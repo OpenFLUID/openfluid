@@ -131,120 +131,132 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        openfluid::core::StringValue& Val) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         openfluid::core::StringValue& Val) const;
 
     /**
       Gets a simulator parameter from the parameters set, as a DoubleValue
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        openfluid::core::DoubleValue& Val) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         openfluid::core::DoubleValue& Val) const;
 
     /**
       Gets a simulator parameter from the parameters set, as a VectorValue
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        openfluid::core::VectorValue& Val) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         openfluid::core::VectorValue& Val) const;
 
     /**
       Gets a simulator parameter from the parameters set, as a MatrixValue
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        openfluid::core::MatrixValue& Val) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         openfluid::core::MatrixValue& Val) const;
 
     /**
       Gets a simulator parameter from the parameters set, as a double
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        double& Val) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         double& Val) const;
 
     /**
       Gets a simulator parameter value from the parameters set, as a long int
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        long& Val) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         long& Val) const;
 
     /**
       Gets a simulator parameter from the parameters set, as a float
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        float& Val) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         float& Val) const;
 
     /**
       Gets a simulator parameter value from the parameters set, as an int
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        int& Val) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         int& Val) const;
 
     /**
       Gets a simulator parameter value from the parameters set, as a string
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        std::string& Val) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         std::string& Val) const;
 
     /**
       Gets a simulator parameter vector of values from the parameters set, as a vector of strings
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Vals the vector of values of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        std::vector<std::string>& Vals) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         std::vector<std::string>& Vals) const;
 
     /**
       Gets a simulator parameter vector of values from the parameters set, as a vector of doubles
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Vals the vector of values of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        std::vector<double>& Vals) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         std::vector<double>& Vals) const;
 
     /**
       Gets a simulator parameter vector of values from the parameters set, as a vector of long ints
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Vals the vector of values of the requested parameter
+      @return true if the parameter exists, false otherwise
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
-                                        const openfluid::ware::WareParamKey_t& ParamName,
-                                        std::vector<long>& Vals) const;
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         std::vector<long>& Vals) const;
 
     /**
       Returns the maximum number of threads that can be concurrently run in threaded spatial loops
