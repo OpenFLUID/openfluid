@@ -111,7 +111,7 @@ class OPENFLUID_API ColumnTextParser
       @param[in] Column the column number of the value (first column is 0)
       @return the requested value
     */
-    std::string getValue(unsigned int Line, unsigned int Column);
+    std::string getValue(unsigned int Line, unsigned int Column) const;
 
     /**
       Gets the value at a specified row-column, as a string
@@ -120,7 +120,7 @@ class OPENFLUID_API ColumnTextParser
       @param[out] Value the requested value if exists
       @return true if the value has been found, false otherwise
     */
-    bool getStringValue(unsigned int Line, unsigned int Column, std::string *Value);
+    bool getStringValue(unsigned int Line, unsigned int Column, std::string *Value) const;
 
     /**
       Gets the value at a specified row-column, as a long int
@@ -129,7 +129,7 @@ class OPENFLUID_API ColumnTextParser
       @param[out] Value the requested value if exists
       @return true if the value has been found, false otherwise
     */
-    bool getLongValue(unsigned int Line, unsigned int Column, long* Value);
+    bool getLongValue(unsigned int Line, unsigned int Column, long* Value) const;
 
 
     /**
@@ -139,14 +139,14 @@ class OPENFLUID_API ColumnTextParser
       @param[out] Value the requested value if exists
       @return true if the value has been found, false otherwise
     */
-    bool getDoubleValue(unsigned int Line, unsigned int Column, double* Value);
+    bool getDoubleValue(unsigned int Line, unsigned int Column, double* Value) const;
 
     /**
       Returns the values at a specified line
       @param[in] Line the line number of the value (first line is 0)
       @return the requested values
     */
-    std::vector<std::string> getValues(unsigned int Line);
+    std::vector<std::string> getValues(unsigned int Line) const;
 
     /**
       Returns the number of lines
