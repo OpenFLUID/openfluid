@@ -30,10 +30,9 @@
 */
 
 /**
- \file LandREntity.hpp
- \brief Header of ...
+ @file LandREntity.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LANDRENTITY_HPP__

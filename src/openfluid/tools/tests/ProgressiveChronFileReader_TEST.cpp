@@ -32,10 +32,9 @@
 
 
 /**
-  \file MarketClient_TEST.cpp
-  \brief Implements ...
+  @file MarketClient_TEST.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 

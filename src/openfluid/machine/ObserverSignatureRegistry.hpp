@@ -30,10 +30,9 @@
 */
 
 /**
- \file ObserverSignatureRegistry.hpp
- \brief Header of ...
+ @file ObserverSignatureRegistry.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_MACHINE_OBSERVERSIGNATUREREGISTRY_HPP__

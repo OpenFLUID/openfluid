@@ -32,8 +32,7 @@
 
 
 /**
-  \file FortranSim.cpp
-  \brief Implements ...
+  @file FortranSim.cpp
 */
 
 

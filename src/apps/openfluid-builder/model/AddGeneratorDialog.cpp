@@ -32,10 +32,9 @@
 
 
 /**
-  \file AddGeneratorDialog.cpp
-  \brief Implements ...
+  @file AddGeneratorDialog.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

@@ -32,10 +32,9 @@
 
 
 /**
-  \file GeneratorsSim.cpp
-  \brief Implements ...
+  @file GeneratorsSim.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

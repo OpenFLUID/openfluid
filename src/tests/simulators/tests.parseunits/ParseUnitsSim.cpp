@@ -32,10 +32,9 @@
 
 
 /**
-  \file ParseUnitsSim.cpp
-  \brief Implements ...
+  @file ParseUnitsSim.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

@@ -32,10 +32,9 @@
 
 
 /**
-  \file ChronFileInterpolator.cpp
-  \brief Implements ...
+  @file ChronFileInterpolator.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <boost/math/special_functions/fpclassify.hpp>

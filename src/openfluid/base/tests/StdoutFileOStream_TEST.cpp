@@ -32,10 +32,9 @@
 
 
 /**
-  \file DualOStream_TEST.cpp
-  \brief Implements ...
+  @file DualOStream_TEST.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN

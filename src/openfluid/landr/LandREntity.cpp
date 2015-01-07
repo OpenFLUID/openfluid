@@ -30,10 +30,9 @@
 */
 
 /**
- \file LandREntity.cpp
- \brief Implements ...
+ @file LandREntity.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "LandREntity.hpp"

@@ -32,7 +32,7 @@
 /**
   @file
 
-  @author JC.Fabre <fabrejc@supagro.inra.fr>
+  @author JC.Fabre <jean-christophe.fabre@supagro.inra.fr>
 */
 
 

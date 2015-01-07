@@ -32,8 +32,7 @@
 
 
 /**
-  \file FortranSim.h
-  \brief Header of ...
+  @file FortranSim.h
 */
 
 #ifndef __FORTRANSIM_H__

@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedDomainDescriptor.cpp
- \brief Implements ...
+ @file AdvancedDomainDescriptor.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>

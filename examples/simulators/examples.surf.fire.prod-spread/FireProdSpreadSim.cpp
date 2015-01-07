@@ -32,10 +32,9 @@
 
 
 /**
-  \file DebugSim.cpp
-  \brief Implements ...
+  @file DebugSim.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -66,7 +65,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.fire.prod-spread")
   DECLARE_DOMAIN("fire");
   DECLARE_PROCESS("production, spreading");
   DECLARE_METHOD("wind coefficient, stock quantity and type");
-  DECLARE_AUTHOR("Jean-Christophe Fabre","fabrejc@supagro.inra.fr");
+  DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
 
   DECLARE_SIMULATOR_PARAM("ignitionunits","semicolon separated list of land units IDs where the fire ignites","-")
 

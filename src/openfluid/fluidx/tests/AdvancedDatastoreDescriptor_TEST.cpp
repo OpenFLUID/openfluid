@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedDatastoreDescriptor_TEST.cpp
- \brief Implements ...
+ @file AdvancedDatastoreDescriptor_TEST.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN

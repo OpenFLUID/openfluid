@@ -30,10 +30,9 @@
 */
 
 /**
- \file VectorDataset.hpp
- \brief Header of ...
+ @file VectorDataset.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_VECTORDATASET_HPP__

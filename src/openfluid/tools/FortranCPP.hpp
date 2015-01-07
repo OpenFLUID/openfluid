@@ -34,7 +34,7 @@
 /**
   @file
 
-  @author JC.Fabre <fabrejc@supagro.inra.fr>, C.Dagès <dages@supagro.inra.fr>
+  @author JC.Fabre <jean-christophe.fabre@supagro.inra.fr>, C.Dagès <dages@supagro.inra.fr>
 
 
   @see http://www-h.eng.cam.ac.uk/help/tpl/languages/mixinglanguages.html

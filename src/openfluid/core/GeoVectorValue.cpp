@@ -30,10 +30,9 @@
 */
 
 /**
- \file GeoVectorValue.cpp
- \brief Implements ...
+ @file GeoVectorValue.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include <openfluid/core/GeoVectorValue.hpp>

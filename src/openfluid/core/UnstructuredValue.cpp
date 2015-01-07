@@ -30,10 +30,9 @@
 */
 
 /**
- \file UnstructuredValue.cpp
- \brief Implements ...
+ @file UnstructuredValue.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include "UnstructuredValue.hpp"

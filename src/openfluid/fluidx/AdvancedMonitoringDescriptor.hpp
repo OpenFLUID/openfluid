@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedMonitoringDescriptor.hpp
- \brief Header of ...
+ @file AdvancedMonitoringDescriptor.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef ADVANCEDMONITORINGDESCRIPTOR_HPP_

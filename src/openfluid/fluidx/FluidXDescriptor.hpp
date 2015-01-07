@@ -30,10 +30,10 @@
 */
 
 /**
- \file FluidXDescriptor.hpp
- \brief Header of ...
+ @file FluidXDescriptor.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef FLUIDXDESCRIPTOR_HPP_
@@ -187,6 +187,6 @@ class OPENFLUID_API FluidXDescriptor
     void writeToSingleFile(std::string FilePath);
 };
 
-}
-} // namespaces
+} } // namespaces
+
 #endif /* FLUIDXDESCRIPTOR_HPP_ */

@@ -1,7 +1,7 @@
 #
 # CMake build for OpenFLUID
 #
-# Author : Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+# Author : Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 #
 # Usage for debug build:
 #  cmake <path to sources>

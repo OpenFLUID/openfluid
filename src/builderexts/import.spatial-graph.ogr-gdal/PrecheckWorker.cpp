@@ -31,10 +31,9 @@
 
 
 /**
-  \file PrecheckWorker.cpp
-  \brief Implements ...
+  @file PrecheckWorker.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

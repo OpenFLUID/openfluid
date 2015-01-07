@@ -32,8 +32,7 @@
 
 
 /**
-  \file OFEFunc2DocSim.h
-  \brief Header of ...
+  @file OFEFunc2DocSim.h
 */
 
 #ifndef __SIM2DOCSIM_H__

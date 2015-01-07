@@ -1,5 +1,5 @@
 /**
-  \file ExampleUnitsAUp.cpp
+  @file ExampleUnitsAUp.cpp
 */
 
 
@@ -30,7 +30,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.up")
   DECLARE_DOMAIN("examples");
   DECLARE_PROCESS("");
   DECLARE_METHOD("");
-  DECLARE_AUTHOR("Jean-Christophe Fabre","fabrejc@supagro.inra.fr");
+  DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
 
   DECLARE_SIMULATOR_PARAM("gmult","multiply coefficient","");
 

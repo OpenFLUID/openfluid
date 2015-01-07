@@ -32,10 +32,9 @@
 
 
 /**
-  \file DebugSim.cpp
-  \brief Implements ...
+  @file DebugSim.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <boost/random.hpp>
@@ -66,7 +65,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.wind-fire.connections")
   DECLARE_DOMAIN("fire");
   DECLARE_PROCESS("spatial connections");
   DECLARE_METHOD("wind direction");
-  DECLARE_AUTHOR("Jean-Christophe Fabre","fabrejc@supagro.inra.fr");
+  DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
 
   DECLARE_REQUIRED_ATTRIBUTE("N","LU","North cell ID, -1 if none","-")
   DECLARE_REQUIRED_ATTRIBUTE("NE","LU","Northeast cell ID, -1 if none","-")

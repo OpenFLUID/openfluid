@@ -30,10 +30,9 @@
 */
 
 /**
- \file GeoValue.hpp
- \brief Header of ...
+ @file GeoValue.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef GEOVALUE_HPP_

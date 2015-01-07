@@ -30,11 +30,10 @@
 */
 
 /**
- \file PreferencesManager.cpp
- \brief Implements ...
+ @file PreferencesManager.cpp
 
- \author Jean-Christophe Fabre <fabrejc@supagro.inra.fr>
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include "PreferencesManager.hpp"

@@ -30,10 +30,9 @@
 */
 
 /**
- \file DatastoreItem.hpp
- \brief Header of ...
+ @file DatastoreItem.hpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_DATASTOREITEM_HPP__

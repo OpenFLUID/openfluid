@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedDatastoreDescriptor.cpp
- \brief Implements ...
+ @file AdvancedDatastoreDescriptor.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "AdvancedDatastoreDescriptor.hpp"

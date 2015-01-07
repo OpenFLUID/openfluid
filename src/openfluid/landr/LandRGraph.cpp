@@ -30,10 +30,9 @@
  */
 
 /**
- \file LandRGraph.cpp
- \brief Implements ...
+ @file LandRGraph.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "LandRGraph.hpp"

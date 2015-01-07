@@ -30,10 +30,9 @@
 */
 
 /**
- \file SimulatorSignatureRegistry.hpp
- \brief Header of ...
+ @file SimulatorSignatureRegistry.hpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_MACHINE_SIMULATORSIGNATUREREGISTRY_HPP__

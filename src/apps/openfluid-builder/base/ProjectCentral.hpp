@@ -30,9 +30,9 @@
 */
 
 /**
- \file ProjectCentral.hpp
+ @file ProjectCentral.hpp
 
- \author Jean-Christophe Fabre <fabrejc@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_BUILDERAPP_PROJECTCENTRAL_HPP__

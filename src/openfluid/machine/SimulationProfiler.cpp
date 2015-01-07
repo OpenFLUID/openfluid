@@ -32,10 +32,9 @@
 
 
 /**
-  \file SimulationProfiler.cpp
-  \brief Implements ...
+  @file SimulationProfiler.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

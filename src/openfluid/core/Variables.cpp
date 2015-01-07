@@ -30,10 +30,9 @@
 */
 
 /**
- \file Variables.cpp
- \brief Implements ...
+ @file Variables.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include <openfluid/core/Variables.hpp>

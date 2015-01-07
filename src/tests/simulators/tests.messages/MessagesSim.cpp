@@ -32,8 +32,7 @@
 
 
 /**
-  \file PrimitivesProdSim.cpp
-  \brief Implements ...
+  @file PrimitivesProdSim.cpp
 */
 
 

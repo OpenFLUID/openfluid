@@ -30,10 +30,9 @@
 */
 
 /**
- \file GeoValue.cpp
- \brief Implements ...
+ @file GeoValue.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "GeoValue.hpp"

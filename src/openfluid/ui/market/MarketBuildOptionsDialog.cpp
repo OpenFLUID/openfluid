@@ -32,10 +32,9 @@
 
 
 /**
-  \file MarketBuildOptionsDialog.cpp
-  \brief Implements ...
+  @file MarketBuildOptionsDialog.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 #include <openfluid/ui/market/MarketBuildOptionsDialog.hpp>

@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedFluidXDescriptor.hpp
- \brief Header of ...
+ @file AdvancedFluidXDescriptor.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDFLUIDXDESCRIPTOR_HPP__

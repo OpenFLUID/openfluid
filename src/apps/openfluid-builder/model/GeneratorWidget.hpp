@@ -31,10 +31,9 @@
 
 
 /**
-  \file GeneratorWidget.hpp
-  \brief Header of ...
+  @file GeneratorWidget.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

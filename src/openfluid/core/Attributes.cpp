@@ -32,10 +32,9 @@
 
 
 /**
-  \file Attributes.cpp
-  \brief Implements ...
+  @file Attributes.cpp
 
-  \author Aline LIBRES <libres@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 

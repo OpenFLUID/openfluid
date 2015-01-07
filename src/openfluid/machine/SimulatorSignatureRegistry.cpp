@@ -30,10 +30,9 @@
 */
 
 /**
- \file SimulatorSignatureRegistry.cpp
- \brief Implements ...
+ @file SimulatorSignatureRegistry.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>

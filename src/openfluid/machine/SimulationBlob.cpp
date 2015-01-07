@@ -32,10 +32,9 @@
 
 
 /**
-  \file SimulationBlob.cpp
-  \brief Implements ...
+  @file SimulationBlob.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

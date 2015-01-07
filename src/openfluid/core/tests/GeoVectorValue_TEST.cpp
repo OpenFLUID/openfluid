@@ -30,10 +30,9 @@
 */
 
 /**
- \file GeoVectorValue_TEST.cpp
- \brief Implements ...
+ @file GeoVectorValue_TEST.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN

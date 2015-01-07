@@ -31,10 +31,9 @@
 
 
 /**
-  \file ViewLogFileWindow.hpp
-  \brief Header of ...
+  @file ViewLogFileWindow.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

@@ -30,10 +30,9 @@
 */
 
 /**
- \file LineStringEntity.cpp
- \brief Implements ...
+ @file LineStringEntity.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "LineStringEntity.hpp"

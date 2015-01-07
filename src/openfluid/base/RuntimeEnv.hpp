@@ -34,7 +34,7 @@
 /**
   @file
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 #ifndef __OPENFLUID_BASE_RUNTIMEENV_HPP__

@@ -31,10 +31,9 @@
 
 
 /**
-  \file SimulationBlob.hpp
-  \brief Header of ...
+  @file SimulationBlob.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

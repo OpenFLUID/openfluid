@@ -30,10 +30,9 @@
 */
 
 /**
-  \file FakeSim.cpp
-  \brief Implements FakeSimulator
+  @file FakeSim.cpp
 
-  \author John Doe <doe@foo.bar.org>
+  @author John Doe <doe@foo.bar.org>
  */
 
 

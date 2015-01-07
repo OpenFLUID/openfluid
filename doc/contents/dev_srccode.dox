@@ -856,23 +856,23 @@ Simulators can log messages to both console and files using
 <ul>
 <li>
 \if DocIsLaTeX
-\b OpenFLUID_Logger.getFile()
+\b OpenFLUID_Logger.file()
 \else
-\link openfluid::base::StdoutAndFileOutputStream::getFile() OpenFLUID_Logger.getFile() \endlink
+\link openfluid::base::StdoutAndFileOutputStream::file() OpenFLUID_Logger.file() \endlink
 \endif
 to log messages to file only
 <li>
 \if DocIsLaTeX
-\b OpenFLUID_Logger.getStdout()
+\b OpenFLUID_Logger.stdout()
 \else
-\link openfluid::base::StdoutAndFileOutputStream::getStdout() OpenFLUID_Logger.getStdout() \endlink
+\link openfluid::base::StdoutAndFileOutputStream::stdout() OpenFLUID_Logger.stdout() \endlink
 \endif
 to log messages to console only
 <li>
 \if DocIsLaTeX
-\b OpenFLUID_Logger.get()
+\b OpenFLUID_Logger.all()
 \else
-\link openfluid::base::StdoutAndFileOutputStream::get() OpenFLUID_Logger.get() \endlink
+\link openfluid::base::StdoutAndFileOutputStream::all() OpenFLUID_Logger.all() \endlink
 \endif
 to log messages to file and console.
 </ul>
@@ -889,16 +889,16 @@ openfluid::base::SchedulingRequest runStep()
 {
   openfluid::core::Unit* TU;
 
-  OPENFLUID_Logger.get() << 
+  OPENFLUID_Logger.all() << 
     "This is a message to both file and console" << std::endl;
-  OPENFLUID_Logger.getFile() << 
+  OPENFLUID_Logger.file() << 
     "This is a message to file only" << std::endl;
-  OPENFLUID_Logger.getStdout() << 
+  OPENFLUID_Logger.stdout() << 
     "This is a message to console only" << std::endl;
 
   OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
   {
-    OPENFLUID_Logger.get() << "TestUnits " << TU->getID() << std::endl;
+    OPENFLUID_Logger.all() << "TestUnits " << TU->getID() << std::endl;
   }
 
   return DefaultDeltaT;

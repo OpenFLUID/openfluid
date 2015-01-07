@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedDatastoreDescriptor.hpp
- \brief Header of ...
+ @file AdvancedDatastoreDescriptor.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDDATASTOREDESCRIPTOR_HPP__

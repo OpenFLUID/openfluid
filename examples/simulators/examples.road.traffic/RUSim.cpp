@@ -1,5 +1,5 @@
 /**
-  \file RUSim.cpp
+  @file RUSim.cpp
  */
 
 

@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedModelDescriptor.hpp
- \brief Header of ...
+ @file AdvancedModelDescriptor.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef ADVANCEDMODELDESCRIPTOR_HPP_

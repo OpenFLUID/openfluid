@@ -30,10 +30,9 @@
 */
 
 /**
- \file GeoRasterValue.cpp
- \brief Implements ...
+ @file GeoRasterValue.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include <openfluid/core/GeoRasterValue.hpp>

@@ -30,10 +30,9 @@
 */
 
 /**
- \file VectorDataset.cpp
- \brief Implements ...
+ @file VectorDataset.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "VectorDataset.hpp"

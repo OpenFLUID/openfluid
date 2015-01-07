@@ -30,10 +30,9 @@
 */
 
 /**
- \file LineStringEntity.hpp
- \brief Header of ...
+ @file LineStringEntity.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LINESTRINGENTITY_HPP__

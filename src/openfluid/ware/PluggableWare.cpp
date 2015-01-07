@@ -32,10 +32,9 @@
 
 
 /**
-  \file PluggableWare.cpp
-  \brief Implements ...
+  @file PluggableWare.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

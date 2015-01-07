@@ -31,10 +31,9 @@
 
 
 /**
-  \file AddEventDialog.cpp
-  \brief Implements ...
+  @file AddEventDialog.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

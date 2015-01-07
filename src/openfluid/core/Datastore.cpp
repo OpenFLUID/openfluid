@@ -30,10 +30,9 @@
 */
 
 /**
- \file Datastore.cpp
- \brief Implements ...
+ @file Datastore.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include "Datastore.hpp"

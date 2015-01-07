@@ -31,10 +31,9 @@
 
 
 /**
-  \file PluggableSimulator.hpp
-  \brief Header of ...
+  @file PluggableSimulator.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -108,7 +107,7 @@ namespace openfluid { namespace ware {
   defining the minimal structure for a simulator. \n
   All simulators must inherit from this class.
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
 {

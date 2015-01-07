@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedDomainDescriptor.hpp
- \brief Header of ...
+ @file AdvancedDomainDescriptor.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef ADVANCEDDOMAINDESCRIPTOR_HPP_

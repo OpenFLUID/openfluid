@@ -30,10 +30,9 @@
 */
 
 /**
- \file PolygonEdge.cpp
- \brief Implements ...
+ @file PolygonEdge.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "PolygonEdge.hpp"

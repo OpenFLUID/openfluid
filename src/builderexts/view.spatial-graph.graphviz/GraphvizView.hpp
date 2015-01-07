@@ -31,10 +31,9 @@
 
 
 /**
-  \file GraphvizView.hpp
-  \brief Header of ...
+  @file GraphvizView.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

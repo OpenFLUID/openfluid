@@ -30,11 +30,10 @@
 */
 
 /**
- \file ValuesBuffer.cpp
- \brief Implements ...
+ @file ValuesBuffer.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
- \author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/core/ValuesBuffer.hpp>

@@ -32,8 +32,7 @@
 
 
 /**
-  \file LoopsSim.cpp
-  \brief Implements ...
+  @file LoopsSim.cpp
 */
 
 #include <openfluid/ware/PluggableSimulator.hpp>

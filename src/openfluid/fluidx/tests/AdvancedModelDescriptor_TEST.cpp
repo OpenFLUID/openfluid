@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedModelDescriptor_TEST.cpp
- \brief Implements ...
+ @file AdvancedModelDescriptor_TEST.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN

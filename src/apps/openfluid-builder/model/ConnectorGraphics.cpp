@@ -32,10 +32,9 @@
 
 
 /**
-  \file ConnectorGraphics.cpp
-  \brief Implements ...
+  @file ConnectorGraphics.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include "ModelItemGraphics.hpp"

@@ -32,10 +32,9 @@
 
 
 /**
-  \file AppActions.cpp
-  \brief Implements ...
+  @file AppActions.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

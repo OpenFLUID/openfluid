@@ -30,10 +30,9 @@
 */
 
 /**
- \file GeneratorSignature.hpp
- \brief Header of ...
+ @file GeneratorSignature.hpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__

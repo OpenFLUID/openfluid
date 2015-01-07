@@ -32,10 +32,9 @@
 
 
 /**
-  \file HomeModule.cpp
-  \brief Implements ...
+  @file HomeModule.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/base/PreferencesManager.hpp>

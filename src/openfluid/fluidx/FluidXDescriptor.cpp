@@ -30,10 +30,9 @@
 */
 
 /**
- \file FluidXDescriptor.cpp
- \brief Implements ...
+ @file FluidXDescriptor.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "FluidXDescriptor.hpp"

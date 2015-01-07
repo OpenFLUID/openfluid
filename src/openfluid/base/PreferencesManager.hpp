@@ -30,11 +30,10 @@
 */
 
 /**
- \file PreferencesManager.hpp
- \brief Header of ...
+ @file PreferencesManager.hpp
 
- \author Jean-Christophe Fabre <fabrejc@supagro.inra.fr>
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_BASE_PREFERENCESMANAGER_HPP__

@@ -30,10 +30,9 @@
 */
 
 /**
- \file LandRTools_TEST.cpp
- \brief Implements ...
+ @file LandRTools_TEST.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 /*
@@ -68,10 +67,9 @@
 */
 
 /**
- \file LandRTools_TEST.cpp
- \brief Implements ...
+ @file LandRTools_TEST.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
