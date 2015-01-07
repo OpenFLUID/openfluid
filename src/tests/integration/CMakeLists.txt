@@ -524,7 +524,7 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyNewSimHelp
 
 
 FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim")
-CONFIGURE_FILE("${TESTS_DATASETS_PATH}/tests.buddy.newsim/CMakeLists.txt.in" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim/CMakeLists.txt" @ONLY)
+CONFIGURE_FILE("${TESTS_MISCDATA_PATH}/tests.buddy.newsim/CMakeLists.txt.in" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim/CMakeLists.txt" @ONLY)
     
 OPENFLUID_ADD_TEST(NAME integration-BuddyNewSim
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"

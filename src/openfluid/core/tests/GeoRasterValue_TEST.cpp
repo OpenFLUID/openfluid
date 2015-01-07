@@ -80,7 +80,7 @@ class GeoRasterValueSub: public openfluid::core::GeoRasterValue
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoRasterValue/dem.jpeg");
 
   BOOST_CHECK_EQUAL(Val->getType(),
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   BOOST_CHECK_EQUAL(
       Val->getAbsolutePath(),
-      boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue/dem.jpeg").string());
+      boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue/dem.jpeg").string());
 
   BOOST_CHECK(!Val->data());
 
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 {
   GeoRasterValueSub* Val = new GeoRasterValueSub(
-      CONFIGTESTS_INPUT_DATASETS_DIR, "GeoRasterValue/wrongfile.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoRasterValue/wrongfile.jpeg");
 
   BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Jpeg)
 {
-  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoRasterValue/dem.jpeg");
 
   Val->tryToOpenSource();
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Jpeg)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Gtiff)
 {
-  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoRasterValue/dem.Gtiff");
 
   Val->tryToOpenSource();
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Gtiff)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Img)
 {
-  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoRasterValue/dem.img");
 
   Val->tryToOpenSource();
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Img)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Ascii)
 {
-  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoRasterValue/dem.asc");
 
   Val->tryToOpenSource();

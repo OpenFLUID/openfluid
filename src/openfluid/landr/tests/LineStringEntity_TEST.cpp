@@ -60,7 +60,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "RS.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_clone)
 {
-  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "RS.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(check_clone)
 BOOST_AUTO_TEST_CASE(check_nodes)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(check_nodes)
 BOOST_AUTO_TEST_CASE(check_LineOrientNeighbours)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(check_LineOrientNeighbours)
 BOOST_AUTO_TEST_CASE(check_Neighbours)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);

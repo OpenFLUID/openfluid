@@ -69,7 +69,7 @@
 BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 
 BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
 {
-  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "RS.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
 
 BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
 {
-  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "RS.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
 //BOOST_AUTO_TEST_CASE(check_clone)
 //{
 //  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+//      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 //
 //  openfluid::landr::LineStringGraph* Graph =
 //      openfluid::landr::LineStringGraph::create(*Val);
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
 BOOST_AUTO_TEST_CASE(check_StartsEnds)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE(check_StartsEnds)
 BOOST_AUTO_TEST_CASE(check_getEntity)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE(check_getOfldIdOrderedEntities)
 {
 
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -302,7 +302,7 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
   BOOST_CHECK_EQUAL(i, 0);
 
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -335,7 +335,7 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
 BOOST_AUTO_TEST_CASE(check_RemoveEntity)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -377,10 +377,10 @@ BOOST_AUTO_TEST_CASE(check_RemoveEntity)
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_intPixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -410,10 +410,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_intPixelType)
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float32PixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.asc");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -443,10 +443,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float32PixelTy
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float64PixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.Gtiff");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -476,10 +476,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float64PixelTy
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_intPixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -509,10 +509,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_intPixelType)
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float32PixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.asc");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -542,10 +542,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float32PixelType
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float64PixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.Gtiff");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -575,10 +575,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float64PixelType
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -608,10 +608,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.asc");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -641,10 +641,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelTyp
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.Gtiff");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -674,7 +674,7 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelTyp
 BOOST_AUTO_TEST_CASE(check_reverse_orientation_LineStringEntity)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -703,7 +703,7 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
 {
 
   openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*ValRS);
   BOOST_CHECK_EQUAL(Graph->isLineStringGraphArborescence(),true);
@@ -711,7 +711,7 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
   delete ValRS;
 
   openfluid::core::GeoVectorValue* BadRS_1 = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_disconnected.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "badRS_disconnected.shp");
   openfluid::landr::LineStringGraph* BadGraph_1 =
       openfluid::landr::LineStringGraph::create(*BadRS_1);
   BOOST_CHECK_EQUAL(BadGraph_1->isLineStringGraphArborescence(),false);
@@ -719,7 +719,7 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
   delete BadGraph_1;
 
   openfluid::core::GeoVectorValue* BadRS_2 = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_with_loop.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "badRS_with_loop.shp");
   openfluid::landr::LineStringGraph* BadGraph_2 =
       openfluid::landr::LineStringGraph::create(*BadRS_2);
   BOOST_CHECK_EQUAL(BadGraph_2->isLineStringGraphArborescence(),false);
@@ -727,7 +727,7 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
   delete BadGraph_2;
 
   openfluid::core::GeoVectorValue* BadRS_3 = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_non_connected.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "badRS_non_connected.shp");
   openfluid::landr::LineStringGraph* BadGraph_3 =
       openfluid::landr::LineStringGraph::create(*BadRS_3);
   BOOST_CHECK_EQUAL(BadGraph_3->isLineStringGraphArborescence(),false);
@@ -736,7 +736,7 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
 
 
   openfluid::core::GeoVectorValue* ValRS4 = new openfluid::core::GeoVectorValue(
-       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "badRS_misdirected.shp");
    openfluid::landr::LineStringGraph* Graph4 =
        openfluid::landr::LineStringGraph::create(*ValRS4);
    BOOST_CHECK_EQUAL(Graph4->isLineStringGraphArborescence(),true);
@@ -754,10 +754,10 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
 BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -787,10 +787,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
 BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.asc");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -820,10 +820,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
 BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.Gtiff");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
@@ -853,7 +853,7 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
 BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -927,7 +927,7 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
 BOOST_AUTO_TEST_CASE(check_getLineStringEntityByMinLength)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "badRS_misdirected.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -972,7 +972,7 @@ BOOST_AUTO_TEST_CASE(check_getLineStringEntityByMinLength)
 BOOST_AUTO_TEST_CASE(check_construction_from_MultiLineString)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "MultiLine.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "MultiLine.shp");
 
   openfluid::landr::LineStringGraph* Graph=0;
   BOOST_CHECK_THROW( Graph =
@@ -989,7 +989,7 @@ BOOST_AUTO_TEST_CASE(check_construction_from_MultiLineString)
 BOOST_AUTO_TEST_CASE(setOrientationByOfldId)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "badRS_misdirected.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);

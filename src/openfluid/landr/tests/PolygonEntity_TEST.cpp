@@ -64,7 +64,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "SU.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_neighbours)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
   openfluid::landr::PolygonGraph* Graph =
       openfluid::landr::PolygonGraph::create(*Val);
@@ -388,7 +388,7 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
 BOOST_AUTO_TEST_CASE(check_getCommonEdgesWith)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU_horseshoe_lines.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU_horseshoe_lines.shp");
 
   openfluid::landr::PolygonGraph* Graph =
       openfluid::landr::PolygonGraph::create(*Val);
@@ -424,7 +424,7 @@ BOOST_AUTO_TEST_CASE(check_getCommonEdgesWith)
 BOOST_AUTO_TEST_CASE(check_getNeighbour_MinDistCentroCentro)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
   openfluid::landr::PolygonGraph* Graph =
       openfluid::landr::PolygonGraph::create(*Val);
@@ -450,10 +450,10 @@ BOOST_AUTO_TEST_CASE(check_getNeighbour_MinDistCentroCentro)
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Contains)
 {
   openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
   openfluid::landr::LineStringGraph* RSGraph =
       openfluid::landr::LineStringGraph::create(*ValRS);
@@ -511,10 +511,10 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Contains)
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Intersect)
 {
   openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
   openfluid::landr::LineStringGraph* RSGraph =
       openfluid::landr::LineStringGraph::create(*ValRS);
@@ -567,10 +567,10 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Intersect)
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Contains)
 {
   openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST4.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LINE_TEST4.shp");
 
   openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
 
   openfluid::landr::LineStringGraph* RSGraph =
       openfluid::landr::LineStringGraph::create(*ValRS);
@@ -685,10 +685,10 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Contains)
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Intersects)
 {
   openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST4.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LINE_TEST4.shp");
 
   openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
 
   openfluid::landr::LineStringGraph* RSGraph =
       openfluid::landr::LineStringGraph::create(*ValRS);
@@ -842,10 +842,10 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
 {
 
   openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST4.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LINE_TEST4.shp");
 
   openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
 
   openfluid::landr::LineStringGraph* RSGraph =
       openfluid::landr::LineStringGraph::create(*ValRS);
@@ -974,7 +974,7 @@ BOOST_AUTO_TEST_CASE(check_getNeighbourWithCommonEdge)
 {
 
 	openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
-			CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+			CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
 
 	openfluid::landr::PolygonGraph* SUGraph =
 			openfluid::landr::PolygonGraph::create(*ValSU);
@@ -1022,13 +1022,13 @@ BOOST_AUTO_TEST_CASE(check_computeNeighboursWithBarriers)
 {
 
   openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
 
   openfluid::landr::PolygonGraph* SUGraph =
       openfluid::landr::PolygonGraph::create(*ValSU);
 
   openfluid::core::GeoVectorValue* ValBarriers = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/", "Barriers.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "Barriers.shp");
 
   openfluid::landr::LineStringGraph* BarriersGraph =
       openfluid::landr::LineStringGraph::create(*ValBarriers);
@@ -1082,7 +1082,7 @@ BOOST_AUTO_TEST_CASE(check_computeNeighboursWithBarriers)
   BOOST_CHECK_EQUAL(SU2->getOrderedNeighbourOfldIds().size(),0);
 
   openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
-        CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/", "LINE_TEST4.shp");
+        CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "LINE_TEST4.shp");
 
     openfluid::landr::LineStringGraph* RSGraph =
         openfluid::landr::LineStringGraph::create(*ValRS);
@@ -1119,7 +1119,7 @@ BOOST_AUTO_TEST_CASE(check_getOrderedNeighboursByLengthBoundary)
 {
 
   openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
   openfluid::landr::PolygonGraph* SUGraph =
       openfluid::landr::PolygonGraph::create(*ValSU);
@@ -1151,16 +1151,16 @@ BOOST_AUTO_TEST_CASE(check_getNeighbourByLineTopology)
 {
 
   openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
-  openfluid::core::GeoVectorValue ValTopo(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue ValTopo(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                           "SUTopoLine.shp");
 
   openfluid::landr::VectorDataset* VectTopo = new openfluid::landr::VectorDataset(
       ValTopo);
 
   openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::PolygonGraph* SUGraph =
       openfluid::landr::PolygonGraph::create(*ValSU);

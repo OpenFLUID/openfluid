@@ -60,7 +60,7 @@
 
 BOOST_AUTO_TEST_CASE(check_constructor)
 {
-  openfluid::core::GeoRasterValue Value(CONFIGTESTS_INPUT_DATASETS_DIR,
+  openfluid::core::GeoRasterValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                         "landr/dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(check_constructor)
 BOOST_AUTO_TEST_CASE(check_Properties)
 {
   openfluid::core::GeoRasterValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(check_Properties)
 BOOST_AUTO_TEST_CASE(check_CoordinateToPixel)
 {
   openfluid::core::GeoRasterValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(check_CoordinateToPixel)
 BOOST_AUTO_TEST_CASE(check_getValues)
 {
   openfluid::core::GeoRasterValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
 {
   // integer values
   openfluid::core::GeoRasterValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
@@ -227,7 +227,7 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
 
   // float values
   Val = openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.asc");
 
   Rast = new openfluid::landr::RasterDataset(Val);
 
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 {
   // integer values
   openfluid::core::GeoRasterValue RasterVal(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       RasterVal);
@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 
   // float values keeped (GDALFPolygonize for floats available since GDAL 1.9.0 )
   RasterVal = openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.asc");
 
   Rast = new openfluid::landr::RasterDataset(RasterVal);
 

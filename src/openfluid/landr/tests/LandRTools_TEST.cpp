@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
 
 BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
 {
-  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "RS.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
   delete Vect;
 
   Val = openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
   Vect = new openfluid::landr::VectorDataset(Val);
 
@@ -263,7 +263,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
 
 BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
 {
-  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "SU.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
   delete Vect;
 
   Val = openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   Vect = new openfluid::landr::VectorDataset(Val);
 
@@ -295,10 +295,10 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
 BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
 {
   openfluid::core::GeoVectorValue ValSU(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
 
   openfluid::core::GeoVectorValue ValRS(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LINE_TEST.shp");
 
   openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
       ValSU);
@@ -342,10 +342,10 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
 BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
 {
   openfluid::core::GeoVectorValue ValSU(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
 
   openfluid::core::GeoVectorValue ValRS(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LINE_TEST.shp");
 
   openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
       ValSU);
@@ -402,13 +402,13 @@ BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
 BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
 {
   openfluid::core::GeoVectorValue ValSU(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
   openfluid::core::GeoVectorValue ValSU2(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST2.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST2.shp");
   openfluid::core::GeoVectorValue ValRS(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LINE_TEST.shp");
   openfluid::core::GeoVectorValue ValRS2(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST2.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LINE_TEST2.shp");
 
   openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
       ValSU);
@@ -485,9 +485,9 @@ BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
 BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
 {
   openfluid::core::GeoVectorValue ValSU(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "field.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "field.shp");
   openfluid::core::GeoVectorValue ValSU2(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soil.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "soil.shp");
 
   openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
       ValSU);
@@ -549,12 +549,12 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
 
 BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
 {
-  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "field.shp");
   openfluid::core::GeoVectorValue Val2(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soil.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "soil.shp");
   openfluid::core::GeoVectorValue Val3(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "reach.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "reach.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       Val);
@@ -642,11 +642,11 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
 BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
 {
   openfluid::core::GeoVectorValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "field2.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/virtual", "field2.shp");
   openfluid::core::GeoVectorValue Val2(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "soil.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/virtual", "soil.shp");
   openfluid::core::GeoVectorValue Val3(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "reach5.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/virtual", "reach5.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       Val);
@@ -728,9 +728,9 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
 BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
 {
   openfluid::core::GeoVectorValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "field2.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/virtual", "field2.shp");
   openfluid::core::GeoVectorValue Val2(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "soil.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/virtual", "soil.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       Val);
@@ -807,9 +807,9 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
 BOOST_AUTO_TEST_CASE(check_intersect_2Polygons)
 {
   openfluid::core::GeoVectorValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
   openfluid::core::GeoVectorValue ValLine(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LINE_TEST.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       Val);
@@ -830,7 +830,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_2Polygons)
   delete VectLine;
 
   openfluid::core::GeoVectorValue Val2(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST2.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST2.shp");
 
   openfluid::landr::VectorDataset* Vect2 = new openfluid::landr::VectorDataset(
       Val2);
@@ -856,7 +856,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_2Polygons)
 BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -911,7 +911,7 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
@@ -980,9 +980,9 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
 {
   // intersect HorseShoe with simple polygon
   openfluid::core::GeoVectorValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
   openfluid::core::GeoVectorValue ValHorse(
-        CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_HORSESHOE.shp");
+        CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_HORSESHOE.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       Val);
@@ -1007,7 +1007,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   // intersect HorseShoe with polygon with hole
   IntersectPolys.clear();
   openfluid::core::GeoVectorValue ValHole(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU-has-hole.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU-has-hole.shp");
 
   openfluid::landr::VectorDataset* VectHole = new openfluid::landr::VectorDataset(
       ValHole);
@@ -1028,7 +1028,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   // intersect HorseShoe with polygon with island
   IntersectPolys.clear();
   openfluid::core::GeoVectorValue ValIsland(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU-has-islands.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU-has-islands.shp");
 
   openfluid::landr::VectorDataset* VectIsland = new openfluid::landr::VectorDataset(
       ValIsland);
@@ -1061,9 +1061,9 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
 {
   double SnapTolerance=0.001;
   openfluid::core::GeoVectorValue ValSU(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "fields_extract2.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "fields_extract2.shp");
   openfluid::core::GeoVectorValue ValSU2(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soils_extract3.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "soils_extract3.shp");
 
   openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
       ValSU);
@@ -1123,7 +1123,7 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
 BOOST_AUTO_TEST_CASE(check_getNodesFromVectorOfLines)
 {
 
-  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "RS.shp");
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
@@ -1146,7 +1146,7 @@ BOOST_AUTO_TEST_CASE(check_getNodesFromVectorOfLines)
 BOOST_AUTO_TEST_CASE(markInvertedLineStringEntityUsingDFS)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "badRS_misdirected.shp");
 
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);

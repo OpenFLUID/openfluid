@@ -80,7 +80,7 @@ class GeoVectorValueSub: public openfluid::core::GeoVectorValue
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue");
 
   BOOST_CHECK_EQUAL(Val->getType(),
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   BOOST_CHECK_EQUAL(
       Val->getAbsolutePath(),
-      boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/GeoVectorValue").string());
+      boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/GeoVectorValue").string());
 
   BOOST_CHECK(!Val->dataWithoutCheck());
 
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongDir)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "WrongDir");
 
   BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongDir)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectDir)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue");
 
   Val->tryToOpenSource();
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectDir)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue/wrongfile");
 
   BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile_NoExtension)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue/SU");
 
   BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile_NoExtension)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFileExtension)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue/SU.aaa");
 
   BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFileExtension)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shp)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue/SU.shp");
 
   Val->tryToOpenSource();
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shp)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Dbf)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue/SU.dbf");
 
   Val->tryToOpenSource();
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Dbf)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shx)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue/SU.shx");
 
   Val->tryToOpenSource();
@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shx)
 
 BOOST_AUTO_TEST_CASE(check_get_CorrectDir)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue");
 
   BOOST_CHECK(Val->data());
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(check_get_CorrectDir)
 
 BOOST_AUTO_TEST_CASE(check_get_WrongDir)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "WrongDir");
 
   BOOST_CHECK_THROW(Val->data(), openfluid::base::FrameworkException);
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE(check_get_WrongDir)
 BOOST_AUTO_TEST_CASE(check_Properties)
 {
   GeoVectorValueSub* Val = new GeoVectorValueSub(
-      CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/SU.shp");
+      CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/SU.shp");
 
   BOOST_CHECK(!Val->isLineType());
   BOOST_CHECK(Val->isPolygonType());
@@ -267,7 +267,7 @@ BOOST_AUTO_TEST_CASE(check_Properties)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GeoJSON)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue/SU.geojson");
   Val->tryToOpenSource();
 
@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GeoJSON)
   BOOST_CHECK_EQUAL(Val->containsField("OFLD_ID"),true);
   BOOST_CHECK_EQUAL(Val->data()->GetDriver()->GetName(),"GeoJSON");
 
-  GeoVectorValueSub* Val2 = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val2 = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                   "GeoVectorValue/RS.geojson");
   Val2->tryToOpenSource();
 
@@ -294,7 +294,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GeoJSON)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GML)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue/SU.gml");
   Val->tryToOpenSource();
 
@@ -303,7 +303,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GML)
   BOOST_CHECK_EQUAL(Val->containsField("OFLD_ID"),true);
   BOOST_CHECK_EQUAL(Val->data()->GetDriver()->GetName(),"GML");
 
-  GeoVectorValueSub* Val2 = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+  GeoVectorValueSub* Val2 = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                   "GeoVectorValue/RS.gml");
   Val2->tryToOpenSource();
 
@@ -323,7 +323,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GML)
 BOOST_AUTO_TEST_CASE(check_Polygon_Geometry)
 {
 	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/SU.shp");
+			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/SU.shp");
 
 	BOOST_CHECK(Val->isPolygonType());
 
@@ -342,7 +342,7 @@ BOOST_AUTO_TEST_CASE(check_Polygon_Geometry)
 BOOST_AUTO_TEST_CASE(check_MultiPolygon_Geometry)
 {
 	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/MultiSU.geojson");
+			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiSU.geojson");
 
 	BOOST_CHECK(Val->isMultiPolygonType());
 
@@ -361,7 +361,7 @@ BOOST_AUTO_TEST_CASE(check_MultiPolygon_Geometry)
 BOOST_AUTO_TEST_CASE(check_Line_Geometry)
 {
 	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/RS.shp");
+			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/RS.shp");
 
 	BOOST_CHECK(Val->isLineType());
 
@@ -380,7 +380,7 @@ BOOST_AUTO_TEST_CASE(check_Line_Geometry)
 BOOST_AUTO_TEST_CASE(check_MultiLine_Geometry)
 {
 	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/MultiRS.geojson");
+			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiRS.geojson");
 
 	BOOST_CHECK(Val->isMultiLineType());
 
@@ -399,7 +399,7 @@ BOOST_AUTO_TEST_CASE(check_MultiLine_Geometry)
 BOOST_AUTO_TEST_CASE(check_Point_Geometry)
 {
 	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/PU.shp");
+			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/PU.shp");
 
 	BOOST_CHECK(Val->isPointType());
 
@@ -418,7 +418,7 @@ BOOST_AUTO_TEST_CASE(check_Point_Geometry)
 BOOST_AUTO_TEST_CASE(check_MultiPoint_Geometry)
 {
 	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/MultiPU.geojson");
+			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiPU.geojson");
 
 	BOOST_CHECK(Val->isMultiPointType());
 
