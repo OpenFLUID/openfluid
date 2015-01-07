@@ -24,7 +24,16 @@ IF(BUILD_FORTRAN_SIMULATORS)
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran" 
                         "-p${TEST_OUTPUT_PATH}"
                      PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran"
-                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran/tests.fortran_ofware-sim.log"                        )  
+                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran/tests.fortran_ofware-sim.log")
+                     
+  ADD_SUBDIRECTORY(tests.fortran90)  
+  OPENFLUID_ADD_TEST(NAME simulators-Fortran90
+                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Fortran90"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran90" 
+                        "-p${TEST_OUTPUT_PATH}"
+                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran90"
+                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran90/tests.fortran90_ofware-sim.log")                       
 ENDIF(BUILD_FORTRAN_SIMULATORS)
 
 

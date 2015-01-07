@@ -56,7 +56,7 @@ DECLARE_SIMULATOR_PLUGIN
 // =====================================================================
 
 
-BEGIN_SIMULATOR_SIGNATURE("tests.fortran")
+BEGIN_SIMULATOR_SIGNATURE("tests.fortran90")
 
   DECLARE_NAME("test simulator for Fortran code wrapping");
   DECLARE_DESCRIPTION("");
@@ -79,10 +79,10 @@ END_SIMULATOR_SIGNATURE
 
 
 BEGIN_EXTERN_FORTRAN
-  EXTERN_FSUBROUTINE(multrealvalue)(FREAL8*,FREAL8*,FREAL8*);
-  EXTERN_FSUBROUTINE(multintvalue)(FINT*,FINT*,FINT*);
-  EXTERN_FSUBROUTINE(catstrings)(FCHARACTER*,FCHARACTER*,FCHARACTER*);
-  EXTERN_FSUBROUTINE(multrealmatrix)(FREAL8*,FINT*,FINT*,FREAL8*,FREAL8*);
+  EXTERN_FMODSUBROUTINE(testmodule,multrealvalue)(FREAL8*,FREAL8*,FREAL8*);
+  EXTERN_FMODSUBROUTINE(testmodule,multintvalue)(FINT*,FINT*,FINT*);
+  EXTERN_FMODSUBROUTINE(testmodule,catstrings)(FCHARACTER*,FCHARACTER*,FCHARACTER*);
+  EXTERN_FMODSUBROUTINE(testmodule,multrealmatrix)(FREAL8*,FINT*,FINT*,FREAL8*,FREAL8*);
 END_EXTERN_FORTRAN
 
 
@@ -90,7 +90,7 @@ END_EXTERN_FORTRAN
 // =====================================================================
 
 
-class FortranSimulator : public openfluid::ware::PluggableSimulator
+class Fortran90Simulator : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -98,7 +98,7 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
 
   public:
 
-    FortranSimulator() : PluggableSimulator()
+    Fortran90Simulator() : PluggableSimulator()
     {
 
     }
@@ -108,7 +108,7 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
     // =====================================================================
 
 
-    ~FortranSimulator()
+    ~Fortran90Simulator()
     {
 
     }
@@ -170,7 +170,7 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
       DMult = 2.5;
       DResult = 0.0;
 
-      CALL_FSUBROUTINE(multrealvalue)(&DValue,&DMult,&DResult);
+      CALL_FMODSUBROUTINE(testmodule,multrealvalue)(&DValue,&DMult,&DResult);
 
       if (std::abs(DResult - (DValue*DMult)) > m_Precision)
         OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealvalue)");
@@ -183,7 +183,7 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
       IMult = 18;
       IResult = 0;
 
-      CALL_FSUBROUTINE(multintvalue)(&IValue,&IMult,&IResult);
+      CALL_FMODSUBROUTINE(testmodule,multintvalue)(&IValue,&IMult,&IResult);
 
       if (IResult != (IValue*IMult))
         OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multintvalue)");
@@ -243,7 +243,7 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
 
       MResult.fill(0.0);
 
-      CALL_FSUBROUTINE(multrealmatrix)(MValue.data(),&MDim1,&MDim2,&MMult,MTmpResult);
+      CALL_FMODSUBROUTINE(testmodule,multrealmatrix)(MValue.data(),&MDim1,&MDim2,&MMult,MTmpResult);
 
       MResult = openfluid::core::MatrixValue(MDim1,MDim2);
       MResult.setData(MTmpResult);
@@ -302,4 +302,4 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
 // =====================================================================
 
 
-DEFINE_SIMULATOR_CLASS(FortranSimulator)
+DEFINE_SIMULATOR_CLASS(Fortran90Simulator)

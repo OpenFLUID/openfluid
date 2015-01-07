@@ -230,8 +230,8 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 
 
 
-#ifndef __OPENFLUID_TOOLS_FORTRAN2CPP_HPP__
-#define __OPENFLUID_TOOLS_FORTRAN2CPP_HPP__
+#ifndef __OPENFLUID_TOOLS_FORTRANCPP_HPP__
+#define __OPENFLUID_TOOLS_FORTRANCPP_HPP__
 
 
 #ifdef __cplusplus
@@ -284,28 +284,29 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
   @param[in] x the name of the module
   @param[in] y the name of the function
 */
-#define EXTERN_FMODFUNCTION(x,y) __##x##__##y
+#define EXTERN_FMODFUNCTION(x,y) __##x##_MOD_##y
 
 /**
   Macro for calling an external fortran90 function in a module
   @param[in] x the name of the module
   @param[in] y the name of the function
 */
-#define CALL_FMODFUNCTION(x,y) __##x##__##y
+#define CALL_FMODFUNCTION(x,y) __##x##_MOD_##y
 
 /**
   Macro for declaration of an external fortran90 subroutine in a module
   @param[in] x the name of the module
   @param[in] y the name of the subroutine
 */
-#define EXTERN_FMODSUBROUTINE(x,y) void __##x##__##y
+#define EXTERN_FMODSUBROUTINE(x,y) void __##x##_MOD_##y
 
 /**
   Macro for calling an external fortran90 subroutine in a module
   @param[in] x the name of the module
   @param[in] y the name of the subroutine
 */
-#define CALL_FMODSUBROUTINE(x,y) __##x##__##y
+#define CALL_FMODSUBROUTINE(x,y) __##x##_MOD_##y
+
 
 // =====================================================================
 // =====================================================================
@@ -343,8 +344,10 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 #define FLOGICAL int
 #define FLOGICAL1 bool
 
+
 // =====================================================================
 // =====================================================================
+
 
 // Character and string handling
 
@@ -352,6 +355,7 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 
 #define FSTRING char*
 #define FSTRINGLEN int
+
 
 // =====================================================================
 // =====================================================================
@@ -364,5 +368,5 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 #define STD2FSTRINGFULL(str) strdup((str).c_str()),strlen((str).c_str())
 
 
-#endif  /* __OPENFLUID_TOOLS_FORTRAN2CPP_HPP__ */
+#endif  /* __OPENFLUID_TOOLS_FORTRANCPP_HPP__ */
 

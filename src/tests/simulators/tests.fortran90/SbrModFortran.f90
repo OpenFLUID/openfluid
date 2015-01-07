@@ -30,6 +30,9 @@
 !*
 
 
+module testmodule
+
+contains
 
 subroutine multrealvalue(value,mult,result)
 
@@ -100,3 +103,7 @@ end do
 
 return
 end
+
+
+end module
+
