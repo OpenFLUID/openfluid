@@ -49,8 +49,8 @@ namespace openfluid { namespace ware {
 
 
 void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
-                                const openfluid::core::AttributeName_t& AttrName,
-                                const openfluid::core::Value& Val)
+                                                       const openfluid::core::AttributeName_t& AttrName,
+                                                       const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_SetAttribute",
@@ -75,8 +75,8 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
 
 
 void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
-                                               const openfluid::core::AttributeName_t& AttrName,
-                                               const double& Val)
+                                                       const openfluid::core::AttributeName_t& AttrName,
+                                                       const double& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_SetAttribute",
@@ -101,8 +101,8 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
 
 
 void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
-                                               const openfluid::core::AttributeName_t& AttrName,
-                                               const long& Val)
+                                                       const openfluid::core::AttributeName_t& AttrName,
+                                                       const long& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_SetAttribute",
@@ -127,8 +127,8 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
 
 
 void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
-                                               const openfluid::core::AttributeName_t& AttrName,
-                                               const std::string& Val)
+                                                       const openfluid::core::AttributeName_t& AttrName,
+                                                       const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_SetAttribute",
@@ -153,8 +153,8 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const openfluid::core::Value& Val)
+                                                             const openfluid::core::VariableName_t& VarName,
+                                                             const openfluid::core::Value& Val)
 {
   OPENFLUID_InitializeVariable(*UnitPtr,VarName,Val);
 }
@@ -165,8 +165,8 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit& aUnit,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const openfluid::core::Value& Val)
+                                                             const openfluid::core::VariableName_t& VarName,
+                                                             const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
                            "SimulationContributorWare::OPENFLUID_InitializeVariable",
@@ -187,8 +187,8 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const double& Val)
+                                                             const openfluid::core::VariableName_t& VarName,
+                                                             const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
                               "SimulationContributorWare::OPENFLUID_InitializeVariable",
@@ -213,8 +213,8 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const long& Val)
+                                                             const openfluid::core::VariableName_t& VarName,
+                                                             const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
                            "SimulationContributorWare::OPENFLUID_InitializeVariable",
@@ -236,8 +236,8 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const bool& Val)
+                                                             const openfluid::core::VariableName_t& VarName,
+                                                             const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
                            "SimulationContributorWare::OPENFLUID_InitializeVariable",
@@ -259,8 +259,8 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const std::string& Val)
+                                                             const openfluid::core::VariableName_t& VarName,
+                                                             const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
                            "SimulationContributorWare::OPENFLUID_InitializeVariable",
@@ -282,8 +282,8 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const openfluid::core::Value& Val)
+                                                         const openfluid::core::VariableName_t& VarName,
+                                                         const openfluid::core::Value& Val)
 {
   OPENFLUID_AppendVariable(*UnitPtr,VarName,Val);
 }
@@ -294,8 +294,8 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::SpatialUnit& aUnit,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const openfluid::core::Value& Val)
+                                                         const openfluid::core::VariableName_t& VarName,
+                                                         const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_AppendVariable",
@@ -316,8 +316,8 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const double& Val)
+                                                         const openfluid::core::VariableName_t& VarName,
+                                                         const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_AppendVariable",
@@ -342,8 +342,8 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const long& Val)
+                                                         const openfluid::core::VariableName_t& VarName,
+                                                         const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_AppendVariable",
@@ -365,8 +365,8 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const bool& Val)
+                                                         const openfluid::core::VariableName_t& VarName,
+                                                         const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_AppendVariable",
@@ -388,8 +388,8 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const std::string& Val)
+                                                         const openfluid::core::VariableName_t& VarName,
+                                                         const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_AppendVariable",
@@ -411,8 +411,8 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const openfluid::core::Value& Val)
+                                                      const openfluid::core::VariableName_t& VarName,
+                                                      const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_SetVariable",
@@ -434,8 +434,8 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const double& Val)
+                                                      const openfluid::core::VariableName_t& VarName,
+                                                      const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_SetVariable",
@@ -460,8 +460,8 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       const long& Val)
+                                                      const openfluid::core::VariableName_t& VarName,
+                                                      const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_SetVariable",
@@ -483,8 +483,8 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       const bool& Val)
+                                                      const openfluid::core::VariableName_t& VarName,
+                                                      const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_SetVariable",
@@ -506,8 +506,8 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       const std::string& Val)
+                                                      const openfluid::core::VariableName_t& VarName,
+                                                      const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_SetVariable",
@@ -529,7 +529,7 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
 
 void SimulationContributorWare::OPENFLUID_AppendEvent(openfluid::core::SpatialUnit *UnitPtr,
-                                              openfluid::core::Event& Ev)
+                                                      openfluid::core::Event& Ev)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                            "SimulationContributorWare::OPENFLUID_SetVariable",
@@ -548,9 +548,9 @@ void SimulationContributorWare::OPENFLUID_AppendEvent(openfluid::core::SpatialUn
 // =====================================================================
 
 
-void SimulationContributorWare::OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName,
-                                          openfluid::core::UnitID_t ID,
-                                          openfluid::core::PcsOrd_t PcsOrder)
+void SimulationContributorWare::OPENFLUID_AddUnit(const openfluid::core::UnitClass_t& ClassName,
+                                                  openfluid::core::UnitID_t ID,
+                                                  openfluid::core::PcsOrd_t PcsOrder)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_AddUnit",
@@ -570,8 +570,8 @@ void SimulationContributorWare::OPENFLUID_AddUnit(openfluid::core::UnitClass_t C
 // =====================================================================
 
 
-void SimulationContributorWare::OPENFLUID_DeleteUnit(openfluid::core::UnitClass_t ClassName,
-                                             openfluid::core::UnitID_t ID)
+void SimulationContributorWare::OPENFLUID_DeleteUnit(const openfluid::core::UnitClass_t& ClassName,
+                                                     openfluid::core::UnitID_t ID)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_DeleteUnit",
@@ -595,10 +595,10 @@ void SimulationContributorWare::OPENFLUID_DeleteUnit(openfluid::core::UnitClass_
 // =====================================================================
 
 
-bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
-                                                      openfluid::core::UnitID_t IDFrom,
-                                                      openfluid::core::UnitClass_t ClassNameTo,
-                                                      openfluid::core::UnitID_t IDTo)
+bool SimulationContributorWare::OPENFLUID_AddFromToConnection(const openfluid::core::UnitClass_t& ClassNameFrom,
+                                                              openfluid::core::UnitID_t IDFrom,
+                                                              const openfluid::core::UnitClass_t& ClassNameTo,
+                                                              openfluid::core::UnitID_t IDTo)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_AddFromToConnection",
@@ -616,7 +616,7 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::U
 
 
 bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::SpatialUnit* FromUnit,
-                                                      openfluid::core::SpatialUnit* ToUnit)
+                                                              openfluid::core::SpatialUnit* ToUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_AddFromToConnection",
@@ -636,10 +636,10 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::S
 // =====================================================================
 
 
-bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
-                                                         openfluid::core::UnitID_t IDFrom,
-                                                         openfluid::core::UnitClass_t ClassNameTo,
-                                                         openfluid::core::UnitID_t IDTo)
+bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(const openfluid::core::UnitClass_t& ClassNameFrom,
+                                                                 openfluid::core::UnitID_t IDFrom,
+                                                                 const openfluid::core::UnitClass_t& ClassNameTo,
+                                                                 openfluid::core::UnitID_t IDTo)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_RemoveFromToConnection",
@@ -657,7 +657,7 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core
 
 
 bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core::SpatialUnit* FromUnit,
-                                                         openfluid::core::SpatialUnit* ToUnit)
+                                                                 openfluid::core::SpatialUnit* ToUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_RemoveFromToConnection",
@@ -675,10 +675,10 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core
 // =====================================================================
 
 
-bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
-                                                           openfluid::core::UnitID_t IDChild,
-                                                           openfluid::core::UnitClass_t ClassNameParent,
-                                                           openfluid::core::UnitID_t IDParent)
+bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(const openfluid::core::UnitClass_t& ClassNameChild,
+                                                                   openfluid::core::UnitID_t IDChild,
+                                                                   const openfluid::core::UnitClass_t& ClassNameParent,
+                                                                   openfluid::core::UnitID_t IDParent)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_AddChildParentConnection",
@@ -696,7 +696,7 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
 
 
 bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::core::SpatialUnit* ChildUnit,
-                                                           openfluid::core::SpatialUnit* ParentUnit)
+                                                                   openfluid::core::SpatialUnit* ParentUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_AddChildParentConnection",
@@ -716,10 +716,10 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
 // =====================================================================
 
 
-bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
-                                                           openfluid::core::UnitID_t IDChild,
-                                                           openfluid::core::UnitClass_t ClassNameParent,
-                                                           openfluid::core::UnitID_t IDParent)
+bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(const openfluid::core::UnitClass_t& ClassNameChild,
+                                                                      openfluid::core::UnitID_t IDChild,
+                                                                      const openfluid::core::UnitClass_t& ClassNameParent,
+                                                                      openfluid::core::UnitID_t IDParent)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection",
@@ -737,7 +737,7 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid:
 
 
 bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid::core::SpatialUnit* ChildUnit,
-                                                           openfluid::core::SpatialUnit* ParentUnit)
+                                                                      openfluid::core::SpatialUnit* ParentUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection",
@@ -756,8 +756,8 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid:
 
 
 void SimulationContributorWare::OPENFLUID_BuildUnitsMatrix(const openfluid::core::UnitClass_t& UnitsClass,
-                                                   const unsigned int& ColsNbr,
-                                                   const unsigned int& RowsNbr)
+                                                           const unsigned int& ColsNbr,
+                                                           const unsigned int& RowsNbr)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_BuildUnitsMatrix",
@@ -924,6 +924,6 @@ void SimulationContributorWare::OPENFLUID_BuildUnitsMatrix(const openfluid::core
 }
 
 
-} } // openfluid::ware
+} } // namespaces
 
 

@@ -33,6 +33,7 @@
  @file GeoVectorValue.hpp
 
  @author Aline LIBRES <libres@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_GEOVECTORVALUE_HPP__
@@ -43,8 +44,7 @@
 
 #include <ogrsf_frmts.h>
 
-namespace openfluid {
-namespace core {
+namespace openfluid { namespace core {
 
 /**
  * @brief Container class for geospatial vector data,
@@ -84,7 +84,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
      * @param FilePath The path of the file(s).
      * @param FileName The name or the relative path of the file to open.
      */
-    GeoVectorValue(std::string FilePath, std::string FileName);
+    GeoVectorValue(const std::string& FilePath, const std::string& FileName);
 
     /**
      * @brief Closes the opened OGR datasource.
@@ -148,7 +148,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       * @return True if the field FieldName exists, False otherwise.
       * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
       */
-     bool containsField(std::string FieldName, unsigned int LayerIndex = 0);
+     bool containsField(const std::string& FieldName, unsigned int LayerIndex = 0);
 
      /**
       * @brief Gets the index of a field in the LayerIndex layer.
@@ -158,7 +158,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       * @return The index of FieldName or -1 if field FieldName doesn't exist.
       * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
       */
-     int getFieldIndex(std::string FieldName, unsigned int LayerIndex = 0);
+     int getFieldIndex(const std::string& FieldName, unsigned int LayerIndex = 0);
 
      /**
       * @brief Returns true if a field is of the type FieldType in the LayerIndex layer.
@@ -170,7 +170,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       * @throw openfluid::base::OFException if the field doesn't exist.
       * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
       */
-     bool isFieldOfType(std::string FieldName, OGRFieldType FieldType,
+     bool isFieldOfType(const std::string& FieldName, OGRFieldType FieldType,
                         unsigned int LayerIndex = 0);
 
      /**
@@ -210,7 +210,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
 
 };
 
-}
-} // namespaces
+} } // namespaces
+
 
 #endif /* __OPENFLUID_CORE_GEOVECTORVALUE_HPP__ */

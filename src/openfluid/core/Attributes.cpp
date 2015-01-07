@@ -35,6 +35,7 @@
   @file Attributes.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -62,7 +63,7 @@ Attributes::~Attributes()
 // =====================================================================
 // =====================================================================
 
-bool Attributes::setValue(const AttributeName_t aName, const Value& aValue)
+bool Attributes::setValue(const AttributeName_t& aName, const Value& aValue)
 {
   if (isAttributeExist(aName))
     return false;
@@ -77,7 +78,7 @@ bool Attributes::setValue(const AttributeName_t aName, const Value& aValue)
 // =====================================================================
 
 
-bool Attributes::setValue(const AttributeName_t aName, const std::string& aValue)
+bool Attributes::setValue(const AttributeName_t& aName, const std::string& aValue)
 {
   if (isAttributeExist(aName))
     return false;
@@ -92,7 +93,7 @@ bool Attributes::setValue(const AttributeName_t aName, const std::string& aValue
 // =====================================================================
 
 
-bool Attributes::getValue(const AttributeName_t aName, openfluid::core::StringValue& aValue) const
+bool Attributes::getValue(const AttributeName_t& aName, openfluid::core::StringValue& aValue) const
 {
   // Don't use m_data[aName] because [] operator is not const
 
@@ -111,7 +112,7 @@ bool Attributes::getValue(const AttributeName_t aName, openfluid::core::StringVa
 // =====================================================================
 // =====================================================================
 
-bool Attributes::getValue(const AttributeName_t aName, std::string& aValue) const
+bool Attributes::getValue(const AttributeName_t& aName, std::string& aValue) const
 {
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -129,7 +130,7 @@ bool Attributes::getValue(const AttributeName_t aName, std::string& aValue) cons
 // =====================================================================
 
 
-bool Attributes::getValueAsDouble(const AttributeName_t aName, double& aValue) const
+bool Attributes::getValueAsDouble(const AttributeName_t& aName, double& aValue) const
 {
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -143,7 +144,7 @@ bool Attributes::getValueAsDouble(const AttributeName_t aName, double& aValue) c
 // =====================================================================
 
 
-bool Attributes::getValueAsLong(const AttributeName_t aName, long& aValue) const
+bool Attributes::getValueAsLong(const AttributeName_t& aName, long& aValue) const
 {
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -157,7 +158,7 @@ bool Attributes::getValueAsLong(const AttributeName_t aName, long& aValue) const
 // =====================================================================
 
 
-bool Attributes::isAttributeExist(const AttributeName_t aName) const
+bool Attributes::isAttributeExist(const AttributeName_t& aName) const
 {
   return m_Data.find(aName) != m_Data.end();
 }
@@ -182,7 +183,7 @@ std::vector<AttributeName_t> Attributes::getAttributesNames() const
 // =====================================================================
 
 
-bool Attributes::replaceValue(const AttributeName_t aName, const StringValue& aValue)
+bool Attributes::replaceValue(const AttributeName_t& aName, const StringValue& aValue)
 {
   if(isAttributeExist(aName))
   {
@@ -198,7 +199,7 @@ bool Attributes::replaceValue(const AttributeName_t aName, const StringValue& aV
 // =====================================================================
 
 
-bool Attributes::replaceValue(const AttributeName_t aName, const std::string& aValue)
+bool Attributes::replaceValue(const AttributeName_t& aName, const std::string& aValue)
 {
   if(isAttributeExist(aName))
   {
@@ -216,7 +217,7 @@ bool Attributes::replaceValue(const AttributeName_t aName, const std::string& aV
 // =====================================================================
 
 
-bool Attributes::removeAttribute(const AttributeName_t aName)
+bool Attributes::removeAttribute(const AttributeName_t& aName)
 {
   if(isAttributeExist(aName))
   {

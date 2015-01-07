@@ -77,7 +77,7 @@ void PluggableWare::OPENFLUID_RaiseError(const std::string& Msg)
 // =====================================================================
 
 
-bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, std::string& Value)
+bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, std::string& Value)
 {
   return mp_WareEnv->getValue(Key,Value);
 }
@@ -87,7 +87,7 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, std::string& Va
 // =====================================================================
 
 
-bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, bool &Value)
+bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, bool &Value)
 {
   return mp_WareEnv->getValue(Key,Value);
 }

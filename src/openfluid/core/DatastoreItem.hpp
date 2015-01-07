@@ -79,8 +79,9 @@ class OPENFLUID_API DatastoreItem
      * @param UnitClass (optional) The associated unit class of the item.
      * @throw openfluid::base::OFException if the given type is unknown.
      */
-    DatastoreItem(std::string ID, std::string PrefixPath, std::string RelativePath,
-        UnstructuredValue::UnstructuredType Type, std::string UnitClass = "");
+    DatastoreItem(const std::string& ID,
+                  const std::string& PrefixPath, const std::string& RelativePath,
+                  UnstructuredValue::UnstructuredType Type, const std::string& UnitClass = "");
 
     /**
      * @brief Destroys the resource and its associated value.

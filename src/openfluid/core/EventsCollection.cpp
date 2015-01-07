@@ -123,7 +123,7 @@ bool EventsCollection::addEvent(const Event& Ev)
 // =====================================================================
 
 
-bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime EndDate,
+bool EventsCollection::getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate,
     EventsCollection *Events) const
 {
   return getEventsBetween(BeginDate,EndDate,*Events);
@@ -134,7 +134,7 @@ bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime
 // =====================================================================
 
 
-bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime EndDate,
+bool EventsCollection::getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate,
     EventsCollection& Events) const
 {
 

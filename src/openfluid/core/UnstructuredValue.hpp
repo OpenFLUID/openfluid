@@ -33,6 +33,7 @@
  @file UnstructuredValue.hpp
 
  @author Aline LIBRES <libres@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_UNSTRUCTUREDVALUE_HPP__
@@ -55,32 +56,22 @@ class OPENFLUID_API UnstructuredValue
     };
 
     UnstructuredValue()
-    {
-    }
-    ;
+    {  }
 
-    //    UnstructuredValue(const UnstructuredValue& /*Val*/) {};
-
-    //    virtual UnstructuredValue& operator =(const UnstructuredValue& /*Other*/)
-    //    {
-    //      return *this;
-    //    }
 
     virtual ~UnstructuredValue()
-    {
-    }
-    ;
+    {  }
 
     virtual UnstructuredType getType() const = 0;
 
-    static bool getValueTypeFromString(const std::string ValueTypeString, UnstructuredValue::UnstructuredType& ValueType);
+    static bool getValueTypeFromString(const std::string& ValueTypeString,
+                                       UnstructuredValue::UnstructuredType& ValueType);
 
     static std::string getStringFromValueType(const UnstructuredValue::UnstructuredType ValueType);
 
 };
 
-}
-} // namespaces
+} } // namespaces
 
 
 #endif /* __OPENFLUID_CORE_UNSTRUCTUREDVALUE_HPP__ */

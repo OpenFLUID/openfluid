@@ -29,12 +29,10 @@
   
 */
 
-
-
 /**
-  @file
+  @file FortranCPP.hpp
 
-  @author JC.Fabre <jean-christophe.fabre@supagro.inra.fr>, C.Dagès <dages@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
 
 
   @see http://www-h.eng.cam.ac.uk/help/tpl/languages/mixinglanguages.html
@@ -47,7 +45,7 @@
 
 
   fortran source code:
-  @code
+@code
 subroutine multrealvalue(value,mult,result)
 
 implicit none

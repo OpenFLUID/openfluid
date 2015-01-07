@@ -58,7 +58,9 @@ class OPENFLUID_API ProgressiveChronFileReader : public ProgressiveColumnFileRea
 
   public:
 
-    ProgressiveChronFileReader(const std::string& FileName, const std::string& DateFormat = "%Y-%m-%dT%H:%M:%S", const std::string& ColSeparators = " \t\r\n");
+    ProgressiveChronFileReader(const std::string& FileName,
+                               const std::string& DateFormat = "%Y-%m-%dT%H:%M:%S",
+                               const std::string& ColSeparators = " \t\r\n");
 
     virtual ~ProgressiveChronFileReader()
     { };

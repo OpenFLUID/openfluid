@@ -29,7 +29,11 @@
   
 */
 
+/**
+  @file SpatialGraph.hpp
 
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #ifndef __OPENFLUID_CORE_SPATIALGRAPH_HPP__
 #define __OPENFLUID_CORE_SPATIALGRAPH_HPP__
@@ -60,7 +64,7 @@ class OPENFLUID_API SpatialGraph
 
     SpatialGraph();
 
-    bool addUnit(const SpatialUnit aUnit);
+    bool addUnit(const SpatialUnit& aUnit);
 
     bool deleteUnit(SpatialUnit* aUnit);
 
@@ -72,11 +76,11 @@ class OPENFLUID_API SpatialGraph
 
     bool sortUnitsByProcessOrder();
 
-    SpatialUnit* spatialUnit(UnitClass_t UnitClass, UnitID_t UnitID);
+    SpatialUnit* spatialUnit(const UnitClass_t& UnitClass, UnitID_t UnitID);
 
-    UnitsCollection* spatialUnits(UnitClass_t UnitClass);
+    UnitsCollection* spatialUnits(const UnitClass_t& UnitClass);
 
-    const UnitsCollection* spatialUnits(UnitClass_t UnitClass) const;
+    const UnitsCollection* spatialUnits(const UnitClass_t& UnitClass) const;
 
     inline const UnitsListByClassMap_t* allSpatialUnitsByClass() const { return &m_PcsOrderedUnitsByClass; };
 
@@ -84,7 +88,7 @@ class OPENFLUID_API SpatialGraph
 
     inline UnitsPtrList_t* allSpatialUnits() { return &m_PcsOrderedUnitsGlobal; };
 
-    bool isUnitsClassExist(UnitClass_t UnitClass) const;
+    bool isUnitsClassExist(const UnitClass_t& UnitClass) const;
 
     void streamContents(std::ostream& OStream);
 

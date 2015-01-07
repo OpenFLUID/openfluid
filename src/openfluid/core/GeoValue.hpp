@@ -33,6 +33,7 @@
  @file GeoValue.hpp
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef GEOVALUE_HPP_
@@ -45,8 +46,8 @@ namespace openfluid {
 namespace core {
 
 /**
- * @brief Abstract class for geospatial data.
- */
+  @brief Abstract class for geospatial data.
+*/
 class OPENFLUID_API GeoValue: public openfluid::core::UnstructuredValue
 {
   protected:
@@ -61,16 +62,15 @@ class OPENFLUID_API GeoValue: public openfluid::core::UnstructuredValue
 
   public:
 
-    GeoValue(std::string FilePath, std::string FileName);
+    GeoValue(const std::string& FilePath, const std::string& FileName);
 
     virtual ~GeoValue() = 0;
 
     std::string getFilePath();
 
-    static std::string computeAbsolutePath(std::string FilePath, std::string FileName);
+    static std::string computeAbsolutePath(const std::string& FilePath, const std::string& FileName);
 };
 
-} /* namespace core */
-} /* namespace openfluid */
+} } // namespaces
 
 #endif /* GEOVALUE_HPP_ */

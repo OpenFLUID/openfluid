@@ -33,51 +33,60 @@
  @file GeoValue.cpp
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include "GeoValue.hpp"
 
 #include <boost/filesystem/path.hpp>
 
-namespace openfluid {
-namespace core {
+
+namespace openfluid { namespace core {
+
 
 // =====================================================================
 // =====================================================================
 
-GeoValue::GeoValue(std::string FilePath, std::string FileName) :
+
+GeoValue::GeoValue(const std::string& FilePath, const std::string& FileName) :
     m_FilePath(FilePath), m_FileName(FileName)
 {
   m_AbsolutePath = computeAbsolutePath(m_FilePath, m_FileName);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 GeoValue::~GeoValue()
 {
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::string GeoValue::computeAbsolutePath(std::string FilePath,
-                                          std::string FileName)
+
+std::string GeoValue::computeAbsolutePath(const std::string& FilePath,
+                                          const std::string& FileName)
 {
   return boost::filesystem::path(FilePath + "/" + FileName).string();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string GeoValue::getFilePath()
 {
   return m_FilePath;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-} /* namespace core */
-} /* namespace openfluid */
+} } // namesaces

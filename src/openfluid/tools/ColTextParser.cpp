@@ -63,10 +63,8 @@ ColumnTextParser::ColumnTextParser(const std::string& CommentLineSymbol, const s
 }
 
 
-
 // =====================================================================
 // =====================================================================
-
 
 
 ColumnTextParser::~ColumnTextParser()
@@ -92,7 +90,6 @@ std::vector<std::string> ColumnTextParser::tokenizeLine(const std::string& Line)
 
 // =====================================================================
 // =====================================================================
-
 
 
 bool ColumnTextParser::checkContents()
@@ -137,7 +134,6 @@ bool ColumnTextParser::isCommentLineStr(const std::string& LineStr)
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -148,10 +144,8 @@ bool ColumnTextParser::isEmptyLineStr(const std::string& LineStr)
 }
 
 
-
 // =====================================================================
 // =====================================================================
-
 
 
 bool ColumnTextParser::loadFromFile(const std::string& Filename)
@@ -188,6 +182,7 @@ bool ColumnTextParser::loadFromFile(const std::string& Filename)
 
 // =====================================================================
 // =====================================================================
+
 
 bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int ColumnsNbr)
 {
@@ -244,9 +239,9 @@ bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int C
   return IsOK && checkContents();
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 
 
 std::vector<std::string> ColumnTextParser::getValues(unsigned int Line)
@@ -261,7 +256,6 @@ std::vector<std::string> ColumnTextParser::getValues(unsigned int Line)
   }
 
 }
-
 
 
 // =====================================================================
@@ -282,7 +276,6 @@ std::string ColumnTextParser::getValue(unsigned int Line, unsigned int Column)
   }
 
 }
-
 
 
 // =====================================================================
@@ -319,7 +312,6 @@ bool ColumnTextParser::getLongValue(unsigned int Line, unsigned int Column, long
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -338,9 +330,9 @@ bool ColumnTextParser::getDoubleValue(unsigned int Line, unsigned int Column, do
 }
 
 
+// =====================================================================
+// =====================================================================
 
-// =====================================================================
-// =====================================================================
 
 void ColumnTextParser::streamContents(std::ostream& OStream)
 {

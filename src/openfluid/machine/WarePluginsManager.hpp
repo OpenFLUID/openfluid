@@ -247,7 +247,7 @@ class OPENFLUID_API WarePluginsManager
     /**
       Lists available wares
     */
-    std::vector<S*> getAvailableWaresSignatures(const std::string Pattern = "")
+    std::vector<S*> getAvailableWaresSignatures(const std::string& Pattern = "")
     {
       std::vector<S*> PluginsContainers;
       std::vector<std::string> PluginsPaths = getPluginsSearchPaths();

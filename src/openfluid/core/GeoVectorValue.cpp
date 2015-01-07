@@ -47,7 +47,7 @@ namespace core {
 // =====================================================================
 
 
-GeoVectorValue::GeoVectorValue(std::string FilePath, std::string FileName) :
+GeoVectorValue::GeoVectorValue(const std::string& FilePath, const std::string& FileName) :
     GeoValue(FilePath, FileName), mp_Data(0)
 {
   OGRRegisterAll();
@@ -160,7 +160,7 @@ bool GeoVectorValue::isPolygonType(unsigned int LayerIndex)
 // =====================================================================
 
 
-bool GeoVectorValue::containsField(std::string FieldName,
+bool GeoVectorValue::containsField(const std::string& FieldName,
                                   unsigned int LayerIndex)
 {
   return layerDef(LayerIndex)->GetFieldIndex(FieldName.c_str()) != -1;
@@ -171,7 +171,7 @@ bool GeoVectorValue::containsField(std::string FieldName,
 // =====================================================================
 
 
-int GeoVectorValue::getFieldIndex(std::string FieldName, unsigned int LayerIndex)
+int GeoVectorValue::getFieldIndex(const std::string& FieldName, unsigned int LayerIndex)
 {
   return layerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
 }
@@ -181,7 +181,7 @@ int GeoVectorValue::getFieldIndex(std::string FieldName, unsigned int LayerIndex
 // =====================================================================
 
 
-bool GeoVectorValue::isFieldOfType(std::string FieldName, OGRFieldType FieldType,
+bool GeoVectorValue::isFieldOfType(const std::string& FieldName, OGRFieldType FieldType,
                                   unsigned int LayerIndex)
 {
   if (!containsField(FieldName))

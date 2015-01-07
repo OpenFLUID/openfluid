@@ -56,7 +56,7 @@ Event::Event():
 // =====================================================================
 
 
-Event::Event(DateTime Date):
+Event::Event(const DateTime& Date):
   m_Date(Date)
 {
 
@@ -77,7 +77,7 @@ Event::~Event()
 // =====================================================================
 
 
-bool Event::isInfoExist(const std::string Key) const
+bool Event::isInfoExist(const std::string& Key) const
 {
   return m_Infos.count(Key);
 }

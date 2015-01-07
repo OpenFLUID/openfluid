@@ -29,7 +29,11 @@
   
 */
 
+/**
+  @file SpatialGraph.cpp
 
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
 #include <boost/foreach.hpp>
@@ -90,7 +94,7 @@ bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
 // =====================================================================
 
 
-bool SpatialGraph::addUnit(SpatialUnit aUnit)
+bool SpatialGraph::addUnit(const SpatialUnit& aUnit)
 {
   SpatialUnit* TheUnit = m_PcsOrderedUnitsByClass[aUnit.getClass()].addSpatialUnit(aUnit);
   if (TheUnit != NULL)
@@ -196,7 +200,7 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
 
 
 bool SpatialGraph::removeFromToConnection(SpatialUnit* FromUnit,
-                                            SpatialUnit* ToUnit)
+                                          SpatialUnit* ToUnit)
 {
   if (FromUnit != NULL && ToUnit != NULL)
   {
@@ -212,7 +216,7 @@ bool SpatialGraph::removeFromToConnection(SpatialUnit* FromUnit,
 
 
 bool SpatialGraph::removeChildParentConnection(SpatialUnit* ChildUnit,
-                                                 SpatialUnit* ParentUnit)
+                                               SpatialUnit* ParentUnit)
 {
   if (ChildUnit != NULL && ParentUnit != NULL)
   {
@@ -227,7 +231,7 @@ bool SpatialGraph::removeChildParentConnection(SpatialUnit* ChildUnit,
 // =====================================================================
 
 
-bool SpatialGraph::isUnitsClassExist(UnitClass_t UnitClass) const
+bool SpatialGraph::isUnitsClassExist(const UnitClass_t& UnitClass) const
 {
   return m_PcsOrderedUnitsByClass.find(UnitClass) != m_PcsOrderedUnitsByClass.end();
 }
@@ -236,7 +240,7 @@ bool SpatialGraph::isUnitsClassExist(UnitClass_t UnitClass) const
 // =====================================================================
 
 
-SpatialUnit* SpatialGraph::spatialUnit(UnitClass_t UnitClass, UnitID_t UnitID)
+SpatialUnit* SpatialGraph::spatialUnit(const UnitClass_t& UnitClass, UnitID_t UnitID)
 {
   UnitsListByClassMap_t::iterator it;
 
@@ -255,7 +259,7 @@ SpatialUnit* SpatialGraph::spatialUnit(UnitClass_t UnitClass, UnitID_t UnitID)
 // =====================================================================
 
 
-UnitsCollection* SpatialGraph::spatialUnits(UnitClass_t UnitClass)
+UnitsCollection* SpatialGraph::spatialUnits(const UnitClass_t& UnitClass)
 {
   UnitsListByClassMap_t::iterator it;
 
@@ -270,7 +274,7 @@ UnitsCollection* SpatialGraph::spatialUnits(UnitClass_t UnitClass)
 // =====================================================================
 
 
-const UnitsCollection* SpatialGraph::spatialUnits(UnitClass_t UnitClass) const
+const UnitsCollection* SpatialGraph::spatialUnits(const UnitClass_t& UnitClass) const
 {
   UnitsListByClassMap_t::const_iterator it;
 

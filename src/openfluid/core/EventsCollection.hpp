@@ -89,14 +89,14 @@ class OPENFLUID_API EventsCollection
       at the end of the given collection
       @deprecated
     */
-    bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventsCollection *Events) const OPENFLUID_DEPRECATED;
+    bool getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate, EventsCollection *Events) const OPENFLUID_DEPRECATED;
 
     /**
       Returns an event collection extracted from the current event collection, taking into account a time period
       If some events are already in the given collection, they are not deleted. Events matching the period are appended
       at the end of the given collection
     */
-    bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventsCollection& Events) const;
+    bool getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate, EventsCollection& Events) const;
 
     /**
       Returns the event collection as a list

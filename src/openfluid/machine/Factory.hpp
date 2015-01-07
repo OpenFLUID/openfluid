@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file Factory.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -50,6 +50,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 namespace openfluid {
+
 namespace base {
 class ExecutionMessages;
 class OutputDescriptor;
@@ -62,8 +63,7 @@ namespace fluidx {
 class SpatialDomainDescriptor;
 class RunDescriptor;
 class DatastoreDescriptor;
-}
-}
+} }
 
 
 namespace openfluid { namespace machine {

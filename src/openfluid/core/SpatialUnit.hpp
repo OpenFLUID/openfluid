@@ -30,11 +30,10 @@
 */
 
 /**
-  @file
+  @file SpatialUnit.hpp
 
-  @author JC.Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
 */
-
 
 
 
@@ -117,8 +116,11 @@ class OPENFLUID_API SpatialUnit
     unsigned int m_PcsOrder;
 
     LinkedUnitsListByClassMap_t m_FromUnits;
+
     LinkedUnitsListByClassMap_t m_ToUnits;
+
     LinkedUnitsListByClassMap_t m_ParentUnits;
+
     LinkedUnitsListByClassMap_t m_ChildrenUnits;
 
     Attributes m_Attributes;
@@ -126,6 +128,7 @@ class OPENFLUID_API SpatialUnit
     Variables m_Variables;
 
     EventsCollection m_Events;
+
 
   public:
 
@@ -135,7 +138,7 @@ class OPENFLUID_API SpatialUnit
       @param[in] anID the ID of the unit
       @param[in] aPcsOrder the process order of the unit
      */
-    SpatialUnit(const UnitClass_t aClass, const UnitID_t anID,
+    SpatialUnit(const UnitClass_t& aClass, const UnitID_t anID,
          const PcsOrd_t aPcsOrder);
 
     /*
@@ -172,36 +175,36 @@ class OPENFLUID_API SpatialUnit
       Returns NULL if no units of the requested class are connected to this unit.
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* toSpatialUnits(const UnitClass_t aClass);
+    UnitsPtrList_t* toSpatialUnits(const UnitClass_t& aClass);
 
-    const UnitsPtrList_t* toSpatialUnits(const UnitClass_t aClass) const;
+    const UnitsPtrList_t* toSpatialUnits(const UnitClass_t& aClass) const;
 
     /**
       Returns a list of units, of the requested class, connected from this unit.
       Returns NULL if no units of the requested class are connected from this unit.
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* fromSpatialUnits(const UnitClass_t aClass);
+    UnitsPtrList_t* fromSpatialUnits(const UnitClass_t& aClass);
 
-    const UnitsPtrList_t* fromSpatialUnits(const UnitClass_t aClass) const;
+    const UnitsPtrList_t* fromSpatialUnits(const UnitClass_t& aClass) const;
 
     /**
       Returns a list of parent units of the requested class.
       Returns NULL if this unit has no parent
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* parentSpatialUnits(const UnitClass_t aClass);
+    UnitsPtrList_t* parentSpatialUnits(const UnitClass_t& aClass);
 
-    const UnitsPtrList_t* parentSpatialUnits(const UnitClass_t aClass) const;
+    const UnitsPtrList_t* parentSpatialUnits(const UnitClass_t& aClass) const;
 
     /**
       Returns a list of children units of the requested class.
       Returns NULL if this unit has no child
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* childSpatialUnits(const UnitClass_t aClass);
+    UnitsPtrList_t* childSpatialUnits(const UnitClass_t& aClass);
 
-    const UnitsPtrList_t* childSpatialUnits(const UnitClass_t aClass) const;
+    const UnitsPtrList_t* childSpatialUnits(const UnitClass_t& aClass) const;
 
     inline Attributes* attributes()  { return &m_Attributes; };
 

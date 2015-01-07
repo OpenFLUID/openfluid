@@ -47,7 +47,9 @@
 namespace openfluid { namespace tools {
 
 
-ProgressiveChronFileReader::ProgressiveChronFileReader(const std::string& FileName, const std::string& DateFormat, const std::string& ColSeparators):
+ProgressiveChronFileReader::ProgressiveChronFileReader(const std::string& FileName,
+                                                       const std::string& DateFormat,
+                                                       const std::string& ColSeparators):
   ProgressiveColumnFileReader(FileName,ColSeparators), m_DateFormat(DateFormat)
 {
 

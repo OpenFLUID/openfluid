@@ -33,6 +33,7 @@
  @file GeoRasterValue.hpp
 
  @author Aline LIBRES <libres@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_GEORASTERVALUE_HPP__
@@ -80,7 +81,7 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
      * @param FilePath The path of the file(s).
      * @param FileName The name or the relative path of the file to open.
      */
-    GeoRasterValue(std::string FilePath, std::string FileName);
+    GeoRasterValue(const std::string& FilePath, const std::string& FileName);
 
     /**
      * @brief Closes the opened GDAL dataset.

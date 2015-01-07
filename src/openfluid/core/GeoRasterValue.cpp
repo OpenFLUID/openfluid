@@ -33,7 +33,8 @@
  @file GeoRasterValue.cpp
 
  @author Aline LIBRES <libres@supagro.inra.fr>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #include <openfluid/core/GeoRasterValue.hpp>
 
@@ -47,7 +48,7 @@ namespace core {
 // =====================================================================
 // =====================================================================
 
-GeoRasterValue::GeoRasterValue(std::string FilePath, std::string FileName) :
+GeoRasterValue::GeoRasterValue(const std::string& FilePath, const std::string& FileName) :
     GeoValue(FilePath, FileName), mp_Data(0)
 {
   GDALAllRegister();

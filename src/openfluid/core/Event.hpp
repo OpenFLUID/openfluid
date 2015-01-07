@@ -79,7 +79,7 @@ class OPENFLUID_API Event
       Constructor
       @param[in] Date the date and time of the event
     */
-    Event(DateTime Date);
+    Event(const DateTime& Date);
 
     /**
       Destructor
@@ -90,7 +90,7 @@ class OPENFLUID_API Event
       Returns true if the information exists
       @param[in] Key the requested information key
     */
-    bool isInfoExist(const std::string Key) const;
+    bool isInfoExist(const std::string& Key) const;
 
     /**
       Returns true if the information exists and equals the given string value

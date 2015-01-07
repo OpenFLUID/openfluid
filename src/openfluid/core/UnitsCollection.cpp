@@ -29,6 +29,11 @@
   
 */
 
+/**
+  @file UnitsCollection.cpp
+
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
 #include <openfluid/core/SpatialUnit.hpp>
@@ -91,7 +96,7 @@ SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID)
 
 
 
-SpatialUnit* UnitsCollection::addSpatialUnit(SpatialUnit aUnit)
+SpatialUnit* UnitsCollection::addSpatialUnit(const SpatialUnit& aUnit)
 {
 
   if (spatialUnit(aUnit.getID()) == NULL)

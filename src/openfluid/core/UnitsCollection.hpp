@@ -29,17 +29,19 @@
   
 */
 
+/**
+  @file UnitsCollection.hpp
+
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
 #ifndef __OPENFLUID_CORE_UNITSCOLLECTION_HPP__
 #define __OPENFLUID_CORE_UNITSCOLLECTION_HPP__
 
 
-
-
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
-//#include <openfluid/core/Unit.hpp>
 
 
 namespace openfluid { namespace core {
@@ -68,7 +70,7 @@ class OPENFLUID_API UnitsCollection
 
     SpatialUnit* spatialUnit(UnitID_t aUnitID);
 
-    SpatialUnit* addSpatialUnit(SpatialUnit aUnit);
+    SpatialUnit* addSpatialUnit(const SpatialUnit& aUnit);
 
     void sortByProcessOrder();
 
