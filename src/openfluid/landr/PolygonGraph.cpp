@@ -181,7 +181,7 @@ void PolygonGraph::addEntity(LandREntity* Entity)
 {
   PolygonEntity* NewEntity = dynamic_cast<PolygonEntity*>(Entity);
 
-  const geos::geom::Polygon* Polygon = NewEntity->getPolygon();
+  const geos::geom::Polygon* Polygon = NewEntity->polygon();
 
   std::vector<geos::geom::Geometry*> SharedGeoms;
 
@@ -276,8 +276,8 @@ PolygonEdge* PolygonGraph::createEdge(geos::geom::LineString& LineString)
   const geos::geom::Coordinate& EndCoordinate = Coordinates->getAt(
       Coordinates->getSize() - 1);
 
-  geos::planargraph::Node* StartNode = getNode(StartCoordinate);
-  geos::planargraph::Node* EndNode = getNode(EndCoordinate);
+  geos::planargraph::Node* StartNode = node(StartCoordinate);
+  geos::planargraph::Node* EndNode = node(EndCoordinate);
 
   geos::planargraph::DirectedEdge* DirectedEdge0 =
       new geos::planargraph::DirectedEdge(StartNode, EndNode,
@@ -322,7 +322,7 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
         "PolygonGraph::removeSegment", s.str());
   }
 
-  geos::geom::Geometry* DiffGeom = OldEdge->getLine()->difference(Segment);
+  geos::geom::Geometry* DiffGeom = OldEdge->line()->difference(Segment);
 
   if (!DiffGeom->isEmpty())
   {
@@ -365,9 +365,9 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 // =====================================================================
 
 
-PolygonEntity* PolygonGraph::getEntity(int OfldId)
+PolygonEntity* PolygonGraph::entity(int OfldId)
 {
-  return dynamic_cast<PolygonEntity*>(LandRGraph::getEntity(OfldId));
+  return dynamic_cast<PolygonEntity*>(LandRGraph::entity(OfldId));
 }
 
 
@@ -400,7 +400,7 @@ bool PolygonGraph::hasIsland()
   for (; it != ite; ++it)
   {
     PolygonEntity*  Entity=dynamic_cast<PolygonEntity*>(*it);
-    const geos::geom::Polygon* RefPoly = Entity->getPolygon();
+    const geos::geom::Polygon* RefPoly = Entity->polygon();
 
     if (RefPoly->getNumInteriorRing ()!=0)
     {
@@ -417,7 +417,7 @@ bool PolygonGraph::hasIsland()
           PolygonEntity*  IslandEntity=dynamic_cast<PolygonEntity*>(*it2);
           if (Entity->getOfldId()!=IslandEntity->getOfldId())
           {
-            const geos::geom::Polygon* IslandPoly = IslandEntity->getPolygon();
+            const geos::geom::Polygon* IslandPoly = IslandEntity->polygon();
             const geos::geom::LineString *OuterRing=IslandPoly->getExteriorRing();
             if (InnerRing->within(OuterRing))
               return true;
@@ -437,11 +437,11 @@ bool PolygonGraph::hasIsland()
 
 PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(PolygonEntity& Entity)
 {
-  const geos::geom::Polygon* RefPoly = Entity.getPolygon();
+  const geos::geom::Polygon* RefPoly = Entity.polygon();
 
   RastValByRastPoly_t IntersectPolys;
 
-  std::vector<geos::geom::Polygon*>* RasterPolys = getRasterPolygonizedPolys();
+  std::vector<geos::geom::Polygon*>* RasterPolys = rasterPolygonizedPolys();
 
   if (!RasterPolys)
     throw openfluid::base::FrameworkException(
@@ -544,10 +544,10 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
   std::vector<geos::planargraph::Edge*>::iterator ite = Edges->end();
   for (; it != ite; ++it)
   {
-    OGRFeature* Feat = OGRFeature::CreateFeature(OutVector->getLayerDef());
+    OGRFeature* Feat = OGRFeature::CreateFeature(OutVector->layerDef());
 
     geos::geom::Geometry* Geom =
-        dynamic_cast<geos::geom::Geometry*>((dynamic_cast<PolygonEdge*>(*it))->getLine());
+        dynamic_cast<geos::geom::Geometry*>((dynamic_cast<PolygonEdge*>(*it))->line());
 
     OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS((GEOSGeom) Geom);
 
@@ -562,7 +562,7 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
 
     Feat->SetGeometry(OGRGeom);
 
-    if (OutVector->getLayer(0)->CreateFeature(Feat) != OGRERR_NONE)
+    if (OutVector->layer(0)->CreateFeature(Feat) != OGRERR_NONE)
     {
       delete OutVector;
 
@@ -677,7 +677,7 @@ std::vector<std::string> PolygonGraph::getEdgeAttributeNames()
 void PolygonGraph::removeEntity(int OfldId)
 {
 
-  PolygonEntity* Ent = getEntity(OfldId);
+  PolygonEntity* Ent = entity(OfldId);
 
   if (!Ent)
   {
@@ -725,7 +725,7 @@ void PolygonGraph::removeEntity(int OfldId)
   std::list<PolygonEdge*>::iterator lt=lEdges.begin();
   std::list<PolygonEdge*>::iterator lte=lEdges.end();
   for (;lt!=lte;++lt)
-    removeSegment(Ent,(*lt)->getLine());
+    removeSegment(Ent,(*lt)->line());
 
 
   m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
@@ -855,7 +855,7 @@ void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity,
         "PolygonGraph::mergePolygonEntities",
         "The PolygonEntities are not neighbours");
 
-  geos::geom::Geometry *  NewPoly=Entity.getGeometry()->Union(EntityToMerge.getGeometry());
+  geos::geom::Geometry *  NewPoly=Entity.geometry()->Union(EntityToMerge.geometry());
 
 
   int OfldId=Entity.getOfldId();

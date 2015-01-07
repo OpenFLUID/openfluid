@@ -66,24 +66,21 @@ class OPENFLUID_API SimulationBlob
 
     ~SimulationBlob();
 
-    inline openfluid::core::SpatialGraph& getSpatialGraph() { return m_SpatialGraph; };
+    inline openfluid::core::SpatialGraph& spatialGraph() { return m_SpatialGraph; };
 
-    inline openfluid::fluidx::RunDescriptor& getRunDescriptor() {return  m_RunDescriptor; };
+    inline openfluid::fluidx::RunDescriptor& runDescriptor() {return m_RunDescriptor; };
 
-    inline openfluid::base::SimulationStatus& getSimulationStatus() {return  m_Status; };
+    inline openfluid::base::SimulationStatus& simulationStatus() {return m_Status; };
 
-    inline openfluid::core::Datastore& getDatastore() { return m_Datastore; };
+    inline openfluid::core::Datastore& datastore() { return m_Datastore; };
 
-    inline const openfluid::core::SpatialGraph& getSpatialGraph() const { return m_SpatialGraph; };
+    inline const openfluid::core::SpatialGraph& spatialGraph() const { return m_SpatialGraph; };
 
-    inline const openfluid::fluidx::RunDescriptor& getRunDescriptor() const {return  m_RunDescriptor; };
+    inline const openfluid::fluidx::RunDescriptor& runDescriptor() const {return m_RunDescriptor; };
 
-    inline const openfluid::base::SimulationStatus& getSimulationStatus() const {return  m_Status; };
+    inline const openfluid::base::SimulationStatus& simulationStatus() const {return m_Status; };
 
-    inline const openfluid::core::Datastore& getDatastore() const { return m_Datastore; };
-
-    void clearSimulationGarbage();
-
+    inline const openfluid::core::Datastore& datastore() const { return m_Datastore; };
 
 };
 

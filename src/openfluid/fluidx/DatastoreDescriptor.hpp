@@ -62,9 +62,9 @@ class OPENFLUID_API DatastoreDescriptor
 
     DatastoreDescriptor();
 
-    DatastoreDescription_t& getItems();
+    DatastoreDescription_t& items();
 
-    const DatastoreDescription_t& getItems() const;
+    const DatastoreDescription_t& items() const;
 
     bool appendItem(DatastoreItemDescriptor* Item);
 

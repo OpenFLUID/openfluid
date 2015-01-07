@@ -127,7 +127,7 @@ void MarketClientAssistant::setupSelectionPage()
   m_RefURLComboBoxModel.appendRow(m_URLColumns);
 
 
-  openfluid::base::PreferencesManager::MarketPlaces_t MarketPlaces = openfluid::base::PreferencesManager::getInstance()->getMarketplaces();
+  openfluid::base::PreferencesManager::MarketPlaces_t MarketPlaces = openfluid::base::PreferencesManager::instance()->getMarketplaces();
 
   BOOST_FOREACH(openfluid::base::PreferencesManager::MarketPlaces_t::value_type &PlaceIt, MarketPlaces)
   {
@@ -363,16 +363,16 @@ void MarketClientAssistant::onLicensesTreeviewChanged(QTreeWidgetItem *CurrentIt
       = m_MarketClient.findInTypesMetaPackagesCatalogs(PackageID.toStdString());
 
     // id package found ?
-    if (PCit != m_MarketClient.getTypesMetaPackagesCatalogs().rbegin()->second.end())
+    if (PCit != m_MarketClient.typesMetaPackagesCatalogs().rbegin()->second.end())
     {
       // Getting license id
       std::string LicenseID = PCit->second.AvailablePackages[PCit->second.Selected].License;
 
       // Searching license
-      std::map<std::string,std::string>::const_iterator LIter = m_MarketClient.getLicensesTexts().find(LicenseID);
+      std::map<std::string,std::string>::const_iterator LIter = m_MarketClient.licensesTexts().find(LicenseID);
 
       // Displaying license
-      if (LIter != m_MarketClient.getLicensesTexts().end())
+      if (LIter != m_MarketClient.licensesTexts().end())
         mp_LicensesTextView->setText(QString::fromStdString(LIter->second));
       else
         mp_LicensesTextView->setText(tr("(License content not available)"));
@@ -395,7 +395,7 @@ void MarketClientAssistant::onLicenseRadioClicked(bool Checked)
 // =====================================================================
 
 
-MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::ware::WareID_t& ID) const
+MarketPackWidget* MarketClientAssistant::availablePackWidget(const openfluid::ware::WareID_t& ID) const
 {
   std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::const_iterator APMiter;
   std::list<MarketPackWidget*>::const_iterator APLiter;
@@ -422,7 +422,7 @@ MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::war
 bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& ID,
     const openfluid::market::PackageInfo::PackageType& Type)
 {
-  openfluid::market::MetaPackagesCatalog_t DataCatalog = m_MarketClient.getTypesMetaPackagesCatalogs().at(openfluid::market::PackageInfo::DATA);
+  openfluid::market::MetaPackagesCatalog_t DataCatalog = m_MarketClient.typesMetaPackagesCatalogs().at(openfluid::market::PackageInfo::DATA);
   openfluid::market::MetaPackagesCatalog_t::iterator PCit;
 
   // for each dataset package
@@ -432,7 +432,7 @@ bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& I
     std::list<openfluid::ware::WareID_t>::iterator Dit = Dependencies.begin();
 
     // searching if ID package is a dependence of this dataset
-    while (Dit != Dependencies.end() && !(*Dit == ID && getAvailPackWidget(PCit->second.ID)->isInstall()))
+    while (Dit != Dependencies.end() && !(*Dit == ID && availablePackWidget(PCit->second.ID)->isInstall()))
       ++Dit;
 
     if (Dit != Dependencies.end())
@@ -494,9 +494,9 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
   openfluid::market::MetaPackagesCatalog_t::iterator PCit = m_MarketClient.findInTypesMetaPackagesCatalogs(ID);
 
   // package found
-  if (PCit != m_MarketClient.getTypesMetaPackagesCatalogs().rbegin()->second.end())
+  if (PCit != m_MarketClient.typesMetaPackagesCatalogs().rbegin()->second.end())
   {
-    MarketPackWidget* MPW = getAvailPackWidget(ID);
+    MarketPackWidget* MPW = availablePackWidget(ID);
 
     // dependencies of id package
     openfluid::market::PackageInfo::Dependencies_t Dependencies = PCit->second.AvailablePackages[MPW->getPackageFormat()].Dependencies;
@@ -514,7 +514,7 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
       {
         // For each dependence
         openfluid::ware::WareID_t DependenceID = *DLit;
-        MarketPackWidget *DependencePack = getAvailPackWidget(DependenceID);
+        MarketPackWidget *DependencePack = availablePackWidget(DependenceID);
 
         // dependence pack widget found ?
         if (DependencePack != 0)
@@ -795,7 +795,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
 
-  Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
+  Catalogs = m_MarketClient.typesMetaPackagesCatalogs();
 
   for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
   {
@@ -932,7 +932,7 @@ void MarketClientAssistant::initializeLicencesTreeView()
   mp_LicensesTreeView->clear();
 
   std::map<openfluid::market::PackageInfo::PackageType,bool> RowCreated;
-  Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
+  Catalogs = m_MarketClient.typesMetaPackagesCatalogs();
 
   for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
   {
@@ -977,7 +977,7 @@ void MarketClientAssistant::initializeLicencesTreeView()
 
 void MarketClientAssistant::updateInstallTreeview()
 {
-  std::list<openfluid::market::MarketPackage*> PacksList = m_MarketClient.getSelectionToInstall();
+  std::list<openfluid::market::MarketPackage*> PacksList = m_MarketClient.selectionToInstall();
   std::list<openfluid::market::MarketPackage*>::const_iterator PLiter;
 
   for (PLiter = PacksList.begin();PLiter != PacksList.end();++PLiter )

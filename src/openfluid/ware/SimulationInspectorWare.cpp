@@ -79,7 +79,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getAttributes()->getValue(AttrName,Val))
+    if (!UnitPtr->attributes()->getValue(AttrName,Val))
       throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute","StringValue for attribute "+ AttrName +" does not exist");
   }
   else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute","Unit is NULL");
@@ -141,7 +141,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getAttributes()->getValueAsDouble(AttrName,Val))
+    if (!UnitPtr->attributes()->getValueAsDouble(AttrName,Val))
       throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute","Double value for attribute "+ AttrName +" does not exist");
   }
   else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute","Unit is NULL");
@@ -161,7 +161,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getAttributes()->getValueAsLong(AttrName,Val))
+    if (!UnitPtr->attributes()->getValueAsLong(AttrName,Val))
       throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute","Long integer for attribute "+ AttrName +" does not exist");
   }
   else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute","Unit is NULL");
@@ -181,7 +181,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getAttributes()->getValue(AttrName,Val))
+    if (!UnitPtr->attributes()->getValue(AttrName,Val))
       throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute","String value for attribute "+ AttrName +" does not exist");
   }
   else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute","Unit is NULL");
@@ -199,7 +199,7 @@ bool SimulationInspectorWare::OPENFLUID_IsAttributeExist(const openfluid::core::
                               "SimulationInspectorWare::OPENFLUID_IsAttributeExist","Attributes cannot be accessed during INITPARAMS stage");
 
   if (UnitPtr != NULL)
-    return UnitPtr->getAttributes()->isAttributeExist(AttrName);
+    return UnitPtr->attributes()->isAttributeExist(AttrName);
 
   throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_IsAttributeExist","Unit is NULL");
   return false;
@@ -220,7 +220,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Spati
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->getValue(VarName,Index,&Val))
+    if (!UnitPtr->variables()->getValue(VarName,Index,&Val))
     {
       std::string TimeStr;
       openfluid::tools::ConvertValue(Index,&TimeStr);
@@ -304,7 +304,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Spati
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->getValue(VarName,OPENFLUID_GetCurrentTimeIndex(),&Val))
+    if (!UnitPtr->variables()->getValue(VarName,OPENFLUID_GetCurrentTimeIndex(),&Val))
     {
       std::string TimeStr;
       openfluid::tools::ConvertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
@@ -384,7 +384,7 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariable(const openfluid::core:
 
   if (UnitPtr != NULL)
    {
-     if (!UnitPtr->getVariables()->getLatestIndexedValue(VarName,IndVal))
+     if (!UnitPtr->variables()->getLatestIndexedValue(VarName,IndVal))
      {
        std::string TimeStr;
        openfluid::tools::ConvertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
@@ -410,7 +410,7 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariables(const openfluid::core
 
   if (UnitPtr != NULL)
    {
-     if (!UnitPtr->getVariables()->getLatestIndexedValues(VarName,BeginIndex,IndValList))
+     if (!UnitPtr->variables()->getLatestIndexedValues(VarName,BeginIndex,IndValList))
      {
        std::string TimeStr;
        openfluid::tools::ConvertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
@@ -436,7 +436,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariables(const openfluid::core::Spat
 
   if (UnitPtr != NULL)
    {
-     if (!UnitPtr->getVariables()->getIndexedValues(VarName,BeginIndex,EndIndex,IndValList))
+     if (!UnitPtr->variables()->getIndexedValues(VarName,BeginIndex,EndIndex,IndValList))
      {
        std::string TimeStr;
        openfluid::tools::ConvertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
@@ -457,7 +457,7 @@ bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::S
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::INITIALIZERUN,
                               "SimulationInspectorWare::OPENFLUID_IsVariableExist","Variables can be accessed only during INITIALIZERUN, RUNSTEP and FINALIZERUN stages")
 
-  return (UnitPtr != NULL && UnitPtr->getVariables()->isVariableExist(VarName));
+  return (UnitPtr != NULL && UnitPtr->variables()->isVariableExist(VarName));
 }
 
 
@@ -472,7 +472,7 @@ bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::S
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::INITIALIZERUN,
                               "SimulationInspectorWare::OPENFLUID_IsVariableExist","Variables can be accessed using time index only during INITIALIZERUN, RUNSTEP and FINALIZERUN stages")
 
-   return (UnitPtr != NULL && UnitPtr->getVariables()->isVariableExist(VarName,Index));
+   return (UnitPtr != NULL && UnitPtr->variables()->isVariableExist(VarName,Index));
 }
 
 
@@ -488,7 +488,7 @@ bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::S
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::INITIALIZERUN,
                               "SimulationInspectorWare::OPENFLUID_IsVariableExist","Variables can be accessed using time index only during INITIALIZERUN, RUNSTEP and FINALIZERUN stages")
 
-  return (UnitPtr != NULL && UnitPtr->getVariables()->isVariableExist(VarName,Index,ValueType));
+  return (UnitPtr != NULL && UnitPtr->variables()->isVariableExist(VarName,Index,ValueType));
 }
 
 
@@ -503,7 +503,7 @@ bool SimulationInspectorWare::OPENFLUID_IsTypedVariableExist(const openfluid::co
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::INITIALIZERUN,
                               "SimulationInspectorWare::OPENFLUID_IsTypedVariableExist","Variables can be accessed only during INITIALIZERUN, RUNSTEP and FINALIZERUN stages")
 
-  return (UnitPtr != NULL && UnitPtr->getVariables()->isTypedVariableExist(VarName,VarType));
+  return (UnitPtr != NULL && UnitPtr->variables()->isTypedVariableExist(VarName,VarType));
 }
 
 
@@ -519,7 +519,7 @@ bool SimulationInspectorWare::OPENFLUID_IsTypedVariableExist(const openfluid::co
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::INITIALIZERUN,
                               "SimulationInspectorWare::OPENFLUID_IsTypedVariableExist","Variables can be accessed using time index only during INITIALIZERUN, RUNSTEP and FINALIZERUN stages")
 
-  return (UnitPtr != NULL && UnitPtr->getVariables()->isTypedVariableExist(VarName,Index,VarType));
+  return (UnitPtr != NULL && UnitPtr->variables()->isTypedVariableExist(VarName,Index,VarType));
 }
 
 
@@ -537,7 +537,7 @@ void SimulationInspectorWare::OPENFLUID_GetEvents(const openfluid::core::Spatial
 
 
   if (UnitPtr != NULL)
-    UnitPtr->getEvents()->getEventsBetween(BeginDate,EndDate,Events);
+    UnitPtr->events()->getEventsBetween(BeginDate,EndDate,Events);
 
   else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetEvents","Unit is NULL");
 }
@@ -550,7 +550,7 @@ void SimulationInspectorWare::OPENFLUID_GetEvents(const openfluid::core::Spatial
 bool SimulationInspectorWare::OPENFLUID_IsUnitExist(openfluid::core::UnitClass_t ClassName,
                                               openfluid::core::UnitID_t ID) const
 {
-  return (mp_SpatialData->getUnit(ClassName,ID) != NULL);
+  return (mp_SpatialData->spatialUnit(ClassName,ID) != NULL);
 }
 
 
@@ -574,7 +574,7 @@ bool SimulationInspectorWare::OPENFLUID_GetUnitsCount(const openfluid::core::Uni
   UnitsCount = 0;
   if (mp_SpatialData->isUnitsClassExist(ClassName))
   {
-    UnitsCount = mp_SpatialData->getUnits(ClassName)->getList()->size();
+    UnitsCount = mp_SpatialData->spatialUnits(ClassName)->list()->size();
     return true;
   }
   else return false;
@@ -590,9 +590,9 @@ void SimulationInspectorWare::OPENFLUID_GetUnitsCount(unsigned int& UnitsCount) 
   UnitsCount = 0;
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
-  for (UnitsIt = mp_SpatialData->getUnitsByClass()->begin(); UnitsIt != mp_SpatialData->getUnitsByClass()->end();++UnitsIt )
+  for (UnitsIt = mp_SpatialData->allSpatialUnitsByClass()->begin(); UnitsIt != mp_SpatialData->allSpatialUnitsByClass()->end();++UnitsIt )
   {
-    UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
+    UnitsCount = UnitsCount + (*UnitsIt).second.list()->size();
   }
 }
 
@@ -605,7 +605,7 @@ bool SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitClass
                                           const openfluid::core::UnitID_t& ID,
                                           openfluid::core::SpatialUnit* aUnit) const
 {
-  aUnit =  const_cast<openfluid::core::SpatialUnit*>(mp_SpatialData->getUnit(ClassName,ID));
+  aUnit =  const_cast<openfluid::core::SpatialUnit*>(mp_SpatialData->spatialUnit(ClassName,ID));
   return (aUnit != NULL);
 }
 
@@ -617,7 +617,7 @@ bool SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitClass
 openfluid::core::SpatialUnit* SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
                                                             const openfluid::core::UnitID_t& ID) const
 {
-  return mp_SpatialData->getUnit(ClassName,ID);
+  return mp_SpatialData->spatialUnit(ClassName,ID);
 }
 
 
@@ -629,7 +629,7 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedTo(openfluid::core::Spati
                                                     const openfluid::core::UnitID_t& IDTo) const
 {
   if (aUnit == NULL || !mp_SpatialData->isUnitsClassExist(ClassNameTo)) return false;
-  return IsUnitIDInPtrList(aUnit->getToUnits(ClassNameTo),IDTo);
+  return IsUnitIDInPtrList(aUnit->toSpatialUnits(ClassNameTo),IDTo);
 }
 
 
@@ -642,7 +642,7 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedFrom(openfluid::core::Spa
                                                       const openfluid::core::UnitID_t& IDFrom) const
 {
   if (aUnit == NULL || !mp_SpatialData->isUnitsClassExist(ClassNameFrom)) return false;
-  return IsUnitIDInPtrList(aUnit->getFromUnits(ClassNameFrom),IDFrom);
+  return IsUnitIDInPtrList(aUnit->fromSpatialUnits(ClassNameFrom),IDFrom);
 }
 
 
@@ -655,7 +655,7 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitChildOf(openfluid::core::SpatialUn
                                                 const openfluid::core::UnitID_t& IDParent) const
 {
   if (aUnit == NULL || !mp_SpatialData->isUnitsClassExist(ClassNameParent)) return false;
-  return IsUnitIDInPtrList(aUnit->getParentUnits(ClassNameParent),IDParent);
+  return IsUnitIDInPtrList(aUnit->parentSpatialUnits(ClassNameParent),IDParent);
 }
 
 
@@ -668,7 +668,7 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitParentOf(openfluid::core::SpatialU
                                                  const openfluid::core::UnitID_t& IDChild) const
 {
   if (aUnit == NULL || !mp_SpatialData->isUnitsClassExist(ClassNameChild)) return false;
-  return IsUnitIDInPtrList(aUnit->getChildrenUnits(ClassNameChild),IDChild);
+  return IsUnitIDInPtrList(aUnit->childSpatialUnits(ClassNameChild),IDChild);
 }
 
 

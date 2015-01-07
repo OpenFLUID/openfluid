@@ -104,17 +104,17 @@ class OPENFLUID_API LineStringEntity: public LandREntity, public geos::planargra
     /**
      @brief Returns the geos::geom::LineString of this LineStringEntity.
      */
-    const geos::geom::LineString* getLine() const;
+    const geos::geom::LineString* line() const;
 
     /**
      @brief Returns the start geos::planargraph::Node of this LineStringEntity.
      */
-    geos::planargraph::Node* getStartNode();
+    geos::planargraph::Node* startNode();
 
     /**
      @brief Returns the end geos::planargraph::Node of this LineStringEntity.
      */
-    geos::planargraph::Node* getEndNode();
+    geos::planargraph::Node* endNode();
 
     /**
      @brief Return a vector of up-neighbours LineStringEntity using the line orientation of this LineStringEntity.

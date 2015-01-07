@@ -160,7 +160,7 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
     /**
      @brief Returns a PolygonEntity with OfldId, or 0 if it doesn't exist.
      */
-    PolygonEntity* getEntity(int OfldId);
+    PolygonEntity* entity(int OfldId);
 
     /**
      @brief Returns true if each PolygonEntity is complete.

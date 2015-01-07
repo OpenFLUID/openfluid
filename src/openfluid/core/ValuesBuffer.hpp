@@ -40,85 +40,13 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/ValuesBufferProperties.hpp>
-#include <openfluid/core/Value.hpp>
-#include <openfluid/core/NullValue.hpp>
-#include <openfluid/core/DateTime.hpp>
+#include <openfluid/core/IndexedValue.hpp>
+
 #include <boost/circular_buffer.hpp>
 
-#include <boost/shared_ptr.hpp>
-
-#include <iostream>
-#include <list>
 
 namespace openfluid { namespace core {
 
-
-class IndexedValue
-{
-  friend class ValuesBuffer;
-
-  private:
-
-    TimeIndex_t m_Index;
-
-    boost::shared_ptr<Value> m_Value;
-
-
-  public:
-
-    /**
-      Default constructor
-    */
-    IndexedValue():
-      m_Index(0),m_Value(boost::shared_ptr<Value>(new NullValue())) {};
-
-    /**
-      Constructor from a time index and a value
-    */
-    IndexedValue(const TimeIndex_t& Ind, const Value& Val):
-      m_Index(Ind),m_Value(boost::shared_ptr<Value>(Val.clone())) {};
-
-    /**
-      Copy constructor
-    */
-    IndexedValue(const IndexedValue& IndValue):
-          m_Index(IndValue.m_Index),m_Value(boost::shared_ptr<Value>(IndValue.m_Value.get()->clone())) {};
-
-    /**
-      Returns the time index of the indexed value
-      @return the time index
-    */
-    inline TimeIndex_t getIndex() const { return m_Index; };
-
-    /**
-      Returns a pointer to the value of the indexed value
-      @return a pointer to the value
-    */
-    inline Value* getValue() const { return m_Value.get(); };
-
-    /**
-      Returns a pointer to the value of the indexed value
-      @return a pointer to the value
-    */
-    inline Value* getValue() { return m_Value.get(); };
-
-    /**
-      Clears the content of the indexed value. The time index is set to 0,
-      and the value is set to an openfluid::core::NullValue.
-    */
-    inline void clear() { m_Index = 0; m_Value.reset(new NullValue()); };
-
-};
-
-
-/**
-  Indexed value list, ordered from oldest (front) to more recent (back)
-*/
-typedef std::list<IndexedValue> IndexedValueList;
-
-
-// =====================================================================
-// =====================================================================
 
 
 class OPENFLUID_API ValuesBuffer: public ValuesBufferProperties
@@ -145,9 +73,9 @@ class OPENFLUID_API ValuesBuffer: public ValuesBufferProperties
 
     bool getValue(const TimeIndex_t& anIndex, Value* aValue) const;
 
-    Value* getValue(const TimeIndex_t& anIndex) const;
+    Value* value(const TimeIndex_t& anIndex) const;
 
-    Value* getCurrentValue() const;
+    Value* currentValue() const;
 
     TimeIndex_t getCurrentIndex() const;
 
@@ -184,8 +112,7 @@ class OPENFLUID_API ValuesBuffer: public ValuesBufferProperties
 
 };
 
-}
-} // namespaces
+}  } // namespaces
 
 
 #endif /* __OPENFLUID_CORE_VALUESBUFFER_HPP__ */

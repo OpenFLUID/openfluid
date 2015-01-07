@@ -74,7 +74,7 @@ class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverS
 
   public:
 
-    static ObserverPluginsManager* getInstance()
+    static ObserverPluginsManager* instance()
     {
       if (mp_Singleton == NULL) mp_Singleton = new ObserverPluginsManager();
        return mp_Singleton;
@@ -87,7 +87,7 @@ class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverS
 
     std::string getPluginFullPath(const std::string& Filename)
     {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getObserverPluginFullPath(Filename);
+      return openfluid::base::RuntimeEnvironment::instance()->getObserverPluginFullPath(Filename);
     }
 
 
@@ -97,7 +97,7 @@ class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverS
 
     std::vector<std::string> getPluginsSearchPaths()
     {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths();
+      return openfluid::base::RuntimeEnvironment::instance()->getObserversPluginsPaths();
     }
 
 

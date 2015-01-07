@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   MC.getMarketInfo(MI);
   BOOST_REQUIRE_EQUAL(MI.Name,"OpenFLUID-Market generated automatically");
 
-  openfluid::market::TypesMetaPackagesCatalogs_t TPC = MC.getTypesMetaPackagesCatalogs();
+  openfluid::market::TypesMetaPackagesCatalogs_t TPC = MC.typesMetaPackagesCatalogs();
 
   openfluid::market::TypesMetaPackagesCatalogs_t::iterator TPCit;
   openfluid::market::MetaPackagesCatalog_t::iterator PCit;

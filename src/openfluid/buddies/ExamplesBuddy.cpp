@@ -134,8 +134,8 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
 bool ExamplesBuddy::run()
 {
   setOptionIfNotSet("selection","*");
-  setOptionIfNotSet("sourcedir",boost::filesystem::path(openfluid::base::RuntimeEnvironment::getInstance()->getProvidedExamplesDir()+"/"+openfluid::config::PROJECTS_SUBDIR).string());
-  setOptionIfNotSet("installdir",boost::filesystem::path(openfluid::base::RuntimeEnvironment::getInstance()->getUserExamplesDir()+"/"+openfluid::config::PROJECTS_SUBDIR).string());
+  setOptionIfNotSet("sourcedir",boost::filesystem::path(openfluid::base::RuntimeEnvironment::instance()->getProvidedExamplesDir()+"/"+openfluid::config::PROJECTS_SUBDIR).string());
+  setOptionIfNotSet("installdir",boost::filesystem::path(openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir()+"/"+openfluid::config::PROJECTS_SUBDIR).string());
   setOptionIfNotSet("force","0");
 
   if (m_Options["selection"] == "*")

@@ -44,6 +44,7 @@
 #include <openfluid/dllexport.hpp>
 
 #include <openfluid/core/UnstructuredValue.hpp>
+#include <openfluid/core/TypeDefs.hpp>
 
 
 namespace openfluid { namespace fluidx {
@@ -59,16 +60,15 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
 
   public:
 
-    AdvancedDatastoreDescriptor(
-        openfluid::fluidx::DatastoreDescriptor& DatastoreDesc);
+    AdvancedDatastoreDescriptor(openfluid::fluidx::DatastoreDescriptor& DatastoreDesc);
 
     ~AdvancedDatastoreDescriptor();
 
-    const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& getItems() const;
+    const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& items() const;
 
-    std::list<openfluid::fluidx::DatastoreItemDescriptor*> getItems(const std::string& UnitClass) const;
+    std::list<openfluid::fluidx::DatastoreItemDescriptor*> getItems(const openfluid::core::UnitClass_t& UnitClass) const;
 
-    std::list<openfluid::fluidx::DatastoreItemDescriptor*> getItems(const std::string& UnitClass,
+    std::list<openfluid::fluidx::DatastoreItemDescriptor*> getItems(const openfluid::core::UnitClass_t& UnitClass,
                                                                     openfluid::core::UnstructuredValue::UnstructuredType Type) const;
 
     /**
@@ -109,7 +109,7 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
      * @param ItemID ID of the expected item.
      * @return The item with the given ID, or 0 if not found.
      */
-    openfluid::fluidx::DatastoreItemDescriptor* getItem(const std::string& ItemID);
+    openfluid::fluidx::DatastoreItemDescriptor* item(const std::string& ItemID);
 
 
 

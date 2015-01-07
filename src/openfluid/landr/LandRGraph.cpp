@@ -165,7 +165,7 @@ void LandRGraph::addEntitiesFromGeoVector()
   // TODO move to... ?
   setlocale(LC_NUMERIC, "C");
 
-  OGRLayer* Layer0 = mp_Vector->getLayer(0);
+  OGRLayer* Layer0 = mp_Vector->layer(0);
 
   Layer0->ResetReading();
 
@@ -207,7 +207,7 @@ void LandRGraph::addEntitiesFromEntityList(const LandRGraph::Entities_t& Entitie
   LandRGraph::Entities_t::const_iterator it = Entities.begin();
   LandRGraph::Entities_t::const_iterator ite = Entities.end();
   for (; it != ite; ++it)
-      addEntity(getNewEntity((*it)->getGeometry()->clone(), (*it)->getOfldId()));
+      addEntity(getNewEntity((*it)->geometry()->clone(), (*it)->getOfldId()));
 
   removeUnusedNodes();
 }
@@ -217,7 +217,7 @@ void LandRGraph::addEntitiesFromEntityList(const LandRGraph::Entities_t& Entitie
 // =====================================================================
 
 
-geos::planargraph::Node* LandRGraph::getNode(const geos::geom::Coordinate& Coordinate)
+geos::planargraph::Node* LandRGraph::node(const geos::geom::Coordinate& Coordinate)
 {
   geos::planargraph::Node* Node = findNode(Coordinate);
 
@@ -252,7 +252,7 @@ void LandRGraph::removeUnusedNodes()
 // =====================================================================
 
 
-LandREntity* LandRGraph::getEntity(int OfldId)
+LandREntity* LandRGraph::entity(int OfldId)
 {
   if (m_EntitiesByOfldId.count(OfldId))
     return m_EntitiesByOfldId.find(OfldId)->second;
@@ -405,7 +405,7 @@ bool LandRGraph::hasAnAssociatedRaster()
 // =====================================================================
 
 
-openfluid::landr::VectorDataset* LandRGraph::getRasterPolygonized()
+openfluid::landr::VectorDataset* LandRGraph::rasterPolygonized()
 {
   if (!mp_RasterPolygonized)
   {
@@ -430,11 +430,11 @@ openfluid::landr::VectorDataset* LandRGraph::getRasterPolygonized()
 // =====================================================================
 
 
-std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
+std::vector<geos::geom::Polygon*>* LandRGraph::rasterPolygonizedPolys()
 {
   if (!mp_RasterPolygonizedPolys)
   {
-    openfluid::landr::VectorDataset* Polygonized = getRasterPolygonized();
+    openfluid::landr::VectorDataset* Polygonized = rasterPolygonized();
 
     if (!Polygonized)
       throw openfluid::base::FrameworkException(
@@ -446,7 +446,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
     // TODO move?
     setlocale(LC_NUMERIC, "C");
 
-    OGRLayer* Layer0 = Polygonized->getLayer(0);
+    OGRLayer* Layer0 = Polygonized->layer(0);
 
     int PixelValFieldIndex = Polygonized->getFieldIndex(
         openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName());
@@ -494,7 +494,7 @@ float* LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
         "No raster associated to the PolygonGraph");
 
   Val = new float(
-      mp_Raster->getValueOfCoordinate(*Entity.getCentroid()->getCoordinate()));
+      mp_Raster->getValueOfCoordinate(*Entity.centroid()->getCoordinate()));
 
   return Val;
 }
@@ -577,12 +577,12 @@ void LandRGraph::exportToShp(const std::string& FilePath,
   Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
   {
-    OGRFeature *Feat = OGRFeature::CreateFeature(Out->getLayerDef());
+    OGRFeature *Feat = OGRFeature::CreateFeature(Out->layerDef());
 
     Feat->SetField("OFLD_ID", (int) (*it)->getOfldId());
 
     OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS(
-        (GEOSGeom) (*it)->getGeometry());
+        (GEOSGeom) (*it)->geometry());
 
     if (!OGRGeom)
     {
@@ -595,7 +595,7 @@ void LandRGraph::exportToShp(const std::string& FilePath,
 
     Feat->SetGeometry(OGRGeom);
 
-    if (Out->getLayer(0)->CreateFeature(Feat) != OGRERR_NONE)
+    if (Out->layer(0)->CreateFeature(Feat) != OGRERR_NONE)
     {
       delete Out;
       delete OGRGeom;
@@ -634,7 +634,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 
   setlocale(LC_NUMERIC, "C");
 
-  OGRLayer* Layer0 = Vector.getLayer(0);
+  OGRLayer* Layer0 = Vector.layer(0);
   Layer0->ResetReading();
 
   int columnIndex=Vector.getFieldIndex(Column);
@@ -642,7 +642,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
   while ((Feat = Layer0->GetNextFeature()) != NULL)
   {
     int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
-    openfluid::landr::LandREntity* Entity=getEntity(OfldId);
+    openfluid::landr::LandREntity* Entity=entity(OfldId);
     if (Entity)
     {
       if (Vector.isFieldOfType(Column, OFTInteger))
@@ -690,7 +690,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 
   setlocale(LC_NUMERIC, "C");
 
-  OGRLayer* Layer0 = Vector.getLayer(0);
+  OGRLayer* Layer0 = Vector.layer(0);
   Layer0->ResetReading();
 
   int columnIndex=Vector.getFieldIndex(Column);
@@ -698,7 +698,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
   while ((Feat = Layer0->GetNextFeature()) != NULL)
   {
     int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
-    openfluid::landr::LandREntity* Entity=getEntity(OfldId);
+    openfluid::landr::LandREntity* Entity=entity(OfldId);
     if (Entity)
     {
       if (Vector.isFieldOfType(Column, OFTInteger))
@@ -750,14 +750,14 @@ void LandRGraph::snapVertices(double snapTolerance)
     for (; jt != jte; ++jt)
     {
       if (static_cast<unsigned>(*li)!=(*jt)->getOfldId())
-        entitiesGeoms.push_back(const_cast<geos::geom::Geometry*>((*jt)->getGeometry()));
+        entitiesGeoms.push_back(const_cast<geos::geom::Geometry*>((*jt)->geometry()));
     }
 
     geos::geom::Geometry* entitiesGeom =
         geos::geom::GeometryFactory::getDefaultInstance()->buildGeometry(
             entitiesGeoms);
 
-    geos::operation::overlay::snap::GeometrySnapper geomSnapper(*(getEntity(*li))->getGeometry());
+    geos::operation::overlay::snap::GeometrySnapper geomSnapper(*(entity(*li))->geometry());
     std::auto_ptr<geos::geom::Geometry> snapEntityGeom=geomSnapper.snapTo(*entitiesGeom,snapTolerance);
     geos::geom::Geometry* snappedEntityGeom=snapEntityGeom.release();
 
@@ -800,7 +800,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 
   setlocale(LC_NUMERIC, "C");
 
-  OGRLayer* Layer0 = Vector.getLayer(0);
+  OGRLayer* Layer0 = Vector.layer(0);
   Layer0->ResetReading();
 
   int columnIndex=Vector.getFieldIndex(Column);
@@ -812,9 +812,9 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
   for (; it != ite; ++it)
   {
     geos::geom::Point* IntPoint;
-    if((*it)->getGeometry()->getDimension()==1)
+    if((*it)->geometry()->getDimension()==1)
     {
-      const geos::geom::LineString* Line=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getLine();
+      const geos::geom::LineString* Line=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->line();
       const geos::geom::Coordinate FirstCoord=Line->getCoordinateN(0);
       const geos::geom::Coordinate SecondCoord=Line->getCoordinateN(1);
       geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
@@ -824,7 +824,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 
     }
     else
-      IntPoint=(*it)->getGeometry()->getInteriorPoint();
+      IntPoint=(*it)->geometry()->getInteriorPoint();
 
     OGRFeature* Feat;
     while ((Feat = Layer0->GetNextFeature()) != NULL)
@@ -893,7 +893,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 
   setlocale(LC_NUMERIC, "C");
 
-  OGRLayer* Layer0 = Vector.getLayer(0);
+  OGRLayer* Layer0 = Vector.layer(0);
   Layer0->ResetReading();
 
   int columnIndex=Vector.getFieldIndex(Column);
@@ -906,9 +906,9 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
   for (; it != ite; ++it)
   {
     geos::geom::Point* IntPoint;
-    if((*it)->getGeometry()->getDimension()==1)
+    if((*it)->geometry()->getDimension()==1)
     {
-      const geos::geom::LineString* Line=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getLine();
+      const geos::geom::LineString* Line=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->line();
       const geos::geom::Coordinate FirstCoord=Line->getCoordinateN(0);
       const geos::geom::Coordinate SecondCoord=Line->getCoordinateN(1);
       geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
@@ -917,7 +917,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
       IntPoint=mp_Factory->createPoint(CoordInteriorPoint);
     }
     else
-      IntPoint=(*it)->getGeometry()->getInteriorPoint();
+      IntPoint=(*it)->geometry()->getInteriorPoint();
 
     OGRFeature* Feat;
     while ((Feat = Layer0->GetNextFeature()) != NULL)

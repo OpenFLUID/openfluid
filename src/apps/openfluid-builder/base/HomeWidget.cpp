@@ -99,17 +99,17 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   ui->VersionLabel->setText(std::string("OpenFLUID v"+openfluid::config::FULL_VERSION).c_str());
 
   ui->URLLabel->setText("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>");
-  connect(ui->URLLabel,SIGNAL(clicked()),Actions->getAction("HelpOnlineWeb"),SLOT(trigger()));
+  connect(ui->URLLabel,SIGNAL(clicked()),Actions->action("HelpOnlineWeb"),SLOT(trigger()));
 
   // left buttons
 
   QVBoxLayout* ButtonsLayout = new QVBoxLayout(ui->ButtonsFrame);
 
   QPushButton* TheButton;
-  TheButton = createButton(Actions->getAction("ProjectNew"),tr("Create a project..."));
+  TheButton = createButton(Actions->action("ProjectNew"),tr("Create a project..."));
   ButtonsLayout->addWidget(TheButton);
 
-  TheButton = createButton(Actions->getAction("ProjectOpen"),tr("Open a project..."));
+  TheButton = createButton(Actions->action("ProjectOpen"),tr("Open a project..."));
   ButtonsLayout->addWidget(TheButton);
 
   QFrame* ButtonsHLine = new QFrame(ui->ButtonsFrame);
@@ -117,7 +117,7 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   ButtonsHLine->setLineWidth(1);
   ButtonsLayout->addWidget(ButtonsHLine);
 
-  TheButton = createButton(Actions->getAction("HelpExamplesOpen"),tr("Open an example project..."));
+  TheButton = createButton(Actions->action("HelpExamplesOpen"),tr("Open an example project..."));
   ButtonsLayout->addWidget(TheButton);
 
   ButtonsHLine = new QFrame(ui->ButtonsFrame);
@@ -125,7 +125,7 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   ButtonsHLine->setLineWidth(1);
   ButtonsLayout->addWidget(ButtonsHLine);
 
-  TheButton = createButton(Actions->getAction("MarketAccess"),tr("Access to OpenFLUID-Market..."));
+  TheButton = createButton(Actions->action("MarketAccess"),tr("Access to OpenFLUID-Market..."));
   ButtonsLayout->addWidget(TheButton);
 
   ButtonsLayout->setAlignment(Qt::AlignTop);

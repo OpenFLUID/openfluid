@@ -120,12 +120,17 @@ std::string DatastoreItem::getUnitClass() const
 // =====================================================================
 
 
-UnstructuredValue* DatastoreItem::getValue()
+UnstructuredValue* DatastoreItem::value()
 {
   return m_Value;
 }
 
-const UnstructuredValue* DatastoreItem::getValue() const
+
+// =====================================================================
+// =====================================================================
+
+
+const UnstructuredValue* DatastoreItem::value() const
 {
   return m_Value;
 }

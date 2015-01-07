@@ -150,7 +150,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
 
 
-    UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_SpatialData->getUnitsByClass());
+    UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_SpatialData->allSpatialUnitsByClass());
 /*
     std::cout << std::endl;
     std::cout.flush();
@@ -167,7 +167,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
     for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
     {
 
-      UnitsList = const_cast<openfluid::core::UnitsList_t*>(((*itUnitsClass).second).getList());
+      UnitsList = const_cast<openfluid::core::UnitsList_t*>(((*itUnitsClass).second).list());
 
       for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
       {
@@ -179,7 +179,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
         for (unsigned int i=0;i<ClassVector.size();i++)
         {
-          ToUnitsPtrList = const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->getToUnits(ClassVector[i]));
+          ToUnitsPtrList = const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->toSpatialUnits(ClassVector[i]));
 
           if (ToUnitsPtrList != NULL)
           {
@@ -204,7 +204,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
     for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
     {
 
-      UnitsList = const_cast<openfluid::core::UnitsList_t*>(((*itUnitsClass).second).getList());
+      UnitsList = const_cast<openfluid::core::UnitsList_t*>(((*itUnitsClass).second).list());
 
       for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
       {
@@ -216,7 +216,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
         for (unsigned int i=0;i<ClassVector.size();i++)
         {
-          FromUnitsPtrList = const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->getFromUnits(ClassVector[i]));
+          FromUnitsPtrList = const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->fromSpatialUnits(ClassVector[i]));
 
           if (FromUnitsPtrList != NULL)
           {

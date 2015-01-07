@@ -140,16 +140,10 @@ class OPENFLUID_API IntegerValue : public SimpleValue
     Value* clone() const { return new IntegerValue(*this); };
 
     /**
-      Returns the integer value as plain old type
+      Returns the integer value as a plain old type
       @return the integer value
     */
-    inline long& get() { return m_Value; };
-
-    /**
-      Returns the integer value as a const plain old type
-      @return the integer value
-    */
-    inline const long& get() const { return m_Value; };
+    inline long get() const { return m_Value; };
 
     /**
       Sets the plain old type long integer value

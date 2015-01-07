@@ -57,7 +57,7 @@
 ProjectCentral::ProjectCentral(QString PrjPath):
   mp_FXDesc(NULL),mp_AdvancedFXDesc(NULL)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
+  openfluid::base::RuntimeEnvironment::instance()->linkToProject();
 
   mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(&m_IOListener);
 
@@ -69,7 +69,7 @@ ProjectCentral::ProjectCentral(QString PrjPath):
   {
     try
     {
-      mp_FXDesc->loadFromDirectory(openfluid::base::ProjectManager::getInstance()->getInputDir());
+      mp_FXDesc->loadFromDirectory(openfluid::base::ProjectManager::instance()->getInputDir());
     }
     catch (openfluid::base::Exception& E)
     {
@@ -137,7 +137,7 @@ void ProjectCentral::deleteData()
     mp_FXDesc = NULL;
   }
 
-  openfluid::base::RuntimeEnvironment::getInstance()->detachFromProject();
+  openfluid::base::RuntimeEnvironment::instance()->detachFromProject();
 }
 
 
@@ -161,8 +161,8 @@ void ProjectCentral::run()
 
   RunDlg.execute();
 
-  openfluid::machine::SimulatorSignatureRegistry::getInstance()->unloadAllSimulators();
-  openfluid::machine::ObserverSignatureRegistry::getInstance()->unloadAllObservers();
+  openfluid::machine::SimulatorSignatureRegistry::instance()->unloadAllSimulators();
+  openfluid::machine::ObserverSignatureRegistry::instance()->unloadAllObservers();
 }
 
 
@@ -172,9 +172,9 @@ void ProjectCentral::run()
 
 bool ProjectCentral::save()
 {
-  QString InputDir = QString(openfluid::base::ProjectManager::getInstance()->getInputDir().c_str());
+  QString InputDir = QString(openfluid::base::ProjectManager::instance()->getInputDir().c_str());
 
-  openfluid::base::ProjectManager::getInstance()->save();
+  openfluid::base::ProjectManager::instance()->save();
 
   QDir InputPath(InputDir);
 
@@ -198,7 +198,7 @@ bool ProjectCentral::save()
 
 bool ProjectCentral::saveAs(const QString& NewPrjName, const QString& NewPrjPath)
 {
-  openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::getInstance();
+  openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::instance();
 
   QString OldPrjPath = QString::fromStdString(PrjMan->getPath());
 
@@ -214,7 +214,7 @@ bool ProjectCentral::saveAs(const QString& NewPrjName, const QString& NewPrjPath
   // open renamed project
   PrjMan->open(NewPrjPath.toStdString());
 
-  openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
+  openfluid::base::RuntimeEnvironment::instance()->linkToProject();
 
   // update project metadata
   PrjMan->setName(NewPrjName.toStdString());
@@ -236,7 +236,7 @@ void ProjectCentral::check()
 {
   m_CheckInfos.clear();
 
-  if (!mp_FXDesc->getModelDescriptor().getItems().empty())
+  if (!mp_FXDesc->modelDescriptor().items().empty())
   {
     checkModel();
   }
@@ -250,7 +250,7 @@ void ProjectCentral::check()
 
   checkDatastore();
 
-  if (!mp_FXDesc->getMonitoringDescriptor().getItems().empty())
+  if (!mp_FXDesc->monitoringDescriptor().items().empty())
   {
     checkMonitoring();
   }
@@ -321,7 +321,7 @@ bool ProjectCentral::isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
                                 const std::string& ParamName)
 {
   return (!Item->getParameters()[ParamName].get().empty()
-      || !mp_AdvancedFXDesc->getModel().getGlobalParameters()[ParamName].get().empty());
+      || !mp_AdvancedFXDesc->model().getGlobalParameters()[ParamName].get().empty());
 }
 
 
@@ -338,7 +338,7 @@ bool ProjectCentral::isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Ite
   double d;
 
   return (Item->getParameters()[ParamName].toDouble(d)
-      || mp_AdvancedFXDesc->getModel().getGlobalParameters()[ParamName].toDouble(d));
+      || mp_AdvancedFXDesc->model().getGlobalParameters()[ParamName].toDouble(d));
 }
 
 
@@ -359,7 +359,7 @@ double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* 
   if (Item->getParameters()[ParamName].toDouble(d))
     return d;
 
-  mp_AdvancedFXDesc->getModel().getGlobalParameters()[ParamName].toDouble(d);
+  mp_AdvancedFXDesc->model().getGlobalParameters()[ParamName].toDouble(d);
 
   return d;
 }
@@ -371,13 +371,13 @@ double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* 
 
 void ProjectCentral::checkModel()
 {
-  openfluid::fluidx::AdvancedModelDescriptor& Model = mp_AdvancedFXDesc->getModel();
-  openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_AdvancedFXDesc->getDomain();
+  openfluid::fluidx::AdvancedModelDescriptor& Model = mp_AdvancedFXDesc->model();
+  openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_AdvancedFXDesc->spatialDomain();
 
-  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = Model.getItems();
+  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = Model.items();
 
-  openfluid::machine::SimulatorSignatureRegistry* Reg = openfluid::machine::SimulatorSignatureRegistry::getInstance();
-  openfluid::base::RuntimeEnvironment* RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
+  openfluid::machine::SimulatorSignatureRegistry* Reg = openfluid::machine::SimulatorSignatureRegistry::instance();
+  openfluid::base::RuntimeEnvironment* RunEnv = openfluid::base::RuntimeEnvironment::instance();
 
   openfluid::ware::SimulatorSignature* Sign;
 
@@ -395,7 +395,7 @@ void ProjectCentral::checkModel()
     {
       AtLeastOneEnabled = true;
 
-      openfluid::machine::ModelItemSignatureInstance* SignII = Reg->getSignatureItemInstance(*itModelItem);
+      openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signatureItemInstance(*itModelItem);
       std::string ID = Model.getID(*itModelItem);
 
       if (SignII != NULL)
@@ -617,7 +617,7 @@ void ProjectCentral::checkModel()
   {
     if ((*itModelItem)->isEnabled())
     {
-      openfluid::machine::ModelItemSignatureInstance* SignII = Reg->getSignatureItemInstance(*itModelItem);
+      openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signatureItemInstance(*itModelItem);
       std::string ID = Model.getID(*itModelItem);
 
       if (SignII != NULL)
@@ -726,7 +726,7 @@ void ProjectCentral::checkModel()
   {
     if ((*itModelItem)->isEnabled())
     {
-      openfluid::machine::ModelItemSignatureInstance* SignII = Reg->getSignatureItemInstance(*itModelItem);
+      openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signatureItemInstance(*itModelItem);
       std::string ID = Model.getID(*itModelItem);
 
       if (SignII != NULL)
@@ -793,9 +793,9 @@ void ProjectCentral::checkSpatialDomain()
 
 void ProjectCentral::checkDatastore()
 {
-  std::set<std::string> Classes = mp_AdvancedFXDesc->getDomain().getClassNames();
+  std::set<std::string> Classes = mp_AdvancedFXDesc->spatialDomain().getClassNames();
 
-  const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items = mp_AdvancedFXDesc->getDatastore().getItems();
+  const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items = mp_AdvancedFXDesc->datastore().items();
 
   for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator itDatastore = Items.begin();
        itDatastore != Items.end(); ++itDatastore)
@@ -819,10 +819,10 @@ void ProjectCentral::checkDatastore()
 
 void ProjectCentral::checkMonitoring()
 {
-  openfluid::fluidx::AdvancedMonitoringDescriptor& Monitoring = mp_AdvancedFXDesc->getMonitoring();
-  const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = Monitoring.getItems();
+  openfluid::fluidx::AdvancedMonitoringDescriptor& Monitoring = mp_AdvancedFXDesc->monitoring();
+  const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = Monitoring.items();
 
-  openfluid::machine::ObserverSignatureRegistry* Reg = openfluid::machine::ObserverSignatureRegistry::getInstance();
+  openfluid::machine::ObserverSignatureRegistry* Reg = openfluid::machine::ObserverSignatureRegistry::instance();
 
   bool AtLeastOneEnabled = false;
 
@@ -834,7 +834,7 @@ void ProjectCentral::checkMonitoring()
     {
       AtLeastOneEnabled = true;
 
-      const openfluid::machine::ObserverSignatureInstance* SignII = Reg->getSignature((*itMonitoring)->getID());
+      const openfluid::machine::ObserverSignatureInstance* SignII = Reg->signature((*itMonitoring)->getID());
 
       if (SignII == NULL)
       {

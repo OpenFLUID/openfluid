@@ -89,28 +89,28 @@ BOOST_AUTO_TEST_CASE(check_operations)
   Repos->sortUnitsByProcessOrder();
 
   // *** Units count and process order
-  UnitsColl = Repos->getUnits("UnitClassA");
-  BOOST_REQUIRE_EQUAL(UnitsColl->getList()->size(),250);
+  UnitsColl = Repos->spatialUnits("UnitClassA");
+  BOOST_REQUIRE_EQUAL(UnitsColl->list()->size(),250);
 
-  PrevUnitsIt = UnitsColl->getList()->begin();
-  for (UnitsIt = UnitsColl->getList()->begin(); UnitsIt != UnitsColl->getList()->end();++UnitsIt)
+  PrevUnitsIt = UnitsColl->list()->begin();
+  for (UnitsIt = UnitsColl->list()->begin(); UnitsIt != UnitsColl->list()->end();++UnitsIt)
   {
 
-    if (UnitsIt != UnitsColl->getList()->begin())
+    if (UnitsIt != UnitsColl->list()->begin())
     {
       BOOST_REQUIRE_GE(UnitsIt->getProcessOrder(),PrevUnitsIt->getProcessOrder());
     }
     PrevUnitsIt = UnitsIt;
   }
 
-  UnitsColl = Repos->getUnits("UnitClassB");
-  BOOST_REQUIRE_EQUAL(UnitsColl->getList()->size(),7325);
+  UnitsColl = Repos->spatialUnits("UnitClassB");
+  BOOST_REQUIRE_EQUAL(UnitsColl->list()->size(),7325);
 
-  PrevUnitsIt = UnitsColl->getList()->begin();
-  for (UnitsIt = UnitsColl->getList()->begin(); UnitsIt != UnitsColl->getList()->end();++UnitsIt)
+  PrevUnitsIt = UnitsColl->list()->begin();
+  for (UnitsIt = UnitsColl->list()->begin(); UnitsIt != UnitsColl->list()->end();++UnitsIt)
   {
 
-    if (UnitsIt != UnitsColl->getList()->begin())
+    if (UnitsIt != UnitsColl->list()->begin())
     {
       BOOST_REQUIRE_GE(UnitsIt->getProcessOrder(),PrevUnitsIt->getProcessOrder());
     }
@@ -125,24 +125,24 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   // *** existing units
-  BOOST_REQUIRE(Repos->getUnit("UnitClassA",17) != NULL);
-  BOOST_REQUIRE(Repos->getUnit("UnitClassA",1000) == NULL);
-  U = Repos->getUnit("UnitClassA",17);
+  BOOST_REQUIRE(Repos->spatialUnit("UnitClassA",17) != NULL);
+  BOOST_REQUIRE(Repos->spatialUnit("UnitClassA",1000) == NULL);
+  U = Repos->spatialUnit("UnitClassA",17);
   BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassA");
   BOOST_REQUIRE_EQUAL(U->getID(),17);
 
-  BOOST_REQUIRE(Repos->getUnit("UnitClassB",1333) != NULL);
-  BOOST_REQUIRE(Repos->getUnit("UnitClassB",10000) == NULL);
-  U = Repos->getUnit("UnitClassB",1333);
+  BOOST_REQUIRE(Repos->spatialUnit("UnitClassB",1333) != NULL);
+  BOOST_REQUIRE(Repos->spatialUnit("UnitClassB",10000) == NULL);
+  U = Repos->spatialUnit("UnitClassB",1333);
   BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassB");
   BOOST_REQUIRE_EQUAL(U->getID(),1333);
 
-  BOOST_REQUIRE(Repos->getUnit("WrongClass",1) == NULL);
+  BOOST_REQUIRE(Repos->spatialUnit("WrongClass",1) == NULL);
 
 
   Repos->clearUnits();
-  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassA")->getList()->size(),0);
-  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassB")->getList()->size(),0);
+  BOOST_REQUIRE_EQUAL(Repos->spatialUnits("UnitClassA")->list()->size(),0);
+  BOOST_REQUIRE_EQUAL(Repos->spatialUnits("UnitClassB")->list()->size(),0);
 
 }
 

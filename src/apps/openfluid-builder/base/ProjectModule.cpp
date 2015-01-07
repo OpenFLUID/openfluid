@@ -134,7 +134,7 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
 
 ProjectModule::~ProjectModule()
 {
-  ExtensionsRegistry::getInstance()->releaseAllExtensions();
+  ExtensionsRegistry::instance()->releaseAllExtensions();
 
   delete mp_ProjectCentral;
   mp_SimulatorsPlugsWatcher->deleteLater();
@@ -156,10 +156,10 @@ void ProjectModule::updateWaresWatchersPaths()
   if (!mp_SimulatorsPlugsWatcher->directories().isEmpty())
     mp_SimulatorsPlugsWatcher->removePaths(mp_SimulatorsPlugsWatcher->directories());
 
-  if (openfluid::base::PreferencesManager::getInstance()->isWaresWatchersActive())
+  if (openfluid::base::PreferencesManager::instance()->isWaresWatchersActive())
   {
-    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths())
-          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths());
+    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()->getSimulatorsPluginsPaths())
+          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()->getExtraSimulatorsPluginsPaths());
 
     Paths.removeDuplicates();
 
@@ -177,11 +177,11 @@ void ProjectModule::updateWaresWatchersPaths()
   if (!mp_ObserversPlugsWatcher->directories().isEmpty())
     mp_ObserversPlugsWatcher->removePaths(mp_ObserversPlugsWatcher->directories());
 
-  if (openfluid::base::PreferencesManager::getInstance()->isWaresWatchersActive())
+  if (openfluid::base::PreferencesManager::instance()->isWaresWatchersActive())
   {
 
-    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths())
-          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths());
+    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()->getObserversPluginsPaths())
+          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()->getExtraObserversPluginsPaths());
 
     Paths.removeDuplicates();
 
@@ -218,7 +218,7 @@ void ProjectModule::resetInputDirWatcher()
 // =====================================================================
 
 
-QWidget* ProjectModule::getMainWidget(QWidget* Parent)
+QWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
 {
   if (mp_MainWidget != NULL)
   {
@@ -229,31 +229,31 @@ QWidget* ProjectModule::getMainWidget(QWidget* Parent)
   mp_MainWidget = new ProjectWidget(Parent);
 
 
-  mp_ModelTab = new ModelWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  mp_ModelTab = new ModelWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
   connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)),
           this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)));
 
-  mp_SpatialTab = new SpatialDomainWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  mp_SpatialTab = new SpatialDomainWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_SpatialTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
-  mp_DatastoreTab = new DatastoreWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  mp_DatastoreTab = new DatastoreWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_DatastoreTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
-  mp_MonitoringTab = new MonitoringWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  mp_MonitoringTab = new MonitoringWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_MonitoringTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
   connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)),
           this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)));
 
-  mp_RunConfigTab = new RunConfigurationWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  mp_RunConfigTab = new RunConfigurationWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_RunConfigTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
-  mp_OutputsTab = new OutputsWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  mp_OutputsTab = new OutputsWidget(NULL,mp_ProjectCentral->advancedDescriptors());
 
 
   mp_MainWidget->addWorkspaceTab(mp_ModelTab,tr("Model"));
@@ -271,7 +271,7 @@ QWidget* ProjectModule::getMainWidget(QWidget* Parent)
 // =====================================================================
 
 
-QWidget* ProjectModule::getDockWidget(QWidget* Parent)
+QWidget* ProjectModule::dockWidgetRebuilt(QWidget* Parent)
 {
   if (mp_DashboardFrame != NULL)
   {
@@ -389,9 +389,9 @@ void ProjectModule::whenPropertiesAsked()
 
   if (EditDlg.exec() == QDialog::Accepted)
   {
-    openfluid::base::ProjectManager::getInstance()->setDescription(EditDlg.getDescription().toStdString());
-    openfluid::base::ProjectManager::getInstance()->setAuthors(EditDlg.getAuthors().toStdString());
-    openfluid::base::ProjectManager::getInstance()->save();
+    openfluid::base::ProjectManager::instance()->setDescription(EditDlg.getDescription().toStdString());
+    openfluid::base::ProjectManager::instance()->setAuthors(EditDlg.getAuthors().toStdString());
+    openfluid::base::ProjectManager::instance()->save();
   }
 
 }
@@ -416,19 +416,19 @@ void ProjectModule::whenPreferencesAsked()
   bool WaresWatchingUpdated = false;
 
   openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),true);
-  PrefsDlg.initializeBuilderPrefs(openfluid::tools::toQStringList(ExtensionPluginsManager::getInstance()->getPluginsStandardSearchPaths()));
+  PrefsDlg.initializeBuilderPrefs(openfluid::tools::toQStringList(ExtensionPluginsManager::instance()->getPluginsStandardSearchPaths()));
   PrefsDlg.exec();
 
   openfluid::base::PreferencesManager* PrefsMgr =
-    openfluid::base::PreferencesManager::getInstance();
+    openfluid::base::PreferencesManager::instance();
 
   if (PrefsDlg.isSimPathsChanged())
   {
     QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
 
-    openfluid::base::RuntimeEnvironment::getInstance()->resetExtraSimulatorsPluginsPaths();
+    openfluid::base::RuntimeEnvironment::instance()->resetExtraSimulatorsPluginsPaths();
     for (int i=0;i<ExtraPaths.size(); i++)
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
+      openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
 
     updateWaresWatchersPaths();
     WaresWatchingUpdated = true;
@@ -440,9 +440,9 @@ void ProjectModule::whenPreferencesAsked()
   {
     QStringList ExtraPaths = PrefsMgr->getExtraObserversPaths();
 
-    openfluid::base::RuntimeEnvironment::getInstance()->resetExtraObserversPluginsPaths();
+    openfluid::base::RuntimeEnvironment::instance()->resetExtraObserversPluginsPaths();
     for (int i=0;i<ExtraPaths.size(); i++)
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
+      openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
 
     updateWaresWatchersPaths();
     WaresWatchingUpdated = true;
@@ -482,7 +482,7 @@ void ProjectModule::whenRecentProjectsActionsChanged()
 
 void ProjectModule::whenRunAsked()
 {
-  if (openfluid::base::PreferencesManager::getInstance()->isAutomaticSaveBeforeRun())
+  if (openfluid::base::PreferencesManager::instance()->isAutomaticSaveBeforeRun())
     whenSaveAsked();
 
   emit simulationStarted();
@@ -502,7 +502,7 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
 
   openfluid::ware::WareID_t WareID = ID.toStdString();
 
-  ExtensionsRegistry* ExtReg = ExtensionsRegistry::getInstance();
+  ExtensionsRegistry* ExtReg = ExtensionsRegistry::instance();
 
   if (ExtReg->isExtensionRegistered(WareID))
   {
@@ -517,7 +517,7 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
 
         // TODO set correct extension configuration
         ExtModal->setConfiguration(openfluid::ware::WareParams_t());
-        ExtModal->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
+        ExtModal->setFluidXDescriptor(&(mp_ProjectCentral->advancedDescriptors()));
 
         connect(ExtModal,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));
@@ -544,7 +544,7 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
 
         // TODO set correct extension configuration
         ExtModeless->setConfiguration(openfluid::ware::WareParams_t());
-        ExtModeless->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
+        ExtModeless->setFluidXDescriptor(&(mp_ProjectCentral->advancedDescriptors()));
 
         connect(ExtModeless,SIGNAL(finished(int)),this, SLOT(releaseModelessExtension()));
         connect(ExtModeless,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
@@ -572,7 +572,7 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
         // TODO set correct extension configuration
 
         ExtWork->setConfiguration(openfluid::ware::WareParams_t());
-        ExtWork->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
+        ExtWork->setFluidXDescriptor(&(mp_ProjectCentral->advancedDescriptors()));
 
         connect(ExtWork,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));
@@ -584,12 +584,12 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
         if (ExtWork->initialize())
         {
           ExtWork->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
-          mp_MainWidget->addWorkspaceExtensionTab(ExtWork,ExtReg->getRegisteredExtensions()->at(WareID)->Signature->MenuText);
+          mp_MainWidget->addWorkspaceExtensionTab(ExtWork,ExtReg->registeredExtensions()->at(WareID)->Signature->MenuText);
         }
         else
         {
           // destruction of the extension
-          ExtensionsRegistry::getInstance()->releaseExtension(ExtWork);
+          ExtensionsRegistry::instance()->releaseExtension(ExtWork);
           ExtWork->deleteLater();
         }
       }
@@ -786,7 +786,7 @@ void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableMod
 
   if (Sender)
   {
-    ExtensionsRegistry::getInstance()->releaseExtension(Sender);
+    ExtensionsRegistry::instance()->releaseExtension(Sender);
     Sender->deleteLater();
   }
 }
@@ -798,7 +798,7 @@ void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableMod
 
 void ProjectModule::updateSimulatorsWares()
 {
-  openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::machine::SimulatorSignatureRegistry::instance()->updatePluggableSignatures();
   mp_ModelTab->updateWares();
 
   doCheck();
@@ -811,7 +811,7 @@ void ProjectModule::updateSimulatorsWares()
 
 void ProjectModule::updateObserversWares()
 {
-  openfluid::machine::ObserverSignatureRegistry::getInstance()->update();
+  openfluid::machine::ObserverSignatureRegistry::instance()->update();
   mp_MonitoringTab->updateWares();
 
   doCheck();
@@ -834,7 +834,7 @@ void ProjectModule::checkInputDir()
 
 bool ProjectModule::isOkForSimulation() const
 {
-  return mp_ProjectCentral->getCheckInfos()->isOKForSimulation();
+  return mp_ProjectCentral->checkInfos()->isOKForSimulation();
 }
 
 
@@ -846,5 +846,5 @@ void ProjectModule::doCheck()
 {
   mp_ProjectCentral->check();
   mp_DashboardFrame->refresh();
-  emit runEnabled(mp_ProjectCentral->getCheckInfos()->isOKForSimulation());
+  emit runEnabled(mp_ProjectCentral->checkInfos()->isOKForSimulation());
 }

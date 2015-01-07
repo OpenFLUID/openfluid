@@ -32,54 +32,62 @@
 /**
  @file
 
- @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_FLUIDX_WARESETDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_WARESETDESCRIPTOR_HPP__
 
+
 #include <list>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
 
-namespace openfluid {
-namespace fluidx {
+
+namespace openfluid { namespace fluidx {
+
 
 template<class T>
 class OPENFLUID_API WareSetDescriptor
 {
   public:
+
     typedef std::list<T*> SetDescription_t;
 
+
   private:
+
     SetDescription_t m_SetDescription;
 
     openfluid::ware::WareParams_t m_Params;
+
 
   public:
 
     WareSetDescriptor<T>()
     {
     }
-    ;
 
-    inline SetDescription_t& getItems()
+
+    inline SetDescription_t& items()
     {
       return (m_SetDescription);
     }
-    ;
+
 
     // =====================================================================
     // =====================================================================
 
-    inline const SetDescription_t& getItems() const
+
+    inline const SetDescription_t& items() const
     {
       return (m_SetDescription);
     }
-    ;
+
 
     // =====================================================================
     // =====================================================================
+
 
     void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key,
                             const openfluid::ware::WareParamValue_t& Value)
@@ -87,8 +95,10 @@ class OPENFLUID_API WareSetDescriptor
       m_Params[Key] = Value;
     }
 
+
     // =====================================================================
     // =====================================================================
+
 
     void setGlobalParameters(const openfluid::ware::WareParams_t& Params)
     {
@@ -98,24 +108,30 @@ class OPENFLUID_API WareSetDescriptor
         m_Params[it->first] = it->second;
     }
 
+
     // =====================================================================
     // =====================================================================
+
 
     openfluid::ware::WareParams_t getGlobalParameters()
     {
       return m_Params;
     }
 
+
     // =====================================================================
     // =====================================================================
+
 
     void eraseGlobalParameter(const openfluid::ware::WareParamKey_t& Key)
     {
       m_Params.erase(Key);
     }
 
+
     // =====================================================================
     // =====================================================================
+
 
     void appendItem(T *Item)
     {
@@ -124,7 +140,6 @@ class OPENFLUID_API WareSetDescriptor
 
 };
 
-}
-} // namespaces
+} } // namespaces
 
 #endif /* __OPENFLUID_FLUIDX_MODELDESCRIPTOR_HPP__ */

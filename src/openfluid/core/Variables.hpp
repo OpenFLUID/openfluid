@@ -67,9 +67,9 @@ class OPENFLUID_API Variables
     bool getValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
         Value* aValue) const;
 
-    Value* getValue(const VariableName_t& aName, const TimeIndex_t& anIndex) const;
+    Value* value(const VariableName_t& aName, const TimeIndex_t& anIndex) const;
 
-    Value* getCurrentValue(const VariableName_t& aName) const;
+    Value* currentValue(const VariableName_t& aName) const;
 
     bool getCurrentValue(const VariableName_t& aName, Value* aValue) const;
 
@@ -83,7 +83,7 @@ class OPENFLUID_API Variables
 
     bool getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index, Value* aValue) const;
 
-    Value* getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index) const;
+    Value* currentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index) const;
 
     bool isVariableExist(const VariableName_t& aName) const;
 

@@ -59,16 +59,16 @@
 BOOST_AUTO_TEST_CASE(test_SetFileName)
 {
   QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
   BOOST_CHECK_THROW(openfluid::base::PreferencesManager::setFileName(CFile),openfluid::base::FrameworkException);
 
-  BOOST_CHECK(PrefMgr->getFileName().toStdString() == openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
+  BOOST_CHECK(PrefMgr->getFileName().toStdString() == openfluid::base::RuntimeEnvironment::instance()->getDefaultConfigFile());
 
   delete PrefMgr;
 
   openfluid::base::PreferencesManager::setFileName(CFile);
-  PrefMgr = openfluid::base::PreferencesManager::getInstance();
+  PrefMgr = openfluid::base::PreferencesManager::instance();
 
   BOOST_CHECK(PrefMgr->getFileName() == CFile);
 
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
 
   QStringList WksPaths;
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
   BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),5);
   BOOST_CHECK_EQUAL(PrefMgr->getRecentProjects().size(),0);
@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
 
   QStringList ExtraPaths = PrefMgr->getExtraSimulatorsPaths();
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
 
   QStringList ExtraPaths = PrefMgr->getExtraExtensionsPaths();
@@ -355,7 +355,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
 
   QStringList ExtraPaths = PrefMgr->getExtraObserversPaths();
@@ -442,7 +442,7 @@ BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
 
   openfluid::base::PreferencesManager::MarketPlaces_t Places = PrefMgr->getMarketplaces();
@@ -502,7 +502,7 @@ BOOST_AUTO_TEST_CASE(test_DockToolbarPositionsManagement)
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
   PrefMgr->setToolBarPosition(Qt::LeftToolBarArea);
   PrefMgr->setDockPosition(Qt::BottomDockWidgetArea);

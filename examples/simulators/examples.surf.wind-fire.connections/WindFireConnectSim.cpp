@@ -220,14 +220,14 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
       int FireTargetIndex = FireTarget / 45;
 
 
-      openfluid::core::UnitsPtrList_t* ChildrenLUs = U->getChildrenUnits("LU");
+      openfluid::core::UnitsPtrList_t* ChildrenLUs = U->childSpatialUnits("LU");
       openfluid::core::SpatialUnit* LU;
 
       OPENFLUID_UNITSLIST_LOOP(ChildrenLUs,LU)
       {
 
         // remove existing connection
-        openfluid::core::UnitsPtrList_t* ToLU = LU->getToUnits("LU");
+        openfluid::core::UnitsPtrList_t* ToLU = LU->toSpatialUnits("LU");
 
         if (ToLU != NULL && ToLU->size()==1)
         {
@@ -276,7 +276,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
         // compute corrected wind direction
         openfluid::core::IntegerValue CorrectedDir =
-            getCorrectedWindDir((int)(LatestMainWindDir.getValue()->asDoubleValue().get()));
+            getCorrectedWindDir((int)(LatestMainWindDir.value()->asDoubleValue().get()));
 
         OPENFLUID_AppendVariable(AU,"gas.atm.degree.winddir",getCorrectedWindDir(CorrectedDir));
 

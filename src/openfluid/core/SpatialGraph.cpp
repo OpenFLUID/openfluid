@@ -92,7 +92,7 @@ bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
 
 bool SpatialGraph::addUnit(SpatialUnit aUnit)
 {
-  SpatialUnit* TheUnit = m_PcsOrderedUnitsByClass[aUnit.getClass()].addUnit(aUnit);
+  SpatialUnit* TheUnit = m_PcsOrderedUnitsByClass[aUnit.getClass()].addSpatialUnit(aUnit);
   if (TheUnit != NULL)
   {
     m_PcsOrderedUnitsGlobal.push_back(TheUnit);
@@ -125,22 +125,22 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
   for (unsigned int i = 0; i < ClassVector.size(); i++)
   {
     // from
-    UnitsList = aUnit->getFromUnits(ClassVector[i]);
+    UnitsList = aUnit->fromSpatialUnits(ClassVector[i]);
     while (UnitsList !=NULL && !UnitsList->empty())
       removeFromToConnection(UnitsList->front(),aUnit);
 
     // to
-    UnitsList = aUnit->getToUnits(ClassVector[i]);
+    UnitsList = aUnit->toSpatialUnits(ClassVector[i]);
     while (UnitsList !=NULL && !UnitsList->empty())
       removeFromToConnection(aUnit, UnitsList->front());
 
     // children
-    UnitsList = aUnit->getChildrenUnits(ClassVector[i]);
+    UnitsList = aUnit->childSpatialUnits(ClassVector[i]);
     while (UnitsList !=NULL && !UnitsList->empty())
       removeChildParentConnection(UnitsList->front(),aUnit);
 
     // parent
-    UnitsList = aUnit->getParentUnits(ClassVector[i]);
+    UnitsList = aUnit->parentSpatialUnits(ClassVector[i]);
     while (UnitsList !=NULL && !UnitsList->empty())
       removeChildParentConnection(aUnit, UnitsList->front());
 
@@ -173,7 +173,7 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
 
   if (it != m_PcsOrderedUnitsByClass.end())
   {
-    UnitsList_t* UnitsBase = it->second.getList();
+    UnitsList_t* UnitsBase = it->second.list();
     UnitsList_t::iterator UnitsBaseIt;
 
     UnitsBaseIt = UnitsBase->begin();
@@ -200,8 +200,8 @@ bool SpatialGraph::removeFromToConnection(SpatialUnit* FromUnit,
 {
   if (FromUnit != NULL && ToUnit != NULL)
   {
-    return (removeUnitFromList(FromUnit->getToUnits(ToUnit->getClass()),ToUnit->getID()) &&
-            removeUnitFromList(ToUnit->getFromUnits(FromUnit->getClass()),FromUnit->getID()));
+    return (removeUnitFromList(FromUnit->toSpatialUnits(ToUnit->getClass()),ToUnit->getID()) &&
+            removeUnitFromList(ToUnit->fromSpatialUnits(FromUnit->getClass()),FromUnit->getID()));
   }
   else return false;
 }
@@ -216,8 +216,8 @@ bool SpatialGraph::removeChildParentConnection(SpatialUnit* ChildUnit,
 {
   if (ChildUnit != NULL && ParentUnit != NULL)
   {
-    return (removeUnitFromList(ChildUnit->getParentUnits(ParentUnit->getClass()),ParentUnit->getID()) &&
-            removeUnitFromList(ParentUnit->getChildrenUnits(ChildUnit->getClass()),ChildUnit->getID()));
+    return (removeUnitFromList(ChildUnit->parentSpatialUnits(ParentUnit->getClass()),ParentUnit->getID()) &&
+            removeUnitFromList(ParentUnit->childSpatialUnits(ChildUnit->getClass()),ChildUnit->getID()));
   }
   else return false;
 }
@@ -236,7 +236,7 @@ bool SpatialGraph::isUnitsClassExist(UnitClass_t UnitClass) const
 // =====================================================================
 
 
-SpatialUnit* SpatialGraph::getUnit(UnitClass_t UnitClass, UnitID_t UnitID)
+SpatialUnit* SpatialGraph::spatialUnit(UnitClass_t UnitClass, UnitID_t UnitID)
 {
   UnitsListByClassMap_t::iterator it;
 
@@ -244,7 +244,7 @@ SpatialUnit* SpatialGraph::getUnit(UnitClass_t UnitClass, UnitID_t UnitID)
 
   if (it != m_PcsOrderedUnitsByClass.end())
   {
-    return (it->second.getUnit(UnitID));
+    return (it->second.spatialUnit(UnitID));
   }
 
   return NULL;
@@ -255,7 +255,7 @@ SpatialUnit* SpatialGraph::getUnit(UnitClass_t UnitClass, UnitID_t UnitID)
 // =====================================================================
 
 
-UnitsCollection* SpatialGraph::getUnits(UnitClass_t UnitClass)
+UnitsCollection* SpatialGraph::spatialUnits(UnitClass_t UnitClass)
 {
   UnitsListByClassMap_t::iterator it;
 
@@ -270,7 +270,7 @@ UnitsCollection* SpatialGraph::getUnits(UnitClass_t UnitClass)
 // =====================================================================
 
 
-const UnitsCollection* SpatialGraph::getUnits(UnitClass_t UnitClass) const
+const UnitsCollection* SpatialGraph::spatialUnits(UnitClass_t UnitClass) const
 {
   UnitsListByClassMap_t::const_iterator it;
 
@@ -327,7 +327,7 @@ void SpatialGraph::streamContents(std::ostream& OStream)
     OStream << "** Units class : " << ClassIt->first << " **" << std::endl;
 
 
-    Units = (ClassIt->second).getList();
+    Units = (ClassIt->second).list();
 
     for (UnitIt = Units->begin();UnitIt != Units->end();++UnitIt)
     {
@@ -348,7 +348,7 @@ void SpatialGraph::clearAllVariables()
 {
   BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
-    CurrentUnit->getVariables()->clear();
+    CurrentUnit->variables()->clear();
   }
 }
 
@@ -361,7 +361,7 @@ void SpatialGraph::clearAllAttributes()
 {
   BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
-    CurrentUnit->getAttributes()->clear();
+    CurrentUnit->attributes()->clear();
   }
 }
 
@@ -374,7 +374,7 @@ void SpatialGraph::clearAllEvents()
 {
   BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
-    CurrentUnit->getEvents()->clear();
+    CurrentUnit->events()->clear();
   }
 }
 
@@ -387,9 +387,9 @@ void SpatialGraph::clearAllData()
 {
   BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
-    CurrentUnit->getVariables()->clear();
-    CurrentUnit->getAttributes()->clear();
-    CurrentUnit->getEvents()->clear();
+    CurrentUnit->variables()->clear();
+    CurrentUnit->attributes()->clear();
+    CurrentUnit->events()->clear();
   }
 }
 

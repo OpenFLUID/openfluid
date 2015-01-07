@@ -54,7 +54,7 @@
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
   openfluid::machine::SimulatorSignatureRegistry* Signatures =
-      openfluid::machine::SimulatorSignatureRegistry::getInstance();
+      openfluid::machine::SimulatorSignatureRegistry::instance();
 
   BOOST_CHECK_EQUAL(
       Signatures->getSimSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].size(),
@@ -70,10 +70,10 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
 {
   openfluid::machine::SimulatorSignatureRegistry* Reg =
-      openfluid::machine::SimulatorSignatureRegistry::getInstance();
+      openfluid::machine::SimulatorSignatureRegistry::instance();
 
   openfluid::machine::ModelItemSignatureInstance* Sign =
-      Reg->getSignatureItemInstance("examples.primitives.unitsA.prod");
+      Reg->signatureItemInstance("examples.primitives.unitsA.prod");
 
   BOOST_CHECK_EQUAL(Sign->Signature->ID, "examples.primitives.unitsA.prod");
 
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
       "examples.primitives.unitsB.prod");
 
   openfluid::machine::ModelItemSignatureInstance* Sign2 =
-      Reg->getSignatureItemInstance(&ItemDesc);
+      Reg->signatureItemInstance(&ItemDesc);
 
   BOOST_CHECK_EQUAL(Sign2->Signature->ID, "examples.primitives.unitsB.prod");
 }

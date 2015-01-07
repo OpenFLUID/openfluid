@@ -133,7 +133,7 @@ void SimulatorWidget::refresh()
 {
   openfluid::machine::ModelItemSignatureInstance* Signature = NULL;
 
-  Signature = openfluid::machine::SimulatorSignatureRegistry::getInstance()->getSignatureItemInstance(m_ID);
+  Signature = openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(m_ID);
 
   if (Signature != NULL)
   {

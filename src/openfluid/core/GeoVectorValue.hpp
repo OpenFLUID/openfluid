@@ -105,7 +105,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
      * @return The opened OGR datasource.
      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
      */
-    OGRDataSource* get();
+    OGRDataSource* data();
 
     /**
      * @brief Gets a layer of the shape.
@@ -114,7 +114,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
      * @return The layer indexed LayerIndex.
      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
      */
-    OGRLayer* getLayer(unsigned int LayerIndex = 0);
+    OGRLayer* layer(unsigned int LayerIndex = 0);
 
     /**
      * @brief Gets the Feature definition of a layer.
@@ -123,7 +123,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
      * @return The OGR Feature definition of the LayerIndex layer.
      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
      */
-    OGRFeatureDefn* getLayerDef(unsigned int LayerIndex = 0);
+    OGRFeatureDefn* layerDef(unsigned int LayerIndex = 0);
 
     /**
      * @brief Returns true if the GeoVectorValue is line type, false otherwise.

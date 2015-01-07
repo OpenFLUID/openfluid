@@ -66,15 +66,15 @@ class OPENFLUID_API UnitsCollection
 
     ~UnitsCollection();
 
-    SpatialUnit* getUnit(UnitID_t aUnitID);
+    SpatialUnit* spatialUnit(UnitID_t aUnitID);
 
-    SpatialUnit* addUnit(SpatialUnit aUnit);
+    SpatialUnit* addSpatialUnit(SpatialUnit aUnit);
 
     void sortByProcessOrder();
 
-    inline const UnitsList_t* getList() const { return &m_Data; };
+    inline const UnitsList_t* list() const { return &m_Data; };
 
-    inline UnitsList_t* getList() { return &m_Data; };
+    inline UnitsList_t* list() { return &m_Data; };
 
 };
 

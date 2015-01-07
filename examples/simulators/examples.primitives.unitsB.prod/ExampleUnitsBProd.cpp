@@ -141,7 +141,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
         FromAList = NULL;
         FromBList = NULL;
 
-        FromAList = B->getFromUnits("unitsA");
+        FromAList = B->fromSpatialUnits("unitsA");
 
         if (FromAList != NULL)
         {
@@ -167,7 +167,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
 
         if (OPENFLUID_GetCurrentTimeIndex()>0)
         {
-          FromBList = B->getFromUnits("unitsB");
+          FromBList = B->fromSpatialUnits("unitsB");
 
           if (FromBList != NULL)
           {

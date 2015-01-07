@@ -60,7 +60,7 @@ const int PreferencesManager::RecentProjectsLimit = 10;
 // =====================================================================
 
 
-PreferencesManager* PreferencesManager::getInstance()
+PreferencesManager* PreferencesManager::instance()
 {
   if (!mp_Instance)
     mp_Instance = new PreferencesManager();
@@ -77,7 +77,7 @@ PreferencesManager::PreferencesManager():
 {
   if (m_FileName.isEmpty())
   {
-    m_FileName = QString(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile().c_str());
+    m_FileName = QString(openfluid::base::RuntimeEnvironment::instance()->getDefaultConfigFile().c_str());
   }
 
 
@@ -189,7 +189,7 @@ QString PreferencesManager::getLang()
 QStringList PreferencesManager::getAvailableLangs()
 {
   QStringList QMFiles;
-  QMFiles = QDir(QString(openfluid::base::RuntimeEnvironment::getInstance()->getTranslationsDir().c_str())).entryList(QStringList("*.qm"),QDir::Files);
+  QMFiles = QDir(QString(openfluid::base::RuntimeEnvironment::instance()->getTranslationsDir().c_str())).entryList(QStringList("*.qm"),QDir::Files);
 
   QStringList Langs;
   for (int i=0;i<QMFiles.size();++i)
@@ -377,7 +377,7 @@ QStringList PreferencesManager::getWorkspacesPaths()
 
   if (PathsList.isEmpty())
   {
-    PathsList.append(QString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(openfluid::config::WORKSPACE_SUBDIR).c_str()));
+    PathsList.append(QString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath(openfluid::config::WORKSPACE_SUBDIR).c_str()));
   }
 
   return PathsList;

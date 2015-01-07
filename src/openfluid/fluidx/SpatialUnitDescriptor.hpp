@@ -65,19 +65,29 @@ class OPENFLUID_API SpatialUnitDescriptor
     ~SpatialUnitDescriptor();
 
 
-    inline openfluid::core::UnitID_t& getUnitID() { return m_UnitID; };
+    inline openfluid::core::UnitID_t getID() const
+    { return m_UnitID; };
 
-    inline const openfluid::core::UnitID_t& getUnitID() const { return m_UnitID; };
+    inline void setID(openfluid::core::UnitID_t ID)
+    { m_UnitID = ID; };
 
-    inline openfluid::core::UnitClass_t& getUnitClass() { return m_UnitClass; };
+    inline const openfluid::core::UnitClass_t getUnitsClass() const
+    { return m_UnitClass; };
 
-    inline openfluid::core::PcsOrd_t& getProcessOrder() { return m_PcsOrder; };
+    inline void setUnitsClass(const openfluid::core::UnitClass_t& UClass)
+    { m_UnitClass = UClass; };
 
-    inline const openfluid::core::PcsOrd_t& getProcessOrder() const { return m_PcsOrder; };
+    inline openfluid::core::PcsOrd_t getProcessOrder() const
+    { return m_PcsOrder; };
 
-    inline std::list<openfluid::core::UnitClassID_t>& getUnitsTos() { return m_UnitsTos; };
+    inline void setProcessOrder(openfluid::core::PcsOrd_t Order)
+    { m_PcsOrder = Order; };
 
-    inline std::list<openfluid::core::UnitClassID_t>& getUnitsParents() { return m_UnitsParents; };
+    inline std::list<openfluid::core::UnitClassID_t>& toSpatialUnits()
+    { return m_UnitsTos; };
+
+    inline std::list<openfluid::core::UnitClassID_t>& parentSpatialUnits()
+    { return m_UnitsParents; };
 
 };
 

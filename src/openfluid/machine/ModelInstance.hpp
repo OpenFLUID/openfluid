@@ -120,13 +120,13 @@ class OPENFLUID_API ModelInstance
 
     unsigned int getItemsCount() const { return m_ModelItems.size(); };
 
-    openfluid::ware::WareParams_t& getGlobalParameters() { return m_GlobalParams; };
+    openfluid::ware::WareParams_t& globalParameters() { return m_GlobalParams; };
 
     void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamValue_t& Value);
 
     void setGlobalParameters(const openfluid::ware::WareParams_t& Params) { m_GlobalParams = Params; };
 
-    const std::list<ModelItemInstance*>& getItems() const { return m_ModelItems; };
+    const std::list<ModelItemInstance*>& items() const { return m_ModelItems; };
 
     void initialize(openfluid::base::SimulationLogger* SimLogger);
 

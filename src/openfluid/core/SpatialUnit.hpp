@@ -64,17 +64,18 @@ namespace openfluid { namespace core {
 */
 typedef std::map<UnitClass_t,UnitsCollection> UnitsListByClassMap_t;
 
-//class OPENFLUID_API Unit;
 
 /**
   Type for a list of pointers on Unit
 */
 typedef std::list<SpatialUnit*> UnitsPtrList_t;
 
+
 /**
   Type for a map associating a unit class to a list of pointers on Unit
 */
 typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
+
 
 /**
   Class defining a spatial unit
@@ -88,17 +89,17 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   openfluid::core::UnitsPtrList_t* aUnitListPtr;
 
 
-  // *** get unit ID ***
+  // get unit ID
   aUnitID = aUnit.getID();
   // or (pointed unit)
   aUnitID = aUnitPtr->getID();
 
-  // *** get unit class ***
+  // get unit class
   aUnitClass = aUnit.getClass();
   // or (pointed unit)
   aUnitClass = aUnitPtr->getClass();
 
-  // *** get connected units (to and from) ***
+  // get connected units (to and from)
   aUnitListPtr = aUnit.getToUnits("foo");
   // or
   aUnitListPtr = aUnit.getFromUnits("bar");
@@ -129,17 +130,17 @@ class OPENFLUID_API SpatialUnit
   public:
 
     /*
-          Constructor
+      Constructor
       @param[in] aClass the class of the unit
       @param[in] anID the ID of the unit
       @param[in] aPcsOrder the process order of the unit
-        */
+     */
     SpatialUnit(const UnitClass_t aClass, const UnitID_t anID,
          const PcsOrd_t aPcsOrder);
 
     /*
-          Destructor
-        */
+      Destructor
+    */
     ~SpatialUnit();
 
     /**
@@ -171,51 +172,48 @@ class OPENFLUID_API SpatialUnit
       Returns NULL if no units of the requested class are connected to this unit.
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* getToUnits(const UnitClass_t aClass);
+    UnitsPtrList_t* toSpatialUnits(const UnitClass_t aClass);
 
-    const UnitsPtrList_t* getToUnits(const UnitClass_t aClass) const;
+    const UnitsPtrList_t* toSpatialUnits(const UnitClass_t aClass) const;
 
     /**
       Returns a list of units, of the requested class, connected from this unit.
       Returns NULL if no units of the requested class are connected from this unit.
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* getFromUnits(const UnitClass_t aClass);
+    UnitsPtrList_t* fromSpatialUnits(const UnitClass_t aClass);
 
-    const UnitsPtrList_t* getFromUnits(const UnitClass_t aClass) const;
+    const UnitsPtrList_t* fromSpatialUnits(const UnitClass_t aClass) const;
 
     /**
       Returns a list of parent units of the requested class.
       Returns NULL if this unit has no parent
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* getParentUnits(const UnitClass_t aClass);
+    UnitsPtrList_t* parentSpatialUnits(const UnitClass_t aClass);
 
-    const UnitsPtrList_t* getParentUnits(const UnitClass_t aClass) const;
+    const UnitsPtrList_t* parentSpatialUnits(const UnitClass_t aClass) const;
 
     /**
       Returns a list of children units of the requested class.
       Returns NULL if this unit has no child
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* getChildrenUnits(const UnitClass_t aClass);
+    UnitsPtrList_t* childSpatialUnits(const UnitClass_t aClass);
 
-    const UnitsPtrList_t* getChildrenUnits(const UnitClass_t aClass) const;
+    const UnitsPtrList_t* childSpatialUnits(const UnitClass_t aClass) const;
 
+    inline Attributes* attributes()  { return &m_Attributes; };
 
+    inline const Attributes* attributes() const { return &m_Attributes; };
 
+    Variables* variables() { return &m_Variables; };
 
-    inline Attributes* getAttributes()  { return &m_Attributes; };
+    const Variables* variables() const { return &m_Variables; };
 
-    inline const Attributes* getAttributes() const { return &m_Attributes; };
+    inline EventsCollection* events() { return &m_Events; };
 
-    Variables* getVariables() { return &m_Variables; };
-
-    const Variables* getVariables() const { return &m_Variables; };
-
-    inline EventsCollection* getEvents() { return &m_Events; };
-
-    inline const EventsCollection* getEvents() const { return &m_Events; };
+    inline const EventsCollection* events() const { return &m_Events; };
 
     void streamContents(std::ostream& OStream);
 

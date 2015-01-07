@@ -74,18 +74,18 @@ NewslineDownloadWorker::~NewslineDownloadWorker()
 
 void NewslineDownloadWorker::run()
 {
-  QDir().mkpath(QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_NEWSLINE_CACHERELDIR.toStdString())));
+  QDir().mkpath(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath(BUILDER_NEWSLINE_CACHERELDIR.toStdString())));
 
   QString LastUpdFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath("%1/lastupdate.info"))
+      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/lastupdate.info"))
        .arg(BUILDER_NEWSLINE_CACHERELDIR);
 
   QString RSSDefaultFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath("%1/en.rss"))
+      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/en.rss"))
       .arg(BUILDER_NEWSLINE_CACHERELDIR);
 
   QString RSSFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath("%1/%2.rss"))
+      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/%2.rss"))
       .arg(BUILDER_NEWSLINE_CACHERELDIR,m_ShortLocale);
 
 
@@ -122,14 +122,14 @@ void NewslineDownloadWorker::run()
 
 bool NewslineDownloadWorker::isTimeForDownload(const QString& ShortLocale)
 {
-  QDir CacheDir = QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_NEWSLINE_CACHERELDIR.toStdString()));
+  QDir CacheDir = QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath(BUILDER_NEWSLINE_CACHERELDIR.toStdString()));
   if (!CacheDir.exists("lastupdate.info"))
    return true;
   else
   {
     // check date
     QString LastUpdFile =
-        QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath("%1/lastupdate.info"))
+        QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/lastupdate.info"))
         .arg(BUILDER_NEWSLINE_CACHERELDIR);
     QByteArray Line;
 

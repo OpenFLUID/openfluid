@@ -71,27 +71,27 @@ class OPENFLUID_API AdvancedFluidXDescriptor
 
     ~AdvancedFluidXDescriptor();
 
-    AdvancedDomainDescriptor& getDomain();
+    AdvancedDomainDescriptor& spatialDomain();
 
-    const AdvancedDomainDescriptor& getDomain() const;
+    const AdvancedDomainDescriptor& spatialDomain() const;
 
-    AdvancedModelDescriptor& getModel();
+    AdvancedModelDescriptor& model();
 
-    const AdvancedModelDescriptor& getModel() const;
+    const AdvancedModelDescriptor& model() const;
 
-    openfluid::fluidx::RunDescriptor& getRunDescriptor();
+    openfluid::fluidx::RunDescriptor& runDescriptor();
 
-    const openfluid::fluidx::RunDescriptor& getRunDescriptor() const;
+    const openfluid::fluidx::RunDescriptor& runDescriptor() const;
 
-    openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor();
+    openfluid::fluidx::DatastoreDescriptor& datastoreDescriptor();
 
-    const openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor() const;
+    const openfluid::fluidx::DatastoreDescriptor& datastoreDescriptor() const;
 
-    AdvancedDatastoreDescriptor& getDatastore();
+    AdvancedDatastoreDescriptor& datastore();
 
-    AdvancedMonitoringDescriptor& getMonitoring();
+    AdvancedMonitoringDescriptor& monitoring();
 
-    const AdvancedMonitoringDescriptor& getMonitoring() const;
+    const AdvancedMonitoringDescriptor& monitoring() const;
 };
 
 } } // namespaces

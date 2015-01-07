@@ -204,7 +204,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
           {
             openfluid::core::IndexedValue IVal;
             OPENFLUID_GetLatestVariable(UU,m_AnimLayerInfo.VarName,IVal);
-            Val = IVal.getValue()->asDoubleValue().get();
+            Val = IVal.value()->asDoubleValue().get();
             ValueFound = true;
           }
         }

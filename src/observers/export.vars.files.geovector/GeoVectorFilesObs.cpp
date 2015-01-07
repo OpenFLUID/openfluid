@@ -445,8 +445,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
                 OPENFLUID_RaiseWarning(Msg.toStdString());
               }
 
-              if (VarValue.getValue()->isDoubleValue())
-                CreatedValue = VarValue.getValue()->asDoubleValue();
+              if (VarValue.value()->isDoubleValue())
+                CreatedValue = VarValue.value()->asDoubleValue();
               else
               {
                 QString Msg("Variable %1 on unit %2#%3 is not a double. Only double are currently supported");
@@ -454,7 +454,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
                 OPENFLUID_RaiseWarning(Msg.toStdString());
               }
 
-              CreatedFeature->SetField(FieldName.c_str(),VarValue.getValue()->asDoubleValue());
+              CreatedFeature->SetField(FieldName.c_str(),VarValue.value()->asDoubleValue());
             }
 
             CreatedLayer->CreateFeature(CreatedFeature);

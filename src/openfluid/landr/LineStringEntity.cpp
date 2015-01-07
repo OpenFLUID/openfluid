@@ -104,7 +104,7 @@ LineStringEntity* LineStringEntity::clone()
 // =====================================================================
 
 
-const geos::geom::LineString* LineStringEntity::getLine() const
+const geos::geom::LineString* LineStringEntity::line() const
 {
   return mp_Line;
 }
@@ -114,7 +114,7 @@ const geos::geom::LineString* LineStringEntity::getLine() const
 // =====================================================================
 
 
-geos::planargraph::Node* LineStringEntity::getStartNode()
+geos::planargraph::Node* LineStringEntity::startNode()
 {
   return getDirEdge(0)->getFromNode();
 }
@@ -124,7 +124,7 @@ geos::planargraph::Node* LineStringEntity::getStartNode()
 // =====================================================================
 
 
-geos::planargraph::Node* LineStringEntity::getEndNode()
+geos::planargraph::Node* LineStringEntity::endNode()
 {
   return getDirEdge(0)->getToNode();
 }
@@ -143,8 +143,8 @@ void LineStringEntity::computeNeighbours()
 
   mp_Neighbours = new std::set<LandREntity*>;
 
-  geos::planargraph::DirectedEdgeStar* UpStar = getStartNode()->getOutEdges();
-  geos::planargraph::DirectedEdgeStar* DownStar = getEndNode()->getOutEdges();
+  geos::planargraph::DirectedEdgeStar* UpStar = startNode()->getOutEdges();
+  geos::planargraph::DirectedEdgeStar* DownStar = endNode()->getOutEdges();
 
   std::vector<geos::planargraph::DirectedEdge*>::iterator it=UpStar->iterator();
   std::vector<geos::planargraph::DirectedEdge*>::iterator ite=UpStar->end();
@@ -188,9 +188,9 @@ void LineStringEntity::computeLineOrientUpNeighbours()
 {
   mp_LOUpNeighbours = new std::vector<LineStringEntity*>();
 
-  geos::planargraph::DirectedEdgeStar* UpStar = getStartNode()->getOutEdges();
+  geos::planargraph::DirectedEdgeStar* UpStar = startNode()->getOutEdges();
 
-  geos::geom::Coordinate UpNodeCoo = getStartNode()->getCoordinate();
+  geos::geom::Coordinate UpNodeCoo = startNode()->getCoordinate();
 
   std::vector<geos::planargraph::DirectedEdge*>::iterator it =
         UpStar->iterator();
@@ -200,7 +200,7 @@ void LineStringEntity::computeLineOrientUpNeighbours()
   {
     LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
 
-    if (Unit->getEndNode()->getCoordinate().equals(UpNodeCoo))
+    if (Unit->endNode()->getCoordinate().equals(UpNodeCoo))
       mp_LOUpNeighbours->push_back(Unit);
   }
 }
@@ -227,9 +227,9 @@ void LineStringEntity::computeLineOrientDownNeighbours()
 {
   mp_LODownNeighbours = new std::vector<LineStringEntity*>();
 
-  geos::planargraph::DirectedEdgeStar* DownStar = getEndNode()->getOutEdges();
+  geos::planargraph::DirectedEdgeStar* DownStar = endNode()->getOutEdges();
 
-  geos::geom::Coordinate DownNodeCoo = getEndNode()->getCoordinate();
+  geos::geom::Coordinate DownNodeCoo = endNode()->getCoordinate();
 
   std::vector<geos::planargraph::DirectedEdge*>::iterator it =
         DownStar->iterator();
@@ -239,7 +239,7 @@ void LineStringEntity::computeLineOrientDownNeighbours()
   {
     LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
 
-    if (Unit->getStartNode()->getCoordinate().equals(DownNodeCoo))
+    if (Unit->startNode()->getCoordinate().equals(DownNodeCoo))
       mp_LODownNeighbours->push_back(Unit);
   }
 }

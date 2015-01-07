@@ -131,11 +131,11 @@ class SimC : openfluid::ware::PluggableSimulator
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
 
   openfluid::machine::SimulationBlob SB;
 
-  SB.getSimulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,14,46,39),60);
+  SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,14,46,39),60);
 
   openfluid::machine::ModelInstance MI(SB,NULL);
 
@@ -147,13 +147,13 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
 
   openfluid::machine::SimulationBlob SB;
 
   //SB.getSimulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,14,46,39),60);
 
-  SB.getSimulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,0,3,19),60);
+  SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,0,3,19),60);
 
   openfluid::machine::ModelInstance MI(SB,NULL);
 
@@ -184,22 +184,22 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   MI.initialize(SimLog);
 
-  SB.getSimulationStatus().setCurrentStage(openfluid::base::SimulationStatus::INITPARAMS);
+  SB.simulationStatus().setCurrentStage(openfluid::base::SimulationStatus::INITPARAMS);
   MI.call_initParams();
 
-  SB.getSimulationStatus().setCurrentStage(openfluid::base::SimulationStatus::PREPAREDATA);
+  SB.simulationStatus().setCurrentStage(openfluid::base::SimulationStatus::PREPAREDATA);
   MI.call_prepareData();
 
-  SB.getSimulationStatus().setCurrentStage(openfluid::base::SimulationStatus::CHECKCONSISTENCY);
+  SB.simulationStatus().setCurrentStage(openfluid::base::SimulationStatus::CHECKCONSISTENCY);
   MI.call_checkConsistency();
 
 
-  SB.getSimulationStatus().setCurrentStage(openfluid::base::SimulationStatus::INITIALIZERUN);
+  SB.simulationStatus().setCurrentStage(openfluid::base::SimulationStatus::INITIALIZERUN);
   MI.call_initializeRun();
 
   BOOST_REQUIRE(MI.hasTimePointToProcess());
 
-  SB.getSimulationStatus().setCurrentStage(openfluid::base::SimulationStatus::RUNSTEP);
+  SB.simulationStatus().setCurrentStage(openfluid::base::SimulationStatus::RUNSTEP);
   while (MI.hasTimePointToProcess())
   {
     std::cout << " ******** " << MI.getNextTimePointIndex() << " ********" << std::endl;
@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE(!MI.hasTimePointToProcess());
 
-  SB.getSimulationStatus().setCurrentStage(openfluid::base::SimulationStatus::FINALIZERUN);
+  SB.simulationStatus().setCurrentStage(openfluid::base::SimulationStatus::FINALIZERUN);
   MI.call_finalizeRun();
 
   MI.finalize();
@@ -244,7 +244,7 @@ class ModelInstanceSub: public openfluid::machine::ModelInstance
 
 BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
 
   openfluid::machine::SimulationBlob SB;
 

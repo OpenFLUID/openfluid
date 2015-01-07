@@ -143,10 +143,10 @@ Value& MapValue::operator[](const std::string& Key)
 // =====================================================================
 
 
-Value& MapValue::get(const std::string& Key)
+Value& MapValue::at(const std::string& Key)
 {
   if (!isKeyExist(Key))
-    throw openfluid::base::FrameworkException("MapValue::get","Requested key " + Key + " does not exist");
+    throw openfluid::base::FrameworkException("MapValue::at","Requested key " + Key + " does not exist");
 
   return (*(m_Value[Key]));
 }

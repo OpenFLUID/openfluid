@@ -133,7 +133,7 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(openfl
 
   std::vector<geos::geom::LineString*> Lines;
 
-  geos::geom::Geometry* Geom = Val.getGeometries();
+  geos::geom::Geometry* Geom = Val.geometries();
 
   unsigned int iEnd=Geom->getNumGeometries();
   for (unsigned int i = 0; i < iEnd; i++)
@@ -158,7 +158,7 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(openfluid::lan
 
   std::vector<geos::geom::LineString*> Lines;
 
-  geos::geom::Geometry* Geom = Val.getGeometries();
+  geos::geom::Geometry* Geom = Val.geometries();
 
   unsigned int iEnd=Geom->getNumGeometries();
   for (unsigned int i = 0; i < iEnd; i++)
@@ -321,10 +321,10 @@ void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
   {
     if (!(*it)->getEdge()->isVisited())
     {
-      geos::planargraph::Node * theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getStartNode();
+      geos::planargraph::Node * theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->startNode();
 
       if (Node->getCoordinate().equals(theNextNode->getCoordinate()))
-        theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getEndNode();
+        theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->endNode();
 
       // set Edge visited as true
       (*it)->getEdge()->setVisited(true);
@@ -672,11 +672,11 @@ void LandRTools::markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* N
     if (!(*it)->getEdge()->isVisited())
     {
 
-      geos::planargraph::Node * theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getStartNode();
+      geos::planargraph::Node * theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->startNode();
 
       if ((Node->getCoordinate()).equals(theNextNode->getCoordinate()))
       {
-        theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getEndNode();
+        theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->endNode();
         int OfldId = static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getOfldId();
         vectIdent.push_back(OfldId);
       }

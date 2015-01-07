@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(check_constructor_empty)
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       "test.shp");
 
-  OGRDataSource* DS = Vect->getDataSource();
+  OGRDataSource* DS = Vect->source();
 
   BOOST_CHECK(DS);
   BOOST_CHECK(DS->GetDriver());
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       Value);
 
-  OGRDataSource* DS = Vect->getDataSource();
+  OGRDataSource* DS = Vect->source();
 
   BOOST_CHECK(DS);
   BOOST_CHECK(DS->GetDriver());
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(check_copyToDisk)
   openfluid::core::GeoVectorValue NewVal(
       CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp");
 
-  BOOST_CHECK_EQUAL(NewVal.get()->GetLayer(0)->GetFeatureCount(), 24);
+  BOOST_CHECK_EQUAL(NewVal.data()->GetLayer(0)->GetFeatureCount(), 24);
 
   BOOST_CHECK_THROW(
       Vect->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp", false),
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
     BOOST_CHECK_EQUAL(GeosGeom->toString(), it->second->toString());
   }
 
-  geos::geom::Geometry* Geom = Vect->getGeometries();
+  geos::geom::Geometry* Geom = Vect->geometries();
 
   BOOST_CHECK_EQUAL(Geom->getNumGeometries(), 24);
   BOOST_CHECK_EQUAL(Geom->getDimension(), 2 /* means Polygons */);
@@ -295,7 +295,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
     delete GeosGeom;
   }
 
-  Geom = Vect->getGeometries();
+  Geom = Vect->geometries();
 
   BOOST_CHECK_EQUAL(Geom->getNumGeometries(), 8);
   BOOST_CHECK_EQUAL(Geom->getDimension(), 1 /* means LineStrings */);

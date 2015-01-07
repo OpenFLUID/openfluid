@@ -98,13 +98,13 @@ class OPENFLUID_API PreferencesManager
 
     typedef std::map<QString, QString> MarketPlaces_t;
 
-    static PreferencesManager* getInstance();
+    static PreferencesManager* instance();
 
     ~PreferencesManager();
 
     /* Used only if we want to set another file name for the conf file
      * instead of the default one (for tests eg.)
-     * To be set before the first call of getInstance().
+     * To be set before the first call of instance().
      */
     static void setFileName(const QString& AbsoluteFileName);
 

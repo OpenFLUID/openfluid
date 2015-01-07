@@ -163,12 +163,12 @@ bool Variables::getValue(const VariableName_t& aName, const TimeIndex_t& anIndex
 // =====================================================================
 // =====================================================================
 
-Value* Variables::getValue(const VariableName_t& aName, const TimeIndex_t& anIndex) const
+Value* Variables::value(const VariableName_t& aName, const TimeIndex_t& anIndex) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
-    return it->second.first.getValue(anIndex);
+    return it->second.first.value(anIndex);
 
   return (Value*) 0;
 }
@@ -177,12 +177,12 @@ Value* Variables::getValue(const VariableName_t& aName, const TimeIndex_t& anInd
 // =====================================================================
 
 
-Value* Variables::getCurrentValue(const VariableName_t& aName) const
+Value* Variables::currentValue(const VariableName_t& aName) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
-    return it->second.first.getCurrentValue();
+    return it->second.first.currentValue();
 
   return (Value*) 0;
 }
@@ -243,12 +243,12 @@ bool Variables::getIndexedValues(const VariableName_t& aName,
 // =====================================================================
 
 
-Value* Variables::getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index) const
+Value* Variables::currentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end() && it->second.first.getCurrentIndex() == Index)
-    return it->second.first.getCurrentValue();
+    return it->second.first.currentValue();
 
   return (Value*) 0;
 }
@@ -295,7 +295,7 @@ bool Variables::isVariableExist(const VariableName_t& aName, const TimeIndex_t& 
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  return (it != m_Data.end() && it->second.first.isValueExist(anIndex) && it->second.first.getValue(anIndex)->getType() == ValueType);
+  return (it != m_Data.end() && it->second.first.isValueExist(anIndex) && it->second.first.value(anIndex)->getType() == ValueType);
 }
 
 // =====================================================================

@@ -62,7 +62,7 @@
 
 
 ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::ModelWidget), m_Model(AFXDesc.getModel())
+  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::ModelWidget), m_Model(AFXDesc.model())
 {
   ui->setupUi(this);
 
@@ -153,16 +153,16 @@ void ModelWidget::addGlobalParam()
   QStringList CompPList;
 
   openfluid::machine::SimulatorSignatureRegistry* Reg =
-      openfluid::machine::SimulatorSignatureRegistry::getInstance();
+      openfluid::machine::SimulatorSignatureRegistry::instance();
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      m_Model.getItems();
+      m_Model.items();
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
     openfluid::machine::ModelItemSignatureInstance* Sign =
-        Reg->getSignatureItemInstance(*it);
+        Reg->signatureItemInstance(*it);
 
     if (Sign)
     {
@@ -303,7 +303,7 @@ void ModelWidget::addGenerator()
 {
   QStringList UnitsClasses;
 
-  std::set<std::string> ClassNames = m_AdvFluidxDesc.getDomain().getClassNames();
+  std::set<std::string> ClassNames = m_AdvFluidxDesc.spatialDomain().getClassNames();
   for (std::set<std::string>::iterator it = ClassNames.begin();
        it != ClassNames.end(); ++it)
     UnitsClasses.append(QString::fromStdString(*it));
@@ -327,7 +327,7 @@ void ModelWidget::addGenerator()
 
     GeneratorWidget* GenWidget = new GeneratorWidget(this,GenDesc,
                                                      ID,
-                                                     openfluid::machine::SimulatorSignatureRegistry::getInstance()->getSignatureItemInstance(AddGenDlg.getMethod()));
+                                                     openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(AddGenDlg.getMethod()));
 
     connect(GenWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
     connect(GenWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
@@ -447,7 +447,7 @@ void ModelWidget::refresh()
 
 void ModelWidget::updateCoupledModel()
 {
-  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = m_Model.getItems();
+  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = m_Model.items();
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itb = Items.begin();
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator ite = Items.end();
@@ -476,7 +476,7 @@ void ModelWidget::updateCoupledModel()
 
       GeneratorWidget* GenWidget = new GeneratorWidget(this,*it,
                                                        m_Model.getID(*it),
-                                                       openfluid::machine::SimulatorSignatureRegistry::getInstance()->getSignatureItemInstance(*it));
+                                                       openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(*it));
 
       mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(GenWidget);
       if (it == itb) GenWidget->setUpButtonEnabled(false);

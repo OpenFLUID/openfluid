@@ -97,7 +97,7 @@ class OPENFLUID_API PolygonEdge: public geos::planargraph::Edge
     /**
      @brief Returns the geos::geom::LineString representing this PolygonEdge.
      */
-    geos::geom::LineString* getLine();
+    geos::geom::LineString* line();
 
     /**
      @brief Add a PolygonEntity as a Face to this PolygonEdge.

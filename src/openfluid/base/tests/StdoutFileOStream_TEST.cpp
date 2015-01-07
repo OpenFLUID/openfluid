@@ -67,10 +67,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::base::StdoutAndFileOutputStream OStream(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger3.log");
 
-  OStream.get() << "Hello World!" << std::endl;
+  OStream.all() << "Hello World!" << std::endl;
 
-  OStream.getStdout() << "stdout only" << std::endl;
+  OStream.stdout() << "stdout only" << std::endl;
 
-  OStream.getFile() << "file only" << std::endl;
+  OStream.file() << "file only" << std::endl;
 }
 

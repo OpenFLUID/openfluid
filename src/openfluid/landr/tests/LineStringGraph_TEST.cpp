@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
 
   openfluid::landr::LandRGraph::Entities_t Entities;
 
-  OGRLayer* Layer0 = Vect->getLayer(0);
+  OGRLayer* Layer0 = Vect->layer(0);
 
   Layer0->ResetReading();
 
@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
 
   openfluid::landr::LandRGraph::Entities_t Entities;
 
-  OGRLayer* Layer0 = Vect->getLayer(0);
+  OGRLayer* Layer0 = Vect->layer(0);
 
   Layer0->ResetReading();
 
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(check_StartsEnds)
       Graph->getEndLineStringEntities();
   BOOST_CHECK_EQUAL(Ends.size(), 1);
 
-  BOOST_CHECK_EQUAL(Graph->getLastLineStringEntity()->getOfldId(), 1);
+  BOOST_CHECK_EQUAL(Graph->lastLineStringEntity()->getOfldId(), 1);
 
   delete Graph;
   delete Val;
@@ -248,10 +248,10 @@ BOOST_AUTO_TEST_CASE(check_getEntity)
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
 
-  BOOST_CHECK(Graph->getEntity(1));
-  BOOST_CHECK(Graph->getEntity(5));
-  BOOST_CHECK(Graph->getEntity(3));
-  BOOST_CHECK(!Graph->getEntity(100));
+  BOOST_CHECK(Graph->entity(1));
+  BOOST_CHECK(Graph->entity(5));
+  BOOST_CHECK(Graph->entity(3));
+  BOOST_CHECK(!Graph->entity(100));
 
   delete Graph;
   delete Val;
@@ -320,7 +320,7 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
   DECLARE_ENTITIES_ORDERED_LOOP(3);
   BEGIN_ENTITIES_ORDERED_LOOP(3,Graph,CurrentEntity)
   BOOST_CHECK_EQUAL(CurrentEntity->getOfldId(),
-                    Graph->getEntity(i)->getOfldId());
+                    Graph->entity(i)->getOfldId());
   i++;
   END_LOOP;
 
@@ -350,7 +350,7 @@ BOOST_AUTO_TEST_CASE(check_RemoveEntity)
 
   Graph->removeEntity(2);
 
-  BOOST_CHECK(!Graph->getEntity(2));
+  BOOST_CHECK(!Graph->entity(2));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 7);
   Nodes.clear();
@@ -359,7 +359,7 @@ BOOST_AUTO_TEST_CASE(check_RemoveEntity)
 
   Graph->removeEntity(1);
 
-  BOOST_CHECK(!Graph->getEntity(1));
+  BOOST_CHECK(!Graph->entity(1));
   BOOST_CHECK_EQUAL(Graph->getSize(), 6);
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 6);
   Nodes.clear();
@@ -392,10 +392,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_intPixelType)
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK_EQUAL(Val.get(), 62);
 
-  Graph->getEntity(3)->getAttributeValue("test_val", Val);
+  Graph->entity(3)->getAttributeValue("test_val", Val);
   BOOST_CHECK_EQUAL(Val.get(), 72);
 
   delete Graph;
@@ -425,10 +425,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float32PixelTy
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 59.5801));
 
-  Graph->getEntity(3)->getAttributeValue("test_val", Val);
+  Graph->entity(3)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 72.1662));
 
   delete Graph;
@@ -458,10 +458,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float64PixelTy
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 59.5801));
 
-  Graph->getEntity(3)->getAttributeValue("test_val", Val);
+  Graph->entity(3)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 72.1662));
 
   delete Graph;
@@ -491,10 +491,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_intPixelType)
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK_EQUAL(Val.get(), 46);
 
-  Graph->getEntity(3)->getAttributeValue("test_val", Val);
+  Graph->entity(3)->getAttributeValue("test_val", Val);
   BOOST_CHECK_EQUAL(Val.get(), 62);
 
   delete Graph;
@@ -524,10 +524,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float32PixelType
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 42.3272));
 
-  Graph->getEntity(3)->getAttributeValue("test_val", Val);
+  Graph->entity(3)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 59.5801));
 
   delete Graph;
@@ -557,10 +557,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float64PixelType
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 42.3272));
 
-  Graph->getEntity(3)->getAttributeValue("test_val", Val);
+  Graph->entity(3)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 59.5801));
 
   delete Graph;
@@ -590,10 +590,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  Graph->entity(1)->getAttributeValue("test_val", Val);
   BOOST_CHECK_EQUAL(Val.get(), 36);
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK_EQUAL(Val.get(), 53);
 
   delete Graph;
@@ -623,10 +623,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelTyp
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  Graph->entity(1)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 35.324));
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0379));
 
   delete Graph;
@@ -656,10 +656,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelTyp
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  Graph->entity(1)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 35.324));
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0379));
 
   delete Graph;
@@ -682,14 +682,14 @@ BOOST_AUTO_TEST_CASE(check_reverse_orientation_LineStringEntity)
 
   BOOST_CHECK_EQUAL(Graph->getSize(), 8);
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 8);
-  openfluid::landr::LineStringEntity* U1 = Graph->getEntity(1);
-  geos::planargraph::Node *oldStartNode= U1->getStartNode();
-  geos::planargraph::Node *oldEndNode=U1->getEndNode();
+  openfluid::landr::LineStringEntity* U1 = Graph->entity(1);
+  geos::planargraph::Node *oldStartNode= U1->startNode();
+  geos::planargraph::Node *oldEndNode=U1->endNode();
 
   Graph->reverseLineStringEntity(*U1);
-  openfluid::landr::LineStringEntity* U1reverse = Graph->getEntity(1);
-  BOOST_CHECK(U1reverse->getStartNode()->getCoordinate().equals(oldEndNode->getCoordinate()));
-  BOOST_CHECK(U1reverse->getEndNode()->getCoordinate().equals(oldStartNode->getCoordinate()));
+  openfluid::landr::LineStringEntity* U1reverse = Graph->entity(1);
+  BOOST_CHECK(U1reverse->startNode()->getCoordinate().equals(oldEndNode->getCoordinate()));
+  BOOST_CHECK(U1reverse->endNode()->getCoordinate().equals(oldStartNode->getCoordinate()));
 
   delete Graph;
   delete Val;
@@ -769,10 +769,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  Graph->entity(1)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 39.5));
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 54));
 
   delete Graph;
@@ -802,10 +802,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  Graph->entity(1)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(),  36.6167));
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 50.9536));
 
   delete Graph;
@@ -835,10 +835,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
 
   openfluid::core::DoubleValue Val;
 
-  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  Graph->entity(1)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 36.6167));
 
-  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  Graph->entity(2)->getAttributeValue("test_val", Val);
   BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 50.9536));
 
   delete Graph;
@@ -861,7 +861,7 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   std::vector<geos::planargraph::Node*> Nodes;
 
 
-  BOOST_CHECK_THROW(Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(5))),
+  BOOST_CHECK_THROW(Graph->mergeLineStringEntities(*(Graph->entity(1)),*(Graph->entity(5))),
                     openfluid::base::FrameworkException);
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 9);
@@ -869,10 +869,10 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
 
   // first coincidence :   |----2------>|-----1----->
   // result :              |----2------------------->
-  Graph->mergeLineStringEntities(*(Graph->getEntity(2)),*(Graph->getEntity(1)));
+  Graph->mergeLineStringEntities(*(Graph->entity(2)),*(Graph->entity(1)));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
-  BOOST_CHECK(!Graph->getEntity(1));
-  BOOST_CHECK(Graph->getEntity(2)->clone());
+  BOOST_CHECK(!Graph->entity(1));
+  BOOST_CHECK(Graph->entity(2)->clone());
   Nodes.clear();
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 8);
@@ -881,10 +881,10 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   // second coincidence :   |----2------>|-----1----->
   // result :               |----1------------------->
   Graph = openfluid::landr::LineStringGraph::create(*Val);
-  Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(2)));
+  Graph->mergeLineStringEntities(*(Graph->entity(1)),*(Graph->entity(2)));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
-  BOOST_CHECK(!Graph->getEntity(2));
-  BOOST_CHECK(Graph->getEntity(1)->clone());
+  BOOST_CHECK(!Graph->entity(2));
+  BOOST_CHECK(Graph->entity(1)->clone());
   Nodes.clear();
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 8);
@@ -893,11 +893,11 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   // third coincidence :   |----2------>|<----1-----|
   // result :              <----1-------------------|
   Graph = openfluid::landr::LineStringGraph::create(*Val);
-  Graph->reverseLineStringEntity(*(Graph->getEntity(1)));
-  Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(2)));
+  Graph->reverseLineStringEntity(*(Graph->entity(1)));
+  Graph->mergeLineStringEntities(*(Graph->entity(1)),*(Graph->entity(2)));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
-  BOOST_CHECK(!Graph->getEntity(2));
-  BOOST_CHECK(Graph->getEntity(1)->clone());
+  BOOST_CHECK(!Graph->entity(2));
+  BOOST_CHECK(Graph->entity(1)->clone());
   Nodes.clear();
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 8);
@@ -906,11 +906,11 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   // fourth coincidence :   <-----2------|-----1----->
   // result :               |----1------------------->
   Graph = openfluid::landr::LineStringGraph::create(*Val);
-  Graph->reverseLineStringEntity(*(Graph->getEntity(2)));
-  Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(2)));
+  Graph->reverseLineStringEntity(*(Graph->entity(2)));
+  Graph->mergeLineStringEntities(*(Graph->entity(1)),*(Graph->entity(2)));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
-  BOOST_CHECK(!Graph->getEntity(2));
-  BOOST_CHECK(Graph->getEntity(1)->clone());
+  BOOST_CHECK(!Graph->entity(2));
+  BOOST_CHECK(Graph->entity(1)->clone());
   Nodes.clear();
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 8);
@@ -997,8 +997,8 @@ BOOST_AUTO_TEST_CASE(setOrientationByOfldId)
 
   Graph->setOrientationByOfldId(1);
 
-  openfluid::landr::LineStringEntity * lineEntity=Graph->getEntity(1);
-  geos::planargraph::Node * firstNode=lineEntity->getEndNode();
+  openfluid::landr::LineStringEntity * lineEntity=Graph->entity(1);
+  geos::planargraph::Node * firstNode=lineEntity->endNode();
   std::vector<int> vectIdent;
 
   openfluid::landr::LandRTools::markInvertedLineStringEntityUsingDFS(firstNode,vectIdent);

@@ -322,7 +322,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           if (IndValue.getIndex() != OPENFLUID_GetPreviousRunTimeIndex())
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect OPENFLUID_GetLatestVariable time index (tests.double, DOUBLE) before append");
 
-          if (!IndValue.getValue()->isDoubleValue())
+          if (!IndValue.value()->isDoubleValue())
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect OPENFLUID_GetLatestVariable value (tests.double, DOUBLE) before append");
 
           OPENFLUID_GetLatestVariables(TU,"tests.double",0,IndValueList);

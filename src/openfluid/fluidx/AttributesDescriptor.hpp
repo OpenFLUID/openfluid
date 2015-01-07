@@ -72,13 +72,17 @@ class OPENFLUID_API AttributesDescriptor
 
     void parseDataBlob(const std::string& Data);
 
-    inline openfluid::core::UnitClass_t& getUnitsClass() { return m_UnitsClass; };
+    inline const openfluid::core::UnitClass_t getUnitsClass()
+    { return m_UnitsClass; };
 
-    inline std::vector<std::string>& getColumnsOrder() { return m_ColumnsOrder; };
+    inline void setUnitsClass(const openfluid::core::UnitClass_t& UClass)
+    { m_UnitsClass = UClass; };
 
-    inline const UnitIDAttribute_t& getAttributes() const { return m_Data; };
+    inline std::vector<std::string>& columnsOrder() { return m_ColumnsOrder; };
 
-    inline UnitIDAttribute_t& getAttributes() { return m_Data; };
+    inline const UnitIDAttribute_t& attributes() const { return m_Data; };
+
+    inline UnitIDAttribute_t& attributes() { return m_Data; };
 
 };
 

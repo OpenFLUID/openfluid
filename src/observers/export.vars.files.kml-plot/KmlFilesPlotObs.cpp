@@ -469,7 +469,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
       {
         if ((*it).VarsListStr == "*")
         {
-          (*it).VarsList = mp_SpatialData->getUnits((*it).UnitsClass)->getList()->front().getVariables()->getVariablesNames();
+          (*it).VarsList = mp_SpatialData->spatialUnits((*it).UnitsClass)->list()->front().variables()->getVariablesNames();
         }
         else
         {

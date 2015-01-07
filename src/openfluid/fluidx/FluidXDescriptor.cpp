@@ -448,7 +448,7 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
         openfluid::core::PcsOrd_t PcsOrder;
         openfluid::core::UnitID_t UnitID;
 
-        UnitDesc->getUnitClass().assign(xmlUnitClass.toStdString());
+        UnitDesc->setUnitsClass(xmlUnitClass.toStdString());
 
         if (!openfluid::tools::ConvertString(xmlUnitID.toStdString(),
                                              &UnitID))
@@ -463,8 +463,8 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
               "wrong format for process order in unit definition (" + m_CurrentFile
               + ")");
 
-        UnitDesc->getProcessOrder() = PcsOrder;
-        UnitDesc->getUnitID() = UnitID;
+        UnitDesc->setProcessOrder(PcsOrder);
+        UnitDesc->setID(UnitID);
 
 
         for(QDomElement CurrLinkNode = CurrNode.firstChildElement();
@@ -472,18 +472,18 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
         {
           if (CurrLinkNode.tagName() == QString("to"))
           {
-            UnitDesc->getUnitsTos().push_back(
+            UnitDesc->toSpatialUnits().push_back(
                 extractUnitClassIDFromNode(CurrLinkNode));
           }
 
           if (CurrLinkNode.tagName() == QString("childof"))
           {
-            UnitDesc->getUnitsParents().push_back(
+            UnitDesc->parentSpatialUnits().push_back(
                 extractUnitClassIDFromNode(CurrLinkNode));
           }
         }
 
-        m_DomainDescriptor.getUnits().push_back(*UnitDesc);
+        m_DomainDescriptor.spatialUnits().push_back(*UnitDesc);
       }
       else
         throw openfluid::base::FrameworkException(
@@ -508,7 +508,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
   {
     openfluid::fluidx::AttributesDescriptor AttrsDesc;
 
-    AttrsDesc.getUnitsClass().assign(xmlUnitClass.toStdString());
+    AttrsDesc.setUnitsClass(xmlUnitClass.toStdString());
 
     std::vector<std::string> ColOrder;
 
@@ -521,7 +521,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
           "wrong or empty colorder attribute in domain attributes (" + m_CurrentFile
           + ")");
 
-    AttrsDesc.getColumnsOrder() = ColOrder;
+    AttrsDesc.columnsOrder() = ColOrder;
 
     QString xmlDataBlob = Node.text();
 
@@ -533,7 +533,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
           "wrong or empty data content in domain attributes (" + m_CurrentFile
           + ")");
 
-    m_DomainDescriptor.getAttributes().push_back(AttrsDesc);
+    m_DomainDescriptor.attributes().push_back(AttrsDesc);
   }
   else
     throw openfluid::base::FrameworkException(
@@ -577,9 +577,9 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
               "FluidXDescriptor::extractDomainCalendarFromNode",
               "wrong format for date in event (" + m_CurrentFile + ")");
 
-        EvDesc.getUnitClass().assign(xmlUnitClass.toStdString());
-        EvDesc.getUnitID() = UnitID;
-        EvDesc.getEvent() = openfluid::core::Event(EventDate);
+        EvDesc.setUnitClass(xmlUnitClass.toStdString());
+        EvDesc.setUnitID(UnitID);
+        EvDesc.event() = openfluid::core::Event(EventDate);
 
 
         for(QDomElement CurrInfoNode = CurrNode.firstChildElement();
@@ -593,7 +593,7 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
 
             if (!xmlKey.isNull() && !xmlValue.isNull())
             {
-              EvDesc.getEvent().addInfo(xmlKey.toStdString(),
+              EvDesc.event().addInfo(xmlKey.toStdString(),
                                         xmlValue.toStdString());
             }
             else
@@ -605,7 +605,7 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
 
         }
 
-        m_DomainDescriptor.getEvents().push_back(EvDesc);
+        m_DomainDescriptor.events().push_back(EvDesc);
       }
       else
         throw openfluid::base::FrameworkException(
@@ -853,7 +853,7 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
   }
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
-      m_ModelDescriptor.getItems();
+      m_ModelDescriptor.items();
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -908,7 +908,7 @@ std::string FluidXDescriptor::getParamsAsStr(
       it != Params.end(); ++it)
   {
     std::string EscapedValueStr =
-        openfluid::tools::escapeXMLEntities(QString::fromStdString(it->second.get())).toStdString();
+        openfluid::tools::escapeXMLEntities(QString::fromStdString(it->second.data())).toStdString();
 
     ParamsStr += (m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
                  + it->first + "\" value=\"" + EscapedValueStr + "\"/>\n");
@@ -973,7 +973,7 @@ void FluidXDescriptor::writeDomainDefinitionToStream(std::ostream& Contents)
   Contents << m_IndentStr << m_IndentStr << "<definition>\n";
 
   std::list<openfluid::fluidx::SpatialUnitDescriptor>& Units =
-      m_DomainDescriptor.getUnits();
+      m_DomainDescriptor.spatialUnits();
 
   std::list<openfluid::core::UnitClassID_t>::iterator itRel;
 
@@ -981,16 +981,16 @@ void FluidXDescriptor::writeDomainDefinitionToStream(std::ostream& Contents)
       Units.begin(); it != Units.end(); ++it)
   {
     Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<unit class=\""
-             << it->getUnitClass() << "\" ID=\"" << it->getUnitID()
+             << it->getUnitsClass() << "\" ID=\"" << it->getID()
              << "\" pcsorder=\"" << it->getProcessOrder() << "\">\n";
 
-    std::list<openfluid::core::UnitClassID_t>& Tos = it->getUnitsTos();
+    std::list<openfluid::core::UnitClassID_t>& Tos = it->toSpatialUnits();
     for (itRel = Tos.begin(); itRel != Tos.end(); ++itRel)
       Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
                << "<to class=\"" << itRel->first << "\" ID=\"" << itRel->second
                << "\" />\n";
 
-    std::list<openfluid::core::UnitClassID_t>& Parents = it->getUnitsParents();
+    std::list<openfluid::core::UnitClassID_t>& Parents = it->parentSpatialUnits();
     for (itRel = Parents.begin(); itRel != Parents.end(); ++itRel)
       Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
                << "<childof class=\"" << itRel->first << "\" ID=\""
@@ -1009,7 +1009,7 @@ void FluidXDescriptor::writeDomainDefinitionToStream(std::ostream& Contents)
 
 void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
 {
-  std::list<AttributesDescriptor>& Attrs = m_DomainDescriptor.getAttributes();
+  std::list<AttributesDescriptor>& Attrs = m_DomainDescriptor.attributes();
 
   openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::iterator itData;
   openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::iterator itVal;
@@ -1020,7 +1020,7 @@ void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
     Contents << m_IndentStr << m_IndentStr << "<attributes unitclass=\""
              << it->getUnitsClass() << "\" colorder=\"";
 
-    std::vector<std::string> Cols = it->getColumnsOrder();
+    std::vector<std::string> Cols = it->columnsOrder();
     if (!Cols.empty())
     {
       int Max = Cols.size() - 1;
@@ -1032,7 +1032,7 @@ void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
     Contents << "\">\n";
 
     openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t& DataMap =
-        it->getAttributes();
+        it->attributes();
     for (itData = DataMap.begin(); itData != DataMap.end(); ++itData)
     {
       Contents << itData->first << "\t";
@@ -1062,7 +1062,7 @@ void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
 
 void FluidXDescriptor::writeDomainCalendarToStream(std::ostream& Contents)
 {
-  std::list<EventDescriptor>& Events = m_DomainDescriptor.getEvents();
+  std::list<EventDescriptor>& Events = m_DomainDescriptor.events();
 
   if (Events.empty())
     return;
@@ -1077,9 +1077,9 @@ void FluidXDescriptor::writeDomainCalendarToStream(std::ostream& Contents)
     Contents << m_IndentStr << m_IndentStr << m_IndentStr
              << "<event unitclass=\"" << it->getUnitClass() << "\" "
              << "unitID=\"" << it->getUnitID() << "\" " << "date=\""
-             << it->getEvent().getDateTime().getAsISOString() << "\">\n";
+             << it->event().getDateTime().getAsISOString() << "\">\n";
 
-    openfluid::core::Event::EventInfosMap_t Infos = it->getEvent().getInfos();
+    openfluid::core::Event::EventInfosMap_t Infos = it->event().getInfos();
     for (itInfos = Infos.begin(); itInfos != Infos.end(); ++itInfos)
       Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
                << "<info key=\"" << itInfos->first << "\" value=\""
@@ -1137,7 +1137,7 @@ void FluidXDescriptor::writeRunConfigurationToStream(std::ostream& Contents)
 void FluidXDescriptor::writeDatastoreToStream(std::ostream& Contents)
 {
   openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t& Items =
-      m_DatastoreDescriptor.getItems();
+      m_DatastoreDescriptor.items();
 
 
   Contents << m_IndentStr << "<datastore>\n";
@@ -1175,7 +1175,7 @@ void FluidXDescriptor::writeMonitoringToStream(std::ostream& Contents)
 
   Contents << m_IndentStr << "<monitoring>\n";
 
-  std::list<ObserverDescriptor*> Items = m_MonitoringDescriptor.getItems();
+  std::list<ObserverDescriptor*> Items = m_MonitoringDescriptor.items();
 
   for (std::list<ObserverDescriptor*>::iterator it = Items.begin();
       it != Items.end(); ++it)

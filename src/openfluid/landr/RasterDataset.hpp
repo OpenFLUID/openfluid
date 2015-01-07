@@ -107,19 +107,19 @@ class OPENFLUID_API RasterDataset
     /**
      @brief Returns the GDALDataset related to this RasterDataset.
      */
-    GDALDataset* getDataset();
+    GDALDataset* source();
 
     /**
      @brief Returns the const GDALDataset related to this RasterDataset.
      */
-    GDALDataset* getDataset() const;
+    GDALDataset* source() const;
 
     /**
      @brief Gets the RasterBand indexed with RasterBandIndex of the dataset.
      @details Is owned by its dataset, should never be destroyed with the C++ delete operator.
      @param RasterBandIndex The rasterBand to get, default 1
      */
-    GDALRasterBand* getRasterBand(unsigned int RasterBandIndex = 1);
+    GDALRasterBand* rasterBand(unsigned int RasterBandIndex = 1);
 
     /**
      @brief Returns the column and line index of a pixel from the coordinate of the pixel.

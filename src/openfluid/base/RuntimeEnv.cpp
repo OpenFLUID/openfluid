@@ -310,7 +310,7 @@ RuntimeEnvironment::~RuntimeEnvironment()
 // =====================================================================
 
 
-RuntimeEnvironment* RuntimeEnvironment::getInstance()
+RuntimeEnvironment* RuntimeEnvironment::instance()
 {
   if (mp_Singleton == NULL)
     mp_Singleton = new RuntimeEnvironment();
@@ -512,8 +512,8 @@ void RuntimeEnvironment::setSimulationTimeInformation(
 void RuntimeEnvironment::linkToProject()
 {
   m_IsLinkedToProject = true;
-  setInputDir(ProjectManager::getInstance()->getInputDir());
-  setOutputDir(ProjectManager::getInstance()->getOutputDir());
+  setInputDir(ProjectManager::instance()->getInputDir());
+  setOutputDir(ProjectManager::instance()->getOutputDir());
 }
 
 

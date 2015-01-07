@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     openfluid::fluidx::FluidXDescriptor FXDesc(IOListen);
 
 
-    RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
+    RunEnv = openfluid::base::RuntimeEnvironment::instance();
     RunEnv->setInputDir(InputDir);
     RunEnv->setOutputDir(OutputDir);
     RunEnv->addExtraSimulatorsPluginsPaths(PlugsDir);
@@ -93,10 +93,10 @@ int main(int argc, char **argv)
 
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,SBlob);
 
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.modelDescriptor(),
                                                                   Model);
 
-    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.getMonitoringDescriptor(),
+    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoringDescriptor(),
                                                                   Monitoring);
 
     Engine = new openfluid::machine::Engine(SBlob, Model, Monitoring, MachineListen);

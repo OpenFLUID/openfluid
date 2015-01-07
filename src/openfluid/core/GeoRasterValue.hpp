@@ -102,7 +102,7 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
      * @return The opened GDAL dataset.
      * @throw openfluid::base::OFException if GDAL doesn't succeed to open the dataset.
      */
-    GDALDataset* get();
+    GDALDataset* data();
 
     /**
      * @brief Returns the absolute Path of this GeoRasterValue.

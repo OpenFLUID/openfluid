@@ -97,7 +97,7 @@ SimulatorSignatureRegistry::SimulatorSignatureRegistry()
 // =====================================================================
 
 
-SimulatorSignatureRegistry* SimulatorSignatureRegistry::getInstance()
+SimulatorSignatureRegistry* SimulatorSignatureRegistry::instance()
 {
   if (!mp_Instance)
     mp_Instance = new SimulatorSignatureRegistry();
@@ -157,10 +157,10 @@ void SimulatorSignatureRegistry::updatePluggableSignatures()
 {
   m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].clear();
 
-  openfluid::machine::SimulatorPluginsManager::getInstance()->unloadAllWares();
+  openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
 
   std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
-      openfluid::machine::SimulatorPluginsManager::getInstance()->getAvailableWaresSignatures();
+      openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();
 
   for (unsigned int i = 0; i < Signatures.size(); i++)
   {
@@ -168,7 +168,7 @@ void SimulatorSignatureRegistry::updatePluggableSignatures()
       addAPluggableSignature(Signatures[i]);
   }
 
-  openfluid::machine::SimulatorPluginsManager::getInstance()->unloadAllWares();
+  openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
 }
 
 
@@ -232,7 +232,7 @@ bool SimulatorSignatureRegistry::isPluggableSimulatorAvailable(
 // =====================================================================
 
 
-openfluid::machine::ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance(
+openfluid::machine::ModelItemSignatureInstance* SimulatorSignatureRegistry::signatureItemInstance(
     std::string SimulatorID)
 {
   if (isPluggableSimulatorAvailable(SimulatorID))
@@ -250,7 +250,7 @@ openfluid::machine::ModelItemSignatureInstance* SimulatorSignatureRegistry::getS
 // =====================================================================
 
 
-ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance(
+ModelItemSignatureInstance* SimulatorSignatureRegistry::signatureItemInstance(
     openfluid::fluidx::ModelItemDescriptor* Item)
 {
   std::string ItemID = "";
@@ -263,7 +263,7 @@ ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance
         openfluid::fluidx::GeneratorDescriptor::getGeneratorName(
             (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratorMethod());
 
-  return getSignatureItemInstance(ItemID);
+  return signatureItemInstance(ItemID);
 }
 
 
@@ -271,7 +271,7 @@ ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance
 // =====================================================================
 
 
-ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method)
+ModelItemSignatureInstance* SimulatorSignatureRegistry::signatureItemInstance(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method)
 {
   return m_GenSignatures[Method];
 }
@@ -283,7 +283,7 @@ ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance
 
 void SimulatorSignatureRegistry::unloadAllSimulators()
 {
-  openfluid::machine::SimulatorPluginsManager::getInstance()->unloadAllWares();
+  openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
 }
 
 

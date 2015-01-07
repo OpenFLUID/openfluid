@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(check_operationss)
   BOOST_REQUIRE_CLOSE(V1[1],-5.18,0.0001);
   BOOST_REQUIRE_CLOSE(V1.at(3),12345.6789,0.0001);
 
-  V2.setData(V1.getData(),V1.getSize());
+  V2.setData(V1.data(),V1.getSize());
   BOOST_REQUIRE_EQUAL(V2.getSize(),10);
   BOOST_REQUIRE_CLOSE(V2.at(1),-5.18,0.0001);
   BOOST_REQUIRE_CLOSE(V2.getElement(3),12345.6789,0.0001);

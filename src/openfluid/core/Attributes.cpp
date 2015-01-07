@@ -101,7 +101,7 @@ bool Attributes::getValue(const AttributeName_t aName, openfluid::core::StringVa
 
   if(it != m_Data.end())
   {
-    aValue.set(it->second.get());
+    aValue.set(it->second.data());
 
     return true;
   }
@@ -118,7 +118,7 @@ bool Attributes::getValue(const AttributeName_t aName, std::string& aValue) cons
 
   if(it != m_Data.end())
   {
-    aValue = it->second.get();
+    aValue = it->second.data();
 
     return true;
   }
@@ -187,7 +187,7 @@ bool Attributes::replaceValue(const AttributeName_t aName, const StringValue& aV
 {
   if(isAttributeExist(aName))
   {
-    m_Data[aName].set(aValue.get());
+    m_Data[aName].set(aValue.data());
 
     return true;
   }

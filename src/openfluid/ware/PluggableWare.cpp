@@ -145,7 +145,7 @@ boost::property_tree::ptree PluggableWare::getParamsAsPropertyTree(
   boost::property_tree::ptree pt;
 
   for (WareParams_t::const_iterator it = Params.begin() ; it != Params.end() ; ++it)
-    if (isWellFormated(it->first)) pt.put(it->first, it->second.get());
+    if (isWellFormated(it->first)) pt.put(it->first, it->second.data());
     else throw openfluid::base::FrameworkException("PluggableWare::getParamsAsPropertyTree","Wrong format for parameter \""+it->first+"\"");
 
   return pt;

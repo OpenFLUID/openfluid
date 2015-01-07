@@ -100,7 +100,7 @@ void ParameterWidget::notifyRemoveClicked()
 {
   bool OK = true;
 
-  if (openfluid::base::PreferencesManager::getInstance()->isParamRemovalConfirm())
+  if (openfluid::base::PreferencesManager::instance()->isParamRemovalConfirm())
   {
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",

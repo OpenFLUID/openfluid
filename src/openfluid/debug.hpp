@@ -137,11 +137,11 @@
 #define OFDBG_UNIT_EXTENDED(unitptr) \
   { \
     OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Unit class " << (unitptr)->getClass() << ", ID " << (unitptr)->getID() << std::endl; \
-    std::vector<openfluid::core::AttributeName_t> _M_DBG_AttrsNames = (unitptr)->getAttributes()->getAttributesNames(); \
+    std::vector<openfluid::core::AttributeName_t> _M_DBG_AttrsNames = (unitptr)->attributes()->getAttributesNames(); \
     OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Attributes: "; \
     for (unsigned int i=0; i<_M_DBG_AttrsNames.size();i++) OFDBG_OUTSTREAM << _M_DBG_AttrsNames[i] << " , "; \
     OFDBG_OUTSTREAM << std::endl; \
-    std::vector<openfluid::core::VariableName_t> _M_DBG_VarNames = (unitptr)->getVariables()->getVariablesNames(); \
+    std::vector<openfluid::core::VariableName_t> _M_DBG_VarNames = (unitptr)->variables()->getVariablesNames(); \
     OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Variables: "; \
     for (unsigned int i=0; i<_M_DBG_VarNames.size();i++) OFDBG_OUTSTREAM << _M_DBG_VarNames[i] << " , "; \
     OFDBG_OUTSTREAM << std::endl; \
@@ -185,9 +185,9 @@
 
 #define OFDBG_EVENTCOLLECTION(eventcoll) \
   { \
-    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Event collection size : " << eventcoll.getEventsList()->size() << std::endl; \
+    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Event collection size : " << eventcoll.eventsList()->size() << std::endl; \
     openfluid::core::EventsList_t::iterator _M_DBG_EvListiter; \
-    for (_M_DBG_EvListiter=(EvColl.getEventsList())->begin(); _M_DBG_EvListiter != (EvColl.getEventsList())->end(); _M_DBG_EvListiter++) \
+    for (_M_DBG_EvListiter=(EvColl.eventsList())->begin(); _M_DBG_EvListiter != (EvColl.eventsList())->end(); _M_DBG_EvListiter++) \
     { \
       OFDBG_EVENT(&(*_M_DBG_EvListiter)); \
     } \

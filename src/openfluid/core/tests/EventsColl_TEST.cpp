@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   EvColl.addEvent(Ev);
 
 
-  BOOST_REQUIRE_EQUAL(EvColl.getEventsList()->size(),4);
+  BOOST_REQUIRE_EQUAL(EvColl.eventsList()->size(),4);
 
   EvColl2.clear();
   EvColl.getEventsBetween(openfluid::core::DateTime(1979,1,1,0,0,0),openfluid::core::DateTime(2019,1,1,0,0,0),EvColl2);
@@ -102,8 +102,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   EvColl.getEventsBetween(openfluid::core::DateTime(2010,1,1,0,0,0),openfluid::core::DateTime(2010,12,31,23,59,59),EvColl2);
   BOOST_REQUIRE_EQUAL(EvColl2.getCount(),1);
 
-  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front().isInfoEqual("specialthing","wedding"),true);
-  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front().isInfoExist("test333"),false);
+  BOOST_REQUIRE_EQUAL(EvColl2.eventsList()->front().isInfoEqual("specialthing","wedding"),true);
+  BOOST_REQUIRE_EQUAL(EvColl2.eventsList()->front().isInfoExist("test333"),false);
 
 
 

@@ -80,7 +80,7 @@ LandREntity::~LandREntity()
 // =====================================================================
 
 
-const geos::geom::Geometry* LandREntity::getGeometry()
+const geos::geom::Geometry* LandREntity::geometry()
 {
   return mp_Geom;
 }
@@ -100,7 +100,7 @@ unsigned int LandREntity::getOfldId() const
 // =====================================================================
 
 
-geos::geom::Point* LandREntity::getCentroid() const
+geos::geom::Point* LandREntity::centroid() const
 {
   return mp_Centroid;
 }
@@ -130,7 +130,7 @@ double LandREntity::getLength() const
 // =====================================================================
 
 
-std::set<LandREntity*>* LandREntity::getNeighbours()
+std::set<LandREntity*>* LandREntity::neighbours()
 {
   if (!mp_Neighbours)
     computeNeighbours();
@@ -187,7 +187,7 @@ bool LandREntity::setAttributeValue(const std::string& AttributeName,
 
 double LandREntity::getDistCentroCentro(LandREntity& Other)
 {
-  return mp_Centroid->distance(Other.getCentroid());
+  return mp_Centroid->distance(Other.centroid());
 }
 
 
@@ -195,9 +195,9 @@ double LandREntity::getDistCentroCentro(LandREntity& Other)
 // =====================================================================
 
 
-LandREntity* LandREntity::getNeighbour_MinDistCentroCentro()
+LandREntity* LandREntity::neighbour_MinDistCentroCentro()
 {
-  std::set<LandREntity*> Neigh = *getNeighbours();
+  std::set<LandREntity*> Neigh = *neighbours();
 
   std::map<double, LandREntity*> NeighByDist;
 

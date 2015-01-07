@@ -104,9 +104,9 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
   void initParams(const openfluid::ware::WareParams_t& /*Params*/)
   {
 
-    OPENFLUID_Logger.get() << "This is a message to both file and console" << std::endl;
-    OPENFLUID_Logger.getFile() << "This is a message to file only" << std::endl;
-    OPENFLUID_Logger.getStdout() << "This is a message to console only" << std::endl;
+    OPENFLUID_Logger.all() << "This is a message to both file and console" << std::endl;
+    OPENFLUID_Logger.file() << "This is a message to file only" << std::endl;
+    OPENFLUID_Logger.stdout() << "This is a message to console only" << std::endl;
   }
 
   // =====================================================================
@@ -131,7 +131,7 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    OPENFLUID_Logger.get() << "Time step duration" << OPENFLUID_GetDefaultDeltaT() << std::endl;
+    OPENFLUID_Logger.all() << "Time step duration" << OPENFLUID_GetDefaultDeltaT() << std::endl;
 
     return DefaultDeltaT();
   }
@@ -147,7 +147,7 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
 
-      OPENFLUID_Logger.get() << "TestUnits #" << TU->getID() << std::endl;
+      OPENFLUID_Logger.all() << "TestUnits #" << TU->getID() << std::endl;
 
     }
 

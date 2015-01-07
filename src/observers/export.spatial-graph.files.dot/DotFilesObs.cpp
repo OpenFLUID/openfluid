@@ -127,7 +127,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
       std::ofstream DotFile;
       std::string OutputDir;
-      const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_SpatialData->getUnitsByClass();
+      const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_SpatialData->allSpatialUnitsByClass();
       const openfluid::core::UnitsList_t* UnitsList = NULL;
       std::vector<openfluid::core::UnitClass_t> ClassVector;
       openfluid::core::SpatialUnit* TheUnit;
@@ -173,7 +173,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
           Options += "];";
         }
 
-        UnitsList=((*itUnitsClass).second).getList();
+        UnitsList=((*itUnitsClass).second).list();
 
         for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
         {
@@ -189,7 +189,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
       {
 
-        UnitsList=((*itUnitsClass).second).getList();
+        UnitsList=((*itUnitsClass).second).list();
 
         for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
         {
@@ -200,7 +200,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
           for (unsigned int i=0;i<ClassVector.size();i++)
           {
-            const openfluid::core::UnitsPtrList_t* ToUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getToUnits(ClassVector[i]));
+            const openfluid::core::UnitsPtrList_t* ToUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->toSpatialUnits(ClassVector[i]));
 
             if (ToUnits != NULL)
             {
@@ -217,7 +217,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
               }
             }
 
-            const openfluid::core::UnitsPtrList_t* ParentUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getParentUnits(ClassVector[i]));
+            const openfluid::core::UnitsPtrList_t* ParentUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->parentSpatialUnits(ClassVector[i]));
 
             if (ParentUnits != NULL)
             {

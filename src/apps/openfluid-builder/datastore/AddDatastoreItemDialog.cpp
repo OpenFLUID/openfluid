@@ -282,7 +282,7 @@ bool AddDatastoreItemDialog::isSourceFileInInputDataset() const
   if (SourceFile.isEmpty())
     return false;
 
-  QString InputPath = QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
+  QString InputPath = QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInputDir());
 
   if (QDir::fromNativeSeparators(SourceFile).startsWith(QDir::fromNativeSeparators(InputPath)))
     return true;

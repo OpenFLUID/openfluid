@@ -68,8 +68,8 @@ NewslineWidget::NewslineWidget(QWidget* Parent):
   ui->NewslineContents->setStyleSheet(QString("QWidget#NewslineContents { background-color : %1;}")
                                       .arg(BUILDER_NEWSLINE_BGCOLOR));
 
-  if (openfluid::base::PreferencesManager::getInstance()->getLang() != "default")
-    NewsItemWidget::setLocale(QLocale(openfluid::base::PreferencesManager::getInstance()->getLang()));
+  if (openfluid::base::PreferencesManager::instance()->getLang() != "default")
+    NewsItemWidget::setLocale(QLocale(openfluid::base::PreferencesManager::instance()->getLang()));
   else
     NewsItemWidget::setLocale(QLocale(QLocale::English));
 
@@ -199,11 +199,11 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const QString& FilePath)
 void NewslineWidget::refreshFromCache()
 {
   QString RSSDefaultFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath("%1/en.rss"))
+      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/en.rss"))
       .arg(BUILDER_NEWSLINE_CACHERELDIR);
 
   QString RSSFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath("%1/%2.rss"))
+      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/%2.rss"))
       .arg(BUILDER_NEWSLINE_CACHERELDIR,NewsItemWidget::getLocale().name().left(2));
 
   QList<NewsItemData> News = loadRSSFile(RSSFile);

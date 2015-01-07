@@ -66,7 +66,7 @@ WorkspaceTabWidget::WorkspaceTabWidget(QWidget* Parent):
 
 void WorkspaceTabWidget::closeTab(int Index)
 {
-  ExtensionsRegistry::getInstance()->releaseExtension(widget(Index)->property("ID").toString().toStdString());
+  ExtensionsRegistry::instance()->releaseExtension(widget(Index)->property("ID").toString().toStdString());
   widget(Index)->deleteLater();
   removeTab(Index);
 }

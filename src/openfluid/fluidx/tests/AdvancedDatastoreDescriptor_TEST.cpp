@@ -56,12 +56,12 @@ BOOST_AUTO_TEST_CASE(check_construction)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDatastoreDescriptor DS(
-      FXDesc.getDatastoreDescriptor());
+      FXDesc.datastoreDescriptor());
 
-  BOOST_CHECK_EQUAL(DS.getItems().size(), 5);
+  BOOST_CHECK_EQUAL(DS.items().size(), 5);
 
   const std::list<openfluid::fluidx::DatastoreItemDescriptor*> Items =
-      DS.getItems();
+      DS.items();
 
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator it =
       Items.begin();
@@ -117,10 +117,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDatastoreDescriptor DS(
-      FXDesc.getDatastoreDescriptor());
+      FXDesc.datastoreDescriptor());
 
 
-  openfluid::fluidx::DatastoreItemDescriptor* Item =DS.getItem("units_A");
+  openfluid::fluidx::DatastoreItemDescriptor* Item =DS.item("units_A");
   BOOST_CHECK_EQUAL(Item->getID(), "units_A");
   BOOST_CHECK_EQUAL(Item->getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
@@ -128,10 +128,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
 
-  BOOST_CHECK_EQUAL(DS.getItems().size(), 5);
+  BOOST_CHECK_EQUAL(DS.items().size(), 5);
 
   const std::list<openfluid::fluidx::DatastoreItemDescriptor*>* Items =
-      &(DS.getItems());
+      &(DS.items());
 
   // appendItem
   openfluid::fluidx::DatastoreItemDescriptor AppItem(
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::core::UnstructuredValue::GeoVectorValue);
   DS.appendItem(&AppItem);
 
-  BOOST_CHECK_EQUAL(DS.getItems().size(), 6);
+  BOOST_CHECK_EQUAL(DS.items().size(), 6);
 
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator it =
       Items->begin();
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   DS.insertItem(&InsItem, 3);
 
-  BOOST_CHECK_EQUAL(DS.getItems().size(), 7);
+  BOOST_CHECK_EQUAL(DS.items().size(), 7);
 
   it = Items->begin();
 

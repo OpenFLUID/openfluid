@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   openfluid::fluidx::CoupledModelDescriptor ModelDesc;
 
-  BOOST_REQUIRE_EQUAL(ModelDesc.getItems().size(),0);
+  BOOST_REQUIRE_EQUAL(ModelDesc.items().size(),0);
 
 }
 
@@ -107,11 +107,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   ModelDesc.appendItem(&SimDesc);
   ModelDesc.appendItem(&GenDesc2);
 
-  BOOST_REQUIRE_EQUAL(ModelDesc.getItems().size(),3);
+  BOOST_REQUIRE_EQUAL(ModelDesc.items().size(),3);
 
   openfluid::fluidx::CoupledModelDescriptor::SetDescription_t ModelItems;
 
-  ModelItems = ModelDesc.getItems();
+  ModelItems = ModelDesc.items();
 
   BOOST_REQUIRE_EQUAL(ModelItems.size(),3);
 

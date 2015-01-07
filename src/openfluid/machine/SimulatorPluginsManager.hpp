@@ -74,7 +74,7 @@ class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelIte
 
   public:
 
-    static SimulatorPluginsManager* getInstance()
+    static SimulatorPluginsManager* instance()
     {
       if (mp_Singleton == NULL) mp_Singleton = new SimulatorPluginsManager();
        return mp_Singleton;
@@ -87,7 +87,7 @@ class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelIte
 
     std::string getPluginFullPath(const std::string& Filename)
     {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorPluginFullPath(Filename);
+      return openfluid::base::RuntimeEnvironment::instance()->getSimulatorPluginFullPath(Filename);
     }
 
 
@@ -97,7 +97,7 @@ class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelIte
 
     std::vector<std::string> getPluginsSearchPaths()
     {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths();
+      return openfluid::base::RuntimeEnvironment::instance()->getSimulatorsPluginsPaths();
     }
 
 

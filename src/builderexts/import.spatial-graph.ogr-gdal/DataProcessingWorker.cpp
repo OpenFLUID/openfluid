@@ -98,7 +98,7 @@ bool DataProcessingWorker::isUnitExists(const QString& Class, int ID)
   }
 
   // is unit exist in existing units
-  return mp_AdvDesc->getDomain().isUnitExist(Class.toStdString(),ID);
+  return mp_AdvDesc->spatialDomain().isSpatialUnitExist(Class.toStdString(),ID);
 }
 
 
@@ -508,7 +508,7 @@ bool DataProcessingWorker::runCheck(int StartStep)
       return false;
     }
 
-    if (mp_AdvDesc->getDomain().isClassNameExists(m_SourcesInfos[i].UnitsClass.toStdString()))
+    if (mp_AdvDesc->spatialDomain().isClassNameExists(m_SourcesInfos[i].UnitsClass.toStdString()))
     {
       emit stepCompleted(StartStep,getStyledText(tr("[Error] Class name for layer \"%1\" already exists")
                                                  .arg(m_SourcesInfos[i].LayerName),
@@ -579,7 +579,7 @@ bool DataProcessingWorker::runCheck(int StartStep)
 
     // check if datastore ID already exists
     if (m_SourcesInfos[i].IsDatastore &&
-        mp_AdvDesc->getDatastore().isItemAlreadyExist(m_SourcesInfos[i].DatastoreID.toStdString()))
+        mp_AdvDesc->datastore().isItemAlreadyExist(m_SourcesInfos[i].DatastoreID.toStdString()))
     {
       emit stepCompleted(StartStep,getStyledText(tr("[Error] Datastore ID for layer \"%1\" already exists")
                                                        .arg(m_SourcesInfos[i].LayerName),

@@ -83,7 +83,7 @@ void AppActions::updateRecentProjectsActions()
 {
   openfluid::base::PreferencesManager::RecentProjectsList_t RPList;
 
-  RPList = openfluid::base::PreferencesManager::getInstance()->getRecentProjects();
+  RPList = openfluid::base::PreferencesManager::instance()->getRecentProjects();
 
   int RFCount = qMin(int(RPList.size()),openfluid::base::PreferencesManager::RecentProjectsLimit);
 
@@ -207,7 +207,7 @@ void AppActions::createActions()
 // =====================================================================
 
 
-QAction* AppActions::getAction(const std::string& ID) const
+QAction* AppActions::action(const std::string& ID) const
 {
   std::map<std::string,QAction*>::const_iterator It = m_Actions.find(ID);
 
@@ -281,9 +281,9 @@ void AppActions::setHomeMode()
 
 void AppActions::updateExtensionsActionsAndMenus()
 {
-  ExtensionsRegistry* ExtReg = ExtensionsRegistry::getInstance();
+  ExtensionsRegistry* ExtReg = ExtensionsRegistry::instance();
 
-  ExtensionsRegistry::ExtensionsByName_t* Extensions = ExtReg->getRegisteredExtensions();
+  ExtensionsRegistry::ExtensionsByName_t* Extensions = ExtReg->registeredExtensions();
 
   ExtensionsRegistry::ExtensionsByName_t::iterator it;
   ExtensionsRegistry::ExtensionsByName_t::iterator itb = Extensions->begin();
@@ -366,45 +366,45 @@ void AppActions::createMenus(MainWindow& MainWin)
   QMenu* SubMenu;
 
   Menu = MainWin.menuBar()->addMenu(tr("&Project"));
-  Menu->addAction(getAction("ProjectNew"));
-  Menu->addAction(getAction("ProjectOpen"));
+  Menu->addAction(action("ProjectNew"));
+  Menu->addAction(action("ProjectOpen"));
 
   // recents
   mp_RecentProjectsMenu = Menu->addMenu(tr("Open recent"));
   for (int i=0;i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
     mp_RecentProjectsMenu->addAction(m_RecentProjectsActions[i]);
 
-  Menu->addAction(getAction("ProjectReload"));
-  Menu->addAction(getAction("ProjectSave"));
-  Menu->addAction(getAction("ProjectSaveAs"));
-  Menu->addAction(getAction("ProjectProperties"));
-  Menu->addAction(getAction("ProjectClose"));
+  Menu->addAction(action("ProjectReload"));
+  Menu->addAction(action("ProjectSave"));
+  Menu->addAction(action("ProjectSaveAs"));
+  Menu->addAction(action("ProjectProperties"));
+  Menu->addAction(action("ProjectClose"));
   Menu->addSeparator();
-  Menu->addAction(getAction("ProjectQuit"));
+  Menu->addAction(action("ProjectQuit"));
 
 
   Menu = MainWin.menuBar()->addMenu(tr("&Edit"));
-  Menu->addAction(getAction("EditCut"));
-  Menu->addAction(getAction("EditCopy"));
-  Menu->addAction(getAction("EditPaste"));
+  Menu->addAction(action("EditCut"));
+  Menu->addAction(action("EditCopy"));
+  Menu->addAction(action("EditPaste"));
   Menu->addSeparator();
-  Menu->addAction(getAction("EditPreferences"));
+  Menu->addAction(action("EditPreferences"));
 
 
   mp_DevelopmentMenu = MainWin.menuBar()->addMenu(tr("&Development"));
-  mp_DevelopmentMenu->addAction(getAction("DevNewSimulator"));
-  mp_DevelopmentMenu->addAction(getAction("DevNewObserver"));
+  mp_DevelopmentMenu->addAction(action("DevNewSimulator"));
+  mp_DevelopmentMenu->addAction(action("DevNewObserver"));
   mp_DevelopmentMenu->addSeparator();
-  mp_DevelopmentMenu->addAction(getAction("DevOpenSimulator"));
-  mp_DevelopmentMenu->addAction(getAction("DevOpenObserver"));
+  mp_DevelopmentMenu->addAction(action("DevOpenSimulator"));
+  mp_DevelopmentMenu->addAction(action("DevOpenObserver"));
   mp_DevelopmentMenu->addSeparator();
-  mp_DevelopmentMenu->addAction(getAction("DevLaunchDevStudio"));
+  mp_DevelopmentMenu->addAction(action("DevLaunchDevStudio"));
 
 
   mp_SimulationMenu = MainWin.menuBar()->addMenu(tr("&Simulation"));
-  mp_SimulationMenu->addAction(getAction("WaresRefresh"));
+  mp_SimulationMenu->addAction(action("WaresRefresh"));
   mp_SimulationMenu->addSeparator();
-  mp_SimulationMenu->addAction(getAction("SimulationRun"));
+  mp_SimulationMenu->addAction(action("SimulationRun"));
 
 
   mp_ExtensionsMenu = MainWin.menuBar()->addMenu(tr("&Extensions"));
@@ -416,20 +416,20 @@ void AppActions::createMenus(MainWindow& MainWin)
 
 
   mp_ViewMenu = MainWin.menuBar()->addMenu(tr("&View"));
-  mp_ViewMenu->addAction(getAction("ViewDashboard"));
-  mp_ViewMenu->addAction(getAction("ViewRestore"));
+  mp_ViewMenu->addAction(action("ViewDashboard"));
+  mp_ViewMenu->addAction(action("ViewRestore"));
 
 
   Menu = MainWin.menuBar()->addMenu(tr("&Help"));
   SubMenu = Menu->addMenu(tr("OpenFLUID online"));
-  SubMenu->addAction(getAction("HelpOnlineWeb"));
-  SubMenu->addAction(getAction("HelpOnlineCommunity"));
+  SubMenu->addAction(action("HelpOnlineWeb"));
+  SubMenu->addAction(action("HelpOnlineCommunity"));
   Menu->addSeparator();
   SubMenu = Menu->addMenu(tr("Examples"));
-  SubMenu->addAction(getAction("HelpExamplesOpen"));
-  SubMenu->addAction(getAction("HelpExamplesRestore"));
+  SubMenu->addAction(action("HelpExamplesOpen"));
+  SubMenu->addAction(action("HelpExamplesRestore"));
   Menu->addSeparator();
-  Menu->addAction(getAction("HelpAbout"));
+  Menu->addAction(action("HelpAbout"));
 
   updateRecentProjectsActions();
 
@@ -455,14 +455,14 @@ void AppActions::createToolbar(MainWindow& MainWin)
     mp_MainToolbar->setIconSize(QSize(32,32));
     mp_MainToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-    mp_MainToolbar->addAction(getAction("ProjectNew"));
-    mp_MainToolbar->addAction(getAction("ProjectOpen"));
-    mp_MainToolbar->addAction(getAction("ProjectReload"));
-    mp_MainToolbar->addAction(getAction("ProjectSave"));
-    mp_MainToolbar->addAction(getAction("ProjectSaveAs"));
-    mp_MainToolbar->addAction(getAction("ProjectClose"));
+    mp_MainToolbar->addAction(action("ProjectNew"));
+    mp_MainToolbar->addAction(action("ProjectOpen"));
+    mp_MainToolbar->addAction(action("ProjectReload"));
+    mp_MainToolbar->addAction(action("ProjectSave"));
+    mp_MainToolbar->addAction(action("ProjectSaveAs"));
+    mp_MainToolbar->addAction(action("ProjectClose"));
     mp_MainToolbar->addSeparator();
-    mp_MainToolbar->addAction(getAction("SimulationRun"));
+    mp_MainToolbar->addAction(action("SimulationRun"));
     mp_MainToolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
 
     mp_MainToolbar->setObjectName("MainToolbar");
@@ -474,7 +474,7 @@ void AppActions::createToolbar(MainWindow& MainWin)
                                               BUILDER_TOOLBARBUTTON_BORDERCOLOR));
   }
 
-  MainWin.addToolBar(openfluid::base::PreferencesManager::getInstance()->getToolBarPosition(),
+  MainWin.addToolBar(openfluid::base::PreferencesManager::instance()->getToolBarPosition(),
                      mp_MainToolbar);
 }
 

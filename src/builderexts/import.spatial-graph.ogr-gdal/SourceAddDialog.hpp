@@ -104,7 +104,7 @@ class SourceAddDialog : public QDialog
 
     ~SourceAddDialog();
 
-    const SourceInfos& getSourceInfos()
+    const SourceInfos& sourceInfos()
     { return m_SrcInfos; }
 };
 

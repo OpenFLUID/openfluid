@@ -60,7 +60,7 @@ class GeoRasterValueSub: public openfluid::core::GeoRasterValue
     {
     }
 
-    GDALDataset* getData()
+    GDALDataset* data()
     {
       return mp_Data;
     }
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
       Val->getAbsolutePath(),
       boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue/dem.jpeg").string());
 
-  BOOST_CHECK(!Val->getData());
+  BOOST_CHECK(!Val->data());
 
   delete Val;
 }
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 
   BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
-  BOOST_CHECK(!Val->getData());
+  BOOST_CHECK(!Val->data());
 
   delete Val;
 }
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Jpeg)
 
   Val->tryToOpenSource();
 
-  BOOST_CHECK(Val->getData());
+  BOOST_CHECK(Val->data());
 
   delete Val;
 }
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Gtiff)
 
   Val->tryToOpenSource();
 
-  BOOST_CHECK(Val->getData());
+  BOOST_CHECK(Val->data());
 
   delete Val;
 }
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Img)
 
   Val->tryToOpenSource();
 
-  BOOST_CHECK(Val->getData());
+  BOOST_CHECK(Val->data());
 
   delete Val;
 }
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Ascii)
 
   Val->tryToOpenSource();
 
-  BOOST_CHECK(Val->getData());
+  BOOST_CHECK(Val->data());
 
   delete Val;
 }

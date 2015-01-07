@@ -137,9 +137,9 @@ class OPENFLUID_API MarketClient
 
     void getMarketInfo(MarketInfo& Info);
 
-    const MarketLicensesTexts_t& getLicensesTexts();
+    const MarketLicensesTexts_t& licensesTexts();
 
-    const TypesMetaPackagesCatalogs_t& getTypesMetaPackagesCatalogs();
+    const TypesMetaPackagesCatalogs_t& typesMetaPackagesCatalogs();
 
     /**
      Finds the ID package in m_TypesMetaPackagesCatalogs
@@ -175,13 +175,13 @@ class OPENFLUID_API MarketClient
 
     unsigned int getCountOfPackagesToInstall() const { return m_PacksToInstall.size(); };
 
-    const MarketPackage* getNextPackageToBeInstalled() const { return m_PacksToInstall.front(); };
+    const MarketPackage* nextPackageToBeInstalled() const { return m_PacksToInstall.front(); };
 
     bool hasSelectedPackagesToInstall();
 
     void installNextSelectedPackage();
 
-    const std::list<MarketPackage*>& getSelectionToInstall() const { return m_PacksToInstall; };
+    const std::list<MarketPackage*>& selectionToInstall() const { return m_PacksToInstall; };
 
     bool isConnected() const { return m_IsConnected; };
 

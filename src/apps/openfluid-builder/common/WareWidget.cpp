@@ -238,7 +238,7 @@ void WareWidget::notifyRemoveClicked()
 {
   bool OK = true;
 
-  if (openfluid::base::PreferencesManager::getInstance()->isItemRemovalConfirm())
+  if (openfluid::base::PreferencesManager::instance()->isItemRemovalConfirm())
   {
     QString TypeStr = tr("the generator");
 

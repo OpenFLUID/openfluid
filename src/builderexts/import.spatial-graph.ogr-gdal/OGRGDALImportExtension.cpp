@@ -238,7 +238,7 @@ void OGRGDALImportExtension::addFileSource()
 
   if (AddDlg.exec() == QDialog::Accepted)
   {
-    addSource(AddDlg.getSourceInfos());
+    addSource(AddDlg.sourceInfos());
   }
 }
 
@@ -253,7 +253,7 @@ void OGRGDALImportExtension::addWFSSource()
 
   if (AddDlg.exec() == QDialog::Accepted)
   {
-    addSource(AddDlg.getSourceInfos());
+    addSource(AddDlg.sourceInfos());
   }
 }
 

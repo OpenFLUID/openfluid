@@ -87,7 +87,7 @@ class OPENFLUID_API ExecutionTimePoint
 
     openfluid::base::SchedulingRequest processNextItem();
 
-    inline openfluid::machine::ModelItemInstance* getNextItem() const
+    inline openfluid::machine::ModelItemInstance* nextItem() const
     { return m_ItemsPtrList.front(); };
 
     inline openfluid::core::TimeIndex_t getTimeIndex() const

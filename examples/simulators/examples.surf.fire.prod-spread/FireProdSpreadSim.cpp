@@ -210,7 +210,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
     double getWindCoefficient(openfluid::core::SpatialUnit* U)
     {
-      openfluid::core::UnitsPtrList_t* ParentAU = U->getParentUnits("AU");
+      openfluid::core::UnitsPtrList_t* ParentAU = U->parentSpatialUnits("AU");
 
       if (ParentAU != NULL && ParentAU->size()==1)
       {
@@ -224,9 +224,9 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
         // > 75 km/h : 2
 
         int WindCoeff = 1.0;
-        if (WindSpeed.getValue()->asDoubleValue().get() > 25) WindCoeff = 1.4;
-        if (WindSpeed.getValue()->asDoubleValue().get() > 50) WindCoeff = 1.7;
-        if (WindSpeed.getValue()->asDoubleValue().get() > 75) WindCoeff = 2;
+        if (WindSpeed.value()->asDoubleValue().get() > 25) WindCoeff = 1.4;
+        if (WindSpeed.value()->asDoubleValue().get() > 50) WindCoeff = 1.7;
+        if (WindSpeed.value()->asDoubleValue().get() > 75) WindCoeff = 2;
 
         return WindCoeff;
       }
@@ -287,7 +287,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
     void updateStatus(openfluid::core::SpatialUnit* U)
     {
-      openfluid::core::UnitsPtrList_t* FromLU = U->getFromUnits("LU");
+      openfluid::core::UnitsPtrList_t* FromLU = U->fromSpatialUnits("LU");
 
       // compute the burning/non-burning status of each land unit
       // a cell starts burning if :

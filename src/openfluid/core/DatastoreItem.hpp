@@ -105,12 +105,12 @@ class OPENFLUID_API DatastoreItem
     /**
      * @brief Gets the associated value of the resource.
      */
-    UnstructuredValue* getValue();
+    UnstructuredValue* value();
 
     /**
      * @brief Gets the associated value of the resource.
      */
-    const UnstructuredValue* getValue() const;
+    const UnstructuredValue* value() const;
 };
 
 }

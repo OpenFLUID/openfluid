@@ -73,7 +73,7 @@ UnitsCollection::~UnitsCollection()
 // =====================================================================
 
 
-SpatialUnit* UnitsCollection::getUnit(UnitID_t aUnitID)
+SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID)
 {
   UnitsList_t::iterator it;
 
@@ -91,10 +91,10 @@ SpatialUnit* UnitsCollection::getUnit(UnitID_t aUnitID)
 
 
 
-SpatialUnit* UnitsCollection::addUnit(SpatialUnit aUnit)
+SpatialUnit* UnitsCollection::addSpatialUnit(SpatialUnit aUnit)
 {
 
-  if (getUnit(aUnit.getID()) == NULL)
+  if (spatialUnit(aUnit.getID()) == NULL)
   {
     m_Data.push_back(aUnit);
     return &(m_Data.back());

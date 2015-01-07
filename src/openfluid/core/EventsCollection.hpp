@@ -101,7 +101,7 @@ class OPENFLUID_API EventsCollection
     /**
       Returns the event collection as a list
     */
-    inline EventsList_t* getEventsList() { return &m_Events; };
+    inline EventsList_t* eventsList() { return &m_Events; };
 
     /**
       Returns number of events in the event collection

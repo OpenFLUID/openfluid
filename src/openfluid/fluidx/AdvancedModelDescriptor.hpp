@@ -65,14 +65,14 @@ class OPENFLUID_API AdvancedModelDescriptor
 
     void checkModel() const;
 
-    const std::list<openfluid::fluidx::ModelItemDescriptor*>& getItems() const;
+    const std::list<openfluid::fluidx::ModelItemDescriptor*>& items() const;
 
     /**
      * @throw openfluid::base::OFException if Index is out of range
      * @param Index
      * @return
      */
-    openfluid::fluidx::ModelItemDescriptor* getItemAt(unsigned int Index) const;
+    openfluid::fluidx::ModelItemDescriptor* itemAt(unsigned int Index) const;
 
     /**
      * Return the position of the firts Item with ItemID found in the list, or -1 if not found

@@ -71,7 +71,7 @@ class OPENFLUID_API MonitoringInstance
 
     void appendObserver(ObserverInstance* ObsInstance);
 
-    const std::list<ObserverInstance*>& getObservers() const { return m_Observers; };
+    const std::list<ObserverInstance*>& observers() const { return m_Observers; };
 
     void initialize(openfluid::base::SimulationLogger* mp_SimLogger);
 

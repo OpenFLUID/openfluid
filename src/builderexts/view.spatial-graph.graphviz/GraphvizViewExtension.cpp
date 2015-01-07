@@ -139,7 +139,7 @@ void GraphvizViewExtension::launchSVGFileGeneration()
 
   QThread* WThread = new QThread;
   SVGFileGeneratorWorker* Worker = new SVGFileGeneratorWorker(m_GVFileName,m_SVGFileName,
-                                                            &(mp_AdvancedDesc->getDomain()));
+                                                            &(mp_AdvancedDesc->spatialDomain()));
   Worker->moveToThread(WThread);
 
   if (ui->RankDirComboBox->currentIndex() == 0)

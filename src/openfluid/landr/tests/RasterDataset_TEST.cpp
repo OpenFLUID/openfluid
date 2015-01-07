@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(check_constructor)
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Value);
 
-  GDALDataset* DS = Rast->getDataset();
+  GDALDataset* DS = Rast->source();
 
   BOOST_CHECK(DS);
 
@@ -87,15 +87,15 @@ BOOST_AUTO_TEST_CASE(check_Properties)
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
 
-  BOOST_CHECK_EQUAL(Rast->getDataset()->GetRasterXSize(), 20);
-  BOOST_CHECK_EQUAL(Rast->getDataset()->GetRasterYSize(), 20);
+  BOOST_CHECK_EQUAL(Rast->source()->GetRasterXSize(), 20);
+  BOOST_CHECK_EQUAL(Rast->source()->GetRasterYSize(), 20);
 
-  BOOST_CHECK_EQUAL(Rast->getRasterBand(1)->GetXSize(), 20);
-  BOOST_CHECK_EQUAL(Rast->getRasterBand(1)->GetYSize(), 20);
+  BOOST_CHECK_EQUAL(Rast->rasterBand(1)->GetXSize(), 20);
+  BOOST_CHECK_EQUAL(Rast->rasterBand(1)->GetYSize(), 20);
 
   double adfGeoTransform[6];
   BOOST_REQUIRE(
-      GDALGetGeoTransform(Rast->getDataset(), adfGeoTransform) == CE_None);
+      GDALGetGeoTransform(Rast->source(), adfGeoTransform) == CE_None);
 
   BOOST_CHECK_EQUAL(Rast->getOrigin()->x, adfGeoTransform[0]);
   BOOST_CHECK_EQUAL(Rast->getOrigin()->y, adfGeoTransform[3]);
@@ -156,12 +156,12 @@ BOOST_AUTO_TEST_CASE(check_getValues)
   std::vector<float> Col4 = Rast->getValuesOfColumn(4);
   std::vector<float> Col19 = Rast->getValuesOfColumn(19);
 
-  BOOST_CHECK_EQUAL(Line0.size(), Rast->getRasterBand(1)->GetXSize());
-  BOOST_CHECK_EQUAL(Line4.size(), Rast->getRasterBand(1)->GetXSize());
-  BOOST_CHECK_EQUAL(Line19.size(), Rast->getRasterBand(1)->GetXSize());
-  BOOST_CHECK_EQUAL(Col0.size(), Rast->getRasterBand(1)->GetYSize());
-  BOOST_CHECK_EQUAL(Col4.size(), Rast->getRasterBand(1)->GetYSize());
-  BOOST_CHECK_EQUAL(Col19.size(), Rast->getRasterBand(1)->GetYSize());
+  BOOST_CHECK_EQUAL(Line0.size(), Rast->rasterBand(1)->GetXSize());
+  BOOST_CHECK_EQUAL(Line4.size(), Rast->rasterBand(1)->GetXSize());
+  BOOST_CHECK_EQUAL(Line19.size(), Rast->rasterBand(1)->GetXSize());
+  BOOST_CHECK_EQUAL(Col0.size(), Rast->rasterBand(1)->GetYSize());
+  BOOST_CHECK_EQUAL(Col4.size(), Rast->rasterBand(1)->GetYSize());
+  BOOST_CHECK_EQUAL(Col19.size(), Rast->rasterBand(1)->GetYSize());
 
   BOOST_CHECK_EQUAL(Line0[0], 96);
   BOOST_CHECK_EQUAL(Line0[0], Col0[0]);
@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
   openfluid::landr::VectorDataset* VectorVal = Rast->polygonize("TestOut.shp",
                                                                 "RasterVal");
 
-  OGRLayer* VectorLayer = VectorVal->getLayer(0);
+  OGRLayer* VectorLayer = VectorVal->layer(0);
 
   BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 234);
   BOOST_CHECK_EQUAL(VectorLayer->GetFeature(0)->GetFieldAsInteger("RasterVal"),
@@ -277,7 +277,7 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 
   VectorVal = Rast->polygonize("TestOut.shp");
 
-  VectorLayer = VectorVal->getLayer(0);
+  VectorLayer = VectorVal->layer(0);
 
   BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 400);
 

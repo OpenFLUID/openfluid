@@ -115,7 +115,7 @@ QVariant ModelItemGraphics::itemChange(GraphicsItemChange Change,
 {
   if (m_Initialized && Change == QGraphicsItem::ItemPositionChange)
   {
-    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.model.graphicalview",m_ID,pos().toPoint());
+    openfluid::base::ProjectManager::instance()->setConfigValue("builder.model.graphicalview",m_ID,pos().toPoint());
 
     foreach (ConnectorGraphics* Conn, m_Connectors)
     {
@@ -298,7 +298,7 @@ void ModelItemGraphics::removeConnectors()
 // =====================================================================
 
 
-bool ModelItemGraphics::hasProducedVar(const QString& UnitClass, const QString& Name)
+bool ModelItemGraphics::hasProducedVariable(const QString& UnitClass, const QString& Name)
 {
   return (m_ProducedVars.find(UnitClass)!=m_ProducedVars.end() && m_ProducedVars[UnitClass].contains(Name));
 }
@@ -308,7 +308,7 @@ bool ModelItemGraphics::hasProducedVar(const QString& UnitClass, const QString& 
 // =====================================================================
 
 
-bool ModelItemGraphics::hasUpdatedVar(const QString& UnitClass, const QString& Name)
+bool ModelItemGraphics::hasUpdatedVariable(const QString& UnitClass, const QString& Name)
 {
   return (m_UpdatedVars.find(UnitClass)!=m_UpdatedVars.end() && m_UpdatedVars[UnitClass].contains(Name));
 }

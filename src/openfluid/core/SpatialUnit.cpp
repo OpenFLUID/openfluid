@@ -103,9 +103,9 @@ bool SpatialUnit::addChildUnit(SpatialUnit* aUnit)
 // =====================================================================
 
 
-const UnitsPtrList_t* SpatialUnit::getToUnits(const UnitClass_t aClass) const
+const UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitClass_t aClass) const
 {
-  return const_cast<UnitsPtrList_t*>(getToUnits(aClass));
+  return const_cast<UnitsPtrList_t*>(toSpatialUnits(aClass));
 
 }
 
@@ -113,9 +113,9 @@ const UnitsPtrList_t* SpatialUnit::getToUnits(const UnitClass_t aClass) const
 // =====================================================================
 
 
-const UnitsPtrList_t* SpatialUnit::getChildrenUnits(const UnitClass_t aClass) const
+const UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitClass_t aClass) const
 {
-  return const_cast<UnitsPtrList_t*>(getChildrenUnits(aClass));
+  return const_cast<UnitsPtrList_t*>(childSpatialUnits(aClass));
 }
 
 
@@ -123,9 +123,9 @@ const UnitsPtrList_t* SpatialUnit::getChildrenUnits(const UnitClass_t aClass) co
 // =====================================================================
 
 
-const UnitsPtrList_t* SpatialUnit::getParentUnits(const UnitClass_t aClass) const
+const UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitClass_t aClass) const
 {
-  return const_cast<UnitsPtrList_t*>(getParentUnits(aClass));
+  return const_cast<UnitsPtrList_t*>(parentSpatialUnits(aClass));
 
 }
 
@@ -133,9 +133,9 @@ const UnitsPtrList_t* SpatialUnit::getParentUnits(const UnitClass_t aClass) cons
 // =====================================================================
 
 
-const UnitsPtrList_t* SpatialUnit::getFromUnits(const UnitClass_t aClass) const
+const UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitClass_t aClass) const
 {
-  return const_cast<UnitsPtrList_t*>(getFromUnits(aClass));
+  return const_cast<UnitsPtrList_t*>(fromSpatialUnits(aClass));
 }
 
 
@@ -143,7 +143,7 @@ const UnitsPtrList_t* SpatialUnit::getFromUnits(const UnitClass_t aClass) const
 // =====================================================================
 
 
-UnitsPtrList_t* SpatialUnit::getToUnits(const UnitClass_t aClass)
+UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitClass_t aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_ToUnits.find(aClass);
 
@@ -156,7 +156,7 @@ UnitsPtrList_t* SpatialUnit::getToUnits(const UnitClass_t aClass)
 // =====================================================================
 
 
-UnitsPtrList_t* SpatialUnit::getFromUnits(const UnitClass_t aClass)
+UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitClass_t aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_FromUnits.find(aClass);
 
@@ -169,7 +169,7 @@ UnitsPtrList_t* SpatialUnit::getFromUnits(const UnitClass_t aClass)
 // =====================================================================
 
 
-UnitsPtrList_t* SpatialUnit::getParentUnits(const UnitClass_t aClass)
+UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitClass_t aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_ParentUnits.find(aClass);
 
@@ -182,7 +182,7 @@ UnitsPtrList_t* SpatialUnit::getParentUnits(const UnitClass_t aClass)
 // =====================================================================
 
 
-UnitsPtrList_t* SpatialUnit::getChildrenUnits(const UnitClass_t aClass)
+UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitClass_t aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_ChildrenUnits.find(aClass);
 

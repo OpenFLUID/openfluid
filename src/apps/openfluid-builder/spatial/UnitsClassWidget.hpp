@@ -144,7 +144,7 @@ class UnitsClassWidget : public QFrame
 
     void setLayerVisible();
 
-    const openfluid::fluidx::DatastoreItemDescriptor* getLayerSource() const
+    const openfluid::fluidx::DatastoreItemDescriptor* layerSource() const
     { return mp_LayerSource; }
 
 };

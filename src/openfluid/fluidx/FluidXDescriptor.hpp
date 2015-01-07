@@ -149,34 +149,34 @@ class OPENFLUID_API FluidXDescriptor
 
     void loadFromDirectory(std::string DirPath);
 
-    inline openfluid::fluidx::CoupledModelDescriptor& getModelDescriptor()
+    inline openfluid::fluidx::CoupledModelDescriptor& modelDescriptor()
     { return m_ModelDescriptor; }
 
-    inline openfluid::fluidx::SpatialDomainDescriptor& getDomainDescriptor()
+    inline openfluid::fluidx::SpatialDomainDescriptor& spatialDomainDescriptor()
     { return m_DomainDescriptor; }
 
-    inline openfluid::fluidx::RunDescriptor& getRunDescriptor()
+    inline openfluid::fluidx::RunDescriptor& runDescriptor()
     { return m_RunDescriptor; }
 
-    inline openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor()
+    inline openfluid::fluidx::DatastoreDescriptor& datastoreDescriptor()
     { return m_DatastoreDescriptor; }
 
-    inline openfluid::fluidx::MonitoringDescriptor& getMonitoringDescriptor()
+    inline openfluid::fluidx::MonitoringDescriptor& monitoringDescriptor()
     { return m_MonitoringDescriptor; }
 
-    inline const openfluid::fluidx::CoupledModelDescriptor& getModelDescriptor() const
+    inline const openfluid::fluidx::CoupledModelDescriptor& modelDescriptor() const
     { return m_ModelDescriptor; }
 
-    inline const openfluid::fluidx::SpatialDomainDescriptor& getDomainDescriptor() const
+    inline const openfluid::fluidx::SpatialDomainDescriptor& spatialDomainDescriptor() const
     { return m_DomainDescriptor; }
 
-    inline const openfluid::fluidx::RunDescriptor& getRunDescriptor() const
+    inline const openfluid::fluidx::RunDescriptor& runDescriptor() const
     { return m_RunDescriptor; }
 
-    inline const openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor() const
+    inline const openfluid::fluidx::DatastoreDescriptor& datastoreDescriptor() const
     { return m_DatastoreDescriptor; }
 
-    inline const openfluid::fluidx::MonitoringDescriptor& getMonitoringDescriptor() const
+    inline const openfluid::fluidx::MonitoringDescriptor& monitoringDescriptor() const
     { return m_MonitoringDescriptor; }
 
     // =====================================================================

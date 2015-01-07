@@ -137,7 +137,7 @@ void OpenFLUIDApp::printSimulatorsList()
 {
 
   std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
-    openfluid::machine::SimulatorPluginsManager::getInstance()->getAvailableWaresSignatures();
+    openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();
 
   std::cout << "Available simulators:" << std::endl;
 
@@ -170,7 +170,7 @@ void OpenFLUIDApp::printMonitoring()
 {
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
-    openfluid::machine::ObserverPluginsManager::getInstance()->getAvailableWaresSignatures();
+    openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures();
 
   std::cout << "Available observers:" << std::endl;
 
@@ -339,7 +339,7 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
 {
 
   std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
-      openfluid::machine::SimulatorPluginsManager::getInstance()->getAvailableWaresSignatures(Pattern);
+      openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures(Pattern);
   std::string StatusStr;
 
 
@@ -391,7 +391,7 @@ void OpenFLUIDApp::printObserversReport(const std::string Pattern)
 {
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
-      openfluid::machine::ObserverPluginsManager::getInstance()->getAvailableWaresSignatures(Pattern);
+      openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures(Pattern);
   std::string StatusStr;
 
 
@@ -438,12 +438,12 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
 void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
-  std::vector<std::string> SimulatorsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths();
-  std::vector<std::string> ObserversPaths = openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths();
+  std::vector<std::string> SimulatorsPaths = openfluid::base::RuntimeEnvironment::instance()->getSimulatorsPluginsPaths();
+  std::vector<std::string> ObserversPaths = openfluid::base::RuntimeEnvironment::instance()->getObserversPluginsPaths();
   unsigned int i;
 
-  std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
+  std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::instance()->getInputDir() << std::endl;
+  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() || openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::instance()->getOutputDir() << std::endl;
 
   std::cout << "Simulators search path(s):" << std::endl;
   for (i=0;i<SimulatorsPaths.size();i++) std::cout << " #" << (i+1) << " " << SimulatorsPaths[i] << std::endl;
@@ -451,7 +451,7 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
   std::cout << "Observers search path(s):" << std::endl;
   for (i=0;i<ObserversPaths.size();i++) std::cout << " #" << (i+1) << " " << ObserversPaths[i] << std::endl;
 
-  if (ShowTemp) std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
+  if (ShowTemp) std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::instance()->getTempDir() << std::endl;
 }
 
 // =====================================================================
@@ -461,13 +461,13 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
 void OpenFLUIDApp::printEnvInfos()
 {
   bool IsVerbose = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",IsVerbose);
+  openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.verbose",IsVerbose);
   bool IsQuiet = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",IsQuiet);
+  openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.quiet",IsQuiet);
 
 
   printPaths(false);
-  if ((openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) && (openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
+  if ((openfluid::base::RuntimeEnvironment::instance()->isWriteResults() || openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) && (openfluid::base::RuntimeEnvironment::instance()->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
   if (IsQuiet) std::cout << "Quiet mode enabled" << std::endl;
   if (IsVerbose) std::cout << "Verbose mode enabled" << std::endl;
   std::cout << std::endl;
@@ -481,9 +481,9 @@ void OpenFLUIDApp::runSimulation()
 {
 
   bool IsVerbose = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",IsVerbose);
+  openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.verbose",IsVerbose);
   bool IsQuiet = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",IsQuiet);
+  openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.quiet",IsQuiet);
 
   m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
@@ -515,7 +515,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Loading data... " << std::endl; std::cout.flush();
   openfluid::fluidx::FluidXDescriptor FXDesc(IOListener);
-  FXDesc.loadFromDirectory(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
+  FXDesc.loadFromDirectory(openfluid::base::RuntimeEnvironment::instance()->getInputDir());
 
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
@@ -524,12 +524,12 @@ void OpenFLUIDApp::runSimulation()
 
 
   std::cout << "* Building model... "; std::cout.flush();
-  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),
+  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.modelDescriptor(),
                                                                 Model);
   std::cout << "[OK]" << std::endl; std::cout.flush();
 
   std::cout << "* Building monitoring... "; std::cout.flush();
-  openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.getMonitoringDescriptor(),
+  openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoringDescriptor(),
                                                                 Monitoring);
   std::cout << "[OK]" << std::endl; std::cout.flush();
 
@@ -552,35 +552,35 @@ void OpenFLUIDApp::runSimulation()
   std::cout << std::endl;
 
   unsigned int UnitsCount = 0;
-  for (UnitsIt = m_SimBlob.getSpatialGraph().getUnitsByClass()->begin(); UnitsIt != m_SimBlob.getSpatialGraph().getUnitsByClass()->end();++UnitsIt )
+  for (UnitsIt = m_SimBlob.spatialGraph().allSpatialUnitsByClass()->begin(); UnitsIt != m_SimBlob.spatialGraph().allSpatialUnitsByClass()->end();++UnitsIt )
   {
-    UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
+    UnitsCount = UnitsCount + (*UnitsIt).second.list()->size();
   }
 
   std::cout << "Spatial domain, " << UnitsCount << " units :"<< std::endl;
-  for (UnitsIt = m_SimBlob.getSpatialGraph().getUnitsByClass()->begin(); UnitsIt != m_SimBlob.getSpatialGraph().getUnitsByClass()->end();++UnitsIt )
+  for (UnitsIt = m_SimBlob.spatialGraph().allSpatialUnitsByClass()->begin(); UnitsIt != m_SimBlob.spatialGraph().allSpatialUnitsByClass()->end();++UnitsIt )
   {
-    std::cout << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
+    std::cout << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.list()->size() << " units" << std::endl;
   }
   std::cout << std::endl;
 
-  std::cout << "Simulation from " << mp_Engine->getSimulationStatus()->getBeginDate().getAsISOString()
-            << " to " << mp_Engine->getSimulationStatus()->getEndDate().getAsISOString() << std::endl;
+  std::cout << "Simulation from " << mp_Engine->simulationStatus()->getBeginDate().getAsISOString()
+            << " to " << mp_Engine->simulationStatus()->getEndDate().getAsISOString() << std::endl;
 
-  if (mp_Engine->getSimulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+  if (mp_Engine->simulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
     std::cout << "Checked";
-  else if (mp_Engine->getSimulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+  else if (mp_Engine->simulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
     std::cout << "Forced";
   else
     std::cout << "Default";
-  std::cout << " DeltaT is " << mp_Engine->getSimulationStatus()->getDefaultDeltaT() << " seconds" << std::endl;
+  std::cout << " DeltaT is " << mp_Engine->simulationStatus()->getDefaultDeltaT() << " seconds" << std::endl;
 
   std::cout << std::endl;
 
   std::cout << "Size of buffers for variables is set to "
             << openfluid::core::ValuesBufferProperties::getBufferSize();
 
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize())
+  if (openfluid::base::RuntimeEnvironment::instance()->isUserValuesBufferSize())
     std::cout << " (using dataset run configuration)";
   else
     std::cout << " (automatically computed)";
@@ -597,11 +597,11 @@ void OpenFLUIDApp::runSimulation()
   m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
   std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
   std::cout.flush();
-  openfluid::base::RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
+  openfluid::base::RuntimeEnvironment::instance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
 
   m_FullEndTime = boost::posix_time::microsec_clock::local_time();
 
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
+  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() || openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) std::cout << std::endl;
 
   boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
 
@@ -609,7 +609,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << std::endl;
 
-  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
+  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::instance()->getEffectiveSimulationDuration()) << std::endl;
   std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
   std::cout << std::endl;
 
@@ -726,12 +726,12 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("simulators-paths"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(OptionsVars["simulators-paths"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(OptionsVars["simulators-paths"].as<std::string>());
   }
 
   if (OptionsVars.count("observers-paths"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(OptionsVars["observers-paths"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(OptionsVars["observers-paths"].as<std::string>());
   }
 
 
@@ -774,10 +774,10 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("project"))
   {
-    if (openfluid::base::ProjectManager::getInstance()->open(OptionsVars["project"].as<std::string>()))
+    if (openfluid::base::ProjectManager::instance()->open(OptionsVars["project"].as<std::string>()))
     {
-      openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
-      openfluid::base::ProjectManager::getInstance()->updateOutputDir();
+      openfluid::base::RuntimeEnvironment::instance()->linkToProject();
+      openfluid::base::ProjectManager::instance()->updateOutputDir();
     }
     else
       throw openfluid::base::ApplicationException("openfluid",OptionsVars["project"].as<std::string>() + " is not a correct project path");
@@ -786,17 +786,17 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("input-dir"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setInputDir(OptionsVars["input-dir"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::instance()->setInputDir(OptionsVars["input-dir"].as<std::string>());
   }
 
   if (OptionsVars.count("output-dir"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(OptionsVars["output-dir"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::instance()->setOutputDir(OptionsVars["output-dir"].as<std::string>());
   }
 
   if (OptionsVars.count("auto-output-dir"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setDateTimeOutputDir();
+    openfluid::base::RuntimeEnvironment::instance()->setDateTimeOutputDir();
   }
 
   if (OptionsVars.count("show-paths"))
@@ -808,39 +808,39 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("max-threads"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setSimulatorsMaxNumThreads(OptionsVars["max-threads"].as<unsigned int>());
+    openfluid::base::RuntimeEnvironment::instance()->setSimulatorsMaxNumThreads(OptionsVars["max-threads"].as<unsigned int>());
   }
 
   if (OptionsVars.count("clean-output-dir"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setClearOutputDir(true);
+    openfluid::base::RuntimeEnvironment::instance()->setClearOutputDir(true);
   }
 
   if (OptionsVars.count("quiet"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().setValue("display.quiet",true);
-    openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().setValue("display.verbose",false);
+    openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.quiet",true);
+    openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.verbose",false);
   }
 
   if (OptionsVars.count("verbose"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().setValue("display.verbose",true);
-    openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().setValue("display.quiet",false);
+    openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.verbose",true);
+    openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.quiet",false);
   }
 
   if (OptionsVars.count("no-simreport"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setWriteSimReport(false);
+    openfluid::base::RuntimeEnvironment::instance()->setWriteSimReport(false);
   }
 
   if (OptionsVars.count("no-result"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setWriteResults(false);
+    openfluid::base::RuntimeEnvironment::instance()->setWriteResults(false);
   }
 
   if (OptionsVars.count("enable-simulation-profiling"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setSimulationProfilingEnabled(true);
+    openfluid::base::RuntimeEnvironment::instance()->setSimulationProfilingEnabled(true);
   }
 
 

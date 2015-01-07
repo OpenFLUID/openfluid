@@ -97,21 +97,21 @@ class OPENFLUID_API Event
       @param[in] Key the requested information key
       @param[in] Value the requested value
     */
-    bool isInfoEqual(const std::string Key, const std::string Value) const;
+    bool isInfoEqual(const std::string& Key, const std::string& Value) const;
 
     /**
       Returns true if the information exists and equals the given long value
       @param[in] Key the requested information key
       @param[in] Value the requested value
     */
-    bool isInfoEqual(const std::string Key, long Value) const;
+    bool isInfoEqual(const std::string& Key, long Value) const;
 
     /**
       Returns true if the information exists and equals the given double value
       @param[in] Key the requested information key
       @param[in] Value the requested value
     */
-    bool isInfoEqual(const std::string Key, const double Value) const;
+    bool isInfoEqual(const std::string& Key, const double Value) const;
 
     /**
       Returns true if the information exists and equals the given double value
@@ -119,14 +119,14 @@ class OPENFLUID_API Event
       @param[in] Info the requested value
       @deprecated
     */
-    bool isInfoEqual(const std::string Key, const double* Info) const OPENFLUID_DEPRECATED;
+    bool isInfoEqual(const std::string& Key, const double* Info) const OPENFLUID_DEPRECATED;
 
     /**
       Returns true if the information exists and equals the given DoubleValue value
       @param[in] Key the requested information key
       @param[in] Info the requested value
     */
-    bool isInfoEqual(const std::string Key, const DoubleValue& Info) const;
+    bool isInfoEqual(const std::string& Key, const DoubleValue& Info) const;
 
     /**
       Returns the number of information
@@ -150,7 +150,7 @@ class OPENFLUID_API Event
       @return true if the key exists and the conversion to the requested type is correct
       @deprecated
     */
-    bool getInfoAsString(const std::string Key, std::string *Info) const OPENFLUID_DEPRECATED;
+    bool getInfoAsString(const std::string& Key, std::string *Info) const OPENFLUID_DEPRECATED;
 
     /**
       Gets an information as a string
@@ -158,7 +158,7 @@ class OPENFLUID_API Event
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsString(const std::string Key, std::string& Info) const;
+    bool getInfoAsString(const std::string& Key, std::string& Info) const;
 
     /**
       Gets an information as a long integer
@@ -167,7 +167,7 @@ class OPENFLUID_API Event
       @return true if the key exists and the conversion to the requested type is correct
       @deprecated
     */
-    bool getInfoAsLong(const std::string Key, long *Info) const OPENFLUID_DEPRECATED;
+    bool getInfoAsLong(const std::string& Key, long *Info) const OPENFLUID_DEPRECATED;
 
     /**
       Gets an information as a long integer
@@ -175,7 +175,7 @@ class OPENFLUID_API Event
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsLong(const std::string Key, long& Info) const;
+    bool getInfoAsLong(const std::string& Key, long& Info) const;
 
     /**
       Gets an information as a double
@@ -184,7 +184,7 @@ class OPENFLUID_API Event
       @return true if the key exists and the conversion to the requested type is correct
       @deprecated
     */
-    bool getInfoAsDouble(const std::string Key, double *Info) const OPENFLUID_DEPRECATED;
+    bool getInfoAsDouble(const std::string& Key, double *Info) const OPENFLUID_DEPRECATED;
 
     /**
       Gets an information as a double
@@ -192,7 +192,7 @@ class OPENFLUID_API Event
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsDouble(const std::string Key, double& Info) const;
+    bool getInfoAsDouble(const std::string& Key, double& Info) const;
 
     /**
       Gets an information as a DoubleValue
@@ -200,7 +200,7 @@ class OPENFLUID_API Event
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsDoubleValue(const std::string Key, DoubleValue& Info) const;
+    bool getInfoAsDoubleValue(const std::string& Key, DoubleValue& Info) const;
 
     /**
       Adds an information to the event
@@ -208,7 +208,7 @@ class OPENFLUID_API Event
       @param[in] Info the value of the added information
       @return true if the adding is correct (key does not already exists)
     */
-    bool addInfo(const std::string Key, const std::string Info);
+    bool addInfo(const std::string& Key, const std::string& Info);
 
     /**
       Prints the content of the event to stdout

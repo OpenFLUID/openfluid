@@ -56,8 +56,8 @@ SaveAsDialog::SaveAsDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  ui->DirectoryLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::getInstance()->getProjectsPath()));
-  ui->ProjectNameEdit->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()));
+  ui->DirectoryLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()->getProjectsPath()));
+  ui->ProjectNameEdit->setText(QString::fromStdString(openfluid::base::ProjectManager::instance()->getName()));
 
   projectChanged();
 

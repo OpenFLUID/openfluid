@@ -69,7 +69,7 @@ HomeModule::~HomeModule()
 // =====================================================================
 
 
-QWidget* HomeModule::getMainWidget(QWidget* Parent)
+QWidget* HomeModule::mainWidgetRebuilt(QWidget* Parent)
 {
   if (mp_Widget != NULL)
     delete mp_Widget;
@@ -166,7 +166,7 @@ bool HomeModule::whenCloseAsked()
 void HomeModule::whenPreferencesAsked()
 {
   openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),true);
-  PrefsDlg.initializeBuilderPrefs(openfluid::tools::toQStringList(ExtensionPluginsManager::getInstance()->getPluginsStandardSearchPaths()));
+  PrefsDlg.initializeBuilderPrefs(openfluid::tools::toQStringList(ExtensionPluginsManager::instance()->getPluginsStandardSearchPaths()));
   PrefsDlg.exec();
 }
 

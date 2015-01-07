@@ -141,13 +141,7 @@ class OPENFLUID_API DoubleValue : public SimpleValue
       Returns the double value as plain old type
       @return the double value
     */
-    inline double& get() { return m_Value; };
-
-    /**
-      Returns the double value as a const plain old type
-      @return the double value
-    */
-    inline const double& get() const { return m_Value; };
+    inline double get() const { return m_Value; };
 
     /**
       Sets the plain old type double value

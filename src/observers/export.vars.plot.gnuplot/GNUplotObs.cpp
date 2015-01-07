@@ -232,7 +232,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         if (!SInfo.VarName.empty() && !SInfo.UnitClass.empty() && openfluid::tools::ConvertString(UnitIDStr,&SInfo.UnitID))
         {
           openfluid::core::SpatialUnit* TmpU;
-          TmpU = mp_SpatialData->getUnit(SInfo.UnitClass,SInfo.UnitID);
+          TmpU = mp_SpatialData->spatialUnit(SInfo.UnitClass,SInfo.UnitID);
           if (TmpU != NULL)
           {
             SInfo.Type = SerieInfo::SERIE_VAR;
@@ -289,7 +289,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       {
         if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
         {
-          openfluid::core::Value* Val = (*Sit).second.Unit->getVariables()->getCurrentValueIfIndex((*Sit).second.VarName,OPENFLUID_GetCurrentTimeIndex());
+          openfluid::core::Value* Val = (*Sit).second.Unit->variables()->currentValueIfIndex((*Sit).second.VarName,OPENFLUID_GetCurrentTimeIndex());
 
           if (Val!= NULL)
           {

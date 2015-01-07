@@ -76,7 +76,7 @@ void AdvancedMonitoringDescriptor::checkMonitoring() const
   std::set<std::string> UniqueIDs;
 
   std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
-      mp_MonitoringDesc->getItems();
+      mp_MonitoringDesc->items();
 
   for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -94,9 +94,9 @@ void AdvancedMonitoringDescriptor::checkMonitoring() const
 // =====================================================================
 
 
-const std::list<openfluid::fluidx::ObserverDescriptor*>& AdvancedMonitoringDescriptor::getItems() const
+const std::list<openfluid::fluidx::ObserverDescriptor*>& AdvancedMonitoringDescriptor::items() const
 {
-  return mp_MonitoringDesc->getItems();
+  return mp_MonitoringDesc->items();
 }
 
 
@@ -104,11 +104,11 @@ const std::list<openfluid::fluidx::ObserverDescriptor*>& AdvancedMonitoringDescr
 // =====================================================================
 
 
-openfluid::fluidx::ObserverDescriptor& AdvancedMonitoringDescriptor::getDescriptor(
+openfluid::fluidx::ObserverDescriptor& AdvancedMonitoringDescriptor::descriptor(
     std::string ObserverID) const
 {
   std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
-      mp_MonitoringDesc->getItems();
+      mp_MonitoringDesc->items();
   for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
       Observers.begin(); it != Observers.end(); ++it)
   {
@@ -141,9 +141,9 @@ void AdvancedMonitoringDescriptor::addToObserverList(std::string ObserverID)
 void AdvancedMonitoringDescriptor::removeFromObserverList(
     std::string ObserverID)
 {
-  openfluid::fluidx::ObserverDescriptor& Obs = getDescriptor(ObserverID);
+  openfluid::fluidx::ObserverDescriptor& Obs = descriptor(ObserverID);
   std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
-      mp_MonitoringDesc->getItems();
+      mp_MonitoringDesc->items();
   std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it = std::find(
       Observers.begin(), Observers.end(), &Obs);
   if (it != Observers.end())
@@ -158,7 +158,7 @@ void AdvancedMonitoringDescriptor::removeFromObserverList(
 void AdvancedMonitoringDescriptor::setItems(
     std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList)
 {
-  mp_MonitoringDesc->getItems() = ObserversList;
+  mp_MonitoringDesc->items() = ObserversList;
 }
 
 
@@ -170,7 +170,7 @@ void AdvancedMonitoringDescriptor::moveItemTowardsTheBeginning(
     std::string ObserverID)
 {
   std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
-      mp_MonitoringDesc->getItems();
+      mp_MonitoringDesc->items();
 
   if (Observers.size() < 2)
     return;
@@ -205,7 +205,7 @@ void AdvancedMonitoringDescriptor::moveItemTowardsTheBeginning(
 void AdvancedMonitoringDescriptor::moveItemTowardsTheEnd(std::string ObserverID)
 {
   std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
-      mp_MonitoringDesc->getItems();
+      mp_MonitoringDesc->items();
 
   if (Observers.size() < 2)
     return;
@@ -240,7 +240,7 @@ void AdvancedMonitoringDescriptor::moveItemTowardsTheEnd(std::string ObserverID)
 int AdvancedMonitoringDescriptor::getFirstIndex(const std::string& ID) const
 {
   std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
-      mp_MonitoringDesc->getItems();
+      mp_MonitoringDesc->items();
 
   for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -262,7 +262,7 @@ std::vector<openfluid::ware::WareID_t> AdvancedMonitoringDescriptor::getOrderedI
   std::vector<openfluid::ware::WareID_t> IDs;
 
   std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
-      mp_MonitoringDesc->getItems();
+      mp_MonitoringDesc->items();
 
   for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)

@@ -65,14 +65,14 @@ class ExtensionsRegistry
 
   public:
 
-    static ExtensionsRegistry* getInstance();
+    static ExtensionsRegistry* instance();
 
     ~ExtensionsRegistry();
 
 
     void registerExtensions();
 
-    ExtensionsByName_t* getRegisteredExtensions()
+    ExtensionsByName_t* registeredExtensions()
     { return &m_Extensions; };
 
     openfluid::builderext::PluggableBuilderExtension* instanciateExtension(const openfluid::ware::WareID_t& ID);

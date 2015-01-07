@@ -52,7 +52,7 @@
 
 
 MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::MonitoringWidget), m_Monitoring(AFXDesc.getMonitoring())
+  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::MonitoringWidget), m_Monitoring(AFXDesc.monitoring())
 {
   ui->setupUi(this);
 
@@ -95,7 +95,7 @@ void MonitoringWidget::addObserver()
 
     m_Monitoring.addToObserverList(ID);
 
-    ObserverWidget* ObsWidget = new ObserverWidget(this,&m_Monitoring.getDescriptor(ID),ID);
+    ObserverWidget* ObsWidget = new ObserverWidget(this,&m_Monitoring.descriptor(ID),ID);
 
     connect(ObsWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
     connect(ObsWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
@@ -178,7 +178,7 @@ void MonitoringWidget::removeModelItem(const QString& ID)
 
 void MonitoringWidget::refresh()
 {
-  const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = m_Monitoring.getItems();
+  const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = m_Monitoring.items();
 
   std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itb = Items.begin();
   std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator ite = Items.end();

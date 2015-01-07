@@ -96,7 +96,7 @@ class OPENFLUID_API Datastore
      * @param ItemID ID of the expected item.
      * @return The item with the given ID, or 0 if not found.
      */
-    DatastoreItem* getItem(const std::string& ItemID);
+    DatastoreItem* item(const std::string& ItemID);
 
     /**
      * @brief Adds an item to the datastore.

@@ -134,16 +134,22 @@ class OPENFLUID_API StringValue : public SimpleValue
     Value* clone() const { return new StringValue(*this); };
 
     /**
-      Returns the string value as plain old type
+      Returns the string value as std::string type
       @return the string value
     */
-    inline std::string& get() { return m_Value; };
+    inline std::string get() { return m_Value; };
 
     /**
-      Returns the string value as a const plain old type
+      Returns a reference to the string value as std::string type
       @return the string value
     */
-    inline const std::string& get() const { return m_Value; };
+    inline std::string& data() { return m_Value; };
+
+    /**
+      Returns a reference to the string value as std::string type
+      @return the string value
+    */
+    inline const std::string& data() const { return m_Value; };
 
     /**
       Sets the string value

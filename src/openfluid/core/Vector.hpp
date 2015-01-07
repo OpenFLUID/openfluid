@@ -50,7 +50,9 @@ template <class T>
 class OPENFLUID_API Vector
 {
   protected :
+
     T* m_Data;
+
     unsigned long m_Size;
 
     bool allocate(unsigned long Size);
@@ -58,6 +60,7 @@ class OPENFLUID_API Vector
     void init();
 
     static void copy(const Vector& Source, Vector& Dest);
+
 
   public :
 
@@ -106,7 +109,7 @@ class OPENFLUID_API Vector
     /**
       Returns a pointer to the content of the vector (like C arrays)
     */
-    T* getData() const { return m_Data; };
+    T* data() const { return m_Data; };
 
     /**
       Sets data for the vector from Data and with size Size

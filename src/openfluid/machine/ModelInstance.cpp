@@ -118,11 +118,11 @@ void ModelInstance::appendItemToTimePoint(openfluid::core::TimeIndex_t TimeIndex
 {
 
   // no back in time nor iteration
-  if (TimeIndex <= m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex())
+  if (TimeIndex <= m_SimulationBlob.simulationStatus().getCurrentTimeIndex())
     throw openfluid::base::FrameworkException("SimulationScheduler::appendItemToTimePoint","Cannot append simulation item before or on current time point");
 
   // ignore time points after simulation end
-  if (TimeIndex > m_SimulationBlob.getSimulationStatus().getSimulationDuration())
+  if (TimeIndex > m_SimulationBlob.simulationStatus().getSimulationDuration())
     return;
 
   // add time point if no existing time point
@@ -178,7 +178,7 @@ openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const o
 
   for(openfluid::ware::WareParams_t::const_iterator it = Params.begin();it != Params.end();++it)
   {
-    if(!it->second.get().empty())
+    if(!it->second.data().empty())
       MergedParams[it->first] = it->second;
     else if(!m_GlobalParams.count(it->first))
       MergedParams[it->first] = it->second;
@@ -290,7 +290,7 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 
   openfluid::machine::SimulationProfiler::WareIDSequence_t SimSequence;
 
-  openfluid::machine::SimulatorPluginsManager* FPlugsMgr = openfluid::machine::SimulatorPluginsManager::getInstance();
+  openfluid::machine::SimulatorPluginsManager* FPlugsMgr = openfluid::machine::SimulatorPluginsManager::instance();
 
   std::list<ModelItemInstance*>::const_iterator SimIter;
   ModelItemInstance* CurrentSimulator;
@@ -324,19 +324,19 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
     }
 
     CurrentSimulator->Body->linkToSimulationLogger(mp_SimLogger);
-    CurrentSimulator->Body->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
-    CurrentSimulator->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
-    CurrentSimulator->Body->linkToSpatialGraph(&(m_SimulationBlob.getSpatialGraph()));
-    CurrentSimulator->Body->linkToDatastore(&(m_SimulationBlob.getDatastore()));
+    CurrentSimulator->Body->linkToSimulation(&(m_SimulationBlob.simulationStatus()));
+    CurrentSimulator->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::instance()->wareEnvironment());
+    CurrentSimulator->Body->linkToSpatialGraph(&(m_SimulationBlob.spatialGraph()));
+    CurrentSimulator->Body->linkToDatastore(&(m_SimulationBlob.datastore()));
     CurrentSimulator->Body->initializeWare(CurrentSimulator->Signature->ID,
-                                    openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsMaxNumThreads());
+                                    openfluid::base::RuntimeEnvironment::instance()->getSimulatorsMaxNumThreads());
     SimSequence.push_back(CurrentSimulator->Signature->ID);
 
     SimIter++;
   }
 
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isSimulationProfilingEnabled())
-    mp_SimProfiler = new SimulationProfiler(&(m_SimulationBlob.getSimulationStatus()), SimSequence);
+  if (openfluid::base::RuntimeEnvironment::instance()->isSimulationProfilingEnabled())
+    mp_SimProfiler = new SimulationProfiler(&(m_SimulationBlob.simulationStatus()), SimSequence);
 
   m_Initialized = true;
 }
@@ -431,21 +431,21 @@ void ModelInstance::call_checkConsistency() const
 void ModelInstance::checkDeltaTMode(openfluid::base::SchedulingRequest& SReq, const openfluid::ware::WareID_t& ID)
 {
   // check if "checked" DeltaT mode is respected
-  if (m_SimulationBlob.getSimulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+  if (m_SimulationBlob.simulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
   {
      if (!(SReq.RequestType == openfluid::base::SchedulingRequest::DURATION &&
-           SReq.Duration ==  m_SimulationBlob.getSimulationStatus().getDefaultDeltaT()))
+           SReq.Duration ==  m_SimulationBlob.simulationStatus().getDefaultDeltaT()))
      {
        std::string TIStr;
-       openfluid::tools::ConvertValue(m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex(),&TIStr);
+       openfluid::tools::ConvertValue(m_SimulationBlob.simulationStatus().getCurrentTimeIndex(),&TIStr);
        throw openfluid::base::FrameworkException("ModelInstance::checkDeltaTMode",
                                           "DeltaT checked mode not respected by simulator " + ID + " at time index " + TIStr);
      }
   }
 
   // check if "forced" DeltaT mode is respected
-  if (m_SimulationBlob.getSimulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
-    SReq =  openfluid::base::SchedulingRequest(m_SimulationBlob.getSimulationStatus().getDefaultDeltaT());
+  if (m_SimulationBlob.simulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+    SReq =  openfluid::base::SchedulingRequest(m_SimulationBlob.simulationStatus().getDefaultDeltaT());
 
 }
 
@@ -486,12 +486,12 @@ void ModelInstance::call_initializeRun()
       // TODO optimize by testing DURATION before ATTHEEND
       if (SchedReq.RequestType == openfluid::base::SchedulingRequest::ATTHEEND) // AtTheEnd();
       {
-        appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getSimulationDuration(),
+        appendItemToTimePoint(m_SimulationBlob.simulationStatus().getSimulationDuration(),
                               CurrentSimulator);
       }
       else if (SchedReq.RequestType == openfluid::base::SchedulingRequest::DURATION) // != Never()
       {
-        appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex()+SchedReq.Duration,
+        appendItemToTimePoint(m_SimulationBlob.simulationStatus().getCurrentTimeIndex()+SchedReq.Duration,
                               CurrentSimulator);
       }
 
@@ -512,17 +512,17 @@ void ModelInstance::processNextTimePoint()
 {
 
   if (hasTimePointToProcess())
-    m_SimulationBlob.getSimulationStatus().setCurrentTimeIndex(m_TimePointList.front().getTimeIndex());
+    m_SimulationBlob.simulationStatus().setCurrentTimeIndex(m_TimePointList.front().getTimeIndex());
   else
     return;
 
   m_TimePointList.front().sortByOriginalPosition();
 
-  mp_Listener->onRunStep(&m_SimulationBlob.getSimulationStatus());
+  mp_Listener->onRunStep(&m_SimulationBlob.simulationStatus());
 
   while (m_TimePointList.front().hasItemsToProcess())
   {
-    openfluid::machine::ModelItemInstance* NextItem = m_TimePointList.front().getNextItem();
+    openfluid::machine::ModelItemInstance* NextItem = m_TimePointList.front().nextItem();
 
     mp_Listener->onSimulatorRunStep(NextItem->Signature->ID);
     boost::posix_time::ptime TimeProfileStart = boost::posix_time::microsec_clock::universal_time();
@@ -541,12 +541,12 @@ void ModelInstance::processNextTimePoint()
 
     if (SchedReq.RequestType == openfluid::base::SchedulingRequest::ATTHEEND) // AtTheEnd();
     {
-      appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getSimulationDuration(),
+      appendItemToTimePoint(m_SimulationBlob.simulationStatus().getSimulationDuration(),
                                            NextItem);
     }
     else if (SchedReq.RequestType == openfluid::base::SchedulingRequest::DURATION) // != Never()
     {
-      appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex()+SchedReq.Duration,
+      appendItemToTimePoint(m_SimulationBlob.simulationStatus().getCurrentTimeIndex()+SchedReq.Duration,
                                      NextItem);
     }
   }

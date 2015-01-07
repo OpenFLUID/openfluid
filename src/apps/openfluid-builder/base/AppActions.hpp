@@ -89,14 +89,14 @@ class AppActions : QObject
 
     ~AppActions();
 
-    QAction* getAction(const std::string& ID) const;
+    QAction* action(const std::string& ID) const;
 
     std::vector<QAction*> getRecentProjectActions() const
     {
       return m_RecentProjectsActions;
     }
 
-    std::map<openfluid::ware::WareID_t,QAction*>& getExtensionsActions()
+    std::map<openfluid::ware::WareID_t,QAction*> getExtensionsActions()
     {
       return m_ExtensionsActions;
     }

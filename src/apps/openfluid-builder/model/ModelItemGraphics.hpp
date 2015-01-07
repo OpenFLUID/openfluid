@@ -119,21 +119,21 @@ class ModelItemGraphics : public QGraphicsRectItem
 
     void removeConnectors();*/
 
-    const IOSet_t* getProduced() const
+    const IOSet_t* producedVariables() const
     { return &m_ProducedVars; }
 
-    const IOSet_t* getUpdated() const
+    const IOSet_t* updatedVariables() const
     { return &m_UpdatedVars; }
 
-    const IOSet_t* getRequired() const
+    const IOSet_t* requiredVariables() const
     { return &m_RequiredVars; }
 
-    const IOSet_t* getUsed() const
+    const IOSet_t* usedVariables() const
     { return &m_UsedVars; }
 
-    bool hasProducedVar(const QString& UnitClass, const QString& Name);
+    bool hasProducedVariable(const QString& UnitClass, const QString& Name);
 
-    bool hasUpdatedVar(const QString& UnitClass, const QString& Name);
+    bool hasUpdatedVariable(const QString& UnitClass, const QString& Name);
 
 
 };

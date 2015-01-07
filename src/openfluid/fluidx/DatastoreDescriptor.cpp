@@ -50,7 +50,7 @@ DatastoreDescriptor::DatastoreDescriptor()
 // =====================================================================
 
 
-DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems()
+DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::items()
 {
   return m_DatastoreDescription;
 }
@@ -60,7 +60,7 @@ DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems()
 // =====================================================================
 
 
-const DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems() const
+const DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::items() const
 {
   return m_DatastoreDescription;
 }

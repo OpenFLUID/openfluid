@@ -66,71 +66,71 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   m_MainWindow(MainWin),m_Actions(Actions),
   mp_DockWidget(NULL), mp_CurrentModule(NULL)
 {
-  m_Actions.getAction("ProjectSave")->setEnabled(false);
+  m_Actions.action("ProjectSave")->setEnabled(false);
 
 
   // Project
-  connect(m_Actions.getAction("ProjectQuit"), SIGNAL(triggered()),
+  connect(m_Actions.action("ProjectQuit"), SIGNAL(triggered()),
           this, SLOT(whenQuitAsked()));
-  connect(m_Actions.getAction("ProjectNew"), SIGNAL(triggered()),
+  connect(m_Actions.action("ProjectNew"), SIGNAL(triggered()),
           this, SLOT(whenNewAsked()));
-  connect(m_Actions.getAction("ProjectOpen"), SIGNAL(triggered()),
+  connect(m_Actions.action("ProjectOpen"), SIGNAL(triggered()),
           this, SLOT(whenOpenAsked()));
-  connect(m_Actions.getAction("ProjectReload"), SIGNAL(triggered()),
+  connect(m_Actions.action("ProjectReload"), SIGNAL(triggered()),
             this, SLOT(whenReloadAsked()));
-  connect(m_Actions.getAction("ProjectSave"), SIGNAL(triggered()),
+  connect(m_Actions.action("ProjectSave"), SIGNAL(triggered()),
           this, SLOT(whenSaveAsked()));
-  connect(m_Actions.getAction("ProjectSaveAs"), SIGNAL(triggered()),
+  connect(m_Actions.action("ProjectSaveAs"), SIGNAL(triggered()),
           this, SLOT(whenSaveAsAsked()));
-  connect(m_Actions.getAction("ProjectProperties"), SIGNAL(triggered()),
+  connect(m_Actions.action("ProjectProperties"), SIGNAL(triggered()),
           this, SLOT(whenPropertiesAsked()));
-  connect(m_Actions.getAction("ProjectClose"), SIGNAL(triggered()),
+  connect(m_Actions.action("ProjectClose"), SIGNAL(triggered()),
           this, SLOT(whenCloseAsked()));
 
   // Edit
-  connect(m_Actions.getAction("EditPreferences"), SIGNAL(triggered()),
+  connect(m_Actions.action("EditPreferences"), SIGNAL(triggered()),
           this, SLOT(whenPreferencesAsked()));
 
   // Development
-  connect(m_Actions.getAction("DevNewSimulator"), SIGNAL(triggered()),
+  connect(m_Actions.action("DevNewSimulator"), SIGNAL(triggered()),
           this, SLOT(whenNewSimulatorSrcAsked()));
-  connect(m_Actions.getAction("DevOpenSimulator"), SIGNAL(triggered()),
+  connect(m_Actions.action("DevOpenSimulator"), SIGNAL(triggered()),
           this, SLOT(whenOpenSimulatorSrcAsked()));
-  connect(m_Actions.getAction("DevNewObserver"), SIGNAL(triggered()),
+  connect(m_Actions.action("DevNewObserver"), SIGNAL(triggered()),
           this, SLOT(whenNewObserverSrcAsked()));
-  connect(m_Actions.getAction("DevOpenObserver"), SIGNAL(triggered()),
+  connect(m_Actions.action("DevOpenObserver"), SIGNAL(triggered()),
           this, SLOT(whenOpenObserverSrcAsked()));
-  connect(m_Actions.getAction("DevLaunchDevStudio"), SIGNAL(triggered()),
+  connect(m_Actions.action("DevLaunchDevStudio"), SIGNAL(triggered()),
           this, SLOT(whenLaunchDevStudioAsked()));
 
   // Simulation
-  connect(m_Actions.getAction("SimulationRun"), SIGNAL(triggered()),
+  connect(m_Actions.action("SimulationRun"), SIGNAL(triggered()),
           this, SLOT(whenRunAsked()));
-  connect(m_Actions.getAction("WaresRefresh"), SIGNAL(triggered()),
+  connect(m_Actions.action("WaresRefresh"), SIGNAL(triggered()),
           this, SLOT(whenWaresRefreshAsked()));
 
   // View
-  connect(m_Actions.getAction("ViewDashboard"), SIGNAL(triggered()),
+  connect(m_Actions.action("ViewDashboard"), SIGNAL(triggered()),
           this, SLOT(whenViewDashboardAsked()));
-  connect(m_Actions.getAction("ViewRestore"), SIGNAL(triggered()),
+  connect(m_Actions.action("ViewRestore"), SIGNAL(triggered()),
           this, SLOT(whenViewRestoreAsked()));
 
   // Help
-  connect(m_Actions.getAction("HelpOnlineWeb"), SIGNAL(triggered()),
+  connect(m_Actions.action("HelpOnlineWeb"), SIGNAL(triggered()),
           this, SLOT(whenOnlineWebAsked()));
-  connect(m_Actions.getAction("HelpOnlineCommunity"), SIGNAL(triggered()),
+  connect(m_Actions.action("HelpOnlineCommunity"), SIGNAL(triggered()),
           this, SLOT(whenOnlineCommunityAsked()));
-  connect(m_Actions.getAction("HelpEmail"), SIGNAL(triggered()),
+  connect(m_Actions.action("HelpEmail"), SIGNAL(triggered()),
           this, SLOT(whenEmailAsked()));
-  connect(m_Actions.getAction("HelpExamplesOpen"), SIGNAL(triggered()),
+  connect(m_Actions.action("HelpExamplesOpen"), SIGNAL(triggered()),
           this, SLOT(whenOpenExampleAsked()));
-  connect(m_Actions.getAction("HelpExamplesRestore"), SIGNAL(triggered()),
+  connect(m_Actions.action("HelpExamplesRestore"), SIGNAL(triggered()),
           this, SLOT(whenRestoreExamplesAsked()));
-  connect(m_Actions.getAction("HelpAbout"), SIGNAL(triggered()),
+  connect(m_Actions.action("HelpAbout"), SIGNAL(triggered()),
           this, SLOT(whenAboutAsked()));
 
   // Market
-  connect(m_Actions.getAction("MarketAccess"), SIGNAL(triggered()),
+  connect(m_Actions.action("MarketAccess"), SIGNAL(triggered()),
           this, SLOT(whenMarketAsked()));
 
 
@@ -141,7 +141,7 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   for (unsigned int i=0;i<RecentActions.size();i++)
     connect(RecentActions[i], SIGNAL(triggered()), this, SLOT(whenOpenRecentAsked()));
 
-  m_MainWindow.setQuitAction(m_Actions.getAction("ProjectQuit"));
+  m_MainWindow.setQuitAction(m_Actions.action("ProjectQuit"));
 
 }
 
@@ -195,7 +195,7 @@ void AppCoordinator::setCurrentModule(AbstractModule* Module)
   unsetCurrentModule();
   mp_CurrentModule = Module;
 
-  m_MainWindow.setWidget(Module->getMainWidget(&m_MainWindow));
+  m_MainWindow.setWidget(Module->mainWidgetRebuilt(&m_MainWindow));
 }
 
 
@@ -241,8 +241,8 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
     if (mp_DockWidget == NULL)
       mp_DockWidget = new QDockWidget(tr("Project dashboard"),&m_MainWindow);
 
-    DashboardFrame* DockedWidget = (DashboardFrame*)(((ProjectModule*)Module)->getDockWidget(mp_DockWidget));
-    DockedWidget->updateOrientation(openfluid::base::PreferencesManager::getInstance()->getDockPosition());
+    DashboardFrame* DockedWidget = (DashboardFrame*)(((ProjectModule*)Module)->dockWidgetRebuilt(mp_DockWidget));
+    DockedWidget->updateOrientation(openfluid::base::PreferencesManager::instance()->getDockPosition());
 
     mp_DockWidget->setObjectName("DockWidget");
     mp_DockWidget->setWidget(DockedWidget);
@@ -254,7 +254,7 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
                                          "QDockWidget::title {padding : 5px; font: bold; }")
                                         .arg(BUILDER_TOOLBAR_BGCOLOR));
 
-    m_MainWindow.addDockWidget(openfluid::base::PreferencesManager::getInstance()->getDockPosition(),
+    m_MainWindow.addDockWidget(openfluid::base::PreferencesManager::instance()->getDockPosition(),
                                mp_DockWidget);
 
     connect(mp_DockWidget,SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
@@ -274,11 +274,11 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
             this,SLOT(enableRun(bool)));
 
     connect((ProjectModule*)mp_CurrentModule,SIGNAL(refreshWaresEnabled(bool)),
-            m_Actions.getAction("WaresRefresh"),SLOT(setEnabled(bool)));
+            m_Actions.action("WaresRefresh"),SLOT(setEnabled(bool)));
 
     enableRun(((ProjectModule*)Module)->isOkForSimulation());
 
-    m_Actions.getAction("WaresRefresh")->setEnabled(!openfluid::base::PreferencesManager::getInstance()->isWaresWatchersActive());
+    m_Actions.action("WaresRefresh")->setEnabled(!openfluid::base::PreferencesManager::instance()->isWaresWatchersActive());
   }
   catch (openfluid::base::Exception& E)
   {
@@ -299,8 +299,8 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
                                    NewProjectDialog::ImportType IType, const QString& ISource)
 {
 
-  openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::getInstance();
-  openfluid::base::PreferencesManager* PrefsMan = openfluid::base::PreferencesManager::getInstance();
+  openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::instance();
+  openfluid::base::PreferencesManager* PrefsMan = openfluid::base::PreferencesManager::instance();
 
   if (!PrjMan->create(Path.toStdString(), Name.toStdString(),
                       Description.toStdString(), Authors.toStdString(),
@@ -312,11 +312,11 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
     openfluid::fluidx::FluidXDescriptor FXD(NULL);
     openfluid::core::DateTime DT;
     DT.setFromISOString(PrefsMan->getBegin().toStdString());
-    FXD.getRunDescriptor().setBeginDate(DT);
+    FXD.runDescriptor().setBeginDate(DT);
     DT.setFromISOString(PrefsMan->getEnd().toStdString());
-    FXD.getRunDescriptor().setEndDate(DT);
-    FXD.getRunDescriptor().setDeltaT(PrefsMan->getDeltaT());
-    FXD.getRunDescriptor().setFilled(true);
+    FXD.runDescriptor().setEndDate(DT);
+    FXD.runDescriptor().setDeltaT(PrefsMan->getDeltaT());
+    FXD.runDescriptor().setFilled(true);
 
     FXD.writeToManyFiles(PrjMan->getInputDir());
 
@@ -342,9 +342,9 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
 void AppCoordinator::openProject(const QString& Name, const QString& Path)
 {
   // update recents projects
-  openfluid::base::PreferencesManager::getInstance()->addRecentProject(
-        QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()),
-        QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
+  openfluid::base::PreferencesManager::instance()->addRecentProject(
+        QString::fromStdString(openfluid::base::ProjectManager::instance()->getName()),
+        QString::fromStdString(openfluid::base::ProjectManager::instance()->getPath()));
 
   if (setProjectModule(Path))
   {
@@ -360,7 +360,7 @@ void AppCoordinator::openProject(const QString& Name, const QString& Path)
 
 bool AppCoordinator::closeProject()
 {
-  if (m_Actions.getAction("ProjectSave")->isEnabled())
+  if (m_Actions.action("ProjectSave")->isEnabled())
   {
     QMessageBox::StandardButton Ret = QMessageBox::question(&m_MainWindow,
                                                             tr("Close project"),
@@ -369,13 +369,13 @@ bool AppCoordinator::closeProject()
     if (Ret != QMessageBox::Cancel)
     {
       if (Ret == QMessageBox::Save) whenSaveAsked();
-      m_Actions.getAction("ProjectSave")->setEnabled(false);
-      openfluid::base::ProjectManager::getInstance()->close();
+      m_Actions.action("ProjectSave")->setEnabled(false);
+      openfluid::base::ProjectManager::instance()->close();
       return true;
     }
     return false;
   }
-  openfluid::base::ProjectManager::getInstance()->close();
+  openfluid::base::ProjectManager::instance()->close();
   return true;
 }
 
@@ -458,12 +458,12 @@ void AppCoordinator::whenOpenAsked()
   {
     // TODO develop custom dialog for opening projects
     QString SelectedDir = QFileDialog::getExistingDirectory(&m_MainWindow,tr("Open project"),
-                                                            openfluid::base::PreferencesManager::getInstance()->getProjectsPath());
+                                                            openfluid::base::PreferencesManager::instance()->getProjectsPath());
     if (SelectedDir !=  "")
     {
       if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
       {
-        openfluid::base::ProjectManager::getInstance()->open(SelectedDir.toStdString());
+        openfluid::base::ProjectManager::instance()->open(SelectedDir.toStdString());
 
         try
         {
@@ -473,7 +473,7 @@ void AppCoordinator::whenOpenAsked()
         }
         catch (openfluid::base::Exception& E)
         {
-          openfluid::base::ProjectManager::getInstance()->close();
+          openfluid::base::ProjectManager::instance()->close();
           QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;
@@ -506,7 +506,7 @@ void AppCoordinator::whenOpenRecentAsked()
 
       if (openfluid::base::ProjectManager::isProject(ProjectPath.toStdString()))
       {
-        openfluid::base::ProjectManager::getInstance()->open(ProjectPath.toStdString());
+        openfluid::base::ProjectManager::instance()->open(ProjectPath.toStdString());
 
         try
         {
@@ -516,7 +516,7 @@ void AppCoordinator::whenOpenRecentAsked()
         }
         catch (openfluid::base::Exception& E)
         {
-          openfluid::base::ProjectManager::getInstance()->close();
+          openfluid::base::ProjectManager::instance()->close();
           QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;
@@ -540,11 +540,11 @@ void AppCoordinator::whenOpenRecentAsked()
 
 void AppCoordinator::whenReloadAsked()
 {
-  QString ProjectDir = QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath());
+  QString ProjectDir = QString::fromStdString(openfluid::base::ProjectManager::instance()->getPath());
 
   if (mp_CurrentModule->whenReloadAsked())
   {
-    openfluid::base::ProjectManager::getInstance()->close();
+    openfluid::base::ProjectManager::instance()->close();
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -554,7 +554,7 @@ void AppCoordinator::whenReloadAsked()
       {
         unsetCurrentModule();
 
-        openfluid::base::ProjectManager::getInstance()->open(ProjectDir.toStdString());
+        openfluid::base::ProjectManager::instance()->open(ProjectDir.toStdString());
 
         try
         {
@@ -563,7 +563,7 @@ void AppCoordinator::whenReloadAsked()
         }
         catch (openfluid::base::Exception& E)
         {
-          openfluid::base::ProjectManager::getInstance()->close();
+          openfluid::base::ProjectManager::instance()->close();
           QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;
@@ -603,9 +603,9 @@ void AppCoordinator::whenSaveAsAsked()
 {
   if (mp_CurrentModule->whenSaveAsAsked())
   {
-    openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::getInstance();
+    openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::instance();
 
-    openfluid::base::PreferencesManager::getInstance()->addRecentProject(
+    openfluid::base::PreferencesManager::instance()->addRecentProject(
           QString::fromStdString(PrjMan->getName()),
           QString::fromStdString(PrjMan->getPath()));
 
@@ -707,7 +707,7 @@ void AppCoordinator::whenViewRestoreAsked()
 {
   m_MainWindow.removeDockWidget(mp_DockWidget);
   m_MainWindow.addDockWidget(Qt::LeftDockWidgetArea, mp_DockWidget);
-  openfluid::base::PreferencesManager::getInstance()->setDockPosition(Qt::LeftDockWidgetArea);
+  openfluid::base::PreferencesManager::instance()->setDockPosition(Qt::LeftDockWidgetArea);
   mp_DockWidget->setFloating(false);
   mp_DockWidget->setVisible(true);
 }
@@ -767,7 +767,7 @@ void AppCoordinator::whenOpenExampleAsked()
 
       if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
       {
-        openfluid::base::ProjectManager::getInstance()->open(SelectedDir.toStdString());
+        openfluid::base::ProjectManager::instance()->open(SelectedDir.toStdString());
 
         try
         {
@@ -777,7 +777,7 @@ void AppCoordinator::whenOpenExampleAsked()
         }
         catch (openfluid::base::Exception& E)
         {
-          openfluid::base::ProjectManager::getInstance()->close();
+          openfluid::base::ProjectManager::instance()->close();
           QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;
@@ -832,8 +832,8 @@ void AppCoordinator::whenRestoreExamplesAsked()
 void AppCoordinator::whenAboutAsked()
 {
   openfluid::ui::common::AboutDialog AboutDlg(&m_MainWindow,
-                                              m_Actions.getAction("HelpOnlineWeb"),
-                                              m_Actions.getAction("HelpEmail"));
+                                              m_Actions.action("HelpOnlineWeb"),
+                                              m_Actions.action("HelpEmail"));
 
   AboutDlg.exec();
 }
@@ -896,7 +896,7 @@ void AppCoordinator::whenLaunchDevStudioAsked()
 
 void AppCoordinator::enableSave()
 {
-  m_Actions.getAction("ProjectSave")->setEnabled(true);
+  m_Actions.action("ProjectSave")->setEnabled(true);
 }
 
 
@@ -906,7 +906,7 @@ void AppCoordinator::enableSave()
 
 void AppCoordinator::disableSave()
 {
-  m_Actions.getAction("ProjectSave")->setEnabled(false);
+  m_Actions.action("ProjectSave")->setEnabled(false);
 }
 
 
@@ -916,7 +916,7 @@ void AppCoordinator::disableSave()
 
 void AppCoordinator::saveDockArea(Qt::DockWidgetArea Area)
 {
-  openfluid::base::PreferencesManager::getInstance()->setDockPosition(Area);
+  openfluid::base::PreferencesManager::instance()->setDockPosition(Area);
 }
 
 
@@ -926,5 +926,5 @@ void AppCoordinator::saveDockArea(Qt::DockWidgetArea Area)
 
 void AppCoordinator::enableRun(bool Enabled)
 {
-  m_Actions.getAction("SimulationRun")->setEnabled(Enabled);
+  m_Actions.action("SimulationRun")->setEnabled(Enabled);
 }

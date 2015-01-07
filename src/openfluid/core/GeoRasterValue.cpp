@@ -74,7 +74,7 @@ openfluid::core::UnstructuredValue::UnstructuredType GeoRasterValue::getType() c
 // =====================================================================
 // =====================================================================
 
-GDALDataset* GeoRasterValue::get()
+GDALDataset* GeoRasterValue::data()
 {
   if (!mp_Data)
     tryToOpenSource();

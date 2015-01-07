@@ -142,7 +142,7 @@ class OPENFLUID_API RuntimeEnvironment
 
   public:
 
-    static RuntimeEnvironment* getInstance();
+    static RuntimeEnvironment* instance();
 
     /**
       Destructor
@@ -420,7 +420,7 @@ class OPENFLUID_API RuntimeEnvironment
       Returns the extra properties list
       @return the extra properties list
     */
-    inline openfluid::base::EnvironmentProperties& getExtraProperties()
+    inline openfluid::base::EnvironmentProperties& extraProperties()
       { return m_ExtraProperties; };
 
     /**
@@ -462,7 +462,7 @@ class OPENFLUID_API RuntimeEnvironment
     void setWriteSimReport(bool WriteIt)
       { m_WriteSimReport = WriteIt; mp_WareEnv->setValue("mode.writereport",m_WriteSimReport); };
 
-    openfluid::base::EnvironmentProperties* getWareEnvironment() const
+    openfluid::base::EnvironmentProperties* wareEnvironment() const
       { return mp_WareEnv; };
 
 

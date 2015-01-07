@@ -62,7 +62,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getAttributes()->setValue(AttrName,Val))
+    if (!UnitPtr->attributes()->setValue(AttrName,Val))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_SetAttribute",
                                                 "Unable to set value for attribute "+ AttrName);
   }
@@ -88,7 +88,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getAttributes()->setValue(AttrName,openfluid::core::DoubleValue(Val)))
+    if (!UnitPtr->attributes()->setValue(AttrName,openfluid::core::DoubleValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_SetAttribute",
                                                 "Unable to set double value for attribute "+ AttrName);
   }
@@ -114,7 +114,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getAttributes()->setValue(AttrName,openfluid::core::IntegerValue(Val)))
+    if (!UnitPtr->attributes()->setValue(AttrName,openfluid::core::IntegerValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_SetAttribute",
                                                 "Unable to set long value for attribute "+ AttrName);
   }
@@ -140,7 +140,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getAttributes()->setValue(AttrName,Val))
+    if (!UnitPtr->attributes()->setValue(AttrName,Val))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_SetAttribute",
                                                 "Unable to set string value for attribute "+ AttrName);
   }
@@ -175,7 +175,7 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
   if (&aUnit != NULL)
   {
-    if (!aUnit.getVariables()->appendValue(VarName,0,Val))
+    if (!aUnit.variables()->appendValue(VarName,0,Val))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_InitializeVariable",
                                                 "Error initializing value for variable "+ VarName);
   }
@@ -200,7 +200,7 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
    */
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,0,openfluid::core::DoubleValue(Val)))
+    if (!UnitPtr->variables()->appendValue(VarName,0,openfluid::core::DoubleValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_InitializeVariable",
                                                 "Error appending double value for variable "+ VarName);
   }
@@ -223,7 +223,7 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,0,openfluid::core::IntegerValue(Val)))
+    if (!UnitPtr->variables()->appendValue(VarName,0,openfluid::core::IntegerValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_InitializeVariable",
                                                 "Error appending long value for variable "+ VarName);
   }
@@ -246,7 +246,7 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,0,openfluid::core::BooleanValue(Val)))
+    if (!UnitPtr->variables()->appendValue(VarName,0,openfluid::core::BooleanValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_InitializeVariable",
                                                 "Error appending boolean value for variable "+ VarName);
   }
@@ -269,7 +269,7 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,0,openfluid::core::StringValue(Val)))
+    if (!UnitPtr->variables()->appendValue(VarName,0,openfluid::core::StringValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_InitializeVariable",
                                                 "Error appending string value for variable "+ VarName);
   }
@@ -304,7 +304,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
   if (&aUnit != NULL)
   {
-    if (!aUnit.getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
+    if (!aUnit.variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_AppendVariable",
                                                 "Error appending value for variable "+ VarName);
   }
@@ -329,7 +329,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
    */
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::DoubleValue(Val)))
+    if (!UnitPtr->variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::DoubleValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_AppendVariable",
                                                 "Error appending double value for variable "+ VarName);
   }
@@ -352,7 +352,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
+    if (!UnitPtr->variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_AppendVariable",
                                                 "Error appending long value for variable "+ VarName);
   }
@@ -375,7 +375,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
+    if (!UnitPtr->variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_AppendVariable",
                                                 "Error appending boolean value for variable "+ VarName);
   }
@@ -398,7 +398,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
+    if (!UnitPtr->variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_AppendVariable",
                                                 "Error appending string value for variable "+ VarName);
   }
@@ -421,7 +421,7 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
+    if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_SetVariable",
                                                 "Error setting value for variable "+ VarName);
   }
@@ -447,7 +447,7 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
    */
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::DoubleValue(Val)))
+    if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::DoubleValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_SetVariable",
                                                 "Error setting double value for variable "+ VarName);
   }
@@ -470,7 +470,7 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
+    if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_SetVariable",
                                                 "Error setting long value for variable "+ VarName);
   }
@@ -493,7 +493,7 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
+    if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_SetVariable",
                                                 "Error setting boolean value for variable "+ VarName);
   }
@@ -516,7 +516,7 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
+    if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
       throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_SetVariable",
                                                 "Error setting string value for variable "+ VarName);
   }
@@ -538,7 +538,7 @@ void SimulationContributorWare::OPENFLUID_AppendEvent(openfluid::core::SpatialUn
 
   if (UnitPtr != NULL)
   {
-    UnitPtr->getEvents()->addEvent(Ev);
+    UnitPtr->events()->addEvent(Ev);
   }
   else throw openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_AppendEvent",
                                                  "Unit is NULL");
@@ -581,7 +581,7 @@ void SimulationContributorWare::OPENFLUID_DeleteUnit(openfluid::core::UnitClass_
                               "SimulationContributorWare::OPENFLUID_DeleteUnit",
                               "Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
-  openfluid::core::SpatialUnit* TheUnit = mp_SpatialData->getUnit(ClassName,ID);
+  openfluid::core::SpatialUnit* TheUnit = mp_SpatialData->spatialUnit(ClassName,ID);
 
   if (TheUnit == NULL)
     openfluid::base::FrameworkException("SimulationContributorWare::OPENFLUID_DeleteUnit",
@@ -605,8 +605,8 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::U
                               "SimulationContributorWare::OPENFLUID_AddFromToConnection",
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
-  openfluid::core::SpatialUnit* FromUnit = mp_SpatialData->getUnit(ClassNameFrom, IDFrom);
-  openfluid::core::SpatialUnit* ToUnit = mp_SpatialData->getUnit(ClassNameTo, IDTo);
+  openfluid::core::SpatialUnit* FromUnit = mp_SpatialData->spatialUnit(ClassNameFrom, IDFrom);
+  openfluid::core::SpatialUnit* ToUnit = mp_SpatialData->spatialUnit(ClassNameTo, IDTo);
 
   return OPENFLUID_AddFromToConnection(FromUnit, ToUnit);
 }
@@ -646,8 +646,8 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core
                               "SimulationContributorWare::OPENFLUID_RemoveFromToConnection",
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
-  openfluid::core::SpatialUnit* FromUnit = mp_SpatialData->getUnit(ClassNameFrom, IDFrom);
-  openfluid::core::SpatialUnit* ToUnit = mp_SpatialData->getUnit(ClassNameTo, IDTo);
+  openfluid::core::SpatialUnit* FromUnit = mp_SpatialData->spatialUnit(ClassNameFrom, IDFrom);
+  openfluid::core::SpatialUnit* ToUnit = mp_SpatialData->spatialUnit(ClassNameTo, IDTo);
 
   return OPENFLUID_RemoveFromToConnection(FromUnit, ToUnit);
 }
@@ -685,8 +685,8 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
                               "SimulationContributorWare::OPENFLUID_AddChildParentConnection",
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
-  openfluid::core::SpatialUnit* ChildUnit = mp_SpatialData->getUnit(ClassNameChild, IDChild);
-  openfluid::core::SpatialUnit* ParentUnit = mp_SpatialData->getUnit(ClassNameParent, IDParent);
+  openfluid::core::SpatialUnit* ChildUnit = mp_SpatialData->spatialUnit(ClassNameChild, IDChild);
+  openfluid::core::SpatialUnit* ParentUnit = mp_SpatialData->spatialUnit(ClassNameParent, IDParent);
 
   return OPENFLUID_AddChildParentConnection(ChildUnit, ParentUnit);
 }
@@ -726,8 +726,8 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid:
                               "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection",
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
-  openfluid::core::SpatialUnit* ChildUnit = mp_SpatialData->getUnit(ClassNameChild, IDChild);
-  openfluid::core::SpatialUnit* ParentUnit = mp_SpatialData->getUnit(ClassNameParent, IDParent);
+  openfluid::core::SpatialUnit* ChildUnit = mp_SpatialData->spatialUnit(ClassNameChild, IDChild);
+  openfluid::core::SpatialUnit* ParentUnit = mp_SpatialData->spatialUnit(ClassNameParent, IDParent);
 
   return OPENFLUID_RemoveChildParentConnection(ChildUnit, ParentUnit);
 }

@@ -95,7 +95,7 @@ class OPENFLUID_API ProjectManager
 
   public:
 
-    static ProjectManager* getInstance();
+    static ProjectManager* instance();
 
     ~ProjectManager();
 
