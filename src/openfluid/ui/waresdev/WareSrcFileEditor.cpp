@@ -70,7 +70,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
   new WareSrcSyntaxHighlighter(
       document(),
-      WareSrcFiletypeManager::getInstance()->getHighlightingRules(m_FilePath));
+      WareSrcFiletypeManager::instance()->getHighlightingRules(m_FilePath));
 
   // TODO get defaults from conf file
   // setStyleSheet("fFont: 11pt \"Courier\";");

@@ -81,30 +81,30 @@ WareSrcWidget::WareSrcWidget(
 
     ui->Toolbar_Layout->addWidget(TB);
 
-    connect(TB->getAction("NewFile"), SIGNAL(triggered()), this,
+    connect(TB->action("NewFile"), SIGNAL(triggered()), this,
             SLOT(showNotYetImplemented()));
-    connect(TB->getAction("OpenFile"), SIGNAL(triggered()), this,
+    connect(TB->action("OpenFile"), SIGNAL(triggered()), this,
             SLOT(showNotYetImplemented()));
-    connect(TB->getAction("SaveFile"), SIGNAL(triggered()), this,
+    connect(TB->action("SaveFile"), SIGNAL(triggered()), this,
             SLOT(saveCurrentEditor()));
-    connect(TB->getAction("SaveAsFile"), SIGNAL(triggered()), this,
+    connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this,
             SIGNAL(saveAsRequested()));
-    connect(TB->getAction("CloseFile"), SIGNAL(triggered()), this,
+    connect(TB->action("CloseFile"), SIGNAL(triggered()), this,
             SLOT(closeCurrentEditor()));
-    connect(TB->getAction("DeleteFile"), SIGNAL(triggered()), this,
+    connect(TB->action("DeleteFile"), SIGNAL(triggered()), this,
             SLOT(showNotYetImplemented()));
 
-    connect(TB->getAction("Release"), SIGNAL(triggered()), this,
+    connect(TB->action("Release"), SIGNAL(triggered()), this,
             SLOT(setReleaseMode()));
-    connect(TB->getAction("Debug"), SIGNAL(triggered()), this,
+    connect(TB->action("Debug"), SIGNAL(triggered()), this,
             SLOT(setDebugMode()));
-    connect(TB->getAction("BuildInstall"), SIGNAL(triggered()), this,
+    connect(TB->action("BuildInstall"), SIGNAL(triggered()), this,
             SLOT(setBuildWithInstallMode()));
-    connect(TB->getAction("BuildOnly"), SIGNAL(triggered()), this,
+    connect(TB->action("BuildOnly"), SIGNAL(triggered()), this,
             SLOT(setBuildNoInstallMode()));
-    connect(TB->getAction("Configure"), SIGNAL(triggered()), this,
+    connect(TB->action("Configure"), SIGNAL(triggered()), this,
             SLOT(configure()));
-    connect(TB->getAction("Build"), SIGNAL(triggered()), this, SLOT(build()));
+    connect(TB->action("Build"), SIGNAL(triggered()), this, SLOT(build()));
   }
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this,
@@ -349,7 +349,7 @@ bool WareSrcWidget::setCurrent(
 // =====================================================================
 
 
-openfluid::waresdev::WareSrcContainer& WareSrcWidget::getWareSrcContainer()
+openfluid::waresdev::WareSrcContainer& WareSrcWidget::wareSrcContainer()
 {
   return m_Container;
 }

@@ -304,7 +304,7 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
 // =====================================================================
 
 
-WareSrcFiletypeManager* WareSrcFiletypeManager::getInstance()
+WareSrcFiletypeManager* WareSrcFiletypeManager::instance()
 {
   if (!mp_Instance)
     mp_Instance = new WareSrcFiletypeManager();

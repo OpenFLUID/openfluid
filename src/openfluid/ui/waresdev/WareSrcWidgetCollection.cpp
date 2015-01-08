@@ -63,7 +63,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget,
                                                  bool IsStandalone) :
     mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(
-        openfluid::waresdev::WareSrcManager::getInstance()), m_DefaultConfigMode(
+        openfluid::waresdev::WareSrcManager::instance()), m_DefaultConfigMode(
         openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE), m_DefaultBuildMode(
         openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL)
 {
@@ -174,7 +174,7 @@ void WareSrcWidgetCollection::closeWareTab(WareSrcWidget* Ware)
 {
   mp_TabWidget->removeTab(mp_TabWidget->indexOf(Ware));
 
-  m_WareSrcWidgetByPath.remove(Ware->getWareSrcContainer().getAbsolutePath());
+  m_WareSrcWidgetByPath.remove(Ware->wareSrcContainer().getAbsolutePath());
 
   delete Ware;
 }
@@ -278,7 +278,7 @@ QString WareSrcWidgetCollection::getCurrentPath()
 {
   try
   {
-    return getCurrentWidgetContainer().getAbsolutePath();
+    return currentWidgetContainer().getAbsolutePath();
   }
   catch (openfluid::base::FrameworkException& e)
   {
@@ -291,11 +291,11 @@ QString WareSrcWidgetCollection::getCurrentPath()
 // =====================================================================
 
 
-openfluid::waresdev::WareSrcContainer& WareSrcWidgetCollection::getCurrentWidgetContainer()
+openfluid::waresdev::WareSrcContainer& WareSrcWidgetCollection::currentWidgetContainer()
 {
   if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
       mp_TabWidget->currentWidget()))
-    return Widget->getWareSrcContainer();
+    return Widget->wareSrcContainer();
 
   throw openfluid::base::FrameworkException(
       "WareSrcWidgetCollection::getCurrentWidgetContainer",
@@ -359,7 +359,7 @@ void WareSrcWidgetCollection::configure()
 {
   try
   {
-    getCurrentWidgetContainer().configure();
+    currentWidgetContainer().configure();
   }
   catch (openfluid::base::FrameworkException& e)
   {
@@ -376,7 +376,7 @@ void WareSrcWidgetCollection::build()
 {
   try
   {
-    getCurrentWidgetContainer().build();
+    currentWidgetContainer().build();
   }
   catch (openfluid::base::FrameworkException& e)
   {
@@ -447,7 +447,7 @@ void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
     QString CurrentPath = CurrentWare->getCurrentFilePath();
 
     QString TopDir =
-        TopDirectory.isEmpty() ? CurrentWare->getWareSrcContainer()
+        TopDirectory.isEmpty() ? CurrentWare->wareSrcContainer()
                                      .getAbsolutePath() :
                                  TopDirectory;
 

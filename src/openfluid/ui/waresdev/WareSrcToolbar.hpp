@@ -62,7 +62,7 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
 
     ~WareSrcToolbar();
 
-    QAction* getAction(const QString& ActionName);
+    QAction* action(const QString& ActionName);
 };
 
 } } }  // namespaces

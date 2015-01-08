@@ -98,17 +98,17 @@ MainWindow::MainWindow() :
   qApp,
           SLOT(quit()));
 
-  connect(mp_Toolbar->getAction("NewFile"), SIGNAL(triggered()), this,
+  connect(mp_Toolbar->action("NewFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
-  connect(mp_Toolbar->getAction("OpenFile"), SIGNAL(triggered()), this,
+  connect(mp_Toolbar->action("OpenFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
-  connect(mp_Toolbar->getAction("SaveFile"), SIGNAL(triggered()), mp_Collection,
+  connect(mp_Toolbar->action("SaveFile"), SIGNAL(triggered()), mp_Collection,
           SLOT(saveCurrentEditor()));
-  connect(mp_Toolbar->getAction("SaveAsFile"), SIGNAL(triggered()),
+  connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()),
           mp_Collection, SLOT(saveCurrentEditorAs()));
-  connect(mp_Toolbar->getAction("CloseFile"), SIGNAL(triggered()),
+  connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()),
           mp_Collection, SLOT(closeCurrentEditor()));
-  connect(mp_Toolbar->getAction("DeleteFile"), SIGNAL(triggered()), this,
+  connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
 
   connect(m_Actions["Copy"], SIGNAL(triggered()), this,
@@ -124,21 +124,21 @@ MainWindow::MainWindow() :
   connect(m_Actions["GoToLine"], SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
 
-  connect(mp_Toolbar->getAction("Release"), SIGNAL(triggered()), mp_Collection,
+  connect(mp_Toolbar->action("Release"), SIGNAL(triggered()), mp_Collection,
           SLOT(setReleaseMode()));
-  connect(mp_Toolbar->getAction("Debug"), SIGNAL(triggered()), mp_Collection,
+  connect(mp_Toolbar->action("Debug"), SIGNAL(triggered()), mp_Collection,
           SLOT(setDebugMode()));
-  connect(mp_Toolbar->getAction("BuildInstall"), SIGNAL(triggered()),
+  connect(mp_Toolbar->action("BuildInstall"), SIGNAL(triggered()),
           mp_Collection, SLOT(setBuildWithInstallMode()));
-  connect(mp_Toolbar->getAction("BuildOnly"), SIGNAL(triggered()),
+  connect(mp_Toolbar->action("BuildOnly"), SIGNAL(triggered()),
           mp_Collection, SLOT(setBuildNoInstallMode()));
-  connect(mp_Toolbar->getAction("Configure"), SIGNAL(triggered()),
+  connect(mp_Toolbar->action("Configure"), SIGNAL(triggered()),
           mp_Collection, SLOT(configure()));
-  connect(mp_Toolbar->getAction("Build"), SIGNAL(triggered()), mp_Collection,
+  connect(mp_Toolbar->action("Build"), SIGNAL(triggered()), mp_Collection,
           SLOT(build()));
-  connect(mp_Toolbar->getAction("OpenExplorer"), SIGNAL(triggered()),
+  connect(mp_Toolbar->action("OpenExplorer"), SIGNAL(triggered()),
           mp_Collection, SLOT(openExplorer()));
-  connect(mp_Toolbar->getAction("OpenTerminal"), SIGNAL(triggered()),
+  connect(mp_Toolbar->action("OpenTerminal"), SIGNAL(triggered()),
           mp_Collection, SLOT(openTerminal()));
 
   connect(ui->SimExplorer, SIGNAL(openAsked(const QString&)), mp_Collection,
@@ -250,12 +250,12 @@ void MainWindow::createMenus()
   SubMenu->addAction(m_Actions["OpenExtension"]);
   Menu->addAction(m_Actions["DeleteWare"]);
   Menu->addSeparator();
-  Menu->addAction(mp_Toolbar->getAction("NewFile"));
-  Menu->addAction(mp_Toolbar->getAction("OpenFile"));
-  Menu->addAction(mp_Toolbar->getAction("SaveFile"));
+  Menu->addAction(mp_Toolbar->action("NewFile"));
+  Menu->addAction(mp_Toolbar->action("OpenFile"));
+  Menu->addAction(mp_Toolbar->action("SaveFile"));
   Menu->addAction(m_Actions["SaveAsFile"]);
-  Menu->addAction(mp_Toolbar->getAction("CloseFile"));
-  Menu->addAction(mp_Toolbar->getAction("DeleteFile"));
+  Menu->addAction(mp_Toolbar->action("CloseFile"));
+  Menu->addAction(mp_Toolbar->action("DeleteFile"));
   Menu->addSeparator();
   Menu->addAction(m_Actions.value("SwitchWorkspace"));
   Menu->addAction(m_Actions.value("Quit"));
@@ -269,18 +269,18 @@ void MainWindow::createMenus()
   Menu->addAction(m_Actions.value("GoToLine"));
 
   Menu = menuBar()->addMenu(tr("Build"));
-  Menu->addAction(mp_Toolbar->getAction("Configure"));
+  Menu->addAction(mp_Toolbar->action("Configure"));
   SubMenu = Menu->addMenu(tr("Set active configuration"));
-  SubMenu->addAction(mp_Toolbar->getAction("Release"));
-  SubMenu->addAction(mp_Toolbar->getAction("Debug"));
-  Menu->addAction(mp_Toolbar->getAction("Build"));
+  SubMenu->addAction(mp_Toolbar->action("Release"));
+  SubMenu->addAction(mp_Toolbar->action("Debug"));
+  Menu->addAction(mp_Toolbar->action("Build"));
   SubMenu = Menu->addMenu(tr("Set active build action"));
-  SubMenu->addAction(mp_Toolbar->getAction("BuildInstall"));
-  SubMenu->addAction(mp_Toolbar->getAction("BuildOnly"));
+  SubMenu->addAction(mp_Toolbar->action("BuildInstall"));
+  SubMenu->addAction(mp_Toolbar->action("BuildOnly"));
 
   Menu = menuBar()->addMenu(tr("Tools"));
-  Menu->addAction(mp_Toolbar->getAction("OpenTerminal"));
-  Menu->addAction(mp_Toolbar->getAction("OpenExplorer"));
+  Menu->addAction(mp_Toolbar->action("OpenTerminal"));
+  Menu->addAction(mp_Toolbar->action("OpenExplorer"));
 }
 
 
@@ -291,7 +291,7 @@ void MainWindow::createMenus()
 void MainWindow::onSaveAsRequested()
 {
   mp_Collection->saveCurrentEditorAs(
-      openfluid::waresdev::WareSrcManager::getInstance()->getWorkspacePath());
+      openfluid::waresdev::WareSrcManager::instance()->getWorkspacePath());
 }
 
 

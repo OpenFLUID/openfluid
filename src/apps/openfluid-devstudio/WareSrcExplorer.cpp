@@ -83,7 +83,7 @@ void WareSrcExplorer::setType(
 {
   m_WareType = Type;
 
-  QString Path = openfluid::waresdev::WareSrcManager::getInstance()
+  QString Path = openfluid::waresdev::WareSrcManager::instance()
       ->getWareTypePath(m_WareType);
 
   mp_Model = new WareSrcExplorerModel(Path);

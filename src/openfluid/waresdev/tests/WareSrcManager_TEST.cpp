@@ -135,7 +135,7 @@ BOOST_FIXTURE_TEST_CASE(constructor,F)
   BOOST_CHECK(!QDir(m_WaresdevPath).exists());
   BOOST_CHECK(!QDir(m_SimulatorsPath).exists());
 
-  openfluid::waresdev::WareSrcManager::getInstance();
+  openfluid::waresdev::WareSrcManager::instance();
 
   BOOST_CHECK(QDir(m_WaresdevPath).exists());
   BOOST_CHECK(QDir(m_SimulatorsPath).exists());
@@ -149,7 +149,7 @@ BOOST_FIXTURE_TEST_CASE(constructor,F)
 BOOST_FIXTURE_TEST_CASE(getWareTypePath,F)
 {
   BOOST_CHECK_EQUAL(
-      openfluid::waresdev::WareSrcManager::getInstance()->getWareTypePath(
+      openfluid::waresdev::WareSrcManager::instance()->getWareTypePath(
           openfluid::waresdev::WareSrcManager::SIMULATOR).toStdString(),
       m_SimulatorsPath.toStdString());
 }
@@ -165,7 +165,7 @@ BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
 
 
   openfluid::waresdev::WareSrcManager* Manager =
-      openfluid::waresdev::WareSrcManager::getInstance();
+      openfluid::waresdev::WareSrcManager::instance();
 
   openfluid::waresdev::WareSrcManager::PathInfo Info;
 

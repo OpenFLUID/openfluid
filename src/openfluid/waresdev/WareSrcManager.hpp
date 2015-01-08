@@ -101,7 +101,7 @@ class OPENFLUID_API WareSrcManager
 
   public:
 
-    static WareSrcManager* getInstance();
+    static WareSrcManager* instance();
 
     /**
      * Set default internal paths (workspace and waresdev sub dirs) and create them if they don't exist.

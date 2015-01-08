@@ -79,7 +79,7 @@ WareSrcManager::~WareSrcManager()
 // =====================================================================
 
 
-WareSrcManager* WareSrcManager::getInstance()
+WareSrcManager* WareSrcManager::instance()
 {
   if (!mp_Instance)
     mp_Instance = new WareSrcManager();

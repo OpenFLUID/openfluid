@@ -84,7 +84,7 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     /**
      * @throw openfluid::base::FrameworkException
      */
-    openfluid::waresdev::WareSrcContainer& getCurrentWidgetContainer();
+    openfluid::waresdev::WareSrcContainer& currentWidgetContainer();
 
     bool isModified();
 

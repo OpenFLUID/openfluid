@@ -111,7 +111,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
      */
     bool setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
 
-    openfluid::waresdev::WareSrcContainer& getWareSrcContainer();
+    openfluid::waresdev::WareSrcContainer& wareSrcContainer();
 
     bool isModified();
 

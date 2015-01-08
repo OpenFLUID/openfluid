@@ -54,7 +54,7 @@
 BOOST_AUTO_TEST_CASE(parseSyntaxFile)
 {
   openfluid::ui::waresdev::WareSrcFiletypeManager* Manager =
-      openfluid::ui::waresdev::WareSrcFiletypeManager::getInstance();
+      openfluid::ui::waresdev::WareSrcFiletypeManager::instance();
 
   BOOST_CHECK(Manager->getHighlightingRules("file.wrongtype").isEmpty());
   BOOST_CHECK(!Manager->getHighlightingRules("file.cpp").isEmpty());

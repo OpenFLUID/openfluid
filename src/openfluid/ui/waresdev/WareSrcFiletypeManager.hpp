@@ -123,7 +123,7 @@ class OPENFLUID_API WareSrcFiletypeManager
 
     ~WareSrcFiletypeManager();
 
-    static WareSrcFiletypeManager* getInstance();
+    static WareSrcFiletypeManager* instance();
 
     QMap<QString, QString> getIconsByFileExtensionList();
 

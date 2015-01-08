@@ -61,7 +61,7 @@ WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
   m_DefaultIcons["*.ui"] = ":/icons/qt-ui.png";
   m_DefaultIcons["wareshub.json"] = ":/icons/wareshub.png";
 
-  m_UserIcons = openfluid::ui::waresdev::WareSrcFiletypeManager::getInstance()
+  m_UserIcons = openfluid::ui::waresdev::WareSrcFiletypeManager::instance()
       ->getIconsByFileExtensionList();
 
   setRootPath(m_DirPath);
@@ -111,7 +111,7 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
       if (Role == Qt::FontRole)
       {
         openfluid::waresdev::WareSrcManager::PathInfo PInfo =
-            openfluid::waresdev::WareSrcManager::getInstance()->getPathInfo(
+            openfluid::waresdev::WareSrcManager::instance()->getPathInfo(
                 Info.absoluteFilePath());
 
         if (openfluid::waresdev::WareSrcContainer(PInfo.m_AbsolutePathOfWare,
