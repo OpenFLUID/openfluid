@@ -67,6 +67,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     QTabWidget* mp_TabWidget;
 
+    bool m_IsStandalone;
+
     openfluid::waresdev::WareSrcManager* mp_Manager;
 
     /**
@@ -77,8 +79,6 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     openfluid::waresdev::WareSrcContainer::ConfigMode m_DefaultConfigMode;
     openfluid::waresdev::WareSrcContainer::BuildMode m_DefaultBuildMode;
 
-    int m_ChangedNb;
-
     QString getCurrentPath();
 
     /**
@@ -86,19 +86,19 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
      */
     openfluid::waresdev::WareSrcContainer& getCurrentWidgetContainer();
 
-    bool isChanged();
+    bool isModified();
 
     void closeWareTab(WareSrcWidget* Ware);
 
   public:
 
-    WareSrcWidgetCollection(QTabWidget* TabWidget);
+    WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone);
 
     ~WareSrcWidgetCollection();
 
-    void openPath(const QString& Path, bool IsStandalone);
-
   public slots:
+
+    void openPath(const QString& Path);
 
     void setCurrent(const QString& Path);
 
@@ -118,15 +118,15 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void build();
 
-    void saveCurrent();
+    void saveCurrentEditor();
 
-    void saveCurrentAs();
+    void saveCurrentEditorAs(const QString& TopDirectory = "");
 
-    void closeCurrent();
+    void closeCurrentEditor();
 
   private slots:
 
-    void onWareTxtChanged(WareSrcWidget* Widget, bool Changed);
+    void onWareTxtModified(WareSrcWidget* Widget, bool Modified);
 
     void onCloseWareTabRequested(int Index);
 };

@@ -125,18 +125,25 @@ void WareSrcToolbar::createActions()
 {
   m_Actions["NewFile"] = new QAction(QIcon(":/ui/common/icons/file-new.png"),
                                      tr("New..."), this);
+  m_Actions["NewFile"]->setToolTip(tr("Create a new file"));
   m_Actions["OpenFile"] = new QAction(QIcon(":/ui/common/icons/file-open.png"),
                                       tr("Open..."), this);
+  m_Actions["OpenFile"]->setToolTip(tr("Open a file"));
+
   m_Actions["SaveFile"] = new QAction(QIcon(":/ui/common/icons/file-save.png"),
                                       tr("Save"), this);
   m_Actions["SaveFile"]->setShortcut(QKeySequence::Save);
+  m_Actions["SaveFile"]->setToolTip(tr("Save the current file"));
 
   m_Actions["SaveAsFile"] = new QAction(
       QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
+  m_Actions["SaveAsFile"]->setToolTip(tr("Save the current file as..."));
 
   m_Actions["CloseFile"] = new QAction(
       QIcon(":/ui/common/icons/file-close.png"), tr("Close"), this);
+  m_Actions["CloseFile"]->setToolTip(tr("Close the current file"));
   m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
+  m_Actions["DeleteFile"]->setToolTip(tr("Delete the current file"));
 
   m_Actions["Configure"] = new QAction(tr("Configure ware"), this);
   m_Actions["ConfigureWMenu"] = new QAction(tr("Configure"), this);

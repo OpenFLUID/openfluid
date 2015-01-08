@@ -50,6 +50,7 @@
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
+#include <openfluid/ui/waresdev/RestrictedFileDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -59,12 +60,12 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget) :
-    mp_TabWidget(TabWidget), mp_Manager(
+WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget,
+                                                 bool IsStandalone) :
+    mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(
         openfluid::waresdev::WareSrcManager::getInstance()), m_DefaultConfigMode(
         openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE), m_DefaultBuildMode(
-        openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL), m_ChangedNb(
-        0)
+        openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL)
 {
   connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this,
           SLOT(onCloseWareTabRequested(int)));
@@ -85,7 +86,7 @@ WareSrcWidgetCollection::~WareSrcWidgetCollection()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone)
+void WareSrcWidgetCollection::openPath(const QString& Path)
 {
   openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(
       Path);
@@ -101,7 +102,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone)
 
     if (!Widget)
     {
-      Widget = new WareSrcWidget(Info, IsStandalone, m_DefaultConfigMode,
+      Widget = new WareSrcWidget(Info, m_IsStandalone, m_DefaultConfigMode,
                                  m_DefaultBuildMode, mp_TabWidget);
 
       mp_TabWidget->addTab(Widget, Info.m_WareName);
@@ -111,8 +112,10 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone)
       if (Info.m_isAWare)
         Widget->openDefaultFiles();
 
-      connect(Widget, SIGNAL(wareTextChanged(WareSrcWidget*,bool)), this,
-              SLOT(onWareTxtChanged(WareSrcWidget*,bool)));
+      connect(Widget, SIGNAL(wareTextModified(WareSrcWidget*,bool)), this,
+              SLOT(onWareTxtModified(WareSrcWidget*,bool)));
+      connect(Widget, SIGNAL(saveAsRequested()), this,
+              SLOT(saveCurrentEditorAs()));
     }
 
     if (Info.m_isAWareFile)
@@ -134,9 +137,8 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
       mp_TabWidget->widget(Index)))
   {
     int Choice = QMessageBox::Discard;
-    bool IsModified = Ware->isChanged();
 
-    if (IsModified)
+    if (Ware->isModified())
     {
       QMessageBox MsgBox;
       MsgBox.setText(tr("Documents have been modified."));
@@ -174,9 +176,6 @@ void WareSrcWidgetCollection::closeWareTab(WareSrcWidget* Ware)
 
   m_WareSrcWidgetByPath.remove(Ware->getWareSrcContainer().getAbsolutePath());
 
-  if (Ware->isChanged())
-    m_ChangedNb--;
-
   delete Ware;
 }
 
@@ -204,7 +203,6 @@ void WareSrcWidgetCollection::setCurrent(const QString& Path)
       if (Info.m_isAWare || Widget->setCurrent(Info))
         mp_TabWidget->setCurrentWidget(Widget);
     }
-
   }
 
 }
@@ -391,33 +389,19 @@ void WareSrcWidgetCollection::build()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::onWareTxtChanged(WareSrcWidget* Widget,
-                                               bool Changed)
+void WareSrcWidgetCollection::onWareTxtModified(WareSrcWidget* Widget,
+                                                bool Modified)
 {
   int Pos = mp_TabWidget->indexOf(Widget);
   if (Pos > -1)
   {
     QString Label = mp_TabWidget->tabText(Pos);
-    bool ChangedState = Label.endsWith("*");
+    bool ModifiedState = Label.startsWith("*");
 
-    if (Changed)
-    {
-      m_ChangedNb++;
-
-      if (!ChangedState)
-        mp_TabWidget->setTabText(Pos, Label.append("*"));
-    }
-    else
-    {
-      m_ChangedNb--;
-
-      if (ChangedState)
-      {
-        Label.chop(1);
-        mp_TabWidget->setTabText(Pos, Label);
-      }
-    }
-
+    if (Modified && !ModifiedState)
+      mp_TabWidget->setTabText(Pos, Label.prepend("*"));
+    else if (!Modified && ModifiedState)
+      mp_TabWidget->setTabText(Pos, Label.remove(0, 1));
   }
 }
 
@@ -426,9 +410,14 @@ void WareSrcWidgetCollection::onWareTxtChanged(WareSrcWidget* Widget,
 // =====================================================================
 
 
-bool WareSrcWidgetCollection::isChanged()
+bool WareSrcWidgetCollection::isModified()
 {
-  return m_ChangedNb > 0;
+  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath){
+  if(Ware->isModified())
+  return true;
+}
+
+return false;
 }
 
 
@@ -436,11 +425,11 @@ bool WareSrcWidgetCollection::isChanged()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::saveCurrent()
+void WareSrcWidgetCollection::saveCurrentEditor()
 {
   if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
       mp_TabWidget->currentWidget()))
-    Widget->saveCurrent();
+    Widget->saveCurrentEditor();
   else
     QMessageBox::warning(0, "No ware open", "Open a ware first");
 }
@@ -450,26 +439,73 @@ void WareSrcWidgetCollection::saveCurrent()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::saveCurrentAs()
+void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
 {
-  if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
+  if (WareSrcWidget* CurrentWare = qobject_cast<WareSrcWidget*>(
       mp_TabWidget->currentWidget()))
-    Widget->saveCurrentAs();
+  {
+    QString CurrentPath = CurrentWare->getCurrentFilePath();
+
+    QString TopDir =
+        TopDirectory.isEmpty() ? CurrentWare->getWareSrcContainer()
+                                     .getAbsolutePath() :
+                                 TopDirectory;
+
+    QString NewPath = RestrictedFileDialog::getSaveFileName(CurrentWare,
+                                                            CurrentPath,
+                                                            TopDir);
+
+    if (NewPath.isEmpty())
+      return;
+
+    if (NewPath == CurrentPath)
+      CurrentWare->saveCurrentEditor();
+    else
+    {
+      CurrentWare->saveCurrentEditorAs(NewPath);
+      int CurrentIndexInCurrentWare = CurrentWare->closeCurrentEditor(false);
+
+      openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = mp_Manager
+          ->getPathInfo(NewPath);
+
+      QString NewPathWarePath = NewPathInfo.m_AbsolutePathOfWare;
+
+      // NewPath is in an already opened ware
+      if (m_WareSrcWidgetByPath.contains(NewPathWarePath))
+      {
+        WareSrcWidget* NewPathWare = m_WareSrcWidgetByPath.value(
+            NewPathWarePath);
+
+        // in case the new path was already opened, we close it
+        int IndexInOtherWare = NewPathWare->closeFileTab(NewPath);
+
+        int NewPathIndex = -1;
+        if (NewPathWare == CurrentWare)
+          NewPathIndex = CurrentIndexInCurrentWare;
+        else if (IndexInOtherWare > -1)
+          NewPathIndex = IndexInOtherWare;
+
+        NewPathWare->openFile(NewPathInfo, NewPathIndex);
+        mp_TabWidget->setCurrentWidget(NewPathWare);
+      }
+      else
+        openPath(NewPath);
+    }
+  }
   else
     QMessageBox::warning(0, "No ware open", "Open a ware first");
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
 
-void WareSrcWidgetCollection::closeCurrent()
+void WareSrcWidgetCollection::closeCurrentEditor()
 {
   if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
       mp_TabWidget->currentWidget()))
-    Widget->closeCurrent();
+    Widget->closeCurrentEditor();
   else
     QMessageBox::warning(0, "No ware open", "Open a ware first");
 }

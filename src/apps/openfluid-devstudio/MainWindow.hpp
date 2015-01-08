@@ -76,7 +76,7 @@ class MainWindow: public QMainWindow
 
   private slots:
 
-    void onOpenAsked(const QString& Path);
+    void onSaveAsRequested();
 
     void showNotYetImplemented();
 

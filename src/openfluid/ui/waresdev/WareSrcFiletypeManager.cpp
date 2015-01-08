@@ -345,9 +345,9 @@ QMap<QString, QString> WareSrcFiletypeManager::getIconsByFileExtensionList()
 
 
 WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::getHighlightingRules(
-    const QFile& File)
+    const QString& FilePath)
 {
-  QString FileType = getFileType(QFileInfo(File).fileName());
+  QString FileType = getFileType(QFileInfo(FilePath).fileName());
 
   return m_WareSrcFiletypes.value(FileType, WareSrcFiletype()).m_HlRules;
 }

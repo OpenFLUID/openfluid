@@ -74,19 +74,10 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     openfluid::ui::waresdev::TextEditMsgStream* mp_TextEditMsgStream;
 
-    int m_ChangedNb;
-
     bool m_IsStandalone;
 
     void addNewFileTab(int Index, const QString& AbsolutePath,
                        const QString& TabLabel, const QString& TabTooltip = "");
-
-    void saveEditorContent(WareSrcFileEditor* Editor);
-
-    void saveEditorContentAs(WareSrcFileEditor* Editor);
-
-    void saveEditorContentToPath(WareSrcFileEditor* Editor,
-                                 const QString& Path);
 
     /**
      * Deletes Editor
@@ -122,11 +113,15 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     openfluid::waresdev::WareSrcContainer& getWareSrcContainer();
 
-    bool isChanged();
+    bool isModified();
 
     void saveAllFileTabs();
 
     void closeAllFileTabs();
+
+    QString getCurrentFilePath();
+
+    int closeFileTab(const QString& Path);
 
   public slots:
 
@@ -144,21 +139,23 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void showNotYetImplemented();
 
-    void saveCurrent();
+    void saveCurrentEditor();
 
-    void saveCurrentAs();
+    void saveCurrentEditorAs(const QString& Path);
 
-    void closeCurrent();
+    int closeCurrentEditor(bool WithConfirm = true);
+
+    int onCloseFileTabRequested(int Index, bool WithConfirm = true);
 
   private slots:
 
-    void onEditorTxtChanged(WareSrcFileEditor* Editor, bool Changed);
-
-    void onCloseFileTabRequested(int Index);
+    void onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified);
 
   signals:
 
-    void wareTextChanged(WareSrcWidget* Widget, bool Changed);
+    void wareTextModified(WareSrcWidget* Widget, bool Modified);
+
+    void saveAsRequested();
 };
 
 } } }  // namespaces

@@ -82,6 +82,12 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     QString getFilePath();
 
+    void saveContent();
+
+    void saveContentToPath(const QString& Path);
+
+    void updateContent();
+
   signals :
 
     void editorTxtChanged(WareSrcFileEditor* Editor, bool Changed);

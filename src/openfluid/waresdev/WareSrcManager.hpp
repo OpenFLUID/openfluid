@@ -120,6 +120,8 @@ class OPENFLUID_API WareSrcManager
     PathInfo getPathInfo(const QString& Path);
 
     QString getWaresdevPath();
+
+    QString getWorkspacePath();
 };
 
 } }  // namespaces

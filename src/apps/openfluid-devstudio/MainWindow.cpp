@@ -70,7 +70,7 @@ MainWindow::MainWindow() :
   ui->ExtExplorer->setType(openfluid::waresdev::WareSrcManager::BUILDEREXT);
 
   mp_Collection = new openfluid::ui::waresdev::WareSrcWidgetCollection(
-      ui->WareSrcCollection);
+      ui->WareSrcCollection, false);
 
   createLocalActions();
   createMenus();
@@ -87,6 +87,8 @@ MainWindow::MainWindow() :
           SLOT(showNotYetImplemented()));
   connect(m_Actions["OpenExtension"], SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
+  connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), this,
+          SLOT(onSaveAsRequested()));
   connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
   connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this,
@@ -101,11 +103,11 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->getAction("OpenFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
   connect(mp_Toolbar->getAction("SaveFile"), SIGNAL(triggered()), mp_Collection,
-          SLOT(saveCurrent()));
-  connect(mp_Toolbar->getAction("SaveAsFile"), SIGNAL(triggered()), mp_Collection,
-          SLOT(saveCurrentAs()));
-  connect(mp_Toolbar->getAction("CloseFile"), SIGNAL(triggered()), mp_Collection,
-          SLOT(closeCurrent()));
+          SLOT(saveCurrentEditor()));
+  connect(mp_Toolbar->getAction("SaveAsFile"), SIGNAL(triggered()),
+          mp_Collection, SLOT(saveCurrentEditorAs()));
+  connect(mp_Toolbar->getAction("CloseFile"), SIGNAL(triggered()),
+          mp_Collection, SLOT(closeCurrentEditor()));
   connect(mp_Toolbar->getAction("DeleteFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
 
@@ -139,12 +141,12 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->getAction("OpenTerminal"), SIGNAL(triggered()),
           mp_Collection, SLOT(openTerminal()));
 
-  connect(ui->SimExplorer, SIGNAL(openAsked(const QString&)), this,
-          SLOT(onOpenAsked(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(openAsked(const QString&)), this,
-          SLOT(onOpenAsked(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(openAsked(const QString&)), this,
-          SLOT(onOpenAsked(const QString&)));
+  connect(ui->SimExplorer, SIGNAL(openAsked(const QString&)), mp_Collection,
+          SLOT(openPath(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(openAsked(const QString&)), mp_Collection,
+          SLOT(openPath(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(openAsked(const QString&)), mp_Collection,
+          SLOT(openPath(const QString&)));
 
   connect(ui->SimExplorer, SIGNAL(setCurrentAsked(const QString&)),
           mp_Collection, SLOT(setCurrent(const QString&)));
@@ -192,6 +194,10 @@ void MainWindow::createLocalActions()
   m_Actions["OpenSimulator"] = new QAction(tr("Simulator..."), this);
   m_Actions["OpenObserver"] = new QAction(tr("Observer..."), this);
   m_Actions["OpenExtension"] = new QAction(tr("Builder extension..."), this);
+
+  m_Actions["SaveAsFile"] = new QAction(
+      QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
+  m_Actions["SaveAsFile"]->setToolTip(tr("Save the current file as..."));
 
   m_Actions["DeleteWare"] = new QAction(tr("Delete ware"), this);
 
@@ -247,7 +253,7 @@ void MainWindow::createMenus()
   Menu->addAction(mp_Toolbar->getAction("NewFile"));
   Menu->addAction(mp_Toolbar->getAction("OpenFile"));
   Menu->addAction(mp_Toolbar->getAction("SaveFile"));
-  Menu->addAction(mp_Toolbar->getAction("SaveAsFile"));
+  Menu->addAction(m_Actions["SaveAsFile"]);
   Menu->addAction(mp_Toolbar->getAction("CloseFile"));
   Menu->addAction(mp_Toolbar->getAction("DeleteFile"));
   Menu->addSeparator();
@@ -282,9 +288,10 @@ void MainWindow::createMenus()
 // =====================================================================
 
 
-void MainWindow::onOpenAsked(const QString& Path)
+void MainWindow::onSaveAsRequested()
 {
-  mp_Collection->openPath(Path, false);
+  mp_Collection->saveCurrentEditorAs(
+      openfluid::waresdev::WareSrcManager::getInstance()->getWorkspacePath());
 }
 
 
@@ -296,6 +303,7 @@ void MainWindow::showNotYetImplemented()
 {
   QMessageBox::information(0, "", "Not yet implemented");
 }
+
 
 // =====================================================================
 // =====================================================================

@@ -68,15 +68,9 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
 
-  QFile File(m_FilePath);
-  if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-    throw openfluid::base::FrameworkException(
-        "WareSrcFileEditor constructor",
-        QString("Cannot open file %1").arg(m_FilePath).toStdString());
-
   new WareSrcSyntaxHighlighter(
       document(),
-      WareSrcFiletypeManager::getInstance()->getHighlightingRules(File));
+      WareSrcFiletypeManager::getInstance()->getHighlightingRules(m_FilePath));
 
   // TODO get defaults from conf file
   // setStyleSheet("fFont: 11pt \"Courier\";");
@@ -86,12 +80,10 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   Font.setPointSize(11);
   setFont(Font);
 
-  QTextStream In(&File);
-  setPlainText(In.readAll());
+  updateContent();
 
-  connect(document(), SIGNAL(modificationChanged ( bool )), this,
+  connect(document(), SIGNAL(modificationChanged(bool)), this,
           SLOT(onChanged(bool)));
-
 }
 
 
@@ -242,6 +234,58 @@ void WareSrcFileEditor::onChanged(bool Changed)
 QString WareSrcFileEditor::getFilePath()
 {
   return m_FilePath;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::saveContent()
+{
+  saveContentToPath(m_FilePath);
+
+  document()->setModified(false);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::saveContentToPath(const QString& Path)
+{
+  if (Path.isEmpty())
+    return;
+
+  QFile File(Path);
+
+  if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
+    throw openfluid::base::FrameworkException(
+        "WareSrcFileEditor::setContentToPath",
+        QString("Cannot open file %1 in write mode").arg(Path).toStdString());
+
+  QTextStream Str(&File);
+  Str << toPlainText();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::updateContent()
+{
+  QFile File(m_FilePath);
+
+  if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+    throw openfluid::base::FrameworkException(
+        "WareSrcFileEditor::updateContent",
+        QString("Cannot open file %1").arg(m_FilePath).toStdString());
+
+  setPlainText(QTextStream(&File).readAll());
+
+  document()->setModified(false);
 }
 
 

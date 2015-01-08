@@ -127,7 +127,7 @@ class OPENFLUID_API WareSrcFiletypeManager
 
     QMap<QString, QString> getIconsByFileExtensionList();
 
-    HighlightingRules_t getHighlightingRules(const QFile& File);
+    HighlightingRules_t getHighlightingRules(const QString& FilePath);
 };
 
 
