@@ -65,6 +65,9 @@ namespace Ui
   class ProjectWidget;
 }
 
+namespace openfluid { namespace ui { namespace waresdev {
+class WareSrcWidgetCollection;
+}}}
 
 class ProjectWidget : public QWidget
 {
@@ -76,6 +79,7 @@ class ProjectWidget : public QWidget
 
     WorkspaceTabWidget* mp_WorkspaceTabWidget;
 
+    openfluid::ui::waresdev::WareSrcWidgetCollection* mp_WareSrcCollection;
 
   public:
 
@@ -86,6 +90,8 @@ class ProjectWidget : public QWidget
     void addWorkspaceTab(QWidget* Tab, const QString& Label);
 
     void addWorkspaceExtensionTab(QWidget* Tab, const QString& Label);
+
+    void addWorkspaceWareSrcTab(const QString& Path);
 };
 
 

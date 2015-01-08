@@ -45,6 +45,9 @@
 
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
 
+#include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
+#include <openfluid/ui/waresdev/WareSrcWidget.hpp>
+
 #include "ui_ProjectWidget.h"
 #include "ProjectWidget.hpp"
 
@@ -65,7 +68,11 @@ WorkspaceTabWidget::WorkspaceTabWidget(QWidget* Parent):
 
 void WorkspaceTabWidget::closeTab(int Index)
 {
+  if(qobject_cast<openfluid::ui::waresdev::WareSrcWidget*>(widget(Index)))
+    return;
+
   ExtensionsRegistry::instance()->releaseExtension(widget(Index)->property("ID").toString().toStdString());
+
   widget(Index)->deleteLater();
   removeTab(Index);
 }
@@ -107,6 +114,8 @@ ProjectWidget::ProjectWidget(QWidget* Parent):
 
   mp_WorkspaceTabWidget = new WorkspaceTabWidget(this);
   layout()->addWidget(mp_WorkspaceTabWidget);
+
+  mp_WareSrcCollection = new openfluid::ui::waresdev::WareSrcWidgetCollection(mp_WorkspaceTabWidget, true);
 }
 
 
@@ -137,4 +146,14 @@ void ProjectWidget::addWorkspaceTab(QWidget* Tab, const QString& Label)
 void ProjectWidget::addWorkspaceExtensionTab(QWidget* Tab, const QString& Label)
 {
   mp_WorkspaceTabWidget->addWorkspaceTab(Tab,Label,true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectWidget::addWorkspaceWareSrcTab(const QString& Path)
+{
+  mp_WareSrcCollection->openPath(Path);
 }

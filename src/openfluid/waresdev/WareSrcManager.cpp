@@ -135,6 +135,42 @@ QString WareSrcManager::getWareTypePath(WareType WareSrcType)
 // =====================================================================
 // =====================================================================
 
+
+QString WareSrcManager::getWarePath(
+    const QString& WareID, openfluid::ware::PluggableWare::WareType OFWareType,
+    QString& ErrMsg)
+{
+  openfluid::waresdev::WareSrcManager::WareType Type;
+
+  switch (OFWareType)
+  {
+    case openfluid::ware::PluggableWare::SIMULATOR:
+      Type = openfluid::waresdev::WareSrcManager::SIMULATOR;
+      break;
+    case openfluid::ware::PluggableWare::OBSERVER:
+      Type = openfluid::waresdev::WareSrcManager::OBSERVER;
+      break;
+    default:
+      ErrMsg = QObject::tr("Unknown ware type");
+      return "";
+  }
+
+  QDir Dir(getWareTypePath(Type));
+
+  // TODO add check of other workspaces than current
+  if (Dir.exists(WareID))
+    return Dir.filePath(WareID);
+
+  ErrMsg = QObject::tr(
+      "Unable to find source code for \"%1\" in the current workspace.").arg(
+      WareID);
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
 // TODO later, pass or use other workspace paths ?
 WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 {

@@ -56,6 +56,8 @@
 
 #include <openfluid/ui/common/PreferencesDialog.hpp>
 
+#include <openfluid/waresdev/WareSrcManager.hpp>
+
 #include "ProjectCentral.hpp"
 #include "ProjectModule.hpp"
 #include "SaveAsDialog.hpp"
@@ -656,17 +658,17 @@ bool ProjectModule::whenOpenExampleAsked()
 
 void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType)
 {
-  QString TypeStr = "unknown ware type";
+  QString ErrMsg;
 
-  if (WType == openfluid::ware::PluggableWare::SIMULATOR)
-    TypeStr = "simulator";
-  else if (WType == openfluid::ware::PluggableWare::OBSERVER)
-    TypeStr = "observer";
+  QString Path = openfluid::waresdev::WareSrcManager::instance()->getWarePath(ID,WType,ErrMsg);
 
-  QMessageBox::critical(QApplication::activeWindow(),
-                                tr("Source code edition error"),
-                                tr("Edition of source code for %1\n%2\nis not implemented.").arg(TypeStr).arg(ID),
-                                QMessageBox::Close);
+  if(!Path.isEmpty())
+    mp_MainWidget->addWorkspaceWareSrcTab(Path);
+  else
+    QMessageBox::critical(QApplication::activeWindow(),
+                          tr("Source code edition error"),
+                          ErrMsg,
+                          QMessageBox::Close);
 }
 
 

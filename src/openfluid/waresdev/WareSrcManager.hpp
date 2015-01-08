@@ -42,6 +42,7 @@
 #define __OPENFLUID_WARESDEV_WARESRCMANAGER_HPP__
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
 
 #include <QString>
 #include <QMap>
@@ -111,6 +112,10 @@ class OPENFLUID_API WareSrcManager
     void switchWorkspace(const QString& NewAbsoluteWorkspacePath);
 
     QString getWareTypePath(WareType WareSrcType);
+
+    QString getWarePath(const QString& WareID,
+                        openfluid::ware::PluggableWare::WareType OFWareType,
+                        QString& ErrMsg);
 
     /**
      * Make Path absolute then splits it to retrieve PathInfo attributes.

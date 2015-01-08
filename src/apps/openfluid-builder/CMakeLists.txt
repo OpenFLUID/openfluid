@@ -273,7 +273,9 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-ui-common
                       openfluid-ui-market
                       openfluid-builderext
-                      openfluid-fluidx)
+                      openfluid-fluidx
+                      openfluid-ui-waresdev
+                      openfluid-waresdev)
        
        
                       
@@ -316,7 +318,9 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-ui-common
                       openfluid-ui-market
                       openfluid-builder-main
-                      openfluid-fluidx)
+                      openfluid-fluidx
+                      openfluid-ui-waresdev
+                      openfluid-waresdev)
                                    
 INSTALL(TARGETS openfluid-builder-main
         RUNTIME DESTINATION ${BIN_INSTALL_PATH}
