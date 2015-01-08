@@ -34,13 +34,14 @@
 /**
   @file
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
 
-#ifndef __OFBUDDY_H__
-#define __OFBUDDY_H__
+#ifndef __OPENFLUID_BUDDIES_OPENFLUIDBUDDY_HPP__
+#define __OPENFLUID_BUDDIES_OPENFLUIDBUDDY_HPP__
+
 
 #include <string>
 #include <map>
@@ -82,4 +83,4 @@ class OPENFLUID_API OpenFLUIDBuddy
 
 } } //namespaces
 
-#endif // __OPENFLUID_BUDDIES_OFBUDDY_HPP__
+#endif  /* __OPENFLUID_BUDDIES_OPENFLUIDBUDDY_HPP__ */

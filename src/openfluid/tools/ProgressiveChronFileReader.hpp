@@ -31,10 +31,9 @@
 
 
 /**
-  \file ProgressiveColumnFileReader.hpp
-  \brief Header of ...
+  @file ProgressiveColumnFileReader.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -59,7 +58,9 @@ class OPENFLUID_API ProgressiveChronFileReader : public ProgressiveColumnFileRea
 
   public:
 
-    ProgressiveChronFileReader(const std::string& FileName, const std::string& DateFormat = "%Y-%m-%dT%H:%M:%S", const std::string& ColSeparators = " \t\r\n");
+    ProgressiveChronFileReader(const std::string& FileName,
+                               const std::string& DateFormat = "%Y-%m-%dT%H:%M:%S",
+                               const std::string& ColSeparators = " \t\r\n");
 
     virtual ~ProgressiveChronFileReader()
     { };

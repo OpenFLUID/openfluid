@@ -32,10 +32,9 @@
 
 
 /**
-  \file DashboardWidget.cpp
-  \brief Implements ...
+  @file DashboardWidget.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

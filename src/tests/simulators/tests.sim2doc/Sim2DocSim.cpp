@@ -32,8 +32,7 @@
 
 
 /**
-  \file OFEFunc2DocSim.cpp
-  \brief Implements ...
+  @file OFEFunc2DocSim.cpp
 */
 
 
@@ -88,7 +87,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
   DECLARE_DOMAIN("Test");
   DECLARE_PROCESS("No process");
   DECLARE_METHOD("No method");
-  DECLARE_AUTHOR("JC Fabre","fabrejc@supagro.inra.fr");
+  DECLARE_AUTHOR("JC Fabre","jean-christophe.fabre@supagro.inra.fr");
   DECLARE_AUTHOR("Manuel Chataigner","manuel.chataigner@supagro.inra.fr");
 
   DECLARE_SIMULATOR_PARAM("testparam","a param just for test","kg/m3")

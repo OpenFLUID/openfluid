@@ -30,10 +30,9 @@
 */
 
 /**
- \file DatastoreItemDescriptor.hpp
- \brief Header of ...
+ @file DatastoreItemDescriptor.hpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_FLUIDX_DATASTOREITEMDESCRIPTOR_HPP__

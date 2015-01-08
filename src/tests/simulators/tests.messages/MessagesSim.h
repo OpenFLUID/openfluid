@@ -32,8 +32,7 @@
 
 
 /**
-  \file MessagesSim.h
-  \brief Header of ...
+  @file MessagesSim.h
 */
 
 #ifndef __MESSAGESSIM_H__

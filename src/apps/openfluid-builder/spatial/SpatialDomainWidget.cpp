@@ -32,10 +32,9 @@
 
 
 /**
-  \file SpatialDomainWidget.cpp
-  \brief Implements ...
+  @file SpatialDomainWidget.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -76,7 +75,7 @@ enum CustomRoles {
 
 SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
   WorkspaceWidget(Parent,AFXDesc), ui(new Ui::SpatialDomainWidget),
-  m_Domain(AFXDesc.getDomain()), m_Datastore(AFXDesc.getDatastore()),
+  m_Domain(AFXDesc.spatialDomain()), m_Datastore(AFXDesc.datastore()),
   m_ActiveClass("")
 {
   ui->setupUi(this);
@@ -210,11 +209,11 @@ void SpatialDomainWidget::refresh()
   QStringList ClassesList;
 
   // get display order for classes from project config file
-  QVariant TmpList = openfluid::base::ProjectManager::getInstance()->getConfigValue("builder.spatial.unitsclasses","order");
+  QVariant TmpList = openfluid::base::ProjectManager::instance()->getConfigValue("builder.spatial.unitsclasses","order");
 
   if (!TmpList.isValid())
   {
-    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses","order",OriginalClassesList);
+    openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses","order",OriginalClassesList);
     ClassesList = OriginalClassesList;
   }
   else
@@ -247,7 +246,7 @@ void SpatialDomainWidget::refresh()
         ClassesList.append(OriginalClassesList[i]);
     }
 
-    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses","order",ClassesList);
+    openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses","order",ClassesList);
   }
 
 
@@ -426,7 +425,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
     ui->RemoveUnitButton->setText(tr("Remove unit %1 from %2 class").arg(ID).arg(m_ActiveClass));
 
-    const openfluid::fluidx::AdvancedUnitDescriptor& UnitDesc = m_Domain.getUnit(m_ActiveClass.toStdString(),ID);
+    const openfluid::fluidx::AdvancedUnitDescriptor& UnitDesc = m_Domain.spatialUnit(m_ActiveClass.toStdString(),ID);
 
     // ======== Process order
 
@@ -449,7 +448,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
     QTableWidgetItem *Item;
 
     // to connections
-    ConnUnits = m_Domain.getUnitsToOf(UnitClassID);
+    ConnUnits = m_Domain.toSpatialUnits(UnitClassID);
 
     for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
     {
@@ -472,7 +471,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
 
     // from connections
-    ConnUnits = m_Domain.getUnitsFromOf(UnitClassID);
+    ConnUnits = m_Domain.getFromSpatialUnits(UnitClassID);
 
     for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
     {
@@ -495,7 +494,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
 
     // parent of connections
-    ConnUnits = m_Domain.getUnitsParentsOf(UnitClassID);
+    ConnUnits = m_Domain.parentSpatialUnits(UnitClassID);
 
     for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
     {
@@ -518,7 +517,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
 
     // child of connections
-    ConnUnits = m_Domain.getUnitsChildrenOf(UnitClassID);
+    ConnUnits = m_Domain.getChildSpatialUnits(UnitClassID);
 
     for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
     {
@@ -575,9 +574,9 @@ void SpatialDomainWidget::refreshClassAttributes()
       for (int j=0;j<AttrNames.size();j++)
       {
         ui->AttributesTableWidget->setItem(i,j,
-                                           new QTableWidgetItem(QString::fromStdString(m_Domain.getAttribute(m_ActiveClass.toStdString(),
-                                                                                                             IDs[i].toInt(),
-                                                                                                             AttrNames[j].toStdString()))));
+                                           new QTableWidgetItem(QString::fromStdString(m_Domain.attribute(m_ActiveClass.toStdString(),
+                                                                                                          IDs[i].toInt(),
+                                                                                                          AttrNames[j].toStdString()))));
       }
     }
   }
@@ -609,7 +608,8 @@ void SpatialDomainWidget::refreshClassEvents()
 
     for (it=itb; it!=ite; ++it)
     {
-      const std::list<openfluid::fluidx::EventDescriptor*>* EventsDescsListPtr = &(m_Domain.getUnit(m_ActiveClass.toStdString(),*it).EventsDescriptors);
+      const std::list<openfluid::fluidx::EventDescriptor*>* EventsDescsListPtr =
+          &(m_Domain.spatialUnit(m_ActiveClass.toStdString(),*it).EventsDescriptors);
 
       if (!EventsDescsListPtr->empty())
       {
@@ -623,7 +623,7 @@ void SpatialDomainWidget::refreshClassEvents()
           ui->EventsTableWidget->setRowCount(RowIndex+1);
 
           // storage of the event ID for edition and removal
-          QTableWidgetItem *Item = new QTableWidgetItem(QString::fromStdString((*Eit)->getEvent().getDateTime().getAsISOString()));
+          QTableWidgetItem *Item = new QTableWidgetItem(QString::fromStdString((*Eit)->event().getDateTime().getAsISOString()));
           Item->setData(EventIDRole,QVariant::fromValue<openfluid::fluidx::EventID_t>((*Eit)->getID()));
 
           ui->EventsTableWidget->setItem(RowIndex,0,Item);
@@ -633,7 +633,7 @@ void SpatialDomainWidget::refreshClassEvents()
 
 
           // associated infos
-          openfluid::core::Event::EventInfosMap_t Infos = (*Eit)->getEvent().getInfos();
+          openfluid::core::Event::EventInfosMap_t Infos = (*Eit)->event().getInfos();
           openfluid::core::Event::EventInfosMap_t::iterator Iit;
           openfluid::core::Event::EventInfosMap_t::iterator Iitb = Infos.begin();
           openfluid::core::Event::EventInfosMap_t::iterator Iite = Infos.end();
@@ -688,9 +688,9 @@ void SpatialDomainWidget::refreshMap()
     ClassW->linkToDatastoreItem(m_Datastore.getItems(ClassW->getClassName().toStdString(),
                                   openfluid::core::UnstructuredValue::GeoVectorValue));
 
-    if (ClassW->getLayerSource() != NULL && ClassW->isLayerVisible())
+    if (ClassW->layerSource() != NULL && ClassW->isLayerVisible())
     {
-      mp_MapScene->addLayer(ClassW->getLayerSource(),
+      mp_MapScene->addLayer(ClassW->layerSource(),
                             -i,
                             ClassW->getLineWidth(),
                             ClassW->getLineColor(),
@@ -730,10 +730,10 @@ void SpatialDomainWidget::addUnitsClass()
   AddUnitsClassDialog AddDlg(ExistingClasses,this);
   if (AddDlg.exec() == QDialog::Accepted)
   {
-    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
-    UDesc->getUnitClass() = AddDlg.getClassName().toStdString();
-    UDesc->getUnitID() = AddDlg.getUnitID();
-    UDesc->getProcessOrder() = AddDlg.getUnitPcsOrd();
+    openfluid::fluidx::SpatialUnitDescriptor* UDesc = new openfluid::fluidx::SpatialUnitDescriptor();
+    UDesc->setUnitsClass(AddDlg.getClassName().toStdString());
+    UDesc->setID(AddDlg.getUnitID());
+    UDesc->setProcessOrder(AddDlg.getUnitPcsOrd());
     m_Domain.addUnit(UDesc);
 
     updateUpDownButtons();
@@ -763,7 +763,7 @@ void SpatialDomainWidget::moveUnitsClassUp(QString ClassName)
 
   updateUpDownButtons();
 
-  openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+  openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
                                                                  "order",
                                                                  getClassesOrderedStringList());
 
@@ -793,7 +793,7 @@ void SpatialDomainWidget::moveUnitsClassDown(QString ClassName)
 
   updateUpDownButtons();
 
-  openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+  openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
                                                                  "order",
                                                                  getClassesOrderedStringList());
 
@@ -843,10 +843,10 @@ void SpatialDomainWidget::addUnit()
     int ID = AddDlg.getUnitID();
 
     // create unit in FluidX descriptor
-    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
-    UDesc->getUnitClass() = m_ActiveClass.toStdString();
-    UDesc->getUnitID() = ID;
-    UDesc->getProcessOrder() = AddDlg.getUnitPcsOrd();
+    openfluid::fluidx::SpatialUnitDescriptor* UDesc = new openfluid::fluidx::SpatialUnitDescriptor();
+    UDesc->setUnitsClass(m_ActiveClass.toStdString());
+    UDesc->setID(ID);
+    UDesc->setProcessOrder(AddDlg.getUnitPcsOrd());
 
     m_Domain.addUnit(UDesc);
 
@@ -858,7 +858,7 @@ void SpatialDomainWidget::addUnit()
     while (it.hasNext())
     {
       it.next();
-      m_Domain.getAttribute(m_ActiveClass.toStdString(),AddDlg.getUnitID(),it.key().toStdString()) =
+      m_Domain.attribute(m_ActiveClass.toStdString(),AddDlg.getUnitID(),it.key().toStdString()) =
           it.value().toStdString();
     }
 
@@ -887,7 +887,7 @@ void SpatialDomainWidget::removeUnit()
 
   bool OK = true;
 
-  if (openfluid::base::PreferencesManager::getInstance()->isSpatialUnitsRemovalConfirm())
+  if (openfluid::base::PreferencesManager::instance()->isSpatialUnitsRemovalConfirm())
   {
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",
@@ -987,7 +987,7 @@ void SpatialDomainWidget::removeConnection()
     QString ConnStr = ui->ConnectionsTableWidget->item(Row,0)->text();
     int ConnCode = ui->ConnectionsTableWidget->item(Row,0)->data(Qt::UserRole).toInt();
 
-    if (openfluid::base::PreferencesManager::getInstance()->isSpatialConnsRemovalConfirm())
+    if (openfluid::base::PreferencesManager::instance()->isSpatialConnsRemovalConfirm())
     {
       OK = (QMessageBox::question(QApplication::activeWindow(),
                                   "OpenFLUID-Builder",
@@ -1189,7 +1189,7 @@ void SpatialDomainWidget::removeAttribute()
     EditAttributeNameDialog RemoveDlg(EditAttributeNameDialog::EDIT_REMOVE,AttrsNames,this);
     if (RemoveDlg.exec() == QDialog::Accepted)
     {
-      if (openfluid::base::PreferencesManager::getInstance()->isSpatialAttrsRemovalConfirm())
+      if (openfluid::base::PreferencesManager::instance()->isSpatialAttrsRemovalConfirm())
       {
         OK = (QMessageBox::question(QApplication::activeWindow(),
                                     "OpenFLUID-Builder",
@@ -1320,7 +1320,7 @@ void SpatialDomainWidget::updateFluidXAttributeFromCellValue(int Row, int Column
   int ID = ui->AttributesTableWidget->verticalHeaderItem(Row)->text().toInt();
   std::string Value = ui->AttributesTableWidget->item(Row,Column)->text().toStdString();
 
-  m_Domain.getAttribute(m_ActiveClass.toStdString(),ID,Attr) = Value;
+  m_Domain.attribute(m_ActiveClass.toStdString(),ID,Attr) = Value;
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
 }
@@ -1333,7 +1333,7 @@ void SpatialDomainWidget::updateFluidXAttributeFromCellValue(int Row, int Column
 void SpatialDomainWidget::updateFluidXProcessOrder(int PcsOrd)
 {
   int ID = ui->IDsListWidget->currentItem()->text().toInt();
-  (&const_cast<openfluid::fluidx::UnitDescriptor&>(m_Domain.getUnitDescriptor(m_ActiveClass.toStdString(),ID)))->getProcessOrder() = PcsOrd;
+  (&const_cast<openfluid::fluidx::SpatialUnitDescriptor&>(m_Domain.spatialUnitDescriptor(m_ActiveClass.toStdString(),ID)))->setProcessOrder(PcsOrd);
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
 }
@@ -1348,7 +1348,7 @@ void SpatialDomainWidget::addEvent()
   QStringList UnitsIDsList = openfluid::tools::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
 
   AddEventDialog AddEventDlg(m_ActiveClass,UnitsIDsList,
-                              m_AdvFluidxDesc.getRunDescriptor().getBeginDate(),
+                              m_AdvFluidxDesc.runDescriptor().getBeginDate(),
                               this);
 
   if (AddEventDlg.exec() == QDialog::Accepted)
@@ -1388,7 +1388,7 @@ void SpatialDomainWidget::editEvent()
     openfluid::fluidx::EventID_t OriginEventID =
         ui->EventsTableWidget->item(Row,0)->data(EventIDRole).value<openfluid::fluidx::EventID_t>();
 
-    openfluid::fluidx::EventDescriptor* EvDesc = m_Domain.getEventDescriptor(OriginEventID);
+    openfluid::fluidx::EventDescriptor* EvDesc = m_Domain.eventDescriptor(OriginEventID);
 
     if (EvDesc)
     {
@@ -1398,8 +1398,8 @@ void SpatialDomainWidget::editEvent()
 
       EditEventDialog EditEventDlg(m_ActiveClass,UnitsIDsList,
                                   ui->EventsTableWidget->item(Row,1)->text(),
-                                  EvDesc->getEvent().getDateTime(),
-                                  EvDesc->getEvent().getInfos(),
+                                  EvDesc->event().getDateTime(),
+                                  EvDesc->event().getInfos(),
                                   this);
 
 

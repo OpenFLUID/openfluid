@@ -32,10 +32,9 @@
 
 
 /**
-  \file SimulatorGraphics.cpp
-  \brief Implements ...
+  @file SimulatorGraphics.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include "builderconfig.hpp"

@@ -30,11 +30,10 @@
 */
 
 /**
- \file PreferencesManager.hpp
- \brief Header of ...
+ @file PreferencesManager.hpp
 
- \author Jean-Christophe Fabre <fabrejc@supagro.inra.fr>
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_BASE_PREFERENCESMANAGER_HPP__
@@ -98,13 +97,13 @@ class OPENFLUID_API PreferencesManager
 
     typedef std::map<QString, QString> MarketPlaces_t;
 
-    static PreferencesManager* getInstance();
+    static PreferencesManager* instance();
 
     ~PreferencesManager();
 
     /* Used only if we want to set another file name for the conf file
      * instead of the default one (for tests eg.)
-     * To be set before the first call of getInstance().
+     * To be set before the first call of instance().
      */
     static void setFileName(const QString& AbsoluteFileName);
 

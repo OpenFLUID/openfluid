@@ -34,12 +34,12 @@
 /**
   @file
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
-#ifndef __NEWDATABUDDY_H___
-#define __NEWDATABUDDY_H___
+#ifndef __OPENFLUID_BUDDIES_NEWDATABUDDY_HPP__
+#define __OPENFLUID_BUDDIES_NEWDATABUDDY_HPP__
 
 #include <boost/filesystem/path.hpp>
 
@@ -86,4 +86,4 @@ class OPENFLUID_API NewDataBuddy : public OpenFLUIDBuddy
 } } //namespaces
 
 
-#endif /* __NEWDATABUDDY_H___ */
+#endif /* __OPENFLUID_BUDDIES_NEWDATABUDDY_HPP__ */

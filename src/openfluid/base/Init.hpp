@@ -31,10 +31,9 @@
 
 
 /**
-  \file Init.hpp
-  \brief Header of ...
+  @file Init.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -55,13 +54,13 @@
 #define INIT_OPENFLUID_APPLICATION(ac,av) \
   OFDBG_BANNER; \
   QCoreApplication _M_qapp(ac,av); \
-  openfluid::base::RuntimeEnvironment::getInstance();
+  openfluid::base::RuntimeEnvironment::instance();
 
 
 #define INIT_OPENFLUID_APPLICATION_WITH_GUI(ac,av) \
   OFDBG_BANNER; \
   QApplication _M_qapp(ac,av); \
-  openfluid::base::RuntimeEnvironment::getInstance();
+  openfluid::base::RuntimeEnvironment::instance();
 
 
 #define CLOSE_OPENFLUID_APPLICATION_WITH_GUI \

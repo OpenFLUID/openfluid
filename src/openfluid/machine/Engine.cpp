@@ -35,7 +35,7 @@
   @file
   @brief implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
@@ -69,12 +69,12 @@ Engine::Engine(SimulationBlob& SimBlob,
        : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_MonitoringInstance(OLInstance), mp_SimLogger(NULL)
 {
 
-  mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
+  mp_RunEnv = openfluid::base::RuntimeEnvironment::instance();
 
   mp_MachineListener = MachineListener;
   if (mp_MachineListener == NULL) mp_MachineListener = new openfluid::machine::MachineListener();
 
-  mp_SimStatus = &(m_SimulationBlob.getSimulationStatus());
+  mp_SimStatus = &(m_SimulationBlob.simulationStatus());
 
   prepareOutputDir();
 
@@ -111,7 +111,7 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
+  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else throw openfluid::base::FrameworkException("Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + SimulatorID);
 
   bool Status = true;
@@ -120,9 +120,9 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
   while (UnitIter != UnitList->end())
   {
     if(VarType == openfluid::core::Value::NONE)
-      Status = (*UnitIter).getVariables()->isVariableExist(VarName);
+      Status = (*UnitIter).variables()->isVariableExist(VarName);
     else
-      Status = (*UnitIter).getVariables()->isTypedVariableExist(VarName,VarType);
+      Status = (*UnitIter).variables()->isTypedVariableExist(VarName,VarType);
 
     if (!Status)
       throw openfluid::base::FrameworkException("Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + SimulatorID + " does not exist");
@@ -147,7 +147,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
+  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else throw openfluid::base::FrameworkException("Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + SimulatorID);
 
   bool Status = true;
@@ -158,7 +158,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
     UnitIter = UnitList->begin();
     while (UnitIter != UnitList->end())
     {
-       Status = !((*UnitIter).getVariables()->isVariableExist(VarName));
+       Status = !((*UnitIter).variables()->isVariableExist(VarName));
 
       if (!Status)
         throw openfluid::base::FrameworkException("Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + SimulatorID + " cannot be created because it is already created");
@@ -169,7 +169,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
 
   for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
   {
-    (*UnitIter).getVariables()->createVariable(VarName,VarType);
+    (*UnitIter).variables()->createVariable(VarName,VarType);
   }
 
 }
@@ -187,7 +187,7 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
+  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else throw openfluid::base::FrameworkException("Engine::checkExistingAttribute","Unit " + ClassName + " class does not exist for " + AttrName + " attribute required by " + SimulatorID);
 
   bool Status = true;
@@ -195,7 +195,7 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
   UnitIter = UnitList->begin();
   while (Status && (UnitIter != UnitList->end()))
   {
-    Status = (*UnitIter).getAttributes()->isAttributeExist(AttrName);
+    Status = (*UnitIter).attributes()->isAttributeExist(AttrName);
     if (!Status)
       throw openfluid::base::FrameworkException("Engine::checkExistingAttribute",AttrName + " attribute on " + ClassName + " required by " + SimulatorID + " is not available");
 
@@ -216,13 +216,13 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
+  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else throw openfluid::base::FrameworkException("Engine::createAttribute","Unit class " + ClassName + " does not exist for " + AttrName + " attribute produced by " + SimulatorID);
 
 
   for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
   {
-    (*UnitIter).getAttributes()->setValue(AttrName,openfluid::core::NullValue());
+    (*UnitIter).attributes()->setValue(AttrName,openfluid::core::NullValue());
   }
 }
 
@@ -241,15 +241,15 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   std::vector<std::string> VarsNames;
 
 
-  AllUnits = m_SimulationBlob.getCoreRepository().getUnitsByClass();
+  AllUnits = m_SimulationBlob.spatialGraph().allSpatialUnitsByClass();
 
   for (UnitsClassesIter = AllUnits->begin(); UnitsClassesIter != AllUnits->end();++UnitsClassesIter)
   {
-    UnitsList = UnitsClassesIter->second.getList();
+    UnitsList = UnitsClassesIter->second.list();
 
     for (UnitsIter = UnitsList->begin();UnitsIter != UnitsList->end();++UnitsIter)
     {
-      if (!((*UnitsIter).getVariables()->isAllVariablesCount(ExpectedVarsCount)))
+      if (!((*UnitsIter).variables()->isAllVariablesCount(ExpectedVarsCount)))
         throw openfluid::base::FrameworkException("Engine::checkSimulationVarsProduction","Variable production error");
 
     }
@@ -276,9 +276,9 @@ void Engine::checkModelConsistency()
         3) required vars
   */
 
-  SimIter = m_ModelInstance.getItems().begin();
+  SimIter = m_ModelInstance.items().begin();
 
-  while (SimIter != m_ModelInstance.getItems().end())
+  while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
     HData = CurrentSimulator->Signature->HandledData;
@@ -304,9 +304,9 @@ void Engine::checkModelConsistency()
   }
 
 
-  SimIter = m_ModelInstance.getItems().begin();
+  SimIter = m_ModelInstance.items().begin();
 
-  while (SimIter != m_ModelInstance.getItems().end())
+  while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
     HData = CurrentSimulator->Signature->HandledData;
@@ -336,9 +336,9 @@ void Engine::checkAttributesConsistency()
   unsigned int i;
 
 
-  SimIter = m_ModelInstance.getItems().begin();
+  SimIter = m_ModelInstance.items().begin();
 
-  while (SimIter != m_ModelInstance.getItems().end())
+  while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
     HData = CurrentSimulator->Signature->HandledData;
@@ -372,7 +372,7 @@ void Engine::checkExtraFilesConsistency()
 
 
   // on each simulator
-  for (SimIter = m_ModelInstance.getItems().begin(); SimIter != m_ModelInstance.getItems().end(); ++SimIter)
+  for (SimIter = m_ModelInstance.items().begin(); SimIter != m_ModelInstance.items().end(); ++SimIter)
   {
     CurrentSimulator = *SimIter;
 
@@ -422,7 +422,7 @@ void Engine::prepareOutputDir()
 
 void Engine::initialize()
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->resetIgnitionDateTime();
+  openfluid::base::RuntimeEnvironment::instance()->resetIgnitionDateTime();
   m_ModelInstance.initialize(mp_SimLogger);
   m_MonitoringInstance.initialize(mp_SimLogger);
 

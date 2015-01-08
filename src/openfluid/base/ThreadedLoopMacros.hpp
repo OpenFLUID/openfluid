@@ -31,10 +31,9 @@
 
 
 /**
-  \file LoopMacros.hpp
-  \brief Header of ...
+  @file LoopMacros.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -61,7 +60,7 @@
 
 
 #define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitclass,funcptr,...) \
-  openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_CoreData->getUnits(unitclass)->getList(); \
+  openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->spatialUnits(unitclass)->list(); \
   if (_UNITSLISTID(id) != NULL) \
   { \
     openfluid::core::UnitsList_t::iterator _UNITSLISTITERID(id) = _UNITSLISTID(id)->begin(); \
@@ -107,7 +106,7 @@
 
 
 #define _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(id,funcptr,...) \
-  openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_CoreData->getUnitsGlobally(); \
+  openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_SpatialData->allSpatialUnits(); \
   if (_UNITSPTRLISTID(id) != NULL) \
   { \
     openfluid::core::UnitsPtrList_t::iterator _UNITSPTRLISTITERID(id) = _UNITSPTRLISTID(id)->begin(); \

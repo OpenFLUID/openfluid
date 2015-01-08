@@ -31,10 +31,9 @@
 
 
 /**
-  \file DistributionTables.hpp
-  \brief Header of ...
+  @file DistributionTables.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

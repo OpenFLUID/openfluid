@@ -30,10 +30,9 @@
 */
 
 /**
- \file DomainReader.cpp
- \brief Implements ...
+ @file DomainReader.cpp
 
- \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN
@@ -89,17 +88,17 @@ void TestDataset(std::string DatasetPath)
   // Model
   // ====================================================================
 
-  BOOST_REQUIRE_EQUAL(FXDesc.getModelDescriptor().getGlobalParameters().size(), 2);
+  BOOST_REQUIRE_EQUAL(FXDesc.modelDescriptor().getGlobalParameters().size(), 2);
   BOOST_REQUIRE_EQUAL(
-      FXDesc.getModelDescriptor().getGlobalParameters()["gparam1"].get(),
+      FXDesc.modelDescriptor().getGlobalParameters()["gparam1"].get(),
       "100");
   BOOST_REQUIRE_EQUAL(
-      FXDesc.getModelDescriptor().getGlobalParameters()["gparam2"].get(),
+      FXDesc.modelDescriptor().getGlobalParameters()["gparam2"].get(),
       "0.1");
 
   openfluid::fluidx::CoupledModelDescriptor::SetDescription_t ModelItems;
 
-  ModelItems = FXDesc.getModelDescriptor().getItems();
+  ModelItems = FXDesc.modelDescriptor().items();
 
   BOOST_REQUIRE_EQUAL(ModelItems.size(), 5);
 
@@ -209,48 +208,48 @@ void TestDataset(std::string DatasetPath)
   // Run
   // ====================================================================
 
-  BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().getDeltaT(), 4753);
+  BOOST_REQUIRE_EQUAL(FXDesc.runDescriptor().getDeltaT(), 4753);
   BOOST_REQUIRE(
-      FXDesc.getRunDescriptor().getBeginDate() == openfluid::core::DateTime(1997,1,2,11,15,48));
+      FXDesc.runDescriptor().getBeginDate() == openfluid::core::DateTime(1997,1,2,11,15,48));
   BOOST_REQUIRE(
-      FXDesc.getRunDescriptor().getEndDate() == openfluid::core::DateTime(2005,11,30,6,53,7));
-  BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().isUserValuesBufferSize(), true);
-  BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().getValuesBufferSize(), 100);
+      FXDesc.runDescriptor().getEndDate() == openfluid::core::DateTime(2005,11,30,6,53,7));
+  BOOST_REQUIRE_EQUAL(FXDesc.runDescriptor().isUserValuesBufferSize(), true);
+  BOOST_REQUIRE_EQUAL(FXDesc.runDescriptor().getValuesBufferSize(), 100);
 
 
   // Domain definition
   // ====================================================================
 
-  std::list<openfluid::fluidx::UnitDescriptor>::iterator UnitsIt;
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator UnitsIt;
 
-  BOOST_REQUIRE_EQUAL(FXDesc.getDomainDescriptor().getUnits().size(), 14);
+  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().spatialUnits().size(), 14);
 
-  UnitsIt = FXDesc.getDomainDescriptor().getUnits().begin();
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitClass(), "unitsP");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitID(), 1);
+  UnitsIt = FXDesc.spatialDomainDescriptor().spatialUnits().begin();
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsP");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 1);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(), 0);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(), 0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 0);
 
   UnitsIt++;
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitClass(), "unitsA");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitID(), 3);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsA");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 3);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().first, "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().second, 11);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().front().first, "unitsP");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().front().second, 1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().first, "unitsB");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().second, 11);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().first, "unitsP");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().second, 1);
 
   UnitsIt++;
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitClass(), "unitsA");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitID(), 1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsA");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 1);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().first, "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().second, 2);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(), 0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().first, "unitsB");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().second, 2);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 0);
 
   UnitsIt++;
   UnitsIt++;
@@ -259,24 +258,24 @@ void TestDataset(std::string DatasetPath)
   UnitsIt++;
   UnitsIt++;
   UnitsIt++;
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitClass(), "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitID(), 11);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsB");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 11);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().first, "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().second, 3);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().front().first, "unitsP");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().front().second, 1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().first, "unitsB");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().second, 3);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().first, "unitsP");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().second, 1);
 
   UnitsIt++;
   UnitsIt++;
   UnitsIt++;
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitClass(), "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitID(), 7);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsB");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 7);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 4);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(), 0);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(), 0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 0);
 
 
   // Domain attributes
@@ -284,34 +283,34 @@ void TestDataset(std::string DatasetPath)
 
   std::list<openfluid::fluidx::AttributesDescriptor>::iterator AttrsIt;
 
-  BOOST_REQUIRE_EQUAL(FXDesc.getDomainDescriptor().getAttributes().size(), 3);
+  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().attributes().size(), 3);
 
-  AttrsIt = FXDesc.getDomainDescriptor().getAttributes().begin();
+  AttrsIt = FXDesc.spatialDomainDescriptor().attributes().begin();
   BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsA");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getColumnsOrder().size(), 1);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getColumnsOrder()[0], "indataA");
-  BOOST_REQUIRE((*AttrsIt).getAttributes().size() > 0);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getAttributes().at(8).at("indataA"), "1.1");
+  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
+  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataA");
+  BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
+  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(8).at("indataA"), "1.1");
 
   AttrsIt++;
   BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getColumnsOrder().size(), 2);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getColumnsOrder()[0], "indataB1");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getColumnsOrder()[1], "indataB3");
-  BOOST_REQUIRE((*AttrsIt).getAttributes().size() > 0);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getAttributes().at(7).at("indataB1"), "7.1");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getAttributes().at(7).at("indataB3"), "7.3");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getAttributes().at(11).at("indataB1"), "11.1");
+  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 2);
+  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB1");
+  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[1], "indataB3");
+  BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
+  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB1"), "7.1");
+  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB3"), "7.3");
+  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB1"), "11.1");
 
   AttrsIt++;
   BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getColumnsOrder().size(), 1);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getColumnsOrder()[0], "indataB2");
-  BOOST_REQUIRE((*AttrsIt).getAttributes().size() > 0);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getAttributes().at(11).at("indataB2"), "codeA");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getAttributes().at(7).at("indataB2"), "codeE");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getAttributes().at(2).at("indataB2"), "codeC");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getAttributes().at(1).at("indataB2"), "codeD");
+  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
+  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB2");
+  BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
+  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB2"), "codeA");
+  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB2"), "codeE");
+  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(2).at("indataB2"), "codeC");
+  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(1).at("indataB2"), "codeD");
 
 
   // Domain calendar
@@ -319,29 +318,29 @@ void TestDataset(std::string DatasetPath)
 
   std::list<openfluid::fluidx::EventDescriptor>::iterator EventIt;
 
-  BOOST_REQUIRE_EQUAL(FXDesc.getDomainDescriptor().getEvents().size(), 10);
+  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().events().size(), 10);
 
-  EventIt = FXDesc.getDomainDescriptor().getEvents().begin();
+  EventIt = FXDesc.spatialDomainDescriptor().events().begin();
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitClass(), "unitsA");
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 1);
   BOOST_REQUIRE(
-      (*EventIt).getEvent().getDateTime() == openfluid::core::DateTime(1999,12,31,23,59,59));
-  BOOST_REQUIRE_EQUAL((*EventIt).getEvent().getInfosCount(), 4);
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("when","before"));
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("where","1"));
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("numeric","1.13"));
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("string","EADGBE"));
+      (*EventIt).event().getDateTime() == openfluid::core::DateTime(1999,12,31,23,59,59));
+  BOOST_REQUIRE_EQUAL((*EventIt).event().getInfosCount(), 4);
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("when","before"));
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("where","1"));
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("numeric","1.13"));
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("string","EADGBE"));
 
   EventIt++;
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitClass(), "unitsA");
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 1);
   BOOST_REQUIRE(
-      (*EventIt).getEvent().getDateTime() == openfluid::core::DateTime(1999,12,1,12,0,0));
-  BOOST_REQUIRE_EQUAL((*EventIt).getEvent().getInfosCount(), 4);
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("when","before"));
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("where","1"));
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("numeric","1.13"));
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("string","EADG"));
+      (*EventIt).event().getDateTime() == openfluid::core::DateTime(1999,12,1,12,0,0));
+  BOOST_REQUIRE_EQUAL((*EventIt).event().getInfosCount(), 4);
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("when","before"));
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("where","1"));
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("numeric","1.13"));
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("string","EADG"));
 
   EventIt++;
   EventIt++;
@@ -350,19 +349,19 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitClass(), "unitsB");
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 7);
   BOOST_REQUIRE(
-      (*EventIt).getEvent().getDateTime() == openfluid::core::DateTime(2000,1,1,2,18,12));
-  BOOST_REQUIRE_EQUAL((*EventIt).getEvent().getInfosCount(), 4);
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("when","during"));
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("where","9"));
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("numeric","1.15"));
-  BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("string","EADGBE"));
+      (*EventIt).event().getDateTime() == openfluid::core::DateTime(2000,1,1,2,18,12));
+  BOOST_REQUIRE_EQUAL((*EventIt).event().getInfosCount(), 4);
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("when","during"));
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("where","9"));
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("numeric","1.15"));
+  BOOST_REQUIRE((*EventIt).event().isInfoEqual("string","EADGBE"));
 
 
   // Datastore
   // ====================================================================
 
   openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t DataItems =
-      FXDesc.getDatastoreDescriptor().getItems();
+      FXDesc.datastoreDescriptor().items();
 
   BOOST_REQUIRE_EQUAL(DataItems.size(),3);
 
@@ -394,7 +393,7 @@ void TestDataset(std::string DatasetPath)
   // Monitoring
   // ====================================================================
   openfluid::fluidx::MonitoringDescriptor::SetDescription_t Observers =
-       FXDesc.getMonitoringDescriptor().getItems();
+       FXDesc.monitoringDescriptor().items();
 
    BOOST_CHECK_EQUAL(Observers.size(), 4);
 
@@ -705,16 +704,16 @@ BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
   {
     openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
 
-    FXDesc.getRunDescriptor().setBeginDate(openfluid::core::DateTime(2014,9,4,17,0,0));
-    FXDesc.getRunDescriptor().setEndDate(openfluid::core::DateTime(2014,9,4,18,0,0));
-    FXDesc.getRunDescriptor().setDeltaT(60);
+    FXDesc.runDescriptor().setBeginDate(openfluid::core::DateTime(2014,9,4,17,0,0));
+    FXDesc.runDescriptor().setEndDate(openfluid::core::DateTime(2014,9,4,18,0,0));
+    FXDesc.runDescriptor().setDeltaT(60);
 
-    FXDesc.getRunDescriptor().setFilled(true);
+    FXDesc.runDescriptor().setFilled(true);
 
     ObsDesc = new openfluid::fluidx::ObserverDescriptor("tests.observer");
     ObsDesc->setParameter("param1",openfluid::core::StringValue(RefParamStr));
 
-    FXDesc.getMonitoringDescriptor().getItems().push_back(ObsDesc);
+    FXDesc.monitoringDescriptor().items().push_back(ObsDesc);
 
     FXDesc.writeToManyFiles(DatasetDir);
   }
@@ -726,7 +725,7 @@ BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
 
     FXDesc.loadFromDirectory(DatasetDir);
 
-    openfluid::ware::WareParams_t Params = FXDesc.getMonitoringDescriptor().getItems().front()->getParameters();
+    openfluid::ware::WareParams_t Params = FXDesc.monitoringDescriptor().items().front()->getParameters();
 
     BOOST_REQUIRE_EQUAL(Params["param1"].toString(),RefParamStr);
   }

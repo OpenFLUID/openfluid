@@ -30,10 +30,9 @@
 */
 
 /**
- \file VectorDataset.cpp
- \brief Implements ...
+ @file VectorDataset.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "VectorDataset.hpp"
@@ -109,7 +108,7 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
 {
   OGRRegisterAll();
 
-  OGRDataSource* DS = Value.get();
+  OGRDataSource* DS = Value.data();
   OGRSFDriver* Driver = DS->GetDriver();
 
   std::string DriverName=Driver->GetName();
@@ -153,7 +152,7 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
 {
   OGRRegisterAll();
 
-  OGRDataSource* DS = Other.getDataSource();
+  OGRDataSource* DS = Other.source();
   OGRSFDriver* Driver = DS->GetDriver();
 
   std::string DriverName=Driver->GetName();
@@ -216,7 +215,7 @@ std::string VectorDataset::getTimestampedPath(const std::string& OriginalFileNam
 std::string VectorDataset::getInitializedTmpPath()
 {
   std::string TmpPath =
-      openfluid::base::RuntimeEnvironment::getInstance()->getTempDir();
+      openfluid::base::RuntimeEnvironment::instance()->getTempDir();
 
   if (!boost::filesystem::exists(TmpPath))
     boost::filesystem::create_directories(TmpPath);
@@ -265,7 +264,7 @@ VectorDataset::~VectorDataset()
 // =====================================================================
 
 
-OGRDataSource* VectorDataset::getDataSource()
+OGRDataSource* VectorDataset::source()
 {
   return mp_DataSource;
 }
@@ -275,7 +274,7 @@ OGRDataSource* VectorDataset::getDataSource()
 // =====================================================================
 
 
-OGRDataSource* VectorDataset::getDataSource() const
+OGRDataSource* VectorDataset::source() const
 {
   return mp_DataSource;
 }
@@ -373,7 +372,7 @@ void VectorDataset::addALayer(std::string LayerName,
 // =====================================================================
 
 
-OGRLayer* VectorDataset::getLayer(unsigned int LayerIndex)
+OGRLayer* VectorDataset::layer(unsigned int LayerIndex)
 {
   return mp_DataSource->GetLayer(LayerIndex);
 }
@@ -383,9 +382,9 @@ OGRLayer* VectorDataset::getLayer(unsigned int LayerIndex)
 // =====================================================================
 
 
-OGRFeatureDefn* VectorDataset::getLayerDef(unsigned int LayerIndex)
+OGRFeatureDefn* VectorDataset::layerDef(unsigned int LayerIndex)
 {
-  return getLayer(LayerIndex)->GetLayerDefn();
+  return layer(LayerIndex)->GetLayerDefn();
 }
 
 
@@ -399,7 +398,7 @@ void VectorDataset::addAField(const std::string& FieldName,
 {
   OGRFieldDefn Field(FieldName.c_str(), FieldType);
 
-  if (getLayer(LayerIndex)->CreateField(&Field) != OGRERR_NONE)
+  if (layer(LayerIndex)->CreateField(&Field) != OGRERR_NONE)
     throw openfluid::base::FrameworkException(
         "VectorDataset::addAField",
         "Creating field \"" + FieldName + "\" failed.");
@@ -412,7 +411,7 @@ void VectorDataset::addAField(const std::string& FieldName,
 
 bool VectorDataset::isLineType(unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetGeomType() == wkbLineString;
+  return layerDef(LayerIndex)->GetGeomType() == wkbLineString;
 }
 
 
@@ -422,7 +421,7 @@ bool VectorDataset::isLineType(unsigned int LayerIndex)
 
 bool VectorDataset::isPolygonType(unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetGeomType() == wkbPolygon;
+  return layerDef(LayerIndex)->GetGeomType() == wkbPolygon;
 }
 
 
@@ -433,7 +432,7 @@ bool VectorDataset::isPolygonType(unsigned int LayerIndex)
 bool VectorDataset::containsField(const std::string& FieldName,
                                   unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str()) != -1;
+  return layerDef(LayerIndex)->GetFieldIndex(FieldName.c_str()) != -1;
 }
 
 
@@ -444,7 +443,7 @@ bool VectorDataset::containsField(const std::string& FieldName,
 int VectorDataset::getFieldIndex(const std::string& FieldName,
                                  unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
+  return layerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
 }
 
 
@@ -461,7 +460,7 @@ bool VectorDataset::isFieldOfType(const std::string& FieldName,
         "VectorDataset::isFieldOfType",
         "Field \"" + FieldName + "\" is not set.");
 
-  return getLayerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()
+  return layerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()
       == FieldType;
 }
 
@@ -479,9 +478,9 @@ bool VectorDataset::isIntValueSet(const std::string& FieldName,
         "VectorDataset::isIntValueSet",
         "Field \"" + FieldName + "\" is not set or is not of type Int.");
 
-  int CatIndex = getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
+  int CatIndex = layerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
 
-  OGRLayer* Layer = getLayer(LayerIndex);
+  OGRLayer* Layer = layer(LayerIndex);
 
   Layer->ResetReading();
 
@@ -518,7 +517,7 @@ VectorDataset::FeaturesList_t VectorDataset::getFeatures(
 // =====================================================================
 
 
-geos::geom::Geometry* VectorDataset::getGeometries(unsigned int LayerIndex)
+geos::geom::Geometry* VectorDataset::geometries(unsigned int LayerIndex)
 {
   if (!m_Geometries.count(LayerIndex))
     parse(LayerIndex);
@@ -539,7 +538,7 @@ void VectorDataset::parse(unsigned int LayerIndex)
   // TODO move to... ?
   setlocale(LC_NUMERIC, "C");
 
-  OGRLayer* Layer = getLayer(LayerIndex);
+  OGRLayer* Layer = layer(LayerIndex);
 
   Layer->ResetReading();
 
@@ -602,7 +601,7 @@ void VectorDataset::parse(unsigned int LayerIndex)
 
 bool VectorDataset::isPointType(unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetGeomType() == wkbPoint;
+  return layerDef(LayerIndex)->GetGeomType() == wkbPoint;
 }
 
 

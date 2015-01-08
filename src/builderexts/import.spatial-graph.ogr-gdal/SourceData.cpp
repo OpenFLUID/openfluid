@@ -31,10 +31,9 @@
 
 
 /**
-  \file SourceData.cpp
-  \brief Implements ...
+  @file SourceData.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

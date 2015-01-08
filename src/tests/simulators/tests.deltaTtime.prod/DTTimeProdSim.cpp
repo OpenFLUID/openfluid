@@ -32,10 +32,9 @@
 
 
 /**
-  \file VTimeProdSim.cpp
-  \brief Implements ...
+  @file VTimeProdSim.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -133,7 +132,7 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     openfluid::core::NullValue TheNull;
     long VectorSize = 5;
@@ -164,7 +163,7 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest runStep()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     openfluid::core::NullValue TheNull;
     long VectorSize = 40;

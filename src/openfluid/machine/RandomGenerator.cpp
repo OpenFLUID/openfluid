@@ -35,7 +35,7 @@
   @file
   @brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -99,7 +99,7 @@ void RandomGenerator::checkConsistency()
 
 openfluid::base::SchedulingRequest RandomGenerator::initializeRun()
 {
-  openfluid::core::Unit* LU;
+  openfluid::core::SpatialUnit* LU;
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
   {
     if (isVectorVariable())
@@ -123,7 +123,7 @@ openfluid::base::SchedulingRequest RandomGenerator::initializeRun()
 openfluid::base::SchedulingRequest RandomGenerator::runStep()
 {
 
-  openfluid::core::Unit* LU;
+  openfluid::core::SpatialUnit* LU;
 
   boost::uniform_real<> Distribution(m_Min, m_Max);
   boost::variate_generator<boost::mt19937&, boost::uniform_real<> > Random (m_RandomEngine, Distribution);

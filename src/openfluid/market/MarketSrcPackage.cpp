@@ -32,10 +32,9 @@
 
 
 /**
-  \file MarketSrcPackage.cpp
-  \brief Implements ...
+  @file MarketSrcPackage.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 #include <openfluid/market/MarketSrcPackage.hpp>

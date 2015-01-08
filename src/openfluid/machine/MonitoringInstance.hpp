@@ -31,10 +31,9 @@
 
 
 /**
-  \file MonitoringInstance.hpp
-  \brief Header of ...
+  @file MonitoringInstance.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -71,7 +70,7 @@ class OPENFLUID_API MonitoringInstance
 
     void appendObserver(ObserverInstance* ObsInstance);
 
-    const std::list<ObserverInstance*>& getObservers() const { return m_Observers; };
+    const std::list<ObserverInstance*>& observers() const { return m_Observers; };
 
     void initialize(openfluid::base::SimulationLogger* mp_SimLogger);
 

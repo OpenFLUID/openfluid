@@ -32,10 +32,9 @@
 
 
 /**
-  \file MonitoringInstance.cpp
-  \brief Implements ...
+  @file MonitoringInstance.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/machine/MonitoringInstance.hpp>
@@ -87,7 +86,7 @@ void MonitoringInstance::appendObserver(ObserverInstance* ObsInstance)
 
 void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 {
-  openfluid::machine::ObserverPluginsManager* OPlugsMgr = openfluid::machine::ObserverPluginsManager::getInstance();
+  openfluid::machine::ObserverPluginsManager* OPlugsMgr = openfluid::machine::ObserverPluginsManager::instance();
 
   std::list<ObserverInstance*>::const_iterator ObsIter;
   ObserverInstance* CurrentObserver;
@@ -99,10 +98,10 @@ void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger
     OPlugsMgr->completeSignatureWithWareBody(CurrentObserver);
 
     CurrentObserver->Body->linkToSimulationLogger(SimLogger);
-    CurrentObserver->Body->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
-    CurrentObserver->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
-    CurrentObserver->Body->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));
-    CurrentObserver->Body->linkToDatastore(&(m_SimulationBlob.getDatastore()));
+    CurrentObserver->Body->linkToSimulation(&(m_SimulationBlob.simulationStatus()));
+    CurrentObserver->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::instance()->wareEnvironment());
+    CurrentObserver->Body->linkToSpatialGraph(&(m_SimulationBlob.spatialGraph()));
+    CurrentObserver->Body->linkToDatastore(&(m_SimulationBlob.datastore()));
     CurrentObserver->Body->initializeWare(CurrentObserver->Signature->ID);
 
     ObsIter++;

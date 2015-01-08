@@ -32,10 +32,9 @@
 
 
 /**
-  \file DotViewExtension.cpp
-  \brief Implements ...
+  @file DotViewExtension.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -139,7 +138,7 @@ void GraphvizViewExtension::launchSVGFileGeneration()
 
   QThread* WThread = new QThread;
   SVGFileGeneratorWorker* Worker = new SVGFileGeneratorWorker(m_GVFileName,m_SVGFileName,
-                                                            &(mp_AdvancedDesc->getDomain()));
+                                                            &(mp_AdvancedDesc->spatialDomain()));
   Worker->moveToThread(WThread);
 
   if (ui->RankDirComboBox->currentIndex() == 0)

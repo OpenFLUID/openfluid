@@ -32,10 +32,9 @@
 
 
 /**
-  \file BuilderApp.cpp
-  \brief Implements ...
+  @file BuilderApp.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <QApplication>
@@ -76,25 +75,25 @@ void BuilderApp::initialize()
   qsrand((uint)QTime::currentTime().msec());
 
   openfluid::base::PreferencesManager* PrefsMgr =
-    openfluid::base::PreferencesManager::getInstance();
+    openfluid::base::PreferencesManager::instance();
 
 
   // TODO see if this is moved into ProjectCoordinator or ProjectModule
 
   QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
+    openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
 
   ExtraPaths = PrefsMgr->getExtraObserversPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
+    openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
 
 
   // Extensions
 
   ExtraPaths = PrefsMgr->getExtraExtensionsPaths();
-  ExtensionPluginsManager::getInstance(ExtraPaths); // initialization parameterized with extra paths
-  ExtensionsRegistry::getInstance()->registerExtensions();
+  ExtensionPluginsManager::instance(ExtraPaths); // initialization parameterized with extra paths
+  ExtensionsRegistry::instance()->registerExtensions();
 
   m_Actions.createMenus(m_MainWindow);
   m_Actions.createToolbar(m_MainWindow);

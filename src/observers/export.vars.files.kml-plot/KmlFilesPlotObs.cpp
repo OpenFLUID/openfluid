@@ -32,10 +32,9 @@
 
 
 /**
-  \file KmlFilesPlotObs.cpp
-  \brief Implements ...
+  @file KmlFilesPlotObs.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -469,7 +468,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
       {
         if ((*it).VarsListStr == "*")
         {
-          (*it).VarsList = mp_CoreData->getUnits((*it).UnitsClass)->getList()->front().getVariables()->getVariablesNames();
+          (*it).VarsList = mp_SpatialData->spatialUnits((*it).UnitsClass)->list()->front().variables()->getVariablesNames();
         }
         else
         {
@@ -506,7 +505,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       if (!m_OKToGo) return;
 
-      openfluid::core::Unit* UU;
+      openfluid::core::SpatialUnit* UU;
 
 
       // write data files

@@ -32,10 +32,9 @@
 
 
 /**
-  \file DashboardInfosWidget.cpp
-  \brief Implements ...
+  @file DashboardInfosWidget.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/base/ProjectManager.hpp>
@@ -95,20 +94,20 @@ DashboardInfosWidget::~DashboardInfosWidget()
 void DashboardInfosWidget::refresh()
 {
   unsigned int SimCount, GenCount;
-  m_AdvFluidxDesc.getModel().getItemsCount(SimCount,GenCount);
+  m_AdvFluidxDesc.model().getItemsCount(SimCount,GenCount);
 
-  unsigned int UnitsCount = m_AdvFluidxDesc.getDomain().getUnitsCount();
-  int UnitsClassesCount = m_AdvFluidxDesc.getDomain().getClassNames().size();
+  unsigned int UnitsCount = m_AdvFluidxDesc.spatialDomain().getUnitsCount();
+  int UnitsClassesCount = m_AdvFluidxDesc.spatialDomain().getClassNames().size();
 
-  unsigned int DStoreCount = m_AdvFluidxDesc.getDatastoreDescriptor().getItems().size();
+  unsigned int DStoreCount = m_AdvFluidxDesc.datastoreDescriptor().items().size();
 
-  unsigned int MonitoringCount = m_AdvFluidxDesc.getMonitoring().getItems().size();
+  unsigned int MonitoringCount = m_AdvFluidxDesc.monitoring().items().size();
 
-  int DeltaT = m_AdvFluidxDesc.getRunDescriptor().getDeltaT();
+  int DeltaT = m_AdvFluidxDesc.runDescriptor().getDeltaT();
 
-  int Duration = m_AdvFluidxDesc.getRunDescriptor().getEndDate().diffInSeconds(m_AdvFluidxDesc.getRunDescriptor().getBeginDate());
+  int Duration = m_AdvFluidxDesc.runDescriptor().getEndDate().diffInSeconds(m_AdvFluidxDesc.runDescriptor().getBeginDate());
 
-  openfluid::base::SimulationStatus::SchedulingConstraint SchedConst = m_AdvFluidxDesc.getRunDescriptor().getSchedulingConstraint();
+  openfluid::base::SimulationStatus::SchedulingConstraint SchedConst = m_AdvFluidxDesc.runDescriptor().getSchedulingConstraint();
   QString SchedConstStr = tr("no constraint");
 
   if (SchedConst == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
@@ -131,9 +130,9 @@ void DashboardInfosWidget::refresh()
 
 void DashboardInfosWidget::refreshProjectInfos()
 {
-  QString NativePath = QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
+  QString NativePath = QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::instance()->getPath()));
 
-  ui->TitleLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()));
+  ui->TitleLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::instance()->getName()));
   ui->PathLabel->setText(NativePath);
   ui->PathLabel->setToolTip(NativePath);
 }

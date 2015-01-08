@@ -30,10 +30,9 @@
 */
 
 /**
- \file LandREntity.hpp
- \brief Header of ...
+ @file LandREntity.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LANDRENTITY_HPP__
@@ -60,13 +59,14 @@ namespace landr {
 /**
  @brief Interface for a landscape representation element.
  */
-class OPENFLUID_API LandREntity: public geos::planargraph::GraphComponent
+class OPENFLUID_API LandREntity : public geos::planargraph::GraphComponent
 {
   private:
 
     LandREntity();
 
     LandREntity(const LandREntity&);
+
 
   protected:
     /**
@@ -113,6 +113,7 @@ class OPENFLUID_API LandREntity: public geos::planargraph::GraphComponent
      */
     virtual void computeNeighbours() = 0;
 
+
   public:
 
     LandREntity(const geos::geom::Geometry* Geom, unsigned int OfldId);
@@ -124,7 +125,7 @@ class OPENFLUID_API LandREntity: public geos::planargraph::GraphComponent
     /**
      @brief Returns the geos::geom::Geometry of this LandREntity.
      */
-    const geos::geom::Geometry* getGeometry();
+    const geos::geom::Geometry* geometry();
 
     /**
      @brief Returns the identifier of this LandREntity.
@@ -134,7 +135,7 @@ class OPENFLUID_API LandREntity: public geos::planargraph::GraphComponent
     /**
      @brief Returns the centroid of this LandREntity.
      */
-    geos::geom::Point* getCentroid() const;
+    geos::geom::Point* centroid() const;
 
     /**
      @brief Returns the area of this LandREntity.
@@ -149,7 +150,7 @@ class OPENFLUID_API LandREntity: public geos::planargraph::GraphComponent
     /**
      @brief Returns a set of LandREntity neighbours of this LandREntity.
      */
-    std::set<LandREntity*>* getNeighbours();
+    std::set<LandREntity*>* neighbours();
 
     /**
      @brief Gets the value of an attribute.
@@ -176,7 +177,7 @@ class OPENFLUID_API LandREntity: public geos::planargraph::GraphComponent
     /**
      @brief Gets the LandREntity neighbour that has the minimum centroid-to-centroid distance.
      */
-    LandREntity* getNeighbour_MinDistCentroCentro();
+    LandREntity* neighbour_MinDistCentroCentro();
 
 };
 

@@ -31,10 +31,9 @@
 
 
 /**
-  \file ConnectorGraphics.hpp
-  \brief Header of ...
+  @file ConnectorGraphics.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -82,13 +81,13 @@ class ConnectorGraphics : public QGraphicsPathItem
 
     void addVariable(const QString& UnitClass, const QString& VarName);
 
-    ModelItemGraphics* getFromItem()
+    ModelItemGraphics* fromItem()
     { return mp_FromItem; }
 
     OutNodeType getFromNode()
     { return m_FromOutNode; }
 
-    ModelItemGraphics* getToItem()
+    ModelItemGraphics* toItem()
     { return mp_ToItem; }
 
     InNodeType getToNode()

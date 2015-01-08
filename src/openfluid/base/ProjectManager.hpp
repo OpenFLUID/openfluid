@@ -32,10 +32,9 @@
 
 
 /**
-  \file ProjectManager.hpp
-  \brief Header of ...
+  @file ProjectManager.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -95,7 +94,7 @@ class OPENFLUID_API ProjectManager
 
   public:
 
-    static ProjectManager* getInstance();
+    static ProjectManager* instance();
 
     ~ProjectManager();
 

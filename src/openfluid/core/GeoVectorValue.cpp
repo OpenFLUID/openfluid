@@ -30,10 +30,9 @@
 */
 
 /**
- \file GeoVectorValue.cpp
- \brief Implements ...
+ @file GeoVectorValue.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include <openfluid/core/GeoVectorValue.hpp>
@@ -43,25 +42,31 @@
 namespace openfluid {
 namespace core {
 
+
 // =====================================================================
 // =====================================================================
 
-GeoVectorValue::GeoVectorValue(std::string FilePath, std::string FileName) :
+
+GeoVectorValue::GeoVectorValue(const std::string& FilePath, const std::string& FileName) :
     GeoValue(FilePath, FileName), mp_Data(0)
 {
   OGRRegisterAll();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 GeoVectorValue::~GeoVectorValue()
 {
   destroyDataSource();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void GeoVectorValue::destroyDataSource()
 {
@@ -72,18 +77,22 @@ void GeoVectorValue::destroyDataSource()
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::core::UnstructuredValue::UnstructuredType GeoVectorValue::getType() const
 {
   return openfluid::core::UnstructuredValue::GeoVectorValue;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-OGRDataSource* GeoVectorValue::get()
+
+OGRDataSource* GeoVectorValue::data()
 {
   if (!mp_Data)
     tryToOpenSource();
@@ -91,8 +100,10 @@ OGRDataSource* GeoVectorValue::get()
   return mp_Data;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void GeoVectorValue::tryToOpenSource()
 {
@@ -104,59 +115,73 @@ void GeoVectorValue::tryToOpenSource()
         "Error while trying to open file " + m_AbsolutePath);
 }
 
+
 // =====================================================================
 // =====================================================================
 
-OGRLayer* GeoVectorValue::getLayer(unsigned int LayerIndex)
+
+OGRLayer* GeoVectorValue::layer(unsigned int LayerIndex)
 {
-  return get()->GetLayer(LayerIndex);
+  return data()->GetLayer(LayerIndex);
 }
 
+
 // =====================================================================
 // =====================================================================
 
-OGRFeatureDefn* GeoVectorValue::getLayerDef(unsigned int LayerIndex)
+
+OGRFeatureDefn* GeoVectorValue::layerDef(unsigned int LayerIndex)
 {
-  return getLayer(LayerIndex)->GetLayerDefn();
+  return layer(LayerIndex)->GetLayerDefn();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool GeoVectorValue::isLineType(unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetGeomType() == wkbLineString;
+  return layerDef(LayerIndex)->GetGeomType() == wkbLineString;
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 bool GeoVectorValue::isPolygonType(unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetGeomType() == wkbPolygon;
+  return layerDef(LayerIndex)->GetGeomType() == wkbPolygon;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-bool GeoVectorValue::containsField(std::string FieldName,
+
+bool GeoVectorValue::containsField(const std::string& FieldName,
                                   unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str()) != -1;
+  return layerDef(LayerIndex)->GetFieldIndex(FieldName.c_str()) != -1;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-int GeoVectorValue::getFieldIndex(std::string FieldName, unsigned int LayerIndex)
+
+int GeoVectorValue::getFieldIndex(const std::string& FieldName, unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
+  return layerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
 }
 
+
 // =====================================================================
 // =====================================================================
 
-bool GeoVectorValue::isFieldOfType(std::string FieldName, OGRFieldType FieldType,
+
+bool GeoVectorValue::isFieldOfType(const std::string& FieldName, OGRFieldType FieldType,
                                   unsigned int LayerIndex)
 {
   if (!containsField(FieldName))
@@ -164,16 +189,18 @@ bool GeoVectorValue::isFieldOfType(std::string FieldName, OGRFieldType FieldType
         "VectorDataset::isFieldOfType",
         "Field \"" + FieldName + "\" is not set.");
 
-  return getLayerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()
+  return layerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()
       == FieldType;
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 bool GeoVectorValue::isPointType(unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetGeomType() == wkbPoint;
+  return layerDef(LayerIndex)->GetGeomType() == wkbPoint;
 }
 
 // =====================================================================
@@ -181,24 +208,29 @@ bool GeoVectorValue::isPointType(unsigned int LayerIndex)
 
 bool GeoVectorValue::isMultiPolygonType(unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetGeomType() == wkbMultiPolygon;
+  return layerDef(LayerIndex)->GetGeomType() == wkbMultiPolygon;
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 bool GeoVectorValue::isMultiLineType(unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetGeomType() == wkbMultiLineString;
+  return layerDef(LayerIndex)->GetGeomType() == wkbMultiLineString;
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 bool GeoVectorValue::isMultiPointType(unsigned int LayerIndex)
 {
-  return getLayerDef(LayerIndex)->GetGeomType() == wkbMultiPoint;
+  return layerDef(LayerIndex)->GetGeomType() == wkbMultiPoint;
 }
+
 
 // =====================================================================
 // =====================================================================

@@ -32,10 +32,9 @@
 
 
 /**
-  \file CouplingBSim.cpp
-  \brief Implements ...
+  @file CouplingBSim.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -134,7 +133,7 @@ class CouplingBSimulator : public openfluid::ware::PluggableSimulator
   openfluid::base::SchedulingRequest initializeRun()
   {
 
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
@@ -158,7 +157,7 @@ class CouplingBSimulator : public openfluid::ware::PluggableSimulator
   openfluid::base::SchedulingRequest runStep()
   {
 
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {

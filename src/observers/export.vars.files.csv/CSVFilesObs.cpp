@@ -32,10 +32,9 @@
 
 
 /**
-  \file CSVFilesObs.cpp
-  \brief Implements ...
+  @file CSVFilesObs.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -85,7 +84,7 @@ class CSVFormat
 class CSVFile
 {
   public:
-    openfluid::core::Unit* Unit;
+    openfluid::core::SpatialUnit* Unit;
 
     char* FileBuffer;
 
@@ -321,7 +320,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
       SetMap_t::iterator SetItB = m_Sets.begin();
       SetMap_t::iterator SetIt;
 
-      openfluid::core::Unit* TmpU;
+      openfluid::core::SpatialUnit* TmpU;
 
       for (SetIt=SetItB;SetIt!=SetItE;++SetIt)
       {
@@ -335,7 +334,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
           if ((*SetIt).second.VariablesStr == "*")
           {
             // process all variables
-            VarArray = mp_CoreData->getUnits((*SetIt).second.UnitClass)->getList()->begin()->getVariables()->getVariablesNames();
+            VarArray = mp_SpatialData->spatialUnits((*SetIt).second.UnitClass)->list()->begin()->variables()->getVariablesNames();
           }
           else
           {
@@ -346,7 +345,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
             for (unsigned int i = 0; i < TmpVarArray.size(); i++)
             {
-              if (mp_CoreData->getUnits((*SetIt).second.UnitClass)->getList()->begin()->getVariables()->isVariableExist(TmpVarArray[i]))
+              if (mp_SpatialData->spatialUnits((*SetIt).second.UnitClass)->list()->begin()->variables()->isVariableExist(TmpVarArray[i]))
               {
                  VarArray.push_back(TmpVarArray[i]);
               }
@@ -386,7 +385,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
               TmpU = NULL;
               if (openfluid::tools::ConvertString(UIDArray[i], &UID))
               {
-                TmpU = mp_CoreData->getUnit((*SetIt).second.UnitClass,UID);
+                TmpU = mp_SpatialData->spatialUnit((*SetIt).second.UnitClass,UID);
                 if (TmpU != NULL)
                 {
                   for (unsigned int i = 0; i < VarArray.size(); i++)
@@ -491,7 +490,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
         for (FLIt=FLItB;FLIt!=FLItE;++FLIt)
         {
-          openfluid::core::Value* Val = (*FLIt)->Unit->getVariables()->getCurrentValueIfIndex((*FLIt)->VarName,OPENFLUID_GetCurrentTimeIndex());
+          openfluid::core::Value* Val = (*FLIt)->Unit->variables()->currentValueIfIndex((*FLIt)->VarName,OPENFLUID_GetCurrentTimeIndex());
 
           if (Val!=NULL)
           {

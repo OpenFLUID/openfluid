@@ -30,10 +30,9 @@
 */
 
 /**
- \file LineStringGraph.hpp
- \brief Header of ...
+ @file LineStringGraph.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LINESTRINGGRAPH_HPP__
@@ -171,7 +170,7 @@ public:
 	/**
 	 @brief Returns a LineStringEntity with OFLD_ID, or 0 if it doesn't exist.
 	 */
-	LineStringEntity* getEntity(int OfldId);
+	LineStringEntity* entity(int OfldId);
 
 	/**
 	 @brief Removes from this LineStringGraph the LineStringEntity with OFLD_ID and its associated nodes.
@@ -184,7 +183,7 @@ public:
 	 ie the one that has no down neighbour.
 	 @return The last LineStringEntity or 0 if there is zero or more than one LineStringEntity whith no down neighbour.
 	 */
-	LineStringEntity* getLastLineStringEntity();
+	LineStringEntity* lastLineStringEntity();
 
 	/**
 	 @brief Returns a vector of LineStringEntity that have no down neighbour, according to the LineStringEntity orientations.
@@ -260,9 +259,9 @@ public:
 	 @param HighDegree : if true, do not get the if StartNode and EndNode of this LineStringEntitiy are Degree>=3.
 	 @return a multimap of LineStringEntity with key is the length of each LineStringEntity.
 	 */
-	std::multimap<double,  LineStringEntity*> getLineStringEntitiesByMinLength(double MinLength,
-	                                                                           bool rmDangle=true,
-	                                                                           bool HighDegree=true);
+	std::multimap<double,LineStringEntity*> getLineStringEntitiesByMinLength(double MinLength,
+	                                                                         bool rmDangle=true,
+	                                                                         bool HighDegree=true);
 
 	/**
 	 @brief Set the orientation of the LineStringGraph with outlet identification by OFLD_ID identifier.

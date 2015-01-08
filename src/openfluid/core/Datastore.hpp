@@ -30,10 +30,9 @@
 */
 
 /**
- \file Datastore.hpp
- \brief Header of ...
+ @file Datastore.hpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_DATASTORE_HPP__
@@ -96,7 +95,7 @@ class OPENFLUID_API Datastore
      * @param ItemID ID of the expected item.
      * @return The item with the given ID, or 0 if not found.
      */
-    DatastoreItem* getItem(const std::string& ItemID);
+    DatastoreItem* item(const std::string& ItemID);
 
     /**
      * @brief Adds an item to the datastore.

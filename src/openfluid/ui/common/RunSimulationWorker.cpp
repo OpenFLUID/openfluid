@@ -32,10 +32,9 @@
 
 
 /**
-  \file RunSimulationWorker.cpp
-  \brief Implements ...
+  @file RunSimulationWorker.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -356,18 +355,18 @@ void RunSimulationWorker::run()
 
   try
   {
-    openfluid::base::ProjectManager::getInstance()->updateOutputDir();
+    openfluid::base::ProjectManager::instance()->updateOutputDir();
 
-    openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
+    openfluid::base::RuntimeEnvironment::instance()->linkToProject();
 
     openfluid::machine::SimulationBlob SimBlob;
 
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc,
                                                                     SimBlob);
 
-    emit periodChanged(QString(SimBlob.getSimulationStatus().getBeginDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
-                       QString(SimBlob.getSimulationStatus().getEndDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
-                       SimBlob.getSimulationStatus().getSimulationDuration());
+    emit periodChanged(QString(SimBlob.simulationStatus().getBeginDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
+                       QString(SimBlob.simulationStatus().getEndDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
+                       SimBlob.simulationStatus().getSimulationDuration());
 
     openfluid::machine::ModelInstance ModelInstance(SimBlob, mp_Listener);
 
@@ -377,15 +376,15 @@ void RunSimulationWorker::run()
                                       mp_Listener);
 
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(
-        mp_FXDesc->getModelDescriptor(), ModelInstance);
+        mp_FXDesc->modelDescriptor(), ModelInstance);
 
     openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(
-        mp_FXDesc->getMonitoringDescriptor(), MonitInstance);
+        mp_FXDesc->monitoringDescriptor(), MonitInstance);
 
     openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
-        mp_FXDesc->getRunDescriptor());
+        mp_FXDesc->runDescriptor());
 
-    SimBlob.getCoreRepository().sortUnitsByProcessOrder();
+    SimBlob.spatialGraph().sortUnitsByProcessOrder();
 
 
     // simulation begins -->

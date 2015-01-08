@@ -184,7 +184,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
       // untyped
 
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
         unsigned int CurrIndex;
 
@@ -273,12 +273,12 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (IndValue.getIndex() != OPENFLUID_GetCurrentTimeIndex())
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect time index (tests.double) get by latest variable");
 
-          if (!openfluid::tools::IsCloseEnough(IndValue.getValue()->asDoubleValue(),RefDouble,0.00001))
+          if (!openfluid::tools::IsCloseEnough(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by latest variable");
 
           VarDouble = 0.0;
           OPENFLUID_GetLatestVariables(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex()-1,IndValueList);
-          if (!openfluid::tools::IsCloseEnough(IndValueList.back().getValue()->asDoubleValue(),RefDouble,0.00001))
+          if (!openfluid::tools::IsCloseEnough(IndValueList.back().value()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by reference");
 
 
@@ -624,7 +624,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
       // typed
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
         unsigned int CurrIndex;
 
@@ -681,7 +681,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by reference");
 
           OPENFLUID_GetLatestVariable(TU,"tests.typed.double",IndValue);
-          if (!openfluid::tools::IsCloseEnough(IndValue.getValue()->asDoubleValue(),RefDouble,0.00001))
+          if (!openfluid::tools::IsCloseEnough(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by latest variable");
 
 
@@ -692,7 +692,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value after update (tests.double)");
 
           OPENFLUID_GetLatestVariables(TU,"tests.typed.double",OPENFLUID_GetCurrentTimeIndex()-1,IndValueList);
-          if (!openfluid::tools::IsCloseEnough(IndValueList.back().getValue()->asDoubleValue(),NewDouble,0.00001))
+          if (!openfluid::tools::IsCloseEnough(IndValueList.back().value()->asDoubleValue(),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by latest variable");
 
 
@@ -760,7 +760,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
 
           OPENFLUID_GetLatestVariable(TU,"tests.typed.vector",IndValue);
-          if (IndValue.getValue()->asVectorValue().getSize() != RefVectorSize)
+          if (IndValue.value()->asVectorValue().getSize() != RefVectorSize)
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector size get by latest variable");
 
 

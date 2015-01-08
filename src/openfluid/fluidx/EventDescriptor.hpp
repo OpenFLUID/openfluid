@@ -34,7 +34,7 @@
 /**
   @file
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -75,13 +75,19 @@ class OPENFLUID_API EventDescriptor
 
     ~EventDescriptor();
 
-    inline openfluid::core::UnitID_t& getUnitID()
+    inline openfluid::core::UnitID_t getUnitID() const
     { return m_UnitID; };
 
-    inline openfluid::core::UnitClass_t& getUnitClass()
+    inline void setUnitID(openfluid::core::UnitID_t ID)
+    { m_UnitID = ID; };
+
+    inline const openfluid::core::UnitClass_t getUnitClass() const
     { return m_UnitClass; };
 
-    inline openfluid::core::Event& getEvent()
+    inline void setUnitClass(const openfluid::core::UnitClass_t& UClass)
+    { m_UnitClass = UClass; };
+
+    inline openfluid::core::Event& event()
     { return m_Event; };
 
     inline EventID_t getID() const

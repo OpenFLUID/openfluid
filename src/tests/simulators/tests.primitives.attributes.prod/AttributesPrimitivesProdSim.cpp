@@ -136,7 +136,7 @@ class AttributesPrimitivesProdSimulator : public openfluid::ware::PluggableSimul
 
     void prepareData()
     {
-      openfluid::core::Unit* TU;
+      openfluid::core::SpatialUnit* TU;
       openfluid::core::VectorValue aVector(3);
       aVector.set(0,1.1);
       aVector.set(1,1.2);

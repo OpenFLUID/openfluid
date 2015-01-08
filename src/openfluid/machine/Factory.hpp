@@ -32,9 +32,9 @@
 
 
 /**
-  @file
+  @file Factory.hpp
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -50,20 +50,20 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 namespace openfluid {
+
 namespace base {
 class ExecutionMessages;
 class OutputDescriptor;
 }
 namespace core {
-class CoreRepository;
+class SpatialGraph;
 class Datastore;
 }
 namespace fluidx {
-class DomainDescriptor;
+class SpatialDomainDescriptor;
 class RunDescriptor;
 class DatastoreDescriptor;
-}
-}
+} }
 
 
 namespace openfluid { namespace machine {
@@ -77,8 +77,8 @@ class OPENFLUID_API Factory
 {
   public:
 
-    static void buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Descriptor,
-                                          openfluid::core::CoreRepository& CoreRepos);
+    static void buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
+                                          openfluid::core::SpatialGraph& SGraph);
 
     static void buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescriptor& Descriptor,
                                              openfluid::core::Datastore& Store);

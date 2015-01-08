@@ -30,10 +30,9 @@
 */
 
 /**
- \file WareDescriptor.hpp
- \brief Header of ...
+ @file WareDescriptor.hpp
 
- \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_FLUIDX_WAREDESCRIPTOR_HPP__
@@ -42,8 +41,9 @@
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/dllexport.hpp>
 
-namespace openfluid {
-namespace fluidx {
+
+namespace openfluid { namespace fluidx {
+
 
 class OPENFLUID_API WareDescriptor
 {
@@ -54,6 +54,7 @@ class OPENFLUID_API WareDescriptor
       NoWareType, PluggedSimulator, Generator, PluggedObserver
     };
 
+
   protected:
 
     WareType m_WareType;
@@ -61,6 +62,7 @@ class OPENFLUID_API WareDescriptor
     openfluid::ware::WareParams_t m_Params;  // Simulator parameters set
 
     bool m_Enabled;
+
 
   public:
 
@@ -91,7 +93,7 @@ class OPENFLUID_API WareDescriptor
 
 };
 
-}
-}  // namespaces
+} }  // namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_WAREDESCRIPTOR_HPP__ */

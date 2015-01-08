@@ -30,10 +30,9 @@
 */
 
 /**
- \file RasterDataset.cpp
- \brief Implements ...
+ @file RasterDataset.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "RasterDataset.hpp"
@@ -58,7 +57,7 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
 {
   GDALAllRegister();
 
-  GDALDataset* DS = Value.get();
+  GDALDataset* DS = Value.data();
 
   // GDAL supports many raster formats for reading, but significantly less formats for writing
   // (see http://www.gdal.org/gdal_vrttut.html)
@@ -84,7 +83,7 @@ RasterDataset::RasterDataset(const RasterDataset& Other) :
 {
   GDALAllRegister();
 
-  GDALDataset* DS = Other.getDataset();
+  GDALDataset* DS = Other.source();
 
   // GDAL supports many raster formats for reading, but significantly less formats for writing
   // (see http://www.gdal.org/gdal_vrttut.html)
@@ -117,7 +116,7 @@ RasterDataset::~RasterDataset()
 // =====================================================================
 
 
-GDALDataset* RasterDataset::getDataset()
+GDALDataset* RasterDataset::source()
 {
   return mp_Dataset;
 }
@@ -127,7 +126,7 @@ GDALDataset* RasterDataset::getDataset()
 // =====================================================================
 
 
-GDALDataset* RasterDataset::getDataset() const
+GDALDataset* RasterDataset::source() const
 {
   return mp_Dataset;
 }
@@ -137,7 +136,7 @@ GDALDataset* RasterDataset::getDataset() const
 // =====================================================================
 
 
-GDALRasterBand* RasterDataset::getRasterBand(unsigned int RasterBandIndex)
+GDALRasterBand* RasterDataset::rasterBand(unsigned int RasterBandIndex)
 {
   return mp_Dataset->GetRasterBand(RasterBandIndex);
 }
@@ -219,11 +218,11 @@ std::vector<float> RasterDataset::getValuesOfLine(int LineIndex,
 {
   std::vector<float> Val;
 
-  int ColumnCount = getRasterBand(RasterBandIndex)->GetXSize();
+  int ColumnCount = rasterBand(RasterBandIndex)->GetXSize();
 
   float* ScanLine = (float *) CPLMalloc(sizeof(float) * ColumnCount);
 
-  getRasterBand(RasterBandIndex)->RasterIO(GF_Read, 0, LineIndex, ColumnCount,
+  rasterBand(RasterBandIndex)->RasterIO(GF_Read, 0, LineIndex, ColumnCount,
                                            1, ScanLine, ColumnCount, 1,
                                            GDT_Float32, 0, 0);
 
@@ -245,11 +244,11 @@ std::vector<float> RasterDataset::getValuesOfColumn(int ColIndex,
 {
   std::vector<float> Val;
 
-  int LineCount = getRasterBand(RasterBandIndex)->GetYSize();
+  int LineCount = rasterBand(RasterBandIndex)->GetYSize();
 
   float* ScanLine = (float *) CPLMalloc(sizeof(float) * LineCount);
 
-  getRasterBand(RasterBandIndex)->RasterIO(GF_Read, ColIndex, 0, 1, LineCount,
+  rasterBand(RasterBandIndex)->RasterIO(GF_Read, ColIndex, 0, 1, LineCount,
                                            ScanLine, 1, LineCount, GDT_Float32,
                                            0, 0);
 
@@ -275,7 +274,7 @@ float RasterDataset::getValueOfPixel(int ColIndex,
   float* ScanLine = (float *) CPLMalloc(sizeof(float));
 
   //  The pixel values will automatically be translated from the GDALRasterBand data type as needed.
-  if (getRasterBand(RasterBandIndex)->RasterIO(GF_Read, ColIndex, LineIndex, 1,
+  if (rasterBand(RasterBandIndex)->RasterIO(GF_Read, ColIndex, LineIndex, 1,
                                                1, ScanLine, 1, 1, GDT_Float32,
                                                0, 0)
       != CE_None)
@@ -330,9 +329,9 @@ openfluid::landr::VectorDataset* RasterDataset::polygonize(const std::string& Fi
             FieldName);
 
     OGRLayer* Layer =
-        mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->getLayer(0);
+        mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->layer(0);
 
-    if (GDALFPolygonize(getRasterBand(RasterBandIndex), NULL, Layer, FieldIndex,
+    if (GDALFPolygonize(rasterBand(RasterBandIndex), NULL, Layer, FieldIndex,
                         NULL, NULL, NULL)
         != CE_None)
     {

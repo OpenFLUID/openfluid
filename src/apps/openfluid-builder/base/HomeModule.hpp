@@ -31,10 +31,9 @@
 
 
 /**
-  \file HomeModule.hpp
-  \brief Header of ...
+  @file HomeModule.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -66,9 +65,9 @@ class HomeModule : public AbstractModule
 
     ~HomeModule();
 
-    QWidget* getMainWidget(QWidget* Parent);
+    QWidget* mainWidgetRebuilt(QWidget* Parent);
 
-    QWidget* getDockWidget(QWidget* /*Parent*/)
+    QWidget* dockWidgetRebuilt(QWidget* /*Parent*/)
     { return NULL; }
 
     bool whenQuitAsked();

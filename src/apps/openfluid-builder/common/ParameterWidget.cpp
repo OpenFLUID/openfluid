@@ -32,10 +32,9 @@
 
 
 /**
-  \file ParameterWidget.cpp
-  \brief Implements ...
+  @file ParameterWidget.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/base/PreferencesManager.hpp>
@@ -100,7 +99,7 @@ void ParameterWidget::notifyRemoveClicked()
 {
   bool OK = true;
 
-  if (openfluid::base::PreferencesManager::getInstance()->isParamRemovalConfirm())
+  if (openfluid::base::PreferencesManager::instance()->isParamRemovalConfirm())
   {
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",

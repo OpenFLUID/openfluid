@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedModelDescriptor_TEST.cpp
- \brief Implements ...
+ @file AdvancedModelDescriptor_TEST.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
@@ -75,7 +74,7 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
 
-  BOOST_CHECK_NO_THROW(openfluid::fluidx::AdvancedModelDescriptor(FXDesc.getModelDescriptor()));
+  BOOST_CHECK_NO_THROW(openfluid::fluidx::AdvancedModelDescriptor(FXDesc.modelDescriptor()));
 }
 
 // =====================================================================
@@ -87,12 +86,12 @@ BOOST_AUTO_TEST_CASE(check_construction)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  AdvancedModelDescriptorSub Model(FXDesc.getModelDescriptor());
+  AdvancedModelDescriptorSub Model(FXDesc.modelDescriptor());
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
-      Model.getItems();
+      Model.items();
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin();
@@ -118,12 +117,12 @@ BOOST_AUTO_TEST_CASE(check_construction)
       "tests.simulatorB");
 
   BOOST_CHECK_EQUAL(
-      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Model.getItemAt(0))->getGeneratedID(),
+      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Model.itemAt(0))->getGeneratedID(),
       "tests.generator.interp.TU.genscalar");
   BOOST_CHECK_EQUAL(
-      dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Model.getItemAt(4))->getID(),
+      dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Model.itemAt(4))->getID(),
       "tests.simulatorB");
-  BOOST_CHECK_THROW(Model.getItemAt(5), openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Model.itemAt(5), openfluid::base::FrameworkException);
 
   BOOST_CHECK_EQUAL(
       Model.getFirstItemIndex("tests.generator.interp.TU.genscalar"), 0);
@@ -146,12 +145,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  AdvancedModelDescriptorSub Model(FXDesc.getModelDescriptor());
+  AdvancedModelDescriptorSub Model(FXDesc.modelDescriptor());
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*>* Items =
-      &(Model.getItems());
+      &(Model.items());
 
   // appendItem
   openfluid::fluidx::SimulatorDescriptor AppItem("appended.item");

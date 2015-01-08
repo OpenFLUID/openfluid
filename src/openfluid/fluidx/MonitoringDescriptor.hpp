@@ -31,10 +31,9 @@
 
 
 /**
-  \file MonitoringDescriptor.hpp
-  \brief Header of ...
+  @file MonitoringDescriptor.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

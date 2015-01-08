@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedDatastoreDescriptor.cpp
- \brief Implements ...
+ @file AdvancedDatastoreDescriptor.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "AdvancedDatastoreDescriptor.hpp"
@@ -72,9 +71,9 @@ AdvancedDatastoreDescriptor::~AdvancedDatastoreDescriptor()
 // =====================================================================
 
 
-const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& AdvancedDatastoreDescriptor::getItems() const
+const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& AdvancedDatastoreDescriptor::items() const
 {
-  return mp_DatastoreDesc->getItems();
+  return mp_DatastoreDesc->items();
 }
 
 
@@ -82,11 +81,11 @@ const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& AdvancedDatastoreD
 // =====================================================================
 
 
-std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescriptor::getItems(const std::string& UnitClass) const
+std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitClass_t& UnitClass) const
 {
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->getItems().begin();
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->getItems().end();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->items().begin();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->items().end();
 
   std::list<openfluid::fluidx::DatastoreItemDescriptor*> ClassList;
 
@@ -104,12 +103,12 @@ std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescript
 // =====================================================================
 
 
-std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescriptor::getItems(const std::string& UnitClass,
+std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitClass_t& UnitClass,
                                                                                              openfluid::core::UnstructuredValue::UnstructuredType Type) const
 {
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->getItems().begin();
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->getItems().end();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->items().begin();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->items().end();
 
   std::list<openfluid::fluidx::DatastoreItemDescriptor*> ClassList;
 
@@ -133,7 +132,7 @@ void AdvancedDatastoreDescriptor::moveItem(unsigned int From, unsigned int To)
     return;
 
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items =
-      mp_DatastoreDesc->getItems();
+      mp_DatastoreDesc->items();
 
   unsigned int Last = Items.size() - 1;
 
@@ -176,7 +175,7 @@ void AdvancedDatastoreDescriptor::insertItem(
     openfluid::fluidx::DatastoreItemDescriptor* Item, unsigned int Position)
 {
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items =
-      mp_DatastoreDesc->getItems();
+      mp_DatastoreDesc->items();
 
   if (Position == 0)
     Items.insert(Items.begin(), Item);
@@ -201,7 +200,7 @@ void AdvancedDatastoreDescriptor::insertItem(
 void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
 {
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items =
-      mp_DatastoreDesc->getItems();
+      mp_DatastoreDesc->items();
 
   if (Position < Items.size())
   {
@@ -226,8 +225,8 @@ std::list<std::string> AdvancedDatastoreDescriptor::getItemsIDs() const
   std::list<std::string> IDsList;
 
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->getItems().begin();
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->getItems().end();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->items().begin();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->items().end();
 
   for (it = itb; it != ite; ++it)
     IDsList.push_back((*it)->getID());
@@ -250,12 +249,12 @@ bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID) const
 // =====================================================================
 
 
-openfluid::fluidx::DatastoreItemDescriptor* AdvancedDatastoreDescriptor::getItem(const std::string& ItemID)
+openfluid::fluidx::DatastoreItemDescriptor* AdvancedDatastoreDescriptor::item(const std::string& ItemID)
 {
 
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->getItems().begin();
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->getItems().end();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->items().begin();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->items().end();
 
   for (it = itb; it != ite; ++it)
   {

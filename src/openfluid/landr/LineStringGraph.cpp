@@ -30,10 +30,9 @@
 */
 
 /**
- \file LineStringGraph.cpp
- \brief Implements ...
+ @file LineStringGraph.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "LineStringGraph.hpp"
@@ -161,7 +160,7 @@ void LineStringGraph::addEntity(LandREntity* Entity)
 {
   LineStringEntity* Edge = dynamic_cast<LineStringEntity*>(Entity);
 
-  const geos::geom::LineString* LineString = Edge->getLine();
+  const geos::geom::LineString* LineString = Edge->line();
 
   geos::geom::CoordinateSequence* Coordinates =
       geos::geom::CoordinateSequence::removeRepeatedPoints(
@@ -171,8 +170,8 @@ void LineStringGraph::addEntity(LandREntity* Entity)
   const geos::geom::Coordinate& EndCoordinate = Coordinates->getAt(
       Coordinates->getSize() - 1);
 
-  geos::planargraph::Node* StartNode = getNode(StartCoordinate);
-  geos::planargraph::Node* EndNode = getNode(EndCoordinate);
+  geos::planargraph::Node* StartNode = node(StartCoordinate);
+  geos::planargraph::Node* EndNode = node(EndCoordinate);
 
   geos::planargraph::DirectedEdge* DirectedEdge0 =
       new geos::planargraph::DirectedEdge(StartNode, EndNode,
@@ -211,7 +210,7 @@ LandREntity* LineStringGraph::getNewEntity(const geos::geom::Geometry* Geom,
 
 void LineStringGraph::removeEntity(int OfldId)
 {
-  LineStringEntity* Ent = getEntity(OfldId);
+  LineStringEntity* Ent = entity(OfldId);
 
   if (!Ent)
   {
@@ -238,9 +237,9 @@ void LineStringGraph::removeEntity(int OfldId)
 // =====================================================================
 
 
-LineStringEntity* LineStringGraph::getEntity(int OfldId)
+LineStringEntity* LineStringGraph::entity(int OfldId)
 {
-  return dynamic_cast<LineStringEntity*>(LandRGraph::getEntity(OfldId));
+  return dynamic_cast<LineStringEntity*>(LandRGraph::entity(OfldId));
 }
 
 
@@ -248,7 +247,7 @@ LineStringEntity* LineStringGraph::getEntity(int OfldId)
 // =====================================================================
 
 
-LineStringEntity* LineStringGraph::getLastLineStringEntity()
+LineStringEntity* LineStringGraph::lastLineStringEntity()
 {
   std::vector<LineStringEntity*> EndEntities = getEndLineStringEntities();
 
@@ -274,7 +273,7 @@ std::vector<LineStringEntity*> LineStringGraph::getEndLineStringEntities()
   {
     CurrentEntity = dynamic_cast<LineStringEntity*>(getEdges()->at(i));
 
-    if (CurrentEntity->getEndNode()->getDegree() == 1)
+    if (CurrentEntity->endNode()->getDegree() == 1)
     {
       EndEntities.push_back(CurrentEntity);
     }
@@ -299,7 +298,7 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
   {
     CurrentEntity = dynamic_cast<LineStringEntity*>(getEdges()->at(i));
 
-    if (CurrentEntity->getStartNode()->getDegree() == 1)
+    if (CurrentEntity->startNode()->getDegree() == 1)
     {
       StartEntities.push_back(CurrentEntity);
     }
@@ -325,7 +324,7 @@ float* LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entit
   {
     Val = new float(
         mp_Raster->getValueOfCoordinate(
-            Entity.getStartNode()->getCoordinate()));
+            Entity.startNode()->getCoordinate()));
   }
 
   return Val;
@@ -347,7 +346,7 @@ float* LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
   else
   {
     Val = new float(
-        mp_Raster->getValueOfCoordinate(Entity.getEndNode()->getCoordinate()));
+        mp_Raster->getValueOfCoordinate(Entity.endNode()->getCoordinate()));
   }
 
   return Val;
@@ -423,7 +422,7 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(const std::string& At
 void LineStringGraph::reverseLineStringEntity(LineStringEntity& Entity)
 {
 
-  const geos::geom::LineString* Ent=Entity.getLine();
+  const geos::geom::LineString* Ent=Entity.line();
   geos::geom::Geometry* ReverseEnt=Ent->reverse();
   LandREntity* LandEnt = dynamic_cast<LandREntity*>(&Entity);
   int OfldId=LandEnt->getOfldId();
@@ -553,11 +552,11 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity,
 
   //ensure that the two LineStrings are coincident
   bool Coincident=false;
-  geos::planargraph::Node* StartNode=Entity.getStartNode();
-  geos::planargraph::Node* EndNode=Entity.getEndNode();
+  geos::planargraph::Node* StartNode=Entity.startNode();
+  geos::planargraph::Node* EndNode=Entity.endNode();
 
-  geos::planargraph::Node* StartNode2=EntityToMerge.getStartNode();
-  geos::planargraph::Node* EndNode2=EntityToMerge.getEndNode();
+  geos::planargraph::Node* StartNode2=EntityToMerge.startNode();
+  geos::planargraph::Node* EndNode2=EntityToMerge.endNode();
 
   if ((StartNode->getCoordinate()).equals(StartNode2->getCoordinate())||
       (StartNode->getCoordinate()).equals(EndNode2->getCoordinate())||
@@ -577,28 +576,28 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity,
 
   if ((EndNode->getCoordinate()).equals(StartNode2->getCoordinate()))
   {
-    CoordsOne=(Entity.getLine())->getCoordinates();
-    CoordsTwo=(EntityToMerge.getLine())->getCoordinates();
+    CoordsOne=(Entity.line())->getCoordinates();
+    CoordsTwo=(EntityToMerge.line())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
   else if ((StartNode->getCoordinate()).equals(EndNode2->getCoordinate()))
   {
-    CoordsOne=(EntityToMerge.getLine())->getCoordinates();
-    CoordsTwo=(Entity.getLine())->getCoordinates();
+    CoordsOne=(EntityToMerge.line())->getCoordinates();
+    CoordsTwo=(Entity.line())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
   else if ((EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
   {
-    CoordsOne=(Entity.getLine())->getCoordinates();
-    CoordsTwo=(EntityToMerge.getLine())->getCoordinates();
+    CoordsOne=(Entity.line())->getCoordinates();
+    CoordsTwo=(EntityToMerge.line())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,false);
   }
   else if ((StartNode->getCoordinate()).equals(StartNode2->getCoordinate()))
   {
     reverseLineStringEntity(EntityToMerge);
 
-    CoordsOne=(EntityToMerge.getLine())->getCoordinates();
-    CoordsTwo=(Entity.getLine())->getCoordinates();
+    CoordsOne=(EntityToMerge.line())->getCoordinates();
+    CoordsTwo=(Entity.line())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
 
@@ -650,8 +649,8 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
     if ((*it)->getLength()<MinLength)
     {
 
-      int StartDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getStartNode()->getDegree();
-      int EndDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getEndNode()->getDegree();
+      int StartDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->startNode()->getDegree();
+      int EndDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->endNode()->getDegree();
       bool LineCounted=true;
       //is Line between two confluences ? StartNode and EndNode are in contact with three or more Edges
       if(HighDegree &&(StartDegree>=3 && EndDegree>=3))
@@ -687,7 +686,7 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
         "The LineStringGraph is not a correct arborescence.");
 
   // get the node of this edge
-  openfluid::landr::LineStringEntity* lineEntity=this->getEntity(OfldId);
+  openfluid::landr::LineStringEntity* lineEntity=this->entity(OfldId);
 
   if(!lineEntity)
   {
@@ -699,7 +698,7 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
         +s.str());
   }
 
-  if (lineEntity->getStartNode()->getDegree()==1)
+  if (lineEntity->startNode()->getDegree()==1)
     this->reverseLineStringEntity(*lineEntity);    // reverse the outlet if necessary
 
   // mark all nodes as non marked
@@ -723,8 +722,8 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
 
 
 
-  lineEntity=this->getEntity(OfldId);
-  geos::planargraph::Node * firstNode=lineEntity->getEndNode();
+  lineEntity=this->entity(OfldId);
+  geos::planargraph::Node * firstNode=lineEntity->endNode();
   std::vector<int> vectIdent;
 
   openfluid::landr::LandRTools::markInvertedLineStringEntityUsingDFS(firstNode,vectIdent);
@@ -753,7 +752,7 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
   std::vector<int>::iterator itV=vectIdent.begin();
   std::vector<int>::iterator itVe=vectIdent.end();
   for (; itV!=itVe;itV++)
-    this->reverseLineStringEntity(*(this->getEntity(*itV)));
+    this->reverseLineStringEntity(*(this->entity(*itV)));
 
 }
 

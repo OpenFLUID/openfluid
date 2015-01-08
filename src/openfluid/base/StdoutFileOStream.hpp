@@ -31,10 +31,9 @@
 
 
 /**
-  \file StdoutFileOStream.hpp
-  \brief Header of ...
+  @file StdoutFileOStream.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -88,11 +87,11 @@ class OPENFLUID_API StdoutAndFileOutputStream
 
     ~StdoutAndFileOutputStream();
 
-    inline std::ofstream& getFile() { return m_FileLogger; };
+    inline std::ofstream& file() { return m_FileLogger; };
 
-    inline std::ostream& getStdout() { return std::cout; };
+    inline std::ostream& stdout() { return std::cout; };
 
-    inline TeeStream& get() { return m_Logger; };
+    inline TeeStream& all() { return m_Logger; };
 
     bool open(std::string LogFilePath);
 

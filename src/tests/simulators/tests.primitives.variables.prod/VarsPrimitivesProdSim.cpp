@@ -156,7 +156,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
       // untyped
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
 
         double TheDouble;
@@ -210,7 +210,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
       // typed
 
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
 
         double TheDouble;
@@ -278,7 +278,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
 
         double TheDouble;
@@ -322,7 +322,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           if (IndValue.getIndex() != OPENFLUID_GetPreviousRunTimeIndex())
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect OPENFLUID_GetLatestVariable time index (tests.double, DOUBLE) before append");
 
-          if (!IndValue.getValue()->isDoubleValue())
+          if (!IndValue.value()->isDoubleValue())
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect OPENFLUID_GetLatestVariable value (tests.double, DOUBLE) before append");
 
           OPENFLUID_GetLatestVariables(TU,"tests.double",0,IndValueList);
@@ -642,7 +642,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
 
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
 
         double TheDouble;

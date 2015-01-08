@@ -32,10 +32,9 @@
 
 
 /**
-  \file OutputsWidget.cpp
-  \brief Implements ...
+  @file OutputsWidget.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <QFileSystemModel>
@@ -56,7 +55,7 @@ OutputsWidget::OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXD
 {
   ui->setupUi(this);
 
-  QDir("").mkpath(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
+  QDir("").mkpath(QString(openfluid::base::ProjectManager::instance()->getOutputDir().c_str()));
 
   ui->OutputDirView->setModel(mp_FSModel);
   refreshOutputDir();
@@ -84,7 +83,7 @@ OutputsWidget::~OutputsWidget()
 
 void OutputsWidget::refreshOutputDir() const
 {
-  QString NativePath = QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getOutputDir()));
+  QString NativePath = QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::instance()->getOutputDir()));
 
   ui->OutputDirLabel->setText(NativePath);
   ui->OutputDirLabel->setToolTip(NativePath);
@@ -132,7 +131,7 @@ void OutputsWidget::clearOutputDir()
                            tr("This will delete all files and directories in the output directory.\n\nProceed anyway?"),
                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {
-    QDir OutDir(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getOutputDir()));
+    QDir OutDir(QString::fromStdString(openfluid::base::ProjectManager::instance()->getOutputDir()));
 
     foreach (QFileInfo FI, OutDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
     {
@@ -173,5 +172,5 @@ void OutputsWidget::tryToOpenFile(const QModelIndex& Index)
 
 void OutputsWidget::tryToExploreOutputDir()
 {
-  QDesktopServices::openUrl(QUrl::fromLocalFile(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str())));
+  QDesktopServices::openUrl(QUrl::fromLocalFile(QString(openfluid::base::ProjectManager::instance()->getOutputDir().c_str())));
 }

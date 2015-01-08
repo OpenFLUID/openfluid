@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedMonitoringDescriptor.hpp
- \brief Header of ...
+ @file AdvancedMonitoringDescriptor.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef ADVANCEDMONITORINGDESCRIPTOR_HPP_
@@ -63,14 +62,13 @@ class OPENFLUID_API AdvancedMonitoringDescriptor
 
     void checkMonitoring() const;
 
-    const std::list<openfluid::fluidx::ObserverDescriptor*>& getItems() const;
+    const std::list<openfluid::fluidx::ObserverDescriptor*>& items() const;
 
     /**
      * @brief Returns the Descriptor of the Observer with ObserverID if is in the Monitoring descriptor
      * @throw openfluid::base::OFException if this Observer is not in the Monitoring descriptor
      */
-    openfluid::fluidx::ObserverDescriptor& getDescriptor(
-        std::string ObserverID) const;
+    openfluid::fluidx::ObserverDescriptor& descriptor(std::string ObserverID) const;
 
     /**
      * @brief Adds the Observer with ObserverID to the Monitoring descriptor

@@ -32,10 +32,9 @@
 
 
 /**
-  \file ModelView.cpp
-  \brief Implements ...
+  @file ModelView.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -136,8 +135,8 @@ void ModelView::exportSceneAsSVG()
     SvgGen.setSize(QSize((int)ExportRect.width(),
                          (int)ExportRect.height()));
     SvgGen.setViewBox(QRectF(0,0,ExportRect.width(),ExportRect.height()));
-    SvgGen.setTitle(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()));
-    SvgGen.setDescription(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getDescription()));
+    SvgGen.setTitle(QString::fromStdString(openfluid::base::ProjectManager::instance()->getName()));
+    SvgGen.setDescription(QString::fromStdString(openfluid::base::ProjectManager::instance()->getDescription()));
 
     QPainter Painter(&SvgGen);
     scene()->render(&Painter);

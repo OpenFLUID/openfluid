@@ -30,10 +30,9 @@
 */
 
 /**
- \file RasterDataset_TEST.cpp
- \brief Implements ...
+ @file RasterDataset_TEST.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
@@ -61,13 +60,13 @@
 
 BOOST_AUTO_TEST_CASE(check_constructor)
 {
-  openfluid::core::GeoRasterValue Value(CONFIGTESTS_INPUT_DATASETS_DIR,
+  openfluid::core::GeoRasterValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                         "landr/dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Value);
 
-  GDALDataset* DS = Rast->getDataset();
+  GDALDataset* DS = Rast->source();
 
   BOOST_CHECK(DS);
 
@@ -82,20 +81,20 @@ BOOST_AUTO_TEST_CASE(check_constructor)
 BOOST_AUTO_TEST_CASE(check_Properties)
 {
   openfluid::core::GeoRasterValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
 
-  BOOST_CHECK_EQUAL(Rast->getDataset()->GetRasterXSize(), 20);
-  BOOST_CHECK_EQUAL(Rast->getDataset()->GetRasterYSize(), 20);
+  BOOST_CHECK_EQUAL(Rast->source()->GetRasterXSize(), 20);
+  BOOST_CHECK_EQUAL(Rast->source()->GetRasterYSize(), 20);
 
-  BOOST_CHECK_EQUAL(Rast->getRasterBand(1)->GetXSize(), 20);
-  BOOST_CHECK_EQUAL(Rast->getRasterBand(1)->GetYSize(), 20);
+  BOOST_CHECK_EQUAL(Rast->rasterBand(1)->GetXSize(), 20);
+  BOOST_CHECK_EQUAL(Rast->rasterBand(1)->GetYSize(), 20);
 
   double adfGeoTransform[6];
   BOOST_REQUIRE(
-      GDALGetGeoTransform(Rast->getDataset(), adfGeoTransform) == CE_None);
+      GDALGetGeoTransform(Rast->source(), adfGeoTransform) == CE_None);
 
   BOOST_CHECK_EQUAL(Rast->getOrigin()->x, adfGeoTransform[0]);
   BOOST_CHECK_EQUAL(Rast->getOrigin()->y, adfGeoTransform[3]);
@@ -114,7 +113,7 @@ BOOST_AUTO_TEST_CASE(check_Properties)
 BOOST_AUTO_TEST_CASE(check_CoordinateToPixel)
 {
   openfluid::core::GeoRasterValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
@@ -143,7 +142,7 @@ BOOST_AUTO_TEST_CASE(check_CoordinateToPixel)
 BOOST_AUTO_TEST_CASE(check_getValues)
 {
   openfluid::core::GeoRasterValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
@@ -156,12 +155,12 @@ BOOST_AUTO_TEST_CASE(check_getValues)
   std::vector<float> Col4 = Rast->getValuesOfColumn(4);
   std::vector<float> Col19 = Rast->getValuesOfColumn(19);
 
-  BOOST_CHECK_EQUAL(Line0.size(), Rast->getRasterBand(1)->GetXSize());
-  BOOST_CHECK_EQUAL(Line4.size(), Rast->getRasterBand(1)->GetXSize());
-  BOOST_CHECK_EQUAL(Line19.size(), Rast->getRasterBand(1)->GetXSize());
-  BOOST_CHECK_EQUAL(Col0.size(), Rast->getRasterBand(1)->GetYSize());
-  BOOST_CHECK_EQUAL(Col4.size(), Rast->getRasterBand(1)->GetYSize());
-  BOOST_CHECK_EQUAL(Col19.size(), Rast->getRasterBand(1)->GetYSize());
+  BOOST_CHECK_EQUAL(Line0.size(), Rast->rasterBand(1)->GetXSize());
+  BOOST_CHECK_EQUAL(Line4.size(), Rast->rasterBand(1)->GetXSize());
+  BOOST_CHECK_EQUAL(Line19.size(), Rast->rasterBand(1)->GetXSize());
+  BOOST_CHECK_EQUAL(Col0.size(), Rast->rasterBand(1)->GetYSize());
+  BOOST_CHECK_EQUAL(Col4.size(), Rast->rasterBand(1)->GetYSize());
+  BOOST_CHECK_EQUAL(Col19.size(), Rast->rasterBand(1)->GetYSize());
 
   BOOST_CHECK_EQUAL(Line0[0], 96);
   BOOST_CHECK_EQUAL(Line0[0], Col0[0]);
@@ -211,7 +210,7 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
 {
   // integer values
   openfluid::core::GeoRasterValue Val(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
@@ -228,7 +227,7 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
 
   // float values
   Val = openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.asc");
 
   Rast = new openfluid::landr::RasterDataset(Val);
 
@@ -250,7 +249,7 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 {
   // integer values
   openfluid::core::GeoRasterValue RasterVal(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
 
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       RasterVal);
@@ -258,7 +257,7 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
   openfluid::landr::VectorDataset* VectorVal = Rast->polygonize("TestOut.shp",
                                                                 "RasterVal");
 
-  OGRLayer* VectorLayer = VectorVal->getLayer(0);
+  OGRLayer* VectorLayer = VectorVal->layer(0);
 
   BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 234);
   BOOST_CHECK_EQUAL(VectorLayer->GetFeature(0)->GetFieldAsInteger("RasterVal"),
@@ -271,13 +270,13 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 
   // float values keeped (GDALFPolygonize for floats available since GDAL 1.9.0 )
   RasterVal = openfluid::core::GeoRasterValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.asc");
 
   Rast = new openfluid::landr::RasterDataset(RasterVal);
 
   VectorVal = Rast->polygonize("TestOut.shp");
 
-  VectorLayer = VectorVal->getLayer(0);
+  VectorLayer = VectorVal->layer(0);
 
   BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 400);
 

@@ -30,10 +30,9 @@
 */
 
 /**
- \file LandRGraph.hpp
- \brief Header of ...
+ @file LandRGraph.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LANDRGRAPH_HPP__
@@ -85,6 +84,7 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
     };
 
     typedef std::list<LandREntity*> Entities_t;
+
 
   protected:
     /**
@@ -165,7 +165,7 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
      @param Coordinate A geos::geom::Coordinate.
      @return A geos::planargraph::Node.
      */
-    geos::planargraph::Node* getNode(const geos::geom::Coordinate& Coordinate);
+    geos::planargraph::Node* node(const geos::geom::Coordinate& Coordinate);
 
   public:
 
@@ -182,7 +182,7 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
     /**
      @brief Returns the LandREntity with OfldId, or 0 if it doesn't exist.
      */
-    virtual LandREntity* getEntity(int OfldId);
+    virtual LandREntity* entity(int OfldId);
 
     /**
      @brief Returns a list of the LandREntity of this LandRGraph.
@@ -251,13 +251,13 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
      @brief Transforms the associated raster value into an openfluid::landr::VectorDataset of polygons.
      @return An openfluid::landr::VectorDataset of the created polygons.
      */
-    openfluid::landr::VectorDataset* getRasterPolygonized();
+    openfluid::landr::VectorDataset* rasterPolygonized();
 
     /**
      @brief Transforms the associated raster value into a vector of geos::geom::Polygon.
      @return A vector of the created geos::geom::Polygon.
      */
-    std::vector<geos::geom::Polygon*>* getRasterPolygonizedPolys();
+    std::vector<geos::geom::Polygon*>* rasterPolygonizedPolys();
 
     /**
      @brief Fetchs the associated raster value corresponding to the LandREntity centroid coordinate.

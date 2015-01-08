@@ -31,10 +31,9 @@
 
 
 /**
-  \file MarketClientAssistant.hpp
-  \brief Header of ...
+  @file MarketClientAssistant.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -129,7 +128,7 @@ class OPENFLUID_API MarketClientAssistant : public QWizard
      @return MarketPackWidget of ID package
      @param ID of package
     */
-    MarketPackWidget* getAvailPackWidget(const openfluid::ware::WareID_t& ID) const;
+    MarketPackWidget* availablePackWidget(const openfluid::ware::WareID_t& ID) const;
 
     /**
      @return true if ID package passed as parameter has datasets selected which need it

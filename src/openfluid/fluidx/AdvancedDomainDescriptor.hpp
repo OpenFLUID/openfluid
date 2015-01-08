@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedDomainDescriptor.hpp
- \brief Header of ...
+ @file AdvancedDomainDescriptor.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef ADVANCEDDOMAINDESCRIPTOR_HPP_
@@ -54,8 +53,8 @@ class Event;
 
 namespace fluidx {
 
-class DomainDescriptor;
-class UnitDescriptor;
+class SpatialDomainDescriptor;
+class SpatialUnitDescriptor;
 class AttributesDescriptor;
 
 
@@ -68,13 +67,13 @@ class OPENFLUID_API AdvancedUnitDescriptor
 
   public:
 
-    openfluid::fluidx::UnitDescriptor* UnitDescriptor;
+    openfluid::fluidx::SpatialUnitDescriptor* UnitDescriptor;
 
     std::map<openfluid::core::AttributeName_t, std::string*> Attributes;
 
     std::list<openfluid::fluidx::EventDescriptor*> EventsDescriptors;
 
-    AdvancedUnitDescriptor(openfluid::fluidx::UnitDescriptor& UnitDesc) :
+    AdvancedUnitDescriptor(openfluid::fluidx::SpatialUnitDescriptor& UnitDesc) :
         UnitDescriptor(&UnitDesc)
     {
     }
@@ -94,7 +93,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
 
   private:
 
-    openfluid::fluidx::DomainDescriptor* mp_DomainDesc;
+    openfluid::fluidx::SpatialDomainDescriptor* mp_DomainDesc;
 
     /**
      * Units by ID by ClassName
@@ -109,7 +108,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
 
     void checkUnitRelations() const;
 
-    void checkUnitRelations(openfluid::fluidx::UnitDescriptor& Unit) const;
+    void checkUnitRelations(openfluid::fluidx::SpatialUnitDescriptor& Unit) const;
 
     void checkAttributesConsistency() const;
 
@@ -118,17 +117,17 @@ class OPENFLUID_API AdvancedDomainDescriptor
 
   public:
 
-    AdvancedDomainDescriptor(openfluid::fluidx::DomainDescriptor& DomainDesc);
+    AdvancedDomainDescriptor(openfluid::fluidx::SpatialDomainDescriptor& DomainDesc);
 
     ~AdvancedDomainDescriptor();
 
-    bool isUnitExist(const std::string& ClassName, int ID) const;
+    bool isSpatialUnitExist(const std::string& ClassName, int ID) const;
 
     /**
      *
      * @return May return an empty map. Never throws.
      */
-    const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >& getUnitsByIdByClass() const;
+    const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >& spatialUnitsByIdByClass() const;
 
     /**
      * @throw openfluid::base::OFException if Unit doesn't exist
@@ -136,7 +135,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
      * @param ID
      * @return
      */
-    const AdvancedUnitDescriptor& getUnit(const std::string& ClassName, int ID) const;
+    const AdvancedUnitDescriptor& spatialUnit(const std::string& ClassName, int ID) const;
 
     /**
      * @throw openfluid::base::OFException if Unit doesn't exist
@@ -144,8 +143,8 @@ class OPENFLUID_API AdvancedDomainDescriptor
      * @param ID
      * @return
      */
-    const openfluid::fluidx::UnitDescriptor& getUnitDescriptor(
-        const std::string& ClassName, int ID) const;
+    const openfluid::fluidx::SpatialUnitDescriptor& spatialUnitDescriptor(const std::string& ClassName,
+                                                                          int ID) const;
 
     /**
      *
@@ -171,7 +170,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
      * @throw openfluid::base::OFException if Unit already exists or if Unit has a relation with a non-existent Unit
      * @param UnitDesc
      */
-    void addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc);
+    void addUnit(openfluid::fluidx::SpatialUnitDescriptor* UnitDesc);
 
     /**
      * Does nothing if Unit doesn't exist
@@ -188,8 +187,8 @@ class OPENFLUID_API AdvancedDomainDescriptor
      * @param AttrName
      * @return
      */
-    std::string& getAttribute(const std::string& ClassName, int ID,
-                              const std::string& AttrName);
+    std::string& attribute(const std::string& ClassName, int ID,
+                           const std::string& AttrName);
 
     /**
      *
@@ -257,16 +256,16 @@ class OPENFLUID_API AdvancedDomainDescriptor
       Returns a pointer to the event descriptor corresponding to the event ID
       @param[in] ID The ID of the event to delete
     */
-    openfluid::fluidx::EventDescriptor* getEventDescriptor(const openfluid::fluidx::EventID_t& ID);
+    openfluid::fluidx::EventDescriptor* eventDescriptor(const openfluid::fluidx::EventID_t& ID);
 
 
-    const std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(const openfluid::core::UnitClassID_t Unit) const;
+    const std::list<openfluid::core::UnitClassID_t>& toSpatialUnits(const openfluid::core::UnitClassID_t Unit) const;
 
-    const std::list<openfluid::core::UnitClassID_t>& getUnitsParentsOf(const openfluid::core::UnitClassID_t Unit) const;
+    const std::list<openfluid::core::UnitClassID_t>& parentSpatialUnits(const openfluid::core::UnitClassID_t Unit) const;
 
-    std::list<openfluid::core::UnitClassID_t> getUnitsFromOf(const openfluid::core::UnitClassID_t Unit) const;
+    std::list<openfluid::core::UnitClassID_t> getFromSpatialUnits(const openfluid::core::UnitClassID_t Unit) const;
 
-    std::list<openfluid::core::UnitClassID_t> getUnitsChildrenOf(const openfluid::core::UnitClassID_t Unit) const;
+    std::list<openfluid::core::UnitClassID_t> getChildSpatialUnits(const openfluid::core::UnitClassID_t Unit) const;
 
     /**
      * @brief Add ToUnit to the list of "Tos" of FromUnit

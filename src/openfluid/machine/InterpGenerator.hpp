@@ -34,7 +34,7 @@
 /**
   @file
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -88,4 +88,4 @@ class OPENFLUID_API InterpGenerator : public Generator
 
 
 
-#endif /* __INTERPGENERATOR_H___ */
+#endif /* __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__ */

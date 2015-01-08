@@ -31,10 +31,9 @@
 
 
 /**
-  \file AbstractModule.hpp
-  \brief Header of ...
+  @file AbstractModule.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -68,9 +67,9 @@ class AbstractModule : public QObject
 
     }
 
-    virtual QWidget* getMainWidget(QWidget* Parent) = 0;
+    virtual QWidget* mainWidgetRebuilt(QWidget* Parent) = 0;
 
-    virtual QWidget* getDockWidget(QWidget* Parent) = 0;
+    virtual QWidget* dockWidgetRebuilt(QWidget* Parent) = 0;
 
     virtual bool whenQuitAsked() = 0;
 

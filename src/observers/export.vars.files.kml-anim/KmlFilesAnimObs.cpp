@@ -32,10 +32,9 @@
 
 
 /**
-  \file KmlFilesAnimObs.cpp
-  \brief Implements ...
+  @file KmlFilesAnimObs.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -153,7 +152,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
     void updateKmlFile()
     {
-      openfluid::core::Unit* UU;
+      openfluid::core::SpatialUnit* UU;
 
       openfluid::core::TimeIndex_t CurrentTI = OPENFLUID_GetCurrentTimeIndex();
 
@@ -204,7 +203,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
           {
             openfluid::core::IndexedValue IVal;
             OPENFLUID_GetLatestVariable(UU,m_AnimLayerInfo.VarName,IVal);
-            Val = IVal.getValue()->asDoubleValue().get();
+            Val = IVal.value()->asDoubleValue().get();
             ValueFound = true;
           }
         }

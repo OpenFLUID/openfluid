@@ -34,7 +34,7 @@
 /**
   @file
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
@@ -150,13 +150,13 @@ class OPENFLUID_API Engine
 
     void finalize();
 
-    const openfluid::base::SimulationStatus* getSimulationStatus() { return mp_SimStatus; };
+    const openfluid::base::SimulationStatus* simulationStatus() { return mp_SimStatus; };
 
-    SimulationBlob*  getSimulationBlob() { return &m_SimulationBlob; };
+    SimulationBlob* simulationBlob() { return &m_SimulationBlob; };
 
-    MachineListener* getMachineListener() { return mp_MachineListener; };
+    MachineListener* machineListener() { return mp_MachineListener; };
 
-    ModelInstance* getModelInstance() { return &m_ModelInstance; };
+    ModelInstance* modelInstance() { return &m_ModelInstance; };
 
     unsigned int getWarningsCount() const { return mp_SimLogger->getWarningsCount(); };
 };

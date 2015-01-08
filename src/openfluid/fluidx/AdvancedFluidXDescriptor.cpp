@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedFluidXDescriptor.cpp
- \brief Implements ...
+ @file AdvancedFluidXDescriptor.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
@@ -47,14 +46,14 @@ namespace openfluid { namespace fluidx {
 
 AdvancedFluidXDescriptor::AdvancedFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc)
 {
-  mp_Domain = new AdvancedDomainDescriptor(FluidXDesc.getDomainDescriptor());
-  mp_Model = new AdvancedModelDescriptor(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
+  mp_Domain = new AdvancedDomainDescriptor(FluidXDesc.spatialDomainDescriptor());
+  mp_Model = new AdvancedModelDescriptor(FluidXDesc.modelDescriptor());
+  mp_RunDesc = &(FluidXDesc.runDescriptor());
+  mp_DatastoreDesc = &(FluidXDesc.datastoreDescriptor());
   mp_Datastore = new AdvancedDatastoreDescriptor(
-      FluidXDesc.getDatastoreDescriptor());
+      FluidXDesc.datastoreDescriptor());
   mp_Monitoring = new AdvancedMonitoringDescriptor(
-      FluidXDesc.getMonitoringDescriptor());
+      FluidXDesc.monitoringDescriptor());
 }
 
 
@@ -75,7 +74,7 @@ AdvancedFluidXDescriptor::~AdvancedFluidXDescriptor()
 // =====================================================================
 
 
-AdvancedDomainDescriptor& AdvancedFluidXDescriptor::getDomain()
+AdvancedDomainDescriptor& AdvancedFluidXDescriptor::spatialDomain()
 {
   return *mp_Domain;
 }
@@ -85,7 +84,7 @@ AdvancedDomainDescriptor& AdvancedFluidXDescriptor::getDomain()
 // =====================================================================
 
 
-const AdvancedDomainDescriptor& AdvancedFluidXDescriptor::getDomain() const
+const AdvancedDomainDescriptor& AdvancedFluidXDescriptor::spatialDomain() const
 {
   return *mp_Domain;
 }
@@ -95,7 +94,7 @@ const AdvancedDomainDescriptor& AdvancedFluidXDescriptor::getDomain() const
 // =====================================================================
 
 
-AdvancedModelDescriptor& AdvancedFluidXDescriptor::getModel()
+AdvancedModelDescriptor& AdvancedFluidXDescriptor::model()
 {
   return *mp_Model;
 }
@@ -105,7 +104,7 @@ AdvancedModelDescriptor& AdvancedFluidXDescriptor::getModel()
 // =====================================================================
 
 
-const AdvancedModelDescriptor& AdvancedFluidXDescriptor::getModel() const
+const AdvancedModelDescriptor& AdvancedFluidXDescriptor::model() const
 {
   return *mp_Model;
 }
@@ -115,7 +114,7 @@ const AdvancedModelDescriptor& AdvancedFluidXDescriptor::getModel() const
 // =====================================================================
 
 
-openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::getRunDescriptor()
+openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::runDescriptor()
 {
   return *mp_RunDesc;
 }
@@ -125,7 +124,7 @@ openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::getRunDescriptor()
 // =====================================================================
 
 
-const openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::getRunDescriptor() const
+const openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::runDescriptor() const
 {
   return *mp_RunDesc;
 }
@@ -135,7 +134,7 @@ const openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::getRunDescript
 // =====================================================================
 
 
-openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::getDatastoreDescriptor()
+openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::datastoreDescriptor()
 {
   return *mp_DatastoreDesc;
 }
@@ -145,7 +144,7 @@ openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::getDatastoreDe
 // =====================================================================
 
 
-const openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::getDatastoreDescriptor() const
+const openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::datastoreDescriptor() const
 {
   return *mp_DatastoreDesc;
 }
@@ -155,7 +154,7 @@ const openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::getDatas
 // =====================================================================
 
 
-AdvancedDatastoreDescriptor& AdvancedFluidXDescriptor::getDatastore()
+AdvancedDatastoreDescriptor& AdvancedFluidXDescriptor::datastore()
 {
   return *mp_Datastore;
 }
@@ -165,7 +164,7 @@ AdvancedDatastoreDescriptor& AdvancedFluidXDescriptor::getDatastore()
 // =====================================================================
 
 
-AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring()
+AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::monitoring()
 {
   return *mp_Monitoring;
 }
@@ -175,7 +174,7 @@ AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring()
 // =====================================================================
 
 
-const AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring() const
+const AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::monitoring() const
 {
   return *mp_Monitoring;
 }

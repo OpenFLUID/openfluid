@@ -30,10 +30,9 @@
 */
 
 /**
- \file DatastoreItem.cpp
- \brief Implements ...
+ @file DatastoreItem.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include "DatastoreItem.hpp"
@@ -49,8 +48,9 @@ namespace core {
 // =====================================================================
 
 
-DatastoreItem::DatastoreItem(std::string ID, std::string PrefixPath, std::string RelativePath,
-    UnstructuredValue::UnstructuredType Type, std::string UnitClass) :
+DatastoreItem::DatastoreItem(const std::string& ID,
+                             const std::string& PrefixPath, const std::string& RelativePath,
+                             UnstructuredValue::UnstructuredType Type, const std::string& UnitClass) :
   m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_UnitClass(UnitClass), m_Value(0)
 {
   switch (Type)
@@ -120,12 +120,17 @@ std::string DatastoreItem::getUnitClass() const
 // =====================================================================
 
 
-UnstructuredValue* DatastoreItem::getValue()
+UnstructuredValue* DatastoreItem::value()
 {
   return m_Value;
 }
 
-const UnstructuredValue* DatastoreItem::getValue() const
+
+// =====================================================================
+// =====================================================================
+
+
+const UnstructuredValue* DatastoreItem::value() const
 {
   return m_Value;
 }

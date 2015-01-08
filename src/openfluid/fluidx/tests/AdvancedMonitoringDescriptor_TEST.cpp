@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedMonitoringDescriptor_TEST.cpp
- \brief Implements ...
+ @file AdvancedMonitoringDescriptor_TEST.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
@@ -59,9 +58,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
-      FXDesc.getMonitoringDescriptor());
+      FXDesc.monitoringDescriptor());
 
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
+  BOOST_CHECK_EQUAL(Monit.items().size(), 2);
 }
 
 // =====================================================================
@@ -74,7 +73,7 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
 
   BOOST_CHECK_THROW(
-      openfluid::fluidx::AdvancedMonitoringDescriptor(FXDesc.getMonitoringDescriptor()),
+      openfluid::fluidx::AdvancedMonitoringDescriptor(FXDesc.monitoringDescriptor()),
       openfluid::base::FrameworkException);
 }
 
@@ -88,13 +87,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
-      FXDesc.getMonitoringDescriptor());
+      FXDesc.monitoringDescriptor());
 
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
-  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
+  BOOST_CHECK_EQUAL(Monit.items().size(), 2);
+  BOOST_CHECK_EQUAL(Monit.descriptor("export.vars.files.csv").getID(),
                     "export.vars.files.csv");
   BOOST_CHECK_EQUAL(
-      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
+      Monit.descriptor("export.spatial-graph.files.dot").getID(),
       "export.spatial-graph.files.dot");
 
   BOOST_CHECK_THROW(Monit.removeFromObserverList("dummy"),
@@ -102,25 +101,25 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   Monit.removeFromObserverList("export.vars.files.csv");
 
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 1);
-  BOOST_CHECK_THROW(Monit.getDescriptor("export.vars.files.csv"),
+  BOOST_CHECK_EQUAL(Monit.items().size(), 1);
+  BOOST_CHECK_THROW(Monit.descriptor("export.vars.files.csv"),
                     openfluid::base::FrameworkException);
   BOOST_CHECK_EQUAL(
-      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
+      Monit.descriptor("export.spatial-graph.files.dot").getID(),
       "export.spatial-graph.files.dot");
 
   Monit.addToObserverList("export.vars.files.csv");
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
-  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
+  BOOST_CHECK_EQUAL(Monit.items().size(), 2);
+  BOOST_CHECK_EQUAL(Monit.descriptor("export.vars.files.csv").getID(),
                     "export.vars.files.csv");
   BOOST_CHECK_EQUAL(
-      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
+      Monit.descriptor("export.spatial-graph.files.dot").getID(),
       "export.spatial-graph.files.dot");
 
   Monit.addToObserverList("export.vars.files.vtk");
 
   const std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
-      Monit.getItems();
+      Monit.items();
   std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it =
       Items.begin();
 

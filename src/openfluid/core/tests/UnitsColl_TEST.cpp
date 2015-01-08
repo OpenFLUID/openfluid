@@ -32,10 +32,9 @@
 
 
 /**
-  \file UnitsColl_TEST.cpp
-  \brief Implements ...
+  @file UnitsColl_TEST.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -45,8 +44,8 @@
 #define BOOST_TEST_MODULE unittest_unitscoll
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-#include <openfluid/core/Unit.hpp>
+#include <openfluid/core/UnitsCollection.hpp>
+#include <openfluid/core/SpatialUnit.hpp>
 
 
 BOOST_AUTO_TEST_CASE(check_construction)
@@ -55,8 +54,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   pUC = new openfluid::core::UnitsCollection();
 
-  BOOST_REQUIRE_EQUAL(pUC->getList()->size(),0);
-  BOOST_REQUIRE(pUC->getUnit(1) == NULL);
+  BOOST_REQUIRE_EQUAL(pUC->list()->size(),0);
+  BOOST_REQUIRE(pUC->spatialUnit(1) == NULL);
 
   delete pUC;
 }
@@ -72,20 +71,20 @@ BOOST_AUTO_TEST_CASE(check_populate)
 
   pUC = new openfluid::core::UnitsCollection();
 
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",1,1)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",2,1)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",5,1)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",4,2)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",17,1)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",4,3)) == NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",17,3)) == NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",1,1)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",2,1)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",5,1)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",4,2)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",17,1)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",4,3)) == NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",17,3)) == NULL);
 
 
-  BOOST_REQUIRE_EQUAL(pUC->getList()->size(),5);
+  BOOST_REQUIRE_EQUAL(pUC->list()->size(),5);
 
-  BOOST_REQUIRE(pUC->getUnit(1) != NULL);
-  BOOST_REQUIRE(pUC->getUnit(17) != NULL);
-  BOOST_REQUIRE(pUC->getUnit(9) == NULL);
+  BOOST_REQUIRE(pUC->spatialUnit(1) != NULL);
+  BOOST_REQUIRE(pUC->spatialUnit(17) != NULL);
+  BOOST_REQUIRE(pUC->spatialUnit(9) == NULL);
 
   delete pUC;
 }
@@ -103,19 +102,19 @@ BOOST_AUTO_TEST_CASE(check_sortbypcsorder)
 
   pUC = new openfluid::core::UnitsCollection();
 
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",1,1)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",2,5)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",5,2)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",4,7)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",17,3)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",13,1)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",15,2)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",1,1)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",2,5)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",5,2)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",4,7)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",17,3)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",13,1)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",15,2)) != NULL);
 
   pUC->sortByProcessOrder();
 
 
   LastOrd = 0;
-  for (it=pUC->getList()->begin();it!=pUC->getList()->end();++it)
+  for (it=pUC->list()->begin();it!=pUC->list()->end();++it)
   {
     BOOST_REQUIRE_GE(it->getProcessOrder(),LastOrd);
     LastOrd = it->getProcessOrder();

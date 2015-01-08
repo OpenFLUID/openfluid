@@ -35,7 +35,7 @@
   @file
   @brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -870,7 +870,7 @@ bool Sim2DocBuddy::run()
 {
 #if defined __unix__ || defined __APPLE__
 
-  setOptionIfNotSet("tplfile", openfluid::base::RuntimeEnvironment::getInstance()->getCommonResourceFilePath(openfluid::config::SIM2DOC_TPLFILE_NAME));
+  setOptionIfNotSet("tplfile", openfluid::base::RuntimeEnvironment::instance()->getCommonResourceFilePath(openfluid::config::SIM2DOC_TPLFILE_NAME));
   setOptionIfNotSet("outputdir",boost::filesystem::current_path().string());
   setOptionIfNotSet("pdf","0");
   setOptionIfNotSet("html","0");

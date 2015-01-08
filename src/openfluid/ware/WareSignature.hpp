@@ -31,10 +31,9 @@
 
 
 /**
-  \file WareSignature.hpp
-  \brief Header of ...
+  @file WareSignature.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/dllexport.hpp>

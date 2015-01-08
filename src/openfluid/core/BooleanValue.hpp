@@ -32,10 +32,9 @@
 
 
 /**
-  \file BooleanValue.hpp
-  \brief Header of ...
+  @file BooleanValue.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -141,13 +140,7 @@ class OPENFLUID_API BooleanValue : public SimpleValue
       Returns the boolean value as plain old type
       @return the boolean value
     */
-    inline bool& get() { return m_Value; };
-
-    /**
-      Returns the boolean value as a const plain old type
-      @return the boolean value
-    */
-    inline const bool& get() const { return m_Value; };
+    inline bool get() { return m_Value; };
 
     /**
       Sets the plain old type boolean value

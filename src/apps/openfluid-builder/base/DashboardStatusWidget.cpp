@@ -32,10 +32,9 @@
 
 
 /**
-  \file DashboardStatusWidget.cpp
-  \brief Implements ...
+  @file DashboardStatusWidget.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -128,7 +127,7 @@ DashboardStatusWidget::~DashboardStatusWidget()
 
 void DashboardStatusWidget::refresh()
 {
-   const ProjectCheckInfos* Check = mp_PrjCentral->getCheckInfos();
+   const ProjectCheckInfos* Check = mp_PrjCentral->checkInfos();
 
   setLevel(Check->getOverallStatus());
 

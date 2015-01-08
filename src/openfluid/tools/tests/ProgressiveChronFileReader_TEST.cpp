@@ -32,10 +32,9 @@
 
 
 /**
-  \file MarketClient_TEST.cpp
-  \brief Implements ...
+  @file MarketClient_TEST.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
@@ -61,8 +60,8 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::tools::ProgressiveColumnFileReader PColumnFR(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/ChronFiles/measured_ticks.dat").string());
-  openfluid::tools::ProgressiveChronFileReader PChronFR(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/ChronFiles/temp.dat").string());
+  openfluid::tools::ProgressiveColumnFileReader PColumnFR(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat").string());
+  openfluid::tools::ProgressiveChronFileReader PChronFR(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat").string());
 }
 
 // =====================================================================
@@ -70,7 +69,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::tools::ProgressiveColumnFileReader PColumnFR(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/ChronFiles/temp.dat").string());
+  openfluid::tools::ProgressiveColumnFileReader PColumnFR(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat").string());
 
   std::string TmpStr;
   std::vector<std::string> TmpVectStr;
@@ -92,7 +91,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::tools::ChronItem_t CI;
 
-  openfluid::tools::ProgressiveChronFileReader PChronFR(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/ChronFiles/temp.dat").string());
+  openfluid::tools::ProgressiveChronFileReader PChronFR(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat").string());
 
   while (PChronFR.getNextValue(CI)) std::cout << CI.second << " at " << CI.first.getAsISOString() << std::endl;
 

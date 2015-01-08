@@ -32,10 +32,9 @@
 
 
 /**
-  \file DebugSim.cpp
-  \brief Implements ...
+  @file DebugSim.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <boost/random.hpp>
@@ -66,7 +65,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.wind-fire.connections")
   DECLARE_DOMAIN("fire");
   DECLARE_PROCESS("spatial connections");
   DECLARE_METHOD("wind direction");
-  DECLARE_AUTHOR("Jean-Christophe Fabre","fabrejc@supagro.inra.fr");
+  DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
 
   DECLARE_REQUIRED_ATTRIBUTE("N","LU","North cell ID, -1 if none","-")
   DECLARE_REQUIRED_ATTRIBUTE("NE","LU","Northeast cell ID, -1 if none","-")
@@ -99,7 +98,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 {
   private:
 
-    typedef openfluid::core::IDMap<std::vector<openfluid::core::Unit*> >::Type Connections_t;
+    typedef openfluid::core::IDMap<std::vector<openfluid::core::SpatialUnit*> >::Type Connections_t;
 
     boost::mt19937 m_RandomEngine;
 
@@ -141,13 +140,13 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     void prepareData()
     {
 
-      openfluid::core::Unit* LU;
+      openfluid::core::SpatialUnit* LU;
 
       // preparation of the lookup table for connections
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {
-        m_PotentialConnections[LU->getID()].assign(8,(openfluid::core::Unit*)NULL);
+        m_PotentialConnections[LU->getID()].assign(8,(openfluid::core::SpatialUnit*)NULL);
 
         long int TargetID;
 
@@ -211,7 +210,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     // =====================================================================
 
 
-    void updateLandConnections(openfluid::core::Unit* U, const openfluid::core::IntegerValue& WindDir)
+    void updateLandConnections(openfluid::core::SpatialUnit* U, const openfluid::core::IntegerValue& WindDir)
     {
 
       // computation of the target land unit for fire, according to wind direction
@@ -220,14 +219,14 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
       int FireTargetIndex = FireTarget / 45;
 
 
-      openfluid::core::UnitsPtrList_t* ChildrenLUs = U->getChildrenUnits("LU");
-      openfluid::core::Unit* LU;
+      openfluid::core::UnitsPtrList_t* ChildrenLUs = U->childSpatialUnits("LU");
+      openfluid::core::SpatialUnit* LU;
 
       OPENFLUID_UNITSLIST_LOOP(ChildrenLUs,LU)
       {
 
         // remove existing connection
-        openfluid::core::UnitsPtrList_t* ToLU = LU->getToUnits("LU");
+        openfluid::core::UnitsPtrList_t* ToLU = LU->toSpatialUnits("LU");
 
         if (ToLU != NULL && ToLU->size()==1)
         {
@@ -249,7 +248,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest initializeRun()
     {
 
-      openfluid::core::Unit* AU;
+      openfluid::core::SpatialUnit* AU;
 
       OPENFLUID_UNITS_ORDERED_LOOP("AU",AU)
       {
@@ -267,7 +266,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
 
-      openfluid::core::Unit* AU;
+      openfluid::core::SpatialUnit* AU;
       openfluid::core::IndexedValue LatestMainWindDir;
 
       OPENFLUID_UNITS_ORDERED_LOOP("AU",AU)
@@ -276,7 +275,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
         // compute corrected wind direction
         openfluid::core::IntegerValue CorrectedDir =
-            getCorrectedWindDir((int)(LatestMainWindDir.getValue()->asDoubleValue().get()));
+            getCorrectedWindDir((int)(LatestMainWindDir.value()->asDoubleValue().get()));
 
         OPENFLUID_AppendVariable(AU,"gas.atm.degree.winddir",getCorrectedWindDir(CorrectedDir));
 

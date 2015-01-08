@@ -30,10 +30,9 @@
 */
 
 /**
- \file LandRTools.hpp
- \brief Header of ...
+ @file LandRTools.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LANDRTOOLS_HPP__

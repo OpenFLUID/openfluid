@@ -32,10 +32,9 @@
 
 
 /**
-  \file GeneratorSignature_TEST.cpp
-  \brief Implements ...
+  @file GeneratorSignature_TEST.cpp
 
-  \author Aline LIBRES <libres@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN

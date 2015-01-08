@@ -31,10 +31,9 @@
 
 
 /**
-  \file MapValue.hpp
-  \brief Header of ...
+  @file MapValue.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -228,53 +227,53 @@ class OPENFLUID_API MapValue : public CompoundValue
     Value& operator[](const std::string& Key);
 
     /**
-      Returns the value of the map at the given key
+      Returns a reference to the value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    Value& get(const std::string& Key);
+    Value& at(const std::string& Key);
 
     /**
       Returns the double value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline double getDouble(const std::string& Key) { return get(Key).asDoubleValue().get(); };
+    inline double getDouble(const std::string& Key) { return at(Key).asDoubleValue().get(); };
 
     /**
       Returns the long value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline long getInteger(const std::string& Key) { return get(Key).asIntegerValue().get(); };
+    inline long getInteger(const std::string& Key) { return at(Key).asIntegerValue().get(); };
 
     /**
       Returns the boolean value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline bool getBoolean(const std::string& Key) { return get(Key).asBooleanValue().get(); };
+    inline bool getBoolean(const std::string& Key) { return at(Key).asBooleanValue().get(); };
 
     /**
       Returns the string value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline std::string getString(const std::string& Key) { return get(Key).asStringValue().get(); };
+    inline std::string getString(const std::string& Key) { return at(Key).asStringValue().get(); };
 
     /**
       Returns the VectorValue value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline VectorValue getVectorValue(const std::string& Key) { return get(Key).asVectorValue(); };
+    inline VectorValue getVectorValue(const std::string& Key) { return at(Key).asVectorValue(); };
 
     /**
       Returns the MatrixValue value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline MatrixValue getMatrixValue(const std::string& Key) { return get(Key).asMatrixValue(); };
+    inline MatrixValue getMatrixValue(const std::string& Key) { return at(Key).asMatrixValue(); };
 
     /**
       Removes the value corresponding to the given key

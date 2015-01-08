@@ -30,10 +30,9 @@
 */
 
 /**
- \file Datastore.cpp
- \brief Implements ...
+ @file Datastore.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include "Datastore.hpp"
@@ -62,26 +61,32 @@ Datastore::~Datastore()
     delete it->second;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 Datastore::DataItemsById_t Datastore::getItems()
 {
   return m_ItemsById;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const Datastore::DataItemsById_t Datastore::getItems() const
 {
   return m_ItemsById;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-DatastoreItem* Datastore::getItem(const std::string& ItemID)
+
+DatastoreItem* Datastore::item(const std::string& ItemID)
 {
   DataItemsById_t::iterator it = m_ItemsById.find(ItemID);
 
@@ -91,8 +96,10 @@ DatastoreItem* Datastore::getItem(const std::string& ItemID)
   return (DatastoreItem*) 0;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void Datastore::addItem(const DatastoreItem* Item)
 {
@@ -104,7 +111,9 @@ void Datastore::addItem(const DatastoreItem* Item)
   m_ItemsById[Item->getID()] = const_cast<DatastoreItem*>(Item);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 } } // namespaces

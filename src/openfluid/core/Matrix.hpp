@@ -32,10 +32,9 @@
 
 
 /**
-  \file Matrix.hpp
-  \brief Header of ...
+  @file Matrix.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -121,7 +120,7 @@ class OPENFLUID_API Matrix
     /**
       Returns a pointer to the content of the Matrix (like C arrays)
     */
-    T* getData() const { return (T*)(m_Data.data()); };
+    T* data() const { return (T*)(m_Data.data()); };
 
     /**
       Sets data from a pointer to a content (like C arrays)

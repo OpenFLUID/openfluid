@@ -30,10 +30,9 @@
 */
 
 /**
- \file DatastoreDescriptor.cpp
- \brief Implements ...
+ @file DatastoreDescriptor.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include "DatastoreDescriptor.hpp"
@@ -50,7 +49,7 @@ DatastoreDescriptor::DatastoreDescriptor()
 // =====================================================================
 
 
-DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems()
+DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::items()
 {
   return m_DatastoreDescription;
 }
@@ -60,7 +59,7 @@ DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems()
 // =====================================================================
 
 
-const DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems() const
+const DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::items() const
 {
   return m_DatastoreDescription;
 }

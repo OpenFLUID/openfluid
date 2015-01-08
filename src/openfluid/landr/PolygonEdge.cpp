@@ -30,10 +30,9 @@
 */
 
 /**
- \file PolygonEdge.cpp
- \brief Implements ...
+ @file PolygonEdge.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "PolygonEdge.hpp"
@@ -77,7 +76,7 @@ PolygonEdge::~PolygonEdge()
 // =====================================================================
 
 
-geos::geom::LineString* PolygonEdge::getLine()
+geos::geom::LineString* PolygonEdge::line()
 {
   return &m_Line;
 }
@@ -122,7 +121,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
 
 bool PolygonEdge::isLineInFace(PolygonEntity& Face)
 {
-  return (m_Line.relate(Face.getPolygon(), "F1F"
+  return (m_Line.relate(Face.polygon(), "F1F"
                         "F*F"
                         "***"));
 }
@@ -221,11 +220,11 @@ void PolygonEdge::removeAttribute(const std::string& AttributeName)
 bool PolygonEdge::isCoincident(PolygonEdge *Edge)
 {
 
-  geos::geom::Point *StartPoint=getLine()->getStartPoint();
-  geos::geom::Point *EndPoint=getLine()->getEndPoint();
+  geos::geom::Point *StartPoint=line()->getStartPoint();
+  geos::geom::Point *EndPoint=line()->getEndPoint();
 
-  geos::geom::Point *StartPoint2=Edge->getLine()->getStartPoint();
-  geos::geom::Point *EndPoint2=Edge->getLine()->getEndPoint();
+  geos::geom::Point *StartPoint2=Edge->line()->getStartPoint();
+  geos::geom::Point *EndPoint2=Edge->line()->getEndPoint();
 
   bool Coincident=false;
   if ((StartPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||

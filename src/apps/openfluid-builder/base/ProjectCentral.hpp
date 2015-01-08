@@ -30,9 +30,9 @@
 */
 
 /**
- \file ProjectCentral.hpp
+ @file ProjectCentral.hpp
 
- \author Jean-Christophe Fabre <fabrejc@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_BUILDERAPP_PROJECTCENTRAL_HPP__
@@ -111,13 +111,13 @@ class ProjectCentral : QObject
 
    bool saveAs(const QString& NewPrjName, const QString& NewPrjPath);
 
-   const ProjectCheckInfos* getCheckInfos() const
+   const ProjectCheckInfos* checkInfos() const
    {  return &m_CheckInfos; }
 
-   openfluid::fluidx::AdvancedFluidXDescriptor& getAdvancedDescriptors()
+   openfluid::fluidx::AdvancedFluidXDescriptor& advancedDescriptors()
    { return *mp_AdvancedFXDesc; }
 
-   const openfluid::fluidx::AdvancedFluidXDescriptor& getAdvancedDescriptors() const
+   const openfluid::fluidx::AdvancedFluidXDescriptor& advancedDescriptors() const
    { return *mp_AdvancedFXDesc; }
 
 };

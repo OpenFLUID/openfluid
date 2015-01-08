@@ -32,10 +32,9 @@
 
 
 /**
-  \file ExtensionContainer.cpp
-  \brief Implements ...
+  @file ExtensionContainer.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include "ExtensionContainer.hpp"

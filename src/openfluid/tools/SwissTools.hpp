@@ -34,12 +34,13 @@
 /**
   @file
 
-  @author JC.Fabre <fabrejc@supagro.inra.fr>
+  @author JC.Fabre <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
 #ifndef __OPENFLUID_TOOLS_SWISSTOOLS_HPP__
 #define __OPENFLUID_TOOLS_SWISSTOOLS_HPP__
+
 
 #include <vector>
 #include <string>
@@ -48,6 +49,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+
 
 namespace openfluid { namespace core {
   class DateTime;
@@ -158,9 +160,9 @@ bool OPENFLUID_API WildcardMatching(const std::string& Pattern, const std::strin
   @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
 */
 std::vector<std::string> OPENFLUID_API GetFilesByExt(const std::string DirToExplore,
-                                                 const std::string Ext,
-                                                 bool WithPath = false,
-                                                 bool ExtIncludeDot = false);
+                                                     const std::string Ext,
+                                                     bool WithPath = false,
+                                                     bool ExtIncludeDot = false);
 
 
 /**
@@ -172,10 +174,10 @@ std::vector<std::string> OPENFLUID_API GetFilesByExt(const std::string DirToExpl
   @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
 */
 std::vector<std::string> OPENFLUID_API GetFilesBySuffixAndExt(const std::string& DirToExplore,
-                                                          const std::string& Suffix,
-                                                          const std::string& Ext,
-                                                          bool WithPath = false,
-                                                          bool ExtIncludeDot = false);
+                                                              const std::string& Suffix,
+                                                              const std::string& Ext,
+                                                              bool WithPath = false,
+                                                              bool ExtIncludeDot = false);
 
 
 /**
@@ -186,8 +188,8 @@ std::vector<std::string> OPENFLUID_API GetFilesBySuffixAndExt(const std::string&
   @return a vector of strings
 */
 std::vector<std::string> OPENFLUID_API SplitString(const std::string& StrToSplit,
-                                               const std::string& Separators,
-                                               bool ReturnsEmpty = false);
+                                                   const std::string& Separators,
+                                                   bool ReturnsEmpty = false);
 
 
 /**
@@ -215,7 +217,7 @@ std::vector<std::string> OPENFLUID_API GetFilesRecursively(const std::string& Di
   @return the processed string
 */
 std::string OPENFLUID_API ReplaceEmptyString(std::string SourceStr,
-		                                 const std::string& ReplaceStr);
+                                             const std::string& ReplaceStr);
 
 
 /**
@@ -238,8 +240,8 @@ void OPENFLUID_API printSTDOUT(std::vector<std::string> Strings, std::string Sep
   @param[in] DontCopyDotDirs flag for copying dot ('.*') directories. Default is false.
 */
 void OPENFLUID_API CopyDirectoryRecursively(const std::string& SourcePath,
-		                                const std::string& IntoPath,
-		                                const bool DontCopyDotDirs = false);
+                                            const std::string& IntoPath,
+                                            const bool DontCopyDotDirs = false);
 
 
 /**
@@ -250,8 +252,8 @@ void OPENFLUID_API CopyDirectoryRecursively(const std::string& SourcePath,
   @param[in] DontCopyDotDirs flag for copying dot ('.*') directories. Default is false.
 */
 void OPENFLUID_API CopyDirectoryContentsRecursively(const std::string& SourcePath,
-		                                        const std::string& IntoPath,
-		                                        const bool DontCopyDotDirs = false);
+                                                    const std::string& IntoPath,
+                                                    const bool DontCopyDotDirs = false);
 
 
 /**
@@ -274,5 +276,5 @@ void OPENFLUID_API Sleep(const unsigned int MSec);
 } } //namespaces
 
 
-#endif // __SWISSTOOLS_H__
+#endif // __OPENFLUID_TOOLS_SWISSTOOLS_HPP__
 

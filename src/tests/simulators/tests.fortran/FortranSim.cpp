@@ -32,12 +32,13 @@
 
 
 /**
-  \file FortranSim.cpp
-  \brief Implements ...
+  @file FortranSim.cpp
+
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#include "FortranSim.h"
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/FortranCPP.hpp>
 #include <openfluid/core/Value.hpp>
 #include <openfluid/core/MatrixValue.hpp>
@@ -48,7 +49,7 @@
 // =====================================================================
 
 
-DEFINE_SIMULATOR_CLASS(FortranSimulator)
+DECLARE_SIMULATOR_PLUGIN
 
 
 // =====================================================================
@@ -57,7 +58,7 @@ DEFINE_SIMULATOR_CLASS(FortranSimulator)
 
 BEGIN_SIMULATOR_SIGNATURE("tests.fortran")
 
-  DECLARE_NAME("test simulator for fortran code wrapping");
+  DECLARE_NAME("test simulator for Fortran code wrapping");
   DECLARE_DESCRIPTION("");
 
   DECLARE_VERSION("1.0");
@@ -89,98 +90,109 @@ END_EXTERN_FORTRAN
 // =====================================================================
 
 
-FortranSimulator::FortranSimulator()
-                : PluggableSimulator()
+class FortranSimulator : public openfluid::ware::PluggableSimulator
 {
+  private:
+
+    double m_Precision;
+
+  public:
+
+    FortranSimulator() : PluggableSimulator()
+    {
+
+    }
 
 
-}
+    // =====================================================================
+    // =====================================================================
 
 
-// =====================================================================
-// =====================================================================
+    ~FortranSimulator()
+    {
+
+    }
 
 
-FortranSimulator::~FortranSimulator()
-{
+    // =====================================================================
+    // =====================================================================
 
 
-}
+    void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+    {
+
+    }
+
+    // =====================================================================
+    // =====================================================================
 
 
-// =====================================================================
-// =====================================================================
+    void prepareData()
+    {
+
+    }
 
 
-void FortranSimulator::initParams(const openfluid::ware::WareParams_t& /*Params*/)
-{  }
-
-// =====================================================================
-// =====================================================================
+    // =====================================================================
+    // =====================================================================
 
 
-void FortranSimulator::prepareData()
-{  }
+    void checkConsistency()
+    {
+
+    }
 
 
-// =====================================================================
-// =====================================================================
+    // =====================================================================
+    // =====================================================================
 
 
-void FortranSimulator::checkConsistency()
-{  }
+    openfluid::base::SchedulingRequest initializeRun()
+    {
+
+      m_Precision = 0.000001;
+
+      return DefaultDeltaT();
+    }
+
+    // =====================================================================
+    // =====================================================================
 
 
-// =====================================================================
-// =====================================================================
+    openfluid::base::SchedulingRequest runStep()
+    {
+      int i,j;
+
+      // ====== double ======
+
+      double DValue, DMult, DResult;
+      DValue = 1.5436;
+      DMult = 2.5;
+      DResult = 0.0;
+
+      CALL_FSUBROUTINE(multrealvalue)(&DValue,&DMult,&DResult);
+
+      if (std::abs(DResult - (DValue*DMult)) > m_Precision)
+        OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealvalue)");
 
 
-openfluid::base::SchedulingRequest FortranSimulator::initializeRun()
-{
+      // ====== int ======
 
-  m_Precision = 0.000001;
+      int IValue, IMult, IResult;
+      IValue = 45;
+      IMult = 18;
+      IResult = 0;
 
-  return DefaultDeltaT();
-}
+      CALL_FSUBROUTINE(multintvalue)(&IValue,&IMult,&IResult);
 
-// =====================================================================
-// =====================================================================
-
-
-openfluid::base::SchedulingRequest FortranSimulator::runStep()
-{
-  int i,j;
-
-  // ====== double ======
-
-  double DValue, DMult, DResult;
-  DValue = 1.5436;
-  DMult = 2.5;
-  DResult = 0.0;
-
-  CALL_FSUBROUTINE(multrealvalue)(&DValue,&DMult,&DResult);
-
-  if (std::abs(DResult - (DValue*DMult)) > m_Precision)
-    OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealvalue)");
+      if (IResult != (IValue*IMult))
+        OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multintvalue)");
 
 
-  // ====== int ======
+      // ====== string ======
 
-  int IValue, IMult, IResult;
-  IValue = 45;
-  IMult = 18;
-  IResult = 0;
-
-  CALL_FSUBROUTINE(multintvalue)(&IValue,&IMult,&IResult);
-
-  if (IResult != (IValue*IMult))
-    OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multintvalue)");
-
-
-  // ====== string ======
-
-  // TODO finish this
-/*  std::string SStr1, SStr2, SResult;
+      // TODO finish this
+      /*  std::string SStr1, SStr2, SResult;
   char* CResult;
   SStr1 = "Hello";
   SStr2 = "from fortran";
@@ -191,93 +203,103 @@ openfluid::base::SchedulingRequest FortranSimulator::runStep()
 
   if (SResult != (SStr1 + " " + SStr2))
     OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (catstrings)");
-*/
+       */
 
 
-  // ====== matrix ======
+      // ====== matrix ======
 
-  int MDim1,MDim2;
-  double MMult;
-  openfluid::core::MatrixValue MValue;
-  openfluid::core::MatrixValue MResult;
-  double* MTmpResult;
+      int MDim1,MDim2;
+      double MMult;
+      openfluid::core::MatrixValue MValue;
+      openfluid::core::MatrixValue MResult;
+      double* MTmpResult;
 
-  MDim1 = 3;
-  MDim2 = 5;
+      MDim1 = 3;
+      MDim2 = 5;
 
-  MMult = 2.18;
+      MMult = 2.18;
 
-  MValue = openfluid::core::MatrixValue(MDim1,MDim2);
+      MValue = openfluid::core::MatrixValue(MDim1,MDim2);
 
-  MTmpResult = new double[MDim1*MDim2];
+      MTmpResult = new double[MDim1*MDim2];
 
-  for (j=0; j < MDim2;j++)
-    for (i=0; i < MDim1;i++)
-      MValue.setElement(i,j,(j*MDim1)+i+1);
+      for (j=0; j < MDim2;j++)
+        for (i=0; i < MDim1;i++)
+          MValue.setElement(i,j,(j*MDim1)+i+1);
 
-  std::cout << std::endl;
+      std::cout << std::endl;
 
 
 
-  std::cout << "MValue:"<< std::endl;
-  for (j=0; j < MDim2;j++)
-  {
-    for (i=0; i < MDim1;i++)
-    {
-        std::cout << MValue.getElement(i,j) << " ";
+      std::cout << "MValue:"<< std::endl;
+      for (j=0; j < MDim2;j++)
+      {
+        for (i=0; i < MDim1;i++)
+        {
+          std::cout << MValue.getElement(i,j) << " ";
+        }
+        std::cout << std::endl;
+      }
+
+      MResult.fill(0.0);
+
+      CALL_FSUBROUTINE(multrealmatrix)(MValue.data(),&MDim1,&MDim2,&MMult,MTmpResult);
+
+      MResult = openfluid::core::MatrixValue(MDim1,MDim2);
+      MResult.setData(MTmpResult);
+
+      std::cout << "MTmpResult:"<< std::endl;
+      for (j=0; j < MDim2;j++)
+      {
+        for (i=0; i < MDim1;i++)
+        {
+          std::cout << MTmpResult[i+(j*MDim1)] << " ";
+        }
+        std::cout << std::endl;
+      }
+
+
+      std::cout << "MResult:"<< std::endl;
+      for (j=0; j < MDim2;j++)
+      {
+        for (i=0; i < MDim1;i++)
+        {
+          std::cout << MResult.getElement(i,j) << " ";
+        }
+        std::cout << std::endl;
+      }
+
+
+      std::cout << std::endl;
+
+
+      for (j=0; j < MDim2;j++)
+      {
+        for (i=0; i < MDim1;i++)
+        {
+          //      std::cout << MResult.get(i,j) << "  " << (MValue.get(i,j) * MMult) << std::endl;
+          if (std::abs(MResult.get(i,j) - (MValue.get(i,j) * MMult)) > m_Precision)
+            OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealmatrix)");
+        }
+      }
+
+      return DefaultDeltaT();
     }
-    std::cout << std::endl;
-  }
 
-  MResult.fill(0.0);
+    // =====================================================================
+    // =====================================================================
 
-  CALL_FSUBROUTINE(multrealmatrix)(MValue.getData(),&MDim1,&MDim2,&MMult,MTmpResult);
 
-  MResult = openfluid::core::MatrixValue(MDim1,MDim2);
-  MResult.setData(MTmpResult);
-
-  std::cout << "MTmpResult:"<< std::endl;
-  for (j=0; j < MDim2;j++)
-  {
-    for (i=0; i < MDim1;i++)
+    void finalizeRun()
     {
-        std::cout << MTmpResult[i+(j*MDim1)] << " ";
+
     }
-    std::cout << std::endl;
-  }
 
+};
 
-  std::cout << "MResult:"<< std::endl;
-  for (j=0; j < MDim2;j++)
-  {
-    for (i=0; i < MDim1;i++)
-    {
-        std::cout << MResult.getElement(i,j) << " ";
-    }
-    std::cout << std::endl;
-  }
-
-
-  std::cout << std::endl;
-
-
-  for (j=0; j < MDim2;j++)
-  {
-    for (i=0; i < MDim1;i++)
-    {
-//      std::cout << MResult.get(i,j) << "  " << (MValue.get(i,j) * MMult) << std::endl;
-      if (std::abs(MResult.get(i,j) - (MValue.get(i,j) * MMult)) > m_Precision)
-        OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealmatrix)");
-    }
-  }
-
-  return DefaultDeltaT();
-}
 
 // =====================================================================
 // =====================================================================
 
 
-void FortranSimulator::finalizeRun()
-{  }
-
+DEFINE_SIMULATOR_CLASS(FortranSimulator)

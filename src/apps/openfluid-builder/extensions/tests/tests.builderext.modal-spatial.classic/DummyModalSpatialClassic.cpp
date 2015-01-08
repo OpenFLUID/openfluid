@@ -32,10 +32,9 @@
 
 
 /**
-  \file DummyModalSpatialClassic.cpp
-  \brief Implements ...
+  @file DummyModalSpatialClassic.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -107,11 +106,12 @@ void DummyModalSpatialClassic::addUnitClass()
 
   if (OK && !UnitClass.isEmpty())
   {
-    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
-    UDesc->getUnitClass() = UnitClass.toStdString();
-    UDesc->getUnitID() = 1;
-    UDesc->getProcessOrder() = 1;
-    mp_AdvancedDesc->getDomain().addUnit(UDesc);
+    openfluid::fluidx::SpatialUnitDescriptor* UDesc = new openfluid::fluidx::SpatialUnitDescriptor();
+
+    UDesc->setUnitsClass(UnitClass.toStdString());
+    UDesc->setID(1);
+    UDesc->setProcessOrder(1);
+    mp_AdvancedDesc->spatialDomain().addUnit(UDesc);
 
     emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
   }
@@ -124,7 +124,7 @@ void DummyModalSpatialClassic::addUnitClass()
 
 void DummyModalSpatialClassic::clearSpatialDomain()
 {
-  mp_AdvancedDesc->getDomain().clearDomain();
+  mp_AdvancedDesc->spatialDomain().clearDomain();
 
   emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
                      openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
@@ -141,7 +141,7 @@ void DummyModalSpatialClassic::update(openfluid::builderext::FluidXUpdateFlags::
   if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL) ||
       UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS) ||
       UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT))
-  ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)").arg(mp_AdvancedDesc->getDomain().getClassNames().size()));
+  ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)").arg(mp_AdvancedDesc->spatialDomain().getClassNames().size()));
 }
 
 

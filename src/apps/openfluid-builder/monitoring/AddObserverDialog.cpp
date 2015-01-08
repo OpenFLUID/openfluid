@@ -32,10 +32,9 @@
 
 
 /**
-  \file AddObserverDialog.cpp
-  \brief Implements ...
+  @file AddObserverDialog.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -56,7 +55,7 @@ AddObserverDialog::AddObserverDialog(const QStringList& ObsIDList, QWidget* Pare
   ui->MessageLabel->setText(tr("Add observer"));
 
   openfluid::machine::ObserverSignatureRegistry* Reg =
-    openfluid::machine::ObserverSignatureRegistry::getInstance();
+    openfluid::machine::ObserverSignatureRegistry::instance();
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> ObsSigns =
     Reg->getAvailableSignatures();
@@ -105,10 +104,10 @@ AddObserverDialog::~AddObserverDialog()
 void AddObserverDialog::updateSignature()
 {
   openfluid::machine::ObserverSignatureRegistry* Reg =
-    openfluid::machine::ObserverSignatureRegistry::getInstance();
+    openfluid::machine::ObserverSignatureRegistry::instance();
 
   const openfluid::machine::ObserverSignatureInstance* Sign =
-      Reg->getSignature(ui->WaresListWidget->currentItem()->text().toStdString());
+      Reg->signature(ui->WaresListWidget->currentItem()->text().toStdString());
 
   ui->EmptyLabel->setVisible(false);
   mp_SignWidget->setVisible(true);
@@ -140,3 +139,5 @@ void AddObserverDialog::setMessage(const QString& Msg)
     ui->MessageLabel->setText(Msg);
   }
 }
+
+

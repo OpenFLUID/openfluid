@@ -31,10 +31,9 @@
 
 
 /**
-  \file WarePluginsManager.hpp
-  \brief Header of ...
+  @file WarePluginsManager.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -248,7 +247,7 @@ class OPENFLUID_API WarePluginsManager
     /**
       Lists available wares
     */
-    std::vector<S*> getAvailableWaresSignatures(const std::string Pattern = "")
+    std::vector<S*> getAvailableWaresSignatures(const std::string& Pattern = "")
     {
       std::vector<S*> PluginsContainers;
       std::vector<std::string> PluginsPaths = getPluginsSearchPaths();

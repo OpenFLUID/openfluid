@@ -32,10 +32,9 @@
 
 
 /**
-  \file MapScene.cpp
-  \brief Implements ...
+  @file MapScene.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -78,7 +77,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
   {
     openfluid::core::DatastoreItem* DSItem = NULL;
 
-    if (m_LocalDatastore.getItem(DSItemDesc->getID()) == NULL)
+    if (m_LocalDatastore.item(DSItemDesc->getID()) == NULL)
     {
       DSItem = new openfluid::core::DatastoreItem(DSItemDesc->getID(),
                                                   DSItemDesc->getPrefixPath(),
@@ -88,14 +87,14 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
       m_LocalDatastore.addItem(DSItem);
     }
     else
-      DSItem = m_LocalDatastore.getItem(DSItemDesc->getID());
+      DSItem = m_LocalDatastore.item(DSItemDesc->getID());
 
     openfluid::core::GeoVectorValue* VectorData =
-        dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->getValue());
+        dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
 
-    if (VectorData->get() != NULL && VectorData->containsField("OFLD_ID",0))
+    if (VectorData->data() != NULL && VectorData->containsField("OFLD_ID",0))
     {
-      OGRLayer* Layer = VectorData->getLayer();
+      OGRLayer* Layer = VectorData->layer();
 
       // TODO fix for correct line width
       QPen FeaturePen(QBrush(LineColor),0);
@@ -113,7 +112,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
 
         int ID = Feature->GetFieldAsInteger("OFLD_ID");
 
-        if (Geometry != NULL && m_Domain.isUnitExist(StdClassName,ID))
+        if (Geometry != NULL && m_Domain.isSpatialUnitExist(StdClassName,ID))
         {
           if (GeomType == wkbPoint)
           {

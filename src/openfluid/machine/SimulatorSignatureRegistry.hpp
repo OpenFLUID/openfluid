@@ -30,10 +30,9 @@
 */
 
 /**
- \file SimulatorSignatureRegistry.hpp
- \brief Header of ...
+ @file SimulatorSignatureRegistry.hpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_MACHINE_SIMULATORSIGNATUREREGISTRY_HPP__
@@ -84,7 +83,7 @@ class OPENFLUID_API SimulatorSignatureRegistry
 
   public:
 
-    static SimulatorSignatureRegistry* getInstance();
+    static SimulatorSignatureRegistry* instance();
 
     SimSignaturesByTypeByName_t getSimSignatures();
 
@@ -98,13 +97,11 @@ class OPENFLUID_API SimulatorSignatureRegistry
 
     bool isPluggableSimulatorAvailable(std::string SimulatorID);
 
-    ModelItemSignatureInstance* getSignatureItemInstance(
-        std::string SimulatorID);
+    ModelItemSignatureInstance* signatureItemInstance(std::string SimulatorID);
 
-    ModelItemSignatureInstance* getSignatureItemInstance(
-        openfluid::fluidx::ModelItemDescriptor* Item);
+    ModelItemSignatureInstance* signatureItemInstance(openfluid::fluidx::ModelItemDescriptor* Item);
 
-    ModelItemSignatureInstance* getSignatureItemInstance(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method);
+    ModelItemSignatureInstance* signatureItemInstance(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method);
 
     void unloadAllSimulators();
 };

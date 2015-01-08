@@ -32,10 +32,9 @@
 
 
 /**
-  \file PluggableSimulator.cpp
-  \brief Implements ...
+  @file PluggableSimulator.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -254,7 +253,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
 
   if (it != Params.end())
   {
-    Value = it->second.get();
+    Value = it->second.data();
 
     return true;
   }
@@ -277,7 +276,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   {
     std::vector<std::string> Tokens;
 
-    openfluid::tools::TokenizeString(it->second.get(),Tokens,";");
+    openfluid::tools::TokenizeString(it->second.data(),Tokens,";");
 
     Vals.clear();
 

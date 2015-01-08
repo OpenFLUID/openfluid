@@ -31,10 +31,9 @@
 
 
 /**
-  \file UnitsClassWidget.hpp
-  \brief Header of ...
+  @file UnitsClassWidget.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -144,7 +143,7 @@ class UnitsClassWidget : public QFrame
 
     void setLayerVisible();
 
-    const openfluid::fluidx::DatastoreItemDescriptor* getLayerSource() const
+    const openfluid::fluidx::DatastoreItemDescriptor* layerSource() const
     { return mp_LayerSource; }
 
 };

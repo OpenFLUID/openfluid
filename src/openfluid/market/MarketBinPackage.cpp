@@ -32,10 +32,9 @@
 
 
 /**
-  \file MarketBinPackage.cpp
-  \brief Implements ...
+  @file MarketBinPackage.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 #include <openfluid/market/MarketBinPackage.hpp>

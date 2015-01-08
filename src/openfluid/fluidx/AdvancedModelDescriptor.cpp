@@ -30,10 +30,9 @@
 */
 
 /**
- \file AdvancedModelDescriptor.cpp
- \brief Implements ...
+ @file AdvancedModelDescriptor.cpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
@@ -81,7 +80,7 @@ void AdvancedModelDescriptor::checkModel() const
   std::set<std::string> UniqueIDs;
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_ModelDesc->getItems();
+      mp_ModelDesc->items();
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -100,9 +99,9 @@ void AdvancedModelDescriptor::checkModel() const
 // =====================================================================
 
 
-const std::list<openfluid::fluidx::ModelItemDescriptor*>& AdvancedModelDescriptor::getItems() const
+const std::list<openfluid::fluidx::ModelItemDescriptor*>& AdvancedModelDescriptor::items() const
 {
-  return mp_ModelDesc->getItems();
+  return mp_ModelDesc->items();
 }
 
 
@@ -110,11 +109,10 @@ const std::list<openfluid::fluidx::ModelItemDescriptor*>& AdvancedModelDescripto
 // =====================================================================
 
 
-openfluid::fluidx::ModelItemDescriptor* AdvancedModelDescriptor::getItemAt(
-    unsigned int Index) const
+openfluid::fluidx::ModelItemDescriptor* AdvancedModelDescriptor::itemAt(unsigned int Index) const
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_ModelDesc->getItems();
+      mp_ModelDesc->items();
 
   if (Index < Items.size())
   {
@@ -138,7 +136,7 @@ openfluid::fluidx::ModelItemDescriptor* AdvancedModelDescriptor::getItemAt(
 int AdvancedModelDescriptor::getFirstItemIndex(std::string ItemID) const
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_ModelDesc->getItems();
+      mp_ModelDesc->items();
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -159,7 +157,7 @@ int AdvancedModelDescriptor::getFirstItemIndex(
     openfluid::fluidx::ModelItemDescriptor* Item) const
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_ModelDesc->getItems();
+      mp_ModelDesc->items();
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it = std::find(
       Items.begin(), Items.end(), Item);
@@ -180,7 +178,7 @@ std::vector<std::string> AdvancedModelDescriptor::getOrderedIDs() const
   std::vector<std::string> IDs;
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_ModelDesc->getItems();
+      mp_ModelDesc->items();
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -229,7 +227,7 @@ void AdvancedModelDescriptor::insertItem(
     openfluid::fluidx::ModelItemDescriptor* Item, unsigned int Position)
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_ModelDesc->getItems();
+      mp_ModelDesc->items();
 
   if (Position == 0)
     Items.insert(Items.begin(), Item);
@@ -255,7 +253,7 @@ void AdvancedModelDescriptor::insertItem(
 void AdvancedModelDescriptor::setItems(
     std::list<openfluid::fluidx::ModelItemDescriptor*> SimulatorsList)
 {
-  mp_ModelDesc->getItems() = SimulatorsList;
+  mp_ModelDesc->items() = SimulatorsList;
 }
 
 
@@ -266,7 +264,7 @@ void AdvancedModelDescriptor::setItems(
 void AdvancedModelDescriptor::removeItem(unsigned int Position)
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_ModelDesc->getItems();
+      mp_ModelDesc->items();
 
   if (Position < Items.size())
   {
@@ -293,7 +291,7 @@ void AdvancedModelDescriptor::moveItem(unsigned int From, unsigned int To)
     return;
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_ModelDesc->getItems();
+      mp_ModelDesc->items();
 
   unsigned int Last = Items.size() - 1;
 
@@ -323,7 +321,7 @@ void AdvancedModelDescriptor::moveItem(unsigned int From, unsigned int To)
 
 unsigned int AdvancedModelDescriptor::getItemsCount() const
 {
-  return mp_ModelDesc->getItems().size();
+  return mp_ModelDesc->items().size();
 }
 
 
@@ -337,7 +335,7 @@ void AdvancedModelDescriptor::getItemsCount(unsigned int& SimCount, unsigned int
   GenCount = 0;
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_ModelDesc->getItems();
+      mp_ModelDesc->items();
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)

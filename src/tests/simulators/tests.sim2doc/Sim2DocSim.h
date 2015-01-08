@@ -32,12 +32,11 @@
 
 
 /**
-  \file OFEFunc2DocSim.h
-  \brief Header of ...
+  @file OFEFunc2DocSim.h
 */
 
-#ifndef __OFEFUNC2DOCSIM_H__
-#define __OFEFUNC2DOCSIM_H__
+#ifndef __SIM2DOCSIM_H__
+#define __SIM2DOCSIM_H__
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 
@@ -88,4 +87,4 @@ class Sim2DocSimulator : public openfluid::ware::PluggableSimulator
 };
 
 
-#endif  // __OFEFUNC2DOCSIM_H__
+#endif  /* __SIM2DOCSIM_H__ */

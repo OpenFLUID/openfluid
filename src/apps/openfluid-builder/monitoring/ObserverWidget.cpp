@@ -32,10 +32,9 @@
 
 
 /**
-  \file ObserverWidget.cpp
-  \brief Implements ...
+  @file ObserverWidget.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -78,7 +77,7 @@ ObserverWidget::~ObserverWidget()
 void ObserverWidget::refresh()
 {
   const openfluid::machine::ObserverSignatureInstance* Signature =
-    openfluid::machine::ObserverSignatureRegistry::getInstance()->getSignature(m_ID);
+    openfluid::machine::ObserverSignatureRegistry::instance()->signature(m_ID);
 
   if (Signature != NULL)
   {

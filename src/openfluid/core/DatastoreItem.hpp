@@ -30,10 +30,9 @@
 */
 
 /**
- \file DatastoreItem.hpp
- \brief Header of ...
+ @file DatastoreItem.hpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_DATASTOREITEM_HPP__
@@ -80,8 +79,9 @@ class OPENFLUID_API DatastoreItem
      * @param UnitClass (optional) The associated unit class of the item.
      * @throw openfluid::base::OFException if the given type is unknown.
      */
-    DatastoreItem(std::string ID, std::string PrefixPath, std::string RelativePath,
-        UnstructuredValue::UnstructuredType Type, std::string UnitClass = "");
+    DatastoreItem(const std::string& ID,
+                  const std::string& PrefixPath, const std::string& RelativePath,
+                  UnstructuredValue::UnstructuredType Type, const std::string& UnitClass = "");
 
     /**
      * @brief Destroys the resource and its associated value.
@@ -105,12 +105,12 @@ class OPENFLUID_API DatastoreItem
     /**
      * @brief Gets the associated value of the resource.
      */
-    UnstructuredValue* getValue();
+    UnstructuredValue* value();
 
     /**
      * @brief Gets the associated value of the resource.
      */
-    const UnstructuredValue* getValue() const;
+    const UnstructuredValue* value() const;
 };
 
 }

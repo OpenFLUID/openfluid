@@ -32,10 +32,9 @@
 
 
 /**
-  \file DebugSim.cpp
-  \brief Implements ...
+  @file DebugSim.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -66,7 +65,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.fire.prod-spread")
   DECLARE_DOMAIN("fire");
   DECLARE_PROCESS("production, spreading");
   DECLARE_METHOD("wind coefficient, stock quantity and type");
-  DECLARE_AUTHOR("Jean-Christophe Fabre","fabrejc@supagro.inra.fr");
+  DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
 
   DECLARE_SIMULATOR_PARAM("ignitionunits","semicolon separated list of land units IDs where the fire ignites","-")
 
@@ -134,7 +133,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
     void prepareData()
     {
-      openfluid::core::Unit* LU;
+      openfluid::core::SpatialUnit* LU;
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {
@@ -185,7 +184,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     openfluid::base::SchedulingRequest initializeRun()
     {
 
-      openfluid::core::Unit* LU;
+      openfluid::core::SpatialUnit* LU;
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {
@@ -208,9 +207,9 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     // =====================================================================
 
 
-    double getWindCoefficient(openfluid::core::Unit* U)
+    double getWindCoefficient(openfluid::core::SpatialUnit* U)
     {
-      openfluid::core::UnitsPtrList_t* ParentAU = U->getParentUnits("AU");
+      openfluid::core::UnitsPtrList_t* ParentAU = U->parentSpatialUnits("AU");
 
       if (ParentAU != NULL && ParentAU->size()==1)
       {
@@ -224,9 +223,9 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
         // > 75 km/h : 2
 
         int WindCoeff = 1.0;
-        if (WindSpeed.getValue()->asDoubleValue().get() > 25) WindCoeff = 1.4;
-        if (WindSpeed.getValue()->asDoubleValue().get() > 50) WindCoeff = 1.7;
-        if (WindSpeed.getValue()->asDoubleValue().get() > 75) WindCoeff = 2;
+        if (WindSpeed.value()->asDoubleValue().get() > 25) WindCoeff = 1.4;
+        if (WindSpeed.value()->asDoubleValue().get() > 50) WindCoeff = 1.7;
+        if (WindSpeed.value()->asDoubleValue().get() > 75) WindCoeff = 2;
 
         return WindCoeff;
       }
@@ -239,7 +238,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     // =====================================================================
 
 
-    void updateStock(openfluid::core::Unit* U)
+    void updateStock(openfluid::core::SpatialUnit* U)
     {
 
       openfluid::core::IntegerValue Stock;
@@ -285,9 +284,9 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     // =====================================================================
 
 
-    void updateStatus(openfluid::core::Unit* U)
+    void updateStatus(openfluid::core::SpatialUnit* U)
     {
-      openfluid::core::UnitsPtrList_t* FromLU = U->getFromUnits("LU");
+      openfluid::core::UnitsPtrList_t* FromLU = U->fromSpatialUnits("LU");
 
       // compute the burning/non-burning status of each land unit
       // a cell starts burning if :
@@ -320,7 +319,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
     openfluid::base::SchedulingRequest runStep()
     {
-      openfluid::core::Unit* LU;
+      openfluid::core::SpatialUnit* LU;
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {

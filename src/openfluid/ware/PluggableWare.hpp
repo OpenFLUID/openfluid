@@ -31,10 +31,9 @@
 
 
 /**
-  \file PluggableWare.hpp
-  \brief Header of ...
+  @file PluggableWare.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -123,14 +122,14 @@ class OPENFLUID_API PluggableWare
       @param[in] Key the sender of the message
       @param[out] Val the value associated with the environment key
     */
-    bool OPENFLUID_GetRunEnvironment(std::string Key, std::string& Val);
+    bool OPENFLUID_GetRunEnvironment(const std::string& Key, std::string& Val);
 
     /**
       Gets an environment boolean value associated to a Key
       @param[in] Key the sender of the message
       @param[out] Val the value associated with the environment key
     */
-    bool OPENFLUID_GetRunEnvironment(std::string Key, bool& Val);
+    bool OPENFLUID_GetRunEnvironment(const std::string& Key, bool& Val);
 
     /**
       Returns the ID of the ware (itself)

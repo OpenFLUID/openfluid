@@ -32,10 +32,9 @@
 
 
 /**
-  \file PreferencesDialog.cpp
-  \brief Implements ...
+  @file PreferencesDialog.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -181,10 +180,10 @@ void PreferencesDialog::initialize()
 {
 
   openfluid::base::PreferencesManager* PrefsMan =
-    openfluid::base::PreferencesManager::getInstance();
+    openfluid::base::PreferencesManager::instance();
 
   openfluid::base::RuntimeEnvironment* RunEnv =
-      openfluid::base::RuntimeEnvironment::getInstance();
+      openfluid::base::RuntimeEnvironment::instance();
 
 
   // Interface
@@ -217,7 +216,7 @@ void PreferencesDialog::initialize()
 void PreferencesDialog::updateMarketplacesList()
 {
   openfluid::base::PreferencesManager* PrefsMan =
-    openfluid::base::PreferencesManager::getInstance();
+    openfluid::base::PreferencesManager::instance();
 
   openfluid::base::PreferencesManager::MarketPlaces_t MPlaces = PrefsMan->getMarketplaces();
 
@@ -252,7 +251,7 @@ void PreferencesDialog::updateMarketplacesList()
 void PreferencesDialog::initializeBuilderPrefs(const QStringList& ExtsPaths)
 {
   openfluid::base::PreferencesManager* PrefsMan =
-    openfluid::base::PreferencesManager::getInstance();
+    openfluid::base::PreferencesManager::instance();
 
   // interface
   ui->RecentMaxSpinBox->setValue(PrefsMan->getRecentMax());
@@ -298,7 +297,7 @@ void PreferencesDialog::changePage(QTreeWidgetItem* Current, QTreeWidgetItem* Pr
 
 void PreferencesDialog::updateLanguage(const QString& Lang)
 {
-  openfluid::base::PreferencesManager::getInstance()->setLang(Lang);
+  openfluid::base::PreferencesManager::instance()->setLang(Lang);
 }
 
 
@@ -308,7 +307,7 @@ void PreferencesDialog::updateLanguage(const QString& Lang)
 
 void PreferencesDialog::clearRecentsList()
 {
-  openfluid::base::PreferencesManager::getInstance()->clearRecentProjects();
+  openfluid::base::PreferencesManager::instance()->clearRecentProjects();
   m_RecentsChanged = true;
 }
 
@@ -319,7 +318,7 @@ void PreferencesDialog::clearRecentsList()
 
 void PreferencesDialog::updateRecentsMax(int Val)
 {
-  openfluid::base::PreferencesManager::getInstance()->setRecentMax(Val);
+  openfluid::base::PreferencesManager::instance()->setRecentMax(Val);
   m_RecentsChanged = true;
 }
 
@@ -330,7 +329,7 @@ void PreferencesDialog::updateRecentsMax(int Val)
 
 void PreferencesDialog::confirmItemRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::getInstance()->setItemRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setItemRemovalConfirm(Confirm);
 }
 
 
@@ -340,7 +339,7 @@ void PreferencesDialog::confirmItemRemoval(bool Confirm)
 
 void PreferencesDialog::confirmParamRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::getInstance()->setParamRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setParamRemovalConfirm(Confirm);
 }
 
 
@@ -350,7 +349,7 @@ void PreferencesDialog::confirmParamRemoval(bool Confirm)
 
 void PreferencesDialog::confirmUnitsRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::getInstance()->setSpatialUnitsRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setSpatialUnitsRemovalConfirm(Confirm);
 }
 
 
@@ -360,7 +359,7 @@ void PreferencesDialog::confirmUnitsRemoval(bool Confirm)
 
 void PreferencesDialog::confirmConnectionsRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::getInstance()->setSpatialConnsRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setSpatialConnsRemovalConfirm(Confirm);
 }
 
 
@@ -370,7 +369,7 @@ void PreferencesDialog::confirmConnectionsRemoval(bool Confirm)
 
 void PreferencesDialog::confirmAttributesRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::getInstance()->setSpatialAttrsRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setSpatialAttrsRemovalConfirm(Confirm);
 }
 
 
@@ -380,7 +379,7 @@ void PreferencesDialog::confirmAttributesRemoval(bool Confirm)
 
 void PreferencesDialog::enableWatchers(bool Active)
 {
-  openfluid::base::PreferencesManager::getInstance()->setWaresWatchersActive(Active);
+  openfluid::base::PreferencesManager::instance()->setWaresWatchersActive(Active);
   m_WaresWatchingChanged = true;
 }
 
@@ -391,7 +390,7 @@ void PreferencesDialog::enableWatchers(bool Active)
 
 void PreferencesDialog::enableAutoSaveBeforeRun(bool AutoSave)
 {
-  openfluid::base::PreferencesManager::getInstance()->setAutomaticSaveBeforeRun(AutoSave);
+  openfluid::base::PreferencesManager::instance()->setAutomaticSaveBeforeRun(AutoSave);
 }
 
 
@@ -401,7 +400,7 @@ void PreferencesDialog::enableAutoSaveBeforeRun(bool AutoSave)
 
 void PreferencesDialog::updateDeltaT(int Val)
 {
-  openfluid::base::PreferencesManager::getInstance()->setDeltaT(Val);
+  openfluid::base::PreferencesManager::instance()->setDeltaT(Val);
 }
 
 
@@ -411,7 +410,7 @@ void PreferencesDialog::updateDeltaT(int Val)
 
 void PreferencesDialog::updatePeriodBegin(const QDateTime& DT)
 {
-  openfluid::base::PreferencesManager::getInstance()->setBegin(DT.toString("yyyy-MM-dd HH:mm:ss"));
+  openfluid::base::PreferencesManager::instance()->setBegin(DT.toString("yyyy-MM-dd HH:mm:ss"));
   if (ui->EndDateEdit->dateTime() <= DT)
   {
     ui->EndDateEdit->setDateTime(DT.addSecs(1));
@@ -425,7 +424,7 @@ void PreferencesDialog::updatePeriodBegin(const QDateTime& DT)
 
 void PreferencesDialog::updatePeriodEnd(const QDateTime& DT)
 {
-  openfluid::base::PreferencesManager::getInstance()->setEnd(DT.toString("yyyy-MM-dd HH:mm:ss"));
+  openfluid::base::PreferencesManager::instance()->setEnd(DT.toString("yyyy-MM-dd HH:mm:ss"));
 }
 
 
@@ -436,11 +435,11 @@ void PreferencesDialog::updatePeriodEnd(const QDateTime& DT)
 void PreferencesDialog::addMarketPlace()
 {
   EditMarketplaceDialog MarketDlg(this,"","",
-                                  openfluid::base::PreferencesManager::getInstance()->getMarketplaces());
+                                  openfluid::base::PreferencesManager::instance()->getMarketplaces());
 
   if (MarketDlg.exec() == QDialog::Accepted)
   {
-    openfluid::base::PreferencesManager::getInstance()->addMarketplace(MarketDlg.getName(),MarketDlg.getURL());
+    openfluid::base::PreferencesManager::instance()->addMarketplace(MarketDlg.getName(),MarketDlg.getURL());
     updateMarketplacesList();
   }
 }
@@ -458,12 +457,12 @@ void PreferencesDialog::editMarketPlace()
     QStringList AssociatedData = Item->data(Qt::UserRole).toStringList();
 
     EditMarketplaceDialog MarketDlg(this,AssociatedData[0],AssociatedData[1],
-                                    openfluid::base::PreferencesManager::getInstance()->getMarketplaces());
+                                    openfluid::base::PreferencesManager::instance()->getMarketplaces());
 
     if (MarketDlg.exec() == QDialog::Accepted)
     {
-      openfluid::base::PreferencesManager::getInstance()->removeMarketplace(MarketDlg.getOriginalName());
-      openfluid::base::PreferencesManager::getInstance()->addMarketplace(MarketDlg.getName(),MarketDlg.getURL());
+      openfluid::base::PreferencesManager::instance()->removeMarketplace(MarketDlg.getOriginalName());
+      openfluid::base::PreferencesManager::instance()->addMarketplace(MarketDlg.getName(),MarketDlg.getURL());
       updateMarketplacesList();
     }
   }
@@ -481,7 +480,7 @@ void PreferencesDialog::removeMarketPlace()
     QListWidgetItem* Item = ui->MarketPlacesListWidget->currentItem();
     QStringList AssociatedData = Item->data(Qt::UserRole).toStringList();
 
-    openfluid::base::PreferencesManager::getInstance()->removeMarketplace(AssociatedData[0]);
+    openfluid::base::PreferencesManager::instance()->removeMarketplace(AssociatedData[0]);
 
     updateMarketplacesList();
   }
@@ -494,7 +493,7 @@ void PreferencesDialog::removeMarketPlace()
 
 void PreferencesDialog::processSimUserPathsUpdate()
 {
-  openfluid::base::PreferencesManager::getInstance()->setExtraSimulatorsPaths(ui->SimulatorsSearchPathsWidget->getUserPaths());
+  openfluid::base::PreferencesManager::instance()->setExtraSimulatorsPaths(ui->SimulatorsSearchPathsWidget->getUserPaths());
   m_SimPathsChanged = true;
 }
 
@@ -505,7 +504,7 @@ void PreferencesDialog::processSimUserPathsUpdate()
 
 void PreferencesDialog::processObsUserPathsUpdate()
 {
-  openfluid::base::PreferencesManager::getInstance()->setExtraObserversPaths(ui->ObserversSearchPathsWidget->getUserPaths());
+  openfluid::base::PreferencesManager::instance()->setExtraObserversPaths(ui->ObserversSearchPathsWidget->getUserPaths());
   m_ObsPathsChanged = true;
 }
 
@@ -516,7 +515,7 @@ void PreferencesDialog::processObsUserPathsUpdate()
 
 void PreferencesDialog::processBextUserPathsUpdate()
 {
-  openfluid::base::PreferencesManager::getInstance()->setExtraExtensionsPaths(ui->BuilderextsSearchPathsWidget->getUserPaths());
+  openfluid::base::PreferencesManager::instance()->setExtraExtensionsPaths(ui->BuilderextsSearchPathsWidget->getUserPaths());
 }
 
 
@@ -526,7 +525,7 @@ void PreferencesDialog::processBextUserPathsUpdate()
 
 void PreferencesDialog::processWorkspacesPathsUpdate()
 {
-  openfluid::base::PreferencesManager::getInstance()->setWorkspacesPaths(ui->WorkspacesPathsWidget->getPathsList());
+  openfluid::base::PreferencesManager::instance()->setWorkspacesPaths(ui->WorkspacesPathsWidget->getPathsList());
 }
 
 

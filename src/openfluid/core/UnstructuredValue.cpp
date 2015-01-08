@@ -30,24 +30,23 @@
 */
 
 /**
- \file UnstructuredValue.cpp
- \brief Implements ...
+  @file UnstructuredValue.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
- */
+  @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #include "UnstructuredValue.hpp"
 
-namespace openfluid {
-namespace core {
+namespace openfluid { namespace core {
+
 
 // =====================================================================
 // =====================================================================
 
 
-bool UnstructuredValue::getValueTypeFromString(
-    const std::string ValueTypeString,
-    UnstructuredValue::UnstructuredType& ValueType)
+bool UnstructuredValue::getValueTypeFromString(const std::string& ValueTypeString,
+                                               UnstructuredValue::UnstructuredType& ValueType)
 {
   if (ValueTypeString == "geovector")
   {
@@ -63,12 +62,12 @@ bool UnstructuredValue::getValueTypeFromString(
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-std::string UnstructuredValue::getStringFromValueType(
-    const UnstructuredValue::UnstructuredType ValueType)
+std::string UnstructuredValue::getStringFromValueType(const UnstructuredValue::UnstructuredType ValueType)
 {
   switch (ValueType)
   {
@@ -81,5 +80,5 @@ std::string UnstructuredValue::getStringFromValueType(
   }
 }
 
-}
-} // namespaces
+
+} } // namespaces

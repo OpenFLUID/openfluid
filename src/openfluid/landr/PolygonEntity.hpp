@@ -30,10 +30,9 @@
 */
 
 /**
- \file PolygonEntity.hpp
- \brief Header of ...
+ @file PolygonEntity.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_POLYGONENTITY_HPP__
@@ -120,7 +119,7 @@ class OPENFLUID_API PolygonEntity: public LandREntity
     /**
      @brief Returns the geos::geom::Polygon associated to this PolygonEntity.
      */
-    const geos::geom::Polygon* getPolygon() const;
+    const geos::geom::Polygon* polygon() const;
 
     /**
      @brief Adds a PolygonEdge to this PolygonEntity.
@@ -151,7 +150,7 @@ class OPENFLUID_API PolygonEntity: public LandREntity
     /**
      @brief Returns a map of this PolygonEntity neighbours with for each a vector of the shared PolygonEdge.
      */
-    const NeighboursMap_t* getNeighboursAndEdges();
+    const NeighboursMap_t* neighboursAndEdges();
 
     /**
      @brief Returns a vector of the OFLD_ID of this PolygonEntity neighbours, ascending ordered.
@@ -183,7 +182,7 @@ class OPENFLUID_API PolygonEntity: public LandREntity
      @param Edge A PolygonEdge.
      @return A vector a PolygonEntity.
      */
-    PolygonEntity * getNeighbourWithCommonEdge(PolygonEdge * Edge);
+    PolygonEntity * neighbourWithCommonEdge(PolygonEdge * Edge);
 
     /**
      @brief Gets the boundary of this PolygonEntity polygon, with a buffer of BufferDistance.
@@ -229,7 +228,7 @@ class OPENFLUID_API PolygonEntity: public LandREntity
     /**
      @brief Return the a map of the LineStringEntity neighbours of this PolygonEntity.
      */
-    LineStringNeighboursMap_t* getLineStringNeighbours();
+    LineStringNeighboursMap_t* lineStringNeighbours();
 
 
     /**

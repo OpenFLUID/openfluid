@@ -1,5 +1,5 @@
 /**
-  \file RUSim.cpp
+  @file RUSim.cpp
  */
 
 
@@ -117,8 +117,8 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest initializeRun()
     {
 
-      openfluid::core::Unit* RU;
-      openfluid::core::Unit* TLU;
+      openfluid::core::SpatialUnit* RU;
+      openfluid::core::SpatialUnit* TLU;
       openfluid::core::DoubleValue StockValue;
 
       m_UseTLUStateFromTLUVar=false;
@@ -152,18 +152,18 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
 
-      openfluid::core::Unit* RU;
-      openfluid::core::Unit* UpRU;
-      openfluid::core::Unit* UpTLU;
+      openfluid::core::SpatialUnit* RU;
+      openfluid::core::SpatialUnit* UpRU;
+      openfluid::core::SpatialUnit* UpTLU;
       openfluid::core::DoubleValue StockValue;
       openfluid::core::DoubleValue Capacity;
       openfluid::core::DoubleValue CapacityByDeltaT;
       openfluid::core::DoubleValue StockValueUp;
       openfluid::core::DoubleValue TmpValue;
       bool TLUState;
-      std::list<openfluid::core::Unit*>* UpRUsList;
-      std::list<openfluid::core::Unit*>* UpTLUsList;
-      std::list<openfluid::core::Unit*>::iterator UpRUiter;
+      std::list<openfluid::core::SpatialUnit*>* UpRUsList;
+      std::list<openfluid::core::SpatialUnit*>* UpTLUsList;
+      std::list<openfluid::core::SpatialUnit*>::iterator UpRUiter;
       unsigned int DeltaT =  OPENFLUID_GetDefaultDeltaT();
 
       OPENFLUID_UNITS_ORDERED_LOOP("RU",RU)
@@ -172,7 +172,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
         TLUState=1;
         if (m_UseTLUStateFromTLUVar)
         {
-          UpTLUsList = RU->getFromUnits("TLU");
+          UpTLUsList = RU->fromSpatialUnits("TLU");
           if (UpTLUsList != NULL)
           {
             UpTLU = *UpTLUsList->begin();
@@ -187,7 +187,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
         else
         {
-          UpRUsList = RU->getFromUnits("RU");
+          UpRUsList = RU->fromSpatialUnits("RU");
 
           if (UpRUsList == NULL)
             OPENFLUID_GetVariable(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);

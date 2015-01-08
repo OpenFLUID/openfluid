@@ -30,10 +30,9 @@
 */
 
 /**
- \file PolygonEdge.hpp
- \brief Header of ...
+ @file PolygonEdge.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_POLYGONEDGE_HPP__
@@ -97,7 +96,7 @@ class OPENFLUID_API PolygonEdge: public geos::planargraph::Edge
     /**
      @brief Returns the geos::geom::LineString representing this PolygonEdge.
      */
-    geos::geom::LineString* getLine();
+    geos::geom::LineString* line();
 
     /**
      @brief Add a PolygonEntity as a Face to this PolygonEdge.

@@ -32,10 +32,9 @@
 
 
 /**
-  \file ProgressiveChronFileReader.cpp
-  \brief Implements ...
+  @file ProgressiveChronFileReader.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -48,7 +47,9 @@
 namespace openfluid { namespace tools {
 
 
-ProgressiveChronFileReader::ProgressiveChronFileReader(const std::string& FileName, const std::string& DateFormat, const std::string& ColSeparators):
+ProgressiveChronFileReader::ProgressiveChronFileReader(const std::string& FileName,
+                                                       const std::string& DateFormat,
+                                                       const std::string& ColSeparators):
   ProgressiveColumnFileReader(FileName,ColSeparators), m_DateFormat(DateFormat)
 {
 

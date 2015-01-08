@@ -32,10 +32,9 @@
 
 
 /**
-  \file GNUplotGraphObs.cpp
-  \brief Implements ...
+  @file GNUplotGraphObs.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -111,7 +110,7 @@ class SerieInfo
 
     openfluid::core::UnitID_t UnitID;
 
-    openfluid::core::Unit* Unit;
+    openfluid::core::SpatialUnit* Unit;
 
     std::string Label;
 
@@ -231,8 +230,8 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
         if (!SInfo.VarName.empty() && !SInfo.UnitClass.empty() && openfluid::tools::ConvertString(UnitIDStr,&SInfo.UnitID))
         {
-          openfluid::core::Unit* TmpU;
-          TmpU = mp_CoreData->getUnit(SInfo.UnitClass,SInfo.UnitID);
+          openfluid::core::SpatialUnit* TmpU;
+          TmpU = mp_SpatialData->spatialUnit(SInfo.UnitClass,SInfo.UnitID);
           if (TmpU != NULL)
           {
             SInfo.Type = SerieInfo::SERIE_VAR;
@@ -289,7 +288,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       {
         if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
         {
-          openfluid::core::Value* Val = (*Sit).second.Unit->getVariables()->getCurrentValueIfIndex((*Sit).second.VarName,OPENFLUID_GetCurrentTimeIndex());
+          openfluid::core::Value* Val = (*Sit).second.Unit->variables()->currentValueIfIndex((*Sit).second.VarName,OPENFLUID_GetCurrentTimeIndex());
 
           if (Val!= NULL)
           {

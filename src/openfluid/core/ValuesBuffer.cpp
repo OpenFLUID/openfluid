@@ -30,20 +30,21 @@
 */
 
 /**
- \file ValuesBuffer.cpp
- \brief Implements ...
+ @file ValuesBuffer.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/core/StringValue.hpp>
-
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/IntegerValue.hpp>
 
-namespace openfluid {
-namespace core {
+#include <iostream>
+
+
+namespace openfluid { namespace core {
 
 
 // =====================================================================
@@ -54,6 +55,7 @@ ValuesBuffer::ValuesBuffer()
 {
   m_Data.set_capacity(BufferSize);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -170,7 +172,7 @@ bool ValuesBuffer::getValue(const TimeIndex_t& anIndex, Value* aValue) const
 // =====================================================================
 
 
-Value* ValuesBuffer::getValue(const TimeIndex_t& anIndex) const
+Value* ValuesBuffer::value(const TimeIndex_t& anIndex) const
 {
   DataContainer_t::const_iterator It = findAtIndex(anIndex);
 
@@ -186,7 +188,7 @@ Value* ValuesBuffer::getValue(const TimeIndex_t& anIndex) const
 // =====================================================================
 
 
-Value* ValuesBuffer::getCurrentValue() const
+Value* ValuesBuffer::currentValue() const
 {
   return m_Data.back().m_Value.get();
 }
@@ -374,5 +376,4 @@ void ValuesBuffer::displayContent(std::ostream& OStream) const
 // =====================================================================
 
 
-}
-}
+} } // namespaces

@@ -30,10 +30,9 @@
 */
 
 /**
- \file Datastore_TEST.cpp
- \brief Implements ...
+ @file Datastore_TEST.cpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN
@@ -99,8 +98,8 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path1");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect");
   BOOST_CHECK_EQUAL(Item->getUnitClass(),"SU");
-  BOOST_REQUIRE(Item->getValue() != 0);
-  BOOST_CHECK_EQUAL(Item->getValue()->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_REQUIRE(Item->value() != 0);
+  BOOST_CHECK_EQUAL(Item->value()->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
 
   i = Store->getItems().find("mymap2");
   Item = i->second;
@@ -109,8 +108,8 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path2");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect.shp");
   BOOST_CHECK_EQUAL(Item->getUnitClass(),"");
-  BOOST_REQUIRE(Item->getValue() != 0);
-  BOOST_CHECK_EQUAL(Item->getValue()->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_REQUIRE(Item->value() != 0);
+  BOOST_CHECK_EQUAL(Item->value()->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
 
   i = Store->getItems().find("myrast");
   Item = i->second;
@@ -119,8 +118,8 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path3");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testrast.tif");
   BOOST_CHECK_EQUAL(Item->getUnitClass(),"");
-  BOOST_REQUIRE(Item->getValue() != 0);
-  BOOST_CHECK_EQUAL(Item->getValue()->getType(),openfluid::core::UnstructuredValue::GeoRasterValue);
+  BOOST_REQUIRE(Item->value() != 0);
+  BOOST_CHECK_EQUAL(Item->value()->getType(),openfluid::core::UnstructuredValue::GeoRasterValue);
 
   delete Store;
 }
@@ -143,9 +142,9 @@ BOOST_AUTO_TEST_CASE(check_getItem)
   Store->addItem(VectSUItem);
   Store->addItem(VectItem);
 
-  BOOST_CHECK_EQUAL(Store->getItem("mymap")->getID(),"mymap");
-  BOOST_CHECK(!Store->getItem("wrongId"));
-  BOOST_CHECK_EQUAL(Store->getItem("mymap2")->getID(),"mymap2");
+  BOOST_CHECK_EQUAL(Store->item("mymap")->getID(),"mymap");
+  BOOST_CHECK(!Store->item("wrongId"));
+  BOOST_CHECK_EQUAL(Store->item("mymap2")->getID(),"mymap2");
 
   delete Store;
 }

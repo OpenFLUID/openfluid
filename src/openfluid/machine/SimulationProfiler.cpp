@@ -32,10 +32,9 @@
 
 
 /**
-  \file SimulationProfiler.cpp
-  \brief Implements ...
+  @file SimulationProfiler.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -66,8 +65,8 @@ SimulationProfiler::SimulationProfiler(const openfluid::base::SimulationStatus* 
 : mp_SimStatus(SimStatus), m_OriginalModelSequence(OrigModelSequence), m_CurrentTimeIndex(0)
 {
 
-  m_CurrentSequenceFile.open(openfluid::base::RuntimeEnvironment::getInstance()->getOutputFullPath(openfluid::config::SCHEDULE_PROFILE_FILE).c_str(),std::ios::out);
-  m_CurrentProfileFile.open(openfluid::base::RuntimeEnvironment::getInstance()->getOutputFullPath(openfluid::config::TIMEINDEX_PROFILE_FILE).c_str(),std::ios::out);
+  m_CurrentSequenceFile.open(openfluid::base::RuntimeEnvironment::instance()->getOutputFullPath(openfluid::config::SCHEDULE_PROFILE_FILE).c_str(),std::ios::out);
+  m_CurrentProfileFile.open(openfluid::base::RuntimeEnvironment::instance()->getOutputFullPath(openfluid::config::TIMEINDEX_PROFILE_FILE).c_str(),std::ios::out);
 
   m_CurrentSequenceFile << "TIMEINDEX;<simulators call sequence>\n";
 
@@ -108,7 +107,7 @@ SimulationProfiler::~SimulationProfiler()
 
   std::ofstream CumulativeFile;
 
-  CumulativeFile.open(openfluid::base::RuntimeEnvironment::getInstance()->getOutputFullPath(openfluid::config::CUMULATIVE_PROFILE_FILE).c_str(),std::ios::out);
+  CumulativeFile.open(openfluid::base::RuntimeEnvironment::instance()->getOutputFullPath(openfluid::config::CUMULATIVE_PROFILE_FILE).c_str(),std::ios::out);
 
   WareIDSequence_t::const_iterator ItPrf;
   WareIDSequence_t::const_iterator ItPrfB = m_OriginalModelSequence.begin();

@@ -32,10 +32,9 @@
 
 
 /**
-  \file ExtensionsRegistry.cpp
-  \brief Implements ...
+  @file ExtensionsRegistry.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -57,7 +56,7 @@ ExtensionsRegistry::ExtensionsRegistry():
 // =====================================================================
 
 
-ExtensionsRegistry* ExtensionsRegistry::getInstance()
+ExtensionsRegistry* ExtensionsRegistry::instance()
 {
   if (!mp_Instance)
     mp_Instance = new ExtensionsRegistry();
@@ -84,7 +83,7 @@ void ExtensionsRegistry::registerExtensions()
 {
   if (m_IsRegistered) return;
 
-  std::vector<ExtensionContainer*> ExtVector = ExtensionPluginsManager::getInstance()->getAvailableWaresSignatures();
+  std::vector<ExtensionContainer*> ExtVector = ExtensionPluginsManager::instance()->getAvailableWaresSignatures();
 
   for (unsigned int i=0; i<ExtVector.size(); i++)
     m_Extensions[ExtVector[i]->Signature->ID] = ExtVector[i];
@@ -101,8 +100,8 @@ openfluid::builderext::PluggableBuilderExtension* ExtensionsRegistry::instanciat
 {
   if (isExtensionRegistered(ID) && !m_Extensions[ID]->Active)
   {
-    ExtensionPluginsManager::getInstance()->completeSignatureWithWareBody(m_Extensions[ID]);
-    m_Extensions[ID]->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
+    ExtensionPluginsManager::instance()->completeSignatureWithWareBody(m_Extensions[ID]);
+    m_Extensions[ID]->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::instance()->wareEnvironment());
     m_Extensions[ID]->Body->initializeWare(ID);
     m_Extensions[ID]->Active = true;
     return m_Extensions[ID]->Body;

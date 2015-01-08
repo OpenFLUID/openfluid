@@ -31,10 +31,9 @@
 
 
 /**
-  \file SimulationContributorWare.hpp
-  \brief Header of ...
+  @file SimulationContributorWare.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -60,7 +59,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] AttrName the name of the set attribute
        @param[in] Val the value of the set attribute
      */
-     void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+     void OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
                                  const openfluid::core::AttributeName_t& AttrName,
                                  const openfluid::core::Value& Val);
 
@@ -70,7 +69,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] AttrName the name of the set attribute
        @param[in] Val the value of the set attribute
      */
-     void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+     void OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
                                  const openfluid::core::AttributeName_t& AttrName,
                                  const double& Val);
 
@@ -80,7 +79,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] AttrName the name of the set attribute
        @param[in] Val the value of the set attribute
      */
-     void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+     void OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
                                  const openfluid::core::AttributeName_t& AttrName,
                                  const long& Val);
 
@@ -90,7 +89,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] AttrName the name of the set attribute
        @param[out] Val the value of the set attribute
      */
-     void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+     void OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
                                  const openfluid::core::AttributeName_t& AttrName,
                                  const std::string& Val);
 
@@ -102,7 +101,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the added value of the variable
        @deprecated
      */
-     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+     void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
                                    const openfluid::core::VariableName_t& VarName,
                                    const openfluid::core::Value& Val);
 
@@ -112,7 +111,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] VarName the name of the variable
        @param[in] Val the added value of the variable
      */
-     void OPENFLUID_InitializeVariable(openfluid::core::Unit& aUnit,
+     void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit& aUnit,
                                        const openfluid::core::VariableName_t& VarName,
                                        const openfluid::core::Value& Val);
 
@@ -122,7 +121,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] VarName the name of the variable
        @param[in] Val the added value of the variable (double)
      */
-     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+     void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
                                    const openfluid::core::VariableName_t& VarName,
                                    const double& Val);
 
@@ -132,7 +131,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] VarName the name of the variable
        @param[in] Val the added value of the variable (long)
      */
-     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+     void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
                                    const openfluid::core::VariableName_t& VarName,
                                    const long& Val);
 
@@ -142,7 +141,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] VarName the name of the variable
        @param[in] Val the added value of the variable (bool)
      */
-     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+     void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
                                    const openfluid::core::VariableName_t& VarName,
                                    const bool& Val);
 
@@ -152,7 +151,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] VarName the name of the variable
        @param[in] Val the added value of the variable (string)
      */
-     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+     void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
                                    const openfluid::core::VariableName_t& VarName,
                                    const std::string& Val);
 
@@ -163,7 +162,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] Val the added value of the variable
       @deprecated
     */
-    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
                                   const openfluid::core::VariableName_t& VarName,
                                   const openfluid::core::Value& Val);
 
@@ -173,7 +172,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable
     */
-    void OPENFLUID_AppendVariable(openfluid::core::Unit& aUnit,
+    void OPENFLUID_AppendVariable(openfluid::core::SpatialUnit& aUnit,
                                   const openfluid::core::VariableName_t& VarName,
                                   const openfluid::core::Value& Val);
 
@@ -183,7 +182,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (double)
     */
-    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
                                   const openfluid::core::VariableName_t& VarName,
                                   const double& Val);
 
@@ -193,7 +192,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (long)
     */
-    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
                                   const openfluid::core::VariableName_t& VarName,
                                   const long& Val);
 
@@ -203,7 +202,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (bool)
     */
-    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
                                   const openfluid::core::VariableName_t& VarName,
                                   const bool& Val);
 
@@ -213,7 +212,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (string)
     */
-    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
                                   const openfluid::core::VariableName_t& VarName,
                                   const std::string& Val);
 
@@ -224,7 +223,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable
     */
-    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                const openfluid::core::Value& Val);
 
@@ -234,7 +233,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (double)
     */
-    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                const double& Val);
 
@@ -244,7 +243,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (long)
     */
-    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                const long& Val);
 
@@ -254,7 +253,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (bool)
     */
-    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                const bool& Val);
 
@@ -264,7 +263,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (string)
     */
-    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                const std::string& Val);
 
@@ -273,7 +272,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] UnitPtr a Unit
       @param[in] Ev the event to append
     */
-    void OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_AppendEvent(openfluid::core::SpatialUnit *UnitPtr,
                                openfluid::core::Event& Ev);
 
 
@@ -283,7 +282,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ID ID of the added unit
       @param[in] PcsOrder Process order of the added unit
     */
-    void OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName,
+    void OPENFLUID_AddUnit(const openfluid::core::UnitClass_t& ClassName,
                            openfluid::core::UnitID_t ID,
                            openfluid::core::PcsOrd_t PcsOrder);
 
@@ -293,7 +292,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ID ID of the added unit
       @return true if the unit has been correctly deleted
     */
-    void OPENFLUID_DeleteUnit(openfluid::core::UnitClass_t ClassName,
+    void OPENFLUID_DeleteUnit(const openfluid::core::UnitClass_t& ClassName,
                               openfluid::core::UnitID_t ID);
 
 
@@ -305,9 +304,9 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] IDTo ID of the "to" unit
       @return false if the unit connection already exists
     */
-    bool OPENFLUID_AddFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
+    bool OPENFLUID_AddFromToConnection(const openfluid::core::UnitClass_t& ClassNameFrom,
                                        openfluid::core::UnitID_t IDFrom,
-                                       openfluid::core::UnitClass_t ClassNameTo,
+                                       const openfluid::core::UnitClass_t& ClassNameTo,
                                        openfluid::core::UnitID_t IDTo);
 
     /**
@@ -316,8 +315,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ToUnit pointer to the "to" unit
       @return false if the connection already exists
     */
-    bool OPENFLUID_AddFromToConnection(openfluid::core::Unit* FromUnit,
-                                       openfluid::core::Unit* ToUnit);
+    bool OPENFLUID_AddFromToConnection(openfluid::core::SpatialUnit* FromUnit,
+                                       openfluid::core::SpatialUnit* ToUnit);
 
     /**
       Removes a from-to connection between two units
@@ -327,9 +326,9 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] IDTo ID of the "to" unit
       @return false if the unit connection does not exist
     */
-    bool OPENFLUID_RemoveFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
+    bool OPENFLUID_RemoveFromToConnection(const openfluid::core::UnitClass_t& ClassNameFrom,
                                           openfluid::core::UnitID_t IDFrom,
-                                          openfluid::core::UnitClass_t ClassNameTo,
+                                          const openfluid::core::UnitClass_t& ClassNameTo,
                                           openfluid::core::UnitID_t IDTo);
 
     /**
@@ -338,8 +337,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ToUnit pointer to the "to" unit
       @return false if the connection does not exist
     */
-    bool OPENFLUID_RemoveFromToConnection(openfluid::core::Unit* FromUnit,
-                                          openfluid::core::Unit* ToUnit);
+    bool OPENFLUID_RemoveFromToConnection(openfluid::core::SpatialUnit* FromUnit,
+                                          openfluid::core::SpatialUnit* ToUnit);
 
 
     /**
@@ -350,9 +349,9 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] IDParent ID of the "parent" unit
       @return false if the connection already exists
     */
-    bool OPENFLUID_AddChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
+    bool OPENFLUID_AddChildParentConnection(const openfluid::core::UnitClass_t& ClassNameChild,
                                             openfluid::core::UnitID_t IDChild,
-                                            openfluid::core::UnitClass_t ClassNameParent,
+                                            const openfluid::core::UnitClass_t& ClassNameParent,
                                             openfluid::core::UnitID_t IDParent);
 
     /**
@@ -361,8 +360,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ParentUnit pointer to the "parent" unit
       @return false if the connection already exists
     */
-    bool OPENFLUID_AddChildParentConnection(openfluid::core::Unit* ChildUnit,
-                                            openfluid::core::Unit* ParentUnit);
+    bool OPENFLUID_AddChildParentConnection(openfluid::core::SpatialUnit* ChildUnit,
+                                            openfluid::core::SpatialUnit* ParentUnit);
 
 
     /**
@@ -373,10 +372,10 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] IDParent ID of the "parent" unit
       @return false if the connection does not exist
     */
-    bool OPENFLUID_RemoveChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
-                                                openfluid::core::UnitID_t IDChild,
-                                                openfluid::core::UnitClass_t ClassNameParent,
-                                                openfluid::core::UnitID_t IDParent);
+    bool OPENFLUID_RemoveChildParentConnection(const openfluid::core::UnitClass_t& ClassNameChild,
+                                               openfluid::core::UnitID_t IDChild,
+                                               const openfluid::core::UnitClass_t& ClassNameParent,
+                                               openfluid::core::UnitID_t IDParent);
 
     /**
       Removes a child-parent connection between two units
@@ -384,8 +383,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ParentUnit pointer to the "parent" unit
       @return false if the connection does not exist
     */
-    bool OPENFLUID_RemoveChildParentConnection(openfluid::core::Unit* ChildUnit,
-                                                openfluid::core::Unit* ParentUnit);
+    bool OPENFLUID_RemoveChildParentConnection(openfluid::core::SpatialUnit* ChildUnit,
+                                               openfluid::core::SpatialUnit* ParentUnit);
 
     /**
       Builds a ColsNbr x RowsNbr unix matrix with bi-directionnal connections

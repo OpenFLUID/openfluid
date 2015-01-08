@@ -32,10 +32,9 @@
 
 
 /**
-  \file MarketPackage_TEST.cpp
-  \brief Implements ...
+  @file MarketPackage_TEST.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
@@ -169,7 +168,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::market::MarketPackage::initialize(true);
 
-  std::string Arch = openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinSubDir();
+  std::string Arch = openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir();
 
   openfluid::market::MarketBinSimulatorPackage BSPack("tests.market.sim.binonly","file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/marketplace/simulators/"+Arch+"/tests.market.sim.binonly_"+VersionStr+"_"+Arch+".ofpk").string());
 

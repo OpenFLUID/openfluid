@@ -32,10 +32,9 @@
 
 
 /**
-  \file OpenExampleProjectDialog.cpp
-  \brief Implements ...
+  @file OpenExampleProjectDialog.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <QPushButton>
@@ -64,7 +63,7 @@ OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
   openfluid::buddies::ExamplesBuddy(NULL).run();
   QApplication::restoreOverrideCursor();
 
-  m_ProjectsRootPath = QString(openfluid::base::RuntimeEnvironment::getInstance()->getUserExamplesDir().c_str()) +
+  m_ProjectsRootPath = QString(openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir().c_str()) +
                        QString("/") +
                        QString(openfluid::config::PROJECTS_SUBDIR.c_str());
 

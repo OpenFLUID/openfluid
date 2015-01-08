@@ -30,10 +30,9 @@
 */
 
 /**
- \file DatastoreDescriptor.hpp
- \brief Header of ...
+ @file DatastoreDescriptor.hpp
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_FLUIDX_DATASTOREDESCRIPTOR_HPP__
@@ -62,9 +61,9 @@ class OPENFLUID_API DatastoreDescriptor
 
     DatastoreDescriptor();
 
-    DatastoreDescription_t& getItems();
+    DatastoreDescription_t& items();
 
-    const DatastoreDescription_t& getItems() const;
+    const DatastoreDescription_t& items() const;
 
     bool appendItem(DatastoreItemDescriptor* Item);
 

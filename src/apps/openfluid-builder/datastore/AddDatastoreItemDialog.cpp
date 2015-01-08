@@ -31,10 +31,9 @@
 
 
 /**
-  \file AddDatastoreItemDialog.cpp
-  \brief Implements ...
+  @file AddDatastoreItemDialog.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -282,7 +281,7 @@ bool AddDatastoreItemDialog::isSourceFileInInputDataset() const
   if (SourceFile.isEmpty())
     return false;
 
-  QString InputPath = QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
+  QString InputPath = QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInputDir());
 
   if (QDir::fromNativeSeparators(SourceFile).startsWith(QDir::fromNativeSeparators(InputPath)))
     return true;

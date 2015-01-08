@@ -32,10 +32,9 @@
 
 
 /**
-  \file PluggableWare.cpp
-  \brief Implements ...
+  @file PluggableWare.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -78,7 +77,7 @@ void PluggableWare::OPENFLUID_RaiseError(const std::string& Msg)
 // =====================================================================
 
 
-bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, std::string& Value)
+bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, std::string& Value)
 {
   return mp_WareEnv->getValue(Key,Value);
 }
@@ -88,7 +87,7 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, std::string& Va
 // =====================================================================
 
 
-bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, bool &Value)
+bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, bool &Value)
 {
   return mp_WareEnv->getValue(Key,Value);
 }
@@ -145,7 +144,7 @@ boost::property_tree::ptree PluggableWare::getParamsAsPropertyTree(
   boost::property_tree::ptree pt;
 
   for (WareParams_t::const_iterator it = Params.begin() ; it != Params.end() ; ++it)
-    if (isWellFormated(it->first)) pt.put(it->first, it->second.get());
+    if (isWellFormated(it->first)) pt.put(it->first, it->second.data());
     else throw openfluid::base::FrameworkException("PluggableWare::getParamsAsPropertyTree","Wrong format for parameter \""+it->first+"\"");
 
   return pt;

@@ -32,10 +32,9 @@
 
 
 /**
-  \file ModelScene.cpp
-  \brief Implements ...
+  @file ModelScene.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/base/ProjectManager.hpp>
@@ -101,7 +100,7 @@ void ModelScene::refresh()
   clear();
 
 
-  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = m_Model.getItems();
+  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = m_Model.items();
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itb = Items.begin();
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator ite = Items.end();
@@ -121,7 +120,7 @@ void ModelScene::refresh()
 
       QString ID = QString::fromStdString(m_Model.getID(*it));
 
-      QVariant ConfigPos = openfluid::base::ProjectManager::getInstance()->getConfigValue("builder.model.graphicalview",ID);
+      QVariant ConfigPos = openfluid::base::ProjectManager::instance()->getConfigValue("builder.model.graphicalview",ID);
       QPoint Position(0,0);
 
       if (ConfigPos.type() == QVariant::Point)
@@ -134,10 +133,10 @@ void ModelScene::refresh()
       }
 
       if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator &&
-          openfluid::machine::SimulatorSignatureRegistry::getInstance()->isPluggableSimulatorAvailable(ID.toStdString()))
+          openfluid::machine::SimulatorSignatureRegistry::instance()->isPluggableSimulatorAvailable(ID.toStdString()))
       {
         SimulatorGraphics* SimG = new SimulatorGraphics(QPoint(0,0),ID,
-                                                        openfluid::machine::SimulatorSignatureRegistry::getInstance()->getSignatureItemInstance(ID.toStdString()));
+                                                        openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(ID.toStdString()));
         addItem(SimG);
         SimG->moveBy(Position.x(),Position.y());
         SimCount++;
@@ -184,7 +183,7 @@ void ModelScene::buildConnections()
     ConnectorGraphics::OutNodeType ProviderOutNode;
 
     // Required vars
-    VarsSet = ToMItemG->getRequired();
+    VarsSet = ToMItemG->requiredVariables();
     itTo = VarsSet->begin();
 
     for (itTo = VarsSet->constBegin(); itTo != VarsSet->constEnd(); ++itTo)
@@ -198,14 +197,14 @@ void ModelScene::buildConnections()
           if (ToMItemG != FromMItemG)
           {
 
-            if (FromMItemG->hasProducedVar(itTo.key(),VarName))
+            if (FromMItemG->hasProducedVariable(itTo.key(),VarName))
             {
               ProviderItem = FromMItemG;
               ProviderOutNode = ConnectorGraphics::NODE_PROD;
 
             }
 
-            if (FromMItemG->hasUpdatedVar(itTo.key(),VarName))
+            if (FromMItemG->hasUpdatedVariable(itTo.key(),VarName))
             {
               ProviderItem = FromMItemG;
               ProviderOutNode = ConnectorGraphics::NODE_OUTUP;
@@ -225,7 +224,7 @@ void ModelScene::buildConnections()
 
 
     // Used vars
-    VarsSet = ToMItemG->getUsed();
+    VarsSet = ToMItemG->usedVariables();
     itTo = VarsSet->begin();
 
     for (itTo = VarsSet->constBegin(); itTo != VarsSet->constEnd(); ++itTo)
@@ -238,13 +237,13 @@ void ModelScene::buildConnections()
           if (ToMItemG != FromMItemG)
           {
 
-            if (FromMItemG->hasProducedVar(itTo.key(),VarName))
+            if (FromMItemG->hasProducedVariable(itTo.key(),VarName))
             {
               ProviderItem = FromMItemG;
               ProviderOutNode = ConnectorGraphics::NODE_PROD;
             }
 
-            if (FromMItemG->hasUpdatedVar(itTo.key(),VarName))
+            if (FromMItemG->hasUpdatedVariable(itTo.key(),VarName))
             {
               ProviderItem = FromMItemG;
               ProviderOutNode = ConnectorGraphics::NODE_OUTUP;
@@ -264,7 +263,7 @@ void ModelScene::buildConnections()
 
 
     // Updated vars
-    VarsSet = ToMItemG->getUpdated();
+    VarsSet = ToMItemG->updatedVariables();
     itTo = VarsSet->begin();
 
     for (itTo = VarsSet->constBegin(); itTo != VarsSet->constEnd(); ++itTo)
@@ -277,13 +276,13 @@ void ModelScene::buildConnections()
 
           if (ToMItemG != FromMItemG)
           {
-            if (FromMItemG->hasProducedVar(itTo.key(),VarName))
+            if (FromMItemG->hasProducedVariable(itTo.key(),VarName))
             {
               ProviderItem = FromMItemG;
               ProviderOutNode = ConnectorGraphics::NODE_PROD;
             }
 
-            if (FromMItemG->hasUpdatedVar(itTo.key(),VarName))
+            if (FromMItemG->hasUpdatedVariable(itTo.key(),VarName))
             {
               ProviderItem = FromMItemG;
               ProviderOutNode = ConnectorGraphics::NODE_OUTUP;
@@ -318,8 +317,8 @@ void ModelScene::addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::O
 
   foreach(ConnectorGraphics* Conn, m_GraphicsConnections)
   {
-    if (Conn->getFromItem() == FromItem && Conn->getFromNode() == FromOutNode &&
-        Conn->getToItem() == ToItem && Conn->getToNode() == ToInNode)
+    if (Conn->fromItem() == FromItem && Conn->getFromNode() == FromOutNode &&
+        Conn->toItem() == ToItem && Conn->getToNode() == ToInNode)
     {
       // if connection already exist, just add the variable name
       Conn->addVariable(UnitClass,VarName);

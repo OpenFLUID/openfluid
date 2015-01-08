@@ -30,10 +30,9 @@
 */
 
 /**
- \file VectorDataset.hpp
- \brief Header of ...
+ @file VectorDataset.hpp
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_VECTORDATASET_HPP__
@@ -142,12 +141,12 @@ class OPENFLUID_API VectorDataset
     /**
      @brief Returns the OGRDataSource associated to this VectorDataset.
      */
-    OGRDataSource* getDataSource();
+    OGRDataSource* source();
 
     /**
      @brief Returns the const OGRDataSource associated to this VectorDataset.
      */
-    OGRDataSource* getDataSource() const;
+    OGRDataSource* source() const;
 
     /**
      @brief Write to disk a copy of the OGRDataSource.
@@ -176,14 +175,14 @@ class OPENFLUID_API VectorDataset
      @param LayerIndex The index of the asked layer, default 0.
      @return The layer indexed LayerIndex.
      */
-    OGRLayer* getLayer(unsigned int LayerIndex = 0);
+    OGRLayer* layer(unsigned int LayerIndex = 0);
 
     /**
      @brief Get the Feature definition of a layer.
      @param LayerIndex The index of the asked layer definition, default 0.
      @return The OGR Feature definition of the LayerIndex layer.
      */
-    OGRFeatureDefn* getLayerDef(unsigned int LayerIndex = 0);
+    OGRFeatureDefn* layerDef(unsigned int LayerIndex = 0);
 
     /**
      @brief Add a field to a layer.
@@ -263,7 +262,7 @@ class OPENFLUID_API VectorDataset
      @param LayerIndex The index of the layer to query, default 0.
      @return A geos::geom::Geometry.
      */
-    geos::geom::Geometry* getGeometries(unsigned int LayerIndex = 0);
+    geos::geom::Geometry* geometries(unsigned int LayerIndex = 0);
 
     /**
      @brief Returns true if the VectorDataset is point type.

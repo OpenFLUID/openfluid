@@ -32,10 +32,9 @@
 
 
 /**
-  \file CSVFilesObs.cpp
-  \brief Implements ...
+  @file CSVFilesObs.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -127,10 +126,10 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
       std::ofstream DotFile;
       std::string OutputDir;
-      const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_CoreData->getUnitsByClass();
+      const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_SpatialData->allSpatialUnitsByClass();
       const openfluid::core::UnitsList_t* UnitsList = NULL;
       std::vector<openfluid::core::UnitClass_t> ClassVector;
-      openfluid::core::Unit* TheUnit;
+      openfluid::core::SpatialUnit* TheUnit;
 
       openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
       openfluid::core::UnitsList_t::const_iterator itUnitsList;
@@ -173,11 +172,11 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
           Options += "];";
         }
 
-        UnitsList=((*itUnitsClass).second).getList();
+        UnitsList=((*itUnitsClass).second).list();
 
         for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
         {
-          TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+          TheUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
           std::string IDStr = "";
           openfluid::tools::ConvertValue(TheUnit->getID(),&IDStr);
           DotFile << generateDotNode(ClassStr,IDStr,Options) << "\n";
@@ -189,18 +188,18 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
       {
 
-        UnitsList=((*itUnitsClass).second).getList();
+        UnitsList=((*itUnitsClass).second).list();
 
         for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
         {
-          TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+          TheUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
           std::string SrcClassStr = TheUnit->getClass();
           std::string SrcIDStr = "";
           openfluid::tools::ConvertValue(TheUnit->getID(),&SrcIDStr);
 
           for (unsigned int i=0;i<ClassVector.size();i++)
           {
-            const openfluid::core::UnitsPtrList_t* ToUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getToUnits(ClassVector[i]));
+            const openfluid::core::UnitsPtrList_t* ToUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->toSpatialUnits(ClassVector[i]));
 
             if (ToUnits != NULL)
             {
@@ -217,7 +216,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
               }
             }
 
-            const openfluid::core::UnitsPtrList_t* ParentUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getParentUnits(ClassVector[i]));
+            const openfluid::core::UnitsPtrList_t* ParentUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->parentSpatialUnits(ClassVector[i]));
 
             if (ParentUnits != NULL)
             {

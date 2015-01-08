@@ -32,10 +32,9 @@
 
 
 /**
-  \file main.cpp
-  \brief Implements ...
+  @file main.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -65,7 +64,7 @@ int main(int argc, char** argv)
     INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
 
     // translations management
-    QString Lang = openfluid::base::PreferencesManager::getInstance()->getLang();
+    QString Lang = openfluid::base::PreferencesManager::instance()->getLang();
 
     QTranslator QtTranslator;
     QTranslator OpenFLUIDTranslator;
@@ -77,7 +76,7 @@ int main(int argc, char** argv)
 
       // load provided OpenFLUID translations
       OpenFLUIDTranslator.load(QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang + ".qm",
-                               QString(openfluid::base::RuntimeEnvironment::getInstance()->getTranslationsDir().c_str()));
+                               QString(openfluid::base::RuntimeEnvironment::instance()->getTranslationsDir().c_str()));
     }
     OPENFLUID_APPLICATION.installTranslator(&QtTranslator);
     OPENFLUID_APPLICATION.installTranslator(&OpenFLUIDTranslator);

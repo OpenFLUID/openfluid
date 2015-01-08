@@ -32,10 +32,9 @@
 
 
 /**
-  \file ObserverInstance.cpp
-  \brief Implements ...
+  @file ObserverInstance.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 

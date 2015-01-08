@@ -32,10 +32,9 @@
 
 
 /**
-  \file Value_TEST.cpp
-  \brief Implements ...
+  @file Value_TEST.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -350,9 +349,9 @@ BOOST_AUTO_TEST_CASE(check_map)
   Val1.setBoolean("foofoobar", true);
   BOOST_REQUIRE_EQUAL(Val1.getSize(),4);
   BOOST_REQUIRE_CLOSE(Val1.getDouble("foo"),1.5,0.0001);
-  BOOST_REQUIRE_EQUAL(Val1.get("bar").asVectorValue().getSize(),5);
-  BOOST_REQUIRE_EQUAL(Val1.get("foofoobar").asBooleanValue().get(),true);
-  BOOST_REQUIRE_EQUAL(Val1.get("foobar").asStringValue().get(),"you're talking to me?");
+  BOOST_REQUIRE_EQUAL(Val1.at("bar").asVectorValue().getSize(),5);
+  BOOST_REQUIRE_EQUAL(Val1.at("foofoobar").asBooleanValue().get(),true);
+  BOOST_REQUIRE_EQUAL(Val1.at("foobar").asStringValue().get(),"you're talking to me?");
 
   Val1.setVectorValue("bar",openfluid::core::VectorValue(7,7.7));
   BOOST_REQUIRE_EQUAL(Val1.getVectorValue("bar").getSize(),7);
@@ -370,8 +369,8 @@ BOOST_AUTO_TEST_CASE(check_map)
 
   BOOST_REQUIRE_EQUAL(Val2.getSize(),3);
   BOOST_REQUIRE_CLOSE(Val2.getDouble("foo"),1.5,0.0001);
-  BOOST_REQUIRE_EQUAL(Val2.get("bar").asIntegerValue().get(),17);
-  BOOST_REQUIRE_EQUAL(Val2.get("foofoobar").asBooleanValue().get(),true);
+  BOOST_REQUIRE_EQUAL(Val2.at("bar").asIntegerValue().get(),17);
+  BOOST_REQUIRE_EQUAL(Val2.at("foofoobar").asBooleanValue().get(),true);
 
   Val2.setMatrixValue("foofoobar",openfluid::core::MatrixValue(5,9,29.5));
   BOOST_REQUIRE_EQUAL(Val1["foofoobar"].getType(),openfluid::core::Value::BOOLEAN);
@@ -380,8 +379,8 @@ BOOST_AUTO_TEST_CASE(check_map)
   BOOST_REQUIRE_EQUAL(Val2.getMatrixValue("foofoobar").getRowsNbr(),9);
 
   BOOST_REQUIRE_THROW(Val2.getMatrixValue("foo"),openfluid::base::FrameworkException);
-  BOOST_REQUIRE_THROW(Val2.get("foo").asIntegerValue(),openfluid::base::FrameworkException);
-  BOOST_REQUIRE_THROW(Val2.get("wrongfoo"),openfluid::base::FrameworkException);
+  BOOST_REQUIRE_THROW(Val2.at("foo").asIntegerValue(),openfluid::base::FrameworkException);
+  BOOST_REQUIRE_THROW(Val2.at("wrongfoo"),openfluid::base::FrameworkException);
 }
 
 
@@ -562,13 +561,13 @@ BOOST_AUTO_TEST_CASE(check_string)
   BOOST_REQUIRE(Val3.toMapValue(";",MapV));
   BOOST_REQUIRE_EQUAL(MapV.getSize(),4);
   BOOST_REQUIRE_EQUAL(MapV.getString("str"),"toto");
-  BOOST_REQUIRE(MapV.get("dbl").asStringValue().toDoubleValue(DoubleV));
+  BOOST_REQUIRE(MapV.at("dbl").asStringValue().toDoubleValue(DoubleV));
   BOOST_REQUIRE_CLOSE(DoubleV.get(),12.560,0.000001);
   BOOST_REQUIRE_EQUAL(MapV.getString("dbl"),"12.56");
-  BOOST_REQUIRE(MapV.get("int").asStringValue().toIntegerValue(IntV));
+  BOOST_REQUIRE(MapV.at("int").asStringValue().toIntegerValue(IntV));
   BOOST_REQUIRE_EQUAL(IntV.get(),17);
   BOOST_REQUIRE_EQUAL(MapV.getString("int"),"17");
-  BOOST_REQUIRE(MapV.get("bool").asStringValue().toBooleanValue(BoolV));
+  BOOST_REQUIRE(MapV.at("bool").asStringValue().toBooleanValue(BoolV));
   BOOST_REQUIRE_EQUAL(BoolV.get(),false);
   BOOST_REQUIRE_EQUAL(MapV.getString("bool"),"false");
   std::cout << MapV << std::endl;

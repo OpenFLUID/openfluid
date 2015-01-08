@@ -32,8 +32,7 @@
 
 
 /**
-  \file ToolsSim.cpp
-  \brief Implements ...
+  @file ToolsSim.cpp
 */
 
 #include <boost/filesystem/operations.hpp>

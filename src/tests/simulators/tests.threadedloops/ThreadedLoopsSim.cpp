@@ -32,10 +32,9 @@
 
 
 /**
-  \file OutBufSim.cpp
-  \brief Implements ...
+  @file OutBufSim.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -140,7 +139,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
     {
@@ -156,7 +155,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void processUnit(openfluid::core::Unit* aUnit)
+  void processUnit(openfluid::core::SpatialUnit* aUnit)
   {
     if (m_LastOrd > aUnit->getProcessOrder())
       OPENFLUID_RaiseError("wrong process order");
@@ -171,7 +170,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void produceDataOnTUThreaded(openfluid::core::Unit* aUnit, const openfluid::core::DoubleValue& Value)
+  void produceDataOnTUThreaded(openfluid::core::SpatialUnit* aUnit, const openfluid::core::DoubleValue& Value)
   {
     openfluid::tools::Sleep(100*aUnit->getID());
 
@@ -183,7 +182,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void produceDataOnTUSequenced(openfluid::core::Unit* aUnit, const openfluid::core::DoubleValue& Value)
+  void produceDataOnTUSequenced(openfluid::core::SpatialUnit* aUnit, const openfluid::core::DoubleValue& Value)
   {
     openfluid::tools::Sleep(100*aUnit->getID());
     OPENFLUID_AppendVariable(aUnit,"tests.data.sequence",double(aUnit->getID())+Value/1000.0);
@@ -194,7 +193,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void processUnitXTimes(openfluid::core::Unit* aUnit, const unsigned int& Times)
+  void processUnitXTimes(openfluid::core::SpatialUnit* aUnit, const unsigned int& Times)
   {
     for (unsigned int i=0; i<Times;i++ ) processUnit(aUnit);
 
@@ -207,7 +206,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest runStep()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     std::cout << std::endl;
 

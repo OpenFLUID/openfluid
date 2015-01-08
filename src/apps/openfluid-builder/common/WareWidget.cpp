@@ -32,10 +32,9 @@
 
 
 /**
-  \file WareWidget.cpp
-  \brief Implements ...
+  @file WareWidget.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/base/PreferencesManager.hpp>
@@ -238,7 +237,7 @@ void WareWidget::notifyRemoveClicked()
 {
   bool OK = true;
 
-  if (openfluid::base::PreferencesManager::getInstance()->isItemRemovalConfirm())
+  if (openfluid::base::PreferencesManager::instance()->isItemRemovalConfirm())
   {
     QString TypeStr = tr("the generator");
 

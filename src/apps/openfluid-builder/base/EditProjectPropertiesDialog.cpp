@@ -32,10 +32,9 @@
 
 
 /**
-  \file EditProjectPropertiesDialog.cpp
-  \brief Implements ...
+  @file EditProjectPropertiesDialog.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/base/ProjectManager.hpp>
@@ -53,7 +52,7 @@ EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
   openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::EditProjectPropertiesDialog)
 {
   openfluid::base::ProjectManager* PrjMan =
-      openfluid::base::ProjectManager::getInstance();
+      openfluid::base::ProjectManager::instance();
 
   ui->setupUi(this);
 

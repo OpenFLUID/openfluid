@@ -1,5 +1,5 @@
 /**
-  \file ExampleUnitsBProd.cpp
+  @file ExampleUnitsBProd.cpp
 */
 
 
@@ -30,7 +30,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsB.prod")
   DECLARE_DOMAIN("examples");
   DECLARE_PROCESS("");
   DECLARE_METHOD("");
-  DECLARE_AUTHOR("Jean-Christophe Fabre","fabrejc@supagro.inra.fr");
+  DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
 
   DECLARE_USED_VAR("var2","unitsA","the variable 2","");
   DECLARE_USED_VAR("var3","unitsA","the variable 3","");
@@ -110,7 +110,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
   
     openfluid::base::SchedulingRequest initializeRun()
     {
-      openfluid::core::Unit *B;
+      openfluid::core::SpatialUnit *B;
 
       OPENFLUID_UNITS_ORDERED_LOOP("unitsB",B)
       {
@@ -128,7 +128,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
 
-      openfluid::core::Unit *FromA, *FromB, *B;
+      openfluid::core::SpatialUnit *FromA, *FromB, *B;
       openfluid::core::UnitsPtrList_t *FromAList, *FromBList;
       openfluid::core::DoubleValue Value5, AuxValue;
 
@@ -141,7 +141,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
         FromAList = NULL;
         FromBList = NULL;
 
-        FromAList = B->getFromUnits("unitsA");
+        FromAList = B->fromSpatialUnits("unitsA");
 
         if (FromAList != NULL)
         {
@@ -167,7 +167,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
 
         if (OPENFLUID_GetCurrentTimeIndex()>0)
         {
-          FromBList = B->getFromUnits("unitsB");
+          FromBList = B->fromSpatialUnits("unitsB");
 
           if (FromBList != NULL)
           {

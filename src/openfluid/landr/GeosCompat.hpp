@@ -32,10 +32,9 @@
 
 
 /**
-  \file GeosCompat.hpp
-  \brief Header of ...
+  @file GeosCompat.hpp
 
-  \author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 

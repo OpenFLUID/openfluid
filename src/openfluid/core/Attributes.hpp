@@ -29,8 +29,17 @@
   
 */
 
-#ifndef __ATTRIBUTES_H__
-#define __ATTRIBUTES_H__
+
+/**
+  @file Attributes.hpp
+
+  @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+ */
+
+
+#ifndef __OPENFLUID_CORE_ATTRIBUTES_HPP__
+#define __OPENFLUID_CORE_ATTRIBUTES_HPP__
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
@@ -47,7 +56,9 @@ class OPENFLUID_API Attributes
   private:
 
     typedef std::map<AttributeName_t, StringValue> AttributesMap_t;
+
     AttributesMap_t m_Data;
+
 
   public:
 
@@ -55,27 +66,27 @@ class OPENFLUID_API Attributes
 
     ~Attributes();
 
-    bool setValue(const AttributeName_t aName, const Value& aValue);
+    bool setValue(const AttributeName_t& aName, const Value& aValue);
 
-    bool setValue(const AttributeName_t aName, const std::string& aValue);
+    bool setValue(const AttributeName_t& aName, const std::string& aValue);
 
-    bool getValue(const AttributeName_t aName, openfluid::core::StringValue& aValue) const;
+    bool getValue(const AttributeName_t& aName, openfluid::core::StringValue& aValue) const;
 
-    bool getValue(const AttributeName_t aName, std::string& aValue) const;
+    bool getValue(const AttributeName_t& aName, std::string& aValue) const;
 
-    bool getValueAsDouble(const AttributeName_t aName, double& aValue) const;
+    bool getValueAsDouble(const AttributeName_t& aName, double& aValue) const;
 
-    bool getValueAsLong(const AttributeName_t aName, long& aValue) const;
+    bool getValueAsLong(const AttributeName_t& aName, long& aValue) const;
 
-    bool isAttributeExist(const AttributeName_t aName) const;
+    bool isAttributeExist(const AttributeName_t& aName) const;
 
     std::vector<AttributeName_t> getAttributesNames() const;
 
-    bool replaceValue(const AttributeName_t aName, const StringValue& aValue);
+    bool replaceValue(const AttributeName_t& aName, const StringValue& aValue);
 
-    bool replaceValue(const AttributeName_t aName, const std::string& aValue);
+    bool replaceValue(const AttributeName_t& aName, const std::string& aValue);
 
-    bool removeAttribute(const AttributeName_t aName);
+    bool removeAttribute(const AttributeName_t& aName);
 
     void clear();
 
@@ -85,4 +96,4 @@ class OPENFLUID_API Attributes
 } } // namespaces
 
 
-#endif /* __ATTRIBUTES_H__ */
+#endif /* __OPENFLUID_CORE_ATTRIBUTES_HPP__ */

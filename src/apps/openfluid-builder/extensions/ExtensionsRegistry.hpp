@@ -31,10 +31,9 @@
 
 
 /**
-  \file ExtensionsRegistry.hpp
-  \brief Header of ...
+  @file ExtensionsRegistry.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -65,14 +64,14 @@ class ExtensionsRegistry
 
   public:
 
-    static ExtensionsRegistry* getInstance();
+    static ExtensionsRegistry* instance();
 
     ~ExtensionsRegistry();
 
 
     void registerExtensions();
 
-    ExtensionsByName_t* getRegisteredExtensions()
+    ExtensionsByName_t* registeredExtensions()
     { return &m_Extensions; };
 
     openfluid::builderext::PluggableBuilderExtension* instanciateExtension(const openfluid::ware::WareID_t& ID);

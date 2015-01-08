@@ -32,10 +32,9 @@
 
 
 /**
-  \file NewProjectDialog.cpp
-  \brief Implements ...
+  @file NewProjectDialog.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <QFileDialog>
@@ -56,7 +55,7 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
 {
   ui->setupUi(this);
 
-  ui->WorkdirLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::getInstance()->getProjectsPath()));
+  ui->WorkdirLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()->getProjectsPath()));
 
 
   connect(ui->WorkdirButton,SIGNAL(clicked()),this,SLOT(onWorkdirButtonClicked()));

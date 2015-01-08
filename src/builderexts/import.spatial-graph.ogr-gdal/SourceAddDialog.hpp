@@ -30,10 +30,9 @@
 */
 
 /**
-  \file SourceAddDialog.hpp
-  \brief Header of ...
+  @file SourceAddDialog.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -104,7 +103,7 @@ class SourceAddDialog : public QDialog
 
     ~SourceAddDialog();
 
-    const SourceInfos& getSourceInfos()
+    const SourceInfos& sourceInfos()
     { return m_SrcInfos; }
 };
 

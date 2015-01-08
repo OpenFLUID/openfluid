@@ -30,10 +30,9 @@
 */
 
 /**
- \file config.hpp
- \brief Header of ...
-
- \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @file config.hpp
+ 
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 

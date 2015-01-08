@@ -31,20 +31,19 @@
 
 
 /**
-  \file SimulationBlob.hpp
-  \brief Header of ...
+  @file SimulationBlob.hpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
 #ifndef __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__
 #define __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__
 
-#include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
+#include <openfluid/core/SpatialGraph.hpp>
 
 namespace openfluid { namespace machine {
 
@@ -52,7 +51,7 @@ class OPENFLUID_API SimulationBlob
 {
   private:
 
-    openfluid::core::CoreRepository m_CoreRepos;
+    openfluid::core::SpatialGraph m_SpatialGraph;
 
     openfluid::fluidx::RunDescriptor m_RunDescriptor;
 
@@ -66,24 +65,21 @@ class OPENFLUID_API SimulationBlob
 
     ~SimulationBlob();
 
-    inline openfluid::core::CoreRepository& getCoreRepository() { return m_CoreRepos; };
+    inline openfluid::core::SpatialGraph& spatialGraph() { return m_SpatialGraph; };
 
-    inline openfluid::fluidx::RunDescriptor& getRunDescriptor() {return  m_RunDescriptor; };
+    inline openfluid::fluidx::RunDescriptor& runDescriptor() {return m_RunDescriptor; };
 
-    inline openfluid::base::SimulationStatus& getSimulationStatus() {return  m_Status; };
+    inline openfluid::base::SimulationStatus& simulationStatus() {return m_Status; };
 
-    inline openfluid::core::Datastore& getDatastore() { return m_Datastore; };
+    inline openfluid::core::Datastore& datastore() { return m_Datastore; };
 
-    inline const openfluid::core::CoreRepository& getCoreRepository() const { return m_CoreRepos; };
+    inline const openfluid::core::SpatialGraph& spatialGraph() const { return m_SpatialGraph; };
 
-    inline const openfluid::fluidx::RunDescriptor& getRunDescriptor() const {return  m_RunDescriptor; };
+    inline const openfluid::fluidx::RunDescriptor& runDescriptor() const {return m_RunDescriptor; };
 
-    inline const openfluid::base::SimulationStatus& getSimulationStatus() const {return  m_Status; };
+    inline const openfluid::base::SimulationStatus& simulationStatus() const {return m_Status; };
 
-    inline const openfluid::core::Datastore& getDatastore() const { return m_Datastore; };
-
-    void clearSimulationGarbage();
-
+    inline const openfluid::core::Datastore& datastore() const { return m_Datastore; };
 
 };
 

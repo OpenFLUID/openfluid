@@ -1,7 +1,7 @@
 #
 # Configuration file for CMakeLists.txt files
 #
-# Author : Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+# Author : Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 #
 # This file is included by the main CMakeLists.txt file, and defines variables
 # to configure the build and install 
@@ -126,6 +126,7 @@ SET(TRANSLATIONS_BUILD_DIR "${BUILD_OUTPUT_PATH}/${SHARE_TRANSLATIONS_PATH}")
 
 SET(TEST_OUTPUT_PATH "${CMAKE_BINARY_DIR}/tests-bin")
 SET(TESTS_DATASETS_PATH "${CMAKE_SOURCE_DIR}/resources/tests/datasets")
+SET(TESTS_MISCDATA_PATH "${CMAKE_SOURCE_DIR}/resources/tests/miscdata")
 SET(TESTS_OUTPUTDATA_PATH "${CMAKE_BINARY_DIR}/tests-output")
 
 SET(OPENFLUID_TESTS_USERDATA_PATH "${CMAKE_BINARY_DIR}/tests-userdata")

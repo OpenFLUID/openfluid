@@ -112,7 +112,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
     void prepareData()
     {
-      openfluid::core::Unit *aUnit;
+      openfluid::core::SpatialUnit *aUnit;
       openfluid::core::Event AddedEvent;
       openfluid::core::DateTime BeginDate;
 
@@ -139,7 +139,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest initializeRun()
     {
-      openfluid::core::Unit* aUnit;
+      openfluid::core::SpatialUnit* aUnit;
       openfluid::core::EventsCollection EvColl;
       openfluid::core::Event* Event;
       std::string Info;
@@ -167,7 +167,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (EvColl.getCount() != 2)
             OPENFLUID_RaiseError("wrong event number on TestUnit 1");
 
-          OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
+          OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
           {
             if (!(Event->isInfoEqual("when","before") &&
                   Event->isInfoEqual("where",1.0) &&
@@ -213,7 +213,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
         EvColl.clear();
         OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,EvColl);
 
-        OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
+        OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
         {
           if (Event->isInfoExist("addingstep")) OPENFLUID_RaiseError("unexpected event found");
         }
@@ -231,7 +231,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
 
-      openfluid::core::Unit *aUnit;
+      openfluid::core::SpatialUnit *aUnit;
       openfluid::core::EventsCollection EvColl;
       openfluid::core::Event *Event, AddedEvent;
       std::string Info, TmpStr;
@@ -248,7 +248,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
         EvColl.clear();
         OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,EvColl);
 
-        OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
+        OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
         {
     //      std::cout << std::endl << "========== Unit " << aUnit->getID() << " ==========" << std::endl;
           //Event->println();
@@ -273,7 +273,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetEvents(aUnit,openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+OPENFLUID_GetDefaultDeltaT()),
                                   openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)),EvColl);
 
-        OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
+        OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
           if (Event->isInfoEqual("addingstep",TmpStr)) FoundEvent = true;
 
         if (!FoundEvent) OPENFLUID_RaiseError("added event not found");

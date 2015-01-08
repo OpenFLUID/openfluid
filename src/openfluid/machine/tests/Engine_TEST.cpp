@@ -32,10 +32,9 @@
 
 
 /**
-  \file Engine_TEST.cpp
-  \brief Implements ...
+  @file Engine_TEST.cpp
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
@@ -85,7 +84,7 @@ class EmptySimulator : public openfluid::ware::PluggableSimulator
 void displayModel(openfluid::machine::ModelInstance& MI)
 {
   std::cout << " ---- " << std::endl;
-  BOOST_FOREACH(openfluid::machine::ModelItemInstance* MII,MI.getItems())
+  BOOST_FOREACH(openfluid::machine::ModelItemInstance* MII,MI.items())
   {
     std::cout << MII->Signature->ID << std::endl;
   }
@@ -99,7 +98,7 @@ void displayModel(openfluid::machine::ModelInstance& MI)
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
+  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
 
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
@@ -121,7 +120,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_pretests)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
+  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
 
   openfluid::machine::ModelItemInstance* MIInstance;
 
@@ -131,8 +130,8 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   openfluid::machine::MonitoringInstance Monitoring(SBlob);
 
 
-  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1));
-  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1));
+  SBlob.spatialGraph().addUnit(openfluid::core::SpatialUnit("UA",1,1));
+  SBlob.spatialGraph().addUnit(openfluid::core::SpatialUnit("UB",1,1));
 
   openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
@@ -238,7 +237,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
 BOOST_AUTO_TEST_CASE(check_typed_pretests)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
+  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
 
   openfluid::machine::ModelItemInstance* MIInstance;
 
@@ -248,8 +247,8 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   openfluid::machine::MonitoringInstance Monitoring(SBlob);
 
 
-  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1));
-  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1));
+  SBlob.spatialGraph().addUnit(openfluid::core::SpatialUnit("UA",1,1));
+  SBlob.spatialGraph().addUnit(openfluid::core::SpatialUnit("UB",1,1));
 
   openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
