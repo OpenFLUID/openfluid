@@ -51,8 +51,9 @@
 #include <unistd.h>
 #endif
 
-namespace openfluid {
-namespace base {
+
+namespace openfluid { namespace base {
+
 
 RuntimeEnvironment* RuntimeEnvironment::mp_Singleton = NULL;
 

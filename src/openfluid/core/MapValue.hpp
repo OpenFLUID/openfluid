@@ -133,12 +133,14 @@ namespace openfluid { namespace core {
 class OPENFLUID_API MapValue : public CompoundValue
 {
   public:
+
     typedef std::map<std::string,boost::shared_ptr<Value> > Map_t;
 
 
   private:
 
     Map_t m_Value;
+
 
   public:
 
@@ -299,6 +301,12 @@ class OPENFLUID_API MapValue : public CompoundValue
       @return true if the given key is present
     */
     inline bool isKeyExist(const std::string& Key) const { return (m_Value.find(Key) != m_Value.end()); };
+
+    /**
+      Returns the list of keys of the map
+      @return a std::vector of std::string containing the keys of the map
+    */
+    std::vector<std::string> getKeys() const;
 
     /**
       Clears the map by removing all values
