@@ -82,8 +82,8 @@ WareSrcFiletypeManager::WareSrcFiletypeManager()
   QDir WaresdevDir(
       QString("%1/%2").arg(
           QString::fromStdString(
-              openfluid::base::RuntimeEnvironment::getInstance()
-                  ->getInstallPrefix())).arg(
+              openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()))
+          .arg(
           QString::fromStdString(
               openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
 

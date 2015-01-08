@@ -68,7 +68,7 @@ struct F
     {
       m_CMakeConfigFile = QString::fromStdString(openfluid::config::WARESDEV_CMAKE_USERFILE);
 
-      m_WorkspacePath = openfluid::base::PreferencesManager::getInstance()->getWorkspacePath();
+      m_WorkspacePath = openfluid::base::PreferencesManager::instance()->getWorkspacePath();
 
       m_WaresdevPath = QString("%1/%2").arg(m_WorkspacePath).arg(
           QString::fromStdString(openfluid::config::WARESDEV_SUBDIR));

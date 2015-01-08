@@ -61,7 +61,7 @@ WareSrcManager::WareSrcManager() :
         QString::fromStdString(openfluid::config::WARESDEV_SUBDIR))
 {
   switchWorkspace(
-      openfluid::base::PreferencesManager::getInstance()->getWorkspacePath());
+      openfluid::base::PreferencesManager::instance()->getWorkspacePath());
 }
 
 

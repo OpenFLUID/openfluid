@@ -88,10 +88,8 @@ WareSrcContainer::WareSrcContainer(
     }
   }
 
-  m_OFVersion =
-      QString::fromStdString(
-          openfluid::base::RuntimeEnvironment::getInstance()
-              ->getMajorMinorVersion());
+  m_OFVersion = QString::fromStdString(
+      openfluid::base::RuntimeEnvironment::instance()->getMajorMinorVersion());
 
   setConfigMode(CONFIG_RELEASE);
   setBuildMode(BUILD_WITHINSTALL);
