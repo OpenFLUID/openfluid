@@ -90,12 +90,25 @@ BOOST_AUTO_TEST_CASE(check_map)
   BOOST_REQUIRE_EQUAL(Val1.getKeys().at(2),"foobar");
   BOOST_REQUIRE_EQUAL(Val1.getKeys().at(3),"foofoobar");
 
+  for (openfluid::core::MapValue::iterator it = Val1.begin(); it!=Val1.end(); ++it)
+    std::cout << "using iterator, " << (*it).first << " = " << (*(*it).second) << std::endl;
+
+  for (openfluid::core::MapValue::const_iterator it = Val1.begin(); it!=Val1.end(); ++it)
+    std::cout << "using const iterator, " << (*it).first << " = " << (*(*it).second) << std::endl;
+
+
   Val1.remove("foobar");
 
   BOOST_REQUIRE_EQUAL(Val1.getKeys().size(),3);
   BOOST_REQUIRE_EQUAL(Val1.getKeys().at(0),"bar");
   BOOST_REQUIRE_EQUAL(Val1.getKeys().at(1),"foo");
   BOOST_REQUIRE_EQUAL(Val1.getKeys().at(2),"foofoobar");
+
+  for (openfluid::core::MapValue::iterator it = Val1.begin(); it!=Val1.end(); ++it)
+    std::cout << "using iterator, " << (*it).first << " = " << (*(*it).second) << std::endl;
+
+  for (openfluid::core::MapValue::const_iterator it = Val1.begin(); it!=Val1.end(); ++it)
+    std::cout << "using const iterator, " << (*it).first << " = " << (*(*it).second) << std::endl;
 
   BOOST_REQUIRE_EQUAL(Val1.getSize(),3);
   Val1.setInteger("bar",17);
@@ -119,5 +132,13 @@ BOOST_AUTO_TEST_CASE(check_map)
   BOOST_REQUIRE_THROW(Val2.getMatrixValue("foo"),openfluid::base::FrameworkException);
   BOOST_REQUIRE_THROW(Val2.at("foo").asIntegerValue(),openfluid::base::FrameworkException);
   BOOST_REQUIRE_THROW(Val2.at("wrongfoo"),openfluid::base::FrameworkException);
+
+  for (openfluid::core::MapValue::iterator it = Val1.begin(); it!=Val1.end(); ++it)
+  {
+    (*it).second.reset(new openfluid::core::DoubleValue(1.0));
+    std::cout << "using iterator, " << (*it).first << " = " << (*(*it).second) << std::endl;
+  }
+
+
 }
 

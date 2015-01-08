@@ -49,6 +49,13 @@ namespace openfluid { namespace core {
 template <class T>
 class OPENFLUID_API Vector
 {
+  public:
+
+    typedef T* iterator;
+
+    typedef const T* const_iterator;
+
+
   protected :
 
     T* m_Data;
@@ -163,6 +170,34 @@ class OPENFLUID_API Vector
       Clears the vector (empty and size is 0)
     */
     void clear();
+
+    /**
+      Returns an iterator referring to the first element in the vector
+      @return an iterator to the first element in the vector
+    */
+    inline iterator begin()
+    { return &m_Data[0]; }
+
+    /**
+      Returns a constant iterator referring to the first element in the vector
+      @return a constant iterator to the first element in the vector
+    */
+    inline const_iterator begin() const
+    { return &m_Data[0]; }
+
+    /**
+      Returns an iterator referring to the past-the-end element in the vector
+      @return an iterator to the past-the-end element in the vector
+    */
+    inline iterator end()
+    { return &m_Data[m_Size]; }
+
+    /**
+      Returns a constant iterator referring to the past-the-end element in the vector
+      @return a constant iterator to the past-the-end element in the vector
+    */
+    inline const_iterator end() const
+    { return &m_Data[m_Size]; }
 
 };
 
