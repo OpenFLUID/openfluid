@@ -77,7 +77,7 @@ class WaresManagementWidget : public QWidget
 
     Ui::WaresManagementWidget* ui;
 
-    void updateUpDownButtons(bool WithFinalStretch = true);
+    void updateIndexesAndButtons(bool WithFinalStretch = true);
 
     WaresManagementWidget(QWidget* Parent,
                           bool WithSecondAddWareButton);

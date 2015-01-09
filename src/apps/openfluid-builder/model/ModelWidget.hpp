@@ -91,11 +91,11 @@ class ModelWidget : public WorkspaceWidget
 
     void addGenerator();
 
-    void moveModelItemUp(const QString& ID);
+    void moveModelItemUp(const QString& ID, int CurrentIndex);
 
-    void moveModelItemDown(const QString& ID);
+    void moveModelItemDown(const QString& ID, int CurrentIndex);
 
-    void removeModelItem(const QString& ID);
+    void removeModelItem(const QString& ID, int CurrentIndex);
 
     void dispatchChangesFromChildren();
 

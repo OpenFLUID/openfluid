@@ -91,6 +91,8 @@ class WareWidget : public QWidget
 
     bool m_Enabled;
 
+    int m_CurrentIndex;
+
     bool m_ParamsExpanded;
 
 
@@ -107,11 +109,11 @@ class WareWidget : public QWidget
 
   signals:
 
-    void upClicked(const QString&);
+    void upClicked(const QString& ID, int Index);
 
-    void downClicked(const QString&);
+    void downClicked(const QString& ID, int Index);
 
-    void removeClicked(const QString&);
+    void removeClicked(const QString& ID, int Index);
 
     void changed();
 
@@ -123,7 +125,8 @@ class WareWidget : public QWidget
 
   public:
 
-    WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, bool Enabled, const QString& BGColor);
+    WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
+               bool Enabled, const QString& BGColor, int Index);
 
     virtual ~WareWidget();
 
@@ -134,6 +137,8 @@ class WareWidget : public QWidget
     void setUpButtonEnabled(bool Enabled);
 
     void setDownButtonEnabled(bool Enabled);
+
+    void setCurrentIndex(int Index);
 
     void displayParams();
 

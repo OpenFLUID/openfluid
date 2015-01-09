@@ -42,9 +42,8 @@
 
 
 ClickableWareWidget::ClickableWareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
-                                         bool Enabled, const QString& BGColor):
-  WareWidget(Parent,ID,Enabled,BGColor)
-
+                                         bool Enabled, const QString& BGColor, int Index):
+  WareWidget(Parent,ID,Enabled,BGColor, Index)
 {
 
 }

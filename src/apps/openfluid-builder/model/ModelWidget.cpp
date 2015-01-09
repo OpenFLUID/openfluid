@@ -274,19 +274,19 @@ void ModelWidget::addSimulator()
 
     m_Model.appendItem(SimDesc);
 
-    SimulatorWidget* SimWidget = new SimulatorWidget(this,SimDesc,ID.toStdString());
+    SimulatorWidget* SimWidget = new SimulatorWidget(this,SimDesc,ID.toStdString(),0);
 
     connect(SimWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
     connect(SimWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
-    connect(SimWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
-    connect(SimWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
-    connect(SimWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+    connect(SimWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
+    connect(SimWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
+    connect(SimWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
 
     // compute position in layout, taking into account the ending spacer
     int Position = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;
     ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(Position,SimWidget);
 
-    mp_WaresManWidget->updateUpDownButtons();
+    mp_WaresManWidget->updateIndexesAndButtons();
 
     mp_ModelScene->refresh();
     emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MODELDEF);
@@ -324,20 +324,22 @@ void ModelWidget::addGenerator()
 
     std::string ID = m_Model.getID(GenDesc);
 
-    GeneratorWidget* GenWidget = new GeneratorWidget(this,GenDesc,
-                                                     ID,
-                                                     openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(AddGenDlg.getMethod()));
+    GeneratorWidget* GenWidget =
+        new GeneratorWidget(this,GenDesc,
+                            ID,
+                            0,
+                            openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(AddGenDlg.getMethod()));
 
     connect(GenWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
-    connect(GenWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
-    connect(GenWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
-    connect(GenWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+    connect(GenWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
+    connect(GenWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
+    connect(GenWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
 
     // compute position in layout, taking into account the ending spacer
     int Position = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;
     ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(Position,GenWidget);
 
-    mp_WaresManWidget->updateUpDownButtons();
+    mp_WaresManWidget->updateIndexesAndButtons();
 
     mp_ModelScene->refresh();
     emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MODELDEF);
@@ -350,14 +352,12 @@ void ModelWidget::addGenerator()
 // =====================================================================
 
 
-void ModelWidget::moveModelItemUp(const QString& ID)
+void ModelWidget::moveModelItemUp(const QString& /*ID*/, int CurrentIndex)
 {
-  int Position = m_Model.getFirstItemIndex(ID.toStdString());
+  if (CurrentIndex < 0)
+     return;
 
-  if (Position < 0)
-    return;
-
-  unsigned int From = Position;
+  unsigned int From = CurrentIndex;
   unsigned int To = (From == 0) ? m_Model.getItemsCount() - 1 : From - 1;
 
   m_Model.moveItem(From, To);
@@ -365,7 +365,7 @@ void ModelWidget::moveModelItemUp(const QString& ID)
   WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(From)->widget());
   ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(To,W);
 
-  mp_WaresManWidget->updateUpDownButtons();
+  mp_WaresManWidget->updateIndexesAndButtons();
 
   mp_ModelScene->refresh();
 
@@ -377,23 +377,21 @@ void ModelWidget::moveModelItemUp(const QString& ID)
 // =====================================================================
 
 
-void ModelWidget::moveModelItemDown(const QString& ID)
+void ModelWidget::moveModelItemDown(const QString& /*ID*/, int CurrentIndex)
 {
-  int Position = m_Model.getFirstItemIndex(ID.toStdString());
-
-  if (Position < 0)
+  if (CurrentIndex < 0)
     return;
 
-  unsigned int From = Position;
-  unsigned int To = (From == m_Model.getItemsCount() - 1) ? 0 : From + 1;
+  unsigned int From = CurrentIndex;
+  unsigned int To = (From == (unsigned int)m_Model.getItemsCount() - 1) ? 0 : From + 1;
 
-  m_Model.moveItem(From, To);
+  m_Model.moveItem(From,To);
 
 
   WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(From)->widget());
   ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(To,W);
 
-  mp_WaresManWidget->updateUpDownButtons();
+  mp_WaresManWidget->updateIndexesAndButtons();
 
   mp_ModelScene->refresh();
 
@@ -406,19 +404,17 @@ void ModelWidget::moveModelItemDown(const QString& ID)
 // =====================================================================
 
 
-void ModelWidget::removeModelItem(const QString& ID)
+void ModelWidget::removeModelItem(const QString& /*ID*/, int CurrentIndex)
 {
-  int Position = m_Model.getFirstItemIndex(ID.toStdString());
-
-  if (Position < 0)
+  if (CurrentIndex < 0)
     return;
 
-  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(Position)->widget());
+  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(CurrentIndex)->widget());
   W->deleteLater();
 
-  m_Model.removeItem(Position);
+  m_Model.removeItem(CurrentIndex);
 
-  mp_WaresManWidget->updateUpDownButtons();
+  mp_WaresManWidget->updateIndexesAndButtons();
 
   mp_ModelScene->refresh();
 
@@ -457,16 +453,16 @@ void ModelWidget::updateCoupledModel()
   {
     if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator)
     {
-      SimulatorWidget* SimWidget = new SimulatorWidget(this,*it,m_Model.getID(*it));
+      SimulatorWidget* SimWidget = new SimulatorWidget(this,*it,m_Model.getID(*it),0);
       mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(SimWidget);
       if (it == itb) SimWidget->setUpButtonEnabled(false);
       if (it == itl) SimWidget->setDownButtonEnabled(false);
 
       connect(SimWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
       connect(SimWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
-      connect(SimWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
-      connect(SimWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
-      connect(SimWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+      connect(SimWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
+      connect(SimWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
+      connect(SimWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
     }
     else if ((*it)->getType() == openfluid::fluidx::WareDescriptor::Generator)
     {
@@ -475,6 +471,7 @@ void ModelWidget::updateCoupledModel()
 
       GeneratorWidget* GenWidget = new GeneratorWidget(this,*it,
                                                        m_Model.getID(*it),
+                                                       0,
                                                        openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(*it));
 
       mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(GenWidget);
@@ -482,12 +479,14 @@ void ModelWidget::updateCoupledModel()
       if (it == itl) GenWidget->setDownButtonEnabled(false);
 
       connect(GenWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
-      connect(GenWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
-      connect(GenWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
-      connect(GenWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+      connect(GenWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
+      connect(GenWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
+      connect(GenWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
     }
   }
   ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->addStretch();
+
+  mp_WaresManWidget->updateIndexesAndButtons();
 }
 
 

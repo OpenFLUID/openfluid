@@ -33,6 +33,7 @@
  @file AdvancedModelDescriptor_TEST.cpp
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN
@@ -49,8 +50,10 @@
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 
+
 // =====================================================================
 // =====================================================================
+
 
 class AdvancedModelDescriptorSub: public openfluid::fluidx::AdvancedModelDescriptor
 {
@@ -58,15 +61,16 @@ class AdvancedModelDescriptorSub: public openfluid::fluidx::AdvancedModelDescrip
 
     AdvancedModelDescriptorSub(
         openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
-        openfluid::fluidx::AdvancedModelDescriptor()
+        openfluid::fluidx::AdvancedModelDescriptor(ModelDesc)
     {
-      mp_ModelDesc = &ModelDesc;
+
     }
-    ;
 };
+
 
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_duplicates)
 {
@@ -77,8 +81,10 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
   BOOST_CHECK_NO_THROW(openfluid::fluidx::AdvancedModelDescriptor(FXDesc.modelDescriptor()));
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
@@ -117,17 +123,17 @@ BOOST_AUTO_TEST_CASE(check_construction)
       "tests.simulatorB");
 
   BOOST_CHECK_EQUAL(
-      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Model.itemAt(0))->getGeneratedID(),
+      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(&Model.itemAt(0))->getGeneratedID(),
       "tests.generator.interp.TU.genscalar");
   BOOST_CHECK_EQUAL(
-      dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Model.itemAt(4))->getID(),
+      dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(&Model.itemAt(4))->getID(),
       "tests.simulatorB");
   BOOST_CHECK_THROW(Model.itemAt(5), openfluid::base::FrameworkException);
 
   BOOST_CHECK_EQUAL(
-      Model.getFirstItemIndex("tests.generator.interp.TU.genscalar"), 0);
-  BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.simulatorB"), 4);
-  BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.wrongsimulator"), -1);
+      Model.findFirstItem("tests.generator.interp.TU.genscalar"), 0);
+  BOOST_CHECK_EQUAL(Model.findFirstItem("tests.simulatorB"), 4);
+  BOOST_CHECK_EQUAL(Model.findFirstItem("tests.wrongsimulator"), -1);
 
   std::vector<std::string> IDs = Model.getOrderedIDs();
 
@@ -136,8 +142,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL(IDs.at(4), "tests.simulatorB");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -341,6 +349,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Random);
 }
 
-// =====================================================================
-// =====================================================================
 

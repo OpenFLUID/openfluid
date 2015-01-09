@@ -30,77 +30,43 @@
 */
 
 /**
- @file AdvancedMonitoringDescriptor.hpp
+  @file AdvancedMonitoringDescriptor.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Aline LIBRES <aline.libres@gmail.com>
+*/
 
-#ifndef ADVANCEDMONITORINGDESCRIPTOR_HPP_
-#define ADVANCEDMONITORINGDESCRIPTOR_HPP_
 
-#include  <openfluid/fluidx/MonitoringDescriptor.hpp>
+#ifndef __OPENFLUID_FLUIDX_ADVANCEDMONITORINGDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_ADVANCEDMONITORINGDESCRIPTOR_HPP__
+
+
+#include <openfluid/fluidx/AdvancedWareSetDescriptor.hpp>
+#include <openfluid/fluidx/MonitoringDescriptor.hpp>
+#include <openfluid/fluidx/ObserverDescriptor.hpp>
+
 #include <openfluid/dllexport.hpp>
 
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
 
 
-// TODO refactor this for enable the possibility to have the same observer twice in the monitoring list
-class OPENFLUID_API AdvancedMonitoringDescriptor
+class OPENFLUID_API AdvancedMonitoringDescriptor : public AdvancedWareSetDescriptor<MonitoringDescriptor,
+                                                                                    ObserverDescriptor>
 {
-  private:
-
-    openfluid::fluidx::MonitoringDescriptor* mp_MonitoringDesc;
-
   public:
 
-    AdvancedMonitoringDescriptor(
-        openfluid::fluidx::MonitoringDescriptor& MonitoringDesc);
+    AdvancedMonitoringDescriptor(MonitoringDescriptor& Desc);
 
     ~AdvancedMonitoringDescriptor();
 
-    void checkMonitoring() const;
+    void check();
 
-    const std::list<openfluid::fluidx::ObserverDescriptor*>& items() const;
-
-    /**
-     * @brief Returns the Descriptor of the Observer with ObserverID if is in the Monitoring descriptor
-     * @throw openfluid::base::OFException if this Observer is not in the Monitoring descriptor
-     */
-    openfluid::fluidx::ObserverDescriptor& descriptor(std::string ObserverID) const;
-
-    /**
-     * @brief Adds the Observer with ObserverID to the Monitoring descriptor
-     */
-    void addToObserverList(std::string ObserverID);
-
-    /**
-     * @brief Removes the Observer with ObserverID from the Monitoring descriptor
-     * @throw openfluid::base::OFException if this Observer is not in the Monitoring descriptor
-     */
-    void removeFromObserverList(std::string ObserverID);
-
-    /**
-     * @brief Replace existing observers with ObserversList
-     */
-    void setItems(
-        std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList);
-
-    // TODO to rename to match equivalent in AdvancedModelDescriptor
-    void moveItemTowardsTheBeginning(std::string ObserverID);
-
-    // TODO to rename to match equivalent in AdvancedModelDescriptor
-    void moveItemTowardsTheEnd(std::string ObserverID);
-
-    int getFirstIndex(const std::string& ID) const;
-
-    std::vector<openfluid::ware::WareID_t> getOrderedIDs() const;
-
-
+    openfluid::ware::WareID_t getID(ObserverDescriptor* Item) const;
 
 };
 
-}
-} //namespaces
-#endif /* ADVANCEDMONITORINGDESCRIPTOR_HPP_ */
+
+} } //namespaces
+
+#endif /* __OPENFLUID_FLUIDX_ADVANCEDMONITORINGDESCRIPTOR_HPP__ */

@@ -65,8 +65,11 @@ class OPENFLUID_API WareSetDescriptor
   public:
 
     WareSetDescriptor<T>()
-    {
-    }
+    {  }
+
+
+    // =====================================================================
+    // =====================================================================
 
 
     inline SetDescription_t& items()

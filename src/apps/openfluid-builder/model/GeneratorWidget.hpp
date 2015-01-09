@@ -73,6 +73,7 @@ class GeneratorWidget : public WareWidget
     GeneratorWidget(QWidget* Parent,
                     openfluid::fluidx::ModelItemDescriptor* Desc,
                     const openfluid::ware::WareID_t& ID,
+                    int Index,
                     openfluid::machine::ModelItemSignatureInstance* SignInstance);
 
     ~GeneratorWidget();

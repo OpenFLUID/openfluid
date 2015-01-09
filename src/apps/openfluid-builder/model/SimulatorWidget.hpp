@@ -74,7 +74,8 @@ class SimulatorWidget : public ClickableWareWidget
 
     SimulatorWidget(QWidget* Parent,
                     openfluid::fluidx::ModelItemDescriptor* Desc,
-                    const openfluid::ware::WareID_t& ID);
+                    const openfluid::ware::WareID_t& ID,
+                    int Index);
 
     ~SimulatorWidget();
 
