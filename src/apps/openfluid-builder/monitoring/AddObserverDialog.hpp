@@ -60,7 +60,7 @@ class AddObserverDialog : public AddWareDialog
 
   public:
 
-    AddObserverDialog(const QStringList& ObsIDList, QWidget* Parent = 0);
+    AddObserverDialog(QWidget* Parent = 0);
 
     ~AddObserverDialog();
 };

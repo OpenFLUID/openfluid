@@ -49,7 +49,7 @@
 #include <QPushButton>
 
 
-AddObserverDialog::AddObserverDialog(const QStringList& ObsIDList, QWidget* Parent) :
+AddObserverDialog::AddObserverDialog(QWidget* Parent) :
   AddWareDialog(Parent)
 {
   ui->MessageLabel->setText(tr("Add observer"));
@@ -67,9 +67,6 @@ AddObserverDialog::AddObserverDialog(const QStringList& ObsIDList, QWidget* Pare
     QString ID = QString::fromStdString((*it)->Signature->ID);
 
     QListWidgetItem* Item = new QListWidgetItem(ID);
-
-    if (ObsIDList.contains(ID))
-      Item->setFlags(Qt::ItemIsSelectable);
 
     if ((*it)->Signature->Status == openfluid::ware::EXPERIMENTAL)
       Item->setIcon(QIcon(":/images/status-experimental.png"));

@@ -83,11 +83,8 @@ MonitoringWidget::~MonitoringWidget()
 
 void MonitoringWidget::addObserver()
 {
-  QStringList ObsList = openfluid::tools::toQStringList(m_Monitoring.getOrderedIDs());
+  AddObserverDialog AddObsDlg(this);
 
-  AddObserverDialog AddObsDlg(ObsList,this);
-
-  // TODo duplicate observers may appears in list if a path is defined twice
   if (AddObsDlg.exec() == QDialog::Accepted)
   {
     openfluid::ware::WareID_t ID = AddObsDlg.getSelectedID().toStdString();

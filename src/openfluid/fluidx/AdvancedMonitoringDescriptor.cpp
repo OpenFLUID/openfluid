@@ -68,18 +68,7 @@ AdvancedMonitoringDescriptor::~AdvancedMonitoringDescriptor()
 
 void AdvancedMonitoringDescriptor::check()
 {
-  std::set<std::string> UniqueIDs;
 
-  std::list<openfluid::fluidx::ObserverDescriptor*>& Items = mp_Descriptor->items();
-
-  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it = Items.begin(); it != Items.end(); ++it)
-  {
-    std::string ID = (*it)->getID();
-    if (!UniqueIDs.insert(ID).second)
-      throw openfluid::base::FrameworkException(
-          "AdvancedMonitoringDescriptor::check",
-          "The observer with ID \"" + ID + "\" is duplicate");
-  }
 }
 
 
