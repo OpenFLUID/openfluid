@@ -1078,6 +1078,37 @@ void PreferencesManager::setAutomaticSaveBeforeRun(bool AutoSave)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isAutomaticSaveBeforeBuild()
+{
+  mp_ConfFile->beginGroup("openfluid.waresdev.interface");
+  if (!mp_ConfFile->contains("savebeforebuild")) mp_ConfFile->setValue("savebeforebuild",true);
+  bool AutoSave = mp_ConfFile->value("savebeforebuild").toBool();
+  mp_ConfFile->endGroup();
+
+  return AutoSave;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+void PreferencesManager::setAutomaticSaveBeforeBuild(bool AutoSave)
+{
+  mp_ConfFile->beginGroup("openfluid.waresdev.interface");
+  mp_ConfFile->setValue("savebeforebuild",AutoSave);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 } } //namespaces

@@ -81,10 +81,7 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     QString getCurrentPath();
 
-    /**
-     * @throw openfluid::base::FrameworkException
-     */
-    openfluid::waresdev::WareSrcContainer& currentWidgetContainer();
+    WareSrcWidget* currentWareWidget();
 
     bool isModified();
 

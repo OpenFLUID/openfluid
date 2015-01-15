@@ -234,6 +234,10 @@ class OPENFLUID_API PreferencesManager
 
     void setSpatialAttrsRemovalConfirm(bool Confirm);
 
+
+    bool isAutomaticSaveBeforeBuild();
+
+    void setAutomaticSaveBeforeBuild(bool AutoSave);
 };
 
 } } //namespaces

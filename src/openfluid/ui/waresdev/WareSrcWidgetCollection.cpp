@@ -46,7 +46,7 @@
 #include <QProcess>
 #include <QMessageBox>
 
-#include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
@@ -276,30 +276,23 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 
 QString WareSrcWidgetCollection::getCurrentPath()
 {
-  try
-  {
-    return currentWidgetContainer().getAbsolutePath();
-  }
-  catch (openfluid::base::FrameworkException& e)
-  {
-    return "";
-  }
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+    return CurrentWare->wareSrcContainer().getAbsolutePath();
+
+  return "";
 }
 
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::waresdev::WareSrcContainer& WareSrcWidgetCollection::currentWidgetContainer()
+WareSrcWidget* WareSrcWidgetCollection::currentWareWidget()
 {
   if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
       mp_TabWidget->currentWidget()))
-    return Widget->wareSrcContainer();
+    return Widget;
 
-  throw openfluid::base::FrameworkException(
-      "WareSrcWidgetCollection::getCurrentWidgetContainer",
-      "unable to get current ware widget");
+  return 0;
 }
 
 
@@ -357,14 +350,15 @@ void WareSrcWidgetCollection::setBuildNoInstallMode()
 
 void WareSrcWidgetCollection::configure()
 {
-  try
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
-    currentWidgetContainer().configure();
+    if (openfluid::base::PreferencesManager::instance()
+        ->isAutomaticSaveBeforeBuild())
+      CurrentWare->saveAllFileTabs();
+    CurrentWare->wareSrcContainer().configure();
   }
-  catch (openfluid::base::FrameworkException& e)
-  {
+  else
     QMessageBox::warning(0, "No ware open", "Open a ware first");
-  }
 }
 
 
@@ -374,14 +368,15 @@ void WareSrcWidgetCollection::configure()
 
 void WareSrcWidgetCollection::build()
 {
-  try
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
-    currentWidgetContainer().build();
+    if (openfluid::base::PreferencesManager::instance()
+        ->isAutomaticSaveBeforeBuild())
+      CurrentWare->saveAllFileTabs();
+    CurrentWare->wareSrcContainer().build();
   }
-  catch (openfluid::base::FrameworkException& e)
-  {
+  else
     QMessageBox::warning(0, "No ware open", "Open a ware first");
-  }
 }
 
 
@@ -427,9 +422,8 @@ return false;
 
 void WareSrcWidgetCollection::saveCurrentEditor()
 {
-  if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
-      mp_TabWidget->currentWidget()))
-    Widget->saveCurrentEditor();
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+    CurrentWare->saveCurrentEditor();
   else
     QMessageBox::warning(0, "No ware open", "Open a ware first");
 }
@@ -441,14 +435,12 @@ void WareSrcWidgetCollection::saveCurrentEditor()
 
 void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
 {
-  if (WareSrcWidget* CurrentWare = qobject_cast<WareSrcWidget*>(
-      mp_TabWidget->currentWidget()))
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
     QString CurrentPath = CurrentWare->getCurrentFilePath();
 
     QString TopDir =
-        TopDirectory.isEmpty() ? CurrentWare->wareSrcContainer()
-                                     .getAbsolutePath() :
+        TopDirectory.isEmpty() ? CurrentWare->wareSrcContainer().getAbsolutePath() :
                                  TopDirectory;
 
     QString NewPath = RestrictedFileDialog::getSaveFileName(CurrentWare,
@@ -503,9 +495,8 @@ void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
 
 void WareSrcWidgetCollection::closeCurrentEditor()
 {
-  if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
-      mp_TabWidget->currentWidget()))
-    Widget->closeCurrentEditor();
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+    CurrentWare->closeCurrentEditor();
   else
     QMessageBox::warning(0, "No ware open", "Open a ware first");
 }
