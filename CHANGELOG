@@ -1,3 +1,14 @@
+2.1.0
+
+  * Introduced iterators for VectorValue and MapValue types
+  * Fixed name mangling for Fortran90 modules in Fortran/C interface 
+  * Renamed classes for better understanding, with compatibility aliases
+  * Renamed accessor methods according to the evolution of the coding style  
+  * Fixed potential conflicts in headers guards
+  * Fixed minor errors in documentation 
+
+
+
 2.0.2
 
   * Introduced management of multiple workspaces

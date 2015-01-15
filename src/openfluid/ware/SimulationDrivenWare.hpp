@@ -79,7 +79,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
 
 
     /**
-      Pointer to the execution messages repository
+      Pointer to the execution messages logger
      */
     openfluid::base::SimulationLogger* mp_SimLogger;
 

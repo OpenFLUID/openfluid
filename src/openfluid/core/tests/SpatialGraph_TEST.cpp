@@ -52,11 +52,11 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::SpatialGraph* Repos;
+  openfluid::core::SpatialGraph* SGraph;
 
-  Repos = new openfluid::core::SpatialGraph();
+  SGraph = new openfluid::core::SpatialGraph();
 
-  delete Repos;
+  delete SGraph;
 }
 
 // =====================================================================
@@ -64,31 +64,31 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::core::SpatialGraph* Repos;
+  openfluid::core::SpatialGraph* SGraph;
   int i, PcsOrder;
   openfluid::core::UnitsCollection* UnitsColl;
   openfluid::core::UnitsList_t::iterator UnitsIt, PrevUnitsIt;
   openfluid::core::SpatialUnit* U;
 
 
-  Repos = new openfluid::core::SpatialGraph();
+  SGraph = new openfluid::core::SpatialGraph();
 
   for (i=1;i<=250;i++)
   {
     PcsOrder = (i%7)+1;
-    Repos->addUnit(openfluid::core::SpatialUnit("UnitClassA",i,PcsOrder));
+    SGraph->addUnit(openfluid::core::SpatialUnit("UnitClassA",i,PcsOrder));
   }
 
   for (i=1;i<=7325;i++)
   {
     PcsOrder = (i%31)+1;
-    Repos->addUnit(openfluid::core::SpatialUnit("UnitClassB",i,PcsOrder));
+    SGraph->addUnit(openfluid::core::SpatialUnit("UnitClassB",i,PcsOrder));
   }
 
-  Repos->sortUnitsByProcessOrder();
+  SGraph->sortUnitsByProcessOrder();
 
   // *** Units count and process order
-  UnitsColl = Repos->spatialUnits("UnitClassA");
+  UnitsColl = SGraph->spatialUnits("UnitClassA");
   BOOST_REQUIRE_EQUAL(UnitsColl->list()->size(),250);
 
   PrevUnitsIt = UnitsColl->list()->begin();
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
     PrevUnitsIt = UnitsIt;
   }
 
-  UnitsColl = Repos->spatialUnits("UnitClassB");
+  UnitsColl = SGraph->spatialUnits("UnitClassB");
   BOOST_REQUIRE_EQUAL(UnitsColl->list()->size(),7325);
 
   PrevUnitsIt = UnitsColl->list()->begin();
@@ -118,30 +118,30 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   // *** existing classes
-  BOOST_REQUIRE_EQUAL(Repos->isUnitsClassExist("UnitClassA"),true);
-  BOOST_REQUIRE_EQUAL(Repos->isUnitsClassExist("UnitClassB"),true);
-  BOOST_REQUIRE_EQUAL(Repos->isUnitsClassExist("WrongClass"),false);
+  BOOST_REQUIRE_EQUAL(SGraph->isUnitsClassExist("UnitClassA"),true);
+  BOOST_REQUIRE_EQUAL(SGraph->isUnitsClassExist("UnitClassB"),true);
+  BOOST_REQUIRE_EQUAL(SGraph->isUnitsClassExist("WrongClass"),false);
 
 
   // *** existing units
-  BOOST_REQUIRE(Repos->spatialUnit("UnitClassA",17) != NULL);
-  BOOST_REQUIRE(Repos->spatialUnit("UnitClassA",1000) == NULL);
-  U = Repos->spatialUnit("UnitClassA",17);
+  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassA",17) != NULL);
+  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassA",1000) == NULL);
+  U = SGraph->spatialUnit("UnitClassA",17);
   BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassA");
   BOOST_REQUIRE_EQUAL(U->getID(),17);
 
-  BOOST_REQUIRE(Repos->spatialUnit("UnitClassB",1333) != NULL);
-  BOOST_REQUIRE(Repos->spatialUnit("UnitClassB",10000) == NULL);
-  U = Repos->spatialUnit("UnitClassB",1333);
+  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassB",1333) != NULL);
+  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassB",10000) == NULL);
+  U = SGraph->spatialUnit("UnitClassB",1333);
   BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassB");
   BOOST_REQUIRE_EQUAL(U->getID(),1333);
 
-  BOOST_REQUIRE(Repos->spatialUnit("WrongClass",1) == NULL);
+  BOOST_REQUIRE(SGraph->spatialUnit("WrongClass",1) == NULL);
 
 
-  Repos->clearUnits();
-  BOOST_REQUIRE_EQUAL(Repos->spatialUnits("UnitClassA")->list()->size(),0);
-  BOOST_REQUIRE_EQUAL(Repos->spatialUnits("UnitClassB")->list()->size(),0);
+  SGraph->clearUnits();
+  BOOST_REQUIRE_EQUAL(SGraph->spatialUnits("UnitClassA")->list()->size(),0);
+  BOOST_REQUIRE_EQUAL(SGraph->spatialUnits("UnitClassB")->list()->size(),0);
 
 }
 

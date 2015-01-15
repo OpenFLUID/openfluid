@@ -66,7 +66,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
 
     // TODO check if const
     /**
-         Pointer to the core repository (const). It should be used with care. Prefer to use the OPENFLUID_Xxxx methods.
+         Pointer to the spatial graph. It should be used with care. Prefer using the OPENFLUID_Xxxx methods.
      */
     openfluid::core::SpatialGraph* mp_SpatialData;
 
