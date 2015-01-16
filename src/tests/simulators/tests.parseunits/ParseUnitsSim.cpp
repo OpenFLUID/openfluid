@@ -39,6 +39,7 @@
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 
 
 // =====================================================================
@@ -174,7 +175,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
         std::string SrcClassStr = CurrentUnit->getClass();
         std::string SrcIDStr = "";
-        openfluid::tools::ConvertValue(CurrentUnit->getID(),&SrcIDStr);
+        openfluid::tools::convertValue(CurrentUnit->getID(),&SrcIDStr);
 
         for (unsigned int i=0;i<ClassVector.size();i++)
         {
@@ -187,7 +188,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
             for (itToUnitsPtrList=ToUnitsPtrList->begin();itToUnitsPtrList!=ToUnitsPtrList->end();++itToUnitsPtrList)
             {
               std::string DestIDStr = "";
-              openfluid::tools::ConvertValue((*itToUnitsPtrList)->getID(),&DestIDStr);
+              openfluid::tools::convertValue((*itToUnitsPtrList)->getID(),&DestIDStr);
 /*              std::cout << SrcClassStr << "#" << SrcIDStr << " --> "<< DestClassStr << "#" << DestIDStr << std::endl;
               std::cout.flush();*/
             }
@@ -211,7 +212,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
         std::string SrcClassStr = CurrentUnit->getClass();
         std::string SrcIDStr = "";
-        openfluid::tools::ConvertValue(CurrentUnit->getID(),&SrcIDStr);
+        openfluid::tools::convertValue(CurrentUnit->getID(),&SrcIDStr);
 
         for (unsigned int i=0;i<ClassVector.size();i++)
         {
@@ -224,7 +225,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
             for (itFromUnitsPtrList=FromUnitsPtrList->begin();itFromUnitsPtrList!=FromUnitsPtrList->end();++itFromUnitsPtrList)
             {
               std::string DestIDStr = "";
-              openfluid::tools::ConvertValue((*itFromUnitsPtrList)->getID(),&DestIDStr);
+              openfluid::tools::convertValue((*itFromUnitsPtrList)->getID(),&DestIDStr);
 /*              std::cout << SrcClassStr << "#" << SrcIDStr << " <-- "<< DestClassStr << "#" << DestIDStr << std::endl;
               std::cout.flush();*/
             }

@@ -36,14 +36,15 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/tools/GDALHelpers.hpp>
-
 #include <ogrsf_frmts.h>
 #include <ogr_api.h>
 #include <gdal.h>
+#include <openfluid/utils/GDALHelpers.hpp>
+
+#include <QStringList>
 
 
-namespace openfluid { namespace tools {
+namespace openfluid { namespace utils {
 
 
 const GDALDriversFilesExts_t getOGRFilesDriversForOpenFLUID()
@@ -134,8 +135,8 @@ const std::set<std::string> getOGRFilesExtensionsForOpenFLUID()
   std::set<std::string> ExtsList;
 
   // getting files drivers list
-  openfluid::tools::GDALDriversFilesExts_t Drivers = openfluid::tools::getOGRFilesDriversForOpenFLUID();
-  openfluid::tools::GDALDriversFilesExts_t::const_iterator DriversIt;
+  GDALDriversFilesExts_t Drivers = getOGRFilesDriversForOpenFLUID();
+  GDALDriversFilesExts_t::const_iterator DriversIt;
 
   // adding extensions in set
   for (DriversIt = Drivers.begin(); DriversIt != Drivers.end(); ++DriversIt)
@@ -149,6 +150,46 @@ const std::set<std::string> getOGRFilesExtensionsForOpenFLUID()
   }
 
   return ExtsList;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
+                                         const QString& AllFormatsLabel)
+{
+  QStringList AllFormats;
+  QStringList DetailedFormats;
+
+  GDALDriversFilesExts_t::const_iterator it;
+  GDALDriversFilesExts_t::const_iterator bit = Drivers.begin();
+  GDALDriversFilesExts_t::const_iterator eit = Drivers.end();
+
+  for (it=bit; it!= eit; ++it)
+  {
+    QString CurrentFormatsStr;
+
+    for (unsigned int i =0; i< (*it).second.FilesExts.size(); i++)
+    {
+      if (i!=0) CurrentFormatsStr += " ";
+      CurrentFormatsStr += "*." + QString::fromStdString((*it).second.FilesExts.at(i));
+    }
+
+    DetailedFormats.append(QString::fromStdString((*it).second.Label) + "(" + CurrentFormatsStr + ")");
+    AllFormats.append(CurrentFormatsStr);
+  }
+
+  if (!AllFormats.isEmpty())
+  {
+    QString AllFormatsStr;
+
+    AllFormatsStr = AllFormatsLabel +" (" + AllFormats.join(" ")+")";
+    DetailedFormats.prepend(AllFormatsStr);
+  }
+
+  return DetailedFormats.join(";;");
 }
 
 

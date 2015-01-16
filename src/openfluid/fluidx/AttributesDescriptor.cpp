@@ -39,7 +39,7 @@
  */
 
 #include <openfluid/fluidx/AttributesDescriptor.hpp>
-#include <openfluid/tools/ColTextParser.hpp>
+#include <openfluid/tools/ColumnTextParser.hpp>
 
 namespace openfluid { namespace fluidx {
 

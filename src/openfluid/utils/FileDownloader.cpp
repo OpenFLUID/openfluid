@@ -37,8 +37,8 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
-#include <openfluid/tools/FileDownloader.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/utils/FileDownloader.hpp>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -47,7 +47,7 @@
 
 
 
-namespace openfluid { namespace tools {
+namespace openfluid { namespace utils {
 
 
 class FileDownloaderImpl : public QObject

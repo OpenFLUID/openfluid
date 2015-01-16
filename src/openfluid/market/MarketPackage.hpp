@@ -44,7 +44,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/market/MarketInfos.hpp>
-#include <openfluid/tools/ExternalProgram.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 
 namespace openfluid { namespace market {
@@ -106,7 +106,7 @@ class OPENFLUID_API MarketPackage
     */
     static std::string m_MarketBagSrcSubDir;
 
-    static openfluid::tools::ExternalProgram m_CMakeProgram;
+    static openfluid::utils::ExternalProgram m_CMakeProgram;
 
     /**
      * Common build options for simulators

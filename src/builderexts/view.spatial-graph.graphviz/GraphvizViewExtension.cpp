@@ -38,7 +38,7 @@
  */
 
 
-#include <openfluid/tools/ExternalProgram.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 #include "ui_GraphvizWidget.h"
 #include "GraphvizViewExtension.hpp"
@@ -90,9 +90,9 @@ GraphvizViewExtension::~GraphvizViewExtension()
 bool GraphvizViewExtension::initialize()
 {
 #if defined(Q_OS_WIN32)
-  openfluid::tools::ExternalProgram DotProgram("dot.exe");
+  openfluid::utils::ExternalProgram DotProgram("dot.exe");
 #else
-  openfluid::tools::ExternalProgram DotProgram("dot");
+  openfluid::utils::ExternalProgram DotProgram("dot");
 #endif
 
   if (!DotProgram.isFound())

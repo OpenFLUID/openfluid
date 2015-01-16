@@ -38,6 +38,7 @@
  */
 
 
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
@@ -135,7 +136,7 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
     if (!OPENFLUID_GetSimulatorParameter(Params,"gparam3",DoubleParam))
       OPENFLUID_RaiseError("tests.globalparams","gparam3 not found");
 
-    if (!openfluid::tools::IsCloseEnough(DoubleParam,0.1,0.00001))
+    if (!openfluid::scientific::isCloseEnough(DoubleParam,0.1,0.00001))
       OPENFLUID_RaiseError("tests.globalparams","wrong value for gparam3");
   }
 

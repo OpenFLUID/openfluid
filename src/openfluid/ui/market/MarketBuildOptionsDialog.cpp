@@ -39,8 +39,7 @@
 
 #include <openfluid/ui/market/MarketBuildOptionsDialog.hpp>
 #include <openfluid/market/MarketPackage.hpp>
-#include <openfluid/tools/SwissTools.hpp>
-
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <QBoxLayout>
 #include <QDialogButtonBox>
 #include <QLabel>
@@ -66,7 +65,7 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOpt
 
   if (!SimID.isEmpty())
   {
-    QString Options = QString::fromStdString(openfluid::tools::ReplaceEmptyString(CommonBuildOptions.toStdString(),tr("<i>none</i>").toStdString()));
+    QString Options = QString::fromStdString(openfluid::tools::replaceEmptyString(CommonBuildOptions.toStdString(),tr("<i>none</i>").toStdString()));
     CommonOptsLabel->setText("<u>"+tr("Common source build options:")+"</u><br/>" + Options);
   }
   else

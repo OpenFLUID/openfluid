@@ -32,6 +32,7 @@
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 
 
 // =====================================================================
@@ -264,7 +265,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
         bool FoundEvent = false;
         AddedEvent = openfluid::core::Event(openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)));
-        openfluid::tools::ConvertValue(OPENFLUID_GetDefaultDeltaT(),&TmpStr);
+        openfluid::tools::convertValue(OPENFLUID_GetDefaultDeltaT(),&TmpStr);
         AddedEvent.addInfo("addingstep",TmpStr);
 
         OPENFLUID_AppendEvent(aUnit,AddedEvent);

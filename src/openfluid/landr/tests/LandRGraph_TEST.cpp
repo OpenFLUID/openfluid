@@ -52,7 +52,7 @@
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
-#include <openfluid/tools.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <geos/geom/LineString.h>
 #include <geos/geom/CoordinateSequence.h>
 
@@ -273,15 +273,15 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_LineStringGraph)
   openfluid::landr::LineStringEntity* Entity=Graph->entity(1);
   openfluid::core::DoubleValue DoubleValue(0);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 191.11));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 191.11));
 
   Entity=Graph->entity(6);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 317.16));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 317.16));
 
   Entity=Graph->entity(8);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 0.0));
 
 
   openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
@@ -291,11 +291,11 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_LineStringGraph)
 
   Entity=Graph->entity(1);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0.02));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 0.02));
 
   Entity=Graph->entity(6);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0.06));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 0.06));
 
 
   openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "badRS_misdirected.shp");
@@ -308,11 +308,11 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_LineStringGraph)
 
   Entity=Graph->entity(1);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 2));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(),2.0));
 
   Entity=Graph->entity(6);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 1));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(),1.0));
 
 
   delete Graph;
@@ -453,11 +453,11 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
 
   Entity=Graph->entity(7);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 154.26));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 154.26));
 
   Entity=Graph->entity(1);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 17.14));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 17.14));
 
 
   Graph->setAttributeFromVectorLocation("attribut",*Vect, "comment",8);
@@ -521,11 +521,11 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
 
   Entity=Graph->entity(20);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0.06));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 0.06));
 
   Entity=Graph->entity(9);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0.05));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 0.05));
 
 
   Graph->setAttributeFromVectorLocation("attribut",*Vect, "FLOW_CDE",0.5);
@@ -583,11 +583,11 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
 
   Entity=Graph->entity(7);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 1610.964));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 1610.964));
 
   Entity=Graph->entity(10);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 1806.479));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 1806.479));
 
 
   Graph->setAttributeFromVectorLocation("attribut",*Vect, "FLOW_CDE",0.5);
@@ -645,11 +645,11 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
 
   Entity=Graph->entity(24);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 1.5));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(), 1.5));
   DoubleValue.set(0);
   Entity=Graph->entity(21);
   Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(DoubleValue.get(),0.0));
 
 
   delete Graph;

@@ -48,6 +48,7 @@
 #include <QFileInfo>
 
 #include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/config.hpp>
 
@@ -110,7 +111,7 @@ class OPENFLUID_API WarePluginsManager
 
         if (ABIVersionProc)
         {
-          Plug->Verified = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
+          Plug->Verified = (openfluid::tools::compareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
         }
         else Plug->Verified = false;
 
@@ -163,7 +164,7 @@ class OPENFLUID_API WarePluginsManager
 
         if (ABIVersionProc)
         {
-          Plug->Verified = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
+          Plug->Verified = (openfluid::tools::compareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
         }
         else Plug->Verified = false;
 
@@ -258,7 +259,7 @@ class OPENFLUID_API WarePluginsManager
 
       for (i=0;i<PluginsPaths.size();i++)
       {
-        TmpFiles = openfluid::tools::GetFilesBySuffixAndExt(PluginsPaths[i],getPluginFilenameSuffix(),openfluid::config::PLUGINS_EXT,false,true);
+        TmpFiles = openfluid::tools::findFilesBySuffixAndExtension(PluginsPaths[i],getPluginFilenameSuffix(),openfluid::config::PLUGINS_EXT,false,true);
         for (j=0;j<TmpFiles.size();j++) PluginFiles.push_back(TmpFiles[j]);
       }
 
@@ -273,7 +274,7 @@ class OPENFLUID_API WarePluginsManager
         {
           if (Pattern != "")
           {
-            if (openfluid::tools::WildcardMatching(Pattern,CurrentPlug->Signature->ID))
+            if (openfluid::tools::matchWithWildcard(Pattern,CurrentPlug->Signature->ID))
               PluginsContainers.push_back(CurrentPlug);
           }
           else PluginsContainers.push_back(CurrentPlug);

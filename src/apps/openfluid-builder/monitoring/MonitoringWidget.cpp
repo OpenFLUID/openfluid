@@ -39,8 +39,7 @@
 
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
-
+#include <openfluid/tools/DataHelpers.hpp>
 #include "ui_WaresManagementWidget.h"
 #include "ui_MonitoringWidget.h"
 #include "ui_AddWareDialog.h"

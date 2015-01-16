@@ -47,6 +47,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/ApplicationException.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
@@ -205,10 +206,10 @@ void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Si
   if (Signature->Status == openfluid::ware::BETA) StatusStr = "beta";
   if (Signature->Status == openfluid::ware::STABLE) StatusStr = "stable";
 
-  std::cout << "   - Name: " << openfluid::tools::ReplaceEmptyString(Signature->Name,("(unknown)")) << std::endl;
+  std::cout << "   - Name: " << openfluid::tools::replaceEmptyString(Signature->Name,("(unknown)")) << std::endl;
   std::cout << "   - File: " << Filename << std::endl;
-  std::cout << "   - Description: " << openfluid::tools::ReplaceEmptyString(Signature->Description,("(none)")) << std::endl;
-  std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(Signature->Version,("(unknown)")) << std::endl;
+  std::cout << "   - Description: " << openfluid::tools::replaceEmptyString(Signature->Description,("(none)")) << std::endl;
+  std::cout << "   - Version: " << openfluid::tools::replaceEmptyString(Signature->Version,("(unknown)")) << std::endl;
   std::cout << "   - SDK version used at build time: " << Signature->ABIVersion <<  std::endl;
   std::cout << "   - Development status: " << StatusStr <<  std::endl;
   std::cout << "   - Author(s): " << Signature->getAuthorsAsString() << std::endl;
@@ -355,13 +356,13 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
 
 
       std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
-      std::cout << "   - Name: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)")) << std::endl;
+      std::cout << "   - Name: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)")) << std::endl;
       std::cout << "   - File: " << PlugContainers[i]->FileFullPath << std::endl;
-      std::cout << "   - Domain: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)")) << std::endl;
-      std::cout << "   - Process: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)")) << std::endl;
-      std::cout << "   - Method: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
-      std::cout << "   - Description: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Description,("(none)")) << std::endl;
-      std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)")) << std::endl;
+      std::cout << "   - Domain: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)")) << std::endl;
+      std::cout << "   - Process: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)")) << std::endl;
+      std::cout << "   - Method: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
+      std::cout << "   - Description: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Description,("(none)")) << std::endl;
+      std::cout << "   - Version: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)")) << std::endl;
       std::cout << "   - SDK version used at build time: " << PlugContainers[i]->Signature->ABIVersion <<  std::endl;
       std::cout << "   - Development status: " << StatusStr <<  std::endl;
       std::cout << "   - Author(s): " << PlugContainers[i]->Signature->getAuthorsAsString() << std::endl;
@@ -628,7 +629,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 {
 
   std::string DefaultMaxThreadsStr;
-  openfluid::tools::ConvertValue(openfluid::config::SIMULATORS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
+  openfluid::tools::convertValue(openfluid::config::SIMULATORS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
 
   // TODO adapt colon or semicolon separated path to system win32 or unix
   boost::program_options::options_description OptionsDesc("openfluid allowed options");

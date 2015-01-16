@@ -41,12 +41,12 @@
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/tools/SwissTools.hpp>
 #include <openfluid/config.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/convenience.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 
 
 namespace openfluid { namespace buddies {
@@ -88,7 +88,7 @@ bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
   {
     boost::filesystem::create_directories(ThisProjectInstallPath);
 
-    openfluid::tools::CopyDirectoryRecursively(boost::filesystem::path(ProjectsSourcePath+"/"+ProjectDir).string(),
+    openfluid::tools::copyDirectoryRecursively(boost::filesystem::path(ProjectsSourcePath+"/"+ProjectDir).string(),
                                                AllProjectsInstallPath.string());
     mp_Listener->onSubstageCompleted("Done");
     return true;

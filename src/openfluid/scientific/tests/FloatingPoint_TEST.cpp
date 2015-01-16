@@ -30,56 +30,37 @@
 */
 
 
+
 /**
-  @file FileDownloader.hpp
+  @file ScientificHelpers_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
-
-#ifndef __OPENFLUID_TOOLS_FILEDOWNLOADER_HPP__
-#define __OPENFLUID_TOOLS_FILEDOWNLOADER_HPP__
-
-#include <string>
-#include <openfluid/dllexport.hpp>
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_scientifichelpers
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-namespace openfluid { namespace tools {
-
-/**
-  Management of data downloads over network
-*/
-class OPENFLUID_API FileDownloader
+BOOST_AUTO_TEST_CASE(check_operations)
 {
+  double Val = 0.01;
+
+  BOOST_REQUIRE_EQUAL(openfluid::scientific::isVeryClose(Val,0.01),true);
+  BOOST_REQUIRE_EQUAL(openfluid::scientific::isVeryClose(Val,0.02),false);
+
+}
 
 
-  public:
-
-    /**
-     Downloads URL contents to string
-     @param[in] URL The URL for the download
-     @param[out] Contents The string containing the downloaded contents
-    */
-    static bool downloadToString(const std::string& URL, std::string& Contents);
-
-    /**
-     Downloads URL contents to file
-     @param[in] URL The URL for the download
-     @param[out] FilePath The path of the file to store the downloaded contents
-    */
-    static bool downloadToFile(const std::string& URL, const std::string& FilePath);
-
-};
-
-
-} } // namespaces
-
-
-
-#endif /* __OPENFLUID_TOOLS_FILEDOWNLOADER_HPP__ */
+// =====================================================================
+// =====================================================================
 

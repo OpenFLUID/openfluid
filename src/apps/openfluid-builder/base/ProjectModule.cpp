@@ -51,7 +51,6 @@
 
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
-
 #include <openfluid/tools/QtHelpers.hpp>
 
 #include <openfluid/ui/common/PreferencesDialog.hpp>

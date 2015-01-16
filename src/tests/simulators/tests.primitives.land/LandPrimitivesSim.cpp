@@ -6,6 +6,7 @@
  */
 
 
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
@@ -295,7 +296,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       OPENFLUID_UNITS_ORDERED_LOOP("TU", TU)
       {
         OPENFLUID_GetAttribute(TU,"indatadbl",DblValue);
-        if (!openfluid::tools::IsVeryClose(double(TU->getID())*0.1,DblValue))
+        if (!openfluid::scientific::isVeryClose(double(TU->getID())*0.1,DblValue))
           OPENFLUID_RaiseError("tests.primitives.land","attributes error for indatadbl");
 
         OPENFLUID_GetAttribute(TU,"indatastr",StrValue);

@@ -29,69 +29,62 @@
   
 */
 
+
+
 /**
-  @file GDALHelpers.hpp
+  @file DataHelpers.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
-#ifndef __OPENFLUID_TOOLS_GDALHELPERS_HPP__
-#define __OPENFLUID_TOOLS_GDALHELPERS_HPP__
+#include <openfluid/tools/DataHelpers.hpp>
 
-#include <openfluid/dllexport.hpp>
-
-#include <vector>
-#include <map>
-#include <set>
-#include <QString>
+#include <boost/algorithm/string.hpp>
 
 
 namespace openfluid { namespace tools {
 
-/**
-  Structure associating a driver label with a list of corresponding files extensions
-*/
-struct GDALDriverInfos_t {
-	/** Label of the driver */
-    std::string Label;
 
-    /** Vector of files extensions */
-    std::vector<std::string> FilesExts;
-};
+void tokenizeString(const std::string& StrToTokenize,
+                    std::vector<std::string>& Tokens,
+                    const std::string& Delimiters = " ")
+{
+  Tokens.clear();
 
+  std::string::size_type LastPos = StrToTokenize.find_first_not_of(Delimiters, 0);
+  std::string::size_type Pos = StrToTokenize.find_first_of(Delimiters, LastPos);
 
-/**
-  Map of drivercode => openfluid::tools::GDALDriverInfos_t
-*/
-typedef std::map<std::string,GDALDriverInfos_t> GDALDriversFilesExts_t;
+  while (std::string::npos != Pos || std::string::npos != LastPos)
+  {
+    // Found a token, add it to the vector.
+    Tokens.push_back(StrToTokenize.substr(LastPos, Pos - LastPos));
+    // Skip delimiters.  Note the "not_of"
+    LastPos = StrToTokenize.find_first_not_of(Delimiters, Pos);
+    // Find next "non-delimiter"
+    Pos = StrToTokenize.find_first_of(Delimiters, LastPos);
+  }
+}
 
 
 // =====================================================================
 // =====================================================================
 
-/**
-  Returns a list of OGR drivers available in OpenFLUID for GIS vector files
-  @return an openfluid::tools::GDALDriversFilesExts_t
-*/
-const GDALDriversFilesExts_t OPENFLUID_API getOGRFilesDriversForOpenFLUID();
 
+std::vector<std::string> splitString(const std::string& StrToSplit,
+                                     const std::string& Separators,
+                                     bool ReturnsEmpty)
+{
+  std::vector<std::string> SplitParts;
 
-/**
-  Returns a list of GDAL drivers available in OpenFLUID for GIS vector files
-  @return an openfluid::tools::GDALDriversFilesExts_t
-*/
-const GDALDriversFilesExts_t OPENFLUID_API getGDALFilesDriversForOpenFLUID();
+  boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
+  if (ReturnsEmpty) TokCompress = boost::token_compress_off;
 
+  boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators),TokCompress);
 
-/**
-  Returns a set of GIS vector files extensions available in OpenFLUID
-  @return a set of files extensions
-*/
-const std::set<std::string> OPENFLUID_API getOGRFilesExtensionsForOpenFLUID();
+  return SplitParts;
+}
+
 
 
 } } // namespaces
-
-
-#endif /* __OPENFLUID_TOOLS_GDALHELPERS_HPP__ */

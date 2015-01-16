@@ -41,10 +41,8 @@
 #ifndef __OPENFLUID_TOOLS_HPP__
 #define __OPENFLUID_TOOLS_HPP__
 
-#include <openfluid/tools/ColTextParser.hpp>
-#include <openfluid/tools/DistributionBindings.hpp>
-#include <openfluid/tools/ChronFileLinearInterpolator.hpp>
-#include <openfluid/tools/ProgressiveChronFileReader.hpp>
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/FilesHelpers.hpp>
 
 #endif /* __OPENFLUID_TOOLS_HPP__ */

@@ -38,10 +38,10 @@
  */
 
 
-#include <boost/foreach.hpp>
 
+#include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
-#include <openfluid/tools/ExternalProgram.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 
 #include <QDir>
 #include <QProcess>
@@ -215,7 +215,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
               OPENFLUID_RaiseError("No graph defined");
 
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("serie"))
+      foreach (const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("serie"))
       {
         std::string SerieID = v.first;
 
@@ -228,7 +228,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         SInfo.Style = ParamsPT.get("serie."+SerieID+".style","line");
         SInfo.Color = ParamsPT.get("serie."+SerieID+".color","");
 
-        if (!SInfo.VarName.empty() && !SInfo.UnitClass.empty() && openfluid::tools::ConvertString(UnitIDStr,&SInfo.UnitID))
+        if (!SInfo.VarName.empty() && !SInfo.UnitClass.empty() && openfluid::tools::convertString(UnitIDStr,&SInfo.UnitID))
         {
           openfluid::core::SpatialUnit* TmpU;
           TmpU = mp_SpatialData->spatialUnit(SInfo.UnitClass,SInfo.UnitID);
@@ -248,7 +248,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       }
 
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("graph"))
+      foreach (const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("graph"))
       {
         std::string GraphID = v.first;
 
@@ -258,7 +258,8 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
          GInfo.Key = ParamsPT.get("graph."+GraphID+".key","default");
          GInfo.YLabel = ParamsPT.get("graph."+GraphID+".ylabel","");
 
-         std::vector<std::string> SeriesStr = openfluid::tools::SplitString(ParamsPT.get("graph."+GraphID+".series",""),";",false);
+         std::vector<std::string> SeriesStr = openfluid::tools::splitString(ParamsPT.get("graph."+GraphID+".series",""),
+                                                                            ";",false);
 
          for (std::vector<std::string>::const_iterator it = SeriesStr.begin();it != SeriesStr.end();++it)
          {
@@ -378,8 +379,8 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
     {
       if (m_TryOpenGNUplot)
       {
-        openfluid::tools::ExternalProgram GNUPlotProgram =
-            openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GnuplotProgram);
+        openfluid::utils::ExternalProgram GNUPlotProgram =
+            openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GnuplotProgram);
 
         if (GNUPlotProgram.isFound())
         {
@@ -447,7 +448,6 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       std::map<std::string,GraphInfo>::iterator Gite = m_Graphs.end();
 
 
-
       for (Git = Gitb; Git != Gite; ++Git)
       {
 
@@ -477,7 +477,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
             else
             {
               std::string UnitIDStr;
-              openfluid::tools::ConvertValue((*Sit)->UnitID,&UnitIDStr);
+              openfluid::tools::convertValue((*Sit)->UnitID,&UnitIDStr);
               Label= (*Sit)->VarName + " (" + (*Sit)->UnitClass + "#" + UnitIDStr + ")";
             }
           }

@@ -39,8 +39,6 @@
 #include <openfluid/market/MarketSrcBuilderextPackage.hpp>
 #include <openfluid/market/MarketBinBuilderextPackage.hpp>
 #include <openfluid/market/MarketDatasetPackage.hpp>
-#include <openfluid/tools/FileDownloader.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/config.hpp>
 
 #include <QSettings>
@@ -50,6 +48,8 @@
 #include <deque>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utils/FileDownloader.hpp>
 
 
 namespace openfluid { namespace market {
@@ -449,7 +449,7 @@ void MarketClient::downloadAssociatedLicenses()
 
   for (Licit = m_LicensesTexts.begin(); Licit != m_LicensesTexts.end(); ++Licit)
   {
-    if (!openfluid::tools::FileDownloader::downloadToString(m_URL+"/licenses/"+Licit->first+".txt",Licit->second))
+    if (!openfluid::utils::FileDownloader::downloadToString(m_URL+"/licenses/"+Licit->first+".txt",Licit->second))
       Licit->second = "(license text not available)";
   }
 }
@@ -488,7 +488,7 @@ void MarketClient::connect(const std::string& URL)
   // Downloading OpenFLUID-Marketplace file
   std::string MarketFileLocal = openfluid::base::RuntimeEnvironment::instance()->getTempDir()+"/marketplace.tmp";
 
-  if (!m_IsConnected && openfluid::tools::FileDownloader::downloadToFile(MarketFileURL, MarketFileLocal))
+  if (!m_IsConnected && openfluid::utils::FileDownloader::downloadToFile(MarketFileURL, MarketFileLocal))
   {
     lockMarketTemp();
     parseMarketSiteData(MarketFileLocal);
@@ -509,7 +509,7 @@ void MarketClient::connect(const std::string& URL)
           openfluid::base::RuntimeEnvironment::instance()->getTempDir()+"/"+
           QString("catalog_%1.tmp").arg(CUit->first).toStdString();
 
-      if (openfluid::tools::FileDownloader::downloadToFile(CUit->second, CatalogFileLocal))
+      if (openfluid::utils::FileDownloader::downloadToFile(CUit->second, CatalogFileLocal))
         parseCatalogData(CUit->first, CatalogFileLocal);
 
     }

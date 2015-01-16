@@ -40,8 +40,8 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/tools/ColTextParser.hpp>
 #include <openfluid/tools/ChronFileInterpolator.hpp>
+#include <openfluid/tools/ColumnTextParser.hpp>
 
 namespace openfluid { namespace tools {
 

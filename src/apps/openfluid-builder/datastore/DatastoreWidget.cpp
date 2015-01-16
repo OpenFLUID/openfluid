@@ -44,11 +44,10 @@
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
-
 #include <gdal.h>
 #include <gdal_priv.h>
 #include <ogr_api.h>
+#include <openfluid/tools/QtHelpers.hpp>
 #include "ogrsf_frmts.h"
 
 #include <QFileInfo>

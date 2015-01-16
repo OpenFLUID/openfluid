@@ -38,6 +38,7 @@
 
 #include "MessagesSim.h"
 
+#include <openfluid/tools/DataHelpers.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -146,16 +147,16 @@ openfluid::base::SchedulingRequest MessagesSimulator::runStep()
 
   std::string RptStr, IDStr, TSStr;
 
-  openfluid::tools::ConvertValue((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TSStr);
+  openfluid::tools::convertValue((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TSStr);
 
 
   OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
   {
-    openfluid::tools::ConvertValue(TU->getID(),&IDStr);
+    openfluid::tools::convertValue(TU->getID(),&IDStr);
 
     for (i = 0; i< m_RepeatMessages; i++)
     {
-      openfluid::tools::ConvertValue((i+1),&RptStr);
+      openfluid::tools::convertValue((i+1),&RptStr);
       OPENFLUID_RaiseWarning("["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages simulator");
     }
 

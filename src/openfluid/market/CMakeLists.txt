@@ -20,6 +20,7 @@ SET_TARGET_PROPERTIES(openfluid-market PROPERTIES VERSION "${VERSION_MAJOR}.${VE
 TARGET_LINK_LIBRARIES(openfluid-market
                       openfluid-base
                       openfluid-tools
+                      openfluid-utils
                       ${QT_QTCORE_LIBRARIES} 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 

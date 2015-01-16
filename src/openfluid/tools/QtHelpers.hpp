@@ -41,7 +41,6 @@
 #define __OPENFLUID_TOOLS_QTHELPERS_HPP__
 
 
-#include <openfluid/tools/GDALHelpers.hpp>
 #include <openfluid/core/DateTime.hpp>
 
 #include <string>
@@ -59,6 +58,7 @@
 
 
 namespace openfluid { namespace tools {
+
 
 /**
   Transforms the given string to a string compatible with the INI files managed with QSettings.
@@ -89,7 +89,7 @@ std::list<std::string> OPENFLUID_API toStdStringList(const QStringList& StrList)
   @param[in] DT The OpenFLUID DateTime to transform
   @return The DT transformed into QDateTime
 */
-QDateTime OPENFLUID_API toQDateTime(openfluid::core::DateTime DT);
+QDateTime OPENFLUID_API toQDateTime(const openfluid::core::DateTime& DT);
 
 
 /**
@@ -123,17 +123,6 @@ QStringList OPENFLUID_API toQStringList(const std::list<std::string>& StrList);
 */
 QStringList OPENFLUID_API toQStringList(const std::set<int>& IntSet);
 
-
-/**
-  Returns the available GDAL/OGR formats as a QFileDialog formats string.
-  The string is built according to GDAL/OGR available drivers.
-  The OGRRegisterAll() and/or GDALAllRegister() instruction must be called before using this function.
-  @param[in] Drivers The available extensions list
-  @param[in] AllFormatsLabel the label displayed for all formats
-  @return the format string (e.g. "All vector files (*.shp *.mif *.tab);;ESRI Shapefiles (*.shp);;Mapinfo (*.mif *.tab)")
-*/
-QString OPENFLUID_API getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
-                                                   const QString& AllFormatsLabel);
 
 /**
   Escapes characters in the given string to be compatible with the XML format.

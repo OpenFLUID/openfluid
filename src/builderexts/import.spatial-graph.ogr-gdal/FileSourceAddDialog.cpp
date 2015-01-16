@@ -37,10 +37,11 @@
  */
 
 
+#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/utils/GDALHelpers.hpp>
+
 #include "ui_SourceAddDialog.h"
 #include "FileSourceAddDialog.hpp"
-
-#include <openfluid/tools/QtHelpers.hpp>
 
 #include <QFileDialog>
 
@@ -78,7 +79,7 @@ void FileSourceAddDialog::selectFile()
       QFileDialog::getOpenFileName(this,
                                    tr("Open file"),
                                    m_InputDir,
-                                   openfluid::tools::getOGRGDALFormatsForQFileDialogs(openfluid::tools::getOGRFilesDriversForOpenFLUID(),
+                                   openfluid::utils::getOGRGDALFormatsForQFileDialogs(openfluid::utils::getOGRFilesDriversForOpenFLUID(),
                                                                                       tr("All vector files")));
 
   m_CurrentSourceDisplay = m_CurrentSourceURI;

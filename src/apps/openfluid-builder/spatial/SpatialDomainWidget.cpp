@@ -38,8 +38,6 @@
  */
 
 
-#include <openfluid/tools/QtHelpers.hpp>
-
 #include "ui_SpatialDomainWidget.h"
 #include "SpatialDomainWidget.hpp"
 #include "UnitsClassWidget.hpp"
@@ -54,6 +52,7 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
 
 #include <QTableWidgetItem>

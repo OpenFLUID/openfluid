@@ -38,6 +38,7 @@
  */
 
 
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
@@ -149,7 +150,7 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
     {
 
       OPENFLUID_GetVariable(TU,"tests.fixed",OPENFLUID_GetCurrentTimeIndex(),SValue);
-      if (!openfluid::tools::IsCloseEnough(SValue,12.7))
+      if (!openfluid::scientific::isCloseEnough<double>(SValue,12.7))
         OPENFLUID_RaiseError("tests.generators","incorrect value for tests.fixed variable");
 
 
@@ -197,12 +198,12 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
       if (TU->getID() % 2 != 0)
       {
 
-        if (!openfluid::tools::IsCloseEnough(SValue,double(OPENFLUID_GetCurrentTimeIndex())/double(OPENFLUID_GetDefaultDeltaT())))
+        if (!openfluid::scientific::isCloseEnough<double>(SValue,double(OPENFLUID_GetCurrentTimeIndex())/double(OPENFLUID_GetDefaultDeltaT())))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.inject variable (source3.dat)");
       }
       else
       {
-        if (!openfluid::tools::IsCloseEnough(SValue,0.0))
+        if (!openfluid::scientific::isCloseEnough<double>(SValue,0.0))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.inject variable (source4.dat)");
       }
 
@@ -210,7 +211,7 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
       if (OPENFLUID_GetCurrentTimeIndex() > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
       {
         OPENFLUID_GetVariable(TU,"tests.fixedprev",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),VValue);
-        if (!openfluid::tools::IsCloseEnough(VValue[0],5.3))
+        if (!openfluid::scientific::isCloseEnough(VValue[0],5.3))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.fixedprev variable");
       }
 

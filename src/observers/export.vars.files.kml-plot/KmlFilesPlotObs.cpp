@@ -43,9 +43,8 @@
 #include <iostream>
 #include <iomanip>
 
-#include <openfluid/tools/ExternalProgram.hpp>
-
-#include <boost/foreach.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 
 #include "../KmlObserverBase.hpp"
 
@@ -126,7 +125,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
     std::string m_GNUPlotSubDir;
 
-    openfluid::tools::ExternalProgram m_PlotProgram;
+    openfluid::utils::ExternalProgram m_PlotProgram;
 
     std::string m_PlotXTics;
 
@@ -323,7 +322,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
     KmlFilesPlotObserver() :
       KmlObserverBase(), m_GNUPlotSubDir("gnuplot"),
-      m_PlotProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GnuplotProgram))
+      m_PlotProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GnuplotProgram))
     {
       m_TmpSubDir = "export.vars.files.kml-plot";
       m_OutputFileName = "kmlplot.kmz";
@@ -374,7 +373,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
         OPENFLUID_RaiseError("No layers defined");
 
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("layers"))
+      foreach (const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("layers"))
       {
         std::string LayerID = v.first;
 
@@ -450,10 +449,10 @@ class KmlFilesPlotObserver : public KmlObserverBase
       if (!m_OKToGo) return;
 
 
-      boost::filesystem::remove_all(boost::filesystem::path(m_TmpDir+"/"+m_GNUPlotSubDir));
-      boost::filesystem::create_directories(boost::filesystem::path(m_TmpDir+"/"+m_GNUPlotSubDir));
+      openfluid::tools::removeDirectoryRecursively(QString::fromStdString(m_TmpDir+"/"+m_GNUPlotSubDir));
+      QDir().mkpath(QString::fromStdString(m_TmpDir+"/"+m_GNUPlotSubDir));
 
-      if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir+"/"+m_GNUPlotSubDir)))
+      if (!QFileInfo(QString::fromStdString(m_TmpDir+"/"+m_GNUPlotSubDir)).isDir())
       {
         OPENFLUID_RaiseWarning("Cannot initialize gnuplot temporary directory");
         m_OKToGo = false;
@@ -472,7 +471,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
         }
         else
         {
-          openfluid::tools::TokenizeString((*it).VarsListStr,(*it).VarsList,";");
+          openfluid::tools::tokenizeString((*it).VarsListStr,(*it).VarsList,";");
         }
         if ((*it).VarsList.empty())
         {

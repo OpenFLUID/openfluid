@@ -37,15 +37,15 @@
  */
 
 
-#ifndef __OPENFLUID_TOOLS_EXTERNALPROGRAM_HPP__
-#define __OPENFLUID_TOOLS_EXTERNALPROGRAM_HPP__
+#ifndef __OPENFLUID_UTILS_EXTERNALPROGRAM_HPP__
+#define __OPENFLUID_UTILS_EXTERNALPROGRAM_HPP__
 
 #include <openfluid/dllexport.hpp>
 
 #include <QStringList>
 
 
-namespace openfluid { namespace tools {
+namespace openfluid { namespace utils {
 
 /**
   Management of external programs
@@ -132,4 +132,4 @@ class OPENFLUID_API ExternalProgram
 
 } } // namespaces
 
-#endif /* __OPENFLUID_TOOLS_EXTERNALPROGRAM_HPP__ */
+#endif /* __OPENFLUID_UTILS_EXTERNALPROGRAM_HPP__ */

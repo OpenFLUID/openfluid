@@ -39,7 +39,7 @@
 
 
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/tools/FileDownloader.hpp>
+#include <openfluid/utils/FileDownloader.hpp>
 
 #include "NewslineDownloadWorker.hpp"
 #include "builderconfig.hpp"
@@ -90,12 +90,12 @@ void NewslineDownloadWorker::run()
 
   bool DownloadSucceeded = false;
 
-  if (openfluid::tools::FileDownloader::downloadToFile(BUILDER_NEWSLINE_SOURCEURL.toStdString()+"?request=rss&lang="+m_ShortLocale.toStdString(),
+  if (openfluid::utils::FileDownloader::downloadToFile(BUILDER_NEWSLINE_SOURCEURL.toStdString()+"?request=rss&lang="+m_ShortLocale.toStdString(),
                                                        RSSFile.toStdString()))
   {
     DownloadSucceeded = true;
   }
-  else if(openfluid::tools::FileDownloader::downloadToFile(BUILDER_NEWSLINE_SOURCEURL.toStdString()+"?request=rss",
+  else if(openfluid::utils::FileDownloader::downloadToFile(BUILDER_NEWSLINE_SOURCEURL.toStdString()+"?request=rss",
                                                        RSSDefaultFile.toStdString()))
   {
     DownloadSucceeded = true;

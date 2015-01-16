@@ -136,7 +136,7 @@ class CouplingESimulator : public openfluid::ware::PluggableSimulator
     }
 
 
-    openfluid::tools::Sleep(5000);
+    openfluid::tools::sleep(5000);
 
     return DefaultDeltaT();
   }

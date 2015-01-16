@@ -40,6 +40,8 @@
 
 
 #include <openfluid/machine/FixedGenerator.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
+
 
 namespace openfluid { namespace machine {
 
@@ -71,7 +73,7 @@ void FixedGenerator::initParams(const openfluid::ware::WareParams_t& Params)
     throw openfluid::base::FrameworkException("FixedGenerator::initParams","missing fixed value for generator");
 
   std::string DeltaTStr;
-  if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) && !openfluid::tools::ConvertString(DeltaTStr,&m_DeltaT))
+  if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) && !openfluid::tools::convertString(DeltaTStr,&m_DeltaT))
     throw openfluid::base::FrameworkException("RandomGenerator::initParams","wrong value for deltat");
 }
 

@@ -41,7 +41,7 @@
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
@@ -276,7 +276,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   {
     std::vector<std::string> Tokens;
 
-    openfluid::tools::TokenizeString(it->second.data(),Tokens,";");
+    openfluid::tools::tokenizeString(it->second.data(),Tokens,";");
 
     Vals.clear();
 

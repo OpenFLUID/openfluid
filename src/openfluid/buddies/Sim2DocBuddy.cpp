@@ -53,7 +53,8 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>
 #include <openfluid/config.hpp>
@@ -67,10 +68,10 @@ typedef parse_info<std::string::const_iterator>   Parser_t;
 
 Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
   OpenFLUIDBuddy(Listener),
-  m_PDFLatexProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::PdfLatexProgram)),
-  m_BibtexProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::BibTexProgram)),
-  m_Latex2HTMLProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::Latex2HTMLProgram)),
-  m_GCCProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GccProgram))
+  m_PDFLatexProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::PdfLatexProgram)),
+  m_BibtexProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::BibTexProgram)),
+  m_Latex2HTMLProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::Latex2HTMLProgram)),
+  m_GCCProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GccProgram))
 {
   m_RequiredOptionsHelp["outputdir"] = "path for generated files";
   m_RequiredOptionsHelp["inputcpp"] = "path for cpp file to parse";
@@ -158,7 +159,7 @@ std::string Sim2DocBuddy::toLatexFriendly(std::string Content)
 void Sim2DocBuddy::addLatexDataCatBegin(std::string& Content, const std::string Title, const std::string ColsFormat)
 {
   std::string ColsNbrStr;
-  openfluid::tools::ConvertValue(ColsFormat.length(),&ColsNbrStr);
+  openfluid::tools::convertValue(ColsFormat.length(),&ColsNbrStr);
 
   Content = Content + "\\begin{center}\\begin{small}"+"\n"+"\\begin{tabularx}{\\linewidth}{"+ColsFormat+"}"+"\n";
   Content = Content + "\\multicolumn{"+ColsNbrStr+"}{l}{\\begin{large}\\textbf{"+Title+"}\\end{large}}\\\\"+"\n"+"\\hline"+"\n";
@@ -188,7 +189,7 @@ void Sim2DocBuddy::copyDocDirectory()
     if (boost::filesystem::is_directory(InputDocDirPath))
     {
       mp_Listener->onSubstageCompleted("** Processing doc directory...");
-      openfluid::tools::CopyDirectoryRecursively(InputDocDirPath.string(),m_OutputDirPath.string(),true);
+      openfluid::tools::copyDirectoryRecursively(InputDocDirPath.string(),m_OutputDirPath.string(),true);
       mp_Listener->onStageCompleted(" done");
 
     }
@@ -241,7 +242,10 @@ void Sim2DocBuddy::cpreprocessCPP()
 
   boost::filesystem::remove(m_CProcessedFilePath);
 
-  std::string CommandToRun = m_GCCProgram.getFullProgramPath().toStdString() + " -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed " + m_InputFilePath.string() + " > " + m_CProcessedFilePath.string() + " 2>/dev/null";
+  std::string CommandToRun = m_GCCProgram.getFullProgramPath().toStdString() +
+                             " -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed " +
+                             m_InputFilePath.string() + " > " + m_CProcessedFilePath.string() +
+                             " 2>/dev/null";
 
   if (system(CommandToRun.c_str()) == 0)
     throw openfluid::base::FrameworkException("Sim2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
@@ -850,7 +854,10 @@ void Sim2DocBuddy::buildHTML()
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
     throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
 
-  std::string CommandToRun = m_Latex2HTMLProgram.getFullProgramPath().toStdString() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() +" > /dev/null";
+  std::string CommandToRun = m_Latex2HTMLProgram.getFullProgramPath().toStdString() +
+                             " -dir="+m_OutputDirPath.string() +
+                             " " +
+                             m_OutputLatexFilePath.string() + " > /dev/null";
 
   if (system(CommandToRun.c_str()) != 0)
     throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()","Error running latex2html command");

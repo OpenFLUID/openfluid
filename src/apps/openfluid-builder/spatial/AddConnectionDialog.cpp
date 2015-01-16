@@ -38,7 +38,6 @@
  */
 
 #include <openfluid/tools/QtHelpers.hpp>
-
 #include "ui_AddConnectionDialog.h"
 #include "AddConnectionDialog.hpp"
 #include <openfluid/ui/config.hpp>

@@ -40,10 +40,9 @@
 
 
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
-
+#include <openfluid/tools/DataHelpers.hpp>
 #include <vector>
 
-#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace buddies {
@@ -101,11 +100,11 @@ bool OpenFLUIDBuddy::parseOptions(std::string OptsStr)
   std::vector<std::string> OptsItems;
   std::vector<std::string> OptKeyValue;
 
-  OptsItems = openfluid::tools::SplitString(OptsStr,",");
+  OptsItems = openfluid::tools::splitString(OptsStr,",");
 
   for (unsigned int i = 0; i<OptsItems.size();i++)
   {
-    OptKeyValue = openfluid::tools::SplitString(OptsItems[i],"=");
+    OptKeyValue = openfluid::tools::splitString(OptsItems[i],"=");
 
     if (OptKeyValue.size() == 2 )
     {

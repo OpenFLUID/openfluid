@@ -44,7 +44,9 @@
 #include <boost/filesystem/operations.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
+
 #include <openfluid/config.hpp>
 
 #if defined __unix__ || defined __APPLE__
@@ -339,16 +341,16 @@ void RuntimeEnvironment::addExtraSimulatorsPluginsPaths(
   std::vector<std::string> ExtraPaths;
 
 #if  defined __unix__ || defined __APPLE__
-  ExtraPaths = openfluid::tools::SplitString(SemicolonSeparatedPaths, ":");
+  ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths, ":");
 #endif
 
 #if WIN32
-  ExtraPaths = openfluid::tools::SplitString(SemicolonSeparatedPaths,";");
+  ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths,";");
 #endif
 
   for (int i = ExtraPaths.size() - 1; i >= 0; i--)
     m_ExtraSimulatorsPlugsDirs.insert(m_ExtraSimulatorsPlugsDirs.begin(), 1,
-        openfluid::tools::RemoveTrailingSlashes(ExtraPaths[i]));
+        openfluid::tools::removeTrailingSlashes(ExtraPaths[i]));
 }
 
 
@@ -389,16 +391,16 @@ void RuntimeEnvironment::addExtraObserversPluginsPaths(
   std::vector<std::string> ExtraPaths;
 
 #if  defined __unix__ || defined __APPLE__
-  ExtraPaths = openfluid::tools::SplitString(SemicolonSeparatedPaths, ":");
+  ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths, ":");
 #endif
 
 #if WIN32
-  ExtraPaths = openfluid::tools::SplitString(SemicolonSeparatedPaths,";");
+  ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths,";");
 #endif
 
   for (int i = ExtraPaths.size() - 1; i >= 0; i--)
     m_ExtraObserversPlugsDirs.insert(m_ExtraObserversPlugsDirs.begin(), 1,
-        openfluid::tools::RemoveTrailingSlashes(ExtraPaths[i]));
+        openfluid::tools::removeTrailingSlashes(ExtraPaths[i]));
 }
 
 // =====================================================================

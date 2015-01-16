@@ -160,8 +160,7 @@ class OPENFLUID_API PluggableWare
      */
     static bool isWellFormated(const openfluid::ware::WareParamKey_t& ParameterKey);
 
-    static boost::property_tree::ptree getParamsAsPropertyTree(
-        const WareParams_t& Params);
+    static boost::property_tree::ptree getParamsAsPropertyTree(const WareParams_t& Params);
 
 };
 

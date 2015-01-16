@@ -33,6 +33,7 @@
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 
 
 // =====================================================================
@@ -160,7 +161,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       m_ParamDouble = 0.0;
       if (!OPENFLUID_GetSimulatorParameter(Params,"doubleparam",m_ParamDouble))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doubleparam) get by reference");
-      if(!openfluid::tools::IsCloseEnough(m_ParamDouble,0.1,0.00001))
+      if(!openfluid::scientific::isCloseEnough(m_ParamDouble,0.1,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doubleparam, value) get by reference");
 
       if (OPENFLUID_GetSimulatorParameter(Params,"wrongdoubleparam",m_ParamDouble))
@@ -169,7 +170,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       if (!OPENFLUID_GetSimulatorParameter(Params,"doubleparam",ParamDoubleVal))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doubleparam) into DoubleValue");
 
-      if(!openfluid::tools::IsCloseEnough(ParamDoubleVal.get(),0.1,0.00001))
+      if(!openfluid::scientific::isCloseEnough(ParamDoubleVal.get(),0.1,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doubleparam, value) into DoubleValue");
 
       if (OPENFLUID_GetSimulatorParameter(Params,"wrongdoubleparam",ParamDoubleVal))
@@ -184,7 +185,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doubleparam) into VectorValue");
       if(ParamVectorVal.size() != 1)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doubleparam, size) into VectorValue");
-      if(!openfluid::tools::IsCloseEnough(ParamVectorVal[0],0.1,0.00001))
+      if(!openfluid::scientific::isCloseEnough(ParamVectorVal[0],0.1,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doubleparam, value) into VectorValue");
 
 
@@ -201,7 +202,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       if (!OPENFLUID_GetSimulatorParameter(Params,"longparam",ParamDoubleVal))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (longparam) into DoubleValue");
-      if(!openfluid::tools::IsCloseEnough(ParamDoubleVal.get(),10,0.00001))
+      if(!openfluid::scientific::isCloseEnough<double>(ParamDoubleVal.get(),10,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (longparam, value) into DoubleValue");
 
       if (!OPENFLUID_GetSimulatorParameter(Params,"longparam",ParamStrVal))
@@ -213,7 +214,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (longparam) into VectorValue");
       if(ParamVectorVal.size() != 1)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (longparam, size) into VectorValue");
-      if(!openfluid::tools::IsCloseEnough(ParamVectorVal[0],10,0.00001))
+      if(!openfluid::scientific::isCloseEnough<double>(ParamVectorVal[0],10,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (longparam, value) into VectorValue");
 
 
@@ -260,9 +261,9 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doublearrayparam) get by reference");
       if (ParamDoubleArray.size() != 4)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doublearrayparam, size) get by reference");
-      if (!openfluid::tools::IsCloseEnough(ParamDoubleArray[2],1.3,0.00001))
+      if (!openfluid::scientific::isCloseEnough(ParamDoubleArray[2],1.3,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doublearrayparam, value) get by reference");
-      if (openfluid::tools::IsCloseEnough(ParamDoubleArray[3],1.3,0.00001))
+      if (openfluid::scientific::isCloseEnough(ParamDoubleArray[3],1.3,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doublearrayparam, wrongvalue) get by reference");
 
       if (OPENFLUID_GetSimulatorParameter(Params,"wrongdoublearrayparam",ParamDoubleArray))
@@ -280,7 +281,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doublearrayparam) into VectorValue");
       if(ParamVectorVal.size() != 4)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doublearrayparam, size) into VectorValue");
-      if(!openfluid::tools::IsCloseEnough(ParamVectorVal[2],1.3,0.00001))
+      if(!openfluid::scientific::isCloseEnough(ParamVectorVal[2],1.3,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (doublearrayparam, value) into VectorValue");
 
 
@@ -311,7 +312,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (longarrayparam) into VectorValue");
       if(ParamVectorVal.size() != 5)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (longarrayparam, size) into VectorValue");
-      if(!openfluid::tools::IsCloseEnough(ParamVectorVal[3],14,0.00001))
+      if(!openfluid::scientific::isCloseEnough<double>(ParamVectorVal[3],14,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (longarrayparam, value) into VectorValue");
 
       // ====== Matrix param ======
@@ -322,11 +323,11 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (matrixparam, cols nb) get by reference");
       if (ParamMatrixVal.getRowsNbr() != 3)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (matrixparam, rows nb) get by reference");
-      if (!openfluid::tools::IsCloseEnough(ParamMatrixVal.get(0,0),1.1))
+      if (!openfluid::scientific::isCloseEnough(ParamMatrixVal.get(0,0),1.1))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (matrixparam, value) get by reference");
-      if (!openfluid::tools::IsCloseEnough(ParamMatrixVal.get(0,1),2.1))
+      if (!openfluid::scientific::isCloseEnough(ParamMatrixVal.get(0,1),2.1))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (matrixparam, wrongvalue) get by reference");
-      if (!openfluid::tools::IsCloseEnough(ParamMatrixVal.get(1,2),3.2))
+      if (!openfluid::scientific::isCloseEnough(ParamMatrixVal.get(1,2),3.2))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (matrixparam, wrongvalue) get by reference");
 
       if (OPENFLUID_GetSimulatorParameter(Params,"wrongmatrixparam",ParamMatrixVal))
@@ -355,7 +356,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       double aDouble = 0.0;
       if(!ParamMapVal["key1"].asStringValue().toDouble(aDouble))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (mapparam, type for key key1)");
-      if(!openfluid::tools::IsCloseEnough(aDouble,1.1))
+      if(!openfluid::scientific::isCloseEnough(aDouble,1.1))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (mapparam, value for key key1)");
       if(ParamMapVal.getString("key2") != "a string")
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetSimulatorParameter (mapparam, value for key key2)");

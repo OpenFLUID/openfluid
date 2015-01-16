@@ -42,7 +42,6 @@
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
-
 #include <openfluid/tools/QtHelpers.hpp>
 
 #include "ui_WaresManagementWidget.h"

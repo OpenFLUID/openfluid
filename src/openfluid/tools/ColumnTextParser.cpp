@@ -32,21 +32,20 @@
 
 
 /**
-  @file
+  @file ColumnTextParser.cpp
   @brief implements column file parser
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#include <openfluid/tools/ColTextParser.hpp>
-
 #include <iostream>
 #include <fstream>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
+#include <openfluid/tools/ColumnTextParser.hpp>
 
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 
 
 // =====================================================================
@@ -82,7 +81,7 @@ std::vector<std::string> ColumnTextParser::tokenizeLine(const std::string& Line)
 {
   std::vector<std::string> NewLine;
 
-  TokenizeString(Line,NewLine,m_Delimiter);
+  tokenizeString(Line,NewLine,m_Delimiter);
 
   return NewLine;
 }
@@ -198,7 +197,7 @@ bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int C
 
   bool IsOK = true;
 
-  TokenizeString(Contents,Tokens,m_Delimiter);
+  tokenizeString(Contents,Tokens,m_Delimiter);
 
   if (Tokens.size() % ColumnsNbr == 0)
   {
@@ -298,7 +297,7 @@ bool ColumnTextParser::getLongValue(unsigned int Line, unsigned int Column, long
 
   if (StrValue.length() != 0)
   {
-    return openfluid::tools::ConvertString(StrValue,Value);
+    return openfluid::tools::convertString(StrValue,Value);
   }
 
   return false;
@@ -316,7 +315,7 @@ bool ColumnTextParser::getDoubleValue(unsigned int Line, unsigned int Column, do
 
   if (StrValue.length() != 0)
   {
-    return openfluid::tools::ConvertString(StrValue,Value);
+    return openfluid::tools::convertString(StrValue,Value);
   }
 
   return false;

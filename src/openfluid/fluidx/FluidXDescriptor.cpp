@@ -39,8 +39,11 @@
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
+
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
 #include <QDomDocument>
@@ -230,7 +233,7 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
 
         if (!xmlVarSize.isNull())
         {
-          if (!openfluid::tools::ConvertString(xmlVarSize.toStdString(),
+          if (!openfluid::tools::convertString(xmlVarSize.toStdString(),
                                                &VarSize))
             throw openfluid::base::FrameworkException(
                 "FluidXDescriptor::extractModelFromNode",
@@ -329,7 +332,7 @@ void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
         int DeltaT;
         std::string ReadDeltaTStr = xmlDeltaT.toStdString();
 
-        if (!openfluid::tools::ConvertString(ReadDeltaTStr, &DeltaT))
+        if (!openfluid::tools::convertString(ReadDeltaTStr, &DeltaT))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractRunFromNode",
               "empty or wrong value for deltat (" + m_CurrentFile + ")");
@@ -367,7 +370,7 @@ void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
       {
         unsigned int ReadSteps;
 
-        if (!openfluid::tools::ConvertString(xmlSteps.toStdString(),
+        if (!openfluid::tools::convertString(xmlSteps.toStdString(),
                                              &ReadSteps))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractRunFromNode",
@@ -412,7 +415,7 @@ openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
   {
     openfluid::core::UnitID_t UnitID;
 
-    if (!openfluid::tools::ConvertString(xmlUnitID.toStdString(),
+    if (!openfluid::tools::convertString(xmlUnitID.toStdString(),
                                          &UnitID))
       throw openfluid::base::FrameworkException(
           "FluidXDescriptor::extractUnitsLinkFromNode",
@@ -449,13 +452,13 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
 
         UnitDesc->setUnitsClass(xmlUnitClass.toStdString());
 
-        if (!openfluid::tools::ConvertString(xmlUnitID.toStdString(),
+        if (!openfluid::tools::convertString(xmlUnitID.toStdString(),
                                              &UnitID))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainDefinitionFromNode",
               "wrong format for ID in unit definition (" + m_CurrentFile + ")");
 
-        if (!openfluid::tools::ConvertString(xmlPcsOrd.toStdString(),
+        if (!openfluid::tools::convertString(xmlPcsOrd.toStdString(),
                                              &PcsOrder))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainDefinitionFromNode",
@@ -511,7 +514,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
 
     std::vector<std::string> ColOrder;
 
-    ColOrder = openfluid::tools::SplitString(xmlColOrder.toStdString(),
+    ColOrder = openfluid::tools::splitString(xmlColOrder.toStdString(),
                                              ";");
 
     if (ColOrder.empty())
@@ -563,7 +566,7 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
 
         openfluid::core::UnitID_t UnitID;
 
-        if (!openfluid::tools::ConvertString(xmlUnitID.toStdString(),
+        if (!openfluid::tools::convertString(xmlUnitID.toStdString(),
                                              &UnitID))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainCalendarFromNode",
@@ -659,7 +662,7 @@ void FluidXDescriptor::extractDatastoreFromNode(QDomElement& Node)
       {
         std::string DataID;
 
-        if (!openfluid::tools::ConvertString(xmlDataID.toStdString(),
+        if (!openfluid::tools::convertString(xmlDataID.toStdString(),
                                              &DataID)
             || DataID.empty())
           throw openfluid::base::FrameworkException(
@@ -786,13 +789,11 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
         "FluidXDescriptor::loadFromDirectory",
         "directory " + DirPath + " does not exist");
 
-  std::vector<std::string> FluidXFilesToLoad = openfluid::tools::GetFilesByExt(
-      DirPath, "fluidx", true);
+  std::vector<std::string> FluidXFilesToLoad = openfluid::tools::findFilesByExtension(DirPath, "fluidx", true);
 
   if (FluidXFilesToLoad.size() == 0)
-    throw openfluid::base::FrameworkException(
-        "FluidXDescriptor::loadFromDirectory",
-        "no fluidx file found in directory " + DirPath);
+    throw openfluid::base::FrameworkException("FluidXDescriptor::loadFromDirectory",
+                                              "no fluidx file found in directory " + DirPath);
 
   std::sort(FluidXFilesToLoad.begin(), FluidXFilesToLoad.end());
 

@@ -40,6 +40,7 @@
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
+
 #include <openfluid/config.hpp>
 
 
