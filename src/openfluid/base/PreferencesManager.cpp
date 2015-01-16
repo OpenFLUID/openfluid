@@ -93,6 +93,8 @@ PreferencesManager::PreferencesManager():
     setDefaultValues();
     mp_ConfFile->sync();
   }
+
+  setTextEditorDefaults(false);
 }
 
 
@@ -1103,6 +1105,229 @@ void PreferencesManager::setAutomaticSaveBeforeBuild(bool AutoSave)
   mp_ConfFile->beginGroup("openfluid.waresdev.interface");
   mp_ConfFile->setValue("savebeforebuild",AutoSave);
   mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setTextEditorDefaults(bool ForceReset)
+{
+  mp_ConfFile->beginGroup("openfluid.waresdev.texteditor");
+
+
+  mp_ConfFile->beginGroup("syntax_highlighting");
+
+  if(! mp_ConfFile->contains("enabled") || ForceReset)
+  mp_ConfFile->setValue("enabled",true);
+
+  QMap<QString,QString> DefaultHLRules;
+
+  DefaultHLRules.insert("keyword/color","#0000FF");
+  DefaultHLRules.insert("keyword/decoration","bold");
+
+  DefaultHLRules.insert("datatype/color","system");
+  DefaultHLRules.insert("datatype/decoration","bold");
+
+  DefaultHLRules.insert("preprocessor/color","#FF00FF");
+  DefaultHLRules.insert("preprocessor/decoration","bold");
+
+  DefaultHLRules.insert("deprecated/color","#0000FF");
+  DefaultHLRules.insert("deprecated/decoration","bold,strike-through");
+
+  DefaultHLRules.insert("quoted/color","#FF0000");
+  DefaultHLRules.insert("quoted/decoration","none");
+
+  DefaultHLRules.insert("function/color","#0000FF");
+  DefaultHLRules.insert("function/decoration","none");
+
+  DefaultHLRules.insert("comment/color","#00FF00");
+  DefaultHLRules.insert("comment/decoration","italic");
+
+  for(QMap<QString,QString>::iterator it = DefaultHLRules.begin(); it != DefaultHLRules.end(); ++it)
+  {
+    if(! mp_ConfFile->contains(it.key()) || ForceReset)
+      mp_ConfFile->setValue(it.key(),it.value());
+  }
+
+  mp_ConfFile->endGroup();
+
+
+  mp_ConfFile->beginGroup("currentline_highlighting");
+
+  if(! mp_ConfFile->contains("enabled") || ForceReset)
+    mp_ConfFile->setValue("enabled",true);
+
+  if(! mp_ConfFile->contains("color") || ForceReset)
+    mp_ConfFile->setValue("color","#FFFF99");
+
+  mp_ConfFile->endGroup();
+
+
+  if(! mp_ConfFile->contains("fontname") || ForceReset)
+    mp_ConfFile->setValue("fontname","Courier");
+
+  if(! mp_ConfFile->contains("linewrapping/enabled") || ForceReset)
+     mp_ConfFile->setValue("linewrapping/enabled",true);
+
+
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isSyntaxHighlightingEnabled()
+{
+  return mp_ConfFile->value("openfluid.waresdev.texteditor/syntax_highlighting/enabled",true).toBool();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setSyntaxHighlightingEnabled(bool Enabled)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.texteditor/syntax_highlighting/enabled",Enabled);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+PreferencesManager::SyntaxHighlightingRules_t PreferencesManager::getSyntaxHighlightingRules()
+{
+  SyntaxHighlightingRules_t Rules;
+
+  mp_ConfFile->beginGroup("openfluid.waresdev.texteditor/syntax_highlighting");
+
+  QStringList StyleNames = mp_ConfFile->childGroups();
+  foreach(QString StyleName,StyleNames)
+  {
+    mp_ConfFile->beginGroup(StyleName);
+    Rules.insert(StyleName, SyntaxHighlightingRule_t(
+        mp_ConfFile->value("color","").toString(),
+        mp_ConfFile->value("decoration","").toStringList()));
+    mp_ConfFile->endGroup();
+  }
+
+   mp_ConfFile->endGroup();
+
+   return Rules;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setSyntaxHighlightingRules(const SyntaxHighlightingRules_t& Rules)
+{
+  mp_ConfFile->beginGroup("openfluid.waresdev.texteditor/syntax_highlighting");
+
+  for(SyntaxHighlightingRules_t::const_iterator it = Rules.begin(); it != Rules.end(); ++it)
+  {
+    mp_ConfFile->beginGroup(it.key());
+
+    mp_ConfFile->setValue("color",it.value().m_Color);
+    mp_ConfFile->setValue("decoration",it.value().m_Decoration);
+
+    mp_ConfFile->endGroup();
+  }
+
+  mp_ConfFile->endGroup();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isCurrentlineHighlightingEnabled()
+{
+  return mp_ConfFile->value("openfluid.waresdev.texteditor/currentline_highlighting/enabled",true).toBool();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setCurrentlineHighlightingEnabled(bool Enabled)
+{
+  mp_ConfFile->setValue("waresdev.texteditor/currentline_highlighting/enabled",Enabled);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::getCurrentlineColor()
+{
+  return mp_ConfFile->value("openfluid.waresdev.texteditor/currentline_highlighting/color","").toString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setCurrentlineColor(const QString& Color)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.texteditor/currentline_highlighting/color",Color);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::getFontName()
+{
+  return mp_ConfFile->value("openfluid.waresdev.texteditor/fontname","").toString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setFontName(const QString& FontName)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.texteditor/fontname",FontName);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isLineWrappingEnabled()
+{
+  return mp_ConfFile->value("openfluid.waresdev.texteditor/linewrapping/enabled",true).toBool();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setLineWrappingEnabled(bool Enabled)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.texteditor/linewrapping/enabled",Enabled);
   mp_ConfFile->sync();
 }
 

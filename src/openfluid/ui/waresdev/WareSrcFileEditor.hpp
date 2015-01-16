@@ -46,6 +46,8 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
+class WareSrcSyntaxHighlighter;
+
 class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 {
   Q_OBJECT
@@ -55,6 +57,10 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
     QWidget* mp_lineNumberArea;
 
     QString m_FilePath;
+
+    QColor m_LineColor;
+
+    WareSrcSyntaxHighlighter* mp_SyntaxHighlighter;
 
   private slots:
 

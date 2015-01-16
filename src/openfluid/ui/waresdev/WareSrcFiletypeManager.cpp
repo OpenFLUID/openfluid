@@ -44,6 +44,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -58,26 +59,30 @@ WareSrcFiletypeManager* WareSrcFiletypeManager::mp_Instance = 0;
 
 WareSrcFiletypeManager::WareSrcFiletypeManager()
 {
-  //TODO get formats from conf file
+  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules =
+      openfluid::base::PreferencesManager::instance()
+          ->getSyntaxHighlightingRules();
 
-  m_Formats["keyword"].setForeground(QColor("#0000FF"));
-  m_Formats["keyword"].setFontWeight(QFont::Bold);
+  for (openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it =
+      Rules.begin(); it != Rules.end(); ++it)
+  {
+    QString StyleName = it.key();
 
-  m_Formats["datatype"].setFontWeight(QFont::Bold);
+    QColor Color(it.value().m_Color);
+    if (Color.isValid())
+      m_Formats[StyleName].setForeground(Color);
 
-  m_Formats["preprocessor"].setForeground(QColor("#FF00FF"));
-  m_Formats["preprocessor"].setFontWeight(QFont::Bold);
-
-  m_Formats["deprecated"].setForeground(QColor("#0000FF"));
-  m_Formats["deprecated"].setFontWeight(QFont::Bold);
-  m_Formats["deprecated"].setFontStrikeOut(true);
-
-  m_Formats["quoted"].setForeground(QColor("#FF0000"));
-
-  m_Formats["function"].setForeground(QColor("#0000FF"));
-
-  m_Formats["comment"].setForeground(QColor("#00FF00"));
-  m_Formats["comment"].setFontItalic(true);
+    foreach(QString Decoration,it.value().m_Decoration){
+    if(Decoration == "bold")
+    m_Formats[StyleName].setFontWeight(QFont::Bold);
+    else if(Decoration == "italic")
+    m_Formats[StyleName].setFontItalic(true);
+    else if(Decoration == "underline")
+    m_Formats[StyleName].setFontUnderline(true);
+    else if(Decoration == "strike-through")
+    m_Formats[StyleName].setFontStrikeOut(true);
+  }
+}
 
   QDir WaresdevDir(
       QString("%1/%2").arg(

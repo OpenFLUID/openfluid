@@ -43,6 +43,7 @@
 #include <QTextStream>
 
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
 
 
@@ -54,31 +55,49 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
-    QPlainTextEdit(Parent), m_FilePath(FilePath)
+    QPlainTextEdit(Parent), m_FilePath(FilePath), mp_SyntaxHighlighter(0)
 {
   mp_lineNumberArea = new LineNumberArea(this);
+
+  updateLineNumberAreaWidth(0);
 
   connect(this, SIGNAL(blockCountChanged(int)), this,
           SLOT(updateLineNumberAreaWidth(int)));
   connect(this, SIGNAL(updateRequest(QRect,int)), this,
           SLOT(updateLineNumberArea(QRect,int)));
-  connect(this, SIGNAL(cursorPositionChanged()), this,
-          SLOT(highlightCurrentLine()));
 
-  updateLineNumberAreaWidth(0);
-  highlightCurrentLine();
+  openfluid::base::PreferencesManager* PrefMgr =
+      openfluid::base::PreferencesManager::instance();
 
-  new WareSrcSyntaxHighlighter(
-      document(),
-      WareSrcFiletypeManager::instance()->getHighlightingRules(m_FilePath));
+  if (PrefMgr->isCurrentlineHighlightingEnabled() && QColor::isValidColor(
+      PrefMgr->getCurrentlineColor()))
+  {
+    m_LineColor.setNamedColor(PrefMgr->getCurrentlineColor());
+    connect(this, SIGNAL(cursorPositionChanged()), this,
+            SLOT(highlightCurrentLine()));
 
-  // TODO get defaults from conf file
-  // setStyleSheet("fFont: 11pt \"Courier\";");
+    highlightCurrentLine();
+  }
+
+  if (PrefMgr->isSyntaxHighlightingEnabled())
+  {
+    mp_SyntaxHighlighter = new WareSrcSyntaxHighlighter(
+        document(),
+        WareSrcFiletypeManager::instance()->getHighlightingRules(m_FilePath));
+  }
+
   QFont Font;
-  Font.setFamily("Courier");
+  Font.setFamily(PrefMgr->getFontName());
   Font.setFixedPitch(true);
   Font.setPointSize(11);
   setFont(Font);
+
+  if (!PrefMgr->isLineWrappingEnabled())
+  {
+    QTextOption Option = document()->defaultTextOption();
+    Option.setWrapMode(QTextOption::NoWrap);
+    document()->setDefaultTextOption(Option);
+  }
 
   updateContent();
 
@@ -93,7 +112,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
 WareSrcFileEditor::~WareSrcFileEditor()
 {
-
+  delete mp_SyntaxHighlighter;
 }
 
 
@@ -170,9 +189,7 @@ void WareSrcFileEditor::highlightCurrentLine()
   {
     QTextEdit::ExtraSelection Selection;
 
-    QColor LineColor = QColor(Qt::yellow).lighter(160);
-
-    Selection.format.setBackground(LineColor);
+    Selection.format.setBackground(m_LineColor);
     Selection.format.setProperty(QTextFormat::FullWidthSelection, true);
     Selection.cursor = textCursor();
     Selection.cursor.clearSelection();

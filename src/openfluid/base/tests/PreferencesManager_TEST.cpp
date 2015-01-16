@@ -517,3 +517,39 @@ BOOST_AUTO_TEST_CASE(test_DockToolbarPositionsManagement)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(test_textEditorProperties)
+{
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  if (QFile::exists(CFile)) QFile::remove(CFile);
+
+  openfluid::base::PreferencesManager::setFileName(CFile);
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+
+  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules;
+  openfluid::base::PreferencesManager::SyntaxHighlightingRule_t Rule(QString("pink"),QStringList("none"));
+  Rules.insert("datatype",Rule);
+  openfluid::base::PreferencesManager::SyntaxHighlightingRule_t ControlRule(QString("controlColor"),QStringList("none"));
+
+  BOOST_CHECK_EQUAL(PrefMgr->isSyntaxHighlightingEnabled(),true);
+  BOOST_CHECK_EQUAL(PrefMgr->getSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");
+
+  PrefMgr->setSyntaxHighlightingEnabled(false);
+  PrefMgr->setSyntaxHighlightingRules(Rules);
+  BOOST_CHECK_EQUAL(PrefMgr->isSyntaxHighlightingEnabled(),false);
+  BOOST_CHECK_EQUAL(PrefMgr->getSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"pink");
+
+  PrefMgr->setTextEditorDefaults(true);
+  BOOST_CHECK_EQUAL(PrefMgr->isSyntaxHighlightingEnabled(),true);
+  BOOST_CHECK_EQUAL(PrefMgr->getSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");
+
+  delete PrefMgr;
+}
+
+// =====================================================================
+// =====================================================================
+
+

@@ -47,6 +47,7 @@
 
 
 #include <QSettings>
+#include <QStringList>
 
 
 namespace openfluid { namespace base {
@@ -93,7 +94,18 @@ class OPENFLUID_API PreferencesManager
         QString Path;
     };
 
+    struct SyntaxHighlightingRule_t
+    {
+        QString m_Color;
+        QStringList m_Decoration;
+
+        SyntaxHighlightingRule_t(const QString& Color,const QStringList& Decoration)
+        : m_Color(Color),m_Decoration(Decoration) {}
+    };
+
     typedef std::vector<RecentProject_t> RecentProjectsList_t;
+
+    typedef QMap<QString,SyntaxHighlightingRule_t> SyntaxHighlightingRules_t;
 
     typedef std::map<QString, QString> MarketPlaces_t;
 
@@ -238,6 +250,33 @@ class OPENFLUID_API PreferencesManager
     bool isAutomaticSaveBeforeBuild();
 
     void setAutomaticSaveBeforeBuild(bool AutoSave);
+
+
+    void setTextEditorDefaults(bool ForceReset);
+
+    bool isSyntaxHighlightingEnabled();
+
+    void setSyntaxHighlightingEnabled(bool Enabled);
+
+    SyntaxHighlightingRules_t getSyntaxHighlightingRules();
+
+    void setSyntaxHighlightingRules(const SyntaxHighlightingRules_t& Rules);
+
+    bool isCurrentlineHighlightingEnabled();
+
+    void setCurrentlineHighlightingEnabled(bool Enabled);
+
+    QString getCurrentlineColor();
+
+    void setCurrentlineColor(const QString& Color);
+
+    QString getFontName();
+
+    void setFontName(const QString& FontName);
+
+    bool isLineWrappingEnabled();
+
+    void setLineWrappingEnabled(bool Enabled);
 };
 
 } } //namespaces
