@@ -42,6 +42,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 
 #include <boost/filesystem/operations.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
@@ -118,9 +119,9 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   // ====== Default directories ======
   // UNIX:
-  //  User directory for Openfluid : home dir + .openfluid subdir
+  //  User directory for OpenFLUID : home dir + .openfluid subdir
   // WIN32:
-  //  User directory for Openfluid : home dir + openfluid subdir
+  //  User directory for OpenFLUID : home dir + openfluid subdir
 
   m_HomeDir = QDir::homePath().toStdString();
   m_TempDir = QDir(QDir::tempPath()+"/openfluid-tmp").absolutePath().toStdString();
@@ -291,14 +292,8 @@ RuntimeEnvironment::RuntimeEnvironment() :
       + "/" + openfluid::config::OBSERVERS_PLUGINS_STDDIR).string();
   m_DefaultObserversPlugsDirs.push_back(ObserversPluginsInstallPath);
 
-
-
-  // set ignition date time
-  resetIgnitionDateTime();
-
-  m_EffectiveSimulationDuration = boost::posix_time::time_duration();
-
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -308,6 +303,7 @@ RuntimeEnvironment::~RuntimeEnvironment()
 {
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -320,14 +316,16 @@ RuntimeEnvironment* RuntimeEnvironment::instance()
   return mp_Singleton;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
 void RuntimeEnvironment::setDateTimeOutputDir()
 {
-  m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + "OPENFLUID."
-      + boost::posix_time::to_iso_string(m_IgnitionDateTime) + ".OUT").string();
+  m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + "OPENFLUID." +
+                                        boost::posix_time::to_iso_string(boost::posix_time::microsec_clock::local_time()) +
+                                        ".OUT").string();
 }
 
 
@@ -381,6 +379,7 @@ std::string RuntimeEnvironment::getSimulatorPluginFullPath(std::string Filename)
   return PlugFullPath;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -402,6 +401,7 @@ void RuntimeEnvironment::addExtraObserversPluginsPaths(
     m_ExtraObserversPlugsDirs.insert(m_ExtraObserversPlugsDirs.begin(), 1,
         openfluid::tools::removeTrailingSlashes(ExtraPaths[i]));
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -441,6 +441,7 @@ std::string RuntimeEnvironment::getCommonResourcesDir() const
       + openfluid::config::SHARE_COMMON_INSTALL_PATH).string();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -451,6 +452,7 @@ std::string RuntimeEnvironment::getCommonResourceFilePath(
   return boost::filesystem::path(m_InstallPrefix + "/"
       + openfluid::config::SHARE_COMMON_INSTALL_PATH + "/" + RelativeFilePath).string();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -489,16 +491,6 @@ std::string RuntimeEnvironment::getTranslationsDir() const
 // =====================================================================
 
 
-void RuntimeEnvironment::resetIgnitionDateTime()
-{
-  m_IgnitionDateTime = boost::posix_time::microsec_clock::local_time();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void RuntimeEnvironment::setSimulationTimeInformation(
     openfluid::core::DateTime StartTime, openfluid::core::DateTime EndTime,
     int TimeStep)
@@ -507,6 +499,7 @@ void RuntimeEnvironment::setSimulationTimeInformation(
   m_EndTime = EndTime;
   m_TimeStep = TimeStep;
 }
+
 
 // =====================================================================
 // =====================================================================

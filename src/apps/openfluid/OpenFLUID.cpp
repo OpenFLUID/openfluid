@@ -43,6 +43,8 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
+#include <QElapsedTimer>
+
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
@@ -63,6 +65,26 @@
 #include "DefaultMachineListener.hpp"
 #include "VerboseMachineListener.hpp"
 #include "DefaultBuddiesListener.hpp"
+
+
+
+// =====================================================================
+// =====================================================================
+
+std::string msecsToString(qint64 MSecs)
+{
+  int LeftMSecs = (int) (MSecs % 1000);
+  int Seconds = (int) (MSecs / 1000) % 60;
+  int Minutes = (int) ((MSecs / (1000*60)) % 60);
+  int Hours   = (int) ((MSecs / (1000*60*60)) % 24);
+  int Days   = (int) (MSecs / (1000*60*60*24));
+
+  return openfluid::tools::convertValue(Days)+"d "+
+         openfluid::tools::convertValue(Hours)+"h "+
+         openfluid::tools::convertValue(Minutes)+"m "+
+         openfluid::tools::convertValue(Seconds)+"."+
+         openfluid::tools::convertValue(LeftMSecs)+"s";
+}
 
 
 // =====================================================================
@@ -480,13 +502,17 @@ void OpenFLUIDApp::printEnvInfos()
 
 void OpenFLUIDApp::runSimulation()
 {
+  QElapsedTimer FullTimer;
+  QElapsedTimer EffectiveRunTimer;
+
+
+  FullTimer.start();
 
   bool IsVerbose = false;
   openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.verbose",IsVerbose);
   bool IsQuiet = false;
   openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.quiet",IsQuiet);
 
-  m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
   openfluid::machine::MachineListener* MListener;
   openfluid::base::IOListener* IOListener = new DefaultIOListener();
@@ -586,32 +612,29 @@ void OpenFLUIDApp::runSimulation()
   else
     std::cout << " (automatically computed)";
   std::cout << std::endl;
-
   std::cout << std::endl;
-
   std::cout.flush();
 
   std::cout << std::endl << "**** Running simulation ****" << std::endl;
   std::cout.flush();
-  m_EffectiveStartTime = boost::posix_time::microsec_clock::local_time();
+
+  EffectiveRunTimer.start();
   mp_Engine->run();
-  m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
-  std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
+  qint64 EffectiveTime = EffectiveRunTimer.elapsed();
+
+  std::cout << "**** Simulation completed ****" << std::endl << std::endl;
+  std::cout << std::endl;
   std::cout.flush();
-  openfluid::base::RuntimeEnvironment::instance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
 
-  m_FullEndTime = boost::posix_time::microsec_clock::local_time();
-
-  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() || openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) std::cout << std::endl;
-
-  boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
+  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() ||
+      openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) std::cout << std::endl;
 
   printlnExecMessagesStats();
 
   std::cout << std::endl;
 
-  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::instance()->getEffectiveSimulationDuration()) << std::endl;
-  std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
+  std::cout << "Simulation run time: " << msecsToString(EffectiveTime) << std::endl;
+  std::cout << "     Total run time: " << msecsToString(FullTimer.elapsed()) << std::endl;
   std::cout << std::endl;
 
   mp_Engine->finalize();
