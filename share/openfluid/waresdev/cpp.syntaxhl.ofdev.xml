@@ -205,7 +205,7 @@
         </rule>
 
         <rule name="comment-multiline" style="comment">
-          <pattern start="/\*" end="\*/" />
+          <pattern start="(^|[^/])/{1}\*" end="\*/" />
         </rule>
 
       </highlighting>

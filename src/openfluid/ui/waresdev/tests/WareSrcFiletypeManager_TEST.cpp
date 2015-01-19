@@ -70,34 +70,37 @@ BOOST_AUTO_TEST_CASE(checkRegExp)
   BOOST_CHECK(QRegExp("\\bint\\b").indexIn("bla int bla") != -1);
   BOOST_CHECK(QRegExp("\\bit\\b").indexIn("bla int bla") == -1);
 
-  QRegExp preproc("^\\s*#\\s*\\w+");
+  QRegExp preproc("^\\s*#\\s*\\w+"); //<pattern value="^\s*#\s*\w+" />
   BOOST_CHECK(preproc.indexIn("#include bla") != -1);
   BOOST_CHECK(preproc.indexIn(" #include bla") != -1);
   BOOST_CHECK(preproc.indexIn("# include bla") != -1);
 
   BOOST_CHECK(
-      QRegExp("\\bOPENFLUID_\\w+\\b").indexIn(" OPENFLUID_GET(bla) ") != -1);
+      QRegExp("\\bOPENFLUID_\\w+\\b").indexIn(" OPENFLUID_GET(bla) ") != -1); // <pattern value="\bOPENFLUID_\w+\b" />  <pattern value="\bOpenFLUID_\w+\b" />
 
-  QRegExp simpleComment("//.*$");
+  QRegExp simpleComment("//.*$"); // <pattern value="//.*$" />
   BOOST_CHECK(simpleComment.indexIn("// comment") != -1);
   BOOST_CHECK(simpleComment.indexIn("bla //comment ") != -1);
+  BOOST_CHECK(simpleComment.indexIn("//* comment") != -1);
   BOOST_CHECK(simpleComment.indexIn("bla / bla") == -1);
   BOOST_CHECK(simpleComment.indexIn("bla/bla") == -1);
 
-  QRegExp multiComment("(/\\*).*(\\*/)");
+  QRegExp multiComment("((^|[^/])/{1}\\*).*(\\*/)"); // <pattern start="(^|[^/])/{1}\*" end="\*/" />
   multiComment.indexIn("/* comment */");
   BOOST_CHECK(multiComment.matchedLength() != -1);
   multiComment.indexIn("/* comment\n next line */");
   BOOST_CHECK(multiComment.matchedLength() != -1);
+  multiComment.indexIn("//* comment */");
+  BOOST_CHECK(multiComment.matchedLength() == -1);
   multiComment.indexIn("// comment ");
   BOOST_CHECK(multiComment.matchedLength() == -1);
   multiComment.indexIn("/ bla ");
   BOOST_CHECK(multiComment.matchedLength() == -1);
 
-  BOOST_CHECK(QRegExp("\".*\"").indexIn(" bla \"text text \"") != -1);
-  BOOST_CHECK(QRegExp("\'.*\'").indexIn(" bla 'text text '") != -1);
+  BOOST_CHECK(QRegExp("\".*\"").indexIn(" bla \"text text \"") != -1); // <pattern value='\".*\"' />
+  BOOST_CHECK(QRegExp("\'.*\'").indexIn(" bla 'text text '") != -1); // <pattern value="\'.*\'" />
 
-  QRegExp function("\\w+\\s*(?=\\()");
+  QRegExp function("\\w+\\s*(?=\\()"); //<pattern value="\w+\s*(?=\()" />
   BOOST_CHECK(function.indexIn("func()") != -1);
   BOOST_CHECK(function.indexIn("func(param)") != -1);
   BOOST_CHECK(function.indexIn("func ( param)") != -1);
