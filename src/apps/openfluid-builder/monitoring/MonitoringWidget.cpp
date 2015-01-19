@@ -39,8 +39,7 @@
 
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
-
+#include <openfluid/tools/DataHelpers.hpp>
 #include "ui_WaresManagementWidget.h"
 #include "ui_MonitoringWidget.h"
 #include "ui_AddWareDialog.h"
@@ -83,30 +82,29 @@ MonitoringWidget::~MonitoringWidget()
 
 void MonitoringWidget::addObserver()
 {
-  QStringList ObsList = openfluid::tools::toQStringList(m_Monitoring.getOrderedIDs());
+  AddObserverDialog AddObsDlg(this);
 
-  AddObserverDialog AddObsDlg(ObsList,this);
-
-  // TODo duplicate observers may appears in list if a path is defined twice
   if (AddObsDlg.exec() == QDialog::Accepted)
   {
     openfluid::ware::WareID_t ID = AddObsDlg.getSelectedID().toStdString();
 
-    m_Monitoring.addToObserverList(ID);
+    openfluid::fluidx::ObserverDescriptor* ObsDesc = new openfluid::fluidx::ObserverDescriptor(ID);
 
-    ObserverWidget* ObsWidget = new ObserverWidget(this,&m_Monitoring.descriptor(ID),ID);
+    m_Monitoring.appendItem(ObsDesc);
+
+    ObserverWidget* ObsWidget = new ObserverWidget(this,ObsDesc,ID,0);
 
     connect(ObsWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
     connect(ObsWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
-    connect(ObsWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
-    connect(ObsWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
-    connect(ObsWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+    connect(ObsWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
+    connect(ObsWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
+    connect(ObsWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
 
     // compute position in layout, taking into account the ending spacer
     int Position = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;
     ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(Position,ObsWidget);
 
-    mp_WaresManWidget->updateUpDownButtons();
+    mp_WaresManWidget->updateIndexesAndButtons();
 
     emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
   }
@@ -117,16 +115,20 @@ void MonitoringWidget::addObserver()
 // =====================================================================
 
 
-void MonitoringWidget::moveModelItemUp(const QString& ID)
+void MonitoringWidget::moveModelItemUp(const QString& /*ID*/, int CurrentIndex)
 {
-  int From = m_Monitoring.getFirstIndex(ID.toStdString());
-  m_Monitoring.moveItemTowardsTheBeginning(ID.toStdString());
-  int To = m_Monitoring.getFirstIndex(ID.toStdString());
+  if (CurrentIndex < 0)
+     return;
+
+  unsigned int From = CurrentIndex;
+  unsigned int To = (From == 0) ? m_Monitoring.getItemsCount() - 1 : From - 1;
+
+  m_Monitoring.moveItem(From, To);
 
   WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(From)->widget());
   ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(To,W);
 
-  mp_WaresManWidget->updateUpDownButtons();
+  mp_WaresManWidget->updateIndexesAndButtons();
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
 }
@@ -136,17 +138,21 @@ void MonitoringWidget::moveModelItemUp(const QString& ID)
 // =====================================================================
 
 
-void MonitoringWidget::moveModelItemDown(const QString& ID)
+void MonitoringWidget::moveModelItemDown(const QString& /*ID*/, int CurrentIndex)
 {
-  int From = m_Monitoring.getFirstIndex(ID.toStdString());
-  m_Monitoring.moveItemTowardsTheEnd(ID.toStdString());
-  int To = m_Monitoring.getFirstIndex(ID.toStdString());
+  if (CurrentIndex < 0)
+    return;
+
+  unsigned int From = CurrentIndex;
+  unsigned int To = (From == (unsigned int)m_Monitoring.getItemsCount() - 1) ? 0 : From + 1;
+
+  m_Monitoring.moveItem(From,To);
 
 
   WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(From)->widget());
   ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(To,W);
 
-  mp_WaresManWidget->updateUpDownButtons();
+  mp_WaresManWidget->updateIndexesAndButtons();
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
 }
@@ -156,16 +162,17 @@ void MonitoringWidget::moveModelItemDown(const QString& ID)
 // =====================================================================
 
 
-void MonitoringWidget::removeModelItem(const QString& ID)
+void MonitoringWidget::removeModelItem(const QString& /*ID*/, int CurrentIndex)
 {
-  int Position = m_Monitoring.getFirstIndex(ID.toStdString());
+  if (CurrentIndex < 0)
+     return;
 
-  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(Position)->widget());
+  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(CurrentIndex)->widget());
   W->deleteLater();
 
-  m_Monitoring.removeFromObserverList(ID.toStdString());
+  m_Monitoring.removeItem(CurrentIndex);
 
-  mp_WaresManWidget->updateUpDownButtons();
+  mp_WaresManWidget->updateIndexesAndButtons();
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
 }
@@ -187,19 +194,21 @@ void MonitoringWidget::refresh()
 
   for (it = itb; it!= ite; ++it)
   {
-    ObserverWidget* ObsWidget = new ObserverWidget(this,*it,(*it)->getID());
+    ObserverWidget* ObsWidget = new ObserverWidget(this,*it,(*it)->getID(),0);
     mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(ObsWidget);
     if (it == itb) ObsWidget->setUpButtonEnabled(false);
     if (it == itl) ObsWidget->setDownButtonEnabled(false);
 
     connect(ObsWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
     connect(ObsWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
-    connect(ObsWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
-    connect(ObsWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
-    connect(ObsWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+    connect(ObsWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
+    connect(ObsWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
+    connect(ObsWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
 
   }
   ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->addStretch();
+
+  mp_WaresManWidget->updateIndexesAndButtons();
 }
 
 

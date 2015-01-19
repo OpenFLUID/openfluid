@@ -144,7 +144,7 @@ class CouplingBSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest DT = m_DeltaTList.front();
     m_DeltaTList.pop_front();
 
-    openfluid::tools::Sleep(5000);
+    openfluid::tools::sleep(5000);
 
     return DT;
   }
@@ -171,7 +171,7 @@ class CouplingBSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest DT = m_DeltaTList.front();
     m_DeltaTList.pop_front();
 
-    if (DT.RequestType == openfluid::base::SchedulingRequest::DURATION) openfluid::tools::Sleep(10000/DT.Duration);
+    if (DT.RequestType == openfluid::base::SchedulingRequest::DURATION) openfluid::tools::sleep(10000/DT.Duration);
 
     return DT;
   }

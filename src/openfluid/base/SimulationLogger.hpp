@@ -48,7 +48,7 @@
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/DateTime.hpp>
 
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 
 
 namespace openfluid { namespace base {

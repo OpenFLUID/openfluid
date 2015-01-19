@@ -55,7 +55,7 @@
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
-#include <openfluid/tools.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
@@ -705,7 +705,7 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
     BOOST_CHECK((int*)it->first->getUserData());
   }
 
-  BOOST_CHECK(openfluid::tools::IsVeryClose(Area,U1->getArea()));
+  BOOST_CHECK(openfluid::scientific::isVeryClose(Area,U1->getArea()));
 
   delete Graph;
   delete Vector;
@@ -747,7 +747,7 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingAlsoMultiPolygon)
     BOOST_CHECK((int*)it->first->getUserData());
   }
 
-  BOOST_CHECK(openfluid::tools::IsVeryClose(Area,U2->getArea()));
+  BOOST_CHECK(openfluid::scientific::isVeryClose(Area,U2->getArea()));
 
   delete Graph;
   delete Vector;
@@ -810,10 +810,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelTyp
   openfluid::core::DoubleValue Val;
 
   Graph->entity(1)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 32.9131));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 32.9131));
 
   Graph->entity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0607));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 51.0607));
 
   delete Graph;
   delete Vector;
@@ -843,10 +843,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelTyp
   openfluid::core::DoubleValue Val;
 
   Graph->entity(1)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 32.9131));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 32.9131));
 
   Graph->entity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0607));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 51.0607));
 
   delete Graph;
   delete Vector;
@@ -876,10 +876,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
   openfluid::core::DoubleValue Val;
 
   Graph->entity(1)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 34.0569));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 34.0569));
 
   Graph->entity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 46.6497));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 46.6497));
 
   delete Graph;
   delete Vector;
@@ -909,10 +909,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
   openfluid::core::DoubleValue Val;
 
   Graph->entity(1)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(),  33.6118));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(),  33.6118));
 
   Graph->entity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 46.8027));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 46.8027));
 
   delete Graph;
   delete Vector;
@@ -942,10 +942,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
   openfluid::core::DoubleValue Val;
 
   Graph->entity(1)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 33.6118));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 33.6118));
 
   Graph->entity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 46.8027));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 46.8027));
 
   delete Graph;
   delete Vector;
@@ -1296,7 +1296,7 @@ BOOST_AUTO_TEST_CASE(check_mergePolygonEntities)
   BOOST_CHECK_EQUAL(Graph->isComplete(),true);
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(),57);
   double areaAfter=Graph->entity(7)->getArea();
-  BOOST_CHECK( openfluid::tools::IsVeryClose(areaBefore, areaAfter));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(areaBefore, areaAfter));
 
 
   delete Graph;
@@ -1347,10 +1347,8 @@ BOOST_AUTO_TEST_CASE(check_construction_from_Bad_Geometry)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "BAD_POLYTEST.shp");
 
-  openfluid::landr::PolygonGraph* Graph =0;
-
-  BOOST_CHECK_THROW(Graph =
-      openfluid::landr::PolygonGraph::create(*Val),
+  BOOST_CHECK_THROW(
+      openfluid::landr::PolygonGraph* Graph = openfluid::landr::PolygonGraph::create(*Val),
       openfluid::base::FrameworkException);
 
 
@@ -1359,11 +1357,10 @@ BOOST_AUTO_TEST_CASE(check_construction_from_Bad_Geometry)
   openfluid::core::GeoVectorValue Val2(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                        "BAD_POLYTEST.shp");
 
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-      Val2);
+  openfluid::landr::VectorDataset* Vect =
+      new openfluid::landr::VectorDataset(Val2);
 
-  BOOST_CHECK_THROW(Graph =
-      openfluid::landr::PolygonGraph::create(*Vect),
+  BOOST_CHECK_THROW(openfluid::landr::PolygonGraph* Graph = openfluid::landr::PolygonGraph::create(*Vect),
       openfluid::base::FrameworkException);
 
   delete Vect;
@@ -2388,10 +2385,9 @@ BOOST_AUTO_TEST_CASE(check_construction_from_MultiPolygon)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "MultiPolygon.shp");
 
-  openfluid::landr::PolygonGraph* Graph=0;
-
-  BOOST_CHECK_THROW( Graph =
-      openfluid::landr::PolygonGraph::create(*Val),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(
+      openfluid::landr::PolygonGraph* Graph = openfluid::landr::PolygonGraph::create(*Val),
+      openfluid::base::FrameworkException);
 
   delete Val;
 }
@@ -2419,7 +2415,7 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_With_NoData)
   openfluid::core::DoubleValue Val;
 
   Graph->entity(1)->getAttributeValue("test_val", Val);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 76.7213));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 76.7213));
 
   delete Graph;
   delete Vector;

@@ -76,7 +76,8 @@ class ObserverWidget : public ClickableWareWidget
 
     ObserverWidget(QWidget* Parent,
                    openfluid::fluidx::ObserverDescriptor* Desc,
-                   const openfluid::ware::WareID_t& ID);
+                   const openfluid::ware::WareID_t& ID,
+                   int Index);
 
     ~ObserverWidget();
 

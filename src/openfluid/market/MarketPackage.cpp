@@ -43,8 +43,8 @@
 
 #include <openfluid/config.hpp>
 #include <openfluid/market/MarketPackage.hpp>
-#include <openfluid/tools/FileDownloader.hpp>
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/utils/FileDownloader.hpp>
 
 
 namespace openfluid { namespace market {
@@ -65,8 +65,8 @@ std::string MarketPackage::m_MarketBagSrcSubDir = "";
 std::string MarketPackage::m_LogFile = "";
 bool MarketPackage::m_IsLogEnabled = false;
 
-openfluid::tools::ExternalProgram MarketPackage::m_CMakeProgram =
-    openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::CMakeProgram);
+openfluid::utils::ExternalProgram MarketPackage::m_CMakeProgram =
+    openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::CMakeProgram);
 std::string MarketPackage::m_SimulatorBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 std::string MarketPackage::m_ObserverBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 std::string MarketPackage::m_BuilderextBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
@@ -272,7 +272,7 @@ void MarketPackage::download()
 
   appendToLogFile(m_PackageFilename,getPackageType(),"downloading","");
 
-  if (!openfluid::tools::FileDownloader::downloadToFile(m_PackageURL, m_PackageDest))
+  if (!openfluid::utils::FileDownloader::downloadToFile(m_PackageURL, m_PackageDest))
   {
     appendToLogFile("Error");
     throw openfluid::base::FrameworkException("MarketPackage::download()","error while downloading package "+m_PackageFilename);

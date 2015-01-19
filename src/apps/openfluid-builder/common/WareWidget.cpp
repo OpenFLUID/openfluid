@@ -48,11 +48,11 @@
 #include <QMessageBox>
 
 
-WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, bool Enabled, const QString& BGColor):
+WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
+                       bool Enabled, const QString& BGColor, int Index):
   QWidget(Parent),ui(new Ui::WareWidget), m_ID(ID), m_EnabledBGColor(BGColor),
-  m_Available(false),m_Enabled(Enabled), m_ParamsExpanded(false)
+  m_Available(false),m_Enabled(Enabled), m_CurrentIndex(Index), m_ParamsExpanded(false)
 {
-
   ui->setupUi(this);
   ui->IDLabel->setText(QString::fromStdString(m_ID));
   ui->NameLabel->setElideMode(Qt::ElideRight);
@@ -213,9 +213,19 @@ void WareWidget::setDownButtonEnabled(bool Enabled)
 // =====================================================================
 
 
+void WareWidget::setCurrentIndex(int Index)
+{
+  m_CurrentIndex = Index;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareWidget::notifyUpClicked()
 {
-  emit upClicked(QString::fromStdString(m_ID));
+  emit upClicked(QString::fromStdString(m_ID),m_CurrentIndex);
 }
 
 
@@ -225,7 +235,7 @@ void WareWidget::notifyUpClicked()
 
 void WareWidget::notifyDownClicked()
 {
-  emit downClicked(QString::fromStdString(m_ID));
+  emit downClicked(QString::fromStdString(m_ID),m_CurrentIndex);
 }
 
 
@@ -252,7 +262,7 @@ void WareWidget::notifyRemoveClicked()
   }
 
   if (OK)
-    emit removeClicked(QString::fromStdString(m_ID));
+    emit removeClicked(QString::fromStdString(m_ID),m_CurrentIndex);
 }
 
 

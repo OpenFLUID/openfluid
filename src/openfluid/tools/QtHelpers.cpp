@@ -166,46 +166,6 @@ QStringList toQStringList(const std::set<int>& IntSet)
 // =====================================================================
 
 
-QString getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
-                                         const QString& AllFormatsLabel)
-{
-  QStringList AllFormats;
-  QStringList DetailedFormats;
-
-  GDALDriversFilesExts_t::const_iterator it;
-  GDALDriversFilesExts_t::const_iterator bit = Drivers.begin();
-  GDALDriversFilesExts_t::const_iterator eit = Drivers.end();
-
-  for (it=bit; it!= eit; ++it)
-  {
-    QString CurrentFormatsStr;
-
-    for (unsigned int i =0; i< (*it).second.FilesExts.size(); i++)
-    {
-      if (i!=0) CurrentFormatsStr += " ";
-      CurrentFormatsStr += "*." + QString::fromStdString((*it).second.FilesExts.at(i));
-    }
-
-    DetailedFormats.append(QString::fromStdString((*it).second.Label) + "(" + CurrentFormatsStr + ")");
-    AllFormats.append(CurrentFormatsStr);
-  }
-
-  if (!AllFormats.isEmpty())
-  {
-    QString AllFormatsStr;
-
-    AllFormatsStr = AllFormatsLabel +" (" + AllFormats.join(" ")+")";
-    DetailedFormats.prepend(AllFormatsStr);
-  }
-
-  return DetailedFormats.join(";;");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 QString escapeXMLEntities(const QString& Str)
 {
   QString EscapedStr = Str;

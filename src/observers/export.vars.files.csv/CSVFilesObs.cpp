@@ -45,7 +45,7 @@
 #include <boost/foreach.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
-
+#include <openfluid/tools/DataHelpers.hpp>
 
 
 
@@ -341,7 +341,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
             // process selected variables
             std::vector<openfluid::core::VariableName_t> TmpVarArray;
 
-            TmpVarArray = openfluid::tools::SplitString((*SetIt).second.VariablesStr,";");
+            TmpVarArray = openfluid::tools::splitString((*SetIt).second.VariablesStr,";");
 
             for (unsigned int i = 0; i < TmpVarArray.size(); i++)
             {
@@ -379,11 +379,11 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
             openfluid::core::UnitID_t UID;
 
-            std::vector<std::string> UIDArray = openfluid::tools::SplitString((*SetIt).second.UnitsIDsStr, ";");
+            std::vector<std::string> UIDArray = openfluid::tools::splitString((*SetIt).second.UnitsIDsStr, ";");
             for (unsigned int i = 0; i < UIDArray.size(); i++)
             {
               TmpU = NULL;
-              if (openfluid::tools::ConvertString(UIDArray[i], &UID))
+              if (openfluid::tools::convertString(UIDArray[i],&UID))
               {
                 TmpU = mp_SpatialData->spatialUnit((*SetIt).second.UnitClass,UID);
                 if (TmpU != NULL)

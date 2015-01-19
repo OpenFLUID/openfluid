@@ -44,8 +44,8 @@
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/tools/ExternalProgram.hpp>
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/config.hpp>
 
 namespace openfluid { namespace waresdev {
@@ -247,9 +247,9 @@ void WareSrcContainer::setBuildMode(BuildMode Mode)
 
 void WareSrcContainer::findCMake()
 {
-  openfluid::tools::ExternalProgram CMakeProg =
-      openfluid::tools::ExternalProgram::getRegisteredProgram(
-          openfluid::tools::ExternalProgram::CMakeProgram);
+  openfluid::utils::ExternalProgram CMakeProg =
+      openfluid::utils::ExternalProgram::getRegisteredProgram(
+          openfluid::utils::ExternalProgram::CMakeProgram);
 
   if (!CMakeProg.isFound())
     throw openfluid::base::FrameworkException("WareSrcContainer::findCMake",
@@ -272,7 +272,7 @@ void WareSrcContainer::configure()
 
   QFile BuildDir(m_BuildDirPath);
   if (BuildDir.exists())
-    openfluid::tools::EmptyDirectoryRecursively(
+    openfluid::tools::emptyDirectoryRecursively(
         QString(m_BuildDirPath).toStdString());
   else if (!QDir().mkpath(m_BuildDirPath))
     throw openfluid::base::FrameworkException(

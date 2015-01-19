@@ -43,10 +43,11 @@
 #include <iostream>
 #include <iomanip>
 
-#include <boost/foreach.hpp>
-#include <boost/filesystem.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 
 #include "../KmlObserverBase.hpp"
+
+
 
 // =====================================================================
 // =====================================================================
@@ -159,7 +160,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       std::string CurrentTIStr;
 
-      openfluid::tools::ConvertValue(CurrentTI,&CurrentTIStr);
+      openfluid::tools::convertValue(CurrentTI,&CurrentTIStr);
 
       std::ofstream CurrentKmlFile(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir+"/t_"+CurrentTIStr+".kml").string().c_str());
 
@@ -346,7 +347,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
       std::string ColorScaleString;
 
       ColorScaleString = ParamsPT.get("layers.anim.colorscale","");
-      ColorScaleVector = openfluid::tools::SplitString(ColorScaleString,";",false);
+      ColorScaleVector = openfluid::tools::splitString(ColorScaleString,";",false);
 
       if (ColorScaleVector.size() % 2 == 0)
       {
@@ -389,7 +390,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
             else
             {
               // value item
-              if (openfluid::tools::ConvertString(ColorScaleVector[i],&TmpVal))
+              if (openfluid::tools::convertString(ColorScaleVector[i],&TmpVal))
               {
                 TmpColorValue.second = TmpVal;
                 m_AnimLayerInfo.ColorScale.push_back(TmpColorValue);
@@ -420,8 +421,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       if (StaticLayersTree)
       {
-        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("layers.static"))
-          {
+        foreach (const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("layers.static"))
+        {
           std::string LayerID = v.first;
 
           KmlStaticLayerInfo KSLI;

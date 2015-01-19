@@ -4,7 +4,7 @@
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
-
+#include <openfluid/tools/DataHelpers.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -126,7 +126,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
         {
           ID = TLU->getID();
           std::string IDStr;
-          openfluid::tools::ConvertValue(ID,&IDStr);
+          openfluid::tools::convertValue(ID,&IDStr);
           OPENFLUID_RaiseError("examples.trafficlight.state","The Duration coefficient of TLU " + IDStr + " should be compatible with the Simulation Scheduling.");
 
         }

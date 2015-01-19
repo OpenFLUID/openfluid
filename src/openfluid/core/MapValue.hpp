@@ -133,12 +133,18 @@ namespace openfluid { namespace core {
 class OPENFLUID_API MapValue : public CompoundValue
 {
   public:
+
     typedef std::map<std::string,boost::shared_ptr<Value> > Map_t;
+
+    typedef Map_t::iterator iterator;
+
+    typedef Map_t::const_iterator const_iterator;
 
 
   private:
 
     Map_t m_Value;
+
 
   public:
 
@@ -301,9 +307,43 @@ class OPENFLUID_API MapValue : public CompoundValue
     inline bool isKeyExist(const std::string& Key) const { return (m_Value.find(Key) != m_Value.end()); };
 
     /**
+      Returns the list of keys of the map
+      @return a std::vector of std::string containing the keys of the map
+    */
+    std::vector<std::string> getKeys() const;
+
+    /**
       Clears the map by removing all values
     */
     void clear();
+
+    /**
+      Returns an iterator referring to the first element in the map
+      @return an iterator to the first element in the map
+    */
+    inline iterator begin()
+    { return m_Value.begin(); }
+
+    /**
+      Returns a constant iterator referring to the first element in the map
+      @return a constant iterator to the first element in the map
+    */
+    inline const_iterator begin() const
+    { return m_Value.begin(); }
+
+    /**
+      Returns an iterator referring to the past-the-end element in the map
+      @return an iterator to the past-the-end element in the map
+    */
+    inline iterator end()
+    { return m_Value.end(); }
+
+    /**
+      Returns a constant iterator referring to the past-the-end element in the map
+      @return a constant iterator to the past-the-end element in the map
+    */
+    inline const_iterator end() const
+    { return m_Value.end(); }
 
 };
 

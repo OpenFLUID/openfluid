@@ -39,7 +39,7 @@
 
 
 #include <openfluid/ware/SimulationInspectorWare.hpp>
-
+#include <openfluid/tools/DataHelpers.hpp>
 
 namespace openfluid { namespace ware {
 
@@ -222,7 +222,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Spati
     if (!UnitPtr->variables()->getValue(VarName,Index,&Val))
     {
       std::string TimeStr;
-      openfluid::tools::ConvertValue(Index,&TimeStr);
+      openfluid::tools::convertValue(Index,&TimeStr);
       throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetVariable","Value for variable "+ VarName +" does not exist or is not right type at time index "+ TimeStr);
     }
   }
@@ -306,7 +306,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Spati
     if (!UnitPtr->variables()->getValue(VarName,OPENFLUID_GetCurrentTimeIndex(),&Val))
     {
       std::string TimeStr;
-      openfluid::tools::ConvertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
+      openfluid::tools::convertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
       throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetVariable","Value for variable "+ VarName +" does not exist or is not right type at time index "+ TimeStr);
     }
   }
@@ -386,7 +386,7 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariable(const openfluid::core:
      if (!UnitPtr->variables()->getLatestIndexedValue(VarName,IndVal))
      {
        std::string TimeStr;
-       openfluid::tools::ConvertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
+       openfluid::tools::convertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
        throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetLatestVariable","Indexed value for variable "+ VarName +" does not exist or is empty at time index "+ TimeStr);
      }
    }
@@ -412,7 +412,7 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariables(const openfluid::core
      if (!UnitPtr->variables()->getLatestIndexedValues(VarName,BeginIndex,IndValList))
      {
        std::string TimeStr;
-       openfluid::tools::ConvertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
+       openfluid::tools::convertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
        throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetLatestVariables","Indexed values for variable "+ VarName +" does not exist or is empty at time index "+ TimeStr);
      }
    }
@@ -438,7 +438,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariables(const openfluid::core::Spat
      if (!UnitPtr->variables()->getIndexedValues(VarName,BeginIndex,EndIndex,IndValList))
      {
        std::string TimeStr;
-       openfluid::tools::ConvertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
+       openfluid::tools::convertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
        throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetVariables","Indexed values for variable "+ VarName +" does not exist or is empty at time index "+ TimeStr);
      }
    }

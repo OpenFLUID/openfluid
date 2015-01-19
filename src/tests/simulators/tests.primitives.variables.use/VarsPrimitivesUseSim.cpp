@@ -33,7 +33,7 @@
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
-
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <QString>
 
 
@@ -260,12 +260,12 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           // double
 
           OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,VarDouble);
-          if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double)");
 
           VarDouble = 0.0;
           OPENFLUID_GetVariable(TU,"tests.double",VarDouble);
-          if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by reference without index");
 
           VarDouble = 0.0;
@@ -273,12 +273,12 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (IndValue.getIndex() != OPENFLUID_GetCurrentTimeIndex())
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect time index (tests.double) get by latest variable");
 
-          if (!openfluid::tools::IsCloseEnough(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough<double>(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by latest variable");
 
           VarDouble = 0.0;
           OPENFLUID_GetLatestVariables(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex()-1,IndValueList);
-          if (!openfluid::tools::IsCloseEnough(IndValueList.back().value()->asDoubleValue(),RefDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough<double>(IndValueList.back().value()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by reference");
 
 
@@ -287,13 +287,13 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
             OPENFLUID_GetVariable(TU,"tests.double",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarDouble);
-            if (!openfluid::tools::IsCloseEnough(VarDouble,PreDouble,0.00001))
+            if (!openfluid::scientific::isCloseEnough(VarDouble,PreDouble,0.00001))
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value at t-1 (tests.double)");
           }
 
           OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,VarDouble);
 
-          if (!openfluid::tools::IsCloseEnough(VarDouble,NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarDouble,NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value after update (tests.double)");
 
 
@@ -317,13 +317,13 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
             OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarDoubleVal);
-            if (!openfluid::tools::IsCloseEnough(VarDoubleVal.get(),PreDouble,0.00001))
+            if (!openfluid::scientific::isCloseEnough(VarDoubleVal.get(),PreDouble,0.00001))
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value at t-1 (tests.doubleval)");
           }
 
           OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex,VarDoubleVal);
 
-          if (!openfluid::tools::IsCloseEnough(VarDoubleVal.get(),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarDoubleVal.get(),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value after update (tests.doubleval)");
 
 
@@ -493,10 +493,10 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (VarVectorVal.getSize() != NewVectorSize)
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector size after update");
 
-          if (!openfluid::tools::IsCloseEnough(VarVectorVal[0],NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarVectorVal[0],NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector value at index 0 after update");
 
-          if (!openfluid::tools::IsCloseEnough(VarVectorVal[4],NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarVectorVal[4],NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector value at index 4 after update");
 
 
@@ -507,10 +507,10 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             if (VarVectorVal.getSize() != NewVectorSize)
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector size at t-1");
 
-            if (!openfluid::tools::IsCloseEnough(VarVectorVal[0],PreDouble,0.00001))
+            if (!openfluid::scientific::isCloseEnough(VarVectorVal[0],PreDouble,0.00001))
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector value at index 0 at t-1");
 
-            if (!openfluid::tools::IsCloseEnough(VarVectorVal[4],PreDouble,0.00001))
+            if (!openfluid::scientific::isCloseEnough(VarVectorVal[4],PreDouble,0.00001))
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector value at index 4 at t-1");
 
           }
@@ -544,10 +544,10 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (VarMatrixVal.getRowsNbr() != NewMatrixRowsNb)
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix rows nb after update");
 
-          if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(0,0),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarMatrixVal.get(0,0),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix value at index 0,0 after update");
 
-          if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(4,3),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarMatrixVal.get(4,3),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix value at index 4,3 after update");
 
 
@@ -558,10 +558,10 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             if (VarMatrixVal.getSize() != NewMatrixRowsNb*NewMatrixColsNb)
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix size at t-1");
 
-            if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(0,0),PreDouble,0.00001))
+            if (!openfluid::scientific::isCloseEnough(VarMatrixVal.get(0,0),PreDouble,0.00001))
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix value at index 0,0 at t-1");
 
-            if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(4,3),PreDouble,0.00001))
+            if (!openfluid::scientific::isCloseEnough(VarMatrixVal.get(4,3),PreDouble,0.00001))
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix value at index 4,3 at t-1");
 
           }
@@ -590,7 +590,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (VarMapVal.getString("key1") != NewString)
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect map value at key key1 after update");
 
-          if (!openfluid::tools::IsCloseEnough(VarMapVal.getDouble("key2"),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarMapVal.getDouble("key2"),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect map value at key key2 after update");
 
           if (VarMapVal.getBoolean("key3") != NewBool)
@@ -607,7 +607,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             if (VarMapVal.getString("key1") != PreString)
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect map value at key key1 at t-1");
 
-            if (!openfluid::tools::IsCloseEnough(VarMapVal.getDouble("key2"),PreDouble,0.00001))
+            if (!openfluid::scientific::isCloseEnough(VarMapVal.getDouble("key2"),PreDouble,0.00001))
               OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect map value at key key2 at t-1");
 
             if (VarMapVal.getBoolean("key3") != PreBool)
@@ -677,22 +677,22 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           // double
 
           OPENFLUID_GetVariable(TU,"tests.typed.double",CurrIndex,VarDouble);
-          if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by reference");
 
           OPENFLUID_GetLatestVariable(TU,"tests.typed.double",IndValue);
-          if (!openfluid::tools::IsCloseEnough(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough<double>(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by latest variable");
 
 
           OPENFLUID_SetVariable(TU,"tests.typed.double",NewDouble);
 
           OPENFLUID_GetVariable(TU,"tests.typed.double",CurrIndex,VarDouble);
-          if (!openfluid::tools::IsCloseEnough(VarDouble,NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarDouble,NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value after update (tests.double)");
 
           OPENFLUID_GetLatestVariables(TU,"tests.typed.double",OPENFLUID_GetCurrentTimeIndex()-1,IndValueList);
-          if (!openfluid::tools::IsCloseEnough(IndValueList.back().value()->asDoubleValue(),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough<double>(IndValueList.back().value()->asDoubleValue(),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by latest variable");
 
 
@@ -770,9 +770,9 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           OPENFLUID_GetVariable(TU,"tests.typed.vector",CurrIndex,VarVectorVal);
           if (VarVectorVal.getSize() != NewVectorSize)
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector size after update");
-          if (!openfluid::tools::IsCloseEnough(VarVectorVal[0],NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarVectorVal[0],NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector value at index 0 after update");
-          if (!openfluid::tools::IsCloseEnough(VarVectorVal[4],NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarVectorVal[4],NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector value at index 4 after update");
 
           if (!OPENFLUID_IsTypedVariableExist(TU,"tests.typed.vector",openfluid::core::Value::VECTOR))
@@ -791,9 +791,9 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           OPENFLUID_GetVariable(TU,"tests.typed.oldvector",CurrIndex,VarVectorVal);
           if (VarVectorVal.getSize() != NewVectorSize)
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect oldvector size after update");
-          if (!openfluid::tools::IsCloseEnough(VarVectorVal[0],NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarVectorVal[0],NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect oldvector value at index 0 after update");
-          if (!openfluid::tools::IsCloseEnough(VarVectorVal[4],NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarVectorVal[4],NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect oldvector value at index 4 after update");
 
           if (!OPENFLUID_IsTypedVariableExist(TU,"tests.typed.oldvector",openfluid::core::Value::VECTOR))
@@ -816,9 +816,9 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix cols nb after update");
           if (VarMatrixVal.getRowsNbr() != NewMatrixRowsNb)
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix rows nb after update");
-          if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(0,0),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarMatrixVal.get(0,0),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix value at index 0,0 after update");
-          if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(4,3),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarMatrixVal.get(4,3),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix value at index 4,3 after update");
 
           if (!OPENFLUID_IsTypedVariableExist(TU,"tests.typed.matrix",openfluid::core::Value::MATRIX))
@@ -842,7 +842,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect map size after update");
           if (VarMapVal.getString("key1") != NewString)
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect map value at key key1 after update");
-          if (!openfluid::tools::IsCloseEnough(VarMapVal.getDouble("key2"),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarMapVal.getDouble("key2"),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect map value at key key2 after update");
           if (VarMapVal.getBoolean("key3") != NewBool)
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect map value at key key3 after update");
@@ -862,7 +862,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
           VarDouble = 0.0;
           OPENFLUID_GetVariable(TU,"tests.typed.none",CurrIndex,VarDouble);
-          if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.none)");
 
 
@@ -914,7 +914,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           OPENFLUID_GetVariable(TU,"tests.typed.none",CurrIndex,VarVectorVal);
           if (VarVectorVal.size() != NewVect.size())
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector size value (tests.none)");
-          if (!openfluid::tools::IsCloseEnough(VarVectorVal[4],NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarVectorVal[4],NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect vector value at index 4 (tests.none)");
 
 
@@ -927,7 +927,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           OPENFLUID_GetVariable(TU,"tests.typed.none",CurrIndex,VarMatrixVal);
           if (VarMatrixVal.size() != NewMatrix.size())
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix size value (tests.none)");
-          if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(4,3),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough(VarMatrixVal.get(4,3),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect matrix value at index 4,3 (tests.none)");
 
 

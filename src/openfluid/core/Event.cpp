@@ -40,8 +40,8 @@
 
 
 #include <openfluid/core/Event.hpp>
-
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 
 namespace openfluid { namespace core {
 
@@ -113,7 +113,8 @@ bool Event::isInfoEqual(const std::string& Key, const double Value) const
 {
   double TmpValue;
 
-  return (getInfoAsDouble(Key,TmpValue) && openfluid::tools::IsCloseEnough(TmpValue,Value,0.00001));
+  return (getInfoAsDouble(Key,TmpValue) &&
+          openfluid::scientific::isCloseEnough(TmpValue,Value,0.00001));
 }
 
 
@@ -135,7 +136,8 @@ bool Event::isInfoEqual(const std::string& Key, const DoubleValue& Value) const
 {
   DoubleValue TmpValue;
 
-  return (getInfoAsDoubleValue(Key,TmpValue) && openfluid::tools::IsCloseEnough(TmpValue.get(),Value.get(),0.00001));
+  return (getInfoAsDoubleValue(Key,TmpValue) &&
+          openfluid::scientific::isCloseEnough(TmpValue.get(),Value.get(),0.00001));
 }
 
 

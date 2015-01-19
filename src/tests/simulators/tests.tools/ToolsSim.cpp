@@ -36,9 +36,10 @@
 */
 
 #include <boost/filesystem/operations.hpp>
-
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/tools/ColTextParser.hpp>
+#include <openfluid/tools/ColumnTextParser.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -188,7 +189,7 @@ openfluid::base::SchedulingRequest ToolsSimulator::initializeRun()
     if (!CTParser.getDoubleValue(2,1,&DoubleValue))
       OPENFLUID_RaiseError("tests.tools","error reading double value (3,2) in " + FileName.string());
 
-    if (!openfluid::tools::IsVeryClose(DoubleValue,1.2))
+    if (!openfluid::scientific::isVeryClose(DoubleValue,1.2))
       OPENFLUID_RaiseError("tests.tools","wrong double value for (3,2) in " + FileName.string());
 
     if (!CTParser.getStringValue(0,0,&StrValue))

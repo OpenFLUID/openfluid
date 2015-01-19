@@ -18,9 +18,10 @@ SET_TARGET_PROPERTIES(openfluid-buddies PROPERTIES VERSION "${VERSION_MAJOR}.${V
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 TARGET_LINK_LIBRARIES(openfluid-buddies 
+                      openfluid-core
                       openfluid-base
                       openfluid-tools
-                      openfluid-core                      
+                      openfluid-utils                      
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
                       ${Boost_REGEX_LIBRARY})
 

@@ -95,7 +95,7 @@
 #include <geos/util/TopologyException.h>
 #include <geos/util/IllegalArgumentException.h>
 #include <geos/planargraph/Node.h>
-#include <openfluid/tools.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <geos/operation/overlay/snap/SnapOverlayOp.h>
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
 #include <geos/operation/distance/DistanceOp.h>
@@ -889,7 +889,7 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 
   BOOST_CHECK_EQUAL(vEntities.size(),2);
 
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Graph->entity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength())));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength())));
   double distance=vEntities[0]->getEndPoint()->getCoordinate()->distance(*(Point->getCoordinate()));
   BOOST_CHECK(distance<1);
   distance=vEntities[1]->getStartPoint()->getCoordinate()->distance(*(Point->getCoordinate()));
@@ -960,7 +960,7 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
   BOOST_CHECK_EQUAL(vEntities.size(),3);
 
 
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Graph->entity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength()+vEntities[2]->getLength())));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength()+vEntities[2]->getLength())));
 
   delete Val;
   delete Graph;
@@ -1002,7 +1002,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   for (;it!=ite;++it)
       area=area+(*it)->getArea();
 
-  BOOST_CHECK( openfluid::tools::IsVeryClose(area,0.12999));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(area,0.12999));
 
   // intersect HorseShoe with polygon with hole
   IntersectPolys.clear();
@@ -1022,7 +1022,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   for (;it!=ite;++it)
     area=area+(*it)->getArea();
 
-  BOOST_CHECK( openfluid::tools::IsVeryClose(area,0.69474));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(area,0.69474));
 
 
   // intersect HorseShoe with polygon with island
@@ -1043,7 +1043,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   for (;it!=ite;++it)
     area=area+(*it)->getArea();
 
-  BOOST_CHECK( openfluid::tools::IsVeryClose(area,0.743386));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(area,0.743386));
 
   delete Vect;
   delete VectHorse;

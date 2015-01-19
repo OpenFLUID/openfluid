@@ -269,6 +269,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-machine
                       openfluid-ware
                       openfluid-tools
+                      openfluid-utils
                       openfluid-market
                       openfluid-ui-common
                       openfluid-ui-market
@@ -315,6 +316,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-ware
                       openfluid-machine
                       openfluid-tools
+                      openfluid-utils
                       openfluid-ui-common
                       openfluid-ui-market
                       openfluid-builder-main

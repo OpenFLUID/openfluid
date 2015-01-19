@@ -51,8 +51,9 @@
 
 ObserverWidget::ObserverWidget(QWidget* Parent,
                                openfluid::fluidx::ObserverDescriptor* Desc,
-                               const openfluid::ware::WareID_t& ID):
-  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_OBSERVER_BGCOLOR), mp_Desc(Desc)
+                               const openfluid::ware::WareID_t& ID,
+                               int Index):
+  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_OBSERVER_BGCOLOR,Index), mp_Desc(Desc)
 {
   refresh();
 

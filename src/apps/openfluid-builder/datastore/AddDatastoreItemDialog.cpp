@@ -42,11 +42,11 @@
 #include <openfluid/ui/config.hpp>
 
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
-#include <openfluid/tools/GDALHelpers.hpp>
+#include <openfluid/utils/GDALHelpers.hpp>
 
 #include <gdal.h>
 #include <ogr_api.h>
+#include <openfluid/tools/DataHelpers.hpp>
 
 #include <QPushButton>
 #include <QFileDialog>
@@ -63,10 +63,10 @@ AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingUnitsC
   GDALAllRegister();
   OGRRegisterAll();
 
-  m_OGRFormatsStr = openfluid::tools::getOGRGDALFormatsForQFileDialogs(openfluid::tools::getOGRFilesDriversForOpenFLUID(),
+  m_OGRFormatsStr = openfluid::utils::getOGRGDALFormatsForQFileDialogs(openfluid::utils::getOGRFilesDriversForOpenFLUID(),
                                                                           tr("All vector files"));
 
-  m_GDALFormatsStr = openfluid::tools::getOGRGDALFormatsForQFileDialogs(openfluid::tools::getGDALFilesDriversForOpenFLUID(),
+  m_GDALFormatsStr = openfluid::utils::getOGRGDALFormatsForQFileDialogs(openfluid::utils::getGDALFilesDriversForOpenFLUID(),
                                                                         tr("All raster files"));
 
   setMessage();

@@ -41,7 +41,7 @@
 #define __OPENFLUID_BASE_RUNTIMEENV_HPP__
 
 #include <string>
-#include <boost/date_time/posix_time/posix_time.hpp>
+
 #include <boost/filesystem/path.hpp>
 
 #include <openfluid/dllexport.hpp>
@@ -120,10 +120,6 @@ class OPENFLUID_API RuntimeEnvironment
     openfluid::base::EnvironmentProperties* mp_WareEnv;
 
     openfluid::base::EnvironmentProperties m_ExtraProperties;
-
-    boost::posix_time::ptime m_IgnitionDateTime;
-
-    boost::posix_time::time_duration m_EffectiveSimulationDuration;
 
     openfluid::core::DateTime m_StartTime;
 
@@ -465,20 +461,6 @@ class OPENFLUID_API RuntimeEnvironment
     openfluid::base::EnvironmentProperties* wareEnvironment() const
       { return mp_WareEnv; };
 
-
-    boost::posix_time::ptime getIgnitionDateTime() const
-      { return m_IgnitionDateTime; };
-
-
-    void resetIgnitionDateTime();
-
-
-    boost::posix_time::time_duration getEffectiveSimulationDuration() const
-      { return m_EffectiveSimulationDuration; };
-
-
-    void setEffectiveSimulationDuration(const boost::posix_time::time_duration& TimeDuration)
-      { m_EffectiveSimulationDuration = TimeDuration; };
 
     /**
       Returns the local host name (if could be determined)

@@ -38,8 +38,8 @@
  */
 
 #include <openfluid/tools/DistributionTables.hpp>
-#include <openfluid/tools/ColTextParser.hpp>
 #include <boost/filesystem/convenience.hpp>
+#include <openfluid/tools/ColumnTextParser.hpp>
 
 #include <QDomDocument>
 #include <QDomElement>

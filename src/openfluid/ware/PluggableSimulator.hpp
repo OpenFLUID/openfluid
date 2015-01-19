@@ -115,7 +115,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
   private:
 
     /**
-      Pointer to the core repository, for internal use only
+      Pointer to the spatial graph, for internal use only
     */
     // TODO check here
    // openfluid::core::SpatialGraph* mp_InternalSpatialGraph;

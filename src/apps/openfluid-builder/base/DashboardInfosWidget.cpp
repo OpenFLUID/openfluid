@@ -94,7 +94,7 @@ DashboardInfosWidget::~DashboardInfosWidget()
 void DashboardInfosWidget::refresh()
 {
   unsigned int SimCount, GenCount;
-  m_AdvFluidxDesc.model().getItemsCount(SimCount,GenCount);
+  m_AdvFluidxDesc.model().getItemsCountByType(SimCount,GenCount);
 
   unsigned int UnitsCount = m_AdvFluidxDesc.spatialDomain().getUnitsCount();
   int UnitsClassesCount = m_AdvFluidxDesc.spatialDomain().getClassNames().size();

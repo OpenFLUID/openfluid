@@ -38,6 +38,7 @@ TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       #openfluid-fluidx
                       openfluid-ui-common
                       openfluid-waresdev
+                      openfluid-utils
                       ${QT_QTCORE_LIBRARIES}
                       ${QT_QTGUI_LIBRARIES}    
                      )

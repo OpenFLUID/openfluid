@@ -50,6 +50,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 
 #include "AppCoordinator.hpp"
 #include "MainWindow.hpp"
@@ -323,12 +324,12 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
   }
   else if (IType == NewProjectDialog::IMPORT_PROJECT)
   {
-    openfluid::tools::CopyDirectoryContentsRecursively(ISource.toStdString()+"/IN",PrjMan->getInputDir());
+    openfluid::tools::copyDirectoryContentsRecursively(ISource.toStdString()+"/IN",PrjMan->getInputDir());
     return true;
   }
   else
   {
-    openfluid::tools::CopyDirectoryContentsRecursively(ISource.toStdString(),PrjMan->getInputDir());
+    openfluid::tools::copyDirectoryContentsRecursively(ISource.toStdString(),PrjMan->getInputDir());
     return true;
   }
 }

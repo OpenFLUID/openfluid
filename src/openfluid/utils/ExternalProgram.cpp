@@ -38,13 +38,12 @@
  */
 
 
-#include <openfluid/tools/ExternalProgram.hpp>
-
+#include <openfluid/utils/ExternalProgram.hpp>
 #include <QFileInfo>
 #include <QDir>
 
 
-namespace openfluid { namespace tools {
+namespace openfluid { namespace utils {
 
 ExternalProgram::ExternalProgram(const QString& Program,
                                  const QStringList& SearchPaths,

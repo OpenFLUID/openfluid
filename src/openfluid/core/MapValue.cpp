@@ -165,6 +165,22 @@ bool MapValue::remove(const std::string& Key)
 // =====================================================================
 
 
+std::vector<std::string> MapValue::getKeys() const
+{
+  std::vector<std::string> Keys;
+  Map_t::const_iterator it;
+
+  for (it=m_Value.begin(); it!=m_Value.end(); ++it)
+    Keys.push_back((*it).first);
+
+  return Keys;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MapValue::clear()
 {
   m_Value.clear();

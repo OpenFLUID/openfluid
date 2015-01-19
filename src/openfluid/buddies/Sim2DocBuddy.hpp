@@ -55,12 +55,12 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 #include <boost/spirit/include/classic_core.hpp>
 #include <boost/spirit/include/classic_file_iterator.hpp>
 #include <boost/bind.hpp>
 
-#include <openfluid/tools/ExternalProgram.hpp>
 
 using namespace BOOST_SPIRIT_CLASSIC_NS;
 
@@ -84,10 +84,10 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
     boost::filesystem::path m_TplFilePath;
     boost::filesystem::path m_CProcessedFilePath;
 
-    openfluid::tools::ExternalProgram m_PDFLatexProgram;
-    openfluid::tools::ExternalProgram m_BibtexProgram;
-    openfluid::tools::ExternalProgram m_Latex2HTMLProgram;
-    openfluid::tools::ExternalProgram m_GCCProgram;
+    openfluid::utils::ExternalProgram m_PDFLatexProgram;
+    openfluid::utils::ExternalProgram m_BibtexProgram;
+    openfluid::utils::ExternalProgram m_Latex2HTMLProgram;
+    openfluid::utils::ExternalProgram m_GCCProgram;
 
     std::string m_ExtractedLatexDoc;
 

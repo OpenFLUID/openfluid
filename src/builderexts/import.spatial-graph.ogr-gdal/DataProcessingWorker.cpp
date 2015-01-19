@@ -41,7 +41,7 @@
 #include "OGRGDALHelpers.hpp"
 
 #include <ogrsf_frmts.h>
-#include <openfluid/tools/GDALHelpers.hpp>
+#include <openfluid/utils/GDALHelpers.hpp>
 #include <QFileInfo>
 
 
@@ -547,7 +547,7 @@ bool DataProcessingWorker::runCheck(int StartStep)
 
     QFileInfo DatasetFile(m_SourcesInfos[i].RelativeDatasetPath);
     QString Ext = DatasetFile.suffix();
-    std::set<std::string> RegisteredExtsList = openfluid::tools::getOGRFilesExtensionsForOpenFLUID();
+    std::set<std::string> RegisteredExtsList = openfluid::utils::getOGRFilesExtensionsForOpenFLUID();
 
     // check if dataset import file contains an extension
     if (m_SourcesInfos[i].IsDatasetImport && Ext.isEmpty())

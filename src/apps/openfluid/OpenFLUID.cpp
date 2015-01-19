@@ -43,10 +43,13 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
+#include <QElapsedTimer>
+
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/ApplicationException.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
@@ -62,6 +65,26 @@
 #include "DefaultMachineListener.hpp"
 #include "VerboseMachineListener.hpp"
 #include "DefaultBuddiesListener.hpp"
+
+
+
+// =====================================================================
+// =====================================================================
+
+std::string msecsToString(qint64 MSecs)
+{
+  int LeftMSecs = (int) (MSecs % 1000);
+  int Seconds = (int) (MSecs / 1000) % 60;
+  int Minutes = (int) ((MSecs / (1000*60)) % 60);
+  int Hours   = (int) ((MSecs / (1000*60*60)) % 24);
+  int Days   = (int) (MSecs / (1000*60*60*24));
+
+  return openfluid::tools::convertValue(Days)+"d "+
+         openfluid::tools::convertValue(Hours)+"h "+
+         openfluid::tools::convertValue(Minutes)+"m "+
+         openfluid::tools::convertValue(Seconds)+"."+
+         openfluid::tools::convertValue(LeftMSecs)+"s";
+}
 
 
 // =====================================================================
@@ -205,10 +228,10 @@ void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Si
   if (Signature->Status == openfluid::ware::BETA) StatusStr = "beta";
   if (Signature->Status == openfluid::ware::STABLE) StatusStr = "stable";
 
-  std::cout << "   - Name: " << openfluid::tools::ReplaceEmptyString(Signature->Name,("(unknown)")) << std::endl;
+  std::cout << "   - Name: " << openfluid::tools::replaceEmptyString(Signature->Name,("(unknown)")) << std::endl;
   std::cout << "   - File: " << Filename << std::endl;
-  std::cout << "   - Description: " << openfluid::tools::ReplaceEmptyString(Signature->Description,("(none)")) << std::endl;
-  std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(Signature->Version,("(unknown)")) << std::endl;
+  std::cout << "   - Description: " << openfluid::tools::replaceEmptyString(Signature->Description,("(none)")) << std::endl;
+  std::cout << "   - Version: " << openfluid::tools::replaceEmptyString(Signature->Version,("(unknown)")) << std::endl;
   std::cout << "   - SDK version used at build time: " << Signature->ABIVersion <<  std::endl;
   std::cout << "   - Development status: " << StatusStr <<  std::endl;
   std::cout << "   - Author(s): " << Signature->getAuthorsAsString() << std::endl;
@@ -355,13 +378,13 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
 
 
       std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
-      std::cout << "   - Name: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)")) << std::endl;
+      std::cout << "   - Name: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)")) << std::endl;
       std::cout << "   - File: " << PlugContainers[i]->FileFullPath << std::endl;
-      std::cout << "   - Domain: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)")) << std::endl;
-      std::cout << "   - Process: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)")) << std::endl;
-      std::cout << "   - Method: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
-      std::cout << "   - Description: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Description,("(none)")) << std::endl;
-      std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)")) << std::endl;
+      std::cout << "   - Domain: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)")) << std::endl;
+      std::cout << "   - Process: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)")) << std::endl;
+      std::cout << "   - Method: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
+      std::cout << "   - Description: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Description,("(none)")) << std::endl;
+      std::cout << "   - Version: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)")) << std::endl;
       std::cout << "   - SDK version used at build time: " << PlugContainers[i]->Signature->ABIVersion <<  std::endl;
       std::cout << "   - Development status: " << StatusStr <<  std::endl;
       std::cout << "   - Author(s): " << PlugContainers[i]->Signature->getAuthorsAsString() << std::endl;
@@ -479,13 +502,17 @@ void OpenFLUIDApp::printEnvInfos()
 
 void OpenFLUIDApp::runSimulation()
 {
+  QElapsedTimer FullTimer;
+  QElapsedTimer EffectiveRunTimer;
+
+
+  FullTimer.start();
 
   bool IsVerbose = false;
   openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.verbose",IsVerbose);
   bool IsQuiet = false;
   openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.quiet",IsQuiet);
 
-  m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
   openfluid::machine::MachineListener* MListener;
   openfluid::base::IOListener* IOListener = new DefaultIOListener();
@@ -585,32 +612,29 @@ void OpenFLUIDApp::runSimulation()
   else
     std::cout << " (automatically computed)";
   std::cout << std::endl;
-
   std::cout << std::endl;
-
   std::cout.flush();
 
   std::cout << std::endl << "**** Running simulation ****" << std::endl;
   std::cout.flush();
-  m_EffectiveStartTime = boost::posix_time::microsec_clock::local_time();
+
+  EffectiveRunTimer.start();
   mp_Engine->run();
-  m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
-  std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
+  qint64 EffectiveTime = EffectiveRunTimer.elapsed();
+
+  std::cout << "**** Simulation completed ****" << std::endl << std::endl;
+  std::cout << std::endl;
   std::cout.flush();
-  openfluid::base::RuntimeEnvironment::instance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
 
-  m_FullEndTime = boost::posix_time::microsec_clock::local_time();
-
-  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() || openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) std::cout << std::endl;
-
-  boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
+  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() ||
+      openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) std::cout << std::endl;
 
   printlnExecMessagesStats();
 
   std::cout << std::endl;
 
-  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::instance()->getEffectiveSimulationDuration()) << std::endl;
-  std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
+  std::cout << "Simulation run time: " << msecsToString(EffectiveTime) << std::endl;
+  std::cout << "     Total run time: " << msecsToString(FullTimer.elapsed()) << std::endl;
   std::cout << std::endl;
 
   mp_Engine->finalize();
@@ -628,7 +652,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 {
 
   std::string DefaultMaxThreadsStr;
-  openfluid::tools::ConvertValue(openfluid::config::SIMULATORS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
+  openfluid::tools::convertValue(openfluid::config::SIMULATORS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
 
   // TODO adapt colon or semicolon separated path to system win32 or unix
   boost::program_options::options_description OptionsDesc("openfluid allowed options");

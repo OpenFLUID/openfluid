@@ -42,6 +42,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
+
 #include <openfluid/ui/config.hpp>
 
 #include "ui_PreferencesDialog.h"

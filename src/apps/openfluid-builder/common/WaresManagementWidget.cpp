@@ -122,13 +122,16 @@ void WaresManagementWidget::collapseAll()
 // =====================================================================
 
 
-void WaresManagementWidget::updateUpDownButtons(bool WithFinalStretch)
+void WaresManagementWidget::updateIndexesAndButtons(bool WithFinalStretch)
 {
   int LastIndex = ui->WaresListAreaContents->layout()->count()-WithFinalStretch-1;
 
   for (int i=0;i<=LastIndex;i++)
   {
     WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->itemAt(i)->widget());
+
+    W->setCurrentIndex(i);
+
     if (i==0)
     {
       W->setUpButtonEnabled(false);

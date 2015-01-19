@@ -42,9 +42,9 @@
 #include <QDir>
 #include <boost/foreach.hpp>
 #include <ogrsf_frmts.h>
+#include <openfluid/utils/GDALHelpers.hpp>
 
 #include <openfluid/ware/PluggableObserver.hpp>
-#include <openfluid/tools/GDALHelpers.hpp>
 
 
 DECLARE_OBSERVER_PLUGIN
@@ -540,7 +540,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       // process of format parameter
       m_GDALFormat = ParamsPT.get("format","");
 
-      openfluid::tools::GDALDriversFilesExts_t ValidVectorDrivers = openfluid::tools::getOGRFilesDriversForOpenFLUID();
+      openfluid::utils::GDALDriversFilesExts_t ValidVectorDrivers =
+          openfluid::utils::getOGRFilesDriversForOpenFLUID();
 
       if (ValidVectorDrivers.find(m_GDALFormat) == ValidVectorDrivers.end())
       {

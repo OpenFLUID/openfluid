@@ -40,16 +40,15 @@
 #ifndef __KMLOBSERVERBASE_HPP__
 #define __KMLOBSERVERBASE_HPP__
 
-#include <boost/filesystem.hpp>
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <ogrsf_frmts.h>
+#include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 #include <openfluid/ware/PluggableObserver.hpp>
-#include <openfluid/tools/ExternalProgram.hpp>
-
 #include <QProcess>
 #include <QDir>
+
 
 class KmlUnitInfo
 {
@@ -128,7 +127,8 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
         return false;
       }
 
-      std::string LayerName = boost::filesystem::path(LayerInfo.SourceFilename).stem().string();
+      //std::string LayerName = boost::filesystem::path(LayerInfo.SourceFilename).stem().string();
+      std::string LayerName = QFileInfo(QString::fromStdString(LayerInfo.SourceFilename)).baseName().toStdString();
 
       Layer = DataSource->GetLayerByName(LayerName.c_str());
 
@@ -262,10 +262,10 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       std::string InputDir = boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/").string();
       std::string KmzFilePath = boost::filesystem::path(m_OutputDir + "/"+ m_OutputFileName).string();
 
-      boost::filesystem::remove_all(boost::filesystem::path(KmzFilePath));
+      openfluid::tools::removeDirectoryRecursively(QString::fromStdString(KmzFilePath));
 
-      openfluid::tools::ExternalProgram SevenZProgram =
-          openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::SevenZipProgram);
+      openfluid::utils::ExternalProgram SevenZProgram =
+          openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::SevenZipProgram);
 
       if (SevenZProgram.isFound())
       {
@@ -286,8 +286,8 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
     {
       if (m_TryOpenGEarth)
       {
-        openfluid::tools::ExternalProgram GEarthProgram =
-            openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GoogleEarthProgram);
+        openfluid::utils::ExternalProgram GEarthProgram =
+            openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GoogleEarthProgram);
 
         if (GEarthProgram.isFound())
         {
@@ -318,9 +318,9 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       m_TmpDir = boost::filesystem::path(TmpDir+"/"+m_TmpSubDir).string();
 
-      boost::filesystem::create_directories(boost::filesystem::path(m_TmpDir));
+      QDir().mkpath(QString::fromStdString(m_TmpDir));
 
-      if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir)))
+      if (!QFileInfo(QString::fromStdString(m_TmpDir)).isDir())
       {
         OPENFLUID_RaiseWarning("KmlObserverBase::prepareTempDirectory()",
                   "Cannot initialize temporary directory");
@@ -328,10 +328,10 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
         return;
       }
 
-      boost::filesystem::remove_all(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir));
-      boost::filesystem::create_directories(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir));
+      openfluid::tools::removeDirectoryRecursively(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir));
+      QDir().mkpath(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir));
 
-      if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir)))
+      if (!QFileInfo(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir)).isDir())
       {
         OPENFLUID_RaiseWarning("KmlObserverBase::prepareTempDirectory()",
                   "Cannot initialize kmz temporary directory");
@@ -340,9 +340,9 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       }
 
 
-      boost::filesystem::create_directories(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir));
+      QDir().mkpath(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir));
 
-      if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir)))
+      if (!QFileInfo(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir)).isDir())
       {
         OPENFLUID_RaiseWarning("KmlObserverBase::prepareTempDirectory()",
                   "Cannot initialize kmz data temporary directory");

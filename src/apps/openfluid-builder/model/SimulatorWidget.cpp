@@ -49,8 +49,9 @@
 
 
 SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDescriptor* Desc,
-                                 const openfluid::ware::WareID_t& ID):
-  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR), mp_Desc(Desc)
+                                 const openfluid::ware::WareID_t& ID,
+                                 int Index):
+  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR,Index), mp_Desc(Desc)
 {
   refresh();
 

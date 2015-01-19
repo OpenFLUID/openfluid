@@ -44,6 +44,7 @@
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
+#include <openfluid/scientific/Interpolators.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -100,7 +101,7 @@ void ChronFileLinearInterpolator::runInterpolation()
       y0 = BeforeCurrentTime.second;
       y1 = AfterCurrentTime.second;
 
-      y = y0 + ( x * ( double(y1-y0)/double(x1)));
+      y = openfluid::scientific::linearInterpolationFromXOrigin(y0,double(x1),y1,double(x));
     }
 
     OutFile << CurrentDateTime.getAsString(m_OutDateFormat) << m_OutColumnSeparator << y << "\n";
@@ -109,7 +110,6 @@ void ChronFileLinearInterpolator::runInterpolation()
   }
 
   OutFile.close();
-
 }
 
 

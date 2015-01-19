@@ -162,7 +162,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
     m_LastOrd = aUnit->getProcessOrder();
 
-    openfluid::tools::Sleep(100);
+    openfluid::tools::sleep(100);
   }
 
 
@@ -172,7 +172,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
   void produceDataOnTUThreaded(openfluid::core::SpatialUnit* aUnit, const openfluid::core::DoubleValue& Value)
   {
-    openfluid::tools::Sleep(100*aUnit->getID());
+    openfluid::tools::sleep(100*aUnit->getID());
 
     OPENFLUID_AppendVariable(aUnit,"tests.data.threaded",double(aUnit->getID())+Value/1000.0);
   }
@@ -184,7 +184,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
   void produceDataOnTUSequenced(openfluid::core::SpatialUnit* aUnit, const openfluid::core::DoubleValue& Value)
   {
-    openfluid::tools::Sleep(100*aUnit->getID());
+    openfluid::tools::sleep(100*aUnit->getID());
     OPENFLUID_AppendVariable(aUnit,"tests.data.sequence",double(aUnit->getID())+Value/1000.0);
   }
 

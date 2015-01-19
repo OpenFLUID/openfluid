@@ -99,9 +99,9 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   aUnitClass = aUnitPtr->getClass();
 
   // get connected units (to and from)
-  aUnitListPtr = aUnit.getToUnits("foo");
+  aUnitListPtr = aUnit.toSpatialUnits("foo");
   // or
-  aUnitListPtr = aUnit.getFromUnits("bar");
+  aUnitListPtr = aUnit.fromSpatialUnits("bar");
   @endcode
 */
 class OPENFLUID_API SpatialUnit

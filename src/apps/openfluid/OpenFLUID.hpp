@@ -75,11 +75,6 @@ class OpenFLUIDApp
     openfluid::machine::SimulationBlob m_SimBlob;
     openfluid::machine::Engine* mp_Engine;
 
-    boost::posix_time::ptime m_FullStartTime;
-    boost::posix_time::ptime m_FullEndTime;
-    boost::posix_time::ptime m_EffectiveStartTime;
-    boost::posix_time::ptime m_EffectiveEndTime;
-
 
     void printlnExecMessagesStats();
 

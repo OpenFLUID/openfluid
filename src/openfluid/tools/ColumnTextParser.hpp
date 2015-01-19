@@ -32,13 +32,13 @@
 
 
 /**
-  @file
+  @file ColumnTextParser.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
-#ifndef __OPENFLUID_TOOLS_COLFILEPARSER_HPP__
-#define __OPENFLUID_TOOLS_COLFILEPARSER_HPP__
+#ifndef __OPENFLUID_TOOLS_COLUMNTEXTPARSER_HPP__
+#define __OPENFLUID_TOOLS_COLUMNTEXTPARSER_HPP__
 
 
 #include <vector>

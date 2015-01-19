@@ -37,7 +37,7 @@
  */
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 
 
 #ifndef __OPENFLUID_WARE_WARESIGNATURE_HPP__
@@ -175,9 +175,9 @@ class OPENFLUID_API WareSignature
         if (it != Authors.begin())
           Str+= ", ";
 
-        Str += openfluid::tools::ReplaceEmptyString((*it).first,("(unknown author)"));
+        Str += openfluid::tools::replaceEmptyString((*it).first,("(unknown author)"));
         Str += " <";
-        Str += openfluid::tools::ReplaceEmptyString((*it).second,("(unknown author email)"));
+        Str += openfluid::tools::replaceEmptyString((*it).second,("(unknown author email)"));
         Str += ">";
       }
       return Str;

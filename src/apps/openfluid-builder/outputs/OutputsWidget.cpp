@@ -44,8 +44,7 @@
 #include <QApplication>
 
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/tools/SwissTools.hpp>
-
+#include <openfluid/tools/MiscHelpers.hpp>
 #include "ui_OutputsWidget.h"
 #include "OutputsWidget.hpp"
 

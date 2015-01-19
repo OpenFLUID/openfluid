@@ -54,6 +54,7 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -410,7 +411,7 @@ void Engine::prepareOutputDir()
   {
     if (mp_RunEnv->isClearOutputDir())
     {
-      openfluid::tools::EmptyDirectoryRecursively(mp_RunEnv->getOutputDir().c_str());
+      openfluid::tools::emptyDirectoryRecursively(mp_RunEnv->getOutputDir().c_str());
     }
   }
 }
@@ -422,7 +423,6 @@ void Engine::prepareOutputDir()
 
 void Engine::initialize()
 {
-  openfluid::base::RuntimeEnvironment::instance()->resetIgnitionDateTime();
   m_ModelInstance.initialize(mp_SimLogger);
   m_MonitoringInstance.initialize(mp_SimLogger);
 

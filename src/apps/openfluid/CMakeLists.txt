@@ -18,6 +18,7 @@ TARGET_LINK_LIBRARIES(${OPENFLUID_CMD_APP}
                       openfluid-core
                       openfluid-machine
                       openfluid-tools
+                      openfluid-utils
                       openfluid-fluidx)
 
 

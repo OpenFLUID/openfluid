@@ -39,9 +39,10 @@
 
 
 #include <boost/algorithm/string.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 
 #include <openfluid/tools/ProgressiveColumnFileReader.hpp>
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -81,7 +82,7 @@ bool ProgressiveColumnFileReader::getNextLine(std::vector<std::string>& Values)
 
   if (getNextLine(TmpStr))
   {
-    Values = openfluid::tools::SplitString(TmpStr,m_ColSeparators,false);
+    Values = openfluid::tools::splitString(TmpStr,m_ColSeparators,false);
     return true;
   }
   return false;

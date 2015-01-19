@@ -49,8 +49,9 @@
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/tools.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <geos/geom/Coordinate.h>
 
 
@@ -232,10 +233,10 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
   Rast = new openfluid::landr::RasterDataset(Val);
 
   BOOST_CHECK(
-      openfluid::tools::IsVeryClose(Rast->getValueOfCoordinate(*Rast->getOrigin()), 98.9708));
+      openfluid::scientific::isVeryClose(double(Rast->getValueOfCoordinate(*Rast->getOrigin())), 98.9708));
 
   BOOST_CHECK(
-      openfluid::tools::IsVeryClose(Rast->getValueOfCoordinate(geos::geom::Coordinate(x, y)), 84.587));
+      openfluid::scientific::isVeryClose(double(Rast->getValueOfCoordinate(geos::geom::Coordinate(x, y))), 84.587));
 
   delete Rast;
 }
@@ -281,16 +282,16 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
   BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 400);
 
   openfluid::core::DoubleValue Val=VectorLayer->GetFeature(0)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 98.9708));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 98.9708));
 
   Val=VectorLayer->GetFeature(1)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 99.201));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 99.201));
 
   Val=VectorLayer->GetFeature(331)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 42.327));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 42.327));
 
   Val=VectorLayer->GetFeature(399)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
-  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 21.0336));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 21.0336));
 
   delete Rast;
   delete VectorVal;

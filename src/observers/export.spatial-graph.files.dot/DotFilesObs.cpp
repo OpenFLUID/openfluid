@@ -42,8 +42,12 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+
 #include <boost/foreach.hpp>
+
 #include <openfluid/ware/PluggableObserver.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
+
 
 
 // =====================================================================
@@ -178,7 +182,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
         {
           TheUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
           std::string IDStr = "";
-          openfluid::tools::ConvertValue(TheUnit->getID(),&IDStr);
+          openfluid::tools::convertValue(TheUnit->getID(),&IDStr);
           DotFile << generateDotNode(ClassStr,IDStr,Options) << "\n";
         }
       }
@@ -195,7 +199,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
           TheUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
           std::string SrcClassStr = TheUnit->getClass();
           std::string SrcIDStr = "";
-          openfluid::tools::ConvertValue(TheUnit->getID(),&SrcIDStr);
+          openfluid::tools::convertValue(TheUnit->getID(),&SrcIDStr);
 
           for (unsigned int i=0;i<ClassVector.size();i++)
           {
@@ -209,7 +213,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
               for (itToUnits=ToUnits->begin();itToUnits!=ToUnits->end();++itToUnits)
               {
                 std::string DestIDStr = "";
-                openfluid::tools::ConvertValue((*itToUnits)->getID(),&DestIDStr);
+                openfluid::tools::convertValue((*itToUnits)->getID(),&DestIDStr);
 
                 DotFile << generateDotEdge(SrcClassStr,SrcIDStr,DestClassStr,DestIDStr,"") << "\n";
 
@@ -226,7 +230,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
               for (itParentUnits=ParentUnits->begin();itParentUnits!=ParentUnits->end();++itParentUnits)
               {
                 std::string DestIDStr = "";
-                openfluid::tools::ConvertValue((*itParentUnits)->getID(),&DestIDStr);
+                openfluid::tools::convertValue((*itParentUnits)->getID(),&DestIDStr);
 
                 DotFile << generateDotEdge(SrcClassStr,SrcIDStr,DestClassStr,DestIDStr,"[arrowhead=odiamond,color=gray50,style=dashed]") << "\n";
 

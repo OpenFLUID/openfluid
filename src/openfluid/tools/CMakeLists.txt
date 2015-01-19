@@ -1,4 +1,4 @@
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${QT_INCLUDES} ${GDAL_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${QT_INCLUDES})
 
 FILE(GLOB OPENFLUID_TOOLS_CPP *.cpp)
 FILE(GLOB OPENFLUID_TOOLS_HPP *.hpp)
@@ -19,9 +19,8 @@ TARGET_LINK_LIBRARIES(openfluid-tools
                       openfluid-core
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
                       ${QT_QTCORE_LIBRARY}
-                      ${QT_QTNETWORK_LIBRARY}
                       ${QT_QTXML_LIBRARY}
-                      ${GDAL_LIBRARIES})
+                      )
 
 
 
