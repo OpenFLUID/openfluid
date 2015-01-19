@@ -43,9 +43,12 @@
 #include <QDesktopWidget>
 #include <QAction>
 #include <QMessageBox>
+#include <QCloseEvent>
 
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
+
+#include "DevStudioPreferencesManager.hpp"
 
 
 MainWindow::MainWindow() :
@@ -93,10 +96,8 @@ MainWindow::MainWindow() :
           SLOT(showNotYetImplemented()));
   connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
-
-  connect(m_Actions.value("Quit"), SIGNAL(triggered()),
-  qApp,
-          SLOT(quit()));
+  connect(m_Actions["Quit"], SIGNAL(triggered()), this,
+          SLOT(onQuitRequested()));
 
   connect(mp_Toolbar->action("NewFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
@@ -104,10 +105,10 @@ MainWindow::MainWindow() :
           SLOT(showNotYetImplemented()));
   connect(mp_Toolbar->action("SaveFile"), SIGNAL(triggered()), mp_Collection,
           SLOT(saveCurrentEditor()));
-  connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()),
-          mp_Collection, SLOT(saveCurrentEditorAs()));
-  connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()),
-          mp_Collection, SLOT(closeCurrentEditor()));
+  connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()), mp_Collection,
+          SLOT(saveCurrentEditorAs()));
+  connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()), mp_Collection,
+          SLOT(closeCurrentEditor()));
   connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
 
@@ -130,10 +131,10 @@ MainWindow::MainWindow() :
           SLOT(setDebugMode()));
   connect(mp_Toolbar->action("BuildInstall"), SIGNAL(triggered()),
           mp_Collection, SLOT(setBuildWithInstallMode()));
-  connect(mp_Toolbar->action("BuildOnly"), SIGNAL(triggered()),
-          mp_Collection, SLOT(setBuildNoInstallMode()));
-  connect(mp_Toolbar->action("Configure"), SIGNAL(triggered()),
-          mp_Collection, SLOT(configure()));
+  connect(mp_Toolbar->action("BuildOnly"), SIGNAL(triggered()), mp_Collection,
+          SLOT(setBuildNoInstallMode()));
+  connect(mp_Toolbar->action("Configure"), SIGNAL(triggered()), mp_Collection,
+          SLOT(configure()));
   connect(mp_Toolbar->action("Build"), SIGNAL(triggered()), mp_Collection,
           SLOT(build()));
   connect(mp_Toolbar->action("OpenExplorer"), SIGNAL(triggered()),
@@ -168,6 +169,8 @@ MainWindow::MainWindow() :
           mp_Collection, SLOT(openTerminal(const QString&)));
   connect(ui->ExtExplorer, SIGNAL(openTerminalAsked(const QString&)),
           mp_Collection, SLOT(openTerminal(const QString&)));
+
+  setWorkspaceDefaults();
 }
 
 
@@ -288,6 +291,29 @@ void MainWindow::createMenus()
 // =====================================================================
 
 
+void MainWindow::setWorkspaceDefaults()
+{
+  DevStudioPreferencesManager* Mgr = DevStudioPreferencesManager::instance();
+
+  QStringList Mode = Mgr->getConfigBuildMode().split("|");
+  mp_Toolbar->action(
+      Mode.contains("DEBUG", Qt::CaseInsensitive) ? "Debug" : "Release")
+      ->trigger();
+  mp_Toolbar->action(
+      Mode.contains("BUILDONLY", Qt::CaseInsensitive) ? "BuildOnly" :
+                                                        "BuildInstall")->trigger();
+
+  QStringList LastOpenWares = Mgr->getLastOpenWares();
+  foreach(QString WarePath,LastOpenWares)mp_Collection->openPath(WarePath);
+
+  mp_Collection->setCurrent(Mgr->getLastActiveWare());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MainWindow::onSaveAsRequested()
 {
   mp_Collection->saveCurrentEditorAs(
@@ -302,6 +328,39 @@ void MainWindow::onSaveAsRequested()
 void MainWindow::showNotYetImplemented()
 {
   QMessageBox::information(0, "", "Not yet implemented");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void MainWindow::onQuitRequested()
+{
+  DevStudioPreferencesManager* Mgr = DevStudioPreferencesManager::instance();
+
+  QStringList Mode;
+  Mode << (mp_Collection->isDebugMode() ? "DEBUG" : "RELEASE");
+  Mode
+      << (mp_Collection->isBuildNoInstallMode() ? "BUILDONLY" : "BUILDINSTALL");
+  Mgr->setConfigBuildMode(Mode.join("|"));
+
+  Mgr->setLastOpenWares(mp_Collection->getOpenWarePaths());
+
+  Mgr->setLastActiveWare(mp_Collection->getCurrentWarePath());
+
+  if (mp_Collection->closeAllWidgets())
+    qApp->quit();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::closeEvent(QCloseEvent* Event)
+{
+  Event->ignore();
+  onQuitRequested();
 }
 
 

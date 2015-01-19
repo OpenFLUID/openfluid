@@ -3,9 +3,9 @@
 CONFIGURE_FILE(devstudioconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/devstudioconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
-SET(DEVSTUDIO_CPP MainWindow.cpp WareSrcExplorer.cpp WareSrcExplorerModel.cpp)
+SET(DEVSTUDIO_CPP MainWindow.cpp WareSrcExplorer.cpp WareSrcExplorerModel.cpp DevStudioPreferencesManager.cpp)
                      
-SET(DEVSTUDIO_HPP MainWindow.hpp WareSrcExplorer.hpp WareSrcExplorerModel.hpp)
+SET(DEVSTUDIO_HPP MainWindow.hpp WareSrcExplorer.hpp WareSrcExplorerModel.hpp DevStudioPreferencesManager.hpp)
 
 QT4_WRAP_UI(DEVSTUDIO_UI MainWindow.ui)
 

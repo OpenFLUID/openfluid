@@ -26,71 +26,53 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
+
 /**
- \file MainWindow.hpp
+ \file DevStudioPreferencesManager.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__
-#define __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__
 
-#include <QMainWindow>
-#include <QMap>
+#ifndef __OPENFLUID_DEVSTUDIOAPP_DEVSTUDIOPREFERENCESMANAGER_HPP__
+#define __OPENFLUID_DEVSTUDIOAPP_DEVSTUDIOPREFERENCESMANAGER_HPP__
 
-#include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
-#include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
-
-namespace Ui {
-class MainWindow;
-}
-
-class QAction;
-
-namespace openfluid { namespace ui { namespace waresdev {
-class WareSrcWidget;
-} } }
+#include <QSettings>
 
 
-class MainWindow: public QMainWindow
+class DevStudioPreferencesManager
 {
-  Q_OBJECT
+  private :
 
-  private:
+    static DevStudioPreferencesManager* mp_Instance;
 
-    Ui::MainWindow* ui;
+    QSettings* mp_Settings;
 
-    openfluid::ui::waresdev::WareSrcToolbar* mp_Toolbar;
-
-    openfluid::ui::waresdev::WareSrcWidgetCollection* mp_Collection;
-
-    QMap<QString, QAction*> m_Actions;
-
-    void createLocalActions();
-
-    void createMenus();
-
-    void setWorkspaceDefaults();
-
-  private slots:
-
-    void onSaveAsRequested();
-
-    void showNotYetImplemented();
-
-    void onQuitRequested();
+    DevStudioPreferencesManager();
 
   public:
 
-    MainWindow();
+    ~DevStudioPreferencesManager();
 
-    ~MainWindow();
+    static DevStudioPreferencesManager* instance();
 
-    void closeEvent(QCloseEvent* Event);
+    void switchWorkspace(const QString& NewAbsoluteWorkspacePath);
+
+    QStringList getLastOpenWares();
+
+    void setLastOpenWares(const QStringList& OpenWaresAbsolutePath);
+
+    QString getLastActiveWare();
+
+    void setLastActiveWare(const QString& ActiveWareAbsolutePath);
+
+    QString getConfigBuildMode();
+
+    void setConfigBuildMode(const QString& Mode);
 };
 
-#endif /* __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__ */
+#endif /* __OPENFLUID_DEVSTUDIOAPP_DEVSTUDIOPREFERENCESMANAGER_HPP__ */

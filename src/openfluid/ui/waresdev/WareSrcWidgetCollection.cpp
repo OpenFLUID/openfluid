@@ -220,7 +220,7 @@ void WareSrcWidgetCollection::openExplorer(const QString& Path)
     FileToOpen = Path;
   else
   {
-    QString Current = getCurrentPath();
+    QString Current = getCurrentWarePath();
 
     if (!Current.isEmpty())
       FileToOpen = Current;
@@ -244,7 +244,7 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
     FileToOpen = Path;
   else
   {
-    QString Current = getCurrentPath();
+    QString Current = getCurrentWarePath();
 
     if (!Current.isEmpty())
       FileToOpen = Current;
@@ -274,7 +274,7 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 // =====================================================================
 
 
-QString WareSrcWidgetCollection::getCurrentPath()
+QString WareSrcWidgetCollection::getCurrentWarePath()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     return CurrentWare->wareSrcContainer().getAbsolutePath();
@@ -499,6 +499,79 @@ void WareSrcWidgetCollection::closeCurrentEditor()
     CurrentWare->closeCurrentEditor();
   else
     QMessageBox::warning(0, "No ware open", "Open a ware first");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidgetCollection::closeAllWidgets()
+{
+  int Choice = QMessageBox::Discard;
+
+  if (isModified())
+  {
+    QMessageBox MsgBox;
+    MsgBox.setText(tr("Documents have been modified."));
+    MsgBox.setInformativeText(tr("Do you want to save your changes?"));
+    MsgBox.setStandardButtons(
+        QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel);
+    MsgBox.setDefaultButton(QMessageBox::SaveAll);
+    Choice = MsgBox.exec();
+  }
+
+  switch (Choice)
+  {
+    case QMessageBox::SaveAll:
+      foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath){
+      Ware->saveAllFileTabs();
+    }
+    case QMessageBox::Discard:
+    foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)
+    {
+      Ware->closeAllFileTabs();
+      closeWareTab(Ware);
+    }
+    return true;
+    break;
+    case QMessageBox::Cancel:
+    default:
+    return false;
+    break;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList WareSrcWidgetCollection::getOpenWarePaths()
+{
+  return m_WareSrcWidgetByPath.keys();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidgetCollection::isDebugMode()
+{
+  return m_DefaultConfigMode
+      == openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidgetCollection::isBuildNoInstallMode()
+{
+  return m_DefaultBuildMode
+      == openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL;
 }
 
 

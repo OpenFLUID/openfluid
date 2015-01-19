@@ -79,8 +79,6 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     openfluid::waresdev::WareSrcContainer::ConfigMode m_DefaultConfigMode;
     openfluid::waresdev::WareSrcContainer::BuildMode m_DefaultBuildMode;
 
-    QString getCurrentPath();
-
     WareSrcWidget* currentWareWidget();
 
     bool isModified();
@@ -92,6 +90,19 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone);
 
     ~WareSrcWidgetCollection();
+
+    /**
+     * Returns false is there is unchanged modifications and user chooses to cancel closing, true otherwise
+     */
+    bool closeAllWidgets();
+
+    QStringList getOpenWarePaths();
+
+    QString getCurrentWarePath();
+
+    bool isDebugMode();
+
+    bool isBuildNoInstallMode();
 
   public slots:
 
