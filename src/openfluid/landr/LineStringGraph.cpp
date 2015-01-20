@@ -26,8 +26,8 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
  @file LineStringGraph.cpp
@@ -197,8 +197,8 @@ void LineStringGraph::addEntity(LandREntity* Entity)
 // =====================================================================
 
 
-LandREntity* LineStringGraph::getNewEntity(const geos::geom::Geometry* Geom,
-                                           unsigned int OfldId)
+LandREntity* LineStringGraph::createNewEntity(const geos::geom::Geometry* Geom,
+                                              unsigned int OfldId)
 {
   return new LineStringEntity(Geom, OfldId);
 }
@@ -312,20 +312,19 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
 // =====================================================================
 
 
-float* LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entity)
+float LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entity)
 {
-  float* Val = 0;
+
 
   if (!mp_Raster)
     throw openfluid::base::FrameworkException(
         "LineStringGraph::getRasterValueForEntityStartNode",
         "No raster associated to the LineStringGraph");
-  else
-  {
-    Val = new float(
-        mp_Raster->getValueOfCoordinate(
-            Entity.startNode()->getCoordinate()));
-  }
+
+  float	Val =
+      mp_Raster->getValueOfCoordinate(
+          Entity.startNode()->getCoordinate());
+
 
   return Val;
 }
@@ -335,19 +334,18 @@ float* LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entit
 // =====================================================================
 
 
-float* LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
+float LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
 {
-  float* Val = 0;
+
 
   if (!mp_Raster)
     throw openfluid::base::FrameworkException(
         "LineStringGraph::getRasterValueForEntityEndNode",
         "No raster associated to the LineStringGraph");
-  else
-  {
-    Val = new float(
-        mp_Raster->getValueOfCoordinate(Entity.endNode()->getCoordinate()));
-  }
+
+  float	Val =
+      mp_Raster->getValueOfCoordinate(Entity.endNode()->getCoordinate());
+
 
   return Val;
 }
@@ -364,8 +362,8 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(const std::string& 
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
   {
-    float* Val = getRasterValueForEntityStartNode(
-        *dynamic_cast<LineStringEntity*>(*it));
+    float* Val = new float(getRasterValueForEntityStartNode(
+        *dynamic_cast<LineStringEntity*>(*it)));
 
     if (!Val)
     {
@@ -378,6 +376,7 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(const std::string& 
     }
 
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
+    delete Val;
   }
 
 }
@@ -395,8 +394,8 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(const std::string& At
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
   {
-    float* Val = getRasterValueForEntityEndNode(
-        *dynamic_cast<LineStringEntity*>(*it));
+    float* Val = new float (getRasterValueForEntityEndNode(
+        *dynamic_cast<LineStringEntity*>(*it)));
 
     if (!Val)
     {
@@ -506,8 +505,8 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
   {
-    float* EndVal = getRasterValueForEntityEndNode(
-        *dynamic_cast<LineStringEntity*>(*it));
+    float* EndVal = new float(getRasterValueForEntityEndNode(
+        *dynamic_cast<LineStringEntity*>(*it)));
 
     if (!EndVal)
     {
@@ -519,8 +518,8 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
       return;
     }
 
-    float* StartVal = getRasterValueForEntityStartNode(
-        *dynamic_cast<LineStringEntity*>(*it));
+    float* StartVal = new float( getRasterValueForEntityStartNode(
+        *dynamic_cast<LineStringEntity*>(*it)));
 
     if (!StartVal)
     {
@@ -753,6 +752,81 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
   std::vector<int>::iterator itVe=vectIdent.end();
   for (; itV!=itVe;itV++)
     this->reverseLineStringEntity(*(this->entity(*itV)));
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void LineStringGraph::mergeLineStringEntitiesByMinLength(double MinLength,bool rmDangle)
+{
+
+  if (MinLength<=0.0)
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::mergeLineStringEntitiesByMinLength : "
+        "Threshold must be superior to 0.0");
+
+  if (getEntities().size()==1)
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::mergeLineStringEntitiesByMinLength : "
+        "RSGRaph have just one RS Entity");
+
+  std::multimap<double, LineStringEntity*>  mOrderedLength;
+  mOrderedLength=getLineStringEntitiesByMinLength(MinLength,rmDangle);
+
+  if (mOrderedLength.empty())
+    return ;
+
+
+  while (!mOrderedLength.empty())
+  {
+    std::multimap<double, LineStringEntity*>::iterator jt=mOrderedLength.begin();
+    LineStringEntity* EntityToMerge=(*jt).second;
+    std::vector<LineStringEntity*> vNeighbours=EntityToMerge->getLineNeighboursDegree2();
+
+    int StartDegree=EntityToMerge->startNode()->getDegree();
+    int EndDegree=EntityToMerge->endNode()->getDegree();
+
+    if (StartDegree==1 && EndDegree>=3 && rmDangle==true)
+      removeEntity(EntityToMerge->getOfldId());
+
+    else if (!vNeighbours.empty())
+    {
+      std::vector<LineStringEntity*>::iterator it2 = vNeighbours.begin();
+      std::vector<LineStringEntity*>::iterator it2e = vNeighbours.end();
+      std::multimap<double, LandREntity*> mLengthNeighbours;
+
+      for (;it2!=it2e;++it2)
+      {
+        LandREntity* Line =
+            dynamic_cast<LineStringEntity*>(*it2);
+        mLengthNeighbours.insert ( std::pair<double, LandREntity*>(Line->getLength(),Line) );
+      }
+      std::multimap<double, LandREntity*>::iterator itMapEnd=mLengthNeighbours.end();
+      itMapEnd--;
+
+      LineStringEntity* Entity;
+      Entity=dynamic_cast<LineStringEntity*>((*itMapEnd).second);
+
+      try
+      {
+        mergeLineStringEntities(*Entity,*EntityToMerge);
+      }
+      catch (std::exception& e)
+      {
+        throw openfluid::base::FrameworkException(
+            "LineStringGraph::mergeLineStringEntitiesByMinLength : "
+            "Unable to merge LineStringEntity.");
+      }
+
+    }
+    //TODO change this part to improve speed : just remove from the list the Entity and the Entity to Merge if necessary
+    mOrderedLength.clear();
+    mOrderedLength=getLineStringEntitiesByMinLength(MinLength,rmDangle);
+
+  }
 
 }
 

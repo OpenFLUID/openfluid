@@ -137,7 +137,7 @@ class OPENFLUID_API PolygonEntity: public LandREntity
      @param Other The PolygonEntity to compare to.
      @return A vector of new allocated geos::geom::LineString representing the linear intersections (eventually merged) between this PolygonEntity and Other.
      */
-    std::vector<geos::geom::LineString*> getLineIntersectionsWith(PolygonEntity& Other);
+    std::vector<geos::geom::LineString*> computeLineIntersectionsWith(PolygonEntity& Other);
 
     /**
      @brief Returns the PolygonEdge containing Segment.
@@ -260,7 +260,7 @@ class OPENFLUID_API PolygonEntity: public LandREntity
      @param LineTopology A line VectorDataset
      @return A openfluid::landr:landREntity or an empty entity if not found.
      */
-    LandREntity *getNeighbourByLineTopology(VectorDataset LineTopology);
+    LandREntity *computeNeighbourByLineTopology(VectorDataset LineTopology);
 
 
 

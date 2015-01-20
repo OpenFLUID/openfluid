@@ -264,3 +264,29 @@ BOOST_AUTO_TEST_CASE(check_Neighbours)
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_getLineNeighboursDegree2)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LineToMerge.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Val);
+
+  std::vector<openfluid::landr::LineStringEntity*> vNeighbours=Graph->entity(25)->getLineNeighboursDegree2();
+  BOOST_CHECK_EQUAL(vNeighbours.size(),0);
+  vNeighbours.clear();
+  vNeighbours=Graph->entity(23)->getLineNeighboursDegree2();
+  BOOST_CHECK_EQUAL(vNeighbours.size(),1);
+  vNeighbours.clear();
+  vNeighbours=Graph->entity(22)->getLineNeighboursDegree2();
+  BOOST_CHECK_EQUAL(vNeighbours.size(),2);
+
+
+  delete Graph;
+  delete Val;
+}
+
+
+// =====================================================================
+// =====================================================================

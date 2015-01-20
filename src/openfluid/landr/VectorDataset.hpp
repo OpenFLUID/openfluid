@@ -255,7 +255,7 @@ class OPENFLUID_API VectorDataset
      @param LayerIndex The index of the layer to query, default 0.
      @return A list of OGRFeature and geos::geom::Geometry of this VectorDataset.
      */
-    FeaturesList_t getFeatures(unsigned int LayerIndex = 0);
+    FeaturesList_t features(unsigned int LayerIndex = 0);
 
     /**
      @brief Gets a geos::geom::Geometry representing a collection of all the geometries of the layer LayerIndex of this GeoVectorValue.

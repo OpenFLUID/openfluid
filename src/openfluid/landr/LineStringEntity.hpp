@@ -130,6 +130,12 @@ class OPENFLUID_API LineStringEntity: public LandREntity, public geos::planargra
      */
     void computeNeighbours();
 
+    /**
+     @brief Returns a vector of LineStringEntity down and upneighbours with NodeDegree=2.
+     @return A vector of LineStringEntity.
+    */
+    std::vector<LineStringEntity*>  getLineNeighboursDegree2();
+
 };
 
 } } // namespace landr, openfluid

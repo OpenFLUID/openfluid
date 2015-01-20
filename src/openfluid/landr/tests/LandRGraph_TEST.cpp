@@ -145,8 +145,8 @@ BOOST_AUTO_TEST_CASE(check_getARasterValue_fromPolygonGraph)
 
   Graph->addAGeoRasterValue(*Raster);
 
-  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U1), 29);
-  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U20), 64);
+  BOOST_CHECK_EQUAL(Graph->getRasterValueForEntityCentroid(*U1), 29);
+  BOOST_CHECK_EQUAL(Graph->getRasterValueForEntityCentroid(*U20), 64);
 
   delete Graph;
   delete Vector;
@@ -177,8 +177,8 @@ BOOST_AUTO_TEST_CASE(check_getARasterValue_fromLineStringGraph)
 
   Graph->addAGeoRasterValue(*Raster);
 
-  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U1), 36);
-  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U3), 69);
+  BOOST_CHECK_EQUAL(Graph->getRasterValueForEntityCentroid(*U1), 36);
+  BOOST_CHECK_EQUAL(Graph->getRasterValueForEntityCentroid(*U3), 69);
 
   delete Graph;
   delete Vector;
