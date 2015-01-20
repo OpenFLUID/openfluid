@@ -157,7 +157,7 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
      @param Geom A geos::geom::Geometry.
      @param OfldId The identifier of the new LandREntity.
      */
-    virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
+    virtual LandREntity* createNewEntity(const geos::geom::Geometry* Geom,
                                       unsigned int OfldId) = 0;
 
     /**
@@ -264,7 +264,7 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
      @param Entity The LandREntity to get the centroid coordinate from.
      @return The raster value corresponding to the LandREntity centroid coordinate.
      */
-    virtual float* getRasterValueForEntityCentroid(const LandREntity& Entity);
+    virtual float getRasterValueForEntityCentroid(const LandREntity& Entity);
 
     /**
      @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity

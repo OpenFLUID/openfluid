@@ -26,8 +26,8 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
  @file PolygonGraph.hpp
@@ -95,8 +95,8 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
      @param OfldId The identifier of the new PolygonEntity.
      @return A new LandREntity.
      */
-    virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-                                      unsigned int OfldId);
+    virtual LandREntity* createNewEntity(const geos::geom::Geometry* Geom,
+                                         unsigned int OfldId);
 
     /**
      @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
@@ -179,7 +179,7 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
      @return A map of polygonized Raster Polygons, from associated polygonized raster,
      with for each one the intersection area.
      */
-    RastValByRastPoly_t getRasterPolyOverlapping(PolygonEntity& Entity);
+    RastValByRastPoly_t computeRasterPolyOverlapping(PolygonEntity& Entity);
 
     /**
      @brief Creates a new attribute for this PolygonGraph entities, and set for each PolygonEntity
@@ -279,6 +279,21 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
      */
     void mergePolygonEntities(PolygonEntity& Entity,
                               PolygonEntity& EntityToMerge);
+
+    /**
+      @brief Merge the entities of this PolygonGraph which area is under threshold
+      @details The small PolygonEntity is merged into the one which share the longest boundary.
+      @param MinArea The minimum area threshold.
+     */
+    void mergePolygonEntitiesByMinArea(double MinArea);
+
+    /**
+     @brief Merge the entities of this PolygonGraph which compactness value are superior
+     to a compactness threshold (Gravelius Index).
+     @details The small PolygonEntity is merged into the one which share the longest boundary.
+     @param Compactness The compactness threshold (perimeter/2 x sqrt (Pi x area)).
+     */
+    void mergePolygonEntitiesByCompactness(double Compactness);
 
 
 

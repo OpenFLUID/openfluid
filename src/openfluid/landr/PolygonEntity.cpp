@@ -161,7 +161,7 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
 // =====================================================================
 
 
-std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(PolygonEntity& Other)
+std::vector<geos::geom::LineString*> PolygonEntity::computeLineIntersectionsWith(PolygonEntity& Other)
 {
   std::vector<geos::geom::LineString*> Lines;
 
@@ -172,7 +172,7 @@ std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(Pol
     geos::geom::Geometry* SharedGeom = mp_Polygon->intersection(
         Other.mp_Polygon);
 
-    Lines = *LandRTools::getMergedLineStringsFromGeometry(SharedGeom);
+    Lines = *LandRTools::computeMergedLineStringsFromGeometry(SharedGeom);
 
     delete SharedGeom;
   }
@@ -286,7 +286,7 @@ bool PolygonEntity::isComplete()
       geos::geom::GeometryFactory::getDefaultInstance()->createMultiLineString(
           Geoms);
 
-  geos::geom::LineString* LS = LandRTools::getMergedLineStringFromGeometry(
+  geos::geom::LineString* LS = LandRTools::computeMergedLineStringFromGeometry(
       dynamic_cast<geos::geom::Geometry*>(MLS));
 
   bool Complete = LS && LS->equals(mp_Polygon->getExteriorRing());
@@ -645,11 +645,11 @@ std::multimap<double,PolygonEntity*> PolygonEntity::getOrderedNeighboursByLength
 // =====================================================================
 
 
-LandREntity *PolygonEntity::getNeighbourByLineTopology(VectorDataset LineTopology)
+LandREntity *PolygonEntity::computeNeighbourByLineTopology(VectorDataset LineTopology)
 {
   if (!LineTopology.isLineType())
     throw openfluid::base::FrameworkException(
-        "PolygonEntity::getNeighbourByLineTopology",
+        "PolygonEntity::computeNeighbourByLineTopology",
         "The VectorDataset is not Line Type ");
 
   if (!mp_NeighboursMap)

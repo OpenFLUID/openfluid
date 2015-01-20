@@ -503,7 +503,7 @@ bool VectorDataset::isIntValueSet(const std::string& FieldName,
 // =====================================================================
 
 
-VectorDataset::FeaturesList_t VectorDataset::getFeatures(
+VectorDataset::FeaturesList_t VectorDataset::features(
     unsigned int LayerIndex)
 {
   if (!m_Features.count(LayerIndex))

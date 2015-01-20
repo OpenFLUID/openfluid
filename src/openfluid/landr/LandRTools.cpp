@@ -67,12 +67,12 @@ namespace openfluid { namespace landr {
 // =====================================================================
 
 
-geos::geom::LineString* LandRTools::getMergedLineStringFromGeometry(geos::geom::Geometry* Geom)
+geos::geom::LineString* LandRTools::computeMergedLineStringFromGeometry(geos::geom::Geometry* Geom)
 {
   geos::geom::LineString* LS = 0;
 
   std::vector<geos::geom::LineString*>* Lines =
-      getMergedLineStringsFromGeometry(Geom);
+      computeMergedLineStringsFromGeometry(Geom);
 
   if (!Lines || Lines->size() != 1)
   {
@@ -93,7 +93,7 @@ geos::geom::LineString* LandRTools::getMergedLineStringFromGeometry(geos::geom::
 // =====================================================================
 
 
-std::vector<geos::geom::LineString*>* LandRTools::getMergedLineStringsFromGeometry(geos::geom::Geometry* Geom)
+std::vector<geos::geom::LineString*>* LandRTools::computeMergedLineStringsFromGeometry(geos::geom::Geometry* Geom)
 {
   std::vector<geos::geom::LineString*>* LS = 0;
 
@@ -123,11 +123,11 @@ std::vector<geos::geom::LineString*>* LandRTools::getMergedLineStringsFromGeomet
 // =====================================================================
 
 
-std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(openfluid::landr::VectorDataset& Val)
+std::vector<geos::geom::LineString*> LandRTools::computeVectorOfExteriorRings(openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isPolygonType())
     throw openfluid::base::FrameworkException(
-        "LandRTools::getVectorOfExteriorRings",
+        "LandRTools::computeVectorOfExteriorRings",
         " The GeoVectorValue is not polygon-typed.");
 
   std::vector<geos::geom::LineString*> Lines;
@@ -148,11 +148,11 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(openfl
 // =====================================================================
 
 
-std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(openfluid::landr::VectorDataset& Val)
+std::vector<geos::geom::LineString*> LandRTools::computeVectorOfLines(openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isLineType())
     throw openfluid::base::FrameworkException(
-        "LandRTools::getVectorOfLines",
+        "LandRTools::computeVectorOfLines",
         " The GeoVectorValue is not linestring-typed.");
 
   std::vector<geos::geom::LineString*> Lines;
@@ -173,7 +173,7 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(openfluid::lan
 // =====================================================================
 
 
-std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(geos::geom::Geometry* Geom1,
+std::vector<geos::geom::LineString*>* LandRTools::computeNodedLines(geos::geom::Geometry* Geom1,
                                                                 geos::geom::Geometry* Geom2,
                                                                 double SnapTolerance,
                                                                 double PrecisionReducer)
@@ -221,7 +221,7 @@ std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(geos::geom::Geom
   catch (geos::util::GEOSException& e)
   {
     throw openfluid::base::FrameworkException(
-        "LandRTools::getNodedLines",
+        "LandRTools::computeNodedLines",
         "Error while noding lines, you can try again with a greater snap tolerance value.\n"
         "(Details: "
         + std::string(e.what()) + ")");
@@ -602,7 +602,7 @@ std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(std::vector<g
 // =====================================================================
 
 
-std::vector<geos::geom::Point*> LandRTools::getNodesFromVectorOfLines(std::vector<geos::geom::LineString*>& NodedLines)
+std::vector<geos::geom::Point*> LandRTools::computeNodesFromVectorOfLines(std::vector<geos::geom::LineString*>& NodedLines)
 {
   std::vector<geos::geom::Point*> vPoints;
 

@@ -186,11 +186,11 @@ void LandRGraph::addEntitiesFromGeoVector()
         (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
     addEntity(
-        getNewEntity(GeosGeom->clone(), Feat->GetFieldAsInteger("OFLD_ID")));
+        createNewEntity(GeosGeom->clone(), Feat->GetFieldAsInteger("OFLD_ID")));
 
     // destroying the feature destroys also the associated OGRGeom
-    OGRFeature::DestroyFeature(Feat);
-    delete GeosGeom;
+   delete GeosGeom;
+   OGRFeature::DestroyFeature(Feat);
   }
 
  removeUnusedNodes();
@@ -206,7 +206,7 @@ void LandRGraph::addEntitiesFromEntityList(const LandRGraph::Entities_t& Entitie
   LandRGraph::Entities_t::const_iterator it = Entities.begin();
   LandRGraph::Entities_t::const_iterator ite = Entities.end();
   for (; it != ite; ++it)
-      addEntity(getNewEntity((*it)->geometry()->clone(), (*it)->getOfldId()));
+    addEntity(createNewEntity((*it)->geometry()->clone(), (*it)->getOfldId()));
 
   removeUnusedNodes();
 }
@@ -241,7 +241,7 @@ void LandRGraph::removeUnusedNodes()
   unsigned int UnSize=Unused->size();
   for (unsigned int i = 0; i < UnSize; i++)
     remove(Unused->at(i));
-
+    
   delete Unused;
 
 }
@@ -483,17 +483,16 @@ std::vector<geos::geom::Polygon*>* LandRGraph::rasterPolygonizedPolys()
 // =====================================================================
 
 
-float* LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
+float LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
 {
-  float* Val = 0;
 
   if (!mp_Raster)
     throw openfluid::base::FrameworkException(
         "LandRGraph::getRasterValueForEntityCentroid",
         "No raster associated to the PolygonGraph");
 
-  Val = new float(
-      mp_Raster->getValueOfCoordinate(*Entity.centroid()->getCoordinate()));
+  float  Val =
+      mp_Raster->getValueOfCoordinate(*Entity.centroid()->getCoordinate());
 
   return Val;
 }
@@ -511,8 +510,8 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(const std::string& Attrib
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
   {
-    float* Val = getRasterValueForEntityCentroid(
-        *const_cast<LandREntity*>(*it));
+    float* Val = new float (getRasterValueForEntityCentroid(
+        *const_cast<LandREntity*>(*it)));
 
     if (!Val)
     {
@@ -761,7 +760,7 @@ void LandRGraph::snapVertices(double snapTolerance)
     geos::geom::Geometry* snappedEntityGeom=snapEntityGeom.release();
 
     removeEntity(*(li));
-    addEntity(getNewEntity(snappedEntityGeom,(*li)));
+    addEntity(createNewEntity(snappedEntityGeom,(*li)));
 
     removeUnusedNodes();
 

@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -868,7 +868,10 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
 
   // first coincidence :   |----2------>|-----1----->
   // result :              |----2------------------->
+  double lengthBefore=Graph->entity(2)->getLength()+Graph->entity(1)->getLength();
   Graph->mergeLineStringEntities(*(Graph->entity(2)),*(Graph->entity(1)));
+  double lengthAfter=Graph->entity(2)->getLength();
+  BOOST_CHECK( openfluid::scientific::isVeryClose(lengthBefore, lengthAfter));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK(!Graph->entity(1));
   BOOST_CHECK(Graph->entity(2)->clone());
@@ -880,7 +883,10 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   // second coincidence :   |----2------>|-----1----->
   // result :               |----1------------------->
   Graph = openfluid::landr::LineStringGraph::create(*Val);
+  lengthBefore=Graph->entity(2)->getLength()+Graph->entity(1)->getLength();
   Graph->mergeLineStringEntities(*(Graph->entity(1)),*(Graph->entity(2)));
+  lengthAfter=Graph->entity(1)->getLength();
+  BOOST_CHECK( openfluid::scientific::isVeryClose(lengthBefore, lengthAfter));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK(!Graph->entity(2));
   BOOST_CHECK(Graph->entity(1)->clone());
@@ -892,8 +898,11 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   // third coincidence :   |----2------>|<----1-----|
   // result :              <----1-------------------|
   Graph = openfluid::landr::LineStringGraph::create(*Val);
+  lengthBefore=Graph->entity(2)->getLength()+Graph->entity(1)->getLength();
   Graph->reverseLineStringEntity(*(Graph->entity(1)));
   Graph->mergeLineStringEntities(*(Graph->entity(1)),*(Graph->entity(2)));
+  lengthAfter=Graph->entity(1)->getLength();
+  BOOST_CHECK( openfluid::scientific::isVeryClose(lengthBefore, lengthAfter));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK(!Graph->entity(2));
   BOOST_CHECK(Graph->entity(1)->clone());
@@ -901,12 +910,19 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 8);
   delete Graph;
+  delete Val;
 
   // fourth coincidence :   <-----2------|-----1----->
   // result :               |----1------------------->
+  Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
   Graph = openfluid::landr::LineStringGraph::create(*Val);
+lengthBefore=Graph->entity(2)->getLength()+Graph->entity(1)->getLength();
   Graph->reverseLineStringEntity(*(Graph->entity(2)));
   Graph->mergeLineStringEntities(*(Graph->entity(1)),*(Graph->entity(2)));
+lengthAfter=Graph->entity(1)->getLength();
+
+  BOOST_CHECK( openfluid::scientific::isVeryClose(lengthBefore, lengthAfter));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK(!Graph->entity(2));
   BOOST_CHECK(Graph->entity(1)->clone());
@@ -1010,3 +1026,72 @@ BOOST_AUTO_TEST_CASE(setOrientationByOfldId)
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_mergeLineStringEntitiesByMinLength)
+{
+
+
+  openfluid::core::GeoVectorValue* ValLine = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "LineToMerge.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+        openfluid::landr::LineStringGraph::create(*ValLine);
+
+
+  BOOST_CHECK_THROW(Graph->mergeLineStringEntitiesByMinLength(-1),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->mergeLineStringEntitiesByMinLength(0),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->mergeLineStringEntitiesByMinLength(-0.000000001),openfluid::base::FrameworkException);
+
+
+  Graph->mergeLineStringEntitiesByMinLength(10);
+  BOOST_CHECK_EQUAL(Graph->getEntities().size(), 8);
+
+
+  Graph->mergeLineStringEntitiesByMinLength(110,false);
+  BOOST_CHECK_EQUAL(Graph->getEntities().size(), 6);
+  delete Graph;
+
+
+  Graph = openfluid::landr::LineStringGraph::create(*ValLine);
+
+
+  geos::geom::Coordinate OldStart20=Graph->entity(20)->startNode()->getCoordinate();
+  geos::geom::Coordinate OldEnd20=Graph->entity(20)->endNode()->getCoordinate();
+  geos::geom::Coordinate OldEnd25=Graph->entity(25)->endNode()->getCoordinate();
+  geos::geom::Coordinate OldStart26=Graph->entity(26)->startNode()->getCoordinate();
+  geos::geom::Coordinate OldEnd26=Graph->entity(26)->endNode()->getCoordinate();
+
+  Graph->mergeLineStringEntitiesByMinLength(110,true);
+  BOOST_CHECK_EQUAL(Graph->getEntities().size(), 3);
+  BOOST_CHECK(!Graph->entity(24));
+  BOOST_CHECK(!Graph->entity(25));
+  BOOST_CHECK(!Graph->entity(27));
+  BOOST_CHECK(!Graph->entity(22));
+  BOOST_CHECK(!Graph->entity(21));
+  BOOST_CHECK(Graph->entity(20));
+  BOOST_CHECK(Graph->entity(23));
+  BOOST_CHECK(Graph->entity(26));
+
+  geos::geom::Coordinate NewStart20=Graph->entity(20)->startNode()->getCoordinate();
+  geos::geom::Coordinate NewEnd20=Graph->entity(20)->endNode()->getCoordinate();
+  geos::geom::Coordinate NewStart23=Graph->entity(23)->startNode()->getCoordinate();
+  geos::geom::Coordinate NewEnd23=Graph->entity(23)->endNode()->getCoordinate();
+  geos::geom::Coordinate NewStart26=Graph->entity(26)->startNode()->getCoordinate();
+  geos::geom::Coordinate NewEnd26=Graph->entity(26)->endNode()->getCoordinate();
+
+  BOOST_CHECK_EQUAL(NewStart20.equals(OldStart20), true);
+  BOOST_CHECK_EQUAL(NewEnd20.equals(OldEnd20), true);
+  BOOST_CHECK_EQUAL(NewStart23.equals(OldEnd20), true);
+  BOOST_CHECK_EQUAL(NewEnd23.equals(OldEnd25), true);
+  BOOST_CHECK_EQUAL(NewStart26.equals(OldStart26), true);
+  BOOST_CHECK_EQUAL(NewEnd26.equals(OldEnd26), true);
+
+
+  delete Graph;
+  delete ValLine;
+
+}
+
+
+// =====================================================================
+// =====================================================================

@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
       Value);
 
   openfluid::landr::VectorDataset::FeaturesList_t Features =
-      Vect->getFeatures();
+      Vect->features();
 
   BOOST_CHECK_EQUAL(Features.size(), 24);
 
@@ -280,7 +280,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
 
   Vect = new openfluid::landr::VectorDataset(Value);
 
-  Features = Vect->getFeatures();
+  Features = Vect->features();
 
   BOOST_CHECK_EQUAL(Features.size(), 8);
 

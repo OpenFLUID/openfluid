@@ -130,7 +130,7 @@ class OPENFLUID_API RasterDataset
     /**
      @brief Returns the geos::geom::Coordinate origin of this RasterDataset.
      */
-    geos::geom::Coordinate* getOrigin();
+    geos::geom::Coordinate* computeOrigin();
 
     /**
      @brief Returns the pixel width of this RasterDataset.

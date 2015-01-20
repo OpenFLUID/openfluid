@@ -26,8 +26,8 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
  @file LineStringGraph.hpp
@@ -134,8 +134,8 @@ protected:
 	 @param OfldId The identifier of the new LineStringEntity.
 	 @return A new LandREntity.
 	 */
-	virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-	                                  unsigned int OfldId);
+	virtual LandREntity* createNewEntity(const geos::geom::Geometry* Geom,
+			unsigned int OfldId);
 
 
 
@@ -200,14 +200,14 @@ public:
 	 @param Entity The LineStringEntity to get the StartNode coordinate from.
 	 @return The raster value corresponding to the LineStringEntity StartNode coordinate.
 	 */
-	float* getRasterValueForEntityStartNode(LineStringEntity& Entity);
+	float getRasterValueForEntityStartNode(LineStringEntity& Entity);
 
 	/**
 	 @brief Fetch the associated raster value corresponding to the LineStringEntity EndNode coordinate.
 	 @param Entity The LineStringEntity to get the EndNode coordinate from.
 	 @return The raster value corresponding to the LineStringEntity EndNode coordinate.
 	 */
-	float* getRasterValueForEntityEndNode(LineStringEntity& Entity);
+	float getRasterValueForEntityEndNode(LineStringEntity& Entity);
 
 	/**
 	 @brief Creates a new attribute for these LineStringGraph entities, and set for each LineStringEntity
@@ -269,6 +269,13 @@ public:
 	 @param OfldId The identifier of the outlet.
 	 */
 	void setOrientationByOfldId(int OfldId);
+
+	/**
+	 @brief Merges the entities of this LineStringGraph under length threshold.
+	 @param MinLength The length threshold (in map units).
+	 @param rmDangle if true, remove also dangles under the threshold, default is true.
+	 */
+	void mergeLineStringEntitiesByMinLength(double MinLength,bool rmDangle=true);
 
 };
 
