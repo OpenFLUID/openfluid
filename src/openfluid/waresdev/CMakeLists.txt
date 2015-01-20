@@ -22,12 +22,8 @@ SET_TARGET_PROPERTIES(openfluid-waresdev PROPERTIES VERSION "${VERSION_MAJOR}.${
 
 TARGET_LINK_LIBRARIES(openfluid-waresdev
                       openfluid-base
-                      #openfluid-core
-                      #openfluid-ware
-                      #openfluid-tools                                           
-                      #openfluid-fluidx
+                      openfluid-utils
                       ${QT_QTCORE_LIBRARIES}
-                      #${QT_QTGUI_LIBRARIES}    
                      )
 
 

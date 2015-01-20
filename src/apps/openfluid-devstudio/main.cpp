@@ -81,7 +81,12 @@ int main(int argc, char** argv)
 //                                                "border: 1px solid %2; }")
 //                                        .arg(BUILDER_TOOLTIP_BGCOLOR,BUILDER_TOOLTIP_BORDERCOLOR));
 
+
+// TODO remove the #if linux when icons problem on win32 will be solved
+#if linux
     Q_INIT_RESOURCE(openfluiduicommon);
+#endif
+
     OPENFLUID_APPLICATION.setAttribute(Qt::AA_DontShowIconsInMenus);
 
     MainWindow m_MainWindow;
