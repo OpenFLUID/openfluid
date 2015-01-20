@@ -140,7 +140,7 @@ SET(CUSTOM_CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_
 SET(VERSION_MAJOR 2)
 SET(VERSION_MINOR 1)
 SET(VERSION_PATCH 0)
-SET(VERSION_STATUS "beta3") # example: SET(VERSION_STATUS "rc1")
+SET(VERSION_STATUS "beta4") # example: SET(VERSION_STATUS "rc1")
 
 SET(FULL_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
@@ -186,14 +186,14 @@ SET(BUILD_APP_MINIMAL 1)
 # set this to 1 to build openfluid-builder
 SET(BUILD_APP_BUILDER 1)
 
+# set this to 1 to build openfluid-devstudio
+SET(BUILD_APP_DEVSTUDIO 0)
+
 # set this to 1 enable waresdev integration in openfluid-builder
 SET(ENABLE_WARESDEV_BUILDER_INTEGRATION 0)
 
 # set this to 1 to build openfluid-market-client
 SET(BUILD_APP_MARKETCLIENT 0)
-
-# set this to 1 to build openfluid-minimal-gui
-SET(BUILD_APP_MINIMALGUI 0)
 
 
 ################### simulators build ###################

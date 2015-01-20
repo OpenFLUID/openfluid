@@ -148,12 +148,6 @@ ELSE()
   MESSAGE(STATUS "Build openfluid-ui libraries : no")  
 ENDIF()
 
-IF(BUILD_APP_MINIMALGUI AND OPENFLUID_ENABLE_GUI)
-  MESSAGE(STATUS "Build openfluid-minimal-gui application : yes")  
-ELSE()
-  MESSAGE(STATUS "Build openfluid-minimal-gui application : no")  
-ENDIF()
-
 IF(BUILD_APP_BUILDER AND OPENFLUID_ENABLE_GUI)
   MESSAGE(STATUS "Build openfluid-builder application : yes")  
 ELSE()
