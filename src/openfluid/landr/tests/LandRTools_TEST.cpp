@@ -837,7 +837,8 @@ BOOST_AUTO_TEST_CASE(check_intersect_2Polygons)
 
   geos::geom::Geometry *Geom2=Vect2->geometries();
 
-  std::vector<geos::geom::Polygon*> IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
+  std::vector<geos::geom::Polygon*> IntersectPolys  =
+      openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
 //  for (unsigned int i = 0; i < IntersectPolys.size(); i++)
 //    std::cout << IntersectPolys.at(i)->toString() << std::endl;
   BOOST_CHECK_EQUAL(IntersectPolys.size(), 6);
@@ -869,7 +870,9 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 
   geos::geom::Point * PointNode=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(CoorNode);
 
-  vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), *PointNode,0.01);
+  vEntities=
+  openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																										 *PointNode,0.01);
   BOOST_CHECK(vEntities.empty());
 
   geos::geom::Coordinate Coor;
@@ -878,18 +881,25 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
   geos::geom::Point * Point=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(Coor);
 
 
-  BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-                                                                 *Point,0),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(
+  openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+																									     *Point,0),
+																									     openfluid::base::FrameworkException);
 
 
-  vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), *Point,0.0001);
+  vEntities=
+  openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																										 *Point,0.0001);
   BOOST_CHECK(vEntities.empty());
 
-  vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), *Point,1);
+  vEntities=
+  openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																										 *Point,1);
 
   BOOST_CHECK_EQUAL(vEntities.size(),2);
 
-  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength())));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(),
+               (vEntities[0]->getLength()+vEntities[1]->getLength())));
   double distance=vEntities[0]->getEndPoint()->getCoordinate()->distance(*(Point->getCoordinate()));
   BOOST_CHECK(distance<1);
   distance=vEntities[1]->getStartPoint()->getCoordinate()->distance(*(Point->getCoordinate()));
@@ -930,10 +940,13 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
   geos::geom::Point * PointEndNode=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(CoorNode);
   vPoints.push_back(PointEndNode);
 
-  BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-                                                                          vPoints,0,vEntities),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoints
+  									(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+							      vPoints,0,vEntities),
+							      openfluid::base::FrameworkException);
 
-  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), vPoints,0.01,vEntities);
+  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																											vPoints,0.01,vEntities);
   BOOST_CHECK_EQUAL(vEntities.size(),1);
 
   vPoints.clear();
@@ -951,16 +964,19 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
 
   vEntities.clear();
 
-  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), vPoints,0.0001,vEntities);
+  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																											vPoints,0.0001,vEntities);
   BOOST_CHECK_EQUAL(vEntities.size(),1);
 
   vEntities.clear();
 
-  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), vPoints,1,vEntities);
+  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																											vPoints,1,vEntities);
   BOOST_CHECK_EQUAL(vEntities.size(),3);
 
 
-  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength()+vEntities[2]->getLength())));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(),
+             (vEntities[0]->getLength()+vEntities[1]->getLength()+vEntities[2]->getLength())));
 
   delete Val;
   delete Graph;
@@ -992,7 +1008,8 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   geos::geom::Geometry *Geom1=Vect->geometries();
   geos::geom::Geometry *GeomHorse=VectHorse->geometries();
 
-  std::vector<geos::geom::Polygon*> IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, GeomHorse);
+  std::vector<geos::geom::Polygon*> IntersectPolys  =
+      openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, GeomHorse);
   BOOST_CHECK_EQUAL(IntersectPolys.size(), 3);
 
   std::vector<geos::geom::Polygon*>::iterator it=IntersectPolys.begin();
@@ -1075,7 +1092,8 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
   geos::geom::Geometry *Geom2=VectSU2->geometries();
 
 
-  std::vector<geos::geom::Polygon*> IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
+  std::vector<geos::geom::Polygon*> IntersectPolys  =
+      openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
 
   std::vector<geos::geom::Geometry*> GeomPolygons;
   const geos::geom::GeometryFactory* Factory ;
@@ -1089,12 +1107,13 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
   std::vector<geos::geom::LineString*> PolyRings;
   unsigned int i2End=GeomPolygons_coll->getNumGeometries();
   for (unsigned int i = 0; i < i2End; i++)
-    PolyRings.push_back(
-        const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(GeomPolygons_coll->getGeometryN(
-            i)))->getExteriorRing()));
+    PolyRings.push_back(const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>
+                        (const_cast<geos::geom::Geometry*>(GeomPolygons_coll->getGeometryN(i)))->
+                        getExteriorRing()));
 
 
-  std::vector<geos::geom::LineString*>* cleanLines  =  openfluid::landr::LandRTools::cleanLineStrings(PolyRings,SnapTolerance);
+  std::vector<geos::geom::LineString*>* cleanLines  =
+      openfluid::landr::LandRTools::cleanLineStrings(PolyRings,SnapTolerance);
 
   BOOST_CHECK_EQUAL(cleanLines->size(), 26);
 

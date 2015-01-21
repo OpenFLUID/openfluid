@@ -77,7 +77,8 @@ class OPENFLUID_API LandRTools
     /**
      @brief Returns a vector of geos::geom::LineString representing the linearized input geos::geom::Geometry.
      @param Geom The geos::geom::Geometry to linearize.
-     @return A new allocated vector of geos::geom::LineString representing the maximal linearized input geos::geom::Geometry,
+     @return A new allocated vector of geos::geom::LineString
+      representing the maximal linearized input geos::geom::Geometry,
      or 0 if the geos::geom::Geometry is not \"Line\" typed.
      */
     static std::vector<geos::geom::LineString*>* computeMergedLineStringsFromGeometry(geos::geom::Geometry* Geom);
@@ -103,7 +104,8 @@ class OPENFLUID_API LandRTools
      @param Geom1 The geos::geom::Geometry to node with Geom2.
      @param Geom2 The other geos::geom::Geometry.
      @param SnapTolerance The tolerance to use while computing intersections and equality of lines.
-     @param PrecisionReducer The PrecisionModel value for reducing coordinates precision, default is 10000000 (7 digits).
+     @param PrecisionReducer The PrecisionModel value for reducing
+      coordinates precision, default is 10000000 (7 digits).
      @return A vector of geos::geom::LineString, representing all input lines, cut at each node.
      */
     static std::vector<geos::geom::LineString*>* computeNodedLines(geos::geom::Geometry* Geom1,
@@ -125,7 +127,8 @@ class OPENFLUID_API LandRTools
 
 
     /**
-     @brief Returns true if a geos::geom::LineString is exactly equals of an element of a list of geos::geom::LineString, up to a specified tolerance.
+     @brief Returns true if a geos::geom::LineString is exactly equals
+     of an element of a list of geos::geom::LineString, up to a specified tolerance.
      @param Line The geos::geom::LineString to compare.
      @param RefLines The list of geos::geom::LineString to compare to.
      @param Tolerance The tolerance to use.
@@ -201,7 +204,8 @@ class OPENFLUID_API LandRTools
      @param NodedLines A vector of geos::geom::LineString.
      @return A vector of geos::geom::Point.
      */
-    static std::vector<geos::geom::Point*> computeNodesFromVectorOfLines(std::vector<geos::geom::LineString*>& NodedLines);
+    static std::vector<geos::geom::Point*> computeNodesFromVectorOfLines(
+									                         std::vector<geos::geom::LineString*>& NodedLines);
 
     /**
      @brief Returns the inverted openfluid::landr::LineStringEntity of a geos::planargraph using a recursive method.

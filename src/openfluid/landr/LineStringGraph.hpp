@@ -71,7 +71,8 @@
 		if (graph) \
 		{ \
 			_M_##loopid##_uvect = graph->getEntities();\
-			for (_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+			for (_M_##loopid##_it=_M_##loopid##_uvect.begin();\
+			     _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
 			{ \
 				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
@@ -85,7 +86,8 @@
 		if (graph) \
 		{ \
 			_M_##loopid##_uvect = graph->getOfldIdOrderedEntities();\
-			for (_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+			for (_M_##loopid##_it=_M_##loopid##_uvect.begin();\
+			     _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
 			{ \
 				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
@@ -144,13 +146,15 @@ public:
 
 	/**
 	 @brief Creates a new LineStringGraph initialized from a core::GeoVectorValue.
-	 @param Val A core::GeoVectorValue which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
+	 @param Val A core::GeoVectorValue which must be composed of one or many LineStrings,
+	 and each of them must contain a "OFLD_ID" attribute.
 	 */
 	static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
 
 	/**
 	 @brief Creates a new LineStringGraph initialized from a VectorDataset.
-	 @param Vect A VectorDataset which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
+	 @param Vect A VectorDataset which must be composed of one or many LineStrings,
+	  and each of them must contain a "OFLD_ID" attribute.
 	 */
 	static LineStringGraph* create(openfluid::landr::VectorDataset& Vect);
 
@@ -186,7 +190,8 @@ public:
 	LineStringEntity* lastLineStringEntity();
 
 	/**
-	 @brief Returns a vector of LineStringEntity that have no down neighbour, according to the LineStringEntity orientations.
+	 @brief Returns a vector of LineStringEntity that have no down neighbour,
+	 according to the LineStringEntity orientations.
 	 */
 	std::vector<LineStringEntity*> getEndLineStringEntities();
 
@@ -200,14 +205,14 @@ public:
 	 @param Entity The LineStringEntity to get the StartNode coordinate from.
 	 @return The raster value corresponding to the LineStringEntity StartNode coordinate.
 	 */
-	float getRasterValueForEntityStartNode(LineStringEntity& Entity);
+	double getRasterValueForEntityStartNode(LineStringEntity& Entity);
 
 	/**
 	 @brief Fetch the associated raster value corresponding to the LineStringEntity EndNode coordinate.
 	 @param Entity The LineStringEntity to get the EndNode coordinate from.
 	 @return The raster value corresponding to the LineStringEntity EndNode coordinate.
 	 */
-	float getRasterValueForEntityEndNode(LineStringEntity& Entity);
+	double getRasterValueForEntityEndNode(LineStringEntity& Entity);
 
 	/**
 	 @brief Creates a new attribute for these LineStringGraph entities, and set for each LineStringEntity

@@ -197,11 +197,13 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
                                     std::string FileName);
 
     /**
-     @brief Computes the neighbours between the PolygonEntity elements of this PolygonGraph and the LineStringEntity of a LineStringGraph.
+     @brief Computes the neighbours between the PolygonEntity elements of this PolygonGraph
+      and the LineStringEntity of a LineStringGraph.
      @param Graph The LineStringGraph to compare to.
      @param Relation The Relationship to use for comparison.
      @param BufferDistance The distance below which we consider that two elements are related.
-     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
+     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries
+      to be taking acccount (only for LandRTools::TOUCHES RelationShip)
      */
     void computeLineStringNeighbours(LineStringGraph& Graph,
                                      openfluid::landr::LandRTools::Relationship Relation,
@@ -212,11 +214,13 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
      @brief Computes the neighbours between the PolygonEntity elements of this PolygonGraph by using
      the LineStringEntity of an input LineStringGraph which are considered as barriers.
      @details A barrier between two PolygonEntity will avoid to considered them as neighbours.
-     @details A LineStringEntity is considered as a barrier if it lies within the buffer of this PolygonEntity polygon boundary.
+     @details A LineStringEntity is considered as a barrier if it lies within the buffer of this
+      PolygonEntity polygon boundary.
      @param Graph The LineStringGraph to compare to.
      @param Relation The Relationship to use for comparison, the LandRTools::Relationship INTERSECTS is not allowed.
      @param BufferDistance The distance below which we consider that two elements are related.
-     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
+     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries
+      to be taking acccount (only for LandRTools::TOUCHES RelationShip)
      */
     void computeNeighboursWithBarriers(LineStringGraph& Graph,
                                        openfluid::landr::LandRTools::Relationship Relation,
@@ -265,7 +269,8 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
     std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea);
 
     /**
-     @brief Gets a map of sliver PolygonEntity which compactness value are superior to a compactness threshold (Gravelius Index)
+     @brief Gets a map of sliver PolygonEntity which compactness value are superior to a
+      compactness threshold (Gravelius Index)
      @param Compactness The compactness threshold (perimeter/2 x sqrt (Pi x area))
      @return a multimap of PolygonEntity with key is the compactness of each PolygonEntity.
      */

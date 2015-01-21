@@ -30,7 +30,7 @@
  */
 
 /**
- @file Tools.cpp
+ @file LandRTools.cpp
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
@@ -136,9 +136,8 @@ std::vector<geos::geom::LineString*> LandRTools::computeVectorOfExteriorRings(op
 
   unsigned int iEnd=Geom->getNumGeometries();
   for (unsigned int i = 0; i < iEnd; i++)
-    Lines.push_back(
-        const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(
-            i)))->getExteriorRing()));
+    Lines.push_back(const_cast<geos::geom::LineString*>
+    (dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(i)))->getExteriorRing()));
 
   return Lines;
 }
@@ -320,7 +319,8 @@ void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
   {
     if (!(*it)->getEdge()->isVisited())
     {
-      geos::planargraph::Node * theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->startNode();
+      geos::planargraph::Node * theNextNode=
+          static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->startNode();
 
       if (Node->getCoordinate().equals(theNextNode->getCoordinate()))
         theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->endNode();
@@ -364,14 +364,16 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(geos::geo
               " The Geometry is not Polygon-typed.");
         if ((Geom1->getGeometryN(i))->intersects(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j))))
         {
-          geos::geom::Geometry *Intersect=(Geom1->getGeometryN(i))->intersection(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j)));
+          geos::geom::Geometry *Intersect=
+              (Geom1->getGeometryN(i))->intersection(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j)));
           if (Intersect->getGeometryTypeId()==geos::geom::GEOS_POLYGON)
             Polygons.push_back(dynamic_cast<geos::geom::Polygon*>(Intersect));
           else if (Intersect->getGeometryTypeId()==geos::geom::GEOS_MULTIPOLYGON)
           {
             unsigned int hEnd=Intersect->getNumGeometries();
             for (unsigned int h = 0; h < hEnd; h++)
-              Polygons.push_back(dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Intersect->getGeometryN(h))));
+              Polygons.push_back(dynamic_cast<geos::geom::Polygon*>
+              (const_cast<geos::geom::Geometry*>(Intersect->getGeometryN(h))));
 
           }
 
@@ -430,7 +432,8 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
   unsigned int numVertices=Entity.getNumPoints()-1;
   unsigned int i=0;
   bool split=false;
-  const geos::geom::CoordinateSequenceFactory *CoordSeqFactory=geos::geom::GeometryFactory::getDefaultInstance()->getCoordinateSequenceFactory();
+  const geos::geom::CoordinateSequenceFactory *CoordSeqFactory=
+      geos::geom::GeometryFactory::getDefaultInstance()->getCoordinateSequenceFactory();
 
 
   geos::geom::Coordinate newCoorPoint;
@@ -477,7 +480,8 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
 
   geos::geom::CoordinateSequence* FirstCoordSeq=CoordSeqFactory->create(vFirstCoorLine);
   FirstCoordSeq->removeRepeatedPoints();
-  geos::geom::LineString * NewFirstLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(FirstCoordSeq);
+  geos::geom::LineString * NewFirstLine=
+      geos::geom::GeometryFactory::getDefaultInstance()->createLineString(FirstCoordSeq);
 
   std::vector<geos::geom::Coordinate>* vSecondCoorLine= new std::vector<geos::geom::Coordinate>;
   vSecondCoorLine->push_back(newCoorPoint);
@@ -487,7 +491,8 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
     vSecondCoorLine->push_back(Entity.getCoordinateN(j));
   geos::geom::CoordinateSequence* SecondCoordSeq=CoordSeqFactory->create(vSecondCoorLine);
   SecondCoordSeq->removeRepeatedPoints();
-  geos::geom::LineString * NewSecondLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(SecondCoordSeq);
+  geos::geom::LineString * NewSecondLine=
+      geos::geom::GeometryFactory::getDefaultInstance()->createLineString(SecondCoordSeq);
 
   vEntities.push_back(NewFirstLine);
   vEntities.push_back(NewSecondLine);
@@ -551,7 +556,8 @@ std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(std::vector<g
 
     std::vector<geos::geom::LineString*>::iterator it=vLines.begin();
     std::vector<geos::geom::LineString*>::iterator ite=vLines.end();
-    const geos::geom::CoordinateSequenceFactory *CoordSeqFactory=geos::geom::GeometryFactory::getDefaultInstance()->getCoordinateSequenceFactory();
+    const geos::geom::CoordinateSequenceFactory *CoordSeqFactory=
+        geos::geom::GeometryFactory::getDefaultInstance()->getCoordinateSequenceFactory();
 
     for(;it!=ite;++it)
     {
@@ -602,7 +608,8 @@ std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(std::vector<g
 // =====================================================================
 
 
-std::vector<geos::geom::Point*> LandRTools::computeNodesFromVectorOfLines(std::vector<geos::geom::LineString*>& NodedLines)
+std::vector<geos::geom::Point*> LandRTools::computeNodesFromVectorOfLines(
+                                std::vector<geos::geom::LineString*>& NodedLines)
 {
   std::vector<geos::geom::Point*> vPoints;
 
@@ -671,7 +678,8 @@ void LandRTools::markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* N
     if (!(*it)->getEdge()->isVisited())
     {
 
-      geos::planargraph::Node * theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->startNode();
+      geos::planargraph::Node * theNextNode=
+          static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->startNode();
 
       if ((Node->getCoordinate()).equals(theNextNode->getCoordinate()))
       {

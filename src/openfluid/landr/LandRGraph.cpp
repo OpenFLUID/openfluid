@@ -483,7 +483,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::rasterPolygonizedPolys()
 // =====================================================================
 
 
-float LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
+double LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
 {
 
   if (!mp_Raster)
@@ -491,8 +491,8 @@ float LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
         "LandRGraph::getRasterValueForEntityCentroid",
         "No raster associated to the PolygonGraph");
 
-  float  Val =
-      mp_Raster->getValueOfCoordinate(*Entity.centroid()->getCoordinate());
+  double  Val = (double)
+      (mp_Raster->getValueOfCoordinate(*Entity.centroid()->getCoordinate()));
 
   return Val;
 }
@@ -510,7 +510,7 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(const std::string& Attrib
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
   {
-    float* Val = new float (getRasterValueForEntityCentroid(
+    double* Val = new double (getRasterValueForEntityCentroid(
         *const_cast<LandREntity*>(*it)));
 
     if (!Val)

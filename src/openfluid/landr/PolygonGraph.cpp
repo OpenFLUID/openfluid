@@ -615,7 +615,8 @@ void PolygonGraph::createEdgeAttribute(std::string AttributeName,
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
   {
-    std::vector<openfluid::landr::PolygonEdge*> vPolygonEdges=(dynamic_cast<openfluid::landr::PolygonEntity*>(*it))->m_PolyEdges;
+    std::vector<openfluid::landr::PolygonEdge*> vPolygonEdges=
+        (dynamic_cast<openfluid::landr::PolygonEntity*>(*it))->m_PolyEdges;
 
     std::vector<openfluid::landr::PolygonEdge*>::iterator it2 = vPolygonEdges.begin();
     std::vector<openfluid::landr::PolygonEdge*>::iterator it2E = vPolygonEdges.end();
@@ -638,7 +639,8 @@ void PolygonGraph::removeEdgeAttribute(std::string AttributeName)
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
   {
-    std::vector<openfluid::landr::PolygonEdge*> vPolygonEdges=(dynamic_cast<openfluid::landr::PolygonEntity*>(*it))->m_PolyEdges;
+    std::vector<openfluid::landr::PolygonEdge*> vPolygonEdges=
+        (dynamic_cast<openfluid::landr::PolygonEntity*>(*it))->m_PolyEdges;
 
     std::vector<openfluid::landr::PolygonEdge*>::iterator it2 = vPolygonEdges.begin();
     std::vector<openfluid::landr::PolygonEdge*>::iterator it2E = vPolygonEdges.end();
@@ -656,7 +658,8 @@ void PolygonGraph::removeEdgeAttribute(std::string AttributeName)
 std::vector<std::string> PolygonGraph::getEdgeAttributeNames()
 {
   std::vector<std::string> Names;
-  std::vector<PolygonEdge*> vPolyEdge=(dynamic_cast<openfluid::landr::PolygonEntity*>(*m_Entities.begin()))->m_PolyEdges;
+  std::vector<PolygonEdge*> vPolyEdge=
+      (dynamic_cast<openfluid::landr::PolygonEntity*>(*m_Entities.begin()))->m_PolyEdges;
 
   std::map<std::string, core::Value*> Attr =(*vPolyEdge.begin())->m_EdgeAttributes;
 
@@ -832,7 +835,8 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea
   for (;it!=ite;++it)
   {
     if ((*it)->getArea()<MinArea)
-      mOrderedArea.insert ( std::pair<double, PolygonEntity*>((*it)->getArea(),dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
+      mOrderedArea.insert ( std::pair<double, PolygonEntity*>
+      ((*it)->getArea(),dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
   }
   return mOrderedArea;
 
@@ -898,7 +902,8 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompact
   {
     double valCompact=(*it)->getLength()/(2*std::sqrt(4 * std::atan(1.0)*(*it)->getArea()));
     if (valCompact>Compactness)
-      mOrderedCompact.insert ( std::pair<double, PolygonEntity*>(valCompact,dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
+      mOrderedCompact.insert ( std::pair<double, PolygonEntity*>
+      (valCompact,dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
   }
   return mOrderedCompact;
 

@@ -861,7 +861,8 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
   BOOST_CHECK(!SU1->lineStringNeighbours());
 
   BOOST_CHECK_THROW(SU1->computeLineStringNeighbours(*RSGraph,
-                                                     openfluid::landr::LandRTools::TOUCHES, 0),openfluid::base::FrameworkException);
+                    openfluid::landr::LandRTools::TOUCHES, 0),
+                    openfluid::base::FrameworkException);
 
   SU1->computeLineStringNeighbours(*RSGraph,
                                    openfluid::landr::LandRTools::TOUCHES, 0,0.1);

@@ -281,16 +281,20 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 
   BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 400);
 
-  openfluid::core::DoubleValue Val=VectorLayer->GetFeature(0)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  openfluid::core::DoubleValue Val=VectorLayer->GetFeature(0)->
+  GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
   BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 98.9708));
 
-  Val=VectorLayer->GetFeature(1)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  Val=VectorLayer->GetFeature(1)->
+  GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
   BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 99.201));
 
-  Val=VectorLayer->GetFeature(331)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  Val=VectorLayer->GetFeature(331)->
+  GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
   BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 42.327));
 
-  Val=VectorLayer->GetFeature(399)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  Val=VectorLayer->GetFeature(399)->
+  GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
   BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 21.0336));
 
   delete Rast;

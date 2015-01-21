@@ -312,7 +312,7 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
 // =====================================================================
 
 
-float LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entity)
+double LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entity)
 {
 
 
@@ -321,9 +321,9 @@ float LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entity
         "LineStringGraph::getRasterValueForEntityStartNode",
         "No raster associated to the LineStringGraph");
 
-  float	Val =
-      mp_Raster->getValueOfCoordinate(
-          Entity.startNode()->getCoordinate());
+  double	Val = (double)
+      (mp_Raster->getValueOfCoordinate(
+          Entity.startNode()->getCoordinate()));
 
 
   return Val;
@@ -334,7 +334,7 @@ float LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entity
 // =====================================================================
 
 
-float LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
+double LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
 {
 
 
@@ -343,8 +343,8 @@ float LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
         "LineStringGraph::getRasterValueForEntityEndNode",
         "No raster associated to the LineStringGraph");
 
-  float	Val =
-      mp_Raster->getValueOfCoordinate(Entity.endNode()->getCoordinate());
+  double	Val = (double)
+      (mp_Raster->getValueOfCoordinate(Entity.endNode()->getCoordinate()));
 
 
   return Val;
@@ -660,7 +660,8 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
         //A dangle has StartNode in contact with one Edge and EndNode with three or more Edges
         // or has EndNode in contact with one Edge and StartNode with three or more Edges
         if (!((StartDegree==1 && EndDegree>=3 && rmDangle==false)||(EndDegree==1 && StartDegree>=3 && rmDangle==false)))
-          mOrderedLength.insert ( std::pair<double, LineStringEntity*>((*it)->getLength(),dynamic_cast<openfluid::landr::LineStringEntity*>(*it)) );
+          mOrderedLength.insert ( std::pair<double, LineStringEntity*>((*it)->getLength(),
+                                  dynamic_cast<openfluid::landr::LineStringEntity*>(*it)) );
 
       }
 
