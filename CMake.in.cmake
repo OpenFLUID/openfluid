@@ -195,6 +195,10 @@ SET(ENABLE_WARESDEV_BUILDER_INTEGRATION 0)
 # set this to 1 to build openfluid-market-client
 SET(BUILD_APP_MARKETCLIENT 0)
 
+# set this to 1 enable market integration in openfluid-builder
+SET(ENABLE_MARKET_BUILDER_INTEGRATION 1)
+
+
 
 ################### simulators build ###################
 

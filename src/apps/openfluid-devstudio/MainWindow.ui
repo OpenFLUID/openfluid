@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources/openfluiddevstudio.qrc">
-    <normaloff>:/icons/openfluid_icon.png</normaloff>:/icons/openfluid_icon.png</iconset>
+    <normaloff>:/icons/openfluid_icon_devstudio.png</normaloff>:/icons/openfluid_icon_devstudio.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">

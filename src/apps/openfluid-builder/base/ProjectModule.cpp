@@ -57,6 +57,7 @@
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
+#include "AppTools.hpp"
 #include "ProjectCentral.hpp"
 #include "ProjectModule.hpp"
 #include "SaveAsDialog.hpp"
@@ -721,8 +722,7 @@ void ProjectModule::whenOpenObserverSrcAsked()
 
 void ProjectModule::whenLaunchDevStudioAsked()
 {
-  // TODO to be replaced
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  launchDevStudio();
 }
 
 

@@ -42,6 +42,7 @@
 #include <openfluid/ui/market/MarketClientAssistant.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
 
+#include "AppTools.hpp"
 #include "HomeModule.hpp"
 #include "ExtensionPluginsManager.hpp"
 
@@ -277,7 +278,7 @@ void HomeModule::whenOpenObserverSrcAsked()
 
 void HomeModule::whenLaunchDevStudioAsked()
 {
-
+  launchDevStudio();
 }
 
 

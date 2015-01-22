@@ -58,7 +58,7 @@ MainWindow::MainWindow():
   layout()->setSpacing(0);
 
   setProjectName();
-  setWindowIcon(QIcon(":/icons/openfluid_icon.png"));
+  setWindowIcon(QIcon(":/icons/openfluid_icon_builder.png"));
 }
 
 

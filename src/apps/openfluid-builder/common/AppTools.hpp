@@ -49,5 +49,7 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath =
 
 QColor getRandomColor();
 
+void launchDevStudio();
+
 
 #endif /* __OPENFLUID_BUILDERAPP_APPTOOLS_HPP__ */
