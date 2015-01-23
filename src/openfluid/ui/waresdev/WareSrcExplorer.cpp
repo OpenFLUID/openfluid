@@ -36,11 +36,19 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "WareSrcExplorer.hpp"
+#include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 
 #include <QAction>
+#include <QTimer>
 
-#include "WareSrcExplorerModel.hpp"
+#include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
+
+
+namespace openfluid { namespace ui { namespace waresdev {
+
+
+// =====================================================================
+// =====================================================================
 
 
 WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
@@ -51,16 +59,6 @@ WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
 
   connect(this, SIGNAL(clicked(const QModelIndex&)), this,
           SLOT(onClicked(const QModelIndex&)));
-
-  QAction* OpenExplorerAction = new QAction("Open a file explorer", this);
-  connect(OpenExplorerAction, SIGNAL(triggered()), this, SLOT(onOpenExplorerAsked()));
-  addAction(OpenExplorerAction);
-
-  QAction* OpenTerminaAction = new QAction("Open a terminal", this);
-  connect(OpenTerminaAction, SIGNAL(triggered()), this, SLOT(onOpenTerminalAsked()));
-  addAction(OpenTerminaAction);
-
-  setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 
@@ -78,15 +76,10 @@ WareSrcExplorer::~WareSrcExplorer()
 // =====================================================================
 
 
-void WareSrcExplorer::setType(
-    openfluid::waresdev::WareSrcManager::WareType Type)
+void WareSrcExplorer::configure(const QString& TopDirectoryPath,
+                                bool WithContextMenu)
 {
-  m_WareType = Type;
-
-  QString Path = openfluid::waresdev::WareSrcManager::instance()
-      ->getWareTypePath(m_WareType);
-
-  mp_Model = new WareSrcExplorerModel(Path);
+  mp_Model = new WareSrcExplorerModel(TopDirectoryPath);
 
   setModel(mp_Model);
 
@@ -94,7 +87,26 @@ void WareSrcExplorer::setType(
   hideColumn(2);
   hideColumn(3);
 
-  setRootIndex(mp_Model->index(Path));
+  setRootIndex(mp_Model->index(TopDirectoryPath));
+
+  connect(selectionModel(),
+          SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this,
+          SLOT(onCurrentChanged(const QModelIndex&)));
+
+  if (WithContextMenu)
+  {
+    QAction* OpenExplorerAction = new QAction("Open a file explorer", this);
+    connect(OpenExplorerAction, SIGNAL(triggered()), this,
+            SLOT(onOpenExplorerAsked()));
+    addAction(OpenExplorerAction);
+
+    QAction* OpenTerminaAction = new QAction("Open a terminal", this);
+    connect(OpenTerminaAction, SIGNAL(triggered()), this,
+            SLOT(onOpenTerminalAsked()));
+    addAction(OpenTerminaAction);
+
+    setContextMenuPolicy(Qt::ActionsContextMenu);
+  }
 }
 
 
@@ -104,7 +116,7 @@ void WareSrcExplorer::setType(
 
 void WareSrcExplorer::onDoubleClicked(const QModelIndex& Index)
 {
-  emit openAsked(mp_Model->filePath(Index));
+  emit doubleClicked(mp_Model->filePath(Index));
 }
 
 
@@ -114,7 +126,17 @@ void WareSrcExplorer::onDoubleClicked(const QModelIndex& Index)
 
 void WareSrcExplorer::onClicked(const QModelIndex& Index)
 {
-  emit setCurrentAsked(mp_Model->filePath(Index));
+  emit clicked(mp_Model->filePath(Index));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onCurrentChanged(const QModelIndex& Current)
+{
+  emit currentChanged(mp_Model->filePath(Current));
 }
 
 
@@ -149,7 +171,7 @@ QString WareSrcExplorer::getCurrentDir()
     if (mp_Model->isDir(currentIndex()))
       return mp_Model->filePath(currentIndex());
 
-    return mp_Model->fileInfo(currentIndex()).dir().absolutePath();
+    return mp_Model->fileInfo(currentIndex()).absolutePath();
   }
 
   return "";
@@ -160,3 +182,47 @@ QString WareSrcExplorer::getCurrentDir()
 // =====================================================================
 
 
+QString WareSrcExplorer::getCurrentPath()
+{
+  if (currentIndex().isValid())
+    return mp_Model->filePath(currentIndex());
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void WareSrcExplorer::setCurrentPath(const QString& Path)
+{
+  setCurrentIndex(mp_Model->index(Path));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::showEvent(QShowEvent * event)
+{
+  QTreeView::showEvent(event);
+  QTimer::singleShot(20, this, SLOT(scrollToCurrent()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::scrollToCurrent()
+{
+  scrollTo(currentIndex());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } } // namespaces

@@ -5,7 +5,6 @@
 
       <filetype name="cpp">
         <extensions>*.c++;*.cxx;*.cpp;*.cc;*.C;*.moc;*.c</extensions>
-        <icon qresname=":/icons/cpp.png" />
         <edition internal="yes">
           <highlighting specsfile="cpp.syntaxhl.ofdev.xml" />
           <completion specsfile="cpp.comp.ofdev.xml" />

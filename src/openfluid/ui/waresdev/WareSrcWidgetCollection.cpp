@@ -50,7 +50,7 @@
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
-#include <openfluid/ui/waresdev/RestrictedFileDialog.hpp>
+#include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -437,20 +437,22 @@ void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
-    QString CurrentPath = CurrentWare->getCurrentFilePath();
+    QString CurrentEditorPath = CurrentWare->getCurrentFilePath();
+
+    if (CurrentEditorPath.isEmpty())
+      return;
 
     QString TopDir =
         TopDirectory.isEmpty() ? CurrentWare->wareSrcContainer().getAbsolutePath() :
                                  TopDirectory;
 
-    QString NewPath = RestrictedFileDialog::getSaveFileName(CurrentWare,
-                                                            CurrentPath,
-                                                            TopDir);
+    QString NewPath = WareExplorerDialog::getSaveFilePath(CurrentWare, TopDir,
+                                                          CurrentEditorPath);
 
     if (NewPath.isEmpty())
       return;
 
-    if (NewPath == CurrentPath)
+    if (NewPath == CurrentEditorPath)
       CurrentWare->saveCurrentEditor();
     else
     {
@@ -572,6 +574,47 @@ bool WareSrcWidgetCollection::isBuildNoInstallMode()
 {
   return m_DefaultBuildMode
       == openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void WareSrcWidgetCollection::openSimulator()
+{
+  openWare(openfluid::waresdev::WareSrcManager::SIMULATOR,
+           tr("Open a simulator"));
+}
+
+void WareSrcWidgetCollection::openObserver()
+{
+  openWare(openfluid::waresdev::WareSrcManager::OBSERVER,
+           tr("Open an observer"));
+}
+
+void WareSrcWidgetCollection::openBuilderExtension()
+{
+  openWare(openfluid::waresdev::WareSrcManager::BUILDEREXT,
+           tr("Open a Builder extension"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::openWare(
+    openfluid::waresdev::WareSrcManager::WareType Type, const QString& Title)
+{
+  QString PathToOpen =
+      openfluid::ui::waresdev::WareExplorerDialog::getOpenWarePath(
+          QApplication::activeWindow(), mp_Manager->getWareTypePath(Type),
+          Title);
+
+  if (PathToOpen.isEmpty())
+    return;
+
+  openPath(PathToOpen);
 }
 
 

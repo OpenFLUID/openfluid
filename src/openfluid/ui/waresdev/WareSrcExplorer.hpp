@@ -36,12 +36,15 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __OPENFLUID_DEVSTUDIOAPP_WARESRCEXPLORER_HPP__
-#define __OPENFLUID_DEVSTUDIOAPP_WARESRCEXPLORER_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCEXPLORER_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESRCEXPLORER_HPP__
 
 #include <QTreeView>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
+
+namespace openfluid { namespace ui { namespace waresdev {
+
 
 class WareSrcExplorerModel;
 
@@ -52,9 +55,7 @@ class WareSrcExplorer: public QTreeView
 
   private:
 
-  	WareSrcExplorerModel* mp_Model;
-
-    openfluid::waresdev::WareSrcManager::WareType m_WareType;
+    WareSrcExplorerModel* mp_Model;
 
     QString getCurrentDir();
 
@@ -64,9 +65,13 @@ class WareSrcExplorer: public QTreeView
 
     void onClicked(const QModelIndex& Index);
 
+    void onCurrentChanged(const QModelIndex& Current);
+
     void onOpenExplorerAsked();
 
     void onOpenTerminalAsked();
+
+    void scrollToCurrent();
 
   public:
 
@@ -74,17 +79,29 @@ class WareSrcExplorer: public QTreeView
 
     ~WareSrcExplorer();
 
-    void setType(openfluid::waresdev::WareSrcManager::WareType Type);
+    void configure(const QString& TopDirectoryPath, bool WithContextMenu);
+
+    void setCurrentPath(const QString& Path);
+
+    QString getCurrentPath();
+
+  protected:
+
+    void showEvent(QShowEvent * event);
 
   signals:
 
-    void openAsked(const QString& FilePath);
+    void doubleClicked(const QString& FilePath);
 
-    void setCurrentAsked(const QString& FilePath);
+    void clicked(const QString& FilePath);
+
+    void currentChanged(const QString& FilePath);
 
     void openExplorerAsked(const QString& FilePath);
 
     void openTerminalAsked(const QString& FilePath);
 };
 
-#endif /* __OPENFLUID_DEVSTUDIOAPP_WARESRCEXPLORER_HPP__ */
+} } } // namespaces
+
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCEXPLORER_HPP__ */

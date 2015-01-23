@@ -68,9 +68,18 @@ MainWindow::MainWindow() :
   mp_Toolbar = new openfluid::ui::waresdev::WareSrcToolbar(false, this);
   addToolBar(mp_Toolbar);
 
-  ui->SimExplorer->setType(openfluid::waresdev::WareSrcManager::SIMULATOR);
-  ui->ObsExplorer->setType(openfluid::waresdev::WareSrcManager::OBSERVER);
-  ui->ExtExplorer->setType(openfluid::waresdev::WareSrcManager::BUILDEREXT);
+  openfluid::waresdev::WareSrcManager* Manager =
+      openfluid::waresdev::WareSrcManager::instance();
+
+  ui->SimExplorer->configure(
+      Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::SIMULATOR),
+      true);
+  ui->ObsExplorer->configure(
+      Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::OBSERVER),
+      true);
+  ui->ExtExplorer->configure(
+      Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::BUILDEREXT),
+      true);
 
   mp_Collection = new openfluid::ui::waresdev::WareSrcWidgetCollection(
       ui->WareSrcCollection, false);
@@ -84,12 +93,12 @@ MainWindow::MainWindow() :
           SLOT(showNotYetImplemented()));
   connect(m_Actions["NewExtension"], SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
-  connect(m_Actions["OpenSimulator"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["OpenObserver"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["OpenExtension"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
+  connect(m_Actions["OpenSimulator"], SIGNAL(triggered()), mp_Collection,
+          SLOT(openSimulator()));
+  connect(m_Actions["OpenObserver"], SIGNAL(triggered()), mp_Collection,
+          SLOT(openObserver()));
+  connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection,
+          SLOT(openBuilderExtension()));
   connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), this,
           SLOT(onSaveAsRequested()));
   connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this,
@@ -142,19 +151,19 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("OpenTerminal"), SIGNAL(triggered()),
           mp_Collection, SLOT(openTerminal()));
 
-  connect(ui->SimExplorer, SIGNAL(openAsked(const QString&)), mp_Collection,
+  connect(ui->SimExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection,
           SLOT(openPath(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(openAsked(const QString&)), mp_Collection,
+  connect(ui->ObsExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection,
           SLOT(openPath(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(openAsked(const QString&)), mp_Collection,
+  connect(ui->ExtExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection,
           SLOT(openPath(const QString&)));
 
-  connect(ui->SimExplorer, SIGNAL(setCurrentAsked(const QString&)),
-          mp_Collection, SLOT(setCurrent(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(setCurrentAsked(const QString&)),
-          mp_Collection, SLOT(setCurrent(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(setCurrentAsked(const QString&)),
-          mp_Collection, SLOT(setCurrent(const QString&)));
+  connect(ui->SimExplorer, SIGNAL(clicked(const QString&)), mp_Collection,
+          SLOT(setCurrent(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(clicked(const QString&)), mp_Collection,
+          SLOT(setCurrent(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(clicked(const QString&)), mp_Collection,
+          SLOT(setCurrent(const QString&)));
 
   connect(ui->SimExplorer, SIGNAL(openExplorerAsked(const QString&)),
           mp_Collection, SLOT(openExplorer(const QString&)));

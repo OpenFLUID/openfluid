@@ -92,6 +92,10 @@ class ProjectWidget : public QWidget
     void addWorkspaceExtensionTab(QWidget* Tab, const QString& Label);
 
     void addWorkspaceWareSrcTab(const QString& Path);
+
+    void openSimulatorSrc();
+
+    void openObsereverSrc();
 };
 
 

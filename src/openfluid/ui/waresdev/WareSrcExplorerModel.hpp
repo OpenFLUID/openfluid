@@ -38,14 +38,21 @@
  */
 
 
-#ifndef __OPENFLUID_DEVSTUDIOAPP_WARESRCEXPLORERMODEL_HPP__
-#define __OPENFLUID_DEVSTUDIOAPP_WARESRCEXPLORERMODEL_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCEXPLORERMODEL_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESRCEXPLORERMODEL_HPP__
 
 #include <QFileSystemModel>
+
+#include <openfluid/waresdev/WareSrcManager.hpp>
+
+
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 class WareSrcExplorerModel: public QFileSystemModel
 {
+  Q_OBJECT
+
   private:
 
     QString m_DirPath;
@@ -54,12 +61,26 @@ class WareSrcExplorerModel: public QFileSystemModel
     QMap<QString, QString> m_UserIcons;
     QMap<QString, QString> m_DefaultIcons;
 
+    openfluid::waresdev::WareSrcManager* mp_Manager;
+
+    /*
+     * Map of PathInfo for each FilePath
+     * Stored to avoid PathInfo object creation at each data() call.
+     * Instead they are only created at each directoryLoaded() signal
+     */
+    QMap<QString, openfluid::waresdev::WareSrcManager::PathInfo> m_PathInfos;
+
   public:
 
     WareSrcExplorerModel(const QString& Path);
 
     QVariant data(const QModelIndex& Index, int Role) const;
+
+  private slots:
+
+    void onDirectoryLoaded(const QString& Path);
 };
 
+} } } // namespaces
 
-#endif /* __OPENFLUID_DEVSTUDIOAPP_WARESRCEXPLORERMODEL_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCEXPLORERMODEL_HPP__ */

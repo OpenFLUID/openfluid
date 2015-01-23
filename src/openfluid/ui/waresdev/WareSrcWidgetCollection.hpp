@@ -85,6 +85,9 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void closeWareTab(WareSrcWidget* Ware);
 
+    void openWare(openfluid::waresdev::WareSrcManager::WareType Type,
+                  const QString& Title);
+
   public:
 
     WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone);
@@ -131,6 +134,10 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void saveCurrentEditorAs(const QString& TopDirectory = "");
 
     void closeCurrentEditor();
+
+    void openSimulator();
+    void openObserver();
+    void openBuilderExtension();
 
   private slots:
 

@@ -96,17 +96,15 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
 {
   m_WorkspacePath = QDir(NewAbsoluteWorkspacePath).absolutePath();
 
-  m_WaresdevPath = QString("%1/%2").arg(m_WorkspacePath).arg(m_WaresdevDirName);
+  m_WaresdevPath = QDir(m_WorkspacePath).absoluteFilePath(m_WaresdevDirName);
 
-  m_WareTypePathByWareType[SIMULATOR] =
-      QString("%1/%2").arg(m_WaresdevPath).arg(
-          QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
+  QDir WaresdevDir(m_WaresdevPath);
 
-  m_WareTypePathByWareType[OBSERVER] = QString("%1/%2").arg(m_WaresdevPath).arg(
+  m_WareTypePathByWareType[SIMULATOR] = WaresdevDir.filePath(
+      QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
+  m_WareTypePathByWareType[OBSERVER] = WaresdevDir.filePath(
       QString::fromStdString(openfluid::config::OBSERVERS_PLUGINS_SUBDIR));
-
-  m_WareTypePathByWareType[BUILDEREXT] = QString("%1/%2").arg(m_WaresdevPath)
-      .arg(
+  m_WareTypePathByWareType[BUILDEREXT] = WaresdevDir.filePath(
       QString::fromStdString(openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR));
 
   foreach(QString Path,m_WareTypePathByWareType){
@@ -161,8 +159,7 @@ QString WareSrcManager::getWarePath(
   if (Dir.exists(WareID))
     return Dir.filePath(WareID);
 
-  ErrMsg = QObject::tr(
-      "Unable to find source code for \"%1\" in the current workspace.").arg(
+  ErrMsg = QObject::tr("Unable to find \"%1\" in the current workspace.").arg(
       WareID);
   return "";
 }
@@ -176,42 +173,58 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 {
   PathInfo Info;
 
-  Info.m_AbsolutePath = QDir(Path).absolutePath();
+  Info.m_AbsolutePath = QDir::cleanPath(QDir(Path).absolutePath());
 
-  QString RelToWorkspace = QDir(m_WorkspacePath).relativeFilePath(
-      Info.m_AbsolutePath);
+  // we *are* current workspace
+  if (Info.m_AbsolutePath == m_WorkspacePath)
+    return Info;
 
-  Info.m_IsInCurrentWorkspace = !RelToWorkspace.startsWith("..");
+  // we are not under current workspace
+  if (Info.m_AbsolutePath.indexOf(m_WorkspacePath) != 0)
+    return Info;
 
+  Info.m_IsInCurrentWorkspace = true;
 
   for (QMap<WareType, QString>::iterator it = m_WareTypePathByWareType.begin();
       it != m_WareTypePathByWareType.end(); ++it)
   {
-    QString RelToWareType = QDir(it.value()).relativeFilePath(
-        Info.m_AbsolutePath);
+    // we *are* this waretype directory
+    if (Info.m_AbsolutePath == it.value())
+      return Info;
 
-    if (RelToWareType.startsWith(".."))
+    // we are not under this waretype directory
+    if (Info.m_AbsolutePath.indexOf(it.value()) != 0)
       continue;
 
+    QDir WareTypeDir(it.value());
+    QString RelToWareType = WareTypeDir.relativeFilePath(Info.m_AbsolutePath);
+    QString PotentialWareName = RelToWareType.section(
+        '/', 0, 0, QString::SectionSkipEmpty);
+    QString PotentialWarePath = WareTypeDir.absoluteFilePath(PotentialWareName);
+
+    // we are just under this waretype directory, but just a file out of any ware
+    if (QFileInfo(PotentialWarePath).isFile())
+      return Info;
+
+    Info.m_WareName = PotentialWareName;
+    Info.m_AbsolutePathOfWare = PotentialWarePath;
     Info.m_WareType = it.key();
-    Info.m_WareName = RelToWareType.split("/").at(0);
+    Info.m_RelativePathToWareDir = QDir(Info.m_AbsolutePathOfWare)
+        .relativeFilePath(Info.m_AbsolutePath);
 
-    Info.m_AbsolutePathOfWare = QDir(it.value()).filePath(Info.m_WareName);
-
-    if (!QFileInfo(Info.m_AbsolutePathOfWare).isDir())
-      break;
-
-    if (Info.m_AbsolutePathOfWare == Info.m_AbsolutePath)
+    if (PotentialWarePath == Info.m_AbsolutePath)
     {
       Info.m_isAWare = true;
+      return Info;
     }
-    else if (!QFileInfo(Info.m_AbsolutePath).isDir())
-    {
-      Info.m_isAWareFile = true;
-      Info.m_RelativePathToWareDir = QDir(Info.m_AbsolutePathOfWare)
-          .relativeFilePath(Info.m_AbsolutePath);
-      Info.m_FileName = QFileInfo(Info.m_AbsolutePath).fileName();
-    }
+
+    QFileInfo FileInfo(Info.m_AbsolutePath);
+
+    Info.m_isAWareFile = FileInfo.isFile();
+    if (Info.m_isAWareFile)
+      Info.m_FileName = FileInfo.fileName();
+
+    return Info;
   }
 
   return Info;

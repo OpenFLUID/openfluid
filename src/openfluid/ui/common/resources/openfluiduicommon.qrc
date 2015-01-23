@@ -15,5 +15,14 @@
     <file>icons/start.png</file>
     <file>icons/stop.png</file>
     <file>icons/pause.png</file> 
+    <file>icons/cmake-config.png</file>
+    <file>icons/cmakelists.png</file>
+    <file>icons/cpp.png</file>
+    <file>icons/fortran.png</file>
+    <file>icons/hpp.png</file>
+    <file>icons/notype.png</file>
+    <file>icons/qt-ui.png</file>
+    <file>icons/waredir.png</file>
+    <file>icons/wareshub.png</file>
   </qresource>
 </RCC>

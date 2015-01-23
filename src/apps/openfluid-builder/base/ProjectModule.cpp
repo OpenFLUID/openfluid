@@ -688,8 +688,7 @@ void ProjectModule::whenNewSimulatorSrcAsked()
 
 void ProjectModule::whenOpenSimulatorSrcAsked()
 {
-  // TODO to be replaced
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  mp_MainWidget->openSimulatorSrc();
 }
 
 
@@ -710,8 +709,7 @@ void ProjectModule::whenNewObserverSrcAsked()
 
 void ProjectModule::whenOpenObserverSrcAsked()
 {
-  // TODO to be replaced
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  mp_MainWidget->openObsereverSrc();
 }
 
 
