@@ -645,7 +645,7 @@ std::multimap<double,PolygonEntity*> PolygonEntity::getOrderedNeighboursByLength
 // =====================================================================
 
 
-LandREntity *PolygonEntity::computeNeighbourByLineTopology(VectorDataset LineTopology)
+std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(VectorDataset LineTopology)
 {
   if (!LineTopology.isLineType())
     throw openfluid::base::FrameworkException(
@@ -655,9 +655,16 @@ LandREntity *PolygonEntity::computeNeighbourByLineTopology(VectorDataset LineTop
   if (!mp_NeighboursMap)
     computeNeighbours();
 
+  openfluid::landr::LandREntity* Down=0;
+  double FlowLength=0.0;
+  std::pair<LandREntity*, double > pairNeighLength;
+
   // no Intersection between this PolygonEntity and the lines of the VectorDataset
   if (!(geometry()->intersects(LineTopology.geometries())))
-    return (LandREntity*) 0;
+  {
+    pairNeighLength = std::make_pair(Down,FlowLength);
+    return pairNeighLength;
+  }
 
   geos::geom::Geometry* PtIntersect=(LineTopology.geometries());
   geos::geom::LineString* Line=0;
@@ -677,12 +684,18 @@ LandREntity *PolygonEntity::computeNeighbourByLineTopology(VectorDataset LineTop
 
   }
 
+  // no Intersection between this PolygonEntity and the lines of the VectorDataset
   if (!cover)
-    return (LandREntity*) 0;
+  {
+    pairNeighLength = std::make_pair(Down,FlowLength);
+    return pairNeighLength;
+  }
+
 
   geos::geom::Point* EndPoint=Line->getEndPoint();
   bool downUnit=false;
-  openfluid::landr::LandREntity* Down=0;
+
+
   NeighboursMap_t::iterator jt = mp_NeighboursMap->begin();
   NeighboursMap_t::iterator jte = mp_NeighboursMap->end();
 
@@ -692,6 +705,7 @@ LandREntity *PolygonEntity::computeNeighbourByLineTopology(VectorDataset LineTop
     {
       Down=(*jt).first;
       downUnit=true;
+      FlowLength=Line->getLength();
     }
     else
       ++jt;
@@ -711,6 +725,25 @@ LandREntity *PolygonEntity::computeNeighbourByLineTopology(VectorDataset LineTop
       {
         Down=(*ht).first;
         downUnit=true;
+        geos::geom::Geometry *Intersect=
+            Line->difference((*ht).first->line());
+        unsigned int hEnd=Intersect->getNumGeometries();
+
+        for (unsigned int h = 0; h < hEnd; h++)
+        {
+          geos::geom::LineString* LinePart=
+              (dynamic_cast<geos::geom::LineString*>
+          (const_cast<geos::geom::Geometry*>(Intersect->getGeometryN(h))));
+
+          // FLowLength is the length of the line which EndPoint touches the LineString Neighbour
+          if (LinePart->getEndPoint()->isWithinDistance((*ht).first->line(),0.0001)
+              && geometry()->covers(LinePart->getStartPoint()))
+            FlowLength=LinePart->getLength();
+
+          delete LinePart;
+
+        }
+
       }
       else
         ++ht;
@@ -718,8 +751,8 @@ LandREntity *PolygonEntity::computeNeighbourByLineTopology(VectorDataset LineTop
   }
 
   delete EndPoint;
-
-  return Down;
+  pairNeighLength = std::make_pair(Down,FlowLength);
+  return pairNeighLength;
 
 }
 

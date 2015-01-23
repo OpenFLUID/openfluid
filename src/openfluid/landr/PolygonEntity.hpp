@@ -262,13 +262,14 @@ class OPENFLUID_API PolygonEntity: public LandREntity
          *  |  *           it becomes the neighbour :e.g, if LineStringNeighbour
          *  -  *           exists between PolygonEntity 1 and 2, the neighbour
          *  2  *           of PolygonEntity becomes this LineStringNeighbour.
-         *     *           Do NOT work for PointEntity topology
+         *     *
          *******
       \endverbatim
      @param LineTopology A line VectorDataset
-     @return A openfluid::landr:landREntity or an empty entity if not found.
+     @return A pair of openfluid::landr:landREntity and the length of the line of the VectorDataset
+      or an empty pair if not found.
      */
-    LandREntity *computeNeighbourByLineTopology(VectorDataset LineTopology);
+   std::pair< LandREntity*, double> computeNeighbourByLineTopology(VectorDataset LineTopology);
 
 
 

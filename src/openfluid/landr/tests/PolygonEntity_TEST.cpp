@@ -45,6 +45,7 @@
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
@@ -1168,26 +1169,28 @@ BOOST_AUTO_TEST_CASE(check_computeNeighbourByLineTopology)
 
   openfluid::landr::PolygonEntity* SU9 = SUGraph->entity(9);
 
-  BOOST_CHECK_EQUAL(SU9->computeNeighbourByLineTopology(*VectTopo)->getOfldId(),12);
+  BOOST_CHECK_EQUAL(SU9->computeNeighbourByLineTopology(*VectTopo).first->getOfldId(),12);
+  BOOST_CHECK(openfluid::scientific::isVeryClose(SU9->computeNeighbourByLineTopology(*VectTopo).second,85.50399));
 
   openfluid::landr::LineStringGraph* RSGraph =
       openfluid::landr::LineStringGraph::create(*ValRS);
   SU9->computeLineStringNeighbours(*RSGraph,
                                    openfluid::landr::LandRTools::INTERSECTS, 0.1);
 
-  BOOST_CHECK_EQUAL(SU9->computeNeighbourByLineTopology(*VectTopo)->getOfldId(),5);
+  BOOST_CHECK_EQUAL(SU9->computeNeighbourByLineTopology(*VectTopo).first->getOfldId(),5);
+
+  BOOST_CHECK(openfluid::scientific::isVeryClose(SU9->computeNeighbourByLineTopology(*VectTopo).second,44.5096));
 
   openfluid::landr::PolygonEntity* SU10 = SUGraph->entity(10);
 
-  openfluid::landr::LandREntity * NeighbourFalse=SU10->computeNeighbourByLineTopology(*VectTopo);
+  openfluid::landr::LandREntity * NeighbourFalse=SU10->computeNeighbourByLineTopology(*VectTopo).first;
   BOOST_CHECK(!NeighbourFalse);
-
+  BOOST_CHECK(openfluid::scientific::isVeryClose(SU10->computeNeighbourByLineTopology(*VectTopo).second,0.0));
   openfluid::landr::PolygonEntity* SU8 = SUGraph->entity(8);
 
-  openfluid::landr::LandREntity * NoNeighbour=SU8->computeNeighbourByLineTopology(*VectTopo);
+  openfluid::landr::LandREntity * NoNeighbour=SU8->computeNeighbourByLineTopology(*VectTopo).first;
   BOOST_CHECK(!NoNeighbour);
-
-
+  BOOST_CHECK(openfluid::scientific::isVeryClose(SU8->computeNeighbourByLineTopology(*VectTopo).second,0.0));
 
   delete ValSU;
   delete ValRS;
