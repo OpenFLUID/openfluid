@@ -30,10 +30,8 @@
 */
 
 
-
 /**
-  @file
-  @brief implements of ...
+  @file SimulationLogger.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -73,7 +71,11 @@ void SimulationLogger::addLog(const std::string& Prefix, const std::string& Send
                                   const std::string& Source, const openfluid::core::TimeIndex_t& TimeIndex,
                                   const std::string& Msg)
 {
-  m_LogFile << Prefix << ' ' << Msg << " (sent by " << Sender << ", from " << Source << ", at time index " << TimeIndex << ")\n";
+  m_LogFile << Prefix
+            << ' ' << Msg
+            << " (sent by " << Sender
+            << ", from " << Source
+            << ", at time index " << TimeIndex << ")\n";
 }
 
 
@@ -84,7 +86,9 @@ void SimulationLogger::addLog(const std::string& Prefix, const std::string& Send
 void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
                                   const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
 {
-  m_LogFile << Prefix << ' ' << Msg << " (sent by " << Sender << ", at time index " << TimeIndex << ")\n";
+  m_LogFile << Prefix << ' ' << Msg
+            << " (sent by " << Sender
+            << ", at time index " << TimeIndex << ")\n";
 }
 
 
@@ -95,7 +99,9 @@ void SimulationLogger::addLog(const std::string& Prefix, const std::string& Send
 void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
                                   const std::string& Source, const std::string& Msg)
 {
-  m_LogFile << Prefix << ' ' << Msg << " (sent by " << Sender << ", from " << Source << ")\n";
+  m_LogFile << Prefix << ' ' << Msg
+            << " (sent by " << Sender
+            << ", from " << Source << ")\n";
 }
 
 
@@ -106,7 +112,8 @@ void SimulationLogger::addLog(const std::string& Prefix, const std::string& Send
 void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
                                   const std::string& Msg)
 {
-  m_LogFile << Prefix << ' ' << Msg << " (sent by " << Sender << ")\n";
+  m_LogFile << Prefix << ' ' << Msg
+            << " (sent by " << Sender << ")\n";
 }
 
 

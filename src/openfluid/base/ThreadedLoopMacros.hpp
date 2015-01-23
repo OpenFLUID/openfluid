@@ -31,7 +31,7 @@
 
 
 /**
-  @file LoopMacros.hpp
+  @file ThreadedLoopMacros.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -70,11 +70,14 @@
       while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
       { \
         QFutureSynchronizer<void> _THREADSYNCID(id); \
-        while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end() && _UNITSLISTITERID(id)->getProcessOrder() == _PCSORDID(id)) \
+        while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end() && \
+               _UNITSLISTITERID(id)->getProcessOrder() == _PCSORDID(id)) \
         { \
           try \
           { \
-            _THREADSYNCID(id).addFuture(QtConcurrent::run(boost::bind(&funcptr,this,&(*_UNITSLISTITERID(id)),## __VA_ARGS__)));\
+            _THREADSYNCID(id).addFuture(QtConcurrent::run(boost::bind(&funcptr,\
+                                                                      this,\
+                                                                      &(*_UNITSLISTITERID(id)),## __VA_ARGS__)));\
             if (_THREADSYNCID(id).futures().size() == OPENFLUID_GetSimulatorMaxThreads())\
             { \
               _THREADSYNCID(id).waitForFinished(); \
@@ -116,11 +119,14 @@
       while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \
       { \
         QFutureSynchronizer<void> _THREADSYNCID(id); \
-        while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end() && (*_UNITSPTRLISTITERID(id))->getProcessOrder() == _PCSORDID(id)) \
+        while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end() && \
+              (*_UNITSPTRLISTITERID(id))->getProcessOrder() == _PCSORDID(id)) \
         { \
           try \
           { \
-            _THREADSYNCID(id).addFuture(QtConcurrent::run(boost::bind(&funcptr,this,(*_UNITSPTRLISTITERID(id)),## __VA_ARGS__)));\
+            _THREADSYNCID(id).addFuture(QtConcurrent::run(boost::bind(&funcptr,\
+                                                                      this,\
+                                                                      (*_UNITSPTRLISTITERID(id)),## __VA_ARGS__)));\
             if (_THREADSYNCID(id).futures().size() == OPENFLUID_GetSimulatorMaxThreads())\
             { \
               _THREADSYNCID(id).waitForFinished(); \
@@ -135,7 +141,8 @@
         } \
         _THREADSYNCID(id).waitForFinished(); \
         _THREADSYNCID(id).clearFutures(); \
-        if (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
+        if (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end())\
+          _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
       } \
     } \
   }

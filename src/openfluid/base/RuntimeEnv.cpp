@@ -30,10 +30,9 @@
 */
 
 /**
- @file
- @brief implements ...
+  @file RuntimeEnv.cpp
 
- @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
@@ -323,9 +322,10 @@ RuntimeEnvironment* RuntimeEnvironment::instance()
 
 void RuntimeEnvironment::setDateTimeOutputDir()
 {
-  m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + "OPENFLUID." +
-                                        boost::posix_time::to_iso_string(boost::posix_time::microsec_clock::local_time()) +
-                                        ".OUT").string();
+  m_OutputDir =
+      boost::filesystem::path(m_UserDataDir + "/" + "OPENFLUID." +
+                              boost::posix_time::to_iso_string(boost::posix_time::microsec_clock::local_time()) +
+                              ".OUT").string();
 }
 
 

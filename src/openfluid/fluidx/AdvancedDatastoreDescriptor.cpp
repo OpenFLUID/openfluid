@@ -30,9 +30,9 @@
 */
 
 /**
- @file AdvancedDatastoreDescriptor.cpp
+  @file AdvancedDatastoreDescriptor.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "AdvancedDatastoreDescriptor.hpp"
@@ -81,7 +81,8 @@ const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& AdvancedDatastoreD
 // =====================================================================
 
 
-std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitClass_t& UnitClass) const
+std::list<openfluid::fluidx::DatastoreItemDescriptor*>
+  AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitClass_t& UnitClass) const
 {
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->items().begin();
@@ -103,8 +104,9 @@ std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescript
 // =====================================================================
 
 
-std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitClass_t& UnitClass,
-                                                                                             openfluid::core::UnstructuredValue::UnstructuredType Type) const
+std::list<openfluid::fluidx::DatastoreItemDescriptor*>
+  AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitClass_t& UnitClass,
+                                        openfluid::core::UnstructuredValue::UnstructuredType Type) const
 {
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->items().begin();

@@ -71,7 +71,8 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
     openfluid::core::SpatialGraph* mp_SpatialData;
 
 
-    virtual bool isLinked() const { return (SimulationDrivenWare::isLinked() && mp_SpatialData != NULL && mp_Datastore != NULL); };
+    virtual bool isLinked() const
+    { return (SimulationDrivenWare::isLinked() && mp_SpatialData != NULL && mp_Datastore != NULL); };
 
 
     /**

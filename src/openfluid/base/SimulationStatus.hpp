@@ -56,7 +56,8 @@ class OPENFLUID_API SimulationStatus
 {
   public:
 
-    enum SimulationStage { PRE, INITPARAMS, PREPAREDATA, CHECKCONSISTENCY, INITIALIZERUN, RUNSTEP, FINALIZERUN, POST, UNKNOWN };
+    enum SimulationStage { PRE, INITPARAMS, PREPAREDATA, CHECKCONSISTENCY,
+                           INITIALIZERUN, RUNSTEP, FINALIZERUN, POST, UNKNOWN };
 
     enum SchedulingConstraint { SCHED_NONE, SCHED_DTCHECKED, SCHED_DTFORCED };
 
@@ -87,25 +88,34 @@ class OPENFLUID_API SimulationStatus
 
     ~SimulationStatus() {}
 
-    inline openfluid::core::DateTime getBeginDate() const { return m_BeginDate; }
+    inline openfluid::core::DateTime getBeginDate() const
+    { return m_BeginDate; }
 
-    inline openfluid::core::DateTime getEndDate() const { return m_EndDate; }
+    inline openfluid::core::DateTime getEndDate() const
+    { return m_EndDate; }
 
-    inline openfluid::core::DateTime getCurrentDate() const { return m_CurrentDate; }
+    inline openfluid::core::DateTime getCurrentDate() const
+    { return m_CurrentDate; }
 
-    inline openfluid::core::Duration_t getDefaultDeltaT() const { return m_DefaultDeltaT; }
+    inline openfluid::core::Duration_t getDefaultDeltaT() const
+    { return m_DefaultDeltaT; }
 
-    inline openfluid::core::Duration_t getSimulationDuration() const { return m_Duration; }
+    inline openfluid::core::Duration_t getSimulationDuration() const
+    { return m_Duration; }
 
-    inline openfluid::core::TimeIndex_t getCurrentTimeIndex() const { return m_CurrentTimeIndex; }
+    inline openfluid::core::TimeIndex_t getCurrentTimeIndex() const
+    { return m_CurrentTimeIndex; }
 
-    inline SchedulingConstraint getSchedulingConstraint() const { return m_SchedConstraint; }
+    inline SchedulingConstraint getSchedulingConstraint() const
+    { return m_SchedConstraint; }
 
-    inline bool isFirstTimeIndex() const { return m_CurrentTimeIndex == 0; }
+    inline bool isFirstTimeIndex() const
+    { return m_CurrentTimeIndex == 0; }
 
     void setCurrentTimeIndex(const openfluid::core::TimeIndex_t& Index);
 
-    inline SimulationStage getCurrentStage() const { return m_CurrentStage; }
+    inline SimulationStage getCurrentStage() const
+    { return m_CurrentStage; }
 
     void setCurrentStage(const SimulationStage& Stage);
 

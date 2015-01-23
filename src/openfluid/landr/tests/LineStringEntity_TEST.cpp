@@ -30,9 +30,9 @@
 */
 
 /**
- @file LineStringEntity_TEST.cpp
+  @file LineStringEntity_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN

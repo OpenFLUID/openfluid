@@ -92,7 +92,9 @@ class OPENFLUID_API DistributionBindings
 
     bool advanceToNextTimeAfter(const openfluid::core::DateTime& DT, openfluid::core::DateTime& NextDT);
 
-    bool getValue(const openfluid::core::UnitID_t& UnitID, const openfluid::core::DateTime& DT, openfluid::core::DoubleValue& Value);
+    bool getValue(const openfluid::core::UnitID_t& UnitID,
+                  const openfluid::core::DateTime& DT,
+                  openfluid::core::DoubleValue& Value);
 
     void displayBindings();
 

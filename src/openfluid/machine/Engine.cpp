@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief implements ...
+  @file Engine.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -79,10 +78,12 @@ Engine::Engine(SimulationBlob& SimBlob,
 
   prepareOutputDir();
 
-  mp_SimLogger = new openfluid::base::SimulationLogger(mp_RunEnv->getOutputFullPath(openfluid::config::MESSAGES_LOG_FILE));
+  mp_SimLogger =
+    new openfluid::base::SimulationLogger(mp_RunEnv->getOutputFullPath(openfluid::config::MESSAGES_LOG_FILE));
 
   mp_SimLogger->addInfo("*** Execution information ********************************************");
-  mp_SimLogger->addInfo("Date: " + boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time()));
+  mp_SimLogger->addInfo("Date: " +
+                        boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time()));
   mp_SimLogger->addInfo("Computer: " + mp_RunEnv->getHostName());
   mp_SimLogger->addInfo("User: " + mp_RunEnv->getUserID());
   mp_SimLogger->addInfo("Input directory: " + mp_RunEnv->getInputDir());
@@ -112,8 +113,12 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
-  else throw openfluid::base::FrameworkException("Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + SimulatorID);
+  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
+    UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+  else
+    throw openfluid::base::FrameworkException("Engine::checkExistingVariable",
+                                              "Unit class " + ClassName + " does not exist for " +
+                                              VarName + " variable required by " + SimulatorID);
 
   bool Status = true;
 
@@ -126,7 +131,9 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
       Status = (*UnitIter).variables()->isTypedVariableExist(VarName,VarType);
 
     if (!Status)
-      throw openfluid::base::FrameworkException("Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + SimulatorID + " does not exist");
+      throw openfluid::base::FrameworkException("Engine::checkExistingVariable",
+                                                VarName + " variable on " + ClassName +
+                                                " required by " + SimulatorID + " does not exist");
 
     ++UnitIter;
   }
@@ -148,8 +155,12 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
-  else throw openfluid::base::FrameworkException("Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + SimulatorID);
+  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
+    UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+  else
+    throw openfluid::base::FrameworkException("Engine::createVariable","Unit class " + ClassName +
+                                              " does not exist for " + VarName +
+                                              " variable produced by " + SimulatorID);
 
   bool Status = true;
 
@@ -162,7 +173,10 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
        Status = !((*UnitIter).variables()->isVariableExist(VarName));
 
       if (!Status)
-        throw openfluid::base::FrameworkException("Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + SimulatorID + " cannot be created because it is already created");
+        throw openfluid::base::FrameworkException("Engine::createVariable",
+                                                  VarName + " variable on " + ClassName +
+                                                  " produced by " + SimulatorID +
+                                                  " cannot be created because it is already created");
 
       ++UnitIter;
     }
@@ -188,8 +202,12 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
-  else throw openfluid::base::FrameworkException("Engine::checkExistingAttribute","Unit " + ClassName + " class does not exist for " + AttrName + " attribute required by " + SimulatorID);
+  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
+    UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+  else
+    throw openfluid::base::FrameworkException("Engine::checkExistingAttribute",
+                                              "Unit " + ClassName + " class does not exist for " +
+                                              AttrName + " attribute required by " + SimulatorID);
 
   bool Status = true;
 
@@ -198,7 +216,9 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
   {
     Status = (*UnitIter).attributes()->isAttributeExist(AttrName);
     if (!Status)
-      throw openfluid::base::FrameworkException("Engine::checkExistingAttribute",AttrName + " attribute on " + ClassName + " required by " + SimulatorID + " is not available");
+      throw openfluid::base::FrameworkException("Engine::checkExistingAttribute",
+                                                AttrName + " attribute on " + ClassName +
+                                                " required by " + SimulatorID + " is not available");
 
     ++UnitIter;
   }
@@ -217,8 +237,11 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
-  else throw openfluid::base::FrameworkException("Engine::createAttribute","Unit class " + ClassName + " does not exist for " + AttrName + " attribute produced by " + SimulatorID);
+  if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
+    UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+  else throw openfluid::base::FrameworkException("Engine::createAttribute",
+                                                 "Unit class " + ClassName + " does not exist for " +
+                                                 AttrName + " attribute produced by " + SimulatorID);
 
 
   for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
@@ -251,7 +274,8 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
     for (UnitsIter = UnitsList->begin();UnitsIter != UnitsList->end();++UnitsIter)
     {
       if (!((*UnitsIter).variables()->isAllVariablesCount(ExpectedVarsCount)))
-        throw openfluid::base::FrameworkException("Engine::checkSimulationVarsProduction","Variable production error");
+        throw openfluid::base::FrameworkException("Engine::checkSimulationVarsProduction",
+                                                  "Variable production error");
 
     }
 
@@ -384,7 +408,9 @@ void Engine::checkExtraFilesConsistency()
 
       boost::filesystem::path ReqExtraFilePath(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]));
       if (!boost::filesystem::exists(ReqExtraFilePath))
-        throw openfluid::base::FrameworkException("Engine::checkExtraFilesConsistency","File " + HData.RequiredExtraFiles[i] + " required by " + CurrentSimulator->Signature->ID + " not found");
+        throw openfluid::base::FrameworkException("Engine::checkExtraFilesConsistency",
+                                                  "File " + HData.RequiredExtraFiles[i] +
+                                                  " required by " + CurrentSimulator->Signature->ID + " not found");
     }
   }
 }
@@ -432,7 +458,8 @@ void Engine::initialize()
   }
   else
   {
-    openfluid::core::ValuesBufferProperties::setBufferSize((mp_SimStatus->getSimulationDuration()/mp_SimStatus->getDefaultDeltaT())+2);
+    openfluid::core::ValuesBufferProperties::setBufferSize(
+        (mp_SimStatus->getSimulationDuration()/mp_SimStatus->getDefaultDeltaT())+2);
   }
 
 
@@ -446,8 +473,8 @@ void Engine::initialize()
 
 void Engine::initParams()
 {
-
   mp_MachineListener->onInitParams();
+
   try
   {
     mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::INITPARAMS);
@@ -459,8 +486,12 @@ void Engine::initParams()
     mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_ERROR);
     throw;
   }
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_WARNING);
-  else mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_OK);
+
+  if (mp_SimLogger->isWarningFlag())
+    mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else
+    mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_OK);
+
   mp_SimLogger->resetWarningFlag();
 
 }
@@ -482,8 +513,12 @@ void Engine::prepareData()
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_WARNING);
-  else  mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_OK);
+  if (mp_SimLogger->isWarningFlag())
+    mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else
+    mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_OK);
+
+
   mp_SimLogger->resetWarningFlag();
 
 }
@@ -493,8 +528,6 @@ void Engine::prepareData()
 
 void Engine::checkConsistency()
 {
-
-
   // check simulators count
 
   try
@@ -527,8 +560,11 @@ void Engine::checkConsistency()
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_WARNING);
-  else  mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_OK);
+  if (mp_SimLogger->isWarningFlag())
+    mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else
+    mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_OK);
+
   mp_SimLogger->resetWarningFlag();
 
 }
@@ -549,7 +585,6 @@ void Engine::run()
 
   mp_MachineListener->onInitializeRun();
 
-
   try
   {
     mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::INITIALIZERUN);
@@ -562,8 +597,11 @@ void Engine::run()
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
-  else mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
+  if (mp_SimLogger->isWarningFlag())
+    mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else
+    mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
+
   mp_SimLogger->resetWarningFlag();
 
   // check simulation vars production after init
@@ -620,8 +658,11 @@ void Engine::run()
   }
 
 
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
-  else mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
+  if (mp_SimLogger->isWarningFlag())
+    mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else
+    mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
+
   mp_SimLogger->resetWarningFlag();
 
   // check simulation vars production after finalize

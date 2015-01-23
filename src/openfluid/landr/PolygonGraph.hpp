@@ -30,9 +30,9 @@
  */
 
 /**
- @file PolygonGraph.hpp
+  @file PolygonGraph.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_POLYGONGRAPH_HPP__

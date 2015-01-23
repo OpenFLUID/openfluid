@@ -53,7 +53,8 @@
 
 namespace openfluid { namespace core {
 /**
-StringValue is a container for a std::string value, with methods for conversion to other containers derived from Value.\n
+StringValue is a container for a std::string value, with methods for conversion
+to other containers derived from Value.\n
 
 \see Value
 

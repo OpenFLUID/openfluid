@@ -30,9 +30,9 @@
 */
 
 /**
- @file PolygonEdge.hpp
+  @file PolygonEdge.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_POLYGONEDGE_HPP__

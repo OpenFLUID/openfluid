@@ -123,7 +123,8 @@ void DistributionBindings::advanceToTime(const openfluid::core::DateTime& DT)
 // =====================================================================
 
 
-bool DistributionBindings::advanceToNextTimeAfter(const openfluid::core::DateTime& DT, openfluid::core::DateTime& NextDT)
+bool DistributionBindings::advanceToNextTimeAfter(const openfluid::core::DateTime& DT,
+                                                  openfluid::core::DateTime& NextDT)
 {
   openfluid::core::DateTime DTPlusOne(DT);
   DTPlusOne.addSeconds(1);
@@ -169,7 +170,9 @@ bool DistributionBindings::advanceToNextTimeAfter(const openfluid::core::DateTim
 // =====================================================================
 
 
-bool DistributionBindings::getValue(const openfluid::core::UnitID_t& UnitID, const openfluid::core::DateTime& DT, openfluid::core::DoubleValue& Value)
+bool DistributionBindings::getValue(const openfluid::core::UnitID_t& UnitID,
+                                    const openfluid::core::DateTime& DT,
+                                    openfluid::core::DoubleValue& Value)
 {
   // if a value is available for DT : passes the value to caller, and returns true
   // else returns false

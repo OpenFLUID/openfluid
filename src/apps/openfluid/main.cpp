@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief implements main
+  @file main.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -65,7 +64,8 @@ int main(int argc, char **argv)
   }
   catch (std::bad_alloc& E)
   {
-    ReturnValue = App.stopAppReturn("MEMORY ALLOCATION ERROR: " + std::string(E.what()) + ". Possibly not enough memory available");
+    ReturnValue = App.stopAppReturn("MEMORY ALLOCATION ERROR: " + std::string(E.what()) +
+                                    ". Possibly not enough memory available");
   }
   catch (std::exception& E)
   {

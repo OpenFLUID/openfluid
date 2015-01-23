@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  @file ModelInstance.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -74,9 +73,17 @@ namespace openfluid { namespace machine {
         mp_Listener->onSimulator##listenermethod(_M_CurrentSimulator->Signature->ID); \
         boost::posix_time::ptime _M_TimeProfileStart = boost::posix_time::microsec_clock::universal_time(); \
         _M_CurrentSimulator->Body->calledmethod; \
-        if (mp_SimProfiler != NULL) mp_SimProfiler->addDuration(_M_CurrentSimulator->Signature->ID,timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length()); \
-        if (mp_SimLogger->isWarningFlag())  mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_WARNING,_M_CurrentSimulator->Signature->ID); \
-        else  mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_OK,_M_CurrentSimulator->Signature->ID); \
+        if (mp_SimProfiler != NULL)\
+          mp_SimProfiler\
+          ->addDuration(_M_CurrentSimulator->Signature->ID,\
+                        timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,\
+                                                    boost::posix_time::microsec_clock::universal_time()).length()); \
+        if (mp_SimLogger->isWarningFlag()) \
+          mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_WARNING,\
+                                                         _M_CurrentSimulator->Signature->ID); \
+        else \
+          mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_OK,\
+                                                         _M_CurrentSimulator->Signature->ID); \
         mp_SimLogger->resetWarningFlag(); \
       } \
       _M_SimIter++; \
@@ -120,7 +127,8 @@ void ModelInstance::appendItemToTimePoint(openfluid::core::TimeIndex_t TimeIndex
 
   // no back in time nor iteration
   if (TimeIndex <= m_SimulationBlob.simulationStatus().getCurrentTimeIndex())
-    throw openfluid::base::FrameworkException("SimulationScheduler::appendItemToTimePoint","Cannot append simulation item before or on current time point");
+    throw openfluid::base::FrameworkException("SimulationScheduler::appendItemToTimePoint",
+                                              "Cannot append simulation item before or on current time point");
 
   // ignore time points after simulation end
   if (TimeIndex > m_SimulationBlob.simulationStatus().getSimulationDuration())
@@ -173,7 +181,8 @@ void ModelInstance::appendItemToTimePoint(openfluid::core::TimeIndex_t TimeIndex
 // =====================================================================
 
 
-openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const
+openfluid::ware::WareParams_t
+  ModelInstance::mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const
 {
   openfluid::ware::WareParams_t MergedParams = m_GlobalParams;
 
@@ -193,7 +202,8 @@ openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const o
 // =====================================================================
 
 
-void ModelInstance::setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamValue_t& Value)
+void ModelInstance::setGlobalParameter(const openfluid::ware::WareParamKey_t& Key,
+                                       const openfluid::ware::WareParamValue_t& Value)
 {
   m_GlobalParams[Key] = Value;
 }
@@ -206,7 +216,8 @@ void ModelInstance::setGlobalParameter(const openfluid::ware::WareParamKey_t& Ke
 void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
 {
   if (m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::appendItem()","Trying to append model item after model initialization");
+    throw openfluid::base::FrameworkException("ModelInstance::appendItem()",
+                                              "Trying to append model item after model initialization");
 
   m_ModelItems.push_back(ItemInstance);
 }
@@ -219,7 +230,8 @@ void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
 void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Position)
 {
   if (m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::insertItem()","Trying to insert model item after model initialization");
+    throw openfluid::base::FrameworkException("ModelInstance::insertItem()",
+                                              "Trying to insert model item after model initialization");
 
 
   if (Position == 0)
@@ -233,7 +245,8 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
       m_ModelItems.insert(it,ItemInstance);
     }
     else
-      throw openfluid::base::FrameworkException("ModelInstance::insertItem()","Bad index of item to insert");
+      throw openfluid::base::FrameworkException("ModelInstance::insertItem()",
+                                                "Bad index of item to insert");
   }
 
 }
@@ -246,7 +259,8 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
 void ModelInstance::deleteItem(unsigned int Position)
 {
   if (m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::deleteItem()","Trying to delete model item after model initialization");
+    throw openfluid::base::FrameworkException("ModelInstance::deleteItem()",
+                                              "Trying to delete model item after model initialization");
 
   if (Position < m_ModelItems.size())
   {
@@ -255,7 +269,8 @@ void ModelInstance::deleteItem(unsigned int Position)
     m_ModelItems.erase(it);
   }
   else
-    throw openfluid::base::FrameworkException("ModelInstance::deleteItem()","Bad index of item to delete");
+    throw openfluid::base::FrameworkException("ModelInstance::deleteItem()",
+                                              "Bad index of item to delete");
 }
 
 
@@ -266,7 +281,8 @@ void ModelInstance::deleteItem(unsigned int Position)
 void ModelInstance::clear()
 {
   if (m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::clear()","Trying to clear model after model initialization");
+    throw openfluid::base::FrameworkException("ModelInstance::clear()",
+                                              "Trying to clear model after model initialization");
 
   std::list<ModelItemInstance*>::iterator it;
 
@@ -304,7 +320,8 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
     if(CurrentSimulator->ItemType == openfluid::fluidx::ModelItemDescriptor::PluggedSimulator)
       FPlugsMgr->completeSignatureWithWareBody(CurrentSimulator);
 
-    if(CurrentSimulator->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator && CurrentSimulator->GeneratorInfo != NULL)
+    if (CurrentSimulator->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator &&
+        CurrentSimulator->GeneratorInfo != NULL)
     {
       if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Fixed)
         CurrentSimulator->Body = new FixedGenerator();
@@ -318,10 +335,11 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
       if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Interp)
         CurrentSimulator->Body = new InterpGenerator();
 
-      ((openfluid::machine::Generator*)(CurrentSimulator->Body))->setInfos(CurrentSimulator->GeneratorInfo->VariableName,
-                                                                              CurrentSimulator->GeneratorInfo->UnitClass,
-                                                                              CurrentSimulator->GeneratorInfo->GeneratorMethod,
-                                                                              CurrentSimulator->GeneratorInfo->VariableSize);
+      ((openfluid::machine::Generator*)
+          (CurrentSimulator->Body))->setInfos(CurrentSimulator->GeneratorInfo->VariableName,
+                                              CurrentSimulator->GeneratorInfo->UnitClass,
+                                              CurrentSimulator->GeneratorInfo->GeneratorMethod,
+                                              CurrentSimulator->GeneratorInfo->VariableSize);
     }
 
     CurrentSimulator->Body->linkToSimulationLogger(mp_SimLogger);
@@ -391,7 +409,8 @@ void ModelInstance::call_initParams() const
 
 
   DECLARE_SIMULATOR_PARSER;
-  PARSE_SIMULATOR_LIST(initParams(mergeParamsWithGlobalParams(_M_CurrentSimulator->Params)),InitParams,openfluid::base::SimulationStatus::INITPARAMS);
+  PARSE_SIMULATOR_LIST(initParams(mergeParamsWithGlobalParams(_M_CurrentSimulator->Params)),
+                       InitParams,openfluid::base::SimulationStatus::INITPARAMS);
 }
 
 
@@ -432,7 +451,8 @@ void ModelInstance::call_checkConsistency() const
 void ModelInstance::checkDeltaTMode(openfluid::base::SchedulingRequest& SReq, const openfluid::ware::WareID_t& ID)
 {
   // check if "checked" DeltaT mode is respected
-  if (m_SimulationBlob.simulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+  if (m_SimulationBlob.simulationStatus().getSchedulingConstraint() ==
+        openfluid::base::SimulationStatus::SCHED_DTCHECKED)
   {
      if (!(SReq.RequestType == openfluid::base::SchedulingRequest::DURATION &&
            SReq.Duration ==  m_SimulationBlob.simulationStatus().getDefaultDeltaT()))
@@ -440,12 +460,14 @@ void ModelInstance::checkDeltaTMode(openfluid::base::SchedulingRequest& SReq, co
        std::string TIStr;
        openfluid::tools::convertValue(m_SimulationBlob.simulationStatus().getCurrentTimeIndex(),&TIStr);
        throw openfluid::base::FrameworkException("ModelInstance::checkDeltaTMode",
-                                          "DeltaT checked mode not respected by simulator " + ID + " at time index " + TIStr);
+                                          "DeltaT checked mode not respected by simulator " + ID +
+                                          " at time index " + TIStr);
      }
   }
 
   // check if "forced" DeltaT mode is respected
-  if (m_SimulationBlob.simulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+  if (m_SimulationBlob.simulationStatus().getSchedulingConstraint() ==
+        openfluid::base::SimulationStatus::SCHED_DTFORCED)
     SReq =  openfluid::base::SchedulingRequest(m_SimulationBlob.simulationStatus().getDefaultDeltaT());
 
 }
@@ -473,13 +495,19 @@ void ModelInstance::call_initializeRun()
 
       boost::posix_time::ptime TimeProfileStart = boost::posix_time::microsec_clock::universal_time();
       openfluid::base::SchedulingRequest SchedReq = CurrentSimulator->Body->initializeRun();
-      if (mp_SimProfiler != NULL) mp_SimProfiler->addDuration(CurrentSimulator->Signature->ID,
-                                                              openfluid::base::SimulationStatus::INITIALIZERUN,
-                                                              boost::posix_time::time_period(TimeProfileStart,
-                                                                                             boost::posix_time::microsec_clock::universal_time()).length());
+      if (mp_SimProfiler != NULL)
+        mp_SimProfiler->addDuration(CurrentSimulator->Signature->ID,
+                                    openfluid::base::SimulationStatus::INITIALIZERUN,
+                                    boost::posix_time::time_period(TimeProfileStart,
+                                                                   boost::posix_time::microsec_clock::universal_time())
+                                    .length());
 
-      if (mp_SimLogger->isWarningFlag())  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING,CurrentSimulator->Signature->ID);
-      else  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK,CurrentSimulator->Signature->ID);
+      if (mp_SimLogger->isWarningFlag())
+        mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING,
+                                                  CurrentSimulator->Signature->ID);
+      else
+        mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK,
+                                                  CurrentSimulator->Signature->ID);
       mp_SimLogger->resetWarningFlag();
 
       checkDeltaTMode(SchedReq,CurrentSimulator->Signature->ID);
@@ -530,12 +558,18 @@ void ModelInstance::processNextTimePoint()
 
     openfluid::base::SchedulingRequest SchedReq = m_TimePointList.front().processNextItem();
 
-    if (mp_SimProfiler != NULL) mp_SimProfiler->addDuration(NextItem->Signature->ID,
-                                                            openfluid::base::SimulationStatus::RUNSTEP,
-                                                            boost::posix_time::time_period(TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length());
+    if (mp_SimProfiler != NULL)
+      mp_SimProfiler->addDuration(NextItem->Signature->ID,
+                                  openfluid::base::SimulationStatus::RUNSTEP,
+                                  boost::posix_time::time_period(TimeProfileStart,
+                                                                 boost::posix_time::microsec_clock::universal_time())
+                                  .length());
+
     if (mp_SimLogger->isWarningFlag())
       mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING,NextItem->Signature->ID);
-    else  mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_OK,NextItem->Signature->ID);
+    else
+      mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_OK,NextItem->Signature->ID);
+
     mp_SimLogger->resetWarningFlag();
 
     checkDeltaTMode(SchedReq,NextItem->Signature->ID);

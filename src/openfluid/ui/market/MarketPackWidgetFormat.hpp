@@ -31,14 +31,13 @@
 
 
 /**
- * MarketPackWidgetFormat.hpp
- *
- *  Created on: 21 mars 2013
- *      Author: Manuel CHATAIGNER
+  @file MarketPackWidgetFormat.hpp
+
+  @auth Manuel Chataigner
 */
 
-#ifndef __MARKETPACKWIDGETFORMAT__HPP__
-#define __MARKETPACKWIDGETFORMAT__HPP__
+#ifndef __OPENFLUID_UIMARKET_MARKETPACKWIDGETFORMAT_HPP__
+#define __OPENFLUID_UIMARKET_MARKETPACKWIDGETFORMAT_HPP__
 
 
 #include <openfluid/ui/market/MarketPackWidget.hpp>

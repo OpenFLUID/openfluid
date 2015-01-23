@@ -30,9 +30,9 @@
  */
 
 /**
- @file PolygonEntity.cpp
+  @file PolygonEntity.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "PolygonEntity.hpp"

@@ -30,9 +30,9 @@
 */
 
 /**
- @file RasterDataset.hpp
+  @file RasterDataset.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_RASTERDATASET_HPP__

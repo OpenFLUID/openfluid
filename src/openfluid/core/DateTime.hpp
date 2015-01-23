@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file DateTime.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -74,7 +74,8 @@ typedef unsigned long long Duration_t;
   Class for management of date and time information. It includes arithmetics and comparisons operations.
 
   Sources:
-  @li Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968). http://www.decimaltime.hynes.net/index.html
+  @li Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968).
+      http://www.decimaltime.hynes.net/index.html
   @li http://en.wikipedia.org/wiki/Julian_day
 
   <BR>

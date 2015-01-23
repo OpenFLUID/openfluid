@@ -84,7 +84,8 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     openfluid::base::SimulationLogger* mp_SimLogger;
 
 
-    virtual bool isLinked() const { return (PluggableWare::isLinked() &&  mp_SimLogger != NULL && mp_SimStatus != NULL); };
+    virtual bool isLinked() const
+    { return (PluggableWare::isLinked() &&  mp_SimLogger != NULL && mp_SimStatus != NULL); };
 
     /**
       Returns the real beginning date of the simulated period
@@ -181,15 +182,14 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     void linkToSimulation(const openfluid::base::SimulationStatus* SimStatus);
 
     void linkToSimulationLogger(openfluid::base::SimulationLogger* SimLogger)
-    {
-      mp_SimLogger = SimLogger;
-    };
+    { mp_SimLogger = SimLogger; };
 
     void initializeWare(const WareID_t& ID);
 
     void finalizeWare();
 
-    void setPreviousTimeIndex(const openfluid::core::TimeIndex_t& TimeIndex) { m_PreviousTimeIndex = TimeIndex; };
+    void setPreviousTimeIndex(const openfluid::core::TimeIndex_t& TimeIndex)
+    { m_PreviousTimeIndex = TimeIndex; };
 
 };
 

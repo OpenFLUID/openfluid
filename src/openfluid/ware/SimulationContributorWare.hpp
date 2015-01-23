@@ -156,7 +156,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
                                    const std::string& Val);
 
     /**
-      Appends a distributed variable value for a unit at the end of the previously added values for this variable
+      Appends a distributed variable value for a unit at the end
+      of the previously added values for this variable
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable
@@ -167,7 +168,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
                                   const openfluid::core::Value& Val);
 
     /**
-      Appends a distributed variable value for a unit at the end of the previously added values for this variable
+      Appends a distributed variable value for a unit at the end
+      of the previously added values for this variable
       @param[in] aUnit a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable
@@ -177,7 +179,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
                                   const openfluid::core::Value& Val);
 
     /**
-      Appends a distributed double variable value for a unit at the end of the previously added values for this variable
+      Appends a distributed double variable value for a unit at the end
+      of the previously added values for this variable
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (double)
@@ -187,7 +190,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
                                   const double& Val);
 
     /**
-      Appends a distributed long variable value for a unit at the end of the previously added values for this variable
+      Appends a distributed long variable value for a unit at the end
+      of the previously added values for this variable
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (long)
@@ -197,7 +201,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
                                   const long& Val);
 
     /**
-      Appends a distributed boolean variable value for a unit at the end of the previously added values for this variable
+      Appends a distributed boolean variable value for a unit at the end
+      of the previously added values for this variable
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (bool)
@@ -207,7 +212,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
                                   const bool& Val);
 
     /**
-      Appends a distributed string variable value for a unit at the end of the previously added values for this variable
+      Appends a distributed string variable value for a unit at the end
+      of the previously added values for this variable
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (string)

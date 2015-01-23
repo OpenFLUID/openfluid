@@ -30,9 +30,9 @@
 */
 
 /**
- @file PreferencesManager_TEST.cpp
+  @file PreferencesManager_TEST.cpp
 
- @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN

@@ -30,10 +30,10 @@
 */
 
 /**
- @file PreferencesManager.cpp
+  @file PreferencesManager.cpp
 
- @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
- @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include "PreferencesManager.hpp"
@@ -192,7 +192,8 @@ QString PreferencesManager::getLang()
 QStringList PreferencesManager::getAvailableLangs()
 {
   QStringList QMFiles;
-  QMFiles = QDir(QString(openfluid::base::RuntimeEnvironment::instance()->getTranslationsDir().c_str())).entryList(QStringList("*.qm"),QDir::Files);
+  QMFiles = QDir(QString(openfluid::base::RuntimeEnvironment::instance()->getTranslationsDir().c_str()))
+                 .entryList(QStringList("*.qm"),QDir::Files);
 
   QStringList Langs;
   for (int i=0;i<QMFiles.size();++i)
@@ -247,7 +248,10 @@ void PreferencesManager::setRecentMax(int RecentMax)
 int PreferencesManager::getRecentMax()
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
-  if (!mp_ConfFile->contains("recentmax")) mp_ConfFile->setValue("recentmax",(unsigned int)(RecentProjectsLimit/2));
+
+  if (!mp_ConfFile->contains("recentmax"))
+    mp_ConfFile->setValue("recentmax",(unsigned int)(RecentProjectsLimit/2));
+
   unsigned int RecentMax = mp_ConfFile->value("recentmax").toUInt();
   mp_ConfFile->endGroup();
   return RecentMax;
@@ -380,7 +384,8 @@ QStringList PreferencesManager::getWorkspacesPaths()
 
   if (PathsList.isEmpty())
   {
-    PathsList.append(QString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath(openfluid::config::WORKSPACE_SUBDIR).c_str()));
+    PathsList.append(QString(openfluid::base::RuntimeEnvironment::instance()
+                             ->getUserDataPath(openfluid::config::WORKSPACE_SUBDIR).c_str()));
   }
 
   return PathsList;

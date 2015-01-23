@@ -30,9 +30,9 @@
 */
 
 /**
- @file Variables.cpp
+  @file Variables.cpp
 
- @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include <openfluid/core/Variables.hpp>
@@ -215,7 +215,8 @@ bool Variables::getLatestIndexedValue(const VariableName_t& aName, IndexedValue&
 // =====================================================================
 
 
-bool Variables::getLatestIndexedValues(const VariableName_t& aName, const TimeIndex_t& anIndex, IndexedValueList& IndValueList) const
+bool Variables::getLatestIndexedValues(const VariableName_t& aName, const TimeIndex_t& anIndex,
+                                       IndexedValueList& IndValueList) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -256,11 +257,13 @@ Value* Variables::currentValueIfIndex(const VariableName_t& aName, const TimeInd
 // =====================================================================
 // =====================================================================
 
+
 bool Variables::getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index, Value* aValue) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  return (it != m_Data.end() && it->second.first.getCurrentIndex() == Index && it->second.first.getCurrentValue(aValue));
+  return (it != m_Data.end() &&
+          it->second.first.getCurrentIndex() == Index && it->second.first.getCurrentValue(aValue));
 }
 
 
@@ -294,8 +297,10 @@ bool Variables::isVariableExist(const VariableName_t& aName, const TimeIndex_t& 
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  return (it != m_Data.end() && it->second.first.isValueExist(anIndex) && it->second.first.value(anIndex)->getType() == ValueType);
+  return (it != m_Data.end() &&
+          it->second.first.isValueExist(anIndex) && it->second.first.value(anIndex)->getType() == ValueType);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -308,6 +313,7 @@ bool Variables::isTypedVariableExist(const VariableName_t& aName, const Value::T
   return (it != m_Data.end() && it->second.second == VarType);
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -319,6 +325,7 @@ bool Variables::isTypedVariableExist(const VariableName_t& aName,
 
   return (it != m_Data.end() && it->second.first.isValueExist(anIndex) && it->second.second == VarType);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -333,6 +340,7 @@ std::vector<VariableName_t> Variables::getVariablesNames() const
 
   return TheNames;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -364,6 +372,7 @@ bool Variables::isAllVariablesCount(unsigned int Count) const
 
   return true;
 }
+
 
 // =====================================================================
 // =====================================================================

@@ -30,9 +30,9 @@
 */
 
 /**
- @file ProjectManager.cpp
+  @file ProjectManager.cpp
 
- @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <QFile>

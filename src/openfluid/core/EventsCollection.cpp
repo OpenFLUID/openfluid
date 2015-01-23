@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief Implements distributed event collection management class
+  @file EventsCollection.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */

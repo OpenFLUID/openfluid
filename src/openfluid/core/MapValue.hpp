@@ -57,7 +57,8 @@
 namespace openfluid { namespace core {
 
 /**
-  MapValue is a container for a key => value map, where keys are strings and values can be any type derived from openfluid::core::Value.\n
+  MapValue is a container for a key => value map,
+  where keys are strings and values can be any type derived from openfluid::core::Value.\n
 
 \see Value
 

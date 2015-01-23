@@ -85,7 +85,8 @@ class OPENFLUID_API Value
 
     virtual Type getType() const = 0;
 
-    virtual Value* clone() const { throw openfluid::base::FrameworkException("Value::clone","Value is not cloneable"); };
+    virtual Value* clone() const
+    { throw openfluid::base::FrameworkException("Value::clone","Value is not cloneable"); };
 
     inline virtual bool isSimple() const = 0;
 
@@ -94,7 +95,7 @@ class OPENFLUID_API Value
     virtual void writeToStream(std::ostream& OutStm) const = 0;
 
     friend std::ostream& operator<<(std::ostream& OutStm, const Value& Val)
-      { Val.writeToStream(OutStm); return OutStm; };
+    { Val.writeToStream(OutStm); return OutStm; };
 
     /**
       Returns true if the Value is a DoubleValue

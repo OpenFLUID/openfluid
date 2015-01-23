@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file OpenFLUID.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -88,11 +88,13 @@ class OpenFLUIDApp
 
     void printMonitoring();
 
-    void printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix);
+    void printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph,
+                                                std::string Suffix);
 
     void printSimulatorsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix);
 
-    void printSimulatorsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type);
+    void printSimulatorsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem,
+                                              std::string Suffix, std::string Type);
 
     void printSimulatorsTimeSchedulingReport(openfluid::ware::SignatureTimeScheduling TScheduling);
 

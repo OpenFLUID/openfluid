@@ -151,7 +151,8 @@ class OPENFLUID_API Matrix
     /**
       Sets a new value for element at the given index
     */
-    inline void set(unsigned long ColIndex, unsigned long RowIndex, T Element) { setElement(ColIndex,RowIndex,Element); };
+    inline void set(unsigned long ColIndex, unsigned long RowIndex, T Element)
+    { setElement(ColIndex,RowIndex,Element); };
 
     /**
       Allocation operator
@@ -242,7 +243,9 @@ void Matrix<T>::setData(T* Data)
 template <class T>
 T Matrix<T>::getElement(unsigned long ColIndex, unsigned long RowIndex) const
 {
-  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr) throw openfluid::base::FrameworkException("Matrix::getElement","element access range error");
+  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr)
+    throw openfluid::base::FrameworkException("Matrix::getElement","element access range error");
+
   return m_Data[ColIndex][RowIndex];
 }
 
@@ -254,7 +257,9 @@ T Matrix<T>::getElement(unsigned long ColIndex, unsigned long RowIndex) const
 template <class T>
 void Matrix<T>::setElement(unsigned long ColIndex, unsigned long RowIndex, T Element)
 {
-  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr) throw openfluid::base::FrameworkException("Matrix::setElement","element access range error");
+  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr)
+    throw openfluid::base::FrameworkException("Matrix::setElement","element access range error");
+
   m_Data[ColIndex][RowIndex] = Element;
 }
 

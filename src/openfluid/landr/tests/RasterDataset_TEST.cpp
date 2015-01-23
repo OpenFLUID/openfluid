@@ -30,9 +30,9 @@
 */
 
 /**
- @file RasterDataset_TEST.cpp
+  @file RasterDataset_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN

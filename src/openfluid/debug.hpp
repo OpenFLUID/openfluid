@@ -66,7 +66,10 @@
 
 #ifndef NDEBUG
 
-#define OFDBG_LOCATE { OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " File " << __FILE__ << ", Line " << __LINE__ << std::endl; }
+#define OFDBG_LOCATE \
+  {\
+    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " File " << __FILE__ << ", Line " << __LINE__ << std::endl;\
+  }
 
 #else
 
@@ -118,7 +121,10 @@
 #ifndef NDEBUG
 
 #define OFDBG_UNIT(unitptr) \
-  { OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Unit class " << (unitptr)->getClass() << ", ID " << (unitptr)->getID() << std::endl; }
+  {\
+    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Unit class " << (unitptr)->getClass()\
+                                                       << ", ID " << (unitptr)->getID() << std::endl;\
+  }
 
 #else
 
@@ -135,7 +141,8 @@
 
 #define OFDBG_UNIT_EXTENDED(unitptr) \
   { \
-    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Unit class " << (unitptr)->getClass() << ", ID " << (unitptr)->getID() << std::endl; \
+    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Unit class " << (unitptr)->getClass()\
+                                                       << ", ID " << (unitptr)->getID() << std::endl; \
     std::vector<openfluid::core::AttributeName_t> _M_DBG_AttrsNames = (unitptr)->attributes()->getAttributesNames(); \
     OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Attributes: "; \
     for (unsigned int i=0; i<_M_DBG_AttrsNames.size();i++) OFDBG_OUTSTREAM << _M_DBG_AttrsNames[i] << " , "; \
@@ -161,11 +168,14 @@
 
 #define OFDBG_EVENT(eventptr) \
   { \
-    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Event at " << (eventptr)->getDateTime().getAsISOString() << std::endl; \
+    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX\
+                    << " Event at " << (eventptr)->getDateTime().getAsISOString() << std::endl; \
     openfluid::core::Event::EventInfosMap_t::iterator _M_DBG_EvInfoiter; \
-    for (_M_DBG_EvInfoiter = (eventptr)->getInfos().begin();_M_DBG_EvInfoiter != (eventptr)->getInfos().end();++_M_DBG_EvInfoiter) \
+    for (_M_DBG_EvInfoiter = (eventptr)->getInfos().begin();\
+         _M_DBG_EvInfoiter != (eventptr)->getInfos().end();++_M_DBG_EvInfoiter) \
     { \
-      OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - " << (*_M_DBG_EvInfoiter).first << " = " << (*_M_DBG_EvInfoiter).second.get() << std::endl; \
+      OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - "\
+                      << (*_M_DBG_EvInfoiter).first << " = " << (*_M_DBG_EvInfoiter).second.get() << std::endl; \
     } \
   }
 
@@ -184,9 +194,11 @@
 
 #define OFDBG_EVENTCOLLECTION(eventcoll) \
   { \
-    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Event collection size : " << eventcoll.eventsList()->size() << std::endl; \
+    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Event collection size : "\
+                                                       << eventcoll.eventsList()->size() << std::endl; \
     openfluid::core::EventsList_t::iterator _M_DBG_EvListiter; \
-    for (_M_DBG_EvListiter=(EvColl.eventsList())->begin(); _M_DBG_EvListiter != (EvColl.eventsList())->end(); _M_DBG_EvListiter++) \
+    for (_M_DBG_EvListiter=(EvColl.eventsList())->begin();\
+         _M_DBG_EvListiter != (EvColl.eventsList())->end(); _M_DBG_EvListiter++) \
     { \
       OFDBG_EVENT(&(*_M_DBG_EvListiter)); \
     } \

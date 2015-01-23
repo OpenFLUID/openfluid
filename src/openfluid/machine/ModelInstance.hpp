@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file ModelInstance.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -111,7 +111,8 @@ class OPENFLUID_API ModelInstance
     void insertItem(ModelItemInstance* ItemInstance, unsigned int Position);
 
     /**
-      Delete the ModelItemInstance located at the given postion (positions starts at index 0), and remove it from the ModelInstance
+      Delete the ModelItemInstance located at the given postion (positions starts at index 0),
+      and remove it from the ModelInstance
       @param[in] Position the position
     */
     void deleteItem(unsigned int Position);

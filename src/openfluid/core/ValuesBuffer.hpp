@@ -30,9 +30,9 @@
 */
 
 /**
- @file
+  @file ValuesBuffer.hpp
 
- @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_VALUESBUFFER_HPP__

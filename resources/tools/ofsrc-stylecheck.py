@@ -83,7 +83,7 @@ class SourceTreeChecker:
     
     self.FileList = list()
     
-    self.ErrorsCount = 0;
+    self.ErrorsCount = {'LLEN': 0, 'LICH': 0, 'HGRD': 0, 'AUTH':0, 'FNAM': 0};
     
     self.MaxLineLength = 120;
     
@@ -94,6 +94,8 @@ class SourceTreeChecker:
           if (RelFilename.endswith('.cpp') or RelFilename.endswith('.hpp') or
               RelFilename.endswith('.hpp.in')) :
             self.FileList.append(RelFilename)
+
+    self.FileList.sort()
 
             
 ############################################################################            
@@ -119,9 +121,9 @@ class SourceTreeChecker:
 ############################################################################
 
 
-  def addProblem(self,Filename,*Args):
-      self.ErrorsCount += 1
-      print Filename+':',
+  def addProblem(self,Code,Filename,*Args):
+      self.ErrorsCount[Code] += 1
+      print '['+Code+']',Filename+':',
       for Arg in Args:
         print Arg,
       print
@@ -135,7 +137,7 @@ class SourceTreeChecker:
     i = 1
     for Line in Lines :
       if len(Line) > self.MaxLineLength:
-        self.addProblem(Filename,'line',i,'is too long (exceeds',self.MaxLineLength,'characters)')
+        self.addProblem('LLEN',Filename,'line',i,'is too long (exceeds',self.MaxLineLength,'characters)')
       i += 1
 
 
@@ -145,7 +147,7 @@ class SourceTreeChecker:
   def checkLicenseHeader(self, Filename, Content):
 
     if not Content.startswith(self.LicenseHeader):
-      self.addProblem(Filename,'missing or malformed license header')
+      self.addProblem('LICH',Filename,'missing or malformed license header')
      
      
 ############################################################################
@@ -159,11 +161,11 @@ class SourceTreeChecker:
         
     Result = re.search( r'\@file '+re.escape(ExpectedFilename), Content)
     if not Result:
-      self.addProblem(Filename,'missing or malformed @file information (expected @file',ExpectedFilename+')')
+      self.addProblem('FNAM',Filename,'missing or malformed @file information (expected @file',ExpectedFilename+')')
       
     Result = re.search( r'\@author \w+', Content)
     if not Result:
-      self.addProblem(Filename,'missing or malformed @author information (expected @author <authorname>)')
+      self.addProblem('AUTH',Filename,'missing or malformed @author information (expected @author <authorname>)')
       
 
 ############################################################################
@@ -209,7 +211,7 @@ class SourceTreeChecker:
     if ExpectedGuardName:
       Result = re.search( r'#ifndef '+re.escape(ExpectedGuardName)+'\s*\n#define '+re.escape(ExpectedGuardName), Content)
       if not Result:
-        self.addProblem(Filename,'missing or malformed header guard (expected',ExpectedGuardName+')')
+        self.addProblem('HGRD',Filename,'missing or malformed header guard (expected',ExpectedGuardName+')')
 
 
 ############################################################################
@@ -238,7 +240,9 @@ class SourceTreeChecker:
     for File in self.FileList:
       self.checkFile(File)
     
-    print len(self.FileList),"files checked,",self.ErrorsCount,"potential style problems detected"
+    print len(self.FileList),"files checked,",sum(self.ErrorsCount.values()),"potential style problems detected"
+    for Code in self.ErrorsCount:
+      print '    - ['+Code+']:',self.ErrorsCount[Code],'problems'
 
 
 

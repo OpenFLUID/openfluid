@@ -30,9 +30,9 @@
 */
 
 /**
- @file GeoRasterValue_TEST.cpp
+  @file GeoRasterValue_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN

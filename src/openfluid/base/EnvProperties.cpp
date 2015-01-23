@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief implementation file for simulator environment
+  @file EnvProperties.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */

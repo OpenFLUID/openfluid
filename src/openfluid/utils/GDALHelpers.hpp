@@ -97,7 +97,8 @@ const std::set<std::string> OPENFLUID_API getOGRFilesExtensionsForOpenFLUID();
   The OGRRegisterAll() and/or GDALAllRegister() instruction must be called before using this function.
   @param[in] Drivers The available extensions list
   @param[in] AllFormatsLabel the label displayed for all formats
-  @return the format string (e.g. "All vector files (*.shp *.mif *.tab);;ESRI Shapefiles (*.shp);;Mapinfo (*.mif *.tab)")
+  @return the format string
+  (e.g. "All vector files (*.shp *.mif *.tab);;ESRI Shapefiles (*.shp);;Mapinfo (*.mif *.tab)")
 */
 QString OPENFLUID_API getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
                                                        const QString& AllFormatsLabel);

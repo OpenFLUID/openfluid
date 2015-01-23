@@ -30,6 +30,13 @@
 */
 
 
+/**
+  @file MiscHelpers.cpp
+
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
+
+
 #include <QDir>
 
 #include <openfluid/core/DateTime.hpp>
@@ -160,8 +167,10 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
   if (SplittedA.size()==4) StatusA = SplittedA[3];
   if (SplittedB.size()==4) StatusB = SplittedB[3];
 
-  if (convertString(SplittedA[0],&MajorA) && convertString(SplittedA[1],&MinorA) && convertString(SplittedA[2],&PatchA) &&
-      convertString(SplittedB[0],&MajorB) && convertString(SplittedB[1],&MinorB) && convertString(SplittedB[2],&PatchB))
+  if (convertString(SplittedA[0],&MajorA) && convertString(SplittedA[1],&MinorA) &&
+      convertString(SplittedA[2],&PatchA) &&
+      convertString(SplittedB[0],&MajorB) && convertString(SplittedB[1],&MinorB) &&
+      convertString(SplittedB[2],&PatchB))
   {
     if (MajorA > MajorB) return 1;
     if (MajorA < MajorB) return -1;

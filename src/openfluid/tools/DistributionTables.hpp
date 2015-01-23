@@ -69,7 +69,8 @@ class OPENFLUID_API DistributionTables
     { };
 
 
-    void build(const std::string& BasePath, const std::string& SourcesFileName, const std::string& DistributionFileName);
+    void build(const std::string& BasePath, const std::string& SourcesFileName,
+               const std::string& DistributionFileName);
 
 };
 

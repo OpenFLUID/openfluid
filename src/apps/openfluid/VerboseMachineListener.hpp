@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file VerboseMachineListener.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */

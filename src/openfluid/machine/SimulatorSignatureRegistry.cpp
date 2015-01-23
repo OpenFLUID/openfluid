@@ -30,9 +30,9 @@
 */
 
 /**
- @file SimulatorSignatureRegistry.cpp
+  @file SimulatorSignatureRegistry.cpp
 
- @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
@@ -270,7 +270,8 @@ ModelItemSignatureInstance* SimulatorSignatureRegistry::signatureItemInstance(
 // =====================================================================
 
 
-ModelItemSignatureInstance* SimulatorSignatureRegistry::signatureItemInstance(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method)
+ModelItemSignatureInstance*
+  SimulatorSignatureRegistry::signatureItemInstance(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method)
 {
   return m_GenSignatures[Method];
 }

@@ -100,7 +100,8 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, bool &Va
 void PluggableWare::initializeWare(const WareID_t& ID)
 {
   if(!isLinked())
-    throw openfluid::base::FrameworkException("PluggableWare::initializeWare","initialized ware that is not fully linked ("+ID+")");
+    throw openfluid::base::FrameworkException("PluggableWare::initializeWare",
+                                              "initialized ware that is not fully linked ("+ID+")");
 
   m_WareID = ID;
 
@@ -145,7 +146,8 @@ boost::property_tree::ptree PluggableWare::getParamsAsPropertyTree(
 
   for (WareParams_t::const_iterator it = Params.begin() ; it != Params.end() ; ++it)
     if (isWellFormated(it->first)) pt.put(it->first, it->second.data());
-    else throw openfluid::base::FrameworkException("PluggableWare::getParamsAsPropertyTree","Wrong format for parameter \""+it->first+"\"");
+    else throw openfluid::base::FrameworkException("PluggableWare::getParamsAsPropertyTree",
+                                                   "Wrong format for parameter \""+it->first+"\"");
 
   return pt;
 }

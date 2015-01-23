@@ -57,7 +57,8 @@ void ChronologicalSerie::reset()
 // =====================================================================
 
 
-bool ChronologicalSerie::getSurroundingValues(const openfluid::core::DateTime& DT, ChronItem_t& Before, ChronItem_t& After)
+bool ChronologicalSerie::getSurroundingValues(const openfluid::core::DateTime& DT,
+                                              ChronItem_t& Before, ChronItem_t& After)
 {
 
   if (size() <2) return false;
@@ -68,7 +69,9 @@ bool ChronologicalSerie::getSurroundingValues(const openfluid::core::DateTime& D
     reset();
 
 
-  while (m_InternalIterator != end() && !((*m_InternalIterator).first >= DT && (*m_PreviousInternalIterator).first <= DT))
+  while (m_InternalIterator != end() &&
+        !((*m_InternalIterator).first >= DT &&
+          (*m_PreviousInternalIterator).first <= DT))
   {
 
     // found exact time

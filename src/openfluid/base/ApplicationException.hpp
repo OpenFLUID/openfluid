@@ -31,7 +31,7 @@
 
 
 /**
-  @file FrameworkException.hpp
+  @file ApplicationException.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

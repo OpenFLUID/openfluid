@@ -30,9 +30,9 @@
 */
 
 /**
- @file DatastoreDescriptor.cpp
+  @file DatastoreDescriptor.cpp
 
- @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include "DatastoreDescriptor.hpp"
