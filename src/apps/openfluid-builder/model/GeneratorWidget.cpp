@@ -51,7 +51,7 @@ GeneratorWidget::GeneratorWidget(QWidget* Parent,
                                  openfluid::fluidx::ModelItemDescriptor* Desc,
                                  const openfluid::ware::WareID_t& ID,
                                  int Index,
-                                 openfluid::machine::ModelItemSignatureInstance* SignInstance):
+                                 const openfluid::machine::ModelItemSignatureInstance* SignInstance):
   WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_GENERATOR_BGCOLOR, Index),mp_Desc(Desc), mp_SignInstance(SignInstance)
 {
   ui->AddParamButton->setVisible(false);

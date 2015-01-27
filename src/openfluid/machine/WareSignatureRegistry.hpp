@@ -29,48 +29,39 @@
   
 */
 
-
 /**
-  @file SimulatorGraphics.hpp
+  @file WareSignatureRegistry.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_SIMULATORGRAPHICS_HPP__
-#define __OPENFLUID_BUILDERAPP_SIMULATORGRAPHICS_HPP__
+
+#ifndef __OPENFLUID_MACHINE_WARESIGNATUREREGISTRY_HPP__
+#define __OPENFLUID_MACHINE_WARESIGNATUREREGISTRY_HPP__
 
 
-#include "ModelItemGraphics.hpp"
+#include <openfluid/ware/WareSignature.hpp>
 
 
-class SimulatorGraphics : public QObject, public ModelItemGraphics
+namespace openfluid { namespace machine {
+
+template<class S>
+class WareSignatureRegistry
 {
-  Q_OBJECT;
-
-  protected:
-
-    static QPointF m_ProducedIOFromCenter;
-
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* Event);
-
-
-  signals:
-
-    void srcEditAsked(const QString&);
-
 
   public:
 
-    SimulatorGraphics(const QPointF &Coords, const QString& ID,
-                      const openfluid::machine::ModelItemSignatureInstance* Signature,
-                      QGraphicsItem* Parent = 0);
+    virtual void update() = 0;
 
-    ~SimulatorGraphics();
+    virtual void unloadAll() = 0;
 
-    QPointF getProducedIOPosition();
+    virtual  const S* signature(const openfluid::ware::WareID_t& ID) = 0;
+
 };
 
 
+} }  // namespaces
 
-#endif /* __OPENFLUID_BUILDERAPP_SIMULATORGRAPHICS_HPP__ */
+
+#endif /* __OPENFLUID_MACHINE_WARESIGNATUREREGISTRY_HPP__ */

@@ -160,8 +160,8 @@ void ProjectCentral::run()
 
   RunDlg.execute();
 
-  openfluid::machine::SimulatorSignatureRegistry::instance()->unloadAllSimulators();
-  openfluid::machine::ObserverSignatureRegistry::instance()->unloadAllObservers();
+  openfluid::machine::SimulatorSignatureRegistry::instance()->unloadAll();
+  openfluid::machine::ObserverSignatureRegistry::instance()->unloadAll();
 }
 
 
@@ -394,7 +394,7 @@ void ProjectCentral::checkModel()
     {
       AtLeastOneEnabled = true;
 
-      openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signatureItemInstance(*itModelItem);
+      const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
       std::string ID = Model.getID(*itModelItem);
 
       if (SignII != NULL)
@@ -616,7 +616,7 @@ void ProjectCentral::checkModel()
   {
     if ((*itModelItem)->isEnabled())
     {
-      openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signatureItemInstance(*itModelItem);
+      const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
       std::string ID = Model.getID(*itModelItem);
 
       if (SignII != NULL)
@@ -725,7 +725,7 @@ void ProjectCentral::checkModel()
   {
     if ((*itModelItem)->isEnabled())
     {
-      openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signatureItemInstance(*itModelItem);
+      const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
       std::string ID = Model.getID(*itModelItem);
 
       if (SignII != NULL)

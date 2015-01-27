@@ -59,21 +59,29 @@ class SimA : openfluid::ware::PluggableSimulator
 {
   public:
 
-    SimA() : openfluid::ware::PluggableSimulator() {};
+    SimA() : openfluid::ware::PluggableSimulator()
+    { };
 
-    ~SimA() {};
+    ~SimA()
+    { };
 
-    void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
+    void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+    { }
 
-    void prepareData() { }
+    void prepareData()
+    { }
 
-    void checkConsistency() { }
+    void checkConsistency()
+    { }
 
-    openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest initializeRun()
+    { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.a " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest runStep()
+    { std::cout << "sim.a " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return DefaultDeltaT(); }
 
-    void finalizeRun() { }
+    void finalizeRun()
+    { }
 
 };
 
@@ -82,21 +90,29 @@ class SimB : openfluid::ware::PluggableSimulator
 {
   public:
 
-    SimB() : openfluid::ware::PluggableSimulator() {};
+    SimB() : openfluid::ware::PluggableSimulator()
+    { };
 
-    ~SimB() {};
+    ~SimB()
+    { };
 
-    void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
+    void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+    { }
 
-    void prepareData() { }
+    void prepareData()
+    { }
 
-    void checkConsistency() { }
+    void checkConsistency()
+    { }
 
-    openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest initializeRun()
+    { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.b " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(2); }
+    openfluid::base::SchedulingRequest runStep()
+    { std::cout << "sim.b " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(2); }
 
-    void finalizeRun() { }
+    void finalizeRun()
+    { }
 
 };
 
@@ -105,21 +121,29 @@ class SimC : openfluid::ware::PluggableSimulator
 {
   public:
 
-    SimC() : openfluid::ware::PluggableSimulator() {};
+    SimC() : openfluid::ware::PluggableSimulator()
+    { };
 
-    ~SimC() {};
+    ~SimC()
+    { };
 
-    void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
+    void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+    { }
 
-    void prepareData() { }
+    void prepareData()
+    { }
 
-    void checkConsistency() { }
+    void checkConsistency()
+    { }
 
-    openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest initializeRun()
+    { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.c " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(0.5); }
+    openfluid::base::SchedulingRequest runStep()
+    { std::cout << "sim.c " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(0.5); }
 
-    void finalizeRun() { }
+    void finalizeRun()
+    { }
 
 };
 
@@ -130,11 +154,13 @@ class SimC : openfluid::ware::PluggableSimulator
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+  openfluid::base::RuntimeEnvironment::instance()
+  ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
 
   openfluid::machine::SimulationBlob SB;
 
-  SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,14,46,39),60);
+  SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
+                                                            openfluid::core::DateTime(2012,1,1,14,46,39),60);
 
   openfluid::machine::ModelInstance MI(SB,NULL);
 
@@ -146,13 +172,16 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+  openfluid::base::RuntimeEnvironment::instance()
+  ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
 
   openfluid::machine::SimulationBlob SB;
 
-  //SB.getSimulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,14,46,39),60);
+  /*SB.getSimulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
+                                                                 openfluid::core::DateTime(2012,1,1,14,46,39),60);*/
 
-  SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,0,3,19),60);
+  SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
+                                                            openfluid::core::DateTime(2012,1,1,0,3,19),60);
 
   openfluid::machine::ModelInstance MI(SB,NULL);
 
@@ -179,7 +208,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   MII->OriginalPosition = 3;
   MI.appendItem(MII);
 
-  openfluid::base::SimulationLogger* SimLog = new openfluid::base::SimulationLogger(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog2.log");
+  openfluid::base::SimulationLogger* SimLog =
+      new openfluid::base::SimulationLogger(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog2.log");
 
   MI.initialize(SimLog);
 
@@ -243,7 +273,8 @@ class ModelInstanceSub: public openfluid::machine::ModelInstance
 
 BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
 {
-  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+  openfluid::base::RuntimeEnvironment::instance()
+  ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
 
   openfluid::machine::SimulationBlob SB;
 

@@ -127,7 +127,8 @@ class SimC : openfluid::ware::PluggableSimulator
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,15,14,46,39),60);
+  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
+                                              openfluid::core::DateTime(2012,1,15,14,46,39),60);
   openfluid::machine::ExecutionTimePoint TP(17);
 
   BOOST_REQUIRE_EQUAL(TP.getTimeIndex(),17);
@@ -139,7 +140,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-	openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,15,14,46,39),60);
+	openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
+	                                            openfluid::core::DateTime(2012,1,15,14,46,39),60);
 	openfluid::machine::ExecutionTimePoint TP(17);
 
 	BOOST_REQUIRE_EQUAL(TP.getTimeIndex(),17);

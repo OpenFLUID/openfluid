@@ -59,7 +59,7 @@ class GeneratorWidget : public WareWidget
 
     openfluid::fluidx::ModelItemDescriptor* mp_Desc;
 
-    openfluid::machine::ModelItemSignatureInstance* mp_SignInstance;
+    const openfluid::machine::ModelItemSignatureInstance* mp_SignInstance;
 
     void updateParams();
 
@@ -74,7 +74,7 @@ class GeneratorWidget : public WareWidget
                     openfluid::fluidx::ModelItemDescriptor* Desc,
                     const openfluid::ware::WareID_t& ID,
                     int Index,
-                    openfluid::machine::ModelItemSignatureInstance* SignInstance);
+                    const openfluid::machine::ModelItemSignatureInstance* SignInstance);
 
     ~GeneratorWidget();
 

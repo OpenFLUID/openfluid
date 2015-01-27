@@ -53,7 +53,7 @@ class SimulatorWidget : public ClickableWareWidget
 
     openfluid::fluidx::ModelItemDescriptor* mp_Desc;
 
-    void updateParams(openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateParams(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
 
   private slots:

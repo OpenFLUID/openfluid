@@ -73,7 +73,7 @@ SimulatorWidget::~SimulatorWidget()
 // =====================================================================
 
 
-void SimulatorWidget::updateParams(openfluid::machine::ModelItemSignatureInstance* Signature)
+void SimulatorWidget::updateParams(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   clearParameterWidgets();
 
@@ -97,7 +97,8 @@ void SimulatorWidget::updateParams(openfluid::machine::ModelItemSignatureInstanc
                                                        QString::fromStdString(ParamName),ParamValue,
                                                        QString::fromStdString((*it).DataUnit));
 
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+            this, SLOT(updateParamValue(const QString&,const QString&)));
 
     ParamsInSign << QString::fromStdString(ParamName);
 
@@ -131,9 +132,8 @@ void SimulatorWidget::updateParams(openfluid::machine::ModelItemSignatureInstanc
 
 void SimulatorWidget::refresh()
 {
-  openfluid::machine::ModelItemSignatureInstance* Signature = NULL;
-
-  Signature = openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(m_ID);
+  const openfluid::machine::ModelItemSignatureInstance* Signature =
+    openfluid::machine::SimulatorSignatureRegistry::instance()->signature(m_ID);
 
   if (Signature != NULL)
   {

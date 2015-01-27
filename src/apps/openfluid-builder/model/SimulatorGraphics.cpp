@@ -44,7 +44,7 @@
 
 
 SimulatorGraphics::SimulatorGraphics(const QPointF& Coords, const QString& ID,
-                                     openfluid::machine::ModelItemSignatureInstance* Signature,
+                                     const openfluid::machine::ModelItemSignatureInstance* Signature,
                                      QGraphicsItem* Parent):
   ModelItemGraphics(Coords,ID,Parent)
 {

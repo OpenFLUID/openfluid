@@ -33,13 +33,16 @@
   @file SimulatorSignatureRegistry.hpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
+
 
 #ifndef __OPENFLUID_MACHINE_SIMULATORSIGNATUREREGISTRY_HPP__
 #define __OPENFLUID_MACHINE_SIMULATORSIGNATUREREGISTRY_HPP__
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/machine/WareSignatureRegistry.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -52,7 +55,7 @@ class GeneratorSignature;
 // =====================================================================
 // =====================================================================
 
-class OPENFLUID_API SimulatorSignatureRegistry
+class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<ModelItemSignatureInstance>
 {
   public:
 
@@ -62,12 +65,14 @@ class OPENFLUID_API SimulatorSignatureRegistry
       std::map<openfluid::fluidx::GeneratorDescriptor::GeneratorMethod, openfluid::machine::ModelItemSignatureInstance*>
         GenSignaturesByMethod_t;
 
-    typedef std::map<openfluid::fluidx::ModelItemDescriptor::WareType,
-        SimSignaturesByName_t> SimSignaturesByTypeByName_t;
+    typedef std::map<openfluid::fluidx::ModelItemDescriptor::WareType, SimSignaturesByName_t>
+      SimSignaturesByTypeByName_t;
+
 
   private:
 
     static SimulatorSignatureRegistry* mp_Instance;
+
 
   protected:
 
@@ -77,11 +82,10 @@ class OPENFLUID_API SimulatorSignatureRegistry
 
     SimulatorSignatureRegistry();
 
-    void addAPluggableSignature(
-        openfluid::machine::ModelItemSignatureInstance* Signature);
+    void addSimulatorSignature(openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    void addAGeneratorSignature(
-        openfluid::machine::ModelItemSignatureInstance* Signature);
+    void addGeneratorSignature(openfluid::machine::ModelItemSignatureInstance* Signature);
+
 
   public:
 
@@ -91,21 +95,21 @@ class OPENFLUID_API SimulatorSignatureRegistry
 
     SimSignaturesByName_t getGeneratorSignatures();
 
-    SimSignaturesByName_t getPluggableSignatures();
+    SimSignaturesByName_t getSimulatorSignatures();
 
-    void updatePluggableSignatures();
+    void update();
 
-    static ModelItemSignatureInstance* getEmptyPluggableSignature();
+    static ModelItemSignatureInstance* getEmptyModelItemSignature();
 
-    bool isPluggableSimulatorAvailable(std::string SimulatorID);
+    bool isSimulatorAvailable(const openfluid::ware::WareID_t& ID);
 
-    ModelItemSignatureInstance* signatureItemInstance(std::string SimulatorID);
+    const ModelItemSignatureInstance* signature(const openfluid::ware::WareID_t& ID);
 
-    ModelItemSignatureInstance* signatureItemInstance(openfluid::fluidx::ModelItemDescriptor* Item);
+    const ModelItemSignatureInstance* signature(openfluid::fluidx::ModelItemDescriptor* Item);
 
-    ModelItemSignatureInstance* signatureItemInstance(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method);
+    const ModelItemSignatureInstance* signature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method);
 
-    void unloadAllSimulators();
+    void unloadAll();
 };
 
 

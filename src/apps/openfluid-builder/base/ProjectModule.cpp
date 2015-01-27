@@ -798,7 +798,7 @@ void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableMod
 
 void ProjectModule::updateSimulatorsWares()
 {
-  openfluid::machine::SimulatorSignatureRegistry::instance()->updatePluggableSignatures();
+  openfluid::machine::SimulatorSignatureRegistry::instance()->update();
   mp_ModelTab->updateWares();
 
   doCheck();
