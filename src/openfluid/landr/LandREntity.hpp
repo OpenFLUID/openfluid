@@ -92,7 +92,7 @@ class OPENFLUID_API LandREntity : public geos::planargraph::GraphComponent
     /**
      @brief The length of this LandREntity.
      */
-    double m_Lenght;
+    double m_Length;
 
     /**
      @brief A set of LandREntity neighbours of this LandREntity.
