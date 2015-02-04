@@ -14,7 +14,7 @@ IF(UNIX AND NOT APPLE)
             )
     ENDIF()
   
-  IF(BUILD_APP_BUILDER) 
+  IF(BUILD_APP_DEVSTUDIO) 
     CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/packaging/openfluid-devstudio.desktop.in" "${CMAKE_CURRENT_BINARY_DIR}/openfluid-devstudio.desktop" @ONLY)
 
     INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/openfluid-devstudio.desktop" 
