@@ -30,9 +30,9 @@
 */
 
 /**
- @file GeneratorSignature.cpp
+  @file GeneratorSignature.cpp
 
- @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include <openfluid/ware/GeneratorSignature.hpp>

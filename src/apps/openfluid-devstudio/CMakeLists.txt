@@ -38,26 +38,12 @@ ADD_LIBRARY(openfluid-devstudio-main SHARED ${DEVSTUDIO_CPP} ${DEVSTUDIO_HPP}
 
 
 TARGET_LINK_LIBRARIES(openfluid-devstudio-main 
-                      #${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
-                      #${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
-                      #${Boost_REGEX_LIBRARY}
                       ${QT_QTCORE_LIBRARIES}
                       ${QT_QTGUI_LIBRARIES}
-                      #${QT_QTSVG_LIBRARIES}
-                      #openfluid-base
-                      #openfluid-buddies
-                      #openfluid-core
-                      #openfluid-machine
-                      #openfluid-ware
-                      #openfluid-tools
-                      #openfluid-market
                       openfluid-ui-common
-                      #openfluid-ui-market
-                      #openfluid-builderext
-                      #openfluid-fluidx
                       openfluid-waresdev
                       openfluid-ui-waresdev
-                      )
+                     )
        
        
                       
@@ -87,23 +73,11 @@ IF(APPLE)
 ENDIF()
 
 TARGET_LINK_LIBRARIES(openfluid-devstudio
-                      #${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
-                      #${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
-                      #${Boost_REGEX_LIBRARY}
-                      #${GDAL_LIBRARIES}
-                      #openfluid-base
-                      #openfluid-buddies
-                      #openfluid-core
-                      #openfluid-ware
-                      #openfluid-machine
-                      #openfluid-tools
-                      openfluid-ui-common
-                      #openfluid-ui-market
                       openfluid-devstudio-main
-                      #openfluid-fluidx
+                      openfluid-ui-common
                       openfluid-waresdev
                       openfluid-ui-waresdev
-                      )
+                     )
                                    
 INSTALL(TARGETS openfluid-devstudio-main
         RUNTIME DESTINATION ${BIN_INSTALL_PATH}

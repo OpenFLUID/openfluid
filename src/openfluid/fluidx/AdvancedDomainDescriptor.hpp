@@ -30,13 +30,13 @@
 */
 
 /**
- @file AdvancedDomainDescriptor.hpp
+  @file AdvancedDomainDescriptor.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef ADVANCEDDOMAINDESCRIPTOR_HPP_
-#define ADVANCEDDOMAINDESCRIPTOR_HPP_
+#ifndef __OPENFLUID_FLUIDX_ADVANCEDDOMAINDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_ADVANCEDDOMAINDESCRIPTOR_HPP__
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
@@ -261,7 +261,8 @@ class OPENFLUID_API AdvancedDomainDescriptor
 
     const std::list<openfluid::core::UnitClassID_t>& toSpatialUnits(const openfluid::core::UnitClassID_t Unit) const;
 
-    const std::list<openfluid::core::UnitClassID_t>& parentSpatialUnits(const openfluid::core::UnitClassID_t Unit) const;
+    const std::list<openfluid::core::UnitClassID_t>&
+      parentSpatialUnits(const openfluid::core::UnitClassID_t Unit) const;
 
     std::list<openfluid::core::UnitClassID_t> getFromSpatialUnits(const openfluid::core::UnitClassID_t Unit) const;
 
@@ -315,5 +316,5 @@ class OPENFLUID_API AdvancedDomainDescriptor
 
 } } // namespaces
 
-#endif /* ADVANCEDDOMAINDESCRIPTOR_HPP_ */
+#endif /* __OPENFLUID_FLUIDX_ADVANCEDDOMAINDESCRIPTOR_HPP__ */
 

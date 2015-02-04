@@ -30,9 +30,9 @@
 */
 
 /**
- @file DatastoreItem.cpp
+  @file DatastoreItem.cpp
 
- @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include "DatastoreItem.hpp"

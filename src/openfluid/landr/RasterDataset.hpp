@@ -30,9 +30,9 @@
 */
 
 /**
- @file RasterDataset.hpp
+  @file RasterDataset.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_RASTERDATASET_HPP__
@@ -130,7 +130,7 @@ class OPENFLUID_API RasterDataset
     /**
      @brief Returns the geos::geom::Coordinate origin of this RasterDataset.
      */
-    geos::geom::Coordinate* getOrigin();
+    geos::geom::Coordinate* computeOrigin();
 
     /**
      @brief Returns the pixel width of this RasterDataset.
@@ -180,10 +180,12 @@ class OPENFLUID_API RasterDataset
                                unsigned int RasterBandIndex = 1);
 
     /**
-     @brief Creates a new VectorDataset with polygons for all connected regions of pixels in the raster sharing a common pixel value.
+     @brief Creates a new VectorDataset with polygons for all connected regions of pixels
+      in the raster sharing a common pixel value.
      @details Use openfluid::landr::VectorDataset::copyToDisk() to keep this vectorDataset on disk
      @param FileName The name of the new VectorDataset.
-     @param FieldName The name of the field to be created for storing the pixel value, limited to 10 characters (or will be truncated).
+     @param FieldName The name of the field to be created for storing the pixel value,
+      limited to 10 characters (or will be truncated).
      Default is set to "PixelVal". Type of field is OFTReal .
      @param RasterBandIndex The raster band index (default is 1).
      @return The newly created VectorDataset.

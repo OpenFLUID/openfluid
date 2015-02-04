@@ -30,9 +30,9 @@
 */
 
 /**
- @file LandREntity.cpp
+  @file LandREntity.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "LandREntity.hpp"
@@ -54,7 +54,7 @@ LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int OfldId) 
 {
   mp_Centroid = mp_Geom->getCentroid();
   m_Area = mp_Geom->getArea();
-  m_Lenght = mp_Geom->getLength();
+  m_Length = mp_Geom->getLength();
 }
 
 
@@ -121,7 +121,7 @@ double LandREntity::getArea() const
 
 double LandREntity::getLength() const
 {
-  return m_Lenght;
+  return m_Length;
 }
 
 

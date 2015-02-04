@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief Implements date-time management class
+  @file DateTime.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -247,7 +246,8 @@ void DateTime::updateRawTimeFromYMDHMS()
   Year = m_TM.tm_year+1900;
   Month = m_TM.tm_mon+1;
 
-  JDN = (RawTime_t)((Day-32075+1461*(Year+4800+(Month-14)/12)/4+367*(Month-2-(Month-14)/12*12)/12-3*((Year+4900+(Month-14)/12)/100)/4)-1721059);
+  JDN = (RawTime_t)((Day-32075+1461*(Year+4800+(Month-14)/12)/4+367*
+                                    (Month-2-(Month-14)/12*12)/12-3*((Year+4900+(Month-14)/12)/100)/4)-1721059);
 
   m_RawTime = (RawTime_t)((JDN*86400) + (m_TM.tm_hour*3600) + (m_TM.tm_min*60) + m_TM.tm_sec);
 

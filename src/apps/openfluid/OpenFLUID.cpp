@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief implements OpenFLUID application
+  @file OpenFLUID.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -228,13 +227,20 @@ void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Si
   if (Signature->Status == openfluid::ware::BETA) StatusStr = "beta";
   if (Signature->Status == openfluid::ware::STABLE) StatusStr = "stable";
 
-  std::cout << "   - Name: " << openfluid::tools::replaceEmptyString(Signature->Name,("(unknown)")) << std::endl;
-  std::cout << "   - File: " << Filename << std::endl;
-  std::cout << "   - Description: " << openfluid::tools::replaceEmptyString(Signature->Description,("(none)")) << std::endl;
-  std::cout << "   - Version: " << openfluid::tools::replaceEmptyString(Signature->Version,("(unknown)")) << std::endl;
-  std::cout << "   - SDK version used at build time: " << Signature->ABIVersion <<  std::endl;
-  std::cout << "   - Development status: " << StatusStr <<  std::endl;
-  std::cout << "   - Author(s): " << Signature->getAuthorsAsString() << std::endl;
+  std::cout << "   - Name: " << openfluid::tools::replaceEmptyString(Signature->Name,("(unknown)"))
+            << std::endl;
+  std::cout << "   - File: " << Filename
+            << std::endl;
+  std::cout << "   - Description: " << openfluid::tools::replaceEmptyString(Signature->Description,("(none)"))
+            << std::endl;
+  std::cout << "   - Version: " << openfluid::tools::replaceEmptyString(Signature->Version,("(unknown)"))
+            << std::endl;
+  std::cout << "   - SDK version used at build time: " << Signature->ABIVersion
+            <<  std::endl;
+  std::cout << "   - Development status: " << StatusStr
+            <<  std::endl;
+  std::cout << "   - Author(s): " << Signature->getAuthorsAsString()
+            << std::endl;
 }
 
 
@@ -242,7 +248,8 @@ void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Si
 // =====================================================================
 
 
-void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type)
+void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem,
+                                                        std::string Suffix, std::string Type)
 {
   std::string TypeStr = ("");
 
@@ -280,7 +287,8 @@ void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::Signatu
 // =====================================================================
 
 
-void OpenFLUIDApp::printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix)
+void OpenFLUIDApp::printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph,
+                                                          std::string Suffix)
 {
   unsigned int i;
   if (!HandledUnitsGraph.UpdatedUnitsGraph.empty())
@@ -288,7 +296,9 @@ void OpenFLUIDApp::printSimulatorsHandledUnitsGraphReport(openfluid::ware::Signa
 
   for (i=0;i<HandledUnitsGraph.UpdatedUnitsClass.size();i++)
   {
-    std::cout << Suffix << "Units graph update on class " << HandledUnitsGraph.UpdatedUnitsClass[i].UnitsClass << ": " << HandledUnitsGraph.UpdatedUnitsClass[i].Description << std::endl;
+    std::cout << Suffix << "Units graph update on class "
+              << HandledUnitsGraph.UpdatedUnitsClass[i].UnitsClass << ": "
+              << HandledUnitsGraph.UpdatedUnitsClass[i].Description << std::endl;
   }
 }
 
@@ -322,19 +332,35 @@ void OpenFLUIDApp::printSimulatorsTimeSchedulingReport(openfluid::ware::Signatur
 // =====================================================================
 
 
-void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix)
+void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHandledData HandledData,
+                                                    std::string Suffix)
 {
 
   unsigned int i;
 
-  for (i=0;i<HandledData.SimulatorParams.size();i++) printSimulatorsHandledDataItemReport(HandledData.SimulatorParams[i],Suffix,("fpar"));
-  for (i=0;i<HandledData.ProducedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
-  for (i=0;i<HandledData.RequiredVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
-  for (i=0;i<HandledData.UpdatedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
-  for (i=0;i<HandledData.UsedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
-  for (i=0;i<HandledData.ProducedAttribute.size();i++) printSimulatorsHandledDataItemReport(HandledData.ProducedAttribute[i],Suffix,("pinput"));
-  for (i=0;i<HandledData.RequiredAttribute.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredAttribute[i],Suffix,("rinput"));
-  for (i=0;i<HandledData.UsedAttribute.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedAttribute[i],Suffix,("sinput"));
+  for (i=0;i<HandledData.SimulatorParams.size();i++)
+    printSimulatorsHandledDataItemReport(HandledData.SimulatorParams[i],Suffix,("fpar"));
+
+  for (i=0;i<HandledData.ProducedVars.size();i++)
+    printSimulatorsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
+
+  for (i=0;i<HandledData.RequiredVars.size();i++)
+    printSimulatorsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
+
+  for (i=0;i<HandledData.UpdatedVars.size();i++)
+    printSimulatorsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
+
+  for (i=0;i<HandledData.UsedVars.size();i++)
+    printSimulatorsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
+
+  for (i=0;i<HandledData.ProducedAttribute.size();i++)
+    printSimulatorsHandledDataItemReport(HandledData.ProducedAttribute[i],Suffix,("pinput"));
+
+  for (i=0;i<HandledData.RequiredAttribute.size();i++)
+    printSimulatorsHandledDataItemReport(HandledData.RequiredAttribute[i],Suffix,("rinput"));
+
+  for (i=0;i<HandledData.UsedAttribute.size();i++)
+    printSimulatorsHandledDataItemReport(HandledData.UsedAttribute[i],Suffix,("sinput"));
 
   if (HandledData.UsedEventsOnUnits.size() > 0)
   {
@@ -347,8 +373,11 @@ void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHa
     }
   }
 
-  for (i=0;i<HandledData.RequiredExtraFiles.size();i++) std::cout << Suffix << "Required extra file : " << HandledData.RequiredExtraFiles[i] << std::endl;
-  for (i=0;i<HandledData.UsedExtraFiles.size();i++) std::cout << Suffix << "Used extra file : " << HandledData.UsedExtraFiles[i] << std::endl;
+  for (i=0;i<HandledData.RequiredExtraFiles.size();i++)
+    std::cout << Suffix << "Required extra file : " << HandledData.RequiredExtraFiles[i] << std::endl;
+
+  for (i=0;i<HandledData.UsedExtraFiles.size();i++)
+    std::cout << Suffix << "Used extra file : " << HandledData.UsedExtraFiles[i] << std::endl;
 
 }
 
@@ -377,21 +406,53 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
       if (PlugContainers[i]->Signature->Status == openfluid::ware::STABLE) StatusStr = "stable";
 
 
-      std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
-      std::cout << "   - Name: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)")) << std::endl;
+      std::cout << "* " << PlugContainers[i]->Signature->ID
+                << std::endl;
+
+      std::cout << "   - Name: "
+                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)"))
+                << std::endl;
+
       std::cout << "   - File: " << PlugContainers[i]->FileFullPath << std::endl;
-      std::cout << "   - Domain: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)")) << std::endl;
-      std::cout << "   - Process: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)")) << std::endl;
-      std::cout << "   - Method: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
-      std::cout << "   - Description: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Description,("(none)")) << std::endl;
-      std::cout << "   - Version: " << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)")) << std::endl;
-      std::cout << "   - SDK version used at build time: " << PlugContainers[i]->Signature->ABIVersion <<  std::endl;
-      std::cout << "   - Development status: " << StatusStr <<  std::endl;
-      std::cout << "   - Author(s): " << PlugContainers[i]->Signature->getAuthorsAsString() << std::endl;
+
+      std::cout << "   - Domain: "
+                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)"))
+                << std::endl;
+
+      std::cout << "   - Process: "
+                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)"))
+                << std::endl;
+
+      std::cout << "   - Method: "
+                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)"))
+                << std::endl;
+
+      std::cout << "   - Description: "
+                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Description,("(none)"))
+                << std::endl;
+
+      std::cout << "   - Version: "
+                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)"))
+                << std::endl;
+
+      std::cout << "   - SDK version used at build time: "
+                << PlugContainers[i]->Signature->ABIVersion
+                <<  std::endl;
+
+      std::cout << "   - Development status: "
+                << StatusStr
+                <<  std::endl;
+
+      std::cout << "   - Author(s): "
+                << PlugContainers[i]->Signature->getAuthorsAsString()
+                << std::endl;
+
       std::cout << "   - Time scheduling : ";
       printSimulatorsTimeSchedulingReport(PlugContainers[i]->Signature->TimeScheduling);
+
       std::cout << "   - Handled data" << std::endl;
       printSimulatorsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "));
+
       std::cout << "   - Handled units graph" << std::endl;
       printSimulatorsHandledUnitsGraphReport(PlugContainers[i]->Signature->HandledUnitsGraph,("     . "));
 
@@ -423,7 +484,8 @@ void OpenFLUIDApp::printObserversReport(const std::string Pattern)
     for (unsigned int i=0;i<PlugContainers.size();i++)
     {
       std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
-      printWareInfosReport((openfluid::ware::WareSignature*)(PlugContainers[i]->Signature),PlugContainers[i]->FileFullPath);
+      printWareInfosReport((openfluid::ware::WareSignature*)(PlugContainers[i]->Signature),
+                           PlugContainers[i]->FileFullPath);
 
       if (i != PlugContainers.size()-1)
         std::cout << "================================================================================" << std::endl;
@@ -461,20 +523,31 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
 void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
-  std::vector<std::string> SimulatorsPaths = openfluid::base::RuntimeEnvironment::instance()->getSimulatorsPluginsPaths();
-  std::vector<std::string> ObserversPaths = openfluid::base::RuntimeEnvironment::instance()->getObserversPluginsPaths();
+  std::vector<std::string> SimulatorsPaths =
+      openfluid::base::RuntimeEnvironment::instance()->getSimulatorsPluginsPaths();
+
+  std::vector<std::string> ObserversPaths =
+      openfluid::base::RuntimeEnvironment::instance()->getObserversPluginsPaths();
+
   unsigned int i;
 
+
   std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::instance()->getInputDir() << std::endl;
-  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() || openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::instance()->getOutputDir() << std::endl;
+
+  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() ||
+      openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport())
+    std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::instance()->getOutputDir() << std::endl;
 
   std::cout << "Simulators search path(s):" << std::endl;
-  for (i=0;i<SimulatorsPaths.size();i++) std::cout << " #" << (i+1) << " " << SimulatorsPaths[i] << std::endl;
+  for (i=0;i<SimulatorsPaths.size();i++)
+    std::cout << " #" << (i+1) << " " << SimulatorsPaths[i] << std::endl;
 
   std::cout << "Observers search path(s):" << std::endl;
-  for (i=0;i<ObserversPaths.size();i++) std::cout << " #" << (i+1) << " " << ObserversPaths[i] << std::endl;
+  for (i=0;i<ObserversPaths.size();i++)
+    std::cout << " #" << (i+1) << " " << ObserversPaths[i] << std::endl;
 
-  if (ShowTemp) std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::instance()->getTempDir() << std::endl;
+  if (ShowTemp)
+    std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::instance()->getTempDir() << std::endl;
 }
 
 // =====================================================================
@@ -490,9 +563,18 @@ void OpenFLUIDApp::printEnvInfos()
 
 
   printPaths(false);
-  if ((openfluid::base::RuntimeEnvironment::instance()->isWriteResults() || openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) && (openfluid::base::RuntimeEnvironment::instance()->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
-  if (IsQuiet) std::cout << "Quiet mode enabled" << std::endl;
-  if (IsVerbose) std::cout << "Verbose mode enabled" << std::endl;
+
+  if ((openfluid::base::RuntimeEnvironment::instance()->isWriteResults() ||
+      openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) &&
+      (openfluid::base::RuntimeEnvironment::instance()->isClearOutputDir()))
+    std::cout << "Output dir cleared before data saving" << std::endl;
+
+  if (IsQuiet)
+    std::cout << "Quiet mode enabled" << std::endl;
+
+  if (IsVerbose)
+    std::cout << "Verbose mode enabled" << std::endl;
+
   std::cout << std::endl;
 }
 
@@ -579,13 +661,17 @@ void OpenFLUIDApp::runSimulation()
   std::cout << std::endl;
 
   unsigned int UnitsCount = 0;
-  for (UnitsIt = m_SimBlob.spatialGraph().allSpatialUnitsByClass()->begin(); UnitsIt != m_SimBlob.spatialGraph().allSpatialUnitsByClass()->end();++UnitsIt )
+  for (UnitsIt = m_SimBlob.spatialGraph().allSpatialUnitsByClass()->begin();
+      UnitsIt != m_SimBlob.spatialGraph().allSpatialUnitsByClass()->end();
+      ++UnitsIt )
   {
     UnitsCount = UnitsCount + (*UnitsIt).second.list()->size();
   }
 
   std::cout << "Spatial domain, " << UnitsCount << " units :"<< std::endl;
-  for (UnitsIt = m_SimBlob.spatialGraph().allSpatialUnitsByClass()->begin(); UnitsIt != m_SimBlob.spatialGraph().allSpatialUnitsByClass()->end();++UnitsIt )
+  for (UnitsIt = m_SimBlob.spatialGraph().allSpatialUnitsByClass()->begin();
+      UnitsIt != m_SimBlob.spatialGraph().allSpatialUnitsByClass()->end();
+      ++UnitsIt )
   {
     std::cout << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.list()->size() << " units" << std::endl;
   }
@@ -594,12 +680,22 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "Simulation from " << mp_Engine->simulationStatus()->getBeginDate().getAsISOString()
             << " to " << mp_Engine->simulationStatus()->getEndDate().getAsISOString() << std::endl;
 
-  if (mp_Engine->simulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+  if (mp_Engine->simulationStatus()->getSchedulingConstraint() ==
+        openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+  {
     std::cout << "Checked";
-  else if (mp_Engine->simulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+  }
+  else if (mp_Engine->simulationStatus()->getSchedulingConstraint() ==
+        openfluid::base::SimulationStatus::SCHED_DTFORCED)
+  {
     std::cout << "Forced";
+  }
   else
+  {
     std::cout << "Default";
+  }
+
+
   std::cout << " DeltaT is " << mp_Engine->simulationStatus()->getDefaultDeltaT() << " seconds" << std::endl;
 
   std::cout << std::endl;
@@ -668,15 +764,21 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("input-dir,i",boost::program_options::value< std::string >(),"set dataset input directory")
       ("enable-simulation-profiling,k","enable time profiling for simulators")
       ("observers-report,l","print a report of available observers, with details (do not run the simulation)")
-      ("observers-paths,n",boost::program_options::value< std::string >(),"add extra observers search paths (colon separated)")
+      ("observers-paths,n",boost::program_options::value< std::string >(),
+                           "add extra observers search paths (colon separated)")
       ("output-dir,o",boost::program_options::value< std::string >(),"set results output directory")
-      ("simulators-paths,p",boost::program_options::value< std::string >(),"add extra simulators search paths (colon separated)")
+      ("simulators-paths,p",boost::program_options::value< std::string >(),
+                            "add extra simulators search paths (colon separated)")
       ("quiet,q","quiet display during simulation run")
       ("simulators-report,r","print a report of available simulators, with details (do not run the simulation)")
       ("no-simreport,s","do not generate simulation report")
       ("show-paths","print the used paths (do not run the simulation)")
-      ("max-threads,t",boost::program_options::value< unsigned int >(),std::string("change maximum number of threads for threaded spatial loops (default is "+DefaultMaxThreadsStr+")").c_str())
-      ("matching-simulators-report,u",boost::program_options::value< std::string >(),"print a report of simulators matching the given wildcard-based pattern (do not run the simulation)")
+      ("max-threads,t",boost::program_options::value< unsigned int >(),
+                       std::string("change maximum number of threads for threaded spatial loops "
+                        "(default is "+DefaultMaxThreadsStr+")").c_str())
+      ("matching-simulators-report,u",boost::program_options::value< std::string >(),
+                                      "print a report of simulators matching "
+                                      "the given wildcard-based pattern (do not run the simulation)")
       ("verbose,v","verbose display during simulation")
       ("project,w",boost::program_options::value< std::string >(),"set project directory")
       ("version","get version (do not run the simulation)")
@@ -684,9 +786,14 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   ;
 
   boost::program_options::variables_map OptionsVars;
-  boost::program_options::store(boost::program_options::parse_command_line(ArgC, ArgV, OptionsDesc,
-		                                                                   boost::program_options::command_line_style::default_style ^ boost::program_options::command_line_style::allow_guessing),
-		                                                                   OptionsVars);
+
+  boost::program_options::store(
+      boost::program_options::parse_command_line(
+          ArgC, ArgV, OptionsDesc,
+          boost::program_options::command_line_style::default_style ^
+          boost::program_options::command_line_style::allow_guessing),
+          OptionsVars);
+
   boost::program_options::notify(OptionsVars);
 
 
@@ -702,18 +809,24 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("buddyhelp"))
   {
-
     openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
+
     openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
-    if (OptionsVars["buddyhelp"].as<std::string>() == "newsim" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
+
+    if (OptionsVars["buddyhelp"].as<std::string>() == "newsim" )
+      Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
+
 #ifndef __APPLE__
     // Disabled for compilation errors due to boost.spirit usage under MacOSX
     // TODO Should be re-enabled later
-    if (OptionsVars["buddyhelp"].as<std::string>() == "sim2doc" ) Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
+    if (OptionsVars["buddyhelp"].as<std::string>() == "sim2doc" )
+      Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
 #endif
-    if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
-    if (OptionsVars["buddyhelp"].as<std::string>() == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
+    if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" )
+      Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
 
+    if (OptionsVars["buddyhelp"].as<std::string>() == "examples" )
+      Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
 
     if (Buddy != NULL)
     {
@@ -721,7 +834,9 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       Buddy->invokeHelp();
       delete Buddy;
     }
-    else throw openfluid::base::ApplicationException("openfluid","Buddy " + OptionsVars["buddyhelp"].as<std::string>() + " does not exists");
+    else throw openfluid::base::ApplicationException("openfluid",
+                                                     "Buddy " + OptionsVars["buddyhelp"].as<std::string>() +
+                                                     " does not exists");
     m_RunType = None;
     return;
   }
@@ -750,12 +865,14 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("simulators-paths"))
   {
-    openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(OptionsVars["simulators-paths"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::instance()
+    ->addExtraSimulatorsPluginsPaths(OptionsVars["simulators-paths"].as<std::string>());
   }
 
   if (OptionsVars.count("observers-paths"))
   {
-    openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(OptionsVars["observers-paths"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::instance()
+    ->addExtraObserversPluginsPaths(OptionsVars["observers-paths"].as<std::string>());
   }
 
 
@@ -804,7 +921,9 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       openfluid::base::ProjectManager::instance()->updateOutputDir();
     }
     else
-      throw openfluid::base::ApplicationException("openfluid",OptionsVars["project"].as<std::string>() + " is not a correct project path");
+      throw openfluid::base::ApplicationException("openfluid",
+                                                  OptionsVars["project"].as<std::string>() +
+                                                  " is not a correct project path");
   }
 
 
@@ -832,7 +951,8 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("max-threads"))
   {
-    openfluid::base::RuntimeEnvironment::instance()->setSimulatorsMaxNumThreads(OptionsVars["max-threads"].as<unsigned int>());
+    openfluid::base::RuntimeEnvironment::instance()
+    ->setSimulatorsMaxNumThreads(OptionsVars["max-threads"].as<unsigned int>());
   }
 
   if (OptionsVars.count("clean-output-dir"))
@@ -917,10 +1037,6 @@ void OpenFLUIDApp::run()
   }
 }
 
-
-
-// =====================================================================
-// =====================================================================
 
 
 

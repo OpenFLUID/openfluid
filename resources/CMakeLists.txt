@@ -1,18 +1,33 @@
 
 
 # desktop file on UNIX systems
-IF(BUILD_APP_BUILDER AND UNIX AND NOT APPLE)
+IF(UNIX AND NOT APPLE)
 
-  CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/packaging/openfluid-builder.desktop.in" "${CMAKE_CURRENT_BINARY_DIR}/openfluid-builder.desktop" @ONLY)
+  IF(BUILD_APP_BUILDER) 
+    CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/packaging/openfluid-builder.desktop.in" "${CMAKE_CURRENT_BINARY_DIR}/openfluid-builder.desktop" @ONLY)
 
-  INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/openfluid-builder.desktop" 
-          DESTINATION "${SHARE_DESKTOPENTRY_INSTALL_PATH}"
-          PERMISSIONS OWNER_READ OWNER_EXECUTE OWNER_WRITE
-                      GROUP_READ GROUP_EXECUTE
-                      WORLD_READ WORLD_EXECUTE
-          )
+    INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/openfluid-builder.desktop" 
+            DESTINATION "${SHARE_DESKTOPENTRY_INSTALL_PATH}"
+            PERMISSIONS OWNER_READ OWNER_EXECUTE OWNER_WRITE
+                        GROUP_READ GROUP_EXECUTE
+                        WORLD_READ WORLD_EXECUTE
+            )
+    ENDIF()
+  
+  IF(BUILD_APP_BUILDER) 
+    CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/packaging/openfluid-devstudio.desktop.in" "${CMAKE_CURRENT_BINARY_DIR}/openfluid-devstudio.desktop" @ONLY)
 
+    INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/openfluid-devstudio.desktop" 
+            DESTINATION "${SHARE_DESKTOPENTRY_INSTALL_PATH}"
+            PERMISSIONS OWNER_READ OWNER_EXECUTE OWNER_WRITE
+                        GROUP_READ GROUP_EXECUTE
+                        WORLD_READ WORLD_EXECUTE
+            )
+    ENDIF()
 ENDIF()
+
+
+
 
 
 
@@ -61,5 +76,21 @@ FOREACH(LANG ${OPENFLUID_TRANSLATIONS_LANGS})
          )
          
 ENDFOREACH()
-                                              
-                                              
+
+
+# checkstyle tool
+FIND_PACKAGE(PythonInterp)
+
+IF(PYTHONINTERP_FOUND)
+  ADD_CUSTOM_COMMAND(COMMAND "${PYTHON_EXECUTABLE}" 
+                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
+                             "${CMAKE_SOURCE_DIR}"
+                     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nofile.checkstyke
+                    )
+        
+  ADD_CUSTOM_TARGET(stylecheck
+                    COMMENT "Checking source code style"
+                    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/nofile.checkstyke
+                   )
+ENDIF()
+

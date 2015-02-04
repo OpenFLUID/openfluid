@@ -232,7 +232,9 @@ void SimulationDrivenWare::OPENFLUID_RaiseError(const std::string& Msg)
 {
   if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
       mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
-    throw WareException(OPENFLUID_GetWareID(),m_WareType,OPENFLUID_GetCurrentStage(),mp_SimStatus->getCurrentTimeIndex(),Msg);
+    throw WareException(OPENFLUID_GetWareID(),
+                        m_WareType,OPENFLUID_GetCurrentStage(),
+                        mp_SimStatus->getCurrentTimeIndex(),Msg);
   else
     throw WareException(OPENFLUID_GetWareID(),m_WareType,OPENFLUID_GetCurrentStage(),Msg);
 }

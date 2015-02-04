@@ -44,7 +44,9 @@
 namespace openfluid { namespace ware {
 
 
-bool SignatureHandledTypedDataItem::getVariableNameAndType(const std::string SourceStr, std::string& VarName, openfluid::core::Value::Type& VarType)
+bool SignatureHandledTypedDataItem::getVariableNameAndType(const std::string SourceStr,
+                                                           std::string& VarName,
+                                                           openfluid::core::Value::Type& VarType)
 {
   const boost::basic_regex<char> eVect("^([-.\\w]+)\\[\\]$"); //match "abc[]"
   const boost::basic_regex<char> eNone("[^[\\]][-.\\w]+"); //match "abc"

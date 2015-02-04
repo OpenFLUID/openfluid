@@ -30,9 +30,9 @@
 */
 
 /**
- @file PolygonEntity_TEST.cpp
+  @file PolygonEntity_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
@@ -45,6 +45,7 @@
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
@@ -184,7 +185,7 @@ BOOST_AUTO_TEST_CASE(check_OneLineIntersection)
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
   openfluid::landr::PolygonEntity Ent2(P2, 0);
 
-  geos::geom::LineString* Shared = *Ent1.getLineIntersectionsWith(Ent2).begin();
+  geos::geom::LineString* Shared = *Ent1.computeLineIntersectionsWith(Ent2).begin();
 
   BOOST_CHECK(Shared->getCoordinateN(0).equals(geos::geom::Coordinate(2, 1)));
   BOOST_CHECK(Shared->getCoordinateN(1).equals(geos::geom::Coordinate(2, 0)));
@@ -234,7 +235,7 @@ BOOST_AUTO_TEST_CASE(check_NoLineIntersection)
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
   openfluid::landr::PolygonEntity Ent2(P2, 0);
 
-  BOOST_CHECK_EQUAL(Ent1.getLineIntersectionsWith(Ent2).size(), 0);
+  BOOST_CHECK_EQUAL(Ent1.computeLineIntersectionsWith(Ent2).size(), 0);
 }
 
 
@@ -421,7 +422,7 @@ BOOST_AUTO_TEST_CASE(check_getCommonEdgesWith)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getNeighbour_MinDistCentroCentro)
+BOOST_AUTO_TEST_CASE(check_computeNeighbour_MinDistCentroCentro)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
@@ -861,7 +862,8 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
   BOOST_CHECK(!SU1->lineStringNeighbours());
 
   BOOST_CHECK_THROW(SU1->computeLineStringNeighbours(*RSGraph,
-                                                     openfluid::landr::LandRTools::TOUCHES, 0),openfluid::base::FrameworkException);
+                    openfluid::landr::LandRTools::TOUCHES, 0),
+                    openfluid::base::FrameworkException);
 
   SU1->computeLineStringNeighbours(*RSGraph,
                                    openfluid::landr::LandRTools::TOUCHES, 0,0.1);
@@ -970,7 +972,7 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getNeighbourWithCommonEdge)
+BOOST_AUTO_TEST_CASE(check_computeNeighbourWithCommonEdge)
 {
 
 	openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
@@ -1147,7 +1149,7 @@ BOOST_AUTO_TEST_CASE(check_getOrderedNeighboursByLengthBoundary)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getNeighbourByLineTopology)
+BOOST_AUTO_TEST_CASE(check_computeNeighbourByLineTopology)
 {
 
   openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
@@ -1167,26 +1169,28 @@ BOOST_AUTO_TEST_CASE(check_getNeighbourByLineTopology)
 
   openfluid::landr::PolygonEntity* SU9 = SUGraph->entity(9);
 
-  BOOST_CHECK_EQUAL(SU9->getNeighbourByLineTopology(*VectTopo)->getOfldId(),12);
+  BOOST_CHECK_EQUAL(SU9->computeNeighbourByLineTopology(*VectTopo).first->getOfldId(),12);
+  BOOST_CHECK(openfluid::scientific::isVeryClose(SU9->computeNeighbourByLineTopology(*VectTopo).second,85.50399));
 
   openfluid::landr::LineStringGraph* RSGraph =
       openfluid::landr::LineStringGraph::create(*ValRS);
   SU9->computeLineStringNeighbours(*RSGraph,
                                    openfluid::landr::LandRTools::INTERSECTS, 0.1);
 
-  BOOST_CHECK_EQUAL(SU9->getNeighbourByLineTopology(*VectTopo)->getOfldId(),5);
+  BOOST_CHECK_EQUAL(SU9->computeNeighbourByLineTopology(*VectTopo).first->getOfldId(),5);
+
+  BOOST_CHECK(openfluid::scientific::isVeryClose(SU9->computeNeighbourByLineTopology(*VectTopo).second,44.5096));
 
   openfluid::landr::PolygonEntity* SU10 = SUGraph->entity(10);
 
-  openfluid::landr::LandREntity * NeighbourFalse=SU10->getNeighbourByLineTopology(*VectTopo);
+  openfluid::landr::LandREntity * NeighbourFalse=SU10->computeNeighbourByLineTopology(*VectTopo).first;
   BOOST_CHECK(!NeighbourFalse);
-
+  BOOST_CHECK(openfluid::scientific::isVeryClose(SU10->computeNeighbourByLineTopology(*VectTopo).second,0.0));
   openfluid::landr::PolygonEntity* SU8 = SUGraph->entity(8);
 
-  openfluid::landr::LandREntity * NoNeighbour=SU8->getNeighbourByLineTopology(*VectTopo);
+  openfluid::landr::LandREntity * NoNeighbour=SU8->computeNeighbourByLineTopology(*VectTopo).first;
   BOOST_CHECK(!NoNeighbour);
-
-
+  BOOST_CHECK(openfluid::scientific::isVeryClose(SU8->computeNeighbourByLineTopology(*VectTopo).second,0.0));
 
   delete ValSU;
   delete ValRS;

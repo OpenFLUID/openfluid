@@ -30,9 +30,9 @@
 */
 
 /**
- @file AdvancedFluidXDescriptor.cpp
+  @file AdvancedFluidXDescriptor.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>

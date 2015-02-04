@@ -30,6 +30,13 @@
 */
 
 
+/**
+  @file config.hpp
+ 
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+*/
+
+
 
 #ifndef __OPENFLUID_CONFIG_HPP__
 #define __OPENFLUID_CONFIG_HPP__

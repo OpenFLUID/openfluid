@@ -53,7 +53,8 @@
 #define BEGIN_BUILDEREXT_SIGNATURE(id,exttype) \
   openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL() \
   { \
-    openfluid::builderext::BuilderExtensionSignature* Signature = new openfluid::builderext::BuilderExtensionSignature(); \
+    openfluid::builderext::BuilderExtensionSignature* Signature =\
+      new openfluid::builderext::BuilderExtensionSignature(); \
     Signature->setABIVersion(openfluid::config::FULL_VERSION); \
     Signature->ID = (id); \
     Signature->Type = (exttype);

@@ -32,7 +32,7 @@
 
 
 /**
-  @file MultiLineGraphics.cpp
+  @file LineStringGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

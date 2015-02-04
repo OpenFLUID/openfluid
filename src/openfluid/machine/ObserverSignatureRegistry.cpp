@@ -30,9 +30,9 @@
 */
 
 /**
- @file ObserverSignatureRegistry.cpp
+  @file ObserverSignatureRegistry.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>

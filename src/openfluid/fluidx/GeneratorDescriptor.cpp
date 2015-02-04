@@ -30,21 +30,21 @@
 */
 
 /**
- @file
- @brief Implements ...
+  @file GeneratorDescriptor.cpp
 
- @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
 #include <openfluid/machine/Factory.hpp>
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
+
 
 // =====================================================================
 // =====================================================================
+
 
 GeneratorDescriptor::GeneratorDescriptor() :
     ModelItemDescriptor(), m_VarName(""), m_UnitClass(""), m_GenMethod(
@@ -53,8 +53,10 @@ GeneratorDescriptor::GeneratorDescriptor() :
   m_WareType = Generator;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 GeneratorDescriptor::GeneratorDescriptor(
     openfluid::core::VariableName_t VarName,
@@ -76,32 +78,40 @@ GeneratorDescriptor::GeneratorDescriptor(
                                                                 UnitClass);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::core::VariableName_t GeneratorDescriptor::getVariableName() const
 {
   return m_VarName;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::core::UnitClass_t GeneratorDescriptor::getUnitClass() const
 {
   return m_UnitClass;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 GeneratorDescriptor::GeneratorMethod GeneratorDescriptor::getGeneratorMethod() const
 {
   return m_GenMethod;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string GeneratorDescriptor::getGeneratorName(GeneratorDescriptor::GeneratorMethod GenMethod)
 {
@@ -120,9 +130,10 @@ std::string GeneratorDescriptor::getGeneratorName(GeneratorDescriptor::Generator
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}
-} // namespaces
+
+} } // namespaces
 

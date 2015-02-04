@@ -72,7 +72,8 @@
 /**
   Macro for a loop processing all units of a class, following their process order
   @param[in] unitclass name of the unit class
-  @param[out] unitptr pointer to a openfluid::core::SpatialUnit object, automatically pointing to the current processed unit
+  @param[out] unitptr pointer to a openfluid::core::SpatialUnit object,
+  automatically pointing to the current processed unit
 */
 #define OPENFLUID_UNITS_ORDERED_LOOP(unitclass,unitptr) \
     _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitclass,unitptr,__LINE__)
@@ -88,7 +89,8 @@
 
 /**
   Macro for a loop processing all units, following their process order
-  @param[out] unitptr pointer to a openfluid::core::SpatialUnit object, automatically pointing to the current processed unit
+  @param[out] unitptr pointer to a openfluid::core::SpatialUnit object,
+  automatically pointing to the current processed unit
 */
 #define OPENFLUID_ALLUNITS_ORDERED_LOOP(unitptr) \
     _OPENFLUID_ALLUNITS_ORDERED_LOOP_WITHID(unitptr,__LINE__)
@@ -104,7 +106,8 @@
 /**
   Macro for a loop processing a list of units
   @param[in] unitslist pointer to a list of openfluid::core::Unit
-  @param[out] unitptr unitptr pointer to a openfluid::core::SpatialUnit object, pointing to the current processed unit
+  @param[out] unitptr unitptr pointer to a openfluid::core::SpatialUnit object,
+  pointing to the current processed unit
 */#define OPENFLUID_UNITSLIST_LOOP(unitslist,unitptr) \
     _OPENFLUID_UNITSLIST_LOOP_WITHID(unitslist,unitptr,__LINE__)
 

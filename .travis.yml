@@ -16,6 +16,9 @@ install:
   - sudo apt-get install -qq openssh-server openssh-client g++ gfortran cmake libboost-all-dev libqt4-dev libgdal1h libgdal1-dev libgeos++-dev p7zip-full gnuplot graphviz
 
 before_script:
+  - echo "SET(BUILD_FORTRAN_SIMULATORS 1)" > CMake.in.local.cmake
+  - echo "SET(BUILD_APP_DEVSTUDIO 1)" >> CMake.in.local.cmake
+  - echo "SET(ENABLE_WARESDEV_BUILDER_INTEGRATION 1)" >> CMake.in.local.cmake
   - mkdir _build
   - cd _build
   - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "debug" ] ; then cmake .. -DOPENFLUID_ENABLE_HEAVYTESTING=1 ; fi

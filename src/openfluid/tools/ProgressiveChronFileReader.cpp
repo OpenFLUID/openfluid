@@ -78,7 +78,8 @@ bool ProgressiveChronFileReader::getNextValue(ChronItem_t& Value)
         return true;
       }
       else
-        throw openfluid::base::FrameworkException("ProgressiveChronFileReader::getNextValue","wrong data in " + m_FileName);
+        throw openfluid::base::FrameworkException("ProgressiveChronFileReader::getNextValue",
+                                                  "wrong data in " + m_FileName);
     }
   }
 

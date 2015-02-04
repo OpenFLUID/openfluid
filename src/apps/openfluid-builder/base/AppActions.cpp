@@ -159,6 +159,7 @@ void AppActions::createActions()
   m_Actions["DevOpenObserver"] = new QAction(tr("Open observer..."), this);
 
   m_Actions["DevLaunchDevStudio"] = new QAction(tr("OpenFLUID-DevStudio"), this);
+  m_Actions["DevLaunchDevStudio"]->setIcon(QIcon(":/icons/wares-development.png"));
 
 
   //Simulation menu

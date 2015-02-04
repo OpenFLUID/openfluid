@@ -30,9 +30,9 @@
  */
 
 /**
- @file PolygonGraph_TEST.cpp
+  @file PolygonGraph_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
@@ -672,7 +672,7 @@ BOOST_AUTO_TEST_CASE(check_getOfldIdOrderedEntities)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
+BOOST_AUTO_TEST_CASE(check_computeRasterPolyOverlapping_gettingPolygonsOnly)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
@@ -685,13 +685,13 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
 
   openfluid::landr::PolygonEntity* U1 = Graph->entity(1);
 
-  BOOST_CHECK_THROW(Graph->getRasterPolyOverlapping(*U1),
+  BOOST_CHECK_THROW(Graph->computeRasterPolyOverlapping(*U1),
                     openfluid::base::FrameworkException);
 
   Graph->addAGeoRasterValue(*Raster);
 
   openfluid::landr::PolygonGraph::RastValByRastPoly_t OverlapsU1 =
-      Graph->getRasterPolyOverlapping(*U1);
+      Graph->computeRasterPolyOverlapping(*U1);
 
   BOOST_CHECK_EQUAL(OverlapsU1.size(), 12);
 
@@ -717,7 +717,7 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingAlsoMultiPolygon)
+BOOST_AUTO_TEST_CASE(check_computeRasterPolyOverlapping_gettingAlsoMultiPolygon)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
@@ -733,7 +733,7 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingAlsoMultiPolygon)
   openfluid::landr::PolygonEntity* U2 = Graph->entity(2);
 
   openfluid::landr::PolygonGraph::RastValByRastPoly_t OverlapsU2 =
-      Graph->getRasterPolyOverlapping(*U2);
+      Graph->computeRasterPolyOverlapping(*U2);
 
   BOOST_CHECK_EQUAL(OverlapsU2.size(), 20);
 
@@ -2512,3 +2512,98 @@ BOOST_AUTO_TEST_CASE(check_computeNeighboursWithBarriers)
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_mergePolygonEntitiesByMinArea)
+{
+  openfluid::core::GeoVectorValue* ValPoly = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* PolyGraph =
+      openfluid::landr::PolygonGraph::create(*ValPoly);
+
+
+  BOOST_CHECK_THROW(PolyGraph->mergePolygonEntitiesByMinArea(-1),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(PolyGraph->mergePolygonEntitiesByMinArea(0),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(PolyGraph->mergePolygonEntitiesByMinArea(-0.000000001),openfluid::base::FrameworkException);
+  PolyGraph->mergePolygonEntitiesByMinArea(12);
+  BOOST_CHECK_EQUAL(PolyGraph->getEntities().size(), 24);
+
+
+  double areaBefore=PolyGraph->entity(9)->getArea()+PolyGraph->entity(7)->getArea();
+  PolyGraph->mergePolygonEntitiesByMinArea(12000);
+  BOOST_CHECK_EQUAL(PolyGraph->getEntities().size(), 23);
+  BOOST_CHECK(!PolyGraph->entity(9));
+  double areaAfter=PolyGraph->entity(7)->getArea();
+  BOOST_CHECK( openfluid::scientific::isVeryClose(areaBefore, areaAfter));
+
+  PolyGraph = openfluid::landr::PolygonGraph::create(*ValPoly);
+
+  areaBefore=PolyGraph->entity(13)->getArea()+PolyGraph->entity(14)->getArea();
+  double areaBefore1=PolyGraph->entity(9)->getArea()+PolyGraph->entity(7)->getArea();
+  PolyGraph->mergePolygonEntitiesByMinArea(13000);
+  BOOST_CHECK_EQUAL(PolyGraph->getEntities().size(), 22);
+  BOOST_CHECK(!PolyGraph->entity(9));
+  BOOST_CHECK(!PolyGraph->entity(13));
+  BOOST_CHECK(PolyGraph->entity(7));
+  BOOST_CHECK(PolyGraph->entity(14));
+  areaAfter=PolyGraph->entity(14)->getArea();
+  double areaAfter1=PolyGraph->entity(7)->getArea();
+  BOOST_CHECK( openfluid::scientific::isVeryClose(areaBefore, areaAfter));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(areaBefore1, areaAfter1));
+
+  delete PolyGraph;
+  delete ValPoly;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_mergePolygonEntitiesByCompactness)
+{
+  openfluid::core::GeoVectorValue* ValPoly = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* PolyGraph =
+      openfluid::landr::PolygonGraph::create(*ValPoly);
+
+
+  BOOST_CHECK_THROW(PolyGraph->mergePolygonEntitiesByCompactness(-1),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(PolyGraph->mergePolygonEntitiesByCompactness(0),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(PolyGraph->mergePolygonEntitiesByCompactness(-0.000000001),openfluid::base::FrameworkException);
+  PolyGraph->mergePolygonEntitiesByCompactness(1.7);
+  BOOST_CHECK_EQUAL(PolyGraph->getEntities().size(), 24);
+
+
+  double areaBefore=PolyGraph->entity(13)->getArea()+PolyGraph->entity(14)->getArea();
+  PolyGraph->mergePolygonEntitiesByCompactness(1.6);
+  BOOST_CHECK_EQUAL(PolyGraph->getEntities().size(), 23);
+  BOOST_CHECK(!PolyGraph->entity(13));
+  double areaAfter=PolyGraph->entity(14)->getArea();
+  BOOST_CHECK( openfluid::scientific::isVeryClose(areaBefore, areaAfter));
+  delete PolyGraph;
+
+  PolyGraph = openfluid::landr::PolygonGraph::create(*ValPoly);
+  areaBefore=PolyGraph->entity(13)->getArea()+PolyGraph->entity(14)->getArea();
+  double areaBefore1=PolyGraph->entity(18)->getArea()+PolyGraph->entity(17)->getArea();
+  PolyGraph->mergePolygonEntitiesByCompactness(1.51);
+  BOOST_CHECK_EQUAL(PolyGraph->getEntities().size(), 22);
+  BOOST_CHECK(!PolyGraph->entity(13));
+  BOOST_CHECK(!PolyGraph->entity(18));
+  BOOST_CHECK(PolyGraph->entity(17));
+  BOOST_CHECK(PolyGraph->entity(14));
+  areaAfter=PolyGraph->entity(14)->getArea();
+  double areaAfter1=PolyGraph->entity(17)->getArea();
+  BOOST_CHECK( openfluid::scientific::isVeryClose(areaBefore, areaAfter));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(areaBefore1, areaAfter1));
+
+  delete PolyGraph;
+  delete ValPoly;
+
+}
+
+
+// =====================================================================
+// =====================================================================

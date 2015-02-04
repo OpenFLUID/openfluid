@@ -26,13 +26,13 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
- @file PolygonGraph.hpp
+  @file PolygonGraph.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_POLYGONGRAPH_HPP__
@@ -95,8 +95,8 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
      @param OfldId The identifier of the new PolygonEntity.
      @return A new LandREntity.
      */
-    virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-                                      unsigned int OfldId);
+    virtual LandREntity* createNewEntity(const geos::geom::Geometry* Geom,
+                                         unsigned int OfldId);
 
     /**
      @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
@@ -179,7 +179,7 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
      @return A map of polygonized Raster Polygons, from associated polygonized raster,
      with for each one the intersection area.
      */
-    RastValByRastPoly_t getRasterPolyOverlapping(PolygonEntity& Entity);
+    RastValByRastPoly_t computeRasterPolyOverlapping(PolygonEntity& Entity);
 
     /**
      @brief Creates a new attribute for this PolygonGraph entities, and set for each PolygonEntity
@@ -197,11 +197,13 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
                                     std::string FileName);
 
     /**
-     @brief Computes the neighbours between the PolygonEntity elements of this PolygonGraph and the LineStringEntity of a LineStringGraph.
+     @brief Computes the neighbours between the PolygonEntity elements of this PolygonGraph
+      and the LineStringEntity of a LineStringGraph.
      @param Graph The LineStringGraph to compare to.
      @param Relation The Relationship to use for comparison.
      @param BufferDistance The distance below which we consider that two elements are related.
-     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
+     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries
+      to be taking acccount (only for LandRTools::TOUCHES RelationShip)
      */
     void computeLineStringNeighbours(LineStringGraph& Graph,
                                      openfluid::landr::LandRTools::Relationship Relation,
@@ -212,11 +214,13 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
      @brief Computes the neighbours between the PolygonEntity elements of this PolygonGraph by using
      the LineStringEntity of an input LineStringGraph which are considered as barriers.
      @details A barrier between two PolygonEntity will avoid to considered them as neighbours.
-     @details A LineStringEntity is considered as a barrier if it lies within the buffer of this PolygonEntity polygon boundary.
+     @details A LineStringEntity is considered as a barrier if it lies within the buffer of this
+      PolygonEntity polygon boundary.
      @param Graph The LineStringGraph to compare to.
      @param Relation The Relationship to use for comparison, the LandRTools::Relationship INTERSECTS is not allowed.
      @param BufferDistance The distance below which we consider that two elements are related.
-     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
+     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries
+      to be taking acccount (only for LandRTools::TOUCHES RelationShip)
      */
     void computeNeighboursWithBarriers(LineStringGraph& Graph,
                                        openfluid::landr::LandRTools::Relationship Relation,
@@ -265,7 +269,8 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
     std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea);
 
     /**
-     @brief Gets a map of sliver PolygonEntity which compactness value are superior to a compactness threshold (Gravelius Index)
+     @brief Gets a map of sliver PolygonEntity which compactness value are superior to a
+      compactness threshold (Gravelius Index)
      @param Compactness The compactness threshold (perimeter/2 x sqrt (Pi x area))
      @return a multimap of PolygonEntity with key is the compactness of each PolygonEntity.
      */
@@ -279,6 +284,21 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
      */
     void mergePolygonEntities(PolygonEntity& Entity,
                               PolygonEntity& EntityToMerge);
+
+    /**
+      @brief Merge the entities of this PolygonGraph which area is under threshold
+      @details The small PolygonEntity is merged into the one which share the longest boundary.
+      @param MinArea The minimum area threshold.
+     */
+    void mergePolygonEntitiesByMinArea(double MinArea);
+
+    /**
+     @brief Merge the entities of this PolygonGraph which compactness value are superior
+     to a compactness threshold (Gravelius Index).
+     @details The small PolygonEntity is merged into the one which share the longest boundary.
+     @param Compactness The compactness threshold (perimeter/2 x sqrt (Pi x area)).
+     */
+    void mergePolygonEntitiesByCompactness(double Compactness);
 
 
 

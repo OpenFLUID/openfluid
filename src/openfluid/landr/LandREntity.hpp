@@ -30,9 +30,9 @@
 */
 
 /**
- @file LandREntity.hpp
+  @file LandREntity.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LANDRENTITY_HPP__
@@ -92,7 +92,7 @@ class OPENFLUID_API LandREntity : public geos::planargraph::GraphComponent
     /**
      @brief The length of this LandREntity.
      */
-    double m_Lenght;
+    double m_Length;
 
     /**
      @brief A set of LandREntity neighbours of this LandREntity.

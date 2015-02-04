@@ -26,13 +26,13 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
- @file LineStringGraph.hpp
+  @file LineStringGraph.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LINESTRINGGRAPH_HPP__
@@ -71,7 +71,8 @@
 		if (graph) \
 		{ \
 			_M_##loopid##_uvect = graph->getEntities();\
-			for (_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+			for (_M_##loopid##_it=_M_##loopid##_uvect.begin();\
+			     _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
 			{ \
 				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
@@ -85,7 +86,8 @@
 		if (graph) \
 		{ \
 			_M_##loopid##_uvect = graph->getOfldIdOrderedEntities();\
-			for (_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+			for (_M_##loopid##_it=_M_##loopid##_uvect.begin();\
+			     _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
 			{ \
 				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
@@ -134,8 +136,8 @@ protected:
 	 @param OfldId The identifier of the new LineStringEntity.
 	 @return A new LandREntity.
 	 */
-	virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-	                                  unsigned int OfldId);
+	virtual LandREntity* createNewEntity(const geos::geom::Geometry* Geom,
+			unsigned int OfldId);
 
 
 
@@ -144,13 +146,15 @@ public:
 
 	/**
 	 @brief Creates a new LineStringGraph initialized from a core::GeoVectorValue.
-	 @param Val A core::GeoVectorValue which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
+	 @param Val A core::GeoVectorValue which must be composed of one or many LineStrings,
+	 and each of them must contain a "OFLD_ID" attribute.
 	 */
 	static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
 
 	/**
 	 @brief Creates a new LineStringGraph initialized from a VectorDataset.
-	 @param Vect A VectorDataset which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
+	 @param Vect A VectorDataset which must be composed of one or many LineStrings,
+	  and each of them must contain a "OFLD_ID" attribute.
 	 */
 	static LineStringGraph* create(openfluid::landr::VectorDataset& Vect);
 
@@ -186,7 +190,8 @@ public:
 	LineStringEntity* lastLineStringEntity();
 
 	/**
-	 @brief Returns a vector of LineStringEntity that have no down neighbour, according to the LineStringEntity orientations.
+	 @brief Returns a vector of LineStringEntity that have no down neighbour,
+	 according to the LineStringEntity orientations.
 	 */
 	std::vector<LineStringEntity*> getEndLineStringEntities();
 
@@ -200,14 +205,14 @@ public:
 	 @param Entity The LineStringEntity to get the StartNode coordinate from.
 	 @return The raster value corresponding to the LineStringEntity StartNode coordinate.
 	 */
-	float* getRasterValueForEntityStartNode(LineStringEntity& Entity);
+	double getRasterValueForEntityStartNode(LineStringEntity& Entity);
 
 	/**
 	 @brief Fetch the associated raster value corresponding to the LineStringEntity EndNode coordinate.
 	 @param Entity The LineStringEntity to get the EndNode coordinate from.
 	 @return The raster value corresponding to the LineStringEntity EndNode coordinate.
 	 */
-	float* getRasterValueForEntityEndNode(LineStringEntity& Entity);
+	double getRasterValueForEntityEndNode(LineStringEntity& Entity);
 
 	/**
 	 @brief Creates a new attribute for these LineStringGraph entities, and set for each LineStringEntity
@@ -269,6 +274,13 @@ public:
 	 @param OfldId The identifier of the outlet.
 	 */
 	void setOrientationByOfldId(int OfldId);
+
+	/**
+	 @brief Merges the entities of this LineStringGraph under length threshold.
+	 @param MinLength The length threshold (in map units).
+	 @param rmDangle if true, remove also dangles under the threshold, default is true.
+	 */
+	void mergeLineStringEntitiesByMinLength(double MinLength,bool rmDangle=true);
 
 };
 

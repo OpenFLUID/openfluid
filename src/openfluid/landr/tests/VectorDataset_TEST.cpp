@@ -30,9 +30,9 @@
 */
 
 /**
- @file VectorDataset_TEST.cpp
+  @file VectorDataset_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
       Value);
 
   openfluid::landr::VectorDataset::FeaturesList_t Features =
-      Vect->getFeatures();
+      Vect->features();
 
   BOOST_CHECK_EQUAL(Features.size(), 24);
 
@@ -280,7 +280,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
 
   Vect = new openfluid::landr::VectorDataset(Value);
 
-  Features = Vect->getFeatures();
+  Features = Vect->features();
 
   BOOST_CHECK_EQUAL(Features.size(), 8);
 
@@ -350,3 +350,31 @@ BOOST_AUTO_TEST_CASE(check_Geometry_Properties)
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_setIndexIntField)
+{
+  openfluid::core::GeoVectorValue Value(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Value);
+
+
+  BOOST_CHECK_THROW(Vect->setIndexIntField("WrongField"),
+                    openfluid::base::FrameworkException);
+  Vect->addAField("Enum",OFTInteger);
+  Vect->setIndexIntField("Enum",10);
+  BOOST_CHECK_EQUAL(Vect-> isIntValueSet("Enum",10),true);
+  BOOST_CHECK_EQUAL(Vect-> isIntValueSet("Enum",11),true);
+  BOOST_CHECK_EQUAL(Vect-> isIntValueSet("Enum",12),true);
+  BOOST_CHECK_EQUAL(Vect-> isIntValueSet("Enum",33),true);
+  BOOST_CHECK_EQUAL(Vect-> isIntValueSet("Enum",34),false);
+
+
+
+  delete Vect;
+}
+
+
+// =====================================================================
+// =====================================================================

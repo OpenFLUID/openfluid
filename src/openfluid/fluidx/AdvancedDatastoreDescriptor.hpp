@@ -30,9 +30,9 @@
 */
 
 /**
- @file AdvancedDatastoreDescriptor.hpp
+  @file AdvancedDatastoreDescriptor.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDDATASTOREDESCRIPTOR_HPP__
@@ -65,10 +65,12 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
 
     const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& items() const;
 
-    std::list<openfluid::fluidx::DatastoreItemDescriptor*> getItems(const openfluid::core::UnitClass_t& UnitClass) const;
+    std::list<openfluid::fluidx::DatastoreItemDescriptor*>
+      getItems(const openfluid::core::UnitClass_t& UnitClass) const;
 
-    std::list<openfluid::fluidx::DatastoreItemDescriptor*> getItems(const openfluid::core::UnitClass_t& UnitClass,
-                                                                    openfluid::core::UnstructuredValue::UnstructuredType Type) const;
+    std::list<openfluid::fluidx::DatastoreItemDescriptor*>
+      getItems(const openfluid::core::UnitClass_t& UnitClass,
+               openfluid::core::UnstructuredValue::UnstructuredType Type) const;
 
     /**
      * Move the Item located at the given From position to the To position (positions starts at index 0)

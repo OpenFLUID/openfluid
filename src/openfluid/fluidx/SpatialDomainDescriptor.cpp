@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  @file SpatialDomainDescriptor.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

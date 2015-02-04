@@ -33,16 +33,11 @@ SET_TARGET_PROPERTIES(openfluid-ui-waresdev PROPERTIES VERSION "${VERSION_MAJOR}
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
-                      #openfluid-base
-                      #openfluid-core
-                      #openfluid-ware
-                      #openfluid-tools                                           
-                      #openfluid-fluidx
+                      ${QT_QTCORE_LIBRARIES}
+                      ${QT_QTGUI_LIBRARIES}    
                       openfluid-ui-common
                       openfluid-waresdev
                       openfluid-utils
-                      ${QT_QTCORE_LIBRARIES}
-                      ${QT_QTGUI_LIBRARIES}    
                      )
 
 

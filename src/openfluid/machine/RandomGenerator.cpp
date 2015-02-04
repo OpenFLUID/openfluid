@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  @file RandomGenerator.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -79,7 +78,8 @@ void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
     throw openfluid::base::FrameworkException("RandomGenerator::initParams","missing max value for generator");
 
   std::string DeltaTStr;
-  if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) && !openfluid::tools::convertString(DeltaTStr,&m_DeltaT))
+  if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) &&
+      !openfluid::tools::convertString(DeltaTStr,&m_DeltaT))
     throw openfluid::base::FrameworkException("RandomGenerator::initParams","wrong value for deltat");
 };
 
@@ -91,7 +91,8 @@ void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 void RandomGenerator::checkConsistency()
 {
   if ( m_Min > m_Max)
-    throw openfluid::base::FrameworkException("FixedGenerator::checkConsistency","max value must be greater or equal to min value for generator");
+    throw openfluid::base::FrameworkException("FixedGenerator::checkConsistency",
+                                              "max value must be greater or equal to min value for generator");
 }
 
 

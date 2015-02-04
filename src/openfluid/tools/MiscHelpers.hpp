@@ -32,9 +32,9 @@
 
 
 /**
-  @file
+  @file MiscHelpers.hpp
 
-  @author JC.Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
@@ -94,7 +94,10 @@ std::string OPENFLUID_API removeTrailingSlashes(const std::string& Str);
   @param[in] VersionA the first version number
   @param[in] VersionB the second version number
   @param[in] Strict If true, the comparison include the status part of the version (it ignores it otherwise)
-  @return 1 if VersionA is greater than VersionB, -1 if VersionB is greater than VersionA, 0 if versions are equals, -2 if a version format is not well-formed
+  @return 1 if VersionA is greater than VersionB,
+          -1 if VersionB is greater than VersionA,
+          0 if versions are equals,
+          -2 if a version format is not well-formed
 */
 int OPENFLUID_API compareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
 

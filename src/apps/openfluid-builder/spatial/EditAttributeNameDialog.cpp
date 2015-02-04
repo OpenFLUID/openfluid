@@ -32,7 +32,7 @@
 
 
 /**
-  @file EditAttributeName.cpp
+  @file EditAttributeNameDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

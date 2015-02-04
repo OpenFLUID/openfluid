@@ -31,7 +31,7 @@
 
 
 /**
-  @file EditAttributeName.hpp
+  @file EditAttributeNameDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

@@ -30,9 +30,9 @@
 */
 
 /**
- @file VectorDataset.cpp
+  @file VectorDataset.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "VectorDataset.hpp"
@@ -503,7 +503,7 @@ bool VectorDataset::isIntValueSet(const std::string& FieldName,
 // =====================================================================
 
 
-VectorDataset::FeaturesList_t VectorDataset::getFeatures(
+VectorDataset::FeaturesList_t VectorDataset::features(
     unsigned int LayerIndex)
 {
   if (!m_Features.count(LayerIndex))
@@ -577,8 +577,10 @@ void VectorDataset::parse(unsigned int LayerIndex)
     delete GeosGeom;
   }
 
-  // ! do not use buildGeometry, because it may build a MultiPolygon if all geometries are Polygons, what may produce an invalid MultiPolygon!
-  // (because the boundaries of any two Polygons of a valid MultiPolygon may touch, *but only at a finite number of points*)
+  // ! do not use buildGeometry, because it may build a MultiPolygon if all geometries
+  //are Polygons, what may produce an invalid MultiPolygon!
+  // (because the boundaries of any two Polygons of a valid MultiPolygon may touch,
+  //*but only at a finite number of points*)
   m_Geometries.insert(
       std::make_pair(
           LayerIndex,
@@ -608,6 +610,40 @@ bool VectorDataset::isPointType(unsigned int LayerIndex)
 // =====================================================================
 // =====================================================================
 
+
+void VectorDataset::setIndexIntField(const std::string& FieldName,
+                                     int BeginValue,
+                                     unsigned int LayerIndex)
+
+{
+  if (!isFieldOfType(FieldName, OFTInteger, LayerIndex))
+      throw openfluid::base::FrameworkException(
+          "VectorDataset::setIndexIntField",
+          "Field \"" + FieldName + "\" is not set or is not of type Int.");
+
+    OGRLayer* Layer = layer(LayerIndex);
+
+    if (! Layer->TestCapability( "RandomWrite"))
+      throw openfluid::base::FrameworkException(
+                "VectorDataset::setIndexIntField",
+                "Unable to update the Field \"" + FieldName +"\"");
+
+    Layer->ResetReading();
+
+    OGRFeature* Feat;
+    while ((Feat = Layer->GetNextFeature()) != NULL)
+    {
+      Feat->SetField(FieldName.c_str(),BeginValue);
+      Layer->SetFeature(Feat);
+      OGRFeature::DestroyFeature(Feat);
+      BeginValue++;
+    }
+
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 } } // namespaces openfluid, landr

@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file EventsCollection.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -89,7 +89,8 @@ class OPENFLUID_API EventsCollection
       at the end of the given collection
       @deprecated
     */
-    bool getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate, EventsCollection *Events) const OPENFLUID_DEPRECATED;
+    bool getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate,
+                          EventsCollection *Events) const OPENFLUID_DEPRECATED;
 
     /**
       Returns an event collection extracted from the current event collection, taking into account a time period

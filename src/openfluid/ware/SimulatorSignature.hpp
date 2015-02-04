@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file SimulatorSignature.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -102,7 +102,8 @@
   @param[in] unit unit of the parameter. Could be an empty string if there is no unit
 */
 #define DECLARE_SIMULATOR_PARAM(name,description,unit) \
-  Signature->HandledData.SimulatorParams.push_back(openfluid::ware::SignatureHandledDataItem((name),(""),description,unit));
+  Signature->HandledData.SimulatorParams\
+  .push_back(openfluid::ware::SignatureHandledDataItem((name),(""),description,unit));
 
 
 
@@ -118,7 +119,8 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_PRODUCED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.ProducedVars\
+  .push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of an updated variable
@@ -128,7 +130,8 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_UPDATED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.UpdatedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.UpdatedVars\
+  .push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required variable
@@ -138,7 +141,8 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredVars\
+  .push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 
 /**
@@ -149,7 +153,8 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.UsedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedVars\
+  .push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 
 /**
@@ -160,7 +165,8 @@
   @param[in] unit unit of the attribute. Could be an empty string if there is no unit
 */
 #define DECLARE_PRODUCED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.ProducedAttribute.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.ProducedAttribute\
+  .push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required attribute
@@ -170,7 +176,8 @@
   @param[in] unit unit of the attribute. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.RequiredAttribute.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredAttribute\
+  .push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a used attribute
@@ -180,7 +187,8 @@
   @param[in] unit unit of the attribute. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.UsedAttribute.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedAttribute\
+  .push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of used events
@@ -204,7 +212,9 @@
   @param[in] description description of the updated class
 
 */
-#define DECLARE_UPDATED_UNITSCLASS(uclass,description) Signature->HandledUnitsGraph.UpdatedUnitsClass.push_back(openfluid::ware::SignatureHandledUnitsClassItem(uclass,description));
+#define DECLARE_UPDATED_UNITSCLASS(uclass,description) \
+    Signature->HandledUnitsGraph.UpdatedUnitsClass\
+    .push_back(openfluid::ware::SignatureHandledUnitsClassItem(uclass,description));
 
 
 /**
@@ -297,7 +307,8 @@ class OPENFLUID_API SignatureHandledTypedDataItem : public SignatureHandledDataI
 
   public:
 
-    static bool getVariableNameAndType(const std::string SourceStr, std::string& VarName, openfluid::core::Value::Type& VarType);
+    static bool getVariableNameAndType(const std::string SourceStr, std::string& VarName,
+                                       openfluid::core::Value::Type& VarType);
 
     openfluid::core::Value::Type DataType;
 

@@ -30,9 +30,9 @@
 */
 
 /**
- @file LandRGraph_TEST.cpp
+  @file LandRGraph_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
@@ -145,8 +145,8 @@ BOOST_AUTO_TEST_CASE(check_getARasterValue_fromPolygonGraph)
 
   Graph->addAGeoRasterValue(*Raster);
 
-  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U1), 29);
-  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U20), 64);
+  BOOST_CHECK_EQUAL(Graph->getRasterValueForEntityCentroid(*U1), 29);
+  BOOST_CHECK_EQUAL(Graph->getRasterValueForEntityCentroid(*U20), 64);
 
   delete Graph;
   delete Vector;
@@ -177,8 +177,8 @@ BOOST_AUTO_TEST_CASE(check_getARasterValue_fromLineStringGraph)
 
   Graph->addAGeoRasterValue(*Raster);
 
-  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U1), 36);
-  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U3), 69);
+  BOOST_CHECK_EQUAL(Graph->getRasterValueForEntityCentroid(*U1), 36);
+  BOOST_CHECK_EQUAL(Graph->getRasterValueForEntityCentroid(*U3), 69);
 
   delete Graph;
   delete Vector;
@@ -212,10 +212,12 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolygonized)
   BOOST_CHECK_EQUAL(Polygonized->layer(0)->GetFeatureCount(), 234);
 
   BOOST_CHECK_EQUAL(
-      Polygonized->layer(0)->GetFeature(0)->GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
+      Polygonized->layer(0)->GetFeature(0)->
+      GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
       96);
   BOOST_CHECK_EQUAL(
-      Polygonized->layer(0)->GetFeature(76)->GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
+      Polygonized->layer(0)->GetFeature(76)->
+      GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
       83);
 
   delete Graph;
@@ -426,7 +428,8 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
   openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "reach2.shp");
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),
+  									openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "TYPE",5);
   std::vector<std::string> vAttributes=Graph->getAttributeNames();
@@ -496,7 +499,8 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
   openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),
+  									openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "OFLD_ID",0.1);
   std::vector<std::string> vAttributes=Graph->getAttributeNames();
@@ -558,7 +562,8 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
   openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "fields_extract2.shp");
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),
+  									openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "OFLD_ID",0.5);
   std::vector<std::string> vAttributes=Graph->getAttributeNames();
@@ -620,7 +625,8 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
   openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS_complex.shp");
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),
+  									openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "OFLD_ID",10);
   std::vector<std::string> vAttributes=Graph->getAttributeNames();

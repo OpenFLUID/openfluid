@@ -30,10 +30,10 @@
 */
 
 /**
- @file GeoValue.cpp
+  @file GeoValue.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #include "GeoValue.hpp"

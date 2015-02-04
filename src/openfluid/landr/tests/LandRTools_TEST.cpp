@@ -30,9 +30,9 @@
 */
 
 /**
- @file LandRTools_TEST.cpp
+  @file LandRTools_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 /*
@@ -67,9 +67,9 @@
 */
 
 /**
- @file LandRTools_TEST.cpp
+  @file LandRTools_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
@@ -131,12 +131,12 @@ BOOST_AUTO_TEST_CASE(check_MergesWith1ResultLine)
   BOOST_CHECK_EQUAL(MLS->getNumGeometries(), 2);
 
   std::vector<geos::geom::LineString*>* MergedLSVect =
-      openfluid::landr::LandRTools::getMergedLineStringsFromGeometry(MLS);
+      openfluid::landr::LandRTools::computeMergedLineStringsFromGeometry(MLS);
 
   BOOST_CHECK_EQUAL(MergedLSVect->size(), 1);
 
   geos::geom::LineString* MergedLS =
-      openfluid::landr::LandRTools::getMergedLineStringFromGeometry(MLS);
+      openfluid::landr::LandRTools::computeMergedLineStringFromGeometry(MLS);
 
   BOOST_CHECK_EQUAL(MergedLS->getNumPoints(), 3);
 
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
   BOOST_CHECK_EQUAL(MLS->getNumGeometries(), 4);
 
   std::vector<geos::geom::LineString*>* MergedLSVect =
-      openfluid::landr::LandRTools::getMergedLineStringsFromGeometry(MLS);
+      openfluid::landr::LandRTools::computeMergedLineStringsFromGeometry(MLS);
 
   BOOST_CHECK_EQUAL(MergedLSVect->size(), 2);
 
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
       MergedLS2->getCoordinateN(2).equals(geos::geom::Coordinate(0, 5)));
 
   geos::geom::LineString* MergedLS =
-      openfluid::landr::LandRTools::getMergedLineStringFromGeometry(MLS);
+      openfluid::landr::LandRTools::computeMergedLineStringFromGeometry(MLS);
 
   BOOST_CHECK(!MergedLS);
 
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
+BOOST_AUTO_TEST_CASE(check_computeVectorOfExteriorRings)
 {
   openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "RS.shp");
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
       Val);
 
   BOOST_CHECK_THROW(
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect),
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*Vect),
       openfluid::base::FrameworkException);
 
   delete Vect;
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
   Vect = new openfluid::landr::VectorDataset(Val);
 
   std::vector<geos::geom::LineString*> Geoms =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*Vect);
 
   BOOST_CHECK_EQUAL(Geoms.size(), 24);
 
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
+BOOST_AUTO_TEST_CASE(check_computeVectorOfLines)
 {
   openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
                                       "SU.shp");
@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       Val);
 
-  BOOST_CHECK_THROW(openfluid::landr::LandRTools::getVectorOfLines(*Vect),
+  BOOST_CHECK_THROW(openfluid::landr::LandRTools::computeVectorOfLines(*Vect),
                     openfluid::base::FrameworkException);
 
   delete Vect;
@@ -280,7 +280,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
   Vect = new openfluid::landr::VectorDataset(Val);
 
   std::vector<geos::geom::LineString*> Geoms =
-      openfluid::landr::LandRTools::getVectorOfLines(*Vect);
+      openfluid::landr::LandRTools::computeVectorOfLines(*Vect);
 
   BOOST_CHECK_EQUAL(Geoms.size(), 8);
 
@@ -292,7 +292,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
+BOOST_AUTO_TEST_CASE(check_computeNodedLines_simple)
 {
   openfluid::core::GeoVectorValue ValSU(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
@@ -307,10 +307,10 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
       ValRS);
 
   std::vector<geos::geom::LineString*> SU_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*VectSU);
 
   std::vector<geos::geom::LineString*> RS_lines =
-      openfluid::landr::LandRTools::getVectorOfLines(*VectRS);
+      openfluid::landr::LandRTools::computeVectorOfLines(*VectRS);
 
   std::vector<geos::geom::Geometry*> SU_vect;
   std::vector<geos::geom::Geometry*> RS_vect;
@@ -324,7 +324,7 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
   geos::geom::Geometry* RS_coll = Factory->buildGeometry(RS_vect);
 
   std::vector<geos::geom::LineString*>* Noded =
-      openfluid::landr::LandRTools::getNodedLines(SU_coll, RS_coll);
+      openfluid::landr::LandRTools::computeNodedLines(SU_coll, RS_coll);
 
   BOOST_CHECK_EQUAL(Noded->size(), 17);
 //  for (unsigned int i = 0; i < Noded->size(); i++)
@@ -354,10 +354,10 @@ BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
       ValRS);
 
   std::vector<geos::geom::LineString*> SU_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*VectSU);
 
   std::vector<geos::geom::LineString*> RS_lines =
-      openfluid::landr::LandRTools::getVectorOfLines(*VectRS);
+      openfluid::landr::LandRTools::computeVectorOfLines(*VectRS);
 
   std::vector<geos::geom::Geometry*> SU_vect;
   std::vector<geos::geom::Geometry*> RS_vect;
@@ -371,7 +371,7 @@ BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
   geos::geom::Geometry* RS_coll = Factory->buildGeometry(RS_vect);
 
   std::vector<geos::geom::LineString*>* Noded_lines =
-      openfluid::landr::LandRTools::getNodedLines(SU_coll, RS_coll);
+      openfluid::landr::LandRTools::computeNodedLines(SU_coll, RS_coll);
 
   std::vector<geos::geom::Geometry*> Noded;
   Noded.assign(Noded_lines->begin(), Noded_lines->end());
@@ -423,13 +423,13 @@ BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
       new openfluid::landr::VectorDataset(ValRS2);
 
   std::vector<geos::geom::LineString*> SU_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*VectSU);
   std::vector<geos::geom::LineString*> SU2_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU2);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*VectSU2);
   std::vector<geos::geom::LineString*> RS_lines =
-      openfluid::landr::LandRTools::getVectorOfLines(*VectRS);
+      openfluid::landr::LandRTools::computeVectorOfLines(*VectRS);
   std::vector<geos::geom::LineString*> RS2_lines =
-      openfluid::landr::LandRTools::getVectorOfLines(*VectRS2);
+      openfluid::landr::LandRTools::computeVectorOfLines(*VectRS2);
 
   const geos::geom::GeometryFactory* Factory =
       geos::geom::GeometryFactory::getDefaultInstance();
@@ -447,12 +447,12 @@ BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
   // TODO Check why and if this is the correct geos version change
 #if !GEOS_VERSION_GREATER_OR_EQUAL_3_3_2
   BOOST_CHECK_THROW(
-      openfluid::landr::LandRTools::getNodedLines(SU_coll, RS_coll),
+      openfluid::landr::LandRTools::computeNodedLines(SU_coll, RS_coll),
       openfluid::base::FrameworkException);
 #endif
 
   std::vector<geos::geom::LineString*>* Noded_lines =
-      openfluid::landr::LandRTools::getNodedLines(SU_coll, RS_coll, 0.000001);
+      openfluid::landr::LandRTools::computeNodedLines(SU_coll, RS_coll, 0.000001);
 
   std::vector<geos::geom::Geometry*> Noded;
   Noded.assign(Noded_lines->begin(), Noded_lines->end());
@@ -496,9 +496,9 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
       new openfluid::landr::VectorDataset(ValSU2);
 
   std::vector<geos::geom::LineString*> SU_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*VectSU);
   std::vector<geos::geom::LineString*> SU2_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU2);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*VectSU2);
 
   const geos::geom::GeometryFactory* Factory =
       geos::geom::GeometryFactory::getDefaultInstance();
@@ -512,7 +512,7 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
   geos::geom::Geometry* SU2_coll = Factory->buildGeometry(SU2_vect);
 
   std::vector<geos::geom::LineString*>* Noded_lines =
-      openfluid::landr::LandRTools::getNodedLines(SU_coll, SU2_coll);
+      openfluid::landr::LandRTools::computeNodedLines(SU_coll, SU2_coll);
 
   BOOST_CHECK_EQUAL(Noded_lines->size(), 51);
 //  for (unsigned int i = 0; i < Noded_lines->size(); i++)
@@ -564,9 +564,9 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
       Val3);
 
   std::vector<geos::geom::LineString*> Field_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*Vect);
   std::vector<geos::geom::LineString*> Soil_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect2);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*Vect2);
 
   std::vector<geos::geom::Geometry*> Fields;
   std::vector<geos::geom::Geometry*> Soils;
@@ -580,7 +580,7 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
   geos::geom::Geometry* Soil_coll = Factory->buildGeometry(Soils);
 
   std::vector<geos::geom::LineString*>* Poly_lines =
-      openfluid::landr::LandRTools::getNodedLines(Field_coll, Soil_coll);
+      openfluid::landr::LandRTools::computeNodedLines(Field_coll, Soil_coll);
 
   BOOST_CHECK_EQUAL(Poly_lines->size(), 51);
 
@@ -591,19 +591,19 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
   // TODO Check why and if this is the correct geos version change
 #if !GEOS_VERSION_GREATER_OR_EQUAL_3_3_2
   BOOST_CHECK_THROW(
-      openfluid::landr::LandRTools::getNodedLines(Poly_coll, Vect3->geometries()),
+      openfluid::landr::LandRTools::computeNodedLines(Poly_coll, Vect3->geometries()),
       openfluid::base::FrameworkException);
 #endif
 
   std::vector<geos::geom::LineString*>* All_lines =
-      openfluid::landr::LandRTools::getNodedLines(Poly_coll,
+      openfluid::landr::LandRTools::computeNodedLines(Poly_coll,
                                                   Vect3->geometries(),
                                                   0.000001);
 
   BOOST_CHECK_EQUAL(All_lines->size(), 65);
 
   All_lines->clear();
-  All_lines = openfluid::landr::LandRTools::getNodedLines(
+  All_lines = openfluid::landr::LandRTools::computeNodedLines(
       Poly_coll, Vect3->geometries(), 0.00001);
 
   BOOST_CHECK_EQUAL(All_lines->size(), 63);
@@ -639,7 +639,7 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
+BOOST_AUTO_TEST_CASE(check_computeNodedLines_virtual)
 {
   openfluid::core::GeoVectorValue Val(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/virtual", "field2.shp");
@@ -656,10 +656,10 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
       Val3);
 
   std::vector<geos::geom::LineString*> Field_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*Vect);
 
   std::vector<geos::geom::LineString*> Soil_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect2);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*Vect2);
 
   geos::geom::Geometry* Reach_coll = Vect3->geometries();
 
@@ -677,7 +677,7 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
   double snapTolerance = 0.2;
 
   std::vector<geos::geom::LineString*>* NodedPolys =
-      openfluid::landr::LandRTools::getNodedLines(Field_coll, Soil_coll,
+      openfluid::landr::LandRTools::computeNodedLines(Field_coll, Soil_coll,
                                                   snapTolerance);
 
   BOOST_CHECK_EQUAL(NodedPolys->size(), 58);
@@ -689,7 +689,7 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
   geos::geom::Geometry* Polys_coll = Factory->buildGeometry(Polys);
 
   std::vector<geos::geom::LineString*>* NodedAll =
-      openfluid::landr::LandRTools::getNodedLines(Polys_coll, Reach_coll,
+      openfluid::landr::LandRTools::computeNodedLines(Polys_coll, Reach_coll,
                                                   snapTolerance);
 
   BOOST_CHECK_EQUAL(NodedAll->size(), 59);
@@ -725,7 +725,7 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
+BOOST_AUTO_TEST_CASE(check_computeNodedLines_virtual_snap)
 {
   openfluid::core::GeoVectorValue Val(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/virtual", "field2.shp");
@@ -738,10 +738,10 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
       Val2);
 
   std::vector<geos::geom::LineString*> Field_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*Vect);
 
   std::vector<geos::geom::LineString*> Soil_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect2);
+      openfluid::landr::LandRTools::computeVectorOfExteriorRings(*Vect2);
 
   std::vector<geos::geom::Geometry*> Fields;
   std::vector<geos::geom::Geometry*> Soils;
@@ -757,7 +757,7 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
   double snapTolerance = 0.2;
 
   std::vector<geos::geom::LineString*>* NodedPolys =
-      openfluid::landr::LandRTools::getNodedLines(Field_coll, Soil_coll,
+      openfluid::landr::LandRTools::computeNodedLines(Field_coll, Soil_coll,
                                                   snapTolerance);
 
   BOOST_CHECK_EQUAL(NodedPolys->size(), 58);
@@ -776,7 +776,7 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
   snapTolerance = 10;
 
   NodedPolys->clear();
-  NodedPolys = openfluid::landr::LandRTools::getNodedLines(Field_coll,
+  NodedPolys = openfluid::landr::LandRTools::computeNodedLines(Field_coll,
                                                            Soil_coll,
                                                            snapTolerance);
 
@@ -837,7 +837,8 @@ BOOST_AUTO_TEST_CASE(check_intersect_2Polygons)
 
   geos::geom::Geometry *Geom2=Vect2->geometries();
 
-  std::vector<geos::geom::Polygon*> IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
+  std::vector<geos::geom::Polygon*> IntersectPolys  =
+      openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
 //  for (unsigned int i = 0; i < IntersectPolys.size(); i++)
 //    std::cout << IntersectPolys.at(i)->toString() << std::endl;
   BOOST_CHECK_EQUAL(IntersectPolys.size(), 6);
@@ -869,7 +870,9 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 
   geos::geom::Point * PointNode=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(CoorNode);
 
-  vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), *PointNode,0.01);
+  vEntities=
+  openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																										 *PointNode,0.01);
   BOOST_CHECK(vEntities.empty());
 
   geos::geom::Coordinate Coor;
@@ -878,18 +881,25 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
   geos::geom::Point * Point=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(Coor);
 
 
-  BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-                                                                 *Point,0),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(
+  openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+																									     *Point,0),
+																									     openfluid::base::FrameworkException);
 
 
-  vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), *Point,0.0001);
+  vEntities=
+  openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																										 *Point,0.0001);
   BOOST_CHECK(vEntities.empty());
 
-  vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), *Point,1);
+  vEntities=
+  openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																										 *Point,1);
 
   BOOST_CHECK_EQUAL(vEntities.size(),2);
 
-  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength())));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(),
+               (vEntities[0]->getLength()+vEntities[1]->getLength())));
   double distance=vEntities[0]->getEndPoint()->getCoordinate()->distance(*(Point->getCoordinate()));
   BOOST_CHECK(distance<1);
   distance=vEntities[1]->getStartPoint()->getCoordinate()->distance(*(Point->getCoordinate()));
@@ -930,10 +940,13 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
   geos::geom::Point * PointEndNode=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(CoorNode);
   vPoints.push_back(PointEndNode);
 
-  BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-                                                                          vPoints,0,vEntities),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoints
+  									(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+							      vPoints,0,vEntities),
+							      openfluid::base::FrameworkException);
 
-  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), vPoints,0.01,vEntities);
+  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																											vPoints,0.01,vEntities);
   BOOST_CHECK_EQUAL(vEntities.size(),1);
 
   vPoints.clear();
@@ -951,16 +964,19 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
 
   vEntities.clear();
 
-  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), vPoints,0.0001,vEntities);
+  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																											vPoints,0.0001,vEntities);
   BOOST_CHECK_EQUAL(vEntities.size(),1);
 
   vEntities.clear();
 
-  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()), vPoints,1,vEntities);
+  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+  																											vPoints,1,vEntities);
   BOOST_CHECK_EQUAL(vEntities.size(),3);
 
 
-  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength()+vEntities[2]->getLength())));
+  BOOST_CHECK( openfluid::scientific::isVeryClose(Graph->entity(7)->getLength(),
+             (vEntities[0]->getLength()+vEntities[1]->getLength()+vEntities[2]->getLength())));
 
   delete Val;
   delete Graph;
@@ -992,7 +1008,8 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   geos::geom::Geometry *Geom1=Vect->geometries();
   geos::geom::Geometry *GeomHorse=VectHorse->geometries();
 
-  std::vector<geos::geom::Polygon*> IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, GeomHorse);
+  std::vector<geos::geom::Polygon*> IntersectPolys  =
+      openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, GeomHorse);
   BOOST_CHECK_EQUAL(IntersectPolys.size(), 3);
 
   std::vector<geos::geom::Polygon*>::iterator it=IntersectPolys.begin();
@@ -1075,7 +1092,8 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
   geos::geom::Geometry *Geom2=VectSU2->geometries();
 
 
-  std::vector<geos::geom::Polygon*> IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
+  std::vector<geos::geom::Polygon*> IntersectPolys  =
+      openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
 
   std::vector<geos::geom::Geometry*> GeomPolygons;
   const geos::geom::GeometryFactory* Factory ;
@@ -1089,12 +1107,13 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
   std::vector<geos::geom::LineString*> PolyRings;
   unsigned int i2End=GeomPolygons_coll->getNumGeometries();
   for (unsigned int i = 0; i < i2End; i++)
-    PolyRings.push_back(
-        const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(GeomPolygons_coll->getGeometryN(
-            i)))->getExteriorRing()));
+    PolyRings.push_back(const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>
+                        (const_cast<geos::geom::Geometry*>(GeomPolygons_coll->getGeometryN(i)))->
+                        getExteriorRing()));
 
 
-  std::vector<geos::geom::LineString*>* cleanLines  =  openfluid::landr::LandRTools::cleanLineStrings(PolyRings,SnapTolerance);
+  std::vector<geos::geom::LineString*>* cleanLines  =
+      openfluid::landr::LandRTools::cleanLineStrings(PolyRings,SnapTolerance);
 
   BOOST_CHECK_EQUAL(cleanLines->size(), 26);
 
@@ -1120,7 +1139,7 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_getNodesFromVectorOfLines)
+BOOST_AUTO_TEST_CASE(check_computeNodesFromVectorOfLines)
 {
 
   openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
@@ -1130,9 +1149,9 @@ BOOST_AUTO_TEST_CASE(check_getNodesFromVectorOfLines)
       Val);
 
   std::vector<geos::geom::LineString*> Geoms =
-      openfluid::landr::LandRTools::getVectorOfLines(*Vect);
+      openfluid::landr::LandRTools::computeVectorOfLines(*Vect);
 
-  std::vector<geos::geom::Point*> Points=openfluid::landr::LandRTools::getNodesFromVectorOfLines(Geoms);
+  std::vector<geos::geom::Point*> Points=openfluid::landr::LandRTools::computeNodesFromVectorOfLines(Geoms);
   BOOST_CHECK_EQUAL(Points.size(),9);
 
   delete Vect;

@@ -102,9 +102,9 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
 
   // left buttons
 
+  QPushButton* TheButton;
   QVBoxLayout* ButtonsLayout = new QVBoxLayout(ui->ButtonsFrame);
 
-  QPushButton* TheButton;
   TheButton = createButton(Actions->action("ProjectNew"),tr("Create a project..."));
   ButtonsLayout->addWidget(TheButton);
 
@@ -122,10 +122,20 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   ButtonsHLine = new QFrame(ui->ButtonsFrame);
   ButtonsHLine->setFrameStyle(QFrame::HLine | QFrame::Sunken);
   ButtonsHLine->setLineWidth(1);
-  ButtonsLayout->addWidget(ButtonsHLine);
 
+#if defined(ENABLE_MARKET_INTEGRATION) || defined(ENABLE_WARESDEV_INTEGRATION)
+  ButtonsLayout->addWidget(ButtonsHLine);
+#endif
+
+#ifdef ENABLE_MARKET_INTEGRATION
   TheButton = createButton(Actions->action("MarketAccess"),tr("Access to OpenFLUID-Market..."));
   ButtonsLayout->addWidget(TheButton);
+#endif
+
+#ifdef ENABLE_WARESDEV_INTEGRATION
+  TheButton = createButton(Actions->action("DevLaunchDevStudio"),tr("Launch OpenFLUID-DevStudio..."));
+  ButtonsLayout->addWidget(TheButton);
+#endif
 
   ButtonsLayout->setAlignment(Qt::AlignTop);
   ui->ButtonsFrame->setLayout(ButtonsLayout);

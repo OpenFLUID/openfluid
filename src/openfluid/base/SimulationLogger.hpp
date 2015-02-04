@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file SimulationLogger.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -101,7 +101,8 @@ class OPENFLUID_API SimulationLogger
     ~SimulationLogger();
 
 
-    void addWarning(const std::string& Sender, const std::string& Source, const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
+    void addWarning(const std::string& Sender, const std::string& Source,
+                    const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
     { addLog("[Warning]",Sender,Source, TimeIndex, Msg); m_WarningFlag = true; m_RealWarningsCount++; };
 
 
@@ -117,7 +118,8 @@ class OPENFLUID_API SimulationLogger
     { addLog("[Warning]",Sender,Msg); m_WarningFlag = true; m_RealWarningsCount++; };
 
 
-    void addMessage(const std::string& Sender, const std::string& Source, const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
+    void addMessage(const std::string& Sender, const std::string& Source,
+                    const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
     { addLog("[Message]",Sender,Source, TimeIndex, Msg); };
 
 

@@ -29,16 +29,17 @@
   
 */
 
+
 /**
-  @file ScientificHelpers.hpp
+  @file FloatingPoint.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
 
-#ifndef __OPENFLUID_SCIENTIFIC_SCIENTIFICHELPERS_HPP__
-#define __OPENFLUID_SCIENTIFIC_SCIENTIFICHELPERS_HPP__
+#ifndef __OPENFLUID_SCIENTIFIC_FLOATINGPOINT_HPP__
+#define __OPENFLUID_SCIENTIFIC_FLOATINGPOINT_HPP__
 
 
 #include <cmath>
@@ -106,4 +107,4 @@ inline bool IsVeryClose(double A, double B, double Epsilon)
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_SCIENTIFIC_SCIENTIFICHELPERS_HPP__ */
+#endif /* __OPENFLUID_SCIENTIFIC_FLOATINGPOINT_HPP__ */

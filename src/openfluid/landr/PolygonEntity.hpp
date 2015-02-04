@@ -30,9 +30,9 @@
 */
 
 /**
- @file PolygonEntity.hpp
+  @file PolygonEntity.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_POLYGONENTITY_HPP__
@@ -85,12 +85,14 @@ class OPENFLUID_API PolygonEntity: public LandREntity
     typedef std::map<LineStringEntity*, PolygonEdge*> LineStringNeighboursMap_t;
 
     /**
-     @brief A Map of neighbours of PolygonEntity type and the related vector of PolygonEdge that are between this PolygonEntity and his neighbours.
+     @brief A Map of neighbours of PolygonEntity type and the related vector of PolygonEdge
+      that are between this PolygonEntity and his neighbours.
      */
     NeighboursMap_t* mp_NeighboursMap;
 
     /**
-     @brief A Map of neighbours of LineStringEntity type and the related PolygonEdge that is between this PolygonEntity and his neighbours, if exist.
+     @brief A Map of neighbours of LineStringEntity type and the related PolygonEdge
+      that is between this PolygonEntity and his neighbours, if exist.
      */
     LineStringNeighboursMap_t* mp_LineStringNeighboursMap;
 
@@ -135,9 +137,10 @@ class OPENFLUID_API PolygonEntity: public LandREntity
     /**
      @brief Returns a vector of geos::geom::LineString representing the linear intersections between two PolygonEntity.
      @param Other The PolygonEntity to compare to.
-     @return A vector of new allocated geos::geom::LineString representing the linear intersections (eventually merged) between this PolygonEntity and Other.
+     @return A vector of new allocated geos::geom::LineString representing the linear
+      intersections (eventually merged) between this PolygonEntity and Other.
      */
-    std::vector<geos::geom::LineString*> getLineIntersectionsWith(PolygonEntity& Other);
+    std::vector<geos::geom::LineString*> computeLineIntersectionsWith(PolygonEntity& Other);
 
     /**
      @brief Returns the PolygonEdge containing Segment.
@@ -158,7 +161,8 @@ class OPENFLUID_API PolygonEntity: public LandREntity
     std::vector<int> getOrderedNeighbourOfldIds();
 
     /**
-     @brief Returns a multimap of the length of the shared boundary of each neighbour of this PolygonEntity and each PolygonEntity neighbour,
+     @brief Returns a multimap of the length of the shared boundary of each
+      neighbour of this PolygonEntity and each PolygonEntity neighbour,
      ascending ordered by length shared boundary (shortest to longest boundary).
      */
     std::multimap<double,PolygonEntity*> getOrderedNeighboursByLengthBoundary();
@@ -199,11 +203,13 @@ class OPENFLUID_API PolygonEntity: public LandREntity
 
     /**
      @brief Computes the relations between this PolygonEntity and the LineStringEntity of an input LineStringGraph.
-     @details A LineStringEntity is considered as a neighbour if it lies within the buffer of this PolygonEntity polygon boundary.
+     @details A LineStringEntity is considered as a neighbour if it lies within the buffer
+      of this PolygonEntity polygon boundary.
      @param Graph The LineStringGraph to compare to.
      @param Relation The Relationship to use for comparison.
      @param BufferDistance The distance below which we consider that two elements are related.
-     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
+     @param ContactLength Min Length of the LineString in intersection with polygon
+     Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
      */
     void computeLineStringNeighbours(LineStringGraph& Graph,
                                      LandRTools::Relationship Relation,
@@ -214,11 +220,13 @@ class OPENFLUID_API PolygonEntity: public LandREntity
      @brief Computes the relations between this PolygonEntity and its PolygonEntities Neighbours by using
      the LineStringEntity of an input LineStringGraph which are considered as barriers.
      @details A barrier between two PolygonEntity will avoid to considered them as neighbours.
-     @details A LineStringEntity is considered as a barrier if it lies within the buffer of this PolygonEntity polygon boundary.
+     @details A LineStringEntity is considered as a barrier if it lies within the buffer
+      of this PolygonEntity polygon boundary.
      @param Graph The LineStringGraph to compare to.
      @param Relation The Relationship to use for comparison, the LandRTools::Relationship INTERSECTS is not allowed.
      @param BufferDistance The distance below which we consider that two elements are related.
-     @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
+     @param ContactLength Min Length of the LineString in intersection with polygon
+     Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
      */
     void computeNeighboursWithBarriers(LineStringGraph& Graph,
                                        LandRTools::Relationship Relation,
@@ -254,13 +262,14 @@ class OPENFLUID_API PolygonEntity: public LandREntity
          *  |  *           it becomes the neighbour :e.g, if LineStringNeighbour
          *  -  *           exists between PolygonEntity 1 and 2, the neighbour
          *  2  *           of PolygonEntity becomes this LineStringNeighbour.
-         *     *           Do NOT work for PointEntity topology
+         *     *
          *******
       \endverbatim
      @param LineTopology A line VectorDataset
-     @return A openfluid::landr:landREntity or an empty entity if not found.
+     @return A pair of openfluid::landr:landREntity and the length of the line of the VectorDataset
+      or an empty pair if not found.
      */
-    LandREntity *getNeighbourByLineTopology(VectorDataset LineTopology);
+   std::pair< LandREntity*, double> computeNeighbourByLineTopology(VectorDataset LineTopology);
 
 
 

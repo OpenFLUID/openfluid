@@ -30,9 +30,9 @@
 */
 
 /**
- @file LineStringEntity.hpp
+  @file LineStringEntity.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LINESTRINGENTITY_HPP__
@@ -129,6 +129,12 @@ class OPENFLUID_API LineStringEntity: public LandREntity, public geos::planargra
      @brief Compute the neighbours using line orientation of this LineStringEntity.
      */
     void computeNeighbours();
+
+    /**
+     @brief Returns a vector of LineStringEntity down and upneighbours with NodeDegree=2.
+     @return A vector of LineStringEntity.
+    */
+    std::vector<LineStringEntity*>  getLineNeighboursDegree2();
 
 };
 

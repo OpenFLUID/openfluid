@@ -67,7 +67,8 @@ class OPENFLUID_API SimulationProfiler
 
   private:
 
-    typedef std::map<openfluid::base::SimulationStatus::SimulationStage,boost::posix_time::time_duration> CumulativeSimulatorProfile_t;
+    typedef std::map<openfluid::base::SimulationStatus::SimulationStage,boost::posix_time::time_duration>
+      CumulativeSimulatorProfile_t;
 
     typedef std::map<openfluid::ware::WareID_t,CumulativeSimulatorProfile_t> CumulativeModelProfile_t;
 

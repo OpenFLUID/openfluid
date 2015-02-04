@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file RuntimeEnv.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -193,7 +193,8 @@ class OPENFLUID_API RuntimeEnvironment
     inline std::string getOutputDir() const { return m_OutputDir; };
 
     /**
-      Sets the output directory as a directory located in the user data directory, with a name based on the current date-time
+      Sets the output directory as a directory located in the user data directory,
+      with a name based on the current date-time
     */
     void setDateTimeOutputDir();
 
@@ -204,27 +205,32 @@ class OPENFLUID_API RuntimeEnvironment
     inline std::string getMarketBagDir() const { return m_MarketBagDir; };
 
     /**
-      @return the market bag directory for the current OpenFLUID version (i.e. $HOME/.openfluid/market-bag/2.0.0)
+      @return the market bag directory for the current OpenFLUID version
+      (i.e. $HOME/.openfluid/market-bag/2.0.0)
      */
     inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
 
     /**
-      @return the market bag directory for simulators of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/simulators)
+      @return the market bag directory for simulators of the current version
+      (i.e. $HOME/.openfluid/market-bag/2.0.0/simulators)
      */
     inline std::string getMarketBagSimVersionDir() const { return m_MarketBagSimVersionDir; };
 
     /**
-      @return the market bag directory for observers of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/observers)
+      @return the market bag directory for observers of the current version
+      (i.e. $HOME/.openfluid/market-bag/2.0.0/observers)
      */
     inline std::string getMarketBagObsVersionDir() const { return m_MarketBagObsVersionDir; };
 
     /**
-      @return the market bag directory for builderexts of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/builderexts)
+      @return the market bag directory for builderexts of the current version
+      (i.e. $HOME/.openfluid/market-bag/2.0.0/builderexts)
      */
     inline std::string getMarketBagBuildVersionDir() const { return m_MarketBagBuildVersionDir; };
 
     /**
-      @return the market bag directory for datasets of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/datasets)
+      @return the market bag directory for datasets of the current version
+      (i.e. $HOME/.openfluid/market-bag/2.0.0/datasets)
      */
     inline std::string getMarketBagDataVersionDir() const { return m_MarketBagDataVersionDir; };
 
@@ -262,7 +268,8 @@ class OPENFLUID_API RuntimeEnvironment
       { return m_HomeDir; };
 
     /**
-      Returns the absolute path for a given relative path in the user OpenFLUID directory (i.e. $HOME/.openfluid/RelativePath)
+      Returns the absolute path for a given relative path in the user OpenFLUID directory
+      (i.e. $HOME/.openfluid/RelativePath)
       @param[in] RelativePath the given relative path
       @return the absolute path
     */
@@ -290,7 +297,7 @@ class OPENFLUID_API RuntimeEnvironment
       @return the path for a given output file
     */
     inline std::string getOutputFullPath(std::string Filename) const
-      { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
+    { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
 
     /**
       Returns the path for a given simulator plugin file, taking into account the simulator plugins path search order
@@ -306,11 +313,14 @@ class OPENFLUID_API RuntimeEnvironment
     */
     void addExtraSimulatorsPluginsPaths(std::string SemicolonSeparatedPaths);
 
-    inline void resetExtraSimulatorsPluginsPaths() { m_ExtraSimulatorsPlugsDirs.clear(); };
+    inline void resetExtraSimulatorsPluginsPaths()
+    { m_ExtraSimulatorsPlugsDirs.clear(); };
 
-    inline std::vector<std::string> getDefaultSimulatorsPluginsPaths() const  { return m_DefaultSimulatorsPlugsDirs;  };
+    inline std::vector<std::string> getDefaultSimulatorsPluginsPaths() const
+    { return m_DefaultSimulatorsPlugsDirs;  };
 
-    inline std::vector<std::string> getExtraSimulatorsPluginsPaths() const  { return m_ExtraSimulatorsPlugsDirs;  };
+    inline std::vector<std::string> getExtraSimulatorsPluginsPaths() const
+    { return m_ExtraSimulatorsPlugsDirs;  };
 
     /**
       Returns the ordered list of paths used to search for simulator plugins
@@ -319,7 +329,9 @@ class OPENFLUID_API RuntimeEnvironment
     inline std::vector<std::string> getSimulatorsPluginsPaths() const
     {
       std::vector<std::string> ComposedPaths(m_ExtraSimulatorsPlugsDirs);
-      ComposedPaths.insert(ComposedPaths.end(), m_DefaultSimulatorsPlugsDirs.begin(), m_DefaultSimulatorsPlugsDirs.end());
+      ComposedPaths.insert(ComposedPaths.end(),
+                           m_DefaultSimulatorsPlugsDirs.begin(),
+                           m_DefaultSimulatorsPlugsDirs.end());
       return ComposedPaths;
     };
 
@@ -339,9 +351,11 @@ class OPENFLUID_API RuntimeEnvironment
 
     inline void resetExtraObserversPluginsPaths() { m_ExtraObserversPlugsDirs.clear(); };
 
-    inline std::vector<std::string> getDefaultObserversPluginsPaths() const  { return m_DefaultObserversPlugsDirs;  };
+    inline std::vector<std::string> getDefaultObserversPluginsPaths() const
+    { return m_DefaultObserversPlugsDirs;  };
 
-    inline std::vector<std::string> getExtraObserversPluginsPaths() const  { return m_ExtraObserversPlugsDirs;  };
+    inline std::vector<std::string> getExtraObserversPluginsPaths() const
+    { return m_ExtraObserversPlugsDirs;  };
 
     /**
       Returns the ordered list of paths used to search for observer plugins
@@ -350,7 +364,9 @@ class OPENFLUID_API RuntimeEnvironment
     inline std::vector<std::string> getObserversPluginsPaths() const
     {
       std::vector<std::string> ComposedPaths(m_ExtraObserversPlugsDirs);
-      ComposedPaths.insert(ComposedPaths.end(), m_DefaultObserversPlugsDirs.begin(), m_DefaultObserversPlugsDirs.end());
+      ComposedPaths.insert(ComposedPaths.end(),
+                           m_DefaultObserversPlugsDirs.begin(),
+                           m_DefaultObserversPlugsDirs.end());
       return ComposedPaths;
     };
 
@@ -358,7 +374,8 @@ class OPENFLUID_API RuntimeEnvironment
 
     /**
       Returns the install prefix path.
-      The install prefix is given at compile time, but can be overriden by the OPENFLUID_INSTALL_PREFIX environment variable (recommended on windows systems).
+      The install prefix is given at compile time, but can be overriden by the
+      OPENFLUID_INSTALL_PREFIX environment variable (recommended on windows systems).
       @return the install prefix path
     */
     inline std::string getInstallPrefix() const

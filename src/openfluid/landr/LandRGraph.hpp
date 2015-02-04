@@ -30,9 +30,9 @@
 */
 
 /**
- @file LandRGraph.hpp
+  @file LandRGraph.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_LANDRGRAPH_HPP__
@@ -157,7 +157,7 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
      @param Geom A geos::geom::Geometry.
      @param OfldId The identifier of the new LandREntity.
      */
-    virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
+    virtual LandREntity* createNewEntity(const geos::geom::Geometry* Geom,
                                       unsigned int OfldId) = 0;
 
     /**
@@ -264,7 +264,7 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
      @param Entity The LandREntity to get the centroid coordinate from.
      @return The raster value corresponding to the LandREntity centroid coordinate.
      */
-    virtual float* getRasterValueForEntityCentroid(const LandREntity& Entity);
+    virtual double getRasterValueForEntityCentroid(const LandREntity& Entity);
 
     /**
      @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
@@ -320,7 +320,8 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
      @param AttributeName The name of the attribute to create.
      @param Vector The Name of the core::GeoVectorValue.
      @param Column The column of the core::GeoVectorValue to upload.
-     @param Thresh The threshold of minimum distance between the core::GeoVectorValue geometry and the LandRGraph geometry.
+     @param Thresh The threshold of minimum distance between
+     the core::GeoVectorValue geometry and the LandRGraph geometry.
      */
     virtual void setAttributeFromVectorLocation(const std::string& AttributeName,
                                                 openfluid::core::GeoVectorValue& Vector,

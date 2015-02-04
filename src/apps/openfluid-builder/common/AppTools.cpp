@@ -43,8 +43,9 @@
 
 #include "AppTools.hpp"
 #include <QDir>
-
-
+#include <QApplication>
+#include <QMessageBox>
+#include <QProcess>
 
 
 QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
@@ -61,7 +62,8 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
     TmpDate.setFromString(LastModDate,"%Y%m%dT%H%M%S");
     LastModDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
 
-    InfosStr += "<table><tr><td valign='middle' width='74px' style='padding: 5px;'><IMG STYLE='vertical-align:middle;' SRC=':/icons/openfluid_icon.png' /></td>"
+    InfosStr += "<table><tr><td valign='middle' width='74px' style='padding: 5px;'>"
+                "<IMG STYLE='vertical-align:middle;' SRC=':/icons/openfluid_icon.png' /></td>"
                 "<td valign='middle' style='padding: 5px;'><i>Project:</i><br>"
                 "<b><big>"+QString(Name.c_str())+"</big></b></td>"
                 "</tr></table><hr/>";
@@ -86,4 +88,35 @@ QColor getRandomColor()
   return QColor(qrand() % 256,qrand() % 256,qrand() % 256);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+#include <iostream>
+
+void launchDevStudio()
+{
+  QString ExeName;
+
+  // TODO set devstudio exe name in CMake config
+
+#if WIN32
+  ExeName = "openfluid-devstudio.exe";
+#endif
+
+#if linux
+  ExeName = "openfluid-devstudio";
+#endif
+
+  QString ExePath = QApplication::applicationDirPath()+"/"+ExeName;
+
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  bool ExecOK = QProcess::startDetached(ExePath);
+  QApplication::restoreOverrideCursor();
+
+  if (!ExecOK)
+    QMessageBox::critical(QApplication::activeWindow(),"OpenFLUID-Builder",
+                          QObject::tr("OpenFLUID-DevStudio could not be launched"),
+                          QMessageBox::Close);
+}
 

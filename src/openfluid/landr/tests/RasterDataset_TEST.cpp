@@ -30,9 +30,9 @@
 */
 
 /**
- @file RasterDataset_TEST.cpp
+  @file RasterDataset_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
@@ -97,8 +97,8 @@ BOOST_AUTO_TEST_CASE(check_Properties)
   BOOST_REQUIRE(
       GDALGetGeoTransform(Rast->source(), adfGeoTransform) == CE_None);
 
-  BOOST_CHECK_EQUAL(Rast->getOrigin()->x, adfGeoTransform[0]);
-  BOOST_CHECK_EQUAL(Rast->getOrigin()->y, adfGeoTransform[3]);
+  BOOST_CHECK_EQUAL(Rast->computeOrigin()->x, adfGeoTransform[0]);
+  BOOST_CHECK_EQUAL(Rast->computeOrigin()->y, adfGeoTransform[3]);
 
   BOOST_CHECK_EQUAL(Rast->getPixelWidth(), adfGeoTransform[1]);
   BOOST_CHECK_EQUAL(Rast->getPixelHeight(), adfGeoTransform[5]);
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(check_CoordinateToPixel)
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
 
-  std::pair<int, int> Pixel = Rast->getPixelFromCoordinate(*Rast->getOrigin());
+  std::pair<int, int> Pixel = Rast->getPixelFromCoordinate(*Rast->computeOrigin());
 
   BOOST_CHECK_EQUAL(Pixel.first, 0);
   BOOST_CHECK_EQUAL(Pixel.second, 0);
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       Val);
 
-  BOOST_CHECK_EQUAL(Rast->getValueOfCoordinate(*Rast->getOrigin()), 96);
+  BOOST_CHECK_EQUAL(Rast->getValueOfCoordinate(*Rast->computeOrigin()), 96);
 
   double x = 679288.64458;
   double y = 132607.541088;
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
   Rast = new openfluid::landr::RasterDataset(Val);
 
   BOOST_CHECK(
-      openfluid::scientific::isVeryClose(double(Rast->getValueOfCoordinate(*Rast->getOrigin())), 98.9708));
+      openfluid::scientific::isVeryClose(double(Rast->getValueOfCoordinate(*Rast->computeOrigin())), 98.9708));
 
   BOOST_CHECK(
       openfluid::scientific::isVeryClose(double(Rast->getValueOfCoordinate(geos::geom::Coordinate(x, y))), 84.587));
@@ -281,16 +281,20 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 
   BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 400);
 
-  openfluid::core::DoubleValue Val=VectorLayer->GetFeature(0)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  openfluid::core::DoubleValue Val=VectorLayer->GetFeature(0)->
+  GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
   BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 98.9708));
 
-  Val=VectorLayer->GetFeature(1)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  Val=VectorLayer->GetFeature(1)->
+  GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
   BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 99.201));
 
-  Val=VectorLayer->GetFeature(331)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  Val=VectorLayer->GetFeature(331)->
+  GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
   BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 42.327));
 
-  Val=VectorLayer->GetFeature(399)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  Val=VectorLayer->GetFeature(399)->
+  GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
   BOOST_CHECK( openfluid::scientific::isVeryClose(Val.get(), 21.0336));
 
   delete Rast;

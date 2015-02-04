@@ -124,7 +124,9 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
     /**
       Copy constructor
     */
-    MatrixValue(const MatrixValue& Val) : CompoundValue(static_cast<const CompoundValue&>(Val)), Matrix<double>(static_cast<const Matrix<double>& >(Val)) {};
+    MatrixValue(const MatrixValue& Val) :
+      CompoundValue(static_cast<const CompoundValue&>(Val)),
+      Matrix<double>(static_cast<const Matrix<double>& >(Val)) {};
 
     /**
       Constructor, creates a Matrix containing ColsNbr x RowsNbr elements
@@ -134,7 +136,8 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
     /**
       Constructor, creates a Matrix containing ColsNbr x RowsNbr elements, initialized with value InitValue
     */
-    MatrixValue(unsigned long ColsNbr, unsigned long RowsNbr, double InitValue) : CompoundValue(), Matrix<double>(ColsNbr,RowsNbr,InitValue) {};
+    MatrixValue(unsigned long ColsNbr, unsigned long RowsNbr, double InitValue) :
+      CompoundValue(), Matrix<double>(ColsNbr,RowsNbr,InitValue) {};
 
     Value& operator =(const Value& Other);
 

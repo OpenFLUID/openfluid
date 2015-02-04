@@ -240,7 +240,8 @@ void copyDirectoryRecursively(const std::string& SourceDir,
 
     if (boost::filesystem::is_regular(it->status()))
     {
-      boost::filesystem::copy_file(it->path(),boost::filesystem::path(DestDirPath.string()+"/"+it->path().filename().string()));
+      boost::filesystem::copy_file(it->path(),
+                                   boost::filesystem::path(DestDirPath.string()+"/"+it->path().filename().string()));
     }
 
     if (boost::filesystem::is_directory(it->status()))
@@ -277,7 +278,8 @@ void copyDirectoryContentsRecursively(const std::string& SourceDir,
 
     if (boost::filesystem::is_regular(it->status()))
     {
-      boost::filesystem::copy_file(it->path(),boost::filesystem::path(IntoDirPath.string()+"/"+it->path().filename().string()));
+      boost::filesystem::copy_file(it->path(),
+                                   boost::filesystem::path(IntoDirPath.string()+"/"+it->path().filename().string()));
     }
 
     if (boost::filesystem::is_directory(it->status()))

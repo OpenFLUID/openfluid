@@ -30,20 +30,21 @@
 */
 
 /**
- @file GeoValue.hpp
+  @file GeoValue.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#ifndef GEOVALUE_HPP_
-#define GEOVALUE_HPP_
+#ifndef __OPENFLUID_CORE_GEOVALUE_HPP__
+#define __OPENFLUID_CORE_GEOVALUE_HPP__
 
 #include <openfluid/core/UnstructuredValue.hpp>
 #include <openfluid/dllexport.hpp>
 
-namespace openfluid {
-namespace core {
+
+namespace openfluid { namespace core {
+
 
 /**
   @brief Abstract class for geospatial data.
@@ -73,4 +74,4 @@ class OPENFLUID_API GeoValue: public openfluid::core::UnstructuredValue
 
 } } // namespaces
 
-#endif /* GEOVALUE_HPP_ */
+#endif /* __OPENFLUID_CORE_GEOVALUE_HPP__ */

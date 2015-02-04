@@ -32,7 +32,7 @@
 
 
 /**
-  @file DotViewExtension.cpp
+  @file GraphvizViewExtension.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

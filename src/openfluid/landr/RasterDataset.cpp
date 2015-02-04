@@ -30,9 +30,9 @@
 */
 
 /**
- @file RasterDataset.cpp
+  @file RasterDataset.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "RasterDataset.hpp"
@@ -148,8 +148,8 @@ GDALRasterBand* RasterDataset::rasterBand(unsigned int RasterBandIndex)
 
 std::pair<int, int> RasterDataset::getPixelFromCoordinate(geos::geom::Coordinate Coo)
 {
-  int offsetX = int((Coo.x - getOrigin()->x) / getPixelWidth());
-  int offsetY = int((Coo.y - getOrigin()->y) / getPixelHeight());
+  int offsetX = int((Coo.x - computeOrigin()->x) / getPixelWidth());
+  int offsetY = int((Coo.y - computeOrigin()->y) / getPixelHeight());
 
   return std::make_pair(offsetX, offsetY);
 }
@@ -159,7 +159,7 @@ std::pair<int, int> RasterDataset::getPixelFromCoordinate(geos::geom::Coordinate
 // =====================================================================
 
 
-geos::geom::Coordinate* RasterDataset::getOrigin()
+geos::geom::Coordinate* RasterDataset::computeOrigin()
 {
   if (!mp_GeoTransform)
     computeGeoTransform();

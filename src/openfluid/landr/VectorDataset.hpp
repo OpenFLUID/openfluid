@@ -30,9 +30,9 @@
 */
 
 /**
- @file VectorDataset.hpp
+  @file VectorDataset.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_LANDR_VECTORDATASET_HPP__
@@ -83,7 +83,8 @@ class OPENFLUID_API VectorDataset
     std::map<unsigned int, FeaturesList_t> m_Features;
 
     /**
-     @brief A map of geos::geom::Geometry representing a collection of all the geometries of the layers of this VectorDataset, indexed by layer index.
+     @brief A map of geos::geom::Geometry representing a collection of all
+      the geometries of the layers of this VectorDataset, indexed by layer index.
      */
     std::map<unsigned int, geos::geom::Geometry*> m_Geometries;
 
@@ -163,7 +164,8 @@ class OPENFLUID_API VectorDataset
      *
      @param LayerName The name of the layer to create.
      @param LayerType The type of the layer to create, default wkbUnknown.
-     @param SpatialRef The coordinate system to use for the new layer, or NULL (default) if no coordinate system is available.
+     @param SpatialRef The coordinate system to use for the new layer,
+     or NULL (default) if no coordinate system is available.
      @throw openfluid::base::OFException if the creation of layer failed.
      */
     void addALayer(std::string LayerName = "",
@@ -255,10 +257,11 @@ class OPENFLUID_API VectorDataset
      @param LayerIndex The index of the layer to query, default 0.
      @return A list of OGRFeature and geos::geom::Geometry of this VectorDataset.
      */
-    FeaturesList_t getFeatures(unsigned int LayerIndex = 0);
+    FeaturesList_t features(unsigned int LayerIndex = 0);
 
     /**
-     @brief Gets a geos::geom::Geometry representing a collection of all the geometries of the layer LayerIndex of this GeoVectorValue.
+     @brief Gets a geos::geom::Geometry representing a collection of all
+      the geometries of the layer LayerIndex of this GeoVectorValue.
      @param LayerIndex The index of the layer to query, default 0.
      @return A geos::geom::Geometry.
      */
@@ -271,7 +274,15 @@ class OPENFLUID_API VectorDataset
      */
     bool isPointType(unsigned int LayerIndex = 0);
 
-
+    /**
+      @brief Sets an integer Field with an index list (increment value one by one)
+      @param FieldName The name of the field to query (must exist).
+      @param BeginValue The begin value, default 1.
+      @param LayerIndex The index of the layer to query, default 0.
+     */
+    void setIndexIntField(const std::string& FieldName,
+                          int BeginValue = 1,
+                          unsigned int LayerIndex = 0);
 
 };
 

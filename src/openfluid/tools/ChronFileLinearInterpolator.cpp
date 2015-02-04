@@ -51,8 +51,10 @@ namespace openfluid { namespace tools {
 
 
 ChronFileLinearInterpolator::ChronFileLinearInterpolator(const std::string& InFilePath, const std::string& OutFilePath,
-                                                          const openfluid::core::DateTime& BeginDate, const openfluid::core::DateTime& EndDate,
-                                                          const openfluid::core::Duration_t& DeltaT, PreProcess PrePcs)
+                                                         const openfluid::core::DateTime& BeginDate,
+                                                         const openfluid::core::DateTime& EndDate,
+                                                         const openfluid::core::Duration_t& DeltaT,
+                                                         PreProcess PrePcs)
 : ChronFileInterpolator(InFilePath,OutFilePath,BeginDate,EndDate,DeltaT, PrePcs)
 {
 

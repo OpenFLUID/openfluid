@@ -30,10 +30,10 @@
 */
 
 /**
- @file GeoRasterValue.hpp
+  @file GeoRasterValue.hpp
 
- @author Aline LIBRES <libres@supagro.inra.fr>
- @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_GEORASTERVALUE_HPP__
@@ -45,8 +45,9 @@
 #include "gdal_priv.h"
 #include "cpl_conv.h" // for CPLMalloc()
 
-namespace openfluid {
-namespace core {
+
+namespace openfluid { namespace core {
+
 
 /**
  * @brief Container class for geospatial raster data,
@@ -111,6 +112,6 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
     std::string getAbsolutePath();
 };
 
-}
-} // namespaces
+} } // namespaces
+
 #endif /* __OPENFLUID_CORE_GEORASTERVALUE_HPP__ */

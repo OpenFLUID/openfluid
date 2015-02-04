@@ -30,10 +30,10 @@
 */
 
 /**
- @file UnstructuredValue.hpp
+  @file UnstructuredValue.hpp
 
- @author Aline LIBRES <libres@supagro.inra.fr>
- @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_UNSTRUCTUREDVALUE_HPP__

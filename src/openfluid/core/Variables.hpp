@@ -29,6 +29,11 @@
 
 */
 
+/**
+  @file Variables.hpp
+
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #ifndef __OPENFLUID_CORE_VARIABLES_HPP__
 #define __OPENFLUID_CORE_VARIABLES_HPP__
@@ -37,8 +42,8 @@
 #include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/dllexport.hpp>
 
-namespace openfluid {
-namespace core {
+
+namespace openfluid { namespace core {
 
 class OPENFLUID_API Variables
 {
@@ -75,7 +80,8 @@ class OPENFLUID_API Variables
 
     bool getLatestIndexedValue(const VariableName_t& aName, IndexedValue& IndValue) const;
 
-    bool getLatestIndexedValues(const VariableName_t& aName, const TimeIndex_t& anIndex, IndexedValueList& IndValueList) const;
+    bool getLatestIndexedValues(const VariableName_t& aName, const TimeIndex_t& anIndex,
+                                IndexedValueList& IndValueList) const;
 
     bool getIndexedValues(const VariableName_t& aName,
                           const TimeIndex_t& aBeginIndex, const TimeIndex_t& anEndIndex,

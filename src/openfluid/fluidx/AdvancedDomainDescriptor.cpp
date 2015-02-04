@@ -30,9 +30,9 @@
 */
 
 /**
- @file AdvancedDomainDescriptor.cpp
+  @file AdvancedDomainDescriptor.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
@@ -300,7 +300,8 @@ bool AdvancedDomainDescriptor::isSpatialUnitExist(const std::string& ClassName, 
 // =====================================================================
 
 
-const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >& AdvancedDomainDescriptor::spatialUnitsByIdByClass() const
+const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >&
+  AdvancedDomainDescriptor::spatialUnitsByIdByClass() const
 {
   return m_Units;
 }
@@ -333,8 +334,9 @@ const AdvancedUnitDescriptor& AdvancedDomainDescriptor::spatialUnit(const std::s
 // =====================================================================
 
 
-const openfluid::fluidx::SpatialUnitDescriptor& AdvancedDomainDescriptor::spatialUnitDescriptor(const std::string& ClassName,
-                                                                                     int ID) const
+const openfluid::fluidx::SpatialUnitDescriptor&
+  AdvancedDomainDescriptor::spatialUnitDescriptor(const std::string& ClassName,
+                                                  int ID) const
 {
   return *(spatialUnit(ClassName, ID).UnitDescriptor);
 }

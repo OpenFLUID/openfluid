@@ -171,5 +171,7 @@ void OutputsWidget::tryToOpenFile(const QModelIndex& Index)
 
 void OutputsWidget::tryToExploreOutputDir()
 {
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
   QDesktopServices::openUrl(QUrl::fromLocalFile(QString(openfluid::base::ProjectManager::instance()->getOutputDir().c_str())));
+  QApplication::restoreOverrideCursor();
 }

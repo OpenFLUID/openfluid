@@ -52,7 +52,9 @@ namespace openfluid { namespace machine {
 
 double SimulationProfiler::getDurationInDecimalSeconds(const boost::posix_time::time_duration& Duration)
 {
-  return (static_cast<double>(Duration.total_seconds()) + (static_cast<double>(Duration.fractional_seconds()) / static_cast<double>(boost::posix_time::time_duration::ticks_per_second())));
+  return (static_cast<double>(Duration.total_seconds()) +
+         (static_cast<double>(Duration.fractional_seconds()) /
+             static_cast<double>(boost::posix_time::time_duration::ticks_per_second())));
 }
 
 
@@ -65,8 +67,10 @@ SimulationProfiler::SimulationProfiler(const openfluid::base::SimulationStatus* 
 : mp_SimStatus(SimStatus), m_OriginalModelSequence(OrigModelSequence), m_CurrentTimeIndex(0)
 {
 
-  m_CurrentSequenceFile.open(openfluid::base::RuntimeEnvironment::instance()->getOutputFullPath(openfluid::config::SCHEDULE_PROFILE_FILE).c_str(),std::ios::out);
-  m_CurrentProfileFile.open(openfluid::base::RuntimeEnvironment::instance()->getOutputFullPath(openfluid::config::TIMEINDEX_PROFILE_FILE).c_str(),std::ios::out);
+  m_CurrentSequenceFile.open(openfluid::base::RuntimeEnvironment::instance()
+  ->getOutputFullPath(openfluid::config::SCHEDULE_PROFILE_FILE).c_str(),std::ios::out);
+  m_CurrentProfileFile.open(openfluid::base::RuntimeEnvironment::instance()
+  ->getOutputFullPath(openfluid::config::TIMEINDEX_PROFILE_FILE).c_str(),std::ios::out);
 
   m_CurrentSequenceFile << "TIMEINDEX;<simulators call sequence>\n";
 
@@ -78,12 +82,18 @@ SimulationProfiler::SimulationProfiler(const openfluid::base::SimulationStatus* 
       It != m_OriginalModelSequence.end();
       ++It)
   {
-    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::INITPARAMS] = boost::posix_time::time_duration(0,0,0,0);
-    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::PREPAREDATA] = boost::posix_time::time_duration(0,0,0,0);
-    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::CHECKCONSISTENCY] = boost::posix_time::time_duration(0,0,0,0);
-    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::INITIALIZERUN] = boost::posix_time::time_duration(0,0,0,0);
-    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::RUNSTEP] = boost::posix_time::time_duration(0,0,0,0);
-    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::FINALIZERUN] = boost::posix_time::time_duration(0,0,0,0);
+    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::INITPARAMS] =
+        boost::posix_time::time_duration(0,0,0,0);
+    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::PREPAREDATA] =
+        boost::posix_time::time_duration(0,0,0,0);
+    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::CHECKCONSISTENCY] =
+        boost::posix_time::time_duration(0,0,0,0);
+    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::INITIALIZERUN] =
+        boost::posix_time::time_duration(0,0,0,0);
+    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::RUNSTEP] =
+        boost::posix_time::time_duration(0,0,0,0);
+    m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::FINALIZERUN] =
+        boost::posix_time::time_duration(0,0,0,0);
 
     m_CurrentProfileFile << ";" << *It;
   }
@@ -107,7 +117,8 @@ SimulationProfiler::~SimulationProfiler()
 
   std::ofstream CumulativeFile;
 
-  CumulativeFile.open(openfluid::base::RuntimeEnvironment::instance()->getOutputFullPath(openfluid::config::CUMULATIVE_PROFILE_FILE).c_str(),std::ios::out);
+  CumulativeFile.open(openfluid::base::RuntimeEnvironment::instance()
+  ->getOutputFullPath(openfluid::config::CUMULATIVE_PROFILE_FILE).c_str(),std::ios::out);
 
   WareIDSequence_t::const_iterator ItPrf;
   WareIDSequence_t::const_iterator ItPrfB = m_OriginalModelSequence.begin();
@@ -119,12 +130,19 @@ SimulationProfiler::~SimulationProfiler()
   for (ItPrf=ItPrfB;ItPrf!=ItPrfE;++ItPrf)
   {
     CumulativeFile << *ItPrf;
-    CumulativeFile << ";" << getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::INITPARAMS]);
-    CumulativeFile << ";" << getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::PREPAREDATA]);
-    CumulativeFile << ";" << getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::CHECKCONSISTENCY]);
-    CumulativeFile << ";" << getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::INITIALIZERUN]);
-    CumulativeFile << ";" << getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::RUNSTEP]);
-    CumulativeFile << ";" << getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::FINALIZERUN]);
+    CumulativeFile << ";" <<
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::INITPARAMS]);
+    CumulativeFile << ";" <<
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::PREPAREDATA]);
+    CumulativeFile << ";" <<
+        getDurationInDecimalSeconds(
+            m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::CHECKCONSISTENCY]);
+    CumulativeFile << ";" <<
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::INITIALIZERUN]);
+    CumulativeFile << ";" <<
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::RUNSTEP]);
+    CumulativeFile << ";" <<
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::FINALIZERUN]);
     CumulativeFile << "\n";
   }
 

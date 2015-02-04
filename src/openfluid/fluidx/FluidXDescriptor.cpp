@@ -30,9 +30,9 @@
 */
 
 /**
- @file FluidXDescriptor.cpp
+  @file FluidXDescriptor.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "FluidXDescriptor.hpp"
@@ -52,11 +52,12 @@
 
 #include <fstream>
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
+
 
 // =====================================================================
 // =====================================================================
+
 
 FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
     mp_Listener(Listener), m_IndentStr(" ")
@@ -65,8 +66,10 @@ FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
     mp_Listener = new openfluid::base::IOListener();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 FluidXDescriptor::~FluidXDescriptor()
 {
@@ -731,7 +734,9 @@ void FluidXDescriptor::parseFile(std::string Filename)
     {
       if (Root.tagName() == QString("openfluid"))
       {
-        for(QDomElement CurrNode = Root.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
+        for(QDomElement CurrNode = Root.firstChildElement();
+            !CurrNode.isNull();
+            CurrNode = CurrNode.nextSiblingElement())
         {
           if (CurrNode.tagName() == QString("run"))
           {

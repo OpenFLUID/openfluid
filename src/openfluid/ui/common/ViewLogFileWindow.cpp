@@ -32,7 +32,7 @@
 
 
 /**
-  @file ViewLog.cpp
+  @file ViewLogFileWindow.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */

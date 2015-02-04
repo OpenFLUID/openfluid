@@ -716,10 +716,11 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
 // =====================================================================
 
 
-bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(const openfluid::core::UnitClass_t& ClassNameChild,
-                                                                      openfluid::core::UnitID_t IDChild,
-                                                                      const openfluid::core::UnitClass_t& ClassNameParent,
-                                                                      openfluid::core::UnitID_t IDParent)
+bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(
+                                                                    const openfluid::core::UnitClass_t& ClassNameChild,
+                                                                    openfluid::core::UnitID_t IDChild,
+                                                                    const openfluid::core::UnitClass_t& ClassNameParent,
+                                                                    openfluid::core::UnitID_t IDParent)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection",

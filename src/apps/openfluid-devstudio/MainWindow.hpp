@@ -44,6 +44,8 @@
 
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
+#include <openfluid/dllexport.hpp>
+
 
 namespace Ui {
 class MainWindow;
@@ -51,12 +53,13 @@ class MainWindow;
 
 class QAction;
 
+
 namespace openfluid { namespace ui { namespace waresdev {
 class WareSrcWidget;
 } } }
 
 
-class MainWindow: public QMainWindow
+class OPENFLUID_API MainWindow: public QMainWindow
 {
   Q_OBJECT
 

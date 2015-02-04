@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  @file Factory.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -91,7 +90,9 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
   for (itUnits = Descriptor.spatialUnits().begin();itUnits != Descriptor.spatialUnits().end();++itUnits)
   {
 
-    for (itLinkedUnits = (*itUnits).toSpatialUnits().begin();itLinkedUnits != (*itUnits).toSpatialUnits().end();++itLinkedUnits)
+    for (itLinkedUnits = (*itUnits).toSpatialUnits().begin();
+        itLinkedUnits != (*itUnits).toSpatialUnits().end();
+        ++itLinkedUnits)
     {
       FromUnit = SGraph.spatialUnit((*itUnits).getUnitsClass(),(*itUnits).getID());
       ToUnit = SGraph.spatialUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
@@ -105,7 +106,9 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
       {
         std::ostringstream UnitStr;
         UnitStr << FromUnit->getClass() << "#" << FromUnit->getID();
-        throw openfluid::base::FrameworkException("DomainFactory::buildGraphFromDescriptor","Target -to- unit referenced by " + UnitStr.str() + " does not exist" );
+        throw openfluid::base::FrameworkException("DomainFactory::buildGraphFromDescriptor",
+                                                  "Target -to- unit referenced by " + UnitStr.str() +
+                                                  " does not exist" );
       }
     }
   }
@@ -115,7 +118,9 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
   for (itUnits = Descriptor.spatialUnits().begin();itUnits != Descriptor.spatialUnits().end();++itUnits)
   {
 
-    for (itLinkedUnits = (*itUnits).parentSpatialUnits().begin();itLinkedUnits != (*itUnits).parentSpatialUnits().end();++itLinkedUnits)
+    for (itLinkedUnits = (*itUnits).parentSpatialUnits().begin();
+        itLinkedUnits != (*itUnits).parentSpatialUnits().end();
+        ++itLinkedUnits)
     {
       ChildUnit = SGraph.spatialUnit((*itUnits).getUnitsClass(),(*itUnits).getID());
       ParentUnit = SGraph.spatialUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
@@ -129,7 +134,9 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
       {
         std::ostringstream UnitStr;
         UnitStr << ChildUnit->getClass() << "#" << ChildUnit->getID();
-        throw openfluid::base::FrameworkException("DomainFactory::buildGraphFromDescriptor","Target -parent- unit referenced by " + UnitStr.str() + " does not exist" );
+        throw openfluid::base::FrameworkException("DomainFactory::buildGraphFromDescriptor",
+                                                  "Target -parent- unit referenced by " + UnitStr.str() +
+                                                  " does not exist" );
       }
     }
   }
@@ -150,13 +157,16 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
     openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t Data = (*itAttrs).attributes();
     openfluid::core::SpatialUnit* TheUnit;
 
-    for (openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnit=Data.begin();itUnit!=Data.end();++itUnit)
+    for (openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnit=Data.begin();
+        itUnit!=Data.end();++itUnit)
     {
       TheUnit = SGraph.spatialUnit((*itAttrs).getUnitsClass(),itUnit->first);
 
       if (TheUnit != NULL)
       {
-        for (openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::const_iterator itUnitData = itUnit->second.begin();itUnitData!=itUnit->second.end();++itUnitData)
+        for (openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::const_iterator
+               itUnitData = itUnit->second.begin();
+            itUnitData!=itUnit->second.end();++itUnitData)
         {
           TheUnit->attributes()->setValue(itUnitData->first,itUnitData->second);
         }
@@ -230,12 +240,14 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
     {
 
       if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
-        throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","unknown model item type");
+        throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor",
+                                                  "unknown model item type");
 
       if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
       {
         // instanciation of a plugged simulator using the plugin manager
-        IInstance = SimulatorPluginsManager::instance()->loadWareSignatureOnly(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID());
+        IInstance = SimulatorPluginsManager::instance()->loadWareSignatureOnly(
+            ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID());
         IInstance->Params = (*it)->getParameters();
         IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
       }
@@ -255,8 +267,10 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         std::string TypedVarName = GenDesc->getVariableName();
         GenDesc->isVectorVariable() ? TypedVarName += "[vector]" : TypedVarName += "[double]";
 
-        Signature->ID = buildGeneratorID(GenDesc->getVariableName(),GenDesc->isVectorVariable(),GenDesc->getUnitClass());
-        Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem(TypedVarName,GenDesc->getUnitClass(),"",""));
+        Signature->ID = buildGeneratorID(GenDesc->getVariableName(),
+                                         GenDesc->isVectorVariable(),GenDesc->getUnitClass());
+        Signature->HandledData.ProducedVars
+        .push_back(openfluid::ware::SignatureHandledTypedDataItem(TypedVarName,GenDesc->getUnitClass(),"",""));
 
         IInstance->GeneratorInfo = new GeneratorExtraInfo();
         IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();
@@ -284,7 +298,8 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         }
 
         if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
-          throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","unknown generator type");
+          throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor",
+                                                    "unknown generator type");
 
         IInstance->Body = NULL;
         IInstance->Signature = Signature;
@@ -315,7 +330,8 @@ void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::Monitorin
     if ((*it)->isEnabled())
     {
       // instanciation of a plugged observer using the plugin manager
-      OInstance = ObserverPluginsManager::instance()->loadWareSignatureOnly(((openfluid::fluidx::ObserverDescriptor*)(*it))->getID());
+      OInstance = ObserverPluginsManager::instance()->loadWareSignatureOnly(
+          ((openfluid::fluidx::ObserverDescriptor*)(*it))->getID());
       OInstance->Params = (*it)->getParameters();
 
       MonInstance.appendObserver(OInstance);
@@ -331,11 +347,13 @@ void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::Monitorin
 void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor& RunDesc)
 {
   if (!RunDesc.isFilled())
-    throw openfluid::base::FrameworkException("Factory::fillRunEnvironmentFromDescriptor","Wrong or undefined run configuration");
+    throw openfluid::base::FrameworkException("Factory::fillRunEnvironmentFromDescriptor",
+                                              "Wrong or undefined run configuration");
 
 
-  openfluid::base::RuntimeEnvironment::instance()->setSimulationTimeInformation(RunDesc.getBeginDate(),RunDesc.getEndDate(),
-      RunDesc.getDeltaT());
+  openfluid::base::RuntimeEnvironment::instance()->setSimulationTimeInformation(RunDesc.getBeginDate(),
+                                                                                RunDesc.getEndDate(),
+                                                                                RunDesc.getDeltaT());
 
   if (RunDesc.isUserValuesBufferSize())
   {
@@ -360,9 +378,9 @@ void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescri
   buildDatastoreFromDescriptor(FluidXDesc.datastoreDescriptor(),SimBlob.datastore());
 
   SimBlob.simulationStatus() = openfluid::base::SimulationStatus(FluidXDesc.runDescriptor().getBeginDate(),
-                                                                    FluidXDesc.runDescriptor().getEndDate(),
-                                                                    FluidXDesc.runDescriptor().getDeltaT(),
-                                                                    FluidXDesc.runDescriptor().getSchedulingConstraint());
+                                                                 FluidXDesc.runDescriptor().getEndDate(),
+                                                                 FluidXDesc.runDescriptor().getDeltaT(),
+                                                                 FluidXDesc.runDescriptor().getSchedulingConstraint());
 
   SimBlob.runDescriptor() = FluidXDesc.runDescriptor();
 

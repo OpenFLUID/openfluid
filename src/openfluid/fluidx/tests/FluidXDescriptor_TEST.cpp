@@ -30,9 +30,9 @@
 */
 
 /**
- @file DomainReader.cpp
+  @file DomainReader.cpp
 
- @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN

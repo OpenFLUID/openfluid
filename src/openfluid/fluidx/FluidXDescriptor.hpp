@@ -30,14 +30,14 @@
 */
 
 /**
- @file FluidXDescriptor.hpp
+  @file FluidXDescriptor.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#ifndef FLUIDXDESCRIPTOR_HPP_
-#define FLUIDXDESCRIPTOR_HPP_
+#ifndef __OPENFLUID_FLUIDX_FLUIDXDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_FLUIDXDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
@@ -189,4 +189,4 @@ class OPENFLUID_API FluidXDescriptor
 
 } } // namespaces
 
-#endif /* FLUIDXDESCRIPTOR_HPP_ */
+#endif /* __OPENFLUID_FLUIDX_FLUIDXDESCRIPTOR_HPP__ */

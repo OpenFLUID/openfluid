@@ -76,7 +76,8 @@ class OPENFLUID_API ExternalProgram
       Constructor for a given external programs. Automatically searches for the program at construction
       @param[in] Program The program to find
       @param[in] SearchPaths The list of paths to search. Default value is an empty list
-      @param[in] UsePathEnv Enable the use of PATH environment variable to search for the program. Default value is true.
+      @param[in] UsePathEnv Enable the use of PATH environment variable to search for the program.
+      Default value is true.
     */
     ExternalProgram(const QString& Program,
                     const QStringList& SearchPaths = QStringList(),
@@ -88,7 +89,8 @@ class OPENFLUID_API ExternalProgram
       Returns an ExternalProgram object initialized with the registered program to find
       @param[in] Prog The registered program to find
       @param[in] SearchPaths The list of paths to search. Default value is an empty list
-      @param[in] UsePathEnv Enable the use of PATH environment variable to search for the registered program. Default value is true.
+      @param[in] UsePathEnv Enable the use of PATH environment variable to search for the registered program.
+      Default value is true.
       @return An ExternalProgram object initialized with the registered program to find
     */
     static ExternalProgram getRegisteredProgram(RegisteredPrograms Prog,
