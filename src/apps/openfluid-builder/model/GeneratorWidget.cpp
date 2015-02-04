@@ -95,11 +95,8 @@ void GeneratorWidget::updateParams()
 
     connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
 
-    ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addWidget(ParamWidget);
+    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
   }
-
-  ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addStretch();
-
 }
 
 
@@ -116,7 +113,7 @@ void GeneratorWidget::refresh()
     ui->NameLabel->setText(QString::fromStdString(mp_SignInstance->Signature->Name));
 
     // TODO add produced variable in signature
-    ui->InfosWidget->update(mp_SignInstance);
+    ui->InfosSideWidget->update(mp_SignInstance);
 
     updateParams();
   }

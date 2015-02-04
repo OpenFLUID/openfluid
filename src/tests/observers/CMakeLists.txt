@@ -4,13 +4,19 @@ ADD_DEFINITIONS(-DOPENFLUID_VERSION=${FULL_VERSION})
 INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
 
 
-OPNFLD_ADD_OBSERVER(tests.empty tests.empty ${TEST_OUTPUT_PATH})
-OPNFLD_ADD_OBSERVER(tests.primitives.time tests.primitives.time ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_OBSERVER(tests.empty tests.empty ${TEST_OUTPUT_PATH} OFF)
+OPNFLD_ADD_OBSERVER(tests.primitives.time tests.primitives.time ${TEST_OUTPUT_PATH} OFF)
 
 ###########################################################################
 
 
-OPNFLD_ADD_OBSERVER(tests.hopla tests.hopla ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_OBSERVER(tests.paramswidget tests.paramswidget ${TEST_OUTPUT_PATH} ON)
+                                                                                    
+
+###########################################################################
+
+
+OPNFLD_ADD_OBSERVER(tests.hopla tests.hopla ${TEST_OUTPUT_PATH} OFF)
 OPENFLUID_ADD_TEST(NAME observers-Hopla 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                                  "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesHopla"
@@ -25,7 +31,7 @@ OPENFLUID_ADD_TEST(NAME observers-Hopla
 ###########################################################################
 
 
-OPNFLD_ADD_OBSERVER(tests.exceptions tests.exceptions ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_OBSERVER(tests.exceptions tests.exceptions ${TEST_OUTPUT_PATH} OFF)
 OPENFLUID_ADD_TEST(NAME observers-Exceptions 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ObsExceptions"

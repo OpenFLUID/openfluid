@@ -77,12 +77,13 @@ class WaresManagementWidget : public QWidget
 
     Ui::WaresManagementWidget* ui;
 
-    void updateIndexesAndButtons(bool WithFinalStretch = true);
 
     WaresManagementWidget(QWidget* Parent,
                           bool WithSecondAddWareButton);
 
     virtual ~WaresManagementWidget();
+
+    void updateIndexesAndButtons(bool WithFinalStretch = true);
 
 };
 

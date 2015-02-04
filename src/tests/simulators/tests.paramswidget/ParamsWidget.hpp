@@ -29,68 +29,50 @@
   
 */
 
-
 /**
-  @file ObserverWidget.hpp
+  @file ParamsWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_OBSERVERWIDGET_HPP__
-#define __OPENFLUID_BUILDERAPP_OBSERVERWIDGET_HPP__
+
+#ifndef __PARAMSWIDGET_HPP__
+#define __PARAMSWIDGET_HPP__
 
 
-#include <openfluid/fluidx/ObserverDescriptor.hpp>
-
-#include "ClickableWareWidget.hpp"
+#include <openfluid/ui/ware/ParameterizationWidget.hpp>
 
 
-class ObserverWidget : public ClickableWareWidget
+namespace Ui
+{
+  class ParamsWidget;
+}
+
+
+class ParamsWidget: public openfluid::ui::ware::ParameterizationWidget
 {
   Q_OBJECT;
 
   private:
 
-    openfluid::fluidx::ObserverDescriptor* mp_Desc;
-
-    void updateParametersList();
+    Ui::ParamsWidget* ui;
 
 
   private slots:
 
-    void setEnabledWare(bool Enabled);
-
-    void addParameterToList();
-
-    void updateParameterValue(const QString& Name, const QString& Value);
-
-    void removeParameterFromList(const QString& Name);
-
-
-  public slots:
-
-    void refresh();
+    void resetParams();
 
 
   public:
 
-    ObserverWidget(QWidget* Parent,
-                   openfluid::fluidx::ObserverDescriptor* Desc,
-                   const openfluid::ware::WareID_t& ID,
-                   int Index);
+    ParamsWidget();
 
-    ~ObserverWidget();
+    ~ParamsWidget();
 
-    void prepareWareUpdate();
-
-    void updateWare();
-
-    openfluid::fluidx::WareDescriptor::WareType getType()
-    { return openfluid::fluidx::WareDescriptor::PluggedObserver; }
+    void update();
 
 };
 
 
-
-#endif /* __OPENFLUID_BUILDERAPP_OBSERVERWIDGET_HPP__ */
+#endif /* __PARAMSWIDGET_HPP__ */

@@ -135,6 +135,8 @@ class OPENFLUID_API WarePluginsManager
             Plug->Verified = (Plug->Signature->ID == ID);
 
             Plug->Body = 0;
+
+            Plug->WithParametersWidget = PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
           }
           else
             throw openfluid::base::FrameworkException("WarePluginsManager::buildWareContainerWithSignatureOnly",
@@ -196,6 +198,8 @@ class OPENFLUID_API WarePluginsManager
 
             Plug->Verified =
                 QString::fromStdString(PluginFilename).startsWith(QString::fromStdString(Plug->Signature->ID));
+
+            Plug->WithParametersWidget = PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
           }
           else
             throw openfluid::base::FrameworkException("WarePluginsManager::getWareSignature",
@@ -350,6 +354,36 @@ class OPENFLUID_API WarePluginsManager
       else throw openfluid::base::FrameworkException("completeSignatureWithWareBody",
                                                      "Unable to find plugin file " + PluginFullPath);
     }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void* getParameterizationWidget(const S* Item)
+    {
+      std::string PluginFullPath = Item->FileFullPath;
+
+      QLibrary* PlugLib = loadWare(PluginFullPath);
+
+      // library loading
+      if (PlugLib)
+      {
+        typedef void* (*GetParametersWidgetProc)();
+        GetParametersWidgetProc ParamsWidgetProc = (GetParametersWidgetProc)PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
+
+        // checks if the handle proc exists
+        if(ParamsWidgetProc)
+        {
+          return ParamsWidgetProc();
+        }
+        else
+          return NULL;
+      }
+      else
+        return NULL;
+    }
+
 
 
     // =====================================================================

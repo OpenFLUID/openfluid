@@ -798,6 +798,7 @@ void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableMod
 
 void ProjectModule::updateSimulatorsWares()
 {
+  mp_ModelTab->prepareWaresUpdate();
   openfluid::machine::SimulatorSignatureRegistry::instance()->update();
   mp_ModelTab->updateWares();
 
@@ -811,6 +812,7 @@ void ProjectModule::updateSimulatorsWares()
 
 void ProjectModule::updateObserversWares()
 {
+  mp_MonitoringTab->prepareWaresUpdate();
   openfluid::machine::ObserverSignatureRegistry::instance()->update();
   mp_MonitoringTab->updateWares();
 

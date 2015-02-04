@@ -75,7 +75,9 @@ class OPENFLUID_API WareDescriptor
 
     void setParameters(const openfluid::ware::WareParams_t& Params);
 
-    openfluid::ware::WareParams_t getParameters();
+    openfluid::ware::WareParams_t getParameters() const;
+
+    openfluid::ware::WareParams_t& parameters();
 
     bool isType(WareType MIType) const;
 

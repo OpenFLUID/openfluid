@@ -53,18 +53,20 @@
   Macro for the beginning of definition of observer hook
 */
 #define BEGIN_OBSERVER_SIGNATURE(id) \
-  openfluid::ware::ObserverSignature* WARESIGNATURE_PROC_DECL() \
-  { \
-    openfluid::ware::ObserverSignature* Signature = new openfluid::ware::ObserverSignature(); \
-    Signature->setABIVersion(openfluid::config::FULL_VERSION); \
-    Signature->ID = (id);
+  extern "C" { \
+    OPENFLUID_PLUGIN openfluid::ware::ObserverSignature* WARESIGNATURE_PROC_DECL() \
+    { \
+      openfluid::ware::ObserverSignature* Signature = new openfluid::ware::ObserverSignature(); \
+      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+      Signature->ID = (id);
 
 
 /**
   Macro for the end of definition of signature hook
 */
 #define END_OBSERVER_SIGNATURE \
-    return Signature; \
+      return Signature; \
+    } \
   }
 
 

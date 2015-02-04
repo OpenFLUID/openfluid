@@ -293,7 +293,18 @@ OPENFLUID_ADD_TEST(NAME integration-FluidXWriterMany
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunMany"
                                "-p" "${TEST_OUTPUT_PATH}")
 SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS unit-api-FluidXDescriptor_TEST)
-  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-ParameterizationUI
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesWithParameterizationUI"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesWithParameterizationUI"
+                               "-p" "${TEST_OUTPUT_PATH}"
+                               "-n" "${TEST_OUTPUT_PATH}")
+                                 
 
 ###########################################################################
 

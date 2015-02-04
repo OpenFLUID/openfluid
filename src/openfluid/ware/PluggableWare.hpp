@@ -71,6 +71,13 @@ namespace openfluid { namespace ware {
 #define WAREABIVERSION_PROC_DECL GetWareABIVersion
 
 
+/**
+  Hook function name of ware ABI version
+*/
+#define WAREPARAMSWIDGET_PROC_NAME "GetWareParamsWidget"
+#define WAREPARAMSWIDGET_PROC_DECL GetWareParamsWidget
+
+
 // =====================================================================
 // =====================================================================
 
@@ -141,6 +148,7 @@ class OPENFLUID_API PluggableWare
 
 
     PluggableWare(WareType WType);
+
 
   public:
 

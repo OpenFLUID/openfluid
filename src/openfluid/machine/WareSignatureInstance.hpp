@@ -57,7 +57,10 @@ class OPENFLUID_API WareSignatureInstance
 
     bool Verified;
 
-    WareSignatureInstance() : ItemType(openfluid::fluidx::WareDescriptor::NoWareType), FileFullPath(""),Verified(false)
+    bool WithParametersWidget;
+
+    WareSignatureInstance() : ItemType(openfluid::fluidx::WareDescriptor::NoWareType),
+        FileFullPath(""),Verified(false), WithParametersWidget(false)
     { }
 
 };

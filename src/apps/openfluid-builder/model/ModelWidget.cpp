@@ -517,6 +517,22 @@ void ModelWidget::notifySrcEditAsked(const QString& ID)
 // =====================================================================
 
 
+void ModelWidget::prepareWaresUpdate()
+{
+  int LastIndex = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;
+
+  for (int i=0;i<=LastIndex;i++)
+  {
+    WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->itemAt(i)->widget());
+    if (W != NULL) W->prepareWareUpdate();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelWidget::updateWares()
 {
   int LastIndex = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;

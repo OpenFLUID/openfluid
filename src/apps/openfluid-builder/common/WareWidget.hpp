@@ -45,6 +45,7 @@
 #include <QWidget>
 
 #include <openfluid/ware/WareSignature.hpp>
+#include <openfluid/ui/ware/ParameterizationWidget.hpp>
 #include <openfluid/ui/common/ActionLabel.hpp>
 
 #include "SignatureWidget.hpp"
@@ -74,9 +75,13 @@ class WareWidget : public QWidget
 
     virtual void setEnabledWare(bool Enabled);
 
-    virtual void updateParamValue(const QString& Name, const QString& Value);
+    virtual void updateParameterValue(const QString& Name, const QString& Value);
 
-    virtual void removeParam(const QString& Name);
+    virtual void removeParameterFromList(const QString& Name);
+
+    void switchParameterizationMode();
+
+    void notifyChangedFromParameterizationWidget();
 
 
   protected:
@@ -95,6 +100,8 @@ class WareWidget : public QWidget
 
     bool m_ParamsExpanded;
 
+    openfluid::ui::ware::ParameterizationWidget* mp_ParamsWidget;
+
 
     virtual void setAvailableWare(bool Available);
 
@@ -102,9 +109,13 @@ class WareWidget : public QWidget
 
     bool addParameterWidget(const QString& Name, const QString& Value);
 
-    bool removeParameterWidget(const QString& Name, bool WithFinalStretch = true);
+    bool removeParameterWidget(const QString& Name);
 
     void clearParameterWidgets();
+
+    void updateParameterizationSwitch();
+
+    virtual void updateParametersList();
 
 
   signals:
@@ -132,6 +143,8 @@ class WareWidget : public QWidget
 
     virtual void updateWare();
 
+    virtual void prepareWareUpdate();
+
     void setExpanded(bool Expand);
 
     void setUpButtonEnabled(bool Enabled);
@@ -146,7 +159,6 @@ class WareWidget : public QWidget
     { return m_ID; };
 
     virtual openfluid::fluidx::WareDescriptor::WareType getType() = 0;
-
 
 };
 

@@ -118,6 +118,8 @@ class ModelWidget : public WorkspaceWidget
 
     virtual ~ModelWidget();
 
+    void prepareWaresUpdate();
+
     void updateWares();
 };
 

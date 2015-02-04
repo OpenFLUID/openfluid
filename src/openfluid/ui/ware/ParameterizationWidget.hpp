@@ -29,63 +29,83 @@
   
 */
 
-
-
 /**
-  @file ClickableLabel.cpp
+  @file ParameterizationWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#include "ClickableLabel.hpp"
 
-#include <QMouseEvent>
-
-
-namespace openfluid { namespace ui { namespace common {
+#ifndef __OPENFLUID_UIWARE_PARAMETERIZATIONWIDGET_HPP__
+#define __OPENFLUID_UIWARE_PARAMETERIZATIONWIDGET_HPP__
 
 
-ClickableLabel::ClickableLabel(QWidget* Parent) :
-  QLabel(Parent)
+#include <QWidget>
+
+#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/dllexport.hpp>
+
+/**
+  Macro for definition of parameters widget hook
+  @param[in] widgetclassname The name of the class to instantiate
+*/
+#define DEFINE_PARAMETERIZATIONWIDGET_CLASS(widgetclassname) \
+  extern "C" \
+  { \
+    OPENFLUID_PLUGIN openfluid::ui::ware::ParameterizationWidget* WAREPARAMSWIDGET_PROC_DECL() \
+    { \
+      return new widgetclassname(); \
+    } \
+  }
+
+
+// =====================================================================
+// =====================================================================
+
+
+namespace openfluid { namespace ui { namespace ware {
+
+
+class OPENFLUID_API ParameterizationWidget : public QWidget
 {
+  Q_OBJECT;
 
-}
+  protected:
 
+    openfluid::ware::WareParams_t* mp_Params;
 
-// =====================================================================
-// =====================================================================
+  signals:
 
-
-ClickableLabel::ClickableLabel(const QString& Text, QWidget* Parent) :
-  QLabel(Text,Parent)
-{
-
-}
+    void changed();
 
 
-// =====================================================================
-// =====================================================================
+  public:
+
+    ParameterizationWidget() : QWidget()
+    {
+
+    }
 
 
-void ClickableLabel::mouseReleaseEvent(QMouseEvent* /*Event*/)
-{
-  emit clicked();
-
-  //QLabel::mouseReleaseEvent(Event);
-}
+    void linkParams(openfluid::ware::WareParams_t* Params)
+    {
+      mp_Params = Params;
+    }
 
 
-// =====================================================================
-// =====================================================================
+    virtual ~ParameterizationWidget()
+    {
+
+    }
 
 
-void ClickableLabel::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
-{
-  emit clicked();
+    virtual void update() = 0;
 
-  //QLabel::mouseDoubleClickEvent(Event);
-}
+};
 
-} } } // namespaces
 
+} } }  // namespaces
+
+
+#endif /* __OPENFLUID_UIWARE_PARAMETERIZATIONWIDGET_HPP__ */

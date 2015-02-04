@@ -45,6 +45,7 @@
 
 #include "WareWidget.hpp"
 
+
 class GeneratorWidget : public WareWidget
 {
   Q_OBJECT;
@@ -67,6 +68,7 @@ class GeneratorWidget : public WareWidget
   public slots:
 
     void refresh();
+
 
   public:
 

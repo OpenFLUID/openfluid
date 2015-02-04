@@ -26,49 +26,32 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
 
+ */
 
 
 /**
-  @file ParameterWidget.cpp
+  @file ParamsWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
-#include <openfluid/base/PreferencesManager.hpp>
 
-#include "ui_ParameterWidget.h"
-#include "ParameterWidget.hpp"
+#include <iostream>
 
-#include <QMessageBox>
 
-ParameterWidget::ParameterWidget(QWidget* Parent,
-                                 const QString& Name, const QString& Value,
-                                 const QString& SIUnit,
-                                 bool Removable):
-  QWidget(Parent),ui(new Ui::ParameterWidget)
+#include "ParamsWidget.hpp"
+#include "ui_ParamsWidget.h"
+
+
+
+ParamsWidget::ParamsWidget(): openfluid::ui::ware::ParameterizationWidget(),
+  ui(new Ui::ParamsWidget)
 {
   ui->setupUi(this);
 
-  ui->NameLabel->setText(Name);
-  ui->ValueEdit->setText(Value);
-  ui->SIUnitLabel->setText(SIUnit);
-  ui->GlobalValueLabel->setText("");
-
-  connect(ui->ValueEdit,SIGNAL(textEdited(const QString&)),this,SLOT(notifyValueChanged()));
-
-  if (Removable)
-  {
-    ui->RemoveButton->setText("");
-    ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
-    ui->RemoveButton->setIconSize(QSize(16,16));
-
-    connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(notifyRemoveClicked()));
-  }
-
-  ui->RemoveButton->setVisible(Removable);
+  connect(ui->AddButton,SIGNAL(clicked()),this,SLOT(addParam()));
+  connect(ui->ClearButton,SIGNAL(clicked()),this,SLOT(clearParams()));
 }
 
 
@@ -76,7 +59,7 @@ ParameterWidget::ParameterWidget(QWidget* Parent,
 // =====================================================================
 
 
-ParameterWidget::~ParameterWidget()
+ParamsWidget::~ParamsWidget()
 {
   delete ui;
 }
@@ -86,30 +69,18 @@ ParameterWidget::~ParameterWidget()
 // =====================================================================
 
 
-void ParameterWidget::notifyValueChanged()
+void ParamsWidget::update()
 {
-  emit valueChanged(ui->NameLabel->text(),ui->ValueEdit->text());
-}
+  ui->ParamsEdit->clear();
 
+  openfluid::ware::WareParams_t::const_iterator it;
+  openfluid::ware::WareParams_t::const_iterator itb = mp_Params->begin();
+  openfluid::ware::WareParams_t::const_iterator ite = mp_Params->end();
 
-// =====================================================================
-// =====================================================================
-
-
-void ParameterWidget::notifyRemoveClicked()
-{
-  bool OK = true;
-
-  if (openfluid::base::PreferencesManager::instance()->isParamRemovalConfirm())
+  for (it=itb; it!= ite; ++it)
   {
-    OK = (QMessageBox::question(QApplication::activeWindow(),
-                                "OpenFLUID-Builder",
-                                tr("You are removing the %1 parameter.\nIts value will be lost.\nProceed anyway?").arg(getName()),
-                                QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+    ui->ParamsEdit->append(QString::fromStdString((*it).first)+"="+QString::fromStdString((*it).second));
   }
-
-  if (OK)
-    emit removeClicked(ui->NameLabel->text());
 }
 
 
@@ -117,7 +88,34 @@ void ParameterWidget::notifyRemoveClicked()
 // =====================================================================
 
 
-QString ParameterWidget::getName()
+void ParamsWidget::addParam()
 {
-  return ui->NameLabel->text();
+  std::string ParamName;
+  int i=0;
+
+  do
+  {
+    i++;
+    ParamName = (QString("param%1").arg(i)).toStdString();
+  } while (mp_Params->find(ParamName) != mp_Params->end());
+
+  mp_Params->operator[](ParamName) =  (QString("%1").arg(i)).toStdString();
+
+  update();
+
+  emit changed();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ParamsWidget::clearParams()
+{
+  mp_Params->clear();
+
+  update();
+
+  emit changed();
 }

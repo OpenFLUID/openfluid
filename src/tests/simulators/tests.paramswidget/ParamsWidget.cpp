@@ -26,30 +26,31 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
 
-
-
-/**
-  @file ClickableLabel.cpp
-
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
-#include "ClickableLabel.hpp"
+/**
+  @file ParamsWidget.cpp
 
-#include <QMouseEvent>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
-namespace openfluid { namespace ui { namespace common {
+#include <iostream>
 
 
-ClickableLabel::ClickableLabel(QWidget* Parent) :
-  QLabel(Parent)
+#include "ParamsWidget.hpp"
+#include "ui_ParamsWidget.h"
+
+
+
+ParamsWidget::ParamsWidget(): openfluid::ui::ware::ParameterizationWidget(),
+  ui(new Ui::ParamsWidget)
 {
+  ui->setupUi(this);
 
+  connect(ui->ResetButton,SIGNAL(clicked()),this,SLOT(resetParams()));
 }
 
 
@@ -57,10 +58,9 @@ ClickableLabel::ClickableLabel(QWidget* Parent) :
 // =====================================================================
 
 
-ClickableLabel::ClickableLabel(const QString& Text, QWidget* Parent) :
-  QLabel(Text,Parent)
+ParamsWidget::~ParamsWidget()
 {
-
+  delete ui;
 }
 
 
@@ -68,11 +68,18 @@ ClickableLabel::ClickableLabel(const QString& Text, QWidget* Parent) :
 // =====================================================================
 
 
-void ClickableLabel::mouseReleaseEvent(QMouseEvent* /*Event*/)
+void ParamsWidget::update()
 {
-  emit clicked();
+  ui->ParamsEdit->clear();
 
-  //QLabel::mouseReleaseEvent(Event);
+  openfluid::ware::WareParams_t::const_iterator it;
+  openfluid::ware::WareParams_t::const_iterator itb = mp_Params->begin();
+  openfluid::ware::WareParams_t::const_iterator ite = mp_Params->end();
+
+  for (it=itb; it!= ite; ++it)
+  {
+    ui->ParamsEdit->append(QString::fromStdString((*it).first)+"="+QString::fromStdString((*it).second));
+  }
 }
 
 
@@ -80,12 +87,18 @@ void ClickableLabel::mouseReleaseEvent(QMouseEvent* /*Event*/)
 // =====================================================================
 
 
-void ClickableLabel::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
+void ParamsWidget::resetParams()
 {
-  emit clicked();
+  openfluid::ware::WareParams_t::iterator it;
+  openfluid::ware::WareParams_t::iterator itb = mp_Params->begin();
+  openfluid::ware::WareParams_t::iterator ite = mp_Params->end();
 
-  //QLabel::mouseDoubleClickEvent(Event);
+  for (it=itb; it!= ite; ++it)
+  {
+    (*it).second.data() = "";
+  }
+
+  update();
+
+  emit changed();
 }
-
-} } } // namespaces
-
