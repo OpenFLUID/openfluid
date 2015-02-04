@@ -7,11 +7,11 @@
       <!-- Order matters: first the functions, then the words, then the quotations, then finally the comments -->
         
         <rule name="functions-methods" style="function">
-               <pattern value="\w+\s*(?=\()" />
+            <pattern value="\w+\s*(?=\()" />
         </rule> 
         
         <list name="lang-keywords" style="keyword">
-		      <item>asm</item>
+		    <item>asm</item>
 	        <item>break</item>
 	        <item>case</item>
 	        <item>catch</item>
@@ -181,18 +181,30 @@
           <item>uint64_t</item>
           <item>wchar_t</item>
         </list>
+        
+        <rule name="stdtypes" style="datatype">
+          <pattern value="\bstd::[\w::]+\b" />
+        </rule>
 
         <rule name="preprocessor-keywords" style="preprocessor">
           <pattern value="^\s*#\s*\w+" />
         </rule>
 
-        <rule name="openfluid-keywords" style="keyword">
+        <rule name="openfluid-keywords" style="openfluid-keyword">
           <pattern value="\bOPENFLUID_\w+\b" />
           <pattern value="\bOpenFLUID_\w+\b" />
+          <pattern value="\bopenfluid::[\w::]+\b" />
+          <pattern value="\bDECLARE_\w+\b" />
+          <pattern value="\bBEGIN_SIMULATOR_SIGNATURE\b" />
+          <pattern value="\bEND_SIMULATOR_SIGNATURE\b" />
+          <pattern value="\bBEGIN_OBSERVER_SIGNATURE\b" />
+          <pattern value="\bEND_OBSERVER_SIGNATURE\b" />
+          <pattern value="\bBEGIN_BUILDEREXT_SIGNATURE\b" />
+          <pattern value="\bEND_BUILDEREXT_SIGNATURE\b" />
         </rule>
 
-        <rule name="deprecated-keywords" style="deprecated">
-          <pattern value="" />          
+        <rule name="openfluid-deprecated-keywords" style="openfluid-deprecated">
+          <pattern value="openfluid::core::Unit" />        
         </rule>
         
         <rule name="string" style="quoted">

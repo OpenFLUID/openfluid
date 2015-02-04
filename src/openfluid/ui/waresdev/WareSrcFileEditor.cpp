@@ -89,7 +89,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   QFont Font;
   Font.setFamily(PrefMgr->getFontName());
   Font.setFixedPitch(true);
-  Font.setPointSize(11);
+  Font.setPointSize(10);
   setFont(Font);
 
   if (!PrefMgr->isLineWrappingEnabled())

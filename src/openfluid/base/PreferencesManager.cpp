@@ -1132,31 +1132,37 @@ void PreferencesManager::setTextEditorDefaults(bool ForceReset)
 
   QMap<QString,QString> DefaultHLRules;
 
-  DefaultHLRules.insert("keyword/color","#0000FF");
+  DefaultHLRules.insert("function/color","system");
+  DefaultHLRules.insert("function/decoration","bold");
+
+  DefaultHLRules.insert("keyword/color","#7F0055");
   DefaultHLRules.insert("keyword/decoration","bold");
 
   DefaultHLRules.insert("datatype/color","system");
   DefaultHLRules.insert("datatype/decoration","bold");
 
-  DefaultHLRules.insert("preprocessor/color","#FF00FF");
+  DefaultHLRules.insert("preprocessor/color","#7F0055");
   DefaultHLRules.insert("preprocessor/decoration","bold");
 
-  DefaultHLRules.insert("deprecated/color","#0000FF");
+  DefaultHLRules.insert("openfluid-keyword/color","#546F02");
+  DefaultHLRules.insert("openfluid-keyword/decoration","bold");
+
+  DefaultHLRules.insert("openfluid-deprecated/color","#546F02");
+  DefaultHLRules.insert("openfluid-deprecated/decoration","bold,strike-through");
+
+  DefaultHLRules.insert("deprecated/color","#7F0055");
   DefaultHLRules.insert("deprecated/decoration","bold,strike-through");
 
-  DefaultHLRules.insert("quoted/color","#FF0000");
+  DefaultHLRules.insert("quoted/color","#2A00FF");
   DefaultHLRules.insert("quoted/decoration","none");
 
-  DefaultHLRules.insert("function/color","#0000FF");
-  DefaultHLRules.insert("function/decoration","none");
-
-  DefaultHLRules.insert("comment/color","#00FF00");
+  DefaultHLRules.insert("comment/color","#A7A7A7");
   DefaultHLRules.insert("comment/decoration","italic");
 
   for(QMap<QString,QString>::iterator it = DefaultHLRules.begin(); it != DefaultHLRules.end(); ++it)
   {
     if(! mp_ConfFile->contains(it.key()) || ForceReset)
-      mp_ConfFile->setValue(it.key(),it.value());
+      mp_ConfFile->setValue(it.key(),it.value().remove(" ").split(',',QString::SkipEmptyParts));
   }
 
   mp_ConfFile->endGroup();
@@ -1168,13 +1174,13 @@ void PreferencesManager::setTextEditorDefaults(bool ForceReset)
     mp_ConfFile->setValue("enabled",true);
 
   if(! mp_ConfFile->contains("color") || ForceReset)
-    mp_ConfFile->setValue("color","#FFFF99");
+    mp_ConfFile->setValue("color","#EFF6FF");
 
   mp_ConfFile->endGroup();
 
 
   if(! mp_ConfFile->contains("fontname") || ForceReset)
-    mp_ConfFile->setValue("fontname","Courier");
+    mp_ConfFile->setValue("fontname","DejaVu Sans Mono");
 
   if(! mp_ConfFile->contains("linewrapping/enabled") || ForceReset)
      mp_ConfFile->setValue("linewrapping/enabled",true);
