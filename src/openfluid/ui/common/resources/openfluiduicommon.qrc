@@ -24,5 +24,8 @@
     <file>icons/qt-ui.png</file>
     <file>icons/waredir.png</file>
     <file>icons/wareshub.png</file>
+    <file>icons/build.png</file>
+    <file>icons/configure.png</file>
+    <file>icons/menu.png</file>
   </qresource>
 </RCC>

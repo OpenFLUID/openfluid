@@ -87,7 +87,7 @@ int main(int argc, char** argv)
     Q_INIT_RESOURCE(openfluiduicommon);
 #endif
 
-    OPENFLUID_APPLICATION.setAttribute(Qt::AA_DontShowIconsInMenus);
+//    OPENFLUID_APPLICATION.setAttribute(Qt::AA_DontShowIconsInMenus);
 
     MainWindow m_MainWindow;
     m_MainWindow.show();

@@ -42,6 +42,7 @@
 #include <QToolButton>
 #include <openfluid/base/FrameworkException.hpp>
 
+#include <QDebug>
 namespace openfluid { namespace ui { namespace waresdev {
 
 
@@ -98,8 +99,8 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubMenu->addAction(m_Actions["OpenExplorer"]);
 
     QToolButton* MenuButton = new QToolButton(this);
-    MenuButton->setText(tr("Menu"));
-    MenuButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+    MenuButton->setToolTip(tr("Menu"));
+    MenuButton->setIcon(QIcon(":/ui/common/icons/menu.png"));
     MenuButton->setPopupMode(QToolButton::InstantPopup);
     MenuButton->setMenu(Menu);
     addWidget(MenuButton);
@@ -145,8 +146,8 @@ void WareSrcToolbar::createActions()
   m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
   m_Actions["DeleteFile"]->setToolTip(tr("Delete the current file"));
 
-  m_Actions["Configure"] = new QAction(tr("Configure ware"), this);
-  m_Actions["ConfigureWMenu"] = new QAction(tr("Configure"), this);
+  m_Actions["Configure"] = new QAction(QIcon(":/ui/common/icons/configure.png"),tr("Configure ware"), this);
+  m_Actions["ConfigureWMenu"] = new QAction(QIcon(":/ui/common/icons/configure.png"),tr("Configure"), this);
   QActionGroup* ConfigureGroup = new QActionGroup(this);
   QMenu* Menu = new QMenu();
   m_Actions["Release"] = new QAction(tr("Release"), ConfigureGroup);
@@ -160,8 +161,8 @@ void WareSrcToolbar::createActions()
   connect(m_Actions["ConfigureWMenu"], SIGNAL(triggered()),
           m_Actions["Configure"], SLOT(trigger()));
 
-  m_Actions["Build"] = new QAction(tr("Build ware"), this);
-  m_Actions["BuildWMenu"] = new QAction(tr("Build"), this);
+  m_Actions["Build"] = new QAction(QIcon(":/ui/common/icons/build.png"),tr("Build ware"), this);
+  m_Actions["BuildWMenu"] = new QAction(QIcon(":/ui/common/icons/build.png"),tr("Build"), this);
   QActionGroup* BuildGroup = new QActionGroup(this);
   Menu = new QMenu();
   m_Actions["BuildInstall"] = new QAction(tr("Build and install"), BuildGroup);
@@ -177,6 +178,9 @@ void WareSrcToolbar::createActions()
 
   m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
   m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
+
+  foreach(QAction* Action,m_Actions.values())
+    Action->setIconVisibleInMenu(true);
 }
 
 
