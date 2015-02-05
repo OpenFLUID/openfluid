@@ -152,8 +152,9 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
           }
           else if (GeomType == wkbMultiLineString)
           {
-            MultiLineStringGraphics* MultiLineSG = new MultiLineStringGraphics(dynamic_cast<OGRMultiLineString*>(Geometry),
-                                                                               FeaturePen);
+            MultiLineStringGraphics* MultiLineSG =
+                new MultiLineStringGraphics(dynamic_cast<OGRMultiLineString*>(Geometry),
+                                            FeaturePen);
             MultiLineSG->setZValue(ZLayer);
             MultiLineSG->setUnitID(ID);
             addItem(MultiLineSG);
@@ -161,8 +162,9 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
           }
           else if (GeomType == wkbMultiPolygon)
           {
-            MultiPolygonGraphics* MultiPolyG = new MultiPolygonGraphics(dynamic_cast<OGRMultiPolygon*>(Geometry),
-                                                                        FeaturePen,FeatureBrush);
+            MultiPolygonGraphics* MultiPolyG =
+                new MultiPolygonGraphics(dynamic_cast<OGRMultiPolygon*>(Geometry),
+                                         FeaturePen,FeatureBrush);
             MultiPolyG->setZValue(ZLayer);
             MultiPolyG->setUnitID(ID);
             addItem(MultiPolyG);
@@ -232,5 +234,6 @@ void MapScene::setActiveLayer(const QString& UnitClass)
 void MapScene::enableUnitsIDs(bool /*Enabled*/)
 {
   // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),
+                        QString(__PRETTY_FUNCTION__),QMessageBox::Close);
 }

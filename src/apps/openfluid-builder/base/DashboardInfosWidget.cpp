@@ -52,11 +52,12 @@ DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::AdvancedFlui
 
   refreshProjectInfos();
 
-  ui->ContentsFrame->setStyleSheet("#ContentsFrame {background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
-                                                                                      "stop:0 #314054, "
-                                                                                      "stop:1 #3F546E); "
-                                                                                      "border-radius: 6px;"
-                                                                                      "border : 1px solid #AAAAAA;}");
+  ui->ContentsFrame->setStyleSheet("#ContentsFrame "
+                                       "{background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
+                                           "stop:0 #314054, "
+                                           "stop:1 #3F546E); "
+                                           "border-radius: 6px;"
+                                           "border : 1px solid #AAAAAA;}");
 
   ui->TitleLabel->setStyleSheet("color: white;");
   ui->PathLabel->setStyleSheet("color: white;");
@@ -105,9 +106,11 @@ void DashboardInfosWidget::refresh()
 
   int DeltaT = m_AdvFluidxDesc.runDescriptor().getDeltaT();
 
-  int Duration = m_AdvFluidxDesc.runDescriptor().getEndDate().diffInSeconds(m_AdvFluidxDesc.runDescriptor().getBeginDate());
+  int Duration =
+      m_AdvFluidxDesc.runDescriptor().getEndDate().diffInSeconds(m_AdvFluidxDesc.runDescriptor().getBeginDate());
 
-  openfluid::base::SimulationStatus::SchedulingConstraint SchedConst = m_AdvFluidxDesc.runDescriptor().getSchedulingConstraint();
+  openfluid::base::SimulationStatus::SchedulingConstraint SchedConst =
+      m_AdvFluidxDesc.runDescriptor().getSchedulingConstraint();
   QString SchedConstStr = tr("no constraint");
 
   if (SchedConst == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
@@ -117,10 +120,13 @@ void DashboardInfosWidget::refresh()
 
 
   ui->ModelLabel->setText(tr("<u>Coupled model:</u> %1 simulator(s) and %2 generator(s)").arg(SimCount).arg(GenCount));
-  ui->SpatialLabel->setText(tr("<u>Spatial domain:</u> %1 spatial unit(s) in %2 units class(es)").arg(UnitsCount).arg(UnitsClassesCount));
+  ui->SpatialLabel->setText(tr("<u>Spatial domain:</u> %1 spatial unit(s) in %2 units class(es)")
+                            .arg(UnitsCount).arg(UnitsClassesCount));
   ui->DatastoreLabel->setText(tr("<u>Datastore:</u> %1 item(s)").arg(DStoreCount));
   ui->MonitoringLabel->setText(tr("<u>Monitoring:</u> %1 observer(s)").arg(MonitoringCount));
-  ui->SimConfigLabel->setText(tr("<u>Run configuration:</u> total duration of %1 seconds with a default DeltaT of %2 seconds and %3").arg(Duration).arg(DeltaT).arg(SchedConstStr));
+  ui->SimConfigLabel->setText(tr("<u>Run configuration:</u> total duration of %1 seconds "
+                                 "with a default DeltaT of %2 seconds and %3")
+                              .arg(Duration).arg(DeltaT).arg(SchedConstStr));
 }
 
 
@@ -130,7 +136,8 @@ void DashboardInfosWidget::refresh()
 
 void DashboardInfosWidget::refreshProjectInfos()
 {
-  QString NativePath = QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::instance()->getPath()));
+  QString NativePath =
+      QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::instance()->getPath()));
 
   ui->TitleLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::instance()->getName()));
   ui->PathLabel->setText(NativePath);

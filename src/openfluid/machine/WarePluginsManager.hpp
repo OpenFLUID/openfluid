@@ -370,7 +370,8 @@ class OPENFLUID_API WarePluginsManager
       if (PlugLib)
       {
         typedef void* (*GetParametersWidgetProc)();
-        GetParametersWidgetProc ParamsWidgetProc = (GetParametersWidgetProc)PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
+        GetParametersWidgetProc ParamsWidgetProc =
+            (GetParametersWidgetProc)PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
 
         // checks if the handle proc exists
         if(ParamsWidgetProc)

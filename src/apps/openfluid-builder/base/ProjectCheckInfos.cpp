@@ -144,7 +144,8 @@ ProjectStatusLevel ProjectCheckInfos::getOverallStatus() const
                     qMax(m_Infos.at(PART_SPATIALSTRUCT).getStatus(),
                          qMax(m_Infos.at(PART_SPATIALATTRS).getStatus(),
                               qMax(m_Infos.at(PART_DATASTORE).getStatus(),
-                                   qMax(m_Infos.at(PART_MONITORING).getStatus(),m_Infos.at(PART_RUNCONFIG).getStatus())))))));
+                                   qMax(m_Infos.at(PART_MONITORING).getStatus(),
+                                        m_Infos.at(PART_RUNCONFIG).getStatus())))))));
 }
 
 

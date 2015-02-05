@@ -68,7 +68,9 @@ int main(int argc, char **argv)
       PlugsDir = std::string(argv[3]);
     }
     else
-      throw openfluid::base::ApplicationException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdirs>");
+      throw openfluid::base::ApplicationException("openfluid-minimal",
+                                                  "Incorrect number of arguments, "
+                                                  "should be <inputdir> <outputdir> <pluginsdirs>");
 
     openfluid::machine::Engine* Engine;
     openfluid::machine::SimulationBlob SBlob;
@@ -119,7 +121,8 @@ int main(int argc, char **argv)
   }
   catch (std::bad_alloc& E)
   {
-    std::cerr << "MEMORY ALLOCATION ERROR: " + std::string(E.what()) + ". Possibly not enough memory available" << std::endl;
+    std::cerr << "MEMORY ALLOCATION ERROR: " +
+                 std::string(E.what()) + ". Possibly not enough memory available" << std::endl;
   }
   catch (std::exception& E)
   {

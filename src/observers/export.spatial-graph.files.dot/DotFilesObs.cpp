@@ -63,7 +63,8 @@ DECLARE_OBSERVER_PLUGIN
 
 BEGIN_OBSERVER_SIGNATURE("export.spatial-graph.files.dot")
   DECLARE_NAME("Exports spatial graph to Dot files");
-  DECLARE_DESCRIPTION("This observer exports spatial domain graph to Dot files and can be post-processed with GraphViz\n"
+  DECLARE_DESCRIPTION("This observer exports spatial domain graph to Dot files "
+      "and can be post-processed with GraphViz\n"
       "Parameters can be\n"
       "  title : the main title of the graph\n"
       "  when.init : set to 1 to export the graph at initialization time\n"
@@ -203,7 +204,8 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
           for (unsigned int i=0;i<ClassVector.size();i++)
           {
-            const openfluid::core::UnitsPtrList_t* ToUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->toSpatialUnits(ClassVector[i]));
+            const openfluid::core::UnitsPtrList_t* ToUnits =
+                const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->toSpatialUnits(ClassVector[i]));
 
             if (ToUnits != NULL)
             {
@@ -220,7 +222,8 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
               }
             }
 
-            const openfluid::core::UnitsPtrList_t* ParentUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->parentSpatialUnits(ClassVector[i]));
+            const openfluid::core::UnitsPtrList_t* ParentUnits =
+                const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->parentSpatialUnits(ClassVector[i]));
 
             if (ParentUnits != NULL)
             {
@@ -232,7 +235,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
                 std::string DestIDStr = "";
                 openfluid::tools::convertValue((*itParentUnits)->getID(),&DestIDStr);
 
-                DotFile << generateDotEdge(SrcClassStr,SrcIDStr,DestClassStr,DestIDStr,"[arrowhead=odiamond,color=gray50,style=dashed]") << "\n";
+                DotFile << generateDotEdge(SrcClassStr,SrcIDStr,
+                                           DestClassStr,DestIDStr,
+                                           "[arrowhead=odiamond,color=gray50,style=dashed]") << "\n";
 
               }
             }

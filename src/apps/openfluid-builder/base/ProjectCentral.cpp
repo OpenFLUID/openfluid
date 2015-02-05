@@ -107,7 +107,8 @@ ProjectCentral::~ProjectCentral()
 // =====================================================================
 
 
-QStringList ProjectCentral::convertUpdatedUnitsClassesToQStringList(const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>& UnitsClassesVector)
+QStringList ProjectCentral::convertUpdatedUnitsClassesToQStringList(
+    const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>& UnitsClassesVector)
 {
   QStringList QSL;
   for (unsigned int i=0; i<UnitsClassesVector.size();++i)
@@ -576,7 +577,8 @@ void ProjectCentral::checkModel()
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
-                        .addMessage(tr("Attribute %1 produced on %2 units by %3 is already produced by another simulator")
+                        .addMessage(tr("Attribute %1 produced on %2 units by %3 "
+                                       "is already produced by another simulator")
                                     .arg(QString::fromStdString(itProdData->UnitClass))
                                     .arg(QString::fromStdString(itProdData->DataName))
                                     .arg(QString::fromStdString(ID)));
@@ -651,7 +653,8 @@ void ProjectCentral::checkModel()
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
-                        .addMessage(tr("Variable %1 on %2 produced by %3 cannot be created because it is created by another simulator or generator")
+                        .addMessage(tr("Variable %1 on %2 produced by %3 cannot be created "
+                                       "because it is created by another simulator or generator")
                                     .arg(QString::fromStdString(itData->DataName))
                                     .arg(QString::fromStdString(itData->UnitClass))
                                     .arg(QString::fromStdString(ID)));
@@ -678,13 +681,15 @@ void ProjectCentral::checkModel()
           {
             VarsUnits.insert(std::make_pair(GenDesc->getUnitClass(),GenDesc->getVariableName()));
             TypedVarsUnits.insert(std::make_pair(GenDesc->getUnitClass(),
-                                                 std::make_pair(GenDesc->getVariableName(),GenDesc->getVariableType())));
+                                                 std::make_pair(GenDesc->getVariableName(),
+                                                                GenDesc->getVariableType())));
           }
           else
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
-                        .addMessage(tr("Variable %1 on %2 produced by %3 is already produced by another simulator or generator")
+                        .addMessage(tr("Variable %1 on %2 produced by %3 is already produced "
+                                       "by another simulator or generator")
                                     .arg(QString::fromStdString(GenDesc->getVariableName()))
                                     .arg(QString::fromStdString(GenDesc->getUnitClass()))
                                     .arg(QString::fromStdString(ID)));
@@ -757,7 +762,8 @@ void ProjectCentral::checkModel()
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
-                        .addMessage(tr("Variable %1 on %2 required by %3 is not produced by another simulator or generator")
+                        .addMessage(tr("Variable %1 on %2 required by %3 is not produced "
+                                       "by another simulator or generator")
                                     .arg(QString::fromStdString(itData->DataName))
                                     .arg(QString::fromStdString(itData->UnitClass))
                                     .arg(QString::fromStdString(ID)));
@@ -804,9 +810,11 @@ void ProjectCentral::checkDatastore()
     if (!Class.empty() && !Classes.count(Class))
     {
       m_CheckInfos.part(ProjectCheckInfos::PART_DATASTORE).setStatus(PRJ_WARNING);
-      m_CheckInfos.part(ProjectCheckInfos::PART_DATASTORE).addMessage(tr("Unit class %1 does not exist for datastore item %2")
+      m_CheckInfos.part(ProjectCheckInfos::PART_DATASTORE).addMessage(tr("Unit class %1 does not exist "
+                                                                         "for datastore item %2")
                                                                       .arg(QString::fromStdString(Class))
-                                                                      .arg(QString::fromStdString((*itDatastore)->getID())));
+                                                                      .arg(QString::fromStdString((*itDatastore)
+                                                                                                       ->getID())));
     }
   }
 }
@@ -839,7 +847,8 @@ void ProjectCentral::checkMonitoring()
       {
         m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).setStatus(PRJ_ERROR);
         m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("Observer %1 is not available")
-                                                                         .arg(QString::fromStdString((*itMonitoring)->getID())));
+                                                                         .arg(QString::fromStdString((*itMonitoring)
+                                                                                                         ->getID())));
       }
     }
   }

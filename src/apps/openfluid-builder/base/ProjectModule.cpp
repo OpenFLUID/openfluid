@@ -99,7 +99,8 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
   mp_SimulatorsPlugsUpdateTimer->setInterval(BUILDER_WARE_WATCHERS_DELAY);
   mp_SimulatorsPlugsUpdateTimer->setSingleShot(true);
 
-  connect(mp_SimulatorsPlugsWatcher,SIGNAL(directoryChanged(const QString&)),mp_SimulatorsPlugsUpdateTimer,SLOT(start()));
+  connect(mp_SimulatorsPlugsWatcher,SIGNAL(directoryChanged(const QString&)),
+          mp_SimulatorsPlugsUpdateTimer,SLOT(start()));
   connect(mp_SimulatorsPlugsUpdateTimer,SIGNAL(timeout()),SLOT(updateSimulatorsWares()));
 
   // watcher for observers, with delay for ui update using timer
@@ -109,7 +110,8 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
   mp_ObserversPlugsUpdateTimer->setInterval(BUILDER_WARE_WATCHERS_DELAY);
   mp_ObserversPlugsUpdateTimer->setSingleShot(true);
 
-  connect(mp_ObserversPlugsWatcher,SIGNAL(directoryChanged(const QString&)),mp_ObserversPlugsUpdateTimer,SLOT(start()));
+  connect(mp_ObserversPlugsWatcher,SIGNAL(directoryChanged(const QString&)),
+          mp_ObserversPlugsUpdateTimer,SLOT(start()));
   connect(mp_ObserversPlugsUpdateTimer,SIGNAL(timeout()),SLOT(updateObserversWares()));
 
 
@@ -159,8 +161,10 @@ void ProjectModule::updateWaresWatchersPaths()
 
   if (openfluid::base::PreferencesManager::instance()->isWaresWatchersActive())
   {
-    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()->getSimulatorsPluginsPaths())
-          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()->getExtraSimulatorsPluginsPaths());
+    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()
+                                                 ->getSimulatorsPluginsPaths())
+          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()
+                                                 ->getExtraSimulatorsPluginsPaths());
 
     Paths.removeDuplicates();
 
@@ -181,8 +185,10 @@ void ProjectModule::updateWaresWatchersPaths()
   if (openfluid::base::PreferencesManager::instance()->isWaresWatchersActive())
   {
 
-    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()->getObserversPluginsPaths())
-          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()->getExtraObserversPluginsPaths());
+    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()
+                                                 ->getObserversPluginsPaths())
+          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()
+                                                 ->getExtraObserversPluginsPaths());
 
     Paths.removeDuplicates();
 
@@ -417,7 +423,8 @@ void ProjectModule::whenPreferencesAsked()
   bool WaresWatchingUpdated = false;
 
   openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),true);
-  PrefsDlg.initializeBuilderPrefs(openfluid::tools::toQStringList(ExtensionPluginsManager::instance()->getPluginsStandardSearchPaths()));
+  PrefsDlg.initializeBuilderPrefs(openfluid::tools::toQStringList(ExtensionPluginsManager::instance()
+                                                                      ->getPluginsStandardSearchPaths()));
   PrefsDlg.exec();
 
   openfluid::base::PreferencesManager* PrefsMgr =
@@ -585,7 +592,8 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
         if (ExtWork->initialize())
         {
           ExtWork->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
-          mp_MainWidget->addWorkspaceExtensionTab(ExtWork,ExtReg->registeredExtensions()->at(WareID)->Signature->MenuText);
+          mp_MainWidget->addWorkspaceExtensionTab(ExtWork,
+                                                  ExtReg->registeredExtensions()->at(WareID)->Signature->MenuText);
         }
         else
         {
@@ -679,7 +687,8 @@ void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::Pluggabl
 void ProjectModule::whenNewSimulatorSrcAsked()
 {
   // TODO to be replaced
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),
+                        QString("not implemented"),QMessageBox::Close);
 }
 
 
@@ -690,7 +699,8 @@ void ProjectModule::whenNewSimulatorSrcAsked()
 void ProjectModule::whenOpenSimulatorSrcAsked()
 {
   // TODO to be replaced
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),
+                        QString("not implemented"),QMessageBox::Close);
 }
 
 
@@ -701,7 +711,8 @@ void ProjectModule::whenOpenSimulatorSrcAsked()
 void ProjectModule::whenNewObserverSrcAsked()
 {
   // TODO to be replaced
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),
+                        QString("not implemented"),QMessageBox::Close);
 }
 
 
@@ -712,7 +723,8 @@ void ProjectModule::whenNewObserverSrcAsked()
 void ProjectModule::whenOpenObserverSrcAsked()
 {
   // TODO to be replaced
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),
+                        QString("not implemented"),QMessageBox::Close);
 }
 
 

@@ -261,7 +261,9 @@ void WareWidget::notifyRemoveClicked()
 
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",
-                                tr("You are removing %1 %2.\nAll parameters will be lost.\n\nProceed anyway?").arg(QString::fromStdString(getID())).arg(TypeStr),
+                                tr("You are removing %1 %2.\n"
+                                   "All parameters will be lost.\n\nProceed anyway?")
+                                .arg(QString::fromStdString(getID())).arg(TypeStr),
                                 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
   }
 
@@ -300,8 +302,10 @@ bool WareWidget::addParameterWidget(const QString& Name, const QString& Value)
                                                      Name,Value,
                                                      QString::fromStdString(""),true);
 
-  connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParameterValue(const QString&,const QString&)));
-  connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeParameterFromList(const QString&)));
+  connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+          this, SLOT(updateParameterValue(const QString&,const QString&)));
+  connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
+          this, SLOT(removeParameterFromList(const QString&)));
 
   ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
 

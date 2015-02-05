@@ -60,7 +60,8 @@ class OPENFLUID_API ExamplesBuddy : public OpenFLUIDBuddy
     bool installExampleProject(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath,
                                  const std::string& ProjectDir, const bool Force = false);
 
-    bool installAllExamplesProjects(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath, const bool Force = false);
+    bool installAllExamplesProjects(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath,
+                                    const bool Force = false);
 };
 
 

@@ -59,7 +59,8 @@ class WorkspaceWidget : public QWidget
 
   signals:
 
-    void changed(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags = openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
+    void changed(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
+                     openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
 
   public slots:
 

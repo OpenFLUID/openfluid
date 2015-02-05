@@ -141,7 +141,8 @@ void DummyModalSpatialClassic::update(openfluid::builderext::FluidXUpdateFlags::
   if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL) ||
       UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS) ||
       UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT))
-  ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)").arg(mp_AdvancedDesc->spatialDomain().getClassNames().size()));
+  ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)")
+                          .arg(mp_AdvancedDesc->spatialDomain().getClassNames().size()));
 }
 
 

@@ -278,7 +278,8 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
 
     enableRun(((ProjectModule*)Module)->isOkForSimulation());
 
-    m_Actions.action("WaresRefresh")->setEnabled(!openfluid::base::PreferencesManager::instance()->isWaresWatchersActive());
+    m_Actions.action("WaresRefresh")
+        ->setEnabled(!openfluid::base::PreferencesManager::instance()->isWaresWatchersActive());
   }
   catch (openfluid::base::Exception& E)
   {
@@ -295,7 +296,8 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
 // =====================================================================
 
 
-bool AppCoordinator::createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
+bool AppCoordinator::createProject(const QString& Name, const QString& Path,
+                                   const QString& Description, const QString& Authors,
                                    NewProjectDialog::ImportType IType, const QString& ISource)
 {
 
@@ -362,10 +364,11 @@ bool AppCoordinator::closeProject()
 {
   if (m_Actions.action("ProjectSave")->isEnabled())
   {
-    QMessageBox::StandardButton Ret = QMessageBox::question(&m_MainWindow,
-                                                            tr("Close project"),
-                                                            tr("Do you want to save the current project before closing?"),
-                                                            QMessageBox::Cancel | QMessageBox::Save | QMessageBox::Discard);
+    QMessageBox::StandardButton Ret =
+        QMessageBox::question(&m_MainWindow,
+                              tr("Close project"),
+                              tr("Do you want to save the current project before closing?"),
+                              QMessageBox::Cancel | QMessageBox::Save | QMessageBox::Discard);
     if (Ret != QMessageBox::Cancel)
     {
       if (Ret == QMessageBox::Save) whenSaveAsked();
@@ -431,14 +434,16 @@ void AppCoordinator::whenNewAsked()
           QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,
                                 tr("Project error"),
-                                tr("Error creating project %1 in\n%2").arg(NewPrjDlg.getProjectName(),NewPrjDlg.getProjectFullPath()));
+                                tr("Error creating project %1 in\n%2").arg(NewPrjDlg.getProjectName(),
+                                                                           NewPrjDlg.getProjectFullPath()));
         }
       }
       catch (openfluid::base::Exception& E)
       {
         QMessageBox::critical(&m_MainWindow,
                               tr("Project error"),
-                              tr("Error creating project %1 in\n%2").arg(NewPrjDlg.getProjectName(),NewPrjDlg.getProjectFullPath()));
+                              tr("Error creating project %1 in\n%2").arg(NewPrjDlg.getProjectName(),
+                                                                         NewPrjDlg.getProjectFullPath()));
         QApplication::restoreOverrideCursor();
       }
     }
@@ -457,8 +462,9 @@ void AppCoordinator::whenOpenAsked()
   if (mp_CurrentModule->whenOpenAsked() && closeProject())
   {
     // TODO develop custom dialog for opening projects
-    QString SelectedDir = QFileDialog::getExistingDirectory(&m_MainWindow,tr("Open project"),
-                                                            openfluid::base::PreferencesManager::instance()->getProjectsPath());
+    QString SelectedDir =
+        QFileDialog::getExistingDirectory(&m_MainWindow,tr("Open project"),
+                                          openfluid::base::PreferencesManager::instance()->getProjectsPath());
     if (SelectedDir !=  "")
     {
       if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
@@ -802,7 +808,8 @@ void AppCoordinator::whenOpenExampleAsked()
 void AppCoordinator::whenRestoreExamplesAsked()
 {
   if (QMessageBox::question(&m_MainWindow,tr("Reinstall examples projects"),
-                            tr("Reinstalling will overwrite all modifications and delete simulations results associated to these examples.")+
+                            tr("Reinstalling will overwrite all modifications "
+                                "and delete simulations results associated to these examples.")+
                             "\n\n"+
                             tr("Proceed anyway?"),
                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)

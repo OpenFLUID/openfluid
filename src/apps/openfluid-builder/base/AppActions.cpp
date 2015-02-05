@@ -468,7 +468,8 @@ void AppActions::createToolbar(MainWindow& MainWin)
     mp_MainToolbar->setObjectName("MainToolbar");
     mp_MainToolbar->setStyleSheet(QString("QWidget {color: white; padding-left : 10px; padding-right : 10px;} "
                                           "#MainToolbar {background-color: %1; border: 1px solid %1;}"
-                                          "QToolButton::hover { background-color: %2; border : 1px solid %3; border-radius: 4px; }")
+                                          "QToolButton::hover "
+                                            "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }")
                                          .arg(BUILDER_TOOLBAR_BGCOLOR,
                                               BUILDER_TOOLBARBUTTON_BGCOLOR,
                                               BUILDER_TOOLBARBUTTON_BORDERCOLOR));

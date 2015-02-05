@@ -53,17 +53,27 @@ class OPENFLUID_API MarketWizardPage : public QWizardPage
   private:
 
     bool m_PackagesSelected;
+
     bool m_LicensesRadioAccepted;
+
     bool m_InstallationFinished;
 
-    bool isSelectionPage() const { return nextId() == 1; };
-    bool isLicensesnPage() const { return nextId() == 2; };
-    bool isInstallPage() const { return nextId() == -1; };
+    bool isSelectionPage() const
+    { return nextId() == 1; }
+
+    bool isLicensesnPage() const
+    { return nextId() == 2; }
+
+    bool isInstallPage() const
+    { return nextId() == -1; }
+
 
   public:
 
     MarketWizardPage(QWidget *Parent = 0);
+
     virtual bool isComplete() const;
+
     void setPageComplete(bool Complete);
 };
 

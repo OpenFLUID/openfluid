@@ -246,7 +246,8 @@ void AddGeneratorDialog::selectSourcesFile()
   }
   else
   {
-    QMessageBox::critical(QApplication::activeWindow(),"OpenFLUID-Builder",tr("Choosen file is not located in the input dataset of the project"),QMessageBox::Close);
+    QMessageBox::critical(QApplication::activeWindow(),"OpenFLUID-Builder",
+                          tr("Choosen file is not located in the input dataset of the project"),QMessageBox::Close);
   }
 
 }
@@ -270,7 +271,8 @@ void AddGeneratorDialog::selectDistriFile()
   }
   else
   {
-    QMessageBox::critical(QApplication::activeWindow(),"OpenFLUID-Builder",tr("Choosen file is not located in the input dataset of the project"),QMessageBox::Close);
+    QMessageBox::critical(QApplication::activeWindow(),"OpenFLUID-Builder",
+                          tr("Choosen file is not located in the input dataset of the project"),QMessageBox::Close);
   }
 
 }

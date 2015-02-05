@@ -51,9 +51,10 @@
 #include "builderconfig.hpp"
 
 
-class ExtensionPluginsManager : public openfluid::machine::WarePluginsManager<ExtensionContainer,ExtensionContainer,
-                                                                              openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,
-                                                                              openfluid::builderext::GetPluggableBuilderExtensionBodyProc>
+class ExtensionPluginsManager :
+    public openfluid::machine::WarePluginsManager<ExtensionContainer,ExtensionContainer,
+                                                  openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,
+                                                  openfluid::builderext::GetPluggableBuilderExtensionBodyProc>
 {
 
   private:
@@ -71,7 +72,8 @@ class ExtensionPluginsManager : public openfluid::machine::WarePluginsManager<Ex
       for (int i=0; i <ExtraSearchPaths.size();i++)
         m_SearchPaths.push_back(ExtraSearchPaths[i].toStdString());
 
-      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
+      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()
+                                  ->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
       m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getMarketBagBuildVersionDir()+
                               "/"+
                               openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir());
@@ -79,7 +81,8 @@ class ExtensionPluginsManager : public openfluid::machine::WarePluginsManager<Ex
                               "/"+
                               BUILDEREXTS_INSTALL_PATH);
 
-      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
+      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()
+                                          ->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
       m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getMarketBagBuildVersionDir()+
                                       "/"+
                                       openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir());

@@ -146,7 +146,8 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
       Contents += convertStdString("");
 
     Contents += "<hr>";
-    Contents += "<b>" + tr("Plugin path") + ":</b> " + QDir::toNativeSeparators(convertStdString(Signature->FileFullPath));
+    Contents += "<b>" + tr("Plugin path") + ":</b> " +
+                QDir::toNativeSeparators(convertStdString(Signature->FileFullPath));
     Contents += "<hr>";
     Contents += "<b>" + tr("Version") + ":</b> " + convertStdString(Signature->Signature->Version) + "<br/>";
 
@@ -171,7 +172,8 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
 
 void SignatureWidget::updateParameters(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
-  const std::vector<openfluid::ware::SignatureHandledDataItem>* Params = &(Signature->Signature->HandledData.SimulatorParams);
+  const std::vector<openfluid::ware::SignatureHandledDataItem>* Params =
+      &(Signature->Signature->HandledData.SimulatorParams);
 
   ui->ParametersTableWidget->setRowCount(Params->size());
 
@@ -250,7 +252,8 @@ void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware:
     Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataName));
     ui->VariablesTableWidget->setItem(i+BaseIndex, 1, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(openfluid::core::Value::getStringFromValueType(Infos->at(i).DataType)));
+    Item = new QTableWidgetItem(QString::fromStdString(
+        openfluid::core::Value::getStringFromValueType(Infos->at(i).DataType)));
     ui->VariablesTableWidget->setItem(i+BaseIndex, 2, Item);
 
     Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataUnit));
@@ -272,10 +275,14 @@ void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware:
 
 void SignatureWidget::updateVariables(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
-  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* ProdVars = &(Signature->Signature->HandledData.ProducedVars);
-  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* ReqVars = &(Signature->Signature->HandledData.RequiredVars);
-  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* UsVars = &(Signature->Signature->HandledData.UsedVars);
-  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* UpdVars = &(Signature->Signature->HandledData.UpdatedVars);
+  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* ProdVars =
+      &(Signature->Signature->HandledData.ProducedVars);
+  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* ReqVars =
+      &(Signature->Signature->HandledData.RequiredVars);
+  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* UsVars =
+      &(Signature->Signature->HandledData.UsedVars);
+  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* UpdVars =
+      &(Signature->Signature->HandledData.UpdatedVars);
 
 
   ui->VariablesTableWidget->setRowCount(ProdVars->size()+ReqVars->size()+UsVars->size()+UpdVars->size());
@@ -327,9 +334,12 @@ void SignatureWidget::updateAttributesCategory(const std::vector<openfluid::ware
 
 void SignatureWidget::updateAttributes(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
-  const std::vector<openfluid::ware::SignatureHandledDataItem>* ProdAttrs = &(Signature->Signature->HandledData.ProducedAttribute);
-  const std::vector<openfluid::ware::SignatureHandledDataItem>* ReqAttrs = &(Signature->Signature->HandledData.RequiredAttribute);
-  const std::vector<openfluid::ware::SignatureHandledDataItem>* UsAttrs = &(Signature->Signature->HandledData.UsedAttribute);
+  const std::vector<openfluid::ware::SignatureHandledDataItem>* ProdAttrs =
+      &(Signature->Signature->HandledData.ProducedAttribute);
+  const std::vector<openfluid::ware::SignatureHandledDataItem>* ReqAttrs =
+      &(Signature->Signature->HandledData.RequiredAttribute);
+  const std::vector<openfluid::ware::SignatureHandledDataItem>* UsAttrs =
+      &(Signature->Signature->HandledData.UsedAttribute);
 
 
   ui->AttributesTableWidget->setRowCount(ProdAttrs->size()+ReqAttrs->size()+UsAttrs->size());
@@ -373,7 +383,8 @@ void SignatureWidget::updateEvents(const openfluid::machine::ModelItemSignatureI
 void SignatureWidget::updateSpatialGraph(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   const std::string Desc = Signature->Signature->HandledUnitsGraph.UpdatedUnitsGraph;
-  const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>* UnitsClasses = &(Signature->Signature->HandledUnitsGraph.UpdatedUnitsClass);
+  const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>* UnitsClasses =
+      &(Signature->Signature->HandledUnitsGraph.UpdatedUnitsClass);
 
   if (!Desc.empty())
     ui->GraphDescriptionLabel->setText(tr("<b>Overall description</b>")+": "+convertStdString(Desc));

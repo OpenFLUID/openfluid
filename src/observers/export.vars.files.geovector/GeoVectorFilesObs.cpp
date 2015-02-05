@@ -65,8 +65,10 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.geovector")
       "  geoserie.<seriename>.vars : the list of variables of the serie (mandatory)."
       "The field name for the variable can be explicitely given by using the varname=>fieldname\n"
       "  geoserie.<seriename>.when : the time mode for output files production (optional). "
-      "Values for geoserie.<seriename>.when can be init for output at initialization only, final for output at finalization only, continuous for continuous output. "
-      "Continuous output can be parameterized with a minimal delay in seconds between two outputs (e.g. continuous;7200 for a minimal delay of 2 hours)."
+      "Values for geoserie.<seriename>.when can be init for output at initialization only, "
+        "final for output at finalization only, continuous for continuous output. "
+      "Continuous output can be parameterized with a minimal delay in seconds "
+        "between two outputs (e.g. continuous;7200 for a minimal delay of 2 hours)."
       );
 
   DECLARE_VERSION(openfluid::config::FULL_VERSION);
@@ -645,7 +647,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
         }
         else if ((*it).OFLDIDFieldIndex < 0)
         {
-          OPENFLUID_RaiseWarning("File not found or wrong file format for geographic source for serie "+(*it).SerieName);
+          OPENFLUID_RaiseWarning("File not found or wrong file format for geographic source for serie "+
+                                 (*it).SerieName);
           closeSerie(*it);
           it = m_Series.erase(it);
         }

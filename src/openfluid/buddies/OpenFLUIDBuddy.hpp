@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file OpenFLUIDBuddy.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

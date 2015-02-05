@@ -148,12 +148,15 @@ void ObserverWidget::updateParametersList()
 
   for (openfluid::ware::WareParams_t::iterator it = DescParams.begin();it != DescParams.end(); ++it)
   {
-    ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                       QString::fromStdString((*it).first),QString::fromStdString((*it).second),
-                                                       QString::fromStdString(""),true);
+    ParameterWidget* ParamWidget =
+        new ParameterWidget(this,
+                            QString::fromStdString((*it).first),QString::fromStdString((*it).second),
+                            QString::fromStdString(""),true);
 
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParameterValue(const QString&,const QString&)));
-    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeParameterFromList(const QString&)));
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+            this, SLOT(updateParameterValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
+            this, SLOT(removeParameterFromList(const QString&)));
 
 
     ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);

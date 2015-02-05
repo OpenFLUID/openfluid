@@ -120,7 +120,8 @@ void ModelScene::refresh()
 
       QString ID = QString::fromStdString(m_Model.getID(*it));
 
-      QVariant ConfigPos = openfluid::base::ProjectManager::instance()->getConfigValue("builder.model.graphicalview",ID);
+      QVariant ConfigPos =
+          openfluid::base::ProjectManager::instance()->getConfigValue("builder.model.graphicalview",ID);
       QPoint Position(0,0);
 
       if (ConfigPos.type() == QVariant::Point)

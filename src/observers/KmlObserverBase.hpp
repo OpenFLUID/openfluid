@@ -287,7 +287,8 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       if (m_TryOpenGEarth)
       {
         openfluid::utils::ExternalProgram GEarthProgram =
-            openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GoogleEarthProgram);
+            openfluid::utils::ExternalProgram::getRegisteredProgram(
+                openfluid::utils::ExternalProgram::GoogleEarthProgram);
 
         if (GEarthProgram.isFound())
         {

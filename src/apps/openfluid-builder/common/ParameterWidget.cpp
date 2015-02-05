@@ -104,7 +104,8 @@ void ParameterWidget::notifyRemoveClicked()
   {
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",
-                                tr("You are removing the %1 parameter.\nIts value will be lost.\nProceed anyway?").arg(getName()),
+                                tr("You are removing the %1 parameter.\n"
+                                   "Its value will be lost.\nProceed anyway?").arg(getName()),
                                 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
   }
 

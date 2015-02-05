@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  @file Sim2DocBuddy.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -68,9 +67,12 @@ typedef parse_info<std::string::const_iterator>   Parser_t;
 
 Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
   OpenFLUIDBuddy(Listener),
-  m_PDFLatexProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::PdfLatexProgram)),
-  m_BibtexProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::BibTexProgram)),
-  m_Latex2HTMLProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::Latex2HTMLProgram)),
+  m_PDFLatexProgram(
+      openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::PdfLatexProgram)),
+  m_BibtexProgram(
+      openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::BibTexProgram)),
+  m_Latex2HTMLProgram(
+      openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::Latex2HTMLProgram)),
   m_GCCProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GccProgram))
 {
   m_RequiredOptionsHelp["outputdir"] = "path for generated files";
@@ -162,7 +164,8 @@ void Sim2DocBuddy::addLatexDataCatBegin(std::string& Content, const std::string 
   openfluid::tools::convertValue(ColsFormat.length(),&ColsNbrStr);
 
   Content = Content + "\\begin{center}\\begin{small}"+"\n"+"\\begin{tabularx}{\\linewidth}{"+ColsFormat+"}"+"\n";
-  Content = Content + "\\multicolumn{"+ColsNbrStr+"}{l}{\\begin{large}\\textbf{"+Title+"}\\end{large}}\\\\"+"\n"+"\\hline"+"\n";
+  Content = Content + "\\multicolumn{"+ColsNbrStr+"}{l}{\\begin{large}\\textbf{"+Title+"}\\end{large}}\\\\"+
+            "\n"+"\\hline"+"\n";
 }
 
 
@@ -238,7 +241,8 @@ void Sim2DocBuddy::cpreprocessCPP()
 
   mp_Listener->onSubstageCompleted("** Preprocessing C++ file (using gcc)...");
 
-  m_CProcessedFilePath = boost::filesystem::path(m_OutputDirPath.string() + "/" + m_InputFilePath.filename().string() + ".sim2doc");
+  m_CProcessedFilePath = boost::filesystem::path(m_OutputDirPath.string() + "/" + m_InputFilePath.filename().string() +
+                                                 ".sim2doc");
 
   boost::filesystem::remove(m_CProcessedFilePath);
 
@@ -268,7 +272,8 @@ std::string Sim2DocBuddy::extractSignatureLines()
 
   // check if file exists and if it is "openable"
   if (!CProcessedFile)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::extractSignatureLines()","Could not open C preprocessed file");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::extractSignatureLines()",
+                                              "Could not open C preprocessed file");
 
   std::string StrLine  = "";
   std::string FileContent = "";
@@ -444,7 +449,8 @@ void Sim2DocBuddy::storeDataIntoStatus()
 // =====================================================================
 
 
-void Sim2DocBuddy::storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass,
+void Sim2DocBuddy::storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem>*
+                                           UpdatedUnitsClass,
     int Attr)
 {
   if (UpdatedUnitsClass)
@@ -607,7 +613,8 @@ void Sim2DocBuddy::processSignature()
       ++pInfo.stop;
     }
 
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::processSignature()","Error parsing simulator signature line \""+Line+"\"");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::processSignature()",
+                                              "Error parsing simulator signature line \""+Line+"\"");
   }
 
 
@@ -666,7 +673,8 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_SimData,"Required or used Attribute(s)","lllXr");
     for (it = m_InAttrs.begin(); it != m_InAttrs.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
+                  "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
@@ -676,7 +684,8 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_SimData,"Produced Attribute(s)","lllXr");
     for (it = m_OutAttrs.begin(); it != m_OutAttrs.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
+                  "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
@@ -686,7 +695,8 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_SimData,"Required or used variable(s)","llllXr");
     for (it = m_InVars.begin(); it != m_InVars.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&" + it->second[3] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
+                  "&" + it->second[2] + "&" + it->second[3] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
@@ -696,7 +706,8 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_SimData,"Produced or updated variable(s)","lllXr");
     for (it = m_OutVars.begin(); it != m_OutVars.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
+                  "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
@@ -761,7 +772,8 @@ void Sim2DocBuddy::generateLatex()
 
 bool Sim2DocBuddy::isErrorInPDFLatexLog()
 {
-  boost::filesystem::path LogFilePath(m_OutputDirPath.string() + "/" + boost::filesystem::basename(m_OutputLatexFilePath) + ".log");
+  boost::filesystem::path LogFilePath(m_OutputDirPath.string() + "/" +
+                                      boost::filesystem::basename(m_OutputLatexFilePath) + ".log");
 
   std::ifstream LogFile(LogFilePath.string().c_str());
 
@@ -794,7 +806,8 @@ void Sim2DocBuddy::buildPDF()
   mp_Listener->onSubstageCompleted("** Building PDF...");
 
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error changing current directory to " + m_OutputDirPath.string());
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()",
+                                              "Error changing current directory to " + m_OutputDirPath.string());
 
   std::string PDFCommandToRun = m_PDFLatexProgram.getFullProgramPath().toStdString()
                                 + " -shell-escape -interaction=nonstopmode -output-directory="
@@ -811,7 +824,8 @@ void Sim2DocBuddy::buildPDF()
     throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()",
+                                              "Error running pdflatex command (catched in log file)");
 
   mp_Listener->onSubstageCompleted(" bibliography and references...");
 
@@ -825,7 +839,8 @@ void Sim2DocBuddy::buildPDF()
     throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()",
+                                              "Error running pdflatex command (catched in log file)");
 
   mp_Listener->onSubstageCompleted(" third pass...");
 
@@ -833,7 +848,8 @@ void Sim2DocBuddy::buildPDF()
     throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()",
+                                              "Error running pdflatex command (catched in log file)");
 
   mp_Listener->onStageCompleted(" done");
 
@@ -852,7 +868,8 @@ void Sim2DocBuddy::buildHTML()
   mp_Listener->onSubstageCompleted("** Building HTML...");
 
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()",
+                                              "Error changing current directory to " + m_OutputDirPath.string());
 
   std::string CommandToRun = m_Latex2HTMLProgram.getFullProgramPath().toStdString() +
                              " -dir="+m_OutputDirPath.string() +
@@ -877,7 +894,9 @@ bool Sim2DocBuddy::run()
 {
 #if defined __unix__ || defined __APPLE__
 
-  setOptionIfNotSet("tplfile", openfluid::base::RuntimeEnvironment::instance()->getCommonResourceFilePath(openfluid::config::SIM2DOC_TPLFILE_NAME));
+  setOptionIfNotSet("tplfile",
+                    openfluid::base::RuntimeEnvironment::instance()
+                    ->getCommonResourceFilePath(openfluid::config::SIM2DOC_TPLFILE_NAME));
   setOptionIfNotSet("outputdir",boost::filesystem::current_path().string());
   setOptionIfNotSet("pdf","0");
   setOptionIfNotSet("html","0");

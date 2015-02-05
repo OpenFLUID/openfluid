@@ -61,9 +61,13 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
 
   setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 
-  mp_WebLabel = new openfluid::ui::common::ClickableLabel("<A HREF='http://www.openfluid-project.org'>www.openfluid-project.org</A>",this);
+  mp_WebLabel =
+      new openfluid::ui::common::ClickableLabel("<A HREF='http://www.openfluid-project.org'>"
+                                                "www.openfluid-project.org</A>",this);
   mp_WebLabel->setCursor(Qt::PointingHandCursor);
-  mp_ContactLabel = new openfluid::ui::common::ClickableLabel("<A HREF='mailto:contact@openfluid-project.org'>contact@openfluid-project.org</A>",this);
+  mp_ContactLabel =
+      new openfluid::ui::common::ClickableLabel("<A HREF='mailto:contact@openfluid-project.org'>"
+                                                "contact@openfluid-project.org</A>",this);
   mp_ContactLabel->setCursor(Qt::PointingHandCursor);
 
   ui->InfosLayout->insertWidget(1,mp_WebLabel);

@@ -124,7 +124,8 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
     if (DS == NULL)
     {
-      emit stepCompleted(Step,getStyledText(tr("[Error] Unable to open datasource for layer \"%1\"").arg(m_SourcesInfos[i].LayerName),"red"));
+      emit stepCompleted(Step,getStyledText(tr("[Error] Unable to open datasource for layer \"%1\"")
+                                            .arg(m_SourcesInfos[i].LayerName),"red"));
       return false;
     }
 
@@ -154,7 +155,8 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       if (FieldIndex < 0)
       {
         OGRDataSource::DestroyDataSource(DS);
-        emit stepCompleted(Step,getStyledText(tr("[Error] Field for unit ID not found in layer \"%1\"").arg(m_SourcesInfos[i].LayerName),"red"));
+        emit stepCompleted(Step,getStyledText(tr("[Error] Field for unit ID not found in layer \"%1\"")
+                                              .arg(m_SourcesInfos[i].LayerName),"red"));
         return false;
       }
 
@@ -163,7 +165,8 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       if (CurrentUnitID <= 0)
       {
         OGRDataSource::DestroyDataSource(DS);
-        emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field format for unit ID in layer \"%1\"").arg(m_SourcesInfos[i].LayerName),"red"));
+        emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field format for unit ID in layer \"%1\"")
+                                              .arg(m_SourcesInfos[i].LayerName),"red"));
         return false;
       }
 
@@ -221,7 +224,8 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
         if (FieldIndex < 0)
         {
           OGRDataSource::DestroyDataSource(DS);
-          emit stepCompleted(Step,getStyledText(tr("[Error] Field for \"to\" connections not found in layer \"%1\"").arg(m_SourcesInfos[i].LayerName),"red"));
+          emit stepCompleted(Step,getStyledText(tr("[Error] Field for \"to\" connections not found in layer \"%1\"")
+                                                .arg(m_SourcesInfos[i].LayerName),"red"));
           return false;
         }
 
@@ -248,7 +252,9 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
         if (FieldIndex < 0)
         {
           OGRDataSource::DestroyDataSource(DS);
-          emit stepCompleted(Step,getStyledText(tr("[Error] Field for \"childof\" connections not found in layer \"%1\"").arg(m_SourcesInfos[i].LayerName),"red"));
+          emit stepCompleted(Step,
+                             getStyledText(tr("[Error] Field for \"childof\" connections not found in layer \"%1\"")
+                                           .arg(m_SourcesInfos[i].LayerName),"red"));
           return false;
         }
 
@@ -351,10 +357,12 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       if (Feature->GetGeometryRef()->Centroid(&Centroid) != OGRERR_NONE)
       {
         OGRDataSource::DestroyDataSource(DS);
-        emit stepCompleted(Step,getStyledText(tr("[Error] Unable to compute centroid coordinates for geometries in layer \"%1\"."
-                                                 "Computing centroid coordinates should be unchecked in computed attributes.")
-                                                 .arg(m_SourcesInfos[i].LayerName),
-                                              "red"));
+        emit stepCompleted(Step,
+                           getStyledText(tr("[Error] Unable to compute centroid coordinates "
+                                            "for geometries in layer \"%1\"."
+                                            "Computing centroid coordinates should be unchecked "
+                                            "in computed attributes.")
+                                         .arg(m_SourcesInfos[i].LayerName),"red"));
         return false;
       }
 
@@ -539,9 +547,9 @@ bool DataProcessingWorker::runCheck(int StartStep)
     // check if dataset import file is not empty
     if (m_SourcesInfos[i].IsDatasetImport && m_SourcesInfos[i].RelativeDatasetPath.isEmpty())
     {
-      emit stepCompleted(StartStep,getStyledText(tr("[Error] Missing file name for copy of layer \"%1\" in project dataset")
-                                                 .arg(m_SourcesInfos[i].LayerName),
-                                                 "red"));
+      emit stepCompleted(StartStep,
+                         getStyledText(tr("[Error] Missing file name for copy of layer \"%1\" in project dataset")
+                                       .arg(m_SourcesInfos[i].LayerName),"red"));
       return false;
     }
 

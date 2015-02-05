@@ -90,7 +90,8 @@ QWidget(Parent), ui(new Ui::NewsItemWidget)
     QLabel* TagLabel = new QLabel(TagLabelText,TagWidget);
     TagLabel->setWordWrap(true);
 
-    TagLabel->setStyleSheet(QString("qproperty-alignment: AlignCenter; color : %1; background-color : %2 ; border-radius: 4px; padding : 4px; font-size : 9pt;")
+    TagLabel->setStyleSheet(QString("qproperty-alignment: AlignCenter; color : %1; "
+                                    "background-color : %2 ; border-radius: 4px; padding : 4px; font-size : 9pt;")
                             .arg("white",getCSSColorFromTag(Tag)));
 
 

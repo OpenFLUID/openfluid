@@ -111,12 +111,15 @@ void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine
   {
     if (!ParamsInSign.contains(QString::fromStdString((*it).first)))
     {
-      ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                         QString::fromStdString((*it).first),QString::fromStdString((*it).second),
-                                                         QString::fromStdString(""),true);
+      ParameterWidget* ParamWidget =
+          new ParameterWidget(this,
+                              QString::fromStdString((*it).first),QString::fromStdString((*it).second),
+                              QString::fromStdString(""),true);
 
-      connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParameterValue(const QString&,const QString&)));
-      connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeParameterFromList(const QString&)));
+      connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+              this, SLOT(updateParameterValue(const QString&,const QString&)));
+      connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
+              this, SLOT(removeParameterFromList(const QString&)));
 
 
       ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);

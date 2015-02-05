@@ -93,7 +93,8 @@ void GeneratorWidget::updateParams()
                                                        QString::fromStdString(ParamName),ParamValue,
                                                        QString::fromStdString((*it).DataUnit));
 
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this,
+            SLOT(updateParamValue(const QString&,const QString&)));
 
     ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
   }

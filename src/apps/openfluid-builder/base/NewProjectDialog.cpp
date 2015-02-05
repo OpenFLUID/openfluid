@@ -51,11 +51,13 @@
 
 
 NewProjectDialog::NewProjectDialog(QWidget *Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent), ui(new Ui::NewProjectDialog), mp_DirectoryModel(new QFileSystemModel(this))
+  openfluid::ui::common::OpenFLUIDDialog(Parent), ui(new Ui::NewProjectDialog),
+  mp_DirectoryModel(new QFileSystemModel(this))
 {
   ui->setupUi(this);
 
-  ui->WorkdirLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()->getProjectsPath()));
+  ui->WorkdirLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
+                                                         ->getProjectsPath()));
 
 
   connect(ui->WorkdirButton,SIGNAL(clicked()),this,SLOT(onWorkdirButtonClicked()));
@@ -102,11 +104,15 @@ void NewProjectDialog::onGlobalCheck()
   {
     setMessage(tr("Project already exists"));
   }
-  else if (ui->DataGroupBox->isChecked() && ui->ProjectRadioButton->isChecked() && ui->ProjectLabel->text() == "(none)")
+  else if (ui->DataGroupBox->isChecked() &&
+           ui->ProjectRadioButton->isChecked() &&
+           ui->ProjectLabel->text() == "(none)")
   {
     setMessage(tr("Imported project is not selected"));
   }
-  else if (ui->DataGroupBox->isChecked() && ui->DirectoryRadioButton->isChecked() && ui->DirectoryLabel->text() == "(none)")
+  else if (ui->DataGroupBox->isChecked() &&
+           ui->DirectoryRadioButton->isChecked() &&
+           ui->DirectoryLabel->text() == "(none)")
   {
     setMessage(tr("Imported data directory is not selected"));
   }
