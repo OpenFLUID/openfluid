@@ -186,7 +186,8 @@ void MarketPackage::setCommonBuildOptions(const PackageInfo::PackageType& Type, 
 // =====================================================================
 
 
-std::string MarketPackage::composeFullBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions)
+std::string MarketPackage::composeFullBuildOptions(const PackageInfo::PackageType& Type,
+                                                   const std::string& BuildOptions)
 {
   std::string FullOptions = "";
 
@@ -266,7 +267,8 @@ void MarketPackage::download()
 {
 
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("MarketPackage::download()","package "+m_PackageFilename+" not initialized");
+    throw openfluid::base::FrameworkException("MarketPackage::download()",
+                                              "package "+m_PackageFilename+" not initialized");
 
   m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
 
@@ -275,7 +277,8 @@ void MarketPackage::download()
   if (!openfluid::utils::FileDownloader::downloadToFile(m_PackageURL, m_PackageDest))
   {
     appendToLogFile("Error");
-    throw openfluid::base::FrameworkException("MarketPackage::download()","error while downloading package "+m_PackageFilename);
+    throw openfluid::base::FrameworkException("MarketPackage::download()",
+                                              "error while downloading package "+m_PackageFilename);
   }
 
   appendToLogFile("OK");

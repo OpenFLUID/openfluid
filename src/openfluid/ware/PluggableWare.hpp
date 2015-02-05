@@ -40,7 +40,6 @@
 #ifndef __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
 #define __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
 
-#include <boost/filesystem/path.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <string>
 

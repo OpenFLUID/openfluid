@@ -31,10 +31,9 @@
 
 
 /**
- * MarketPackWidgetFormat.cpp
- *
- *  Created on: 21 mars 2013
- *      Author: Manuel CHATAIGNER
+ @file MarketPackWidgetFormat.cpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
 
@@ -56,7 +55,8 @@ MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageI
 
 
   // source
-  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != MetaPackInfo.AvailablePackages.end())
+  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) !=
+      MetaPackInfo.AvailablePackages.end())
   {
     m_FormatColumns.mp_FormatName = new QStandardItem(tr("source"));
     m_FormatColumns.mp_SelType = new QStandardItem();
@@ -65,11 +65,13 @@ MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageI
     m_FormatColumns.appendItems();
     m_RefFormatComboBoxModel.appendRow(m_FormatColumns);
 
-    m_EditedBuildOptions = QString::fromStdString(m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].BuildOptions);
+    m_EditedBuildOptions =
+        QString::fromStdString(m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].BuildOptions);
   }
 
   // binary
-  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != MetaPackInfo.AvailablePackages.end())
+  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) !=
+      MetaPackInfo.AvailablePackages.end())
   {
     m_FormatColumns.mp_FormatName = new QStandardItem(tr("binary"));
     m_FormatColumns.mp_SelType = new QStandardItem();
@@ -111,8 +113,9 @@ MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageI
 
 void MarketPackWidgetFormat::onConfigClicked()
 {
-  MarketBuildOptionsDialog OptDialog(QString::fromStdString(openfluid::market::MarketPackage::getCommonBuildOptions(m_PackageType)),
-                                     m_EditedBuildOptions,QString::fromStdString(m_MetaPackInfo.ID));
+  MarketBuildOptionsDialog OptDialog(
+      QString::fromStdString(openfluid::market::MarketPackage::getCommonBuildOptions(m_PackageType)),
+      m_EditedBuildOptions,QString::fromStdString(m_MetaPackInfo.ID));
 
 
   if (OptDialog.exec() == QDialog::Accepted)
@@ -158,7 +161,10 @@ void MarketPackWidgetFormat::updateDisplayedInfos()
   // build options
   if (SelType == openfluid::market::MetaPackageInfo::SRC)
   {
-    QString BuildOptions = QString::fromStdString(openfluid::market::MarketPackage::composeFullBuildOptions(m_PackageType,m_EditedBuildOptions.toStdString()));
+    QString BuildOptions =
+        QString::fromStdString(
+            openfluid::market::MarketPackage::composeFullBuildOptions(m_PackageType,
+                                                                      m_EditedBuildOptions.toStdString()));
     MarkupTooltip += "<br/><u>"+tr("Build options:")+"</u> " + replaceByNoneIfEmpty(BuildOptions);
   }
 

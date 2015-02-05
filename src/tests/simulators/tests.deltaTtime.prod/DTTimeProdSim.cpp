@@ -32,7 +32,7 @@
 
 
 /**
-  @file VTimeProdSim.cpp
+  @file DTTimeProdSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -175,12 +175,16 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
       OPENFLUID_AppendVariable(TU,"tests.double.dt",double(OPENFLUID_GetCurrentTimeIndex()));
-      OPENFLUID_AppendVariable(TU,"tests.string.dt",openfluid::core::IntegerValue(OPENFLUID_GetCurrentTimeIndex()).toString());
+      OPENFLUID_AppendVariable(TU,"tests.string.dt",
+                               openfluid::core::IntegerValue(OPENFLUID_GetCurrentTimeIndex()).toString());
 
       OPENFLUID_AppendVariable(TU,"tests.null.dt",TheNull);
 
-      OPENFLUID_AppendVariable(TU,"tests.vector.dt",openfluid::core::VectorValue(VectorSize,double(OPENFLUID_GetCurrentTimeIndex())));
-      OPENFLUID_AppendVariable(TU,"tests.matrix.dt",openfluid::core::MatrixValue(MatrixColsNb,MatrixRowsNb,double(OPENFLUID_GetCurrentTimeIndex())));
+      OPENFLUID_AppendVariable(TU,"tests.vector.dt",
+                               openfluid::core::VectorValue(VectorSize,double(OPENFLUID_GetCurrentTimeIndex())));
+      OPENFLUID_AppendVariable(TU,"tests.matrix.dt",
+                               openfluid::core::MatrixValue(MatrixColsNb,MatrixRowsNb,
+                                                            double(OPENFLUID_GetCurrentTimeIndex())));
     }
 
     return DefaultDeltaT();

@@ -32,7 +32,7 @@
 
 
 /**
-  @file CSVFilesObs.cpp
+  @file HoplaObs.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

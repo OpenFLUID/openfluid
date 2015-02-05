@@ -31,10 +31,9 @@
 
 
 /**
- * MarketBinBuilderextPackage.hpp
- *
- *  Created on: 7 mars 2013
- *      Author: Manuel CHATAIGNER
+ @file MarketBinBuilderextPackage.hpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
 #ifndef __OPENFLUID_MARKET_MARKETBINBUILDEREXTPACKAGE_HPP__

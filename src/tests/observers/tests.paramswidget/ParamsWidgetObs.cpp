@@ -32,7 +32,7 @@
 
 
 /**
-  @file EmptyParamsWidgetObs.cpp.cpp
+  @file ParamsWidgetObs.cpp.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

@@ -32,9 +32,10 @@
 
 
 /**
-  @file OFEFunc2DocSim.cpp
-*/
+  @file Sim2DocSim.cpp
 
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
 /*

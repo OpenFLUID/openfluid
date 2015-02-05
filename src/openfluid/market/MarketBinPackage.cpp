@@ -60,11 +60,13 @@ MarketBinPackage::MarketBinPackage(const openfluid::ware::WareID_t& ID, const st
 void MarketBinPackage::process()
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("MarketBinPackage::download()","package "+m_PackageFilename+" not initialized");
+    throw openfluid::base::FrameworkException("MarketBinPackage::download()",
+                                              "package "+m_PackageFilename+" not initialized");
 
 
   if (!m_Downloaded)
-    throw openfluid::base::FrameworkException("MarketBinPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
+    throw openfluid::base::FrameworkException("MarketBinPackage::process()",
+                                              "package "+m_PackageFilename+" cannot be processed before download");
 
 
   if (!m_CMakeProgram.isFound())

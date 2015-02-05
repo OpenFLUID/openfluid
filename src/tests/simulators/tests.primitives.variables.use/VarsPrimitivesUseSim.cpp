@@ -29,7 +29,11 @@
   
 */
 
+/**
+  @file VarsPrimitivesUseSim.cpp
 
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
@@ -246,12 +250,19 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           PreDouble = TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT())*m_ParamDouble;
           PreLong = TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT())*m_ParamLong;
           PreBool = ((TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT()))%2 == 0);
-          PreString = QString("%1 %2x%3").arg(QString::fromStdString(m_ParamString)).arg(TUID).arg(CurrIndex-OPENFLUID_GetDefaultDeltaT()).toStdString();
+          PreString = QString("%1 %2x%3")
+                      .arg(QString::fromStdString(m_ParamString))
+                      .arg(TUID)
+                      .arg(CurrIndex-OPENFLUID_GetDefaultDeltaT())
+                      .toStdString();
 
           NewDouble = TUID*CurrIndex*m_ParamDouble;
           NewLong = TUID*CurrIndex*m_ParamLong;
           NewBool = ((TUID*CurrIndex)%2 == 0);
-          NewString = QString("%1 %2x%3").arg(QString::fromStdString(m_ParamString)).arg(TUID).arg(CurrIndex).toStdString();
+          NewString = QString("%1 %2x%3")
+                      .arg(QString::fromStdString(m_ParamString))
+                      .arg(TUID).arg(CurrIndex)
+                      .toStdString();
 
 
           // ====== Variables ======
@@ -278,7 +289,8 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
           VarDouble = 0.0;
           OPENFLUID_GetLatestVariables(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex()-1,IndValueList);
-          if (!openfluid::scientific::isCloseEnough<double>(IndValueList.back().value()->asDoubleValue(),RefDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough<double>(
+                IndValueList.back().value()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by reference");
 
 
@@ -384,7 +396,9 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           // values count since beginning of simulation
           OPENFLUID_GetVariables(TU,"tests.integer",0,CurrIndex-1,IndValueList);
           if (IndValueList.size() != (m_ExpectedValCount-1))
-            OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect long value list between t0 and current time index -1 (tests.integer) by variables");
+            OPENFLUID_RaiseError(THIS_SIM_ID,
+                                 "incorrect long value list between t0 and current time index -1 (tests.integer) "
+                                 "by variables");
 
           OPENFLUID_GetLatestVariables(TU,"tests.integer",0,IndValueList);
           if (IndValueList.size() != m_ExpectedValCount)
@@ -392,7 +406,9 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
           OPENFLUID_GetVariables(TU,"tests.integer",0,CurrIndex,IndValueList);
           if (IndValueList.size() != m_ExpectedValCount)
-            OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect long value list between t0 and current time index (tests.integer) by variables");
+            OPENFLUID_RaiseError(THIS_SIM_ID,
+                                 "incorrect long value list between t0 and current time index (tests.integer) "
+                                 "by variables");
 
 
           // bool
@@ -692,7 +708,8 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value after update (tests.double)");
 
           OPENFLUID_GetLatestVariables(TU,"tests.typed.double",OPENFLUID_GetCurrentTimeIndex()-1,IndValueList);
-          if (!openfluid::scientific::isCloseEnough<double>(IndValueList.back().value()->asDoubleValue(),NewDouble,0.00001))
+          if (!openfluid::scientific::isCloseEnough<double>(
+                IndValueList.back().value()->asDoubleValue(),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_SIM_ID,"incorrect double value (tests.double) get by latest variable");
 
 

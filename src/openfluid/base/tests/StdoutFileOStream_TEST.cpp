@@ -32,7 +32,7 @@
 
 
 /**
-  @file DualOStream_TEST.cpp
+  @file StdoutFileOStream_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

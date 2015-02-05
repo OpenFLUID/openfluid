@@ -166,18 +166,22 @@ void MarketPackWidget::updateDisplayedInfos()
   QString MarkupTooltip("");
   openfluid::market::MetaPackageInfo::SelectionType SelType;
 
-  m_VersionLabel.setText("<u>"+tr("Version:")+"</u> "+ replaceByUnknownIfEmpty(QString::fromStdString(m_MetaPackInfo.Version)));
+  m_VersionLabel.setText("<u>"+tr("Version:")+"</u> "+
+                         replaceByUnknownIfEmpty(QString::fromStdString(m_MetaPackInfo.Version)));
 
   // Id
   MarkupTooltip += "<b>" + QString::fromStdString(m_MetaPackInfo.ID) + "</b>";
 
   // version
-  MarkupTooltip += "<br/><u>"+tr("Version:")+"</u> " + replaceByUnknownIfEmpty(QString::fromStdString(m_MetaPackInfo.Version));
+  MarkupTooltip += "<br/><u>"+tr("Version:")+"</u> " +
+                   replaceByUnknownIfEmpty(QString::fromStdString(m_MetaPackInfo.Version));
   // author
-  MarkupTooltip += "<br/><u>"+tr("Author(s):")+"</u> " + replaceByUnknownIfEmpty(QString::fromStdString(m_MetaPackInfo.Authors));
+  MarkupTooltip += "<br/><u>"+tr("Author(s):")+"</u> " +
+                   replaceByUnknownIfEmpty(QString::fromStdString(m_MetaPackInfo.Authors));
 
   // for datasets
-  if (m_MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::FLUIDX) != m_MetaPackInfo.AvailablePackages.end())
+  if (m_MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::FLUIDX) !=
+      m_MetaPackInfo.AvailablePackages.end())
   {
     SelType = openfluid::market::MetaPackageInfo::FLUIDX;
     QString LicenseStr(QString::fromStdString((*(m_MetaPackInfo.AvailablePackages.find(SelType))).second.License));
@@ -187,10 +191,12 @@ void MarketPackWidget::updateDisplayedInfos()
     m_LicenseLabel.setText("<u>"+tr("License:")+"</u> "+replaceByUnknownIfEmpty(LicenseStr));
 
     // description
-    if (!m_MetaPackInfo.Description.empty()) MarkupTooltip += "<br/><br/>"+QString::fromStdString(m_MetaPackInfo.Description);
+    if (!m_MetaPackInfo.Description.empty())
+      MarkupTooltip += "<br/><br/>"+QString::fromStdString(m_MetaPackInfo.Description);
 
     // dependencies
-    openfluid::market::PackageInfo::Dependencies_t Dependencies = m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::FLUIDX].Dependencies;
+    openfluid::market::PackageInfo::Dependencies_t Dependencies =
+        m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::FLUIDX].Dependencies;
     openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
     std::list<openfluid::ware::WareID_t>::const_iterator DLit;
 

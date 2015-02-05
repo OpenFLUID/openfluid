@@ -32,7 +32,7 @@
 
 
 /**
-  @file SSerieValues_TEST.cpp
+  @file ValuesBuffer_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

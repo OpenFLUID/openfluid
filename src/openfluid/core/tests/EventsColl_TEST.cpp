@@ -98,7 +98,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(EvColl2.getCount(),3);
 
   EvColl2.clear();
-  EvColl.getEventsBetween(openfluid::core::DateTime(2010,1,1,0,0,0),openfluid::core::DateTime(2010,12,31,23,59,59),EvColl2);
+  EvColl.getEventsBetween(openfluid::core::DateTime(2010,1,1,0,0,0),
+                          openfluid::core::DateTime(2010,12,31,23,59,59),EvColl2);
   BOOST_REQUIRE_EQUAL(EvColl2.getCount(),1);
 
   BOOST_REQUIRE_EQUAL(EvColl2.eventsList()->front().isInfoEqual("specialthing","wedding"),true);

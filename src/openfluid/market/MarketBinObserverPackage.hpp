@@ -31,10 +31,9 @@
 
 
 /**
- * MarketBinObserverPackage.hpp
- *
- *  Created on: 18 févr. 2013
- *      Author: Manuel CHATAIGNER
+ @file MarketBinObserverPackage.hpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
 #ifndef __OPENFLUID_MARKET_MARKETBINOBSERVERPACKAGE_HPP__

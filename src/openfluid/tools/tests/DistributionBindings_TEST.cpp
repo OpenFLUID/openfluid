@@ -32,7 +32,7 @@
 
 
 /**
-  @file MarketClient_TEST.cpp
+  @file DistributionBindings_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -78,8 +78,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   DistriTables.build(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.Generators").string(),
                                                       "sourcesinject.xml","distri.dat");
 
-  BOOST_REQUIRE_EQUAL(DistriTables.SourcesTable["1"],boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.Generators/source3.dat").string());
-  BOOST_REQUIRE_EQUAL(DistriTables.SourcesTable["2"],boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.Generators/source4.dat").string());
+  BOOST_REQUIRE_EQUAL(DistriTables.SourcesTable["1"],
+                      boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+
+                                              "/OPENFLUID.IN.Generators/source3.dat").string());
+  BOOST_REQUIRE_EQUAL(DistriTables.SourcesTable["2"],
+                      boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+
+                                              "/OPENFLUID.IN.Generators/source4.dat").string());
 
   BOOST_REQUIRE_EQUAL(DistriTables.UnitsTable[1],"1");
   BOOST_REQUIRE_EQUAL(DistriTables.UnitsTable[2],"2");

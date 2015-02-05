@@ -71,7 +71,8 @@ BEGIN_SIMULATOR_SIGNATURE("tests.generators")
   DECLARE_REQUIRED_VAR("tests.random[double]","TestUnits","random value from generators for tests","");
   DECLARE_REQUIRED_VAR("tests.interp[double]","TestUnits","interpolated value from generators for tests","");
 
-  DECLARE_REQUIRED_VAR("tests.fixedprev[vector]","TestUnits","fixed value from generators at a previous time step for tests","");
+  DECLARE_REQUIRED_VAR("tests.fixedprev[vector]","TestUnits",
+                       "fixed value from generators at a previous time step for tests","");
 
 END_SIMULATOR_SIGNATURE
 
@@ -198,7 +199,9 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
       if (TU->getID() % 2 != 0)
       {
 
-        if (!openfluid::scientific::isCloseEnough<double>(SValue,double(OPENFLUID_GetCurrentTimeIndex())/double(OPENFLUID_GetDefaultDeltaT())))
+        if (!openfluid::scientific::isCloseEnough<double>(SValue,
+                                                          double(OPENFLUID_GetCurrentTimeIndex())/
+                                                          double(OPENFLUID_GetDefaultDeltaT())))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.inject variable (source3.dat)");
       }
       else

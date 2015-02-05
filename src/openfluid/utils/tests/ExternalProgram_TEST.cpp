@@ -29,19 +29,16 @@
   
 */
 
-
 /**
- * Archiver_TEST.cpp
- *
- *  Created on: 16 juil. 2013
- *      Author: Manuel CHATAIGNER
-*/
+  @file ExternalProgram_TEST.cpp
 
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_archiver
+#define BOOST_TEST_MODULE unittest_externalprogram
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
@@ -71,7 +68,8 @@ BOOST_AUTO_TEST_CASE(check_registered)
   ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GnuplotProgram);
   std::cout << "Looking for gnuplot: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
 
-  ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GoogleEarthProgram);
+  ExtProg =
+      openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GoogleEarthProgram);
   std::cout << "Looking for GoogleEarth: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
 
   ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::PdfLatexProgram);
@@ -80,7 +78,8 @@ BOOST_AUTO_TEST_CASE(check_registered)
   ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::BibTexProgram);
   std::cout << "Looking for bibtex: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
 
-  ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::Latex2HTMLProgram);
+  ExtProg =
+      openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::Latex2HTMLProgram);
   std::cout << "Looking for latex2html: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
 }
 

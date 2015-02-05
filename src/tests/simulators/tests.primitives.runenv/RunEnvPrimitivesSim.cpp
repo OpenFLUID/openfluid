@@ -29,7 +29,11 @@
   
 */
 
+/**
+  @file RunEnvPrimitivesSim.cpp
 
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
@@ -133,7 +137,8 @@ class RunEnvPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       if (OPENFLUID_GetRunEnvironment("mode.verbose",RunEnvBool))
        OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (mode.verbose)");
 
-      if (RunEnvBool) OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (mode.verbose is true)");
+      if (RunEnvBool) OPENFLUID_RaiseError("tests.primitives.use",
+                                           "incorrect OPENFLUID_GetRunEnvironment (mode.verbose is true)");
 
       if (OPENFLUID_GetRunEnvironment("wrong.bool",RunEnvBool))
         OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (wrong.bool)");

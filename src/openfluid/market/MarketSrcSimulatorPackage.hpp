@@ -31,11 +31,11 @@
 
 
 /**
- * MarketSrcSimulatorPackage.hpp
- *
- *  Created on: 25 févr. 2013
- *      Author: Manuel CHATAIGNER
+ @file MarketSrcSimulatorPackage.hpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
+
 
 #ifndef __OPENFLUID_MARKET_MARKETSRCSIMULATORPACKAGE_HPP__
 #define __OPENFLUID_MARKET_MARKETSRCSIMULATORPACKAGE_HPP__

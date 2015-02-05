@@ -30,7 +30,7 @@
 */
 
 /**
-  @file DomainReader.cpp
+  @file FluidXDescriptor_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -406,7 +406,8 @@ void TestDataset(std::string DatasetPath)
        (*ObsIt)->isType(openfluid::fluidx::WareDescriptor::PluggedObserver));
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.csv");
 
-   boost::property_tree::ptree Params = openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
+   boost::property_tree::ptree Params =
+       openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
 
    BOOST_CHECK_EQUAL(Params.get_child("format").size(), 4);
 
@@ -632,11 +633,15 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   BOOST_REQUIRE_EQUAL(HasFailed, true);
 
   BOOST_REQUIRE_THROW(
-      openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+ "/OPENFLUID.IN.FluidXDescriptor/wrong-unknowndatatype").string()),
+      openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener())
+      .loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+
+                                                  "/OPENFLUID.IN.FluidXDescriptor/wrong-unknowndatatype").string()),
       openfluid::base::FrameworkException);
 
   BOOST_REQUIRE_THROW(
-      openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+ "/OPENFLUID.IN.FluidXDescriptor/wrong-missingdataid").string()),
+      openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener())
+      .loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+
+                                                  "/OPENFLUID.IN.FluidXDescriptor/wrong-missingdataid").string()),
       openfluid::base::FrameworkException);
 
 }

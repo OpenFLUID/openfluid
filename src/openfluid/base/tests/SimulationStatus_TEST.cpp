@@ -32,7 +32,7 @@
 
 
 /**
-  @file SimStatus_TEST.cpp
+  @file SimulationStatus_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

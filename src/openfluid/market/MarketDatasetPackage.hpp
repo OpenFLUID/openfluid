@@ -29,13 +29,11 @@
   
 */
 
+/**
+ @file MarketDatasetPackage.hpp
 
-/*
- * MarketDatasetPackage.hpp
- *
- *  Created on: 4 mars 2013
- *      Author: Manuel CHATAIGNER
- */
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
+*/
 
 #ifndef __OPENFLUID_MARKET_MARKETDATASETPACKAGE_HPP__
 #define __OPENFLUID_MARKET_MARKETDATASETPACKAGE_HPP__

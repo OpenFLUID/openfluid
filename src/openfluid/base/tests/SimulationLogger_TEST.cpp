@@ -67,7 +67,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::base::SimulationLogger* SimLog = new openfluid::base::SimulationLogger(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog2.log");
+  openfluid::base::SimulationLogger* SimLog =
+      new openfluid::base::SimulationLogger(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog2.log");
 
   SimLog->addWarning("Sender",1,"Warning message #1");
   BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),1);

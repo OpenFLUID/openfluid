@@ -32,7 +32,7 @@
 
 
 /**
-  @file MarketClient_TEST.cpp
+  @file ChronologicalSerie_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */

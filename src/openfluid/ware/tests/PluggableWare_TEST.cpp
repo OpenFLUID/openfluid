@@ -30,7 +30,7 @@
 */
 
 /**
-  @file WareDescriptor_TEST.cpp
+  @file PluggableWare_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
  */

@@ -57,12 +57,14 @@
 
 BOOST_AUTO_TEST_CASE(test_SetFileName)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
   BOOST_CHECK_THROW(openfluid::base::PreferencesManager::setFileName(CFile),openfluid::base::FrameworkException);
 
-  BOOST_CHECK(PrefMgr->getFileName().toStdString() == openfluid::base::RuntimeEnvironment::instance()->getDefaultConfigFile());
+  BOOST_CHECK(PrefMgr->getFileName().toStdString() ==
+              openfluid::base::RuntimeEnvironment::instance()->getDefaultConfigFile());
 
   delete PrefMgr;
 
@@ -80,7 +82,8 @@ BOOST_AUTO_TEST_CASE(test_SetFileName)
 
 BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
@@ -118,7 +121,8 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
 
 BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
@@ -178,7 +182,8 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
 
 BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
@@ -263,7 +268,8 @@ BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
 
 BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
@@ -350,7 +356,8 @@ BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
 
 BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
@@ -437,7 +444,8 @@ BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
 
 BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
@@ -497,7 +505,8 @@ BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
 
 BOOST_AUTO_TEST_CASE(test_DockToolbarPositionsManagement)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
@@ -523,7 +532,8 @@ BOOST_AUTO_TEST_CASE(test_DockToolbarPositionsManagement)
 
 BOOST_AUTO_TEST_CASE(test_textEditorProperties)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
   if (QFile::exists(CFile)) QFile::remove(CFile);
 
   openfluid::base::PreferencesManager::setFileName(CFile);
@@ -532,7 +542,8 @@ BOOST_AUTO_TEST_CASE(test_textEditorProperties)
   openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules;
   openfluid::base::PreferencesManager::SyntaxHighlightingRule_t Rule(QString("pink"),QStringList("none"));
   Rules.insert("datatype",Rule);
-  openfluid::base::PreferencesManager::SyntaxHighlightingRule_t ControlRule(QString("controlColor"),QStringList("none"));
+  openfluid::base::PreferencesManager::SyntaxHighlightingRule_t ControlRule(QString("controlColor"),
+                                                                            QStringList("none"));
 
   BOOST_CHECK_EQUAL(PrefMgr->isSyntaxHighlightingEnabled(),true);
   BOOST_CHECK_EQUAL(PrefMgr->getSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");

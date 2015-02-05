@@ -77,18 +77,22 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_CHECK_EQUAL(openfluid::base::ProjectManager::isProject(Prj1Dir),false);
 
-  openfluid::base::ProjectManager::instance()->create(Prj1Dir,"Test project","This is a test project","John Doe", false);
+  openfluid::base::ProjectManager::instance()->create(Prj1Dir,"Test project",
+                                                      "This is a test project","John Doe", false);
 
   BOOST_CHECK_EQUAL(openfluid::base::ProjectManager::isProject(Prj1Dir),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isOpened(), true);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getPath(), Prj1Dir);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getInputDir(), boost::filesystem::path(Prj1Dir+"/IN").string());
-  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getOutputDir(), boost::filesystem::path(Prj1Dir+"/OUT").string());
+  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getInputDir(),
+                      boost::filesystem::path(Prj1Dir+"/IN").string());
+  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getOutputDir(),
+                      boost::filesystem::path(Prj1Dir+"/OUT").string());
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isIncrementalOutputDir(),false);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getName(), "Test project");
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getDescription(), "This is a test project");
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getAuthors(),"John Doe");
-  BOOST_CHECK_EQUAL(openfluid::base::ProjectManager::instance()->getCreationDate(),openfluid::base::ProjectManager::instance()->getLastModDate());
+  BOOST_CHECK_EQUAL(openfluid::base::ProjectManager::instance()->getCreationDate(),
+                    openfluid::base::ProjectManager::instance()->getLastModDate());
 
   openfluid::base::ProjectManager::instance()->setIncrementalOutputDir(true);
   openfluid::base::ProjectManager::instance()->setName("Modified Test project");
@@ -111,14 +115,17 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::ProjectManager::instance()->updateOutputDir();
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isOpened(), true);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getPath(), Prj1Dir);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getInputDir(), boost::filesystem::path(Prj1Dir+"/IN").string());
+  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getInputDir(),
+                      boost::filesystem::path(Prj1Dir+"/IN").string());
 
-  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getOutputDir(), boost::filesystem::path(Prj1Dir+"/OUT_"+Now).string());
+  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getOutputDir(),
+                      boost::filesystem::path(Prj1Dir+"/OUT_"+Now).string());
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isIncrementalOutputDir(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getName(), "Modified Test project");
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getDescription(), "This is a modified test project");
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getAuthors(),"John Doe, Tom Morello");
-  BOOST_CHECK_NE(openfluid::base::ProjectManager::instance()->getCreationDate(),openfluid::base::ProjectManager::instance()->getLastModDate());
+  BOOST_CHECK_NE(openfluid::base::ProjectManager::instance()->getCreationDate(),
+                 openfluid::base::ProjectManager::instance()->getLastModDate());
   openfluid::base::ProjectManager::instance()->close();
 
   BOOST_CHECK_EQUAL(openfluid::base::ProjectManager::isProject(Prj1Dir),true);

@@ -284,23 +284,27 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       CurrentUnit = OPENFLUID_GetUnit("OU",13);
 
       if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"OU",5))
-        OPENFLUID_RaiseError("tests.primitives.land","incorrect from-to connection between units OU#13 and OU#5 before removing");
+        OPENFLUID_RaiseError("tests.primitives.land",
+                             "incorrect from-to connection between units OU#13 and OU#5 before removing");
 
       OPENFLUID_RemoveFromToConnection("OU",13,"OU",5);
 
       if (OPENFLUID_IsUnitConnectedTo(CurrentUnit,"OU",5))
-        OPENFLUID_RaiseError("tests.primitives.land","incorrect removing of from-to connection between units OU#13 and OU#5");
+        OPENFLUID_RaiseError("tests.primitives.land",
+                             "incorrect removing of from-to connection between units OU#13 and OU#5");
 
 
       CurrentUnit = OPENFLUID_GetUnit("TU",18);
 
       if (!OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
-        OPENFLUID_RaiseError("tests.primitives.land","incorrect child-parent connection between units TU#18 and VU#1 before removing");
+        OPENFLUID_RaiseError("tests.primitives.land",
+                             "incorrect child-parent connection between units TU#18 and VU#1 before removing");
 
       OPENFLUID_RemoveChildParentConnection("TU",18,"VU",1);
 
       if (OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
-        OPENFLUID_RaiseError("tests.primitives.land","incorrect removing of child-parent connection between units TU#18 and VU#1");
+        OPENFLUID_RaiseError("tests.primitives.land",
+                             "incorrect removing of child-parent connection between units TU#18 and VU#1");
 
 
     }

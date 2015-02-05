@@ -31,10 +31,9 @@
 
 
 /**
- * MarketBinObserverPackage.cpp
- *
- *  Created on: 18 févr. 2013
- *      Author: Manuel CHATAIGNER
+ @file MarketBinObserverPackage.cpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
 

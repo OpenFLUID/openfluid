@@ -36,7 +36,7 @@ This is a text for testing \LaTeX doc
 */
 
 /**
-  @file CmakeSim.cpp
+  @file CMakeSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

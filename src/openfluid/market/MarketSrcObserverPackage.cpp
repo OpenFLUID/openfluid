@@ -31,12 +31,10 @@
 
 
 /**
- * MarketSrcObserverPackage.cpp
- *
- *  Created on: 18 févr. 2013
- *      Author: Manuel CHATAIGNER
-*/
+ @file MarketSrcObserverPackage.cpp
 
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
+*/
 
 #include <openfluid/market/MarketSrcObserverPackage.hpp>
 

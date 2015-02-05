@@ -32,7 +32,7 @@
 
 
 /**
-  @file CouplingCSim.cpp
+  @file CouplingESim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

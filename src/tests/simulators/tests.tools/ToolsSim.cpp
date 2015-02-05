@@ -33,6 +33,8 @@
 
 /**
   @file ToolsSim.cpp
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 #include <boost/filesystem/operations.hpp>

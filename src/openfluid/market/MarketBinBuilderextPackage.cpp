@@ -30,11 +30,10 @@
 */
 
 
-/*
- * MarketBinBuilderextPackage.cpp
- *
- *  Created on: 7 mars 2013
- *      Author: Manuel CHATAIGNER
+/**
+ @file MarketBinBuilderextPackage.cpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
 
@@ -44,7 +43,8 @@
 namespace openfluid { namespace market {
 
 
-MarketBinBuilderextPackage::MarketBinBuilderextPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
+MarketBinBuilderextPackage::MarketBinBuilderextPackage(const openfluid::ware::WareID_t& ID,
+                                                       const std::string& PackageURL)
                           : MarketBinPackage(ID, PackageURL)
 {
 
