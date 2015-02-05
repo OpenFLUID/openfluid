@@ -307,9 +307,6 @@ class OPENFLUID_API SignatureHandledTypedDataItem : public SignatureHandledDataI
 
   public:
 
-    static bool getVariableNameAndType(const std::string SourceStr, std::string& VarName,
-                                       openfluid::core::Value::Type& VarType);
-
     openfluid::core::Value::Type DataType;
 
     SignatureHandledTypedDataItem() :

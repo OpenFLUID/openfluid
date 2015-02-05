@@ -270,15 +270,48 @@ std::string Value::toString() const
 // =====================================================================
 // =====================================================================
 
-bool Value::getValueTypeFromString(const std::string TypeName, Value::Type& ValueType)
+bool Value::getValueTypeFromString(const std::string& TypeName, Value::Type& ValueType)
 {
-  if(TypeName == "double") { ValueType = openfluid::core::Value::DOUBLE; return true; }
-  if(TypeName == "integer") { ValueType = openfluid::core::Value::INTEGER; return true; }
-  if(TypeName == "boolean") { ValueType = openfluid::core::Value::BOOLEAN; return true; }
-  if(TypeName == "vector") { ValueType = openfluid::core::Value::VECTOR; return true; }
-  if(TypeName == "matrix") { ValueType = openfluid::core::Value::MATRIX; return true; }
-  if(TypeName == "map") { ValueType = openfluid::core::Value::MAP; return true; }
-  if(TypeName == "string") { ValueType = openfluid::core::Value::STRING; return true; }
+  if (TypeName == "double")
+  {
+    ValueType = openfluid::core::Value::DOUBLE;
+    return true;
+  }
+  else if (TypeName == "integer")
+  {
+    ValueType = openfluid::core::Value::INTEGER;
+    return true;
+  }
+  else if (TypeName == "boolean")
+  {
+    ValueType = openfluid::core::Value::BOOLEAN;
+    return true;
+  }
+  else if(TypeName == "vector")
+  {
+    ValueType = openfluid::core::Value::VECTOR;
+    return true;
+  }
+  else if (TypeName == "matrix")
+  {
+    ValueType = openfluid::core::Value::MATRIX;
+    return true;
+  }
+  else if (TypeName == "map")
+  {
+    ValueType = openfluid::core::Value::MAP;
+    return true;
+  }
+  else if (TypeName == "string")
+  {
+    ValueType = openfluid::core::Value::STRING;
+    return true;
+  }
+  else if (TypeName == "null")
+  {
+    ValueType = openfluid::core::Value::NULLL;
+    return true;
+  }
 
   return false;
 }
@@ -308,6 +341,8 @@ std::string Value::getStringFromValueType(const Value::Type ValueType)
       return "map";
     case openfluid::core::Value::STRING:
       return "string";
+    case openfluid::core::Value::NULLL:
+      return "null";
     default:
       return "";
   }

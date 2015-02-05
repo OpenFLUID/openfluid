@@ -174,7 +174,7 @@ class OPENFLUID_API Value
     */
     std::string toString() const;
 
-    static bool getValueTypeFromString(const std::string ValueTypeString, Value::Type& ValueType);
+    static bool getValueTypeFromString(const std::string& ValueTypeString, Value::Type& ValueType);
 
     static std::string getStringFromValueType(const Value::Type ValueType);
 
