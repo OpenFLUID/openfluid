@@ -1,39 +1,39 @@
 /*
 
- This file is part of OpenFLUID software
- Copyright(c) 2007, INRA - Montpellier SupAgro
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
 
  */
 
 /**
- \file WareSrcFileEditor.cpp
- \brief Implements ...
+ @file WareSrcFileEditor.cpp
+ @brief Implements ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
@@ -61,20 +61,15 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
   updateLineNumberAreaWidth(0);
 
-  connect(this, SIGNAL(blockCountChanged(int)), this,
-          SLOT(updateLineNumberAreaWidth(int)));
-  connect(this, SIGNAL(updateRequest(QRect,int)), this,
-          SLOT(updateLineNumberArea(QRect,int)));
+  connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
+  connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
 
-  openfluid::base::PreferencesManager* PrefMgr =
-      openfluid::base::PreferencesManager::instance();
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
-  if (PrefMgr->isCurrentlineHighlightingEnabled() && QColor::isValidColor(
-      PrefMgr->getCurrentlineColor()))
+  if (PrefMgr->isCurrentlineHighlightingEnabled() && QColor::isValidColor(PrefMgr->getCurrentlineColor()))
   {
     m_LineColor.setNamedColor(PrefMgr->getCurrentlineColor());
-    connect(this, SIGNAL(cursorPositionChanged()), this,
-            SLOT(highlightCurrentLine()));
+    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
     highlightCurrentLine();
   }
@@ -82,8 +77,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   if (PrefMgr->isSyntaxHighlightingEnabled())
   {
     mp_SyntaxHighlighter = new WareSrcSyntaxHighlighter(
-        document(),
-        WareSrcFiletypeManager::instance()->getHighlightingRules(m_FilePath));
+        document(), WareSrcFiletypeManager::instance()->getHighlightingRules(m_FilePath));
   }
 
   QFont Font;
@@ -101,8 +95,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
   updateContent();
 
-  connect(document(), SIGNAL(modificationChanged(bool)), this,
-          SLOT(onChanged(bool)));
+  connect(document(), SIGNAL(modificationChanged(bool)), this, SLOT(onChanged(bool)));
 }
 
 
@@ -155,8 +148,7 @@ void WareSrcFileEditor::updateLineNumberArea(const QRect& Rect, int dy)
   if (dy)
     mp_lineNumberArea->scroll(0, dy);
   else
-    mp_lineNumberArea->update(0, Rect.y(), mp_lineNumberArea->width(),
-                              Rect.height());
+    mp_lineNumberArea->update(0, Rect.y(), mp_lineNumberArea->width(), Rect.height());
 
   if (Rect.contains(viewport()->rect()))
     updateLineNumberAreaWidth(0);
@@ -172,8 +164,7 @@ void WareSrcFileEditor::resizeEvent(QResizeEvent* Event)
   QPlainTextEdit::resizeEvent(Event);
 
   QRect CR = contentsRect();
-  mp_lineNumberArea->setGeometry(
-      QRect(CR.left(), CR.top(), lineNumberAreaWidth(), CR.height()));
+  mp_lineNumberArea->setGeometry(QRect(CR.left(), CR.top(), lineNumberAreaWidth(), CR.height()));
 }
 
 
@@ -212,8 +203,7 @@ void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
 
   QTextBlock Block = firstVisibleBlock();
   int BlockNumber = Block.blockNumber();
-  int Top =
-      (int) blockBoundingGeometry(Block).translated(contentOffset()).top();
+  int Top = (int) blockBoundingGeometry(Block).translated(contentOffset()).top();
   int Bottom = Top + (int) blockBoundingRect(Block).height();
 
   while (Block.isValid() && Top <= Event->rect().bottom())
@@ -222,8 +212,7 @@ void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
     {
       QString Number = QString::number(BlockNumber + 1);
       painter.setPen(Qt::black);
-      painter.drawText(0, Top, mp_lineNumberArea->width(),
-                       fontMetrics().height(), Qt::AlignRight, Number);
+      painter.drawText(0, Top, mp_lineNumberArea->width(), fontMetrics().height(), Qt::AlignRight, Number);
     }
 
     Block = Block.next();
@@ -278,9 +267,8 @@ void WareSrcFileEditor::saveContentToPath(const QString& Path)
   QFile File(Path);
 
   if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
-    throw openfluid::base::FrameworkException(
-        "WareSrcFileEditor::setContentToPath",
-        QString("Cannot open file %1 in write mode").arg(Path).toStdString());
+    throw openfluid::base::FrameworkException("WareSrcFileEditor::setContentToPath",
+                                              QString("Cannot open file %1 in write mode").arg(Path).toStdString());
 
   QTextStream Str(&File);
   Str << toPlainText();
@@ -296,9 +284,8 @@ void WareSrcFileEditor::updateContent()
   QFile File(m_FilePath);
 
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-    throw openfluid::base::FrameworkException(
-        "WareSrcFileEditor::updateContent",
-        QString("Cannot open file %1").arg(m_FilePath).toStdString());
+    throw openfluid::base::FrameworkException("WareSrcFileEditor::updateContent",
+                                              QString("Cannot open file %1").arg(m_FilePath).toStdString());
 
   setPlainText(QTextStream(&File).readAll());
 
@@ -310,4 +297,4 @@ void WareSrcFileEditor::updateContent()
 // =====================================================================
 
 
-} } } // namespaces
+} } }  // namespaces

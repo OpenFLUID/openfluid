@@ -1,39 +1,39 @@
 /*
 
- This file is part of OpenFLUID software
- Copyright(c) 2007, INRA - Montpellier SupAgro
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
 
  */
 
 /**
- \file WareSrcWidget.hpp
- \brief Header of ...
+ @file WareSrcWidget.hpp
+ @brief Header of ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__
@@ -76,8 +76,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     bool m_IsStandalone;
 
-    void addNewFileTab(int Index, const QString& AbsolutePath,
-                       const QString& TabLabel, const QString& TabTooltip = "");
+    void addNewFileTab(int Index, const QString& AbsolutePath, const QString& TabLabel, const QString& TabTooltip = "");
 
     /**
      * Deletes Editor
@@ -91,22 +90,20 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
   public:
 
-    WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info,
-                  bool IsStandalone,
+    WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
                   openfluid::waresdev::WareSrcContainer::ConfigMode Config,
-                  openfluid::waresdev::WareSrcContainer::BuildMode Build,
-                  QWidget* Parent = 0);
+                  openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent = 0);
 
     ~WareSrcWidget();
 
-    void openFile(const openfluid::waresdev::WareSrcManager::PathInfo& Info,
-                  int Index = -1);
+    void openFile(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index = -1);
 
     void openDefaultFiles();
 
     /**
      * Set the file editor for the absolute path of Info as the current tab
-     * @details Check if the file editor is already opened. If true, set this editor as the current tab. Otherwise does nothing.
+     * @details Check if the file editor is already opened. If true, set this editor as the current tab.
+     * Otherwise does nothing.
      * @return true if the file editor was already opened, false otherwise
      */
     bool setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info);

@@ -1,40 +1,40 @@
 /*
 
- This file is part of OpenFLUID software
- Copyright(c) 2007, INRA - Montpellier SupAgro
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
  
  */
 
 
 /**
- \file WareSrcManager.cpp
- \brief Implements ...
+ @file WareSrcManager.cpp
+ @brief Implements ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
@@ -57,11 +57,9 @@ WareSrcManager* WareSrcManager::mp_Instance = 0;
 
 
 WareSrcManager::WareSrcManager() :
-    m_WaresdevDirName(
-        QString::fromStdString(openfluid::config::WARESDEV_SUBDIR))
+    m_WaresdevDirName(QString::fromStdString(openfluid::config::WARESDEV_SUBDIR))
 {
-  switchWorkspace(
-      openfluid::base::PreferencesManager::instance()->getWorkspacePath());
+  switchWorkspace(openfluid::base::PreferencesManager::instance()->getWorkspacePath());
 }
 
 
@@ -125,8 +123,7 @@ QString WareSrcManager::getWareTypePath(WareType WareSrcType)
   if (m_WareTypePathByWareType.contains(WareSrcType))
     return m_WareTypePathByWareType.value(WareSrcType);
 
-  throw openfluid::base::FrameworkException(
-      "waresdev::WareSrcManager::getWareTypePath", "unknown source type");
+  throw openfluid::base::FrameworkException("waresdev::WareSrcManager::getWareTypePath", "unknown source type");
 }
 
 
@@ -134,9 +131,8 @@ QString WareSrcManager::getWareTypePath(WareType WareSrcType)
 // =====================================================================
 
 
-QString WareSrcManager::getWarePath(
-    const QString& WareID, openfluid::ware::PluggableWare::WareType OFWareType,
-    QString& ErrMsg)
+QString WareSrcManager::getWarePath(const QString& WareID, openfluid::ware::PluggableWare::WareType OFWareType,
+                                    QString& ErrMsg)
 {
   openfluid::waresdev::WareSrcManager::WareType Type;
 
@@ -159,8 +155,7 @@ QString WareSrcManager::getWarePath(
   if (Dir.exists(WareID))
     return Dir.filePath(WareID);
 
-  ErrMsg = QObject::tr("Unable to find \"%1\" in the current workspace.").arg(
-      WareID);
+  ErrMsg = QObject::tr("Unable to find \"%1\" in the current workspace.").arg(WareID);
   return "";
 }
 
@@ -185,8 +180,8 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 
   Info.m_IsInCurrentWorkspace = true;
 
-  for (QMap<WareType, QString>::iterator it = m_WareTypePathByWareType.begin();
-      it != m_WareTypePathByWareType.end(); ++it)
+  for (QMap<WareType, QString>::iterator it = m_WareTypePathByWareType.begin(); it != m_WareTypePathByWareType.end();
+      ++it)
   {
     // we *are* this waretype directory
     if (Info.m_AbsolutePath == it.value())
@@ -198,8 +193,7 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 
     QDir WareTypeDir(it.value());
     QString RelToWareType = WareTypeDir.relativeFilePath(Info.m_AbsolutePath);
-    QString PotentialWareName = RelToWareType.section(
-        '/', 0, 0, QString::SectionSkipEmpty);
+    QString PotentialWareName = RelToWareType.section('/', 0, 0, QString::SectionSkipEmpty);
     QString PotentialWarePath = WareTypeDir.absoluteFilePath(PotentialWareName);
 
     // we are just under this waretype directory, but just a file out of any ware
@@ -209,8 +203,7 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
     Info.m_WareName = PotentialWareName;
     Info.m_AbsolutePathOfWare = PotentialWarePath;
     Info.m_WareType = it.key();
-    Info.m_RelativePathToWareDir = QDir(Info.m_AbsolutePathOfWare)
-        .relativeFilePath(Info.m_AbsolutePath);
+    Info.m_RelativePathToWareDir = QDir(Info.m_AbsolutePathOfWare).relativeFilePath(Info.m_AbsolutePath);
 
     if (PotentialWarePath == Info.m_AbsolutePath)
     {
@@ -255,4 +248,4 @@ QString WareSrcManager::getWorkspacePath()
 // =====================================================================
 
 
-} } // namespaces
+} }  // namespaces

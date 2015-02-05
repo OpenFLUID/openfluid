@@ -1,39 +1,39 @@
 /*
 
- This file is part of OpenFLUID software
- Copyright(c) 2007, INRA - Montpellier SupAgro
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
 
  */
 
 /**
- \file WareSrcWidget.cpp
- \brief Implements ...
+ @file WareSrcWidget.cpp
+ @brief Implements ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "WareSrcWidget.hpp"
@@ -61,13 +61,11 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcWidget::WareSrcWidget(
-    const openfluid::waresdev::WareSrcManager::PathInfo& Info,
-    bool IsStandalone, openfluid::waresdev::WareSrcContainer::ConfigMode Config,
-    openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent) :
-    QWidget(Parent), ui(new Ui::WareSrcWidget), m_Container(
-        Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName), m_IsStandalone(
-        IsStandalone)
+WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
+                             openfluid::waresdev::WareSrcContainer::ConfigMode Config,
+                             openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent) :
+    QWidget(Parent), ui(new Ui::WareSrcWidget), m_Container(Info.m_AbsolutePathOfWare, Info.m_WareType,
+                                                            Info.m_WareName), m_IsStandalone(IsStandalone)
 {
   ui->setupUi(this);
 
@@ -81,40 +79,27 @@ WareSrcWidget::WareSrcWidget(
 
     ui->Toolbar_Layout->addWidget(TB);
 
-    connect(TB->action("NewFile"), SIGNAL(triggered()), this,
-            SLOT(showNotYetImplemented()));
-    connect(TB->action("OpenFile"), SIGNAL(triggered()), this,
-            SLOT(showNotYetImplemented()));
-    connect(TB->action("SaveFile"), SIGNAL(triggered()), this,
-            SLOT(saveCurrentEditor()));
-    connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this,
-            SIGNAL(saveAsRequested()));
-    connect(TB->action("CloseFile"), SIGNAL(triggered()), this,
-            SLOT(closeCurrentEditor()));
-    connect(TB->action("DeleteFile"), SIGNAL(triggered()), this,
-            SLOT(showNotYetImplemented()));
+    connect(TB->action("NewFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+    connect(TB->action("OpenFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+    connect(TB->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
+    connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this, SIGNAL(saveAsRequested()));
+    connect(TB->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
+    connect(TB->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
 
-    connect(TB->action("Release"), SIGNAL(triggered()), this,
-            SLOT(setReleaseMode()));
-    connect(TB->action("Debug"), SIGNAL(triggered()), this,
-            SLOT(setDebugMode()));
-    connect(TB->action("BuildInstall"), SIGNAL(triggered()), this,
-            SLOT(setBuildWithInstallMode()));
-    connect(TB->action("BuildOnly"), SIGNAL(triggered()), this,
-            SLOT(setBuildNoInstallMode()));
-    connect(TB->action("Configure"), SIGNAL(triggered()), this,
-            SLOT(configure()));
+    connect(TB->action("Release"), SIGNAL(triggered()), this, SLOT(setReleaseMode()));
+    connect(TB->action("Debug"), SIGNAL(triggered()), this, SLOT(setDebugMode()));
+    connect(TB->action("BuildInstall"), SIGNAL(triggered()), this, SLOT(setBuildWithInstallMode()));
+    connect(TB->action("BuildOnly"), SIGNAL(triggered()), this, SLOT(setBuildNoInstallMode()));
+    connect(TB->action("Configure"), SIGNAL(triggered()), this, SLOT(configure()));
     connect(TB->action("Build"), SIGNAL(triggered()), this, SLOT(build()));
   }
 
-  connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this,
-          SLOT(onCloseFileTabRequested(int)));
+  connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
 
   m_Container.setConfigMode(Config);
   m_Container.setBuildMode(Build);
 
-  mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(
-      ui->WareSrcMessageWidget);
+  mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(ui->WareSrcMessageWidget);
   m_Container.setMsgStream(*mp_TextEditMsgStream);
 }
 
@@ -133,19 +118,16 @@ WareSrcWidget::~WareSrcWidget()
 // =====================================================================
 // =====================================================================
 
-void WareSrcWidget::openFile(
-    const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index)
+void WareSrcWidget::openFile(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index)
 {
-  WareSrcFileEditor* Editor = m_WareSrcFilesByPath.value(Info.m_AbsolutePath,
-                                                         0);
+  WareSrcFileEditor* Editor = m_WareSrcFilesByPath.value(Info.m_AbsolutePath, 0);
   if (Editor)
   {
     Editor->updateContent();
     ui->WareSrcFileCollection->setCurrentWidget(Editor);
   }
   else
-    addNewFileTab(Index, Info.m_AbsolutePath, Info.m_FileName,
-                  QDir::toNativeSeparators(Info.m_RelativePathToWareDir));
+    addNewFileTab(Index, Info.m_AbsolutePath, Info.m_FileName, QDir::toNativeSeparators(Info.m_RelativePathToWareDir));
 }
 
 
@@ -153,8 +135,7 @@ void WareSrcWidget::openFile(
 // =====================================================================
 
 
-void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath,
-                                  const QString& TabLabel,
+void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const QString& TabLabel,
                                   const QString& TabTooltip)
 {
   WareSrcFileEditor* Widget = new WareSrcFileEditor(AbsolutePath, this);
@@ -180,8 +161,7 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath,
 
 int WareSrcWidget::closeCurrentEditor(bool WithConfirm)
 {
-  return onCloseFileTabRequested(ui->WareSrcFileCollection->currentIndex(),
-                                 WithConfirm);
+  return onCloseFileTabRequested(ui->WareSrcFileCollection->currentIndex(), WithConfirm);
 }
 
 
@@ -193,8 +173,7 @@ int WareSrcWidget::onCloseFileTabRequested(int Index, bool WithConfirm)
 {
   int ClosedTabPos = -1;
 
-  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(
-      ui->WareSrcFileCollection->widget(Index)))
+  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->widget(Index)))
   {
     int Choice = QMessageBox::Discard;
 
@@ -203,8 +182,7 @@ int WareSrcWidget::onCloseFileTabRequested(int Index, bool WithConfirm)
       QMessageBox MsgBox;
       MsgBox.setText(tr("The document has been modified."));
       MsgBox.setInformativeText(tr("Do you want to save your changes?"));
-      MsgBox.setStandardButtons(
-          QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+      MsgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
       MsgBox.setDefaultButton(QMessageBox::Save);
       Choice = MsgBox.exec();
     }
@@ -276,8 +254,7 @@ void WareSrcWidget::closeAllFileTabs()
 
 QString WareSrcWidget::getCurrentFilePath()
 {
-  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(
-      ui->WareSrcFileCollection->currentWidget()))
+  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->currentWidget()))
     return Editor->getFilePath();
 
   return "";
@@ -303,8 +280,7 @@ int WareSrcWidget::closeFileTab(const QString& Path)
 
 bool WareSrcWidget::eventFilter(QObject* Obj, QEvent* Event)
 {
-  if (Event->type() == QEvent::ShortcutOverride && static_cast<QKeyEvent*>(Event)
-      ->matches(QKeySequence::Save))
+  if (Event->type() == QEvent::ShortcutOverride && static_cast<QKeyEvent*>(Event)->matches(QKeySequence::Save))
   {
     saveCurrentEditor();
     Event->accept();
@@ -332,11 +308,9 @@ void WareSrcWidget::openDefaultFiles()
 // =====================================================================
 
 
-bool WareSrcWidget::setCurrent(
-    const openfluid::waresdev::WareSrcManager::PathInfo& Info)
+bool WareSrcWidget::setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info)
 {
-  WareSrcFileEditor* Widget = m_WareSrcFilesByPath.value(Info.m_AbsolutePath,
-                                                         0);
+  WareSrcFileEditor* Widget = m_WareSrcFilesByPath.value(Info.m_AbsolutePath, 0);
 
   if (Widget)
     ui->WareSrcFileCollection->setCurrentWidget(Widget);
@@ -361,8 +335,7 @@ openfluid::waresdev::WareSrcContainer& WareSrcWidget::wareSrcContainer()
 
 void WareSrcWidget::setReleaseMode()
 {
-  m_Container.setConfigMode(
-      openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE);
+  m_Container.setConfigMode(openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE);
 }
 
 
@@ -373,8 +346,7 @@ void WareSrcWidget::setReleaseMode()
 void WareSrcWidget::setDebugMode()
 
 {
-  m_Container.setConfigMode(
-      openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG);
+  m_Container.setConfigMode(openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG);
 }
 
 
@@ -385,8 +357,7 @@ void WareSrcWidget::setDebugMode()
 void WareSrcWidget::setBuildWithInstallMode()
 
 {
-  m_Container.setBuildMode(
-      openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL);
+  m_Container.setBuildMode(openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL);
 }
 
 
@@ -397,8 +368,7 @@ void WareSrcWidget::setBuildWithInstallMode()
 void WareSrcWidget::setBuildNoInstallMode()
 
 {
-  m_Container.setBuildMode(
-      openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL);
+  m_Container.setBuildMode(openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL);
 }
 
 
@@ -438,8 +408,7 @@ void WareSrcWidget::showNotYetImplemented()
 // =====================================================================
 
 
-void WareSrcWidget::onEditorTxtModified(WareSrcFileEditor* Editor,
-                                        bool Modified)
+void WareSrcWidget::onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified)
 {
   int Pos = ui->WareSrcFileCollection->indexOf(Editor);
 
@@ -480,8 +449,7 @@ return false;
 
 void WareSrcWidget::saveCurrentEditor()
 {
-  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(
-      ui->WareSrcFileCollection->currentWidget()))
+  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->currentWidget()))
     Editor->saveContent();
 }
 
@@ -492,8 +460,7 @@ void WareSrcWidget::saveCurrentEditor()
 
 void WareSrcWidget::saveCurrentEditorAs(const QString& Path)
 {
-  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(
-      ui->WareSrcFileCollection->currentWidget()))
+  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->currentWidget()))
     Editor->saveContentToPath(Path);
 }
 
@@ -502,4 +469,4 @@ void WareSrcWidget::saveCurrentEditorAs(const QString& Path)
 // =====================================================================
 
 
-} } } // namespaces
+} } }  // namespaces

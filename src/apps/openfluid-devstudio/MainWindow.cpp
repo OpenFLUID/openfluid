@@ -1,39 +1,39 @@
 /*
 
- This file is part of OpenFLUID software
- Copyright(c) 2007, INRA - Montpellier SupAgro
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
 
  */
 
 /**
- \file MainWindow.cpp
- \brief Implements ...
+ @file MainWindow.cpp
+ @brief Implements ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include "MainWindow.hpp"
@@ -58,8 +58,7 @@ MainWindow::MainWindow() :
 
   QRect ScreenRect = QApplication::desktop()->screenGeometry();
   resize(ScreenRect.width() * 0.9, ScreenRect.height() * 0.9);
-  move((ScreenRect.width() - width()) / 2,
-       (ScreenRect.height() - height()) / 2);
+  move((ScreenRect.width() - width()) / 2, (ScreenRect.height() - height()) / 2);
 
   QList<int> Sizes;
   Sizes << 180 << 1000;
@@ -68,116 +67,72 @@ MainWindow::MainWindow() :
   mp_Toolbar = new openfluid::ui::waresdev::WareSrcToolbar(false, this);
   addToolBar(mp_Toolbar);
 
-  openfluid::waresdev::WareSrcManager* Manager =
-      openfluid::waresdev::WareSrcManager::instance();
+  openfluid::waresdev::WareSrcManager* Manager = openfluid::waresdev::WareSrcManager::instance();
 
-  ui->SimExplorer->configure(
-      Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::SIMULATOR),
-      true);
-  ui->ObsExplorer->configure(
-      Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::OBSERVER),
-      true);
-  ui->ExtExplorer->configure(
-      Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::BUILDEREXT),
-      true);
+  ui->SimExplorer->configure(Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::SIMULATOR), true);
+  ui->ObsExplorer->configure(Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::OBSERVER), true);
+  ui->ExtExplorer->configure(Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::BUILDEREXT), true);
 
-  mp_Collection = new openfluid::ui::waresdev::WareSrcWidgetCollection(
-      ui->WareSrcCollection, false);
+  mp_Collection = new openfluid::ui::waresdev::WareSrcWidgetCollection(ui->WareSrcCollection, false);
 
   createLocalActions();
   createMenus();
 
-  connect(m_Actions["NewSimulator"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["NewObserver"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["NewExtension"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["OpenSimulator"], SIGNAL(triggered()), mp_Collection,
-          SLOT(openSimulator()));
-  connect(m_Actions["OpenObserver"], SIGNAL(triggered()), mp_Collection,
-          SLOT(openObserver()));
-  connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection,
-          SLOT(openBuilderExtension()));
-  connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), this,
-          SLOT(onSaveAsRequested()));
-  connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["Quit"], SIGNAL(triggered()), this,
-          SLOT(onQuitRequested()));
+  connect(m_Actions["NewSimulator"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["NewObserver"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["NewExtension"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["OpenSimulator"], SIGNAL(triggered()), mp_Collection, SLOT(openSimulator()));
+  connect(m_Actions["OpenObserver"], SIGNAL(triggered()), mp_Collection, SLOT(openObserver()));
+  connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection, SLOT(openBuilderExtension()));
+  connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), this, SLOT(onSaveAsRequested()));
+  connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
 
-  connect(mp_Toolbar->action("NewFile"), SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(mp_Toolbar->action("OpenFile"), SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(mp_Toolbar->action("SaveFile"), SIGNAL(triggered()), mp_Collection,
-          SLOT(saveCurrentEditor()));
-  connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()), mp_Collection,
-          SLOT(saveCurrentEditorAs()));
-  connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()), mp_Collection,
-          SLOT(closeCurrentEditor()));
-  connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->action("NewFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->action("OpenFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->action("SaveFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditor()));
+  connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditorAs()));
+  connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()), mp_Collection, SLOT(closeCurrentEditor()));
+  connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
 
-  connect(m_Actions["Copy"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["Cut"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["Paste"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["Find"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["Replace"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
-  connect(m_Actions["GoToLine"], SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
+  connect(m_Actions["Copy"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["Cut"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["Paste"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["Find"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["Replace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["GoToLine"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
 
-  connect(mp_Toolbar->action("Release"), SIGNAL(triggered()), mp_Collection,
-          SLOT(setReleaseMode()));
-  connect(mp_Toolbar->action("Debug"), SIGNAL(triggered()), mp_Collection,
-          SLOT(setDebugMode()));
-  connect(mp_Toolbar->action("BuildInstall"), SIGNAL(triggered()),
-          mp_Collection, SLOT(setBuildWithInstallMode()));
-  connect(mp_Toolbar->action("BuildOnly"), SIGNAL(triggered()), mp_Collection,
-          SLOT(setBuildNoInstallMode()));
-  connect(mp_Toolbar->action("Configure"), SIGNAL(triggered()), mp_Collection,
-          SLOT(configure()));
-  connect(mp_Toolbar->action("Build"), SIGNAL(triggered()), mp_Collection,
-          SLOT(build()));
-  connect(mp_Toolbar->action("OpenExplorer"), SIGNAL(triggered()),
-          mp_Collection, SLOT(openExplorer()));
-  connect(mp_Toolbar->action("OpenTerminal"), SIGNAL(triggered()),
-          mp_Collection, SLOT(openTerminal()));
+  connect(mp_Toolbar->action("Release"), SIGNAL(triggered()), mp_Collection, SLOT(setReleaseMode()));
+  connect(mp_Toolbar->action("Debug"), SIGNAL(triggered()), mp_Collection, SLOT(setDebugMode()));
+  connect(mp_Toolbar->action("BuildInstall"), SIGNAL(triggered()), mp_Collection, SLOT(setBuildWithInstallMode()));
+  connect(mp_Toolbar->action("BuildOnly"), SIGNAL(triggered()), mp_Collection, SLOT(setBuildNoInstallMode()));
+  connect(mp_Toolbar->action("Configure"), SIGNAL(triggered()), mp_Collection, SLOT(configure()));
+  connect(mp_Toolbar->action("Build"), SIGNAL(triggered()), mp_Collection, SLOT(build()));
+  connect(mp_Toolbar->action("OpenExplorer"), SIGNAL(triggered()), mp_Collection, SLOT(openExplorer()));
+  connect(mp_Toolbar->action("OpenTerminal"), SIGNAL(triggered()), mp_Collection, SLOT(openTerminal()));
 
-  connect(ui->SimExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection,
-          SLOT(openPath(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection,
-          SLOT(openPath(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection,
-          SLOT(openPath(const QString&)));
+  connect(ui->SimExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection, SLOT(openPath(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection, SLOT(openPath(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection, SLOT(openPath(const QString&)));
 
-  connect(ui->SimExplorer, SIGNAL(clicked(const QString&)), mp_Collection,
-          SLOT(setCurrent(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(clicked(const QString&)), mp_Collection,
-          SLOT(setCurrent(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(clicked(const QString&)), mp_Collection,
-          SLOT(setCurrent(const QString&)));
+  connect(ui->SimExplorer, SIGNAL(clicked(const QString&)), mp_Collection, SLOT(setCurrent(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(clicked(const QString&)), mp_Collection, SLOT(setCurrent(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(clicked(const QString&)), mp_Collection, SLOT(setCurrent(const QString&)));
 
-  connect(ui->SimExplorer, SIGNAL(openExplorerAsked(const QString&)),
-          mp_Collection, SLOT(openExplorer(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(openExplorerAsked(const QString&)),
-          mp_Collection, SLOT(openExplorer(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(openExplorerAsked(const QString&)),
-          mp_Collection, SLOT(openExplorer(const QString&)));
+  connect(ui->SimExplorer, SIGNAL(openExplorerAsked(const QString&)), mp_Collection,
+          SLOT(openExplorer(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(openExplorerAsked(const QString&)), mp_Collection,
+          SLOT(openExplorer(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(openExplorerAsked(const QString&)), mp_Collection,
+          SLOT(openExplorer(const QString&)));
 
-  connect(ui->SimExplorer, SIGNAL(openTerminalAsked(const QString&)),
-          mp_Collection, SLOT(openTerminal(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(openTerminalAsked(const QString&)),
-          mp_Collection, SLOT(openTerminal(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(openTerminalAsked(const QString&)),
-          mp_Collection, SLOT(openTerminal(const QString&)));
+  connect(ui->SimExplorer, SIGNAL(openTerminalAsked(const QString&)), mp_Collection,
+          SLOT(openTerminal(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(openTerminalAsked(const QString&)), mp_Collection,
+          SLOT(openTerminal(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(openTerminalAsked(const QString&)), mp_Collection,
+          SLOT(openTerminal(const QString&)));
 
   setWorkspaceDefaults();
 }
@@ -207,8 +162,7 @@ void MainWindow::createLocalActions()
   m_Actions["OpenObserver"] = new QAction(tr("Observer..."), this);
   m_Actions["OpenExtension"] = new QAction(tr("Builder extension..."), this);
 
-  m_Actions["SaveAsFile"] = new QAction(
-      QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
+  m_Actions["SaveAsFile"] = new QAction(QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
   m_Actions["SaveAsFile"]->setToolTip(tr("Save the current file as..."));
 
   m_Actions["DeleteWare"] = new QAction(tr("Delete ware"), this);
@@ -219,7 +173,8 @@ void MainWindow::createLocalActions()
   m_Actions["Quit"]->setShortcuts(QKeySequence::Quit);
 
   /* TODO check it, because :
-   "The menu role can only be changed before the actions are put into the menu bar in Mac OS X (usually just before the first application window is shown)."
+   "The menu role can only be changed before the actions are put into the menu bar in Mac OS X
+   (usually just before the first application window is shown)."
    (http://qt-project.org/doc/qt-4.8/qaction.html#menuRole-prop)*/
   m_Actions["Quit"]->setMenuRole(QAction::QuitRole);
 
@@ -305,12 +260,8 @@ void MainWindow::setWorkspaceDefaults()
   DevStudioPreferencesManager* Mgr = DevStudioPreferencesManager::instance();
 
   QStringList Mode = Mgr->getConfigBuildMode().split("|");
-  mp_Toolbar->action(
-      Mode.contains("DEBUG", Qt::CaseInsensitive) ? "Debug" : "Release")
-      ->trigger();
-  mp_Toolbar->action(
-      Mode.contains("BUILDONLY", Qt::CaseInsensitive) ? "BuildOnly" :
-                                                        "BuildInstall")->trigger();
+  mp_Toolbar->action(Mode.contains("DEBUG", Qt::CaseInsensitive) ? "Debug" : "Release")->trigger();
+  mp_Toolbar->action(Mode.contains("BUILDONLY", Qt::CaseInsensitive) ? "BuildOnly" : "BuildInstall")->trigger();
 
   QStringList LastOpenWares = Mgr->getLastOpenWares();
   foreach(QString WarePath,LastOpenWares)mp_Collection->openPath(WarePath);
@@ -325,8 +276,7 @@ void MainWindow::setWorkspaceDefaults()
 
 void MainWindow::onSaveAsRequested()
 {
-  mp_Collection->saveCurrentEditorAs(
-      openfluid::waresdev::WareSrcManager::instance()->getWorkspacePath());
+  mp_Collection->saveCurrentEditorAs(openfluid::waresdev::WareSrcManager::instance()->getWorkspacePath());
 }
 
 
@@ -349,8 +299,7 @@ void MainWindow::onQuitRequested()
 
   QStringList Mode;
   Mode << (mp_Collection->isDebugMode() ? "DEBUG" : "RELEASE");
-  Mode
-      << (mp_Collection->isBuildNoInstallMode() ? "BUILDONLY" : "BUILDINSTALL");
+  Mode << (mp_Collection->isBuildNoInstallMode() ? "BUILDONLY" : "BUILDINSTALL");
   Mgr->setConfigBuildMode(Mode.join("|"));
 
   Mgr->setLastOpenWares(mp_Collection->getOpenWarePaths());

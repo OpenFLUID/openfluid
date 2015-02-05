@@ -1,40 +1,40 @@
 /*
 
- This file is part of OpenFLUID software
- Copyright(c) 2007, INRA - Montpellier SupAgro
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
  
  */
 
 
 /**
- \file WareSrcSyntaxManager.cpp
- \brief Implements ...
+ @file WareSrcFiletypeManager.cpp
+ @brief Implements ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <QDir>
@@ -60,11 +60,10 @@ WareSrcFiletypeManager* WareSrcFiletypeManager::mp_Instance = 0;
 WareSrcFiletypeManager::WareSrcFiletypeManager()
 {
   openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules =
-      openfluid::base::PreferencesManager::instance()
-          ->getSyntaxHighlightingRules();
+      openfluid::base::PreferencesManager::instance()->getSyntaxHighlightingRules();
 
-  for (openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it =
-      Rules.begin(); it != Rules.end(); ++it)
+  for (openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.begin(); it != Rules.end();
+      ++it)
   {
     QString StyleName = it.key();
 
@@ -85,21 +84,15 @@ WareSrcFiletypeManager::WareSrcFiletypeManager()
 }
 
   QDir WaresdevDir(
-      QString("%1/%2").arg(
-          QString::fromStdString(
-              openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()))
-          .arg(
-          QString::fromStdString(
-              openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
+      QString("%1/%2").arg(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()))
+                      .arg(QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
 
   parseFiletypeFile(WaresdevDir.filePath("filetypes.ofdev.xml"));
 
-  for (QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin();
-      it != m_WareSrcFiletypes.end(); ++it)
+  for (QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin(); it != m_WareSrcFiletypes.end(); ++it)
   {
     if (!it.value().m_HlFilename.isEmpty())
-      it.value().m_HlRules = parseSyntaxFile(
-          WaresdevDir.filePath(it.value().m_HlFilename));
+      it.value().m_HlRules = parseSyntaxFile(WaresdevDir.filePath(it.value().m_HlFilename));
   }
 
 }
@@ -125,9 +118,8 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
   QFile File(FilePath);
 
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-    throw openfluid::base::FrameworkException(
-        "WareSrcFiletypeManager::openWaresdevFile",
-        QString("syntax file not found: %1").arg(FilePath).toStdString());
+    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::openWaresdevFile",
+                                              QString("syntax file not found: %1").arg(FilePath).toStdString());
 
   QString Msg;
   int Line, Col;
@@ -136,23 +128,20 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
     File.close();
     throw openfluid::base::FrameworkException(
         "WareSrcFiletypeManager::openWaresdevFile",
-        QString("error in syntax file: %1 (line %2, column %3").arg(Msg).arg(
-            Line).arg(Col).toStdString());
+        QString("error in syntax file: %1 (line %2, column %3").arg(Msg).arg(Line).arg(Col).toStdString());
   }
   File.close();
 
   QDomElement Elem = Doc.documentElement();
 
   if (Elem.tagName() != "openfluid")
-    throw openfluid::base::FrameworkException(
-        "WareSrcFiletypeManager::openWaresdevFile",
-        "syntax file not well formed (missing 'openfluid' tag)");
+    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::openWaresdevFile",
+                                              "syntax file not well formed (missing 'openfluid' tag)");
 
   Elem = Elem.firstChildElement();
   if (Elem.tagName() != "waresdev")
-    throw openfluid::base::FrameworkException(
-        "WareSrcFiletypeManager::openWaresdevFile",
-        "syntax file not well formed (missing 'waresdev' tag)");
+    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::openWaresdevFile",
+                                              "syntax file not well formed (missing 'waresdev' tag)");
 
   return Elem;
 }
@@ -168,13 +157,11 @@ void WareSrcFiletypeManager::parseFiletypeFile(const QString& FilePath)
 
   Elem = Elem.firstChildElement();
   if (Elem.tagName() != "filetypes")
-    throw openfluid::base::FrameworkException(
-        "WareSrcFiletypeManager::parseFiletypeFile",
-        "language file not well formed (missing 'filetypes' tag)");
+    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseFiletypeFile",
+                                              "language file not well formed (missing 'filetypes' tag)");
 
-  for (QDomElement TypeElem = Elem.firstChildElement();
-      !TypeElem.isNull() && TypeElem.tagName() == "filetype"; TypeElem =
-          TypeElem.nextSiblingElement())
+  for (QDomElement TypeElem = Elem.firstChildElement(); !TypeElem.isNull() && TypeElem.tagName() == "filetype";
+      TypeElem = TypeElem.nextSiblingElement())
   {
     QString TypeName = TypeElem.attribute("name");
     if (TypeName.isEmpty())
@@ -184,29 +171,25 @@ void WareSrcFiletypeManager::parseFiletypeFile(const QString& FilePath)
 
     QDomNode ExtNode = TypeElem.namedItem("extensions");
     if (ExtNode.isNull() || !ExtNode.isElement())
-      throw openfluid::base::FrameworkException(
-          "WareSrcFiletypeManager::parseFiletypeFile",
-          "language file not well formed (missing 'extensions' tag)");
+      throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseFiletypeFile",
+                                                "language file not well formed (missing 'extensions' tag)");
 
     WareSrcFiletype Type;
 
     Type.m_Extensions = ExtNode.toElement().text();
 
-    for (QDomElement TypeInfoElem = TypeElem.firstChildElement();
-        !TypeInfoElem.isNull(); TypeInfoElem =
-            TypeInfoElem.nextSiblingElement())
+    for (QDomElement TypeInfoElem = TypeElem.firstChildElement(); !TypeInfoElem.isNull();
+        TypeInfoElem = TypeInfoElem.nextSiblingElement())
     {
       if (TypeInfoElem.tagName() == "icon")
       {
         Type.m_IconPath = TypeInfoElem.attribute("qresname");
         m_IconsByFileExtensionList[Type.m_Extensions] = Type.m_IconPath;
       }
-      else if (TypeInfoElem.tagName() == "edition"
-          && TypeInfoElem.attribute("internal") == "yes")
+      else if (TypeInfoElem.tagName() == "edition" && TypeInfoElem.attribute("internal") == "yes")
       {
-        for (QDomElement EditionElem = TypeInfoElem.firstChildElement();
-            !EditionElem.isNull(); EditionElem =
-                EditionElem.nextSiblingElement())
+        for (QDomElement EditionElem = TypeInfoElem.firstChildElement(); !EditionElem.isNull(); EditionElem =
+            EditionElem.nextSiblingElement())
         {
           if (EditionElem.tagName() == "highlighting")
             Type.m_HlFilename = EditionElem.attribute("specsfile");
@@ -227,8 +210,7 @@ void WareSrcFiletypeManager::parseFiletypeFile(const QString& FilePath)
 // =====================================================================
 
 
-WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxFile(
-    const QString& FilePath)
+WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxFile(const QString& FilePath)
 {
   QDomElement Elem = openWaresdevFile(FilePath);
 
@@ -243,14 +225,12 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
 
   Elem = Elem.firstChildElement();
   if (Elem.tagName() != "highlighting")
-    throw openfluid::base::FrameworkException(
-        "WareSrcFiletypeManager::parseSyntaxFile",
-        "no 'highlighting' tag in syntax file");
+    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseSyntaxFile",
+                                              "no 'highlighting' tag in syntax file");
 
   HighlightingRules_t Rules;
 
-  for (QDomElement HlElem = Elem.firstChildElement(); !HlElem.isNull(); HlElem =
-      HlElem.nextSiblingElement())
+  for (QDomElement HlElem = Elem.firstChildElement(); !HlElem.isNull(); HlElem = HlElem.nextSiblingElement())
   {
     if (HlElem.tagName() == "list")
     {
@@ -262,11 +242,7 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
         QDomNodeList Items = HlElem.elementsByTagName("item");
         for (int i = 0; i < Items.size(); i++)
         {
-          Rules.append(
-              HighlightingRule(
-                  QRegExp(
-                      QString("\\b%1\\b").arg(Items.at(i).toElement().text())),
-                  Format));
+          Rules.append(HighlightingRule(QRegExp(QString("\\b%1\\b").arg(Items.at(i).toElement().text())), Format));
         }
       }
     }
@@ -292,9 +268,7 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
           }
           else if (!BeginPatternValue.isEmpty() && !EndPatternValue.isEmpty())
           {
-            Rules.append(
-                HighlightingRule(QRegExp(BeginPatternValue),
-                                 QRegExp(EndPatternValue), Format));
+            Rules.append(HighlightingRule(QRegExp(BeginPatternValue), QRegExp(EndPatternValue), Format));
           }
         }
       }
@@ -324,8 +298,7 @@ WareSrcFiletypeManager* WareSrcFiletypeManager::instance()
 
 QString WareSrcFiletypeManager::getFileType(const QString& FileName)
 {
-  for (QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin();
-      it != m_WareSrcFiletypes.end(); ++it)
+  for (QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin(); it != m_WareSrcFiletypes.end(); ++it)
   {
     if (QDir::match(it.value().m_Extensions, FileName))
       return it.key();
@@ -349,8 +322,7 @@ QMap<QString, QString> WareSrcFiletypeManager::getIconsByFileExtensionList()
 // =====================================================================
 
 
-WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::getHighlightingRules(
-    const QString& FilePath)
+WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::getHighlightingRules(const QString& FilePath)
 {
   QString FileType = getFileType(QFileInfo(FilePath).fileName());
 
@@ -362,4 +334,4 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::getHighlight
 // =====================================================================
 
 
-} } } // namespaces
+} } }  // namespaces

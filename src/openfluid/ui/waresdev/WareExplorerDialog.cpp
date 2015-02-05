@@ -1,40 +1,40 @@
 /*
 
- This file is part of OpenFLUID software
- Copyright(c) 2007, INRA - Montpellier SupAgro
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
  
  */
 
 
 /**
- \file WareExplorerDialog.cpp
- \brief Implements ...
+ @file WareExplorerDialog.cpp
+ @brief Implements ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
@@ -53,9 +53,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareExplorerDialog::WareExplorerDialog(QWidget* Parent,
-                                       const QString& TopDirectoryPath,
-                                       const QString& CurrentPath) :
+WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath) :
     QDialog(Parent), ui(new Ui::WareExplorerDialog), mp_AcceptButton(0)
 {
   ui->setupUi(this);
@@ -66,8 +64,7 @@ WareExplorerDialog::WareExplorerDialog(QWidget* Parent,
 
   ui->WareExplorer->configure(TopDirectoryPath, false);
 
-  QString CurrentPathToSet =
-      CurrentPath.isEmpty() ? TopDirectoryPath : CurrentPath;
+  QString CurrentPathToSet = CurrentPath.isEmpty() ? TopDirectoryPath : CurrentPath;
 
   ui->WareExplorer->setCurrentPath(CurrentPathToSet);
   ui->Filename_lineEdit->setText(QFileInfo(CurrentPathToSet).fileName());
@@ -92,9 +89,7 @@ WareExplorerDialog::~WareExplorerDialog()
 // =====================================================================
 
 
-QString WareExplorerDialog::getOpenWarePath(QWidget* Parent,
-                                            const QString& TopDirectoryPath,
-                                            const QString& Title,
+QString WareExplorerDialog::getOpenWarePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& Title,
                                             const QString& CurrentPath)
 {
   WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath);
@@ -113,8 +108,7 @@ QString WareExplorerDialog::getOpenWarePath(QWidget* Parent,
 // =====================================================================
 
 
-QString WareExplorerDialog::getOpenFilePath(QWidget* Parent,
-                                            const QString& TopDirectoryPath,
+QString WareExplorerDialog::getOpenFilePath(QWidget* Parent, const QString& TopDirectoryPath,
                                             const QString& CurrentPath)
 {
   WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath);
@@ -131,8 +125,7 @@ QString WareExplorerDialog::getOpenFilePath(QWidget* Parent,
 // =====================================================================
 
 
-QString WareExplorerDialog::getSaveFilePath(QWidget* Parent,
-                                            const QString& TopDirectoryPath,
+QString WareExplorerDialog::getSaveFilePath(QWidget* Parent, const QString& TopDirectoryPath,
                                             const QString& CurrentPath)
 {
   WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath);
@@ -155,11 +148,9 @@ QString WareExplorerDialog::getSaveFilePath(QWidget* Parent,
     int Res = QMessageBox::Ok;
 
     if (QFileInfo(NewPath).exists())
-      Res = QMessageBox::warning(Parent, tr("Save as"),
-                                 tr("This file already exists.\n"
-                                    "Do you want to replace it?"),
-                                 QMessageBox::Ok | QMessageBox::Cancel,
-                                 QMessageBox::Cancel);
+      Res = QMessageBox::warning(Parent, tr("Save as"), tr("This file already exists.\n"
+                                                           "Do you want to replace it?"),
+                                 QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
 
     return Res == QMessageBox::Ok ? NewPath : "";
   }
@@ -218,8 +209,7 @@ void WareExplorerDialog::setSaveFileMode()
 
   mp_AcceptButton->setText(tr("Save"));
 
-  connect(ui->Filename_lineEdit, SIGNAL(textChanged ( const QString & )), this,
-          SLOT(onTextChanged(const QString&)));
+  connect(ui->Filename_lineEdit, SIGNAL(textChanged ( const QString & )), this, SLOT(onTextChanged(const QString&)));
 
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
           SLOT(onCurrentChangedSaveFileMode(const QString&)));
@@ -304,4 +294,4 @@ QString WareExplorerDialog::getEditedFilename()
 // =====================================================================
 
 
-} } } // namespaces
+} } }  // namespaces

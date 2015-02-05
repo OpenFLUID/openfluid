@@ -1,40 +1,40 @@
 /*
 
- This file is part of OpenFLUID software
- Copyright(c) 2007, INRA - Montpellier SupAgro
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
  
  */
 
 
 /**
- \file WareSrcWidgetCollection.cpp
- \brief Implements ...
+ @file WareSrcWidgetCollection.cpp
+ @brief Implements ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
@@ -60,15 +60,12 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget,
-                                                 bool IsStandalone) :
-    mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(
-        openfluid::waresdev::WareSrcManager::instance()), m_DefaultConfigMode(
-        openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE), m_DefaultBuildMode(
-        openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL)
+WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone) :
+    mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(openfluid::waresdev::WareSrcManager::instance()),
+    m_DefaultConfigMode(openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE),
+    m_DefaultBuildMode(openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL)
 {
-  connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this,
-          SLOT(onCloseWareTabRequested(int)));
+  connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseWareTabRequested(int)));
 }
 
 
@@ -88,8 +85,7 @@ WareSrcWidgetCollection::~WareSrcWidgetCollection()
 
 void WareSrcWidgetCollection::openPath(const QString& Path)
 {
-  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(
-      Path);
+  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
 
 // TODO manage other workspaces later
   if (!Info.m_IsInCurrentWorkspace)
@@ -97,13 +93,11 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
 
   if (Info.m_isAWare || Info.m_isAWareFile)
   {
-    openfluid::ui::waresdev::WareSrcWidget* Widget =
-        m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
+    openfluid::ui::waresdev::WareSrcWidget* Widget = m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
 
     if (!Widget)
     {
-      Widget = new WareSrcWidget(Info, m_IsStandalone, m_DefaultConfigMode,
-                                 m_DefaultBuildMode, mp_TabWidget);
+      Widget = new WareSrcWidget(Info, m_IsStandalone, m_DefaultConfigMode, m_DefaultBuildMode, mp_TabWidget);
 
       mp_TabWidget->addTab(Widget, Info.m_WareName);
 
@@ -114,8 +108,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
 
       connect(Widget, SIGNAL(wareTextModified(WareSrcWidget*,bool)), this,
               SLOT(onWareTxtModified(WareSrcWidget*,bool)));
-      connect(Widget, SIGNAL(saveAsRequested()), this,
-              SLOT(saveCurrentEditorAs()));
+      connect(Widget, SIGNAL(saveAsRequested()), this, SLOT(saveCurrentEditorAs()));
     }
 
     if (Info.m_isAWareFile)
@@ -133,8 +126,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
 
 void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
 {
-  if (WareSrcWidget* Ware = qobject_cast<WareSrcWidget*>(
-      mp_TabWidget->widget(Index)))
+  if (WareSrcWidget* Ware = qobject_cast<WareSrcWidget*>(mp_TabWidget->widget(Index)))
   {
     int Choice = QMessageBox::Discard;
 
@@ -143,8 +135,7 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
       QMessageBox MsgBox;
       MsgBox.setText(tr("Documents have been modified."));
       MsgBox.setInformativeText(tr("Do you want to save your changes?"));
-      MsgBox.setStandardButtons(
-          QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel);
+      MsgBox.setStandardButtons(QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel);
       MsgBox.setDefaultButton(QMessageBox::SaveAll);
       Choice = MsgBox.exec();
     }
@@ -186,8 +177,7 @@ void WareSrcWidgetCollection::closeWareTab(WareSrcWidget* Ware)
 
 void WareSrcWidgetCollection::setCurrent(const QString& Path)
 {
-  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(
-      Path);
+  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
 
 // TODO manage other workspaces later
   if (!Info.m_IsInCurrentWorkspace)
@@ -195,8 +185,7 @@ void WareSrcWidgetCollection::setCurrent(const QString& Path)
 
   if (Info.m_isAWare || Info.m_isAWareFile)
   {
-    openfluid::ui::waresdev::WareSrcWidget* Widget =
-        m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
+    openfluid::ui::waresdev::WareSrcWidget* Widget = m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
 
     if (Widget)
     {
@@ -256,8 +245,7 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 
   // TODO test on Mac and not Debian-based distros
 #if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
-  if (!QProcess::startDetached("x-terminal-emulator", QStringList(),
-                               FileToOpen))
+  if (!QProcess::startDetached("x-terminal-emulator", QStringList(), FileToOpen))
     TermFound = QProcess::startDetached("xterm", QStringList(), FileToOpen);
 #elif defined(Q_OS_WIN32)
   TermFound = QProcess::startDetached("cmd.exe",QStringList(),FileToOpen);
@@ -288,8 +276,7 @@ QString WareSrcWidgetCollection::getCurrentWarePath()
 
 WareSrcWidget* WareSrcWidgetCollection::currentWareWidget()
 {
-  if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
-      mp_TabWidget->currentWidget()))
+  if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(mp_TabWidget->currentWidget()))
     return Widget;
 
   return 0;
@@ -352,8 +339,7 @@ void WareSrcWidgetCollection::configure()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
-    if (openfluid::base::PreferencesManager::instance()
-        ->isAutomaticSaveBeforeBuild())
+    if (openfluid::base::PreferencesManager::instance()->isAutomaticSaveBeforeBuild())
       CurrentWare->saveAllFileTabs();
     CurrentWare->wareSrcContainer().configure();
   }
@@ -370,8 +356,7 @@ void WareSrcWidgetCollection::build()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
-    if (openfluid::base::PreferencesManager::instance()
-        ->isAutomaticSaveBeforeBuild())
+    if (openfluid::base::PreferencesManager::instance()->isAutomaticSaveBeforeBuild())
       CurrentWare->saveAllFileTabs();
     CurrentWare->wareSrcContainer().build();
   }
@@ -384,8 +369,7 @@ void WareSrcWidgetCollection::build()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::onWareTxtModified(WareSrcWidget* Widget,
-                                                bool Modified)
+void WareSrcWidgetCollection::onWareTxtModified(WareSrcWidget* Widget, bool Modified)
 {
   int Pos = mp_TabWidget->indexOf(Widget);
   if (Pos > -1)
@@ -442,12 +426,9 @@ void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
     if (CurrentEditorPath.isEmpty())
       return;
 
-    QString TopDir =
-        TopDirectory.isEmpty() ? CurrentWare->wareSrcContainer().getAbsolutePath() :
-                                 TopDirectory;
+    QString TopDir = TopDirectory.isEmpty() ? CurrentWare->wareSrcContainer().getAbsolutePath() : TopDirectory;
 
-    QString NewPath = WareExplorerDialog::getSaveFilePath(CurrentWare, TopDir,
-                                                          CurrentEditorPath);
+    QString NewPath = WareExplorerDialog::getSaveFilePath(CurrentWare, TopDir, CurrentEditorPath);
 
     if (NewPath.isEmpty())
       return;
@@ -459,16 +440,14 @@ void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
       CurrentWare->saveCurrentEditorAs(NewPath);
       int CurrentIndexInCurrentWare = CurrentWare->closeCurrentEditor(false);
 
-      openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = mp_Manager
-          ->getPathInfo(NewPath);
+      openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = mp_Manager->getPathInfo(NewPath);
 
       QString NewPathWarePath = NewPathInfo.m_AbsolutePathOfWare;
 
       // NewPath is in an already opened ware
       if (m_WareSrcWidgetByPath.contains(NewPathWarePath))
       {
-        WareSrcWidget* NewPathWare = m_WareSrcWidgetByPath.value(
-            NewPathWarePath);
+        WareSrcWidget* NewPathWare = m_WareSrcWidgetByPath.value(NewPathWarePath);
 
         // in case the new path was already opened, we close it
         int IndexInOtherWare = NewPathWare->closeFileTab(NewPath);
@@ -517,8 +496,7 @@ bool WareSrcWidgetCollection::closeAllWidgets()
     QMessageBox MsgBox;
     MsgBox.setText(tr("Documents have been modified."));
     MsgBox.setInformativeText(tr("Do you want to save your changes?"));
-    MsgBox.setStandardButtons(
-        QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel);
+    MsgBox.setStandardButtons(QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel);
     MsgBox.setDefaultButton(QMessageBox::SaveAll);
     Choice = MsgBox.exec();
   }
@@ -561,8 +539,7 @@ QStringList WareSrcWidgetCollection::getOpenWarePaths()
 
 bool WareSrcWidgetCollection::isDebugMode()
 {
-  return m_DefaultConfigMode
-      == openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG;
+  return m_DefaultConfigMode == openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG;
 }
 
 
@@ -572,8 +549,7 @@ bool WareSrcWidgetCollection::isDebugMode()
 
 bool WareSrcWidgetCollection::isBuildNoInstallMode()
 {
-  return m_DefaultBuildMode
-      == openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL;
+  return m_DefaultBuildMode == openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL;
 }
 
 
@@ -582,20 +558,17 @@ bool WareSrcWidgetCollection::isBuildNoInstallMode()
 
 void WareSrcWidgetCollection::openSimulator()
 {
-  openWare(openfluid::waresdev::WareSrcManager::SIMULATOR,
-           tr("Open a simulator"));
+  openWare(openfluid::waresdev::WareSrcManager::SIMULATOR, tr("Open a simulator"));
 }
 
 void WareSrcWidgetCollection::openObserver()
 {
-  openWare(openfluid::waresdev::WareSrcManager::OBSERVER,
-           tr("Open an observer"));
+  openWare(openfluid::waresdev::WareSrcManager::OBSERVER, tr("Open an observer"));
 }
 
 void WareSrcWidgetCollection::openBuilderExtension()
 {
-  openWare(openfluid::waresdev::WareSrcManager::BUILDEREXT,
-           tr("Open a Builder extension"));
+  openWare(openfluid::waresdev::WareSrcManager::BUILDEREXT, tr("Open a Builder extension"));
 }
 
 
@@ -603,13 +576,11 @@ void WareSrcWidgetCollection::openBuilderExtension()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::openWare(
-    openfluid::waresdev::WareSrcManager::WareType Type, const QString& Title)
+void WareSrcWidgetCollection::openWare(openfluid::waresdev::WareSrcManager::WareType Type, const QString& Title)
 {
-  QString PathToOpen =
-      openfluid::ui::waresdev::WareExplorerDialog::getOpenWarePath(
-          QApplication::activeWindow(), mp_Manager->getWareTypePath(Type),
-          Title);
+  QString PathToOpen = openfluid::ui::waresdev::WareExplorerDialog::getOpenWarePath(QApplication::activeWindow(),
+                                                                                    mp_Manager->getWareTypePath(Type),
+                                                                                    Title);
 
   if (PathToOpen.isEmpty())
     return;
@@ -622,4 +593,4 @@ void WareSrcWidgetCollection::openWare(
 // =====================================================================
 
 
-} } } //namespaces
+} } }  //namespaces
