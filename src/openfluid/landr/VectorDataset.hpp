@@ -284,6 +284,11 @@ class OPENFLUID_API VectorDataset
                           int BeginValue = 1,
                           unsigned int LayerIndex = 0);
 
+    /**
+      @brief Returns the OGREnvelope associated to this VectorDataset.
+    */
+    OGREnvelope envelope();
+
 };
 
 } } // namespaces openfluid, landr

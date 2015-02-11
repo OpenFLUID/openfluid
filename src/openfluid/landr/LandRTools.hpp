@@ -214,6 +214,11 @@ class OPENFLUID_API LandRTools
      */
     static void markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* Node,std::vector<int>& vectIdent);
 
+    /**
+     @brief Returns true if the OGREnvelope intersect, false otherwise
+     */
+     static bool isExtentsIntersect(std::vector<OGREnvelope> vEnvelope);
+
 
 };
 

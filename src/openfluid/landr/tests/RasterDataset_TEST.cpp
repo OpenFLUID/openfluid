@@ -305,3 +305,23 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_envelope)
+{
+  openfluid::core::GeoRasterValue RasterVal(
+        CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
+
+    openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
+        RasterVal);
+
+  OGREnvelope envelope=Rast->envelope();
+
+  BOOST_CHECK(openfluid::scientific::isVeryClose(envelope.MinX,679060.43));
+  BOOST_CHECK(openfluid::scientific::isVeryClose(envelope.MinY,131916.45));
+  BOOST_CHECK(openfluid::scientific::isVeryClose(envelope.MaxX,679837.58));
+  BOOST_CHECK(openfluid::scientific::isVeryClose(envelope.MaxY,132960.09));
+
+
+  delete Rast;
+
+}

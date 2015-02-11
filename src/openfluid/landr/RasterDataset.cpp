@@ -361,4 +361,29 @@ std::string RasterDataset::getDefaultPolygonizedFieldName()
 // =====================================================================
 
 
+OGREnvelope RasterDataset::envelope()
+{
+  OGREnvelope Envelope;
+  double adfGeoTransform[6];
+  if (source()->GetGeoTransform(adfGeoTransform) == CE_None)
+  {
+    Envelope.MinX = adfGeoTransform[0];
+    Envelope.MaxY = adfGeoTransform[3];
+    // Extent computation
+    Envelope.MaxX = adfGeoTransform[0]
+                                    + (source()->GetRasterXSize() * adfGeoTransform[1]);
+    Envelope.MinY = adfGeoTransform[3]
+                                    + (source()->GetRasterYSize() * adfGeoTransform[5]);
+  }
+
+  return Envelope;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
 } } // namespaces landr openfluid
