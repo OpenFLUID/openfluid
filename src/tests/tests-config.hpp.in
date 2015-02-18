@@ -53,6 +53,7 @@ const std::string CONFIGTESTS_LIB_OUTPUT_PATH = "@LIB_OUTPUT_PATH@";
 const std::string CONFIGTESTS_INCLUDE_DIRS = "@CMAKE_SOURCE_DIR@/src";
 const std::string CONFIGTESTS_CMAKE_GENERATOR = "@CMAKE_GENERATOR@";
 const std::string CONFIGTESTS_OPTIONS_FOR_CMAKE = "-G \"@CMAKE_GENERATOR@\" "
+                                                  "-DOpenFLUIDHelpers_DIR=@CMAKE_MODULES_OUTPUT_PATH@ "
                                                   "-DOpenFLUID_DIR=@CMAKE_MODULES_OUTPUT_PATH@ "
                                                   "-DOpenFLUID_ROOT_DIR=@BUILD_OUTPUT_PATH@ "
                                                   "-DSIM_INCLUDE_DIRS=@CMAKE_SOURCE_DIR@/src "
