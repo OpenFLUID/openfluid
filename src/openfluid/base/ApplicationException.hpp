@@ -41,6 +41,7 @@
 #define __OPENFLUID_BASE_APPLICATIONEXCEPTION_HPP__
 
 #include <openfluid/base/Exception.hpp>
+#include <openfluid/deprecation.hpp>
 
 
 namespace openfluid { namespace base {
@@ -53,25 +54,45 @@ class ApplicationException : public Exception
     void buildFullMessage()
     {
       m_FullMessage = m_Message;
-      m_FullMessage += " (sent by " + m_Sender + " application";
-      if (m_Source != "")
-        m_FullMessage += ", from " + m_Source;
-      m_FullMessage += ")";
+      m_FullMessage += " [" + m_Context.toString() + "]";
     }
 
 
   public:
 
-    ApplicationException(const std::string& AppName, const std::string& Msg) :
-      Exception(AppName,Msg)
+    ApplicationException(const ExceptionContext& Context, const std::string& Msg) :
+      Exception(Context,Msg)
     {
       buildFullMessage();
     }
 
-    ApplicationException(const std::string& AppName, const std::string& Source, const std::string& Msg) :
-      Exception(AppName,Source,Msg)
+
+    // =====================================================================
+    // =====================================================================
+
+
+    static ExceptionContext computeContext(const std::string& AppName)
     {
-      buildFullMessage();
+      ExceptionContext Context;
+
+      Context["src"] = "app";
+      Context["appname"] = AppName;
+
+      return Context;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    static ExceptionContext computeContext(const std::string& AppName, const std::string& AppPart)
+    {
+      ExceptionContext Context = computeContext(AppName);
+
+      Context["apppart"] = AppPart;
+
+      return Context;
     }
 
 };

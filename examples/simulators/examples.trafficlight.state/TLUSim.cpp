@@ -161,8 +161,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
           ID = TLU->getID();
           std::string IDStr;
           openfluid::tools::convertValue(ID,&IDStr);
-          OPENFLUID_RaiseError("examples.trafficlight.state",
-                               "The Duration coefficient of TLU " + IDStr +
+          OPENFLUID_RaiseError("The Duration coefficient of TLU " + IDStr +
                                " should be compatible with the Simulation Scheduling.");
 
         }

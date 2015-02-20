@@ -44,9 +44,42 @@
 #include <exception>
 #include <string>
 #include <sstream>
+#include <map>
 
 
 namespace openfluid { namespace base {
+
+
+
+class ExceptionContext : public std::map<std::string, std::string>
+{
+  public:
+
+    std::string toString() const
+    {
+      std::string Str;
+
+
+      std::map<std::string, std::string>::const_iterator it;
+      std::map<std::string, std::string>::const_iterator itb = begin();
+      std::map<std::string, std::string>::const_iterator ite = end();
+
+      for (it = itb; it!= ite; ++it)
+      {
+        if (it!=itb)
+          Str += ",";
+
+        Str += (*it).first + "=" + (*it).second;
+      }
+
+      return Str;
+    }
+
+};
+
+
+// =====================================================================
+// =====================================================================
 
 
 class Exception : public std::exception
@@ -54,8 +87,9 @@ class Exception : public std::exception
   protected:
 
       std::string m_Message;
-      std::string m_Sender;
-      std::string m_Source;
+
+      ExceptionContext m_Context;
+
       std::string m_FullMessage;
 
 
@@ -63,15 +97,11 @@ class Exception : public std::exception
 
 
       Exception(const std::string& Msg) :
-        m_Message(Msg), m_Sender(""), m_Source(""), m_FullMessage("")
+        m_Message(Msg), m_FullMessage("")
       { }
 
-      Exception(const std::string& Sender, const std::string& Msg) :
-        m_Message(Msg), m_Sender(Sender), m_Source(""), m_FullMessage("")
-      { }
-
-      Exception(const std::string& Sender, const std::string& Source, const std::string& Msg) :
-        m_Message(Msg), m_Sender(Sender), m_Source(Source), m_FullMessage("")
+      Exception(const ExceptionContext& Context, const std::string& Msg) :
+        m_Message(Msg), m_Context(Context), m_FullMessage("")
       { }
 
   public:
@@ -89,6 +119,7 @@ class Exception : public std::exception
 
     const std::string getMessage() const { return m_Message; }
 
+    const ExceptionContext getContext() const { return m_Context; }
 
 };
 

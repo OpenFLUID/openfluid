@@ -43,6 +43,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include <boost/filesystem/path.hpp>
+
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
@@ -249,8 +251,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
                   << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
         }
         else
-          OPENFLUID_RaiseError("KmlFilesPlotObserver::writeKmlFile",
-                               "Unsupported geometry format in source geometry file");
+          OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
 
         KmlFile << "    <Folder>\n";
         KmlFile << "      <name>" << (*it).UnitsClass << "</name>\n";
@@ -301,8 +302,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
                     << "</coordinates></LineString>\n";
           }
           else
-            OPENFLUID_RaiseError("KmlFilesAnimObserver::writeKmlFile",
-                                 "Unsupported geometry format in source geometry file");
+            OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
 
 
           KmlFile << "    </Placemark>\n";

@@ -214,9 +214,14 @@ QAction* AppActions::action(const std::string& ID) const
   if (It != m_Actions.end())
     return (*It).second;
   else
-    throw openfluid::base::ApplicationException("openfluid-builder",
-                                                "AppActions::getAction",
+  {
+    openfluid::base::ExceptionContext Context =
+        openfluid::base::ApplicationException::computeContext("openfluid-builder",
+                                                              "AppActions::getAction");
+
+    throw openfluid::base::ApplicationException(Context,
                                                 "Required action \"" + ID + "\" does not exist.");
+  }
 }
 
 

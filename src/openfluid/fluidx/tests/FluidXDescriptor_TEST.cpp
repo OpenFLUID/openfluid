@@ -64,6 +64,7 @@ typedef boost::onullstream onullstream_type;
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
 
 
 

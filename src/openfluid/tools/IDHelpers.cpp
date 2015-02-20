@@ -121,7 +121,7 @@ bool extractVarableNameAndType(const openfluid::core::VariableName_t& Name,
   if (!isValidTypedVariableName(Name))
     return false;
 
-  int InPos = Name.find("[");
+  std::size_t InPos = Name.find("[");
 
   // no type
   if (InPos == std::string::npos)

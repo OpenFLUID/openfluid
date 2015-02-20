@@ -29,47 +29,70 @@
   
 */
 
+/**
+  @file ware/TypeDefs.hpp
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+*/
+
+
+
+#ifndef __OPENFLUID_WARE_TYPEDEFS_HPP__
+#define __OPENFLUID_WARE_TYPEDEFS_HPP__
+
+
+#include <openfluid/core/TypeDefs.hpp>
+
+
+namespace openfluid { namespace ware {
+
+
+typedef std::string WareID_t;
+
+typedef std::string WareName_t;
+
+typedef std::string WareVersion_t;
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 /**
-  @file StdoutFileOStream_TEST.cpp
-
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
-
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_stdoutfileostream
-#include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
-
-#include <tests-config.hpp>
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(check_construction)
+  Ware status
+*/
+enum WareStatus_t
 {
-  openfluid::base::StdoutAndFileOutputStream OStream(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger1.log");
+  /**
+    Experimental status, for testing only
+  */
+  EXPERIMENTAL,
 
-  openfluid::base::StdoutAndFileOutputStream OStream2;
-  OStream2.open(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger2.log");
-}
+  /**
+    Beta status, on the road to a stable status
+  */
+  BETA,
+
+  /**
+    Stable status
+  */
+  STABLE
+};
+
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_operations)
-{
-  openfluid::base::StdoutAndFileOutputStream OStream(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger3.log");
 
-  OStream.all() << "Hello World!" << std::endl;
+typedef std::string WareParamKey_t;
 
-  OStream.stdout() << "stdout only" << std::endl;
+typedef openfluid::core::StringValue WareParamValue_t;
 
-  OStream.file() << "file only" << std::endl;
-}
+typedef std::map<WareParamKey_t, WareParamValue_t> WareParams_t;
 
+
+} } // namespaces
+
+
+#endif /* __OPENFLUID_WARE_TYPEDEFS_HPP__ */

@@ -152,12 +152,12 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_GetVariable(TU,"tests.fixed",OPENFLUID_GetCurrentTimeIndex(),SValue);
       if (!openfluid::scientific::isCloseEnough<double>(SValue,12.7))
-        OPENFLUID_RaiseError("tests.generators","incorrect value for tests.fixed variable");
+        OPENFLUID_RaiseError("incorrect value for tests.fixed variable");
 
 
       OPENFLUID_GetVariable(TU,"tests.random",OPENFLUID_GetCurrentTimeIndex(),SValue);
       if (!(SValue >= 20.53 && SValue<= 50.0))
-        OPENFLUID_RaiseError("tests.generators","incorrect value for tests.random variable");
+        OPENFLUID_RaiseError("incorrect value for tests.random variable");
 
 
       OPENFLUID_GetVariable(TU,"tests.interp",OPENFLUID_GetCurrentTimeIndex(),SValue);
@@ -165,12 +165,12 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
       if (TU->getID() % 2 != 0)
       {
         if (!(SValue >= -15.0 && SValue <= -1.0))
-          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.interp variable (source1.dat)");
+          OPENFLUID_RaiseError("incorrect value for tests.interp variable (source1.dat)");
       }
       else
       {
         if (!(SValue >= 101.0 && SValue<= 115.0))
-          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.interp variable (source2.dat)");
+          OPENFLUID_RaiseError("incorrect value for tests.interp variable (source2.dat)");
       }
 
 
@@ -179,19 +179,19 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
       if (TU->getID() % 2 != 0)
       {
         if (!(SValue >= 0.0))
-          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.interpmin variable (source1.dat)");
+          OPENFLUID_RaiseError("incorrect value for tests.interpmin variable (source1.dat)");
       }
       else
       {
         if (!(SValue >= 101.0 && SValue<= 115.0))
-          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.interpmin variable (source2.dat)");
+          OPENFLUID_RaiseError("incorrect value for tests.interpmin variable (source2.dat)");
       }
 
 
       OPENFLUID_GetVariable(TU,"tests.interpminmax",OPENFLUID_GetCurrentTimeIndex(),SValue);
 
       if (!(SValue >= 0.0 && SValue<= 20.0))
-          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.interpminmax variable");
+          OPENFLUID_RaiseError("incorrect value for tests.interpminmax variable");
 
 
       OPENFLUID_GetVariable(TU,"tests.inject",OPENFLUID_GetCurrentTimeIndex(),SValue);
@@ -202,12 +202,12 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
         if (!openfluid::scientific::isCloseEnough<double>(SValue,
                                                           double(OPENFLUID_GetCurrentTimeIndex())/
                                                           double(OPENFLUID_GetDefaultDeltaT())))
-          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.inject variable (source3.dat)");
+          OPENFLUID_RaiseError("incorrect value for tests.inject variable (source3.dat)");
       }
       else
       {
         if (!openfluid::scientific::isCloseEnough<double>(SValue,0.0))
-          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.inject variable (source4.dat)");
+          OPENFLUID_RaiseError("incorrect value for tests.inject variable (source4.dat)");
       }
 
 
@@ -215,7 +215,7 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
       {
         OPENFLUID_GetVariable(TU,"tests.fixedprev",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),VValue);
         if (!openfluid::scientific::isCloseEnough(VValue[0],5.3))
-          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.fixedprev variable");
+          OPENFLUID_RaiseError("incorrect value for tests.fixedprev variable");
       }
 
     }

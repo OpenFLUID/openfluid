@@ -43,11 +43,11 @@
 
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/base/SimulationLogger.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
 #include <openfluid/ware/WareException.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/deprecation.hpp>
 
 
 #define REQUIRE_SIMULATION_STAGE(stage,sender,msg) \
@@ -63,6 +63,68 @@
     throw openfluid::base::FrameworkException(sender,msg);
 
 
+// =====================================================================
+// =====================================================================
+
+
+#define _STREAMTOSTRING(_stream) ((static_cast<std::ostringstream&>(std::ostringstream().flush() << _stream)).str())
+
+
+// Log macros for warnings
+
+#define OPENFLUID_LogWarning(_stream) \
+  appendToLog(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream));
+
+#define OPENFLUID_DisplayWarning(_stream) \
+  displayToConsole(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream));
+
+#define OPENFLUID_LogAndDisplayWarning(_stream) \
+  OPENFLUID_LogWarning(_stream) \
+  OPENFLUID_DisplayWarning(_stream)
+
+
+// Log macros for infos
+
+#define OPENFLUID_LogInfo(_stream) \
+  appendToLog(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream));
+
+#define OPENFLUID_DisplayInfo(_stream) \
+  displayToConsole(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream));
+
+#define OPENFLUID_LogAndDisplayInfo(_stream) \
+  OPENFLUID_LogInfo(_stream) \
+  OPENFLUID_DisplayInfo(_stream)
+
+
+// Log macros for debug
+
+#ifndef NDEBUG
+
+#define OPENFLUID_LogDebug(_stream) \
+  appendToLog(openfluid::tools::FileLogger::LOG_DEBUG,_STREAMTOSTRING(_stream));
+
+#define OPENFLUID_DisplayDebug(_stream) \
+  displayToConsole(openfluid::tools::FileLogger::LOG_DEBUG,_STREAMTOSTRING(_stream));
+
+#define OPENFLUID_LogAndDisplayDebug(_stream) \
+  OPENFLUID_LogDebug(_stream) \
+  OPENFLUID_DisplayDebug(_stream)
+
+#else
+
+#define OPENFLUID_LogDebug(_stream)
+
+#define OPENFLUID_DisplayDebug(_stream)
+
+#define OPENFLUID_LogAndDisplayDebug(_stream)
+
+#endif
+
+
+// =====================================================================
+// =====================================================================
+
+
 namespace openfluid { namespace ware {
 
 
@@ -72,20 +134,24 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
 
     const openfluid::base::SimulationStatus* mp_SimStatus;
 
+    openfluid::base::SimulationLogger* mp_SimLogger;
+
     openfluid::core::TimeIndex_t m_PreviousTimeIndex;
+
+
+    openfluid::base::ExceptionContext computeWareContext() const;
 
 
   protected:
 
 
-    /**
-      Pointer to the execution messages logger
-     */
-    openfluid::base::SimulationLogger* mp_SimLogger;
-
-
     virtual bool isLinked() const
     { return (PluggableWare::isLinked() &&  mp_SimLogger != NULL && mp_SimStatus != NULL); };
+
+    void appendToLog(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const;
+
+    void displayToConsole(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const;
+
 
     /**
       Returns the real beginning date of the simulated period
@@ -142,18 +208,20 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     */
     openfluid::base::SimulationStatus::SchedulingConstraint OPENFLUID_GetSchedulingConstraint() const;
 
+
     /**
-      Raises a time-marked warning message to the kernel. This do not stops the simulation
+      Raises a time-marked warning message to the kernel. This does not stops the simulation
       @param[in] Msg the content of the message
     */
     virtual void OPENFLUID_RaiseWarning(const std::string& Msg);
 
     /**
-      Raises a time-marked warning message to the kernel. This do not stops the simulation
-      @param[in] Source the source of the message
-      @param[in] Msg the content of the message
-    */
-    virtual void OPENFLUID_RaiseWarning(const std::string& Source, const std::string& Msg);
+       Raises a time-marked warning message to the kernel. This does not stops the simulation
+       @param[in] Source the source of the message
+       @param[in] Msg the content of the message
+       @deprecated
+     */
+    virtual void OPENFLUID_RaiseWarning(const std::string& Source, const std::string& Msg) OPENFLUID_DEPRECATED;
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
@@ -165,13 +233,12 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
       @param[in] Source the source of the message
       @param[in] Msg the content of the message
+      @deprecated
     */
-    virtual void OPENFLUID_RaiseError(const std::string& Source, const std::string& Msg);
-
-    openfluid::base::StdoutAndFileOutputStream OPENFLUID_Logger;
+    virtual void OPENFLUID_RaiseError(const std::string& Source, const std::string& Msg) OPENFLUID_DEPRECATED;
 
     SimulationDrivenWare(WareType WType) : PluggableWare(WType),
-        mp_SimStatus(NULL), m_PreviousTimeIndex(0), mp_SimLogger(NULL) { };
+        mp_SimStatus(NULL), mp_SimLogger(NULL), m_PreviousTimeIndex(0) { };
 
 
   public:

@@ -29,54 +29,70 @@
   
 */
 
-
 /**
-  @file SimulationLogger.cpp
+  @file FileLogger.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#include <openfluid/base/SimulationLogger.hpp>
 
-namespace openfluid { namespace base {
+#ifndef __OPENFLUID_TOOLS_FILELOGGER_HPP__
+#define __OPENFLUID_TOOLS_FILELOGGER_HPP__
 
-
-// =====================================================================
-// =====================================================================
+#include <fstream>
 
 
-SimulationLogger::SimulationLogger(const std::string& LogFilePath):
-  m_CurrentWarningFlag(false)
+class QMutex;
+
+namespace openfluid { namespace tools {
+
+class FileLogger
 {
-  init(LogFilePath);
-}
+  private:
+
+    QMutex* mp_LogMutex;
+
+    std::ofstream m_LogFile;
+
+    unsigned int m_InfosCount;
+
+    unsigned int m_WarningsCount;
+
+    bool m_IsError;
 
 
-// =====================================================================
-// =====================================================================
+  public:
+
+    enum LogType {LOG_INFO, LOG_WARNING, LOG_ERROR, LOG_DEBUG };
+
+    FileLogger();
+
+    ~FileLogger();
 
 
-SimulationLogger::~SimulationLogger()
-{
+    static std::string logTypeToString(LogType LType);
 
-}
+    void init(const std::string& FilePath);
 
+    void close();
 
-// =====================================================================
-// =====================================================================
+    void add(LogType LType, const std::string& Context, const std::string& Msg);
 
+    unsigned int getInfosCount() const
+    { return m_InfosCount; }
 
-void SimulationLogger::add(LogType LType, const std::string& ContextStr, const std::string& Msg)
-{
-  if (LType == LOG_WARNING)
-    m_CurrentWarningFlag = true;
+    bool isError() const
+    { return m_IsError; }
 
-  FileLogger::add(LType,ContextStr,Msg);
-}
+    unsigned int getWarningsCount() const
+    { return m_WarningsCount; }
 
-
-} } // namespace openfluid::base
+};
 
 
+} }  // namespaces
 
+
+
+#endif /* __OPENFLUID_TOOLS_FILELOGGER_HPP__ */

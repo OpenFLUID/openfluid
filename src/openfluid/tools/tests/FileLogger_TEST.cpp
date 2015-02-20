@@ -32,18 +32,19 @@
 
 
 /**
-  @file SimulationLogger_TEST.cpp
+  @file FileLogger_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_simlogger
+#define BOOST_TEST_MODULE unittest_filelogger
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/base/SimulationLogger.hpp>
+#include <openfluid/tools/FileLogger.hpp>
 #include <tests-config.hpp>
 
 
@@ -51,48 +52,45 @@
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_construction)
+BOOST_AUTO_TEST_CASE(check_operations_1)
 {
-  openfluid::base::SimulationLogger SimLog(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog1.log");
+  openfluid::tools::FileLogger Log;
 
-  BOOST_REQUIRE_EQUAL(SimLog.getWarningsCount(),0);
-  BOOST_REQUIRE_EQUAL(SimLog.isCurrentWarningFlag(),false);
+  Log.init(CONFIGTESTS_OUTPUT_DATA_DIR+"/filelogger1.log");
 
-  SimLog.addInfo("Test","Hello World!");
+  Log.add(openfluid::tools::FileLogger::LOG_INFO,"test","info 1");
+  Log.add(openfluid::tools::FileLogger::LOG_DEBUG,"test","debug 1");
+  Log.add(openfluid::tools::FileLogger::LOG_INFO,"test","info 2");
+  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning 1");
+  Log.add(openfluid::tools::FileLogger::LOG_ERROR,"test","error");
 
+  BOOST_REQUIRE_EQUAL(Log.getWarningsCount(),1);
+  BOOST_REQUIRE_EQUAL(Log.getInfosCount(),2);
+  BOOST_REQUIRE(Log.isError());
 }
+
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_operations)
+
+BOOST_AUTO_TEST_CASE(check_operations_2)
 {
-  openfluid::base::SimulationLogger* SimLog =
-      new openfluid::base::SimulationLogger(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog2.log");
+  openfluid::tools::FileLogger Log;
 
-  SimLog->addWarning("test","Warning message #1");
-  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),1);
-  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),true);
-  SimLog->resetCurrentWarningFlag();
-  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),false);
-  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),1);
+  Log.init(CONFIGTESTS_OUTPUT_DATA_DIR+"/filelogger2.log");
 
-  SimLog->addWarning("test","Warning message #2");
-  SimLog->addWarning("test","Warning message #3");
-  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
-  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),true);
-  SimLog->resetCurrentWarningFlag();
-  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),false);
-  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
-  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
-  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),false);
+  Log.add(openfluid::tools::FileLogger::LOG_INFO,"test","info 1");
+  Log.add(openfluid::tools::FileLogger::LOG_DEBUG,"test","debug 1");
+  Log.add(openfluid::tools::FileLogger::LOG_INFO,"test","info 2");
+  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
+  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
+  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
+  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
+  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
 
-  SimLog->addWarning("test","Warning message #4");
-  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),4);
-  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),true);
-
-  SimLog->addInfo("test","Info #1");
-
-  delete SimLog;
-
+  BOOST_REQUIRE_EQUAL(Log.getWarningsCount(),5);
+  BOOST_REQUIRE_EQUAL(Log.getInfosCount(),2);
+  BOOST_REQUIRE(!Log.isError());
 }
+

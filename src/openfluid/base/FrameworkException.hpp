@@ -41,6 +41,8 @@
 #define __OPENFLUID_BASE_FRAMEWORKEXCEPTION_HPP__
 
 #include <openfluid/base/Exception.hpp>
+#include <openfluid/deprecation.hpp>
+
 
 namespace openfluid { namespace base {
 
@@ -52,23 +54,64 @@ class FrameworkException : public Exception
     void buildFullMessage()
     {
       m_FullMessage = m_Message;
-      m_FullMessage += " (sent by " + m_Sender;
-      if (m_Source != "")
-        m_FullMessage += ", from " + m_Source;
+      m_FullMessage += " (sent by OpenFLUID framework";
+      if (m_Context.find("part") != m_Context.end())
+        m_FullMessage += ", from " + m_Context["part"];
       m_FullMessage += ")";
     }
 
 
   public:
 
-    FrameworkException(const std::string& Msg) :
-      Exception("OpenFLUID framework",Msg)
+
+    FrameworkException(const ExceptionContext& Context, const std::string& Msg) :
+      Exception(Context,Msg)
     {
       buildFullMessage();
     }
 
-    FrameworkException(const std::string& Source, const std::string& Msg) :
-      Exception("OpenFLUID framework",Source,Msg)
+
+    // =====================================================================
+    // =====================================================================
+
+
+    FrameworkException(const std::string& MiscStr, const std::string& Msg) :
+      Exception(computeContext(MiscStr),Msg)
+    {
+      buildFullMessage();
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    static ExceptionContext computeContext()
+    {
+      ExceptionContext Context;
+      Context["src"] = "framework";
+      return Context;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    static ExceptionContext computeContext(const std::string& Part)
+    {
+      ExceptionContext Context = computeContext();
+      Context["part"] = Part;
+      return Context;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    FrameworkException(const std::string& Msg) :
+      Exception(computeContext(),Msg)
     {
       buildFullMessage();
     }

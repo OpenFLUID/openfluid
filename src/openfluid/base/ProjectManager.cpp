@@ -203,7 +203,6 @@ bool ProjectManager::open(const std::string& Path)
 // =====================================================================
 
 
-/* throws boost::filesystem::basic_filesystem_error<boost::filesystem::path> */
 bool ProjectManager::create(const std::string& Path,
     const std::string& Name, const std::string& Description,
     const std::string& Authors, const bool Inc)

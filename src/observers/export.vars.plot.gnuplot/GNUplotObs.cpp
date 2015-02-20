@@ -402,8 +402,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         }
         else
         {
-          OPENFLUID_RaiseWarning("GNUplotObserver::tryOpenGNUplot()",
-                                 "Cannot find GNUPlot");
+          OPENFLUID_RaiseWarning("Cannot find GNUPlot");
         }
       }
     }

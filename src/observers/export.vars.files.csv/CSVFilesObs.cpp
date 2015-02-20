@@ -42,8 +42,11 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+
 #include <boost/foreach.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/filesystem/path.hpp>
+
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 

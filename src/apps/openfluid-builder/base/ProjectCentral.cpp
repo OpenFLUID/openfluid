@@ -350,9 +350,14 @@ double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* 
                                         const std::string& ParamName)
 {
   if (!isParamIsDouble(Item, ParamName))
-    throw openfluid::base::ApplicationException("openfluid-builder",
-                                                "ProjectCentral::getParamAsDouble",
+  {
+    openfluid::base::ExceptionContext Context =
+        openfluid::base::ApplicationException::computeContext("openfluid-builder",
+                                                              "ProjectCentral::getParamAsDouble");
+
+    throw openfluid::base::ApplicationException(Context,
                                                 "Parameter " + ParamName + " is not set as a double precision value");
+  }
 
   double d;
 

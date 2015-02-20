@@ -69,7 +69,7 @@ PluggableWare::~PluggableWare()
 
 void PluggableWare::OPENFLUID_RaiseError(const std::string& Msg)
 {
-  throw WareException(OPENFLUID_GetWareID(),m_WareType,"",Msg);
+  throw WareException(openfluid::ware::WareException::computeContext(m_WareType,OPENFLUID_GetWareID()),Msg);
 }
 
 
@@ -104,8 +104,6 @@ void PluggableWare::initializeWare(const WareID_t& ID)
                                               "initialized ware that is not fully linked ("+ID+")");
 
   m_WareID = ID;
-
-
 };
 
 

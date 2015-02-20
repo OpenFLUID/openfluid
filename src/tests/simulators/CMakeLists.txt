@@ -30,8 +30,7 @@ IF(BUILD_FORTRAN_SIMULATORS)
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Fortran"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran" 
                         "-p${TEST_OUTPUT_PATH}"
-                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran"
-                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran/tests.fortran_ofware-sim.log")
+                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran")
                      
   ADD_SUBDIRECTORY(tests.fortran90)  
   OPENFLUID_ADD_TEST(NAME simulators-Fortran90
@@ -39,8 +38,7 @@ IF(BUILD_FORTRAN_SIMULATORS)
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Fortran90"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran90" 
                         "-p${TEST_OUTPUT_PATH}"
-                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran90"
-                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran90/tests.fortran90_ofware-sim.log")                       
+                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran90")                       
 ENDIF(BUILD_FORTRAN_SIMULATORS)
 
 
@@ -56,7 +54,6 @@ OPENFLUID_ADD_TEST(NAME simulators-Exceptions
                            "-n${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.SimExceptions"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.SimExceptions/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.SimExceptions/tests.exceptions_ofware-sim.log"
                    )
 SET_TESTS_PROPERTIES(simulators-Exceptions PROPERTIES WILL_FAIL TRUE)
 
@@ -73,7 +70,6 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesRunEnv
                            "-n${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv/tests.primitives.runenv_ofware-sim.log"
                    )
 
 
@@ -89,8 +85,6 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesTime
                            "-n${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime/tests.primitives.time_ofware-sim.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime/tests.primitives.time_ofware-obs.log"
                    )
 
 
@@ -106,7 +100,6 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesSimParams
                            "-n${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesSimParams"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesSimParams/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesSimParams/tests.primitives.simparams_ofware-sim.log"
                    )
 
 
@@ -123,8 +116,6 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAttributes
                            "-n${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes/tests.primitives.attributes.prod_ofware-sim.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes/tests.primitives.attributes.use_ofware-sim.log"
                    )
 
 
@@ -140,7 +131,6 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesEvents
                            "-n${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents/tests.primitives.events_ofware-sim.log"
                    )
                    
 
@@ -157,8 +147,6 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesVariables
                            "-n${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables/tests.primitives.variables.prod_ofware-sim.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables/tests.primitives.variables.use_ofware-sim.log"
                    )
 
 
@@ -174,8 +162,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesLand
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand" 
                            "-p${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand"
-                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand/tests.primitives.land_ofware-sim.log"                                                     
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand/openfluid-messages.log"                                                     
                     )
 
 

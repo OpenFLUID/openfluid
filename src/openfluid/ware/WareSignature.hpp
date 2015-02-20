@@ -37,6 +37,7 @@
  */
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 
 
@@ -80,35 +81,6 @@
 
 
 namespace openfluid { namespace ware {
-
-
-typedef std::string WareID_t;
-
-typedef std::string WareName_t;
-
-typedef std::string WareVersion_t;
-
-
-/**
-  Ware status
-*/
-enum WareStatus_t
-{
-  /**
-    Experimental status, for testing only
-  */
-  EXPERIMENTAL,
-
-  /**
-    Beta status, on the road to a stable status
-  */
-  BETA,
-
-  /**
-    Stable status
-  */
-  STABLE
-};
 
 
 // =====================================================================

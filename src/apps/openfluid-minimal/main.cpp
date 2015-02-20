@@ -68,10 +68,14 @@ int main(int argc, char **argv)
       PlugsDir = std::string(argv[3]);
     }
     else
-      throw openfluid::base::ApplicationException("openfluid-minimal",
+    {
+      openfluid::base::ExceptionContext Context =
+          openfluid::base::ApplicationException::computeContext("openfluid-minimal");
+
+      throw openfluid::base::ApplicationException(Context,
                                                   "Incorrect number of arguments, "
                                                   "should be <inputdir> <outputdir> <pluginsdirs>");
-
+    }
     openfluid::machine::Engine* Engine;
     openfluid::machine::SimulationBlob SBlob;
     openfluid::base::RuntimeEnvironment* RunEnv;

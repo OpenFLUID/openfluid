@@ -66,7 +66,7 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 
 INCLUDE(OpenFLUIDDetectQt)
-FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system filesystem date_time program_options regex iostreams unit_test_framework)
+FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system filesystem date_time program_options regex unit_test_framework)
 FIND_PACKAGE(GDAL REQUIRED)
 FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(LATEX)

@@ -30,28 +30,26 @@
 */
 
 
-
 /**
-  @file StdoutFileOStream.cpp
+  @file FileLogger.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
+
+#include <QMutex>
+#include <QMutexLocker>
+
+#include <openfluid/tools/FileLogger.hpp>
 
 
-#include <openfluid/base/StdoutFileOStream.hpp>
+namespace openfluid { namespace tools {
 
 
-namespace openfluid { namespace base {
 
-
-// =====================================================================
-// =====================================================================
-
-
-StdoutAndFileOutputStream::StdoutAndFileOutputStream():
-  mp_LoggerDevice(NULL)
+FileLogger::FileLogger() :
+    m_InfosCount(0), m_WarningsCount(0), m_IsError(false)
 {
-
+  mp_LogMutex = new QMutex;
 }
 
 
@@ -59,57 +57,10 @@ StdoutAndFileOutputStream::StdoutAndFileOutputStream():
 // =====================================================================
 
 
-StdoutAndFileOutputStream::StdoutAndFileOutputStream(std::string LogFilePath):
-  mp_LoggerDevice(NULL)
-{
-  open(LogFilePath);
-  tieStreams();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-StdoutAndFileOutputStream::~StdoutAndFileOutputStream()
-{
-  if (mp_LoggerDevice != NULL)
-  {
-    flush();
-    close();
-  }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void StdoutAndFileOutputStream::tieStreams()
-{
-
-  if (mp_LoggerDevice == NULL)
-  {
-    mp_LoggerDevice = new TeeDevice(std::cout, m_FileLogger);
-    m_Logger.open(*mp_LoggerDevice);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool StdoutAndFileOutputStream::open(std::string LogFilePath)
+FileLogger::~FileLogger()
 {
   close();
-
-  m_FileLogger.open(LogFilePath.c_str(), std::ios::out | std::ios::trunc);
-
-  if (m_FileLogger.is_open()) tieStreams();
-
-  return m_FileLogger.is_open();
+  delete mp_LogMutex;
 }
 
 
@@ -117,32 +68,63 @@ bool StdoutAndFileOutputStream::open(std::string LogFilePath)
 // =====================================================================
 
 
-void StdoutAndFileOutputStream::close()
+std::string FileLogger::logTypeToString(LogType LType)
 {
-  if (m_FileLogger.is_open()) m_FileLogger.close();
+  std::string LTypeStr = "";
 
-  if (mp_LoggerDevice != NULL)
-  {
-    delete mp_LoggerDevice;
-    mp_LoggerDevice = NULL;
-  }
+  if (LType == LOG_INFO)
+    LTypeStr = "Info";
+  else  if (LType == LOG_WARNING)
+    LTypeStr = "Warning";
+  else if (LType == LOG_DEBUG)
+    LTypeStr = "Debug";
+  else if (LType == LOG_ERROR)
+    LTypeStr = "Error";
 
-  if (m_Logger.is_open()) m_Logger.close();
+  return LTypeStr;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void StdoutAndFileOutputStream::flush()
+void FileLogger::init(const std::string& FilePath)
 {
-  m_FileLogger.flush();
-  m_Logger.flush();
+  m_LogFile.open(FilePath.c_str(),std::ios::out);
 }
 
 
+// =====================================================================
+// =====================================================================
 
-} }  // namespaces
+
+void FileLogger::close()
+{
+  if (m_LogFile.is_open())
+    m_LogFile.close();
+}
 
 
+// =====================================================================
+// =====================================================================
 
+
+void FileLogger::add(LogType LType, const std::string& Sender, const std::string& Msg)
+{
+  QMutexLocker Locker(mp_LogMutex);
+
+  std::string LTypeStr = logTypeToString(LType);
+
+  if (LType == LOG_INFO)
+    m_InfosCount++;
+  else  if (LType == LOG_WARNING)
+    m_WarningsCount++;
+  else if (LType == LOG_ERROR)
+    m_IsError = true;
+
+  m_LogFile << "[" << LTypeStr << "]" << "[" << Sender << "] " << Msg << "\n";
+}
+
+
+} }

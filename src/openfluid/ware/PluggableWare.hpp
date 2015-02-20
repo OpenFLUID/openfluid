@@ -81,16 +81,6 @@ namespace openfluid { namespace ware {
 // =====================================================================
 
 
-typedef std::string WareParamKey_t;
-typedef openfluid::core::StringValue WareParamValue_t;
-
-typedef std::map<WareParamKey_t, WareParamValue_t> WareParams_t;
-
-
-// =====================================================================
-// =====================================================================
-
-
 class OPENFLUID_API PluggableWare
 {
   public:

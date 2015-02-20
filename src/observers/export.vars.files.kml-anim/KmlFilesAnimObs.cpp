@@ -43,6 +43,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include <boost/filesystem/path.hpp>
+
 #include <openfluid/tools/DataHelpers.hpp>
 
 #include "../KmlObserverBase.hpp"

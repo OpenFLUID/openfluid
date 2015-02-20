@@ -186,25 +186,25 @@ openfluid::base::SchedulingRequest ToolsSimulator::initializeRun()
     CTParser.loadFromFile(FileName.string());
 
     if (CTParser.getColsCount() != 5)
-      OPENFLUID_RaiseError("tests.tools","wrong columns number in " + FileName.string());
+      OPENFLUID_RaiseError("wrong columns number in " + FileName.string());
 
     if (!CTParser.getDoubleValue(2,1,&DoubleValue))
-      OPENFLUID_RaiseError("tests.tools","error reading double value (3,2) in " + FileName.string());
+      OPENFLUID_RaiseError("error reading double value (3,2) in " + FileName.string());
 
     if (!openfluid::scientific::isVeryClose(DoubleValue,1.2))
-      OPENFLUID_RaiseError("tests.tools","wrong double value for (3,2) in " + FileName.string());
+      OPENFLUID_RaiseError("wrong double value for (3,2) in " + FileName.string());
 
     if (!CTParser.getStringValue(0,0,&StrValue))
-      OPENFLUID_RaiseError("tests.tools","error reading string value (0,0) in " + FileName.string());
+      OPENFLUID_RaiseError("error reading string value (0,0) in " + FileName.string());
 
     if (StrValue != "5")
-      OPENFLUID_RaiseError("tests.tools","wrong string value for (0,0) in " + FileName.string());
+      OPENFLUID_RaiseError("wrong string value for (0,0) in " + FileName.string());
 
 
     if (CTParser.getStringValue(5,5,&StrValue))
-      OPENFLUID_RaiseError("tests.tools","error : found value out of range (5,5) in " + FileName.string());
+      OPENFLUID_RaiseError("error : found value out of range (5,5) in " + FileName.string());
   }
-  else OPENFLUID_RaiseError("tests.tools","file " + FileName.string() + " not found!");
+  else OPENFLUID_RaiseError("file " + FileName.string() + " not found!");
 
   return DefaultDeltaT();
 }
