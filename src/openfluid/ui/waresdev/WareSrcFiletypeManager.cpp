@@ -59,8 +59,8 @@ WareSrcFiletypeManager* WareSrcFiletypeManager::mp_Instance = 0;
 
 WareSrcFiletypeManager::WareSrcFiletypeManager()
 {
-  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules =
-      openfluid::base::PreferencesManager::instance()->getSyntaxHighlightingRules();
+  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules = openfluid::base::PreferencesManager::instance()
+      ->getSyntaxHighlightingRules();
 
   for (openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.begin(); it != Rules.end();
       ++it)
@@ -85,14 +85,20 @@ WareSrcFiletypeManager::WareSrcFiletypeManager()
 
   QDir WaresdevDir(
       QString("%1/%2").arg(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()))
-                      .arg(QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
+          .arg(QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
 
   parseFiletypeFile(WaresdevDir.filePath("filetypes.ofdev.xml"));
 
+  /*
+   * TODO Avoid the multiple parsing of the same file,
+   * that happens if several file types have the same syntax file and/or same completion file
+   */
   for (QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin(); it != m_WareSrcFiletypes.end(); ++it)
   {
     if (!it.value().m_HlFilename.isEmpty())
       it.value().m_HlRules = parseSyntaxFile(WaresdevDir.filePath(it.value().m_HlFilename));
+    if (!it.value().m_CompFilename.isEmpty())
+      it.value().m_CompRules = parseCompletionFile(WaresdevDir.filePath(it.value().m_CompFilename));
   }
 
 }
@@ -119,7 +125,7 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
 
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
     throw openfluid::base::FrameworkException("WareSrcFiletypeManager::openWaresdevFile",
-                                              QString("syntax file not found: %1").arg(FilePath).toStdString());
+                                              QString("file not found: %1").arg(FilePath).toStdString());
 
   QString Msg;
   int Line, Col;
@@ -128,7 +134,7 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
     File.close();
     throw openfluid::base::FrameworkException(
         "WareSrcFiletypeManager::openWaresdevFile",
-        QString("error in syntax file: %1 (line %2, column %3").arg(Msg).arg(Line).arg(Col).toStdString());
+        QString("error in file: %1 (line %2, column %3").arg(Msg).arg(Line).arg(Col).toStdString());
   }
   File.close();
 
@@ -136,12 +142,12 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
 
   if (Elem.tagName() != "openfluid")
     throw openfluid::base::FrameworkException("WareSrcFiletypeManager::openWaresdevFile",
-                                              "syntax file not well formed (missing 'openfluid' tag)");
+                                              "file not well formed (missing 'openfluid' tag)");
 
   Elem = Elem.firstChildElement();
   if (Elem.tagName() != "waresdev")
     throw openfluid::base::FrameworkException("WareSrcFiletypeManager::openWaresdevFile",
-                                              "syntax file not well formed (missing 'waresdev' tag)");
+                                              "file not well formed (missing 'waresdev' tag)");
 
   return Elem;
 }
@@ -193,8 +199,8 @@ void WareSrcFiletypeManager::parseFiletypeFile(const QString& FilePath)
         {
           if (EditionElem.tagName() == "highlighting")
             Type.m_HlFilename = EditionElem.attribute("specsfile");
-          else if (EditionElem.tagName() == "highlighting")
-            Type.m_ComplFilename = EditionElem.attribute("specsfile");
+          else if (EditionElem.tagName() == "completion")
+            Type.m_CompFilename = EditionElem.attribute("specsfile");
         }
 
       }
@@ -283,6 +289,73 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
 // =====================================================================
 
 
+WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::parseCompletionFile(const QString& FilePath)
+{
+  QDomElement Elem = openWaresdevFile(FilePath);
+
+  // TODO remove useless 'language' tag
+  Elem = Elem.firstChildElement();
+  //  if (Elem.tagName() != "language" || Elem.attribute("name") != FileTypeName)
+  //    throw openfluid::base::FrameworkException(
+  //        "WareSrcFiletypeManager::parseCompletionFile",
+  //        QString(
+  //            "syntax file not well formed (missing 'language' tag or language name is not '%1')")
+  //            .arg(FileTypeName).toStdString());
+
+  Elem = Elem.firstChildElement();
+  if (Elem.tagName() != "snippets")
+    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseCompletionFile",
+                                              "no 'snippets' tag in completion file");
+
+  QMap<QString, QString> IconPathsByCategory;
+  QDomNodeList Items = Elem.elementsByTagName("category");
+  for (int i = 0; i < Items.size(); i++)
+  {
+    QDomElement Elem = Items.at(i).toElement();
+    IconPathsByCategory[Elem.attribute("name")] = Elem.attribute("icon");
+  }
+
+  CompletionRulesByWareType_t Rules;
+
+  Items = Elem.elementsByTagName("item");
+  for (int i = 0; i < Items.size(); i++)
+  {
+    QDomElement HlElem = Items.at(i).toElement();
+
+    QString MenuPath = HlElem.attribute("menutree");
+    QString Title = HlElem.attribute("menutitle");
+    bool ForCompletion = HlElem.attribute("completion") == "true";
+    QString Content = HlElem.text().trimmed().replace("\\n", "\n");
+    QString Category = HlElem.attribute("category");
+
+    CompletionRule Rule(MenuPath, Title, Content, ForCompletion, IconPathsByCategory.value(Category, ""));
+
+    QString Context = HlElem.attribute("context");
+    if (Context.contains("anyware") || Context.isEmpty())
+    {
+      Rules[openfluid::waresdev::WareSrcManager::SIMULATOR].append(Rule);
+      Rules[openfluid::waresdev::WareSrcManager::OBSERVER].append(Rule);
+      Rules[openfluid::waresdev::WareSrcManager::BUILDEREXT].append(Rule);
+    }
+    else
+    {
+      if (Context.contains("simulator"))
+        Rules[openfluid::waresdev::WareSrcManager::SIMULATOR].append(Rule);
+      if (Context.contains("observer"))
+        Rules[openfluid::waresdev::WareSrcManager::OBSERVER].append(Rule);
+      if (Context.contains("builderext"))
+        Rules[openfluid::waresdev::WareSrcManager::BUILDEREXT].append(Rule);
+    }
+  }
+
+  return Rules;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 WareSrcFiletypeManager* WareSrcFiletypeManager::instance()
 {
   if (!mp_Instance)
@@ -327,6 +400,21 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::getHighlight
   QString FileType = getFileType(QFileInfo(FilePath).fileName());
 
   return m_WareSrcFiletypes.value(FileType, WareSrcFiletype()).m_HlRules;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+WareSrcFiletypeManager::CompletionRules_t WareSrcFiletypeManager::getCompletionRules(const QString& FilePath)
+{
+  QString FileType = getFileType(QFileInfo(FilePath).fileName());
+
+  openfluid::waresdev::WareSrcManager::WareType WareType = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(
+      FilePath).m_WareType;
+
+  return m_WareSrcFiletypes.value(FileType, WareSrcFiletype()).m_CompRules.value(WareType, QVector<CompletionRule>());
 }
 
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid>
+  <waresdev>
+    <language name="cpp">
+        
+      <snippets>
+      
+       	<category name="OpenFLUID" icon=":/ui/common/icons/OFcode.png" />
+        <category name="C++" icon=":/ui/common/icons/cppcode.png" />
+        
+        <item completion="false" context="simulator" category="OpenFLUID"
+              menutree="OpenFLUID/Signature" menutitle="Simulator signature block">
+          BEGIN_SIMULATOR_SIGNATURE("%%SEL_START%%sim.id%%SEL_END%%")\n\nEND_SIMULATOR_SIGNATURE
+        </item>
+
+        <item completion="false" context="anyware" category="OpenFLUID"
+              menutree="OpenFLUID/Signature/General informations" menutitle="Author">
+          DECLARE_AUTHOR("%%SEL_START%%name%%SEL_END%%","email")
+        </item>
+
+        <item completion="true" category="OpenFLUID">BEGIN_SIMULATOR_SIGNATURE("%%SEL_START%%sim.id%%SEL_END%%")</item>
+        <item completion="true" category="OpenFLUID">END_SIMULATOR_SIGNATURE</item>
+
+        
+        <item completion="true" context="simulator;observer" category="OpenFLUID"
+              menutree="OpenFLUID/Compute code/Variables" menutitle="Get variable value on current time index">          
+          OPENFLUID_GetVariable("%%SEL_START%%UnitPtr%%SEL_END%%","variable.id",Value);          
+        </item>
+
+        <item completion="false" context="simulator"  category="OpenFLUID"
+              menutree="OpenFLUID/Compute code/Loops" menutitle="Loop on spatial units of a units class">
+          OPENFLUID_UNITS_ORDERED_LOOPS("%%SEL_START%%UnitPtr%%SEL_END%%","unitsclass")\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}
+        </item>
+        
+        <item completion="true" context="anyware" category="C++" 
+              menutree="C++/Streams/Standard" menutitle="output to console">
+          std::cout%%CURSOR%%
+        </item>
+
+      </snippets>
+      
+    </language>
+  </waresdev>
+</openfluid>

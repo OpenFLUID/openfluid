@@ -42,6 +42,11 @@
 #include <openfluid/dllexport.hpp>
 
 #include <QPlainTextEdit>
+#include <QCompleter>
+#include <QSignalMapper>
+#include <QStandardItemModel>
+
+#include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -54,13 +59,31 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
   private:
 
-    QWidget* mp_lineNumberArea;
-
     QString m_FilePath;
+
+    WareSrcSyntaxHighlighter* mp_SyntaxHighlighter;
+
+    QRegExp m_SelectionTagsRegExp;
+    QRegExp m_AllTagsRegExp;
+    QRegExp m_WordPartRegExp;
+
+    QWidget* mp_LineNumberArea;
 
     QColor m_LineColor;
 
-    WareSrcSyntaxHighlighter* mp_SyntaxHighlighter;
+    int m_SpaceCharWidth;
+
+    WareSrcFiletypeManager::CompletionRules_t m_CompletionRules;
+
+    QSignalMapper* mp_SignalMapper;
+
+    QStandardItemModel* mp_CompletionModel;
+
+    QMap<QString, QMenu*> m_InsertionMenus;
+
+    QCompleter* mp_Completer;
+
+    void writeString(const QString& Str, int InitialIndentInSpaceNb);
 
   private slots:
 
@@ -72,9 +95,19 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void onChanged(bool Changed);
 
+    void onInsertRequested(const QString& Str);
+
+    void insertCompletion();
+
+    void onCompletionPopupCurrentRowChanged(const QModelIndex &Current, const QModelIndex& Previous);
+
   protected:
 
     void resizeEvent(QResizeEvent* Event);
+
+    void contextMenuEvent(QContextMenuEvent* Event);
+
+    void keyPressEvent(QKeyEvent* Event);
 
   public:
 

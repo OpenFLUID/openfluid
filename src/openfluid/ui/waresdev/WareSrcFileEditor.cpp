@@ -41,6 +41,10 @@
 #include <QDir>
 #include <QPainter>
 #include <QTextStream>
+#include <QMenu>
+#include <QAbstractItemView>
+#include <QScrollBar>
+#include <QToolTip>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
@@ -57,12 +61,21 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
     QPlainTextEdit(Parent), m_FilePath(FilePath), mp_SyntaxHighlighter(0)
 {
-  mp_lineNumberArea = new LineNumberArea(this);
+  m_SelectionTagsRegExp.setPattern("%%SEL_(START|END)%%");
+  m_AllTagsRegExp.setPattern("%%(SEL_(START|END)|CURSOR|INDENT)%%");
+  //TODO get "word part" characters from scanning xml completion strings ?
+  m_WordPartRegExp.setPattern("\\w|:");
 
+  // Line number management
+
+  mp_LineNumberArea = new LineNumberArea(this);
   updateLineNumberAreaWidth(0);
 
   connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
   connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
+
+
+  // Syntax highlighting management
 
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
@@ -80,18 +93,122 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
         document(), WareSrcFiletypeManager::instance()->getHighlightingRules(m_FilePath));
   }
 
-  QFont Font;
-  Font.setFamily(PrefMgr->getFontName());
-  Font.setFixedPitch(true);
-  Font.setPointSize(10);
-  setFont(Font);
-
   if (!PrefMgr->isLineWrappingEnabled())
   {
     QTextOption Option = document()->defaultTextOption();
     Option.setWrapMode(QTextOption::NoWrap);
     document()->setDefaultTextOption(Option);
   }
+
+
+  // Font management
+
+  QFont Font;
+  Font.setFamily(PrefMgr->getFontName());
+  Font.setFixedPitch(true);
+  Font.setPointSize(10);
+  setFont(Font);
+
+  m_SpaceCharWidth = fontMetrics().width(' ');
+
+
+  // Code insertion and code completion management
+
+  m_CompletionRules = WareSrcFiletypeManager::instance()->getCompletionRules(m_FilePath);
+
+  mp_SignalMapper = new QSignalMapper(this);
+  mp_CompletionModel = new QStandardItemModel();
+
+  int row = 0;
+  for (WareSrcFiletypeManager::CompletionRules_t::iterator it = m_CompletionRules.begin();
+      it != m_CompletionRules.end(); ++it)
+  {
+    QString Title = it->Title;
+    QString Content = it->Content;
+
+    // initialize actions for code insertion
+
+    if (!Title.isEmpty())
+    {
+      QString MenuPath = it->MenuPath;
+      QStringList MenuPathList = MenuPath.split("/");
+
+      if (MenuPathList.isEmpty())
+        MenuPathList << "Other";
+
+      QString MainMenuTitle = MenuPathList.first();
+      if (!m_InsertionMenus.contains(MainMenuTitle))
+      {
+        m_InsertionMenus[MainMenuTitle] = new QMenu(MainMenuTitle);
+        m_InsertionMenus[MainMenuTitle]->setObjectName(MainMenuTitle);
+      }
+
+      QMenu* Menu = m_InsertionMenus[MainMenuTitle];
+
+      for (int i = 1; i < MenuPathList.size(); i++)
+      {
+        QString SubPathName = MenuPath.section("/", 0, i);
+        QMenu* SubMenu = Menu->findChild<QMenu*>(SubPathName);
+        if (!SubMenu)
+        {
+          SubMenu = Menu->addMenu(MenuPathList[i]);
+          SubMenu->setObjectName(SubPathName);
+        }
+        Menu = SubMenu;
+      }
+
+      QAction* a = new QAction(Title, this);
+      mp_SignalMapper->setMapping(a, Content);
+      connect(a, SIGNAL(triggered()), mp_SignalMapper, SLOT(map()));
+      Menu->addAction(a);
+    }
+
+    // initialize model for code completion
+
+    QString ContentWoTags = Content;
+    ContentWoTags.remove(m_AllTagsRegExp);
+    QStringList L = ContentWoTags.split("\n");
+    QString ContentForList, ContentForDetail;
+
+    if (L.size() > 1)
+    {
+      ContentForList = L[0].append("...");
+      ContentForDetail = ContentWoTags;
+    }
+    else
+    {
+      ContentForList = ContentWoTags;
+      ContentForDetail = "";
+    }
+
+    mp_CompletionModel->setItem(row, 0, new QStandardItem(ContentForList));
+    // setItem(...QIcon()...) doesn't allow to resize icon
+    QPixmap PM = QPixmap::fromImage(QImage(it->IconPath));
+    mp_CompletionModel->setData(mp_CompletionModel->index(row, 0), PM.scaled(QSize(15, 15), Qt::KeepAspectRatio),
+                                Qt::DecorationRole);
+    mp_CompletionModel->setItem(row, 1, new QStandardItem(ContentForDetail));
+    mp_CompletionModel->setItem(row, 2, new QStandardItem(Content));
+
+    row++;
+  }
+
+  mp_CompletionModel->setSortRole(Qt::DisplayRole);
+  mp_CompletionModel->sort(0);
+
+  mp_Completer = new QCompleter(this);
+  mp_Completer->setModel(mp_CompletionModel);
+  mp_Completer->setCaseSensitivity(Qt::CaseInsensitive);
+  mp_Completer->setWidget(this);
+  mp_Completer->setCompletionMode(QCompleter::PopupCompletion);
+  mp_Completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+
+  connect(mp_Completer->popup()->selectionModel(), SIGNAL(currentRowChanged (const QModelIndex&, const QModelIndex&)),
+          this, SLOT(onCompletionPopupCurrentRowChanged(const QModelIndex&, const QModelIndex&)));
+
+  connect(mp_Completer, SIGNAL(activated(QString)), this, SLOT(insertCompletion()));
+
+  connect(mp_SignalMapper, SIGNAL(mapped(QString)), this, SLOT(onInsertRequested(QString)));
+
 
   updateContent();
 
@@ -106,6 +223,103 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 WareSrcFileEditor::~WareSrcFileEditor()
 {
   delete mp_SyntaxHighlighter;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
+{
+  if (mp_Completer->popup()->isVisible())
+  {
+    switch (Event->key())
+    {
+      case Qt::Key_Enter:
+      case Qt::Key_Return:
+      case Qt::Key_Escape:
+      case Qt::Key_Tab:
+      case Qt::Key_Backtab:
+        Event->ignore();
+        return;
+      default:
+        break;
+    }
+  }
+
+  // ! 8239 == 0x202F == "narrow no-break space", may happen as a key with Ctrl modifier
+  bool IsShortcut = ((Event->modifiers() & Qt::ControlModifier)
+      && (Event->key() == Qt::Key_Space || Event->key() == 8239));
+
+  if (!IsShortcut)
+    QPlainTextEdit::keyPressEvent(Event);
+
+
+  // to skip if only Ctrl or Shift alone
+  const bool CtrlOrShift = Event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+  if (CtrlOrShift && Event->text().isEmpty())
+    return;
+
+  QTextCursor TestCursor = textCursor();
+  int TestPosition = TestCursor.position();
+  QString TestSelection;
+  bool RemoveFirstChar = true;
+
+  do
+  {
+    TestPosition--;
+    if (TestPosition < 0)
+    {
+      RemoveFirstChar = false;
+      break;
+    }
+
+    TestCursor.setPosition(TestPosition, QTextCursor::KeepAnchor);
+    TestSelection = TestCursor.selectedText();
+  }
+  while (m_WordPartRegExp.exactMatch(TestSelection.left(1)));
+
+  if (RemoveFirstChar)
+    TestSelection.remove(0, 1);
+
+  QString CompletionPrefix = TestSelection;
+
+  if (IsShortcut || (mp_Completer->popup()->isVisible() && !CompletionPrefix.isEmpty()
+                     && CompletionPrefix != mp_Completer->completionPrefix()))
+  {
+    mp_Completer->setCompletionPrefix(CompletionPrefix);
+
+    QRect cr = cursorRect();
+    cr.setWidth(
+        mp_Completer->popup()->sizeHintForColumn(0) + mp_Completer->popup()->verticalScrollBar()->sizeHint().width());
+
+    mp_Completer->complete(cr);
+
+    // to do after the call of complete() for the signal "currentRowChanged" to be sent
+    mp_Completer->popup()->setCurrentIndex(mp_Completer->completionModel()->index(0, 0));
+
+    return;
+  }
+
+  mp_Completer->popup()->hide();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::insertCompletion()
+{
+  QTextCursor Cursor = textCursor();
+
+  Cursor.setPosition(Cursor.position() - mp_Completer->completionPrefix().size(), QTextCursor::KeepAnchor);
+  Cursor.removeSelectedText();
+
+  onInsertRequested(
+      mp_Completer->completionModel()->data(
+          mp_Completer->completionModel()->index(mp_Completer->popup()->currentIndex().row(), 2)).toString());
 }
 
 
@@ -146,9 +360,9 @@ void WareSrcFileEditor::updateLineNumberAreaWidth(int /*NewBlockCount*/)
 void WareSrcFileEditor::updateLineNumberArea(const QRect& Rect, int dy)
 {
   if (dy)
-    mp_lineNumberArea->scroll(0, dy);
+    mp_LineNumberArea->scroll(0, dy);
   else
-    mp_lineNumberArea->update(0, Rect.y(), mp_lineNumberArea->width(), Rect.height());
+    mp_LineNumberArea->update(0, Rect.y(), mp_LineNumberArea->width(), Rect.height());
 
   if (Rect.contains(viewport()->rect()))
     updateLineNumberAreaWidth(0);
@@ -164,7 +378,92 @@ void WareSrcFileEditor::resizeEvent(QResizeEvent* Event)
   QPlainTextEdit::resizeEvent(Event);
 
   QRect CR = contentsRect();
-  mp_lineNumberArea->setGeometry(QRect(CR.left(), CR.top(), lineNumberAreaWidth(), CR.height()));
+  mp_LineNumberArea->setGeometry(QRect(CR.left(), CR.top(), lineNumberAreaWidth(), CR.height()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::contextMenuEvent(QContextMenuEvent* Event)
+{
+  QMenu* Menu = createStandardContextMenu();
+  Menu->addSeparator();
+
+  foreach(QMenu* SubMenu,m_InsertionMenus){
+  Menu->addMenu(SubMenu);
+}
+
+  Menu->exec(Event->globalPos());
+
+
+  delete Menu;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::onCompletionPopupCurrentRowChanged(const QModelIndex& Current, const QModelIndex& /*Previous*/)
+{
+  QString Str =
+      mp_Completer->completionModel()->data(mp_Completer->completionModel()->index(Current.row(), 1)).toString();
+
+  QToolTip::showText(mp_Completer->popup()->mapToGlobal(mp_Completer->popup()->rect().topRight()), Str);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::onInsertRequested(const QString& Str)
+{
+  int InitialIndentInSpaceNb = cursorRect().x() / m_SpaceCharWidth;
+
+  QStringList L = Str.split("%%CURSOR%%");
+  if (L.size() > 1)
+  {
+    writeString(L[0], InitialIndentInSpaceNb);
+    int Pos = textCursor().position();
+    writeString(L[1], InitialIndentInSpaceNb);
+
+    QTextCursor Cursor = textCursor();
+    Cursor.setPosition(Pos);
+    setTextCursor(Cursor);
+    return;
+  }
+
+  L = Str.split(m_SelectionTagsRegExp);
+  if (L.size() > 2)
+  {
+    writeString(L[0], InitialIndentInSpaceNb);
+    int PosStart = textCursor().position();
+    writeString(L[1], InitialIndentInSpaceNb);
+    int PosEnd = textCursor().position();
+    writeString(L[2], InitialIndentInSpaceNb);
+
+    QTextCursor Cursor = textCursor();
+    Cursor.setPosition(PosStart);
+    Cursor.setPosition(PosEnd, QTextCursor::KeepAnchor);
+    setTextCursor(Cursor);
+    return;
+  }
+
+  writeString(Str, InitialIndentInSpaceNb);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::writeString(const QString& Str, int InitialIndentInSpaceNb)
+{
+  QString ToInsert(Str);
+  insertPlainText(ToInsert.replace("%%INDENT%%", QString(InitialIndentInSpaceNb, ' ')));
 }
 
 
@@ -197,7 +496,7 @@ void WareSrcFileEditor::highlightCurrentLine()
 
 void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
 {
-  QPainter painter(mp_lineNumberArea);
+  QPainter painter(mp_LineNumberArea);
   painter.fillRect(Event->rect(), Qt::lightGray);
 
 
@@ -212,7 +511,7 @@ void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
     {
       QString Number = QString::number(BlockNumber + 1);
       painter.setPen(Qt::black);
-      painter.drawText(0, Top, mp_lineNumberArea->width(), fontMetrics().height(), Qt::AlignRight, Number);
+      painter.drawText(0, Top, mp_LineNumberArea->width(), fontMetrics().height(), Qt::AlignRight, Number);
     }
 
     Block = Block.next();

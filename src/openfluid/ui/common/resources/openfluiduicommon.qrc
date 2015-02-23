@@ -27,5 +27,7 @@
     <file>icons/build.png</file>
     <file>icons/configure.png</file>
     <file>icons/menu.png</file>
+    <file>icons/cppcode.png</file>
+    <file>icons/OFcode.png</file>
   </qresource>
 </RCC>
