@@ -68,13 +68,24 @@ ClickableLabel::ClickableLabel(const QString& Text, QWidget* Parent) :
 // =====================================================================
 
 
-void ClickableLabel::mouseReleaseEvent(QMouseEvent* Event)
+void ClickableLabel::mouseReleaseEvent(QMouseEvent* /*Event*/)
 {
   emit clicked();
 
-  QLabel::mouseReleaseEvent(Event);
+  //QLabel::mouseReleaseEvent(Event);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ClickableLabel::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
+{
+  emit clicked();
+
+  //QLabel::mouseDoubleClickEvent(Event);
+}
 
 } } } // namespaces
 

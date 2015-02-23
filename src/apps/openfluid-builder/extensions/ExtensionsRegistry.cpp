@@ -96,7 +96,8 @@ void ExtensionsRegistry::registerExtensions()
 // =====================================================================
 
 
-openfluid::builderext::PluggableBuilderExtension* ExtensionsRegistry::instanciateExtension(const openfluid::ware::WareID_t& ID)
+openfluid::builderext::PluggableBuilderExtension*
+    ExtensionsRegistry::instanciateExtension(const openfluid::ware::WareID_t& ID)
 {
   if (isExtensionRegistered(ID) && !m_Extensions[ID]->Active)
   {

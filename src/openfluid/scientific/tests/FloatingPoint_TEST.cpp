@@ -32,7 +32,7 @@
 
 
 /**
-  @file ScientificHelpers_TEST.cpp
+  @file FloatingPoint_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

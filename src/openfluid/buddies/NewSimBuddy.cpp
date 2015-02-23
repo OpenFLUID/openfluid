@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief Implements the "new simulator" buddy
+  @file NewSimBuddy.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -126,7 +125,8 @@ void NewSimulatorBuddy::writeSimulatorCPP()
   CPPContent << "  DECLARE_DOMAIN(\"\");" << std::endl;
   CPPContent << "  DECLARE_PROCESS(\"\");" << std::endl;
   CPPContent << "  DECLARE_METHOD(\"\");" << std::endl;
-  CPPContent << "  DECLARE_AUTHOR(\"" << m_Options["authorname"] << "\",\"" << m_Options["authoremail"] << "\");" << std::endl;
+  CPPContent << "  DECLARE_AUTHOR(\"" << m_Options["authorname"]
+             << "\",\"" << m_Options["authoremail"] << "\");" << std::endl;
   CPPContent << "" << std::endl;
   CPPContent << "END_SIMULATOR_SIGNATURE" << std::endl;
   CPPContent << std::endl;

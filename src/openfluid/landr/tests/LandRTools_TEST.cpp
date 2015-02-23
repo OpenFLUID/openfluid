@@ -26,8 +26,8 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
   @file LandRTools_TEST.cpp
@@ -63,8 +63,8 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
   @file LandRTools_TEST.cpp
@@ -82,9 +82,11 @@
 #include <tests-config.hpp>
 #include <openfluid/landr/GeosCompat.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
+#include <openfluid/landr/RasterDataset.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
@@ -872,7 +874,7 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 
   vEntities=
   openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-  																										 *PointNode,0.01);
+                                                       *PointNode,0.01);
   BOOST_CHECK(vEntities.empty());
 
   geos::geom::Coordinate Coor;
@@ -883,18 +885,18 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 
   BOOST_CHECK_THROW(
   openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-																									     *Point,0),
-																									     openfluid::base::FrameworkException);
+                                                       *Point,0),
+                                                       openfluid::base::FrameworkException);
 
 
   vEntities=
   openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-  																										 *Point,0.0001);
+                                                       *Point,0.0001);
   BOOST_CHECK(vEntities.empty());
 
   vEntities=
   openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-  																										 *Point,1);
+                                                       *Point,1);
 
   BOOST_CHECK_EQUAL(vEntities.size(),2);
 
@@ -941,12 +943,12 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
   vPoints.push_back(PointEndNode);
 
   BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoints
-  									(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-							      vPoints,0,vEntities),
-							      openfluid::base::FrameworkException);
+                    (*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
+                    vPoints,0,vEntities),
+                    openfluid::base::FrameworkException);
 
   openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-  																											vPoints,0.01,vEntities);
+                                                        vPoints,0.01,vEntities);
   BOOST_CHECK_EQUAL(vEntities.size(),1);
 
   vPoints.clear();
@@ -965,13 +967,13 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
   vEntities.clear();
 
   openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-  																											vPoints,0.0001,vEntities);
+                                                        vPoints,0.0001,vEntities);
   BOOST_CHECK_EQUAL(vEntities.size(),1);
 
   vEntities.clear();
 
   openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->entity(7)->line()),
-  																											vPoints,1,vEntities);
+                                                        vPoints,1,vEntities);
   BOOST_CHECK_EQUAL(vEntities.size(),3);
 
 
@@ -1186,4 +1188,50 @@ BOOST_AUTO_TEST_CASE(markInvertedLineStringEntityUsingDFS)
 
 // =====================================================================
 // =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_envelope)
+{
+  openfluid::core::GeoRasterValue RasterVal(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
+      RasterVal);
+
+  std::vector<OGREnvelope> vEnvelope;
+  vEnvelope.push_back(Rast->envelope());
+
+
+  openfluid::core::GeoVectorValue Value(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::VectorDataset* Vect =
+      new openfluid::landr::VectorDataset(Value);
+  vEnvelope.push_back(Vect->envelope());
+
+  BOOST_CHECK(openfluid::landr::LandRTools::isExtentsIntersect(vEnvelope));
+
+
+  vEnvelope.clear();
+  vEnvelope.push_back(Rast->envelope());
+
+  openfluid::core::GeoVectorValue Value2(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
+
+  Vect = new openfluid::landr::VectorDataset(Value2);
+  vEnvelope.push_back(Vect->envelope());
+
+  BOOST_CHECK(! openfluid::landr::LandRTools::isExtentsIntersect(vEnvelope));
+
+
+  delete Rast;
+  delete Vect;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 

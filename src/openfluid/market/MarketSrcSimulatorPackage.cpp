@@ -31,12 +31,10 @@
 
 
 /**
- * MarketSrcSimulatorPackage.cpp
- *
- *  Created on: 25 févr. 2013
- *      Author: Manuel CHATAIGNER
-*/
+ @file MarketSrcSimulatorPackage.cpp
 
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
+*/
 
 #include <openfluid/market/MarketSrcSimulatorPackage.hpp>
 

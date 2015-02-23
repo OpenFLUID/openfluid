@@ -32,7 +32,7 @@
 
 
 /**
-  @file
+  @file Sim2DocBuddy.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -298,12 +298,17 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
 
                     | str_p("DECLARE_SCHEDULING_UNDEFINED")[boost::bind(&ware::SignatureTimeScheduling::setAsUndefined,
                         &self.mp_Owner->m_TimeScheduling)] >> endLine
-                    | str_p("DECLARE_SCHEDULING_DEFAULT")[boost::bind(&ware::SignatureTimeScheduling::setAsDefaultDeltaT,
+                    | str_p("DECLARE_SCHEDULING_DEFAULT")[boost::bind(
+                        &ware::SignatureTimeScheduling::setAsDefaultDeltaT,
                         &self.mp_Owner->m_TimeScheduling)] >> endLine
-                    | str_p("DECLARE_SCHEDULING_FIXED") >> *blank >> '(' >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingFixed, self.mp_Owner, _1)]
+                    | str_p("DECLARE_SCHEDULING_FIXED") >> *blank >> '(' >> *blank
+                            >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingFixed, self.mp_Owner, _1)]
                             >> *blank >> ')' >> endLine
-                    | str_p("DECLARE_SCHEDULING_RANGE") >> *blank >> '(' >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingFixed, self.mp_Owner, _1)]
-                            >> *blank >> ',' >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingRange, self.mp_Owner, _1)] >> *blank >>  ')' >> endLine
+                    | str_p("DECLARE_SCHEDULING_RANGE") >> *blank >> '('
+                            >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingFixed, self.mp_Owner, _1)]
+                            >> *blank >> ','
+                            >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingRange, self.mp_Owner, _1)]
+                            >> *blank >>  ')' >> endLine
 
                     | linemarker >> endLine
                   )
@@ -327,8 +332,10 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
           varName = *(print_p - ')');
 
           // Parameter of a method surrounded by quotes (string) or not (var name)
-          element = (+(*blank >> '"' >> string[boost::bind(&Sim2DocBuddy::buildParsedParam, self.mp_Owner, _1, _2)] >> '"' >> *blank))
-                      | (*blank >> varName[boost::bind(&Sim2DocBuddy::buildParsedParam, self.mp_Owner, _1, _2)] >> *blank);
+          element = (+(*blank >> '"' >> string[boost::bind(&Sim2DocBuddy::buildParsedParam, self.mp_Owner, _1, _2)]
+                                     >> '"' >> *blank))
+                      | (*blank >> varName[boost::bind(&Sim2DocBuddy::buildParsedParam, self.mp_Owner, _1, _2)]
+                                >> *blank);
 
           // List of parameters of a declaration (here not stored)
           parameters = element[boost::bind(&Sim2DocBuddy::clearParsedParam, self.mp_Owner)]
@@ -338,43 +345,73 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
 
           /** List of rules for the different lines of signature **/
 
-          IDRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimID)];
-          NameRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimName)];
-          DescriptionRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimDescription)];
-          VersionRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimVersion)];
+          IDRule =
+              element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimID)];
+          NameRule =
+              element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimName)];
+          DescriptionRule =
+              element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimDescription)];
+          VersionRule =
+              element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimVersion)];
 
           StatusRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoStatus, self.mp_Owner)];
 
-          DomainRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimDomain)];
-          AuthorRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoVector, self.mp_Owner, &self.mp_Owner->m_SimAuthorsNames)]
-             >> ',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoVector, self.mp_Owner, &self.mp_Owner->m_SimAuthorsEmails)];
+          DomainRule =
+              element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimDomain)];
+          AuthorRule =
+              element[boost::bind(&Sim2DocBuddy::storeDataIntoVector, self.mp_Owner, &self.mp_Owner->m_SimAuthorsNames)]
+             >> ',' >>
+             element[boost::bind(&Sim2DocBuddy::storeDataIntoVector, self.mp_Owner,
+                                 &self.mp_Owner->m_SimAuthorsEmails)];
 
-          SimulatorParamRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_ParamsData, "")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_ParamsData)]);
+          SimulatorParamRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey,
+                                                   self.mp_Owner, &self.mp_Owner->m_ParamsData, "")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData,
+                                                   self.mp_Owner, &self.mp_Owner->m_ParamsData)]);
 
-          ProducedVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_OutVars, "produced")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_OutVars)]);
-          UpdatedVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_OutVars, "updated")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_OutVars)]);
-          RequiredVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_InVars, "required")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_InVars)]);
-          UsedVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_InVars, "used")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_InVars)]);
+          ProducedVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                                &self.mp_Owner->m_OutVars, "produced")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData,
+                                                   self.mp_Owner, &self.mp_Owner->m_OutVars)]);
+          UpdatedVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                               &self.mp_Owner->m_OutVars, "updated")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData,
+                                                   self.mp_Owner, &self.mp_Owner->m_OutVars)]);
+          RequiredVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                                &self.mp_Owner->m_InVars, "required")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData,
+                                                   self.mp_Owner, &self.mp_Owner->m_InVars)]);
+          UsedVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                            &self.mp_Owner->m_InVars, "used")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData,
+                                                   self.mp_Owner, &self.mp_Owner->m_InVars)]);
 
-          ProducedAttributeRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_OutAttrs, "produced")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_OutAttrs)]);
-          RequiredAttributeRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_InAttrs, "required")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_InAttrs)]);
-          UsedAttributeRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_InAttrs, "used")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_InAttrs)]);
+          ProducedAttributeRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                                      &self.mp_Owner->m_OutAttrs, "produced")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner,
+                                                   &self.mp_Owner->m_OutAttrs)]);
+          RequiredAttributeRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                                      &self.mp_Owner->m_InAttrs, "required")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner,
+                                                   &self.mp_Owner->m_InAttrs)]);
+          UsedAttributeRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                                  &self.mp_Owner->m_InAttrs, "used")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner,
+                                                   &self.mp_Owner->m_InAttrs)]);
 
-          UsedEventsRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_Events, "")];
-          UsedExtraFilesRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_ExtraFiles, "used")];
-          RequiredExtraFilesRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_ExtraFiles, "required")];
+          UsedEventsRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                               &self.mp_Owner->m_Events, "")];
+          UsedExtraFilesRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                                   &self.mp_Owner->m_ExtraFiles, "used")];
+          RequiredExtraFilesRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner,
+                                                       &self.mp_Owner->m_ExtraFiles, "required")];
 
-          UpdatedUnitsGraphRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_UnitsGraph.UpdatedUnitsGraph)];
-          UpdatedUnitsClassRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoUnitsClass, self.mp_Owner, &self.mp_Owner->m_UnitsGraph.UpdatedUnitsClass, 1)]
-                  >> ',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoUnitsClass, self.mp_Owner, &self.mp_Owner->m_UnitsGraph.UpdatedUnitsClass, 2)];
+          UpdatedUnitsGraphRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner,
+                                                      &self.mp_Owner->m_UnitsGraph.UpdatedUnitsGraph)];
+          UpdatedUnitsClassRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoUnitsClass, self.mp_Owner,
+                                                      &self.mp_Owner->m_UnitsGraph.UpdatedUnitsClass, 1)]
+                  >> ',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoUnitsClass, self.mp_Owner,
+                                                &self.mp_Owner->m_UnitsGraph.UpdatedUnitsClass, 2)];
         }
 
         /**

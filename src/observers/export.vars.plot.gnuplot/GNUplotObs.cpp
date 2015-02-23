@@ -68,7 +68,8 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.plot.gnuplot")
       "  serie.<seriename>.var : the name of the variable to plot (e.g. var.foo)\n"
       "  serie.<seriename>.unitclass : the unit class (e.g. TU)\n"
       "  serie.<seriename>.unitid : the unit id (e.g. 17)\n"
-      "  serie.<seriename>.sourcefile : the file to plot (e.g. measured_data.dat), if this serie is not based on simulation variables\n"
+      "  serie.<seriename>.sourcefile : the file to plot (e.g. measured_data.dat), "
+        "if this serie is not based on simulation variables\n"
       "  serie.<seriename>.style : the GNUplot style to use to plot this serie (e.g. linespoint)\n"
       "  serie.<seriename>.label : the label to use for this serie (e.g. foo) instead of the automatic label\n"
       "Parameters for declaring graphs can be:\n"
@@ -228,7 +229,9 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         SInfo.Style = ParamsPT.get("serie."+SerieID+".style","line");
         SInfo.Color = ParamsPT.get("serie."+SerieID+".color","");
 
-        if (!SInfo.VarName.empty() && !SInfo.UnitClass.empty() && openfluid::tools::convertString(UnitIDStr,&SInfo.UnitID))
+        if (!SInfo.VarName.empty() &&
+            !SInfo.UnitClass.empty() &&
+            openfluid::tools::convertString(UnitIDStr,&SInfo.UnitID))
         {
           openfluid::core::SpatialUnit* TmpU;
           TmpU = mp_SpatialData->spatialUnit(SInfo.UnitClass,SInfo.UnitID);
@@ -258,8 +261,9 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
          GInfo.Key = ParamsPT.get("graph."+GraphID+".key","default");
          GInfo.YLabel = ParamsPT.get("graph."+GraphID+".ylabel","");
 
-         std::vector<std::string> SeriesStr = openfluid::tools::splitString(ParamsPT.get("graph."+GraphID+".series",""),
-                                                                            ";",false);
+         std::vector<std::string> SeriesStr =
+             openfluid::tools::splitString(ParamsPT.get("graph."+GraphID+".series",""),
+                                           ";",false);
 
          for (std::vector<std::string>::const_iterator it = SeriesStr.begin();it != SeriesStr.end();++it)
          {
@@ -289,7 +293,9 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       {
         if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
         {
-          openfluid::core::Value* Val = (*Sit).second.Unit->variables()->currentValueIfIndex((*Sit).second.VarName,OPENFLUID_GetCurrentTimeIndex());
+          openfluid::core::Value* Val =
+              (*Sit).second.Unit->variables()->currentValueIfIndex((*Sit).second.VarName,
+                                                                   OPENFLUID_GetCurrentTimeIndex());
 
           if (Val!= NULL)
           {

@@ -298,7 +298,8 @@ class OPENFLUID_API MarketClientAssistant : public QWizard
      @param Maj First letter in maj
      @param Plural Return plural name
     */
-    static QString getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
+    static QString getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type,
+                                      const bool Maj, const bool Plural);
 };
 
 } } } // namespaces

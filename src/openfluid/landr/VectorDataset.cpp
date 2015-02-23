@@ -646,4 +646,20 @@ void VectorDataset::setIndexIntField(const std::string& FieldName,
 // =====================================================================
 
 
+OGREnvelope VectorDataset::envelope()
+{
+  OGREnvelope Envelope;
+  layer()->GetExtent(&Envelope);
+
+  return Envelope;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+
 } } // namespaces openfluid, landr

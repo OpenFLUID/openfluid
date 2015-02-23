@@ -293,7 +293,18 @@ OPENFLUID_ADD_TEST(NAME integration-FluidXWriterMany
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunMany"
                                "-p" "${TEST_OUTPUT_PATH}")
 SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS unit-api-FluidXDescriptor_TEST)
-  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-ParameterizationUI
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesWithParameterizationUI"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesWithParameterizationUI"
+                               "-p" "${TEST_OUTPUT_PATH}"
+                               "-n" "${TEST_OUTPUT_PATH}")
+                                 
 
 ###########################################################################
 
@@ -322,6 +333,7 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorConfigure
                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.sim.cmake" 
                              "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                              "${CMAKE_CURRENT_SOURCE_DIR}/tests.sim.cmake"
+                             "-DOpenFLUIDHelpers_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
                              "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
                              "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
@@ -342,6 +354,35 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorBuild
 SET_PROPERTY(TEST integration-CMakeModuleSimulatorBuild APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorConfigure)                                                            
 
 
+###########################################################################
+
+
+FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.simui.cmake")
+
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorParamsUIConfigure
+                   COMMAND "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.simui.cmake" 
+                              "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/tests.simui.cmake"
+                              "-DOpenFLUIDHelpers_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                              "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                              "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
+                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
+                              "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                    PRE_TEST EMPTY_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.simui.cmake")                              
+                              
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorParamsUIBuild
+                   COMMAND "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.simui.cmake" 
+                              "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.simui.cmake"
+                              "--target" "install"
+                              "--clean-first")
+SET_PROPERTY(TEST integration-CMakeModuleSimulatorParamsUIBuild APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorParamsUIConfigure)
+
 
 ###########################################################################
 
@@ -353,6 +394,7 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverConfigure
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake" 
                               "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                               "${CMAKE_CURRENT_SOURCE_DIR}/tests.obs.cmake"
+                              "-DOpenFLUIDHelpers_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
                               "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
                               "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
                               "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
@@ -375,6 +417,37 @@ SET_PROPERTY(TEST integration-CMakeModuleObserverBuild APPEND PROPERTY DEPENDS i
 ###########################################################################
 
 
+FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.obsui.cmake")
+
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverParamsUIConfigure
+                   COMMAND "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.obsui.cmake" 
+                              "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/tests.obsui.cmake"
+                              "-DOpenFLUIDHelpers_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                              "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                              "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
+                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
+                              "-DOBS_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                    PRE_TEST EMPTY_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.obsui.cmake")                              
+                              
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverParamsUIBuild
+                   COMMAND "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.obsui.cmake" 
+                              "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.obsui.cmake"
+                              "--target" "install"
+                              "--clean-first")
+SET_PROPERTY(TEST integration-CMakeModuleObserverParamsUIBuild APPEND PROPERTY DEPENDS integration-CMakeModuleObserverParamsUIConfigure)                                                            
+
+
+
+###########################################################################
+
+
 IF(BUILD_APP_BUILDER AND OPENFLUID_ENABLE_GUI)
 
 FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.bext.cmake")
@@ -384,6 +457,7 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleBuilderextConfigure
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.bext.cmake" 
                               "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                               "${CMAKE_CURRENT_SOURCE_DIR}/tests.bext.cmake"
+                              "-DOpenFLUIDHelpers_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
                               "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
                               "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
                               "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
@@ -417,12 +491,12 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleRun
 #                           "-p${TESTS_OUTPUTDATA_PATH}/tests.sim.cmake"
 #                           "-n${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule"
-                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.cmake_ofware-sim.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.cmake_ofware-obs.log")
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.sim.cmake_ofware-sim.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.obs.cmake_ofware-obs.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.obsui.cmake_ofware-obs.log")
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorBuild)
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverBuild)
-SET_TESTS_PROPERTIES(integration-CMakeModuleRun PROPERTIES PASS_REGULAR_EXPRESSION "CMake module built simulator"
-                                                           PASS_REGULAR_EXPRESSION "CMake module built observer")
+SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverParamsUIBuild)
                                                              
 
 ###########################################################################

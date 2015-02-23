@@ -50,22 +50,15 @@
 #include <openfluid/dllexport.hpp>
 
 
+// =====================================================================
+// =====================================================================
+
+
 /**
   Macro for declaration of builder extension and signature hooks
+  @deprecated
 */
-#define DECLARE_BUILDEREXT_PLUGIN \
-  extern "C" \
-  { \
-    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL(); \
-    OPENFLUID_PLUGIN openfluid::builderext::PluggableBuilderExtension* WAREBODY_PROC_DECL(); \
-    OPENFLUID_PLUGIN openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL(); \
-  }
-
-
-
-
-// =====================================================================
-// =====================================================================
+#define DECLARE_BUILDEREXT_PLUGIN
 
 
 /**
@@ -73,14 +66,17 @@
   @param[in] pluginclassname The name of the class to instantiate
 */
 #define DEFINE_BUILDEREXT_CLASS(pluginclassname) \
-  std::string WAREABIVERSION_PROC_DECL() \
+  extern "C" \
   { \
-    return std::string(openfluid::config::FULL_VERSION); \
-  } \
-  \
-  openfluid::builderext::PluggableBuilderExtension* WAREBODY_PROC_DECL() \
-  { \
-    return new pluginclassname(); \
+    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL() \
+    { \
+      return std::string(openfluid::config::FULL_VERSION); \
+    } \
+    \
+    OPENFLUID_PLUGIN openfluid::builderext::PluggableBuilderExtension* WAREBODY_PROC_DECL() \
+    { \
+      return new pluginclassname(); \
+    } \
   }
 
 

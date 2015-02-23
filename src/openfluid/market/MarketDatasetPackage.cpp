@@ -30,12 +30,11 @@
 */
 
 
-/*
- * MarketDatasetPackage.cpp
- *
- *  Created on: 4 mars 2013
- *      Author: Manuel CHATAIGNER
- */
+/**
+ @file MarketDatasetPackage.cpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
+*/
 
 
 #include <openfluid/market/MarketDatasetPackage.hpp>
@@ -83,11 +82,13 @@ PackageInfo::PackageType MarketDatasetPackage::getPackageType() const
 void MarketDatasetPackage::process()
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::download()","package "+m_PackageFilename+" not initialized");
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::download()",
+                                              "package "+m_PackageFilename+" not initialized");
 
 
   if (!m_Downloaded)
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()",
+                                              "package "+m_PackageFilename+" cannot be processed before download");
 
 
   if (!m_CMakeProgram.isFound())
@@ -100,7 +101,8 @@ void MarketDatasetPackage::process()
     boost::filesystem::remove_all(boost::filesystem::path(DatasetInstallDir));
 
   if (!boost::filesystem::create_directories(boost::filesystem::path(DatasetInstallDir)))
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","unable to create dataset directory for "+m_ID+" package");
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()",
+                                              "unable to create dataset directory for "+m_ID+" package");
 
   QString ProcessCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"")
                                     .arg(m_CMakeProgram.getFullProgramPath(),
@@ -122,7 +124,8 @@ void MarketDatasetPackage::process()
   if (RetValue != 0)
   {
     appendToLogFile(QString(Uncompress.readAllStandardError()).toStdString());
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","Error uncompressing package using CMake");
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()",
+                                              "Error uncompressing package using CMake");
   }
 
 }

@@ -58,7 +58,7 @@ AddSimulatorDialog::AddSimulatorDialog(const QStringList& SimIDList, QWidget* Pa
     openfluid::machine::SimulatorSignatureRegistry::instance();
 
   openfluid::machine::SimulatorSignatureRegistry::SimSignaturesByName_t SimSigns =
-    Reg->getPluggableSignatures();
+    Reg->getSimulatorSignatures();
 
   for (openfluid::machine::SimulatorSignatureRegistry::SimSignaturesByName_t::iterator it =
       SimSigns.begin(); it != SimSigns.end(); ++it)
@@ -105,8 +105,8 @@ void AddSimulatorDialog::updateSignature()
   openfluid::machine::SimulatorSignatureRegistry* Reg =
     openfluid::machine::SimulatorSignatureRegistry::instance();
 
-  openfluid::machine::ModelItemSignatureInstance* Sign =
-      Reg->signatureItemInstance(ui->WaresListWidget->currentItem()->text().toStdString());
+  const openfluid::machine::ModelItemSignatureInstance* Sign =
+      Reg->signature(ui->WaresListWidget->currentItem()->text().toStdString());
 
   ui->EmptyLabel->setVisible(false);
   mp_SignWidget->setVisible(true);

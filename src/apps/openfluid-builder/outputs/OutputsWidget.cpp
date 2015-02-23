@@ -82,7 +82,8 @@ OutputsWidget::~OutputsWidget()
 
 void OutputsWidget::refreshOutputDir() const
 {
-  QString NativePath = QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::instance()->getOutputDir()));
+  QString NativePath =
+      QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::instance()->getOutputDir()));
 
   ui->OutputDirLabel->setText(NativePath);
   ui->OutputDirLabel->setToolTip(NativePath);
@@ -172,6 +173,7 @@ void OutputsWidget::tryToOpenFile(const QModelIndex& Index)
 void OutputsWidget::tryToExploreOutputDir()
 {
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-  QDesktopServices::openUrl(QUrl::fromLocalFile(QString(openfluid::base::ProjectManager::instance()->getOutputDir().c_str())));
+  QDesktopServices::openUrl(QUrl::fromLocalFile(
+      QString(openfluid::base::ProjectManager::instance()->getOutputDir().c_str())));
   QApplication::restoreOverrideCursor();
 }

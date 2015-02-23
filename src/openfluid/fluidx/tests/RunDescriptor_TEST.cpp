@@ -32,7 +32,7 @@
 
 
 /**
-  @file RunDesc_TEST.cpp
+  @file RunDescriptor_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -52,7 +52,8 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::fluidx::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),openfluid::core::DateTime(2010,1,9,12,0,0));
+  openfluid::fluidx::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),
+                                           openfluid::core::DateTime(2010,1,9,12,0,0));
 
   BOOST_REQUIRE_EQUAL(RunDesc.getDeltaT(),57);
   BOOST_REQUIRE_EQUAL(RunDesc.getSchedulingConstraint(),openfluid::base::SimulationStatus::SCHED_NONE);
@@ -71,7 +72,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::fluidx::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),openfluid::core::DateTime(2010,1,9,12,0,0));
+  openfluid::fluidx::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),
+                                           openfluid::core::DateTime(2010,1,9,12,0,0));
 
   RunDesc.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_DTCHECKED);
   RunDesc.setValuesBufferSize(20);

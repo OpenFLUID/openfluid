@@ -51,7 +51,7 @@ GeneratorWidget::GeneratorWidget(QWidget* Parent,
                                  openfluid::fluidx::ModelItemDescriptor* Desc,
                                  const openfluid::ware::WareID_t& ID,
                                  int Index,
-                                 openfluid::machine::ModelItemSignatureInstance* SignInstance):
+                                 const openfluid::machine::ModelItemSignatureInstance* SignInstance):
   WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_GENERATOR_BGCOLOR, Index),mp_Desc(Desc), mp_SignInstance(SignInstance)
 {
   ui->AddParamButton->setVisible(false);
@@ -93,13 +93,11 @@ void GeneratorWidget::updateParams()
                                                        QString::fromStdString(ParamName),ParamValue,
                                                        QString::fromStdString((*it).DataUnit));
 
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this,
+            SLOT(updateParamValue(const QString&,const QString&)));
 
-    ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addWidget(ParamWidget);
+    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
   }
-
-  ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addStretch();
-
 }
 
 
@@ -116,7 +114,7 @@ void GeneratorWidget::refresh()
     ui->NameLabel->setText(QString::fromStdString(mp_SignInstance->Signature->Name));
 
     // TODO add produced variable in signature
-    ui->InfosWidget->update(mp_SignInstance);
+    ui->InfosSideWidget->update(mp_SignInstance);
 
     updateParams();
   }

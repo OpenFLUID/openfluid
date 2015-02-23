@@ -159,8 +159,7 @@ void ModelWidget::addGlobalParam()
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
-    openfluid::machine::ModelItemSignatureInstance* Sign =
-        Reg->signatureItemInstance(*it);
+    const openfluid::machine::ModelItemSignatureInstance* Sign = Reg->signature(*it);
 
     if (Sign)
     {
@@ -187,8 +186,10 @@ void ModelWidget::addGlobalParam()
                                                        AddPDlg.getParamName(),AddPDlg.getParamValue(),
                                                        QString::fromStdString(""),true);
 
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateGlobalParamValue(const QString&,const QString&)));
-    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeGlobalParam(const QString&)));
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+            this, SLOT(updateGlobalParamValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
+            this, SLOT(removeGlobalParam(const QString&)));
 
     int Position = ui->GlobalParamsAreaContents->layout()->count()-1;
     ((QBoxLayout*)(ui->GlobalParamsAreaContents->layout()))->insertWidget(Position,ParamWidget);
@@ -240,12 +241,15 @@ void ModelWidget::updateGlobalParams()
 
   for (openfluid::ware::WareParams_t::iterator it = GParams.begin();it != GParams.end(); ++it)
   {
-    ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                       QString::fromStdString((*it).first),QString::fromStdString((*it).second),
-                                                       QString::fromStdString(""),true);
+    ParameterWidget* ParamWidget =
+        new ParameterWidget(this,
+                            QString::fromStdString((*it).first),QString::fromStdString((*it).second),
+                            QString::fromStdString(""),true);
 
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateGlobalParamValue(const QString&,const QString&)));
-    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeGlobalParam(const QString&)));
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+            this, SLOT(updateGlobalParamValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
+            this, SLOT(removeGlobalParam(const QString&)));
 
     ((QBoxLayout*)(ui->GlobalParamsAreaContents->layout()))->addWidget(ParamWidget);
   }
@@ -327,7 +331,8 @@ void ModelWidget::addGenerator()
         new GeneratorWidget(this,GenDesc,
                             ID,
                             0,
-                            openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(AddGenDlg.getMethod()));
+                            openfluid::machine::SimulatorSignatureRegistry::instance()
+                            ->signature(AddGenDlg.getMethod()));
 
     connect(GenWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
     connect(GenWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
@@ -408,7 +413,8 @@ void ModelWidget::removeModelItem(const QString& /*ID*/, int CurrentIndex)
   if (CurrentIndex < 0)
     return;
 
-  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(CurrentIndex)->widget());
+  WareWidget* W =
+      (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(CurrentIndex)->widget());
   W->deleteLater();
 
   m_Model.removeItem(CurrentIndex);
@@ -468,10 +474,11 @@ void ModelWidget::updateCoupledModel()
       // TODO see if a more elegant method is possible for generators signature
       // than passing signature instance to constructor
 
-      GeneratorWidget* GenWidget = new GeneratorWidget(this,*it,
-                                                       m_Model.getID(*it),
-                                                       0,
-                                                       openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(*it));
+      GeneratorWidget* GenWidget =
+          new GeneratorWidget(this,*it,
+                              m_Model.getID(*it),
+                              0,
+                              openfluid::machine::SimulatorSignatureRegistry::instance()->signature(*it));
 
       mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(GenWidget);
       if (it == itb) GenWidget->setUpButtonEnabled(false);
@@ -508,6 +515,22 @@ void ModelWidget::dispatchChangesFromChildren()
 void ModelWidget::notifySrcEditAsked(const QString& ID)
 {
   emit srcEditAsked(ID,openfluid::ware::PluggableWare::SIMULATOR);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::prepareWaresUpdate()
+{
+  int LastIndex = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;
+
+  for (int i=0;i<=LastIndex;i++)
+  {
+    WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->itemAt(i)->widget());
+    if (W != NULL) W->prepareWareUpdate();
+  }
 }
 
 

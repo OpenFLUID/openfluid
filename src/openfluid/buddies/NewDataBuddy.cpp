@@ -32,8 +32,7 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  @file NewDataBuddy.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -154,7 +153,8 @@ void NewDataBuddy::generateOutputXML()
   Content << getXMLHeader() << std::endl;
   Content << "  <output>" << std::endl;
   Content << std::endl;
-  Content << "    <!-- dtformat can be predefined (6cols,iso) or using the strftime() format, default is iso -->" << std::endl;
+  Content << "    <!-- dtformat can be predefined (6cols,iso) or using the strftime() format, default is iso -->"
+          << std::endl;
   Content << "    <!-- colsep default is \t -->" << std::endl;
   Content << "    <files colsep=\" \" dtformat=\"%Y %m %d %H %M %S\" commentchar=\"%\">" << std::endl;
   Content << "      <set unitsclass=\"unitsA\" name=\"full\" unitsIDs=\"*\" vars=\"*\" />" << std::endl;
@@ -185,14 +185,16 @@ void NewDataBuddy::generateEventsXML()
   Content << "  <domain>" << std::endl;
   Content << "    <calendar>" << std::endl;
   Content << std::endl;
-  Content << "      <event name=\"\" category=\"example\" unitclass=\"unitsA\" unitID=\"1\" date=\"2001-01-18 12:25:33\">" << std::endl;
+  Content << "      <event name=\"\" category=\"example\" unitclass=\"unitsA\" unitID=\"1\" "
+             "date=\"2001-01-18 12:25:33\">" << std::endl;
   Content << "        <info key=\"when\" value=\"during\"/>" << std::endl;
   Content << "        <info key=\"where\" value=\"1\"/>" << std::endl;
   Content << "        <info key=\"numeric\" value=\"1.15\"/>" << std::endl;
   Content << "        <info key=\"string\" value=\"EADGBE\"/>" << std::endl;
   Content << "      </event>" << std::endl;
   Content << std::endl;
-  Content << "      <event name=\"\" category=\"example\" unitclass=\"unitsB\" unitID=\"1\" date=\"2001-05-01 06:00:17\">" << std::endl;
+  Content << "      <event name=\"\" category=\"example\" unitclass=\"unitsB\" unitID=\"1\" "
+             "date=\"2001-05-01 06:00:17\">" << std::endl;
   Content << "        <info key=\"when\" value=\"after\"/>" << std::endl;
   Content << "        <info key=\"where\" value=\"12\"/>" << std::endl;
   Content << "        <info key=\"numeric\" value=\"1.15\"/>" << std::endl;

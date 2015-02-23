@@ -53,22 +53,26 @@ class SimulatorWidget : public ClickableWareWidget
 
     openfluid::fluidx::ModelItemDescriptor* mp_Desc;
 
-    void updateParams(openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateParametersListWithSignature(const openfluid::machine::ModelItemSignatureInstance* Signature);
+
+    void updateParametersList();
 
 
   private slots:
 
     void setEnabledWare(bool Enabled);
 
-    void addParam();
+    void addParameterToList();
 
-    void updateParamValue(const QString& Name, const QString& Value);
+    void updateParameterValue(const QString& Name, const QString& Value);
 
-    void removeParam(const QString& Name);
+    void removeParameterFromList(const QString& Name);
+
 
   public slots:
 
     void refresh();
+
 
   public:
 
@@ -78,6 +82,8 @@ class SimulatorWidget : public ClickableWareWidget
                     int Index);
 
     ~SimulatorWidget();
+
+    void prepareWareUpdate();
 
     void updateWare();
 

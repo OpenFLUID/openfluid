@@ -51,21 +51,27 @@
   Macro for the beginning of definition of signature hook
 */
 #define BEGIN_BUILDEREXT_SIGNATURE(id,exttype) \
-  openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL() \
-  { \
-    openfluid::builderext::BuilderExtensionSignature* Signature =\
-      new openfluid::builderext::BuilderExtensionSignature(); \
-    Signature->setABIVersion(openfluid::config::FULL_VERSION); \
-    Signature->ID = (id); \
-    Signature->Type = (exttype);
+  extern "C" { \
+  OPENFLUID_PLUGIN openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL() \
+    { \
+      openfluid::builderext::BuilderExtensionSignature* Signature =\
+        new openfluid::builderext::BuilderExtensionSignature(); \
+      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+      Signature->ID = (id); \
+      Signature->Type = (exttype);
 
 
 /**
   Macro for the end of definition of signature hook
 */
 #define END_BUILDEREXT_SIGNATURE \
-    return Signature; \
-  }
+      return Signature; \
+    } \
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**

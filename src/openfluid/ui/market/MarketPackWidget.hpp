@@ -96,7 +96,8 @@ class OPENFLUID_API MarketPackWidget : public QGroupBox
     void installModified(openfluid::ware::WareID_t);
 
   public:
-    MarketPackWidget(const openfluid::market::PackageInfo::PackageType& Type,const openfluid::market::MetaPackageInfo& MetaPackInfo);
+    MarketPackWidget(const openfluid::market::PackageInfo::PackageType& Type,
+                     const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
     ~MarketPackWidget();
 

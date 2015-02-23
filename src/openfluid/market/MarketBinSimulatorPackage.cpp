@@ -30,11 +30,10 @@
 */
 
 
-/*
- * MarketBinSimulatorPackage.cpp
- *
- *  Created on: 25 févr. 2013
- *      Author: Manuel CHATAIGNER
+/**
+ @file MarketBinSimulatorPackage.cpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
 

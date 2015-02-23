@@ -97,7 +97,11 @@ class MonitoringWidget : public WorkspaceWidget
 
     virtual ~MonitoringWidget();
 
+    void prepareWaresUpdate();
+
     void updateWares();
+
+
 };
 
 

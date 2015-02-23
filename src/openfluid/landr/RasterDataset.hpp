@@ -40,6 +40,7 @@
 
 #include <map>
 #include "gdal_priv.h"
+#include <ogrsf_frmts.h>
 #include "cpl_conv.h" // for CPLMalloc()
 #include <openfluid/dllexport.hpp>
 
@@ -195,6 +196,12 @@ class OPENFLUID_API RasterDataset
                                                 unsigned int RasterBandIndex = 1);
 
     static std::string getDefaultPolygonizedFieldName();
+
+    /**
+      @brief Returns the OGREnvelope associated to this RasterDataset.
+    */
+    OGREnvelope envelope();
+
 };
 
 } } // namespaces openfluid, landr

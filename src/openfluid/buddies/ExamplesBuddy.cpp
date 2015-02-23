@@ -57,7 +57,8 @@ ExamplesBuddy::ExamplesBuddy(openfluid::buddies::BuddiesListener* Listener):
 {
   m_OtherOptionsHelp["selection"] = "* to install all examples (default), the name of the example to install instead";
   m_OtherOptionsHelp["sourcedir"] = "source directory of examples to install (default is standard source directory)";
-  m_OtherOptionsHelp["installdir"] = "destination directory of examples to install (default is standard install directory)";
+  m_OtherOptionsHelp["installdir"] = "destination directory of examples to install "
+                                     "(default is standard install directory)";
   m_OtherOptionsHelp["force"] = "set to 1 to force installation, even if example is already installed (default is 0)";
 }
 
@@ -76,7 +77,8 @@ ExamplesBuddy::~ExamplesBuddy()
 // =====================================================================
 
 
-bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath,
+bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
+                                          const std::string& ProjectsInstallPath,
                                           const std::string& ProjectDir, const bool Force)
 {
   mp_Listener->onSubstageCompleted("Installing example project \"" + ProjectDir + "\" ... ");
@@ -104,7 +106,8 @@ bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
 // =====================================================================
 
 
-bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath, const bool Force)
+bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSourcePath,
+                                               const std::string& ProjectsInstallPath, const bool Force)
 {
   boost::filesystem::path PathToExplore(ProjectsSourcePath);
 
@@ -120,7 +123,8 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
     }
   }
   else
-    throw openfluid::base::FrameworkException("ExamplesBuddy::installAllExamplesProjects()","Projects source path is not a directory");
+    throw openfluid::base::FrameworkException("ExamplesBuddy::installAllExamplesProjects()",
+                                              "Projects source path is not a directory");
 
   return true;
 }
@@ -133,14 +137,19 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
 bool ExamplesBuddy::run()
 {
   setOptionIfNotSet("selection","*");
-  setOptionIfNotSet("sourcedir",boost::filesystem::path(openfluid::base::RuntimeEnvironment::instance()->getProvidedExamplesDir()+"/"+openfluid::config::PROJECTS_SUBDIR).string());
-  setOptionIfNotSet("installdir",boost::filesystem::path(openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir()+"/"+openfluid::config::PROJECTS_SUBDIR).string());
+  setOptionIfNotSet("sourcedir",
+                    boost::filesystem::path(openfluid::base::RuntimeEnvironment::instance()->getProvidedExamplesDir()+
+                                            "/"+openfluid::config::PROJECTS_SUBDIR).string());
+  setOptionIfNotSet("installdir",
+                    boost::filesystem::path(openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir()+"/"+
+                                            openfluid::config::PROJECTS_SUBDIR).string());
   setOptionIfNotSet("force","0");
 
   if (m_Options["selection"] == "*")
     installAllExamplesProjects(m_Options["sourcedir"],m_Options["installdir"],m_Options["force"]=="1");
   else
-    installExampleProject(m_Options["sourcedir"],m_Options["installdir"],m_Options["selection"],m_Options["force"]=="1");
+    installExampleProject(m_Options["sourcedir"],m_Options["installdir"],
+                          m_Options["selection"],m_Options["force"]=="1");
 
   return true;
 }

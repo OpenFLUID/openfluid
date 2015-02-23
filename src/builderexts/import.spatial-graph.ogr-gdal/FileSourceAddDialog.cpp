@@ -79,8 +79,9 @@ void FileSourceAddDialog::selectFile()
       QFileDialog::getOpenFileName(this,
                                    tr("Open file"),
                                    m_InputDir,
-                                   openfluid::utils::getOGRGDALFormatsForQFileDialogs(openfluid::utils::getOGRFilesDriversForOpenFLUID(),
-                                                                                      tr("All vector files")));
+                                   openfluid::utils::getOGRGDALFormatsForQFileDialogs(
+                                       openfluid::utils::getOGRFilesDriversForOpenFLUID(),
+                                       tr("All vector files")));
 
   m_CurrentSourceDisplay = m_CurrentSourceURI;
 

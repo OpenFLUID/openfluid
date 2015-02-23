@@ -29,7 +29,11 @@
   
 */
 
+/**
+  @file AttributesPrimitivesProdSim.cpp
 
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>

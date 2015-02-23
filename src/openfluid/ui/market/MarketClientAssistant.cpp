@@ -126,7 +126,8 @@ void MarketClientAssistant::setupSelectionPage()
   m_RefURLComboBoxModel.appendRow(m_URLColumns);
 
 
-  openfluid::base::PreferencesManager::MarketPlaces_t MarketPlaces = openfluid::base::PreferencesManager::instance()->getMarketplaces();
+  openfluid::base::PreferencesManager::MarketPlaces_t MarketPlaces =
+      openfluid::base::PreferencesManager::instance()->getMarketplaces();
 
   BOOST_FOREACH(openfluid::base::PreferencesManager::MarketPlaces_t::value_type &PlaceIt, MarketPlaces)
   {
@@ -421,13 +422,15 @@ MarketPackWidget* MarketClientAssistant::availablePackWidget(const openfluid::wa
 bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& ID,
     const openfluid::market::PackageInfo::PackageType& Type)
 {
-  openfluid::market::MetaPackagesCatalog_t DataCatalog = m_MarketClient.typesMetaPackagesCatalogs().at(openfluid::market::PackageInfo::DATA);
+  openfluid::market::MetaPackagesCatalog_t DataCatalog =
+      m_MarketClient.typesMetaPackagesCatalogs().at(openfluid::market::PackageInfo::DATA);
   openfluid::market::MetaPackagesCatalog_t::iterator PCit;
 
   // for each dataset package
   for (PCit = DataCatalog.begin(); PCit != DataCatalog.end(); ++PCit)
   {
-    std::list<openfluid::ware::WareID_t> Dependencies = PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::FLUIDX].Dependencies[Type];
+    std::list<openfluid::ware::WareID_t> Dependencies =
+        PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::FLUIDX].Dependencies[Type];
     std::list<openfluid::ware::WareID_t>::iterator Dit = Dependencies.begin();
 
     // searching if ID package is a dependence of this dataset
@@ -498,7 +501,8 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
     MarketPackWidget* MPW = availablePackWidget(ID);
 
     // dependencies of id package
-    openfluid::market::PackageInfo::Dependencies_t Dependencies = PCit->second.AvailablePackages[MPW->getPackageFormat()].Dependencies;
+    openfluid::market::PackageInfo::Dependencies_t Dependencies =
+        PCit->second.AvailablePackages[MPW->getPackageFormat()].Dependencies;
     openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
     std::list<openfluid::ware::WareID_t>::const_iterator DLit;
 
@@ -584,7 +588,8 @@ void MarketClientAssistant::onPackageInstallModified()
       }
 
       if (APMiter->first != openfluid::market::PackageInfo::DATA)
-        m_MarketClient.setSRCBuildOptions(MPW->getID().toStdString(),((MarketPackWidgetFormat*)MPW)->getEditedBuildOptions().toStdString());
+        m_MarketClient.setSRCBuildOptions(MPW->getID().toStdString(),
+                                          ((MarketPackWidgetFormat*)MPW)->getEditedBuildOptions().toStdString());
     }
   }
 
@@ -620,7 +625,9 @@ void MarketClientAssistant::onSelectAllClicked()
   openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
 
   // Selecting of all packages of current tab
-  for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin(); APLiter != mp_AvailPacksWidgets[CurrentTab].end(); ++APLiter)
+  for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin();
+       APLiter != mp_AvailPacksWidgets[CurrentTab].end();
+       ++APLiter)
   {
     MarketPackWidget* MPW;
     MPW = *APLiter;
@@ -639,7 +646,9 @@ void MarketClientAssistant::onSelectNoneClicked()
   openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
 
   // Unselecting of all packages of current tab
-  for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin(); APLiter != mp_AvailPacksWidgets[CurrentTab].end(); ++APLiter)
+  for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin();
+       APLiter != mp_AvailPacksWidgets[CurrentTab].end();
+       ++APLiter)
   {
     MarketPackWidget* MPW;
     MPW = *APLiter;
@@ -655,7 +664,8 @@ void MarketClientAssistant::onSelectNoneClicked()
 void MarketClientAssistant::onCommonBuildConfigClicked()
 {
   openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
-  MarketBuildOptionsDialog OptDialog(QString::fromStdString(openfluid::market::MarketPackage::getCommonBuildOptions(CurrentTab)),"");
+  MarketBuildOptionsDialog OptDialog(QString::fromStdString(
+      openfluid::market::MarketPackage::getCommonBuildOptions(CurrentTab)),"");
 
   if (OptDialog.exec() == QDialog::Accepted)
   {
@@ -664,7 +674,9 @@ void MarketClientAssistant::onCommonBuildConfigClicked()
 
     std::list<MarketPackWidget*>::iterator APLiter;
 
-    for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin(); APLiter != mp_AvailPacksWidgets[CurrentTab].end(); ++APLiter)
+    for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin();
+        APLiter != mp_AvailPacksWidgets[CurrentTab].end();
+        ++APLiter)
       ((MarketPackWidget*)(*APLiter))->updateDisplayedInfos();
   }
 }
@@ -911,7 +923,8 @@ void MarketClientAssistant::displayMarketplaceError()
 
   // display error message
   QMessageBox::critical(this, tr("Connection error"),
-      tr("Unable to connect to \"%1\" marketplace.\nThis marketplace is not available, does not contain any catalog files or catalogs are empty.")
+      tr("Unable to connect to \"%1\" marketplace.\n"
+          "This marketplace is not available, does not contain any catalog files or catalogs are empty.")
       .arg(MarketplaceName));
 
   m_URLCombo.setCurrentIndex(0);
@@ -1016,7 +1029,8 @@ void MarketClientAssistant::updateInstallTreeview()
 
 void MarketClientAssistant::onViewLogClicked()
 {
-  openfluid::ui::common::ViewLogFileWindow LogWindow(QString::fromStdString(openfluid::market::MarketPackage::getLogFile()));
+  openfluid::ui::common::ViewLogFileWindow
+    LogWindow(QString::fromStdString(openfluid::market::MarketPackage::getLogFile()));
 
   LogWindow.exec();
 }
@@ -1026,7 +1040,8 @@ void MarketClientAssistant::onViewLogClicked()
 // =====================================================================
 
 
-QString MarketClientAssistant::getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural)
+QString MarketClientAssistant::getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type,
+                                                  const bool Maj, const bool Plural)
 {
   QString TypeNames[] = { tr("simulator"), tr("observer"), tr("builder extension"), tr("dataset")};
   QString PluralTypeNames[] = { tr("simulators"), tr("observers"), tr("builder extensions"), tr("datasets")};

@@ -94,7 +94,8 @@ class ProjectCentral : QObject
     double getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
                             const std::string& ParamName);
 
-    static QStringList convertUpdatedUnitsClassesToQStringList(const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>& UnitsClassesVector);
+    static QStringList convertUpdatedUnitsClassesToQStringList(
+        const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>& UnitsClassesVector);
 
 
   public:

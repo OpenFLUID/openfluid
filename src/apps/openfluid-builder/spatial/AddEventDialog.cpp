@@ -61,7 +61,8 @@ AddEventDialog::AddEventDialog(const QString& ClassName, const QStringList& IDsL
 
   ui->UnitIDComboBox->addItems(IDsList);
 
-  ui->DateTimeEdit->setDateTime(QDateTime::fromString(QString(CurrentDateTime.getAsString("%Y-%m-%d %H:%M:%S").c_str()),"yyyy-MM-dd HH:mm:ss"));
+  ui->DateTimeEdit->setDateTime(
+      QDateTime::fromString(QString(CurrentDateTime.getAsString("%Y-%m-%d %H:%M:%S").c_str()),"yyyy-MM-dd HH:mm:ss"));
 
   connect(ui->AddInfoButton,SIGNAL(clicked()),this,SLOT(addInfoLine()));
   connect(ui->RemoveInfoButton,SIGNAL(clicked()),this,SLOT(removeInfoLine()));

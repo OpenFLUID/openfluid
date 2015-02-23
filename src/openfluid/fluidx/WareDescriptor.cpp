@@ -37,11 +37,13 @@
 
 #include <openfluid/fluidx/WareDescriptor.hpp>
 
-namespace openfluid {
-namespace fluidx {
+
+namespace openfluid { namespace fluidx {
+
 
 // =====================================================================
 // =====================================================================
+
 
 WareDescriptor::WareDescriptor() :
     m_WareType(NoWareType), m_Enabled(true)
@@ -49,15 +51,19 @@ WareDescriptor::WareDescriptor() :
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 WareDescriptor::~WareDescriptor()
 {
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void WareDescriptor::setParameter(const openfluid::ware::WareParamKey_t& Key,
                                   const openfluid::ware::WareParamValue_t& Value)
@@ -65,8 +71,10 @@ void WareDescriptor::setParameter(const openfluid::ware::WareParamKey_t& Key,
   m_Params[Key] = Value;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void WareDescriptor::setParameters(const openfluid::ware::WareParams_t& Params)
 {
@@ -76,53 +84,76 @@ void WareDescriptor::setParameters(const openfluid::ware::WareParams_t& Params)
     m_Params[it->first] = it->second;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-openfluid::ware::WareParams_t WareDescriptor::getParameters()
+
+openfluid::ware::WareParams_t WareDescriptor::getParameters() const
 {
   return m_Params;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+openfluid::ware::WareParams_t& WareDescriptor::parameters()
+{
+  return m_Params;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 bool WareDescriptor::isType(WareType MIType) const
 {
   return (m_WareType == MIType);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 WareDescriptor::WareType WareDescriptor::getType() const
 {
   return m_WareType;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void WareDescriptor::eraseParameter(const openfluid::ware::WareParamKey_t& Key)
 {
   m_Params.erase(Key);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void WareDescriptor::clearParameters()
 {
   m_Params.clear();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool WareDescriptor::hasParameter(std::string ParameterKey)
 {
   return m_Params.count(ParameterKey);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -144,7 +175,4 @@ bool WareDescriptor::isEnabled() const
 }
 
 
-
-
-}
-} // namespaces
+} } // namespaces

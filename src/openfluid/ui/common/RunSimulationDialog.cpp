@@ -73,7 +73,8 @@
 #define STATUS_STYLE_PAUSED "QLabel {color: #336DA5; font-weight: bold;}"
 #define STATUS_STYLE_ABORTREQUEST "QLabel {color: #D11919;}"
 #define STATUS_STYLE_ABORTED "QLabel {color: #D11919; font-weight: bold;}"
-#define STATUS_STYLE_FAILED "QLabel {color: #D11919; font-weight: bold;} QToolTip {color: #D11919; background-color: #F7F7F7;} "
+#define STATUS_STYLE_FAILED "QLabel {color: #D11919; font-weight: bold;} "\
+                            "QToolTip {color: #D11919; background-color: #F7F7F7;} "
 #define STATUS_STYLE_SUCCEEDED "QLabel {color: #4E983E; font-weight: bold;}"
 
 
@@ -116,7 +117,8 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
 
   mp_Listener = new openfluid::ui::common::RunSimulationListener();
   QThread* WThread = new QThread;
-  openfluid::ui::common::RunSimulationWorker* Worker = new openfluid::ui::common::RunSimulationWorker(mp_FXDesc,mp_Listener);
+  openfluid::ui::common::RunSimulationWorker* Worker =
+      new openfluid::ui::common::RunSimulationWorker(mp_FXDesc,mp_Listener);
   Worker->moveToThread(WThread);
 
   connect(Worker, SIGNAL(error(QString)), this, SLOT(handleError(QString)));
@@ -128,7 +130,8 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   connect(WThread, SIGNAL(finished()), WThread, SLOT(deleteLater()));
   connect(WThread, SIGNAL(finished()), mp_Listener, SLOT(deleteLater()));
 
-  qRegisterMetaType<openfluid::ui::common::RunSimulationListener::Stage>("openfluid::ui::common::RunSimulationListener::Stage");
+  qRegisterMetaType<openfluid::ui::common::RunSimulationListener::Stage>(
+      "openfluid::ui::common::RunSimulationListener::Stage");
   qRegisterMetaType<openfluid::core::TimeIndex_t>("openfluid::core::TimeIndex_t");
 
   connect(Worker, SIGNAL(periodChanged(QString,QString,int)), this, SLOT(setPeriod(QString,QString,int)));
@@ -185,7 +188,8 @@ void RunSimulationDialog::requestAbort()
 {
   if (QMessageBox::question(QApplication::activeWindow(),
                                   "OpenFLUID",
-                                  tr("You are requesting the simulation to abort.\nSimulation data not written on disk will be lost.\n\nProceed anyway?"),
+                                  tr("You are requesting the simulation to abort.\n"
+                                     "Simulation data not written on disk will be lost.\n\nProceed anyway?"),
                                   QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
   {
     ui->StatusLabel->setText(tr("abort requested"));

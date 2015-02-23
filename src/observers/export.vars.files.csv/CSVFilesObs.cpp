@@ -71,7 +71,9 @@ class CSVFormat
 
     bool IsTimeIndexDateFormat;
 
-    CSVFormat(): Header(Info), ColSeparator("\t"), DateFormat("%Y%m%dT%H%M%S"), CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false)
+    CSVFormat():
+      Header(Info), ColSeparator("\t"), DateFormat("%Y%m%dT%H%M%S"),
+      CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false)
     { };
 
 
@@ -158,7 +160,8 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv")
       "  format.<formatname>.precision : the precision for real values\n"
       "  set.<setname>.unitclass : the unit class of the set\n"
       "  set.<setname>.unitsIDs : the unit IDs included in the set. Use * to include all units of the class\n"
-      "  set.<setname>.vars : the variable included in the set, separated by semicolons. Use * to include all variables\n"
+      "  set.<setname>.vars : the variable included in the set, separated by semicolons. "
+         "Use * to include all variables\n"
       "  set.<setname>.format : the <formatname> used, must be defined by a format parameter");
 
   DECLARE_VERSION(openfluid::config::FULL_VERSION);
@@ -334,7 +337,9 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
           if ((*SetIt).second.VariablesStr == "*")
           {
             // process all variables
-            VarArray = mp_SpatialData->spatialUnits((*SetIt).second.UnitClass)->list()->begin()->variables()->getVariablesNames();
+            VarArray =
+                mp_SpatialData->spatialUnits((*SetIt).second.UnitClass)
+                    ->list()->begin()->variables()->getVariablesNames();
           }
           else
           {
@@ -345,12 +350,14 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
             for (unsigned int i = 0; i < TmpVarArray.size(); i++)
             {
-              if (mp_SpatialData->spatialUnits((*SetIt).second.UnitClass)->list()->begin()->variables()->isVariableExist(TmpVarArray[i]))
+              if (mp_SpatialData->spatialUnits((*SetIt).second.UnitClass)
+                      ->list()->begin()->variables()->isVariableExist(TmpVarArray[i]))
               {
                  VarArray.push_back(TmpVarArray[i]);
               }
               else
-                OPENFLUID_RaiseWarning("Variable "+TmpVarArray[i]+" for unit class "+(*SetIt).second.UnitClass+" does not exist. Ignored.");
+                OPENFLUID_RaiseWarning("Variable "+TmpVarArray[i]+" for unit class "+(*SetIt).second.UnitClass+" "
+                                       "does not exist. Ignored.");
             }
 
           }
@@ -397,7 +404,8 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
                   }
                 }
                 else
-                  OPENFLUID_RaiseWarning("Unit #"+UIDArray[i]+" does not exist in class "+(*SetIt).second.UnitClass+". Ignored.");
+                  OPENFLUID_RaiseWarning("Unit #"+UIDArray[i]+" does not exist in class "+(*SetIt).second.UnitClass+". "
+                                         "Ignored.");
               }
             }
           }
@@ -422,7 +430,8 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
           (*FLIt)->FileBuffer = new char[m_BufferSize];
           (*FLIt)->FileHandle.rdbuf()->pubsetbuf((*FLIt)->FileBuffer,m_BufferSize);
 
-          (*FLIt)->FileName = buildFilename((*SetIt).first,(*SetIt).second.UnitClass,(*FLIt)->Unit->getID(),(*FLIt)->VarName);
+          (*FLIt)->FileName =
+              buildFilename((*SetIt).first,(*SetIt).second.UnitClass,(*FLIt)->Unit->getID(),(*FLIt)->VarName);
           (*FLIt)->FileHandle.open((*FLIt)->FileName.c_str(),
                                    std::ios::out);
 
@@ -430,12 +439,19 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
           if((*SetIt).second.Format->Header == CSVFormat::Info ||
              (*SetIt).second.Format->Header == CSVFormat::Full)
           {
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << "========================================================================\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << " file: " << boost::filesystem::path((*FLIt)->FileName).leaf() << "\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << " date: " << boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time()) << "\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << " unit: " << (*FLIt)->Unit->getClass() << " #" << (*FLIt)->Unit->getID() << "\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << " variable: " << (*FLIt)->VarName << "\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << "========================================================================\n";
+            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
+                                << "========================================================================\n";
+            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
+                                << " file: " << boost::filesystem::path((*FLIt)->FileName).leaf() << "\n";
+            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
+                                << " date: " << boost::posix_time::to_simple_string(
+                                                    boost::posix_time::microsec_clock::local_time()) << "\n";
+            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
+                                << " unit: " << (*FLIt)->Unit->getClass() << " #" << (*FLIt)->Unit->getID() << "\n";
+            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
+                                << " variable: " << (*FLIt)->VarName << "\n";
+            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
+                                << "========================================================================\n";
 
           }
 
@@ -490,7 +506,8 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
         for (FLIt=FLItB;FLIt!=FLItE;++FLIt)
         {
-          openfluid::core::Value* Val = (*FLIt)->Unit->variables()->currentValueIfIndex((*FLIt)->VarName,OPENFLUID_GetCurrentTimeIndex());
+          openfluid::core::Value* Val =
+              (*FLIt)->Unit->variables()->currentValueIfIndex((*FLIt)->VarName,OPENFLUID_GetCurrentTimeIndex());
 
           if (Val!=NULL)
           {

@@ -120,7 +120,8 @@ void ModelScene::refresh()
 
       QString ID = QString::fromStdString(m_Model.getID(*it));
 
-      QVariant ConfigPos = openfluid::base::ProjectManager::instance()->getConfigValue("builder.model.graphicalview",ID);
+      QVariant ConfigPos =
+          openfluid::base::ProjectManager::instance()->getConfigValue("builder.model.graphicalview",ID);
       QPoint Position(0,0);
 
       if (ConfigPos.type() == QVariant::Point)
@@ -133,10 +134,13 @@ void ModelScene::refresh()
       }
 
       if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator &&
-          openfluid::machine::SimulatorSignatureRegistry::instance()->isPluggableSimulatorAvailable(ID.toStdString()))
+          openfluid::machine::SimulatorSignatureRegistry::instance()->isSimulatorAvailable(ID.toStdString()))
       {
-        SimulatorGraphics* SimG = new SimulatorGraphics(QPoint(0,0),ID,
-                                                        openfluid::machine::SimulatorSignatureRegistry::instance()->signatureItemInstance(ID.toStdString()));
+        SimulatorGraphics* SimG =
+            new SimulatorGraphics(QPoint(0,0),
+                                  ID,
+                                  openfluid::machine::SimulatorSignatureRegistry::instance()
+                                  ->signature(ID.toStdString()));
         addItem(SimG);
         SimG->moveBy(Position.x(),Position.y());
         SimCount++;

@@ -30,13 +30,11 @@
 */
 
 
-/*
- * MarketWizardPage.cpp
- *
- *  Created on: 9 août 2013
- *      Author: Manuel CHATAIGNER
- */
+/**
+ @file MarketWizardPage.cpp
 
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
+*/
 
 #include <openfluid/ui/market/MarketWizardPage.hpp>
 

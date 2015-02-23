@@ -31,12 +31,10 @@
 
 
 /**
- * MarketSrcBuilderextPackage.cpp
- *
- *  Created on: 7 mars 2013
- *      Author: Manuel CHATAIGNER
-*/
+ @file MarketSrcBuilderextPackage.cpp
 
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
+*/
 
 #include <openfluid/market/MarketSrcBuilderextPackage.hpp>
 
@@ -45,7 +43,8 @@
 namespace openfluid { namespace market {
 
 
-MarketSrcBuilderextPackage::MarketSrcBuilderextPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
+MarketSrcBuilderextPackage::MarketSrcBuilderextPackage(const openfluid::ware::WareID_t& ID,
+                                                       const std::string& PackageURL)
                           : MarketSrcPackage(ID, PackageURL)
 {
 

@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string notr="true"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout_5">
    <item>
     <widget class="QFrame" name="WareFrame">
      <property name="sizePolicy">
@@ -235,7 +235,7 @@
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <widget class="QWidget" name="widget" native="true">
+           <widget class="QWidget" name="ParamsSideWidget" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0">
              <property name="leftMargin">
               <number>0</number>
@@ -259,6 +259,13 @@
                 </widget>
                </item>
                <item>
+                <widget class="openfluid::ui::common::ActionLabel" name="ParameterizationSwitchLabel">
+                 <property name="text">
+                  <string>ParameterizationSwitchLabel</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <spacer name="horizontalSpacer_4">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -274,78 +281,156 @@
                  </property>
                 </spacer>
                </item>
-               <item>
-                <widget class="QPushButton" name="AddParamButton">
-                 <property name="minimumSize">
-                  <size>
-                   <width>24</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>24</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>Add parameter</string>
-                 </property>
-                 <property name="text">
-                  <string notr="true"/>
-                 </property>
-                </widget>
-               </item>
               </layout>
              </item>
              <item>
-              <widget class="QScrollArea" name="ParamsArea">
-               <property name="minimumSize">
-                <size>
-                 <width>200</width>
-                 <height>250</height>
-                </size>
+              <widget class="QStackedWidget" name="ParameterizationStackWidget">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
                </property>
-               <property name="baseSize">
-                <size>
-                 <width>200</width>
-                 <height>0</height>
-                </size>
+               <property name="frameShadow">
+                <enum>QFrame::Sunken</enum>
                </property>
-               <property name="horizontalScrollBarPolicy">
-                <enum>Qt::ScrollBarAlwaysOff</enum>
+               <property name="currentIndex">
+                <number>0</number>
                </property>
-               <property name="widgetResizable">
-                <bool>true</bool>
-               </property>
-               <widget class="QWidget" name="ParamsAreaContents">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>429</width>
-                  <height>271</height>
-                 </rect>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>250</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="baseSize">
-                 <size>
-                  <width>250</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_5"/>
+               <widget class="QWidget" name="ParamsListPage">
+                <layout class="QVBoxLayout" name="verticalLayout">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QScrollArea" name="ParamsListArea">
+                   <property name="minimumSize">
+                    <size>
+                     <width>200</width>
+                     <height>250</height>
+                    </size>
+                   </property>
+                   <property name="baseSize">
+                    <size>
+                     <width>200</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::NoFrame</enum>
+                   </property>
+                   <property name="horizontalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAlwaysOff</enum>
+                   </property>
+                   <property name="widgetResizable">
+                    <bool>true</bool>
+                   </property>
+                   <widget class="QWidget" name="ParamsListAreaContents">
+                    <property name="geometry">
+                     <rect>
+                      <x>0</x>
+                      <y>0</y>
+                      <width>517</width>
+                      <height>275</height>
+                     </rect>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>250</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="baseSize">
+                     <size>
+                      <width>250</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,1">
+                     <item>
+                      <widget class="QWidget" name="ParamsListZoneWidget" native="true">
+                       <layout class="QVBoxLayout" name="verticalLayout_6">
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_3">
+                       <item>
+                        <spacer name="horizontalSpacer">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="AddParamButton">
+                         <property name="minimumSize">
+                          <size>
+                           <width>24</width>
+                           <height>24</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>24</width>
+                           <height>24</height>
+                          </size>
+                         </property>
+                         <property name="toolTip">
+                          <string>Add parameter</string>
+                         </property>
+                         <property name="text">
+                          <string notr="true"/>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </widget>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </widget>
              </item>
             </layout>
            </widget>
-           <widget class="SignatureWidget" name="InfosWidget" native="true"/>
+           <widget class="SignatureWidget" name="InfosSideWidget" native="true"/>
           </widget>
          </item>
         </layout>

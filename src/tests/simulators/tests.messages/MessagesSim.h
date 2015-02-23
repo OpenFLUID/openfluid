@@ -33,6 +33,8 @@
 
 /**
   @file MessagesSim.h
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 #ifndef __MESSAGESSIM_H__

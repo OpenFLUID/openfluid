@@ -32,7 +32,7 @@
 
 
 /**
-  @file FortranSim.cpp
+  @file Fortran90Sim.cpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
 */

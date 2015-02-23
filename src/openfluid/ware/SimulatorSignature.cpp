@@ -37,48 +37,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <boost/regex.hpp>
 
+#include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 
+
 namespace openfluid { namespace ware {
-
-
-bool SignatureHandledTypedDataItem::getVariableNameAndType(const std::string SourceStr,
-                                                           std::string& VarName,
-                                                           openfluid::core::Value::Type& VarType)
-{
-  const boost::basic_regex<char> eVect("^([-.\\w]+)\\[\\]$"); //match "abc[]"
-  const boost::basic_regex<char> eNone("[^[\\]][-.\\w]+"); //match "abc"
-  const boost::basic_regex<char> eType("^([-.\\w]+)\\[(\\w+)\\]$");  //match "abc[type]"
-  boost::smatch Type;
-
-  if(boost::regex_match(SourceStr,Type,eVect) && Type.size() == 2)
-  {
-    VarName = Type[1];
-    VarType = openfluid::core::Value::VECTOR;
-    return true;
-  }
-
-  if(boost::regex_match(SourceStr,eNone))
-  {
-    VarName = SourceStr;
-    VarType = openfluid::core::Value::NONE;
-    return true;
-  }
-
-  if(boost::regex_match(SourceStr,Type,eType) && Type.size() == 3)
-  {
-    VarName = Type[1];
-    return openfluid::core::Value::getValueTypeFromString(Type[2],VarType);
-  }
-
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
 
 
 SignatureHandledTypedDataItem::SignatureHandledTypedDataItem(std::string DName,
@@ -91,7 +55,7 @@ SignatureHandledTypedDataItem::SignatureHandledTypedDataItem(std::string DName,
   Description = DDescription;
   DataUnit = DUnit;
 
-  if(!getVariableNameAndType(DName,DataName,DataType))
+  if (!openfluid::tools::extractVarableNameAndType(DName,DataName,DataType))
     throw openfluid::base::FrameworkException("SignatureHandledTypedDataItem::SignatureHandledTypedDataItem",
                                               "Variable " + DName + " is not well formated.");
 }

@@ -32,7 +32,7 @@
 
 
 /**
-  @file Vector_TEST.cpp
+  @file Matrix_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */

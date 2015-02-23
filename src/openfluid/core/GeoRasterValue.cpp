@@ -45,8 +45,10 @@
 namespace openfluid {
 namespace core {
 
+
 // =====================================================================
 // =====================================================================
+
 
 GeoRasterValue::GeoRasterValue(const std::string& FilePath, const std::string& FileName) :
     GeoValue(FilePath, FileName), mp_Data(0)
@@ -54,8 +56,10 @@ GeoRasterValue::GeoRasterValue(const std::string& FilePath, const std::string& F
   GDALAllRegister();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 GeoRasterValue::~GeoRasterValue()
 {
@@ -63,16 +67,20 @@ GeoRasterValue::~GeoRasterValue()
     GDALClose(mp_Data);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::core::UnstructuredValue::UnstructuredType GeoRasterValue::getType() const
 {
   return openfluid::core::UnstructuredValue::GeoRasterValue;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 GDALDataset* GeoRasterValue::data()
 {
@@ -82,8 +90,10 @@ GDALDataset* GeoRasterValue::data()
   return mp_Data;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void GeoRasterValue::tryToOpenSource()
 {
@@ -101,16 +111,20 @@ void GeoRasterValue::tryToOpenSource()
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string GeoRasterValue::getAbsolutePath()
 {
   return m_AbsolutePath;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 }
 } // namespaces

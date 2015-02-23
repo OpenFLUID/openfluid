@@ -45,6 +45,7 @@
 
 #include "WareWidget.hpp"
 
+
 class GeneratorWidget : public WareWidget
 {
   Q_OBJECT;
@@ -59,7 +60,7 @@ class GeneratorWidget : public WareWidget
 
     openfluid::fluidx::ModelItemDescriptor* mp_Desc;
 
-    openfluid::machine::ModelItemSignatureInstance* mp_SignInstance;
+    const openfluid::machine::ModelItemSignatureInstance* mp_SignInstance;
 
     void updateParams();
 
@@ -68,13 +69,14 @@ class GeneratorWidget : public WareWidget
 
     void refresh();
 
+
   public:
 
     GeneratorWidget(QWidget* Parent,
                     openfluid::fluidx::ModelItemDescriptor* Desc,
                     const openfluid::ware::WareID_t& ID,
                     int Index,
-                    openfluid::machine::ModelItemSignatureInstance* SignInstance);
+                    const openfluid::machine::ModelItemSignatureInstance* SignInstance);
 
     ~GeneratorWidget();
 

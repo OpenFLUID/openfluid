@@ -31,9 +31,9 @@
 
 
 /**
-  @file
+  @file MarketClient.hpp
 
-  @author JC.Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 

@@ -214,9 +214,12 @@ void OGRGDALImportExtension::addSource(const SourceInfos& SrcInfos)
 
   int RowIndex = ui->SourcesTableWidget->rowCount()-1;
 
-  ui->SourcesTableWidget->setItem(RowIndex,1,new QTableWidgetItem(SrcInfos.SourceDisplay));
-  ui->SourcesTableWidget->setItem(RowIndex,2,new QTableWidgetItem(SrcInfos.LayerName));
-  ui->SourcesTableWidget->setItem(RowIndex,3,new QTableWidgetItem(QString(OGRGeometryTypeToName(SrcInfos.SourceGeomType))));
+  ui->SourcesTableWidget->setItem(RowIndex,1,
+                                  new QTableWidgetItem(SrcInfos.SourceDisplay));
+  ui->SourcesTableWidget->setItem(RowIndex,2,
+                                  new QTableWidgetItem(SrcInfos.LayerName));
+  ui->SourcesTableWidget->setItem(RowIndex,3,
+                                  new QTableWidgetItem(QString(OGRGeometryTypeToName(SrcInfos.SourceGeomType))));
 
   ui->SourcesTableWidget->selectRow(RowIndex);
 
@@ -407,26 +410,30 @@ void OGRGDALImportExtension::updateUI()
     // Units process order field
     ui->PcsOrdComboBox->addItem("");
     ui->PcsOrdComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
-    ui->PcsOrdComboBox->setCurrentIndex(ui->PcsOrdComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].UnitsPcsOrdField));
+    ui->PcsOrdComboBox->setCurrentIndex(
+        ui->PcsOrdComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].UnitsPcsOrdField));
 
 
     // Units "to" connections field
     ui->ToConnectComboBox->addItem("");
     ui->ToConnectComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
-    ui->ToConnectComboBox->setCurrentIndex(ui->ToConnectComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].ToConnectionsField));
+    ui->ToConnectComboBox->setCurrentIndex(
+        ui->ToConnectComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].ToConnectionsField));
 
 
     // Units "childof" connections field
     ui->ChildofConnectComboBox->addItem("");
     ui->ChildofConnectComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
-    ui->ChildofConnectComboBox->setCurrentIndex(ui->ChildofConnectComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].ChildofConnectionsField));
+    ui->ChildofConnectComboBox->setCurrentIndex(
+        ui->ChildofConnectComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].ChildofConnectionsField));
 
 
     // Fields to import as attributes
     for (int i=0; i< m_SourcesInfos[m_CurrentSrcIndex].AvailableFields.size();i++)
     {
       QListWidgetItem* Item = new QListWidgetItem(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields[i]);
-      if (m_SourcesInfos[m_CurrentSrcIndex].ImportedFields.contains(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields[i]))
+      if (m_SourcesInfos[m_CurrentSrcIndex].ImportedFields
+          .contains(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields[i]))
         Item->setCheckState(Qt::Checked);
       else
         Item->setCheckState(Qt::Unchecked);
@@ -553,7 +560,8 @@ void OGRGDALImportExtension::runPrecheck()
 void OGRGDALImportExtension::updateUnitsClassInfos()
 {
   m_SourcesInfos[m_CurrentSrcIndex].UnitsClass = ui->UnitsClassLineEdit->text();
-  ui->SourcesTableWidget->setItem(m_CurrentSrcIndex,0,new QTableWidgetItem(m_SourcesInfos[m_CurrentSrcIndex].UnitsClass));
+  ui->SourcesTableWidget->setItem(m_CurrentSrcIndex,0,
+                                  new QTableWidgetItem(m_SourcesInfos[m_CurrentSrcIndex].UnitsClass));
 }
 
 

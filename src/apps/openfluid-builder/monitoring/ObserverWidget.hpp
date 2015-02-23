@@ -42,6 +42,7 @@
 
 
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
+
 #include "ClickableWareWidget.hpp"
 
 
@@ -53,18 +54,18 @@ class ObserverWidget : public ClickableWareWidget
 
     openfluid::fluidx::ObserverDescriptor* mp_Desc;
 
-    void updateParams();
+    void updateParametersList();
 
 
   private slots:
 
     void setEnabledWare(bool Enabled);
 
-    void addParam();
+    void addParameterToList();
 
-    void updateParamValue(const QString& Name, const QString& Value);
+    void updateParameterValue(const QString& Name, const QString& Value);
 
-    void removeParam(const QString& Name);
+    void removeParameterFromList(const QString& Name);
 
 
   public slots:
@@ -80,6 +81,8 @@ class ObserverWidget : public ClickableWareWidget
                    int Index);
 
     ~ObserverWidget();
+
+    void prepareWareUpdate();
 
     void updateWare();
 

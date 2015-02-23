@@ -162,10 +162,14 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       openfluid::tools::convertValue(CurrentTI,&CurrentTIStr);
 
-      std::ofstream CurrentKmlFile(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir+"/t_"+CurrentTIStr+".kml").string().c_str());
+      std::ofstream CurrentKmlFile(
+          boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir+"/t_"+
+                                  CurrentTIStr+".kml").string().c_str());
 
       CurrentKmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-      CurrentKmlFile << "<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
+      CurrentKmlFile << "<kml xmlns=\"http://www.opengis.net/kml/2.2\" "
+                        "xmlns:gx=\"http://www.google.com/kml/ext/2.2\" "
+                        "xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 
       CurrentKmlFile << "<Document>\n";
 
@@ -177,15 +181,21 @@ class KmlFilesAnimObserver : public KmlObserverBase
       for (unsigned int i=0; i<m_AnimLayerInfo.ColorScale.size();i++)
       {
         if ((*(m_AnimLayerInfo.UnitsInfos.begin())).second.GeometryType == wkbPolygon)
-          CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><PolyStyle><color>#" << m_AnimLayerInfo.ColorScale[i].first << "</color><outline>0</outline></PolyStyle></Style>\n";
+          CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><PolyStyle><color>#"
+                         << m_AnimLayerInfo.ColorScale[i].first << "</color><outline>0</outline></PolyStyle></Style>\n";
         else if ((*(m_AnimLayerInfo.UnitsInfos.begin())).second.GeometryType == wkbLineString)
-          CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><LineStyle><color>#" << m_AnimLayerInfo.ColorScale[i].first << "</color><width>" << m_AnimLayerInfo.LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
+          CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><LineStyle><color>#"
+                         << m_AnimLayerInfo.ColorScale[i].first << "</color><width>"
+                         << m_AnimLayerInfo.LineWidth
+                         << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
         else
           OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
       }
 
 
-      for (std::map<openfluid::core::UnitID_t,KmlUnitInfo>::iterator it2=m_AnimLayerInfo.UnitsInfos.begin();it2!=m_AnimLayerInfo.UnitsInfos.end();++it2)
+      for (std::map<openfluid::core::UnitID_t,KmlUnitInfo>::iterator it2=m_AnimLayerInfo.UnitsInfos.begin();
+          it2!=m_AnimLayerInfo.UnitsInfos.end();
+          ++it2)
       {
 
         bool ValueFound = false;
@@ -234,16 +244,19 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
 
         if (ValueFound)
-          CurrentKmlFile << "      <styleUrl>#" << TmpStyleID << "_" << m_AnimLayerInfo.getColorScaleIndexForValue(Val) << "</styleUrl>\n";
+          CurrentKmlFile << "      <styleUrl>#" << TmpStyleID << "_"
+                         << m_AnimLayerInfo.getColorScaleIndexForValue(Val) << "</styleUrl>\n";
 
 
         if ((*it2).second.GeometryType == wkbPolygon)
         {
-            CurrentKmlFile << "<Polygon><tessellate>1</tessellate><outerBoundaryIs><LinearRing><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LinearRing></outerBoundaryIs></Polygon>\n";
+            CurrentKmlFile << "<Polygon><tessellate>1</tessellate><outerBoundaryIs><LinearRing><coordinates>"
+                           << (*it2).second.CoordsStr << "</coordinates></LinearRing></outerBoundaryIs></Polygon>\n";
         }
         else if ((*it2).second.GeometryType == wkbLineString)
         {
-          CurrentKmlFile << "<LineString><tessellate>1</tessellate><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LineString>\n";
+          CurrentKmlFile << "<LineString><tessellate>1</tessellate><coordinates>" << (*it2).second.CoordsStr
+                          << "</coordinates></LineString>\n";
         }
         else
           OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
@@ -261,8 +274,10 @@ class KmlFilesAnimObserver : public KmlObserverBase
       openfluid::core::DateTime EndDateTime = OPENFLUID_GetCurrentDate();
 
       m_KmlFile << "<NetworkLink>\n";
-      m_KmlFile << "  <name>" << m_AnimLayerInfo.UnitsClass << " at " << EndDateTime.getAsString("%Y-%m-%d %H:%M:%S") << "</name>\n";
-      m_KmlFile << "  <TimeSpan><begin>" << m_UpdateBeginDate.getAsString("%Y-%m-%dT%H:%M:%SZ") << "</begin><end>" << EndDateTime.getAsString("%Y-%m-%dT%H:%M:%SZ") << "</end></TimeSpan>\n";
+      m_KmlFile << "  <name>" << m_AnimLayerInfo.UnitsClass << " at " << EndDateTime.getAsString("%Y-%m-%d %H:%M:%S")
+                << "</name>\n";
+      m_KmlFile << "  <TimeSpan><begin>" << m_UpdateBeginDate.getAsString("%Y-%m-%dT%H:%M:%SZ") << "</begin><end>"
+                << EndDateTime.getAsString("%Y-%m-%dT%H:%M:%SZ") << "</end></TimeSpan>\n";
       m_KmlFile << "  <Link><href>" << m_KmzDataSubDir << "/t_" << CurrentTIStr << ".kml</href></Link>\n";
       m_KmlFile << "</NetworkLink>\n";
 
@@ -479,7 +494,9 @@ class KmlFilesAnimObserver : public KmlObserverBase
       m_KmlFile.open(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/doc.kml").string().c_str());
 
       m_KmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-      m_KmlFile << "<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
+      m_KmlFile << "<kml xmlns=\"http://www.opengis.net/kml/2.2\" "
+                   "xmlns:gx=\"http://www.google.com/kml/ext/2.2\" "
+                   "xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 
       m_KmlFile << "<Document>\n";
       m_KmlFile << "  <name>" << m_Title << "</name>\n";
@@ -489,12 +506,16 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
         std::string TmpStyleID = "static_" + (*it).UnitsClass +"_style";
 
-        m_KmlFile << "    <Style id=\"" << TmpStyleID << "\"><LineStyle><color>"<< (*it).Color << "</color><width>" << (*it).LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
+        m_KmlFile << "    <Style id=\"" << TmpStyleID << "\"><LineStyle><color>"<< (*it).Color
+                  << "</color><width>" << (*it).LineWidth
+                  << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
 
         m_KmlFile << "    <Folder>\n";
         m_KmlFile << "      <name>" << (*it).UnitsClass << "</name>\n";
 
-        for (std::map<openfluid::core::UnitID_t,KmlUnitInfo>::iterator it2=(*it).UnitsInfos.begin();it2!=(*it).UnitsInfos.end();++it2)
+        for (std::map<openfluid::core::UnitID_t,KmlUnitInfo>::iterator it2=(*it).UnitsInfos.begin();
+            it2!=(*it).UnitsInfos.end();
+            ++it2)
         {
           m_KmlFile << "    <Placemark>\n";
 
@@ -512,12 +533,14 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
           if ((*it2).second.GeometryType == wkbPolygon)
           {
-            m_KmlFile << "<Polygon><tessellate>1</tessellate><outerBoundaryIs><LinearRing><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LinearRing></outerBoundaryIs></Polygon>\n";
+            m_KmlFile << "<Polygon><tessellate>1</tessellate><outerBoundaryIs><LinearRing><coordinates>"
+                      << (*it2).second.CoordsStr << "</coordinates></LinearRing></outerBoundaryIs></Polygon>\n";
           }
 
           if ((*it2).second.GeometryType == wkbLineString)
           {
-            m_KmlFile << "<LineString><tessellate>1</tessellate><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LineString>\n";
+            m_KmlFile << "<LineString><tessellate>1</tessellate><coordinates>" << (*it2).second.CoordsStr
+                      << "</coordinates></LineString>\n";
           }
 
 

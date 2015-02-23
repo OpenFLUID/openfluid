@@ -56,7 +56,8 @@ NewslineWidget::NewslineWidget(QWidget* Parent):
 {
   ui->setupUi(this);
 
-  ui->ContentsFrame->setStyleSheet(QString("QFrame#ContentsFrame { background-color : %1;}").arg(BUILDER_NEWSLINE_BGCOLOR));
+  ui->ContentsFrame->setStyleSheet(QString("QFrame#ContentsFrame { background-color : %1;}")
+                                   .arg(BUILDER_NEWSLINE_BGCOLOR));
 
   ui->NewslineLabel->setText(QString("<b><big>%1</big></b>").arg(tr("Newsline")));
   ui->NewslineLabel->setStyleSheet(QString("color : %1;").arg(BUILDER_NEWSLINE_TEXTCOLOR));
@@ -160,7 +161,9 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const QString& FilePath)
 
           if (!ChannelNode.isNull())
           {
-            for(QDomElement CurrNode = ChannelNode.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
+            for(QDomElement CurrNode = ChannelNode.firstChildElement();
+                !CurrNode.isNull();
+                CurrNode = CurrNode.nextSiblingElement())
             {
               QDomElement CurrElement = CurrNode.toElement();
               if (!CurrElement.isNull() && CurrElement.tagName() == "item")
@@ -171,7 +174,9 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const QString& FilePath)
                 Item.Text = CurrNode.firstChildElement("description").toElement().text();
                 Item.ISODate = CurrNode.firstChildElement("pubDate").toElement().text();
 
-                for(QDomElement CurrTagNode = CurrNode.firstChildElement("category"); !CurrTagNode.isNull(); CurrTagNode = CurrTagNode.nextSiblingElement())
+                for(QDomElement CurrTagNode = CurrNode.firstChildElement("category");
+                    !CurrTagNode.isNull();
+                    CurrTagNode = CurrTagNode.nextSiblingElement())
                 {
                   Item.Tags.push_back(CurrTagNode.toElement().text());
                 }

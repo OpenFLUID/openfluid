@@ -169,7 +169,8 @@ void SVGFileGeneratorWorker::run()
       {
         GVOut << "\"" << QString::fromStdString((*itP).first) << "#" << ((*itP).second) << "\""
               << " -> "
-              << "\"" << QString::fromStdString(*itC) << "#" << (*itI) << "\" [arrowhead=odiamond,color=gray50,style=dashed]\n";
+              << "\""
+              << QString::fromStdString(*itC) << "#" << (*itI) << "\" [arrowhead=odiamond,color=gray50,style=dashed]\n";
       }
     }
 

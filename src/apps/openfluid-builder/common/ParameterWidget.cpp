@@ -45,12 +45,13 @@
 #include <QMessageBox>
 
 ParameterWidget::ParameterWidget(QWidget* Parent,
-                    const QString& Name, const QString& Value,
-                    const QString& SIUnit,
-                    bool Removable):
+                                 const QString& Name, const QString& Value,
+                                 const QString& SIUnit,
+                                 bool Removable):
   QWidget(Parent),ui(new Ui::ParameterWidget)
 {
   ui->setupUi(this);
+
   ui->NameLabel->setText(Name);
   ui->ValueEdit->setText(Value);
   ui->SIUnitLabel->setText(SIUnit);
@@ -103,7 +104,8 @@ void ParameterWidget::notifyRemoveClicked()
   {
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",
-                                tr("You are removing the %1 parameter.\nIts value will be lost.\nProceed anyway?").arg(getName()),
+                                tr("You are removing the %1 parameter.\n"
+                                   "Its value will be lost.\nProceed anyway?").arg(getName()),
                                 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
   }
 

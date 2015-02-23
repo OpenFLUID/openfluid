@@ -32,7 +32,7 @@
 
 
 /**
-  @file OutBufSim.cpp
+  @file ThreadedLoopsSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -242,7 +242,8 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
 
     StartTime = boost::posix_time::microsec_clock::local_time();
-    APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::produceDataOnTUThreaded,double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
+    APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::produceDataOnTUThreaded,
+                                      double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "TU Production Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;

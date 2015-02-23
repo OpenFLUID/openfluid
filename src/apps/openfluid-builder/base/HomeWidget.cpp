@@ -254,7 +254,8 @@ void HomeWidget::refreshRecentProjects()
 
       if (RecentActions[i]->isVisible())
       {
-        dynamic_cast<QLabel*>(ItemLayout->itemAt(1)->widget())->setText(QDir(RecentActions[i]->data().toString()).dirName());
+        dynamic_cast<QLabel*>(ItemLayout->itemAt(1)->widget())
+            ->setText(QDir(RecentActions[i]->data().toString()).dirName());
 
         QString InfosStr = getProjectInfosAsHTML(RecentActions[i]->data().toString(),true);
         if (!InfosStr.isEmpty()) ItemLayout->itemAt(1)->widget()->setToolTip(InfosStr);

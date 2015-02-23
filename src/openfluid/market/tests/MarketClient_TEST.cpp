@@ -71,11 +71,16 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::market::MarketClient MC;
   openfluid::market::MarketInfo MI;
 
-  std::string TmpDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/temp").string();
-  std::string MarketBagSimulatorDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-simulators").string();
-  std::string MarketBagObserverDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-observers").string();
-  std::string MarketBagBuilderextDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-builderexts").string();
-  std::string MarketBagDatasetDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-datasets").string();
+  std::string TmpDir =
+      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/temp").string();
+  std::string MarketBagSimulatorDir =
+      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-simulators").string();
+  std::string MarketBagObserverDir =
+      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-observers").string();
+  std::string MarketBagBuilderextDir =
+      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-builderexts").string();
+  std::string MarketBagDatasetDir =
+      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-datasets").string();
   std::string MarketBagBinSubDir = "bin";
   std::string MarketBagSrcSubDir = "src";
 
@@ -117,23 +122,35 @@ BOOST_AUTO_TEST_CASE(check_operations)
       //std::cout << "############ " << PCit->first << " ############" << std::endl;
       //std::cout << "ID: " << PCit->second.ID << std::endl;
 
-      if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != PCit->second.AvailablePackages.end())
+      if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) !=
+          PCit->second.AvailablePackages.end())
       {
-  /*      std::cout << "BIN | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].URL << std::endl;
-        std::cout << "BIN | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Name << std::endl;
-        std::cout << "BIN | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Description << std::endl;
-        std::cout << "BIN | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Authors << std::endl;
-        std::cout << "BIN | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].License << std::endl;
+  /*      std::cout << "BIN | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].URL
+                    << std::endl;
+        std::cout << "BIN | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Name
+                  << std::endl;
+        std::cout << "BIN | Desc: "
+                  << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Description << std::endl;
+        std::cout << "BIN | Authors: "
+                  << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Authors << std::endl;
+        std::cout << "BIN | License: "
+                  << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].License << std::endl;
 */
       }
 
-      if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != PCit->second.AvailablePackages.end())
+      if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) !=
+          PCit->second.AvailablePackages.end())
       {
-  /*      std::cout << "SRC | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].URL << std::endl;
-        std::cout << "SRC | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Name << std::endl;
-        std::cout << "SRC | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Description << std::endl;
-        std::cout << "SRC | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Authors << std::endl;
-        std::cout << "SRC | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].License << std::endl;
+  /*      std::cout << "SRC | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].URL
+                    << std::endl;
+        std::cout << "SRC | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Name
+                  << std::endl;
+        std::cout << "SRC | Desc: "
+                  << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Description << std::endl;
+        std::cout << "SRC | Authors: "
+                  << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Authors << std::endl;
+        std::cout << "SRC | License: "
+                  << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].License << std::endl;
 */      }
 
       BOOST_REQUIRE_EQUAL(PCit->second.Selected,openfluid::market::MetaPackageInfo::NONE);
@@ -185,9 +202,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   //MC.addBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
-  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::SIM, CONFIGTESTS_OPTIONS_FOR_CMAKE);
-  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::OBS, CONFIGTESTS_OPTIONS_FOR_CMAKE);
-  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::BUILD, CONFIGTESTS_OPTIONS_FOR_CMAKE);
+  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::SIM,
+                                                          CONFIGTESTS_OPTIONS_FOR_CMAKE);
+  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::OBS,
+                                                          CONFIGTESTS_OPTIONS_FOR_CMAKE);
+  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::BUILD,
+                                                          CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
   MC.installSelection();
 

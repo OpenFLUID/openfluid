@@ -702,6 +702,29 @@ void LandRTools::markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* N
 // =====================================================================
 
 
+bool LandRTools::isExtentsIntersect(std::vector<OGREnvelope> vEnvelope)
+  {
+    if (vEnvelope.size() > 1)
+    {
+      for (unsigned int i = 0; i < vEnvelope.size(); i++)
+      {
+        for (unsigned int j = i + 1; j < vEnvelope.size(); j++)
+        {
+          if (vEnvelope[i].Intersects(vEnvelope[j]) != 1)
+            return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+
+// =====================================================================
+// =====================================================================
+
+
+
 } } // namespace openfluid, landr
 
 

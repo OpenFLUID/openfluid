@@ -40,7 +40,6 @@
 #ifndef __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
 #define __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
 
-#include <boost/filesystem/path.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <string>
 
@@ -69,6 +68,13 @@ namespace openfluid { namespace ware {
 */
 #define WAREABIVERSION_PROC_NAME "GetWareABIVersion"
 #define WAREABIVERSION_PROC_DECL GetWareABIVersion
+
+
+/**
+  Hook function name of ware ABI version
+*/
+#define WAREPARAMSWIDGET_PROC_NAME "GetWareParamsWidget"
+#define WAREPARAMSWIDGET_PROC_DECL GetWareParamsWidget
 
 
 // =====================================================================
@@ -141,6 +147,7 @@ class OPENFLUID_API PluggableWare
 
 
     PluggableWare(WareType WType);
+
 
   public:
 

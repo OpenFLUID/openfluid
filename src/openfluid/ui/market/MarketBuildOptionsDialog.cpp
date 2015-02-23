@@ -51,21 +51,24 @@ namespace openfluid { namespace ui { namespace market {
 // =====================================================================
 
 
-MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOptions, const QString& BuildOptions, const QString& SimID)
+MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOptions,
+                                                   const QString& BuildOptions, const QString& SimID)
 : QDialog(), m_CommonBuildOptions(CommonBuildOptions),m_BuildOptions(BuildOptions),m_SimID(SimID)
 {
 
   setMinimumSize(450,0);
 
   QLabel *InfoLabel = new QLabel();
-  InfoLabel->setText("<i>"+tr("These options control the builds of source packages.<br/>Changing this is at your own risk.")+"</i>");
+  InfoLabel->setText("<i>"+tr("These options control the builds of source packages.<br/>"
+                              "Changing this is at your own risk.")+"</i>");
   InfoLabel->setAlignment(Qt::AlignHCenter);
 
   QLabel *CommonOptsLabel = new QLabel();
 
   if (!SimID.isEmpty())
   {
-    QString Options = QString::fromStdString(openfluid::tools::replaceEmptyString(CommonBuildOptions.toStdString(),tr("<i>none</i>").toStdString()));
+    QString Options = QString::fromStdString(openfluid::tools::replaceEmptyString(CommonBuildOptions.toStdString(),
+                                                                                  tr("<i>none</i>").toStdString()));
     CommonOptsLabel->setText("<u>"+tr("Common source build options:")+"</u><br/>" + Options);
   }
   else

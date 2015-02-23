@@ -272,14 +272,16 @@ void SourceAddDialog::proceedToImport()
     }
     else
     {
-      QMessageBox::critical(this,tr("Import error"),tr("Error importing from source\n")+m_CurrentSourceURI+
-                                                    tr("\n\nThe mandatory field \"OFLD_ID\" cannot be found. \n\nAborting."));
+      QMessageBox::critical(this,tr("Import error"),
+                            tr("Error importing from source\n")+m_CurrentSourceURI+
+                            tr("\n\nThe mandatory field \"OFLD_ID\" cannot be found. \n\nAborting."));
       reject();
     }
   }
   else
   {
-    QMessageBox::critical(this,tr("Import error"),tr("Error importing from source\n")+m_CurrentSourceURI+tr("\n\nAborting."));
+    QMessageBox::critical(this,tr("Import error"),
+                          tr("Error importing from source\n")+m_CurrentSourceURI+tr("\n\nAborting."));
     reject();
   }
 }

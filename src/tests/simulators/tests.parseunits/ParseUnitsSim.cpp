@@ -216,13 +216,16 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
         for (unsigned int i=0;i<ClassVector.size();i++)
         {
-          FromUnitsPtrList = const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->fromSpatialUnits(ClassVector[i]));
+          FromUnitsPtrList =
+              const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->fromSpatialUnits(ClassVector[i]));
 
           if (FromUnitsPtrList != NULL)
           {
             std::string DestClassStr = ClassVector[i];
 
-            for (itFromUnitsPtrList=FromUnitsPtrList->begin();itFromUnitsPtrList!=FromUnitsPtrList->end();++itFromUnitsPtrList)
+            for (itFromUnitsPtrList=FromUnitsPtrList->begin();
+                 itFromUnitsPtrList!=FromUnitsPtrList->end();
+                 ++itFromUnitsPtrList)
             {
               std::string DestIDStr = "";
               openfluid::tools::convertValue((*itFromUnitsPtrList)->getID(),&DestIDStr);

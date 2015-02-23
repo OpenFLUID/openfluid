@@ -29,8 +29,6 @@
   
 */
 
-
-
 /**
   @file Factory.cpp
 
@@ -38,7 +36,6 @@
  */
 
 #include <openfluid/machine/Factory.hpp>
-
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
@@ -57,6 +54,8 @@
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
+
 
 
 namespace openfluid { namespace machine {
@@ -106,7 +105,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
       {
         std::ostringstream UnitStr;
         UnitStr << FromUnit->getClass() << "#" << FromUnit->getID();
-        throw openfluid::base::FrameworkException("DomainFactory::buildGraphFromDescriptor",
+        throw openfluid::base::FrameworkException("Factory::buildDomainFromDescriptor",
                                                   "Target -to- unit referenced by " + UnitStr.str() +
                                                   " does not exist" );
       }
@@ -134,7 +133,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
       {
         std::ostringstream UnitStr;
         UnitStr << ChildUnit->getClass() << "#" << ChildUnit->getID();
-        throw openfluid::base::FrameworkException("DomainFactory::buildGraphFromDescriptor",
+        throw openfluid::base::FrameworkException("Factory::buildDomainFromDescriptor",
                                                   "Target -parent- unit referenced by " + UnitStr.str() +
                                                   " does not exist" );
       }
@@ -149,26 +148,35 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
   // ============== Attributes ==============
 
 
-  std::list<openfluid::fluidx::AttributesDescriptor>::iterator itAttrs;
+  std::list<openfluid::fluidx::AttributesDescriptor>::iterator itAttrsDesc;
 
-  for (itAttrs = Descriptor.attributes().begin();itAttrs != Descriptor.attributes().end();++itAttrs)
+  for (itAttrsDesc = Descriptor.attributes().begin();itAttrsDesc != Descriptor.attributes().end();++itAttrsDesc)
   {
 
-    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t Data = (*itAttrs).attributes();
+    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t UnitsAttrs = (*itAttrsDesc).attributes();
     openfluid::core::SpatialUnit* TheUnit;
 
-    for (openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnit=Data.begin();
-        itUnit!=Data.end();++itUnit)
+    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnit;
+    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnitb = UnitsAttrs.begin();
+    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnite = UnitsAttrs.end();
+
+    for (itUnit=itUnitb; itUnit!=itUnite; ++itUnit)
     {
-      TheUnit = SGraph.spatialUnit((*itAttrs).getUnitsClass(),itUnit->first);
+      TheUnit = SGraph.spatialUnit((*itAttrsDesc).getUnitsClass(),itUnit->first);
 
       if (TheUnit != NULL)
       {
-        for (openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::const_iterator
-               itUnitData = itUnit->second.begin();
-            itUnitData!=itUnit->second.end();++itUnitData)
+        openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::const_iterator itUnitAttr;
+
+        for (itUnitAttr = itUnit->second.begin(); itUnitAttr!=itUnit->second.end(); ++itUnitAttr)
         {
-          TheUnit->attributes()->setValue(itUnitData->first,itUnitData->second);
+          if (!openfluid::tools::isValidAttributeName(itUnitAttr->first))
+            throw openfluid::base::FrameworkException("Factory::buildDomainFromDescriptor",
+                                                      "Wrong syntax for attribute "+
+                                                      itUnitAttr->first + " on units class "+
+                                                      (*itAttrsDesc).getUnitsClass());
+
+          TheUnit->attributes()->setValue(itUnitAttr->first,itUnitAttr->second);
         }
       }
     }
@@ -231,7 +239,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
 
   if (ModelDesc.items().empty())
-    throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","No simulator in model");
+    throw openfluid::base::FrameworkException("Factory::buildModelInstanceFromDescriptor","No simulator in model");
 
 
   for (it=ModelDesc.items().begin();it!=ModelDesc.items().end();++it)
@@ -240,14 +248,20 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
     {
 
       if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
-        throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor",
+        throw openfluid::base::FrameworkException("Factory::buildModelInstanceFromDescriptor",
                                                   "unknown model item type");
 
       if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
       {
+        openfluid::ware::WareID_t ID = ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID();
+
+        if (!openfluid::tools::isValidWareID(ID))
+          throw openfluid::base::FrameworkException("Factory::buildModelInstanceFromDescriptor",
+                                                    "invalid simulator ID \""+ID+"\"");
+
         // instanciation of a plugged simulator using the plugin manager
-        IInstance = SimulatorPluginsManager::instance()->loadWareSignatureOnly(
-            ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID());
+        IInstance = SimulatorPluginsManager::instance()->loadWareSignatureOnly(ID);
+            ;
         IInstance->Params = (*it)->getParameters();
         IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
       }
@@ -298,7 +312,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         }
 
         if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
-          throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor",
+          throw openfluid::base::FrameworkException("Factory::buildModelInstanceFromDescriptor",
                                                     "unknown generator type");
 
         IInstance->Body = NULL;
@@ -329,9 +343,14 @@ void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::Monitorin
   {
     if ((*it)->isEnabled())
     {
+      openfluid::ware::WareID_t ID = ((openfluid::fluidx::ObserverDescriptor*)(*it))->getID();
+
+      if (!openfluid::tools::isValidWareID(ID))
+        throw openfluid::base::FrameworkException("Factory::buildMonitoringInstanceFromDescriptor",
+                                                  "invalid observer ID \""+ID+"\"");
+
       // instanciation of a plugged observer using the plugin manager
-      OInstance = ObserverPluginsManager::instance()->loadWareSignatureOnly(
-          ((openfluid::fluidx::ObserverDescriptor*)(*it))->getID());
+      OInstance = ObserverPluginsManager::instance()->loadWareSignatureOnly(ID);
       OInstance->Params = (*it)->getParameters();
 
       MonInstance.appendObserver(OInstance);

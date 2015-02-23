@@ -56,7 +56,8 @@ DECLARE_SIMULATOR_PLUGIN
 BEGIN_SIMULATOR_SIGNATURE("examples.surf.fire.prod-spread")
 
   DECLARE_NAME("Example simulator for production and spreading of fire over land units");
-  DECLARE_DESCRIPTION("This simulator simulate the dynamics of fuel stock decreasing during fire, based on wind speed and stock type."
+  DECLARE_DESCRIPTION("This simulator simulate the dynamics of fuel stock decreasing during fire, "
+                      "based on wind speed and stock type."
                       "It also performs the propagation of the head of the fire using landscapes connections");
 
   DECLARE_VERSION("1.0");
@@ -173,7 +174,8 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     void checkConsistency()
     {
       if (m_IgnitionUnits.empty())
-        OPENFLUID_RaiseError("FireProductionSpreadingSimulator::checkConsistency()","List of land unit to ignite is empty, or wrong land unit ID");
+        OPENFLUID_RaiseError("FireProductionSpreadingSimulator::checkConsistency()",
+                             "List of land unit to ignite is empty, or wrong land unit ID");
     }
 
 
@@ -250,7 +252,8 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
       // compute the new stock based on time, wind coefficient and comustion factor
       if (m_UnitsStatus[U->getID()])
-        Stock.set(Stock.get() - (int)(getWindCoefficient(U) * m_UnitsCombustionFactor[U->getID()] * (double(OPENFLUID_GetDefaultDeltaT()))));
+        Stock.set(Stock.get() - (int)(getWindCoefficient(U) * m_UnitsCombustionFactor[U->getID()] *
+                  (double(OPENFLUID_GetDefaultDeltaT()))));
 
 
       if (Stock <= 0)

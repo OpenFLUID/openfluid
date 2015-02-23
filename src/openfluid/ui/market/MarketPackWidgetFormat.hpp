@@ -33,7 +33,7 @@
 /**
   @file MarketPackWidgetFormat.hpp
 
-  @auth Manuel Chataigner
+  @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
 #ifndef __OPENFLUID_UIMARKET_MARKETPACKWIDGETFORMAT_HPP__
@@ -86,7 +86,8 @@ class OPENFLUID_API MarketPackWidgetFormat : public MarketPackWidget
 
   public:
 
-    MarketPackWidgetFormat(const openfluid::market::PackageInfo::PackageType& Type,const openfluid::market::MetaPackageInfo& MetaPackInfo);
+    MarketPackWidgetFormat(const openfluid::market::PackageInfo::PackageType& Type,
+                           const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
     virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 

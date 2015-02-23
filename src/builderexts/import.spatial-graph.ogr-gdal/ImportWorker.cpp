@@ -155,10 +155,10 @@ bool ImportWorker::buildConnections(int Step)
       // "childof" connections
       for (int j=0;j<It.value().ChildofConn.size();j++)
       {
-        mp_AdvDesc->spatialDomain().addParentChildRelation(std::make_pair(It.value().ChildofConn[j].DestClass.toStdString(),
-                                                                      It.value().ChildofConn[j].DestID),
-                                                       std::make_pair(m_SourcesInfos[i].UnitsClass.toStdString(),
-                                                                      It.key()));
+        mp_AdvDesc->spatialDomain().addParentChildRelation(
+            std::make_pair(It.value().ChildofConn[j].DestClass.toStdString(),
+                           It.value().ChildofConn[j].DestID),
+            std::make_pair(m_SourcesInfos[i].UnitsClass.toStdString(),It.key()));
       }
     }
     i++;

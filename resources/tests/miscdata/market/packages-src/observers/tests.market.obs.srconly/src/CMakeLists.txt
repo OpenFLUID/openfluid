@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)
 
-FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware)
+FIND_PACKAGE(OpenFLUIDHelpers REQUIRED)
 
 
 SET(OBS_ID tests.market.obs.srconly)

@@ -53,7 +53,9 @@ class OPENFLUID_API ClickableLabel : public QLabel
 
   protected:
 
-    void mouseReleaseEvent(QMouseEvent *Event);
+    void mouseReleaseEvent(QMouseEvent* Event);
+
+    void mouseDoubleClickEvent(QMouseEvent* Event);
 
 
    signals:

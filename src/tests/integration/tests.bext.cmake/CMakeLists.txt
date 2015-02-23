@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)
 
-FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware builderext)
+FIND_PACKAGE(OpenFLUIDHelpers REQUIRED)
 
 SET(BEXT_ID tests.bext.cmake)
 SET(BEXT_CPP CMakeBExt.cpp)

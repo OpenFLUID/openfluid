@@ -52,22 +52,25 @@
 // =====================================================================
 // =====================================================================
 
+
 /**
   Macro for the beginning of definition of signature hook
 */
 #define BEGIN_SIMULATOR_SIGNATURE(id) \
-  openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL() \
-  { \
-    openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature(); \
-    Signature->setABIVersion(openfluid::config::FULL_VERSION); \
-    Signature->ID = (id);
+  extern "C" { \
+    OPENFLUID_PLUGIN openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL() \
+    { \
+      openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature(); \
+      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+      Signature->ID = (id);
 
 
 /**
   Macro for the end of definition of signature hook
 */
 #define END_SIMULATOR_SIGNATURE \
-    return Signature; \
+      return Signature; \
+    } \
   }
 
 
@@ -306,9 +309,6 @@ class OPENFLUID_API SignatureHandledTypedDataItem : public SignatureHandledDataI
 {
 
   public:
-
-    static bool getVariableNameAndType(const std::string SourceStr, std::string& VarName,
-                                       openfluid::core::Value::Type& VarType);
 
     openfluid::core::Value::Type DataType;
 

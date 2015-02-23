@@ -45,6 +45,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -378,3 +379,29 @@ BOOST_AUTO_TEST_CASE(check_setIndexIntField)
 
 // =====================================================================
 // =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_envelope)
+{
+  openfluid::core::GeoVectorValue Value(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Value);
+
+  OGREnvelope envelope=Vect->envelope();
+
+  BOOST_CHECK(openfluid::scientific::isVeryClose(envelope.MinX,679060.43));
+  BOOST_CHECK(openfluid::scientific::isVeryClose(envelope.MinY,131916.45));
+  BOOST_CHECK(openfluid::scientific::isVeryClose(envelope.MaxX,679837.58));
+  BOOST_CHECK(openfluid::scientific::isVeryClose(envelope.MaxY,132960.09));
+
+  delete Vect;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+

@@ -30,6 +30,11 @@
 */
 
 
+/**
+  @file EventsPrimitivesSim.cpp
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
@@ -119,7 +124,8 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",aUnit)
       {
-        AddedEvent = openfluid::core::Event(openfluid::core::DateTime(OPENFLUID_GetEndDate()+10*OPENFLUID_GetDefaultDeltaT()));
+        AddedEvent =
+            openfluid::core::Event(openfluid::core::DateTime(OPENFLUID_GetEndDate()+10*OPENFLUID_GetDefaultDeltaT()));
         AddedEvent.addInfo("unused_event","true");
 
         OPENFLUID_AppendEvent(aUnit,AddedEvent);
@@ -264,7 +270,9 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
 
         bool FoundEvent = false;
-        AddedEvent = openfluid::core::Event(openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)));
+        AddedEvent =
+            openfluid::core::Event(openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+
+                                                             (OPENFLUID_GetDefaultDeltaT()*2)));
         openfluid::tools::convertValue(OPENFLUID_GetDefaultDeltaT(),&TmpStr);
         AddedEvent.addInfo("addingstep",TmpStr);
 
@@ -272,7 +280,8 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
         EvColl.clear();
         OPENFLUID_GetEvents(aUnit,openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+OPENFLUID_GetDefaultDeltaT()),
-                                  openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)),EvColl);
+                                  openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+
+                                                            (OPENFLUID_GetDefaultDeltaT()*2)),EvColl);
 
         OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
           if (Event->isInfoEqual("addingstep",TmpStr)) FoundEvent = true;

@@ -62,18 +62,9 @@
 
 /**
   Macro for declaration of simulator and signature hooks
+  @deprecated
 */
-#define DECLARE_SIMULATOR_PLUGIN \
-  extern "C" \
-  { \
-    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL(); \
-    OPENFLUID_PLUGIN openfluid::ware::PluggableSimulator* WAREBODY_PROC_DECL(); \
-    OPENFLUID_PLUGIN openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL(); \
-  }
-
-
-// =====================================================================
-// =====================================================================
+#define DECLARE_SIMULATOR_PLUGIN
 
 
 /**
@@ -81,16 +72,18 @@
   @param[in] pluginclassname The name of the class to instantiate
 */
 #define DEFINE_SIMULATOR_CLASS(pluginclassname) \
-  std::string WAREABIVERSION_PROC_DECL() \
+  extern "C" \
   { \
-    return std::string(openfluid::config::FULL_VERSION); \
-  } \
-  \
-  openfluid::ware::PluggableSimulator* WAREBODY_PROC_DECL() \
-  { \
-    return new pluginclassname(); \
+    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL() \
+    { \
+      return std::string(openfluid::config::FULL_VERSION); \
+    } \
+    \
+    OPENFLUID_PLUGIN openfluid::ware::PluggableSimulator* WAREBODY_PROC_DECL() \
+    { \
+      return new pluginclassname(); \
+    } \
   }
-
 
 
 // =====================================================================
@@ -335,9 +328,11 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
 
 };
 
+
 typedef PluggableSimulator* (*GetPluggableSimulatorBodyProc)();
 
 typedef SimulatorSignature* (*GetPluggableSimulatorSignatureProc)();
+
 
 } } // namespaces
 

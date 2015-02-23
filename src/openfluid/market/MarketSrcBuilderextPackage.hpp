@@ -29,12 +29,10 @@
   
 */
 
-
 /**
- * MarketSrcBuilderextPackage.hpp
- *
- *  Created on: 7 mars 2013
- *      Author: Manuel CHATAIGNER
+ @file MarketSrcBuilderextPackage.hpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
 #ifndef __OPENFLUID_MARKET_MARKETSRCBUILDEREXTPACKAGE_HPP__

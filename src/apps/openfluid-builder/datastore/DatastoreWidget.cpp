@@ -124,7 +124,8 @@ void DatastoreWidget::refresh()
     Item = new QTableWidgetItem(QString::fromStdString((*it)->getID()));
     ui->DatastoreTableWidget->setItem(CurrentRow, 0, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(openfluid::core::UnstructuredValue::getStringFromValueType((*it)->getType())));
+    Item = new QTableWidgetItem(QString::fromStdString(
+        openfluid::core::UnstructuredValue::getStringFromValueType((*it)->getType())));
     ui->DatastoreTableWidget->setItem(CurrentRow, 1, Item);
 
     Item = new QTableWidgetItem(QString::fromStdString((*it)->getUnitClass()));
@@ -166,8 +167,10 @@ void DatastoreWidget::addItem()
       QString Subdir = QDir::fromNativeSeparators(AddItemDlg.getCopySubdir());
       QString SourceFilename = QDir::fromNativeSeparators(QFileInfo(AddItemDlg.getSourceFilePath()).fileName());
 
-      QString DestFile = QDir::fromNativeSeparators(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInputDir()) +
-                                                    "/"+Subdir+"/"+SourceFilename);
+      QString DestFile =
+          QDir::fromNativeSeparators(QString::fromStdString(
+              openfluid::base::RuntimeEnvironment::instance()->getInputDir()) +
+              "/"+Subdir+"/"+SourceFilename);
 
       if (AddItemDlg.getItemType() == openfluid::core::UnstructuredValue::GeoVectorValue)
       {
@@ -255,8 +258,9 @@ void DatastoreWidget::addItem()
           {
             QDir().mkpath(QFileInfo(DestFile).absolutePath());
 
-            if (CopyDriver->CopyFiles(DestFile.toStdString().c_str(),
-                                      QDir::fromNativeSeparators(AddItemDlg.getSourceFilePath()).toStdString().c_str()) == CE_Failure)
+            if (CopyDriver->CopyFiles(
+                    DestFile.toStdString().c_str(),
+                    QDir::fromNativeSeparators(AddItemDlg.getSourceFilePath()).toStdString().c_str()) == CE_Failure)
             {
               QMessageBox::critical(QApplication::activeWindow(),
                                     "OpenFLUID-Builder",
@@ -299,8 +303,9 @@ void DatastoreWidget::addItem()
       // creation of datastore item
 
       // build of the relative path for the file associated with the item
-      QString RelativeDSItemFile = QDir(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInputDir()))
-                                         .relativeFilePath(DSItemFile);
+      QString RelativeDSItemFile =
+          QDir(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInputDir()))
+          .relativeFilePath(DSItemFile);
 
       openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc =
           new openfluid::fluidx::DatastoreItemDescriptor(AddItemDlg.getItemID().toStdString(),
@@ -328,7 +333,8 @@ void DatastoreWidget::addItem()
 void DatastoreWidget::editItem()
 {
   // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),
+                        QString(__PRETTY_FUNCTION__),QMessageBox::Close);
 }
 
 

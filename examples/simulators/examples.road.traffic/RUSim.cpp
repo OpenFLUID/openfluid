@@ -32,6 +32,8 @@
 
 /**
   @file RUSim.cpp
+
+  @author Michael Rabotin <michael.rabotin@supagro.inra.fr>
 */
 
 
@@ -119,7 +121,8 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_GetSimulatorParameter(Params,"MultiCapacity",m_MultiCapacity);
       if (m_MultiCapacity<0)
-        OPENFLUID_RaiseError("examples.road.traffic","The Multiplying factor for capacity (MultiCapacity) should be positive");
+        OPENFLUID_RaiseError("examples.road.traffic",
+                             "The Multiplying factor for capacity (MultiCapacity) should be positive");
     }
 
     // =====================================================================
@@ -213,7 +216,8 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
         }
         if (TLUState!=true)
         {
-          OPENFLUID_GetVariable(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
+          OPENFLUID_GetVariable(RU,"examples.RU.S.stock",
+                                OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
           OPENFLUID_AppendVariable(RU,"examples.RU.S.stock",StockValue);
         }
 
@@ -222,7 +226,8 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
           UpRUsList = RU->fromSpatialUnits("RU");
 
           if (UpRUsList == NULL)
-            OPENFLUID_GetVariable(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
+            OPENFLUID_GetVariable(RU,"examples.RU.S.stock",
+                                  OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
           else
           {
             OPENFLUID_GetAttribute(RU,"capacity",Capacity);
@@ -235,7 +240,8 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
 
             else
-              OPENFLUID_GetVariable(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
+              OPENFLUID_GetVariable(RU,"examples.RU.S.stock",
+                                    OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
 
             for (UpRUiter=UpRUsList->begin(); UpRUiter != UpRUsList->end(); UpRUiter++)
             {

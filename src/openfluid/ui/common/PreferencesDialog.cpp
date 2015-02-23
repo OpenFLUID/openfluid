@@ -200,9 +200,11 @@ void PreferencesDialog::initialize()
 
   // Wares search paths
   ui->SimulatorsSearchPathsWidget->initialize(PrefsMan->getExtraSimulatorsPaths(),
-                                              openfluid::tools::toQStringList(RunEnv->getDefaultSimulatorsPluginsPaths()));
+                                              openfluid::tools::toQStringList(
+                                                  RunEnv->getDefaultSimulatorsPluginsPaths()));
   ui->ObserversSearchPathsWidget->initialize(PrefsMan->getExtraObserversPaths(),
-                                             openfluid::tools::toQStringList(RunEnv->getDefaultObserversPluginsPaths()));
+                                             openfluid::tools::toQStringList(
+                                                 RunEnv->getDefaultObserversPluginsPaths()));
 
 
   // Market
@@ -494,7 +496,8 @@ void PreferencesDialog::removeMarketPlace()
 
 void PreferencesDialog::processSimUserPathsUpdate()
 {
-  openfluid::base::PreferencesManager::instance()->setExtraSimulatorsPaths(ui->SimulatorsSearchPathsWidget->getUserPaths());
+  openfluid::base::PreferencesManager::instance()
+      ->setExtraSimulatorsPaths(ui->SimulatorsSearchPathsWidget->getUserPaths());
   m_SimPathsChanged = true;
 }
 
@@ -505,7 +508,8 @@ void PreferencesDialog::processSimUserPathsUpdate()
 
 void PreferencesDialog::processObsUserPathsUpdate()
 {
-  openfluid::base::PreferencesManager::instance()->setExtraObserversPaths(ui->ObserversSearchPathsWidget->getUserPaths());
+  openfluid::base::PreferencesManager::instance()
+      ->setExtraObserversPaths(ui->ObserversSearchPathsWidget->getUserPaths());
   m_ObsPathsChanged = true;
 }
 
@@ -516,7 +520,8 @@ void PreferencesDialog::processObsUserPathsUpdate()
 
 void PreferencesDialog::processBextUserPathsUpdate()
 {
-  openfluid::base::PreferencesManager::instance()->setExtraExtensionsPaths(ui->BuilderextsSearchPathsWidget->getUserPaths());
+  openfluid::base::PreferencesManager::instance()
+      ->setExtraExtensionsPaths(ui->BuilderextsSearchPathsWidget->getUserPaths());
 }
 
 

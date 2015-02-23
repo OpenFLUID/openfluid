@@ -40,6 +40,8 @@
 
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverPluginsManager.hpp>
+
 #include "builderconfig.hpp"
 
 #include "ui_WareWidget.h"
@@ -57,7 +59,7 @@ ObserverWidget::ObserverWidget(QWidget* Parent,
 {
   refresh();
 
-  connect(ui->AddParamButton,SIGNAL(clicked()),this,SLOT(addParam()));
+  connect(ui->AddParamButton,SIGNAL(clicked()),this,SLOT(addParameterToList()));
 }
 
 
@@ -84,9 +86,34 @@ void ObserverWidget::refresh()
   {
     setAvailableWare(true);
     ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
-    ui->InfosWidget->update(Signature);
+    ui->InfosSideWidget->update(Signature);
 
-    updateParams();
+    updateParametersList();
+
+    // TODO begin to be refactored, see also SimulatorWidget =========
+
+    mp_ParamsWidget = NULL;
+
+    if (Signature->WithParametersWidget)
+    {
+      mp_ParamsWidget = static_cast<openfluid::ui::ware::ParameterizationWidget*>(
+          openfluid::machine::ObserverPluginsManager::instance()->getParameterizationWidget(Signature));
+      mp_ParamsWidget->setParent(this);
+      mp_ParamsWidget->linkParams(&(mp_Desc->parameters()));
+
+      connect(mp_ParamsWidget,SIGNAL(changed()),this,SLOT(notifyChangedFromParameterizationWidget()));
+
+      int Position = ui->ParameterizationStackWidget->addWidget(mp_ParamsWidget);
+
+      mp_ParamsWidget->update();
+
+      ui->ParameterizationStackWidget->setCurrentIndex(Position);
+    }
+
+    updateParameterizationSwitch();
+
+    // end to be refactored =========
+
   }
   else
   {
@@ -95,7 +122,6 @@ void ObserverWidget::refresh()
 
   updateWidgetBackground();
 }
-
 
 
 // =====================================================================
@@ -114,7 +140,7 @@ void ObserverWidget::setEnabledWare(bool Enabled)
 // =====================================================================
 
 
-void ObserverWidget::updateParams()
+void ObserverWidget::updateParametersList()
 {
   clearParameterWidgets();
 
@@ -122,18 +148,19 @@ void ObserverWidget::updateParams()
 
   for (openfluid::ware::WareParams_t::iterator it = DescParams.begin();it != DescParams.end(); ++it)
   {
-    ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                       QString::fromStdString((*it).first),QString::fromStdString((*it).second),
-                                                       QString::fromStdString(""),true);
+    ParameterWidget* ParamWidget =
+        new ParameterWidget(this,
+                            QString::fromStdString((*it).first),QString::fromStdString((*it).second),
+                            QString::fromStdString(""),true);
 
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
-    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeParam(const QString&)));
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+            this, SLOT(updateParameterValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
+            this, SLOT(removeParameterFromList(const QString&)));
 
 
-    ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addWidget(ParamWidget);
+    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
   }
-
-  ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addStretch();
 }
 
 
@@ -141,7 +168,7 @@ void ObserverWidget::updateParams()
 // =====================================================================
 
 
-void ObserverWidget::addParam()
+void ObserverWidget::addParameterToList()
 {
   QStringList ExistPList;
 
@@ -171,7 +198,7 @@ void ObserverWidget::addParam()
 
 
 
-void ObserverWidget::updateParamValue(const QString& Name, const QString& Value)
+void ObserverWidget::updateParameterValue(const QString& Name, const QString& Value)
 {
   mp_Desc->setParameter(Name.toStdString(),Value.toStdString());
   emit changed();
@@ -182,12 +209,27 @@ void ObserverWidget::updateParamValue(const QString& Name, const QString& Value)
 // =====================================================================
 
 
-void ObserverWidget::removeParam(const QString& Name)
+void ObserverWidget::removeParameterFromList(const QString& Name)
 {
   if (removeParameterWidget(Name))
   {
     mp_Desc->eraseParameter(Name.toStdString());
     emit changed();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ObserverWidget::prepareWareUpdate()
+{
+  if (mp_ParamsWidget)
+  {
+    ui->ParameterizationStackWidget->removeWidget(mp_ParamsWidget);
+    delete mp_ParamsWidget;
+    mp_ParamsWidget = NULL;
   }
 }
 

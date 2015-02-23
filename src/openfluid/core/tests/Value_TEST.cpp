@@ -102,7 +102,8 @@ BOOST_AUTO_TEST_CASE(check_sequence)
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::BooleanValue>(new openfluid::core::BooleanValue(true)));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::VectorValue>(new openfluid::core::VectorValue(500,17.0)));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::MatrixValue>(new openfluid::core::MatrixValue(29,47,1955.19)));
-  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::StringValue>(new openfluid::core::StringValue("Welcome to the jungle!")));
+  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::StringValue>(
+      new openfluid::core::StringValue("Welcome to the jungle!")));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::IntegerValue>(new openfluid::core::IntegerValue(1984)));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::NullValue>(new openfluid::core::NullValue()));
 
@@ -281,7 +282,8 @@ BOOST_AUTO_TEST_CASE(check_performance)
 
   for (unsigned int i=0; i< ElementsNbr;i++)
   {
-    BufferValue.push_back(boost::shared_ptr<openfluid::core::Value>(new openfluid::core::DoubleValue(static_cast<double>(i)/ElementsNbr)));
+    BufferValue.push_back(boost::shared_ptr<openfluid::core::Value>(
+        new openfluid::core::DoubleValue(static_cast<double>(i)/ElementsNbr)));
   }
 
   MARK_TEST_TICKER();
@@ -313,4 +315,38 @@ BOOST_AUTO_TEST_CASE(check_performance)
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_stringtotype)
+{
+  openfluid::core::Value::Type ValueType;
+
+  BOOST_REQUIRE(openfluid::core::Value::getValueTypeFromString("double",ValueType));
+  BOOST_REQUIRE_EQUAL(ValueType,openfluid::core::Value::DOUBLE);
+
+  BOOST_REQUIRE(openfluid::core::Value::getValueTypeFromString("vector",ValueType));
+  BOOST_REQUIRE_EQUAL(ValueType,openfluid::core::Value::VECTOR);
+
+  BOOST_REQUIRE(openfluid::core::Value::getValueTypeFromString("null",ValueType));
+  BOOST_REQUIRE_EQUAL(ValueType,openfluid::core::Value::NULLL);
+
+  BOOST_REQUIRE(!openfluid::core::Value::getValueTypeFromString("foo",ValueType));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_typetostring)
+{
+  BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::DOUBLE),"double");
+
+  BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::VECTOR),"vector");
+
+  BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::NULLL),"null");
+}
 

@@ -32,7 +32,9 @@
 
 /**
   @file TLUSim.cpp
- */
+
+  @author Michael Rabotin <michael.rabotin@supagro.inra.fr>
+*/
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
@@ -159,7 +161,9 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
           ID = TLU->getID();
           std::string IDStr;
           openfluid::tools::convertValue(ID,&IDStr);
-          OPENFLUID_RaiseError("examples.trafficlight.state","The Duration coefficient of TLU " + IDStr + " should be compatible with the Simulation Scheduling.");
+          OPENFLUID_RaiseError("examples.trafficlight.state",
+                               "The Duration coefficient of TLU " + IDStr +
+                               " should be compatible with the Simulation Scheduling.");
 
         }
       }
@@ -216,7 +220,8 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(pTLU,"state",State);
         State.toBoolean(StateBool);
 
-        OPENFLUID_GetVariable(pTLU,"examples.TLU.T.changeTime",CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),NextPeriod);
+        OPENFLUID_GetVariable(pTLU,"examples.TLU.T.changeTime",
+                              CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),NextPeriod);
         OPENFLUID_GetVariable(pTLU,"examples.TLU.S.state",CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),StateBool);
 
 

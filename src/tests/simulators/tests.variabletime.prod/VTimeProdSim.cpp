@@ -191,12 +191,19 @@ class VariableTimeProdSimulator : public openfluid::ware::PluggableSimulator
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
       OPENFLUID_AppendVariable(TU,"tests.double",double(OPENFLUID_GetCurrentTimeIndex()));
-      OPENFLUID_AppendVariable(TU,"tests.string",openfluid::core::IntegerValue(OPENFLUID_GetCurrentTimeIndex()).toString());
+      OPENFLUID_AppendVariable(TU,"tests.string",
+                               openfluid::core::IntegerValue(OPENFLUID_GetCurrentTimeIndex()).toString());
 
-      if (OPENFLUID_GetCurrentTimeIndex() % 3 == 0) OPENFLUID_AppendVariable(TU,"tests.null",TheNull);
+      if (OPENFLUID_GetCurrentTimeIndex() % 3 == 0)
+        OPENFLUID_AppendVariable(TU,"tests.null",TheNull);
 
-      OPENFLUID_AppendVariable(TU,"tests.vector",openfluid::core::VectorValue(VectorSize,double(OPENFLUID_GetCurrentTimeIndex())));
-      if (OPENFLUID_GetCurrentTimeIndex() % 7 == 0) OPENFLUID_AppendVariable(TU,"tests.matrix",openfluid::core::MatrixValue(MatrixColsNb,MatrixRowsNb,double(OPENFLUID_GetCurrentTimeIndex())));
+      OPENFLUID_AppendVariable(TU,"tests.vector",
+                               openfluid::core::VectorValue(VectorSize,double(OPENFLUID_GetCurrentTimeIndex())));
+
+      if (OPENFLUID_GetCurrentTimeIndex() % 7 == 0)
+        OPENFLUID_AppendVariable(TU,"tests.matrix",
+                                 openfluid::core::MatrixValue(MatrixColsNb,MatrixRowsNb,
+                                                              double(OPENFLUID_GetCurrentTimeIndex())));
     }
 
     if (m_DefaultDT)

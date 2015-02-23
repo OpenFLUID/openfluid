@@ -31,10 +31,9 @@
 
 
 /**
- * MarketBinSimulatorPackage.hpp
- *
- *  Created on: 25 févr. 2013
- *      Author: Manuel CHATAIGNER
+ @file MarketBinSimulatorPackage.hpp
+
+ @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
 #ifndef __OPENFLUID_MARKET_MARKETBINSIMULATORPACKAGE_HPP__

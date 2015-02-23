@@ -3,6 +3,7 @@
   <monitoring>
     
     <observer ID="tests.obs.cmake" />
+    <observer ID="tests.obsui.cmake" />
     
   </monitoring>
 </openfluid>

@@ -1,7 +1,5 @@
 
 
-INCLUDE(OpenFLUIDHelpers)
-
 
 ADD_SUBDIRECTORY(simulators)
 

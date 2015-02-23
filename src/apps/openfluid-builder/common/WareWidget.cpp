@@ -45,13 +45,15 @@
 #include "WareWidget.hpp"
 #include "ParameterWidget.hpp"
 
+
 #include <QMessageBox>
 
 
 WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
                        bool Enabled, const QString& BGColor, int Index):
   QWidget(Parent),ui(new Ui::WareWidget), m_ID(ID), m_EnabledBGColor(BGColor),
-  m_Available(false),m_Enabled(Enabled), m_CurrentIndex(Index), m_ParamsExpanded(false)
+  m_Available(false),m_Enabled(Enabled), m_CurrentIndex(Index),
+  m_ParamsExpanded(false), mp_ParamsWidget(NULL)
 {
   ui->setupUi(this);
   ui->IDLabel->setText(QString::fromStdString(m_ID));
@@ -91,6 +93,8 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
   connect(ui->DownButton,SIGNAL(clicked()),this,SLOT(notifyDownClicked()));
   connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(notifyRemoveClicked()));
 
+  connect(ui->ParameterizationSwitchLabel,SIGNAL(clicked()),this,SLOT(switchParameterizationMode()));
+
   ui->ParamInfoWidget->setVisible(false);
 }
 
@@ -114,6 +118,7 @@ void WareWidget::setAvailableWare(bool Available)
   m_Available = Available;
   ui->NameLabel->setVisible(Available);
   ui->ParamInfoTitleWidget->setVisible(Available);
+  ui->ShowHideParamsLabel->setVisible(Available);
   ui->ParamInfoWidget->setVisible(Available && m_ParamsExpanded);
 
   updateWidgetBackground();
@@ -144,7 +149,7 @@ void WareWidget::updateWidgetBackground()
   if (!m_Enabled) BGColor = BUILDER_DISABLEDWARE_BGCOLOR;
   if (!m_Available) BGPattern = " background-image:url(:/images/warn-pattern-lightgray.png);";
 
-  setStyleSheet("QFrame#WareFrame { background-color:"+BGColor+"; "+BGPattern+"}");
+  setStyleSheet("#WareFrame { background-color:"+BGColor+"; "+BGPattern+"}");
 }
 
 
@@ -172,7 +177,6 @@ void WareWidget::setExpanded(bool Expand)
   else
     m_ParamsExpanded = false;
 }
-
 
 
 // =====================================================================
@@ -257,7 +261,9 @@ void WareWidget::notifyRemoveClicked()
 
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",
-                                tr("You are removing %1 %2.\nAll parameters will be lost.\n\nProceed anyway?").arg(QString::fromStdString(getID())).arg(TypeStr),
+                                tr("You are removing %1 %2.\n"
+                                   "All parameters will be lost.\n\nProceed anyway?")
+                                .arg(QString::fromStdString(getID())).arg(TypeStr),
                                 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
   }
 
@@ -270,7 +276,7 @@ void WareWidget::notifyRemoveClicked()
 // =====================================================================
 
 
-void WareWidget::updateParamValue(const QString& /*Name*/, const QString& /*Value*/)
+void WareWidget::updateParameterValue(const QString& /*Name*/, const QString& /*Value*/)
 {
 
 }
@@ -280,7 +286,7 @@ void WareWidget::updateParamValue(const QString& /*Name*/, const QString& /*Valu
 // =====================================================================
 
 
-void WareWidget::removeParam(const QString& /*Name*/)
+void WareWidget::removeParameterFromList(const QString& /*Name*/)
 {
 
 }
@@ -296,11 +302,12 @@ bool WareWidget::addParameterWidget(const QString& Name, const QString& Value)
                                                      Name,Value,
                                                      QString::fromStdString(""),true);
 
-  connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
-  connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeParam(const QString&)));
+  connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+          this, SLOT(updateParameterValue(const QString&,const QString&)));
+  connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
+          this, SLOT(removeParameterFromList(const QString&)));
 
-  int Position = ui->ParamsAreaContents->layout()->count()-1;
-  ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->insertWidget(Position,ParamWidget);
+  ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
 
   return true;
 }
@@ -310,22 +317,32 @@ bool WareWidget::addParameterWidget(const QString& Name, const QString& Value)
 // =====================================================================
 
 
-bool WareWidget::removeParameterWidget(const QString& Name, bool WithFinalStretch)
+bool WareWidget::removeParameterWidget(const QString& Name)
 {
-  int LastIndex = ui->ParamsAreaContents->layout()->count()-WithFinalStretch-1;
+  int LastIndex = ui->ParamsListZoneWidget->layout()->count()-1;
 
   for (int i=0;i<=LastIndex;i++)
   {
-    ParameterWidget* W = (ParameterWidget*)(ui->ParamsAreaContents->layout()->itemAt(i)->widget());
+    ParameterWidget* W = (ParameterWidget*)(ui->ParamsListZoneWidget->layout()->itemAt(i)->widget());
     if (W != 0 && W->getName() == Name)
     {
-      W = (ParameterWidget*)(ui->ParamsAreaContents->layout()->takeAt(i)->widget());
+      W = (ParameterWidget*)(ui->ParamsListZoneWidget->layout()->takeAt(i)->widget());
       W->deleteLater();
       return true;
     }
   }
 
   return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::prepareWareUpdate()
+{
+
 }
 
 
@@ -345,7 +362,7 @@ void WareWidget::updateWare()
 
 void WareWidget::clearParameterWidgets()
 {
-  QBoxLayout* Layout = ((QBoxLayout*)(ui->ParamsAreaContents->layout()));
+  QBoxLayout* Layout = ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()));
   QLayoutItem* Item;
 
   while ((Item = Layout->takeAt(0)) != NULL)
@@ -355,4 +372,67 @@ void WareWidget::clearParameterWidgets()
 
     delete Item;
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::updateParametersList()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::updateParameterizationSwitch()
+{
+  ui->ParameterizationSwitchLabel->setVisible(mp_ParamsWidget);
+
+  if (mp_ParamsWidget)
+  {
+    if (ui->ParameterizationStackWidget->currentIndex() == 0)
+      ui->ParameterizationSwitchLabel->setText(tr("switch to assistant"));
+    else
+      ui->ParameterizationSwitchLabel->setText(tr("switch to list"));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::switchParameterizationMode()
+{
+  if (mp_ParamsWidget && ui->ParameterizationStackWidget->count() > 1)
+  {
+
+    if (ui->ParameterizationStackWidget->currentWidget() == mp_ParamsWidget)
+    {
+      updateParametersList();
+      ui->ParameterizationStackWidget->setCurrentWidget(ui->ParamsListPage);
+    }
+    else
+    {
+      mp_ParamsWidget->update();
+      ui->ParameterizationStackWidget->setCurrentWidget(mp_ParamsWidget);
+    }
+
+    updateParameterizationSwitch();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::notifyChangedFromParameterizationWidget()
+{
+  emit changed();
 }

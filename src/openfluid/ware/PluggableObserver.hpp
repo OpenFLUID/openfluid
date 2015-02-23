@@ -52,16 +52,9 @@
 
 /**
   Macro for declaration of observer and signature hooks
+  @deprecated
 */
-#define DECLARE_OBSERVER_PLUGIN \
-  extern "C" \
-  { \
-    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL(); \
-    OPENFLUID_PLUGIN openfluid::ware::PluggableObserver* WAREBODY_PROC_DECL(); \
-    OPENFLUID_PLUGIN openfluid::ware::ObserverSignature* WARESIGNATURE_PROC_DECL(); \
-  }
-
-
+#define DECLARE_OBSERVER_PLUGIN
 
 
 // =====================================================================
@@ -73,14 +66,17 @@
   @param[in] pluginclassname The name of the class to instantiate
 */
 #define DEFINE_OBSERVER_CLASS(pluginclassname) \
-  std::string WAREABIVERSION_PROC_DECL() \
+  extern "C" \
   { \
-    return std::string(openfluid::config::FULL_VERSION); \
-  } \
-  \
-  openfluid::ware::PluggableObserver* WAREBODY_PROC_DECL() \
-  { \
-    return new pluginclassname(); \
+    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL() \
+    { \
+      return std::string(openfluid::config::FULL_VERSION); \
+    } \
+    \
+    OPENFLUID_PLUGIN openfluid::ware::PluggableObserver* WAREBODY_PROC_DECL() \
+    { \
+      return new pluginclassname(); \
+    } \
   }
 
 
@@ -133,9 +129,11 @@ class OPENFLUID_API PluggableObserver : public SimulationInspectorWare
 
 };
 
+
 typedef PluggableObserver* (*GetPluggableObserverBodyProc)();
 
 typedef ObserverSignature* (*GetPluggableObserverSignatureProc)();
+
 
 } } // openfluid::ware
 

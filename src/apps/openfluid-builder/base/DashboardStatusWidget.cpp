@@ -55,13 +55,14 @@ DashboardStatusWidget::DashboardStatusWidget(const ProjectCentral* PrjCentral,QW
 
   ui->NoMessageLabel->setStyleSheet("color:white; font:italic;");
 
-  ui->InnerWidget->setStyleSheet("#InnerWidget {background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
-                                                                                      "stop:0 #314054, "
-                                                                                      "stop:1 #3F546E); "
-                                                                                      "border-top-left-radius: 1px;"
-                                                                                      "border-top-right-radius: 1px;"
-                                                                                      "border-bottom-left-radius: 6px;"
-                                                                                      "border-bottom-right-radius: 6px;}");
+  ui->InnerWidget->setStyleSheet("#InnerWidget "
+                                    "{background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
+                                        "stop:0 #314054, "
+                                        "stop:1 #3F546E); "
+                                        "border-top-left-radius: 1px;"
+                                        "border-top-right-radius: 1px;"
+                                        "border-bottom-left-radius: 6px;"
+                                        "border-bottom-right-radius: 6px;}");
 
   ui->ContentsScrollArea->setStyleSheet("QFrame {background-color: rgba(0,0,0,0);}");
 
