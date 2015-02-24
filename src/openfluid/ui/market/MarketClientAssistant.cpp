@@ -52,7 +52,7 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/market/MarketBuildOptionsDialog.hpp>
-#include <openfluid/ui/common/ViewLogFileWindow.hpp>
+#include <openfluid/ui/market/ViewLogFileWindow.hpp>
 #include <openfluid/ui/market/MarketPackWidgetFormat.hpp>
 
 
@@ -1029,7 +1029,7 @@ void MarketClientAssistant::updateInstallTreeview()
 
 void MarketClientAssistant::onViewLogClicked()
 {
-  openfluid::ui::common::ViewLogFileWindow
+  openfluid::ui::market::ViewLogFileWindow
     LogWindow(QString::fromStdString(openfluid::market::MarketPackage::getLogFile()));
 
   LogWindow.exec();

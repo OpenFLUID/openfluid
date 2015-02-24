@@ -161,6 +161,12 @@ ELSE()
   MESSAGE(STATUS "Build openfluid-devstudio application : no")  
 ENDIF()
   
+IF(BUILD_APP_LOGEXPLORER AND OPENFLUID_ENABLE_GUI)
+  MESSAGE(STATUS "Build openfluid-logexplorer application : yes")  
+ELSE()
+  MESSAGE(STATUS "Build openfluid-logexplorer application : no")  
+ENDIF()  
+  
 IF(BUILD_APP_MARKETCLIENT AND OPENFLUID_ENABLE_GUI)
   MESSAGE(STATUS "Build openfluid-market-client application : yes")  
 ELSE()

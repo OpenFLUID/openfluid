@@ -37,12 +37,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
-#include <openfluid/ui/common/ViewLogFileWindow.hpp>
+#include <openfluid/ui/market/ViewLogFileWindow.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <QFile>
 #include <QTextStream>
 
-namespace openfluid { namespace ui { namespace common {
+namespace openfluid { namespace ui { namespace market {
 
 
 // =====================================================================

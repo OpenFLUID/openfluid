@@ -200,6 +200,8 @@ SET(BUILD_APP_MARKETCLIENT 0)
 # set this to 1 enable market integration in openfluid-builder
 SET(ENABLE_MARKET_BUILDER_INTEGRATION 1)
 
+# set this to 1 to build openfluid-logexplorer
+SET(BUILD_APP_LOGEXPLORER 1)
 
 
 ################### simulators build ###################

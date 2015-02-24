@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __OPENFLUID_UICOMMON_VIEWLOGFILEWINDOW_HPP__
-#define __OPENFLUID_UICOMMON_VIEWLOGFILEWINDOW_HPP__
+#ifndef __OPENFLUID_UIMARKET_VIEWLOGFILEWINDOW_HPP__
+#define __OPENFLUID_UIMARKET_VIEWLOGFILEWINDOW_HPP__
 
 #include <QDialog>
 #include <QString>
@@ -50,7 +50,7 @@
 #include <openfluid/dllexport.hpp>
 
 
-namespace openfluid { namespace ui { namespace common {
+namespace openfluid { namespace ui { namespace market {
 
 
 // =====================================================================
@@ -77,4 +77,4 @@ class OPENFLUID_API ViewLogFileWindow : public QDialog
 
 
 
-#endif /* __OPENFLUID_UICOMMON_VIEWLOGFILEWINDOW_HPP__ */
+#endif /* __OPENFLUID_UIMARKET_VIEWLOGFILEWINDOW_HPP__ */
