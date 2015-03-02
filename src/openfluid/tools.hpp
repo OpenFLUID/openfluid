@@ -43,6 +43,6 @@
 
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
-#include <openfluid/tools/FilesHelpers.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 
 #endif /* __OPENFLUID_TOOLS_HPP__ */
