@@ -132,6 +132,14 @@ QStringList OPENFLUID_API toQStringList(const std::set<int>& IntSet);
 QString OPENFLUID_API escapeXMLEntities(const QString& Str);
 
 
+/**
+  Decodes XML entities to characters
+  @param[in] Str the string to decode
+  @return The decoded string
+*/
+QString OPENFLUID_API decodeXMLEntities(const QString& Str);
+
+
 } } // namespaces
 
 

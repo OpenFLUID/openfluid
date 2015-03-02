@@ -291,6 +291,7 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
 
 WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::parseCompletionFile(const QString& FilePath)
 {
+
   QDomElement Elem = openWaresdevFile(FilePath);
 
   // TODO remove useless 'language' tag
@@ -302,49 +303,58 @@ WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::pars
   //            "syntax file not well formed (missing 'language' tag or language name is not '%1')")
   //            .arg(FileTypeName).toStdString());
 
-  Elem = Elem.firstChildElement();
-  if (Elem.tagName() != "snippets")
-    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseCompletionFile",
-                                              "no 'snippets' tag in completion file");
-
-  QMap<QString, QString> IconPathsByCategory;
-  QDomNodeList Items = Elem.elementsByTagName("category");
-  for (int i = 0; i < Items.size(); i++)
-  {
-    QDomElement Elem = Items.at(i).toElement();
-    IconPathsByCategory[Elem.attribute("name")] = Elem.attribute("icon");
-  }
 
   CompletionRulesByWareType_t Rules;
 
-  Items = Elem.elementsByTagName("item");
-  for (int i = 0; i < Items.size(); i++)
+  QDomNodeList Snippets = Elem.elementsByTagName("snippets");
+
+  for (int i = 0; i < Snippets.size(); i++)
   {
-    QDomElement HlElem = Items.at(i).toElement();
 
-    QString MenuPath = HlElem.attribute("menutree");
-    QString Title = HlElem.attribute("menutitle");
-    bool ForCompletion = HlElem.attribute("completion") == "true";
-    QString Content = HlElem.text().trimmed().replace("\\n", "\n");
-    QString Category = HlElem.attribute("category");
+    QDomElement SnippetElem = Snippets.at(i).toElement();
 
-    CompletionRule Rule(MenuPath, Title, Content, ForCompletion, IconPathsByCategory.value(Category, ""));
+    QString Category = SnippetElem.attribute("category");
+    QString Icon = SnippetElem.attribute("icon");
 
-    QString Context = HlElem.attribute("context");
-    if (Context.contains("anyware") || Context.isEmpty())
+    if (Category.isEmpty())
+      throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseCompletionFile",
+                                                "missing category attribute in  <snippets> tag");
+
+    QDomNodeList Items = SnippetElem.elementsByTagName("item");
+
+    for (int j = 0; j < Items.size(); j++)
     {
-      Rules[openfluid::waresdev::WareSrcManager::SIMULATOR].append(Rule);
-      Rules[openfluid::waresdev::WareSrcManager::OBSERVER].append(Rule);
-      Rules[openfluid::waresdev::WareSrcManager::BUILDEREXT].append(Rule);
-    }
-    else
-    {
-      if (Context.contains("simulator"))
+      QDomElement ItemElem = Items.at(j).toElement();
+
+      QString MenuPath = ItemElem.attribute("menupath");
+      int LastSepPosition = MenuPath.lastIndexOf('/');
+
+      QString MenuTree = Category+"/"+MenuPath.left(LastSepPosition);
+      QString MenuTitle = MenuPath.section('/',-1);
+
+      bool ForCompletion = ItemElem.attribute("completion") == "true";
+
+      QString Content = ItemElem.text().trimmed().replace("\\n", "\n");
+
+
+      CompletionRule Rule(MenuTree, MenuTitle, Content, ForCompletion, Icon);
+
+      QString Context = ItemElem.attribute("context");
+      if (Context.contains("anyware") || Context.isEmpty())
+      {
         Rules[openfluid::waresdev::WareSrcManager::SIMULATOR].append(Rule);
-      if (Context.contains("observer"))
         Rules[openfluid::waresdev::WareSrcManager::OBSERVER].append(Rule);
-      if (Context.contains("builderext"))
         Rules[openfluid::waresdev::WareSrcManager::BUILDEREXT].append(Rule);
+      }
+      else
+      {
+        if (Context.contains("simulator"))
+          Rules[openfluid::waresdev::WareSrcManager::SIMULATOR].append(Rule);
+        if (Context.contains("observer"))
+          Rules[openfluid::waresdev::WareSrcManager::OBSERVER].append(Rule);
+        if (Context.contains("builderext"))
+          Rules[openfluid::waresdev::WareSrcManager::BUILDEREXT].append(Rule);
+      }
     }
   }
 

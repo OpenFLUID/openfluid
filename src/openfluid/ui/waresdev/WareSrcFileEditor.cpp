@@ -49,6 +49,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -135,6 +136,10 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
       if (MenuPathList.isEmpty())
         MenuPathList << "Other";
+      else
+        for (int i=0;i<MenuPathList.size();i++)
+          MenuPathList[i] = openfluid::tools::decodeXMLEntities(MenuPathList[i]);
+
 
       QString MainMenuTitle = MenuPathList.first();
       if (!m_InsertionMenus.contains(MainMenuTitle))

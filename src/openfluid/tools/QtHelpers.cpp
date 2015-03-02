@@ -174,6 +174,18 @@ QString escapeXMLEntities(const QString& Str)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+QString decodeXMLEntities(const QString& Str)
+{
+  QString DecodedStr = Str;
+  DecodedStr.replace("&amp;","&").replace("&gt;",">").replace("&lt;","<").replace("&quot;","\"");
+  return DecodedStr;
+}
+
+
 
 
 } } // namespaces
