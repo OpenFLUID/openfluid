@@ -41,13 +41,15 @@
 #define __OPENFLUID_TOOLS_FILELOGGER_HPP__
 
 #include <fstream>
-
+#include <openfluid/dllexport.hpp>
 
 class QMutex;
 
+
 namespace openfluid { namespace tools {
 
-class FileLogger
+
+class OPENFLUID_API FileLogger
 {
   private:
 

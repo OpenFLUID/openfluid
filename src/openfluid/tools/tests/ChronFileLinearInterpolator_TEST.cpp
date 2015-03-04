@@ -44,11 +44,10 @@
 #define BOOST_TEST_MODULE unittest_chronfilelinearinterpolator
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
 #include <boost/progress.hpp>
 
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
 
@@ -68,11 +67,11 @@ bool validateException(const openfluid::base::FrameworkException& /*E*/) { retur
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  boost::filesystem::create_directories(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators"));
+  openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators");
 
   openfluid::tools::ChronFileLinearInterpolator
-    CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat").string(),
-         boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp.dat").string(),
+    CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
+         CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp.dat",
          openfluid::core::DateTime(1997,1,1,11,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),60);
 }
 
@@ -83,14 +82,15 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  boost::filesystem::create_directories(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators"));
+  openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators");
+
   {
     boost::progress_timer t;
     std::cout << "measured_ticks_interp60.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp60.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp60.dat",
            openfluid::core::DateTime(1997,1,1,11,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),60);
 
     CFLI.runInterpolation();
@@ -101,8 +101,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
     std::cout << "measured_ticks_interp227.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat",
            openfluid::core::DateTime(1997,1,1,11,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),227,
            openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
 
@@ -112,8 +112,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // wrong end date
   {
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat",
            openfluid::core::DateTime(1997,1,1,11,0,0),openfluid::core::DateTime(1998,1,1,15,30,17),227,
            openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
     BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::FrameworkException,validateException);
@@ -122,8 +122,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // wrong begin date
   {
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat",
            openfluid::core::DateTime(1997,1,1,1,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),227,
            openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
 
@@ -134,8 +134,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // begin date > end date
   {
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat",
            openfluid::core::DateTime(1998,1,1,11,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),227,
            openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
 
@@ -150,8 +150,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
     std::cout << "temp_interp60.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/temp_interp60.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/temp_interp60.dat",
            openfluid::core::DateTime(2013,1,1,12,0,0),openfluid::core::DateTime(2013,9,30,12,30,0),60);
 
     CFLI.runInterpolation();
@@ -164,8 +164,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
     std::cout << "temp_interp86400.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/temp_interp86400.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/temp_interp86400.dat",
            openfluid::core::DateTime(2013,1,1,12,0,0),openfluid::core::DateTime(2013,9,30,12,30,0),86400);
 
     CFLI.runInterpolation();
@@ -179,8 +179,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/rain.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp3600.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/rain.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp3600.dat",
            openfluid::core::DateTime(1992,6,1,0,0,0),openfluid::core::DateTime(1996,4,1,12,30,17),3600);
 
     CFLI.runInterpolation();
@@ -193,8 +193,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
     std::cout << "rain_interp3600short.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/rain.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp3600short.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/rain.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp3600short.dat",
            openfluid::core::DateTime(1992,6,1,0,0,0),openfluid::core::DateTime(1993,4,1,12,30,17),3600);
 
     CFLI.runInterpolation();
@@ -207,8 +207,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
     std::cout << "rain_reinterp3600short.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp3600short.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_reinterp3600short.dat").string(),
+      CFLI(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp3600short.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_reinterp3600short.dat",
            openfluid::core::DateTime(1992,6,1,0,0,0),openfluid::core::DateTime(1993,4,1,12,0,0),3600);
 
     CFLI.runInterpolation();
@@ -220,10 +220,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
     boost::progress_timer t;
     std::cout << "rain_interp3600short.dat vs rain_reinterp3600short.dat: " << std::endl;
 
-    std::ifstream ifs1(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                               "/Interpolators/rain_interp3600short.dat").string().c_str());
-    std::ifstream ifs2(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                               "/Interpolators/rain_reinterp3600short.dat").string().c_str());
+    std::ifstream ifs1(std::string(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp3600short.dat").c_str());
+    std::ifstream ifs2(std::string(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_reinterp3600short.dat").c_str());
 
     std::istream_iterator<char> b1(ifs1), e1;
     std::istream_iterator<char> b2(ifs2), e2;
@@ -237,8 +235,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
     std::cout << "rain_interp60veryshort.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
-      CFLI(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/rain.dat").string(),
-           boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp60veryshort.dat").string(),
+      CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/rain.dat",
+           CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp60veryshort.dat",
            openfluid::core::DateTime(1992,7,1,0,0,0),openfluid::core::DateTime(1992,12,31,23,59,59),60);
 
     CFLI.runInterpolation();

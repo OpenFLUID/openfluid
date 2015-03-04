@@ -37,10 +37,11 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
-#include <boost/filesystem/operations.hpp>
+
 #include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 
 // =====================================================================
@@ -179,32 +180,32 @@ openfluid::base::SchedulingRequest ToolsSimulator::initializeRun()
   std::string StrValue;
 
   OPENFLUID_GetRunEnvironment("dir.input",InputDir);
-  boost::filesystem::path FileName(InputDir + "/" + "columnfile.txt");
+  std::string FileName = InputDir + "/" + "columnfile.txt";
 
-  if (boost::filesystem::exists(FileName))
+  if (openfluid::tools::Filesystem::isFile(FileName))
   {
-    CTParser.loadFromFile(FileName.string());
+    CTParser.loadFromFile(FileName);
 
     if (CTParser.getColsCount() != 5)
-      OPENFLUID_RaiseError("wrong columns number in " + FileName.string());
+      OPENFLUID_RaiseError("wrong columns number in " + FileName);
 
     if (!CTParser.getDoubleValue(2,1,&DoubleValue))
-      OPENFLUID_RaiseError("error reading double value (3,2) in " + FileName.string());
+      OPENFLUID_RaiseError("error reading double value (3,2) in " + FileName);
 
     if (!openfluid::scientific::isVeryClose(DoubleValue,1.2))
-      OPENFLUID_RaiseError("wrong double value for (3,2) in " + FileName.string());
+      OPENFLUID_RaiseError("wrong double value for (3,2) in " + FileName);
 
     if (!CTParser.getStringValue(0,0,&StrValue))
-      OPENFLUID_RaiseError("error reading string value (0,0) in " + FileName.string());
+      OPENFLUID_RaiseError("error reading string value (0,0) in " + FileName);
 
     if (StrValue != "5")
-      OPENFLUID_RaiseError("wrong string value for (0,0) in " + FileName.string());
+      OPENFLUID_RaiseError("wrong string value for (0,0) in " + FileName);
 
 
     if (CTParser.getStringValue(5,5,&StrValue))
-      OPENFLUID_RaiseError("error : found value out of range (5,5) in " + FileName.string());
+      OPENFLUID_RaiseError("error : found value out of range (5,5) in " + FileName);
   }
-  else OPENFLUID_RaiseError("file " + FileName.string() + " not found!");
+  else OPENFLUID_RaiseError("file " + FileName + " not found!");
 
   return DefaultDeltaT();
 }

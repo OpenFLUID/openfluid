@@ -85,6 +85,14 @@ std::list<std::string> OPENFLUID_API toStdStringList(const QStringList& StrList)
 
 
 /**
+  Transforms a QStringList into a std::vector of std::string
+  @param[in] StrList the QStringList to transform
+  @return The QStringList transformed into a std::vector of std::string
+*/
+std::vector<std::string> toStdStringVector(const QStringList& StrList);
+
+
+/**
   Transforms an OpenFLUID DateTime to a QDateTime
   @param[in] DT The OpenFLUID DateTime to transform
   @return The DT transformed into QDateTime

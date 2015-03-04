@@ -41,14 +41,13 @@
 #define BOOST_TEST_MODULE unittest_vectordataset
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <geos/geom/Geometry.h>
 
 
@@ -164,10 +163,8 @@ BOOST_AUTO_TEST_CASE(check_copyToDisk)
 
   deleteIfExists(NewPath);
 
-  if (!boost::filesystem::exists(
-      CONFIGTESTS_OUTPUT_DATA_DIR + "/OPENFLUID.OUT.VectorDataset"))
-    boost::filesystem::create_directories(
-        CONFIGTESTS_OUTPUT_DATA_DIR + "/OPENFLUID.OUT.VectorDataset");
+  if (!openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR + "/OPENFLUID.OUT.VectorDataset"))
+    openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR + "/OPENFLUID.OUT.VectorDataset");
 
   openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                         "landr/SU.shp");

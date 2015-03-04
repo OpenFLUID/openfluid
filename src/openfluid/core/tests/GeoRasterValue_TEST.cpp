@@ -86,9 +86,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL(Val->getType(),
                     openfluid::core::UnstructuredValue::GeoRasterValue);
 
-  BOOST_CHECK_EQUAL(
-      Val->getAbsolutePath(),
-      boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue/dem.jpeg").string());
+  BOOST_CHECK_EQUAL(Val->getAbsolutePath(),CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue/dem.jpeg");
 
   BOOST_CHECK(!Val->data());
 

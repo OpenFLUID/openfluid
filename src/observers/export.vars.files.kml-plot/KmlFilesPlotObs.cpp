@@ -43,8 +43,6 @@
 #include <iostream>
 #include <iomanip>
 
-#include <boost/filesystem/path.hpp>
-
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
@@ -149,7 +147,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
           if ((*it2).second.IsPlotted)
           {
-            std::string ScriptFilename = boost::filesystem::path(WorkDir+"/tmpscript.gp").string();
+            std::string ScriptFilename = WorkDir+"/tmpscript.gp";
             std::string DataFilename = buildFilePath(WorkDir,(*it).UnitsClass,
                                                      (*it2).second.UnitID,(*it).GroupName,"dat");
             std::string OutputFilename = buildFilePath(DestDir,(*it).UnitsClass,
@@ -330,7 +328,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       oss << Dir << "/" << UnitClass << "_" << ID << "_" << VarName << "." << Ext;
 
-      return boost::filesystem::path(oss.str()).string();
+      return oss.str();
     }
 
 
@@ -467,10 +465,10 @@ class KmlFilesPlotObserver : public KmlObserverBase
       if (!m_OKToGo) return;
 
 
-      openfluid::tools::removeDirectoryRecursively(QString::fromStdString(m_TmpDir+"/"+m_GNUPlotSubDir));
-      QDir().mkpath(QString::fromStdString(m_TmpDir+"/"+m_GNUPlotSubDir));
+      openfluid::tools::Filesystem::removeDirectory(m_TmpDir+"/"+m_GNUPlotSubDir);
+      openfluid::tools::Filesystem::makeDirectory(m_TmpDir+"/"+m_GNUPlotSubDir);
 
-      if (!QFileInfo(QString::fromStdString(m_TmpDir+"/"+m_GNUPlotSubDir)).isDir())
+      if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir+"/"+m_GNUPlotSubDir))
       {
         OPENFLUID_RaiseWarning("Cannot initialize gnuplot temporary directory");
         m_OKToGo = false;
@@ -507,7 +505,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
           if ((*it2).second.IsPlotted)
           {
             std::string DataFilename =
-                buildFilePath(boost::filesystem::path(m_TmpDir+"/"+m_GNUPlotSubDir).string(),
+                buildFilePath(m_TmpDir+"/"+m_GNUPlotSubDir,
                               (*it).UnitsClass,(*it2).second.UnitID,
                               (*it).GroupName,"dat");
 
@@ -623,7 +621,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
       buildGnuplotImages(m_TmpDir+"/"+m_GNUPlotSubDir,m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir);
 
 
-      writeKmlFile(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/doc.kml").string());
+      writeKmlFile(m_TmpDir+"/"+m_KmzSubDir+"/doc.kml");
 
       buildKmzFile();
 

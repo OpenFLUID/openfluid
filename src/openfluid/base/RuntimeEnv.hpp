@@ -41,8 +41,7 @@
 #define __OPENFLUID_BASE_RUNTIMEENV_HPP__
 
 #include <string>
-
-#include <boost/filesystem/path.hpp>
+#include <vector>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/EnvProperties.hpp>
@@ -257,7 +256,7 @@ class OPENFLUID_API RuntimeEnvironment
       @return the path
     */
     std::string getConfigFilePath(std::string Filename) const
-      { return boost::filesystem::path(m_UserDataDir + "/" + Filename).string(); };
+    { return m_UserDataDir + "/" + Filename; };
 
 
     /**
@@ -274,7 +273,7 @@ class OPENFLUID_API RuntimeEnvironment
       @return the absolute path
     */
     std::string getUserDataPath(std::string RelativePath) const
-      { return boost::filesystem::path(m_UserDataDir + "/" + RelativePath).string(); };
+      { return m_UserDataDir + "/" + RelativePath; };
 
     /**
       Returns the path of the temporary directory
@@ -289,7 +288,7 @@ class OPENFLUID_API RuntimeEnvironment
       @return the path for a given input file
     */
     std::string getInputFullPath(std::string Filename) const
-      { return boost::filesystem::path(m_InputDir + "/" + Filename).string(); };
+      { return m_InputDir + "/" + Filename; };
 
     /**
       Returns the path for a given output file (i.e. OutputDir/Filename)
@@ -297,7 +296,7 @@ class OPENFLUID_API RuntimeEnvironment
       @return the path for a given output file
     */
     inline std::string getOutputFullPath(std::string Filename) const
-    { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
+    { return m_OutputDir + "/" + Filename; };
 
     /**
       Returns the path for a given simulator plugin file, taking into account the simulator plugins path search order

@@ -38,9 +38,7 @@
 
 
 #include <openfluid/market/MarketDatasetPackage.hpp>
-
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include <QProcess>
 
@@ -97,10 +95,10 @@ void MarketDatasetPackage::process()
 
   std::string DatasetInstallDir = getInstallPath() + "/" + m_ID;
 
-  if (boost::filesystem::is_directory(boost::filesystem::path(DatasetInstallDir)))
-    boost::filesystem::remove_all(boost::filesystem::path(DatasetInstallDir));
+  if (openfluid::tools::Filesystem::isDirectory(DatasetInstallDir))
+    openfluid::tools::Filesystem::removeDirectory(DatasetInstallDir);
 
-  if (!boost::filesystem::create_directories(boost::filesystem::path(DatasetInstallDir)))
+  if (!openfluid::tools::Filesystem::makeDirectory(DatasetInstallDir))
     throw openfluid::base::FrameworkException("MarketDatasetPackage::process()",
                                               "unable to create dataset directory for "+m_ID+" package");
 

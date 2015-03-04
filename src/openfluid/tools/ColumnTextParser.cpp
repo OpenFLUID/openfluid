@@ -42,10 +42,10 @@
 #include <iostream>
 #include <fstream>
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem.hpp>
-#include <openfluid/tools/ColumnTextParser.hpp>
 
+#include <openfluid/tools/ColumnTextParser.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 
 // =====================================================================
@@ -151,22 +151,18 @@ bool ColumnTextParser::loadFromFile(const std::string& Filename)
 {
 
   std::string StrLine;
-  boost::filesystem::path ColumnFilename;
 
   if (m_Contents.size()> 0 ) m_Contents.clear();
 
   m_LinesCount = 0;
   m_ColsCount = 0;
 
+  // check if file exists
+  if (!openfluid::tools::Filesystem::isFile(Filename)) return false;
 
-  ColumnFilename = boost::filesystem::path(Filename);
+  std::ifstream FileContent(Filename.c_str());
 
-
-  std::ifstream FileContent(ColumnFilename.string().c_str());
-
-
-  // check if file exists and if it is "openable"
-  if (!boost::filesystem::exists(ColumnFilename)) return false;
+  // check if file is "openable"
   if (!FileContent) return false;
 
   // parse and loads file contents

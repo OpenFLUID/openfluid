@@ -43,8 +43,6 @@
 #define BOOST_TEST_MODULE unittest_marketpackage
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
 
 #include <openfluid/market/MarketSrcSimulatorPackage.hpp>
 #include <openfluid/market/MarketBinSimulatorPackage.hpp>
@@ -53,6 +51,7 @@
 #include <openfluid/market/MarketSrcBuilderextPackage.hpp>
 #include <openfluid/market/MarketBinBuilderextPackage.hpp>
 #include <openfluid/market/MarketDatasetPackage.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include <tests-config.hpp>
 #include <QCoreApplication>
@@ -63,15 +62,15 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  std::string TmpDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp").string();
+  std::string TmpDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp";
   std::string MarketBagSimulatorDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-simulators").string();
+      CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-simulators";
   std::string MarketBagObserverDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-observers").string();
+      CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-observers";
   std::string MarketBagBuilderextDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-builderexts").string();
+      CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-builderexts";
   std::string MarketBagDatasetDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets").string();
+      CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets";
   std::string MarketBagBinSubDir = "bin";
   std::string MarketBagSrcSubDir = "src";
 
@@ -80,49 +79,50 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   openfluid::market::MarketPackage::initialize(false);
 
-  boost::filesystem::remove_all(boost::filesystem::path(TmpDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSimulatorDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagObserverDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBuilderextDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagDatasetDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSrcSubDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBinSubDir));
+  openfluid::tools::Filesystem::removeDirectory(TmpDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagSimulatorDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagObserverDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagBuilderextDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagDatasetDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagSrcSubDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagBinSubDir);
 
 
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagSimulatorDir())));
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagSimulatorDir()
-                +"/"+ openfluid::market::MarketPackage::getMarketBagBinSubDir())));
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagSimulatorDir()
-                +"/"+ openfluid::market::MarketPackage::getMarketBagSrcSubDir())));
+  BOOST_REQUIRE(
+      openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagSimulatorDir())
+  );
 
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagObserverDir())));
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagObserverDir()
-                +"/"+ openfluid::market::MarketPackage::getMarketBagBinSubDir())));
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagObserverDir()
-                +"/"+ openfluid::market::MarketPackage::getMarketBagSrcSubDir())));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagSimulatorDir()
+                +"/"+ openfluid::market::MarketPackage::getMarketBagBinSubDir()));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagSimulatorDir()
+                +"/"+ openfluid::market::MarketPackage::getMarketBagSrcSubDir()));
 
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagBuilderextDir())));
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagBuilderextDir()
-                +"/"+ openfluid::market::MarketPackage::getMarketBagBinSubDir())));
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagBuilderextDir()
-                +"/"+ openfluid::market::MarketPackage::getMarketBagSrcSubDir())));
+  BOOST_REQUIRE(
+      openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagObserverDir())
+  );
+  BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagObserverDir()
+                +"/"+ openfluid::market::MarketPackage::getMarketBagBinSubDir()));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagObserverDir()
+                +"/"+ openfluid::market::MarketPackage::getMarketBagSrcSubDir()));
 
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagDatasetDir())));
+  BOOST_REQUIRE(
+      openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagBuilderextDir())
+  );
+  BOOST_REQUIRE(
+      openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagBuilderextDir()
+      +"/"+ openfluid::market::MarketPackage::getMarketBagBinSubDir())
+  );
+  BOOST_REQUIRE(
+      openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagBuilderextDir()
+      +"/"+ openfluid::market::MarketPackage::getMarketBagSrcSubDir())
+  );
 
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getTempBuildsDir())));
-  BOOST_REQUIRE(boost::filesystem::create_directories(
-      boost::filesystem::path(openfluid::market::MarketPackage::getTempDownloadsDir())));
+  BOOST_REQUIRE(
+      openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getMarketBagDatasetDir())
+  );
+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getTempBuildsDir()));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(openfluid::market::MarketPackage::getTempDownloadsDir()));
 
 
   openfluid::market::MarketSrcSimulatorPackage SFPack("dummy.id","file:://path/to/file");
@@ -171,16 +171,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::string VersionStr = CONFIGTESTS_VERSION_MAJOR+"."+CONFIGTESTS_VERSION_MINOR+"."+CONFIGTESTS_VERSION_PATCH;
 
 
-  std::string TmpDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp").string();;
-  std::string MarketBagSimulatorDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-simulators").string();
-  std::string MarketBagObserverDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-observers").string();
-  std::string MarketBagBuilderextDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-builderexts").string();
-  std::string MarketBagDatasetDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets").string();
+  std::string TmpDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp";
+  std::string MarketBagSimulatorDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-simulators";
+  std::string MarketBagObserverDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-observers";
+  std::string MarketBagBuilderextDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-builderexts";
+  std::string MarketBagDatasetDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets";
   std::string MarketBagBinSubDir = "bin";
   std::string MarketBagSrcSubDir = "src";
 
@@ -193,57 +188,61 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::market::MarketBinSimulatorPackage BSPack("tests.market.sim.binonly",
                                                       "file://"+
-                                                      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                      CONFIGTESTS_OUTPUT_DATA_DIR+
                                                                               "/marketplace/simulators/"+Arch+
                                                                               "/tests.market.sim.binonly_"+VersionStr+
-                                                                              "_"+Arch+".ofpk").string());
+                                                                              "_"+Arch+".ofpk");
 
   BSPack.download();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/temp/downloads/tests.market.sim.binonly_"+VersionStr+"_"+
-                              Arch+".ofpk")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+      "/market/packages/temp/downloads/tests.market.sim.binonly_"+VersionStr+"_"+
+      Arch+".ofpk"));
 
   BSPack.process();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/market-simulators/bin/tests.market.sim.binonly")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-simulators/bin/tests.market.sim.binonly")
+  );
 
   openfluid::market::MarketBinObserverPackage BOPack("tests.market.obs.binonly",
-                                                     "file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                     "file://"+CONFIGTESTS_OUTPUT_DATA_DIR+
                                                                                        "/marketplace/observers/"+Arch+
                                                                                        "/tests.market.obs.binonly_"+
                                                                                        VersionStr+"_"+Arch+
-                                                                                       ".ofpk").string());
+                                                                                       ".ofpk");
 
   BOPack.download();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/temp/downloads/tests.market.obs.binonly_"+VersionStr+"_"+
-                              Arch+".ofpk")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+      "/market/packages/temp/downloads/tests.market.obs.binonly_"+VersionStr+"_"+
+      Arch+".ofpk")
+  );
 
   BOPack.process();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/market-observers/bin/tests.market.obs.binonly")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+      "/market/packages/market-observers/bin/tests.market.obs.binonly")
+  );
 
   openfluid::market::MarketBinBuilderextPackage BBPack("tests.market.bext.binonly",
                                                        "file://"+
-                                                       boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                                               "/marketplace/builderexts/"+Arch+
-                                                                               "/tests.market.bext.binonly_"+
-                                                                               VersionStr+"_"+Arch+".ofpk").string());
+                                                       CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                       "/marketplace/builderexts/"+Arch+
+                                                       "/tests.market.bext.binonly_"+
+                                                       VersionStr+"_"+Arch+".ofpk");
 
   BBPack.download();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/temp/downloads/tests.market.bext.binonly_"+
-                              VersionStr+"_"+Arch+".ofpk")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+      "/market/packages/temp/downloads/tests.market.bext.binonly_"+
+      VersionStr+"_"+Arch+".ofpk")
+  );
 
   BBPack.process();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/market-builderexts/bin/tests.market.bext.binonly")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+      "/market/packages/market-builderexts/bin/tests.market.bext.binonly"))
+  ;
 
 
 
@@ -251,76 +250,81 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::market::MarketSrcSimulatorPackage SSPack("tests.market.sim.srconly",
                                                       "file://"+
-                                                      boost::filesystem::path(
+
                                                           CONFIGTESTS_OUTPUT_DATA_DIR+
                                                           "/marketplace/simulators/src/tests.market.sim.srconly_"+
-                                                          VersionStr+"_src.ofpk").string());
+                                                          VersionStr+"_src.ofpk");
   SSPack.setBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
   SSPack.download();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/temp/downloads/tests.market.sim.srconly_"+VersionStr+"_src.ofpk")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+      "/market/packages/temp/downloads/tests.market.sim.srconly_"+VersionStr+"_src.ofpk")
+  );
 
   SSPack.process();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
                               "/market/packages/temp/builds/tests.market.sim.srconly/tests.market.sim.srconly"+
-                              openfluid::config::SIMULATORS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)));
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/market-simulators/src/tests.market.sim.srconly")));
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
+                              openfluid::config::SIMULATORS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(
+      CONFIGTESTS_OUTPUT_DATA_DIR+ "/market/packages/market-simulators/src/tests.market.sim.srconly")
+  );
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
                               "/market/packages/market-simulators/bin/tests.market.sim.srconly"+
-                              openfluid::config::SIMULATORS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)));
+                              openfluid::config::SIMULATORS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 
 
   openfluid::market::MarketSrcObserverPackage SOPack("tests.market.obs.srconly",
                                                      "file://"+
-                                                     boost::filesystem::path(
+
                                                          CONFIGTESTS_OUTPUT_DATA_DIR+
                                                          "/marketplace/observers/src/tests.market.obs.srconly_"+
-                                                         VersionStr+"_src.ofpk").string());
+                                                         VersionStr+"_src.ofpk");
   SOPack.setBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
   SOPack.download();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/temp/downloads/tests.market.obs.srconly_"+VersionStr+"_src.ofpk")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+                              "/market/packages/temp/downloads/tests.market.obs.srconly_"+VersionStr+"_src.ofpk"));
 
   SOPack.process();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
                               "/market/packages/temp/builds/tests.market.obs.srconly/tests.market.obs.srconly"+
-                              openfluid::config::OBSERVERS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)));
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/market-observers/src/tests.market.obs.srconly")));
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
+                              openfluid::config::OBSERVERS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(
+      CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-observers/src/tests.market.obs.srconly")
+  );
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
                               "/market/packages/market-observers/bin/tests.market.obs.srconly"+
-                              openfluid::config::OBSERVERS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)));
+                              openfluid::config::OBSERVERS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)
+  );
 
 
   openfluid::market::MarketDatasetPackage DPack("tests.market.data",
                                                 "file://"+
-                                                boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                                        "/marketplace/datasets/tests.market.data_"+
-                                                                        VersionStr+"_data.ofpk").string());
+                                                CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                "/marketplace/datasets/tests.market.data_"+
+                                                VersionStr+"_data.ofpk");
 
   DPack.download();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/temp/downloads/tests.market.data_"+VersionStr+"_data.ofpk")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+      "/market/packages/temp/downloads/tests.market.data_"+VersionStr+"_data.ofpk")
+  );
 
   DPack.process();
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/market-datasets/tests.market.data")));
-  BOOST_REQUIRE(boost::filesystem::exists(
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                              "/market/packages/market-datasets/tests.market.data/tests.market.data.fluidx")));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+      "/market/packages/market-datasets/tests.market.data")
+  );
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+      CONFIGTESTS_OUTPUT_DATA_DIR+
+      "/market/packages/market-datasets/tests.market.data/tests.market.data.fluidx")
+  );
 }
 
 // =====================================================================

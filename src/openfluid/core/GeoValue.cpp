@@ -36,9 +36,7 @@
   @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include "GeoValue.hpp"
-
-#include <boost/filesystem/path.hpp>
+#include <openfluid/core/GeoValue.hpp>
 
 
 namespace openfluid { namespace core {
@@ -72,7 +70,7 @@ GeoValue::~GeoValue()
 std::string GeoValue::computeAbsolutePath(const std::string& FilePath,
                                           const std::string& FileName)
 {
-  return boost::filesystem::path(FilePath + "/" + FileName).string();
+  return FilePath + "/" + FileName;
 }
 
 

@@ -261,7 +261,7 @@ ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP
 
 
 TARGET_LINK_LIBRARIES(openfluid-builder-main 
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
+                      ${Boost_SYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
                       ${GDAL_LIBRARIES}
@@ -311,7 +311,7 @@ IF(APPLE)
 ENDIF()
 
 TARGET_LINK_LIBRARIES(openfluid-builder
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
+                      ${Boost_SYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
                       ${GDAL_LIBRARIES}

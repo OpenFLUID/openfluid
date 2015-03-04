@@ -40,12 +40,12 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 
-#include <boost/filesystem/operations.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include <openfluid/config.hpp>
 
@@ -112,8 +112,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   if (INSTALLEnvVar != NULL)
   {
-    m_InstallPrefix
-        = boost::filesystem::path(std::string(INSTALLEnvVar)).string();
+    m_InstallPrefix = std::string(INSTALLEnvVar);
   }
 
   // ====== Default directories ======
@@ -137,8 +136,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   ChUserName= std::getenv("USER");
   if (ChUserName != NULL) m_UserID= ChUserName;
 
-  m_UserDataDir = boost::filesystem::path(m_HomeDir + "/."
-        + openfluid::config::RELATIVEDIR).string();
+  m_UserDataDir = m_HomeDir + "/." + openfluid::config::RELATIVEDIR;
 #endif
 
 #if WIN32
@@ -150,7 +148,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   ChUserName= std::getenv("USERNAME");
   if (ChUserName != NULL) m_UserID= ChUserName;
 
-  m_UserDataDir = boost::filesystem::path(m_HomeDir+"/"+openfluid::config::RELATIVEDIR).string();
+  m_UserDataDir = m_HomeDir+"/"+openfluid::config::RELATIVEDIR;
 #endif
 
 
@@ -159,8 +157,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   if (USERDATAEnvVar != NULL)
   {
-    m_UserDataDir
-        = boost::filesystem::path(std::string(USERDATAEnvVar)).string();
+    m_UserDataDir = std::string(USERDATAEnvVar);
   }
 
 
@@ -169,43 +166,36 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   if (TEMPEnvVar != NULL)
   {
-    m_TempDir
-        = boost::filesystem::path(std::string(TEMPEnvVar)).string();
+    m_TempDir = std::string(TEMPEnvVar);
   }
 
 
-  m_OutputDir = boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::DEFAULT_OUTDIR).string();
-  m_InputDir = boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::DEFAULT_INDIR).string();
+  m_OutputDir = m_UserDataDir + "/" + openfluid::config::DEFAULT_OUTDIR;
+  m_InputDir = m_UserDataDir + "/" + openfluid::config::DEFAULT_INDIR;
 
   // ====== Market ======
 
-  m_MarketBagDir = boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::MARKETBAG_SUBDIR).string();
-  m_MarketBagVersionDir = boost::filesystem::path(m_MarketBagDir + "/" + m_Version).string();
+  m_MarketBagDir = m_UserDataDir + "/" + openfluid::config::MARKETBAG_SUBDIR;
+  m_MarketBagVersionDir = m_MarketBagDir + "/" + m_Version;
 
-  m_MarketBagSimVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "simulators").string();
-  m_MarketBagObsVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "observers").string();
-  m_MarketBagBuildVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "builderexts").string();
-  m_MarketBagDataVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "datasets").string();
+  m_MarketBagSimVersionDir = m_MarketBagVersionDir + "/" + "simulators";
+  m_MarketBagObsVersionDir = m_MarketBagVersionDir + "/" + "observers";
+  m_MarketBagBuildVersionDir = m_MarketBagVersionDir + "/" + "builderexts";
+  m_MarketBagDataVersionDir = m_MarketBagVersionDir + "/" + "datasets";
   m_MarketBagBinSubDir = m_Arch;
   m_MarketBagSrcSubDir = "src";
 
 
   // ====== Config file ======
 
-  m_DefaultConfigFilePath = boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::DEFAULT_CONFIGFILE).string();
+  m_DefaultConfigFilePath = m_UserDataDir + "/" + openfluid::config::DEFAULT_CONFIGFILE;
 
 
   // ====== Examples ======
 
-  m_UserExamplesDir = boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::EXAMPLES_SUBDIR).string();
+  m_UserExamplesDir = m_UserDataDir + "/" + openfluid::config::EXAMPLES_SUBDIR;
 
-  m_ProvidedExamplesDir = boost::filesystem::path(m_InstallPrefix + "/"
-        + openfluid::config::EXAMPLES_STDDIR).string();
+  m_ProvidedExamplesDir = m_InstallPrefix + "/" + openfluid::config::EXAMPLES_STDDIR;
 
 
   // ====== Default values ======
@@ -248,16 +238,13 @@ RuntimeEnvironment::RuntimeEnvironment() :
   }
 
   // user dir
-  m_DefaultSimulatorsPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::SIMULATORS_PLUGINS_USRDIR).string());
+  m_DefaultSimulatorsPlugsDirs.push_back(m_UserDataDir + "/" + openfluid::config::SIMULATORS_PLUGINS_USRDIR);
 
   // market-bag dir (for current version)
-  m_DefaultSimulatorsPlugsDirs.push_back(boost::filesystem::path(m_MarketBagSimVersionDir
-      + "/" + m_MarketBagBinSubDir).string());
+  m_DefaultSimulatorsPlugsDirs.push_back(m_MarketBagSimVersionDir + "/" + m_MarketBagBinSubDir);
 
   // install directory
-  std::string SimulatorsPluginsInstallPath = boost::filesystem::path(m_InstallPrefix
-      + "/" + openfluid::config::SIMULATORS_PLUGINS_STDDIR).string();
+  std::string SimulatorsPluginsInstallPath =  m_InstallPrefix + "/" + openfluid::config::SIMULATORS_PLUGINS_STDDIR;
   m_DefaultSimulatorsPlugsDirs.push_back(SimulatorsPluginsInstallPath);
 
 
@@ -279,16 +266,13 @@ RuntimeEnvironment::RuntimeEnvironment() :
   }
 
   // user dir
-  m_DefaultObserversPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::OBSERVERS_PLUGINS_USRDIR).string());
+  m_DefaultObserversPlugsDirs.push_back(m_UserDataDir + "/" + openfluid::config::OBSERVERS_PLUGINS_USRDIR);
 
   // market-bag dir (for current version)
-   m_DefaultObserversPlugsDirs.push_back(boost::filesystem::path(m_MarketBagObsVersionDir
-       + "/" + m_MarketBagBinSubDir).string());
+   m_DefaultObserversPlugsDirs.push_back(m_MarketBagObsVersionDir + "/" + m_MarketBagBinSubDir);
 
   // install directory
-  std::string ObserversPluginsInstallPath = boost::filesystem::path(m_InstallPrefix
-      + "/" + openfluid::config::OBSERVERS_PLUGINS_STDDIR).string();
+  std::string ObserversPluginsInstallPath = m_InstallPrefix + "/" + openfluid::config::OBSERVERS_PLUGINS_STDDIR;
   m_DefaultObserversPlugsDirs.push_back(ObserversPluginsInstallPath);
 
 }
@@ -322,10 +306,8 @@ RuntimeEnvironment* RuntimeEnvironment::instance()
 
 void RuntimeEnvironment::setDateTimeOutputDir()
 {
-  m_OutputDir =
-      boost::filesystem::path(m_UserDataDir + "/" + "OPENFLUID." +
-                              boost::posix_time::to_iso_string(boost::posix_time::microsec_clock::local_time()) +
-                              ".OUT").string();
+  m_OutputDir = m_UserDataDir + "/" + "OPENFLUID." +
+                boost::posix_time::to_iso_string(boost::posix_time::microsec_clock::local_time()) + ".OUT";
 }
 
 
@@ -361,17 +343,15 @@ std::string RuntimeEnvironment::getSimulatorPluginFullPath(std::string Filename)
 
   std::vector<std::string> PluginsPaths = getSimulatorsPluginsPaths();
   std::string PlugFullPath = "";
-  boost::filesystem::path TmpPath;
 
   unsigned int i = 0;
 
   while ((PlugFullPath.length() == 0) && (i < PluginsPaths.size()))
   {
+    std::string TmpPath = PluginsPaths[i] + "/" + Filename;
 
-    TmpPath = boost::filesystem::path(PluginsPaths[i] + "/" + Filename);
-
-    if (boost::filesystem::exists(TmpPath))
-      PlugFullPath = TmpPath.string();
+    if (openfluid::tools::Filesystem::isFile(TmpPath))
+      PlugFullPath = TmpPath;
 
     i++;
   }
@@ -412,17 +392,16 @@ std::string RuntimeEnvironment::getObserverPluginFullPath(std::string Filename)
 
   std::vector<std::string> PluginsPaths = getObserversPluginsPaths();
   std::string PlugFullPath = "";
-  boost::filesystem::path TmpPath;
 
   unsigned int i = 0;
 
   while ((PlugFullPath.length() == 0) && (i < PluginsPaths.size()))
   {
 
-    TmpPath = boost::filesystem::path(PluginsPaths[i] + "/" + Filename);
+    std::string TmpPath = PluginsPaths[i] + "/" + Filename;
 
-    if (boost::filesystem::exists(TmpPath))
-      PlugFullPath = TmpPath.string();
+    if (openfluid::tools::Filesystem::isFile(TmpPath))
+      PlugFullPath = TmpPath;
 
     i++;
   }
@@ -437,8 +416,7 @@ std::string RuntimeEnvironment::getObserverPluginFullPath(std::string Filename)
 
 std::string RuntimeEnvironment::getCommonResourcesDir() const
 {
-  return boost::filesystem::path(m_InstallPrefix + "/"
-      + openfluid::config::SHARE_COMMON_INSTALL_PATH).string();
+  return m_InstallPrefix + "/" + openfluid::config::SHARE_COMMON_INSTALL_PATH;
 }
 
 
@@ -449,8 +427,7 @@ std::string RuntimeEnvironment::getCommonResourcesDir() const
 std::string RuntimeEnvironment::getCommonResourceFilePath(
     std::string RelativeFilePath) const
 {
-  return boost::filesystem::path(m_InstallPrefix + "/"
-      + openfluid::config::SHARE_COMMON_INSTALL_PATH + "/" + RelativeFilePath).string();
+  return m_InstallPrefix + "/" + openfluid::config::SHARE_COMMON_INSTALL_PATH + "/" + RelativeFilePath;
 }
 
 
@@ -460,8 +437,7 @@ std::string RuntimeEnvironment::getCommonResourceFilePath(
 
 std::string RuntimeEnvironment::getAppResourcesDir(std::string AppName) const
 {
-  return boost::filesystem::path(m_InstallPrefix + "/"
-      + openfluid::config::SHARE_APPS_INSTALL_PATH + "/" + AppName).string();
+  return m_InstallPrefix + "/" + openfluid::config::SHARE_APPS_INSTALL_PATH + "/" + AppName;
 }
 
 // =====================================================================
@@ -471,9 +447,7 @@ std::string RuntimeEnvironment::getAppResourcesDir(std::string AppName) const
 std::string RuntimeEnvironment::getAppResourceFilePath(std::string AppName,
     std::string RelativeFilePath) const
 {
-  return boost::filesystem::path(m_InstallPrefix + "/"
-      + openfluid::config::SHARE_APPS_INSTALL_PATH + "/" + AppName + "/"
-      + RelativeFilePath).string();
+  return m_InstallPrefix + "/" + openfluid::config::SHARE_APPS_INSTALL_PATH + "/" + AppName + "/" + RelativeFilePath;
 }
 
 
@@ -483,7 +457,7 @@ std::string RuntimeEnvironment::getAppResourceFilePath(std::string AppName,
 
 std::string RuntimeEnvironment::getTranslationsDir() const
 {
-  return boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::SHARE_TRANSLATIONS_PATH).string();
+  return m_InstallPrefix + "/" + openfluid::config::SHARE_TRANSLATIONS_PATH;
 }
 
 
@@ -491,9 +465,9 @@ std::string RuntimeEnvironment::getTranslationsDir() const
 // =====================================================================
 
 
-void RuntimeEnvironment::setSimulationTimeInformation(
-    openfluid::core::DateTime StartTime, openfluid::core::DateTime EndTime,
-    int TimeStep)
+void RuntimeEnvironment::setSimulationTimeInformation(openfluid::core::DateTime StartTime,
+                                                      openfluid::core::DateTime EndTime,
+                                                      int TimeStep)
 {
   m_StartTime = StartTime;
   m_EndTime = EndTime;

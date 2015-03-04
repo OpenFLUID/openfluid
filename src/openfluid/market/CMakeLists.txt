@@ -22,7 +22,7 @@ TARGET_LINK_LIBRARIES(openfluid-market
                       openfluid-tools
                       openfluid-utils
                       ${QT_QTCORE_LIBRARIES} 
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+                      ${Boost_SYSTEM_LIBRARY})
 
 
 

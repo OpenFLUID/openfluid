@@ -45,10 +45,10 @@
 
 #include <boost/foreach.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/filesystem/path.hpp>
 
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 
 
@@ -204,7 +204,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
       oss << m_OutputDir << "/" << SetName << "_" << UnitClass << UnitID << "_" << Varname << "." << m_OutFileExt;
 
-      return boost::filesystem::path(oss.str()).string();
+      return oss.str();
     }
 
 
@@ -445,7 +445,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
             (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
                                 << "========================================================================\n";
             (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
-                                << " file: " << boost::filesystem::path((*FLIt)->FileName).leaf() << "\n";
+                                << " file: " << openfluid::tools::Filesystem::filename((*FLIt)->FileName) << "\n";
             (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
                                 << " date: " << boost::posix_time::to_simple_string(
                                                     boost::posix_time::microsec_clock::local_time()) << "\n";

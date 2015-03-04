@@ -40,8 +40,6 @@
 #include <fstream>
 #include <iomanip>
 
-#include <boost/filesystem/path.hpp>
-
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
 #include <openfluid/scientific/Interpolators.hpp>
@@ -87,7 +85,7 @@ void ChronFileLinearInterpolator::runInterpolation()
   long x,x1;
   double y,y0,y1;
 
-  std::ofstream OutFile(boost::filesystem::path(m_OutFilePath).string().c_str());
+  std::ofstream OutFile(m_OutFilePath.c_str());
 
   OutFile << std::setprecision(15);
 

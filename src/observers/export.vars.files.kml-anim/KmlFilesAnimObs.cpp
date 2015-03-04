@@ -43,8 +43,6 @@
 #include <iostream>
 #include <iomanip>
 
-#include <boost/filesystem/path.hpp>
-
 #include <openfluid/tools/DataHelpers.hpp>
 
 #include "../KmlObserverBase.hpp"
@@ -164,9 +162,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       openfluid::tools::convertValue(CurrentTI,&CurrentTIStr);
 
-      std::ofstream CurrentKmlFile(
-          boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir+"/t_"+
-                                  CurrentTIStr+".kml").string().c_str());
+      std::ofstream CurrentKmlFile(std::string(m_TmpDir+"/"+m_KmzSubDir+"/"+
+                                               m_KmzDataSubDir+"/t_"+ CurrentTIStr+".kml").c_str());
 
       CurrentKmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
       CurrentKmlFile << "<kml xmlns=\"http://www.opengis.net/kml/2.2\" "
@@ -493,7 +490,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
 
       // open and initialize doc.kml file
-      m_KmlFile.open(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/doc.kml").string().c_str());
+      m_KmlFile.open(std::string(m_TmpDir+"/"+m_KmzSubDir+"/doc.kml").c_str());
 
       m_KmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
       m_KmlFile << "<kml xmlns=\"http://www.opengis.net/kml/2.2\" "

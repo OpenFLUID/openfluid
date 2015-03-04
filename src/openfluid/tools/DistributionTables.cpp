@@ -38,8 +38,8 @@
  */
 
 #include <openfluid/tools/DistributionTables.hpp>
-#include <boost/filesystem/convenience.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -60,7 +60,7 @@ void DistributionTables::build(const std::string& BasePath,
   QDomDocument Doc;
   QDomElement Root;
 
-  std::string SourcesFilePath = boost::filesystem::path(BasePath+"/"+SourcesFileName).string();
+  std::string SourcesFilePath = BasePath+"/"+SourcesFileName;
 
 
   QFile File(QString(SourcesFilePath.c_str()));
@@ -97,8 +97,7 @@ void DistributionTables::build(const std::string& BasePath,
 
                 if (!xmlID.isNull() && !xmlFile.isNull())
                 {
-                  SourcesTable[xmlID.toStdString()] =
-                      boost::filesystem::path(BasePath + "/" + xmlFile.toStdString()).string();
+                  SourcesTable[xmlID.toStdString()] = BasePath + "/" + xmlFile.toStdString();
                 }
               }
             }
@@ -130,9 +129,9 @@ void DistributionTables::build(const std::string& BasePath,
 
   ColumnTextParser DistriFileParser("%");
 
-  std::string DistributionFilePath = boost::filesystem::path(BasePath+"/"+DistributionFileName).string();
+  std::string DistributionFilePath = BasePath+"/"+DistributionFileName;
 
-  if (boost::filesystem::exists(boost::filesystem::path(DistributionFilePath)))
+  if (openfluid::tools::Filesystem::isFile(DistributionFilePath))
   {
     if (DistriFileParser.loadFromFile(DistributionFilePath) &&
         DistriFileParser.getColsCount() == 2 &&

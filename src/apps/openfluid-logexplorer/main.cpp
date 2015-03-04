@@ -38,6 +38,7 @@
 
 
 #include <iostream>
+#include <typeinfo>
 
 #include <QTranslator>
 #include <QLibraryInfo>

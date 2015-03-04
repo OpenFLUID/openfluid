@@ -48,7 +48,6 @@
 // TODO Should be re-enabled later
 
 
-#include <boost/filesystem/path.hpp>
 #include <map>
 #include <vector>
 
@@ -77,12 +76,12 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
     std::string m_CPPFile;
     std::string m_LatexOutFile;
 
-    boost::filesystem::path m_InputDirPath;
-    boost::filesystem::path m_OutputDirPath;
-    boost::filesystem::path m_InputFilePath;
-    boost::filesystem::path m_OutputLatexFilePath;
-    boost::filesystem::path m_TplFilePath;
-    boost::filesystem::path m_CProcessedFilePath;
+    std::string m_InputDirPath;
+    std::string m_OutputDirPath;
+    std::string m_InputFilePath;
+    std::string m_OutputLatexFilePath;
+    std::string m_TplFilePath;
+    std::string m_CProcessedFilePath;
 
     openfluid::utils::ExternalProgram m_PDFLatexProgram;
     openfluid::utils::ExternalProgram m_BibtexProgram;

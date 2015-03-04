@@ -43,8 +43,7 @@
 #include <iostream>
 #include <iomanip>
 #include <set>
-#include <math.h>
-#include <boost/filesystem.hpp>
+#include <cmath>
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -54,6 +53,7 @@
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -409,9 +409,7 @@ void Engine::checkExtraFilesConsistency()
 
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
-
-      boost::filesystem::path ReqExtraFilePath(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]));
-      if (!boost::filesystem::exists(ReqExtraFilePath))
+      if (!openfluid::tools::Filesystem::isFile(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i])))
         throw openfluid::base::FrameworkException("Engine::checkExtraFilesConsistency",
                                                   "File " + HData.RequiredExtraFiles[i] +
                                                   " required by " + CurrentSimulator->Signature->ID + " not found");
@@ -426,16 +424,11 @@ void Engine::checkExtraFilesConsistency()
 
 void Engine::prepareOutputDir()
 {
-
-  boost::filesystem::path OutputDirPath(mp_RunEnv->getOutputDir());
-
-
-  if (!boost::filesystem::exists(OutputDirPath))
+  if (!openfluid::tools::Filesystem::isDirectory(mp_RunEnv->getOutputDir()))
   {
-    boost::filesystem::create_directories(OutputDirPath);
-    if (!boost::filesystem::exists(OutputDirPath))
+    openfluid::tools::Filesystem::makeDirectory(mp_RunEnv->getOutputDir());
+    if (!openfluid::tools::Filesystem::isDirectory(mp_RunEnv->getOutputDir()))
       throw openfluid::base::FrameworkException("IOManager::prepareOutputDir","Error creating output directory");
-
   }
   else
   {

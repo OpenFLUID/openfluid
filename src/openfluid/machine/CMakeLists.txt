@@ -23,7 +23,7 @@ TARGET_LINK_LIBRARIES(openfluid-machine
                       openfluid-ware
                       openfluid-fluidx
                       ${QT_QTCORE_LIBRARY}                    
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
 
 
 INSTALL(TARGETS openfluid-machine

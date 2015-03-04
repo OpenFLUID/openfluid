@@ -43,10 +43,8 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/convenience.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 
 namespace openfluid { namespace buddies {
@@ -83,15 +81,14 @@ bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
 {
   mp_Listener->onSubstageCompleted("Installing example project \"" + ProjectDir + "\" ... ");
 
-  boost::filesystem::path AllProjectsInstallPath(ProjectsInstallPath);
-  boost::filesystem::path ThisProjectInstallPath(ProjectsInstallPath+"/"+ProjectDir);
+  std::string ThisProjectInstallPath = ProjectsInstallPath+"/"+ProjectDir;
 
-  if (!boost::filesystem::is_directory(ThisProjectInstallPath) || Force)
+  if (!openfluid::tools::Filesystem::isDirectory(ThisProjectInstallPath) || Force)
   {
-    boost::filesystem::create_directories(ThisProjectInstallPath);
+    openfluid::tools::Filesystem::makeDirectory(ThisProjectInstallPath);
 
-    openfluid::tools::copyDirectoryRecursively(boost::filesystem::path(ProjectsSourcePath+"/"+ProjectDir).string(),
-                                               AllProjectsInstallPath.string());
+    openfluid::tools::Filesystem::copyDirectory(ProjectsSourcePath+"/"+ProjectDir,
+                                                ProjectsInstallPath);
     mp_Listener->onSubstageCompleted("Done");
     return true;
   }
@@ -109,18 +106,15 @@ bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
 bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSourcePath,
                                                const std::string& ProjectsInstallPath, const bool Force)
 {
-  boost::filesystem::path PathToExplore(ProjectsSourcePath);
 
 
-  if (boost::filesystem::is_directory(PathToExplore))
+
+  if (openfluid::tools::Filesystem::isDirectory(ProjectsSourcePath))
   {
-    boost::filesystem::directory_iterator it;
+    std::vector<std::string> FoundProjects = openfluid::tools::findDirectories(ProjectsSourcePath);
 
-    for (it = boost::filesystem::directory_iterator(PathToExplore);it != boost::filesystem::directory_iterator(); ++it)
-    {
-      if (boost::filesystem::is_directory(it->status()))
-        installExampleProject(ProjectsSourcePath,ProjectsInstallPath,it->path().stem().string(),Force);
-    }
+    for (unsigned int i=0;i<FoundProjects.size();i++)
+      installExampleProject(ProjectsSourcePath,ProjectsInstallPath,FoundProjects[i],Force);
   }
   else
     throw openfluid::base::FrameworkException("ExamplesBuddy::installAllExamplesProjects()",
@@ -137,12 +131,10 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
 bool ExamplesBuddy::run()
 {
   setOptionIfNotSet("selection","*");
-  setOptionIfNotSet("sourcedir",
-                    boost::filesystem::path(openfluid::base::RuntimeEnvironment::instance()->getProvidedExamplesDir()+
-                                            "/"+openfluid::config::PROJECTS_SUBDIR).string());
-  setOptionIfNotSet("installdir",
-                    boost::filesystem::path(openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir()+"/"+
-                                            openfluid::config::PROJECTS_SUBDIR).string());
+  setOptionIfNotSet("sourcedir",openfluid::base::RuntimeEnvironment::instance()->getProvidedExamplesDir()+
+                                "/"+openfluid::config::PROJECTS_SUBDIR);
+  setOptionIfNotSet("installdir",openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir()+"/"+
+                                 openfluid::config::PROJECTS_SUBDIR);
   setOptionIfNotSet("force","0");
 
   if (m_Options["selection"] == "*")
