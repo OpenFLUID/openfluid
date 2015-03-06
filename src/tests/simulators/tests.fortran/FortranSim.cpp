@@ -246,7 +246,7 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
       CALL_FSUBROUTINE(multrealmatrix)(MValue.data(),&MDim1,&MDim2,&MMult,MTmpResult);
 
       MResult = openfluid::core::MatrixValue(MDim1,MDim2);
-      MResult.setData(MTmpResult);
+      MResult.setData(MTmpResult,MDim1,MDim2);
 
       std::cout << "MTmpResult:"<< std::endl;
       for (j=0; j < MDim2;j++)

@@ -47,7 +47,6 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/circular_buffer.hpp>
-#include <boost/scoped_ptr.hpp>
 
 
 #include <openfluid/core/NullValue.hpp>
@@ -60,6 +59,7 @@
 #include <openfluid/core/StringValue.hpp>
 
 #include <list>
+#include <memory>
 
 
 // =====================================================================
@@ -94,18 +94,18 @@ BOOST_AUTO_TEST_CASE(check_sequence)
   std::cout << "======== check_sequence ========" << std::endl;
 
 
-  std::list< boost::shared_ptr<openfluid::core::Value> > ValuesSeq;
+  std::list< std::shared_ptr<openfluid::core::Value> > ValuesSeq;
 
 
-  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::DoubleValue>(new openfluid::core::DoubleValue(3.7)));
-  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::MapValue>(new openfluid::core::MapValue()));
-  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::BooleanValue>(new openfluid::core::BooleanValue(true)));
-  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::VectorValue>(new openfluid::core::VectorValue(500,17.0)));
-  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::MatrixValue>(new openfluid::core::MatrixValue(29,47,1955.19)));
-  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::StringValue>(
+  ValuesSeq.push_back(std::shared_ptr<openfluid::core::DoubleValue>(new openfluid::core::DoubleValue(3.7)));
+  ValuesSeq.push_back(std::shared_ptr<openfluid::core::MapValue>(new openfluid::core::MapValue()));
+  ValuesSeq.push_back(std::shared_ptr<openfluid::core::BooleanValue>(new openfluid::core::BooleanValue(true)));
+  ValuesSeq.push_back(std::shared_ptr<openfluid::core::VectorValue>(new openfluid::core::VectorValue(500,17.0)));
+  ValuesSeq.push_back(std::shared_ptr<openfluid::core::MatrixValue>(new openfluid::core::MatrixValue(29,47,1955.19)));
+  ValuesSeq.push_back(std::shared_ptr<openfluid::core::StringValue>(
       new openfluid::core::StringValue("Welcome to the jungle!")));
-  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::IntegerValue>(new openfluid::core::IntegerValue(1984)));
-  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::NullValue>(new openfluid::core::NullValue()));
+  ValuesSeq.push_back(std::shared_ptr<openfluid::core::IntegerValue>(new openfluid::core::IntegerValue(1984)));
+  ValuesSeq.push_back(std::shared_ptr<openfluid::core::NullValue>(new openfluid::core::NullValue()));
 
   while(!ValuesSeq.empty())
   {
@@ -209,7 +209,7 @@ class ValueCapsule
 {
   public:
 
-    boost::shared_ptr<openfluid::core::Value> m_Val;
+    std::shared_ptr<openfluid::core::Value> m_Val;
 
     ValueCapsule()
     : m_Val(new openfluid::core::NullValue())
@@ -263,7 +263,7 @@ BOOST_AUTO_TEST_CASE(check_performance)
   const unsigned int BufferSize = 5;
 
   boost::circular_buffer<double> BufferDouble(BufferSize);
-  boost::circular_buffer<boost::shared_ptr<openfluid::core::Value> > BufferValue(5000);
+  boost::circular_buffer<std::shared_ptr<openfluid::core::Value> > BufferValue(5000);
 
 
   START_TEST_TICKER();
@@ -282,7 +282,7 @@ BOOST_AUTO_TEST_CASE(check_performance)
 
   for (unsigned int i=0; i< ElementsNbr;i++)
   {
-    BufferValue.push_back(boost::shared_ptr<openfluid::core::Value>(
+    BufferValue.push_back(std::shared_ptr<openfluid::core::Value>(
         new openfluid::core::DoubleValue(static_cast<double>(i)/ElementsNbr)));
   }
 

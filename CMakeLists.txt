@@ -23,6 +23,20 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/internal;${CMAKE_SOURCE_DIR}/cm
 INCLUDE(OpenFLUIDSystemInfo)
 
 
+INCLUDE(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+IF(COMPILER_SUPPORTS_CXX11)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+ELSE()
+  CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+  IF(COMPILER_SUPPORTS_CXX0X)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+  ELSE()
+    MESSAGE(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} does not support C++11.")
+  ENDIF()
+ENDIF()
+
+
 INCLUDE(CMake.in.cmake)
 
 IF (EXISTS ${CMAKE_SOURCE_DIR}/CMake.in.local.cmake)
@@ -60,7 +74,7 @@ IF(CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo"
 ENDIF(CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
 
 
-# hack for avoiding conflicts between boos libraries and Qt moc system
+# hack for avoiding conflicts between Boost libraries and Qt moc system
 SET(CMAKE_AUTOMOC_MOC_OPTIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 

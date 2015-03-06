@@ -113,6 +113,7 @@ BOOST_AUTO_TEST_CASE(check_matrix)
   openfluid::core::StringValue StrTest("1.1;1.2|2.1;2.2|3.1;3.2");
   Val3.clear();
   StrTest.toMatrixValue(";","|",Val3);
+  BOOST_REQUIRE_CLOSE(Val3.get(1,1),2.2,0.00001);
   std::cout << Val3.toString() << std::endl;
   BOOST_REQUIRE_EQUAL(Val3.toString(),"1.1;1.2|2.1;2.2|3.1;3.2");
 

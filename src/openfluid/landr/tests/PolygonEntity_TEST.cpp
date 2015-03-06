@@ -41,7 +41,6 @@
 #define BOOST_TEST_MODULE unittest_polygonentity
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>

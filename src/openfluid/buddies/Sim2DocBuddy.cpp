@@ -295,32 +295,6 @@ std::string Sim2DocBuddy::extractSignatureLines()
 // =====================================================================
 // =====================================================================
 
-std::vector<std::string> Sim2DocBuddy::searchStringLitterals(std::string StrToParse)
-{
-  std::vector<std::string> FoundStrings;
-  std::string::const_iterator StrStart, StrEnd;
-  boost::regex Expression("\"([^\"\\\\]|\\\\.)*\"");
-
-  StrStart = StrToParse.begin();
-  StrEnd = StrToParse.end();
-
-  boost::sregex_token_iterator It(StrStart, StrEnd, Expression, 0);
-  boost::sregex_token_iterator EndIt;
-
-  for (; It != EndIt ; ++It)
-  {
-    std::string FoundStr = std::string(It->first, It->second);
-    FoundStr = FoundStr.substr(1,FoundStr.length()-2);
-    FoundStrings.push_back(FoundStr);
-  }
-
-  return FoundStrings;
-}
-
-
-// =====================================================================
-// =====================================================================
-
 
 void Sim2DocBuddy::buildParsedParam(const char* First, const char* Last)
 {

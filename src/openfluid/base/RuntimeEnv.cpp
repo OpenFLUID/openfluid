@@ -72,16 +72,16 @@ RuntimeEnvironment::RuntimeEnvironment() :
       + openfluid::config::MINOR_VERSION;
 
   m_TempDir = "";
-  m_HostName = "(unknown)";
-  m_UserID = "(unknown)";
-  m_Arch = "unknown";
+  m_HostName = "";
+  m_UserID = "";
+  m_Arch = "";
 
   m_SimulatorsMaxNumThreads = openfluid::config::SIMULATORS_MAXNUMTHREADS;
 
   // ====== System architecture ======
 
-#if linux
-#if __i386__
+#if defined __linux__
+#if defined __i386__
   m_Arch = "linux-i386";
 #endif
 #ifdef __x86_64__
@@ -89,16 +89,16 @@ RuntimeEnvironment::RuntimeEnvironment() :
 #endif
 #endif
 
-#if WIN32
+#if defined _WIN32
   m_Arch = "win32";
 #endif
 
-#if WIN64
+#if defined _WIN64
   m_Arch = "win64";
 #endif
 
-#if __APPLE__
-#if __LP64__
+#if defined __APPLE__
+#if defined __LP64__
   m_Arch = "osx64";
 #else
   m_Arch = "osx32";

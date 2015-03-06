@@ -46,8 +46,7 @@
 #include <openfluid/core/DateTime.hpp>
 
 #include <list>
-
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 namespace openfluid { namespace core {
@@ -61,7 +60,7 @@ class IndexedValue
 
     TimeIndex_t m_Index;
 
-    boost::shared_ptr<Value> m_Value;
+    std::shared_ptr<Value> m_Value;
 
 
   public:
@@ -70,19 +69,19 @@ class IndexedValue
       Default constructor
     */
     IndexedValue():
-      m_Index(0),m_Value(boost::shared_ptr<Value>(new NullValue())) {};
+      m_Index(0),m_Value(new NullValue()) {};
 
     /**
       Constructor from a time index and a value
     */
     IndexedValue(const TimeIndex_t& Ind, const Value& Val):
-      m_Index(Ind),m_Value(boost::shared_ptr<Value>(Val.clone())) {};
+      m_Index(Ind),m_Value(Val.clone()) {};
 
     /**
       Copy constructor
     */
     IndexedValue(const IndexedValue& IndValue):
-          m_Index(IndValue.m_Index),m_Value(boost::shared_ptr<Value>(IndValue.m_Value.get()->clone())) {};
+          m_Index(IndValue.m_Index),m_Value(IndValue.m_Value.get()->clone()) {};
 
     /**
       Returns the time index of the indexed value

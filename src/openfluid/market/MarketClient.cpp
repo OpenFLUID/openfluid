@@ -305,6 +305,10 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
   MetaPackagesCatalog_t& MetaPackagesCatalog = m_TypesMetaPackagesCatalogs[CatalogType];
   MetaPackagesCatalog.clear();
 
+  if (openfluid::base::RuntimeEnvironment::instance()->getArch().empty())
+    throw openfluid::base::FrameworkException("MarketClient::parseCatalogData()",
+                                              "undetermined system architecture");
+
   std::string BinaryArchKey= "arch." + openfluid::base::RuntimeEnvironment::instance()->getArch();
 
   QSettings CatalogData(QString::fromStdString(CatalogFile),QSettings::IniFormat);

@@ -181,9 +181,9 @@ std::vector<geos::geom::LineString*>* LandRTools::computeNodedLines(geos::geom::
   {
     geos::geom::PrecisionModel *precision=new geos::geom::PrecisionModel(PrecisionReducer);
     geos::precision::SimpleGeometryPrecisionReducer reducer(precision);
-    std::auto_ptr<geos::geom::Geometry> reducerGeom1 ( reducer.reduce(Geom1) );
+    std::unique_ptr<geos::geom::Geometry> reducerGeom1 ( reducer.reduce(Geom1) );
     geos::geom::Geometry* Geom1Simple = reducerGeom1.release();
-    std::auto_ptr<geos::geom::Geometry> reducerGeom2 ( reducer.reduce(Geom2) );
+    std::unique_ptr<geos::geom::Geometry> reducerGeom2 ( reducer.reduce(Geom2) );
     geos::geom::Geometry* Geom2Simple = reducerGeom2.release();
 
     geos::geom::Geometry* UnionGeom = computeSnapOverlayUnion(*Geom1Simple, *Geom2Simple,
@@ -246,7 +246,7 @@ geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(geos::geom::Geometry& 
                                                         SnapTolerance,
                                                         PrepGeom);
 
-    std::auto_ptr<geos::geom::Geometry> Result(geos::operation::overlay::OverlayOp::overlayOp(
+    std::unique_ptr<geos::geom::Geometry> Result(geos::operation::overlay::OverlayOp::overlayOp(
                                                PrepGeom.first.get(), PrepGeom.second.get(),
                                                geos::operation::overlay::OverlayOp::opUNION));
 

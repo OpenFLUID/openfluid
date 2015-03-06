@@ -564,9 +564,7 @@ void VectorDataset::parse(unsigned int LayerIndex)
     OGRFeature* FeatClone = Feat->Clone();
 
     Geoms.push_back(GeomClone);
-    m_Features.at(LayerIndex).push_back(
-        std::make_pair<OGRFeature*, geos::geom::Geometry*>(FeatClone,
-                                                           GeomClone));
+    m_Features.at(LayerIndex).push_back(std::make_pair(FeatClone,GeomClone));
 
     // destroying the feature destroys also the associated OGRGeom
     OGRFeature::DestroyFeature(Feat);

@@ -41,8 +41,6 @@
 #define BOOST_TEST_MODULE unittest_externalprogram
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
 
 #include <openfluid/utils/ExternalProgram.hpp>
 

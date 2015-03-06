@@ -41,7 +41,6 @@
 #include <openfluid/machine/InjectGenerator.hpp>
 
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/filesystem/convenience.hpp>
 
 
 namespace openfluid { namespace machine {

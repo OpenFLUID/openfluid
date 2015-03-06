@@ -207,8 +207,10 @@ class OPENFLUID_API Vector
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 Vector<T>::Vector()
@@ -220,6 +222,7 @@ Vector<T>::Vector()
 // =====================================================================
 // =====================================================================
 
+
 template <class T>
 Vector<T>::Vector(const Vector &A)
 {
@@ -229,12 +232,12 @@ Vector<T>::Vector(const Vector &A)
     throw openfluid::base::FrameworkException("Vector::Vector(const Vector)","Cannot allocate memory");
 
   std::copy(A.m_Data, A.m_Data + A.m_Size, m_Data);
-
 }
 
 
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 Vector<T>::Vector(unsigned long Size)
@@ -246,14 +249,14 @@ Vector<T>::Vector(unsigned long Size)
 }
 
 
+// =====================================================================
+// =====================================================================
 
-// =====================================================================
-// =====================================================================
+
 template <class T>
 Vector<T>::Vector(unsigned long Size, T InitValue)
 {
   init();
-
 
   if (!allocate(Size))
     throw openfluid::base::FrameworkException("Vector::Vector(Size,T)","Cannot allocate memory");
@@ -264,7 +267,6 @@ Vector<T>::Vector(unsigned long Size, T InitValue)
     unsigned long i;
     for (i=0;i<m_Size;i++) m_Data[i] = InitValue;
   }
-
 }
 
 
@@ -298,6 +300,7 @@ Vector<T>::~Vector()
 // =====================================================================
 // =====================================================================
 
+
 template <class T>
 bool Vector<T>::allocate(unsigned long Size)
 {
@@ -305,20 +308,19 @@ bool Vector<T>::allocate(unsigned long Size)
   if (Size > 0)
   {
     m_Data = new T[Size];
-    if (m_Data != NULL) m_Size = Size;
+    if (m_Data != NULL)
+      m_Size = Size;
     else
-    {
       return false;
-    }
   }
 
   return true;
-
-
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 void Vector<T>::setData(T* Data, unsigned long Size)
@@ -328,13 +330,13 @@ void Vector<T>::setData(T* Data, unsigned long Size)
   if (!allocate(Size))
     throw openfluid::base::FrameworkException("Vector::setData","Cannot allocate memory");
 
-  if (m_Data != NULL) std::copy(Data, Data + Size, m_Data);
-
+  std::copy(Data, Data + Size, m_Data);
 }
 
 
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 T Vector<T>::getElement(unsigned long Index) const
@@ -348,6 +350,7 @@ T Vector<T>::getElement(unsigned long Index) const
 
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 void Vector<T>::setElement(unsigned long Index, T Element)
@@ -371,13 +374,14 @@ T& Vector<T>::operator[](unsigned long Index)
   return m_Data[Index];
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 Vector<T>& Vector<T>::operator=(const Vector &A)
 {
-
   if (this == &A) return *this; // in case somebody tries assign array to itself
 
   clear();
@@ -387,6 +391,7 @@ Vector<T>& Vector<T>::operator=(const Vector &A)
 
   return *this;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -422,13 +427,15 @@ void Vector<T>::clear()
   init();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 void Vector<T>::copy(const Vector& Source, Vector& Dest)
 {
-  Dest.clear;
+  Dest.clear();
   Dest.allocate(Source.m_Size);
   for (unsigned long i = 0; i < Source.m_Size;i++)
   {

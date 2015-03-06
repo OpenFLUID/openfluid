@@ -67,11 +67,31 @@ ENDFUNCTION()
 ###########################################################################
 
 
+MACRO(OPENFLUID_DETECT_CXX11)
+  
+  INCLUDE(CheckCXXCompilerFlag)
+  CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+  IF(COMPILER_SUPPORTS_CXX11)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  ELSE()
+    CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+    IF(COMPILER_SUPPORTS_CXX0X)
+      SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+    ELSE()
+      MESSAGE(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} does not support C++11.")
+    ENDIF()
+  ENDIF()
+
+ENDMACRO()
+
+
+###########################################################################
+
+
 # Macro for Qt detection, and automatic selection of Qt4 or Qt5
 MACRO(OPENFLUID_FIND_QT)
   INCLUDE(${OpenFLUIDHelpers_DIR}/OpenFLUIDDetectQt.cmake)
 ENDMACRO()
-
 
 
 ###########################################################################
@@ -239,6 +259,8 @@ ENDMACRO()
 
 MACRO(OPENFLUID_ADD_SIMULATOR _SIMNAME)
 
+  OPENFLUID_DETECT_CXX11()
+
   _OPENFLUID_WARE_BUILD(${_SIMNAME} "sim")
   
   FIND_PACKAGE(Boost REQUIRED system)
@@ -330,6 +352,8 @@ ENDMACRO()
 
 MACRO(OPENFLUID_ADD_OBSERVER _OBSNAME)
 
+  OPENFLUID_DETECT_CXX11()
+
   _OPENFLUID_WARE_BUILD(${_OBSNAME} "obs")
   
   _OPENFLUID_WARE_TESTS(${_OBSNAME})
@@ -362,6 +386,8 @@ ENDMACRO()
 # _EXTNAME_INSTALL_PATH : install path, replacing the default one
 
 MACRO(OPENFLUID_ADD_BUILDEREXT _EXTNAME)
+
+  OPENFLUID_DETECT_CXX11()
 
   SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 

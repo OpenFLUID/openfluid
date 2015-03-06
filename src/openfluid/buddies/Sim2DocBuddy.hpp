@@ -134,8 +134,6 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
 
     std::string extractSignatureLines();
 
-    std::vector<std::string> searchStringLitterals(std::string StrToParse);
-
     void copyDocDirectory();
 
     void extractLatexDocFromCPP();

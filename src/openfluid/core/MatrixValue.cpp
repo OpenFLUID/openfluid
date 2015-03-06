@@ -67,23 +67,21 @@ void MatrixValue::writeToStream(std::ostream& OutStm) const
   const unsigned long s = getSize();
 
   if (s == 0)
-  {
     OutStm << "empty";
-  }
   else
   {
-    const unsigned long s1 = getColsNbr();
-    const unsigned long s2 = getRowsNbr();
+    const unsigned long ColsNbr = getColsNbr();
+    const unsigned long RowsNbr = getRowsNbr();
 
-    for (unsigned int j = 0; j<s2 ;j++ )
+    for (unsigned int i = 0; i<RowsNbr; i++)
     {
 
-      for (unsigned int i = 0; i<s1 ;i++ )
+      for (unsigned int j = 0; j<ColsNbr; j++)
       {
-        OutStm << m_Data[i][j];
-        if (i != s1-1) OutStm << m_StreamSeparators[0];
+        OutStm << get(j,i);
+        if (j != ColsNbr-1) OutStm << m_StreamSeparators[0];
       }
-      if (j != s2-1) OutStm << m_StreamSeparators[1];
+      if (i != RowsNbr-1) OutStm << m_StreamSeparators[1];
     }
   }
 }

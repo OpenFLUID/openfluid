@@ -41,10 +41,10 @@
 #ifndef __OPENFLUID_LANDR_GEOSCOMPAT_HPP__
 #define __OPENFLUID_LANDR_GEOSCOMPAT_HPP__
 
+
 #include <openfluid/config.hpp>
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
 
 #if GEOS_VERSION_GREATER_OR_EQUAL_3_3_0
   #define GET_DANGLES(P,D) \
@@ -58,7 +58,7 @@ namespace landr {
 #if GEOS_VERSION_GREATER_OR_EQUAL_3_3_2
   #define GEOM_PTR_PAIR geos::geom::GeomPtrPair
 #else
-  #define GEOM_PTR_PAIR std::pair<std::auto_ptr<geos::geom::Geometry>,std::auto_ptr<geos::geom::Geometry> >
+  #define GEOM_PTR_PAIR std::pair<std::unique_ptr<geos::geom::Geometry>,std::unique_ptr<geos::geom::Geometry> >
 #endif
 
 

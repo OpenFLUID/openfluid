@@ -39,7 +39,6 @@
 
 #include <string.h>
 #include <gdal_alg.h>
-#include <boost/filesystem/path.hpp>
 #include <geos/geom/Coordinate.h>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>

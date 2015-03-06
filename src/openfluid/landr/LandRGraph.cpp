@@ -756,7 +756,7 @@ void LandRGraph::snapVertices(double snapTolerance)
             entitiesGeoms);
 
     geos::operation::overlay::snap::GeometrySnapper geomSnapper(*(entity(*li))->geometry());
-    std::auto_ptr<geos::geom::Geometry> snapEntityGeom=geomSnapper.snapTo(*entitiesGeom,snapTolerance);
+    std::unique_ptr<geos::geom::Geometry> snapEntityGeom=geomSnapper.snapTo(*entitiesGeom,snapTolerance);
     geos::geom::Geometry* snappedEntityGeom=snapEntityGeom.release();
 
     removeEntity(*(li));

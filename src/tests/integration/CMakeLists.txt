@@ -607,8 +607,14 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyNewSim
 
 OPENFLUID_ADD_TEST(NAME integration-BuddyNewSimConfigure
                    COMMAND "${CMAKE_COMMAND}"
-                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim" "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}" "." 
-                              )
+                            "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim" "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
+                            "-DOpenFLUIDHelpers_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                            "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                            "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
+                            "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
+                            "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                            "-DSIM_SIM2DOC_MODE=off" 
+                            ".")
 SET_PROPERTY(TEST integration-BuddyNewSimConfigure APPEND PROPERTY DEPENDS integration-BuddyNewSim)
 
 

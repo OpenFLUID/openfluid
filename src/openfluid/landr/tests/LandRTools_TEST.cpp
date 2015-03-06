@@ -78,7 +78,6 @@
 #define BOOST_TEST_MODULE unittest_landrtools
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
 #include <openfluid/landr/GeosCompat.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
