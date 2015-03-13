@@ -43,10 +43,10 @@
 #include <iostream>
 #include <iomanip>
 
-#include <boost/foreach.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <openfluid/ware/PluggableObserver.hpp>
+#include <openfluid/ware/WareParamsTree.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
@@ -216,6 +216,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
     }
 
+
     // =====================================================================
     // =====================================================================
 
@@ -243,8 +244,10 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
         return CSVFormat::Info;
     }
 
+
     // =====================================================================
     // =====================================================================
+
 
     static std::string StrToDateFormat(const std::string& FormatStr)
     {
@@ -256,60 +259,73 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
         return FormatStr;
     }
 
+
     // =====================================================================
     // =====================================================================
+
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree ParamsPT;
+      openfluid::ware::WareParamsTree ParamsTree;
 
       try
       {
-        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+        ParamsTree.setParams(Params);
       }
       catch (openfluid::base::FrameworkException& E)
       {
         OPENFLUID_RaiseError(E.getMessage());
       }
 
-
-      if (!ParamsPT.get_child_optional("format"))
+      if (!ParamsTree.root().hasChild("format"))
         OPENFLUID_RaiseError("No format defined");
 
-      if (!ParamsPT.get_child_optional("set"))
+      if (!ParamsTree.root().hasChild("set"))
         OPENFLUID_RaiseError("No set defined");
 
-
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("format"))
+      try
       {
-        std::string FormatName = v.first;
-        m_Formats[FormatName].ColSeparator = ParamsPT.get("format."+FormatName+".colsep","\t");
-        m_Formats[FormatName].Precision = ParamsPT.get<unsigned int>("format."+FormatName+".precision",5);
-        m_Formats[FormatName].DateFormat = StrToDateFormat(ParamsPT.get("format."+FormatName+".date","ISO"));
-        m_Formats[FormatName].IsTimeIndexDateFormat = (m_Formats[FormatName].DateFormat == "timeindex");
-        m_Formats[FormatName].CommentChar = ParamsPT.get("format."+FormatName+".commentchar","#");
-        m_Formats[FormatName].Header = StrToHeaderType(ParamsPT.get("format."+FormatName+".header",""));
-      }
+        for (auto& Format : ParamsTree.root().child("format"))
+        {
+          std::string FormatName = Format.first;
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("set"))
+          m_Formats[FormatName].ColSeparator = Format.second.getChildValue("colsep","\t");
+          long Precision;
+          Format.second.getChildValue("precision",5).toInteger(Precision);
+          m_Formats[FormatName].Precision = Precision;
+          m_Formats[FormatName].DateFormat =
+              StrToDateFormat(Format.second.getChildValue("date","ISO").get());
+          m_Formats[FormatName].IsTimeIndexDateFormat = (m_Formats[FormatName].DateFormat == "timeindex");
+          m_Formats[FormatName].CommentChar = Format.second.getChildValue("commentchar","#");
+          m_Formats[FormatName].Header = StrToHeaderType(Format.second.getChildValue("header","").get());
+        }
+
+        for (auto& Set : ParamsTree.root().child("set"))
+        {
+          std::string SetName = Set.first;
+          m_Sets[SetName].UnitClass = Set.second.getChildValue("unitclass","");
+          if (m_Sets[SetName].UnitClass == "")
+            OPENFLUID_RaiseError("Unit class of set "+SetName+" is undefined");
+
+          m_Sets[SetName].UnitsIDsStr = Set.second.getChildValue("unitsIDs","*");
+          m_Sets[SetName].VariablesStr = Set.second.getChildValue("vars","*");
+
+          std::string FormatName = Set.second.getChildValue("format","");
+          if (m_Formats.find(FormatName) == m_Formats.end())
+            OPENFLUID_RaiseError("Format "+FormatName+" used by "+ SetName+" is undefined");
+          else
+            m_Sets[SetName].Format = &(m_Formats[FormatName]);
+        }
+
+        long BufferSize;
+        ParamsTree.getValueUsingFullKey("general.buffersize","2").toInteger(BufferSize);
+        m_BufferSize = BufferSize * 1024;
+
+      }
+      catch (openfluid::base::FrameworkException& E)
       {
-        std::string SetName = v.first;
-        m_Sets[SetName].UnitClass = ParamsPT.get("set."+SetName+".unitclass","");
-        if (m_Sets[SetName].UnitClass == "")
-          OPENFLUID_RaiseError("Unit class of set "+SetName+" is undefined");
-
-
-        m_Sets[SetName].UnitsIDsStr = ParamsPT.get("set."+SetName+".unitsIDs","*");
-        m_Sets[SetName].VariablesStr = ParamsPT.get("set."+SetName+".vars","*");
-
-        std::string FormatName = ParamsPT.get("set."+SetName+".format","");
-        if (m_Formats.find(FormatName) == m_Formats.end())
-          OPENFLUID_RaiseError("Format "+FormatName+" used by "+ SetName+" is undefined");
-        else
-          m_Sets[SetName].Format = &(m_Formats[FormatName]);
+        OPENFLUID_RaiseError(E.getMessage());
       }
-
-      m_BufferSize = ParamsPT.get<unsigned int>("general.buffersize",2) * 1024;
 
     }
 

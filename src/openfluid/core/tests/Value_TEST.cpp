@@ -56,6 +56,7 @@
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/core/MapValue.hpp>
+#include <openfluid/core/TreeValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 
 #include <list>
@@ -106,6 +107,7 @@ BOOST_AUTO_TEST_CASE(check_sequence)
       new openfluid::core::StringValue("Welcome to the jungle!")));
   ValuesSeq.push_back(std::shared_ptr<openfluid::core::IntegerValue>(new openfluid::core::IntegerValue(1984)));
   ValuesSeq.push_back(std::shared_ptr<openfluid::core::NullValue>(new openfluid::core::NullValue()));
+  ValuesSeq.push_back(std::shared_ptr<openfluid::core::TreeValue>(new openfluid::core::TreeValue()));
 
   while(!ValuesSeq.empty())
   {
@@ -176,6 +178,12 @@ BOOST_AUTO_TEST_CASE(check_sequence)
       Processed = true;
     }
 
+
+    if (ValuesSeq.front()->isTreeValue())
+    {
+      BOOST_REQUIRE_EQUAL(ValuesSeq.front().get()->asTreeValue().size(),1);
+      Processed = true;
+    }
 
     if (ValuesSeq.front()->isStringValue())
     {
@@ -333,6 +341,10 @@ BOOST_AUTO_TEST_CASE(check_stringtotype)
   BOOST_REQUIRE(openfluid::core::Value::getValueTypeFromString("null",ValueType));
   BOOST_REQUIRE_EQUAL(ValueType,openfluid::core::Value::NULLL);
 
+  BOOST_REQUIRE(openfluid::core::Value::getValueTypeFromString("tree",ValueType));
+  BOOST_REQUIRE_EQUAL(ValueType,openfluid::core::Value::TREE);
+
+
   BOOST_REQUIRE(!openfluid::core::Value::getValueTypeFromString("foo",ValueType));
 }
 
@@ -348,5 +360,7 @@ BOOST_AUTO_TEST_CASE(check_typetostring)
   BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::VECTOR),"vector");
 
   BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::NULLL),"null");
+
+  BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::TREE),"tree");
 }
 

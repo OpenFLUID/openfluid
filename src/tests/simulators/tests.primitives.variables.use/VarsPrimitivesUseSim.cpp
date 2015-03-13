@@ -211,6 +211,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
         openfluid::core::VectorValue VarVectorVal;
         openfluid::core::MatrixValue VarMatrixVal;
         openfluid::core::MapValue VarMapVal;
+        openfluid::core::TreeValue VarTreeVal;
         openfluid::core::NullValue VarNullVal;
 
         openfluid::core::IndexedValue IndValue;
@@ -633,6 +634,58 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.map"))
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.map)");
+
+
+          // tree value
+
+          VarTreeVal.clear();
+          OPENFLUID_GetVariable(TU,"tests.tree",CurrIndex,VarTreeVal);
+          if (VarTreeVal.size() != 8)
+            OPENFLUID_RaiseError("incorrect tree size get by reference");
+
+          /* Note: the tree is created using this:
+             TheTree = openfluid::core::TreeValue();
+             TheTree.addChild("x").addChild("x1").addChild("x2",2);
+             TheTree.child("x").child("x1").addChild("x22",22);
+             TheTree.addChild("y").addChild("y1").addChild("y2",OPENFLUID_GetCurrentTimeIndex());
+           */
+
+          if (!openfluid::scientific::isCloseEnough(VarTreeVal.child("y").child("y1").child("y2").getValue(),
+                                                    double(OPENFLUID_GetCurrentTimeIndex()),0.01))
+            OPENFLUID_RaiseError("incorrect tree value at y.y1.y2");
+
+          openfluid::core::TreeValue NewTree;
+          NewTree.addChild("a").addChild("b",2.0).addChild("c",3.0);
+          OPENFLUID_SetVariable(TU,"tests.tree",NewTree);
+          OPENFLUID_GetVariable(TU,"tests.tree",CurrIndex,VarTreeVal);
+
+          if (VarTreeVal.size() != 4)
+            OPENFLUID_RaiseError("incorrect tree size get by reference");
+
+          if (VarTreeVal.child("a").hasValue())
+            OPENFLUID_RaiseError("incorrect tree value existence at a");
+
+          if (!openfluid::scientific::isCloseEnough(VarTreeVal.child("a").child("b").getValue(),
+                                                    2.0,0.01))
+            OPENFLUID_RaiseError("incorrect tree value at b");
+
+          if (!openfluid::scientific::isCloseEnough(VarTreeVal.child("a").child("b").getChildValue("c",0.0),
+                                                    3.0,0.01))
+            OPENFLUID_RaiseError("incorrect tree value at c");
+
+          VarTreeVal.clear();
+          if (VarTreeVal.size() != 1)
+            OPENFLUID_RaiseError("incorrect tree after clear");
+
+          if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
+          {
+            OPENFLUID_GetVariable(TU,"tests.tree",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarTreeVal);
+            if (VarTreeVal.size() != 4)
+              OPENFLUID_RaiseError("incorrect tree size at t-1");
+          }
+
+          if (!OPENFLUID_IsVariableExist(TU,"tests.tree"))
+            OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.tree)");
         }
       }
 
@@ -659,6 +712,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
         openfluid::core::VectorValue VarVectorVal;
         openfluid::core::MatrixValue VarMatrixVal;
         openfluid::core::MapValue VarMapVal;
+        openfluid::core::TreeValue VarTreeVal;
 
         openfluid::core::IndexedValue IndValue;
         openfluid::core::IndexedValueList IndValueList;
@@ -866,6 +920,59 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
           if (!OPENFLUID_IsTypedVariableExist(TU,"tests.typed.map",openfluid::core::Value::MAP))
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsTypedVariableExist (tests.map, MAP)");
+
+
+
+          // tree value
+
+          VarTreeVal.clear();
+          OPENFLUID_GetVariable(TU,"tests.typed.tree",CurrIndex,VarTreeVal);
+          if (VarTreeVal.size() != 8)
+            OPENFLUID_RaiseError("incorrect typed tree size get by reference");
+
+          /* Note: the tree is created using this:
+             TheTree = openfluid::core::TreeValue();
+             TheTree.addChild("x").addChild("x1").addChild("x2",2);
+             TheTree.child("x").child("x1").addChild("x22",22);
+             TheTree.addChild("y").addChild("y1").addChild("y2",OPENFLUID_GetCurrentTimeIndex());
+           */
+
+          if (!openfluid::scientific::isCloseEnough(VarTreeVal.child("y").child("y1").child("y2").getValue(),
+                                                    double(OPENFLUID_GetCurrentTimeIndex()),0.01))
+            OPENFLUID_RaiseError("incorrect typed tree value at y.y1.y2");
+
+          openfluid::core::TreeValue NewTree;
+          NewTree.addChild("a").addChild("b",20.0).addChild("c",30.0).addChild("d",40.0);
+          OPENFLUID_SetVariable(TU,"tests.typed.tree",NewTree);
+          OPENFLUID_GetVariable(TU,"tests.typed.tree",CurrIndex,VarTreeVal);
+
+          if (VarTreeVal.size() != 5)
+            OPENFLUID_RaiseError("incorrect typed tree size get by reference");
+
+          if (VarTreeVal.child("a").hasValue())
+            OPENFLUID_RaiseError("incorrect typed tree value existence at a");
+
+          if (!openfluid::scientific::isCloseEnough(VarTreeVal.child("a").child("b").getValue(),
+                                                    20.0,0.01))
+            OPENFLUID_RaiseError("incorrect typed tree value at b");
+
+          if (!openfluid::scientific::isCloseEnough(VarTreeVal.child("a").child("b").getChildValue("c",0.0),
+                                                    30.0,0.01))
+            OPENFLUID_RaiseError("incorrect typed tree value at c");
+
+          VarTreeVal.clear();
+          if (VarTreeVal.size() != 1)
+            OPENFLUID_RaiseError("incorrect typed tree after clear");
+
+          if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
+          {
+            OPENFLUID_GetVariable(TU,"tests.typed.tree",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarTreeVal);
+            if (VarTreeVal.size() != 5)
+              OPENFLUID_RaiseError("incorrect typed tree size at t-1");
+          }
+
+          if (!OPENFLUID_IsVariableExist(TU,"tests.typed.tree"))
+            OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.typed.tree)");
 
 
           // none

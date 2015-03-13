@@ -49,6 +49,7 @@
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/core/MapValue.hpp>
+#include <openfluid/core/TreeValue.hpp>
 
 
 namespace openfluid { namespace core {
@@ -259,6 +260,32 @@ MapValue& Value::asMapValue()
 // =====================================================================
 
 
+const TreeValue& Value::asTreeValue() const
+{
+  if (!isTreeValue())
+    throw openfluid::base::FrameworkException("Value::asTreeValue","Value is not a TreeValue");
+
+  return static_cast<const TreeValue&>(*this);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+TreeValue& Value::asTreeValue()
+{
+  if (!isTreeValue())
+    throw openfluid::base::FrameworkException("Value::asTreeValue","Value is not a TreeValue");
+
+  return static_cast<TreeValue&>(*this);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string Value::toString() const
 {
   std::ostringstream OSS;
@@ -302,6 +329,11 @@ bool Value::getValueTypeFromString(const std::string& TypeName, Value::Type& Val
     ValueType = openfluid::core::Value::MAP;
     return true;
   }
+  else if (TypeName == "tree")
+  {
+    ValueType = openfluid::core::Value::TREE;
+    return true;
+  }
   else if (TypeName == "string")
   {
     ValueType = openfluid::core::Value::STRING;
@@ -339,6 +371,8 @@ std::string Value::getStringFromValueType(const Value::Type ValueType)
       return "matrix";
     case openfluid::core::Value::MAP:
       return "map";
+    case openfluid::core::Value::TREE:
+      return "tree";
     case openfluid::core::Value::STRING:
       return "string";
     case openfluid::core::Value::NULLL:

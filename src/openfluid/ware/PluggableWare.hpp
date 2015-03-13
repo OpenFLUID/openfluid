@@ -40,7 +40,7 @@
 #ifndef __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
 #define __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
 
-#include <boost/property_tree/ptree.hpp>
+
 #include <string>
 
 #include <openfluid/dllexport.hpp>
@@ -156,8 +156,6 @@ class OPENFLUID_API PluggableWare
      * Return false if ParameterKey starts nor ends with a dot, true otherwise
      */
     static bool isWellFormated(const openfluid::ware::WareParamKey_t& ParameterKey);
-
-    static boost::property_tree::ptree getParamsAsPropertyTree(const WareParams_t& Params);
 
 };
 

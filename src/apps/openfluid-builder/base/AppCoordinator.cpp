@@ -136,7 +136,7 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
 
   // connection of recent open projects
 
-  std::vector<QAction*> RecentActions = m_Actions.getRecentProjectActions();
+  std::vector<QAction*> RecentActions = m_Actions.recentProjectActions();
 
   for (unsigned int i=0;i<RecentActions.size();i++)
     connect(RecentActions[i], SIGNAL(triggered()), this, SLOT(whenOpenRecentAsked()));
@@ -164,8 +164,8 @@ AppCoordinator::~AppCoordinator()
 void AppCoordinator::connectExtensions()
 {
   std::map<openfluid::ware::WareID_t,QAction*>::const_iterator it;
-  std::map<openfluid::ware::WareID_t,QAction*>::const_iterator itb = m_Actions.getExtensionsActions().begin();
-  std::map<openfluid::ware::WareID_t,QAction*>::const_iterator ite = m_Actions.getExtensionsActions().end();
+  std::map<openfluid::ware::WareID_t,QAction*>::const_iterator itb = m_Actions.extensionsActions().begin();
+  std::map<openfluid::ware::WareID_t,QAction*>::const_iterator ite = m_Actions.extensionsActions().end();
 
   for (it = itb; it != ite; ++it)
     connect((*it).second,SIGNAL(triggered()),this, SLOT(whenExtensionAsked()));

@@ -139,7 +139,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_UserDataDir = m_HomeDir + "/." + openfluid::config::RELATIVEDIR;
 #endif
 
-#if WIN32
+#if defined _WIN32
   char* ChHostName = NULL;
   ChHostName= std::getenv("COMPUTERNAME");
   if (ChHostName != NULL) m_HostName = ChHostName;
@@ -320,11 +320,11 @@ void RuntimeEnvironment::addExtraSimulatorsPluginsPaths(
 {
   std::vector<std::string> ExtraPaths;
 
-#if  defined __unix__ || defined __APPLE__
+#if defined __unix__ || defined __APPLE__
   ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths, ":");
 #endif
 
-#if WIN32
+#if defined _WIN32
   ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths,";");
 #endif
 
@@ -369,11 +369,11 @@ void RuntimeEnvironment::addExtraObserversPluginsPaths(
 {
   std::vector<std::string> ExtraPaths;
 
-#if  defined __unix__ || defined __APPLE__
+#if defined __unix__ || defined __APPLE__
   ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths, ":");
 #endif
 
-#if WIN32
+#if defined _WIN32
   ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths,";");
 #endif
 

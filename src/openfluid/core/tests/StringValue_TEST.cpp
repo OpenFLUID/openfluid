@@ -91,6 +91,15 @@ BOOST_AUTO_TEST_CASE(check_string)
   BOOST_REQUIRE_EQUAL(Val2.toString(),"EGDC");
 
 
+  // check other constructors
+  BOOST_REQUIRE_EQUAL(openfluid::core::StringValue("char*").get(),"char*");
+  BOOST_REQUIRE_EQUAL(openfluid::core::StringValue(42).get(),"42");
+  BOOST_REQUIRE_EQUAL(openfluid::core::StringValue(false).get(),"0");
+  BOOST_REQUIRE_EQUAL(openfluid::core::StringValue(true).get(),"1");
+  double TmpDbl;
+  openfluid::core::StringValue(99.9).toDouble(TmpDbl);
+  BOOST_REQUIRE_CLOSE(TmpDbl,99.9,0.001);
+
   openfluid::core::StringValue Val3;
 
   openfluid::core::NullValue NullV;

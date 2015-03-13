@@ -89,13 +89,13 @@ class OPENFLUID_API RasterDataset
     /**
      @brief Create a virtual (in memory) copy of Value GDALDataset
      @param Value The GeoRasterValue to copy
-     @throw openfluid::base::OFException if fails
+     @throw openfluid::base::FrameworkException if fails
      */
     RasterDataset(openfluid::core::GeoRasterValue& Value);
 
     /**
      @brief Copy constructor
-     @throw openfluid::base::OFException if fails
+     @throw openfluid::base::FrameworkException if fails
      */
     RasterDataset(const RasterDataset& Other);
 

@@ -150,7 +150,7 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
 
   QPixmap DotPix(":/images/dot.png");
 
-  std::vector<QAction*> RecentActions = mp_Actions->getRecentProjectActions();
+  std::vector<QAction*> RecentActions = mp_Actions->recentProjectActions();
 
   for (int i=0; i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
   {
@@ -228,7 +228,7 @@ QPushButton* HomeWidget::createButton(const QAction* Action, const QString& Text
 
 void HomeWidget::refreshRecentProjects()
 {
-  std::vector<QAction*> RecentActions = mp_Actions->getRecentProjectActions();
+  std::vector<QAction*> RecentActions = mp_Actions->recentProjectActions();
 
   for (int i=0; i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
   {

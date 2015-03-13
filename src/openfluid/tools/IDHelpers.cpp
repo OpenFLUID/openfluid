@@ -85,7 +85,7 @@ bool isValidTypedVariableName(const openfluid::core::VariableName_t& Name)
   // must start by an alphanumeric char
   // can have a type between square brackets at the end
 
-  QRegExp Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)(\\[(|double|integer|boolean|string|vector|matrix|map|null)\\])?");
+  QRegExp Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)(\\[(|double|integer|boolean|string|vector|matrix|map|tree|null)\\])?");
 
   QString NameQStr = QString::fromStdString(Name);
 

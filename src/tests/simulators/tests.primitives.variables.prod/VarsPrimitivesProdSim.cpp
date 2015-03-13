@@ -82,6 +82,7 @@ BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
   DECLARE_PRODUCED_VAR("tests.vector","TestUnits","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.matrix","TestUnits","matrix for tests","");
   DECLARE_PRODUCED_VAR("tests.map","TestUnits","map for tests","");
+  DECLARE_PRODUCED_VAR("tests.tree","TestUnits","tree for tests","");
 
   DECLARE_PRODUCED_VAR("tests.typed.none","TestUnits","untyped for tests","");
   DECLARE_PRODUCED_VAR("tests.typed.double[double]","TestUnits","double for tests","");
@@ -92,6 +93,7 @@ BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
   DECLARE_PRODUCED_VAR("tests.typed.oldvector[]","TestUnits","old style vector for tests","");
   DECLARE_PRODUCED_VAR("tests.typed.matrix[matrix]","TestUnits","matrix for tests","");
   DECLARE_PRODUCED_VAR("tests.typed.map[map]","TestUnits","map for tests","");
+  DECLARE_PRODUCED_VAR("tests.typed.tree[tree]","TestUnits","tree for tests","");
 
 END_SIMULATOR_SIGNATURE
 
@@ -174,6 +176,8 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
         long MatrixRowsNb = 3;
         openfluid::core::MatrixValue TheMatrix;
         openfluid::core::MapValue TheMap;
+        openfluid::core::TreeValue TheTree;
+
 
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
         {
@@ -208,6 +212,11 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheMap.setDouble("key2",TheDouble);
           OPENFLUID_InitializeVariable(TU,"tests.map",TheMap);
 
+          TheTree = openfluid::core::TreeValue();
+          TheTree.addChild("x").addChild("x1").addChild("x2",2);
+          TheTree.child("x").child("x1").addChild("x22",22);
+          TheTree.addChild("y").addChild("y1").addChild("y2",202);
+          OPENFLUID_InitializeVariable(TU,"tests.tree",TheTree);
         }
       }
 
@@ -227,6 +236,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
         long MatrixRowsNb = 3;
         openfluid::core::MatrixValue TheMatrix;
         openfluid::core::MapValue TheMap;
+        openfluid::core::TreeValue TheTree;
 
 
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -265,6 +275,12 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheMap.setDouble("key2",TheDouble);
           OPENFLUID_InitializeVariable(TU,"tests.typed.map",TheMap);
 
+          TheTree = openfluid::core::TreeValue();
+          TheTree.addChild("x").addChild("x1").addChild("x2",2);
+          TheTree.child("x").child("x1").addChild("x22",22);
+          TheTree.addChild("y").addChild("y1").addChild("y2",202);
+          OPENFLUID_InitializeVariable(TU,"tests.typed.tree",TheTree);
+
         }
       }
 
@@ -296,6 +312,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
         long MatrixRowsNb = 3;
         openfluid::core::MatrixValue TheMatrix;
         openfluid::core::MapValue TheMap;
+        openfluid::core::TreeValue TheTree;
         openfluid::core::IndexedValue IndValue;
         openfluid::core::IndexedValueList IndValueList;
 
@@ -310,6 +327,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheLong = TUID;
           TheBool = (TUID%2 == 0);
           TheString = QString("ID %1").arg(TUID).toStdString();
+
 
           // double
 
@@ -374,6 +392,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.double, timestep+1, DOUBLE) "
                                  "after append");
 
+
           // integer
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.integer"))
@@ -407,6 +426,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.integer, timestep+1, INTEGER) "
                                  "after append");
 
+
           // boolean
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.bool"))
@@ -437,6 +457,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
                                         openfluid::core::Value::BOOLEAN))
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.bool, timestep+1, BOOLEAN) after append");
 
+
           // string
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.string"))
@@ -465,6 +486,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
                                         OPENFLUID_GetCurrentTimeIndex()+OPENFLUID_GetDefaultDeltaT(),
                                         openfluid::core::Value::STRING))
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.string, timestep+1, STRING) after append");
+
 
           // double value
 
@@ -499,6 +521,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.doubleval, timestep+1, DOUBLE) "
                                  "after append");
 
+
           // integer value
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.integerval"))
@@ -531,6 +554,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
                                         openfluid::core::Value::INTEGER))
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.integerval, timestep+1, INTEGER) "
                                  "after append");
+
 
           // boolean value
 
@@ -597,6 +621,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.stringval, timestep+1, STRING) "
                                  "after append");
 
+
           // null value
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.null"))
@@ -625,6 +650,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
                                         OPENFLUID_GetCurrentTimeIndex()+OPENFLUID_GetDefaultDeltaT(),
                                         openfluid::core::Value::NULLL))
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.null, timestep+1, NULLL) after append");
+
 
           // vector value
 
@@ -657,6 +683,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
                                         openfluid::core::Value::VECTOR))
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.vector, timestep+1, VECTOR) after append");
 
+
           // matrix value
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.matrix"))
@@ -686,6 +713,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
                                         OPENFLUID_GetCurrentTimeIndex()+OPENFLUID_GetDefaultDeltaT(),
                                         openfluid::core::Value::MATRIX))
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.matrix, timestep+1, MATRIX) after append");
+
 
           // map value
 
@@ -717,6 +745,22 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.map, timestep+1, MAP) after append");
 
 
+          // tree value
+
+          if (!OPENFLUID_IsVariableExist(TU,"tests.tree"))
+            OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.tree)");
+
+          if (OPENFLUID_IsVariableExist(TU,"tests.tree",OPENFLUID_GetCurrentTimeIndex()))
+            OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.tree, timestep) before append");
+
+          if (OPENFLUID_IsVariableExist(TU,"tests.tree",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::MAP))
+            OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.tree, timestep, MAP) before append");
+
+          TheTree = openfluid::core::TreeValue();
+          TheTree.addChild("x").addChild("x1").addChild("x2",2);
+          TheTree.child("x").child("x1").addChild("x22",22);
+          TheTree.addChild("y").addChild("y1").addChild("y2",OPENFLUID_GetCurrentTimeIndex());
+          OPENFLUID_AppendVariable(TU,"tests.tree",TheTree);
         }
       }
 
@@ -735,6 +779,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
         long MatrixRowsNb = 3;
         openfluid::core::MatrixValue TheMatrix;
         openfluid::core::MapValue TheMap;
+        openfluid::core::TreeValue TheTree;
 
 
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -930,6 +975,27 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           if (!OPENFLUID_IsTypedVariableExist(TU,"tests.typed.map",OPENFLUID_GetCurrentTimeIndex(),
                                               openfluid::core::Value::MAP))
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsTypedVariableExist (tests.map, timestep, MAP) after append");
+
+
+          // tree value
+
+          if (!OPENFLUID_IsTypedVariableExist(TU,"tests.typed.tree", openfluid::core::Value::TREE))
+            OPENFLUID_RaiseError("incorrect OPENFLUID_IsTypedVariableExist (tests.tree, MAP)");
+
+          if (OPENFLUID_IsTypedVariableExist(TU,"tests.typed.tree", openfluid::core::Value::NONE))
+            OPENFLUID_RaiseError("incorrect OPENFLUID_IsTypedVariableExist (tests.tree, NONE)");
+
+          if (OPENFLUID_IsTypedVariableExist(TU,"tests.typed.tree",OPENFLUID_GetCurrentTimeIndex(),
+                                             openfluid::core::Value::TREE))
+            OPENFLUID_RaiseError("incorrect OPENFLUID_IsTypedVariableExist (tests.tree, timestep, TREE) "
+                                 "before append");
+
+
+          TheTree = openfluid::core::TreeValue();
+          TheTree.addChild("x").addChild("x1").addChild("x2",2);
+          TheTree.child("x").child("x1").addChild("x22",22);
+          TheTree.addChild("y").addChild("y1").addChild("y2",OPENFLUID_GetCurrentTimeIndex());
+          OPENFLUID_AppendVariable(TU,"tests.typed.tree",TheTree);
         }
 
       }

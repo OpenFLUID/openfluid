@@ -101,7 +101,7 @@ class OPENFLUID_API PolygonEdge: public geos::planargraph::Edge
     /**
      @brief Add a PolygonEntity as a Face to this PolygonEdge.
      @param NewFace A PolygonEntity.
-     @throw base::OFException if this PolygonEdge is not in the boundary of the input PolygonEntity,
+     @throw base::FrameworkException if this PolygonEdge is not in the boundary of the input PolygonEntity,
      or if this PolygonEdge has already two Faces.
      */
     void addFace(PolygonEntity& NewFace);

@@ -108,54 +108,93 @@ class OPENFLUID_API StringValue : public SimpleValue
     /**
       Default constructor
     */
-    StringValue() : m_Value("") {};
+    StringValue() : m_Value("")
+    { };
 
     /**
       Copy constructor
     */
-    StringValue(const StringValue& Val) : SimpleValue(Val), m_Value(Val.m_Value) {};
+    StringValue(const StringValue& Val) : SimpleValue(Val), m_Value(Val.m_Value)
+    { };
 
     /**
-      Constructor from plain old type
+      Constructor from char*
     */
-    StringValue(const std::string& POD) : SimpleValue(), m_Value(POD) {};
+    StringValue(const char* Val) : SimpleValue(), m_Value(std::string(Val))
+    { };
 
+    /**
+      Constructor from std::string
+    */
+    StringValue(const std::string& Val) : SimpleValue(), m_Value(Val)
+    { };
+
+    /**
+      Constructor from bool
+    */
+    StringValue(bool Val);
+
+    /**
+      Constructor from int
+    */
+    StringValue(int Val);
+
+    /**
+      Constructor from double
+    */
+    StringValue(double Val);
+
+    /**
+      Assignment operator
+    */
     Value& operator =(const Value& Other);
 
     /**
-     * Cast operator
-     */
-    operator std::string() const { return m_Value; };
+      Cast operator
+    */
+    operator std::string() const
+    { return m_Value; };
 
-    virtual ~StringValue() {};
+    virtual ~StringValue()
+    { };
 
-    inline Type getType() const { return Value::STRING; };
+    inline Type getType() const
+    { return Value::STRING; };
 
-    Value* clone() const { return new StringValue(*this); };
+    Value* clone() const
+    { return new StringValue(*this); };
 
     /**
       Returns the string value as std::string type
       @return the string value
     */
-    inline std::string get() { return m_Value; };
+    inline std::string get()
+    { return m_Value; };
 
     /**
       Returns a reference to the string value as std::string type
       @return the string value
     */
-    inline std::string& data() { return m_Value; };
+    inline std::string& data()
+    { return m_Value; };
 
     /**
       Returns a reference to the string value as std::string type
       @return the string value
     */
-    inline const std::string& data() const { return m_Value; };
+    inline const std::string& data() const
+    { return m_Value; };
 
     /**
       Sets the string value
       @param[in] Val the string value
     */
-    inline void set(const std::string& Val) { m_Value = Val; };
+    inline void set(const std::string& Val)
+    { m_Value = Val; };
+
+
+    inline void clear()
+    { m_Value.clear(); }
 
     void writeToStream(std::ostream& OutStm) const;
 
@@ -163,13 +202,15 @@ class OPENFLUID_API StringValue : public SimpleValue
       Returns the size of the string
       @return size of the string
     */
-    inline unsigned long getSize() const { return m_Value.size(); };
+    inline unsigned long getSize() const
+    { return m_Value.size(); };
 
     /**
       Returns the size of the string
       @return size of the string
     */
-    unsigned long size() const { return m_Value.size(); };
+    unsigned long size() const
+    { return m_Value.size(); };
 
     /**
       Converts the contained string to a double value (if possible)
@@ -197,6 +238,13 @@ class OPENFLUID_API StringValue : public SimpleValue
       @return bool true if the conversion is correct, false otherwise
     */
     bool toBooleanValue(BooleanValue& Val) const;
+
+    /**
+      Converts the contained string to an int value (if possible)
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
+    bool toInteger(int& Val) const;
 
     /**
       Converts the contained string to a long value (if possible)

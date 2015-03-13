@@ -106,7 +106,7 @@ class OPENFLUID_API PolygonEntity: public LandREntity
      @details Takes ownership of NewPolygon.
      @param NewPolygon The geos::geom::Geometry of this new PolygonEntity.
      @param OfldId The identifier of this new PolygonEntity.
-     @throw base::OFException if NewPolygon is not a geos::geom::Polygon or is not a valid geometry.
+     @throw base::FrameworkException if NewPolygon is not a geos::geom::Polygon or is not a valid geometry.
      */
     PolygonEntity(const geos::geom::Geometry* NewPolygon, unsigned int OfldId);
 

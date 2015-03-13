@@ -116,7 +116,7 @@ class OPENFLUID_API VectorDataset
     /**
      @brief Creates a new empty OGRDatasource in the openfluid temp directory, with filename suffixes with timestamp.
      @param FileName The name of the file to create.
-     @throw openfluid::base::OFException if fails.
+     @throw openfluid::base::FrameworkException if fails.
      */
     VectorDataset(const std::string& FileName);
 
@@ -124,13 +124,13 @@ class OPENFLUID_API VectorDataset
      @brief Creates in the openfluid temp directory a copy of Value OGRDatasource,
      using Value filename suffixed with timestamp as filename.
      @param Value The GeoVectorValue to copy
-     @throw openfluid::base::OFException if fails.
+     @throw openfluid::base::FrameworkException if fails.
      */
     VectorDataset(openfluid::core::GeoVectorValue& Value);
 
     /**
      @brief Copy constructor.
-     @throw openfluid::base::OFException if fails.
+     @throw openfluid::base::FrameworkException if fails.
      */
     VectorDataset(const VectorDataset& Other);
 
@@ -166,7 +166,7 @@ class OPENFLUID_API VectorDataset
      @param LayerType The type of the layer to create, default wkbUnknown.
      @param SpatialRef The coordinate system to use for the new layer,
      or NULL (default) if no coordinate system is available.
-     @throw openfluid::base::OFException if the creation of layer failed.
+     @throw openfluid::base::FrameworkException if the creation of layer failed.
      */
     void addALayer(std::string LayerName = "",
                    OGRwkbGeometryType LayerType = wkbUnknown,
@@ -191,7 +191,7 @@ class OPENFLUID_API VectorDataset
      @param FieldName The name of the field to add.
      @param FieldType The type of the field to add (default OFTString).
      @param LayerIndex The index of the layer to add the field, default 0.
-     @throw openfluid::base::OFException if creating field failed.
+     @throw openfluid::base::FrameworkException if creating field failed.
      */
     void addAField(const std::string& FieldName,
                    OGRFieldType FieldType = OFTString,
@@ -235,7 +235,7 @@ class OPENFLUID_API VectorDataset
      @param FieldType The type of the field to query.
      @param LayerIndex The index of the layer to query, default 0.
      @return True if the field FieldName is type FieldType.
-     @throw openfluid::base::OFException if the field doesn't exist.
+     @throw openfluid::base::FrameworkException if the field doesn't exist.
      */
     bool isFieldOfType(const std::string& FieldName,
                        OGRFieldType FieldType,

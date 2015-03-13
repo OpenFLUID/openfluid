@@ -30,37 +30,54 @@
 */
 
 
-
 /**
-  @file core.hpp
+  @file TreeValue_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_CORE_HPP__
-#define __OPENFLUID_CORE_HPP__
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_treevalue
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
 
-
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/Attributes.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/NullValue.hpp>
-#include <openfluid/core/BooleanValue.hpp>
-#include <openfluid/core/DoubleValue.hpp>
-#include <openfluid/core/EventsCollection.hpp>
-#include <openfluid/core/IntegerValue.hpp>
-#include <openfluid/core/StringValue.hpp>
-#include <openfluid/core/VectorValue.hpp>
-#include <openfluid/core/MatrixValue.hpp>
-#include <openfluid/core/MapValue.hpp>
-#include <openfluid/core/SpatialGraph.hpp>
-#include <openfluid/core/SpatialUnit.hpp>
-#include <openfluid/core/UnitsCollection.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
 #include <openfluid/core/TreeValue.hpp>
 
-#endif /* __OPENFLUID_CORE_HPP__ */
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_tree)
+{
+  std::cout << "======== check_tree ========" << std::endl;
+
+  openfluid::core::TreeValue Val1;
+
+
+  BOOST_REQUIRE_EQUAL(Val1.size(),1);
+
+
+  BOOST_REQUIRE_EQUAL(Val1.isSimple(),false);
+  BOOST_REQUIRE_EQUAL(Val1.isCompound(),true);
+
+
+  Val1.addChild("i1").addChild("i2").addChild("i3",3.0);
+  BOOST_REQUIRE_EQUAL(Val1.size(),4);
+
+
+  Val1.addChild("j1").addChild("j2").addChild("j3",33.0);
+  Val1.child("j1").child("j2").addChild("j33",66.0);
+  BOOST_REQUIRE_EQUAL(Val1.size(),8);
+
+  BOOST_REQUIRE_CLOSE(Val1.child("j1").child("j2").getChildValue("j33",0.0),66,000.1);
+
+  Val1.writeToStream(std::cout);
+  std::cout << std::endl;
+}
+
+
+

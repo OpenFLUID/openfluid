@@ -58,6 +58,39 @@
 namespace openfluid { namespace core {
 
 
+StringValue::StringValue(bool Val) :
+  SimpleValue(), m_Value(openfluid::core::BooleanValue(Val).toString())
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+StringValue::StringValue(int Val) :
+  SimpleValue(), m_Value(openfluid::core::IntegerValue(Val).toString())
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+StringValue::StringValue(double Val) :
+  SimpleValue(), m_Value(openfluid::core::DoubleValue(Val).toString())
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 Value& StringValue::operator =(const Value& Other)
 {
   const StringValue* CastedValue = dynamic_cast<const StringValue*> (&Other);
@@ -69,6 +102,7 @@ Value& StringValue::operator =(const Value& Other)
 
   return *this;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -154,13 +188,13 @@ bool StringValue::toDoubleValue(DoubleValue& Val) const
 bool StringValue::toBoolean(bool& Val) const
 {
 
-  if (m_Value == "true")
+  if (m_Value == "true" || m_Value == "1")
   {
     Val = true;
     return true;
   }
 
-  if (m_Value == "false")
+  if (m_Value == "false" || m_Value == "0")
   {
     Val = false;
     return true;
@@ -193,6 +227,17 @@ bool StringValue::toBooleanValue(BooleanValue& Val) const
 // =====================================================================
 // =====================================================================
 
+
+bool StringValue::toInteger(int& Val) const
+{
+  std::istringstream iss(m_Value);
+  char c;
+  return ((iss >> Val) && !iss.get(c));
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 bool StringValue::toInteger(long& Val) const

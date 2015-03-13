@@ -43,9 +43,8 @@
 #include <iostream>
 #include <iomanip>
 
-#include <boost/foreach.hpp>
-
 #include <openfluid/ware/PluggableObserver.hpp>
+#include <openfluid/ware/WareParamsTree.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
 
@@ -278,11 +277,11 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree ParamsPT;
+      openfluid::ware::WareParamsTree ParamsTree;
 
       try
       {
-        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+        ParamsTree.setParams(Params);
       }
       catch (openfluid::base::FrameworkException& E)
       {
@@ -290,28 +289,31 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       }
 
 
-      m_Title = ParamsPT.get("title",m_Title);
-
-      m_Init = ParamsPT.get<bool>("when.init",false);
-      m_EveryTime = ParamsPT.get<bool>("when.everytime",false);
-      m_Final = ParamsPT.get<bool>("when.final",false);
-
       try
       {
-        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("style"))
+        m_Title = ParamsTree.root().getChildValue("title",m_Title);
+
+        ParamsTree.root().child("when").getChildValue("init",false).toBoolean(m_Init);
+        ParamsTree.root().child("when").getChildValue("everytime",false).toBoolean(m_EveryTime);
+        ParamsTree.root().child("when").getChildValue("final",false).toBoolean(m_Final);
+
+        for (auto& Style : ParamsTree.root().child("style"))
         {
-          BOOST_FOREACH(const boost::property_tree::ptree::value_type &w,ParamsPT.get_child("style."+v.first))
+          std::string StyleID = Style.first;
+
+          for (auto& StyleAttr : Style.second.children())
           {
-            m_UnitClassStyles[v.first][w.first] = ParamsPT.get("style."+v.first+"."+w.first,"");
+            m_UnitClassStyles[StyleID][StyleAttr.first] = StyleAttr.second.getValue("");
           }
         }
       }
-      catch(boost::exception const& E)
-      { }
+      catch(openfluid::base::FrameworkException& E)
+      {
+
+      }
 
       if (!(m_Init || m_EveryTime || m_Final))
         m_Final = true;
-
     }
 
 

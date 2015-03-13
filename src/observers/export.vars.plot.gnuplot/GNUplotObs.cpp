@@ -42,6 +42,7 @@
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/ware/WareParamsTree.hpp>
 
 #include <QDir>
 #include <QProcess>
@@ -192,42 +193,42 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree ParamsPT;
+      openfluid::ware::WareParamsTree ParamsTree;
 
       try
       {
-        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+        ParamsTree.setParams(Params);
+
+        ParamsTree.root().getChildValue("tryopengnuplot",m_TryOpenGNUplot).toBoolean(m_TryOpenGNUplot);
+        ParamsTree.root().getChildValue("persistent",m_Persistent).toBoolean(m_Persistent);
+        m_Terminal = ParamsTree.root().getChildValue("terminal",m_Terminal);
+        m_Output = ParamsTree.root().getChildValue("output",m_Output);
+
       }
       catch (openfluid::base::FrameworkException& E)
       {
         OPENFLUID_RaiseError(E.getMessage());
       }
 
-      m_TryOpenGNUplot = ParamsPT.get<bool>("tryopengnuplot",m_TryOpenGNUplot);
-      m_Persistent = ParamsPT.get<bool>("persistent",m_Persistent);
-      m_Terminal = ParamsPT.get("terminal",m_Terminal);
-      m_Output = ParamsPT.get("output",m_Output);
-
-
-      if (!ParamsPT.get_child_optional("serie"))
+      if (!ParamsTree.root().hasChild("serie"))
         OPENFLUID_RaiseError("No serie defined");
 
-      if (!ParamsPT.get_child_optional("graph"))
-              OPENFLUID_RaiseError("No graph defined");
+      if (!ParamsTree.root().hasChild("graph"))
+        OPENFLUID_RaiseError("No graph defined");
 
 
-      foreach (const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("serie"))
+      for (auto& Serie : ParamsTree.root().child("serie"))
       {
-        std::string SerieID = v.first;
+        std::string SerieID = Serie.first;
 
         SerieInfo SInfo;
-        SInfo.VarName = ParamsPT.get("serie."+SerieID+".var","");
-        SInfo.UnitClass = ParamsPT.get("serie."+SerieID+".unitclass","");
-        std::string UnitIDStr = ParamsPT.get("serie."+SerieID+".unitID","");
-        SInfo.SourceFile = ParamsPT.get("serie."+SerieID+".sourcefile","");
-        SInfo.Label = ParamsPT.get("serie."+SerieID+".label","");
-        SInfo.Style = ParamsPT.get("serie."+SerieID+".style","line");
-        SInfo.Color = ParamsPT.get("serie."+SerieID+".color","");
+        SInfo.VarName = Serie.second.getChildValue("var","");
+        SInfo.UnitClass = Serie.second.getChildValue("unitclass","");
+        std::string UnitIDStr = Serie.second.getChildValue("unitID","");
+        SInfo.SourceFile = Serie.second.getChildValue("sourcefile","");
+        SInfo.Label = Serie.second.getChildValue("label","");
+        SInfo.Style = Serie.second.getChildValue("style","line");
+        SInfo.Color = Serie.second.getChildValue("color","");
 
         if (!SInfo.VarName.empty() &&
             !SInfo.UnitClass.empty() &&
@@ -251,18 +252,18 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       }
 
 
-      foreach (const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("graph"))
+      for (auto& Graph : ParamsTree.root().child("graph"))
       {
-        std::string GraphID = v.first;
+        std::string GraphID = Graph.first;
 
          GraphInfo GInfo;
 
-         GInfo.Title = ParamsPT.get("graph."+GraphID+".title",v.first);
-         GInfo.Key = ParamsPT.get("graph."+GraphID+".key","default");
-         GInfo.YLabel = ParamsPT.get("graph."+GraphID+".ylabel","");
+         GInfo.Title = Graph.second.getChildValue("title",GraphID);
+         GInfo.Key = Graph.second.getChildValue("key","default");
+         GInfo.YLabel = Graph.second.getChildValue("ylabel","");
 
          std::vector<std::string> SeriesStr =
-             openfluid::tools::splitString(ParamsPT.get("graph."+GraphID+".series",""),
+             openfluid::tools::splitString(Graph.second.getChildValue("series",""),
                                            ";",false);
 
          for (std::vector<std::string>::const_iterator it = SeriesStr.begin();it != SeriesStr.end();++it)
@@ -272,9 +273,9 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
          }
 
          if (!GInfo.Series.empty())
-           m_Graphs[v.first] = GInfo;
+           m_Graphs[GraphID] = GInfo;
          else
-           OPENFLUID_RaiseWarning("Graph " + v.first + "ignored");
+           OPENFLUID_RaiseWarning("Graph " + GraphID + "ignored");
       }
     }
 

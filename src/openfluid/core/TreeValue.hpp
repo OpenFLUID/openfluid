@@ -29,38 +29,61 @@
   
 */
 
-
-
 /**
-  @file core.hpp
+  @file TreeValue.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_CORE_HPP__
-#define __OPENFLUID_CORE_HPP__
+#ifndef __OPENFLUID_CORE_TREEVALUE_HPP__
+#define __OPENFLUID_CORE_TREEVALUE_HPP__
+
+#include <string>
+
+#include <openfluid/core/CompoundValue.hpp>
+#include <openfluid/core/Tree.hpp>
+#include <openfluid/dllexport.hpp>
 
 
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/Attributes.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/NullValue.hpp>
-#include <openfluid/core/BooleanValue.hpp>
-#include <openfluid/core/DoubleValue.hpp>
-#include <openfluid/core/EventsCollection.hpp>
-#include <openfluid/core/IntegerValue.hpp>
-#include <openfluid/core/StringValue.hpp>
-#include <openfluid/core/VectorValue.hpp>
-#include <openfluid/core/MatrixValue.hpp>
-#include <openfluid/core/MapValue.hpp>
-#include <openfluid/core/SpatialGraph.hpp>
-#include <openfluid/core/SpatialUnit.hpp>
-#include <openfluid/core/UnitsCollection.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
-#include <openfluid/core/TreeValue.hpp>
+namespace openfluid { namespace core {
 
-#endif /* __OPENFLUID_CORE_HPP__ */
+
+class OPENFLUID_API TreeValue : public CompoundValue, public Tree<std::string,double>
+{
+
+  public:
+
+    /**
+      Default constructor
+    */
+    TreeValue() : CompoundValue(), Tree<std::string,double>() {};
+
+    /**
+      Copy constructor
+    */
+    TreeValue(const TreeValue& Val) :
+      CompoundValue(static_cast<const CompoundValue&>(Val)),
+      Tree<std::string,double>(static_cast<const Tree<std::string,double>& >(Val))
+    {  };
+
+    Value& operator =(const Value& Other);
+
+    virtual ~TreeValue()
+    {  };
+
+    inline Type getType() const
+    { return Value::TREE; };
+
+    Value* clone() const
+    { return new TreeValue(*this); };
+
+    void writeToStream(std::ostream& OutStm) const;
+
+};
+
+
+} }  // namespaces
+
+
+#endif /* __OPENFLUID_CORE_TREEVALUE_HPP__ */

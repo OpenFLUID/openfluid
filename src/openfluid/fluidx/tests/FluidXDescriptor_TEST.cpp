@@ -53,7 +53,6 @@ typedef boost::onullstream onullstream_type;
 #endif
 
 #include <tests-config.hpp>
-#include <boost/foreach.hpp>
 
 // to avoid conflicts between Qt and boost foreach macros
 #define QT_NO_KEYWORDS
@@ -63,7 +62,7 @@ typedef boost::onullstream onullstream_type;
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
+
 
 
 // =====================================================================
@@ -408,91 +407,6 @@ void TestDataset(std::string DatasetPath)
        (*ObsIt)->isType(openfluid::fluidx::WareDescriptor::PluggedObserver));
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.csv");
 
-   boost::property_tree::ptree Params =
-       openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
-
-   BOOST_CHECK_EQUAL(Params.get_child("format").size(), 4);
-
-   BOOST_CHECK_EQUAL(Params.size(), 2);
-
-   std::vector<std::string> FormatNames;
-   BOOST_FOREACH(boost::property_tree::ptree::value_type &v,Params.get_child("format"))FormatNames.push_back(v.first);
-
-   BOOST_CHECK_EQUAL(FormatNames[0], "ft1");
-   BOOST_CHECK_EQUAL(FormatNames[1], "ft2");
-   BOOST_CHECK_EQUAL(FormatNames[2], "ft4");
-   BOOST_CHECK_EQUAL(FormatNames[3], "ft5");
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft1.colsep"), " ");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft1.dtformat"),
-                     "%Y %m %d %H %M %S");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft1.commentchar"), "%");
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft2.colsep"), ";");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft2.dtformat"),
-                     "%Y%m%dT%H%M%S");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft2.commentchar"), "#");
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft4.dtformat"), "iso");
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft5.dtformat"), "6cols");
-
-   BOOST_CHECK_EQUAL(Params.get_child("set").size(), 9);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.format"), "ft1");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.unitsclass"), "XU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.unitsIDs"), "*");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.vars"), "*");
-   BOOST_CHECK(Params.get_optional<std::string>("set.full.precision") == NULL);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.2vars.format"), "ft1");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.2vars.unitsclass"), "YU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.2vars.unitsIDs"), "*");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.2vars.vars"), "var1;var2[]");
-   BOOST_CHECK_EQUAL(Params.get_optional<int>("set.2vars.precision"), 3);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.3units.format"), "ft1");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.3units.unitsclass"), "ZU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.3units.unitsIDs"), "5;197;73");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.3units.vars"), "*");
-   BOOST_CHECK_EQUAL(Params.get_optional<int>("set.3units.precision"), 5);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full2.format"), "ft2");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full2.unitsclass"), "KU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full2.unitsIDs"), "*");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full2.vars"), "*");
-   BOOST_CHECK_EQUAL(Params.get_optional<int>("set.full2.precision"), 9);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.3vars.format"), "ft2");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.3vars.unitsclass"), "LU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.3vars.unitsIDs"), "*");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.3vars.vars"),
-                     "var1;var2[];var5");
-   BOOST_CHECK(Params.get_optional<int>("set.3vars.precision") == NULL);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.2units.format"), "ft2");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.2units.unitsclass"), "MU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.2units.unitsIDs"), "2;1");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.2units.vars"), "*");
-   BOOST_CHECK(Params.get_optional<int>("set.2units.precision") == NULL);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full3.format"), "ft3");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full3.unitsclass"), "UU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full3.unitsIDs"), "*");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full3.vars"), "*");
-   BOOST_CHECK(Params.get_optional<int>("set.full3.precision") == NULL);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full4.format"), "ft4");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full4.unitsclass"), "UU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full4.unitsIDs"), "*");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full4.vars"), "*");
-   BOOST_CHECK(Params.get_optional<int>("set.full4.precision") == NULL);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full5.format"), "ft5");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full5.unitsclass"), "UU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full5.unitsIDs"), "*");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("set.full5.vars"), "*");
-   BOOST_CHECK(Params.get_optional<int>("set.full5.precision") == NULL);
 
    // output.files.kml
 
@@ -500,9 +414,6 @@ void TestDataset(std::string DatasetPath)
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.kml");
 
-   Params = openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
-
-   BOOST_CHECK_EQUAL(Params.size(), 0);
 
    // output.files.kml-dynamic
 
@@ -510,38 +421,12 @@ void TestDataset(std::string DatasetPath)
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.kml-dynamic");
 
-   Params = openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
-
-   BOOST_CHECK_EQUAL(Params.size(), 1);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("configfile"), "kmloutput.conf");
 
    // output.files.vtk
 
    ObsIt++;
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.vtk");
-
-   Params = openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
-
-   BOOST_CHECK_EQUAL(Params.size(), 3);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("DEMfile"), "DEMs/virtualdem.tif");
-   BOOST_CHECK_EQUAL(Params.get<bool>("visitfile.create"), true);
-
-   BOOST_CHECK_EQUAL(Params.get_child("serie").size(), 2);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk1.unitclass"), "SU");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk1.var"), "tests.var1");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk1.shapefile"),
-                     "shapefiles/SU.shp");
-   BOOST_CHECK_EQUAL(Params.get<int>("serie.vtk1.step"), 1);
-
-   BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk7.unitclass"), "RS");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk7.var"), "tests.var3");
-   BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk7.shapefile"),
-                     "shapefiles/RS.shp");
-   BOOST_CHECK_EQUAL(Params.get<int>("serie.vtk7.step"), 10);
 
 }
 

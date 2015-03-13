@@ -45,6 +45,7 @@
 
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/ware/WareParamsTree.hpp>
 
 #include "../KmlObserverBase.hpp"
 
@@ -361,11 +362,11 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree ParamsPT;
+      openfluid::ware::WareParamsTree ParamsTree;
 
       try
       {
-        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+        ParamsTree.setParams(Params);
       }
       catch (openfluid::base::FrameworkException& E)
       {
@@ -380,51 +381,57 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       // general
 
-      m_Title = ParamsPT.get("title",m_Title);
-      m_OutputFileName = ParamsPT.get("kmzfilename",m_OutputFileName);
-      m_TryOpenGEarth = ParamsPT.get<bool>("tryopengearth",m_TryOpenGEarth);
-
-
-      if (!ParamsPT.get_child_optional("layers"))
-        OPENFLUID_RaiseError("No layers defined");
-
-
-      foreach (const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("layers"))
+      try
       {
-        std::string LayerID = v.first;
+        m_Title = ParamsTree.root().getChildValue("title",m_Title);
 
-        KmlSerieInfo KSI;
+        m_OutputFileName = ParamsTree.root().getChildValue("kmzfilename",m_OutputFileName);
+        ParamsTree.root().getChildValue("tryopengearth",m_TryOpenGEarth).toBoolean(m_TryOpenGEarth);
 
-        KSI.UnitsClass = ParamsPT.get("layers."+LayerID+".unitclass","");
+
+        if (!ParamsTree.root().hasChild("layers"))
+          OPENFLUID_RaiseError("No layer defined");
 
 
-        KSI.VarsListStr = ParamsPT.get("layers."+LayerID+".varslist","*");
-
-        // TODO Manage selection of plotted spatial units
-
-        KSI.LineWidth = ParamsPT.get<int>("layers."+LayerID+".linewidth",1);
-        KSI.DefaultColor = ParamsPT.get("layers."+LayerID+".defaultcolor","ffffffff");
-        KSI.PlottedColor = ParamsPT.get("layers."+LayerID+".plottedcolor","ff0000ff");
-
-        KSI.SourceIsDatastore = (ParamsPT.get("layers."+LayerID+".source","file") == "datastore");
-        if (KSI.SourceIsDatastore)
-          return;
-        else
+        for (auto& Layer : ParamsTree.root().child("layers"))
         {
-          KSI.SourceFilename = ParamsPT.get("layers."+LayerID+".sourcefile","");
-          if (KSI.SourceFilename.empty())
-          {
-            OPENFLUID_RaiseWarning("wrong sourcefile format");
+          std::string LayerID = Layer.first;
+
+          KmlSerieInfo KSI;
+
+          KSI.UnitsClass = Layer.second.getChildValue("unitclass","");
+          KSI.VarsListStr = Layer.second.getChildValue("varslist","*");
+
+          // TODO Manage selection of plotted spatial units
+
+          Layer.second.getChildValue("linewidth",1).toInteger(KSI.LineWidth);
+          KSI.DefaultColor = Layer.second.getChildValue("defaultcolor","ffffffff");
+          KSI.PlottedColor = Layer.second.getChildValue("plottedcolor","ff0000ff");
+
+          KSI.SourceIsDatastore = (Layer.second.getChildValue("source","file").get() == "datastore");
+          if (KSI.SourceIsDatastore)
             return;
+          else
+          {
+            KSI.SourceFilename = Layer.second.getChildValue("sourcefile","");
+            if (KSI.SourceFilename.empty())
+            {
+              OPENFLUID_RaiseWarning("wrong sourcefile format");
+              return;
+            }
+            KSI.SourceFilename = m_InputDir + "/" + KSI.SourceFilename;
           }
-          KSI.SourceFilename = m_InputDir + "/" + KSI.SourceFilename;
-        }
 
-        if (transformVectorLayerToKmlGeometry(KSI))
-        {
-          m_KmlSeriesInfos.push_back(KSI);
-        }
+          if (transformVectorLayerToKmlGeometry(KSI))
+          {
+            m_KmlSeriesInfos.push_back(KSI);
+          }
 
+        }
+      }
+      catch (openfluid::base::FrameworkException& E)
+      {
+        OPENFLUID_RaiseError(E.getMessage());
       }
 
       m_OKToGo = true;

@@ -40,11 +40,11 @@
 
 #include <QStringList>
 #include <QDir>
-#include <boost/foreach.hpp>
 #include <ogrsf_frmts.h>
-#include <openfluid/utils/GDALHelpers.hpp>
 
+#include <openfluid/utils/GDALHelpers.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
+#include <openfluid/ware/WareParamsTree.hpp>
 
 
 DECLARE_OBSERVER_PLUGIN
@@ -514,11 +514,11 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree ParamsPT;
+      openfluid::ware::WareParamsTree ParamsTree;
 
       try
       {
-        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+        ParamsTree.setParams(Params);
       }
       catch (openfluid::base::FrameworkException& E)
       {
@@ -526,13 +526,13 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       }
 
       // checking of mandatory parameters
-      if (!ParamsPT.get_child_optional("format"))
+      if (!ParamsTree.root().hasChild("format"))
       {
         OPENFLUID_RaiseWarning("Missing GDAL format for output files");
         return;
       }
 
-      if (!ParamsPT.get_child_optional("geoserie"))
+      if (!ParamsTree.root().hasChild("format"))
       {
         OPENFLUID_RaiseWarning("No serie defined");
         return;
@@ -540,7 +540,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
 
       // process of format parameter
-      m_GDALFormat = ParamsPT.get("format","");
+      m_GDALFormat = ParamsTree.root().getChildValue("format","");
 
       openfluid::utils::GDALDriversFilesExts_t ValidVectorDrivers =
           openfluid::utils::getOGRFilesDriversForOpenFLUID();
@@ -555,7 +555,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
 
       // process of parameter for optional output subdirectory
-      std::string OutSeriesSubdir = ParamsPT.get("outsubdir","");
+      std::string OutSeriesSubdir = ParamsTree.root().getChildValue("outsubdir","");
 
 
       // get paths for input dataset and output directory
@@ -566,17 +566,17 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
         m_OutputPath += "/"+OutSeriesSubdir;
 
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("geoserie"))
+      for (auto& Serie : ParamsTree.root().child("geoserie"))
       {
         GeoVectorSerie::WhenModeCases Mode = GeoVectorSerie::WHENCONTINUOUS;
         openfluid::core::Duration_t ContinuousDelay = 1;
 
-        std::string SerieName = v.first;
+        std::string SerieName = Serie.first;
 
-        std::string GeoSourceFilename = ParamsPT.get("geoserie."+SerieName+".sourcefile","");
-        std::string VarsString = ParamsPT.get("geoserie."+SerieName+".vars","");
-        openfluid::core::UnitClass_t UnitsClass = ParamsPT.get("geoserie."+SerieName+".unitsclass","");
-        std::string WhenModeString = ParamsPT.get("geoserie."+SerieName+".when","");
+        std::string GeoSourceFilename = Serie.second.getChildValue("sourcefile","");
+        std::string VarsString = Serie.second.getChildValue("vars","");
+        openfluid::core::UnitClass_t UnitsClass = Serie.second.getChildValue("unitsclass","");
+        std::string WhenModeString = Serie.second.getChildValue("when","");
 
 
         if (GeoSourceFilename.empty())

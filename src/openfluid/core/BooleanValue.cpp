@@ -56,8 +56,10 @@ Value& BooleanValue::operator =(const Value& Other)
   return *this;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void BooleanValue::writeToStream(std::ostream& OutStm) const
 {

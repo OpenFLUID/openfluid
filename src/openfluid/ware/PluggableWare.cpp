@@ -133,22 +133,5 @@ bool PluggableWare::isWellFormated(const openfluid::ware::WareParamKey_t& Parame
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-boost::property_tree::ptree PluggableWare::getParamsAsPropertyTree(
-    const WareParams_t& Params)
-{
-  boost::property_tree::ptree pt;
-
-  for (WareParams_t::const_iterator it = Params.begin() ; it != Params.end() ; ++it)
-    if (isWellFormated(it->first)) pt.put(it->first, it->second.data());
-    else throw openfluid::base::FrameworkException("PluggableWare::getParamsAsPropertyTree",
-                                                   "Wrong format for parameter \""+it->first+"\"");
-
-  return pt;
-}
-
 
 }  }  // namespaces

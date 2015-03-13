@@ -30,37 +30,41 @@
 */
 
 
-
 /**
-  @file core.hpp
+  @file TreeValue.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_CORE_HPP__
-#define __OPENFLUID_CORE_HPP__
-
-
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/Attributes.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/NullValue.hpp>
-#include <openfluid/core/BooleanValue.hpp>
-#include <openfluid/core/DoubleValue.hpp>
-#include <openfluid/core/EventsCollection.hpp>
-#include <openfluid/core/IntegerValue.hpp>
-#include <openfluid/core/StringValue.hpp>
-#include <openfluid/core/VectorValue.hpp>
-#include <openfluid/core/MatrixValue.hpp>
-#include <openfluid/core/MapValue.hpp>
-#include <openfluid/core/SpatialGraph.hpp>
-#include <openfluid/core/SpatialUnit.hpp>
-#include <openfluid/core/UnitsCollection.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
 #include <openfluid/core/TreeValue.hpp>
 
-#endif /* __OPENFLUID_CORE_HPP__ */
+
+namespace openfluid { namespace core {
+
+
+Value& TreeValue::operator =(const Value& Other)
+{
+  const TreeValue* CastedValue = dynamic_cast<const TreeValue*> (&Other);
+
+  if (CastedValue)
+  {
+    Tree<std::string,double>::operator=(static_cast<const Tree<std::string,double>& >(Other.asTreeValue()));
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void TreeValue::writeToStream(std::ostream& OutStm) const
+{
+  OutStm << "{";
+  Tree<std::string,double>::writeToStreamFlat(OutStm);
+  OutStm << "}";
+}
+
+} }  // namespaces

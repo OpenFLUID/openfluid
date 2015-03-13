@@ -89,7 +89,7 @@ class OPENFLUID_API LineStringEntity: public LandREntity, public geos::planargra
     /**
      @brief Creates a new LineStringEntity.
      @details Takes ownership of NewLine.
-     @throw base::OFException if NewLine is not a geos::geom::LineString or is an empty geometry.
+     @throw base::FrameworkException if NewLine is not a geos::geom::LineString or is an empty geometry.
      */
     LineStringEntity(const geos::geom::Geometry* NewLine, unsigned int OfldId);
 
