@@ -48,8 +48,7 @@
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
-namespace Ui {
-class WareExplorerDialog;
+namespace Ui { class WareExplorerDialog;
 }
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -67,7 +66,12 @@ class OPENFLUID_API WareExplorerDialog: public QDialog
 
     QPushButton* mp_AcceptButton;
 
-    WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath);
+    QString m_DefaulMessage;
+
+    WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath,
+                       const QString& Title, const QString& DefaultMessage, const QString& AcceptButtonLabel);
+
+    void setStatus(const QString WarningMsg);
 
   public:
 
@@ -80,13 +84,28 @@ class OPENFLUID_API WareExplorerDialog: public QDialog
 
     static QString getSaveFilePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath = "");
 
+    static QString getCreateFilePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath = "");
+
     void setOpenWareMode();
     void setOpenFileMode();
     void setSaveFileMode();
+    void setCreateFileMode();
 
+    /*
+     * Returns the path selected in the explorer (may be a file or a directory)
+     */
     QString getSelectedPath();
 
+    /*
+     * Returns the filename (i.e. without path) in the line edit (may be empty)
+     */
     QString getEditedFilename();
+
+    /*
+     * Returns the complete selected path, i.e. the combination of the filename in the selected directory
+     */
+    QString getCompleteFilePath();
+
 
   private slots:
 
@@ -94,7 +113,8 @@ class OPENFLUID_API WareExplorerDialog: public QDialog
     void onCurrentChangedOpenFileMode(const QString& Path);
     void onCurrentChangedSaveFileMode(const QString& Path);
 
-    void onTextChanged(const QString & text);
+    void onTextChangedCheckEmpty(const QString& Text);
+    void onTextChangedCheckExists(const QString& Text);
 };
 
 } } }  // namespaces

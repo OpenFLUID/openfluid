@@ -90,6 +90,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void openWare(openfluid::waresdev::WareSrcManager::WareType Type, const QString& Title);
 
+    void newWare(openfluid::waresdev::WareSrcManager::WareType Type);
+
   public:
 
     WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone);
@@ -140,6 +142,12 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void openSimulator();
     void openObserver();
     void openBuilderExtension();
+
+    void newFile();
+
+    void newSimulator();
+    void newObserver();
+    void newBuilderExtension();
 
   private slots:
 

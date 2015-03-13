@@ -153,6 +153,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void wareTextModified(WareSrcWidget* Widget, bool Modified);
 
     void saveAsRequested();
+
+    void newFileRequested();
 };
 
 } } }  // namespaces

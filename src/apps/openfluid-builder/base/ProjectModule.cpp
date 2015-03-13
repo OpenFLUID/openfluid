@@ -686,9 +686,7 @@ void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::Pluggabl
 
 void ProjectModule::whenNewSimulatorSrcAsked()
 {
-  // TODO to be replaced
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),
-                        QString("not implemented"),QMessageBox::Close);
+  mp_MainWidget->newSimulator();
 }
 
 
@@ -708,9 +706,7 @@ void ProjectModule::whenOpenSimulatorSrcAsked()
 
 void ProjectModule::whenNewObserverSrcAsked()
 {
-  // TODO to be replaced
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),
-                        QString("not implemented"),QMessageBox::Close);
+  mp_MainWidget->newObserver();
 }
 
 
@@ -720,7 +716,7 @@ void ProjectModule::whenNewObserverSrcAsked()
 
 void ProjectModule::whenOpenObserverSrcAsked()
 {
-  mp_MainWidget->openObsereverSrc();
+  mp_MainWidget->openObserverSrc();
 }
 
 

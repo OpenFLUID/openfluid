@@ -51,6 +51,8 @@
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
+#include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
+//#include <openfluid/ui/waresdev/NewWareDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -109,6 +111,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
       connect(Widget, SIGNAL(wareTextModified(WareSrcWidget*,bool)), this,
               SLOT(onWareTxtModified(WareSrcWidget*,bool)));
       connect(Widget, SIGNAL(saveAsRequested()), this, SLOT(saveCurrentEditorAs()));
+      connect(Widget, SIGNAL(newFileRequested()), this, SLOT(newFile()));
     }
 
     if (Info.m_isAWareFile)
@@ -556,6 +559,7 @@ bool WareSrcWidgetCollection::isBuildNoInstallMode()
 // =====================================================================
 // =====================================================================
 
+
 void WareSrcWidgetCollection::openSimulator()
 {
   openWare(openfluid::waresdev::WareSrcManager::SIMULATOR, tr("Open a simulator"));
@@ -586,6 +590,68 @@ void WareSrcWidgetCollection::openWare(openfluid::waresdev::WareSrcManager::Ware
     return;
 
   openPath(PathToOpen);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::newFile()
+{
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
+    openfluid::waresdev::WareSrcContainer& Container = CurrentWare->wareSrcContainer();
+
+    NewSrcFileAssistant Assistant(Container, QApplication::activeWindow());
+    Assistant.exec();
+
+    QString NewFilePath = Assistant.getNewFilePath();
+    if (!NewFilePath.isEmpty())
+    {
+      Container.update();
+      openPath(NewFilePath);
+    }
+  }
+  else
+    QMessageBox::warning(0, "No ware open", "Open a ware first");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::newSimulator()
+{
+  newWare(openfluid::waresdev::WareSrcManager::SIMULATOR);
+}
+
+void WareSrcWidgetCollection::newObserver()
+{
+  newWare(openfluid::waresdev::WareSrcManager::OBSERVER);
+}
+
+void WareSrcWidgetCollection::newBuilderExtension()
+{
+  newWare(openfluid::waresdev::WareSrcManager::BUILDEREXT);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::newWare(openfluid::waresdev::WareSrcManager::WareType /*Type*/)
+{
+//  openfluid::ui::waresdev::NewWareDialog Dialog(Type, m_DefaultConfigMode, QApplication::activeWindow());
+//  if (Dialog.exec())
+//  {
+//    QString NewPath = Dialog.getNewWarePath();
+//
+//    if (!NewPath.isEmpty())
+//      openPath(NewPath);
+//  }
 }
 
 

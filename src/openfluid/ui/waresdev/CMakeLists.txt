@@ -6,13 +6,15 @@ INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp WareSrcWidgetCollection.cpp
                               WareSrcSyntaxHighlighter.cpp WareSrcFiletypeManager.cpp TextEditMsgStream.cpp
-                              WareSrcExplorer.cpp WareSrcExplorerModel.cpp WareExplorerDialog.cpp)
+                              WareSrcExplorer.cpp WareSrcExplorerModel.cpp WareExplorerDialog.cpp
+                              NewSrcFileAssistant.cpp)
 
 SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp WareSrcWidgetCollection.hpp
                               WareSrcSyntaxHighlighter.hpp WareSrcFiletypeManager.hpp TextEditMsgStream.hpp
-                              WareSrcExplorer.hpp WareSrcExplorerModel.hpp WareExplorerDialog.hpp)
+                              WareSrcExplorer.hpp WareSrcExplorerModel.hpp WareExplorerDialog.hpp
+                              NewSrcFileAssistant.hpp)
 
-QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui)
+QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui CppPage.ui CMakeConfigPage.ui NewSrcFileAssistant.ui)
                                    
 
 #QT4_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)

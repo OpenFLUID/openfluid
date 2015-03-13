@@ -78,9 +78,9 @@ MainWindow::MainWindow() :
   createLocalActions();
   createMenus();
 
-  connect(m_Actions["NewSimulator"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
-  connect(m_Actions["NewObserver"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
-  connect(m_Actions["NewExtension"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["NewSimulator"], SIGNAL(triggered()), mp_Collection, SLOT(newSimulator()));
+  connect(m_Actions["NewObserver"], SIGNAL(triggered()), mp_Collection, SLOT(newObserver()));
+  connect(m_Actions["NewExtension"], SIGNAL(triggered()), mp_Collection, SLOT(newBuilderExtension()));
   connect(m_Actions["OpenSimulator"], SIGNAL(triggered()), mp_Collection, SLOT(openSimulator()));
   connect(m_Actions["OpenObserver"], SIGNAL(triggered()), mp_Collection, SLOT(openObserver()));
   connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection, SLOT(openBuilderExtension()));
@@ -89,7 +89,7 @@ MainWindow::MainWindow() :
   connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
 
-  connect(mp_Toolbar->action("NewFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->action("NewFile"), SIGNAL(triggered()), mp_Collection, SLOT(newFile()));
   connect(mp_Toolbar->action("OpenFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(mp_Toolbar->action("SaveFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditor()));
   connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditorAs()));
