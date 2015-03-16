@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   openfluid::waresdev::WareSrcFactory::Replacements R;
   R.ClassName = "MySim";
   R.RootCppFilename = "MySim.cpp";
-  R.Sim2docMode = "AUTO";
+  R.Sim2docModeIndex = 1;  //"AUTO"
   R.Sim2docInstall = true;
 
   BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(NewFilePath, ErrMsg), false);
@@ -148,9 +148,8 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
 
   R.ParamsUiClassname = "MyWidget";
   R.ParamsUiRootCppFilename = "MyWidget.cpp";
-  R.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::Replacements::getHppFilename(
-      R.ParamsUiRootCppFilename);
-  R.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::Replacements::getHeaderGuard(R.ParamsUiRootHppFilename);
+  R.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.ParamsUiRootCppFilename);
+  R.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.ParamsUiRootHppFilename);
 
   BOOST_CHECK_EQUAL(Factory.createParamUiCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(SimDir.exists("MyWidget.cpp"));
@@ -199,9 +198,9 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   openfluid::waresdev::WareSrcFactory::Replacements R;
   R.ClassName = "MyBext";
   R.RootCppFilename = "MyBext.cpp";
-  R.RootHppFilename = openfluid::waresdev::WareSrcFactory::Replacements::getHppFilename(R.RootCppFilename);
-  R.HppHeaderGuard = openfluid::waresdev::WareSrcFactory::Replacements::getHeaderGuard(R.RootHppFilename);
-  R.BuilderExtCategory = "openfluid::builderext::CAT_SPATIAL";
+  R.RootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.RootCppFilename);
+  R.HppHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.RootHppFilename);
+  R.BuilderExtCategoryIndex = 0;  //"openfluid::builderext::CAT_SPATIAL"
   R.BuilderExtMenuText = "bla bla";
 
   BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(NewFilePath, ErrMsg), false);
@@ -255,7 +254,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BOOST_CHECK(CMakeConfigFileContent.contains("SET(BEXT_CPP MyBext.cpp)"));
   CMakeConfigResult.close();
 
-  R.BuilderExtType = openfluid::builderext::TYPE_MODAL;
+  R.BuilderExtTypeIndex = 0;  //openfluid::builderext::TYPE_MODAL
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("MyBext.cpp"));
@@ -283,7 +282,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   HppResult.remove();
 
 
-  R.BuilderExtType = openfluid::builderext::TYPE_MODELESS;
+  R.BuilderExtTypeIndex = 1;  //openfluid::builderext::TYPE_MODELESS
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("MyBext.cpp"));
@@ -309,7 +308,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   HppResult.remove();
 
 
-  R.BuilderExtType = openfluid::builderext::TYPE_WORKSPACE;
+  R.BuilderExtTypeIndex = 2;  //openfluid::builderext::TYPE_WORKSPACE
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("MyBext.cpp"));

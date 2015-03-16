@@ -58,6 +58,14 @@ class OPENFLUID_API WareSrcFactory
 
     struct Replacements
     {
+      private:
+
+        QList<openfluid::builderext::ExtensionType> BextType_Data;
+        QStringList BextCategory_Data;
+        QStringList Sim2docMode_Data;
+
+      public:
+
         QString ClassName;
         QString RootCppFilename;
         QString RootHppFilename;
@@ -68,28 +76,62 @@ class OPENFLUID_API WareSrcFactory
         QString ParamsUiRootHppFilename;
         QString ParamsUiHeaderGuard;
         QString ParamsUiComment;
-        QString Sim2docMode;
+        int Sim2docModeIndex;
         bool Sim2docInstall;
-        openfluid::builderext::ExtensionType BuilderExtType;
-        QString BuilderExtCategory;
+        int BuilderExtTypeIndex;
+        int BuilderExtCategoryIndex;
         QString BuilderExtMenuText;
+
 
         Replacements() :
             ParamsUiEnabled(false), ParamsUiClassname("ParamsUiWidget"), ParamsUiRootCppFilename(""),
-            ParamsUiRootHppFilename("ParamsUiWidget.hpp"), ParamsUiComment("//"), Sim2docInstall(false),
-            BuilderExtType(openfluid::builderext::TYPE_UNKNOWN)
+            ParamsUiRootHppFilename("ParamsUiWidget.hpp"), ParamsUiComment("//"), Sim2docModeIndex(0),
+            Sim2docInstall(false), BuilderExtTypeIndex(-1), BuilderExtCategoryIndex(0)
         {
+          BextType_Data << openfluid::builderext::TYPE_MODAL << openfluid::builderext::TYPE_MODELESS
+                        << openfluid::builderext::TYPE_WORKSPACE;
+
+          BextCategory_Data << "openfluid::builderext::CAT_SPATIAL" << "openfluid::builderext::CAT_MODEL"
+                            << "openfluid::builderext::CAT_RESULTS" << "openfluid::builderext::CAT_OTHER";
+
+          Sim2docMode_Data << "ON" << "AUTO" << "OFF";
         }
 
-        static QString getHeaderGuard(const QString& HppFilename)
+        static QStringList getBuilderExtTypeTexts()
         {
-          return HppFilename.toUpper().replace(".", "_").append("__").prepend("__");
+          QStringList BextType_Texts;
+          BextType_Texts << QObject::tr("Modal") << QObject::tr("Modeless") << QObject::tr("Workspace");
+          return BextType_Texts;
+        }
+        static QStringList getBuilderExtCategoryTexts()
+        {
+          QStringList BextCategory_Texts;
+          BextCategory_Texts << QObject::tr("Spatial domain") << QObject::tr("Model") << QObject::tr("Results")
+                             << QObject::tr("Other");
+          return BextCategory_Texts;
+        }
+        static QStringList getSim2docModeTexts()
+        {
+          QStringList Sim2docMode_Texts;
+          Sim2docMode_Texts << QObject::tr("On - sim2doc must be run manually")
+                            << QObject::tr("Auto - sim2doc is automatically run")
+                            << QObject::tr("Off - sim2doc is disabled");
+          return Sim2docMode_Texts;
         }
 
-        static QString getHppFilename(const QString& CppFilename)
+        openfluid::builderext::ExtensionType getBuilderExtType() const
         {
-          QString Hpp(CppFilename);
-          return Hpp.replace(QRegExp("\\.cpp$"), ".hpp");
+          return BextType_Data.value(BuilderExtTypeIndex, openfluid::builderext::TYPE_UNKNOWN);
+        }
+
+        QString getBuilderExtCategory() const
+        {
+          return BextCategory_Data.value(BuilderExtCategoryIndex, "");
+        }
+
+        QString getSim2docMode() const
+        {
+          return Sim2docMode_Data.value(Sim2docModeIndex, "");
         }
 
         QString getParamsUiEnabled() const
@@ -101,6 +143,7 @@ class OPENFLUID_API WareSrcFactory
         {
           return Sim2docInstall ? "OFF" : "ON";
         }
+
     };
 
   private:
@@ -190,10 +233,14 @@ class OPENFLUID_API WareSrcFactory
      */
     bool createCmakeConfigFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg);
 
-    static QRegExp getCppFilenameRegExp(bool IsHpp = false);
-    static QRegExp getClassnameRegExp();
-    static QRegExp getWareIdRegExp();
+    static QRegExp getCppFilenameRegExp(QString& Tooltip, bool IsHpp = false);
+    static QRegExp getClassnameRegExp(QString& Tooltip);
+    static QRegExp getWareIdRegExp(QString& Tooltip);
+
+    static QString getHeaderGuard(const QString& HppFilename);
+    static QString getHppFilename(const QString& CppFilename);
 };
 
 } }  // namespaces
+
 #endif /* __OPENFLUID_WARESDEV_WARESRCFACTORY_HPP__ */

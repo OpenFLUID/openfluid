@@ -133,7 +133,7 @@ bool WareSrcFactory::createJsonFile(QString& NewFilePath, QString& ErrMsg)
 bool WareSrcFactory::createCppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
 {
   QString TplFilename;
-  switch (R.BuilderExtType)
+  switch (R.getBuilderExtType())
   {
     case openfluid::builderext::TYPE_MODAL:
       TplFilename = "source_modal.cpp.tpl";
@@ -161,7 +161,7 @@ bool WareSrcFactory::createCppFile(const Replacements& R, QString& NewFilePath, 
 bool WareSrcFactory::createHppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
 {
   QString TplFilename;
-  switch (R.BuilderExtType)
+  switch (R.getBuilderExtType())
   {
     case openfluid::builderext::TYPE_MODAL:
       TplFilename = "source_modal.hpp.tpl";
@@ -286,8 +286,8 @@ bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFile
   Str.replace("%%PARAMSUIHPPHEADERGUARD%%", R.ParamsUiHeaderGuard);
   Str.replace("%%PARAMSUICOMMENT%%", R.ParamsUiComment);
   Str.replace("%%SIM2DOCINSTALLDISABLED%%", R.getSim2docInstall());
-  Str.replace("%%SIM2DOCMODE%%", R.Sim2docMode);
-  Str.replace("%%BUILDEREXTCATEGORY%%", R.BuilderExtCategory);
+  Str.replace("%%SIM2DOCMODE%%", R.getSim2docMode());
+  Str.replace("%%BUILDEREXTCATEGORY%%", R.getBuilderExtCategory());
   Str.replace("%%BUILDEREXTMENUTEXT%%", R.BuilderExtMenuText);
 
   if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -306,19 +306,43 @@ bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFile
 // =====================================================================
 // =====================================================================
 
-QRegExp WareSrcFactory::getCppFilenameRegExp(bool IsHpp)
+QRegExp WareSrcFactory::getCppFilenameRegExp(QString& Tooltip, bool IsHpp)
 {
+  Tooltip = QObject::tr("Accepts only letters, digits, dash ('-'), underscore('_') or dot ('.') characters.");
   return IsHpp ? QRegExp("[a-zA-Z0-9._-]+\\.hpp") : QRegExp("[a-zA-Z0-9._-]+\\.cpp");
 }
 
-QRegExp WareSrcFactory::getClassnameRegExp()
+QRegExp WareSrcFactory::getClassnameRegExp(QString& Tooltip)
 {
+  Tooltip = QObject::tr("Accepts only letters, digits, or underscore ('_') characters, and must begin with a letter.");
   return QRegExp("[a-zA-Z]+[a-zA-Z0-9_]*");
 }
 
-QRegExp WareSrcFactory::getWareIdRegExp()
+QRegExp WareSrcFactory::getWareIdRegExp(QString& Tooltip)
 {
+  Tooltip = QObject::tr("Accepts only letters, digits, dash ('-'), underscore('_') or dot ('.') characters.");
   return QRegExp("[a-zA-Z0-9._-]+");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcFactory::getHeaderGuard(const QString& HppFilename)
+{
+  return HppFilename.toUpper().replace(".", "_").append("__").prepend("__");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcFactory::getHppFilename(const QString& CppFilename)
+{
+  QString Hpp(CppFilename);
+  return Hpp.replace(QRegExp("\\.cpp$"), ".hpp");
 }
 
 

@@ -52,7 +52,7 @@
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
-//#include <openfluid/ui/waresdev/NewWareDialog.hpp>
+#include <openfluid/ui/waresdev/NewWareDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -642,16 +642,16 @@ void WareSrcWidgetCollection::newBuilderExtension()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::newWare(openfluid::waresdev::WareSrcManager::WareType /*Type*/)
+void WareSrcWidgetCollection::newWare(openfluid::waresdev::WareSrcManager::WareType Type)
 {
-//  openfluid::ui::waresdev::NewWareDialog Dialog(Type, m_DefaultConfigMode, QApplication::activeWindow());
-//  if (Dialog.exec())
-//  {
-//    QString NewPath = Dialog.getNewWarePath();
-//
-//    if (!NewPath.isEmpty())
-//      openPath(NewPath);
-//  }
+  openfluid::ui::waresdev::NewWareDialog Dialog(Type, QApplication::activeWindow());
+  if (Dialog.exec())
+  {
+    QString NewPath = Dialog.getNewWarePath();
+
+    if (!NewPath.isEmpty())
+      openPath(NewPath);
+  }
 }
 
 

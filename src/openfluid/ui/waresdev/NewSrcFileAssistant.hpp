@@ -85,8 +85,7 @@ class OPENFLUID_API CppPage: public QWizardPage
 
   public:
 
-    CppPage(const QDir& WareDir, const QStringList& BextType_Text, const QStringList& BextCategory_Text,
-            QWidget* Parent = 0);
+    CppPage(const QDir& WareDir, QWidget* Parent = 0);
 
     ~CppPage();
 
@@ -118,8 +117,7 @@ class OPENFLUID_API CMakeConfigPage: public QWizardPage
 
   public:
 
-    CMakeConfigPage(openfluid::waresdev::WareSrcManager::WareType Type, const QStringList& Sim2doc_Text,
-                    QWidget* Parent = 0);
+    CMakeConfigPage(openfluid::waresdev::WareSrcManager::WareType Type, QWidget* Parent = 0);
 
     ~CMakeConfigPage();
 
@@ -151,10 +149,6 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
     const openfluid::waresdev::WareSrcContainer& mref_Container;
 
     QString m_NewFilePath;
-
-    QList<openfluid::builderext::ExtensionType> m_BextType_Data;
-    QStringList m_BextCategory_Data;
-    QStringList m_Sim2doc_Data;
 
   protected:
 
