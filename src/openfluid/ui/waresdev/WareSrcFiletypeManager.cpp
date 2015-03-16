@@ -175,24 +175,26 @@ void WareSrcFiletypeManager::parseFiletypeFile(const QString& FilePath)
           "WareSrcFiletypeManager::parseFiletypeFile",
           "language file not well formed ('filetype' tag has no 'name' attribute)");
 
+    WareSrcFiletype Type;
+
     QDomNode ExtNode = TypeElem.namedItem("extensions");
     if (ExtNode.isNull() || !ExtNode.isElement())
       throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseFiletypeFile",
                                                 "language file not well formed (missing 'extensions' tag)");
 
-    WareSrcFiletype Type;
-
     Type.m_Extensions = ExtNode.toElement().text();
+
+    QString IconPath = TypeElem.attribute("icon");
+    if (!IconPath.isEmpty())
+    {
+      Type.m_IconPath = IconPath;
+      m_IconsByFileExtensionList[Type.m_Extensions] = IconPath;
+    }
 
     for (QDomElement TypeInfoElem = TypeElem.firstChildElement(); !TypeInfoElem.isNull();
         TypeInfoElem = TypeInfoElem.nextSiblingElement())
     {
-      if (TypeInfoElem.tagName() == "icon")
-      {
-        Type.m_IconPath = TypeInfoElem.attribute("qresname");
-        m_IconsByFileExtensionList[Type.m_Extensions] = Type.m_IconPath;
-      }
-      else if (TypeInfoElem.tagName() == "edition" && TypeInfoElem.attribute("internal") == "yes")
+      if (TypeInfoElem.tagName() == "edition" && TypeInfoElem.attribute("internal") == "yes")
       {
         for (QDomElement EditionElem = TypeInfoElem.firstChildElement(); !EditionElem.isNull(); EditionElem =
             EditionElem.nextSiblingElement())

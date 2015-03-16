@@ -15,7 +15,7 @@
     <file>icons/start.png</file>
     <file>icons/stop.png</file>
     <file>icons/pause.png</file> 
-    <file>icons/cmake-config.png</file>
+    <file>icons/cmake.png</file>
     <file>icons/cmakelists.png</file>
     <file>icons/cpp.png</file>
     <file>icons/fortran.png</file>

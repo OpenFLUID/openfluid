@@ -54,23 +54,15 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
-    QFileSystemModel(), m_DirPath(Path)
+    QFileSystemModel()
 {
-  m_DefaultIcons["*.c++;*.cxx;*.cpp;*.cc;*.C;*.moc;*.c"] = ":/ui/common/icons/cpp.png";
-  m_DefaultIcons["*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc"] = ":/ui/common/icons/hpp.png";
-  m_DefaultIcons["CMake.in.config"] = ":/ui/common/icons/cmake-config.png";
-  m_DefaultIcons["CMakeLists.txt;*.cmake"] = ":/ui/common/icons/cmakelists.png";
-  m_DefaultIcons["*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95"] = ":/ui/common/icons/fortran.png";
-  m_DefaultIcons["*.ui"] = ":/ui/common/icons/qt-ui.png";
-  m_DefaultIcons["wareshub.json"] = ":/ui/common/icons/wareshub.png";
-
   m_UserIcons = openfluid::ui::waresdev::WareSrcFiletypeManager::instance()->getIconsByFileExtensionList();
 
   mp_Manager = openfluid::waresdev::WareSrcManager::instance();
 
   connect(this, SIGNAL(directoryLoaded(const QString&)), this, SLOT(onDirectoryLoaded(const QString&)));
 
-  setRootPath(m_DirPath);
+  setRootPath(Path);
 }
 
 
@@ -109,12 +101,6 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
     if (!isDir(Index))
     {
       for (QMap<QString, QString>::const_iterator it = m_UserIcons.begin(); it != m_UserIcons.end(); ++it)
-      {
-        if (QDir::match(it.key(), fileName(Index)))
-          return QIcon(it.value());
-      }
-
-      for (QMap<QString, QString>::const_iterator it = m_DefaultIcons.begin(); it != m_DefaultIcons.end(); ++it)
       {
         if (QDir::match(it.key(), fileName(Index)))
           return QIcon(it.value());

@@ -3,7 +3,7 @@
   <waresdev>
     <filetypes>
 
-      <filetype name="cpp">
+      <filetype name="cpp" icon=":/ui/common/icons/cpp.png">
         <extensions>*.c++;*.cxx;*.cpp;*.cc;*.C;*.moc;*.c</extensions>
         <edition internal="yes">
           <highlighting specsfile="cpp.syntaxhl.ofdev.xml" />
@@ -11,7 +11,7 @@
         </edition>
       </filetype>
       
-      <filetype name="hpp">
+      <filetype name="hpp" icon=":/ui/common/icons/hpp.png">
         <extensions>*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc</extensions>
         <edition internal="yes">
           <highlighting specsfile="cpp.syntaxhl.ofdev.xml" />
@@ -19,14 +19,21 @@
         </edition>
       </filetype>
 
-      <filetype name="cmake">
-        <extensions>CMakeLists.txt;CMake.in.config;*.cmake</extensions>
+      <filetype name="cmakelists" icon=":/ui/common/icons/cmakelists.png">
+        <extensions>CMakeLists.txt</extensions>
         <edition internal="yes">
           <highlighting specsfile="cmake.syntaxhl.ofdev.xml" />
         </edition>
       </filetype>
       
-      <filetype name="fortran">
+      <filetype name="cmake" icon=":/ui/common/icons/cmake.png">
+        <extensions>CMake.in.config;*.cmake</extensions>
+        <edition internal="yes">
+          <highlighting specsfile="cmake.syntaxhl.ofdev.xml" />
+        </edition>
+      </filetype>
+      
+      <filetype name="fortran" icon=":/ui/common/icons/fortran.png">
         <extensions>*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95</extensions>
         <edition internal="no">
           <highlighting specsfile="fortran.syntaxhl.ofdev.xml" />
@@ -43,8 +50,17 @@
       <filetype name="image">
         <extensions>*.png;*.jpg;*.tif</extensions>
         <edition internal="no" />
-        <icon qresname=":/icons/image.png" />
-      </filetype>      
+      </filetype>
+      
+      <filetype name="qt-ui" icon=":/ui/common/icons/qt-ui.png">
+        <extensions>*.ui</extensions>
+        <edition internal="no" />
+      </filetype>
+      
+      <filetype name="wareshub" icon=":/ui/common/icons/wareshub.png">
+        <extensions>wareshub.json</extensions>
+        <edition internal="no" />
+      </filetype> 
 
     </filetypes>    
   </waresdev>

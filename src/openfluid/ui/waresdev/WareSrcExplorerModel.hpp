@@ -55,11 +55,8 @@ class WareSrcExplorerModel: public QFileSystemModel
 
   private:
 
-    QString m_DirPath;
-
     // set here to speed up display
     QMap<QString, QString> m_UserIcons;
-    QMap<QString, QString> m_DefaultIcons;
 
     openfluid::waresdev::WareSrcManager* mp_Manager;
 
