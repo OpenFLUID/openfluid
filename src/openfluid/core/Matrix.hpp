@@ -42,11 +42,9 @@
 #define __OPENFLUID_CORE_MATRIX_HPP__
 
 
-
-#include <iostream>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <boost/multi_array.hpp>
+
 
 namespace openfluid { namespace core {
 
@@ -59,11 +57,15 @@ class OPENFLUID_API Matrix
 {
   protected :
 
-    boost::multi_array<T, 2> m_Data;
+    T* m_Data;
 
     unsigned long m_ColsNbr;
 
     unsigned long m_RowsNbr;
+
+    bool allocate(unsigned long ColsNbr, unsigned long RowsNbr);
+
+    void init();
 
 
   public :
@@ -120,12 +122,12 @@ class OPENFLUID_API Matrix
     /**
       Returns a pointer to the content of the Matrix (like C arrays)
     */
-    T* data() const { return (T*)(m_Data.data()); };
+    T* data() const { return (T*)(m_Data); };
 
     /**
       Sets data from a pointer to a content (like C arrays)
     */
-    void setData(T* Data);
+    void setData(T* Data, unsigned long ColsNbr, unsigned long RowsNbr);
 
     /**
       Returns the element of the Matrix for index Index
@@ -176,9 +178,9 @@ class OPENFLUID_API Matrix
 
 template <class T>
 Matrix<T>::Matrix():
-  m_Data(boost::extents[0][0],boost::fortran_storage_order()),
   m_ColsNbr(0),m_RowsNbr(0)
 {
+  init();
 }
 
 
@@ -186,11 +188,14 @@ Matrix<T>::Matrix():
 // =====================================================================
 
 template <class T>
-Matrix<T>::Matrix(const Matrix &A):
-  m_Data(boost::extents[A.m_ColsNbr][A.m_RowsNbr],boost::fortran_storage_order()),
-  m_ColsNbr(A.m_ColsNbr),m_RowsNbr(A.m_RowsNbr)
+Matrix<T>::Matrix(const Matrix &A)
 {
-  m_Data = A.m_Data;
+  init();
+
+  if (!allocate(A.m_ColsNbr,A.m_RowsNbr))
+    throw openfluid::base::FrameworkException("Matrix::Matrix(const Vector)","Cannot allocate memory");
+
+  std::copy(A.m_Data, A.m_Data + (A.m_ColsNbr*A.m_RowsNbr), m_Data);
 }
 
 
@@ -198,10 +203,13 @@ Matrix<T>::Matrix(const Matrix &A):
 // =====================================================================
 
 template <class T>
-Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr) :
-  m_Data(boost::extents[ColsNbr][RowsNbr],boost::fortran_storage_order()),
-  m_ColsNbr(ColsNbr),m_RowsNbr(RowsNbr)
+Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr)
 {
+  init();
+
+  if (!allocate(ColsNbr,RowsNbr))
+    throw openfluid::base::FrameworkException("Matrix::Matrix(ColsNbr,RowNbr)","Cannot allocate memory");
+
   fill(0);
 }
 
@@ -211,10 +219,13 @@ Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr) :
 
 
 template <class T>
-Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr, T InitValue) :
-  m_Data(boost::extents[ColsNbr][RowsNbr],boost::fortran_storage_order()),
-  m_ColsNbr(ColsNbr),m_RowsNbr(RowsNbr)
+Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr, T InitValue)
 {
+  init();
+
+  if (!allocate(ColsNbr,RowsNbr))
+    throw openfluid::base::FrameworkException("Matrix::Matrix(ColsNbr,RowNbr,Value)","Cannot allocate memory");
+
   fill(InitValue);
 }
 
@@ -224,15 +235,49 @@ Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr, T InitValue) :
 
 
 template <class T>
-void Matrix<T>::setData(T* Data)
+void Matrix<T>::init()
 {
-  for (unsigned long j=0; j < m_RowsNbr;j++)
+  m_Data = NULL;
+  m_ColsNbr = 0;
+  m_RowsNbr = 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template <class T>
+bool Matrix<T>::allocate(unsigned long ColsNbr, unsigned long RowsNbr)
+{
+  if (ColsNbr > 0 && RowsNbr > 0)
   {
-    for (unsigned long i=0; i < m_ColsNbr;i++)
+    m_Data = new T[ColsNbr*RowsNbr];
+    if (m_Data)
     {
-      m_Data[i][j] = Data[i+(j*m_ColsNbr)];
+      m_RowsNbr = RowsNbr;
+      m_ColsNbr = ColsNbr;
     }
+    else
+      return false;
   }
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+template <class T>
+void Matrix<T>::setData(T* Data, unsigned long ColsNbr, unsigned long RowsNbr)
+{
+  clear();
+
+  if (!allocate(ColsNbr,RowsNbr))
+    throw openfluid::base::FrameworkException("Vector::setData","Cannot allocate memory");
+
+  std::copy(Data, Data + (ColsNbr*RowsNbr), m_Data);
 }
 
 
@@ -246,7 +291,7 @@ T Matrix<T>::getElement(unsigned long ColIndex, unsigned long RowIndex) const
   if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr)
     throw openfluid::base::FrameworkException("Matrix::getElement","element access range error");
 
-  return m_Data[ColIndex][RowIndex];
+  return m_Data[ColIndex*m_RowsNbr+RowIndex];
 }
 
 
@@ -260,7 +305,7 @@ void Matrix<T>::setElement(unsigned long ColIndex, unsigned long RowIndex, T Ele
   if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr)
     throw openfluid::base::FrameworkException("Matrix::setElement","element access range error");
 
-  m_Data[ColIndex][RowIndex] = Element;
+  m_Data[ColIndex*m_RowsNbr+RowIndex] = Element;
 }
 
 
@@ -274,10 +319,12 @@ Matrix<T>& Matrix<T>::operator=(const Matrix &A)
 
   if (this == &A) return *this; // in case somebody tries assign array to itself
 
-  m_Data.resize(boost::extents[A.m_ColsNbr][A.m_RowsNbr]);
-  m_Data = A.m_Data;
-  m_ColsNbr = A.m_ColsNbr;
-  m_RowsNbr = A.m_RowsNbr;
+  clear();
+
+  if (!allocate(A.m_ColsNbr,A.m_RowsNbr))
+    throw openfluid::base::FrameworkException("Matrix::operator=","Cannot allocate memory");
+
+  std::copy(A.m_Data, A.m_Data + (A.m_ColsNbr*A.m_RowsNbr), m_Data);
 
   return *this;
 }
@@ -290,9 +337,9 @@ Matrix<T>& Matrix<T>::operator=(const Matrix &A)
 template <class T>
 void Matrix<T>::fill(const T& Val)
 {
-  for (unsigned long i=0;i<m_ColsNbr;i++)
-    for (unsigned long j=0;j<m_RowsNbr;j++)
-      m_Data[i][j] = Val;
+  for (unsigned long i=0;i<m_RowsNbr;i++)
+    for (unsigned long j=0;j<m_ColsNbr;j++)
+      m_Data[i*m_ColsNbr+j] = Val;
 }
 
 
@@ -302,9 +349,8 @@ void Matrix<T>::fill(const T& Val)
 template <class T>
 void Matrix<T>::clear()
 {
-  m_Data.resize(boost::extents[0][0]);
-  m_ColsNbr=0;
-  m_RowsNbr=0;
+  delete [] m_Data;
+  init();
 }
 
 

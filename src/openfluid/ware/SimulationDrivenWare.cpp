@@ -44,6 +44,60 @@
 namespace openfluid { namespace ware {
 
 
+openfluid::base::ExceptionContext SimulationDrivenWare::computeWareContext() const
+{
+  openfluid::base::ExceptionContext Context;
+
+  if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
+      mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
+  {
+    Context = openfluid::ware::WareException::computeContext(m_WareType,
+                                                             OPENFLUID_GetWareID(),
+                                                             mp_SimStatus->getCurrentStage(),
+                                                             mp_SimStatus->getCurrentTimeIndex());
+  }
+  else
+  {
+    Context = openfluid::ware::WareException::computeContext(m_WareType,
+                                                             OPENFLUID_GetWareID(),
+                                                             mp_SimStatus->getCurrentStage());
+  }
+
+  return Context;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationDrivenWare::appendToLog(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const
+{
+  if (mp_SimStatus == NULL || mp_SimLogger == NULL)
+    throw openfluid::base::FrameworkException("SimulationDrivenWare::appendToLog",
+                                              "Simulation status or execution messages not set");
+
+  mp_SimLogger->add(LType,computeWareContext().toString(),Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationDrivenWare::displayToConsole(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const
+{
+  if (mp_SimStatus == NULL || mp_SimLogger == NULL)
+    throw openfluid::base::FrameworkException("SimulationDrivenWare::appendToLog",
+                                              "Simulation status or execution messages not set");
+
+  std::cout << "[" << openfluid::tools::FileLogger::logTypeToString(LType) << "] " << Msg << std::endl;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void SimulationDrivenWare::linkToSimulation(const openfluid::base::SimulationStatus* SimStatus)
 {
@@ -191,18 +245,7 @@ openfluid::base::SimulationStatus::SchedulingConstraint SimulationDrivenWare::OP
 
 void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& Msg)
 {
-  std::string Source;
-  WareException::updateSourceInfo(m_WareType,OPENFLUID_GetCurrentStage(),Source);
-
-  if (mp_SimStatus == NULL || mp_SimLogger == NULL)
-    throw openfluid::base::FrameworkException("SimulationDrivenWare::OPENFLUID_RaiseWarning()",
-                                              "Simulation status or execution messages not set");
-
-  if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
-      mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
-    mp_SimLogger->addWarning(OPENFLUID_GetWareID(),Source,mp_SimStatus->getCurrentTimeIndex(),Msg);
-  else
-    mp_SimLogger->addWarning(OPENFLUID_GetWareID(),Source,Msg);
+  appendToLog(openfluid::tools::FileLogger::LOG_WARNING,Msg);
 }
 
 
@@ -210,17 +253,9 @@ void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& Msg)
 // =====================================================================
 
 
-void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& Source, const std::string& Msg)
+void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& /*Source*/, const std::string& Msg)
 {
-  if (mp_SimStatus == NULL || mp_SimLogger == NULL)
-    throw openfluid::base::FrameworkException("SimulationDrivenWare::OPENFLUID_RaiseWarning()",
-                                              "Simulation status or execution messages not set");
-
-  if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
-      mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
-    mp_SimLogger->addWarning(OPENFLUID_GetWareID(),Source,mp_SimStatus->getCurrentTimeIndex(),Msg);
-  else
-    mp_SimLogger->addWarning(OPENFLUID_GetWareID(),Source,Msg);
+  OPENFLUID_RaiseWarning(Msg);
 }
 
 
@@ -230,26 +265,16 @@ void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& Source, con
 
 void SimulationDrivenWare::OPENFLUID_RaiseError(const std::string& Msg)
 {
-  if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
-      mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
-    throw WareException(OPENFLUID_GetWareID(),
-                        m_WareType,OPENFLUID_GetCurrentStage(),
-                        mp_SimStatus->getCurrentTimeIndex(),Msg);
-  else
-    throw WareException(OPENFLUID_GetWareID(),m_WareType,OPENFLUID_GetCurrentStage(),Msg);
+  throw WareException(computeWareContext(),Msg);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void SimulationDrivenWare::OPENFLUID_RaiseError(const std::string& Source, const std::string& Msg)
+void SimulationDrivenWare::OPENFLUID_RaiseError(const std::string& /*Source*/, const std::string& Msg)
 {
-  if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
-      mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
-    throw WareException(OPENFLUID_GetWareID(),m_WareType,Source,mp_SimStatus->getCurrentTimeIndex(),Msg);
-  else
-    throw WareException(OPENFLUID_GetWareID(),m_WareType,Source,Msg);
+  OPENFLUID_RaiseError(Msg);
 }
 
 
@@ -263,19 +288,6 @@ void SimulationDrivenWare::initializeWare(const WareID_t& ID)
 
   PluggableWare::initializeWare(ID);
 
-  // initialize loggers
-  std::string LogFile;
-  std::string LogDir;
-  std::string LogFileSuffix = "_undefined";
-
-  if (m_WareType == SIMULATOR) LogFileSuffix = openfluid::config::SIMULATORS_PLUGINS_SUFFIX;
-  if (m_WareType == OBSERVER) LogFileSuffix = openfluid::config::OBSERVERS_PLUGINS_SUFFIX;
-
-  OPENFLUID_GetRunEnvironment("dir.output",LogDir);
-  LogFile = boost::filesystem::path(LogDir + "/" + OPENFLUID_GetWareID() + LogFileSuffix + ".log").string();
-
-  OPENFLUID_Logger.open(LogFile.c_str());
-
   m_Initialized = true;
 }
 
@@ -286,7 +298,7 @@ void SimulationDrivenWare::initializeWare(const WareID_t& ID)
 
 void SimulationDrivenWare::finalizeWare()
 {
-  OPENFLUID_Logger.close();
+
 }
 
 

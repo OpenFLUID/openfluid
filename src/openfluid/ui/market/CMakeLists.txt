@@ -5,11 +5,13 @@ INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
 SET(OPENFLUID_UI_MARKET_CPP MarketBuildOptionsDialog.cpp MarketClientAssistant.cpp MarketWizardPage.cpp 
-                            MarketPackWidget.cpp MarketPackWidgetFormat.cpp                                  
+                            MarketPackWidget.cpp MarketPackWidgetFormat.cpp
+                            ViewLogFileWindow.cpp                                                         
                             )
 
 SET(OPENFLUID_UI_MARKET_HPP MarketBuildOptionsDialog.hpp MarketClientAssistant.hpp MarketWizardPage.hpp 
-                            MarketPackWidget.hpp MarketPackWidgetFormat.hpp                                           
+                            MarketPackWidget.hpp MarketPackWidgetFormat.hpp
+                            ViewLogFileWindow.hpp                                                                       
                             )
 
 

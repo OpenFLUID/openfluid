@@ -38,7 +38,7 @@
 #ifndef __OPENFLUID_FLUIDX_WAREDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_WAREDESCRIPTOR_HPP__
 
-#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
 
 

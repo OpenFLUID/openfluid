@@ -44,7 +44,7 @@
 #include <openfluid/tools/DataHelpers.hpp>
 
 
-#if WIN32
+#if defined _WIN32
 #include <windows.h> // for Sleep
 #else
 #include <unistd.h>
@@ -214,7 +214,7 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
 
 void sleep(const unsigned int MSec)
 {
-#if WIN32
+#if defined _WIN32
   Sleep(MSec);
 #else
   usleep(MSec);

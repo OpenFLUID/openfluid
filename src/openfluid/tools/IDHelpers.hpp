@@ -72,7 +72,7 @@ bool OPENFLUID_API isValidVariableName(const openfluid::core::VariableName_t& Na
   Checks whether a variable name (with or without type) is valid or not.\n
   To be valid, a variable name must only contain alphanumeric, '_', '-' or '.' characters,
   must begin by an alphanumeric character, and can be suffixed by a valid type into square brackets.
-  @param[in] ID the variable name to check
+  @param[in] Name the variable name to check
   @return true if the name is valid
 */
 bool OPENFLUID_API isValidTypedVariableName(const openfluid::core::VariableName_t& Name);

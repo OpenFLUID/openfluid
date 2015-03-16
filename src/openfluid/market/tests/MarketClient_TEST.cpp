@@ -43,10 +43,9 @@
 #define BOOST_TEST_MODULE unittest_marketclient
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
 
 #include <openfluid/market/MarketClient.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include <tests-config.hpp>
 #include <QCoreApplication>
@@ -71,16 +70,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::market::MarketClient MC;
   openfluid::market::MarketInfo MI;
 
-  std::string TmpDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/temp").string();
-  std::string MarketBagSimulatorDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-simulators").string();
-  std::string MarketBagObserverDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-observers").string();
-  std::string MarketBagBuilderextDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-builderexts").string();
-  std::string MarketBagDatasetDir =
-      boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-datasets").string();
+  std::string TmpDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/temp";
+  std::string MarketBagSimulatorDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-simulators";
+  std::string MarketBagObserverDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-observers";
+  std::string MarketBagBuilderextDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-builderexts";
+  std::string MarketBagDatasetDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-datasets";
   std::string MarketBagBinSubDir = "bin";
   std::string MarketBagSrcSubDir = "src";
 
@@ -89,18 +83,18 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::market::MarketPackage::setWorksDirs(TmpDir, MarketBagSimulatorDir, MarketBagObserverDir,
       MarketBagBuilderextDir, MarketBagDatasetDir, MarketBagBinSubDir, MarketBagSrcSubDir);
 
-  boost::filesystem::remove_all(boost::filesystem::path(TmpDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSimulatorDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagObserverDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBuilderextDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagDatasetDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBinSubDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSrcSubDir));
+  openfluid::tools::Filesystem::removeDirectory(TmpDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagSimulatorDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagObserverDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagBuilderextDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagDatasetDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagBinSubDir);
+  openfluid::tools::Filesystem::removeDirectory(MarketBagSrcSubDir);
 
   MC.enableLog(true);
 
 
-  MC.connect("file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/marketplace").string());
+  MC.connect("file://"+CONFIGTESTS_OUTPUT_DATA_DIR+"/marketplace");
 
   BOOST_REQUIRE_EQUAL(MC.isConnected(),true);
 

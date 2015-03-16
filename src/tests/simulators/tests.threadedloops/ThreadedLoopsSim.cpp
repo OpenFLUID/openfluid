@@ -174,6 +174,8 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   {
     openfluid::tools::sleep(100*aUnit->getID());
 
+    OPENFLUID_LogInfo("Threaded process of spatial unit " << aUnit->getClass() << "#" << aUnit->getID());
+
     OPENFLUID_AppendVariable(aUnit,"tests.data.threaded",double(aUnit->getID())+Value/1000.0);
   }
 
@@ -185,6 +187,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   void produceDataOnTUSequenced(openfluid::core::SpatialUnit* aUnit, const openfluid::core::DoubleValue& Value)
   {
     openfluid::tools::sleep(100*aUnit->getID());
+
     OPENFLUID_AppendVariable(aUnit,"tests.data.sequence",double(aUnit->getID())+Value/1000.0);
   }
 
@@ -195,8 +198,11 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
   void processUnitXTimes(openfluid::core::SpatialUnit* aUnit, const unsigned int& Times)
   {
-    for (unsigned int i=0; i<Times;i++ ) processUnit(aUnit);
+#ifdef __GNUC__
+    OPENFLUID_LogDebug(__PRETTY_FUNCTION__);
+#endif
 
+    for (unsigned int i=0; i<Times;i++ ) processUnit(aUnit);
   }
 
   // =====================================================================

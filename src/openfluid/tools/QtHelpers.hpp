@@ -85,6 +85,14 @@ std::list<std::string> OPENFLUID_API toStdStringList(const QStringList& StrList)
 
 
 /**
+  Transforms a QStringList into a std::vector of std::string
+  @param[in] StrList the QStringList to transform
+  @return The QStringList transformed into a std::vector of std::string
+*/
+std::vector<std::string> toStdStringVector(const QStringList& StrList);
+
+
+/**
   Transforms an OpenFLUID DateTime to a QDateTime
   @param[in] DT The OpenFLUID DateTime to transform
   @return The DT transformed into QDateTime
@@ -130,6 +138,14 @@ QStringList OPENFLUID_API toQStringList(const std::set<int>& IntSet);
   @return The escaped string
 */
 QString OPENFLUID_API escapeXMLEntities(const QString& Str);
+
+
+/**
+  Decodes XML entities to characters
+  @param[in] Str the string to decode
+  @return The decoded string
+*/
+QString OPENFLUID_API decodeXMLEntities(const QString& Str);
 
 
 } } // namespaces

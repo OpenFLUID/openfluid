@@ -37,85 +37,43 @@
 */
 
 
-#include <openfluid/tools/FileHelpers.hpp>
+#include <QDir>
+#include <QFileInfo>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <iostream>
+
+#include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
+
 
 
 namespace openfluid { namespace tools {
 
 
-bool removeDirectoryRecursively(const QString& DirPath)
-{
-  bool Res = true;
-  QDir CurrentDir(DirPath);
-
-  if (CurrentDir.exists(DirPath))
-  {
-    Q_FOREACH(QFileInfo Info,
-              CurrentDir.entryInfoList(QDir::NoDotAndDotDot |
-                                       QDir::System |
-                                       QDir::Hidden  |
-                                       QDir::AllDirs |
-                                       QDir::Files,
-                                       QDir::DirsFirst))
-    {
-      if (Info.isDir())
-      {
-        Res = removeDirectoryRecursively(Info.absoluteFilePath());
-      }
-      else
-      {
-        Res = QFile::remove(Info.absoluteFilePath());
-      }
-
-      if (!Res)
-      {
-        return Res;
-      }
-    }
-    Res = CurrentDir.rmdir(DirPath);
-  }
-
-  return Res;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::vector<std::string> findFilesByExtension(const std::string DirToExplore, const std::string Ext,
+std::vector<std::string> findFilesByExtension(const std::string& Path,
+                                              const std::string& Ext,
                                               bool WithPath, bool ExtIncludeDot)
 {
+  QStringList NameFilters;
+
+  if (ExtIncludeDot)
+    NameFilters << QString::fromStdString('*'+Ext);
+  else
+    NameFilters << QString::fromStdString("*."+Ext);
+
+
+  QFileInfoList FoundFiles =
+      QDir(QString::fromStdString(Path)).entryInfoList(NameFilters, QDir::NoDotAndDotDot | QDir::Hidden | QDir::Files);
 
   std::vector<std::string> FileList;
 
-
-  std::string FileExt = Ext;
-  if (!ExtIncludeDot) FileExt = "."+Ext;
-
-  boost::filesystem::path PathToExplore(DirToExplore);
-
-  if (boost::filesystem::is_directory(PathToExplore))
+  for (int i=0;i<FoundFiles.size();i++)
   {
-
-    boost::filesystem::directory_iterator it;
-
-    std::string FoundFile;
-
-    for (it = boost::filesystem::directory_iterator(PathToExplore);it != boost::filesystem::directory_iterator(); ++it)
-    {
-
-      // lists files with specified extension
-
-      if (boost::filesystem::is_regular(it->status()) && boost::ends_with(it->path().string(),FileExt))
-      {
-        if (WithPath) FileList.push_back(it->path().string());
-        else FileList.push_back(it->path().filename().string());
-      }
-    }
+    if (WithPath)
+      FileList.push_back(FoundFiles[i].absoluteFilePath().toStdString());
+    else
+      FileList.push_back(FoundFiles[i].fileName().toStdString());
   }
 
   return FileList;
@@ -127,43 +85,60 @@ std::vector<std::string> findFilesByExtension(const std::string DirToExplore, co
 // =====================================================================
 
 
-std::vector<std::string> findFilesBySuffixAndExtension(const std::string& DirToExplore,
+std::vector<std::string> findFilesBySuffixAndExtension(const std::string& Path,
                                                        const std::string& Suffix,
                                                        const std::string& Ext,
                                                        bool WithPath,
                                                        bool ExtIncludeDot)
 
 {
+  QStringList NameFilters;
+
+  if (ExtIncludeDot)
+    NameFilters << QString::fromStdString('*'+Suffix+Ext);
+  else
+    NameFilters << QString::fromStdString('*'+Suffix+'.'+Ext);
+
+
+  QFileInfoList FoundFiles =
+      QDir(QString::fromStdString(Path)).entryInfoList(NameFilters, QDir::NoDotAndDotDot | QDir::Hidden | QDir::Files);
 
   std::vector<std::string> FileList;
 
-
-  std::string FileEnd = Suffix+Ext;
-  if (!ExtIncludeDot) FileEnd = Suffix+"."+Ext;
-
-  boost::filesystem::path PathToExplore(DirToExplore);
-
-  if (boost::filesystem::is_directory(PathToExplore))
+  for (int i=0;i<FoundFiles.size();i++)
   {
-
-    boost::filesystem::directory_iterator it;
-
-    std::string FoundFile;
-
-    for (it = boost::filesystem::directory_iterator(PathToExplore);it != boost::filesystem::directory_iterator(); ++it)
-    {
-
-      // lists files with specified extension
-
-      if (boost::filesystem::is_regular(it->status()) && boost::ends_with(it->path().string(),FileEnd))
-      {
-        if (WithPath) FileList.push_back(it->path().string());
-        else FileList.push_back(it->path().filename().string());
-      }
-    }
+    if (WithPath)
+      FileList.push_back(FoundFiles[i].absoluteFilePath().toStdString());
+    else
+      FileList.push_back(FoundFiles[i].fileName().toStdString());
   }
 
   return FileList;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> findDirectories(const std::string& Path,
+                                         bool WithPath)
+{
+
+  QFileInfoList FoundDirs =
+      QDir(QString::fromStdString(Path)).entryInfoList(QDir::NoDotAndDotDot | QDir::Hidden | QDir::Dirs);
+
+  std::vector<std::string> DirList;
+
+  for (int i=0;i<FoundDirs.size();i++)
+  {
+    if (WithPath)
+      DirList.push_back(FoundDirs[i].absoluteFilePath().toStdString());
+    else
+      DirList.push_back(FoundDirs[i].fileName().toStdString());
+  }
+
+  return DirList;
 }
 
 
@@ -172,15 +147,9 @@ std::vector<std::string> findFilesBySuffixAndExtension(const std::string& DirToE
 
 
 // TODO to be fixed: should not delete the given path, may not work on win32
-bool emptyDirectoryRecursively(const std::string& DirPath)
+bool emptyDirectoryRecursively(const std::string& Path)
 {
-
-  boost::filesystem::path PathToEmpty(DirPath);
-
-  boost::filesystem::remove_all(PathToEmpty);
-
-  return boost::filesystem::create_directory(PathToEmpty);
-
+  return (Filesystem::removeDirectory(Path) && Filesystem::makeDirectory(Path));
 }
 
 
@@ -188,106 +157,32 @@ bool emptyDirectoryRecursively(const std::string& DirPath)
 // =====================================================================
 
 
-std::vector<std::string> findFilesRecursively(const std::string& DirPath)
-{
-  std::vector<std::string> FileNames;
-
-  boost::filesystem::directory_iterator It;
-
-  for (It = boost::filesystem::directory_iterator(DirPath); It != boost::filesystem::directory_iterator(); ++It)
-  {
-    // Regular file
-    if (boost::filesystem::is_regular(It->status()))
-      FileNames.push_back(DirPath + "/" + It->path().filename().string());
-
-    // Directory
-    if (boost::filesystem::is_directory(It->status()))
-    {
-      std::vector<std::string> SubDirFiles = findFilesRecursively(It->path().string());
-      std::vector<std::string>::const_iterator It;
-
-      for (It = SubDirFiles.begin(); It != SubDirFiles.end(); ++It)
-        FileNames.push_back(*It);
-    }
-  }
-
-  return FileNames;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void copyDirectoryRecursively(const std::string& SourceDir,
-                          const std::string& IntoDir,
-                          const bool DontCopyDotDirs)
-{
-
-  boost::filesystem::path SourceDirPath(SourceDir);
-  boost::filesystem::path IntoDirPath(IntoDir);
-  boost::filesystem::path DestDirPath(IntoDir+"/"+SourceDirPath.filename().string());
-
-
-  if (boost::filesystem::is_directory(DestDirPath)) boost::filesystem::remove_all(DestDirPath);
-
-  boost::filesystem::create_directory(DestDirPath);
-
-  boost::filesystem::directory_iterator it;
-
-  for (it = boost::filesystem::directory_iterator(SourceDirPath);it != boost::filesystem::directory_iterator(); ++it)
-  {
-
-    if (boost::filesystem::is_regular(it->status()))
-    {
-      boost::filesystem::copy_file(it->path(),
-                                   boost::filesystem::path(DestDirPath.string()+"/"+it->path().filename().string()));
-    }
-
-    if (boost::filesystem::is_directory(it->status()))
-    {
-      if (!DontCopyDotDirs || (DontCopyDotDirs && !boost::starts_with(it->path().filename().string(),".")))
-      {
-        copyDirectoryRecursively(it->path().string(),DestDirPath.string(), DontCopyDotDirs);
-      }
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void copyDirectoryContentsRecursively(const std::string& SourceDir,
-                                      const std::string& IntoDir,
+void copyDirectoryContentsRecursively(const std::string& SrcPath,
+                                      const std::string& DestPath,
                                       const bool DontCopyDotDirs)
 {
 
-  boost::filesystem::path SourceDirPath(SourceDir);
-  boost::filesystem::path IntoDirPath(IntoDir);
+  if (QFileInfo(QString::fromStdString(DestPath)).isDir()) Filesystem::removeDirectory(DestPath);
 
-  if (boost::filesystem::is_directory(IntoDirPath)) boost::filesystem::remove_all(IntoDirPath);
+  Filesystem::makeDirectory(DestPath);
 
-  boost::filesystem::create_directory(IntoDirPath);
 
-  boost::filesystem::directory_iterator it;
+  QFileInfoList FoundFiles =
+      QDir(QString::fromStdString(SrcPath)).entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  |
+                                                          QDir::AllDirs | QDir::Files, QDir::DirsFirst);
 
-  for (it = boost::filesystem::directory_iterator(SourceDirPath);it != boost::filesystem::directory_iterator(); ++it)
+  for (int i=0;i<FoundFiles.size();i++)
   {
-
-    if (boost::filesystem::is_regular(it->status()))
+    if (FoundFiles[i].isDir() && !(DontCopyDotDirs && FoundFiles[i].fileName().startsWith(".")))
     {
-      boost::filesystem::copy_file(it->path(),
-                                   boost::filesystem::path(IntoDirPath.string()+"/"+it->path().filename().string()));
+      Filesystem::copyDirectory(FoundFiles[i].absoluteFilePath().toStdString(),
+                                DestPath,
+                                DontCopyDotDirs);
     }
-
-    if (boost::filesystem::is_directory(it->status()))
+    else
     {
-      if (!DontCopyDotDirs || (DontCopyDotDirs && !boost::starts_with(it->path().filename().string(),".")))
-      {
-        copyDirectoryRecursively(it->path().string(),IntoDirPath.string(), DontCopyDotDirs);
-      }
+      Filesystem::copyFile(FoundFiles[i].absoluteFilePath().toStdString(),
+                           DestPath+"/"+FoundFiles[i].fileName().toStdString());
     }
   }
 }

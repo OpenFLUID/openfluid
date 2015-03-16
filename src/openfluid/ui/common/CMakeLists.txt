@@ -2,18 +2,18 @@
 
 SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp
                             RunSimulationDialog.cpp RunSimulationWorker.cpp                                  
-                            ViewLogFileWindow.cpp
                             ClickableLabel.cpp ActionLabel.cpp ElidedLabel.cpp                             
-                            PathsManagementWidget.cpp WaresSearchPathsWidget.cpp 
+                            PathsManagementWidget.cpp WaresSearchPathsWidget.cpp
+                            LogExplorerDialog.cpp 
                             EditMarketplaceDialog.cpp
                             PreferencesDialog.cpp
                             )
 
 SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp
                             RunSimulationDialog.hpp RunSimulationWorker.hpp
-                            ViewLogFileWindow.hpp
                             ClickableLabel.hpp ActionLabel.hpp ElidedLabel.hpp                            
                             PathsManagementWidget.hpp WaresSearchPathsWidget.hpp
+                            LogExplorerDialog.hpp
                             EditMarketplaceDialog.hpp
                             PreferencesDialog.hpp
                             )
@@ -21,6 +21,7 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp
 
 QT4_WRAP_UI(OPENFLUID_UI_COMMON_UI RunSimulationDialog.ui AboutDialog.ui
                                    PathsManagementWidget.ui WaresSearchPathsWidget.ui
+                                   LogExplorerDialog.ui
                                    PreferencesDialog.ui
                                    EditMarketplaceDialog.ui
                                    )

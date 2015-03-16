@@ -42,8 +42,6 @@
 #include <openfluid/core/ValuesBufferProperties.hpp>
 #include <openfluid/core/IndexedValue.hpp>
 
-#include <boost/circular_buffer.hpp>
-
 
 namespace openfluid { namespace core {
 
@@ -52,18 +50,11 @@ namespace openfluid { namespace core {
 class OPENFLUID_API ValuesBuffer: public ValuesBufferProperties
 {
 
-  public:
-
-    typedef  boost::circular_buffer<IndexedValue> DataContainer_t;
-
-
   private:
 
-    DataContainer_t m_Data;
+    class PrivateImpl;
+    PrivateImpl* m_PImpl;
 
-    DataContainer_t::iterator findAtIndex(const TimeIndex_t& anIndex);
-
-    DataContainer_t::const_iterator findAtIndex(const TimeIndex_t& anIndex) const;
 
   public:
 
@@ -79,11 +70,7 @@ class OPENFLUID_API ValuesBuffer: public ValuesBufferProperties
 
     TimeIndex_t getCurrentIndex() const;
 
-    bool isValueExist(const TimeIndex_t& anIndex) const
-    {
-      return (!m_Data.empty() && findAtIndex(anIndex) != m_Data.end());
-    }
-
+    bool isValueExist(const TimeIndex_t& anIndex) const;
 
     bool getCurrentValue(Value* aValue) const;
 
@@ -100,10 +87,7 @@ class OPENFLUID_API ValuesBuffer: public ValuesBufferProperties
 
     bool appendValue(const TimeIndex_t& anIndex, const Value& aValue);
 
-    unsigned int getValuesCount() const
-    {
-      return m_Data.size();
-    }
+    unsigned int getValuesCount() const;
 
     void displayStatus(std::ostream& OStream) const;
 

@@ -44,8 +44,6 @@
 #define BOOST_TEST_MODULE unittest_progressivechronfilereader
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
 
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
 
@@ -60,10 +58,9 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::tools::ProgressiveColumnFileReader
-    PColumnFR(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat").string());
-  openfluid::tools::ProgressiveChronFileReader
-    PChronFR(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat").string());
+  openfluid::tools::ProgressiveColumnFileReader PColumnFR(CONFIGTESTS_INPUT_MISCDATA_DIR+
+                                                          "/ChronFiles/measured_ticks.dat");
+  openfluid::tools::ProgressiveChronFileReader PChronFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
 }
 
 // =====================================================================
@@ -71,8 +68,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::tools::ProgressiveColumnFileReader
-    PColumnFR(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat").string());
+  openfluid::tools::ProgressiveColumnFileReader PColumnFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
 
   std::string TmpStr;
   std::vector<std::string> TmpVectStr;
@@ -94,8 +90,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::tools::ChronItem_t CI;
 
-  openfluid::tools::ProgressiveChronFileReader
-    PChronFR(boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat").string());
+  openfluid::tools::ProgressiveChronFileReader PChronFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
 
   while (PChronFR.getNextValue(CI)) std::cout << CI.second << " at " << CI.first.getAsISOString() << std::endl;
 

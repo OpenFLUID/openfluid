@@ -152,7 +152,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
         else if (CoverCode.get() == "URBAN") m_UnitsCombustionFactor[LU->getID()] = 15.0/3600.0;
         else if (CoverCode.get() == "CULTIVATED") m_UnitsCombustionFactor[LU->getID()] = 45.0/3600.0;
         else if (CoverCode.get() == "FOREST") m_UnitsCombustionFactor[LU->getID()] = 75.0/3600.0;
-        else OPENFLUID_RaiseError("FireProductionSpreadingSimulator::prepareData()","unknown cover code");
+        else OPENFLUID_RaiseError("unknown cover code");
       }
 
       // set fire ignition on the land units
@@ -174,8 +174,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     void checkConsistency()
     {
       if (m_IgnitionUnits.empty())
-        OPENFLUID_RaiseError("FireProductionSpreadingSimulator::checkConsistency()",
-                             "List of land unit to ignite is empty, or wrong land unit ID");
+        OPENFLUID_RaiseError("List of land unit to ignite is empty, or wrong land unit ID");
     }
 
 

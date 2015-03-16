@@ -38,12 +38,10 @@
  */
 
 #include <openfluid/buddies/NewDataBuddy.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include <fstream>
 #include <sstream>
-
-#include <boost/filesystem/convenience.hpp>
-
 
 namespace openfluid { namespace buddies {
 
@@ -107,11 +105,11 @@ void NewDataBuddy::generateRunXML()
   Content << "  </run>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/run.fluidx");
+  std::string FilePath = m_OutputDirPath+"/run.fluidx";
 
   std::ofstream OutFile;
 
-  OutFile.open(FilePath.string().c_str(),std::ios::out);
+  OutFile.open(FilePath.c_str(),std::ios::out);
   OutFile << Content.str();
   OutFile.close();
 }
@@ -133,11 +131,11 @@ void NewDataBuddy::generateModelXML()
   Content << "  </model>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/model.fluidx");
+  std::string FilePath = m_OutputDirPath + "/model.fluidx";
 
   std::ofstream OutFile;
 
-  OutFile.open(FilePath.string().c_str(),std::ios::out);
+  OutFile.open(FilePath.c_str(),std::ios::out);
   OutFile << Content.str();
   OutFile.close();
 }
@@ -164,11 +162,11 @@ void NewDataBuddy::generateOutputXML()
   Content << "  </output>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/output.fluidx");
+  std::string FilePath = m_OutputDirPath + "/output.fluidx";
 
   std::ofstream OutFile;
 
-  OutFile.open(FilePath.string().c_str(),std::ios::out);
+  OutFile.open(FilePath.c_str(),std::ios::out);
   OutFile << Content.str();
   OutFile.close();
 }
@@ -205,11 +203,11 @@ void NewDataBuddy::generateEventsXML()
   Content << "  </domain>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/eventsAandB.events.fluidx");
+  std::string FilePath = m_OutputDirPath + "/eventsAandB.events.fluidx";
 
   std::ofstream OutFile;
 
-  OutFile.open(FilePath.string().c_str(),std::ios::out);
+  OutFile.open(FilePath.c_str(),std::ios::out);
   OutFile << Content.str();
   OutFile.close();
 }
@@ -241,11 +239,11 @@ void NewDataBuddy::generateDDefXML()
   Content << "  </domain>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/unitsAandB.ddef.fluidx");
+  std::string FilePath = m_OutputDirPath + "/unitsAandB.ddef.fluidx";
 
   std::ofstream OutFile;
 
-  OutFile.open(FilePath.string().c_str(),std::ios::out);
+  OutFile.open(FilePath.c_str(),std::ios::out);
   OutFile << Content.str();
   OutFile.close();
 }
@@ -257,7 +255,7 @@ void NewDataBuddy::generateDDefXML()
 void NewDataBuddy::generateDDataXML()
 {
   std::ostringstream ContentA, ContentB;
-  boost::filesystem::path FilePath;
+  std::string FilePath;
   std::ofstream OutFileA, OutFileB;
 
 
@@ -273,9 +271,9 @@ void NewDataBuddy::generateDDataXML()
   ContentA << "  </domain>" << std::endl;
   ContentA << getXMLFooter() << std::endl;
 
-  FilePath = boost::filesystem::path(m_OutputDirPath.string()+"/unitsA.ddata.fluidx");
+  FilePath = m_OutputDirPath + "/unitsA.ddata.fluidx";
 
-  OutFileA.open(FilePath.string().c_str(),std::ios::out);
+  OutFileA.open(FilePath.c_str(),std::ios::out);
   OutFileA << ContentA.str();
   OutFileA.close();
 
@@ -292,9 +290,9 @@ void NewDataBuddy::generateDDataXML()
   ContentB << "  </domain>" << std::endl;
   ContentB << getXMLFooter() << std::endl;
 
-  FilePath = boost::filesystem::path(m_OutputDirPath.string()+"/unitsB.ddata.fluidx");
+  FilePath = m_OutputDirPath + "/unitsB.ddata.fluidx";
 
-  OutFileB.open(FilePath.string().c_str(),std::ios::out);
+  OutFileB.open(FilePath.c_str(),std::ios::out);
   OutFileB << ContentB.str();
   OutFileB.close();
 
@@ -308,9 +306,10 @@ bool NewDataBuddy::run()
 {
   mp_Listener->onInfo("Output directory: " + m_Options["outputdir"]);
 
-  m_OutputDirPath = boost::filesystem::path(m_Options["outputdir"]);
+  m_OutputDirPath = m_Options["outputdir"];
 
-  if (!boost::filesystem::is_directory(m_OutputDirPath)) boost::filesystem::create_directories(m_OutputDirPath);
+  if (!openfluid::tools::Filesystem::isDirectory(m_OutputDirPath))
+    openfluid::tools::Filesystem::makeDirectory(m_OutputDirPath);
 
   generateModelXML();
   generateRunXML();

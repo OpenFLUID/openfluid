@@ -77,7 +77,7 @@ class OPENFLUID_API DatastoreItem
      * @param RelativePath The relative path of the item from the PrefixPath
      * @param Type The type of the item.
      * @param UnitClass (optional) The associated unit class of the item.
-     * @throw openfluid::base::OFException if the given type is unknown.
+     * @throw openfluid::base::FrameworkException if the given type is unknown.
      */
     DatastoreItem(const std::string& ID,
                   const std::string& PrefixPath, const std::string& RelativePath,

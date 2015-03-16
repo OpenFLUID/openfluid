@@ -41,6 +41,7 @@ TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       openfluid-ui-common
                       openfluid-waresdev
                       openfluid-utils
+                      openfluid-tools
                      )
 
 

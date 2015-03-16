@@ -187,14 +187,14 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
               OPENFLUID_GetVariable(FromA,"var2",CurrentTimeIndex,AuxValue);
               Value5 = Value5 + AuxValue;
             }
-            else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod","var2 is not present, ignored");
+            else OPENFLUID_RaiseWarning("var2 is not present, ignored");
 
             if (OPENFLUID_IsVariableExist(FromA,"var3",CurrentTimeIndex))
             {
               OPENFLUID_GetVariable(FromA,"var3",CurrentTimeIndex,AuxValue);
               Value5 = Value5 + AuxValue;
             }
-            else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod","var3 is not present, ignored");
+            else OPENFLUID_RaiseWarning("var3 is not present, ignored");
 
           }
         }

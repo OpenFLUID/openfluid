@@ -24,7 +24,6 @@ OPENFLUID_ADD_TEST(NAME observers-Hopla
                                  "-p${TEST_OUTPUT_PATH}"
                                  "-n${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesHopla"
-                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesHopla/tests.hopla_ofware-obs.log"
                    )
 
 
@@ -40,7 +39,6 @@ OPENFLUID_ADD_TEST(NAME observers-Exceptions
                            "-n${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ObsExceptions"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ObsExceptions/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ObsExceptions/tests.exceptions_ofware-sim.log"
                    )
 SET_TESTS_PROPERTIES(observers-Exceptions PROPERTIES WILL_FAIL TRUE)
 

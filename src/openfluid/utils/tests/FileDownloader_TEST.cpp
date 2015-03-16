@@ -43,11 +43,10 @@
 #define BOOST_TEST_MODULE unittest_filedownloader
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
 
 #include <openfluid/utils/FileDownloader.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <QCoreApplication>
 
 #include <iostream>
@@ -80,38 +79,33 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(
       openfluid::utils::FileDownloader::downloadToString("file://"+
-                                                         boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+
-                                                                                 "/FileDownloader/lorem_ipsum.txt")
-                                                         .string(),LoremIpsumDLoaded),
-      true);
+                                                         CONFIGTESTS_INPUT_MISCDATA_DIR+
+                                                         "/FileDownloader/lorem_ipsum.txt",
+                                                         LoremIpsumDLoaded),true);
 
   BOOST_REQUIRE_EQUAL(LoremIpsum,LoremIpsumDLoaded);
 
-  boost::filesystem::remove(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                    "/FileDownloader/lorem_ipsum_dload.txt"));
-  boost::filesystem::create_directories(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader"));
+  openfluid::tools::Filesystem::removeFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader/lorem_ipsum_dload.txt");
+  openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader");
 
 
   BOOST_REQUIRE_EQUAL(
       openfluid::utils::FileDownloader::downloadToFile("file://"+
-                                                       boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+
-                                                                               "/FileDownloader/lorem_ipsum.txt")
-                                                       .string(),
-                                                       boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                                               "/FileDownloader/lorem_ipsum_dload.txt")
-                                                       .string()),
-      true);
+                                                       CONFIGTESTS_INPUT_MISCDATA_DIR+
+                                                       "/FileDownloader/lorem_ipsum.txt",
+                                                       CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                       "/FileDownloader/lorem_ipsum_dload.txt"),true);
 
   std::string LI1, LI2;
 
   openfluid::utils::FileDownloader::downloadToString("file://"+
-                                                     boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+
-                                                                             "/FileDownloader/lorem_ipsum.txt")
-                                                     .string(),LI1);
+                                                     CONFIGTESTS_INPUT_MISCDATA_DIR+
+                                                     "/FileDownloader/lorem_ipsum.txt",
+                                                     LI1);
   openfluid::utils::FileDownloader::downloadToString("file://"+
-                                                     boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                                             "/FileDownloader/lorem_ipsum_dload.txt")
-                                                     .string(),LI2);
+                                                     CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                     "/FileDownloader/lorem_ipsum_dload.txt",
+                                                     LI2);
 
   BOOST_REQUIRE_EQUAL(LI1,LI2);
 }

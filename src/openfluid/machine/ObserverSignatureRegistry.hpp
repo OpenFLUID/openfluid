@@ -69,7 +69,7 @@ class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<Obs
 
     /**
      * @brief Returns the Signature of the Observer with ObserverID if available
-     * @throw openfluid::base::OFException if this Observer plugin is not available
+     * @throw openfluid::base::FrameworkException if this Observer plugin is not available
      */
     const openfluid::machine::ObserverSignatureInstance* signature(const openfluid::ware::WareID_t& ID);
 

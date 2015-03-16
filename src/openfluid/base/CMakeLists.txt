@@ -18,7 +18,7 @@ SET_TARGET_PROPERTIES(openfluid-base PROPERTIES VERSION "${VERSION_MAJOR}.${VERS
 TARGET_LINK_LIBRARIES(openfluid-base
                       openfluid-core
                       openfluid-tools
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+                      ${Boost_SYSTEM_LIBRARY}
                       ${Boost_DATE_TIME_LIBRARY})
 
 

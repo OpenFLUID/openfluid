@@ -36,10 +36,8 @@
   @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
 */
 
+
 #include <openfluid/core/GeoRasterValue.hpp>
-
-#include <boost/filesystem/path.hpp>
-
 #include <openfluid/base/FrameworkException.hpp>
 
 namespace openfluid {

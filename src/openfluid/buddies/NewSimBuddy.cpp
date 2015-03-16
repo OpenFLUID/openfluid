@@ -37,15 +37,15 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/buddies/NewSimBuddy.hpp>
+
 
 #include <sstream>
 #include <fstream>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+#include <openfluid/buddies/NewSimBuddy.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 
 namespace openfluid { namespace buddies {
@@ -227,10 +227,9 @@ void NewSimulatorBuddy::writeSimulatorCPP()
   CPPContent << std::endl;
 
   std::ofstream OutFile;
-  boost::filesystem::path OutFilePath;
+  std::string OutFilePath = m_Options["outputdir"]+"/"+m_Options["cppclass"]+".cpp";
 
-  OutFilePath = boost::filesystem::path(m_Options["outputdir"]+"/"+m_Options["cppclass"]+".cpp");
-  OutFile.open(OutFilePath.string().c_str(),std::ios::out);
+  OutFile.open(OutFilePath.c_str(),std::ios::out);
   OutFile << CPPContent.str();
   OutFile.close();
 
@@ -243,7 +242,7 @@ void NewSimulatorBuddy::writeSimulatorCPP()
 bool NewSimulatorBuddy::run()
 {
 
-  setOptionIfNotSet("outputdir",boost::filesystem::current_path().string());
+  setOptionIfNotSet("outputdir",openfluid::tools::Filesystem::currentPath());
 
   mp_Listener->onInfo("Simulator ID: " + m_Options["simid"]);
   mp_Listener->onInfo("Simulator  C++ class: " + m_Options["cppclass"]);
@@ -252,7 +251,7 @@ bool NewSimulatorBuddy::run()
   mp_Listener->onInfo("Author name: " + m_Options["authorname"]);
   mp_Listener->onInfo("Author email: " + m_Options["authoremail"]);
 
-  boost::filesystem::path OutputDirPath(m_Options["outputdir"]);
+  std::string OutputDirPath = m_Options["outputdir"];
 
   if (m_Options["simid"] == "")
       throw openfluid::base::FrameworkException("NewSimulatorBuddy::run()","No simulator ID");
@@ -261,7 +260,7 @@ bool NewSimulatorBuddy::run()
       throw openfluid::base::FrameworkException("NewSimulatorBuddy::run()","No simulator C++ class");
 
 
-  if (!boost::filesystem::exists(OutputDirPath))
+  if (!openfluid::tools::Filesystem::isDirectory(OutputDirPath))
     throw openfluid::base::FrameworkException("NewSimulatorBuddy::run()","Output directory does not exist");
 
 

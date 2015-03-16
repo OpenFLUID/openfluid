@@ -30,46 +30,41 @@
 */
 
 
-
 /**
-  @file StdoutFileOStream_TEST.cpp
+  @file TreeValue.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
-
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_stdoutfileostream
-#include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
-
-#include <tests-config.hpp>
-
-// =====================================================================
-// =====================================================================
+*/
 
 
-BOOST_AUTO_TEST_CASE(check_construction)
+#include <openfluid/core/TreeValue.hpp>
+
+
+namespace openfluid { namespace core {
+
+
+Value& TreeValue::operator =(const Value& Other)
 {
-  openfluid::base::StdoutAndFileOutputStream OStream(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger1.log");
+  const TreeValue* CastedValue = dynamic_cast<const TreeValue*> (&Other);
 
-  openfluid::base::StdoutAndFileOutputStream OStream2;
-  OStream2.open(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger2.log");
+  if (CastedValue)
+  {
+    Tree<std::string,double>::operator=(static_cast<const Tree<std::string,double>& >(Other.asTreeValue()));
+  }
+
+  return *this;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_operations)
+
+void TreeValue::writeToStream(std::ostream& OutStm) const
 {
-  openfluid::base::StdoutAndFileOutputStream OStream(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger3.log");
-
-  OStream.all() << "Hello World!" << std::endl;
-
-  OStream.stdout() << "stdout only" << std::endl;
-
-  OStream.file() << "file only" << std::endl;
+  OutStm << "{";
+  Tree<std::string,double>::writeToStreamFlat(OutStm);
+  OutStm << "}";
 }
 
+} }  // namespaces

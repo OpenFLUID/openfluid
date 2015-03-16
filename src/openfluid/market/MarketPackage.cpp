@@ -37,13 +37,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
 #include <fstream>
 
 #include <openfluid/config.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/FileDownloader.hpp>
 
 
@@ -77,7 +76,7 @@ bool MarketPackage::m_Initialized = false;
 MarketPackage::MarketPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
               : m_ID(ID), m_PackageURL(PackageURL), m_Downloaded(false)
 {
-  m_PackageFilename = boost::filesystem::path(PackageURL).filename().string();
+  m_PackageFilename = openfluid::tools::Filesystem::filename(PackageURL);
 }
 
 
@@ -121,19 +120,19 @@ void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& 
                                  const std::string& MarketBagSrcSubDir)
 {
   // Temporary directories
-  m_TempDir = boost::filesystem::path(TempDir).string();
-  m_TempBuildsDir = boost::filesystem::path(TempDir+"/"+BUILDS_SUBDIR).string();
-  m_TempDownloadsDir = boost::filesystem::path(TempDir+"/"+DLOADS_SUBDIR).string();
+  m_TempDir = TempDir;
+  m_TempBuildsDir = TempDir+"/"+BUILDS_SUBDIR;
+  m_TempDownloadsDir = TempDir+"/"+DLOADS_SUBDIR;
 
   // Installation directories
-  m_MarketBagSimulatorDir = boost::filesystem::path(MarketBagSimulatorDir).string();
-  m_MarketBagObserverDir = boost::filesystem::path(MarketBagObserverDir).string();
-  m_MarketBagBuilderextDir = boost::filesystem::path(MarketBagBuilderextDir).string();
-  m_MarketBagDatasetDir = boost::filesystem::path(MarketBagDatasetDir).string();
-  m_MarketBagBinSubDir = boost::filesystem::path(MarketBagBinSubDir).string();
-  m_MarketBagSrcSubDir = boost::filesystem::path(MarketBagSrcSubDir).string();
+  m_MarketBagSimulatorDir = MarketBagSimulatorDir;
+  m_MarketBagObserverDir = MarketBagObserverDir;
+  m_MarketBagBuilderextDir = MarketBagBuilderextDir;
+  m_MarketBagDatasetDir = MarketBagDatasetDir;
+  m_MarketBagBinSubDir = MarketBagBinSubDir;
+  m_MarketBagSrcSubDir = MarketBagSrcSubDir;
 
-  m_LogFile = boost::filesystem::path(TempDir+"/"+LOG_FILENAME).string();
+  m_LogFile = TempDir+"/"+LOG_FILENAME;
 
   m_Initialized = false;
 }
@@ -217,7 +216,7 @@ void MarketPackage::appendToLogFile(const std::string& PackageName,
     else StrType = "DATA";
 
     std::ofstream LogFileStream;
-    LogFileStream.open(boost::filesystem::path(m_LogFile).string().c_str(),std::ios_base::app);
+    LogFileStream.open(m_LogFile.c_str(),std::ios_base::app);
     LogFileStream << "\n================================================================================\n";
     LogFileStream << "  [" << StrType << "] " << PackageName << " : " << Action << "\n";
     LogFileStream << "================================================================================\n";
@@ -237,7 +236,7 @@ void MarketPackage::appendToLogFile(const std::string& Str)
   if (m_IsLogEnabled)
   {
     std::ofstream LogFileStream;
-    LogFileStream.open(boost::filesystem::path(m_LogFile).string().c_str(),std::ios_base::app);
+    LogFileStream.open(m_LogFile.c_str(),std::ios_base::app);
     LogFileStream << Str << "\n";
     LogFileStream.close();
   }
@@ -253,8 +252,8 @@ void MarketPackage::resetLogFile()
 {
   if (m_IsLogEnabled)
   {
-    boost::filesystem::remove(boost::filesystem::path(m_LogFile));
-    std::ofstream(boost::filesystem::path(m_LogFile).string().c_str()).close();
+    openfluid::tools::Filesystem::removeFile(m_LogFile);
+    std::ofstream(m_LogFile.c_str()).close();
   }
 }
 
@@ -270,7 +269,7 @@ void MarketPackage::download()
     throw openfluid::base::FrameworkException("MarketPackage::download()",
                                               "package "+m_PackageFilename+" not initialized");
 
-  m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
+  m_PackageDest = m_TempDownloadsDir+"/"+m_PackageFilename;
 
   appendToLogFile(m_PackageFilename,getPackageType(),"downloading","");
 

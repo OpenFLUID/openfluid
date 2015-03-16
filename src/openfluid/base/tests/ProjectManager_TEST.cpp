@@ -44,10 +44,10 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <tests-config.hpp>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -69,10 +69,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  std::string Prj1Dir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/prjmanager/prj1").string();
+  std::string Prj1Dir = CONFIGTESTS_OUTPUT_DATA_DIR+"/prjmanager/prj1";
 
-  if (boost::filesystem::is_directory(boost::filesystem::path(Prj1Dir)))
-    boost::filesystem::remove_all(boost::filesystem::path(Prj1Dir));
+  if (openfluid::tools::Filesystem::isDirectory(Prj1Dir))
+    openfluid::tools::Filesystem::removeDirectory(Prj1Dir);
 
 
   BOOST_CHECK_EQUAL(openfluid::base::ProjectManager::isProject(Prj1Dir),false);
@@ -83,10 +83,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_CHECK_EQUAL(openfluid::base::ProjectManager::isProject(Prj1Dir),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isOpened(), true);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getPath(), Prj1Dir);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getInputDir(),
-                      boost::filesystem::path(Prj1Dir+"/IN").string());
-  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getOutputDir(),
-                      boost::filesystem::path(Prj1Dir+"/OUT").string());
+  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getInputDir(),Prj1Dir+"/IN");
+  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getOutputDir(),Prj1Dir+"/OUT");
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isIncrementalOutputDir(),false);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getName(), "Test project");
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getDescription(), "This is a test project");
@@ -115,11 +113,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::ProjectManager::instance()->updateOutputDir();
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isOpened(), true);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getPath(), Prj1Dir);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getInputDir(),
-                      boost::filesystem::path(Prj1Dir+"/IN").string());
+  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getInputDir(),Prj1Dir+"/IN");
 
-  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getOutputDir(),
-                      boost::filesystem::path(Prj1Dir+"/OUT_"+Now).string());
+  BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getOutputDir(),Prj1Dir+"/OUT_"+Now);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isIncrementalOutputDir(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getName(), "Modified Test project");
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getDescription(), "This is a modified test project");

@@ -17,7 +17,7 @@ SET_TARGET_PROPERTIES(openfluid-fluidx PROPERTIES VERSION "${VERSION_MAJOR}.${VE
 TARGET_LINK_LIBRARIES(openfluid-fluidx
                       openfluid-base
                       openfluid-core
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+                      ${Boost_SYSTEM_LIBRARY}
                       ${QT_QTXML_LIBRARY})
 
 INSTALL(TARGETS openfluid-fluidx

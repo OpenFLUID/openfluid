@@ -53,60 +53,71 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
 {
   protected:
 
-    PluggableWare::WareType m_WareType;
-
-    openfluid::base::SimulationStatus::SimulationStage m_Stage;
-
-    openfluid::core::TimeIndex_t m_TimeIndex;
-
-    bool m_IsTimeIndexed;
 
     void buildFullMessage()
     {
-      if (m_Source.empty())
-        m_Source = "unknown source";
-
       m_FullMessage = m_Message;
-
-      m_FullMessage += " (sent by " + m_Sender;
-      if (m_WareType == PluggableWare::SIMULATOR)
-        m_FullMessage += " simulator";
-      if (m_WareType == PluggableWare::OBSERVER)
-        m_FullMessage += " observer";
-
-      if (m_Source != "")
-        m_FullMessage += ", from " + m_Source;
-
-      if (m_IsTimeIndexed)
-      {
-        std::stringstream StrStream;
-        StrStream << m_TimeIndex;
-        m_FullMessage += ", at time index #" + StrStream.str();
-      }
-
-      m_FullMessage += ")";
+      m_FullMessage += " [" + m_Context.toString() + "]";
     }
 
 
 
   public:
 
-    static void updateSourceInfo(const PluggableWare::WareType& WType,
-                                 const openfluid::base::SimulationStatus::SimulationStage& Stage,
-                                 std::string& SourceStr)
+    WareException(const openfluid::base::ExceptionContext& Context,
+                  const std::string& Msg) :
+      openfluid::base::Exception(Context,Msg)
     {
-      SourceStr = "unknown source";
+      buildFullMessage();
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    static openfluid::base::ExceptionContext computeContext(const openfluid::ware::PluggableWare::WareType WType,
+                                                            const openfluid::ware::WareID_t& ID)
+    {
+
+      openfluid::base::ExceptionContext Context;
+
+      Context["src"] = "ware";
+      Context["waretype"] = "unknown";
+
+      if (WType == PluggableWare::OBSERVER)
+        Context["waretype"] = "observer";
+      else if (WType == PluggableWare::SIMULATOR)
+        Context["waretype"] = "simulator";
+
+      Context["wareid"] = ID;
+
+      return Context;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    static openfluid::base::ExceptionContext computeContext(const openfluid::ware::PluggableWare::WareType WType,
+                                                            const openfluid::ware::WareID_t& ID,
+                                                            const openfluid::base::SimulationStatus::SimulationStage
+                                                              Stage)
+    {
+      
+      openfluid::base::ExceptionContext Context = computeContext(WType,ID);
 
       if (WType == PluggableWare::OBSERVER)
       {
         switch (Stage)
         {
-          case openfluid::base::SimulationStatus::INITPARAMS : SourceStr = "initParams"; break;
-          case openfluid::base::SimulationStatus::PREPAREDATA : SourceStr = "onPrepared"; break;
-          case openfluid::base::SimulationStatus::CHECKCONSISTENCY : SourceStr = "onPrepared"; break;
-          case openfluid::base::SimulationStatus::INITIALIZERUN : SourceStr = "onInitializedRun"; break;
-          case openfluid::base::SimulationStatus::RUNSTEP : SourceStr = "onStepCompleted"; break;
-          case openfluid::base::SimulationStatus::FINALIZERUN : SourceStr = "onFinalizedRun"; break;
+          case openfluid::base::SimulationStatus::INITPARAMS : Context["stage"] = "initParams"; break;
+          case openfluid::base::SimulationStatus::PREPAREDATA : Context["stage"] = "onPrepared"; break;
+          case openfluid::base::SimulationStatus::CHECKCONSISTENCY : Context["stage"] = "onPrepared"; break;
+          case openfluid::base::SimulationStatus::INITIALIZERUN : Context["stage"] = "onInitializedRun"; break;
+          case openfluid::base::SimulationStatus::RUNSTEP : Context["stage"] = "onStepCompleted"; break;
+          case openfluid::base::SimulationStatus::FINALIZERUN : Context["stage"] = "onFinalizedRun"; break;
           default : break;
         }
       }
@@ -114,65 +125,45 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
       {
         switch (Stage)
         {
-          case openfluid::base::SimulationStatus::INITPARAMS : SourceStr = "initParams"; break;
-          case openfluid::base::SimulationStatus::PREPAREDATA : SourceStr = "prepareData"; break;
-          case openfluid::base::SimulationStatus::CHECKCONSISTENCY : SourceStr = "checkConsistency"; break;
-          case openfluid::base::SimulationStatus::INITIALIZERUN : SourceStr = "initializeRun"; break;
-          case openfluid::base::SimulationStatus::RUNSTEP : SourceStr = "runStep"; break;
-          case openfluid::base::SimulationStatus::FINALIZERUN : SourceStr = "finalizeRun"; break;
+          case openfluid::base::SimulationStatus::INITPARAMS : Context["stage"] = "initParams"; break;
+          case openfluid::base::SimulationStatus::PREPAREDATA : Context["stage"] = "prepareData"; break;
+          case openfluid::base::SimulationStatus::CHECKCONSISTENCY : Context["stage"] = "checkConsistency"; break;
+          case openfluid::base::SimulationStatus::INITIALIZERUN : Context["stage"] = "initializeRun"; break;
+          case openfluid::base::SimulationStatus::RUNSTEP : Context["stage"] = "runStep"; break;
+          case openfluid::base::SimulationStatus::FINALIZERUN : Context["stage"] = "finalizeRun"; break;
           default : break;
         }
       }
+      else
+      {
+        Context["stage"] = "unknown";
+      }
+      
+      return Context;
     }
 
 
-    WareException(const WareID_t& ID,
-                  const PluggableWare::WareType& WType,
-                  const std::string& Source,
-                  const std::string& Msg) :
-      openfluid::base::Exception(ID,Msg), m_WareType(WType), m_Stage(openfluid::base::SimulationStatus::UNKNOWN),
-      m_TimeIndex(0), m_IsTimeIndexed(false)
+    // =====================================================================
+    // =====================================================================
+
+
+    static openfluid::base::ExceptionContext computeContext(const openfluid::ware::PluggableWare::WareType WType,
+                                                            const openfluid::ware::WareID_t& ID,
+                                                            const openfluid::base::SimulationStatus::SimulationStage
+                                                              Stage,
+                                                            openfluid::core::TimeIndex_t TimeIndex)
     {
-      m_Source = Source;
-      buildFullMessage();
+      openfluid::base::ExceptionContext Context = computeContext(WType,ID,Stage);
+
+      std::ostringstream IndexSStr;
+      IndexSStr << TimeIndex;
+
+      Context["timeindex"] = IndexSStr.str();
+
+      return Context;
     }
 
 
-    WareException(const WareID_t& ID,
-                  const PluggableWare::WareType& WType,
-                  const openfluid::base::SimulationStatus::SimulationStage& Stage,
-                  const std::string& Msg) :
-      openfluid::base::Exception(ID,Msg), m_WareType(WType), m_Stage(Stage), m_TimeIndex(0), m_IsTimeIndexed(false)
-    {
-      updateSourceInfo(WType,Stage,m_Source);
-      buildFullMessage();
-    }
-
-
-    WareException(const WareID_t& ID,
-                  const PluggableWare::WareType& WType,
-                  const std::string& Source,
-                  const openfluid::core::TimeIndex_t& TimeIndex,
-                  const std::string& Msg) :
-      openfluid::base::Exception(ID,Msg), m_WareType(WType), m_Stage(openfluid::base::SimulationStatus::UNKNOWN),
-      m_TimeIndex(TimeIndex), m_IsTimeIndexed(true)
-    {
-      m_Source = Source;
-      buildFullMessage();
-    }
-
-
-    WareException(const WareID_t& ID,
-                  const PluggableWare::WareType& WType,
-                  const openfluid::base::SimulationStatus::SimulationStage& Stage,
-                  const openfluid::core::TimeIndex_t& TimeIndex,
-                  const std::string& Msg) :
-      openfluid::base::Exception(ID,Msg), m_WareType(WType), m_Stage(Stage),
-      m_TimeIndex(TimeIndex), m_IsTimeIndexed(true)
-    {
-      updateSourceInfo(WType,Stage,m_Source);
-      buildFullMessage();
-    }
 
 };
 

@@ -43,7 +43,7 @@
 
 #include <QWidget>
 
-#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
 
 /**

@@ -43,8 +43,7 @@
 #include <iostream>
 #include <iomanip>
 #include <set>
-#include <math.h>
-#include <boost/filesystem.hpp>
+#include <cmath>
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -54,6 +53,7 @@
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -81,18 +81,23 @@ Engine::Engine(SimulationBlob& SimBlob,
   mp_SimLogger =
     new openfluid::base::SimulationLogger(mp_RunEnv->getOutputFullPath(openfluid::config::MESSAGES_LOG_FILE));
 
-  mp_SimLogger->addInfo("*** Execution information ********************************************");
-  mp_SimLogger->addInfo("Date: " +
+  mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
+                        "Date: " +
                         boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time()));
-  mp_SimLogger->addInfo("Computer: " + mp_RunEnv->getHostName());
-  mp_SimLogger->addInfo("User: " + mp_RunEnv->getUserID());
-  mp_SimLogger->addInfo("Input directory: " + mp_RunEnv->getInputDir());
-  mp_SimLogger->addInfo("Output directory: " + mp_RunEnv->getOutputDir());
-  mp_SimLogger->addInfo("*** End of execution information *************************************");
+  mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
+                        "Computer: " + mp_RunEnv->getHostName());
+  mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
+                        "User: " + mp_RunEnv->getUserID());
+  mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
+                        "Input directory: " + mp_RunEnv->getInputDir());
+  mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
+                        "Output directory: " + mp_RunEnv->getOutputDir());
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 Engine::~Engine()
 {
@@ -137,9 +142,8 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
 
     ++UnitIter;
   }
-
-
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -405,9 +409,7 @@ void Engine::checkExtraFilesConsistency()
 
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
-
-      boost::filesystem::path ReqExtraFilePath(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]));
-      if (!boost::filesystem::exists(ReqExtraFilePath))
+      if (!openfluid::tools::Filesystem::isFile(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i])))
         throw openfluid::base::FrameworkException("Engine::checkExtraFilesConsistency",
                                                   "File " + HData.RequiredExtraFiles[i] +
                                                   " required by " + CurrentSimulator->Signature->ID + " not found");
@@ -422,16 +424,11 @@ void Engine::checkExtraFilesConsistency()
 
 void Engine::prepareOutputDir()
 {
-
-  boost::filesystem::path OutputDirPath(mp_RunEnv->getOutputDir());
-
-
-  if (!boost::filesystem::exists(OutputDirPath))
+  if (!openfluid::tools::Filesystem::isDirectory(mp_RunEnv->getOutputDir()))
   {
-    boost::filesystem::create_directories(OutputDirPath);
-    if (!boost::filesystem::exists(OutputDirPath))
+    openfluid::tools::Filesystem::makeDirectory(mp_RunEnv->getOutputDir());
+    if (!openfluid::tools::Filesystem::isDirectory(mp_RunEnv->getOutputDir()))
       throw openfluid::base::FrameworkException("IOManager::prepareOutputDir","Error creating output directory");
-
   }
   else
   {
@@ -487,12 +484,12 @@ void Engine::initParams()
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag())
+  if (mp_SimLogger->isCurrentWarningFlag())
     mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_WARNING);
   else
     mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_OK);
 
-  mp_SimLogger->resetWarningFlag();
+  mp_SimLogger->resetCurrentWarningFlag();
 
 }
 
@@ -513,13 +510,13 @@ void Engine::prepareData()
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag())
+  if (mp_SimLogger->isCurrentWarningFlag())
     mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_WARNING);
   else
     mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_OK);
 
 
-  mp_SimLogger->resetWarningFlag();
+  mp_SimLogger->resetCurrentWarningFlag();
 
 }
 
@@ -560,12 +557,12 @@ void Engine::checkConsistency()
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag())
+  if (mp_SimLogger->isCurrentWarningFlag())
     mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_WARNING);
   else
     mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_OK);
 
-  mp_SimLogger->resetWarningFlag();
+  mp_SimLogger->resetCurrentWarningFlag();
 
 }
 
@@ -597,12 +594,12 @@ void Engine::run()
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag())
+  if (mp_SimLogger->isCurrentWarningFlag())
     mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
   else
     mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
 
-  mp_SimLogger->resetWarningFlag();
+  mp_SimLogger->resetCurrentWarningFlag();
 
   // check simulation vars production after init
   checkSimulationVarsProduction(1);
@@ -619,7 +616,7 @@ void Engine::run()
   while (m_ModelInstance.hasTimePointToProcess())
   {
 
-    mp_SimLogger->resetWarningFlag();
+    mp_SimLogger->resetCurrentWarningFlag();
 
     try
     {
@@ -638,7 +635,7 @@ void Engine::run()
 
   mp_MachineListener->onAfterRunSteps();
 
-  mp_SimLogger->resetWarningFlag();
+  mp_SimLogger->resetCurrentWarningFlag();
 
 
   // ============= finalizeRun() =============
@@ -658,12 +655,12 @@ void Engine::run()
   }
 
 
-  if (mp_SimLogger->isWarningFlag())
+  if (mp_SimLogger->isCurrentWarningFlag())
     mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
   else
     mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
 
-  mp_SimLogger->resetWarningFlag();
+  mp_SimLogger->resetCurrentWarningFlag();
 
   // check simulation vars production after finalize
   //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);

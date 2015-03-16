@@ -45,6 +45,9 @@
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/ui/common/LogExplorerDialog.hpp>
+#include <openfluid/config.hpp>
+
 #include "ui_OutputsWidget.h"
 #include "OutputsWidget.hpp"
 
@@ -62,6 +65,7 @@ OutputsWidget::OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXD
   connect(ui->OutputDirView,SIGNAL(doubleClicked(const QModelIndex&)),this,SLOT(tryToOpenFile(const QModelIndex&)));
   connect(ui->ClearButton,SIGNAL(clicked()),this,SLOT(clearOutputDir()));
   connect(ui->ExploreButton,SIGNAL(clicked()),this,SLOT(tryToExploreOutputDir()));
+  connect(ui->LogButton,SIGNAL(clicked()),this,SLOT(openLogExplorer()));
 
 }
 
@@ -158,9 +162,14 @@ void OutputsWidget::tryToOpenFile(const QModelIndex& Index)
 
   if (!SelectedFile.isEmpty())
   {
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    QDesktopServices::openUrl(QUrl::fromLocalFile(SelectedFile));
-    QApplication::restoreOverrideCursor();
+    if (SelectedFile.endsWith(QString::fromStdString(openfluid::config::MESSAGES_LOG_FILE)))
+      openLogExplorer();
+    else
+    {
+      QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+      QDesktopServices::openUrl(QUrl::fromLocalFile(SelectedFile));
+      QApplication::restoreOverrideCursor();
+    }
   }
 
 }
@@ -176,4 +185,19 @@ void OutputsWidget::tryToExploreOutputDir()
   QDesktopServices::openUrl(QUrl::fromLocalFile(
       QString(openfluid::base::ProjectManager::instance()->getOutputDir().c_str())));
   QApplication::restoreOverrideCursor();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OutputsWidget::openLogExplorer()
+{
+  openfluid::ui::common::LogExplorerDialog
+    LogDlg(QString::fromStdString(openfluid::base::ProjectManager::instance()->getOutputDir()),this);
+
+  LogDlg.setDirectoryVisible(false);
+
+  LogDlg.exec();
 }

@@ -37,13 +37,11 @@
 
 #include "FluidXDescriptor.hpp"
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
 #include <QDomDocument>
@@ -789,10 +787,9 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
   if (!mp_Listener)
     mp_Listener = new openfluid::base::IOListener();
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(DirPath)))
-    throw openfluid::base::FrameworkException(
-        "FluidXDescriptor::loadFromDirectory",
-        "directory " + DirPath + " does not exist");
+  if (!openfluid::tools::Filesystem::isDirectory(DirPath))
+    throw openfluid::base::FrameworkException("FluidXDescriptor::loadFromDirectory",
+                                              "directory " + DirPath + " does not exist");
 
   std::vector<std::string> FluidXFilesToLoad = openfluid::tools::findFilesByExtension(DirPath, "fluidx", true);
 
@@ -814,17 +811,15 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
   unsigned int i = 0;
 
   std::string CurrentFile;
-  boost::filesystem::path CurrentFilePath;
 
   m_CurrentDir = DirPath;
 
   for (i = 0; i < FluidXFilesToLoad.size(); i++)
   {
-    CurrentFilePath = boost::filesystem::path(FluidXFilesToLoad[i]);
-    CurrentFile = CurrentFilePath.string();
+    CurrentFile = FluidXFilesToLoad[i];
     try
     {
-      mp_Listener->onFileLoad(CurrentFilePath.filename().string());
+      mp_Listener->onFileLoad(openfluid::tools::Filesystem::filename(CurrentFile));
       parseFile(CurrentFile);
       mp_Listener->onFileLoaded(openfluid::base::Listener::LISTEN_OK);
     }
@@ -1202,7 +1197,7 @@ void FluidXDescriptor::writeMonitoringToStream(std::ostream& Contents)
 // =====================================================================
 
 
-void FluidXDescriptor::writeToManyFiles(std::string DirPath)
+void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
 {
   mp_Listener->onWrite();
 
@@ -1212,7 +1207,7 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
   prepareFluidXDir(DirPath);
 
   // model
-  OutFilename = boost::filesystem::path(DirPath + "/model.fluidx").string();
+  OutFilename = DirPath + "/model.fluidx";
   mp_Listener->onFileWrite(OutFilename);
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
@@ -1227,7 +1222,7 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
   mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
 
   // domain
-  OutFilename = boost::filesystem::path(DirPath + "/domain.fluidx").string();
+  OutFilename = DirPath + "/domain.fluidx";
   mp_Listener->onFileWrite(OutFilename);
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
@@ -1242,7 +1237,7 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
   mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
 
   // datastore
-  OutFilename = boost::filesystem::path(DirPath + "/datastore.fluidx").string();
+  OutFilename = DirPath + "/datastore.fluidx";
   mp_Listener->onFileWrite(OutFilename);
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
@@ -1257,8 +1252,7 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
   mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
 
   // monitoring
-  OutFilename =
-      boost::filesystem::path(DirPath + "/monitoring.fluidx").string();
+  OutFilename = DirPath + "/monitoring.fluidx";
   mp_Listener->onFileWrite(OutFilename);
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
@@ -1274,7 +1268,7 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
 
 
   // run
-  OutFilename = boost::filesystem::path(DirPath + "/run.fluidx").string();
+  OutFilename = DirPath + "/run.fluidx";
   mp_Listener->onFileWrite(OutFilename);
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
@@ -1296,15 +1290,15 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::writeToSingleFile(std::string FilePath)
+void FluidXDescriptor::writeToSingleFile(const std::string& FilePath)
 {
   mp_Listener->onWrite();
 
   std::ofstream OutFile;
 
-  prepareFluidXDir(boost::filesystem::path(FilePath).branch_path().string());
+  prepareFluidXDir(openfluid::tools::Filesystem::dirname(FilePath));
 
-  std::string OutFilename = boost::filesystem::path(FilePath).string();
+  std::string OutFilename = FilePath;
   mp_Listener->onFileWrite(OutFilename);
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
@@ -1331,17 +1325,19 @@ void FluidXDescriptor::writeToSingleFile(std::string FilePath)
   mp_Listener->onWritten(openfluid::base::Listener::LISTEN_OK);
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::prepareFluidXDir(std::string DirPath)
+
+void FluidXDescriptor::prepareFluidXDir(const std::string& DirPath)
 {
-  boost::filesystem::path OutputDirPath(DirPath);
 
-  if (!boost::filesystem::exists(OutputDirPath))
+  if (!openfluid::tools::Filesystem::isDirectory(DirPath))
   {
-    boost::filesystem::create_directory(OutputDirPath);
-    if (!boost::filesystem::exists(OutputDirPath))
+    openfluid::tools::Filesystem::makeDirectory(DirPath);
+
+    if (!openfluid::tools::Filesystem::isDirectory(DirPath))
       throw openfluid::base::FrameworkException(
                                          "FluidXDescriptor::prepareOutputDir",
                                          "Error creating output directory");

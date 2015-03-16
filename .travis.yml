@@ -4,16 +4,22 @@ compiler:
   - gcc
 
 env:
-  - OFBUILD_TRAVIS_BUILDTYPE=debug
-  - OFBUILD_TRAVIS_BUILDTYPE=release
+  global:
+    - GCC_VERSION="4.8"
+  matrix:
+    - OFBUILD_TRAVIS_BUILDTYPE=debug
+    - OFBUILD_TRAVIS_BUILDTYPE=release
 
 before_install:
   - sudo add-apt-repository ppa:ubuntugis/ppa -y
   - sudo add-apt-repository ppa:czchen/travis-ci -y
+  - sudo add-apt-repository ppa:boost-latest/ppa -y
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq openssh-server openssh-client g++ gfortran cmake libboost-all-dev libqt4-dev libgdal1h libgdal1-dev libgeos++-dev p7zip-full gnuplot graphviz
+  - sudo apt-get install -qq openssh-server openssh-client "g++-${GCC_VERSION}" gfortran cmake libboost1.54-all-dev libqt4-dev libgdal1h libgdal1-dev libgeos++-dev p7zip-full gnuplot graphviz
+  - sudo update-alternatives --install /usr/bin/g++ g++ "/usr/bin/g++-${GCC_VERSION}" 90
 
 before_script:
   - echo "SET(BUILD_FORTRAN_SIMULATORS 1)" > CMake.in.local.cmake

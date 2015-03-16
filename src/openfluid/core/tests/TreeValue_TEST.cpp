@@ -31,50 +31,53 @@
 
 
 /**
-  @file ViewLogFileWindow.hpp
+  @file TreeValue_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_UICOMMON_VIEWLOGFILEWINDOW_HPP__
-#define __OPENFLUID_UICOMMON_VIEWLOGFILEWINDOW_HPP__
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_treevalue
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
 
-#include <QDialog>
-#include <QString>
-#include <QVBoxLayout>
-#include <QTextEdit>
-#include <QScrollArea>
-#include <QPushButton>
-
-#include <openfluid/dllexport.hpp>
-
-
-namespace openfluid { namespace ui { namespace common {
+#include <openfluid/core/TreeValue.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
-class OPENFLUID_API ViewLogFileWindow : public QDialog
+
+BOOST_AUTO_TEST_CASE(check_tree)
 {
-  Q_OBJECT
+  std::cout << "======== check_tree ========" << std::endl;
 
-  private:
-    QVBoxLayout m_VBox;
-    QTextEdit *mp_LogTextView;
-    QScrollArea m_LogSWindow;
-    QPushButton m_CloseButton;
-
-  private slots:
-    void onCloseClicked();
-
-  public:
-    ViewLogFileWindow(const QString& PathToLogfile);
-};
-
-} } } //namespaces
+  openfluid::core::TreeValue Val1;
 
 
+  BOOST_REQUIRE_EQUAL(Val1.size(),1);
 
-#endif /* __OPENFLUID_UICOMMON_VIEWLOGFILEWINDOW_HPP__ */
+
+  BOOST_REQUIRE_EQUAL(Val1.isSimple(),false);
+  BOOST_REQUIRE_EQUAL(Val1.isCompound(),true);
+
+
+  Val1.addChild("i1").addChild("i2").addChild("i3",3.0);
+  BOOST_REQUIRE_EQUAL(Val1.size(),4);
+
+
+  Val1.addChild("j1").addChild("j2").addChild("j3",33.0);
+  Val1.child("j1").child("j2").addChild("j33",66.0);
+  BOOST_REQUIRE_EQUAL(Val1.size(),8);
+
+  BOOST_REQUIRE_CLOSE(Val1.child("j1").child("j2").getChildValue("j33",0.0),66,000.1);
+
+  Val1.writeToStream(std::cout);
+  std::cout << std::endl;
+}
+
+
+

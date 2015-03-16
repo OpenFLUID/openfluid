@@ -56,9 +56,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::base::SimulationLogger SimLog(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog1.log");
 
   BOOST_REQUIRE_EQUAL(SimLog.getWarningsCount(),0);
-  BOOST_REQUIRE_EQUAL(SimLog.isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(SimLog.isCurrentWarningFlag(),false);
 
-  SimLog.addInfo("Hello World!");
+  SimLog.addInfo("Test","Hello World!");
 
 }
 
@@ -70,30 +70,28 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::SimulationLogger* SimLog =
       new openfluid::base::SimulationLogger(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog2.log");
 
-  SimLog->addWarning("Sender",1,"Warning message #1");
+  SimLog->addWarning("test","Warning message #1");
   BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),1);
-  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),true);
-  SimLog->resetWarningFlag();
-  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),true);
+  SimLog->resetCurrentWarningFlag();
+  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),false);
   BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),1);
 
-  SimLog->addWarning("Sender","Warning message #2");
-  SimLog->addWarning("Sender",std::string("Source"),1,"Warning message #3");
+  SimLog->addWarning("test","Warning message #2");
+  SimLog->addWarning("test","Warning message #3");
   BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
-  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),true);
-  SimLog->resetWarningFlag();
-  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),true);
+  SimLog->resetCurrentWarningFlag();
+  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),false);
   BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
   BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
-  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),false);
 
-  SimLog->addWarning("Sender","Source","Warning message #4");
+  SimLog->addWarning("test","Warning message #4");
   BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),4);
-  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),true);
+  BOOST_REQUIRE_EQUAL(SimLog->isCurrentWarningFlag(),true);
 
-  SimLog->addMessage("Sender","Message #1");
-
-  SimLog->addInfo("Info #1");
+  SimLog->addInfo("test","Info #1");
 
   delete SimLog;
 

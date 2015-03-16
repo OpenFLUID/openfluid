@@ -37,14 +37,11 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include <openfluid/machine/InterpGenerator.hpp>
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
-
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/filesystem/operations.hpp>
-
+#include <openfluid/tools/Filesystem.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -106,13 +103,13 @@ void InterpGenerator::prepareData()
   {
     std::ostringstream TmpSubDir;
     TmpSubDir << "interp-generator-" << DirNameIncr;
-    TmpDir = boost::filesystem::path(BaseTmpDir+"/"+TmpSubDir.str()).string();
+    TmpDir = BaseTmpDir+"/"+TmpSubDir.str();
     DirNameIncr++;
   }
-  while (boost::filesystem::is_directory(boost::filesystem::path(TmpDir)));
+  while (openfluid::tools::Filesystem::isDirectory(TmpDir));
 
 
-  boost::filesystem::create_directories(boost::filesystem::path(TmpDir));
+  openfluid::tools::Filesystem::makeDirectory(TmpDir);
 
   DistriTables.build(InputDir,m_SourcesFile,m_DistriFile);
 
@@ -122,16 +119,15 @@ void InterpGenerator::prepareData()
   for (openfluid::tools::DistributionTables::SourceIDFile_t::iterator it = itb; it != ite; ++it)
   {
 
-    std::string InFileName = boost::filesystem::path((*it).second).filename().string();
-    std::string OutFilePath = boost::filesystem::path(TmpDir+"/interp_"+InFileName).string();
-    openfluid::tools::ChronFileLinearInterpolator CFLI((*it).second,
-                                                       boost::filesystem::path(OutFilePath).string(),
+    std::string InFileName = openfluid::tools::Filesystem::filename((*it).second);
+    std::string OutFilePath = TmpDir+"/interp_"+InFileName;
+    openfluid::tools::ChronFileLinearInterpolator CFLI((*it).second,OutFilePath,
                                                        OPENFLUID_GetBeginDate(),OPENFLUID_GetEndDate(),
                                                        OPENFLUID_GetDefaultDeltaT());
 
     CFLI.runInterpolation();
 
-    (*it).second = boost::filesystem::path(OutFilePath).string();
+    (*it).second = OutFilePath;
   }
 
   m_DistriBindings = new openfluid::tools::DistributionBindings(DistriTables);

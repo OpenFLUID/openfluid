@@ -87,7 +87,7 @@ class OPENFLUID_API LandRTools
      @brief Returns all exterior rings of the polygon-typed VectorDataset.
      @param Val A VectorDataset of polygons.
      @return A vector of new allocated geos::geom::LineString representing exterior rings.
-     @throw base::OFException if the VectorDataset is not polygon-typed.
+     @throw openfluid::base::FrameworkException if the VectorDataset is not polygon-typed.
      */
     static std::vector<geos::geom::LineString*> computeVectorOfExteriorRings(openfluid::landr::VectorDataset& Val);
 
@@ -95,7 +95,7 @@ class OPENFLUID_API LandRTools
      @brief Returns all geos::geom::LineString composing of the linestring-typed VectorDataset.
      @param Val A VectorDataset of linestrings.
      @return A vector of new allocated geos::geom::Geometry representing lines.
-     @throw base::OFException if the VectorDataset is not linestring-typed.
+     @throw base::FrameworkException if the VectorDataset is not linestring-typed.
      */
     static std::vector<geos::geom::LineString*> computeVectorOfLines(openfluid::landr::VectorDataset& Val);
 

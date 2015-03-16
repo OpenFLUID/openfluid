@@ -41,56 +41,27 @@
 #ifndef __OPENFLUID_BASE_SIMULATIONLOGGER_HPP__
 #define __OPENFLUID_BASE_SIMULATIONLOGGER_HPP__
 
-#include <string>
-#include <fstream>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/tools/FileLogger.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
 
 #include <openfluid/tools/MiscHelpers.hpp>
 
 
 namespace openfluid { namespace base {
 
-/**
-  Class for managing messages during execution
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
-*/
-class OPENFLUID_API SimulationLogger
+class OPENFLUID_API SimulationLogger : public openfluid::tools::FileLogger
 {
 
   private:
 
-    std::ofstream m_LogFile;
-
-    bool m_WarningFlag;
-
-    unsigned int m_RealWarningsCount;
-
-    void addLog(const std::string& Prefix,
-                    const std::string& Sender,
-                    const std::string& Source,
-                    const openfluid::core::TimeIndex_t& TimeIndex,
-                    const std::string& Msg);
-
-    void addLog(const std::string& Prefix,
-                    const std::string& Sender,
-                    const openfluid::core::TimeIndex_t& TimeIndex,
-                    const std::string& Msg);
-
-    void addLog(const std::string& Prefix,
-                    const std::string& Sender,
-                    const std::string& Source,
-                    const std::string& Msg);
-
-    void addLog(const std::string& Prefix,
-                    const std::string& Sender,
-                    const std::string& Msg);
-
-    void addLog(const std::string& Prefix,
-                    const std::string& Msg);
+    bool m_CurrentWarningFlag;
 
 
   public:
@@ -101,55 +72,24 @@ class OPENFLUID_API SimulationLogger
     ~SimulationLogger();
 
 
-    void addWarning(const std::string& Sender, const std::string& Source,
-                    const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
-    { addLog("[Warning]",Sender,Source, TimeIndex, Msg); m_WarningFlag = true; m_RealWarningsCount++; };
+    void add(LogType LType, const std::string& ContextStr, const std::string& Msg);
+
+    void addInfo(const std::string& Context, const std::string& Msg)
+    { add(LOG_INFO,Context,Msg); }
+
+    void addDebug(const std::string& Context, const std::string& Msg)
+    { add(LOG_DEBUG,Context,Msg); }
+
+    void addWarning(const std::string& Context, const std::string& Msg)
+    { add(LOG_WARNING,Context,Msg); }
+
+    void addError(const std::string& Context, const std::string& Msg)
+    { add(LOG_ERROR,Context,Msg); }
 
 
-    void addWarning(const std::string& Sender, const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
-    { addLog("[Warning]",Sender,TimeIndex, Msg); m_WarningFlag = true; m_RealWarningsCount++; };
+    inline void resetCurrentWarningFlag() { m_CurrentWarningFlag = false; };
 
-
-    void addWarning(const std::string& Sender, const std::string& Source, const std::string& Msg)
-    { addLog("[Warning]",Sender,Source,Msg); m_WarningFlag = true; m_RealWarningsCount++; };
-
-
-    void addWarning(const std::string& Sender, const std::string& Msg)
-    { addLog("[Warning]",Sender,Msg); m_WarningFlag = true; m_RealWarningsCount++; };
-
-
-    void addMessage(const std::string& Sender, const std::string& Source,
-                    const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
-    { addLog("[Message]",Sender,Source, TimeIndex, Msg); };
-
-
-    void addMessage(const std::string& Sender, const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
-    { addLog("[Message]",Sender, TimeIndex, Msg); };
-
-
-    void addMessage(const std::string& Sender, const std::string& Source, const std::string& Msg)
-    { addLog("[Message]",Sender,Source, Msg); };
-
-
-    void addMessage(const std::string& Sender, const std::string& Msg)
-    { addLog("[Message]",Sender,Msg); };
-
-
-    void addInfo(const std::string& Sender, const std::string& Msg)
-    { addLog("[Info]",Sender,Msg); };
-
-
-    void addInfo(const std::string& Msg)
-    { addLog("[Info]",Msg); };
-
-
-    inline void resetWarningFlag() { m_WarningFlag = false; };
-
-
-    inline bool isWarningFlag() const { return m_WarningFlag; };
-
-
-    inline unsigned int getWarningsCount() const { return m_RealWarningsCount; };
+    inline bool isCurrentWarningFlag() const { return m_CurrentWarningFlag; };
 
 };
 

@@ -44,8 +44,6 @@
 #define BOOST_TEST_MODULE unittest_distributionbindings
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
 
 #include <openfluid/tools/DistributionBindings.hpp>
 
@@ -75,15 +73,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::tools::DistributionTables DistriTables;
 
-  DistriTables.build(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.Generators").string(),
-                                                      "sourcesinject.xml","distri.dat");
+  DistriTables.build(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.Generators",
+                     "sourcesinject.xml","distri.dat");
 
   BOOST_REQUIRE_EQUAL(DistriTables.SourcesTable["1"],
-                      boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+
-                                              "/OPENFLUID.IN.Generators/source3.dat").string());
+                      CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.Generators/source3.dat");
   BOOST_REQUIRE_EQUAL(DistriTables.SourcesTable["2"],
-                      boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+
-                                              "/OPENFLUID.IN.Generators/source4.dat").string());
+                      CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.Generators/source4.dat");
 
   BOOST_REQUIRE_EQUAL(DistriTables.UnitsTable[1],"1");
   BOOST_REQUIRE_EQUAL(DistriTables.UnitsTable[2],"2");

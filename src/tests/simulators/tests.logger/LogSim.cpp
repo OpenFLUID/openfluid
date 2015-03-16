@@ -102,10 +102,17 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
 
   void initParams(const openfluid::ware::WareParams_t& /*Params*/)
   {
+    OPENFLUID_LogAndDisplayInfo("This is a message to both file and console");
+    OPENFLUID_LogInfo("This is a message to file only");
+    OPENFLUID_DisplayInfo("This is a message to console only");
 
-    OPENFLUID_Logger.all() << "This is a message to both file and console" << std::endl;
-    OPENFLUID_Logger.file() << "This is a message to file only" << std::endl;
-    OPENFLUID_Logger.stdout() << "This is a message to console only" << std::endl;
+    OPENFLUID_LogAndDisplayDebug("This is a message to both file and console");
+    OPENFLUID_LogDebug("This is a message to file only");
+    OPENFLUID_DisplayDebug("This is a message to console only");
+
+    OPENFLUID_LogAndDisplayWarning("This is a message to both file and console");
+    OPENFLUID_LogWarning("This is a message to file only");
+    OPENFLUID_DisplayWarning("This is a message to console only");
   }
 
   // =====================================================================
@@ -130,7 +137,7 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    OPENFLUID_Logger.all() << "Time step duration" << OPENFLUID_GetDefaultDeltaT() << std::endl;
+    OPENFLUID_LogInfo("Time step duration" << OPENFLUID_GetDefaultDeltaT());
 
     return DefaultDeltaT();
   }
@@ -145,9 +152,10 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
 
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
+      OPENFLUID_LogInfo("TestUnits #" << TU->getID());
+      OPENFLUID_DisplayInfo("TestUnits #" << TU->getID());
 
-      OPENFLUID_Logger.all() << "TestUnits #" << TU->getID() << std::endl;
-
+      OPENFLUID_LogWarning("This is a warning message for " << "TestUnits #" << TU->getID());
     }
 
 
@@ -159,7 +167,11 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
 
 
   void finalizeRun()
-  { }
+  {
+    OPENFLUID_LogAndDisplayWarning("This is almost the end");
+    OPENFLUID_LogAndDisplayDebug("Are you sure?");
+    OPENFLUID_LogAndDisplayInfo("This is the end");
+  }
 
 };
 

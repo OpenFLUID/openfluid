@@ -173,7 +173,7 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
       CALL_FMODSUBROUTINE(testmodule,multrealvalue)(&DValue,&DMult,&DResult);
 
       if (std::abs(DResult - (DValue*DMult)) > m_Precision)
-        OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealvalue)");
+        OPENFLUID_RaiseError("incorrect fortran call (multrealvalue)");
 
 
       // ====== int ======
@@ -186,7 +186,7 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
       CALL_FMODSUBROUTINE(testmodule,multintvalue)(&IValue,&IMult,&IResult);
 
       if (IResult != (IValue*IMult))
-        OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multintvalue)");
+        OPENFLUID_RaiseError("incorrect fortran call (multintvalue)");
 
 
       // ====== string ======
@@ -246,7 +246,7 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
       CALL_FMODSUBROUTINE(testmodule,multrealmatrix)(MValue.data(),&MDim1,&MDim2,&MMult,MTmpResult);
 
       MResult = openfluid::core::MatrixValue(MDim1,MDim2);
-      MResult.setData(MTmpResult);
+      MResult.setData(MTmpResult,MDim1,MDim2);
 
       std::cout << "MTmpResult:"<< std::endl;
       for (j=0; j < MDim2;j++)
@@ -279,7 +279,7 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
         {
           //      std::cout << MResult.get(i,j) << "  " << (MValue.get(i,j) * MMult) << std::endl;
           if (std::abs(MResult.get(i,j) - (MValue.get(i,j) * MMult)) > m_Precision)
-            OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealmatrix)");
+            OPENFLUID_RaiseError("incorrect fortran call (multrealmatrix)");
         }
       }
 

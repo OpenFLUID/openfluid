@@ -65,7 +65,7 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
 
     /**
      @brief Open the GDALDataset of this GeoRasterValue.
-     @throw openfluid::base::OFException if GDAL doesn't succeed to open the datasource.
+     @throw openfluid::base::FrameworkException if GDAL doesn't succeed to open the datasource.
     */
     void tryToOpenSource();
 
@@ -95,7 +95,7 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
      @brief Gets the associated opened GDAL dataset in read-only access.
      If the dataset is not already opened, tries to open it first.
      @return The opened GDAL dataset.
-     @throw openfluid::base::OFException if GDAL doesn't succeed to open the dataset.
+     @throw openfluid::base::FrameworkException if GDAL doesn't succeed to open the dataset.
      */
     GDALDataset* data();
 

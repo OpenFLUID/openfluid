@@ -44,6 +44,7 @@
 #include <iomanip>
 
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/ware/WareParamsTree.hpp>
 
 #include "../KmlObserverBase.hpp"
 
@@ -162,9 +163,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       openfluid::tools::convertValue(CurrentTI,&CurrentTIStr);
 
-      std::ofstream CurrentKmlFile(
-          boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir+"/t_"+
-                                  CurrentTIStr+".kml").string().c_str());
+      std::ofstream CurrentKmlFile(std::string(m_TmpDir+"/"+m_KmzSubDir+"/"+
+                                               m_KmzDataSubDir+"/t_"+ CurrentTIStr+".kml").c_str());
 
       CurrentKmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
       CurrentKmlFile << "<kml xmlns=\"http://www.opengis.net/kml/2.2\" "
@@ -312,11 +312,11 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree ParamsPT;
+      openfluid::ware::WareParamsTree ParamsTree;
 
       try
       {
-        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+        ParamsTree.setParams(Params);
       }
       catch (openfluid::base::FrameworkException& E)
       {
@@ -330,140 +330,152 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       // general
 
-      m_Title = ParamsPT.get("title",m_Title);
-      m_OutputFileName = ParamsPT.get("kmzfilename",m_OutputFileName);
-      m_TryOpenGEarth = ParamsPT.get<bool>("tryopengearth",m_TryOpenGEarth);
-      m_MinSamplingDelay = ParamsPT.get("minsamplingdelay",m_MinSamplingDelay);
-
-
-      // anim layer
-
-      m_AnimLayerInfo.UnitsClass = ParamsPT.get("layers.anim.unitclass","");
-      m_AnimLayerInfo.VarName = ParamsPT.get("layers.anim.varname","");
-      m_AnimLayerInfo.LineWidth = ParamsPT.get<int>("layers.anim.linewidth",1);
-
-
-      m_AnimLayerInfo.SourceIsDatastore = (ParamsPT.get("layers.anim.source","file") == "datastore");
-      if (m_AnimLayerInfo.SourceIsDatastore)
-        return;
-      else
+      try
       {
-        m_AnimLayerInfo.SourceFilename = ParamsPT.get("layers.anim.sourcefile","");
-        if (m_AnimLayerInfo.SourceFilename.empty())
+        m_Title = ParamsTree.root().getChildValue("title",m_Title);
+
+        m_OutputFileName = ParamsTree.root().getChildValue("kmzfilename",m_OutputFileName);
+        ParamsTree.root().getChildValue("tryopengearth",m_TryOpenGEarth).toBoolean(m_TryOpenGEarth);
+        long MSD;
+        ParamsTree.root().getChildValue("minsamplingdelay",(int)m_MinSamplingDelay).toInteger(MSD);
+        m_MinSamplingDelay = MSD;
+
+
+        // anim layer
+
+        m_AnimLayerInfo.UnitsClass = ParamsTree.root().child("layers").child("anim").getChildValue("unitclass","");
+        m_AnimLayerInfo.VarName = ParamsTree.root().child("layers").child("anim").getChildValue("varname","");
+        ParamsTree.root().child("layers").child("anim").getChildValue("linewidth",1)
+            .toInteger(m_AnimLayerInfo.LineWidth);
+
+
+        m_AnimLayerInfo.SourceIsDatastore =
+            (ParamsTree.root().child("layers").child("anim").getChildValue("source","file").get() == "datastore");
+        if (m_AnimLayerInfo.SourceIsDatastore)
+          return;
+        else
         {
-          OPENFLUID_RaiseWarning("wrong sourcefile format");
+          m_AnimLayerInfo.SourceFilename =
+              ParamsTree.root().child("layers").child("anim").getChildValue("sourcefile","");
+          if (m_AnimLayerInfo.SourceFilename.empty())
+          {
+            OPENFLUID_RaiseWarning("wrong sourcefile format");
+            return;
+          }
+          m_AnimLayerInfo.SourceFilename = m_InputDir + "/" + m_AnimLayerInfo.SourceFilename;
+        }
+
+
+        std::vector<std::string> ColorScaleVector;
+        std::string ColorScaleString;
+
+        ColorScaleString = ParamsTree.root().child("layers").child("anim").getChildValue("colorscale","");
+        ColorScaleVector = openfluid::tools::splitString(ColorScaleString,";",false);
+
+        if (ColorScaleVector.size() % 2 == 0)
+        {
+          OPENFLUID_RaiseWarning("wrong colorscale format");
           return;
         }
-        m_AnimLayerInfo.SourceFilename = m_InputDir + "/" + m_AnimLayerInfo.SourceFilename;
-      }
-
-
-      std::vector<std::string> ColorScaleVector;
-      std::string ColorScaleString;
-
-      ColorScaleString = ParamsPT.get("layers.anim.colorscale","");
-      ColorScaleVector = openfluid::tools::splitString(ColorScaleString,";",false);
-
-      if (ColorScaleVector.size() % 2 == 0)
-      {
-        OPENFLUID_RaiseWarning("wrong colorscale format");
-        return;
-      }
-      else
-      {
-        std::pair<std::string,double> TmpColorValue("",0.0);
-
-        for (unsigned int i=0;i<ColorScaleVector.size();i++)
+        else
         {
-          double TmpVal;
+          std::pair<std::string,double> TmpColorValue("",0.0);
 
-          if (i == ColorScaleVector.size()-1)
+          for (unsigned int i=0;i<ColorScaleVector.size();i++)
           {
-            if (ColorScaleVector[i].size() != 8)
-            {
-              OPENFLUID_RaiseWarning("Wrong color scale color format on last item");
-              return;
-            }
-            TmpColorValue = std::make_pair("",0.0);
-            TmpColorValue.first = ColorScaleVector[i];
-            m_AnimLayerInfo.ColorScale.push_back(TmpColorValue);
+            double TmpVal;
 
-          }
-          else
-          {
-            if (i%2 == 0)
+            if (i == ColorScaleVector.size()-1)
             {
-              // color item
               if (ColorScaleVector[i].size() != 8)
               {
-                OPENFLUID_RaiseWarning("Wrong color scale color format");
+                OPENFLUID_RaiseWarning("Wrong color scale color format on last item");
                 return;
               }
-
+              TmpColorValue = std::make_pair("",0.0);
               TmpColorValue.first = ColorScaleVector[i];
+              m_AnimLayerInfo.ColorScale.push_back(TmpColorValue);
+
             }
             else
             {
-              // value item
-              if (openfluid::tools::convertString(ColorScaleVector[i],&TmpVal))
+              if (i%2 == 0)
               {
-                TmpColorValue.second = TmpVal;
-                m_AnimLayerInfo.ColorScale.push_back(TmpColorValue);
+                // color item
+                if (ColorScaleVector[i].size() != 8)
+                {
+                  OPENFLUID_RaiseWarning("Wrong color scale color format");
+                  return;
+                }
+
+                TmpColorValue.first = ColorScaleVector[i];
               }
               else
               {
-                OPENFLUID_RaiseWarning("Wrong color scale value format");
-                return;
+                // value item
+                if (openfluid::tools::convertString(ColorScaleVector[i],&TmpVal))
+                {
+                  TmpColorValue.second = TmpVal;
+                  m_AnimLayerInfo.ColorScale.push_back(TmpColorValue);
+                }
+                else
+                {
+                  OPENFLUID_RaiseWarning("Wrong color scale value format");
+                  return;
+                }
+
+                TmpColorValue = std::make_pair("",0.0);
               }
-
-              TmpColorValue = std::make_pair("",0.0);
             }
           }
         }
-      }
 
 
-      if (!transformVectorLayerToKmlGeometry(m_AnimLayerInfo))
-      {
-        m_OKToGo = false;
-        return;
-      }
-
-
-      // static layers
-
-      boost::optional<boost::property_tree::ptree&> StaticLayersTree = ParamsPT.get_child_optional( "layers.static" );
-
-      if (StaticLayersTree)
-      {
-        foreach (const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("layers.static"))
+        if (!transformVectorLayerToKmlGeometry(m_AnimLayerInfo))
         {
-          std::string LayerID = v.first;
+          m_OKToGo = false;
+          return;
+        }
 
-          KmlStaticLayerInfo KSLI;
 
-          KSLI.UnitsClass = ParamsPT.get("layers.static."+LayerID+".unitclass","");
-          KSLI.LineWidth = ParamsPT.get<int>("layers.static."+LayerID+".linewidth",1);
-          KSLI.Color = ParamsPT.get("layers.static."+LayerID+".color","ffffffff");
 
-          KSLI.SourceIsDatastore = (ParamsPT.get("layers.static."+LayerID+".source","file") == "datastore");
-          if (KSLI.SourceIsDatastore)
-            return;
-          else
-          {
-            KSLI.SourceFilename = ParamsPT.get("layers.static."+LayerID+".sourcefile","");
-            if (KSLI.SourceFilename.empty())
+        // static layers
+
+        if (ParamsTree.root().child("layers").hasChild("static"))
+        {
+          for (auto& SLayer : ParamsTree.root().child("layers").child("static"))
             {
-              OPENFLUID_RaiseWarning("wrong sourcefile format");
-            }
-            KSLI.SourceFilename = m_InputDir + "/" + KSLI.SourceFilename;
-          }
+            std::string LayerID = SLayer.first;
 
-          if (transformVectorLayerToKmlGeometry(KSLI))
-          {
-            m_StaticLayersInfo.push_back(KSLI);
+            KmlStaticLayerInfo KSLI;
+
+            KSLI.UnitsClass = SLayer.second.getChildValue("unitclass","");
+            SLayer.second.getChildValue("linewidth",1).toInteger(KSLI.LineWidth);
+            KSLI.Color = SLayer.second.getChildValue("color","ffffffff");
+
+            KSLI.SourceIsDatastore = (SLayer.second.getChildValue("source","file").get() == "datastore");
+            if (KSLI.SourceIsDatastore)
+              return;
+            else
+            {
+              KSLI.SourceFilename = SLayer.second.getChildValue("sourcefile","");
+              if (KSLI.SourceFilename.empty())
+              {
+                OPENFLUID_RaiseWarning("wrong sourcefile format");
+              }
+              KSLI.SourceFilename = m_InputDir + "/" + KSLI.SourceFilename;
+            }
+
+            if (transformVectorLayerToKmlGeometry(KSLI))
+            {
+              m_StaticLayersInfo.push_back(KSLI);
+            }
           }
         }
+      }
+      catch (openfluid::base::FrameworkException& E)
+      {
+        OPENFLUID_RaiseError(E.getMessage());
       }
 
       m_OKToGo = true;
@@ -491,7 +503,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
 
       // open and initialize doc.kml file
-      m_KmlFile.open(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/doc.kml").string().c_str());
+      m_KmlFile.open(std::string(m_TmpDir+"/"+m_KmzSubDir+"/doc.kml").c_str());
 
       m_KmlFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
       m_KmlFile << "<kml xmlns=\"http://www.opengis.net/kml/2.2\" "

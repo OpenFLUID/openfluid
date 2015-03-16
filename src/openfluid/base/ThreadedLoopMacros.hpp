@@ -40,6 +40,9 @@
 #ifndef __OPENFLUID_BASE_THREADEDLOOPMACROS_HPP__
 #define __OPENFLUID_BASE_THREADEDLOOPMACROS_HPP__
 
+
+#include <functional>
+
 #include <QtGlobal>
 
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
@@ -75,7 +78,7 @@
         { \
           try \
           { \
-            _THREADSYNCID(id).addFuture(QtConcurrent::run(boost::bind(&funcptr,\
+            _THREADSYNCID(id).addFuture(QtConcurrent::run(std::bind(&funcptr,\
                                                                       this,\
                                                                       &(*_UNITSLISTITERID(id)),## __VA_ARGS__)));\
             if (_THREADSYNCID(id).futures().size() == OPENFLUID_GetSimulatorMaxThreads())\
@@ -124,7 +127,7 @@
         { \
           try \
           { \
-            _THREADSYNCID(id).addFuture(QtConcurrent::run(boost::bind(&funcptr,\
+            _THREADSYNCID(id).addFuture(QtConcurrent::run(std::bind(&funcptr,\
                                                                       this,\
                                                                       (*_UNITSPTRLISTITERID(id)),## __VA_ARGS__)));\
             if (_THREADSYNCID(id).futures().size() == OPENFLUID_GetSimulatorMaxThreads())\

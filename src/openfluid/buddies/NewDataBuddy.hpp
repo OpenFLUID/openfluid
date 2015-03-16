@@ -41,7 +41,6 @@
 #ifndef __OPENFLUID_BUDDIES_NEWDATABUDDY_HPP__
 #define __OPENFLUID_BUDDIES_NEWDATABUDDY_HPP__
 
-#include <boost/filesystem/path.hpp>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
@@ -54,7 +53,7 @@ class OPENFLUID_API NewDataBuddy : public OpenFLUIDBuddy
 {
   private:
 
-    boost::filesystem::path m_OutputDirPath;
+    std::string m_OutputDirPath;
 
     std::string getXMLHeader();
 

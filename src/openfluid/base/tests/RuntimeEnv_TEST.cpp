@@ -61,6 +61,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isUserValuesBufferSize(),false);
 
+  BOOST_REQUIRE(!openfluid::base::RuntimeEnvironment::instance()->getArch().empty());
+
   std::cout << "Arch: " << openfluid::base::RuntimeEnvironment::instance()->getArch() << std::endl;
   std::cout << "Hostname: " << openfluid::base::RuntimeEnvironment::instance()->getHostName() << std::endl;
   std::cout << "UserID: " << openfluid::base::RuntimeEnvironment::instance()->getUserID() << std::endl;

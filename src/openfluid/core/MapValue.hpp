@@ -42,7 +42,7 @@
 
 
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <openfluid/core/CompoundValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
@@ -135,7 +135,7 @@ class OPENFLUID_API MapValue : public CompoundValue
 {
   public:
 
-    typedef std::map<std::string,boost::shared_ptr<Value> > Map_t;
+    typedef std::map<std::string,std::shared_ptr<Value> > Map_t;
 
     typedef Map_t::iterator iterator;
 

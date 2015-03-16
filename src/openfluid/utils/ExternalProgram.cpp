@@ -196,7 +196,7 @@ QString ExternalProgram::findUsingPATHEnvVar(const QString& Program)
     PathsList = PATHStr.split(":",QString::SkipEmptyParts);
 #endif
 
-#ifdef WIN32
+#if defined(Q_OS_WIN32)
     PathsList = PATHStr.split(";",QString::SkipEmptyParts);
 #endif
   }

@@ -42,8 +42,9 @@
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
 
-namespace openfluid {
-namespace ware {
+
+namespace openfluid { namespace ware {
+
 
 class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignature
 {
@@ -59,13 +60,12 @@ class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignatu
 
   public:
 
-    GeneratorSignature(
-        openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+    GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
 
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
 
 };
 
-}} //namespaces
+} } //namespaces
 
 #endif /* __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__ */

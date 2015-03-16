@@ -41,8 +41,6 @@
 #define BOOST_TEST_MODULE unittest_rasterdataset
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/RasterDataset.hpp>

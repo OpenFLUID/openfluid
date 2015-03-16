@@ -490,10 +490,7 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleRun
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule" 
 #                           "-p${TESTS_OUTPUTDATA_PATH}/tests.sim.cmake"
 #                           "-n${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake"
-                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule"
-                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.sim.cmake_ofware-sim.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.obs.cmake_ofware-obs.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.obsui.cmake_ofware-obs.log")
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule")
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorBuild)
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverBuild)
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverParamsUIBuild)
@@ -576,8 +573,6 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesRunPrimitives
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                               "-w" "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives"                                                   
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/examples.primitives.unitsA.prod_ofware-sim.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/examples.primitives.unitsB.prod_ofware-sim.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/fullA_unitsA1_var1.csv"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/fullB_unitsB2_var5.csv"
                    )
@@ -612,8 +607,14 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyNewSim
 
 OPENFLUID_ADD_TEST(NAME integration-BuddyNewSimConfigure
                    COMMAND "${CMAKE_COMMAND}"
-                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim" "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}" "." 
-                              )
+                            "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim" "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
+                            "-DOpenFLUIDHelpers_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                            "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                            "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
+                            "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
+                            "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                            "-DSIM_SIM2DOC_MODE=off" 
+                            ".")
 SET_PROPERTY(TEST integration-BuddyNewSimConfigure APPEND PROPERTY DEPENDS integration-BuddyNewSim)
 
 

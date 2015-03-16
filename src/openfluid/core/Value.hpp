@@ -58,13 +58,14 @@ class StringValue;
 class VectorValue;
 class MatrixValue;
 class MapValue;
+class TreeValue;
 
 
 class OPENFLUID_API Value
 {
   public:
 
-    enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, MAP, NULLL };
+    enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, MAP, TREE, NULLL };
 
     /**
       Default constructor
@@ -168,6 +169,17 @@ class OPENFLUID_API Value
     const MapValue& asMapValue() const;
 
     MapValue& asMapValue();
+
+
+    /**
+      Returns true if the Value is a TreeValue
+    */
+    inline bool isTreeValue() const { return getType() == Value::TREE; };
+
+    const TreeValue& asTreeValue() const;
+
+    TreeValue& asTreeValue();
+
 
     /**
       Returns the contained value as a string

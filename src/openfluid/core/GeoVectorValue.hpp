@@ -61,7 +61,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
 
     /**
      @brief Open the OGRDataSource of this GeoVectorValue.
-     @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+     @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
     */
     void tryToOpenSource();
 
@@ -97,7 +97,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
      @brief Gets the associated opened OGR datasource in read-only access.
      If the datasource is not already opened, tries to open it first.
      @return The opened OGR datasource.
-     @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+     @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
      */
     OGRDataSource* data();
 
@@ -105,7 +105,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
      @brief Gets a layer of the shape.
      @param LayerIndex The index of the asked layer, default 0.
      @return The layer indexed LayerIndex.
-     @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+     @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
      */
     OGRLayer* layer(unsigned int LayerIndex = 0);
 
@@ -113,7 +113,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
      @brief Gets the Feature definition of a layer.
      @param LayerIndex The index of the asked layer definition, default 0.
      @return The OGR Feature definition of the LayerIndex layer.
-     @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+     @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
      */
     OGRFeatureDefn* layerDef(unsigned int LayerIndex = 0);
 
@@ -121,7 +121,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
      @brief Returns true if the GeoVectorValue is line type, false otherwise.
      @param LayerIndex The index of the layer to compare the type, default 0.
      @return True if the type of the layer LayerIndex is wkbLineString, false otherwise.
-     @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+     @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
       */
      bool isLineType(unsigned int LayerIndex = 0);
 
@@ -129,7 +129,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       @brief Returns true if the GeoVectorValue is polygon type, false otherwise.
       @param LayerIndex The index of the layer to compare the type, default 0.
       @return True if the type of the layer LayerIndex is wkbPolygon, false otherwise.
-      @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
       */
      bool isPolygonType(unsigned int LayerIndex = 0);
 
@@ -138,7 +138,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       @param FieldName The name of the field to query.
       @param LayerIndex The index of the layer to query, default 0.
       @return True if the field FieldName exists, False otherwise.
-      @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
       */
      bool containsField(const std::string& FieldName, unsigned int LayerIndex = 0);
 
@@ -147,7 +147,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       @param LayerIndex The index of the layer to query, default 0.
       @param FieldName The name of the field to query.
       @return The index of FieldName or -1 if field FieldName doesn't exist.
-      @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
       */
      int getFieldIndex(const std::string& FieldName, unsigned int LayerIndex = 0);
 
@@ -157,8 +157,8 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       @param FieldType The type of the field to query.
       @param LayerIndex The index of the layer to query, default 0.
       @return True if the field FieldName is type FieldType.
-      @throw openfluid::base::OFException if the field doesn't exist.
-      @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      @throw openfluid::base::FrameworkException if the field doesn't exist.
+      @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
       */
      bool isFieldOfType(const std::string& FieldName, OGRFieldType FieldType,
                         unsigned int LayerIndex = 0);
@@ -167,7 +167,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       @brief Returns true if the GeoVectorValue is point type, false otherwise.
       @param LayerIndex The index of the layer to compare the type, default 0.
       @return True if the type of the layer LayerIndex is wkbPoint, false otherwise.
-      @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
       */
      bool isPointType(unsigned int LayerIndex = 0);
 
@@ -175,7 +175,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       @brief Returns true if the GeoVectorValue is MultiPolygon type, false otherwise.
       @param LayerIndex The index of the layer to compare the type, default 0.
       @return True if the type of the layer LayerIndex is wkbMultiPolygon, false otherwise.
-      @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
       */
      bool isMultiPolygonType(unsigned int LayerIndex = 0);
 
@@ -183,7 +183,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       @brief Returns true if the GeoVectorValue is MultiLine type, false otherwise.
       @param LayerIndex The index of the layer to compare the type, default 0.
       @return True if the type of the layer LayerIndex is wkbMultiLineString, false otherwise.
-      @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
       */
      bool isMultiLineType(unsigned int LayerIndex = 0);
 
@@ -191,7 +191,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       @brief Returns true if the GeoVectorValue is MultiPoint type, false otherwise.
       @param LayerIndex The index of the layer to compare the type, default 0.
       @return True if the type of the layer LayerIndex is wkbMultiPoint, false otherwise.
-      @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
       */
      bool isMultiPointType(unsigned int LayerIndex = 0);
 

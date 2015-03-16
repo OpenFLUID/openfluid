@@ -100,8 +100,7 @@ class OPENFLUID_API FluidXDescriptor
 
     void extractDomainFomNode(QDomElement& Node);
 
-    openfluid::core::UnitClassID_t extractUnitClassIDFromNode(
-        QDomElement& Node);
+    openfluid::core::UnitClassID_t extractUnitClassIDFromNode(QDomElement& Node);
 
     void extractDomainDefinitionFromNode(QDomElement& Node);
 
@@ -116,13 +115,11 @@ class OPENFLUID_API FluidXDescriptor
     // =====================================================================
     // =====================================================================
 
-    void prepareFluidXDir(std::string DirPath);
+    void prepareFluidXDir(const std::string& DirPath);
 
-    std::string getGeneratorMethodAsStr(
-        openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const;
+    std::string getGeneratorMethodAsStr(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const;
 
-    std::string getParamsAsStr(
-        const openfluid::ware::WareParams_t& Params) const;
+    std::string getParamsAsStr(const openfluid::ware::WareParams_t& Params) const;
 
     void writeModelToStream(std::ostream& Contents);
 
@@ -182,9 +179,9 @@ class OPENFLUID_API FluidXDescriptor
     // =====================================================================
     // =====================================================================
 
-    void writeToManyFiles(std::string DirPath);
+    void writeToManyFiles(const std::string& DirPath);
 
-    void writeToSingleFile(std::string FilePath);
+    void writeToSingleFile(const std::string& FilePath);
 };
 
 } } // namespaces

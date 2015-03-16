@@ -139,7 +139,7 @@ void SVGFileGeneratorWorker::run()
     for (itI=itIb;itI!= itIe;++itI)
     {
       const std::list<openfluid::core::UnitClassID_t>& ToUnits =
-          mp_AdvDomainDesc->toSpatialUnits(std::make_pair<std::string,int>(*itC,*itI));
+          mp_AdvDomainDesc->toSpatialUnits(std::make_pair(*itC,*itI));
 
       std::list<openfluid::core::UnitClassID_t>::const_iterator itT;
       std::list<openfluid::core::UnitClassID_t>::const_iterator itTb = ToUnits.begin();
@@ -159,7 +159,7 @@ void SVGFileGeneratorWorker::run()
     for (itI=itIb;itI!= itIe;++itI)
     {
       const std::list<openfluid::core::UnitClassID_t>& ParentUnits =
-          mp_AdvDomainDesc->parentSpatialUnits(std::make_pair<std::string,int>(*itC,*itI));
+          mp_AdvDomainDesc->parentSpatialUnits(std::make_pair(*itC,*itI));
 
       std::list<openfluid::core::UnitClassID_t>::const_iterator itP;
       std::list<openfluid::core::UnitClassID_t>::const_iterator itPb = ParentUnits.begin();

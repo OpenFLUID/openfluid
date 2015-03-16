@@ -41,7 +41,6 @@
 #define BOOST_TEST_MODULE unittest_georastervalue
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
@@ -86,9 +85,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL(Val->getType(),
                     openfluid::core::UnstructuredValue::GeoRasterValue);
 
-  BOOST_CHECK_EQUAL(
-      Val->getAbsolutePath(),
-      boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue/dem.jpeg").string());
+  BOOST_CHECK_EQUAL(Val->getAbsolutePath(),CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue/dem.jpeg");
 
   BOOST_CHECK(!Val->data());
 

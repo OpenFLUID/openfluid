@@ -73,6 +73,8 @@ class OutputsWidget : public WorkspaceWidget
 
     void tryToExploreOutputDir();
 
+    void openLogExplorer();
+
 
   public slots:
 

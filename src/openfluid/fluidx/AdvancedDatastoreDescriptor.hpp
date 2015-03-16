@@ -76,7 +76,7 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
      * Move the Item located at the given From position to the To position (positions starts at index 0)
      * @param From
      * @param To
-     * @throw openfluid::base::OFException a position is out of range
+     * @throw openfluid::base::FrameworkException a position is out of range
      */
     void moveItem(unsigned int From, unsigned int To);
 
@@ -87,7 +87,7 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
      @param[in] Item the DatastoreItemDescriptor to insert
      @param[in] Position the position, should be between zero and list size - 1.
      To insert an Item at the end of the list, use appendItem instead.
-     @throw openfluid::base::OFException if Position is out of range
+     @throw openfluid::base::FrameworkException if Position is out of range
      */
     void insertItem(openfluid::fluidx::DatastoreItemDescriptor* Item,
                     unsigned int Position);
@@ -96,7 +96,7 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
      Remove from the list the Item located at the given Position (positions starts at index 0).
      This doesn't delete the DatastoreItemDescriptor pointer.
      @param[in] Position the position
-     @throw openfluid::base::OFException if Position is out of range
+     @throw openfluid::base::FrameworkException if Position is out of range
      */
     void removeItem(unsigned int Position);
 

@@ -161,7 +161,11 @@ class SourceTreeChecker:
         
     Result = re.search( r'\@file '+re.escape(ExpectedFilename), Content)
     if not Result:
-      self.addProblem('FNAM',Filename,'missing or malformed @file information (expected @file',ExpectedFilename+')')
+      ExpectedFilenameWithParentDir = os.path.basename(os.path.dirname(Filename))+'/'+ExpectedFilename;       
+      Result = re.search( r'\@file '+re.escape(ExpectedFilenameWithParentDir), Content)
+      if not Result:
+        self.addProblem('FNAM',Filename,'missing or malformed @file information (expected @file',ExpectedFilename,
+                        'or @file',ExpectedFilenameWithParentDir+')')
       
     Result = re.search( r'\@author \w+', Content)
     if not Result:

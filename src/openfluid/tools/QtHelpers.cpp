@@ -82,6 +82,21 @@ std::list<std::string> toStdStringList(const QStringList& StrList)
 // =====================================================================
 
 
+std::vector<std::string> toStdStringVector(const QStringList& StrList)
+{
+  std::vector<std::string> TmpVector;
+
+  for (int i=0; i<StrList.size(); i++)
+    TmpVector.push_back(StrList[i].toStdString());
+
+  return TmpVector;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 QDateTime toQDateTime(openfluid::core::DateTime DT)
 {
   QDate D(DT.getYear(),DT.getMonth(),DT.getDay());
@@ -171,6 +186,18 @@ QString escapeXMLEntities(const QString& Str)
   QString EscapedStr = Str;
   EscapedStr.replace("&","&amp;").replace(">","&gt;").replace("<","&lt;").replace("\"","&quot;");
   return EscapedStr;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString decodeXMLEntities(const QString& Str)
+{
+  QString DecodedStr = Str;
+  DecodedStr.replace("&amp;","&").replace("&gt;",">").replace("&lt;","<").replace("&quot;","\"");
+  return DecodedStr;
 }
 
 

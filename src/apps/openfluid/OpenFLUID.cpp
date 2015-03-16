@@ -40,7 +40,6 @@
 #include <iostream>
 #include <string>
 #include <boost/program_options.hpp>
-#include <boost/filesystem.hpp>
 
 #include <QElapsedTimer>
 
@@ -834,7 +833,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       Buddy->invokeHelp();
       delete Buddy;
     }
-    else throw openfluid::base::ApplicationException("openfluid",
+    else throw openfluid::base::ApplicationException(openfluid::base::ApplicationException::computeContext("openfluid"),
                                                      "Buddy " + OptionsVars["buddyhelp"].as<std::string>() +
                                                      " does not exists");
     m_RunType = None;
@@ -921,7 +920,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       openfluid::base::ProjectManager::instance()->updateOutputDir();
     }
     else
-      throw openfluid::base::ApplicationException("openfluid",
+      throw openfluid::base::ApplicationException(openfluid::base::ApplicationException::computeContext("openfluid"),
                                                   OptionsVars["project"].as<std::string>() +
                                                   " is not a correct project path");
   }
@@ -1014,7 +1013,8 @@ void OpenFLUIDApp::runBuddy()
     Buddy->run();
     delete Buddy;
   }
-  else throw openfluid::base::ApplicationException("openfluid","Buddy " + m_BuddyToRun.first + " does not exists");
+  else throw openfluid::base::ApplicationException(openfluid::base::ApplicationException::computeContext("openfluid"),
+                                                   "Buddy " + m_BuddyToRun.first + " does not exists");
 
 }
 

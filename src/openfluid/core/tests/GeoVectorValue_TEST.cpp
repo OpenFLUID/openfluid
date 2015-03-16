@@ -41,7 +41,6 @@
 #define BOOST_TEST_MODULE unittest_geovectorvalue
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
@@ -83,12 +82,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoVectorValue");
 
-  BOOST_CHECK_EQUAL(Val->getType(),
-                    openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(Val->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
 
-  BOOST_CHECK_EQUAL(
-      Val->getAbsolutePath(),
-      boost::filesystem::path(CONFIGTESTS_INPUT_MISCDATA_DIR+"/GeoVectorValue").string());
+  BOOST_CHECK_EQUAL(Val->getAbsolutePath(),CONFIGTESTS_INPUT_MISCDATA_DIR+"/GeoVectorValue");
 
   BOOST_CHECK(!Val->dataWithoutCheck());
 

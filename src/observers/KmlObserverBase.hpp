@@ -42,12 +42,13 @@
 
 
 #include <ogrsf_frmts.h>
-#include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <QProcess>
 #include <QDir>
+
 
 
 class KmlUnitInfo
@@ -122,20 +123,18 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       DataSource = OGRSFDriverRegistrar::Open(LayerInfo.SourceFilename.c_str(), FALSE );
       if( DataSource == NULL )
       {
-        OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
-            "Cannot open shapefile "+LayerInfo.SourceFilename+". This Kml output is ignored.");
+        OPENFLUID_RaiseWarning("Cannot open shapefile "+LayerInfo.SourceFilename+". This Kml output is ignored.");
         return false;
       }
 
-      //std::string LayerName = boost::filesystem::path(LayerInfo.SourceFilename).stem().string();
-      std::string LayerName = QFileInfo(QString::fromStdString(LayerInfo.SourceFilename)).baseName().toStdString();
+      std::string LayerName = openfluid::tools::Filesystem::basename(LayerInfo.SourceFilename);
 
       Layer = DataSource->GetLayerByName(LayerName.c_str());
 
       if (Layer == NULL)
       {
-        OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
-            "Cannot open shapefile layer from "+LayerInfo.SourceFilename+". This Kml output is ignored.");
+        OPENFLUID_RaiseWarning("Cannot open shapefile layer from " + LayerInfo.SourceFilename +
+                               ". This Kml output is ignored.");
         return false;
       }
 
@@ -144,8 +143,8 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (OfldIDFieldIndex < 0)
       {
-        OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
-            "Cannot find OFLD_ID attribute in "+LayerInfo.SourceFilename+". This Kml output is ignored.");
+        OPENFLUID_RaiseWarning("Cannot find OFLD_ID attribute in " + LayerInfo.SourceFilename +
+                               ". This Kml output is ignored.");
         return false;
       }
 
@@ -175,8 +174,8 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
             if (Geometry->getGeometryType() != wkbPolygon && Geometry->getGeometryType() != wkbLineString)
             {
-              OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
-                  "Unsupported geometry type in "+LayerInfo.SourceFilename+". This Kml output is ignored.");
+              OPENFLUID_RaiseWarning("Unsupported geometry type in " + LayerInfo.SourceFilename +
+                                     ". This Kml output is ignored.");
               return false;
             }
 
@@ -236,8 +235,8 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
           }
           else
           {
-            OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
-                "Wrong geometry reference in "+LayerInfo.SourceFilename+". This Kml output is ignored.");
+            OPENFLUID_RaiseWarning("Wrong geometry reference in " + LayerInfo.SourceFilename +
+                                   ". This Kml output is ignored.");
             return false;
           }
 
@@ -259,10 +258,10 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
     void buildKmzFile()
     {
-      std::string InputDir = boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/").string();
-      std::string KmzFilePath = boost::filesystem::path(m_OutputDir + "/"+ m_OutputFileName).string();
+      std::string InputDir = m_TmpDir+"/"+m_KmzSubDir+"/";
+      std::string KmzFilePath = m_OutputDir + "/"+ m_OutputFileName;
 
-      openfluid::tools::removeDirectoryRecursively(QString::fromStdString(KmzFilePath));
+      openfluid::tools::Filesystem::removeDirectory(KmzFilePath);
 
       openfluid::utils::ExternalProgram SevenZProgram =
           openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::SevenZipProgram);
@@ -299,8 +298,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
         }
         else
         {
-          OPENFLUID_RaiseWarning("KmlObserverBase::tryOpenGEarth()",
-                                 "Cannot find Google Earth");
+          OPENFLUID_RaiseWarning("Cannot find Google Earth");
         }
       }
     }
@@ -317,36 +315,33 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       OPENFLUID_GetRunEnvironment("dir.temp",TmpDir);
 
-      m_TmpDir = boost::filesystem::path(TmpDir+"/"+m_TmpSubDir).string();
+      m_TmpDir = TmpDir+"/"+m_TmpSubDir;
 
-      QDir().mkpath(QString::fromStdString(m_TmpDir));
+      openfluid::tools::Filesystem::makeDirectory(m_TmpDir);
 
-      if (!QFileInfo(QString::fromStdString(m_TmpDir)).isDir())
+      if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir))
       {
-        OPENFLUID_RaiseWarning("KmlObserverBase::prepareTempDirectory()",
-                  "Cannot initialize temporary directory");
+        OPENFLUID_RaiseWarning("Cannot initialize temporary directory");
         m_OKToGo = false;
         return;
       }
 
-      openfluid::tools::removeDirectoryRecursively(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir));
-      QDir().mkpath(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir));
+      openfluid::tools::Filesystem::removeDirectory(m_TmpDir+"/"+m_KmzSubDir);
+      openfluid::tools::Filesystem::makeDirectory(m_TmpDir+"/"+m_KmzSubDir);
 
-      if (!QFileInfo(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir)).isDir())
+      if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir+"/"+m_KmzSubDir))
       {
-        OPENFLUID_RaiseWarning("KmlObserverBase::prepareTempDirectory()",
-                  "Cannot initialize kmz temporary directory");
+        OPENFLUID_RaiseWarning("Cannot initialize kmz temporary directory");
         m_OKToGo = false;
         return;
       }
 
 
-      QDir().mkpath(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir));
+      openfluid::tools::Filesystem::makeDirectory(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir);
 
-      if (!QFileInfo(QString::fromStdString(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir)).isDir())
+      if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir))
       {
-        OPENFLUID_RaiseWarning("KmlObserverBase::prepareTempDirectory()",
-                  "Cannot initialize kmz data temporary directory");
+        OPENFLUID_RaiseWarning("Cannot initialize kmz data temporary directory");
         m_OKToGo = false;
         return;
       }

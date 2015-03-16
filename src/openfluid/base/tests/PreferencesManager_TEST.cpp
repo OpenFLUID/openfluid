@@ -47,7 +47,6 @@
 #include <openfluid/base/PreferencesManager.hpp>
 
 #include <openfluid/config.hpp>
-#include <boost/filesystem.hpp>
 #include "tests-config.hpp"
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>

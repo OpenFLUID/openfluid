@@ -44,8 +44,9 @@
 #define BOOST_TEST_MODULE unittest_filehelpers
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+#include <tests-config.hpp>
 
 
 // =====================================================================
@@ -55,8 +56,24 @@
 BOOST_AUTO_TEST_CASE(check_operations)
 {
 
-  BOOST_REQUIRE_EQUAL(boost::filesystem::path("/my/path/myfile.txt").filename().string(),"myfile.txt");
-  BOOST_REQUIRE_EQUAL(boost::filesystem::path("/my/other/path").filename().string(),"path");
+  openfluid::tools::copyDirectoryContentsRecursively(CONFIGTESTS_INPUT_MISCDATA_DIR+"/Filesystem",
+                                                     CONFIGTESTS_OUTPUT_DATA_DIR+"/FileHelpers/dircopycontents");
+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                     "/FileHelpers/dircopycontents/README"));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                     "/FileHelpers/dircopycontents/README.TOO"));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                     "/FileHelpers/dircopycontents/subdir/another_subdir/README"));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                     "/FileHelpers/dircopycontents/subdir2/README.TXT"));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                          "/FileHelpers/dircopycontents/subdir/another_subdir"));
+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                              "/FileHelpers/dircopycontents"));
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileHelpers/dircopycontents"));
+
 }
 
 

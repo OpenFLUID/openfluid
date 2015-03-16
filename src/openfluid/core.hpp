@@ -61,5 +61,6 @@
 #include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/Vector.hpp>
+#include <openfluid/core/TreeValue.hpp>
 
 #endif /* __OPENFLUID_CORE_HPP__ */

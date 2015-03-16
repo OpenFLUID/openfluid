@@ -121,8 +121,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_GetSimulatorParameter(Params,"MultiCapacity",m_MultiCapacity);
       if (m_MultiCapacity<0)
-        OPENFLUID_RaiseError("examples.road.traffic",
-                             "The Multiplying factor for capacity (MultiCapacity) should be positive");
+        OPENFLUID_RaiseError("The Multiplying factor for capacity (MultiCapacity) should be positive");
     }
 
     // =====================================================================

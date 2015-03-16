@@ -47,9 +47,9 @@ namespace openfluid { namespace base {
 
 
 SimulationLogger::SimulationLogger(const std::string& LogFilePath):
-  m_WarningFlag(false), m_RealWarningsCount(0)
+  m_CurrentWarningFlag(false)
 {
-  m_LogFile.open(LogFilePath.c_str(),std::ios::out);
+  init(LogFilePath);
 }
 
 
@@ -59,7 +59,7 @@ SimulationLogger::SimulationLogger(const std::string& LogFilePath):
 
 SimulationLogger::~SimulationLogger()
 {
-  m_LogFile.close();
+
 }
 
 
@@ -67,66 +67,13 @@ SimulationLogger::~SimulationLogger()
 // =====================================================================
 
 
-void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
-                                  const std::string& Source, const openfluid::core::TimeIndex_t& TimeIndex,
-                                  const std::string& Msg)
+void SimulationLogger::add(LogType LType, const std::string& ContextStr, const std::string& Msg)
 {
-  m_LogFile << Prefix
-            << ' ' << Msg
-            << " (sent by " << Sender
-            << ", from " << Source
-            << ", at time index " << TimeIndex << ")\n";
+  if (LType == LOG_WARNING)
+    m_CurrentWarningFlag = true;
+
+  FileLogger::add(LType,ContextStr,Msg);
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
-                                  const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
-{
-  m_LogFile << Prefix << ' ' << Msg
-            << " (sent by " << Sender
-            << ", at time index " << TimeIndex << ")\n";
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
-                                  const std::string& Source, const std::string& Msg)
-{
-  m_LogFile << Prefix << ' ' << Msg
-            << " (sent by " << Sender
-            << ", from " << Source << ")\n";
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
-                                  const std::string& Msg)
-{
-  m_LogFile << Prefix << ' ' << Msg
-            << " (sent by " << Sender << ")\n";
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationLogger::addLog(const std::string& Prefix,
-                               const std::string& Msg)
-{
-  m_LogFile << Prefix << ' ' << Msg << "\n";
-}
-
 
 
 } } // namespace openfluid::base

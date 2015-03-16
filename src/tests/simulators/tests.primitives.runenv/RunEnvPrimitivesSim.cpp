@@ -121,27 +121,26 @@ class RunEnvPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
 
       if (!OPENFLUID_GetRunEnvironment("dir.input",RunEnvStr))
-        OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (dir.input)");
+        OPENFLUID_RaiseError("incorrect OPENFLUID_GetRunEnvironment (dir.input)");
 
       std::cout << "dir.input = " << RunEnvStr << std::endl;
 
       if (!OPENFLUID_GetRunEnvironment("dir.output",RunEnvStr))
-        OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (dir.output)");
+        OPENFLUID_RaiseError("incorrect OPENFLUID_GetRunEnvironment (dir.output)");
 
       std::cout << "dir.output = " << RunEnvStr << std::endl;
 
       if (OPENFLUID_GetRunEnvironment("wrong.str",RunEnvStr))
-        OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (wrong.str)");
+        OPENFLUID_RaiseError("incorrect OPENFLUID_GetRunEnvironment (wrong.str)");
 
       RunEnvBool = false;
       if (OPENFLUID_GetRunEnvironment("mode.verbose",RunEnvBool))
-       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (mode.verbose)");
+       OPENFLUID_RaiseError("incorrect OPENFLUID_GetRunEnvironment (mode.verbose)");
 
-      if (RunEnvBool) OPENFLUID_RaiseError("tests.primitives.use",
-                                           "incorrect OPENFLUID_GetRunEnvironment (mode.verbose is true)");
+      if (RunEnvBool) OPENFLUID_RaiseError("incorrect OPENFLUID_GetRunEnvironment (mode.verbose is true)");
 
       if (OPENFLUID_GetRunEnvironment("wrong.bool",RunEnvBool))
-        OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (wrong.bool)");
+        OPENFLUID_RaiseError("incorrect OPENFLUID_GetRunEnvironment (wrong.bool)");
     }
 
 

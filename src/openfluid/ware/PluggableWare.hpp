@@ -40,7 +40,7 @@
 #ifndef __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
 #define __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
 
-#include <boost/property_tree/ptree.hpp>
+
 #include <string>
 
 #include <openfluid/dllexport.hpp>
@@ -75,16 +75,6 @@ namespace openfluid { namespace ware {
 */
 #define WAREPARAMSWIDGET_PROC_NAME "GetWareParamsWidget"
 #define WAREPARAMSWIDGET_PROC_DECL GetWareParamsWidget
-
-
-// =====================================================================
-// =====================================================================
-
-
-typedef std::string WareParamKey_t;
-typedef openfluid::core::StringValue WareParamValue_t;
-
-typedef std::map<WareParamKey_t, WareParamValue_t> WareParams_t;
 
 
 // =====================================================================
@@ -166,8 +156,6 @@ class OPENFLUID_API PluggableWare
      * Return false if ParameterKey starts nor ends with a dot, true otherwise
      */
     static bool isWellFormated(const openfluid::ware::WareParamKey_t& ParameterKey);
-
-    static boost::property_tree::ptree getParamsAsPropertyTree(const WareParams_t& Params);
 
 };
 

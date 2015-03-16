@@ -38,7 +38,6 @@
 #include "VectorDataset.hpp"
 
 #include <utility>
-#include <boost/filesystem/operations.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/posix_time/time_formatters.hpp>
 #include <geos/geom/Geometry.h>
@@ -49,6 +48,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 
 namespace openfluid { namespace landr {
@@ -60,7 +60,7 @@ namespace openfluid { namespace landr {
 
 VectorDataset::VectorDataset(const std::string& FileName)
 {
-  std::string DefaultDriverName="ESRI Shapefile";
+  std::string DefaultDriverName = "ESRI Shapefile";
   OGRRegisterAll();
 
   OGRDataSource  *poDS= OGRSFDriverRegistrar::Open( FileName.c_str(), FALSE );
@@ -118,8 +118,7 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
         "VectorDataset::VectorDataset",
         "\"" + DriverName + "\" driver not supported.");
 
-  std::string Path = getTimestampedPath(
-      boost::filesystem::path(DS->GetName()).filename().string());
+  std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetName()));
 
   mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), NULL);
 
@@ -162,8 +161,7 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
         "VectorDataset::VectorDataset",
         "\"" + DriverName + "\" driver not supported.");
 
-  std::string Path = getTimestampedPath(
-      boost::filesystem::path(DS->GetName()).filename().string());
+  std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetName()));
 
   mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), NULL);
 
@@ -194,17 +192,15 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
 
 std::string VectorDataset::getTimestampedPath(const std::string& OriginalFileName)
 {
-  boost::filesystem::path OriginalFile = boost::filesystem::path(
-      OriginalFileName);
-  std::string FileWOExt = OriginalFile.stem().string();
-  std::string Ext = OriginalFile.extension().string();
+  std::string FileWOExt = openfluid::tools::Filesystem::basename(OriginalFileName);
+  std::string Ext = openfluid::tools::Filesystem::extension(OriginalFileName);
 
   return openfluid::core::GeoValue::computeAbsolutePath(
       getInitializedTmpPath(),
       FileWOExt + "_"
       + boost::posix_time::to_iso_string(
           boost::posix_time::microsec_clock::local_time())
-      + Ext);
+      + '.'+Ext);
 }
 
 
@@ -217,8 +213,8 @@ std::string VectorDataset::getInitializedTmpPath()
   std::string TmpPath =
       openfluid::base::RuntimeEnvironment::instance()->getTempDir();
 
-  if (!boost::filesystem::exists(TmpPath))
-    boost::filesystem::create_directories(TmpPath);
+  if (!openfluid::tools::Filesystem::isDirectory(TmpPath))
+    openfluid::tools::Filesystem::makeDirectory(TmpPath);
 
   return TmpPath;
 }
@@ -290,8 +286,8 @@ void VectorDataset::copyToDisk(const std::string& FilePath,
 {
   OGRSFDriver* Driver = mp_DataSource->GetDriver();
 
-  if (!boost::filesystem::exists(FilePath))
-    boost::filesystem::create_directories(FilePath);
+  if (!openfluid::tools::Filesystem::isDirectory(FilePath))
+    openfluid::tools::Filesystem::makeDirectory(FilePath);
 
   std::string Path = openfluid::core::GeoValue::computeAbsolutePath(FilePath,
                                                                     FileName);
@@ -568,9 +564,7 @@ void VectorDataset::parse(unsigned int LayerIndex)
     OGRFeature* FeatClone = Feat->Clone();
 
     Geoms.push_back(GeomClone);
-    m_Features.at(LayerIndex).push_back(
-        std::make_pair<OGRFeature*, geos::geom::Geometry*>(FeatClone,
-                                                           GeomClone));
+    m_Features.at(LayerIndex).push_back(std::make_pair(FeatClone,GeomClone));
 
     // destroying the feature destroys also the associated OGRGeom
     OGRFeature::DestroyFeature(Feat);
