@@ -33,6 +33,7 @@
   @file LandRGraph.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #include "LandRGraph.hpp"
@@ -169,7 +170,7 @@ void LandRGraph::addEntitiesFromGeoVector()
   Layer0->ResetReading();
 
   OGRFeature* Feat;
-  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  while ((Feat = Layer0->GetNextFeature()) != nullptr)
   {
     OGRGeometry* OGRGeom = Feat->GetGeometryRef();
     if(!OGRGeom->IsValid())
@@ -220,7 +221,7 @@ geos::planargraph::Node* LandRGraph::node(const geos::geom::Coordinate& Coordina
 {
   geos::planargraph::Node* Node = findNode(Coordinate);
 
-  if (Node == NULL)
+  if (Node == nullptr)
   {
     Node = new geos::planargraph::Node(Coordinate);
     add(Node);
@@ -453,7 +454,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::rasterPolygonizedPolys()
     Layer0->ResetReading();
 
     OGRFeature* Feat;
-    while ((Feat = Layer0->GetNextFeature()) != NULL)
+    while ((Feat = Layer0->GetNextFeature()) != nullptr)
     {
       OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 
@@ -637,7 +638,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 
   int columnIndex=Vector.getFieldIndex(Column);
   OGRFeature* Feat;
-  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  while ((Feat = Layer0->GetNextFeature()) != nullptr)
   {
     int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
     openfluid::landr::LandREntity* Entity=entity(OfldId);
@@ -693,7 +694,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 
   int columnIndex=Vector.getFieldIndex(Column);
   OGRFeature* Feat;
-  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  while ((Feat = Layer0->GetNextFeature()) != nullptr)
   {
     int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
     openfluid::landr::LandREntity* Entity=entity(OfldId);
@@ -825,7 +826,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
       IntPoint=(*it)->geometry()->getInteriorPoint();
 
     OGRFeature* Feat;
-    while ((Feat = Layer0->GetNextFeature()) != NULL)
+    while ((Feat = Layer0->GetNextFeature()) != nullptr)
     {
       OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 
@@ -918,7 +919,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
       IntPoint=(*it)->geometry()->getInteriorPoint();
 
     OGRFeature* Feat;
-    while ((Feat = Layer0->GetNextFeature()) != NULL)
+    while ((Feat = Layer0->GetNextFeature()) != nullptr)
     {
       OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 

@@ -33,6 +33,7 @@
   @file LandREntity.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #ifndef __OPENFLUID_LANDR_LANDRENTITY_HPP__
@@ -57,8 +58,8 @@ class Value;
 namespace landr {
 
 /**
- @brief Interface for a landscape representation element.
- */
+  @brief Interface for a landscape representation element.
+*/
 class OPENFLUID_API LandREntity : public geos::planargraph::GraphComponent
 {
   private:
@@ -70,38 +71,38 @@ class OPENFLUID_API LandREntity : public geos::planargraph::GraphComponent
 
   protected:
     /**
-     @brief The geos::geom::Geometry of this LandREntity.
-     */
+      @brief The geos::geom::Geometry of this LandREntity.
+    */
     const geos::geom::Geometry* mp_Geom;
 
     /**
-     @brief The identifier of this LandREntity.
-     */
+      @brief The identifier of this LandREntity.
+    */
     unsigned int m_OfldId;
 
     /**
-     @brief The centroid of this LandREntity.
-     */
+      @brief The centroid of this LandREntity.
+    */
     geos::geom::Point* mp_Centroid;
 
     /**
-     @brief The area of this LandREntity.
-     */
+      @brief The area of this LandREntity.
+    */
     double m_Area;
 
     /**
-     @brief The length of this LandREntity.
-     */
+      @brief The length of this LandREntity.
+    */
     double m_Length;
 
     /**
-     @brief A set of LandREntity neighbours of this LandREntity.
-     */
+      @brief A set of LandREntity neighbours of this LandREntity.
+    */
     std::set<LandREntity*>* mp_Neighbours;
 
     /**
-     @brief A map of attributes of this LandREntity.
-     */
+      @brief A map of attributes of this LandREntity.
+    */
 
     std::map<std::string, core::Value*> m_Attributes;
 
@@ -109,8 +110,8 @@ class OPENFLUID_API LandREntity : public geos::planargraph::GraphComponent
     friend class LandRGraph;
 
     /**
-     @brief Computes the neighbours of this LandREntity.
-     */
+      @brief Computes the neighbours of this LandREntity.
+    */
     virtual void computeNeighbours() = 0;
 
 
@@ -123,60 +124,60 @@ class OPENFLUID_API LandREntity : public geos::planargraph::GraphComponent
     virtual LandREntity* clone() = 0;
 
     /**
-     @brief Returns the geos::geom::Geometry of this LandREntity.
-     */
+      @brief Returns the geos::geom::Geometry of this LandREntity.
+    */
     const geos::geom::Geometry* geometry();
 
     /**
-     @brief Returns the identifier of this LandREntity.
-     */
+      @brief Returns the identifier of this LandREntity.
+    */
     unsigned int getOfldId() const;
 
     /**
-     @brief Returns the centroid of this LandREntity.
-     */
+      @brief Returns the centroid of this LandREntity.
+    */
     geos::geom::Point* centroid() const;
 
     /**
-     @brief Returns the area of this LandREntity.
-     */
+      @brief Returns the area of this LandREntity.
+    */
     double getArea() const;
 
     /**
-     @brief Returns the length of this LandREntity.
-     */
+      @brief Returns the length of this LandREntity.
+    */
     double getLength() const;
 
     /**
-     @brief Returns a set of LandREntity neighbours of this LandREntity.
-     */
+      @brief Returns a set of LandREntity neighbours of this LandREntity.
+    */
     std::set<LandREntity*>* neighbours();
 
     /**
-     @brief Gets the value of an attribute.
-     @param AttributeName The name of the attribute to get.
-     @param Value The core::Value to assign the attribute value.
-     @return True if the attribute exists, false otherwise.
-     */
+      @brief Gets the value of an attribute.
+      @param AttributeName The name of the attribute to get.
+      @param Value The core::Value to assign the attribute value.
+      @return True if the attribute exists, false otherwise.
+    */
     bool getAttributeValue(const std::string& AttributeName, core::Value& Value) const;
 
     /**
-     @brief Sets the value of an attribute.
-     @details Takes the ownership of Value.
-     @param AttributeName The name of the attribute to set.
-     @param Value The core::Value assign to the attribute value.
-     @return True if the attribute exists, false otherwise.
-     */
+      @brief Sets the value of an attribute.
+      @details Takes the ownership of Value.
+      @param AttributeName The name of the attribute to set.
+      @param Value The core::Value assign to the attribute value.
+      @return True if the attribute exists, false otherwise.
+    */
     bool setAttributeValue(const std::string& AttributeName, const core::Value* Value);
 
     /**
-     @brief Gets the distance between this LandREntity centroid and Other LandREntity centroid.
-     */
+      @brief Gets the distance between this LandREntity centroid and Other LandREntity centroid.
+    */
     double getDistCentroCentro(LandREntity& Other);
 
     /**
-     @brief Gets the LandREntity neighbour that has the minimum centroid-to-centroid distance.
-     */
+      @brief Gets the LandREntity neighbour that has the minimum centroid-to-centroid distance.
+    */
     LandREntity* neighbour_MinDistCentroCentro();
 
 };

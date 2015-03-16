@@ -33,6 +33,7 @@
   @file PolygonGraph_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN
@@ -116,7 +117,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
   Layer0->ResetReading();
 
   OGRFeature* Feat;
-  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  while ((Feat = Layer0->GetNextFeature()) != nullptr)
   {
     OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 
@@ -172,7 +173,7 @@ BOOST_AUTO_TEST_CASE(check_construction_onePolygon)
   Coos1->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
-  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
+  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, nullptr);
   openfluid::landr::PolygonEntity Ent1(P1, 1);
   Entities.push_back(&Ent1);
 
@@ -217,7 +218,7 @@ BOOST_AUTO_TEST_CASE(check_construction_twoSimplePolygons)
   Coos1->push_back(geos::geom::Coordinate(0, 2));
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
-  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
+  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, nullptr);
   openfluid::landr::PolygonEntity Ent1(P1, 1);
   Entites.push_back(&Ent1);
 
@@ -230,7 +231,7 @@ BOOST_AUTO_TEST_CASE(check_construction_twoSimplePolygons)
   Coos2->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
-  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
+  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, nullptr);
   openfluid::landr::PolygonEntity Ent2(P2, 2);
   Entites.push_back(&Ent2);
 
@@ -281,7 +282,7 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
   Coos1->push_back(geos::geom::Coordinate(0, 1));
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
-  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
+  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, nullptr);
   openfluid::landr::PolygonEntity Ent1(P1, 1);
   Entites.push_back(&Ent1);
 
@@ -294,7 +295,7 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
   Coos2->push_back(geos::geom::Coordinate(3, 0));
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
-  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
+  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, nullptr);
   openfluid::landr::PolygonEntity Ent2(P2, 2);
   Entites.push_back(&Ent2);
 
@@ -307,7 +308,7 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
   Coos3->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR3 = Factory.createLinearRing(
       SeqFactory.create(Coos3));
-  geos::geom::Polygon* P3 = Factory.createPolygon(LR3, NULL);
+  geos::geom::Polygon* P3 = Factory.createPolygon(LR3, nullptr);
   openfluid::landr::PolygonEntity Ent3(P3, 3);
   Entites.push_back(&Ent3);
 
@@ -364,7 +365,7 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   Coos1->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
-  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
+  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, nullptr);
   openfluid::landr::PolygonEntity Ent1(P1, 1);
   Entites.push_back(&Ent1);
 
@@ -377,7 +378,7 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   Coos2->push_back(geos::geom::Coordinate(1, 1));
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
-  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
+  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, nullptr);
   openfluid::landr::PolygonEntity Ent2(P2, 2);
   Entites.push_back(&Ent2);
 
@@ -400,7 +401,7 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   Coos3->push_back(geos::geom::Coordinate(3, 0));
   geos::geom::LinearRing* LR3 = Factory.createLinearRing(
       SeqFactory.create(Coos3));
-  geos::geom::Polygon* P3 = Factory.createPolygon(LR3, NULL);
+  geos::geom::Polygon* P3 = Factory.createPolygon(LR3, nullptr);
   openfluid::landr::PolygonEntity Ent3(P3, 3);
   Entites.push_back(&Ent3);
 
@@ -413,7 +414,7 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   Coos4->push_back(geos::geom::Coordinate(2, 0));
   geos::geom::LinearRing* LR4 = Factory.createLinearRing(
       SeqFactory.create(Coos4));
-  geos::geom::Polygon* P4 = Factory.createPolygon(LR4, NULL);
+  geos::geom::Polygon* P4 = Factory.createPolygon(LR4, nullptr);
   openfluid::landr::PolygonEntity Ent4(P4, 4);
   Entites.push_back(&Ent4);
 
@@ -463,7 +464,7 @@ BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
   Coos1->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
-  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
+  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, nullptr);
   openfluid::landr::PolygonEntity Ent1(P1, 1);
   Entites.push_back(&Ent1);
 
@@ -476,7 +477,7 @@ BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
   Coos2->push_back(geos::geom::Coordinate(2, 3));
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
-  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
+  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, nullptr);
   openfluid::landr::PolygonEntity Ent2(P2, 2);
   Entites.push_back(&Ent2);
 

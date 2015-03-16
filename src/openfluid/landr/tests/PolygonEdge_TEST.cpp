@@ -33,6 +33,7 @@
   @file PolygonEdge_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN
@@ -84,7 +85,7 @@ BOOST_AUTO_TEST_CASE(check_isLineInFace)
   CoosPoly->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR = Factory.createLinearRing(
       SeqFactory.create(CoosPoly));
-  geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
+  geos::geom::Polygon* P = Factory.createPolygon(LR, nullptr);
   openfluid::landr::PolygonEntity Entity(P, 0);
 
   BOOST_CHECK(Edge.isLineInFace(Entity));
@@ -98,7 +99,7 @@ BOOST_AUTO_TEST_CASE(check_isLineInFace)
   CoosWrongPoly->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* WrongLR = Factory.createLinearRing(
       SeqFactory.create(CoosWrongPoly));
-  geos::geom::Polygon* WrongP = Factory.createPolygon(WrongLR, NULL);
+  geos::geom::Polygon* WrongP = Factory.createPolygon(WrongLR, nullptr);
   openfluid::landr::PolygonEntity WrongEntity(WrongP, 0);
 
   BOOST_CHECK(!Edge.isLineInFace(WrongEntity));
@@ -137,7 +138,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
   CoosPoly->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR = Factory.createLinearRing(
       SeqFactory.create(CoosPoly));
-  geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
+  geos::geom::Polygon* P = Factory.createPolygon(LR, nullptr);
   openfluid::landr::PolygonEntity Entity(P, 0);
 
 

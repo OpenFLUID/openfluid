@@ -33,6 +33,7 @@
   @file LineStringGraph_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN
@@ -100,7 +101,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
   Layer0->ResetReading();
 
   OGRFeature* Feat;
-  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  while ((Feat = Layer0->GetNextFeature()) != nullptr)
   {
     OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 
@@ -149,7 +150,7 @@ BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
   Layer0->ResetReading();
 
   OGRFeature* Feat;
-  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  while ((Feat = Layer0->GetNextFeature()) != nullptr)
   {
     OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 

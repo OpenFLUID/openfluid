@@ -33,6 +33,7 @@
   @file VectorDataset.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #include "VectorDataset.hpp"
@@ -45,11 +46,15 @@
 #include <geos/geom/LineString.h>
 #include <geos/geom/GeometryCollection.h>
 #include <geos/operation/valid/IsValidOp.h>
+#include <geos/geom/Point.h>
+#include <geos/geom/Polygon.h>
+#include <geos/geom/Coordinate.h>
+#include <geos/operation/overlay/snap/GeometrySnapper.h>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-
+#include <openfluid/tools/DataHelpers.hpp>
 
 namespace openfluid { namespace landr {
 
@@ -64,7 +69,7 @@ VectorDataset::VectorDataset(const std::string& FileName)
   OGRRegisterAll();
 
   OGRDataSource  *poDS= OGRSFDriverRegistrar::Open( FileName.c_str(), FALSE );
-  if (poDS!=NULL)
+  if (poDS!=nullptr)
   {
 
     std::string DriverName=poDS->GetDriver()->GetName();
@@ -88,7 +93,7 @@ VectorDataset::VectorDataset(const std::string& FileName)
 
   std::string Path = getTimestampedPath(FileName);
 
-  mp_DataSource = Driver->CreateDataSource(Path.c_str(), NULL);
+  mp_DataSource = Driver->CreateDataSource(Path.c_str(), nullptr);
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(
@@ -120,7 +125,7 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
 
   std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetName()));
 
-  mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), NULL);
+  mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), nullptr);
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(
@@ -163,7 +168,7 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
 
   std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetName()));
 
-  mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), NULL);
+  mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), nullptr);
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(
@@ -313,7 +318,7 @@ void VectorDataset::copyToDisk(const std::string& FilePath,
   }
 
   OGRDataSource* NewDS = Driver->CopyDataSource(mp_DataSource, Path.c_str(),
-                                                NULL);
+                                                nullptr);
 
   if (!NewDS)
     throw openfluid::base::FrameworkException(
@@ -334,14 +339,14 @@ void VectorDataset::addALayer(std::string LayerName,
                               OGRwkbGeometryType LayerType,
                               OGRSpatialReference* SpatialRef)
 {
-  if (mp_DataSource->GetLayerByName(LayerName.c_str()) != NULL)
+  if (mp_DataSource->GetLayerByName(LayerName.c_str()) != nullptr)
     throw openfluid::base::FrameworkException(
         "VectorDataset::addALayer",
         "Error while adding a layer to " + std::string(mp_DataSource->GetName())
         + ": a layer named " + LayerName + " already exists.");
 
   OGRLayer* Layer = mp_DataSource->CreateLayer(LayerName.c_str(), SpatialRef,
-                                               LayerType, NULL);
+                                               LayerType, nullptr);
 
   if (!Layer)
     throw openfluid::base::FrameworkException(
@@ -481,7 +486,7 @@ bool VectorDataset::isIntValueSet(const std::string& FieldName,
   Layer->ResetReading();
 
   OGRFeature* Feat;
-  while ((Feat = Layer->GetNextFeature()) != NULL)
+  while ((Feat = Layer->GetNextFeature()) != nullptr)
   {
     if (Feat->GetFieldAsInteger(CatIndex) == Value)
     {
@@ -544,7 +549,7 @@ void VectorDataset::parse(unsigned int LayerIndex)
   m_Features.insert(std::make_pair(LayerIndex, List));
 
   // GetNextFeature returns a copy of the feature
-  while ((Feat = Layer->GetNextFeature()) != NULL)
+  while ((Feat = Layer->GetNextFeature()) != nullptr)
   {
     OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 
@@ -625,7 +630,7 @@ void VectorDataset::setIndexIntField(const std::string& FieldName,
     Layer->ResetReading();
 
     OGRFeature* Feat;
-    while ((Feat = Layer->GetNextFeature()) != NULL)
+    while ((Feat = Layer->GetNextFeature()) != nullptr)
     {
       Feat->SetField(FieldName.c_str(),BeginValue);
       Layer->SetFeature(Feat);
@@ -652,6 +657,452 @@ OGREnvelope VectorDataset::envelope()
 
 // =====================================================================
 // =====================================================================
+
+
+void VectorDataset::snapVertices(double Threshold,unsigned int LayerIndex)
+{
+  if (isLineType())
+    snapLineNodes(Threshold,LayerIndex);
+
+  else if (isPolygonType())
+    snapPolygonVertices(Threshold,LayerIndex);
+
+  else
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::snapVertices",
+        "this VectorDataset is nor Line nor Polygon Type");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void VectorDataset::snapLineNodes(double Threshold,unsigned int LayerIndex)
+{
+
+  FeaturesList_t Features=features(LayerIndex);
+
+  for (FeaturesList_t::iterator it =
+      Features.begin(); it != Features.end(); ++it)
+  {
+    geos::geom::Geometry *Geom=geometries();
+
+    geos::geom::LineString *CurrentLine=(dynamic_cast<geos::geom::LineString*>((*it).second));
+    // get a vector of StartPoint and EndPoint of all Geometries
+    // except the current Geometry
+    std::vector<geos::geom::Point*> vPoints;
+    unsigned int iEnd=Geom->getNumGeometries();
+    for (unsigned int i = 0; i < iEnd; i++)
+    {
+      if (!(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(i)))->equals((*it).second))
+      {
+        geos::geom::LineString *Line=
+            (dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(i))));
+        vPoints.push_back(Line->getStartPoint());
+        vPoints.push_back(Line->getEndPoint());
+      }
+    }
+
+    geos::geom::Point *PStart=CurrentLine->getStartPoint();
+    geos::geom::Point *PEnd=CurrentLine->getEndPoint();
+    geos::geom::Point *NewPStart=nullptr;
+    geos::geom::Point *NewPEnd=nullptr;
+
+    for (unsigned int j = 0; j < vPoints.size(); j++)
+    {
+      if (!PStart->equals(vPoints.at(j))&&PStart->equalsExact(vPoints.at(j),Threshold))
+        NewPStart=vPoints.at(j);
+      if (!PEnd->equals(vPoints.at(j))&&PEnd->equalsExact(vPoints.at(j),Threshold))
+        NewPEnd=vPoints.at(j);
+    }
+
+    if (! NewPStart && ! NewPEnd)
+      continue;
+
+    geos::geom::CoordinateSequence* CoordSeq=CurrentLine->getCoordinates();
+    if (NewPStart)
+      CoordSeq->setAt(*NewPStart->getCoordinate(),0);
+
+    if (NewPEnd)
+      CoordSeq->setAt(*NewPEnd->getCoordinate(),CoordSeq->getSize()-1);
+
+    geos::geom::LineString * NewLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(CoordSeq);
+    OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS(
+        (GEOSGeom) dynamic_cast<geos::geom::Geometry*>(NewLine));
+    OGRFeature* OGRFeat = (*it).first;
+    OGRFeat->SetGeometry(OGRGeom);
+    geos::geom::Geometry* NewLineClone = NewLine->clone();
+    OGRFeature* OGRFeatClone = OGRFeat->Clone();
+    (*it) = std::make_pair<OGRFeature*, geos::geom::Geometry*>
+    (dynamic_cast<OGRFeature *>(OGRFeat), dynamic_cast<geos::geom::Geometry*>(NewLineClone));
+    mp_DataSource->GetLayer(LayerIndex)->SetFeature(OGRFeatClone);
+    m_Geometries.clear();
+
+    delete NewLine;
+    OGRFeature::DestroyFeature(OGRFeat);
+    delete PStart;
+    delete PEnd;
+    delete NewPStart;
+    delete NewPEnd;
+    delete CurrentLine;
+
+    try
+    {
+      parse(LayerIndex);
+
+    }
+    catch (std::exception& e)
+    {
+      throw openfluid::base::FrameworkException(
+          "VectorDataset::snapLineNodes : "
+          "Unable to parse the VectorDataset."
+          " ( Details: "
+          + std::string(e.what()) + ")");
+    }
+
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void VectorDataset::snapPolygonVertices(double Threshold,unsigned int LayerIndex)
+{
+  FeaturesList_t Features=features(LayerIndex);
+
+  for (FeaturesList_t::iterator it =
+      Features.begin(); it != Features.end(); ++it)
+  {
+
+    geos::geom::Geometry *Geom=geometries();
+    geos::geom::Polygon *CurrentPolygon=(dynamic_cast<geos::geom::Polygon*>((*it).second));
+
+    // get a vector of the Coordinates of the vertices of all Geometries
+    // except the current Geometry
+    std::vector<geos::geom::Coordinate> vCoor;
+    unsigned int iEnd=Geom->getNumGeometries();
+    for (unsigned int i = 0; i < iEnd; i++)
+    {
+
+      if (!(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(i)))->equals((*it).second))
+      {
+        geos::geom::Polygon *Polygon=
+            (dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(i))));
+
+        if (Polygon)
+        {
+          const std::vector<geos::geom::Coordinate> *vCoorPoly=Polygon->getCoordinates()->toVector();
+          vCoor.insert( vCoor.end(), vCoorPoly->begin(), vCoorPoly->end() );
+          delete vCoorPoly;
+        }
+        delete Polygon;
+      }
+    }
+
+    const std::vector<geos::geom::Coordinate> *vCoorCurrentGeom=CurrentPolygon->getCoordinates()->toVector();
+    geos::geom::CoordinateSequence* CoordSeq=CurrentPolygon->getCoordinates();
+    for (unsigned int j = 0; j < vCoorCurrentGeom->size(); j++)
+    {
+      for (unsigned int h = 0; h < vCoor.size(); h++)
+      {
+        if (!vCoorCurrentGeom->at(j).equals(vCoor.at(h))&&
+            vCoorCurrentGeom->at(j).distance(vCoor.at(h))>0 &&
+            vCoorCurrentGeom->at(j).distance(vCoor.at(h))<Threshold)
+          CoordSeq->setAt(vCoor.at(h),j);
+
+      }
+
+    }
+
+    geos::geom::Polygon * NewPolygon=geos::geom::GeometryFactory::getDefaultInstance()->createPolygon(
+        geos::geom::GeometryFactory::getDefaultInstance()->createLinearRing(CoordSeq),nullptr);
+
+    OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS(
+        (GEOSGeom) dynamic_cast<geos::geom::Geometry*>(NewPolygon));
+    OGRFeature* OGRFeat = (*it).first;
+
+    OGRFeat->SetGeometry(OGRGeom);
+    OGRFeature* OGRFeatClone = OGRFeat->Clone();
+    geos::geom::Geometry* NewPolygonClone = NewPolygon->clone();
+    (*it) = std::make_pair<OGRFeature*, geos::geom::Geometry*>
+    (dynamic_cast<OGRFeature *>(OGRFeatClone), dynamic_cast<geos::geom::Geometry*>(NewPolygonClone));
+
+    mp_DataSource->GetLayer(LayerIndex)->SetFeature(OGRFeatClone);
+
+    OGRFeature::DestroyFeature(OGRFeatClone);
+    delete NewPolygonClone;
+    delete CoordSeq;
+    delete vCoorCurrentGeom;
+    delete CurrentPolygon;
+
+    m_Geometries.clear();
+    try
+    {
+      parse(LayerIndex);
+
+    }
+    catch (std::exception& e)
+    {
+      throw openfluid::base::FrameworkException(
+          "VectorDataset::snapPolygonVertices : "
+          "Unable to parse the VectorDataset."
+          " ( Details: "
+          + std::string(e.what()) + ")");
+    }
+
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string VectorDataset::checkTopology(double Threshold, unsigned int LayerIndex)
+{
+  if ( ! isPolygonType(LayerIndex))
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::checkTopology : "
+        "the VectorDataset is not Polygon type.");
+
+  std::string ErrorMsg="";
+  // TODO move to... ?
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer = layer(LayerIndex);
+
+  Layer->ResetReading();
+
+  OGRFeature* Feat;
+
+  FeaturesList_t List;
+  m_Features.insert(std::make_pair(LayerIndex, List));
+
+  // GetNextFeature returns a copy of the feature
+  while ((Feat = Layer->GetNextFeature()) != nullptr)
+  {
+    OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+    // c++ cast doesn't work (have to use the C API instead)
+    geos::geom::Geometry* GeosGeom =
+        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+    geos::operation::valid::IsValidOp ValidOp(GeosGeom);
+
+    if (!ValidOp.isValid())
+      ErrorMsg=ErrorMsg+"\n"+ValidOp.getValidationError()->toString()
+      +" FID "+openfluid::tools::convertValue(Feat->GetFID());
+
+    // destroying the feature destroys also the associated OGRGeom
+    OGRFeature::DestroyFeature(Feat);
+    delete GeosGeom;
+  }
+
+  // test if overlap
+  std::list<std::pair<OGRFeature*,OGRFeature*> > lOverlaps=findOverlap(LayerIndex);
+  std::list<std::pair<OGRFeature*,OGRFeature*> >::iterator it= lOverlaps.begin();
+  std::list<std::pair<OGRFeature*,OGRFeature*> >::iterator ite= lOverlaps.end();
+
+  for(;it != ite; ++it)
+    ErrorMsg=ErrorMsg+"\n"+"Polygon FID "+openfluid::tools::convertValue((*it).first->GetFID())
+  +" overlaps with Polygon FID "+ openfluid::tools::convertValue((*it).second->GetFID());
+
+  // test if gap
+  std::list<std::pair<OGRFeature*,OGRFeature*> > lGaps=findGap(Threshold,LayerIndex);
+  std::list<std::pair<OGRFeature*,OGRFeature*> >::iterator jt= lGaps.begin();
+  std::list<std::pair<OGRFeature*,OGRFeature*> >::iterator jte= lGaps.end();
+
+  for(;jt != jte; ++jt)
+    ErrorMsg=ErrorMsg+"\n"+"Polygon FID "+openfluid::tools::convertValue((*jt).first->GetFID())
+  +" has a gap with Polygon FID "+ openfluid::tools::convertValue((*jt).second->GetFID());
+
+
+  return ErrorMsg;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::list<std::pair<OGRFeature*, OGRFeature*> > VectorDataset::findOverlap(unsigned int LayerIndex)
+{
+  m_Features.clear();
+  m_Geometries.clear();
+  std::list<std::pair<OGRFeature*,OGRFeature*> > lOverlaps;
+  FeaturesList_t Features=features(LayerIndex);
+
+  for (FeaturesList_t::iterator it =
+      Features.begin(); it != Features.end(); ++it)
+  {
+    FeaturesList_t FeaturesToTest=features(LayerIndex);
+    for (FeaturesList_t::iterator jt =
+        FeaturesToTest.begin(); jt != FeaturesToTest.end(); ++jt)
+    {
+      //test if overlap
+      if (!(*it).first->GetGeometryRef()->Equals((*jt).first->GetGeometryRef())
+          && (*it).first->GetGeometryRef()->Overlaps((*jt).first->GetGeometryRef()))
+      {
+        std::list<std::pair<OGRFeature*, OGRFeature*> >::iterator lt;
+        std::list<std::pair<OGRFeature*, OGRFeature*> >::iterator lt2;
+        std::pair<OGRFeature*, OGRFeature*> pair1 ((*it).first, (*jt).first);
+        std::pair<OGRFeature*, OGRFeature*> pair2 ((*jt).first, (*it).first);
+
+        lt = std::find(lOverlaps.begin(), lOverlaps.end(), pair1);
+        lt2 = std::find (lOverlaps.begin(), lOverlaps.end(), pair2);
+        if (lt == lOverlaps.end() && lt2 == lOverlaps.end())
+          lOverlaps.push_back(pair1);
+
+      }
+
+    }
+  }
+
+  return lOverlaps;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::list<std::pair<OGRFeature*,OGRFeature*> > VectorDataset::findGap(double Threshold, unsigned int LayerIndex)
+{
+  m_Features.clear();
+  m_Geometries.clear();
+  std::list<std::pair<OGRFeature*,OGRFeature*> > lGaps;
+  FeaturesList_t Features=features(LayerIndex);
+  for (FeaturesList_t::iterator it =
+      Features.begin(); it != Features.end(); ++it)
+  {
+    FeaturesList_t FeaturesToTest=features(LayerIndex);
+    for (FeaturesList_t::iterator jt =
+        FeaturesToTest.begin(); jt != FeaturesToTest.end(); ++jt)
+    {
+      //test if Gap (under the threshold)
+      if (!(*it).first->GetGeometryRef()->Equals((*jt).first->GetGeometryRef())
+          && !(*it).first->GetGeometryRef()->Touches((*jt).first->GetGeometryRef())
+          && !(*it).first->GetGeometryRef()->Overlaps((*jt).first->GetGeometryRef())
+          && (*it).first->GetGeometryRef()->Distance((*jt).first->GetGeometryRef())<Threshold)
+      {
+        std::list<std::pair<OGRFeature*,OGRFeature*> >::iterator lt;
+        std::list<std::pair<OGRFeature*,OGRFeature*> >::iterator lt2;
+        std::pair<OGRFeature*,OGRFeature*> pair1 ((*it).first, (*jt).first);
+        std::pair<OGRFeature*,OGRFeature*> pair2 ((*jt).first, (*it).first);
+
+        lt = std::find(lGaps.begin(), lGaps.end(), pair1);
+        lt2 = std::find (lGaps.begin(), lGaps.end(), pair2);
+        if (lt == lGaps.end() && lt2 == lGaps.end())
+          lGaps.push_back(pair1);
+
+      }
+
+    }
+  }
+
+  return lGaps;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void VectorDataset::cleanOverlap(double Threshold, unsigned int LayerIndex)
+{
+
+  m_Features.clear();
+  m_Geometries.clear();
+  std::list<std::pair<OGRFeature*,OGRFeature*> > lOverlaps=findOverlap();
+
+  int lSize=lOverlaps.size();
+  for (int i=0; i<lSize;i++)
+  {
+    // find the OGRFeature and the OGRGeometry in m_Features
+    OGRFeature *Feat1=lOverlaps.front().first;
+    OGRFeature *Feat2=lOverlaps.front().second;
+
+    geos::geom::Geometry* Geom1 =
+        (geos::geom::Geometry*) Feat1->GetGeometryRef()->exportToGEOS();
+    geos::geom::Geometry* Geom2 =
+        (geos::geom::Geometry*) Feat2->GetGeometryRef()->exportToGEOS();
+
+    geos::geom::Geometry * Diff= Geom1->difference(Geom2);
+
+    // snap Diff with Geom2
+    geos::operation::overlay::snap::GeometrySnapper geomSnapper(*const_cast<geos::geom::Geometry*>(Geom2));
+    std::unique_ptr<geos::geom::Geometry> snapEntityGeom2=geomSnapper.snapTo(*Diff,Threshold);
+
+    geos::geom::Geometry* snappedEntityGeom2=snapEntityGeom2.release();
+
+    OGRGeometry* OGRGeom1 = OGRGeometryFactory::createFromGEOS(
+        (GEOSGeom) Diff);
+    OGRGeometry* OGRGeom2 = OGRGeometryFactory::createFromGEOS(
+        (GEOSGeom) snappedEntityGeom2);
+
+
+    Feat1->SetGeometry(OGRGeom1);
+    Feat2->SetGeometry(OGRGeom2);
+
+    OGRFeature* Feat1Clone = Feat1->Clone();
+    OGRFeature* Feat2Clone = Feat2->Clone();
+
+    mp_DataSource->GetLayer(LayerIndex)->SetFeature(Feat1Clone);
+    mp_DataSource->GetLayer(LayerIndex)->SetFeature(Feat2Clone);
+
+    OGRFeature::DestroyFeature(Feat1);
+    OGRFeature::DestroyFeature(Feat2);
+
+    delete snappedEntityGeom2;
+    delete Diff;
+    delete Geom1;
+    delete Geom2;
+
+    // clean structures and find overlap
+    m_Features.clear();
+    m_Geometries.clear();
+    try
+    {
+      parse(LayerIndex);
+    }
+    catch (std::exception& e)
+    {
+      throw openfluid::base::FrameworkException(
+          "VectorDataset::cleanOverlap : "
+          "Unable to parse the VectorDataset."
+          " ( Details: "
+          + std::string(e.what()) + ")");
+    }
+
+    lOverlaps.clear();
+    lOverlaps=findOverlap();
+  }
+
+  try
+  {
+    snapPolygonVertices(Threshold);
+  }
+  catch (std::exception& e)
+  {
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::cleanOverlap : "
+        "Unable to clean the VectorDataset."
+        " ( Details: "
+        + std::string(e.what()) + ")");
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 

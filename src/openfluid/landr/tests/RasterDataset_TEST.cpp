@@ -33,6 +33,7 @@
   @file RasterDataset_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN

@@ -33,6 +33,7 @@
   @file VectorDataset_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN
@@ -45,6 +46,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
+#include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -401,4 +403,179 @@ BOOST_AUTO_TEST_CASE(check_envelope)
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_findOverlap)
+{
+  openfluid::core::GeoVectorValue ValueSU(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_overlap.shp");
+
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValueSU);
+
+  std::list<std::pair<OGRFeature*, OGRFeature*> > lOverlap=VectSU->findOverlap();
+  BOOST_CHECK_EQUAL(lOverlap.size(),4);
+  std::list<std::pair<OGRFeature*, OGRFeature*> >::iterator it = lOverlap.begin();
+
+  BOOST_CHECK_EQUAL((*it).first->GetFID(),0);
+  BOOST_CHECK_EQUAL((*it).second->GetFID(),3);
+  std::advance(it, 1);
+  BOOST_CHECK_EQUAL((*it).first->GetFID(),1);
+  BOOST_CHECK_EQUAL((*it).second->GetFID(),4);
+  std::advance(it, 1);
+  BOOST_CHECK_EQUAL((*it).first->GetFID(),2);
+  BOOST_CHECK_EQUAL((*it).second->GetFID(),4);
+  std::advance(it, 1);
+  BOOST_CHECK_EQUAL((*it).first->GetFID(),3);
+  BOOST_CHECK_EQUAL((*it).second->GetFID(),4);
+
+
+  delete VectSU;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_findGap)
+{
+  openfluid::core::GeoVectorValue ValueSU(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
+
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValueSU);
+  std::list<std::pair<OGRFeature*, OGRFeature*> > lGap=VectSU->findGap(0.0001);
+  BOOST_CHECK_EQUAL(lGap.size(),0);
+  lGap=VectSU->findGap(0.1);
+  BOOST_CHECK_EQUAL(lGap.size(),3);
+  std::list<std::pair<OGRFeature*, OGRFeature*> >::iterator it = lGap.begin();
+
+  BOOST_CHECK_EQUAL((*it).first->GetFID(),0);
+  BOOST_CHECK_EQUAL((*it).second->GetFID(),1);
+  std::advance(it, 1);
+  BOOST_CHECK_EQUAL((*it).first->GetFID(),0);
+  BOOST_CHECK_EQUAL((*it).second->GetFID(),22);
+  std::advance(it, 1);
+  BOOST_CHECK_EQUAL((*it).first->GetFID(),0);
+  BOOST_CHECK_EQUAL((*it).second->GetFID(),23);
+
+  delete VectSU;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_checkTopology)
+{
+  openfluid::core::GeoVectorValue ValueSU(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
+
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValueSU);
+
+  std::string Msg=VectSU->checkTopology(0.1);
+  BOOST_CHECK_EQUAL(Msg.empty(),false);
+  BOOST_CHECK_EQUAL(Msg.size(),173);
+  Msg.clear();
+  Msg=VectSU->checkTopology(4);
+  BOOST_CHECK_EQUAL(Msg.empty(),false);
+  BOOST_CHECK_EQUAL(Msg.size(),216);
+
+  delete VectSU;
+
+  openfluid::core::GeoVectorValue ValueRS(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "RS_To_Snap.shp");
+
+  openfluid::landr::VectorDataset* VectRS = new openfluid::landr::VectorDataset(
+      ValueRS);
+
+  BOOST_CHECK_THROW(VectRS->checkTopology(0.1),openfluid::base::FrameworkException);
+  delete VectRS;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_snapVertices)
+{
+  openfluid::core::GeoVectorValue ValueRS(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "RS_To_Snap.shp");
+
+  openfluid::landr::LineStringGraph* Graph0 =
+      openfluid::landr::LineStringGraph::create(ValueRS);
+  BOOST_CHECK_EQUAL(Graph0->isLineStringGraphArborescence(),false);
+
+  openfluid::landr::VectorDataset* VectRS = new openfluid::landr::VectorDataset(
+      ValueRS);
+
+  VectRS->snapVertices(2);
+  VectRS->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR,
+                     "OPENFLUID.OUT.VectorDataset/snapRS.shp", true);
+
+
+  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.VectorDataset","snapRS.shp");
+  openfluid::landr::LineStringGraph* Graph1 =
+      openfluid::landr::LineStringGraph::create(*ValRS);
+  BOOST_CHECK_EQUAL(Graph1->isLineStringGraphArborescence(),true);
+
+  delete Graph0;
+  delete Graph1;
+  delete VectRS;
+
+  openfluid::core::GeoVectorValue ValueSU(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "SU_To_Snap.shp");
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValueSU);
+
+  std::list<std::pair<OGRFeature*, OGRFeature*> > lGap=VectSU->findGap(2);
+  BOOST_CHECK_EQUAL(lGap.size(),2);
+  VectSU->snapVertices(2);
+  lGap.clear();
+  lGap=VectSU->findGap(2);
+  BOOST_CHECK_EQUAL(lGap.size(),0);
+
+  delete VectSU;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_Overlap_and_Snap_Polygon)
+{
+  openfluid::core::GeoVectorValue ValueSU(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
+
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValueSU);
+
+  std::list<std::pair<OGRFeature*, OGRFeature*> > lGap=VectSU->findGap(0.1);
+  BOOST_CHECK_EQUAL(lGap.size(),3);
+  std::list<std::pair<OGRFeature*, OGRFeature*> > lOverlap=VectSU->findOverlap();
+  BOOST_CHECK_EQUAL(lOverlap.size(),1);
+
+  VectSU->snapVertices(3);
+  VectSU->cleanOverlap(2);
+
+  lGap.clear();
+  lOverlap.clear();
+  lGap=VectSU->findGap(3);
+  BOOST_CHECK_EQUAL(lGap.size(),0);
+  lOverlap=VectSU->findOverlap();
+  BOOST_CHECK_EQUAL(lOverlap.size(),0);
+
+
+  delete VectSU;
+}
+
+
+// =====================================================================
+// =====================================================================
 

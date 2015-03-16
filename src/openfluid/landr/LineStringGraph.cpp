@@ -33,6 +33,7 @@
   @file LineStringGraph.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #include "LineStringGraph.hpp"

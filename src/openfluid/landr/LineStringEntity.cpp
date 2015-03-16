@@ -33,6 +33,7 @@
   @file LineStringEntity.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #include "LineStringEntity.hpp"

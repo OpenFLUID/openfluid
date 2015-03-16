@@ -33,6 +33,7 @@
   @file PolygonEntity_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #define BOOST_TEST_MAIN
@@ -169,7 +170,7 @@ BOOST_AUTO_TEST_CASE(check_OneLineIntersection)
   Coos1->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
-  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
+  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, nullptr);
   openfluid::landr::PolygonEntity Ent1(P1, 0);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
@@ -181,7 +182,7 @@ BOOST_AUTO_TEST_CASE(check_OneLineIntersection)
   Coos2->push_back(geos::geom::Coordinate(2, 0));
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
-  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
+  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, nullptr);
   openfluid::landr::PolygonEntity Ent2(P2, 0);
 
   geos::geom::LineString* Shared = *Ent1.computeLineIntersectionsWith(Ent2).begin();
@@ -219,7 +220,7 @@ BOOST_AUTO_TEST_CASE(check_NoLineIntersection)
   Coos1->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
-  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
+  geos::geom::Polygon* P1 = Factory.createPolygon(LR1, nullptr);
   openfluid::landr::PolygonEntity Ent1(P1, 0);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
@@ -231,7 +232,7 @@ BOOST_AUTO_TEST_CASE(check_NoLineIntersection)
   Coos2->push_back(geos::geom::Coordinate(2, 3));
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
-  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
+  geos::geom::Polygon* P2 = Factory.createPolygon(LR2, nullptr);
   openfluid::landr::PolygonEntity Ent2(P2, 0);
 
   BOOST_CHECK_EQUAL(Ent1.computeLineIntersectionsWith(Ent2).size(), 0);
@@ -262,7 +263,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveEdge_isComplete)
   CoosLR->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR = Factory.createLinearRing(
       SeqFactory.create(CoosLR));
-  geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
+  geos::geom::Polygon* P = Factory.createPolygon(LR, nullptr);
   openfluid::landr::PolygonEntity Entity(P, 0);
 
   std::vector<geos::geom::Coordinate>* Coos1 = new std::vector<
@@ -327,7 +328,7 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
   CoosLR->push_back(geos::geom::Coordinate(0, 0));
   geos::geom::LinearRing* LR = Factory.createLinearRing(
       SeqFactory.create(CoosLR));
-  geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
+  geos::geom::Polygon* P = Factory.createPolygon(LR, nullptr);
   openfluid::landr::PolygonEntity Entity(P, 0);
 
   std::vector<geos::geom::Coordinate>* Coos1 = new std::vector<

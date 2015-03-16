@@ -33,6 +33,7 @@
   @file RasterDataset.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
 #include "RasterDataset.hpp"
@@ -61,7 +62,7 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
   // GDAL supports many raster formats for reading, but significantly less formats for writing
   // (see http://www.gdal.org/gdal_vrttut.html)
   GDALDriver* Driver = static_cast<GDALDriver*>(GDALGetDriverByName("VRT"));
-  mp_Dataset = Driver->CreateCopy("", DS, true, NULL, NULL, NULL);
+  mp_Dataset = Driver->CreateCopy("", DS, true, nullptr, nullptr, nullptr);
 
   if (!mp_Dataset)
   {
@@ -87,7 +88,7 @@ RasterDataset::RasterDataset(const RasterDataset& Other) :
   // GDAL supports many raster formats for reading, but significantly less formats for writing
   // (see http://www.gdal.org/gdal_vrttut.html)
   GDALDriver* Driver = static_cast<GDALDriver*>(GDALGetDriverByName("VRT"));
-  mp_Dataset = Driver->CreateCopy("", DS, true, NULL, NULL, NULL);
+  mp_Dataset = Driver->CreateCopy("", DS, true, nullptr, nullptr, nullptr);
 
   if (!mp_Dataset)
   {
@@ -330,8 +331,8 @@ openfluid::landr::VectorDataset* RasterDataset::polygonize(const std::string& Fi
     OGRLayer* Layer =
         mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->layer(0);
 
-    if (GDALFPolygonize(rasterBand(RasterBandIndex), NULL, Layer, FieldIndex,
-                        NULL, NULL, NULL)
+    if (GDALFPolygonize(rasterBand(RasterBandIndex), nullptr, Layer, FieldIndex,
+                        nullptr, nullptr, nullptr)
         != CE_None)
     {
       throw openfluid::base::FrameworkException(
