@@ -185,10 +185,8 @@ QString WareExplorerDialog::getCreateFilePath(QWidget* Parent, const QString& To
 
 void WareExplorerDialog::setOpenWareMode()
 {
-  ui->Directoryname_label->setVisible(false);
-  ui->Directory_label->setVisible(false);
-  ui->Filename_label->setVisible(false);
-  ui->Filename_lineEdit->setVisible(false);
+  ui->Directory_widget->setVisible(false);
+  ui->Filename_widget->setVisible(false);
 
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
           SLOT(onCurrentChangedOpenWareMode(const QString&)));
@@ -203,10 +201,8 @@ void WareExplorerDialog::setOpenWareMode()
 
 void WareExplorerDialog::setOpenFileMode()
 {
-  ui->Directoryname_label->setVisible(false);
-  ui->Filename_label->setVisible(false);
-  ui->Directory_label->setVisible(false);
-  ui->Filename_lineEdit->setVisible(false);
+  ui->Directory_widget->setVisible(false);
+  ui->Filename_widget->setVisible(false);
 
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
           SLOT(onCurrentChangedOpenFileMode(const QString&)));

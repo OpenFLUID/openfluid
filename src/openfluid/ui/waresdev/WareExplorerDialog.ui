@@ -14,6 +14,9 @@
    <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QFrame" name="MessageFrame">
      <property name="sizePolicy">
@@ -61,67 +64,80 @@ font : bold;
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="margin">
+      <number>9</number>
+     </property>
      <item>
-      <widget class="QLabel" name="Directoryname_label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Parent folder:</string>
-       </property>
+      <widget class="QWidget" name="Directory_widget" native="true">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="Directoryname_label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Parent folder:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="openfluid::ui::common::ElidedLabel" name="Directory_label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
      <item>
-      <widget class="openfluid::ui::common::ElidedLabel" name="Directory_label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="WareExplorer"/>
+     </item>
+     <item>
+      <widget class="QWidget" name="Filename_widget" native="true">
+       <layout class="QHBoxLayout" name="FilenameLayout">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="Filename_label">
+          <property name="text">
+           <string>File name:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="Filename_lineEdit"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-       <property name="text">
-        <string/>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Open</set>
        </property>
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="WareExplorer"/>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="FilenameLayout">
-     <item>
-      <widget class="QLabel" name="Filename_label">
-       <property name="text">
-        <string>File name:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="Filename_lineEdit"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Open</set>
-     </property>
-    </widget>
    </item>
   </layout>
-  <zorder>WareExplorer</zorder>
-  <zorder>buttonBox</zorder>
-  <zorder>MessageFrame</zorder>
-  <zorder>Directoryname_label</zorder>
  </widget>
  <customwidgets>
   <customwidget>
