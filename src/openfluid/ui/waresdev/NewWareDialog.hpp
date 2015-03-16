@@ -47,7 +47,6 @@
 #include <QDir>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/waresdev/WareSrcContainer.hpp>
 
 namespace Ui {
 class NewWareDialog;

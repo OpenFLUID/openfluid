@@ -42,14 +42,9 @@
 #include "ui_CppPage.h"
 #include "ui_CMakeConfigPage.h"
 
-#include <QRadioButton>
-#include <QCloseEvent>
-#include <QFile>
 #include <QMessageBox>
 
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
-#include <openfluid/builderext/BuilderExtensionSignature.hpp>
-#include <openfluid/config.hpp>
 #include <openfluid/ui/config.hpp>
 
 

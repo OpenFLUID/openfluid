@@ -44,7 +44,6 @@
 #include <openfluid/dllexport.hpp>
 
 #include <QWizard>
-#include <QWizardPage>
 #include <QDir>
 
 #include <QFrame>

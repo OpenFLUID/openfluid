@@ -42,13 +42,13 @@
 #include "ui_NewWareDialog.h"
 
 #include <openfluid/ui/config.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 
 #include <QPushButton>
 #include <QMessageBox>
 
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 

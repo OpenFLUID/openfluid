@@ -63,21 +63,6 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, WareSrcManager::
 {
   update();
 
-  switch (m_Type)
-  {
-    case WareSrcManager::SIMULATOR:
-      m_TypeSubDir = QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR);
-      break;
-    case WareSrcManager::OBSERVER:
-      m_TypeSubDir = QString::fromStdString(openfluid::config::OBSERVERS_PLUGINS_SUBDIR);
-      break;
-    case WareSrcManager::BUILDEREXT:
-      m_TypeSubDir = QString::fromStdString(openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR);
-      break;
-    default:
-      break;
-  }
-
   m_OFVersion = QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getMajorMinorVersion());
 
   setConfigMode(CONFIG_RELEASE);
@@ -273,16 +258,6 @@ WareSrcManager::WareType WareSrcContainer::getType() const
 QString WareSrcContainer::getName() const
 {
   return m_Name;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString WareSrcContainer::getTypeSubDir() const
-{
-  return m_TypeSubDir;
 }
 
 

@@ -77,8 +77,6 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QString m_Name;
 
-    QString m_TypeSubDir;
-
     /**
      * Absolute path of the CMake config file if it exists, otherwise an empty string
      */
