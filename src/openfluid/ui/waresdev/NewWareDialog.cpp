@@ -233,6 +233,7 @@ void NewWareDialog::accept()
         R.ParamsUiRootCppFilename = ui->UiParamSourceFilename_lineEdit->text();
         R.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.ParamsUiRootCppFilename);
         R.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.ParamsUiRootHppFilename);
+        R.ParamsUiComment = "";
       }
     }
       break;
