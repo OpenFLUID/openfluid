@@ -73,18 +73,40 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QString m_AbsolutePath;
 
+    WareSrcManager::WareType m_Type;
+
+    QString m_Name;
+
+    QString m_TypeSubDir;
+
     /**
      * Absolute path of the CMake config file if it exists, otherwise an empty string
      */
     QString m_AbsoluteCMakeConfigPath;
 
     /**
-     * Absolute path of the main .cpp as set in the CMakeLists.txt file, if this .cpp file exists,
+     * Absolute path of the main .cpp as set in the CMake config file, if this .cpp file exists,
      * otherwise an empty string
      */
     QString m_AbsoluteMainCppPath;
 
-    QString m_CMakePath;
+    /**
+     * Absolute path of the ui-parameterization .cpp as set in the CMake config file, if this .cpp file exists,
+     * otherwise an empty string
+     */
+    QString m_AbsoluteUiParamCppPath;
+
+    /**
+     * Absolute path of the CMake config file if it exists, otherwise an empty string
+     */
+    QString m_AbsoluteCMakeListsPath;
+
+    /**
+     * Absolute path of the wareshub.json file if it exists, otherwise an empty string
+     */
+    QString m_AbsoluteJsonPath;
+
+    QString m_CMakeProgramPath;
 
     openfluid::waresdev::WareSrcMsgStream* mp_Stream;
 
@@ -118,7 +140,11 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     ~WareSrcContainer();
 
+    void update();
+
     static QString searchMainCppFileName(const QString& CMakeFileContent);
+
+    static QString searchUiParamCppFileName(const QString& CMakeFileContent);
 
     /**
      * Return the absolute paths of:
@@ -129,15 +155,45 @@ class OPENFLUID_API WareSrcContainer: public QObject
      * - the first .cpp file found in this ware directory (not recursive).
      * @return a list of existing absolute paths into this ware directory. It can be empty.
      */
-    QStringList getDefaultFiles();
-
-    /**
-     * Return the absolute path of the main .cpp as set in the CMakeLists.txt file, if this .cpp file exists,
-     * otherwise an empty string
-     */
-    QString getMainCppFile();
+    QStringList getDefaultFilesPaths();
 
     QString getAbsolutePath() const;
+
+    WareSrcManager::WareType getType() const;
+
+    QString getName() const;
+
+    QString getTypeSubDir() const;
+
+    /**
+     * Return the absolute path of the main .cpp as set in the CMake config file, if this .cpp file exists,
+     * otherwise an empty string
+     */
+    QString getMainCppPath() const;
+
+    /**
+     * Return the absolute path of the ui-parameterization .cpp as set in the CMake config file,
+     * if this .cpp file exists, otherwise an empty string
+     */
+    QString getUiParamCppPath() const;
+
+    /**
+     * Return the absolute path of the CMake config file, if this file exists,
+     * otherwise an empty string
+     */
+    QString getCMakeConfigPath() const;
+
+    /**
+     * Return the absolute path of the CMakeLists.txt file, if this file exists,
+     * otherwise an empty string
+     */
+    QString getCMakeListsPath() const;
+
+    /**
+     * Return the absolute path of the wareshub.json file, if this file exists,
+     * otherwise an empty string
+     */
+    QString getJsonPath() const;
 
     void setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream);
 

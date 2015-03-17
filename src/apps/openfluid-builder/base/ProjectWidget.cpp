@@ -173,7 +173,7 @@ void ProjectWidget::openSimulatorSrc()
 // =====================================================================
 
 
-void ProjectWidget::openObsereverSrc()
+void ProjectWidget::openObserverSrc()
 {
   mp_WareSrcCollection->openObserver();
 }
@@ -182,3 +182,18 @@ void ProjectWidget::openObsereverSrc()
 // =====================================================================
 // =====================================================================
 
+
+void ProjectWidget::newSimulator()
+{
+  mp_WareSrcCollection->newSimulator();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectWidget::newObserver()
+{
+  mp_WareSrcCollection->newObserver();
+}

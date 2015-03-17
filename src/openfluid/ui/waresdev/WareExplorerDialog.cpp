@@ -45,6 +45,7 @@
 #include <QDir>
 #include <QMessageBox>
 
+#include <openfluid/ui/config.hpp>
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -53,12 +54,18 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath) :
-    QDialog(Parent), ui(new Ui::WareExplorerDialog), mp_AcceptButton(0)
+WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath,
+                                       const QString& Title, const QString& DefaultMessage,
+                                       const QString& AcceptButtonLabel) :
+    QDialog(Parent), ui(new Ui::WareExplorerDialog), mp_AcceptButton(0), m_DefaulMessage(DefaultMessage)
 {
   ui->setupUi(this);
 
-  QRegExp Rx("[a-zA-Z0-9.-]+");
+  setWindowTitle(Title);
+
+  setStatus("");
+
+  QRegExp Rx("[a-zA-Z0-9._-]+");
   QValidator* Validator = new QRegExpValidator(Rx, this);
   ui->Filename_lineEdit->setValidator(Validator);
 
@@ -67,11 +74,15 @@ WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirect
   QString CurrentPathToSet = CurrentPath.isEmpty() ? TopDirectoryPath : CurrentPath;
 
   ui->WareExplorer->setCurrentPath(CurrentPathToSet);
-  ui->Filename_lineEdit->setText(QFileInfo(CurrentPathToSet).fileName());
+
+  QFileInfo CurrentPathToSetFI(CurrentPathToSet);
+  ui->Filename_lineEdit->setText(CurrentPathToSetFI.isFile() ? CurrentPathToSetFI.fileName() : "");
 
   mp_Manager = openfluid::waresdev::WareSrcManager::instance();
 
   mp_AcceptButton = ui->buttonBox->button(QDialogButtonBox::Open);
+  if (mp_AcceptButton)
+    mp_AcceptButton->setText(AcceptButtonLabel);
 }
 
 
@@ -92,10 +103,9 @@ WareExplorerDialog::~WareExplorerDialog()
 QString WareExplorerDialog::getOpenWarePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& Title,
                                             const QString& CurrentPath)
 {
-  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath);
+  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, Title.isEmpty() ? "Open ware" : Title,
+                            tr("Choose the directory of the ware to open"), tr("Open"));
   Dialog.setOpenWareMode();
-  if (!Title.isEmpty())
-    Dialog.setWindowTitle(Title);
 
   if (Dialog.exec())
     return Dialog.getSelectedPath();
@@ -111,7 +121,8 @@ QString WareExplorerDialog::getOpenWarePath(QWidget* Parent, const QString& TopD
 QString WareExplorerDialog::getOpenFilePath(QWidget* Parent, const QString& TopDirectoryPath,
                                             const QString& CurrentPath)
 {
-  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath);
+  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("Open file"), tr("Choose the file to open"),
+                            tr("Open"));
   Dialog.setOpenFileMode();
 
   if (Dialog.exec())
@@ -128,28 +139,19 @@ QString WareExplorerDialog::getOpenFilePath(QWidget* Parent, const QString& TopD
 QString WareExplorerDialog::getSaveFilePath(QWidget* Parent, const QString& TopDirectoryPath,
                                             const QString& CurrentPath)
 {
-  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath);
+  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("Save as"), tr("Define the file to save as"),
+                            tr("Save"));
   Dialog.setSaveFileMode();
 
   if (Dialog.exec())
   {
-    QFileInfo Info(Dialog.getSelectedPath());
-
-    QDir Dir;
-    QString NewPath;
-
-    if (Info.isFile())
-      Dir = Info.absoluteDir();
-    else
-      Dir.setPath(Info.filePath());
-
-    NewPath = Dir.filePath(Dialog.getEditedFilename());
+    QString NewPath = Dialog.getCompleteFilePath();
 
     int Res = QMessageBox::Ok;
 
     if (QFileInfo(NewPath).exists())
-      Res = QMessageBox::warning(Parent, tr("Save as"), tr("This file already exists.\n"
-                                                           "Do you want to replace it?"),
+      Res = QMessageBox::warning(&Dialog, tr("Save as"), tr("This file already exists.\n"
+                                                            "Do you want to replace it?"),
                                  QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
 
     return Res == QMessageBox::Ok ? NewPath : "";
@@ -163,10 +165,26 @@ QString WareExplorerDialog::getSaveFilePath(QWidget* Parent, const QString& TopD
 // =====================================================================
 
 
+QString WareExplorerDialog::getCreateFilePath(QWidget* Parent, const QString& TopDirectoryPath,
+                                              const QString& CurrentPath)
+{
+  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("New file"), tr("Define the file to create"),
+                            tr("OK"));
+  Dialog.setCreateFileMode();
+
+  if (Dialog.exec())
+    return Dialog.getCompleteFilePath();
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareExplorerDialog::setOpenWareMode()
 {
-  setWindowTitle(tr("Open ware"));
-
   ui->Directoryname_label->setVisible(false);
   ui->Directory_label->setVisible(false);
   ui->Filename_label->setVisible(false);
@@ -185,8 +203,6 @@ void WareExplorerDialog::setOpenWareMode()
 
 void WareExplorerDialog::setOpenFileMode()
 {
-  setWindowTitle(tr("Open file"));
-
   ui->Directoryname_label->setVisible(false);
   ui->Filename_label->setVisible(false);
   ui->Directory_label->setVisible(false);
@@ -205,16 +221,30 @@ void WareExplorerDialog::setOpenFileMode()
 
 void WareExplorerDialog::setSaveFileMode()
 {
-  setWindowTitle(tr("Save as"));
-
-  mp_AcceptButton->setText(tr("Save"));
-
-  connect(ui->Filename_lineEdit, SIGNAL(textChanged ( const QString & )), this, SLOT(onTextChanged(const QString&)));
+  connect(ui->Filename_lineEdit, SIGNAL(textChanged(const QString &)), this,
+          SLOT(onTextChangedCheckEmpty(const QString&)));
 
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
           SLOT(onCurrentChangedSaveFileMode(const QString&)));
 
-  onTextChanged(ui->Filename_lineEdit->text());
+  onTextChangedCheckEmpty(ui->Filename_lineEdit->text());
+  onCurrentChangedSaveFileMode(ui->WareExplorer->getCurrentPath());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareExplorerDialog::setCreateFileMode()
+{
+  connect(ui->Filename_lineEdit, SIGNAL(textChanged(const QString &)), this,
+          SLOT(onTextChangedCheckExists(const QString&)));
+
+  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
+          SLOT(onCurrentChangedSaveFileMode(const QString&)));
+
+  onTextChangedCheckExists(ui->Filename_lineEdit->text());
   onCurrentChangedSaveFileMode(ui->WareExplorer->getCurrentPath());
 }
 
@@ -225,8 +255,7 @@ void WareExplorerDialog::setSaveFileMode()
 
 void WareExplorerDialog::onCurrentChangedOpenWareMode(const QString& Path)
 {
-  if (mp_AcceptButton)
-    mp_AcceptButton->setEnabled(mp_Manager->getPathInfo(Path).m_isAWare);
+  setStatus(mp_Manager->getPathInfo(Path).m_isAWare ? "" : "You must select a ware directory");
 }
 
 
@@ -236,9 +265,7 @@ void WareExplorerDialog::onCurrentChangedOpenWareMode(const QString& Path)
 
 void WareExplorerDialog::onCurrentChangedOpenFileMode(const QString& Path)
 {
-  if (mp_AcceptButton)
-    mp_AcceptButton->setEnabled(QFileInfo(Path).isFile());
-
+  setStatus(QFileInfo(Path).isFile() ? "" : "You must select a file");
 }
 
 
@@ -264,10 +291,25 @@ void WareExplorerDialog::onCurrentChangedSaveFileMode(const QString& Path)
 // =====================================================================
 
 
-void WareExplorerDialog::onTextChanged(const QString & text)
+void WareExplorerDialog::onTextChangedCheckEmpty(const QString& Text)
 {
-  if (mp_AcceptButton)
-    mp_AcceptButton->setEnabled(!text.isEmpty());
+  setStatus(Text.isEmpty() ? "You must enter a file name" : "");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareExplorerDialog::onTextChangedCheckExists(const QString& Text)
+{
+  QString Msg = "";
+  if (Text.isEmpty())
+    Msg = "You must enter a file name";
+  else if (QFile(getCompleteFilePath()).exists())
+    Msg = "You must enter the name of a file that doesn't already exist";
+
+  setStatus(Msg);
 }
 
 
@@ -287,6 +329,44 @@ QString WareExplorerDialog::getSelectedPath()
 QString WareExplorerDialog::getEditedFilename()
 {
   return ui->Filename_lineEdit->text();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareExplorerDialog::getCompleteFilePath()
+{
+  QFileInfo Info(getSelectedPath());
+
+  QDir Dir;
+  QString NewPath;
+
+  if (Info.isFile())
+    Dir = Info.absoluteDir();
+  else
+    Dir.setPath(Info.filePath());
+
+  return Dir.filePath(getEditedFilename());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void WareExplorerDialog::setStatus(const QString WarningMsg)
+{
+  bool Ok = WarningMsg.isEmpty();
+
+  ui->MessageLabel->setText(Ok ? m_DefaulMessage : WarningMsg);
+
+  ui->MessageFrame->setStyleSheet(
+      QString("background-color: %1;").arg(
+          Ok ? openfluid::ui::config::DIALOGBANNER_BGCOLOR : openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
+
+  if (mp_AcceptButton)
+    mp_AcceptButton->setEnabled(Ok);
 }
 
 

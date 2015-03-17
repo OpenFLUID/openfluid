@@ -95,7 +95,11 @@ class ProjectWidget : public QWidget
 
     void openSimulatorSrc();
 
-    void openObsereverSrc();
+    void openObserverSrc();
+
+    void newSimulator();
+
+    void newObserver();
 };
 
 

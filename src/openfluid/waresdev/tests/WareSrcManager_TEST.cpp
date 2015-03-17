@@ -45,6 +45,7 @@
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/config.hpp>
 
 #include <QDir>
@@ -92,6 +93,8 @@ struct F
       m_RealFiles.insert(8, QString("%1/ware1/subdir1/subdir2/file8.txt").arg(m_SimulatorsPath));
       m_RealFiles.insert(9, QString("%1/ware2/file9.txt").arg(m_SimulatorsPath));
       m_RealFiles.insert(10, QString("%1/ware2/subdir1/file10.txt").arg(m_SimulatorsPath));
+
+      deleteAll(m_WaresdevPath);
     }
 
     ~F()
@@ -121,6 +124,20 @@ struct F
 
       for (int i = m_RealDirs.size() - 1; i >= 0; i--)
       Dir.rmdir(m_RealDirs.at(i));
+    }
+
+    void deleteAll(const QString& DirName)
+    {
+      QDir Dir(DirName);
+      if (Dir.exists(DirName))
+      {
+        foreach(QFileInfo Info, Dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files))
+        {
+          if (Info.isDir()) deleteAll(Info.absoluteFilePath());
+          else QFile::remove(Info.absoluteFilePath());
+        }
+        Dir.rmdir(DirName);
+      }
     }
   };
 

@@ -41,6 +41,8 @@
 
 #include <QTreeView>
 
+#include <openfluid/dllexport.hpp>
+
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -49,7 +51,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 class WareSrcExplorerModel;
 
 
-class WareSrcExplorer: public QTreeView
+class OPENFLUID_API WareSrcExplorer: public QTreeView
 {
   Q_OBJECT
 

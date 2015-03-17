@@ -79,7 +79,7 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
 
     ui->Toolbar_Layout->addWidget(TB);
 
-    connect(TB->action("NewFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+    connect(TB->action("NewFile"), SIGNAL(triggered()), this, SIGNAL(newFileRequested()));
     connect(TB->action("OpenFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
     connect(TB->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
     connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this, SIGNAL(saveAsRequested()));
@@ -297,7 +297,7 @@ bool WareSrcWidget::eventFilter(QObject* Obj, QEvent* Event)
 
 void WareSrcWidget::openDefaultFiles()
 {
-  foreach(QString F,m_Container.getDefaultFiles()){
+  foreach(QString F,m_Container.getDefaultFilesPaths()){
   QString FileName = QFileInfo(F).fileName();
   addNewFileTab(-1,F, FileName, QDir::toNativeSeparators(FileName));
 }
