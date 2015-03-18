@@ -96,6 +96,8 @@ class OPENFLUID_API Engine
 
      void checkSimulationVarsProduction(int ExpectedVarsCount);
 
+     void checkParametersConsistency();
+
      void checkModelConsistency();
 
      void checkAttributesConsistency();

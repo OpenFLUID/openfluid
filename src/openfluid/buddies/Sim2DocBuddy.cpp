@@ -420,7 +420,7 @@ void Sim2DocBuddy::storeDataIntoStatus()
 // =====================================================================
 
 
-void Sim2DocBuddy::storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem>*
+void Sim2DocBuddy::storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureUnitsClassItem>*
                                            UpdatedUnitsClass,
     int Attr)
 {
@@ -428,7 +428,7 @@ void Sim2DocBuddy::storeDataIntoUnitsClass(std::vector<openfluid::ware::Signatur
   {
     if (Attr == 1)
     {
-      UpdatedUnitsClass->push_back(openfluid::ware::SignatureHandledUnitsClassItem());
+      UpdatedUnitsClass->push_back(openfluid::ware::SignatureUnitsClassItem());
       UpdatedUnitsClass->back().UnitsClass = m_CurrentBuiltParam;
     }
     else
@@ -546,7 +546,7 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
   }
 
 
-  std::vector<ware::SignatureHandledUnitsClassItem>::iterator UnitsClassIt;
+  std::vector<ware::SignatureUnitsClassItem>::iterator UnitsClassIt;
 
   m_UnitsGraph.UpdatedUnitsGraph = toLatexFriendly(m_UnitsGraph.UpdatedUnitsGraph);
 
@@ -629,30 +629,31 @@ void Sim2DocBuddy::generateLatex()
 
   SignatureData_t::iterator it;
 
+  // Parameters
   if (m_ParamsData.size() > 0)
   {
-    addLatexDataCatBegin(m_SimData,"Simulator parameter(s)","lXr");
+    addLatexDataCatBegin(m_SimData,"Parameters","llXr");
     for (it = m_ParamsData.begin(); it != m_ParamsData.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&$" + it->second[1] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
+                  "&$" + it->second[2] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
 
-  if (m_InAttrs.size() > 0)
+  // Attributes
+  if ((m_InAttrs.size() + m_OutAttrs.size()) > 0)
   {
-    addLatexDataCatBegin(m_SimData,"Required or used Attribute(s)","lllXr");
+    addLatexDataCatBegin(m_SimData,"Attributes","lllXr");
     for (it = m_InAttrs.begin(); it != m_InAttrs.end(); ++it)
     {
       m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
                   "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
-    addLatexDataCatEnd(m_SimData);
-  }
 
-  if (m_OutAttrs.size() > 0)
-  {
-    addLatexDataCatBegin(m_SimData,"Produced Attribute(s)","lllXr");
+    if (m_InAttrs.size() > 0 && m_OutAttrs.size() > 0)
+      m_SimData += "\\hline\n";
+
     for (it = m_OutAttrs.begin(); it != m_OutAttrs.end(); ++it)
     {
       m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
@@ -661,20 +662,19 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatEnd(m_SimData);
   }
 
-  if (m_InVars.size() > 0)
+  // Variables
+  if ((m_InVars.size() + m_OutVars.size()) > 0)
   {
-    addLatexDataCatBegin(m_SimData,"Required or used variable(s)","llllXr");
+    addLatexDataCatBegin(m_SimData,"Variables","lllXr");
     for (it = m_InVars.begin(); it != m_InVars.end(); ++it)
     {
       m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
                   "&" + it->second[2] + "&" + it->second[3] + "$\\\\" + "\n";
     }
-    addLatexDataCatEnd(m_SimData);
-  }
 
-  if (m_OutVars.size() > 0)
-  {
-    addLatexDataCatBegin(m_SimData,"Produced or updated variable(s)","lllXr");
+    if (m_InVars.size() > 0 && m_OutVars.size() > 0)
+      m_SimData += "\\hline\n";
+
     for (it = m_OutVars.begin(); it != m_OutVars.end(); ++it)
     {
       m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
@@ -683,9 +683,10 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatEnd(m_SimData);
   }
 
+  // Events
   if (m_Events.size() > 0)
   {
-    addLatexDataCatBegin(m_SimData,"Used event(s)","l");
+    addLatexDataCatBegin(m_SimData,"Events","l");
     for (it = m_Events.begin(); it != m_Events.end(); ++it)
     {
       m_SimData = m_SimData + "\\texttt{" + it->first + "}\\\\" + "\n";
@@ -693,15 +694,17 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatEnd(m_SimData);
   }
 
+  // Extrafiles
   if (m_ExtraFiles.size() > 0)
   {
-    addLatexDataCatBegin(m_SimData,"Required or used extrafile(s)","lX");
+    addLatexDataCatBegin(m_SimData,"Extrafiles","lX");
     for (it = m_ExtraFiles.begin(); it != m_ExtraFiles.end(); ++it)
     {
       m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
+
 
   // creating list with authors names
 
@@ -738,8 +741,10 @@ void Sim2DocBuddy::generateLatex()
   mp_Listener->onStageCompleted(" done");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool Sim2DocBuddy::isErrorInPDFLatexLog()
 {
@@ -765,6 +770,7 @@ bool Sim2DocBuddy::isErrorInPDFLatexLog()
   return (LogFileContent.find("Fatal error") != std::string::npos);
 
 }
+
 
 // =====================================================================
 // =====================================================================

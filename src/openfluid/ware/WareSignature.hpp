@@ -45,46 +45,7 @@
 #define __OPENFLUID_WARE_WARESIGNATURE_HPP__
 
 
-/**
-  Macro for declaration of the ware name
-*/
-#define DECLARE_NAME(name) Signature->Name = name;
-
-/**
-  Macro for declaration of the ware description
-*/
-#define DECLARE_DESCRIPTION(desc) Signature->Description = desc;
-
-/**
-  Macro for declaration of the ware author name and email
-*/
-#define DECLARE_AUTHOR(name,email) Signature->Authors.push_back(std::make_pair((name),(email)));
-
-/**
-  Macro for declaration of the ware version
-*/
-#define DECLARE_VERSION(version) Signature->Version = version;
-
-/**
-  Macro for declaration of the ware status
-*/
-#define DECLARE_STATUS(status) Signature->Status = status;
-
-/**
-  Macro for declaration of ABI version used to build the ware
-*/
-#define DECLARE_SDKVERSION Signature->setABIVersion(openfluid::config::FULL_VERSION);
-
-
-// =====================================================================
-// =====================================================================
-
-
 namespace openfluid { namespace ware {
-
-
-// =====================================================================
-// =====================================================================
 
 
 class OPENFLUID_API WareSignature

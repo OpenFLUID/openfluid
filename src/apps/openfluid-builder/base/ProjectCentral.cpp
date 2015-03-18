@@ -108,7 +108,7 @@ ProjectCentral::~ProjectCentral()
 
 
 QStringList ProjectCentral::convertUpdatedUnitsClassesToQStringList(
-    const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>& UnitsClassesVector)
+    const std::vector<openfluid::ware::SignatureUnitsClassItem>& UnitsClassesVector)
 {
   QStringList QSL;
   for (unsigned int i=0; i<UnitsClassesVector.size();++i)
@@ -242,7 +242,7 @@ void ProjectCentral::check()
   }
   else
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("Model is empty"));
   }
 
@@ -256,7 +256,7 @@ void ProjectCentral::check()
   }
   else
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).setStatus(PRJ_WARNING);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).updateStatus(PRJ_WARNING);
     m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("Monitoring is empty"));
   }
 
@@ -281,7 +281,7 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
   {
     TestCompare = false;
 
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).setStatus(PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
                 .addMessage(tr("Parameter %1 for %2 has to be a double precision value")
                             .arg(QString::fromStdString(MinParamName))
@@ -293,7 +293,7 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
   else if (!isParamIsDouble(Item, MaxParamName))
   {
     TestCompare = false;
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).setStatus(PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
                 .addMessage(tr("Parameter %1 for %2 has to be a double precision value")
                             .arg(QString::fromStdString(MaxParamName))
@@ -303,7 +303,7 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
   if (TestCompare && !(getParamAsDouble(Item, MaxParamName)
       > getParamAsDouble(Item, MinParamName)))
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).setStatus(PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
                 .addMessage(tr("Parameter %1 is greater or equal to parameter %2 for %3")
                             .arg(QString::fromStdString(MinParamName))
@@ -394,7 +394,7 @@ void ProjectCentral::checkModel()
 
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itModelItem = Items.begin();
-       itModelItem != Items.end(); ++itModelItem)
+      itModelItem != Items.end(); ++itModelItem)
   {
     if ((*itModelItem)->isEnabled())
     {
@@ -428,11 +428,11 @@ void ProjectCentral::checkModel()
             if (!FileNameFromParam.empty() &&
                 !QFileInfo(QString::fromStdString(RunEnv->getInputFullPath(FileNameFromParam))).exists())
             {
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).setStatus(PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
               m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
-                          .addMessage(tr("File %1 required by generator %2 does not exist")
-                                      .arg(QString::fromStdString(FileNameFromParam))
-                                      .arg(QString::fromStdString(ID)));
+                              .addMessage(tr("File %1 required by generator %2 does not exist")
+                                          .arg(QString::fromStdString(FileNameFromParam))
+                                          .arg(QString::fromStdString(ID)));
             }
 
             // distribution file
@@ -441,11 +441,11 @@ void ProjectCentral::checkModel()
             if (!FileNameFromParam.empty() &&
                 !QFileInfo(QString::fromStdString(RunEnv->getInputFullPath(FileNameFromParam))).exists())
             {
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).setStatus(PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
               m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
-                          .addMessage(tr("File %1 required by generator %2 does not exist")
-                                      .arg(QString::fromStdString(FileNameFromParam))
-                                      .arg(QString::fromStdString(ID)));
+                              .addMessage(tr("File %1 required by generator %2 does not exist")
+                                          .arg(QString::fromStdString(FileNameFromParam))
+                                          .arg(QString::fromStdString(ID)));
             }
           }
         }
@@ -455,11 +455,11 @@ void ProjectCentral::checkModel()
           {
             if (!QFileInfo(QString::fromStdString(RunEnv->getInputFullPath(*itFile))).exists())
             {
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).setStatus(PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
               m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
-                          .addMessage(tr("File %1 required by generator %2 does not exist")
-                                      .arg(QString::fromStdString((*itFile)))
-                                      .arg(QString::fromStdString(ID)));
+                              .addMessage(tr("File %1 required by generator %2 does not exist")
+                                          .arg(QString::fromStdString((*itFile)))
+                                          .arg(QString::fromStdString(ID)));
             }
           }
         }
@@ -471,56 +471,64 @@ void ProjectCentral::checkModel()
         bool InterpMinMaxChecked = false;
         bool InjectMinMaxChecked = false;
 
-        std::vector<openfluid::ware::SignatureHandledDataItem>& Params = Sign->HandledData.SimulatorParams;
 
-        for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itParam = Params.begin();
-             itParam != Params.end(); ++itParam)
+        // required parameters
+        const std::vector<openfluid::ware::SignatureDataItem>& ReqParams = Sign->HandledData.RequiredParams;
+
+        for (auto itParam = ReqParams.begin();itParam != ReqParams.end(); ++itParam)
         {
           if (!isParamSet(*itModelItem, itParam->DataName))
           {
-            if ((*itModelItem)->isType(openfluid::fluidx::ModelItemDescriptor::Generator) &&
-                itParam->DataName != "thresholdmin" &&
-                itParam->DataName != "thresholdmax" &&
-                itParam->DataName != "deltat")
-            {
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).setStatus(PRJ_ERROR);
-            }
-            else
-            {
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).setStatus(PRJ_WARNING);
-            }
-
+            m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
-                        .addMessage(tr("Parameter %1 for generator %2 is not set")
-                                    .arg(QString::fromStdString(itParam->DataName))
-                                    .arg(QString::fromStdString(ID)));
-          }
-
-          // check Generators Params
-          if ((*itModelItem)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
-          {
-            openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
-                (static_cast<openfluid::ware::GeneratorSignature*>(Sign))->m_GeneratorMethod;
-
-            if (Method == openfluid::fluidx::GeneratorDescriptor::Random && !RandomMinMaxChecked)
-            {
-              checkGeneratorParam("min", "max", *itModelItem, ID);
-              RandomMinMaxChecked = true;
-            }
-            else if (Method == openfluid::fluidx::GeneratorDescriptor::Interp &&
-                     !InterpMinMaxChecked)
-            {
-              checkGeneratorParam("thresholdmin", "thresholdmax", *itModelItem, ID);
-              InterpMinMaxChecked = true;
-            }
-            else if (Method == openfluid::fluidx::GeneratorDescriptor::Inject &&
-                     !InjectMinMaxChecked)
-            {
-              checkGeneratorParam("thresholdmin", "thresholdmax", *itModelItem, ID);
-              InjectMinMaxChecked = true;
-            }
+                                        .addMessage(tr("Required parameter %1 for simulator %2 is not set")
+                                                    .arg(QString::fromStdString(itParam->DataName))
+                                                    .arg(QString::fromStdString(ID)));
           }
         }
+
+
+        // used  parameters
+        const std::vector<openfluid::ware::SignatureDataItem>& UsParams = Sign->HandledData.UsedParams;
+
+        for (auto itParam = UsParams.begin();itParam != UsParams.end(); ++itParam)
+        {
+          if (!isParamSet(*itModelItem, itParam->DataName))
+          {
+            m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_WARNING);
+            m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
+                                        .addMessage(tr("Used parameter %1 for simulator %2 is not set")
+                                                    .arg(QString::fromStdString(itParam->DataName))
+                                                    .arg(QString::fromStdString(ID)));
+          }
+        }
+
+        // check Generators Params
+        if ((*itModelItem)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
+        {
+          openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
+              (static_cast<openfluid::ware::GeneratorSignature*>(Sign))->m_GeneratorMethod;
+
+          if (Method == openfluid::fluidx::GeneratorDescriptor::Random && !RandomMinMaxChecked)
+          {
+            checkGeneratorParam("min", "max", *itModelItem, ID);
+            RandomMinMaxChecked = true;
+          }
+          else if (Method == openfluid::fluidx::GeneratorDescriptor::Interp &&
+              !InterpMinMaxChecked)
+          {
+            checkGeneratorParam("thresholdmin", "thresholdmax", *itModelItem, ID);
+            InterpMinMaxChecked = true;
+          }
+          else if (Method == openfluid::fluidx::GeneratorDescriptor::Inject &&
+              !InjectMinMaxChecked)
+          {
+            checkGeneratorParam("thresholdmin", "thresholdmax", *itModelItem, ID);
+            InjectMinMaxChecked = true;
+          }
+        }
+
+
 
 
         // populate updated units classes (created, modified)
@@ -529,49 +537,49 @@ void ProjectCentral::checkModel()
 
         // check required attributes
 
-        std::vector<openfluid::ware::SignatureHandledDataItem>& ReqData = Sign->HandledData.RequiredAttribute;
+        std::vector<openfluid::ware::SignatureSpatialDataItem>& ReqData = Sign->HandledData.RequiredAttribute;
 
-        for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itReqData = ReqData.begin();
-             itReqData != ReqData.end(); ++itReqData)
+        for (std::vector<openfluid::ware::SignatureSpatialDataItem>::iterator itReqData = ReqData.begin();
+            itReqData != ReqData.end(); ++itReqData)
         {
           if (!Domain.isClassNameExists(itReqData->UnitClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itReqData->UnitClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
-                        .addMessage(tr("Unit class %1 does not exist for attribute %2 required by %3")
-                                    .arg(QString::fromStdString(itReqData->UnitClass))
-                                    .arg(QString::fromStdString(itReqData->DataName))
-                                    .arg(QString::fromStdString(ID)));
+                                .addMessage(tr("Unit class %1 does not exist for attribute %2 required by %3")
+                                            .arg(QString::fromStdString(itReqData->UnitClass))
+                                            .arg(QString::fromStdString(itReqData->DataName))
+                                            .arg(QString::fromStdString(ID)));
           }
           else if (!(Domain.getAttributesNames(itReqData->UnitClass).count(itReqData->DataName)
-                   || AttrsUnits.count(std::make_pair(itReqData->UnitClass, itReqData->DataName))))
+              || AttrsUnits.count(std::make_pair(itReqData->UnitClass, itReqData->DataName))))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
-                        .addMessage(tr("Attribute %1 required on %2 units by %3 does not exist")
-                                    .arg(QString::fromStdString(itReqData->DataName))
-                                    .arg(QString::fromStdString(itReqData->UnitClass))
-                                    .arg(QString::fromStdString(ID)));
+                                .addMessage(tr("Attribute %1 required on %2 units by %3 does not exist")
+                                            .arg(QString::fromStdString(itReqData->DataName))
+                                            .arg(QString::fromStdString(itReqData->UnitClass))
+                                            .arg(QString::fromStdString(ID)));
           }
         }
 
 
         // check produced attributes
-        std::vector<openfluid::ware::SignatureHandledDataItem>& ProdData = Sign->HandledData.ProducedAttribute;
+        std::vector<openfluid::ware::SignatureSpatialDataItem>& ProdData = Sign->HandledData.ProducedAttribute;
 
-        for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itProdData = ProdData.begin();
-             itProdData != ProdData.end(); ++itProdData)
+        for (std::vector<openfluid::ware::SignatureSpatialDataItem>::iterator itProdData = ProdData.begin();
+            itProdData != ProdData.end(); ++itProdData)
         {
           if (!Domain.isClassNameExists(itProdData->UnitClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itProdData->UnitClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
-                        .addMessage(tr("Unit class %1 does not exist for attribute %2 produced by %3")
-                                    .arg(QString::fromStdString(itProdData->UnitClass))
-                                    .arg(QString::fromStdString(itProdData->DataName))
-                                    .arg(QString::fromStdString(ID)));
+                                .addMessage(tr("Unit class %1 does not exist for attribute %2 produced by %3")
+                                            .arg(QString::fromStdString(itProdData->UnitClass))
+                                            .arg(QString::fromStdString(itProdData->DataName))
+                                            .arg(QString::fromStdString(ID)));
           }
 
           if (!AttrsUnits.count(std::make_pair(itProdData->UnitClass, itProdData->DataName)))
@@ -580,19 +588,19 @@ void ProjectCentral::checkModel()
           }
           else
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
-                        .addMessage(tr("Attribute %1 produced on %2 units by %3 "
-                                       "is already produced by another simulator")
-                                    .arg(QString::fromStdString(itProdData->UnitClass))
-                                    .arg(QString::fromStdString(itProdData->DataName))
-                                    .arg(QString::fromStdString(ID)));
+                                .addMessage(tr("Attribute %1 produced on %2 units by %3 "
+                                    "is already produced by another simulator")
+                                            .arg(QString::fromStdString(itProdData->UnitClass))
+                                            .arg(QString::fromStdString(itProdData->DataName))
+                                            .arg(QString::fromStdString(ID)));
           }
         }
       }
       else
       {
-        m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
+        m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
         if ((*itModelItem)->getType() == openfluid::fluidx::ModelItemDescriptor::PluggedSimulator)
           m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("Simulator %1 is not available")
                                                                          .arg(QString::fromStdString(ID)));
@@ -604,7 +612,7 @@ void ProjectCentral::checkModel()
 
   // ========== internal constraints
 
-  std::vector<openfluid::ware::SignatureHandledTypedDataItem>::iterator itData;
+  std::vector<openfluid::ware::SignatureTypedSpatialDataItem>::iterator itData;
 
   std::set<std::pair<std::string, std::string> > VarsUnits;
   std::set<std::pair<std::string,std::pair<std::string, openfluid::core::Value::Type> > > TypedVarsUnits;
@@ -619,7 +627,7 @@ void ProjectCentral::checkModel()
 
   // pass 1
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itModelItem = Items.begin();
-       itModelItem != Items.end(); ++itModelItem)
+      itModelItem != Items.end(); ++itModelItem)
   {
     if ((*itModelItem)->isEnabled())
     {
@@ -632,7 +640,7 @@ void ProjectCentral::checkModel()
         std::string ID = Model.getID(*itModelItem);
 
         // check produced Vars
-        std::vector<openfluid::ware::SignatureHandledTypedDataItem>& ProdVars = Sign->HandledData.ProducedVars;
+        std::vector<openfluid::ware::SignatureTypedSpatialDataItem>& ProdVars = Sign->HandledData.ProducedVars;
 
         for (itData = ProdVars.begin(); itData != ProdVars.end(); ++itData)
         {
@@ -640,12 +648,12 @@ void ProjectCentral::checkModel()
           if (!Domain.isClassNameExists(itData->UnitClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
-                        .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
-                                    .arg(QString::fromStdString(itData->UnitClass))
-                                    .arg(QString::fromStdString(itData->DataName))
-                                    .arg(QString::fromStdString(ID)));
+                            .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
+                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(ID)));
           }
 
           if (!VarsUnits.count(std::make_pair(itData->UnitClass, itData->DataName)))
@@ -656,13 +664,13 @@ void ProjectCentral::checkModel()
           }
           else
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
-                        .addMessage(tr("Variable %1 on %2 produced by %3 cannot be created "
-                                       "because it is created by another simulator or generator")
-                                    .arg(QString::fromStdString(itData->DataName))
-                                    .arg(QString::fromStdString(itData->UnitClass))
-                                    .arg(QString::fromStdString(ID)));
+                            .addMessage(tr("Variable %1 on %2 produced by %3 cannot be created "
+                                "because it is created by another simulator or generator")
+                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(ID)));
           }
         }
 
@@ -674,12 +682,12 @@ void ProjectCentral::checkModel()
           if (!Domain.isClassNameExists(GenDesc->getUnitClass()) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(GenDesc->getUnitClass())))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
-                        .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
-                                    .arg(QString::fromStdString(GenDesc->getUnitClass()))
-                                    .arg(QString::fromStdString(GenDesc->getVariableName()))
-                                    .arg(QString::fromStdString(ID)));
+                            .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
+                                        .arg(QString::fromStdString(GenDesc->getUnitClass()))
+                                        .arg(QString::fromStdString(GenDesc->getVariableName()))
+                                        .arg(QString::fromStdString(ID)));
           }
 
           if (!VarsUnits.count(std::make_pair(GenDesc->getUnitClass(), GenDesc->getVariableName())))
@@ -691,30 +699,30 @@ void ProjectCentral::checkModel()
           }
           else
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
-                        .addMessage(tr("Variable %1 on %2 produced by %3 is already produced "
-                                       "by another simulator or generator")
-                                    .arg(QString::fromStdString(GenDesc->getVariableName()))
-                                    .arg(QString::fromStdString(GenDesc->getUnitClass()))
-                                    .arg(QString::fromStdString(ID)));
+                            .addMessage(tr("Variable %1 on %2 produced by %3 is already produced "
+                                "by another simulator or generator")
+                                        .arg(QString::fromStdString(GenDesc->getVariableName()))
+                                        .arg(QString::fromStdString(GenDesc->getUnitClass()))
+                                        .arg(QString::fromStdString(ID)));
           }
         }
 
         // check updated vars
-        std::vector<openfluid::ware::SignatureHandledTypedDataItem>& UpVars =
+        std::vector<openfluid::ware::SignatureTypedSpatialDataItem>& UpVars =
             Sign->HandledData.UpdatedVars;
         for (itData = UpVars.begin(); itData != UpVars.end(); ++itData)
         {
           if (!Domain.isClassNameExists(itData->UnitClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
-                        .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
-                                    .arg(QString::fromStdString(itData->UnitClass))
-                                    .arg(QString::fromStdString(itData->DataName))
-                                    .arg(QString::fromStdString(ID)));
+                            .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
+                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(ID)));
           }
 
           if (!VarsUnits.count(std::make_pair(itData->UnitClass, itData->DataName)))
@@ -731,7 +739,7 @@ void ProjectCentral::checkModel()
 
   // pass 2
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itModelItem = Items.begin();
-       itModelItem != Items.end(); ++itModelItem)
+      itModelItem != Items.end(); ++itModelItem)
   {
     if ((*itModelItem)->isEnabled())
     {
@@ -744,19 +752,19 @@ void ProjectCentral::checkModel()
         Sign = SignII->Signature;
 
         // check required Vars
-        std::vector<openfluid::ware::SignatureHandledTypedDataItem>& ReqVars = Sign->HandledData.RequiredVars;
+        std::vector<openfluid::ware::SignatureTypedSpatialDataItem>& ReqVars = Sign->HandledData.RequiredVars;
 
         for (itData = ReqVars.begin(); itData != ReqVars.end(); ++itData)
         {
           if (!Domain.isClassNameExists(itData->UnitClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
-                        .addMessage(tr("Unit class %1 does not exist for variable %2 required by %3")
-                                    .arg(QString::fromStdString(itData->UnitClass))
-                                    .arg(QString::fromStdString(itData->DataName))
-                                    .arg(QString::fromStdString(ID)));
+                            .addMessage(tr("Unit class %1 does not exist for variable %2 required by %3")
+                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(ID)));
           }
 
           if ((itData->DataType == openfluid::core::Value::NONE
@@ -765,13 +773,13 @@ void ProjectCentral::checkModel()
                   std::make_pair(itData->UnitClass,
                                  std::make_pair(itData->DataName, itData->DataType)))))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
-                        .addMessage(tr("Variable %1 on %2 required by %3 is not produced "
-                                       "by another simulator or generator")
-                                    .arg(QString::fromStdString(itData->DataName))
-                                    .arg(QString::fromStdString(itData->UnitClass))
-                                    .arg(QString::fromStdString(ID)));
+                            .addMessage(tr("Variable %1 on %2 required by %3 is not produced "
+                                           "by another simulator or generator")
+                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(ID)));
           }
         }
       }
@@ -781,7 +789,7 @@ void ProjectCentral::checkModel()
 
   if (!AtLeastOneEnabled)
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("No simulator or generator is enabled in model"));
   }
 }
@@ -814,7 +822,7 @@ void ProjectCentral::checkDatastore()
 
     if (!Class.empty() && !Classes.count(Class))
     {
-      m_CheckInfos.part(ProjectCheckInfos::PART_DATASTORE).setStatus(PRJ_WARNING);
+      m_CheckInfos.part(ProjectCheckInfos::PART_DATASTORE).updateStatus(PRJ_WARNING);
       m_CheckInfos.part(ProjectCheckInfos::PART_DATASTORE).addMessage(tr("Unit class %1 does not exist "
                                                                          "for datastore item %2")
                                                                       .arg(QString::fromStdString(Class))
@@ -850,7 +858,7 @@ void ProjectCentral::checkMonitoring()
 
       if (SignII == NULL)
       {
-        m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).setStatus(PRJ_ERROR);
+        m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).updateStatus(PRJ_ERROR);
         m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("Observer %1 is not available")
                                                                          .arg(QString::fromStdString((*itMonitoring)
                                                                                                          ->getID())));
@@ -861,7 +869,7 @@ void ProjectCentral::checkMonitoring()
 
   if (!AtLeastOneEnabled)
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).setStatus(PRJ_WARNING);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).updateStatus(PRJ_WARNING);
     m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("No observer is enabled in monitoring"));
   }
 }

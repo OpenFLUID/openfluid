@@ -66,9 +66,9 @@ BEGIN_SIMULATOR_SIGNATURE("tests.wrongprod")
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_PRODUCED_VAR("tests.wrongvector[vector]","TestUnits","wrong vector for tests","");
-  DECLARE_PRODUCED_VAR("tests.wrongscalar[double]","TestUnits","wrong scalar for tests","");
-  DECLARE_PRODUCED_VAR("tests.scalarok[double]","TestUnits","scalar OK for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.wrongvector[vector]","TestUnits","wrong vector for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.wrongscalar[double]","TestUnits","wrong scalar for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.scalarok[double]","TestUnits","scalar OK for tests","");
 
   DECLARE_SCHEDULING_DEFAULT;
 

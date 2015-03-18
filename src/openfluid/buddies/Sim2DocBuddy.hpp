@@ -121,7 +121,7 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
     SignatureData_t m_Events;
     SignatureData_t m_ExtraFiles;
 
-    openfluid::ware::SignatureHandledUnitsGraph m_UnitsGraph;
+    openfluid::ware::SignatureUnitsGraph m_UnitsGraph;
     openfluid::ware::SignatureTimeScheduling m_TimeScheduling;
 
     std::string extractBetweenTags(std::string Content, const std::string BeginTag, const std::string EndTag);
@@ -189,7 +189,7 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
       @param[out] UpdatedUnitsClass Vector of Units class
       @param[in] Attr Attribute of the new UnitsClass receiving the value
     */
-    void storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass,
+    void storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureUnitsClassItem> *UpdatedUnitsClass,
             int Attr);
 
     /**
@@ -245,9 +245,11 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
         /** List of parsing rules **/
         rule<ScannerT> blank, linemarker, endLine, escapedQuote, string, varName, element, parameters, signature,
                         IDRule, NameRule, DescriptionRule, VersionRule, StatusRule, DomainRule, AuthorRule,
-                        SimulatorParamRule, ProducedVarRule, UpdatedVarRule, RequiredVarRule, UsedVarRule,
+                        UsedParamRule, RequiredParamRule,
+                        ProducedVarRule, UpdatedVarRule, RequiredVarRule, UsedVarRule,
                         ProducedAttributeRule, RequiredAttributeRule, UsedAttributeRule,
-                        UsedEventsRule, UsedExtraFilesRule, RequiredExtraFilesRule,
+                        UsedEventsRule,
+                        UsedExtraFilesRule, RequiredExtraFilesRule,
                         UpdatedUnitsGraphRule, UpdatedUnitsClassRule;
 
         /**
@@ -275,8 +277,18 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
                     | str_p("DECLARE_METHOD") >> *blank >> '(' >> parameters >> ')' >> endLine
                     | str_p("DECLARE_AUTHOR") >> *blank >> '(' >> AuthorRule >> ')' >> endLine
 
-                    | str_p("DECLARE_SIMULATOR_PARAM") >> *blank >> '(' >> SimulatorParamRule >> ')' >> endLine
+                    | str_p("DECLARE_REQUIRED_PARAMETER") >> *blank >> '(' >> RequiredParamRule >> ')' >> endLine
+                    | str_p("DECLARE_USED_PARAMETER") >> *blank >> '(' >> UsedParamRule >> ')' >> endLine
 
+                    // for compatibility with deprecated macros
+                    | str_p("DECLARE_SIMULATOR_PARAM") >> *blank >> '(' >> UsedParamRule >> ')' >> endLine
+
+                    | str_p("DECLARE_PRODUCED_VARIABLE") >> *blank >> '(' >> ProducedVarRule >> ')' >> endLine
+                    | str_p("DECLARE_UPDATED_VARIABLE") >> *blank >> '(' >> UpdatedVarRule >> ')' >> endLine
+                    | str_p("DECLARE_REQUIRED_VARIABLE") >> *blank >> '(' >> RequiredVarRule >> ')' >> endLine
+                    | str_p("DECLARE_USED_VARIABLE") >> *blank >> '(' >> UsedVarRule >> ')' >> endLine
+
+                    // for compatibility with deprecated macros
                     | str_p("DECLARE_PRODUCED_VAR") >> *blank >> '(' >> ProducedVarRule >> ')' >> endLine
                     | str_p("DECLARE_UPDATED_VAR") >> *blank >> '(' >> UpdatedVarRule >> ')' >> endLine
                     | str_p("DECLARE_REQUIRED_VAR") >> *blank >> '(' >> RequiredVarRule >> ')' >> endLine
@@ -361,8 +373,12 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
              element[boost::bind(&Sim2DocBuddy::storeDataIntoVector, self.mp_Owner,
                                  &self.mp_Owner->m_SimAuthorsEmails)];
 
-          SimulatorParamRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey,
-                                                   self.mp_Owner, &self.mp_Owner->m_ParamsData, "")]
+          UsedParamRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey,
+                                              self.mp_Owner, &self.mp_Owner->m_ParamsData, "used")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData,
+                                                   self.mp_Owner, &self.mp_Owner->m_ParamsData)]);
+          RequiredParamRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey,
+                                                   self.mp_Owner, &self.mp_Owner->m_ParamsData, "required")]
                    >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData,
                                                    self.mp_Owner, &self.mp_Owner->m_ParamsData)]);
 

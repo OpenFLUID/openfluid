@@ -67,11 +67,11 @@ BEGIN_SIMULATOR_SIGNATURE("tests.generators")
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_REQUIRED_VAR("tests.fixed[double]","TestUnits","fixed value from generators for tests","");
-  DECLARE_REQUIRED_VAR("tests.random[double]","TestUnits","random value from generators for tests","");
-  DECLARE_REQUIRED_VAR("tests.interp[double]","TestUnits","interpolated value from generators for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.fixed[double]","TestUnits","fixed value from generators for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.random[double]","TestUnits","random value from generators for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.interp[double]","TestUnits","interpolated value from generators for tests","");
 
-  DECLARE_REQUIRED_VAR("tests.fixedprev[vector]","TestUnits",
+  DECLARE_REQUIRED_VARIABLE("tests.fixedprev[vector]","TestUnits",
                        "fixed value from generators at a previous time step for tests","");
 
 END_SIMULATOR_SIGNATURE

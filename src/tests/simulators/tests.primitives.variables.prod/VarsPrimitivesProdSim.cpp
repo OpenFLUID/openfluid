@@ -70,29 +70,29 @@ BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
 
 
 
-  DECLARE_PRODUCED_VAR("tests.double","TestUnits","double for tests","");
-  DECLARE_PRODUCED_VAR("tests.integer","TestUnits","integer for tests","");
-  DECLARE_PRODUCED_VAR("tests.bool","TestUnits","boolean for tests","");
-  DECLARE_PRODUCED_VAR("tests.string","TestUnits","string for tests","");
-  DECLARE_PRODUCED_VAR("tests.doubleval","TestUnits","double value for tests","");
-  DECLARE_PRODUCED_VAR("tests.integerval","TestUnits","integer value for tests","");
-  DECLARE_PRODUCED_VAR("tests.boolval","TestUnits","boolean value for tests","");
-  DECLARE_PRODUCED_VAR("tests.stringval","TestUnits","string value for tests","");
-  DECLARE_PRODUCED_VAR("tests.null","TestUnits","null for tests","");
-  DECLARE_PRODUCED_VAR("tests.vector","TestUnits","vector for tests","");
-  DECLARE_PRODUCED_VAR("tests.matrix","TestUnits","matrix for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.double","TestUnits","double for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.integer","TestUnits","integer for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.bool","TestUnits","boolean for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.string","TestUnits","string for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.doubleval","TestUnits","double value for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.integerval","TestUnits","integer value for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.boolval","TestUnits","boolean value for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.stringval","TestUnits","string value for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.null","TestUnits","null for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.vector","TestUnits","vector for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.matrix","TestUnits","matrix for tests","");
   DECLARE_PRODUCED_VAR("tests.map","TestUnits","map for tests","");
-  DECLARE_PRODUCED_VAR("tests.tree","TestUnits","tree for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.tree","TestUnits","tree for tests","");
 
-  DECLARE_PRODUCED_VAR("tests.typed.none","TestUnits","untyped for tests","");
-  DECLARE_PRODUCED_VAR("tests.typed.double[double]","TestUnits","double for tests","");
-  DECLARE_PRODUCED_VAR("tests.typed.integer[integer]","TestUnits","integer for tests","");
-  DECLARE_PRODUCED_VAR("tests.typed.bool[boolean]","TestUnits","boolean for tests","");
-  DECLARE_PRODUCED_VAR("tests.typed.string[string]","TestUnits","string for tests","");
-  DECLARE_PRODUCED_VAR("tests.typed.vector[vector]","TestUnits","vector for tests","");
-  DECLARE_PRODUCED_VAR("tests.typed.oldvector[]","TestUnits","old style vector for tests","");
-  DECLARE_PRODUCED_VAR("tests.typed.matrix[matrix]","TestUnits","matrix for tests","");
-  DECLARE_PRODUCED_VAR("tests.typed.map[map]","TestUnits","map for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.typed.none","TestUnits","untyped for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.typed.double[double]","TestUnits","double for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.typed.integer[integer]","TestUnits","integer for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.typed.bool[boolean]","TestUnits","boolean for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.typed.string[string]","TestUnits","string for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.typed.vector[vector]","TestUnits","vector for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.typed.oldvector[]","TestUnits","old style vector for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.typed.matrix[matrix]","TestUnits","matrix for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.typed.map[map]","TestUnits","map for tests","");
   DECLARE_PRODUCED_VAR("tests.typed.tree[tree]","TestUnits","tree for tests","");
 
 END_SIMULATOR_SIGNATURE

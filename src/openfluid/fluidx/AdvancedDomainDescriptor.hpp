@@ -164,12 +164,13 @@ class OPENFLUID_API AdvancedDomainDescriptor
     unsigned int getUnitsCount() const;
 
     /**
-     * @details Add this UnitDesc ID to the descriptor for all attributes of this UnitDesc class,
-     * with a default value of "-"
-     * @warning Invalidate UnitDesc
-     * @throw openfluid::base::FrameworkException if Unit already exists or if Unit has a relation with a non-existent Unit
-     * @param UnitDesc
-     */
+      @details Add this UnitDesc ID to the descriptor for all attributes of this UnitDesc class,
+      with a default value of "-"
+      @warning Invalidate UnitDesc
+      @throw openfluid::base::FrameworkException if Unit already exists or if Unit has a relation
+      with a non-existent Unit
+      @param UnitDesc
+    */
     void addUnit(openfluid::fluidx::SpatialUnitDescriptor* UnitDesc);
 
     /**
@@ -292,9 +293,10 @@ class OPENFLUID_API AdvancedDomainDescriptor
                                 const openfluid::core::UnitClassID_t ChildUnit);
 
     /**
-     * @brief Remove ChildUnit from the list of "Children" of ParentUnit
-     * @throw openfluid::base::FrameworkException if ParentUnit or ChildUnit doesn't exist or if the relation doesn't exists
-     */
+      @brief Remove ChildUnit from the list of "Children" of ParentUnit
+      @throw openfluid::base::FrameworkException if ParentUnit or ChildUnit doesn't exist
+      or if the relation doesn't exists
+    */
     void removeParentChildRelation(
         const openfluid::core::UnitClassID_t ParentUnit,
         const openfluid::core::UnitClassID_t ChildUnit);

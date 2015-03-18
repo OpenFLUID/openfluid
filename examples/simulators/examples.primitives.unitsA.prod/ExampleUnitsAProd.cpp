@@ -64,10 +64,10 @@ BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.prod")
   DECLARE_METHOD("");
   DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
 
-  DECLARE_REQUIRED_VAR("var3","unitsA","the variable 3","");
+  DECLARE_REQUIRED_VARIABLE("var3","unitsA","the variable 3","");
   
-  DECLARE_PRODUCED_VAR("var1","unitsA","the variable 1","");
-  DECLARE_PRODUCED_VAR("var2","unitsA","the variable 2","");
+  DECLARE_PRODUCED_VARIABLE("var1","unitsA","the variable 1","");
+  DECLARE_PRODUCED_VARIABLE("var2","unitsA","the variable 2","");
   
   DECLARE_REQUIRED_ATTRIBUTE("inivar1","unitsA","the attribute inivar1","");
 

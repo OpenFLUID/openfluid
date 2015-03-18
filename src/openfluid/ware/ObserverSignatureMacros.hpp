@@ -29,38 +29,39 @@
   
 */
 
-
 /**
-  @file ObserverSignature.hpp
+  @file ObserverSignatureMacros.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__
-#define __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__
-
-#include <openfluid/config.hpp>
-#include <openfluid/dllexport.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/ware/WareSignature.hpp>
+#ifndef __OPENFLUID_WARE_OBSERVERSIGNATUREMACROS_HPP__
+#define __OPENFLUID_WARE_OBSERVERSIGNATUREMACROS_HPP__
 
 
-namespace openfluid { namespace ware {
+#include <openfluid/ware/WareSignatureMacros.hpp>
 
 
-class OPENFLUID_API ObserverSignature : public WareSignature
-{
-
-  public:
-
-    ObserverSignature() : WareSignature()
-      {}
-
-};
-
-
-} }  // namespaces
+/**
+  Macro for the beginning of definition of observer hook
+*/
+#define BEGIN_OBSERVER_SIGNATURE(id) \
+  extern "C" { \
+    OPENFLUID_PLUGIN openfluid::ware::ObserverSignature* WARESIGNATURE_PROC_DECL() \
+    { \
+      openfluid::ware::ObserverSignature* Signature = new openfluid::ware::ObserverSignature(); \
+      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+      Signature->ID = (id);
 
 
-#endif /* __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__ */
+/**
+  Macro for the end of definition of signature hook
+*/
+#define END_OBSERVER_SIGNATURE \
+      return Signature; \
+    } \
+  }
+
+
+#endif /* __OPENFLUID_WARE_OBSERVERSIGNATUREMACROS_HPP__ */

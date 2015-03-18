@@ -67,8 +67,8 @@ DECLARE_AUTHOR("Michael Rabotin","rabotin@supagro.inra.fr");
 
 
 
-DECLARE_PRODUCED_VAR("examples.TLU.S.state","TLU","traffic light unit state ","");
-DECLARE_PRODUCED_VAR("examples.TLU.T.changeTime","TLU","traffic light unit state changing time","");
+DECLARE_PRODUCED_VARIABLE("examples.TLU.S.state","TLU","traffic light unit state ","");
+DECLARE_PRODUCED_VARIABLE("examples.TLU.T.changeTime","TLU","traffic light unit state changing time","");
 DECLARE_REQUIRED_ATTRIBUTE("state","TLU","","-");
 DECLARE_REQUIRED_ATTRIBUTE("duration","TLU","","-");
 

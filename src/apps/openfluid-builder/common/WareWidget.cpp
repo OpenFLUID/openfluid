@@ -300,7 +300,7 @@ bool WareWidget::addParameterWidget(const QString& Name, const QString& Value)
 {
   ParameterWidget* ParamWidget = new ParameterWidget(this,
                                                      Name,Value,
-                                                     QString::fromStdString(""),true);
+                                                     QString::fromStdString(""),false,true);
 
   connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
           this, SLOT(updateParameterValue(const QString&,const QString&)));

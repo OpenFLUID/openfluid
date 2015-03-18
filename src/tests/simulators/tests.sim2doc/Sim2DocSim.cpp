@@ -91,8 +91,8 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
   DECLARE_AUTHOR("JC Fabre","jean-christophe.fabre@supagro.inra.fr");
   DECLARE_AUTHOR("Manuel Chataigner","manuel.chataigner@supagro.inra.fr");
 
-  DECLARE_SIMULATOR_PARAM("testparam","a param just for test","kg/m3")
-  DECLARE_SIMULATOR_PARAM("dummy_param","a dummy param just for test","snail/m2")
+  DECLARE_USED_PARAMETER("testparam","a param just for test","kg/m3")
+  DECLARE_USED_PARAMETER("dummy_param","a dummy param just for test","snail/m2")
 
 
   /**
@@ -103,15 +103,15 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
   */
 
 
-  DECLARE_PRODUCED_VAR("tests.prodvector[]","TestUnits","produced vector on TestUnits","");
-  DECLARE_PRODUCED_VAR("tests.prodscalar","TestUnits","produced scalar on TestUnits","joker/batman");
+  DECLARE_PRODUCED_VARIABLE("tests.prodvector[]","TestUnits","produced vector on TestUnits","");
+  DECLARE_PRODUCED_VARIABLE("tests.prodscalar","TestUnits","produced scalar on TestUnits","joker/batman");
 
-  DECLARE_UPDATED_VAR("tests.updscalar","TestUnits","updated scalar on TestUnits","");
+  DECLARE_UPDATED_VARIABLE("tests.updscalar","TestUnits","updated scalar on TestUnits","");
 
-  DECLARE_REQUIRED_VAR("tests.reqvector[]","TestUnits","required vector on TestUnits","m2");
-  DECLARE_REQUIRED_VAR("tests.reqscalar","TestUnits","required scalar on TestUnits","");
+  DECLARE_REQUIRED_VARIABLE("tests.reqvector[]","TestUnits","required vector on TestUnits","m2");
+  DECLARE_REQUIRED_VARIABLE("tests.reqscalar","TestUnits","required scalar on TestUnits","");
 
-  DECLARE_USED_VAR("tests.usedscalar","TestUnits","used scalar on TestUnits","");
+  DECLARE_USED_VARIABLE("tests.usedscalar","TestUnits","used scalar on TestUnits","");
 
   DECLARE_PRODUCED_ATTRIBUTE("attr1","TestUnits","a description","")
   DECLARE_REQUIRED_ATTRIBUTE("indataA","TestUnits","required attribute A on TestUnits","m")

@@ -76,17 +76,20 @@ SimulatorWidget::~SimulatorWidget()
 
 void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
+  // TODO take Required/Used params into account
+
   clearParameterWidgets();
 
-  std::vector<openfluid::ware::SignatureHandledDataItem>* SignParams =
-      &(Signature->Signature->HandledData.SimulatorParams);
+  std::vector<openfluid::ware::SignatureDataItem>* UsedParams = &(Signature->Signature->HandledData.UsedParams);
+  std::vector<openfluid::ware::SignatureDataItem>* RequiredParams = &(Signature->Signature->HandledData.RequiredParams);
 
   openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
 
   QStringList ParamsInSign;
 
-  for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it = SignParams->begin();
-       it != SignParams->end(); ++it)
+  // Required params
+
+  for (auto it = RequiredParams->begin(); it != RequiredParams->end(); ++it)
   {
     std::string ParamName = (*it).DataName;
     QString ParamValue = "";
@@ -96,7 +99,8 @@ void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine
 
     ParameterWidget* ParamWidget = new ParameterWidget(this,
                                                        QString::fromStdString(ParamName),ParamValue,
-                                                       QString::fromStdString((*it).DataUnit));
+                                                       QString::fromStdString((*it).DataUnit),
+                                                       true,false);
 
     connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
             this, SLOT(updateParameterValue(const QString&,const QString&)));
@@ -107,6 +111,32 @@ void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine
   }
 
 
+  // Used params
+
+  for (auto it = UsedParams->begin(); it != UsedParams->end(); ++it)
+  {
+    std::string ParamName = (*it).DataName;
+    QString ParamValue = "";
+
+    if (DescParams.find(ParamName) != DescParams.end())
+      ParamValue = QString::fromStdString(DescParams[ParamName]);
+
+    ParameterWidget* ParamWidget = new ParameterWidget(this,
+                                                       QString::fromStdString(ParamName),ParamValue,
+                                                       QString::fromStdString((*it).DataUnit),
+                                                       false,false);
+
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+            this, SLOT(updateParameterValue(const QString&,const QString&)));
+
+    ParamsInSign << QString::fromStdString(ParamName);
+
+    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
+  }
+
+
+  // Other params not in signature
+
   for (openfluid::ware::WareParams_t::iterator it = DescParams.begin();it != DescParams.end(); ++it)
   {
     if (!ParamsInSign.contains(QString::fromStdString((*it).first)))
@@ -114,7 +144,8 @@ void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine
       ParameterWidget* ParamWidget =
           new ParameterWidget(this,
                               QString::fromStdString((*it).first),QString::fromStdString((*it).second),
-                              QString::fromStdString(""),true);
+                              QString::fromStdString(""),
+                              false,true);
 
       connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
               this, SLOT(updateParameterValue(const QString&,const QString&)));

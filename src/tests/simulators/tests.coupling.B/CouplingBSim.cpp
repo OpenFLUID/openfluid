@@ -66,7 +66,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.coupling.B")
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_PRODUCED_VAR("varB","TestUnits","","");
+  DECLARE_PRODUCED_VARIABLE("varB","TestUnits","","");
 
 END_SIMULATOR_SIGNATURE
 

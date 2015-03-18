@@ -74,7 +74,8 @@ class ParameterWidget : public QWidget
     ParameterWidget(QWidget* Parent,
                     const QString& Name, const QString& Value,
                     const QString& SIUnit,
-                    bool Removable = false);
+                    bool Required,
+                    bool Removable);
 
     ~ParameterWidget();
 

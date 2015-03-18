@@ -66,7 +66,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.coupling.C")
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_PRODUCED_VAR("varC","TestUnits","","");
+  DECLARE_PRODUCED_VARIABLE("varC","TestUnits","","");
 
   DECLARE_SCHEDULING_RANGE(34,60);
 

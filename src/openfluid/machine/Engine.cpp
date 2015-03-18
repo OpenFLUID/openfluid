@@ -190,7 +190,6 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
   {
     (*UnitIter).variables()->createVariable(VarName,VarType);
   }
-
 }
 
 
@@ -286,8 +285,35 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+void Engine::checkParametersConsistency()
+{
+
+  for (ModelItemInstance* IInstance : m_ModelInstance.items())
+  {
+    for (openfluid::ware::SignatureDataItem Param : IInstance->Signature->HandledData.RequiredParams)
+    {
+      auto it = IInstance->Params.find(Param.DataName);
+      if (it == IInstance->Params.end())
+        throw openfluid::base::FrameworkException("Engine::checkParametersConsistency",
+                                                  "Cannot find parameter " + Param.DataName +
+                                                  " required by " + IInstance->Signature->ID);
+      else if ((*it).second.size() == 0)
+        throw openfluid::base::FrameworkException("Engine::checkParametersConsistency",
+                                                  "Parameter " + Param.DataName +
+                                                  " required by " + IInstance->Signature->ID + " is empty");
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void Engine::checkModelConsistency()
 {
@@ -352,9 +378,9 @@ void Engine::checkModelConsistency()
 
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 
 
 void Engine::checkAttributesConsistency()
@@ -388,6 +414,7 @@ void Engine::checkAttributesConsistency()
   }
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -497,6 +524,7 @@ void Engine::initParams()
 // =====================================================================
 // =====================================================================
 
+
 void Engine::prepareData()
 {
   try
@@ -520,8 +548,10 @@ void Engine::prepareData()
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void Engine::checkConsistency()
 {
@@ -533,6 +563,8 @@ void Engine::checkConsistency()
       throw openfluid::base::FrameworkException("Engine::checkConsistency","No simulator in model");
 
     checkExtraFilesConsistency();
+
+    checkParametersConsistency();
 
     checkModelConsistency();
 

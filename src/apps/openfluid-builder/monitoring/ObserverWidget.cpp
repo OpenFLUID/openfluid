@@ -151,7 +151,8 @@ void ObserverWidget::updateParametersList()
     ParameterWidget* ParamWidget =
         new ParameterWidget(this,
                             QString::fromStdString((*it).first),QString::fromStdString((*it).second),
-                            QString::fromStdString(""),true);
+                            QString::fromStdString(""),
+                            false,true);
 
     connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
             this, SLOT(updateParameterValue(const QString&,const QString&)));

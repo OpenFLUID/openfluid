@@ -49,224 +49,6 @@
 
 
 
-// =====================================================================
-// =====================================================================
-
-
-/**
-  Macro for the beginning of definition of signature hook
-*/
-#define BEGIN_SIMULATOR_SIGNATURE(id) \
-  extern "C" { \
-    OPENFLUID_PLUGIN openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL() \
-    { \
-      openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature(); \
-      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
-      Signature->ID = (id);
-
-
-/**
-  Macro for the end of definition of signature hook
-*/
-#define END_SIMULATOR_SIGNATURE \
-      return Signature; \
-    } \
-  }
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-  Macro for declaration of the simulator application domain
-*/
-#define DECLARE_DOMAIN(domain) Signature->Domain = domain;
-
-/**
-  Macro for declaration of the simulator application processes
-*/
-#define DECLARE_PROCESS(process) Signature->Process = process;
-
-/**
-  Macro for declaration of the simulator application numerical method
-*/
-#define DECLARE_METHOD(method) Signature->Method = method;
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-  Macro for declaration of a simulator parameter
-  @param[in] name name of the parameter
-  @param[in] description description of the parameter
-  @param[in] unit unit of the parameter. Could be an empty string if there is no unit
-*/
-#define DECLARE_SIMULATOR_PARAM(name,description,unit) \
-  Signature->HandledData.SimulatorParams\
-  .push_back(openfluid::ware::SignatureHandledDataItem((name),(""),description,unit));
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-  Macro for declaration of a produced variable
-  @param[in] name name of the variable
-  @param[in] uclass class of the concerned units
-  @param[in] description description of the variable
-  @param[in] unit unit of the variable. Could be an empty string if there is no unit
-*/
-#define DECLARE_PRODUCED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.ProducedVars\
-  .push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
-
-/**
-  Macro for declaration of an updated variable
-  @param[in] name name of the variable
-  @param[in] uclass class of the concerned units
-  @param[in] description description of the variable
-  @param[in] unit unit of the variable. Could be an empty string if there is no unit
-*/
-#define DECLARE_UPDATED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.UpdatedVars\
-  .push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
-
-/**
-  Macro for declaration of a required variable
-  @param[in] name name of the variable
-  @param[in] uclass class of the concerned units
-  @param[in] description description of the variable
-  @param[in] unit unit of the variable. Could be an empty string if there is no unit
-*/
-#define DECLARE_REQUIRED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.RequiredVars\
-  .push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
-
-
-/**
-  Macro for declaration of an used variable
-  @param[in] name name of the variable
-  @param[in] uclass class of the concerned units
-  @param[in] description description of the variable
-  @param[in] unit unit of the variable. Could be an empty string if there is no unit
-*/
-#define DECLARE_USED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.UsedVars\
-  .push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
-
-
-/**
-  Macro for declaration of a produced attribute
-  @param[in] name name of the attribute
-  @param[in] uclass class of the concerned units
-  @param[in] description description of the attribute
-  @param[in] unit unit of the attribute. Could be an empty string if there is no unit
-*/
-#define DECLARE_PRODUCED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.ProducedAttribute\
-  .push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
-
-/**
-  Macro for declaration of a required attribute
-  @param[in] name name of the attribute
-  @param[in] uclass class of the concerned units
-  @param[in] description description of the attribute
-  @param[in] unit unit of the attribute. Could be an empty string if there is no unit
-*/
-#define DECLARE_REQUIRED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.RequiredAttribute\
-  .push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
-
-/**
-  Macro for declaration of a used attribute
-  @param[in] name name of the attribute
-  @param[in] uclass class of the concerned units
-  @param[in] description description of the attribute
-  @param[in] unit unit of the attribute. Could be an empty string if there is no unit
-*/
-#define DECLARE_USED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.UsedAttribute\
-  .push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
-
-/**
-  Macro for declaration of used events
-  @param[in] uclass class of the concerned units
-*/
-#define DECLARE_USED_EVENTS(uclass) Signature->HandledData.UsedEventsOnUnits.push_back(uclass);
-
-
-
-/**
-  Macro for declaration of units graph modification
-  @param[in] description description of modification
-
-*/
-#define DECLARE_UPDATED_UNITSGRAPH(description) Signature->HandledUnitsGraph.UpdatedUnitsGraph = (description);
-
-
-/**
-  Macro for declaration of units class creation or update
-  @param[in] uclass name of the created or updated class
-  @param[in] description description of the updated class
-
-*/
-#define DECLARE_UPDATED_UNITSCLASS(uclass,description) \
-    Signature->HandledUnitsGraph.UpdatedUnitsClass\
-    .push_back(openfluid::ware::SignatureHandledUnitsClassItem(uclass,description));
-
-
-/**
-  Macro for declaration of required file
-  @param[in] name name of the file
-*/
-#define DECLARE_REQUIRED_EXTRAFILE(name) \
-  Signature->HandledData.RequiredExtraFiles.push_back(name);
-
-/**
-  Macro for declaration of used file
-  @param[in] name name of the file
-*/
-#define DECLARE_USED_EXTRAFILE(name) \
-  Signature->HandledData.UsedExtraFiles.push_back(name);
-
-/**
-  Macro for declaration of time scheduling as undefined
-*/
-#define DECLARE_SCHEDULING_UNDEFINED \
-  Signature->TimeScheduling.setAsUndefined();
-
-/**
-  Macro for declaration of time scheduling as default delta T
-*/
-#define DECLARE_SCHEDULING_DEFAULT \
-  Signature->TimeScheduling.setAsDefaultDeltaT();
-
-/**
-  Macro for declaration of fixed time scheduling
-  @param[in] deltat fixed time scheduling value
-*/
-#define DECLARE_SCHEDULING_FIXED(deltat) \
-  Signature->TimeScheduling.setAsFixed(deltat);
-
-/**
-  Macro for declaration of range of time scheduling
-  @param[in] min minimal time scheduling value
-  @param[in] max maximal time scheduling value
-*/
-#define DECLARE_SCHEDULING_RANGE(min,max) \
-  Signature->TimeScheduling.setAsRange(min,max);
-
-
-// =====================================================================
-// =====================================================================
-
-
-
 namespace openfluid { namespace ware {
 
 
@@ -284,58 +66,60 @@ typedef std::string SimDomain_t;
 /**
 Class for storage of the definition of data handled by the simulator.
 */
-class OPENFLUID_API SignatureHandledDataItem
+class OPENFLUID_API SignatureDataItem
 {
   public:
 
     std::string DataName;
-    openfluid::core::UnitClass_t UnitClass;
     std::string Description;
     std::string DataUnit;
 
-    SignatureHandledDataItem() :
-      DataName(""),UnitClass(""),Description(""),DataUnit("") {}
+    SignatureDataItem() :
+      DataName(""),Description(""),DataUnit("")
+    {  }
 
-    SignatureHandledDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
-        std::string DDescription, std::string DUnit) :
-          DataName(DName),UnitClass(UClass),Description(DDescription),DataUnit(DUnit) {}
-
+    SignatureDataItem(std::string DName, std::string DDescription, std::string DUnit) :
+          DataName(DName),Description(DDescription),DataUnit(DUnit)
+    {  }
 };
+
+
+
+/**
+Class for storage of the definition of data handled by the simulator.
+*/
+class OPENFLUID_API SignatureSpatialDataItem : public SignatureDataItem
+{
+  public:
+
+    openfluid::core::UnitClass_t UnitClass;
+
+    SignatureSpatialDataItem() :
+      SignatureDataItem(), UnitClass("")
+    {  }
+
+    SignatureSpatialDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
+        std::string DDescription, std::string DUnit) :
+          SignatureDataItem(DName,DDescription,DUnit),UnitClass(UClass)
+    {  }
+};
+
 
 /**
 Class for storage of the definition of typed data handled by the simulator.
 */
-class OPENFLUID_API SignatureHandledTypedDataItem : public SignatureHandledDataItem
+class OPENFLUID_API SignatureTypedSpatialDataItem : public SignatureSpatialDataItem
 {
 
   public:
 
     openfluid::core::Value::Type DataType;
 
-    SignatureHandledTypedDataItem() :
-      SignatureHandledDataItem(), DataType(openfluid::core::Value::NONE) {}
+    SignatureTypedSpatialDataItem() :
+      SignatureSpatialDataItem(), DataType(openfluid::core::Value::NONE) {}
 
-    SignatureHandledTypedDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
+    SignatureTypedSpatialDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
         std::string DDescription, std::string DUnit);
-};
-
-
-/**
-  Class for storage of the definition of spatial units handled by the simulator.
-*/
-class OPENFLUID_API SignatureHandledUnitsClassItem
-{
-  public:
-
-    openfluid::core::UnitClass_t UnitsClass;
-    std::string Description;
-
-    SignatureHandledUnitsClassItem() :
-      UnitsClass(""),Description("") {}
-
-    SignatureHandledUnitsClassItem(openfluid::core::UnitClass_t UClass,
-        std::string DDescription) :
-          UnitsClass(UClass),Description(DDescription) {}
 };
 
 
@@ -346,21 +130,23 @@ class OPENFLUID_API SignatureHandledData
 {
   public:
 
-    std::vector<SignatureHandledTypedDataItem> ProducedVars;
+    std::vector<SignatureDataItem> UsedParams;
 
-    std::vector<SignatureHandledTypedDataItem> UpdatedVars;
+    std::vector<SignatureDataItem> RequiredParams;
 
-    std::vector<SignatureHandledTypedDataItem> RequiredVars;
+    std::vector<SignatureTypedSpatialDataItem> ProducedVars;
 
-    std::vector<SignatureHandledTypedDataItem> UsedVars;
+    std::vector<SignatureTypedSpatialDataItem> UpdatedVars;
 
-    std::vector<SignatureHandledDataItem> SimulatorParams;
+    std::vector<SignatureTypedSpatialDataItem> RequiredVars;
 
-    std::vector<SignatureHandledDataItem> ProducedAttribute;
+    std::vector<SignatureTypedSpatialDataItem> UsedVars;
 
-    std::vector<SignatureHandledDataItem> RequiredAttribute;
+    std::vector<SignatureSpatialDataItem> ProducedAttribute;
 
-    std::vector<SignatureHandledDataItem> UsedAttribute;
+    std::vector<SignatureSpatialDataItem> RequiredAttribute;
+
+    std::vector<SignatureSpatialDataItem> UsedAttribute;
 
     std::vector<std::string> RequiredExtraFiles;
 
@@ -377,15 +163,34 @@ class OPENFLUID_API SignatureHandledData
 };
 
 
-class OPENFLUID_API SignatureHandledUnitsGraph
+/**
+  Class for storage of the definition of spatial units handled by the simulator.
+*/
+class OPENFLUID_API SignatureUnitsClassItem
+{
+  public:
+
+    openfluid::core::UnitClass_t UnitsClass;
+    std::string Description;
+
+    SignatureUnitsClassItem() :
+      UnitsClass(""),Description("") {}
+
+    SignatureUnitsClassItem(openfluid::core::UnitClass_t UClass,
+        std::string DDescription) :
+          UnitsClass(UClass),Description(DDescription) {}
+};
+
+
+class OPENFLUID_API SignatureUnitsGraph
 {
   public:
 
     std::string UpdatedUnitsGraph;
 
-    std::vector<SignatureHandledUnitsClassItem> UpdatedUnitsClass;
+    std::vector<SignatureUnitsClassItem> UpdatedUnitsClass;
 
-    SignatureHandledUnitsGraph()
+    SignatureUnitsGraph()
     {
       UpdatedUnitsGraph.clear();
     }
@@ -472,7 +277,7 @@ class OPENFLUID_API SimulatorSignature : public WareSignature
     /**
     Handled units graph
     */
-    SignatureHandledUnitsGraph HandledUnitsGraph;
+    SignatureUnitsGraph HandledUnitsGraph;
 
     /**
       Time scheduling

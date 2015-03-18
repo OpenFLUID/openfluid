@@ -68,15 +68,15 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.fire.prod-spread")
   DECLARE_METHOD("wind coefficient, stock quantity and type");
   DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
 
-  DECLARE_SIMULATOR_PARAM("ignitionunits","semicolon separated list of land units IDs where the fire ignites","-")
+  DECLARE_USED_PARAMETER("ignitionunits","semicolon separated list of land units IDs where the fire ignites","-")
 
   DECLARE_REQUIRED_ATTRIBUTE("stockini","LU","Initial stock quantity available on the land unit","-");
   DECLARE_REQUIRED_ATTRIBUTE("landcover","LU","Land cover code for the land unit","-");
 
-  DECLARE_REQUIRED_VAR("gas.atm.V.windspeed","AU","Wind speed","m/s");
+  DECLARE_REQUIRED_VARIABLE("gas.atm.V.windspeed","AU","Wind speed","m/s");
 
-  DECLARE_PRODUCED_VAR("fire.surf.Q.stocklevel[integer]","LU","Quantity of stock remaining on the land unit","-");
-  DECLARE_PRODUCED_VAR("fire.surf.Q.stockratio[double]","LU","Ratio of stock remaining on the land unit","-");
+  DECLARE_PRODUCED_VARIABLE("fire.surf.Q.stocklevel[integer]","LU","Quantity of stock remaining on the land unit","-");
+  DECLARE_PRODUCED_VARIABLE("fire.surf.Q.stockratio[double]","LU","Ratio of stock remaining on the land unit","-");
 
   DECLARE_SCHEDULING_DEFAULT;
 

@@ -29,38 +29,47 @@
   
 */
 
-
 /**
-  @file ObserverSignature.hpp
+  @file WareSignatureMacros.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__
-#define __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__
 
-#include <openfluid/config.hpp>
-#include <openfluid/dllexport.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/ware/WareSignature.hpp>
+#ifndef __OPENFLUID_WARE_WARESIGNATUREMACROS_HPP__
+#define __OPENFLUID_WARE_WARESIGNATUREMACROS_HPP__
 
 
-namespace openfluid { namespace ware {
+/**
+  Macro for declaration of the ware name
+*/
+#define DECLARE_NAME(name) Signature->Name = name;
+
+/**
+  Macro for declaration of the ware description
+*/
+#define DECLARE_DESCRIPTION(desc) Signature->Description = desc;
+
+/**
+  Macro for declaration of the ware author name and email
+*/
+#define DECLARE_AUTHOR(name,email) Signature->Authors.push_back(std::make_pair((name),(email)));
+
+/**
+  Macro for declaration of the ware version
+*/
+#define DECLARE_VERSION(version) Signature->Version = version;
+
+/**
+  Macro for declaration of the ware status
+*/
+#define DECLARE_STATUS(status) Signature->Status = status;
+
+/**
+  Macro for declaration of ABI version used to build the ware
+*/
+#define DECLARE_SDKVERSION Signature->setABIVersion(openfluid::config::FULL_VERSION);
 
 
-class OPENFLUID_API ObserverSignature : public WareSignature
-{
-
-  public:
-
-    ObserverSignature() : WareSignature()
-      {}
-
-};
-
-
-} }  // namespaces
-
-
-#endif /* __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__ */
+#endif /* __OPENFLUID_WARE_WARESIGNATUREMACROS_HPP__ */

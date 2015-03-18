@@ -72,7 +72,7 @@ QStringList ProjectPartCheckInfos::getMessages() const
 // =====================================================================
 
 
-void ProjectPartCheckInfos::setStatus(ProjectStatusLevel Level)
+void ProjectPartCheckInfos::updateStatus(ProjectStatusLevel Level)
 {
   if (Level > m_Status) m_Status = Level;
 }

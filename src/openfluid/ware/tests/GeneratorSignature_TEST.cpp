@@ -46,38 +46,58 @@
 
 #include <openfluid/ware/GeneratorSignature.hpp>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 {
   openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Fixed);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Fixed values");
-  BOOST_CHECK_EQUAL(Sign.HandledData.SimulatorParams.size(),2);
+  BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),1);
+  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),1);
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
   openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Random);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Random values");
-  BOOST_CHECK_EQUAL(Sign.HandledData.SimulatorParams.size(),3);
+  BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
+  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),1);
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 {
   openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Values from file interpolation");
-  BOOST_CHECK_EQUAL(Sign.HandledData.SimulatorParams.size(),4);
+  BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
+  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),2);
 }
+
 
 // =====================================================================
 // =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(test_InjectGeneratorConstructor)
+{
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Inject);
+
+  BOOST_CHECK_EQUAL(Sign.ID,"Values from file injection");
+  BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
+  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),2);
+}

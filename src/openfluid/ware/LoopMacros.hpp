@@ -37,9 +37,8 @@
  */
 
 
-#ifndef __OPENFLUID_BASE_LOOPMACROS_HPP__
-#define __OPENFLUID_BASE_LOOPMACROS_HPP__
-
+#ifndef __OPENFLUID_WARE_LOOPMACROS_HPP__
+#define __OPENFLUID_WARE_LOOPMACROS_HPP__
 
 
 // =====================================================================
@@ -131,4 +130,4 @@
 // =====================================================================
 
 
-#endif /* __OPENFLUID_BASE_LOOPMACROS_HPP__ */
+#endif /* __OPENFLUID_WARE_LOOPMACROS_HPP__ */

@@ -69,15 +69,15 @@ BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_SIMULATOR_PARAM ("strparam","=strvalue","-");
-  DECLARE_SIMULATOR_PARAM ("doubleparam","=0.1","-");
-  DECLARE_SIMULATOR_PARAM ("longparam","=10","-");
-  DECLARE_SIMULATOR_PARAM ("boolparam","=true","-");
-  DECLARE_SIMULATOR_PARAM ("strarrayparam","=strvalue1;strvalue2;strvalue3","-");
-  DECLARE_SIMULATOR_PARAM ("doublearrayparam","=1.1;1.3;1.3;1.4","-");
-  DECLARE_SIMULATOR_PARAM ("longarrayparam","=11;12;13;14;15","-");
-  DECLARE_SIMULATOR_PARAM ("matrixparam","=1.1;1.2|2.1;2.2|3.1;3.2","-");
-  DECLARE_SIMULATOR_PARAM ("mapparam","=key1=1.1;key2=a string;key3=true","-");
+  DECLARE_USED_PARAMETER("strparam","=strvalue","-");
+  DECLARE_REQUIRED_PARAMETER("doubleparam","=0.1","-");
+  DECLARE_REQUIRED_PARAMETER("longparam","=10","-");
+  DECLARE_REQUIRED_PARAMETER("boolparam","=true","-");
+  DECLARE_REQUIRED_PARAMETER("strarrayparam","=strvalue1;strvalue2;strvalue3","-");
+  DECLARE_REQUIRED_PARAMETER("doublearrayparam","=1.1;1.3;1.3;1.4","-");
+  DECLARE_REQUIRED_PARAMETER("longarrayparam","=11;12;13;14;15","-");
+  DECLARE_REQUIRED_PARAMETER("matrixparam","=1.1;1.2|2.1;2.2|3.1;3.2","-");
+  DECLARE_SIMULATOR_PARAM("mapparam","=key1=1.1;key2=a string;key3=true","-");
 
 END_SIMULATOR_SIGNATURE
 

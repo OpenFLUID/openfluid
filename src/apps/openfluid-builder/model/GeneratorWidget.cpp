@@ -55,6 +55,7 @@ GeneratorWidget::GeneratorWidget(QWidget* Parent,
   WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_GENERATOR_BGCOLOR, Index),mp_Desc(Desc), mp_SignInstance(SignInstance)
 {
   ui->AddParamButton->setVisible(false);
+  ui->ParameterizationSwitchLabel->setVisible(false);
 
   refresh();
 }
@@ -75,13 +76,13 @@ GeneratorWidget::~GeneratorWidget()
 
 void GeneratorWidget::updateParams()
 {
-  std::vector<openfluid::ware::SignatureHandledDataItem>* SignParams =
-      &(mp_SignInstance->Signature->HandledData.SimulatorParams);
-
   openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
 
-  for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it = SignParams->begin();
-       it != SignParams->end(); ++it)
+  // required parameters
+  std::vector<openfluid::ware::SignatureDataItem>* RequiredParams =
+      &(mp_SignInstance->Signature->HandledData.RequiredParams);
+
+  for (auto it = RequiredParams->begin(); it != RequiredParams->end(); ++it)
   {
     std::string ParamName = (*it).DataName;
     QString ParamValue = "";
@@ -91,7 +92,32 @@ void GeneratorWidget::updateParams()
 
     ParameterWidget* ParamWidget = new ParameterWidget(this,
                                                        QString::fromStdString(ParamName),ParamValue,
-                                                       QString::fromStdString((*it).DataUnit));
+                                                       QString::fromStdString((*it).DataUnit),
+                                                       true,false);
+
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this,
+            SLOT(updateParamValue(const QString&,const QString&)));
+
+    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
+  }
+
+
+  // used parameters
+  std::vector<openfluid::ware::SignatureDataItem>* UsedParams =
+      &(mp_SignInstance->Signature->HandledData.UsedParams);
+
+  for (auto it = UsedParams->begin(); it != UsedParams->end(); ++it)
+  {
+    std::string ParamName = (*it).DataName;
+    QString ParamValue = "";
+
+    if (DescParams.find(ParamName) != DescParams.end())
+      ParamValue = QString::fromStdString(DescParams[ParamName]);
+
+    ParameterWidget* ParamWidget = new ParameterWidget(this,
+                                                       QString::fromStdString(ParamName),ParamValue,
+                                                       QString::fromStdString((*it).DataUnit),
+                                                       false,false);
 
     connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this,
             SLOT(updateParamValue(const QString&,const QString&)));

@@ -61,8 +61,8 @@ BEGIN_SIMULATOR_SIGNATURE("tests.primitives.land.prod")
   DECLARE_METHOD("");
   DECLARE_AUTHOR("","");
 
-  DECLARE_PRODUCED_VAR("tests.var1","TU","","");
-  DECLARE_PRODUCED_VAR("tests.var2","MU","","");
+  DECLARE_PRODUCED_VARIABLE("tests.var1","TU","","");
+  DECLARE_PRODUCED_VARIABLE("tests.var2","MU","","");
 
   DECLARE_PRODUCED_ATTRIBUTE("attr1","TU","","");
 

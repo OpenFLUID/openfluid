@@ -163,10 +163,10 @@ void ModelWidget::addGlobalParam()
 
     if (Sign)
     {
-      std::vector<openfluid::ware::SignatureHandledDataItem> Items =
-          Sign->Signature->HandledData.SimulatorParams;
+      std::vector<openfluid::ware::SignatureDataItem> Items =
+          Sign->Signature->HandledData.UsedParams;
 
-      for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it =
+      for (std::vector<openfluid::ware::SignatureDataItem>::iterator it =
           Items.begin(); it != Items.end(); ++it)
       {
         if (!CompPList.contains(QString::fromStdString((*it).DataName)))
@@ -184,7 +184,7 @@ void ModelWidget::addGlobalParam()
 
     ParameterWidget* ParamWidget = new ParameterWidget(this,
                                                        AddPDlg.getParamName(),AddPDlg.getParamValue(),
-                                                       QString::fromStdString(""),true);
+                                                       QString::fromStdString(""),false,true);
 
     connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
             this, SLOT(updateGlobalParamValue(const QString&,const QString&)));
@@ -244,7 +244,7 @@ void ModelWidget::updateGlobalParams()
     ParameterWidget* ParamWidget =
         new ParameterWidget(this,
                             QString::fromStdString((*it).first),QString::fromStdString((*it).second),
-                            QString::fromStdString(""),true);
+                            QString::fromStdString(""),false,true);
 
     connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
             this, SLOT(updateGlobalParamValue(const QString&,const QString&)));

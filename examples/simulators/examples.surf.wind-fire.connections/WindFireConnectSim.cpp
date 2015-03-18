@@ -76,10 +76,10 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.wind-fire.connections")
   DECLARE_REQUIRED_ATTRIBUTE("W","LU","West cell ID, -1 if none","-")
   DECLARE_REQUIRED_ATTRIBUTE("NW","LU","Northwest cell ID, -1 if none","-")
 
-  DECLARE_REQUIRED_VAR("gas.atm.degree.mainwinddir","AU",
+  DECLARE_REQUIRED_VARIABLE("gas.atm.degree.mainwinddir","AU",
                        "Main wind direction in degrees in the athmospheric unit","degree")
 
-  DECLARE_PRODUCED_VAR("gas.atm.degree.winddir","AU",
+  DECLARE_PRODUCED_VARIABLE("gas.atm.degree.winddir","AU",
                        "Corrected wind direction in degrees in the athmospheric unit, "
                        "computed using main wind direction and a random variation","degree")
 

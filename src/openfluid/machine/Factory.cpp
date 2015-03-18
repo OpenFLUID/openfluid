@@ -284,7 +284,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         Signature->ID = buildGeneratorID(GenDesc->getVariableName(),
                                          GenDesc->isVectorVariable(),GenDesc->getUnitClass());
         Signature->HandledData.ProducedVars
-        .push_back(openfluid::ware::SignatureHandledTypedDataItem(TypedVarName,GenDesc->getUnitClass(),"",""));
+        .push_back(openfluid::ware::SignatureTypedSpatialDataItem(TypedVarName,GenDesc->getUnitClass(),"",""));
 
         IInstance->GeneratorInfo = new GeneratorExtraInfo();
         IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();

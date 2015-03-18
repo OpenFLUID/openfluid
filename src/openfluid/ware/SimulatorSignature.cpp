@@ -45,15 +45,12 @@
 namespace openfluid { namespace ware {
 
 
-SignatureHandledTypedDataItem::SignatureHandledTypedDataItem(std::string DName,
+SignatureTypedSpatialDataItem::SignatureTypedSpatialDataItem(std::string DName,
                                                              openfluid::core::UnitClass_t UClass,
                                                              std::string DDescription,
                                                              std::string DUnit):
- SignatureHandledDataItem()
+ SignatureSpatialDataItem(DName,UClass,DDescription,DUnit)
 {
-  UnitClass = UClass;
-  Description = DDescription;
-  DataUnit = DUnit;
 
   if (!openfluid::tools::extractVarableNameAndType(DName,DataName,DataType))
     throw openfluid::base::FrameworkException("SignatureHandledTypedDataItem::SignatureHandledTypedDataItem",

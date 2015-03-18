@@ -247,7 +247,31 @@ void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Si
 // =====================================================================
 
 
-void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem,
+void OpenFLUIDApp::printSimulatorsDataItemReport(openfluid::ware::SignatureDataItem HandledItem,
+                                                 std::string Suffix, std::string Type)
+{
+  std::string TypeStr = ("");
+
+  std::cout << Suffix;
+
+  std::string UnitStr = ("");
+
+  if (HandledItem.DataUnit != ("")) UnitStr = (" (")+HandledItem.DataUnit+(")");
+
+  if (Type == ("fpar")) TypeStr = ("simulator parameter");
+
+
+  std::cout << HandledItem.DataName << UnitStr << " : " << TypeStr << ".";
+  if (HandledItem.Description.length()!=0) std::cout << " " << HandledItem.Description;
+  std::cout << std::endl;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDApp::printSimulatorsSpatialDataItemReport(openfluid::ware::SignatureSpatialDataItem HandledItem,
                                                         std::string Suffix, std::string Type)
 {
   std::string TypeStr = ("");
@@ -259,7 +283,7 @@ void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::Signatu
 
 
   if (HandledItem.DataUnit != ("")) UnitStr = (" (")+HandledItem.DataUnit+(")");
-  if (HandledItem.UnitClass != ("")) DistribStr = "{"+HandledItem.UnitClass+"} ";
+  if (HandledItem.UnitClass != ("")) DistribStr = " {"+HandledItem.UnitClass+"}";
 
 
   if (Type == ("pvar")) TypeStr = ("produced variable");
@@ -274,11 +298,9 @@ void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::Signatu
   if (Type == ("rinput")) TypeStr = ("required attribute");
   if (Type == ("sinput")) TypeStr = ("used attribute");
 
-  std::cout << DistribStr << HandledItem.DataName << UnitStr << " : " << TypeStr << ".";
-  if (HandledItem.Description.length()!=0) std::cout << " " << HandledItem.Description;
+  std::cout << HandledItem.DataName << DistribStr << " : " << TypeStr << ".";
+  if (HandledItem.Description.length()!=0) std::cout << " " << HandledItem.Description << UnitStr;
   std::cout << std::endl;
-
-
 }
 
 
@@ -286,7 +308,7 @@ void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::Signatu
 // =====================================================================
 
 
-void OpenFLUIDApp::printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph,
+void OpenFLUIDApp::printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureUnitsGraph HandledUnitsGraph,
                                                           std::string Suffix)
 {
   unsigned int i;
@@ -337,29 +359,29 @@ void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHa
 
   unsigned int i;
 
-  for (i=0;i<HandledData.SimulatorParams.size();i++)
-    printSimulatorsHandledDataItemReport(HandledData.SimulatorParams[i],Suffix,("fpar"));
+  for (i=0;i<HandledData.UsedParams.size();i++)
+    printSimulatorsDataItemReport(HandledData.UsedParams[i],Suffix,("fpar"));
 
   for (i=0;i<HandledData.ProducedVars.size();i++)
-    printSimulatorsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
+    printSimulatorsSpatialDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
 
   for (i=0;i<HandledData.RequiredVars.size();i++)
-    printSimulatorsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
+    printSimulatorsSpatialDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
 
   for (i=0;i<HandledData.UpdatedVars.size();i++)
-    printSimulatorsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
+    printSimulatorsSpatialDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
 
   for (i=0;i<HandledData.UsedVars.size();i++)
-    printSimulatorsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
+    printSimulatorsSpatialDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
 
   for (i=0;i<HandledData.ProducedAttribute.size();i++)
-    printSimulatorsHandledDataItemReport(HandledData.ProducedAttribute[i],Suffix,("pinput"));
+    printSimulatorsSpatialDataItemReport(HandledData.ProducedAttribute[i],Suffix,("pinput"));
 
   for (i=0;i<HandledData.RequiredAttribute.size();i++)
-    printSimulatorsHandledDataItemReport(HandledData.RequiredAttribute[i],Suffix,("rinput"));
+    printSimulatorsSpatialDataItemReport(HandledData.RequiredAttribute[i],Suffix,("rinput"));
 
   for (i=0;i<HandledData.UsedAttribute.size();i++)
-    printSimulatorsHandledDataItemReport(HandledData.UsedAttribute[i],Suffix,("sinput"));
+    printSimulatorsSpatialDataItemReport(HandledData.UsedAttribute[i],Suffix,("sinput"));
 
   if (HandledData.UsedEventsOnUnits.size() > 0)
   {

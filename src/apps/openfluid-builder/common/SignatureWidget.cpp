@@ -170,34 +170,53 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
 // =====================================================================
 
 
-void SignatureWidget::updateParameters(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SignatureWidget::updateParametersCategory(const std::vector<openfluid::ware::SignatureDataItem>* Infos,
+                                               const QString& CatStr, unsigned int BaseIndex)
 {
-  const std::vector<openfluid::ware::SignatureHandledDataItem>* Params =
-      &(Signature->Signature->HandledData.SimulatorParams);
-
-  ui->ParametersTableWidget->setRowCount(Params->size());
-
-  for (unsigned int i = 0; i < Params->size(); i++)
+  for (unsigned int i = 0; i < Infos->size(); i++)
   {
     QTableWidgetItem *Item;
 
-    Item = new QTableWidgetItem(QString::fromStdString(Params->at(i).DataName));
-    ui->ParametersTableWidget->setItem(i, 0, Item);
+    Item = new QTableWidgetItem(CatStr);
+        ui->ParametersTableWidget->setItem(i+BaseIndex, 0, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Params->at(i).DataUnit));
-    ui->ParametersTableWidget->setItem(i, 1, Item);
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataName));
+    ui->ParametersTableWidget->setItem(i+BaseIndex, 1, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Params->at(i).Description));
-    ui->ParametersTableWidget->setItem(i, 2, Item);
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataUnit));
+    ui->ParametersTableWidget->setItem(i+BaseIndex, 2, Item);
+
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).Description));
+    ui->ParametersTableWidget->setItem(i+BaseIndex, 3, Item);
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureWidget::updateParameters(const openfluid::machine::ModelItemSignatureInstance* Signature)
+{
+  const std::vector<openfluid::ware::SignatureDataItem>* ReqParams =
+      &(Signature->Signature->HandledData.RequiredParams);
+  const std::vector<openfluid::ware::SignatureDataItem>* UsParams =
+      &(Signature->Signature->HandledData.UsedParams);
+
+  ui->ParametersTableWidget->setRowCount(ReqParams->size()+UsParams->size());
+
+  updateParametersCategory(ReqParams,tr("Required"),0);
+  updateParametersCategory(UsParams,tr("Used"),ReqParams->size());
 
   if (ui->ParametersTableWidget->rowCount() > 0)
     ui->InfosTabWidget->addTab(ui->ParametersTab,tr("Parameters"));
 }
 
 
+
 // =====================================================================
 // =====================================================================
+
 
 void SignatureWidget::updateExtrafilesCategory(const std::vector<std::string>* Infos,
                                                const QString& CatStr, unsigned int BaseIndex)
@@ -238,7 +257,7 @@ void SignatureWidget::updateExtrafiles(const openfluid::machine::ModelItemSignat
 // =====================================================================
 
 
-void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* Infos,
+void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* Infos,
                                               const QString& CatStr, unsigned int BaseIndex)
 {
 
@@ -275,13 +294,13 @@ void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware:
 
 void SignatureWidget::updateVariables(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
-  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* ProdVars =
+  const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* ProdVars =
       &(Signature->Signature->HandledData.ProducedVars);
-  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* ReqVars =
+  const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* ReqVars =
       &(Signature->Signature->HandledData.RequiredVars);
-  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* UsVars =
+  const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* UsVars =
       &(Signature->Signature->HandledData.UsedVars);
-  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* UpdVars =
+  const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* UpdVars =
       &(Signature->Signature->HandledData.UpdatedVars);
 
 
@@ -301,7 +320,7 @@ void SignatureWidget::updateVariables(const openfluid::machine::ModelItemSignatu
 // =====================================================================
 
 
-void SignatureWidget::updateAttributesCategory(const std::vector<openfluid::ware::SignatureHandledDataItem>* Infos,
+void SignatureWidget::updateAttributesCategory(const std::vector<openfluid::ware::SignatureSpatialDataItem>* Infos,
                                                const QString& CatStr, unsigned int BaseIndex)
 {
 
@@ -334,11 +353,11 @@ void SignatureWidget::updateAttributesCategory(const std::vector<openfluid::ware
 
 void SignatureWidget::updateAttributes(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
-  const std::vector<openfluid::ware::SignatureHandledDataItem>* ProdAttrs =
+  const std::vector<openfluid::ware::SignatureSpatialDataItem>* ProdAttrs =
       &(Signature->Signature->HandledData.ProducedAttribute);
-  const std::vector<openfluid::ware::SignatureHandledDataItem>* ReqAttrs =
+  const std::vector<openfluid::ware::SignatureSpatialDataItem>* ReqAttrs =
       &(Signature->Signature->HandledData.RequiredAttribute);
-  const std::vector<openfluid::ware::SignatureHandledDataItem>* UsAttrs =
+  const std::vector<openfluid::ware::SignatureSpatialDataItem>* UsAttrs =
       &(Signature->Signature->HandledData.UsedAttribute);
 
 
@@ -383,7 +402,7 @@ void SignatureWidget::updateEvents(const openfluid::machine::ModelItemSignatureI
 void SignatureWidget::updateSpatialGraph(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   const std::string Desc = Signature->Signature->HandledUnitsGraph.UpdatedUnitsGraph;
-  const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>* UnitsClasses =
+  const std::vector<openfluid::ware::SignatureUnitsClassItem>* UnitsClasses =
       &(Signature->Signature->HandledUnitsGraph.UpdatedUnitsClass);
 
   if (!Desc.empty())

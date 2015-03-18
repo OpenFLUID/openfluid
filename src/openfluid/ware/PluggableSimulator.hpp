@@ -45,9 +45,10 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/ware/SimulatorSignatureMacros.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/base/SchedulingRequest.hpp>
-#include <openfluid/base/LoopMacros.hpp>
+#include <openfluid/ware/LoopMacros.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/core/Event.hpp>
 #include <openfluid/core/EventsCollection.hpp>

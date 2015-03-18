@@ -43,7 +43,8 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationInspectorWare.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
-#include <openfluid/base/LoopMacros.hpp>
+#include <openfluid/ware/ObserverSignatureMacros.hpp>
+#include <openfluid/ware/LoopMacros.hpp>
 
 
 // =====================================================================

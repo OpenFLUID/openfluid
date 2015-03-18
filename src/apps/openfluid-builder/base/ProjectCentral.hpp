@@ -95,7 +95,7 @@ class ProjectCentral : QObject
                             const std::string& ParamName);
 
     static QStringList convertUpdatedUnitsClassesToQStringList(
-        const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>& UnitsClassesVector);
+        const std::vector<openfluid::ware::SignatureUnitsClassItem>& UnitsClassesVector);
 
 
   public:

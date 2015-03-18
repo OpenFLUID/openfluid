@@ -32,7 +32,7 @@
    <item>
     <widget class="QTabWidget" name="InfosTabWidget">
      <property name="currentIndex">
-      <number>6</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="GeneralTab">
       <attribute name="title">
@@ -67,8 +67,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>739</width>
-            <height>403</height>
+            <width>109</width>
+            <height>35</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -134,6 +134,11 @@
          <attribute name="verticalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
+         <column>
+          <property name="text">
+           <string>In</string>
+          </property>
+         </column>
          <column>
           <property name="text">
            <string>Name</string>

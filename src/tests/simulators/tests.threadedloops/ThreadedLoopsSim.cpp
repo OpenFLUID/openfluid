@@ -38,7 +38,7 @@
  */
 
 
-#include <openfluid/base/ThreadedLoopMacros.hpp>
+#include <openfluid/ware/ThreadedLoopMacros.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <cmath>
 #include <boost/date_time.hpp>
@@ -69,8 +69,8 @@ BEGIN_SIMULATOR_SIGNATURE("tests.threadedloops")
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_PRODUCED_VAR("tests.data.sequence[double]","TU","sequenced test data","");
-  DECLARE_PRODUCED_VAR("tests.data.threaded[double]","TU","threaded test data","");
+  DECLARE_PRODUCED_VARIABLE("tests.data.sequence[double]","TU","sequenced test data","");
+  DECLARE_PRODUCED_VARIABLE("tests.data.threaded[double]","TU","threaded test data","");
 
 
 

@@ -65,15 +65,15 @@ BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.up")
   DECLARE_METHOD("");
   DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
 
-  DECLARE_SIMULATOR_PARAM("gmult","multiply coefficient","");
+  DECLARE_USED_PARAMETER("gmult","multiply coefficient","");
 
-  DECLARE_REQUIRED_VAR("var1","unitsA","the variable 1","");
-  DECLARE_REQUIRED_VAR("var10","unitsA","the variable 1","");
-  DECLARE_REQUIRED_VAR("var11","unitsA","the variable 1","");
+  DECLARE_REQUIRED_VARIABLE("var1","unitsA","the variable 1","");
+  DECLARE_REQUIRED_VARIABLE("var10","unitsA","the variable 1","");
+  DECLARE_REQUIRED_VARIABLE("var11","unitsA","the variable 1","");
   
-  DECLARE_PRODUCED_VAR("var3","unitsA","the variable 3","");
+  DECLARE_PRODUCED_VARIABLE("var3","unitsA","the variable 3","");
   
-  DECLARE_UPDATED_VAR("var2","unitsA","the variable 2","");
+  DECLARE_UPDATED_VARIABLE("var2","unitsA","the variable 2","");
 
 END_SIMULATOR_SIGNATURE
 

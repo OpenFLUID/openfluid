@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __OPENFLUID_BASE_THREADEDLOOPMACROS_HPP__
-#define __OPENFLUID_BASE_THREADEDLOOPMACROS_HPP__
+#ifndef __OPENFLUID_WARE_THREADEDLOOPMACROS_HPP__
+#define __OPENFLUID_WARE_THREADEDLOOPMACROS_HPP__
 
 
 #include <functional>
@@ -52,11 +52,11 @@
 #include <QtConcurrentRun>
 #include <QFutureSynchronizer>
 
-#include <openfluid/base/LoopMacros.hpp>
+#include <openfluid/ware/LoopMacros.hpp>
+
 
 // =====================================================================
 // =====================================================================
-
 
 
 #define _THREADSYNCID(_id) _M_##_id##_Sync
@@ -165,4 +165,4 @@
 // =====================================================================
 
 
-#endif /* __OPENFLUID_BASE_THREADEDLOOPMACROS_HPP__ */
+#endif /* __OPENFLUID_WARE_THREADEDLOOPMACROS_HPP__ */

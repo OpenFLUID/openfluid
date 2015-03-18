@@ -45,6 +45,7 @@
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/ware/SimulatorSignatureMacros.hpp>
 
 
 // =====================================================================
@@ -55,7 +56,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::ware::SimulatorSignature Signature;
   openfluid::ware::SignatureHandledData SignatureData;
-  openfluid::ware::SignatureHandledDataItem SignatureDataItem;
+  openfluid::ware::SignatureDataItem SignatureDataItem;
 
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::UNDEFINED);
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Min,0);
@@ -79,26 +80,27 @@ BOOST_AUTO_TEST_CASE(check_operations)
   DECLARE_VERSION("4.7");
   DECLARE_STATUS(openfluid::ware::BETA);
 
-  DECLARE_SIMULATOR_PARAM("param1","this is param1","m/s");
-  DECLARE_SIMULATOR_PARAM("param2","this is param2","m3");
+  DECLARE_USED_PARAMETER("param1","this is param1","m/s");
+  DECLARE_USED_PARAMETER("param2","this is param2","m3");
+  DECLARE_REQUIRED_PARAMETER("param3","this is param3","m");
 
   DECLARE_REQUIRED_ATTRIBUTE("attr1","UnitClassA","this is attr1","goals/period");
   DECLARE_REQUIRED_ATTRIBUTE("attr2","UnitClassB","this is attr2","");
 
   DECLARE_USED_ATTRIBUTE("attr3","UnitClassA","this is attr3","?");
 
-  DECLARE_PRODUCED_VAR("pvar1","UnitClassA","this is pvar1","");
-  DECLARE_PRODUCED_VAR("pvar2","UnitClassA","this is pvar2","m");
-  DECLARE_PRODUCED_VAR("pvar1","UnitClassB","this is pvar1","?");
+  DECLARE_PRODUCED_VARIABLE("pvar1","UnitClassA","this is pvar1","");
+  DECLARE_PRODUCED_VARIABLE("pvar2","UnitClassA","this is pvar2","m");
+  DECLARE_PRODUCED_VARIABLE("pvar1","UnitClassB","this is pvar1","?");
 
-  DECLARE_UPDATED_VAR("pvar1","UnitClassA","this is pvar1 updated","");
+  DECLARE_UPDATED_VARIABLE("pvar1","UnitClassA","this is pvar1 updated","");
 
-  DECLARE_REQUIRED_VAR("pvar1","UnitClassA","this is rvar1","");
-  DECLARE_REQUIRED_VAR("pvar2","UnitClassA","this is rvar2","m");
-  DECLARE_REQUIRED_VAR("pvar1","UnitClassB","this is rvar3","?");
+  DECLARE_REQUIRED_VARIABLE("pvar1","UnitClassA","this is rvar1","");
+  DECLARE_REQUIRED_VARIABLE("pvar2","UnitClassA","this is rvar2","m");
+  DECLARE_REQUIRED_VARIABLE("pvar1","UnitClassB","this is rvar3","?");
 
-  DECLARE_USED_VAR("uvar1","UnitClassA","this is uvar1","s");
-  DECLARE_USED_VAR("uvar2","UnitClassA","this is uvar2","s-1");
+  DECLARE_USED_VARIABLE("uvar1","UnitClassA","this is uvar1","s");
+  DECLARE_USED_VARIABLE("uvar2","UnitClassA","this is uvar2","s-1");
 
   DECLARE_USED_EVENTS("UnitClassA");
   DECLARE_USED_EVENTS("UnitClassB");
@@ -124,9 +126,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,10);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,30);
 
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.SimulatorParams[1].DataName,"param2");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.SimulatorParams[1].Description,"this is param2");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.SimulatorParams[1].DataUnit,"m3");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedParams[1].DataName,"param2");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedParams[1].Description,"this is param2");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedParams[1].DataUnit,"m3");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredParams[0].DataName,"param3");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredParams[0].Description,"this is param3");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredParams[0].DataUnit,"m");
+
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredAttribute.size(),2);
 

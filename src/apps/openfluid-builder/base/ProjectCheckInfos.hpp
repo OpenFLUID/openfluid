@@ -65,7 +65,7 @@ class ProjectPartCheckInfos
 
     QStringList getMessages() const;
 
-    void setStatus(ProjectStatusLevel Level);
+    void updateStatus(ProjectStatusLevel Level);
 
     void addMessage(const QString& Msg);
 

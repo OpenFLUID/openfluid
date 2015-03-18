@@ -61,8 +61,8 @@ BEGIN_SIMULATOR_SIGNATURE("tests.primitives.land.use")
   DECLARE_METHOD("");
   DECLARE_AUTHOR("","");
 
-  DECLARE_REQUIRED_VAR("tests.var1","TU","","");
-  DECLARE_REQUIRED_VAR("tests.var2","MU","","");
+  DECLARE_REQUIRED_VARIABLE("tests.var1","TU","","");
+  DECLARE_REQUIRED_VARIABLE("tests.var2","MU","","");
 
   DECLARE_REQUIRED_ATTRIBUTE("attr1","TU","","");
 

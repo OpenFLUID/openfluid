@@ -88,12 +88,15 @@ class OpenFLUIDApp
 
     void printMonitoring();
 
-    void printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph,
+    void printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureUnitsGraph HandledUnitsGraph,
                                                 std::string Suffix);
 
     void printSimulatorsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix);
 
-    void printSimulatorsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem,
+    void printSimulatorsDataItemReport(openfluid::ware::SignatureDataItem HandledItem,
+                                       std::string Suffix, std::string Type);
+
+    void printSimulatorsSpatialDataItemReport(openfluid::ware::SignatureSpatialDataItem HandledItem,
                                               std::string Suffix, std::string Type);
 
     void printSimulatorsTimeSchedulingReport(openfluid::ware::SignatureTimeScheduling TScheduling);

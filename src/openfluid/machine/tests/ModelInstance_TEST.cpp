@@ -283,12 +283,9 @@ BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
   openfluid::machine::ModelItemInstance* MII = new openfluid::machine::ModelItemInstance();
   MII->Body = (openfluid::ware::PluggableSimulator*) (new SimA());
   MII->Signature = new openfluid::ware::SimulatorSignature();
-  MII->Signature->HandledData.SimulatorParams.push_back(
-      *new openfluid::ware::SignatureHandledDataItem("A1", "unitsA", "", ""));
-  MII->Signature->HandledData.SimulatorParams.push_back(
-      *new openfluid::ware::SignatureHandledDataItem("B1.C1", "unitsA", "", ""));
-  MII->Signature->HandledData.SimulatorParams.push_back(
-      *new openfluid::ware::SignatureHandledDataItem("D1.E1.F1", "unitsA", "", ""));
+  MII->Signature->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("A1","",""));
+  MII->Signature->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("B1.C1","",""));
+  MII->Signature->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("D1.E1.F1","",""));
 
   MI.appendItem(MII);
 

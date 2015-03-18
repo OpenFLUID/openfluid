@@ -65,9 +65,9 @@ DECLARE_PROCESS("");
 DECLARE_METHOD("");
 DECLARE_AUTHOR("Michael Rabotin","rabotin@supagro.inra.fr");
 
-DECLARE_SIMULATOR_PARAM("MultiCapacity","Multiplying factor for capacity","-");
-DECLARE_USED_VAR("examples.TLU.S.state","TLU","traffic light unit state","");
-DECLARE_PRODUCED_VAR("examples.RU.S.stock","RU","number of cars stocked on RU","");
+DECLARE_USED_PARAMETER("MultiCapacity","Multiplying factor for capacity","-");
+DECLARE_USED_VARIABLE("examples.TLU.S.state","TLU","traffic light unit state","");
+DECLARE_PRODUCED_VARIABLE("examples.RU.S.stock","RU","number of cars stocked on RU","");
 DECLARE_USED_ATTRIBUTE("stockini","RU","","-");
 DECLARE_USED_ATTRIBUTE("capacity","RU","","car/min");
 

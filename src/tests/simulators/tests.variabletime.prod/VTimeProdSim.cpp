@@ -67,11 +67,11 @@ BEGIN_SIMULATOR_SIGNATURE("tests.variabletime.prod")
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_PRODUCED_VAR("tests.double","TestUnits","double for tests","");
-  DECLARE_PRODUCED_VAR("tests.string","TestUnits","string for tests","");
-  DECLARE_PRODUCED_VAR("tests.null","TestUnits","null for tests","");
-  DECLARE_PRODUCED_VAR("tests.vector","TestUnits","vector for tests","");
-  DECLARE_PRODUCED_VAR("tests.matrix","TestUnits","matrix for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.double","TestUnits","double for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.string","TestUnits","string for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.null","TestUnits","null for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.vector","TestUnits","vector for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.matrix","TestUnits","matrix for tests","");
 
 END_SIMULATOR_SIGNATURE
 

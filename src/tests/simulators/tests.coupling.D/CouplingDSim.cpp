@@ -66,7 +66,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.coupling.D")
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_PRODUCED_VAR("varD","TestUnits","","");
+  DECLARE_PRODUCED_VARIABLE("varD","TestUnits","","");
 
   DECLARE_SCHEDULING_DEFAULT;
 

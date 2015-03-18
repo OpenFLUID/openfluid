@@ -67,11 +67,11 @@ BEGIN_SIMULATOR_SIGNATURE("tests.deltaTtime.prod")
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_PRODUCED_VAR("tests.double.dt","TestUnits","double for tests","");
-  DECLARE_PRODUCED_VAR("tests.string.dt","TestUnits","string for tests","");
-  DECLARE_PRODUCED_VAR("tests.null.dt","TestUnits","null for tests","");
-  DECLARE_PRODUCED_VAR("tests.vector.dt","TestUnits","vector for tests","");
-  DECLARE_PRODUCED_VAR("tests.matrix.dt","TestUnits","matrix for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.double.dt","TestUnits","double for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.string.dt","TestUnits","string for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.null.dt","TestUnits","null for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.vector.dt","TestUnits","vector for tests","");
+  DECLARE_PRODUCED_VARIABLE("tests.matrix.dt","TestUnits","matrix for tests","");
 
   DECLARE_SCHEDULING_DEFAULT;
 

@@ -47,6 +47,7 @@
 ParameterWidget::ParameterWidget(QWidget* Parent,
                                  const QString& Name, const QString& Value,
                                  const QString& SIUnit,
+                                 bool Required,
                                  bool Removable):
   QWidget(Parent),ui(new Ui::ParameterWidget)
 {
@@ -56,6 +57,10 @@ ParameterWidget::ParameterWidget(QWidget* Parent,
   ui->ValueEdit->setText(Value);
   ui->SIUnitLabel->setText(SIUnit);
   ui->GlobalValueLabel->setText("");
+
+  if (Required)
+    ui->ValueEdit->setPlaceholderText(tr("Required"));
+
 
   connect(ui->ValueEdit,SIGNAL(textEdited(const QString&)),this,SLOT(notifyValueChanged()));
 
