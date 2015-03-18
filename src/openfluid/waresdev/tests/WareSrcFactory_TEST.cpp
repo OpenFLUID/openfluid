@@ -45,6 +45,7 @@
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.cpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/config.hpp>
 
@@ -171,6 +172,8 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   BOOST_CHECK(HppUiFileContent.contains("#ifndef __MYWIDGET_HPP__"));
   BOOST_CHECK(HppUiFileContent.contains("class MyWidget: public openfluid::ui::ware::ParameterizationWidget"));
   HppUiResult.close();
+
+  openfluid::tools::removeDirectoryRecursively(WareTypePath);
 }
 
 
@@ -333,6 +336,8 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BOOST_CHECK(HppFileContent.contains("#ifndef __MYBEXT_HPP__"));
   BOOST_CHECK(HppFileContent.contains("class MyBext : public openfluid::builderext::PluggableWorkspaceExtension"));
   HppResult.close();
+
+  openfluid::tools::removeDirectoryRecursively(WareTypePath);
 }
 
 

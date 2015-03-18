@@ -45,6 +45,7 @@
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/tools/Filesystem.cpp>
 #include <openfluid/config.hpp>
 
 #include <QDir>
@@ -75,7 +76,10 @@ struct F
 
       m_SimulatorsPath = QString("%1/%2").arg(m_WaresdevPath).arg(
           QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
+    }
 
+    void createTestFiles()
+    {
       m_RealDirs.insert(0, QString("%1/ware_ok").arg(m_SimulatorsPath));
       // right CMake content
       m_RealFiles.insert(0, QString("%1/ware_ok/%2").arg(m_SimulatorsPath).arg(m_CMakeConfigFile));
@@ -106,20 +110,7 @@ struct F
       m_RealDirs.insert(6, QString("%1/ware_empty2").arg(m_SimulatorsPath));
       m_RealDirs.insert(7, QString("%1/ware_empty2/subdir").arg(m_SimulatorsPath));
       m_RealFiles.insert(11, QString("%1/ware_empty2/subdir/%2").arg(m_SimulatorsPath).arg(m_CMakeConfigFile));
-    }
 
-    ~F()
-    {
-      QDir WaresdevDir(m_WaresdevPath);
-
-      foreach(QString P,WaresdevDir.entryList()){
-      WaresdevDir.rmdir(P);}
-
-      WaresdevDir.rmdir(m_WaresdevPath);
-    }
-
-    void createTestFiles()
-    {
       QDir Dir(m_WorkspacePath);
 
       foreach(QString D,m_RealDirs)Dir.mkpath(D);
@@ -144,15 +135,6 @@ struct F
                    "SET(SIM_CPP wrongmain.cpp)\n");
     }
 
-    void deleteTestFiles()
-    {
-      QDir Dir(m_WorkspacePath);
-
-      foreach(QString F,m_RealFiles)Dir.remove(F);
-
-      for (int i = m_RealDirs.size() - 1; i >= 0; i--)
-        Dir.rmdir(m_RealDirs.at(i));
-    }
 };
 
 
@@ -308,6 +290,8 @@ BOOST_AUTO_TEST_CASE(searchUiParamCppFileName)
 
 BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
 {
+  openfluid::tools::removeDirectoryRecursively(m_WorkspacePath);
+
   createTestFiles();
 
 
@@ -349,8 +333,7 @@ BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
       .getDefaultFilesPaths();
   BOOST_CHECK_EQUAL(List.count(), 0);
 
-
-  deleteTestFiles();
+  openfluid::tools::removeDirectoryRecursively(m_WorkspacePath);
 }
 
 

@@ -45,7 +45,7 @@
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.cpp>
 #include <openfluid/config.hpp>
 
 #include <QDir>
@@ -73,6 +73,16 @@ struct F
       m_SimulatorsPath = QString("%1/%2").arg(m_WaresdevPath).arg(
           QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
 
+      openfluid::tools::removeDirectoryRecursively(m_WorkspacePath);
+    }
+
+    ~F()
+    {
+      openfluid::tools::removeDirectoryRecursively(m_WorkspacePath);
+    }
+
+    void createTestFiles()
+    {
       m_RealDirs.insert(0, QString("%1/nowaresdevdir").arg(m_WorkspacePath));
       m_RealDirs.insert(1, QString("%1/nowaretype").arg(m_WaresdevPath));
       m_RealDirs.insert(2, QString("%1/nowaretype/ware1").arg(m_WaresdevPath));
@@ -94,21 +104,6 @@ struct F
       m_RealFiles.insert(9, QString("%1/ware2/file9.txt").arg(m_SimulatorsPath));
       m_RealFiles.insert(10, QString("%1/ware2/subdir1/file10.txt").arg(m_SimulatorsPath));
 
-      deleteAll(m_WaresdevPath);
-    }
-
-    ~F()
-    {
-      QDir WaresdevDir(m_WaresdevPath);
-
-      foreach(QString P,WaresdevDir.entryList()){
-      WaresdevDir.rmdir(P);}
-
-      WaresdevDir.rmdir(m_WaresdevPath);
-    }
-
-    void createTestFiles()
-    {
       QDir Dir(m_WorkspacePath);
 
       foreach(QString D,m_RealDirs)Dir.mkpath(D);
@@ -116,29 +111,6 @@ struct F
       foreach(QString F,m_RealFiles)QFile(F).open(QIODevice::ReadWrite);
     }
 
-    void deleteTestFiles()
-    {
-      QDir Dir(m_WorkspacePath);
-
-      foreach(QString F,m_RealFiles)Dir.remove(F);
-
-      for (int i = m_RealDirs.size() - 1; i >= 0; i--)
-      Dir.rmdir(m_RealDirs.at(i));
-    }
-
-    void deleteAll(const QString& DirName)
-    {
-      QDir Dir(DirName);
-      if (Dir.exists(DirName))
-      {
-        foreach(QFileInfo Info, Dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files))
-        {
-          if (Info.isDir()) deleteAll(Info.absoluteFilePath());
-          else QFile::remove(Info.absoluteFilePath());
-        }
-        Dir.rmdir(DirName);
-      }
-    }
   };
 
 
@@ -340,9 +312,6 @@ BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
   BOOST_CHECK_EQUAL(Info.m_RelativePathToWareDir.toStdString(), "subdir1/file10.txt");
   BOOST_CHECK_EQUAL(Info.m_AbsolutePathOfWare.toStdString(), QString("%1/ware2").arg(m_SimulatorsPath).toStdString());
   BOOST_CHECK_EQUAL(Info.m_FileName.toStdString(), "file10.txt");
-
-
-  deleteTestFiles();
 }
 
 
