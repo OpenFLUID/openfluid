@@ -50,6 +50,7 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCompleter>
 
 
 AddGeneratorDialog::AddGeneratorDialog(const QStringList& UnitsClasses, QWidget* Parent) :
@@ -67,6 +68,7 @@ AddGeneratorDialog::AddGeneratorDialog(const QStringList& UnitsClasses, QWidget*
   connect(ui->VectorRadioButton,SIGNAL(toggled(bool)),ui->VectorSpinBox,SLOT(setEnabled(bool)));
 
   connect(ui->VarNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
+  connect(ui->UnitsClassEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
 
   connect(ui->SourcesBrowseButton,SIGNAL(clicked()),this,SLOT(selectSourcesFile()));
   connect(ui->DistriBrowseButton,SIGNAL(clicked()),this,SLOT(selectDistriFile()));
@@ -81,7 +83,14 @@ AddGeneratorDialog::AddGeneratorDialog(const QStringList& UnitsClasses, QWidget*
   ui->FixedRadioButton->setChecked(true);
   ui->DoubleRadioButton->setChecked(true);
   ui->VectorSpinBox->setEnabled(false);
-  ui->UnitsClassComboBox->addItems(UnitsClasses);
+
+  ui->VarNameEdit->setPlaceholderText(tr("Required"));
+  ui->UnitsClassEdit->setPlaceholderText(tr("Required"));
+
+  QCompleter* Completer = new QCompleter(UnitsClasses, this);
+  Completer->setCaseSensitivity(Qt::CaseInsensitive);
+  Completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
+  ui->UnitsClassEdit->setCompleter(Completer);
 
   checkGlobal();
 }
@@ -157,7 +166,7 @@ void AddGeneratorDialog::checkGlobal()
 {
   if (ui->VarNameEdit->text().isEmpty())
     setMessage(tr("Variable name cannot be empty"));
-  else if (ui->UnitsClassComboBox->currentText().isEmpty())
+  else if (ui->UnitsClassEdit->text().isEmpty())
     setMessage(tr("Units class cannot be empty"));
   else
     setMessage();
@@ -180,7 +189,7 @@ QString AddGeneratorDialog::getVariableName() const
 
 QString AddGeneratorDialog::getUnitClass() const
 {
-  return ui->UnitsClassComboBox->currentText();
+  return ui->UnitsClassEdit->text();
 }
 
 

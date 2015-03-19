@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>670</width>
+    <width>673</width>
     <height>350</height>
    </rect>
   </property>
@@ -242,9 +242,6 @@ font : bold;
          </property>
         </widget>
        </item>
-       <item row="2" column="2">
-        <widget class="QComboBox" name="UnitsClassComboBox"/>
-       </item>
        <item row="3" column="0" colspan="4">
         <spacer name="verticalSpacer">
          <property name="orientation">
@@ -404,6 +401,9 @@ font : bold;
           </layout>
          </widget>
         </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="UnitsClassEdit"/>
        </item>
       </layout>
      </item>
