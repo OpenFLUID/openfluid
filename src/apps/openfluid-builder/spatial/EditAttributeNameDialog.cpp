@@ -77,6 +77,9 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
     m_DefaultMsg = tr("Remove attribute");
   }
 
+  ui->NewNameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->DefaultValueEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+
   ui->OriginalNameWidget->setVisible(m_Mode == EDIT_REMOVE ||
                                      m_Mode == EDIT_RENAME);
 

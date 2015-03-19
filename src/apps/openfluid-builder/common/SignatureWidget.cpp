@@ -43,6 +43,9 @@
 
 #include <QDir>
 
+#include <openfluid/ui/config.hpp>
+
+
 
 SignatureWidget::SignatureWidget(QWidget* Parent):
   QWidget(Parent), ui(new Ui::SignatureWidget)

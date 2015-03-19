@@ -100,6 +100,8 @@ AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingUnitsC
     connect(mp_Completer,SIGNAL(activated(const QString&)),this,SLOT(checkGlobal()));
   }
 
+  ui->IDEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
@@ -125,13 +127,34 @@ void AddDatastoreItemDialog::checkGlobal()
 {
   ui->IDEdit->setText(ui->IDEdit->text().replace(QRegExp("[^\\w]"),"_"));
 
+  ui->UnitsClassEdit->setEnabled(ui->UnitsClassCheckBox->isChecked());
+  if (ui->UnitsClassEdit->isEnabled())
+    ui->UnitsClassEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  else
+    ui->UnitsClassEdit->setPlaceholderText("");
+
   ui->GeovectorEdit->setEnabled(ui->GeovectorRadioButton->isChecked());
   ui->GeovectorBrowseButton->setEnabled(ui->GeovectorRadioButton->isChecked());
+  if (ui->GeovectorEdit->isEnabled())
+    ui->GeovectorEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  else
+    ui->GeovectorEdit->setPlaceholderText("");
 
   ui->GeorasterEdit->setEnabled(ui->GeorasterRadioButton->isChecked());
   ui->GeorasterBrowseButton->setEnabled(ui->GeorasterRadioButton->isChecked());
+  if (ui->GeorasterEdit->isEnabled())
+    ui->GeorasterEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  else
+    ui->GeorasterEdit->setPlaceholderText("");
+
+  ui->CopySubdirEdit->setEnabled(ui->CopySubdirRadioButton->isChecked());
+  if (ui->CopySubdirEdit->isEnabled())
+    ui->CopySubdirEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  else
+    ui->CopySubdirEdit->setPlaceholderText("");
 
   ui->DataDestGroupBox->setEnabled(!isSourceFileInInputDataset());
+
 
   if (ui->IDEdit->text().isEmpty())
     setMessage(tr("Item ID cannot be empty"));

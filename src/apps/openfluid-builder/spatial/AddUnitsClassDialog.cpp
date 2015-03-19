@@ -52,6 +52,8 @@ AddUnitsClassDialog::AddUnitsClassDialog(const QStringList& ExistingClasses, QWi
   ui->ClassLabel->setVisible(false);
   ui->AttributesWidget->setVisible(false);
 
+  ui->ClassEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+
   connect(ui->ClassEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->UnitIDEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
 

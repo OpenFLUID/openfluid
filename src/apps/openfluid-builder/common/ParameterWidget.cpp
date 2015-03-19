@@ -37,12 +37,15 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
+#include <QMessageBox>
+
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include "ui_ParameterWidget.h"
 #include "ParameterWidget.hpp"
 
-#include <QMessageBox>
 
 ParameterWidget::ParameterWidget(QWidget* Parent,
                                  const QString& Name, const QString& Value,
@@ -59,7 +62,7 @@ ParameterWidget::ParameterWidget(QWidget* Parent,
   ui->GlobalValueLabel->setText("");
 
   if (Required)
-    ui->ValueEdit->setPlaceholderText(tr("Required"));
+    ui->ValueEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
 
   connect(ui->ValueEdit,SIGNAL(textEdited(const QString&)),this,SLOT(notifyValueChanged()));

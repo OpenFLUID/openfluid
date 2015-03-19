@@ -41,6 +41,7 @@
 #ifndef __OPENFLUID_UI_CONFIG_HPP__
 #define __OPENFLUID_UI_CONFIG_HPP__
 
+
 namespace openfluid { namespace ui { namespace config {
 
 
@@ -49,6 +50,8 @@ const QString AUTHORS_TEXT = "@UI_AUTHORS_TEXT@";
 
 const QString DIALOGBANNER_BGCOLOR = "#384A61";
 const QString DIALOGBANNER_WARNBGCOLOR = "#F59122";
+
+const QString PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::config","required");
 
 
 } } } // namespaces

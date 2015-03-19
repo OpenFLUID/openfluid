@@ -84,8 +84,8 @@ AddGeneratorDialog::AddGeneratorDialog(const QStringList& UnitsClasses, QWidget*
   ui->DoubleRadioButton->setChecked(true);
   ui->VectorSpinBox->setEnabled(false);
 
-  ui->VarNameEdit->setPlaceholderText(tr("Required"));
-  ui->UnitsClassEdit->setPlaceholderText(tr("Required"));
+  ui->VarNameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->UnitsClassEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
   QCompleter* Completer = new QCompleter(UnitsClasses, this);
   Completer->setCaseSensitivity(Qt::CaseInsensitive);

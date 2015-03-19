@@ -62,6 +62,9 @@ EditMarketplaceDialog::EditMarketplaceDialog(QWidget* Parent,
   ui->NameEdit->setText(Name);
   ui->URLEdit->setText(URL);
 
+  ui->NameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->URLEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+
   connect(ui->NameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
   connect(ui->URLEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
 

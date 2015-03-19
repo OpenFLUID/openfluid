@@ -93,6 +93,25 @@ EditAttributesValuesDialog::~EditAttributesValuesDialog()
 
 void EditAttributesValuesDialog::checkGlobal()
 {
+  ui->ReplaceEdit->setEnabled(ui->ReplaceRadioButton->isChecked());
+  if (ui->ReplaceEdit->isEnabled())
+    ui->ReplaceEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  else
+    ui->ReplaceEdit->setPlaceholderText("");
+
+  ui->MultEdit->setEnabled(ui->MultRadioButton->isChecked());
+  if (ui->MultEdit->isEnabled())
+    ui->MultEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  else
+    ui->MultEdit->setPlaceholderText("");
+
+  ui->AddEdit->setEnabled(ui->AddRadioButton->isChecked());
+  if (ui->AddEdit->isEnabled())
+    ui->AddEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  else
+    ui->AddEdit->setPlaceholderText("");
+
+
   if (ui->ReplaceRadioButton->isChecked() && ui->ReplaceEdit->text().isEmpty())
     setMessage(tr("Replacement value cannot be empty"));
   else if (ui->MultRadioButton->isChecked() && ui->MultEdit->text().isEmpty())

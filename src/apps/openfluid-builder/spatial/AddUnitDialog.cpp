@@ -44,6 +44,8 @@
 
 #include <QPushButton>
 
+#include <openfluid/ui/config.hpp>
+
 
 AddUnitDialog::AddUnitDialog(QWidget* Parent):
   openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::AddUnitDialog)
@@ -54,6 +56,8 @@ AddUnitDialog::AddUnitDialog(QWidget* Parent):
   IDValidator->setBottom(0);
 
   ui->UnitIDEdit->setValidator(IDValidator);
+
+  ui->UnitIDEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));

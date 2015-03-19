@@ -142,7 +142,7 @@ SET(CUSTOM_CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_
 SET(VERSION_MAJOR 2)
 SET(VERSION_MINOR 1)
 SET(VERSION_PATCH 0)
-SET(VERSION_STATUS "beta5") # example: SET(VERSION_STATUS "rc1")
+SET(VERSION_STATUS "beta6") # example: SET(VERSION_STATUS "rc1")
 
 SET(FULL_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
@@ -251,7 +251,10 @@ ENDIF(WIN32)
 SET(OPENFLUID_TRANSLATIONS_FILEROOT openfluid)
 SET(OPENFLUID_TRANSLATIONS_TSDIR "${CMAKE_SOURCE_DIR}/resources/translations")
 SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR)
-SET(OPENFLUID_TRANSLATIONS_DIRSTOSCAN "${CMAKE_SOURCE_DIR}/src/openfluid/ui" "${CMAKE_SOURCE_DIR}/src/apps/openfluid-builder" "${CMAKE_SOURCE_DIR}/src/apps/openfluid-devstudio")
+SET(OPENFLUID_TRANSLATIONS_DIRSTOSCAN "${CMAKE_SOURCE_DIR}/src/openfluid/ui"
+                                      "${CMAKE_SOURCE_DIR}/src/openfluid/ui/config.hpp.in"                                      
+                                      "${CMAKE_SOURCE_DIR}/src/apps/openfluid-builder"
+                                      "${CMAKE_SOURCE_DIR}/src/apps/openfluid-devstudio")
 
 
 
