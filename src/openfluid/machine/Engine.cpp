@@ -121,7 +121,7 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else
-    throw openfluid::base::FrameworkException("Engine::checkExistingVariable",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unit class " + ClassName + " does not exist for " +
                                               VarName + " variable required by " + SimulatorID);
 
@@ -136,7 +136,7 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
       Status = (*UnitIter).variables()->isTypedVariableExist(VarName,VarType);
 
     if (!Status)
-      throw openfluid::base::FrameworkException("Engine::checkExistingVariable",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 VarName + " variable on " + ClassName +
                                                 " required by " + SimulatorID + " does not exist");
 
@@ -162,7 +162,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else
-    throw openfluid::base::FrameworkException("Engine::createVariable","Unit class " + ClassName +
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Unit class " + ClassName +
                                               " does not exist for " + VarName +
                                               " variable produced by " + SimulatorID);
 
@@ -177,7 +177,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
        Status = !((*UnitIter).variables()->isVariableExist(VarName));
 
       if (!Status)
-        throw openfluid::base::FrameworkException("Engine::createVariable",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   VarName + " variable on " + ClassName +
                                                   " produced by " + SimulatorID +
                                                   " cannot be created because it is already created");
@@ -208,7 +208,7 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else
-    throw openfluid::base::FrameworkException("Engine::checkExistingAttribute",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unit " + ClassName + " class does not exist for " +
                                               AttrName + " attribute required by " + SimulatorID);
 
@@ -219,7 +219,7 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
   {
     Status = (*UnitIter).attributes()->isAttributeExist(AttrName);
     if (!Status)
-      throw openfluid::base::FrameworkException("Engine::checkExistingAttribute",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 AttrName + " attribute on " + ClassName +
                                                 " required by " + SimulatorID + " is not available");
 
@@ -242,7 +242,7 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
   UnitList = NULL;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
-  else throw openfluid::base::FrameworkException("Engine::createAttribute",
+  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Unit class " + ClassName + " does not exist for " +
                                                  AttrName + " attribute produced by " + SimulatorID);
 
@@ -277,7 +277,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
     for (UnitsIter = UnitsList->begin();UnitsIter != UnitsList->end();++UnitsIter)
     {
       if (!((*UnitsIter).variables()->isAllVariablesCount(ExpectedVarsCount)))
-        throw openfluid::base::FrameworkException("Engine::checkSimulationVarsProduction",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Variable production error");
 
     }
@@ -299,11 +299,11 @@ void Engine::checkParametersConsistency()
     {
       auto it = IInstance->Params.find(Param.DataName);
       if (it == IInstance->Params.end())
-        throw openfluid::base::FrameworkException("Engine::checkParametersConsistency",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Cannot find parameter " + Param.DataName +
                                                   " required by " + IInstance->Signature->ID);
       else if ((*it).second.size() == 0)
-        throw openfluid::base::FrameworkException("Engine::checkParametersConsistency",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Parameter " + Param.DataName +
                                                   " required by " + IInstance->Signature->ID + " is empty");
     }
@@ -437,7 +437,7 @@ void Engine::checkExtraFilesConsistency()
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
       if (!openfluid::tools::Filesystem::isFile(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i])))
-        throw openfluid::base::FrameworkException("Engine::checkExtraFilesConsistency",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "File " + HData.RequiredExtraFiles[i] +
                                                   " required by " + CurrentSimulator->Signature->ID + " not found");
     }
@@ -455,7 +455,7 @@ void Engine::prepareOutputDir()
   {
     openfluid::tools::Filesystem::makeDirectory(mp_RunEnv->getOutputDir());
     if (!openfluid::tools::Filesystem::isDirectory(mp_RunEnv->getOutputDir()))
-      throw openfluid::base::FrameworkException("IOManager::prepareOutputDir","Error creating output directory");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error creating output directory");
   }
   else
   {
@@ -560,7 +560,7 @@ void Engine::checkConsistency()
   try
   {
     if (m_ModelInstance.getItemsCount() == 0)
-      throw openfluid::base::FrameworkException("Engine::checkConsistency","No simulator in model");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator in model");
 
     checkExtraFilesConsistency();
 

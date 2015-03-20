@@ -217,7 +217,7 @@ QAction* AppActions::action(const std::string& ID) const
   {
     openfluid::base::ExceptionContext Context =
         openfluid::base::ApplicationException::computeContext("openfluid-builder",
-                                                              "AppActions::getAction");
+                                                              OPENFLUID_CODE_LOCATION);
 
     throw openfluid::base::ApplicationException(Context,
                                                 "Required action \"" + ID + "\" does not exist.");

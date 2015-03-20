@@ -42,7 +42,7 @@
 #define __OPENFLUID_BUDDIES_SIM2DOCBUDDY_HPP__
 
 
-#ifndef __APPLE__
+#if !defined(OPENFLUID_OS_MAC)
 
 // Disabled for compilation errors due to boost.spirit usage under MacOSX
 // TODO Should be re-enabled later
@@ -439,6 +439,6 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
 
 } } //namespaces
 
-#endif /* __APPLE__ */
+#endif /* !defined(OPENFLUID_OS_MAC) */
 
 #endif  /* __OPENFLUID_BUDDIES_SIM2DOCBUDDY_HPP__ */

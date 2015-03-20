@@ -101,10 +101,9 @@ void GeoRasterValue::tryToOpenSource()
 
   if (!mp_Data)
   {
-    throw openfluid::base::FrameworkException(
-        "GeoRasterValue::tryToOpenSource",
-        "Error while trying to open file " + m_AbsolutePath + " ("
-        + CPLGetLastErrorMsg() + ")");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Error while trying to open file " + m_AbsolutePath +
+                                              " (" + CPLGetLastErrorMsg() + ")");
   }
 
 }

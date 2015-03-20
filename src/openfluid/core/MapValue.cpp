@@ -132,7 +132,7 @@ void MapValue::set(const std::string& Key, Value* Element)
 Value& MapValue::operator[](const std::string& Key)
 {
   if (!isKeyExist(Key))
-    throw openfluid::base::FrameworkException("MapValue::operator[]","Requested key " + Key + " does not exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Requested key " + Key + " does not exist");
 
   return (*(m_Value[Key]));
 }
@@ -145,7 +145,7 @@ Value& MapValue::operator[](const std::string& Key)
 Value& MapValue::at(const std::string& Key)
 {
   if (!isKeyExist(Key))
-    throw openfluid::base::FrameworkException("MapValue::at","Requested key " + Key + " does not exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Requested key " + Key + " does not exist");
 
   return (*(m_Value[Key]));
 }

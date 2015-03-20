@@ -84,7 +84,7 @@ PreferencesManager::PreferencesManager():
   QDir FileDir = QFileInfo(m_FileName).path();
 
   if (!FileDir.exists() && !QDir::root().mkpath(FileDir.absolutePath()))
-    throw openfluid::base::FrameworkException("PreferencesManager::PreferencesManager",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Cannot create " + FileDir.path().toStdString() + " directory");
 
   mp_ConfFile = new QSettings(QString(m_FileName),QSettings::IniFormat);
@@ -138,9 +138,8 @@ void PreferencesManager::setFileName(const QString& AbsoluteFileName)
   if (!mp_Instance)
     m_FileName = AbsoluteFileName;
   else
-    throw openfluid::base::FrameworkException(
-        "PreferencesManager::setFileName",
-        "FileName can not be changed after PreferencesManager instantiation");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "FileName can not be changed after PreferencesManager instantiation");
 }
 
 

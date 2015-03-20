@@ -60,17 +60,17 @@ MarketBinPackage::MarketBinPackage(const openfluid::ware::WareID_t& ID, const st
 void MarketBinPackage::process()
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("MarketBinPackage::download()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" not initialized");
 
 
   if (!m_Downloaded)
-    throw openfluid::base::FrameworkException("MarketBinPackage::process()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" cannot be processed before download");
 
 
   if (!m_CMakeProgram.isFound())
-    throw openfluid::base::FrameworkException("MarketBinPackage::process()","CMake command not defined");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"CMake command not defined");
 
 
   QString ProcessCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"")
@@ -95,7 +95,7 @@ void MarketBinPackage::process()
   if (RetValue != 0)
   {
     appendToLogFile(QString(Uncompress.readAllStandardError()).toStdString());
-    throw openfluid::base::FrameworkException("MarketBinPackage::process()","Error uncompressing package using CMake");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error uncompressing package using CMake");
   }
 }
 

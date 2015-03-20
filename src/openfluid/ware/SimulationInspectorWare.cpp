@@ -80,10 +80,10 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->attributes()->getValue(AttrName,Val))
-      throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "StringValue for attribute "+ AttrName +" does not exist");
   }
-  else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute",
+  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Unit is NULL");
 }
 
@@ -145,10 +145,10 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->attributes()->getValueAsDouble(AttrName,Val))
-      throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Double value for attribute "+ AttrName +" does not exist");
   }
-  else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute",
+  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Unit is NULL");
 }
 
@@ -168,10 +168,10 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->attributes()->getValueAsLong(AttrName,Val))
-      throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Long integer for attribute "+ AttrName +" does not exist");
   }
-  else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute",
+  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Unit is NULL");
 }
 
@@ -191,10 +191,10 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->attributes()->getValue(AttrName,Val))
-      throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "String value for attribute "+ AttrName +" does not exist");
   }
-  else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetAttribute",
+  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Unit is NULL");
 }
 
@@ -213,7 +213,7 @@ bool SimulationInspectorWare::OPENFLUID_IsAttributeExist(const openfluid::core::
   if (UnitPtr != NULL)
     return UnitPtr->attributes()->isAttributeExist(AttrName);
 
-  throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_IsAttributeExist",
+  throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                             "Unit is NULL");
   return false;
 }
@@ -239,12 +239,12 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Spati
     {
       std::string TimeStr;
       openfluid::tools::convertValue(Index,&TimeStr);
-      throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetVariable",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Value for variable "+ VarName +" does not exist or is not right type"
                                                 "at time index "+ TimeStr);
     }
   }
-  else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetVariable",
+  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Unit is NULL");
 }
 
@@ -327,12 +327,12 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Spati
     {
       std::string TimeStr;
       openfluid::tools::convertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
-      throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetVariable",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Value for variable "+ VarName +" does not exist or is not right type"
                                                 "at time index "+ TimeStr);
     }
   }
-  else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetVariable",
+  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Unit is NULL");
 }
 
@@ -411,12 +411,12 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariable(const openfluid::core:
      {
        std::string TimeStr;
        openfluid::tools::convertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
-       throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetLatestVariable",
+       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Indexed value for variable "+ VarName +" does not exist or is empty"
                                                  "at time index "+ TimeStr);
      }
    }
-   else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetLatestVariable",
+   else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Unit is NULL");
 
 }
@@ -441,12 +441,12 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariables(const openfluid::core
      {
        std::string TimeStr;
        openfluid::tools::convertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
-       throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetLatestVariables",
+       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Indexed values for variable "+ VarName +" does not exist or is empty"
                                                  "at time index "+ TimeStr);
      }
    }
-   else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetLatestVariables",
+   else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Unit is NULL");
 }
 
@@ -471,12 +471,12 @@ void SimulationInspectorWare::OPENFLUID_GetVariables(const openfluid::core::Spat
      {
        std::string TimeStr;
        openfluid::tools::convertValue(OPENFLUID_GetCurrentTimeIndex(),&TimeStr);
-       throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetVariables",
+       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Indexed values for variable "+ VarName +" does not exist or is empty"
                                                  "at time index "+ TimeStr);
      }
    }
-   else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetVariables","Unit is NULL");
+   else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Unit is NULL");
 }
 
 
@@ -581,7 +581,7 @@ void SimulationInspectorWare::OPENFLUID_GetEvents(const openfluid::core::Spatial
   if (UnitPtr != NULL)
     UnitPtr->events()->getEventsBetween(BeginDate,EndDate,Events);
 
-  else throw openfluid::base::FrameworkException("SimulationInspectorWare::OPENFLUID_GetEvents","Unit is NULL");
+  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Unit is NULL");
 }
 
 

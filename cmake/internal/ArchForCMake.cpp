@@ -26,38 +26,31 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
 
 /**
-  @file SimulatorSignature.cpp
+  @file ArchForCMake.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#include <openfluid/tools/IDHelpers.hpp>
-#include <openfluid/ware/SimulatorSignature.hpp>
+#include <iostream>
+
+#include <openfluid/global.hpp>
 
 
-namespace openfluid { namespace ware {
-
-
-SignatureTypedSpatialDataItem::SignatureTypedSpatialDataItem(std::string DName,
-                                                             openfluid::core::UnitClass_t UClass,
-                                                             std::string DDescription,
-                                                             std::string DUnit):
- SignatureSpatialDataItem(DName,UClass,DDescription,DUnit)
+int main(int argc, char **argv)
 {
+  std::string Arch = OPENFLUID_OS_STRLABEL;
 
-  if (!openfluid::tools::extractVarableNameAndType(DName,DataName,DataType))
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Variable " + DName + " is not well formated.");
+  if (Arch.empty())
+    return 127;
+
+  std::cout << Arch;
+
+  return 0;
 }
-
-
-
-} } //namespaces
-

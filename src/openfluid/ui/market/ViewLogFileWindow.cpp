@@ -78,7 +78,7 @@ ViewLogFileWindow::ViewLogFileWindow(const QString& PathToLogFile) : QDialog()
   QString FullContent;
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
   {
-    throw openfluid::base::FrameworkException("ViewLogFileWindow::ViewLogFileWindow",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
        "error opening " + PathToLogFile.toStdString());
   }
 

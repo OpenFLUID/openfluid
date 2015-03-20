@@ -99,7 +99,7 @@ openfluid::core::StringValue WareParamsTree::getValueUsingFullKey(const std::str
     if (CurrentNode->hasChild(Key))
       CurrentNode = &(CurrentNode->child(Key));
     else
-      throw openfluid::base::FrameworkException("WareParamsTree::getValue","Parameter " + FullName + " does not exist");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Parameter " + FullName + " does not exist");
   }
 
   return CurrentNode->getValue();

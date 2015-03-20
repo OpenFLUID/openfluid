@@ -139,7 +139,7 @@ void AdvancedDatastoreDescriptor::moveItem(unsigned int From, unsigned int To)
   unsigned int Last = Items.size() - 1;
 
   if (From > Last || To > Last)
-    throw openfluid::base::FrameworkException("AdvancedDatastoreDescriptor::moveItem",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Bad indexes of items to move");
 
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator itFrom =
@@ -190,7 +190,7 @@ void AdvancedDatastoreDescriptor::insertItem(
     Items.insert(it, Item);
   }
   else
-    throw openfluid::base::FrameworkException("AdvancedDatastoreDescriptor::insertItem()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Bad index of item to insert");
 }
 
@@ -213,7 +213,7 @@ void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
     Items.erase(it);
   }
   else
-    throw openfluid::base::FrameworkException("AdvancedDatastoreDescriptor::deleteItem()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Bad index of item to delete");
 }
 

@@ -72,11 +72,11 @@ InjectGenerator::~InjectGenerator()
 void InjectGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetSimulatorParameter(Params,"sources",m_SourcesFile))
-    throw openfluid::base::FrameworkException("InjectGenerator::initParams",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "missing sources value for generator");
 
   if (!OPENFLUID_GetSimulatorParameter(Params,"distribution",m_DistriFile))
-    throw openfluid::base::FrameworkException("InjectGenerator::initParams",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "missing distribution value for generator");
 
 
@@ -110,7 +110,7 @@ void InjectGenerator::prepareData()
 void InjectGenerator::checkConsistency()
 {
   if (m_IsMin && m_IsMax && m_Min > m_Max)
-    throw openfluid::base::FrameworkException("InjectGenerator::checkConsistency",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "threshold max value must be greater or equal "
                                               "to threshold min value for generator");
 }

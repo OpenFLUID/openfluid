@@ -84,7 +84,7 @@ void AdvancedDomainDescriptor::dispatchUnits()
   {
     if (!m_Units[it->getUnitsClass()].insert(
         std::make_pair(it->getID(), AdvancedUnitDescriptor(*it))).second)
-      throw openfluid::base::FrameworkException("AdvancedDomainDescriptor::dispatchUnits",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "trying to add a Unit that already exists");
   }
 }
@@ -131,9 +131,7 @@ void AdvancedDomainDescriptor::checkUnitRelations(
       ss << "Unit " << it->second << " of class " << it->first
          << " in \"To\" relation of unit " << Unit.getID() << " of class "
          << Unit.getUnitsClass() << " doesn't exist";
-      throw openfluid::base::FrameworkException(
-          "AdvancedDomainDescriptor::checkUnitRelation",
-          ss.str());
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
     }
   }
 
@@ -151,9 +149,7 @@ void AdvancedDomainDescriptor::checkUnitRelations(
       ss << "Unit " << it->second << " of class " << it->first
          << " in \"Parent\" relation of unit " << Unit.getID()
          << " of class " << Unit.getUnitsClass() << " doesn't exist";
-      throw openfluid::base::FrameworkException(
-          "AdvancedDomainDescriptor::checkUnitRelations",
-          ss.str());
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
     }
   }
 
@@ -191,10 +187,9 @@ void AdvancedDomainDescriptor::dispatchAttributes()
         {
           if (!m_Units.at(it->getUnitsClass()).at(it2->first).Attributes.insert(
               std::make_pair(it3->first, &it3->second)).second)
-            throw openfluid::base::FrameworkException(
-                "AdvancedDomainDescriptor::dispatchAttributes",
-                "trying to add an attribute (" + it3->first
-                + ") that already exists");
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                      "trying to add an attribute (" + it3->first
+                                                      + ") that already exists");
         }
         catch (std::out_of_range& e)
         {
@@ -202,9 +197,7 @@ void AdvancedDomainDescriptor::dispatchAttributes()
           ss << "trying to add an attribute (" << it3->first
              << ") to a Unit that doesn't exist (class " << it->getUnitsClass()
              << " - ID " << it2->first << ")";
-          throw openfluid::base::FrameworkException(
-              "AdvancedDomainDescriptor::dispatchAttributes",
-              ss.str());
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
         }
       }
     }
@@ -225,9 +218,8 @@ void AdvancedDomainDescriptor::checkAttributesConsistency() const
     std::set<std::string> Names = it->second;
 
     if (!isClassNameExists(ClassName))
-      throw openfluid::base::FrameworkException(
-          "AdvancedDomainDescriptor::checkAttributesConsistency",
-          "class " + ClassName + " doesn't exist");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                "class " + ClassName + " doesn't exist");
 
     const std::map<int, AdvancedUnitDescriptor>* Units = &(m_Units.at(ClassName));
 
@@ -246,8 +238,7 @@ void AdvancedDomainDescriptor::checkAttributesConsistency() const
           std::ostringstream ss;
           ss << "Attribute " << AttrName << " doesn't exist for Unit " << ID
              << " of class " << ClassName;
-          throw openfluid::base::FrameworkException(
-              "AdvancedDomainDescriptor::checkAttributesConsistency", ss.str());
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, ss.str());
         }
       }
     }
@@ -323,9 +314,7 @@ const AdvancedUnitDescriptor& AdvancedDomainDescriptor::spatialUnit(const std::s
     std::ostringstream ss;
     ss << "trying to get a Unit that doesn't exist (UnitClass " << ClassName
        << " ID " << ID << ")";
-    throw openfluid::base::FrameworkException(
-                                       "AdvancedDomainDescriptor::getUnit",
-                                       ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
   }
 }
 
@@ -418,9 +407,7 @@ void AdvancedDomainDescriptor::addUnit(openfluid::fluidx::SpatialUnitDescriptor*
     mp_DomainDesc->spatialUnits().erase(
         mp_DomainDesc->spatialUnits().end().operator --());
 
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::addUnit",
-        "trying to add a Unit that already exists");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"trying to add a Unit that already exists");
   }
 
   //check relations
@@ -564,9 +551,8 @@ std::string& AdvancedDomainDescriptor::attribute(const std::string& ClassName,
   }
   catch (std::out_of_range& e)
   {
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::getAttributes",
-        "trying to get an attribute that doesn't exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "trying to get an attribute that doesn't exist");
   }
 }
 
@@ -595,14 +581,12 @@ void AdvancedDomainDescriptor::addAttribute(const std::string& ClassName,
                                             const std::string& DefaultValue)
 {
   if (!isClassNameExists(ClassName))
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::addAttribute",
-        "trying to add an attribute to a Class that doesn't exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "trying to add an attribute to a Class that doesn't exist");
 
   if (getAttributesNames(ClassName).count(AttrName))
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::addAttribute",
-        "trying to add an attribute that already exists");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "trying to add an attribute that already exists");
 
   // add in DomainDesc
   openfluid::fluidx::AttributesDescriptor AttrsDesc;
@@ -643,14 +627,12 @@ void AdvancedDomainDescriptor::deleteAttribute(const std::string& ClassName,
                                                const std::string& AttrName)
 {
   if (!isClassNameExists(ClassName))
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::deleteAttribute",
-        "trying to delete an attribute from a Class that doesn't exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "trying to delete an attribute from a Class that doesn't exist");
 
   if (!getAttributesNames(ClassName).count(AttrName))
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::deleteAttribute",
-        "trying to delete an attribute that doesn't exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "trying to delete an attribute that doesn't exist");
 
   // delete in m_Units
   for (std::map<int, AdvancedUnitDescriptor>::iterator it = m_Units.at(ClassName).begin();
@@ -715,14 +697,12 @@ void AdvancedDomainDescriptor::renameAttribute(const std::string& ClassName,
     return;
 
   if (!isClassNameExists(ClassName))
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::renameAttribute",
-        "trying to rename an attribute of a Class that doesn't exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "trying to rename an attribute of a Class that doesn't exist");
 
   if (!getAttributesNames(ClassName).count(OldAttrName))
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::renameAttribute",
-        "trying to rename an attribute that doesn't exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "trying to rename an attribute that doesn't exist");
 
   //rename in DomainDesc
   std::map<unsigned int, std::string*> DomainDescAttrs;
@@ -795,10 +775,7 @@ void AdvancedDomainDescriptor::addEvent(const openfluid::core::UnitClass_t& Unit
    }
   catch (std::out_of_range& e)
   {
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::addEvent",
-        "Error adding event");
-
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error adding event");
   }
 }
 
@@ -835,9 +812,7 @@ void AdvancedDomainDescriptor::deleteEvent(const openfluid::core::UnitClass_t& U
   }
   catch (std::out_of_range& e)
   {
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::addEvent",
-        "Error deleting event");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error deleting event");
   }
 
 
@@ -920,9 +895,8 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::toSpa
   }
   catch (std::out_of_range& e)
   {
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::getUnitsToOf",
-        "trying to get relations of a Unit that doesn't exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "trying to get relations of a Unit that doesn't exist");
   }
 }
 
@@ -940,9 +914,8 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::paren
   }
   catch (std::out_of_range& e)
   {
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::getUnitsParentsOf",
-        "trying to get relations of a Unit that doesn't exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "trying to get relations of a Unit that doesn't exist");
   }
 }
 
@@ -1026,9 +999,7 @@ void AdvancedDomainDescriptor::addFromToRelation(
     std::ostringstream ss;
     ss << "trying to add a From/To relation from a Unit that doesn't exist (UnitClass "
        << FromUnit.first << " ID " << FromUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::addFromToRelation",
-        ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
   }
 
   try
@@ -1040,9 +1011,7 @@ void AdvancedDomainDescriptor::addFromToRelation(
     std::ostringstream ss;
     ss << "trying to add a From/To relation to a Unit that doesn't exist (UnitClass "
        << ToUnit.first << " ID " << ToUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::addFromToRelation",
-        ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
   }
 
   std::list<openfluid::core::UnitClassID_t>& Tos = UFrom->toSpatialUnits();
@@ -1070,9 +1039,7 @@ void AdvancedDomainDescriptor::removeFromToRelation(
     std::ostringstream ss;
     ss << "trying to remove a From/To relation from a Unit that doesn't exist (UnitClass "
        << FromUnit.first << " ID " << FromUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::removeFromToRelation",
-        ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
   }
 
   try
@@ -1084,9 +1051,7 @@ void AdvancedDomainDescriptor::removeFromToRelation(
     std::ostringstream ss;
     ss << "trying to remove a From/To relation to a Unit that doesn't exist (UnitClass "
        << ToUnit.first << " ID " << ToUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::removeFromToRelation",
-        ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
   }
 
   std::list<openfluid::core::UnitClassID_t>& Tos = UFrom->toSpatialUnits();
@@ -1098,9 +1063,7 @@ void AdvancedDomainDescriptor::removeFromToRelation(
     ss << "trying to remove a From/To relation that doesn't exist (from UnitClass "
        << FromUnit.first << " ID " << FromUnit.second << " to UnitClass "
        << ToUnit.first << " ID " << ToUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::removeFromToRelation",
-        ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
   }
 }
 
@@ -1124,8 +1087,7 @@ void AdvancedDomainDescriptor::addParentChildRelation(
     std::ostringstream ss;
     ss << "trying to add a Parent/Child relation to a Unit that doesn't exist (UnitClass "
        << ChildUnit.first << " ID " << ChildUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::addParentChildRelation", ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, ss.str());
   }
 
   try
@@ -1137,8 +1099,7 @@ void AdvancedDomainDescriptor::addParentChildRelation(
     std::ostringstream ss;
     ss << "trying to add a Parent/Child relation from a Unit that doesn't exist (UnitClass "
        << ParentUnit.first << " ID " << ParentUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::addParentChildRelation", ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, ss.str());
   }
 
   std::list<openfluid::core::UnitClassID_t>& Parents =
@@ -1167,8 +1128,7 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
     std::ostringstream ss;
     ss << "trying to remove a Parent/Child relation to a Unit that doesn't exist (UnitClass "
        << ChildUnit.first << " ID " << ChildUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::removeParentChildRelation", ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, ss.str());
   }
 
   try
@@ -1180,8 +1140,7 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
     std::ostringstream ss;
     ss << "trying to remove a Parent/Child relation from a Unit that doesn't exist (UnitClass "
        << ParentUnit.first << " ID " << ParentUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::removeParentChildRelation", ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, ss.str());
   }
 
   std::list<openfluid::core::UnitClassID_t>& Parents =
@@ -1194,8 +1153,7 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
     ss << "trying to remove a Parent/Child relation that doesn't exist (from UnitClass "
        << ParentUnit.first << " ID " << ParentUnit.second << " to UnitClass "
        << ChildUnit.first << " ID " << ChildUnit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::removeParentChildRelation", ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
   }
 
 }
@@ -1219,9 +1177,7 @@ void AdvancedDomainDescriptor::clearRelations(
     std::ostringstream ss;
     ss << "trying to remove relations to a Unit that doesn't exist (UnitClass "
        << Unit.first << " ID " << Unit.second << ")";
-    throw openfluid::base::FrameworkException(
-        "AdvancedDomainDescriptor::clearRelations",
-        ss.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,ss.str());
   }
 
   std::list<openfluid::core::UnitClassID_t> Froms = getFromSpatialUnits(Unit);

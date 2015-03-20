@@ -128,7 +128,7 @@ class OPENFLUID_API WarePluginsManager
             Plug->Signature = SignatureProc();
 
             if (Plug->Signature == NULL)
-              throw openfluid::base::FrameworkException("WarePluginsManager::buildWareContainerWithSignatureOnly",
+              throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                         "Signature from plugin file " + PluginFilename +
                                                         " cannot be instanciated");
 
@@ -139,15 +139,15 @@ class OPENFLUID_API WarePluginsManager
             Plug->WithParametersWidget = PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
           }
           else
-            throw openfluid::base::FrameworkException("WarePluginsManager::buildWareContainerWithSignatureOnly",
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Format error in plugin file " + PluginFilename);
         }
         else
-          throw openfluid::base::FrameworkException("WarePluginsManager::buildWareContainerWithSignatureOnly",
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "Compatibility version mismatch for plugin file " + PluginFilename);
       }
       else
-        throw openfluid::base::FrameworkException("WarePluginsManager::buildWareContainerWithSignatureOnly",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Unable to load plugin from file " + PluginFilename);
 
       return Plug;
@@ -192,7 +192,7 @@ class OPENFLUID_API WarePluginsManager
             Plug->Signature = SignatureProc();
 
             if (Plug->Signature == NULL)
-              throw openfluid::base::FrameworkException("WarePluginsManager::getWareSignature",
+              throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                         "Signature from plugin file " + PluginFilename +
                                                         " cannot be instanciated");
 
@@ -202,12 +202,12 @@ class OPENFLUID_API WarePluginsManager
             Plug->WithParametersWidget = PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
           }
           else
-            throw openfluid::base::FrameworkException("WarePluginsManager::getWareSignature",
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Format error in plugin file " + PluginFilename);
         }
       }
       else
-        throw openfluid::base::FrameworkException("WarePluginsManager::getWareSignature",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Unable to find plugin file " + PluginFilename);
 
       return Plug;
@@ -343,15 +343,15 @@ class OPENFLUID_API WarePluginsManager
           Item->Body = BodyProc();
 
           if (Item->Body == NULL)
-            throw openfluid::base::FrameworkException("WarePluginsManager::completeSignatureWithWareBody",
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Ware from plugin file " + PluginFullPath +
                                                       " cannot be instanciated");
 
         }
-        else throw openfluid::base::FrameworkException("completeSignatureWithWareBody",
+        else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                        "Format error in plugin file " + PluginFullPath);
       }
-      else throw openfluid::base::FrameworkException("completeSignatureWithWareBody",
+      else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                      "Unable to find plugin file " + PluginFullPath);
     }
 

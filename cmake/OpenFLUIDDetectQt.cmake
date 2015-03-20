@@ -45,6 +45,6 @@ FIND_PACKAGE(Qt5 QUIET COMPONENTS Core Widgets Network Xml Svg Declarative Concu
   
   ELSE()
   
-    FIND_PACKAGE(Qt4 REQUIRED)
+    FIND_PACKAGE(Qt4 4.7 REQUIRED)
     
   ENDIF() 

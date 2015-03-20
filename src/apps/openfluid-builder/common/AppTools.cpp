@@ -100,7 +100,7 @@ void launchDevStudio()
 
   // TODO set devstudio exe name in CMake config
 
-#if defined _WIN32
+#if defined OPENFLUID_OS_WINDOWS
   ExeName = "openfluid-devstudio.exe";
 #endif
 

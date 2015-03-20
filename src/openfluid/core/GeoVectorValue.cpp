@@ -110,9 +110,8 @@ void GeoVectorValue::tryToOpenSource()
   mp_Data = OGRSFDriverRegistrar::Open(m_AbsolutePath.c_str(), false);
 
   if (!mp_Data)
-    throw openfluid::base::FrameworkException(
-        "GeoVectorValue::tryToOpenSource",
-        "Error while trying to open file " + m_AbsolutePath);
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Error while trying to open file " + m_AbsolutePath);
 }
 
 
@@ -185,9 +184,8 @@ bool GeoVectorValue::isFieldOfType(const std::string& FieldName, OGRFieldType Fi
                                   unsigned int LayerIndex)
 {
   if (!containsField(FieldName))
-    throw openfluid::base::FrameworkException(
-        "VectorDataset::isFieldOfType",
-        "Field \"" + FieldName + "\" is not set.");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Field \"" + FieldName + "\" is not set.");
 
   return layerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()
       == FieldType;

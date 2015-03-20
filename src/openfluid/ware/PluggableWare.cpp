@@ -100,7 +100,7 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, bool &Va
 void PluggableWare::initializeWare(const WareID_t& ID)
 {
   if(!isLinked())
-    throw openfluid::base::FrameworkException("PluggableWare::initializeWare",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "initialized ware that is not fully linked ("+ID+")");
 
   m_WareID = ID;

@@ -90,7 +90,7 @@ inline T convertString(const std::string& StrToConvert)
   if (convertString(StrToConvert,&Converted))
     return Converted;
 
-  throw openfluid::base::FrameworkException("openfluid::tools::convertString","Error in string conversion");
+  throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error in string conversion");
 }
 
 
@@ -150,7 +150,7 @@ inline std::string convertValue(const T& ValueToConvert)
   if (convertValue(ValueToConvert,&Converted))
     return Converted;
 
-  throw openfluid::base::FrameworkException("openfluid::tools::convertValue","Error in value conversion");
+  throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error in value conversion");
 }
 
 

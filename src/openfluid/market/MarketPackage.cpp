@@ -97,7 +97,7 @@ MarketPackage::~MarketPackage()
 void MarketPackage::initialize(bool EnableLog = false)
 {
   if (!m_CMakeProgram.isFound())
-    throw openfluid::base::FrameworkException("MarketPackage::initialize()","Required CMake program not found");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Required CMake program not found");
 
   // TODO
   //m_CommonBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
@@ -266,7 +266,7 @@ void MarketPackage::download()
 {
 
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("MarketPackage::download()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" not initialized");
 
   m_PackageDest = m_TempDownloadsDir+"/"+m_PackageFilename;
@@ -276,7 +276,7 @@ void MarketPackage::download()
   if (!openfluid::utils::FileDownloader::downloadToFile(m_PackageURL, m_PackageDest))
   {
     appendToLogFile("Error");
-    throw openfluid::base::FrameworkException("MarketPackage::download()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "error while downloading package "+m_PackageFilename);
   }
 

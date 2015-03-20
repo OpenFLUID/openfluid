@@ -81,19 +81,19 @@ void ChronFileInterpolator::checkPreload()
   {
     ColSepFound = m_InDateFormat.find(m_InColumnSeparators[i]);
     if (ColSepFound != std::string::npos)
-      throw openfluid::base::FrameworkException("ChronFileInterpolator::preChecks",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "column separator has been found in input file date format");
   }
 
 
   ColSepFound = m_OutDateFormat.find(m_OutColumnSeparator);
   if (ColSepFound != std::string::npos)
-    throw openfluid::base::FrameworkException("ChronFileInterpolator::preChecks",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "column separator has been found in output file date format");
 
 
   if (m_BeginDate >= m_EndDate)
-    throw openfluid::base::FrameworkException("ChronFileInterpolator::preChecks",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Begin date is greater or equal to end date");
 }
 
@@ -125,7 +125,7 @@ void ChronFileInterpolator::loadInFile(ChronologicalSerie& Data)
 
 
   if (!FileParser.loadFromFile(m_InFilePath))
-    throw openfluid::base::FrameworkException("ChronFileInterpolator::loadInFile",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "unable to load file "+m_InFilePath);
 
 
@@ -148,18 +148,18 @@ void ChronFileInterpolator::loadInFile(ChronologicalSerie& Data)
         {
 
           if (!Data.empty() && Data.back().first > ZeDT )
-            throw openfluid::base::FrameworkException("ChronFileInterpolator::loadInFile",
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "wrong time chronology in "+m_InFilePath);
 
           Data.push_back(std::make_pair(ZeDT,Value));
 
         }
         else
-          throw openfluid::base::FrameworkException("ChronFileInterpolator::loadInFile",
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "wrong value read from "+m_InFilePath);
       }
       else
-        throw openfluid::base::FrameworkException("ChronFileInterpolator::loadInFile",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "wrong file format in "+m_InFilePath);
 
       i++;
@@ -167,20 +167,20 @@ void ChronFileInterpolator::loadInFile(ChronologicalSerie& Data)
   }
   else
   {
-    throw openfluid::base::FrameworkException("ChronFileInterpolator::loadInFile",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "wrong global file format in "+m_InFilePath);
   }
 
   // checking of the loaded file
   if (Data.size() < 2)
-    throw openfluid::base::FrameworkException("ChronFileInterpolator::loadInFile",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "file "+
                                               m_InFilePath+
                                               " contains unsufficient values (at least 2 values needed)");
 
   // checking of the covered period
   if (Data.front().first > m_BeginDate || Data.back().first < m_EndDate)
-    throw openfluid::base::FrameworkException("ChronFileInterpolator::loadInFile",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "serie in file "+m_InFilePath+" does not cover the requested period");
 
 

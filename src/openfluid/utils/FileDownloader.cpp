@@ -136,7 +136,7 @@ class FileDownloaderImpl : public QObject
     {
       QFile File(QString(FilePath.c_str()));
       if (!File.open(QIODevice::WriteOnly))
-        throw openfluid::base::FrameworkException("FileDownloader::writeToFile",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
              "Could not open "+FilePath+" : "+qPrintable(File.errorString()));
 
       File.write(m_FileContent);

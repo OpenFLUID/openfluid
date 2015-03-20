@@ -89,7 +89,7 @@
           }\
           catch(QtConcurrent::UnhandledException& E) \
           { \
-            throw openfluid::base::FrameworkException("Unknown exception thrown from compute thread"); \
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION); \
           } \
           ++_UNITSLISTITERID(id); \
         } \
@@ -138,7 +138,7 @@
           }\
           catch(QtConcurrent::UnhandledException& E) \
           { \
-            throw openfluid::base::FrameworkException("Unknown exception thrown from compute thread"); \
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION); \
           } \
           ++_UNITSPTRLISTITERID(id); \
         } \

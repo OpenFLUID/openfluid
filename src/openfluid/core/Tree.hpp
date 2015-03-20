@@ -105,7 +105,7 @@ class OPENFLUID_API Tree
       if (m_HasValue)
         return m_Value;
       else
-        throw openfluid::base::FrameworkException("Tree<>::getValue", "Node has no value");
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Node has no value");
 
     }
 
@@ -199,7 +199,7 @@ class OPENFLUID_API Tree
       auto it = m_Children.find(Key);
 
       if (it == m_Children.end())
-        throw openfluid::base::FrameworkException("Tree<>::child", "Key " + keyToStr(Key) + " does not exist");
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Key " + keyToStr(Key) + " does not exist");
 
       return (*it).second;
     }
@@ -220,7 +220,7 @@ class OPENFLUID_API Tree
       auto it = m_Children.find(Key);
 
       if (it == m_Children.end())
-        throw openfluid::base::FrameworkException("Tree<>::child", "Key " + keyToStr(Key) + " does not exist");
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Key " + keyToStr(Key) + " does not exist");
 
       return (*it).second;
     }
@@ -275,7 +275,7 @@ class OPENFLUID_API Tree
     Tree<K,V>& addChild(const K& Key, const V& Val)
     {
       if (hasChild(Key))
-        throw openfluid::base::FrameworkException("Tree<>::addChild", "Key " + keyToStr(Key) + " already exists");
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Key " + keyToStr(Key) + " already exists");
 
       m_Children[Key] = Tree<K,V>();
       m_Children[Key].setValue(Val);
@@ -297,7 +297,7 @@ class OPENFLUID_API Tree
     Tree<K,V>& addChild(const K& Key)
     {
       if (hasChild(Key))
-        throw openfluid::base::FrameworkException("Tree<>::addChild", "Key " + keyToStr(Key) + " already exists");
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Key " + keyToStr(Key) + " already exists");
 
       m_Children[Key] = Tree<K,V>();
 

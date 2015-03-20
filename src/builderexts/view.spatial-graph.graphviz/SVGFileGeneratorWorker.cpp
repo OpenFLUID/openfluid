@@ -75,6 +75,7 @@ void SVGFileGeneratorWorker::setOption(const QString& Name, const QString& Value
   m_Options[Name] = Value;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -184,7 +185,7 @@ void SVGFileGeneratorWorker::run()
 
   // Generation of SVG file
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
   openfluid::utils::ExternalProgram DotProgram("dot.exe");
 #else
   openfluid::utils::ExternalProgram DotProgram("dot");

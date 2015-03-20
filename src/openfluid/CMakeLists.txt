@@ -26,8 +26,8 @@ IF(OPENFLUID_ENABLE_LANDR)
 ENDIF()  
 
 
-INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp market.hpp 
-              dllexport.hpp debug.hpp deprecation.hpp ware.hpp
+INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp market.hpp ware.hpp 
+              dllexport.hpp debug.hpp deprecation.hpp global.hpp
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
 
 
@@ -45,4 +45,4 @@ INSTALL(FILES "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc"
 
 INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.hpp" 
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
-               
+                       

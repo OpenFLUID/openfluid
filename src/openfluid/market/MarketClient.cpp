@@ -108,7 +108,7 @@ void MarketClient::initMarketBag()
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagSimulatorDir());
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagSimulatorDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag simulators directory");
 
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagSimulatorDir()
@@ -116,7 +116,7 @@ void MarketClient::initMarketBag()
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagBinSubDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag simulators binary subdirectory");
 
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagSimulatorDir()
@@ -124,7 +124,7 @@ void MarketClient::initMarketBag()
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag simulators source subdirectory");
 
 
@@ -133,7 +133,7 @@ void MarketClient::initMarketBag()
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagObserverDir());
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagObserverDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag observers directory");
 
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagObserverDir()
@@ -141,7 +141,7 @@ void MarketClient::initMarketBag()
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagObserverDir()
     + "/" + MarketPackage::getMarketBagBinSubDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag observers binary subdirectory");
 
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagObserverDir()
@@ -149,7 +149,7 @@ void MarketClient::initMarketBag()
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagObserverDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag observers source subdirectory");
 
 
@@ -158,7 +158,7 @@ void MarketClient::initMarketBag()
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagBuilderextDir());
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagBuilderextDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag builderexts directory");
 
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagBuilderextDir()
@@ -166,7 +166,7 @@ void MarketClient::initMarketBag()
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagBuilderextDir()
     + "/" + MarketPackage::getMarketBagBinSubDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag builderexts binary subdirectory");
 
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagBuilderextDir()
@@ -174,7 +174,7 @@ void MarketClient::initMarketBag()
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagBuilderextDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag builderexts source subdirectory");
 
 
@@ -183,7 +183,7 @@ void MarketClient::initMarketBag()
   openfluid::tools::Filesystem::makeDirectory(MarketPackage::getMarketBagDatasetDir());
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getMarketBagDatasetDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market-bag datasets directory");
 }
 
@@ -200,7 +200,7 @@ void MarketClient::initMarketTemp()
 
   if (!openfluid::tools::Filesystem::isDirectory(MarketPackage::getTempBuildsDir()) ||
       !openfluid::tools::Filesystem::isDirectory(MarketPackage::getTempDownloadsDir()))
-    throw openfluid::base::FrameworkException("MarketClient::initMarketTemp()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to initialize market temp directory");
 }
 
@@ -214,13 +214,13 @@ void MarketClient::lockMarketTemp()
   std::string LockFilename = MarketPackage::getTempDir()+"/"+LOCK_FILE;
 
   if (openfluid::tools::Filesystem::isFile(LockFilename))
-    throw openfluid::base::FrameworkException("MarketClient::lockMarketTemp()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to lock market temp directory (already locked)");
 
   std::ofstream(LockFilename.c_str()).close();
 
   if (!openfluid::tools::Filesystem::isFile(LockFilename))
-    throw openfluid::base::FrameworkException("MarketClient::lockMarketTemp()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to lock market temp directory (cannot create lock)");
 }
 
@@ -236,7 +236,7 @@ void MarketClient::unlockMarketTemp()
   openfluid::tools::Filesystem::removeFile(LockFilename);
 
   if (openfluid::tools::Filesystem::isFile(LockFilename))
-    throw openfluid::base::FrameworkException("MarketClient::unlockMarketTemp()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unable to unlock market temp directory (cannot remove lock)");
 }
 
@@ -306,7 +306,7 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
   MetaPackagesCatalog.clear();
 
   if (openfluid::base::RuntimeEnvironment::instance()->getArch().empty())
-    throw openfluid::base::FrameworkException("MarketClient::parseCatalogData()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "undetermined system architecture");
 
   std::string BinaryArchKey= "arch." + openfluid::base::RuntimeEnvironment::instance()->getArch();

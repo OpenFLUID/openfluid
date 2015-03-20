@@ -70,7 +70,8 @@ int main(int argc, char **argv)
     else
     {
       openfluid::base::ExceptionContext Context =
-          openfluid::base::ApplicationException::computeContext("openfluid-minimal");
+          openfluid::base::ApplicationException::computeContext("openfluid-minimal",
+                                                                OPENFLUID_CODE_LOCATION);
 
       throw openfluid::base::ApplicationException(Context,
                                                   "Incorrect number of arguments, "

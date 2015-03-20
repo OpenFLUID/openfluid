@@ -117,8 +117,7 @@ void SimulatorSignatureRegistry::addSimulatorSignature(
     m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator][Signature->Signature->ID] = Signature;
   }
   else
-    throw openfluid::base::FrameworkException(
-        "SimulatorSignatureRegistry::addSimulatorSignature",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
         "trying to register a simulator signature with no signature instantiated");
 }
 
@@ -138,8 +137,7 @@ void SimulatorSignatureRegistry::addGeneratorSignature(
         Signature;
   }
   else
-    throw openfluid::base::FrameworkException(
-        "SimulatorSignatureRegistry::addSimulatorSignature",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
         "Trying to register a generator signature with no signature instantiated");
 }
 

@@ -40,7 +40,7 @@
 
 #include <openfluid/buddies/Sim2DocBuddy.hpp>
 
-#ifndef __APPLE__
+#if !defined(OPENFLUID_OS_MAC)
 
 #include <iosfwd>
 #include <fstream>
@@ -209,7 +209,7 @@ void Sim2DocBuddy::extractLatexDocFromCPP()
 
   // check if file exists and if it is "openable"
   if (!CPPFile)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::extractLatexDocFromCPP()","Could not open input file");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Could not open input file");
 
   std::string StrLine  = "";
   std::string CPPFileContent = "";
@@ -235,7 +235,7 @@ void Sim2DocBuddy::extractLatexDocFromCPP()
 
 void Sim2DocBuddy::cpreprocessCPP()
 {
-#if defined __unix__ || defined __APPLE__
+#if defined(OPENFLUID_OS_UNIX)
 
   mp_Listener->onSubstageCompleted("** Preprocessing C++ file (using gcc)...");
 
@@ -249,10 +249,10 @@ void Sim2DocBuddy::cpreprocessCPP()
                              " 2>/dev/null";
 
   if (system(CommandToRun.c_str()) == 0)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running c preprocessor");
 
   if (!openfluid::tools::Filesystem::isFile(m_CProcessedFilePath))
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::cpreprocessCPP()","C preprocessed file not generated");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"C preprocessed file not generated");
 
   mp_Listener->onStageCompleted(" done");
 
@@ -269,7 +269,7 @@ std::string Sim2DocBuddy::extractSignatureLines()
 
   // check if file exists and if it is "openable"
   if (!CProcessedFile)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::extractSignatureLines()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Could not open C preprocessed file");
 
   std::string StrLine  = "";
@@ -584,7 +584,7 @@ void Sim2DocBuddy::processSignature()
       ++pInfo.stop;
     }
 
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::processSignature()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error parsing simulator signature line \""+Line+"\"");
   }
 
@@ -611,7 +611,7 @@ void Sim2DocBuddy::generateLatex()
 
   // check if file exists and if it is "openable"
   if (!TPLFile)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::generateLatex()","Could not open template file");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Could not open template file");
 
   std::string StrLine  = "";
   m_LatexOutFile = "";
@@ -778,12 +778,12 @@ bool Sim2DocBuddy::isErrorInPDFLatexLog()
 
 void Sim2DocBuddy::buildPDF()
 {
-#if defined __unix__ || defined __APPLE__
+#if defined(OPENFLUID_OS_UNIX)
 
   mp_Listener->onSubstageCompleted("** Building PDF...");
 
   if (chdir(m_OutputDirPath.c_str()) != 0)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error changing current directory to " + m_OutputDirPath);
 
   std::string PDFCommandToRun = m_PDFLatexProgram.getFullProgramPath().toStdString()
@@ -798,34 +798,34 @@ void Sim2DocBuddy::buildPDF()
   mp_Listener->onSubstageCompleted(" first pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error running pdflatex command (catched in log file)");
 
   mp_Listener->onSubstageCompleted(" bibliography and references...");
 
 
   if (system(BibCommandToRun.c_str()) == -1)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running bibtex command");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running bibtex command");
 
   mp_Listener->onSubstageCompleted(" second pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error running pdflatex command (catched in log file)");
 
   mp_Listener->onSubstageCompleted(" third pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error running pdflatex command (catched in log file)");
 
   mp_Listener->onStageCompleted(" done");
@@ -840,12 +840,12 @@ void Sim2DocBuddy::buildPDF()
 
 void Sim2DocBuddy::buildHTML()
 {
-#if defined __unix__ || defined __APPLE__
+#if defined(OPENFLUID_OS_UNIX)
 
   mp_Listener->onSubstageCompleted("** Building HTML...");
 
   if (chdir(m_OutputDirPath.c_str()) != 0)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error changing current directory to " + m_OutputDirPath);
 
   std::string CommandToRun = m_Latex2HTMLProgram.getFullProgramPath().toStdString() +
@@ -854,7 +854,7 @@ void Sim2DocBuddy::buildHTML()
                              m_OutputLatexFilePath + " > /dev/null";
 
   if (system(CommandToRun.c_str()) != 0)
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()","Error running latex2html command");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running latex2html command");
 
   mp_Listener->onStageCompleted(" done");
 
@@ -869,7 +869,7 @@ void Sim2DocBuddy::buildHTML()
 
 bool Sim2DocBuddy::run()
 {
-#if defined __unix__ || defined __APPLE__
+#if defined(OPENFLUID_OS_UNIX)
 
   setOptionIfNotSet("tplfile",
                     openfluid::base::RuntimeEnvironment::instance()
@@ -886,7 +886,7 @@ bool Sim2DocBuddy::run()
 
   if (m_GCCProgram.isFound())
     mp_Listener->onInfo("Using C preprocessor: " + m_GCCProgram.getFullProgramPath().toStdString());
-  else throw openfluid::base::FrameworkException("Sim2DocBuddy::run()","C preprocessor (gcc) not found");
+  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"C preprocessor (gcc) not found");
 
 
   if (m_Options["pdf"] == "1")
@@ -923,11 +923,11 @@ bool Sim2DocBuddy::run()
   m_OutputDirPath = m_Options["outputdir"];
 
   if (!openfluid::tools::Filesystem::isFile(m_InputFilePath))
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::run()","Input file does not exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Input file does not exist");
 
   m_TplFilePath = m_Options["tplfile"];
   if (!openfluid::tools::Filesystem::isFile(m_TplFilePath))
-    throw openfluid::base::FrameworkException("Sim2DocBuddy::run()","Template file does not exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Template file does not exist");
 
   if (!openfluid::tools::Filesystem::isDirectory(m_OutputDirPath))
     openfluid::tools::Filesystem::makeDirectory(m_OutputDirPath);
@@ -963,4 +963,4 @@ bool Sim2DocBuddy::run()
 } } //namespaces
 
 
-#endif /* __APPLE__ */
+#endif /* !defined(OPENFLUID_OS_MAC) */

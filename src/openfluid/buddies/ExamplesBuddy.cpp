@@ -117,7 +117,7 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
       installExampleProject(ProjectsSourcePath,ProjectsInstallPath,FoundProjects[i],Force);
   }
   else
-    throw openfluid::base::FrameworkException("ExamplesBuddy::installAllExamplesProjects()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Projects source path is not a directory");
 
   return true;

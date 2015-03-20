@@ -353,7 +353,7 @@ double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* 
   {
     openfluid::base::ExceptionContext Context =
         openfluid::base::ApplicationException::computeContext("openfluid-builder",
-                                                              "ProjectCentral::getParamAsDouble");
+                                                              OPENFLUID_CODE_LOCATION);
 
     throw openfluid::base::ApplicationException(Context,
                                                 "Parameter " + ParamName + " is not set as a double precision value");

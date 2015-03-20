@@ -78,100 +78,96 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
 
   if (Prog == CMakeProgram)
   {
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(OPENFLUID_OS_UNIX)
     ProgName = "cmake";
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     ProgName = "cmake.exe";
 #endif
   }
   else if (Prog == ZipProgram)
   {
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(OPENFLUID_OS_UNIX)
     ProgName = "zip";
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     ProgName = "zip.exe";
 #endif
   }
   else if (Prog == SevenZipProgram)
   {
-#if defined(Q_OS_UNIX)
+#if defined(OPENFLUID_OS_UNIX)
     ProgName = "7z";
 #endif
 
-#if defined(Q_OS_MAC)
-    ProgName = "7z";
-#endif
-
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     ProgName = "7z.exe";
 #endif
   }
   else if (Prog == GnuplotProgram)
   {
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(OPENFLUID_OS_UNIX)
     ProgName = "gnuplot";
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     ProgName = "gnuplot.exe";
 #endif
   }
   else if (Prog == GoogleEarthProgram)
   {
-#if defined(Q_OS_UNIX)
+#if defined(OPENFLUID_OS_UNIX)
     ProgName = "google-earth";
 #endif
 
-#if defined(Q_OS_MAC)
+#if defined(OPENFLUID_OS_MAC)
     ProgName = "Google Earth";
     ModSearchPaths.append("/Applications/Google Earth.app/Contents/MacOS/");
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     ProgName = "google-earth.exe";
 #endif
   }
   else if (Prog == GccProgram)
   {
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(OPENFLUID_OS_UNIX)
     ProgName = "gcc";
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     ProgName = "gcc.exe";
 #endif
   }
   else if (Prog == PdfLatexProgram)
   {
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(OPENFLUID_OS_UNIX)
     ProgName = "pdflatex";
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     ProgName = "pdflatex.exe";
 #endif
   }
   else if (Prog == BibTexProgram)
   {
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(OPENFLUID_OS_UNIX)
     ProgName = "bibtex";
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     ProgName = "bibtex.exe";
 #endif
   }
   else if (Prog == Latex2HTMLProgram)
   {
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(OPENFLUID_OS_UNIX)
     ProgName = "latex2html";
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     ProgName = "latex2html.exe";
 #endif
   }
@@ -192,11 +188,11 @@ QString ExternalProgram::findUsingPATHEnvVar(const QString& Program)
 
   if (!PATHStr.isEmpty())
   {
-#if defined __unix__ || defined __APPLE__
+#if defined(OPENFLUID_OS_UNIX)
     PathsList = PATHStr.split(":",QString::SkipEmptyParts);
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
     PathsList = PATHStr.split(";",QString::SkipEmptyParts);
 #endif
   }

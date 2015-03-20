@@ -254,14 +254,14 @@ bool NewSimulatorBuddy::run()
   std::string OutputDirPath = m_Options["outputdir"];
 
   if (m_Options["simid"] == "")
-      throw openfluid::base::FrameworkException("NewSimulatorBuddy::run()","No simulator ID");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator ID");
 
   if (m_Options["cppclass"] == "")
-      throw openfluid::base::FrameworkException("NewSimulatorBuddy::run()","No simulator C++ class");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator C++ class");
 
 
   if (!openfluid::tools::Filesystem::isDirectory(OutputDirPath))
-    throw openfluid::base::FrameworkException("NewSimulatorBuddy::run()","Output directory does not exist");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Output directory does not exist");
 
 
 

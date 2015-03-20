@@ -89,7 +89,7 @@ GraphvizViewExtension::~GraphvizViewExtension()
 
 bool GraphvizViewExtension::initialize()
 {
-#if defined(Q_OS_WIN32)
+#if defined(OPENFLUID_OS_WINDOWS)
   openfluid::utils::ExternalProgram DotProgram("dot.exe");
 #else
   openfluid::utils::ExternalProgram DotProgram("dot");

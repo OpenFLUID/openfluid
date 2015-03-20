@@ -62,9 +62,9 @@ DatastoreItem::DatastoreItem(const std::string& ID,
       m_Value = new openfluid::core::GeoRasterValue(m_PrefixPath,m_RelativePath);
       break;
     default:
-      throw openfluid::base::FrameworkException(
-          "DatastoreItem::DatastoreItem", "No value to instanciate for item type "
-              + UnstructuredValue::getStringFromValueType(Type) + " in " + ID);
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                "No value to instanciate for item type "
+                                                + UnstructuredValue::getStringFromValueType(Type) + " in " + ID);
       break;
   }
 

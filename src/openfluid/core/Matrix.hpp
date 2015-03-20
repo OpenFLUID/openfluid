@@ -193,7 +193,7 @@ Matrix<T>::Matrix(const Matrix &A)
   init();
 
   if (!allocate(A.m_ColsNbr,A.m_RowsNbr))
-    throw openfluid::base::FrameworkException("Matrix::Matrix(const Vector)","Cannot allocate memory");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
 
   std::copy(A.m_Data, A.m_Data + (A.m_ColsNbr*A.m_RowsNbr), m_Data);
 }
@@ -208,7 +208,7 @@ Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr)
   init();
 
   if (!allocate(ColsNbr,RowsNbr))
-    throw openfluid::base::FrameworkException("Matrix::Matrix(ColsNbr,RowNbr)","Cannot allocate memory");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
 
   fill(0);
 }
@@ -224,7 +224,7 @@ Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr, T InitValue)
   init();
 
   if (!allocate(ColsNbr,RowsNbr))
-    throw openfluid::base::FrameworkException("Matrix::Matrix(ColsNbr,RowNbr,Value)","Cannot allocate memory");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
 
   fill(InitValue);
 }
@@ -275,7 +275,7 @@ void Matrix<T>::setData(T* Data, unsigned long ColsNbr, unsigned long RowsNbr)
   clear();
 
   if (!allocate(ColsNbr,RowsNbr))
-    throw openfluid::base::FrameworkException("Vector::setData","Cannot allocate memory");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
 
   std::copy(Data, Data + (ColsNbr*RowsNbr), m_Data);
 }
@@ -289,7 +289,7 @@ template <class T>
 T Matrix<T>::getElement(unsigned long ColIndex, unsigned long RowIndex) const
 {
   if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr)
-    throw openfluid::base::FrameworkException("Matrix::getElement","element access range error");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"element access range error");
 
   return m_Data[ColIndex*m_RowsNbr+RowIndex];
 }
@@ -303,7 +303,7 @@ template <class T>
 void Matrix<T>::setElement(unsigned long ColIndex, unsigned long RowIndex, T Element)
 {
   if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr)
-    throw openfluid::base::FrameworkException("Matrix::setElement","element access range error");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"element access range error");
 
   m_Data[ColIndex*m_RowsNbr+RowIndex] = Element;
 }
@@ -322,7 +322,7 @@ Matrix<T>& Matrix<T>::operator=(const Matrix &A)
   clear();
 
   if (!allocate(A.m_ColsNbr,A.m_RowsNbr))
-    throw openfluid::base::FrameworkException("Matrix::operator=","Cannot allocate memory");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
 
   std::copy(A.m_Data, A.m_Data + (A.m_ColsNbr*A.m_RowsNbr), m_Data);
 

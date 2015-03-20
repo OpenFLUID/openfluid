@@ -147,7 +147,7 @@ class OPENFLUID_API AdvancedWareSetDescriptor
         return **it;
       }
       else
-        throw openfluid::base::FrameworkException("AdvancedModelDescriptor::itemAt()",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Index out of bounds");
     }
 
@@ -190,7 +190,7 @@ class OPENFLUID_API AdvancedWareSetDescriptor
         Items.insert(it, Item);
       }
       else
-        throw openfluid::base::FrameworkException("AdvancedWareSetDescriptor::insertItem()",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Index out of bounds");
     }
 
@@ -216,7 +216,7 @@ class OPENFLUID_API AdvancedWareSetDescriptor
         Items.erase(it);
       }
       else
-        throw openfluid::base::FrameworkException("AdvancedWareSetDescriptor::removeItem()",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Index out of bounds");
     }
 
@@ -240,7 +240,7 @@ class OPENFLUID_API AdvancedWareSetDescriptor
       unsigned int Last = Items.size() - 1;
 
       if (indexFrom > Last || indexTo > Last)
-        throw openfluid::base::FrameworkException("AdvancedWareSetDescriptor::moveItem",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Index out of bounds");
 
       typename std::list<I*>::const_iterator itFrom = Items.begin();

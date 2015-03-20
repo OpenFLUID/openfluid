@@ -49,7 +49,7 @@
 
 #include <openfluid/config.hpp>
 
-#if defined __unix__ || defined __APPLE__
+#if defined(OPENFLUID_OS_UNIX)
 #include <unistd.h>
 #endif
 
@@ -58,6 +58,7 @@ namespace openfluid { namespace base {
 
 
 RuntimeEnvironment* RuntimeEnvironment::mp_Singleton = NULL;
+
 
 RuntimeEnvironment::RuntimeEnvironment() :
     m_Profiling(false), m_IsLinkedToProject(false)
@@ -79,31 +80,8 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_SimulatorsMaxNumThreads = openfluid::config::SIMULATORS_MAXNUMTHREADS;
 
   // ====== System architecture ======
+  m_Arch = OPENFLUID_OS_STRLABEL;
 
-#if defined __linux__
-#if defined __i386__
-  m_Arch = "linux-i386";
-#endif
-#ifdef __x86_64__
-  m_Arch = "linux-x86-64";
-#endif
-#endif
-
-#if defined _WIN32
-  m_Arch = "win32";
-#endif
-
-#if defined _WIN64
-  m_Arch = "win64";
-#endif
-
-#if defined __APPLE__
-#if defined __LP64__
-  m_Arch = "osx64";
-#else
-  m_Arch = "osx32";
-#endif
-#endif
 
   m_InstallPrefix = openfluid::config::INSTALL_PREFIX;
 
@@ -118,13 +96,14 @@ RuntimeEnvironment::RuntimeEnvironment() :
   // ====== Default directories ======
   // UNIX:
   //  User directory for OpenFLUID : home dir + .openfluid subdir
-  // WIN32:
+  // WINDOWS:
   //  User directory for OpenFLUID : home dir + openfluid subdir
 
   m_HomeDir = QDir::homePath().toStdString();
   m_TempDir = QDir(QDir::tempPath()+"/openfluid-tmp").absolutePath().toStdString();
 
-#if defined __unix__ || defined __APPLE__
+#if defined(OPENFLUID_OS_UNIX)
+
   char ChHostName[512];
 
   if (gethostname(ChHostName, 512) == 0)
@@ -137,9 +116,9 @@ RuntimeEnvironment::RuntimeEnvironment() :
   if (ChUserName != NULL) m_UserID= ChUserName;
 
   m_UserDataDir = m_HomeDir + "/." + openfluid::config::RELATIVEDIR;
-#endif
 
-#if defined _WIN32
+#elif defined(OPENFLUID_OS_WINDOWS)
+
   char* ChHostName = NULL;
   ChHostName= std::getenv("COMPUTERNAME");
   if (ChHostName != NULL) m_HostName = ChHostName;
@@ -149,6 +128,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   if (ChUserName != NULL) m_UserID= ChUserName;
 
   m_UserDataDir = m_HomeDir+"/"+openfluid::config::RELATIVEDIR;
+
 #endif
 
 
@@ -320,11 +300,9 @@ void RuntimeEnvironment::addExtraSimulatorsPluginsPaths(
 {
   std::vector<std::string> ExtraPaths;
 
-#if defined __unix__ || defined __APPLE__
+#if defined(OPENFLUID_OS_UNIX)
   ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths, ":");
-#endif
-
-#if defined _WIN32
+#elif defined(OPENFLUID_OS_WINDOWS)
   ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths,";");
 #endif
 
@@ -369,11 +347,9 @@ void RuntimeEnvironment::addExtraObserversPluginsPaths(
 {
   std::vector<std::string> ExtraPaths;
 
-#if defined __unix__ || defined __APPLE__
+#if defined(OPENFLUID_OS_UNIX)
   ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths, ":");
-#endif
-
-#if defined _WIN32
+#elif defined(OPENFLUID_OS_WINDOWS)
   ExtraPaths = openfluid::tools::splitString(SemicolonSeparatedPaths,";");
 #endif
 

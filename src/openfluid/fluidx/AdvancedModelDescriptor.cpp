@@ -85,7 +85,7 @@ openfluid::ware::WareID_t AdvancedModelDescriptor::getID(ModelItemDescriptor* It
   if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
     return (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratedID();
 
-  throw openfluid::base::FrameworkException("AdvancedModelDescriptor::getID()",
+  throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                             "Unknown ware type");
 }
 

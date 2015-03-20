@@ -66,7 +66,7 @@ void DistributionTables::build(const std::string& BasePath,
   QFile File(QString(SourcesFilePath.c_str()));
   if (!File.open(QIODevice::ReadOnly))
   {
-    throw openfluid::base::FrameworkException("DistributionTables::build",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
         "Error opening " + SourcesFilePath);
   }
 
@@ -105,16 +105,16 @@ void DistributionTables::build(const std::string& BasePath,
         }
       }
       else
-        throw openfluid::base::FrameworkException("DistributionTables::build",
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Cannot find <openfluid> tag in sources file " +
                                                   SourcesFilePath);
     }
     else
-      throw openfluid::base::FrameworkException("DistributionTables::build","Wrong formatted sources file " +
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Wrong formatted sources file " +
                                                 SourcesFilePath);
   }
   else
-    throw openfluid::base::FrameworkException("DistributionTables::build","Cannot open sources file " +
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot open sources file " +
                                               SourcesFilePath);
 
 
@@ -144,23 +144,23 @@ void DistributionTables::build(const std::string& BasePath,
           if (SourcesTable.find(DataSrcID) != SourcesTable.end())
             UnitsTable[UnitID] = DataSrcID;
           else
-            throw openfluid::base::FrameworkException("DistributionTables::build",
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Error in distribution file " + DistributionFilePath +
                                                       ", data source ID not found");
         }
         else
-          throw openfluid::base::FrameworkException("DistributionTables::build",
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "Error in distribution file " + DistributionFilePath +
                                                     ", format error");
       }
     }
     else
-      throw openfluid::base::FrameworkException("DistributionTables::build",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Error in distribution file " + DistributionFilePath +
                                                 ", file not found or format error");
   }
   else
-    throw openfluid::base::FrameworkException("DistributionTables::build",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Distribution file " + DistributionFilePath + " not found");
 
 }

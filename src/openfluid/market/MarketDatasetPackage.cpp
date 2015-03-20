@@ -80,17 +80,17 @@ PackageInfo::PackageType MarketDatasetPackage::getPackageType() const
 void MarketDatasetPackage::process()
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::download()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" not initialized");
 
 
   if (!m_Downloaded)
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" cannot be processed before download");
 
 
   if (!m_CMakeProgram.isFound())
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","CMake command not defined");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"CMake command not defined");
 
 
   std::string DatasetInstallDir = getInstallPath() + "/" + m_ID;
@@ -99,7 +99,7 @@ void MarketDatasetPackage::process()
     openfluid::tools::Filesystem::removeDirectory(DatasetInstallDir);
 
   if (!openfluid::tools::Filesystem::makeDirectory(DatasetInstallDir))
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "unable to create dataset directory for "+m_ID+" package");
 
   QString ProcessCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"")
@@ -122,7 +122,7 @@ void MarketDatasetPackage::process()
   if (RetValue != 0)
   {
     appendToLogFile(QString(Uncompress.readAllStandardError()).toStdString());
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error uncompressing package using CMake");
   }
 

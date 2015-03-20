@@ -87,7 +87,7 @@ class OPENFLUID_API Value
     virtual Type getType() const = 0;
 
     virtual Value* clone() const
-    { throw openfluid::base::FrameworkException("Value::clone","Value is not cloneable"); };
+    { throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Value is not cloneable"); };
 
     inline virtual bool isSimple() const = 0;
 

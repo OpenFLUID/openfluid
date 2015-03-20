@@ -111,9 +111,6 @@ ModelInstance::~ModelInstance()
 {
   if (m_Initialized)
     finalize();
-
-  if (m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::~ModelInstance()","Destroyed initialized ModelInstance");
 }
 
 
@@ -127,7 +124,7 @@ void ModelInstance::appendItemToTimePoint(openfluid::core::TimeIndex_t TimeIndex
 
   // no back in time nor iteration
   if (TimeIndex <= m_SimulationBlob.simulationStatus().getCurrentTimeIndex())
-    throw openfluid::base::FrameworkException("SimulationScheduler::appendItemToTimePoint",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Cannot append simulation item before or on current time point");
 
   // ignore time points after simulation end
@@ -216,7 +213,7 @@ void ModelInstance::setGlobalParameter(const openfluid::ware::WareParamKey_t& Ke
 void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
 {
   if (m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::appendItem()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Trying to append model item after model initialization");
 
   m_ModelItems.push_back(ItemInstance);
@@ -230,7 +227,7 @@ void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
 void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Position)
 {
   if (m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::insertItem()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Trying to insert model item after model initialization");
 
 
@@ -245,7 +242,7 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
       m_ModelItems.insert(it,ItemInstance);
     }
     else
-      throw openfluid::base::FrameworkException("ModelInstance::insertItem()",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Bad index of item to insert");
   }
 
@@ -259,7 +256,7 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
 void ModelInstance::deleteItem(unsigned int Position)
 {
   if (m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::deleteItem()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Trying to delete model item after model initialization");
 
   if (Position < m_ModelItems.size())
@@ -269,7 +266,7 @@ void ModelInstance::deleteItem(unsigned int Position)
     m_ModelItems.erase(it);
   }
   else
-    throw openfluid::base::FrameworkException("ModelInstance::deleteItem()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Bad index of item to delete");
 }
 
@@ -281,7 +278,7 @@ void ModelInstance::deleteItem(unsigned int Position)
 void ModelInstance::clear()
 {
   if (m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::clear()",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Trying to clear model after model initialization");
 
   std::list<ModelItemInstance*>::iterator it;
@@ -369,7 +366,7 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 void ModelInstance::finalize()
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::finalize()","Trying to finalize an uninitialized model");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Trying to finalize an uninitialized model");
 
   std::list<ModelItemInstance*>::const_iterator SimIter;
 
@@ -405,7 +402,7 @@ void ModelInstance::finalize()
 void ModelInstance::call_initParams() const
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::call_initParams()","Model not initialized");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Model not initialized");
 
 
   DECLARE_SIMULATOR_PARSER;
@@ -421,7 +418,7 @@ void ModelInstance::call_initParams() const
 void ModelInstance::call_prepareData() const
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::call_prepareData()","Model not initialized");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Model not initialized");
 
 
   DECLARE_SIMULATOR_PARSER;
@@ -436,7 +433,7 @@ void ModelInstance::call_prepareData() const
 void ModelInstance::call_checkConsistency() const
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::call_checkConsistency()","Model not initialized");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Model not initialized");
 
 
   DECLARE_SIMULATOR_PARSER;
@@ -459,7 +456,7 @@ void ModelInstance::checkDeltaTMode(openfluid::base::SchedulingRequest& SReq, co
      {
        std::string TIStr;
        openfluid::tools::convertValue(m_SimulationBlob.simulationStatus().getCurrentTimeIndex(),&TIStr);
-       throw openfluid::base::FrameworkException("ModelInstance::checkDeltaTMode",
+       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                           "DeltaT checked mode not respected by simulator " + ID +
                                           " at time index " + TIStr);
      }
@@ -480,7 +477,7 @@ void ModelInstance::checkDeltaTMode(openfluid::base::SchedulingRequest& SReq, co
 void ModelInstance::call_initializeRun()
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::call_initializeRun()","Model not initialized");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Model not initialized");
 
   std::list<ModelItemInstance*>::const_iterator SimIter;
 
@@ -526,7 +523,7 @@ void ModelInstance::call_initializeRun()
 
     }
     else
-      throw openfluid::base::FrameworkException("ModelInstance::call_initializeRun","NULL model item instance!");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"NULL model item instance!");
 
     SimIter++;
   }
@@ -602,7 +599,7 @@ void ModelInstance::processNextTimePoint()
 void ModelInstance::call_finalizeRun() const
 {
   if (!m_Initialized)
-    throw openfluid::base::FrameworkException("ModelInstance::call_finalizeRun()","Model not initialized");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Model not initialized");
 
 
   DECLARE_SIMULATOR_PARSER;
