@@ -296,7 +296,7 @@ The following methods are available:
 \if DocIsLaTeX
 <ul>
 <li>\b OPENFLUID_IsUnitExist
-<li>\b OPENFLUID_IsUnitClassExist
+<li>\b OPENFLUID_IsUnitsClassExist
 <li>\b OPENFLUID_GetUnitsCount
 <li>\b OPENFLUID_IsUnitConnectedTo
 <li>\b OPENFLUID_IsUnitConnectedFrom
@@ -306,7 +306,7 @@ The following methods are available:
 \else
 <ul>
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_IsUnitExist OPENFLUID_IsUnitExist \endlink
-<li>\link openfluid::ware::PluggableSimulator::OPENFLUID_IsUnitClassExist OPENFLUID_IsUnitClassExist \endlink
+<li>\link openfluid::ware::PluggableSimulator::OPENFLUID_IsUnitsClassExist OPENFLUID_IsUnitsClassExist \endlink
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_GetUnitsCount OPENFLUID_GetUnitsCount \endlink
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_IsUnitConnectedTo OPENFLUID_IsUnitConnectedTo \endlink
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_IsUnitConnectedFrom OPENFLUID_IsUnitConnectedFrom \endlink

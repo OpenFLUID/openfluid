@@ -542,24 +542,24 @@ void ProjectCentral::checkModel()
         for (std::vector<openfluid::ware::SignatureSpatialDataItem>::iterator itReqData = ReqData.begin();
             itReqData != ReqData.end(); ++itReqData)
         {
-          if (!Domain.isClassNameExists(itReqData->UnitClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itReqData->UnitClass)))
+          if (!Domain.isClassNameExists(itReqData->UnitsClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itReqData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
                                 .addMessage(tr("Unit class %1 does not exist for attribute %2 required by %3")
-                                            .arg(QString::fromStdString(itReqData->UnitClass))
+                                            .arg(QString::fromStdString(itReqData->UnitsClass))
                                             .arg(QString::fromStdString(itReqData->DataName))
                                             .arg(QString::fromStdString(ID)));
           }
-          else if (!(Domain.getAttributesNames(itReqData->UnitClass).count(itReqData->DataName)
-              || AttrsUnits.count(std::make_pair(itReqData->UnitClass, itReqData->DataName))))
+          else if (!(Domain.getAttributesNames(itReqData->UnitsClass).count(itReqData->DataName)
+              || AttrsUnits.count(std::make_pair(itReqData->UnitsClass, itReqData->DataName))))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
                                 .addMessage(tr("Attribute %1 required on %2 units by %3 does not exist")
                                             .arg(QString::fromStdString(itReqData->DataName))
-                                            .arg(QString::fromStdString(itReqData->UnitClass))
+                                            .arg(QString::fromStdString(itReqData->UnitsClass))
                                             .arg(QString::fromStdString(ID)));
           }
         }
@@ -571,20 +571,20 @@ void ProjectCentral::checkModel()
         for (std::vector<openfluid::ware::SignatureSpatialDataItem>::iterator itProdData = ProdData.begin();
             itProdData != ProdData.end(); ++itProdData)
         {
-          if (!Domain.isClassNameExists(itProdData->UnitClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itProdData->UnitClass)))
+          if (!Domain.isClassNameExists(itProdData->UnitsClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itProdData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
                                 .addMessage(tr("Unit class %1 does not exist for attribute %2 produced by %3")
-                                            .arg(QString::fromStdString(itProdData->UnitClass))
+                                            .arg(QString::fromStdString(itProdData->UnitsClass))
                                             .arg(QString::fromStdString(itProdData->DataName))
                                             .arg(QString::fromStdString(ID)));
           }
 
-          if (!AttrsUnits.count(std::make_pair(itProdData->UnitClass, itProdData->DataName)))
+          if (!AttrsUnits.count(std::make_pair(itProdData->UnitsClass, itProdData->DataName)))
           {
-            AttrsUnits.insert(std::make_pair(itProdData->UnitClass, itProdData->DataName));
+            AttrsUnits.insert(std::make_pair(itProdData->UnitsClass, itProdData->DataName));
           }
           else
           {
@@ -592,7 +592,7 @@ void ProjectCentral::checkModel()
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
                                 .addMessage(tr("Attribute %1 produced on %2 units by %3 "
                                     "is already produced by another simulator")
-                                            .arg(QString::fromStdString(itProdData->UnitClass))
+                                            .arg(QString::fromStdString(itProdData->UnitsClass))
                                             .arg(QString::fromStdString(itProdData->DataName))
                                             .arg(QString::fromStdString(ID)));
           }
@@ -645,21 +645,21 @@ void ProjectCentral::checkModel()
         for (itData = ProdVars.begin(); itData != ProdVars.end(); ++itData)
         {
 
-          if (!Domain.isClassNameExists(itData->UnitClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitClass)))
+          if (!Domain.isClassNameExists(itData->UnitsClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
-                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(itData->DataName))
                                         .arg(QString::fromStdString(ID)));
           }
 
-          if (!VarsUnits.count(std::make_pair(itData->UnitClass, itData->DataName)))
+          if (!VarsUnits.count(std::make_pair(itData->UnitsClass, itData->DataName)))
           {
-            VarsUnits.insert(std::make_pair(itData->UnitClass, itData->DataName));
-            TypedVarsUnits.insert(std::make_pair(itData->UnitClass,
+            VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->DataName));
+            TypedVarsUnits.insert(std::make_pair(itData->UnitsClass,
                                                  std::make_pair(itData->DataName, itData->DataType)));
           }
           else
@@ -669,7 +669,7 @@ void ProjectCentral::checkModel()
                             .addMessage(tr("Variable %1 on %2 produced by %3 cannot be created "
                                 "because it is created by another simulator or generator")
                                         .arg(QString::fromStdString(itData->DataName))
-                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(ID)));
           }
         }
@@ -679,21 +679,21 @@ void ProjectCentral::checkModel()
           openfluid::fluidx::GeneratorDescriptor* GenDesc =
               dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*itModelItem);
 
-          if (!Domain.isClassNameExists(GenDesc->getUnitClass()) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(GenDesc->getUnitClass())))
+          if (!Domain.isClassNameExists(GenDesc->getUnitsClass()) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(GenDesc->getUnitsClass())))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
-                                        .arg(QString::fromStdString(GenDesc->getUnitClass()))
+                                        .arg(QString::fromStdString(GenDesc->getUnitsClass()))
                                         .arg(QString::fromStdString(GenDesc->getVariableName()))
                                         .arg(QString::fromStdString(ID)));
           }
 
-          if (!VarsUnits.count(std::make_pair(GenDesc->getUnitClass(), GenDesc->getVariableName())))
+          if (!VarsUnits.count(std::make_pair(GenDesc->getUnitsClass(), GenDesc->getVariableName())))
           {
-            VarsUnits.insert(std::make_pair(GenDesc->getUnitClass(),GenDesc->getVariableName()));
-            TypedVarsUnits.insert(std::make_pair(GenDesc->getUnitClass(),
+            VarsUnits.insert(std::make_pair(GenDesc->getUnitsClass(),GenDesc->getVariableName()));
+            TypedVarsUnits.insert(std::make_pair(GenDesc->getUnitsClass(),
                                                  std::make_pair(GenDesc->getVariableName(),
                                                                 GenDesc->getVariableType())));
           }
@@ -704,7 +704,7 @@ void ProjectCentral::checkModel()
                             .addMessage(tr("Variable %1 on %2 produced by %3 is already produced "
                                 "by another simulator or generator")
                                         .arg(QString::fromStdString(GenDesc->getVariableName()))
-                                        .arg(QString::fromStdString(GenDesc->getUnitClass()))
+                                        .arg(QString::fromStdString(GenDesc->getUnitsClass()))
                                         .arg(QString::fromStdString(ID)));
           }
         }
@@ -714,22 +714,22 @@ void ProjectCentral::checkModel()
             Sign->HandledData.UpdatedVars;
         for (itData = UpVars.begin(); itData != UpVars.end(); ++itData)
         {
-          if (!Domain.isClassNameExists(itData->UnitClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitClass)))
+          if (!Domain.isClassNameExists(itData->UnitsClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
-                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(itData->DataName))
                                         .arg(QString::fromStdString(ID)));
           }
 
-          if (!VarsUnits.count(std::make_pair(itData->UnitClass, itData->DataName)))
+          if (!VarsUnits.count(std::make_pair(itData->UnitsClass, itData->DataName)))
           {
-            VarsUnits.insert(std::make_pair(itData->UnitClass, itData->DataName));
+            VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->DataName));
             TypedVarsUnits.insert(
-                std::make_pair(itData->UnitClass,
+                std::make_pair(itData->UnitsClass,
                                std::make_pair(itData->DataName, itData->DataType)));
           }
         }
@@ -756,21 +756,21 @@ void ProjectCentral::checkModel()
 
         for (itData = ReqVars.begin(); itData != ReqVars.end(); ++itData)
         {
-          if (!Domain.isClassNameExists(itData->UnitClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitClass)))
+          if (!Domain.isClassNameExists(itData->UnitsClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 required by %3")
-                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(itData->DataName))
                                         .arg(QString::fromStdString(ID)));
           }
 
           if ((itData->DataType == openfluid::core::Value::NONE
-              && !VarsUnits.count(std::make_pair(itData->UnitClass, itData->DataName)))
+              && !VarsUnits.count(std::make_pair(itData->UnitsClass, itData->DataName)))
               || (itData->DataType != openfluid::core::Value::NONE && !TypedVarsUnits.count(
-                  std::make_pair(itData->UnitClass,
+                  std::make_pair(itData->UnitsClass,
                                  std::make_pair(itData->DataName, itData->DataType)))))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
@@ -778,7 +778,7 @@ void ProjectCentral::checkModel()
                             .addMessage(tr("Variable %1 on %2 required by %3 is not produced "
                                            "by another simulator or generator")
                                         .arg(QString::fromStdString(itData->DataName))
-                                        .arg(QString::fromStdString(itData->UnitClass))
+                                        .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(ID)));
           }
         }
@@ -818,7 +818,7 @@ void ProjectCentral::checkDatastore()
   for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator itDatastore = Items.begin();
        itDatastore != Items.end(); ++itDatastore)
   {
-    std::string Class = (*itDatastore)->getUnitClass();
+    std::string Class = (*itDatastore)->getUnitsClass();
 
     if (!Class.empty() && !Classes.count(Class))
     {

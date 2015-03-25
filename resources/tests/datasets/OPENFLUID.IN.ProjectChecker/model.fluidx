@@ -13,24 +13,24 @@
    
       <simulator ID="tests.primitives.variables.prod" />       
       
-      <generator varname="tests.fixed" unitclass="TestUnits" method="fixed">
+      <generator varname="tests.fixed" unitsclass="TestUnits" method="fixed">
          <param name="fixedvalue" value="12.7" />
          <param name="deltat" value="0" />
       </generator>
       
-      <generator varname="tests.random" unitclass="TestUnits" method="random">
+      <generator varname="tests.random" unitsclass="TestUnits" method="random">
          <param name="min" value="12.7" />
          <param name="max" value="12.8" />
          <param name="deltat" value="0" />
       </generator>
       
-      <generator varname="tests.interp" unitclass="TestUnits" method="interp">
+      <generator varname="tests.interp" unitsclass="TestUnits" method="interp">
          <param name="thresholdmax" value="12.8" />
          <param name="sources" value="src.txt" />
          <param name="distribution" value="sub/distrib.txt" />
       </generator>
 
-	  <generator varname="tests.inject" unitclass="TestUnits" method="inject">
+	  <generator varname="tests.inject" unitsclass="TestUnits" method="inject">
          <param name="thresholdmin" value="1.7" />
          <param name="thresholdmax" value="1.8" />
          <param name="sources" value="src.txt" />

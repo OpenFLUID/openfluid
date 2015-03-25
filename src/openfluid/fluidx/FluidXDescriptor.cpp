@@ -47,14 +47,10 @@
 #include <QDomDocument>
 #include <QFile>
 
-
 #include <fstream>
 
+
 namespace openfluid { namespace fluidx {
-
-
-// =====================================================================
-// =====================================================================
 
 
 FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
@@ -206,7 +202,9 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
     if (CurrNode.tagName() == QString("generator"))
     {
       QString xmlVarName = CurrNode.attributeNode(QString("varname")).value();
-      QString xmlUnitClass = CurrNode.attributeNode(QString("unitclass")).value();
+      QString xmlUnitClass = CurrNode.attributeNode(QString("unitsclass")).value();
+      if (xmlUnitClass.isEmpty())
+        xmlUnitClass = CurrNode.attributeNode(QString("unitclass")).value();
       QString xmlMethod = CurrNode.attributeNode(QString("method")).value();
       QString xmlVarSize = CurrNode.attributeNode(QString("varsize")).value();
       unsigned int VarSize = 1;
@@ -471,7 +469,9 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
 
 void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
 {
-  QString xmlUnitClass = Node.attributeNode(QString("unitclass")).value();
+  QString xmlUnitClass = Node.attributeNode(QString("unitsclass")).value();
+  if (xmlUnitClass.isEmpty())
+    xmlUnitClass = Node.attributeNode(QString("unitclass")).value();
   QString xmlColOrder = Node.attributeNode(QString("colorder")).value();
 
   if (!xmlUnitClass.isNull() && !xmlColOrder.isNull())
@@ -503,7 +503,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
   }
   else
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-        "missing or wrong unitclass attribute(s) in domain attributes (" + m_CurrentFile + ")");
+        "missing or wrong unitsclass attribute(s) in domain attributes (" + m_CurrentFile + ")");
 }
 
 
@@ -518,8 +518,9 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
     if (CurrNode.tagName() == QString("event"))
     {
       QString xmlUnitID = CurrNode.attributeNode(QString("unitID")).value();
-      QString xmlUnitClass = CurrNode.attributeNode(QString("unitclass")).value();
-
+      QString xmlUnitClass = CurrNode.attributeNode(QString("unitsclass")).value();
+      if (xmlUnitClass.isEmpty())
+        xmlUnitClass = CurrNode.attributeNode(QString("unitclass")).value();
       QString xmlDate = CurrNode.attributeNode(QString("date")).value();
 
       if (!xmlUnitID.isNull() && !xmlUnitClass.isNull() && !xmlDate.isNull())
@@ -539,7 +540,7 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "wrong format for date in event (" + m_CurrentFile + ")");
 
-        EvDesc.setUnitClass(xmlUnitClass.toStdString());
+        EvDesc.setUnitsClass(xmlUnitClass.toStdString());
         EvDesc.setUnitID(UnitID);
         EvDesc.event() = openfluid::core::Event(EventDate);
 
@@ -575,8 +576,10 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::extractDomainFomNode(QDomElement& Node)
 {
@@ -600,8 +603,10 @@ void FluidXDescriptor::extractDomainFomNode(QDomElement& Node)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::extractDatastoreFromNode(QDomElement& Node)
 {
@@ -612,7 +617,9 @@ void FluidXDescriptor::extractDatastoreFromNode(QDomElement& Node)
       QString xmlDataID = CurrNode.attributeNode(QString("id")).value();
       QString xmlDataType = CurrNode.attributeNode(QString("type")).value();
       QString xmlDataSrc = CurrNode.attributeNode(QString("source")).value();
-      QString xmlDataClass = CurrNode.attributeNode(QString("unitclass")).value();
+      QString xmlDataClass = CurrNode.attributeNode(QString("unitsclass")).value();
+      if (xmlDataClass.isEmpty())
+        xmlDataClass = CurrNode.attributeNode(QString("unitclass")).value();
 
       if (!xmlDataID.isNull() && !xmlDataType.isNull() && !xmlDataSrc.isNull())
       {
@@ -637,7 +644,7 @@ void FluidXDescriptor::extractDatastoreFromNode(QDomElement& Node)
                 DataType);
 
         if (!xmlDataClass.isNull())
-          Item->setUnitClass(xmlDataClass.toStdString());
+          Item->setUnitsClass(xmlDataClass.toStdString());
 
         if (!m_DatastoreDescriptor.appendItem(Item))
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -651,8 +658,10 @@ void FluidXDescriptor::extractDatastoreFromNode(QDomElement& Node)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::parseFile(std::string Filename)
 {
@@ -724,8 +733,10 @@ void FluidXDescriptor::parseFile(std::string Filename)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::loadFromDirectory(std::string DirPath)
 {
@@ -820,8 +831,8 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
           dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
 
       Contents << m_IndentStr << m_IndentStr << "<generator varname=\""
-               << GenDesc->getVariableName() << "\" " << "unitclass=\""
-               << GenDesc->getUnitClass() << "\" " << "method=\""
+               << GenDesc->getVariableName() << "\" " << "unitsclass=\""
+               << GenDesc->getUnitsClass() << "\" " << "method=\""
                << getGeneratorMethodAsStr(GenDesc->getGeneratorMethod())
                << "\"";
 
@@ -1020,7 +1031,7 @@ void FluidXDescriptor::writeDomainCalendarToStream(std::ostream& Contents)
       it != Events.end(); ++it)
   {
     Contents << m_IndentStr << m_IndentStr << m_IndentStr
-             << "<event unitclass=\"" << it->getUnitClass() << "\" "
+             << "<event unitsclass=\"" << it->getUnitsClass() << "\" "
              << "unitID=\"" << it->getUnitID() << "\" " << "date=\""
              << it->event().getDateTime().getAsISOString() << "\">\n";
 
@@ -1100,8 +1111,8 @@ void FluidXDescriptor::writeDatastoreToStream(std::ostream& Contents)
             (*it)->getType())
         << "\" " << "source=\"" << (*it)->getRelativePath() << "\" ";
 
-    if (!(*it)->getUnitClass().empty())
-      Contents << "unitclass=\"" << (*it)->getUnitClass() << "\" ";
+    if (!(*it)->getUnitsClass().empty())
+      Contents << "unitsclass=\"" << (*it)->getUnitsClass() << "\" ";
 
     Contents << "/>\n";
   }
@@ -1288,8 +1299,9 @@ void FluidXDescriptor::prepareFluidXDir(const std::string& DirPath)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}
-} // namespaces
+
+} } // namespaces

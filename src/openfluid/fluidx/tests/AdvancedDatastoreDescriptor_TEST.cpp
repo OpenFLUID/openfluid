@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL((*it)->getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shapes/units_A.shp");
-  BOOST_CHECK_EQUAL((*it)->getUnitClass(), "unitsA");
+  BOOST_CHECK_EQUAL((*it)->getUnitsClass(), "unitsA");
 
   it++;
 
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL((*it)->getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "units_B.shp");
-  BOOST_CHECK_EQUAL((*it)->getUnitClass(), "unitsB");
+  BOOST_CHECK_EQUAL((*it)->getUnitsClass(), "unitsB");
 
   it++;
 
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL((*it)->getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shapes/Vect.shp");
-  BOOST_CHECK_EQUAL((*it)->getUnitClass(), "");
+  BOOST_CHECK_EQUAL((*it)->getUnitsClass(), "");
 
   it++;
 
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL((*it)->getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shapes/wrong_class.shp");
-  BOOST_CHECK_EQUAL((*it)->getUnitClass(), "wrongClass");
+  BOOST_CHECK_EQUAL((*it)->getUnitsClass(), "wrongClass");
 
   BOOST_CHECK(!DS.isItemAlreadyExist("wrong.item"));
   BOOST_CHECK(DS.isItemAlreadyExist("RastWOClass"));

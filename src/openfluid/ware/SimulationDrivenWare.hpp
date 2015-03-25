@@ -73,26 +73,26 @@
 // Log macros for warnings
 
 #define OPENFLUID_LogWarning(_stream) \
-  appendToLog(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream));
+  appendToLog(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
 
 #define OPENFLUID_DisplayWarning(_stream) \
-  displayToConsole(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream));
+  displayToConsole(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
 
 #define OPENFLUID_LogAndDisplayWarning(_stream) \
-  OPENFLUID_LogWarning(_stream) \
+  OPENFLUID_LogWarning(_stream); \
   OPENFLUID_DisplayWarning(_stream)
 
 
 // Log macros for infos
 
 #define OPENFLUID_LogInfo(_stream) \
-  appendToLog(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream));
+  appendToLog(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
 
 #define OPENFLUID_DisplayInfo(_stream) \
-  displayToConsole(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream));
+  displayToConsole(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
 
 #define OPENFLUID_LogAndDisplayInfo(_stream) \
-  OPENFLUID_LogInfo(_stream) \
+  OPENFLUID_LogInfo(_stream); \
   OPENFLUID_DisplayInfo(_stream)
 
 
@@ -101,13 +101,13 @@
 #ifndef NDEBUG
 
 #define OPENFLUID_LogDebug(_stream) \
-  appendToLog(openfluid::tools::FileLogger::LOG_DEBUG,_STREAMTOSTRING(_stream));
+  appendToLog(openfluid::tools::FileLogger::LOG_DEBUG,_STREAMTOSTRING(_stream))
 
 #define OPENFLUID_DisplayDebug(_stream) \
-  displayToConsole(openfluid::tools::FileLogger::LOG_DEBUG,_STREAMTOSTRING(_stream));
+  displayToConsole(openfluid::tools::FileLogger::LOG_DEBUG,_STREAMTOSTRING(_stream))
 
 #define OPENFLUID_LogAndDisplayDebug(_stream) \
-  OPENFLUID_LogDebug(_stream) \
+  OPENFLUID_LogDebug(_stream); \
   OPENFLUID_DisplayDebug(_stream)
 
 #else
@@ -219,7 +219,9 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
        Raises a time-marked warning message to the kernel. This does not stops the simulation
        @param[in] Source the source of the message
        @param[in] Msg the content of the message
-       @deprecated
+       @deprecated Since version 2.1.0.
+       Use openfluid::ware::SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string&)
+       or #OPENFLUID_LogWarning instead
      */
     virtual void OPENFLUID_RaiseWarning(const std::string& Source, const std::string& Msg) OPENFLUID_DEPRECATED;
 
@@ -233,7 +235,8 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
       @param[in] Source the source of the message
       @param[in] Msg the content of the message
-      @deprecated
+      @deprecated Since version 2.1.0.
+      Use openfluid::ware::SimulationDrivenWare::OPENFLUID_RaiseError(const std::string&) instead
     */
     virtual void OPENFLUID_RaiseError(const std::string& Source, const std::string& Msg) OPENFLUID_DEPRECATED;
 

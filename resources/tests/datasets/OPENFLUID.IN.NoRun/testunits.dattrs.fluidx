@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <domain>
-    <attributes unitclass="TestUnits" colorder="indataA;indataB;indataC">
+    <attributes unitsclass="TestUnits" colorder="indataA;indataB;indataC">
       
 
 1	1.1 1.2 1.3

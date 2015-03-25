@@ -121,7 +121,7 @@ class CSVSet
 
     typedef std::list<CSVFile*> CSVFilePtrList_t;
 
-    openfluid::core::UnitClass_t UnitClass;
+    openfluid::core::UnitsClass_t UnitsClass;
 
     std::string UnitsIDsStr;
 
@@ -137,7 +137,7 @@ class CSVSet
 
     CSVFormat* Format;
 
-    CSVSet() : UnitClass(""), UnitsIDsStr(""), isAllUnits(false), VariablesStr(""), isAllVars(false), Format(NULL)
+    CSVSet() : UnitsClass(""), UnitsIDsStr(""), isAllUnits(false), VariablesStr(""), isAllVars(false), Format(NULL)
     { };
 };
 
@@ -161,7 +161,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv")
       "  format.<formatname>.commentchar : the character for comment lines\n"
       "  format.<formatname>.header : the header type\n"
       "  format.<formatname>.precision : the precision for real values\n"
-      "  set.<setname>.unitclass : the unit class of the set\n"
+      "  set.<setname>.unitsclass : the unit class of the set\n"
       "  set.<setname>.unitsIDs : the unit IDs included in the set. Use * to include all units of the class\n"
       "  set.<setname>.vars : the variable included in the set, separated by semicolons. "
          "Use * to include all variables\n"
@@ -196,13 +196,13 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
     std::string m_OutFileExt;
 
     std::string buildFilename(const std::string& SetName,
-                              const openfluid::core::UnitClass_t& UnitClass,
+                              const openfluid::core::UnitsClass_t& UnitsClass,
                               const openfluid::core::UnitID_t& UnitID,
                               const openfluid::core::VariableName_t& Varname)
     {
       std::ostringstream oss;
 
-      oss << m_OutputDir << "/" << SetName << "_" << UnitClass << UnitID << "_" << Varname << "." << m_OutFileExt;
+      oss << m_OutputDir << "/" << SetName << "_" << UnitsClass << UnitID << "_" << Varname << "." << m_OutFileExt;
 
       return oss.str();
     }
@@ -303,9 +303,17 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
         for (auto& Set : ParamsTree.root().child("set"))
         {
           std::string SetName = Set.first;
-          m_Sets[SetName].UnitClass = Set.second.getChildValue("unitclass","");
-          if (m_Sets[SetName].UnitClass == "")
-            OPENFLUID_RaiseError("Unit class of set "+SetName+" is undefined");
+          m_Sets[SetName].UnitsClass = Set.second.getChildValue("unitsclass","");
+          if (m_Sets[SetName].UnitsClass == "")
+          {
+            // search for deprecated "unitclass" parameter
+            m_Sets[SetName].UnitsClass = Set.second.getChildValue("unitclass","");
+            if (m_Sets[SetName].UnitsClass == "")
+              OPENFLUID_RaiseError("Unit class of set "+SetName+" is undefined");
+            else
+              OPENFLUID_LogWarning("Usage of set.<setname>.unitclass parameter is deprecated."
+                                   "Use set.<setname>.unitsclass instead");
+          }
 
           m_Sets[SetName].UnitsIDsStr = Set.second.getChildValue("unitsIDs","*");
           m_Sets[SetName].VariablesStr = Set.second.getChildValue("vars","*");
@@ -347,7 +355,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
       for (SetIt=SetItB;SetIt!=SetItE;++SetIt)
       {
 
-        if (OPENFLUID_IsUnitClassExist((*SetIt).second.UnitClass))
+        if (OPENFLUID_IsUnitsClassExist((*SetIt).second.UnitsClass))
         {
 
           std::vector<openfluid::core::VariableName_t> VarArray;
@@ -357,7 +365,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
           {
             // process all variables
             VarArray =
-                mp_SpatialData->spatialUnits((*SetIt).second.UnitClass)
+                mp_SpatialData->spatialUnits((*SetIt).second.UnitsClass)
                     ->list()->begin()->variables()->getVariablesNames();
           }
           else
@@ -369,13 +377,13 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
             for (unsigned int i = 0; i < TmpVarArray.size(); i++)
             {
-              if (mp_SpatialData->spatialUnits((*SetIt).second.UnitClass)
+              if (mp_SpatialData->spatialUnits((*SetIt).second.UnitsClass)
                       ->list()->begin()->variables()->isVariableExist(TmpVarArray[i]))
               {
                  VarArray.push_back(TmpVarArray[i]);
               }
               else
-                OPENFLUID_RaiseWarning("Variable "+TmpVarArray[i]+" for unit class "+(*SetIt).second.UnitClass+" "
+                OPENFLUID_LogWarning("Variable "+TmpVarArray[i]+" for unit class "+(*SetIt).second.UnitsClass+" "
                                        "does not exist. Ignored.");
             }
 
@@ -386,7 +394,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
           {
             // all units
 
-            OPENFLUID_UNITS_ORDERED_LOOP((*SetIt).second.UnitClass,TmpU)
+            OPENFLUID_UNITS_ORDERED_LOOP((*SetIt).second.UnitsClass,TmpU)
             {
 
               for (unsigned int i = 0; i < VarArray.size(); i++)
@@ -411,7 +419,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
               TmpU = NULL;
               if (openfluid::tools::convertString(UIDArray[i],&UID))
               {
-                TmpU = mp_SpatialData->spatialUnit((*SetIt).second.UnitClass,UID);
+                TmpU = mp_SpatialData->spatialUnit((*SetIt).second.UnitsClass,UID);
                 if (TmpU != NULL)
                 {
                   for (unsigned int i = 0; i < VarArray.size(); i++)
@@ -423,14 +431,14 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
                   }
                 }
                 else
-                  OPENFLUID_RaiseWarning("Unit #"+UIDArray[i]+" does not exist in class "+(*SetIt).second.UnitClass+". "
+                  OPENFLUID_LogWarning("Unit #"+UIDArray[i]+" does not exist in class "+(*SetIt).second.UnitsClass+". "
                                          "Ignored.");
               }
             }
           }
         }
         else
-          OPENFLUID_RaiseWarning("Unit class "+(*SetIt).second.UnitClass+" does not exist. Ignored.");
+          OPENFLUID_LogWarning("Unit class "+(*SetIt).second.UnitsClass+" does not exist. Ignored.");
 
       }
 
@@ -450,7 +458,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
           (*FLIt)->FileHandle.rdbuf()->pubsetbuf((*FLIt)->FileBuffer,m_BufferSize);
 
           (*FLIt)->FileName =
-              buildFilename((*SetIt).first,(*SetIt).second.UnitClass,(*FLIt)->Unit->getID(),(*FLIt)->VarName);
+              buildFilename((*SetIt).first,(*SetIt).second.UnitsClass,(*FLIt)->Unit->getID(),(*FLIt)->VarName);
           (*FLIt)->FileHandle.open((*FLIt)->FileName.c_str(),
                                    std::ios::out);
 

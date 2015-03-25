@@ -182,7 +182,7 @@ openfluid::core::Duration_t SimulationDrivenWare::OPENFLUID_GetDefaultDeltaT() c
 openfluid::core::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex() const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           "SimulationDrivenWare::OPENFLUID_GetCurrentRunTimeIndex",
+                              OPENFLUID_CODE_LOCATION,
                            "Current run time index cannot be accessed before INITIALIZERUN");
 
   if (mp_SimStatus == NULL)
@@ -200,8 +200,8 @@ openfluid::core::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex
 openfluid::core::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetPreviousRunTimeIndex() const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::RUNSTEP,
-                           "SimulationDrivenWare::OPENFLUID_GetPreviousRunTimeIndex",
-                           "Previous run time index cannot be accessed outside RUNSTEP or FINALIZERUN stages");
+                              OPENFLUID_CODE_LOCATION,
+                              "Previous run time index cannot be accessed outside RUNSTEP or FINALIZERUN stages");
 
   if (mp_SimStatus == NULL)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -255,7 +255,7 @@ void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& Msg)
 
 void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& /*Source*/, const std::string& Msg)
 {
-  OPENFLUID_RaiseWarning(Msg);
+  appendToLog(openfluid::tools::FileLogger::LOG_WARNING,Msg);
 }
 
 

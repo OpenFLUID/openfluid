@@ -45,7 +45,7 @@ namespace openfluid { namespace core {
 // =====================================================================
 
 
-SpatialUnit::SpatialUnit(const UnitClass_t& aClass, const UnitID_t anID,
+SpatialUnit::SpatialUnit(const UnitsClass_t& aClass, const UnitID_t anID,
                          const PcsOrd_t aPcsOrder) :
   m_ID(anID), m_Class(aClass), m_PcsOrder(aPcsOrder)
 {
@@ -108,7 +108,7 @@ bool SpatialUnit::addChildUnit(SpatialUnit* aUnit)
 // =====================================================================
 
 
-const UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitClass_t& aClass) const
+const UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitsClass_t& aClass) const
 {
   return const_cast<UnitsPtrList_t*>(toSpatialUnits(aClass));
 
@@ -118,7 +118,7 @@ const UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitClass_t& aClass) con
 // =====================================================================
 
 
-const UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitClass_t& aClass) const
+const UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitsClass_t& aClass) const
 {
   return const_cast<UnitsPtrList_t*>(childSpatialUnits(aClass));
 }
@@ -128,7 +128,7 @@ const UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitClass_t& aClass) 
 // =====================================================================
 
 
-const UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitClass_t& aClass) const
+const UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitsClass_t& aClass) const
 {
   return const_cast<UnitsPtrList_t*>(parentSpatialUnits(aClass));
 
@@ -138,7 +138,7 @@ const UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitClass_t& aClass)
 // =====================================================================
 
 
-const UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitClass_t& aClass) const
+const UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitsClass_t& aClass) const
 {
   return const_cast<UnitsPtrList_t*>(fromSpatialUnits(aClass));
 }
@@ -148,7 +148,7 @@ const UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitClass_t& aClass) c
 // =====================================================================
 
 
-UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitClass_t& aClass)
+UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitsClass_t& aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_ToUnits.find(aClass);
 
@@ -161,7 +161,7 @@ UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitClass_t& aClass)
 // =====================================================================
 
 
-UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitClass_t& aClass)
+UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitsClass_t& aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_FromUnits.find(aClass);
 
@@ -174,7 +174,7 @@ UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitClass_t& aClass)
 // =====================================================================
 
 
-UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitClass_t& aClass)
+UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitsClass_t& aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_ParentUnits.find(aClass);
 
@@ -187,7 +187,7 @@ UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitClass_t& aClass)
 // =====================================================================
 
 
-UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitClass_t& aClass)
+UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitsClass_t& aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_ChildrenUnits.find(aClass);
 

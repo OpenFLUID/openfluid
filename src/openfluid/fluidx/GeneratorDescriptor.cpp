@@ -47,7 +47,7 @@ namespace openfluid { namespace fluidx {
 
 
 GeneratorDescriptor::GeneratorDescriptor() :
-    ModelItemDescriptor(), m_VarName(""), m_UnitClass(""), m_GenMethod(
+    ModelItemDescriptor(), m_VarName(""), m_UnitsClass(""), m_GenMethod(
         NoGenMethod), m_VarSize(1), m_GeneratedID("")
 {
   m_WareType = Generator;
@@ -60,13 +60,13 @@ GeneratorDescriptor::GeneratorDescriptor() :
 
 GeneratorDescriptor::GeneratorDescriptor(
     openfluid::core::VariableName_t VarName,
-    openfluid::core::UnitClass_t UnitClass, GeneratorMethod GenMethod,
+    openfluid::core::UnitsClass_t UnitsClass, GeneratorMethod GenMethod,
     unsigned int VarSize) :
     ModelItemDescriptor()
 {
   m_WareType = Generator;
   m_VarName = VarName;
-  m_UnitClass = UnitClass;
+  m_UnitsClass = UnitsClass;
   m_GenMethod = GenMethod;
   m_VarSize = VarSize;
 
@@ -75,7 +75,7 @@ GeneratorDescriptor::GeneratorDescriptor(
 
   m_GeneratedID = openfluid::machine::Factory::buildGeneratorID(VarName,
                                                                 (m_VarSize > 1),
-                                                                UnitClass);
+                                                                UnitsClass);
 }
 
 
@@ -93,9 +93,9 @@ openfluid::core::VariableName_t GeneratorDescriptor::getVariableName() const
 // =====================================================================
 
 
-openfluid::core::UnitClass_t GeneratorDescriptor::getUnitClass() const
+openfluid::core::UnitsClass_t GeneratorDescriptor::getUnitsClass() const
 {
-  return m_UnitClass;
+  return m_UnitsClass;
 }
 
 

@@ -40,7 +40,7 @@
 #ifndef __OPENFLUID_CORE_INDEXEDVALUE_HPP__
 #define __OPENFLUID_CORE_INDEXEDVALUE_HPP__
 
-
+#include <openfluid/deprecation.hpp>
 #include <openfluid/core/Value.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/DateTime.hpp>
@@ -81,31 +81,49 @@ class IndexedValue
       Copy constructor
     */
     IndexedValue(const IndexedValue& IndValue):
-          m_Index(IndValue.m_Index),m_Value(IndValue.m_Value.get()->clone()) {};
+          m_Index(IndValue.m_Index),m_Value(IndValue.m_Value.get()->clone())
+    { };
 
     /**
       Returns the time index of the indexed value
       @return the time index
     */
-    inline TimeIndex_t getIndex() const { return m_Index; };
+    inline TimeIndex_t getIndex() const
+    { return m_Index; };
 
     /**
       Returns a pointer to the value of the indexed value
       @return a pointer to the value
     */
-    inline Value* value() const { return m_Value.get(); };
+    inline Value* value() const
+    { return m_Value.get(); };
 
     /**
       Returns a pointer to the value of the indexed value
       @return a pointer to the value
     */
-    inline Value* value() { return m_Value.get(); };
+    inline Value* value()
+    { return m_Value.get(); };
+
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::core::IndexedValue::value() const instead
+    */
+    inline Value* getValue() const OPENFLUID_DEPRECATED
+    { return m_Value.get(); };
+
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::core::IndexedValue::value() instead
+    */
+    inline Value* getValue() OPENFLUID_DEPRECATED
+    { return m_Value.get(); };
+
 
     /**
       Clears the content of the indexed value. The time index is set to 0,
       and the value is set to an openfluid::core::NullValue.
     */
-    inline void clear() { m_Index = 0; m_Value.reset(new NullValue()); };
+    inline void clear()
+    { m_Index = 0; m_Value.reset(new NullValue()); };
 
 };
 

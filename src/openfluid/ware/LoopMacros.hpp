@@ -61,8 +61,8 @@
 
 
 
-#define _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitclass,unitptr,id) \
-    openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->spatialUnits(unitclass)->list(); \
+#define _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitsclass,unitptr,id) \
+    openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->spatialUnits(unitsclass)->list(); \
     if (_UNITSLISTID(id) != NULL && !(_UNITSLISTID(id)->empty())) \
       for (openfluid::core::UnitsList_t::iterator _UNITSLISTITERID(id) = _UNITSLISTID(id)->begin(); \
            unitptr = &(*_UNITSLISTITERID(id)),_UNITSLISTITERID(id) != _UNITSLISTID(id)->end(); \
@@ -70,12 +70,12 @@
 
 /**
   Macro for a loop processing all units of a class, following their process order
-  @param[in] unitclass name of the unit class
+  @param[in] unitsclass name of the units class
   @param[out] unitptr pointer to a openfluid::core::SpatialUnit object,
   automatically pointing to the current processed unit
 */
-#define OPENFLUID_UNITS_ORDERED_LOOP(unitclass,unitptr) \
-    _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitclass,unitptr,__LINE__)
+#define OPENFLUID_UNITS_ORDERED_LOOP(unitsclass,unitptr) \
+    _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitsclass,unitptr,__LINE__)
 
 
 

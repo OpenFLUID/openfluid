@@ -1,0 +1,127 @@
+#titlearea {
+  border-bottom : 1px solid #777;
+}
+
+
+#projectlogo img
+{
+  padding-left : 20px;
+  padding-top : 5px;
+  padding-bottom : 10px;
+}
+
+
+.tabs, .tabs2, .tabs3 {
+  background-color: #4F6074;
+  text-shadow: none;
+  width: 100%;
+  z-index: 101;
+  font-size: 100%;
+  border-bottom : 1px solid #777;
+  background-image: none;
+}
+
+.tabs2 {
+    font-size: 90%;
+    border-bottom : 1px solid #777;
+}
+
+.tabs3 {
+    font-size: 90%;
+    border-bottom : 1px solid #777;
+}
+
+.tablist {
+    margin: 0;
+    padding: 0;
+    display: table;
+    text-shadow: none;
+    background-image: none;
+}
+
+.tablist li {
+    float: left;
+    display: table-cell;
+    background-color: #4F6074;
+    line-height: 36px;
+    list-style: none;
+    text-shadow: none;
+    background-image: none;
+}
+
+.tablist a {
+    display: block;
+    padding: 0 20px;
+    font-weight: bold;
+    background-color: #4F6074;
+    background-repeat:no-repeat;
+    background-position:right;
+    color: #ddd;
+    outline: none;
+    text-shadow: none;
+    background-image: none;
+}
+
+.tabs3 .tablist a {
+    padding: 0 10px;
+    text-shadow: none;
+}
+
+.tablist a:hover {
+    background-color: #4F6074;
+    background-repeat:repeat-x;
+    color: #fff;
+    text-decoration: none;
+    background-image: none;
+    text-shadow: none;
+}
+
+.tablist li.current a {
+    background-color: #4F6074;
+    background-repeat:repeat-x;
+    color: #fff;
+    background-image: none;
+    text-shadow: none;
+}
+
+
+.navpath ul
+{
+  font-size: 95%;
+  background-color: #719133;
+  background-image: none;
+  background-repeat: no-repeat;
+  background-position: none;
+  border: none;
+  border-bottom : 1px solid #777;
+}
+
+.navpath li
+{
+  list-style-type:none;
+  float:left;
+  padding-left:10px;
+  padding-right:15px;
+  background-image:none;
+  background-repeat:no-repeat;
+  background-position:right;
+  color:#364D7C;
+}
+
+.navpath li.navelem a
+{
+	color: #ddd;
+  text-shadow: none;
+}
+
+.navpath li.navelem a:hover
+{
+  color: #fff;
+}
+
+.navpath li.footer
+{
+  background-image:none;
+  background-repeat:no-repeat;
+  background-position:right;
+}

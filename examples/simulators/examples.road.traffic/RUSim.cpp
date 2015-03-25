@@ -164,7 +164,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
       }
 
       // Checking if TLU units exist
-      if (OPENFLUID_IsUnitClassExist("TLU"))
+      if (OPENFLUID_IsUnitsClassExist("TLU"))
       {
         // Checking if TLU variables exist
         OPENFLUID_UNITS_ORDERED_LOOP("TLU",TLU)

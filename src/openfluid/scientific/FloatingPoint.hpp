@@ -58,8 +58,8 @@ namespace openfluid { namespace scientific {
   @see http://www.parashift.com/c++-faq-lite/floating-point-arith.html
   @see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
 */
-template<typename T>
-inline bool isCloseEnough(const T& A, const T& B, const T& Epsilon = 0.00001)
+template<typename T1, typename T2>
+inline bool isCloseEnough(const T1& A, const T2& B, const double& Epsilon = 0.00001)
 {
   // see Knuth section 4.2.2 pages 217-218
   return ((std::fabs(A - B)) <= (Epsilon * std::fabs(A)));
@@ -75,8 +75,8 @@ inline bool isCloseEnough(const T& A, const T& B, const T& Epsilon = 0.00001)
   @see http://www.parashift.com/c++-faq-lite/floating-point-arith.html
   @see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
 */
-template<typename T>
-inline bool isVeryClose(const T& A, const T& B, const T& Epsilon = 0.00001)
+template<typename T1, typename T2>
+inline bool isVeryClose(const T1& A, const T2& B, const double& Epsilon = 0.00001)
 {
   // see Knuth section 4.2.2 pages 217-218
   return (((std::fabs(A - B)) <= (Epsilon * std::fabs(A))) && ((std::fabs(A - B)) <= (Epsilon * std::fabs(B))));
@@ -85,7 +85,7 @@ inline bool isVeryClose(const T& A, const T& B, const T& Epsilon = 0.00001)
 
 
 /**
-  @deprecated use openfluid::scientific::isCloseEnough
+  @deprecated Since version 2.1.0. Use openfluid::scientific::isCloseEnough instead
 */
 inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001) OPENFLUID_DEPRECATED;
 inline bool IsCloseEnough(double A, double B, double Epsilon)
@@ -95,7 +95,7 @@ inline bool IsCloseEnough(double A, double B, double Epsilon)
 
 
 /**
-  @deprecated use openfluid::scientific::isVeryClose
+  @deprecated Since version 2.1.0.Use openfluid::scientific::isVeryClose instead
 */
 inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001) OPENFLUID_DEPRECATED;
 inline bool IsVeryClose(double A, double B, double Epsilon)

@@ -66,10 +66,10 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
     const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& items() const;
 
     std::list<openfluid::fluidx::DatastoreItemDescriptor*>
-      getItems(const openfluid::core::UnitClass_t& UnitClass) const;
+      getItems(const openfluid::core::UnitsClass_t& UnitClass) const;
 
     std::list<openfluid::fluidx::DatastoreItemDescriptor*>
-      getItems(const openfluid::core::UnitClass_t& UnitClass,
+      getItems(const openfluid::core::UnitsClass_t& UnitClass,
                openfluid::core::UnstructuredValue::UnstructuredType Type) const;
 
     /**

@@ -8,20 +8,20 @@
           <param name="gparam2" value="0.1" />
         </gparams>
 
-		<generator varname="tests.generator.interp" unitclass="TU" method="interp">
+		<generator varname="tests.generator.interp" unitsclass="TU" method="interp">
 			<param name="sources" value="sources.xml" />
 			<param name="distribution" value="distri.dat" />
 		</generator>
 
 		<simulator ID="tests.simulatorA" />
 
-		<generator varname="tests.generator.fixed" unitclass="TU"
+		<generator varname="tests.generator.fixed" unitsclass="TU"
 			method="fixed">
 			<param name="fixedvalue" value="20" />
 		</generator>
 
 
-		<generator varname="tests.generator.random" unitclass="TU"
+		<generator varname="tests.generator.random" unitsclass="TU"
 			method="random">
 			<param name="min" value="20.53" />
 			<param name="max" value="50" />

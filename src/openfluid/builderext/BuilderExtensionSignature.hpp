@@ -79,8 +79,13 @@
   @param[in] name name of the parameter
   @param[in] description description of the parameter
 */
-#define DECLARE_CONFIGURATION_PARAM(name,description) \
+#define DECLARE_CONFIGURATION_PARAMETER(name,description) \
   Signature->ConfigParameters[(name)] = (description);
+
+/**
+  @deprecated Since version 2.1.0. Use #DECLARE_CONFIGURATION_PARAMETER instead
+*/
+#define DECLARE_CONFIGURATION_PARAM(name,description) DECLARE_CONFIGURATION_PARAMETER(name,description)
 
 
 /**

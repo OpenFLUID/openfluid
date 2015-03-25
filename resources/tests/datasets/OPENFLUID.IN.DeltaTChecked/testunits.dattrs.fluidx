@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <domain>
-    <attributes unitclass="TestUnits" colorder="indataDouble;indataLong;indataBool;indataString;indataVector;indataMatrix;indataMap">
+    <attributes unitsclass="TestUnits" colorder="indataDouble;indataLong;indataBool;indataString;indataVector;indataMatrix;indataMap">
       
 
 1	1.1	1	0	CODE1	1.1;1.2;1.3		 10.0;10.1;10.2|11.0;11.1;11.2			key1=1.1;key2=aString

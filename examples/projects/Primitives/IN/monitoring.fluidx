@@ -9,12 +9,12 @@
       <param name="format.f1.precision" value="8" />
             
       
-      <param name="set.fullA.unitclass" value="unitsA" />
+      <param name="set.fullA.unitsclass" value="unitsA" />
       <param name="set.fullA.unitsIDs" value="*" />
       <param name="set.fullA.vars" value="*" />
       <param name="set.fullA.format" value="f1" />
       
-      <param name="set.fullB.unitclass" value="unitsB" />
+      <param name="set.fullB.unitsclass" value="unitsB" />
       <param name="set.fullB.unitsIDs" value="*" />
       <param name="set.fullB.vars" value="*" />
       <param name="set.fullB.format" value="f1" />    

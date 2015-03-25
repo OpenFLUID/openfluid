@@ -128,7 +128,7 @@ void DatastoreWidget::refresh()
         openfluid::core::UnstructuredValue::getStringFromValueType((*it)->getType())));
     ui->DatastoreTableWidget->setItem(CurrentRow, 1, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString((*it)->getUnitClass()));
+    Item = new QTableWidgetItem(QString::fromStdString((*it)->getUnitsClass()));
     ui->DatastoreTableWidget->setItem(CurrentRow, 2, Item);
 
     Item = new QTableWidgetItem(QDir::toNativeSeparators(QString::fromStdString((*it)->getRelativePath())));
@@ -314,7 +314,7 @@ void DatastoreWidget::addItem()
                                                          AddItemDlg.getItemType());
 
       if (AddItemDlg.isUnitsClass())
-        DSItemDesc->setUnitClass(AddItemDlg.getUnitsClass().toStdString());
+        DSItemDesc->setUnitsClass(AddItemDlg.getUnitsClass().toStdString());
 
       m_Datastore.appendItem(DSItemDesc);
 

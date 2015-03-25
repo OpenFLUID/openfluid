@@ -46,7 +46,7 @@ namespace openfluid { namespace ware {
 
 
 SignatureTypedSpatialDataItem::SignatureTypedSpatialDataItem(std::string DName,
-                                                             openfluid::core::UnitClass_t UClass,
+                                                             openfluid::core::UnitsClass_t UClass,
                                                              std::string DDescription,
                                                              std::string DUnit):
  SignatureSpatialDataItem(DName,UClass,DDescription,DUnit)

@@ -4,14 +4,14 @@
     
     <observer ID="export.vars.plot.gnuplot">
       <param name="serie.s1.var" value="tests.double.dt" />
-      <param name="serie.s1.unitclass" value="TestUnits" />
+      <param name="serie.s1.unitsclass" value="TestUnits" />
       <param name="serie.s1.unitID" value="1" />
       <param name="serie.s1.label" value="a double" />
       <param name="serie.s1.style" value="line" />
             
       <param name="serie.s2.var" value="tests.double" />
       <param name="serie.s2.style" value="dot" />
-      <param name="serie.s2.unitclass" value="TestUnits" />
+      <param name="serie.s2.unitsclass" value="TestUnits" />
       <param name="serie.s2.unitID" value="1" />
       
       
@@ -21,12 +21,12 @@
    
       <param name="serie.s4.var" value="tests.random" />
       <param name="serie.s4.label" value="random (TU#4)" />
-      <param name="serie.s4.unitclass" value="TestUnits" />
+      <param name="serie.s4.unitsclass" value="TestUnits" />
       <param name="serie.s4.unitID" value="4" />
       
       <param name="serie.s5.var" value="tests.random" />
       <param name="serie.s5.label" value="random (TU#5)" />
-      <param name="serie.s5.unitclass" value="TestUnits" />
+      <param name="serie.s5.unitsclass" value="TestUnits" />
       <param name="serie.s5.unitID" value="5" />
 
                     

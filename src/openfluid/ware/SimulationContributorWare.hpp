@@ -99,7 +99,6 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] UnitPtr a Unit
        @param[in] VarName the name of the variable
        @param[in] Val the added value of the variable
-       @deprecated
      */
      void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
                                    const openfluid::core::VariableName_t& VarName,
@@ -161,7 +160,6 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable
-      @deprecated
     */
     void OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
                                   const openfluid::core::VariableName_t& VarName,
@@ -288,7 +286,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ID ID of the added unit
       @param[in] PcsOrder Process order of the added unit
     */
-    void OPENFLUID_AddUnit(const openfluid::core::UnitClass_t& ClassName,
+    void OPENFLUID_AddUnit(const openfluid::core::UnitsClass_t& ClassName,
                            openfluid::core::UnitID_t ID,
                            openfluid::core::PcsOrd_t PcsOrder);
 
@@ -298,7 +296,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ID ID of the added unit
       @return true if the unit has been correctly deleted
     */
-    void OPENFLUID_DeleteUnit(const openfluid::core::UnitClass_t& ClassName,
+    void OPENFLUID_DeleteUnit(const openfluid::core::UnitsClass_t& ClassName,
                               openfluid::core::UnitID_t ID);
 
 
@@ -310,9 +308,9 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] IDTo ID of the "to" unit
       @return false if the unit connection already exists
     */
-    bool OPENFLUID_AddFromToConnection(const openfluid::core::UnitClass_t& ClassNameFrom,
+    bool OPENFLUID_AddFromToConnection(const openfluid::core::UnitsClass_t& ClassNameFrom,
                                        openfluid::core::UnitID_t IDFrom,
-                                       const openfluid::core::UnitClass_t& ClassNameTo,
+                                       const openfluid::core::UnitsClass_t& ClassNameTo,
                                        openfluid::core::UnitID_t IDTo);
 
     /**
@@ -332,9 +330,9 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] IDTo ID of the "to" unit
       @return false if the unit connection does not exist
     */
-    bool OPENFLUID_RemoveFromToConnection(const openfluid::core::UnitClass_t& ClassNameFrom,
+    bool OPENFLUID_RemoveFromToConnection(const openfluid::core::UnitsClass_t& ClassNameFrom,
                                           openfluid::core::UnitID_t IDFrom,
-                                          const openfluid::core::UnitClass_t& ClassNameTo,
+                                          const openfluid::core::UnitsClass_t& ClassNameTo,
                                           openfluid::core::UnitID_t IDTo);
 
     /**
@@ -355,9 +353,9 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] IDParent ID of the "parent" unit
       @return false if the connection already exists
     */
-    bool OPENFLUID_AddChildParentConnection(const openfluid::core::UnitClass_t& ClassNameChild,
+    bool OPENFLUID_AddChildParentConnection(const openfluid::core::UnitsClass_t& ClassNameChild,
                                             openfluid::core::UnitID_t IDChild,
-                                            const openfluid::core::UnitClass_t& ClassNameParent,
+                                            const openfluid::core::UnitsClass_t& ClassNameParent,
                                             openfluid::core::UnitID_t IDParent);
 
     /**
@@ -378,9 +376,9 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] IDParent ID of the "parent" unit
       @return false if the connection does not exist
     */
-    bool OPENFLUID_RemoveChildParentConnection(const openfluid::core::UnitClass_t& ClassNameChild,
+    bool OPENFLUID_RemoveChildParentConnection(const openfluid::core::UnitsClass_t& ClassNameChild,
                                                openfluid::core::UnitID_t IDChild,
-                                               const openfluid::core::UnitClass_t& ClassNameParent,
+                                               const openfluid::core::UnitsClass_t& ClassNameParent,
                                                openfluid::core::UnitID_t IDParent);
 
     /**
@@ -398,7 +396,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ColsNbr the number of units on the X axis
       @param[in] RowsNbr the number of units on the Y axis
     */
-    void OPENFLUID_BuildUnitsMatrix(const openfluid::core::UnitClass_t& UnitsClass,
+    void OPENFLUID_BuildUnitsMatrix(const openfluid::core::UnitsClass_t& UnitsClass,
                                     const unsigned int& ColsNbr,
                                     const unsigned int& RowsNbr);
 

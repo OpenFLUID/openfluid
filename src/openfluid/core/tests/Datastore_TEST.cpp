@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   BOOST_CHECK_EQUAL(Item->getID(),"mymap");
   BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path1");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect");
-  BOOST_CHECK_EQUAL(Item->getUnitClass(),"SU");
+  BOOST_CHECK_EQUAL(Item->getUnitsClass(),"SU");
   BOOST_REQUIRE(Item->value() != 0);
   BOOST_CHECK_EQUAL(Item->value()->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
 
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   BOOST_CHECK_EQUAL(Item->getID(),"mymap2");
   BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path2");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect.shp");
-  BOOST_CHECK_EQUAL(Item->getUnitClass(),"");
+  BOOST_CHECK_EQUAL(Item->getUnitsClass(),"");
   BOOST_REQUIRE(Item->value() != 0);
   BOOST_CHECK_EQUAL(Item->value()->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
 
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   BOOST_CHECK_EQUAL(Item->getID(),"myrast");
   BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path3");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testrast.tif");
-  BOOST_CHECK_EQUAL(Item->getUnitClass(),"");
+  BOOST_CHECK_EQUAL(Item->getUnitsClass(),"");
   BOOST_REQUIRE(Item->value() != 0);
   BOOST_CHECK_EQUAL(Item->value()->getType(),openfluid::core::UnstructuredValue::GeoRasterValue);
 

@@ -64,7 +64,7 @@ EventDescriptor::EventDescriptor(const EventDescriptor& EvDesc)
 {
   m_ID = EvDesc.m_ID;
 
-  m_UnitClass = EvDesc.m_UnitClass;
+  m_UnitsClass = EvDesc.m_UnitsClass;
   m_UnitID = EvDesc.m_UnitID;
   m_Event = EvDesc.m_Event;
 }

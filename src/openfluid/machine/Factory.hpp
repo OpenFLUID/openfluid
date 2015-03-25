@@ -97,9 +97,9 @@ class OPENFLUID_API Factory
 
     static std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
                                         bool IsVector,
-                                        const openfluid::core::UnitClass_t& ClassName)
+                                        const openfluid::core::UnitsClass_t& ClassName)
     {
-      // <varname>.<unitclass>.gen<type> where <type> can be scalar or vector
+      // <varname>.<unitsclass>.gen<type> where <type> can be scalar or vector
 
       std::string GenID(VarName);
       GenID += ".";

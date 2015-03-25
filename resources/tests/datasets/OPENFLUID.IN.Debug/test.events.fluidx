@@ -3,25 +3,25 @@
 <domain>
   <calendar>
   
-    <event name="" category="test" unitclass="TU" unitID="1" date="1999-12-31 23:59:59">
+    <event name="" category="test" unitsclass="TU" unitID="1" date="1999-12-31 23:59:59">
       <info key="when" value="before"/>
       <info key="where" value="1"/>
       <info key="numeric" value="1.13"/>
       <info key="string" value="EADGBE"/>
     </event>
-    <event name="" category="test" unitclass="TU" unitID="1" date="1999-12-01 12:00:00">
+    <event name="" category="test" unitsclass="TU" unitID="1" date="1999-12-01 12:00:00">
       <info key="when" value="before"/>
       <info key="where" value="1"/>
       <info key="numeric" value="1.13"/>
       <info key="string" value="EADG"/>
     </event>        
-    <event name="" category="test" unitclass="TU" unitID="7" date="1999-12-01 12:00:00">
+    <event name="" category="test" unitsclass="TU" unitID="7" date="1999-12-01 12:00:00">
       <info key="when" value="before"/>
       <info key="where" value="7"/>
       <info key="numeric" value="1.13"/>
       <info key="string" value="EADG"/>
     </event>    
-    <event name="" category="test" unitclass="TU" unitID="12" date="1990-12-01 12:00:00">
+    <event name="" category="test" unitsclass="TU" unitID="12" date="1990-12-01 12:00:00">
       <info key="when" value="before"/>
       <info key="where" value="7"/>
       <info key="numeric" value="1.13"/>
@@ -29,7 +29,7 @@
     </event>    
 
 
-    <event name="" category="test" unitclass="TU" unitID="3" date="2000-01-01 02:18:12">
+    <event name="" category="test" unitsclass="TU" unitID="3" date="2000-01-01 02:18:12">
       <info key="when" value="during"/>
       <info key="where" value="3"/>
       <info key="numeric" value="1.15"/>
@@ -37,14 +37,14 @@
     </event>    
     
         
-    <event name="" category="test" unitclass="TU" unitID="18" date="2000-01-01 02:18:12">
+    <event name="" category="test" unitsclass="TU" unitID="18" date="2000-01-01 02:18:12">
       <info key="when" value="during"/>
       <info key="where" value="18"/>
       <info key="numeric" value="1.15"/>
       <info key="string" value="EADGBE"/>
     </event>    
     
-    <event name="" category="test" unitclass="TU" unitID="18" date="2000-01-01 02:47:37">
+    <event name="" category="test" unitsclass="TU" unitID="18" date="2000-01-01 02:47:37">
       <info key="when" value="during"/>
       <info key="where" value="18"/>
       <info key="numeric" value="17.33"/>
@@ -52,26 +52,26 @@
     </event>        
     
     
-    <event name="" category="test" unitclass="TU" unitID="1" date="2000-01-01 04:00:17">
+    <event name="" category="test" unitsclass="TU" unitID="1" date="2000-01-01 04:00:17">
       <info key="when" value="during"/>
       <info key="where" value="1"/>
       <info key="numeric" value="1.15"/>
       <info key="string" value="EADGBE"/>
     </event>          
 
-    <event name="" category="test" unitclass="TU" unitID="12" date="2000-01-01 06:00:17">
+    <event name="" category="test" unitsclass="TU" unitID="12" date="2000-01-01 06:00:17">
       <info key="when" value="after"/>
       <info key="where" value="12"/>
       <info key="numeric" value="1.15"/>
       <info key="string" value="EADGBE"/>
     </event>    
-    <event name="" category="test" unitclass="TU" unitID="12" date="2000-01-01 09:00:17">
+    <event name="" category="test" unitsclass="TU" unitID="12" date="2000-01-01 09:00:17">
       <info key="when" value="after"/>
       <info key="where" value="12"/>
       <info key="numeric" value="1.15"/>
       <info key="string" value="EADGBE"/>
     </event>        
-    <event name="" category="test" unitclass="TU" unitID="12" date="2011-08-01 12:23:17">
+    <event name="" category="test" unitsclass="TU" unitID="12" date="2011-08-01 12:23:17">
       <info key="when" value="after"/>
       <info key="where" value="12"/>
       <info key="numeric" value="1.15"/>

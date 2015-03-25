@@ -140,13 +140,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars.size(),3);
   BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[1].DataName,"pvar2");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[1].UnitClass,"UnitClassA");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[2].UnitClass,"UnitClassB");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[1].UnitsClass,"UnitClassA");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[2].UnitsClass,"UnitClassB");
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars.size(),3);
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars[1].DataName,"pvar2");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars[1].UnitClass,"UnitClassA");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars[2].UnitClass,"UnitClassB");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars[1].UnitsClass,"UnitClassA");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars[2].UnitsClass,"UnitClassB");
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.UpdatedVars.size(),1);
 

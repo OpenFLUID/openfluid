@@ -233,7 +233,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
       @param[in] UnitID The unit ID of the event
       @param[in] Event The event definition
     */
-    void addEvent(const openfluid::core::UnitClass_t& UnitsClass, const openfluid::core::UnitID_t& UnitID,
+    void addEvent(const openfluid::core::UnitsClass_t& UnitsClass, const openfluid::core::UnitID_t& UnitID,
                      const openfluid::core::Event& Event);
 
     /**
@@ -242,7 +242,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
       @param[in] UnitID The unit ID of the event
       @param[in] EventID The ID of the event to delete
     */
-    void deleteEvent(const openfluid::core::UnitClass_t& UnitsClass, const openfluid::core::UnitID_t& UnitID,
+    void deleteEvent(const openfluid::core::UnitsClass_t& UnitsClass, const openfluid::core::UnitID_t& UnitID,
                      const openfluid::fluidx::EventID_t& EventID);
 
     /**

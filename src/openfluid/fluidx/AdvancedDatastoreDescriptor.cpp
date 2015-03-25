@@ -82,7 +82,7 @@ const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& AdvancedDatastoreD
 
 
 std::list<openfluid::fluidx::DatastoreItemDescriptor*>
-  AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitClass_t& UnitClass) const
+  AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitsClass_t& UnitClass) const
 {
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->items().begin();
@@ -92,7 +92,7 @@ std::list<openfluid::fluidx::DatastoreItemDescriptor*>
 
   for (it = itb; it != ite; ++it)
   {
-    if ((*it)->getUnitClass() == UnitClass)
+    if ((*it)->getUnitsClass() == UnitClass)
       ClassList.push_back((*it));
   }
 
@@ -105,7 +105,7 @@ std::list<openfluid::fluidx::DatastoreItemDescriptor*>
 
 
 std::list<openfluid::fluidx::DatastoreItemDescriptor*>
-  AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitClass_t& UnitClass,
+  AdvancedDatastoreDescriptor::getItems(const openfluid::core::UnitsClass_t& UnitClass,
                                         openfluid::core::UnstructuredValue::UnstructuredType Type) const
 {
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
@@ -116,7 +116,7 @@ std::list<openfluid::fluidx::DatastoreItemDescriptor*>
 
   for (it = itb; it != ite; ++it)
   {
-    if ((*it)->getUnitClass() == UnitClass && (*it)->getType() == Type)
+    if ((*it)->getUnitsClass() == UnitClass && (*it)->getType() == Type)
       ClassList.push_back((*it));
   }
 

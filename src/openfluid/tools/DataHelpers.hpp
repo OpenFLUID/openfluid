@@ -99,7 +99,7 @@ inline T convertString(const std::string& StrToConvert)
 
 
 /**
-  @deprecated use openfluid::tools::convertString
+  @deprecated Since version 2.1.0. Use openfluid::tools::convertString instead
 */
 template<typename T>
 inline bool ConvertString(const std::string& StrToConvert, T* Converted) OPENFLUID_DEPRECATED;
@@ -159,7 +159,7 @@ inline std::string convertValue(const T& ValueToConvert)
 
 
 /**
-  @deprecated use openfluid::tools::convertValue
+  @deprecated Since version 2.1.0. Use openfluid::tools::convertValue instead
 */
 template<typename T>
 inline bool ConvertValue(const T& ValueToConvert, std::string* StrConverted) OPENFLUID_DEPRECATED;
@@ -186,7 +186,7 @@ void OPENFLUID_API tokenizeString(const std::string& StrToTokenize,
 
 
 /**
-  @deprecated use openfluid::tools::tokenizeString
+  @deprecated Since version 2.1.0. Use openfluid::tools::tokenizeString instead
 */
 inline void TokenizeString(const std::string& StrToTokenize,
                            std::vector<std::string>& Tokens,
@@ -211,7 +211,7 @@ std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit
                                                    bool ReturnsEmpty = false);
 
 /**
-  @deprecated use openfluid::tools::splitString
+  @deprecated Since version 2.1.0. Use openfluid::tools::splitString instead
 */
 inline std::vector<std::string> SplitString(const std::string& StrToSplit,
                                             const std::string& Separators,

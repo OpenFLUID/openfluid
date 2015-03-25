@@ -50,8 +50,8 @@ namespace core {
 
 DatastoreItem::DatastoreItem(const std::string& ID,
                              const std::string& PrefixPath, const std::string& RelativePath,
-                             UnstructuredValue::UnstructuredType Type, const std::string& UnitClass) :
-  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_UnitClass(UnitClass), m_Value(0)
+                             UnstructuredValue::UnstructuredType Type, const std::string& UnitsClass) :
+  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_UnitsClass(UnitsClass), m_Value(0)
 {
   switch (Type)
   {
@@ -111,9 +111,9 @@ std::string DatastoreItem::getRelativePath() const
 // =====================================================================
 
 
-std::string DatastoreItem::getUnitClass() const
+std::string DatastoreItem::getUnitsClass() const
 {
-  return m_UnitClass;
+  return m_UnitsClass;
 }
 
 // =====================================================================

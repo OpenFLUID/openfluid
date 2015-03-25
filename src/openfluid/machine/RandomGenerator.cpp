@@ -103,7 +103,7 @@ void RandomGenerator::checkConsistency()
 openfluid::base::SchedulingRequest RandomGenerator::initializeRun()
 {
   openfluid::core::SpatialUnit* LU;
-  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     if (isVectorVariable())
     {
@@ -133,7 +133,7 @@ openfluid::base::SchedulingRequest RandomGenerator::runStep()
 
 
 
-  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     openfluid::core::DoubleValue Value(Random());
 

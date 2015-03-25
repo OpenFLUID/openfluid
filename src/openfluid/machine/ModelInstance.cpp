@@ -334,7 +334,7 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 
       ((openfluid::machine::Generator*)
           (CurrentSimulator->Body))->setInfos(CurrentSimulator->GeneratorInfo->VariableName,
-                                              CurrentSimulator->GeneratorInfo->UnitClass,
+                                              CurrentSimulator->GeneratorInfo->UnitsClass,
                                               CurrentSimulator->GeneratorInfo->GeneratorMethod,
                                               CurrentSimulator->GeneratorInfo->VariableSize);
     }

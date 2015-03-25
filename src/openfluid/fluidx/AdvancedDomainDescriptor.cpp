@@ -261,7 +261,7 @@ void AdvancedDomainDescriptor::dispatchEvents()
   {
     try
     {
-      m_Units.at(it->getUnitClass()).at(it->getUnitID()).EventsDescriptors.push_back(&(*it));
+      m_Units.at(it->getUnitsClass()).at(it->getUnitID()).EventsDescriptors.push_back(&(*it));
     }
     catch (std::out_of_range& e)
     {
@@ -528,7 +528,7 @@ void AdvancedDomainDescriptor::deleteUnit(const std::string& ClassName, int ID)
       Events->begin();
   while (itEv != Events->end())
   {
-    if (itEv->getUnitClass() == ClassName && (int) itEv->getUnitID() == ID)
+    if (itEv->getUnitsClass() == ClassName && (int) itEv->getUnitID() == ID)
       itEv = Events->erase(itEv);
     else
       itEv++;
@@ -755,7 +755,7 @@ void AdvancedDomainDescriptor::renameAttribute(const std::string& ClassName,
 // =====================================================================
 
 
-void AdvancedDomainDescriptor::addEvent(const openfluid::core::UnitClass_t& UnitsClass,
+void AdvancedDomainDescriptor::addEvent(const openfluid::core::UnitsClass_t& UnitsClass,
                                         const openfluid::core::UnitID_t& UnitID,
                                         const openfluid::core::Event& Event)
 {
@@ -764,7 +764,7 @@ void AdvancedDomainDescriptor::addEvent(const openfluid::core::UnitClass_t& Unit
     AdvancedUnitDescriptor* AdvUnitDesc = &m_Units.at(UnitsClass).at(UnitID);
 
     EventDescriptor EvDesc;
-    EvDesc.setUnitClass(UnitsClass);
+    EvDesc.setUnitsClass(UnitsClass);
     EvDesc.setUnitID(UnitID);
     EvDesc.event() = Event;
 
@@ -784,7 +784,7 @@ void AdvancedDomainDescriptor::addEvent(const openfluid::core::UnitClass_t& Unit
 // =====================================================================
 
 
-void AdvancedDomainDescriptor::deleteEvent(const openfluid::core::UnitClass_t& UnitsClass,
+void AdvancedDomainDescriptor::deleteEvent(const openfluid::core::UnitsClass_t& UnitsClass,
                                            const openfluid::core::UnitID_t& UnitID,
                                            const openfluid::fluidx::EventID_t& EventID)
 {

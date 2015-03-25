@@ -53,19 +53,19 @@ SimulatorGraphics::SimulatorGraphics(const QPointF& Coords, const QString& ID,
 
   VarList = SimSign->HandledData.RequiredVars;
   for (unsigned int i=0;i<VarList.size();i++)
-    m_RequiredVars[QString::fromStdString(VarList[i].UnitClass)].append(QString::fromStdString(VarList[i].DataName));
+    m_RequiredVars[QString::fromStdString(VarList[i].UnitsClass)].append(QString::fromStdString(VarList[i].DataName));
 
   VarList = SimSign->HandledData.UsedVars;
   for (unsigned int i=0;i<VarList.size();i++)
-    m_UsedVars[QString::fromStdString(VarList[i].UnitClass)].append(QString::fromStdString(VarList[i].DataName));
+    m_UsedVars[QString::fromStdString(VarList[i].UnitsClass)].append(QString::fromStdString(VarList[i].DataName));
 
   VarList = SimSign->HandledData.ProducedVars;
   for (unsigned int i=0;i<VarList.size();i++)
-    m_ProducedVars[QString::fromStdString(VarList[i].UnitClass)].append(QString::fromStdString(VarList[i].DataName));
+    m_ProducedVars[QString::fromStdString(VarList[i].UnitsClass)].append(QString::fromStdString(VarList[i].DataName));
 
   VarList = SimSign->HandledData.UpdatedVars;
   for (unsigned int i=0;i<VarList.size();i++)
-    m_UpdatedVars[QString::fromStdString(VarList[i].UnitClass)].append(QString::fromStdString(VarList[i].DataName));
+    m_UpdatedVars[QString::fromStdString(VarList[i].UnitsClass)].append(QString::fromStdString(VarList[i].DataName));
 
 
   // In/Out slots

@@ -106,21 +106,21 @@ class OPENFLUID_API Engine
 
      void checkExistingVariable(const openfluid::core::VariableName_t& VarName,
                                 const openfluid::core::Value::Type& VarType,
-                                const openfluid::core::UnitClass_t& ClassName,
+                                const openfluid::core::UnitsClass_t& ClassName,
                                 const std::string& SimulatorID);
 
      void createVariable(const openfluid::core::VariableName_t& VarName,
                          const openfluid::core::Value::Type& VarType,
-                         const openfluid::core::UnitClass_t& ClassName,
+                         const openfluid::core::UnitsClass_t& ClassName,
                          bool UpdateMode,
                          const std::string& SimulatorID);
 
      void checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
-                                 openfluid::core::UnitClass_t ClassName,
+                                 openfluid::core::UnitsClass_t ClassName,
                                  const std::string& SimulatorID);
 
      void createAttribute(openfluid::core::AttributeName_t AttrName,
-                          openfluid::core::UnitClass_t ClassName,
+                          openfluid::core::UnitsClass_t ClassName,
                           const std::string& SimulatorID);
 
      void prepareOutputDir();

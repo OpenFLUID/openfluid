@@ -61,7 +61,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.geovector")
       "  format : the GDAL format for output files (mandatory)"
       "  outsubdir : the subdirectory to store output files, relative to the output directory (optional)\n"
       "  geoserie.<seriename>.sourcefile : the sourcefile for geometry of the serie (mandatory)\n"
-      "  geoserie.<seriename>.unitclass : the unit class of the serie (mandatory)\n"
+      "  geoserie.<seriename>.unitsclass : the unit class of the serie (mandatory)\n"
       "  geoserie.<seriename>.vars : the list of variables of the serie (mandatory)."
       "The field name for the variable can be explicitely given by using the varname=>fieldname\n"
       "  geoserie.<seriename>.when : the time mode for output files production (optional). "
@@ -94,7 +94,7 @@ class GeoVectorSerie
 
     std::string GeoSourceFilePath;
 
-    openfluid::core::UnitClass_t UnitsClass;
+    openfluid::core::UnitsClass_t UnitsClass;
 
     VariablesSet_t VariablesSet;
 
@@ -115,7 +115,7 @@ class GeoVectorSerie
 
     GeoVectorSerie(const std::string& SName,
                    const std::string& SrcFilePath,
-                   const openfluid::core::UnitClass_t& UClass,
+                   const openfluid::core::UnitsClass_t& UClass,
                    const VariablesSet_t& VarsSet,
                    const std::string& OutfileExt,
                    const WhenModeCases& Mode = WHENCONTINUOUS,
@@ -364,7 +364,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       }
       else
       {
-        OPENFLUID_RaiseWarning("Internal stage error when processing geographic series");
+        OPENFLUID_LogWarning("Internal stage error when processing geographic series");
         return;
       }
 
@@ -443,7 +443,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
               {
                 QString Msg("Variable %1 does not exist on unit %2#%3");
                 Msg.arg(VarName.c_str()).arg(UU->getClass().c_str()).arg(UU->getID());
-                OPENFLUID_RaiseWarning(Msg.toStdString());
+                OPENFLUID_LogWarning(Msg.toStdString());
               }
 
               if (VarValue.value()->isDoubleValue())
@@ -452,7 +452,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
               {
                 QString Msg("Variable %1 on unit %2#%3 is not a double. Only double are currently supported");
                 Msg.arg(VarName.c_str()).arg(UU->getClass().c_str()).arg(UU->getID());
-                OPENFLUID_RaiseWarning(Msg.toStdString());
+                OPENFLUID_LogWarning(Msg.toStdString());
               }
 
               CreatedFeature->SetField(FieldName.c_str(),VarValue.value()->asDoubleValue());
@@ -528,13 +528,13 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       // checking of mandatory parameters
       if (!ParamsTree.root().hasChild("format"))
       {
-        OPENFLUID_RaiseWarning("Missing GDAL format for output files");
+        OPENFLUID_LogWarning("Missing GDAL format for output files");
         return;
       }
 
       if (!ParamsTree.root().hasChild("format"))
       {
-        OPENFLUID_RaiseWarning("No serie defined");
+        OPENFLUID_LogWarning("No serie defined");
         return;
       }
 
@@ -547,7 +547,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
       if (ValidVectorDrivers.find(m_GDALFormat) == ValidVectorDrivers.end())
       {
-        OPENFLUID_RaiseWarning("Unsupported GDAL format for output files");
+        OPENFLUID_LogWarning("Unsupported GDAL format for output files");
         return;
       }
 
@@ -575,22 +575,22 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
         std::string GeoSourceFilename = Serie.second.getChildValue("sourcefile","");
         std::string VarsString = Serie.second.getChildValue("vars","");
-        openfluid::core::UnitClass_t UnitsClass = Serie.second.getChildValue("unitsclass","");
+        openfluid::core::UnitsClass_t UnitsClass = Serie.second.getChildValue("unitsclass","");
         std::string WhenModeString = Serie.second.getChildValue("when","");
 
 
         if (GeoSourceFilename.empty())
-          OPENFLUID_RaiseWarning("Missing geographic source filename for serie "+SerieName);
+          OPENFLUID_LogWarning("Missing geographic source filename for serie "+SerieName);
         else if (UnitsClass.empty())
-          OPENFLUID_RaiseWarning("Missing units class for serie "+SerieName);
+          OPENFLUID_LogWarning("Missing units class for serie "+SerieName);
         else if (VarsString.empty())
-          OPENFLUID_RaiseWarning("Missing variables list for serie "+SerieName);
+          OPENFLUID_LogWarning("Missing variables list for serie "+SerieName);
         else
         {
           GeoVectorSerie::VariablesSet_t VarsSet = convertParamToVariableSet(VarsString);
 
           if (VarsSet.empty())
-            OPENFLUID_RaiseWarning("Format error in variables list for serie "+SerieName);
+            OPENFLUID_LogWarning("Format error in variables list for serie "+SerieName);
           else
           {
             if (setWhenModeFromParam(WhenModeString,Mode,ContinuousDelay))
@@ -603,7 +603,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
                                                 Mode,ContinuousDelay));
             }
             else
-              OPENFLUID_RaiseWarning("Format error in whenmode for serie "+SerieName);
+              OPENFLUID_LogWarning("Format error in whenmode for serie "+SerieName);
           }
         }
       }
@@ -635,26 +635,26 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       {
         if ((*it).GeoSource == NULL)
         {
-          OPENFLUID_RaiseWarning("Cannot open geographic source for serie "+(*it).SerieName);
+          OPENFLUID_LogWarning("Cannot open geographic source for serie "+(*it).SerieName);
           closeSerie(*it);
           it = m_Series.erase(it);
         }
         else if ((*it).GeoLayer == NULL)
         {
-          OPENFLUID_RaiseWarning("Cannot open layer in geographic source for serie "+(*it).SerieName);
+          OPENFLUID_LogWarning("Cannot open layer in geographic source for serie "+(*it).SerieName);
           closeSerie(*it);
           it = m_Series.erase(it);
         }
         else if ((*it).OFLDIDFieldIndex < 0)
         {
-          OPENFLUID_RaiseWarning("File not found or wrong file format for geographic source for serie "+
+          OPENFLUID_LogWarning("File not found or wrong file format for geographic source for serie "+
                                  (*it).SerieName);
           closeSerie(*it);
           it = m_Series.erase(it);
         }
         else if ((*it).VariablesSet.empty())
         {
-          OPENFLUID_RaiseWarning("No correct variable name in serie "+(*it).SerieName);
+          OPENFLUID_LogWarning("No correct variable name in serie "+(*it).SerieName);
           closeSerie(*it);
           it = m_Series.erase(it);
         }

@@ -98,7 +98,7 @@ The coupled model must be defined in a section delimited by the
   These parameters can be scalar or vector of integer values, floating point values, string values.
   In case of vector, the values of the vector are separated by a \c ; (semicolon).
   <li> Each \c \<generator\> tag must bring a \c varname attribute giving 
-  the name of the produced variable, a \c unitclass attribute giving the 
+  the name of the produced variable, a \c unitsclass attribute giving the 
   unit class of the produced variable, a \c method attribute giving the 
   method used to produce the variable (\c fixed for constant value,
   \c random for random value in a range, \c interp for a time-interpolated
@@ -136,11 +136,11 @@ The coupled model must be defined in a section delimited by the
 
     <simulator ID="example.simulatorA" />
 
-    <generator varname="example.generator.fixed" unitclass="EU1" method="fixed" varsize="11">
+    <generator varname="example.generator.fixed" unitsclass="EU1" method="fixed" varsize="11">
       <param name="fixedvalue" value="20" />
     </generator>
 
-    <generator varname="example.generator.random" unitclass="EU2" method="random">
+    <generator varname="example.generator.random" unitsclass="EU2" method="random">
       <param name="min" value="20.53" />
       <param name="max" value="50" />
     </generator>
@@ -224,13 +224,13 @@ The spatial domain attributes must be defined in a section delimited
 by the \c \<attributes\> tag, which is a sub-section of the \c domain
 tag, and must be structured following these rules:
 <ul>
-  <li> The \c \<attributes\> tag must bring an \c unitclass
+  <li> The \c \<attributes\> tag must bring an \c unitsclass
   attribute giving the unit class to which the attributes must be attached, and a
   \c colorder attribute giving the order of the contained column-formatted
   data
   <li> Inside the \c \<attributes\> tag, there must be the attributes as 
   row-column text. As a rule, the first column is the ID of the unit in the class
-  given through the \c unitclass attribute of \c \<attributes\>
+  given through the \c unitsclass attribute of \c \<attributes\>
   tag, the following columns are values following the column order given
   through the \c colorder attribute of the \c \<attributes\> tag.
   Values for the data can be real, integer, string, vector or matrix.
@@ -241,12 +241,12 @@ tag, and must be structured following these rules:
 <openfluid>
   <domain>
   
-    <attributes unitclass="EU1" colorder="indataA">
+    <attributes unitsclass="EU1" colorder="indataA">
       3 1.1
       11 7.5
     </attributes>
 
-    <attributes unitclass="EU2" colorder="indataB1;indataB3">
+    <attributes unitsclass="EU2" colorder="indataB1;indataB3">
       2 18 STRVALX
     </attributes>
 
@@ -266,7 +266,7 @@ tag, and must be structured following these rules:
 <ul>
   <li> Inside the \c \<calendar\> tag, there must be a set of \c \<event\> tags 
   <li> Each \c \<event\> tag must bring an \c unitID and an 
-  \c unitclass attribute giving the unit on which occurs the event, a 
+  \c unitsclass attribute giving the unit on which occurs the event, a 
   \c date attribute giving the date and time of the event. The date
   format must be "YYYY-MM-DD hh:mm:ss".
   <li> Each \c \<event\> tag may include zero to many \c \<info\> tags.
@@ -281,17 +281,17 @@ tag, and must be structured following these rules:
   <domain>
     <calendar>
 
-      <event unitclass="EU1" unitID="11" date="1999-12-31 23:59:59">
+      <event unitsclass="EU1" unitID="11" date="1999-12-31 23:59:59">
         <info key="when" value="before" />
         <info key="where" value="1" />
         <info key="var1" value="1.13" />
         <info key="var2" value="EADGBE" />
       </event>
-      <event unitclass="EU2" unitID="3" date="2000-02-05 12:37:51">
+      <event unitsclass="EU2" unitID="3" date="2000-02-05 12:37:51">
         <info key="var3" value="152.27" />
         <info key="var4" value="XYZ" />
       </event>
-      <event unitclass="EU1" unitID="11" date="2000-02-25 12:00:00">
+      <event unitsclass="EU1" unitID="11" date="2000-02-25 12:00:00">
         <info key="var1" value="1.15" />
         <info key="var2" value="EADG" />
       </event>
@@ -314,7 +314,7 @@ The datastore content must be defined in a section delimited by the
   <li> Each \c \<dataitem\> tag must bring an \c ID attribute giving
   the unique identifier of the dataitem, a \c type attribute giving the type
   of the dataitem (only the geovector and georaster types are currently available), and a \c source 
-  attribute giving the source of the dataitem. An optional \c unitclass 
+  attribute giving the source of the dataitem. An optional \c unitsclass 
   attribute is possible for giving the spatial unit class associated to the data. 
 </ul>
 
@@ -324,7 +324,7 @@ The datastore content must be defined in a section delimited by the
   <datastore>
   
     <dataitem id="TUlayer" type="geovector" source="TestUnits_wgs84.shp" 
-              unitclass="TestUnits" />
+              unitsclass="TestUnits" />
     <dataitem id="Ground" type="geovector" source="data/ground.shp" />
     <dataitem id="Ground" type="georaster" source="data/DEM.tiff" />
 
@@ -376,19 +376,19 @@ The monitoring must be defined in a section delimited by the
             
       <param name="format.f2.header" value="full" />  
   
-      <param name="set.s1.unitclass" value="TestUnits" />
+      <param name="set.s1.unitsclass" value="TestUnits" />
       <param name="set.s1.unitsIDs" value="*" />
       <param name="set.s1.vars" value="*" />
       <param name="set.s1.format" value="f1" />
       
-      <param name="set.s2.unitclass" value="TestUnits" />
+      <param name="set.s2.unitsclass" value="TestUnits" />
       <param name="set.s2.unitsIDs" value="5;3;11" />
       <param name="set.s2.vars" value="tests.double;tests.string" />
       <param name="set.s2.format" value="f2" />
     </observer>
     
     <observer ID="export.vars.files.kml-anim" >
-      <param name="layers.anim.unitclass" value="TestUnits" />
+      <param name="layers.anim.unitsclass" value="TestUnits" />
       <param name="layers.anim.varname" value="tests.double" />
       <param name="layers.anim.sourcetype" value="file" />
       <param name="layers.anim.sourcefile" value="TestUnits_wgs84.shp" />
@@ -396,7 +396,7 @@ The monitoring must be defined in a section delimited by the
       <param name="layers.anim.colorscale" 
         value="ff00ff00;14;ff00ff76;18;ff00ffdc;22;ff00faff;26;ff0099ff;28;ff001cff"/>
 
-      <param name="layers.static.1.unitclass" value="OtherUnits" />
+      <param name="layers.static.1.unitsclass" value="OtherUnits" />
       <param name="layers.static.1.sourcetype" value="file" />
       <param name="layers.static.1.sourcefile" value="OtherUnits_wgs84.shp" />
       <param name="layers.static.1.linewidth" value="3" />
@@ -465,11 +465,11 @@ The run configuration must be defined in a section delimited by the
       <param name="gparam2" value="0.1" />
     </gparams>
     <simulator fileID="example.simulatorA" />
-    <generator varname="example.generator.fixed" unitclass="EU1"
+    <generator varname="example.generator.fixed" unitsclass="EU1"
                method="fixed" varsize="11">
       <param name="fixedvalue" value="20" />
     </generator>
-    <generator varname="example.generator.random" unitclass="EU2" 
+    <generator varname="example.generator.random" unitsclass="EU2" 
                method="random">
       <param name="min" value="20.53" />
       <param name="max" value="50" />
@@ -496,27 +496,27 @@ The run configuration must be defined in a section delimited by the
       <unit class="EU2" ID="2" pcsorder="1" />
     </definition>
 
-    <attributes unitclass="EU1" colorder="indataA">
+    <attributes unitsclass="EU1" colorder="indataA">
       3 1.1
       11 7.5
     </attributes>
     
-    <attributes unitclass="EU2" colorder="indataB1;indataB3">
+    <attributes unitsclass="EU2" colorder="indataB1;indataB3">
       2 18 STRVALX
     </attributes>
     
     <calendar>
-      <event unitclass="EU1" unitID="11" date="1999-12-31 23:59:59">
+      <event unitsclass="EU1" unitID="11" date="1999-12-31 23:59:59">
         <info key="when" value="before" />
         <info key="where" value="1" />
         <info key="var1" value="1.13" />
         <info key="var2" value="EADGBE" />
       </event>
-      <event unitclass="EU2" unitID="3" date="2000-02-05 12:37:51">
+      <event unitsclass="EU2" unitID="3" date="2000-02-05 12:37:51">
         <info key="var3" value="152.27" />
         <info key="var4" value="XYZ" />
       </event>
-      <event unitclass="EU1" unitID="11" date="2000-02-25 12:00:00">
+      <event unitsclass="EU1" unitID="11" date="2000-02-25 12:00:00">
         <info key="var1" value="1.15" />
         <info key="var2" value="EADG" />
       </event>
@@ -538,24 +538,24 @@ The run configuration must be defined in a section delimited by the
       <param name="format.f1.date" value="%Y-%m-%d %H:%M:%S" />
       <param name="format.f1.precision" value="8" />
       <param name="format.f2.header" value="full" />  
-      <param name="set.s1.unitclass" value="TestUnits" />
+      <param name="set.s1.unitsclass" value="TestUnits" />
       <param name="set.s1.unitsIDs" value="*" />
       <param name="set.s1.vars" value="*" />
       <param name="set.s1.format" value="f1" />
-      <param name="set.s2.unitclass" value="TestUnits" />
+      <param name="set.s2.unitsclass" value="TestUnits" />
       <param name="set.s2.unitsIDs" value="5;3;11" />
       <param name="set.s2.vars" value="tests.double;tests.string" />
       <param name="set.s2.format" value="f2" />
     </observer>   
     <observer ID="export.vars.files.kml-anim" >
-      <param name="layers.anim.unitclass" value="TestUnits" />
+      <param name="layers.anim.unitsclass" value="TestUnits" />
       <param name="layers.anim.varname" value="tests.double" />
       <param name="layers.anim.sourcetype" value="file" />
       <param name="layers.anim.sourcefile" value="TestUnits_wgs84.shp" />
       <param name="layers.anim.linewidth" value="4" />
       <param name="layers.anim.colorscale" 
         value="ff00ff00;14;ff00ff76;18;ff00ffdc;22;ff00faff;26;ff0099ff;28;ff001cff"/>
-      <param name="layers.static.1.unitclass" value="OtherUnits" />
+      <param name="layers.static.1.unitsclass" value="OtherUnits" />
       <param name="layers.static.1.sourcetype" value="file" />
       <param name="layers.static.1.sourcefile" value="OtherUnits_wgs84.shp" />
       <param name="layers.static.1.linewidth" value="3" />

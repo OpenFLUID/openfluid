@@ -56,7 +56,7 @@ class OPENFLUID_API EventDescriptor
 
     EventID_t m_ID;
 
-    openfluid::core::UnitClass_t m_UnitClass;
+    openfluid::core::UnitsClass_t m_UnitsClass;
 
     openfluid::core::UnitID_t m_UnitID;
 
@@ -81,11 +81,24 @@ class OPENFLUID_API EventDescriptor
     inline void setUnitID(openfluid::core::UnitID_t ID)
     { m_UnitID = ID; };
 
-    inline const openfluid::core::UnitClass_t getUnitClass() const
-    { return m_UnitClass; };
+    inline const openfluid::core::UnitsClass_t getUnitsClass() const
+    { return m_UnitsClass; };
 
-    inline void setUnitClass(const openfluid::core::UnitClass_t& UClass)
-    { m_UnitClass = UClass; };
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::fluidx::EventDescriptor::getUnitsClass() const instead
+    */
+    inline const openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
+    { return m_UnitsClass; };
+
+    inline void setUnitsClass(const openfluid::core::UnitsClass_t& UClass)
+    { m_UnitsClass = UClass; }
+
+    /**
+      @deprecated Since version 2.1.0.
+      Use openfluid::fluidx::EventDescriptor::setUnitsClass(const openfluid::core::UnitsClass_t&) instead
+    */
+    inline void setUnitClass(const openfluid::core::UnitsClass_t& UClass) OPENFLUID_DEPRECATED
+    { m_UnitsClass = UClass; };
 
     inline openfluid::core::Event& event()
     { return m_Event; };

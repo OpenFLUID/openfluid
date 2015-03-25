@@ -160,7 +160,7 @@ openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
   openfluid::core::DoubleValue Value;
   openfluid::core::SpatialUnit* LU;
 
-  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {
@@ -206,7 +206,7 @@ openfluid::base::SchedulingRequest InterpGenerator::runStep()
   openfluid::core::DoubleValue Value;
   openfluid::core::SpatialUnit* LU;
 
-  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {

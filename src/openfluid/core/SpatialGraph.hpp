@@ -76,19 +76,22 @@ class OPENFLUID_API SpatialGraph
 
     bool sortUnitsByProcessOrder();
 
-    SpatialUnit* spatialUnit(const UnitClass_t& UnitClass, UnitID_t UnitID);
+    SpatialUnit* spatialUnit(const UnitsClass_t& UnitsClass, UnitID_t UnitID);
 
-    UnitsCollection* spatialUnits(const UnitClass_t& UnitClass);
+    UnitsCollection* spatialUnits(const UnitsClass_t& UnitsClass);
 
-    const UnitsCollection* spatialUnits(const UnitClass_t& UnitClass) const;
+    const UnitsCollection* spatialUnits(const UnitsClass_t& UnitsClass) const;
 
-    inline const UnitsListByClassMap_t* allSpatialUnitsByClass() const { return &m_PcsOrderedUnitsByClass; };
+    inline const UnitsListByClassMap_t* allSpatialUnitsByClass() const
+    { return &m_PcsOrderedUnitsByClass; };
 
-    inline const UnitsPtrList_t* allSpatialUnits() const { return &m_PcsOrderedUnitsGlobal; };
+    inline const UnitsPtrList_t* allSpatialUnits() const
+    { return &m_PcsOrderedUnitsGlobal; };
 
-    inline UnitsPtrList_t* allSpatialUnits() { return &m_PcsOrderedUnitsGlobal; };
+    inline UnitsPtrList_t* allSpatialUnits()
+    { return &m_PcsOrderedUnitsGlobal; };
 
-    bool isUnitsClassExist(const UnitClass_t& UnitClass) const;
+    bool isUnitsClassExist(const UnitsClass_t& UnitsClass) const;
 
     void streamContents(std::ostream& OStream);
 

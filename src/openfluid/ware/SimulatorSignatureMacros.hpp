@@ -99,7 +99,7 @@
   .push_back(openfluid::ware::SignatureDataItem((name),description,unit));
 
 /**
-  @deprecated
+  @deprecated Since version 2.1.0. Use #DECLARE_USED_PARAMETER instead
 */
 #define DECLARE_SIMULATOR_PARAM(name,description,unit) DECLARE_USED_PARAMETER(name,description,unit)
 
@@ -131,7 +131,7 @@
   .push_back(openfluid::ware::SignatureTypedSpatialDataItem((name),uclass,description,unit));
 
 /**
-  @deprecated
+  @deprecated Since version 2.1.0. Use #DECLARE_PRODUCED_VARIABLE instead
 */
 #define DECLARE_PRODUCED_VAR(name,uclass,description,unit) DECLARE_PRODUCED_VARIABLE(name,uclass,description,unit)
 
@@ -148,7 +148,7 @@
   .push_back(openfluid::ware::SignatureTypedSpatialDataItem((name),uclass,description,unit));
 
 /**
-  @deprecated
+  @deprecated Since version 2.1.0. Use #DECLARE_UPDATED_VARIABLE instead
 */
 #define DECLARE_UPDATED_VAR(name,uclass,description,unit) DECLARE_UPDATED_VARIABLE(name,uclass,description,unit)
 
@@ -165,7 +165,7 @@
   .push_back(openfluid::ware::SignatureTypedSpatialDataItem((name),uclass,description,unit));
 
 /**
-  @deprecated
+  @deprecated Since version 2.1.0. Use #DECLARE_REQUIRED_VARIABLE instead
 */
 #define DECLARE_REQUIRED_VAR(name,uclass,description,unit) DECLARE_REQUIRED_VARIABLE(name,uclass,description,unit)
 
@@ -182,7 +182,7 @@
   .push_back(openfluid::ware::SignatureTypedSpatialDataItem((name),uclass,description,unit));
 
 /**
-  @deprecated
+  @deprecated Since version 2.1.0. Use #DECLARE_USED_VARIABLE instead
 */
 #define DECLARE_USED_VAR(name,uclass,description,unit) DECLARE_USED_VARIABLE(name,uclass,description,unit)
 

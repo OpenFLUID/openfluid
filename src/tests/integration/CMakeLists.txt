@@ -183,12 +183,12 @@ SET_TESTS_PROPERTIES(integration-MissingSimulator PROPERTIES WILL_FAIL TRUE)
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-MissingUnitClass
+OPENFLUID_ADD_TEST(NAME integration-MissingUnitsClass
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                                         "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.MissingClass"
                                         "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MissingClass"
                                         "-p" "${TEST_OUTPUT_PATH}")               
-SET_TESTS_PROPERTIES(integration-MissingUnitClass PROPERTIES WILL_FAIL TRUE)
+SET_TESTS_PROPERTIES(integration-MissingUnitsClass PROPERTIES WILL_FAIL TRUE)
 
 
 ###########################################################################

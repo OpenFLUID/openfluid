@@ -20,27 +20,27 @@
       <param name="format.f5.precision" value="3" />
 
       
-      <param name="set.fullfull.unitclass" value="TestUnits" />
+      <param name="set.fullfull.unitsclass" value="TestUnits" />
       <param name="set.fullfull.unitsIDs" value="*" />
       <param name="set.fullfull.vars" value="*" />
       <param name="set.fullfull.format" value="f2" />
       
-      <param name="set.some.unitclass" value="TestUnits" />
+      <param name="set.some.unitsclass" value="TestUnits" />
       <param name="set.some.unitsIDs" value="5;3;11" />
       <param name="set.some.vars" value="tests.double;tests.string" />
       <param name="set.some.format" value="f1" />
       
-      <param name="set.somevars.unitclass" value="TestUnits" />
+      <param name="set.somevars.unitsclass" value="TestUnits" />
       <param name="set.somevars.unitsIDs" value="*" />
       <param name="set.somevars.vars" value="tests.vector;tests.string" />
       <param name="set.somevars.format" value="f3" />
       
-      <param name="set.someunits.unitclass" value="TestUnits" />
+      <param name="set.someunits.unitsclass" value="TestUnits" />
       <param name="set.someunits.unitsIDs" value="4;6;9" />
       <param name="set.someunits.vars" value="*" />
       <param name="set.someunits.format" value="f4" />      
 
-      <param name="set.someunitsindex.unitclass" value="TestUnits" />
+      <param name="set.someunitsindex.unitsclass" value="TestUnits" />
       <param name="set.someunitsindex.unitsIDs" value="4;6;9" />
       <param name="set.someunitsindex.vars" value="*" />
       <param name="set.someunitsindex.format" value="f5" />      

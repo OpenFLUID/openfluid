@@ -141,7 +141,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
     const openfluid::core::UnitsList_t* UnitsList;
     const openfluid::core::UnitsPtrList_t* ToUnitsPtrList;
     const openfluid::core::UnitsPtrList_t* FromUnitsPtrList;
-    std::vector<openfluid::core::UnitClass_t> ClassVector;
+    std::vector<openfluid::core::UnitsClass_t> ClassVector;
 
     openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
     openfluid::core::UnitsList_t::const_iterator itUnitsList;

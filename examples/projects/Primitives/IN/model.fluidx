@@ -4,11 +4,11 @@
 
     <simulator ID="examples.primitives.unitsA.prod" />
 
-     <generator varname="var10" unitclass="unitsA" method="fixed">
+     <generator varname="var10" unitsclass="unitsA" method="fixed">
       <param name="fixedvalue" value="5.3" />
     </generator>
 
-    <generator varname="var11" unitclass="unitsA" method="random">
+    <generator varname="var11" unitsclass="unitsA" method="random">
       <param name="min" value="5.0" />
       <param name="max" value="6.0" />
     </generator>

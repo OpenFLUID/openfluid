@@ -45,6 +45,7 @@
 #include <string>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/deprecation.hpp>
 #include <openfluid/core/Attributes.hpp>
 #include <openfluid/core/EventsCollection.hpp>
 #include <openfluid/core/Variables.hpp>
@@ -61,7 +62,7 @@ namespace openfluid { namespace core {
 /**
   Type for a hashmap of lists of units, indexed by UnitClass
 */
-typedef std::map<UnitClass_t,UnitsCollection> UnitsListByClassMap_t;
+typedef std::map<UnitsClass_t,UnitsCollection> UnitsListByClassMap_t;
 
 
 /**
@@ -73,7 +74,7 @@ typedef std::list<SpatialUnit*> UnitsPtrList_t;
 /**
   Type for a map associating a unit class to a list of pointers on Unit
 */
-typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
+typedef std::map<UnitsClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
 
 
 /**
@@ -83,7 +84,7 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   @code
   openfluid::core::SpatialUnit aUnit;
   openfluid::core::SpatialUnit* aUnitPtr;
-  openfluid::core::UnitClass_t aUnitClass;
+  openfluid::core::UnitsClass_t aUnitClass;
   openfluid::core::UnitID_t aUnitID;
   openfluid::core::UnitsPtrList_t* aUnitListPtr;
 
@@ -110,7 +111,7 @@ class OPENFLUID_API SpatialUnit
 
     UnitID_t m_ID;
 
-    UnitClass_t m_Class;
+    UnitsClass_t m_Class;
 
     // TODO use openfluid::core::PcsOrd_t instead
     unsigned int m_PcsOrder;
@@ -138,7 +139,7 @@ class OPENFLUID_API SpatialUnit
       @param[in] anID the ID of the unit
       @param[in] aPcsOrder the process order of the unit
      */
-    SpatialUnit(const UnitClass_t& aClass, const UnitID_t anID,
+    SpatialUnit(const UnitsClass_t& aClass, const UnitID_t anID,
          const PcsOrd_t aPcsOrder);
 
     /*
@@ -160,7 +161,7 @@ class OPENFLUID_API SpatialUnit
     /**
       Returns the class of the unit
     */
-    inline UnitClass_t getClass() const { return m_Class; };
+    inline UnitsClass_t getClass() const { return m_Class; };
 
     bool addToUnit(SpatialUnit* aUnit);
 
@@ -175,52 +176,112 @@ class OPENFLUID_API SpatialUnit
       Returns NULL if no units of the requested class are connected to this unit.
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* toSpatialUnits(const UnitClass_t& aClass);
+    UnitsPtrList_t* toSpatialUnits(const UnitsClass_t& aClass);
 
-    const UnitsPtrList_t* toSpatialUnits(const UnitClass_t& aClass) const;
+    const UnitsPtrList_t* toSpatialUnits(const UnitsClass_t& aClass) const;
+
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::toSpatialUnits(const UnitsClass_t&) instead
+    */
+    UnitsPtrList_t* getToUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
+    { return toSpatialUnits(aClass); }
+
+    /**
+      @deprecated Since version 2.1.0.
+      Use openfluid::core::SpatialUnit::toSpatialUnits(const UnitsClass_t&) const instead
+    */
+    const UnitsPtrList_t* getToUnits(const UnitsClass_t& aClass) const OPENFLUID_DEPRECATED
+    { return toSpatialUnits(aClass); }
 
     /**
       Returns a list of units, of the requested class, connected from this unit.
       Returns NULL if no units of the requested class are connected from this unit.
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* fromSpatialUnits(const UnitClass_t& aClass);
+    UnitsPtrList_t* fromSpatialUnits(const UnitsClass_t& aClass);
 
-    const UnitsPtrList_t* fromSpatialUnits(const UnitClass_t& aClass) const;
+    const UnitsPtrList_t* fromSpatialUnits(const UnitsClass_t& aClass) const;
+
+
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::fromSpatialUnits(const UnitsClass_t&) instead
+    */
+    UnitsPtrList_t* getFromUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
+    { return fromSpatialUnits(aClass); }
+
+    /**
+      @deprecated Since version 2.1.0.
+      Use openfluid::core::SpatialUnit::fromSpatialUnits(const UnitsClass_t&) const instead
+    */
+    const UnitsPtrList_t* getFromUnits(const UnitsClass_t& aClass) const
+    { return fromSpatialUnits(aClass); }
 
     /**
       Returns a list of parent units of the requested class.
       Returns NULL if this unit has no parent
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* parentSpatialUnits(const UnitClass_t& aClass);
+    UnitsPtrList_t* parentSpatialUnits(const UnitsClass_t& aClass);
 
-    const UnitsPtrList_t* parentSpatialUnits(const UnitClass_t& aClass) const;
+    const UnitsPtrList_t* parentSpatialUnits(const UnitsClass_t& aClass) const;
+
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::parentSpatialUnits(const UnitsClass_t&) instead
+    */
+    UnitsPtrList_t* getParentUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
+    { return parentSpatialUnits(aClass); }
+
+    /**
+      @deprecated Since version 2.1.0.
+      Use openfluid::core::SpatialUnit::parentSpatialUnits(const UnitsClass_t&) const instead
+    */
+    const UnitsPtrList_t* getParentUnits(const UnitsClass_t& aClass) const OPENFLUID_DEPRECATED
+    { return parentSpatialUnits(aClass); }
 
     /**
       Returns a list of children units of the requested class.
       Returns NULL if this unit has no child
       @param[in] aClass the requested class
     */
-    UnitsPtrList_t* childSpatialUnits(const UnitClass_t& aClass);
+    UnitsPtrList_t* childSpatialUnits(const UnitsClass_t& aClass);
 
-    const UnitsPtrList_t* childSpatialUnits(const UnitClass_t& aClass) const;
+    const UnitsPtrList_t* childSpatialUnits(const UnitsClass_t& aClass) const;
 
-    inline Attributes* attributes()  { return &m_Attributes; };
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::childSpatialUnits(const UnitsClass_t&) instead
+    */
+    UnitsPtrList_t* getChildrenUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
+    { return childSpatialUnits(aClass); }
 
-    inline const Attributes* attributes() const { return &m_Attributes; };
+    /**
+      @deprecated Since version 2.1.0.
+      Use openfluid::core::SpatialUnit::childSpatialUnits(const UnitsClass_t&) const instead
+    */
+    const UnitsPtrList_t* getChildrenUnits(const UnitsClass_t& aClass) const OPENFLUID_DEPRECATED
+    { return childSpatialUnits(aClass); }
 
-    Variables* variables() { return &m_Variables; };
+    inline Attributes* attributes()
+    { return &m_Attributes; };
 
-    const Variables* variables() const { return &m_Variables; };
+    inline const Attributes* attributes() const
+    { return &m_Attributes; };
 
-    inline EventsCollection* events() { return &m_Events; };
+    Variables* variables()
+    { return &m_Variables; };
 
-    inline const EventsCollection* events() const { return &m_Events; };
+    const Variables* variables() const
+    { return &m_Variables; };
+
+    inline EventsCollection* events()
+    { return &m_Events; };
+
+    inline const EventsCollection* events() const
+    { return &m_Events; };
 
     void streamContents(std::ostream& OStream);
 
-    void setProcessOrder(unsigned int PcsOrder) { m_PcsOrder = PcsOrder; };
+    void setProcessOrder(unsigned int PcsOrder)
+    { m_PcsOrder = PcsOrder; };
 
 };
 

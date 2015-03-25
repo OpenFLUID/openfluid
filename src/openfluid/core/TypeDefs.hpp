@@ -45,6 +45,7 @@
 #include <list>
 #include <map>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/deprecation.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/StringValue.hpp>
@@ -67,7 +68,12 @@ typedef int PcsOrd_t;
 /**
   Type definition for the class of units
 */
-typedef std::string UnitClass_t;
+typedef std::string UnitsClass_t;
+
+/**
+  @deprecated Since version 2.1.0. Use openfluid::core::UnitsClass_t instead
+*/
+typedef UnitsClass_t UnitClass_t OPENFLUID_DEPRECATED;
 
 /**
   Type definition for name of an attribute
@@ -79,9 +85,14 @@ typedef std::string AttributeName_t;
 */
 typedef std::string VariableName_t;
 
+/**
+  Type definition for a pair containing the unit class and the unit ID
+*/
+typedef std::pair<UnitsClass_t,UnitID_t> UnitClassID_t;
 
-typedef std::pair<UnitClass_t,UnitID_t> UnitClassID_t;
-
+/**
+  Type definition for a link between two units defined by their class and ID
+*/
 typedef std::pair<UnitClassID_t,UnitClassID_t> UnitsLink_t;
 
 

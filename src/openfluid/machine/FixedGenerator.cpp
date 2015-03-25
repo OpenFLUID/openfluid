@@ -85,7 +85,7 @@ void FixedGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 openfluid::base::SchedulingRequest FixedGenerator::initializeRun()
 {
   openfluid::core::SpatialUnit* LU;
-  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     if (isVectorVariable())
     {
@@ -110,7 +110,7 @@ openfluid::base::SchedulingRequest FixedGenerator::runStep()
 
   openfluid::core::SpatialUnit* LU;
 
-  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
 
     if (isVectorVariable())

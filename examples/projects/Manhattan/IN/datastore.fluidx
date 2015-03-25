@@ -2,7 +2,7 @@
 <openfluid>
   
   <datastore>
-    <dataitem id="Manhattan_RU" type="geovector" source="manhattan.shp" unitclass="RU" />
+    <dataitem id="Manhattan_RU" type="geovector" source="manhattan.shp" unitsclass="RU" />
   </datastore>
 
 </openfluid>

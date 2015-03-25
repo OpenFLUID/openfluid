@@ -281,7 +281,7 @@ void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware:
     Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataUnit));
     ui->VariablesTableWidget->setItem(i+BaseIndex, 3, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).UnitClass));
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).UnitsClass));
     ui->VariablesTableWidget->setItem(i+BaseIndex, 4, Item);
 
     Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).Description));
@@ -340,7 +340,7 @@ void SignatureWidget::updateAttributesCategory(const std::vector<openfluid::ware
     Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataUnit));
     ui->AttributesTableWidget->setItem(i+BaseIndex, 2, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).UnitClass));
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).UnitsClass));
     ui->AttributesTableWidget->setItem(i+BaseIndex, 3, Item);
 
     Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).Description));

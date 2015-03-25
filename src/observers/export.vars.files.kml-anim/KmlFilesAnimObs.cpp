@@ -220,7 +220,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
         }
         else
         {
-          OPENFLUID_RaiseWarning("Unknown spatial unit not found");
+          OPENFLUID_LogWarning("Unknown spatial unit not found");
         }
 
 
@@ -343,7 +343,13 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
         // anim layer
 
-        m_AnimLayerInfo.UnitsClass = ParamsTree.root().child("layers").child("anim").getChildValue("unitclass","");
+        m_AnimLayerInfo.UnitsClass = ParamsTree.root().child("layers").child("anim").getChildValue("unitsclass","");
+        if (m_AnimLayerInfo.UnitsClass == "")
+        {
+          // search for deprecated "unitclass" parameter
+          m_AnimLayerInfo.UnitsClass = ParamsTree.root().child("layers").child("anim").getChildValue("unitclass","");
+        }
+
         m_AnimLayerInfo.VarName = ParamsTree.root().child("layers").child("anim").getChildValue("varname","");
         ParamsTree.root().child("layers").child("anim").getChildValue("linewidth",1)
             .toInteger(m_AnimLayerInfo.LineWidth);
@@ -359,7 +365,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
               ParamsTree.root().child("layers").child("anim").getChildValue("sourcefile","");
           if (m_AnimLayerInfo.SourceFilename.empty())
           {
-            OPENFLUID_RaiseWarning("wrong sourcefile format");
+            OPENFLUID_LogWarning("wrong sourcefile format");
             return;
           }
           m_AnimLayerInfo.SourceFilename = m_InputDir + "/" + m_AnimLayerInfo.SourceFilename;
@@ -374,7 +380,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
         if (ColorScaleVector.size() % 2 == 0)
         {
-          OPENFLUID_RaiseWarning("wrong colorscale format");
+          OPENFLUID_LogWarning("wrong colorscale format");
           return;
         }
         else
@@ -389,7 +395,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
             {
               if (ColorScaleVector[i].size() != 8)
               {
-                OPENFLUID_RaiseWarning("Wrong color scale color format on last item");
+                OPENFLUID_LogWarning("Wrong color scale color format on last item");
                 return;
               }
               TmpColorValue = std::make_pair("",0.0);
@@ -404,7 +410,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
                 // color item
                 if (ColorScaleVector[i].size() != 8)
                 {
-                  OPENFLUID_RaiseWarning("Wrong color scale color format");
+                  OPENFLUID_LogWarning("Wrong color scale color format");
                   return;
                 }
 
@@ -420,7 +426,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
                 }
                 else
                 {
-                  OPENFLUID_RaiseWarning("Wrong color scale value format");
+                  OPENFLUID_LogWarning("Wrong color scale value format");
                   return;
                 }
 
@@ -449,7 +455,12 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
             KmlStaticLayerInfo KSLI;
 
-            KSLI.UnitsClass = SLayer.second.getChildValue("unitclass","");
+            KSLI.UnitsClass = SLayer.second.getChildValue("unitsclass","");
+            if (KSLI.UnitsClass == "")
+            {
+              // search for deprecated "unitclass" parameter
+              KSLI.UnitsClass = SLayer.second.getChildValue("unitclass","");
+            }
             SLayer.second.getChildValue("linewidth",1).toInteger(KSLI.LineWidth);
             KSLI.Color = SLayer.second.getChildValue("color","ffffffff");
 
@@ -461,7 +472,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
               KSLI.SourceFilename = SLayer.second.getChildValue("sourcefile","");
               if (KSLI.SourceFilename.empty())
               {
-                OPENFLUID_RaiseWarning("wrong sourcefile format");
+                OPENFLUID_LogWarning("wrong sourcefile format");
               }
               KSLI.SourceFilename = m_InputDir + "/" + KSLI.SourceFilename;
             }

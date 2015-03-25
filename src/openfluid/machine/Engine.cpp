@@ -111,7 +111,7 @@ Engine::~Engine()
 
 void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarName,
                                    const openfluid::core::Value::Type& VarType,
-                                   const openfluid::core::UnitClass_t& ClassName,
+                                   const openfluid::core::UnitsClass_t& ClassName,
                                    const std::string& SimulatorID)
 {
   openfluid::core::UnitsList_t::const_iterator UnitIter;
@@ -151,7 +151,7 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
 
 void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
                             const openfluid::core::Value::Type& VarType,
-                            const openfluid::core::UnitClass_t& ClassName,
+                            const openfluid::core::UnitsClass_t& ClassName,
                             bool UpdateMode,
                             const std::string& SimulatorID)
 {
@@ -198,7 +198,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
 
 
 void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
-                                    openfluid::core::UnitClass_t ClassName,
+                                    openfluid::core::UnitsClass_t ClassName,
                                     const std::string& SimulatorID)
 {
   openfluid::core::UnitsList_t::const_iterator UnitIter;
@@ -233,7 +233,7 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
 
 
 void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
-                             openfluid::core::UnitClass_t ClassName,
+                             openfluid::core::UnitsClass_t ClassName,
                              const std::string& SimulatorID)
 {
   openfluid::core::UnitsList_t::iterator UnitIter;
@@ -342,7 +342,7 @@ void Engine::checkModelConsistency()
     for (i=0;i< HData.ProducedVars.size();i++)
       createVariable(HData.ProducedVars[i].DataName,
                      HData.ProducedVars[i].DataType,
-                     HData.ProducedVars[i].UnitClass,
+                     HData.ProducedVars[i].UnitsClass,
                      false,
                      CurrentSimulator->Signature->ID);
 
@@ -351,7 +351,7 @@ void Engine::checkModelConsistency()
     for (i=0;i<HData.UpdatedVars.size();i++)
       createVariable(HData.UpdatedVars[i].DataName,
                      HData.UpdatedVars[i].DataType,
-                     HData.UpdatedVars[i].UnitClass,
+                     HData.UpdatedVars[i].UnitsClass,
                      true,
                      CurrentSimulator->Signature->ID);
 
@@ -370,7 +370,7 @@ void Engine::checkModelConsistency()
     for (i=0;i< HData.RequiredVars.size();i++)
       checkExistingVariable(HData.RequiredVars[i].DataName,
                             HData.RequiredVars[i].DataType,
-                            HData.RequiredVars[i].UnitClass,
+                            HData.RequiredVars[i].UnitsClass,
                             CurrentSimulator->Signature->ID);
 
     SimIter++;
@@ -401,13 +401,13 @@ void Engine::checkAttributesConsistency()
     // checking required attribute
     for(i=0; i < HData.RequiredAttribute.size();i++)
       checkExistingAttribute(HData.RequiredAttribute[i].DataName,
-          HData.RequiredAttribute[i].UnitClass,
+          HData.RequiredAttribute[i].UnitsClass,
           CurrentSimulator->Signature->ID);
 
     // checking produced attribute
     for(i=0; i < HData.ProducedAttribute.size();i++)
       createAttribute(HData.ProducedAttribute[i].DataName,
-          HData.ProducedAttribute[i].UnitClass,
+          HData.ProducedAttribute[i].UnitsClass,
           CurrentSimulator->Signature->ID);
 
     SimIter++;

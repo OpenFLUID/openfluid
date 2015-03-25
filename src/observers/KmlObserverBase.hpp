@@ -72,7 +72,7 @@ class KmlLayerInfo
 
     std::string GroupName;
 
-    openfluid::core::UnitClass_t UnitsClass;
+    openfluid::core::UnitsClass_t UnitsClass;
 
     bool SourceIsDatastore;
     std::string SourceID;
@@ -123,7 +123,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       DataSource = OGRSFDriverRegistrar::Open(LayerInfo.SourceFilename.c_str(), FALSE );
       if( DataSource == NULL )
       {
-        OPENFLUID_RaiseWarning("Cannot open shapefile "+LayerInfo.SourceFilename+". This Kml output is ignored.");
+        OPENFLUID_LogWarning("Cannot open shapefile "+LayerInfo.SourceFilename+". This Kml output is ignored.");
         return false;
       }
 
@@ -133,7 +133,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (Layer == NULL)
       {
-        OPENFLUID_RaiseWarning("Cannot open shapefile layer from " + LayerInfo.SourceFilename +
+        OPENFLUID_LogWarning("Cannot open shapefile layer from " + LayerInfo.SourceFilename +
                                ". This Kml output is ignored.");
         return false;
       }
@@ -143,7 +143,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (OfldIDFieldIndex < 0)
       {
-        OPENFLUID_RaiseWarning("Cannot find OFLD_ID attribute in " + LayerInfo.SourceFilename +
+        OPENFLUID_LogWarning("Cannot find OFLD_ID attribute in " + LayerInfo.SourceFilename +
                                ". This Kml output is ignored.");
         return false;
       }
@@ -174,7 +174,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
             if (Geometry->getGeometryType() != wkbPolygon && Geometry->getGeometryType() != wkbLineString)
             {
-              OPENFLUID_RaiseWarning("Unsupported geometry type in " + LayerInfo.SourceFilename +
+              OPENFLUID_LogWarning("Unsupported geometry type in " + LayerInfo.SourceFilename +
                                      ". This Kml output is ignored.");
               return false;
             }
@@ -235,7 +235,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
           }
           else
           {
-            OPENFLUID_RaiseWarning("Wrong geometry reference in " + LayerInfo.SourceFilename +
+            OPENFLUID_LogWarning("Wrong geometry reference in " + LayerInfo.SourceFilename +
                                    ". This Kml output is ignored.");
             return false;
           }
@@ -298,7 +298,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
         }
         else
         {
-          OPENFLUID_RaiseWarning("Cannot find Google Earth");
+          OPENFLUID_LogWarning("Cannot find Google Earth");
         }
       }
     }
@@ -321,7 +321,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir))
       {
-        OPENFLUID_RaiseWarning("Cannot initialize temporary directory");
+        OPENFLUID_LogWarning("Cannot initialize temporary directory");
         m_OKToGo = false;
         return;
       }
@@ -331,7 +331,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir+"/"+m_KmzSubDir))
       {
-        OPENFLUID_RaiseWarning("Cannot initialize kmz temporary directory");
+        OPENFLUID_LogWarning("Cannot initialize kmz temporary directory");
         m_OKToGo = false;
         return;
       }
@@ -341,7 +341,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir))
       {
-        OPENFLUID_RaiseWarning("Cannot initialize kmz data temporary directory");
+        OPENFLUID_LogWarning("Cannot initialize kmz data temporary directory");
         m_OKToGo = false;
         return;
       }

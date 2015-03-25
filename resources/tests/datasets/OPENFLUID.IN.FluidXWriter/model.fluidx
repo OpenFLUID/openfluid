@@ -14,11 +14,11 @@
       
       <simulator ID="tests.primitives.variables.prod" />              
       
-      <generator varname="tests.fixed" unitclass="TestUnits" method="fixed">
+      <generator varname="tests.fixed" unitsclass="TestUnits" method="fixed">
          <param name="fixedvalue" value="12.7" />
       </generator>
 
-      <generator varname="tests.fixed" unitclass="TestUnits" method="fixed" enabled="0">
+      <generator varname="tests.fixed" unitsclass="TestUnits" method="fixed" enabled="0">
          <param name="fixedvalue" value="12.7" />
       </generator>
 

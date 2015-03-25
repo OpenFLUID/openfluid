@@ -89,7 +89,7 @@
     <to class="RS" ID="14" />
    </unit>
   </definition>
-  <attributes unitclass="RS" colorder="LENGTH;USR_HEIG;USR_SLOP;USR_WID">
+  <attributes unitsclass="RS" colorder="LENGTH;USR_HEIG;USR_SLOP;USR_WID">
 10	84.914517	1.12	0.152846	1.75
 9	128.942382	0.86	0.005001	1.08
 7	54.399554	1.5	0.067151	3
@@ -105,7 +105,7 @@
 13	117.311143	1	0.091429	0.6
 1	17.980104	0.7	0.16864	1.6
   </attributes>
-  <attributes unitclass="SU" colorder="AREA;FLOW_DST;USR_SLOP">
+  <attributes unitsclass="SU" colorder="AREA;FLOW_DST;USR_SLOP">
 14	2235.471466	21.7	0.02281
 12	2558.575302	31.1	0.0651
 11	10598.565178	43.4	0.05499

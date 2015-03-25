@@ -74,7 +74,7 @@ class OPENFLUID_API EventsCollection
 
     /**
       Inserts an event in the event collection, ordered by date
-      @deprecated
+      @deprecated Since version 1.7.1. Use openfluid::core::EventsCollection::addEvent(const Event&) instead
     */
     bool addEvent(const Event* Ev) OPENFLUID_DEPRECATED;
 
@@ -87,7 +87,9 @@ class OPENFLUID_API EventsCollection
       Returns an event collection extracted from the current event collection, taking into account a time period
       If some events are already in the given collection, they are not deleted. Events matching the period are appended
       at the end of the given collection
-      @deprecated
+      @deprecated Since version 1.7.1.
+      Use openfluid::core::EventsCollection::getEventsBetween(const DateTime&,const DateTime&,EventsCollection&) const
+      instead
     */
     bool getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate,
                           EventsCollection *Events) const OPENFLUID_DEPRECATED;
@@ -102,17 +104,26 @@ class OPENFLUID_API EventsCollection
     /**
       Returns the event collection as a list
     */
-    inline EventsList_t* eventsList() { return &m_Events; };
+    inline EventsList_t* eventsList()
+    { return &m_Events; };
+
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::core::EventsCollection::eventsList() instead
+    */
+    inline EventsList_t* getEventsList() OPENFLUID_DEPRECATED
+    { return &m_Events; };
 
     /**
       Returns number of events in the event collection
     */
-    inline int getCount() const { return m_Events.size(); };
+    inline int getCount() const
+    { return m_Events.size(); };
 
     /**
       Clears the event collection
     */
-    void clear() { m_Events.clear(); };
+    void clear()
+    { m_Events.clear(); };
 
     void println() const;
 };

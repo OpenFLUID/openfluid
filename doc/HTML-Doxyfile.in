@@ -2,6 +2,7 @@ DOXYFILE_ENCODING      = UTF-8
 
 PROJECT_NAME           = @DOXYGEN_PROJECT_NAME@
 PROJECT_NUMBER         = @FULL_VERSION@
+PROJECT_LOGO           = @DOC_CONTENTS_DIR@/openfluid.png
 
 OUTPUT_DIRECTORY       = @MAIN_DOC_OUTPUT_PATH@
 
@@ -49,7 +50,7 @@ STRIP_CODE_COMMENTS    = NO
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = @DOC_LAYOUT_DIR@/header.html
 HTML_FOOTER            = @DOC_LAYOUT_DIR@/footer.html
-HTML_STYLESHEET        = @DOC_LAYOUT_DIR@/stylesheet.css
+HTML_EXTRA_STYLESHEET  = @DOC_LAYOUT_DIR@/custom.css
 HTML_OUTPUT            = html
 
 SEARCHENGINE		   = YES

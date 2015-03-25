@@ -127,7 +127,7 @@ openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
   openfluid::core::SpatialUnit* LU;
   openfluid::core::DateTime CurrentDT(OPENFLUID_GetCurrentDate());
 
-  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {
@@ -171,7 +171,7 @@ openfluid::base::SchedulingRequest InjectGenerator::runStep()
   openfluid::core::SpatialUnit* LU;
   openfluid::core::DateTime CurrentDT(OPENFLUID_GetCurrentDate());
 
-  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {

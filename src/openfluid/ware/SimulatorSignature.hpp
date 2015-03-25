@@ -92,15 +92,15 @@ class OPENFLUID_API SignatureSpatialDataItem : public SignatureDataItem
 {
   public:
 
-    openfluid::core::UnitClass_t UnitClass;
+    openfluid::core::UnitsClass_t UnitsClass;
 
     SignatureSpatialDataItem() :
-      SignatureDataItem(), UnitClass("")
+      SignatureDataItem(), UnitsClass("")
     {  }
 
-    SignatureSpatialDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
+    SignatureSpatialDataItem(std::string DName, openfluid::core::UnitsClass_t UClass,
         std::string DDescription, std::string DUnit) :
-          SignatureDataItem(DName,DDescription,DUnit),UnitClass(UClass)
+          SignatureDataItem(DName,DDescription,DUnit),UnitsClass(UClass)
     {  }
 };
 
@@ -118,7 +118,7 @@ class OPENFLUID_API SignatureTypedSpatialDataItem : public SignatureSpatialDataI
     SignatureTypedSpatialDataItem() :
       SignatureSpatialDataItem(), DataType(openfluid::core::Value::NONE) {}
 
-    SignatureTypedSpatialDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
+    SignatureTypedSpatialDataItem(std::string DName, openfluid::core::UnitsClass_t UClass,
         std::string DDescription, std::string DUnit);
 };
 
@@ -152,7 +152,7 @@ class OPENFLUID_API SignatureHandledData
 
     std::vector<std::string> UsedExtraFiles;
 
-    std::vector<openfluid::core::UnitClass_t> UsedEventsOnUnits;
+    std::vector<openfluid::core::UnitsClass_t> UsedEventsOnUnits;
 
 
     SignatureHandledData()
@@ -170,13 +170,13 @@ class OPENFLUID_API SignatureUnitsClassItem
 {
   public:
 
-    openfluid::core::UnitClass_t UnitsClass;
+    openfluid::core::UnitsClass_t UnitsClass;
     std::string Description;
 
     SignatureUnitsClassItem() :
       UnitsClass(""),Description("") {}
 
-    SignatureUnitsClassItem(openfluid::core::UnitClass_t UClass,
+    SignatureUnitsClassItem(openfluid::core::UnitsClass_t UClass,
         std::string DDescription) :
           UnitsClass(UClass),Description(DDescription) {}
 };

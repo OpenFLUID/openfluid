@@ -52,8 +52,7 @@
 
 
 /**
-  Macro for declaration of observer and signature hooks
-  @deprecated
+  @deprecated This declaration is not needed anymore since version 2.1.0
 */
 #define DECLARE_OBSERVER_PLUGIN
 

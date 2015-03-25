@@ -47,7 +47,7 @@ namespace openfluid { namespace fluidx {
 
 
 SpatialUnitDescriptor::SpatialUnitDescriptor():
-  m_UnitID(0), m_UnitClass(""), m_PcsOrder(1)
+  m_UnitID(0), m_UnitsClass(""), m_PcsOrder(1)
 {
 
 }

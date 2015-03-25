@@ -194,7 +194,7 @@
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/Units class name">
-          openfluid::core::UnitClass_t* %%SEL_START%%ClassName%%SEL_END%%;
+          openfluid::core::UnitsClass_t* %%SEL_START%%ClassName%%SEL_END%%;
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/Attribute name">
@@ -278,7 +278,7 @@
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Test if a spatial units class exists">
-          OPENFLUID_IsUnitClassExist(%%SEL_START%%ClassName%%SEL_END%%);
+          OPENFLUID_IsUnitsClassExist(%%SEL_START%%ClassName%%SEL_END%%);
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Test if a spatial unit exists in a given units class">

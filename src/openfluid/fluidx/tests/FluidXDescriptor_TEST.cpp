@@ -114,7 +114,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(), 1);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitClass(), "TU");
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(), "TU");
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
       openfluid::fluidx::GeneratorDescriptor::Interp);
@@ -148,7 +148,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(), 11);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitClass(), "TU");
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(), "TU");
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
       openfluid::fluidx::GeneratorDescriptor::Fixed);
@@ -168,7 +168,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(), 1);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitClass(), "TU");
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(), "TU");
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
       openfluid::fluidx::GeneratorDescriptor::Random);
@@ -322,7 +322,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().events().size(), 10);
 
   EventIt = FXDesc.spatialDomainDescriptor().events().begin();
-  BOOST_REQUIRE_EQUAL((*EventIt).getUnitClass(), "unitsA");
+  BOOST_REQUIRE_EQUAL((*EventIt).getUnitsClass(), "unitsA");
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 1);
   BOOST_REQUIRE(
       (*EventIt).event().getDateTime() == openfluid::core::DateTime(1999,12,31,23,59,59));
@@ -333,7 +333,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE((*EventIt).event().isInfoEqual("string","EADGBE"));
 
   EventIt++;
-  BOOST_REQUIRE_EQUAL((*EventIt).getUnitClass(), "unitsA");
+  BOOST_REQUIRE_EQUAL((*EventIt).getUnitsClass(), "unitsA");
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 1);
   BOOST_REQUIRE(
       (*EventIt).event().getDateTime() == openfluid::core::DateTime(1999,12,1,12,0,0));
@@ -347,7 +347,7 @@ void TestDataset(std::string DatasetPath)
   EventIt++;
   EventIt++;
   EventIt++;
-  BOOST_REQUIRE_EQUAL((*EventIt).getUnitClass(), "unitsB");
+  BOOST_REQUIRE_EQUAL((*EventIt).getUnitsClass(), "unitsB");
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 7);
   BOOST_REQUIRE(
       (*EventIt).event().getDateTime() == openfluid::core::DateTime(2000,1,1,2,18,12));
@@ -373,7 +373,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(), "datastore/testvect");
   BOOST_REQUIRE_EQUAL((*DataIt)->getType(),
                       openfluid::core::UnstructuredValue::GeoVectorValue);
-  BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(), "unitsA");
+  BOOST_REQUIRE_EQUAL((*DataIt)->getUnitsClass(), "unitsA");
 
   DataIt++;
 
@@ -381,14 +381,14 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(), "datastore/testvect.shp");
   BOOST_REQUIRE_EQUAL((*DataIt)->getType(),
                       openfluid::core::UnstructuredValue::GeoVectorValue);
-  BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(), "");
+  BOOST_REQUIRE_EQUAL((*DataIt)->getUnitsClass(), "");
 
   DataIt++;
 
   BOOST_REQUIRE_EQUAL((*DataIt)->getID(),"myrast");
   BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testrast.tif");
   BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoRasterValue);
-  BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"");
+  BOOST_REQUIRE_EQUAL((*DataIt)->getUnitsClass(),"");
 
 
   // Monitoring

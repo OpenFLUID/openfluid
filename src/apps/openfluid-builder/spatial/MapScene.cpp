@@ -83,7 +83,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
                                                   DSItemDesc->getPrefixPath(),
                                                   DSItemDesc->getRelativePath(),
                                                   DSItemDesc->getType(),
-                                                  DSItemDesc->getUnitClass());
+                                                  DSItemDesc->getUnitsClass());
       m_LocalDatastore.addItem(DSItem);
     }
     else
@@ -100,7 +100,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
       QPen FeaturePen(QBrush(LineColor),0);
       QBrush FeatureBrush(FillColor);
 
-      std::string StdClassName = DSItemDesc->getUnitClass();
+      std::string StdClassName = DSItemDesc->getUnitsClass();
 
       OGRFeature *Feature;
       Layer->ResetReading();

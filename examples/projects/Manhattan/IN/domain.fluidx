@@ -129,7 +129,7 @@
 
 
     </definition>
-    <attributes unitclass="TLU" colorder="state;duration">
+    <attributes unitsclass="TLU" colorder="state;duration">
 1     false	300
 2     true	300
 3     true  300
@@ -137,7 +137,7 @@
 5     false 300
 6     false 300
     </attributes>
-    <attributes unitclass="RU" colorder="capacity;stockini">
+    <attributes unitsclass="RU" colorder="capacity;stockini">
 1     10	500    
 2     10	500    
 3     8     300

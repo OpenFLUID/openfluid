@@ -242,7 +242,7 @@ bool ImportWorker::processFilesAndDatastore(int Step)
                                                          m_InputDir.toStdString(),
                                                          RelativePath.toStdString(),
                                                          openfluid::core::UnstructuredValue::GeoVectorValue);
-      DSItem->setUnitClass(m_SourcesInfos[i].UnitsClass.toStdString());
+      DSItem->setUnitsClass(m_SourcesInfos[i].UnitsClass.toStdString());
 
       mp_AdvDesc->datastore().appendItem(DSItem);
     }

@@ -48,7 +48,7 @@ DatastoreItemDescriptor::DatastoreItemDescriptor(const std::string& ID,
                                                  const std::string& PrefixPath,
                                                  const std::string& RelativePath,
                                                  openfluid::core::UnstructuredValue::UnstructuredType Type) :
-  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_Type(Type), m_UnitClass("")
+  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_Type(Type), m_UnitsClass("")
 {
 
 }
@@ -58,9 +58,9 @@ DatastoreItemDescriptor::DatastoreItemDescriptor(const std::string& ID,
 // =====================================================================
 
 
-void DatastoreItemDescriptor::setUnitClass(const std::string& UnitClass)
+void DatastoreItemDescriptor::setUnitsClass(const openfluid::core::UnitsClass_t& UnitClass)
 {
-  m_UnitClass = UnitClass;
+  m_UnitsClass = UnitClass;
 }
 
 
@@ -108,9 +108,9 @@ openfluid::core::UnstructuredValue::UnstructuredType DatastoreItemDescriptor::ge
 // =====================================================================
 
 
-std::string DatastoreItemDescriptor::getUnitClass() const
+openfluid::core::UnitsClass_t DatastoreItemDescriptor::getUnitsClass() const
 {
-  return m_UnitClass;
+  return m_UnitsClass;
 }
 
 

@@ -55,8 +55,7 @@
 
 
 /**
-  Macro for declaration of builder extension and signature hooks
-  @deprecated
+  @deprecated This declaration is not needed anymore since version 2.1.0
 */
 #define DECLARE_BUILDEREXT_PLUGIN
 

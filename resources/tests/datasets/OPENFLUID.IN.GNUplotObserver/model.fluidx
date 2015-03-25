@@ -3,7 +3,7 @@
 
     <model>
 
-      <generator varname="tests.random" unitclass="TestUnits" method="random">
+      <generator varname="tests.random" unitsclass="TestUnits" method="random">
         <param name="min" value="20.53" />
         <param name="max" value="50" />
       </generator>

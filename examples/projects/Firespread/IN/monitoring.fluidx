@@ -6,69 +6,69 @@
       <param name="serie.s1.label" value="Main wind direction for AU#1"/>
       <param name="serie.s1.style" value="points"/>
       <param name="serie.s1.unitID" value="1"/>
-      <param name="serie.s1.unitclass" value="AU"/>
+      <param name="serie.s1.unitsclass" value="AU"/>
       <param name="serie.s1.var" value="gas.atm.degree.mainwinddir"/>
       
       <param name="serie.s2.label" value="Corrected wind direction for AU#1"/>
       <param name="serie.s2.style" value="points"/>
       <param name="serie.s2.unitID" value="1"/>
-      <param name="serie.s2.unitclass" value="AU"/>
+      <param name="serie.s2.unitsclass" value="AU"/>
       <param name="serie.s2.var" value="gas.atm.degree.winddir"/>
             
       <param name="serie.s3.label" value="Wind speed for AU#1"/>
       <param name="serie.s3.style" value="lines"/>
       <param name="serie.s3.unitID" value="1"/>
-      <param name="serie.s3.unitclass" value="AU"/>
+      <param name="serie.s3.unitsclass" value="AU"/>
       <param name="serie.s3.var" value="gas.atm.V.windspeed"/>
 
 
       <param name="serie.s4.label" value="Stock ratio for LU#387"/>
       <param name="serie.s4.style" value="lines"/>
       <param name="serie.s4.unitID" value="387"/>
-      <param name="serie.s4.unitclass" value="LU"/>
+      <param name="serie.s4.unitsclass" value="LU"/>
       <param name="serie.s4.var" value="fire.surf.Q.stockratio"/>
 
       <param name="serie.s5.label" value="Stock ratio for LU#323"/>
       <param name="serie.s5.style" value="lines"/>
       <param name="serie.s5.unitID" value="323"/>
-      <param name="serie.s5.unitclass" value="LU"/>
+      <param name="serie.s5.unitsclass" value="LU"/>
       <param name="serie.s5.var" value="fire.surf.Q.stockratio"/>
 
       <param name="serie.s6.label" value="Stock ratio for LU#1237"/>
       <param name="serie.s6.style" value="lines"/>
       <param name="serie.s6.unitID" value="1237"/>
-      <param name="serie.s6.unitclass" value="LU"/>
+      <param name="serie.s6.unitsclass" value="LU"/>
       <param name="serie.s6.var" value="fire.surf.Q.stockratio"/>
 
       <param name="serie.s7.label" value="Stock ratio for LU#1287"/>
       <param name="serie.s7.style" value="lines"/>
       <param name="serie.s7.unitID" value="1287"/>
-      <param name="serie.s7.unitclass" value="LU"/>
+      <param name="serie.s7.unitsclass" value="LU"/>
       <param name="serie.s7.var" value="fire.surf.Q.stockratio"/>
 
 
       <param name="serie.s8.label" value="Stock for LU#387"/>
       <param name="serie.s8.style" value="lines"/>
       <param name="serie.s8.unitID" value="387"/>
-      <param name="serie.s8.unitclass" value="LU"/>
+      <param name="serie.s8.unitsclass" value="LU"/>
       <param name="serie.s8.var" value="fire.surf.Q.stocklevel"/>
 
       <param name="serie.s9.label" value="Stock for LU#323"/>
       <param name="serie.s9.style" value="lines"/>
       <param name="serie.s9.unitID" value="323"/>
-      <param name="serie.s9.unitclass" value="LU"/>
+      <param name="serie.s9.unitsclass" value="LU"/>
       <param name="serie.s9.var" value="fire.surf.Q.stocklevel"/>
 
       <param name="serie.s10.label" value="Stock for LU#1237"/>
       <param name="serie.s10.style" value="lines"/>
       <param name="serie.s10.unitID" value="1237"/>
-      <param name="serie.s10.unitclass" value="LU"/>
+      <param name="serie.s10.unitsclass" value="LU"/>
       <param name="serie.s10.var" value="fire.surf.Q.stocklevel"/>
 
       <param name="serie.s11.label" value="Stock for LU#1287"/>
       <param name="serie.s11.style" value="lines"/>
       <param name="serie.s11.unitID" value="1287"/>
-      <param name="serie.s11.unitclass" value="LU"/>
+      <param name="serie.s11.unitsclass" value="LU"/>
       <param name="serie.s11.var" value="fire.surf.Q.stocklevel"/>
 
 
@@ -105,14 +105,14 @@
       <param name="kmzfilename" value="firespread-anim.kmz" /> 
       <param name="tryopengearth" value="0" />
       
-      <param name="layers.anim.unitclass" value="LU" />
+      <param name="layers.anim.unitsclass" value="LU" />
       <param name="layers.anim.varname" value="fire.surf.Q.stockratio" />
       <param name="layers.anim.sourcetype" value="file" />
       <param name="layers.anim.sourcefile" value="shapefiles/mesh_orb_250_topo_wgs84.shp" />
       <param name="layers.anim.linewidth" value="4" />
       <param name="layers.anim.colorscale" value="BB222222;0.05;CC3E557D;0.2;CC0000A6;0.4;CC0000FF;0.5;CC0055FF;0.7;CC00AAFF;0.85;CC00F4FF;0.999;00000000"/>
 
-      <param name="layers.static.1.unitclass" value="LU" />
+      <param name="layers.static.1.unitsclass" value="LU" />
       <param name="layers.static.1.sourcetype" value="file" />
       <param name="layers.static.1.sourcefile" value="shapefiles/mesh_orb_250_topo_wgs84.shp" />
       <param name="layers.static.1.linewidth" value="1" />

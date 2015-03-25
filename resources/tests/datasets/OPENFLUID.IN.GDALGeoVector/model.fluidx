@@ -2,21 +2,21 @@
 <openfluid>
   <model>
   
-    <generator varname="tests.fixed" unitclass="SU" method="fixed">
+    <generator varname="tests.fixed" unitsclass="SU" method="fixed">
       <param name="fixedvalue" value="13" />
     </generator>
 
-    <generator varname="tests.random" unitclass="SU" method="random">
+    <generator varname="tests.random" unitsclass="SU" method="random">
       <param name="min" value="50" />
       <param name="max" value="100" />
     </generator>
 
 
-    <generator varname="tests.fixed" unitclass="RS" method="fixed">
+    <generator varname="tests.fixed" unitsclass="RS" method="fixed">
       <param name="fixedvalue" value="27" />
     </generator>
 
-    <generator varname="tests.random" unitclass="RS" method="random">
+    <generator varname="tests.random" unitsclass="RS" method="random">
       <param name="min" value="10" />
       <param name="max" value="30" />
     </generator>

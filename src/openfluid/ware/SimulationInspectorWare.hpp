@@ -372,14 +372,21 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         Returns true if the queried unit class exists
         @param[in] ClassName the queried class name
       */
-      bool OPENFLUID_IsUnitClassExist(openfluid::core::UnitClass_t ClassName) const;
+      bool OPENFLUID_IsUnitsClassExist(const openfluid::core::UnitsClass_t& ClassName) const;
+
+      /**
+        @deprecated Since version 2.1.0.
+        Use openfluid::ware::SimulationInspectorWare::OPENFLUID_IsUnitsClassExist instead
+      */
+      bool OPENFLUID_IsUnitClassExist(const openfluid::core::UnitsClass_t& ClassName) const OPENFLUID_DEPRECATED
+      { return OPENFLUID_IsUnitsClassExist(ClassName); }
 
       /**
         Returns true if the queried unit exists
         @param[in] ClassName the class of the queried unit
         @param[in] ID the ID of the queried unit
       */
-      bool OPENFLUID_IsUnitExist(openfluid::core::UnitClass_t ClassName,
+      bool OPENFLUID_IsUnitExist(const openfluid::core::UnitsClass_t& ClassName,
                                  openfluid::core::UnitID_t ID) const;
 
       /**
@@ -394,7 +401,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[out] UnitsCount the queried class name
         @return false if the unit class does not exist
       */
-      bool OPENFLUID_GetUnitsCount(const openfluid::core::UnitClass_t ClassName,
+      bool OPENFLUID_GetUnitsCount(const openfluid::core::UnitsClass_t& ClassName,
                                    unsigned int& UnitsCount) const;
 
       /**
@@ -404,12 +411,12 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[out] aUnit a pointer to the requested Unit, NULL if the unit does not exist
         @return false if the unit does not exist
       */
-      bool OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
+      bool OPENFLUID_GetUnit(const openfluid::core::UnitsClass_t& ClassName,
                              const openfluid::core::UnitID_t& ID,
                              openfluid::core::SpatialUnit* aUnit) const;
 
-      openfluid::core::SpatialUnit* OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
-                                               const openfluid::core::UnitID_t& ID) const;
+      openfluid::core::SpatialUnit* OPENFLUID_GetUnit(const openfluid::core::UnitsClass_t& ClassName,
+                                                      const openfluid::core::UnitID_t& ID) const;
 
       /**
         Returns true if a given unit is connected "to" another unit
@@ -419,7 +426,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @return true if the given unit is connected "to" the other unit
       */
       bool OPENFLUID_IsUnitConnectedTo(openfluid::core::SpatialUnit* aUnit,
-                                       const openfluid::core::UnitClass_t& ClassNameTo,
+                                       const openfluid::core::UnitsClass_t& ClassNameTo,
                                        const openfluid::core::UnitID_t& IDTo) const;
 
 
@@ -431,7 +438,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @return true if the given unit is connected "from" the other unit
       */
       bool OPENFLUID_IsUnitConnectedFrom(openfluid::core::SpatialUnit* aUnit,
-                                         const openfluid::core::UnitClass_t& ClassNameFrom,
+                                         const openfluid::core::UnitsClass_t& ClassNameFrom,
                                          const openfluid::core::UnitID_t& IDFrom) const;
 
 
@@ -443,7 +450,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @return true if the given unit is "a child of" the other unit
       */
       bool OPENFLUID_IsUnitChildOf(openfluid::core::SpatialUnit* aUnit,
-                                   const openfluid::core::UnitClass_t& ClassNameParent,
+                                   const openfluid::core::UnitsClass_t& ClassNameParent,
                                    const openfluid::core::UnitID_t& IDParent) const;
 
 
@@ -455,7 +462,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @return true if the given unit is "parent of" the other unit
       */
       bool OPENFLUID_IsUnitParentOf(openfluid::core::SpatialUnit* aUnit,
-                                    const openfluid::core::UnitClass_t& ClassNameChild,
+                                    const openfluid::core::UnitsClass_t& ClassNameChild,
                                     const openfluid::core::UnitID_t& IDChild) const;
 
 

@@ -56,7 +56,7 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
     openfluid::core::VariableName_t m_VarName;
 
-    openfluid::core::UnitClass_t m_UnitClass;
+    openfluid::core::UnitsClass_t m_UnitsClass;
 
     GeneratorMethod m_GenMethod;
 
@@ -68,12 +68,18 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
     GeneratorDescriptor();
 
-    GeneratorDescriptor(openfluid::core::VariableName_t VarName, openfluid::core::UnitClass_t UnitClass,
+    GeneratorDescriptor(openfluid::core::VariableName_t VarName, openfluid::core::UnitsClass_t UnitsClass,
                         GeneratorMethod GenMethod, unsigned int VarSize=1);
 
     openfluid::core::VariableName_t getVariableName() const;
 
-    openfluid::core::UnitClass_t getUnitClass() const;
+    openfluid::core::UnitsClass_t getUnitsClass() const;
+
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::fluidx::GeneratorDescriptor::getUnitsClass() const instead
+    */
+    openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
+    { return getUnitsClass(); };
 
     GeneratorMethod getGeneratorMethod() const;
 

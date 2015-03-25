@@ -192,7 +192,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
   for (itEvent = Descriptor.events().begin();itEvent != Descriptor.events().end();++itEvent)
   {
 
-    EventUnit = SGraph.spatialUnit((*itEvent).getUnitClass(),(*itEvent).getUnitID());
+    EventUnit = SGraph.spatialUnit((*itEvent).getUnitsClass(),(*itEvent).getUnitID());
 
     if (EventUnit != NULL)
     {
@@ -219,7 +219,7 @@ void Factory::buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescripto
   for(it = Items.begin() ; it != Items.end() ; ++it)
   {
     openfluid::core::DatastoreItem* Item = new openfluid::core::DatastoreItem(
-        (*it)->getID(),(*it)->getPrefixPath(),(*it)->getRelativePath(), (*it)->getType(), (*it)->getUnitClass());
+        (*it)->getID(),(*it)->getPrefixPath(),(*it)->getRelativePath(), (*it)->getType(), (*it)->getUnitsClass());
 
     Store.addItem(Item);
   }
@@ -282,13 +282,13 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         GenDesc->isVectorVariable() ? TypedVarName += "[vector]" : TypedVarName += "[double]";
 
         Signature->ID = buildGeneratorID(GenDesc->getVariableName(),
-                                         GenDesc->isVectorVariable(),GenDesc->getUnitClass());
+                                         GenDesc->isVectorVariable(),GenDesc->getUnitsClass());
         Signature->HandledData.ProducedVars
-        .push_back(openfluid::ware::SignatureTypedSpatialDataItem(TypedVarName,GenDesc->getUnitClass(),"",""));
+        .push_back(openfluid::ware::SignatureTypedSpatialDataItem(TypedVarName,GenDesc->getUnitsClass(),"",""));
 
         IInstance->GeneratorInfo = new GeneratorExtraInfo();
         IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();
-        IInstance->GeneratorInfo->UnitClass = GenDesc->getUnitClass();
+        IInstance->GeneratorInfo->UnitsClass = GenDesc->getUnitsClass();
         IInstance->GeneratorInfo->VariableSize = GenDesc->getVariableSize();
 
         if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Fixed)

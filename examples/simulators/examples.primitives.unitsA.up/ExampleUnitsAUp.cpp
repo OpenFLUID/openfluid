@@ -188,7 +188,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableSimulator
         }
         else
         {
-          OPENFLUID_RaiseWarning("var2 not present, init to value 1.0");
+          OPENFLUID_LogWarning("var2 not present, init to value 1.0");
           Value2 = 1.0;
           OPENFLUID_AppendVariable(A,"var2",Value2);
         }

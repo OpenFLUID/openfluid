@@ -156,7 +156,7 @@ void ModelScene::refresh()
 
         GeneratorGraphics* GenG = new GeneratorGraphics(QPoint(0,0),ID,
                                                         QString::fromStdString(GenDesc->getVariableName()),
-                                                        QString::fromStdString(GenDesc->getUnitClass()));
+                                                        QString::fromStdString(GenDesc->getUnitsClass()));
         addItem(GenG);
         GenG->moveBy(Position.x(),Position.y());
         GenCount++;

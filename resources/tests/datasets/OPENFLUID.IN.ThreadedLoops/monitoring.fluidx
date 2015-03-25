@@ -7,7 +7,7 @@
       <param name="format.f1.date" value="%Y-%m-%d %H:%M:%S" />
       <param name="format.f1.precision" value="8" />
            
-      <param name="set.fullfull.unitclass" value="TU" />
+      <param name="set.fullfull.unitsclass" value="TU" />
       <param name="set.fullfull.unitsIDs" value="*" />
       <param name="set.fullfull.vars" value="*" />
       <param name="set.fullfull.format" value="f1" />

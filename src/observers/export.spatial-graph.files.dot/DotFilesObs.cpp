@@ -69,7 +69,7 @@ BEGIN_OBSERVER_SIGNATURE("export.spatial-graph.files.dot")
       "  when.init : set to 1 to export the graph at initialization time\n"
       "  when.everytime : set to 1 to export the graph at every simulation time point\n"
       "  when.final : set to 1 to export the graph at finalization time\n"
-      "  style.<unitclass>.<attribute> : the value of a Dot attribute for all nodes of a unit class\n");
+      "  style.<unitsclass>.<attribute> : the value of a Dot attribute for all nodes of a unit class\n");
   DECLARE_VERSION(openfluid::config::FULL_VERSION);
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 END_OBSERVER_SIGNATURE
@@ -85,13 +85,13 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
     typedef std::map<std::string,std::string> StyleAttibutes_t;
 
-    typedef std::map<std::string,StyleAttibutes_t> UnitClassStyles_t;
+    typedef std::map<std::string,StyleAttibutes_t> UnitsClassStyles_t;
 
     std::string m_Title;
 
     std::string m_BaseFileName;
 
-    UnitClassStyles_t m_UnitClassStyles;
+    UnitsClassStyles_t m_UnitsClassStyles;
 
     bool m_Init;
     bool m_EveryTime;
@@ -132,7 +132,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       std::string OutputDir;
       const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_SpatialData->allSpatialUnitsByClass();
       const openfluid::core::UnitsList_t* UnitsList = NULL;
-      std::vector<openfluid::core::UnitClass_t> ClassVector;
+      std::vector<openfluid::core::UnitsClass_t> ClassVector;
       openfluid::core::SpatialUnit* TheUnit;
 
       openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
@@ -157,9 +157,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
         std::string ClassStr = (*itUnitsClass).first;
 
-        UnitClassStyles_t::iterator ItStyle = m_UnitClassStyles.find(ClassStr);
+        UnitsClassStyles_t::iterator ItStyle = m_UnitsClassStyles.find(ClassStr);
 
-        if (ItStyle != m_UnitClassStyles.end())
+        if (ItStyle != m_UnitsClassStyles.end())
         {
           Options = "[";
 
@@ -303,7 +303,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
           for (auto& StyleAttr : Style.second.children())
           {
-            m_UnitClassStyles[StyleID][StyleAttr.first] = StyleAttr.second.getValue("");
+            m_UnitsClassStyles[StyleID][StyleAttr.first] = StyleAttr.second.getValue("");
           }
         }
       }

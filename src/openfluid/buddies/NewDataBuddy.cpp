@@ -183,7 +183,7 @@ void NewDataBuddy::generateEventsXML()
   Content << "  <domain>" << std::endl;
   Content << "    <calendar>" << std::endl;
   Content << std::endl;
-  Content << "      <event name=\"\" category=\"example\" unitclass=\"unitsA\" unitID=\"1\" "
+  Content << "      <event name=\"\" category=\"example\" unitsclass=\"unitsA\" unitID=\"1\" "
              "date=\"2001-01-18 12:25:33\">" << std::endl;
   Content << "        <info key=\"when\" value=\"during\"/>" << std::endl;
   Content << "        <info key=\"where\" value=\"1\"/>" << std::endl;
@@ -191,7 +191,7 @@ void NewDataBuddy::generateEventsXML()
   Content << "        <info key=\"string\" value=\"EADGBE\"/>" << std::endl;
   Content << "      </event>" << std::endl;
   Content << std::endl;
-  Content << "      <event name=\"\" category=\"example\" unitclass=\"unitsB\" unitID=\"1\" "
+  Content << "      <event name=\"\" category=\"example\" unitsclass=\"unitsB\" unitID=\"1\" "
              "date=\"2001-05-01 06:00:17\">" << std::endl;
   Content << "        <info key=\"when\" value=\"after\"/>" << std::endl;
   Content << "        <info key=\"where\" value=\"12\"/>" << std::endl;
@@ -262,7 +262,7 @@ void NewDataBuddy::generateDDataXML()
   ContentA.clear();
   ContentA << getXMLHeader() << std::endl;
   ContentA << "  <domain>" << std::endl;
-  ContentA << "    <attributes unitclass=\"unitsA\" colorder=\"foodata\" >" << std::endl;
+  ContentA << "    <attributes unitsclass=\"unitsA\" colorder=\"foodata\" >" << std::endl;
   ContentA << std::endl;
   ContentA << "3 1.25" << std::endl;
   ContentA << "8 2.385" << std::endl;
@@ -282,7 +282,7 @@ void NewDataBuddy::generateDDataXML()
   ContentB.clear();
   ContentB << getXMLHeader() << std::endl;
   ContentB << "  <domain>" << std::endl;
-  ContentB << "    <attributes unitclass=\"unitsB\" colorder=\"bardata;otherbardata\">" << std::endl;
+  ContentB << "    <attributes unitsclass=\"unitsB\" colorder=\"bardata;otherbardata\">" << std::endl;
   ContentB << std::endl;
   ContentB << "1 0.00035 185" << std::endl;
   ContentB << std::endl;

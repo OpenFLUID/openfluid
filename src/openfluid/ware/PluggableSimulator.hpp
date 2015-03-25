@@ -62,8 +62,7 @@
 
 
 /**
-  Macro for declaration of simulator and signature hooks
-  @deprecated
+  @deprecated This declaration is not needed anymore since version 2.1.0
 */
 #define DECLARE_SIMULATOR_PLUGIN
 
@@ -275,10 +274,10 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
     { return openfluid::base::SchedulingRequest(OPENFLUID_GetDefaultDeltaT()); };
 
     inline openfluid::base::SchedulingRequest MultipliedDefaultDeltaT(const double& Mult) const
-        { return openfluid::base::SchedulingRequest(Mult * OPENFLUID_GetDefaultDeltaT()); };
+    { return openfluid::base::SchedulingRequest(Mult * OPENFLUID_GetDefaultDeltaT()); };
 
     inline openfluid::base::SchedulingRequest Duration(const openfluid::core::Duration_t& D) const
-        { return openfluid::base::SchedulingRequest(D); };
+    { return openfluid::base::SchedulingRequest(D); };
 
 
   public:

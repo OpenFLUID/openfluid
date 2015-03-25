@@ -39,17 +39,19 @@
 #define __OPENFLUID_CORE_DATASTOREITEM_HPP__
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/deprecation.hpp>
 
 #include <string>
 
 #include <openfluid/core/UnstructuredValue.hpp>
 
-namespace openfluid {
-namespace core {
+
+namespace openfluid { namespace core {
+
 
 /**
- * @brief Item of a Datastore, giving information about an additional resource.
- */
+  @brief Item of a Datastore, giving information about an additional resource.
+*/
 class OPENFLUID_API DatastoreItem
 {
   private:
@@ -60,56 +62,62 @@ class OPENFLUID_API DatastoreItem
 
     std::string m_RelativePath;
 
-    std::string m_UnitClass;
+    std::string m_UnitsClass;
 
     UnstructuredValue* m_Value;
 
   public:
 
     /**
-     * @brief Creates a new resource item.
-     *
-     * Tries to create a new resource item and its associated UnstructuredValue,
-     * depending on the given type.
-     *
-     * @param ID The ID of the item.
-     * @param PrefixPath The prefix path of the item, usually the IN directory of the project.
-     * @param RelativePath The relative path of the item from the PrefixPath
-     * @param Type The type of the item.
-     * @param UnitClass (optional) The associated unit class of the item.
-     * @throw openfluid::base::FrameworkException if the given type is unknown.
-     */
+      @brief Creates a new resource item.
+
+      Tries to create a new resource item and its associated UnstructuredValue,
+      depending on the given type.
+
+      @param ID The ID of the item.
+      @param PrefixPath The prefix path of the item, usually the IN directory of the project.
+      @param RelativePath The relative path of the item from the PrefixPath
+      @param Type The type of the item.
+      @param UnitsClass (optional) The associated unit class of the item.
+      @throw openfluid::base::FrameworkException if the given type is unknown.
+    */
     DatastoreItem(const std::string& ID,
                   const std::string& PrefixPath, const std::string& RelativePath,
-                  UnstructuredValue::UnstructuredType Type, const std::string& UnitClass = "");
+                  UnstructuredValue::UnstructuredType Type, const std::string& UnitsClass = "");
 
     /**
-     * @brief Destroys the resource and its associated value.
-     */
+      @brief Destroys the resource and its associated value.
+    */
     ~DatastoreItem();
 
     std::string getID() const;
 
     /**
-     * @brief Returns the prefix path of the resource
-     */
+      @brief Returns the prefix path of the resource
+    */
     std::string getPrefixPath() const;
 
     /**
-     * @brief Returns the path of the resource, relative to prefix path.
-     */
+      @brief Returns the path of the resource, relative to prefix path.
+    */
     std::string getRelativePath() const;
 
-    std::string getUnitClass() const;
+    std::string getUnitsClass() const;
 
     /**
-     * @brief Gets the associated value of the resource.
-     */
+      @deprecated Since version 2.1.0. Use openfluid::core::DatastoreItem::getUnitsClass() instead
+    */
+    std::string getUnitClass() const OPENFLUID_DEPRECATED
+    { return getUnitsClass(); }
+
+    /**
+      @brief Gets the associated value of the resource.
+    */
     UnstructuredValue* value();
 
     /**
-     * @brief Gets the associated value of the resource.
-     */
+      @brief Gets the associated value of the resource.
+    */
     const UnstructuredValue* value() const;
 };
 

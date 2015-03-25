@@ -279,8 +279,8 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
   for (std::list<openfluid::fluidx::EventDescriptor>::iterator it =
       Events->begin(); it != Events->end(); ++it)
   {
-    BOOST_CHECK(!(it->getUnitClass() == "unitsA" && it->getUnitID() == 7));
-    BOOST_CHECK(!(it->getUnitClass() == "unitsP"));
+    BOOST_CHECK(!(it->getUnitsClass() == "unitsA" && it->getUnitID() == 7));
+    BOOST_CHECK(!(it->getUnitsClass() == "unitsP"));
   }
 
   // relations

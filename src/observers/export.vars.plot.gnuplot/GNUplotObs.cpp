@@ -67,7 +67,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.plot.gnuplot")
       "Plotted variables can only be scalar variables (boolean, integer, double)\n"
       "Parameters for declaring series can be:\n"
       "  serie.<seriename>.var : the name of the variable to plot (e.g. var.foo)\n"
-      "  serie.<seriename>.unitclass : the unit class (e.g. TU)\n"
+      "  serie.<seriename>.unitsclass : the unit class (e.g. TU)\n"
       "  serie.<seriename>.unitid : the unit id (e.g. 17)\n"
       "  serie.<seriename>.sourcefile : the file to plot (e.g. measured_data.dat), "
         "if this serie is not based on simulation variables\n"
@@ -108,7 +108,7 @@ class SerieInfo
 
     openfluid::core::VariableName_t VarName;
 
-    openfluid::core::UnitClass_t UnitClass;
+    openfluid::core::UnitsClass_t UnitsClass;
 
     openfluid::core::UnitID_t UnitID;
 
@@ -121,7 +121,7 @@ class SerieInfo
     std::string Color;
 
     SerieInfo() : Type(SERIE_UNKNOWN),
-        SourceFile(""), FileHandle(NULL), VarName(""), UnitClass(""), UnitID(1), Unit(NULL),
+        SourceFile(""), FileHandle(NULL), VarName(""), UnitsClass(""), UnitID(1), Unit(NULL),
         Label(""), Style("line"), Color("")
     { }
 
@@ -223,7 +223,12 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
         SerieInfo SInfo;
         SInfo.VarName = Serie.second.getChildValue("var","");
-        SInfo.UnitClass = Serie.second.getChildValue("unitclass","");
+        SInfo.UnitsClass = Serie.second.getChildValue("unitsclass","");
+        if (SInfo.UnitsClass == "")
+        {
+          // search for deprecated "unitclass" parameter
+          SInfo.UnitsClass = Serie.second.getChildValue("unitclass","");
+        }
         std::string UnitIDStr = Serie.second.getChildValue("unitID","");
         SInfo.SourceFile = Serie.second.getChildValue("sourcefile","");
         SInfo.Label = Serie.second.getChildValue("label","");
@@ -231,11 +236,11 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         SInfo.Color = Serie.second.getChildValue("color","");
 
         if (!SInfo.VarName.empty() &&
-            !SInfo.UnitClass.empty() &&
+            !SInfo.UnitsClass.empty() &&
             openfluid::tools::convertString(UnitIDStr,&SInfo.UnitID))
         {
           openfluid::core::SpatialUnit* TmpU;
-          TmpU = mp_SpatialData->spatialUnit(SInfo.UnitClass,SInfo.UnitID);
+          TmpU = mp_SpatialData->spatialUnit(SInfo.UnitsClass,SInfo.UnitID);
           if (TmpU != NULL)
           {
             SInfo.Type = SerieInfo::SERIE_VAR;
@@ -247,7 +252,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
           SInfo.Type = SerieInfo::SERIE_FILE;
 
         if (SInfo.Type!=SerieInfo::SERIE_UNKNOWN) m_Series[SerieID] = SInfo;
-        else OPENFLUID_RaiseWarning("Serie " + SerieID + "ignored");
+        else OPENFLUID_LogWarning("Serie " + SerieID + "ignored");
 
       }
 
@@ -275,7 +280,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
          if (!GInfo.Series.empty())
            m_Graphs[GraphID] = GInfo;
          else
-           OPENFLUID_RaiseWarning("Graph " + GraphID + "ignored");
+           OPENFLUID_LogWarning("Graph " + GraphID + "ignored");
       }
     }
 
@@ -403,7 +408,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         }
         else
         {
-          OPENFLUID_RaiseWarning("Cannot find GNUPlot");
+          OPENFLUID_LogWarning("Cannot find GNUPlot");
         }
       }
     }
@@ -484,7 +489,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
             {
               std::string UnitIDStr;
               openfluid::tools::convertValue((*Sit)->UnitID,&UnitIDStr);
-              Label= (*Sit)->VarName + " (" + (*Sit)->UnitClass + "#" + UnitIDStr + ")";
+              Label= (*Sit)->VarName + " (" + (*Sit)->UnitsClass + "#" + UnitIDStr + ")";
             }
           }
 

@@ -33,20 +33,24 @@
   @file DatastoreItemDescriptor.hpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
+
 
 #ifndef __OPENFLUID_FLUIDX_DATASTOREITEMDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_DATASTOREITEMDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/deprecation.hpp>
 
 #include <string>
 
 #include <openfluid/core/UnstructuredValue.hpp>
+#include <openfluid/core/TypeDefs.hpp>
 
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
+
 
 class OPENFLUID_API DatastoreItemDescriptor
 {
@@ -60,14 +64,30 @@ class OPENFLUID_API DatastoreItemDescriptor
 
     openfluid::core::UnstructuredValue::UnstructuredType m_Type;
 
-    std::string m_UnitClass;
+    std::string m_UnitsClass;
 
   public:
 
-    DatastoreItemDescriptor(const std::string& ID, const std::string& PrefixPath, const std::string& RelativePath,
-        openfluid::core::UnstructuredValue::UnstructuredType Type);
+    DatastoreItemDescriptor(const std::string& ID,
+                            const std::string& PrefixPath, const std::string& RelativePath,
+                            openfluid::core::UnstructuredValue::UnstructuredType Type);
 
-    void setUnitClass(const std::string& UnitClass);
+    void setUnitsClass(const openfluid::core::UnitsClass_t& UnitsClass);
+
+    /**
+      @deprecated Since version 2.1.0.
+      Use openfluid::fluidx::DatastoreItemDescriptor::setUnitsClass(const std::string&) instead
+    */
+    void setUnitClass(const std::string& UnitsClass) OPENFLUID_DEPRECATED
+    { setUnitsClass(UnitsClass); };
+
+    openfluid::core::UnitsClass_t getUnitsClass() const;
+
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::fluidx::DatastoreItemDescriptor::getUnitsClass() const instead
+    */
+    openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
+    { return getUnitsClass(); };
 
     std::string getID() const;
 
@@ -76,11 +96,9 @@ class OPENFLUID_API DatastoreItemDescriptor
     std::string getRelativePath() const;
 
     openfluid::core::UnstructuredValue::UnstructuredType getType() const;
-
-    std::string getUnitClass() const;
 };
 
-}
-} // namespaces
+
+} } // namespaces
 
 #endif /* __OPENFLUID_FLUIDX_DATASTOREITEMDESCRIPTOR_HPP__ */

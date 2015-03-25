@@ -45,7 +45,9 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
+
 namespace openfluid { namespace machine {
+
 
 class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 {
@@ -53,7 +55,7 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 
     openfluid::core::VariableName_t m_VarName;
 
-    openfluid::core::UnitClass_t m_UnitClass;
+    openfluid::core::UnitsClass_t m_UnitsClass;
 
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GenMethod;
 
@@ -67,21 +69,33 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
     ~Generator();
 
 
-    void setInfos(openfluid::core::VariableName_t VarName, openfluid::core::UnitClass_t UnitClass,
+    void setInfos(openfluid::core::VariableName_t VarName, openfluid::core::UnitsClass_t UnitsClass,
                   openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, unsigned int VarSize=1)
-      { m_VarName = VarName; m_UnitClass = UnitClass; m_GenMethod = GenMethod; m_VarSize = VarSize; };
+      { m_VarName = VarName; m_UnitsClass = UnitsClass; m_GenMethod = GenMethod; m_VarSize = VarSize; };
 
-    openfluid::core::VariableName_t getVariableName() const { return m_VarName; };
+    openfluid::core::VariableName_t getVariableName() const
+    { return m_VarName; };
 
-    openfluid::core::UnitClass_t getUnitClass() const { return m_UnitClass; };
+    openfluid::core::UnitsClass_t getUnitsClass() const
+    { return m_UnitsClass; };
 
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod getGeneratorMethod() const { return m_GenMethod; };
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::machine::Generator::getUnitsClass() const instead
+    */
+    openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
+    { return m_UnitsClass; };
 
-    inline bool isVectorVariable() const { return (m_VarSize > 1); };
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod getGeneratorMethod() const
+    { return m_GenMethod; };
 
-    inline bool isScalarVariable() const { return (!isVectorVariable()); };
+    inline bool isVectorVariable() const
+    { return (m_VarSize > 1); };
 
-    inline unsigned int getVariableSize() const { return m_VarSize; };
+    inline bool isScalarVariable() const
+    { return (!isVectorVariable()); };
+
+    inline unsigned int getVariableSize() const
+    { return m_VarSize; };
 
 
     virtual void prepareData() {};

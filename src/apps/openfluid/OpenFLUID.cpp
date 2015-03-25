@@ -283,7 +283,7 @@ void OpenFLUIDApp::printSimulatorsSpatialDataItemReport(openfluid::ware::Signatu
 
 
   if (HandledItem.DataUnit != ("")) UnitStr = (" (")+HandledItem.DataUnit+(")");
-  if (HandledItem.UnitClass != ("")) DistribStr = " {"+HandledItem.UnitClass+"}";
+  if (HandledItem.UnitsClass != ("")) DistribStr = " {"+HandledItem.UnitsClass+"}";
 
 
   if (Type == ("pvar")) TypeStr = ("produced variable");

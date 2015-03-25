@@ -117,7 +117,7 @@ class OPENFLUID_API Event
       Returns true if the information exists and equals the given double value
       @param[in] Key the requested information key
       @param[in] Info the requested value
-      @deprecated
+      @deprecated Since version 1.7.1. Use openfluid::core::Event::isInfoEqual(const std::string&,const double) const
     */
     bool isInfoEqual(const std::string& Key, const double* Info) const OPENFLUID_DEPRECATED;
 
@@ -148,7 +148,8 @@ class OPENFLUID_API Event
       @param[in] Key the requested information key
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
-      @deprecated
+      @deprecated Since version 1.7.1.
+      Use openfluid::core::Event::getInfoAsString(const std::string&,std::string&) const instead
     */
     bool getInfoAsString(const std::string& Key, std::string *Info) const OPENFLUID_DEPRECATED;
 
@@ -165,7 +166,7 @@ class OPENFLUID_API Event
       @param[in] Key the requested information key
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
-      @deprecated
+      @deprecated Since version 1.7.1. Use openfluid::core::Event::getInfoAsLong(const std::string&,long&) const instead
     */
     bool getInfoAsLong(const std::string& Key, long *Info) const OPENFLUID_DEPRECATED;
 
@@ -182,7 +183,8 @@ class OPENFLUID_API Event
       @param[in] Key the requested information key
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
-      @deprecated
+      @deprecated Since version 1.7.1.
+      Use openfluid::core::Event::getInfoAsDouble(const std::string&,double&) const instead
     */
     bool getInfoAsDouble(const std::string& Key, double *Info) const OPENFLUID_DEPRECATED;
 

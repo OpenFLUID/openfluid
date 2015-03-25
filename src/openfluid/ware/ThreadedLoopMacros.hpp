@@ -62,8 +62,8 @@
 #define _THREADSYNCID(_id) _M_##_id##_Sync
 
 
-#define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitclass,funcptr,...) \
-  openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->spatialUnits(unitclass)->list(); \
+#define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitsclass,funcptr,...) \
+  openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->spatialUnits(unitsclass)->list(); \
   if (_UNITSLISTID(id) != NULL) \
   { \
     openfluid::core::UnitsList_t::iterator _UNITSLISTITERID(id) = _UNITSLISTID(id)->begin(); \
@@ -102,12 +102,12 @@
 
 /**
   Macro for applying a threaded simulator to each unit of a class, following their process order
-  @param[in] unitclass name of the unit class
+  @param[in] unitsclass name of the units class
   @param[in] funcptr member simulator name
   @param[in] ... extra parameters to pass to the member simulator
 */
-#define APPLY_UNITS_ORDERED_LOOP_THREADED(unitclass,funcptr,...) \
-    _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitclass,funcptr,## __VA_ARGS__)
+#define APPLY_UNITS_ORDERED_LOOP_THREADED(unitsclass,funcptr,...) \
+    _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitsclass,funcptr,## __VA_ARGS__)
 
 
 

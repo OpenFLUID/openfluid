@@ -19,24 +19,24 @@
 			<unit class="unitsA" ID="3" pcsorder="1" />
 		</definition>
 
-		<attributes unitclass="unitsA" colorder="indataA">
+		<attributes unitsclass="unitsA" colorder="indataA">
 			3	AAA
 		</attributes>
-		<attributes unitclass="unitsA" colorder="indataA">
+		<attributes unitsclass="unitsA" colorder="indataA">
 			1	AAA
 		</attributes>
-		<attributes unitclass="unitsA" colorder="indataA">
+		<attributes unitsclass="unitsA" colorder="indataA">
 			2	AAA
 		</attributes>
-		<attributes unitclass="unitsA" colorder="indataB">
+		<attributes unitsclass="unitsA" colorder="indataB">
 			3	BBB
 			1	BBB
 		</attributes>
-		<attributes unitclass="unitsA" colorder="indataC">
+		<attributes unitsclass="unitsA" colorder="indataC">
 			3	CCC
 			1 	CCC
 		</attributes>
-		<attributes unitclass="unitsA" colorder="indataB;indataC">
+		<attributes unitsclass="unitsA" colorder="indataB;indataC">
 			2 BBB CCC
 		</attributes>
 	</domain>

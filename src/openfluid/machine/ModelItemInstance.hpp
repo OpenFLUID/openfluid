@@ -59,7 +59,7 @@ class OPENFLUID_API GeneratorExtraInfo
   public:
 
     openfluid::core::VariableName_t VariableName;
-    openfluid::core::UnitClass_t UnitClass;
+    openfluid::core::UnitsClass_t UnitsClass;
     unsigned int VariableSize;
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod;
 

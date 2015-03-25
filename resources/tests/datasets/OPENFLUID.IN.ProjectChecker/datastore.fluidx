@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <datastore>
-   	<dataitem id="mymap" type="geovector" source="datastore/testvect" unitclass="TestUnits" />
+   	<dataitem id="mymap" type="geovector" source="datastore/testvect" unitsclass="TestUnits" />
   	<dataitem id="mymap2" type="geovector" source="datastore/testvect.shp" />
   </datastore>
 </openfluid>

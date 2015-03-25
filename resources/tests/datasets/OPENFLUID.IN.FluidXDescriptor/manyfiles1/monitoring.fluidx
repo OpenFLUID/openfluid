@@ -66,11 +66,11 @@
 
     <observer ID='output.files.vtk'>
       <param name="DEMfile" value='DEMs/virtualdem.tif' />
-      <param name="serie.vtk1.unitclass" value='SU' />
+      <param name="serie.vtk1.unitsclass" value='SU' />
       <param name="serie.vtk1.var" value='tests.var1' />
       <param name="serie.vtk1.shapefile" value='shapefiles/SU.shp' />
       <param name="serie.vtk1.step" value='1' />
-      <param name="serie.vtk7.unitclass" value='RS' />
+      <param name="serie.vtk7.unitsclass" value='RS' />
       <param name="serie.vtk7.var" value='tests.var3' />
       <param name="serie.vtk7.shapefile" value='shapefiles/RS.shp' />
       <param name="serie.vtk7.step" value='10' />

@@ -321,13 +321,13 @@ class KmlFilesPlotObserver : public KmlObserverBase
     // =====================================================================
 
 
-    static std::string buildFilePath(std::string Dir,std::string UnitClass,
+    static std::string buildFilePath(std::string Dir,std::string UnitsClass,
                                      openfluid::core::UnitID_t ID, std::string VarName,
                                      std::string Ext)
     {
       std::ostringstream oss;
 
-      oss << Dir << "/" << UnitClass << "_" << ID << "_" << VarName << "." << Ext;
+      oss << Dir << "/" << UnitsClass << "_" << ID << "_" << VarName << "." << Ext;
 
       return oss.str();
     }
@@ -399,7 +399,14 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
           KmlSerieInfo KSI;
 
-          KSI.UnitsClass = Layer.second.getChildValue("unitclass","");
+          KSI.UnitsClass = Layer.second.getChildValue("unitsclass","");
+          if (KSI.UnitsClass == "")
+          {
+            // search for deprecated "unitclass" parameter
+            KSI.UnitsClass = Layer.second.getChildValue("unitclass","");
+          }
+
+
           KSI.VarsListStr = Layer.second.getChildValue("varslist","*");
 
           // TODO Manage selection of plotted spatial units
@@ -416,7 +423,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
             KSI.SourceFilename = Layer.second.getChildValue("sourcefile","");
             if (KSI.SourceFilename.empty())
             {
-              OPENFLUID_RaiseWarning("wrong sourcefile format");
+              OPENFLUID_LogWarning("wrong sourcefile format");
               return;
             }
             KSI.SourceFilename = m_InputDir + "/" + KSI.SourceFilename;
@@ -454,7 +461,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       if (!m_PlotProgram.isFound())
       {
-        OPENFLUID_RaiseWarning("Required GNUplot program not found");
+        OPENFLUID_LogWarning("Required GNUplot program not found");
         m_OKToGo = false;
         return;
       }
@@ -477,7 +484,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir+"/"+m_GNUPlotSubDir))
       {
-        OPENFLUID_RaiseWarning("Cannot initialize gnuplot temporary directory");
+        OPENFLUID_LogWarning("Cannot initialize gnuplot temporary directory");
         m_OKToGo = false;
         return;
       }
