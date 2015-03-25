@@ -265,17 +265,21 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
     /**
       @brief Gets a map of small PolygonEntity which area are under a threshold.
       @param MinArea The area threshold (in map units).
+      @param bool Neighbour : if true, get only PolygonEntity with at least
+      one PolygonEntity neighbour; default is true.
       @return a multimap of PolygonEntity with key is the area of each PolygonEntity.
     */
-    std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea);
+    std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea, bool Neighbour=true);
 
     /**
       @brief Gets a map of sliver PolygonEntity which compactness value are superior to a
       compactness threshold (Gravelius Index)
       @param Compactness The compactness threshold (perimeter/2 x sqrt (Pi x area))
+      @param bool Neighbour : if true, get only PolygonEntity with at least
+      one PolygonEntity neighbour; default is false.
       @return a multimap of PolygonEntity with key is the compactness of each PolygonEntity.
     */
-    std::multimap<double,  PolygonEntity*> getPolygonEntitiesByCompactness(double Compactness);
+    std::multimap<double,  PolygonEntity*> getPolygonEntitiesByCompactness(double Compactness, bool Neighbour=true);
 
     /**
       @brief Merge a PolygonEntity into an other one.

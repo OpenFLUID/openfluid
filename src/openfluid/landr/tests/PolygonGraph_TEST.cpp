@@ -1262,9 +1262,30 @@ BOOST_AUTO_TEST_CASE(check_getPolygonEntityByMinArea)
   BOOST_CHECK_EQUAL(mEntities.size(), 0);
 
   mEntities.clear();
+  mEntities=Graph->getPolygonEntitiesByMinArea(1,false);
+  BOOST_CHECK_EQUAL(mEntities.size(), 0);
+  mEntities.clear();
   mEntities=Graph->getPolygonEntitiesByMinArea(20000);
   BOOST_CHECK_EQUAL(mEntities.size(), 10);
+  mEntities.clear();
+  mEntities=Graph->getPolygonEntitiesByMinArea(20000,false);
+  BOOST_CHECK_EQUAL(mEntities.size(), 10);
 
+
+  delete Graph;
+  delete Vector;
+
+  Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU_To_Snap.shp");
+
+  Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  mEntities=Graph->getPolygonEntitiesByMinArea(3500);
+  BOOST_CHECK_EQUAL(mEntities.size(), 0);
+  mEntities.clear();
+  mEntities=Graph->getPolygonEntitiesByMinArea(3500,false);
+  BOOST_CHECK_EQUAL(mEntities.size(), 1);
 
   delete Graph;
   delete Vector;
@@ -1328,12 +1349,35 @@ BOOST_AUTO_TEST_CASE(check_getPolygonEntityByCompactness)
   BOOST_CHECK_EQUAL(mEntities.size(), 0);
 
   mEntities.clear();
+  mEntities=Graph->getPolygonEntitiesByCompactness(1.70,false);
+  BOOST_CHECK_EQUAL(mEntities.size(), 0);
+
+  mEntities.clear();
   mEntities=Graph->getPolygonEntitiesByCompactness(1.50);
   BOOST_CHECK_EQUAL(mEntities.size(), 3);
 
+  mEntities.clear();
+  mEntities=Graph->getPolygonEntitiesByCompactness(1.50,false);
+  BOOST_CHECK_EQUAL(mEntities.size(), 3);
 
   delete Graph;
   delete Vector;
+
+  Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU_To_Snap.shp");
+
+  Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  mEntities=Graph->getPolygonEntitiesByCompactness(1.3);
+  BOOST_CHECK_EQUAL(mEntities.size(), 0);
+  mEntities.clear();
+  mEntities=Graph->getPolygonEntitiesByCompactness(1.3,false);
+  BOOST_CHECK_EQUAL(mEntities.size(), 2);
+
+  delete Graph;
+  delete Vector;
+
 
 }
 

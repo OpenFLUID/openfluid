@@ -218,8 +218,8 @@ void LineStringGraph::removeEntity(int OfldId)
     std::ostringstream s;
     s << "No entity with id " << OfldId;
     throw openfluid::base::FrameworkException(
-                                       "LineStringGraph::removeEntity",
-                                       s.str());
+        OPENFLUID_CODE_LOCATION,
+        s.str());
     return;
   }
 
@@ -319,7 +319,7 @@ double LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entit
 
   if (!mp_Raster)
     throw openfluid::base::FrameworkException(
-        "LineStringGraph::getRasterValueForEntityStartNode",
+        OPENFLUID_CODE_LOCATION,
         "No raster associated to the LineStringGraph");
 
   double	Val = (double)
@@ -341,7 +341,7 @@ double LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
 
   if (!mp_Raster)
     throw openfluid::base::FrameworkException(
-        "LineStringGraph::getRasterValueForEntityEndNode",
+        OPENFLUID_CODE_LOCATION,
         "No raster associated to the LineStringGraph");
 
   double	Val = (double)
@@ -372,7 +372,7 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(const std::string& 
       s << "No raster value for entity " << (*it)->getOfldId() << " StartNode.";
 
       throw openfluid::base::FrameworkException(
-          "LineStringGraph::setAttributeFromRasterValueAtStartNode", s.str());
+          OPENFLUID_CODE_LOCATION, s.str());
       return;
     }
 
@@ -404,7 +404,7 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(const std::string& At
       s << "No raster value for entity " << (*it)->getOfldId() << " EndNode.";
 
       throw openfluid::base::FrameworkException(
-          "LineStringGraph::setAttributeFromRasterValueAtEndNode", s.str());
+          OPENFLUID_CODE_LOCATION, s.str());
       return;
     }
 
@@ -433,7 +433,7 @@ void LineStringGraph::reverseLineStringEntity(LineStringEntity& Entity)
     std::ostringstream s;
     s << "Reverse orientation impossible for entity" << OfldId<<" : "<<e.what() ;
     throw openfluid::base::FrameworkException(
-        "LineStringGraph::reverseLineStringEntity",s.str());
+        OPENFLUID_CODE_LOCATION,s.str());
   }
 
 }
@@ -515,7 +515,7 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
       s << "No raster value for entity " << (*it)->getOfldId() << " EndNode.";
 
       throw openfluid::base::FrameworkException(
-          "LineStringGraph::setAttributeFromMeanRasterValues", s.str());
+          OPENFLUID_CODE_LOCATION, s.str());
       return;
     }
 
@@ -528,7 +528,7 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
       s << "No raster value for entity " << (*it)->getOfldId() << " StartNode.";
 
       throw openfluid::base::FrameworkException(
-          "LineStringGraph::setAttributeFromMeanRasterValues", s.str());
+          OPENFLUID_CODE_LOCATION, s.str());
       return;
     }
 
@@ -566,7 +566,7 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity,
 
   if (!Coincident)
     throw openfluid::base::FrameworkException(
-        "LineStringGraph::mergeLineStringEntities",
+        OPENFLUID_CODE_LOCATION,
         "The LineStringEntities are not coincident");
 
 
@@ -620,7 +620,7 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity,
     std::ostringstream s;
     s << "Merge operation impossible for entity" << OfldId<<" : "<<e.what() ;
     throw openfluid::base::FrameworkException(
-        "LineStringGraph::mergeLineStringEntities",s.str());
+        OPENFLUID_CODE_LOCATION,s.str());
   }
 
 }
@@ -636,7 +636,7 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
 {
   if (MinLength<=0.0)
     throw  openfluid::base::FrameworkException(
-        "LineStringGraph::getLineStringEntitiesByMinLength : "
+        OPENFLUID_CODE_LOCATION,
         "Threshold must be superior to 0.0");
 
   std::list<LandREntity*> lEntities=getOfldIdOrderedEntities();
@@ -683,7 +683,7 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
 
   if (!this->isLineStringGraphArborescence())
     throw openfluid::base::FrameworkException(
-        "LineStringGraph::setOrientationByOfldID : "
+        OPENFLUID_CODE_LOCATION,
         "The LineStringGraph is not a correct arborescence.");
 
   // get the node of this edge
@@ -695,7 +695,7 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
     s << "Entity " << OfldId<< " is not a correct Line  entity.";
 
     throw openfluid::base::FrameworkException(
-        "LineStringGraph::setOrientationByOfldID : "
+        OPENFLUID_CODE_LOCATION
         +s.str());
   }
 
@@ -767,12 +767,12 @@ void LineStringGraph::mergeLineStringEntitiesByMinLength(double MinLength,bool r
 
   if (MinLength<=0.0)
     throw openfluid::base::FrameworkException(
-        "LineStringGraph::mergeLineStringEntitiesByMinLength : "
+        OPENFLUID_CODE_LOCATION,
         "Threshold must be superior to 0.0");
 
   if (getEntities().size()==1)
     throw openfluid::base::FrameworkException(
-        "LineStringGraph::mergeLineStringEntitiesByMinLength : "
+        OPENFLUID_CODE_LOCATION,
         "RSGRaph have just one RS Entity");
 
   std::multimap<double, LineStringEntity*>  mOrderedLength;
@@ -819,7 +819,7 @@ void LineStringGraph::mergeLineStringEntitiesByMinLength(double MinLength,bool r
       catch (std::exception& e)
       {
         throw openfluid::base::FrameworkException(
-            "LineStringGraph::mergeLineStringEntitiesByMinLength : "
+            OPENFLUID_CODE_LOCATION,
             "Unable to merge LineStringEntity.");
       }
 

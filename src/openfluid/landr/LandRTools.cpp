@@ -128,7 +128,7 @@ std::vector<geos::geom::LineString*> LandRTools::computeVectorOfExteriorRings(op
 {
   if (!Val.isPolygonType())
     throw openfluid::base::FrameworkException(
-        "LandRTools::computeVectorOfExteriorRings",
+        OPENFLUID_CODE_LOCATION,
         " The GeoVectorValue is not polygon-typed.");
 
   std::vector<geos::geom::LineString*> Lines;
@@ -152,7 +152,7 @@ std::vector<geos::geom::LineString*> LandRTools::computeVectorOfLines(openfluid:
 {
   if (!Val.isLineType())
     throw openfluid::base::FrameworkException(
-        "LandRTools::computeVectorOfLines",
+        OPENFLUID_CODE_LOCATION,
         " The GeoVectorValue is not linestring-typed.");
 
   std::vector<geos::geom::LineString*> Lines;
@@ -221,7 +221,7 @@ std::vector<geos::geom::LineString*>* LandRTools::computeNodedLines(geos::geom::
   catch (geos::util::GEOSException& e)
   {
     throw openfluid::base::FrameworkException(
-        "LandRTools::computeNodedLines",
+        OPENFLUID_CODE_LOCATION,
         "Error while noding lines, you can try again with a greater snap tolerance value.\n"
         "(Details: "
         + std::string(e.what()) + ")");
@@ -353,7 +353,7 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(geos::geo
     {
       if (Geom1->getGeometryN(i)->getGeometryTypeId()!=geos::geom::GEOS_POLYGON)
         throw openfluid::base::FrameworkException(
-            "LandRTools::computeIntersectPolygons",
+            OPENFLUID_CODE_LOCATION,
             " The Geometry is not Polygon-typed.");
 
       unsigned int jEnd=Geom2->getNumGeometries();
@@ -361,7 +361,7 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(geos::geo
       {
         if (Geom2->getGeometryN(j)->getGeometryTypeId()!=geos::geom::GEOS_POLYGON)
           throw openfluid::base::FrameworkException(
-              "LandRTools::computeIntersectPolygons",
+              OPENFLUID_CODE_LOCATION,
               " The Geometry is not Polygon-typed.");
         if ((Geom1->getGeometryN(i))->intersects(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j))))
         {
@@ -386,7 +386,7 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(geos::geo
   catch (geos::util::GEOSException& e)
   {
     throw openfluid::base::FrameworkException(
-        "LandRTools::computeIntersectPolygons",
+        OPENFLUID_CODE_LOCATION,
         "Error while Intersecting Polygons.\n"
         "(Details: "
         + std::string(e.what()) + ")");
@@ -405,7 +405,7 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
 {
   if (SnapTolerance<=0.0)
     throw  openfluid::base::FrameworkException(
-        "LandRTools::splitLineStringByPoint : "
+        OPENFLUID_CODE_LOCATION,
         "SnapTolerance must be superior to 0.0");
 
 
@@ -469,7 +469,7 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
 
   if (!split)
     throw  openfluid::base::FrameworkException(
-        "LandRTools::splitLineString : "
+        OPENFLUID_CODE_LOCATION,
         "Splitting operation impossible");
 
   unsigned int j=0;
@@ -515,7 +515,7 @@ void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,
 
   if (SnapTolerance<=0.0)
     throw  openfluid::base::FrameworkException(
-        "LandRTools::splitLineStringByPoints : "
+        OPENFLUID_CODE_LOCATION,
         "SnapTolerance must be superior to 0.0");
 
 
@@ -594,7 +594,7 @@ std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(std::vector<g
   catch (geos::util::GEOSException& e)
   {
     throw openfluid::base::FrameworkException(
-        "LandRTools::cleanLineStrings",
+        OPENFLUID_CODE_LOCATION,
         "Error while cleaning lines, you can try again with an other snap tolerance value.\n"
         "(Details: "
         + std::string(e.what()) + ")");

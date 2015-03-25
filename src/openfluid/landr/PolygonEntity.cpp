@@ -66,7 +66,7 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
     throw openfluid::base::FrameworkException(
-        "PolygonEntity::PolygonEntity",
+        OPENFLUID_CODE_LOCATION,
         "Geometry is not a Polygon.");
 
 
@@ -79,7 +79,7 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
     delete mp_Centroid;
 
     throw openfluid::base::FrameworkException(
-        "PolygonEntity::PolygonEntity",
+        OPENFLUID_CODE_LOCATION,
         "Polygon is not valid.");
   }
 
@@ -149,7 +149,7 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
     m_PolyEdges.erase(itEdge);
   else
     throw openfluid::base::FrameworkException(
-        "PolygonEntity::removeEdge",
+        OPENFLUID_CODE_LOCATION,
         "Edge doesn't exist in Edge vector.");
 
   mp_NeighboursMap = 0;
@@ -338,7 +338,7 @@ void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
 {
   if (Relation == LandRTools::TOUCHES && ContactLength==0)
     throw openfluid::base::FrameworkException(
-        "PolygonEntity::computeLineStringNeighbours",
+        OPENFLUID_CODE_LOCATION,
         "ContactLength must be superior to 0 for LandRTools::TOUCHES Relationship");
 
   if (!mp_NeighboursMap)
@@ -442,7 +442,7 @@ geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge,
   //ensure that the two PolygonEdges are coincident
   if (!Edge->isCoincident(EdgeToMerge))
     throw openfluid::base::FrameworkException(
-        "PolygonEntity::mergeEdges",
+        OPENFLUID_CODE_LOCATION,
         "The PolygonEdges are not coincident");
 
 
@@ -506,12 +506,12 @@ void PolygonEntity::computeNeighboursWithBarriers(LineStringGraph& Graph,
 {
 	if (Relation == LandRTools::TOUCHES && ContactLength==0)
 		throw openfluid::base::FrameworkException(
-				"PolygonEntity::computeNeighboursWithBarriers",
+		    OPENFLUID_CODE_LOCATION,
 				"ContactLength must be superior to 0 for LandRTools::Relationship TOUCHES ");
 
 	if (Relation == LandRTools::INTERSECTS)
 		throw openfluid::base::FrameworkException(
-				"PolygonEntity::computeNeighboursWithBarriers",
+		    OPENFLUID_CODE_LOCATION,
 				"LandRTools::Relationship INTERSECTS is not allowed");
 
 
@@ -650,7 +650,7 @@ std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(V
 {
   if (!LineTopology.isLineType())
     throw openfluid::base::FrameworkException(
-        "PolygonEntity::computeNeighbourByLineTopology",
+        OPENFLUID_CODE_LOCATION,
         "The VectorDataset is not Line Type ");
 
   if (!mp_NeighboursMap)

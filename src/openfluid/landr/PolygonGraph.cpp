@@ -108,7 +108,7 @@ PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
   }catch (openfluid::base::FrameworkException& e)
   {
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::create",
+        OPENFLUID_CODE_LOCATION,
         "Unable to create the PolygonGraph");
   }
 
@@ -130,7 +130,7 @@ PolygonGraph* PolygonGraph::create(openfluid::landr::VectorDataset& Vect)
   }catch (openfluid::base::FrameworkException& e)
   {
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::create",
+        OPENFLUID_CODE_LOCATION,
         "Unable to create the PolygonGraph");
   }
 
@@ -319,7 +319,7 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
                   << ": doesn't find edge intersection.";
 
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::removeSegment", s.str());
+        OPENFLUID_CODE_LOCATION, s.str());
   }
 
   geos::geom::Geometry* DiffGeom = OldEdge->line()->difference(Segment);
@@ -337,7 +337,7 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
                     << ": difference geometry is not \"Line\" typed.";
 
       throw openfluid::base::FrameworkException(
-          "PolygonGraph::removeSegment",
+          OPENFLUID_CODE_LOCATION,
           s.str());
     }
 
@@ -445,7 +445,7 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::computeRasterPolyOverlapping(Pol
 
   if (!RasterPolys)
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::computeRasterPolyOverlapping",
+        OPENFLUID_CODE_LOCATION,
         "No RasterPolygonizedMultiPolygon associated to the PolygonGraph");
 
   std::vector<geos::geom::Polygon*>::iterator it = RasterPolys->begin();
@@ -536,7 +536,7 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
     delete OutVector;
 
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::createVectorRepresentation",
+        OPENFLUID_CODE_LOCATION,
         "No edges for this graph.");
   }
 
@@ -556,7 +556,7 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
       delete OutVector;
       delete Geom;
       throw openfluid::base::FrameworkException(
-          "PolygonGraph::createVectorRepresentation",
+          OPENFLUID_CODE_LOCATION,
           "Failed to transform geometry from GEOS to OGR.");
     }
 
@@ -567,7 +567,7 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
       delete OutVector;
 
       throw openfluid::base::FrameworkException(
-          "PolygonGraph::createVectorRepresentation",
+          OPENFLUID_CODE_LOCATION,
           "Failed to create feature in shapefile.");
     }
     delete Geom;
@@ -591,7 +591,7 @@ void PolygonGraph::computeLineStringNeighbours(LineStringGraph& Graph,
 {
   if (Relation == LandRTools::TOUCHES && ContactLength==0)
     throw openfluid::base::FrameworkException(
-           "PolygonGraph::computeLineStringNeighbours",
+        OPENFLUID_CODE_LOCATION,
            "ContactLength must be superior to 0 for LandRTools::TOUCHES RelationShip");
 
 
@@ -687,7 +687,7 @@ void PolygonGraph::removeEntity(int OfldId)
     std::ostringstream s;
     s << "No entity with id " << OfldId;
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::removeEntity",
+        OPENFLUID_CODE_LOCATION,
         s.str());
     return;
   }
@@ -822,11 +822,11 @@ void PolygonGraph::cleanEdges(PolygonEntity & Entity)
 // =====================================================================
 
 
-std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea(double MinArea)
+std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea(double MinArea, bool Neighbour)
 {
   if (MinArea<=0.0)
     throw  openfluid::base::FrameworkException(
-        "PolygonGraph::getPolygonEntitiesByMinArea : "
+        OPENFLUID_CODE_LOCATION,
         "Threshold must be superior to 0.0");
 
   std::list<LandREntity*> lEntities=getOfldIdOrderedEntities();
@@ -835,7 +835,15 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea
   std::multimap<double, PolygonEntity*> mOrderedArea;
   for (;it!=ite;++it)
   {
-    if ((*it)->getArea()<MinArea)
+    bool NeighbourExist=true;
+    if(Neighbour)
+    {
+      dynamic_cast<openfluid::landr::PolygonEntity*>(*it)->computeNeighbours();
+      if (dynamic_cast<openfluid::landr::PolygonEntity*>(*it)->getOrderedNeighbourOfldIds().empty())
+        NeighbourExist=false;
+    }
+
+    if ((*it)->getArea()<MinArea && NeighbourExist)
       mOrderedArea.insert ( std::pair<double, PolygonEntity*>
       ((*it)->getArea(),dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
   }
@@ -856,7 +864,7 @@ void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity,
   std::vector<PolygonEdge*> vEdge=Entity.getCommonEdgesWith(EntityToMerge);
   if (vEdge.empty())
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::mergePolygonEntities",
+        OPENFLUID_CODE_LOCATION,
         "The PolygonEntities are not neighbours");
 
   geos::geom::Geometry *  NewPoly=Entity.geometry()->Union(EntityToMerge.geometry());
@@ -878,7 +886,7 @@ void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity,
     std::ostringstream s;
     s << "Merge operation impossible for entity" << OfldId<<" : "<<e.what() ;
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::mergePolygonEntities",s.str());
+        OPENFLUID_CODE_LOCATION,s.str());
   }
 
 }
@@ -888,11 +896,11 @@ void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity,
 // =====================================================================
 
 
-std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompactness(double Compactness)
+std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompactness(double Compactness, bool Neighbour)
 {
   if (Compactness<=0.0)
     throw  openfluid::base::FrameworkException(
-        "PolygonGraph::getPolygonEntitiesByCompacteness : "
+        OPENFLUID_CODE_LOCATION,
         "Threshold must be superior to 0.0");
 
   std::list<LandREntity*> lEntities=getOfldIdOrderedEntities();
@@ -901,8 +909,15 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompact
   std::multimap<double, PolygonEntity*> mOrderedCompact;
   for (;it!=ite;++it)
   {
+    bool NeighbourExist=true;
+    if(Neighbour)
+    {
+      dynamic_cast<openfluid::landr::PolygonEntity*>(*it)->computeNeighbours();
+      if (dynamic_cast<openfluid::landr::PolygonEntity*>(*it)->getOrderedNeighbourOfldIds().empty())
+        NeighbourExist=false;
+    }
     double valCompact=(*it)->getLength()/(2*std::sqrt(4 * std::atan(1.0)*(*it)->getArea()));
-    if (valCompact>Compactness)
+    if (valCompact>Compactness && NeighbourExist)
       mOrderedCompact.insert ( std::pair<double, PolygonEntity*>
       (valCompact,dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
   }
@@ -922,12 +937,12 @@ void PolygonGraph::computeNeighboursWithBarriers(LineStringGraph& Graph,
 {
   if (Relation == LandRTools::TOUCHES && ContactLength==0)
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::computeNeighboursWithBarriers",
+        OPENFLUID_CODE_LOCATION,
         "ContactLength must be superior to 0 for LandRTools::TOUCHES RelationShip");
 
   if (Relation == LandRTools::INTERSECTS)
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::computeNeighboursWithBarriers",
+        OPENFLUID_CODE_LOCATION,
         "LandRTools::INTERSECTS RelationShip not allowed");
 
 
@@ -949,12 +964,12 @@ void PolygonGraph::mergePolygonEntitiesByMinArea(double MinArea)
 {
   if (MinArea<=0.0)
     throw  openfluid::base::FrameworkException(
-        "PolygonGraph::mergePolygonEntitiesByMinArea : "
+        OPENFLUID_CODE_LOCATION,
         "Threshold must be superior to 0.0");
 
   if (getEntities().size()==1)
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::mergePolygonEntitiesByMinArea : "
+        OPENFLUID_CODE_LOCATION,
         "PolygonGraph have just one PolygonEntity");
 
 
@@ -981,7 +996,7 @@ void PolygonGraph::mergePolygonEntitiesByMinArea(double MinArea)
     catch (std::exception& e)
     {
       throw openfluid::base::FrameworkException(
-          "PolygonGraph::mergePolygonEntitiesByMinArea : "
+          OPENFLUID_CODE_LOCATION,
           "Unable to merge PolygonEntity.");
     }
     //TODO change this part to improve speed : just remove from the list the Entity and the Entity to Merge if necessary
@@ -1001,12 +1016,12 @@ void PolygonGraph::mergePolygonEntitiesByCompactness(double Compactness)
 {
   if (Compactness<=0.0)
     throw  openfluid::base::FrameworkException(
-        "PolygonGraph::mergePolygonEntitiesByCompactness : "
+        OPENFLUID_CODE_LOCATION,
         "Threshold must be superior to 0.0");
 
   if (getEntities().size()==1)
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::mergePolygonEntitiesByCompactness : "
+        OPENFLUID_CODE_LOCATION,
         "PolygonGraph have just one PolygonEntity");
 
 
@@ -1032,7 +1047,7 @@ void PolygonGraph::mergePolygonEntitiesByCompactness(double Compactness)
     catch (std::exception& e)
     {
       throw openfluid::base::FrameworkException(
-          "PolygonGraph::mergePolygonEntitiesByCompactness : "
+          OPENFLUID_CODE_LOCATION,
           "Unable to merge PolygonEntity.");
     }
     //TODO change this part to improve speed : just remove from the list the Entity and the Entity to Merge if necessary

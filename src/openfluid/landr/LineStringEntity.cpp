@@ -58,7 +58,7 @@ LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
 {
 	if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_LINESTRING)
 		throw openfluid::base::FrameworkException(
-				"LineStringEntity::LineStringEntity",
+		    OPENFLUID_CODE_LOCATION,
 				"Geometry is not a LineString.");
 
 	mp_Line =
@@ -69,7 +69,7 @@ LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
 		delete mp_Centroid;
 
 		throw openfluid::base::FrameworkException(
-				"LineStringEntity::LineStringEntity",
+		    OPENFLUID_CODE_LOCATION,
 				"The LineString is empty");
 	}
 }

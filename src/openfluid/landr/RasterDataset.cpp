@@ -67,7 +67,7 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
   if (!mp_Dataset)
   {
     throw openfluid::base::FrameworkException(
-        "RasterDataset::RasterDataset",
+        OPENFLUID_CODE_LOCATION,
         "Error while creating a virtual copy of " + Value.getAbsolutePath()
         + " (" + CPLGetLastErrorMsg() + ")");
   }
@@ -93,7 +93,7 @@ RasterDataset::RasterDataset(const RasterDataset& Other) :
   if (!mp_Dataset)
   {
     throw openfluid::base::FrameworkException(
-        "RasterDataset::RasterDataset",
+        OPENFLUID_CODE_LOCATION,
         "Error while creating a virtual copy (" + std::string(
             CPLGetLastErrorMsg())
         + ")");
@@ -178,7 +178,7 @@ void RasterDataset::computeGeoTransform()
 
   if (GDALGetGeoTransform(mp_Dataset, mp_GeoTransform) != CE_None)
     throw openfluid::base::FrameworkException(
-        "RasterDataset::computeGeoTransform",
+        OPENFLUID_CODE_LOCATION,
         "Error while getting GeoTransform information");
 }
 
@@ -279,7 +279,7 @@ float RasterDataset::getValueOfPixel(int ColIndex,
                                                0, 0)
       != CE_None)
     throw openfluid::base::FrameworkException(
-        "RasterDataset::getValueOfPixel",
+        OPENFLUID_CODE_LOCATION,
         "Error while getting value from raster.");
 
   Val = ScanLine[0];
@@ -336,7 +336,7 @@ openfluid::landr::VectorDataset* RasterDataset::polygonize(const std::string& Fi
         != CE_None)
     {
       throw openfluid::base::FrameworkException(
-          "RasterDataset::polygonize",
+          OPENFLUID_CODE_LOCATION,
           "Error while polygonizing raster.");
       delete mp_PolygonizedByRasterBandIndex.at(RasterBandIndex);
       mp_PolygonizedByRasterBandIndex.erase(RasterBandIndex);

@@ -86,12 +86,12 @@ LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
 
   if (!mp_Vector)
     throw openfluid::base::FrameworkException(
-        "LandRGraph::LandRGraph",
+        OPENFLUID_CODE_LOCATION,
         "No GeoVectorValue.");
 
   if (!mp_Vector->containsField("OFLD_ID"))
     throw openfluid::base::FrameworkException(
-        "LandRGraph::LandRGraph",
+        OPENFLUID_CODE_LOCATION,
         "GeoVector file must contain a \"OFLD_ID\" field.");
 }
 
@@ -114,7 +114,7 @@ LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
 
   if (!mp_Vector->containsField("OFLD_ID"))
     throw openfluid::base::FrameworkException(
-        "LandRGraph::LandRGraph",
+        OPENFLUID_CODE_LOCATION,
         "GeoVector file must contain a \"OFLD_ID\" field.");
 }
 
@@ -159,7 +159,7 @@ void LandRGraph::addEntitiesFromGeoVector()
 {
   if (!mp_Vector)
     throw openfluid::base::FrameworkException(
-        "LandRGraph::addEntitiesFromGeoVector",
+        OPENFLUID_CODE_LOCATION,
         "No GeoVectorValue.");
 
   // TODO move to... ?
@@ -178,7 +178,7 @@ void LandRGraph::addEntitiesFromGeoVector()
       std::ostringstream s;
       s << "Error when exporting OGR Geometry into GEOS geometry";
       throw openfluid::base::FrameworkException(
-          "LandRGraph::addEntitiesFromGeoVector", s.str());
+          OPENFLUID_CODE_LOCATION, s.str());
 
     }
 
@@ -411,7 +411,7 @@ openfluid::landr::VectorDataset* LandRGraph::rasterPolygonized()
   {
     if (!mp_Raster)
       throw openfluid::base::FrameworkException(
-          "LandRGraph::getRasterPolygonized",
+          OPENFLUID_CODE_LOCATION,
           "No raster associated to the PolygonGraph");
 
     std::ostringstream FileName;
@@ -438,7 +438,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::rasterPolygonizedPolys()
 
     if (!Polygonized)
       throw openfluid::base::FrameworkException(
-          "LandRGraph::getRasterPolygonizedMultiPoly",
+          OPENFLUID_CODE_LOCATION,
           "No RasterPolygonized associated to the PolygonGraph");
 
     mp_RasterPolygonizedPolys = new std::vector<geos::geom::Polygon*>();
@@ -489,7 +489,7 @@ double LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
 
   if (!mp_Raster)
     throw openfluid::base::FrameworkException(
-        "LandRGraph::getRasterValueForEntityCentroid",
+        OPENFLUID_CODE_LOCATION,
         "No raster associated to the PolygonGraph");
 
   double  Val = (double)
@@ -520,7 +520,7 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(const std::string& Attrib
       s << "No raster value for entity " << (*it)->getOfldId() << " centroid.";
 
       throw openfluid::base::FrameworkException(
-          "LandRGraph::setAttributeFromRasterValueAtCentroid", s.str());
+          OPENFLUID_CODE_LOCATION, s.str());
     }
 
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
@@ -565,7 +565,7 @@ void LandRGraph::exportToShp(const std::string& FilePath,
     default:
       delete Out;
       throw openfluid::base::FrameworkException(
-          "LandRGraph::exportToShp",
+          OPENFLUID_CODE_LOCATION,
           "Unable to export graph as a shapefile : is not POLYGON, nor LINESTRING typed");
       break;
   }
@@ -588,7 +588,7 @@ void LandRGraph::exportToShp(const std::string& FilePath,
       delete Out;
       delete OGRGeom;
       throw openfluid::base::FrameworkException(
-          "LandRGraph::exportToShp",
+          OPENFLUID_CODE_LOCATION,
           "Failed to transform geometry from GEOS to OGR.");
     }
 
@@ -599,7 +599,7 @@ void LandRGraph::exportToShp(const std::string& FilePath,
       delete Out;
       delete OGRGeom;
       throw openfluid::base::FrameworkException(
-          "LandRGraph::exportToShp",
+          OPENFLUID_CODE_LOCATION,
           "Failed to create feature in shapefile.");
     }
 
@@ -626,7 +626,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in GeoVector.";
     throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorId", s.str());
+        OPENFLUID_CODE_LOCATION, s.str());
   }
 
   addAttribute(AttributeName);
@@ -682,7 +682,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in VectorDataset.";
     throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorId", s.str());
+        OPENFLUID_CODE_LOCATION, s.str());
   }
 
   addAttribute(AttributeName);
@@ -783,7 +783,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 {
   if (!Vector.isPolygonType()&&!Vector.isLineType())
     throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorLocation",
+        OPENFLUID_CODE_LOCATION,
         "Vector is not Line nor Polygon type");
 
 
@@ -792,7 +792,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in GeoVector.";
     throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorLocation", s.str());
+        OPENFLUID_CODE_LOCATION, s.str());
   }
 
   addAttribute(AttributeName);
@@ -876,7 +876,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 {
   if (!Vector.isPolygonType()&&!Vector.isLineType())
     throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorLocation",
+        OPENFLUID_CODE_LOCATION,
         "Vector is not Line nor Polygon type");
 
 
@@ -885,7 +885,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in GeoVector.";
     throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorLocation", s.str());
+        OPENFLUID_CODE_LOCATION, s.str());
   }
 
   addAttribute(AttributeName);
