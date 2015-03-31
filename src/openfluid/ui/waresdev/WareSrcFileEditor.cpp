@@ -569,15 +569,14 @@ void WareSrcFileEditor::saveContentToPath(const QString& Path)
     return;
 
   if (!QDir().mkpath(QFileInfo(Path).absolutePath()))
-    throw openfluid::base::FrameworkException("WareSrcFileEditor::saveContentToPath",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("Unable to create the path \"%1\"").arg(Path).toStdString());
 
   QFile File(Path);
 
   if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
     throw openfluid::base::FrameworkException(
-        "WareSrcFileEditor::saveContentToPath",
-        QString("Unable to open the file \"%1\" in write mode").arg(Path).toStdString());
+        OPENFLUID_CODE_LOCATION, QString("Unable to open the file \"%1\" in write mode").arg(Path).toStdString());
 
   QTextStream Str(&File);
   Str << toPlainText();
@@ -593,7 +592,7 @@ void WareSrcFileEditor::updateContent()
   QFile File(m_FilePath);
 
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-    throw openfluid::base::FrameworkException("WareSrcFileEditor::updateContent",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("Cannot open file %1").arg(m_FilePath).toStdString());
 
   setPlainText(QTextStream(&File).readAll());

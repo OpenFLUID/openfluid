@@ -108,7 +108,7 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
   foreach(QString Path,m_WareTypePathByWareType){
   if (!QDir(Path).mkpath(Path))
   throw openfluid::base::FrameworkException(
-      "waresdev::WareSrcManager::switchWorkspace",
+      OPENFLUID_CODE_LOCATION,
       QString("unable to open or create %1 directory").arg(Path).toStdString());
 }
 }
@@ -123,7 +123,7 @@ QString WareSrcManager::getWareTypePath(WareType WareSrcType)
   if (m_WareTypePathByWareType.contains(WareSrcType))
     return m_WareTypePathByWareType.value(WareSrcType);
 
-  throw openfluid::base::FrameworkException("waresdev::WareSrcManager::getWareTypePath", "unknown source type");
+  throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unknown source type");
 }
 
 

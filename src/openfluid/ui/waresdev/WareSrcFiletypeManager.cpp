@@ -124,7 +124,7 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
   QFile File(FilePath);
 
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::openWaresdevFile",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("file not found: %1").arg(FilePath).toStdString());
 
   QString Msg;
@@ -133,7 +133,7 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
   {
     File.close();
     throw openfluid::base::FrameworkException(
-        "WareSrcFiletypeManager::openWaresdevFile",
+        OPENFLUID_CODE_LOCATION,
         QString("error in file: %1 (line %2, column %3").arg(Msg).arg(Line).arg(Col).toStdString());
   }
   File.close();
@@ -141,13 +141,12 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
   QDomElement Elem = Doc.documentElement();
 
   if (Elem.tagName() != "openfluid")
-    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::openWaresdevFile",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "file not well formed (missing 'openfluid' tag)");
 
   Elem = Elem.firstChildElement();
   if (Elem.tagName() != "waresdev")
-    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::openWaresdevFile",
-                                              "file not well formed (missing 'waresdev' tag)");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "file not well formed (missing 'waresdev' tag)");
 
   return Elem;
 }
@@ -163,7 +162,7 @@ void WareSrcFiletypeManager::parseFiletypeFile(const QString& FilePath)
 
   Elem = Elem.firstChildElement();
   if (Elem.tagName() != "filetypes")
-    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseFiletypeFile",
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "language file not well formed (missing 'filetypes' tag)");
 
   for (QDomElement TypeElem = Elem.firstChildElement(); !TypeElem.isNull() && TypeElem.tagName() == "filetype";
@@ -172,14 +171,13 @@ void WareSrcFiletypeManager::parseFiletypeFile(const QString& FilePath)
     QString TypeName = TypeElem.attribute("name");
     if (TypeName.isEmpty())
       throw openfluid::base::FrameworkException(
-          "WareSrcFiletypeManager::parseFiletypeFile",
-          "language file not well formed ('filetype' tag has no 'name' attribute)");
+          OPENFLUID_CODE_LOCATION, "language file not well formed ('filetype' tag has no 'name' attribute)");
 
     WareSrcFiletype Type;
 
     QDomNode ExtNode = TypeElem.namedItem("extensions");
     if (ExtNode.isNull() || !ExtNode.isElement())
-      throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseFiletypeFile",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "language file not well formed (missing 'extensions' tag)");
 
     Type.m_Extensions = ExtNode.toElement().text();
@@ -226,15 +224,14 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
   Elem = Elem.firstChildElement();
 //  if (Elem.tagName() != "language" || Elem.attribute("name") != FileTypeName)
 //    throw openfluid::base::FrameworkException(
-//        "WareSrcFiletypeManager::parseSyntaxFile",
+//        OPENFLUID_CODE_LOCATION,
 //        QString(
 //            "syntax file not well formed (missing 'language' tag or language name is not '%1')")
 //            .arg(FileTypeName).toStdString());
 
   Elem = Elem.firstChildElement();
   if (Elem.tagName() != "highlighting")
-    throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseSyntaxFile",
-                                              "no 'highlighting' tag in syntax file");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "no 'highlighting' tag in syntax file");
 
   HighlightingRules_t Rules;
 
@@ -300,7 +297,7 @@ WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::pars
   Elem = Elem.firstChildElement();
   //  if (Elem.tagName() != "language" || Elem.attribute("name") != FileTypeName)
   //    throw openfluid::base::FrameworkException(
-  //        "WareSrcFiletypeManager::parseCompletionFile",
+  //        OPENFLUID_CODE_LOCATION,
   //        QString(
   //            "syntax file not well formed (missing 'language' tag or language name is not '%1')")
   //            .arg(FileTypeName).toStdString());
@@ -319,7 +316,7 @@ WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::pars
     QString Icon = SnippetElem.attribute("icon");
 
     if (Category.isEmpty())
-      throw openfluid::base::FrameworkException("WareSrcFiletypeManager::parseCompletionFile",
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "missing category attribute in  <snippets> tag");
 
     QDomNodeList Items = SnippetElem.elementsByTagName("item");
@@ -331,8 +328,8 @@ WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::pars
       QString MenuPath = ItemElem.attribute("menupath");
       int LastSepPosition = MenuPath.lastIndexOf('/');
 
-      QString MenuTree = Category+"/"+MenuPath.left(LastSepPosition);
-      QString MenuTitle = MenuPath.section('/',-1);
+      QString MenuTree = Category + "/" + MenuPath.left(LastSepPosition);
+      QString MenuTitle = MenuPath.section('/', -1);
 
       bool ForCompletion = ItemElem.attribute("completion") == "true";
 

@@ -185,7 +185,7 @@ QAction* WareSrcToolbar::action(const QString& ActionName)
   if (m_Actions.contains(ActionName))
     return m_Actions.value(ActionName);
 
-  throw openfluid::base::FrameworkException("WareSrcToolbar::getAction",
+  throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                             "Action \"" + ActionName.toStdString() + "\" does'nt exist.");
 }
 

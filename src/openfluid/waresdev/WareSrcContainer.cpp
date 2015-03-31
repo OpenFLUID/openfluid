@@ -116,7 +116,7 @@ void WareSrcContainer::update()
     QFile File(m_AbsoluteCMakeConfigPath);
     if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
       throw openfluid::base::FrameworkException(
-          "WareSrcContainer update", QString("Cannot open file %1").arg(m_AbsoluteCMakeConfigPath).toStdString());
+          OPENFLUID_CODE_LOCATION, QString("Cannot open file %1").arg(m_AbsoluteCMakeConfigPath).toStdString());
 
     QByteArray CMakeFileContent = File.readAll();
 
@@ -347,7 +347,7 @@ void WareSrcContainer::findCMake()
       openfluid::utils::ExternalProgram::CMakeProgram);
 
   if (!CMakeProg.isFound())
-    throw openfluid::base::FrameworkException("WareSrcContainer::findCMake", "unable to find CMake program");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to find CMake program");
 
   m_CMakeProgramPath = CMakeProg.getFullProgramPath();
 }
@@ -368,7 +368,7 @@ void WareSrcContainer::configure()
   if (BuildDir.exists())
     openfluid::tools::emptyDirectoryRecursively(QString(m_BuildDirPath).toStdString());
   else if (!QDir().mkpath(m_BuildDirPath))
-    throw openfluid::base::FrameworkException("WareSrcContainer::configure", "unable to create build directory");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to create build directory");
 
   QString Options = QString(" -DCMAKE_BUILD_TYPE=%1").arg(m_ConfigMode == CONFIG_RELEASE ? "Release" : "Debug");
 
