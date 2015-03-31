@@ -42,7 +42,6 @@
 #include "ui_WareExplorerDialog.h"
 
 #include <QFileInfo>
-#include <QDir>
 #include <QMessageBox>
 
 #include <openfluid/ui/config.hpp>
@@ -57,26 +56,25 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath,
                                        const QString& Title, const QString& DefaultMessage,
                                        const QString& AcceptButtonLabel) :
-    QDialog(Parent), ui(new Ui::WareExplorerDialog), mp_AcceptButton(0), m_DefaulMessage(DefaultMessage)
+    QDialog(Parent), ui(new Ui::WareExplorerDialog), mp_AcceptButton(0), m_DefaulMessage(DefaultMessage),
+    m_TopDir(QDir(TopDirectoryPath))
 {
   ui->setupUi(this);
 
   setWindowTitle(Title);
 
-  setStatus("");
+  ui->Filepath_lineEdit->setFocus();
 
-  QRegExp Rx("[a-zA-Z0-9._-]+");
-  QValidator* Validator = new QRegExpValidator(Rx, this);
-  ui->Filename_lineEdit->setValidator(Validator);
+  QRegExp FilepathRx(QString("[a-zA-Z0-9._%1-]+").arg(QDir::separator()));
+  ui->Filepath_lineEdit->setValidator(new QRegExpValidator(FilepathRx, this));
+  ui->Filepath_lineEdit->setToolTip(
+      tr("Accepts only letters, digits, dashes ('-'), underscores ('_'), dots ('.') and folder separators ('%1').").arg(
+          QDir::separator()));
 
   ui->WareExplorer->configure(TopDirectoryPath, false);
+  ui->ParentDir_label->setText(QDir::toNativeSeparators(TopDirectoryPath));
 
-  QString CurrentPathToSet = CurrentPath.isEmpty() ? TopDirectoryPath : CurrentPath;
-
-  ui->WareExplorer->setCurrentPath(CurrentPathToSet);
-
-  QFileInfo CurrentPathToSetFI(CurrentPathToSet);
-  ui->Filename_lineEdit->setText(CurrentPathToSetFI.isFile() ? CurrentPathToSetFI.fileName() : "");
+  ui->WareExplorer->setCurrentPath(CurrentPath.isEmpty() ? TopDirectoryPath : CurrentPath);
 
   mp_Manager = openfluid::waresdev::WareSrcManager::instance();
 
@@ -139,8 +137,10 @@ QString WareExplorerDialog::getOpenFilePath(QWidget* Parent, const QString& TopD
 QString WareExplorerDialog::getSaveFilePath(QWidget* Parent, const QString& TopDirectoryPath,
                                             const QString& CurrentPath)
 {
-  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("Save as"), tr("Define the file to save as"),
-                            tr("Save"));
+  WareExplorerDialog Dialog(
+      Parent, TopDirectoryPath, CurrentPath, tr("Save as"),
+      tr("Save \"%1\" as...").arg(QDir::toNativeSeparators(QDir(TopDirectoryPath).relativeFilePath(CurrentPath))),
+      tr("Save"));
   Dialog.setSaveFileMode();
 
   if (Dialog.exec())
@@ -185,8 +185,8 @@ QString WareExplorerDialog::getCreateFilePath(QWidget* Parent, const QString& To
 
 void WareExplorerDialog::setOpenWareMode()
 {
-  ui->Directory_widget->setVisible(false);
-  ui->Filename_widget->setVisible(false);
+  ui->ParentDir_widget->setVisible(false);
+  ui->Filepath_widget->setVisible(false);
 
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
           SLOT(onCurrentChangedOpenWareMode(const QString&)));
@@ -201,8 +201,8 @@ void WareExplorerDialog::setOpenWareMode()
 
 void WareExplorerDialog::setOpenFileMode()
 {
-  ui->Directory_widget->setVisible(false);
-  ui->Filename_widget->setVisible(false);
+  ui->ParentDir_widget->setVisible(false);
+  ui->Filepath_widget->setVisible(false);
 
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
           SLOT(onCurrentChangedOpenFileMode(const QString&)));
@@ -217,14 +217,14 @@ void WareExplorerDialog::setOpenFileMode()
 
 void WareExplorerDialog::setSaveFileMode()
 {
-  connect(ui->Filename_lineEdit, SIGNAL(textChanged(const QString &)), this,
-          SLOT(onTextChangedCheckEmpty(const QString&)));
+  connect(ui->Filepath_lineEdit, SIGNAL(textChanged(const QString &)), this,
+          SLOT(onTextChangedSaveMode(const QString&)));
 
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
-          SLOT(onCurrentChangedSaveFileMode(const QString&)));
+          SLOT(onCurrentChangedSaveCreateMode(const QString&)));
 
-  onTextChangedCheckEmpty(ui->Filename_lineEdit->text());
-  onCurrentChangedSaveFileMode(ui->WareExplorer->getCurrentPath());
+  onTextChangedSaveMode(ui->Filepath_lineEdit->text());
+  onCurrentChangedSaveCreateMode(ui->WareExplorer->getCurrentPath());
 }
 
 
@@ -234,14 +234,14 @@ void WareExplorerDialog::setSaveFileMode()
 
 void WareExplorerDialog::setCreateFileMode()
 {
-  connect(ui->Filename_lineEdit, SIGNAL(textChanged(const QString &)), this,
-          SLOT(onTextChangedCheckExists(const QString&)));
+  connect(ui->Filepath_lineEdit, SIGNAL(textChanged(const QString &)), this,
+          SLOT(onTextChangedCreateMode(const QString&)));
 
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
-          SLOT(onCurrentChangedSaveFileMode(const QString&)));
+          SLOT(onCurrentChangedSaveCreateMode(const QString&)));
 
-  onTextChangedCheckExists(ui->Filename_lineEdit->text());
-  onCurrentChangedSaveFileMode(ui->WareExplorer->getCurrentPath());
+  onTextChangedCreateMode(ui->Filepath_lineEdit->text());
+  onCurrentChangedSaveCreateMode(ui->WareExplorer->getCurrentPath());
 }
 
 
@@ -269,17 +269,9 @@ void WareExplorerDialog::onCurrentChangedOpenFileMode(const QString& Path)
 // =====================================================================
 
 
-void WareExplorerDialog::onCurrentChangedSaveFileMode(const QString& Path)
+void WareExplorerDialog::onCurrentChangedSaveCreateMode(const QString& Path)
 {
-  QFileInfo Info(Path);
-
-  if (Info.isFile())
-  {
-    ui->Directory_label->setText(Info.absolutePath());
-    ui->Filename_lineEdit->setText(Info.fileName());
-  }
-  else
-    ui->Directory_label->setText(Info.absoluteFilePath());
+  ui->Filepath_lineEdit->setText(QDir::toNativeSeparators(m_TopDir.relativeFilePath(Path)));
 }
 
 
@@ -287,23 +279,33 @@ void WareExplorerDialog::onCurrentChangedSaveFileMode(const QString& Path)
 // =====================================================================
 
 
-void WareExplorerDialog::onTextChangedCheckEmpty(const QString& Text)
-{
-  setStatus(Text.isEmpty() ? "You must enter a file name" : "");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareExplorerDialog::onTextChangedCheckExists(const QString& Text)
+void WareExplorerDialog::onTextChangedSaveMode(const QString& Text)
 {
   QString Msg = "";
   if (Text.isEmpty())
-    Msg = "You must enter a file name";
+    Msg = "You must enter a file path";
+  else if (QFileInfo(getCompleteFilePath()).isDir())
+    Msg = "You must enter the path of a file";
+  else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
+    Msg = "The file path must be below the parent directory";
+
+  setStatus(Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareExplorerDialog::onTextChangedCreateMode(const QString& Text)
+{
+  QString Msg = "";
+  if (Text.isEmpty())
+    Msg = "You must enter a file path";
   else if (QFile(getCompleteFilePath()).exists())
-    Msg = "You must enter the name of a file that doesn't already exist";
+    Msg = "You must enter the path of a file that doesn't already exist";
+  else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
+    Msg = "The file path must be below the parent directory";
 
   setStatus(Msg);
 }
@@ -322,29 +324,9 @@ QString WareExplorerDialog::getSelectedPath()
 // =====================================================================
 
 
-QString WareExplorerDialog::getEditedFilename()
-{
-  return ui->Filename_lineEdit->text();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 QString WareExplorerDialog::getCompleteFilePath()
 {
-  QFileInfo Info(getSelectedPath());
-
-  QDir Dir;
-  QString NewPath;
-
-  if (Info.isFile())
-    Dir = Info.absoluteDir();
-  else
-    Dir.setPath(Info.filePath());
-
-  return Dir.filePath(getEditedFilename());
+  return m_TopDir.absoluteFilePath(QDir::fromNativeSeparators(ui->Filepath_lineEdit->text()));
 }
 
 

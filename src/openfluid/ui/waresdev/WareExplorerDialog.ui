@@ -69,12 +69,15 @@ font : bold;
       <number>9</number>
      </property>
      <item>
-      <widget class="QWidget" name="Directory_widget" native="true">
-       <layout class="QHBoxLayout" name="horizontalLayout">
+      <widget class="QWidget" name="ParentDir_widget" native="true">
+       <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        </property>
         <property name="margin">
          <number>0</number>
         </property>
-        <item>
+        <item row="0" column="0">
          <widget class="QLabel" name="Directoryname_label">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -83,12 +86,12 @@ font : bold;
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Parent folder:</string>
+           <string>Parent directory:</string>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="openfluid::ui::common::ElidedLabel" name="Directory_label">
+        <item row="0" column="1">
+         <widget class="openfluid::ui::common::ElidedLabel" name="ParentDir_label">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -107,7 +110,7 @@ font : bold;
       <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="WareExplorer"/>
      </item>
      <item>
-      <widget class="QWidget" name="Filename_widget" native="true">
+      <widget class="QWidget" name="Filepath_widget" native="true">
        <layout class="QHBoxLayout" name="FilenameLayout">
         <property name="margin">
          <number>0</number>
@@ -115,12 +118,12 @@ font : bold;
         <item>
          <widget class="QLabel" name="Filename_label">
           <property name="text">
-           <string>File name:</string>
+           <string>New file path:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="Filename_lineEdit"/>
+         <widget class="QLineEdit" name="Filepath_lineEdit"/>
         </item>
        </layout>
       </widget>

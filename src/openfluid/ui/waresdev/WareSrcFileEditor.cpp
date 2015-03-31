@@ -137,7 +137,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
       if (MenuPathList.isEmpty())
         MenuPathList << "Other";
       else
-        for (int i=0;i<MenuPathList.size();i++)
+        for (int i = 0; i < MenuPathList.size(); i++)
           MenuPathList[i] = openfluid::tools::decodeXMLEntities(MenuPathList[i]);
 
 
@@ -568,11 +568,16 @@ void WareSrcFileEditor::saveContentToPath(const QString& Path)
   if (Path.isEmpty())
     return;
 
+  if (!QDir().mkpath(QFileInfo(Path).absolutePath()))
+    throw openfluid::base::FrameworkException("WareSrcFileEditor::saveContentToPath",
+                                              QString("Unable to create the path \"%1\"").arg(Path).toStdString());
+
   QFile File(Path);
 
   if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
-    throw openfluid::base::FrameworkException("WareSrcFileEditor::setContentToPath",
-                                              QString("Cannot open file %1 in write mode").arg(Path).toStdString());
+    throw openfluid::base::FrameworkException(
+        "WareSrcFileEditor::saveContentToPath",
+        QString("Unable to open the file \"%1\" in write mode").arg(Path).toStdString());
 
   QTextStream Str(&File);
   Str << toPlainText();

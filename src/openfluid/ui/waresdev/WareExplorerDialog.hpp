@@ -45,6 +45,7 @@
 
 #include <QDialog>
 #include <QPushButton>
+#include <QDir>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
@@ -67,6 +68,8 @@ class OPENFLUID_API WareExplorerDialog: public QDialog
     QPushButton* mp_AcceptButton;
 
     QString m_DefaulMessage;
+
+    QDir m_TopDir;
 
     WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath,
                        const QString& Title, const QString& DefaultMessage, const QString& AcceptButtonLabel);
@@ -97,24 +100,18 @@ class OPENFLUID_API WareExplorerDialog: public QDialog
     QString getSelectedPath();
 
     /*
-     * Returns the filename (i.e. without path) in the line edit (may be empty)
-     */
-    QString getEditedFilename();
-
-    /*
-     * Returns the complete selected path, i.e. the combination of the filename in the selected directory
+     * Returns the combination of the entered filepath below the top directory
      */
     QString getCompleteFilePath();
-
 
   private slots:
 
     void onCurrentChangedOpenWareMode(const QString& Path);
     void onCurrentChangedOpenFileMode(const QString& Path);
-    void onCurrentChangedSaveFileMode(const QString& Path);
+    void onCurrentChangedSaveCreateMode(const QString& Path);
 
-    void onTextChangedCheckEmpty(const QString& Text);
-    void onTextChangedCheckExists(const QString& Text);
+    void onTextChangedSaveMode(const QString& Text);
+    void onTextChangedCreateMode(const QString& Text);
 };
 
 } } }  // namespaces

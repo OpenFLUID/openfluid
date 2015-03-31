@@ -424,48 +424,55 @@ void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
-    QString CurrentEditorPath = CurrentWare->getCurrentFilePath();
-
-    if (CurrentEditorPath.isEmpty())
-      return;
-
-    QString TopDir = TopDirectory.isEmpty() ? CurrentWare->wareSrcContainer().getAbsolutePath() : TopDirectory;
-
-    QString NewPath = WareExplorerDialog::getSaveFilePath(CurrentWare, TopDir, CurrentEditorPath);
-
-    if (NewPath.isEmpty())
-      return;
-
-    if (NewPath == CurrentEditorPath)
-      CurrentWare->saveCurrentEditor();
-    else
+    try
     {
-      CurrentWare->saveCurrentEditorAs(NewPath);
-      int CurrentIndexInCurrentWare = CurrentWare->closeCurrentEditor(false);
+      QString CurrentEditorPath = CurrentWare->getCurrentFilePath();
 
-      openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = mp_Manager->getPathInfo(NewPath);
+      if (CurrentEditorPath.isEmpty())
+        return;
 
-      QString NewPathWarePath = NewPathInfo.m_AbsolutePathOfWare;
+      QString TopDir = TopDirectory.isEmpty() ? CurrentWare->wareSrcContainer().getAbsolutePath() : TopDirectory;
 
-      // NewPath is in an already opened ware
-      if (m_WareSrcWidgetByPath.contains(NewPathWarePath))
-      {
-        WareSrcWidget* NewPathWare = m_WareSrcWidgetByPath.value(NewPathWarePath);
+      QString NewPath = WareExplorerDialog::getSaveFilePath(CurrentWare, TopDir, CurrentEditorPath);
 
-        // in case the new path was already opened, we close it
-        int IndexInOtherWare = NewPathWare->closeFileTab(NewPath);
+      if (NewPath.isEmpty())
+        return;
 
-        int NewPathIndex = -1;
-        if (NewPathWare == CurrentWare)
-          NewPathIndex = CurrentIndexInCurrentWare;
-        else if (IndexInOtherWare > -1)
-          NewPathIndex = IndexInOtherWare;
-
-        NewPathWare->openFile(NewPathInfo, NewPathIndex);
-        mp_TabWidget->setCurrentWidget(NewPathWare);
-      }
+      if (NewPath == CurrentEditorPath)
+        CurrentWare->saveCurrentEditor();
       else
-        openPath(NewPath);
+      {
+        CurrentWare->saveCurrentEditorAs(NewPath);
+        int CurrentIndexInCurrentWare = CurrentWare->closeCurrentEditor(false);
+
+        openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = mp_Manager->getPathInfo(NewPath);
+
+        QString NewPathWarePath = NewPathInfo.m_AbsolutePathOfWare;
+
+        // NewPath is in an already opened ware
+        if (m_WareSrcWidgetByPath.contains(NewPathWarePath))
+        {
+          WareSrcWidget* NewPathWare = m_WareSrcWidgetByPath.value(NewPathWarePath);
+
+          // in case the new path was already opened, we close it
+          int IndexInOtherWare = NewPathWare->closeFileTab(NewPath);
+
+          int NewPathIndex = -1;
+          if (NewPathWare == CurrentWare)
+            NewPathIndex = CurrentIndexInCurrentWare;
+          else if (IndexInOtherWare > -1)
+            NewPathIndex = IndexInOtherWare;
+
+          NewPathWare->openFile(NewPathInfo, NewPathIndex);
+          mp_TabWidget->setCurrentWidget(NewPathWare);
+        }
+        else
+          openPath(NewPath);
+      }
+    }
+    catch (openfluid::base::FrameworkException& e)
+    {
+      QMessageBox::critical(0, "Error", QString::fromStdString(e.getMessage()));
     }
   }
   else

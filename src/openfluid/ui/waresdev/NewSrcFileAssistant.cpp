@@ -443,8 +443,17 @@ void NewSrcFileAssistant::accept()
       break;
     case EMPTY_PAGE:
     {
-      QFile File(m_NewFilePath);
-      Ok = File.open(QIODevice::ReadWrite | QIODevice::Text);
+      NewFilePath = m_NewFilePath;
+
+      Ok = QDir().mkpath(QFileInfo(NewFilePath).absolutePath());
+      if (!Ok)
+        ErrMsg = tr("Unable to create the path \"%1\"").arg(NewFilePath);
+      else
+      {
+        Ok = QFile(NewFilePath).open(QIODevice::ReadWrite | QIODevice::Text);
+        if (!Ok)
+          ErrMsg = tr("Unable to create the file \"%1\"").arg(NewFilePath);
+      }
       break;
     }
     case CPP_PAGE:

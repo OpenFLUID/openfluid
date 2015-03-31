@@ -308,19 +308,19 @@ bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFile
 
 QRegExp WareSrcFactory::getCppFilenameRegExp(QString& Tooltip, bool IsHpp)
 {
-  Tooltip = QObject::tr("Accepts only letters, digits, dash ('-'), underscore('_') or dot ('.') characters.");
+  Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
   return IsHpp ? QRegExp("[a-zA-Z0-9._-]+\\.hpp") : QRegExp("[a-zA-Z0-9._-]+\\.cpp");
 }
 
 QRegExp WareSrcFactory::getClassnameRegExp(QString& Tooltip)
 {
-  Tooltip = QObject::tr("Accepts only letters, digits, or underscore ('_') characters, and must begin with a letter.");
+  Tooltip = QObject::tr("Accepts only letters, digits, underscores ('_'), and must begin with a letter.");
   return QRegExp("[a-zA-Z]+[a-zA-Z0-9_]*");
 }
 
 QRegExp WareSrcFactory::getWareIdRegExp(QString& Tooltip)
 {
-  Tooltip = QObject::tr("Accepts only letters, digits, dash ('-'), underscore('_') or dot ('.') characters.");
+  Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
   return QRegExp("[a-zA-Z0-9._-]+");
 }
 
