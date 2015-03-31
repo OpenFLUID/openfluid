@@ -67,6 +67,8 @@ CppPage::CppPage(const QDir& WareDir, QWidget* Parent) :
   ui->ClassName_lineEdit->setValidator(
       new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getClassnameRegExp(Tooltip), this));
   ui->ClassName_lineEdit->setToolTip(Tooltip);
+  ui->ClassName_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->SourceFilename_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
   registerField("SourceFilename", ui->SourceFilename_lineEdit);
   registerField("Classname", ui->ClassName_lineEdit);
@@ -238,6 +240,7 @@ CMakeConfigPage::CMakeConfigPage(openfluid::waresdev::WareSrcManager::WareType T
   ui->RootFilename_lineEdit->setValidator(
       new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getCppFilenameRegExp(Tooltip), this));
   ui->RootFilename_lineEdit->setToolTip(Tooltip);
+  ui->RootFilename_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
   m_DefaultMsg = "Create the \"CMake.in.config\" file";
   NewSrcFileAssistant::setStatus(m_DefaultMsg, "", ui->MessageLabel, ui->MessageFrame);

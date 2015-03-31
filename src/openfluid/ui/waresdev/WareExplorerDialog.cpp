@@ -70,6 +70,7 @@ WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirect
   ui->Filepath_lineEdit->setToolTip(
       tr("Accepts only letters, digits, dashes ('-'), underscores ('_'), dots ('.') and folder separators ('%1').").arg(
           QDir::separator()));
+  ui->Filepath_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
   ui->WareExplorer->configure(TopDirectoryPath, false);
   ui->ParentDir_label->setText(QDir::toNativeSeparators(TopDirectoryPath));
