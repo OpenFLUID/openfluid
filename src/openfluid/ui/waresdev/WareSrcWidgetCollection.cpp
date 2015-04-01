@@ -47,6 +47,7 @@
 #include <QMessageBox>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
@@ -634,6 +635,32 @@ void WareSrcWidgetCollection::openWare(openfluid::waresdev::WareSrcManager::Ware
     return;
 
   openPath(PathToOpen);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::deleteCurrentWare()
+{
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
+    QString Path = CurrentWare->wareSrcContainer().getAbsolutePath();
+
+    if (QMessageBox::warning(QApplication::activeWindow(), tr("Delete ware"),
+                             tr("Are you sure you want to delete \"%1\" and all its content?").arg(Path),
+                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
+        == QMessageBox::Cancel)
+      return;
+
+    closeWareTab(CurrentWare);
+
+    if (!openfluid::tools::Filesystem::removeDirectory(Path.toStdString()))
+      QMessageBox::critical(0, "Error", tr("Unable to remove the directory \"%1\"").arg(Path));
+  }
+  else
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
 
 

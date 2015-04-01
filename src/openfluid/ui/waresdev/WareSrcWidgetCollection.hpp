@@ -153,6 +153,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void newObserver();
     void newBuilderExtension();
 
+    void deleteCurrentWare();
+
   private slots:
 
     void onWareTxtModified(WareSrcWidget* Widget, bool Modified);

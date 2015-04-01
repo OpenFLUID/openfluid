@@ -85,7 +85,7 @@ MainWindow::MainWindow() :
   connect(m_Actions["OpenObserver"], SIGNAL(triggered()), mp_Collection, SLOT(openObserver()));
   connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection, SLOT(openBuilderExtension()));
   connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), this, SLOT(onSaveAsRequested()));
-  connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["DeleteWare"], SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentWare()));
   connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
 
