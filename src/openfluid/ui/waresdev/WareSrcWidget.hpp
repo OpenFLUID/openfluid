@@ -116,6 +116,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void closeAllFileTabs();
 
+    WareSrcFileEditor* getCurrentEditor();
+
     QString getCurrentFilePath();
 
     int closeFileTab(const QString& Path);
@@ -143,6 +145,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     int closeCurrentEditor(bool WithConfirm = true);
 
     int onCloseFileTabRequested(int Index, bool WithConfirm = true);
+
+    void deleteCurrentFile();
 
   private slots:
 

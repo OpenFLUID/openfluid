@@ -64,8 +64,8 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
                              openfluid::waresdev::WareSrcContainer::ConfigMode Config,
                              openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent) :
-    QWidget(Parent), ui(new Ui::WareSrcWidget), m_Container(Info.m_AbsolutePathOfWare, Info.m_WareType,
-                                                            Info.m_WareName), m_IsStandalone(IsStandalone)
+    QWidget(Parent), ui(new Ui::WareSrcWidget),
+    m_Container(Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName), m_IsStandalone(IsStandalone)
 {
   ui->setupUi(this);
 
@@ -84,7 +84,7 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
     connect(TB->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
     connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this, SIGNAL(saveAsRequested()));
     connect(TB->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
-    connect(TB->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+    connect(TB->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(deleteCurrentFile()));
 
     connect(TB->action("Release"), SIGNAL(triggered()), this, SLOT(setReleaseMode()));
     connect(TB->action("Debug"), SIGNAL(triggered()), this, SLOT(setDebugMode()));
@@ -254,10 +254,20 @@ void WareSrcWidget::closeAllFileTabs()
 
 QString WareSrcWidget::getCurrentFilePath()
 {
-  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->currentWidget()))
+  if (WareSrcFileEditor* Editor = getCurrentEditor())
     return Editor->getFilePath();
 
   return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+WareSrcFileEditor* WareSrcWidget::getCurrentEditor()
+{
+  return qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->currentWidget());
 }
 
 
@@ -462,6 +472,34 @@ void WareSrcWidget::saveCurrentEditorAs(const QString& Path)
 {
   if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->currentWidget()))
     Editor->saveContentToPath(Path);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::deleteCurrentFile()
+{
+  if (WareSrcFileEditor* Editor = getCurrentEditor())
+  {
+    QString Path = Editor->getFilePath();
+
+    if (QMessageBox::warning(this, tr("Delete file"), tr("Are you sure you want to delete \"%1\"?").arg(Path),
+                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
+        == QMessageBox::Cancel)
+      return;
+
+    // Careful as it deletes Editor
+    closeFileTab(Editor);
+
+    if (QDir().remove(Path))
+      m_Container.update();
+    else
+      QMessageBox::critical(0, "Error", tr("Unable to remove the file \"%1\"").arg(Path));
+  }
+  else
+    QMessageBox::warning(0, tr("No open file"), tr("No file to delete"));
 }
 
 

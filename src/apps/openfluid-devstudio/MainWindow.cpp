@@ -94,7 +94,7 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("SaveFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditor()));
   connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditorAs()));
   connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()), mp_Collection, SLOT(closeCurrentEditor()));
-  connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentFile()));
 
   connect(m_Actions["Copy"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Cut"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));

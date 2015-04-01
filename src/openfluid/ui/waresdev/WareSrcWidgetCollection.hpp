@@ -147,6 +147,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void newFile();
 
+    void deleteCurrentFile();
+
     void newSimulator();
     void newObserver();
     void newBuilderExtension();

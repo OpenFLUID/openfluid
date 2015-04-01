@@ -348,7 +348,7 @@ void WareSrcWidgetCollection::configure()
     CurrentWare->wareSrcContainer().configure();
   }
   else
-    QMessageBox::warning(0, "No ware open", "Open a ware first");
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
 
 
@@ -365,7 +365,7 @@ void WareSrcWidgetCollection::build()
     CurrentWare->wareSrcContainer().build();
   }
   else
-    QMessageBox::warning(0, "No ware open", "Open a ware first");
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
 
 
@@ -413,7 +413,7 @@ void WareSrcWidgetCollection::saveCurrentEditor()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     CurrentWare->saveCurrentEditor();
   else
-    QMessageBox::warning(0, "No ware open", "Open a ware first");
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
 
 
@@ -477,7 +477,7 @@ void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
     }
   }
   else
-    QMessageBox::warning(0, "No ware open", "Open a ware first");
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
 
 
@@ -490,7 +490,7 @@ void WareSrcWidgetCollection::closeCurrentEditor()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     CurrentWare->closeCurrentEditor();
   else
-    QMessageBox::warning(0, "No ware open", "Open a ware first");
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
 
 
@@ -603,7 +603,20 @@ void WareSrcWidgetCollection::openFile()
     openPath(PathToOpen);
   }
   else
-    QMessageBox::warning(0, "No ware open", "Open a ware first");
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::deleteCurrentFile()
+{
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+    CurrentWare->deleteCurrentFile();
+  else
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
 
 
@@ -645,7 +658,7 @@ void WareSrcWidgetCollection::newFile()
     }
   }
   else
-    QMessageBox::warning(0, "No ware open", "Open a ware first");
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
 
 
