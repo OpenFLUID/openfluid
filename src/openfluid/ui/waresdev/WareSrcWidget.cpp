@@ -80,7 +80,7 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
     ui->Toolbar_Layout->addWidget(TB);
 
     connect(TB->action("NewFile"), SIGNAL(triggered()), this, SIGNAL(newFileRequested()));
-    connect(TB->action("OpenFile"), SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+    connect(TB->action("OpenFile"), SIGNAL(triggered()), this, SIGNAL(openFileRequested()));
     connect(TB->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
     connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this, SIGNAL(saveAsRequested()));
     connect(TB->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));

@@ -139,6 +139,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void closeCurrentEditor();
 
+    void openFile();
+
     void openSimulator();
     void openObserver();
     void openBuilderExtension();

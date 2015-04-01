@@ -155,6 +155,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void saveAsRequested();
 
     void newFileRequested();
+
+    void openFileRequested();
 };
 
 } } }  // namespaces

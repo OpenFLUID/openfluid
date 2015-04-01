@@ -112,6 +112,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
               SLOT(onWareTxtModified(WareSrcWidget*,bool)));
       connect(Widget, SIGNAL(saveAsRequested()), this, SLOT(saveCurrentEditorAs()));
       connect(Widget, SIGNAL(newFileRequested()), this, SLOT(newFile()));
+      connect(Widget, SIGNAL(openFileRequested()), this, SLOT(openFile()));
     }
 
     if (Info.m_isAWareFile)
@@ -580,6 +581,29 @@ void WareSrcWidgetCollection::openObserver()
 void WareSrcWidgetCollection::openBuilderExtension()
 {
   openWare(openfluid::waresdev::WareSrcManager::BUILDEREXT, tr("Open a Builder extension"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::openFile()
+{
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
+    openfluid::waresdev::WareSrcContainer& Container = CurrentWare->wareSrcContainer();
+
+    QString PathToOpen = openfluid::ui::waresdev::WareExplorerDialog::getOpenFilePath(
+        QApplication::activeWindow(), Container.getAbsolutePath(), CurrentWare->getCurrentFilePath());
+
+    if (PathToOpen.isEmpty())
+      return;
+
+    openPath(PathToOpen);
+  }
+  else
+    QMessageBox::warning(0, "No ware open", "Open a ware first");
 }
 
 
