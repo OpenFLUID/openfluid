@@ -330,6 +330,13 @@ class OPENFLUID_API VectorDataset
      */
     void cleanOverlap(double Threshold, unsigned int LayerIndex=0);
 
+    /**
+      @brief Identify the duplicate geometry of this VectorDataset.
+      @param LayerIndex The index of the layer to query, default 0.
+      @return A list of OGRFeature* which are duplicate.
+     */
+    std::list<OGRFeature*> hasDuplicateGeometry(unsigned int LayerIndex=0);
+
 };
 
 } } // namespaces openfluid, landr

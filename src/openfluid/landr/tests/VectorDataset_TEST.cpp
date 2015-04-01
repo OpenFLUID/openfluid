@@ -579,3 +579,54 @@ BOOST_AUTO_TEST_CASE(check_Overlap_and_Snap_Polygon)
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_DuplicateGeometry)
+{
+  openfluid::core::GeoVectorValue ValueSU(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "SU.shp");
+
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValueSU);
+
+  std::list<OGRFeature*>  lDuplicate=VectSU->hasDuplicateGeometry();
+  BOOST_CHECK_EQUAL(lDuplicate.size(),0);
+
+  openfluid::core::GeoVectorValue DuplicateSU(
+        CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "duplicateSU.shp");
+
+  VectSU = new openfluid::landr::VectorDataset(
+        DuplicateSU);
+
+  lDuplicate=VectSU->hasDuplicateGeometry();
+  BOOST_CHECK_EQUAL(lDuplicate.size(),2);
+  VectSU->geometries();
+  std::string error=VectSU->checkTopology(0.5);
+  BOOST_CHECK_EQUAL(error.size(),0);
+
+  delete VectSU;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_parsing_Bad_Polygon_Geometry)
+{
+
+  openfluid::core::GeoVectorValue ValueSU(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "BAD_POLYGEOM.shp");
+
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValueSU);
+
+  BOOST_CHECK_THROW(VectSU->features(),openfluid::base::FrameworkException);
+
+
+  delete VectSU;
+}
+
+
+// =====================================================================
+// =====================================================================
+

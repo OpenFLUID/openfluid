@@ -93,6 +93,19 @@ LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION,
         "GeoVector file must contain a \"OFLD_ID\" field.");
+
+  std::list<OGRFeature*>  lDuplicate=mp_Vector->hasDuplicateGeometry();
+  if(lDuplicate.size()!=0)
+  {
+    std::ostringstream s;
+    s << "error : GeoVectorValue has duplicate Geometry - OFLD_ID: ";
+    std::list<OGRFeature*>::iterator it=lDuplicate.begin();
+    std::list<OGRFeature*>::iterator ite=lDuplicate.end();
+    for (;it!=ite;++it)
+      s <<(*it)->GetFieldAsInteger("OFLD_ID")<<" ";
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION, s.str());
+  }
 }
 
 
@@ -109,13 +122,26 @@ LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
 
   if (!mp_Vector)
     throw openfluid::base::FrameworkException(
-        "LandRGraph::LandRGraph",
-        "No GeoVectorValue.");
+        OPENFLUID_CODE_LOCATION,
+        "No VectorDataset.");
 
   if (!mp_Vector->containsField("OFLD_ID"))
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION,
-        "GeoVector file must contain a \"OFLD_ID\" field.");
+        "VectorDataset file must contain a \"OFLD_ID\" field.");
+
+  std::list<OGRFeature*>  lDuplicate=mp_Vector->hasDuplicateGeometry();
+  if(lDuplicate.size()!=0)
+  {
+    std::ostringstream s;
+    s << "error : VectorDataset has duplicate Geometry - OFLD_ID: ";
+    std::list<OGRFeature*>::iterator it=lDuplicate.begin();
+    std::list<OGRFeature*>::iterator ite=lDuplicate.end();
+    for (;it!=ite;++it)
+      s <<(*it)->GetFieldAsInteger("OFLD_ID")<<" ";
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION, s.str());
+  }
 }
 
 

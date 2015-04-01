@@ -2651,3 +2651,24 @@ BOOST_AUTO_TEST_CASE(check_mergePolygonEntitiesByCompactness)
 
 // =====================================================================
 // =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_construction_from_Bad_Polygon_Geometry)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "BAD_POLYGEOM.shp");
+
+  openfluid::landr::PolygonGraph* Graph = NULL;
+  BOOST_CHECK_THROW(openfluid::landr::PolygonGraph::create(*Val),openfluid::base::FrameworkException);
+
+  delete Val;
+  delete Graph;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+

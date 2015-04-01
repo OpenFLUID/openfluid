@@ -553,6 +553,18 @@ void VectorDataset::parse(unsigned int LayerIndex)
   {
     OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 
+    if (OGRGeom->getGeometryType()==wkbPolygon
+        && OGRGeom->getGeometryType()!=wkbMultiPolygon)
+    {
+      OGRPolygon *Polygon = (OGRPolygon *) OGRGeom;
+
+      if (Polygon->getExteriorRing()->getNumPoints()<4)
+        throw openfluid::base::FrameworkException(
+            OPENFLUID_CODE_LOCATION,
+            "Unable to build the polygon with FID "+
+            openfluid::tools::convertValue(Feat->GetFID()));
+
+    }
     // c++ cast doesn't work (have to use the C API instead)
     geos::geom::Geometry* GeosGeom =
         (geos::geom::Geometry*) OGRGeom->exportToGEOS();
@@ -1104,6 +1116,35 @@ void VectorDataset::cleanOverlap(double Threshold, unsigned int LayerIndex)
 // =====================================================================
 
 
+std::list<OGRFeature*> VectorDataset::hasDuplicateGeometry(unsigned int LayerIndex)
+{
+  std::list<OGRFeature* > lDuplicate;
+  FeaturesList_t Features=features(LayerIndex);
+
+  for (FeaturesList_t::iterator it =
+      Features.begin(); it != Features.end(); ++it)
+  {
+
+    geos::geom::Geometry *Geom=geometries();
+    unsigned int iEnd=Geom->getNumGeometries();
+    int DuplicateGeom=0;
+    for (unsigned int i = 0; i < iEnd; i++)
+    {
+      if ((const_cast<geos::geom::Geometry*>(Geom->getGeometryN(i)))->equals((*it).second))
+        DuplicateGeom++;
+    }
+
+    if (DuplicateGeom>1)
+      lDuplicate.push_back((*it).first);
+
+  }
+
+  return lDuplicate;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 

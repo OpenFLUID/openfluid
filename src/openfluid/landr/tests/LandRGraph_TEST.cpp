@@ -670,3 +670,23 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_DuplicateGeometry)
+{
+  openfluid::core::GeoVectorValue duplicateSU(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "duplicateSU.shp");
+
+  openfluid::landr::PolygonGraph* Graph;
+  BOOST_CHECK_THROW(Graph=
+      openfluid::landr::PolygonGraph::create(duplicateSU),
+      openfluid::base::FrameworkException);
+
+  delete Graph;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
