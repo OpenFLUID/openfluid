@@ -52,7 +52,6 @@
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
-#include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>
 
 
@@ -111,13 +110,10 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
 
       connect(Widget, SIGNAL(wareTextModified(WareSrcWidget*,bool)), this,
               SLOT(onWareTxtModified(WareSrcWidget*,bool)));
-      connect(Widget, SIGNAL(saveAsRequested()), this, SLOT(saveCurrentEditorAs()));
-      connect(Widget, SIGNAL(newFileRequested()), this, SLOT(newFile()));
-      connect(Widget, SIGNAL(openFileRequested()), this, SLOT(openFile()));
     }
 
     if (Info.m_isAWareFile)
-      Widget->openFile(Info);
+      Widget->openFileTab(Info);
 
     mp_TabWidget->setCurrentWidget(Widget);
   }
@@ -422,63 +418,39 @@ void WareSrcWidgetCollection::saveCurrentEditor()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::saveCurrentEditorAs(const QString& TopDirectory)
+void WareSrcWidgetCollection::saveAsMayBeAboveWare()
+{
+  QString NewFilePath = saveAs(mp_Manager->getWorkspacePath());
+
+  // the new file is not above the current ware
+  if (NewFilePath.isEmpty())
+    return;
+
+  openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = openfluid::waresdev::WareSrcManager::instance()
+      ->getPathInfo(NewFilePath);
+
+  if (WareSrcWidget* Ware = m_WareSrcWidgetByPath.value(NewPathInfo.m_AbsolutePathOfWare, 0))
+  {
+    // in case the new path was already opened
+    int EditorIndex = Ware->closeFileTab(NewFilePath);
+    Ware->openFileTab(NewPathInfo, EditorIndex);
+  }
+
+  openPath(NewFilePath);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcWidgetCollection::saveAs(const QString& TopDirectory)
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
-  {
-    try
-    {
-      QString CurrentEditorPath = CurrentWare->getCurrentFilePath();
+    return CurrentWare->saveAs(TopDirectory);
 
-      if (CurrentEditorPath.isEmpty())
-        return;
-
-      QString TopDir = TopDirectory.isEmpty() ? CurrentWare->wareSrcContainer().getAbsolutePath() : TopDirectory;
-
-      QString NewPath = WareExplorerDialog::getSaveFilePath(CurrentWare, TopDir, CurrentEditorPath);
-
-      if (NewPath.isEmpty())
-        return;
-
-      if (NewPath == CurrentEditorPath)
-        CurrentWare->saveCurrentEditor();
-      else
-      {
-        CurrentWare->saveCurrentEditorAs(NewPath);
-        int CurrentIndexInCurrentWare = CurrentWare->closeCurrentEditor(false);
-
-        openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = mp_Manager->getPathInfo(NewPath);
-
-        QString NewPathWarePath = NewPathInfo.m_AbsolutePathOfWare;
-
-        // NewPath is in an already opened ware
-        if (m_WareSrcWidgetByPath.contains(NewPathWarePath))
-        {
-          WareSrcWidget* NewPathWare = m_WareSrcWidgetByPath.value(NewPathWarePath);
-
-          // in case the new path was already opened, we close it
-          int IndexInOtherWare = NewPathWare->closeFileTab(NewPath);
-
-          int NewPathIndex = -1;
-          if (NewPathWare == CurrentWare)
-            NewPathIndex = CurrentIndexInCurrentWare;
-          else if (IndexInOtherWare > -1)
-            NewPathIndex = IndexInOtherWare;
-
-          NewPathWare->openFile(NewPathInfo, NewPathIndex);
-          mp_TabWidget->setCurrentWidget(NewPathWare);
-        }
-        else
-          openPath(NewPath);
-      }
-    }
-    catch (openfluid::base::FrameworkException& e)
-    {
-      QMessageBox::critical(0, "Error", QString::fromStdString(e.getMessage()));
-    }
-  }
-  else
-    QMessageBox::warning(0, "No open ware", "Open a ware first");
+  QMessageBox::warning(0, "No open ware", "Open a ware first");
+  return "";
 }
 
 
@@ -592,17 +564,7 @@ void WareSrcWidgetCollection::openBuilderExtension()
 void WareSrcWidgetCollection::openFile()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
-  {
-    openfluid::waresdev::WareSrcContainer& Container = CurrentWare->wareSrcContainer();
-
-    QString PathToOpen = openfluid::ui::waresdev::WareExplorerDialog::getOpenFilePath(
-        QApplication::activeWindow(), Container.getAbsolutePath(), CurrentWare->getCurrentFilePath());
-
-    if (PathToOpen.isEmpty())
-      return;
-
-    openPath(PathToOpen);
-  }
+    CurrentWare->openFile();
   else
     QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
@@ -671,19 +633,7 @@ void WareSrcWidgetCollection::deleteCurrentWare()
 void WareSrcWidgetCollection::newFile()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
-  {
-    openfluid::waresdev::WareSrcContainer& Container = CurrentWare->wareSrcContainer();
-
-    NewSrcFileAssistant Assistant(Container, QApplication::activeWindow());
-    Assistant.exec();
-
-    QString NewFilePath = Assistant.getNewFilePath();
-    if (!NewFilePath.isEmpty())
-    {
-      Container.update();
-      openPath(NewFilePath);
-    }
-  }
+    CurrentWare->newFile();
   else
     QMessageBox::warning(0, "No open ware", "Open a ware first");
 }

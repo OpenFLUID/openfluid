@@ -135,7 +135,14 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void saveCurrentEditor();
 
-    void saveCurrentEditorAs(const QString& TopDirectory = "");
+    void saveAsMayBeAboveWare();
+
+    /**
+     * @param TopDirectory The path to the topmost directory where may be saved the file,
+     * an empty string meaning the current ware directory
+     * @return The path where has been saved the file if it's above this ware, an empty string otherwise
+     */
+    QString saveAs(const QString& TopDirectory = "");
 
     void closeCurrentEditor();
 

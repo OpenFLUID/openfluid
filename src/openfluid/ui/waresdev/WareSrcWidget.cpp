@@ -49,9 +49,11 @@
 
 #include <openfluid/base/FrameworkException.hpp>
 
-#include "WareSrcFileEditor.hpp"
-#include "WareSrcToolbar.hpp"
-#include "TextEditMsgStream.hpp"
+#include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
+#include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
+#include <openfluid/ui/waresdev/TextEditMsgStream.hpp>
+#include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
+#include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -79,10 +81,10 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
 
     ui->Toolbar_Layout->addWidget(TB);
 
-    connect(TB->action("NewFile"), SIGNAL(triggered()), this, SIGNAL(newFileRequested()));
-    connect(TB->action("OpenFile"), SIGNAL(triggered()), this, SIGNAL(openFileRequested()));
+    connect(TB->action("NewFile"), SIGNAL(triggered()), this, SLOT(newFile()));
+    connect(TB->action("OpenFile"), SIGNAL(triggered()), this, SLOT(openFile()));
     connect(TB->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
-    connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this, SIGNAL(saveAsRequested()));
+    connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this, SLOT(saveAs()));
     connect(TB->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
     connect(TB->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(deleteCurrentFile()));
 
@@ -118,15 +120,10 @@ WareSrcWidget::~WareSrcWidget()
 // =====================================================================
 // =====================================================================
 
-void WareSrcWidget::openFile(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index)
+
+void WareSrcWidget::openFileTab(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index)
 {
-  WareSrcFileEditor* Editor = m_WareSrcFilesByPath.value(Info.m_AbsolutePath, 0);
-  if (Editor)
-  {
-    Editor->updateContent();
-    ui->WareSrcFileCollection->setCurrentWidget(Editor);
-  }
-  else
+  if (!setCurrent(Info))
     addNewFileTab(Index, Info.m_AbsolutePath, Info.m_FileName, QDir::toNativeSeparators(Info.m_RelativePathToWareDir));
 }
 
@@ -199,7 +196,6 @@ int WareSrcWidget::onCloseFileTabRequested(int Index, bool WithConfirm)
         break;
     }
 
-    emit wareTextModified(this, isModified());
   }
 
   return ClosedTabPos;
@@ -212,6 +208,9 @@ int WareSrcWidget::onCloseFileTabRequested(int Index, bool WithConfirm)
 
 int WareSrcWidget::closeFileTab(WareSrcFileEditor* Editor)
 {
+  if (!Editor)
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Null Editor");
+
   int Index = ui->WareSrcFileCollection->indexOf(Editor);
 
   ui->WareSrcFileCollection->removeTab(Index);
@@ -219,6 +218,8 @@ int WareSrcWidget::closeFileTab(WareSrcFileEditor* Editor)
   m_WareSrcFilesByPath.remove(Editor->getFilePath());
 
   delete Editor;
+
+  emit wareTextModified(this, isModified());
 
   return Index;
 }
@@ -408,16 +409,6 @@ void WareSrcWidget::build()
 // =====================================================================
 
 
-void WareSrcWidget::showNotYetImplemented()
-{
-  QMessageBox::information(0, "", "Not yet implemented");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void WareSrcWidget::onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified)
 {
   int Pos = ui->WareSrcFileCollection->indexOf(Editor);
@@ -459,7 +450,7 @@ return false;
 
 void WareSrcWidget::saveCurrentEditor()
 {
-  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->currentWidget()))
+  if (WareSrcFileEditor* Editor = getCurrentEditor())
     Editor->saveContent();
 }
 
@@ -468,10 +459,67 @@ void WareSrcWidget::saveCurrentEditor()
 // =====================================================================
 
 
-void WareSrcWidget::saveCurrentEditorAs(const QString& Path)
+QString WareSrcWidget::saveAs(const QString& TopDirectory)
 {
-  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->currentWidget()))
-    Editor->saveContentToPath(Path);
+  WareSrcFileEditor* CurrentEditor = getCurrentEditor();
+  if (!CurrentEditor)
+  {
+    QMessageBox::warning(0, tr("No open file"), tr("No file to save as"));
+    return "";
+  }
+
+  QString CurrentFilePath = CurrentEditor->getFilePath();
+  QString CurrentWarePath = m_Container.getAbsolutePath();
+
+  QString NewFilePath = WareExplorerDialog::getSaveFilePath(this,
+                                                            TopDirectory.isEmpty() ? CurrentWarePath : TopDirectory,
+                                                            CurrentFilePath);
+
+  if (NewFilePath.isEmpty())
+    return "";
+
+  if (NewFilePath == CurrentFilePath)
+  {
+    saveCurrentEditor();
+    return "";
+  }
+
+  CurrentEditor->saveContentToPath(NewFilePath);
+
+  openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = openfluid::waresdev::WareSrcManager::instance()
+      ->getPathInfo(NewFilePath);
+
+  int CurrentIndex = closeFileTab(CurrentEditor);
+
+  if (NewPathInfo.m_AbsolutePathOfWare == CurrentWarePath)
+  {
+    // in case the new path was already opened
+    closeFileTab(NewFilePath);
+
+    openFileTab(NewPathInfo, CurrentIndex);
+
+    return "";
+  }
+
+  return NewFilePath;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::newFile()
+{
+  NewSrcFileAssistant Assistant(m_Container, this);
+  Assistant.exec();
+
+  QString NewFilePath = Assistant.getNewFilePath();
+  if (!NewFilePath.isEmpty())
+  {
+    m_Container.update();
+    openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(NewFilePath));
+  }
 }
 
 
@@ -500,6 +548,22 @@ void WareSrcWidget::deleteCurrentFile()
   }
   else
     QMessageBox::warning(0, tr("No open file"), tr("No file to delete"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::openFile()
+{
+  QString PathToOpen = openfluid::ui::waresdev::WareExplorerDialog::getOpenFilePath(this, m_Container.getAbsolutePath(),
+                                                                                    getCurrentFilePath());
+
+  if (PathToOpen.isEmpty())
+    return;
+
+  openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(PathToOpen));
 }
 
 

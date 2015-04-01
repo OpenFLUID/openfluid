@@ -96,7 +96,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     ~WareSrcWidget();
 
-    void openFile(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index = -1);
+    void openFileTab(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index = -1);
 
     void openDefaultFiles();
 
@@ -136,17 +136,24 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void build();
 
-    void showNotYetImplemented();
-
     void saveCurrentEditor();
-
-    void saveCurrentEditorAs(const QString& Path);
 
     int closeCurrentEditor(bool WithConfirm = true);
 
     int onCloseFileTabRequested(int Index, bool WithConfirm = true);
 
+    void newFile();
+
     void deleteCurrentFile();
+
+    void openFile();
+
+    /**
+     * @param TopDirectory The path to the topmost directory where may be saved the file,
+     * an empty string meaning this ware directory
+     * @return The path where has been saved the file if it's above this ware, an empty string otherwise
+     */
+    QString saveAs(const QString& TopDirectory = "");
 
   private slots:
 
@@ -155,12 +162,6 @@ class OPENFLUID_API WareSrcWidget: public QWidget
   signals:
 
     void wareTextModified(WareSrcWidget* Widget, bool Modified);
-
-    void saveAsRequested();
-
-    void newFileRequested();
-
-    void openFileRequested();
 };
 
 } } }  // namespaces

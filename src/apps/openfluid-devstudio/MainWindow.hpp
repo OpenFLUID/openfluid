@@ -81,8 +81,6 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
   private slots:
 
-    void onSaveAsRequested();
-
     void showNotYetImplemented();
 
     void onQuitRequested();

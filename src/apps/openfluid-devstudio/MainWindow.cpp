@@ -84,7 +84,7 @@ MainWindow::MainWindow() :
   connect(m_Actions["OpenSimulator"], SIGNAL(triggered()), mp_Collection, SLOT(openSimulator()));
   connect(m_Actions["OpenObserver"], SIGNAL(triggered()), mp_Collection, SLOT(openObserver()));
   connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection, SLOT(openBuilderExtension()));
-  connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), this, SLOT(onSaveAsRequested()));
+  connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), mp_Collection, SLOT(saveAsMayBeAboveWare()));
   connect(m_Actions["DeleteWare"], SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentWare()));
   connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
@@ -92,7 +92,7 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("NewFile"), SIGNAL(triggered()), mp_Collection, SLOT(newFile()));
   connect(mp_Toolbar->action("OpenFile"), SIGNAL(triggered()), mp_Collection, SLOT(openFile()));
   connect(mp_Toolbar->action("SaveFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditor()));
-  connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditorAs()));
+  connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveAs()));
   connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()), mp_Collection, SLOT(closeCurrentEditor()));
   connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentFile()));
 
@@ -267,16 +267,6 @@ void MainWindow::setWorkspaceDefaults()
   foreach(QString WarePath,LastOpenWares)mp_Collection->openPath(WarePath);
 
   mp_Collection->setCurrent(Mgr->getLastActiveWare());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MainWindow::onSaveAsRequested()
-{
-  mp_Collection->saveCurrentEditorAs(openfluid::waresdev::WareSrcManager::instance()->getWorkspacePath());
 }
 
 
