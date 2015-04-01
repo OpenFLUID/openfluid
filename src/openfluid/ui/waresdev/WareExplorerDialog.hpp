@@ -112,6 +112,8 @@ class OPENFLUID_API WareExplorerDialog: public QDialog
 
     void onTextChangedSaveMode(const QString& Text);
     void onTextChangedCreateMode(const QString& Text);
+
+    void onDoubleClickedFileMode();
 };
 
 } } }  // namespaces

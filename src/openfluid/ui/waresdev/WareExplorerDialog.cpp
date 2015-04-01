@@ -206,6 +206,8 @@ void WareExplorerDialog::setOpenFileMode()
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
           SLOT(onCurrentChangedOpenFileMode(const QString&)));
 
+  connect(ui->WareExplorer, SIGNAL(doubleClicked(const QString&)), this, SLOT(onDoubleClickedFileMode()));
+
   onCurrentChangedOpenFileMode(ui->WareExplorer->getCurrentPath());
 }
 
@@ -307,6 +309,17 @@ void WareExplorerDialog::onTextChangedCreateMode(const QString& Text)
     Msg = "The file path must be below the parent directory";
 
   setStatus(Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareExplorerDialog::onDoubleClickedFileMode()
+{
+  if (mp_AcceptButton && mp_AcceptButton->isEnabled())
+    accept();
 }
 
 
