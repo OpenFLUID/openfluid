@@ -112,31 +112,17 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("OpenExplorer"), SIGNAL(triggered()), mp_Collection, SLOT(openExplorer()));
   connect(mp_Toolbar->action("OpenTerminal"), SIGNAL(triggered()), mp_Collection, SLOT(openTerminal()));
 
-  connect(ui->SimExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection, SLOT(openPath(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection, SLOT(openPath(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(doubleClicked(const QString&)), mp_Collection, SLOT(openPath(const QString&)));
+  QList<openfluid::ui::waresdev::WareSrcExplorer*> Explorers( { ui->SimExplorer, ui->ObsExplorer, ui->ExtExplorer });
 
-  connect(ui->SimExplorer, SIGNAL(clicked(const QString&)), mp_Collection, SLOT(setCurrent(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(clicked(const QString&)), mp_Collection, SLOT(setCurrent(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(clicked(const QString&)), mp_Collection, SLOT(setCurrent(const QString&)));
+  for (openfluid::ui::waresdev::WareSrcExplorer* Explorer : Explorers)
+  {
+    connect(Explorer, SIGNAL(doubleClicked(const QString&)), mp_Collection, SLOT(openPath(const QString&)));
+    connect(Explorer, SIGNAL(clicked(const QString&)), mp_Collection, SLOT(setCurrent(const QString&)));
+    connect(Explorer, SIGNAL(openExplorerAsked(const QString&)), mp_Collection, SLOT(openExplorer(const QString&)));
+    connect(Explorer, SIGNAL(openTerminalAsked(const QString&)), mp_Collection, SLOT(openTerminal(const QString&)));
 
-  connect(ui->SimExplorer, SIGNAL(openExplorerAsked(const QString&)), mp_Collection,
-          SLOT(openExplorer(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(openExplorerAsked(const QString&)), mp_Collection,
-          SLOT(openExplorer(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(openExplorerAsked(const QString&)), mp_Collection,
-          SLOT(openExplorer(const QString&)));
-
-  connect(ui->SimExplorer, SIGNAL(openTerminalAsked(const QString&)), mp_Collection,
-          SLOT(openTerminal(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(openTerminalAsked(const QString&)), mp_Collection,
-          SLOT(openTerminal(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(openTerminalAsked(const QString&)), mp_Collection,
-          SLOT(openTerminal(const QString&)));
-
-  connect(mp_Collection,SIGNAL(editorSaved()),ui->SimExplorer,SLOT(emitDataChanged()));
-  connect(mp_Collection,SIGNAL(editorSaved()),ui->ObsExplorer,SLOT(emitDataChanged()));
-  connect(mp_Collection,SIGNAL(editorSaved()),ui->ExtExplorer,SLOT(emitDataChanged()));
+    connect(mp_Collection, SIGNAL(editorSaved()), Explorer, SLOT(emitDataChanged()));
+  }
 
   setWorkspaceDefaults();
 }
