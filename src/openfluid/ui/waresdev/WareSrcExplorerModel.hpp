@@ -73,6 +73,8 @@ class WareSrcExplorerModel: public QFileSystemModel
 
     QVariant data(const QModelIndex& Index, int Role) const;
 
+    void emitDataChanged();
+
   private slots:
 
     void onDirectoryLoaded(const QString& Path);

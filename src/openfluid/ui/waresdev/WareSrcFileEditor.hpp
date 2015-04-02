@@ -131,6 +131,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void editorTxtChanged(WareSrcFileEditor* Editor, bool Changed);
 
+    void editorSaved();
+
 };
 
 

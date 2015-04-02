@@ -149,6 +149,8 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const 
 
   connect(Widget, SIGNAL(editorTxtChanged(WareSrcFileEditor*,bool)), this,
           SLOT(onEditorTxtModified(WareSrcFileEditor*,bool)));
+
+  connect(Widget, SIGNAL(editorSaved()), this, SIGNAL(editorSaved()));
 }
 
 

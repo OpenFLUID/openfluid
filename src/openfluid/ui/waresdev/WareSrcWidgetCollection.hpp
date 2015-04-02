@@ -167,6 +167,10 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void onWareTxtModified(WareSrcWidget* Widget, bool Modified);
 
     void onCloseWareTabRequested(int Index);
+
+  signals:
+
+    void editorSaved();
 };
 
 } } }  // namespaces

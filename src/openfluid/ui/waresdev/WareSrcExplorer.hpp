@@ -102,6 +102,10 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
     void openExplorerAsked(const QString& FilePath);
 
     void openTerminalAsked(const QString& FilePath);
+
+  public slots:
+
+    void emitDataChanged();
 };
 
 } } }  // namespaces

@@ -556,6 +556,8 @@ void WareSrcFileEditor::saveContent()
   saveContentToPath(m_FilePath);
 
   document()->setModified(false);
+
+  emit editorSaved();
 }
 
 

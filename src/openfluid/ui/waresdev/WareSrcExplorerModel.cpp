@@ -116,8 +116,9 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
   {
     openfluid::waresdev::WareSrcManager::PathInfo PInfo = m_PathInfos.value(filePath(Index));
 
-    if (openfluid::waresdev::WareSrcContainer(
-          PInfo.m_AbsolutePathOfWare, PInfo.m_WareType, PInfo.m_WareName).getMainCppPath() == filePath(Index))
+    if (openfluid::waresdev::WareSrcContainer(PInfo.m_AbsolutePathOfWare, PInfo.m_WareType, PInfo.m_WareName)
+        .getMainCppPath()
+        == filePath(Index))
     {
       QFont Font;
       Font.setBold(true);
@@ -127,6 +128,16 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
   }
 
   return QFileSystemModel::data(Index, Role);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorerModel::emitDataChanged()
+{
+  emit dataChanged(index(0, 0), index(rowCount(), 0));
 }
 
 

@@ -134,6 +134,10 @@ MainWindow::MainWindow() :
   connect(ui->ExtExplorer, SIGNAL(openTerminalAsked(const QString&)), mp_Collection,
           SLOT(openTerminal(const QString&)));
 
+  connect(mp_Collection,SIGNAL(editorSaved()),ui->SimExplorer,SLOT(emitDataChanged()));
+  connect(mp_Collection,SIGNAL(editorSaved()),ui->ObsExplorer,SLOT(emitDataChanged()));
+  connect(mp_Collection,SIGNAL(editorSaved()),ui->ExtExplorer,SLOT(emitDataChanged()));
+
   setWorkspaceDefaults();
 }
 
