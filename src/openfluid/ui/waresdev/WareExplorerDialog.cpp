@@ -243,6 +243,8 @@ void WareExplorerDialog::setCreateFileMode()
 
   onTextChangedCreateMode(ui->Filepath_lineEdit->text());
   onCurrentChangedSaveCreateMode(ui->WareExplorer->getCurrentPath());
+
+  ui->Filepath_lineEdit->setText("file.txt");
 }
 
 

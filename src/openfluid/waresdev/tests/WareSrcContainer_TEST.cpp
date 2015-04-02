@@ -45,7 +45,7 @@
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/tools/Filesystem.cpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
 #include <QDir>
@@ -290,7 +290,7 @@ BOOST_AUTO_TEST_CASE(searchUiParamCppFileName)
 
 BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
 {
-  openfluid::tools::removeDirectoryRecursively(m_WorkspacePath);
+  openfluid::tools::Filesystem::removeDirectory(m_WorkspacePath.toStdString());
 
   createTestFiles();
 
@@ -333,7 +333,7 @@ BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
       .getDefaultFilesPaths();
   BOOST_CHECK_EQUAL(List.count(), 0);
 
-  openfluid::tools::removeDirectoryRecursively(m_WorkspacePath);
+  openfluid::tools::Filesystem::removeDirectory(m_WorkspacePath.toStdString());
 }
 
 

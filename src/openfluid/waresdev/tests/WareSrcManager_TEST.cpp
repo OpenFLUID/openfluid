@@ -45,7 +45,7 @@
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/tools/Filesystem.cpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
 #include <QDir>
@@ -73,12 +73,12 @@ struct F
       m_SimulatorsPath = QString("%1/%2").arg(m_WaresdevPath).arg(
           QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
 
-      openfluid::tools::removeDirectoryRecursively(m_WorkspacePath);
+      openfluid::tools::Filesystem::removeDirectory(m_WorkspacePath.toStdString());
     }
 
     ~F()
     {
-      openfluid::tools::removeDirectoryRecursively(m_WorkspacePath);
+      openfluid::tools::Filesystem::removeDirectory(m_WorkspacePath.toStdString());
     }
 
     void createTestFiles()

@@ -245,10 +245,10 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
   bool TermFound = true;
 
   // TODO test on Mac and not Debian-based distros
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(OPENFLUID_OS_UNIX)
   if (!QProcess::startDetached("x-terminal-emulator", QStringList(), FileToOpen))
     TermFound = QProcess::startDetached("xterm", QStringList(), FileToOpen);
-#elif defined(Q_OS_WIN32)
+#elif defined(OPENFLUID_OS_WINDOWS)
   TermFound = QProcess::startDetached("cmd.exe",QStringList(),FileToOpen);
 #else
   TermFound = false;
