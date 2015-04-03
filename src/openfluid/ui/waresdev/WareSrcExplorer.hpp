@@ -59,6 +59,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     WareSrcExplorerModel* mp_Model;
 
+    QString m_TopDirectoryPath;
+
     QString getCurrentDir();
 
   private slots:
@@ -83,13 +85,9 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void configure(const QString& TopDirectoryPath, bool WithContextMenu);
 
-    void setCurrentPath(const QString& Path);
+    bool setCurrentPath(const QString& Path);
 
     QString getCurrentPath();
-
-  protected:
-
-    void showEvent(QShowEvent * event);
 
   signals:
 

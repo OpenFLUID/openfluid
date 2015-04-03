@@ -47,7 +47,7 @@
 #include <QRegExp>
 
 
-#include <QDebug>
+#include <QTextStream>
 namespace openfluid { namespace waresdev {
 
 

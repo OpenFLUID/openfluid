@@ -85,6 +85,8 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void onQuitRequested();
 
+    void setCurrentPath(const QString& Path);
+
   public:
 
     MainWindow();

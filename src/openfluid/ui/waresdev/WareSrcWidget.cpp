@@ -97,6 +97,7 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
   }
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
+  connect(ui->WareSrcFileCollection, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
 
   m_Container.setConfigMode(Config);
   m_Container.setBuildMode(Build);
@@ -566,6 +567,17 @@ void WareSrcWidget::openFile()
     return;
 
   openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(PathToOpen));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::onCurrentTabChanged(int Index)
+{
+  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->widget(Index)))
+    emit currentTabChanged(Editor->getFilePath());
 }
 
 

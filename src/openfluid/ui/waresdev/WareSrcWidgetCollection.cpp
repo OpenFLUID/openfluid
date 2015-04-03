@@ -68,6 +68,7 @@ WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsS
     m_DefaultBuildMode(openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL)
 {
   connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseWareTabRequested(int)));
+  connect(mp_TabWidget, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
 }
 
 
@@ -105,12 +106,14 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
 
       m_WareSrcWidgetByPath[Info.m_AbsolutePathOfWare] = Widget;
 
+      // leave before openDefaultFiles()
+      connect(Widget, SIGNAL(currentTabChanged(const QString&)), this, SIGNAL(currentTabChanged(const QString&)));
+
       if (Info.m_isAWare)
         Widget->openDefaultFiles();
 
       connect(Widget, SIGNAL(wareTextModified(WareSrcWidget*,bool)), this,
               SLOT(onWareTxtModified(WareSrcWidget*,bool)));
-
       connect(Widget, SIGNAL(editorSaved()), this, SIGNAL(editorSaved()));
     }
 
@@ -156,6 +159,21 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
         break;
     }
 
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::onCurrentTabChanged(int Index)
+{
+  if (WareSrcWidget* Ware = qobject_cast<WareSrcWidget*>(mp_TabWidget->widget(Index)))
+  {
+    QString FilePath = Ware->getCurrentFilePath();
+
+    emit currentTabChanged(FilePath.isEmpty() ? Ware->wareSrcContainer().getAbsolutePath() : FilePath);
   }
 }
 

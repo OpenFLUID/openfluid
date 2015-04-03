@@ -54,7 +54,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
     QTreeView(Parent), mp_Model(0)
 {
-  connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
+  connect(this, SIGNAL(activated(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
 
   connect(this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(onClicked(const QModelIndex&)));
 }
@@ -76,7 +76,9 @@ WareSrcExplorer::~WareSrcExplorer()
 
 void WareSrcExplorer::configure(const QString& TopDirectoryPath, bool WithContextMenu)
 {
-  mp_Model = new WareSrcExplorerModel(TopDirectoryPath);
+  m_TopDirectoryPath = TopDirectoryPath;
+
+  mp_Model = new WareSrcExplorerModel(m_TopDirectoryPath);
 
   setModel(mp_Model);
 
@@ -84,10 +86,11 @@ void WareSrcExplorer::configure(const QString& TopDirectoryPath, bool WithContex
   hideColumn(2);
   hideColumn(3);
 
-  setRootIndex(mp_Model->index(TopDirectoryPath));
+  setRootIndex(mp_Model->index(m_TopDirectoryPath));
 
   connect(selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this,
           SLOT(onCurrentChanged(const QModelIndex&)));
+  connect(mp_Model, SIGNAL(directoryLoaded(const QString&)), this, SLOT(scrollToCurrent()));
 
   if (WithContextMenu)
   {
@@ -188,20 +191,15 @@ QString WareSrcExplorer::getCurrentPath()
 // =====================================================================
 // =====================================================================
 
-void WareSrcExplorer::setCurrentPath(const QString& Path)
+bool WareSrcExplorer::setCurrentPath(const QString& Path)
 {
-  setCurrentIndex(mp_Model->index(Path));
-}
+  if(Path.contains(m_TopDirectoryPath))
+  {
+    setCurrentIndex(mp_Model->index(Path));
+    return true;
+  }
 
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcExplorer::showEvent(QShowEvent * event)
-{
-  QTreeView::showEvent(event);
-  QTimer::singleShot(20, this, SLOT(scrollToCurrent()));
+  return false;
 }
 
 

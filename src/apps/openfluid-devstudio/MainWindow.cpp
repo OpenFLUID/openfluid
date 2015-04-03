@@ -124,6 +124,8 @@ MainWindow::MainWindow() :
     connect(mp_Collection, SIGNAL(editorSaved()), Explorer, SLOT(emitDataChanged()));
   }
 
+  connect(mp_Collection, SIGNAL(currentTabChanged(const QString&)), this, SLOT(setCurrentPath(const QString&)));
+
   setWorkspaceDefaults();
 }
 
@@ -299,6 +301,21 @@ void MainWindow::closeEvent(QCloseEvent* Event)
 {
   Event->ignore();
   onQuitRequested();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::setCurrentPath(const QString& Path)
+{
+  if (ui->SimExplorer->setCurrentPath(Path))
+    ui->toolBox->setCurrentWidget(ui->SimPage);
+  else if (ui->ObsExplorer->setCurrentPath(Path))
+    ui->toolBox->setCurrentWidget(ui->ObsPage);
+  else if (ui->ExtExplorer->setCurrentPath(Path))
+    ui->toolBox->setCurrentWidget(ui->ExtPage);
 }
 
 

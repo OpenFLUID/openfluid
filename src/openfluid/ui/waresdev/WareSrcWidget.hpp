@@ -159,11 +159,15 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified);
 
+    void onCurrentTabChanged(int Index);
+
   signals:
 
     void wareTextModified(WareSrcWidget* Widget, bool Modified);
 
     void editorSaved();
+
+    void currentTabChanged(const QString& Path);
 };
 
 } } }  // namespaces

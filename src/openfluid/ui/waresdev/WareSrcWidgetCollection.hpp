@@ -168,9 +168,13 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void onCloseWareTabRequested(int Index);
 
+    void onCurrentTabChanged(int Index);
+
   signals:
 
     void editorSaved();
+
+    void currentTabChanged(const QString& Path);
 };
 
 } } }  // namespaces
