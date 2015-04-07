@@ -263,6 +263,8 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
   {
     if (Key == Qt::Key_Return || Key == Qt::Key_Enter)
       insertNewLine();
+    else if (Key == Qt::Key_Tab)
+      insertPlainText(m_IndentString);
     else
       QPlainTextEdit::keyPressEvent(Event);
   }
