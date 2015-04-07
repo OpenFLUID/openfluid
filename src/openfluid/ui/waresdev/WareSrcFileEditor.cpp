@@ -112,6 +112,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
   m_SpaceCharWidth = fontMetrics().width(' ');
 
+  m_IndentString = QString(" ").repeated(PrefMgr->getIndentSpaceNb());
 
   // Code insertion and code completion management
 
@@ -237,9 +238,11 @@ WareSrcFileEditor::~WareSrcFileEditor()
 
 void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
 {
+  int Key = Event->key();
+
   if (mp_Completer->popup()->isVisible())
   {
-    switch (Event->key())
+    switch (Key)
     {
       case Qt::Key_Enter:
       case Qt::Key_Return:
@@ -254,12 +257,15 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
   }
 
   // ! 8239 == 0x202F == "narrow no-break space", may happen as a key with Ctrl modifier
-  bool IsShortcut = ((Event->modifiers() & Qt::ControlModifier)
-      && (Event->key() == Qt::Key_Space || Event->key() == 8239));
+  bool IsShortcut = ((Event->modifiers() & Qt::ControlModifier) && (Key == Qt::Key_Space || Key == 8239));
 
   if (!IsShortcut)
-    QPlainTextEdit::keyPressEvent(Event);
-
+  {
+    if (Key == Qt::Key_Return || Key == Qt::Key_Enter)
+      insertNewLine();
+    else
+      QPlainTextEdit::keyPressEvent(Event);
+  }
 
   // to skip if only Ctrl or Shift alone
   const bool CtrlOrShift = Event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
@@ -600,6 +606,59 @@ void WareSrcFileEditor::updateContent()
   setPlainText(QTextStream(&File).readAll());
 
   document()->setModified(false);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::insertNewLine()
+{
+  QTextCursor Cursor = textCursor();
+  bool AfterOpeningCurlyBrace = false;
+  QString InitialIndent = "";
+  QString StrToInsert = "\n";
+
+  if (!Cursor.atBlockStart())
+  {
+    Cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor);
+    AfterOpeningCurlyBrace = (Cursor.selectedText() == "{");
+
+    Cursor.movePosition(QTextCursor::StartOfLine);
+
+    do
+    {
+      Cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
+
+      QString SelectedText = Cursor.selectedText();
+      if (!SelectedText.endsWith(' ') && !SelectedText.endsWith('\t'))
+      {
+        Cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor);
+        break;
+      }
+    }
+    while (!Cursor.atBlockEnd());
+
+    int InitialIndentInSpaceNb = Cursor.verticalMovementX() / m_SpaceCharWidth;
+    InitialIndent = QString(InitialIndentInSpaceNb, ' ');
+    StrToInsert.append(InitialIndent);
+
+    if (AfterOpeningCurlyBrace)
+      StrToInsert.append(m_IndentString);
+  }
+
+  insertPlainText(StrToInsert);
+
+  int NewPos = textCursor().position();
+  if (AfterOpeningCurlyBrace)
+  {
+    insertPlainText(QString("\n%1}").arg(InitialIndent));
+    Cursor = textCursor();
+    Cursor.setPosition(NewPos);
+    setTextCursor(Cursor);
+  }
+
 }
 
 

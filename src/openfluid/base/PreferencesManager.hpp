@@ -277,6 +277,10 @@ class OPENFLUID_API PreferencesManager
     bool isLineWrappingEnabled();
 
     void setLineWrappingEnabled(bool Enabled);
+
+    int getIndentSpaceNb();
+
+    void setIndentSpaceNb(int SpaceNumber);
 };
 
 } } //namespaces

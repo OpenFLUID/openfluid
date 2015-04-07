@@ -71,6 +71,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     QColor m_LineColor;
 
+    QString m_IndentString;
+
     int m_SpaceCharWidth;
 
     WareSrcFiletypeManager::CompletionRules_t m_CompletionRules;
@@ -84,6 +86,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
     QCompleter* mp_Completer;
 
     void writeString(const QString& Str, int InitialIndentInSpaceNb);
+
+    void insertNewLine();
 
   private slots:
 

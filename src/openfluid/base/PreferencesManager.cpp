@@ -1183,6 +1183,8 @@ void PreferencesManager::setTextEditorDefaults(bool ForceReset)
   if(! mp_ConfFile->contains("linewrapping/enabled") || ForceReset)
      mp_ConfFile->setValue("linewrapping/enabled",true);
 
+  if(! mp_ConfFile->contains("indent/spacenumber") || ForceReset)
+     mp_ConfFile->setValue("indent/spacenumber",2);
 
   mp_ConfFile->endGroup();
 
@@ -1339,6 +1341,26 @@ bool PreferencesManager::isLineWrappingEnabled()
 void PreferencesManager::setLineWrappingEnabled(bool Enabled)
 {
   mp_ConfFile->setValue("openfluid.waresdev.texteditor/linewrapping/enabled",Enabled);
+  mp_ConfFile->sync();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+int PreferencesManager::getIndentSpaceNb()
+{
+  return mp_ConfFile->value("openfluid.waresdev.texteditor/indent/spacenumber",0).toInt();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setIndentSpaceNb(int SpaceNumber)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.texteditor/indent/spacenumber",SpaceNumber);
   mp_ConfFile->sync();
 }
 
