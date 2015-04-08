@@ -47,6 +47,7 @@
 #include <QStandardItemModel>
 
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
+#include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -89,6 +90,10 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void insertNewLine();
 
+    bool findString(const QString& StringToFind, QTextDocument::FindFlags Options);
+
+    bool replaceString(const QString& StringToFind, const QString& StringForReplace, Qt::CaseSensitivity Cs);
+
   private slots:
 
     void updateLineNumberAreaWidth(int NewBlockCount);
@@ -130,6 +135,9 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
     void saveContentToPath(const QString& Path);
 
     void updateContent();
+
+    bool findReplace(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
+                     const QString& StringForReplace, QTextDocument::FindFlags Options, QString& Message);
 
   signals :
 

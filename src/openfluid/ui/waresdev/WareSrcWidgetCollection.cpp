@@ -53,6 +53,8 @@
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>
+#include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
+#include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -65,7 +67,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone) :
     mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(openfluid::waresdev::WareSrcManager::instance()),
     m_DefaultConfigMode(openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE),
-    m_DefaultBuildMode(openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL)
+    m_DefaultBuildMode(openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL), mp_FindReplaceDialog(0)
 {
   connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseWareTabRequested(int)));
   connect(mp_TabWidget, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
@@ -78,7 +80,7 @@ WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsS
 
 WareSrcWidgetCollection::~WareSrcWidgetCollection()
 {
-
+  delete mp_FindReplaceDialog;
 }
 
 
@@ -692,6 +694,47 @@ void WareSrcWidgetCollection::newWare(openfluid::waresdev::WareSrcManager::WareT
 
     if (!NewPath.isEmpty())
       openPath(NewPath);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::showFindReplaceDialog()
+{
+  if (!mp_FindReplaceDialog)
+  {
+    mp_FindReplaceDialog = new FindReplaceDialog(mp_TabWidget);
+
+    connect(mp_FindReplaceDialog, SIGNAL(findReplaceRequested(
+        FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)),
+        this, SLOT(onFindReplaceRequested(
+        FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)));
+  }
+
+  mp_FindReplaceDialog->show();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::onFindReplaceRequested(FindReplaceDialog::FindReplaceAction Action,
+                                                     const QString& StringToFind, const QString& StringForReplace,
+                                                     QTextDocument::FindFlags Options)
+{
+  if (WareSrcWidget* Ware = currentWareWidget())
+  {
+    if (WareSrcFileEditor* Editor = Ware->currentEditor())
+    {
+      Editor->setFocus();
+      QString Message;
+      bool EnableReplace = Editor->findReplace(Action, StringToFind, StringForReplace, Options, Message);
+      mp_FindReplaceDialog->setMessage(Message, EnableReplace);
+    }
   }
 }
 

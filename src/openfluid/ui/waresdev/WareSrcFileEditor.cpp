@@ -660,7 +660,108 @@ void WareSrcFileEditor::insertNewLine()
     Cursor.setPosition(NewPos);
     setTextCursor(Cursor);
   }
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcFileEditor::findReplace(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
+                                    const QString& StringForReplace, QTextDocument::FindFlags Options, QString& Message)
+{
+  switch (Action)
+  {
+    case FindReplaceDialog::FindOnly:
+      if (findString(StringToFind, Options))
+      {
+        Message = "";
+        return true;
+      }
+      break;
+    case FindReplaceDialog::ReplaceOnly:
+      if (replaceString(StringToFind, StringForReplace,
+                        Options & QTextDocument::FindCaseSensitively ? Qt::CaseSensitive : Qt::CaseInsensitive))
+      {
+        Message = "Replaced";
+        return false;
+      }
+      break;
+    case FindReplaceDialog::ReplaceFind:
+      if (replaceString(StringToFind, StringForReplace,
+                        Options & QTextDocument::FindCaseSensitively ? Qt::CaseSensitive : Qt::CaseInsensitive))
+      {
+        Message = "Replaced";
+        return findString(StringToFind, Options);
+      }
+      break;
+    case FindReplaceDialog::ReplaceAll:
+    {
+      QTextCursor Cursor = textCursor();
+      Cursor.movePosition((Options & QTextDocument::FindBackward) ? QTextCursor::End : QTextCursor::Start);
+      setTextCursor(Cursor);
+
+      int ReplaceCount = 0;
+
+      if (findString(StringToFind, Options))
+      {
+        while (findReplace(FindReplaceDialog::ReplaceFind, StringToFind, StringForReplace, Options, Message))
+          ReplaceCount++;
+      }
+
+      if (ReplaceCount > 0)
+        Message = tr("%1 matches replaced").arg(ReplaceCount);
+
+      return true;
+    }
+      break;
+    default:
+      break;
+  }
+
+  Message = tr("String not found");
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcFileEditor::findString(const QString& StringToFind, QTextDocument::FindFlags Options)
+{
+  QTextCursor Cursor = document()->find(StringToFind, textCursor(), Options);
+
+  if (!Cursor.isNull())
+  {
+    setTextCursor(Cursor);
+    return true;
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcFileEditor::replaceString(const QString& StringToFind, const QString& StringForReplace,
+                                      Qt::CaseSensitivity Cs)
+{
+  QTextCursor Cursor = textCursor();
+
+  if (Cursor.selectedText().compare(StringToFind, Cs) == 0)
+  {
+    int From = Cursor.anchor();
+    Cursor.insertText(StringForReplace);
+    Cursor.setPosition(From, QTextCursor::KeepAnchor);
+    setTextCursor(Cursor);
+
+    return true;
+  }
+
+  return false;
 }
 
 

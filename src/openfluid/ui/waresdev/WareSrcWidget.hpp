@@ -116,7 +116,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void closeAllFileTabs();
 
-    WareSrcFileEditor* getCurrentEditor();
+    WareSrcFileEditor* currentEditor();
 
     QString getCurrentFilePath();
 

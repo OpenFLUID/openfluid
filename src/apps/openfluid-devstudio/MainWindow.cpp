@@ -99,8 +99,7 @@ MainWindow::MainWindow() :
   connect(m_Actions["Copy"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Cut"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Paste"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
-  connect(m_Actions["Find"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
-  connect(m_Actions["Replace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["FindReplace"], SIGNAL(triggered()), mp_Collection, SLOT(showFindReplaceDialog()));
   connect(m_Actions["GoToLine"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
 
   connect(mp_Toolbar->action("Release"), SIGNAL(triggered()), mp_Collection, SLOT(setReleaseMode()));
@@ -179,11 +178,8 @@ void MainWindow::createLocalActions()
   m_Actions["Paste"] = new QAction(tr("Paste"), this);
   m_Actions["Paste"]->setShortcuts(QKeySequence::Paste);
 
-  m_Actions["Find"] = new QAction(tr("Find"), this);
-  m_Actions["Find"]->setShortcuts(QKeySequence::Find);
-
-  m_Actions["Replace"] = new QAction(tr("Replace"), this);
-  m_Actions["Replace"]->setShortcuts(QKeySequence::Replace);
+  m_Actions["FindReplace"] = new QAction(tr("Find/Replace"), this);
+  m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);
 
   m_Actions["GoToLine"] = new QAction(tr("Go to line..."), this);
 }
@@ -223,8 +219,7 @@ void MainWindow::createMenus()
   Menu->addAction(m_Actions.value("Copy"));
   Menu->addAction(m_Actions.value("Cut"));
   Menu->addAction(m_Actions.value("Paste"));
-  Menu->addAction(m_Actions.value("Find"));
-  Menu->addAction(m_Actions.value("Replace"));
+  Menu->addAction(m_Actions.value("FindReplace"));
   Menu->addAction(m_Actions.value("GoToLine"));
 
   Menu = menuBar()->addMenu(tr("Build"));

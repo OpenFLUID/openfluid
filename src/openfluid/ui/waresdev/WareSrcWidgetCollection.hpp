@@ -46,8 +46,11 @@
 #include <QObject>
 #include <QMap>
 #include <QString>
+#include <QTextDocument>
 
 #include <openfluid/waresdev/WareSrcContainer.hpp>
+#include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
+
 
 class QTabWidget;
 
@@ -61,6 +64,7 @@ class WareSrcManager;
 namespace ui { namespace waresdev {
 
 class WareSrcWidget;
+class FindReplaceDialog;
 
 class OPENFLUID_API WareSrcWidgetCollection: public QObject
 {
@@ -81,6 +85,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     openfluid::waresdev::WareSrcContainer::ConfigMode m_DefaultConfigMode;
     openfluid::waresdev::WareSrcContainer::BuildMode m_DefaultBuildMode;
+
+    FindReplaceDialog* mp_FindReplaceDialog;
 
     WareSrcWidget* currentWareWidget();
 
@@ -162,6 +168,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void deleteCurrentWare();
 
+    void showFindReplaceDialog();
+
   private slots:
 
     void onWareTxtModified(WareSrcWidget* Widget, bool Modified);
@@ -169,6 +177,9 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void onCloseWareTabRequested(int Index);
 
     void onCurrentTabChanged(int Index);
+
+    void onFindReplaceRequested(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
+                                const QString& StringForReplace, QTextDocument::FindFlags Options);
 
   signals:
 

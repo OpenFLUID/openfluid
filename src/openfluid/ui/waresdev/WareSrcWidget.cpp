@@ -258,7 +258,7 @@ void WareSrcWidget::closeAllFileTabs()
 
 QString WareSrcWidget::getCurrentFilePath()
 {
-  if (WareSrcFileEditor* Editor = getCurrentEditor())
+  if (WareSrcFileEditor* Editor = currentEditor())
     return Editor->getFilePath();
 
   return "";
@@ -269,7 +269,7 @@ QString WareSrcWidget::getCurrentFilePath()
 // =====================================================================
 
 
-WareSrcFileEditor* WareSrcWidget::getCurrentEditor()
+WareSrcFileEditor* WareSrcWidget::currentEditor()
 {
   return qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->currentWidget());
 }
@@ -453,7 +453,7 @@ return false;
 
 void WareSrcWidget::saveCurrentEditor()
 {
-  if (WareSrcFileEditor* Editor = getCurrentEditor())
+  if (WareSrcFileEditor* Editor = currentEditor())
     Editor->saveContent();
 }
 
@@ -464,7 +464,7 @@ void WareSrcWidget::saveCurrentEditor()
 
 QString WareSrcWidget::saveAs(const QString& TopDirectory)
 {
-  WareSrcFileEditor* CurrentEditor = getCurrentEditor();
+  WareSrcFileEditor* CurrentEditor = currentEditor();
   if (!CurrentEditor)
   {
     QMessageBox::warning(0, tr("No open file"), tr("No file to save as"));
@@ -532,7 +532,7 @@ void WareSrcWidget::newFile()
 
 void WareSrcWidget::deleteCurrentFile()
 {
-  if (WareSrcFileEditor* Editor = getCurrentEditor())
+  if (WareSrcFileEditor* Editor = currentEditor())
   {
     QString Path = Editor->getFilePath();
 
