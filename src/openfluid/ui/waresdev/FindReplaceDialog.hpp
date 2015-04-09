@@ -52,7 +52,7 @@ namespace Ui { class FindReplaceDialog;
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class FindReplaceDialog: public QDialog
+class OPENFLUID_API FindReplaceDialog: public QDialog
 {
   Q_OBJECT
 

@@ -43,13 +43,15 @@
 
 #include <QFileSystemModel>
 
+#include <openfluid/dllexport.hpp>
+
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class WareSrcExplorerModel: public QFileSystemModel
+class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
 {
   Q_OBJECT
 
