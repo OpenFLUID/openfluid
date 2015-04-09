@@ -96,6 +96,9 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
     connect(TB->action("BuildOnly"), SIGNAL(triggered()), this, SLOT(setBuildNoInstallMode()));
     connect(TB->action("Configure"), SIGNAL(triggered()), this, SLOT(configure()));
     connect(TB->action("Build"), SIGNAL(triggered()), this, SLOT(build()));
+
+    connect(TB->action("OpenTerminal"), SIGNAL(triggered()), this, SIGNAL(openTerminalRequested()));
+    connect(TB->action("OpenExplorer"), SIGNAL(triggered()), this, SIGNAL(openExplorerRequested()));
   }
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));

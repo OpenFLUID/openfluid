@@ -118,6 +118,8 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
               SLOT(onWareTxtModified(WareSrcWidget*,bool)));
       connect(Widget, SIGNAL(editorSaved()), this, SIGNAL(editorSaved()));
       connect(Widget, SIGNAL(findReplaceRequested()), this, SLOT(showFindReplaceDialog()));
+      connect(Widget, SIGNAL(openTerminalRequested()), this, SLOT(openTerminal()));
+      connect(Widget, SIGNAL(openExplorerRequested()), this, SLOT(openExplorer()));
     }
 
     if (Info.m_isAWareFile)

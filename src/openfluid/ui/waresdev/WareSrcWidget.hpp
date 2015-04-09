@@ -170,6 +170,10 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void currentTabChanged(const QString& Path);
 
     void findReplaceRequested();
+
+    void openTerminalRequested();
+
+    void openExplorerRequested();
 };
 
 } } }  // namespaces
