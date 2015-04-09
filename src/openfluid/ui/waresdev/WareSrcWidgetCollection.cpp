@@ -117,6 +117,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
       connect(Widget, SIGNAL(wareTextModified(WareSrcWidget*,bool)), this,
               SLOT(onWareTxtModified(WareSrcWidget*,bool)));
       connect(Widget, SIGNAL(editorSaved()), this, SIGNAL(editorSaved()));
+      connect(Widget, SIGNAL(findReplaceRequested()), this, SLOT(showFindReplaceDialog()));
     }
 
     if (Info.m_isAWareFile)

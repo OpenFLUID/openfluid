@@ -168,6 +168,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void editorSaved();
 
     void currentTabChanged(const QString& Path);
+
+    void findReplaceRequested();
 };
 
 } } }  // namespaces

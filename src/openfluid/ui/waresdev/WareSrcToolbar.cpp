@@ -84,6 +84,9 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubMenu->addAction(m_Actions["CloseFile"]);
     SubMenu->addAction(m_Actions["DeleteFile"]);
 
+    SubMenu = Menu->addMenu(tr("Edit"));
+    SubMenu->addAction(m_Actions["FindReplace"]);
+
     SubMenu = Menu->addMenu(tr("Build"));
     SubMenu->addAction(m_Actions["Configure"]);
     QMenu* SubSubMenu = SubMenu->addMenu(tr("Set active configuration"));
@@ -140,6 +143,9 @@ void WareSrcToolbar::createActions()
   m_Actions["CloseFile"]->setToolTip(tr("Close the current file"));
   m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
   m_Actions["DeleteFile"]->setToolTip(tr("Delete the current file"));
+
+  m_Actions["FindReplace"] = new QAction(tr("Find/Replace"), this);
+  m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);
 
   m_Actions["Configure"] = new QAction(QIcon(":/ui/common/icons/configure.png"), tr("Configure ware"), this);
   m_Actions["ConfigureWMenu"] = new QAction(QIcon(":/ui/common/icons/configure.png"), tr("Configure"), this);

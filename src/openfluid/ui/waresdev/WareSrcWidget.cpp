@@ -88,6 +88,8 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
     connect(TB->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
     connect(TB->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(deleteCurrentFile()));
 
+    connect(TB->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
+
     connect(TB->action("Release"), SIGNAL(triggered()), this, SLOT(setReleaseMode()));
     connect(TB->action("Debug"), SIGNAL(triggered()), this, SLOT(setDebugMode()));
     connect(TB->action("BuildInstall"), SIGNAL(triggered()), this, SLOT(setBuildWithInstallMode()));
