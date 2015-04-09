@@ -75,7 +75,7 @@ class OPENFLUID_API FindReplaceDialog: public QDialog
 
     ~FindReplaceDialog();
 
-    void setMessage(const QString& Message, bool EnableReplace);
+    void setMessage(const QString& Message, bool TextFound);
 
   signals :
 
@@ -84,9 +84,11 @@ class OPENFLUID_API FindReplaceDialog: public QDialog
 
   public slots:
 
-    void show();
+    void show(const QString& SelectedText);
 
   private slots:
+
+    void onTextChanged(const QString& Text);
 
     void onFindClicked();
 

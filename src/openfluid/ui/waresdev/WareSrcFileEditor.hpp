@@ -139,6 +139,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
     bool findReplace(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
                      const QString& StringForReplace, QTextDocument::FindFlags Options, QString& Message);
 
+    QString getSelectedText();
+
   signals :
 
     void editorTxtChanged(WareSrcFileEditor* Editor, bool Changed);

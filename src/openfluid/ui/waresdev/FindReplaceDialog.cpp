@@ -58,6 +58,13 @@ FindReplaceDialog::FindReplaceDialog(QWidget* Parent) :
   connect(ui->Replace_pushButton, SIGNAL(clicked()), this, SLOT(onReplaceClicked()));
   connect(ui->ReplaceFind_pushButton, SIGNAL(clicked()), this, SLOT(onReplaceFindClicked()));
   connect(ui->ReplaceAll_pushButton, SIGNAL(clicked()), this, SLOT(onReplaceAllClicked()));
+
+  connect(ui->Find_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onTextChanged(const QString&)));
+
+  ui->Find_pushButton->setEnabled(false);
+  ui->ReplaceAll_pushButton->setEnabled(false);
+  ui->ReplaceFind_pushButton->setEnabled(false);
+  ui->Replace_pushButton->setEnabled(false);
 }
 
 
@@ -75,10 +82,15 @@ FindReplaceDialog::~FindReplaceDialog()
 // =====================================================================
 
 
-void FindReplaceDialog::show()
+void FindReplaceDialog::show(const QString& SelectedText)
 {
-  ui->ReplaceFind_pushButton->setEnabled(false);
-  ui->Replace_pushButton->setEnabled(false);
+  bool EmptySelection = SelectedText.isEmpty();
+
+  ui->ReplaceFind_pushButton->setEnabled(!EmptySelection);
+  ui->Replace_pushButton->setEnabled(!EmptySelection);
+
+  if (!EmptySelection)
+    ui->Find_lineEdit->setText(SelectedText);
 
   QWidget::show();
 }
@@ -88,12 +100,31 @@ void FindReplaceDialog::show()
 // =====================================================================
 
 
-void FindReplaceDialog::setMessage(const QString& Message, bool EnableReplace)
+void FindReplaceDialog::setMessage(const QString& Message, bool TextFound)
 {
   ui->Msg_label->setText(Message);
 
-  ui->ReplaceFind_pushButton->setEnabled(EnableReplace);
-  ui->Replace_pushButton->setEnabled(EnableReplace);
+  ui->ReplaceFind_pushButton->setEnabled(TextFound);
+  ui->Replace_pushButton->setEnabled(TextFound);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void FindReplaceDialog::onTextChanged(const QString& Text)
+{
+  bool IsEmpty = Text.isEmpty();
+
+  ui->Find_pushButton->setEnabled(!IsEmpty);
+  ui->ReplaceAll_pushButton->setEnabled(!IsEmpty);
+
+  if (IsEmpty)
+  {
+    ui->ReplaceFind_pushButton->setEnabled(false);
+    ui->Replace_pushButton->setEnabled(false);
+  }
 }
 
 

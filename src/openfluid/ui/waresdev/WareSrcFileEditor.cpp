@@ -769,4 +769,14 @@ bool WareSrcFileEditor::replaceString(const QString& StringToFind, const QString
 // =====================================================================
 
 
+QString WareSrcFileEditor::getSelectedText()
+{
+  return textCursor().selectedText();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 } } }  // namespaces

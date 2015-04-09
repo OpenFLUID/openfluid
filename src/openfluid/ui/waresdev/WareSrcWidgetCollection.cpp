@@ -717,7 +717,14 @@ void WareSrcWidgetCollection::showFindReplaceDialog()
         FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)));
   }
 
-  mp_FindReplaceDialog->show();
+  QString SelectedText = "";
+  if (WareSrcWidget* Ware = currentWareWidget())
+  {
+    if (WareSrcFileEditor* Editor = Ware->currentEditor())
+      SelectedText = Editor->getSelectedText();
+  }
+
+  mp_FindReplaceDialog->show(SelectedText);
 }
 
 
@@ -735,8 +742,8 @@ void WareSrcWidgetCollection::onFindReplaceRequested(FindReplaceDialog::FindRepl
     {
       Editor->setFocus();
       QString Message;
-      bool EnableReplace = Editor->findReplace(Action, StringToFind, StringForReplace, Options, Message);
-      mp_FindReplaceDialog->setMessage(Message, EnableReplace);
+      bool TextFound = Editor->findReplace(Action, StringToFind, StringForReplace, Options, Message);
+      mp_FindReplaceDialog->setMessage(Message, TextFound);
     }
   }
 }
