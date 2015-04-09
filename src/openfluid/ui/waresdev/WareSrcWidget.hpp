@@ -155,6 +155,12 @@ class OPENFLUID_API WareSrcWidget: public QWidget
      */
     QString saveAs(const QString& TopDirectory = "");
 
+    void copyText();
+
+    void cutText();
+
+    void pasteText();
+
   private slots:
 
     void onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified);

@@ -746,4 +746,36 @@ void WareSrcWidgetCollection::onFindReplaceRequested(FindReplaceDialog::FindRepl
 // =====================================================================
 
 
+void WareSrcWidgetCollection::copyText()
+{
+  if (WareSrcWidget* Ware = currentWareWidget())
+    Ware->copyText();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::cutText()
+{
+  if (WareSrcWidget* Ware = currentWareWidget())
+    Ware->cutText();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::pasteText()
+{
+  if (WareSrcWidget* Ware = currentWareWidget())
+    Ware->pasteText();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 } } }  //namespaces

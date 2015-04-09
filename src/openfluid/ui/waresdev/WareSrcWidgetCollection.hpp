@@ -170,6 +170,12 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void showFindReplaceDialog();
 
+    void copyText();
+
+    void cutText();
+
+    void pasteText();
+
   private slots:
 
     void onWareTxtModified(WareSrcWidget* Widget, bool Modified);

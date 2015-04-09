@@ -96,9 +96,9 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()), mp_Collection, SLOT(closeCurrentEditor()));
   connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentFile()));
 
-  connect(m_Actions["Copy"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
-  connect(m_Actions["Cut"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
-  connect(m_Actions["Paste"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(m_Actions["Copy"], SIGNAL(triggered()), mp_Collection, SLOT(copyText()));
+  connect(m_Actions["Cut"], SIGNAL(triggered()), mp_Collection, SLOT(cutText()));
+  connect(m_Actions["Paste"], SIGNAL(triggered()), mp_Collection, SLOT(pasteText()));
   connect(m_Actions["FindReplace"], SIGNAL(triggered()), mp_Collection, SLOT(showFindReplaceDialog()));
   connect(m_Actions["GoToLine"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
 

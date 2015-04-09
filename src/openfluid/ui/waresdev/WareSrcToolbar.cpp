@@ -85,6 +85,9 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubMenu->addAction(m_Actions["DeleteFile"]);
 
     SubMenu = Menu->addMenu(tr("Edit"));
+    SubMenu->addAction(m_Actions["Copy"]);
+    SubMenu->addAction(m_Actions["Cut"]);
+    SubMenu->addAction(m_Actions["Paste"]);
     SubMenu->addAction(m_Actions["FindReplace"]);
 
     SubMenu = Menu->addMenu(tr("Build"));
@@ -143,6 +146,15 @@ void WareSrcToolbar::createActions()
   m_Actions["CloseFile"]->setToolTip(tr("Close the current file"));
   m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
   m_Actions["DeleteFile"]->setToolTip(tr("Delete the current file"));
+
+  m_Actions["Copy"] = new QAction(tr("Copy"), this);
+  m_Actions["Copy"]->setShortcuts(QKeySequence::Copy);
+
+  m_Actions["Cut"] = new QAction(tr("Cut"), this);
+  m_Actions["Cut"]->setShortcuts(QKeySequence::Cut);
+
+  m_Actions["Paste"] = new QAction(tr("Paste"), this);
+  m_Actions["Paste"]->setShortcuts(QKeySequence::Paste);
 
   m_Actions["FindReplace"] = new QAction(tr("Find/Replace"), this);
   m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);

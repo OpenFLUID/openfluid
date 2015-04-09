@@ -88,6 +88,9 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
     connect(TB->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
     connect(TB->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(deleteCurrentFile()));
 
+    connect(TB->action("Copy"), SIGNAL(triggered()), this, SLOT(copyText()));
+    connect(TB->action("Cut"), SIGNAL(triggered()), this, SLOT(cutText()));
+    connect(TB->action("Paste"), SIGNAL(triggered()), this, SLOT(pasteText()));
     connect(TB->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
 
     connect(TB->action("Release"), SIGNAL(triggered()), this, SLOT(setReleaseMode()));
@@ -583,6 +586,39 @@ void WareSrcWidget::onCurrentTabChanged(int Index)
 {
   if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->widget(Index)))
     emit currentTabChanged(Editor->getFilePath());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::copyText()
+{
+  if (WareSrcFileEditor* Editor = currentEditor())
+    Editor->copy();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::cutText()
+{
+  if (WareSrcFileEditor* Editor = currentEditor())
+    Editor->cut();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::pasteText()
+{
+  if (WareSrcFileEditor* Editor = currentEditor())
+    Editor->paste();
 }
 
 
