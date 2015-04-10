@@ -204,7 +204,15 @@
         </rule>
 
         <rule name="openfluid-deprecated-keywords" style="openfluid-deprecated">
-          <pattern value="openfluid::core::Unit" />        
+          <pattern value="openfluid::core::Unit" />
+          <pattern value="openfluid::core::UnitClass_t" />
+          <pattern value="openfluid::tools::ConvertValue" />
+          <pattern value="openfluid::tools::ConvertString" />
+          <pattern value="openfluid::tools::IsCloseEnough" />
+          <pattern value="openfluid::tools::IsVeryClose" />
+          <pattern value="openfluid::tools::TokenizeString" />
+          <pattern value="openfluid::tools::SplitString" />
+          <pattern value="OPENFLUID_IsUnitClassExist" />                  
         </rule>
         
         <rule name="string" style="quoted">
