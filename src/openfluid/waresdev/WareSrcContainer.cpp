@@ -417,10 +417,8 @@ void WareSrcContainer::build()
 
 void WareSrcContainer::processOutput()
 {
-//TODO fix accentuation pb, qprintable not sufficient
-  mp_Stream->write(qPrintable(mp_Process->readAllStandardOutput()),
-                   openfluid::waresdev::WareSrcMsgStream::MSG_STANDARD);
-  mp_Stream->write(qPrintable(mp_Process->readAllStandardError()), openfluid::waresdev::WareSrcMsgStream::MSG_ERROR);
+  mp_Stream->write(mp_Process->readAllStandardOutput(), openfluid::waresdev::WareSrcMsgStream::MSG_STANDARD);
+  mp_Stream->write(mp_Process->readAllStandardError(), openfluid::waresdev::WareSrcMsgStream::MSG_ERROR);
 }
 
 
@@ -431,9 +429,10 @@ void WareSrcContainer::processOutput()
 void WareSrcContainer::processFinishedOutput(int ExitCode)
 {
   if (!ExitCode)
-    mp_Stream->write(tr("Command ended\n\n"), openfluid::waresdev::WareSrcMsgStream::MSG_COMMAND);
+    mp_Stream->write(tr("Command ended\n\n").toLocal8Bit(), openfluid::waresdev::WareSrcMsgStream::MSG_COMMAND);
   else
-    mp_Stream->write(tr("Command ended with error\n\n"), openfluid::waresdev::WareSrcMsgStream::MSG_ERROR);
+    mp_Stream->write(tr("Command ended with error\n\n").toLocal8Bit(),
+                     openfluid::waresdev::WareSrcMsgStream::MSG_ERROR);
 }
 
 
@@ -446,7 +445,7 @@ void WareSrcContainer::runCommand(const QString& Command)
   if (mp_Process->state() != QProcess::NotRunning)
     mp_Process->close();
 
-  mp_Stream->write(QString("%1\n").arg(Command), openfluid::waresdev::WareSrcMsgStream::MSG_COMMAND);
+  mp_Stream->write(QString("%1\n").arg(Command).toLocal8Bit(), openfluid::waresdev::WareSrcMsgStream::MSG_COMMAND);
 
   mp_Process->start(Command);
 }

@@ -68,9 +68,9 @@ void OStreamMsgStream::clear()
 // =====================================================================
 
 
-void OStreamMsgStream::write(const QString& Msg, MessageType /*Type*/)
+void OStreamMsgStream::write(const QByteArray& Msg, MessageType /*Type*/)
 {
-  m_Stream << qPrintable(Msg);
+  m_Stream << Msg.constData();
 }
 
 

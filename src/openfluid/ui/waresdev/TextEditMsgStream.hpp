@@ -65,7 +65,7 @@ class OPENFLUID_API TextEditMsgStream: public openfluid::waresdev::WareSrcMsgStr
 
     void clear();
 
-    void write(const QString& Msg, openfluid::waresdev::WareSrcMsgStream::MessageType Type);
+    void write(const QByteArray& Msg, openfluid::waresdev::WareSrcMsgStream::MessageType Type);
 };
 
 } } }  // namespaces

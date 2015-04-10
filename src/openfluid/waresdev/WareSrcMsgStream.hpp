@@ -64,7 +64,7 @@ class OPENFLUID_API WareSrcMsgStream
 
     virtual void clear() = 0;
 
-    virtual void write(const QString& Msg, MessageType Type) = 0;
+    virtual void write(const QByteArray& Msg, MessageType Type) = 0;
 };
 
 

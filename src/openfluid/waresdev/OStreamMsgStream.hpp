@@ -63,7 +63,7 @@ class OPENFLUID_API OStreamMsgStream: public WareSrcMsgStream
 
     void clear();
 
-    void write(const QString& Msg, MessageType Type);
+    void write(const QByteArray& Msg, MessageType Type);
 };
 
 } }  // namespaces

@@ -72,13 +72,13 @@ void TextEditMsgStream::clear()
 // =====================================================================
 
 
-void TextEditMsgStream::write(const QString& Msg, openfluid::waresdev::WareSrcMsgStream::MessageType Type)
+void TextEditMsgStream::write(const QByteArray& Msg, openfluid::waresdev::WareSrcMsgStream::MessageType Type)
 {
-  QTextCursor Cursor(mp_Edit->textCursor());
+  QTextCursor Cursor = mp_Edit->textCursor();
 
   Cursor.setCharFormat(m_FormatByMsgType.value(Type, QTextCharFormat()));
 
-  Cursor.insertText(Msg);
+  Cursor.insertText(QString::fromUtf8(Msg));
 
   mp_Edit->ensureCursorVisible();
 }
