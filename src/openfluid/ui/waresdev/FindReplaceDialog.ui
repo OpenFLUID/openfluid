@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>395</width>
-    <height>373</height>
+    <width>475</width>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,62 +48,66 @@
     </layout>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Direction</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout_3">
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="Forward_radioButton">
-        <property name="text">
-         <string>Forward</string>
+    <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
+     <item>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>Direction</string>
+       </property>
+       <layout class="QFormLayout" name="formLayout_3">
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="Forward_radioButton">
+          <property name="text">
+           <string>Forward</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="Backward_radioButton">
+          <property name="text">
+           <string>Backward</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Options</string>
+       </property>
+       <layout class="QFormLayout" name="formLayout_2">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="Backward_radioButton">
-        <property name="text">
-         <string>Backward</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Options</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout_2">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-      </property>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="CaseSensitive_checkBox"/>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="caseSensitiveLabel_2">
-        <property name="text">
-         <string>Case sensitive</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="WholeWord_checkBox"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="wholeWordLabel">
-        <property name="text">
-         <string>Whole word</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="CaseSensitive_checkBox"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="caseSensitiveLabel_2">
+          <property name="text">
+           <string>Case sensitive</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="WholeWord_checkBox"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="wholeWordLabel">
+          <property name="text">
+           <string>Whole word</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <spacer name="verticalSpacer">

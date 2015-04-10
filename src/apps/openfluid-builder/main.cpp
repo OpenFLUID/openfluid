@@ -51,6 +51,7 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include <iostream>
 
@@ -83,7 +84,8 @@ int main(int argc, char** argv)
 
     OPENFLUID_APPLICATION.setStyleSheet(QString("QToolTip { color: #FFFFFF; background-color: %1; "
                                                 "border: 1px solid %2; }")
-                                        .arg(BUILDER_TOOLTIP_BGCOLOR,BUILDER_TOOLTIP_BORDERCOLOR));
+                                        .arg(openfluid::ui::config::TOOLTIP_BGCOLOR,
+                                             openfluid::ui::config::TOOLTIP_BORDERCOLOR));
 
     // Application launching
     BuilderApp App;

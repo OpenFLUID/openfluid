@@ -73,8 +73,8 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
   ui->InfosLayout->insertWidget(1,mp_WebLabel);
   ui->InfosLayout->insertWidget(2,mp_ContactLabel);
 
-  ui->IconLabel->setPixmap(QPixmap(":/icons/openfluid_icon_about.png"));
-  ui->TitleLabel->setPixmap(QPixmap(":/images/openfluid_title.png"));
+  ui->IconLabel->setPixmap(QPixmap(":/ui/common/images/openfluid_icon_about.png"));
+  ui->TitleLabel->setPixmap(QPixmap(":/ui/common/images/openfluid_title.png"));
 
   ui->IconLabel->setFocus();
 

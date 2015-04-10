@@ -42,11 +42,16 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QAction>
+#include <QUrl>
+#include <QDesktopServices>
 #include <QMessageBox>
 #include <QCloseEvent>
 
+#include <openfluid/config.hpp>
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
+#include <openfluid/ui/common/AboutDialog.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 
@@ -65,6 +70,27 @@ MainWindow::MainWindow() :
   ui->splitter->setSizes(Sizes);
 
   mp_Toolbar = new openfluid::ui::waresdev::WareSrcToolbar(false, this);
+
+  mp_Toolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
+
+  mp_Toolbar->setObjectName("SrcToolbar");
+  mp_Toolbar->setStyleSheet(QString("QWidget "
+                                      "{color: white; padding-left : 10px; padding-right : 10px;} "
+                                    "#SrcToolbar "
+                                      "{background-color: %1; border: 1px solid %1;}"
+                                    "QToolButton[popupMode=\"1\"] "
+                                      "{background-color: %1; border: 1px solid %1; "
+                                       "padding-left : 10px; padding-right : 20px;}"
+                                    "QToolButton::hover "
+                                      "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }"
+                                    "QToolButton::menu-button "
+                                      "{background-color: %1; border: 1px solid %1; border-radius: 4px;}"
+                                    "QToolButton::menu-button:pressed, QToolButton::menu-button:hover "
+                                      "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }")
+                                       .arg(openfluid::ui::config::TOOLBAR_BGCOLOR,
+                                            openfluid::ui::config::TOOLBARBUTTON_BGCOLOR,
+                                            openfluid::ui::config::TOOLBARBUTTON_BORDERCOLOR));
+
   addToolBar(mp_Toolbar);
 
   openfluid::waresdev::WareSrcManager* Manager = openfluid::waresdev::WareSrcManager::instance();
@@ -88,6 +114,10 @@ MainWindow::MainWindow() :
   connect(m_Actions["DeleteWare"], SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentWare()));
   connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
+
+  connect(m_Actions["HelpAbout"], SIGNAL(triggered()), this, SLOT(onAboutAsked()));
+  connect(m_Actions["HelpOnlineWeb"], SIGNAL(triggered()), this, SLOT(onOnlineWebAsked()));
+  connect(m_Actions["HelpOnlineCommunity"], SIGNAL(triggered()), this, SLOT(onOnlineCommunityAsked()));
 
   connect(mp_Toolbar->action("NewFile"), SIGNAL(triggered()), mp_Collection, SLOT(newFile()));
   connect(mp_Toolbar->action("OpenFile"), SIGNAL(triggered()), mp_Collection, SLOT(openFile()));
@@ -182,6 +212,14 @@ void MainWindow::createLocalActions()
   m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);
 
   m_Actions["GoToLine"] = new QAction(tr("Go to line..."), this);
+
+  //Help menu
+  m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
+  m_Actions["HelpOnlineCommunity"] = new QAction(tr("Community site"), this);
+  m_Actions["HelpEmail"] = new QAction(tr("Email"), this);
+
+  m_Actions["HelpAbout"] = new QAction(tr("About"), this);
+  m_Actions["HelpAbout"]->setMenuRole(QAction::AboutRole);
 }
 
 
@@ -235,6 +273,14 @@ void MainWindow::createMenus()
   Menu = menuBar()->addMenu(tr("Tools"));
   Menu->addAction(mp_Toolbar->action("OpenTerminal"));
   Menu->addAction(mp_Toolbar->action("OpenExplorer"));
+
+  Menu = menuBar()->addMenu(tr("&Help"));
+  SubMenu = Menu->addMenu(tr("OpenFLUID online"));
+  SubMenu->addAction(m_Actions["HelpOnlineWeb"]);
+  SubMenu->addAction(m_Actions["HelpOnlineCommunity"]);
+  Menu->addSeparator();
+  Menu->addAction(m_Actions["HelpAbout"]);
+
 }
 
 
@@ -251,7 +297,8 @@ void MainWindow::setWorkspaceDefaults()
   mp_Toolbar->action(Mode.contains("BUILDONLY", Qt::CaseInsensitive) ? "BuildOnly" : "BuildInstall")->trigger();
 
   QStringList LastOpenWares = Mgr->getLastOpenWares();
-  foreach(QString WarePath,LastOpenWares)mp_Collection->openPath(WarePath);
+  foreach(QString WarePath,LastOpenWares)
+    mp_Collection->openPath(WarePath);
 
   mp_Collection->setCurrent(Mgr->getLastActiveWare());
 }
@@ -285,6 +332,40 @@ void MainWindow::onQuitRequested()
 
   if (mp_Collection->closeAllWidgets())
     qApp->quit();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onOnlineWebAsked()
+{
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_WEBSITE), QUrl::TolerantMode));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onOnlineCommunityAsked()
+{
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_COMMUNITY), QUrl::TolerantMode));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onAboutAsked()
+{
+  openfluid::ui::common::AboutDialog AboutDlg(this,
+                                              m_Actions["HelpOnlineWeb"],
+                                              m_Actions["HelpEmail"]);
+
+  AboutDlg.exec();
 }
 
 

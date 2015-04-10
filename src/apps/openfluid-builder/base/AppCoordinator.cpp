@@ -50,6 +50,8 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
+#include <openfluid/ui/config.hpp>
+#include <openfluid/config.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 
 #include "AppCoordinator.hpp"
@@ -252,7 +254,7 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
 
     mp_DockWidget->setStyleSheet(QString("QDockWidget {padding: 5px; font: bold; background: %1;} "
                                          "QDockWidget::title {padding : 5px; font: bold; }")
-                                        .arg(BUILDER_TOOLBAR_BGCOLOR));
+                                        .arg(openfluid::ui::config::TOOLBAR_BGCOLOR));
 
     m_MainWindow.addDockWidget(openfluid::base::PreferencesManager::instance()->getDockPosition(),
                                mp_DockWidget);
@@ -735,7 +737,7 @@ void AppCoordinator::whenMarketAsked()
 
 void AppCoordinator::whenOnlineWebAsked()
 {
-  QDesktopServices::openUrl(QUrl(BUILDER_URL_WEBSITE, QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_WEBSITE), QUrl::TolerantMode));
 }
 
 
@@ -745,7 +747,7 @@ void AppCoordinator::whenOnlineWebAsked()
 
 void AppCoordinator::whenOnlineCommunityAsked()
 {
-  QDesktopServices::openUrl(QUrl(BUILDER_URL_COMMUNITY, QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_COMMUNITY), QUrl::TolerantMode));
 }
 
 
@@ -754,7 +756,7 @@ void AppCoordinator::whenOnlineCommunityAsked()
 
 void AppCoordinator::whenEmailAsked()
 {
-  QDesktopServices::openUrl(QUrl(BUILDER_URL_EMAIL, QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_EMAIL), QUrl::TolerantMode));
 }
 
 

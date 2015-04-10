@@ -44,6 +44,7 @@
 
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include "AppActions.hpp"
 #include "ExtensionsRegistry.hpp"
@@ -475,9 +476,9 @@ void AppActions::createToolbar(MainWindow& MainWin)
                                           "#MainToolbar {background-color: %1; border: 1px solid %1;}"
                                           "QToolButton::hover "
                                             "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }")
-                                         .arg(BUILDER_TOOLBAR_BGCOLOR,
-                                              BUILDER_TOOLBARBUTTON_BGCOLOR,
-                                              BUILDER_TOOLBARBUTTON_BORDERCOLOR));
+                                         .arg(openfluid::ui::config::TOOLBAR_BGCOLOR,
+                                              openfluid::ui::config::TOOLBARBUTTON_BGCOLOR,
+                                              openfluid::ui::config::TOOLBARBUTTON_BORDERCOLOR));
   }
 
   MainWin.addToolBar(openfluid::base::PreferencesManager::instance()->getToolBarPosition(),

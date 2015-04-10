@@ -190,7 +190,8 @@ void WareSrcToolbar::createActions()
   m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
   m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
 
-  foreach(QAction* Action,m_Actions.values())Action->setIconVisibleInMenu(true);
+  foreach(QAction* Action,m_Actions.values())
+    Action->setIconVisibleInMenu(true);
 }
 
 

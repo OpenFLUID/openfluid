@@ -42,20 +42,8 @@
 #ifndef __OPENFLUID_BUILDERAPP_BUILDERCONFIG_HPP__
 #define __OPENFLUID_BUILDERAPP_BUILDERCONFIG_HPP__
 
+
 const std::string BUILDEREXTS_INSTALL_PATH = "@BUILDEREXTS_INSTALL_PATH@";
-
-const QString BUILDER_URL_WEBSITE = "http://www.openfluid-project.org";
-const QString BUILDER_URL_COMMUNITY = "http://www.openfluid-project.org/community";
-const QString BUILDER_URL_DEV = "https://github.com/OpenFLUID/";
-const QString BUILDER_URL_BUG = "https://github.com/OpenFLUID/openfluid/issues";
-const QString BUILDER_URL_EMAIL = "mailto:contact@openfluid-project.org";
-
-const QString BUILDER_TOOLBAR_BGCOLOR = "#2C3A4C";
-const QString BUILDER_TOOLBARBUTTON_BGCOLOR = "#3B4E66";
-const QString BUILDER_TOOLBARBUTTON_BORDERCOLOR = "#4B4B4B";
-
-const QString BUILDER_TOOLTIP_BGCOLOR = "#2C3A4C";
-const QString BUILDER_TOOLTIP_BORDERCOLOR = "#676767";
 
 const QString BUILDER_SIMULATOR_BGCOLOR = "#ECF9B5";
 const QString BUILDER_GENERATOR_BGCOLOR = "#FDFEDE";

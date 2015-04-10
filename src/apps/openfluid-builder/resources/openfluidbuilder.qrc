@@ -2,7 +2,6 @@
 <RCC version="1.0">
   <qresource>
     <file>images/openfluid_official.png</file>
-    <file>images/openfluid_title.png</file>
     <file>images/dot.png</file>
     <file>images/check-ok.png</file>
     <file>images/check-warn.png</file>
@@ -13,7 +12,6 @@
     <file>images/status-stable.png</file>
     <file>icons/openfluid_icon.png</file>
     <file>icons/openfluid_icon_builder.png</file>
-    <file>icons/openfluid_icon_about.png</file>
     <file>icons/file-open-example.png</file>
     <file>icons/market.png</file>
     <file>icons/wares-development.png</file>    
