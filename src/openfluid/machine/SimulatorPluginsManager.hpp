@@ -84,7 +84,7 @@ class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelIte
     // =====================================================================
 
 
-    std::string getPluginFullPath(const std::string& Filename)
+    std::string getPluginFullPath(const std::string& Filename) const
     {
       return openfluid::base::RuntimeEnvironment::instance()->getSimulatorPluginFullPath(Filename);
     }
@@ -94,7 +94,7 @@ class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelIte
     // =====================================================================
 
 
-    std::vector<std::string> getPluginsSearchPaths()
+    std::vector<std::string> getPluginsSearchPaths() const
     {
       return openfluid::base::RuntimeEnvironment::instance()->getSimulatorsPluginsPaths();
     }
@@ -104,10 +104,17 @@ class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelIte
     // =====================================================================
 
 
-    std::string getPluginFilenameSuffix()
+    std::string getPluginFilenameSuffix() const
     {
       return openfluid::config::SIMULATORS_PLUGINS_SUFFIX;
     }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    std::vector<ModelItemSignatureInstance*> getAvailableGhostsSignatures(const std::string& Pattern = "") const;
 
 };
 

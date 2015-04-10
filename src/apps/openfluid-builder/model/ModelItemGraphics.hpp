@@ -70,6 +70,8 @@ class ModelItemGraphics : public QGraphicsRectItem
 
     QString m_ID;
 
+    bool m_Ghost;
+
     bool m_Initialized;
 
     QList<ConnectorGraphics*> m_Connectors;

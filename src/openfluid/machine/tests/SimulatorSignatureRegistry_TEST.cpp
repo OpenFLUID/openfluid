@@ -47,8 +47,10 @@
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
@@ -63,10 +65,12 @@ BOOST_AUTO_TEST_CASE(test_constructor)
       4);
 }
 
+
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
+
+BOOST_AUTO_TEST_CASE(test_getsignatureiteminstance)
 {
   openfluid::machine::SimulatorSignatureRegistry* Reg =
       openfluid::machine::SimulatorSignatureRegistry::instance();
@@ -75,13 +79,36 @@ BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
 
   BOOST_CHECK_EQUAL(Sign->Signature->ID, "examples.primitives.unitsA.prod");
 
-  openfluid::fluidx::SimulatorDescriptor ItemDesc(
-      "examples.primitives.unitsB.prod");
+  openfluid::fluidx::SimulatorDescriptor ItemDesc("examples.primitives.unitsB.prod");
 
   const openfluid::machine::ModelItemSignatureInstance* Sign2 = Reg->signature(&ItemDesc);
 
   BOOST_CHECK_EQUAL(Sign2->Signature->ID, "examples.primitives.unitsB.prod");
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(test_ghostsimulators)
+{
+  openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(CONFIGTESTS_INPUT_MISCDATA_DIR+"/"+
+                                                                                  "GhostSimulators");
+
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::instance();
+  Reg->update();
+
+  BOOST_CHECK_EQUAL(
+       Reg->getSimSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].size(),
+       12);
+
+  BOOST_CHECK(Reg->signature("simA") != NULL);
+  BOOST_CHECK(Reg->signature("simFake") == NULL);
+
+  BOOST_CHECK_EQUAL(
+       Reg->getSimSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
+       4);
+
+}

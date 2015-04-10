@@ -55,6 +55,8 @@ AddWareDialog::AddWareDialog(QWidget* Parent):
 
   ui->MainHorizontalLayout->addWidget(mp_SignWidget,0);
 
+  ui->WaresListWidget->setIconSize(QSize(24,12));
+
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 }

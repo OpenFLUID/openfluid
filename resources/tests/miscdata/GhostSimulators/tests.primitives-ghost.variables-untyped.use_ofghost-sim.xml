@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid>
+  <ghost-simulator ID="tests.primitives-ghost.variables-untyped.use">
+
+    
+    <infos>
+    
+    
+    </infos>
+    
+    
+    <data>
+      
+      <variable name="tests.double" iomode="required" unitsclass="TestUnits" />
+      <variable name="tests.string" iomode="used" unitsclass="TestUnits" />
+      <variable name="tests.vector" iomode="updated" unitsclass="TestUnits" />
+    
+    </data>
+    
+    
+    <scheduling mode="default" />
+  
+ 
+  </ghost-simulator>
+</openfluid>

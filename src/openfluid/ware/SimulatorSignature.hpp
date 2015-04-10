@@ -84,6 +84,9 @@ class OPENFLUID_API SignatureDataItem
 };
 
 
+// =====================================================================
+// =====================================================================
+
 
 /**
 Class for storage of the definition of data handled by the simulator.
@@ -105,6 +108,10 @@ class OPENFLUID_API SignatureSpatialDataItem : public SignatureDataItem
 };
 
 
+// =====================================================================
+// =====================================================================
+
+
 /**
 Class for storage of the definition of typed data handled by the simulator.
 */
@@ -123,12 +130,18 @@ class OPENFLUID_API SignatureTypedSpatialDataItem : public SignatureSpatialDataI
 };
 
 
+// =====================================================================
+// =====================================================================
+
+
 /**
   Class for storage of the definition of the data handled by the simulator. This is part of the signature.
 */
 class OPENFLUID_API SignatureHandledData
 {
   public:
+
+    // TODO use the same naming style for all members
 
     std::vector<SignatureDataItem> UsedParams;
 
@@ -157,10 +170,31 @@ class OPENFLUID_API SignatureHandledData
 
     SignatureHandledData()
     {
+      clear();
+    }
 
+
+    void clear()
+    {
+      UsedParams.clear();
+      RequiredParams.clear();
+      ProducedVars.clear();
+      UpdatedVars.clear();
+      RequiredVars.clear();
+      UsedVars.clear();
+      ProducedAttribute.clear();
+      RequiredAttribute.clear();
+      UsedAttribute.clear();
+      RequiredExtraFiles.clear();
+      UsedExtraFiles.clear();
+      UsedEventsOnUnits.clear();
     }
 
 };
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -182,6 +216,10 @@ class OPENFLUID_API SignatureUnitsClassItem
 };
 
 
+// =====================================================================
+// =====================================================================
+
+
 class OPENFLUID_API SignatureUnitsGraph
 {
   public:
@@ -190,11 +228,23 @@ class OPENFLUID_API SignatureUnitsGraph
 
     std::vector<SignatureUnitsClassItem> UpdatedUnitsClass;
 
+
     SignatureUnitsGraph()
     {
+      clear();
+    }
+
+
+    void clear()
+    {
       UpdatedUnitsGraph.clear();
+      UpdatedUnitsClass.clear();
     }
 };
+
+
+// =====================================================================
+// =====================================================================
 
 
 class OPENFLUID_API SignatureTimeScheduling
@@ -209,9 +259,11 @@ class OPENFLUID_API SignatureTimeScheduling
 
     openfluid::core::Duration_t Max;
 
-    SignatureTimeScheduling():
-      Type(UNDEFINED), Min(0), Max(0)
-    { }
+
+    SignatureTimeScheduling()
+    {
+      setAsUndefined();
+    }
 
     void setAsUndefined()
     {
@@ -242,6 +294,10 @@ class OPENFLUID_API SignatureTimeScheduling
     }
 
 };
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -284,9 +340,23 @@ class OPENFLUID_API SimulatorSignature : public WareSignature
     */
     SignatureTimeScheduling TimeScheduling;
 
-    SimulatorSignature() : WareSignature(),
-      Domain(""),Process(""),Method("")
-      {}
+
+    SimulatorSignature() : WareSignature()
+    {
+      clear();
+    }
+
+
+    void clear()
+    {
+      WareSignature::clear();
+      Domain.clear();
+      Process.clear();
+      Method.clear();
+      HandledData.clear();
+      HandledUnitsGraph.clear();
+      TimeScheduling.setAsUndefined();
+    }
 
 };
 

@@ -120,7 +120,7 @@ class ExtensionPluginsManager :
     // =====================================================================
 
 
-    std::string getPluginFullPath(const std::string& Filename)
+    std::string getPluginFullPath(const std::string& Filename) const
     {
       std::string PlugFullPath = "";
 
@@ -144,7 +144,7 @@ class ExtensionPluginsManager :
     // =====================================================================
 
 
-    std::vector<std::string> getPluginsSearchPaths()
+    std::vector<std::string> getPluginsSearchPaths() const
     {
       return m_SearchPaths;
     }
@@ -154,7 +154,7 @@ class ExtensionPluginsManager :
     // =====================================================================
 
 
-    std::string getPluginFilenameSuffix()
+    std::string getPluginFilenameSuffix() const
     {
       return openfluid::config::BUILDEREXTS_PLUGINS_SUFFIX;
     }
@@ -164,7 +164,7 @@ class ExtensionPluginsManager :
     // =====================================================================
 
 
-    std::vector<std::string> getPluginsStandardSearchPaths()
+    std::vector<std::string> getPluginsStandardSearchPaths() const
     {
       return m_StandardSearchPaths;
     }

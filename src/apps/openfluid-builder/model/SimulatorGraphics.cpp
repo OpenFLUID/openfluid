@@ -51,6 +51,8 @@ SimulatorGraphics::SimulatorGraphics(const QPointF& Coords, const QString& ID,
   openfluid::ware::SimulatorSignature* SimSign = Signature->Signature;
   std::vector<openfluid::ware::SignatureTypedSpatialDataItem> VarList;
 
+  m_Ghost = Signature->Ghost;
+
   VarList = SimSign->HandledData.RequiredVars;
   for (unsigned int i=0;i<VarList.size();i++)
     m_RequiredVars[QString::fromStdString(VarList[i].UnitsClass)].append(QString::fromStdString(VarList[i].DataName));
@@ -75,7 +77,11 @@ SimulatorGraphics::SimulatorGraphics(const QPointF& Coords, const QString& ID,
   drawIOSlot(getProducedIOPosition(),"Prod",!m_ProducedVars.isEmpty());
   drawIOSlot(getUpOutIOPosition(),"Upd",!m_UpdatedVars.isEmpty());
 
-  setBrush(QBrush(QColor(BUILDER_SIMULATOR_BGCOLOR)));
+  if (!m_Ghost)
+    setBrush(QBrush(QColor(BUILDER_SIMULATOR_BGCOLOR)));
+  else
+    setBrush(QBrush(QColor(BUILDER_GHOST_BGCOLOR)));
+
 }
 
 
@@ -105,9 +111,12 @@ QPointF SimulatorGraphics::getProducedIOPosition()
 
 void SimulatorGraphics::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* Event)
 {
+  if (!m_Ghost)
+  {
 #ifdef ENABLE_WARESDEV_INTEGRATION
   emit srcEditAsked(m_ID);
 #endif
+  }
 
   QGraphicsItem::mousePressEvent(Event);
 }

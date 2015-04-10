@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <model>
+  <simulator ID="tests.primitives-ghost.attributes.prod" enabled="1">
+  </simulator>
+  <simulator ID="tests.primitives-ghost.variables-untyped.prod" enabled="1">
+  </simulator>
+  <simulator ID="tests.primitives-ghost.variables-typed.prod" enabled="1">
+  </simulator>
+  <simulator ID="tests.primitives.attributes.use" enabled="1">
+  </simulator>
+  <simulator ID="tests.primitives.variables.use" enabled="1">
+  </simulator>
+  <simulator ID="tests.primitives-ghost.variables-untyped.use" enabled="1">
+  </simulator>
+ </model>
+
+
+</openfluid>
+

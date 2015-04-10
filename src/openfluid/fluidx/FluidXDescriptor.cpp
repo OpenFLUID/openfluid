@@ -116,11 +116,12 @@ void FluidXDescriptor::extractMonitoringFromNode(QDomElement& Node)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
-openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(
-    QDomElement& Node)
+
+openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(QDomElement& Node)
 {
   openfluid::ware::WareParams_t Params;
 
@@ -149,8 +150,10 @@ openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(
   return Params;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
     const openfluid::ware::WareParams_t& Params,
@@ -165,8 +168,10 @@ openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
   return FinalParams;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
 {
@@ -252,8 +257,10 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
   m_ModelDefined = true;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
 {
@@ -378,8 +385,10 @@ void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
   m_RunDescriptor.setFilled(true);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
     QDomElement& Node)
@@ -403,8 +412,10 @@ openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
         "missing or wrong attribute(s) in units link definition (" + m_CurrentFile + ")");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
 {

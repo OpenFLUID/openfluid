@@ -156,9 +156,11 @@ QString WareSrcContainer::searchMainCppFileName(const QString& CMakeFileContent)
           QString::fromStdString(openfluid::config::WARESDEV_CMAKE_OBSCPPVAR)).arg(
           QString::fromStdString(openfluid::config::WARESDEV_CMAKE_BEXTCPPVAR)));
 
-  foreach(QString L,Lines){ if (RE.indexIn(L) > -1)
-  return RE.cap(1);
-}
+  foreach(QString L,Lines)
+  {
+    if (RE.indexIn(L) > -1)
+      return RE.cap(1);
+  }
 
   return "";
 }
@@ -173,9 +175,11 @@ QString WareSrcContainer::searchUiParamCppFileName(const QString& CMakeFileConte
 
   QRegExp RE("^\\s*SET\\s*\\((?:SIM_PARAMSUI_CPP|OBS_PARAMSUI_CPP)\\s+([\\w_.-]+\\.cpp)");
 
-  foreach(QString L,Lines){ if (RE.indexIn(L) > -1)
-  return RE.cap(1);
-}
+  foreach(QString L,Lines)
+  {
+    if (RE.indexIn(L) > -1)
+      return RE.cap(1);
+  }
 
   return "";
 }

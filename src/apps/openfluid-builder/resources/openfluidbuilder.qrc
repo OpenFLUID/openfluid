@@ -10,6 +10,9 @@
     <file>images/status-experimental.png</file>
     <file>images/status-beta.png</file>
     <file>images/status-stable.png</file>
+    <file>images/ware-sim-ghost.png</file>
+    <file>images/ware-sim-plugged.png</file>
+    <file>images/ware-obs-plugged.png</file>
     <file>icons/openfluid_icon.png</file>
     <file>icons/openfluid_icon_builder.png</file>
     <file>icons/file-open-example.png</file>

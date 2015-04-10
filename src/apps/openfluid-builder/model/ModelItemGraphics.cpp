@@ -67,7 +67,7 @@ QPointF ModelItemGraphics::m_UpOutIOFromCenter = QPoint(30,ModelItemGraphics::m_
 ModelItemGraphics::ModelItemGraphics(const QPointF& Coords, const QString& ID,
                                      QGraphicsItem* Parent):
   QGraphicsRectItem(Coords.x(),Coords.y(),m_DefaultSize.width(),m_DefaultSize.height(),Parent),
-  m_ID(ID), m_Initialized(false)
+  m_ID(ID), m_Ghost(false), m_Initialized(false)
 {
   setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_BORDERCOLOR)),2));
 

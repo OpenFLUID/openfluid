@@ -72,8 +72,14 @@ class OPENFLUID_API GeneratorExtraInfo
 class OPENFLUID_API ModelItemSignatureInstance : public WareSignatureInstance
 {
   public:
+
+    // TODO see if a pointer is mandatory
     openfluid::ware::SimulatorSignature* Signature;
+
     GeneratorExtraInfo* GeneratorInfo;
+
+    bool Ghost;
+
 
     ModelItemSignatureInstance();
 
@@ -88,9 +94,13 @@ class OPENFLUID_API ModelItemSignatureInstance : public WareSignatureInstance
 class OPENFLUID_API ModelItemInstance : public ModelItemSignatureInstance
 {
   public:
+
     openfluid::ware::WareParams_t Params;
+
     openfluid::ware::PluggableSimulator* Body;
+
     unsigned int OriginalPosition;
+
 
     ModelItemInstance();
 };

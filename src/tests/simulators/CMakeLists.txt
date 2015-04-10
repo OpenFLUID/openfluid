@@ -181,6 +181,19 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAll
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesWithGhosts 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesWithGhosts"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesWithGhosts" 
+                           "-p${TEST_OUTPUT_PATH}:${TESTS_MISCDATA_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesWithGhosts"
+                    )
+SET_TESTS_PROPERTIES(simulators-PrimitivesWithGhosts PROPERTIES WILL_FAIL TRUE)
+
+
+###########################################################################
+
+
 OPNFLD_ADD_SIMULATOR(tests.deltaTtime.prod tests.deltaTtime.prod ${TEST_OUTPUT_PATH} OFF)
 OPNFLD_ADD_SIMULATOR(tests.variabletime.prod tests.variabletime.prod ${TEST_OUTPUT_PATH} OFF)
 OPENFLUID_ADD_TEST(NAME simulators-VariableTimeProd

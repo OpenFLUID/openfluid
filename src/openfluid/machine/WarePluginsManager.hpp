@@ -245,21 +245,21 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    virtual std::string getPluginFullPath(const std::string& Filename) = 0;
+    virtual std::string getPluginFullPath(const std::string& Filename) const = 0;
 
 
     // =====================================================================
     // =====================================================================
 
 
-    virtual std::vector<std::string> getPluginsSearchPaths() = 0;
+    virtual std::vector<std::string> getPluginsSearchPaths() const = 0;
 
 
     // =====================================================================
     // =====================================================================
 
 
-    virtual std::string getPluginFilenameSuffix() = 0;
+    virtual std::string getPluginFilenameSuffix() const = 0;
 
 
     // =====================================================================
@@ -283,7 +283,8 @@ class OPENFLUID_API WarePluginsManager
         TmpFiles = openfluid::tools::findFilesBySuffixAndExtension(PluginsPaths[i],
                                                                    getPluginFilenameSuffix(),
                                                                    openfluid::config::PLUGINS_EXT,false,true);
-        for (j=0;j<TmpFiles.size();j++) PluginFiles.push_back(TmpFiles[j]);
+        for (j=0;j<TmpFiles.size();j++)
+          PluginFiles.push_back(TmpFiles[j]);
       }
 
 

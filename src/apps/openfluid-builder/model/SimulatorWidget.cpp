@@ -181,9 +181,14 @@ void SimulatorWidget::refresh()
   const openfluid::machine::ModelItemSignatureInstance* Signature =
     openfluid::machine::SimulatorSignatureRegistry::instance()->signature(m_ID);
 
+  m_Ghost = false;
+
   if (Signature != NULL)
   {
+    m_Ghost = Signature->Ghost;
+
     setAvailableWare(true);
+
     ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
     ui->InfosSideWidget->update(Signature);
 

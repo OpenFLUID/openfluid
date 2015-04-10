@@ -94,6 +94,8 @@ class WareWidget : public QWidget
 
     bool m_Available;
 
+    bool m_Ghost;
+
     bool m_Enabled;
 
     int m_CurrentIndex;

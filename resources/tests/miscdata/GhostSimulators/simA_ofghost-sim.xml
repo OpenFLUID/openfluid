@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid>
+  <ghost-simulator ID="simA">
+
+    
+    <infos>
+    
+      <name>Simulator A</name>
+      <description>This is simulator A</description>
+      <author name="John Doe" email="doe@foobar.org" />
+      <author name="Tony Stark" email="iron@shield.org" />
+      <status>beta</status>
+      <process>process1</process>
+      <method>method1</method>
+      <version>1.0</version>      
+    
+    </infos>
+    
+    
+    <data>
+    
+      <parameter name="param1" iomode="required" siunit="m/s">parameter 1</parameter>
+      <parameter name="param2" iomode="used" siunit="">parameter 2</parameter>      
+    
+      <extrafile name="file1.dat" iomode="required" />
+      <extrafile name="file2.dat" iomode="used" />
+    
+      <events unitsclass="UA" />
+      <events unitsclass="UB" />
+    
+      <variable name="var1" iomode="required" unitsclass="UA" siunit="">variable 1</variable>
+      <variable name="var2" type="double" iomode="used" unitsclass="UB" siunit="m">variable 2</variable>
+      <variable name="var3" type="vector" iomode="produced" unitsclass="UA" siunit="m3">variable 3</variable>
+      <variable name="var4" iomode="produced" unitsclass="UA" siunit="m">variable 4</variable>
+      <variable name="var5" iomode="updated" unitsclass="UB" siunit="">variable 5</variable>
+    
+      <attribute name="attr1" iomode="required" unitsclass="UA" siunit="">attribute 1</attribute>
+      <attribute name="attr2" iomode="required" unitsclass="UA" siunit=""></attribute>
+      <attribute name="attr3" iomode="used" unitsclass="UB" siunit="m">attribute 3</attribute>
+      <attribute name="attr4" iomode="produced" unitsclass="UB" siunit="m2">attribute 4</attribute>
+    
+    </data>
+    
+    
+    <spatialgraph>
+    
+      <description>modifications on UA &amp; UB</description>    
+      <unitsclass name="UA">update of UA</unitsclass>
+      <unitsclass name="UB" />
+      
+    </spatialgraph>
+    
+    
+    <scheduling mode="default" />
+  
+ 
+  </ghost-simulator>
+</openfluid>

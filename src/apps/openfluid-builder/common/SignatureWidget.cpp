@@ -135,6 +135,11 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
 {
   QString Contents;
 
+  QString PathLabelStr = tr("Plugin path");
+
+  if (Signature->Ghost)
+    PathLabelStr = tr("Ghost path");
+
   Contents += "<b>" + tr("Name") + ":</b> " + convertStdString(Signature->Signature->Name) + "<br/>";
   Contents += "<b>" + tr("Description") + ":</b> " + convertStdString(Signature->Signature->Description);
 
@@ -149,7 +154,7 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
       Contents += convertStdString("");
 
     Contents += "<hr>";
-    Contents += "<b>" + tr("Plugin path") + ":</b> " +
+    Contents += "<b>" + PathLabelStr + ":</b> " +
                 QDir::toNativeSeparators(convertStdString(Signature->FileFullPath));
     Contents += "<hr>";
     Contents += "<b>" + tr("Version") + ":</b> " + convertStdString(Signature->Signature->Version) + "<br/>";

@@ -405,6 +405,17 @@ void ProjectCentral::checkModel()
 
       if (SignII != NULL)
       {
+        // checking if simulator is a ghost
+
+        if (SignII->Ghost)
+        {
+          m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
+          m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
+                          .addMessage(tr("Simulator %1 is a ghost")
+                                      .arg(QString::fromStdString(ID)));
+        }
+
+
         Sign = SignII->Signature;
 
 

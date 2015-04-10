@@ -70,12 +70,10 @@ AddSimulatorDialog::AddSimulatorDialog(const QStringList& SimIDList, QWidget* Pa
     if (SimIDList.contains(ID))
       Item->setFlags(Qt::ItemIsSelectable);
 
-    if (it->second->Signature->Status == openfluid::ware::EXPERIMENTAL)
-      Item->setIcon(QIcon(":/images/status-experimental.png"));
-    else if (it->second->Signature->Status == openfluid::ware::BETA)
-      Item->setIcon(QIcon(":/images/status-beta.png"));
-    else if (it->second->Signature->Status == openfluid::ware::STABLE)
-      Item->setIcon(QIcon(":/images/status-stable.png"));
+    if (it->second->Ghost)
+      Item->setIcon(QIcon(":/images/ware-sim-ghost.png"));
+    else
+      Item->setIcon(QIcon(":/images/ware-sim-plugged.png"));
 
     ui->WaresListWidget->addItem(Item);
   }

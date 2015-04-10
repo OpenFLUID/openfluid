@@ -68,12 +68,7 @@ AddObserverDialog::AddObserverDialog(QWidget* Parent) :
 
     QListWidgetItem* Item = new QListWidgetItem(ID);
 
-    if ((*it)->Signature->Status == openfluid::ware::EXPERIMENTAL)
-      Item->setIcon(QIcon(":/images/status-experimental.png"));
-    else if ((*it)->Signature->Status == openfluid::ware::BETA)
-      Item->setIcon(QIcon(":/images/status-beta.png"));
-    else if ((*it)->Signature->Status == openfluid::ware::STABLE)
-      Item->setIcon(QIcon(":/images/status-stable.png"));
+    Item->setIcon(QIcon(":/images/ware-obs-plugged.png"));
 
     ui->WaresListWidget->addItem(Item);
   }

@@ -52,7 +52,7 @@ class OPENFLUID_API WareSignature
 {
   public:
 
-    typedef std::list<std::pair<std::string,std::string> > AuthorsList_t;
+    typedef std::vector<std::pair<std::string,std::string> > AuthorsList_t;
 
     WareID_t ID;
 
@@ -81,22 +81,52 @@ class OPENFLUID_API WareSignature
     AuthorsList_t Authors;
 
 
-    WareSignature() :
-      ID(""),Name(""),Description(""),Version(""),
-      Status(EXPERIMENTAL),ABIVersion("")
-      {
-        Authors.clear();
-      }
+    // =====================================================================
+    // =====================================================================
+
+
+    WareSignature()
+    {
+      clear();
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void clear()
+    {
+      ID.clear();
+      Name.clear();
+      Description.clear();
+      Version.clear();
+      Status = EXPERIMENTAL;
+      ABIVersion.clear();
+      Authors.clear();
+    }
+
+
+    // =====================================================================
+    // =====================================================================
 
 
     virtual ~WareSignature()
-      {}
+    {  }
+
+
+    // =====================================================================
+    // =====================================================================
 
 
     void setABIVersion(WareVersion_t Version)
     {
       ABIVersion = Version;
     }
+
+
+    // =====================================================================
+    // =====================================================================
 
 
     std::string getAuthorsAsString() const

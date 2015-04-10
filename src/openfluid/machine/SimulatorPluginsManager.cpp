@@ -39,12 +39,56 @@
 
 
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/GhostSimulatorFileIO.hpp>
 
 
 namespace openfluid { namespace machine {
 
 
 SimulatorPluginsManager* SimulatorPluginsManager::mp_Singleton = NULL;
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<ModelItemSignatureInstance*>
+SimulatorPluginsManager::getAvailableGhostsSignatures(const std::string& /*Pattern*/) const
+{
+  std::vector<ModelItemSignatureInstance*> PluginsContainers;
+  std::vector<std::string> PluginsPaths = getPluginsSearchPaths();
+  std::vector<std::string> GhostsFiles;
+  std::vector<std::string> TmpFiles;
+  unsigned int i,j;
+
+  for (i=0;i<PluginsPaths.size();i++)
+  {
+    TmpFiles = openfluid::tools::findFilesBySuffixAndExtension(PluginsPaths[i],
+                                                               openfluid::config::SIMULATORS_GHOSTS_SUFFIX,
+                                                               openfluid::config::GHOSTS_EXT,true,true);
+    for (j=0;j<TmpFiles.size();j++)
+      GhostsFiles.push_back(TmpFiles[j]);
+  }
+
+
+  for (i=0;i<GhostsFiles.size();i++)
+  {
+    openfluid::ware::SimulatorSignature* TmpSignature = new openfluid::ware::SimulatorSignature();
+    if (openfluid::machine::GhostSimulatorFileIO::loadFromFile(GhostsFiles[i],*TmpSignature))
+    {
+      ModelItemSignatureInstance* CurrentGhost = new ModelItemSignatureInstance();
+      CurrentGhost->Ghost = true;
+      CurrentGhost->FileFullPath = GhostsFiles[i];
+      CurrentGhost->Signature = TmpSignature;
+      PluginsContainers.push_back(CurrentGhost);
+    }
+    else
+      delete TmpSignature;
+  }
+
+  return PluginsContainers;
+}
 
 
 } }  // namespaces

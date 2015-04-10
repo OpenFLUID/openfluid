@@ -261,7 +261,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
         // instanciation of a plugged simulator using the plugin manager
         IInstance = SimulatorPluginsManager::instance()->loadWareSignatureOnly(ID);
-            ;
+
         IInstance->Params = (*it)->getParameters();
         IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
       }

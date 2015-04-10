@@ -29,38 +29,35 @@
   
 */
 
-
 /**
-  @file ClickableWareWidget.cpp
+  @file GhostSimulatorFileIO.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#include "ClickableWareWidget.hpp"
+#ifndef __OPENFLUID_MACHINE_GHOSTSIMULATORFILEIO_HPP__
+#define __OPENFLUID_MACHINE_GHOSTSIMULATORFILEIO_HPP__
 
 
+#include <openfluid/dllexport.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 
-ClickableWareWidget::ClickableWareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
-                                         bool Enabled, const QString& BGColor, int Index):
-  WareWidget(Parent,ID,Enabled,BGColor, Index)
+
+namespace openfluid { namespace machine {
+
+
+class OPENFLUID_API GhostSimulatorFileIO
 {
+  public:
 
-}
+    static bool saveToFile(const openfluid::ware::SimulatorSignature& Signature, const std::string& DirPath);
+
+    static bool loadFromFile(const std::string& FilePath, openfluid::ware::SimulatorSignature& Signature);
+};
 
 
-// =====================================================================
-// =====================================================================
+} }  // namespaces
 
 
-void ClickableWareWidget::mouseDoubleClickEvent(QMouseEvent* Event)
-{
-  if (!m_Ghost)
-  {
-#ifdef ENABLE_WARESDEV_INTEGRATION
-  emit srcEditAsked(QString::fromStdString(m_ID));
-#endif
-  }
-
-  QWidget::mousePressEvent(Event);
-}
+#endif /* __OPENFLUID_MACHINE_GHOSTSIMULATORFILEIO_HPP__ */
