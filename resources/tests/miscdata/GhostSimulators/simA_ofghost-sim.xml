@@ -10,6 +10,7 @@
       <author name="John Doe" email="doe@foobar.org" />
       <author name="Tony Stark" email="iron@shield.org" />
       <status>beta</status>
+      <domain>tests</domain>
       <process>process1</process>
       <method>method1</method>
       <version>1.0</version>      

@@ -66,6 +66,7 @@ void CheckOriginalSignature(const openfluid::ware::SimulatorSignature& Signature
   BOOST_REQUIRE_EQUAL(Signature.Authors[1].second,"iron@shield.org");
 
   BOOST_REQUIRE_EQUAL(Signature.Status,openfluid::ware::BETA);
+  BOOST_REQUIRE_EQUAL(Signature.Domain,"tests");
   BOOST_REQUIRE_EQUAL(Signature.Process,"process1");
   BOOST_REQUIRE_EQUAL(Signature.Method,"method1");
   BOOST_REQUIRE_EQUAL(Signature.Version,"1.0");

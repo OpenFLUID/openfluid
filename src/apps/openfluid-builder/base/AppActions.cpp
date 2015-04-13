@@ -165,6 +165,7 @@ void AppActions::createActions()
 
   //Simulation menu
   m_Actions["WaresRefresh"] = new QAction(tr("Reload simulators and observers"), this);
+  m_Actions["WaresRefresh"]->setShortcut(QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_R));
 
   m_Actions["SimulationRun"] = new QAction(tr("Run simulation"), this);
   m_Actions["SimulationRun"]->setIcon(QIcon(":/ui/common/icons/start.png"));
@@ -469,9 +470,9 @@ void AppActions::createToolbar(MainWindow& MainWin)
     mp_MainToolbar->addAction(action("ProjectClose"));
     mp_MainToolbar->addSeparator();
     mp_MainToolbar->addAction(action("SimulationRun"));
-    mp_MainToolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
 
     mp_MainToolbar->setObjectName("MainToolbar");
+    mp_MainToolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
     mp_MainToolbar->setStyleSheet(QString("QWidget {color: white; padding-left : 10px; padding-right : 10px;} "
                                           "#MainToolbar {background-color: %1; border: 1px solid %1;}"
                                           "QToolButton::hover "

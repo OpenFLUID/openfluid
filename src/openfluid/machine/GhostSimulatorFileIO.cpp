@@ -187,6 +187,7 @@ bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature&
     OutFile << "stable";
   OutFile << "</status>\n";
 
+  OutFile << Indent << Indent << Indent << "<domain>" << escapeXMLEntities(Signature.Domain) << "</domain>\n";
   OutFile << Indent << Indent << Indent << "<process>" << escapeXMLEntities(Signature.Process) << "</process>\n";
   OutFile << Indent << Indent << Indent << "<method>" << escapeXMLEntities(Signature.Method) << "</method>\n";
   OutFile << Indent << Indent << Indent << "<version>" << escapeXMLEntities(Signature.Version) << "</version>\n";
@@ -365,6 +366,8 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                     Signature.Status = openfluid::ware::STABLE;
                   else return false;
                 }
+                else if (InfoNode.tagName() == "domain")
+                  Signature.Domain = InfoNode.text().toStdString();
                 else if (InfoNode.tagName() == "process")
                   Signature.Process = InfoNode.text().toStdString();
                 else if (InfoNode.tagName() == "method")
