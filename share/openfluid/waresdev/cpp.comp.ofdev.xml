@@ -65,6 +65,14 @@
           DECLARE_MENUTEXT("%%SEL_START%%menu text%%SEL_END%%")
         </item>
 
+        <item context="simulator" menupath="Signature/Parameters/Declare required parameter">
+          DECLARE_REQUIRED_PARAMETER("%%SEL_START%%paramname%%SEL_END%%","description","SI unit")
+        </item>
+
+        <item context="simulator" menupath="Signature/Parameters/Declare used parameter">
+          DECLARE_USED_PARAMETER("%%SEL_START%%paramname%%SEL_END%%","description","SI unit")
+        </item>
+
         <item context="simulator" menupath="Signature/Variables/Declare required variable">
           DECLARE_REQUIRED_VAR("%%SEL_START%%var.name%%SEL_END%%","unitsclass","description","SI unit")
         </item>
@@ -130,283 +138,283 @@
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/Double precision value">
-          openfluid::core::DoubleValue %%SEL_START%%Val%%SEL_END%%;
+          openfluid::core::DoubleValue %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/Boolean value">
-          openfluid::core::BooleanValue %%SEL_START%%Val%%SEL_END%%;
+          openfluid::core::BooleanValue %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/Long integer value">
-          openfluid::core::IntegerValue %%SEL_START%%Val%%SEL_END%%;
+          openfluid::core::IntegerValue %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/String value">
-          openfluid::core::StringValue %%SEL_START%%Val%%SEL_END%%;
+          openfluid::core::StringValue %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/Vector of double values">
-          openfluid::core::VectorValue %%SEL_START%%Val%%SEL_END%%;
+          openfluid::core::VectorValue %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/Matrix of double values">
-          openfluid::core::MatrixValue %%SEL_START%%Val%%SEL_END%%;
+          openfluid::core::MatrixValue %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/Map of any value">
-          openfluid::core::MapValue %%SEL_START%%Val%%SEL_END%%;
+          openfluid::core::MapValue %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/Null value">
-          openfluid::core::NullValue %%SEL_START%%Val%%SEL_END%%;
+          openfluid::core::NullValue %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/Time indexed value">
-          openfluid::core::IndexedValue %%SEL_START%%IndexedVal%%SEL_END%%;
+          openfluid::core::IndexedValue %%SEL_START%%IndexedVal%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Values/List of time indexed value">
-          openfluid::core::IndexedValueList %%SEL_START%%List%%SEL_END%%;
+          openfluid::core::IndexedValueList %%SEL_START%%List%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Time/Time index">
-          openfluid::core::TimeIndex_t* %%SEL_START%%Index%%SEL_END%%;
+          openfluid::core::TimeIndex_t %%SEL_START%%Index%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Time/Duration">
-          openfluid::core::Duration_t* %%SEL_START%%Duration%%SEL_END%%;
+          openfluid::core::Duration_t %%SEL_START%%Duration%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/Spatial unit">
-          openfluid::core::SpatialUnit %%SEL_START%%U%%SEL_END%%;
+          openfluid::core::SpatialUnit %%SEL_START%%U%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/Pointer to spatial unit">
-          openfluid::core::SpatialUnit* %%SEL_START%%U%%SEL_END%%;
+          openfluid::core::SpatialUnit* %%SEL_START%%U%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/List of pointer to spatial unit">
-          openfluid::core::UnitsPtrList_t* %%SEL_START%%List%%SEL_END%%;
+          openfluid::core::UnitsPtrList_t %%SEL_START%%List%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/Unit ID">
-          openfluid::core::UnitID_t* %%SEL_START%%ID%%SEL_END%%;
+          openfluid::core::UnitID_t %%SEL_START%%ID%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/Units class name">
-          openfluid::core::UnitsClass_t* %%SEL_START%%ClassName%%SEL_END%%;
+          openfluid::core::UnitsClass_t %%SEL_START%%ClassName%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/Attribute name">
-          openfluid::core::AttributeName_t* %%SEL_START%%AttrName%%SEL_END%%;
+          openfluid::core::AttributeName_t %%SEL_START%%AttrName%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/Variable name">
-          openfluid::core::VariableName_t* %%SEL_START%%VarName%%SEL_END%%;
+          openfluid::core::VariableName_t %%SEL_START%%VarName%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/Spatial domain/Event">
-          openfluid::core::Event %%SEL_START%%Event%%SEL_END%%;
+          openfluid::core::Event %%SEL_START%%Event%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/ID..Map/ID to single precision (signed)">
-          openfluid::core::IDFloatMap %%SEL_START%%ValMap%%SEL_END%%;
+          openfluid::core::IDFloatMap %%SEL_START%%ValMap%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/ID..Map/ID to double precision (signed)">
-          openfluid::core::IDDoubleMap %%SEL_START%%ValMap%%SEL_END%%;
+          openfluid::core::IDDoubleMap %%SEL_START%%ValMap%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/ID..Map/ID to DoubleValue">
-          openfluid::core::IDDoubleValueMap %%SEL_START%%ValMap%%SEL_END%%;
+          openfluid::core::IDDoubleValueMap %%SEL_START%%ValMap%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/ID..Map/ID to boolean">
-          openfluid::core::IDBoolMap %%SEL_START%%ValMap%%SEL_END%%;
+          openfluid::core::IDBoolMap %%SEL_START%%ValMap%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/ID..Map/ID to integer (signed)">
-          openfluid::core::IDIntMap %%SEL_START%%ValMap%%SEL_END%%;
+          openfluid::core::IDIntMap %%SEL_START%%ValMap%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/ID..Map/ID to VectorValue">
-          openfluid::core::IDVectorValueMap %%SEL_START%%ValMap%%SEL_END%%;
+          openfluid::core::IDVectorValueMap %%SEL_START%%ValMap%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Compute code/Types/ID..Map/ID to pointer to VectorValue">
-          openfluid::core::IDVectorValuePtrMap %%SEL_START%%ValMap%%SEL_END%%;
+          openfluid::core::IDVectorValuePtrMap %%SEL_START%%ValMap%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Time/Get begin date of simulation">
-          OPENFLUID_GetBeginDate();
+          OPENFLUID_GetBeginDate()
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Time/Get end date of simulation">
-          OPENFLUID_GetEndDate();
+          OPENFLUID_GetEndDate()
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Time/Get begin current date of simulation">
-          OPENFLUID_GetCurrentDate();
+          OPENFLUID_GetCurrentDate()
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Time/Get total simulation duration">
-          OPENFLUID_GetSimulationDuration();
+          OPENFLUID_GetSimulationDuration()
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Time/Get default deltaT">
-          OPENFLUID_GetDefaultDeltaT();
+          OPENFLUID_GetDefaultDeltaT()
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Time/Get current time index">
-          OPENFLUID_GetCurrentTimeIndex();
+          OPENFLUID_GetCurrentTimeIndex()
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Time/Get time index of the previous ware run">
-          OPENFLUID_GetPreviousRunTimeIndex();
+          OPENFLUID_GetPreviousRunTimeIndex()
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Time/Get current simulation stage">
-          OPENFLUID_GetCurrentStage();
+          OPENFLUID_GetCurrentStage()
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Time/Get scheduling constraint mode">
-          OPENFLUID_GetSchedulingConstraint();
+          OPENFLUID_GetSchedulingConstraint()
         </item>
 
         <item context="simulator" menupath="Compute code/Parameters/Get simulator parameter">
-          OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Value);
+          OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Test if a spatial units class exists">
-          OPENFLUID_IsUnitsClassExist(%%SEL_START%%ClassName%%SEL_END%%);
+          OPENFLUID_IsUnitsClassExist(%%SEL_START%%ClassName%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Test if a spatial unit exists in a given units class">
-          OPENFLUID_IsUnitExist(%%SEL_START%%ClassName%%SEL_END%%,UnitID);
+          OPENFLUID_IsUnitExist(%%SEL_START%%ClassName%%SEL_END%%,UnitID)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Get the number of spatial units of a given class">
-          OPENFLUID_GetUnitsCount(%%SEL_START%%ClassName%%SEL_END%%,UnitsCount);
+          OPENFLUID_GetUnitsCount(%%SEL_START%%ClassName%%SEL_END%%,UnitsCount)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Get a pointer to a spatial unit of a given units class">
-          OPENFLUID_GetUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,unitPtr);
+          OPENFLUID_GetUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,unitPtr)
         </item>
 
         <item context="simulator" menupath="Compute code/Spatial structure/Add a From-To connection using classes names and IDs">
-          OPENFLUID_AddFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo);
+          OPENFLUID_AddFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo)
         </item>
 
         <item context="simulator" menupath="Compute code/Spatial structure/Add a From-To connection using pointers to spatial units">
-          OPENFLUID_AddFromToConnection(%%SEL_START%%FromUnitPtr%%SEL_END%%,ToUnitPtr);
+          OPENFLUID_AddFromToConnection(%%SEL_START%%FromUnitPtr%%SEL_END%%,ToUnitPtr)
         </item>
 
         <item context="simulator" menupath="Compute code/Spatial structure/Remove a From-To connection using classes names and IDs">
-          OPENFLUID_RemoveFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo);
+          OPENFLUID_RemoveFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo)
         </item>
 
         <item context="simulator" menupath="Compute code/Spatial structure/Remove a From-To connection using spatial units pointers">
-          OPENFLUID_RemoveFromToConnection(%%SEL_START%%FromUnitPtr%%SEL_END%%,ToUnitPtr);
+          OPENFLUID_RemoveFromToConnection(%%SEL_START%%FromUnitPtr%%SEL_END%%,ToUnitPtr)
         </item>
 
         <item context="simulator" menupath="Compute code/Spatial structure/Add a Child-parent connection using classes names and IDs">
-          OPENFLUID_AddChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,IDFChild,ClassNameParent,IDParent);
+          OPENFLUID_AddChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,IDFChild,ClassNameParent,IDParent)
         </item>
 
         <item context="simulator" menupath="Compute code/Spatial structure/Add a Child-parent connection using pointers to spatial units">
-          OPENFLUID_AddChildParentConnection(%%SEL_START%%ChildUnitPtr%%SEL_END%%,ParentUnitPtr);
+          OPENFLUID_AddChildParentConnection(%%SEL_START%%ChildUnitPtr%%SEL_END%%,ParentUnitPtr)
         </item>
 
         <item context="simulator" menupath="Compute code/Spatial structure/Remove a Child-parent connection using classes names and IDs">
-          OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,IDFChild,ClassNameParent,IDParent);
+          OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,IDFChild,ClassNameParent,IDParent)
         </item>
 
         <item context="simulator" menupath="Compute code/Spatial structure/Remove a Child-parent connection using pointers to spatial units">
-          OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ChildUnitPtr%%SEL_END%%,ParentUnitPtr);
+          OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ChildUnitPtr%%SEL_END%%,ParentUnitPtr)
         </item>
 
         <item context="simulator" menupath="Compute code/Spatial structure/Build a cols x rows matrix of spatial units">
-          OPENFLUID_BuildUnitsMatrix(%%SEL_START%%ClassName%%SEL_END%%,ColsNbr,RowsNbr);
+          OPENFLUID_BuildUnitsMatrix(%%SEL_START%%ClassName%%SEL_END%%,ColsNbr,RowsNbr)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Test if a spatial unit is connected to another spatial unit">
-          OPENFLUID_IsUnitConnectedTo(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameTo,IDTo);
+          OPENFLUID_IsUnitConnectedTo(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameTo,IDTo)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Test if a spatial unit is connected from another spatial unit">
-          OPENFLUID_IsUnitConnectedFrom(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameFrom,IDFrom);
+          OPENFLUID_IsUnitConnectedFrom(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameFrom,IDFrom)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Test if a spatial unit is a child of another spatial unit">
-          OPENFLUID_IsUnitChildOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameParent,IDParent);
+          OPENFLUID_IsUnitChildOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameParent,IDParent)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Test if a spatial unit is a parent of another spatial unit">
-          OPENFLUID_IsUnitParentOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameChild,IDChild);
+          OPENFLUID_IsUnitParentOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameChild,IDChild)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Attributes/Get attribute value">
-          OPENFLUID_GetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,"attrname",Value);
+          OPENFLUID_GetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,"attrname",Val)
         </item>
 
         <item context="simulator" menupath="Compute code/Attributes/Set attribute value">
-          OPENFLUID_SetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,"attrname",Value);
+          OPENFLUID_SetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,"attrname",Val)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Attributes/Test if an attribute exists">
-          OPENFLUID_IsAttributeExist(%%SEL_START%%UnitPtr%%SEL_END%%,"attrname");
+          OPENFLUID_IsAttributeExist(%%SEL_START%%UnitPtr%%SEL_END%%,"attrname")
         </item>
 
         <item context="simulator" menupath="Compute code/Variables/Initialize variable with value">
-          OPENFLUID_InitializeVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",InitValue);
+          OPENFLUID_InitializeVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",InitVal)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Get variable value on current time index">
-          OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",Value);
+          OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",Val)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Get variable value on given time index">
-          OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,Value);
+          OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,Val)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Get latest available variable value">
-          OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id", IndexedValue);
+          OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id", IndexedVal)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Get variable values on given period">
-          OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",BeginIndex,EndIndex,ValuesList);
+          OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",BeginIndex,EndIndex,ValuesList)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Get latest available variable values since a time index">
-          OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,IndexedValuesList);
+          OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,IndexedValuesList)
         </item>
 
         <item context="simulator" menupath="Compute code/Variables/Append value to a variable">
-          OPENFLUID_AppendVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",Value);
+          OPENFLUID_AppendVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",Val)
         </item>
 
         <item context="simulator" menupath="Compute code/Variables/Update current value of a variable">
-          OPENFLUID_SetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",Value);
+          OPENFLUID_SetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",Val)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Test if a variable exists">
-          OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id");
+          OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id")
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Test if a variable exists with given type">
-          OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",Type);
+          OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",Type)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Test if a variable exists and has a value on given time index">
-          OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex);
+          OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Test if a variable exists with given type and has a value on given time index">
-          OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,Type);
+          OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,Type)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Test if a variable exists and has a value of given type on given time index">
-          OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,Type);
+          OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,Type)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Events/Get events on a given period">
@@ -418,7 +426,7 @@
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Loops/Ordered loop on spatial units of a class">
-          OPENFLUID_UNITS_ORDERED_LOOP(%%SEL_START%%UnitPtr%%SEL_END%%,"unitsclass")\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}
+          OPENFLUID_UNITS_ORDERED_LOOP("%%SEL_START%%unitsclass%%SEL_END%%",UnitPtr)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Loops/Ordered loop on all spatial units">
@@ -442,91 +450,91 @@
         </item>
 
         <item context="simulator" menupath="Compute code/Sheduling/Run in default deltaT">
-          DefaultDeltaT();
+          DefaultDeltaT()
         </item>
 
         <item context="simulator" menupath="Compute code/Sheduling/Run in X default deltaT">
-          MultipliedDefaultDeltaT(%%SEL_START%%X%%SEL_END%%);
+          MultipliedDefaultDeltaT(%%SEL_START%%X%%SEL_END%%)
         </item>
 
         <item context="simulator" menupath="Compute code/Sheduling/Run in a duration in seconds">
-          Duration(%%SEL_START%%Seconds%%SEL_END%%);
+          Duration(%%SEL_START%%Seconds%%SEL_END%%)
         </item>
 
         <item context="simulator" menupath="Compute code/Sheduling/Run once at the end">
-          AtTheEnd();
+          AtTheEnd()
         </item>
 
         <item context="simulator" menupath="Compute code/Sheduling/Never run again">
-          Never();
+          Never()
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Log information message">
-          OPENFLUID_LogInfo(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_LogInfo(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Display information message">
-          OPENFLUID_DisplayInfo(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_DisplayInfo(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Log and display information message">
-          OPENFLUID_LogAndDisplayInfo(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_LogAndDisplayInfo(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Log debug message">
-          OPENFLUID_LogDebug(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_LogDebug(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Display debug message">
-          OPENFLUID_DisplayDebug(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_DisplayDebug(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Log and display debug message">
-          OPENFLUID_LogAndDisplayDebug(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_LogAndDisplayDebug(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Log warning message">
-          OPENFLUID_LogWarning(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_LogWarning(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Display warning message">
-          OPENFLUID_DisplayWarning(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_DisplayWarning(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Log and warning debug message">
-          OPENFLUID_LogAndDisplayWarning(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_LogAndDisplayWarning(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Messages/Raise fatal error">
-          OPENFLUID_RaiseError(%%SEL_START%%"message"%%SEL_END%%);
+          OPENFLUID_RaiseError(%%SEL_START%%"message"%%SEL_END%%)
         </item>
 
         <item context="anyware" menupath="Compute code/Run environment/Get information about run environment">
-          OPENFLUID_GetRunEnvironment(%%SEL_START%%"key"%%SEL_END%%,Value);
+          OPENFLUID_GetRunEnvironment(%%SEL_START%%"key"%%SEL_END%%,Value)
         </item>
 
         <item context="anyware" menupath="Compute code/Run environment/Get current input dataset directory">
-          OPENFLUID_GetRunEnvironment("dir.input",%%SEL_START%%Value%%SEL_END%%);
+          OPENFLUID_GetRunEnvironment("dir.input",%%SEL_START%%Value%%SEL_END%%)
         </item>
 
         <item context="anyware" menupath="Compute code/Run environment/Get current output results directory">
-          OPENFLUID_GetRunEnvironment("dir.output",%%SEL_START%%Value%%SEL_END%%);
+          OPENFLUID_GetRunEnvironment("dir.output",%%SEL_START%%Value%%SEL_END%%)
         </item>
 
         <item context="anyware" menupath="Compute code/Run environment/Get current directory for temporary data">
-          OPENFLUID_GetRunEnvironment("dir.temp",%%SEL_START%%Value%%SEL_END%%);
+          OPENFLUID_GetRunEnvironment("dir.temp",%%SEL_START%%Value%%SEL_END%%)
         </item>
 
         <item context="anyware" menupath="Compute code/Run environment/Get current ware ID">
-          OPENFLUID_GetWareID();
+          OPENFLUID_GetWareID()
         </item>
 
         <item context="simulator" menupath="Compute code/Threading/Get maximum number of threads">
-          OPENFLUID_GetSimulatorMaxThreads();
+          OPENFLUID_GetSimulatorMaxThreads()
         </item>
 
         <item context="simulator" menupath="Compute code/Threading/Set maximum number of threads">
-          OPENFLUID_SetSimulatorMaxThreads(%%SEL_START%%Number%%SEL_END%%);
+          OPENFLUID_SetSimulatorMaxThreads(%%SEL_START%%Number%%SEL_END%%)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Include FortranCPP header">
@@ -578,43 +586,43 @@
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/Single precision float">
-          FREAL %%SEL_START%%Val%%SEL_END%%;
+          FREAL %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/Double precision float">
-          FREAL8 %%SEL_START%%Val%%SEL_END%%;
+          FREAL8 %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/Double double precision float">
-          FREAL16 %%SEL_START%%Val%%SEL_END%%;
+          FREAL16 %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/Integer">
-          FINT %%SEL_START%%Val%%SEL_END%%;
+          FINT %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/Short integer">
-          FINT2 %%SEL_START%%Val%%SEL_END%%;
+          FINT2 %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/Long integer">
-          FINT8 %%SEL_START%%Val%%SEL_END%%;
+          FINT8 %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/Logical">
-          FLOGICAL %%SEL_START%%Val%%SEL_END%%;
+          FLOGICAL %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/Logical (boolean)">
-          FLOGICAL1 %%SEL_START%%Val%%SEL_END%%;
+          FLOGICAL1 %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/Character">
-          FCHARACTER %%SEL_START%%Val%%SEL_END%%;
+          FCHARACTER %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Fortran integration/Types/String">
-          FSTRING %%SEL_START%%Val%%SEL_END%%;
+          FSTRING %%SEL_START%%Val%%SEL_END%%
         </item>
 
       </snippets>
@@ -623,55 +631,55 @@
       <snippets category="C &amp;&amp; C++" icon=":/ui/common/icons/cppcode.png">
 
         <item context="anyware" menupath="Types/Simple/Boolean">
-          bool %%SEL_START%%Val%%SEL_END%%;
+          bool %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Types/Simple/Integer (signed)">
-          int %%SEL_START%%Val%%SEL_END%%;
+          int %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Types/Simple/Integer (unsigned)">
-          unsigned int %%SEL_START%%Val%%SEL_END%%;
+          unsigned int %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Types/Simple/Long integer (signed)">
-          long int %%SEL_START%%Val%%SEL_END%%;
+          long int %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Types/Simple/Long integer (unsigned)">
-          unsigned long int %%SEL_START%%Val%%SEL_END%%;
+          unsigned long int %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Types/Simple/Single precision float (signed)">
-          float %%SEL_START%%Val%%SEL_END%%;
+          float %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Types/Simple/Single precision float (unsigned)">
-          unsigned float %%SEL_START%%Val%%SEL_END%%;
+          unsigned float %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Types/Simple/Double precision float (signed)">
-          double %%SEL_START%%Val%%SEL_END%%;
+          double %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Types/Simple/Double precision float (unsigned)">
-          unsigned double %%SEL_START%%Val%%SEL_END%%;
+          unsigned double %%SEL_START%%Val%%SEL_END%%
         </item>
 
         <item context="anyware" menupath="Types/Containers/Vector">
-          std::vector&lt;%%SEL_START%%Type%%SEL_END%%&gt; Vect;
+          std::vector&lt;%%SEL_START%%Type%%SEL_END%%&gt; Vect
         </item>
 
         <item context="anyware" menupath="Types/Containers/List">
-          std::list&lt;%%SEL_START%%Type%%SEL_END%%&gt; List;
+          std::list&lt;%%SEL_START%%Type%%SEL_END%%&gt; List
         </item>
 
         <item context="anyware" menupath="Types/Containers/Set">
-          std::set&lt;%%SEL_START%%Type%%SEL_END%%&gt; Set;
+          std::set&lt;%%SEL_START%%Type%%SEL_END%%&gt; Set
         </item>
 
         <item context="anyware" menupath="Types/Containers/Map">
-          std::map&lt;%%SEL_START%%KeyType%%SEL_END%%,ValType&gt; Map;
+          std::map&lt;%%SEL_START%%KeyType%%SEL_END%%,ValType&gt; Map
         </item>
 
         <item context="anyware" menupath="Streams/Output to console">
