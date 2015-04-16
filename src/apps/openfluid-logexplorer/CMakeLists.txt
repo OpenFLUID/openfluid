@@ -10,6 +10,8 @@ ADD_EXECUTABLE(openfluid-logexplorer ${LOGEXPLORER_GUI_OPTION} main.cpp ${LOGEXP
 
 SET_TARGET_PROPERTIES(openfluid-logexplorer PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}"
                                                    AUTOMOC ON)
+                                                   
+SET_TARGET_PROPERTIES(openfluid-logexplorer PROPERTIES OUTPUT_NAME ${OPENFLUID_LOGEXPLORER_APP})
 
 
 TARGET_LINK_LIBRARIES(openfluid-logexplorer

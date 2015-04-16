@@ -37,15 +37,16 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-
-#include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/core/DateTime.hpp>
-
-#include "AppTools.hpp"
 #include <QDir>
 #include <QApplication>
 #include <QMessageBox>
 #include <QProcess>
+
+#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/core/DateTime.hpp>
+
+#include "builderconfig.hpp"
+#include "AppTools.hpp"
 
 
 QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
@@ -92,20 +93,13 @@ QColor getRandomColor()
 // =====================================================================
 // =====================================================================
 
-#include <iostream>
 
 void launchDevStudio()
 {
-  QString ExeName;
-
-  // TODO set devstudio exe name in CMake config
+  QString ExeName = QString::fromStdString(DEVSTUDIO_APP);
 
 #if defined OPENFLUID_OS_WINDOWS
-  ExeName = "openfluid-devstudio.exe";
-#endif
-
-#if linux
-  ExeName = "openfluid-devstudio";
+  ExeName += ".exe";
 #endif
 
   QString ExePath = QApplication::applicationDirPath()+"/"+ExeName;

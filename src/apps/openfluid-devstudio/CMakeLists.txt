@@ -68,9 +68,9 @@ ADD_EXECUTABLE(openfluid-devstudio ${DEVSTUDIO_GUI_OPTION} main.cpp ${DEVSTUDIO_
 SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}"
                                                    AUTOMOC ON)
 
-IF(APPLE)
-  SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES OUTPUT_NAME "OpenFLUID-DevStudio")
-ENDIF()
+
+SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES OUTPUT_NAME ${OPENFLUID_DEVSTUDIO_APP})
+
 
 TARGET_LINK_LIBRARIES(openfluid-devstudio
                       openfluid-devstudio-main

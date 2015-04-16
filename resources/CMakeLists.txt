@@ -30,17 +30,18 @@ ENDIF()
 
 
 
-
-# preparation of market datasets for tests
-EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${CMAKE_SOURCE_DIR}/cmake/internal"
+IF(OPENFLUID_ENABLE_MARKET)
+  # preparation of market datasets for tests
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${CMAKE_SOURCE_DIR}/cmake/internal"
                                              "${CMAKE_COMMAND}"
                                              "-DREPOS_ROOT_DIR=${CMAKE_CURRENT_SOURCE_DIR}/tests/miscdata/market/packages-src"
                                              "-DMARKETPLACE_ROOT_DIR=${TESTS_OUTPUTDATA_PATH}/marketplace"
                                              "-DREPOS_VERSION=${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" 
                                              "-DREPOS_ARCH=${OF_SYSTEM_ARCH}"
                                               "-P" "PackagingForMarket.cmake")
+ENDIF()
 
-                   
+
                                               
 # build of translations
 FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease lrelease-qt4)

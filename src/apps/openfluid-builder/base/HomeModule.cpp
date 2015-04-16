@@ -208,8 +208,10 @@ void HomeModule::whenExtensionAsked(const QString& /*ID*/)
 
 void HomeModule::whenMarketAsked()
 {
+#if defined(ENABLE_MARKET_INTEGRATION)
   openfluid::ui::market::MarketClientAssistant MarketAssistant(QApplication::activeWindow());
   MarketAssistant.exec();
+#endif
 }
 
 

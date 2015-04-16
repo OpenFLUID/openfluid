@@ -15,8 +15,6 @@
 
 SET(OPENFLUID_MAIN_NAME "openfluid")
 
-SET(OPENFLUID_CMD_APP "openfluid")
-
 SET(OPENFLUID_RELATIVEDIR "${OPENFLUID_MAIN_NAME}")
 
 SET(OPENFLUID_DEFAULT_CONFIGFILE "openfluid.conf")
@@ -151,6 +149,20 @@ IF(VERSION_STATUS)
 ENDIF(VERSION_STATUS)
 
 
+################### applications ###################
+
+SET(OPENFLUID_CMD_APP "openfluid")
+SET(OPENFLUID_BUILDER_APP "openfluid-builder")
+SET(OPENFLUID_DEVSTUDIO_APP "openfluid-devstudio")
+SET(OPENFLUID_LOGEXPLORER_APP "openfluid-devstudio")
+
+IF(APPLE)
+  SET(OPENFLUID_BUILDER_APP "OpenFLUID-Builder")
+  SET(OPENFLUID_DEVSTUDIO_APP "OpenFLUID-Devstudio")
+  SET(OPENFLUID_LOGEXPLORER_APP "OpenFLUID-Logexplorer")
+ENDIF()
+
+
 ################### compilation and build ###################
 
 IF(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC) 
@@ -173,14 +185,16 @@ SET(OPENFLUID_GHOSTSIMULATORS_SUFFIX "_ofghost-sim")
 SET(DEBUG_PREFIX "[OpenFLUID debug]")
 
 
-################### library build ###################
+################### parts and libraries build ###################
+
+SET(OPENFLUID_ENABLE_GUI 1)
 
 SET(OPENFLUID_ENABLE_LANDR 1)
 
+SET(OPENFLUID_ENABLE_MARKET 0)
+
 
 ################### applications build ###################
-
-SET(OPENFLUID_ENABLE_GUI 1)
 
 # set this to 1 to build openfluid command line program
 SET(BUILD_APP_CMD 1)

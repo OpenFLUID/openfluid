@@ -11,7 +11,6 @@ ADD_SUBDIRECTORY(tools)
 ADD_SUBDIRECTORY(scientific)
 ADD_SUBDIRECTORY(utils)
 ADD_SUBDIRECTORY(buddies)
-ADD_SUBDIRECTORY(market)
 ADD_SUBDIRECTORY(waresdev)
 
 IF(OPENFLUID_ENABLE_GUI)
@@ -25,10 +24,20 @@ IF(OPENFLUID_ENABLE_LANDR)
   ADD_SUBDIRECTORY(landr)
 ENDIF()  
 
+IF(OPENFLUID_ENABLE_MARKET)
+  ADD_SUBDIRECTORY(market)
+ENDIF()  
 
-INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp market.hpp ware.hpp 
+
+
+INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp ware.hpp 
               dllexport.hpp debug.hpp deprecation.hpp global.hpp
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
+
+IF(OPENFLUID_ENABLE_MARKET)
+  INSTALL(FILES market.hpp
+          DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})  
+ENDIF()  
 
 
 CONFIGURE_FILE(openfluid.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" @ONLY)

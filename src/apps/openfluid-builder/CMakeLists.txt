@@ -243,7 +243,7 @@ IF(ENABLE_WARESDEV_BUILDER_INTEGRATION)
 ENDIF()  
 
 
-IF(ENABLE_MARKET_BUILDER_INTEGRATION)
+IF(OPENFLUID_ENABLE_MARKET AND ENABLE_MARKET_BUILDER_INTEGRATION)
   ADD_DEFINITIONS(-DENABLE_MARKET_INTEGRATION)
 ENDIF()  
 
@@ -274,15 +274,18 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-machine
                       openfluid-ware
                       openfluid-tools
-                      openfluid-utils
-                      openfluid-market
+                      openfluid-utils                      
                       openfluid-ui-common
-                      openfluid-ui-market
                       openfluid-builderext
                       openfluid-fluidx
                       openfluid-ui-waresdev
                       openfluid-waresdev)
-       
+
+IF(OPENFLUID_ENABLE_MARKET)
+  TARGET_LINK_LIBRARIES(openfluid-builder-main
+                        openfluid-ui-market
+                        openfluid-market)
+ENDIF()
        
                       
 SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
@@ -306,9 +309,7 @@ ADD_EXECUTABLE(openfluid-builder ${BUILDER_GUI_OPTION} main.cpp ${BUILDER_WIN32R
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}"
                                                    AUTOMOC ON)
 
-IF(APPLE)
-  SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES OUTPUT_NAME "OpenFLUID-Builder")
-ENDIF()
+SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES OUTPUT_NAME ${OPENFLUID_BUILDER_APP})
 
 TARGET_LINK_LIBRARIES(openfluid-builder
                       ${Boost_SYSTEM_LIBRARY} 
@@ -323,11 +324,15 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-tools
                       openfluid-utils
                       openfluid-ui-common
-                      openfluid-ui-market
                       openfluid-builder-main
                       openfluid-fluidx
                       openfluid-ui-waresdev
                       openfluid-waresdev)
+
+IF(OPENFLUID_ENABLE_MARKET)
+  TARGET_LINK_LIBRARIES(openfluid-builder
+                        openfluid-ui-market)
+ENDIF()
                                    
 INSTALL(TARGETS openfluid-builder-main
         RUNTIME DESTINATION ${BIN_INSTALL_PATH}
