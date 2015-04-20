@@ -10,7 +10,7 @@ SET_TARGET_PROPERTIES(${OPENFLUID_CMD_APP} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "
 
 TARGET_LINK_LIBRARIES(${OPENFLUID_CMD_APP} 
                       ${Boost_SYSTEM_LIBRARY} 
-                      ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
+                      ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
                       ${QT_QTCORE_LIBRARIES}
                       openfluid-base
@@ -18,8 +18,8 @@ TARGET_LINK_LIBRARIES(${OPENFLUID_CMD_APP}
                       openfluid-core
                       openfluid-machine
                       openfluid-tools
-                      openfluid-utils
-                      openfluid-fluidx)
+                      openfluid-fluidx
+                      )
 
 
 

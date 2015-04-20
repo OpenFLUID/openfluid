@@ -39,11 +39,11 @@
 
 
 #include <openfluid/core/CompoundValue.hpp>
-#include <boost/assign/list_of.hpp>
+
 
 namespace openfluid { namespace core {
 
-CompoundValue::SeparatorsByLevels_t CompoundValue::m_StreamSeparators = boost::assign::list_of(";")("|");
+CompoundValue::SeparatorsByLevels_t CompoundValue::m_StreamSeparators {";","|"};
 
 
 // =====================================================================

@@ -37,11 +37,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <boost/math/special_functions/fpclassify.hpp>
+#include <cmath>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/ChronFileInterpolator.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
+
 
 namespace openfluid { namespace tools {
 
@@ -144,7 +145,7 @@ void ChronFileInterpolator::loadInFile(ChronologicalSerie& Data)
           ZeDT.setFromString(DateStr,m_InDateFormat))
       {
 
-        if (!boost::math::isnan(Value) && !boost::math::isinf(Value))
+        if (!std::isnan(Value) && !std::isinf(Value))
         {
 
           if (!Data.empty() && Data.back().first > ZeDT )

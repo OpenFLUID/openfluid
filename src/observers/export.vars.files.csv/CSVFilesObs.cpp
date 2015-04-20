@@ -38,18 +38,16 @@
  */
 
 
+#include <chrono>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <iomanip>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-
 
 
 // =====================================================================
@@ -466,13 +464,15 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
           if((*SetIt).second.Format->Header == CSVFormat::Info ||
              (*SetIt).second.Format->Header == CSVFormat::Full)
           {
+            std::chrono::system_clock::time_point TimePoint = std::chrono::system_clock::now();
+            std::time_t Time = std::chrono::system_clock::to_time_t(TimePoint);
+
             (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
                                 << "========================================================================\n";
             (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
                                 << " file: " << openfluid::tools::Filesystem::filename((*FLIt)->FileName) << "\n";
             (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
-                                << " date: " << boost::posix_time::to_simple_string(
-                                                    boost::posix_time::microsec_clock::local_time()) << "\n";
+                                << " date: " << std::ctime(&Time) << "\n";
             (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
                                 << " unit: " << (*FLIt)->Unit->getClass() << " #" << (*FLIt)->Unit->getID() << "\n";
             (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar

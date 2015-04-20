@@ -38,9 +38,9 @@
 
 #include "VectorDataset.hpp"
 
+#include <algorithm>
 #include <utility>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/date_time/posix_time/time_formatters.hpp>
+#include <chrono>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/GeometryFactory.h>
 #include <geos/geom/LineString.h>
@@ -200,12 +200,17 @@ std::string VectorDataset::getTimestampedPath(const std::string& OriginalFileNam
   std::string FileWOExt = openfluid::tools::Filesystem::basename(OriginalFileName);
   std::string Ext = openfluid::tools::Filesystem::extension(OriginalFileName);
 
+  std::chrono::system_clock::time_point TimePoint = std::chrono::system_clock::now();
+  std::time_t Time = std::chrono::system_clock::to_time_t(TimePoint);
+
+  char NowChar[16];
+  std::strftime(NowChar, sizeof(NowChar), "%Y%m%dT%H%M%S", std::localtime(&Time));
+  std::string Now(NowChar);
+
+
   return openfluid::core::GeoValue::computeAbsolutePath(
       getInitializedTmpPath(),
-      FileWOExt + "_"
-      + boost::posix_time::to_iso_string(
-          boost::posix_time::microsec_clock::local_time())
-      + '.'+Ext);
+      FileWOExt + "_" + Now + '.'+Ext);
 }
 
 

@@ -37,10 +37,9 @@
 
 
 #include <QDir>
+#include <QDateTime>
 
 #include <openfluid/base/RuntimeEnv.hpp>
-
-#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
@@ -287,7 +286,7 @@ RuntimeEnvironment* RuntimeEnvironment::instance()
 void RuntimeEnvironment::setDateTimeOutputDir()
 {
   m_OutputDir = m_UserDataDir + "/" + "OPENFLUID." +
-                boost::posix_time::to_iso_string(boost::posix_time::microsec_clock::local_time()) + ".OUT";
+                QDateTime::currentDateTime().toString("yyyyMMdd'T'hhmmss").toStdString() + ".OUT";
 }
 
 

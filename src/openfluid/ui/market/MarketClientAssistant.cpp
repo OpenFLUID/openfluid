@@ -48,8 +48,6 @@
 #include <QHeaderView>
 #include <QModelIndex>
 
-#include <boost/foreach.hpp>
-
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/market/MarketBuildOptionsDialog.hpp>
 #include <openfluid/ui/market/ViewLogFileWindow.hpp>
@@ -129,7 +127,7 @@ void MarketClientAssistant::setupSelectionPage()
   openfluid::base::PreferencesManager::MarketPlaces_t MarketPlaces =
       openfluid::base::PreferencesManager::instance()->getMarketplaces();
 
-  BOOST_FOREACH(openfluid::base::PreferencesManager::MarketPlaces_t::value_type &PlaceIt, MarketPlaces)
+  for (openfluid::base::PreferencesManager::MarketPlaces_t::value_type &PlaceIt : MarketPlaces)
   {
     m_URLColumns.mp_Name = new QStandardItem(PlaceIt.first + " (" + PlaceIt.second + ")");
     m_URLColumns.mp_URL = new QStandardItem(PlaceIt.second);

@@ -44,9 +44,7 @@
 
 #include <openfluid/machine/MachineListener.hpp>
 #include <iostream>
-
-// =====================================================================
-// =====================================================================
+#include <iomanip>
 
 
 class DefaultMachineListener : public openfluid::machine::MachineListener

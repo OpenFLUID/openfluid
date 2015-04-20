@@ -42,8 +42,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <cstring>
-#include <cstdio>
+#include <iomanip>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -135,6 +134,17 @@ bool DateTime::setFromISOString(const std::string& DateTimeStr)
 
 bool DateTime::setFromString(const std::string& DateTimeStr, const std::string& FormatStr)
 {
+  // TODO Should be replaced by C++11 features when available. Example:
+  /*
+  std::tm CTime;
+  std::istringstream StrS(DateTimeStr);
+  StrS.imbue(std::locale(std::locale::classic()));
+  StrS >> std::get_time(&CTime,FormatStr.c_str());
+
+  return (set(CTime.tm_year+1900, CTime.tm_mon+1,CTime.tm_mday,
+              CTime.tm_hour,CTime.tm_min,CTime.tm_sec));
+  */
+
   boost::posix_time::time_input_facet* Facet = new  boost::posix_time::time_input_facet(FormatStr);
 
   std::istringstream StrS(DateTimeStr);

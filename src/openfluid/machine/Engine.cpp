@@ -81,9 +81,11 @@ Engine::Engine(SimulationBlob& SimBlob,
   mp_SimLogger =
     new openfluid::base::SimulationLogger(mp_RunEnv->getOutputFullPath(openfluid::config::MESSAGES_LOG_FILE));
 
+  std::chrono::system_clock::time_point TimePoint = std::chrono::system_clock::now();
+  std::time_t Time = std::chrono::system_clock::to_time_t(TimePoint);
+
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
-                        "Date: " +
-                        boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time()));
+                        "Date: " + std::string(std::ctime(&Time)));
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
                         "Computer: " + mp_RunEnv->getHostName());
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),

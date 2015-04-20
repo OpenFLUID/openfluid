@@ -38,10 +38,9 @@
  */
 
 
-
 #include <sstream>
 #include <fstream>
-#include <boost/date_time/posix_time/posix_time.hpp>
+#include <chrono>
 
 #include <openfluid/buddies/NewSimBuddy.hpp>
 #include <openfluid/base/FrameworkException.hpp>
@@ -76,17 +75,19 @@ NewSimulatorBuddy::~NewSimulatorBuddy()
 // =====================================================================
 // =====================================================================
 
+
 void NewSimulatorBuddy::writeSimulatorCPP()
 {
   std::ostringstream CPPContent;
   std::ostringstream SimVersionStr;
 
+  std::chrono::system_clock::time_point TimePoint = std::chrono::system_clock::now();
+  std::time_t Time = std::chrono::system_clock::to_time_t(TimePoint);
+  std::tm TimeDetails = *std::localtime(&Time);
+  int Year = (TimeDetails.tm_year+1900);
+  int Month = TimeDetails.tm_mon+1;
 
-  unsigned short Year = (boost::posix_time::second_clock::local_time().date().year() % 100);
-  unsigned short Month = (unsigned short)(boost::posix_time::second_clock::local_time().date().month());
-
-
-  SimVersionStr << Year << ".";
+  SimVersionStr << (Year % 100) << ".";
   if (Month < 10) SimVersionStr << "0";
   SimVersionStr << Month;
 

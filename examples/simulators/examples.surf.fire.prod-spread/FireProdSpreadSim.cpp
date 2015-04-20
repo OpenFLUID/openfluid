@@ -37,8 +37,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-
-#include <boost/math/special_functions/fpclassify.hpp>
+#include <cmath>
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 
@@ -268,7 +267,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
       if (m_UnitsStockIni[U->getID()] > 0)
       {
         StockRatio = ((double)(Stock.get()))/((double)(m_UnitsStockIni[U->getID()]));
-        if (boost::math::isnan(StockRatio) || boost::math::isinf(StockRatio))
+        if (std::isnan(StockRatio) || std::isinf(StockRatio))
           StockRatio = 0.0;
       }
       else

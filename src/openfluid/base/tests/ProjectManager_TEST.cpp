@@ -42,6 +42,9 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_prjman
 
+#include <ctime>
+#include <chrono>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
@@ -50,7 +53,6 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <tests-config.hpp>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -107,9 +109,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE(openfluid::base::ProjectManager::instance()->getPath().empty());
 
   openfluid::base::ProjectManager::instance()->open(Prj1Dir);
-  std::string Now = boost::posix_time::to_iso_string(
-      boost::posix_time::second_clock::local_time());
-  Now[8] = '-';
+
+  std::chrono::system_clock::time_point TimePoint = std::chrono::system_clock::now();
+  std::time_t Time = std::chrono::system_clock::to_time_t(TimePoint);
+
+  char NowChar[16];
+  std::strftime(NowChar, sizeof(NowChar),"%Y%m%d-%H%M%S", std::localtime(&Time));
+  std::string Now(NowChar);
+
   openfluid::base::ProjectManager::instance()->updateOutputDir();
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isOpened(), true);
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->getPath(), Prj1Dir);
@@ -128,9 +135,5 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::instance()->isOpened(), false);
 
 }
-
-// =====================================================================
-// =====================================================================
-
 
 

@@ -41,8 +41,7 @@
 #include <openfluid/ware/ThreadedLoopMacros.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <cmath>
-#include <boost/date_time.hpp>
-
+#include <chrono>
 
 // =====================================================================
 // =====================================================================
@@ -216,94 +215,94 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
     std::cout << std::endl;
 
-    boost::posix_time::ptime StartTime, EndTime;
-    boost::posix_time::time_duration Duration;
+    std::chrono::high_resolution_clock::time_point StartTime, EndTime;
+    std::chrono::milliseconds Duration;
 
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
       processUnit(TU);
 
-    EndTime = boost::posix_time::microsec_clock::local_time();
-    Duration = EndTime - StartTime;
-    std::cout << "TU Classic: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    EndTime = std::chrono::high_resolution_clock::now();
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "TU Classic: " << Duration.count() << "ms" << std::endl;
 
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::processUnit);
-    EndTime = boost::posix_time::microsec_clock::local_time();
-    Duration = EndTime - StartTime;
-    std::cout << "TU Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    EndTime = std::chrono::high_resolution_clock::now();
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "TU Threaded: " << Duration.count() << "ms" << std::endl;
 
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
       produceDataOnTUSequenced(TU,double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
 
-    EndTime = boost::posix_time::microsec_clock::local_time();
-    Duration = EndTime - StartTime;
-    std::cout << "TU Production Sequenced: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    EndTime = std::chrono::high_resolution_clock::now();
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "TU Production Sequenced: " << Duration.count() << "ms"  << std::endl;
 
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::produceDataOnTUThreaded,
                                       double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
-    EndTime = boost::posix_time::microsec_clock::local_time();
-    Duration = EndTime - StartTime;
-    std::cout << "TU Production Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    EndTime = std::chrono::high_resolution_clock::now();
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "TU Production Threaded: " << Duration.count() << "ms"  << std::endl;
 
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
       processUnitXTimes(TU,3);
-    EndTime = boost::posix_time::microsec_clock::local_time();
-    Duration = EndTime - StartTime;
-    std::cout << "TU Classic 3 times: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    EndTime = std::chrono::high_resolution_clock::now();
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "TU Classic 3 times: " << Duration.count() << "ms"  << std::endl;
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::processUnitXTimes,3);
-    EndTime = boost::posix_time::microsec_clock::local_time();
-    Duration = EndTime - StartTime;
-    std::cout << "TU Threaded 3 times: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    EndTime = std::chrono::high_resolution_clock::now();
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "TU Threaded 3 times: " << Duration.count() << "ms"  << std::endl;
 
     // _-_-_-_-_-_-_-_-_-_-_-_-_
 
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     OPENFLUID_ALLUNITS_ORDERED_LOOP(TU)
       processUnit(TU);
-    EndTime = boost::posix_time::microsec_clock::local_time();
+    EndTime = std::chrono::high_resolution_clock::now();
     std::cout << std::endl;
-    Duration = EndTime - StartTime;
-    std::cout << "Full Classic: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "Full Classic: " << Duration.count() << "ms"  << std::endl;
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     APPLY_ALLUNITS_ORDERED_LOOP_THREADED(ThreadedLoopsSimulator::processUnit);
-    EndTime = boost::posix_time::microsec_clock::local_time();
-    Duration = EndTime - StartTime;
-    std::cout << "Full Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    EndTime = std::chrono::high_resolution_clock::now();
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "Full Threaded: " << Duration.count() << "ms"  << std::endl;
 
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     OPENFLUID_ALLUNITS_ORDERED_LOOP(TU)
       processUnitXTimes(TU,4);
-    EndTime = boost::posix_time::microsec_clock::local_time();
-    Duration = EndTime - StartTime;
-    std::cout << "Full Classic 4 times: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    EndTime = std::chrono::high_resolution_clock::now();
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "Full Classic 4 times: " << Duration.count() << "ms"  << std::endl;
 
-    StartTime = boost::posix_time::microsec_clock::local_time();
+    StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     APPLY_ALLUNITS_ORDERED_LOOP_THREADED(ThreadedLoopsSimulator::processUnitXTimes,4);
-    EndTime = boost::posix_time::microsec_clock::local_time();
-    Duration = EndTime - StartTime;
-    std::cout << "Full Threaded 4 times: " << boost::posix_time::to_simple_string(Duration) << std::endl;
+    EndTime = std::chrono::high_resolution_clock::now();
+    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
+    std::cout << "Full Threaded 4 times: " << Duration.count() << "ms"  << std::endl;
 
 
     return DefaultDeltaT();

@@ -44,7 +44,7 @@
 #define BOOST_TEST_MODULE unittest_engine
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/foreach.hpp>
+
 #include <tests-config.hpp>
 
 #include <openfluid/ware/PluggableSimulator.hpp>
@@ -84,7 +84,7 @@ class EmptySimulator : public openfluid::ware::PluggableSimulator
 void displayModel(openfluid::machine::ModelInstance& MI)
 {
   std::cout << " ---- " << std::endl;
-  BOOST_FOREACH(openfluid::machine::ModelItemInstance* MII,MI.items())
+  for (openfluid::machine::ModelItemInstance* MII : MI.items())
   {
     std::cout << MII->Signature->ID << std::endl;
   }

@@ -37,10 +37,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <boost/random.hpp>
+
 #include <ctime>
+#include <random>
 
 #include <openfluid/ware/PluggableSimulator.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -101,12 +103,12 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
     typedef openfluid::core::IDMap<std::vector<openfluid::core::SpatialUnit*> >::Type Connections_t;
 
-    boost::mt19937 m_RandomEngine;
+    std::mt19937 m_RandomEngine;
 
     Connections_t m_PotentialConnections;
 
-  public:
 
+  public:
 
     WindFireConnectSimulator() : PluggableSimulator()
     {
@@ -194,11 +196,10 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::core::IntegerValue getCorrectedWindDir(const openfluid::core::IntegerValue& MainWindDir)
     {
-      boost::uniform_int<> Distribution(-45, 45);
-      boost::variate_generator<boost::mt19937&, boost::uniform_int<> > Random (m_RandomEngine, Distribution);
+      std::uniform_int_distribution<int> Distribution(-45, 45);
 
       // add a random variation to main wind direction
-      openfluid::core::IntegerValue CorrectedDir(MainWindDir.get()+Random());
+      openfluid::core::IntegerValue CorrectedDir(MainWindDir.get()+Distribution(m_RandomEngine));
 
       if (CorrectedDir.get()>=360) CorrectedDir.set(CorrectedDir.get()-360);
       if (CorrectedDir.get()<0) CorrectedDir.set(CorrectedDir.get()+360);

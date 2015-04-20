@@ -125,17 +125,12 @@ openfluid::base::SchedulingRequest RandomGenerator::initializeRun()
 
 openfluid::base::SchedulingRequest RandomGenerator::runStep()
 {
-
   openfluid::core::SpatialUnit* LU;
-
-  boost::uniform_real<> Distribution(m_Min, m_Max);
-  boost::variate_generator<boost::mt19937&, boost::uniform_real<> > Random (m_RandomEngine, Distribution);
-
-
+  std::uniform_real_distribution<double> Distribution(m_Min, m_Max);
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
-    openfluid::core::DoubleValue Value(Random());
+    openfluid::core::DoubleValue Value(Distribution(m_RandomEngine));
 
     if (isVectorVariable())
     {

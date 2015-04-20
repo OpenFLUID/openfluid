@@ -41,8 +41,7 @@
 #ifndef __OPENFLUID_MACHINE_RANDOMGENERATOR_HPP__
 #define __OPENFLUID_MACHINE_RANDOMGENERATOR_HPP__
 
-#include <boost/random.hpp>
-
+#include <random>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
@@ -59,7 +58,7 @@ class OPENFLUID_API RandomGenerator : public Generator
 
     openfluid::core::Duration_t m_DeltaT;
 
-    boost::mt19937 m_RandomEngine;
+    std::mt19937 m_RandomEngine;
 
   public:
 

@@ -45,10 +45,10 @@
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/dllexport.hpp>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <map>
 #include <list>
+#include <chrono>
 
 
 namespace openfluid { namespace machine {
@@ -65,14 +65,16 @@ class OPENFLUID_API SimulationProfiler
 
     typedef std::list<openfluid::ware::WareID_t> WareIDSequence_t;
 
+    typedef std::chrono::nanoseconds TimeResolution_t;
+
   private:
 
-    typedef std::map<openfluid::base::SimulationStatus::SimulationStage,boost::posix_time::time_duration>
+    typedef std::map<openfluid::base::SimulationStatus::SimulationStage,TimeResolution_t>
       CumulativeSimulatorProfile_t;
 
     typedef std::map<openfluid::ware::WareID_t,CumulativeSimulatorProfile_t> CumulativeModelProfile_t;
 
-    typedef std::map<openfluid::ware::WareID_t,boost::posix_time::time_duration> CurrentTimeIndexModelProfile_t;
+    typedef std::map<openfluid::ware::WareID_t,TimeResolution_t> CurrentTimeIndexModelProfile_t;
 
     typedef WareIDSequence_t CurrentTimeIndexModelSequence_t;
 
@@ -92,7 +94,7 @@ class OPENFLUID_API SimulationProfiler
 
     std::ofstream m_CurrentProfileFile;
 
-    static double getDurationInDecimalSeconds(const boost::posix_time::time_duration& Duration);
+    static double getDurationInDecimalSeconds(const TimeResolution_t& Duration);
 
     void flushCurrentProfileToFiles();
 
@@ -104,7 +106,7 @@ class OPENFLUID_API SimulationProfiler
 
     void addDuration(const openfluid::ware::WareID_t& SimID,
                      openfluid::base::SimulationStatus::SimulationStage ProfilePart,
-                     const boost::posix_time::time_duration& Duration);
+                     const TimeResolution_t& Duration);
 
 };
 

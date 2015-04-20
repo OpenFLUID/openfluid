@@ -45,9 +45,11 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/circular_buffer.hpp>
+#include <chrono>
+#include <list>
+#include <memory>
 
+#include <boost/circular_buffer.hpp>
 
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
@@ -59,31 +61,28 @@
 #include <openfluid/core/TreeValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 
-#include <list>
-#include <memory>
-
 
 // =====================================================================
 // =====================================================================
 
 
 #define DECLARE_TEST_TICKER(name) \
-  boost::posix_time::ptime _M_Start_##name; \
-  boost::posix_time::ptime _M_Stop_##name; \
-  boost::posix_time::time_duration _M_Duration_##name;
+  std::chrono::high_resolution_clock::time_point _M_Start_##name; \
+  std::chrono::high_resolution_clock::time_point _M_Stop_##name; \
+  std::chrono::milliseconds _M_Duration_##name;
 
 
 #define START_TEST_TICKER(name) \
-  _M_Start_##name = boost::posix_time::microsec_clock::local_time();
+  _M_Start_##name = std::chrono::high_resolution_clock::now();
 
 
 #define MARK_TEST_TICKER(name) \
-  _M_Stop_##name = boost::posix_time::microsec_clock::local_time(); \
-  _M_Duration_##name = _M_Stop_##name - _M_Start_##name; \
+  _M_Stop_##name = std::chrono::high_resolution_clock::now(); \
+  _M_Duration_##name = std::chrono::duration_cast<std::chrono::milliseconds>(_M_Stop_##name - _M_Start_##name);
 
 
-#define TEST_DURATION_AS_STRING(name) \
-  (boost::posix_time::to_simple_string(_M_Duration_##name))
+#define TEST_DURATION_AS_MS(name) \
+  (_M_Duration_##name.count())
 
 
 // =====================================================================
@@ -265,7 +264,9 @@ BOOST_AUTO_TEST_CASE(check_performance)
   std::cout << "======== check_performance ========" << std::endl;
 
 
-  DECLARE_TEST_TICKER();
+  DECLARE_TEST_TICKER(DBL);
+  DECLARE_TEST_TICKER(DBLVAL);
+
 
   const unsigned int ElementsNbr = 10000000;
   const unsigned int BufferSize = 5;
@@ -274,19 +275,19 @@ BOOST_AUTO_TEST_CASE(check_performance)
   boost::circular_buffer<std::shared_ptr<openfluid::core::Value> > BufferValue(5000);
 
 
-  START_TEST_TICKER();
+  START_TEST_TICKER(DBL);
 
   for (unsigned int i=0; i< ElementsNbr;i++)
   {
     BufferDouble.push_back(static_cast<double>(i)/ElementsNbr);
   }
 
-  MARK_TEST_TICKER();
-  std::cout << "Duration [double], populating: " << TEST_DURATION_AS_STRING() << std::endl;
+  MARK_TEST_TICKER(DBL);
+  std::cout << "Duration [double], populating: " << TEST_DURATION_AS_MS(DBL) << "ms" << std::endl;
 
 
 
-  START_TEST_TICKER();
+  START_TEST_TICKER(DBLVAL);
 
   for (unsigned int i=0; i< ElementsNbr;i++)
   {
@@ -294,11 +295,11 @@ BOOST_AUTO_TEST_CASE(check_performance)
         new openfluid::core::DoubleValue(static_cast<double>(i)/ElementsNbr)));
   }
 
-  MARK_TEST_TICKER();
-  std::cout << "Duration [DoubleValue], populating: " << TEST_DURATION_AS_STRING() << std::endl;
+  MARK_TEST_TICKER(DBLVAL);
+  std::cout << "Duration [DoubleValue], populating: " << TEST_DURATION_AS_MS(DBLVAL) << "ms" << std::endl;
 
 
-  START_TEST_TICKER();
+  START_TEST_TICKER(DBL);
 
   for (unsigned int i=0; i< BufferSize;i++)
   {
@@ -306,11 +307,11 @@ BOOST_AUTO_TEST_CASE(check_performance)
     std::cout << Tmp << std::endl;
   }
 
-  MARK_TEST_TICKER();
-  std::cout << "Duration [double], accessing: " << TEST_DURATION_AS_STRING() << std::endl;
+  MARK_TEST_TICKER(DBL);
+  std::cout << "Duration [double], accessing: " << TEST_DURATION_AS_MS(DBL) << "ms" << std::endl;
 
 
-  START_TEST_TICKER();
+  START_TEST_TICKER(DBLVAL);
 
   for (unsigned int i=0; i< BufferSize;i++)
   {
@@ -318,8 +319,8 @@ BOOST_AUTO_TEST_CASE(check_performance)
     std::cout << Tmp << std::endl;
   }
 
-  MARK_TEST_TICKER();
-  std::cout << "Duration [DoubleValue], accessing: " << TEST_DURATION_AS_STRING() << std::endl;
+  MARK_TEST_TICKER(DBLVAL);
+  std::cout << "Duration [DoubleValue], accessing: " << TEST_DURATION_AS_MS(DBLVAL) << "ms" << std::endl;
 
 }
 

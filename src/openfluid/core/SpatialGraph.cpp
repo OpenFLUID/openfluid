@@ -36,7 +36,6 @@
 */
 
 
-#include <boost/foreach.hpp>
 #include <openfluid/core/SpatialGraph.hpp>
 
 
@@ -350,10 +349,8 @@ void SpatialGraph::streamContents(std::ostream& OStream)
 
 void SpatialGraph::clearAllVariables()
 {
-  BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
-  {
+  for (openfluid::core::SpatialUnit* CurrentUnit : m_PcsOrderedUnitsGlobal)
     CurrentUnit->variables()->clear();
-  }
 }
 
 
@@ -363,10 +360,8 @@ void SpatialGraph::clearAllVariables()
 
 void SpatialGraph::clearAllAttributes()
 {
-  BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
-  {
+  for (openfluid::core::SpatialUnit* CurrentUnit : m_PcsOrderedUnitsGlobal)
     CurrentUnit->attributes()->clear();
-  }
 }
 
 
@@ -376,10 +371,8 @@ void SpatialGraph::clearAllAttributes()
 
 void SpatialGraph::clearAllEvents()
 {
-  BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
-  {
+  for (openfluid::core::SpatialUnit* CurrentUnit : m_PcsOrderedUnitsGlobal)
     CurrentUnit->events()->clear();
-  }
 }
 
 
@@ -389,7 +382,7 @@ void SpatialGraph::clearAllEvents()
 
 void SpatialGraph::clearAllData()
 {
-  BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  for (openfluid::core::SpatialUnit* CurrentUnit : m_PcsOrderedUnitsGlobal)
   {
     CurrentUnit->variables()->clear();
     CurrentUnit->attributes()->clear();

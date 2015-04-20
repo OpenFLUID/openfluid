@@ -51,7 +51,6 @@
 #include <openfluid/tools/DataHelpers.hpp>
 
 
-
 namespace openfluid { namespace machine {
 
 
@@ -71,13 +70,16 @@ namespace openfluid { namespace machine {
       if (_M_CurrentSimulator != NULL) \
       { \
         mp_Listener->onSimulator##listenermethod(_M_CurrentSimulator->Signature->ID); \
-        boost::posix_time::ptime _M_TimeProfileStart = boost::posix_time::microsec_clock::universal_time(); \
+        std::chrono::high_resolution_clock::time_point _M_TimeProfileStart = \
+          std::chrono::high_resolution_clock::now(); \
         _M_CurrentSimulator->Body->calledmethod; \
         if (mp_SimProfiler != NULL)\
-          mp_SimProfiler\
-          ->addDuration(_M_CurrentSimulator->Signature->ID,\
-                        timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,\
-                                                    boost::posix_time::microsec_clock::universal_time()).length()); \
+        { \
+          mp_SimProfiler->addDuration(_M_CurrentSimulator->Signature->ID,\
+                                      timeprofilepart, \
+                                      std::chrono::duration_cast<SimulationProfiler::TimeResolution_t>(\
+                                        std::chrono::high_resolution_clock::now() - _M_TimeProfileStart)); \
+        } \
         if (mp_SimLogger->isCurrentWarningFlag()) \
           mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_WARNING,\
                                                          _M_CurrentSimulator->Signature->ID); \
@@ -490,14 +492,16 @@ void ModelInstance::call_initializeRun()
     {
       mp_Listener->onSimulatorInitializeRun(CurrentSimulator->Signature->ID);
 
-      boost::posix_time::ptime TimeProfileStart = boost::posix_time::microsec_clock::universal_time();
+      std::chrono::high_resolution_clock::time_point TimeProfileStart = std::chrono::high_resolution_clock::now();
+
       openfluid::base::SchedulingRequest SchedReq = CurrentSimulator->Body->initializeRun();
+
       if (mp_SimProfiler != NULL)
         mp_SimProfiler->addDuration(CurrentSimulator->Signature->ID,
                                     openfluid::base::SimulationStatus::INITIALIZERUN,
-                                    boost::posix_time::time_period(TimeProfileStart,
-                                                                   boost::posix_time::microsec_clock::universal_time())
-                                    .length());
+                                    std::chrono::duration_cast<SimulationProfiler::TimeResolution_t>(
+                                        std::chrono::high_resolution_clock::now()-TimeProfileStart)
+                                    );
 
       if (mp_SimLogger->isCurrentWarningFlag())
         mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING,
@@ -551,16 +555,16 @@ void ModelInstance::processNextTimePoint()
     openfluid::machine::ModelItemInstance* NextItem = m_TimePointList.front().nextItem();
 
     mp_Listener->onSimulatorRunStep(NextItem->Signature->ID);
-    boost::posix_time::ptime TimeProfileStart = boost::posix_time::microsec_clock::universal_time();
+    std::chrono::high_resolution_clock::time_point TimeProfileStart = std::chrono::high_resolution_clock::now();
 
     openfluid::base::SchedulingRequest SchedReq = m_TimePointList.front().processNextItem();
 
     if (mp_SimProfiler != NULL)
       mp_SimProfiler->addDuration(NextItem->Signature->ID,
                                   openfluid::base::SimulationStatus::RUNSTEP,
-                                  boost::posix_time::time_period(TimeProfileStart,
-                                                                 boost::posix_time::microsec_clock::universal_time())
-                                  .length());
+                                  std::chrono::duration_cast<SimulationProfiler::TimeResolution_t>(
+                                      std::chrono::high_resolution_clock::now()-TimeProfileStart)
+                                 );
 
     if (mp_SimLogger->isCurrentWarningFlag())
       mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING,NextItem->Signature->ID);

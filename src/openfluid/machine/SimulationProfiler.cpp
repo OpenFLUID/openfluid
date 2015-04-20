@@ -37,6 +37,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+#include <iomanip>
 
 #include <openfluid/machine/SimulationProfiler.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -50,11 +51,14 @@ namespace openfluid { namespace machine {
 // =====================================================================
 
 
-double SimulationProfiler::getDurationInDecimalSeconds(const boost::posix_time::time_duration& Duration)
+double SimulationProfiler::getDurationInDecimalSeconds(const TimeResolution_t& Duration)
 {
-  return (static_cast<double>(Duration.total_seconds()) +
+/*  return (static_cast<double>(Duration.total_seconds()) +
          (static_cast<double>(Duration.fractional_seconds()) /
-             static_cast<double>(boost::posix_time::time_duration::ticks_per_second())));
+             static_cast<double>(boost::posix_time::time_duration::ticks_per_second())));*/
+
+  return double(Duration.count()) / 1000000000;
+
 }
 
 
@@ -83,17 +87,17 @@ SimulationProfiler::SimulationProfiler(const openfluid::base::SimulationStatus* 
       ++It)
   {
     m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::INITPARAMS] =
-        boost::posix_time::time_duration(0,0,0,0);
+        TimeResolution_t(0);
     m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::PREPAREDATA] =
-        boost::posix_time::time_duration(0,0,0,0);
+        TimeResolution_t(0);
     m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::CHECKCONSISTENCY] =
-        boost::posix_time::time_duration(0,0,0,0);
+        TimeResolution_t(0);
     m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::INITIALIZERUN] =
-        boost::posix_time::time_duration(0,0,0,0);
+        TimeResolution_t(0);
     m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::RUNSTEP] =
-        boost::posix_time::time_duration(0,0,0,0);
+        TimeResolution_t(0);
     m_CumulativeModelProfile[*It][openfluid::base::SimulationStatus::FINALIZERUN] =
-        boost::posix_time::time_duration(0,0,0,0);
+        TimeResolution_t(0);
 
     m_CurrentProfileFile << ";" << *It;
   }
@@ -202,7 +206,7 @@ void SimulationProfiler::flushCurrentProfileToFiles()
 
 void SimulationProfiler::addDuration(const openfluid::ware::WareID_t& SimID,
                                      openfluid::base::SimulationStatus::SimulationStage ProfilePart,
-                                     const boost::posix_time::time_duration& Duration)
+                                     const TimeResolution_t& Duration)
 {
   if (ProfilePart == openfluid::base::SimulationStatus::INITIALIZERUN ||
       ProfilePart == openfluid::base::SimulationStatus::RUNSTEP)

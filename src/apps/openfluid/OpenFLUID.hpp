@@ -42,8 +42,6 @@
 #define __OPENFLUID_CMDLINEAPP_OPENFLUID_HPP__
 
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 

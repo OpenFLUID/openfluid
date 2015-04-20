@@ -38,11 +38,10 @@
 
 #include "PreferencesManager.hpp"
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-
 #include <QDir>
 #include <QFileInfo>
 #include <QLocale>
+#include <QDateTime>
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -662,7 +661,7 @@ QString PreferencesManager::getBegin()
 
   if (DateStr.isEmpty())
   {
-    std::string Now = boost::posix_time::to_iso_extended_string(boost::posix_time::microsec_clock::local_time());
+    std::string Now = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss").toStdString();
     Now[10] = ' ';
     openfluid::core::DateTime DT;
     DT.setFromISOString(Now);

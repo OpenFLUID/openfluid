@@ -37,7 +37,6 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <boost/math/special_functions/fpclassify.hpp>
 
 #include <openfluid/machine/InterpGenerator.hpp>
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>

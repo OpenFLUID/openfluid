@@ -19,7 +19,6 @@ SET_TARGET_PROPERTIES(openfluid-core PROPERTIES VERSION "${VERSION_MAJOR}.${VERS
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 TARGET_LINK_LIBRARIES(openfluid-core
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY}
                       ${GDAL_LIBRARIES})
 
 INSTALL(TARGETS openfluid-core
