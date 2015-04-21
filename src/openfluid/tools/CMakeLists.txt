@@ -17,7 +17,6 @@ SET_TARGET_PROPERTIES(openfluid-tools PROPERTIES VERSION "${VERSION_MAJOR}.${VER
 
 TARGET_LINK_LIBRARIES(openfluid-tools 
                       openfluid-core
-                      ${Boost_SYSTEM_LIBRARY}
                       ${QT_QTCORE_LIBRARY}
                       ${QT_QTXML_LIBRARY}
                       )

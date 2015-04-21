@@ -3,7 +3,7 @@ SET(CPACK_SOURCE_GENERATOR "TGZ")
   
 IF(OF_DISTRO_IS_UBUNTU)  
   SET(CPACK_GENERATOR "DEB")      
-  SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-date-time${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-filesystem${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-math${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-program-options${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-regex${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-iostreams${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libqt4-dev (>= 4.8.0), libgdal1-dev, gcc, g++, cmake (>= 2.8.9), gnuplot (>= 4.2), p7zip-full, graphviz")    
+  SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libqt4-dev (>= 4.8.0), libgdal1-dev, gcc, g++, cmake (>= 2.8.9), gnuplot (>= 4.2), p7zip-full, graphviz")    
   IF(OPENFLUID_ENABLE_LANDR)
     IF(${OF_DISTRO_VERSION} VERSION_GREATER "12.04")
       SET(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}, libgeos++-dev (>= 3.3.0)")

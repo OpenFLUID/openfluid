@@ -45,9 +45,6 @@
 #include <iosfwd>
 #include <fstream>
 #include <boost/algorithm/string/replace.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/trim.hpp>
-#include <boost/algorithm/string/regex.hpp>
 
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/FileHelpers.hpp>

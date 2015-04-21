@@ -261,8 +261,6 @@ ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP
 
 
 TARGET_LINK_LIBRARIES(openfluid-builder-main 
-                      ${Boost_SYSTEM_LIBRARY} 
-                      ${Boost_REGEX_LIBRARY}
                       ${GDAL_LIBRARIES}
                       ${QT_QTCORE_LIBRARIES}
                       ${QT_QTGUI_LIBRARIES}
@@ -311,8 +309,6 @@ SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${B
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES OUTPUT_NAME ${OPENFLUID_BUILDER_APP})
 
 TARGET_LINK_LIBRARIES(openfluid-builder
-                      ${Boost_SYSTEM_LIBRARY}  
-                      ${Boost_REGEX_LIBRARY}
                       ${GDAL_LIBRARIES}
                       openfluid-base
                       openfluid-buddies

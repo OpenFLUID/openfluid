@@ -20,9 +20,7 @@ TARGET_LINK_LIBRARIES(openfluid-ware
                       openfluid-core
                       openfluid-base
                       openfluid-fluidx
-                      openfluid-tools               
-                      ${Boost_SYSTEM_LIBRARY}
-                      ${Boost_REGEX_LIBRARIES})
+                      openfluid-tools)
 
 
 INSTALL(TARGETS openfluid-ware

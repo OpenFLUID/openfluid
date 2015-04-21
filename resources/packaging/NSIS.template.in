@@ -920,9 +920,6 @@ Section "-Add to path"
   StrCmp $ADD_TO_PATH_ALL_USERS "1" 0 AddToPath_current
     ${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$INSTDIR\bin"
     ${EnvVarUpdate} $0 "OPENFLUID_INSTALL_PREFIX" "A" "HKLM" "$INSTDIR"
-    ${EnvVarUpdate} $0 "BOOST_ROOT" "A" "HKLM" "$INSTDIR"
-    ${EnvVarUpdate} $0 "BOOST_INCLUDEDIR" "A" "HKLM" "$INSTDIR\include\boost"
-    ${EnvVarUpdate} $0 "BOOST_LIBRARYDIR" "A" "HKLM" "$INSTDIR\lib"
     GetFullPathName /SHORT $1 "$INSTDIR"
     ${EnvVarUpdate} $0 "PKG_CONFIG_PATH" "A" "HKLM" "$1\lib\pkgconfig"
     Goto AddToPath_done
@@ -931,9 +928,6 @@ Section "-Add to path"
   StrCmp $ADD_TO_PATH_CURRENT_USER "1" 0 AddToPath_done
     ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\bin"
     ${EnvVarUpdate} $0 "OPENFLUID_INSTALL_PREFIX" "A" "HKCU" "$INSTDIR"    
-    ${EnvVarUpdate} $0 "BOOST_ROOT" "A" "HKCU" "$INSTDIR"
-    ${EnvVarUpdate} $0 "BOOST_INCLUDEDIR" "A" "HKCU" "$INSTDIR\include\boost"
-    ${EnvVarUpdate} $0 "BOOST_LIBRARYDIR" "A" "HKCU" "$INSTDIR\lib"
     GetFullPathName /SHORT $1 "$INSTDIR"
     ${EnvVarUpdate} $0 "PKG_CONFIG_PATH" "A" "HKCU" "$1\lib\pkgconfig"
     Goto AddToPath_done
@@ -1096,9 +1090,6 @@ Section "Uninstall"
   StrCmp $ADD_TO_PATH_ALL_USERS "1" 0 RemoveFromPath_current
     ${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\bin"
     ${un.EnvVarUpdate} $0 "OPENFLUID_INSTALL_PREFIX" "R" "HKLM" "$INSTDIR\bin"    
-    ${un.EnvVarUpdate} $0 "BOOST_ROOT" "R" "HKLM" "$INSTDIR"
-    ${un.EnvVarUpdate} $0 "BOOST_INCLUDEDIR" "R" "HKLM" "$INSTDIR\include\boost"
-    ${un.EnvVarUpdate} $0 "BOOST_LIBRARYDIR" "R" "HKLM" "$INSTDIR\lib"
     GetFullPathName /SHORT $1 "$INSTDIR"
     ${un.EnvVarUpdate} $0 "PKG_CONFIG_PATH" "R" "HKLM" "$1\lib\pkgconfig"
     Goto RemoveFromPath_done
@@ -1107,9 +1098,6 @@ Section "Uninstall"
   StrCmp $ADD_TO_PATH_CURRENT_USER "1" 0 RemoveFromPath_done
     ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\bin"
     ${un.EnvVarUpdate} $0 "OPENFLUID_INSTALL_PREFIX" "R" "HKCU" "$INSTDIR"
-    ${un.EnvVarUpdate} $0 "BOOST_ROOT" "R" "HKCU" "$INSTDIR"    
-    ${un.EnvVarUpdate} $0 "BOOST_INCLUDEDIR" "R" "HKCU" "$INSTDIR\include\boost"
-    ${un.EnvVarUpdate} $0 "BOOST_LIBRARYDIR" "R" "HKCU" "$INSTDIR\lib"
     GetFullPathName /SHORT $1 "$INSTDIR"
     ${un.EnvVarUpdate} $0 "PKG_CONFIG_PATH" "R" "HKCU" "$1\lib\pkgconfig"
     Goto RemoveFromPath_done

@@ -1,7 +1,7 @@
 
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+
 
 FILE(GLOB OPENFLUID_BUDDIES_CPP *.cpp)
 FILE(GLOB OPENFLUID_BUDDIES_HPP *.hpp)
@@ -21,9 +21,7 @@ TARGET_LINK_LIBRARIES(openfluid-buddies
                       openfluid-core
                       openfluid-base
                       openfluid-tools
-                      openfluid-utils                      
-                      ${Boost_SYSTEM_LIBRARY}
-                      ${Boost_REGEX_LIBRARY})
+                      openfluid-utils)
 
 
 
