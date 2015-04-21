@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+  <model>
+     
+    <generator varname="tests.fixed" unitsclass="TestUnits" method="fixed">
+      <param name="fixedvalue" value="99" />
+    </generator>
+    
+  </model>
+</openfluid>

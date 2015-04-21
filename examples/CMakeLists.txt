@@ -9,8 +9,9 @@ FILE(COPY "${EXAMPLES_PROJECTS_PATH}"
        
 OPENFLUID_ADD_TEST(NAME examples-Primitives 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                              "-i" "${CMAKE_CURRENT_SOURCE_DIR}/projects/Primitives/IN"
-                              "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Primitives" 
+                              "run"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/projects/Primitives/IN"
+                              "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Primitives" 
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Primitives"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Primitives/openfluid-messages.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Primitives/fullA_unitsA1_var1.csv"
@@ -20,8 +21,9 @@ OPENFLUID_ADD_TEST(NAME examples-Primitives
                    
 OPENFLUID_ADD_TEST(NAME examples-Manhattan 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                              "-i" "${CMAKE_CURRENT_SOURCE_DIR}/projects/Manhattan/IN"
-                              "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan" 
+                              "run"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/projects/Manhattan/IN"
+                              "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan" 
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Manhattan"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan/openfluid-messages.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan/manhattan-anim.kmz"
@@ -32,8 +34,9 @@ OPENFLUID_ADD_TEST(NAME examples-Manhattan
                    
 OPENFLUID_ADD_TEST(NAME examples-Firespread 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                              "-i" "${CMAKE_CURRENT_SOURCE_DIR}/projects/Firespread/IN"
-                              "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Firespread"
+                              "run"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/projects/Firespread/IN"
+                              "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Firespread"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Firespread"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Firespread/openfluid-messages.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Firespread/firespread-anim.kmz"                                                            

@@ -57,8 +57,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::instance()->getTempDir(),"");
   BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::instance()->getSimulatorsPluginsPaths().size(),0);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isClearOutputDir(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isWriteResults(),true);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isUserValuesBufferSize(),false);
 
   BOOST_REQUIRE(!openfluid::base::RuntimeEnvironment::instance()->getArch().empty());
@@ -130,12 +128,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::RuntimeEnvironment::instance()->setClearOutputDir(true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isClearOutputDir(),true);
 
-  openfluid::base::RuntimeEnvironment::instance()->setWriteResults(false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isWriteResults(),false);
-
-  openfluid::base::RuntimeEnvironment::instance()->setWriteSimReport(false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport(),false);
-
   openfluid::base::RuntimeEnvironment::instance()->setValuesBufferSize(2345);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->isUserValuesBufferSize(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::instance()->getValuesBufferSize(),2345);
@@ -163,12 +155,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(SimEnv->getValue("mode.clearoutputdir",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::instance()->isClearOutputDir());
-
-  BOOST_REQUIRE_EQUAL(SimEnv->getValue("mode.saveresults",BoolValue),true);
-  BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::instance()->isWriteResults());
-
-  BOOST_REQUIRE_EQUAL(SimEnv->getValue("mode.writereport",BoolValue),true);
-  BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport());
 
 }
 

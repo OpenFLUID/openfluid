@@ -39,7 +39,7 @@
 
 #include <iostream>
 #include <string>
-#include <boost/program_options.hpp>
+
 
 #include <QElapsedTimer>
 
@@ -48,6 +48,7 @@
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/utils/CommandLineParser.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
@@ -494,7 +495,6 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
 
 void OpenFLUIDApp::printObserversReport(const std::string Pattern)
 {
-
   std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
       openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures(Pattern);
   std::string StatusStr;
@@ -555,9 +555,7 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
 
   std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::instance()->getInputDir() << std::endl;
 
-  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() ||
-      openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport())
-    std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::instance()->getOutputDir() << std::endl;
+  std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::instance()->getOutputDir() << std::endl;
 
   std::cout << "Simulators search path(s):" << std::endl;
   for (i=0;i<SimulatorsPaths.size();i++)
@@ -585,10 +583,8 @@ void OpenFLUIDApp::printEnvInfos()
 
   printPaths(false);
 
-  if ((openfluid::base::RuntimeEnvironment::instance()->isWriteResults() ||
-      openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) &&
-      (openfluid::base::RuntimeEnvironment::instance()->isClearOutputDir()))
-    std::cout << "Output dir cleared before data saving" << std::endl;
+  if (openfluid::base::RuntimeEnvironment::instance()->isClearOutputDir())
+    std::cout << "Output directory cleared before simulation" << std::endl;
 
   if (IsQuiet)
     std::cout << "Quiet mode enabled" << std::endl;
@@ -743,9 +739,6 @@ void OpenFLUIDApp::runSimulation()
   std::cout << std::endl;
   std::cout.flush();
 
-  if (openfluid::base::RuntimeEnvironment::instance()->isWriteResults() ||
-      openfluid::base::RuntimeEnvironment::instance()->isWriteSimReport()) std::cout << std::endl;
-
   printlnExecMessagesStats();
 
   std::cout << std::endl;
@@ -771,242 +764,302 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   std::string DefaultMaxThreadsStr;
   openfluid::tools::convertValue(openfluid::config::SIMULATORS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
 
-  // TODO adapt colon or semicolon separated path to system win32 or unix
-  boost::program_options::options_description OptionsDesc("openfluid allowed options");
-  OptionsDesc.add_options()
-      ("auto-output-dir,a","generate automatic results output directory")
-      ("buddy,b",boost::program_options::value< std::string >(),"run specified OpenFLUID buddy")
-      ("buddyhelp",boost::program_options::value< std::string >(),"display help message for specified OpenFLUID buddy")
-      ("buddyopts",boost::program_options::value< std::string >(),"set options for specified OpenFLUID buddy")
-      ("clean-output-dir,c","clean results output directory by removing existing files")
-      ("observers-list,e","list available observers (do not run the simulation)")
-      ("simulators-list,f","list available simulators (do not run the simulation)")
-      ("help,h", "display help message")
-      ("input-dir,i",boost::program_options::value< std::string >(),"set dataset input directory")
-      ("enable-simulation-profiling,k","enable time profiling for simulators")
-      ("observers-report,l","print a report of available observers, with details (do not run the simulation)")
-      ("observers-paths,n",boost::program_options::value< std::string >(),
-                           "add extra observers search paths (colon separated)")
-      ("output-dir,o",boost::program_options::value< std::string >(),"set results output directory")
-      ("simulators-paths,p",boost::program_options::value< std::string >(),
-                            "add extra simulators search paths (colon separated)")
-      ("quiet,q","quiet display during simulation run")
-      ("simulators-report,r","print a report of available simulators, with details (do not run the simulation)")
-      ("no-simreport,s","do not generate simulation report")
-      ("show-paths","print the used paths (do not run the simulation)")
-      ("max-threads,t",boost::program_options::value< unsigned int >(),
-                       std::string("change maximum number of threads for threaded spatial loops "
-                        "(default is "+DefaultMaxThreadsStr+")").c_str())
-      ("matching-simulators-report,u",boost::program_options::value< std::string >(),
-                                      "print a report of simulators matching "
-                                      "the given wildcard-based pattern (do not run the simulation)")
-      ("verbose,v","verbose display during simulation")
-      ("project,w",boost::program_options::value< std::string >(),"set project directory")
-      ("version","get version (do not run the simulation)")
-      ("no-result,z","do not write results files")
-  ;
 
-  boost::program_options::variables_map OptionsVars;
-
-  boost::program_options::store(
-      boost::program_options::parse_command_line(
-          ArgC, ArgV, OptionsDesc,
-          boost::program_options::command_line_style::default_style ^
-          boost::program_options::command_line_style::allow_guessing),
-          OptionsVars);
-
-  boost::program_options::notify(OptionsVars);
-
-
-  m_RunType = Simulation;
-
-  if (OptionsVars.count("help"))
+  std::vector<openfluid::utils::CommandLineOption> RunOptions =
   {
-    std::cout << OptionsDesc << std::endl;
-    m_RunType = None;
-    return;
-  }
+    openfluid::utils::CommandLineOption("quiet","q","quiet display during simulation"),
+    openfluid::utils::CommandLineOption("verbose","v","verbose display during simulation"),
+    openfluid::utils::CommandLineOption("profiling","k","enable simulation profiling"),
+    openfluid::utils::CommandLineOption("clean-output-dir","c","clean output directory before simulation"),
+    openfluid::utils::CommandLineOption("auto-output-dir","a","create automatic output directory"),
+    openfluid::utils::CommandLineOption("max-threads","t",
+                                        "set maximum number of threads for threaded spatial loops"
+                                        " (default is "+DefaultMaxThreadsStr+")",true)
+  };
 
+  std::string PathSepText = "colon";
 
-  if (OptionsVars.count("buddyhelp"))
-  {
-    openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
-
-    openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
-
-    if (OptionsVars["buddyhelp"].as<std::string>() == "newsim" )
-      Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
-
-#ifndef __APPLE__
-    // Disabled for compilation errors due to boost.spirit usage under MacOSX
-    // TODO Should be re-enabled later
-    if (OptionsVars["buddyhelp"].as<std::string>() == "sim2doc" )
-      Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
+#if defined OPENFLUID_OS_WINDOWS
+  PathSepText = "semicolon";
 #endif
-    if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" )
-      Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
 
-    if (OptionsVars["buddyhelp"].as<std::string>() == "examples" )
-      Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
+  std::vector<openfluid::utils::CommandLineOption> SearchOptions =
+  {
+    openfluid::utils::CommandLineOption("observers-paths","n",
+                                        "add extra observers search paths ("+PathSepText+" separated)",true),
+    openfluid::utils::CommandLineOption("simulators-paths","p",
+                                        "add extra simulators search paths ("+PathSepText+" separated)",true),
+  };
 
-    if (Buddy != NULL)
-    {
-      std::cout << "Options for buddy " + OptionsVars["buddyhelp"].as<std::string>() + ":" << std::endl;
-      Buddy->invokeHelp();
-      delete Buddy;
-    }
-    else throw openfluid::base::ApplicationException(openfluid::base::ApplicationException::computeContext("openfluid"),
-                                                     "Buddy " + OptionsVars["buddyhelp"].as<std::string>() +
-                                                     " does not exists");
+  openfluid::utils::CommandLineParser Parser("openfluid","");
+
+  Parser.addOption(openfluid::utils::CommandLineOption("version","","display version"));
+
+  // run dataset
+  openfluid::utils::CommandLineCommand RunDatasetCmd("run","Run a simulation from a project or an input dataset");
+  for (auto& Opt : RunOptions)
+    RunDatasetCmd.addOption(Opt);
+  for (auto& Opt : SearchOptions)
+    RunDatasetCmd.addOption(Opt);
+  Parser.addCommand(RunDatasetCmd);
+
+
+  // buddies
+  openfluid::utils::CommandLineCommand BuddyCmd("buddy","Execute a buddy. "
+                                                        "Available buddies are newsim, newdata, sim2doc, examples");
+  BuddyCmd.addOption(openfluid::utils::CommandLineOption("options","o","set buddy options",true));
+  BuddyCmd.addOption(openfluid::utils::CommandLineOption("buddy-help","","display specific buddy help"));
+  Parser.addCommand(BuddyCmd);
+
+
+  // reporting
+  openfluid::utils::CommandLineCommand ReportCmd("report","Display informations about available wares");
+  ReportCmd.addOption(openfluid::utils::CommandLineOption("list","l","display simple list instead of report"));
+  for (auto& Opt : SearchOptions)
+    ReportCmd.addOption(Opt);
+  Parser.addCommand(ReportCmd);
+
+
+
+  // show paths
+  openfluid::utils::CommandLineCommand ShowPathsCmd("show-paths","Show search paths for wares");
+  for (auto& Opt : SearchOptions)
+    ShowPathsCmd.addOption(Opt);
+  Parser.addCommand(ShowPathsCmd);
+
+
+  if (!Parser.parse(ArgC,ArgV))
+    throw openfluid::base::ApplicationException(
+        openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
+            Parser.getParsingMessage());
+
+
+
+  if (Parser.isHelpAsked())
+  {
     m_RunType = None;
+    Parser.printHelp(std::cout);
     return;
   }
 
+  std::string ActiveCommandStr = Parser.getActiveCommand();
 
-  if (OptionsVars.count("buddy"))
+  if (ActiveCommandStr.empty())
   {
-
-    m_BuddyToRun.first = OptionsVars["buddy"].as<std::string>();
-
-    if (OptionsVars.count("buddyopts"))
+    if (Parser.command(ActiveCommandStr).isOptionActive("version"))
     {
-      m_BuddyToRun.second = OptionsVars["buddyopts"].as<std::string>();
+      std::cout << openfluid::config::FULL_VERSION << std::endl;
+      m_RunType = InfoRequest;
+      return;
     }
-    m_RunType = Buddy;
-    return;
   }
-
-
-  if (OptionsVars.count("version"))
+  else if (ActiveCommandStr == "run")
   {
-    std::cout << openfluid::config::FULL_VERSION << std::endl;
-    m_RunType = InfoRequest;
-    return;
-  }
-
-  if (OptionsVars.count("simulators-paths"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()
-    ->addExtraSimulatorsPluginsPaths(OptionsVars["simulators-paths"].as<std::string>());
-  }
-
-  if (OptionsVars.count("observers-paths"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()
-    ->addExtraObserversPluginsPaths(OptionsVars["observers-paths"].as<std::string>());
-  }
-
-
-  if (OptionsVars.count("observers-list"))
-  {
-    m_RunType = InfoRequest;
-    printOpenFLUIDInfos();
-    printMonitoring();
-    return;
-  }
-
-  if (OptionsVars.count("simulators-list"))
-  {
-    m_RunType = InfoRequest;
-    printOpenFLUIDInfos();
-    printSimulatorsList();
-    return;
-  }
-
-  if (OptionsVars.count("simulators-report"))
-  {
-    m_RunType = InfoRequest;
-    printSimulatorsReport("");
-    return;
-  }
-
-  if (OptionsVars.count("observers-report"))
-  {
-    m_RunType = InfoRequest;
-    printObserversReport("");
-    return;
-  }
-
-  if (OptionsVars.count("matching-simulators-report"))
-  {
-    m_RunType = InfoRequest;
-    printSimulatorsReport(OptionsVars["matching-simulators-report"].as<std::string>());
-    return;
-  }
-
-  if (OptionsVars.count("project"))
-  {
-    if (openfluid::base::ProjectManager::instance()->open(OptionsVars["project"].as<std::string>()))
+    if (Parser.command(ActiveCommandStr).isOptionActive("simulators-paths"))
     {
-      openfluid::base::RuntimeEnvironment::instance()->linkToProject();
-      openfluid::base::ProjectManager::instance()->updateOutputDir();
+      openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(
+          Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
+    }
+
+    if (Parser.command(ActiveCommandStr).isOptionActive("observers-paths"))
+    {
+      openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(
+          Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
+    }
+
+    if (Parser.extraArgs().size() >= 1)
+    {
+      if (openfluid::base::ProjectManager::instance()->open(Parser.extraArgs().at(0)))
+      {
+        openfluid::base::RuntimeEnvironment::instance()->linkToProject();
+        openfluid::base::ProjectManager::instance()->updateOutputDir();
+      }
+      else
+      {
+        openfluid::base::RuntimeEnvironment::instance()->setInputDir(Parser.extraArgs().at(0));
+
+        if (Parser.extraArgs().size() >= 2)
+          openfluid::base::RuntimeEnvironment::instance()->setOutputDir(Parser.extraArgs().at(1));
+
+        if (Parser.command(ActiveCommandStr).isOptionActive("automatic-output-dir"))
+        {
+          openfluid::base::RuntimeEnvironment::instance()->setDateTimeOutputDir();
+        }
+      }
+    }
+
+    if (Parser.command(ActiveCommandStr).isOptionActive("max-threads"))
+    {
+      unsigned int MaxThreads = 0;
+
+      std::cout << Parser.command(ActiveCommandStr).getOptionValue("max-threads") << std::endl;
+
+      if (openfluid::tools::convertString(Parser.command(ActiveCommandStr).getOptionValue("max-threads"),&MaxThreads))
+        openfluid::base::RuntimeEnvironment::instance()->setSimulatorsMaxNumThreads(MaxThreads);
+      else
+        throw openfluid::base::ApplicationException(
+            openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
+                "wrong value for threads number");
+    }
+
+    if (Parser.command(ActiveCommandStr).isOptionActive("clean-output-dir"))
+    {
+      openfluid::base::RuntimeEnvironment::instance()->setClearOutputDir(true);
+    }
+
+    if (Parser.command(ActiveCommandStr).isOptionActive("quiet"))
+    {
+      openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.quiet",true);
+      openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.verbose",false);
+    }
+
+    if (Parser.command(ActiveCommandStr).isOptionActive("verbose"))
+    {
+      openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.verbose",true);
+      openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.quiet",false);
+    }
+
+    if (Parser.command(ActiveCommandStr).isOptionActive("profiling"))
+    {
+      openfluid::base::RuntimeEnvironment::instance()->setSimulationProfilingEnabled(true);
+    }
+
+    m_RunType = Simulation;
+    return;
+  }
+  else if (ActiveCommandStr == "report")
+  {
+    std::string Waretype;
+
+    if (Parser.extraArgs().empty() ||
+        (Parser.extraArgs().at(0) != "simulators" && Parser.extraArgs().at(0) != "observers"))
+      throw openfluid::base::ApplicationException(
+          openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
+              "Type of wares is missing for reporting");
+    else
+      Waretype = Parser.extraArgs().at(0);
+
+    std::string MatchStr;
+    if (Parser.extraArgs().size() > 1)
+      MatchStr = Parser.extraArgs().at(1);
+
+    if (Waretype == "simulators")
+    {
+      if (Parser.command(ActiveCommandStr).isOptionActive("simulators-paths"))
+      {
+        openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(
+            Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
+      }
+
+      if (Parser.command(ActiveCommandStr).isOptionActive("list"))
+      {
+        m_RunType = InfoRequest;
+        printSimulatorsList();
+        return;
+      }
+      else
+      {
+        m_RunType = InfoRequest;
+        printSimulatorsReport(MatchStr);
+        return;
+      }
+
+    }
+    else if (Waretype == "observers")
+    {
+      if (Parser.command(ActiveCommandStr).isOptionActive("observers-paths"))
+      {
+        openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(
+            Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
+      }
+
+      if (Parser.command(ActiveCommandStr).isOptionActive("list"))
+      {
+        m_RunType = InfoRequest;
+        printMonitoring();
+        return;
+      }
+      else
+      {
+        m_RunType = InfoRequest;
+        printObserversReport(MatchStr);
+        return;
+      }
+    }
+  }
+  else if (ActiveCommandStr == "buddy")
+  {
+    if (Parser.extraArgs().empty())
+      throw openfluid::base::ApplicationException(
+               openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
+                   "Buddy name is missing");
+
+    openfluid::buddies::OpenFLUIDBuddy* BuddyBody = nullptr;
+    openfluid::buddies::BuddiesListener* BuddyListener = new DefaultBuddiesListener();
+
+    std::string BuddyName = Parser.extraArgs().at(0);
+
+    if (BuddyName == "newsim")
+      BuddyBody = new openfluid::buddies::NewSimulatorBuddy(BuddyListener);
+    else if (BuddyName == "newdata")
+      BuddyBody = new openfluid::buddies::NewDataBuddy(BuddyListener);
+    else if (BuddyName == "examples")
+      BuddyBody = new openfluid::buddies::ExamplesBuddy(BuddyListener);
+#if !defined(OPENFLUID_OS_MAC)
+    else if (BuddyName == "sim2doc")
+      BuddyBody = new openfluid::buddies::Sim2DocBuddy(BuddyListener);
+#endif
+    else
+    {
+      delete BuddyListener;
+      throw openfluid::base::ApplicationException(openfluid::base::ApplicationException::computeContext("openfluid"),
+                                                           "Buddy " + BuddyName +" does not exists");
+    }
+
+
+    if (Parser.command(ActiveCommandStr).isOptionActive("buddy-help") && BuddyBody != nullptr)
+    {
+      std::cout << "Options for buddy " + BuddyName + ":" << std::endl;
+      BuddyBody->invokeHelp();
+      delete BuddyBody;
     }
     else
-      throw openfluid::base::ApplicationException(openfluid::base::ApplicationException::computeContext("openfluid"),
-                                                  OptionsVars["project"].as<std::string>() +
-                                                  " is not a correct project path");
+    {
+      m_BuddyToRun.first = BuddyName;
+
+      if (Parser.command(ActiveCommandStr).isOptionActive("options"))
+      {
+        m_BuddyToRun.second = Parser.command(ActiveCommandStr).getOptionValue("options");
+      }
+      m_RunType = Buddy;
+      return;
+    }
+
+    m_RunType = None;
+    return;
   }
-
-
-  if (OptionsVars.count("input-dir"))
+  else if (ActiveCommandStr == "show-paths")
   {
-    openfluid::base::RuntimeEnvironment::instance()->setInputDir(OptionsVars["input-dir"].as<std::string>());
-  }
+    if (Parser.command(ActiveCommandStr).isOptionActive("simulators-paths"))
+    {
+      openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(
+          Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
+    }
 
-  if (OptionsVars.count("output-dir"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()->setOutputDir(OptionsVars["output-dir"].as<std::string>());
-  }
+    if (Parser.command(ActiveCommandStr).isOptionActive("observers-paths"))
+    {
+      openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(
+          Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
+    }
 
-  if (OptionsVars.count("auto-output-dir"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()->setDateTimeOutputDir();
-  }
-
-  if (OptionsVars.count("show-paths"))
-  {
     m_RunType = InfoRequest;
     printPaths();
     return;
   }
-
-  if (OptionsVars.count("max-threads"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()
-    ->setSimulatorsMaxNumThreads(OptionsVars["max-threads"].as<unsigned int>());
-  }
-
-  if (OptionsVars.count("clean-output-dir"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()->setClearOutputDir(true);
-  }
-
-  if (OptionsVars.count("quiet"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.quiet",true);
-    openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.verbose",false);
-  }
-
-  if (OptionsVars.count("verbose"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.verbose",true);
-    openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.quiet",false);
-  }
-
-  if (OptionsVars.count("no-simreport"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()->setWriteSimReport(false);
-  }
-
-  if (OptionsVars.count("no-result"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()->setWriteResults(false);
-  }
-
-  if (OptionsVars.count("enable-simulation-profiling"))
-  {
-    openfluid::base::RuntimeEnvironment::instance()->setSimulationProfilingEnabled(true);
-  }
+  else
+    throw openfluid::base::ApplicationException(
+                   openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
+                       "unknown command \"" + ActiveCommandStr + "\"");
 
 
 }

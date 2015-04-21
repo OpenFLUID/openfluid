@@ -183,7 +183,7 @@ ENDMACRO()
 ###########################################################################
 
 
-MACRO(_OPENFLUID_WARE_TESTS _WARENAME)
+MACRO(_OPENFLUID_WARE_TESTS _WARENAME _SEARCH_CMD_SWITCH)
 
   IF(${_WARENAME}_TESTS_DATASETS)
   
@@ -199,10 +199,12 @@ MACRO(_OPENFLUID_WARE_TESTS _WARENAME)
     FILE(MAKE_DIRECTORY "${_TESTS_OUTPUT_DIR}")
   
     FOREACH(_CURRTEST ${${_WARENAME}_TESTS_DATASETS})
-      ADD_TEST(${${_WARENAME}_ID}-${_CURRTEST} "${OpenFLUID_CMD_PROGRAM}"
-                                "-i" "${${_WARENAME}_SOURCE_DIR}/tests/${_CURRTEST}.IN"
-                                "-o" "${_TESTS_OUTPUT_DIR}/${_CURRTEST}.OUT"
-                                "-n" "${_TESTS_WARE_SEARCHPATHS}")
+      ADD_TEST(${${_WARENAME}_ID}-${_CURRTEST} 
+               "${OpenFLUID_CMD_PROGRAM}" 
+               "run"
+               "${${_WARENAME}_SOURCE_DIR}/tests/${_CURRTEST}.IN"
+               "${_TESTS_OUTPUT_DIR}/${_CURRTEST}.OUT"
+               ${_SEARCH_CMD_SWITCH} "${_TESTS_WARE_SEARCHPATHS}")
       MESSAGE(STATUS "  Added test ${${_WARENAME}_ID}-${_CURRTEST}")                            
     ENDFOREACH()
   ENDIF()
@@ -316,7 +318,7 @@ MACRO(OPENFLUID_ADD_SIMULATOR _SIMNAME)
   ENDIF()
 
 
-  _OPENFLUID_WARE_TESTS(${_SIMNAME})
+  _OPENFLUID_WARE_TESTS(${_SIMNAME} "-p")
 
   
   _OPENFLUID_WARE_INSTALL(${_SIMNAME} @OPENFLUID_SIMPLUGSDIR@)
@@ -356,7 +358,7 @@ MACRO(OPENFLUID_ADD_OBSERVER _OBSNAME)
 
   _OPENFLUID_WARE_BUILD(${_OBSNAME} "obs")
   
-  _OPENFLUID_WARE_TESTS(${_OBSNAME})
+  _OPENFLUID_WARE_TESTS(${_OBSNAME} "-n")
   
   _OPENFLUID_WARE_INSTALL(${_OBSNAME} @OPENFLUID_OBSPLUGSDIR@)
   

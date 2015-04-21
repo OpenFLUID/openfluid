@@ -447,32 +447,6 @@ class OPENFLUID_API RuntimeEnvironment
     inline void setClearOutputDir(bool ClearDir)
       { m_ClearOutputDir = ClearDir; mp_WareEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
 
-    /**
-      Returns the write results flag
-      @return the flag as a boolean
-    */
-    inline bool isWriteResults() const
-      { return m_WriteResults; };
-
-    /**
-      Sets the write results flag
-      @param[in] WriteIt The value of the flag
-    */
-    void setWriteResults(bool WriteIt)
-      { m_WriteResults = WriteIt; mp_WareEnv->setValue("mode.saveresults",m_WriteResults); };
-
-    /**
-      Returns the write simulation report flag
-      @return the flag as a boolean
-    */
-    inline bool isWriteSimReport() const { return m_WriteSimReport; };
-
-    /**
-      Sets the write simulation report flag
-      @param[in] WriteIt The value of the flag
-    */
-    void setWriteSimReport(bool WriteIt)
-      { m_WriteSimReport = WriteIt; mp_WareEnv->setValue("mode.writereport",m_WriteSimReport); };
 
     openfluid::base::EnvironmentProperties* wareEnvironment() const
       { return mp_WareEnv; };
