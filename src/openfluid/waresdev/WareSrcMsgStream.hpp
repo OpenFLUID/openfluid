@@ -43,7 +43,7 @@
 
 #include <openfluid/dllexport.hpp>
 
-#include <QString>
+#include <openfluid/waresdev/WareSrcMsgParser.hpp>
 
 
 namespace openfluid { namespace waresdev {
@@ -53,18 +53,13 @@ class OPENFLUID_API WareSrcMsgStream
 {
   public:
 
-    enum MessageType
-    {
-      MSG_COMMAND, MSG_STANDARD, MSG_WARNING, MSG_ERROR,
-    };
-
     virtual ~WareSrcMsgStream()
     {
     }
 
     virtual void clear() = 0;
 
-    virtual void write(const QByteArray& Msg, MessageType Type) = 0;
+    virtual void write(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg) = 0;
 };
 
 

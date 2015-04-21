@@ -47,11 +47,13 @@
 #include <QObject>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/waresdev/OStreamMsgStream.hpp>
+#include <openfluid/waresdev/WareSrcMsgStream.hpp>
 
 class QProcess;
 
+
 namespace openfluid { namespace waresdev {
+
 
 class OPENFLUID_API WareSrcContainer: public QObject
 {
@@ -118,6 +120,10 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QString m_OFVersion;
 
+    WareSrcMsgParser* mp_CurrentParser;
+
+    QList<WareSrcMsgParser::WareSrcMsg> m_Messages;
+
     /**
      * @throw openfluid::base::FrameworkException
      */
@@ -133,8 +139,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
   public:
 
-    WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type, const QString& WareName,
-                     openfluid::waresdev::WareSrcMsgStream& Stream = *new openfluid::waresdev::OStreamMsgStream());
+    WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type, const QString& WareName);
 
     ~WareSrcContainer();
 
@@ -202,6 +207,12 @@ class OPENFLUID_API WareSrcContainer: public QObject
     void configure();
 
     void build();
+
+    QList<WareSrcMsgParser::WareSrcMsg> getMessages();
+
+  signals:
+
+    void processFinished();
 };
 
 

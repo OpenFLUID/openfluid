@@ -37,6 +37,7 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <openfluid/waresdev/OStreamMsgStream.hpp>
 
 
@@ -68,9 +69,9 @@ void OStreamMsgStream::clear()
 // =====================================================================
 
 
-void OStreamMsgStream::write(const QByteArray& Msg, MessageType /*Type*/)
+void OStreamMsgStream::write(WareSrcMsgParser::WareSrcMsg& Msg)
 {
-  m_Stream << Msg.constData();
+  m_Stream << Msg.m_OriginalMsgLine.constData();
 }
 
 

@@ -107,11 +107,16 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
   connect(ui->WareSrcFileCollection, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
 
+  connect(&m_Container, SIGNAL(processFinished()), this, SLOT(onProcessFinished()));
+
   m_Container.setConfigMode(Config);
   m_Container.setBuildMode(Build);
 
   mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(ui->WareSrcMessageWidget);
   m_Container.setMsgStream(*mp_TextEditMsgStream);
+
+  connect(ui->WareSrcMessageWidget, SIGNAL(messageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg&)), this,
+          SLOT(onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg&)));
 }
 
 
@@ -152,6 +157,12 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const 
   m_WareSrcFilesByPath[AbsolutePath] = Widget;
 
   ui->WareSrcFileCollection->setCurrentWidget(Widget);
+
+  for (openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
+  {
+    if (Msg.m_Path == AbsolutePath)
+      Widget->addLineMessage(Msg);
+  }
 
   if (m_IsStandalone)
     Widget->installEventFilter(this);
@@ -401,6 +412,7 @@ void WareSrcWidget::setBuildNoInstallMode()
 void WareSrcWidget::configure()
 
 {
+  clearEditorsMessages();
   m_Container.configure();
 }
 
@@ -412,6 +424,7 @@ void WareSrcWidget::configure()
 void WareSrcWidget::build()
 
 {
+  clearEditorsMessages();
   m_Container.build();
 }
 
@@ -619,6 +632,50 @@ void WareSrcWidget::pasteText()
 {
   if (WareSrcFileEditor* Editor = currentEditor())
     Editor->paste();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::clearEditorsMessages()
+{
+  for (WareSrcFileEditor* Editor : m_WareSrcFilesByPath)
+    Editor->clearLineMessages();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::onProcessFinished()
+{
+  for (openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
+  {
+    if (WareSrcFileEditor* Editor = m_WareSrcFilesByPath.value(Msg.m_Path, 0))
+      Editor->addLineMessage(Msg);
+  }
+
+  for (WareSrcFileEditor* Editor : m_WareSrcFilesByPath)
+    Editor->updateLineNumberArea();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
+{
+  if (Msg.m_Path.isEmpty())
+    return;
+
+  openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(Msg.m_Path));
+
+  if (WareSrcFileEditor* Editor = m_WareSrcFilesByPath.value(Msg.m_Path, 0))
+    Editor->selectLine(Msg.m_LineNb);
 }
 
 

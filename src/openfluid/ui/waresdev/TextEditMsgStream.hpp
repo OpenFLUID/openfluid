@@ -46,6 +46,7 @@
 #include <openfluid/dllexport.hpp>
 
 #include <QPlainTextEdit>
+#include <openfluid/ui/waresdev/WareSrcMsgEditor.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -55,17 +56,15 @@ class OPENFLUID_API TextEditMsgStream: public openfluid::waresdev::WareSrcMsgStr
 {
   private:
 
-    QPlainTextEdit* mp_Edit;
-
-    QMap<openfluid::waresdev::WareSrcMsgStream::MessageType, QTextCharFormat> m_FormatByMsgType;
+    WareSrcMsgEditor* mp_Edit;
 
   public:
 
-    TextEditMsgStream(QPlainTextEdit* Edit);
+    TextEditMsgStream(WareSrcMsgEditor* Edit);
 
     void clear();
 
-    void write(const QByteArray& Msg, openfluid::waresdev::WareSrcMsgStream::MessageType Type);
+    void write(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
 };
 
 } } }  // namespaces

@@ -31,43 +31,41 @@
 
 
 /**
- @file OStreamMsgStream.hpp
- @brief Header of ...
+ @file WareSrcMsgParser.cpp
+ @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-
-#ifndef __OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP__
-#define __OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP__
-
-#include <openfluid/dllexport.hpp>
-
-#include <openfluid/waresdev/WareSrcMsgStream.hpp>
-
-#include <iostream>
+#include <openfluid/waresdev/WareSrcMsgParser.hpp>
 
 
 namespace openfluid { namespace waresdev {
 
 
-class OPENFLUID_API OStreamMsgStream: public WareSrcMsgStream
+// =====================================================================
+// =====================================================================
+
+
+WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLine)
 {
-  private:
+  WareSrcMsgParser::WareSrcMsg Msg(MessageLine);
 
-    std::ostream& m_Stream;
+  if (m_GccMsgParseRx.indexIn(MessageLine) != -1)
+  {
+    Msg.m_Path = m_GccMsgParseRx.cap(1);
+    Msg.m_LineNb = m_GccMsgParseRx.cap(2).toInt();
+    Msg.m_ColNb = m_GccMsgParseRx.cap(3).toInt();
+    Msg.m_Type = m_GccMsgParseRx.cap(4) == "warning" ? WareSrcMsg::MSG_WARNING : WareSrcMsg::MSG_ERROR;
+    Msg.m_Content = m_GccMsgParseRx.cap(5);
+  }
 
-  public:
+  return Msg;
+}
 
-    OStreamMsgStream(std::ostream& Stream = std::cout);
 
-    void clear();
-
-    void write(WareSrcMsgParser::WareSrcMsg& Msg);
-};
+// =====================================================================
+// =====================================================================
 
 
 } }  // namespaces
-
-
-#endif /* __OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP__ */

@@ -31,13 +31,16 @@
 
 
 /**
- @file TextEditMsgStream.cpp
+ @file WareSrcMsgEditor.cpp
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/ui/waresdev/TextEditMsgStream.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgEditor.hpp>
+
+#include <QTextBlock>
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -46,8 +49,21 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-TextEditMsgStream::TextEditMsgStream(WareSrcMsgEditor* Edit) :
-    mp_Edit(Edit)
+WareSrcMsgEditor::WareSrcMsgEditor(QWidget* Parent) :
+    QPlainTextEdit(Parent)
+{
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_COMMAND].setForeground(QColor("blue"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_STANDARD].setForeground(QColor("black"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_WARNING].setForeground(QColor("orange"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_ERROR].setForeground(QColor("red"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+WareSrcMsgEditor::~WareSrcMsgEditor()
 {
 
 }
@@ -57,9 +73,13 @@ TextEditMsgStream::TextEditMsgStream(WareSrcMsgEditor* Edit) :
 // =====================================================================
 
 
-void TextEditMsgStream::clear()
+void WareSrcMsgEditor::clearMessages()
 {
-  mp_Edit->clearMessages();
+  clear();
+
+  ensureCursorVisible();
+
+  m_MessagesByBlockNumber.clear();
 }
 
 
@@ -67,9 +87,32 @@ void TextEditMsgStream::clear()
 // =====================================================================
 
 
-void TextEditMsgStream::write(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
+void WareSrcMsgEditor::writeMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
 {
-  mp_Edit->writeMessage(Msg);
+  QTextCursor Cursor = textCursor();
+
+  Cursor.setCharFormat(m_FormatByMsgType.value(Msg.m_Type, QTextCharFormat()));
+
+  if (Msg.m_LineNb > 0)
+    m_MessagesByBlockNumber.insert(Cursor.blockNumber(), Msg);
+
+  Cursor.insertText(QString::fromUtf8(Msg.m_OriginalMsgLine));
+
+  ensureCursorVisible();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcMsgEditor::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
+{
+  QMap<int, openfluid::waresdev::WareSrcMsgParser::WareSrcMsg>::iterator it = m_MessagesByBlockNumber.find(
+      textCursor().blockNumber());
+
+  if (it != m_MessagesByBlockNumber.end())
+    emit messageClicked(it.value());
 }
 
 

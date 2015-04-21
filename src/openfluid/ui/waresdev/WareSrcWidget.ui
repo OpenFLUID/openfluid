@@ -46,7 +46,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="WareSrcMessageWidget">
+        <widget class="openfluid::ui::waresdev::WareSrcMsgEditor" name="WareSrcMessageWidget">
          <property name="baseSize">
           <size>
            <width>0</width>
@@ -64,6 +64,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>openfluid::ui::waresdev::WareSrcMsgEditor</class>
+   <extends>QPlainTextEdit</extends>
+   <header location="global">openfluid/ui/waresdev/WareSrcMsgEditor.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

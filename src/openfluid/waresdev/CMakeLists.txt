@@ -4,9 +4,11 @@
 INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
-FILE(GLOB OPENFLUID_WARESDEV_CPP WareSrcManager.cpp WareSrcContainer.cpp OStreamMsgStream.cpp WareSrcFactory.cpp)
+FILE(GLOB OPENFLUID_WARESDEV_CPP WareSrcManager.cpp WareSrcContainer.cpp OStreamMsgStream.cpp
+                                 WareSrcFactory.cpp WareSrcMsgParser.cpp)
 
-FILE(GLOB OPENFLUID_WARESDEV_HPP WareSrcManager.hpp WareSrcContainer.hpp WareSrcMsgStream.hpp OStreamMsgStream.cpp WareSrcFactory.hpp)
+FILE(GLOB OPENFLUID_WARESDEV_HPP WareSrcManager.hpp WareSrcContainer.hpp WareSrcMsgStream.hpp OStreamMsgStream.cpp
+                                 WareSrcFactory.hpp WareSrcMsgParser.hpp)
 
 
 ADD_LIBRARY(openfluid-waresdev SHARED ${OPENFLUID_WARESDEV_CPP} ${OPENFLUID_WARESDEV_HPP})

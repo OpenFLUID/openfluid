@@ -70,9 +70,9 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   // Line number management
 
   mp_LineNumberArea = new LineNumberArea(this);
-  updateLineNumberAreaWidth(0);
+  updateLineNumberAreaWidth();
 
-  connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
+  connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth()));
   connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
 
 
@@ -360,9 +360,11 @@ int WareSrcFileEditor::lineNumberAreaWidth()
 // =====================================================================
 
 
-void WareSrcFileEditor::updateLineNumberAreaWidth(int /*NewBlockCount*/)
+void WareSrcFileEditor::updateLineNumberAreaWidth()
 {
-  setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+  setViewportMargins(lineNumberAreaWidth() + 3, 0, 0, 0);
+
+  updateLineNumberArea();
 }
 
 
@@ -370,15 +372,15 @@ void WareSrcFileEditor::updateLineNumberAreaWidth(int /*NewBlockCount*/)
 // =====================================================================
 
 
-void WareSrcFileEditor::updateLineNumberArea(const QRect& Rect, int dy)
+void WareSrcFileEditor::updateLineNumberArea(const QRect& Rect, int Dy)
 {
-  if (dy)
-    mp_LineNumberArea->scroll(0, dy);
+  if (Dy)
+    mp_LineNumberArea->scroll(0, Dy);
   else
     mp_LineNumberArea->update(0, Rect.y(), mp_LineNumberArea->width(), Rect.height());
 
   if (Rect.contains(viewport()->rect()))
-    updateLineNumberAreaWidth(0);
+    updateLineNumberAreaWidth();
 }
 
 
@@ -509,9 +511,8 @@ void WareSrcFileEditor::highlightCurrentLine()
 
 void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
 {
-  QPainter painter(mp_LineNumberArea);
-  painter.fillRect(Event->rect(), Qt::lightGray);
-
+  QPainter Painter(mp_LineNumberArea);
+  Painter.fillRect(Event->rect(), m_LineNbAreaColor);
 
   QTextBlock Block = firstVisibleBlock();
   int BlockNumber = Block.blockNumber();
@@ -522,9 +523,20 @@ void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
   {
     if (Block.isVisible() && Bottom >= Event->rect().top())
     {
-      QString Number = QString::number(BlockNumber + 1);
-      painter.setPen(Qt::black);
-      painter.drawText(0, Top, mp_LineNumberArea->width(), fontMetrics().height(), Qt::AlignRight, Number);
+      Painter.setPen(m_LineNbTextColor);
+
+      QRect Rect(0, Top, mp_LineNumberArea->width(), fontMetrics().height());
+
+      int Number = BlockNumber + 1;
+
+      QMap<QTextBlock, LineMarker>::iterator it = m_LineMarkersByBlock.find(Block);
+      if (it != m_LineMarkersByBlock.end())
+      {
+        Painter.fillRect(Rect, it->getColor());
+        it->m_Rect = Rect;
+      }
+
+      Painter.drawText(Rect, Qt::AlignRight, QString::number(Number));
     }
 
     Block = Block.next();
@@ -772,6 +784,80 @@ bool WareSrcFileEditor::replaceString(const QString& StringToFind, const QString
 QString WareSrcFileEditor::getSelectedText()
 {
   return textCursor().selectedText();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::clearLineMessages()
+{
+  m_LineMarkersByBlock.clear();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::addLineMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Message)
+{
+  QTextBlock Block = document()->findBlockByNumber(Message.m_LineNb - 1);
+
+  if (Block.isValid())
+  {
+    QMap<QTextBlock, LineMarker>::iterator it = m_LineMarkersByBlock.find(Block);
+
+    if (it != m_LineMarkersByBlock.end())
+      it->update(Message.m_Type, Message.m_Content);
+    else
+      m_LineMarkersByBlock.insert(Block, LineMarker(Message.m_Type, Message.m_Content));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::updateLineNumberArea()
+{
+  mp_LineNumberArea->update();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::tooltipEvent(const QPoint& Position)
+{
+  for (LineMarker Marker : m_LineMarkersByBlock.values())
+  {
+    if (Marker.m_Rect.contains(Position))
+    {
+      mp_LineNumberArea->setStyleSheet("QToolTip {min-width:300px;}");
+      mp_LineNumberArea->setToolTip(Marker.getContent());
+      break;
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::selectLine(int LineNumber)
+{
+  QTextCursor Cursor = textCursor();
+  Cursor.setPosition(document()->findBlockByNumber(LineNumber - 1).position());
+  setTextCursor(Cursor);
+
+  highlightCurrentLine();
+
+  centerCursor();
 }
 
 

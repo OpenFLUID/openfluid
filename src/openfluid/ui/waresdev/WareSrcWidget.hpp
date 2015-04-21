@@ -84,6 +84,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
      */
     int closeFileTab(WareSrcFileEditor* Editor);
 
+    void clearEditorsMessages();
+
   protected:
 
     bool eventFilter(QObject* Obj, QEvent* Event);
@@ -166,6 +168,10 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified);
 
     void onCurrentTabChanged(int Index);
+
+    void onProcessFinished();
+
+    void onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
 
   signals:
 

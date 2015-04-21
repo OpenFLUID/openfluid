@@ -48,6 +48,10 @@
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/config.hpp>
 
+#include <openfluid/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/waresdev/OStreamMsgStream.hpp>
+
+
 namespace openfluid { namespace waresdev {
 
 
@@ -55,11 +59,12 @@ namespace openfluid { namespace waresdev {
 // =====================================================================
 
 
-WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type, const QString& WareName,
-                                   openfluid::waresdev::WareSrcMsgStream& Stream) :
+WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type,
+    const QString& WareName) :
     QObject(), m_AbsolutePath(AbsolutePath), m_Type(Type), m_Name(WareName), m_AbsoluteCMakeConfigPath(""),
     m_AbsoluteMainCppPath(""), m_AbsoluteUiParamCppPath(""), m_AbsoluteCMakeListsPath(""), m_AbsoluteJsonPath(""),
-    m_CMakeProgramPath(""), mp_Stream(&Stream), mp_Process(new QProcess())
+    m_CMakeProgramPath(""), mp_Stream(new openfluid::waresdev::OStreamMsgStream()), mp_Process(new QProcess()),
+    mp_CurrentParser(new openfluid::waresdev::WareSrcMsgParserGcc())
 {
   update();
 
@@ -68,8 +73,7 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, WareSrcManager::
   setConfigMode(CONFIG_RELEASE);
   setBuildMode(BUILD_WITHINSTALL);
 
-  connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processOutput()));
-  connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processOutput()));
+  connect(mp_Process, SIGNAL(readyRead()), this, SLOT(processOutput()));
   connect(mp_Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinishedOutput(int)));
 }
 
@@ -84,6 +88,7 @@ WareSrcContainer::~WareSrcContainer()
     mp_Process->close();
 
   delete mp_Process;
+  delete mp_CurrentParser;
 }
 
 
@@ -301,6 +306,8 @@ QString WareSrcContainer::getJsonPath() const
 
 void WareSrcContainer::setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream)
 {
+  if (mp_Stream)
+    delete mp_Stream;
   mp_Stream = &Stream;
 }
 
@@ -367,6 +374,7 @@ void WareSrcContainer::configure()
     findCMake();
 
   mp_Stream->clear();
+  m_Messages.clear();
 
   QFile BuildDir(m_BuildDirPath);
   if (BuildDir.exists())
@@ -397,12 +405,16 @@ void WareSrcContainer::build()
     findCMake();
 
   mp_Stream->clear();
+  m_Messages.clear();
 
   if (!QFile(m_BuildDirPath).exists())
   {
     configure();
     mp_Process->waitForFinished(-1);
   }
+
+  delete mp_CurrentParser;
+  mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserGcc();
 
   QString Command = QString("%1 -E chdir %2 %1 --build . %3").arg(m_CMakeProgramPath).arg(m_BuildDirPath).arg(
       m_BuildMode == BUILD_WITHINSTALL ? "--target install" : "");
@@ -417,8 +429,18 @@ void WareSrcContainer::build()
 
 void WareSrcContainer::processOutput()
 {
-  mp_Stream->write(mp_Process->readAllStandardOutput(), openfluid::waresdev::WareSrcMsgStream::MSG_STANDARD);
-  mp_Stream->write(mp_Process->readAllStandardError(), openfluid::waresdev::WareSrcMsgStream::MSG_ERROR);
+  while (mp_Process->canReadLine())
+  {
+    QString MsgLine = QString::fromUtf8(mp_Process->readLine());
+
+    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(MsgLine);
+
+    mp_Stream->write(Message);
+
+    if (Message.m_Type != WareSrcMsgParser::WareSrcMsg::MSG_STANDARD)
+      m_Messages.append(Message);
+  }
+
 }
 
 
@@ -429,10 +451,19 @@ void WareSrcContainer::processOutput()
 void WareSrcContainer::processFinishedOutput(int ExitCode)
 {
   if (!ExitCode)
-    mp_Stream->write(tr("Command ended\n\n").toLocal8Bit(), openfluid::waresdev::WareSrcMsgStream::MSG_COMMAND);
+  {
+    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(tr("Command ended\n\n"),
+                                                                        WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+    mp_Stream->write(Message);
+  }
   else
-    mp_Stream->write(tr("Command ended with error\n\n").toLocal8Bit(),
-                     openfluid::waresdev::WareSrcMsgStream::MSG_ERROR);
+  {
+    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(tr("Command ended with error\n\n"),
+                                                                        WareSrcMsgParser::WareSrcMsg::MSG_ERROR);
+    mp_Stream->write(Message);
+  }
+
+  emit processFinished();
 }
 
 
@@ -445,9 +476,21 @@ void WareSrcContainer::runCommand(const QString& Command)
   if (mp_Process->state() != QProcess::NotRunning)
     mp_Process->close();
 
-  mp_Stream->write(QString("%1\n").arg(Command).toLocal8Bit(), openfluid::waresdev::WareSrcMsgStream::MSG_COMMAND);
+  WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(QString("%1\n").arg(Command),
+                                                                      WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+  mp_Stream->write(Message);
 
   mp_Process->start(Command);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QList<WareSrcMsgParser::WareSrcMsg> WareSrcContainer::getMessages()
+{
+  return m_Messages;
 }
 
 

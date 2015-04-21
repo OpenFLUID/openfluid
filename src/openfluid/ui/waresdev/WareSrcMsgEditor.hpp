@@ -31,43 +31,56 @@
 
 
 /**
- @file OStreamMsgStream.hpp
+ @file WareSrcMsgEditor.hpp
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef __OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP__
-#define __OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCMSGEDITOR_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESRCMSGEDITOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 
-#include <openfluid/waresdev/WareSrcMsgStream.hpp>
+#include <QPlainTextEdit>
 
-#include <iostream>
-
-
-namespace openfluid { namespace waresdev {
+#include <openfluid/waresdev/WareSrcMsgParser.hpp>
 
 
-class OPENFLUID_API OStreamMsgStream: public WareSrcMsgStream
+namespace openfluid { namespace ui { namespace waresdev {
+
+
+class OPENFLUID_API WareSrcMsgEditor: public QPlainTextEdit
 {
+  Q_OBJECT
+
   private:
 
-    std::ostream& m_Stream;
+    QMap<openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType, QTextCharFormat> m_FormatByMsgType;
+
+    QMap<int, openfluid::waresdev::WareSrcMsgParser::WareSrcMsg> m_MessagesByBlockNumber;
 
   public:
 
-    OStreamMsgStream(std::ostream& Stream = std::cout);
+    WareSrcMsgEditor(QWidget* Parent = 0);
 
-    void clear();
+    ~WareSrcMsgEditor();
 
-    void write(WareSrcMsgParser::WareSrcMsg& Msg);
+    void clearMessages();
+
+    void writeMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+
+  protected:
+
+    void mouseDoubleClickEvent(QMouseEvent* Event);
+
+  signals:
+
+    void messageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
 };
 
 
-} }  // namespaces
+} } }  // namespaces
 
-
-#endif /* __OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCMSGEDITOR_HPP__ */

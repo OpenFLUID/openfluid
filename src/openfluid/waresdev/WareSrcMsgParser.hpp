@@ -31,50 +31,83 @@
 
 
 /**
- @file TextEditMsgStream.cpp
- @brief Implements ...
+ @file WareSrcMsgParser.hpp
+ @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/ui/waresdev/TextEditMsgStream.hpp>
 
-namespace openfluid { namespace ui { namespace waresdev {
+#ifndef __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__
+#define __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__
+
+#include <openfluid/dllexport.hpp>
+
+#include <QRegExp>
+
+
+namespace openfluid { namespace waresdev {
 
 
 // =====================================================================
 // =====================================================================
 
 
-TextEditMsgStream::TextEditMsgStream(WareSrcMsgEditor* Edit) :
-    mp_Edit(Edit)
+class OPENFLUID_API WareSrcMsgParser
 {
+  public:
 
-}
+    class WareSrcMsg
+    {
+      public:
+
+        enum MessageType
+        {
+          MSG_COMMAND, MSG_STANDARD, MSG_WARNING, MSG_ERROR,
+        };
+
+        QByteArray m_OriginalMsgLine;
+        MessageType m_Type;
+        QString m_Path;
+        int m_LineNb = -1;
+        int m_ColNb = -1;
+        QString m_Content;
+
+        WareSrcMsg(const QString& MessageLine, MessageType MsgType = MSG_STANDARD) :
+            m_Type(MsgType)
+        {
+          m_OriginalMsgLine = MessageLine.toUtf8();
+        }
+    };
+
+    virtual ~WareSrcMsgParser()
+    {
+    }
+    virtual WareSrcMsg parse(const QString& MessageLine) = 0;
+};
 
 
 // =====================================================================
 // =====================================================================
 
 
-void TextEditMsgStream::clear()
+class OPENFLUID_API WareSrcMsgParserGcc: public WareSrcMsgParser
 {
-  mp_Edit->clearMessages();
-}
+  private:
+
+    QRegExp m_GccMsgParseRx = QRegExp("^(.+):(\\d+):(\\d+): *(warning|error): *(.+)");
+
+  public:
+
+    WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine);
+};
 
 
 // =====================================================================
 // =====================================================================
 
 
-void TextEditMsgStream::write(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
-{
-  mp_Edit->writeMessage(Msg);
-}
+} }  // namespaces
 
 
-// =====================================================================
-// =====================================================================
-
-
-} } }  // namespaces
+#endif /* __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__ */

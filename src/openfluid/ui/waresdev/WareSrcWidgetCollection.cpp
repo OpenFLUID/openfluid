@@ -367,7 +367,7 @@ void WareSrcWidgetCollection::configure()
   {
     if (openfluid::base::PreferencesManager::instance()->isAutomaticSaveBeforeBuild())
       CurrentWare->saveAllFileTabs();
-    CurrentWare->wareSrcContainer().configure();
+    CurrentWare->configure();
   }
   else
     QMessageBox::warning(0, "No open ware", "Open a ware first");
@@ -384,7 +384,7 @@ void WareSrcWidgetCollection::build()
   {
     if (openfluid::base::PreferencesManager::instance()->isAutomaticSaveBeforeBuild())
       CurrentWare->saveAllFileTabs();
-    CurrentWare->wareSrcContainer().build();
+    CurrentWare->build();
   }
   else
     QMessageBox::warning(0, "No open ware", "Open a ware first");

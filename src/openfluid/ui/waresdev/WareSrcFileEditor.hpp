@@ -48,6 +48,7 @@
 
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
+#include <openfluid/waresdev/WareSrcMsgParser.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -60,6 +61,47 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
   private:
 
+    class LineMarker
+    {
+      private:
+
+        openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType m_MajorMarkerType;
+        QStringList m_ContentList;
+
+        QColor Red = QColor("#FFA3A3");
+        QColor Orange = QColor("#FFD6A3");
+
+      public:
+
+        QRect m_Rect;
+
+        LineMarker(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content) :
+            m_MajorMarkerType(MsgType)
+        {
+          m_ContentList.append(Content.trimmed());
+        }
+        QColor getColor()
+        {
+          if (m_MajorMarkerType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_ERROR)
+            return Red;
+          return Orange;
+        }
+        QString getContent()
+        {
+          if (m_ContentList.size() == 1)
+            return QString("<html>%1</html>").arg(m_ContentList[0]);
+
+          return QString("&bull;&nbsp;%1").arg(m_ContentList.join("<br/>&bull;&nbsp;"));
+        }
+        void update(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content)
+        {
+          if (MsgType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_ERROR)
+            m_MajorMarkerType = MsgType;
+
+          m_ContentList.append(Content.trimmed());
+        }
+    };
+
     QString m_FilePath;
 
     WareSrcSyntaxHighlighter* mp_SyntaxHighlighter;
@@ -71,6 +113,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
     QWidget* mp_LineNumberArea;
 
     QColor m_LineColor;
+    QColor m_LineNbAreaColor = QColor("#F8F8FF");
+    QColor m_LineNbTextColor = QColor("#999999");
 
     QString m_IndentString;
 
@@ -86,6 +130,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     QCompleter* mp_Completer;
 
+    QMap<QTextBlock, LineMarker> m_LineMarkersByBlock;
+
     void writeString(const QString& Str, int InitialIndentInSpaceNb);
 
     void insertNewLine();
@@ -96,7 +142,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
   private slots:
 
-    void updateLineNumberAreaWidth(int NewBlockCount);
+    void updateLineNumberAreaWidth();
 
     void highlightCurrentLine();
 
@@ -141,6 +187,16 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     QString getSelectedText();
 
+    void clearLineMessages();
+
+    void addLineMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Message);
+
+    void updateLineNumberArea();
+
+    void tooltipEvent(const QPoint& Position);
+
+    void selectLine(int LineNumber);
+
   signals :
 
     void editorTxtChanged(WareSrcFileEditor* Editor, bool Changed);
@@ -165,6 +221,15 @@ class LineNumberArea: public QWidget
     void paintEvent(QPaintEvent* Event)
     {
       mp_Editor->lineNumberAreaPaintEvent(Event);
+    }
+    bool event(QEvent* Event)
+    {
+      if (Event->type() == QEvent::ToolTip)
+      {
+        QHelpEvent* HelpEvent = static_cast<QHelpEvent*>(Event);
+        mp_Editor->tooltipEvent(HelpEvent->pos());
+      }
+      return QWidget::event(Event);
     }
 
   public:
