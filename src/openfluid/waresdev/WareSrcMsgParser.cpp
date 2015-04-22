@@ -67,5 +67,39 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLi
 // =====================================================================
 // =====================================================================
 
+// =====================================================================
+// =====================================================================
+
+
+WareSrcMsgParserCMake::WareSrcMsgParserCMake(const QString& AbsolutePath) :
+    WareSrcMsgParser(), m_AbsoluteDir(QDir(AbsolutePath))
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& MessageLine)
+{
+  WareSrcMsgParser::WareSrcMsg Msg(MessageLine);
+
+  if (m_CMakeMsgParseRx.indexIn(MessageLine) != -1)
+  {
+    Msg.m_Path = m_AbsoluteDir.absoluteFilePath(m_CMakeMsgParseRx.cap(1));
+    Msg.m_LineNb = m_CMakeMsgParseRx.cap(2).toInt();
+    Msg.m_Type = WareSrcMsg::MSG_ERROR;
+    Msg.m_Content = m_CMakeMsgParseRx.cap(4);
+  }
+
+  return Msg;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 } }  // namespaces

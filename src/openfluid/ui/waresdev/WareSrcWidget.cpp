@@ -669,10 +669,13 @@ void WareSrcWidget::onProcessFinished()
 
 void WareSrcWidget::onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
 {
-  if (Msg.m_Path.isEmpty())
+  openfluid::waresdev::WareSrcManager::PathInfo Info =
+      openfluid::waresdev::WareSrcManager::instance()->getPathInfo(Msg.m_Path);
+
+  if (Info.m_AbsolutePathOfWare != m_Container.getAbsolutePath())
     return;
 
-  openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(Msg.m_Path));
+  openFileTab(Info);
 
   if (WareSrcFileEditor* Editor = m_WareSrcFilesByPath.value(Msg.m_Path, 0))
     Editor->selectLine(Msg.m_LineNb);

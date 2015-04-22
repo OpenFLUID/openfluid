@@ -831,17 +831,24 @@ void WareSrcFileEditor::updateLineNumberArea()
 // =====================================================================
 
 
-void WareSrcFileEditor::tooltipEvent(const QPoint& Position)
+bool WareSrcFileEditor::tooltipEvent(const QPoint& Position)
 {
   for (LineMarker Marker : m_LineMarkersByBlock.values())
   {
     if (Marker.m_Rect.contains(Position))
     {
-      mp_LineNumberArea->setStyleSheet("QToolTip {min-width:300px;}");
-      mp_LineNumberArea->setToolTip(Marker.getContent());
+      QString MarkerContent = Marker.getContent();
+      if (!MarkerContent.isEmpty())
+      {
+        mp_LineNumberArea->setStyleSheet("QToolTip {min-width:300px;}");
+        mp_LineNumberArea->setToolTip(MarkerContent);
+        return true;
+      }
       break;
     }
   }
+
+  return false;
 }
 
 

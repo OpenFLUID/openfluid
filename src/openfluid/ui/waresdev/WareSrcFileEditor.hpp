@@ -78,7 +78,9 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
         LineMarker(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content) :
             m_MajorMarkerType(MsgType)
         {
-          m_ContentList.append(Content.trimmed());
+          QString Cleared = Content.trimmed();
+          if (!Cleared.isEmpty())
+            m_ContentList.append(Cleared);
         }
         QColor getColor()
         {
@@ -88,6 +90,9 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
         }
         QString getContent()
         {
+          if (m_ContentList.isEmpty())
+            return "";
+
           if (m_ContentList.size() == 1)
             return QString("<html>%1</html>").arg(m_ContentList[0]);
 
@@ -193,7 +198,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void updateLineNumberArea();
 
-    void tooltipEvent(const QPoint& Position);
+    bool tooltipEvent(const QPoint& Position);
 
     void selectLine(int LineNumber);
 
@@ -227,7 +232,7 @@ class LineNumberArea: public QWidget
       if (Event->type() == QEvent::ToolTip)
       {
         QHelpEvent* HelpEvent = static_cast<QHelpEvent*>(Event);
-        mp_Editor->tooltipEvent(HelpEvent->pos());
+        HelpEvent->setAccepted(mp_Editor->tooltipEvent(HelpEvent->pos()));
       }
       return QWidget::event(Event);
     }

@@ -44,6 +44,7 @@
 #include <openfluid/dllexport.hpp>
 
 #include <QRegExp>
+#include <QDir>
 
 
 namespace openfluid { namespace waresdev {
@@ -98,6 +99,27 @@ class OPENFLUID_API WareSrcMsgParserGcc: public WareSrcMsgParser
     QRegExp m_GccMsgParseRx = QRegExp("^(.+):(\\d+):(\\d+): *(warning|error): *(.+)");
 
   public:
+
+    WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine);
+};
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+class OPENFLUID_API WareSrcMsgParserCMake: public WareSrcMsgParser
+{
+  private:
+
+    QRegExp m_CMakeMsgParseRx = QRegExp("^CMake Error at (.+):(\\d+) *(.+)");
+
+    QDir m_AbsoluteDir;
+
+  public:
+
+    WareSrcMsgParserCMake(const QString& AbsolutePath);
 
     WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine);
 };

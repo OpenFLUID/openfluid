@@ -388,6 +388,9 @@ void WareSrcContainer::configure()
   Options.prepend(" -G \"MinGW Makefiles\"");
 #endif
 
+  delete mp_CurrentParser;
+  mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserCMake(m_AbsolutePath);
+
   QString Command = QString("%1 -E chdir %2 %1 %3 %4").arg(m_CMakeProgramPath).arg(m_BuildDirPath).arg(m_AbsolutePath)
       .arg(Options);
 
