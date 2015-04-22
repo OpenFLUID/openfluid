@@ -45,6 +45,7 @@
 #include <QCompleter>
 #include <QSignalMapper>
 #include <QStandardItemModel>
+#include <QMenu>
 
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
@@ -137,6 +138,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     QMap<QTextBlock, LineMarker> m_LineMarkersByBlock;
 
+    bool m_ShowLineMarkers = true;
+
     void writeString(const QString& Str, int InitialIndentInSpaceNb);
 
     void insertNewLine();
@@ -198,9 +201,15 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void updateLineNumberArea();
 
-    bool tooltipEvent(const QPoint& Position);
+    void tooltipEvent(const QPoint& Position);
 
     void selectLine(int LineNumber);
+
+    bool getShowLineMarkers();
+
+  public slots :
+
+    void setShowLineMarkers(bool ShowMarkers);
 
   signals :
 
@@ -217,9 +226,13 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
 class LineNumberArea: public QWidget
 {
+  Q_OBJECT
+
   private:
 
     WareSrcFileEditor* mp_Editor;
+
+    QAction* mp_ShowMarkersAction = 0;
 
   protected:
 
@@ -227,14 +240,25 @@ class LineNumberArea: public QWidget
     {
       mp_Editor->lineNumberAreaPaintEvent(Event);
     }
+
     bool event(QEvent* Event)
     {
       if (Event->type() == QEvent::ToolTip)
       {
         QHelpEvent* HelpEvent = static_cast<QHelpEvent*>(Event);
-        HelpEvent->setAccepted(mp_Editor->tooltipEvent(HelpEvent->pos()));
+        mp_Editor->tooltipEvent(HelpEvent->pos());
       }
       return QWidget::event(Event);
+    }
+
+    void contextMenuEvent(QContextMenuEvent* Event)
+    {
+      mp_ShowMarkersAction->setChecked(mp_Editor->getShowLineMarkers());
+
+      QMenu* Menu = new QMenu();
+      Menu->addAction(mp_ShowMarkersAction);
+      Menu->exec(Event->globalPos());
+      delete Menu;
     }
 
   public:
@@ -242,7 +266,14 @@ class LineNumberArea: public QWidget
     LineNumberArea(WareSrcFileEditor* Editor) :
         QWidget(Editor)
     {
+      setStyleSheet("QToolTip {min-width:300px;}");
+
       mp_Editor = Editor;
+
+      mp_ShowMarkersAction = new QAction("Show markers", this);
+      mp_ShowMarkersAction->setCheckable(true);
+
+      connect(mp_ShowMarkersAction, SIGNAL(triggered(bool)), mp_Editor, SLOT(setShowLineMarkers(bool)));
     }
 
     QSize sizeHint() const

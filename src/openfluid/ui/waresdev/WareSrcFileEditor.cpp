@@ -529,11 +529,14 @@ void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
 
       int Number = BlockNumber + 1;
 
-      QMap<QTextBlock, LineMarker>::iterator it = m_LineMarkersByBlock.find(Block);
-      if (it != m_LineMarkersByBlock.end())
+      if (m_ShowLineMarkers)
       {
-        Painter.fillRect(Rect, it->getColor());
-        it->m_Rect = Rect;
+        QMap<QTextBlock, LineMarker>::iterator it = m_LineMarkersByBlock.find(Block);
+        if (it != m_LineMarkersByBlock.end())
+        {
+          Painter.fillRect(Rect, it->getColor());
+          it->m_Rect = Rect;
+        }
       }
 
       Painter.drawText(Rect, Qt::AlignRight, QString::number(Number));
@@ -831,24 +834,26 @@ void WareSrcFileEditor::updateLineNumberArea()
 // =====================================================================
 
 
-bool WareSrcFileEditor::tooltipEvent(const QPoint& Position)
+void WareSrcFileEditor::tooltipEvent(const QPoint& Position)
 {
-  for (LineMarker Marker : m_LineMarkersByBlock.values())
+  if (!m_ShowLineMarkers)
   {
-    if (Marker.m_Rect.contains(Position))
+    mp_LineNumberArea->setToolTip("");
+  }
+  else
+  {
+    for (LineMarker Marker : m_LineMarkersByBlock.values())
     {
-      QString MarkerContent = Marker.getContent();
-      if (!MarkerContent.isEmpty())
+      if (Marker.m_Rect.contains(Position))
       {
-        mp_LineNumberArea->setStyleSheet("QToolTip {min-width:300px;}");
-        mp_LineNumberArea->setToolTip(MarkerContent);
-        return true;
+        QString MarkerContent = Marker.getContent();
+        if (!MarkerContent.isEmpty())
+          mp_LineNumberArea->setToolTip(MarkerContent);
+        break;
       }
-      break;
     }
   }
 
-  return false;
 }
 
 
@@ -865,6 +870,26 @@ void WareSrcFileEditor::selectLine(int LineNumber)
   highlightCurrentLine();
 
   centerCursor();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::setShowLineMarkers(bool ShowMarkers)
+{
+  m_ShowLineMarkers = ShowMarkers;
+  updateLineNumberArea();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+bool WareSrcFileEditor::getShowLineMarkers()
+{
+  return m_ShowLineMarkers;
 }
 
 
