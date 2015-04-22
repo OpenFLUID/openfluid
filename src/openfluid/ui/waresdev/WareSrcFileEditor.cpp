@@ -839,21 +839,21 @@ void WareSrcFileEditor::tooltipEvent(const QPoint& Position)
   if (!m_ShowLineMarkers)
   {
     mp_LineNumberArea->setToolTip("");
+    return;
   }
-  else
+
+  for (LineMarker Marker : m_LineMarkersByBlock.values())
   {
-    for (LineMarker Marker : m_LineMarkersByBlock.values())
+    if (Marker.m_Rect.contains(Position))
     {
-      if (Marker.m_Rect.contains(Position))
-      {
-        QString MarkerContent = Marker.getContent();
-        if (!MarkerContent.isEmpty())
-          mp_LineNumberArea->setToolTip(MarkerContent);
-        break;
-      }
+      QString MarkerContent = Marker.getContent();
+      if (!MarkerContent.isEmpty())
+        mp_LineNumberArea->setToolTip(MarkerContent);
+      return;
     }
   }
 
+  mp_LineNumberArea->setToolTip("");
 }
 
 
