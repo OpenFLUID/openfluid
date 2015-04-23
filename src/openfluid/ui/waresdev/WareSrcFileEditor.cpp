@@ -265,6 +265,8 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
       insertNewLine();
     else if (Key == Qt::Key_Tab)
       insertPlainText(m_IndentString);
+    else if ((Event->modifiers() & Qt::ControlModifier) && Key == Qt::Key_I)
+      return;
     else
       QPlainTextEdit::keyPressEvent(Event);
   }

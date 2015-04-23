@@ -85,6 +85,7 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
     connect(TB->action("OpenFile"), SIGNAL(triggered()), this, SLOT(openFile()));
     connect(TB->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
     connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this, SLOT(saveAs()));
+    connect(TB->action("SaveAllFiles"), SIGNAL(triggered()), this, SLOT(saveAllFileTabs()));
     connect(TB->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
     connect(TB->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(deleteCurrentFile()));
 

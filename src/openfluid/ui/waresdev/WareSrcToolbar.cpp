@@ -81,6 +81,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubMenu->addAction(m_Actions["OpenFile"]);
     SubMenu->addAction(m_Actions["SaveFile"]);
     SubMenu->addAction(m_Actions["SaveAsFile"]);
+    SubMenu->addAction(m_Actions["SaveAllFiles"]);
     SubMenu->addAction(m_Actions["CloseFile"]);
     SubMenu->addAction(m_Actions["DeleteFile"]);
 
@@ -142,6 +143,10 @@ void WareSrcToolbar::createActions()
   m_Actions["SaveAsFile"] = new QAction(QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
   m_Actions["SaveAsFile"]->setToolTip(tr("Save the current file as..."));
 
+  m_Actions["SaveAllFiles"] = new QAction(tr("Save all"), this);
+  m_Actions["SaveAllFiles"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S));
+  m_Actions["SaveAllFiles"]->setToolTip(tr("Save all files of the ware"));
+
   m_Actions["CloseFile"] = new QAction(QIcon(":/ui/common/icons/file-close.png"), tr("Close"), this);
   m_Actions["CloseFile"]->setToolTip(tr("Close the current file"));
   m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
@@ -160,6 +165,7 @@ void WareSrcToolbar::createActions()
   m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);
 
   m_Actions["Configure"] = new QAction(QIcon(":/ui/common/icons/configure.png"), tr("Configure ware"), this);
+  m_Actions["Configure"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B));
   m_Actions["ConfigureWMenu"] = new QAction(QIcon(":/ui/common/icons/configure.png"), tr("Configure"), this);
   QActionGroup* ConfigureGroup = new QActionGroup(this);
   QMenu* Menu = new QMenu();
@@ -174,6 +180,7 @@ void WareSrcToolbar::createActions()
   connect(m_Actions["ConfigureWMenu"], SIGNAL(triggered()), m_Actions["Configure"], SLOT(trigger()));
 
   m_Actions["Build"] = new QAction(QIcon(":/ui/common/icons/build.png"), tr("Build ware"), this);
+  m_Actions["Build"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
   m_Actions["BuildWMenu"] = new QAction(QIcon(":/ui/common/icons/build.png"), tr("Build"), this);
   QActionGroup* BuildGroup = new QActionGroup(this);
   Menu = new QMenu();

@@ -114,8 +114,6 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     bool isModified();
 
-    void saveAllFileTabs();
-
     void closeAllFileTabs();
 
     WareSrcFileEditor* currentEditor();
@@ -139,6 +137,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void build();
 
     void saveCurrentEditor();
+
+    void saveAllFileTabs();
 
     int closeCurrentEditor(bool WithConfirm = true);
 
