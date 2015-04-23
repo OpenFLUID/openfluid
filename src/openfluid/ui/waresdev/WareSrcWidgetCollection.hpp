@@ -150,6 +150,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
      */
     QString saveAs(const QString& TopDirectory = "");
 
+    void saveAllCurrent();
+
     void closeCurrentEditor();
 
     void openFile();

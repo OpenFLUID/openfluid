@@ -123,6 +123,7 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("OpenFile"), SIGNAL(triggered()), mp_Collection, SLOT(openFile()));
   connect(mp_Toolbar->action("SaveFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditor()));
   connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveAs()));
+  connect(mp_Toolbar->action("SaveAllFiles"), SIGNAL(triggered()), mp_Collection, SLOT(saveAllCurrent()));
   connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()), mp_Collection, SLOT(closeCurrentEditor()));
   connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentFile()));
 
@@ -247,6 +248,7 @@ void MainWindow::createMenus()
   Menu->addAction(mp_Toolbar->action("OpenFile"));
   Menu->addAction(mp_Toolbar->action("SaveFile"));
   Menu->addAction(m_Actions["SaveAsFile"]);
+  Menu->addAction(mp_Toolbar->action("SaveAllFiles"));
   Menu->addAction(mp_Toolbar->action("CloseFile"));
   Menu->addAction(mp_Toolbar->action("DeleteFile"));
   Menu->addSeparator();

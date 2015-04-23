@@ -483,6 +483,19 @@ QString WareSrcWidgetCollection::saveAs(const QString& TopDirectory)
 // =====================================================================
 
 
+void WareSrcWidgetCollection::saveAllCurrent()
+{
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+    CurrentWare->saveAllFileTabs();
+  else
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcWidgetCollection::closeCurrentEditor()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
