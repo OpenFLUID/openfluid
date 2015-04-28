@@ -1,3 +1,7 @@
+body, table, div, p, dl {
+  color : #272727;
+}
+
 #titlearea {
   border-bottom : 1px solid #777;
 }
@@ -110,7 +114,7 @@
 
 .navpath li.navelem a
 {
-	color: #ddd;
+  color: #ddd;
   text-shadow: none;
 }
 
@@ -124,4 +128,70 @@
   background-image:none;
   background-repeat:no-repeat;
   background-position:right;
+}
+
+
+.memproto, dl.reflist dt {
+  background-color: #F9FAFC;
+  background-image: none;
+  border-bottom: 1px solid;
+  border-color: #ccc;  
+  box-shadow: none;
+  font-weight : normal;
+}
+
+.memdoc, dl.reflist dd {
+  background-image: none; 
+  box-shadow: none;
+  border-color: #ccc;
+  margin-bottom: 30px;
+}
+
+.paramname>em {
+  font-weight : normal;
+  color : #719133;
+}
+
+.params .paramname {
+  font-weight : normal;
+  color : #719133;
+}
+
+.memname {
+  font-weight : normal;
+  font-size : 110%;
+}
+
+table.fieldtable {
+  box-shadow : none;  
+  border-color: #ccc;   
+}
+
+
+.fieldtable th {
+  font-weight : normal;
+  box-shadow : none;
+  background-image: none;
+  border-color: #ccc;
+  background-color: #F9FAFC;  
+}
+
+.fieldtable td.fieldname {
+  border-color: #ccc;  
+}
+
+a.el {
+  font-weight : normal;
+}
+
+dt {
+    font-weight: normal;
+    font-style: italic;
+}
+
+div.ah {
+  box-shadow : none;
+  background-color : #666;
+  border : none;
+  background-image: none;
 }
