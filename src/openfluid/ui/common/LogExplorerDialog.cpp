@@ -172,7 +172,7 @@ LogExplorerDialog::LogItemInfos LogExplorerDialog::processLogLine(const QString&
     ContextStr.remove(0,ContextStr.indexOf('[')+1);
     QStringList SplittedContext = ContextStr.split(',');
 
-    foreach (const QString& KeyValStr,SplittedContext)
+    for (const QString& KeyValStr : SplittedContext)
     {
       QStringList SplittedKeyVal = KeyValStr.split('=');
       if (SplittedKeyVal.size() == 2)
@@ -241,7 +241,7 @@ void LogExplorerDialog::updateTable(bool WithFiltering)
     LogItemInfos Item = m_LogInfos[i];
 
     QString TypeStr = Item["type"];
-    QString ContextSrcStr = Item["context.src"];
+    QString ContextSrcStr = Item["context.source"];
 
     if (!(TypeStr.isEmpty() || ContextSrcStr.isEmpty()))
     {
@@ -252,7 +252,7 @@ void LogExplorerDialog::updateTable(bool WithFiltering)
       {
         if (!FilteredTypes.contains(TypeStr))
           OKToDisplay = false;
-        else if (Item.contains("context.src"))
+        else if (Item.contains("context.source"))
         {
           if (ContextSrcStr == "app" && ui->AppFilterCheckBox->checkState() == Qt::Unchecked)
             OKToDisplay = false;
@@ -376,7 +376,7 @@ void LogExplorerDialog::rebuildFilters()
     if (!(TypeStr.isEmpty() || Types.contains(TypeStr)))
       Types.append(TypeStr);
 
-    if (m_LogInfos[i].contains("context.src") && m_LogInfos[i]["context.src"] == "ware" &&
+    if (m_LogInfos[i].contains("context.source") && m_LogInfos[i]["context.source"] == "ware" &&
         m_LogInfos[i].contains("context.waretype") && m_LogInfos[i].contains("context.wareid"))
     {
       QString WareTypeStr = m_LogInfos[i]["context.waretype"];

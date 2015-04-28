@@ -95,10 +95,18 @@ class OPENFLUID_API PluggableWare
     */
     const openfluid::base::EnvironmentProperties* mp_WareEnv;
 
+
     /**
-      Simulator ID
+      Ware Type
+    */
+    WareType m_WareType;
+
+
+    /**
+      Ware ID
     */
     WareID_t m_WareID;
+
 
 
   protected:
@@ -131,9 +139,16 @@ class OPENFLUID_API PluggableWare
       Returns the ID of the ware (itself)
       @return the ID
     */
-    WareID_t OPENFLUID_GetWareID() const { return m_WareID; };
+    WareID_t OPENFLUID_GetWareID() const
+    { return m_WareID; };
 
-    WareType m_WareType;
+
+    /**
+      Returns the type of the ware (itself)
+      @return the type
+    */
+    WareType OPENFLUID_GetWareType() const
+    { return m_WareType; };
 
 
     PluggableWare(WareType WType);

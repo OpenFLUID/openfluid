@@ -50,17 +50,26 @@
 #include <openfluid/deprecation.hpp>
 
 
-#define REQUIRE_SIMULATION_STAGE(stage,sender,msg) \
+#define REQUIRE_SIMULATION_STAGE(stage,msg) \
   if (OPENFLUID_GetCurrentStage() != (stage)) \
-    throw openfluid::base::FrameworkException(sender,msg);
+  { \
+    openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION); \
+    throw openfluid::base::FrameworkException(Context,msg); \
+  }
 
-#define REQUIRE_SIMULATION_STAGE_GE(stage,sender,msg) \
+#define REQUIRE_SIMULATION_STAGE_GE(stage,msg) \
   if (OPENFLUID_GetCurrentStage() < (stage)) \
-    throw openfluid::base::FrameworkException(sender,msg);
+  { \
+    openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION); \
+    throw openfluid::base::FrameworkException(Context,msg); \
+  }
 
-#define REQUIRE_SIMULATION_STAGE_LE(stage,sender,msg) \
+#define REQUIRE_SIMULATION_STAGE_LE(stage,msg) \
   if (OPENFLUID_GetCurrentStage() > (stage)) \
-    throw openfluid::base::FrameworkException(sender,msg);
+  { \
+    openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION); \
+    throw openfluid::base::FrameworkException(Context,msg); \
+  }
 
 
 // =====================================================================
@@ -139,9 +148,6 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     openfluid::core::TimeIndex_t m_PreviousTimeIndex;
 
 
-    openfluid::base::ExceptionContext computeWareContext() const;
-
-
   protected:
 
 
@@ -151,6 +157,11 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     void appendToLog(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const;
 
     void displayToConsole(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const;
+
+
+    openfluid::base::ExceptionContext computeWareContext(const std::string& CodeLoc = "") const;
+
+    openfluid::base::ExceptionContext computeFrameworkContext(const std::string& CodeLoc = "") const;
 
 
     /**
@@ -201,6 +212,8 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @return the stage
     */
     openfluid::base::SimulationStatus::SimulationStage OPENFLUID_GetCurrentStage() const;
+
+    std::string OPENFLUID_GetCurrentStageAsString() const;
 
     /**
       Returns the scheduling constraint applied to the simulation (may be NONE)

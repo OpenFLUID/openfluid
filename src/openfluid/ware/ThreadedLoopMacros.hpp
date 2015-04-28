@@ -87,9 +87,10 @@
               _THREADSYNCID(id).clearFutures(); \
             }\
           }\
-          catch(QtConcurrent::UnhandledException& E) \
+          catch (QtConcurrent::UnhandledException& E) \
           { \
-            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION); \
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, \
+                                                      "QtConcurrent::UnhandledException in threaded loop"); \
           } \
           ++_UNITSLISTITERID(id); \
         } \
@@ -138,7 +139,8 @@
           }\
           catch(QtConcurrent::UnhandledException& E) \
           { \
-            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION); \
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, \
+                                                      "QtConcurrent::UnhandledException in threaded loop"); \
           } \
           ++_UNITSPTRLISTITERID(id); \
         } \

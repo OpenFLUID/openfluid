@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_TOOLS_IDHELPERS_HPP__
 #define __OPENFLUID_TOOLS_IDHELPERS_HPP__
 
+#include <string>
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/ware/WareSignature.hpp>
@@ -47,6 +48,10 @@
 
 
 namespace openfluid { namespace tools {
+
+
+std::string OPENFLUID_API classIDToString(const openfluid::core::UnitsClass_t& Class, openfluid::core::UnitID_t ID);
+
 
 /**
   Checks whether a ware ID is valid or not.\n

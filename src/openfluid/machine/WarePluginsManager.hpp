@@ -102,7 +102,7 @@ class OPENFLUID_API WarePluginsManager
       QLibrary* PlugLib = loadWare(PluginFullPath);
 
       // library loading
-      if (PlugLib)
+      if (PlugLib && PlugLib->load())
       {
         Plug = new M();
         Plug->FileFullPath = PluginFullPath;
@@ -166,7 +166,7 @@ class OPENFLUID_API WarePluginsManager
       QLibrary* PlugLib = loadWare(PluginFullPath);
 
       // library loading
-      if (PlugLib)
+      if (PlugLib && PlugLib->load())
       {
         Plug = new M();
         Plug->FileFullPath = PluginFullPath;
@@ -334,7 +334,7 @@ class OPENFLUID_API WarePluginsManager
       QLibrary* PlugLib = loadWare(PluginFullPath);
 
       // library loading
-      if (PlugLib)
+      if (PlugLib && PlugLib->load())
       {
         BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
 
@@ -368,7 +368,7 @@ class OPENFLUID_API WarePluginsManager
       QLibrary* PlugLib = loadWare(PluginFullPath);
 
       // library loading
-      if (PlugLib)
+      if (PlugLib && PlugLib->load())
       {
         typedef void* (*GetParametersWidgetProc)();
         GetParametersWidgetProc ParamsWidgetProc =

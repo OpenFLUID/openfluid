@@ -527,7 +527,7 @@ void ModelInstance::call_initializeRun()
 
     }
     else
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"NULL model item instance!");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"NULL model item instance");
 
     SimIter++;
   }

@@ -47,6 +47,7 @@
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
+#include <openfluid/base/Exception.hpp>
 
 
 #include <openfluid/dllexport.hpp>
@@ -105,11 +106,13 @@ class OPENFLUID_API RunSimulationDialog : public QDialog
 
     void validateSuspend();
 
-    void handleError(QString Msg);
+    void handleError(QString Msg,openfluid::base::ExceptionContext Context);
 
     void handleFinish();
 
     void handleUserAbort();
+
+    void showErrorDetails();
 
 
   public:

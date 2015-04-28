@@ -99,6 +99,39 @@ void SimulationStatus::setCurrentStage(const SimulationStage& Stage)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+std::string SimulationStatus::getStageAsString(const SimulationStage& Stage)
+{
+  std::string StageStr = "";
+
+  switch (Stage)
+  {
+    case openfluid::base::SimulationStatus::INITPARAMS :  StageStr = "INITPARAMS"; break;
+    case openfluid::base::SimulationStatus::PREPAREDATA : StageStr = "PREPAREDATA"; break;
+    case openfluid::base::SimulationStatus::CHECKCONSISTENCY : StageStr = "CHECKCONSISTENCY"; break;
+    case openfluid::base::SimulationStatus::INITIALIZERUN : StageStr = "INITIALIZERUN"; break;
+    case openfluid::base::SimulationStatus::RUNSTEP : StageStr = "RUNSTEP"; break;
+    case openfluid::base::SimulationStatus::FINALIZERUN : StageStr = "FINALIZERUN"; break;
+    default : break;
+  }
+
+  return StageStr;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string SimulationStatus::getCurrentStageAsString() const
+{
+  return getStageAsString(m_CurrentStage);
+}
+
+
 
 
 }  }  // namespaces

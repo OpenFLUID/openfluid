@@ -48,7 +48,7 @@ namespace openfluid { namespace ware {
 // =====================================================================
 
 PluggableWare::PluggableWare(WareType WType)
-: mp_WareEnv(NULL),m_WareID(""),m_Initialized(false),m_WareType(WType)
+: mp_WareEnv(NULL),m_WareType(WType),m_WareID(""),m_Initialized(false)
 {
 
 }
@@ -99,9 +99,11 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, bool &Va
 
 void PluggableWare::initializeWare(const WareID_t& ID)
 {
-  if(!isLinked())
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "initialized ware that is not fully linked ("+ID+")");
+  if (!isLinked())
+    throw openfluid::base::FrameworkException(
+        openfluid::base::FrameworkException::computeContext(OPENFLUID_CODE_LOCATION)
+        .addInfos({{"wareid",ID}}),
+        "initialized ware that is not fully linked");
 
   m_WareID = ID;
 };

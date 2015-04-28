@@ -43,15 +43,10 @@
 #include <QThread>
 
 
-
-
 #include "ui_RunSimulationDialog.h"
-
 
 #include <openfluid/ui/common/RunSimulationDialog.hpp>
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
-
-
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
@@ -80,6 +75,7 @@
 
 namespace openfluid { namespace ui { namespace common {
 
+
 RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::FluidXDescriptor* FXDesc):
   QDialog(Parent,Qt::CustomizeWindowHint|Qt::WindowTitleHint), ui(new Ui::RunSimulationDialog), mp_FXDesc(FXDesc),
   m_Launched(false), m_Success(false)
@@ -87,8 +83,6 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   setWindowModality(Qt::ApplicationModal);
 
   ui->setupUi(this);
-
-  setFixedSize(geometry().width(),geometry().height());
 
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
@@ -108,6 +102,9 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   ui->StopButton->setEnabled(false);
 
   ui->StatusLabel->setText("");
+  ui->ShowErrorLabel->setVisible(false);
+  ui->ErrorDetailsWidget->setVisible(false);
+
 
   ui->WarningsLabel->setText("0");
 
@@ -121,7 +118,10 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
       new openfluid::ui::common::RunSimulationWorker(mp_FXDesc,mp_Listener);
   Worker->moveToThread(WThread);
 
-  connect(Worker, SIGNAL(error(QString)), this, SLOT(handleError(QString)));
+  qRegisterMetaType<openfluid::base::ExceptionContext>("openfluid::base::ExceptionContext");
+
+  connect(Worker, SIGNAL(error(QString,openfluid::base::ExceptionContext)),
+          this, SLOT(handleError(QString,openfluid::base::ExceptionContext)));
   connect(Worker, SIGNAL(userAbort()), this, SLOT(handleUserAbort()));
   connect(Worker, SIGNAL(finished()), this, SLOT(handleFinish()));
   connect(WThread, SIGNAL(started()), Worker, SLOT(run()));
@@ -129,6 +129,8 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   connect(Worker, SIGNAL(finished()), Worker, SLOT(deleteLater()));
   connect(WThread, SIGNAL(finished()), WThread, SLOT(deleteLater()));
   connect(WThread, SIGNAL(finished()), mp_Listener, SLOT(deleteLater()));
+
+  connect(ui->ShowErrorLabel,SIGNAL(clicked()),this,SLOT(showErrorDetails()));
 
   qRegisterMetaType<openfluid::ui::common::RunSimulationListener::Stage>(
       "openfluid::ui::common::RunSimulationListener::Stage");
@@ -147,6 +149,8 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   connect(ui->StopButton, SIGNAL(clicked()), this, SLOT(requestAbort()));
   connect(ui->PauseButton, SIGNAL(clicked()), this, SLOT(requestSuspendResume()));
   connect(mp_Listener, SIGNAL(pauseConfirmed()), this, SLOT(validateSuspend()));
+
+  adjustSize();
 
   WThread->start();
 }
@@ -339,16 +343,26 @@ void RunSimulationDialog::setStage(openfluid::ui::common::RunSimulationListener:
 // =====================================================================
 
 
-void RunSimulationDialog::handleError(QString Msg)
+void RunSimulationDialog::handleError(QString Msg,openfluid::base::ExceptionContext Context)
 {
   ui->PauseButton->setEnabled(false);
   ui->StopButton->setEnabled(false);
 
-  QMessageBox::critical(NULL,tr("Simulation error"),Msg);
-
   ui->StatusLabel->setStyleSheet(STATUS_STYLE_FAILED);
   ui->StatusLabel->setText(tr("failed due to simulation error"));
   ui->StatusLabel->setToolTip(Msg);
+
+  ui->ErrorMessageEdit->setText(Msg);
+
+  QString ContextStr;
+  for (auto& it : Context)
+    ContextStr += QString::fromStdString("<u>" + it.first + " :</u> " + it.second + "<br/>");
+  ui->ErrorContextEdit->setText(ContextStr);
+
+  ui->ErrorMessageLabel->setStyleSheet(STATUS_STYLE_FAILED);
+  ui->ErrorContextLabel->setStyleSheet(STATUS_STYLE_FAILED);
+
+  ui->ShowErrorLabel->setVisible(true);
 }
 
 
@@ -380,6 +394,16 @@ void RunSimulationDialog::handleFinish()
   m_Success = true;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationDialog::showErrorDetails()
+{
+  ui->ErrorDetailsWidget->setVisible(true);
+  ui->ShowErrorLabel->setVisible(false);
+}
 
 } } } // namespaces
 

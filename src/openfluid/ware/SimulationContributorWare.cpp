@@ -39,6 +39,7 @@
 
 
 #include <openfluid/ware/SimulationContributorWare.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 
 
 namespace openfluid { namespace ware {
@@ -53,20 +54,22 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
                                                        const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_SetAttribute",
                               "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->attributes()->setValue(AttrName,Val))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Unable to set value for attribute "+ AttrName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -79,20 +82,22 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
                                                        const double& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              OPENFLUID_CODE_LOCATION,
                               "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->attributes()->setValue(AttrName,openfluid::core::DoubleValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Unable to set double value for attribute "+ AttrName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -105,20 +110,22 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
                                                        const long& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              OPENFLUID_CODE_LOCATION,
                               "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->attributes()->setValue(AttrName,openfluid::core::IntegerValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Unable to set long value for attribute "+ AttrName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -131,20 +138,22 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
                                                        const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              OPENFLUID_CODE_LOCATION,
                               "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->attributes()->setValue(AttrName,Val))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Unable to set string value for attribute "+ AttrName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -169,17 +178,20 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
                                                              const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be initialized during INITIALIZERUN stage only")
 
   if (&aUnit != NULL)
   {
     if (!aUnit.variables()->appendValue(VarName,0,Val))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(aUnit.getClass(),aUnit.getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error initializing value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 // =====================================================================
@@ -191,7 +203,6 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
                                                              const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be initialized during INITIALIZERUN stage only")
 
   /* Do not call OPENFLUID_InitializeVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
@@ -200,11 +211,15 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->appendValue(VarName,0,openfluid::core::DoubleValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error appending double value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -217,17 +232,20 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
                                                              const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be initialized during INITIALIZERUN stage only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->appendValue(VarName,0,openfluid::core::IntegerValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error appending long value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -240,17 +258,20 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
                                                              const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be initialized during INITIALIZERUN stage only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->appendValue(VarName,0,openfluid::core::BooleanValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error appending boolean value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -263,17 +284,20 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
                                                              const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be initialized during INITIALIZERUN stage only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->appendValue(VarName,0,openfluid::core::StringValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error appending string value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -298,18 +322,22 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
                                                          const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables values cannot be added outside RUNSTEP stage")
 
   if (&aUnit != NULL)
   {
     if (!aUnit.variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(aUnit.getClass(),aUnit.getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error appending value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -320,7 +348,6 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
                                                          const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables values cannot be added outside RUNSTEP stage")
 
   /* Do not call OPENFLUID_AppendVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
@@ -329,11 +356,15 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::DoubleValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error appending double value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -346,17 +377,20 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
                                                          const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables values cannot be added outside RUNSTEP stage")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error appending long value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -369,17 +403,20 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
                                                          const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables values cannot be added outside RUNSTEP stage")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error appending boolean value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -392,17 +429,20 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
                                                          const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables values cannot be added outside RUNSTEP stage")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error appending string value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -415,17 +455,19 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
                                                       const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be modified during RUNSTEP stage only")
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error setting value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -438,7 +480,6 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
                                                       const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be modified during RUNSTEP stage only")
 
   /* Do not call OPENFLUID_SetVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
@@ -447,11 +488,15 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::DoubleValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error setting double value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -464,17 +509,20 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
                                                       const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be modified during RUNSTEP stage only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error setting long value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -487,17 +535,20 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
                                                       const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be modified during RUNSTEP stage only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error setting boolean value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -510,17 +561,20 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
                                                       const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           OPENFLUID_CODE_LOCATION,
                            "Variables can be modified during RUNSTEP stage only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+      throw openfluid::base::FrameworkException(Context,
                                                 "Error setting string value for variable "+ VarName);
+    }
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -532,15 +586,14 @@ void SimulationContributorWare::OPENFLUID_AppendEvent(openfluid::core::SpatialUn
                                                       openfluid::core::Event& Ev)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Events can be modified during PREPAREDATA and later stages only")
 
   if (UnitPtr != NULL)
   {
     UnitPtr->events()->addEvent(Ev);
   }
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                 "Unit is NULL");
+  else
+    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
@@ -553,14 +606,16 @@ void SimulationContributorWare::OPENFLUID_AddUnit(const openfluid::core::UnitsCl
                                                   openfluid::core::PcsOrd_t PcsOrder)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   if (!mp_SpatialData->addUnit(openfluid::core::SpatialUnit(ClassName,ID,PcsOrder)))
-   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error adding unit");
+  {
+    openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+        .addSpatialUnit(openfluid::tools::classIDToString(ClassName,ID));
+    throw openfluid::base::FrameworkException(Context,"Error adding unit");
+  }
 
   mp_SpatialData->sortUnitsByProcessOrder();
 }
@@ -574,17 +629,19 @@ void SimulationContributorWare::OPENFLUID_DeleteUnit(const openfluid::core::Unit
                                                      openfluid::core::UnitID_t ID)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   openfluid::core::SpatialUnit* TheUnit = mp_SpatialData->spatialUnit(ClassName,ID);
 
   if (TheUnit == NULL)
-    openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                        "Error deleting unit");
+  {
+    openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+        .addSpatialUnit(openfluid::tools::classIDToString(ClassName,ID));
+    throw openfluid::base::FrameworkException(Context,
+                                              "Error deleting unit");
+  }
 
   mp_SpatialData->deleteUnit(TheUnit);
 
@@ -601,11 +658,19 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(const openfluid::c
                                                               openfluid::core::UnitID_t IDTo)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   openfluid::core::SpatialUnit* FromUnit = mp_SpatialData->spatialUnit(ClassNameFrom, IDFrom);
   openfluid::core::SpatialUnit* ToUnit = mp_SpatialData->spatialUnit(ClassNameTo, IDTo);
+
+  if (FromUnit == NULL || ToUnit == NULL)
+  {
+    openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+        .addSpatialConnection(openfluid::tools::classIDToString(ClassNameFrom,IDFrom),
+                              openfluid::tools::classIDToString(ClassNameTo,IDTo));
+    throw openfluid::base::FrameworkException(Context,
+                                              "Error adding from-to connection");
+  }
 
   return OPENFLUID_AddFromToConnection(FromUnit, ToUnit);
 }
@@ -619,7 +684,6 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::S
                                                               openfluid::core::SpatialUnit* ToUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (FromUnit != NULL || ToUnit != NULL)
@@ -642,11 +706,19 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(const openfluid
                                                                  openfluid::core::UnitID_t IDTo)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   openfluid::core::SpatialUnit* FromUnit = mp_SpatialData->spatialUnit(ClassNameFrom, IDFrom);
   openfluid::core::SpatialUnit* ToUnit = mp_SpatialData->spatialUnit(ClassNameTo, IDTo);
+
+  if (FromUnit == NULL || ToUnit == NULL)
+  {
+    openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+        .addSpatialConnection(openfluid::tools::classIDToString(ClassNameFrom,IDFrom),
+                              openfluid::tools::classIDToString(ClassNameTo,IDTo));
+    throw openfluid::base::FrameworkException(Context,
+                                              "Error removing from-to connection");
+  }
 
   return OPENFLUID_RemoveFromToConnection(FromUnit, ToUnit);
 }
@@ -660,7 +732,6 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core
                                                                  openfluid::core::SpatialUnit* ToUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (FromUnit == NULL || ToUnit == NULL)
@@ -681,11 +752,19 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(const openflu
                                                                    openfluid::core::UnitID_t IDParent)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   openfluid::core::SpatialUnit* ChildUnit = mp_SpatialData->spatialUnit(ClassNameChild, IDChild);
   openfluid::core::SpatialUnit* ParentUnit = mp_SpatialData->spatialUnit(ClassNameParent, IDParent);
+
+  if (ChildUnit == NULL || ParentUnit == NULL)
+  {
+    openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+        .addSpatialConnection(openfluid::tools::classIDToString(ClassNameChild,IDChild),
+                              openfluid::tools::classIDToString(ClassNameParent,IDParent));
+    throw openfluid::base::FrameworkException(Context,
+                                              "Error adding child-parent connection");
+  }
 
   return OPENFLUID_AddChildParentConnection(ChildUnit, ParentUnit);
 }
@@ -699,7 +778,6 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
                                                                    openfluid::core::SpatialUnit* ParentUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (ChildUnit != NULL || ParentUnit != NULL)
@@ -723,11 +801,19 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(
                                                    openfluid::core::UnitID_t IDParent)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   openfluid::core::SpatialUnit* ChildUnit = mp_SpatialData->spatialUnit(ClassNameChild, IDChild);
   openfluid::core::SpatialUnit* ParentUnit = mp_SpatialData->spatialUnit(ClassNameParent, IDParent);
+
+  if (ChildUnit == NULL || ParentUnit == NULL)
+   {
+     openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+         .addSpatialConnection(openfluid::tools::classIDToString(ClassNameChild,IDChild),
+                               openfluid::tools::classIDToString(ClassNameParent,IDParent));
+     throw openfluid::base::FrameworkException(Context,
+                                               "Error removing child-parent connection");
+   }
 
   return OPENFLUID_RemoveChildParentConnection(ChildUnit, ParentUnit);
 }
@@ -741,7 +827,6 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid:
                                                                       openfluid::core::SpatialUnit* ParentUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (ChildUnit == NULL || ParentUnit == NULL)
@@ -761,10 +846,8 @@ void SimulationContributorWare::OPENFLUID_BuildUnitsMatrix(const openfluid::core
                                                            const unsigned int& RowsNbr)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              OPENFLUID_CODE_LOCATION,
                               "Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   openfluid::core::UnitID_t CurrID = 0;

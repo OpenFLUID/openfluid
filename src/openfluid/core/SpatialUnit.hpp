@@ -52,11 +52,7 @@
 #include <openfluid/core/UnitsCollection.hpp>
 
 
-
 namespace openfluid { namespace core {
-
-//class OPENFLUID_API UnitsCollection;
-
 
 
 /**
@@ -139,8 +135,7 @@ class OPENFLUID_API SpatialUnit
       @param[in] anID the ID of the unit
       @param[in] aPcsOrder the process order of the unit
      */
-    SpatialUnit(const UnitsClass_t& aClass, const UnitID_t anID,
-         const PcsOrd_t aPcsOrder);
+    SpatialUnit(const UnitsClass_t& aClass, const UnitID_t anID, const PcsOrd_t aPcsOrder);
 
     /*
       Destructor
@@ -150,18 +145,21 @@ class OPENFLUID_API SpatialUnit
     /**
       Returns the process order of the unit
     */
-    inline PcsOrd_t getProcessOrder() const { return m_PcsOrder; };
+    inline PcsOrd_t getProcessOrder() const
+    { return m_PcsOrder; };
 
     /**
       Returns the ID of the unit
     */
-    inline UnitID_t getID() const { return m_ID; };
+    inline UnitID_t getID() const
+    { return m_ID; };
 
 
     /**
       Returns the class of the unit
     */
-    inline UnitsClass_t getClass() const { return m_Class; };
+    inline UnitsClass_t getClass() const
+    { return m_Class; };
 
     bool addToUnit(SpatialUnit* aUnit);
 

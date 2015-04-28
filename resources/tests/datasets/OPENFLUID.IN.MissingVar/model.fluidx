@@ -4,7 +4,7 @@
     <model>
 
       
-      <simulator ID="tests.primitives.use"> 
+      <simulator ID="tests.primitives.variables.use"> 
         <param name="strparam" value="strvalue" />
         <param name="doubleparam" value="1.1" />
         <param name="longparam" value="11" />

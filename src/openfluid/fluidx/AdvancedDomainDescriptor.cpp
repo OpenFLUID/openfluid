@@ -35,6 +35,7 @@
   @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include <openfluid/fluidx/AttributesDescriptor.hpp>
@@ -42,6 +43,7 @@
 #include <openfluid/fluidx/SpatialUnitDescriptor.hpp>
 #include <stdexcept>
 #include <algorithm>
+#include <sstream>
 
 namespace openfluid { namespace fluidx {
 

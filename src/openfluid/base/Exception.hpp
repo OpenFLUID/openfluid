@@ -41,45 +41,12 @@
 #ifndef __OPENFLUID_BASE_EXCEPTION_HPP__
 #define __OPENFLUID_BASE_EXCEPTION_HPP__
 
+
 #include <exception>
-#include <string>
-#include <sstream>
-#include <map>
+#include <openfluid/base/ExceptionContext.hpp>
 
 
 namespace openfluid { namespace base {
-
-
-
-class ExceptionContext : public std::map<std::string, std::string>
-{
-  public:
-
-    std::string toString() const
-    {
-      std::string Str;
-
-
-      std::map<std::string, std::string>::const_iterator it;
-      std::map<std::string, std::string>::const_iterator itb = begin();
-      std::map<std::string, std::string>::const_iterator ite = end();
-
-      for (it = itb; it!= ite; ++it)
-      {
-        if (it!=itb)
-          Str += ",";
-
-        Str += (*it).first + "=" + (*it).second;
-      }
-
-      return Str;
-    }
-
-};
-
-
-// =====================================================================
-// =====================================================================
 
 
 class Exception : public std::exception
@@ -112,14 +79,41 @@ class Exception : public std::exception
 
     }
 
+
+    // =====================================================================
+    // =====================================================================
+
+
     const char * what() const throw()
     {
-      return m_FullMessage.c_str();
+      return m_Message.c_str();
     }
 
-    const std::string getMessage() const { return m_Message; }
 
-    const ExceptionContext getContext() const { return m_Context; }
+    // =====================================================================
+    // =====================================================================
+
+
+    const std::string getMessage() const
+    { return m_Message; }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    const std::string getFullMessage() const
+    {
+      return m_FullMessage;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    const ExceptionContext getContext() const
+    { return m_Context; }
 
 };
 

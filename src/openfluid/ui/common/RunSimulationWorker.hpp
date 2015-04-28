@@ -44,6 +44,7 @@
 #include <QtDeclarative>
 
 #include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/base/Exception.hpp>
 
 
 #include <openfluid/dllexport.hpp>
@@ -172,7 +173,7 @@ class RunSimulationWorker : public QObject
 
     void finished();
 
-    void error(QString Error);
+    void error(QString Error, openfluid::base::ExceptionContext Context);
 
     void userAbort();
 

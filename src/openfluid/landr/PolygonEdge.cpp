@@ -46,6 +46,8 @@
 #include <geos/geom/Point.h>
 #include <geos/planargraph/DirectedEdge.h>
 #include <algorithm>
+#include <sstream>
+
 
 namespace openfluid { namespace landr {
 

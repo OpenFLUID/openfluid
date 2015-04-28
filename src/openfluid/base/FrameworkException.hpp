@@ -75,8 +75,8 @@ class FrameworkException : public Exception
     // =====================================================================
 
 
-    FrameworkException(const std::string& MiscStr, const std::string& Msg) :
-      Exception(computeContext(MiscStr),Msg)
+    FrameworkException(const std::string& CodeLoc, const std::string& Msg) :
+      Exception(computeContext(CodeLoc),Msg)
     {
       buildFullMessage();
     }
@@ -89,7 +89,7 @@ class FrameworkException : public Exception
     static ExceptionContext computeContext()
     {
       ExceptionContext Context;
-      Context["src"] = "framework";
+      Context["source"] = "framework";
       return Context;
     }
 
@@ -98,10 +98,10 @@ class FrameworkException : public Exception
     // =====================================================================
 
 
-    static ExceptionContext computeContext(const std::string& Part)
+    static ExceptionContext computeContext(const std::string& CodeLoc)
     {
       ExceptionContext Context = computeContext();
-      Context["part"] = Part;
+      Context["codeloc"] = CodeLoc;
       return Context;
     }
 

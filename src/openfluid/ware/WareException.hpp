@@ -40,11 +40,14 @@
 #ifndef __OPENFLUID_WARE_WAREEXCEPTION_HPP__
 #define __OPENFLUID_WARE_WAREEXCEPTION_HPP__
 
+#include <sstream>
+
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace ware {
 
@@ -82,7 +85,7 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
 
       openfluid::base::ExceptionContext Context;
 
-      Context["src"] = "ware";
+      Context["source"] = "ware";
       Context["waretype"] = "unknown";
 
       if (WType == PluggableWare::OBSERVER)
@@ -108,36 +111,7 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
       
       openfluid::base::ExceptionContext Context = computeContext(WType,ID);
 
-      if (WType == PluggableWare::OBSERVER)
-      {
-        switch (Stage)
-        {
-          case openfluid::base::SimulationStatus::INITPARAMS : Context["stage"] = "initParams"; break;
-          case openfluid::base::SimulationStatus::PREPAREDATA : Context["stage"] = "onPrepared"; break;
-          case openfluid::base::SimulationStatus::CHECKCONSISTENCY : Context["stage"] = "onPrepared"; break;
-          case openfluid::base::SimulationStatus::INITIALIZERUN : Context["stage"] = "onInitializedRun"; break;
-          case openfluid::base::SimulationStatus::RUNSTEP : Context["stage"] = "onStepCompleted"; break;
-          case openfluid::base::SimulationStatus::FINALIZERUN : Context["stage"] = "onFinalizedRun"; break;
-          default : break;
-        }
-      }
-      else if (WType == PluggableWare::SIMULATOR)
-      {
-        switch (Stage)
-        {
-          case openfluid::base::SimulationStatus::INITPARAMS : Context["stage"] = "initParams"; break;
-          case openfluid::base::SimulationStatus::PREPAREDATA : Context["stage"] = "prepareData"; break;
-          case openfluid::base::SimulationStatus::CHECKCONSISTENCY : Context["stage"] = "checkConsistency"; break;
-          case openfluid::base::SimulationStatus::INITIALIZERUN : Context["stage"] = "initializeRun"; break;
-          case openfluid::base::SimulationStatus::RUNSTEP : Context["stage"] = "runStep"; break;
-          case openfluid::base::SimulationStatus::FINALIZERUN : Context["stage"] = "finalizeRun"; break;
-          default : break;
-        }
-      }
-      else
-      {
-        Context["stage"] = "unknown";
-      }
+      Context.addStage(openfluid::base::SimulationStatus::getStageAsString(Stage));
       
       return Context;
     }
@@ -155,10 +129,7 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
     {
       openfluid::base::ExceptionContext Context = computeContext(WType,ID,Stage);
 
-      std::ostringstream IndexSStr;
-      IndexSStr << TimeIndex;
-
-      Context["timeindex"] = IndexSStr.str();
+      Context.addTimeIndex(TimeIndex);
 
       return Context;
     }

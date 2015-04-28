@@ -54,6 +54,8 @@
 #include <geos/geom/LineSegment.h>
 #include <geos/geom/GeometryFactory.h>
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
+#include <sstream>
+
 
 namespace openfluid { namespace landr {
 

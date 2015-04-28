@@ -117,7 +117,11 @@ class OPENFLUID_API SimulationStatus
     inline SimulationStage getCurrentStage() const
     { return m_CurrentStage; }
 
+    std::string getCurrentStageAsString() const;
+
     void setCurrentStage(const SimulationStage& Stage);
+
+    static std::string getStageAsString(const SimulationStage& Stage);
 
 };
 

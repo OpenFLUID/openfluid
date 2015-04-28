@@ -30,54 +30,54 @@
 */
 
 
+
 /**
-  @file main.cpp
+  @file ExceptionContext_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
-*/
+ */
 
 
-#include "OpenFLUID.hpp"
-#include <openfluid/base/Init.hpp>
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_exceptioncontext
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
+#include <openfluid/base/ExceptionContext.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-int main(int argc, char **argv)
+BOOST_AUTO_TEST_CASE(check_construction)
 {
+  openfluid::base::ExceptionContext Ctxt;
 
-  int ReturnValue = 0;
-
-  INIT_OPENFLUID_APPLICATION(argc,argv);
-
-  OpenFLUIDApp App;
-
-  try
-  {
-    App.processOptions(argc,argv);
-    App.run();
-  }
-  catch (openfluid::base::Exception& E)
-  {
-    ReturnValue = App.stopAppReturn("OpenFLUID ERROR: " + E.getMessage() + " [" + E.getContext().toString() + "]");
-  }
-  catch (std::bad_alloc& E)
-  {
-    ReturnValue = App.stopAppReturn("MEMORY ALLOCATION ERROR: " + std::string(E.what()) +
-                                    ". Possibly not enough memory available");
-  }
-  catch (std::exception& E)
-  {
-    ReturnValue = App.stopAppReturn("SYSTEM ERROR: " + std::string(E.what()));
-  }
-  catch (...)
-  {
-    ReturnValue = App.stopAppReturn("UNKNOWN ERROR");
-  }
-
-  return ReturnValue;
+  BOOST_REQUIRE(Ctxt.empty());
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_operations)
+{
+  openfluid::base::ExceptionContext Ctxt;
+  BOOST_REQUIRE_EQUAL(Ctxt.size(),0);
+
+  Ctxt.addInfos({{"codeloc","here"},{"source","test"}});
+  BOOST_REQUIRE_EQUAL(Ctxt.size(),2);
+
+  Ctxt.addInfos({{"key1","k1"},{"key2","k2"}}).addInfos({{"key3","k3"}});
+  BOOST_REQUIRE_EQUAL(Ctxt.size(),5);
+
+  std::cout << "Contents: " << Ctxt.toString() << std::endl;
+
+  Ctxt.clear();
+  Ctxt.addStage("INITIALIZERUN").addSpatialUnit("TU#147").addTimeIndex(123).addTimeIndex(155);
+  std::cout << "Contents: " << Ctxt.toString() << std::endl;
+
+}
