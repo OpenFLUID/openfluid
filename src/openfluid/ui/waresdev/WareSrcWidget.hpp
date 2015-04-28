@@ -55,6 +55,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 class WareSrcFileEditor;
 class TextEditMsgStream;
+class WareSrcToolbar;
 
 
 class OPENFLUID_API WareSrcWidget: public QWidget
@@ -75,6 +76,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     openfluid::ui::waresdev::TextEditMsgStream* mp_TextEditMsgStream;
 
     bool m_IsStandalone;
+
+    WareSrcToolbar* mp_StandaloneToolBar = 0;
 
     void addNewFileTab(int Index, const QString& AbsolutePath, const QString& TabLabel, const QString& TabTooltip = "");
 
@@ -112,7 +115,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     openfluid::waresdev::WareSrcContainer& wareSrcContainer();
 
-    bool isModified();
+    bool isWareModified();
 
     void closeAllFileTabs();
 
@@ -121,6 +124,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     QString getCurrentFilePath();
 
     int closeFileTab(const QString& Path);
+
+    void checkModifiedStatus();
 
   public slots:
 
@@ -186,6 +191,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void openTerminalRequested();
 
     void openExplorerRequested();
+
+    void modifiedStatusChanged(bool CurrentEditorModified, bool WareModified);
 };
 
 } } }  // namespaces

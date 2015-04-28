@@ -120,6 +120,8 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
       connect(Widget, SIGNAL(findReplaceRequested()), this, SLOT(showFindReplaceDialog()));
       connect(Widget, SIGNAL(openTerminalRequested()), this, SLOT(openTerminal()));
       connect(Widget, SIGNAL(openExplorerRequested()), this, SLOT(openExplorer()));
+
+      connect(Widget, SIGNAL(modifiedStatusChanged(bool, bool)), this, SIGNAL(modifiedStatusChanged(bool, bool)));
     }
 
     if (Info.m_isAWareFile)
@@ -141,7 +143,7 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
   {
     int Choice = QMessageBox::Discard;
 
-    if (Ware->isModified())
+    if (Ware->isWareModified())
     {
       QMessageBox MsgBox;
       MsgBox.setText(tr("Documents have been modified."));
@@ -180,6 +182,8 @@ void WareSrcWidgetCollection::onCurrentTabChanged(int Index)
 
     emit currentTabChanged(FilePath.isEmpty() ? Ware->wareSrcContainer().getAbsolutePath() : FilePath);
   }
+
+  checkModifiedStatus();
 }
 
 
@@ -269,7 +273,7 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 
   bool TermFound = true;
 
-  // TODO test on Mac and not Debian-based distros
+// TODO test on Mac and not Debian-based distros
 #if defined(OPENFLUID_OS_UNIX)
   if (!QProcess::startDetached("x-terminal-emulator", QStringList(), FileToOpen))
     TermFound = QProcess::startDetached("xterm", QStringList(), FileToOpen);
@@ -418,7 +422,7 @@ void WareSrcWidgetCollection::onWareTxtModified(WareSrcWidget* Widget, bool Modi
 bool WareSrcWidgetCollection::isModified()
 {
   foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath){
-  if(Ware->isModified())
+  if(Ware->isWareModified())
   return true;
 }
 
@@ -791,6 +795,19 @@ void WareSrcWidgetCollection::pasteText()
 {
   if (WareSrcWidget* Ware = currentWareWidget())
     Ware->pasteText();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::checkModifiedStatus()
+{
+  if (WareSrcWidget* Ware = currentWareWidget())
+    Ware->checkModifiedStatus();
+  else
+    emit modifiedStatusChanged(false, false);
 }
 
 
