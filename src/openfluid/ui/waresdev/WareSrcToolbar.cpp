@@ -139,13 +139,16 @@ void WareSrcToolbar::createActions()
   m_Actions["SaveFile"] = new QAction(QIcon(":/ui/common/icons/file-save.png"), tr("Save"), this);
   m_Actions["SaveFile"]->setShortcut(QKeySequence::Save);
   m_Actions["SaveFile"]->setToolTip(tr("Save the current file"));
+  m_Actions["SaveFile"]->setEnabled(false);
 
   m_Actions["SaveAsFile"] = new QAction(QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
   m_Actions["SaveAsFile"]->setToolTip(tr("Save the current file as..."));
+  m_Actions["SaveAsFile"]->setEnabled(false);
 
-  m_Actions["SaveAllFiles"] = new QAction(tr("Save all"), this);
+  m_Actions["SaveAllFiles"] = new QAction(QIcon(":/ui/common/icons/file-save.png"), tr("Save all"), this);
   m_Actions["SaveAllFiles"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S));
   m_Actions["SaveAllFiles"]->setToolTip(tr("Save all files of the ware"));
+  m_Actions["SaveAllFiles"]->setEnabled(false);
 
   m_Actions["CloseFile"] = new QAction(QIcon(":/ui/common/icons/file-close.png"), tr("Close"), this);
   m_Actions["CloseFile"]->setToolTip(tr("Close the current file"));
@@ -197,8 +200,7 @@ void WareSrcToolbar::createActions()
   m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
   m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
 
-  foreach(QAction* Action,m_Actions.values())
-    Action->setIconVisibleInMenu(true);
+  foreach(QAction* Action,m_Actions.values())Action->setIconVisibleInMenu(true);
 }
 
 

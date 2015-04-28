@@ -189,11 +189,15 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void onFindReplaceRequested(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
                                 const QString& StringForReplace, QTextDocument::FindFlags Options);
 
+    void checkModifiedStatus();
+
   signals:
 
     void editorSaved();
 
     void currentTabChanged(const QString& Path);
+
+    void modifiedStatusChanged(bool CurrentEditorModified, bool CurrentWareModified);
 };
 
 } } }  // namespaces
