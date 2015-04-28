@@ -2670,5 +2670,44 @@ BOOST_AUTO_TEST_CASE(check_construction_from_Bad_Polygon_Geometry)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_construction_from_non_PolygonType)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::PolygonGraph* Graph1 = NULL;
+  BOOST_CHECK_THROW(Graph1 = openfluid::landr::PolygonGraph::create(*Val),openfluid::base::FrameworkException);
+
+  delete Val;
+  delete Graph1;
+
+
+  openfluid::core::GeoVectorValue Val2(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr",
+                                       "RS.shp");
+
+  openfluid::landr::VectorDataset* Vect =
+      new openfluid::landr::VectorDataset(Val2);
+
+  openfluid::landr::PolygonGraph* Graph2=NULL;
+  BOOST_CHECK_THROW( Graph2 = openfluid::landr::PolygonGraph::create(*Vect),
+                     openfluid::base::FrameworkException);
+
+  delete Vect;
+  delete Graph2;
+
+  openfluid::core::GeoVectorValue* Val3 = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "PU.shp");
+
+  openfluid::landr::PolygonGraph* Graph3 = NULL;
+  BOOST_CHECK_THROW(Graph3 = openfluid::landr::PolygonGraph::create(*Val3),openfluid::base::FrameworkException);
+
+  delete Val3;
+  delete Graph3;
+
+}
+
+
+// =====================================================================
+// =====================================================================
 
 

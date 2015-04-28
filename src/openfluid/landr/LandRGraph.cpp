@@ -647,12 +647,21 @@ void LandRGraph::exportToShp(const std::string& FilePath,
 
 void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
                                           openfluid::core::GeoVectorValue& Vector,
-                                          const std::string& Column)
+                                          const std::string& IdColumn,
+                                          const std::string& ValueColumn)
 {
-  if (!Vector.containsField(Column))
+  if (!Vector.containsField(ValueColumn))
   {
     std::ostringstream s;
-    s << "Unable to find the column " << Column << " in GeoVector.";
+    s << "Unable to find the column " << ValueColumn << " in GeoVector.";
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION, s.str());
+  }
+
+  if (!Vector.containsField(IdColumn))
+  {
+    std::ostringstream s;
+    s << "Unable to find the column " << IdColumn << " in GeoVector.";
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION, s.str());
   }
@@ -664,20 +673,20 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
   OGRLayer* Layer0 = Vector.layer(0);
   Layer0->ResetReading();
 
-  int columnIndex=Vector.getFieldIndex(Column);
+  int columnIndex=Vector.getFieldIndex(ValueColumn);
   OGRFeature* Feat;
   while ((Feat = Layer0->GetNextFeature()) != nullptr)
   {
-    int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
+    int OfldId=Feat->GetFieldAsInteger(IdColumn.c_str());
     openfluid::landr::LandREntity* Entity=entity(OfldId);
     if (Entity)
     {
-      if (Vector.isFieldOfType(Column, OFTInteger))
+      if (Vector.isFieldOfType(ValueColumn, OFTInteger))
       {
         int value=Feat->GetFieldAsInteger(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
       }
-      else if (Vector.isFieldOfType(Column, OFTReal))
+      else if (Vector.isFieldOfType(ValueColumn, OFTReal))
       {
         double value=Feat->GetFieldAsDouble(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
@@ -703,12 +712,21 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 
 void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
                                           openfluid::landr::VectorDataset& Vector,
-                                          const std::string& Column)
+                                          const std::string& IdColumn,
+                                          const std::string& ValueColumn)
 {
-  if (!Vector.containsField(Column))
+  if (!Vector.containsField(ValueColumn))
   {
     std::ostringstream s;
-    s << "Unable to find the column " << Column << " in VectorDataset.";
+    s << "Unable to find the column " << ValueColumn << " in VectorDataset.";
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION, s.str());
+  }
+
+  if (!Vector.containsField(IdColumn))
+  {
+    std::ostringstream s;
+    s << "Unable to find the column " << IdColumn << " in VectorDataset.";
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION, s.str());
   }
@@ -720,20 +738,20 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
   OGRLayer* Layer0 = Vector.layer(0);
   Layer0->ResetReading();
 
-  int columnIndex=Vector.getFieldIndex(Column);
+  int columnIndex=Vector.getFieldIndex(ValueColumn);
   OGRFeature* Feat;
   while ((Feat = Layer0->GetNextFeature()) != nullptr)
   {
-    int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
+    int OfldId=Feat->GetFieldAsInteger(IdColumn.c_str());
     openfluid::landr::LandREntity* Entity=entity(OfldId);
     if (Entity)
     {
-      if (Vector.isFieldOfType(Column, OFTInteger))
+      if (Vector.isFieldOfType(ValueColumn, OFTInteger))
       {
         int value=Feat->GetFieldAsInteger(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
       }
-      else if (Vector.isFieldOfType(Column, OFTReal))
+      else if (Vector.isFieldOfType(ValueColumn, OFTReal))
       {
         double value=Feat->GetFieldAsDouble(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));

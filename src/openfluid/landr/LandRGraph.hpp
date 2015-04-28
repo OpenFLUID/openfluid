@@ -295,25 +295,29 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
 
     /**
       @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
-      this attribute value as the vector value corresponding to the entity OFLD_ID.
+      this attribute value as the vector value corresponding to the entity ID number.
       @param AttributeName The name of the attribute to create.
       @param Vector The Name of the core::GeoVectorValue.
-      @param Column The column of the core::GeoVectorValue to upload.
+      @param IdColumn The ID number column of the core::GeoVectorValue.
+      @param ValueColumn The column of the core::GeoVectorValue to upload.
     */
     void setAttributeFromVectorId(const std::string& AttributeName,
                                   openfluid::core::GeoVectorValue& Vector,
-                                  const std::string& Column);
+                                  const std::string& IdColumn,
+                                  const std::string& ValueColumn);
 
     /**
       @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
       this attribute value as the vector value corresponding to the entity OFLD_ID.
       @param AttributeName The name of the attribute to create.
       @param Vector The Name of the VectorDataset.
-      @param Column The column of the core::GeoVectorValue to upload.
+      @param IdColumn The ID number column of the landr::VectorDataset.
+      @param ValueColumn The column of the landr::VectorDataset to upload.
     */
     void setAttributeFromVectorId(const std::string& AttributeName,
                                   openfluid::landr::VectorDataset& Vector,
-                                  const std::string& Column);
+                                  const std::string& IdColumn,
+                                  const std::string& ValueColumn);
 
     /**
       @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity

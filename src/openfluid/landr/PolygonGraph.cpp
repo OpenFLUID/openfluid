@@ -100,6 +100,11 @@ PolygonGraph::PolygonGraph(openfluid::landr::VectorDataset& Vect) :
 
 PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
 {
+  if (!Val.isPolygonType())
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION,
+        "GeoVectorValue is not Polygon type");
+
   PolygonGraph* Graph = new PolygonGraph(Val);
   try{
 
@@ -122,6 +127,11 @@ PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
 
 PolygonGraph* PolygonGraph::create(openfluid::landr::VectorDataset& Vect)
 {
+  if (!Vect.isPolygonType())
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION,
+        "VectorDataset is not Polygon type");
+
   PolygonGraph* Graph = new PolygonGraph(Vect);
   try{
 

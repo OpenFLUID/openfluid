@@ -111,6 +111,11 @@ LineStringGraph::~LineStringGraph()
 
 LineStringGraph* LineStringGraph::create(openfluid::core::GeoVectorValue& Val)
 {
+  if (!Val.isLineType())
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION,
+        "GeoVectorValue is not Line type");
+
   LineStringGraph* Graph = new LineStringGraph(Val);
   Graph->addEntitiesFromGeoVector();
 
@@ -124,6 +129,12 @@ LineStringGraph* LineStringGraph::create(openfluid::core::GeoVectorValue& Val)
 
 LineStringGraph* LineStringGraph::create(openfluid::landr::VectorDataset& Vect)
 {
+
+  if (!Vect.isLineType())
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION,
+        "VectorDataset is not Line type");
+
   LineStringGraph* Graph = new LineStringGraph(Vect);
   Graph->addEntitiesFromGeoVector();
 

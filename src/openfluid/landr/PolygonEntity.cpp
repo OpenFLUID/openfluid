@@ -132,6 +132,8 @@ void PolygonEntity::addEdge(PolygonEdge& Edge)
   m_PolyEdges.push_back(&Edge);
 
   mp_NeighboursMap = 0;
+
+  mp_LineStringNeighboursMap = 0;
 }
 
 
@@ -153,6 +155,8 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
         "Edge doesn't exist in Edge vector.");
 
   mp_NeighboursMap = 0;
+
+  mp_LineStringNeighboursMap = 0;
 
   delete Edge;
 }

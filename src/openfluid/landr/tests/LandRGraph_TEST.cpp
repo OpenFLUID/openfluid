@@ -266,9 +266,10 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_LineStringGraph)
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector, "OFLD_ID","No_col"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector, "No_col","USR_LEN"),openfluid::base::FrameworkException);
 
-  Graph->setAttributeFromVectorId("attribut",*Vector, "USR_LEN");
+  Graph->setAttributeFromVectorId("attribut",*Vector, "OFLD_ID","USR_LEN");
   std::vector<std::string> vAttributes=Graph->getAttributeNames();
   BOOST_CHECK_EQUAL(vAttributes.empty(),false);
 
@@ -289,7 +290,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_LineStringGraph)
   openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
        CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "badRS_misdirected.shp");
 
-  Graph->setAttributeFromVectorId("attribut",*OtherVector, "USR_SLOP");
+  Graph->setAttributeFromVectorId("attribut",*OtherVector, "OFLD_ID","USR_SLOP");
 
   Entity=Graph->entity(1);
   Entity->getAttributeValue("attribut", DoubleValue);
@@ -306,7 +307,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_LineStringGraph)
       Value);
 
 
-  Graph->setAttributeFromVectorId("attribut",*Vect, "USR_WID");
+  Graph->setAttributeFromVectorId("attribut",*Vect, "OFLD_ID","USR_WID");
 
   Entity=Graph->entity(1);
   Entity->getAttributeValue("attribut", DoubleValue);
@@ -338,9 +339,10 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_PolygonGraph)
   openfluid::landr::PolygonGraph* Graph =
       openfluid::landr::PolygonGraph::create(*Vector);
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector,"OFLD_ID", "No_col"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector,"No_col", "FLOW_CDE"),openfluid::base::FrameworkException);
 
-  Graph->setAttributeFromVectorId("attribut",*Vector, "FLOW_CDE");
+  Graph->setAttributeFromVectorId("attribut",*Vector,"OFLD_ID", "FLOW_CDE");
   std::vector<std::string> vAttributes=Graph->getAttributeNames();
   BOOST_CHECK_EQUAL(vAttributes.empty(),false);
 

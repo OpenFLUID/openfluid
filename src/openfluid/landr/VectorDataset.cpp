@@ -950,6 +950,11 @@ std::string VectorDataset::checkTopology(double Threshold, unsigned int LayerInd
 
 std::list<std::pair<OGRFeature*, OGRFeature*> > VectorDataset::findOverlap(unsigned int LayerIndex)
 {
+  if ( ! isPolygonType(LayerIndex))
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION,
+        "the VectorDataset is not Polygon type.");
+
   m_Features.clear();
   m_Geometries.clear();
   std::list<std::pair<OGRFeature*,OGRFeature*> > lOverlaps;
@@ -991,6 +996,11 @@ std::list<std::pair<OGRFeature*, OGRFeature*> > VectorDataset::findOverlap(unsig
 
 std::list<std::pair<OGRFeature*,OGRFeature*> > VectorDataset::findGap(double Threshold, unsigned int LayerIndex)
 {
+  if ( ! isPolygonType(LayerIndex))
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION,
+        "the VectorDataset is not Polygon type.");
+
   m_Features.clear();
   m_Geometries.clear();
   std::list<std::pair<OGRFeature*,OGRFeature*> > lGaps;
@@ -1033,6 +1043,10 @@ std::list<std::pair<OGRFeature*,OGRFeature*> > VectorDataset::findGap(double Thr
 
 void VectorDataset::cleanOverlap(double Threshold, unsigned int LayerIndex)
 {
+  if ( ! isPolygonType(LayerIndex))
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION,
+        "the VectorDataset is not Polygon type.");
 
   m_Features.clear();
   m_Geometries.clear();

@@ -295,6 +295,7 @@ class OPENFLUID_API VectorDataset
 
     /**
       @brief Snap the vertices of this VectorDataset.
+      Only for Polygon or Line Type;
       @param Threshold The snapping threshold value.
       @param LayerIndex The index of the layer to query, default 0.
      */
@@ -302,6 +303,7 @@ class OPENFLUID_API VectorDataset
 
     /**
       @brief Check the topology of this VectorDataset.
+      Only for Polygon Type.
       @param Threshold The maximum distance between polygon to be considered as gap.
       @param LayerIndex The index of the layer to query, default 0.
       @return An non-empty string if found errors, otherwise the string is empty.
@@ -310,6 +312,7 @@ class OPENFLUID_API VectorDataset
 
     /**
       @brief Find the overlapping polygons.
+      Only for Polygon Type;
       @param LayerIndex The index of the layer to query, default 0.
       @return A list of pair of OGRFeature* for each overlap between two polygons.
      */
@@ -317,6 +320,7 @@ class OPENFLUID_API VectorDataset
 
     /**
       @brief Find gap between polygons.
+      Only for Polygon Type;
       @param Threshold The maximum distance between polygon to be considered as gap.
       @param LayerIndex The index of the layer to query, default 0.
       @return A list of pair of OGRFeature* for each overlap between two polygons.
@@ -325,6 +329,7 @@ class OPENFLUID_API VectorDataset
 
     /**
       @brief Clean the overlapping polygons.
+      Only for Polygon Type;
       @param Threshold The snapping threshold value.
       @param LayerIndex The index of the layer to query, default 0.
      */
