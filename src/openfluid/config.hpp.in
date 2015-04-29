@@ -179,6 +179,7 @@ const std::string URL_COMMUNITY = "http://www.openfluid-project.org/community";
 const std::string URL_DEV = "https://github.com/OpenFLUID/";
 const std::string URL_BUG = "https://github.com/OpenFLUID/openfluid/issues";
 const std::string URL_EMAIL = "mailto:contact@openfluid-project.org";
+const std::string URL_APIDOC = "http://www.openfluid-project.org/resources/docs/manuals/en/openfluid/@VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@/main/html/";
 
 } } //namespaces
 

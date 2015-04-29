@@ -117,6 +117,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     bool isBuildNoInstallMode();
 
+    void deleteWare(const QString& WarePath);
+
   public slots:
 
     void openPath(const QString& Path);
@@ -150,6 +152,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
      */
     QString saveAs(const QString& TopDirectory = "");
 
+    void saveAllCurrent();
+
     void closeCurrentEditor();
 
     void openFile();
@@ -166,8 +170,6 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void newObserver();
     void newBuilderExtension();
 
-    void deleteCurrentWare();
-
     void showFindReplaceDialog();
 
     void copyText();
@@ -175,6 +177,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void cutText();
 
     void pasteText();
+
+    void openAPIDoc();
 
   private slots:
 
@@ -187,11 +191,15 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void onFindReplaceRequested(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
                                 const QString& StringForReplace, QTextDocument::FindFlags Options);
 
+    void checkModifiedStatus();
+
   signals:
 
     void editorSaved();
 
     void currentTabChanged(const QString& Path);
+
+    void modifiedStatusChanged(bool CurrentEditorModified, bool CurrentWareModified);
 };
 
 } } }  // namespaces

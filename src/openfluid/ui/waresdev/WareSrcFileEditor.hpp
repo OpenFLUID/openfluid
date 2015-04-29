@@ -50,6 +50,7 @@
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
 #include <openfluid/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/ui/config.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -69,8 +70,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
         openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType m_MajorMarkerType;
         QStringList m_ContentList;
 
-        QColor Red = QColor("#FFA3A3");
-        QColor Orange = QColor("#FFD6A3");
+        QColor Red = QColor(openfluid::ui::config::LINEMARKER_ERRCOLOR);
+        QColor Orange = QColor(openfluid::ui::config::LINEMARKER_WARNCOLOR);
 
       public:
 

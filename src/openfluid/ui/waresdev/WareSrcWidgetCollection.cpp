@@ -48,6 +48,7 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/config.hpp>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
@@ -120,6 +121,9 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
       connect(Widget, SIGNAL(findReplaceRequested()), this, SLOT(showFindReplaceDialog()));
       connect(Widget, SIGNAL(openTerminalRequested()), this, SLOT(openTerminal()));
       connect(Widget, SIGNAL(openExplorerRequested()), this, SLOT(openExplorer()));
+      connect(Widget, SIGNAL(openAPIDocRequested()), this, SLOT(openAPIDoc()));
+
+      connect(Widget, SIGNAL(modifiedStatusChanged(bool, bool)), this, SIGNAL(modifiedStatusChanged(bool, bool)));
     }
 
     if (Info.m_isAWareFile)
@@ -141,7 +145,7 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
   {
     int Choice = QMessageBox::Discard;
 
-    if (Ware->isModified())
+    if (Ware->isWareModified())
     {
       QMessageBox MsgBox;
       MsgBox.setText(tr("Documents have been modified."));
@@ -180,6 +184,8 @@ void WareSrcWidgetCollection::onCurrentTabChanged(int Index)
 
     emit currentTabChanged(FilePath.isEmpty() ? Ware->wareSrcContainer().getAbsolutePath() : FilePath);
   }
+
+  checkModifiedStatus();
 }
 
 
@@ -269,7 +275,7 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 
   bool TermFound = true;
 
-  // TODO test on Mac and not Debian-based distros
+// TODO test on Mac and not Debian-based distros
 #if defined(OPENFLUID_OS_UNIX)
   if (!QProcess::startDetached("x-terminal-emulator", QStringList(), FileToOpen))
     TermFound = QProcess::startDetached("xterm", QStringList(), FileToOpen);
@@ -418,7 +424,7 @@ void WareSrcWidgetCollection::onWareTxtModified(WareSrcWidget* Widget, bool Modi
 bool WareSrcWidgetCollection::isModified()
 {
   foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath){
-  if(Ware->isModified())
+  if(Ware->isWareModified())
   return true;
 }
 
@@ -476,6 +482,19 @@ QString WareSrcWidgetCollection::saveAs(const QString& TopDirectory)
 
   QMessageBox::warning(0, "No open ware", "Open a ware first");
   return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::saveAllCurrent()
+{
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+    CurrentWare->saveAllFileTabs();
+  else
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
 }
 
 
@@ -629,25 +648,20 @@ void WareSrcWidgetCollection::openWare(openfluid::waresdev::WareSrcManager::Ware
 // =====================================================================
 
 
-void WareSrcWidgetCollection::deleteCurrentWare()
+void WareSrcWidgetCollection::deleteWare(const QString& WarePath)
 {
-  if (WareSrcWidget* CurrentWare = currentWareWidget())
-  {
-    QString Path = CurrentWare->wareSrcContainer().getAbsolutePath();
+  if (QMessageBox::warning(QApplication::activeWindow(), tr("Delete ware"),
+                           tr("Are you sure you want to delete \"%1\" and all its content?").arg(WarePath),
+                           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
+      == QMessageBox::Cancel)
+    return;
 
-    if (QMessageBox::warning(QApplication::activeWindow(), tr("Delete ware"),
-                             tr("Are you sure you want to delete \"%1\" and all its content?").arg(Path),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
-        == QMessageBox::Cancel)
-      return;
+  QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
+  if (it != m_WareSrcWidgetByPath.end())
+    closeWareTab(it.value());
 
-    closeWareTab(CurrentWare);
-
-    if (!openfluid::tools::Filesystem::removeDirectory(Path.toStdString()))
-      QMessageBox::critical(0, "Error", tr("Unable to remove the directory \"%1\"").arg(Path));
-  }
-  else
-    QMessageBox::warning(0, "No open ware", "Open a ware first");
+  if (!openfluid::tools::Filesystem::removeDirectory(WarePath.toStdString()))
+    QMessageBox::critical(0, "Error", tr("Unable to remove the directory \"%1\"").arg(WarePath));
 }
 
 
@@ -711,10 +725,13 @@ void WareSrcWidgetCollection::showFindReplaceDialog()
   {
     mp_FindReplaceDialog = new FindReplaceDialog(mp_TabWidget);
 
-    connect(mp_FindReplaceDialog, SIGNAL(findReplaceRequested(
-        FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)),
-        this, SLOT(onFindReplaceRequested(
-        FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)));
+    connect(
+        mp_FindReplaceDialog,
+        SIGNAL(
+            findReplaceRequested( FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)),
+        this,
+        SLOT(
+            onFindReplaceRequested( FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)));
   }
 
   QString SelectedText = "";
@@ -778,6 +795,29 @@ void WareSrcWidgetCollection::pasteText()
 {
   if (WareSrcWidget* Ware = currentWareWidget())
     Ware->pasteText();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::checkModifiedStatus()
+{
+  if (WareSrcWidget* Ware = currentWareWidget())
+    Ware->checkModifiedStatus();
+  else
+    emit modifiedStatusChanged(false, false);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::openAPIDoc()
+{
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_APIDOC), QUrl::TolerantMode));
 }
 
 

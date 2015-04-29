@@ -60,6 +60,9 @@ const QString TOOLTIP_BORDERCOLOR = "#676767";
 
 const QString PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::config","required");
 
+const QString LINEMARKER_ERRCOLOR = "#FFA3A3";
+const QString LINEMARKER_WARNCOLOR = "#FFD6A3";
+
 
 } } } // namespaces
 

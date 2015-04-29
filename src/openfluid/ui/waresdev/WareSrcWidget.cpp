@@ -77,31 +77,34 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
 
   if (m_IsStandalone)
   {
-    WareSrcToolbar* TB = new WareSrcToolbar(true, this);
+    mp_StandaloneToolBar = new WareSrcToolbar(true, this);
 
-    ui->Toolbar_Layout->addWidget(TB);
+    ui->Toolbar_Layout->addWidget(mp_StandaloneToolBar);
 
-    connect(TB->action("NewFile"), SIGNAL(triggered()), this, SLOT(newFile()));
-    connect(TB->action("OpenFile"), SIGNAL(triggered()), this, SLOT(openFile()));
-    connect(TB->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
-    connect(TB->action("SaveAsFile"), SIGNAL(triggered()), this, SLOT(saveAs()));
-    connect(TB->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
-    connect(TB->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(deleteCurrentFile()));
+    connect(mp_StandaloneToolBar->action("NewFile"), SIGNAL(triggered()), this, SLOT(newFile()));
+    connect(mp_StandaloneToolBar->action("OpenFile"), SIGNAL(triggered()), this, SLOT(openFile()));
+    connect(mp_StandaloneToolBar->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
+    connect(mp_StandaloneToolBar->action("SaveAsFile"), SIGNAL(triggered()), this, SLOT(saveAs()));
+    connect(mp_StandaloneToolBar->action("SaveAllFiles"), SIGNAL(triggered()), this, SLOT(saveAllFileTabs()));
+    connect(mp_StandaloneToolBar->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
+    connect(mp_StandaloneToolBar->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(deleteCurrentFile()));
 
-    connect(TB->action("Copy"), SIGNAL(triggered()), this, SLOT(copyText()));
-    connect(TB->action("Cut"), SIGNAL(triggered()), this, SLOT(cutText()));
-    connect(TB->action("Paste"), SIGNAL(triggered()), this, SLOT(pasteText()));
-    connect(TB->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
+    connect(mp_StandaloneToolBar->action("Copy"), SIGNAL(triggered()), this, SLOT(copyText()));
+    connect(mp_StandaloneToolBar->action("Cut"), SIGNAL(triggered()), this, SLOT(cutText()));
+    connect(mp_StandaloneToolBar->action("Paste"), SIGNAL(triggered()), this, SLOT(pasteText()));
+    connect(mp_StandaloneToolBar->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
 
-    connect(TB->action("Release"), SIGNAL(triggered()), this, SLOT(setReleaseMode()));
-    connect(TB->action("Debug"), SIGNAL(triggered()), this, SLOT(setDebugMode()));
-    connect(TB->action("BuildInstall"), SIGNAL(triggered()), this, SLOT(setBuildWithInstallMode()));
-    connect(TB->action("BuildOnly"), SIGNAL(triggered()), this, SLOT(setBuildNoInstallMode()));
-    connect(TB->action("Configure"), SIGNAL(triggered()), this, SLOT(configure()));
-    connect(TB->action("Build"), SIGNAL(triggered()), this, SLOT(build()));
+    connect(mp_StandaloneToolBar->action("Release"), SIGNAL(triggered()), this, SLOT(setReleaseMode()));
+    connect(mp_StandaloneToolBar->action("Debug"), SIGNAL(triggered()), this, SLOT(setDebugMode()));
+    connect(mp_StandaloneToolBar->action("BuildInstall"), SIGNAL(triggered()), this, SLOT(setBuildWithInstallMode()));
+    connect(mp_StandaloneToolBar->action("BuildOnly"), SIGNAL(triggered()), this, SLOT(setBuildNoInstallMode()));
+    connect(mp_StandaloneToolBar->action("Configure"), SIGNAL(triggered()), this, SLOT(configure()));
+    connect(mp_StandaloneToolBar->action("Build"), SIGNAL(triggered()), this, SLOT(build()));
 
-    connect(TB->action("OpenTerminal"), SIGNAL(triggered()), this, SIGNAL(openTerminalRequested()));
-    connect(TB->action("OpenExplorer"), SIGNAL(triggered()), this, SIGNAL(openExplorerRequested()));
+    connect(mp_StandaloneToolBar->action("OpenTerminal"), SIGNAL(triggered()), this, SIGNAL(openTerminalRequested()));
+    connect(mp_StandaloneToolBar->action("OpenExplorer"), SIGNAL(triggered()), this, SIGNAL(openExplorerRequested()));
+
+    connect(mp_StandaloneToolBar->action("APIDoc"), SIGNAL(triggered()), this, SIGNAL(openAPIDocRequested()));
   }
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
@@ -241,7 +244,9 @@ int WareSrcWidget::closeFileTab(WareSrcFileEditor* Editor)
 
   delete Editor;
 
-  emit wareTextModified(this, isModified());
+  emit wareTextModified(this, isWareModified());
+
+  checkModifiedStatus();
 
   return Index;
 }
@@ -447,7 +452,9 @@ void WareSrcWidget::onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified
     else if (!Modified && ModifiedState)
       ui->WareSrcFileCollection->setTabText(Pos, Label.remove(0, 1));
 
-    emit wareTextModified(this, isModified());
+    emit wareTextModified(this, isWareModified());
+
+    checkModifiedStatus();
   }
 
 }
@@ -457,7 +464,7 @@ void WareSrcWidget::onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified
 // =====================================================================
 
 
-bool WareSrcWidget::isModified()
+bool WareSrcWidget::isWareModified()
 {
   foreach(WareSrcFileEditor* Editor,m_WareSrcFilesByPath.values()){
   if(Editor->document()->isModified())
@@ -599,6 +606,8 @@ void WareSrcWidget::onCurrentTabChanged(int Index)
 {
   if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(ui->WareSrcFileCollection->widget(Index)))
     emit currentTabChanged(Editor->getFilePath());
+
+  checkModifiedStatus();
 }
 
 
@@ -669,8 +678,8 @@ void WareSrcWidget::onProcessFinished()
 
 void WareSrcWidget::onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
 {
-  openfluid::waresdev::WareSrcManager::PathInfo Info =
-      openfluid::waresdev::WareSrcManager::instance()->getPathInfo(Msg.m_Path);
+  openfluid::waresdev::WareSrcManager::PathInfo Info = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(
+      Msg.m_Path);
 
   if (Info.m_AbsolutePathOfWare != m_Container.getAbsolutePath())
     return;
@@ -679,6 +688,29 @@ void WareSrcWidget::onMessageClicked(openfluid::waresdev::WareSrcMsgParser::Ware
 
   if (WareSrcFileEditor* Editor = m_WareSrcFilesByPath.value(Msg.m_Path, 0))
     Editor->selectLine(Msg.m_LineNb);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::checkModifiedStatus()
+{
+  bool IsCurrentEditorModified = false;
+  if (WareSrcFileEditor* Editor = currentEditor())
+    IsCurrentEditorModified = Editor->document()->isModified();
+
+  bool IsWareModified = isWareModified();
+
+  if (mp_StandaloneToolBar)
+  {
+    mp_StandaloneToolBar->action("SaveFile")->setEnabled(IsCurrentEditorModified);
+    mp_StandaloneToolBar->action("SaveAsFile")->setEnabled(IsCurrentEditorModified);
+    mp_StandaloneToolBar->action("SaveAllFiles")->setEnabled(IsWareModified);
+  }
+
+  emit modifiedStatusChanged(IsCurrentEditorModified, IsWareModified);
 }
 
 

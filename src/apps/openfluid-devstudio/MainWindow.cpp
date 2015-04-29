@@ -74,22 +74,22 @@ MainWindow::MainWindow() :
   mp_Toolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
 
   mp_Toolbar->setObjectName("SrcToolbar");
-  mp_Toolbar->setStyleSheet(QString("QWidget "
-                                      "{color: white; padding-left : 10px; padding-right : 10px;} "
-                                    "#SrcToolbar "
-                                      "{background-color: %1; border: 1px solid %1;}"
-                                    "QToolButton[popupMode=\"1\"] "
-                                      "{background-color: %1; border: 1px solid %1; "
-                                       "padding-left : 10px; padding-right : 20px;}"
-                                    "QToolButton::hover "
-                                      "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }"
-                                    "QToolButton::menu-button "
-                                      "{background-color: %1; border: 1px solid %1; border-radius: 4px;}"
-                                    "QToolButton::menu-button:pressed, QToolButton::menu-button:hover "
-                                      "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }")
-                                       .arg(openfluid::ui::config::TOOLBAR_BGCOLOR,
-                                            openfluid::ui::config::TOOLBARBUTTON_BGCOLOR,
-                                            openfluid::ui::config::TOOLBARBUTTON_BORDERCOLOR));
+  mp_Toolbar->setStyleSheet(
+      QString("QWidget "
+              "{color: white; padding-left : 10px; padding-right : 10px;} "
+              "#SrcToolbar "
+              "{background-color: %1; border: 1px solid %1;}"
+              "QToolButton[popupMode=\"1\"] "
+              "{background-color: %1; border: 1px solid %1; "
+              "padding-left : 10px; padding-right : 20px;}"
+              "QToolButton::hover "
+              "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }"
+              "QToolButton::menu-button "
+              "{background-color: %1; border: 1px solid %1; border-radius: 4px;}"
+              "QToolButton::menu-button:pressed, QToolButton::menu-button:hover "
+              "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }").arg(
+          openfluid::ui::config::TOOLBAR_BGCOLOR, openfluid::ui::config::TOOLBARBUTTON_BGCOLOR,
+          openfluid::ui::config::TOOLBARBUTTON_BORDERCOLOR));
 
   addToolBar(mp_Toolbar);
 
@@ -111,7 +111,7 @@ MainWindow::MainWindow() :
   connect(m_Actions["OpenObserver"], SIGNAL(triggered()), mp_Collection, SLOT(openObserver()));
   connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection, SLOT(openBuilderExtension()));
   connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), mp_Collection, SLOT(saveAsMayBeAboveWare()));
-  connect(m_Actions["DeleteWare"], SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentWare()));
+  connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this, SLOT(onDeleteWareRequested()));
   connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
 
@@ -123,6 +123,7 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("OpenFile"), SIGNAL(triggered()), mp_Collection, SLOT(openFile()));
   connect(mp_Toolbar->action("SaveFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveCurrentEditor()));
   connect(mp_Toolbar->action("SaveAsFile"), SIGNAL(triggered()), mp_Collection, SLOT(saveAs()));
+  connect(mp_Toolbar->action("SaveAllFiles"), SIGNAL(triggered()), mp_Collection, SLOT(saveAllCurrent()));
   connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()), mp_Collection, SLOT(closeCurrentEditor()));
   connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentFile()));
 
@@ -141,6 +142,8 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("OpenExplorer"), SIGNAL(triggered()), mp_Collection, SLOT(openExplorer()));
   connect(mp_Toolbar->action("OpenTerminal"), SIGNAL(triggered()), mp_Collection, SLOT(openTerminal()));
 
+  connect(mp_Toolbar->action("APIDoc"), SIGNAL(triggered()), mp_Collection, SLOT(openAPIDoc()));
+
   QList<openfluid::ui::waresdev::WareSrcExplorer*> Explorers( { ui->SimExplorer, ui->ObsExplorer, ui->ExtExplorer });
 
   for (openfluid::ui::waresdev::WareSrcExplorer* Explorer : Explorers)
@@ -154,8 +157,11 @@ MainWindow::MainWindow() :
   }
 
   connect(mp_Collection, SIGNAL(currentTabChanged(const QString&)), this, SLOT(setCurrentPath(const QString&)));
+  connect(mp_Collection, SIGNAL(modifiedStatusChanged(bool, bool)), this, SLOT(updateSaveButtonsStatus(bool, bool)));
 
   setWorkspaceDefaults();
+
+  updateSaveButtonsStatus(false, false);
 }
 
 
@@ -247,6 +253,7 @@ void MainWindow::createMenus()
   Menu->addAction(mp_Toolbar->action("OpenFile"));
   Menu->addAction(mp_Toolbar->action("SaveFile"));
   Menu->addAction(m_Actions["SaveAsFile"]);
+  Menu->addAction(mp_Toolbar->action("SaveAllFiles"));
   Menu->addAction(mp_Toolbar->action("CloseFile"));
   Menu->addAction(mp_Toolbar->action("DeleteFile"));
   Menu->addSeparator();
@@ -278,6 +285,7 @@ void MainWindow::createMenus()
   SubMenu = Menu->addMenu(tr("OpenFLUID online"));
   SubMenu->addAction(m_Actions["HelpOnlineWeb"]);
   SubMenu->addAction(m_Actions["HelpOnlineCommunity"]);
+  SubMenu->addAction(mp_Toolbar->action("APIDoc"));
   Menu->addSeparator();
   Menu->addAction(m_Actions["HelpAbout"]);
 
@@ -297,8 +305,7 @@ void MainWindow::setWorkspaceDefaults()
   mp_Toolbar->action(Mode.contains("BUILDONLY", Qt::CaseInsensitive) ? "BuildOnly" : "BuildInstall")->trigger();
 
   QStringList LastOpenWares = Mgr->getLastOpenWares();
-  foreach(QString WarePath,LastOpenWares)
-    mp_Collection->openPath(WarePath);
+  foreach(QString WarePath,LastOpenWares)mp_Collection->openPath(WarePath);
 
   mp_Collection->setCurrent(Mgr->getLastActiveWare());
 }
@@ -361,9 +368,7 @@ void MainWindow::onOnlineCommunityAsked()
 
 void MainWindow::onAboutAsked()
 {
-  openfluid::ui::common::AboutDialog AboutDlg(this,
-                                              m_Actions["HelpOnlineWeb"],
-                                              m_Actions["HelpEmail"]);
+  openfluid::ui::common::AboutDialog AboutDlg(this, m_Actions["HelpOnlineWeb"], m_Actions["HelpEmail"]);
 
   AboutDlg.exec();
 }
@@ -397,4 +402,43 @@ void MainWindow::setCurrentPath(const QString& Path)
 
 // =====================================================================
 // =====================================================================
+
+
+void MainWindow::updateSaveButtonsStatus(bool FileModified, bool WareModified)
+{
+  mp_Toolbar->action("SaveFile")->setEnabled(FileModified);
+  mp_Toolbar->action("SaveAsFile")->setEnabled(FileModified);
+  mp_Toolbar->action("SaveAllFiles")->setEnabled(WareModified);
+  m_Actions["SaveAsFile"]->setEnabled(FileModified);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onDeleteWareRequested()
+{
+  QWidget* CurrentWidget = ui->toolBox->currentWidget();
+  QString SelectedPath = "";
+
+  if (CurrentWidget == ui->SimPage)
+    SelectedPath = ui->SimExplorer->getCurrentPath();
+  else if (CurrentWidget == ui->ObsPage)
+    SelectedPath = ui->ObsExplorer->getCurrentPath();
+  else if (CurrentWidget == ui->ExtPage)
+    SelectedPath = ui->ExtExplorer->getCurrentPath();
+
+  if (SelectedPath != "")
+  {
+    QString WarePath = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(SelectedPath).m_AbsolutePathOfWare;
+    if(WarePath != "")
+      mp_Collection->deleteWare(WarePath);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
