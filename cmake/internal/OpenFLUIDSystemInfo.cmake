@@ -103,6 +103,17 @@ IF(UNIX AND NOT CYGWIN)
         ENDIF()
       ENDIF()
       
+      IF(OF_DISTRO_ID STREQUAL "Fedora")
+        SET(OF_SYSTEM_IS_LINUX YES)        
+        SET(OF_DISTRO_IS_FEDORA YES)        
+        IF(OF_SYSTEM_IS_64BITS)
+          SET(OF_DISTRO_ARCH "x86_64")
+          SET(OF_LIBDIR_SUFFIX "64")
+        ELSE()
+          SET(OF_DISTRO_ARCH "i686")
+        ENDIF()
+      ENDIF()      
+      
     ENDIF()
             
   ELSE()
