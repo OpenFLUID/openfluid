@@ -44,7 +44,6 @@
 #include <QPlainTextEdit>
 #include <QCompleter>
 #include <QSignalMapper>
-#include <QStandardItemModel>
 #include <QMenu>
 
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
@@ -130,8 +129,6 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
     WareSrcFiletypeManager::CompletionRules_t m_CompletionRules;
 
     QSignalMapper* mp_SignalMapper;
-
-    QStandardItemModel* mp_CompletionModel;
 
     QMap<QString, QMenu*> m_InsertionMenus;
 

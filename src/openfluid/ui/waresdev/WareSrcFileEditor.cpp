@@ -46,6 +46,8 @@
 #include <QScrollBar>
 #include <QToolTip>
 #include <QInputDialog>
+#include <QStandardItemModel>
+#include <QSortFilterProxyModel>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
@@ -66,7 +68,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   m_SelectionTagsRegExp.setPattern("%%SEL_(START|END)%%");
   m_AllTagsRegExp.setPattern("%%(SEL_(START|END)|CURSOR|INDENT)%%");
   //TODO get "word part" characters from scanning xml completion strings ?
-  m_WordPartRegExp.setPattern("\\w|:");
+  m_WordPartRegExp.setPattern("\\w|:|#");
 
   // Line number management
 
@@ -120,7 +122,8 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   m_CompletionRules = WareSrcFiletypeManager::instance()->getCompletionRules(m_FilePath);
 
   mp_SignalMapper = new QSignalMapper(this);
-  mp_CompletionModel = new QStandardItemModel();
+
+  QStandardItemModel* CompletionModel = new QStandardItemModel();
 
   int row = 0;
   for (WareSrcFiletypeManager::CompletionRules_t::iterator it = m_CompletionRules.begin();
@@ -188,26 +191,28 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
       ContentForDetail = "";
     }
 
-    mp_CompletionModel->setItem(row, 0, new QStandardItem(ContentForList));
+    CompletionModel->setItem(row, 0, new QStandardItem(ContentForList));
     // setItem(...QIcon()...) doesn't allow to resize icon
     QPixmap PM = QPixmap::fromImage(QImage(it->IconPath));
-    mp_CompletionModel->setData(mp_CompletionModel->index(row, 0), PM.scaled(QSize(15, 15), Qt::KeepAspectRatio),
+    CompletionModel->setData(CompletionModel->index(row, 0), PM.scaled(QSize(15, 15), Qt::KeepAspectRatio),
                                 Qt::DecorationRole);
-    mp_CompletionModel->setItem(row, 1, new QStandardItem(ContentForDetail));
-    mp_CompletionModel->setItem(row, 2, new QStandardItem(Content));
+    CompletionModel->setItem(row, 1, new QStandardItem(ContentForDetail));
+    CompletionModel->setItem(row, 2, new QStandardItem(Content));
 
     row++;
   }
 
-  mp_CompletionModel->setSortRole(Qt::DisplayRole);
-  mp_CompletionModel->sort(0);
+  QSortFilterProxyModel* SortedCompletionModel = new QSortFilterProxyModel();
+  SortedCompletionModel->setSourceModel(CompletionModel);
+  SortedCompletionModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+  SortedCompletionModel->sort(0);
 
   mp_Completer = new QCompleter(this);
-  mp_Completer->setModel(mp_CompletionModel);
+  mp_Completer->setModel(SortedCompletionModel);
   mp_Completer->setCaseSensitivity(Qt::CaseInsensitive);
-  mp_Completer->setWidget(this);
   mp_Completer->setCompletionMode(QCompleter::PopupCompletion);
-  mp_Completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+  mp_Completer->setCompletionColumn(0);
+  mp_Completer->setWidget(this);
 
   connect(mp_Completer->popup()->selectionModel(), SIGNAL(currentRowChanged (const QModelIndex&, const QModelIndex&)),
           this, SLOT(onCompletionPopupCurrentRowChanged(const QModelIndex&, const QModelIndex&)));
