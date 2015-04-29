@@ -117,6 +117,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     bool isBuildNoInstallMode();
 
+    void deleteWare(const QString& WarePath);
+
   public slots:
 
     void openPath(const QString& Path);
@@ -167,8 +169,6 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void newSimulator();
     void newObserver();
     void newBuilderExtension();
-
-    void deleteCurrentWare();
 
     void showFindReplaceDialog();
 
