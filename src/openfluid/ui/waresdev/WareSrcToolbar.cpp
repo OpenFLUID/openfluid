@@ -105,6 +105,9 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubMenu->addAction(m_Actions["OpenTerminal"]);
     SubMenu->addAction(m_Actions["OpenExplorer"]);
 
+    SubMenu = Menu->addMenu(tr("Help"));
+    SubMenu->addAction(m_Actions["APIDoc"]);
+
     QToolButton* MenuButton = new QToolButton(this);
     MenuButton->setToolTip(tr("Menu"));
     MenuButton->setIcon(QIcon(":/ui/common/icons/menu.png"));
@@ -199,6 +202,9 @@ void WareSrcToolbar::createActions()
 
   m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
   m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
+
+  m_Actions["APIDoc"] = new QAction(tr("API documentation"), this);
+  m_Actions["APIDoc"]->setShortcuts(QKeySequence::HelpContents);
 
   foreach(QAction* Action,m_Actions.values())Action->setIconVisibleInMenu(true);
 }

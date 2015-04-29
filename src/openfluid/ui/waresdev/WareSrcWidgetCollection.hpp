@@ -178,6 +178,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void pasteText();
 
+    void openAPIDoc();
+
   private slots:
 
     void onWareTxtModified(WareSrcWidget* Widget, bool Modified);

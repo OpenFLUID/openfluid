@@ -193,6 +193,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void openExplorerRequested();
 
     void modifiedStatusChanged(bool CurrentEditorModified, bool WareModified);
+
+    void openAPIDocRequested();
 };
 
 } } }  // namespaces

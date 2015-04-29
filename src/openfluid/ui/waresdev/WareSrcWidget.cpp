@@ -103,6 +103,8 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
 
     connect(mp_StandaloneToolBar->action("OpenTerminal"), SIGNAL(triggered()), this, SIGNAL(openTerminalRequested()));
     connect(mp_StandaloneToolBar->action("OpenExplorer"), SIGNAL(triggered()), this, SIGNAL(openExplorerRequested()));
+
+    connect(mp_StandaloneToolBar->action("APIDoc"), SIGNAL(triggered()), this, SIGNAL(openAPIDocRequested()));
   }
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
