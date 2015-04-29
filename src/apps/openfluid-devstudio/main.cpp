@@ -37,7 +37,9 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <iostream>
+#include <typeinfo>
 
 #include <QTranslator>
 #include <QLibraryInfo>

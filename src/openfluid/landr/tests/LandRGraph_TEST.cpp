@@ -266,8 +266,10 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_LineStringGraph)
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Vector);
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector, "OFLD_ID","No_col"),openfluid::base::FrameworkException);
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector, "No_col","USR_LEN"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector, "OFLD_ID","No_col"),
+                    openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector, "No_col","USR_LEN"),
+                    openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorId("attribut",*Vector, "OFLD_ID","USR_LEN");
   std::vector<std::string> vAttributes=Graph->getAttributeNames();
@@ -339,8 +341,10 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_PolygonGraph)
   openfluid::landr::PolygonGraph* Graph =
       openfluid::landr::PolygonGraph::create(*Vector);
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector,"OFLD_ID", "No_col"),openfluid::base::FrameworkException);
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector,"No_col", "FLOW_CDE"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector,"OFLD_ID", "No_col"),
+                    openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorId("attribut",*Vector,"No_col", "FLOW_CDE"),
+                    openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorId("attribut",*Vector,"OFLD_ID", "FLOW_CDE");
   std::vector<std::string> vAttributes=Graph->getAttributeNames();
@@ -674,21 +678,14 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
 
 BOOST_AUTO_TEST_CASE(check_DuplicateGeometry)
 {
-  openfluid::core::GeoVectorValue duplicateSU(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "duplicateSU.shp");
+  openfluid::core::GeoVectorValue duplicateSU(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "duplicateSU.shp");
 
-  openfluid::landr::PolygonGraph* Graph;
-  BOOST_CHECK_THROW(Graph=
-      openfluid::landr::PolygonGraph::create(duplicateSU),
-      openfluid::base::FrameworkException);
+  openfluid::landr::PolygonGraph* Graph = nullptr;
+  BOOST_CHECK_THROW(Graph = openfluid::landr::PolygonGraph::create(duplicateSU),
+                    openfluid::base::FrameworkException);
 
-  delete Graph;
-
+  if (Graph != nullptr)
+    delete Graph;
 }
-
-
-// =====================================================================
-// =====================================================================
-
 
 

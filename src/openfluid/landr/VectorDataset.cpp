@@ -50,6 +50,7 @@
 #include <geos/geom/Polygon.h>
 #include <geos/geom/Coordinate.h>
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
+#include <openfluid/landr/GdalCompat.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -572,7 +573,7 @@ void VectorDataset::parse(unsigned int LayerIndex)
     }
     // c++ cast doesn't work (have to use the C API instead)
     geos::geom::Geometry* GeosGeom =
-        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+        (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
     geos::operation::valid::IsValidOp ValidOp(GeosGeom);
 
@@ -745,8 +746,8 @@ void VectorDataset::snapLineNodes(double Threshold,unsigned int LayerIndex)
       CoordSeq->setAt(*NewPEnd->getCoordinate(),CoordSeq->getSize()-1);
 
     geos::geom::LineString * NewLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(CoordSeq);
-    OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS(
-        (GEOSGeom) dynamic_cast<geos::geom::Geometry*>(NewLine));
+    OGRGeometry* OGRGeom =
+        openfluid::landr::convertGEOSGeometryToOGR((GEOSGeom) dynamic_cast<geos::geom::Geometry*>(NewLine));
     OGRFeature* OGRFeat = (*it).first;
     OGRFeat->SetGeometry(OGRGeom);
     geos::geom::Geometry* NewLineClone = NewLine->clone();
@@ -838,8 +839,8 @@ void VectorDataset::snapPolygonVertices(double Threshold,unsigned int LayerIndex
     geos::geom::Polygon * NewPolygon=geos::geom::GeometryFactory::getDefaultInstance()->createPolygon(
         geos::geom::GeometryFactory::getDefaultInstance()->createLinearRing(CoordSeq),nullptr);
 
-    OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS(
-        (GEOSGeom) dynamic_cast<geos::geom::Geometry*>(NewPolygon));
+    OGRGeometry* OGRGeom =
+        openfluid::landr::convertGEOSGeometryToOGR((GEOSGeom) dynamic_cast<geos::geom::Geometry*>(NewPolygon));
     OGRFeature* OGRFeat = (*it).first;
 
     OGRFeat->SetGeometry(OGRGeom);
@@ -907,7 +908,7 @@ std::string VectorDataset::checkTopology(double Threshold, unsigned int LayerInd
 
     // c++ cast doesn't work (have to use the C API instead)
     geos::geom::Geometry* GeosGeom =
-        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+        (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
     geos::operation::valid::IsValidOp ValidOp(GeosGeom);
 
@@ -1060,9 +1061,9 @@ void VectorDataset::cleanOverlap(double Threshold, unsigned int LayerIndex)
     OGRFeature *Feat2=lOverlaps.front().second;
 
     geos::geom::Geometry* Geom1 =
-        (geos::geom::Geometry*) Feat1->GetGeometryRef()->exportToGEOS();
+        (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(Feat1->GetGeometryRef());
     geos::geom::Geometry* Geom2 =
-        (geos::geom::Geometry*) Feat2->GetGeometryRef()->exportToGEOS();
+        (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(Feat2->GetGeometryRef());
 
     geos::geom::Geometry * Diff= Geom1->difference(Geom2);
 
@@ -1072,10 +1073,8 @@ void VectorDataset::cleanOverlap(double Threshold, unsigned int LayerIndex)
 
     geos::geom::Geometry* snappedEntityGeom2=snapEntityGeom2.release();
 
-    OGRGeometry* OGRGeom1 = OGRGeometryFactory::createFromGEOS(
-        (GEOSGeom) Diff);
-    OGRGeometry* OGRGeom2 = OGRGeometryFactory::createFromGEOS(
-        (GEOSGeom) snappedEntityGeom2);
+    OGRGeometry* OGRGeom1 = openfluid::landr::convertGEOSGeometryToOGR((GEOSGeom) Diff);
+    OGRGeometry* OGRGeom2 = openfluid::landr::convertGEOSGeometryToOGR((GEOSGeom) snappedEntityGeom2);
 
 
     Feat1->SetGeometry(OGRGeom1);

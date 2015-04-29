@@ -46,6 +46,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
+#include <openfluid/landr/GdalCompat.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
@@ -76,7 +77,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   OGRGeometry* OGRGeom = FirstFeature->GetGeometryRef();
 
   geos::geom::Geometry* GeosGeom =
-      (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+      (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
   openfluid::landr::PolygonEntity* Entity = new openfluid::landr::PolygonEntity(
       dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),

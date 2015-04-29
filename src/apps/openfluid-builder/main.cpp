@@ -54,7 +54,7 @@
 #include <openfluid/ui/config.hpp>
 
 #include <iostream>
-
+#include <typeinfo>
 
 
 int main(int argc, char** argv)

@@ -49,6 +49,7 @@
 #include <openfluid/core/IntegerValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/landr/GdalCompat.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
@@ -122,7 +123,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
     OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 
     geos::geom::Geometry* GeosGeom =
-        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+        (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
     openfluid::landr::LandREntity* Entity = new openfluid::landr::PolygonEntity(
         dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),

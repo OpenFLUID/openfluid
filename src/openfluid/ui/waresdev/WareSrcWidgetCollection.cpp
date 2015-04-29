@@ -725,13 +725,12 @@ void WareSrcWidgetCollection::showFindReplaceDialog()
   {
     mp_FindReplaceDialog = new FindReplaceDialog(mp_TabWidget);
 
-    connect(
-        mp_FindReplaceDialog,
-        SIGNAL(
-            findReplaceRequested( FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)),
-        this,
-        SLOT(
-            onFindReplaceRequested( FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)));
+    connect(mp_FindReplaceDialog, SIGNAL(findReplaceRequested( FindReplaceDialog::FindReplaceAction,
+                                                               const QString&, const QString&,
+                                                               QTextDocument::FindFlags)),
+            this,SLOT(onFindReplaceRequested( FindReplaceDialog::FindReplaceAction,
+                                              const QString&, const QString&,
+                                              QTextDocument::FindFlags)));
   }
 
   QString SelectedText = "";

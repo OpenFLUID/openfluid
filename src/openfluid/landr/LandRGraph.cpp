@@ -38,6 +38,7 @@
 
 #include "LandRGraph.hpp"
 
+#include <openfluid/landr/GdalCompat.hpp>
 #include <openfluid/landr/LandREntity.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
@@ -212,7 +213,7 @@ void LandRGraph::addEntitiesFromGeoVector()
 
     // c++ cast doesn't work (have to use the C API instead)
     geos::geom::Geometry* GeosGeom =
-        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+        (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
     addEntity(
         createNewEntity(GeosGeom->clone(), Feat->GetFieldAsInteger("OFLD_ID")));
@@ -488,7 +489,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::rasterPolygonizedPolys()
 
       // c++ cast doesn't work (have to use the C API instead)
       geos::geom::Geometry* GeosGeom =
-          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+          (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
       geos::geom::Polygon* Clone =
           dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone());
@@ -608,8 +609,7 @@ void LandRGraph::exportToShp(const std::string& FilePath,
 
     Feat->SetField("OFLD_ID", (int) (*it)->getOfldId());
 
-    OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS(
-        (GEOSGeom) (*it)->geometry());
+    OGRGeometry* OGRGeom = openfluid::landr::convertGEOSGeometryToOGR((GEOSGeom) (*it)->geometry());
 
     if (!OGRGeom)
     {
@@ -878,7 +878,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 
       // c++ cast doesn't work (have to use the C API instead)
       geos::geom::Geometry* GeosGeom =
-          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+          (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
       if (IntPoint->isWithinDistance(GeosGeom,Thresh))
       {
@@ -971,7 +971,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 
       // c++ cast doesn't work (have to use the C API instead)
       geos::geom::Geometry* GeosGeom =
-          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+          (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
 
       if(IntPoint->isWithinDistance(GeosGeom,Thresh))

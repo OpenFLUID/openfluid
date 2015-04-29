@@ -43,6 +43,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <tests-config.hpp>
+#include <openfluid/landr/GdalCompat.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
@@ -262,7 +263,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
       Features.begin(); it != Features.end(); ++it)
   {
     geos::geom::Geometry* GeosGeom =
-        (geos::geom::Geometry*) it->first->GetGeometryRef()->exportToGEOS();
+        (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(it->first->GetGeometryRef());
 
     BOOST_CHECK_EQUAL(GeosGeom->toString(), it->second->toString());
   }
@@ -288,7 +289,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
       Features.begin(); it != Features.end(); ++it)
   {
     geos::geom::Geometry* GeosGeom =
-        (geos::geom::Geometry*) it->first->GetGeometryRef()->exportToGEOS();
+        (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(it->first->GetGeometryRef());
 
     BOOST_CHECK_EQUAL(GeosGeom->toString(), it->second->toString());
     delete GeosGeom;

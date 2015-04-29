@@ -45,6 +45,7 @@
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/landr/GdalCompat.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
@@ -71,7 +72,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   OGRGeometry* OGRGeom = FirstFeature->GetGeometryRef();
 
   geos::geom::Geometry* GeosGeom =
-      (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+      (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
   openfluid::landr::LineStringEntity* Entity =
       new openfluid::landr::LineStringEntity(
@@ -109,7 +110,7 @@ BOOST_AUTO_TEST_CASE(check_clone)
   OGRGeometry* OGRGeom = FirstFeature->GetGeometryRef();
 
   geos::geom::Geometry* GeosGeom =
-      (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+      (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(OGRGeom);
 
   openfluid::landr::LineStringEntity* Entity =
       new openfluid::landr::LineStringEntity(

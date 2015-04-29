@@ -38,6 +38,7 @@
 
 #include "PolygonGraph.hpp"
 
+#include <openfluid/landr/GdalCompat.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/LandRTools.hpp>
@@ -559,7 +560,7 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
     geos::geom::Geometry* Geom =
         dynamic_cast<geos::geom::Geometry*>((dynamic_cast<PolygonEdge*>(*it))->line());
 
-    OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS((GEOSGeom) Geom);
+    OGRGeometry* OGRGeom = openfluid::landr::convertGEOSGeometryToOGR((GEOSGeom) Geom);
 
     if (!OGRGeom)
     {
