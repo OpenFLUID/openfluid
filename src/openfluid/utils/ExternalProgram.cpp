@@ -108,7 +108,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
-    ProgName = "zip.exe";
+    ProgNames << "zip.exe";
 #endif
   }
   else if (Prog == SevenZipProgram)
