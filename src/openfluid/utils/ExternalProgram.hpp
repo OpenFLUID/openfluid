@@ -54,7 +54,7 @@ class OPENFLUID_API ExternalProgram
 {
   private:
 
-    QString m_Program;
+    QStringList m_ProgramNames;
 
     QString m_FullProgramPath;
 
@@ -74,12 +74,23 @@ class OPENFLUID_API ExternalProgram
 
     /**
       Constructor for a given external programs. Automatically searches for the program at construction
-      @param[in] Program The program to find
+      @param[in] ProgramNames The possible names of the program to find
       @param[in] SearchPaths The list of paths to search. Default value is an empty list
       @param[in] UsePathEnv Enable the use of PATH environment variable to search for the program.
       Default value is true.
     */
-    ExternalProgram(const QString& Program,
+    ExternalProgram(const QStringList& ProgramNames,
+                    const QStringList& SearchPaths = QStringList(),
+                    bool UsePathEnv = true);
+
+    /**
+      Constructor for a given external programs. Automatically searches for the program at construction
+      @param[in] ProgramName The name of the program to find
+      @param[in] SearchPaths The list of paths to search. Default value is an empty list
+      @param[in] UsePathEnv Enable the use of PATH environment variable to search for the program.
+      Default value is true.
+    */
+    ExternalProgram(const QString& ProgramName,
                     const QStringList& SearchPaths = QStringList(),
                     bool UsePathEnv = true);
 
@@ -102,7 +113,7 @@ class OPENFLUID_API ExternalProgram
       @param[in] Program The command of the program to find
       @return The full path of the first found program
     */
-    static QString findUsingPATHEnvVar(const QString& Program);
+    static QString findUsingPATHEnvVar(const QStringList& ProgramNames);
 
     /**
       Finds a program using a given paths list
@@ -110,13 +121,14 @@ class OPENFLUID_API ExternalProgram
       @param[in] PathsList The list of paths to search
       @return The full path of the first found program
     */
-    static QString findUsingPathsList(const QString& Program, const QStringList& PathsList);
+    static QString findUsingPathsList(const QStringList& ProgramNames, const QStringList& PathsList);
 
     /**
       Returns true if the current program has been found
       @return true if the current program has been found
     */
-    bool isFound() const { return !m_FullProgramPath.isEmpty(); };
+    bool isFound() const
+    { return !m_FullProgramPath.isEmpty(); };
 
     /**
       Searches for the program
@@ -127,7 +139,8 @@ class OPENFLUID_API ExternalProgram
       Returns the full path of the program
       @return the full path of the program if it has been found, otherwise an empty string
     */
-    QString getFullProgramPath() const { return m_FullProgramPath; };
+    QString getFullProgramPath() const
+    { return m_FullProgramPath; };
 
 };
 

@@ -45,11 +45,26 @@
 
 namespace openfluid { namespace utils {
 
-ExternalProgram::ExternalProgram(const QString& Program,
+
+ExternalProgram::ExternalProgram(const QStringList& ProgramNames,
                                  const QStringList& SearchPaths,
                                  bool UsePathEnv) :
-  m_Program(Program), m_SearchPaths(SearchPaths), m_UsePathEnv(UsePathEnv)
+  m_ProgramNames(ProgramNames), m_SearchPaths(SearchPaths), m_UsePathEnv(UsePathEnv)
 {
+  searchForProgram();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ExternalProgram::ExternalProgram(const QString& ProgramName,
+                                 const QStringList& SearchPaths,
+                                 bool UsePathEnv) :
+  m_SearchPaths(SearchPaths), m_UsePathEnv(UsePathEnv)
+{
+  m_ProgramNames << ProgramName;
   searchForProgram();
 }
 
@@ -72,24 +87,24 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
                                                       const QStringList& SearchPaths,
                                                       bool UsePathEnv)
 {
-  QString ProgName;
+  QStringList ProgNames;
 
   QStringList ModSearchPaths = SearchPaths;
 
   if (Prog == CMakeProgram)
   {
 #if defined(OPENFLUID_OS_UNIX)
-    ProgName = "cmake";
+    ProgNames << "cmake";
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
-    ProgName = "cmake.exe";
+    ProgNames << "cmake.exe";
 #endif
   }
   else if (Prog == ZipProgram)
   {
 #if defined(OPENFLUID_OS_UNIX)
-    ProgName = "zip";
+    ProgNames << "zip";
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
@@ -99,80 +114,81 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
   else if (Prog == SevenZipProgram)
   {
 #if defined(OPENFLUID_OS_UNIX)
-    ProgName = "7z";
+    ProgNames << "7z";
+    ProgNames << "7za";
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
-    ProgName = "7z.exe";
+    ProgNames << "7z.exe";
 #endif
   }
   else if (Prog == GnuplotProgram)
   {
 #if defined(OPENFLUID_OS_UNIX)
-    ProgName = "gnuplot";
+    ProgNames << "gnuplot";
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
-    ProgName = "gnuplot.exe";
+    ProgNames << "gnuplot.exe";
 #endif
   }
   else if (Prog == GoogleEarthProgram)
   {
 #if defined(OPENFLUID_OS_UNIX)
-    ProgName = "google-earth";
+    ProgNames << "google-earth";
 #endif
 
 #if defined(OPENFLUID_OS_MAC)
-    ProgName = "Google Earth";
+    ProgNames << "Google Earth";
     ModSearchPaths.append("/Applications/Google Earth.app/Contents/MacOS/");
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
-    ProgName = "google-earth.exe";
+    ProgNames << "google-earth.exe";
 #endif
   }
   else if (Prog == GccProgram)
   {
 #if defined(OPENFLUID_OS_UNIX)
-    ProgName = "gcc";
+    ProgNames << "gcc";
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
-    ProgName = "gcc.exe";
+    ProgNames << "gcc.exe";
 #endif
   }
   else if (Prog == PdfLatexProgram)
   {
 #if defined(OPENFLUID_OS_UNIX)
-    ProgName = "pdflatex";
+    ProgNames << "pdflatex";
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
-    ProgName = "pdflatex.exe";
+    ProgNames << "pdflatex.exe";
 #endif
   }
   else if (Prog == BibTexProgram)
   {
 #if defined(OPENFLUID_OS_UNIX)
-    ProgName = "bibtex";
+    ProgNames << "bibtex";
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
-    ProgName = "bibtex.exe";
+    ProgNames << "bibtex.exe";
 #endif
   }
   else if (Prog == Latex2HTMLProgram)
   {
 #if defined(OPENFLUID_OS_UNIX)
-    ProgName = "latex2html";
+    ProgNames << "latex2html";
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
-    ProgName = "latex2html.exe";
+    ProgNames << "latex2html.exe";
 #endif
   }
 
-  return ExternalProgram(ProgName,ModSearchPaths,UsePathEnv);
+  return ExternalProgram(ProgNames,ModSearchPaths,UsePathEnv);
 }
 
 
@@ -180,7 +196,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
 // =====================================================================
 
 
-QString ExternalProgram::findUsingPATHEnvVar(const QString& Program)
+QString ExternalProgram::findUsingPATHEnvVar(const QStringList& ProgramNames)
 {
   QString PATHStr(qgetenv("PATH"));
 
@@ -197,7 +213,7 @@ QString ExternalProgram::findUsingPATHEnvVar(const QString& Program)
 #endif
   }
 
-  return findUsingPathsList(Program,PathsList);
+  return findUsingPathsList(ProgramNames,PathsList);
 }
 
 
@@ -205,12 +221,16 @@ QString ExternalProgram::findUsingPATHEnvVar(const QString& Program)
 // =====================================================================
 
 
-QString ExternalProgram::findUsingPathsList(const QString& Program, const QStringList& PathsList)
+QString ExternalProgram::findUsingPathsList(const QStringList& ProgramNames, const QStringList& PathsList)
 {
-  for (int i=0; i< PathsList.size();i++)
+  for (auto& CurrentPath : PathsList)
   {
-    QFileInfo FileToTest(QDir(PathsList[i]),Program);
-    if (FileToTest.isFile()) return FileToTest.absoluteFilePath();
+    for (auto& CurentName : ProgramNames)
+    {
+      QFileInfo FileToTest(QDir(CurrentPath),CurentName);
+      if (FileToTest.isFile())
+        return FileToTest.absoluteFilePath();
+    }
   }
 
   return "";
@@ -226,10 +246,10 @@ void ExternalProgram::searchForProgram()
   m_FullProgramPath = "";
 
   if (!m_SearchPaths.isEmpty())
-    m_FullProgramPath = findUsingPathsList(m_Program,m_SearchPaths);
+    m_FullProgramPath = findUsingPathsList(m_ProgramNames,m_SearchPaths);
 
   if (m_FullProgramPath.isEmpty() && m_UsePathEnv)
-    m_FullProgramPath = findUsingPATHEnvVar(m_Program);
+    m_FullProgramPath = findUsingPATHEnvVar(m_ProgramNames);
 }
 
 } } // namespaces
