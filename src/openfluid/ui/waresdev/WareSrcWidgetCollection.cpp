@@ -824,4 +824,17 @@ void WareSrcWidgetCollection::openAPIDoc()
 // =====================================================================
 
 
+void WareSrcWidgetCollection::goToLine()
+{
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+    CurrentWare->goToLine();
+  else
+    QMessageBox::warning(0, "No open ware", "Open a ware first");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 } } }  //namespaces

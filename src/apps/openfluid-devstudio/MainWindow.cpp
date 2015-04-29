@@ -127,11 +127,11 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("CloseFile"), SIGNAL(triggered()), mp_Collection, SLOT(closeCurrentEditor()));
   connect(mp_Toolbar->action("DeleteFile"), SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentFile()));
 
-  connect(m_Actions["Copy"], SIGNAL(triggered()), mp_Collection, SLOT(copyText()));
-  connect(m_Actions["Cut"], SIGNAL(triggered()), mp_Collection, SLOT(cutText()));
-  connect(m_Actions["Paste"], SIGNAL(triggered()), mp_Collection, SLOT(pasteText()));
-  connect(m_Actions["FindReplace"], SIGNAL(triggered()), mp_Collection, SLOT(showFindReplaceDialog()));
-  connect(m_Actions["GoToLine"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->action("Copy"), SIGNAL(triggered()), mp_Collection, SLOT(copyText()));
+  connect(mp_Toolbar->action("Cut"), SIGNAL(triggered()), mp_Collection, SLOT(cutText()));
+  connect(mp_Toolbar->action("Paste"), SIGNAL(triggered()), mp_Collection, SLOT(pasteText()));
+  connect(mp_Toolbar->action("FindReplace"), SIGNAL(triggered()), mp_Collection, SLOT(showFindReplaceDialog()));
+  connect(mp_Toolbar->action("GoToLine"), SIGNAL(triggered()), mp_Collection, SLOT(goToLine()));
 
   connect(mp_Toolbar->action("Release"), SIGNAL(triggered()), mp_Collection, SLOT(setReleaseMode()));
   connect(mp_Toolbar->action("Debug"), SIGNAL(triggered()), mp_Collection, SLOT(setDebugMode()));
@@ -205,20 +205,6 @@ void MainWindow::createLocalActions()
    (http://qt-project.org/doc/qt-4.8/qaction.html#menuRole-prop)*/
   m_Actions["Quit"]->setMenuRole(QAction::QuitRole);
 
-  m_Actions["Copy"] = new QAction(tr("Copy"), this);
-  m_Actions["Copy"]->setShortcuts(QKeySequence::Copy);
-
-  m_Actions["Cut"] = new QAction(tr("Cut"), this);
-  m_Actions["Cut"]->setShortcuts(QKeySequence::Cut);
-
-  m_Actions["Paste"] = new QAction(tr("Paste"), this);
-  m_Actions["Paste"]->setShortcuts(QKeySequence::Paste);
-
-  m_Actions["FindReplace"] = new QAction(tr("Find/Replace"), this);
-  m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);
-
-  m_Actions["GoToLine"] = new QAction(tr("Go to line..."), this);
-
   //Help menu
   m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
   m_Actions["HelpOnlineCommunity"] = new QAction(tr("Community site"), this);
@@ -261,11 +247,11 @@ void MainWindow::createMenus()
   Menu->addAction(m_Actions.value("Quit"));
 
   Menu = menuBar()->addMenu(tr("Edit"));
-  Menu->addAction(m_Actions.value("Copy"));
-  Menu->addAction(m_Actions.value("Cut"));
-  Menu->addAction(m_Actions.value("Paste"));
-  Menu->addAction(m_Actions.value("FindReplace"));
-  Menu->addAction(m_Actions.value("GoToLine"));
+  Menu->addAction(mp_Toolbar->action("Copy"));
+  Menu->addAction(mp_Toolbar->action("Cut"));
+  Menu->addAction(mp_Toolbar->action("Paste"));
+  Menu->addAction(mp_Toolbar->action("FindReplace"));
+  Menu->addAction(mp_Toolbar->action("GoToLine"));
 
   Menu = menuBar()->addMenu(tr("Build"));
   Menu->addAction(mp_Toolbar->action("Configure"));
@@ -432,7 +418,7 @@ void MainWindow::onDeleteWareRequested()
   if (SelectedPath != "")
   {
     QString WarePath = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(SelectedPath).m_AbsolutePathOfWare;
-    if(WarePath != "")
+    if (WarePath != "")
       mp_Collection->deleteWare(WarePath);
   }
 }

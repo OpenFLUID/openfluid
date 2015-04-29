@@ -90,6 +90,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubMenu->addAction(m_Actions["Cut"]);
     SubMenu->addAction(m_Actions["Paste"]);
     SubMenu->addAction(m_Actions["FindReplace"]);
+    SubMenu->addAction(m_Actions["GoToLine"]);
 
     SubMenu = Menu->addMenu(tr("Build"));
     SubMenu->addAction(m_Actions["Configure"]);
@@ -169,6 +170,9 @@ void WareSrcToolbar::createActions()
 
   m_Actions["FindReplace"] = new QAction(tr("Find/Replace"), this);
   m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);
+
+  m_Actions["GoToLine"] = new QAction(tr("Go to line..."), this);
+  m_Actions["GoToLine"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
 
   m_Actions["Configure"] = new QAction(QIcon(":/ui/common/icons/configure.png"), tr("Configure ware"), this);
   m_Actions["Configure"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B));

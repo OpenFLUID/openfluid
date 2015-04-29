@@ -168,6 +168,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void pasteText();
 
+    void goToLine();
+
   private slots:
 
     void onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified);

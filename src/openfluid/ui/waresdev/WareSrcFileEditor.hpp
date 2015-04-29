@@ -208,6 +208,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     bool getShowLineMarkers();
 
+    void goToLine();
+
   public slots :
 
     void setShowLineMarkers(bool ShowMarkers);

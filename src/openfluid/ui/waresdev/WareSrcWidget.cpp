@@ -93,6 +93,7 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
     connect(mp_StandaloneToolBar->action("Cut"), SIGNAL(triggered()), this, SLOT(cutText()));
     connect(mp_StandaloneToolBar->action("Paste"), SIGNAL(triggered()), this, SLOT(pasteText()));
     connect(mp_StandaloneToolBar->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
+    connect(mp_StandaloneToolBar->action("GoToLine"), SIGNAL(triggered()), this, SLOT(goToLine()));
 
     connect(mp_StandaloneToolBar->action("Release"), SIGNAL(triggered()), this, SLOT(setReleaseMode()));
     connect(mp_StandaloneToolBar->action("Debug"), SIGNAL(triggered()), this, SLOT(setDebugMode()));
@@ -711,6 +712,19 @@ void WareSrcWidget::checkModifiedStatus()
   }
 
   emit modifiedStatusChanged(IsCurrentEditorModified, IsWareModified);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::goToLine()
+{
+  if (WareSrcFileEditor* Editor = currentEditor())
+    Editor->goToLine();
+  else
+    QMessageBox::warning(0, tr("No open file"), tr("No open editor"));
 }
 
 

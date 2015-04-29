@@ -45,6 +45,7 @@
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QToolTip>
+#include <QInputDialog>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
@@ -893,6 +894,29 @@ void WareSrcFileEditor::setShowLineMarkers(bool ShowMarkers)
 bool WareSrcFileEditor::getShowLineMarkers()
 {
   return m_ShowLineMarkers;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::goToLine()
+{
+  bool Ok;
+
+  QString NbTxt = QInputDialog::getText(this, tr("Go to line"), tr("Enter the line number to which to go:"),
+                                        QLineEdit::Normal, "", &Ok);
+  if (!Ok)
+    return;
+
+  int Nb = NbTxt.toInt(&Ok);
+
+  if (!Ok)
+    return;
+
+  if (Nb > 0 && Nb < document()->lineCount())
+    selectLine(Nb);
 }
 
 
