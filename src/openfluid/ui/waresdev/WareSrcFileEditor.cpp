@@ -799,6 +799,7 @@ QString WareSrcFileEditor::getSelectedText()
 void WareSrcFileEditor::clearLineMessages()
 {
   m_LineMarkersByBlock.clear();
+  setShowLineMarkers(true);
 }
 
 
