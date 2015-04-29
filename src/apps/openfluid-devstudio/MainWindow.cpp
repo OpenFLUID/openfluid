@@ -142,6 +142,8 @@ MainWindow::MainWindow() :
   connect(mp_Toolbar->action("OpenExplorer"), SIGNAL(triggered()), mp_Collection, SLOT(openExplorer()));
   connect(mp_Toolbar->action("OpenTerminal"), SIGNAL(triggered()), mp_Collection, SLOT(openTerminal()));
 
+  connect(mp_Toolbar->action("APIDoc"), SIGNAL(triggered()), mp_Collection, SLOT(openAPIDoc()));
+
   QList<openfluid::ui::waresdev::WareSrcExplorer*> Explorers( { ui->SimExplorer, ui->ObsExplorer, ui->ExtExplorer });
 
   for (openfluid::ui::waresdev::WareSrcExplorer* Explorer : Explorers)
@@ -283,6 +285,7 @@ void MainWindow::createMenus()
   SubMenu = Menu->addMenu(tr("OpenFLUID online"));
   SubMenu->addAction(m_Actions["HelpOnlineWeb"]);
   SubMenu->addAction(m_Actions["HelpOnlineCommunity"]);
+  SubMenu->addAction(mp_Toolbar->action("APIDoc"));
   Menu->addSeparator();
   Menu->addAction(m_Actions["HelpAbout"]);
 

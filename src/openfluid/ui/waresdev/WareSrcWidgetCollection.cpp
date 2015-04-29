@@ -48,6 +48,7 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/config.hpp>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
@@ -120,6 +121,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
       connect(Widget, SIGNAL(findReplaceRequested()), this, SLOT(showFindReplaceDialog()));
       connect(Widget, SIGNAL(openTerminalRequested()), this, SLOT(openTerminal()));
       connect(Widget, SIGNAL(openExplorerRequested()), this, SLOT(openExplorer()));
+      connect(Widget, SIGNAL(openAPIDocRequested()), this, SLOT(openAPIDoc()));
 
       connect(Widget, SIGNAL(modifiedStatusChanged(bool, bool)), this, SIGNAL(modifiedStatusChanged(bool, bool)));
     }
@@ -723,10 +725,13 @@ void WareSrcWidgetCollection::showFindReplaceDialog()
   {
     mp_FindReplaceDialog = new FindReplaceDialog(mp_TabWidget);
 
-    connect(mp_FindReplaceDialog, SIGNAL(findReplaceRequested(
-        FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)),
-        this, SLOT(onFindReplaceRequested(
-        FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)));
+    connect(
+        mp_FindReplaceDialog,
+        SIGNAL(
+            findReplaceRequested( FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)),
+        this,
+        SLOT(
+            onFindReplaceRequested( FindReplaceDialog::FindReplaceAction, const QString&, const QString&, QTextDocument::FindFlags)));
   }
 
   QString SelectedText = "";
@@ -803,6 +808,16 @@ void WareSrcWidgetCollection::checkModifiedStatus()
     Ware->checkModifiedStatus();
   else
     emit modifiedStatusChanged(false, false);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::openAPIDoc()
+{
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_APIDOC), QUrl::TolerantMode));
 }
 
 
