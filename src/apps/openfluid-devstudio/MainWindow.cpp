@@ -111,7 +111,7 @@ MainWindow::MainWindow() :
   connect(m_Actions["OpenObserver"], SIGNAL(triggered()), mp_Collection, SLOT(openObserver()));
   connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection, SLOT(openBuilderExtension()));
   connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), mp_Collection, SLOT(saveAsMayBeAboveWare()));
-  connect(m_Actions["DeleteWare"], SIGNAL(triggered()), mp_Collection, SLOT(deleteCurrentWare()));
+  connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this, SLOT(onDeleteWareRequested()));
   connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
 
@@ -407,6 +407,31 @@ void MainWindow::updateSaveButtonsStatus(bool FileModified, bool WareModified)
   mp_Toolbar->action("SaveAsFile")->setEnabled(FileModified);
   mp_Toolbar->action("SaveAllFiles")->setEnabled(WareModified);
   m_Actions["SaveAsFile"]->setEnabled(FileModified);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onDeleteWareRequested()
+{
+  QWidget* CurrentWidget = ui->toolBox->currentWidget();
+  QString SelectedPath = "";
+
+  if (CurrentWidget == ui->SimPage)
+    SelectedPath = ui->SimExplorer->getCurrentPath();
+  else if (CurrentWidget == ui->ObsPage)
+    SelectedPath = ui->ObsExplorer->getCurrentPath();
+  else if (CurrentWidget == ui->ExtPage)
+    SelectedPath = ui->ExtExplorer->getCurrentPath();
+
+  if (SelectedPath != "")
+  {
+    QString WarePath = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(SelectedPath).m_AbsolutePathOfWare;
+    if(WarePath != "")
+      mp_Collection->deleteWare(WarePath);
+  }
 }
 
 

@@ -95,6 +95,8 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void updateSaveButtonsStatus(bool FileModified, bool WareModified);
 
+    void onDeleteWareRequested();
+
   public:
 
     MainWindow();

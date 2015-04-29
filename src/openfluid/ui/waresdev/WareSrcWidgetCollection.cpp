@@ -646,25 +646,20 @@ void WareSrcWidgetCollection::openWare(openfluid::waresdev::WareSrcManager::Ware
 // =====================================================================
 
 
-void WareSrcWidgetCollection::deleteCurrentWare()
+void WareSrcWidgetCollection::deleteWare(const QString& WarePath)
 {
-  if (WareSrcWidget* CurrentWare = currentWareWidget())
-  {
-    QString Path = CurrentWare->wareSrcContainer().getAbsolutePath();
+  if (QMessageBox::warning(QApplication::activeWindow(), tr("Delete ware"),
+                           tr("Are you sure you want to delete \"%1\" and all its content?").arg(WarePath),
+                           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
+      == QMessageBox::Cancel)
+    return;
 
-    if (QMessageBox::warning(QApplication::activeWindow(), tr("Delete ware"),
-                             tr("Are you sure you want to delete \"%1\" and all its content?").arg(Path),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
-        == QMessageBox::Cancel)
-      return;
+  QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
+  if (it != m_WareSrcWidgetByPath.end())
+    closeWareTab(it.value());
 
-    closeWareTab(CurrentWare);
-
-    if (!openfluid::tools::Filesystem::removeDirectory(Path.toStdString()))
-      QMessageBox::critical(0, "Error", tr("Unable to remove the directory \"%1\"").arg(Path));
-  }
-  else
-    QMessageBox::warning(0, "No open ware", "Open a ware first");
+  if (!openfluid::tools::Filesystem::removeDirectory(WarePath.toStdString()))
+    QMessageBox::critical(0, "Error", tr("Unable to remove the directory \"%1\"").arg(WarePath));
 }
 
 
