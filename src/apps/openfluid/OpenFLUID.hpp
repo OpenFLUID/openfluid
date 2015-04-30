@@ -82,9 +82,9 @@ class OpenFLUIDApp
 
     void printEnvInfos();
 
-    void printSimulatorsList();
+    void printSimulatorsList(bool PrintErrors = false);
 
-    void printMonitoring();
+    void printObserversList(bool PrintErrors = false);
 
     void printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureUnitsGraph HandledUnitsGraph,
                                                 std::string Suffix);

@@ -152,7 +152,7 @@ void SimulatorSignatureRegistry::update()
 
   // searching for pluggable simulators
   std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
-      openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();
+      openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures().AvailablePlugins;
 
   for (unsigned int i = 0; i < Signatures.size(); i++)
   {
