@@ -155,21 +155,21 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 // =====================================================================
 
 
-void OpenFLUIDApp::printSimulatorsList()
+void OpenFLUIDApp::printSimulatorsList(bool PrintErrors)
 {
 
-  std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
+  openfluid::machine::SimulatorPluginsManager::PluginsSearchResults SearchResults =
     openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();
 
   std::cout << "Available simulators:" << std::endl;
 
   bool OneAtLeast = false;
 
-  for (unsigned int i=0;i<PlugContainers.size();i++)
+  for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
   {
-    if (PlugContainers[i]->Verified && PlugContainers[i]->Signature!=NULL)
+    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature!=NULL)
     {
-      std::cout << "  - " << PlugContainers[i]->Signature->ID << std::endl;
+      std::cout << " - " << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
       OneAtLeast = true;
     }
   }
@@ -179,6 +179,15 @@ void OpenFLUIDApp::printSimulatorsList()
     std::cout << "  (none)" << std::endl;
   }
   std::cout << std::endl;
+
+  if (PrintErrors && !SearchResults.ErroredFiles.empty())
+  {
+    std::cout << "Errored simulators files:" << std::endl;
+
+    for (auto& it : SearchResults.ErroredFiles)
+      std::cout << " - " << it.first <<  ": " << it.second << std::endl;
+  }
+
   std::cout.flush();
 
 }
@@ -188,21 +197,22 @@ void OpenFLUIDApp::printSimulatorsList()
 // =====================================================================
 
 
-void OpenFLUIDApp::printMonitoring()
+void OpenFLUIDApp::printObserversList(bool PrintErrors)
 {
 
-  std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
+  openfluid::machine::ObserverPluginsManager::PluginsSearchResults SearchResults =
     openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures();
+
 
   std::cout << "Available observers:" << std::endl;
 
   bool OneAtLeast = false;
 
-  for (unsigned int i=0;i<PlugContainers.size();i++)
+  for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
   {
-    if (PlugContainers[i]->Verified && PlugContainers[i]->Signature!=NULL)
+    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature!=NULL)
     {
-      std::cout << "  - " << PlugContainers[i]->Signature->ID << std::endl;
+      std::cout << "  - " << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
       OneAtLeast = true;
     }
   }
@@ -212,8 +222,17 @@ void OpenFLUIDApp::printMonitoring()
     std::cout << "  (none)" << std::endl;
   }
   std::cout << std::endl;
-  std::cout.flush();
 
+
+  if (PrintErrors && !SearchResults.ErroredFiles.empty())
+  {
+    std::cout << "Errored observers files:" << std::endl;
+
+    for (auto& it : SearchResults.ErroredFiles)
+      std::cout << it.first <<  ": " << it.second << std::endl;
+  }
+
+  std::cout.flush();
 }
 
 
@@ -413,7 +432,7 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
 {
 
   std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
-      openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures(Pattern);
+      openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures(Pattern).AvailablePlugins;
   std::string StatusStr;
 
 
@@ -496,7 +515,7 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
 void OpenFLUIDApp::printObserversReport(const std::string Pattern)
 {
   std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
-      openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures(Pattern);
+      openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures(Pattern).AvailablePlugins;
   std::string StatusStr;
 
 
@@ -516,6 +535,7 @@ void OpenFLUIDApp::printObserversReport(const std::string Pattern)
   std::cout.flush();
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -815,6 +835,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   // reporting
   openfluid::utils::CommandLineCommand ReportCmd("report","Display informations about available wares");
   ReportCmd.addOption(openfluid::utils::CommandLineOption("list","l","display simple list instead of report"));
+  ReportCmd.addOption(openfluid::utils::CommandLineOption("with-errors","e","show errored wares during search"));
   for (auto& Opt : SearchOptions)
     ReportCmd.addOption(Opt);
   Parser.addCommand(ReportCmd);
@@ -943,6 +964,10 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     if (Parser.extraArgs().size() > 1)
       MatchStr = Parser.extraArgs().at(1);
 
+    bool ReportErrors = false;
+    if (Parser.command(ActiveCommandStr).isOptionActive("with-errors"))
+      ReportErrors = true;
+
     if (Waretype == "simulators")
     {
       if (Parser.command(ActiveCommandStr).isOptionActive("simulators-paths"))
@@ -954,7 +979,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       if (Parser.command(ActiveCommandStr).isOptionActive("list"))
       {
         m_RunType = InfoRequest;
-        printSimulatorsList();
+        printSimulatorsList(ReportErrors);
         return;
       }
       else
@@ -976,7 +1001,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       if (Parser.command(ActiveCommandStr).isOptionActive("list"))
       {
         m_RunType = InfoRequest;
-        printMonitoring();
+        printObserversList(ReportErrors);
         return;
       }
       else

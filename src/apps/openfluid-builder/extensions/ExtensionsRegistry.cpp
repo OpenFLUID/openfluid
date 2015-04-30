@@ -83,7 +83,8 @@ void ExtensionsRegistry::registerExtensions()
 {
   if (m_IsRegistered) return;
 
-  std::vector<ExtensionContainer*> ExtVector = ExtensionPluginsManager::instance()->getAvailableWaresSignatures();
+  std::vector<ExtensionContainer*> ExtVector =
+      ExtensionPluginsManager::instance()->getAvailableWaresSignatures().AvailablePlugins;
 
   for (unsigned int i=0; i<ExtVector.size(); i++)
     m_Extensions[ExtVector[i]->Signature->ID] = ExtVector[i];

@@ -163,52 +163,60 @@ class OPENFLUID_API WarePluginsManager
       std::string PluginFullPath = getPluginFullPath(PluginFilename);
       S* Plug = NULL;
 
-      QLibrary* PlugLib = loadWare(PluginFullPath);
+      openfluid::base::ExceptionContext ECtxt =
+          openfluid::base::FrameworkException::computeContext(OPENFLUID_CODE_LOCATION)
+          .addInfos({{"pluginfullpath",PluginFullPath},{"pluginfilename",PluginFilename}});
 
       // library loading
-      if (PlugLib && PlugLib->load())
+      QLibrary* PlugLib = loadWare(PluginFullPath);
+
+
+      if (PlugLib)
       {
-        Plug = new M();
-        Plug->FileFullPath = PluginFullPath;
-
-        GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
-
-        if (ABIVersionProc)
+        if (PlugLib->load())
         {
-          Plug->Verified =
-              (openfluid::tools::compareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
-        }
-        else Plug->Verified = false;
+          Plug = new M();
+          Plug->FileFullPath = PluginFullPath;
 
+          GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
 
-        if (Plug->Verified)
-        {
-          BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
-          SP SignatureProc = (SP)PlugLib->resolve(WARESIGNATURE_PROC_NAME);
-
-          // checks if the handle procs exist
-          if (SignatureProc && BodyProc)
+          if (ABIVersionProc)
           {
-            Plug->Signature = SignatureProc();
-
-            if (Plug->Signature == NULL)
-              throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                        "Signature from plugin file " + PluginFilename +
-                                                        " cannot be instanciated");
-
             Plug->Verified =
-                QString::fromStdString(PluginFilename).startsWith(QString::fromStdString(Plug->Signature->ID));
-
-            Plug->WithParametersWidget = PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
+                (openfluid::tools::compareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
           }
-          else
-            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                      "Format error in plugin file " + PluginFilename);
+          else Plug->Verified = false;
+
+
+          if (Plug->Verified)
+          {
+            BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
+            SP SignatureProc = (SP)PlugLib->resolve(WARESIGNATURE_PROC_NAME);
+
+            // checks if the handle procs exist
+            if (SignatureProc && BodyProc)
+            {
+              Plug->Signature = SignatureProc();
+
+              if (Plug->Signature == NULL)
+                throw openfluid::base::FrameworkException(ECtxt,"Signature cannot be instanciated from plugin file");
+
+              Plug->Verified =
+                  QString::fromStdString(PluginFilename).startsWith(QString::fromStdString(Plug->Signature->ID));
+
+              Plug->WithParametersWidget = PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
+            }
+            else
+              throw openfluid::base::FrameworkException(ECtxt,"Format error in plugin file");
+          }
+        }
+        else
+        {
+          throw openfluid::base::FrameworkException(ECtxt,PlugLib->errorString().toStdString());
         }
       }
       else
-        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Unable to find plugin file " + PluginFilename);
+        throw openfluid::base::FrameworkException(ECtxt,"Unable to find plugin file");
 
       return Plug;
     }
@@ -234,6 +242,15 @@ class OPENFLUID_API WarePluginsManager
 
 
   public:
+
+    class PluginsSearchResults
+    {
+      public:
+        std::vector<S*> AvailablePlugins;
+
+        std::map<std::string,std::string> ErroredFiles;
+    };
+
 
     virtual ~WarePluginsManager()
     {
@@ -269,9 +286,9 @@ class OPENFLUID_API WarePluginsManager
     /**
       Lists available wares
     */
-    std::vector<S*> getAvailableWaresSignatures(const std::string& Pattern = "")
+    PluginsSearchResults getAvailableWaresSignatures(const std::string& Pattern = "")
     {
-      std::vector<S*> PluginsContainers;
+      PluginsSearchResults SearchResults;
       std::vector<std::string> PluginsPaths = getPluginsSearchPaths();
       std::vector<std::string> PluginFiles;
       std::vector<std::string> TmpFiles;
@@ -288,24 +305,31 @@ class OPENFLUID_API WarePluginsManager
       }
 
 
-      S* CurrentPlug;
+      S* CurrentPlug = NULL;
 
       for (i=0;i<PluginFiles.size();i++)
       {
-        CurrentPlug = getWareSignature(PluginFiles[i]);
+        try
+        {
+          CurrentPlug = getWareSignature(PluginFiles[i]);
+        }
+        catch (openfluid::base::FrameworkException& E )
+        {
+          SearchResults.ErroredFiles[E.getContext().at("pluginfullpath")] = E.getMessage();
+        }
 
         if (CurrentPlug != NULL && CurrentPlug->Verified)
         {
           if (Pattern != "")
           {
             if (openfluid::tools::matchWithWildcard(Pattern,CurrentPlug->Signature->ID))
-              PluginsContainers.push_back(CurrentPlug);
+              SearchResults.AvailablePlugins.push_back(CurrentPlug);
           }
-          else PluginsContainers.push_back(CurrentPlug);
+          else SearchResults.AvailablePlugins.push_back(CurrentPlug);
         }
       }
 
-      return PluginsContainers;
+      return SearchResults;
     }
 
 

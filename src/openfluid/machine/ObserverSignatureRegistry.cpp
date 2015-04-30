@@ -95,7 +95,7 @@ void ObserverSignatureRegistry::update()
 {
   openfluid::machine::ObserverPluginsManager::instance()->unloadAllWares();
   m_AvailableSignatures =
-      openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures();
+      openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures().AvailablePlugins;
 
   openfluid::machine::ObserverPluginsManager::instance()->unloadAllWares();
 }
