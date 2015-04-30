@@ -910,17 +910,13 @@ void WareSrcFileEditor::goToLine()
 {
   bool Ok;
 
-  QString NbTxt = QInputDialog::getText(this, tr("Go to line"), tr("Enter the line number to which to go:"),
-                                        QLineEdit::Normal, "", &Ok);
+  QInputDialog Dialog(this);
+  int Nb = QInputDialog::getInt(this, tr("Go to line"), tr("Enter the line number to which to go:"),
+                                        1,1,2147483647,1, &Ok);
   if (!Ok)
     return;
 
-  int Nb = NbTxt.toInt(&Ok);
-
-  if (!Ok)
-    return;
-
-  if (Nb > 0 && Nb < document()->lineCount())
+  if (Nb < document()->lineCount())
     selectLine(Nb);
 }
 
