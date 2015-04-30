@@ -29,7 +29,14 @@
 #  
 ##
 
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)  
+
+MESSAGE(STATUS "Found OpenFLUID helpers scripts")
+
+
+###########################################################################
+
   
 MACRO(_OPENFLUID_ADD_WARE_MESSAGES _WAREID _WARETYPE _WAREFILES _WARETARGET)
   MESSAGE(STATUS "***** ${_WARETYPE} ${_WAREID} *****")
