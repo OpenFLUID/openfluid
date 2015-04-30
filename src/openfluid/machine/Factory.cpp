@@ -235,7 +235,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 {
 
   openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::const_iterator it;
-  ModelItemInstance* IInstance;
+  ModelItemInstance* IInstance = nullptr;
 
 
   if (ModelDesc.items().empty())

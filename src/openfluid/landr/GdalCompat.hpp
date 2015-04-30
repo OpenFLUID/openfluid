@@ -52,7 +52,7 @@ namespace openfluid { namespace landr {
 GEOSGeom OPENFLUID_API convertOGRGeometryToGEOS(const OGRGeometry* Geometry);
 
 
-OGRGeometry* OPENFLUID_API convertGEOSGeometryToOGR(const GEOSGeom Geometry);
+OGRGeometry* /*OPENFLUID_API*/ convertGEOSGeometryToOGR(const GEOSGeom Geometry);
 
 
 } }  // namespaces
