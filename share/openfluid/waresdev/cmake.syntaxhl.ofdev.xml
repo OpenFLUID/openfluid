@@ -479,8 +479,8 @@
         </list>
         
         <rule name="string" style="quoted">
-          <pattern value='\".*\"' />
-          <pattern value="\'.*\'" />
+          <pattern value='\"[^\"]*\"' />
+          <pattern value="\'[^\']*\'" />
         </rule>
         
         <rule name="comment" style="comment">

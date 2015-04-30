@@ -97,8 +97,8 @@ BOOST_AUTO_TEST_CASE(checkRegExp)
   multiComment.indexIn("/ bla ");
   BOOST_CHECK(multiComment.matchedLength() == -1);
 
-  BOOST_CHECK(QRegExp("\".*\"").indexIn(" bla \"text text \"") != -1);  // <pattern value='\".*\"' />
-  BOOST_CHECK(QRegExp("\'.*\'").indexIn(" bla 'text text '") != -1);  // <pattern value="\'.*\'" />
+  BOOST_CHECK(QRegExp("\"[^\"]*\"").indexIn(" bla \"text text \"") != -1);  // <pattern value='\"[^\"]*\"' />
+  BOOST_CHECK(QRegExp("\'[^\']*\'").indexIn(" bla 'text text '") != -1);  // <pattern value="\'[^\']*\'" />
 
   QRegExp function("\\w+\\s*(?=\\()");  //<pattern value="\w+\s*(?=\()" />
   BOOST_CHECK(function.indexIn("func()") != -1);

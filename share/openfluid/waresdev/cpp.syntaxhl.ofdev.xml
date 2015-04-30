@@ -217,8 +217,8 @@
         </rule>
         
         <rule name="string" style="quoted">
-          <pattern value='\".*\"' />
-          <pattern value="\'.*\'" />
+          <pattern value='\"[^\"]*\"' />
+          <pattern value="\'[^\']*\'" />
         </rule>
         
         <rule name="comment-singleline" style="comment">
