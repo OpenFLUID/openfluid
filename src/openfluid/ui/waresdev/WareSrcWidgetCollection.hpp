@@ -182,6 +182,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void goToLine();
 
+    void closeEditor(const QString& FilePath);
+
   private slots:
 
     void onWareTxtModified(WareSrcWidget* Widget, bool Modified);

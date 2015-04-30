@@ -89,10 +89,14 @@ class OPENFLUID_API WareExplorerDialog: public QDialog
 
     static QString getCreateFilePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath = "");
 
+    static QString getCreateFolderPath(QWidget* Parent, const QString& TopDirectoryPath,
+                                       const QString& CurrentPath = "");
+
     void setOpenWareMode();
     void setOpenFileMode();
     void setSaveFileMode();
     void setCreateFileMode();
+    void setCreateFolderMode();
 
     /*
      * Returns the path selected in the explorer (may be a file or a directory)
@@ -111,7 +115,8 @@ class OPENFLUID_API WareExplorerDialog: public QDialog
     void onCurrentChangedSaveCreateMode(const QString& Path);
 
     void onTextChangedSaveMode(const QString& Text);
-    void onTextChangedCreateMode(const QString& Text);
+    void onTextChangedCreateFileMode(const QString& Text);
+    void onTextChangedCreateFolderMode(const QString& Text);
 
     void onDoubleClickedFileMode();
 };

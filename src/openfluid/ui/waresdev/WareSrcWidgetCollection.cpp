@@ -837,4 +837,18 @@ void WareSrcWidgetCollection::goToLine()
 // =====================================================================
 
 
+void WareSrcWidgetCollection::closeEditor(const QString& FilePath)
+{
+  QString WarePath = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(FilePath).m_AbsolutePathOfWare;
+
+  QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
+  if (it != m_WareSrcWidgetByPath.end())
+    it.value()->closeFileTab(FilePath);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 } } }  //namespaces

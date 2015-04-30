@@ -184,6 +184,24 @@ QString WareExplorerDialog::getCreateFilePath(QWidget* Parent, const QString& To
 // =====================================================================
 
 
+QString WareExplorerDialog::getCreateFolderPath(QWidget* Parent, const QString& TopDirectoryPath,
+                                                const QString& CurrentPath)
+{
+  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("New folder"), tr("Define the folder to create"),
+                            tr("OK"));
+  Dialog.setCreateFolderMode();
+
+  if (Dialog.exec())
+    return Dialog.getCompleteFilePath();
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareExplorerDialog::setOpenWareMode()
 {
   ui->Filepath_widget->setVisible(false);
@@ -236,15 +254,34 @@ void WareExplorerDialog::setSaveFileMode()
 void WareExplorerDialog::setCreateFileMode()
 {
   connect(ui->Filepath_lineEdit, SIGNAL(textChanged(const QString &)), this,
-          SLOT(onTextChangedCreateMode(const QString&)));
+          SLOT(onTextChangedCreateFileMode(const QString&)));
 
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
           SLOT(onCurrentChangedSaveCreateMode(const QString&)));
 
-  onTextChangedCreateMode(ui->Filepath_lineEdit->text());
+  onTextChangedCreateFileMode(ui->Filepath_lineEdit->text());
   onCurrentChangedSaveCreateMode(ui->WareExplorer->getCurrentPath());
 
   ui->Filepath_lineEdit->setText("file.txt");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareExplorerDialog::setCreateFolderMode()
+{
+  connect(ui->Filepath_lineEdit, SIGNAL(textChanged(const QString &)), this,
+          SLOT(onTextChangedCreateFileMode(const QString&)));
+
+  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
+          SLOT(onCurrentChangedSaveCreateMode(const QString&)));
+
+  onTextChangedCreateFolderMode(ui->Filepath_lineEdit->text());
+  onCurrentChangedSaveCreateMode(ui->WareExplorer->getCurrentPath());
+
+  ui->Filepath_lineEdit->setText("new_folder");
 }
 
 
@@ -300,7 +337,7 @@ void WareExplorerDialog::onTextChangedSaveMode(const QString& Text)
 // =====================================================================
 
 
-void WareExplorerDialog::onTextChangedCreateMode(const QString& Text)
+void WareExplorerDialog::onTextChangedCreateFileMode(const QString& Text)
 {
   QString Msg = "";
   if (Text.isEmpty())
@@ -309,6 +346,24 @@ void WareExplorerDialog::onTextChangedCreateMode(const QString& Text)
     Msg = "You must enter the path of a file that doesn't already exist";
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
     Msg = "The file path must be below the parent directory";
+
+  setStatus(Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareExplorerDialog::onTextChangedCreateFolderMode(const QString& Text)
+{
+  QString Msg = "";
+  if (Text.isEmpty())
+    Msg = "You must enter a folder path";
+  else if (QFile(getCompleteFilePath()).exists())
+    Msg = "You must enter the path of a folder that doesn't already exist";
+  else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
+    Msg = "The folder path must be below the parent directory";
 
   setStatus(Msg);
 }

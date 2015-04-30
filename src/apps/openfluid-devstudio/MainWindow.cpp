@@ -152,6 +152,9 @@ MainWindow::MainWindow() :
     connect(Explorer, SIGNAL(clicked(const QString&)), mp_Collection, SLOT(setCurrent(const QString&)));
     connect(Explorer, SIGNAL(openExplorerAsked(const QString&)), mp_Collection, SLOT(openExplorer(const QString&)));
     connect(Explorer, SIGNAL(openTerminalAsked(const QString&)), mp_Collection, SLOT(openTerminal(const QString&)));
+    connect(Explorer, SIGNAL(openPathAsked(const QString&)), mp_Collection, SLOT(openPath(const QString&)));
+    connect(Explorer, SIGNAL(deleteWareAsked()), this, SLOT(onDeleteWareRequested()));
+    connect(Explorer, SIGNAL(fileDeleted(const QString&)), mp_Collection, SLOT(closeEditor(const QString&)));
 
     connect(mp_Collection, SIGNAL(editorSaved()), Explorer, SLOT(emitDataChanged()));
   }

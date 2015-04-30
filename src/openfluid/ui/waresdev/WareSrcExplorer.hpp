@@ -40,6 +40,7 @@
 #define __OPENFLUID_UIWARESDEV_WARESRCEXPLORER_HPP__
 
 #include <QTreeView>
+#include <QContextMenuEvent>
 
 #include <openfluid/dllexport.hpp>
 
@@ -77,6 +78,14 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void scrollToCurrent();
 
+    void onCustomContextMenuRequested(const QPoint& Point);
+
+    void onNewFileAsked();
+
+    void onNewFolderAsked();
+
+    void onDeleteFileAsked();
+
   public:
 
     WareSrcExplorer(QWidget* Parent = 0);
@@ -100,6 +109,12 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
     void openExplorerAsked(const QString& FilePath);
 
     void openTerminalAsked(const QString& FilePath);
+
+    void openPathAsked(const QString& FilePath);
+
+    void deleteWareAsked();
+
+    void fileDeleted(const QString& Path);
 
   public slots:
 

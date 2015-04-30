@@ -39,9 +39,12 @@
 #include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 
 #include <QAction>
-#include <QTimer>
+#include <QMenu>
+#include <QMessageBox>
 
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
+#include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
+#include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -94,16 +97,36 @@ void WareSrcExplorer::configure(const QString& TopDirectoryPath, bool WithContex
 
   if (WithContextMenu)
   {
-    QAction* OpenExplorerAction = new QAction("Open a file explorer", this);
-    connect(OpenExplorerAction, SIGNAL(triggered()), this, SLOT(onOpenExplorerAsked()));
-    addAction(OpenExplorerAction);
-
-    QAction* OpenTerminaAction = new QAction("Open a terminal", this);
-    connect(OpenTerminaAction, SIGNAL(triggered()), this, SLOT(onOpenTerminalAsked()));
-    addAction(OpenTerminaAction);
-
-    setContextMenuPolicy(Qt::ActionsContextMenu);
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(onCustomContextMenuRequested(const QPoint&)));
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
+{
+  QMenu Menu;
+
+  Menu.addAction("New file", this, SLOT(onNewFileAsked()));
+  Menu.addAction("New folder", this, SLOT(onNewFolderAsked()));
+
+  Menu.addSeparator();
+
+  Menu.addAction("Delete ware", this, SIGNAL(deleteWareAsked()));
+  QAction* DeleteFileAction = Menu.addAction("Delete file", this, SLOT(onDeleteFileAsked()));
+  if (currentIndex().isValid() && mp_Model->isDir(currentIndex()))
+    DeleteFileAction->setEnabled(false);
+
+  Menu.addSeparator();
+
+  Menu.addAction("Open a terminal", this, SLOT(onOpenTerminalAsked()));
+  Menu.addAction("Open a file explorer", this, SLOT(onOpenExplorerAsked()));
+
+  Menu.exec(viewport()->mapToGlobal(Point));
 }
 
 
@@ -193,7 +216,7 @@ QString WareSrcExplorer::getCurrentPath()
 
 bool WareSrcExplorer::setCurrentPath(const QString& Path)
 {
-  if(Path.contains(m_TopDirectoryPath))
+  if (Path.contains(m_TopDirectoryPath))
   {
     setCurrentIndex(mp_Model->index(Path));
     return true;
@@ -220,6 +243,75 @@ void WareSrcExplorer::scrollToCurrent()
 void WareSrcExplorer::emitDataChanged()
 {
   mp_Model->emitDataChanged();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onNewFileAsked()
+{
+  if (!currentIndex().isValid())
+    return;
+
+  openfluid::waresdev::WareSrcManager::PathInfo PInfo = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(
+      mp_Model->filePath(currentIndex()));
+
+  NewSrcFileAssistant Assistant(
+      openfluid::waresdev::WareSrcContainer(PInfo.m_AbsolutePathOfWare, PInfo.m_WareType, PInfo.m_WareName), this);
+  Assistant.exec();
+
+  QString NewFilePath = Assistant.getNewFilePath();
+
+  if (!NewFilePath.isEmpty())
+    emit openPathAsked(NewFilePath);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onNewFolderAsked()
+{
+  if (!currentIndex().isValid())
+    return;
+
+  QString CurrentPath = mp_Model->filePath(currentIndex());
+
+  QString WarePath = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(CurrentPath).m_AbsolutePathOfWare;
+
+  QString NewPath = WareExplorerDialog::getCreateFolderPath(this, WarePath, CurrentPath);
+
+  if (!NewPath.isEmpty())
+  {
+    QDir(WarePath).mkdir(NewPath);
+    setCurrentPath(NewPath);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onDeleteFileAsked()
+{
+  if (!currentIndex().isValid())
+    return;
+
+  QString CurrentPath = mp_Model->filePath(currentIndex());
+
+  if (QMessageBox::warning(this, tr("Delete file"), tr("Are you sure you want to delete \"%1\"?").arg(CurrentPath),
+                           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
+      == QMessageBox::Cancel)
+    return;
+
+  if (QDir().remove(CurrentPath))
+    emit fileDeleted(CurrentPath);
+  else
+    QMessageBox::critical(0, "Error", tr("Unable to remove the file \"%1\"").arg(CurrentPath));
 }
 
 
