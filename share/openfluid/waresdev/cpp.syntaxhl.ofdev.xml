@@ -214,6 +214,10 @@
           <pattern value="openfluid::tools::SplitString" />
           <pattern value="OPENFLUID_IsUnitClassExist" />                  
           <pattern value="DECLARE_SIMULATOR_PARAM" />
+          <pattern value="DECLARE_REQUIRED_VAR(?!\w)" />
+          <pattern value="DECLARE_USED_VAR(?!\w)" />
+          <pattern value="DECLARE_PRODUCED_VAR(?!\w)" />
+          <pattern value="DECLARE_UPDATED_VAR(?!\w)" />
         </rule>
         
         <rule name="string" style="quoted">

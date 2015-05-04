@@ -204,7 +204,7 @@ int WareSrcWidget::onCloseFileTabRequested(int Index, bool WithConfirm)
     {
       QMessageBox MsgBox;
       MsgBox.setText(tr("The document has been modified."));
-      MsgBox.setInformativeText(tr("Do you want to save your changes?"));
+      MsgBox.setInformativeText(tr("Do you want to save changes?"));
       MsgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
       MsgBox.setDefaultButton(QMessageBox::Save);
       Choice = MsgBox.exec();
@@ -496,7 +496,7 @@ QString WareSrcWidget::saveAs(const QString& TopDirectory)
   WareSrcFileEditor* CurrentEditor = currentEditor();
   if (!CurrentEditor)
   {
-    QMessageBox::warning(0, tr("No open file"), tr("No file to save as"));
+    QMessageBox::warning(0, tr("No open file"), tr("No file to save"));
     return "";
   }
 

@@ -75,14 +75,14 @@ NewWareDialog::NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type,
   switch (m_WareType)
   {
     case openfluid::waresdev::WareSrcManager::SIMULATOR:
-      m_DefaultMsg = "Create a new simulator";
+      m_DefaultMsg = tr("Create a new simulator");
       WareId = "sim.id";
       SrcFilename = "MySim.cpp";
       SrcClassname = "MySimulator";
       ui->BuilderExt_widget->setVisible(false);
       break;
     case openfluid::waresdev::WareSrcManager::OBSERVER:
-      m_DefaultMsg = "Create a new observer";
+      m_DefaultMsg = tr("Create a new observer");
       WareId = "obs.id";
       SrcFilename = "MyObs.cpp";
       SrcClassname = "MyObserver";
@@ -90,7 +90,7 @@ NewWareDialog::NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type,
       ui->BuilderExt_widget->setVisible(false);
       break;
     case openfluid::waresdev::WareSrcManager::BUILDEREXT:
-      m_DefaultMsg = "Create a new Builder extension";
+      m_DefaultMsg = tr("Create a new Builder extension");
       WareId = "bext.id";
       SrcFilename = "MyExt.cpp";
       SrcClassname = "MyExtension";
@@ -101,14 +101,14 @@ NewWareDialog::NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type,
       break;
   }
 
-  QString IdTooltip;
+  QString IDTooltip;
   QString CppTooltip;
   QString ClassTooltip;
   QRegExp CppRegExp = openfluid::waresdev::WareSrcFactory::getCppFilenameRegExp(CppTooltip);
   QRegExp ClassnameRegExp = openfluid::waresdev::WareSrcFactory::getClassnameRegExp(ClassTooltip);
   ui->Id_lineEdit->setValidator(
-      new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getWareIdRegExp(IdTooltip), this));
-  ui->Id_lineEdit->setToolTip(IdTooltip);
+      new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getWareIdRegExp(IDTooltip), this));
+  ui->Id_lineEdit->setToolTip(IDTooltip);
   ui->Id_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
   ui->SourceFilename_lineEdit->setValidator(new QRegExpValidator(CppRegExp, this));
   ui->SourceFilename_lineEdit->setToolTip(CppTooltip);
@@ -157,17 +157,17 @@ void NewWareDialog::onInformationChanged()
   QString WarningMsg = "";
 
   if (!ui->Id_lineEdit->hasAcceptableInput())
-    WarningMsg = "You must enter an Id for this new ware";
+    WarningMsg = tr("Ware ID is empty");
   else if (m_WareTypeDir.exists(ui->Id_lineEdit->text()))
-    WarningMsg = "You must enter the Id of a ware that doesn't already exist";
+    WarningMsg = tr("Ware ID already exists");
   else if (!ui->SourceFilename_lineEdit->hasAcceptableInput())
-    WarningMsg = "Source file name must be of the form \"xxx.cpp\"";
+    WarningMsg = tr("Source file name must be of the form \"filexxx.cpp\"");
   else if (!ui->ClassName_lineEdit->hasAcceptableInput())
-    WarningMsg = "You must enter a source class name";
+    WarningMsg = tr("Main class name is empty");
   else if (ui->UiParam_groupBox->isChecked() && !ui->UiParamSourceFilename_lineEdit->hasAcceptableInput())
-    WarningMsg = "Ui parameterization file name must be of the form \"xxx.cpp\"";
+    WarningMsg = tr("UI parameterization file name must be of the form \"filexxx.cpp\"");
   else if (ui->UiParam_groupBox->isChecked() && !ui->UiParamClassName_lineEdit->hasAcceptableInput())
-    WarningMsg = "You must enter an Ui parameterization class name";
+    WarningMsg = tr("UI parameterization class name is empty");
 
   setStatus(WarningMsg);
 }
@@ -255,7 +255,7 @@ void NewWareDialog::accept()
 
   Ok = m_WareTypeDir.mkdir(WareId);
   if (!Ok)
-    ErrMsg = "Unable to create the ware directory";
+    ErrMsg = tr("Unable to create the ware directory");
   else
     Ok = Factory.createCMakeListsFile(NewFilePath, ErrMsg);
 
@@ -286,7 +286,7 @@ void NewWareDialog::accept()
   {
     if (m_WareTypeDir.exists(WareId))
       openfluid::tools::emptyDirectoryRecursively(m_WareTypeDir.absoluteFilePath(WareId).toStdString());
-    QMessageBox::warning(this, tr("Error"), tr("Unable to create the ware : %1").arg(ErrMsg));
+    QMessageBox::warning(this, tr("Error"), tr("Unable to create the ware \"%1\"").arg(ErrMsg));
   }
 }
 

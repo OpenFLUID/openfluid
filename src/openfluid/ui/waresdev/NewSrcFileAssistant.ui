@@ -27,7 +27,16 @@
     <string notr="true">0</string>
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -67,7 +76,7 @@ font : bold;
 </string>
            </property>
            <property name="text">
-            <string notr="true">Choose the type of file you want to create</string>
+            <string>New file</string>
            </property>
           </widget>
          </item>
@@ -78,7 +87,16 @@ font : bold;
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <item>
@@ -141,9 +159,9 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="HppUi_radioButton">
+       <widget class="QRadioButton" name="CppUi_radioButton">
         <property name="text">
-         <string>Ui-parameterization header file (.hpp)</string>
+         <string>Parameterization UI source file (.cpp)</string>
         </property>
         <attribute name="buttonGroup">
          <string notr="true">buttonGroup</string>
@@ -151,9 +169,9 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="CppUi_radioButton">
+       <widget class="QRadioButton" name="HppUi_radioButton">
         <property name="text">
-         <string>Ui-parameterization source file (.cpp)</string>
+         <string>Parameterization UI header file (.hpp)</string>
         </property>
         <attribute name="buttonGroup">
          <string notr="true">buttonGroup</string>
@@ -260,7 +278,16 @@ font : bold;
     <string notr="true">1</string>
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_4">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -311,7 +338,16 @@ font : bold;
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <item>
@@ -368,7 +404,6 @@ font : bold;
   <tabstop>Cpp_radioButton</tabstop>
   <tabstop>Hpp_radioButton</tabstop>
   <tabstop>HppUi_radioButton</tabstop>
-  <tabstop>CppUi_radioButton</tabstop>
   <tabstop>CMakeLists_radioButton</tabstop>
   <tabstop>CMakeConfig_radioButton</tabstop>
   <tabstop>Wareshub_radioButton</tabstop>

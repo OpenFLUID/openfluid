@@ -159,7 +159,7 @@ void AppActions::createActions()
   m_Actions["DevOpenSimulator"] = new QAction(tr("Open simulator..."), this);
   m_Actions["DevOpenObserver"] = new QAction(tr("Open observer..."), this);
 
-  m_Actions["DevLaunchDevStudio"] = new QAction(tr("OpenFLUID-DevStudio"), this);
+  m_Actions["DevLaunchDevStudio"] = new QAction("OpenFLUID-DevStudio", this);
   m_Actions["DevLaunchDevStudio"]->setIcon(QIcon(":/icons/wares-development.png"));
 
 

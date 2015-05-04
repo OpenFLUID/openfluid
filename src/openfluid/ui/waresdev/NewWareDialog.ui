@@ -7,14 +7,23 @@
     <x>0</x>
     <y>0</y>
     <width>644</width>
-    <height>746</height>
+    <height>719</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>New ware</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -68,7 +77,16 @@ font : bold;
      <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin">
+     <property name="leftMargin">
+      <number>9</number>
+     </property>
+     <property name="topMargin">
+      <number>9</number>
+     </property>
+     <property name="rightMargin">
+      <number>9</number>
+     </property>
+     <property name="bottomMargin">
       <number>9</number>
      </property>
      <item>
@@ -82,7 +100,7 @@ font : bold;
           </font>
          </property>
          <property name="text">
-          <string>Ware id</string>
+          <string>Ware ID</string>
          </property>
         </widget>
        </item>
@@ -113,6 +131,9 @@ font : bold;
         <bool>false</bool>
        </property>
        <layout class="QFormLayout" name="formLayout_5">
+        <property name="labelAlignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
         <property name="verticalSpacing">
          <number>6</number>
         </property>
@@ -147,6 +168,9 @@ font : bold;
           <property name="text">
            <string>C++ class name</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
          </widget>
         </item>
         <item row="1" column="1">
@@ -168,7 +192,16 @@ font : bold;
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -187,7 +220,7 @@ font : bold;
         <item>
          <widget class="QGroupBox" name="UiParam_groupBox">
           <property name="title">
-           <string>Generate Ui parameterization files</string>
+           <string>Generate UI parameterization files</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -214,13 +247,25 @@ font : bold;
            <item>
             <widget class="QWidget" name="UiParam_widget" native="true">
              <layout class="QFormLayout" name="formLayout_9">
-              <property name="margin">
+              <property name="labelAlignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
                <number>0</number>
               </property>
               <item row="0" column="0">
                <widget class="QLabel" name="UiParamSourceFilename_label">
                 <property name="text">
-                 <string>Ui parameterization source file name (.cpp)</string>
+                 <string>UI parameterization source file name (.cpp)</string>
                 </property>
                </widget>
               </item>
@@ -237,7 +282,7 @@ font : bold;
               <item row="1" column="0">
                <widget class="QLabel" name="label_15">
                 <property name="text">
-                 <string>Ui parameterization C++ class name</string>
+                 <string>UI parameterization C++ class name</string>
                 </property>
                </widget>
               </item>
@@ -266,7 +311,16 @@ font : bold;
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -285,9 +339,12 @@ font : bold;
         <item>
          <widget class="QGroupBox" name="Sim2doc_groupBox">
           <property name="title">
-           <string>sim2doc</string>
+           <string notr="true">sim2doc</string>
           </property>
           <layout class="QFormLayout" name="formLayout">
+           <property name="labelAlignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
            <property name="verticalSpacing">
             <number>6</number>
            </property>
@@ -316,7 +373,7 @@ font : bold;
            <item row="1" column="0">
             <widget class="QLabel" name="enableBuildOfDocumentationUsingSim2docLabel">
              <property name="text">
-              <string>Installation enabled</string>
+              <string>Enable installation</string>
              </property>
             </widget>
            </item>
@@ -342,7 +399,16 @@ font : bold;
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -381,6 +447,9 @@ font : bold;
            <string>Extension parameters</string>
           </property>
           <layout class="QFormLayout" name="formLayout_4">
+           <property name="labelAlignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
            <property name="leftMargin">
             <number>9</number>
            </property>
@@ -396,7 +465,7 @@ font : bold;
            <item row="0" column="0">
             <widget class="QLabel" name="BextCategory_label">
              <property name="text">
-              <string>Extension category</string>
+              <string>Category</string>
              </property>
             </widget>
            </item>
@@ -469,7 +538,7 @@ font : bold;
        <property name="sizeHint" stdset="0">
         <size>
          <width>20</width>
-         <height>40</height>
+         <height>10</height>
         </size>
        </property>
       </spacer>

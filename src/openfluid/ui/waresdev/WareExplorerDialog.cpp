@@ -68,7 +68,7 @@ WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirect
   QRegExp FilepathRx(QString("[a-zA-Z0-9._%1-]+").arg(QDir::separator()));
   ui->Filepath_lineEdit->setValidator(new QRegExpValidator(FilepathRx, this));
   ui->Filepath_lineEdit->setToolTip(
-      tr("Accepts only letters, digits, dashes ('-'), underscores ('_'), dots ('.') and folder separators ('%1').").arg(
+      tr("Accepts only letters, digits, dashes ('-'), underscores ('_'), dots ('.') and paths separators ('%1').").arg(
           QDir::separator()));
   ui->Filepath_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
@@ -102,8 +102,9 @@ WareExplorerDialog::~WareExplorerDialog()
 QString WareExplorerDialog::getOpenWarePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& Title,
                                             const QString& CurrentPath)
 {
-  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, Title.isEmpty() ? "Open ware" : Title,
-                            tr("Choose the directory of the ware to open"), tr("Open"));
+  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath,
+                            Title.isEmpty() ? tr("Open ware") : Title,
+                            tr("Open a ware"), tr("Open"));
   Dialog.setOpenWareMode();
 
   if (Dialog.exec())
@@ -120,7 +121,8 @@ QString WareExplorerDialog::getOpenWarePath(QWidget* Parent, const QString& TopD
 QString WareExplorerDialog::getOpenFilePath(QWidget* Parent, const QString& TopDirectoryPath,
                                             const QString& CurrentPath)
 {
-  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("Open file"), tr("Choose the file to open"),
+  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("Open file"),
+                            tr("Open a file"),
                             tr("Open"));
   Dialog.setOpenFileMode();
 
@@ -169,7 +171,8 @@ QString WareExplorerDialog::getSaveFilePath(QWidget* Parent, const QString& TopD
 QString WareExplorerDialog::getCreateFilePath(QWidget* Parent, const QString& TopDirectoryPath,
                                               const QString& CurrentPath)
 {
-  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("New file"), tr("Define the file to create"),
+  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("New file"),
+                            tr("Create a file"),
                             tr("OK"));
   Dialog.setCreateFileMode();
 
@@ -187,7 +190,8 @@ QString WareExplorerDialog::getCreateFilePath(QWidget* Parent, const QString& To
 QString WareExplorerDialog::getCreateFolderPath(QWidget* Parent, const QString& TopDirectoryPath,
                                                 const QString& CurrentPath)
 {
-  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("New folder"), tr("Define the folder to create"),
+  WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("New folder"),
+                            tr("Create a folder"),
                             tr("OK"));
   Dialog.setCreateFolderMode();
 
@@ -291,7 +295,7 @@ void WareExplorerDialog::setCreateFolderMode()
 
 void WareExplorerDialog::onCurrentChangedOpenWareMode(const QString& Path)
 {
-  setStatus(mp_Manager->getPathInfo(Path).m_isAWare ? "" : "You must select a ware directory");
+  setStatus(mp_Manager->getPathInfo(Path).m_isAWare ? "" : tr("No ware directory selected"));
 }
 
 
@@ -301,7 +305,7 @@ void WareExplorerDialog::onCurrentChangedOpenWareMode(const QString& Path)
 
 void WareExplorerDialog::onCurrentChangedOpenFileMode(const QString& Path)
 {
-  setStatus(QFileInfo(Path).isFile() ? "" : "You must select a file");
+  setStatus(QFileInfo(Path).isFile() ? "" : tr("No file selected"));
 }
 
 
@@ -323,11 +327,11 @@ void WareExplorerDialog::onTextChangedSaveMode(const QString& Text)
 {
   QString Msg = "";
   if (Text.isEmpty())
-    Msg = "You must enter a file path";
+    Msg = tr("No file path");
   else if (QFileInfo(getCompleteFilePath()).isDir())
-    Msg = "You must enter the path of a file";
+    Msg = tr("Path is not a file");
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
-    Msg = "The file path must be below the parent directory";
+    Msg = tr("File path is not inside the parent directory");
 
   setStatus(Msg);
 }
@@ -341,11 +345,11 @@ void WareExplorerDialog::onTextChangedCreateFileMode(const QString& Text)
 {
   QString Msg = "";
   if (Text.isEmpty())
-    Msg = "You must enter a file path";
+    Msg = tr("No file path");
   else if (QFile(getCompleteFilePath()).exists())
-    Msg = "You must enter the path of a file that doesn't already exist";
+    Msg = tr("File already exists");
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
-    Msg = "The file path must be below the parent directory";
+    Msg = tr("File path is not inside the parent directory");
 
   setStatus(Msg);
 }
@@ -359,11 +363,11 @@ void WareExplorerDialog::onTextChangedCreateFolderMode(const QString& Text)
 {
   QString Msg = "";
   if (Text.isEmpty())
-    Msg = "You must enter a folder path";
+    Msg = tr("No folder path");
   else if (QFile(getCompleteFilePath()).exists())
-    Msg = "You must enter the path of a folder that doesn't already exist";
+    Msg = tr("Folder already exists");
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
-    Msg = "The folder path must be below the parent directory";
+    Msg = tr("Folder path is not inside the parent directory");
 
   setStatus(Msg);
 }

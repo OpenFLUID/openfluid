@@ -111,20 +111,20 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 {
   QMenu Menu;
 
-  Menu.addAction("New file", this, SLOT(onNewFileAsked()));
-  Menu.addAction("New folder", this, SLOT(onNewFolderAsked()));
+  Menu.addAction(tr("New file"), this, SLOT(onNewFileAsked()));
+  Menu.addAction(tr("New folder"), this, SLOT(onNewFolderAsked()));
 
   Menu.addSeparator();
 
-  Menu.addAction("Delete ware", this, SIGNAL(deleteWareAsked()));
-  QAction* DeleteFileAction = Menu.addAction("Delete file", this, SLOT(onDeleteFileAsked()));
+  Menu.addAction(tr("Delete ware"), this, SIGNAL(deleteWareAsked()));
+  QAction* DeleteFileAction = Menu.addAction(tr("Delete file"), this, SLOT(onDeleteFileAsked()));
   if (currentIndex().isValid() && mp_Model->isDir(currentIndex()))
     DeleteFileAction->setEnabled(false);
 
   Menu.addSeparator();
 
-  Menu.addAction("Open a terminal", this, SLOT(onOpenTerminalAsked()));
-  Menu.addAction("Open a file explorer", this, SLOT(onOpenExplorerAsked()));
+  Menu.addAction(tr("Open a terminal"), this, SLOT(onOpenTerminalAsked()));
+  Menu.addAction(tr("Open a file explorer"), this, SLOT(onOpenExplorerAsked()));
 
   Menu.exec(viewport()->mapToGlobal(Point));
 }
@@ -311,7 +311,7 @@ void WareSrcExplorer::onDeleteFileAsked()
   if (QDir().remove(CurrentPath))
     emit fileDeleted(CurrentPath);
   else
-    QMessageBox::critical(0, "Error", tr("Unable to remove the file \"%1\"").arg(CurrentPath));
+    QMessageBox::critical(0, tr("Error"), tr("Unable to remove the file \"%1\"").arg(CurrentPath));
 }
 
 

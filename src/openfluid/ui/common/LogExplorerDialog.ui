@@ -39,14 +39,14 @@
          </font>
         </property>
         <property name="text">
-         <string>DirectoryLabel</string>
+         <string notr="true">DirectoryLabel</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="ChangeDirButton">
         <property name="text">
-         <string>Change...</string>
+         <string>Browse...</string>
         </property>
        </widget>
       </item>

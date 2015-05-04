@@ -94,11 +94,11 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
 
     SubMenu = Menu->addMenu(tr("Build"));
     SubMenu->addAction(m_Actions["Configure"]);
-    QMenu* SubSubMenu = SubMenu->addMenu(tr("Set active configuration"));
+    QMenu* SubSubMenu = SubMenu->addMenu(tr("Active configuration"));
     SubSubMenu->addAction(m_Actions["Release"]);
     SubSubMenu->addAction(m_Actions["Debug"]);
     SubMenu->addAction(m_Actions["Build"]);
-    SubSubMenu = SubMenu->addMenu(tr("Set active build action"));
+    SubSubMenu = SubMenu->addMenu(tr("Active build action"));
     SubSubMenu->addAction(m_Actions["BuildInstall"]);
     SubSubMenu->addAction(m_Actions["BuildOnly"]);
 
@@ -179,11 +179,11 @@ void WareSrcToolbar::createActions()
   m_Actions["ConfigureWMenu"] = new QAction(QIcon(":/ui/common/icons/configure.png"), tr("Configure"), this);
   QActionGroup* ConfigureGroup = new QActionGroup(this);
   QMenu* Menu = new QMenu();
-  m_Actions["Release"] = new QAction(tr("Release"), ConfigureGroup);
+  m_Actions["Release"] = new QAction("Release", ConfigureGroup);
   m_Actions["Release"]->setCheckable(true);
   m_Actions["Release"]->setChecked(true);
   Menu->addAction(m_Actions["Release"]);
-  m_Actions["Debug"] = new QAction(tr("Debug"), ConfigureGroup);
+  m_Actions["Debug"] = new QAction("Debug", ConfigureGroup);
   m_Actions["Debug"]->setCheckable(true);
   Menu->addAction(m_Actions["Debug"]);
   m_Actions["ConfigureWMenu"]->setMenu(Menu);

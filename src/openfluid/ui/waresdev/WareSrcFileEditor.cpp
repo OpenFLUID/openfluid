@@ -911,7 +911,7 @@ void WareSrcFileEditor::goToLine()
   bool Ok;
 
   QInputDialog Dialog(this);
-  int Nb = QInputDialog::getInt(this, tr("Go to line"), tr("Enter the line number to which to go:"),
+  int Nb = QInputDialog::getInt(this, tr("Go to line"), tr("Enter the line number:"),
                                         1,1,2147483647,1, &Ok);
   if (!Ok)
     return;

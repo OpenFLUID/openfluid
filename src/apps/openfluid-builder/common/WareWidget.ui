@@ -191,7 +191,7 @@
         <item>
          <widget class="openfluid::ui::common::ActionLabel" name="ShowHideParamsLabel">
           <property name="text">
-           <string>ShowHideParamsLabel</string>
+           <string notr="true">ShowHideParamsLabel</string>
           </property>
          </widget>
         </item>
@@ -261,7 +261,7 @@
                <item>
                 <widget class="openfluid::ui::common::ActionLabel" name="ParameterizationSwitchLabel">
                  <property name="text">
-                  <string>ParameterizationSwitchLabel</string>
+                  <string notr="true">ParameterizationSwitchLabel</string>
                  </property>
                 </widget>
                </item>

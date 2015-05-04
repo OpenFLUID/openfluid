@@ -258,11 +258,11 @@ void MainWindow::createMenus()
 
   Menu = menuBar()->addMenu(tr("Build"));
   Menu->addAction(mp_Toolbar->action("Configure"));
-  SubMenu = Menu->addMenu(tr("Set active configuration"));
+  SubMenu = Menu->addMenu(tr("Active configuration"));
   SubMenu->addAction(mp_Toolbar->action("Release"));
   SubMenu->addAction(mp_Toolbar->action("Debug"));
   Menu->addAction(mp_Toolbar->action("Build"));
-  SubMenu = Menu->addMenu(tr("Set active build action"));
+  SubMenu = Menu->addMenu(tr("Active build action"));
   SubMenu->addAction(mp_Toolbar->action("BuildInstall"));
   SubMenu->addAction(mp_Toolbar->action("BuildOnly"));
 
@@ -294,7 +294,9 @@ void MainWindow::setWorkspaceDefaults()
   mp_Toolbar->action(Mode.contains("BUILDONLY", Qt::CaseInsensitive) ? "BuildOnly" : "BuildInstall")->trigger();
 
   QStringList LastOpenWares = Mgr->getLastOpenWares();
-  foreach(QString WarePath,LastOpenWares)mp_Collection->openPath(WarePath);
+
+  for (QString WarePath :LastOpenWares)
+    mp_Collection->openPath(WarePath);
 
   mp_Collection->setCurrent(Mgr->getLastActiveWare());
 }

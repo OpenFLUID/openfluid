@@ -74,19 +74,19 @@
         </item>
 
         <item context="simulator" menupath="Signature/Variables/Declare required variable">
-          DECLARE_REQUIRED_VAR("%%SEL_START%%var.name%%SEL_END%%","unitsclass","description","SI unit")
+          DECLARE_REQUIRED_VARIABLE("%%SEL_START%%var.name%%SEL_END%%","unitsclass","description","SI unit")
         </item>
 
         <item context="simulator" menupath="Signature/Variables/Declare used variable">
-          DECLARE_USED_VAR("%%SEL_START%%var.name%%SEL_END%%","unitsclass","description","SI unit")
+          DECLARE_USED_VARIABLE("%%SEL_START%%var.name%%SEL_END%%","unitsclass","description","SI unit")
         </item>
 
         <item context="simulator" menupath="Signature/Variables/Declare produced variable">
-          DECLARE_PRODUCED_VAR("%%SEL_START%%var.name%%SEL_END%%","unitsclass","description","SI unit")
+          DECLARE_PRODUCED_VARIABLE("%%SEL_START%%var.name%%SEL_END%%","unitsclass","description","SI unit")
         </item>
 
         <item context="simulator" menupath="Signature/Variables/Declare updated variable">
-          DECLARE_UPDATED_VAR("%%SEL_START%%var.name%%SEL_END%%","unitsclass","description","SI unit")
+          DECLARE_UPDATED_VARIABLE("%%SEL_START%%var.name%%SEL_END%%","unitsclass","description","SI unit")
         </item>
 
         <item context="simulator" menupath="Signature/Attributes/Declare required attribute">

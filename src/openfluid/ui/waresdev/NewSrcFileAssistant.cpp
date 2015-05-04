@@ -115,12 +115,12 @@ void CppPage::initialize(bool IsHpp, bool IsUi, openfluid::waresdev::WareSrcMana
 
     if (IsHpp)  // UiHpp
     {
-      m_DefaultMsg = tr("Create the ui-parameterization header file (.hpp)");
+      m_DefaultMsg = tr("Create the parameterization UI header file (.hpp)");
       SourceFilename_label = tr("Widget header file name (.hpp)");
     }
     else  // UiCpp
     {
-      m_DefaultMsg = tr("Create the ui-parameterization source file (.cpp)");
+      m_DefaultMsg = tr("Create the parameterization UI source file (.cpp)");
       SourceFilename_label = tr("Widget source file name (.cpp)");
     }
   }
@@ -177,11 +177,11 @@ void CppPage::onInformationChanged()
   QString WarningMsg = "";
 
   if (!ui->SourceFilename_lineEdit->hasAcceptableInput())
-    WarningMsg = QString("File name must be of the form \"xxx.%1\"").arg(m_IsHpp ? "hpp" : "cpp");
+    WarningMsg = QString(tr("File name must be of the form \"filexxx.%1\"")).arg(m_IsHpp ? "hpp" : "cpp");
   else if (m_WareDir.exists(ui->SourceFilename_lineEdit->text()))
-    WarningMsg = "You must enter the name of a file that doesn't already exist";
+    WarningMsg = tr("File already exists");
   else if (!ui->ClassName_lineEdit->hasAcceptableInput())
-    WarningMsg = "You must enter a class name";
+    WarningMsg = tr("Class name is empty");
 
   NewSrcFileAssistant::setStatus(m_DefaultMsg, WarningMsg, ui->MessageLabel, ui->MessageFrame);
 
@@ -242,7 +242,7 @@ CMakeConfigPage::CMakeConfigPage(openfluid::waresdev::WareSrcManager::WareType T
   ui->RootFilename_lineEdit->setToolTip(Tooltip);
   ui->RootFilename_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
-  m_DefaultMsg = "Create the \"CMake.in.config\" file";
+  m_DefaultMsg = tr("Create the \"CMake.in.config\" file");
   NewSrcFileAssistant::setStatus(m_DefaultMsg, "", ui->MessageLabel, ui->MessageFrame);
 
   registerField("RootFilename", ui->RootFilename_lineEdit);
@@ -279,7 +279,8 @@ bool CMakeConfigPage::isComplete() const
 void CMakeConfigPage::onRootfilenameTextChanged()
 {
   NewSrcFileAssistant::setStatus(
-      m_DefaultMsg, ui->RootFilename_lineEdit->hasAcceptableInput() ? "" : "File name must be of the form \"xxx.cpp\"",
+      m_DefaultMsg,
+      ui->RootFilename_lineEdit->hasAcceptableInput() ? "" : tr("File name must be of the form \"filexxx.cpp\""),
       ui->MessageLabel, ui->MessageFrame);
 
   emit QWizardPage::completeChanged();
@@ -322,9 +323,11 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   ui->CppUi_radioButton->setEnabled(UiParamCpp.isEmpty());
   ui->HppUi_radioButton->setEnabled(!QFile::exists(openfluid::waresdev::WareSrcFactory::getHppFilename(UiParamCpp)));
 
-  foreach(QRadioButton* Bt,findChildren<QRadioButton*>()){
-  if(!Bt->isEnabled())Bt->setToolTip(tr("This file already exists"));
-}
+  foreach(QRadioButton* Bt,findChildren<QRadioButton*>())
+  {
+    if(!Bt->isEnabled())
+      Bt->setToolTip(tr("This file already exists"));
+  }
 
   openfluid::waresdev::WareSrcManager::WareType Type = mref_Container.getType();
 
@@ -366,17 +369,17 @@ NewSrcFileAssistant::~NewSrcFileAssistant()
 // =====================================================================
 
 
-int NewSrcFileAssistant::nextId() const
+int NewSrcFileAssistant::getNextButtonID() const
 {
-  int CheckedId = ui->buttonGroup->checkedId();
+  int CheckedID = ui->buttonGroup->checkedId();
 
-  if (currentId() != INTRO_PAGE || CheckedId < 0)
+  if (currentId() != INTRO_PAGE || CheckedID < 0)
     return -1;
 
-  if (CheckedId >= CPP_PAGE)
+  if (CheckedID >= CPP_PAGE)
     return CPP_PAGE;
 
-  return CheckedId;
+  return CheckedID;
 }
 
 
@@ -535,7 +538,7 @@ void NewSrcFileAssistant::accept()
     QDialog::accept();
   }
   else
-    QMessageBox::warning(this, tr("Error"), tr("Unable to create the file : %1").arg(ErrMsg));
+    QMessageBox::warning(this, tr("Error"), tr("Unable to create the file \"%1\"").arg(ErrMsg));
 }
 
 

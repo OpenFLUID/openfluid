@@ -75,7 +75,7 @@
        <item>
         <widget class="QPushButton" name="LogButton">
          <property name="text">
-          <string>Explore logs</string>
+          <string>View logs</string>
          </property>
         </widget>
        </item>

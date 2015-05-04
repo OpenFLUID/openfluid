@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>OpenFLUID DevStudio</string>
+   <string notr="true">OpenFLUID-DevStudio</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources/openfluiddevstudio.qrc">
@@ -54,8 +54,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>653</width>
-          <height>442</height>
+          <width>96</width>
+          <height>96</height>
          </rect>
         </property>
         <attribute name="label">
@@ -72,8 +72,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>653</width>
-          <height>442</height>
+          <width>96</width>
+          <height>96</height>
          </rect>
         </property>
         <attribute name="label">

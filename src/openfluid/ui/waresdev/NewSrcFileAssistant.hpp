@@ -151,7 +151,8 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
   protected:
 
-    void initializePage(int Id);
+    void initializePage(int ID);
+
 
   public:
 
@@ -159,7 +160,7 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
     ~NewSrcFileAssistant();
 
-    int nextId() const;
+    int getNextButtonID() const;
 
     void accept();
 
@@ -167,9 +168,10 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
     static void setStatus(const QString DefaultMsg, const QString WarningMsg, QLabel* MsgLabel, QFrame* MsgFrame);
 
+
   private slots :
 
-    void onFileTypeButtonClicked(int Id);
+    void onFileTypeButtonClicked(int ID);
 
     void onEmptyBrowseToolButtonClicked();
 };
