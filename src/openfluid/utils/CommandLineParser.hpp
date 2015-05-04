@@ -484,6 +484,12 @@ class CommandLineParser
 
             if (Arg[1] != '-')
             {
+              if (Arg.size() != 2)
+              {
+                m_ParsingMessage = "wrong format for short option \"" + Arg + "\"";
+                return false;
+              }
+
               // short option
               LongOptName = m_Commands[m_ActiveCommand].getOptionNameFromShortName(Arg.substr(1,1));
               IsFromShort = true;

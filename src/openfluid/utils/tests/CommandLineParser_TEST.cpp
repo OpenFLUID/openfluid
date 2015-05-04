@@ -143,10 +143,21 @@ BOOST_AUTO_TEST_CASE(check_parser)
 
   std::cout << "=================================" << std::endl;
 
+  std::list<std::string> ArgValues2b {"search","--path=/p/path","-e","*.*"};
+  BOOST_REQUIRE(Parser.parse(ArgValues2b));
+  Parser.printState(std::cout);
+
+  std::cout << "=================================" << std::endl;
+
+  std::list<std::string> WrongArgValues2 {"search","-path","/p/path","-e","*.*"};
+  BOOST_REQUIRE(!Parser.parse(WrongArgValues2));
+  std::cout << "\n" << Parser.getParsingMessage() << std::endl;
+
+  std::cout << "=================================" << std::endl;
+
   std::list<std::string> ArgValues3 {"run","-p","/p/path","-e","*.*"};
   BOOST_REQUIRE(!Parser.parse(ArgValues3));
   Parser.printState(std::cout);
-  std::cout << "\n" << Parser.getParsingMessage() << std::endl;
 
   std::cout << "=================================" << std::endl;
 
@@ -154,6 +165,12 @@ BOOST_AUTO_TEST_CASE(check_parser)
   BOOST_REQUIRE(Parser.parse(ArgValues4));
   Parser.printHelp(std::cout);
 //  std::cout << "\n" << Parser.getParsingMessage() << std::endl;
+
+  std::cout << "=================================" << std::endl;
+
+  std::list<std::string> WrongArgValues4 {"-help"};
+  BOOST_REQUIRE(!Parser.parse(WrongArgValues4));
+  std::cout << "\n" << Parser.getParsingMessage() << std::endl;
 
   std::cout << "=================================" << std::endl;
 
@@ -169,8 +186,6 @@ BOOST_AUTO_TEST_CASE(check_parser)
   Parser.printHelp(std::cout);
 
   std::cout << std::endl;
-
-
 }
 
 
