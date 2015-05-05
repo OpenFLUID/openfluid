@@ -2,6 +2,20 @@
 SET(CPACK_SOURCE_GENERATOR "TGZ")
   
   
+IF(OF_DISTRO_IS_DEBIAN)  
+  SET(CPACK_GENERATOR "DEB")      
+  SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libqt4-dev (>= 4.8.0), libgdal1-dev, gcc, g++, cmake (>= 2.8.9), gnuplot (>= 4.2), p7zip-full, graphviz")    
+  IF(OPENFLUID_ENABLE_LANDR)
+    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}, libgeos++-dev (>= 3.3.0)")
+  ENDIF()  
+  SET(CPACK_DEBIAN_PACKAGE_RECOMMENDS "gnuplot (>= 4.2), p7zip-full, graphviz") 
+  SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${OF_DISTRO_ARCH}")
+  SET(CPACK_DEBIAN_PACKAGE_SECTION "science")
+  SET(CPACK_DEBIAN_PACKAGE_PRIORITY "extra")
+  SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${OF_DISTRO_CODE}_${OF_DISTRO_ARCH}")
+ENDIF()
+  
+  
 IF(OF_DISTRO_IS_UBUNTU)  
   SET(CPACK_GENERATOR "DEB")      
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libqt4-dev (>= 4.8.0), libgdal1-dev, gcc, g++, cmake (>= 2.8.9), gnuplot (>= 4.2), p7zip-full, graphviz")    
