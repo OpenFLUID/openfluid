@@ -125,16 +125,17 @@ void LogExplorerDialog::reloadFromFiles()
 
 
   QFile MsgFile(m_CurrentDir+"/"+QString::fromStdString(openfluid::config::MESSAGES_LOG_FILE));
-  if (!MsgFile.open(QIODevice::ReadOnly | QIODevice::Text))
-    return;
-
-  while (!MsgFile.atEnd())
+  if (MsgFile.open(QIODevice::ReadOnly | QIODevice::Text))
   {
-    QByteArray LineBytes = MsgFile.readLine();
-    appendLogItem(processLogLine(QString(LineBytes)));
+    while (!MsgFile.atEnd())
+    {
+      QByteArray LineBytes = MsgFile.readLine();
+      appendLogItem(processLogLine(QString(LineBytes)));
+    }
+
+    MsgFile.close();
   }
 
-  MsgFile.close();
 
   rebuildFilters();
 
@@ -449,11 +450,14 @@ void LogExplorerDialog::updateDetails(int Row)
 
     ui->ContextDetailLabel->setText(Context.join("\n"));
 
-    ui->DetailsArea->setVisible(true);
+    ui->DetailsArea->setEnabled(true);
   }
   else
   {
-    ui->DetailsArea->setVisible(false);
+    ui->DetailsArea->setEnabled(false);
+    ui->MessageDetailLabel->setText("-");
+    ui->TypeDetailLabel->setText("-");
+    ui->ContextDetailLabel->setText("-");
   }
 }
 
