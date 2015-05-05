@@ -269,7 +269,8 @@ SET(OPENFLUID_TRANSLATIONS_FILEROOT openfluid)
 SET(OPENFLUID_TRANSLATIONS_TSDIR "${CMAKE_SOURCE_DIR}/resources/translations")
 SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR)
 SET(OPENFLUID_TRANSLATIONS_DIRSTOSCAN "${CMAKE_SOURCE_DIR}/src/openfluid/ui"
-                                      "${CMAKE_SOURCE_DIR}/src/openfluid/ui/config.hpp.in"                                      
+                                      "${CMAKE_SOURCE_DIR}/src/openfluid/ui/config.hpp.in"
+                                      "${CMAKE_SOURCE_DIR}/src/openfluid/waresdev"                                      
                                       "${CMAKE_SOURCE_DIR}/src/apps/openfluid-builder"
                                       "${CMAKE_SOURCE_DIR}/src/apps/openfluid-devstudio")
 

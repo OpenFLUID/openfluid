@@ -1982,6 +1982,11 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation>Nom de la classe C++ d&apos;interface de paramétrage</translation>
     </message>
     <message>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="366"/>
+        <source>Run mode</source>
+        <translation>Mode d&apos;exécution</translation>
+    </message>
+    <message>
         <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="376"/>
         <source>Enable installation</source>
         <translation>Activer l&apos;installation</translation>
@@ -1992,9 +1997,8 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation>Catégorie</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="366"/>
         <source>Build mode</source>
-        <translation>Mode de construction</translation>
+        <translation type="obsolete">Mode de construction</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="14"/>
@@ -2517,6 +2521,121 @@ L&apos;extension ne peut être instanciée.</translation>
         <source>OpenFLUID-DevStudio could not be launched</source>
         <translation>OpenFLUID-DevStudio ne peut pas être lancé</translation>
     </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="178"/>
+        <source>The &quot;.hpp&quot; template file does not exist</source>
+        <translation>Le fichier de modèles &quot;.hpp&quot; n&apos;existe pas</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="233"/>
+        <source>Ware ID is empty</source>
+        <translation>L&apos;ID du ware est vide</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="240"/>
+        <source>Ware directory does not exist</source>
+        <translation>Le répertoire du ware n&apos;existe pas</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="247"/>
+        <source>The &quot;%1&quot; template file does not exist</source>
+        <translation>Le fichier modèle &quot;%1&quot; n&apos;existe pas</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="255"/>
+        <source>Unable to copy the &quot;%1&quot; template file</source>
+        <translation>Impossible de copier le fichier modèle &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="272"/>
+        <source>Unable to open the created file in read mode</source>
+        <translation>Impossible d&apos;ouvrir en lecture le fichier créé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="297"/>
+        <source>Unable to open the created file in write mode</source>
+        <translation>Impossible d&apos;ouvrir en écriture le fichier créé</translation>
+    </message>
+    <message>
+        <source>Unable to open the created file</source>
+        <translation type="obsolete">Impossible d&apos;ouvrir le fichier créé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="314"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="336"/>
+        <source>Accepts only letters, digits, dashes (&apos;-&apos;), underscores (&apos;_&apos;) and dots (&apos;.&apos;).</source>
+        <translation>Accepte uniquement des lettres, chiffres, tirest (&apos;-&apos;), tirest bas (&apos;_&apos;) et des points (&apos;.&apos;).</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="325"/>
+        <source>Accepts only letters, digits, underscores (&apos;_&apos;), and must begin with a letter.</source>
+        <translation>Accepte uniquement des lettres, chiffres, tirets bas (&apos;_&apos;) et doit commencer par une lettre.</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="105"/>
+        <source>Modal</source>
+        <translation>Modal</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="105"/>
+        <source>Modeless</source>
+        <translation>Non modal</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="105"/>
+        <source>Workspace</source>
+        <translation>Espace de travail</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="112"/>
+        <source>Spatial domain</source>
+        <translation>Domaine spatial</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="112"/>
+        <source>Model</source>
+        <translation>Modèle</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="112"/>
+        <source>Results</source>
+        <translation>Résultats</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="113"/>
+        <source>Other</source>
+        <translation>Autres</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="120"/>
+        <source>On - sim2doc must be run manually</source>
+        <translation>On - sim2doc doit être lancé manuellement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="121"/>
+        <source>Auto - sim2doc is automatically run</source>
+        <translation>Auto - sim2doc est lancé automatiquement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="122"/>
+        <source>Off - sim2doc is disabled</source>
+        <translation>Off - sim2doc est désactivé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcManager.cpp" line="148"/>
+        <source>Unknown ware type</source>
+        <translation>Type de ware inconnu</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/WareSrcManager.cpp" line="158"/>
+        <source>Unable to find &quot;%1&quot; in the current workspace.</source>
+        <translation>Impossible de trouver &quot;%1&quot;  dans l&apos;espace de travail courant.</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/config.hpp.in" line="64"/>
+        <source>required</source>
+        <translation>requis</translation>
+    </message>
 </context>
 <context>
     <name>RunConfigurationWidget</name>
@@ -2610,7 +2729,7 @@ L&apos;extension ne peut être instanciée.</translation>
     <message>
         <location filename="../../src/openfluid/ui/common/RunSimulationDialog.ui" line="212"/>
         <source>show details</source>
-        <translation>monter les détails</translation>
+        <translation>montrer les détails</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/common/RunSimulationDialog.ui" line="258"/>
@@ -3382,12 +3501,12 @@ Continuer quand même?</translation>
         <translation>Sélectionner le répertoire</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/LogExplorerDialog.cpp" line="348"/>
+        <location filename="../../src/openfluid/ui/common/LogExplorerDialog.cpp" line="349"/>
         <source>%1 message(s)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/LogExplorerDialog.cpp" line="350"/>
+        <location filename="../../src/openfluid/ui/common/LogExplorerDialog.cpp" line="351"/>
         <source>no message</source>
         <translation>Aucun message</translation>
     </message>
@@ -3587,9 +3706,8 @@ Continuer quand même?</translation>
 <context>
     <name>openfluid::ui::config</name>
     <message>
-        <location filename="../../src/openfluid/ui/config.hpp.in" line="61"/>
         <source>required</source>
-        <translation>requis</translation>
+        <translation type="obsolete">requis</translation>
     </message>
 </context>
 <context>
@@ -4103,7 +4221,7 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareExplorerDialog.cpp" line="71"/>
         <source>Accepts only letters, digits, dashes (&apos;-&apos;), underscores (&apos;_&apos;), dots (&apos;.&apos;) and paths separators (&apos;%1&apos;).</source>
-        <translation>Accepte uniquement des lettres, chiffres, tirest (&apos;-&apos;), tirest bas (&apos;_&apos;), points (&apos;.&apos;) et des séparateurs de chemins (&apos;%1&apos;).</translation>
+        <translation>Accepte uniquement des lettres, chiffres, tirets (&apos;-&apos;), tirets bas (&apos;_&apos;), points (&apos;.&apos;) et des séparateurs de chemins (&apos;%1&apos;).</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareExplorerDialog.cpp" line="107"/>

@@ -363,7 +363,7 @@ font : bold;
            <item row="0" column="0">
             <widget class="QLabel" name="Sim2doc_label">
              <property name="text">
-              <string>Build mode</string>
+              <string>Run mode</string>
              </property>
             </widget>
            </item>

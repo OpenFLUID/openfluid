@@ -37,6 +37,7 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -45,9 +46,9 @@
 #include <QObject>
 #include <QApplication>
 #include <QRegExp>
-
-
 #include <QTextStream>
+
+
 namespace openfluid { namespace waresdev {
 
 
@@ -130,6 +131,7 @@ bool WareSrcFactory::createJsonFile(QString& NewFilePath, QString& ErrMsg)
 // =====================================================================
 // =====================================================================
 
+
 bool WareSrcFactory::createCppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
 {
   QString TplFilename;
@@ -173,7 +175,7 @@ bool WareSrcFactory::createHppFile(const Replacements& R, QString& NewFilePath, 
       TplFilename = "source_workspace.hpp.tpl";
       break;
     default:
-      ErrMsg = QObject::tr("No \".hpp\" file avalaible.");
+      ErrMsg = QObject::tr("The \".hpp\" template file does not exist");
       return false;
       break;
   }
@@ -228,21 +230,21 @@ bool WareSrcFactory::copyTemplateToNewFile(const QString& TemplatePath, const QS
 {
   if (m_WareId.isEmpty())
   {
-    ErrMsg = QObject::tr("No ware directory provided");
+    ErrMsg = QObject::tr("Ware ID is empty");
     return false;
   }
 
   QDir WareDir = QDir(m_WareTypeDir.filePath(m_WareId));
   if (!WareDir.exists())
   {
-    ErrMsg = QObject::tr("Ware directory doesn't exist");
+    ErrMsg = QObject::tr("Ware directory does not exist");
     return false;
   }
 
   QFile TemplateFile(TemplatePath);
   if (!TemplateFile.exists())
   {
-    ErrMsg = QObject::tr("The \"%1\" template file doesn't exist.").arg(QFileInfo(TemplatePath).fileName());
+    ErrMsg = QObject::tr("The \"%1\" template file does not exist").arg(QFileInfo(TemplatePath).fileName());
     return false;
   }
 
@@ -250,7 +252,7 @@ bool WareSrcFactory::copyTemplateToNewFile(const QString& TemplatePath, const QS
 
   if (!TemplateFile.copy(NewFilePath))
   {
-    ErrMsg = QObject::tr("Unable to copy the \"%1\" template file.").arg(QFileInfo(TemplatePath).fileName());
+    ErrMsg = QObject::tr("Unable to copy the \"%1\" template file").arg(QFileInfo(TemplatePath).fileName());
     return false;
   }
 
@@ -267,7 +269,7 @@ bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFile
 
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
   {
-    ErrMsg = QObject::tr("Unable to open the created file to read it.");
+    ErrMsg = QObject::tr("Unable to open the created file in read mode");
     return false;
   }
 
@@ -292,7 +294,7 @@ bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFile
 
   if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
   {
-    ErrMsg = QObject::tr("Unable to open the created file to write in it.");
+    ErrMsg = QObject::tr("Unable to open the created file in write mode");
     return false;
   }
 
@@ -306,17 +308,28 @@ bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFile
 // =====================================================================
 // =====================================================================
 
+
 QRegExp WareSrcFactory::getCppFilenameRegExp(QString& Tooltip, bool IsHpp)
 {
   Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
   return IsHpp ? QRegExp("[a-zA-Z0-9._-]+\\.hpp") : QRegExp("[a-zA-Z0-9._-]+\\.cpp");
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 QRegExp WareSrcFactory::getClassnameRegExp(QString& Tooltip)
 {
   Tooltip = QObject::tr("Accepts only letters, digits, underscores ('_'), and must begin with a letter.");
   return QRegExp("[a-zA-Z]+[a-zA-Z0-9_]*");
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 QRegExp WareSrcFactory::getWareIdRegExp(QString& Tooltip)
 {

@@ -41,16 +41,18 @@
 #ifndef __OPENFLUID_WARESDEV_WARESRCFACTORY_HPP__
 #define __OPENFLUID_WARESDEV_WARESRCFACTORY_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QDir>
 #include <QValidator>
 #include <QRegExpValidator>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
+
 namespace openfluid { namespace waresdev {
+
 
 class OPENFLUID_API WareSrcFactory
 {
@@ -103,6 +105,7 @@ class OPENFLUID_API WareSrcFactory
           BextType_Texts << QObject::tr("Modal") << QObject::tr("Modeless") << QObject::tr("Workspace");
           return BextType_Texts;
         }
+
         static QStringList getBuilderExtCategoryTexts()
         {
           QStringList BextCategory_Texts;
@@ -110,6 +113,7 @@ class OPENFLUID_API WareSrcFactory
                              << QObject::tr("Other");
           return BextCategory_Texts;
         }
+
         static QStringList getSim2docModeTexts()
         {
           QStringList Sim2docMode_Texts;

@@ -455,13 +455,13 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
 {
   if (!ExitCode)
   {
-    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(tr("Command ended\n\n"),
+    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg("\nCommand ended\n\n",
                                                                         WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
     mp_Stream->write(Message);
   }
   else
   {
-    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(tr("Command ended with error\n\n"),
+    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg("\nCommand ended with error\n\n",
                                                                         WareSrcMsgParser::WareSrcMsg::MSG_ERROR);
     mp_Stream->write(Message);
   }

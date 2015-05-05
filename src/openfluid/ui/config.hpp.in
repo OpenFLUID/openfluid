@@ -36,10 +36,13 @@
 */
 
 
-#include <QString>
 
 #ifndef __OPENFLUID_UI_CONFIG_HPP__
 #define __OPENFLUID_UI_CONFIG_HPP__
+
+
+#include <QObject>
+#include <QString>
 
 
 namespace openfluid { namespace ui { namespace config {
@@ -58,7 +61,7 @@ const QString TOOLBARBUTTON_BORDERCOLOR = "#4B4B4B";
 const QString TOOLTIP_BGCOLOR = "#2C3A4C";
 const QString TOOLTIP_BORDERCOLOR = "#676767";
 
-const QString PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::config","required");
+const QString PLACEHOLDER_REQUIRED = QObject::tr("required");
 
 const QString LINEMARKER_ERRCOLOR = "#FFA3A3";
 const QString LINEMARKER_WARNCOLOR = "#FFD6A3";
