@@ -41,15 +41,14 @@
 #ifndef __OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP__
 #define __OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QString>
 #include <QObject>
+#include <QProcess>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/waresdev/WareSrcMsgStream.hpp>
-
-class QProcess;
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace waresdev {
@@ -129,13 +128,18 @@ class OPENFLUID_API WareSrcContainer: public QObject
      */
     void findCMake();
 
-    void runCommand(const QString& Command);
+    void runCommand(const QString& Command,
+                    const QProcessEnvironment& Env);
+
 
   private slots:
 
     void processOutput();
 
     void processFinishedOutput(int ExitCode);
+
+    void processErrorOutput(QProcess::ProcessError error);
+
 
   public:
 

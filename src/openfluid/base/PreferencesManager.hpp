@@ -281,6 +281,18 @@ class OPENFLUID_API PreferencesManager
     int getIndentSpaceNb();
 
     void setIndentSpaceNb(int SpaceNumber);
+
+    QString getWaresdevConfigEnv(const QString& Name);
+
+    QString getWaresdevConfigOptions();
+
+    QString getWaresdevConfigGenerator();
+
+    QString getWaresdevBuildEnv(const QString& Name);
+
+    bool isWaresdevShowCommandEnv(const QString& Name);
+
+
 };
 
 } } //namespaces

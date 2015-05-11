@@ -172,7 +172,8 @@ void PreferencesManager::setLang(const QString& Lang)
 QString PreferencesManager::getLang()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("lang")) mp_ConfFile->setValue("lang",guessLang());
+  if (!mp_ConfFile->contains("lang"))
+    mp_ConfFile->setValue("lang",guessLang());
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -230,7 +231,8 @@ QString PreferencesManager::guessLang()
 void PreferencesManager::setRecentMax(int RecentMax)
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
-  if (RecentMax > RecentProjectsLimit) RecentMax = RecentProjectsLimit;
+  if (RecentMax > RecentProjectsLimit)
+    RecentMax = RecentProjectsLimit;
   mp_ConfFile->setValue("recentmax",RecentMax);
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
@@ -628,7 +630,8 @@ openfluid::core::Duration_t PreferencesManager::getDeltaT()
   openfluid::core::Duration_t DeltaT;
 
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
-  if (!mp_ConfFile->contains("deltat")) mp_ConfFile->setValue("deltat",300);
+  if (!mp_ConfFile->contains("deltat"))
+    mp_ConfFile->setValue("deltat",300);
   DeltaT = mp_ConfFile->value("deltat").toUInt();
   mp_ConfFile->endGroup();
 
@@ -843,7 +846,8 @@ void PreferencesManager::setDockPosition(Qt::DockWidgetArea Position)
 Qt::ToolBarArea PreferencesManager::getToolBarPosition()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("toolbarpos")) mp_ConfFile->setValue("toolbarpos",Qt::TopToolBarArea);
+  if (!mp_ConfFile->contains("toolbarpos"))
+    mp_ConfFile->setValue("toolbarpos",Qt::TopToolBarArea);
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -874,7 +878,8 @@ void PreferencesManager::setToolBarPosition(Qt::ToolBarArea Position)
 bool PreferencesManager::isItemRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("itemremovalconfirm")) mp_ConfFile->setValue("itemremovalconfirm",true);
+  if (!mp_ConfFile->contains("itemremovalconfirm"))
+    mp_ConfFile->setValue("itemremovalconfirm",true);
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -905,7 +910,8 @@ void PreferencesManager::setItemRemovalConfirm(bool Confirm)
 bool PreferencesManager::isParamRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("paramremovalconfirm")) mp_ConfFile->setValue("paramremovalconfirm",true);
+  if (!mp_ConfFile->contains("paramremovalconfirm"))
+    mp_ConfFile->setValue("paramremovalconfirm",true);
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -936,7 +942,8 @@ void PreferencesManager::setParamRemovalConfirm(bool Confirm)
 bool PreferencesManager::isWaresWatchersActive()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("wareswatchers")) mp_ConfFile->setValue("wareswatchers",true);
+  if (!mp_ConfFile->contains("wareswatchers"))
+    mp_ConfFile->setValue("wareswatchers",true);
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -967,7 +974,8 @@ void PreferencesManager::setWaresWatchersActive(bool Active)
 bool PreferencesManager::isSpatialUnitsRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("spatialunitsremovalconfirm")) mp_ConfFile->setValue("spatialunitsremovalconfirm",true);
+  if (!mp_ConfFile->contains("spatialunitsremovalconfirm"))
+    mp_ConfFile->setValue("spatialunitsremovalconfirm",true);
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -998,7 +1006,8 @@ void PreferencesManager::setSpatialUnitsRemovalConfirm(bool Confirm)
 bool PreferencesManager::isSpatialConnsRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("spatialconnsremovalconfirm")) mp_ConfFile->setValue("spatialconnsremovalconfirm",true);
+  if (!mp_ConfFile->contains("spatialconnsremovalconfirm"))
+    mp_ConfFile->setValue("spatialconnsremovalconfirm",true);
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -1029,7 +1038,8 @@ void PreferencesManager::setSpatialConnsRemovalConfirm(bool Confirm)
 bool PreferencesManager::isSpatialAttrsRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("spatialattrsremovalconfirm")) mp_ConfFile->setValue("spatialattrsremovalconfirm",true);
+  if (!mp_ConfFile->contains("spatialattrsremovalconfirm"))
+    mp_ConfFile->setValue("spatialattrsremovalconfirm",true);
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -1060,7 +1070,8 @@ void PreferencesManager::setSpatialAttrsRemovalConfirm(bool Confirm)
 bool PreferencesManager::isAutomaticSaveBeforeRun()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("savebeforerun")) mp_ConfFile->setValue("savebeforerun",false);
+  if (!mp_ConfFile->contains("savebeforerun"))
+    mp_ConfFile->setValue("savebeforerun",false);
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -1091,7 +1102,8 @@ void PreferencesManager::setAutomaticSaveBeforeRun(bool AutoSave)
 bool PreferencesManager::isAutomaticSaveBeforeBuild()
 {
   mp_ConfFile->beginGroup("openfluid.waresdev.interface");
-  if (!mp_ConfFile->contains("savebeforebuild")) mp_ConfFile->setValue("savebeforebuild",true);
+  if (!mp_ConfFile->contains("savebeforebuild"))
+    mp_ConfFile->setValue("savebeforebuild",true);
   bool AutoSave = mp_ConfFile->value("savebeforebuild").toBool();
   mp_ConfFile->endGroup();
 
@@ -1226,9 +1238,8 @@ PreferencesManager::SyntaxHighlightingRules_t PreferencesManager::getSyntaxHighl
   foreach(QString StyleName,StyleNames)
   {
     mp_ConfFile->beginGroup(StyleName);
-    Rules.insert(StyleName, SyntaxHighlightingRule_t(
-        mp_ConfFile->value("color","").toString(),
-        mp_ConfFile->value("decoration","").toStringList()));
+    Rules.insert(StyleName, SyntaxHighlightingRule_t(mp_ConfFile->value("color","").toString(),
+                                                     mp_ConfFile->value("decoration","").toStringList()));
     mp_ConfFile->endGroup();
   }
 
@@ -1366,6 +1377,70 @@ void PreferencesManager::setIndentSpaceNb(int SpaceNumber)
 
 // =====================================================================
 // =====================================================================
+
+
+QString PreferencesManager::getWaresdevConfigEnv(const QString& Name)
+{
+  return mp_ConfFile->value("openfluid.waresdev.commands/config/env/"+Name,"").toString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::getWaresdevConfigOptions()
+{
+  return mp_ConfFile->value("openfluid.waresdev.commands/config/options","").toString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::getWaresdevConfigGenerator()
+{
+  QString Generator;
+  mp_ConfFile->beginGroup("openfluid.waresdev.commands");
+#ifdef Q_OS_WIN32
+  if (!mp_ConfFile->contains("config/generator"))
+    mp_ConfFile->setValue("config/generator","MinGW Makefiles");
+#endif
+  Generator = mp_ConfFile->value("config/generator","").toString();
+  mp_ConfFile->endGroup();
+
+  return Generator;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::getWaresdevBuildEnv(const QString& Name)
+{
+  return mp_ConfFile->value("openfluid.waresdev.commands/build/env/"+Name,"").toString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isWaresdevShowCommandEnv(const QString& Name)
+{
+  bool Shown;
+  mp_ConfFile->beginGroup("openfluid.waresdev.commands");
+#ifdef Q_OS_WIN32
+  if (!mp_ConfFile->contains("showenv/"+Name))
+    mp_ConfFile->setValue("showenv/"+Name,false);
+#endif
+  Shown = mp_ConfFile->value("showenv/"+Name,false).toBool();
+  mp_ConfFile->endGroup();
+
+  return Shown;
+}
 
 
 } } //namespaces

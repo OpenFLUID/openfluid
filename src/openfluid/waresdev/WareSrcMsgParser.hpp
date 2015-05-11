@@ -82,8 +82,8 @@ class OPENFLUID_API WareSrcMsgParser
     };
 
     virtual ~WareSrcMsgParser()
-    {
-    }
+    { }
+
     virtual WareSrcMsg parse(const QString& MessageLine) = 0;
 };
 

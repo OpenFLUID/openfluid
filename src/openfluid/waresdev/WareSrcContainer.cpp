@@ -40,10 +40,10 @@
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 
 #include <QDir>
-#include <QProcess>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/config.hpp>
@@ -75,6 +75,7 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, WareSrcManager::
 
   connect(mp_Process, SIGNAL(readyRead()), this, SLOT(processOutput()));
   connect(mp_Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinishedOutput(int)));
+  connect(mp_Process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processErrorOutput(QProcess::ProcessError)));
 }
 
 
@@ -384,17 +385,60 @@ void WareSrcContainer::configure()
 
   QString Options = QString(" -DCMAKE_BUILD_TYPE=%1").arg(m_ConfigMode == CONFIG_RELEASE ? "Release" : "Debug");
 
-#ifdef Q_OS_WIN32
-  Options.prepend(" -G \"MinGW Makefiles\"");
-#endif
+
+  // Use OPENFLUID_INSTALL_PREFIX env. var. if defined
+  QByteArray OpenFLUIDInstallPrefix = qgetenv("OPENFLUID_INSTALL_PREFIX");
+
+  if (!OpenFLUIDInstallPrefix.isNull())
+  {
+	  Options.prepend(" -DCMAKE_PREFIX_PATH="+OpenFLUIDInstallPrefix+"/lib/cmake");
+  }
+
+
+  // Use specific options if configured
+  QString ExtraOptions = openfluid::base::PreferencesManager::instance()->getWaresdevConfigOptions();
+  if (!Options.isEmpty())
+  {
+    ExtraOptions = " " + ExtraOptions;
+    Options.prepend(ExtraOptions);
+  }
+
+
+  // Use specific generator if configured
+  QString Generator = openfluid::base::PreferencesManager::instance()->getWaresdevConfigGenerator();
+  if (!Generator.isEmpty())
+  {
+    QString GeneratorOption = QString(" -G \"%1\"").arg(Generator);
+    Options.prepend(GeneratorOption);
+  }
+
+
+  QProcessEnvironment RunEnv = QProcessEnvironment::systemEnvironment();
+
+  // Set PATH env. var. if configured
+  QString CustomPath = openfluid::base::PreferencesManager::instance()->getWaresdevConfigEnv("PATH");
+  if (!CustomPath.isEmpty())
+  {
+    QByteArray ExistingPath = qgetenv("PATH");
+    if (!ExistingPath.isNull())
+    {
+      CustomPath.replace("%%PATH%%",ExistingPath);
+      RunEnv.insert("PATH",CustomPath);
+    }
+  }
+
 
   delete mp_CurrentParser;
   mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserCMake(m_AbsolutePath);
 
-  QString Command = QString("%1 -E chdir %2 %1 %3 %4").arg(m_CMakeProgramPath).arg(m_BuildDirPath).arg(m_AbsolutePath)
-      .arg(Options);
 
-  runCommand(Command);
+  QString Command = QString("\"%1\" -E chdir \"%2\" \"%1\" \"%3\" %4")
+		                .arg(m_CMakeProgramPath)
+		                .arg(m_BuildDirPath)
+		                .arg(m_AbsolutePath)
+		                .arg(Options);
+
+  runCommand(Command,RunEnv);
 }
 
 
@@ -416,13 +460,32 @@ void WareSrcContainer::build()
     mp_Process->waitForFinished(-1);
   }
 
+
+  QProcessEnvironment RunEnv = QProcessEnvironment::systemEnvironment();
+
+  // Set PATH env. var. if configured
+  QString CustomPath = openfluid::base::PreferencesManager::instance()->getWaresdevBuildEnv("PATH");
+  if (!CustomPath.isEmpty())
+  {
+    QByteArray ExistingPath = qgetenv("PATH");
+    if (!ExistingPath.isNull())
+    {
+      CustomPath.replace("%%PATH%%",ExistingPath);
+      RunEnv.insert("PATH",CustomPath);
+    }
+  }
+
+
   delete mp_CurrentParser;
   mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserGcc();
 
-  QString Command = QString("%1 -E chdir %2 %1 --build . %3").arg(m_CMakeProgramPath).arg(m_BuildDirPath).arg(
-      m_BuildMode == BUILD_WITHINSTALL ? "--target install" : "");
 
-  runCommand(Command);
+  QString Command = QString("\"%1\" -E chdir \"%2\" \"%1\" --build . %3")
+		                .arg(m_CMakeProgramPath)
+		                .arg(m_BuildDirPath)
+		                .arg(m_BuildMode == BUILD_WITHINSTALL ? "--target install" : "");
+
+  runCommand(Command,RunEnv);
 }
 
 
@@ -474,15 +537,49 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
 // =====================================================================
 
 
-void WareSrcContainer::runCommand(const QString& Command)
+void WareSrcContainer::processErrorOutput(QProcess::ProcessError Error)
+{
+  QString MsgStr = "\nError : ";
+
+  switch (Error)
+  {
+    case QProcess::FailedToStart : MsgStr += "command failed to start (program not found or insufficient permissions)"; break;
+    case QProcess::Crashed : MsgStr += "command crashed"; break;
+    case QProcess::Timedout : MsgStr += "command is timed out"; break;
+    case QProcess::WriteError : MsgStr += "write error occurred"; break;
+    case QProcess::ReadError : MsgStr += "read error occurred"; break;
+    default : MsgStr += "unknown"; break;
+  }
+
+  MsgStr += "\n\n";
+
+  WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(MsgStr,
+		                                                              WareSrcMsgParser::WareSrcMsg::MSG_ERROR);
+  mp_Stream->write(Message);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironment& Env)
 {
   if (mp_Process->state() != QProcess::NotRunning)
     mp_Process->close();
 
-  WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(QString("%1\n").arg(Command),
-                                                                      WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
-  mp_Stream->write(Message);
+  if (openfluid::base::PreferencesManager::instance()->isWaresdevShowCommandEnv("PATH"))
+  {
+    WareSrcMsgParser::WareSrcMsg PATHMessage = WareSrcMsgParser::WareSrcMsg(QString("PATH=%1\n").arg(Env.value("PATH","")),
+                                                                        WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+    mp_Stream->write(PATHMessage);
+  }
 
+  WareSrcMsgParser::WareSrcMsg CommandMessage = WareSrcMsgParser::WareSrcMsg(QString("%1\n").arg(Command),
+                                                                      WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+  mp_Stream->write(CommandMessage);
+
+  mp_Process->setProcessEnvironment(Env);
   mp_Process->start(Command);
 }
 
