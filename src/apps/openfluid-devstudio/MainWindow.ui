@@ -29,7 +29,7 @@
         <enum>QFrame::NoFrame</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="SimPage">
         <property name="geometry">
@@ -45,7 +45,11 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="SimExplorer"/>
+          <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="SimExplorer">
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -54,8 +58,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>96</width>
-          <height>96</height>
+          <width>653</width>
+          <height>442</height>
          </rect>
         </property>
         <attribute name="label">
@@ -63,7 +67,11 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="ObsExplorer"/>
+          <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="ObsExplorer">
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -72,8 +80,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>96</width>
-          <height>96</height>
+          <width>653</width>
+          <height>442</height>
          </rect>
         </property>
         <attribute name="label">
@@ -81,7 +89,11 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="ExtExplorer"/>
+          <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="ExtExplorer">
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+          </widget>
          </item>
         </layout>
        </widget>

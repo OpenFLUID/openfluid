@@ -112,7 +112,8 @@ MainWindow::MainWindow() :
   connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection, SLOT(openBuilderExtension()));
   connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), mp_Collection, SLOT(saveAsMayBeAboveWare()));
   connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this, SLOT(onDeleteWareRequested()));
-  connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
+  // TODO to enable again when developped
+  //connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
 
   connect(m_Actions["HelpAbout"], SIGNAL(triggered()), this, SLOT(onAboutAsked()));
@@ -197,7 +198,8 @@ void MainWindow::createLocalActions()
 
   m_Actions["DeleteWare"] = new QAction(tr("Delete ware"), this);
 
-  m_Actions["SwitchWorkspace"] = new QAction(tr("Switch workspace"), this);
+  // TODO to enable again when developped
+  //m_Actions["SwitchWorkspace"] = new QAction(tr("Switch workspace"), this);
 
   m_Actions["Quit"] = new QAction(tr("Quit"), this);
   m_Actions["Quit"]->setShortcuts(QKeySequence::Quit);
@@ -246,7 +248,8 @@ void MainWindow::createMenus()
   Menu->addAction(mp_Toolbar->action("CloseFile"));
   Menu->addAction(mp_Toolbar->action("DeleteFile"));
   Menu->addSeparator();
-  Menu->addAction(m_Actions.value("SwitchWorkspace"));
+  // TODO to enable again when developped
+  //Menu->addAction(m_Actions.value("SwitchWorkspace"));
   Menu->addAction(m_Actions.value("Quit"));
 
   Menu = menuBar()->addMenu(tr("Edit"));
