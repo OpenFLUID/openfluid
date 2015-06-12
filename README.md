@@ -33,21 +33,26 @@ OpenFLUID relies on open-source libraries, required to build or use OpenFLUID.
 
 For the OpenFLUID framework libraries: 
   - C++ STL
-  - Boost (system, filesystem)
-  - Qt : Core, XML, Network, GUI (optional)
+  - Boost (headers only)
+  - Qt : Core, GUI (optional), Network, XML
   - GDAL/OGR
   - GEOS (optional)
 
 For openfluid command line application: 
   - OpenFLUID framework libraries
   - C++ STL
-  - Boost (system, filesystem, program_options, date_time, regex)  
+  - Qt : Core 
 
 For openfluid-builder GUI application: 
   - OpenFLUID framework libraries
   - C++ STL
-  - Boost
-  - Qt : GUI
+  - Qt : Core, GUI, SVG
+  - GDAL/OGR
+
+For openfluid-devstudio GUI application: 
+  - OpenFLUID framework libraries
+  - C++ STL
+  - Qt : Core, GUI
 
 For unit testing, the Boost unit testing framework is also required 
 (unit_test_framework)
@@ -58,19 +63,19 @@ For building Latex documents, required tools and packages are:
 - packages: a4wide, babel, ltxtable, pgf/tikz, tabularx, verbatim
 - fonts: cmbright
 
-OpenFLUID uses CMake version 2.8.9 or higher for build configuration, 
-and has been tested with the GCC compiling system
+OpenFLUID uses CMake version 2.8.11 or higher for build configuration, 
+and has been tested with the GCC 4.8+ compiling system
 
 
 ### Building from source
 
-Commands to be executed from source tree for building and packaging in Ubuntu linux:
+Commands to be executed from source tree for building and packaging on linux (Ubuntu, Debian, Fedora):
 
     mkdir _build
     cd _build
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
     make
-    cpack -G DEB
+    cpack
     
 Detailed informations about building OpenFLUID from sources for Linux and Windows systems 
 are available on the community site: 

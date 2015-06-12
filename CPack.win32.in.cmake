@@ -14,7 +14,8 @@ SET(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/resources/packaging\\\\OF_logo.bmp
 SET(CPACK_NSIS_MENU_LINKS 
     "http://www.openfluid-project.org/" "OpenFLUID web site"
     "http://www.openfluid-project.org/community/" "OpenFLUID community site")
-SET(CPACK_PACKAGE_EXECUTABLES "openfluid-builder" "OpenFLUID-Builder")   
+SET(CPACK_PACKAGE_EXECUTABLES openfluid-builder;OpenFLUID-Builder
+                              openfluid-devstudio;OpenFLUID-DevStudio)   
    
 SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CPACK_PACKAGE_NAME} ${FULL_VERSION}")
 SET(CPACK_NSIS_MODIFY_PATH ON)

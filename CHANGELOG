@@ -1,11 +1,31 @@
 2.1.0
 
-  * Introduced iterators for VectorValue and MapValue types
-  * Fixed name mangling for Fortran90 modules in Fortran/C interface 
+  * Introduced OpenFLUID-DevStudio, an integraded development environment
+    for simulators, observers and builder-extensions
+  * Introduced ghost simulators system
+  * Introduced parameterization UI for simulators and observers 
+    in OpenFLUID-Builder
+  * Introduced required/used conditions for parameters of simulators     
+  * Added iterators for VectorValue and MapValue types
+  * Added new TreeValue structure for tree-like data
+  * Added basic filesystem tools
+  * Added command line parser class
+  * Improved OpenFLUID-LandR library
+  * Improved OpenFLUID-Builder look'n'feel
+  * Modified usage of OpenFLUID command line application 
   * Renamed classes for better understanding, with compatibility aliases
-  * Renamed accessor methods according to the evolution of the coding style  
+  * Renamed accessor methods according to the evolution of the coding style
+  * Introduced openfluid::scientific namespace for scientific helpers
+  * Refactored openfluid::tools namespace with the introduction of 
+    the openfluid::scientific namespace 
+  * Removed wares dependencies to boost libraries
+  * Updated OpenFLUID applications icons
+  * Updated documentation
+  * Fixed name mangling for Fortran90 modules in Fortran/C interface
   * Fixed potential conflicts in headers guards
   * Fixed minor errors in documentation 
+  * Fixed minor bugs
+  * Cleaned source code
 
 
 
