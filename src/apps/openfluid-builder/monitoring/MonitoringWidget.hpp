@@ -88,7 +88,7 @@ class MonitoringWidget : public WorkspaceWidget
 
     signals:
 
-      void srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType);
+      void srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType, bool Ghost);
 
 
   public:

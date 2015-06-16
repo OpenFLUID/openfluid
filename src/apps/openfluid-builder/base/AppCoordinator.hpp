@@ -125,6 +125,8 @@ class AppCoordinator : public QObject
 
     void whenNewSimulatorSrcAsked();
 
+    void whenNewGhostSimulatorAsked();
+
     void whenOpenSimulatorSrcAsked();
 
     void whenNewObserverSrcAsked();

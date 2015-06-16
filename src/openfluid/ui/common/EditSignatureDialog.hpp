@@ -30,41 +30,68 @@
 */
 
 /**
-  @file ClickableWareWidget.hpp
+  @file EditSignatureDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-
-#ifndef __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__
-#define __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__
-
-#include "WareWidget.hpp"
-
-#include <QMouseEvent>
+#ifndef __OPENFLUID_UICOMMON_EDITSIGNATUREDIALOG_HPP__
+#define __OPENFLUID_UICOMMON_EDITSIGNATUREDIALOG_HPP__
 
 
-class ClickableWareWidget : public WareWidget
+#include <openfluid/dllexport.hpp>
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
+
+
+namespace Ui
+{
+  class EditSignatureDialog;
+}
+
+
+namespace openfluid { namespace ui { namespace common {
+
+
+class OPENFLUID_API EditSignatureDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 
-  protected:
 
-    void mouseDoubleClickEvent(QMouseEvent* Event);
+  private:
+
+    QStringList m_ExistingIDs;
 
 
-  signals:
+  protected slots:
 
-    void srcEditAsked(const QString&, bool Ghost = false);
+    void checkGlobally();
+
+
+  private:
+
+    Ui::EditSignatureDialog* ui;
+
+    void setMessage(const QString& Msg = "");
+
+    void initialize(const QStringList& ExistingIDs = QStringList());
 
 
   public:
 
-    ClickableWareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
-                        bool Enabled, const QString& BGColor, int Index);
+    EditSignatureDialog(QWidget* Parent = nullptr);
 
+    virtual ~EditSignatureDialog();
+
+    void initialize(const openfluid::ware::SimulatorSignature& Signature,
+                        const QStringList& ExistingIDs = QStringList());
+
+    openfluid::ware::SimulatorSignature getSignature() const;
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__ */
+} } } // namespaces
+
+
+#endif /* __OPENFLUID_UICOMMON_EDITSIGNATUREDIALOG_HPP__ */

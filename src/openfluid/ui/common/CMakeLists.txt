@@ -1,7 +1,9 @@
 
 
 SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp
-                            RunSimulationDialog.cpp RunSimulationWorker.cpp                                  
+                            RunSimulationDialog.cpp RunSimulationWorker.cpp
+                            SignatureDataEditorWidget.cpp
+                            SignatureEditorWidget.cpp EditSignatureDialog.cpp                                
                             ClickableLabel.cpp ActionLabel.cpp ElidedLabel.cpp                             
                             PathsManagementWidget.cpp WaresSearchPathsWidget.cpp
                             LogExplorerDialog.cpp 
@@ -11,6 +13,8 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp
 
 SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp
                             RunSimulationDialog.hpp RunSimulationWorker.hpp
+                            SignatureDataEditorWidget.hpp
+                            SignatureEditorWidget.hpp EditSignatureDialog.hpp
                             ClickableLabel.hpp ActionLabel.hpp ElidedLabel.hpp                            
                             PathsManagementWidget.hpp WaresSearchPathsWidget.hpp
                             LogExplorerDialog.hpp
@@ -20,6 +24,7 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp
 
 
 QT4_WRAP_UI(OPENFLUID_UI_COMMON_UI RunSimulationDialog.ui AboutDialog.ui
+                                   SignatureEditorWidget.ui SignatureDataEditorWidget.ui EditSignatureDialog.ui
                                    PathsManagementWidget.ui WaresSearchPathsWidget.ui
                                    LogExplorerDialog.ui
                                    PreferencesDialog.ui

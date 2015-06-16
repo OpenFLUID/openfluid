@@ -148,7 +148,7 @@ class ProjectModule : public AbstractModule
 
   public slots:
 
-    void whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType);
+    void whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType,bool Ghost);
 
 
   public:
@@ -192,6 +192,8 @@ class ProjectModule : public AbstractModule
     bool whenOpenExampleAsked();
 
     void whenNewSimulatorSrcAsked();
+
+    void whenNewGhostSimulatorAsked();
 
     void whenOpenSimulatorSrcAsked();
 

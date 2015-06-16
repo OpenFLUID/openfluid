@@ -57,7 +57,7 @@ class SimulatorGraphics : public QObject, public ModelItemGraphics
 
   signals:
 
-    void srcEditAsked(const QString&);
+    void srcEditAsked(const QString&, bool Ghost = false);
 
 
   public:

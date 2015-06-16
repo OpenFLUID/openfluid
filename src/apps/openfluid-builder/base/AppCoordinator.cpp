@@ -96,6 +96,8 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   // Development
   connect(m_Actions.action("DevNewSimulator"), SIGNAL(triggered()),
           this, SLOT(whenNewSimulatorSrcAsked()));
+  connect(m_Actions.action("DevNewGhostSimulator"), SIGNAL(triggered()),
+            this, SLOT(whenNewGhostSimulatorAsked()));
   connect(m_Actions.action("DevOpenSimulator"), SIGNAL(triggered()),
           this, SLOT(whenOpenSimulatorSrcAsked()));
   connect(m_Actions.action("DevNewObserver"), SIGNAL(triggered()),
@@ -855,6 +857,16 @@ void AppCoordinator::whenAboutAsked()
 void AppCoordinator::whenNewSimulatorSrcAsked()
 {
   mp_CurrentModule->whenNewSimulatorSrcAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenNewGhostSimulatorAsked()
+{
+  mp_CurrentModule->whenNewGhostSimulatorAsked();
 }
 
 

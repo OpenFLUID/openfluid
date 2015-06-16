@@ -49,13 +49,18 @@
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 #include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
 
+#include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/machine/GhostSimulatorFileIO.hpp>
 
+#include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
+
+#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include "AppTools.hpp"
 #include "ProjectCentral.hpp"
@@ -239,8 +244,8 @@ QWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
   mp_ModelTab = new ModelWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
-  connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)),
-          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)));
+  connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)),
+          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)));
 
   mp_SpatialTab = new SpatialDomainWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_SpatialTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
@@ -253,8 +258,8 @@ QWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
   mp_MonitoringTab = new MonitoringWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_MonitoringTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
-  connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)),
-          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)));
+  connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)),
+          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)));
 
   mp_RunConfigTab = new RunConfigurationWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_RunConfigTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
@@ -664,19 +669,62 @@ bool ProjectModule::whenOpenExampleAsked()
 // =====================================================================
 
 
-void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType)
+void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType,bool Ghost)
 {
-  QString ErrMsg;
+  if (Ghost)
+  {
+    std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
+      openfluid::machine::SimulatorPluginsManager::instance()->getAvailableGhostsSignatures();
 
-  QString Path = openfluid::waresdev::WareSrcManager::instance()->getWarePath(ID,WType,ErrMsg);
+    openfluid::machine::ModelItemSignatureInstance* GhostSignatureInstance = nullptr;
+    openfluid::ware::SimulatorSignature Signature;
 
-  if(!Path.isEmpty())
-    mp_MainWidget->addWorkspaceWareSrcTab(Path);
+    unsigned int i = 0;
+    while (!GhostSignatureInstance && i < Signatures.size())
+    {
+      if (Signatures[i]->Signature->ID == ID.toStdString())
+      {
+        GhostSignatureInstance = Signatures[i];
+        Signature = *(GhostSignatureInstance->Signature);
+      }
+      else
+        i++;
+    }
+
+    if (GhostSignatureInstance)
+    {
+      openfluid::ui::common::EditSignatureDialog Dlg(mp_MainWidget);
+      Dlg.initialize(Signature);
+      if (Dlg.exec() == QDialog::Accepted)
+      {
+        Signature = Dlg.getSignature();
+        openfluid::machine::GhostSimulatorFileIO::saveToFile(
+                Signature,
+                openfluid::tools::Filesystem::dirname(GhostSignatureInstance->FileFullPath));
+        updateSimulatorsWares();
+      }
+    }
+    else
+      QMessageBox::critical(QApplication::activeWindow(),
+                            tr("Ghost simulator edition error"),
+                            tr("Unable to find ghost simulator"),
+                            QMessageBox::Close);
+
+  }
   else
-    QMessageBox::critical(QApplication::activeWindow(),
-                          tr("Source code edition error"),
-                          ErrMsg,
-                          QMessageBox::Close);
+  {
+    QString ErrMsg;
+
+    QString Path = openfluid::waresdev::WareSrcManager::instance()->getWarePath(ID,WType,ErrMsg);
+
+    if(!Path.isEmpty())
+      mp_MainWidget->addWorkspaceWareSrcTab(Path);
+    else
+      QMessageBox::critical(QApplication::activeWindow(),
+                            tr("Source code edition error"),
+                            ErrMsg,
+                            QMessageBox::Close);
+  }
 }
 
 
@@ -687,6 +735,31 @@ void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::Pluggabl
 void ProjectModule::whenNewSimulatorSrcAsked()
 {
   mp_MainWidget->newSimulator();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenNewGhostSimulatorAsked()
+{
+  QStringList ExistingIDs;
+
+  for (auto Sign : openfluid::machine::SimulatorPluginsManager::instance()->getAvailableGhostsSignatures())
+    ExistingIDs.append(QString::fromStdString(Sign->Signature->ID));
+
+  openfluid::ui::common::EditSignatureDialog Dlg(mp_MainWidget);
+  Dlg.initialize(openfluid::ware::SimulatorSignature(),ExistingIDs);
+
+  if (Dlg.exec() == QDialog::Accepted)
+  {
+    openfluid::ware::SimulatorSignature Signature = Dlg.getSignature();
+    openfluid::machine::GhostSimulatorFileIO::saveToFile(
+        Signature,
+        openfluid::base::RuntimeEnvironment::instance()->getDefaultSimulatorsPluginsPaths().front());
+    updateSimulatorsWares();
+  }
 }
 
 

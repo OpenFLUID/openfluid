@@ -55,12 +55,12 @@ ClickableWareWidget::ClickableWareWidget(QWidget* Parent, const openfluid::ware:
 
 void ClickableWareWidget::mouseDoubleClickEvent(QMouseEvent* Event)
 {
-  if (!m_Ghost)
-  {
+  if (m_Ghost)
+    emit srcEditAsked(QString::fromStdString(m_ID),m_Ghost);
 #ifdef ENABLE_WARESDEV_INTEGRATION
-  emit srcEditAsked(QString::fromStdString(m_ID));
+  else
+    emit srcEditAsked(QString::fromStdString(m_ID),m_Ghost);
 #endif
-  }
 
   QWidget::mousePressEvent(Event);
 }

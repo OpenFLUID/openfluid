@@ -249,6 +249,16 @@ void HomeModule::whenNewSimulatorSrcAsked()
 // =====================================================================
 
 
+void HomeModule::whenNewGhostSimulatorAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeModule::whenOpenSimulatorSrcAsked()
 {
 
@@ -289,7 +299,8 @@ void HomeModule::whenLaunchDevStudioAsked()
 // =====================================================================
 
 
-void HomeModule::whenSrcEditAsked(const QString& /*ID*/,openfluid::ware::PluggableWare::WareType /*WType*/)
+void HomeModule::whenSrcEditAsked(const QString& /*ID*/,openfluid::ware::PluggableWare::WareType /*WType*/,
+                                  bool /*Ghost*/)
 {
 
 }

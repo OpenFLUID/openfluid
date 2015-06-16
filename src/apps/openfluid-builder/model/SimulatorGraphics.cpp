@@ -111,13 +111,14 @@ QPointF SimulatorGraphics::getProducedIOPosition()
 
 void SimulatorGraphics::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* Event)
 {
-  if (!m_Ghost)
-  {
+  if (m_Ghost)
+    emit srcEditAsked(m_ID,m_Ghost);
 #ifdef ENABLE_WARESDEV_INTEGRATION
-  emit srcEditAsked(m_ID);
+  else
+    emit srcEditAsked(m_ID,m_Ghost);
 #endif
-  }
 
-  QGraphicsItem::mousePressEvent(Event);
+  // FIXME The line below causes the application to crash
+  //QGraphicsItem::mousePressEvent(Event);
 }
 

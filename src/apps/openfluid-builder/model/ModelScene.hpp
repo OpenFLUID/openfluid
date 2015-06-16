@@ -52,7 +52,7 @@ class ModelScene : public QGraphicsScene
 
   private slots:
 
-    void notifySrcEditAsked(const QString& ID);
+    void notifySrcEditAsked(const QString& ID, bool Ghost);
 
 
   private:
@@ -77,7 +77,7 @@ class ModelScene : public QGraphicsScene
 
   signals:
 
-    void srcEditAsked(const QString&);
+    void srcEditAsked(const QString&, bool Ghost);
 
 
   public:

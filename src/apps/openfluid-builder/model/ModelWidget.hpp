@@ -99,12 +99,12 @@ class ModelWidget : public WorkspaceWidget
 
     void dispatchChangesFromChildren();
 
-    void notifySrcEditAsked(const QString& ID);
+    void notifySrcEditAsked(const QString& ID, bool Ghost);
 
 
   signals:
 
-    void srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType);
+    void srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType,bool Ghost);
 
 
   public slots:

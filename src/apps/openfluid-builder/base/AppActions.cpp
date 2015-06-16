@@ -154,6 +154,7 @@ void AppActions::createActions()
 
   //Development menu
   m_Actions["DevNewSimulator"] = new QAction(tr("New simulator..."), this);
+  m_Actions["DevNewGhostSimulator"] = new QAction(tr("New ghost simulator..."), this);
   m_Actions["DevNewObserver"] = new QAction(tr("New observer..."), this);
 
   m_Actions["DevOpenSimulator"] = new QAction(tr("Open simulator..."), this);
@@ -400,6 +401,7 @@ void AppActions::createMenus(MainWindow& MainWin)
 
   mp_DevelopmentMenu = MainWin.menuBar()->addMenu(tr("&Development"));
   mp_DevelopmentMenu->addAction(action("DevNewSimulator"));
+  mp_DevelopmentMenu->addAction(action("DevNewGhostSimulator"));
   mp_DevelopmentMenu->addAction(action("DevNewObserver"));
   mp_DevelopmentMenu->addSeparator();
   mp_DevelopmentMenu->addAction(action("DevOpenSimulator"));

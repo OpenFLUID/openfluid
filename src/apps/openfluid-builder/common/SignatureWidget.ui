@@ -32,7 +32,7 @@
    <item>
     <widget class="QTabWidget" name="InfosTabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="GeneralTab">
       <attribute name="title">
@@ -67,8 +67,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>109</width>
-            <height>35</height>
+            <width>106</width>
+            <height>40</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -136,7 +136,7 @@
          </attribute>
          <column>
           <property name="text">
-           <string>In</string>
+           <string>I/O condition</string>
           </property>
          </column>
          <column>
@@ -197,7 +197,7 @@
          </attribute>
          <column>
           <property name="text">
-           <string>In</string>
+           <string>I/O condition</string>
           </property>
          </column>
          <column>
@@ -248,7 +248,7 @@
          </attribute>
          <column>
           <property name="text">
-           <string>In/Out</string>
+           <string>I/O condition</string>
           </property>
          </column>
          <column>
@@ -319,7 +319,7 @@
          </attribute>
          <column>
           <property name="text">
-           <string>In</string>
+           <string>I/O condition</string>
           </property>
          </column>
          <column>

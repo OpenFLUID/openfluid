@@ -98,7 +98,7 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
 
   connect(ui->ShowVarsCheckBox,SIGNAL(clicked(bool)),mp_ModelScene,SLOT(showVariables(bool)));
 
-  connect(mp_ModelScene,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
+  connect(mp_ModelScene,SIGNAL(srcEditAsked(const QString&,bool)),this,SLOT(notifySrcEditAsked(const QString&,bool)));
 }
 
 
@@ -280,7 +280,7 @@ void ModelWidget::addSimulator()
     SimulatorWidget* SimWidget = new SimulatorWidget(this,SimDesc,ID.toStdString(),0);
 
     connect(SimWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
-    connect(SimWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
+    connect(SimWidget,SIGNAL(srcEditAsked(const QString&,bool)),this,SLOT(notifySrcEditAsked(const QString&,bool)));
     connect(SimWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
     connect(SimWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
     connect(SimWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
@@ -464,7 +464,7 @@ void ModelWidget::updateCoupledModel()
       if (it == itl) SimWidget->setDownButtonEnabled(false);
 
       connect(SimWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
-      connect(SimWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
+      connect(SimWidget,SIGNAL(srcEditAsked(const QString&,bool)),this,SLOT(notifySrcEditAsked(const QString&,bool)));
       connect(SimWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
       connect(SimWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
       connect(SimWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
@@ -512,9 +512,9 @@ void ModelWidget::dispatchChangesFromChildren()
 // =====================================================================
 
 
-void ModelWidget::notifySrcEditAsked(const QString& ID)
+void ModelWidget::notifySrcEditAsked(const QString& ID, bool Ghost)
 {
-  emit srcEditAsked(ID,openfluid::ware::PluggableWare::SIMULATOR);
+  emit srcEditAsked(ID,openfluid::ware::PluggableWare::SIMULATOR,Ghost);
 }
 
 
