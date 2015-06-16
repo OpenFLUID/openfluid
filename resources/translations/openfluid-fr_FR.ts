@@ -1577,7 +1577,7 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="259"/>
         <source>Build</source>
-        <translation>Contruire</translation>
+        <translation type="unfinished">Construire</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="261"/>
@@ -4417,7 +4417,7 @@ Do you want to replace it?</source>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="95"/>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="194"/>
         <source>Build</source>
-        <translation>Contruire</translation>
+        <translation type="unfinished">Construire</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="97"/>

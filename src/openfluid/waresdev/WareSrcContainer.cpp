@@ -543,12 +543,18 @@ void WareSrcContainer::processErrorOutput(QProcess::ProcessError Error)
 
   switch (Error)
   {
-    case QProcess::FailedToStart : MsgStr += "command failed to start (program not found or insufficient permissions)"; break;
-    case QProcess::Crashed : MsgStr += "command crashed"; break;
-    case QProcess::Timedout : MsgStr += "command is timed out"; break;
-    case QProcess::WriteError : MsgStr += "write error occurred"; break;
-    case QProcess::ReadError : MsgStr += "read error occurred"; break;
-    default : MsgStr += "unknown"; break;
+    case QProcess::FailedToStart :
+      MsgStr += "command failed to start (program not found or insufficient permissions)"; break;
+    case QProcess::Crashed :
+      MsgStr += "command crashed"; break;
+    case QProcess::Timedout :
+      MsgStr += "command is timed out"; break;
+    case QProcess::WriteError :
+      MsgStr += "write error occurred"; break;
+    case QProcess::ReadError :
+      MsgStr += "read error occurred"; break;
+    default :
+      MsgStr += "unknown"; break;
   }
 
   MsgStr += "\n\n";
@@ -570,8 +576,9 @@ void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironm
 
   if (openfluid::base::PreferencesManager::instance()->isWaresdevShowCommandEnv("PATH"))
   {
-    WareSrcMsgParser::WareSrcMsg PATHMessage = WareSrcMsgParser::WareSrcMsg(QString("PATH=%1\n").arg(Env.value("PATH","")),
-                                                                        WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+    WareSrcMsgParser::WareSrcMsg PATHMessage =
+        WareSrcMsgParser::WareSrcMsg(QString("PATH=%1\n").arg(Env.value("PATH","")),
+                                     WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
     mp_Stream->write(PATHMessage);
   }
 
