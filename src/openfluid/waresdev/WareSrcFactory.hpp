@@ -49,6 +49,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 
 
 namespace openfluid { namespace waresdev {
@@ -78,8 +79,13 @@ class OPENFLUID_API WareSrcFactory
         QString ParamsUiRootHppFilename;
         QString ParamsUiHeaderGuard;
         QString ParamsUiComment;
+        QString SignatureInfos;
         int Sim2docModeIndex;
         bool Sim2docInstall;
+        QString SimulatorSignatureData;
+        QString SimulatorInitCode;
+        QString SimulatorRunCode;
+        QString SimulatorSchedulingReturn;
         int BuilderExtTypeIndex;
         int BuilderExtCategoryIndex;
         QString BuilderExtMenuText;
@@ -243,6 +249,13 @@ class OPENFLUID_API WareSrcFactory
 
     static QString getHeaderGuard(const QString& HppFilename);
     static QString getHppFilename(const QString& CppFilename);
+
+    static QString getSimulatorSignatureInfos(const openfluid::ware::SimulatorSignature& Signature);
+    static QString getSimulatorSignatureData(const openfluid::ware::SimulatorSignature& Signature);
+    static QString getSimulatorInitCode(const openfluid::ware::SimulatorSignature& Signature);
+    static QString getSimulatorRunCode(const openfluid::ware::SimulatorSignature& Signature);
+    static QString getSimulatorSchedulingReturn(const openfluid::ware::SimulatorSignature& Signature);
+
 };
 
 } }  // namespaces

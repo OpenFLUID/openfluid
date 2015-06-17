@@ -246,6 +246,7 @@ QWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
   connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)),
           this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)));
+  connect(mp_ModelTab,SIGNAL(srcGenerateAsked(const QString&)),this,SLOT(whenSrcGenerateAsked(const QString&)));
 
   mp_SpatialTab = new SpatialDomainWidget(NULL,mp_ProjectCentral->advancedDescriptors());
   connect(mp_SpatialTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
@@ -669,29 +670,43 @@ bool ProjectModule::whenOpenExampleAsked()
 // =====================================================================
 
 
+bool ProjectModule::findGhostSignature(const QString& ID,
+                                       openfluid::ware::SimulatorSignature& Signature, std::string& FileFullPath)
+{
+  std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
+    openfluid::machine::SimulatorPluginsManager::instance()->getAvailableGhostsSignatures();
+
+  openfluid::machine::ModelItemSignatureInstance* GhostSignatureInstance = nullptr;
+
+  unsigned int i = 0;
+  while (!GhostSignatureInstance && i < Signatures.size())
+  {
+    if (Signatures[i]->Signature->ID == ID.toStdString())
+    {
+      GhostSignatureInstance = Signatures[i];
+      Signature = *(GhostSignatureInstance->Signature);
+      FileFullPath = GhostSignatureInstance->FileFullPath;
+    }
+    else
+      i++;
+  }
+
+  return (GhostSignatureInstance != nullptr);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType,bool Ghost)
 {
   if (Ghost)
   {
-    std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
-      openfluid::machine::SimulatorPluginsManager::instance()->getAvailableGhostsSignatures();
-
-    openfluid::machine::ModelItemSignatureInstance* GhostSignatureInstance = nullptr;
     openfluid::ware::SimulatorSignature Signature;
+    std::string FileFullPath;
 
-    unsigned int i = 0;
-    while (!GhostSignatureInstance && i < Signatures.size())
-    {
-      if (Signatures[i]->Signature->ID == ID.toStdString())
-      {
-        GhostSignatureInstance = Signatures[i];
-        Signature = *(GhostSignatureInstance->Signature);
-      }
-      else
-        i++;
-    }
-
-    if (GhostSignatureInstance)
+    if (findGhostSignature(ID,Signature,FileFullPath))
     {
       openfluid::ui::common::EditSignatureDialog Dlg(mp_MainWidget);
       Dlg.initialize(Signature);
@@ -700,7 +715,7 @@ void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::Pluggabl
         Signature = Dlg.getSignature();
         openfluid::machine::GhostSimulatorFileIO::saveToFile(
                 Signature,
-                openfluid::tools::Filesystem::dirname(GhostSignatureInstance->FileFullPath));
+                openfluid::tools::Filesystem::dirname(FileFullPath));
         updateSimulatorsWares();
       }
     }
@@ -725,6 +740,26 @@ void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::Pluggabl
                             ErrMsg,
                             QMessageBox::Close);
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenSrcGenerateAsked(const QString& ID)
+{
+  openfluid::ware::SimulatorSignature Signature;
+  std::string FileFullPath;
+
+  if (findGhostSignature(ID,Signature,FileFullPath))
+    mp_MainWidget->newSimulatorFromGhost(Signature);
+  else
+    QMessageBox::critical(QApplication::activeWindow(),
+                          tr("Source code generation error"),
+                          tr("Unable to find ghost simulator"),
+                          QMessageBox::Close);
+
 }
 
 

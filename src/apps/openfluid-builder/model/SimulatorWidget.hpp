@@ -68,6 +68,13 @@ class SimulatorWidget : public ClickableWareWidget
 
     void removeParameterFromList(const QString& Name);
 
+    void notifySrcGenerateAsked();
+
+
+  signals:
+
+    void srcGenerateAsked(const QString&);
+
 
   public slots:
 

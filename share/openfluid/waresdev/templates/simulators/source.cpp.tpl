@@ -19,17 +19,8 @@
 
 BEGIN_SIMULATOR_SIGNATURE("%%WAREID%%")
 
-  DECLARE_NAME("")
-  DECLARE_DESCRIPTION("")
-
-  DECLARE_VERSION("")
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL)
-
-  DECLARE_DOMAIN("")
-  DECLARE_PROCESS("")
-  DECLARE_METHOD("")
-  DECLARE_AUTHOR("","")
-
+%%SIGNATUREINFOS%%
+%%SIMSIGNATUREDATA%%
 END_SIMULATOR_SIGNATURE
 
 
@@ -105,9 +96,8 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableSimulator
   
     openfluid::base::SchedulingRequest initializeRun()
     {  
-    
-      
-      return DefaultDeltaT();
+%%SIMINITCODE%%      
+      return %%SIMSCHEDRETURN%%;
     }
 
 
@@ -117,9 +107,8 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableSimulator
   
     openfluid::base::SchedulingRequest runStep()
     {
-
-
-      return DefaultDeltaT();
+%%SIMRUNCODE%%
+      return %%SIMSCHEDRETURN%%;
     }
 
 

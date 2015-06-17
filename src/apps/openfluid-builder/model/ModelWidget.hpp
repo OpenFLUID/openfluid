@@ -101,10 +101,14 @@ class ModelWidget : public WorkspaceWidget
 
     void notifySrcEditAsked(const QString& ID, bool Ghost);
 
+    void notifySrcGenerateAsked(const QString& ID);
+
 
   signals:
 
-    void srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType,bool Ghost);
+    void srcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType,bool Ghost);
+
+    void srcGenerateAsked(const QString& ID);
 
 
   public slots:

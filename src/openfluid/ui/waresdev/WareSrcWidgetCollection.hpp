@@ -48,6 +48,7 @@
 #include <QString>
 #include <QTextDocument>
 
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
 
@@ -167,7 +168,11 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void deleteCurrentFile();
 
     void newSimulator();
+
+    void newSimulatorFromGhost(const openfluid::ware::SimulatorSignature& Signature);
+
     void newObserver();
+
     void newBuilderExtension();
 
     void showFindReplaceDialog();

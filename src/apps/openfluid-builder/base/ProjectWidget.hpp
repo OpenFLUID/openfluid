@@ -99,6 +99,8 @@ class ProjectWidget : public QWidget
 
     void newSimulator();
 
+    void newSimulatorFromGhost(const openfluid::ware::SimulatorSignature& Signature);
+
     void newObserver();
 };
 

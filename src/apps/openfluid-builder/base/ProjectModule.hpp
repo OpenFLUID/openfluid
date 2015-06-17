@@ -43,6 +43,7 @@
 
 #include "AbstractModule.hpp"
 
+
 #include <openfluid/builderext/FluidXUpdateFlags.hpp>
 
 #include <QString>
@@ -64,9 +65,14 @@ class RunConfigurationWidget;
 class OutputsWidget;
 
 
-namespace openfluid { namespace builderext {
-  class PluggableModelessExtension;
-} }
+namespace openfluid {
+  namespace builderext {
+    class PluggableModelessExtension;
+  }
+  namespace ware {
+    class SimulatorSignature;
+  }
+}
 
 
 class ProjectModule : public AbstractModule
@@ -115,6 +121,9 @@ class ProjectModule : public AbstractModule
 
     void resetInputDirWatcher();
 
+    bool findGhostSignature(const QString& ID,
+                            openfluid::ware::SimulatorSignature& Signature,std::string& FileFullPath);
+
 
   signals:
 
@@ -148,7 +157,9 @@ class ProjectModule : public AbstractModule
 
   public slots:
 
-    void whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType,bool Ghost);
+    void whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType,bool Ghost);
+
+    void whenSrcGenerateAsked(const QString& ID);
 
 
   public:

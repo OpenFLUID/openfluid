@@ -193,6 +193,16 @@ void ProjectWidget::newSimulator()
 // =====================================================================
 
 
+void ProjectWidget::newSimulatorFromGhost(const openfluid::ware::SimulatorSignature& Signature)
+{
+  mp_WareSrcCollection->newSimulatorFromGhost(Signature);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ProjectWidget::newObserver()
 {
   mp_WareSrcCollection->newObserver();

@@ -19,5 +19,6 @@
     <file>icons/market.png</file>
     <file>icons/wares-development.png</file>    
     <file>icons/rename-attribute.png</file>
+    <file>icons/ghost2sim.png</file>
   </qresource>
 </RCC>

@@ -56,7 +56,12 @@ SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDe
 {
   refresh();
 
+  ui->GenerateSrcButton->setText("");
+  ui->GenerateSrcButton->setIcon(QIcon(":/icons/ghost2sim.png"));
+  ui->GenerateSrcButton->setIconSize(QSize(32,16));
+
   connect(ui->AddParamButton,SIGNAL(clicked()),this,SLOT(addParameterToList()));
+  connect(ui->GenerateSrcButton,SIGNAL(clicked()),this,SLOT(notifySrcGenerateAsked()));
 }
 
 
@@ -76,8 +81,6 @@ SimulatorWidget::~SimulatorWidget()
 
 void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
-  // TODO take Required/Used params into account
-
   clearParameterWidgets();
 
   std::vector<openfluid::ware::SignatureDataItem>* UsedParams = &(Signature->Signature->HandledData.UsedParams);
@@ -222,6 +225,8 @@ void SimulatorWidget::refresh()
   {
     setAvailableWare(false);
   }
+
+  ui->GenerateSrcButton->setVisible(m_Ghost);
 }
 
 
@@ -314,3 +319,13 @@ void SimulatorWidget::updateWare()
   refresh();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorWidget::notifySrcGenerateAsked()
+{
+  if (m_Ghost)
+    emit srcGenerateAsked(QString::fromStdString(m_ID));
+}

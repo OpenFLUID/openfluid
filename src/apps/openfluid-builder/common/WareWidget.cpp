@@ -96,6 +96,7 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
   connect(ui->ParameterizationSwitchLabel,SIGNAL(clicked()),this,SLOT(switchParameterizationMode()));
 
   ui->ParamInfoWidget->setVisible(false);
+  ui->GenerateSrcButton->setVisible(false);
 }
 
 

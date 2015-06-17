@@ -687,10 +687,37 @@ void WareSrcWidgetCollection::newSimulator()
   newWare(openfluid::waresdev::WareSrcManager::SIMULATOR);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::newSimulatorFromGhost(const openfluid::ware::SimulatorSignature& Signature)
+{
+  openfluid::ui::waresdev::NewWareDialog Dialog(Signature, QApplication::activeWindow());
+  if (Dialog.exec())
+  {
+    QString NewPath = Dialog.getNewWarePath();
+
+    if (!NewPath.isEmpty())
+      openPath(NewPath);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcWidgetCollection::newObserver()
 {
   newWare(openfluid::waresdev::WareSrcManager::OBSERVER);
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 void WareSrcWidgetCollection::newBuilderExtension()
 {

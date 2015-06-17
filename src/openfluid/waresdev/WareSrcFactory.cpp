@@ -289,6 +289,11 @@ bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFile
   Str.replace("%%PARAMSUICOMMENT%%", R.ParamsUiComment);
   Str.replace("%%SIM2DOCINSTALLDISABLED%%", R.getSim2docInstall());
   Str.replace("%%SIM2DOCMODE%%", R.getSim2docMode());
+  Str.replace("%%SIGNATUREINFOS%%",R.SignatureInfos);
+  Str.replace("%%SIMSIGNATUREDATA%%",R.SimulatorSignatureData);
+  Str.replace("%%SIMINITCODE%%",R.SimulatorInitCode);
+  Str.replace("%%SIMRUNCODE%%",R.SimulatorRunCode);
+  Str.replace("%%SIMSCHEDRETURN%%",R.SimulatorSchedulingReturn);
   Str.replace("%%BUILDEREXTCATEGORY%%", R.getBuilderExtCategory());
   Str.replace("%%BUILDEREXTMENUTEXT%%", R.BuilderExtMenuText);
 
@@ -361,6 +366,283 @@ QString WareSrcFactory::getHppFilename(const QString& CppFilename)
 
 // =====================================================================
 // =====================================================================
+
+
+std::string getDeclarationStringFromVarType(openfluid::core::Value::Type VarType)
+{
+  if (VarType == openfluid::core::Value::NONE)
+    return "";
+  else
+    return "["+openfluid::core::Value::getStringFromValueType(VarType)+"]";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcFactory::getSimulatorSignatureInfos(const openfluid::ware::SimulatorSignature& Signature)
+{
+  std::string TmpStr;
+
+  TmpStr += "  // Informations\n";
+  TmpStr += "  DECLARE_NAME(\""+Signature.Name+"\")\n";
+  TmpStr += "  DECLARE_DESCRIPTION(\""+Signature.Description+"\")\n";
+  TmpStr += "  DECLARE_VERSION(\""+Signature.Version+"\")\n";
+
+  TmpStr += "  DECLARE_STATUS(";
+  if (Signature.Status == openfluid::ware::EXPERIMENTAL)
+    TmpStr += "openfluid::ware::EXPERIMENTAL";
+  else if (Signature.Status == openfluid::ware::BETA)
+    TmpStr += "openfluid::ware::BETA";
+  else
+    TmpStr += "openfluid::ware::STABLE";
+  TmpStr += ")\n";
+
+  for (auto& Item : Signature.Authors)
+    TmpStr += "  DECLARE_AUTHOR(\""+Item.first+"\",\""+Item.second+"\")\n";
+
+  return QString::fromStdString(TmpStr);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::SimulatorSignature& Signature)
+{
+  std::string TmpStr/* = "\n"*/;
+
+  // TODO replace indentation size with value from user's preferences
+
+  if (Signature.HandledData.RequiredParams.size() + Signature.HandledData.UsedParams.size())
+    TmpStr += "\n  // Parameters\n";
+
+  // -- Parameters
+  for (auto& Item : Signature.HandledData.RequiredParams)
+    TmpStr += "  DECLARE_REQUIRED_PARAMETER(\""+Item.DataName+"\","
+                                           "\""+Item.Description+"\","
+                                           "\""+Item.DataUnit+"\")\n";
+
+  for (auto& Item : Signature.HandledData.UsedParams)
+    TmpStr += "  DECLARE_USED_PARAMETER(\""+Item.DataName+"\","
+                                       "\""+Item.Description+"\","
+                                       "\""+Item.DataUnit+"\")\n";
+
+
+  // -- Extra files
+
+  if (Signature.HandledData.RequiredExtraFiles.size() + Signature.HandledData.UsedExtraFiles.size())
+    TmpStr += "\n  // Extra files\n";
+
+  for (auto& Item : Signature.HandledData.RequiredExtraFiles)
+    TmpStr += "  DECLARE_REQUIRED_EXTRAFILE(\""+Item+"\")\n";
+
+  for (auto& Item : Signature.HandledData.UsedExtraFiles)
+    TmpStr += "  DECLARE_USED_EXTRAFILE(\""+Item+"\")\n";
+
+
+  // -- Attributes
+
+  if (Signature.HandledData.RequiredAttribute.size() + Signature.HandledData.UsedAttribute.size() +
+      Signature.HandledData.ProducedAttribute.size())
+    TmpStr += "\n  // Attributes\n";
+
+  for (auto& Item : Signature.HandledData.RequiredAttribute)
+    TmpStr += "  DECLARE_REQUIRED_ATTRIBUTE(\""+Item.DataName+"\","
+                                           "\""+Item.UnitsClass+"\","
+                                           "\""+Item.Description+"\","
+                                           "\""+Item.DataUnit+"\")\n";
+
+  for (auto& Item : Signature.HandledData.UsedAttribute)
+    TmpStr += "  DECLARE_USED_ATTRIBUTE(\""+Item.DataName+"\","
+                                       "\""+Item.UnitsClass+"\","
+                                       "\""+Item.Description+"\","
+                                       "\""+Item.DataUnit+"\")\n";
+
+  for (auto& Item : Signature.HandledData.ProducedAttribute)
+    TmpStr += "  DECLARE_PRODUCED_ATTRIBUTE(\""+Item.DataName+"\","
+                                           "\""+Item.UnitsClass+"\","
+                                           "\""+Item.Description+"\","
+                                           "\""+Item.DataUnit+"\")\n";
+
+
+  // -- Events
+
+  if (Signature.HandledData.UsedEventsOnUnits.size())
+     TmpStr += "\n  // Events\n";
+
+  for (auto& Item : Signature.HandledData.UsedEventsOnUnits)
+    TmpStr += "  DECLARE_USED_EVENTS(\""+Item+"\")\n";
+
+
+  // -- Variables
+
+  if (Signature.HandledData.RequiredVars.size() + Signature.HandledData.UsedVars.size() +
+      Signature.HandledData.ProducedVars.size() + Signature.HandledData.UpdatedVars.size())
+    TmpStr += "\n  // Variables\n";
+
+
+  for (auto& Item : Signature.HandledData.RequiredVars)
+    TmpStr += "  DECLARE_REQUIRED_VARIABLE(\""+Item.DataName+getDeclarationStringFromVarType(Item.DataType)+"\","
+                                          "\""+Item.UnitsClass+"\","
+                                          "\""+Item.Description+"\","
+                                          "\""+Item.DataUnit+"\")\n";
+
+  for (auto& Item : Signature.HandledData.UsedVars)
+    TmpStr += "  DECLARE_USED_VARIABLE(\""+Item.DataName+getDeclarationStringFromVarType(Item.DataType)+"\","
+                                          "\""+Item.UnitsClass+"\","
+                                          "\""+Item.Description+"\","
+                                          "\""+Item.DataUnit+"\")\n";
+
+  for (auto& Item : Signature.HandledData.ProducedVars)
+    TmpStr += "  DECLARE_PRODUCED_VARIABLE(\""+Item.DataName+getDeclarationStringFromVarType(Item.DataType)+"\","
+                                          "\""+Item.UnitsClass+"\","
+                                          "\""+Item.Description+"\","
+                                          "\""+Item.DataUnit+"\")\n";
+
+  for (auto& Item : Signature.HandledData.UpdatedVars)
+    TmpStr += "  DECLARE_UPDATED_VARIABLE(\""+Item.DataName+getDeclarationStringFromVarType(Item.DataType)+"\","
+                                          "\""+Item.UnitsClass+"\","
+                                          "\""+Item.Description+"\","
+                                          "\""+Item.DataUnit+"\")\n";
+
+
+  // -- Spatial graph
+
+  if (Signature.HandledUnitsGraph.UpdatedUnitsClass.size() + Signature.HandledUnitsGraph.UpdatedUnitsGraph.size())
+     TmpStr += "\n  // Spatial graph\n";
+
+  if (!Signature.HandledUnitsGraph.UpdatedUnitsGraph.empty())
+    TmpStr += "  DECLARE_UPDATED_UNITSGRAPH(\""+Signature.HandledUnitsGraph.UpdatedUnitsGraph+"\")\n";
+
+  for (auto& Item : Signature.HandledUnitsGraph.UpdatedUnitsClass)
+    TmpStr += "  DECLARE_UPDATED_UNITSCLASS(\""+Item.UnitsClass+"\",\""+Item.Description+"\")\n";
+
+
+  // -- Scheduling
+
+  TmpStr += "\n  // Scheduling\n";
+
+  if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::DEFAULT)
+    TmpStr += "  DECLARE_SCHEDULING_DEFAULT\n";
+  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED)
+  {
+    std::string TmpValueStr = (QString::fromStdString("%1").arg(Signature.TimeScheduling.Min)).toStdString();
+    TmpStr += "  DECLARE_SCHEDULING_FIXED("+TmpValueStr+")\n";
+  }
+  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::RANGE)
+  {
+    std::string TmpValueStr = (QString::fromStdString("%1,%2")
+                               .arg(Signature.TimeScheduling.Min)
+                               .arg(Signature.TimeScheduling.Max)).toStdString();
+    TmpStr += "  DECLARE_SCHEDULING_RANGE("+TmpValueStr+")\n";
+  }
+  else
+    TmpStr += "  DECLARE_SCHEDULING_UNDEFINED\n";
+
+  return QString::fromStdString(TmpStr);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString getSimulatorInitRunCode(const openfluid::ware::SimulatorSignature& Signature,
+                                const std::string PrimitiveStr)
+{
+  std::string TmpStr;
+  QStringList UnitsClasses;
+
+  for (auto& Item : Signature.HandledData.ProducedVars)
+    UnitsClasses << QString::fromStdString(Item.UnitsClass);
+
+  UnitsClasses.removeDuplicates();
+  UnitsClasses.sort();
+
+  if (!UnitsClasses.isEmpty())
+  {
+    // TODO replace indentation size with value from user's preferences
+
+    TmpStr += "      // -- beginning of automatically generated code --\n";
+    TmpStr += "      openfluid::core::SpatialUnit* U;\n";
+
+    for (auto& UClass : UnitsClasses)
+    {
+      TmpStr += "\n";
+      TmpStr += "      OPENFLUID_UNITS_ORDERED_LOOP(\""+UClass.toStdString()+"\",U)\n";
+      TmpStr += "      {\n";
+
+      for (auto& Item : Signature.HandledData.ProducedVars)
+      {
+        if (Item.UnitsClass == UClass.toStdString())
+        {
+          std::string TmpValueStr = "0.0";
+          if (Item.DataType == openfluid::core::Value::BOOLEAN)
+            TmpValueStr = "openfluid::core::BooleanValue()";
+          else if (Item.DataType == openfluid::core::Value::INTEGER)
+            TmpValueStr = "openfluid::core::IntegerValue(0)";
+          else if (Item.DataType == openfluid::core::Value::STRING)
+            TmpValueStr = "openfluid::core::StringValue()";
+          else if (Item.DataType == openfluid::core::Value::MAP)
+            TmpValueStr = "openfluid::core::MapValue()";
+          else if (Item.DataType == openfluid::core::Value::VECTOR)
+            TmpValueStr = "openfluid::core::VectorValue(5,0.0)";
+          else if (Item.DataType == openfluid::core::Value::MATRIX)
+            TmpValueStr = "openfluid::core::MatrixValue(5,5,0.0)";
+          else if (Item.DataType == openfluid::core::Value::TREE)
+            TmpValueStr = "openfluid::core::TreeValue()";
+          else if (Item.DataType == openfluid::core::Value::NULLL)
+            TmpValueStr = "openfluid::core::NullValue()";
+
+          TmpStr += "        "+PrimitiveStr+"(U,\""+Item.DataName+"\","+TmpValueStr+");\n";
+        }
+      }
+      TmpStr += "      }\n";
+    }
+    TmpStr += "      // -- end of automatically generated code --\n";
+  }
+
+  return QString::fromStdString(TmpStr);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcFactory::getSimulatorInitCode(const openfluid::ware::SimulatorSignature& Signature)
+{
+  return getSimulatorInitRunCode(Signature,"OPENFLUID_InitializeVariable");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcFactory::getSimulatorRunCode(const openfluid::ware::SimulatorSignature& Signature)
+{
+  return getSimulatorInitRunCode(Signature,"OPENFLUID_AppendVariable");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcFactory::getSimulatorSchedulingReturn(const openfluid::ware::SimulatorSignature& Signature)
+{
+  QString TmpStr = "DefaultDeltaT()";
+
+  if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED ||
+      Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::RANGE)
+    TmpStr = QString("Duration(%1)").arg(Signature.TimeScheduling.Min);
+
+  return TmpStr;
+}
 
 
 } }  // namespaces

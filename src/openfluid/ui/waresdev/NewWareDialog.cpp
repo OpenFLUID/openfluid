@@ -58,7 +58,8 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 NewWareDialog::NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type, QWidget* Parent) :
-    QDialog(Parent), ui(new Ui::NewWareDialog), m_WareType(Type), m_NewWarePath("")
+    QDialog(Parent), ui(new Ui::NewWareDialog), m_WareType(Type), m_NewWarePath(""),
+    m_UseSimSignature(false)
 {
   ui->setupUi(this);
 
@@ -135,6 +136,21 @@ NewWareDialog::NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type,
   ui->ClassName_lineEdit->setText(SrcClassname);
   ui->UiParamSourceFilename_lineEdit->setText("ParamsUiWidget.cpp");
   ui->UiParamClassName_lineEdit->setText("ParamsUiWidget");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+NewWareDialog::NewWareDialog(const openfluid::ware::SimulatorSignature& Signature, QWidget* Parent) :
+  NewWareDialog(openfluid::waresdev::WareSrcManager::SIMULATOR,Parent)
+{
+  m_SimSignature = Signature;
+  m_UseSimSignature = true;
+
+  ui->Id_lineEdit->setText(QString::fromStdString(Signature.ID));
+  ui->Id_lineEdit->setReadOnly(true);
 }
 
 
@@ -224,34 +240,54 @@ void NewWareDialog::accept()
   R.RootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.RootCppFilename);
   R.HppHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.RootHppFilename);
 
-  switch (m_WareType)
+  R.SignatureInfos = "  // Informations\n"
+                     "  DECLARE_NAME(\"\")\n"
+                     "  DECLARE_DESCRIPTION(\"\")\n"
+                     "  DECLARE_VERSION(\"\")\n"
+                     "  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL)\n";
+
+  if (m_WareType == openfluid::waresdev::WareSrcManager::SIMULATOR)
   {
-    case openfluid::waresdev::WareSrcManager::SIMULATOR:
-      R.Sim2docModeIndex = ui->Sim2doc_comboBox->currentIndex();
-      R.Sim2docInstall = ui->Sim2doc_checkBox->isChecked();
-    case openfluid::waresdev::WareSrcManager::OBSERVER:
+    R.Sim2docModeIndex = ui->Sim2doc_comboBox->currentIndex();
+    R.Sim2docInstall = ui->Sim2doc_checkBox->isChecked();
+
+    R.SimulatorSchedulingReturn = "DefaultDeltaT()";
+
+    if (m_UseSimSignature)
     {
-      if (WithUiParam)
-      {
-        R.ParamsUiEnabled = true;
-        R.ParamsUiClassname = ui->UiParamClassName_lineEdit->text();
-        R.ParamsUiRootCppFilename = ui->UiParamSourceFilename_lineEdit->text();
-        R.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.ParamsUiRootCppFilename);
-        R.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.ParamsUiRootHppFilename);
-        R.ParamsUiComment = "";
-      }
+      R.SignatureInfos = openfluid::waresdev::WareSrcFactory::getSimulatorSignatureInfos(m_SimSignature);
+      R.SimulatorSignatureData = openfluid::waresdev::WareSrcFactory::getSimulatorSignatureData(m_SimSignature);
+      R.SimulatorInitCode = openfluid::waresdev::WareSrcFactory::getSimulatorInitCode(m_SimSignature);
+      R.SimulatorRunCode = openfluid::waresdev::WareSrcFactory::getSimulatorRunCode(m_SimSignature);
+      R.SimulatorSchedulingReturn = openfluid::waresdev::WareSrcFactory::getSimulatorSchedulingReturn(m_SimSignature);
     }
-      break;
-    case openfluid::waresdev::WareSrcManager::BUILDEREXT:
-      R.BuilderExtTypeIndex = ui->BextType_comboBox->currentIndex();
-      R.BuilderExtCategoryIndex = ui->BextCategory_comboBox->currentIndex();
-      R.BuilderExtMenuText = ui->BextMenutext_lineEdit->text();
-      WithHpp = true;
-      WithUiParam = false;
-      break;
-    default:
-      break;
   }
+  else if (m_WareType == openfluid::waresdev::WareSrcManager::OBSERVER)
+  {
+
+  }
+  else if (m_WareType == openfluid::waresdev::WareSrcManager::BUILDEREXT)
+  {
+    R.BuilderExtTypeIndex = ui->BextType_comboBox->currentIndex();
+    R.BuilderExtCategoryIndex = ui->BextCategory_comboBox->currentIndex();
+    R.BuilderExtMenuText = ui->BextMenutext_lineEdit->text();
+    WithHpp = true;
+    WithUiParam = false;
+  }
+
+
+  if (WithUiParam &&
+      (m_WareType == openfluid::waresdev::WareSrcManager::SIMULATOR ||
+      m_WareType == openfluid::waresdev::WareSrcManager::OBSERVER))
+  {
+    R.ParamsUiEnabled = true;
+    R.ParamsUiClassname = ui->UiParamClassName_lineEdit->text();
+    R.ParamsUiRootCppFilename = ui->UiParamSourceFilename_lineEdit->text();
+    R.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.ParamsUiRootCppFilename);
+    R.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.ParamsUiRootHppFilename);
+    R.ParamsUiComment = "";
+  }
+
 
   Ok = m_WareTypeDir.mkdir(WareId);
   if (!Ok)

@@ -41,12 +41,14 @@
 #ifndef __OPENFLUID_UIWARESDEV_NEWWAREDIALOG_HPP__
 #define __OPENFLUID_UIWARESDEV_NEWWAREDIALOG_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QDialog>
 #include <QDir>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
+
 
 namespace Ui {
 class NewWareDialog;
@@ -70,15 +72,23 @@ class OPENFLUID_API NewWareDialog: public QDialog
 
     QString m_NewWarePath;
 
+    openfluid::ware::SimulatorSignature m_SimSignature;
+
+    bool m_UseSimSignature;
+
     void setStatus(const QString WarningMsg);
+
 
   private slots:
 
     void onInformationChanged();
 
+
   public:
 
     NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type, QWidget* Parent = 0);
+
+    NewWareDialog(const openfluid::ware::SimulatorSignature& Signature, QWidget* Parent = 0);
 
     ~NewWareDialog();
 

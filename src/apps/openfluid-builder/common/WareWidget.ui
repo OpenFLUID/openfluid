@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>751</width>
-    <height>427</height>
+    <height>448</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -64,6 +64,41 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="GenerateSrcButton">
+          <property name="minimumSize">
+           <size>
+            <width>48</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>48</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>30</width>
             <height>20</height>
            </size>
           </property>
@@ -340,7 +375,7 @@
                       <x>0</x>
                       <y>0</y>
                       <width>517</width>
-                      <height>275</height>
+                      <height>296</height>
                      </rect>
                     </property>
                     <property name="minimumSize">
