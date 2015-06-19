@@ -126,7 +126,7 @@ bool isValidAttributeName(const openfluid::core::AttributeName_t& Name)
 // =====================================================================
 
 
-bool extractVarableNameAndType(const openfluid::core::VariableName_t& Name,
+bool extractVariableNameAndType(const openfluid::core::VariableName_t& Name,
                                openfluid::core::VariableName_t& VarName,
                                openfluid::core::Value::Type& VarType)
 {

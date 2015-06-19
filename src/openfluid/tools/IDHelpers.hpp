@@ -102,9 +102,9 @@ bool OPENFLUID_API isValidAttributeName(const openfluid::core::AttributeName_t& 
   @param[out] VarType the extracted variable type
   @return true if the check and extraction are OK
 */
-bool OPENFLUID_API extractVarableNameAndType(const openfluid::core::VariableName_t& Name,
-                                             openfluid::core::VariableName_t& VarName,
-                                             openfluid::core::Value::Type& VarType);
+bool OPENFLUID_API extractVariableNameAndType(const openfluid::core::VariableName_t& Name,
+                                              openfluid::core::VariableName_t& VarName,
+                                              openfluid::core::Value::Type& VarType);
 
 } } // namespaces
 

@@ -196,39 +196,39 @@ BOOST_AUTO_TEST_CASE(check_variables_operations)
   openfluid::core::VariableName_t VarName;
   openfluid::core::Value::Type VarType;
 
-  BOOST_REQUIRE(openfluid::tools::extractVarableNameAndType("abc.def.ghi",VarName,VarType));
+  BOOST_REQUIRE(openfluid::tools::extractVariableNameAndType("abc.def.ghi",VarName,VarType));
   BOOST_REQUIRE_EQUAL(VarName,"abc.def.ghi");
   BOOST_REQUIRE_EQUAL(VarType,openfluid::core::Value::NONE);
 
-  BOOST_REQUIRE(openfluid::tools::extractVarableNameAndType("abc.def.ghi[double]",VarName,VarType));
+  BOOST_REQUIRE(openfluid::tools::extractVariableNameAndType("abc.def.ghi[double]",VarName,VarType));
   BOOST_REQUIRE_EQUAL(VarName,"abc.def.ghi");
   BOOST_REQUIRE_EQUAL(VarType,openfluid::core::Value::DOUBLE);
 
-  BOOST_REQUIRE(openfluid::tools::extractVarableNameAndType("abc.def.ghi[integer]",VarName,VarType));
+  BOOST_REQUIRE(openfluid::tools::extractVariableNameAndType("abc.def.ghi[integer]",VarName,VarType));
   BOOST_REQUIRE_EQUAL(VarName,"abc.def.ghi");
   BOOST_REQUIRE_EQUAL(VarType,openfluid::core::Value::INTEGER);
 
-  BOOST_REQUIRE(openfluid::tools::extractVarableNameAndType("abc.def.ghi[boolean]",VarName,VarType));
+  BOOST_REQUIRE(openfluid::tools::extractVariableNameAndType("abc.def.ghi[boolean]",VarName,VarType));
   BOOST_REQUIRE_EQUAL(VarName,"abc.def.ghi");
   BOOST_REQUIRE_EQUAL(VarType,openfluid::core::Value::BOOLEAN);
 
-  BOOST_REQUIRE(openfluid::tools::extractVarableNameAndType("abc.def.ghi[]",VarName,VarType));
+  BOOST_REQUIRE(openfluid::tools::extractVariableNameAndType("abc.def.ghi[]",VarName,VarType));
   BOOST_REQUIRE_EQUAL(VarName,"abc.def.ghi");
   BOOST_REQUIRE_EQUAL(VarType,openfluid::core::Value::VECTOR);
 
-  BOOST_REQUIRE(openfluid::tools::extractVarableNameAndType("abc.def.ghi[vector]",VarName,VarType));
+  BOOST_REQUIRE(openfluid::tools::extractVariableNameAndType("abc.def.ghi[vector]",VarName,VarType));
   BOOST_REQUIRE_EQUAL(VarName,"abc.def.ghi");
   BOOST_REQUIRE_EQUAL(VarType,openfluid::core::Value::VECTOR);
 
-  BOOST_REQUIRE(openfluid::tools::extractVarableNameAndType("abc.def.ghi[matrix]",VarName,VarType));
+  BOOST_REQUIRE(openfluid::tools::extractVariableNameAndType("abc.def.ghi[matrix]",VarName,VarType));
   BOOST_REQUIRE_EQUAL(VarName,"abc.def.ghi");
   BOOST_REQUIRE_EQUAL(VarType,openfluid::core::Value::MATRIX);
 
-  BOOST_REQUIRE(openfluid::tools::extractVarableNameAndType("abc.def.ghi[map]",VarName,VarType));
+  BOOST_REQUIRE(openfluid::tools::extractVariableNameAndType("abc.def.ghi[map]",VarName,VarType));
   BOOST_REQUIRE_EQUAL(VarName,"abc.def.ghi");
   BOOST_REQUIRE_EQUAL(VarType,openfluid::core::Value::MAP);
 
-  BOOST_REQUIRE(openfluid::tools::extractVarableNameAndType("abc.def.ghi[null]",VarName,VarType));
+  BOOST_REQUIRE(openfluid::tools::extractVariableNameAndType("abc.def.ghi[null]",VarName,VarType));
   BOOST_REQUIRE_EQUAL(VarName,"abc.def.ghi");
   BOOST_REQUIRE_EQUAL(VarType,openfluid::core::Value::NULLL);
 }

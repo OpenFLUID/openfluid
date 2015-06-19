@@ -196,7 +196,14 @@ class OPENFLUID_API WarePluginsManager
             // checks if the handle procs exist
             if (SignatureProc && BodyProc)
             {
-              Plug->Signature = SignatureProc();
+              try
+              {
+                Plug->Signature = SignatureProc();
+              }
+              catch (openfluid::base::FrameworkException& E)
+              {
+                throw openfluid::base::FrameworkException(ECtxt,E.getMessage());
+              }
 
               if (Plug->Signature == NULL)
                 throw openfluid::base::FrameworkException(ECtxt,"Signature cannot be instanciated from plugin file");
@@ -313,7 +320,7 @@ class OPENFLUID_API WarePluginsManager
         {
           CurrentPlug = getWareSignature(PluginFiles[i]);
         }
-        catch (openfluid::base::FrameworkException& E )
+        catch (openfluid::base::FrameworkException& E)
         {
           SearchResults.ErroredFiles[E.getContext().at("pluginfullpath")] = E.getMessage();
         }
