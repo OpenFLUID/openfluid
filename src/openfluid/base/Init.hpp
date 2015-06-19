@@ -53,18 +53,18 @@
 
 #define INIT_OPENFLUID_APPLICATION(ac,av) \
   OFDBG_BANNER; \
-  QCoreApplication _M_qapp(ac,av); \
-  openfluid::base::RuntimeEnvironment::instance();
+  QCoreApplication OPENFLUID_APPLICATION(ac,av); \
+  openfluid::base::RuntimeEnvironment::instance()->prepareUserDataDirectory();
 
 
 #define INIT_OPENFLUID_APPLICATION_WITH_GUI(ac,av) \
   OFDBG_BANNER; \
-  QApplication _M_qapp(ac,av); \
-  openfluid::base::RuntimeEnvironment::instance();
+  QApplication OPENFLUID_APPLICATION(ac,av); \
+  openfluid::base::RuntimeEnvironment::instance()->prepareUserDataDirectory();
 
 
 #define CLOSE_OPENFLUID_APPLICATION_WITH_GUI \
- _M_qapp.exec();
+  OPENFLUID_APPLICATION.exec();
 
 
 

@@ -283,6 +283,31 @@ RuntimeEnvironment* RuntimeEnvironment::instance()
 // =====================================================================
 
 
+void RuntimeEnvironment::prepareUserDataDirectory() const
+{
+  openfluid::tools::Filesystem::makeDirectory(m_UserDataDir);
+
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::SIMULATORS_PLUGINS_USRDIR));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::OBSERVERS_PLUGINS_USRDIR));
+
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR+"/"+
+                                                              openfluid::config::PROJECTS_SUBDIR));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR+"/"+
+                                                              openfluid::config::WARESDEV_SUBDIR));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR+"/"+
+                                                              openfluid::config::WARESDEV_SUBDIR+"/"+
+                                                              openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR+"/"+
+                                                              openfluid::config::WARESDEV_SUBDIR+"/"+
+                                                              openfluid::config::OBSERVERS_PLUGINS_SUBDIR));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void RuntimeEnvironment::setDateTimeOutputDir()
 {
   m_OutputDir = m_UserDataDir + "/" + "OPENFLUID." +
@@ -433,20 +458,6 @@ std::string RuntimeEnvironment::getAppResourceFilePath(std::string AppName,
 std::string RuntimeEnvironment::getTranslationsDir() const
 {
   return m_InstallPrefix + "/" + openfluid::config::SHARE_TRANSLATIONS_PATH;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void RuntimeEnvironment::setSimulationTimeInformation(openfluid::core::DateTime StartTime,
-                                                      openfluid::core::DateTime EndTime,
-                                                      int TimeStep)
-{
-  m_StartTime = StartTime;
-  m_EndTime = EndTime;
-  m_TimeStep = TimeStep;
 }
 
 

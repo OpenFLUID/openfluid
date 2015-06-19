@@ -144,24 +144,26 @@ class OPENFLUID_API RuntimeEnvironment
     */
     ~RuntimeEnvironment();
 
-
     /**
       Returns the version of OpenFLUID
       @return the version as a std::string
     */
-    std::string getVersion() const { return m_Version; };
+    std::string getVersion() const
+    { return m_Version; };
 
     /**
       Returns the full version of OpenFLUID, including status (alpha, beta, rc, ...)
       @return the full version as a std::string
     */
-    std::string getFullVersion() const { return m_FullVersion; };
+    std::string getFullVersion() const
+    { return m_FullVersion; };
 
     /**
       Returns the version of OpenFLUID, composed of major and minor numbers
       @return the major.minor version as a std::string
     */
-    std::string getMajorMinorVersion() const { return m_MajorMinorVersion; };
+    std::string getMajorMinorVersion() const
+    { return m_MajorMinorVersion; };
 
 
 
@@ -170,13 +172,14 @@ class OPENFLUID_API RuntimeEnvironment
       @param[in] InputDir The input directory
     */
     void setInputDir(const std::string InputDir)
-      { m_InputDir = InputDir; mp_WareEnv->setValue("dir.input",m_InputDir); };
+    { m_InputDir = InputDir; mp_WareEnv->setValue("dir.input",m_InputDir); };
 
     /**
       Returns the input directory
       @return the input directory
     */
-    inline std::string getInputDir() const { return m_InputDir; };
+    inline std::string getInputDir() const
+    { return m_InputDir; };
 
     /**
       Sets the output directory, overriding the default output dir
@@ -189,7 +192,8 @@ class OPENFLUID_API RuntimeEnvironment
       Returns the output directory
       @return the output directory
     */
-    inline std::string getOutputDir() const { return m_OutputDir; };
+    inline std::string getOutputDir() const
+    { return m_OutputDir; };
 
     /**
       Sets the output directory as a directory located in the user data directory,
@@ -201,47 +205,55 @@ class OPENFLUID_API RuntimeEnvironment
       Returns the market bag directory (i.e. $HOME/.openfluid/market-bag)
       @return the market bag directory
     */
-    inline std::string getMarketBagDir() const { return m_MarketBagDir; };
+    inline std::string getMarketBagDir() const
+    { return m_MarketBagDir; };
 
     /**
       @return the market bag directory for the current OpenFLUID version
       (i.e. $HOME/.openfluid/market-bag/2.0.0)
      */
-    inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
+    inline std::string getMarketBagVersionDir() const
+    { return m_MarketBagVersionDir; };
 
     /**
       @return the market bag directory for simulators of the current version
       (i.e. $HOME/.openfluid/market-bag/2.0.0/simulators)
      */
-    inline std::string getMarketBagSimVersionDir() const { return m_MarketBagSimVersionDir; };
+    inline std::string getMarketBagSimVersionDir() const
+    { return m_MarketBagSimVersionDir; };
 
     /**
       @return the market bag directory for observers of the current version
       (i.e. $HOME/.openfluid/market-bag/2.0.0/observers)
      */
-    inline std::string getMarketBagObsVersionDir() const { return m_MarketBagObsVersionDir; };
+    inline std::string getMarketBagObsVersionDir() const
+    { return m_MarketBagObsVersionDir; };
 
     /**
       @return the market bag directory for builderexts of the current version
       (i.e. $HOME/.openfluid/market-bag/2.0.0/builderexts)
      */
-    inline std::string getMarketBagBuildVersionDir() const { return m_MarketBagBuildVersionDir; };
+    inline std::string getMarketBagBuildVersionDir() const
+    { return m_MarketBagBuildVersionDir; };
 
     /**
       @return the market bag directory for datasets of the current version
       (i.e. $HOME/.openfluid/market-bag/2.0.0/datasets)
      */
-    inline std::string getMarketBagDataVersionDir() const { return m_MarketBagDataVersionDir; };
+    inline std::string getMarketBagDataVersionDir() const
+    { return m_MarketBagDataVersionDir; };
 
     /**
       @return the binairies market bag subdirectory
      */
-    inline std::string getMarketBagBinSubDir() const { return m_MarketBagBinSubDir; };
+    inline std::string getMarketBagBinSubDir() const
+    { return m_MarketBagBinSubDir; };
 
     /**
       @return the sources market bag subdirectory
      */
-    inline std::string getMarketBagSrcSubDir() const { return m_MarketBagSrcSubDir; };
+    inline std::string getMarketBagSrcSubDir() const
+    { return m_MarketBagSrcSubDir; };
 
     /**
       Returns the default config file path (i.e. $HOME/.openfluid/openfluid.conf)
@@ -273,7 +285,12 @@ class OPENFLUID_API RuntimeEnvironment
       @return the absolute path
     */
     std::string getUserDataPath(std::string RelativePath) const
-      { return m_UserDataDir + "/" + RelativePath; };
+    { return m_UserDataDir + "/" + RelativePath; };
+
+    /**
+      Checks the user data directory and create missing subdirectories and files
+    */
+    void prepareUserDataDirectory() const;
 
     /**
       Returns the path of the temporary directory
@@ -348,7 +365,8 @@ class OPENFLUID_API RuntimeEnvironment
     */
     void addExtraObserversPluginsPaths(std::string SemicolonSeparatedPaths);
 
-    inline void resetExtraObserversPluginsPaths() { m_ExtraObserversPlugsDirs.clear(); };
+    inline void resetExtraObserversPluginsPaths()
+    { m_ExtraObserversPlugsDirs.clear(); };
 
     inline std::vector<std::string> getDefaultObserversPluginsPaths() const
     { return m_DefaultObserversPlugsDirs;  };
@@ -418,14 +436,16 @@ class OPENFLUID_API RuntimeEnvironment
       Returns the path for provided examples, taking into account the install prefix path
       @return the path for provided examples
      */
-    std::string getProvidedExamplesDir() const { return m_ProvidedExamplesDir; };
+    std::string getProvidedExamplesDir() const
+    { return m_ProvidedExamplesDir; };
 
 
     /**
       Returns the path for examples in user's directory
       @return the path for user's examples
      */
-    std::string getUserExamplesDir() const { return m_UserExamplesDir; };
+    std::string getUserExamplesDir() const
+    { return m_UserExamplesDir; };
 
 
     /**
@@ -438,14 +458,15 @@ class OPENFLUID_API RuntimeEnvironment
     /**
       Returns the clear output directory flag
     */
-    inline bool isClearOutputDir() const { return m_ClearOutputDir; };
+    inline bool isClearOutputDir() const
+    { return m_ClearOutputDir; };
 
     /**
       Sets the clear output directory flag
       @param[in] ClearDir The value of the flag
     */
     inline void setClearOutputDir(bool ClearDir)
-      { m_ClearOutputDir = ClearDir; mp_WareEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
+    { m_ClearOutputDir = ClearDir; mp_WareEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
 
 
     openfluid::base::EnvironmentProperties* wareEnvironment() const
@@ -470,33 +491,21 @@ class OPENFLUID_API RuntimeEnvironment
     */
     std::string getArch() const {return m_Arch; };
 
-    unsigned int getSimulatorsMaxNumThreads() const { return m_SimulatorsMaxNumThreads; };
+    unsigned int getSimulatorsMaxNumThreads() const
+    { return m_SimulatorsMaxNumThreads; };
 
     void setSimulatorsMaxNumThreads(const unsigned int& MaxNumThreads)
-      { if (MaxNumThreads > 0) m_SimulatorsMaxNumThreads = MaxNumThreads; };
+    { if (MaxNumThreads > 0) m_SimulatorsMaxNumThreads = MaxNumThreads; };
 
-
-    void setSimulationTimeInformation(openfluid::core::DateTime StartTime,
-                                      openfluid::core::DateTime EndTime,
-                                      int TimeStep);
-
-    openfluid::core::DateTime getSimulationStartTime() const
-      { return m_StartTime; };
-
-    openfluid::core::DateTime getSimulationEndTime() const
-      { return m_EndTime; };
-
-    // TODO set correct type for time step
-    int getSimulationTimeStep() const
-      { return m_TimeStep; };
-
+    // TODO Values buffer size should not be managed here
     void setValuesBufferSize(const unsigned int StepsNbr)
-      { m_ValuesBufferSize = StepsNbr; m_IsUserValuesBufferSize = true; };
+    { m_ValuesBufferSize = StepsNbr; m_IsUserValuesBufferSize = true; };
 
     inline unsigned int getValuesBufferSize() const
-      { return m_ValuesBufferSize; };
+    { return m_ValuesBufferSize; };
 
-    bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
+    bool isUserValuesBufferSize() const
+    { return m_IsUserValuesBufferSize; };
 
     inline void unsetUserValuesBufferSize()
       { m_IsUserValuesBufferSize = false; }
@@ -508,9 +517,11 @@ class OPENFLUID_API RuntimeEnvironment
     bool isLinkedToProject()
       { return m_IsLinkedToProject; };
 
-    bool isSimulationProfilingEnabled() const { return m_Profiling; };
+    bool isSimulationProfilingEnabled() const
+    { return m_Profiling; };
 
-    void setSimulationProfilingEnabled(bool Profiling) { m_Profiling = Profiling; };
+    void setSimulationProfilingEnabled(bool Profiling)
+    { m_Profiling = Profiling; };
 
 };
 

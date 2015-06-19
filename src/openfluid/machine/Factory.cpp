@@ -370,10 +370,6 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor&
                                               "Wrong or undefined run configuration");
 
 
-  openfluid::base::RuntimeEnvironment::instance()->setSimulationTimeInformation(RunDesc.getBeginDate(),
-                                                                                RunDesc.getEndDate(),
-                                                                                RunDesc.getDeltaT());
-
   if (RunDesc.isUserValuesBufferSize())
   {
     openfluid::base::RuntimeEnvironment::instance()->setValuesBufferSize(RunDesc.getValuesBufferSize());

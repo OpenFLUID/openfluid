@@ -105,12 +105,12 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
   m_WareTypePathByWareType[BUILDEREXT] = WaresdevDir.filePath(
       QString::fromStdString(openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR));
 
-  foreach(QString Path,m_WareTypePathByWareType){
-  if (!QDir(Path).mkpath(Path))
-  throw openfluid::base::FrameworkException(
-      OPENFLUID_CODE_LOCATION,
-      QString("unable to open or create %1 directory").arg(Path).toStdString());
-}
+  foreach(QString Path,m_WareTypePathByWareType)
+  {
+    if (!QDir(Path).mkpath(Path))
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+        QString("unable to open or create %1 directory").arg(Path).toStdString());
+  }
 }
 
 
