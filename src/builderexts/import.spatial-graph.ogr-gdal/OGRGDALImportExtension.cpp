@@ -718,6 +718,8 @@ void OGRGDALImportExtension::updateZCentroidComputeAttrInfos()
 
 void OGRGDALImportExtension::updateIsDatasetImportInfos()
 {
+  ui->DatastoreIDLineEdit->setText(ui->DatastoreIDLineEdit->text().replace(QRegExp("[^\\w]"),"_"));
+
   if (!(ui->DatasetImportCheckBox->isChecked() ||
       m_SourcesInfos[m_CurrentSrcIndex].IsAlreadyInDataset))
   {
