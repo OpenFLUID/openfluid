@@ -203,6 +203,51 @@ MACRO(OPNFLD_ADD_BUILDER_EXTENSION_WITH_INSTALL EXT_NAME EXT_SRCDIR EXT_BINDIR)
 
   INSTALL(TARGETS "${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX}"
           DESTINATION "${BUILDEREXTS_INSTALL_PATH}")
+
+
+  IF(LUPDATE_EXECUTABLE)
+
+    ADD_CUSTOM_TARGET(update-translations-strings-${EXT_NAME})
+
+    FOREACH(_LANG ${OPENFLUID_TRANSLATIONS_LANGS})             
+      SET(_LANG_TSFILE ${CMAKE_CURRENT_SOURCE_DIR}/${EXT_SRCDIR}/${EXT_NAME}-${_LANG}.ts)
+
+      ADD_CUSTOM_TARGET(update-translation-strings-${EXT_NAME}-${_LANG}
+                        COMMENT "Updating ${_LANG} translation strings for ${EXT_NAME}"
+                        COMMAND ${LUPDATE_EXECUTABLE} 
+                                "${CMAKE_CURRENT_SOURCE_DIR}/${EXT_SRCDIR}"
+                                "-I" "${CMAKE_CURRENT_SOURCE_DIR}/${EXT_SRCDIR}"
+                                "-ts" ${_LANG_TSFILE})
+      ADD_DEPENDENCIES(update-translations-strings-${EXT_NAME} update-translation-strings-${EXT_NAME}-${_LANG})
+    ENDFOREACH()
+      
+    ADD_DEPENDENCIES(update-translations-strings update-translations-strings-${EXT_NAME})        
+  ENDIF()
+
+
+  IF(LRELEASE_EXECUTABLE)
+    ADD_CUSTOM_TARGET(release-translations-${EXT_NAME})    
+        
+    FOREACH(_LANG ${OPENFLUID_TRANSLATIONS_LANGS})
+      SET(_LANG_TSFILE ${CMAKE_CURRENT_SOURCE_DIR}/${EXT_SRCDIR}/${EXT_NAME}-${_LANG}.ts)
+      SET(_LANG_QMFILE ${EXT_BINDIR}/${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX}-${_LANG}.qm)
+        
+      ADD_CUSTOM_COMMAND(DEPENDS ${_LANG_TSFILE}
+                         COMMAND ${LRELEASE_EXECUTABLE} 
+                                 ${_LANG_TSFILE}
+                                 "-qm" ${_LANG_QMFILE} 
+                          OUTPUT ${_LANG_QMFILE})        
+      ADD_CUSTOM_TARGET(release-translation-${EXT_NAME}-${_LANG}
+                        COMMENT "Releasing ${_LANG} translation for ${EXT_NAME}"
+                        DEPENDS ${_LANG_QMFILE})
+      ADD_DEPENDENCIES(release-translations-${EXT_NAME} release-translation-${EXT_NAME}-${_LANG})
+                
+      INSTALL(FILES "${_LANG_QMFILE}" DESTINATION "${BUILDEREXTS_INSTALL_PATH}")         
+    ENDFOREACH()
+    
+    ADD_DEPENDENCIES(release-translations release-translations-${EXT_NAME})
+  ENDIF()  
+
         
 ENDMACRO()
 

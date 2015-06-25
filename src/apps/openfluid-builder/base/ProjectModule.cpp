@@ -69,6 +69,7 @@
 #include "EditProjectPropertiesDialog.hpp"
 
 #include "ExtensionsRegistry.hpp"
+#include "WaresTranslationsRegistry.hpp"
 
 #include "DashboardFrame.hpp"
 
@@ -230,7 +231,7 @@ void ProjectModule::resetInputDirWatcher()
 // =====================================================================
 
 
-QWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
+AbstractMainWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
 {
   if (mp_MainWidget != NULL)
   {
@@ -597,9 +598,14 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
 
         if (ExtWork->initialize())
         {
+          ExtensionContainer* ExtCon = ExtReg->registeredExtensions()->at(WareID);
+
+          QString TabText = WaresTranslationsRegistry::instance()
+            ->tryTranslate(QString::fromStdString(ExtCon->FileFullPath),
+                           "signature",ExtCon->Signature->MenuText);
+
           ExtWork->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
-          mp_MainWidget->addWorkspaceExtensionTab(ExtWork,
-                                                  ExtReg->registeredExtensions()->at(WareID)->Signature->MenuText);
+          mp_MainWidget->addWorkspaceExtensionTab(ExtWork,TabText);
         }
         else
         {

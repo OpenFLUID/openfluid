@@ -404,220 +404,220 @@
 <context>
     <name>AppActions</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="112"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="113"/>
         <source>&amp;New...</source>
         <translation>&amp;Nouveau...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="116"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="117"/>
         <source>&amp;Open...</source>
         <translation>&amp;Ouvrir...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="120"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="121"/>
         <source>Reload</source>
         <translation>Recharger</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="123"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="124"/>
         <source>&amp;Save</source>
         <translation>&amp;Enregistrer</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="127"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="128"/>
         <source>Save as...</source>
         <translation>Enregistrer sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="130"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="131"/>
         <source>Properties</source>
         <translation>Propriétés</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="132"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="133"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="136"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="137"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="142"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="143"/>
         <source>&amp;Cut</source>
         <translation>&amp;Couper</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="145"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="146"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copier</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="148"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="149"/>
         <source>&amp;Paste</source>
         <translation>&amp;Coller</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="151"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="152"/>
         <source>Preferences...</source>
         <translation>Préférences...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="156"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="157"/>
         <source>New simulator...</source>
         <translation>Nouveau simulateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="157"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="158"/>
         <source>New ghost simulator...</source>
         <translation>Nouveau simulateur fantôme...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="158"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="159"/>
         <source>New observer...</source>
         <translation>Nouvel observateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="160"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="161"/>
         <source>Open simulator...</source>
         <translation>Ouvrir un simulateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="161"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="162"/>
         <source>Open observer...</source>
         <translation>Ouvrir un observateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="168"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="169"/>
         <source>Reload simulators and observers</source>
         <translation>Recharger les simulateurs et observateurs</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="171"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="172"/>
         <source>Run simulation</source>
         <translation>Exécution</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="176"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="177"/>
         <source>Show/Hide project dashboard</source>
         <translation>Afficher/Masquer le panneau d&apos;information</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="177"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="178"/>
         <source>Restore default view</source>
         <translation>Revenir à la vue par défaut</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="181"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="182"/>
         <source>Web site</source>
         <translation>Site web</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="182"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="183"/>
         <source>Community site</source>
         <translation>Site Community</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="183"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="184"/>
         <source>Email</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="185"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="186"/>
         <source>Open an example project...</source>
         <translation>Ouvrir un projet exemple...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="188"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="189"/>
         <source>Reinstall examples projects</source>
         <translation>Réinstaller les projets exemples</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="190"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="191"/>
         <source>About</source>
         <translation>A propos</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="195"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="196"/>
         <source>Access to OpenFLUID-Market</source>
         <translation>Accéder à OpenFLUID-Market</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="338"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="345"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="352"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="359"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="344"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="351"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="358"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="365"/>
         <source>(none)</source>
         <translation>(aucun)</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="376"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="382"/>
         <source>&amp;Project</source>
         <translation>&amp;Projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="381"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="387"/>
         <source>Open recent</source>
         <translation>Ouvrir un projet récent</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="394"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="400"/>
         <source>&amp;Edit</source>
         <translation>&amp;Edition</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="402"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="408"/>
         <source>&amp;Development</source>
         <translation>&amp;Développement</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="413"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="419"/>
         <source>&amp;Simulation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="427"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="433"/>
         <source>&amp;View</source>
         <translation>Affichage</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="419"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="425"/>
         <source>&amp;Extensions</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="421"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="427"/>
         <source>Spatial domain</source>
         <translation>Domaine spatial</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="422"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="428"/>
         <source>Model</source>
         <translation>Modèle</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="423"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="429"/>
         <source>Results</source>
         <translation>Résultats</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="424"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="430"/>
         <source>Other</source>
         <translation>Autres</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="432"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="438"/>
         <source>&amp;Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="433"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="439"/>
         <source>OpenFLUID online</source>
         <translation>OpenFLUID en ligne</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="437"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="443"/>
         <source>Examples</source>
         <translation>Exemples</translation>
     </message>
@@ -1951,52 +1951,52 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation type="obsolete">Exécution de la simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="103"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="115"/>
         <source>Ware ID</source>
         <translation>ID du ware</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="128"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="140"/>
         <source>Sources</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="152"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="164"/>
         <source>Source file name (.cpp)</source>
         <translation>Nom du fichier source (.cpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="169"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="181"/>
         <source>C++ class name</source>
         <translation>Nom de la classe C++</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="223"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="235"/>
         <source>Generate UI parameterization files</source>
         <translation>Générer les fichier de l&apos;interface de paramétrage</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="268"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="280"/>
         <source>UI parameterization source file name (.cpp)</source>
         <translation>Nom du fichier source C++ d&apos;interface de paramétrage (.cpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="285"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="297"/>
         <source>UI parameterization C++ class name</source>
         <translation>Nom de la classe C++ d&apos;interface de paramétrage</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="366"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="378"/>
         <source>Run mode</source>
         <translation>Mode d&apos;exécution</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="376"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="388"/>
         <source>Enable installation</source>
         <translation>Activer l&apos;installation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="468"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="480"/>
         <source>Category</source>
         <translation>Catégorie</translation>
     </message>
@@ -2010,22 +2010,22 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation>Nouveau ware</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="435"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="447"/>
         <source>Extension type</source>
         <translation>Type d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="447"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="459"/>
         <source>Extension parameters</source>
         <translation>Paramètres de l&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="478"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="490"/>
         <source>Menu Text</source>
         <translation>Texte du menu</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="513"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="525"/>
         <source>Create wareshub.json file</source>
         <translation>Créer un fichier wareshub.json</translation>
     </message>
@@ -2434,94 +2434,100 @@ Continuer quand même?</translation>
 <context>
     <name>ProjectModule</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="271"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="273"/>
         <source>Model</source>
         <translation>Modèle</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="272"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="274"/>
         <source>Spatial domain</source>
         <translation>Domaine spatial</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="273"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="275"/>
         <source>Datastore</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="274"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="276"/>
         <source>Monitoring</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="275"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="277"/>
         <source>Simulation configuration</source>
         <translation>Configuration de simulation</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="276"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="278"/>
         <source>Outputs browser</source>
         <translation>Explorateur des sorties</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="335"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="337"/>
         <source>Reload project</source>
         <translation>Recharger le projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="336"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="338"/>
         <source>Reloading project from disk will overwrite all unsaved modifications if any.</source>
         <translation>Recharger le projet depuis le disque écrasera toutes les modifications non sauvegardées s&apos;il y en a.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="338"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="340"/>
         <source>Proceed anyway?</source>
         <translation>Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="613"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="630"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="620"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="637"/>
         <source>Extension error</source>
         <translation>Erreur d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="614"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="621"/>
         <source>Unknown extension type.
 Extension cannot be instantiated.</source>
         <translation>Type d&apos;extension inconnu.
 L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="621"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="628"/>
         <source>Extension warning</source>
         <translation>Avertissement d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="622"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="629"/>
         <source>Extension is already active.</source>
         <translation>L&apos;extension est déjà active.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="631"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="638"/>
         <source>Extension is not registered.
 Extension cannot be instantiated.</source>
         <translation>Extension inconnue.
 L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="709"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="730"/>
         <source>Ghost simulator edition error</source>
         <translation>Erreur d&apos;édition de simulateur fantôme</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="710"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="731"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="766"/>
         <source>Unable to find ghost simulator</source>
         <translation>Impossible de trouver le simulateur fantôme</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="724"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="745"/>
         <source>Source code edition error</source>
         <translation>Erreur d&apos;édition du code source</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="765"/>
+        <source>Source code generation error</source>
+        <translation>Erreur de génération du code source</translation>
     </message>
 </context>
 <context>
@@ -2566,7 +2572,7 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation>Impossible d&apos;ouvrir en lecture le fichier créé</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="297"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="302"/>
         <source>Unable to open the created file in write mode</source>
         <translation>Impossible d&apos;ouvrir en écriture le fichier créé</translation>
     </message>
@@ -2575,63 +2581,63 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation type="obsolete">Impossible d&apos;ouvrir le fichier créé</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="314"/>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="336"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="319"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="341"/>
         <source>Accepts only letters, digits, dashes (&apos;-&apos;), underscores (&apos;_&apos;) and dots (&apos;.&apos;).</source>
         <translation>Accepte uniquement des lettres, chiffres, tirest (&apos;-&apos;), tirest bas (&apos;_&apos;) et des points (&apos;.&apos;).</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="325"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="330"/>
         <source>Accepts only letters, digits, underscores (&apos;_&apos;), and must begin with a letter.</source>
         <translation>Accepte uniquement des lettres, chiffres, tirets bas (&apos;_&apos;) et doit commencer par une lettre.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="105"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="111"/>
         <source>Modal</source>
         <translation>Modal</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="105"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="111"/>
         <source>Modeless</source>
         <translation>Non modal</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="105"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="111"/>
         <source>Workspace</source>
         <translation>Espace de travail</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="112"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="118"/>
         <source>Spatial domain</source>
         <translation>Domaine spatial</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="112"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="118"/>
         <source>Model</source>
         <translation>Modèle</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="112"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="118"/>
         <source>Results</source>
         <translation>Résultats</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="113"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="119"/>
         <source>Other</source>
         <translation>Autres</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="120"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="126"/>
         <source>On - sim2doc must be run manually</source>
         <translation>On - sim2doc doit être lancé manuellement</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="121"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="127"/>
         <source>Auto - sim2doc is automatically run</source>
         <translation>Auto - sim2doc est lancé automatiquement</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="122"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="128"/>
         <source>Off - sim2doc is disabled</source>
         <translation>Off - sim2doc est désactivé</translation>
     </message>
@@ -3491,63 +3497,63 @@ Continuer quand même?</translation>
 <context>
     <name>WareWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="75"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="110"/>
         <source>Enabled</source>
         <translation>Activé</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="110"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="145"/>
         <source>Move up</source>
         <translation>Monter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="132"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="167"/>
         <source>Move down</source>
         <translation>Descendre</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="154"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="189"/>
         <source>Remove</source>
         <translation>Enlever</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="257"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="292"/>
         <source>Parameters:</source>
         <translation>Paramètres:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="401"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="436"/>
         <source>Add parameter</source>
         <translation>Ajouter un paramètre</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="82"/>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="198"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="199"/>
         <source>show parameters and informations</source>
         <translation>montrer les paramètres et les informations</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="196"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="197"/>
         <source>hide parameters and informations</source>
         <translation>cacher les paramètres et les informations</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="262"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="263"/>
         <source>the generator</source>
         <translation>le générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="264"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="265"/>
         <source>the simulator</source>
         <translation>le simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="265"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="266"/>
         <source>the observer</source>
         <translation>l&apos;observateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="270"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="271"/>
         <source>You are removing %1 %2.
 All parameters will be lost.
 
@@ -3558,12 +3564,12 @@ Tous les paramètres seront perdus.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="405"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="406"/>
         <source>switch to assistant</source>
         <translation>passer en mode assistant</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="407"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="408"/>
         <source>switch to list</source>
         <translation>passer en mode liste</translation>
     </message>
@@ -4394,62 +4400,62 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
 <context>
     <name>openfluid::ui::waresdev::NewWareDialog</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="78"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="79"/>
         <source>Create a new simulator</source>
         <translation>Créer un nouveau simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="85"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="86"/>
         <source>Create a new observer</source>
         <translation>Créer un nouvel observateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="93"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="94"/>
         <source>Create a new Builder extension</source>
         <translation>Créer une nouvelle extension Builder</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="160"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="176"/>
         <source>Ware ID is empty</source>
         <translation>L&apos;ID du ware est vide</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="162"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="178"/>
         <source>Ware ID already exists</source>
         <translation>L&apos;ID du ware existe déjà</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="164"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="180"/>
         <source>Source file name must be of the form &quot;filexxx.cpp&quot;</source>
         <translation>Le nom du fichier source doit être de la forme &quot;filexxx.cpp&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="166"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="182"/>
         <source>Main class name is empty</source>
         <translation>Le nom de la classe principale est vide</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="168"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="184"/>
         <source>UI parameterization file name must be of the form &quot;filexxx.cpp&quot;</source>
         <translation>Le nom du fichier source d&apos;interface de paramétrage doit être de la forme &quot;filexxx.cpp&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="170"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="186"/>
         <source>UI parameterization class name is empty</source>
         <translation>Le nom de la classe d&apos;interface de paramétrage est vide</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="258"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="294"/>
         <source>Unable to create the ware directory</source>
         <translation>Impossible de créer le répertoire du ware</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="289"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="325"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="289"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="325"/>
         <source>Unable to create the ware &quot;%1&quot;</source>
         <translation>Impossible de créer le ware &quot;%1&quot;</translation>
     </message>
@@ -4918,7 +4924,7 @@ Do you want to replace it?</source>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="613"/>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="626"/>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="677"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="832"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="859"/>
         <source>No open ware</source>
         <translation>Aucun ware ouvert</translation>
     </message>
@@ -4931,7 +4937,7 @@ Do you want to replace it?</source>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="613"/>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="626"/>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="677"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="832"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="859"/>
         <source>At least one ware must be open to perform this action</source>
         <translation>Au moins un ware doit être ouvert pour réaliser cette action</translation>
     </message>

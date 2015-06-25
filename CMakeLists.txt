@@ -34,20 +34,27 @@ ELSE()
 ENDIF()
 
 
+# Set policy for Qt on Windows
 if(POLICY CMP0020)
  CMAKE_POLICY(SET CMP0020 OLD)
 ENDIF()
 
+
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/internal;${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
+
+# Include internal CMake modules for os and hardware management
 INCLUDE(OpenFLUIDSystemInfo)
 
 
+# Include build configuration
 INCLUDE(CMake.in.cmake)
 INCLUDE(CMake.in.local.cmake OPTIONAL)
+
 
 ADD_SUBDIRECTORY(cmake)
 
 
+# Include internal CMake modules
 SET(CMAKE_MODULE_PATH "${CMAKE_MODULES_OUTPUT_PATH};${CMAKE_MODULE_PATH}")
 SET(OpenFLUID_DIR ${CMAKE_MODULES_OUTPUT_PATH})
 SET(OpenFLUIDHelpers_DIR ${CMAKE_MODULES_OUTPUT_PATH})
@@ -55,12 +62,12 @@ INCLUDE(OpenFLUIDInternalHelpers)
 FIND_PACKAGE(OpenFLUIDHelpers)
 
 
+# Set default build type (if not already set)
 IF(NOT CMAKE_BUILD_TYPE) 
   SET(CMAKE_BUILD_TYPE "Debug")
 ENDIF()
 
 STRING(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE_STR)
-
 
 IF(CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
   SET(CMAKE_INSTALL_PREFIX "${BUILD_OUTPUT_PATH}")
@@ -68,16 +75,26 @@ IF(CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo"
 ENDIF()
 
 
-# hack for avoiding conflicts between Boost libraries and Qt moc system
+# Hack for avoiding conflicts between Boost libraries and Qt moc system
 SET(CMAKE_AUTOMOC_MOC_OPTIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
+
+
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 
+# Detection of main dependencies
 INCLUDE(OpenFLUIDDetectQt)
 FIND_PACKAGE(Boost 1.54 REQUIRED COMPONENTS ${OPNFLD_BOOST_TEST_FRAMEWORK})
 FIND_PACKAGE(GDAL REQUIRED)
 FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(LATEX)
+
+
+# Detection of external translations tools and setup of common translations targets
+FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease lrelease-qt4)
+FIND_PROGRAM(LUPDATE_EXECUTABLE NAMES lupdate lupdate-qt4)
+ADD_CUSTOM_TARGET(update-translations-strings)
+ADD_CUSTOM_TARGET(release-translations ALL)
 
 
 FILE(MAKE_DIRECTORY "${LIB_OUTPUT_PATH}")
@@ -91,6 +108,7 @@ IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
   FILE(MAKE_DIRECTORY ${OPENFLUID_TESTS_TEMP_PATH})
 ENDIF()  
 
+ADD_SUBDIRECTORY(resources)
 
 ADD_SUBDIRECTORY(src)  
 
@@ -100,13 +118,12 @@ IF(BUILD_DOCS)
   ADD_SUBDIRECTORY(doc)
 ENDIF()  
 
-ADD_SUBDIRECTORY(resources)
-
 
 
 INCLUDE(CPack.in.cmake)
 
 
+# Installation of common files
 INSTALL(FILES "COPYING"
         "AUTHORS"
         "README.md"   
@@ -122,6 +139,7 @@ INSTALL(DIRECTORY "share"
         DESTINATION "." PATTERN ".svn" EXCLUDE)
             
   
+# Display of main informations about build configuration
 
 MESSAGE(STATUS "****************************************")
 MESSAGE(STATUS "OpenFLUID version: ${FULL_VERSION}")

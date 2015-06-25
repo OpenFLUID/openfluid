@@ -53,6 +53,8 @@ class SimulatorWidget : public ClickableWareWidget
 
     openfluid::fluidx::ModelItemDescriptor* mp_Desc;
 
+    bool m_IsTranslated;
+
     void updateParametersListWithSignature(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
     void updateParametersList();

@@ -43,6 +43,9 @@
 #include <QWidget>
 #include <QTabWidget>
 
+#include "AbstractMainWidget.hpp"
+
+
 class WorkspaceTabWidget : public QTabWidget
 {
   Q_OBJECT;
@@ -60,16 +63,22 @@ class WorkspaceTabWidget : public QTabWidget
 };
 
 
+// =====================================================================
+// =====================================================================
+
+
 namespace Ui
 {
   class ProjectWidget;
 }
 
+
 namespace openfluid { namespace ui { namespace waresdev {
 class WareSrcWidgetCollection;
-}}}
+} } }
 
-class ProjectWidget : public QWidget
+
+class ProjectWidget : public AbstractMainWidget
 {
   Q_OBJECT;
 
@@ -80,6 +89,7 @@ class ProjectWidget : public QWidget
     WorkspaceTabWidget* mp_WorkspaceTabWidget;
 
     openfluid::ui::waresdev::WareSrcWidgetCollection* mp_WareSrcCollection;
+
 
   public:
 

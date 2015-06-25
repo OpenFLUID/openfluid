@@ -224,7 +224,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
         if (FieldIndex < 0)
         {
           OGRDataSource::DestroyDataSource(DS);
-          emit stepCompleted(Step,getStyledText(tr("[Error] Field for \"to\" connections not found in layer \"%1\"")
+          emit stepCompleted(Step,getStyledText(tr("[Error] Field for \"To\" connections not found in layer \"%1\"")
                                                 .arg(m_SourcesInfos[i].LayerName),"red"));
           return false;
         }
@@ -233,7 +233,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         if (!OGRGDALHelpers::convertConnectionsStringToList(CurrentUnit.ToConnStr,CurrentUnit.ToConn))
         {
-          emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field \"%2\" format for \"to\" connections "
+          emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field \"%2\" format for \"To\" connections "
                                                    "in layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
                                                    .arg(m_SourcesInfos[i].ToConnectionsField),
@@ -253,7 +253,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
         {
           OGRDataSource::DestroyDataSource(DS);
           emit stepCompleted(Step,
-                             getStyledText(tr("[Error] Field for \"childof\" connections not found in layer \"%1\"")
+                             getStyledText(tr("[Error] Field for \"Child Of\" connections not found in layer \"%1\"")
                                            .arg(m_SourcesInfos[i].LayerName),"red"));
           return false;
         }
@@ -262,7 +262,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         if (!OGRGDALHelpers::convertConnectionsStringToList(CurrentUnit.ChildofConnStr,CurrentUnit.ChildofConn))
         {
-          emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field \"%2\" format for \"childof\" connections "
+          emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field \"%2\" format for \"Child Of\" connections "
                                                    "in layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
                                                    .arg(m_SourcesInfos[i].ChildofConnectionsField),
@@ -464,7 +464,7 @@ bool DataProcessingWorker::checkConnectivity(int Step)
       {
         if (!isUnitExists(Conns[j].DestClass,Conns[j].DestID))
         {
-          emit stepCompleted(Step,getStyledText(tr("[Error] Destination unit of \"to\" connection "
+          emit stepCompleted(Step,getStyledText(tr("[Error] Destination unit of \"To\" connection "
                                                    "does not exist for unit %2 of layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
                                                    .arg(It.key()),
@@ -480,7 +480,7 @@ bool DataProcessingWorker::checkConnectivity(int Step)
       {
         if (!isUnitExists(Conns[j].DestClass,Conns[j].DestID))
         {
-          emit stepCompleted(Step,getStyledText(tr("[Error] Parent unit of \"childof\" connection "
+          emit stepCompleted(Step,getStyledText(tr("[Error] Parent unit of \"Child Of\" connection "
                                                    "does not exist for unit %2 of layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
                                                    .arg(It.key()),

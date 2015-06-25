@@ -49,13 +49,15 @@
 #include "ParameterWidget.hpp"
 #include "AddParamDialog.hpp"
 
+#include "WaresTranslationsRegistry.hpp"
 
 
 ObserverWidget::ObserverWidget(QWidget* Parent,
                                openfluid::fluidx::ObserverDescriptor* Desc,
                                const openfluid::ware::WareID_t& ID,
                                int Index):
-  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_OBSERVER_BGCOLOR,Index), mp_Desc(Desc)
+  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_OBSERVER_BGCOLOR,Index),
+  mp_Desc(Desc), m_IsTranslated(false)
 {
   refresh();
 
@@ -84,6 +86,12 @@ void ObserverWidget::refresh()
 
   if (Signature != NULL)
   {
+    if (!m_IsTranslated)
+    {
+      WaresTranslationsRegistry::instance()->tryLoadWareTranslation(QString::fromStdString(Signature->FileFullPath));
+      m_IsTranslated = true;
+    }
+
     setAvailableWare(true);
     ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
     ui->InfosSideWidget->update(Signature);

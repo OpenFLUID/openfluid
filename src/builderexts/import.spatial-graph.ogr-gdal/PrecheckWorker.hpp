@@ -44,6 +44,7 @@
 
 class PrecheckWorker : public DataProcessingWorker
 {
+  Q_OBJECT;
 
   public slots:
 

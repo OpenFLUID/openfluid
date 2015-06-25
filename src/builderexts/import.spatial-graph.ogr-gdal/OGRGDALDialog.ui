@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string notr="true">Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <property name="spacing">
@@ -159,7 +159,7 @@
           <item>
            <widget class="QTabWidget" name="ConfigTabWidget">
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="StructureTab">
              <attribute name="title">
@@ -259,7 +259,7 @@
                 <item>
                  <widget class="QLabel" name="label_8">
                   <property name="text">
-                   <string>Source column for process order of units:</string>
+                   <string>Source field for process order of units:</string>
                   </property>
                  </widget>
                 </item>
@@ -334,7 +334,7 @@
                    </sizepolicy>
                   </property>
                   <property name="text">
-                   <string>Source column for &quot;To&quot; connections:</string>
+                   <string>Source field for &quot;To&quot; connections:</string>
                   </property>
                  </widget>
                 </item>
@@ -367,7 +367,7 @@
                    </sizepolicy>
                   </property>
                   <property name="text">
-                   <string>Source column for &quot;Child of&quot; connections:</string>
+                   <string>Source field for &quot;Child of&quot; connections:</string>
                   </property>
                  </widget>
                 </item>
@@ -422,7 +422,7 @@
                   <item>
                    <widget class="QLabel" name="label_5">
                     <property name="text">
-                     <string>Source columns to import as attributes:</string>
+                     <string>Source fields to import as attributes:</string>
                     </property>
                    </widget>
                   </item>

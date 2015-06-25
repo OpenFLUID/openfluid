@@ -47,12 +47,14 @@
 #include "ParameterWidget.hpp"
 #include "AddParamDialog.hpp"
 
+#include "WaresTranslationsRegistry.hpp"
 
 
 SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDescriptor* Desc,
                                  const openfluid::ware::WareID_t& ID,
                                  int Index):
-  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR,Index), mp_Desc(Desc)
+  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR,Index),
+  mp_Desc(Desc),m_IsTranslated(false)
 {
   refresh();
 
@@ -189,6 +191,12 @@ void SimulatorWidget::refresh()
   if (Signature != NULL)
   {
     m_Ghost = Signature->Ghost;
+
+    if (!m_IsTranslated)
+    {
+      WaresTranslationsRegistry::instance()->tryLoadWareTranslation(QString::fromStdString(Signature->FileFullPath));
+      m_IsTranslated = true;
+    }
 
     setAvailableWare(true);
 

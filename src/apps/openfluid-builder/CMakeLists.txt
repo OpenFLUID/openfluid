@@ -9,7 +9,7 @@ INCLUDE_DIRECTORIES(base common datastore model monitoring spatial outputs runco
 
 ### BASE #
 
-SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
+SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp base/WaresTranslationsRegistry.cpp
                      base/BuilderApp.cpp base/MainWindow.cpp 
                      base/HomeModule.cpp base/HomeWidget.cpp                       
                      base/ProjectModule.cpp base/ProjectWidget.cpp                     
@@ -24,7 +24,7 @@ SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
                      base/EditProjectPropertiesDialog.cpp
                      )
                      
-SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
+SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp base/WaresTranslationsRegistry.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
                      base/HomeModule.hpp base/HomeWidget.hpp
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
@@ -60,7 +60,7 @@ SET(BUILDER_COMMON_CPP common/AppTools.cpp
                        common/AddParamDialog.cpp
                        )
                      
-SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
+SET(BUILDER_COMMON_HPP common/AbstractModule.hpp common/AbstractMainWidget.hpp
                        common/WorkspaceWidget.hpp
                        common/AppTools.hpp
                        common/WaresManagementWidget.hpp common/WareWidget.hpp common/ClickableWareWidget.hpp 

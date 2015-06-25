@@ -47,6 +47,8 @@
 
 #include <openfluid/ui/common/ClickableLabel.hpp>
 
+#include "AbstractMainWidget.hpp"
+
 
 class AppActions;
 
@@ -85,7 +87,7 @@ namespace Ui
 }
 
 
-class HomeWidget : public QWidget
+class HomeWidget : public AbstractMainWidget
 {
   Q_OBJECT;
 

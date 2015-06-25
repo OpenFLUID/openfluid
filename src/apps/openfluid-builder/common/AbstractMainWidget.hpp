@@ -29,54 +29,36 @@
   
 */
 
-
 /**
-  @file MainWindow.hpp
+  @file AbstractMainWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
-#define __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
 
-#include <QMainWindow>
-#include <QAction>
-
-#include "AbstractMainWidget.hpp"
+#ifndef __OPENFLUID_BUILDERAPP_ABSTRACTMAINWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_ABSTRACTMAINWIDGET_HPP__
 
 
-class MainWindow : public QMainWindow
+#include <QWidget>
+
+
+class AbstractMainWidget : public QWidget
 {
   Q_OBJECT;
 
-  private:
-
-    QAction* mp_QuitAction;
-
-    AbstractMainWidget* mp_CentralWidget;
-
-
   public:
 
-    MainWindow();
+    AbstractMainWidget(QWidget* Parent = nullptr) : QWidget(Parent)
+    {
 
-    ~MainWindow();
+    }
 
-    void setWidget(AbstractMainWidget* Widget);
-
-    void unsetWidget()
-    { setWidget(nullptr); }
-
-    void unsetToolbar();
-
-    void closeEvent(QCloseEvent* Event);
-
-    void setQuitAction(QAction* Action) { mp_QuitAction = Action; }
-
-    void setProjectName(const QString& PrjName = "");
+    virtual ~AbstractMainWidget()
+    {  }
 
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ABSTRACTMAINWIDGET_HPP__ */

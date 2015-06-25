@@ -108,7 +108,7 @@ void WorkspaceTabWidget::addWorkspaceTab(QWidget* Tab, const QString& Label, boo
 
 
 ProjectWidget::ProjectWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::ProjectWidget), mp_WorkspaceTabWidget(NULL)
+  AbstractMainWidget(Parent), ui(new Ui::ProjectWidget), mp_WorkspaceTabWidget(NULL)
 {
   ui->setupUi(this);
 

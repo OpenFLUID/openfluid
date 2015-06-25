@@ -54,6 +54,8 @@ class ObserverWidget : public ClickableWareWidget
 
     openfluid::fluidx::ObserverDescriptor* mp_Desc;
 
+    bool m_IsTranslated;
+
     void updateParametersList();
 
 

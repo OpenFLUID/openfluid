@@ -56,7 +56,7 @@
 BEGIN_BUILDEREXT_SIGNATURE("view.spatial-graph.graphviz", openfluid::builderext::TYPE_WORKSPACE)
 
   DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)
-  DECLARE_MENUTEXT("Spatial graph viewer (GraphViz)")
+  DECLARE_MENUTEXT(QT_TRANSLATE_NOOP("signature","Spatial graph viewer (GraphViz)"))
 
 END_BUILDEREXT_SIGNATURE
 

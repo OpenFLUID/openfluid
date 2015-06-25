@@ -36,6 +36,16 @@ SET(BEXT_OPENFLUID_COMPONENTS )
 #SET(BEXT_DEFINITIONS )
 
 
+# set this to ON to enable translations
+#SET(BEXT_TRANSLATIONS_ENABLED ON)
+
+# set this to list the languages for translations
+#SET(BEXT_TRANSLATIONS_LANGS fr_FR)
+
+# set this to list the extra files or directories to scan for strings to translate
+#SET(BEXT_TRANSLATIONS_EXTRASCANS )
+
+
 # set this to force an install path to replace the default one
 #SET(BEXT_INSTALL_PATH "/my/install/path/")
 

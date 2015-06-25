@@ -40,8 +40,10 @@
 #ifndef __OPENFLUID_BUILDERAPP_ABSTRACTMODULE_HPP__
 #define __OPENFLUID_BUILDERAPP_ABSTRACTMODULE_HPP__
 
-#include <QWidget>
+
 #include <QString>
+
+#include "AbstractMainWidget.hpp"
 
 #include <openfluid/ware/PluggableWare.hpp>
 
@@ -68,7 +70,7 @@ class AbstractModule : public QObject
 
     }
 
-    virtual QWidget* mainWidgetRebuilt(QWidget* Parent) = 0;
+    virtual AbstractMainWidget* mainWidgetRebuilt(QWidget* Parent) = 0;
 
     virtual QWidget* dockWidgetRebuilt(QWidget* Parent) = 0;
 

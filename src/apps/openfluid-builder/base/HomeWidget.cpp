@@ -88,7 +88,7 @@ RecentProjectLabel::RecentProjectLabel(const QString& Text, QWidget* Parent):
 
 
 HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
-  QWidget(Parent), ui(new Ui::HomeWidget), mp_Actions(Actions)
+  AbstractMainWidget(Parent), ui(new Ui::HomeWidget), mp_Actions(Actions)
 {
   ui->setupUi(this);
 

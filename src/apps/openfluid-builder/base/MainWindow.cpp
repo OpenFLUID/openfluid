@@ -47,7 +47,7 @@
 
 
 MainWindow::MainWindow():
-  mp_QuitAction(NULL)
+  mp_QuitAction(nullptr), mp_CentralWidget(nullptr)
 {
   QRect ScreenRect = QApplication::desktop()->screenGeometry();
 
@@ -69,6 +69,17 @@ MainWindow::MainWindow():
 MainWindow::~MainWindow()
 {
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::setWidget(AbstractMainWidget* Widget)
+{
+  mp_CentralWidget = Widget;
+  setCentralWidget(mp_CentralWidget);
 }
 
 

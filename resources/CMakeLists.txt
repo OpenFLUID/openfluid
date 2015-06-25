@@ -42,15 +42,38 @@ IF(OPENFLUID_ENABLE_MARKET)
 ENDIF()
 
 
-                                              
+
+
+# update of translations strings
+
+IF(NOT LUPDATE_EXECUTABLE)
+  MESSAGE(FATAL_ERROR "lupdate not found")
+ENDIF()
+
+
+FILE(MAKE_DIRECTORY ${OPENFLUID_TRANSLATIONS_TSDIR})
+
+
+FOREACH(_LANG ${OPENFLUID_TRANSLATIONS_LANGS})
+  ADD_CUSTOM_TARGET(update-translation-strings-${_LANG}
+                    COMMENT "Updating ${_LANG} translations for OpenFLUID"
+                    COMMAND ${LUPDATE_EXECUTABLE} 
+                            ${OPENFLUID_TRANSLATIONS_DIRSTOSCAN}
+                            "-I" "${CMAKE_SOURCE_DIR}/src"
+                            "-ts" "${OPENFLUID_TRANSLATIONS_TSDIR}/${OPENFLUID_TRANSLATIONS_FILEROOT}-${_LANG}.ts")
+     
+  ADD_DEPENDENCIES(update-translations-strings update-translation-strings-${_LANG})    
+ENDFOREACH()  
+
+
+
 # build of translations
-FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease lrelease-qt4)
 
 IF(NOT LRELEASE_EXECUTABLE)
   MESSAGE(FATAL_ERROR "lrelease not found")
 ENDIF()
 
-ADD_CUSTOM_TARGET(i18n-ts ALL)    
+ 
         
 FILE(MAKE_DIRECTORY ${TRANSLATIONS_BUILD_DIR})        
         
@@ -65,12 +88,12 @@ FOREACH(LANG ${OPENFLUID_TRANSLATIONS_LANGS})
                              -qm ${LANG_QMFILE} 
                      OUTPUT ${LANG_QMFILE})
         
-  ADD_CUSTOM_TARGET(i18n-ts-${LANG}
-                    COMMENT "Building i18n-ts messages for ${LANG}"
+  ADD_CUSTOM_TARGET(release-translation-${LANG}
+                    COMMENT "Releasing ${LANG} translation for OpenFLUID"
                     DEPENDS ${LANG_QMFILE})
 
 
-  ADD_DEPENDENCIES(i18n-ts i18n-ts-${LANG})
+  ADD_DEPENDENCIES(release-translations release-translation-${LANG})
     
   INSTALL(FILES "${LANG_QMFILE}" 
           DESTINATION "${SHARE_TRANSLATIONS_PATH}" 
@@ -83,15 +106,12 @@ ENDFOREACH()
 FIND_PACKAGE(PythonInterp)
 
 IF(PYTHONINTERP_FOUND)
-  ADD_CUSTOM_COMMAND(COMMAND "${PYTHON_EXECUTABLE}" 
-                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
-                             "${CMAKE_SOURCE_DIR}"
-                     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nofile.checkstyke
-                    )
-        
+
   ADD_CUSTOM_TARGET(stylecheck
                     COMMENT "Checking source code style"
-                    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/nofile.checkstyke
+                    COMMAND "${PYTHON_EXECUTABLE}" 
+                            "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
+                            "${CMAKE_SOURCE_DIR}"
                    )
 ENDIF()
 

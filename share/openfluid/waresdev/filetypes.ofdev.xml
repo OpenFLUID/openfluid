@@ -53,7 +53,7 @@
       </filetype>
       
       <filetype name="qt-ui" icon=":/ui/common/icons/qt-ui.png">
-        <extensions>*.ui</extensions>
+        <extensions>*.ui;*.ts</extensions>
         <edition internal="no" />
       </filetype>
       

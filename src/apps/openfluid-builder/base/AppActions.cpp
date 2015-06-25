@@ -48,6 +48,7 @@
 
 #include "AppActions.hpp"
 #include "ExtensionsRegistry.hpp"
+#include "WaresTranslationsRegistry.hpp"
 
 
 AppActions::AppActions():
@@ -304,7 +305,12 @@ void AppActions::updateExtensionsActionsAndMenus()
 
   for (it = itb; it!= ite; ++it)
   {
-    m_ExtensionsActions[(*it).first] = new QAction((*it).second->Signature->MenuText,this);
+
+    QString MenuText = WaresTranslationsRegistry::instance()
+      ->tryTranslate(QString::fromStdString((*it).second->FileFullPath),
+                     "signature",(*it).second->Signature->MenuText);
+
+    m_ExtensionsActions[(*it).first] = new QAction(MenuText,this);
 
     // associate extension ID with QAction for use when action is triggered and launch the correct extension
     m_ExtensionsActions[(*it).first]->setData(QString((*it).first.c_str()));

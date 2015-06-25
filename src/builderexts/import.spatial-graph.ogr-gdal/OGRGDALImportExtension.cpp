@@ -57,7 +57,7 @@
 BEGIN_BUILDEREXT_SIGNATURE("import.spatial-graph.ogr-gdal", openfluid::builderext::TYPE_MODAL)
 
   DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)
-  DECLARE_MENUTEXT("Spatial data import (OGR/GDAL)")
+  DECLARE_MENUTEXT(QT_TRANSLATE_NOOP("signature","Spatial data import (OGR/GDAL)"))
 
 END_BUILDEREXT_SIGNATURE
 
@@ -88,7 +88,7 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
 {
   ui->setupUi(this);
 
-  setWindowTitle("Spatial data import (OGR/GDAL)");
+  setWindowTitle(tr("Spatial data import (OGR/GDAL)"));
 
   ui->AddFileButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddFileButton->setIconSize(QSize(16,16));
@@ -347,7 +347,7 @@ void OGRGDALImportExtension::cancelImport()
     if (QMessageBox::question(QApplication::activeWindow(),
                               "Spatial data import (OGR/GDAL)",
                               tr("You have at least one source configured for import.\n"
-                                  "This configuration(s) will be lost.\n\n"
+                                  "The configuration(s) will be lost.\n\n"
                                   "Quit the spatial import anyway?"),
                                   QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
     {

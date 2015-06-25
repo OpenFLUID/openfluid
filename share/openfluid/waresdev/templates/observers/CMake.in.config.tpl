@@ -49,6 +49,16 @@ SET(OBS_OPENFLUID_COMPONENTS )
 #SET(OBS_DEFINITIONS )
 
 
+# set this to ON to enable translations
+#SET(OBS_TRANSLATIONS_ENABLED ON)
+
+# set this to list the languages for translations
+#SET(OBS_TRANSLATIONS_LANGS fr_FR)
+
+# set this to list the extra files or directories to scan for strings to translate
+#SET(OBS_TRANSLATIONS_EXTRASCANS )
+
+
 # set this to force an install path to replace the default one
 #SET(OBS_INSTALL_PATH "/my/install/path/")
 

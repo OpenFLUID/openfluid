@@ -43,6 +43,7 @@
 #include "AbstractModule.hpp"
 #include "HomeWidget.hpp"
 
+
 class HomeModule : public AbstractModule
 {
   Q_OBJECT;
@@ -65,7 +66,7 @@ class HomeModule : public AbstractModule
 
     ~HomeModule();
 
-    QWidget* mainWidgetRebuilt(QWidget* Parent);
+    AbstractMainWidget* mainWidgetRebuilt(QWidget* Parent);
 
     QWidget* dockWidgetRebuilt(QWidget* /*Parent*/)
     { return NULL; }

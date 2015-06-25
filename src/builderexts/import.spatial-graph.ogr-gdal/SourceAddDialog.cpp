@@ -184,7 +184,9 @@ void SourceAddDialog::handleSourceError(QString Message)
   if (!Message.isEmpty())
     QMessageBox::critical(this,tr("Source error"),Message);
   else
-    QMessageBox::critical(this,tr("Source error"),tr("Error opening source\n")+m_CurrentSourceURI+tr("\n\nAborting."));
+    QMessageBox::critical(this,tr("Source error"),tr("Error opening source")+"\n" +
+                                                  m_CurrentSourceURI+"\n\n" +
+                                                  tr("Aborting."));
 
   m_CurrentSourceURI.clear();
 
@@ -273,15 +275,19 @@ void SourceAddDialog::proceedToImport()
     else
     {
       QMessageBox::critical(this,tr("Import error"),
-                            tr("Error importing from source\n")+m_CurrentSourceURI+
-                            tr("\n\nThe mandatory field \"OFLD_ID\" cannot be found. \n\nAborting."));
+                            tr("Error importing from source")+"\n"+
+                            m_CurrentSourceURI+"\n\n"+
+                            tr("The mandatory field \"OFLD_ID\" cannot be found.")+"\n\n"+
+                            tr("Aborting."));
       reject();
     }
   }
   else
   {
     QMessageBox::critical(this,tr("Import error"),
-                          tr("Error importing from source\n")+m_CurrentSourceURI+tr("\n\nAborting."));
+                          tr("Error importing from source")+"\n"+
+                          m_CurrentSourceURI+"\n\n"+
+                          tr("Aborting."));
     reject();
   }
 }

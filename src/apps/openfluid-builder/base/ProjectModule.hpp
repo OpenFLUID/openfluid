@@ -168,7 +168,7 @@ class ProjectModule : public AbstractModule
 
     ~ProjectModule();
 
-    QWidget* mainWidgetRebuilt(QWidget* Parent);
+    AbstractMainWidget* mainWidgetRebuilt(QWidget* Parent);
 
     QWidget* dockWidgetRebuilt(QWidget* Parent);
 

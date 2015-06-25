@@ -29,54 +29,47 @@
   
 */
 
-
 /**
-  @file MainWindow.hpp
+  @file WaresTranslationsRegistry.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
-#define __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
-
-#include <QMainWindow>
-#include <QAction>
-
-#include "AbstractMainWidget.hpp"
+#ifndef __OPENFLUID_BUILDERAPP_WARESTRANSLATIONSREGISTRY_HPP__
+#define __OPENFLUID_BUILDERAPP_WARESTRANSLATIONSREGISTRY_HPP__
 
 
-class MainWindow : public QMainWindow
+#include <map>
+#include <QString>
+#include <QTranslator>
+
+
+class WaresTranslationsRegistry
 {
-  Q_OBJECT;
-
   private:
 
-    QAction* mp_QuitAction;
+    typedef std::map<QString, QTranslator*> TranslatorsByFile_t;
 
-    AbstractMainWidget* mp_CentralWidget;
+    static WaresTranslationsRegistry* mp_Instance;
+
+    TranslatorsByFile_t m_TranslatorsByFile;
+
+    QString m_LangCode;
+
+    WaresTranslationsRegistry();
 
 
   public:
 
-    MainWindow();
+    static WaresTranslationsRegistry* instance();
 
-    ~MainWindow();
+    ~WaresTranslationsRegistry();
 
-    void setWidget(AbstractMainWidget* Widget);
+    QTranslator* tryLoadWareTranslation(const QString& WareFullPath);
 
-    void unsetWidget()
-    { setWidget(nullptr); }
-
-    void unsetToolbar();
-
-    void closeEvent(QCloseEvent* Event);
-
-    void setQuitAction(QAction* Action) { mp_QuitAction = Action; }
-
-    void setProjectName(const QString& PrjName = "");
-
+    QString tryTranslate(const QString& WareFullPath, const QString& Context, const QString& Text);
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_WARESTRANSLATIONSREGISTRY_HPP__ */
