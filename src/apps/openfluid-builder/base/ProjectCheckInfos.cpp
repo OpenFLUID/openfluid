@@ -123,13 +123,13 @@ ProjectCheckInfos::ProjectCheckInfos()
 
 bool ProjectCheckInfos::isOKForSimulation() const
 {
-  return (m_Infos.at(PART_MODELDEF).getStatus() != PRJ_ERROR &&
-      m_Infos.at(PART_MODELPARAMS).getStatus() != PRJ_ERROR &&
-      m_Infos.at(PART_SPATIALSTRUCT).getStatus() != PRJ_ERROR &&
-      m_Infos.at(PART_SPATIALATTRS).getStatus() != PRJ_ERROR &&
-      m_Infos.at(PART_DATASTORE).getStatus() != PRJ_ERROR &&
-      m_Infos.at(PART_MONITORING).getStatus() != PRJ_ERROR &&
-      m_Infos.at(PART_RUNCONFIG).getStatus() != PRJ_ERROR);
+  return (m_Infos.at(PART_MODELDEF).getStatus() < PRJ_DISABLED &&
+          m_Infos.at(PART_MODELPARAMS).getStatus() < PRJ_DISABLED &&
+          m_Infos.at(PART_SPATIALSTRUCT).getStatus() < PRJ_DISABLED &&
+          m_Infos.at(PART_SPATIALATTRS).getStatus() < PRJ_DISABLED &&
+          m_Infos.at(PART_DATASTORE).getStatus() < PRJ_DISABLED &&
+          m_Infos.at(PART_MONITORING).getStatus() < PRJ_DISABLED &&
+          m_Infos.at(PART_RUNCONFIG).getStatus() < PRJ_DISABLED);
 }
 
 

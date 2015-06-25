@@ -409,7 +409,7 @@ void ProjectCentral::checkModel()
 
         if (SignII->Ghost)
         {
-          m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
+          m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_DISABLED);
           m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
                           .addMessage(tr("Simulator %1 is a ghost")
                                       .arg(QString::fromStdString(ID)));
@@ -800,7 +800,7 @@ void ProjectCentral::checkModel()
 
   if (!AtLeastOneEnabled)
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_DISABLED);
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("No simulator or generator is enabled in model"));
   }
 }

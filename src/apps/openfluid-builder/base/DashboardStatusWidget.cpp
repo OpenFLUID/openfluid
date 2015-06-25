@@ -167,12 +167,17 @@ void DashboardStatusWidget::setLevel(const ProjectStatusLevel Level)
     ui->NoMessageLabel->setVisible(false);
     m_BorderColor = "#E3A740";
   }
-  else
+  else if (Level == PRJ_ERROR)
   {
     ui->TitleLabel->setText(tr("Simulation cannot be run"));
     ui->NoMessageLabel->setVisible(false);
     m_BorderColor = "#B31717";
-
+  }
+  else
+  {
+    ui->TitleLabel->setText(tr("Simulation is disabled"));
+    ui->NoMessageLabel->setVisible(false);
+    m_BorderColor = "#757575";
   }
 
   applyStyleSheet();

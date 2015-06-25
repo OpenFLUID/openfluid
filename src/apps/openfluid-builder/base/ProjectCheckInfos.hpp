@@ -45,7 +45,7 @@
 #include <QStringList>
 
 
-enum ProjectStatusLevel { PRJ_OK, PRJ_WARNING, PRJ_ERROR };
+enum ProjectStatusLevel { PRJ_OK, PRJ_WARNING, PRJ_DISABLED, PRJ_ERROR };
 
 
 class ProjectPartCheckInfos

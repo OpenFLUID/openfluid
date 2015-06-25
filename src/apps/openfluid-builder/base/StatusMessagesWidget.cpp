@@ -103,4 +103,6 @@ void StatusMessagesWidget::setStatusLevel(ProjectStatusLevel Level)
     ui->StatusIconLabel->setPixmap(QPixmap(":/images/check-warn.png"));
   else if (Level == PRJ_ERROR)
     ui->StatusIconLabel->setPixmap(QPixmap(":/images/check-error.png"));
+  else if (Level == PRJ_DISABLED)
+      ui->StatusIconLabel->setPixmap(QPixmap(":/images/check-disabled.png"));
 }

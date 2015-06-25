@@ -6,6 +6,7 @@
     <file>images/check-ok.png</file>
     <file>images/check-warn.png</file>
     <file>images/check-error.png</file>
+    <file>images/check-disabled.png</file>
     <file>images/warn-pattern-lightgray.png</file>
     <file>images/status-experimental.png</file>
     <file>images/status-beta.png</file>
