@@ -1512,7 +1512,7 @@ Continuer quand même?</translation>
         <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="190"/>
         <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="194"/>
         <source>Builder extension...</source>
-        <translation>Extensions Builder...</translation>
+        <translation>Extension Builder...</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="196"/>
