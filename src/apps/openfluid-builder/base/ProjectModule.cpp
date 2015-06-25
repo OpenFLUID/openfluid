@@ -604,6 +604,9 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
             ->tryTranslate(QString::fromStdString(ExtCon->FileFullPath),
                            "signature",ExtCon->Signature->MenuText);
 
+          // Replace empty menu text by extension ID
+          TabText = QString::fromStdString(openfluid::tools::replaceEmptyString(TabText.toStdString(),WareID));
+
           ExtWork->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
           mp_MainWidget->addWorkspaceExtensionTab(ExtWork,TabText);
         }

@@ -310,6 +310,9 @@ void AppActions::updateExtensionsActionsAndMenus()
       ->tryTranslate(QString::fromStdString((*it).second->FileFullPath),
                      "signature",(*it).second->Signature->MenuText);
 
+    // Replace empty menu text by extension ID
+    MenuText = QString::fromStdString(openfluid::tools::replaceEmptyString(MenuText.toStdString(),(*it).first));
+
     m_ExtensionsActions[(*it).first] = new QAction(MenuText,this);
 
     // associate extension ID with QAction for use when action is triggered and launch the correct extension
