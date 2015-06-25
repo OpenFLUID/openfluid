@@ -20,11 +20,9 @@ SET(CPACK_PACKAGE_EXECUTABLES openfluid-builder;OpenFLUID-Builder
 SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CPACK_PACKAGE_NAME} ${FULL_VERSION}")
 SET(CPACK_NSIS_MODIFY_PATH ON)
 
-# This packaging includes Boost libs and includes, Qt libs, GEOS libs and GDAL libs
-# It requires the SUPPORT_DIR and QT5_PLUGINS_DIR environment variables
 
-FIND_PATH(QT_MINGW_BINARY_DIR qt5core.dll)
-  
+# This packaging includes Qt libs, GEOS libs and GDAL libs
+# It requires the SUPPORT_DIR environment variable
 FILE(TO_CMAKE_PATH "$ENV{SUPPORT_DIR}" SUPPORT_DIR_MOD)
 FILE(TO_CMAKE_PATH "$ENV{SUPPORT_DIR}/bin" SUPPORT_BINDIR_MOD)
 FILE(TO_CMAKE_PATH "$ENV{SUPPORT_DIR}/lib" SUPPORT_LIBDIR_MOD)

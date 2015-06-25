@@ -437,7 +437,7 @@ void NewSrcFileAssistant::onEmptyBrowseToolButtonClicked()
 void NewSrcFileAssistant::accept()
 {
   QString NewFilePath, ErrMsg;
-  bool Ok;
+  bool Ok = false;
 
   switch (currentId())
   {

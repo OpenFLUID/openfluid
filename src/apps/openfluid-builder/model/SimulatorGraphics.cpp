@@ -109,7 +109,7 @@ QPointF SimulatorGraphics::getProducedIOPosition()
 // =====================================================================
 
 
-void SimulatorGraphics::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* Event)
+void SimulatorGraphics::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* /*Event*/)
 {
   if (m_Ghost)
     emit srcEditAsked(m_ID,m_Ghost);

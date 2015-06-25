@@ -101,7 +101,7 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableObserver
 // =====================================================================
 
 
-DEFINE_OBSERVER_CLASS(CMakeObserverParamsUI)
+DEFINE_OBSERVER_CLASS(%%CLASSNAME%%)
 
 
 // =====================================================================
