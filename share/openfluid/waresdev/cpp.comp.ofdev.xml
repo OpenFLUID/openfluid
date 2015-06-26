@@ -301,6 +301,10 @@
           OPENFLUID_GetUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,unitPtr)
         </item>
 
+        <item context="simulator;observer" menupath="Compute code/Spatial structure/Get a list of pointers to spatial units of a given units class">
+          OPENFLUID_GetUnits(%%SEL_START%%ClassName%%SEL_END%%)
+        </item>
+
         <item context="simulator" menupath="Compute code/Spatial structure/Add a From-To connection using classes names and IDs">
           OPENFLUID_AddFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo)
         </item>

@@ -191,6 +191,38 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("incorrect total number of units");
 
 
+      if (OPENFLUID_GetUnits("VU").size() != 2)
+        OPENFLUID_RaiseError("incorrect number of units in VU units list");
+
+      if (OPENFLUID_GetUnits("MU").size() != (Cols*Rows))
+        OPENFLUID_RaiseError("incorrect number of units in MU units list");
+
+      if (!OPENFLUID_GetUnits("FU").empty())
+        OPENFLUID_RaiseError("incorrect number of units in FU units list");
+
+
+
+      auto CheckUnitsList = [this,Cols,Rows](const openfluid::core::UnitsClass_t& ClassName)
+      {
+        openfluid::core::PcsOrd_t PrevPcsOrd = 0;
+        openfluid::core::UnitsPtrList_t UList = OPENFLUID_GetUnits(ClassName);
+
+        for (auto& Unit : UList)
+        {
+          if (Unit->getProcessOrder() < PrevPcsOrd)
+            OPENFLUID_RaiseError("incorrect units sequence in "+ ClassName +" units list");
+
+          PrevPcsOrd = Unit->getProcessOrder();
+        }
+      };
+
+      CheckUnitsList("MU");
+      CheckUnitsList("VU");
+      CheckUnitsList("TU");
+      CheckUnitsList("XU");
+
+
+
       openfluid::core::SpatialUnit* CurrentUnit = NULL;
 
       CurrentUnit = OPENFLUID_GetUnit("TU",1);

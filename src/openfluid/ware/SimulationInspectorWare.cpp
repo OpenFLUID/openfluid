@@ -641,8 +641,8 @@ void SimulationInspectorWare::OPENFLUID_GetUnitsCount(unsigned int& UnitsCount) 
 
 
 bool SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitsClass_t& ClassName,
-                                          const openfluid::core::UnitID_t& ID,
-                                          openfluid::core::SpatialUnit* aUnit) const
+                                                const openfluid::core::UnitID_t& ID,
+                                                openfluid::core::SpatialUnit* aUnit) const
 {
   aUnit =  const_cast<openfluid::core::SpatialUnit*>(mp_SpatialData->spatialUnit(ClassName,ID));
   return (aUnit != NULL);
@@ -654,9 +654,33 @@ bool SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitsClas
 
 
 openfluid::core::SpatialUnit* SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitsClass_t& ClassName,
-                                                            const openfluid::core::UnitID_t& ID) const
+                                                                         const openfluid::core::UnitID_t& ID) const
 {
   return mp_SpatialData->spatialUnit(ClassName,ID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::UnitsPtrList_t SimulationInspectorWare::OPENFLUID_GetUnits(
+    const openfluid::core::UnitsClass_t& ClassName)
+{
+  openfluid::core::UnitsPtrList_t UnitsPtrList;
+
+  if (mp_SpatialData->isUnitsClassExist(ClassName))
+  {
+    openfluid::core::UnitsList_t* UnitsListPtr = mp_SpatialData->spatialUnits(ClassName)->list();
+
+    if (UnitsListPtr)
+    {
+      for (openfluid::core::UnitsList_t::iterator it = UnitsListPtr->begin(); it != UnitsListPtr->end(); ++it)
+        UnitsPtrList.push_back(&(*it));
+    }
+  }
+
+  return UnitsPtrList;
 }
 
 

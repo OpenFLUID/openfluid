@@ -419,6 +419,13 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
                                                       const openfluid::core::UnitID_t& ID) const;
 
       /**
+        Returns a list of units of the requested class
+        Returns an empty list if the units class does not exist.
+        @param[in] ClassName the requested class
+      */
+      openfluid::core::UnitsPtrList_t OPENFLUID_GetUnits(const openfluid::core::UnitsClass_t& ClassName);
+
+      /**
         Returns true if a given unit is connected "to" another unit
         @param[in] aUnit the given unit
         @param[in] ClassNameTo the class name of the other unit to test
