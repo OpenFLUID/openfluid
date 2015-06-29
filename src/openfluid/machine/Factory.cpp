@@ -233,7 +233,6 @@ void Factory::buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescripto
 void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
                                                ModelInstance& MInstance)
 {
-
   openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::const_iterator it;
   ModelItemInstance* IInstance = nullptr;
 
@@ -319,6 +318,8 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         IInstance->Signature = Signature;
       }
 
+      openfluid::base::RuntimeEnvironment::instance()->processWareParams(IInstance->Params);
+
       IInstance->OriginalPosition = MInstance.getItemsCount()+1;
       MInstance.appendItem(IInstance);
     }
@@ -352,6 +353,7 @@ void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::Monitorin
       // instanciation of a plugged observer using the plugin manager
       OInstance = ObserverPluginsManager::instance()->loadWareSignatureOnly(ID);
       OInstance->Params = (*it)->getParameters();
+      openfluid::base::RuntimeEnvironment::instance()->processWareParams(OInstance->Params);
 
       MonInstance.appendObserver(OInstance);
     }

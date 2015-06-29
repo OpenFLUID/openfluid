@@ -212,6 +212,15 @@ class OPENFLUID_API StringValue : public SimpleValue
     unsigned long size() const
     { return m_Value.size(); };
 
+
+    /**
+      Replaces all occurences of FindStr by ReplaceStr
+      @param[in] FindStr the substring to find
+      @param[in] ReplaceStr the substring to replace the found substrings
+      @return the number of occurences
+    */
+    unsigned int replaceAll(const std::string& FindStr,const std::string& ReplaceStr);
+
     /**
       Converts the contained string to a double value (if possible)
       @return bool true if the conversion is correct, false otherwise

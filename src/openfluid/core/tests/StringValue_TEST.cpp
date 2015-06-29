@@ -251,6 +251,17 @@ BOOST_AUTO_TEST_CASE(check_string)
   BOOST_REQUIRE_EQUAL(MapV.getString("bool"),"false");
   std::cout << MapV << std::endl;
 
+
+  openfluid::core::StringValue SourceStr("my cheschire cat is blue");
+
+  BOOST_REQUIRE_EQUAL(SourceStr.replaceAll("ch","bl"),2);
+  std::cout << SourceStr << std::endl;
+
+  BOOST_REQUIRE_EQUAL(SourceStr.replaceAll("bl","ch"),3);
+  std::cout << SourceStr << std::endl;
+
+  BOOST_REQUIRE_EQUAL(SourceStr.toString(),"my cheschire cat is chue");
+
 }
 
 

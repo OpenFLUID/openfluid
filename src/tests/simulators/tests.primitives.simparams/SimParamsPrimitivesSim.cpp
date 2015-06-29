@@ -78,6 +78,9 @@ BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
   DECLARE_REQUIRED_PARAMETER("longarrayparam","=11;12;13;14;15","-");
   DECLARE_REQUIRED_PARAMETER("matrixparam","=1.1;1.2|2.1;2.2|3.1;3.2","-");
   DECLARE_SIMULATOR_PARAM("mapparam","=key1=1.1;key2=a string;key3=true","-");
+  DECLARE_REQUIRED_PARAMETER("inpath","","-");
+  DECLARE_REQUIRED_PARAMETER("outpath","","-");
+  DECLARE_REQUIRED_PARAMETER("temppath","","-");
 
 END_SIMULATOR_SIGNATURE
 
@@ -371,6 +374,29 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, type for key key3)");
       if(aBool != true)
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, value for key key3)");
+
+
+      // ====== Vars replacements in params ======
+
+      std::string InPath;
+      std::string OutPath;
+      std::string TempPath;
+
+      OPENFLUID_GetRunEnvironment("dir.input",InPath);
+      OPENFLUID_GetRunEnvironment("dir.output",OutPath);
+      OPENFLUID_GetRunEnvironment("dir.temp",TempPath);
+
+      OPENFLUID_GetSimulatorParameter(Params,"inpath",ParamStrVal);
+      if (ParamStrVal.toString() != (InPath+"/path/in"))
+        OPENFLUID_RaiseError("incorrect inpath parameter value");
+
+      OPENFLUID_GetSimulatorParameter(Params,"outpath",ParamStrVal);
+      if (ParamStrVal.toString() != (OutPath+"/path/out"))
+        OPENFLUID_RaiseError("incorrect outpath parameter value");
+
+      OPENFLUID_GetSimulatorParameter(Params,"temppath",ParamStrVal);
+      if (ParamStrVal.toString() != (TempPath+"/path/temp"))
+        OPENFLUID_RaiseError("incorrect temppath parameter value");
     }
 
 

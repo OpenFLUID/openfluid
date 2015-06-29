@@ -485,5 +485,22 @@ void RuntimeEnvironment::detachFromProject()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void RuntimeEnvironment::processWareParams(openfluid::ware::WareParams_t& Params)
+{
+  std::map<std::string,std::string> Replacements =
+    {{"${dir.input}",m_InputDir},
+     {"${dir.output}",m_OutputDir},
+     {"${dir.temp}",m_TempDir}};
+
+  for (auto& Param : Params)
+    for (const auto& R : Replacements)
+      Param.second.replaceAll(R.first,R.second);
+}
+
+
 } } //namespaces
 

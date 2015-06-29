@@ -154,6 +154,27 @@ std::vector<std::string> StringValue::split(const std::string& Separators,
   return splitString(m_Value,Separators,ReturnsEmpty);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+unsigned int StringValue::replaceAll(const std::string& FindStr,const std::string& ReplaceStr)
+{
+  unsigned int Occurrences = 0;
+  std::string::size_type StartPos = 0;
+
+  while ((StartPos = m_Value.find(FindStr,StartPos)) != std::string::npos)
+  {
+    m_Value.replace(StartPos, FindStr.length(), ReplaceStr);
+    StartPos += ReplaceStr.length();
+    Occurrences++;
+  }
+
+  return Occurrences;
+}
+
+
 // =====================================================================
 // =====================================================================
 

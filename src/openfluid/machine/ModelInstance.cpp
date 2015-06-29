@@ -101,7 +101,8 @@ ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
              : mp_Listener(Listener), mp_SimLogger(NULL), mp_SimProfiler(NULL),
                m_SimulationBlob(SimulationBlob), m_Initialized(false)
 {
-  if (mp_Listener == NULL) mp_Listener = new openfluid::machine::MachineListener();
+  if (mp_Listener == NULL)
+    mp_Listener = new openfluid::machine::MachineListener();
 }
 
 

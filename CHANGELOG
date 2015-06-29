@@ -5,11 +5,15 @@
   * Introduced ghost simulators system
   * Introduced parameterization UI for simulators and observers 
     in OpenFLUID-Builder
-  * Introduced required/used conditions for parameters of simulators     
+  * Introduced required/used conditions for parameters of simulators 
+  * Introduced ability to provide translations for wares in OpenFLUID-Builder
+  * Introduced variables in parameters values, giving informations 
+    about run environment
   * Added iterators for VectorValue and MapValue types
   * Added new TreeValue structure for tree-like data
   * Added basic filesystem tools
   * Added command line parser class
+  * Added API primitive to get a list of spatial units in a given class
   * Improved OpenFLUID-LandR library
   * Improved OpenFLUID-Builder look'n'feel
   * Modified usage of OpenFLUID command line application 

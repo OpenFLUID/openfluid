@@ -18,6 +18,10 @@
         <param name="longarrayparam" value="11;12;13;14;15" />
         <param name="matrixparam" value="1.1;1.2|2.1;2.2|3.1;3.2" />
         <param name="mapparam" value="key1=1.1;key2=a string;key3=true" />
+        
+        <param name="inpath" value="${dir.input}/path/in" />
+        <param name="outpath" value="${dir.output}/path/out" />
+        <param name="temppath" value="${dir.temp}/path/temp" />
      </simulator>      
     
      <simulator ID="tests.primitives.attributes.prod" />

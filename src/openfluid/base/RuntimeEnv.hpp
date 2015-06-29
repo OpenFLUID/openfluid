@@ -46,6 +46,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
 
 
 
@@ -470,7 +471,7 @@ class OPENFLUID_API RuntimeEnvironment
 
 
     openfluid::base::EnvironmentProperties* wareEnvironment() const
-      { return mp_WareEnv; };
+    { return mp_WareEnv; };
 
 
     /**
@@ -523,6 +524,7 @@ class OPENFLUID_API RuntimeEnvironment
     void setSimulationProfilingEnabled(bool Profiling)
     { m_Profiling = Profiling; };
 
+    void processWareParams(openfluid::ware::WareParams_t& Params);
 };
 
 
