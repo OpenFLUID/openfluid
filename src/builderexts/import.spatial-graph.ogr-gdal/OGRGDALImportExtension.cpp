@@ -54,7 +54,7 @@
 // =====================================================================
 
 
-BEGIN_BUILDEREXT_SIGNATURE("import.spatial-graph.ogr-gdal", openfluid::builderext::TYPE_MODAL)
+BEGIN_BUILDEREXT_SIGNATURE("import.spatial-graph.ogr-gdal", openfluid::builderext::MODE_MODAL)
 
   DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)
   DECLARE_MENUTEXT(QT_TRANSLATE_NOOP("signature","Spatial data import (OGR/GDAL)"))

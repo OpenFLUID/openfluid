@@ -132,16 +132,6 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableSimulator
 DEFINE_SIMULATOR_CLASS(%%CLASSNAME%%);
 
 
-// =====================================================================
-// =====================================================================
-
-
-#ifdef OPENFLUID_PARAMSUI_ENABLED
-
-%%PARAMSUICOMMENT%%#include "%%PARAMSUIROOTHPPFILENAME%%"
-
-%%PARAMSUICOMMENT%%DEFINE_PARAMETERIZATIONWIDGET_CLASS(%%PARAMSUICLASSNAME%%)
-
-#endif
+DEFINE_WARE_LINKUID(WARE_LINKUID)
 
 

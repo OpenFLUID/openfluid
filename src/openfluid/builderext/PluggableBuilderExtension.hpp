@@ -42,11 +42,9 @@
 #define __OPENFLUID_BUILDEREXT_PLUGGABLEBUILDEREXTENSION_HPP__
 
 
-
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
-#include <openfluid/builderext/FluidXUpdateFlags.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -89,13 +87,6 @@ namespace openfluid { namespace builderext {
 class OPENFLUID_API PluggableBuilderExtension : public openfluid::ware::PluggableWare
 {
 
-  protected:
-
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
-
-    openfluid::ware::WareParams_t m_Config;
-
-
   public:
 
     PluggableBuilderExtension() : PluggableWare(openfluid::ware::PluggableWare::OTHER)
@@ -121,19 +112,10 @@ class OPENFLUID_API PluggableBuilderExtension : public openfluid::ware::Pluggabl
     }
 
 
-    virtual void setConfiguration(const openfluid::ware::WareParams_t& Config)
-    { m_Config = Config; }
-
-
-    void setFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor* Desc)
-    { mp_AdvancedDesc = Desc; }
-
-
     openfluid::ware::WareID_t getID() const
     { return OPENFLUID_GetWareID(); }
 
 
-    virtual bool initialize() = 0;
 };
 
 

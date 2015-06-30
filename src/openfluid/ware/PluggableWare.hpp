@@ -73,9 +73,22 @@ namespace openfluid { namespace ware {
 /**
   Hook function name of ware ABI version
 */
-#define WAREPARAMSWIDGET_PROC_NAME "GetWareParamsWidget"
-#define WAREPARAMSWIDGET_PROC_DECL GetWareParamsWidget
+#define WARELINKUID_PROC_NAME "GetWareLinkUID"
+#define WARELINKUID_PROC_DECL GetWareLinkUID
 
+
+// =====================================================================
+// =====================================================================
+
+
+#define DEFINE_WARE_LINKUID(linkuid) \
+  extern "C" \
+  { \
+    OPENFLUID_PLUGIN std::string WARELINKUID_PROC_DECL() \
+    { \
+      return std::string(linkuid); \
+    } \
+  }
 
 // =====================================================================
 // =====================================================================

@@ -143,8 +143,6 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   BOOST_CHECK(CppFileContent.contains("file MySim.cpp"));
   BOOST_CHECK(CppFileContent.contains("BEGIN_SIMULATOR_SIGNATURE(\"sim.id\")"));
   BOOST_CHECK(CppFileContent.contains("class MySim : public openfluid::ware::PluggableSimulator"));
-  BOOST_CHECK(CppFileContent.contains("//#include \"ParamsUiWidget.hpp\""));
-  BOOST_CHECK(CppFileContent.contains("//DEFINE_PARAMETERIZATIONWIDGET_CLASS(ParamsUiWidget)"));
   CppResult.close();
 
   R.ParamsUiClassname = "MyWidget";
@@ -160,7 +158,7 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   BOOST_CHECK(!CppUiFileContent.contains("%%"));
   BOOST_CHECK(CppUiFileContent.contains("file MyWidget.cpp"));
   BOOST_CHECK(CppUiFileContent.contains("#include \"MyWidget.hpp\""));
-  BOOST_CHECK(CppUiFileContent.contains("MyWidget::MyWidget() : openfluid::ui::ware::ParameterizationWidget()"));
+  BOOST_CHECK(CppUiFileContent.contains("MyWidget::MyWidget() : openfluid::builderext::PluggableParameterizationExtension()"));
   CppUiResult.close();
 
   BOOST_CHECK_EQUAL(Factory.createParamUiHppFile(R, NewFilePath, ErrMsg), true);
@@ -170,7 +168,7 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   BOOST_CHECK(!HppUiFileContent.contains("%%"));
   BOOST_CHECK(HppUiFileContent.contains("file MyWidget.hpp"));
   BOOST_CHECK(HppUiFileContent.contains("#ifndef __MYWIDGET_HPP__"));
-  BOOST_CHECK(HppUiFileContent.contains("class MyWidget: public openfluid::ui::ware::ParameterizationWidget"));
+  BOOST_CHECK(HppUiFileContent.contains("class MyWidget: public openfluid::builderext::PluggableParameterizationExtension"));
   HppUiResult.close();
 
   openfluid::tools::Filesystem::removeDirectory(WareTypePath.toStdString());
@@ -257,7 +255,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BOOST_CHECK(CMakeConfigFileContent.contains("SET(BEXT_CPP MyBext.cpp)"));
   CMakeConfigResult.close();
 
-  R.BuilderExtTypeIndex = 0;  //openfluid::builderext::TYPE_MODAL
+  R.BuilderExtModeIndex = 0;  //openfluid::builderext::TYPE_MODAL
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("MyBext.cpp"));
@@ -267,7 +265,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BOOST_CHECK(!CppFileContent.contains("%%"));
   BOOST_CHECK(CppFileContent.contains("file MyBext.cpp"));
   BOOST_CHECK(CppFileContent.contains("#include \"MyBext.hpp\""));
-  BOOST_CHECK(CppFileContent.contains("BEGIN_BUILDEREXT_SIGNATURE(\"bext.id\", openfluid::builderext::TYPE_MODAL)"));
+  BOOST_CHECK(CppFileContent.contains("BEGIN_BUILDEREXT_SIGNATURE(\"bext.id\", openfluid::builderext::MODE_MODAL)"));
   BOOST_CHECK(CppFileContent.contains("DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)"));
   BOOST_CHECK(CppFileContent.contains("DECLARE_MENUTEXT(\"bla bla\")"));
   BOOST_CHECK(CppFileContent.contains("MyBext::MyBext()"));
@@ -285,7 +283,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   HppResult.remove();
 
 
-  R.BuilderExtTypeIndex = 1;  //openfluid::builderext::TYPE_MODELESS
+  R.BuilderExtModeIndex = 1;  //openfluid::builderext::TYPE_MODELESS
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("MyBext.cpp"));
@@ -294,7 +292,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BOOST_CHECK(!CppFileContent.contains("%%"));
   BOOST_CHECK(CppFileContent.contains("file MyBext.cpp"));
   BOOST_CHECK(CppFileContent.contains("#include \"MyBext.hpp\""));
-  BOOST_CHECK(CppFileContent.contains("BEGIN_BUILDEREXT_SIGNATURE(\"bext.id\", openfluid::builderext::TYPE_MODELESS)"));
+  BOOST_CHECK(CppFileContent.contains("BEGIN_BUILDEREXT_SIGNATURE(\"bext.id\", openfluid::builderext::MODE_MODELESS)"));
   BOOST_CHECK(CppFileContent.contains("DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)"));
   BOOST_CHECK(CppFileContent.contains("DECLARE_MENUTEXT(\"bla bla\")"));
   BOOST_CHECK(CppFileContent.contains("MyBext::MyBext()"));
@@ -311,7 +309,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   HppResult.remove();
 
 
-  R.BuilderExtTypeIndex = 2;  //openfluid::builderext::TYPE_WORKSPACE
+  R.BuilderExtModeIndex = 2;  //openfluid::builderext::TYPE_WORKSPACE
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("MyBext.cpp"));
@@ -321,7 +319,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BOOST_CHECK(CppFileContent.contains("file MyBext.cpp"));
   BOOST_CHECK(CppFileContent.contains("#include \"MyBext.hpp\""));
   BOOST_CHECK(
-      CppFileContent.contains("BEGIN_BUILDEREXT_SIGNATURE(\"bext.id\", openfluid::builderext::TYPE_WORKSPACE)"));
+      CppFileContent.contains("BEGIN_BUILDEREXT_SIGNATURE(\"bext.id\", openfluid::builderext::MODE_WORKSPACE)"));
   BOOST_CHECK(CppFileContent.contains("DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)"));
   BOOST_CHECK(CppFileContent.contains("DECLARE_MENUTEXT(\"bla bla\")"));
   BOOST_CHECK(CppFileContent.contains("MyBext::MyBext()"));

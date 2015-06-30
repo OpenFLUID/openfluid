@@ -30,44 +30,54 @@
 */
 
 /**
-  @file ParameterizationWidget.hpp
+  @file PluggableParameterizationExtension.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
+#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__
+#define __OPENFLUID_BUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__
 
-#ifndef __OPENFLUID_UIWARE_PARAMETERIZATIONWIDGET_HPP__
-#define __OPENFLUID_UIWARE_PARAMETERIZATIONWIDGET_HPP__
 
+#include <openfluid/builderext/PluggableBuilderExtension.hpp>
 
 #include <QWidget>
 
-#include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/dllexport.hpp>
 
 /**
-  Macro for definition of parameters widget hook
-  @param[in] widgetclassname The name of the class to instantiate
+  Macro for the beginning of definition of signature for parameterization extension
 */
-#define DEFINE_PARAMETERIZATIONWIDGET_CLASS(widgetclassname) \
-  extern "C" \
-  { \
-    OPENFLUID_PLUGIN openfluid::ui::ware::ParameterizationWidget* WAREPARAMSWIDGET_PROC_DECL() \
+#ifndef BEGIN_BUILDEREXT_SIGNATURE
+#define BEGIN_BUILDEREXT_SIGNATURE(id) \
+  extern "C" { \
+  OPENFLUID_PLUGIN openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL() \
     { \
-      return new widgetclassname(); \
+      openfluid::builderext::BuilderExtensionSignature* Signature =\
+        new openfluid::builderext::BuilderExtensionSignature(); \
+      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+      Signature->ID = (id); \
+      Signature->Type = openfluid::builderext::TYPE_PARAMETERIZATION;
+#endif
+
+/**
+  Macro for the end of definition of signature hook
+*/
+#ifndef END_BUILDEREXT_SIGNATURE
+#define END_BUILDEREXT_SIGNATURE \
+      return Signature; \
     } \
-  }
-
+}
+#endif
 
 // =====================================================================
 // =====================================================================
 
 
-namespace openfluid { namespace ui { namespace ware {
+namespace openfluid { namespace builderext {
 
 
-class OPENFLUID_API ParameterizationWidget : public QWidget
+class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public PluggableBuilderExtension
 {
   Q_OBJECT;
 
@@ -82,7 +92,7 @@ class OPENFLUID_API ParameterizationWidget : public QWidget
 
   public:
 
-    ParameterizationWidget() : QWidget()
+    PluggableParameterizationExtension() : QWidget()
     {
 
     }
@@ -94,7 +104,7 @@ class OPENFLUID_API ParameterizationWidget : public QWidget
     }
 
 
-    virtual ~ParameterizationWidget()
+    virtual ~PluggableParameterizationExtension()
     {
 
     }
@@ -105,7 +115,7 @@ class OPENFLUID_API ParameterizationWidget : public QWidget
 };
 
 
-} } }  // namespaces
+} }  // namespaces
 
 
-#endif /* __OPENFLUID_UIWARE_PARAMETERIZATIONWIDGET_HPP__ */
+#endif /* __OPENFLUID_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__ */

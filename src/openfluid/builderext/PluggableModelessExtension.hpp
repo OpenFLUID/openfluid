@@ -43,13 +43,13 @@
 #include <QDialog>
 #include <QCloseEvent>
 
-#include <openfluid/builderext/PluggableBuilderExtension.hpp>
+#include <openfluid/builderext/PluggableFeatureExtension.hpp>
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace builderext {
 
-class OPENFLUID_API PluggableModelessExtension : public QDialog, public PluggableBuilderExtension
+class OPENFLUID_API PluggableModelessExtension : public QDialog, public PluggableFeatureExtension
 {
   Q_OBJECT;
 
@@ -71,7 +71,7 @@ class OPENFLUID_API PluggableModelessExtension : public QDialog, public Pluggabl
   public:
 
     PluggableModelessExtension():
-      QDialog(NULL), PluggableBuilderExtension()
+      QDialog(NULL), PluggableFeatureExtension()
     { }
 
 

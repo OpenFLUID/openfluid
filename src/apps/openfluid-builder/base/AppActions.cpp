@@ -292,7 +292,7 @@ void AppActions::updateExtensionsActionsAndMenus()
 {
   ExtensionsRegistry* ExtReg = ExtensionsRegistry::instance();
 
-  ExtensionsRegistry::ExtensionsByName_t* Extensions = ExtReg->registeredExtensions();
+  ExtensionsRegistry::ExtensionsByName_t* Extensions = ExtReg->registeredFeatureExtensions();
 
   ExtensionsRegistry::ExtensionsByName_t::iterator it;
   ExtensionsRegistry::ExtensionsByName_t::iterator itb = Extensions->begin();

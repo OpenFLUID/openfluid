@@ -50,7 +50,7 @@
 // =====================================================================
 
 
-BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.modal-spatial.classic", openfluid::builderext::TYPE_MODAL)
+BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.modal-spatial.classic", openfluid::builderext::MODE_MODAL)
 
   DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)
   DECLARE_MENUTEXT("Spatial classic")

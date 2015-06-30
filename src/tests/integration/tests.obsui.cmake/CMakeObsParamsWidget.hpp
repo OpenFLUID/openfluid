@@ -40,7 +40,7 @@
 #define __CMAKEOBSPARAMSWIDGET_HPP__
 
 
-#include <openfluid/ui/ware/ParameterizationWidget.hpp>
+#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
 
 
 namespace Ui
@@ -49,7 +49,7 @@ namespace Ui
 }
 
 
-class CMakeObsParamsWidget: public openfluid::ui::ware::ParameterizationWidget
+class CMakeObsParamsWidget: public openfluid::builderext::PluggableParameterizationExtension
 {
   Q_OBJECT;
 

@@ -7,14 +7,10 @@
 #define %%PARAMSUIHPPHEADERGUARD%%
 
 
-#include <openfluid/ui/ware/ParameterizationWidget.hpp>
+#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
 
 
-// =====================================================================
-// =====================================================================
-
-
-class %%PARAMSUICLASSNAME%%: public openfluid::ui::ware::ParameterizationWidget
+class %%PARAMSUICLASSNAME%%: public openfluid::builderext::PluggableParameterizationExtension
 {
   Q_OBJECT;
 

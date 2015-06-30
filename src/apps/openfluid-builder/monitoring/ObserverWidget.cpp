@@ -50,6 +50,7 @@
 #include "AddParamDialog.hpp"
 
 #include "WaresTranslationsRegistry.hpp"
+#include "ExtensionsRegistry.hpp"
 
 
 ObserverWidget::ObserverWidget(QWidget* Parent,
@@ -102,10 +103,10 @@ void ObserverWidget::refresh()
 
     mp_ParamsWidget = NULL;
 
-    if (Signature->WithParametersWidget)
+    if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Signature->LinkUID))
     {
-      mp_ParamsWidget = static_cast<openfluid::ui::ware::ParameterizationWidget*>(
-          openfluid::machine::ObserverPluginsManager::instance()->getParameterizationWidget(Signature));
+      mp_ParamsWidget = static_cast<openfluid::builderext::PluggableParameterizationExtension*>(
+          ExtensionsRegistry::instance()->instanciateParameterizationExtension(Signature->LinkUID));
       mp_ParamsWidget->setParent(this);
       mp_ParamsWidget->linkParams(&(mp_Desc->parameters()));
 

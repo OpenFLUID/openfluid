@@ -41,27 +41,22 @@
 #define __OPENFLUID_MACHINE_WARESIGNATUREINSTANCE_HPP__
 
 
-#include <openfluid/dllexport.hpp>
+#include <openfluid/machine/WareContainer.hpp>
 #include <openfluid/fluidx/WareDescriptor.hpp>
 
 
 namespace openfluid { namespace machine {
 
-class OPENFLUID_API WareSignatureInstance
+
+class OPENFLUID_API WareSignatureInstance : public WareContainer
 {
   public:
 
     openfluid::fluidx::WareDescriptor::WareType ItemType;
 
-    std::string FileFullPath;
-
-    bool Verified;
-
-    bool WithParametersWidget;
-
-    WareSignatureInstance() : ItemType(openfluid::fluidx::WareDescriptor::NoWareType),
-        FileFullPath(""),Verified(false), WithParametersWidget(false)
-    { }
+    WareSignatureInstance() : WareContainer(),
+        ItemType(openfluid::fluidx::WareDescriptor::NoWareType)
+    {  }
 
 };
 

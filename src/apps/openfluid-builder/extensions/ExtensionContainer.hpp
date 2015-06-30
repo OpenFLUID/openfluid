@@ -41,26 +41,22 @@
 #define __OPENFLUID_BUILDERAPP_EXTENSIONCONTAINER_HPP__
 
 
+#include <openfluid/machine/WareContainer.hpp>
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
 
 
-class ExtensionContainer
+class ExtensionContainer : public openfluid::machine::WareContainer
 {
   public:
 
-    bool Verified;
-
     bool Active;
-
-    bool WithParametersWidget;
-
-    std::string FileFullPath;
 
     openfluid::builderext::BuilderExtensionSignature* Signature;
 
     openfluid::builderext::PluggableBuilderExtension* Body;
 
     openfluid::ware::WareParams_t Params;
+
 
     ExtensionContainer();
 

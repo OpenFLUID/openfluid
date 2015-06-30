@@ -40,12 +40,12 @@
 #define __CMAKESIMPARAMSWIDGET_HPP__
 
 
-#include <openfluid/ui/ware/ParameterizationWidget.hpp>
+#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
 
 class QPushButton;
 
 
-class CMakeSimParamsWidget: public openfluid::ui::ware::ParameterizationWidget
+class CMakeSimParamsWidget: public openfluid::builderext::PluggableParameterizationExtension
 {
   Q_OBJECT;
 

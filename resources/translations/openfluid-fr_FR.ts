@@ -2001,6 +2001,11 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation>Activer l&apos;installation</translation>
     </message>
     <message>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="447"/>
+        <source>Show mode</source>
+        <translation>Mode d&apos;affichage</translation>
+    </message>
+    <message>
         <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="480"/>
         <source>Category</source>
         <translation>Catégorie</translation>
@@ -2015,9 +2020,8 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation>Nouveau ware</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="447"/>
         <source>Extension type</source>
-        <translation>Type d&apos;extension</translation>
+        <translation type="obsolete">Type d&apos;extension</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="459"/>
@@ -2572,12 +2576,12 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation>Impossible de copier le fichier modèle &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="272"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="273"/>
         <source>Unable to open the created file in read mode</source>
         <translation>Impossible d&apos;ouvrir en lecture le fichier créé</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="302"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="304"/>
         <source>Unable to open the created file in write mode</source>
         <translation>Impossible d&apos;ouvrir en écriture le fichier créé</translation>
     </message>
@@ -2586,63 +2590,63 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation type="obsolete">Impossible d&apos;ouvrir le fichier créé</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="319"/>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="341"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="321"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="343"/>
         <source>Accepts only letters, digits, dashes (&apos;-&apos;), underscores (&apos;_&apos;) and dots (&apos;.&apos;).</source>
         <translation>Accepte uniquement des lettres, chiffres, tirest (&apos;-&apos;), tirest bas (&apos;_&apos;) et des points (&apos;.&apos;).</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="330"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.cpp" line="332"/>
         <source>Accepts only letters, digits, underscores (&apos;_&apos;), and must begin with a letter.</source>
         <translation>Accepte uniquement des lettres, chiffres, tirets bas (&apos;_&apos;) et doit commencer par une lettre.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="111"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="112"/>
         <source>Modal</source>
         <translation>Modal</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="111"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="112"/>
         <source>Modeless</source>
         <translation>Non modal</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="111"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="112"/>
         <source>Workspace</source>
         <translation>Espace de travail</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="118"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="119"/>
         <source>Spatial domain</source>
         <translation>Domaine spatial</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="118"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="119"/>
         <source>Model</source>
         <translation>Modèle</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="118"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="119"/>
         <source>Results</source>
         <translation>Résultats</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="119"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="120"/>
         <source>Other</source>
         <translation>Autres</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="126"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="127"/>
         <source>On - sim2doc must be run manually</source>
         <translation>On - sim2doc doit être lancé manuellement</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="127"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="128"/>
         <source>Auto - sim2doc is automatically run</source>
         <translation>Auto - sim2doc est lancé automatiquement</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="128"/>
+        <location filename="../../src/openfluid/waresdev/WareSrcFactory.hpp" line="129"/>
         <source>Off - sim2doc is disabled</source>
         <translation>Off - sim2doc est désactivé</translation>
     </message>
@@ -4310,12 +4314,12 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
 <context>
     <name>openfluid::ui::waresdev::CMakeConfigPage</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="245"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="247"/>
         <source>Create the &quot;CMake.in.config&quot; file</source>
         <translation>Créer le fichier &quot;CMake.in.config&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="283"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="285"/>
         <source>File name must be of the form &quot;filexxx.cpp&quot;</source>
         <translation>Le nom du fichier doit être de la forme &quot;filexxx.cpp&quot;</translation>
     </message>
@@ -4323,57 +4327,57 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
 <context>
     <name>openfluid::ui::waresdev::CppPage</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="119"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="121"/>
         <source>Widget header file name (.hpp)</source>
         <translation>Fichier en-tête du widget (.hpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="118"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="120"/>
         <source>Create the parameterization UI header file (.hpp)</source>
         <translation>Créer le fichier en-tête d&apos;interface de paramétrage (.hpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="123"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="125"/>
         <source>Create the parameterization UI source file (.cpp)</source>
         <translation>Créer le fichier source d&apos;interface de paramétrage (.hpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="124"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="126"/>
         <source>Widget source file name (.cpp)</source>
         <translation>Fichier source du widget (.cpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="149"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="151"/>
         <source>Create the main C++ header file (.hpp)</source>
         <translation>Créer le fichier en-tête C++ principal (.hpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="150"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="152"/>
         <source>Header file name (.hpp)</source>
         <translation>Fichier en-tête C++ (.hpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="154"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="156"/>
         <source>Create the main C++ source file (.cpp)</source>
         <translation>Créer le fichier source C++ principal (.hpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="155"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="157"/>
         <source>Source file name (.cpp)</source>
         <translation>Nom du fichier source (.cpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="180"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="182"/>
         <source>File name must be of the form &quot;filexxx.%1&quot;</source>
         <translation>Le nom du fichier doit être de la forme &quot;filexxx.%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="182"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="184"/>
         <source>File already exists</source>
         <translation>Le fichier existe déjà</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="184"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="186"/>
         <source>Class name is empty</source>
         <translation>Le nom de la classe est vide</translation>
     </message>
@@ -4381,23 +4385,23 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
 <context>
     <name>openfluid::ui::waresdev::NewSrcFileAssistant</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="329"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="331"/>
         <source>This file already exists</source>
         <translation>Ce fichier existe déjà</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="456"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="458"/>
         <source>Unable to create the path &quot;%1&quot;</source>
         <translation>Impossible de créer le chemin &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="461"/>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="541"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="463"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="544"/>
         <source>Unable to create the file &quot;%1&quot;</source>
         <translation>Impossible de créer le fichier &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="541"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="544"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -4405,62 +4409,62 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
 <context>
     <name>openfluid::ui::waresdev::NewWareDialog</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="79"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="80"/>
         <source>Create a new simulator</source>
         <translation>Créer un nouveau simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="86"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="87"/>
         <source>Create a new observer</source>
         <translation>Créer un nouvel observateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="94"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="95"/>
         <source>Create a new Builder extension</source>
         <translation>Créer une nouvelle extension Builder</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="176"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="177"/>
         <source>Ware ID is empty</source>
         <translation>L&apos;ID du ware est vide</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="178"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="179"/>
         <source>Ware ID already exists</source>
         <translation>L&apos;ID du ware existe déjà</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="180"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="181"/>
         <source>Source file name must be of the form &quot;filexxx.cpp&quot;</source>
         <translation>Le nom du fichier source doit être de la forme &quot;filexxx.cpp&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="182"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="183"/>
         <source>Main class name is empty</source>
         <translation>Le nom de la classe principale est vide</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="184"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="185"/>
         <source>UI parameterization file name must be of the form &quot;filexxx.cpp&quot;</source>
         <translation>Le nom du fichier source d&apos;interface de paramétrage doit être de la forme &quot;filexxx.cpp&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="186"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="187"/>
         <source>UI parameterization class name is empty</source>
         <translation>Le nom de la classe d&apos;interface de paramétrage est vide</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="294"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="297"/>
         <source>Unable to create the ware directory</source>
         <translation>Impossible de créer le répertoire du ware</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="325"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="328"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="325"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="328"/>
         <source>Unable to create the ware &quot;%1&quot;</source>
         <translation>Impossible de créer le ware &quot;%1&quot;</translation>
     </message>

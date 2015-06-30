@@ -29,52 +29,16 @@
   
 */
 
+
 /**
-  @file ParamsWidget.hpp
+  @file PluggableFeatureExtension.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-
-#ifndef __PARAMSWIDGET_HPP__
-#define __PARAMSWIDGET_HPP__
+namespace openfluid { namespace builderext {
 
 
-#include <openfluid/ui/ware/ParameterizationWidget.hpp>
+} }  // namespaces
 
-
-namespace Ui
-{
-  class ParamsWidget;
-}
-
-
-class ParamsWidget: public openfluid::ui::ware::ParameterizationWidget
-{
-  Q_OBJECT;
-
-  private:
-
-    Ui::ParamsWidget* ui;
-
-
-  private slots:
-
-    void addParam();
-
-    void clearParams();
-
-
-  public:
-
-    ParamsWidget();
-
-    ~ParamsWidget();
-
-    void update();
-
-};
-
-
-#endif /* __PARAMSWIDGET_HPP__ */

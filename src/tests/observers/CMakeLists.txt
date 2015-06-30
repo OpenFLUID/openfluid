@@ -10,12 +10,6 @@ OPNFLD_ADD_OBSERVER(tests.primitives.time tests.primitives.time ${TEST_OUTPUT_PA
 ###########################################################################
 
 
-OPNFLD_ADD_OBSERVER(tests.paramswidget tests.paramswidget ${TEST_OUTPUT_PATH} ON)
-                                                                                    
-
-###########################################################################
-
-
 OPNFLD_ADD_OBSERVER(tests.hopla tests.hopla ${TEST_OUTPUT_PATH} OFF)
 OPENFLUID_ADD_TEST(NAME observers-Hopla 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 

@@ -11,13 +11,7 @@ OPNFLD_ADD_SIMULATOR(tests.coupling.B tests.coupling.B ${TEST_OUTPUT_PATH} OFF)
 OPNFLD_ADD_SIMULATOR(tests.coupling.C tests.coupling.C ${TEST_OUTPUT_PATH} OFF)
 OPNFLD_ADD_SIMULATOR(tests.coupling.D tests.coupling.D ${TEST_OUTPUT_PATH} OFF)
 OPNFLD_ADD_SIMULATOR(tests.coupling.E tests.coupling.E ${TEST_OUTPUT_PATH} OFF)
-
-
-###########################################################################
-
-
-OPNFLD_ADD_SIMULATOR(tests.paramswidget tests.paramswidget ${TEST_OUTPUT_PATH} ON)
-
+                                                   
 
 ###########################################################################
 

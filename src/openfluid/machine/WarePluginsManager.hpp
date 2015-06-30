@@ -58,6 +58,8 @@ namespace openfluid { namespace machine {
 
 typedef std::string (*GetWareABIVersionProc)();
 
+typedef std::string (*GetWareLinkUIDProc)();
+
 
 // =====================================================================
 // =====================================================================
@@ -136,7 +138,10 @@ class OPENFLUID_API WarePluginsManager
 
             Plug->Body = 0;
 
-            Plug->WithParametersWidget = PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
+            GetWareLinkUIDProc LinkUIDProc = (GetWareLinkUIDProc)PlugLib->resolve(WARELINKUID_PROC_NAME);
+
+            if (LinkUIDProc)
+              Plug->LinkUID = LinkUIDProc();
           }
           else
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -211,7 +216,10 @@ class OPENFLUID_API WarePluginsManager
               Plug->Verified =
                   QString::fromStdString(PluginFilename).startsWith(QString::fromStdString(Plug->Signature->ID));
 
-              Plug->WithParametersWidget = PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
+              GetWareLinkUIDProc LinkUIDProc = (GetWareLinkUIDProc)PlugLib->resolve(WARELINKUID_PROC_NAME);
+
+              if (LinkUIDProc)
+                Plug->LinkUID = LinkUIDProc();
             }
             else
               throw openfluid::base::FrameworkException(ECtxt,"Format error in plugin file");
@@ -386,37 +394,6 @@ class OPENFLUID_API WarePluginsManager
       else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                      "Unable to find plugin file " + PluginFullPath);
     }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    void* getParameterizationWidget(const S* Item)
-    {
-      std::string PluginFullPath = Item->FileFullPath;
-
-      QLibrary* PlugLib = loadWare(PluginFullPath);
-
-      // library loading
-      if (PlugLib && PlugLib->load())
-      {
-        typedef void* (*GetParametersWidgetProc)();
-        GetParametersWidgetProc ParamsWidgetProc =
-            (GetParametersWidgetProc)PlugLib->resolve(WAREPARAMSWIDGET_PROC_NAME);
-
-        // checks if the handle proc exists
-        if(ParamsWidgetProc)
-        {
-          return ParamsWidgetProc();
-        }
-        else
-          return NULL;
-      }
-      else
-        return NULL;
-    }
-
 
 
     // =====================================================================

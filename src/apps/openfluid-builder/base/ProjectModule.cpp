@@ -143,7 +143,7 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
 
 ProjectModule::~ProjectModule()
 {
-  ExtensionsRegistry::instance()->releaseAllExtensions();
+  ExtensionsRegistry::instance()->releaseAllFeatureExtensions();
 
   delete mp_ProjectCentral;
   mp_SimulatorsPlugsWatcher->deleteLater();
@@ -519,14 +519,14 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
 
   ExtensionsRegistry* ExtReg = ExtensionsRegistry::instance();
 
-  if (ExtReg->isExtensionRegistered(WareID))
+  if (ExtReg->isFeatureExtensionRegistered(WareID))
   {
-    if (!ExtReg->isExtensionActive(WareID))
+    if (!ExtReg->isFeatureExtensionActive(WareID))
     {
-      if (ExtReg->getExtensionType(WareID) == openfluid::builderext::TYPE_MODAL)
+      if (ExtReg->getExtensionMode(WareID) == openfluid::builderext::MODE_MODAL)
       {
         openfluid::builderext::PluggableModalExtension* ExtModal =
-            (openfluid::builderext::PluggableModalExtension*)(ExtReg->instanciateExtension(WareID));
+            (openfluid::builderext::PluggableModalExtension*)(ExtReg->instanciateFeatureExtension(WareID));
         ExtModal->setParent(QApplication::activeWindow(),Qt::Dialog);
         ExtModal->setModal(true);
 
@@ -547,13 +547,13 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
           ExtModal->exec();
         }
 
-        ExtReg->releaseExtension(ExtModal);
+        ExtReg->releaseFeatureExtension(ExtModal);
         ExtModal->deleteLater();
       }
-      else if (ExtReg->getExtensionType(WareID) == openfluid::builderext::TYPE_MODELESS)
+      else if (ExtReg->getExtensionMode(WareID) == openfluid::builderext::MODE_MODELESS)
       {
         openfluid::builderext::PluggableModelessExtension* ExtModeless =
-            (openfluid::builderext::PluggableModelessExtension*)(ExtReg->instanciateExtension(WareID));
+            (openfluid::builderext::PluggableModelessExtension*)(ExtReg->instanciateFeatureExtension(WareID));
         ExtModeless->setParent(QApplication::activeWindow(),Qt::Dialog);
         ExtModeless->setModal(false);
 
@@ -578,10 +578,10 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
         else
           releaseModelessExtension(ExtModeless);
       }
-      else if (ExtReg->getExtensionType(WareID) == openfluid::builderext::TYPE_WORKSPACE)
+      else if (ExtReg->getExtensionMode(WareID) == openfluid::builderext::MODE_WORKSPACE)
       {
         openfluid::builderext::PluggableWorkspaceExtension* ExtWork =
-            (openfluid::builderext::PluggableWorkspaceExtension*)(ExtReg->instanciateExtension(WareID));
+            (openfluid::builderext::PluggableWorkspaceExtension*)(ExtReg->instanciateFeatureExtension(WareID));
         ExtWork->setProperty("ID",QString::fromStdString(WareID));
 
         // TODO set correct extension configuration
@@ -598,7 +598,7 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
 
         if (ExtWork->initialize())
         {
-          ExtensionContainer* ExtCon = ExtReg->registeredExtensions()->at(WareID);
+          ExtensionContainer* ExtCon = ExtReg->registeredFeatureExtensions()->at(WareID);
 
           QString TabText = WaresTranslationsRegistry::instance()
             ->tryTranslate(QString::fromStdString(ExtCon->FileFullPath),
@@ -613,7 +613,7 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
         else
         {
           // destruction of the extension
-          ExtensionsRegistry::instance()->releaseExtension(ExtWork);
+          ExtensionsRegistry::instance()->releaseFeatureExtension(ExtWork);
           ExtWork->deleteLater();
         }
       }
@@ -907,7 +907,7 @@ void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableMod
 
   if (Sender)
   {
-    ExtensionsRegistry::instance()->releaseExtension(Sender);
+    ExtensionsRegistry::instance()->releaseFeatureExtension(Sender);
     Sender->deleteLater();
   }
 }

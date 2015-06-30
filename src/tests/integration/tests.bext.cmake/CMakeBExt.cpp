@@ -48,7 +48,7 @@
 // =====================================================================
 
 
-BEGIN_BUILDEREXT_SIGNATURE("tests.bext.cmake",openfluid::builderext::TYPE_MODAL)
+BEGIN_BUILDEREXT_SIGNATURE("tests.bext.cmake",openfluid::builderext::MODE_MODAL)
 
   DECLARE_CATEGORY(openfluid::builderext::CAT_OTHER)
   DECLARE_MENUTEXT("tests.bext.cmake")

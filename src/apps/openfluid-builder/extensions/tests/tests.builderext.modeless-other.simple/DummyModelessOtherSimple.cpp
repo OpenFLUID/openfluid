@@ -50,7 +50,7 @@ DECLARE_BUILDEREXT_PLUGIN
 // =====================================================================
 
 
-BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.modeless-other.simple", openfluid::builderext::TYPE_MODELESS)
+BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.modeless-other.simple", openfluid::builderext::MODE_MODELESS)
 
   DECLARE_CATEGORY(openfluid::builderext::CAT_OTHER)
   DECLARE_MENUTEXT("Other simple (Modeless)")

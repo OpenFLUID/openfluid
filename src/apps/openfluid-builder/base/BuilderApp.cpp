@@ -62,7 +62,7 @@ BuilderApp::BuilderApp():
 
 BuilderApp::~BuilderApp()
 {
-
+  delete ExtensionsRegistry::instance();
 }
 
 

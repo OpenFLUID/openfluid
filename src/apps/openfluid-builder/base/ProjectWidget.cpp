@@ -71,7 +71,7 @@ void WorkspaceTabWidget::closeTab(int Index)
   if(qobject_cast<openfluid::ui::waresdev::WareSrcWidget*>(widget(Index)))
     return;
 
-  ExtensionsRegistry::instance()->releaseExtension(widget(Index)->property("ID").toString().toStdString());
+  ExtensionsRegistry::instance()->releaseFeatureExtension(widget(Index)->property("ID").toString().toStdString());
 
   widget(Index)->deleteLater();
   removeTab(Index);

@@ -47,7 +47,7 @@
 // =====================================================================
 
 
-BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.workspace-other.simple", openfluid::builderext::TYPE_WORKSPACE)
+BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.workspace-other.simple", openfluid::builderext::MODE_WORKSPACE)
 
   DECLARE_CATEGORY(openfluid::builderext::CAT_OTHER)
   DECLARE_MENUTEXT("Other simple (Workspace)")

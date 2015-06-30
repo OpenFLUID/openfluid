@@ -10,12 +10,8 @@
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 
 
-DECLARE_BUILDEREXT_PLUGIN
-
-
 // =====================================================================
 // =====================================================================
-
 
 
 class %%CLASSNAME%% : public openfluid::builderext::PluggableModalExtension

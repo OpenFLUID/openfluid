@@ -5,18 +5,20 @@ INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
 FILE(GLOB OPENFLUID_BUILDEREXT_CPP PluggableBuilderExtension.cpp
+                                   PluggableParameterizationExtension.cpp
+                                   PluggableFeatureExtension.cpp
                                    PluggableModalExtension.cpp
                                    PluggableModelessExtension.cpp
-                                   PluggableWorkspaceExtension.cpp                                                                    
-
+                                   PluggableWorkspaceExtension.cpp                                                                                                
                                   )
 
 FILE(GLOB OPENFLUID_BUILDEREXT_HPP FluidXUpdateFlags.hpp
-                                   BuilderExtensionSignature.hpp
-                                   PluggableBuilderExtension.hpp
+                                   BuilderExtensionSignature.hpp                                    
+                                   PluggableBuilderExtension.hpp 
+                                   PluggableParameterizationExtension.hpp PluggableFeatureExtension.hpp
                                    PluggableModalExtension.hpp
                                    PluggableModelessExtension.hpp
-                                   PluggableWorkspaceExtension.hpp                                                                
+                                   PluggableWorkspaceExtension.hpp                                   
                                   )
 
 

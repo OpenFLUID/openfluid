@@ -10,12 +10,8 @@
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 
 
-DECLARE_BUILDEREXT_PLUGIN
-
-
 // =====================================================================
 // =====================================================================
-
 
 
 class %%CLASSNAME%% : public openfluid::builderext::PluggableModelessExtension

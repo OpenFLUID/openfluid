@@ -11,23 +11,6 @@ SET(SIM_CPP %%ROOTCPPFILENAME%%)
 #SET(SIM_FORTRAN )
 
 
-# set this to ON to enable parameterization widget
-# ex: SET(SIM_PARAMSUI_ENABLED ON)
-SET(SIM_PARAMSUI_ENABLED %%PARAMSUIENABLED%%)
-
-# list of CPP files for parameterization widget, if any
-# ex: SET(SIM_PARAMSUI_CPP MyWidget.cpp)
-SET(SIM_PARAMSUI_CPP %%PARAMSUIROOTCPPFILENAME%%)
-
-# list of UI files for parameterization widget, if any
-# ex: SET(SIM_PARAMSUI_UI MyWidget.ui)
-SET(SIM_PARAMSUI_UI )
-
-# list of RC files for parameterization widget, if any
-# ex: SET(SIM_PARAMSUI_RC MyWidget.rc)
-SET(SIM_PARAMSUI_RC )
-
-
 # list of extra OpenFLUID libraries required
 # ex: SET(SIM_OPENFLUID_COMPONENTS tools)
 SET(SIM_OPENFLUID_COMPONENTS )
@@ -47,6 +30,26 @@ SET(SIM_OPENFLUID_COMPONENTS )
 # set this to add definitions
 # ex: SET(SIM_DEFINITIONS "-DDebug")
 #SET(SIM_DEFINITIONS )
+
+
+# unique ID for linking parameterization UI extension (if any)
+SET(WARE_LINK_UID "%%WARELINKUID%%")
+
+# set this to ON to enable parameterization widget
+# ex: SET(SIM_PARAMSUI_ENABLED ON)
+SET(SIM_PARAMSUI_ENABLED %%PARAMSUIENABLED%%)
+
+# list of CPP files for parameterization widget, if any
+# ex: SET(SIM_PARAMSUI_CPP MyWidget.cpp)
+SET(SIM_PARAMSUI_CPP %%PARAMSUIROOTCPPFILENAME%%)
+
+# list of UI files for parameterization widget, if any
+# ex: SET(SIM_PARAMSUI_UI MyWidget.ui)
+SET(SIM_PARAMSUI_UI )
+
+# list of RC files for parameterization widget, if any
+# ex: SET(SIM_PARAMSUI_RC MyWidget.rc)
+SET(SIM_PARAMSUI_RC )
 
 
 # set this to ON to enable translations

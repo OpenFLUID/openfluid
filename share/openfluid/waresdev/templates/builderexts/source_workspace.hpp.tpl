@@ -10,12 +10,8 @@
 #include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
 
 
-DECLARE_BUILDEREXT_PLUGIN
-
-
 // =====================================================================
 // =====================================================================
-
 
 
 class %%CLASSNAME%% : public openfluid::builderext::PluggableWorkspaceExtension

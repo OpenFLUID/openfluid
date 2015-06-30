@@ -137,13 +137,13 @@ bool WareSrcFactory::createCppFile(const Replacements& R, QString& NewFilePath, 
   QString TplFilename;
   switch (R.getBuilderExtType())
   {
-    case openfluid::builderext::TYPE_MODAL:
+    case openfluid::builderext::MODE_MODAL:
       TplFilename = "source_modal.cpp.tpl";
       break;
-    case openfluid::builderext::TYPE_MODELESS:
+    case openfluid::builderext::MODE_MODELESS:
       TplFilename = "source_modeless.cpp.tpl";
       break;
-    case openfluid::builderext::TYPE_WORKSPACE:
+    case openfluid::builderext::MODE_WORKSPACE:
       TplFilename = "source_workspace.cpp.tpl";
       break;
     default:
@@ -165,13 +165,13 @@ bool WareSrcFactory::createHppFile(const Replacements& R, QString& NewFilePath, 
   QString TplFilename;
   switch (R.getBuilderExtType())
   {
-    case openfluid::builderext::TYPE_MODAL:
+    case openfluid::builderext::MODE_MODAL:
       TplFilename = "source_modal.hpp.tpl";
       break;
-    case openfluid::builderext::TYPE_MODELESS:
+    case openfluid::builderext::MODE_MODELESS:
       TplFilename = "source_modeless.hpp.tpl";
       break;
-    case openfluid::builderext::TYPE_WORKSPACE:
+    case openfluid::builderext::MODE_WORKSPACE:
       TplFilename = "source_workspace.hpp.tpl";
       break;
     default:
@@ -263,6 +263,7 @@ bool WareSrcFactory::copyTemplateToNewFile(const QString& TemplatePath, const QS
 // =====================================================================
 // =====================================================================
 
+
 bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFilePath, QString& ErrMsg)
 {
   QFile File(NewFilePath);
@@ -277,6 +278,7 @@ bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFile
   File.close();
 
   Str.replace("%%WAREID%%", m_WareId);
+  Str.replace("%%WARELINKUID%%",R.LinkUID);
   Str.replace("%%CLASSNAME%%", R.ClassName);
   Str.replace("%%ROOTCPPFILENAME%%", R.RootCppFilename);
   Str.replace("%%ROOTHPPFILENAME%%", R.RootHppFilename);

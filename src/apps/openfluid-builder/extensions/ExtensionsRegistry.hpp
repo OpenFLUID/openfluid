@@ -52,15 +52,21 @@ class ExtensionsRegistry
 
     typedef std::map<openfluid::ware::WareID_t, ExtensionContainer*> ExtensionsByName_t;
 
+    typedef std::map<openfluid::machine::UUID_t, ExtensionContainer*> ExtensionsByLinkUID_t;
+
+
   private:
 
     static ExtensionsRegistry* mp_Instance;
 
     bool m_IsRegistered;
 
-    ExtensionsByName_t m_Extensions;
+    ExtensionsByName_t m_FeatureExtensions;
+
+    ExtensionsByLinkUID_t m_ParameterizationExtensions;
 
     ExtensionsRegistry();
+
 
   public:
 
@@ -71,23 +77,28 @@ class ExtensionsRegistry
 
     void registerExtensions();
 
-    ExtensionsByName_t* registeredExtensions()
-    { return &m_Extensions; };
+    ExtensionsByName_t* registeredFeatureExtensions()
+    { return &m_FeatureExtensions; };
 
-    openfluid::builderext::PluggableBuilderExtension* instanciateExtension(const openfluid::ware::WareID_t& ID);
+    openfluid::builderext::PluggableBuilderExtension* instanciateFeatureExtension(const openfluid::ware::WareID_t& ID);
 
-    void releaseExtension(const openfluid::ware::WareID_t& ID);
+    void releaseFeatureExtension(const openfluid::ware::WareID_t& ID);
 
-    void releaseExtension(openfluid::builderext::PluggableBuilderExtension* Ext);
+    void releaseFeatureExtension(openfluid::builderext::PluggableBuilderExtension* Ext);
 
-    void releaseAllExtensions();
+    void releaseAllFeatureExtensions();
 
-    bool isExtensionRegistered(const openfluid::ware::WareID_t& ID);
+    bool isFeatureExtensionRegistered(const openfluid::ware::WareID_t& ID);
 
-    bool isExtensionActive(const openfluid::ware::WareID_t& ID)
-    { return (isExtensionRegistered(ID) && m_Extensions[ID]->Active); }
+    bool isFeatureExtensionActive(const openfluid::ware::WareID_t& ID)
+    { return (isFeatureExtensionRegistered(ID) && m_FeatureExtensions[ID]->Active); }
 
-    openfluid::builderext::ExtensionType getExtensionType(const openfluid::ware::WareID_t& ID);
+    openfluid::builderext::PluggableBuilderExtension*
+      instanciateParameterizationExtension(const openfluid::machine::UUID_t& UUID);
+
+    bool isParameterizationExtensionRegistered(const openfluid::machine::UUID_t& UUID);
+
+    openfluid::builderext::ExtensionMode getExtensionMode(const openfluid::ware::WareID_t& ID);
 };
 
 

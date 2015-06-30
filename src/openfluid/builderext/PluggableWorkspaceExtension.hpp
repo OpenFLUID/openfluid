@@ -42,13 +42,13 @@
 
 #include <QWidget>
 
-#include <openfluid/builderext/PluggableBuilderExtension.hpp>
+#include <openfluid/builderext/PluggableFeatureExtension.hpp>
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace builderext {
 
-class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public PluggableBuilderExtension
+class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public PluggableFeatureExtension
 {
   Q_OBJECT;
 
@@ -69,7 +69,7 @@ class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public Pluggab
   public:
 
     PluggableWorkspaceExtension():
-      QWidget(NULL), PluggableBuilderExtension()
+      QWidget(NULL), PluggableFeatureExtension()
     { }
 
 

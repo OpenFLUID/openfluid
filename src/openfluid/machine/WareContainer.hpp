@@ -30,49 +30,47 @@
 */
 
 /**
-  @file ParamsWidget.hpp
+  @file WareContainer.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
 
-#ifndef __PARAMSWIDGET_HPP__
-#define __PARAMSWIDGET_HPP__
+#ifndef __OPENFLUID_MACHINE_WARECONTAINER_HPP__
+#define __OPENFLUID_MACHINE_WARECONTAINER_HPP__
 
 
-#include <openfluid/ui/ware/ParameterizationWidget.hpp>
+#include <string>
+#include <openfluid/dllexport.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
 
 
-namespace Ui
+namespace openfluid { namespace machine {
+
+
+typedef std::string UUID_t;
+
+
+class OPENFLUID_API WareContainer
 {
-  class ParamsWidget;
-}
-
-
-class ParamsWidget: public openfluid::ui::ware::ParameterizationWidget
-{
-  Q_OBJECT;
-
-  private:
-
-    Ui::ParamsWidget* ui;
-
-
-  private slots:
-
-    void resetParams();
-
-
   public:
 
-    ParamsWidget();
+    std::string FileFullPath;
 
-    ~ParamsWidget();
+    bool Verified;
 
-    void update();
+    UUID_t LinkUID;
+
+
+    WareContainer() :
+      FileFullPath(""),Verified(false), LinkUID("")
+    {  }
 
 };
 
 
-#endif /* __PARAMSWIDGET_HPP__ */
+} }  // namespaces
+
+
+#endif /* __OPENFLUID_MACHINE_WARECONTAINER_HPP__ */

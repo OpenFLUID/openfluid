@@ -45,6 +45,7 @@
 
 #include <QPushButton>
 #include <QMessageBox>
+#include <QUuid>
 
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
@@ -246,6 +247,8 @@ void NewWareDialog::accept()
                      "  DECLARE_VERSION(\"\")\n"
                      "  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL)\n";
 
+  R.LinkUID = QUuid::createUuid();
+
   if (m_WareType == openfluid::waresdev::WareSrcManager::SIMULATOR)
   {
     R.Sim2docModeIndex = ui->Sim2doc_comboBox->currentIndex();
@@ -268,7 +271,7 @@ void NewWareDialog::accept()
   }
   else if (m_WareType == openfluid::waresdev::WareSrcManager::BUILDEREXT)
   {
-    R.BuilderExtTypeIndex = ui->BextType_comboBox->currentIndex();
+    R.BuilderExtModeIndex = ui->BextType_comboBox->currentIndex();
     R.BuilderExtCategoryIndex = ui->BextCategory_comboBox->currentIndex();
     R.BuilderExtMenuText = ui->BextMenutext_lineEdit->text();
     WithHpp = true;

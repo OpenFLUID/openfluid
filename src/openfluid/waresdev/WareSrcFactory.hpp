@@ -63,7 +63,7 @@ class OPENFLUID_API WareSrcFactory
     {
       private:
 
-        QList<openfluid::builderext::ExtensionType> BextType_Data;
+        QList<openfluid::builderext::ExtensionMode> BextMode_Data;
         QStringList BextCategory_Data;
         QStringList Sim2docMode_Data;
 
@@ -73,6 +73,7 @@ class OPENFLUID_API WareSrcFactory
         QString RootCppFilename;
         QString RootHppFilename;
         QString HppHeaderGuard;
+        QString LinkUID;
         bool ParamsUiEnabled;
         QString ParamsUiClassname;
         QString ParamsUiRootCppFilename;
@@ -86,7 +87,7 @@ class OPENFLUID_API WareSrcFactory
         QString SimulatorInitCode;
         QString SimulatorRunCode;
         QString SimulatorSchedulingReturn;
-        int BuilderExtTypeIndex;
+        int BuilderExtModeIndex;
         int BuilderExtCategoryIndex;
         QString BuilderExtMenuText;
 
@@ -94,10 +95,10 @@ class OPENFLUID_API WareSrcFactory
         Replacements() :
             ParamsUiEnabled(false), ParamsUiClassname("ParamsUiWidget"), ParamsUiRootCppFilename(""),
             ParamsUiRootHppFilename("ParamsUiWidget.hpp"), ParamsUiComment("//"), Sim2docModeIndex(0),
-            Sim2docInstall(false), BuilderExtTypeIndex(-1), BuilderExtCategoryIndex(0)
+            Sim2docInstall(false), BuilderExtModeIndex(-1), BuilderExtCategoryIndex(0)
         {
-          BextType_Data << openfluid::builderext::TYPE_MODAL << openfluid::builderext::TYPE_MODELESS
-                        << openfluid::builderext::TYPE_WORKSPACE;
+          BextMode_Data << openfluid::builderext::MODE_MODAL << openfluid::builderext::MODE_MODELESS
+                        << openfluid::builderext::MODE_WORKSPACE;
 
           BextCategory_Data << "openfluid::builderext::CAT_SPATIAL" << "openfluid::builderext::CAT_MODEL"
                             << "openfluid::builderext::CAT_RESULTS" << "openfluid::builderext::CAT_OTHER";
@@ -107,9 +108,9 @@ class OPENFLUID_API WareSrcFactory
 
         static QStringList getBuilderExtTypeTexts()
         {
-          QStringList BextType_Texts;
-          BextType_Texts << QObject::tr("Modal") << QObject::tr("Modeless") << QObject::tr("Workspace");
-          return BextType_Texts;
+          QStringList BextMode_Texts;
+          BextMode_Texts << QObject::tr("Modal") << QObject::tr("Modeless") << QObject::tr("Workspace");
+          return BextMode_Texts;
         }
 
         static QStringList getBuilderExtCategoryTexts()
@@ -129,9 +130,9 @@ class OPENFLUID_API WareSrcFactory
           return Sim2docMode_Texts;
         }
 
-        openfluid::builderext::ExtensionType getBuilderExtType() const
+        openfluid::builderext::ExtensionMode getBuilderExtType() const
         {
-          return BextType_Data.value(BuilderExtTypeIndex, openfluid::builderext::TYPE_UNKNOWN);
+          return BextMode_Data.value(BuilderExtModeIndex, openfluid::builderext::MODE_UNKNOWN);
         }
 
         QString getBuilderExtCategory() const

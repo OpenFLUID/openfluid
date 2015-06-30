@@ -11,23 +11,6 @@ SET(OBS_CPP %%ROOTCPPFILENAME%%)
 #SET(OBS_FORTRAN )
 
 
-# set this to ON to enable parameterization widget
-# ex: SET(OBS_PARAMSUI_ENABLED ON)
-SET(OBS_PARAMSUI_ENABLED %%PARAMSUIENABLED%%)
-
-# list of CPP files for parameterization widget, if any
-# ex: SET(OBS_PARAMSUI_CPP MyWidget.cpp)
-SET(OBS_PARAMSUI_CPP %%PARAMSUIROOTCPPFILENAME%%)
-
-# list of UI files for parameterization widget, if any
-# ex: SET(OBS_PARAMSUI_UI MyWidget.ui)
-SET(OBS_PARAMSUI_UI )
-
-# list of RC files for parameterization widget, if any
-# ex: SET(OBS_PARAMSUI_RC MyWidget.rc)
-SET(OBS_PARAMSUI_RC )
-
-
 # list of extra OpenFLUID libraries required
 # ex: SET(OBS_OPENFLUID_COMPONENTS tools)
 SET(OBS_OPENFLUID_COMPONENTS )
@@ -47,6 +30,26 @@ SET(OBS_OPENFLUID_COMPONENTS )
 # set this to add definitions
 # ex: SET(OBS_DEFINITIONS "-DDebug")
 #SET(OBS_DEFINITIONS )
+
+
+# unique ID for linking parameterization UI extension (if any)
+SET(WARE_LINK_UID "%%WARELINKUID%%")
+
+# set this to ON to enable parameterization widget
+# ex: SET(OBS_PARAMSUI_ENABLED ON)
+SET(OBS_PARAMSUI_ENABLED %%PARAMSUIENABLED%%)
+
+# list of CPP files for parameterization widget, if any
+# ex: SET(OBS_PARAMSUI_CPP MyWidget.cpp)
+SET(OBS_PARAMSUI_CPP %%PARAMSUIROOTCPPFILENAME%%)
+
+# list of UI files for parameterization widget, if any
+# ex: SET(OBS_PARAMSUI_UI MyWidget.ui)
+SET(OBS_PARAMSUI_UI )
+
+# list of RC files for parameterization widget, if any
+# ex: SET(OBS_PARAMSUI_RC MyWidget.rc)
+SET(OBS_PARAMSUI_RC )
 
 
 # set this to ON to enable translations

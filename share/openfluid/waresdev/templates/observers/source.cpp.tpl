@@ -104,16 +104,8 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableObserver
 DEFINE_OBSERVER_CLASS(%%CLASSNAME%%)
 
 
-// =====================================================================
-// =====================================================================
+DEFINE_WARE_LINKUID(WARE_LINKUID)
 
 
-#ifdef OPENFLUID_PARAMSUI_ENABLED
-
-%%PARAMSUICOMMENT%%#include "%%PARAMSUIROOTHPPFILENAME%%"
-
-%%PARAMSUICOMMENT%%DEFINE_PARAMETERIZATIONWIDGET_CLASS(%%PARAMSUICLASSNAME%%)
-
-#endif
 
 

@@ -47,72 +47,15 @@
 
 #include <QString>
 
-/**
-  Macro for the beginning of definition of signature hook
-*/
-#define BEGIN_BUILDEREXT_SIGNATURE(id,exttype) \
-  extern "C" { \
-  OPENFLUID_PLUGIN openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL() \
-    { \
-      openfluid::builderext::BuilderExtensionSignature* Signature =\
-        new openfluid::builderext::BuilderExtensionSignature(); \
-      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
-      Signature->ID = (id); \
-      Signature->Type = (exttype);
-
-
-/**
-  Macro for the end of definition of signature hook
-*/
-#define END_BUILDEREXT_SIGNATURE \
-      return Signature; \
-    } \
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-  Macro for declaration of a Builder extension configuration parameter
-  @param[in] name name of the parameter
-  @param[in] description description of the parameter
-*/
-#define DECLARE_CONFIGURATION_PARAMETER(name,description) \
-  Signature->ConfigParameters[(name)] = (description);
-
-/**
-  @deprecated Since version 2.1.0. Use #DECLARE_CONFIGURATION_PARAMETER instead
-*/
-#define DECLARE_CONFIGURATION_PARAM(name,description) DECLARE_CONFIGURATION_PARAMETER(name,description)
-
-
-/**
-  Macro for declaration of the Builder extension category
-*/
-#define DECLARE_CATEGORY(category) Signature->Category = (category);
-
-
-/**
-  Macro for declaration of the Builder extension menu text
-*/
-#define DECLARE_MENUTEXT(menutext) Signature->MenuText = (menutext);
-
-
-// =====================================================================
-// =====================================================================
-
-
-#include <QString>
-
 
 namespace openfluid { namespace builderext {
 
 
 enum ExtensionCategory { CAT_SPATIAL, CAT_MODEL, CAT_RESULTS, CAT_OTHER };
 
-enum ExtensionType { TYPE_UNKNOWN, TYPE_MODAL, TYPE_MODELESS, TYPE_WORKSPACE};
+enum ExtensionType { TYPE_UNKNOWN, TYPE_FEATURE, TYPE_PARAMETERIZATION};
+
+enum ExtensionMode { MODE_UNKNOWN, MODE_MODAL, MODE_MODELESS, MODE_WORKSPACE};
 
 
 class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSignature
@@ -120,6 +63,8 @@ class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSign
   public:
 
     ExtensionCategory Category;
+
+    ExtensionMode Mode;
 
     ExtensionType Type;
 
@@ -129,7 +74,7 @@ class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSign
 
 
     BuilderExtensionSignature():
-      Category(CAT_OTHER), Type(TYPE_UNKNOWN)
+      Category(CAT_OTHER), Mode(MODE_UNKNOWN), Type(TYPE_UNKNOWN)
     {  };
 
 };

@@ -37,12 +37,14 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include "NewSrcFileAssistant.hpp"
 #include "ui_NewSrcFileAssistant.h"
 #include "ui_CppPage.h"
 #include "ui_CMakeConfigPage.h"
 
 #include <QMessageBox>
+#include <QUuid>
 
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/config.hpp>
@@ -477,7 +479,7 @@ void NewSrcFileAssistant::accept()
           if (IsBuilderExt)
           {
             R.RootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.RootCppFilename);
-            R.BuilderExtTypeIndex = field("BextType").toInt();
+            R.BuilderExtModeIndex = field("BextType").toInt();
             R.BuilderExtCategoryIndex = field("BextCategory").toInt();
             R.BuilderExtMenuText = field("BextMenutext").toString();
           }
@@ -491,7 +493,7 @@ void NewSrcFileAssistant::accept()
           R.RootHppFilename = field("SourceFilename").toString();
           if (IsBuilderExt)
           {
-            R.BuilderExtTypeIndex = field("BextType").toInt();
+            R.BuilderExtModeIndex = field("BextType").toInt();
             R.HppHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.RootHppFilename);
           }
 
@@ -522,6 +524,7 @@ void NewSrcFileAssistant::accept()
     {
       openfluid::waresdev::WareSrcFactory::Replacements R;
       R.RootCppFilename = field("RootFilename").toString();
+      R.LinkUID = QUuid::createUuid();
       R.Sim2docModeIndex = field("Sim2docMode").toInt();
       R.Sim2docInstall = field("Sim2docInstall").toBool();
 

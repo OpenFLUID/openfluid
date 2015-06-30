@@ -45,7 +45,7 @@
 #include <QWidget>
 
 #include <openfluid/ware/WareSignature.hpp>
-#include <openfluid/ui/ware/ParameterizationWidget.hpp>
+#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
 #include <openfluid/ui/common/ActionLabel.hpp>
 
 #include "SignatureWidget.hpp"
@@ -102,7 +102,7 @@ class WareWidget : public QWidget
 
     bool m_ParamsExpanded;
 
-    openfluid::ui::ware::ParameterizationWidget* mp_ParamsWidget;
+    openfluid::builderext::PluggableParameterizationExtension* mp_ParamsWidget;
 
 
     virtual void setAvailableWare(bool Available);

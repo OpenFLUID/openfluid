@@ -45,7 +45,7 @@
 
 
 
-CMakeSimParamsWidget::CMakeSimParamsWidget(): openfluid::ui::ware::ParameterizationWidget()
+CMakeSimParamsWidget::CMakeSimParamsWidget(): openfluid::builderext::PluggableParameterizationExtension()
 {
   QVBoxLayout* Layout = new QVBoxLayout;
 
