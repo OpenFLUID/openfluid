@@ -70,7 +70,7 @@ class OPENFLUID_API Tree
     bool m_HasValue;
 
 
-    std::string keyToStr(const K& Key)
+    std::string keyToStr(const K& Key) const
     {
       std::ostringstream oss;
 

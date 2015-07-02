@@ -158,7 +158,8 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   BOOST_CHECK(!CppUiFileContent.contains("%%"));
   BOOST_CHECK(CppUiFileContent.contains("file MyWidget.cpp"));
   BOOST_CHECK(CppUiFileContent.contains("#include \"MyWidget.hpp\""));
-  BOOST_CHECK(CppUiFileContent.contains("MyWidget::MyWidget() : openfluid::builderext::PluggableParameterizationExtension()"));
+  BOOST_CHECK(CppUiFileContent
+                .contains("MyWidget::MyWidget() : openfluid::builderext::PluggableParameterizationExtension()"));
   CppUiResult.close();
 
   BOOST_CHECK_EQUAL(Factory.createParamUiHppFile(R, NewFilePath, ErrMsg), true);
@@ -168,7 +169,8 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   BOOST_CHECK(!HppUiFileContent.contains("%%"));
   BOOST_CHECK(HppUiFileContent.contains("file MyWidget.hpp"));
   BOOST_CHECK(HppUiFileContent.contains("#ifndef __MYWIDGET_HPP__"));
-  BOOST_CHECK(HppUiFileContent.contains("class MyWidget: public openfluid::builderext::PluggableParameterizationExtension"));
+  BOOST_CHECK(HppUiFileContent
+                .contains("class MyWidget: public openfluid::builderext::PluggableParameterizationExtension"));
   HppUiResult.close();
 
   openfluid::tools::Filesystem::removeDirectory(WareTypePath.toStdString());

@@ -1,0 +1,3 @@
+SET(OBS_INSTALL_ENABLED ON)
+
+SET(OBS_EXTRA_LINKS openfluid-utils)
