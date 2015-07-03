@@ -95,7 +95,7 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
   mp_MainWidget(NULL), mp_DashboardFrame(NULL),
   m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
 {
-  mp_ProjectCentral = new ProjectCentral(ProjectPath);
+  mp_ProjectCentral = ProjectCentral::initInstance(ProjectPath);
 
 
   // watcher for simulators, with delay for ui update using timer
@@ -145,7 +145,7 @@ ProjectModule::~ProjectModule()
 {
   ExtensionsRegistry::instance()->releaseAllFeatureExtensions();
 
-  delete mp_ProjectCentral;
+  ProjectCentral::resetInstance();
   mp_SimulatorsPlugsWatcher->deleteLater();
   mp_ObserversPlugsWatcher->deleteLater();
   mp_InputDirWatcher->deleteLater();

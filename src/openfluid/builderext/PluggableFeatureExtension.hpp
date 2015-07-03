@@ -121,7 +121,7 @@ class PluggableFeatureExtension : public PluggableBuilderExtension
 
   public:
 
-    PluggableFeatureExtension() : PluggableBuilderExtension()
+    PluggableFeatureExtension() : PluggableBuilderExtension(), mp_AdvancedDesc(nullptr)
     {  }
 
 

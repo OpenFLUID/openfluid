@@ -52,8 +52,10 @@
 #include "AppTools.hpp"
 
 
+ProjectCentral* ProjectCentral::mp_Instance = nullptr;
 
-ProjectCentral::ProjectCentral(QString PrjPath):
+
+ProjectCentral::ProjectCentral(const QString& PrjPath):
   mp_FXDesc(NULL),mp_AdvancedFXDesc(NULL)
 {
   openfluid::base::RuntimeEnvironment::instance()->linkToProject();
@@ -100,6 +102,49 @@ ProjectCentral::ProjectCentral(QString PrjPath):
 ProjectCentral::~ProjectCentral()
 {
   deleteData();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ProjectCentral* ProjectCentral::initInstance(const QString& PrjPath)
+{
+  if (!mp_Instance)
+    mp_Instance = new ProjectCentral(PrjPath);
+
+  return mp_Instance;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCentral::resetInstance()
+{
+  if (mp_Instance)
+    delete mp_Instance;
+
+  mp_Instance = nullptr;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ProjectCentral* ProjectCentral::instance()
+{
+  if (!mp_Instance)
+  {
+    openfluid::base::ExceptionContext Context =
+        openfluid::base::ApplicationException::computeContext("openfluid-builder",
+                                                              OPENFLUID_CODE_LOCATION);
+    throw openfluid::base::ApplicationException(Context,"Required ProjectCentral instance is null");
+  }
+  return mp_Instance;
 }
 
 

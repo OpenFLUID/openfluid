@@ -42,15 +42,15 @@
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 
-#include "builderconfig.hpp"
-
 #include "ui_WareWidget.h"
 #include "ObserverWidget.hpp"
 #include "ParameterWidget.hpp"
 #include "AddParamDialog.hpp"
 
-#include "WaresTranslationsRegistry.hpp"
+#include "builderconfig.hpp"
+#include "ProjectCentral.hpp"
 #include "ExtensionsRegistry.hpp"
+#include "WaresTranslationsRegistry.hpp"
 
 
 ObserverWidget::ObserverWidget(QWidget* Parent,
@@ -109,6 +109,7 @@ void ObserverWidget::refresh()
           ExtensionsRegistry::instance()->instanciateParameterizationExtension(Signature->LinkUID));
       mp_ParamsWidget->setParent(this);
       mp_ParamsWidget->linkParams(&(mp_Desc->parameters()));
+      mp_ParamsWidget->setFluidXDescriptor(&(ProjectCentral::instance()->advancedDescriptors()));
 
       connect(mp_ParamsWidget,SIGNAL(changed()),this,SLOT(notifyChangedFromParameterizationWidget()));
 

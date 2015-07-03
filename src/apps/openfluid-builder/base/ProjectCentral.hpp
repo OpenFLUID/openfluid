@@ -49,14 +49,13 @@
 #include "ProjectCheckInfos.hpp"
 
 
-
-
-
 class ProjectCentral : QObject
 {
   Q_OBJECT;
 
   private:
+
+    static ProjectCentral* mp_Instance;
 
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
@@ -98,28 +97,35 @@ class ProjectCentral : QObject
         const std::vector<openfluid::ware::SignatureUnitsClassItem>& UnitsClassesVector);
 
 
+    ProjectCentral(const QString& PrjPath = "");
+
+
   public:
 
-    ProjectCentral(QString PrjPath = "");
+    static ProjectCentral* initInstance(const QString& PrjPath = "");
 
-   ~ProjectCentral();
+    static void resetInstance();
 
-   void run();
+    static ProjectCentral* instance();
 
-   void check();
+    ~ProjectCentral();
 
-   bool save();
+    void run();
 
-   bool saveAs(const QString& NewPrjName, const QString& NewPrjPath);
+    void check();
 
-   const ProjectCheckInfos* checkInfos() const
-   {  return &m_CheckInfos; }
+    bool save();
 
-   openfluid::fluidx::AdvancedFluidXDescriptor& advancedDescriptors()
-   { return *mp_AdvancedFXDesc; }
+    bool saveAs(const QString& NewPrjName, const QString& NewPrjPath);
 
-   const openfluid::fluidx::AdvancedFluidXDescriptor& advancedDescriptors() const
-   { return *mp_AdvancedFXDesc; }
+    const ProjectCheckInfos* checkInfos() const
+    {  return &m_CheckInfos; }
+
+    openfluid::fluidx::AdvancedFluidXDescriptor& advancedDescriptors()
+    { return *mp_AdvancedFXDesc; }
+
+    const openfluid::fluidx::AdvancedFluidXDescriptor& advancedDescriptors() const
+    { return *mp_AdvancedFXDesc; }
 
 };
 
