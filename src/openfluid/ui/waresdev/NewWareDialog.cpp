@@ -247,7 +247,7 @@ void NewWareDialog::accept()
                      "  DECLARE_VERSION(\"\")\n"
                      "  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL)\n";
 
-  R.LinkUID = QUuid::createUuid();
+  R.LinkUID = QUuid::createUuid().toString();
 
   if (m_WareType == openfluid::waresdev::WareSrcManager::SIMULATOR)
   {

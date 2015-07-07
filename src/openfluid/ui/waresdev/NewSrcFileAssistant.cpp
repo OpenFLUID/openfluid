@@ -524,7 +524,7 @@ void NewSrcFileAssistant::accept()
     {
       openfluid::waresdev::WareSrcFactory::Replacements R;
       R.RootCppFilename = field("RootFilename").toString();
-      R.LinkUID = QUuid::createUuid();
+      R.LinkUID = QUuid::createUuid().toString();
       R.Sim2docModeIndex = field("Sim2docMode").toInt();
       R.Sim2docInstall = field("Sim2docInstall").toBool();
 
