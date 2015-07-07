@@ -4,7 +4,7 @@
 	<model>
 		<gparams>
 			<param name="gparam1" value="100" />
-			<param name="gparam2" value="seventeen" />
+			<param name="gparam2" value="" />
 			<param name="gparam3" value="0.1" />
 		</gparams>
 

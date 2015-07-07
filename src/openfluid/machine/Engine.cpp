@@ -294,17 +294,37 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 
 void Engine::checkParametersConsistency()
 {
-
   for (ModelItemInstance* IInstance : m_ModelInstance.items())
   {
     for (openfluid::ware::SignatureDataItem Param : IInstance->Signature->HandledData.RequiredParams)
     {
+      bool FoundParam = false;
+      bool FilledParam = false;
+
+      // searching for parameter in local parameters
       auto it = IInstance->Params.find(Param.DataName);
-      if (it == IInstance->Params.end())
+      if (it != IInstance->Params.end())
+      {
+        FoundParam = true;
+        FilledParam = (*it).second.size() > 0;
+      }
+      else
+      {
+        // searching for parameter in global parameters
+        auto git = m_ModelInstance.globalParameters().find(Param.DataName);
+        if (git != m_ModelInstance.globalParameters().end())
+        {
+          FoundParam = true;
+          FilledParam = (*git).second.size() > 0;
+        }
+      }
+
+
+      if (!FoundParam)
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Cannot find parameter " + Param.DataName +
                                                   " required by " + IInstance->Signature->ID);
-      else if ((*it).second.size() == 0)
+      else if (!FilledParam)
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Parameter " + Param.DataName +
                                                   " required by " + IInstance->Signature->ID + " is empty");
@@ -504,6 +524,7 @@ void Engine::initParams()
   try
   {
     mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::INITPARAMS);
+    checkParametersConsistency();
     m_ModelInstance.call_initParams();
     m_MonitoringInstance.call_initParams();
   }
@@ -565,8 +586,6 @@ void Engine::checkConsistency()
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator in model");
 
     checkExtraFilesConsistency();
-
-    checkParametersConsistency();
 
     checkModelConsistency();
 
