@@ -30,43 +30,60 @@
 */
 
 /**
-  @file config.hpp
- 
+  @file EditSetDialog.hpp
+
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
 
-#ifndef __OPENFLUID_UI_CONFIG_HPP__
-#define __OPENFLUID_UI_CONFIG_HPP__
+#ifndef __EDITSETDIALOG_HPP__
+#define __EDITSETDIALOG_HPP__
 
 
-#include <QString>
+#include <QDialog>
+#include <QStringList>
+
+#include <openfluid/ware/TypeDefs.hpp>
 
 
-namespace openfluid { namespace ui { namespace config {
+namespace Ui
+{
+  class EditSetDialog;
+}
 
 
-const QString LICENSE_TEXT = "@UI_LICENSE_TEXT@";
-const QString AUTHORS_TEXT = "@UI_AUTHORS_TEXT@";
-
-const QString DIALOGBANNER_BGCOLOR = "#384A61";
-const QString DIALOGBANNER_WARNBGCOLOR = "#F59122";
-
-const QString TOOLBAR_BGCOLOR = "#2C3A4C";
-const QString TOOLBARBUTTON_BGCOLOR = "#3B4E66";
-const QString TOOLBARBUTTON_BORDERCOLOR = "#4B4B4B";
-
-const QString TOOLTIP_BGCOLOR = "#2C3A4C";
-const QString TOOLTIP_BORDERCOLOR = "#676767";
-
-const QString PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::config","required");
-
-const QString LINEMARKER_ERRCOLOR = "#FFA3A3";
-const QString LINEMARKER_WARNCOLOR = "#FFD6A3";
+class EditSetDialog: public QDialog
+{
+  Q_OBJECT;
 
 
-} } } // namespaces
+  private slots:
+
+    void checkGlobal();
 
 
-#endif /* __OPENFLUID_UI_CONFIG_HPP__ */
+  private:
+
+    Ui::EditSetDialog* ui;
+
+    QStringList m_ExistingSetsNames;
+
+
+  public:
+
+    EditSetDialog(const QStringList& SetNames, const QStringList& FormatNames, const QStringList& ClassNames,
+                 QWidget* Parent = NULL);
+
+    ~EditSetDialog();
+
+    void initialize(const QString& Name, const QString& Format,
+                    const QString& UnitsClass, const QString& UnitsIDs,
+                    const QString& Vars);
+
+    openfluid::ware::WareParams_t getSetParams();
+
+};
+
+
+#endif /* __EDITSETDIALOG_HPP__ */

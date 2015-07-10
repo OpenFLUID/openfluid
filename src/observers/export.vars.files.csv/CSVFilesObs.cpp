@@ -41,11 +41,11 @@
 #include <chrono>
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include <iomanip>
 
+#include "CSVObsTools.hpp"
+
 #include <openfluid/ware/PluggableObserver.hpp>
-#include <openfluid/ware/WareParamsTree.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
@@ -53,36 +53,6 @@
 // =====================================================================
 // =====================================================================
 
-
-class CSVFormat
-{
-  public:
-
-    enum HeaderType { None, Info, ColnamesAsData, ColnamesAsComment, Full };
-
-    HeaderType Header;
-
-    std::string ColSeparator;
-
-    std::string DateFormat;
-
-    std::string CommentChar;
-
-    unsigned int Precision;
-
-    bool IsTimeIndexDateFormat;
-
-    CSVFormat():
-      Header(Info), ColSeparator("\t"), DateFormat("%Y%m%dT%H%M%S"),
-      CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false)
-    { };
-
-
-};
-
-
-// =====================================================================
-// =====================================================================
 
 class CSVFile
 {
@@ -108,34 +78,23 @@ class CSVFile
 };
 
 
-
 // =====================================================================
 // =====================================================================
 
 
-class CSVSet
+class CSVSetFiles
 {
   public:
 
     typedef std::list<CSVFile*> CSVFilePtrList_t;
 
-    openfluid::core::UnitsClass_t UnitsClass;
-
-    std::string UnitsIDsStr;
-
-    bool isAllUnits;
-
     CSVFilePtrList_t Files;
-
-    std::string VariablesStr;
-
-    bool isAllVars;
-
-    //std::list<openfluid::core::VariableName_t> Variables;
 
     CSVFormat* Format;
 
-    CSVSet() : UnitsClass(""), UnitsIDsStr(""), isAllUnits(false), VariablesStr(""), isAllVars(false), Format(NULL)
+    CSVSet SetDefinition;
+
+    CSVSetFiles() : Format(NULL)
     { };
 };
 
@@ -179,13 +138,11 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 {
   private:
 
-    typedef std::map<std::string, CSVFormat> FormatMap_t;
-
-    typedef std::map<std::string, CSVSet> SetMap_t;
+    typedef std::map<std::string, CSVSetFiles> SetFilesMap_t;
 
     FormatMap_t m_Formats;
 
-    SetMap_t m_Sets;
+    SetFilesMap_t m_SetsFiles;
 
     std::string m_OutputDir;
 
@@ -193,23 +150,11 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
     std::string m_OutFileExt;
 
-    std::string buildFilename(const std::string& SetName,
-                              const openfluid::core::UnitsClass_t& UnitsClass,
-                              const openfluid::core::UnitID_t& UnitID,
-                              const openfluid::core::VariableName_t& Varname)
-    {
-      std::ostringstream oss;
-
-      oss << m_OutputDir << "/" << SetName << "_" << UnitsClass << UnitID << "_" << Varname << "." << m_OutFileExt;
-
-      return oss.str();
-    }
-
 
   public:
 
     CSVFilesObserver() : PluggableObserver(),
-    m_OutputDir(""),m_BufferSize(2*1024),m_OutFileExt("csv")
+    m_OutputDir(""),m_BufferSize(2*1024),m_OutFileExt(CSV_FILES_EXT)
     {
 
     }
@@ -222,39 +167,6 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
     ~CSVFilesObserver()
     {
       onFinalizedRun();
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-    static CSVFormat::HeaderType StrToHeaderType(const std::string& HeaderStr)
-    {
-      if (HeaderStr == "none")
-        return CSVFormat::None;
-      else if (HeaderStr == "colnames-as-data")
-        return CSVFormat::ColnamesAsData;
-      else if (HeaderStr == "colnames-as-comment")
-              return CSVFormat::ColnamesAsComment;
-      else if (HeaderStr == "full")
-        return CSVFormat::Full;
-      else
-        return CSVFormat::Info;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    static std::string StrToDateFormat(const std::string& FormatStr)
-    {
-      if (FormatStr == "ISO")
-        return "%Y%m%dT%H%M%S";
-      else if (FormatStr == "6cols")
-        return "%Y\t%m\t%d\t%H\t%M\t%S";
-      else
-        return FormatStr;
     }
 
 
@@ -275,63 +187,39 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
         OPENFLUID_RaiseError(E.getMessage());
       }
 
-      if (!ParamsTree.root().hasChild("format"))
-        OPENFLUID_RaiseError("No format defined");
 
-      if (!ParamsTree.root().hasChild("set"))
-        OPENFLUID_RaiseError("No set defined");
+      std::vector<std::string> ParsingMsgs = parseFormatsFromParamsTree(ParamsTree,m_Formats);
+      for (auto Msg: ParsingMsgs)
+        OPENFLUID_LogWarning(Msg);
 
-      try
+      SetMap_t TmpSetMap;
+      ParsingMsgs = parseSetsFromParamsTree(ParamsTree,TmpSetMap);
+      for (auto Msg: ParsingMsgs)
+        OPENFLUID_LogWarning(Msg);
+
+      for (auto& Format : m_Formats)
+        Format.second.DateFormat = StrToDateFormat(Format.second.DateFormat);
+
+
+      for (auto& Set : TmpSetMap)
       {
-        for (auto& Format : ParamsTree.root().child("format"))
-        {
-          std::string FormatName = Format.first;
+        m_SetsFiles[Set.first].SetDefinition = Set.second;
 
-          m_Formats[FormatName].ColSeparator = Format.second.getChildValue("colsep","\t");
-          long Precision;
-          Format.second.getChildValue("precision",5).toInteger(Precision);
-          m_Formats[FormatName].Precision = Precision;
-          m_Formats[FormatName].DateFormat =
-              StrToDateFormat(Format.second.getChildValue("date","ISO").get());
-          m_Formats[FormatName].IsTimeIndexDateFormat = (m_Formats[FormatName].DateFormat == "timeindex");
-          m_Formats[FormatName].CommentChar = Format.second.getChildValue("commentchar","#");
-          m_Formats[FormatName].Header = StrToHeaderType(Format.second.getChildValue("header","").get());
-        }
+        // check units class is defined
+        if (m_SetsFiles[Set.first].SetDefinition.UnitsClass.empty())
+          OPENFLUID_RaiseError("Units class for " + Set.first + " is undefined");
 
-        for (auto& Set : ParamsTree.root().child("set"))
-        {
-          std::string SetName = Set.first;
-          m_Sets[SetName].UnitsClass = Set.second.getChildValue("unitsclass","");
-          if (m_Sets[SetName].UnitsClass == "")
-          {
-            // search for deprecated "unitclass" parameter
-            m_Sets[SetName].UnitsClass = Set.second.getChildValue("unitclass","");
-            if (m_Sets[SetName].UnitsClass == "")
-              OPENFLUID_RaiseError("Unit class of set "+SetName+" is undefined");
-            else
-              OPENFLUID_LogWarning("Usage of set.<setname>.unitclass parameter is deprecated."
-                                   "Use set.<setname>.unitsclass instead");
-          }
-
-          m_Sets[SetName].UnitsIDsStr = Set.second.getChildValue("unitsIDs","*");
-          m_Sets[SetName].VariablesStr = Set.second.getChildValue("vars","*");
-
-          std::string FormatName = Set.second.getChildValue("format","");
-          if (m_Formats.find(FormatName) == m_Formats.end())
-            OPENFLUID_RaiseError("Format "+FormatName+" used by "+ SetName+" is undefined");
-          else
-            m_Sets[SetName].Format = &(m_Formats[FormatName]);
-        }
-
-        long BufferSize;
-        ParamsTree.getValueUsingFullKey("general.buffersize","2").toInteger(BufferSize);
-        m_BufferSize = BufferSize * 1024;
-
+        // check format is defined
+        std::string FormatName = m_SetsFiles[Set.first].SetDefinition.FormatName;
+        if (m_Formats.find(FormatName) == m_Formats.end())
+          OPENFLUID_RaiseError("Format "+FormatName+" used by "+ Set.first +" is undefined");
+        else
+          m_SetsFiles[Set.first].Format = &(m_Formats[FormatName]);
       }
-      catch (openfluid::base::FrameworkException& E)
-      {
-        OPENFLUID_RaiseError(E.getMessage());
-      }
+
+      long BufferSize;
+      ParamsTree.getValueUsingFullKey("general.buffersize","2").toInteger(BufferSize);
+      m_BufferSize = BufferSize * 1024;
 
     }
 
@@ -344,26 +232,22 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
     {
       OPENFLUID_GetRunEnvironment("dir.output",m_OutputDir);
 
-      SetMap_t::iterator SetItE = m_Sets.end();
-      SetMap_t::iterator SetItB = m_Sets.begin();
-      SetMap_t::iterator SetIt;
-
       openfluid::core::SpatialUnit* TmpU;
 
-      for (SetIt=SetItB;SetIt!=SetItE;++SetIt)
+      for (auto& SetFiles : m_SetsFiles)
       {
 
-        if (OPENFLUID_IsUnitsClassExist((*SetIt).second.UnitsClass))
+        if (OPENFLUID_IsUnitsClassExist(SetFiles.second.SetDefinition.UnitsClass))
         {
 
           std::vector<openfluid::core::VariableName_t> VarArray;
           VarArray.clear();
 
-          if ((*SetIt).second.VariablesStr == "*")
+          if (SetFiles.second.SetDefinition.VariablesStr == "*")
           {
             // process all variables
             VarArray =
-                mp_SpatialData->spatialUnits((*SetIt).second.UnitsClass)
+                mp_SpatialData->spatialUnits(SetFiles.second.SetDefinition.UnitsClass)
                     ->list()->begin()->variables()->getVariablesNames();
           }
           else
@@ -371,28 +255,28 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
             // process selected variables
             std::vector<openfluid::core::VariableName_t> TmpVarArray;
 
-            TmpVarArray = openfluid::tools::splitString((*SetIt).second.VariablesStr,";");
+            TmpVarArray = openfluid::tools::splitString(SetFiles.second.SetDefinition.VariablesStr,";");
 
             for (unsigned int i = 0; i < TmpVarArray.size(); i++)
             {
-              if (mp_SpatialData->spatialUnits((*SetIt).second.UnitsClass)
+              if (mp_SpatialData->spatialUnits(SetFiles.second.SetDefinition.UnitsClass)
                       ->list()->begin()->variables()->isVariableExist(TmpVarArray[i]))
               {
                  VarArray.push_back(TmpVarArray[i]);
               }
               else
-                OPENFLUID_LogWarning("Variable "+TmpVarArray[i]+" for unit class "+(*SetIt).second.UnitsClass+" "
-                                       "does not exist. Ignored.");
+                OPENFLUID_LogWarning("Variable "+TmpVarArray[i]+" for units class "+
+                                     SetFiles.second.SetDefinition.UnitsClass+" does not exist. Ignored.");
             }
 
           }
 
 
-          if ((*SetIt).second.UnitsIDsStr == "*")
+          if (SetFiles.second.SetDefinition.UnitsIDsStr == "*")
           {
             // all units
 
-            OPENFLUID_UNITS_ORDERED_LOOP((*SetIt).second.UnitsClass,TmpU)
+            OPENFLUID_UNITS_ORDERED_LOOP(SetFiles.second.SetDefinition.UnitsClass,TmpU)
             {
 
               for (unsigned int i = 0; i < VarArray.size(); i++)
@@ -400,7 +284,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
                 CSVFile* CF = new CSVFile();
                 CF->Unit = TmpU;
                 CF->VarName = VarArray[i];
-                (*SetIt).second.Files.push_back(CF);
+                SetFiles.second.Files.push_back(CF);
               }
             }
 
@@ -411,13 +295,15 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
             openfluid::core::UnitID_t UID;
 
-            std::vector<std::string> UIDArray = openfluid::tools::splitString((*SetIt).second.UnitsIDsStr, ";");
+            std::vector<std::string> UIDArray =
+                openfluid::tools::splitString(SetFiles.second.SetDefinition.UnitsIDsStr, ";");
+
             for (unsigned int i = 0; i < UIDArray.size(); i++)
             {
               TmpU = NULL;
               if (openfluid::tools::convertString(UIDArray[i],&UID))
               {
-                TmpU = mp_SpatialData->spatialUnit((*SetIt).second.UnitsClass,UID);
+                TmpU = mp_SpatialData->spatialUnit(SetFiles.second.SetDefinition.UnitsClass,UID);
                 if (TmpU != NULL)
                 {
                   for (unsigned int i = 0; i < VarArray.size(); i++)
@@ -425,88 +311,43 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
                     CSVFile* CF = new CSVFile();
                     CF->Unit = TmpU;
                     CF->VarName = VarArray[i];
-                    (*SetIt).second.Files.push_back(CF);
+                    SetFiles.second.Files.push_back(CF);
                   }
                 }
                 else
-                  OPENFLUID_LogWarning("Unit #"+UIDArray[i]+" does not exist in class "+(*SetIt).second.UnitsClass+". "
-                                         "Ignored.");
+                  OPENFLUID_LogWarning("Unit #"+UIDArray[i]+" does not exist in class "+
+                                       SetFiles.second.SetDefinition.UnitsClass+". Ignored.");
               }
             }
           }
         }
         else
-          OPENFLUID_LogWarning("Unit class "+(*SetIt).second.UnitsClass+" does not exist. Ignored.");
+          OPENFLUID_LogWarning("Unit class "+SetFiles.second.SetDefinition.UnitsClass+" does not exist. Ignored.");
 
       }
 
 
-      for (SetIt=SetItB;SetIt!=SetItE;++SetIt)
+      for (auto& SetFiles : m_SetsFiles)
       {
-
-        CSVSet::CSVFilePtrList_t::iterator FLItB = (*SetIt).second.Files.begin();
-        CSVSet::CSVFilePtrList_t::iterator FLItE = (*SetIt).second.Files.end();;
-        CSVSet::CSVFilePtrList_t::iterator FLIt;
-
-        for (FLIt=FLItB;FLIt!=FLItE;++FLIt)
+        for (auto& File : SetFiles.second.Files)
         {
-          // create files with correct headers
+          // create file
+          File->FileBuffer = new char[m_BufferSize];
+          File->FileHandle.rdbuf()->pubsetbuf(File->FileBuffer,m_BufferSize);
 
-          (*FLIt)->FileBuffer = new char[m_BufferSize];
-          (*FLIt)->FileHandle.rdbuf()->pubsetbuf((*FLIt)->FileBuffer,m_BufferSize);
-
-          (*FLIt)->FileName =
-              buildFilename((*SetIt).first,(*SetIt).second.UnitsClass,(*FLIt)->Unit->getID(),(*FLIt)->VarName);
-          (*FLIt)->FileHandle.open((*FLIt)->FileName.c_str(),
+          File->FileName = buildFilename(m_OutputDir,m_OutFileExt,
+                                         SetFiles.first,SetFiles.second.SetDefinition.UnitsClass,
+                                         File->Unit->getID(),File->VarName);
+          File->FileHandle.open(File->FileName.c_str(),
                                    std::ios::out);
 
           // add header
-          if((*SetIt).second.Format->Header == CSVFormat::Info ||
-             (*SetIt).second.Format->Header == CSVFormat::Full)
-          {
-            std::chrono::system_clock::time_point TimePoint = std::chrono::system_clock::now();
-            std::time_t Time = std::chrono::system_clock::to_time_t(TimePoint);
-
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
-                                << "========================================================================\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
-                                << " file: " << openfluid::tools::Filesystem::filename((*FLIt)->FileName) << "\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
-                                << " date: " << std::ctime(&Time) << "\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
-                                << " unit: " << (*FLIt)->Unit->getClass() << " #" << (*FLIt)->Unit->getID() << "\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
-                                << " variable: " << (*FLIt)->VarName << "\n";
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar
-                                << "========================================================================\n";
-
-          }
-
-          if((*SetIt).second.Format->Header == CSVFormat::ColnamesAsComment ||
-             (*SetIt).second.Format->Header == CSVFormat::Full)
-
-          {
-            if ((*SetIt).second.Format->IsTimeIndexDateFormat)
-              (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << "timeindex";
-            else
-              (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << "datetime";
-
-            (*FLIt)->FileHandle << (*SetIt).second.Format->ColSeparator << (*FLIt)->VarName << "\n";
-
-          }
-
-          if((*SetIt).second.Format->Header == CSVFormat::ColnamesAsData)
-          {
-            if ((*SetIt).second.Format->IsTimeIndexDateFormat)
-              (*FLIt)->FileHandle << "timeindex";
-            else
-              (*FLIt)->FileHandle << "datetime";
-
-            (*FLIt)->FileHandle << (*SetIt).second.Format->ColSeparator << (*FLIt)->VarName << "\n";
-          }
+           File->FileHandle << buildHeader(*SetFiles.second.Format,File->FileName,
+                                          File->Unit->getClass(),File->Unit->getID(),
+                                          File->VarName);
 
           // set precision
-          (*FLIt)->FileHandle << std::fixed << std::setprecision((*SetIt).second.Format->Precision);
+          File->FileHandle << std::fixed << std::setprecision(SetFiles.second.Format->Precision);
 
         }
 
@@ -520,16 +361,16 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
     void saveToFiles()
     {
-      SetMap_t::iterator SetItE = m_Sets.end();
-      SetMap_t::iterator SetItB = m_Sets.begin();
-      SetMap_t::iterator SetIt;
+      SetFilesMap_t::iterator SetItE = m_SetsFiles.end();
+      SetFilesMap_t::iterator SetItB = m_SetsFiles.begin();
+      SetFilesMap_t::iterator SetIt;
 
 
       for (SetIt=SetItB;SetIt!=SetItE;++SetIt)
       {
-        CSVSet::CSVFilePtrList_t::iterator FLItB = (*SetIt).second.Files.begin();
-        CSVSet::CSVFilePtrList_t::iterator FLItE = (*SetIt).second.Files.end();;
-        CSVSet::CSVFilePtrList_t::iterator FLIt;
+        CSVSetFiles::CSVFilePtrList_t::iterator FLItB = (*SetIt).second.Files.begin();
+        CSVSetFiles::CSVFilePtrList_t::iterator FLItE = (*SetIt).second.Files.end();;
+        CSVSetFiles::CSVFilePtrList_t::iterator FLIt;
 
         for (FLIt=FLItB;FLIt!=FLItE;++FLIt)
         {
@@ -546,11 +387,8 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
             Val->writeToStream((*FLIt)->FileHandle);
             (*FLIt)->FileHandle << "\n";
           }
-
         }
-
       }
-
     }
 
 
@@ -580,16 +418,16 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
     void onFinalizedRun()
     {
-      SetMap_t::iterator SetItE = m_Sets.end();
-      SetMap_t::iterator SetItB = m_Sets.begin();
-      SetMap_t::iterator SetIt;
+      SetFilesMap_t::iterator SetItE = m_SetsFiles.end();
+      SetFilesMap_t::iterator SetItB = m_SetsFiles.begin();
+      SetFilesMap_t::iterator SetIt;
 
       for (SetIt=SetItB;SetIt!=SetItE;++SetIt)
       {
 
-        CSVSet::CSVFilePtrList_t::iterator FLItB = (*SetIt).second.Files.begin();
-        CSVSet::CSVFilePtrList_t::iterator FLItE = (*SetIt).second.Files.end();;
-        CSVSet::CSVFilePtrList_t::iterator FLIt;
+        CSVSetFiles::CSVFilePtrList_t::iterator FLItB = (*SetIt).second.Files.begin();
+        CSVSetFiles::CSVFilePtrList_t::iterator FLItE = (*SetIt).second.Files.end();;
+        CSVSetFiles::CSVFilePtrList_t::iterator FLIt;
 
         for (FLIt=FLItB;FLIt!=FLItE;++FLIt)
           delete (*FLIt);
@@ -607,3 +445,6 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
 
 DEFINE_OBSERVER_CLASS(CSVFilesObserver)
+
+DEFINE_WARE_LINKUID(WARE_LINKUID)
+

@@ -57,6 +57,22 @@ std::string classIDToString(const openfluid::core::UnitsClass_t& Class, openflui
 // =====================================================================
 
 
+bool isValidAlphaNumName(const std::string& Name)
+{
+  // authorized chars: a to z, A to Z, 0 to 9
+
+  QRegExp Exp("[A-Za-z0-9]+");
+
+  QString NameQStr = QString::fromStdString(Name);
+
+  return Exp.exactMatch(NameQStr);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool isValidWareID(const openfluid::ware::WareID_t& ID)
 {
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _

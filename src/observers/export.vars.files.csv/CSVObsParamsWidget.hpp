@@ -30,43 +30,73 @@
 */
 
 /**
-  @file config.hpp
- 
+  @file CSVObsParamsWidget.hpp
+
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
 
-#ifndef __OPENFLUID_UI_CONFIG_HPP__
-#define __OPENFLUID_UI_CONFIG_HPP__
+#ifndef __CSVOBSPARAMSWIDGET_HPP__
+#define __CSVOBSPARAMSWIDGET_HPP__
 
 
-#include <QString>
+#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
+
+#include "CSVObsTools.hpp"
 
 
-namespace openfluid { namespace ui { namespace config {
+namespace Ui
+{
+  class CSVObsParamsWidget;
+}
 
 
-const QString LICENSE_TEXT = "@UI_LICENSE_TEXT@";
-const QString AUTHORS_TEXT = "@UI_AUTHORS_TEXT@";
+class CSVObsParamsWidget: public openfluid::builderext::PluggableParameterizationExtension
+{
+  Q_OBJECT;
 
-const QString DIALOGBANNER_BGCOLOR = "#384A61";
-const QString DIALOGBANNER_WARNBGCOLOR = "#F59122";
+  private:
 
-const QString TOOLBAR_BGCOLOR = "#2C3A4C";
-const QString TOOLBARBUTTON_BGCOLOR = "#3B4E66";
-const QString TOOLBARBUTTON_BORDERCOLOR = "#4B4B4B";
+    Ui::CSVObsParamsWidget* ui;
 
-const QString TOOLTIP_BGCOLOR = "#2C3A4C";
-const QString TOOLTIP_BORDERCOLOR = "#676767";
+    FormatMap_t m_Formats;
 
-const QString PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::config","required");
+    SetMap_t m_Sets;
 
-const QString LINEMARKER_ERRCOLOR = "#FFA3A3";
-const QString LINEMARKER_WARNCOLOR = "#FFD6A3";
+    void clearInternalDataAndWidgets();
 
+    void removeParamsStartingWith(const QString& Str);
 
-} } } // namespaces
+    QString getParamValue(const QString& Str, const QString Default = "");
 
 
-#endif /* __OPENFLUID_UI_CONFIG_HPP__ */
+  private slots:
+
+    void addFormat();
+
+    void editFormat();
+
+    void removeFormat();
+
+    void addSet();
+
+    void editSet();
+
+    void removeSet();
+
+    void generateAutomaticFormatAndSets();
+
+
+  public:
+
+    CSVObsParamsWidget();
+
+    ~CSVObsParamsWidget();
+
+    void update();
+
+};
+
+
+#endif /* __CSVOBSPARAMSWIDGET_HPP__ */

@@ -16,7 +16,8 @@
     <file>icons/modify.png</file>
     <file>icons/start.png</file>
     <file>icons/stop.png</file>
-    <file>icons/pause.png</file> 
+    <file>icons/pause.png</file>
+    <file>icons/magic.png</file> 
     <file>icons/cmake.png</file>
     <file>icons/cmakelists.png</file>
     <file>icons/cpp.png</file>

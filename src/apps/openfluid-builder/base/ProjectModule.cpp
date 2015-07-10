@@ -501,7 +501,13 @@ void ProjectModule::whenRunAsked()
     whenSaveAsked();
 
   emit simulationStarted();
+
   mp_ProjectCentral->run();
+
+  // following two lines are added in conjunction with removal of equivalent lines in ProjectCentral::run()
+  updateSimulatorsWares();
+  updateObserversWares();
+
   emit simulationFinished();
 }
 

@@ -52,6 +52,36 @@
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_names_operations)
+{
+  BOOST_REQUIRE(openfluid::tools::isValidAlphaNumName("a"));
+  BOOST_REQUIRE(openfluid::tools::isValidAlphaNumName("abc"));
+  BOOST_REQUIRE(openfluid::tools::isValidAlphaNumName("ABC"));
+  BOOST_REQUIRE(openfluid::tools::isValidAlphaNumName("abc9def"));
+  BOOST_REQUIRE(openfluid::tools::isValidAlphaNumName("abc8def8ghi"));
+  BOOST_REQUIRE(openfluid::tools::isValidAlphaNumName("5abcDEFghi"));
+
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName(""));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("_abc"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("-abc"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName(".abc"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abc def.ghi"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abcdefghi()"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abcdefghi{}"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abc789ghi]["));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abcdefghi!"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abcdefghi?"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abcdefghi*"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abc356ghi,"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abc22ghi;"));
+  BOOST_REQUIRE(!openfluid::tools::isValidAlphaNumName("abcdefghi "));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(check_wares_operations)
 {
   BOOST_REQUIRE(openfluid::tools::isValidWareID("a"));

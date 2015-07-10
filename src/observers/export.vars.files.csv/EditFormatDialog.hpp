@@ -30,43 +30,69 @@
 */
 
 /**
-  @file config.hpp
- 
+  @file EditFormatDialog.hpp
+
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
 
-#ifndef __OPENFLUID_UI_CONFIG_HPP__
-#define __OPENFLUID_UI_CONFIG_HPP__
+#ifndef __EDITFORMATDIALOG_HPP__
+#define __EDITFORMATDIALOG_HPP__
 
 
-#include <QString>
+#include <QDialog>
+
+#include "CSVObsTools.hpp"
+#include <openfluid/core/DateTime.hpp>
+
+namespace Ui
+{
+  class EditFormatDialog;
+}
 
 
-namespace openfluid { namespace ui { namespace config {
+class EditFormatDialog: public QDialog
+{
+  Q_OBJECT;
 
 
-const QString LICENSE_TEXT = "@UI_LICENSE_TEXT@";
-const QString AUTHORS_TEXT = "@UI_AUTHORS_TEXT@";
+  private slots:
 
-const QString DIALOGBANNER_BGCOLOR = "#384A61";
-const QString DIALOGBANNER_WARNBGCOLOR = "#F59122";
+    void checkGlobal();
 
-const QString TOOLBAR_BGCOLOR = "#2C3A4C";
-const QString TOOLBARBUTTON_BGCOLOR = "#3B4E66";
-const QString TOOLBARBUTTON_BORDERCOLOR = "#4B4B4B";
-
-const QString TOOLTIP_BGCOLOR = "#2C3A4C";
-const QString TOOLTIP_BORDERCOLOR = "#676767";
-
-const QString PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::config","required");
-
-const QString LINEMARKER_ERRCOLOR = "#FFA3A3";
-const QString LINEMARKER_WARNCOLOR = "#FFD6A3";
+    void updatePreview();
 
 
-} } } // namespaces
+  private:
+
+    Ui::EditFormatDialog* ui;
+
+    CSVFormat m_Format;
+
+    QStringList m_ExistingFormatsNames;
+
+    QStringList m_HeaderLabels;
+    QList<CSVFormat::HeaderType> m_HeaderCodes;
+
+    QStringList m_DateLabels;
+    QList<std::string> m_DateCodes;
+
+    QList<openfluid::core::DateTime> m_PreviewDateTimes;
+    QList<double> m_PreviewValues;
 
 
-#endif /* __OPENFLUID_UI_CONFIG_HPP__ */
+  public:
+
+    EditFormatDialog(const QStringList& ExistingFormats,QWidget* Parent = NULL);
+
+    ~EditFormatDialog();
+
+    void initialize(const QString& Name, const QString& Header, const QString& ColSep,
+                    const QString& Date, const QString& Precision, const QString& CommentChar);
+
+    openfluid::ware::WareParams_t getFormatParams();
+};
+
+
+#endif /* __EDITFORMATDIALOG_HPP__ */

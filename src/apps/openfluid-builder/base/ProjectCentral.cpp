@@ -206,8 +206,9 @@ void ProjectCentral::run()
 
   RunDlg.execute();
 
-  openfluid::machine::SimulatorSignatureRegistry::instance()->unloadAll();
-  openfluid::machine::ObserverSignatureRegistry::instance()->unloadAll();
+  // Removed to prevent crashes when a parameterization widget is active
+  // openfluid::machine::SimulatorSignatureRegistry::instance()->unloadAll();
+  // openfluid::machine::ObserverSignatureRegistry::instance()->unloadAll();
 }
 
 

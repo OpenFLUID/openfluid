@@ -54,6 +54,15 @@ std::string OPENFLUID_API classIDToString(const openfluid::core::UnitsClass_t& C
 
 
 /**
+  Checks whether an alphanumeric name is valid or not.\n
+  To be valid, a name must only contain alphanumeric characters.
+  @param[in] Name the name to check
+  @return true if the name is valid
+*/
+bool OPENFLUID_API isValidAlphaNumName(const std::string& Name);
+
+
+/**
   Checks whether a ware ID is valid or not.\n
   To be valid, a ware ID must only contain alphanumeric, '_', '-', '.' characters,
   and must begin by an alphanumeric character.
