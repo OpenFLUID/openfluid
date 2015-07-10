@@ -99,7 +99,7 @@ void EditSetDialog::checkGlobal()
 
   if (ui->SelectedUnitsRadioButton->isChecked())
   {
-    QRegExp Exp("^[0-9](;[0-9]+)*$");
+    QRegExp Exp("^[0-9]+(;[0-9]+)*$");
 
     ValidLists = !ui->SelectedUnitsTextEdit->toPlainText().isEmpty() &&
                  Exp.exactMatch(ui->SelectedUnitsTextEdit->toPlainText());
