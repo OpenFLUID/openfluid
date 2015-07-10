@@ -1,6 +1,6 @@
 
 
-SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp
+SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp OpenFLUIDSplashScreen.cpp
                             RunSimulationDialog.cpp RunSimulationWorker.cpp
                             SignatureDataEditorWidget.cpp
                             SignatureEditorWidget.cpp EditSignatureDialog.cpp                                
@@ -11,7 +11,7 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp
                             PreferencesDialog.cpp
                             )
 
-SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp
+SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashScreen.hpp
                             RunSimulationDialog.hpp RunSimulationWorker.hpp
                             SignatureDataEditorWidget.hpp
                             SignatureEditorWidget.hpp EditSignatureDialog.hpp

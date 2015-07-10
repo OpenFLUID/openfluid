@@ -720,6 +720,24 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     </message>
 </context>
 <context>
+    <name>BuilderApp</name>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/BuilderApp.cpp" line="83"/>
+        <source>Initializing wares paths</source>
+        <translation>Initialisation des chemins des wares</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/BuilderApp.cpp" line="97"/>
+        <source>Loading extensions</source>
+        <translation>Chargement des extensions</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/BuilderApp.cpp" line="104"/>
+        <source>Preparing and configuring UI</source>
+        <translation>Préparation et configuration de l&apos;interface utilisateur</translation>
+    </message>
+</context>
+<context>
     <name>CMakeConfigPage</name>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/CMakeConfigPage.ui" line="100"/>
@@ -1502,35 +1520,35 @@ Continuer quand même?</translation>
         <translation>Extensions Builder</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="188"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="192"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="198"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="202"/>
         <source>Simulator...</source>
         <translation>Simulateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="189"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="193"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="199"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="203"/>
         <source>Observer...</source>
         <translation>Observateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="190"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="194"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="200"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="204"/>
         <source>Builder extension...</source>
         <translation>Extension Builder...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="196"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="206"/>
         <source>Save as...</source>
         <translation>Enregistrer sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="197"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="207"/>
         <source>Save the current file as...</source>
         <translation>Enregistrer le fichier courant sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="199"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="209"/>
         <source>Delete ware</source>
         <translation>Supprimer le ware</translation>
     </message>
@@ -1539,77 +1557,97 @@ Continuer quand même?</translation>
         <translation type="obsolete">Changer d&apos;espace de travail</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="204"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="62"/>
+        <source>Preparing user interface</source>
+        <translation>Préparation de l&apos;interface utilisateur</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="98"/>
+        <source>Initializing sources codes management</source>
+        <translation>Initialisation du management des codes sources</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="109"/>
+        <source>Configuring UI</source>
+        <translation>Configuration de l&apos;interface utilisateur</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="174"/>
+        <source>Initializing workspace</source>
+        <translation>Initialisation de l&apos;espace de travail</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="214"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="214"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="224"/>
         <source>Web site</source>
         <translation>Site web</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="215"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="225"/>
         <source>Community site</source>
         <translation>Site Community</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="216"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="226"/>
         <source>Email</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="218"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="228"/>
         <source>About</source>
         <translation>A propos</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="232"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="242"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="233"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="243"/>
         <source>New ware</source>
         <translation>Nouveau ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="237"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="247"/>
         <source>Open ware</source>
         <translation>Ouvrir un ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="255"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="265"/>
         <source>Edit</source>
         <translation>Edition</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="262"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="272"/>
         <source>Build</source>
         <translation>Construire</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="264"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="274"/>
         <source>Active configuration</source>
         <translation>Configuration active</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="268"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="278"/>
         <source>Active build action</source>
         <translation>Action de construction active</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="272"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="282"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="276"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="286"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="277"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="287"/>
         <source>OpenFLUID online</source>
         <translation>OpenFLUID en ligne</translation>
     </message>
@@ -3622,6 +3660,29 @@ Continuer quand même?</translation>
         <location filename="../../src/openfluid/ui/common/WaresSearchPathsWidget.ui" line="52"/>
         <source>Predefined paths:</source>
         <translation>Chemins prédéfinis:</translation>
+    </message>
+</context>
+<context>
+    <name>devstudiosplash</name>
+    <message>
+        <source>Setting UI language</source>
+        <translation type="obsolete">Mise en place de la langue</translation>
+    </message>
+    <message>
+        <source>Preparing UI</source>
+        <translation type="obsolete">Préparation de l&apos;interface graphique</translation>
+    </message>
+    <message>
+        <source>Setting language</source>
+        <translation type="obsolete">Mise en place de la langue</translation>
+    </message>
+    <message>
+        <source>Preparing user interface</source>
+        <translation type="obsolete">Préparation de l&apos;interface utilisateur</translation>
+    </message>
+    <message>
+        <source>Initializing workspace</source>
+        <translation type="obsolete">Initialisation de l&apos;espace de travail</translation>
     </message>
 </context>
 <context>

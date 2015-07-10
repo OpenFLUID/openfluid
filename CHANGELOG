@@ -9,6 +9,7 @@
   * Introduced ability to provide translations for wares in OpenFLUID-Builder
   * Introduced variables in parameters values, giving informations 
     about run environment
+  * Added splash screen for Builder and DevStudio applications
   * Added iterators for VectorValue and MapValue types
   * Added new TreeValue structure for tree-like data
   * Added basic filesystem tools

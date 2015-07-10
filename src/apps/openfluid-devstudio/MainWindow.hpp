@@ -42,6 +42,7 @@
 #include <QMainWindow>
 #include <QMap>
 
+#include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/dllexport.hpp>
@@ -79,6 +80,7 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void setWorkspaceDefaults();
 
+
   private slots:
 
     void showNotYetImplemented();
@@ -97,9 +99,10 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void onDeleteWareRequested();
 
+
   public:
 
-    MainWindow();
+    MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash);
 
     ~MainWindow();
 

@@ -56,9 +56,11 @@
 #include "DevStudioPreferencesManager.hpp"
 
 
-MainWindow::MainWindow() :
+MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
     QMainWindow(), ui(new Ui::MainWindow)
 {
+  Splash->setMessage(tr("Preparing user interface"));
+
   ui->setupUi(this);
 
   QRect ScreenRect = QApplication::desktop()->screenGeometry();
@@ -93,6 +95,8 @@ MainWindow::MainWindow() :
 
   addToolBar(mp_Toolbar);
 
+  Splash->setMessage(tr("Initializing sources codes management"));
+
   openfluid::waresdev::WareSrcManager* Manager = openfluid::waresdev::WareSrcManager::instance();
 
   ui->SimExplorer->configure(Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::SIMULATOR), true);
@@ -100,6 +104,9 @@ MainWindow::MainWindow() :
   ui->ExtExplorer->configure(Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::BUILDEREXT), true);
 
   mp_Collection = new openfluid::ui::waresdev::WareSrcWidgetCollection(ui->WareSrcCollection, false);
+
+
+  Splash->setMessage(tr("Configuring UI"));
 
   createLocalActions();
   createMenus();
@@ -162,6 +169,9 @@ MainWindow::MainWindow() :
 
   connect(mp_Collection, SIGNAL(currentTabChanged(const QString&)), this, SLOT(setCurrentPath(const QString&)));
   connect(mp_Collection, SIGNAL(modifiedStatusChanged(bool, bool)), this, SLOT(updateSaveButtonsStatus(bool, bool)));
+
+
+  Splash->setMessage(tr("Initializing workspace"));
 
   setWorkspaceDefaults();
 

@@ -46,6 +46,7 @@
 
 #include <openfluid/base/Init.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
 #include <openfluid/config.hpp>
 
 #include "MainWindow.hpp"
@@ -56,6 +57,11 @@ int main(int argc, char** argv)
   try
   {
     INIT_OPENFLUID_APPLICATION_WITH_GUI(argc, argv);
+
+    openfluid::ui::common::OpenFLUIDSplashScreen Splash(QPixmap(":/images/openfluid_splash_devstudio.png"));
+    Splash.show();
+
+    Splash.setMessage("i18n");
 
     // translations management
     QString Lang = openfluid::base::PreferencesManager::instance()->getLang();
@@ -86,8 +92,9 @@ int main(int argc, char** argv)
 
 //    OPENFLUID_APPLICATION.setAttribute(Qt::AA_DontShowIconsInMenus);
 
-    MainWindow m_MainWindow;
+    MainWindow m_MainWindow(&Splash);
     m_MainWindow.show();
+    Splash.finish(&m_MainWindow);
 
     return CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
   }

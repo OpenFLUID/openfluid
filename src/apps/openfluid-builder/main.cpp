@@ -52,6 +52,8 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 
 #include <iostream>
 #include <typeinfo>
@@ -64,6 +66,11 @@ int main(int argc, char** argv)
   {
     INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
 
+
+    openfluid::ui::common::OpenFLUIDSplashScreen Splash(QPixmap(":/images/openfluid_splash_builder.png"));
+    Splash.show();
+
+    Splash.setMessage("i18n");
     // translations management
     QString Lang = openfluid::base::PreferencesManager::instance()->getLang();
 
@@ -88,10 +95,12 @@ int main(int argc, char** argv)
                                              openfluid::ui::config::TOOLTIP_BORDERCOLOR));
 
     // Application launching
-    BuilderApp App;
+    BuilderApp App(&Splash);
 
     App.initialize();
     App.run();
+
+    Splash.finish(App.mainWindow());
 
     return CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
   }

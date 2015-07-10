@@ -49,8 +49,8 @@
 #include "ExtensionsRegistry.hpp"
 
 
-BuilderApp::BuilderApp():
-  m_Coordinator(m_MainWindow,m_Actions)
+BuilderApp::BuilderApp(openfluid::ui::common::OpenFLUIDSplashScreen* Splash):
+  m_Coordinator(m_MainWindow,m_Actions), mp_Splash(Splash)
 {
   QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
 }
@@ -80,6 +80,8 @@ void BuilderApp::initialize()
 
   // TODO see if this is moved into ProjectCoordinator or ProjectModule
 
+  mp_Splash->setMessage(tr("Initializing wares paths"));
+
   QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
     openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
@@ -89,11 +91,17 @@ void BuilderApp::initialize()
     openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
 
 
+
   // Extensions
+
+  mp_Splash->setMessage(tr("Loading extensions"));
 
   ExtraPaths = PrefsMgr->getExtraExtensionsPaths();
   ExtensionPluginsManager::instance(ExtraPaths); // initialization parameterized with extra paths
   ExtensionsRegistry::instance()->registerExtensions();
+
+
+  mp_Splash->setMessage(tr("Preparing and configuring UI"));
 
   m_Actions.createMenus(m_MainWindow);
   m_Actions.createToolbar(m_MainWindow);

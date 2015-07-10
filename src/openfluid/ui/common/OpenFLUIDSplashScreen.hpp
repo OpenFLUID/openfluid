@@ -29,56 +29,40 @@
   
 */
 
-
 /**
-  @file BuilderApp.hpp
+  @file OpenFLUIDSplashScreen.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_BUILDERAPP_HPP__
-#define __OPENFLUID_BUILDERAPP_BUILDERAPP_HPP__
 
-#include <QObject>
+#ifndef __OPENFLUID_UICOMMON_OPENFLUIDSPLASHSCREEN_HPP__
+#define __OPENFLUID_UICOMMON_OPENFLUIDSPLASHSCREEN_HPP__
+
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
-
-#include "AppActions.hpp"
-#include "MainWindow.hpp"
-#include "AppCoordinator.hpp"
+#include <QSplashScreen>
+#include <QPixmap>
 
 
-class OPENFLUID_API BuilderApp
+namespace openfluid { namespace ui { namespace common {
+
+
+class OPENFLUID_API OpenFLUIDSplashScreen : public QSplashScreen
 {
-  Q_DECLARE_TR_FUNCTIONS(BuilderApp)
-
-  private:
-
-    MainWindow m_MainWindow;
-
-    AppActions m_Actions;
-
-    AppCoordinator m_Coordinator;
-
-    openfluid::ui::common::OpenFLUIDSplashScreen* mp_Splash;
-
-
   public:
 
-    BuilderApp(openfluid::ui::common::OpenFLUIDSplashScreen* Splash);
+    OpenFLUIDSplashScreen(const QPixmap& Pixmap = QPixmap());
 
-    ~BuilderApp();
+    ~OpenFLUIDSplashScreen();
 
-    void initialize();
-
-    void run();
-
-    MainWindow* mainWindow()
-    { return &m_MainWindow; }
-
+    void setMessage(const QString& Message);
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_BUILDERAPP_HPP__ */
+} } } // namespaces
+
+
+
+#endif /* __OPENFLUID_UICOMMON_OPENFLUIDSPLASHSCREEN_HPP__ */

@@ -2,5 +2,6 @@
 <RCC version="1.0">
   <qresource>
     <file>icons/openfluid_icon_devstudio.png</file>
+    <file>images/openfluid_splash_devstudio.png</file>
   </qresource>
 </RCC>

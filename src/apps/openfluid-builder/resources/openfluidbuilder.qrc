@@ -2,6 +2,7 @@
 <RCC version="1.0">
   <qresource>
     <file>images/openfluid_official.png</file>
+    <file>images/openfluid_splash_builder.png</file>
     <file>images/dot.png</file>
     <file>images/check-ok.png</file>
     <file>images/check-warn.png</file>
