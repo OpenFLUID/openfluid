@@ -2,6 +2,7 @@
 
 \page dev_srccode Development of the simulator source code
 
+\tableofcontents
 
 \section dev_srccode_general General information about simulators architecture
 
@@ -66,7 +67,7 @@ to be called only once at the end of simulation duration
 to never be called again
 </ul>
 
-Example for a fixed time step simulator, with a time step equal equal to the default DeltaT value given in the input dataset:
+<i>Example for a fixed time step simulator, with a time step equal to the default DeltaT value given in the input dataset:</i>
 \code
 openfluid::base::SchedulingRequest initializeRun()
 {
@@ -84,7 +85,7 @@ openfluid::base::SchedulingRequest runStep()
 \endcode
 
 
-Example for a variable time step simulator, based on the internal computation of the simulator:
+<i>Example for a variable time step simulator, based on the internal computation of the simulator:</i>
 \code
 openfluid::base::SchedulingRequest initializeRun()
 {
@@ -97,7 +98,7 @@ openfluid::base::SchedulingRequest runStep()
 {
   double TmpValue = 0.0;
 
-  // do something here
+  // do something here with TmpValue
 
   if (TmpValue < 1.0)
     return DefaultDeltaT();
@@ -126,7 +127,8 @@ The available compound types are:
 <ul>
 <li>\b openfluid::core::VectorValue for storing vector data
 <li>\b openfluid::core::MatrixValue for storing matrix data
-<li>\b openfluid::core::MapValue for storing associative keys-value data
+<li>\b openfluid::core::MapValue for storing associative key-value data
+<li>\b openfluid::core::TreeValue for storing hierarchical key-value data
 </ul>
 
 A specific type is available for storing non-existing values:
@@ -161,7 +163,7 @@ In case of untyped variables, values for the variable can be of any type.
 
 \subsection dev_srccode_space_parse Parsing the spatial graph
 
-The spatial graph represents the spatial domain where coupled simulators will be applied.
+The spatial graph represents the spatial domain where coupled simulators will operate.
 Parsing this graph in different ways is a common task in simulators.
 This graph can be browsed using predefined macros.\n
 
@@ -203,15 +205,15 @@ The second part of the source code shows how to browse all units of the spatial 
 \code
 openfluid::base::SchedulingRequest runStep()
 {
-  openfluid::core::Unit* SU;
-  openfluid::core::Unit* UU;
-  openfluid::core::Unit* UpSU;
+  openfluid::core::SpatialUnit* SU;
+  openfluid::core::SpatialUnit* UU;
+  openfluid::core::SpatialUnit* UpSU;
   openfluid::core::UnitsPtrList_t* UpSUsList;
   openfluid::core::DoubleValue TmpValue;
 
   OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
   {
-    UpSUsList = SU->getFromUnits("SU");
+    UpSUsList = SU->fromSpatialUnits("SU");
 
     OPENFLUID_UNITSLIST_LOOP(UpSUsList,UpSU)
     {
@@ -231,7 +233,7 @@ openfluid::base::SchedulingRequest runStep()
 
 \subsubsection dev_srccode_space_parse_par Parallel processing using multithreading
 
-A process defined as a method of simulator class can be applied to the spatial graph, 
+A process defined as a method of a simulator class can be applied in parallel to the spatial graph, 
 following the process order, using the following methods:
 <ul>
 <li> 
@@ -242,20 +244,20 @@ following the process order, using the following methods:
 Extra arguments can also be passed (see example below).\n 
 </ul>
 The first argument of the method passed to the macro must be
-a pointer to an \if DocIsLaTeX \b openfluid::core::Unit \endif
+a pointer to an \if DocIsLaTeX \b openfluid::core::SpatialUnit \endif
  as it represents the currently processed spatial unit. 
 
 \n
 The code below shows how to apply a method in parallel over the spatial graph:
 \code
-void computeA(openfluid::core::Unit* U)
+void computeA(openfluid::core::SpatialUnit* U)
 {
  // compute something
  // can use/produce variables
 }
 
 
-void computeB(openfluid::core::Unit* U, 
+void computeB(openfluid::core::SpatialUnit* U, 
               const double Coeff)
 {
  // compute something else, with extra args
@@ -297,6 +299,8 @@ The following methods are available:
 <ul>
 <li>\b OPENFLUID_IsUnitExist
 <li>\b OPENFLUID_IsUnitsClassExist
+<li>\b OPENFLUID_GetUnit
+<li>\b OPENFLUID_GetUnits
 <li>\b OPENFLUID_GetUnitsCount
 <li>\b OPENFLUID_IsUnitConnectedTo
 <li>\b OPENFLUID_IsUnitConnectedFrom
@@ -307,6 +311,8 @@ The following methods are available:
 <ul>
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_IsUnitExist OPENFLUID_IsUnitExist \endlink
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_IsUnitsClassExist OPENFLUID_IsUnitsClassExist \endlink
+<li>\link openfluid::ware::PluggableSimulator::OPENFLUID_GetUnit OPENFLUID_GetUnit \endlink
+<li>\link openfluid::ware::PluggableSimulator::OPENFLUID_GetUnits OPENFLUID_GetUnits \endlink
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_GetUnitsCount OPENFLUID_GetUnitsCount \endlink
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_IsUnitConnectedTo OPENFLUID_IsUnitConnectedTo \endlink
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_IsUnitConnectedFrom OPENFLUID_IsUnitConnectedFrom \endlink
@@ -318,7 +324,7 @@ The following methods are available:
 \subsection dev_srccode_space_mod Modifying the spatial graph
 
 The spatial graph can be statically defined through the input dataset.
-It can also be defined and modified dynamically during simulations, using primitives allowing to 
+It can also be defined and modified dynamically during simulations, using primitives to 
 create and delete spatial units, and also to add and remove connections between these
 spatial units.\n
 Although the creation, deletion and modification of connections are allowed at any stage of the simulation,
@@ -426,8 +432,7 @@ void prepareData()
 
 \subsubsection dev_srccode_space_mod_gen Generating spatial domain graphs automatically
 
-Generators can help to automatically build a spatial domain graph, or to extend an existing one.\n
-Currently, only one spatial domain generator is available:
+A spatial domain graph can be automatically built or extended using a provided method to create a matrix-like graph:
 \if DocIsLaTeX
 <ul>
 <li>\b OPENFLUID_BuildUnitsMatrix
@@ -445,7 +450,7 @@ Simulators can access to informations about simulation time.
 There are constant time informations, such as simulation duration or begin and end date,
 and evolutive informations such as current time index.
 
-Constant informations about simulation time can be accessed from any part of the simulator
+Constant time informations can be accessed from any part of the simulator
 (except from the constructor), using the following methods:
 \if DocIsLaTeX
 <ul>
@@ -469,7 +474,7 @@ given in the input dataset
 </ul>
 \endif
 
-Evolutive informations about simulation time can be accessed only from specific parts 
+Evolutive time informations can be accessed only from specific parts 
 of the simulator, using the following methods:
 \if DocIsLaTeX
 <ul>
@@ -498,7 +503,7 @@ and is available from the runStep() and finalizeRun() methods of the simulator
 
 
 \n
-Example of code:
+<i>Example of code:</i>
 \code
 openfluid::base::SchedulingRequest runStep()
 {
@@ -514,8 +519,7 @@ openfluid::base::SchedulingRequest runStep()
 
 \section dev_srccode_simparams Simulator parameters
 
-Simulators parameters are passed through the model.fluidx file.
-They can be accessed in the source code from the
+Simulators parameters can be accessed in the source code from the
 \if DocIsLaTeX
 initParams
 \else
@@ -534,7 +538,7 @@ Values of simulators parameters can be retreived using:
 The requested parameter name must be the same as the one used in the model.fluidx file (see \ref user_fluidx_sections_model), 
 or be filled from the OpenFLUID-Builder graphical interface.\n
 \n
-Example of initParams method:
+<i>Example of initParams method:</i>
 \code
 void initParams(const openfluid::ware::WareParams_t& Params)
 {
@@ -581,11 +585,11 @@ from the prepareData() and checkConsistency() parts of the simulator.\n
 The names of the attributes must match the names in the input dataset (see \ref user_fluidx_sections_spatialdomain), 
 or the name of an attribute created by a simulator.
 
-Example of use:
+<i>Example of use:</i>
 \code
 openfluid::base::SchedulingRequest runStep()
 {
-  openfluid::core::Unit* SU;
+  openfluid::core::SpatialUnit* SU;
   openfluid::core::DoubleValue AreaValue;
 
   OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
@@ -654,13 +658,13 @@ These methods can be accessed only from the initializeRun(), runStep()
 and finalizeRun() parts of the simulator.
 \n
 \n
-Example:
+<i>Example:</i>
 \n
 \code
 openfluid::base::SchedulingRequest runStep()
 {
   openfluid::core::DoubleValue TmpValue;
-  openfluid::core::Unit* SU;
+  openfluid::core::SpatialUnit* SU;
 
   OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
   {
@@ -713,7 +717,7 @@ An event can be added on a specific spatial unit at a given date using:
 \code
 openfluid::base::SchedulingRequest runStep()
 {
-  openfluid::core::Unit* TU;
+  openfluid::core::SpatialUnit* TU;
   openfluid::core::EventCollection EvColl;
   openfluid::core::Event* Ev;
   std::list<openfluid::core::Event* > *EvList;
@@ -763,7 +767,7 @@ These data structures exist for different types of data:
 </ul>
 
 
-Example of declaration of ID-map structures in private members of the simulator class:
+<i>Example of declaration of ID-map structures in private members of the simulator class:</i>
 \code
 class MySimulator : public openfluid::ware::PluggableSimulator
 {
@@ -779,13 +783,13 @@ class MySimulator : public openfluid::ware::PluggableSimulator
 \endcode
 
 
-Example of usage of the ID-map structures:
+<i>Example of usage of the ID-map structures:</i>
 \code
-openfluid::base::SchedulingRequest runStep()
+openfluid::base::SchedulingRequest runStep()@tableofcontents
 {
   int ID;
   double TmpValue;
-  openfluid::core::Unit* SU;
+  openfluid::core::SpatialUnit* SU;
 
   OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
   {
@@ -816,7 +820,7 @@ They are accessible from simulators using:
 \endif
 </ul>
 
-Example:
+<i>Example:</i>
 \code
 openfluid::base::SchedulingRequest initializeRun()
 {
@@ -842,105 +846,100 @@ The keys for requesting runtime environment information are:
 </ul>
 
 
-\section dev_srccode_msgs Logs, warnings, errors
+\section dev_srccode_msgs Informations, warnings and errors
 
-\subsection dev_srccode_msgs_log Log messages from simulators
+\subsection dev_srccode_msgs_log Informations and warnings from simulators
 
-Simulators can log messages to both console and files using
-\if DocIsLaTeX
-\b OpenFLUID_Logger
-\else
-\link openfluid::ware::PluggableSimulator::OPENFLUID_Logger OpenFLUID_Logger\endlink
-\endif
-:
+Simulators can emit informations and warnings to both console and files using various methods
 <ul>
 <li>
 \if DocIsLaTeX
-\b OpenFLUID_Logger.file()
+\b OPENFLUID_DisplayInfo
 \else
-\link openfluid::base::StdoutAndFileOutputStream::file() OpenFLUID_Logger.file() \endlink
+#OPENFLUID_DisplayInfo
 \endif
-to log messages to file only
+to display informative messages to console only
 <li>
 \if DocIsLaTeX
-\b OpenFLUID_Logger.stdout()
+\b OPENFLUID_LogInfo
 \else
-\link openfluid::base::StdoutAndFileOutputStream::stdout() OpenFLUID_Logger.stdout() \endlink
+#OPENFLUID_LogInfo
 \endif
-to log messages to console only
+to log informative messages to file only
 <li>
 \if DocIsLaTeX
-\b OpenFLUID_Logger.all()
+\b OPENFLUID_LogAndDisplayInfo
 \else
-\link openfluid::base::StdoutAndFileOutputStream::all() OpenFLUID_Logger.all() \endlink
+#OPENFLUID_LogAndDisplayInfo
 \endif
-to log messages to file and console.
+to log and display informative messages simultaneously
+<li>
+\if DocIsLaTeX
+\b OPENFLUID_DisplayWarning
+\else
+#OPENFLUID_DisplayWarning
+\endif
+to display warning messages to console only
+<li>
+\if DocIsLaTeX
+\b OPENFLUID_LogWarning
+\else
+#OPENFLUID_LogWarning
+\endif
+to log warning messages to file only
+<li>
+\if DocIsLaTeX
+\b OPENFLUID_LogAndDisplayWarning
+\else
+#OPENFLUID_LogAndDisplayWarning
+\endif
+to log and display warning messages simultaneously
 </ul>
-
-The messages logged to file are put in a file named with the ID of the 
-simulator suffixed by _ofware-sim.log, placed in the simulation output directory.
-
-The OpenFLUID_Logger facility is the recommended way to log messages. Please avoid using std::cout
+Using these methods is the recommended way to log and display messages. Please avoid using std::cout
 or similar C++ facilities in production or released simulators.
 
-Example:
+<i>Example:</i>
 \code
 openfluid::base::SchedulingRequest runStep()
 {
-  openfluid::core::Unit* TU;
-
-  OPENFLUID_Logger.all() << 
-    "This is a message to both file and console" << std::endl;
-  OPENFLUID_Logger.file() << 
-    "This is a message to file only" << std::endl;
-  OPENFLUID_Logger.stdout() << 
-    "This is a message to console only" << std::endl;
+  openfluid::core::SpatialUnit* TU;
 
   OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
   {
-    OPENFLUID_Logger.all() << "TestUnits " << TU->getID() << std::endl;
+    OPENFLUID_LogInfo("TestUnits #" << TU->getID());
+    OPENFLUID_DisplayInfo("TestUnits #" << TU->getID());
+
+    OPENFLUID_LogWarning("This is a warning message for " << "TestUnits #" << TU->getID());
   }
 
   return DefaultDeltaT;
 }
 \endcode
 
+The messages logged to file are put in the <tt>openfluid-messages.log</tt> file
+placed in the simulation output directory. This file can be browsed using the <tt>openfluid-logexplorer</tt> program
+or using the OpenFLUID-Builder application. 
 
-\subsection dev_srccode_msgs_warnerr Raise warnings and errors
 
-In order to trace errors and warnings during the run of a simulation, simulators 
-can raise errors and warnings messages. These messages autmatically notice
-the OpenFLUID framework that something wrong or critical had happened. An error stops the simulation the 
-next time the OpenFLUID framework has the control, a warning does 
-not stop the simulation. Error and warnings are reported in the simulation report. 
-(openfluid-messages.log file). They both can be dated with the number of the current time index
-when the warning or error occurs.\n  
+\subsection dev_srccode_msgs_warnerr Errors from simulators
 
-Errors and warnings can be raised using:
-<ul>
-<li>
-\if DocIsLaTeX
-\b OPENFLUID_RaiseWarning
-\else
-\link openfluid::ware::PluggableSimulator::OPENFLUID_RaiseWarning OPENFLUID_RaiseWarning\endlink
-\endif
-for a warning notification
-<li>
+Simulators can raise errors to notify the OpenFLUID framework that something wrong or critical had happened. 
+An error stops the simulation the next time the OpenFLUID framework has the control.\n  
+
+Errors can be raised using
 \if DocIsLaTeX
 \b OPENFLUID_RaiseError
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_RaiseError OPENFLUID_RaiseError\endlink
 \endif
-for an error notification
-</ul>
 
-Example:
+<i>Example:</i>
 
 \code
 void checkConsistency()
 {
   double TmpValue;
-  openfluid::core::Unit* SU;
+  openfluid::core::SpatialUnit* SU;
     
   OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
   {
@@ -958,22 +957,56 @@ void checkConsistency()
 
 \section dev_srccode_debug Debugging
 
-Debugging macros add informations on standard output stream (usually displayed on screen).
-It allows developpers to trace various information during simulations.\n 
-They are enabled only when debug is enabled at simulators builds.
-They are ignored for other build types.\n 
+Debugging macros allow developpers to trace various information during simulations.\n 
+They are enabled only when debug is enabled at simulators builds. They are ignored for other build types.\n 
 
 In order to enable debug build mode, the option <tt>-DCMAKE_BUILD_TYPE=Debug</tt>
 must be added to the cmake command (e.g. <tt>cmake \<srcpath\> -DCMAKE_BUILD_TYPE=Debug</tt>).
 
-Example of build configuration:
+<i>Example of build configuration:</i>
 \verbatim
 cmake .. -DCMAKE_BUILD_TYPE=Debug
 \endverbatim
 This debug build mode is disabled using the release build mode, with the option <tt>-DCMAKE_BUILD_TYPE=Release</tt>.\n
 \n
 
-The following macros are available for debugging:
+Simulators can emit debug information to both console and files using various methods
+<ul>
+<li>
+\if DocIsLaTeX
+\b OPENFLUID_DisplayDebug
+\else
+#OPENFLUID_DisplayDebug
+\endif
+to display debug messages to console only
+<li>
+\if DocIsLaTeX
+\b OPENFLUID_LogDebug
+\else
+#OPENFLUID_LogDebug
+\endif
+to log debug messages to file only
+<li>
+\if DocIsLaTeX
+\b OPENFLUID_LogAndDisplayDebug
+\else
+#OPENFLUID_LogAndDisplayDebug
+\endif
+to log and display debug messages simultaneously
+</ul>
+
+<i>Example:</i>
+\code
+openfluid::base::SchedulingRequest runStep()
+{
+  OPENFLUID_LogDebug("Entering runStep at time index " << OPENFLUID_GetCurrentTimeIndex());
+
+  return DefaultDeltaT;
+}
+\endcode
+
+
+Additional macros are available for debugging:
 <ul>
 <li>\if DocIsLaTeX \b OFDBG_LOCATE
 \else #OFDBG_LOCATE
@@ -1001,11 +1034,11 @@ for information about the event given as an argument
 for information about the event collection given as an argument
 </ul>
 \n
-Example:
+<i>Example:</i>
 \code
 openfluid::base::SchedulingRequest runStep()
 {
-  openfluid::core::Unit* TU;
+  openfluid::core::SpatialUnit* TU;
   openfluid::core::DateTime BeginDate,EndDate;
   openfluid::core::EventsCollection EvColl;
 
@@ -1042,7 +1075,7 @@ These macros allows calls of Fortran77 and Fortran90 source code.
 You are invited to read the FortranCPP.hpp file to get more information about these macros.\n
 
 \n
-Example of Fortran source code (FSubr.f90):
+<i>Example of Fortran source code (FSubr.f90):</i>
 \code
 subroutine displayvector(Fsize,vect)
 
@@ -1058,14 +1091,14 @@ return
 end
 \endcode
 \n
-Example of declaration block int the .cpp file (MySim.cpp):
+<i>Example of declaration block int the .cpp file (MySim.cpp):</i>
 \code
 BEGIN_EXTERN_FORTRAN
   EXTERN_FSUBROUTINE(displayvector)(FINT *Size, FREAL8 *Vect);
 END_EXTERN_FORTRAN
 \endcode
 \n
-Example of call of the fortran subroutine from the initializeRun method (MySim.cpp):
+<i>Example of call of the fortran subroutine from the initializeRun method (MySim.cpp):</i>
 \code
 #include <openfluid/tools/FortranCPP.hpp>
 
@@ -1088,20 +1121,23 @@ when adding fortran source files to the SIM_FORTRAN variable in the CMake.in.con
 (See \ref dev_createsim_exmpl_config).
 
 
-\section dev_srccode_misctools Miscellaneous tools
+\section dev_srccode_misctools Miscellaneous helpers
 
-
-These tools have been developped to help simulators developpers 
+The OpenFLUID API provides miscellaneous functions and classes to help simulators developpers 
 in their setup of data processing or numerical computation. 
-They are available in the namespace openfluid::tools.
-In order to use these tools, the corresponding headers 
+They are available in various namespaces:
+<ul>
+<li>\if DocIsLaTeX \b \endif openfluid::tools
+<li>\if DocIsLaTeX \b \endif openfluid::scientific
+<li>\if DocIsLaTeX \b \endif openfluid::utils
+</ul>
+
+In order to use these helpers, the corresponding headers 
 files must be included in the simulator source code.
 
 As they are not detailed here in this manual, more informations 
-about these tools are available in the provided header files (.hpp), 
-located in the include/openfluid/tools include directory.
-
-
-\see openfluid::tools namespace
+about these helpers are available in the provided header files (.hpp), 
+located in the corresponding include directories.
 
 */
+

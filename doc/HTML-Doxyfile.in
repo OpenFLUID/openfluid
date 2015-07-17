@@ -61,6 +61,7 @@ QUIET                  = YES
 WARNINGS               = YES
 WARN_IF_DOC_ERROR      = YES
 
+MAX_INITIALIZER_LINES  = 0
 
 ENABLED_SECTIONS       = DocIsHTML
 

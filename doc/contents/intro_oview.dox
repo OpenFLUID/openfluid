@@ -1,4 +1,5 @@
 /**
+\if TodoIsDone
 
 \page intro_oview Overview and main concepts
 
@@ -19,5 +20,7 @@
 
 \todo simulation period, productions of variables over the graph, observers, 
 rendering of results, ...
+
+\endif
 
 */

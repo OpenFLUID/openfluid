@@ -2,8 +2,12 @@
 
 \page dev_oviewsim Overview of an OpenFLUID simulator
 
+\tableofcontents
+
 Technically speaking, an OpenFLUID simulator is made of two main parts: 
 The signature and a C++ class containing the computational code.
+These two parts have to be developped in a C++ file (.cpp). 
+They must be compiled before using it in the OpenFLUID environment.
 
 
 \section dev_oviewsim_signature Simulator signature 
@@ -20,7 +24,7 @@ The computational part of a simulator is defined by a class,
 inherited from the \if DocIsLaTeX \b \endif openfluid::ware::PluggableSimulator class.
 The simulation code have to be written into the different methods
 provided by the \if DocIsLaTeX \b \endif openfluid::ware::PluggableSimulator class.
-You can also develop other methods in order to structure your source code.\n
+You can also develop other methods in order to organize your source code.\n
 To get more information about the C++ class of a simulator, see part \ref dev_createsim.
 
 
@@ -36,7 +40,7 @@ for the needs of the computational code (other objects, pointed vars, ...).
 
 \subsection dev_oviewsim_cppclass_methods Mandatory methods to be defined
 
-The class defining a simulator must define the following methods:
+The class of a simulator must define the following methods:
 <ul>
 <li>\if DocIsLaTeX \b initParams \else \link openfluid::ware::PluggableSimulator::initParams initParams \endlink \endif
 <li>\if DocIsLaTeX \b prepareData \else \link openfluid::ware::PluggableSimulator::prepareData prepareData \endlink \endif

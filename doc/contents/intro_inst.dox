@@ -1,5 +1,6 @@
 /**
 
+\if TodoIsDone
 \page intro_inst Installation and resources
 
 
@@ -31,5 +32,6 @@ in your favorite terminal. You are now ready to run your first simulation.
 
 \section intro_inst_resources OpenFLUID resources
 
+\endif
 
 */

@@ -1,38 +1,8 @@
 /**
 
-\page apdx_optenv Command line options and environment variables
+\page apdx_optenv Environment variables and command line usage 
 
-
-\section apdx_optenv_cmdopt Command line options
-
-Command line options for the <tt>openfluid</tt> command line program:
-<ul>
-<li><tt>-a</tt>, <tt>--auto-output-dir</tt> : generate automatic results output directory
-<li><tt>-b</tt>, <tt>--buddy</tt> <tt>\<arg\></tt> : run specified OpenFLUID buddy
-<li><tt>--buddyhelp</tt> <tt>\<arg\></tt> : display help message for specified OpenFLUID buddy
-<li><tt>--buddyopts</tt> <tt>\<arg\></tt> : set options for specified OpenFLUID  buddy
-<li><tt>-c</tt>, <tt>--clean-output-dir</tt> : clean results output directory by removing existing files
-<li><tt>-e</tt>, <tt>--observers-list</tt> : list available observers (do not run the simulation)
-<li><tt>-f</tt>, <tt>--simulators-list</tt> : list available simulators (do not run the simulation)
-<li><tt>-h</tt>, <tt>--help</tt> : display help message
-<li><tt>-i</tt>, <tt>--input-dir</tt> <tt>\<arg\></tt> : set input dataset directory
-<li><tt>-k</tt>, <tt>--enable-simulation-profiling</tt> : enable time profiling for simulators
-<li><tt>-l</tt>, <tt>--observers-report</tt> : print a report of available observers, with details (do not run the simulation)
-<li><tt>-n</tt>, <tt>--observers-paths</tt> <tt>\<arg\></tt> : add extra observers search paths (colon separated)
-<li><tt>-o</tt>, <tt>--output-dir</tt> <tt>\<arg\></tt> : set results output directory
-<li><tt>-p</tt>, <tt>--simulators-paths</tt> <tt>\<arg\></tt> : add extra simulators search paths (colon separated)
-<li><tt>-q</tt>, <tt>--quiet</tt> : quiet display during simulation run
-<li><tt>-r</tt>, <tt>--simulators-report</tt> : print a report of available simulators, with details (do not run the simulation)
-<li><tt>-s</tt>, <tt>--no-simreport</tt> : do not generate simulation report
-<li><tt>--show-paths</tt> : print the used paths (do not run the simulation)
-<li><tt>-t</tt>, <tt>--max-threads</tt> <tt>\<arg\></tt> : change maximum number of threads for threaded spatial loops (default is 4)
-<li><tt>-u</tt>, <tt>--matching-simulators-report</tt> <tt>\<arg\></tt> : print a report of simulators matching the given wildcard-based pattern (do not run the simulation)
-<li><tt>-v</tt>, <tt>--verbose</tt> : verbose display during simulation
-<li><tt>-w</tt>, <tt>--project</tt> <tt>\<arg\></tt> : set project directory
-<li><tt>--version</tt> : get version (do not run the simulation)
-<li><tt>-z</tt>, <tt>--no-result</tt> : do not write results files
-</ul>
-
+\tableofcontents
 
 \section apdx_optenv_envvar Environment variables
 
@@ -48,5 +18,105 @@ The path are separated by colon on UNIX systems, and by semicolon on Windows sys
 The path are separated by colon on UNIX systems, and by semicolon on Windows systems. 
 </ul>
 
+\section apdx_optenv_cmdopt Command line usage
 
+Usage : <tt>openfluid [\<command\>] [\<options\>] [\<args\>]</tt>
+
+Available commands:
+<ul>
+  <li><tt>buddy</tt> : Execute a buddy. Available buddies are newsim, newdata, sim2doc, examples
+  <li><tt>report</tt> : Display informations about available wares
+  <li><tt>run</tt> : Run a simulation from a project or an input dataset
+  <li><tt>show-paths</tt> : Show search paths for wares
+</ul>
+
+Available options:
+<ul>
+  <li><tt>--help,-h</tt> : display this help message
+  <li><tt>--version</tt> : display version
+</ul>
+
+
+\subsection apdx_optenv_cmdopt_run Running simulations
+
+Run a simulation from a project or an input dataset.
+
+Usage : <tt>openfluid run [\<options\>] [\<args\>]</tt>
+
+Available options:
+<ul>
+  <li><tt>--help,-h</tt> : display this help message
+  <li><tt>--auto-output-dir, -a</tt> : create automatic output directory
+  <li><tt>--clean-output-dir, -c</tt> : clean output directory before simulation
+  <li><tt>--max-threads=\<arg\>, -t \<arg\></tt> : set maximum number of threads for threaded spatial loops (default is 4)
+  <li><tt>--observers-paths=\<arg\>, -n \<arg\></tt> : add extra observers search paths (colon separated)
+  <li><tt>--profiling, -k</tt> : enable simulation profiling
+  <li><tt>--quiet, -q</tt> : quiet display during simulation
+  <li><tt>--simulators-paths=\<arg\>, -p \<arg\></tt> : add extra simulators search paths (colon separated)
+  <li><tt>--verbose, -v</tt> : verbose display during simulation
+</ul>
+
+<i>Example of running a simulation from an input dataset:</i>
+\code
+openfluid run /path/to/dataset /path/to/results
+\endcode 
+
+<i>Example of running a simulation from a project</i>:
+\code
+openfluid run /path/to/project
+\endcode 
+
+
+\subsection apdx_optenv_cmdopt_report Wares reporting
+
+Display informations about available wares
+
+Usage : <tt>openfluid report [\<options\>] [\<args\>]</tt>
+
+Available options:
+<ul>
+  <li><tt>--help,-h</tt> : display this help message
+  <li><tt>--list, -l</tt> : display simple list instead of report
+  <li><tt>--observers-paths=\<arg\>, -n \<arg\></tt> : add extra observers search paths (colon separated)
+  <li><tt>--simulators-paths=\<arg\>, -p \<arg\></tt> : add extra simulators search paths (colon separated)
+  <li><tt>--with-errors, -e</tt> : show errored wares during search
+</ul>
+
+<i>Example of detailed reporting about available simulators:</i>
+\code
+openfluid report simulators
+\endcode 
+
+<i>Example of reporting as a list about available observers:</i>
+\code
+openfluid report observers --list
+\endcode 
+
+
+\subsection apdx_optenv_cmdopt_paths Paths
+
+Show search paths for wares
+
+Usage : <tt>openfluid show-paths [\<options\>] [\<args\>]</tt>
+
+Available options:
+<ul>
+  <li><tt>--help,-h</tt> : display this help message
+  <li><tt>--observers-paths=\<arg\>, -n \<arg\></tt> : add extra observers search paths (colon separated)
+  <li><tt>--simulators-paths=\<arg\>, -p \<arg\></tt> : add extra simulators search paths (colon separated)
+</ul>
+
+
+\subsection apdx_optenv_cmdopt_buddies Buddies
+
+Execute a buddy. Available buddies are newsim, newdata, sim2doc, examples
+
+Usage : <tt>openfluid buddy [\<options\>] [\<args\>]</tt>
+
+Available options:
+<ul>
+  <li><tt>--help,-h</tt> : display this help message
+  <li><tt>--buddy-help</tt> : display specific buddy help
+  <li><tt>--options=\<arg\>, -o \<arg\></tt> : set buddy options
+</ul>
 */

@@ -2,9 +2,7 @@
 
 \page dev_signature Declaration of the simulator signature
 
-
-The signature can be automatically generated through the OpenFLUID plugin for Eclipse.
-However it is possible to write the signature \e de \e novo, or complete it manually.
+\tableofcontents
 
 The signature has to be defined between the \if DocIsLaTeX \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
  and the \if DocIsLaTeX \b END_SIMULATOR_SIGNATURE \else #END_SIMULATOR_SIGNATURE \endif 
@@ -24,7 +22,7 @@ allowing to assign a long name to the simulator
 <li>the simulator description, declared through the \if DocIsLaTeX \b DECLARE_DESCRIPTION \else #DECLARE_DESCRIPTION \endif
  macro,
 allowing to provide a detailed description of what the simulator actually does 
-<li>the name(s) of the author(s) and it email address, declared through the \if DocIsLaTeX \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \endif
+<li>the name(s) of the author(s) and her/his email address, declared through the \if DocIsLaTeX \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \endif
  macro.
 There may be multiple \if DocIsLaTeX \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \endif
  macros in the signature in case of multiple authors
@@ -32,7 +30,7 @@ There may be multiple \if DocIsLaTeX \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \en
  macro
 <li>the software status of the simulator, declared through the \if DocIsLaTeX \b DECLARE_STATUS \else #DECLARE_STATUS \endif
  macro. The value can be
-openfluid::base::EXPERIMENTAL, openfluid::base::BETA or openfluid::base::STABLE
+openfluid::ware::EXPERIMENTAL, openfluid::ware::BETA or openfluid::ware::STABLE
 </ul>
 
 See the \ref dev_signature_exmpl part for detailed example. 
@@ -56,9 +54,9 @@ These informations can be :
 
 The data used by the simulators can be:
 <ul>
-<li> Simulator parameters, and can only be accessed by the simulator
+<li> Parameters that are attached to the simulator
 <li> Spatial attributes that are attached to spatial units, giving properties about the spatial units
-<li> Simulation variables that are attached to spatial units, representing the dynamics of modeled processes
+<li> Simulation variables that are attached to spatial units, representing the resulting dynamics of modeled processes
 over the spatial units
 <li> Discrete events that are attached to spatial units, 
 representing the events occurring at a given date and time on a given spatial unit
@@ -69,7 +67,7 @@ These data can be accessed, appended and/or modified by the simulator.\n
 The spatial graph representing the landscape can also be accessed or modified 
 by simulators during simulations.\n 
 \n
-The declarations of spatial data access include rules:
+The declarations of spatial data access include constraint levels:
 <ul>
 <li>REQUIRED, this means that the data must be available or already produced
 <li>USED, this means that the data are used only if they are available or already produced
@@ -78,20 +76,21 @@ The declarations of spatial data access include rules:
 \subsection dev_signature_data_simparams Simulator parameters
 
 Simulator parameters are values provided to each simulator, 
-and are declared using the \if DocIsLaTeX \b DECLARE_SIMULATOR_PARAM \else #DECLARE_SIMULATOR_PARAM \endif
- macro.
-This macro takes 3 arguments
+and are declared using the \if DocIsLaTeX \b DECLARE_REQUIRED_PARAMETER or \b DECLARE_USED_PARAMETER
+\else #DECLARE_REQUIRED_PARAMETER or #DECLARE_USED_PARAMETER \endif
+ macros.
+These macros takes 3 arguments
 <ul>
 <li>the name of the parameter
 <li>the description of the parameter (may be empty)
 <li>the SI unit of the parameter (may be empty)
 </ul>
 
-Example of simulator parameter declaration:
+<i>Example of a simulator parameter declaration:</i>
 \code
-  DECLARE_SIMULATOR_PARAM("meanspeed","mean speed to use","m/s")
+  DECLARE_REQUIRED_PARAMETER("meanspeed","mean speed to use","m/s")
 \endcode
-\n
+
 
 \subsection dev_signature_data_attrs Spatial attributes
 
@@ -108,26 +107,25 @@ These macros take 4 arguments:
 <li>the SI unit of the attribute (may be empty)
 </ul>
 
-Example of attributes declaration:
+<i>Example of attributes declaration:</i>
 \code
   DECLARE_REQUIRED_ATTRIBUTE("area","TU","area of the Test Units","m")
   DECLARE_USED_ATTRIBUTE("landuse","OU","landuse of the Other Units","")
 \endcode
-\n
 
 
 \subsection dev_signature_data_vars Simulation variables
 
 Simulation variables are attached to spatial units. They are produced, accessed and modified
 by simulators during simulations.\n
-Accessed variables are declared using \if DocIsLaTeX \b DECLARE_REQUIRED_VAR or \b DECLARE_USED_VAR
-\else #DECLARE_REQUIRED_VAR or #DECLARE_USED_VAR \endif
+Accessed variables are declared using \if DocIsLaTeX \b DECLARE_REQUIRED_VARIABLE or \b DECLARE_USED_VARIABLE
+\else #DECLARE_REQUIRED_VARIABLE or #DECLARE_USED_VARIABLE \endif
  macros,
-produced variables are declared using \if DocIsLaTeX \b DECLARE_PRODUCED_VAR
-\else #DECLARE_PRODUCED_VAR \endif
+produced variables are declared using \if DocIsLaTeX \b DECLARE_PRODUCED_VARIABLE
+\else #DECLARE_PRODUCED_VARIABLE \endif
  macro, 
-updated variables are declared using \if DocIsLaTeX \b DECLARE_UPDATED_VAR
-\else #DECLARE_UPDATED_VAR \endif
+updated variables are declared using \if DocIsLaTeX \b DECLARE_UPDATED_VARIABLE
+\else #DECLARE_UPDATED_VARIABLE \endif
  macro.
 
 These macros take 4 arguments:
@@ -153,7 +151,8 @@ The type name for a declaration of a variable can be:
 <li> \c string for string values
 <li> \c vector for vector data
 <li> \c matrix for matrix data
-<li> \c map for associative keys-value data
+<li> \c map for associative key-value data
+<li> \c tree for hierarchical key-value data
 </ul>
 
 These scenarios of variable exchanges between two A and B simulators run successfully:
@@ -174,12 +173,12 @@ simulator B requires/uses/updates a \e typed variable var1
 simulator B requires/uses/updates a \e typed variable var1 of type \c matrix 
 </ul>
 
-Example of variable declarations
+<i>Example of variable declarations:</i>
 \code  
-  DECLARE_REQUIRED_VAR("varA[double]","TU","","m")
-  DECLARE_USED_VAR("varB","OU","simple var on Other Units","kg")
-  DECLARE_PRODUCED_VAR("VarB[vector]","TU","vectorized var on Test Units","kg")
-  DECLARE_UPDATED_VAR("VarC","TU","","")
+  DECLARE_REQUIRED_VARIABLE("varA[double]","TU","","m")
+  DECLARE_USED_VARIABLE("varB","OU","simple var on Other Units","kg")
+  DECLARE_PRODUCED_VARIABLE("VarB[vector]","TU","vectorized var on Test Units","kg")
+  DECLARE_UPDATED_VARIABLE("VarC","TU","","")
 \endcode
 
 
@@ -192,7 +191,7 @@ and are declared using the \if DocIsLaTeX \b DECLARE_USED_EVENTS
 
 The declaration macro takes 1 argument: the units class.
 
-Example of events declaration:
+<i>Example of events declaration:</i>
 \code
   DECLARE_USED_EVENTS("TU")
 \endcode
@@ -210,7 +209,7 @@ These files are declared using the \if DocIsLaTeX \b DECLARE_USED_EXTRAFILE
 
 The declaration macro takes 1 argument: the file name with relative path to the dataset path.
 
-Example of extra file declarations:
+<i>Example of extra file declarations:</i>
 \code
   DECLARE_USED_EXTRAFILE("fileA.dat")
   DECLARE_REQUIRED_EXTRAFILE("geo/zone.shp")
@@ -237,7 +236,7 @@ It takes two arguments:
 <li>the description of the update (may be empty)
 </ul>   
 
-Example of declarations for spatial units graph:
+<i>Example of declarations for spatial units graph:</i>
 \code
   DECLARE_UPDATED_UNITSGRAPH("update of the spatial graph for ...")
   DECLARE_UPDATED_UNITSCLASS("TU","")
@@ -259,15 +258,15 @@ BEGIN_SIMULATOR_SIGNATURE("example.simulator")
   DECLARE_AUTHOR("Dave","dave@foobar.org");
   DECLARE_AUTHOR("Mike","mike@foobar.org");
   
-  DECLARE_SIMULATOR_PARAM("meanspeed","mean speed to use","m/s")
+  DECLARE_USED_PARAMETER("meanspeed","mean speed to use","m/s")
   
   DECLARE_REQUIRED_ATTRIBUTE("area","TU","area of the Test Units","m")
   DECLARE_USED_ATTRIBUTE("landuse","OU","landuse of the Other Units","")
   
-  DECLARE_REQUIRED_VAR("varA[double]","TU","","m")
-  DECLARE_USED_VAR("varB","OU","simple var on Other Units","kg")
-  DECLARE_PRODUCED_VAR("VarB[vector]","TU","vectorized var on Test Units","kg")
-  DECLARE_UPDATED_VAR("VarC","TU","","")
+  DECLARE_REQUIRED_VARIABLE("varA[double]","TU","","m")
+  DECLARE_USED_VARIABLE("varB","OU","simple var on Other Units","kg")
+  DECLARE_PRODUCED_VARIABLE("VarB[vector]","TU","vectorized var on Test Units","kg")
+  DECLARE_UPDATED_VARIABLE("VarC","TU","","")
   
   DECLARE_USED_EVENTS("TU")
   

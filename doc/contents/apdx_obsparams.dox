@@ -1,5 +1,7 @@
 /**
 
+\if TodoIsDone
+
 \page apdx_obsparams Observers parameters
 
 \section apdx_obsparams_csv "CSV" observer
@@ -98,5 +100,6 @@ datetime;var1;var2
 
 \todo
 
+\endif
 
 */

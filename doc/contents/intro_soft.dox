@@ -1,8 +1,8 @@
 /**
 
+\if TodoIsDone
+
 \page intro_soft OpenFLUID software
-
-
 
 \section intro_soft_framework OpenFLUID framework
 
@@ -38,5 +38,7 @@ development environment
 \section intro_soft_apps OpenFLUID applications
 
 \todo
+
+\endif
 
 */

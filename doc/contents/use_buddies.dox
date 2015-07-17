@@ -1,5 +1,7 @@
 /**
 
+\if TodoIsDone
+
 \page use_buddies OpenFLUID buddies
 
 \todo
@@ -50,7 +52,7 @@ Other options:
 
 \n
 
-Usage example:\n
+<i>Usage example:</i>\n
 <tt>openfluid-engine --buddy func2doc --buddyopts
 inputcpp=/path/to/cppfile.cpp, outputdir=/path/to/outputdir,pdf=1</tt>
 
@@ -76,7 +78,7 @@ Other options:
 
 \n
 
-Usage example:\n
+<i>Usage example:</i>\n
 <tt>openfluid-engine --buddy newfunc --buddyopts
 funcid=domain.subdomain.process.method, outputdir=/path/to/outputdir</tt>
 
@@ -94,7 +96,7 @@ Required options:
 
 \n
 
-Usage example:\n
+<i>Usage example:</i>\n
 <tt>openfluid-engine --buddy newdata --buddyopts
 outputdir=/path/to/outputdir</tt>
 
@@ -114,9 +116,10 @@ Required options:
 
 \n
 
-Usage example:\n
+<i>Usage example:</i>\n
 <tt>openfluid-engine --buddy convert --buddyopts convmode=13_14,
 inputdir=/path/to/inputdir,outputdir=/path/to/outputdir</tt>
 
+\endif
 
 */

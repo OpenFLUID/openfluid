@@ -2,10 +2,11 @@
 
 \page use_fluidx Formats of input datasets
 
-This part of the manual describes the FluidX file(s) format. Refer to the 
-\ref use_apps part of this manual to run the simulation.
+\tableofcontents
 
-Before running the simulation, the input dataset must be built.
+This part of the manual describes the FluidX file(s) format used to define a simulation dataset. Refer to the 
+\ref use_apps part of this manual to run the simulations.
+
 An OpenFLUID input dataset includes different informations, defined in one or
 many files:
   \li the spatial domain definition
@@ -19,17 +20,17 @@ All files must be placed into a directory that can be reached by the
 OpenFLUID program used.\n
 As OpenFLUID-Builder uses the FluidX format natively, 
 the entire input dataset  can be created through the OpenFLUID-Builder software.\n
-However, these FluidX files can be created by hand or using external tools.
+Out of OpenFLUID-Builder, these FluidX files can be created by hand or using external tools.
 In this case, it is encouraged to write custom scripts in
-specialized software, such as Geographic Information Systems
-(GIS) or scientific environments such as R, to generate automatically the input dataset.
+dedicated software, such as Geographic Information Systems
+(GIS) or scientific environments such as R.
 
 
 \section user_fluidx_overview Overview
 
 The FluidX file format is an XML based format for OpenFLUID input datasets.
 The OpenFLUID input information can be provided by a one or many files using
-this FluidX format.
+this FluidX formatn with the <tt>.fluidx</tt> file extension.
 
 Whatever the input information is put into one or many files, the following
 sections must be defined in the input file(s) set:
@@ -46,7 +47,7 @@ tag.
 \n
 
 Summary view of the XML structure of FluidX files:
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
 
@@ -155,11 +156,13 @@ The coupled model must be defined in a section delimited by the
 </openfluid>
 \endcode
 
+
 \warning There must be only one model definition in the input dataset.
 
 \warning The order of the simulators and data generators in the \c \<model\> section is important : 
 this order will be the call order at initialization time, and the permanent call order in synchronized 
 coupled model (not applicable for variable time coupled models)
+
 
 
 \subsection user_fluidx_sections_spatialdomain Spatial domain section
@@ -449,6 +452,34 @@ The run configuration must be defined in a section delimited by the
     <valuesbuffer size="10" />
     
   </run>
+</openfluid>
+\endcode
+
+
+\section user_fluidx_params_replacements Runtime variables in parameters
+
+Parameters of simulators and observers can include variables that will be replaced by corresponding values at runtime.
+These variables are :
+<ul>
+<li><tt>${dir.input}</tt> is replaced by the complete path to the input dataset directory
+<li><tt>${dir.output}</tt> is replaced by the complete path to the output results directory
+<li><tt>${dir.temp}</tt> is replaced by the complete path to the directory dedicated to temporary files
+</ul> 
+
+\code
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <model>
+
+    <gparams>
+      <param name="globaldata" value="${dir.input}/data/global" />
+    </gparams>
+
+    <simulator ID="example.simulatorA" >
+      <param name="temppath" value="${dir.temp}/simA" />
+    </simulator>
+    
+  </model>
 </openfluid>
 \endcode
 

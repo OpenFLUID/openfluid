@@ -2,29 +2,30 @@
 
 \page dev_createsim Creation of an empty simulator
 
+\tableofcontents
+
 As mentioned in the previous section (see \ref dev_oviewsim), a simulator must contain two parts :
 <ul>
   <li>A signature giving information about the simulator, 
   and used by the OpenFLUID framework to identify and couple simulators 
   <li>A C++ class defining essential methods for computational code
 </ul>
-These two parts have to be developped in a C++ file (.cpp). 
-They must be compiled before using it in the OpenFLUID environment.
 
+\section dev_createsim_env Required tools for development environment
 
-\section dev_createsim_env Development environment
-
-In order to build and develop a simulator, it is recommended to use the following tools:
+In order to build and develop a simulator, the following tools are required:
 <ul>
- <li>GCC as the C++/C/Fortran compiler</li>
- <li>CMake as the build configuration tool (see http://www.cmake.org).\n
- OpenFLUID provides a CMake module to ease the build of simulators.
- <li>Eclipse as the integrated development environment (see http://www.eclipse.org).\n
- OpenFLUID provides an Eclipse plugin to assist the developer when creating a simulator 
- (Available in the downloads section of the OpenFLUID web site). 
+ <li>GCC as the C++/C/Fortran compiler (version 4.8 or later for C++11 compatibility)</li>
+ <li>CMake as the build configuration tool (version 2.8.12 or later).\n
+ OpenFLUID provides a CMake module to ease the build of simulators. 
 </ul>
 
-Moreover, the required libraries must be installed in order to achieve the build of a simulator.
+These tools are also required when using the OpenFLUID-DevStudio application.
+Detailed instructions for installation of these tools are available on the OpenFLUID Community web site
+(http://www.openfluid-project.org/community). 
+
+The OpenFLUID-DevStudio is the recommended environment for simulators development, and is the only one 
+which is officially supported for OpenFLUID wares development.
 
 
 \section dev_createsim_sign Writing the signature
@@ -37,6 +38,7 @@ The informations included in the signature are :
 <ul>
 <li> Identification
 <li> Development information
+<li> Expected parameters
 <li> Expected variables and spatial attributes
 <li> Produced variables and spatial attributes
 <li> Spatial graph updates
@@ -54,7 +56,7 @@ The minimal signature must include identification information. See part \ref dev
 \section emptyclass_sec Writing the C++ class for the simulator 
 
 The C++ class integrates the computational code of the simulator, corresponding to successive stages of simulations.
-You will find a \ref dev_createsim_exmpl below, giving an example of source code of an empty simulator. 
+You will find a \ref dev_createsim_exmpl below, giving an overview of the source code of an empty simulator. 
 The \ref dev_srccode part gives details about how to develop the computational code in the simulator. 
 \n
 \n
@@ -65,14 +67,14 @@ Any OpenFLUID simulator must be compiled using the GCC C++ compiler (g++)
 and must be linked to the OpenFLUID libraries and dependencies.\n 
 The recommended way to build your simulator is to use the CMake build system 
 with the OpenFLUID CMake module, and provide CMake configuration files (CMakeLists.txt, CMake.in.config).\n
-These operations can be performed automatically using the OpenFLUID plugin for the Eclipse IDE.\n
+These operations can be performed automatically using the OpenFLUID-DevStudio application.\n
 \n
 
 These operations can also be performed manually, with the following steps: 
 <ol>
 <li> Create a build directory in your source directory (e.g. <tt>_build</tt>)
 <li> Go to this build directory
-<li> Run the <tt>cmake ..</tt> command, with the optional <tt>-DCMAKE_BUILD_TYPE=Debug</tt> option for debugging mode
+<li> Run the <tt>cmake ..</tt> command, with the optional <tt>-DCMAKE_BUILD_TYPE=Debug</tt> directive for debugging mode
 <li> Run the build command (e.g. <tt>make</tt>) 
 </ol>
 These steps are for Linux systems, and must be slightly adapted for other systems.\n
@@ -89,8 +91,6 @@ including source code and build configuration using the OpenFLUID CMake module.\
 \code
 #include <openfluid/ware/PluggableSimulator.hpp>
 
-DECLARE_SIMULATOR_PLUGIN
-
 
 // =====================================================================
 // =====================================================================
@@ -100,7 +100,7 @@ BEGIN_SIMULATOR_SIGNATURE("example.simulator")
 
   DECLARE_NAME("Example simulator");
   DECLARE_DESCRIPTION("This simulator is an example");
-  DECLARE_VERSION("13.05");
+  DECLARE_VERSION("14.07");
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_AUTHOR("John","john@foobar.org");
@@ -212,16 +212,21 @@ DEFINE_SIMULATOR_CLASS(ExampleSimulator);
  
 \verbatim
 # Simulator ID
-SET(SIM_ID example.simulator)
-
+# ex: SET(SIM_ID "my.simulator.id")
+SET(SIM_ID "example.simulator")
 
 # list of CPP files, the sim2doc tag must be contained in the first one
+# ex: SET(SIM_CPP MySimulator.cpp)
 SET(SIM_CPP ExampleSimulator.cpp)
 
 # list of Fortran files, if any
 # ex: SET(SIM_FORTRAN Calc.f)
 #SET(SIM_FORTRAN )
 
+
+# list of extra OpenFLUID libraries required
+# ex: SET(SIM_OPENFLUID_COMPONENTS tools)
+SET(SIM_OPENFLUID_COMPONENTS )
 
 # set this to add include directories
 # ex: SET(SIM_INCLUDE_DIRS /path/to/include/A/ /path/to/include/B/)
@@ -236,19 +241,49 @@ SET(SIM_CPP ExampleSimulator.cpp)
 #SET(SIM_LINK_LIBS )
 
 # set this to add definitions
-# ex: SET(SIM_DEFINITIONS "-DDefinition")
+# ex: SET(SIM_DEFINITIONS "-DDebug")
 #SET(SIM_DEFINITIONS )
+
+
+# unique ID for linking parameterization UI extension (if any)
+#SET(WARE_LINK_UID "{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}")
+
+# set this to ON to enable parameterization widget
+# ex: SET(SIM_PARAMSUI_ENABLED ON)
+SET(SIM_PARAMSUI_ENABLED OFF)
+
+# list of CPP files for parameterization widget, if any
+# ex: SET(SIM_PARAMSUI_CPP MyWidget.cpp)
+SET(SIM_PARAMSUI_CPP )
+
+# list of UI files for parameterization widget, if any
+# ex: SET(SIM_PARAMSUI_UI MyWidget.ui)
+SET(SIM_PARAMSUI_UI )
+
+# list of RC files for parameterization widget, if any
+# ex: SET(SIM_PARAMSUI_RC MyWidget.rc)
+SET(SIM_PARAMSUI_RC )
+
+
+# set this to ON to enable translations
+#SET(SIM_TRANSLATIONS_ENABLED ON)
+
+# set this to list the languages for translations
+#SET(SIM_TRANSLATIONS_LANGS fr_FR)
+
+# set this to list the extra files or directories to scan for strings to translate
+#SET(SIM_TRANSLATIONS_EXTRASCANS )
 
 
 # set this to force an install path to replace the default one
 #SET(SIM_INSTALL_PATH "/my/install/path/")
 
 
-# set this to 1 if you do not want automatic build of sim2doc documentation
-SET(SIM_SIM2DOC_DISABLED 1)
+# set this to ON or AUTO for build of simulator documentation using sim2doc
+SET(SIM_SIM2DOC_MODE ON)
 
-#set to 1 to disable installation of sim2doc built documentation
-#SET (SIM_SIM2DOC_INSTALL_DISABLED 1)
+#set to ON to disable installation of sim2doc built documentation
+SET(SIM_SIM2DOC_INSTALL_DISABLED OFF)
 
 # set this if you want to use a specific sim2doc template
 #SET(SIM_SIM2DOC_TPL "/path/to/template")
@@ -259,18 +294,18 @@ SET(SIM_SIM2DOC_DISABLED 1)
 # each dataset in the subdir must be names using the test name and suffixed by .IN
 # ex for tests/test01.IN and tests/test02.IN: SET(SIM_TESTS_DATASETS test01 test02)
 #SET(SIM_TESTS_DATASETS )
-\endverbatim
+ \endverbatim
 
 
 
-\subsection dev_createsim_exmpl_cmakelists File CMakeLists.txt containing the build system using the OpenFLUID CMake module
+\subsection dev_createsim_exmpl_cmakelists File CMakeLists.txt defining the build process
  
 \verbatim
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 INCLUDE(CMake.in.config)
 
-FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware)
+FIND_PACKAGE(OpenFLUIDHelpers REQUIRED)
 
 OPENFLUID_ADD_SIMULATOR(SIM)
 \endverbatim 

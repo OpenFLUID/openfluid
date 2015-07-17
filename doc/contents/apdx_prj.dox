@@ -1,5 +1,7 @@
 /**
 
+\if TodoIsDone
+
 \page apdx_prj Structure of an openfluid project
 
 \todo
@@ -34,5 +36,6 @@ For example, if you wish to run a simulation with <tt>openfluid-engine</tt>, usi
 
 \n
 
+\endif
 
 */

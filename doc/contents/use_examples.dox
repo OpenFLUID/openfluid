@@ -1,5 +1,7 @@
 /**
 
+\if TodoIsDone
+
 \page use_examples Examples projects
 
 \todo
@@ -75,5 +77,6 @@ In case of the example simulation functions are not installed in a standard path
 searched by openfluid-engine, the \c -p command line option should be used 
 to add specific search paths. 
 
+\endif
 
 */

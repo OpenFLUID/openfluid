@@ -110,14 +110,14 @@ class OPENFLUID_API ExternalProgram
 
     /**
       Finds a program using the PATH environment variable
-      @param[in] Program The command of the program to find
+      @param[in] ProgramNames The list of the potential program names of the program to find
       @return The full path of the first found program
     */
     static QString findUsingPATHEnvVar(const QStringList& ProgramNames);
 
     /**
       Finds a program using a given paths list
-      @param[in] Program The program to find
+      @param[in] ProgramNames The list of the potential program names of the program to find
       @param[in] PathsList The list of paths to search
       @return The full path of the first found program
     */
