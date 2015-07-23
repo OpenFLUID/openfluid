@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>820</width>
     <height>530</height>
    </rect>
   </property>
@@ -94,6 +94,9 @@ font : bold;
          <height>0</height>
         </size>
        </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
        <attribute name="headerVisible">
         <bool>false</bool>
        </attribute>
@@ -113,10 +116,10 @@ font : bold;
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
-       <widget class="QWidget" name="InterfacePage">
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+       <widget class="QWidget" name="EnvironmentPage">
+        <layout class="QVBoxLayout" name="verticalLayout_11" stretch="0,1">
          <item>
           <widget class="QGroupBox" name="LanguageGroupBox">
            <property name="title">
@@ -132,16 +135,67 @@ font : bold;
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Interface language (requires restart):</string>
+               <string>Interface language :</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QComboBox" name="LangComboBox"/>
             </item>
+            <item>
+             <widget class="QLabel" name="LangRestartLabel">
+              <property name="font">
+               <font>
+                <weight>50</weight>
+                <italic>true</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color : red;</string>
+              </property>
+              <property name="text">
+               <string notr="true"/>
+              </property>
+              <property name="indent">
+               <number>6</number>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
+            <string>Workspaces</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_12" stretch="1,0">
+            <item>
+             <widget class="openfluid::ui::common::PathsManagementWidget" name="WorkspacesPathsWidget" native="true"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="font">
+               <font>
+                <italic>true</italic>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color : #909090;</string>
+              </property>
+              <property name="text">
+               <string>The top workspace path will be set as the active workspace path</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="BuilderInterfacePage">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QGroupBox" name="ProjectsGroupBox">
            <property name="title">
@@ -270,78 +324,8 @@ font : bold;
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="WorkspacesPage">
-        <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,1,0">
-         <item>
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>Workspaces:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="openfluid::ui::common::PathsManagementWidget" name="WorkspacesPathsWidget" native="true"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_7">
-           <property name="font">
-            <font>
-             <italic>true</italic>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color : #909090;</string>
-           </property>
-           <property name="text">
-            <string>The top workspace path will be set as the active workspace path</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="WaresSearchPage">
-        <layout class="QVBoxLayout" name="verticalLayout_8">
-         <item>
-          <widget class="QTabWidget" name="WaresPathsTabWidget">
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="SimulatorsPathsTab">
-            <attribute name="title">
-             <string>Simulators</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_7">
-             <item>
-              <widget class="openfluid::ui::common::WaresSearchPathsWidget" name="SimulatorsSearchPathsWidget" native="true"/>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="ObserversPathsTab">
-            <attribute name="title">
-             <string>Observers</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_9">
-             <item>
-              <widget class="openfluid::ui::common::WaresSearchPathsWidget" name="ObserversSearchPathsWidget" native="true"/>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="BuilderextsPathsTab">
-            <attribute name="title">
-             <string>Builder-Extensions</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_10">
-             <item>
-              <widget class="openfluid::ui::common::WaresSearchPathsWidget" name="BuilderextsSearchPathsWidget" native="true"/>
-             </item>
-            </layout>
-           </widget>
-          </widget>
-         </item>
-        </layout>
-       </widget>
        <widget class="QWidget" name="SimulationPage">
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,1">
          <item>
           <widget class="QGroupBox" name="groupBox_5">
            <property name="title">
@@ -428,19 +412,6 @@ font : bold;
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
             <item row="1" column="1" colspan="2">
              <widget class="QDateTimeEdit" name="BeginDateEdit">
               <property name="sizePolicy">
@@ -460,7 +431,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>8</month>
-                <day>24</day>
+                <day>22</day>
                </date>
               </property>
               <property name="displayFormat">
@@ -474,24 +445,72 @@ font : bold;
               </property>
              </widget>
             </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </widget>
          </item>
          <item>
-          <spacer name="verticalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string>Wares search paths</string>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QTabWidget" name="WaresPathsTabWidget">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="SimulatorsPathsTab_2">
+               <attribute name="title">
+                <string>Simulators</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_13">
+                <item>
+                 <widget class="openfluid::ui::common::WaresSearchPathsWidget" name="SimulatorsSearchPathsWidget" native="true"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="ObserversPathsTab_2">
+               <attribute name="title">
+                <string>Observers</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_14">
+                <item>
+                 <widget class="openfluid::ui::common::WaresSearchPathsWidget" name="ObserversSearchPathsWidget" native="true"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="BuilderextsPathsTab_2">
+               <attribute name="title">
+                <string>Builder-Extensions</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_15">
+                <item>
+                 <widget class="openfluid::ui::common::WaresSearchPathsWidget" name="BuilderextsSearchPathsWidget" native="true"/>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="DevEnvironmentPage"/>
+       <widget class="QWidget" name="DevEditorPage"/>
        <widget class="QWidget" name="MarketPage">
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
@@ -602,7 +621,6 @@ font : bold;
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="ExtensionsPage"/>
       </widget>
      </item>
     </layout>

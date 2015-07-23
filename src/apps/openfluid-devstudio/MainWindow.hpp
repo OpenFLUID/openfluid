@@ -87,6 +87,8 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void onQuitRequested();
 
+    void onPreferencesAsked();
+
     void onAboutAsked();
 
     void onOnlineWebAsked();

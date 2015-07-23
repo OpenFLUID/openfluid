@@ -58,10 +58,11 @@
 namespace openfluid { namespace ui { namespace common {
 
 
-PreferencesDialog::PreferencesDialog(QWidget* Parent, bool WithBuilderPrefs):
+PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QStringList& ExtsPaths):
   OpenFLUIDDialog(Parent), ui(new Ui::PreferencesDialog),
   m_RecentsChanged(false),
-  m_SimPathsChanged(false), m_ObsPathsChanged(false), m_WaresWatchingChanged(false)
+  m_SimPathsChanged(false), m_ObsPathsChanged(false), m_WaresWatchingChanged(false), m_OriginalLangIndex(0),
+  m_Mode(Mode)
 {
   setWindowModality(Qt::ApplicationModal);
 
@@ -85,40 +86,47 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, bool WithBuilderPrefs):
   QTreeWidgetItem *PrefItem;
 
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
-  PrefItem->setText(0,tr("Interface"));
-  PrefItem->setData(0,Qt::UserRole,INTERFACE_PAGE);
+  PrefItem->setText(0,tr("Environment"));
+  PrefItem->setData(0,Qt::UserRole,ENVIRONMENT_PAGE);
 
-  PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
-  PrefItem->setText(0,tr("Workspaces"));
-  PrefItem->setData(0,Qt::UserRole,WORKSPACES_PAGE);
-
-  PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
-  PrefItem->setText(0,tr("Wares paths"));
-  PrefItem->setData(0,Qt::UserRole,WARESPATHS_PAGE);
-
-  if (WithBuilderPrefs)
+  if (m_Mode == MODE_BUILDER || m_Mode == MODE_FULL)
   {
+    PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
+    PrefItem->setText(0,tr("Interface"));
+    PrefItem->setData(0,Qt::UserRole,BUILDER_PAGE);
+
     PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
     PrefItem->setText(0,tr("Simulations"));
     PrefItem->setData(0,Qt::UserRole,SIMULATION_PAGE);
   }
 
+#if 0  // TODO to enable when it will be developed
+  PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
+  PrefItem->setText(0,tr("Development tools"));
+  PrefItem->setData(0,Qt::UserRole,DEVENV_PAGE);
+#endif
+
+#if 0  // TODO to enable when it will be developed
+  PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
+  PrefItem->setText(0,tr("Code editor"));
+  PrefItem->setData(0,Qt::UserRole,DEVEDITOR_PAGE);
+#endif
+
+#if OPENFLUID_MARKET_ENABLED
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0,tr("Market"));
   PrefItem->setData(0,Qt::UserRole,MARKET_PAGE);
+#endif
 
 
   ui->WorkspacesPathsWidget->setAllowEmpty(false);
   ui->WaresPathsTabWidget->setCurrentIndex(0);
 
-  if (!WithBuilderPrefs)
+  if (!(m_Mode == MODE_BUILDER || m_Mode == MODE_FULL))
     ui->WaresPathsTabWidget->removeTab(2);
 
-  ui->ProjectsGroupBox->setVisible(WithBuilderPrefs);
-  ui->WaresGroupBox->setVisible(WithBuilderPrefs);
-  ui->SpatialDomainGroupBox->setVisible(WithBuilderPrefs);
 
-  initialize();
+  initialize(ExtsPaths);
 
   connect(ui->LangComboBox,SIGNAL(currentIndexChanged(const QString&)),this,SLOT(updateLanguage(const QString&)));
   connect(ui->RecentMaxSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateRecentsMax(int)));
@@ -177,9 +185,8 @@ PreferencesDialog::~PreferencesDialog()
 // =====================================================================
 
 
-void PreferencesDialog::initialize()
+void PreferencesDialog::initialize(const QStringList& ExtsPaths)
 {
-
   openfluid::base::PreferencesManager* PrefsMan =
     openfluid::base::PreferencesManager::instance();
 
@@ -193,93 +200,53 @@ void PreferencesDialog::initialize()
   ui->LangComboBox->addItems(openfluid::base::PreferencesManager::getAvailableLangs());
   ui->LangComboBox->setCurrentIndex(ui->LangComboBox->findText(PrefsMan->getLang()));
 
+  m_OriginalLangIndex = ui->LangComboBox->currentIndex();
+
+  ui->LangRestartLabel->setText("");
+
 
   // Workspaces paths
   ui->WorkspacesPathsWidget->setPathsList(PrefsMan->getWorkspacesPaths());
 
 
-  // Wares search paths
-  ui->SimulatorsSearchPathsWidget->initialize(PrefsMan->getExtraSimulatorsPaths(),
-                                              openfluid::tools::toQStringList(
-                                                  RunEnv->getDefaultSimulatorsPluginsPaths()));
-  ui->ObserversSearchPathsWidget->initialize(PrefsMan->getExtraObserversPaths(),
-                                             openfluid::tools::toQStringList(
-                                                 RunEnv->getDefaultObserversPluginsPaths()));
+  if (m_Mode == MODE_BUILDER || m_Mode == MODE_FULL)
+  {
+    // Wares search paths
+    ui->SimulatorsSearchPathsWidget->initialize(PrefsMan->getExtraSimulatorsPaths(),
+                                                openfluid::tools::toQStringList(
+                                                    RunEnv->getDefaultSimulatorsPluginsPaths()));
+    ui->ObserversSearchPathsWidget->initialize(PrefsMan->getExtraObserversPaths(),
+                                               openfluid::tools::toQStringList(
+                                                   RunEnv->getDefaultObserversPluginsPaths()));
+
+    // interface
+    ui->RecentMaxSpinBox->setValue(PrefsMan->getRecentMax());
+
+    ui->AutoSaveCheckBox->setChecked(PrefsMan->isAutomaticSaveBeforeRun());
+
+    ui->ItemRemovalCheckBox->setChecked(PrefsMan->isItemRemovalConfirm());
+    ui->ParamRemovalCheckBox->setChecked(PrefsMan->isParamRemovalConfirm());
+    ui->WatchCheckBox->setChecked(PrefsMan->isWaresWatchersActive());
+
+    ui->UnitsRemovalCheckBox->setChecked(PrefsMan->isSpatialUnitsRemovalConfirm());
+    ui->ConnectionsRemovalCheckBox->setChecked(PrefsMan->isSpatialConnsRemovalConfirm());
+    ui->AttributesRemovalCheckBox->setChecked(PrefsMan->isSpatialAttrsRemovalConfirm());
 
 
+    // Simulations
+    ui->DeltaTSpinBox->setValue(PrefsMan->getDeltaT());
+
+    ui->BeginDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getBegin(),"yyyy-MM-dd HH:mm:ss"));
+    ui->EndDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getEnd(),"yyyy-MM-dd HH:mm:ss"));
+
+
+    ui->BuilderextsSearchPathsWidget->initialize(PrefsMan->getExtraExtensionsPaths(),ExtsPaths);
+  }
+
+#if OPENFLUID_MARKET_ENABLED
   // Market
   updateMarketplacesList();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::updateMarketplacesList()
-{
-  openfluid::base::PreferencesManager* PrefsMan =
-    openfluid::base::PreferencesManager::instance();
-
-  openfluid::base::PreferencesManager::MarketPlaces_t MPlaces = PrefsMan->getMarketplaces();
-
-  openfluid::base::PreferencesManager::MarketPlaces_t::iterator MPit;
-  openfluid::base::PreferencesManager::MarketPlaces_t::iterator MPitb = MPlaces.begin();
-  openfluid::base::PreferencesManager::MarketPlaces_t::iterator MPite = MPlaces.end();
-
-
-  // clear the list
-  while(ui->MarketPlacesListWidget->count()>0)
-  {
-    delete ui->MarketPlacesListWidget->takeItem(0);
-  }
-
-  // populate the list
-  for (MPit=MPitb;MPit!=MPite;++MPit)
-  {
-    QListWidgetItem* Item = new QListWidgetItem((*MPit).first+ " (" + (*MPit).second+")",ui->MarketPlacesListWidget);
-    QStringList AssociatedData;
-    AssociatedData << (*MPit).first << (*MPit).second;
-    Item->setData(Qt::UserRole,AssociatedData);
-  }
-
-  ui->MarketPlacesListWidget->sortItems();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::initializeBuilderPrefs(const QStringList& ExtsPaths)
-{
-  openfluid::base::PreferencesManager* PrefsMan =
-    openfluid::base::PreferencesManager::instance();
-
-  // interface
-  ui->RecentMaxSpinBox->setValue(PrefsMan->getRecentMax());
-
-  ui->AutoSaveCheckBox->setChecked(PrefsMan->isAutomaticSaveBeforeRun());
-
-  ui->ItemRemovalCheckBox->setChecked(PrefsMan->isItemRemovalConfirm());
-  ui->ParamRemovalCheckBox->setChecked(PrefsMan->isParamRemovalConfirm());
-  ui->WatchCheckBox->setChecked(PrefsMan->isWaresWatchersActive());
-
-  ui->UnitsRemovalCheckBox->setChecked(PrefsMan->isSpatialUnitsRemovalConfirm());
-  ui->ConnectionsRemovalCheckBox->setChecked(PrefsMan->isSpatialConnsRemovalConfirm());
-  ui->AttributesRemovalCheckBox->setChecked(PrefsMan->isSpatialAttrsRemovalConfirm());
-
-
-  // Simulations
-  ui->DeltaTSpinBox->setValue(PrefsMan->getDeltaT());
-
-  ui->BeginDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getBegin(),"yyyy-MM-dd HH:mm:ss"));
-  ui->EndDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getEnd(),"yyyy-MM-dd HH:mm:ss"));
-
-
-  ui->BuilderextsSearchPathsWidget->initialize(PrefsMan->getExtraExtensionsPaths(),ExtsPaths);
-
-
+#endif
 }
 
 
@@ -301,6 +268,11 @@ void PreferencesDialog::changePage(QTreeWidgetItem* Current, QTreeWidgetItem* Pr
 void PreferencesDialog::updateLanguage(const QString& Lang)
 {
   openfluid::base::PreferencesManager::instance()->setLang(Lang);
+
+  if (ui->LangComboBox->currentIndex() != m_OriginalLangIndex)
+    ui->LangRestartLabel->setText(tr("Restart required"));
+  else
+    ui->LangRestartLabel->setText("");
 }
 
 
@@ -487,6 +459,41 @@ void PreferencesDialog::removeMarketPlace()
 
     updateMarketplacesList();
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateMarketplacesList()
+{
+  openfluid::base::PreferencesManager* PrefsMan =
+    openfluid::base::PreferencesManager::instance();
+
+  openfluid::base::PreferencesManager::MarketPlaces_t MPlaces = PrefsMan->getMarketplaces();
+
+  openfluid::base::PreferencesManager::MarketPlaces_t::iterator MPit;
+  openfluid::base::PreferencesManager::MarketPlaces_t::iterator MPitb = MPlaces.begin();
+  openfluid::base::PreferencesManager::MarketPlaces_t::iterator MPite = MPlaces.end();
+
+
+  // clear the list
+  while(ui->MarketPlacesListWidget->count()>0)
+  {
+    delete ui->MarketPlacesListWidget->takeItem(0);
+  }
+
+  // populate the list
+  for (MPit=MPitb;MPit!=MPite;++MPit)
+  {
+    QListWidgetItem* Item = new QListWidgetItem((*MPit).first+ " (" + (*MPit).second+")",ui->MarketPlacesListWidget);
+    QStringList AssociatedData;
+    AssociatedData << (*MPit).first << (*MPit).second;
+    Item->setData(Qt::UserRole,AssociatedData);
+  }
+
+  ui->MarketPlacesListWidget->sortItems();
 }
 
 

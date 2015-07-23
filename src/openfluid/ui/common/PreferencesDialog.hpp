@@ -63,13 +63,22 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 
+  public:
+
+    enum DisplayMode { MODE_FULL,
+                       MODE_BUILDER,
+                       MODE_DEVSTUDIO
+                      };
+
+
   private:
 
-    enum PagesIndexes { INTERFACE_PAGE = 0,
-                        WORKSPACES_PAGE = 1,
-                        WARESPATHS_PAGE = 2,
-                        SIMULATION_PAGE = 3,
-                        MARKET_PAGE = 4
+    enum PagesIndexes { ENVIRONMENT_PAGE = 0,
+                        BUILDER_PAGE = 1,
+                        SIMULATION_PAGE = 2,
+                        DEVENV_PAGE = 3,
+                        DEVEDITOR_PAGE = 4,
+                        MARKET_PAGE = 5
                         };
 
   private slots:
@@ -129,18 +138,20 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     bool m_WaresWatchingChanged;
 
-    void initialize();
+    int m_OriginalLangIndex;
+
+    DisplayMode m_Mode;
+
+    void initialize(const QStringList& ExtsPaths);
 
     void updateMarketplacesList();
 
 
   public:
 
-    PreferencesDialog(QWidget *Parent, bool WithBuilderPrefs = false);
+    PreferencesDialog(QWidget *Parent, DisplayMode Mode = MODE_FULL, const QStringList& ExtsPaths = QStringList());
 
     virtual ~PreferencesDialog();
-
-    void initializeBuilderPrefs(const QStringList& ExtsPaths);
 
     bool isRecentsChanged() const { return m_RecentsChanged; }
 

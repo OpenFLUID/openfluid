@@ -1520,35 +1520,35 @@ Continuer quand même?</translation>
         <translation>Extensions Builder</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="198"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="202"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="201"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="205"/>
         <source>Simulator...</source>
         <translation>Simulateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="199"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="203"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="202"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="206"/>
         <source>Observer...</source>
         <translation>Observateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="200"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="204"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="203"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="207"/>
         <source>Builder extension...</source>
         <translation>Extension Builder...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="206"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="209"/>
         <source>Save as...</source>
         <translation>Enregistrer sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="207"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="210"/>
         <source>Save the current file as...</source>
         <translation>Enregistrer le fichier courant sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="209"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="212"/>
         <source>Delete ware</source>
         <translation>Supprimer le ware</translation>
     </message>
@@ -1557,97 +1557,102 @@ Continuer quand même?</translation>
         <translation type="obsolete">Changer d&apos;espace de travail</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="62"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="63"/>
         <source>Preparing user interface</source>
         <translation>Préparation de l&apos;interface utilisateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="98"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="99"/>
         <source>Initializing sources codes management</source>
         <translation>Initialisation du management des codes sources</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="109"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="110"/>
         <source>Configuring UI</source>
         <translation>Configuration de l&apos;interface utilisateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="174"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="177"/>
         <source>Initializing workspace</source>
         <translation>Initialisation de l&apos;espace de travail</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="214"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="217"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="224"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="226"/>
+        <source>Preferences...</source>
+        <translation>Préférences...</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="232"/>
         <source>Web site</source>
         <translation>Site web</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="225"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="233"/>
         <source>Community site</source>
         <translation>Site Community</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="226"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="234"/>
         <source>Email</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="228"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="236"/>
         <source>About</source>
         <translation>A propos</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="242"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="250"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="243"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="251"/>
         <source>New ware</source>
         <translation>Nouveau ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="247"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="255"/>
         <source>Open ware</source>
         <translation>Ouvrir un ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="265"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="273"/>
         <source>Edit</source>
         <translation>Edition</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="272"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="282"/>
         <source>Build</source>
         <translation>Construire</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="274"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="284"/>
         <source>Active configuration</source>
         <translation>Configuration active</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="278"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="288"/>
         <source>Active build action</source>
         <translation>Action de construction active</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="282"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="292"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="286"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="296"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="287"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="297"/>
         <source>OpenFLUID online</source>
         <translation>OpenFLUID en ligne</translation>
     </message>
@@ -2193,77 +2198,91 @@ Continuer quand même?</translation>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="123"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="126"/>
         <source>Language</source>
         <translation>Langue</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="135"/>
         <source>Interface language (requires restart):</source>
-        <translation>Langue de l&apos;interface (nécessite un redémarrage):</translation>
+        <translation type="obsolete">Langue de l&apos;interface (nécessite un redémarrage):</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="148"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="138"/>
+        <source>Interface language :</source>
+        <translation>Langue de l&apos;interface:</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="171"/>
+        <source>Workspaces</source>
+        <translation>Espaces de travail</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="202"/>
         <source>Projects</source>
         <translation>Projets</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="154"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="208"/>
         <source>Maximum number of recent projects:</source>
         <translation>Nombre maximum de projets récents:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="184"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="238"/>
         <source>Clear list</source>
         <translation>Effacer la liste</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="191"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="245"/>
         <source>Save project automatically before simulation run</source>
         <translation>Enregistrer automatiquement le projet avant le lancement des simulations</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="201"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="255"/>
         <source>Simulators, generators and observers</source>
         <translation>Simulateurs, générateurs et observateurs</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="207"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="261"/>
         <source>Confirm removal of simulators, generators or observers</source>
         <translation>Confirmer la supression de simulateurs, générateurs ou observateurs</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="214"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="268"/>
         <source>Confirm removal of parameters</source>
         <translation>Confirmer la suppression de paramètres</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="221"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="275"/>
         <source>Watch for simulators and observers plugins changes on disk (recommended)</source>
         <translation>Surveiller les changements sur disque des simulateurs et observateurs (recommandé)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="231"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="285"/>
         <source>Spatial Domain</source>
         <translation>Domaine spatial</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="237"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="291"/>
         <source>Confirm removal of spatial units</source>
         <translation>Confirmer la suppression d&apos;unités spatiales</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="244"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="298"/>
         <source>Confirm removal of spatial connections</source>
         <translation>Confirmer la suppression de connexions spatiales</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="251"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="305"/>
         <source>Confirm removal of spatial attributes</source>
         <translation>Confirmer la suppression d&apos;attributs spatiaux</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="331"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="467"/>
+        <source>Wares search paths</source>
+        <translation>Chemins de recherche</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="497"/>
         <source>Builder-Extensions</source>
         <translation></translation>
     </message>
@@ -2284,62 +2303,61 @@ Continuer quand même?</translation>
         <translation type="obsolete">Chemins de recherche</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="348"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="332"/>
         <source>Default time settings</source>
         <translation>Configuration du temps par défaut</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="360"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="344"/>
         <source>Period end:</source>
         <translation>Début de la période:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="376"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="360"/>
         <source>Period begin:</source>
         <translation>Fin de la période:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="424"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="408"/>
         <source>Default DeltaT:</source>
         <translation>DeltaT par défaut:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="506"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="525"/>
         <source>Marketplaces</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="537"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="556"/>
         <source>Edit selected marketplace</source>
         <translation>Editer la marketplace sélectionnée</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="565"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="584"/>
         <source>Add marketplace</source>
         <translation>Ajouter une marketplace</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="593"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="612"/>
         <source>Remove marketplace</source>
         <translation>Supprimer une marketplace</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="311"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="477"/>
         <source>Simulators</source>
         <translation>Simulateurs</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="278"/>
         <source>Workspaces:</source>
-        <translation>Espaces de travail:</translation>
+        <translation type="obsolete">Espaces de travail:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="296"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="188"/>
         <source>The top workspace path will be set as the active workspace path</source>
         <translation>Le premier espace de travail de la liste sera l&apos;espace de travail actif</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="321"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="487"/>
         <source>Observers</source>
         <translation>Observateurs</translation>
     </message>
@@ -2526,53 +2544,53 @@ Continuer quand même?</translation>
         <translation>Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="629"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="646"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="632"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="649"/>
         <source>Extension error</source>
         <translation>Erreur d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="630"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="633"/>
         <source>Unknown extension type.
 Extension cannot be instantiated.</source>
         <translation>Type d&apos;extension inconnu.
 L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="637"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="640"/>
         <source>Extension warning</source>
         <translation>Avertissement d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="638"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="641"/>
         <source>Extension is already active.</source>
         <translation>L&apos;extension est déjà active.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="647"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="650"/>
         <source>Extension is not registered.
 Extension cannot be instantiated.</source>
         <translation>Extension inconnue.
 L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="739"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="742"/>
         <source>Ghost simulator edition error</source>
         <translation>Erreur d&apos;édition de simulateur fantôme</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="740"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="775"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="743"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="778"/>
         <source>Unable to find ghost simulator</source>
         <translation>Impossible de trouver le simulateur fantôme</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="754"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="757"/>
         <source>Source code edition error</source>
         <translation>Erreur d&apos;édition du code source</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="774"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="777"/>
         <source>Source code generation error</source>
         <translation>Erreur de génération du code source</translation>
     </message>
@@ -3793,29 +3811,47 @@ Continuer quand même?</translation>
 <context>
     <name>openfluid::ui::common::PreferencesDialog</name>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="88"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="95"/>
         <source>Interface</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="92"/>
         <source>Workspaces</source>
-        <translation>Espaces de travail</translation>
+        <translation type="obsolete">Espaces de travail</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="96"/>
         <source>Wares paths</source>
-        <translation>Chemins des wares</translation>
+        <translation type="obsolete">Chemins des wares</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="102"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="89"/>
+        <source>Environment</source>
+        <translation>Environnement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="99"/>
         <source>Simulations</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="107"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="105"/>
+        <source>Development tools</source>
+        <translation>Outils de développement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="111"/>
+        <source>Code editor</source>
+        <translation>Editeur de code</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="117"/>
         <source>Market</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="273"/>
+        <source>Restart required</source>
+        <translation>Redémarrage requis</translation>
     </message>
 </context>
 <context>

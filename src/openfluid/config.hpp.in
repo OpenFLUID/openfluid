@@ -44,6 +44,13 @@
 
 #include <string>
 
+
+// Definitions based on build options
+#define OPENFLUID_GUI_ENABLED @OPENFLUID_ENABLE_GUI@
+#define OPENFLUID_LANDR_ENABLED @OPENFLUID_ENABLE_LANDR@
+#define OPENFLUID_MARKET_ENABLED @OPENFLUID_ENABLE_MARKET@
+
+
 namespace openfluid { namespace config {
 
 // App Name

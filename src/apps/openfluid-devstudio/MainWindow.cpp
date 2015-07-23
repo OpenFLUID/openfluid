@@ -51,6 +51,7 @@
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
+#include <openfluid/ui/common/PreferencesDialog.hpp>
 #include <openfluid/ui/config.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
@@ -122,6 +123,8 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
   // TODO to enable again when developped
   //connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
   connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
+
+  connect(m_Actions["Preferences"], SIGNAL(triggered()), this, SLOT(onPreferencesAsked()));
 
   connect(m_Actions["HelpAbout"], SIGNAL(triggered()), this, SLOT(onAboutAsked()));
   connect(m_Actions["HelpOnlineWeb"], SIGNAL(triggered()), this, SLOT(onOnlineWebAsked()));
@@ -220,6 +223,11 @@ void MainWindow::createLocalActions()
    (http://qt-project.org/doc/qt-4.8/qaction.html#menuRole-prop)*/
   m_Actions["Quit"]->setMenuRole(QAction::QuitRole);
 
+  m_Actions["Preferences"] = new QAction(tr("Preferences..."), this);
+  m_Actions["Preferences"]->setMenuRole(QAction::PreferencesRole);
+
+
+
   //Help menu
   m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
   m_Actions["HelpOnlineCommunity"] = new QAction(tr("Community site"), this);
@@ -268,6 +276,8 @@ void MainWindow::createMenus()
   Menu->addAction(mp_Toolbar->action("Paste"));
   Menu->addAction(mp_Toolbar->action("FindReplace"));
   Menu->addAction(mp_Toolbar->action("GoToLine"));
+  Menu->addSeparator();
+  Menu->addAction(m_Actions["Preferences"]);
 
   Menu = menuBar()->addMenu(tr("Build"));
   Menu->addAction(mp_Toolbar->action("Configure"));
@@ -343,6 +353,18 @@ void MainWindow::onQuitRequested()
 
   if (mp_Collection->closeAllWidgets())
     qApp->quit();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onPreferencesAsked()
+{
+  openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),
+                                                    openfluid::ui::common::PreferencesDialog::MODE_DEVSTUDIO);
+  PrefsDlg.exec();
 }
 
 

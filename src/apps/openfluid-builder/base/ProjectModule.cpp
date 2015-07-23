@@ -429,10 +429,13 @@ void ProjectModule::whenPreferencesAsked()
 {
   bool WaresWatchingUpdated = false;
 
-  openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),true);
-  PrefsDlg.initializeBuilderPrefs(openfluid::tools::toQStringList(ExtensionPluginsManager::instance()
-                                                                      ->getPluginsStandardSearchPaths()));
+  openfluid::ui::common::PreferencesDialog PrefsDlg(
+      QApplication::activeWindow(),
+      openfluid::ui::common::PreferencesDialog::MODE_BUILDER,
+      openfluid::tools::toQStringList(ExtensionPluginsManager::instance()->getPluginsStandardSearchPaths()));
+
   PrefsDlg.exec();
+
 
   openfluid::base::PreferencesManager* PrefsMgr =
     openfluid::base::PreferencesManager::instance();
