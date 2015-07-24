@@ -284,13 +284,23 @@ class OPENFLUID_API PreferencesManager
 
     QString getWaresdevConfigEnv(const QString& Name);
 
+    void setWaresdevConfigEnv(const QString& Name,const QString& Value);
+
     QString getWaresdevConfigOptions();
+
+    void setWaresdevConfigOptions(const QString& Options);
 
     QString getWaresdevConfigGenerator();
 
+    void setWaresdevConfigGenerator(const QString& Generator);
+
     QString getWaresdevBuildEnv(const QString& Name);
 
+    void setWaresdevBuildEnv(const QString& Name,const QString& Value);
+
     bool isWaresdevShowCommandEnv(const QString& Name);
+
+    void setWaresdevShowCommandEnv(const QString& Name, bool Enabled);
 
 
 };

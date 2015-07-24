@@ -8,7 +8,7 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp OpenFLUIDSplashS
                             PathsManagementWidget.cpp WaresSearchPathsWidget.cpp
                             LogExplorerDialog.cpp 
                             EditMarketplaceDialog.cpp
-                            PreferencesDialog.cpp
+                            PreferencesDialog.cpp DetectQtDevToolsDialog.cpp
                             )
 
 SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashScreen.hpp
@@ -19,7 +19,7 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashS
                             PathsManagementWidget.hpp WaresSearchPathsWidget.hpp
                             LogExplorerDialog.hpp
                             EditMarketplaceDialog.hpp
-                            PreferencesDialog.hpp
+                            PreferencesDialog.hpp DetectQtDevToolsDialog.hpp 
                             )
 
 
@@ -27,7 +27,7 @@ QT4_WRAP_UI(OPENFLUID_UI_COMMON_UI RunSimulationDialog.ui AboutDialog.ui
                                    SignatureEditorWidget.ui SignatureDataEditorWidget.ui EditSignatureDialog.ui
                                    PathsManagementWidget.ui WaresSearchPathsWidget.ui
                                    LogExplorerDialog.ui
-                                   PreferencesDialog.ui
+                                   PreferencesDialog.ui DetectQtDevToolsDialog.ui
                                    EditMarketplaceDialog.ui
                                    )
                                    

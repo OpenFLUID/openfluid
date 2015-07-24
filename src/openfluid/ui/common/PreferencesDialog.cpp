@@ -46,13 +46,14 @@
 #include <openfluid/ui/config.hpp>
 
 #include "ui_PreferencesDialog.h"
-#include "PreferencesDialog.hpp"
+#include <openfluid/ui/common/PreferencesDialog.hpp>
 #include "ui_WaresSearchPathsWidget.h"
-#include "WaresSearchPathsWidget.hpp"
-#include "EditMarketplaceDialog.hpp"
-
+#include <openfluid/ui/common/WaresSearchPathsWidget.hpp>
+#include <openfluid/ui/common/EditMarketplaceDialog.hpp>
+#include <openfluid/ui/common/DetectQtDevToolsDialog.hpp>
 
 #include <QFileDialog>
+#include <QMessageBox>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -100,11 +101,9 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QS
     PrefItem->setData(0,Qt::UserRole,SIMULATION_PAGE);
   }
 
-#if 0  // TODO to enable when it will be developed
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0,tr("Development tools"));
   PrefItem->setData(0,Qt::UserRole,DEVENV_PAGE);
-#endif
 
 #if 0  // TODO to enable when it will be developed
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
@@ -158,10 +157,23 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QS
   connect(ui->RemoveMarketPlaceButton,SIGNAL(clicked()),this,SLOT(removeMarketPlace()));
 
 
+  connect(ui->ConfigPathEnvEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateDevConfigPATH()));
+  connect(ui->ConfigGeneratorEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateDevConfigGenerator()));
+  connect(ui->ConfigOptionsEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateDevConfigOptions()));
+  connect(ui->BuildPathEnvEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateDevBuildPATH()));
+  connect(ui->ShowPathCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateDevShowPATH(bool)));
+
+#if !defined(OPENFLUID_OS_WINDOWS)
+  ui->DetectQtDevWidget->setVisible(false);
+#else
+  connect(ui->DetectQtDevButton,SIGNAL(clicked()),this,SLOT(detectQtDevToolsMinGW()));
+#endif
+
+
+
   connect(ui->PrefsTreeWidget,
           SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
           this, SLOT(changePage(QTreeWidgetItem*,QTreeWidgetItem*)));
-
 
   ui->PrefsTreeWidget->setCurrentItem(ui->PrefsTreeWidget->topLevelItem(0));
 
@@ -242,6 +254,14 @@ void PreferencesDialog::initialize(const QStringList& ExtsPaths)
 
     ui->BuilderextsSearchPathsWidget->initialize(PrefsMan->getExtraExtensionsPaths(),ExtsPaths);
   }
+
+  // Development tools
+  ui->ConfigPathEnvEdit->setText(PrefsMan->getWaresdevConfigEnv("PATH"));
+  ui->ConfigGeneratorEdit->setText(PrefsMan->getWaresdevConfigGenerator());
+  ui->ConfigOptionsEdit->setText(PrefsMan->getWaresdevConfigOptions());
+  ui->BuildPathEnvEdit->setText(PrefsMan->getWaresdevBuildEnv("PATH"));
+  ui->ShowPathCheckBox->setChecked(PrefsMan->isWaresdevShowCommandEnv("PATH"));
+
 
 #if OPENFLUID_MARKET_ENABLED
   // Market
@@ -539,6 +559,78 @@ void PreferencesDialog::processBextUserPathsUpdate()
 void PreferencesDialog::processWorkspacesPathsUpdate()
 {
   openfluid::base::PreferencesManager::instance()->setWorkspacesPaths(ui->WorkspacesPathsWidget->getPathsList());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateDevConfigPATH()
+{
+  openfluid::base::PreferencesManager::instance()->setWaresdevConfigEnv("PATH",ui->ConfigPathEnvEdit->text());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateDevConfigGenerator()
+{
+  openfluid::base::PreferencesManager::instance()->setWaresdevConfigGenerator(ui->ConfigGeneratorEdit->text());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateDevConfigOptions()
+{
+  openfluid::base::PreferencesManager::instance()->setWaresdevConfigOptions(ui->ConfigOptionsEdit->text());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateDevBuildPATH()
+{
+  openfluid::base::PreferencesManager::instance()->setWaresdevBuildEnv("PATH",ui->BuildPathEnvEdit->text());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateDevShowPATH(bool Enabled)
+{
+  openfluid::base::PreferencesManager::instance()->setWaresdevShowCommandEnv("PATH",Enabled);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::detectQtDevToolsMinGW()
+{
+#if defined(OPENFLUID_OS_WINDOWS)
+  DetectQtDevToolsDialog Dlg(this);
+
+  if (Dlg.exec() == QDialog::Accepted)
+  {
+    ui->ConfigPathEnvEdit->setText(QDir::toNativeSeparators(Dlg.getFrameworkPath())+";"+
+                                   QDir::toNativeSeparators(Dlg.getDevToolsPath())+";%%PATH%%");
+    ui->ConfigGeneratorEdit->setText("MinGW Makefiles");
+
+    updateDevConfigGenerator();
+    updateDevConfigPATH();
+  }
+#endif
 }
 
 

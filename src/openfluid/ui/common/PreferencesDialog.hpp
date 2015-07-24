@@ -125,6 +125,18 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void processWorkspacesPathsUpdate();
 
+    void updateDevConfigPATH();
+
+    void updateDevConfigGenerator();
+
+    void updateDevConfigOptions();
+
+    void updateDevBuildPATH();
+
+    void updateDevShowPATH(bool Enabled);
+
+    void detectQtDevToolsMinGW();
+
 
   private:
 

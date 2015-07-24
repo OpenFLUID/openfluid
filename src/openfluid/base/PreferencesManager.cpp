@@ -1389,9 +1389,31 @@ QString PreferencesManager::getWaresdevConfigEnv(const QString& Name)
 // =====================================================================
 
 
+void PreferencesManager::setWaresdevConfigEnv(const QString& Name,const QString& Value)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.commands/config/env/"+Name,Value);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 QString PreferencesManager::getWaresdevConfigOptions()
 {
   return mp_ConfFile->value("openfluid.waresdev.commands/config/options","").toString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevConfigOptions(const QString& Options)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.commands/config/options",Options);
+  mp_ConfFile->sync();
 }
 
 
@@ -1418,9 +1440,31 @@ QString PreferencesManager::getWaresdevConfigGenerator()
 // =====================================================================
 
 
+void PreferencesManager::setWaresdevConfigGenerator(const QString& Generator)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.commands/config/generator",Generator);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 QString PreferencesManager::getWaresdevBuildEnv(const QString& Name)
 {
   return mp_ConfFile->value("openfluid.waresdev.commands/build/env/"+Name,"").toString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevBuildEnv(const QString& Name,const QString& Value)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.commands/build/env/"+Name,Value);
+  mp_ConfFile->sync();
 }
 
 
@@ -1440,6 +1484,17 @@ bool PreferencesManager::isWaresdevShowCommandEnv(const QString& Name)
   mp_ConfFile->endGroup();
 
   return Shown;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevShowCommandEnv(const QString& Name, bool Enabled)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.commands/showenv/"+Name,Enabled);
+  mp_ConfFile->sync();
 }
 
 
