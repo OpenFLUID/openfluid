@@ -1023,6 +1023,30 @@ Continuer quand même?</translation>
     </message>
 </context>
 <context>
+    <name>DetectQtDevToolsDialog</name>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.ui" line="22"/>
+        <source>Qt path:</source>
+        <translation>Chemin de Qt:
+</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.ui" line="29"/>
+        <source>detected if empty</source>
+        <translation>détecté si non renseigné</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.ui" line="36"/>
+        <source>Browse...</source>
+        <translation>Parcourir...</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.ui" line="45"/>
+        <source>Run detection...</source>
+        <translation>Lancer la détection...</translation>
+    </message>
+</context>
+<context>
     <name>EditAttributeNameDialog</name>
     <message>
         <source>Dialog</source>
@@ -2217,72 +2241,72 @@ Continuer quand même?</translation>
         <translation>Espaces de travail</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="202"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="205"/>
         <source>Projects</source>
         <translation>Projets</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="208"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="211"/>
         <source>Maximum number of recent projects:</source>
         <translation>Nombre maximum de projets récents:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="238"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="241"/>
         <source>Clear list</source>
         <translation>Effacer la liste</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="245"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="248"/>
         <source>Save project automatically before simulation run</source>
         <translation>Enregistrer automatiquement le projet avant le lancement des simulations</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="255"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="258"/>
         <source>Simulators, generators and observers</source>
         <translation>Simulateurs, générateurs et observateurs</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="261"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="264"/>
         <source>Confirm removal of simulators, generators or observers</source>
         <translation>Confirmer la supression de simulateurs, générateurs ou observateurs</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="268"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="271"/>
         <source>Confirm removal of parameters</source>
         <translation>Confirmer la suppression de paramètres</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="275"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="278"/>
         <source>Watch for simulators and observers plugins changes on disk (recommended)</source>
         <translation>Surveiller les changements sur disque des simulateurs et observateurs (recommandé)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="285"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="288"/>
         <source>Spatial Domain</source>
         <translation>Domaine spatial</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="291"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="294"/>
         <source>Confirm removal of spatial units</source>
         <translation>Confirmer la suppression d&apos;unités spatiales</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="298"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="301"/>
         <source>Confirm removal of spatial connections</source>
         <translation>Confirmer la suppression de connexions spatiales</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="305"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="308"/>
         <source>Confirm removal of spatial attributes</source>
         <translation>Confirmer la suppression d&apos;attributs spatiaux</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="467"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="470"/>
         <source>Wares search paths</source>
         <translation>Chemins de recherche</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="497"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="500"/>
         <source>Builder-Extensions</source>
         <translation></translation>
     </message>
@@ -2303,47 +2327,88 @@ Continuer quand même?</translation>
         <translation type="obsolete">Chemins de recherche</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="332"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="335"/>
         <source>Default time settings</source>
         <translation>Configuration du temps par défaut</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="344"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="347"/>
         <source>Period end:</source>
         <translation>Début de la période:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="360"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="363"/>
         <source>Period begin:</source>
         <translation>Fin de la période:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="408"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="411"/>
         <source>Default DeltaT:</source>
         <translation>DeltaT par défaut:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="525"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="520"/>
+        <source>Configuration</source>
+        <translation>Configuration</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="529"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="568"/>
+        <source>PATH env. var.:</source>
+        <translation>Var. d&apos;env. PATH:</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="539"/>
+        <source>CMake options:</source>
+        <translation>Options CMake:</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="549"/>
+        <source>CMake generator:</source>
+        <translation>Générateur CMake:</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="562"/>
+        <source>Build</source>
+        <translation>Construction</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="612"/>
+        <source>Detect Qt development tools (MinGW)</source>
+        <translation>Détecter les outils de développement Qt (MinGW)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="638"/>
+        <source>Show PATH environment variable when running development tools</source>
+        <translation>Afficher la variable d&apos;environnement PATH à l&apos;exécution des outils de développement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="669"/>
+        <source>In PATH env. vars., the %%PATH%% string is replaced by actual system PATH</source>
+        <translation>Dans la var. d&apos;env. PATH, la chaîne %%PATH%% est remplacée par la valeur PATH du système</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="703"/>
         <source>Marketplaces</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="556"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="734"/>
         <source>Edit selected marketplace</source>
         <translation>Editer la marketplace sélectionnée</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="584"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="762"/>
         <source>Add marketplace</source>
         <translation>Ajouter une marketplace</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="612"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="790"/>
         <source>Remove marketplace</source>
         <translation>Supprimer une marketplace</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="477"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="480"/>
         <source>Simulators</source>
         <translation>Simulateurs</translation>
     </message>
@@ -2357,7 +2422,7 @@ Continuer quand même?</translation>
         <translation>Le premier espace de travail de la liste sera l&apos;espace de travail actif</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="487"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="490"/>
         <source>Observers</source>
         <translation>Observateurs</translation>
     </message>
@@ -3736,6 +3801,71 @@ Continuer quand même?</translation>
     </message>
 </context>
 <context>
+    <name>openfluid::ui::common::DetectQtDevToolsDialog</name>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="95"/>
+        <source>Select working directory</source>
+        <translation>Sélectionner le répertoire de travail</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="151"/>
+        <source>Searching for qtpaths.exe</source>
+        <translation>Recherche de qtpaths.exe</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="159"/>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="229"/>
+        <source>Searching in %1... </source>
+        <translation>Recherche dans %1...</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="175"/>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="250"/>
+        <source>not found</source>
+        <translation>non trouvé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="177"/>
+        <source>found (%1)</source>
+        <translation>trouvé (%1)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="186"/>
+        <source>Searching for Qt framework path</source>
+        <translation>Recherche du framework Qt</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="201"/>
+        <source>Qt framework path: %1</source>
+        <translation>Chemin du framework Qt : %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="209"/>
+        <source>Qt framework not found</source>
+        <translation>Framework Qt non trouvé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="219"/>
+        <source>Searching for Qt development tools</source>
+        <translation>Recherche des outils de développement Qt</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="239"/>
+        <source>found</source>
+        <translation>trouvé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="242"/>
+        <source>Qt development tools path: %1</source>
+        <translation>Chemin des outils de développement Qt : %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="260"/>
+        <source>Qt development tools not found</source>
+        <translation>Outils de développement Qt non trouvés</translation>
+    </message>
+</context>
+<context>
     <name>openfluid::ui::common::EditMarketplaceDialog</name>
     <message>
         <location filename="../../src/openfluid/ui/common/EditMarketplaceDialog.cpp" line="99"/>
@@ -3811,7 +3941,7 @@ Continuer quand même?</translation>
 <context>
     <name>openfluid::ui::common::PreferencesDialog</name>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="95"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="96"/>
         <source>Interface</source>
         <translation></translation>
     </message>
@@ -3824,12 +3954,12 @@ Continuer quand même?</translation>
         <translation type="obsolete">Chemins des wares</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="89"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="90"/>
         <source>Environment</source>
         <translation>Environnement</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="99"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="100"/>
         <source>Simulations</source>
         <translation></translation>
     </message>
@@ -3839,17 +3969,17 @@ Continuer quand même?</translation>
         <translation>Outils de développement</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="111"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="110"/>
         <source>Code editor</source>
         <translation>Editeur de code</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="117"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="116"/>
         <source>Market</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="273"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="293"/>
         <source>Restart required</source>
         <translation>Redémarrage requis</translation>
     </message>
