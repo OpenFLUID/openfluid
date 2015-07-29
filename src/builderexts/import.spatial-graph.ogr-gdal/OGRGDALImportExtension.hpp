@@ -43,8 +43,6 @@
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 #include "PrecheckImportDialog.hpp"
 
-DECLARE_BUILDEREXT_PLUGIN
-
 
 // =====================================================================
 // =====================================================================

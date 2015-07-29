@@ -112,9 +112,6 @@ void NewSimulatorBuddy::writeSimulatorCPP()
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "DECLARE_SIMULATOR_PLUGIN" << std::endl;
-  CPPContent << std::endl;
-  CPPContent << std::endl;
   CPPContent << "BEGIN_SIMULATOR_SIGNATURE(\"" << m_Options["simid"] << "\")" << std::endl;
   CPPContent << std::endl;
   CPPContent << "  DECLARE_NAME(\"\");" << std::endl;

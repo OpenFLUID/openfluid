@@ -42,14 +42,9 @@
 
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 
 #include <QDialog>
-
-
-
-DECLARE_BUILDEREXT_PLUGIN
 
 
 namespace Ui

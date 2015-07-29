@@ -30,8 +30,12 @@ ENDIF()
 
 
 
+CONFIGURE_FILE(global.hpp.in global.hpp @ONLY)
+CONFIGURE_FILE(config.hpp.in config.hpp @ONLY)
+
+
 INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp ware.hpp 
-              dllexport.hpp debug.hpp deprecation.hpp global.hpp
+              dllexport.hpp debug.hpp deprecation.hpp
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
 
 IF(OPENFLUID_ENABLE_MARKET)
@@ -39,19 +43,7 @@ IF(OPENFLUID_ENABLE_MARKET)
           DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})  
 ENDIF()  
 
-
-CONFIGURE_FILE(openfluid.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" @ONLY)
-CONFIGURE_FILE(openfluid-gui.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid-gui.pc" @ONLY)
-CONFIGURE_FILE(openfluid-other.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid-other.pc" @ONLY)
-
-CONFIGURE_FILE(config.hpp.in config.hpp @ONLY)
-
-
-INSTALL(FILES "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" 
-              "${PKGCONFIG_OUTPUT_PATH}/openfluid-gui.pc"
-              "${PKGCONFIG_OUTPUT_PATH}/openfluid-other.pc"
-        DESTINATION ${PKGCONFIG_INSTALL_PATH})
-
 INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.hpp" 
+              "${CMAKE_CURRENT_BINARY_DIR}/global.hpp"
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
                        

@@ -52,13 +52,6 @@
 // =====================================================================
 
 
-DECLARE_OBSERVER_PLUGIN
-
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_OBSERVER_SIGNATURE("export.vars.plot.gnuplot")
 
   DECLARE_NAME("Plots simulation variables using GNUplot");

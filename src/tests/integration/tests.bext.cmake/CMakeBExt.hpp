@@ -47,9 +47,6 @@
 #include <QDialog>
 
 
-DECLARE_BUILDEREXT_PLUGIN
-
-
 namespace Ui
 {
   class BExtDialog;

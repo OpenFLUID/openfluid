@@ -46,12 +46,6 @@
 // =====================================================================
 
 
-DECLARE_SIMULATOR_PLUGIN
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_SIMULATOR_SIGNATURE("examples.surf.fire.prod-spread")
 
   DECLARE_NAME("Example simulator for production and spreading of fire over land units");

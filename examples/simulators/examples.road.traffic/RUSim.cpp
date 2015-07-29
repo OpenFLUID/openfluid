@@ -44,13 +44,6 @@
 // =====================================================================
 
 
-DECLARE_SIMULATOR_PLUGIN;
-
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_SIMULATOR_SIGNATURE("examples.road.traffic")
 
 DECLARE_NAME("Road Unit (RU) function transfert and stockage for cars");

@@ -44,9 +44,6 @@
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 
 
-DECLARE_BUILDEREXT_PLUGIN
-
-
 class DummyModalSpatialSimple : public openfluid::builderext::PluggableModalExtension
 {
   Q_OBJECT;

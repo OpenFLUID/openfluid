@@ -46,12 +46,6 @@
 // =====================================================================
 
 
-DECLARE_SIMULATOR_PLUGIN
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_SIMULATOR_SIGNATURE("tests.variabletime.prod")
 
   DECLARE_NAME("test simulator for variable time production");

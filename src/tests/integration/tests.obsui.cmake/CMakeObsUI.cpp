@@ -45,13 +45,6 @@
 // =====================================================================
 
 
-DECLARE_OBSERVER_PLUGIN
-
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_OBSERVER_SIGNATURE("tests.obsui.cmake")
 
   DECLARE_NAME("test observer built using the OpenFLUID cmake module");

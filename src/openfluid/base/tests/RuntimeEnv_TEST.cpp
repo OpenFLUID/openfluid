@@ -45,6 +45,32 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/global.hpp>
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_global_versiondef)
+{
+  std::cout << "global, defined numeric version: " << OPENFLUID_VERSION_NUMERIC << std::endl;
+  std::cout << "global, computed numeric version: "
+            << OPENFLUID_VERSION_COMPUTE(OPENFLUID_VERSIONMAJOR_NUMBER,
+                                         OPENFLUID_VERSIONMINOR_NUMBER,
+                                         OPENFLUID_VERSIONPATCH_NUMBER) << std::endl;
+
+#if !(OPENFLUID_VERSION_COMPUTE(OPENFLUID_VERSIONMAJOR_NUMBER,\
+                                OPENFLUID_VERSIONMINOR_NUMBER,\
+                                OPENFLUID_VERSIONPATCH_NUMBER) == OPENFLUID_VERSION_NUMERIC)
+  BOOST_FAIL("Error in defined macros for OpenFLUID version");
+#endif
+
+#if !(OPENFLUID_VERSION_COMPUTE(0,0,0) < OPENFLUID_VERSION_NUMERIC)
+  BOOST_FAIL("Error in OpenFLUID version");
+#endif
+}
+
 
 // =====================================================================
 // =====================================================================

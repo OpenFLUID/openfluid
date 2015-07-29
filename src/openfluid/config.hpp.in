@@ -165,11 +165,12 @@ const std::string SIM2DOC_TPLFILE_NAME = "sim2doc_tpl.tex";
 
 
 // Version information
-const std::string MAJOR_VERSION = "@VERSION_MAJOR@";
-const std::string MINOR_VERSION = "@VERSION_MINOR@";
-const std::string PATCH_VERSION = "@VERSION_PATCH@";
-const std::string RELEASE_STATUS = "@VERSION_STATUS@";
+const std::string VERSION_MAJOR = "@VERSION_MAJOR@";
+const std::string VERSION_MINOR = "@VERSION_MINOR@";
+const std::string VERSION_PATCH = "@VERSION_PATCH@";
+const std::string VERSION_STATUS = "@VERSION_STATUS@";
 const std::string FULL_VERSION = "@FULL_VERSION@";
+const std::string VERSION = "@VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@";
 
 
 // debug information

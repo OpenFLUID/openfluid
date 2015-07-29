@@ -45,12 +45,6 @@
 // =====================================================================
 
 
-DECLARE_SIMULATOR_PLUGIN
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_SIMULATOR_SIGNATURE("tests.coupling.A")
   DECLARE_NAME("test simulator for coupling");
   DECLARE_DESCRIPTION("");

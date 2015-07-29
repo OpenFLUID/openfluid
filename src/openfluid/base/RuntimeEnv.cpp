@@ -64,12 +64,12 @@ RuntimeEnvironment::RuntimeEnvironment() :
 {
   std::string UserID = "";
 
-  m_Version = openfluid::config::MAJOR_VERSION + "."
-      + openfluid::config::MINOR_VERSION + "."
-      + openfluid::config::PATCH_VERSION;
+  m_Version = openfluid::config::VERSION_MAJOR + "." +
+              openfluid::config::VERSION_MINOR + "." +
+              openfluid::config::VERSION_PATCH;
   m_FullVersion = openfluid::config::FULL_VERSION;
-  m_MajorMinorVersion = openfluid::config::MAJOR_VERSION + "."
-      + openfluid::config::MINOR_VERSION;
+  m_MajorMinorVersion = openfluid::config::VERSION_MAJOR + "."
+      + openfluid::config::VERSION_MINOR;
 
   m_TempDir = "";
   m_HostName = "";

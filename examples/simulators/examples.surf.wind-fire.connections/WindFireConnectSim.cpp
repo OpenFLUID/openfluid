@@ -48,12 +48,6 @@
 // =====================================================================
 
 
-DECLARE_SIMULATOR_PLUGIN
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_SIMULATOR_SIGNATURE("examples.surf.wind-fire.connections")
 
   DECLARE_NAME("Example simulator for computing dynamic connections between land units according to wind direction");

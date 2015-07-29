@@ -49,12 +49,6 @@ This is a text for testing \LaTeX doc
 // =====================================================================
 
 
-DECLARE_SIMULATOR_PLUGIN
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_SIMULATOR_SIGNATURE("tests.sim.cmake")
 
   DECLARE_NAME("test simulator built using the OpenFLUID cmake module");

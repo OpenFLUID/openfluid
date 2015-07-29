@@ -40,7 +40,9 @@
 
 #include <iostream>
 
-#include <openfluid/global.hpp>
+// global.hpp.in is used here because the final file global.hpp is configured later in the CMake process
+// Moreover, the configured part is not used here
+#include <openfluid/global.hpp.in>
 
 
 int main(int argc, char **argv)

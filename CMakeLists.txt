@@ -55,6 +55,9 @@ INCLUDE(OpenFLUIDSystemInfo)
 INCLUDE(CMake.in.cmake)
 INCLUDE(CMake.in.local.cmake OPTIONAL)
 
+# Compute version as numeric
+MATH(EXPR VERSION_NUMERIC "${VERSION_MAJOR} * 10000 + ${VERSION_MINOR} * 100 + ${VERSION_PATCH}")
+
 
 ADD_SUBDIRECTORY(cmake)
 
@@ -147,7 +150,7 @@ INSTALL(DIRECTORY "share"
 # Display of main informations about build configuration
 
 MESSAGE(STATUS "****************************************")
-MESSAGE(STATUS "OpenFLUID version: ${FULL_VERSION}")
+MESSAGE(STATUS "OpenFLUID version: ${FULL_VERSION} (numeric: ${VERSION_NUMERIC})")
 MESSAGE(STATUS "System architecture: ${OF_SYSTEM_ARCH}")
 MESSAGE(STATUS "Distribution architecture: ${OF_DISTRO_ARCH}")
 MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")

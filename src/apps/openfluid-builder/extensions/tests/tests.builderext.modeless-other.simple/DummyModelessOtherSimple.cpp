@@ -43,9 +43,6 @@
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 
 
-DECLARE_BUILDEREXT_PLUGIN
-
-
 // =====================================================================
 // =====================================================================
 

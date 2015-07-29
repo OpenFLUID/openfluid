@@ -42,6 +42,22 @@
 
 
 
+// OpenFLUID version
+
+#define OPENFLUID_VERSION_NUMERIC @VERSION_NUMERIC@
+#define OPENFLUID_VERSIONMINOR_NUMBER @VERSION_MINOR@
+#define OPENFLUID_VERSIONMAJOR_NUMBER @VERSION_MAJOR@
+#define OPENFLUID_VERSIONPATCH_NUMBER @VERSION_PATCH@
+#define OPENFLUID_VERSION_STRING "@VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@"
+#define OPENFLUID_FULLVERSION_STRING "@FULL_VERSION@"
+
+#define OPENFLUID_VERSION_COMPUTE(major,minor,patch) (major * 10000 + minor * 100 + patch)
+
+
+// =====================================================================
+// =====================================================================
+
+
 // Processor
 
 #if defined(__i386) || defined(__i386__) || defined(_M_IX86)

@@ -44,13 +44,6 @@
 // =====================================================================
 
 
-DECLARE_SIMULATOR_PLUGIN;
-
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.prod")
 
   DECLARE_NAME("Example of data production on units of class A");

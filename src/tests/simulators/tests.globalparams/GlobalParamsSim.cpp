@@ -46,12 +46,6 @@
 // =====================================================================
 
 
-DECLARE_SIMULATOR_PLUGIN
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_SIMULATOR_SIGNATURE("tests.globalparams")
 
   DECLARE_NAME("test simulator for global parameters of models");

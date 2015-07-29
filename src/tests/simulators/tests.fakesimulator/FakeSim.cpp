@@ -39,12 +39,6 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
-// =====================================================================
-// =====================================================================
-
-
-DECLARE_SIMULATOR_PLUGIN
-
 
 BEGIN_SIMULATOR_SIGNATURE("tests.fakesimulator")
 

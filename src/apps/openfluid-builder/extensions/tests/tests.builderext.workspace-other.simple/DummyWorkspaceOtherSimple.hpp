@@ -41,9 +41,6 @@
 #include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
 
 
-DECLARE_BUILDEREXT_PLUGIN
-
-
 // =====================================================================
 // =====================================================================
 

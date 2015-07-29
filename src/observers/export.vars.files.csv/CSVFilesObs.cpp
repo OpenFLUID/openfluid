@@ -103,13 +103,6 @@ class CSVSetFiles
 // =====================================================================
 
 
-DECLARE_OBSERVER_PLUGIN
-
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv")
   DECLARE_NAME("Exports simulation variables to CSV files");
   DECLARE_DESCRIPTION("This observer exports variables to CSV files\n"

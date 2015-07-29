@@ -46,12 +46,6 @@
 // =====================================================================
 
 
-DECLARE_SIMULATOR_PLUGIN
-
-// =====================================================================
-// =====================================================================
-
-
 BEGIN_SIMULATOR_SIGNATURE("tests.debug")
 
   DECLARE_NAME("test simulator for debugging macros");
@@ -105,11 +99,21 @@ class DebugSimulator : public openfluid::ware::PluggableSimulator
 
   void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
 
+
   // =====================================================================
   // =====================================================================
 
 
-  void prepareData() { }
+  void prepareData()
+  {
+#if !(OPENFLUID_VERSION_COMPUTE(OPENFLUID_VERSIONMAJOR_NUMBER,\
+                                OPENFLUID_VERSIONMINOR_NUMBER,\
+                                OPENFLUID_VERSIONPATCH_NUMBER) == OPENFLUID_VERSION_NUMERIC)
+    OPENFLUID_RaiseError("Error in defined macros for OpenFLUID version")
+#else
+    OFDBG_MESSAGE("Numeric version: " << OPENFLUID_VERSION_NUMERIC);
+#endif
+  }
 
 
   // =====================================================================
