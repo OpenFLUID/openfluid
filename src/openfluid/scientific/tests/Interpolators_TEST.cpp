@@ -46,6 +46,7 @@
 #include <boost/test/auto_unit_test.hpp>
 #include <openfluid/scientific/Interpolators.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
+#include <iostream>
 
 
 // =====================================================================

@@ -1,6 +1,6 @@
 2.1.0
 
-  * Introduced OpenFLUID-DevStudio, an integraded development environment
+  * Introduced OpenFLUID-DevStudio, an integrated development environment
     for simulators, observers and builder-extensions
   * Introduced ghost simulators system
   * Introduced parameterization UI for simulators and observers 
