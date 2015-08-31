@@ -1,0 +1,73 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+<domain>
+  <calendar>
+  
+    <event name="" category="test" unitsclass="TestUnits" unitID="1" date="1999-12-31 23:59:59">
+      <info key="when" value="before"/>
+      <info key="where" value="1"/>
+      <info key="numeric" value="1.13"/>
+      <info key="string" value="EADGBE"/>
+    </event>
+    <event name="" category="test" unitsclass="TestUnits" unitID="1" date="1999-12-01 12:00:00">
+      <info key="when" value="before"/>
+      <info key="where" value="1"/>
+      <info key="numeric" value="1.13"/>
+      <info key="string" value="EADG"/>
+    </event>        
+    <event name="" category="test" unitsclass="TestUnits" unitID="7" date="1999-12-01 12:00:00">
+      <info key="when" value="before"/>
+      <info key="where" value="7"/>
+      <info key="numeric" value="1.13"/>
+      <info key="string" value="EADG"/>
+    </event>    
+    <event name="" category="test" unitsclass="TestUnits" unitID="12" date="1990-12-01 12:00:00">
+      <info key="when" value="before"/>
+      <info key="where" value="7"/>
+      <info key="numeric" value="1.13"/>
+      <info key="string" value="EADG"/>
+    </event>    
+
+
+    <event name="" category="test" unitsclass="TestUnits" unitID="3" date="2000-01-01 02:18:12">
+      <info key="when" value="during"/>
+      <info key="where" value="3"/>
+      <info key="numeric" value="1.15"/>
+      <info key="string" value="EADG"/>
+    </event>    
+    <event name="" category="test" unitsclass="TestUnits" unitID="9" date="2000-01-01 02:18:12">
+      <info key="when" value="during"/>
+      <info key="where" value="9"/>
+      <info key="numeric" value="1.15"/>
+      <info key="string" value="EADGBE"/>
+    </event>    
+    <event name="" category="test" unitsclass="TestUnits" unitID="1" date="2000-01-01 04:00:17">
+      <info key="when" value="during"/>
+      <info key="where" value="1"/>
+      <info key="numeric" value="1.15"/>
+      <info key="string" value="EADGBE"/>
+    </event>    
+
+    <event name="" category="test" unitsclass="TestUnits" unitID="12" date="2000-01-01 06:00:17">
+      <info key="when" value="after"/>
+      <info key="where" value="12"/>
+      <info key="numeric" value="1.15"/>
+      <info key="string" value="EADGBE"/>
+    </event>    
+    <event name="" category="test" unitsclass="TestUnits" unitID="12" date="2000-01-01 09:00:17">
+      <info key="when" value="after"/>
+      <info key="where" value="12"/>
+      <info key="numeric" value="1.15"/>
+      <info key="string" value="EADGBE"/>
+    </event>        
+    <event name="" category="test" unitsclass="TestUnits" unitID="12" date="2011-08-01 12:23:17">
+      <info key="when" value="after"/>
+      <info key="where" value="12"/>
+      <info key="numeric" value="1.15"/>
+      <info key="string" value="EADGBE"/>
+    </event>    
+    
+  </calendar>
+  
+</domain>  
+</openfluid>

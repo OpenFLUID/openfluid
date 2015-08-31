@@ -167,6 +167,10 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       if (UnitsCount != 2)
         OPENFLUID_RaiseError("incorrect number of VU units");
 
+      UnitsCount = OPENFLUID_GetUnitsCount("VU");
+      if (UnitsCount != 2)
+        OPENFLUID_RaiseError("incorrect number of VU units (by return)");
+
       OPENFLUID_GetUnitsCount("TU",UnitsCount);
       if (UnitsCount != 5)
         OPENFLUID_RaiseError("incorrect number of TU units");
@@ -183,6 +187,10 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       OPENFLUID_GetUnitsCount(UnitsCount);
       if (UnitsCount != (10+Cols*Rows))
         OPENFLUID_RaiseError("incorrect total number of units");
+
+      UnitsCount = OPENFLUID_GetUnitsCount();
+      if (UnitsCount != (10+Cols*Rows))
+        OPENFLUID_RaiseError("incorrect total number of units (by return)");
 
 
       if (OPENFLUID_GetUnits("VU").size() != 2)

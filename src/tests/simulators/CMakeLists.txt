@@ -184,6 +184,20 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAll
 ###########################################################################
 
 
+OPNFLD_ADD_SIMULATOR(tests.primitives.benchmarking ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesBenchmarking
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "run"
+                           "${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesBenchmarking"
+                           "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesBenchmarking" 
+                           "-p" "${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesBenchmarking"
+                    )
+
+
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesWithGhosts 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "run"

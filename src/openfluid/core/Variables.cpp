@@ -159,10 +159,12 @@ bool Variables::getValue(const VariableName_t& aName, const TimeIndex_t& anIndex
   return (it != m_Data.end() && it->second.first.getValue(anIndex, aValue));
 }
 
+
 // =====================================================================
 // =====================================================================
 
-Value* Variables::value(const VariableName_t& aName, const TimeIndex_t& anIndex) const
+
+const Value* Variables::value(const VariableName_t& aName, const TimeIndex_t& anIndex) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -172,11 +174,12 @@ Value* Variables::value(const VariableName_t& aName, const TimeIndex_t& anIndex)
   return (Value*) 0;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-Value* Variables::currentValue(const VariableName_t& aName) const
+const Value* Variables::currentValue(const VariableName_t& aName) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -276,6 +279,7 @@ bool Variables::isVariableExist(const VariableName_t& aName) const
   return m_Data.find(aName) != m_Data.end();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -287,6 +291,7 @@ bool Variables::isVariableExist(const VariableName_t& aName,
 
   return (it != m_Data.end() && it->second.first.isValueExist(anIndex));
 }
+
 
 // =====================================================================
 // =====================================================================

@@ -132,13 +132,24 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       std::vector<double> ParamDoubleArray;
 
 
+      if (!OPENFLUID_IsSimulatorParameterExist(Params,"strparam"))
+         OPENFLUID_RaiseError("missing parameter (strparam)");
+
+      if (OPENFLUID_IsSimulatorParameterExist(Params,"fakestrparam"))
+         OPENFLUID_RaiseError("unexpected parameter (fakestrparam)");
+
+
       // ====== String param ======
 
       m_ParamString = "";
       if (!OPENFLUID_GetSimulatorParameter(Params,"strparam",m_ParamString))
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (strparam) get by reference");
-      if(m_ParamString != "strvalue")
+      if (m_ParamString != "strvalue")
          OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (strparam, value) get by reference");
+
+      m_ParamString = OPENFLUID_GetSimulatorParameter(Params,"strparam");
+      if (m_ParamString != "strvalue")
+         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (strparam, value) get by return");
 
       if (OPENFLUID_GetSimulatorParameter(Params,"wrongstrparam",m_ParamString))
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (wrongstrparam)");

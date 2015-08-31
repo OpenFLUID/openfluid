@@ -265,25 +265,54 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
           // double
 
+          VarDouble = 0.0;
           OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,VarDouble);
           if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
-            OPENFLUID_RaiseError("incorrect double value (tests.double)");
+            OPENFLUID_RaiseError("incorrect double value (tests.double, by reference)");
+
+          VarDouble = 0.0;
+          VarDouble = OPENFLUID_GetVariable(TU,"tests.double",CurrIndex)->asDoubleValue();
+          if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
+            OPENFLUID_RaiseError("incorrect double value (tests.double, by return)");
 
           VarDouble = 0.0;
           OPENFLUID_GetVariable(TU,"tests.double",VarDouble);
           if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
-            OPENFLUID_RaiseError("incorrect double value (tests.double) get by reference without index");
+            OPENFLUID_RaiseError("incorrect double value (tests.double, by reference, without index)");
+
+          VarDouble = 0.0;
+          VarDouble = OPENFLUID_GetVariable(TU,"tests.double")->asDoubleValue();
+          if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
+            OPENFLUID_RaiseError("incorrect double value (tests.double, by return, without index)");
 
           VarDouble = 0.0;
           OPENFLUID_GetLatestVariable(TU,"tests.double",IndValue);
           if (IndValue.getIndex() != OPENFLUID_GetCurrentTimeIndex())
-            OPENFLUID_RaiseError("incorrect time index (tests.double) get by latest variable");
+            OPENFLUID_RaiseError("incorrect time index (tests.double, by reference, latest variable)");
 
           if (!openfluid::scientific::isCloseEnough<double>(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
-            OPENFLUID_RaiseError("incorrect double value (tests.double) get by latest variable");
+            OPENFLUID_RaiseError("incorrect double value (tests.double, by reference, latest variable");
+
+          VarDouble = 0.0;
+          IndValue = openfluid::core::IndexedValue();
+          IndValue = OPENFLUID_GetLatestVariable(TU,"tests.double");
+          if (IndValue.getIndex() != OPENFLUID_GetCurrentTimeIndex())
+            OPENFLUID_RaiseError("incorrect time index (tests.double, by return, latest variable)");
+
+          if (!openfluid::scientific::isCloseEnough<double>(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
+            OPENFLUID_RaiseError("incorrect double value (tests.double, by return, latest variable");
+
 
           VarDouble = 0.0;
           OPENFLUID_GetLatestVariables(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex()-1,IndValueList);
+          if (!openfluid::scientific::isCloseEnough<double>(
+                IndValueList.back().value()->asDoubleValue(),RefDouble,0.00001))
+            OPENFLUID_RaiseError("incorrect double value (tests.double) get by reference");
+
+
+          VarDouble = 0.0;
+          IndValueList = openfluid::core::IndexedValueList();
+          IndValueList = OPENFLUID_GetLatestVariables(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex()-1);
           if (!openfluid::scientific::isCloseEnough<double>(
                 IndValueList.back().value()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError("incorrect double value (tests.double) get by reference");
@@ -294,6 +323,11 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
             OPENFLUID_GetVariable(TU,"tests.double",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarDouble);
+            if (!openfluid::scientific::isCloseEnough(VarDouble,PreDouble,0.00001))
+              OPENFLUID_RaiseError("incorrect double value at t-1 (tests.double)");
+
+            VarDouble = OPENFLUID_GetVariable(TU,"tests.double",CurrIndex-OPENFLUID_GetDefaultDeltaT())
+                        ->asDoubleValue();
             if (!openfluid::scientific::isCloseEnough(VarDouble,PreDouble,0.00001))
               OPENFLUID_RaiseError("incorrect double value at t-1 (tests.double)");
           }
@@ -312,12 +346,22 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
           OPENFLUID_GetVariable(TU,"tests.doubleval",VarDoubleVal);
           if (VarDoubleVal.get() != RefDouble)
-            OPENFLUID_RaiseError("incorrect double value (tests.doubleval) get by reference without index");
+            OPENFLUID_RaiseError("incorrect double value (tests.doubleval, by reference, without index)");
+
+          VarDoubleVal= OPENFLUID_GetVariable(TU,"tests.doubleval")->asDoubleValue();
+          if (VarDoubleVal.get() != RefDouble)
+            OPENFLUID_RaiseError("incorrect double value (tests.doubleval, by return, without index");
 
           VarDoubleVal.set(0.0);
           OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex,VarDoubleVal);
           if (VarDoubleVal.get() != RefDouble)
-            OPENFLUID_RaiseError("incorrect double value (tests.doubleval) get by reference");
+            OPENFLUID_RaiseError("incorrect double value (tests.doubleval, by reference)");
+
+          VarDoubleVal.set(0.0);
+          VarDoubleVal = OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex)->asDoubleValue();
+          if (VarDoubleVal.get() != RefDouble)
+            OPENFLUID_RaiseError("incorrect double value (tests.doubleval, by return)");
+
 
           OPENFLUID_SetVariable(TU,"tests.doubleval",NewDouble);
 
@@ -345,6 +389,14 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (VarLong != RefLong)
             OPENFLUID_RaiseError("incorrect long value (tests.integer) get by reference");
 
+          VarLong = OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex)->asIntegerValue();
+          if (VarLong != RefLong)
+            OPENFLUID_RaiseError("incorrect long value (tests.integer, by return)");
+
+          VarLong = OPENFLUID_GetVariable(TU,"tests.integer")->asIntegerValue();
+          if (VarLong != RefLong)
+            OPENFLUID_RaiseError("incorrect long value (tests.integer, by return, without time index)");
+
           OPENFLUID_SetVariable(TU,"tests.integer",NewLong);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
@@ -369,7 +421,20 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           VarLongVal.set(0);
           OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex,VarLongVal);
           if (VarLongVal.get() != RefLong)
-            OPENFLUID_RaiseError("incorrect long value (tests.integerval) get by reference");
+            OPENFLUID_RaiseError("incorrect long value (tests.integerval, by reference)");
+
+
+          VarLongVal.set(0);
+          VarLongVal = OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex)->asIntegerValue();
+          if (VarLongVal != RefLong)
+            OPENFLUID_RaiseError("incorrect long value (tests.integerval, by return)");
+
+          VarLongVal.set(0);
+          VarLongVal = OPENFLUID_GetVariable(TU,"tests.integerval")->asIntegerValue();
+          if (VarLongVal != RefLong)
+            OPENFLUID_RaiseError("incorrect long value (tests.integerval, by return, without time index)");
+
+
           OPENFLUID_SetVariable(TU,"tests.integerval",NewLong);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
@@ -395,14 +460,22 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
                                  "incorrect long value list between t0 and current time index -1 (tests.integer) "
                                  "by variables");
 
+
+          IndValueList.clear();
+          IndValueList = OPENFLUID_GetVariables(TU,"tests.integer",0,CurrIndex-1);
+          if (IndValueList.size() != (m_ExpectedValCount-1))
+            OPENFLUID_RaiseError(
+                                 "incorrect long value list between t0 and current time index -1 (tests.integer) "
+                                 "by return");
+
+
           OPENFLUID_GetLatestVariables(TU,"tests.integer",0,IndValueList);
           if (IndValueList.size() != m_ExpectedValCount)
             OPENFLUID_RaiseError("incorrect long value list since t0 (tests.integer) by latest variables");
 
           OPENFLUID_GetVariables(TU,"tests.integer",0,CurrIndex,IndValueList);
           if (IndValueList.size() != m_ExpectedValCount)
-            OPENFLUID_RaiseError(
-                                 "incorrect long value list between t0 and current time index (tests.integer) "
+            OPENFLUID_RaiseError("incorrect long value list between t0 and current time index (tests.integer) "
                                  "by variables");
 
 
@@ -411,7 +484,17 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           VarBool = false;
           OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex,VarBool);
           if (VarBool != RefBool)
-            OPENFLUID_RaiseError("incorrect bool value (tests.bool) get by reference");
+            OPENFLUID_RaiseError("incorrect bool value (tests.bool, by reference)");
+
+
+          VarBool = OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex)->asBooleanValue();
+          if (VarBool != RefBool)
+            OPENFLUID_RaiseError("incorrect bool value (tests.bool, by return)");
+
+          VarBool = OPENFLUID_GetVariable(TU,"tests.bool")->asBooleanValue();
+          if (VarBool != RefBool)
+            OPENFLUID_RaiseError("incorrect bool value (tests.bool, by return, without time index)");
+
 
           OPENFLUID_SetVariable(TU,"tests.bool",NewBool);
 
@@ -437,6 +520,17 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex,VarBoolVal);
           if (VarBoolVal.get() != RefBool)
             OPENFLUID_RaiseError("incorrect bool value (tests.boolval) get by reference");
+
+          VarBoolVal.set(false);
+          VarBoolVal = OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex)->asBooleanValue();
+          if (VarBoolVal.get() != RefBool)
+            OPENFLUID_RaiseError("incorrect bool value (tests.boolval, by return");
+
+          VarBoolVal.set(false);
+          VarBoolVal = OPENFLUID_GetVariable(TU,"tests.boolval")->asBooleanValue();
+          if (VarBoolVal.get() != RefBool)
+            OPENFLUID_RaiseError("incorrect bool value (tests.boolval, by return, without time index");
+
 
           OPENFLUID_SetVariable(TU,"tests.boolval",NewBool);
 
@@ -464,6 +558,14 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (VarString != RefString)
             OPENFLUID_RaiseError("incorrect string value (tests.string) get by reference");
 
+          VarString = OPENFLUID_GetVariable(TU,"tests.string",CurrIndex)->asStringValue();
+          if (VarString != RefString)
+            OPENFLUID_RaiseError("incorrect string value (tests.string, by return");
+
+          VarString = OPENFLUID_GetVariable(TU,"tests.string")->asStringValue();
+          if (VarString != RefString)
+            OPENFLUID_RaiseError("incorrect string value (tests.string, by return, without time index");
+
           OPENFLUID_SetVariable(TU,"tests.string",NewString);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
@@ -489,6 +591,8 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (VarNullVal.getType() != openfluid::core::Value::NULLL)
             OPENFLUID_RaiseError("incorrect null value (tests.null) get by reference");
 
+          VarNullVal = OPENFLUID_GetVariable(TU,"tests.null",CurrIndex)->asNullValue();
+
 
           // vector value
 
@@ -496,6 +600,18 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex,VarVectorVal);
           if (VarVectorVal.getSize() != RefVectorSize)
             OPENFLUID_RaiseError("incorrect vector size get by reference");
+
+
+          VarVectorVal.clear();
+          VarVectorVal = OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex)->asVectorValue();
+          if (VarVectorVal.getSize() != RefVectorSize)
+            OPENFLUID_RaiseError("incorrect vector size, by return");
+
+          VarVectorVal.clear();
+          VarVectorVal = OPENFLUID_GetVariable(TU,"tests.vector")->asVectorValue();
+          if (VarVectorVal.getSize() != RefVectorSize)
+            OPENFLUID_RaiseError("incorrect vector size, by return, without time index");
+
 
           openfluid::core::VectorValue NewVect(NewVectorSize,NewDouble);
           OPENFLUID_SetVariable(TU,"tests.vector",NewVect);
@@ -538,6 +654,21 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError("incorrect matrix cols nb get by reference");
           if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
             OPENFLUID_RaiseError("incorrect matrix rows nb get by reference");
+
+
+          VarMatrixVal.clear();
+          VarMatrixVal = OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex)->asMatrixValue();
+          if (VarMatrixVal.getColsNbr() != RefMatrixColsNb)
+            OPENFLUID_RaiseError("incorrect matrix cols nb get by return");
+          if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
+            OPENFLUID_RaiseError("incorrect matrix rows nb get by return");
+
+          VarMatrixVal.clear();
+          VarMatrixVal = OPENFLUID_GetVariable(TU,"tests.matrix")->asMatrixValue();
+          if (VarMatrixVal.getColsNbr() != RefMatrixColsNb)
+            OPENFLUID_RaiseError("incorrect matrix cols nb get by return, without time index");
+          if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
+            OPENFLUID_RaiseError("incorrect matrix rows nb get by return, without time index");
 
           VarMatrixVal.clear();
           OPENFLUID_GetVariable(TU,"tests.matrix",VarMatrixVal);
@@ -588,6 +719,16 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (VarMapVal.getSize() != 2)
             OPENFLUID_RaiseError("incorrect map size get by reference");
 
+          VarMapVal.clear();
+          VarMapVal = OPENFLUID_GetVariable(TU,"tests.map",CurrIndex)->asMapValue();
+          if (VarMapVal.getSize() != 2)
+            OPENFLUID_RaiseError("incorrect map size get by return");
+
+           VarMapVal.clear();
+           VarMapVal = OPENFLUID_GetVariable(TU,"tests.map")->asMapValue();
+           if (VarMapVal.getSize() != 2)
+             OPENFLUID_RaiseError("incorrect map size get by return, without time index");
+
           openfluid::core::MapValue NewMap;
           NewMap.setString("key1",NewString);
           NewMap.setDouble("key2",NewDouble);
@@ -636,6 +777,16 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           OPENFLUID_GetVariable(TU,"tests.tree",CurrIndex,VarTreeVal);
           if (VarTreeVal.size() != 8)
             OPENFLUID_RaiseError("incorrect tree size get by reference");
+
+          VarTreeVal.clear();
+          VarTreeVal = OPENFLUID_GetVariable(TU,"tests.tree",CurrIndex)->asTreeValue();
+          if (VarTreeVal.size() != 8)
+            OPENFLUID_RaiseError("incorrect tree size get by return");
+
+          VarTreeVal.clear();
+          VarTreeVal = OPENFLUID_GetVariable(TU,"tests.tree")->asTreeValue();
+          if (VarTreeVal.size() != 8)
+            OPENFLUID_RaiseError("incorrect tree size get by return, without time index");
 
           /* Note: the tree is created using this:
              TheTree = openfluid::core::TreeValue();
@@ -743,6 +894,10 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           OPENFLUID_GetVariable(TU,"tests.typed.double",CurrIndex,VarDouble);
           if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError("incorrect double value (tests.double) get by reference");
+
+          VarDouble = OPENFLUID_GetVariable(TU,"tests.typed.double",CurrIndex)->asDoubleValue();
+          if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
+            OPENFLUID_RaiseError("incorrect double value (tests.double, by return)");
 
           OPENFLUID_GetLatestVariable(TU,"tests.typed.double",IndValue);
           if (!openfluid::scientific::isCloseEnough<double>(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
@@ -873,6 +1028,13 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
             OPENFLUID_RaiseError("incorrect matrix rows nb get by reference");
 
+          VarMatrixVal = OPENFLUID_GetVariable(TU,"tests.typed.matrix",CurrIndex)->asMatrixValue();
+          if (VarMatrixVal.getColsNbr() != RefMatrixColsNb)
+            OPENFLUID_RaiseError("incorrect matrix cols nb get by return");
+          if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
+            OPENFLUID_RaiseError("incorrect matrix rows nb get by return");
+
+
           openfluid::core::MatrixValue NewMatrix(NewMatrixColsNb,NewMatrixRowsNb,NewDouble);
           OPENFLUID_SetVariable(TU,"tests.typed.matrix",NewMatrix);
 
@@ -981,7 +1143,11 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           VarDouble = 0.0;
           OPENFLUID_GetVariable(TU,"tests.typed.none",CurrIndex,VarDouble);
           if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
-            OPENFLUID_RaiseError("incorrect double value (tests.none)");
+            OPENFLUID_RaiseError("incorrect double value (tests.none, get by reference)");
+
+          VarDouble = OPENFLUID_GetVariable(TU,"tests.typed.none",CurrIndex)->asDoubleValue();
+          if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
+            OPENFLUID_RaiseError("incorrect double value (tests.none, get by return)");
 
 
           OPENFLUID_SetVariable(TU,"tests.typed.none",NewLong);

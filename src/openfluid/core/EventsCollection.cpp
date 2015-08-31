@@ -159,10 +159,10 @@ void EventsCollection::println() const
 {
   EventsList_t::const_iterator DEiter;
 
-    for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
-    {
-      (*DEiter).println();
-    }
+  for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
+  {
+    (*DEiter).println();
+  }
 }
 
 

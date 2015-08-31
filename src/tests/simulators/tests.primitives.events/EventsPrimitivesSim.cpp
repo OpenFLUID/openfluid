@@ -262,6 +262,21 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
         }
 
 
+        EvColl.clear();
+        EvColl = OPENFLUID_GetEvents(aUnit,BeginDate,EndDate);
+
+        OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
+        {
+    //      std::cout << std::endl << "========== Unit " << aUnit->getID() << " ==========" << std::endl;
+          //Event->println();
+          if (!((Event->isInfoEqual("when","during") &&
+                Event->isInfoEqual("where",double(aUnit->getID())) &&
+                Event->isInfoEqual("numeric",1.15) &&
+                Event->getInfoAsString("string",Info) &&
+                Info.substr(0,4) == "EADG") || (Event->isInfoExist("addingstep"))))
+            OPENFLUID_RaiseError("wrong event info on some TestUnit");
+        }
+
 
         bool FoundEvent = false;
         AddedEvent =

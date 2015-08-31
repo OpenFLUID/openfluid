@@ -120,6 +120,25 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
   protected:
 
     /**
+      Returns true if the parameter exists
+      @param[in] Params the parameters set for the simulator
+      @param[in] ParamName the name of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_IsSimulatorParameterExist(const openfluid::ware::WareParams_t& Params,
+                                             const openfluid::ware::WareParamKey_t& ParamName) const;
+
+    /**
+      Returns a simulator parameter from the parameters set, as a StringValue
+      @param[in] Params the parameters set for the simulator
+      @param[in] ParamName the name of the requested parameter
+      @return the value of the requested parameter
+    */
+    openfluid::core::StringValue OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+                                                                 const openfluid::ware::WareParamKey_t& ParamName)
+                                                                 const;
+
+    /**
       Gets a simulator parameter from the parameters set, as a StringValue
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter

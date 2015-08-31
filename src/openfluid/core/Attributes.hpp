@@ -74,6 +74,8 @@ class OPENFLUID_API Attributes
 
     bool getValue(const AttributeName_t& aName, std::string& aValue) const;
 
+    const openfluid::core::StringValue* value(const AttributeName_t& aName) const;
+
     bool getValueAsDouble(const AttributeName_t& aName, double& aValue) const;
 
     bool getValueAsLong(const AttributeName_t& aName, long& aValue) const;

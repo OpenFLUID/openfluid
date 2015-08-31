@@ -285,6 +285,14 @@
           OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)
         </item>
 
+        <item context="simulator" menupath="Compute code/Parameters/Get simulator parameter (by return)">
+          OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%)
+        </item>
+        
+        <item context="simulator" menupath="Compute code/Parameters/Test if a simulator parameter exists">
+          OPENFLUID_IsSimulatorParameterExist(Params,%%SEL_START%%ParamName%%SEL_END%%)
+        </item>
+
         <item context="simulator;observer" menupath="Compute code/Spatial structure/Test if a spatial units class exists">
           OPENFLUID_IsUnitsClassExist(%%SEL_START%%ClassName%%SEL_END%%)
         </item>
@@ -361,6 +369,10 @@
           OPENFLUID_GetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,"attrname",Val)
         </item>
 
+        <item context="simulator;observer" menupath="Compute code/Attributes/Get attribute value (by return)">
+          OPENFLUID_GetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,"attrname")
+        </item>
+
         <item context="simulator" menupath="Compute code/Attributes/Set attribute value">
           OPENFLUID_SetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,"attrname",Val)
         </item>
@@ -377,20 +389,40 @@
           OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",Val)
         </item>
 
+        <item context="simulator;observer" menupath="Compute code/Variables/Get variable value on current time index (by return)">
+          OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id")
+        </item>
+
         <item context="simulator;observer" menupath="Compute code/Variables/Get variable value on given time index">
           OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,Val)
         </item>
 
+        <item context="simulator;observer" menupath="Compute code/Variables/Get variable value on given time index (by return)">
+          OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex)
+        </item>
+
         <item context="simulator;observer" menupath="Compute code/Variables/Get latest available variable value">
-          OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id", IndexedVal)
+          OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",IndexedVal)
+        </item>
+
+        <item context="simulator;observer" menupath="Compute code/Variables/Get latest available variable value (by return)">
+          OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id")
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Variables/Get variable values on given period">
           OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",BeginIndex,EndIndex,ValuesList)
         </item>
 
+        <item context="simulator;observer" menupath="Compute code/Variables/Get variable values on given period (by return)">
+          OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",BeginIndex,EndIndex)
+        </item>
+
         <item context="simulator;observer" menupath="Compute code/Variables/Get latest available variable values since a time index">
-          OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,IndexedValuesList)
+          OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex,IndexedValuesList)
+        </item>
+
+        <item context="simulator;observer" menupath="Compute code/Variables/Get latest available variable values since a time index (by return)">
+          OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,"variable.id",TimeIndex)
         </item>
 
         <item context="simulator" menupath="Compute code/Variables/Append value to a variable">
@@ -423,6 +455,10 @@
 
         <item context="simulator;observer" menupath="Compute code/Events/Get events on a given period">
           OPENFLUID_GetEvents(%%SEL_START%%UnitPtr%%SEL_END%%,BeginDate,EndDate,EventsColl)
+        </item>
+
+        <item context="simulator;observer" menupath="Compute code/Events/Get events on a given period (by return)">
+          OPENFLUID_GetEvents(%%SEL_START%%UnitPtr%%SEL_END%%,BeginDate,EndDate)
         </item>
 
         <item context="simulator;observer" menupath="Compute code/Events/Append an event">

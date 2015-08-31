@@ -41,7 +41,9 @@
 
 #include <openfluid/core/Attributes.hpp>
 
+
 namespace openfluid { namespace core {
+
 
 // =====================================================================
 // =====================================================================
@@ -49,19 +51,23 @@ namespace openfluid { namespace core {
 
 Attributes::Attributes()
 {
+
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 
 
 Attributes::~Attributes()
 {
+
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 bool Attributes::setValue(const AttributeName_t& aName, const Value& aValue)
 {
@@ -99,7 +105,7 @@ bool Attributes::getValue(const AttributeName_t& aName, openfluid::core::StringV
 
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
-  if(it != m_Data.end())
+  if (it != m_Data.end())
   {
     aValue.set(it->second.data());
 
@@ -109,14 +115,31 @@ bool Attributes::getValue(const AttributeName_t& aName, openfluid::core::StringV
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+const openfluid::core::StringValue* Attributes::value(const AttributeName_t& aName) const
+{
+  AttributesMap_t::const_iterator it = m_Data.find(aName);
+
+  if (it != m_Data.end())
+    return &(it->second);
+
+  return nullptr;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 bool Attributes::getValue(const AttributeName_t& aName, std::string& aValue) const
 {
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
-  if(it != m_Data.end())
+  if (it != m_Data.end())
   {
     aValue = it->second.data();
 
@@ -126,6 +149,7 @@ bool Attributes::getValue(const AttributeName_t& aName, std::string& aValue) con
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -134,11 +158,12 @@ bool Attributes::getValueAsDouble(const AttributeName_t& aName, double& aValue) 
 {
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
-  if(it != m_Data.end())
+  if (it != m_Data.end())
     return it->second.toDouble(aValue);
 
   return false;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -148,11 +173,12 @@ bool Attributes::getValueAsLong(const AttributeName_t& aName, long& aValue) cons
 {
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
-  if(it != m_Data.end())
+  if (it != m_Data.end())
     return it->second.toInteger(aValue);
 
   return false;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -162,6 +188,7 @@ bool Attributes::isAttributeExist(const AttributeName_t& aName) const
 {
   return m_Data.find(aName) != m_Data.end();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -179,6 +206,7 @@ std::vector<AttributeName_t> Attributes::getAttributesNames() const
   return TheNames;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -194,6 +222,7 @@ bool Attributes::replaceValue(const AttributeName_t& aName, const StringValue& a
 
   return false;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -239,7 +268,9 @@ void Attributes::clear()
   m_Data.clear();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 } } // namespaces
