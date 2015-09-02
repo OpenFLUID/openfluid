@@ -69,7 +69,7 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
   move((ScreenRect.width() - width()) / 2, (ScreenRect.height() - height()) / 2);
 
   QList<int> Sizes;
-  Sizes << 180 << 1000;
+  Sizes << 220 << 1000;
   ui->splitter->setSizes(Sizes);
 
   mp_Toolbar = new openfluid::ui::waresdev::WareSrcToolbar(false, this);
@@ -418,11 +418,11 @@ void MainWindow::closeEvent(QCloseEvent* Event)
 void MainWindow::setCurrentPath(const QString& Path)
 {
   if (ui->SimExplorer->setCurrentPath(Path))
-    ui->toolBox->setCurrentWidget(ui->SimPage);
+    ui->TabWidget->setCurrentWidget(ui->SimPage);
   else if (ui->ObsExplorer->setCurrentPath(Path))
-    ui->toolBox->setCurrentWidget(ui->ObsPage);
+    ui->TabWidget->setCurrentWidget(ui->ObsPage);
   else if (ui->ExtExplorer->setCurrentPath(Path))
-    ui->toolBox->setCurrentWidget(ui->ExtPage);
+    ui->TabWidget->setCurrentWidget(ui->ExtPage);
 }
 
 
@@ -445,7 +445,7 @@ void MainWindow::updateSaveButtonsStatus(bool FileModified, bool WareModified)
 
 void MainWindow::onDeleteWareRequested()
 {
-  QWidget* CurrentWidget = ui->toolBox->currentWidget();
+  QWidget* CurrentWidget = ui->TabWidget->currentWidget();
   QString SelectedPath = "";
 
   if (CurrentWidget == ui->SimPage)

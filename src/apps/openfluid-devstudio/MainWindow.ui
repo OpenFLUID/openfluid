@@ -24,23 +24,18 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QToolBox" name="toolBox">
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
+      <widget class="QTabWidget" name="TabWidget">
        <property name="currentIndex">
         <number>2</number>
        </property>
-       <widget class="QWidget" name="SimPage">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>653</width>
-          <height>442</height>
-         </rect>
-        </property>
-        <attribute name="label">
+       <property name="elideMode">
+        <enum>Qt::ElideRight</enum>
+       </property>
+       <widget class="QWidget" name="SimPage" native="true">
+        <attribute name="title">
+         <string>Simulators</string>
+        </attribute>
+        <attribute name="toolTip">
          <string>Simulators</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -53,16 +48,11 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="ObsPage">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>653</width>
-          <height>442</height>
-         </rect>
-        </property>
-        <attribute name="label">
+       <widget class="QWidget" name="ObsPage" native="true">
+        <attribute name="title">
+         <string>Observers</string>
+        </attribute>
+        <attribute name="toolTip">
          <string>Observers</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -75,16 +65,11 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="ExtPage">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>653</width>
-          <height>442</height>
-         </rect>
-        </property>
-        <attribute name="label">
+       <widget class="QWidget" name="ExtPage" native="true">
+        <attribute name="title">
+         <string>Builder extensions</string>
+        </attribute>
+        <attribute name="toolTip">
          <string>Builder extensions</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_4">
