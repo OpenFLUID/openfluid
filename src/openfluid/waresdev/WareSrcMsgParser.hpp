@@ -82,9 +82,10 @@ class OPENFLUID_API WareSrcMsgParser
     };
 
     virtual ~WareSrcMsgParser()
-    { }
+    {
+    }
 
-    virtual WareSrcMsg parse(const QString& MessageLine) = 0;
+    virtual WareSrcMsg parse(const QString& MessageLine, WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType) = 0;
 };
 
 
@@ -96,13 +97,13 @@ class OPENFLUID_API WareSrcMsgParserGcc: public WareSrcMsgParser
 {
   private:
 
-    QRegExp m_GccMsgParseRx = QRegExp("^(.+):(\\d+):(\\d+): *(warning|error): *(.+)");
+    QRegExp m_GccMsgParseRx = QRegExp("^(.+):(\\d+):(\\d+): *(warning|error|note): *(.+)");
 
   public:
 
-    WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine);
+    WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine,
+      WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType);
 };
-
 
 
 // =====================================================================
@@ -121,7 +122,8 @@ class OPENFLUID_API WareSrcMsgParserCMake: public WareSrcMsgParser
 
     WareSrcMsgParserCMake(const QString& AbsolutePath);
 
-    WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine);
+    WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine,
+      WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType);
 };
 
 
@@ -129,7 +131,7 @@ class OPENFLUID_API WareSrcMsgParserCMake: public WareSrcMsgParser
 // =====================================================================
 
 
-} }  // namespaces
+} } // namespaces
 
 
 #endif /* __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__ */

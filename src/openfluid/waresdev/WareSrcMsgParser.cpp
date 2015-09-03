@@ -47,16 +47,20 @@ namespace openfluid { namespace waresdev {
 // =====================================================================
 
 
-WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLine)
+WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLine,
+  WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType)
 {
   WareSrcMsgParser::WareSrcMsg Msg(MessageLine);
+
+  Msg.m_Type = DefaultMsgType;
 
   if (m_GccMsgParseRx.indexIn(MessageLine) != -1)
   {
     Msg.m_Path = m_GccMsgParseRx.cap(1);
     Msg.m_LineNb = m_GccMsgParseRx.cap(2).toInt();
     Msg.m_ColNb = m_GccMsgParseRx.cap(3).toInt();
-    Msg.m_Type = m_GccMsgParseRx.cap(4) == "warning" ? WareSrcMsg::MSG_WARNING : WareSrcMsg::MSG_ERROR;
+    Msg.m_Type = (m_GccMsgParseRx.cap(4) == "warning" || m_GccMsgParseRx.cap(4) == "note") ? WareSrcMsg::MSG_WARNING :
+                                                                                             WareSrcMsg::MSG_ERROR;
     Msg.m_Content = m_GccMsgParseRx.cap(5);
   }
 
@@ -82,9 +86,12 @@ WareSrcMsgParserCMake::WareSrcMsgParserCMake(const QString& AbsolutePath) :
 // =====================================================================
 
 
-WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& MessageLine)
+WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& MessageLine,
+  WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType)
 {
   WareSrcMsgParser::WareSrcMsg Msg(MessageLine);
+
+  Msg.m_Type = DefaultMsgType;
 
   if (m_CMakeMsgParseRx.indexIn(MessageLine) != -1)
   {
@@ -102,4 +109,4 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& Message
 // =====================================================================
 
 
-} }  // namespaces
+} } // namespaces

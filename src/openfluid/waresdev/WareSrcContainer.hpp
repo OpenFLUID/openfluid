@@ -128,17 +128,16 @@ class OPENFLUID_API WareSrcContainer: public QObject
      */
     void findCMake();
 
-    void runCommand(const QString& Command,
-                    const QProcessEnvironment& Env);
+    void runCommand(const QString& Command, const QProcessEnvironment& Env);
 
 
   private slots:
 
-    void processOutput();
+    void processStandardOutput();
+
+    void processErrorOutput();
 
     void processFinishedOutput(int ExitCode);
-
-    void processErrorOutput(QProcess::ProcessError error);
 
 
   public:
@@ -220,7 +219,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
 };
 
 
-} }  // namespaces
+} } // namespaces
 
 
 #endif /* __OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP__ */

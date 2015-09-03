@@ -60,11 +60,11 @@ namespace openfluid { namespace waresdev {
 
 
 WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type,
-    const QString& WareName) :
+                                   const QString& WareName) :
     QObject(), m_AbsolutePath(AbsolutePath), m_Type(Type), m_Name(WareName), m_AbsoluteCMakeConfigPath(""),
-    m_AbsoluteMainCppPath(""), m_AbsoluteUiParamCppPath(""), m_AbsoluteCMakeListsPath(""), m_AbsoluteJsonPath(""),
-    m_CMakeProgramPath(""), mp_Stream(new openfluid::waresdev::OStreamMsgStream()), mp_Process(new QProcess()),
-    mp_CurrentParser(new openfluid::waresdev::WareSrcMsgParserGcc())
+        m_AbsoluteMainCppPath(""), m_AbsoluteUiParamCppPath(""), m_AbsoluteCMakeListsPath(""), m_AbsoluteJsonPath(""),
+        m_CMakeProgramPath(""), mp_Stream(new openfluid::waresdev::OStreamMsgStream()), mp_Process(new QProcess()),
+        mp_CurrentParser(new openfluid::waresdev::WareSrcMsgParserGcc())
 {
   update();
 
@@ -73,9 +73,10 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, WareSrcManager::
   setConfigMode(CONFIG_RELEASE);
   setBuildMode(BUILD_WITHINSTALL);
 
-  connect(mp_Process, SIGNAL(readyRead()), this, SLOT(processOutput()));
+  connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
+  connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutput()));
+
   connect(mp_Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinishedOutput(int)));
-  connect(mp_Process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processErrorOutput(QProcess::ProcessError)));
 }
 
 
@@ -162,7 +163,7 @@ QString WareSrcContainer::searchMainCppFileName(const QString& CMakeFileContent)
           QString::fromStdString(openfluid::config::WARESDEV_CMAKE_OBSCPPVAR)).arg(
           QString::fromStdString(openfluid::config::WARESDEV_CMAKE_BEXTCPPVAR)));
 
-  foreach(QString L,Lines)
+  for (const QString& L : Lines)
   {
     if (RE.indexIn(L) > -1)
       return RE.cap(1);
@@ -181,7 +182,7 @@ QString WareSrcContainer::searchUiParamCppFileName(const QString& CMakeFileConte
 
   QRegExp RE("^\\s*SET\\s*\\((?:SIM_PARAMSUI_CPP|OBS_PARAMSUI_CPP)\\s+([\\w_.-]+\\.cpp)");
 
-  foreach(QString L,Lines)
+  for (const QString& L : Lines)
   {
     if (RE.indexIn(L) > -1)
       return RE.cap(1);
@@ -391,7 +392,7 @@ void WareSrcContainer::configure()
 
   if (!OpenFLUIDInstallPrefix.isNull())
   {
-	  Options.prepend(" -DCMAKE_PREFIX_PATH="+OpenFLUIDInstallPrefix+"/lib/cmake");
+    Options.prepend(" -DCMAKE_PREFIX_PATH=" + OpenFLUIDInstallPrefix + "/lib/cmake");
   }
 
 
@@ -422,8 +423,8 @@ void WareSrcContainer::configure()
     QByteArray ExistingPath = qgetenv("PATH");
     if (!ExistingPath.isNull())
     {
-      CustomPath.replace("%%PATH%%",ExistingPath);
-      RunEnv.insert("PATH",CustomPath);
+      CustomPath.replace("%%PATH%%", ExistingPath);
+      RunEnv.insert("PATH", CustomPath);
     }
   }
 
@@ -438,7 +439,7 @@ void WareSrcContainer::configure()
 		                .arg(m_AbsolutePath)
 		                .arg(Options);
 
-  runCommand(Command,RunEnv);
+  runCommand(Command, RunEnv);
 }
 
 
@@ -470,8 +471,8 @@ void WareSrcContainer::build()
     QByteArray ExistingPath = qgetenv("PATH");
     if (!ExistingPath.isNull())
     {
-      CustomPath.replace("%%PATH%%",ExistingPath);
-      RunEnv.insert("PATH",CustomPath);
+      CustomPath.replace("%%PATH%%", ExistingPath);
+      RunEnv.insert("PATH", CustomPath);
     }
   }
 
@@ -485,7 +486,7 @@ void WareSrcContainer::build()
 		                .arg(m_BuildDirPath)
 		                .arg(m_BuildMode == BUILD_WITHINSTALL ? "--target install" : "");
 
-  runCommand(Command,RunEnv);
+  runCommand(Command, RunEnv);
 }
 
 
@@ -493,13 +494,16 @@ void WareSrcContainer::build()
 // =====================================================================
 
 
-void WareSrcContainer::processOutput()
+void WareSrcContainer::processStandardOutput()
 {
+  mp_Process->setReadChannel(QProcess::StandardOutput);
+
   while (mp_Process->canReadLine())
   {
     QString MsgLine = QString::fromUtf8(mp_Process->readLine());
 
-    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(MsgLine);
+    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(MsgLine,
+                                                                   WareSrcMsgParser::WareSrcMsg::MSG_STANDARD);
 
     mp_Stream->write(Message);
 
@@ -507,6 +511,28 @@ void WareSrcContainer::processOutput()
       m_Messages.append(Message);
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::processErrorOutput()
+{
+  mp_Process->setReadChannel(QProcess::StandardError);
+
+  while (mp_Process->canReadLine())
+  {
+    QString MsgLine = QString::fromUtf8(mp_Process->readLine());
+
+    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(MsgLine,
+                                                                   WareSrcMsgParser::WareSrcMsg::MSG_WARNING);
+
+    mp_Stream->write(Message);
+
+    m_Messages.append(Message);
+  }
 }
 
 
@@ -537,38 +563,6 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
 // =====================================================================
 
 
-void WareSrcContainer::processErrorOutput(QProcess::ProcessError Error)
-{
-  QString MsgStr = "\nError : ";
-
-  switch (Error)
-  {
-    case QProcess::FailedToStart :
-      MsgStr += "command failed to start (program not found or insufficient permissions)"; break;
-    case QProcess::Crashed :
-      MsgStr += "command crashed"; break;
-    case QProcess::Timedout :
-      MsgStr += "command is timed out"; break;
-    case QProcess::WriteError :
-      MsgStr += "write error occurred"; break;
-    case QProcess::ReadError :
-      MsgStr += "read error occurred"; break;
-    default :
-      MsgStr += "unknown"; break;
-  }
-
-  MsgStr += "\n\n";
-
-  WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(MsgStr,
-		                                                              WareSrcMsgParser::WareSrcMsg::MSG_ERROR);
-  mp_Stream->write(Message);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironment& Env)
 {
   if (mp_Process->state() != QProcess::NotRunning)
@@ -576,14 +570,13 @@ void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironm
 
   if (openfluid::base::PreferencesManager::instance()->isWaresdevShowCommandEnv("PATH"))
   {
-    WareSrcMsgParser::WareSrcMsg PATHMessage =
-        WareSrcMsgParser::WareSrcMsg(QString("PATH=%1\n").arg(Env.value("PATH","")),
-                                     WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+    WareSrcMsgParser::WareSrcMsg PATHMessage = WareSrcMsgParser::WareSrcMsg(
+        QString("PATH=%1\n").arg(Env.value("PATH", "")), WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
     mp_Stream->write(PATHMessage);
   }
 
-  WareSrcMsgParser::WareSrcMsg CommandMessage = WareSrcMsgParser::WareSrcMsg(QString("%1\n").arg(Command),
-                                                                      WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+  WareSrcMsgParser::WareSrcMsg CommandMessage = WareSrcMsgParser::WareSrcMsg(
+      QString("%1\n").arg(Command), WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
   mp_Stream->write(CommandMessage);
 
   mp_Process->setProcessEnvironment(Env);
@@ -605,4 +598,4 @@ QList<WareSrcMsgParser::WareSrcMsg> WareSrcContainer::getMessages()
 // =====================================================================
 
 
-} }  // namespaces
+} } // namespaces
