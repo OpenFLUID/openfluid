@@ -123,7 +123,8 @@ class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
     /**
       Default constructor
     */
-    VectorValue() : CompoundValue(), Vector<double>() {};
+    VectorValue() : CompoundValue(), Vector<double>()
+    { };
 
     /**
       Copy constructor

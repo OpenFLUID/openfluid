@@ -87,6 +87,7 @@ class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public 
 
     openfluid::ware::WareParams_t* mp_Params;
 
+
   signals:
 
     void changed();
@@ -94,7 +95,8 @@ class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public 
 
   public:
 
-    PluggableParameterizationExtension() : QWidget(), mp_AdvancedDesc(nullptr)
+    PluggableParameterizationExtension() : QWidget(),
+      mp_AdvancedDesc(nullptr), mp_Params(nullptr)
     {
 
     }

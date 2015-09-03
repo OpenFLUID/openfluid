@@ -93,13 +93,15 @@ class OPENFLUID_API Matrix
     /**
       Destructor
     */
-    virtual ~Matrix() {};
+    virtual ~Matrix()
+    { };
 
     /**
       Returns the number of columns of the Matrix
       @return number of columns
     */
-    inline unsigned long getColsNbr() const { return m_ColsNbr; };
+    inline unsigned long getColsNbr() const
+    { return m_ColsNbr; };
 
     /**
       Returns the number of rows of the Matrix
@@ -111,18 +113,21 @@ class OPENFLUID_API Matrix
       Returns the full size of the Matrix (number of columns x number of rows)
       @return size of the Matrix
     */
-    inline unsigned long getSize() const { return (m_ColsNbr * m_RowsNbr); };
+    inline unsigned long getSize() const
+    { return (m_ColsNbr * m_RowsNbr); };
 
     /**
       Returns the full size of the Matrix
     */
-    inline unsigned long size() const { return (m_ColsNbr * m_RowsNbr); };
+    inline unsigned long size() const
+    { return (m_ColsNbr * m_RowsNbr); };
 
 
     /**
       Returns a pointer to the content of the Matrix (like C arrays)
     */
-    T* data() const { return (T*)(m_Data); };
+    T* data() const
+    { return static_cast<T*>(m_Data); };
 
     /**
       Sets data from a pointer to a content (like C arrays)
@@ -137,12 +142,14 @@ class OPENFLUID_API Matrix
     /**
       Returns the element of the Matrix for index Index
     */
-    inline T at(unsigned long ColIndex, unsigned long RowIndex) const { return getElement(ColIndex,RowIndex); };
+    inline T at(unsigned long ColIndex, unsigned long RowIndex) const
+    { return getElement(ColIndex,RowIndex); };
 
     /**
       Returns the element of the Matrix for index Index
     */
-    inline T get(unsigned long ColIndex, unsigned long RowIndex) const { return getElement(ColIndex,RowIndex); };
+    inline T get(unsigned long ColIndex, unsigned long RowIndex) const
+    { return getElement(ColIndex,RowIndex); };
 
 
     /**
@@ -159,7 +166,7 @@ class OPENFLUID_API Matrix
     /**
       Allocation operator
     */
-    Matrix<T>& operator = (const Matrix &A);
+    Matrix<T>& operator=(const Matrix &A);
 
     /**
       Fills the Matrix with given value
@@ -173,8 +180,10 @@ class OPENFLUID_API Matrix
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 Matrix<T>::Matrix():
@@ -186,6 +195,7 @@ Matrix<T>::Matrix():
 
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 Matrix<T>::Matrix(const Matrix &A)
@@ -201,6 +211,7 @@ Matrix<T>::Matrix(const Matrix &A)
 
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr)
@@ -345,6 +356,7 @@ void Matrix<T>::fill(const T& Val)
 
 // =====================================================================
 // =====================================================================
+
 
 template <class T>
 void Matrix<T>::clear()

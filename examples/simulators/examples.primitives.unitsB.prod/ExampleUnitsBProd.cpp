@@ -164,8 +164,6 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
       {
 
         Value5 = 0.0;
-        FromAList = NULL;
-        FromBList = NULL;
 
         FromAList = B->fromSpatialUnits("unitsA");
 

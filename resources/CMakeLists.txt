@@ -113,5 +113,14 @@ IF(PYTHONINTERP_FOUND)
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
                             "${CMAKE_SOURCE_DIR}"
                    )
+                   
+  ADD_CUSTOM_TARGET(cppcheck
+                    COMMENT "Static analysis of source code "
+                    COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${CMAKE_SOURCE_DIR}"
+                            "${PYTHON_EXECUTABLE}" 
+                            "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-cppcheck.py"
+                            ${CPPCHECK_EXTRA_OPTIONS}                            
+                            "${CMAKE_SOURCE_DIR}"
+                   )
 ENDIF()
 

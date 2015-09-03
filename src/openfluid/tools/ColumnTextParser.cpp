@@ -217,7 +217,7 @@ bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int C
         LineStr.clear();
       }
 
-      it++;
+      ++it;
     }
 
     // more tokens processed but not a complete line. not good!

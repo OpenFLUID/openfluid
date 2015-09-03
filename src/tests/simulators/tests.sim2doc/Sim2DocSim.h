@@ -51,9 +51,6 @@
 */
 class Sim2DocSimulator : public openfluid::ware::PluggableSimulator
 {
-  private:
-
-    int m_RepeatMessages;
 
   public:
     /**

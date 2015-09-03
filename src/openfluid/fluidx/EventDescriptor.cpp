@@ -60,13 +60,10 @@ EventDescriptor::EventDescriptor()
 // =====================================================================
 
 
-EventDescriptor::EventDescriptor(const EventDescriptor& EvDesc)
+EventDescriptor::EventDescriptor(const EventDescriptor& EvDesc) :
+  m_ID(EvDesc.m_ID),m_UnitsClass(EvDesc.m_UnitsClass),m_UnitID(EvDesc.m_UnitID),m_Event(EvDesc.m_Event)
 {
-  m_ID = EvDesc.m_ID;
 
-  m_UnitsClass = EvDesc.m_UnitsClass;
-  m_UnitID = EvDesc.m_UnitID;
-  m_Event = EvDesc.m_Event;
 }
 
 

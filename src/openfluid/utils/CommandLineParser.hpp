@@ -350,7 +350,8 @@ class CommandLineParser
 
   public:
 
-    CommandLineParser()
+    CommandLineParser():
+      m_HelpAsked(false)
     {
       addCommand(CommandLineCommand("",""));
     }

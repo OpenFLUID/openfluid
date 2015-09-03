@@ -56,8 +56,10 @@ struct SortUnitsPtrByProcessOrder
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 SpatialGraph::SpatialGraph()
 {
@@ -68,6 +70,7 @@ SpatialGraph::SpatialGraph()
 // =====================================================================
 // =====================================================================
 
+
 bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
                                         const UnitID_t& UnitID)
 {
@@ -76,12 +79,14 @@ bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
   bool Found = false;
 
   UnitsIt = UnitsList->begin();
-  while (UnitsIt!=UnitsList->end() && !Found)
+  while (!Found && UnitsIt!=UnitsList->end())
   {
     Found = ((*UnitsIt)->getID() == UnitID);
 
-    if (Found) UnitsList->erase(UnitsIt);
-    else ++UnitsIt;
+    if (Found)
+      UnitsList->erase(UnitsIt);
+    else
+      ++UnitsIt;
   }
 
   return Found;
@@ -96,11 +101,13 @@ bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
 bool SpatialGraph::addUnit(const SpatialUnit& aUnit)
 {
   SpatialUnit* TheUnit = m_PcsOrderedUnitsByClass[aUnit.getClass()].addSpatialUnit(aUnit);
+
   if (TheUnit != NULL)
   {
     m_PcsOrderedUnitsGlobal.push_back(TheUnit);
     return true;
   }
+
   return false;
 }
 
@@ -157,12 +164,14 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
   bool Found = false;
 
   UnitsIt = m_PcsOrderedUnitsGlobal.begin();
-  while (UnitsIt!=m_PcsOrderedUnitsGlobal.end() && !Found)
+  while (!Found && UnitsIt!=m_PcsOrderedUnitsGlobal.end())
   {
     Found = ((*UnitsIt)->getID() == aUnit->getID() && (*UnitsIt)->getClass() == aUnit->getClass());
 
-    if (Found) m_PcsOrderedUnitsGlobal.erase(UnitsIt);
-    else ++UnitsIt;
+    if (Found)
+      m_PcsOrderedUnitsGlobal.erase(UnitsIt);
+    else
+      ++UnitsIt;
   }
 
 
@@ -180,12 +189,14 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
     UnitsList_t::iterator UnitsBaseIt;
 
     UnitsBaseIt = UnitsBase->begin();
-    while (UnitsBaseIt!=UnitsBase->end() && !Found)
+    while (!Found && UnitsBaseIt!=UnitsBase->end())
     {
       Found = ((*UnitsBaseIt).getID() == aUnit->getID() && (*UnitsBaseIt).getClass() == aUnit->getClass());
 
-      if (Found) UnitsBase->erase(UnitsBaseIt);
-      else ++UnitsBaseIt;
+      if (Found)
+        UnitsBase->erase(UnitsBaseIt);
+      else
+        ++UnitsBaseIt;
     }
   }
 
@@ -206,7 +217,8 @@ bool SpatialGraph::removeFromToConnection(SpatialUnit* FromUnit,
     return (removeUnitFromList(FromUnit->toSpatialUnits(ToUnit->getClass()),ToUnit->getID()) &&
             removeUnitFromList(ToUnit->fromSpatialUnits(FromUnit->getClass()),FromUnit->getID()));
   }
-  else return false;
+  else
+    return false;
 }
 
 
@@ -222,7 +234,8 @@ bool SpatialGraph::removeChildParentConnection(SpatialUnit* ChildUnit,
     return (removeUnitFromList(ChildUnit->parentSpatialUnits(ParentUnit->getClass()),ParentUnit->getID()) &&
             removeUnitFromList(ParentUnit->childSpatialUnits(ChildUnit->getClass()),ChildUnit->getID()));
   }
-  else return false;
+  else
+    return false;
 }
 
 
@@ -264,8 +277,10 @@ UnitsCollection* SpatialGraph::spatialUnits(const UnitsClass_t& UnitsClass)
 
   it = m_PcsOrderedUnitsByClass.find(UnitsClass);
 
-  if (it == m_PcsOrderedUnitsByClass.end()) return NULL;
-  return  &(it->second);
+  if (it == m_PcsOrderedUnitsByClass.end())
+    return NULL;
+
+  return &(it->second);
 
 }
 
@@ -279,7 +294,9 @@ const UnitsCollection* SpatialGraph::spatialUnits(const UnitsClass_t& UnitsClass
 
   it = m_PcsOrderedUnitsByClass.find(UnitsClass);
 
-  if (it == m_PcsOrderedUnitsByClass.end()) return NULL;
+  if (it == m_PcsOrderedUnitsByClass.end())
+    return NULL;
+
   return  &(it->second);
 
 }
@@ -319,7 +336,7 @@ void SpatialGraph::streamContents(std::ostream& OStream)
   UnitsList_t::iterator UnitIt;
 
 
-  if (m_PcsOrderedUnitsByClass.size() == 0)
+  if (m_PcsOrderedUnitsByClass.empty())
   {
     OStream << "No unit" << std::endl;
     return;

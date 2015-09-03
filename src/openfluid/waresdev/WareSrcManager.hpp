@@ -80,6 +80,7 @@ class OPENFLUID_API WareSrcManager
         }
     };
 
+
   private:
 
     static WareSrcManager* mp_Instance;

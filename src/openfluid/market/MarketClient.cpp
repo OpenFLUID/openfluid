@@ -298,7 +298,6 @@ bool MarketClient::catalogsContainPackages() const
 
 void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogFile)
 {
-  std::string TmpVersion, TmpArch, TmpID;
   QStringList PackagesIDs;
 
   // Catalog of type passed as parameter
@@ -487,11 +486,8 @@ void MarketClient::downloadAssociatedLicenses()
 
 void MarketClient::connect(const std::string& URL)
 {
-
   // List of catalog urls
   CatalogsFileURL_t CatalogsFileURL;
-  // List of catalog data
-  CatalogsData_t CatalogsData;
 
 
   m_URL = URL;
@@ -603,7 +599,7 @@ MetaPackagesCatalog_t::iterator MarketClient::findInTypesMetaPackagesCatalogs(co
 
   // searching for ID package in each MetaPackages catalog
   while (TPCit != m_TypesMetaPackagesCatalogs.end() && (PCit = TPCit->second.find(ID)) == TPCit->second.end())
-    TPCit++;
+    ++TPCit;
 
   return PCit;
 }
@@ -672,7 +668,7 @@ MetaPackageInfo::SelectionType MarketClient::getSelectionFlag(const openfluid::w
 
   // searching for ID package in each MetaPackages catalog
   while (TPCit != m_TypesMetaPackagesCatalogs.end() && (PCit = TPCit->second.find(ID)) == TPCit->second.end())
-    TPCit++;
+    ++TPCit;
 
   // if ID package found
   if (TPCit != m_TypesMetaPackagesCatalogs.end())
@@ -748,7 +744,7 @@ void MarketClient::preparePackagesInstallation()
         std::string BuildOptsStr = PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions;
 
         if (!BuildOptsStr.empty())
-          ((MarketSrcPackage*)m_PacksToInstall.back())->setBuildConfigOptions(BuildOptsStr);
+          static_cast<MarketSrcPackage*>(m_PacksToInstall.back())->setBuildConfigOptions(BuildOptsStr);
       }
 
 

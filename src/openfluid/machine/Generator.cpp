@@ -43,7 +43,8 @@
 namespace openfluid { namespace machine {
 
 
-Generator::Generator() : PluggableSimulator()
+Generator::Generator() : PluggableSimulator(),
+  m_VarSize(1)
 {
 
 }

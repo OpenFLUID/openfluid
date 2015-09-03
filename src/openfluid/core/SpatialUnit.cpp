@@ -196,9 +196,9 @@ UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitsClass_t& aClass)
   else return NULL;
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 
 
 void SpatialUnit::streamContents(std::ostream& OStream)
@@ -209,7 +209,7 @@ void SpatialUnit::streamContents(std::ostream& OStream)
 
   OStream << m_Class << " #"<< m_ID << " (order: " << m_PcsOrder << ")";
 
-  if (m_ToUnits.size() > 0 )
+  if (!m_ToUnits.empty())
   {
     OStream << " To[";
 
@@ -227,7 +227,7 @@ void SpatialUnit::streamContents(std::ostream& OStream)
     OStream << "] ";
   }
 
-  if (m_FromUnits.size() > 0 )
+  if (!m_FromUnits.empty())
   {
     OStream << " From[";
 

@@ -102,7 +102,7 @@ void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger
     CurrentObserver->Body->linkToDatastore(&(m_SimulationBlob.datastore()));
     CurrentObserver->Body->initializeWare(CurrentObserver->Signature->ID);
 
-    ObsIter++;
+    ++ObsIter;
   }
 
   m_Initialized = true;
@@ -126,7 +126,7 @@ void MonitoringInstance::finalize()
   while (ObsIter != m_Observers.end())
   {
     (*ObsIter)->Body->finalizeWare();
-    ObsIter++;
+    ++ObsIter;
   }
 
 
@@ -135,7 +135,7 @@ void MonitoringInstance::finalize()
   while (ObsIter != m_Observers.end())
   {
     delete (*ObsIter)->Body;
-    ObsIter++;
+    ++ObsIter;
   }
 
   m_Initialized = false;
@@ -155,7 +155,7 @@ void MonitoringInstance::call_initParams() const
   while (ObsIter != m_Observers.end())
   {
     (*ObsIter)->Body->initParams((*ObsIter)->Params);
-    ObsIter++;
+    ++ObsIter;
   }
 }
 
@@ -173,7 +173,7 @@ void MonitoringInstance::call_onPrepared() const
   while (ObsIter != m_Observers.end())
   {
     (*ObsIter)->Body->onPrepared();
-    ObsIter++;
+    ++ObsIter;
   }
 }
 
@@ -191,7 +191,7 @@ void MonitoringInstance::call_onInitializedRun() const
   while (ObsIter != m_Observers.end())
   {
     (*ObsIter)->Body->onInitializedRun();
-    ObsIter++;
+    ++ObsIter;
   }
 }
 
@@ -210,7 +210,7 @@ void MonitoringInstance::call_onStepCompleted(const openfluid::core::TimeIndex_t
   {
     (*ObsIter)->Body->onStepCompleted();
     (*ObsIter)->Body->setPreviousTimeIndex(TimeIndex);
-    ObsIter++;
+    ++ObsIter;
   }
 }
 
@@ -228,8 +228,9 @@ void MonitoringInstance::call_onFinalizedRun() const
   while (ObsIter != m_Observers.end())
   {
     (*ObsIter)->Body->onFinalizedRun();
-    ObsIter++;
+    ++ObsIter;
   }
 }
+
 
 } }  // namespaces

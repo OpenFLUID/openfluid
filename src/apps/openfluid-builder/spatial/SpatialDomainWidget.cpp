@@ -766,7 +766,7 @@ void SpatialDomainWidget::moveUnitsClassUp(QString ClassName)
   int From = Position;
   int To = Position-1;
 
-  UnitsClassWidget* W = (UnitsClassWidget*)(ui->UnitsClassAreaContents->layout()->takeAt(From)->widget());
+  UnitsClassWidget* W = static_cast<UnitsClassWidget*>(ui->UnitsClassAreaContents->layout()->takeAt(From)->widget());
   ((QBoxLayout*)(ui->UnitsClassAreaContents->layout()))->insertWidget(To,W);
 
   updateUpDownButtons();
@@ -796,7 +796,7 @@ void SpatialDomainWidget::moveUnitsClassDown(QString ClassName)
   int From = Position;
   int To = Position+1;
 
-  UnitsClassWidget* W = (UnitsClassWidget*)(ui->UnitsClassAreaContents->layout()->takeAt(From)->widget());
+  UnitsClassWidget* W = static_cast<UnitsClassWidget*>(ui->UnitsClassAreaContents->layout()->takeAt(From)->widget());
   ((QBoxLayout*)(ui->UnitsClassAreaContents->layout()))->insertWidget(To,W);
 
   updateUpDownButtons();
@@ -1232,7 +1232,7 @@ void SpatialDomainWidget::updateUpDownButtons()
 
   for (int i=0;i<=LastIndex;i++)
   {
-    UnitsClassWidget* W = (UnitsClassWidget*)(ui->UnitsClassAreaContents->layout()->itemAt(i)->widget());
+    UnitsClassWidget* W = static_cast<UnitsClassWidget*>(ui->UnitsClassAreaContents->layout()->itemAt(i)->widget());
     if (i==0 && LastIndex == 0)
     {
       W->setUpButtonEnabled(false);

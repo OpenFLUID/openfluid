@@ -73,10 +73,11 @@ std::string MarketPackage::m_BuilderextBuildConfigOptions = openfluid::config::M
 bool MarketPackage::m_Initialized = false;
 
 
-MarketPackage::MarketPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
-              : m_ID(ID), m_PackageURL(PackageURL), m_Downloaded(false)
+MarketPackage::MarketPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL) :
+  m_ID(ID), m_PackageURL(PackageURL),m_PackageFilename(openfluid::tools::Filesystem::filename(PackageURL)),
+  m_Downloaded(false)
 {
-  m_PackageFilename = openfluid::tools::Filesystem::filename(PackageURL);
+
 }
 
 

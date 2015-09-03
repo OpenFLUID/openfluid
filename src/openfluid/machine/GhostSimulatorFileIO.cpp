@@ -67,14 +67,11 @@ class DataNodeFields
 
     std::string Type;
 
-    DataNodeFields(const QDomElement& Node, const QStringList& ExpectedIOModes = QStringList())
+    DataNodeFields(const QDomElement& Node, const QStringList& ExpectedIOModes = QStringList()):
+      Name(Node.attribute("name").toStdString()),UnitsClass(Node.attribute("unitsclass").toStdString()),
+      IOMode(Node.attribute("iomode").toStdString()),SIUnit(Node.attribute("siunit").toStdString()),
+      Description(Node.text().toStdString()),Type(Node.attribute("type").toStdString())
     {
-      Name = Node.attribute("name").toStdString();
-      UnitsClass = Node.attribute("unitsclass").toStdString();
-      SIUnit = Node.attribute("siunit").toStdString();
-      Type = Node.attribute("type").toStdString();
-      Description = Node.text().toStdString();
-      IOMode = Node.attribute("iomode").toStdString();
       if (!ExpectedIOModes.contains(QString::fromStdString(IOMode)))
         IOMode.clear();
     }

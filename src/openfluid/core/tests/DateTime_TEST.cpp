@@ -53,6 +53,15 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
+  openfluid::core::DateTime DT0;
+
+  BOOST_REQUIRE_EQUAL(DT0.getYear(),1900);
+  BOOST_REQUIRE_EQUAL(DT0.getMonth(),1);
+  BOOST_REQUIRE_EQUAL(DT0.getDay(),1);
+  BOOST_REQUIRE_EQUAL(DT0.getHour(),0);
+  BOOST_REQUIRE_EQUAL(DT0.getMinute(),0);
+  BOOST_REQUIRE_EQUAL(DT0.getSecond(),0);
+
   openfluid::core::DateTime DT(2009,9,8,13,11,25);
 
   BOOST_REQUIRE_EQUAL(DT.getYear(),2009);

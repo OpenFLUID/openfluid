@@ -92,7 +92,8 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
 
   public:
 
-    Fortran90Simulator() : PluggableSimulator()
+    Fortran90Simulator() : PluggableSimulator(),
+      m_Precision(0.000001)
     {
 
     }
@@ -143,8 +144,6 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest initializeRun()
     {
-
-      m_Precision = 0.000001;
 
       return DefaultDeltaT();
     }

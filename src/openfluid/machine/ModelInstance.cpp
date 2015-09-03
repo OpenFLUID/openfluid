@@ -88,7 +88,7 @@ namespace openfluid { namespace machine {
                                                          _M_CurrentSimulator->Signature->ID); \
         mp_SimLogger->resetCurrentWarningFlag(); \
       } \
-      _M_SimIter++; \
+      ++_M_SimIter; \
     } \
 
 
@@ -351,7 +351,7 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
                                     openfluid::base::RuntimeEnvironment::instance()->getSimulatorsMaxNumThreads());
     SimSequence.push_back(CurrentSimulator->Signature->ID);
 
-    SimIter++;
+    ++SimIter;
   }
 
   if (openfluid::base::RuntimeEnvironment::instance()->isSimulationProfilingEnabled())
@@ -379,7 +379,7 @@ void ModelInstance::finalize()
   while (SimIter != m_ModelItems.end())
   {
     (*SimIter)->Body->finalizeWare();
-    SimIter++;
+    ++SimIter;
   }
 
 
@@ -388,7 +388,7 @@ void ModelInstance::finalize()
   while (SimIter != m_ModelItems.end())
   {
     delete (*SimIter)->Body;
-    SimIter++;
+    ++SimIter;
   }
 
   if (mp_SimProfiler != NULL) delete mp_SimProfiler;
@@ -530,7 +530,7 @@ void ModelInstance::call_initializeRun()
     else
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"NULL model item instance");
 
-    SimIter++;
+    ++SimIter;
   }
 }
 

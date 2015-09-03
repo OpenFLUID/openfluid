@@ -50,21 +50,20 @@ namespace openfluid { namespace core {
 
 
 /**
- * @brief Container class for geospatial raster data,
- * represented by a GDAL dataset.
- */
+ Container class for geospatial raster data represented by a GDAL dataset.
+*/
 class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
 {
 
   protected:
 
     /**
-      @brief The GDALDataset associated to this GeoRasterValue.
+      The GDALDataset associated to this GeoRasterValue.
     */
     GDALDataset* mp_Data;
 
     /**
-      @brief Open the GDALDataset of this GeoRasterValue.
+      Open the GDALDataset of this GeoRasterValue.
       @throw openfluid::base::FrameworkException if GDAL doesn't succeed to open the datasource.
     */
     void tryToOpenSource();
@@ -72,27 +71,27 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
   public:
 
     /**
-      @brief Creates a new value.
+      Creates a new value.
       The <tt>FileName</tt> may be the name of a .jpeg, .tiff, .img or .asc file...
       It doesn't open the associated GDAL dataset.
-      @param FilePath The path of the file(s).
-      @param FileName The name or the relative path of the file to open.
+      @param[in] FilePath The path of the file(s).
+      @param[in] FileName The name or the relative path of the file to open.
     */
     GeoRasterValue(const std::string& FilePath, const std::string& FileName);
 
     /**
-      @brief Closes the opened GDAL dataset.
+      Closes the opened GDAL dataset.
     */
     ~GeoRasterValue();
 
     /**
-      @brief Returns the type of this GeoRasterValue.
+      Returns the type of this GeoRasterValue.
       @return An openfluid::core::UnstructuredValue::UnstructuredType.
     */
     openfluid::core::UnstructuredValue::UnstructuredType getType() const;
 
     /**
-      @brief Gets the associated opened GDAL dataset in read-only access.
+      Gets the associated opened GDAL dataset in read-only access.
       If the dataset is not already opened, tries to open it first.
       @return The opened GDAL dataset.
       @throw openfluid::base::FrameworkException if GDAL doesn't succeed to open the dataset.
@@ -100,11 +99,13 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
     GDALDataset* data();
 
     /**
-      @brief Returns the absolute Path of this GeoRasterValue.
+      Returns the absolute Path of this GeoRasterValue.
     */
     std::string getAbsolutePath();
 };
 
+
 } } // namespaces
+
 
 #endif /* __OPENFLUID_CORE_GEORASTERVALUE_HPP__ */

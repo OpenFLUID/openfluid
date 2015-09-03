@@ -86,12 +86,19 @@ class OPENFLUID_API MarketClientAssistant : public QWizard
 
         enum { NAME, URL};
 
-        QStandardItem *mp_Name;
-        QStandardItem *mp_URL;
+        QStandardItem* mp_Name;
+        QStandardItem* mp_URL;
 
-        URLComboColumns() {}
+        URLComboColumns() :
+          mp_Name(nullptr), mp_URL(nullptr)
+        { }
 
-        void appendItems() { clear(); append(mp_Name); append(mp_URL); }
+        void appendItems()
+        {
+          clear();
+          append(mp_Name);
+          append(mp_URL);
+        }
     };
 
     URLComboColumns m_URLColumns;
@@ -185,12 +192,16 @@ class OPENFLUID_API MarketClientAssistant : public QWizard
 
         enum { ID, TYPE, FORMAT, STATUS};
 
-        QTableWidgetItem *mp_ID;
-        QTableWidgetItem *mp_Type;
-        QTableWidgetItem *mp_Format;
-        QTableWidgetItem *mp_Status;
+        QTableWidgetItem* mp_ID;
+        QTableWidgetItem* mp_Type;
+        QTableWidgetItem* mp_Format;
+        QTableWidgetItem* mp_Status;
 
-        InstallTableColumns() {}
+        InstallTableColumns() :
+          mp_ID(nullptr), mp_Type(nullptr), mp_Format(nullptr), mp_Status(nullptr)
+        {
+
+        }
 
         void setFlags()
         {

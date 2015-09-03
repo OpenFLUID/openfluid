@@ -167,7 +167,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
       {
         CurrentUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
 
-        std::string SrcClassStr = CurrentUnit->getClass();
+        // std::string SrcClassStr = CurrentUnit->getClass();
         std::string SrcIDStr = "";
         openfluid::tools::convertValue(CurrentUnit->getID(),&SrcIDStr);
 
@@ -177,7 +177,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
           if (ToUnitsPtrList != NULL)
           {
-            std::string DestClassStr = ClassVector[i];
+            // std::string DestClassStr = ClassVector[i];
 
             for (itToUnitsPtrList=ToUnitsPtrList->begin();itToUnitsPtrList!=ToUnitsPtrList->end();++itToUnitsPtrList)
             {
@@ -204,7 +204,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
       {
         CurrentUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
 
-        std::string SrcClassStr = CurrentUnit->getClass();
+        // std::string SrcClassStr = CurrentUnit->getClass();
         std::string SrcIDStr = "";
         openfluid::tools::convertValue(CurrentUnit->getID(),&SrcIDStr);
 
@@ -215,7 +215,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
           if (FromUnitsPtrList != NULL)
           {
-            std::string DestClassStr = ClassVector[i];
+            // std::string DestClassStr = ClassVector[i];
 
             for (itFromUnitsPtrList=FromUnitsPtrList->begin();
                  itFromUnitsPtrList!=FromUnitsPtrList->end();

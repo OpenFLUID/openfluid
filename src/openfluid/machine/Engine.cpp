@@ -262,12 +262,10 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
 
 void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 {
-
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsClassesIter;
   openfluid::core::UnitsList_t::const_iterator UnitsIter;
   const openfluid::core::UnitsListByClassMap_t* AllUnits;
   const openfluid::core::UnitsList_t* UnitsList;
-  std::vector<std::string> VarsNames;
 
 
   AllUnits = m_SimulationBlob.spatialGraph().allSpatialUnitsByClass();
@@ -279,11 +277,8 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
     for (UnitsIter = UnitsList->begin();UnitsIter != UnitsList->end();++UnitsIter)
     {
       if (!((*UnitsIter).variables()->isAllVariablesCount(ExpectedVarsCount)))
-        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Variable production error");
-
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Variable production error");
     }
-
   }
 }
 
@@ -377,7 +372,7 @@ void Engine::checkModelConsistency()
                      true,
                      CurrentSimulator->Signature->ID);
 
-    SimIter++;
+    ++SimIter;
   }
 
 
@@ -395,7 +390,7 @@ void Engine::checkModelConsistency()
                             HData.RequiredVars[i].UnitsClass,
                             CurrentSimulator->Signature->ID);
 
-    SimIter++;
+    ++SimIter;
   }
 
 }
@@ -432,7 +427,7 @@ void Engine::checkAttributesConsistency()
           HData.ProducedAttribute[i].UnitsClass,
           CurrentSimulator->Signature->ID);
 
-    SimIter++;
+    ++SimIter;
   }
 
 }
@@ -626,8 +621,6 @@ void Engine::checkConsistency()
 
 void Engine::run()
 {
-  std::string ProdMessage;
-
   // Check for simulation vars production before init
   checkSimulationVarsProduction(0);
 

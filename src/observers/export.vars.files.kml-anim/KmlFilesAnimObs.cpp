@@ -443,8 +443,6 @@ class KmlFilesAnimObserver : public KmlObserverBase
         {
           for (auto& SLayer : ParamsTree.root().child("layers").child("static"))
             {
-            std::string LayerID = SLayer.first;
-
             KmlStaticLayerInfo KSLI;
 
             KSLI.UnitsClass = SLayer.second.getChildValue("unitsclass","");

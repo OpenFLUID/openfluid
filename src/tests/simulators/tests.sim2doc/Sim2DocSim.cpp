@@ -54,7 +54,7 @@ This is the \LaTeX -style documentation of the \simID\ function (\simNAME, versi
 \cite{Moussa2002b}
 
 \bibliographystyle{plain}
-\bibliography{doc/bibliography/MHYDAS_OpenFLUID}
+\bibliography{doc/bibliography/TestBib}
 
 </sim2doc>
 

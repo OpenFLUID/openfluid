@@ -198,7 +198,7 @@
                                                        << eventcoll.eventsList()->size() << std::endl; \
     openfluid::core::EventsList_t::iterator _M_DBG_EvListiter; \
     for (_M_DBG_EvListiter=(EvColl.eventsList())->begin();\
-         _M_DBG_EvListiter != (EvColl.eventsList())->end(); _M_DBG_EvListiter++) \
+         _M_DBG_EvListiter != (EvColl.eventsList())->end(); ++_M_DBG_EvListiter) \
     { \
       OFDBG_EVENT(&(*_M_DBG_EvListiter)); \
     } \

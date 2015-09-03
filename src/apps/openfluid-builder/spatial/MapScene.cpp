@@ -107,13 +107,13 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
 
       while ((Feature = Layer->GetNextFeature()) != NULL )
       {
-        OGRGeometry *Geometry = Feature->GetGeometryRef();
-        OGRwkbGeometryType GeomType =  Geometry->getGeometryType();
-
+        OGRGeometry* Geometry = Feature->GetGeometryRef();
         int ID = Feature->GetFieldAsInteger("OFLD_ID");
 
-        if (Geometry != NULL && m_Domain.isSpatialUnitExist(StdClassName,ID))
+        if (Geometry && m_Domain.isSpatialUnitExist(StdClassName,ID))
         {
+          OGRwkbGeometryType GeomType = Geometry->getGeometryType();
+
           if (GeomType == wkbPoint)
           {
             PointGraphics* PointG = new PointGraphics(dynamic_cast<OGRPoint*>(Geometry),

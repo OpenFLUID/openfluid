@@ -50,8 +50,11 @@ class OPENFLUID_API ValuesBufferProperties
   protected:
     static unsigned int BufferSize;
 
+
   public:
-    static unsigned int getBufferSize() { return BufferSize; };
+
+    static unsigned int getBufferSize()
+    { return BufferSize; };
 
     static void setBufferSize(const unsigned int aBufferSize)
     {

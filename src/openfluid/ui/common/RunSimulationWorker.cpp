@@ -117,7 +117,11 @@ class UserAbortException : public openfluid::base::Exception
 
 
 RunSimulationListener::RunSimulationListener()
-  : m_Completed(false), m_SimDuration(0),
+  : m_CurrentIndex(0),m_CurrentSimulator(0),
+    m_TotalTime(0),m_TotalSimulators(0),
+    m_CurrentPreSim(0),m_CurrentInit(0),m_CurrentFinal(0),
+    m_TotalTotal(0),
+    m_Completed(false), m_SimDuration(0),
     m_PausedByUser(false), m_ConfirmedPauseByUser(false),
     m_AbortedByUser(false)
 {

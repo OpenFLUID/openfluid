@@ -517,10 +517,10 @@ void AdvancedDomainDescriptor::deleteUnit(const std::string& ClassName, int ID)
       if (itAttrs->attributes().empty())
         itAttrs = Attrs->erase(itAttrs);
       else
-        itAttrs++;
+        ++itAttrs;
     }
     else
-      itAttrs++;
+      ++itAttrs;
   }
 
   // delete in EventDesc list
@@ -533,7 +533,7 @@ void AdvancedDomainDescriptor::deleteUnit(const std::string& ClassName, int ID)
     if (itEv->getUnitsClass() == ClassName && (int) itEv->getUnitID() == ID)
       itEv = Events->erase(itEv);
     else
-      itEv++;
+      ++itEv;
   }
 
 }
@@ -800,7 +800,7 @@ void AdvancedDomainDescriptor::deleteEvent(const openfluid::core::UnitsClass_t& 
 
     bool Found = false;
 
-    while (itu != itue && !Found)
+    while (!Found && itu != itue)
     {
       if ((*itu)->getID() == EventID)
       {
@@ -828,7 +828,7 @@ void AdvancedDomainDescriptor::deleteEvent(const openfluid::core::UnitsClass_t& 
 
   bool Found = false;
 
-  while (it != ite && !Found)
+  while (!Found && it != ite)
   {
     if ((*it).getID() == EventID)
     {

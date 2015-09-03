@@ -125,7 +125,7 @@ class ValuesBuffer::PrivateImpl
         if ((*It).m_Index > anIndex)
           return m_Data.end();
 
-        It++;
+        ++It;
       }
 
       return m_Data.end();
@@ -336,7 +336,7 @@ bool ValuesBuffer::modifyCurrentValue(const Value& aValue)
   if (m_PImpl->m_Data.empty()) return false;
 
   PrivateImpl::DataContainer_t::iterator It = m_PImpl->m_Data.end();
-  It--;
+  --It;
   (*It).m_Value.reset(aValue.clone());
 
   return true;
@@ -394,7 +394,7 @@ void ValuesBuffer::displayContent(std::ostream& OStream) const
   while (It!=Ite)
   {
     OStream << "[" << (*It).m_Index << "|" << (*It).m_Value.get()->toString() << "]" << std::endl;
-    It++;
+    ++It;
   }
 
 }

@@ -269,5 +269,10 @@ SET(OPENFLUID_TRANSLATIONS_DIRSTOSCAN "${CMAKE_SOURCE_DIR}/src/openfluid/ui"
                                       "${CMAKE_SOURCE_DIR}/src/apps/openfluid-devstudio")
 
 
+################### cppcheck ###################
 
+SET(CPPCHECK_EXTRA_OPTIONS "-q" 
+                           "--enable=style,information,performance,portability,missingInclude" 
+                           "--suppress=variableScope"
+                           "--force")
 

@@ -159,15 +159,18 @@ class OPENFLUID_API MapValue : public CompoundValue
     */
     MapValue(const MapValue& Val);
 
-    MapValue(const Map_t& Val) : CompoundValue(), m_Value(Val) {};
+    MapValue(const Map_t& Val) : CompoundValue(), m_Value(Val)
+    { };
 
     Value& operator =(const Value& Other);
 
     ~MapValue();
 
-    inline Type getType() const { return Value::MAP; };
+    inline Type getType() const
+    { return Value::MAP; };
 
-    Value* clone() const { return new MapValue(*this); };
+    Value* clone() const
+    { return new MapValue(*this); };
 
     void writeToStream(std::ostream& OutStm) const;
 

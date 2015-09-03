@@ -245,7 +245,8 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
     if (mp_DockWidget == NULL)
       mp_DockWidget = new QDockWidget(tr("Project dashboard"),&m_MainWindow);
 
-    DashboardFrame* DockedWidget = (DashboardFrame*)(((ProjectModule*)Module)->dockWidgetRebuilt(mp_DockWidget));
+    DashboardFrame* DockedWidget =
+      static_cast<DashboardFrame*>(static_cast<ProjectModule*>(Module)->dockWidgetRebuilt(mp_DockWidget));
     DockedWidget->updateOrientation(openfluid::base::PreferencesManager::instance()->getDockPosition());
 
     mp_DockWidget->setObjectName("DockWidget");
@@ -268,19 +269,20 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
             this,SLOT(saveDockArea(Qt::DockWidgetArea)));
 
 
-    connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
+    connect(static_cast<ProjectModule*>(mp_CurrentModule),
+            SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
             this,SLOT(enableSave()));
 
-    connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),
+    connect(static_cast<ProjectModule*>(mp_CurrentModule),SIGNAL(savePerformed()),
             this,SLOT(disableSave()));
 
-    connect((ProjectModule*)mp_CurrentModule,SIGNAL(runEnabled(bool)),
+    connect(static_cast<ProjectModule*>(mp_CurrentModule),SIGNAL(runEnabled(bool)),
             this,SLOT(enableRun(bool)));
 
-    connect((ProjectModule*)mp_CurrentModule,SIGNAL(refreshWaresEnabled(bool)),
+    connect(static_cast<ProjectModule*>(mp_CurrentModule),SIGNAL(refreshWaresEnabled(bool)),
             m_Actions.action("WaresRefresh"),SLOT(setEnabled(bool)));
 
-    enableRun(((ProjectModule*)Module)->isOkForSimulation());
+    enableRun(static_cast<ProjectModule*>(Module)->isOkForSimulation());
 
     m_Actions.action("WaresRefresh")
         ->setEnabled(!openfluid::base::PreferencesManager::instance()->isWaresWatchersActive());

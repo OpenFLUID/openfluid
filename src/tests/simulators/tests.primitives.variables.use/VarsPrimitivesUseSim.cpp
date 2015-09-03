@@ -270,7 +270,6 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError("incorrect double value (tests.double, by reference)");
 
-          VarDouble = 0.0;
           VarDouble = OPENFLUID_GetVariable(TU,"tests.double",CurrIndex)->asDoubleValue();
           if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError("incorrect double value (tests.double, by return)");
@@ -280,12 +279,10 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError("incorrect double value (tests.double, by reference, without index)");
 
-          VarDouble = 0.0;
           VarDouble = OPENFLUID_GetVariable(TU,"tests.double")->asDoubleValue();
           if (!openfluid::scientific::isCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError("incorrect double value (tests.double, by return, without index)");
 
-          VarDouble = 0.0;
           OPENFLUID_GetLatestVariable(TU,"tests.double",IndValue);
           if (IndValue.getIndex() != OPENFLUID_GetCurrentTimeIndex())
             OPENFLUID_RaiseError("incorrect time index (tests.double, by reference, latest variable)");
@@ -293,8 +290,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (!openfluid::scientific::isCloseEnough<double>(IndValue.value()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError("incorrect double value (tests.double, by reference, latest variable");
 
-          VarDouble = 0.0;
-          IndValue = openfluid::core::IndexedValue();
+          IndValue.clear();
           IndValue = OPENFLUID_GetLatestVariable(TU,"tests.double");
           if (IndValue.getIndex() != OPENFLUID_GetCurrentTimeIndex())
             OPENFLUID_RaiseError("incorrect time index (tests.double, by return, latest variable)");
@@ -311,7 +307,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
 
           VarDouble = 0.0;
-          IndValueList = openfluid::core::IndexedValueList();
+          IndValueList.clear();
           IndValueList = OPENFLUID_GetLatestVariables(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex()-1);
           if (!openfluid::scientific::isCloseEnough<double>(
                 IndValueList.back().value()->asDoubleValue(),RefDouble,0.00001))

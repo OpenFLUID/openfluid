@@ -80,9 +80,9 @@ class OPENFLUID_API FluidXDescriptor
 
     bool m_ModelDefined;
 
-    openfluid::base::IOListener* mp_Listener;
-
     std::string m_IndentStr;
+
+    openfluid::base::IOListener* mp_Listener;
 
     bool extractWareEnabledFromNode(QDomElement& Node);
 
@@ -144,7 +144,7 @@ class OPENFLUID_API FluidXDescriptor
 
     ~FluidXDescriptor();
 
-    void loadFromDirectory(std::string DirPath);
+    void loadFromDirectory(const std::string& DirPath);
 
     inline openfluid::fluidx::CoupledModelDescriptor& modelDescriptor()
     { return m_ModelDescriptor; }

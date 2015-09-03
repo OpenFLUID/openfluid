@@ -414,12 +414,12 @@ void WareSrcFileEditor::contextMenuEvent(QContextMenuEvent* Event)
   QMenu* Menu = createStandardContextMenu();
   Menu->addSeparator();
 
-  foreach(QMenu* SubMenu,m_InsertionMenus){
-  Menu->addMenu(SubMenu);
-}
+  for (QMenu* SubMenu : m_InsertionMenus)
+  {
+    Menu->addMenu(SubMenu);
+  }
 
   Menu->exec(Event->globalPos());
-
 
   delete Menu;
 }

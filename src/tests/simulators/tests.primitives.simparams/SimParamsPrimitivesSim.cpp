@@ -97,7 +97,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
   public:
 
 
-    SimParamsPrimitivesSimulator() : PluggableSimulator()
+    SimParamsPrimitivesSimulator() : PluggableSimulator(),m_ParamLong(0),m_ParamDouble(0.0)
     {
 
 

@@ -697,10 +697,7 @@ void PolygonGraph::removeEntity(int OfldId)
   {
     std::ostringstream s;
     s << "No entity with id " << OfldId;
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        s.str());
-    return;
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,s.str());
   }
   computeNeighbours();
 

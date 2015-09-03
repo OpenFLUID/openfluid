@@ -75,8 +75,8 @@ END_SIMULATOR_SIGNATURE
 // =====================================================================
 
 
-MessagesSimulator::MessagesSimulator()
-                : PluggableSimulator()
+MessagesSimulator::MessagesSimulator() : PluggableSimulator(),
+  m_RepeatMessages(1)
 {
 
 
@@ -100,11 +100,9 @@ MessagesSimulator::~MessagesSimulator()
 
 void MessagesSimulator::initParams(const openfluid::ware::WareParams_t& Params)
 {
-
-  m_RepeatMessages = 1;
-
   OPENFLUID_GetSimulatorParameter(Params,"rptmsgs",m_RepeatMessages);
 }
+
 
 // =====================================================================
 // =====================================================================

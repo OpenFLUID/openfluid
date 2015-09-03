@@ -60,29 +60,15 @@ RuntimeEnvironment* RuntimeEnvironment::mp_Singleton = NULL;
 
 
 RuntimeEnvironment::RuntimeEnvironment() :
-    m_Profiling(false), m_IsLinkedToProject(false)
+  m_Version(openfluid::config::VERSION_MAJOR+"."+openfluid::config::VERSION_MINOR+"."+openfluid::config::VERSION_PATCH),
+  m_FullVersion(openfluid::config::FULL_VERSION),
+  m_MajorMinorVersion(openfluid::config::VERSION_MAJOR+"."+openfluid::config::VERSION_MINOR),
+  m_InstallPrefix(openfluid::config::INSTALL_PREFIX),
+  m_SimulatorsMaxNumThreads(openfluid::config::SIMULATORS_MAXNUMTHREADS),
+  m_Profiling(false), m_IsLinkedToProject(false)
 {
-  std::string UserID = "";
 
-  m_Version = openfluid::config::VERSION_MAJOR + "." +
-              openfluid::config::VERSION_MINOR + "." +
-              openfluid::config::VERSION_PATCH;
-  m_FullVersion = openfluid::config::FULL_VERSION;
-  m_MajorMinorVersion = openfluid::config::VERSION_MAJOR + "."
-      + openfluid::config::VERSION_MINOR;
-
-  m_TempDir = "";
-  m_HostName = "";
-  m_UserID = "";
-  m_Arch = "";
-
-  m_SimulatorsMaxNumThreads = openfluid::config::SIMULATORS_MAXNUMTHREADS;
-
-  // ====== System architecture ======
   m_Arch = OPENFLUID_OS_STRLABEL;
-
-
-  m_InstallPrefix = openfluid::config::INSTALL_PREFIX;
 
   char *INSTALLEnvVar;
   INSTALLEnvVar = std::getenv("OPENFLUID_INSTALL_PREFIX");

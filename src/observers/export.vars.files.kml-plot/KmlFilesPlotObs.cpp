@@ -102,8 +102,10 @@ class KmlSerieInfo : public KmlLayerInfo<KmlUnitInfoExtra>
 
     int LineWidth;
 
-    KmlSerieInfo() : VarsListStr("*"),OutputFileName(""), DefaultColor("ffffffff"),
-                     PlottedColor("ffffffff")
+    KmlSerieInfo() :
+      VarsListStr("*"),OutputFileName(""),
+      DefaultColor("ffffffff"),PlottedColor("ffffffff"),
+      LineWidth(1)
     { };
 };
 
@@ -387,8 +389,6 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
         for (auto& Layer : ParamsTree.root().child("layers"))
         {
-          std::string LayerID = Layer.first;
-
           KmlSerieInfo KSI;
 
           KSI.UnitsClass = Layer.second.getChildValue("unitsclass","");

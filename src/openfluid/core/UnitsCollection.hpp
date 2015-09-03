@@ -74,9 +74,11 @@ class OPENFLUID_API UnitsCollection
 
     void sortByProcessOrder();
 
-    inline const UnitsList_t* list() const { return &m_Data; };
+    inline const UnitsList_t* list() const
+    { return &m_Data; };
 
-    inline UnitsList_t* list() { return &m_Data; };
+    inline UnitsList_t* list()
+    { return &m_Data; };
 
 };
 

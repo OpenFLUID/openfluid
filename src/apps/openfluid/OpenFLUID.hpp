@@ -69,7 +69,7 @@ class OpenFLUIDApp
 
     std::pair<std::string,std::string> m_BuddyToRun;
 
-    openfluid::base::RuntimeEnvironment* m_RunEnv;
+    openfluid::base::RuntimeEnvironment* mp_RunEnv;
     openfluid::machine::SimulationBlob m_SimBlob;
     openfluid::machine::Engine* mp_Engine;
 
@@ -101,9 +101,9 @@ class OpenFLUIDApp
 
     void printWareInfosReport(const openfluid::ware::WareSignature* Signature, const std::string& Filename);
 
-    void printSimulatorsReport(const std::string Pattern);
+    void printSimulatorsReport(const std::string& Pattern);
 
-    void printObserversReport(const std::string Pattern);
+    void printObserversReport(const std::string& Pattern);
 
     /**
       Runs simulation

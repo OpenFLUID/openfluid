@@ -136,9 +136,6 @@ geos::planargraph::Node* LineStringEntity::endNode()
 
 void LineStringEntity::computeNeighbours()
 {
-	std::vector<LineStringEntity*> Ups = getLineOrientUpNeighbours();
-	std::vector<LineStringEntity*> Downs = getLineOrientDownNeighbours();
-
 	delete mp_Neighbours;
 
 	mp_Neighbours = new std::set<LandREntity*>;

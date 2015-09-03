@@ -49,15 +49,18 @@
 
 namespace openfluid { namespace core {
 
+
 class OPENFLUID_API CompoundValue : public Value
 {
   public:
 
-  typedef std::vector<std::string> SeparatorsByLevels_t;
+    typedef std::vector<std::string> SeparatorsByLevels_t;
+
 
   protected:
 
     static SeparatorsByLevels_t m_StreamSeparators;
+
 
   public:
 
@@ -65,9 +68,11 @@ class OPENFLUID_API CompoundValue : public Value
 
     static void setStreamSeparator(const unsigned int& Level, const std::string& Sep);
 
-    inline bool isSimple() const { return false; };
+    inline bool isSimple() const
+    { return false; };
 
-    inline bool isCompound() const { return true; };
+    inline bool isCompound() const
+    { return true; };
 };
 
 

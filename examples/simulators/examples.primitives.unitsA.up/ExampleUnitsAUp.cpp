@@ -85,7 +85,8 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableSimulator
   public:
 
   
-    ExampleUnitsAUpdate() : PluggableSimulator()
+    ExampleUnitsAUpdate() : PluggableSimulator(),
+      m_Mult(1.0)
     {
   
   
@@ -109,7 +110,6 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableSimulator
   
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      m_Mult = 1.0;
       OPENFLUID_GetSimulatorParameter(Params,"gmult",m_Mult);
     }
 

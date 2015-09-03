@@ -47,7 +47,7 @@
 QColor MapItemGraphics::m_SelectionColor = QColor("#FFC85F");
 
 MapItemGraphics::MapItemGraphics(const QColor& MainColor):
-  QGraphicsPathItem(), m_MainColor(MainColor)
+  QGraphicsPathItem(), m_UnitID(0), m_MainColor(MainColor)
 {
 
 }

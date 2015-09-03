@@ -41,11 +41,13 @@
 
 namespace openfluid { namespace ui { namespace market {
 
+
 // =====================================================================
 // =====================================================================
 
 
-MarketWizardPage::MarketWizardPage(QWidget *Parent) : QWizardPage(Parent)
+MarketWizardPage::MarketWizardPage(QWidget *Parent) : QWizardPage(Parent),
+  m_PackagesSelected(false),m_LicensesRadioAccepted(false),m_InstallationFinished(false)
 {
 
 }
@@ -57,9 +59,12 @@ MarketWizardPage::MarketWizardPage(QWidget *Parent) : QWizardPage(Parent)
 
 bool MarketWizardPage::isComplete() const
 {
-  if (isSelectionPage()) return m_PackagesSelected;
-  else if (isLicensesnPage()) return m_LicensesRadioAccepted;
-  else if (isInstallPage()) return m_InstallationFinished;
+  if (isSelectionPage())
+    return m_PackagesSelected;
+  else if (isLicensesnPage())
+    return m_LicensesRadioAccepted;
+  else if (isInstallPage())
+    return m_InstallationFinished;
 
   return QWizardPage::isComplete();
 }

@@ -109,9 +109,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
     s << "Can not add Polygon " << NewFace.getOfldId()
       << " as neighbour of this edge, which has already two neighbours.";
 
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION, s.str());
-    return;
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s.str());
   }
 
   m_Faces.push_back(&NewFace);

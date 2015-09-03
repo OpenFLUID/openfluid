@@ -113,42 +113,51 @@ class OPENFLUID_API IntegerValue : public SimpleValue
     /**
       Default constructor
     */
-    IntegerValue() : m_Value(0) {};
+    IntegerValue() : m_Value(0)
+    { };
 
     /**
       Copy constructor
     */
-    IntegerValue(const IntegerValue& Val) : SimpleValue(Val), m_Value(Val.m_Value) {};
+    IntegerValue(const IntegerValue& Val) : SimpleValue(Val), m_Value(Val.m_Value)
+    { };
 
     /**
       Constructor from plain old type
     */
-    IntegerValue(const long& POD) : SimpleValue(), m_Value(POD) {};
+    IntegerValue(const long& POD) : SimpleValue(), m_Value(POD)
+    { };
 
     Value& operator =(const Value& Other);
 
     /**
     * Cast operator
     */
-    operator long() const { return m_Value; };
+    operator long() const
+    { return m_Value; };
 
-    virtual ~IntegerValue() {};
+    virtual ~IntegerValue()
+    { };
 
-    inline Type getType() const { return Value::INTEGER; };
+    inline Type getType() const
+    { return Value::INTEGER; };
 
-    Value* clone() const { return new IntegerValue(*this); };
+    Value* clone() const
+    { return new IntegerValue(*this); };
 
     /**
       Returns the integer value as a plain old type
       @return the integer value
     */
-    inline long get() const { return m_Value; };
+    inline long get() const
+    { return m_Value; };
 
     /**
       Sets the plain old type long integer value
       @param[in] Val the long integer value
     */
-    inline void set(const long& Val) { m_Value = Val; };
+    inline void set(const long& Val)
+    { m_Value = Val; };
 
     void writeToStream(std::ostream& OutStm) const;
 

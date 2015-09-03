@@ -211,37 +211,43 @@ class OPENFLUID_API DateTime
       Returns Year (4 digits)
       @return an int
     */
-    int getYear() const {return (m_TM.tm_year+1900); };
+    int getYear() const
+    { return (m_TM.tm_year+1900); };
 
     /**
       Retourns Month [1-12]
       @return an int
     */
-    int getMonth() const {return (m_TM.tm_mon+1) ;};
+    int getMonth() const
+    { return (m_TM.tm_mon+1); };
 
     /**
       Returns Day [1-31]
       @return an int
     */
-    int getDay() const {return m_TM.tm_mday;};
+    int getDay() const
+    { return m_TM.tm_mday; };
 
     /**
       Returns Hour  [0-23]
       @return an int
     */
-    int getHour() const {return m_TM.tm_hour;};
+    int getHour() const
+    { return m_TM.tm_hour; };
 
     /**
       Returns Minute [0-59]
       @return an int
     */
-    int getMinute() const {return m_TM.tm_min;};
+    int getMinute() const
+    { return m_TM.tm_min; };
 
     /**
       Returns Second [0-59]
       @return an int
     */
-    int getSecond() const {return m_TM.tm_sec;};
+    int getSecond() const
+    { return m_TM.tm_sec; };
 
     /**
       Returns date-time in raw format (number of seconds since first day of 4713 BC)

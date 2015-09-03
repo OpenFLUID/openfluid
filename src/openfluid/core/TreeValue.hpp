@@ -57,7 +57,8 @@ class OPENFLUID_API TreeValue : public CompoundValue, public Tree<std::string,do
     /**
       Default constructor
     */
-    TreeValue() : CompoundValue(), Tree<std::string,double>() {};
+    TreeValue() : CompoundValue(), Tree<std::string,double>()
+    { };
 
     /**
       Copy constructor

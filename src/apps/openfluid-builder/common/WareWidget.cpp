@@ -330,10 +330,10 @@ bool WareWidget::removeParameterWidget(const QString& Name)
 
   for (int i=0;i<=LastIndex;i++)
   {
-    ParameterWidget* W = (ParameterWidget*)(ui->ParamsListZoneWidget->layout()->itemAt(i)->widget());
+    ParameterWidget* W = static_cast<ParameterWidget*>(ui->ParamsListZoneWidget->layout()->itemAt(i)->widget());
     if (W != 0 && W->getName() == Name)
     {
-      W = (ParameterWidget*)(ui->ParamsListZoneWidget->layout()->takeAt(i)->widget());
+      W = static_cast<ParameterWidget*>(ui->ParamsListZoneWidget->layout()->takeAt(i)->widget());
       W->deleteLater();
       return true;
     }

@@ -50,7 +50,7 @@ namespace openfluid { namespace core {
 
 
 /**
-  @brief Item of a Datastore, giving information about an additional resource.
+  Item of a Datastore, giving information about an additional resource.
 */
 class OPENFLUID_API DatastoreItem
 {
@@ -121,7 +121,8 @@ class OPENFLUID_API DatastoreItem
     const UnstructuredValue* value() const;
 };
 
-}
-} // namespaces
+
+} } // namespaces
+
 
 #endif /* __OPENFLUID_CORE_DATASTOREITEM_HPP__ */

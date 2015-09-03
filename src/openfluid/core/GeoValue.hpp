@@ -47,7 +47,7 @@ namespace openfluid { namespace core {
 
 
 /**
-  @brief Abstract class for geospatial data.
+  Abstract class for geospatial data.
 */
 class OPENFLUID_API GeoValue: public openfluid::core::UnstructuredValue
 {
@@ -61,6 +61,7 @@ class OPENFLUID_API GeoValue: public openfluid::core::UnstructuredValue
 
     virtual void tryToOpenSource() = 0;
 
+
   public:
 
     GeoValue(const std::string& FilePath, const std::string& FileName);
@@ -70,8 +71,12 @@ class OPENFLUID_API GeoValue: public openfluid::core::UnstructuredValue
     std::string getFilePath();
 
     static std::string computeAbsolutePath(const std::string& FilePath, const std::string& FileName);
+
 };
+
 
 } } // namespaces
 
+
 #endif /* __OPENFLUID_CORE_GEOVALUE_HPP__ */
+

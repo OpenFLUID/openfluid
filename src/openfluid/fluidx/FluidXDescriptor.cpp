@@ -54,7 +54,9 @@ namespace openfluid { namespace fluidx {
 
 
 FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
-    mp_Listener(Listener), m_IndentStr(" ")
+    m_RunConfigDefined(false),m_ModelDefined(false),
+    m_IndentStr(" "),
+    mp_Listener(Listener)
 {
   if (!mp_Listener)
     mp_Listener = new openfluid::base::IOListener();
@@ -749,7 +751,7 @@ void FluidXDescriptor::parseFile(std::string Filename)
 // =====================================================================
 
 
-void FluidXDescriptor::loadFromDirectory(std::string DirPath)
+void FluidXDescriptor::loadFromDirectory(const std::string& DirPath)
 {
   if (!mp_Listener)
     mp_Listener = new openfluid::base::IOListener();

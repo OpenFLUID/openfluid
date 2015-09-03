@@ -90,7 +90,7 @@ void WaresManagementWidget::expandAll()
 {
   for (int i=0;i<ui->WaresListAreaContents->layout()->count();i++)
   {
-    WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->itemAt(i)->widget());
+    WareWidget* W = static_cast<WareWidget*>(ui->WaresListAreaContents->layout()->itemAt(i)->widget());
     if (W != 0)
     {
       W->setExpanded(true);
@@ -108,7 +108,7 @@ void WaresManagementWidget::collapseAll()
 {
   for (int i=0;i<ui->WaresListAreaContents->layout()->count();i++)
   {
-    WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->itemAt(i)->widget());
+    WareWidget* W = static_cast<WareWidget*>(ui->WaresListAreaContents->layout()->itemAt(i)->widget());
     if (W != 0)
     {
       W->setExpanded(false);
@@ -128,7 +128,7 @@ void WaresManagementWidget::updateIndexesAndButtons(bool WithFinalStretch)
 
   for (int i=0;i<=LastIndex;i++)
   {
-    WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->itemAt(i)->widget());
+    WareWidget* W = static_cast<WareWidget*>(ui->WaresListAreaContents->layout()->itemAt(i)->widget());
 
     W->setCurrentIndex(i);
 

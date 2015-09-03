@@ -67,13 +67,14 @@ class CSVFile
 
     openfluid::core::VariableName_t VarName;
 
-    CSVFile() : Unit(NULL), FileHandle(NULL), VarName("")
+    CSVFile() :
+      Unit(NULL), FileBuffer(NULL), FileHandle(NULL)
     { }
 
     ~CSVFile()
     {
       if (FileHandle.is_open()) FileHandle.close();
-      delete [] FileBuffer;
+        delete [] FileBuffer;
     }
 };
 

@@ -70,19 +70,24 @@ class OPENFLUID_API MarketPackWidgetFormat : public MarketPackWidget
 
         enum { NAME, TYPE};
 
-        QStandardItem *mp_FormatName;
-        QStandardItem *mp_SelType;
+        QStandardItem* mp_FormatName;
+        QStandardItem* mp_SelType;
 
-        FormatComboColumns() {}
+        FormatComboColumns() :
+          mp_FormatName(nullptr),mp_SelType(nullptr)
+        { }
 
-        void appendItems() { clear(); append(mp_FormatName); append(mp_SelType); }
+        void appendItems()
+        { clear(); append(mp_FormatName); append(mp_SelType); }
     };
 
     FormatComboColumns m_FormatColumns;
 
+
   private slots:
 
     void onConfigClicked();
+
 
   public:
 

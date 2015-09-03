@@ -75,10 +75,8 @@ bool EventsCollection::addEvent(const Event* Ev)
 
 bool EventsCollection::addEvent(const Event& Ev)
 {
-
-
   // empty list
-  if (m_Events.size() == 0)
+  if (m_Events.empty())
   {
     m_Events.push_back(Ev);
   }

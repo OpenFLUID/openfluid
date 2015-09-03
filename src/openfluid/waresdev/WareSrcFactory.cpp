@@ -553,7 +553,7 @@ QString WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::Simulat
 
 
 QString getSimulatorInitRunCode(const openfluid::ware::SimulatorSignature& Signature,
-                                const std::string PrimitiveStr)
+                                const std::string& PrimitiveStr)
 {
   std::string TmpStr;
   QStringList UnitsClasses;

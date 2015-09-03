@@ -123,9 +123,10 @@ class GeoVectorSerie
       VariablesSet(VarsSet),
       WhenMode(Mode), WhenContinuousDelay(ContModeDelay), LatestContinuousIndex(0),
       GeoSource(NULL), GeoLayer(NULL),
+      OutfilePattern(SName+"_"+"%1"+"."+OutfileExt),
       OFLDIDFieldIndex(-1)
     {
-      OutfilePattern = SName+"_"+"%1"+"."+OutfileExt;
+
     }
 
 

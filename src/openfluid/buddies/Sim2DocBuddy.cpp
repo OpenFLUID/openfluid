@@ -68,7 +68,12 @@ Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
       openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::BibTexProgram)),
   m_Latex2HTMLProgram(
       openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::Latex2HTMLProgram)),
-  m_GCCProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GccProgram))
+  m_GCCProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GccProgram)),
+  m_Title("No title"),m_SimID("undefined.id"),m_SimName("Not available"),
+  m_SimVersion("Undefined"),m_SimStatus("Unknown status"),m_SimDomain("Undefined"),
+  m_SimDescription("Not available"),
+  m_BeginSignatureTag("BEGIN_SIMULATOR_SIGNATURE"),m_EndSignatureTag("END_SIMULATOR_SIGNATURE"),
+  m_BeginSim2DocTag("<sim2doc>"),m_EndSim2DocTag("</sim2doc>")
 {
   m_RequiredOptionsHelp["outputdir"] = "path for generated files";
   m_RequiredOptionsHelp["inputcpp"] = "path for cpp file to parse";
@@ -76,27 +81,6 @@ Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
   m_OtherOptionsHelp["html"] = "set to 1 in order to generate documentation as HTML files";
   m_OtherOptionsHelp["pdf"] = "set to 1 in order to generate documentation as PDF file";
   m_OtherOptionsHelp["tplfile"] = "path to template file";
-
-
-  m_Title = "No title";
-  m_SimID = "undefined.id";
-  m_SimName = "Not available";
-  m_SimVersion = "Undefined";
-  m_SimStatus = "Unknown status";
-  m_SimDomain = "Undefined";
-  m_SimDescription = "Not available";
-  m_NewCommands = "";
-
-  m_HTMLPackageLatexCommand = "";
-
-
-  m_BeginSignatureTag = "BEGIN_SIMULATOR_SIGNATURE";
-  m_EndSignatureTag = "END_SIMULATOR_SIGNATURE";
-  m_BeginSim2DocTag = "<sim2doc>";
-  m_EndSim2DocTag = "</sim2doc>";
-
-  m_CurrentKeyValue = "";
-  m_CurrentBuiltParam = "";
 }
 
 
@@ -114,7 +98,8 @@ Sim2DocBuddy::~Sim2DocBuddy()
 // =====================================================================
 
 
-std::string Sim2DocBuddy::extractBetweenTags(std::string Content, const std::string BeginTag, const std::string EndTag)
+std::string Sim2DocBuddy::extractBetweenTags(std::string Content,
+                                             const std::string& BeginTag, const std::string& EndTag)
 {
   std::string::size_type Index = Content.find(BeginTag);
 
@@ -122,7 +107,8 @@ std::string Sim2DocBuddy::extractBetweenTags(std::string Content, const std::str
   {
     Content.erase(0,Index+BeginTag.length());
     Index = Content.find(EndTag);
-    if (Index != std::string::npos) Content.erase(Index,Content.length()-Index);
+    if (Index != std::string::npos)
+      Content.erase(Index,Content.length()-Index);
   }
 
   return Content;
@@ -153,7 +139,7 @@ std::string Sim2DocBuddy::toLatexFriendly(std::string Content)
 // =====================================================================
 
 
-void Sim2DocBuddy::addLatexDataCatBegin(std::string& Content, const std::string Title, const std::string ColsFormat)
+void Sim2DocBuddy::addLatexDataCatBegin(std::string& Content, const std::string& Title, const std::string& ColsFormat)
 {
   std::string ColsNbrStr;
   openfluid::tools::convertValue(ColsFormat.length(),&ColsNbrStr);
@@ -395,7 +381,6 @@ void Sim2DocBuddy::storeDataIntoSignatureData(SignatureData_t *SignatureData)
 void Sim2DocBuddy::storeDataIntoStatus()
 {
   std::string ParsedStatus = "";
-  std::string DataToStore = "";
   std::size_t Found = m_CurrentBuiltParam.rfind(':');
 
   // Get ware status
@@ -627,7 +612,7 @@ void Sim2DocBuddy::generateLatex()
   SignatureData_t::iterator it;
 
   // Parameters
-  if (m_ParamsData.size() > 0)
+  if (!m_ParamsData.empty())
   {
     addLatexDataCatBegin(m_SimData,"Parameters","llXr");
     for (it = m_ParamsData.begin(); it != m_ParamsData.end(); ++it)
@@ -648,7 +633,7 @@ void Sim2DocBuddy::generateLatex()
                   "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
 
-    if (m_InAttrs.size() > 0 && m_OutAttrs.size() > 0)
+    if (!m_InAttrs.empty() && !m_OutAttrs.empty())
       m_SimData += "\\hline\n";
 
     for (it = m_OutAttrs.begin(); it != m_OutAttrs.end(); ++it)
@@ -669,7 +654,7 @@ void Sim2DocBuddy::generateLatex()
                   "&" + it->second[2] + "&" + it->second[3] + "$\\\\" + "\n";
     }
 
-    if (m_InVars.size() > 0 && m_OutVars.size() > 0)
+    if (!m_InVars.empty() && !m_OutVars.empty())
       m_SimData += "\\hline\n";
 
     for (it = m_OutVars.begin(); it != m_OutVars.end(); ++it)
@@ -681,7 +666,7 @@ void Sim2DocBuddy::generateLatex()
   }
 
   // Events
-  if (m_Events.size() > 0)
+  if (!m_Events.empty())
   {
     addLatexDataCatBegin(m_SimData,"Events","l");
     for (it = m_Events.begin(); it != m_Events.end(); ++it)
@@ -692,7 +677,7 @@ void Sim2DocBuddy::generateLatex()
   }
 
   // Extrafiles
-  if (m_ExtraFiles.size() > 0)
+  if (!m_ExtraFiles.empty())
   {
     addLatexDataCatBegin(m_SimData,"Extrafiles","lX");
     for (it = m_ExtraFiles.begin(); it != m_ExtraFiles.end(); ++it)

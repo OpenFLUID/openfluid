@@ -83,13 +83,25 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
           if (!Cleared.isEmpty())
             m_ContentList.append(Cleared);
         }
-        QColor getColor()
+
+
+        // =====================================================================
+        // =====================================================================
+
+
+        QColor getColor() const
         {
           if (m_MajorMarkerType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_ERROR)
             return Red;
           return Orange;
         }
-        QString getContent()
+
+
+        // =====================================================================
+        // =====================================================================
+
+
+        QString getContent() const
         {
           if (m_ContentList.isEmpty())
             return "";
@@ -99,6 +111,12 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
           return QString("&bull;&nbsp;%1").arg(m_ContentList.join("<br/>&bull;&nbsp;"));
         }
+
+
+        // =====================================================================
+        // =====================================================================
+
+
         void update(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content)
         {
           if (MsgType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_ERROR)
@@ -146,6 +164,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     bool replaceString(const QString& StringToFind, const QString& StringForReplace, Qt::CaseSensitivity Cs);
 
+
   private slots:
 
     void updateLineNumberAreaWidth();
@@ -162,6 +181,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void onCompletionPopupCurrentRowChanged(const QModelIndex &Current, const QModelIndex& Previous);
 
+
   protected:
 
     void resizeEvent(QResizeEvent* Event);
@@ -169,6 +189,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
     void contextMenuEvent(QContextMenuEvent* Event);
 
     void keyPressEvent(QKeyEvent* Event);
+
 
   public:
 
@@ -207,9 +228,11 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void goToLine();
 
+
   public slots :
 
     void setShowLineMarkers(bool ShowMarkers);
+
 
   signals :
 
@@ -234,12 +257,18 @@ class LineNumberArea: public QWidget
 
     QAction* mp_ShowMarkersAction = 0;
 
+
   protected:
 
     void paintEvent(QPaintEvent* Event)
     {
       mp_Editor->lineNumberAreaPaintEvent(Event);
     }
+
+
+    // =====================================================================
+    // =====================================================================
+
 
     bool event(QEvent* Event)
     {
@@ -251,6 +280,11 @@ class LineNumberArea: public QWidget
       return QWidget::event(Event);
     }
 
+
+    // =====================================================================
+    // =====================================================================
+
+
     void contextMenuEvent(QContextMenuEvent* Event)
     {
       mp_ShowMarkersAction->setChecked(mp_Editor->getShowLineMarkers());
@@ -260,6 +294,7 @@ class LineNumberArea: public QWidget
       Menu->exec(Event->globalPos());
       delete Menu;
     }
+
 
   public:
 
@@ -276,6 +311,11 @@ class LineNumberArea: public QWidget
       connect(mp_ShowMarkersAction, SIGNAL(triggered(bool)), mp_Editor, SLOT(setShowLineMarkers(bool)));
     }
 
+
+    // =====================================================================
+    // =====================================================================
+
+
     QSize sizeHint() const
     {
       return QSize(mp_Editor->lineNumberAreaWidth(), 0);
@@ -284,5 +324,6 @@ class LineNumberArea: public QWidget
 
 
 } } }  // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESRCFILEEDITOR_HPP__ */

@@ -42,22 +42,24 @@
 #include <string>
 #include <openfluid/dllexport.hpp>
 
+
 namespace openfluid { namespace core {
+
 
 class DatastoreItem;
 
 /**
- * @brief Container class for holding information about additional resources
- * relating to a project.
- */
+  Container class for holding information about additional resources.
+*/
 class OPENFLUID_API Datastore
 {
   public:
 
-    /**
-     * @brief Map indexing DatastoreItems by ID.
-     */
-    typedef std::map<std::string, DatastoreItem*> DataItemsById_t;
+   /**
+     Type to store items indexed by their ID
+   */
+   typedef std::map<std::string, DatastoreItem*> DataItemsById_t;
+
 
   private:
 
@@ -66,45 +68,40 @@ class OPENFLUID_API Datastore
   public:
 
     /**
-     * @brief Creates an empty datastore.
-     */
+      Creates an empty datastore.
+    */
     Datastore();
 
     /**
-     * @brief Destroys all items of the datastore.
-     */
+      Destroys all items of the datastore.
+    */
     ~Datastore();
 
     /**
-     * @brief Gets all items of the datastore.
-     *
-     * @return A map of all items of the datastore.
-     */
+      Gets all items of the datastore.
+     @return A map of all items of the datastore.
+    */
     DataItemsById_t getItems();
 
     /**
-     * @brief Gets all items of the datastore.
-     *
-     * @return A const map of all items of the datastore.
-     */
+      Gets all items of the datastore.
+      @return A const map of all items of the datastore.
+    */
     const DataItemsById_t getItems() const;
 
     /**
-     * @brief Gets the item of the datastore matching the given ID.
-     *
-     * @param ItemID ID of the expected item.
-     * @return The item with the given ID, or 0 if not found.
-     */
+      Gets the item of the datastore matching the given ID.
+      @param[in] ItemID ID of the expected item.
+      @return The item with the given ID, or 0 if not found.
+    */
     DatastoreItem* item(const std::string& ItemID);
 
     /**
-     * @brief Adds an item to the datastore.
-     *
-     * If an item already exists with the ID of the given <tt>Item</tt>,
-     * it is deleted before adding.
-     *
-     * @param Item The item to add.
-     */
+     Adds an item to the datastore.
+     If an item already exists with the ID of the given <tt>Item</tt>,it is deleted before adding.
+
+     @param[in] Item The item to add.
+    */
     void addItem(const DatastoreItem* Item);
 };
 

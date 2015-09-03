@@ -49,10 +49,8 @@
 
 namespace openfluid { namespace core {
 
-
-
 /**
-  @brief Class defining  a discrete event, including attached information
+  Class defining  a discrete event, including attached information
 
   Each event attached information is represented by a Key-Value couple :
   @li Key is the name given to the information
@@ -64,9 +62,11 @@ class OPENFLUID_API Event
     typedef std::map<std::string, openfluid::core::StringValue> EventInfosMap_t;
 
   private:
+
 	  DateTime m_Date;
 
 	  EventInfosMap_t m_Infos;
+
 
   public:
 
@@ -131,17 +131,20 @@ class OPENFLUID_API Event
     /**
       Returns the number of information
     */
-    inline int getInfosCount() const { return m_Infos.size(); }
+    inline int getInfosCount() const
+    { return m_Infos.size(); }
 
     /**
       Returns all the informations as an EventInfosMap
     */
-    inline EventInfosMap_t getInfos() const { return m_Infos; }
+    inline EventInfosMap_t getInfos() const
+    { return m_Infos; }
 
     /**
       Returns the date and time of the event
     */
-    inline DateTime getDateTime() const { return m_Date; }
+    inline DateTime getDateTime() const
+    { return m_Date; }
 
     /**
       Gets an information as a string

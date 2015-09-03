@@ -68,20 +68,19 @@ class IndexedValue
     /**
       Default constructor
     */
-    IndexedValue():
-      m_Index(0),m_Value(new NullValue()) {};
+    IndexedValue() : m_Index(0),m_Value(new NullValue())
+    { };
 
     /**
       Constructor from a time index and a value
     */
-    IndexedValue(const TimeIndex_t& Ind, const Value& Val):
-      m_Index(Ind),m_Value(Val.clone()) {};
+    IndexedValue(const TimeIndex_t& Ind, const Value& Val) : m_Index(Ind),m_Value(Val.clone())
+    { };
 
     /**
       Copy constructor
     */
-    IndexedValue(const IndexedValue& IndValue):
-          m_Index(IndValue.m_Index),m_Value(IndValue.m_Value.get()->clone())
+    IndexedValue(const IndexedValue& IndValue) : m_Index(IndValue.m_Index),m_Value(IndValue.m_Value.get()->clone())
     { };
 
     /**

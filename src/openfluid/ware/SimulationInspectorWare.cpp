@@ -55,8 +55,10 @@ bool SimulationInspectorWare::IsUnitIDInPtrList(const openfluid::core::UnitsPtrL
 
   while (!Found && UnitsIt != UnitsList->end())
   {
-    if ((*UnitsIt)->getID() == ID) Found = true;
-    UnitsIt++;
+    if ((*UnitsIt)->getID() == ID)
+      Found = true;
+
+    ++UnitsIt;
   }
 
   return Found;

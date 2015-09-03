@@ -128,7 +128,7 @@ void TestDataset(std::string DatasetPath)
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["distribution"].get(),
       "distri.dat");
 
-  it++;
+  ++it;
   BOOST_REQUIRE_EQUAL(
       (*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),
       true);
@@ -139,7 +139,7 @@ void TestDataset(std::string DatasetPath)
       ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),
       0);
 
-  it++;
+  ++it;
   BOOST_REQUIRE_EQUAL(
       (*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator), true);
   BOOST_REQUIRE_EQUAL(
@@ -159,7 +159,7 @@ void TestDataset(std::string DatasetPath)
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"].get(),
       "20");
 
-  it++;
+  ++it;
   BOOST_REQUIRE_EQUAL(
       (*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator), true);
   BOOST_REQUIRE_EQUAL(
@@ -182,7 +182,7 @@ void TestDataset(std::string DatasetPath)
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["max"].get(),
       "50");
 
-  it++;
+  ++it;
   BOOST_REQUIRE_EQUAL(
       (*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),
       true);
@@ -232,7 +232,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 0);
   BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 0);
 
-  UnitsIt++;
+  ++UnitsIt;
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsA");
   BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 3);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
@@ -243,7 +243,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().first, "unitsP");
   BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().second, 1);
 
-  UnitsIt++;
+  ++UnitsIt;
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsA");
   BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 1);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
@@ -252,13 +252,13 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().second, 2);
   BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 0);
 
-  UnitsIt++;
-  UnitsIt++;
-  UnitsIt++;
-  UnitsIt++;
-  UnitsIt++;
-  UnitsIt++;
-  UnitsIt++;
+  ++UnitsIt;
+  ++UnitsIt;
+  ++UnitsIt;
+  ++UnitsIt;
+  ++UnitsIt;
+  ++UnitsIt;
+  ++UnitsIt;
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsB");
   BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 11);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
@@ -269,9 +269,9 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().first, "unitsP");
   BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().second, 1);
 
-  UnitsIt++;
-  UnitsIt++;
-  UnitsIt++;
+  ++UnitsIt;
+  ++UnitsIt;
+  ++UnitsIt;
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsB");
   BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 7);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 4);
@@ -293,7 +293,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
   BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(8).at("indataA"), "1.1");
 
-  AttrsIt++;
+  ++AttrsIt;
   BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
   BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 2);
   BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB1");
@@ -303,7 +303,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB3"), "7.3");
   BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB1"), "11.1");
 
-  AttrsIt++;
+  ++AttrsIt;
   BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
   BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
   BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB2");
@@ -332,7 +332,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE((*EventIt).event().isInfoEqual("numeric","1.13"));
   BOOST_REQUIRE((*EventIt).event().isInfoEqual("string","EADGBE"));
 
-  EventIt++;
+  ++EventIt;
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitsClass(), "unitsA");
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 1);
   BOOST_REQUIRE(
@@ -343,10 +343,10 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE((*EventIt).event().isInfoEqual("numeric","1.13"));
   BOOST_REQUIRE((*EventIt).event().isInfoEqual("string","EADG"));
 
-  EventIt++;
-  EventIt++;
-  EventIt++;
-  EventIt++;
+  ++EventIt;
+  ++EventIt;
+  ++EventIt;
+  ++EventIt;
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitsClass(), "unitsB");
   BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 7);
   BOOST_REQUIRE(
@@ -375,7 +375,7 @@ void TestDataset(std::string DatasetPath)
                       openfluid::core::UnstructuredValue::GeoVectorValue);
   BOOST_REQUIRE_EQUAL((*DataIt)->getUnitsClass(), "unitsA");
 
-  DataIt++;
+  ++DataIt;
 
   BOOST_REQUIRE_EQUAL((*DataIt)->getID(), "mymap2");
   BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(), "datastore/testvect.shp");
@@ -383,7 +383,7 @@ void TestDataset(std::string DatasetPath)
                       openfluid::core::UnstructuredValue::GeoVectorValue);
   BOOST_REQUIRE_EQUAL((*DataIt)->getUnitsClass(), "");
 
-  DataIt++;
+  ++DataIt;
 
   BOOST_REQUIRE_EQUAL((*DataIt)->getID(),"myrast");
   BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testrast.tif");
@@ -410,21 +410,21 @@ void TestDataset(std::string DatasetPath)
 
    // output.files.kml
 
-   ObsIt++;
+   ++ObsIt;
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.kml");
 
 
    // output.files.kml-dynamic
 
-   ObsIt++;
+   ++ObsIt;
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.kml-dynamic");
 
 
    // output.files.vtk
 
-   ObsIt++;
+   ++ObsIt;
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.vtk");
 

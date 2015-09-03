@@ -410,7 +410,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       // ===== process order =====
 
       openfluid::core::PcsOrd_t LastPcsOrd;
-      std::string LastStr, CurrentStr, IDStr, ClassStr;
+      std::string LastStr, CurrentStr, IDStr;
 
       LastPcsOrd = 0;
       OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -453,7 +453,6 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           openfluid::tools::convertValue(LastPcsOrd,&LastStr);
           openfluid::tools::convertValue(ZU->getProcessOrder(),&CurrentStr);
           openfluid::tools::convertValue(ZU->getID(),&IDStr);
-          ClassStr = ZU->getClass();
         }
         LastPcsOrd = ZU->getProcessOrder();
       }

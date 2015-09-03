@@ -172,7 +172,7 @@ class OPENFLUID_API RuntimeEnvironment
       Sets the input directory, overriding the default input dir
       @param[in] InputDir The input directory
     */
-    void setInputDir(const std::string InputDir)
+    void setInputDir(const std::string& InputDir)
     { m_InputDir = InputDir; mp_WareEnv->setValue("dir.input",m_InputDir); };
 
     /**
@@ -186,7 +186,7 @@ class OPENFLUID_API RuntimeEnvironment
       Sets the output directory, overriding the default output dir
       @param[in] OutputDir The output directory
     */
-    void setOutputDir(const std::string OutputDir)
+    void setOutputDir(const std::string& OutputDir)
       { m_OutputDir = OutputDir; mp_WareEnv->setValue("dir.output",m_OutputDir); };
 
     /**

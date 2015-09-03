@@ -43,7 +43,8 @@
 
 namespace openfluid { namespace core {
 
-CompoundValue::SeparatorsByLevels_t CompoundValue::m_StreamSeparators {";","|"};
+
+CompoundValue::SeparatorsByLevels_t CompoundValue::m_StreamSeparators ({";","|"});
 
 
 // =====================================================================

@@ -89,7 +89,9 @@ std::string msecsToString(qint64 MSecs)
 // =====================================================================
 // =====================================================================
 
-OpenFLUIDApp::OpenFLUIDApp()
+
+OpenFLUIDApp::OpenFLUIDApp() :
+  mp_RunEnv(NULL)
 {
   m_RunType = None;
   mp_Engine = NULL;
@@ -428,7 +430,7 @@ void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHa
 // =====================================================================
 
 
-void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
+void OpenFLUIDApp::printSimulatorsReport(const std::string& Pattern)
 {
 
   std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
@@ -512,12 +514,10 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
 // =====================================================================
 
 
-void OpenFLUIDApp::printObserversReport(const std::string Pattern)
+void OpenFLUIDApp::printObserversReport(const std::string& Pattern)
 {
   std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
       openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures(Pattern).AvailablePlugins;
-  std::string StatusStr;
-
 
   if (PlugContainers.size() > 0)
   {
@@ -533,7 +533,6 @@ void OpenFLUIDApp::printObserversReport(const std::string Pattern)
   }
 
   std::cout.flush();
-
 }
 
 
@@ -797,10 +796,11 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
                                         " (default is "+DefaultMaxThreadsStr+")",true)
   };
 
-  std::string PathSepText = "colon";
 
 #if defined OPENFLUID_OS_WINDOWS
-  PathSepText = "semicolon";
+  std::string PathSepText = "semicolon";
+#else
+  std::string PathSepText = "colon";
 #endif
 
   std::vector<openfluid::utils::CommandLineOption> SearchOptions =

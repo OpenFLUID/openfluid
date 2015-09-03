@@ -124,13 +124,13 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
     openfluid::ware::SignatureUnitsGraph m_UnitsGraph;
     openfluid::ware::SignatureTimeScheduling m_TimeScheduling;
 
-    std::string extractBetweenTags(std::string Content, const std::string BeginTag, const std::string EndTag);
+    static std::string extractBetweenTags(std::string Content, const std::string& BeginTag, const std::string& EndTag);
 
-    std::string toLatexFriendly(std::string Content);
+    static std::string toLatexFriendly(std::string Content);
 
-    void addLatexDataCatBegin(std::string& Content, const std::string Title, const std::string ColsFormat);
+    static void addLatexDataCatBegin(std::string& Content, const std::string& Title, const std::string& ColsFormat);
 
-    void addLatexDataCatEnd(std::string& Content);
+    static void addLatexDataCatEnd(std::string& Content);
 
     std::string extractSignatureLines();
 

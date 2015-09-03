@@ -335,11 +335,10 @@ openfluid::landr::VectorDataset* RasterDataset::polygonize(const std::string& Fi
                         nullptr, nullptr, nullptr)
         != CE_None)
     {
-      throw openfluid::base::FrameworkException(
-          OPENFLUID_CODE_LOCATION,
-          "Error while polygonizing raster.");
       delete mp_PolygonizedByRasterBandIndex.at(RasterBandIndex);
       mp_PolygonizedByRasterBandIndex.erase(RasterBandIndex);
+
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error while polygonizing raster.");
     }
   }
 

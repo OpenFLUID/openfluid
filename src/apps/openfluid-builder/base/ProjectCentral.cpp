@@ -689,7 +689,6 @@ void ProjectCentral::checkModel()
     if ((*itModelItem)->isEnabled())
     {
       const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
-      std::string ID = Model.getID(*itModelItem);
 
       if (SignII != NULL)
       {

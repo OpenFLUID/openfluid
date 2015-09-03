@@ -587,7 +587,8 @@ void MarketClientAssistant::onPackageInstallModified()
 
       if (APMiter->first != openfluid::market::PackageInfo::DATA)
         m_MarketClient.setSRCBuildOptions(MPW->getID().toStdString(),
-                                          ((MarketPackWidgetFormat*)MPW)->getEditedBuildOptions().toStdString());
+                                          static_cast<MarketPackWidgetFormat*>(MPW)
+                                            ->getEditedBuildOptions().toStdString());
     }
   }
 
@@ -713,7 +714,6 @@ void MarketClientAssistant::onInstallTimeoutOnce()
     }
     catch (openfluid::base::FrameworkException& E)
     {
-      std::string ErrorMsg(E.what());
       StatusItem->setText(tr("Failed"));
     }
     InstalledCount++;

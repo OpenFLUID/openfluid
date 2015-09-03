@@ -62,22 +62,29 @@ class OPENFLUID_API NullValue : public Value
     /**
       Default constructor
     */
-    NullValue() {};
+    NullValue()
+    { };
 
     /**
       Copy constructor
     */
-    NullValue(const NullValue& Val): Value(Val) {};
+    NullValue(const NullValue& Val): Value(Val)
+    { };
 
-    virtual ~NullValue() {};
+    virtual ~NullValue()
+    { };
 
-    inline Type getType() const { return Value::NULLL; };
+    inline Type getType() const
+    { return Value::NULLL; };
 
-    Value* clone() const { return new NullValue(*this); };
+    Value* clone() const
+    { return new NullValue(*this); };
 
-    inline bool isSimple() const { return false; };
+    inline bool isSimple() const
+    { return false; };
 
-    inline bool isCompound() const { return false; };
+    inline bool isCompound() const
+    { return false; };
 
     void writeToStream(std::ostream& OutStm) const;
 };

@@ -111,13 +111,15 @@ class OPENFLUID_API Vector
       Returns the size of the vector
       @return size of the vector
     */
-    unsigned long getSize() const { return m_Size; };
+    unsigned long getSize() const
+    { return m_Size; };
 
     /**
       Returns the size of the vector
       @return size of the vector
     */
-    unsigned long size() const { return getSize(); };
+    unsigned long size() const
+    { return getSize(); };
 
     /**
       Returns a pointer to the content of the vector (like C arrays)
@@ -164,7 +166,7 @@ class OPENFLUID_API Vector
     /**
       Allocation operator
     */
-    Vector<T>& operator = (const Vector &A);
+    Vector<T>& operator=(const Vector &A);
 
     /**
       Fills the vector with given value
@@ -444,8 +446,7 @@ void Vector<T>::copy(const Vector& Source, Vector& Dest)
 }
 
 
-
-} }
+} }  // namespaces
 
 
 #endif

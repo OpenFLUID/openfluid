@@ -229,10 +229,7 @@ void LineStringGraph::removeEntity(int OfldId)
   {
     std::ostringstream s;
     s << "No entity with id " << OfldId;
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        s.str());
-    return;
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,s.str());
   }
 
   remove(dynamic_cast<geos::planargraph::Edge*>(Ent));
@@ -383,9 +380,7 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(const std::string& 
       std::ostringstream s;
       s << "No raster value for entity " << (*it)->getOfldId() << " StartNode.";
 
-      throw openfluid::base::FrameworkException(
-          OPENFLUID_CODE_LOCATION, s.str());
-      return;
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s.str());
     }
 
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
@@ -415,9 +410,7 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(const std::string& At
       std::ostringstream s;
       s << "No raster value for entity " << (*it)->getOfldId() << " EndNode.";
 
-      throw openfluid::base::FrameworkException(
-          OPENFLUID_CODE_LOCATION, s.str());
-      return;
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s.str());
     }
 
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
@@ -472,7 +465,7 @@ bool LineStringGraph::isLineStringGraphArborescence( )
 
   std::vector<geos::planargraph::Node*>::iterator it=vNode.begin();
   std::vector<geos::planargraph::Node*>::iterator ite=vNode.end();
-  for (; it!=ite;it++)
+  for (; it!=ite;++it)
       (*it)->setVisited(false);
 
   // mark all edges as non marked
@@ -480,7 +473,7 @@ bool LineStringGraph::isLineStringGraphArborescence( )
 
    std::vector<geos::planargraph::Edge*>::iterator itE=vEdge->begin();
    std::vector<geos::planargraph::Edge*>::iterator itEe=vEdge->end();
-   for (; itE!=itEe;itE++)
+   for (; itE!=itEe;++itE)
      (*itE)->setVisited(false);
 
 
@@ -495,7 +488,7 @@ bool LineStringGraph::isLineStringGraphArborescence( )
 
   it=vNode.begin();
   ite=vNode.end();
-  for (; it!=ite;it++)
+  for (; it!=ite;++it)
   {
     if (!(*it)->isVisited())
       return false;
@@ -526,9 +519,7 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
       std::ostringstream s;
       s << "No raster value for entity " << (*it)->getOfldId() << " EndNode.";
 
-      throw openfluid::base::FrameworkException(
-          OPENFLUID_CODE_LOCATION, s.str());
-      return;
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s.str());
     }
 
     float* StartVal = new float( getRasterValueForEntityStartNode(
@@ -539,8 +530,11 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
       std::ostringstream s;
       s << "No raster value for entity " << (*it)->getOfldId() << " StartNode.";
 
-      throw openfluid::base::FrameworkException(
-          OPENFLUID_CODE_LOCATION, s.str());
+      if (EndVal)
+        delete EndVal;
+
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s.str());
+
       return;
     }
 
@@ -722,7 +716,7 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
 
   std::vector<geos::planargraph::Node*>::iterator it=vNode.begin();
   std::vector<geos::planargraph::Node*>::iterator ite=vNode.end();
-  for (; it!=ite;it++)
+  for (; it!=ite;++it)
     (*it)->setVisited(false);
 
   // mark all edges as non marked
@@ -730,7 +724,7 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
 
   std::vector<geos::planargraph::Edge*>::iterator itEdge=vEdge->begin();
   std::vector<geos::planargraph::Edge*>::iterator itEdgeE=vEdge->end();
-  for (; itEdge!=itEdgeE;itEdge++)
+  for (; itEdge!=itEdgeE;++itEdge)
     (*itEdge)->setVisited(false);
 
 
@@ -748,7 +742,7 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
 
   it=vNode.begin();
   ite=vNode.end();
-  for (; it!=ite;it++)
+  for (; it!=ite;++it)
     (*it)->setVisited(false);
 
   // mark all edges as non marked
@@ -757,14 +751,14 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
 
   itEdge=vEdge->begin();
   itEdgeE=vEdge->end();
-  for (; itEdge!=itEdgeE;itEdge++)
+  for (; itEdge!=itEdgeE;++itEdge)
     (*itEdge)->setVisited(false);
 
 
   // reverse the lineStringEntity
   std::vector<int>::iterator itV=vectIdent.begin();
   std::vector<int>::iterator itVe=vectIdent.end();
-  for (; itV!=itVe;itV++)
+  for (; itV!=itVe;++itV)
     this->reverseLineStringEntity(*(this->entity(*itV)));
 
 }
@@ -819,7 +813,7 @@ void LineStringGraph::mergeLineStringEntitiesByMinLength(double MinLength,bool r
         mLengthNeighbours.insert ( std::pair<double, LandREntity*>(Line->getLength(),Line) );
       }
       std::multimap<double, LandREntity*>::iterator itMapEnd=mLengthNeighbours.end();
-      itMapEnd--;
+      --itMapEnd;
 
       LineStringEntity* Entity;
       Entity=dynamic_cast<LineStringEntity*>((*itMapEnd).second);
