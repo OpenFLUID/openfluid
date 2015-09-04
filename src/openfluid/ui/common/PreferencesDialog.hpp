@@ -165,13 +165,17 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     virtual ~PreferencesDialog();
 
-    bool isRecentsChanged() const { return m_RecentsChanged; }
+    bool isRecentsChanged() const
+    { return m_RecentsChanged; }
 
-    bool isSimPathsChanged() const { return m_SimPathsChanged; }
+    bool isSimPathsChanged() const
+    { return m_SimPathsChanged; }
 
-    bool isObsPathsChanged() const { return m_ObsPathsChanged; }
+    bool isObsPathsChanged() const
+    { return m_ObsPathsChanged; }
 
-    bool isWaresWatchingChanged() const { return m_WaresWatchingChanged; }
+    bool isWaresWatchingChanged() const
+    { return m_WaresWatchingChanged; }
 
 
 };

@@ -98,37 +98,53 @@ class OPENFLUID_API ProjectManager
 
     ~ProjectManager();
 
-    std::string getPath() const { return m_Path; };
+    std::string getPath() const
+    { return m_Path; };
 
-    std::string getName() const { return m_Name; };
+    std::string getName() const
+    { return m_Name; };
 
-    void setName(const std::string& Name) { m_Name = Name; };
+    void setName(const std::string& Name)
+    { m_Name = Name; };
 
-    std::string getDescription() const { return m_Description; };
+    std::string getDescription() const
+    { return m_Description; };
 
-    void setDescription(const std::string& Description) { m_Description = Description; };
+    void setDescription(const std::string& Description)
+    { m_Description = Description; };
 
-    std::string getAuthors() const { return m_Authors; };
+    std::string getAuthors() const
+    { return m_Authors; };
 
-    void setAuthors(const std::string& Authors) { m_Authors = Authors; };
+    void setAuthors(const std::string& Authors)
+    { m_Authors = Authors; };
 
-    std::string getCreationDate() const { return m_CreationDate; };
+    std::string getCreationDate() const
+    { return m_CreationDate; };
 
-    void setCreationDate(const std::string& CreationDate) { m_CreationDate = CreationDate; };
+    void setCreationDate(const std::string& CreationDate)
+    { m_CreationDate = CreationDate; };
 
-    void setCreationDateAsNow() { m_CreationDate = getNow(); };
+    void setCreationDateAsNow()
+    { m_CreationDate = getNow(); };
 
-    std::string getLastModDate() const { return m_LastModDate; };
+    std::string getLastModDate() const
+    { return m_LastModDate; };
 
-    void setLastModDate(const std::string& LastModDate) { m_LastModDate = LastModDate; };
+    void setLastModDate(const std::string& LastModDate)
+    { m_LastModDate = LastModDate; };
 
-    std::string getOutputDir() { return m_OutputDir; };
+    std::string getOutputDir() const
+    { return m_OutputDir; };
 
-    std::string getInputDir() const { return m_InputDir; };
+    std::string getInputDir() const
+    { return m_InputDir; };
 
-    bool isIncrementalOutputDir() const { return m_IsIncOutputDir; };
+    bool isIncrementalOutputDir() const
+    { return m_IsIncOutputDir; };
 
-    void setIncrementalOutputDir(const bool Inc) { m_IsIncOutputDir = Inc; };
+    void setIncrementalOutputDir(const bool Inc)
+    { m_IsIncOutputDir = Inc; };
 
     bool open(const std::string& Path);
 
@@ -136,7 +152,8 @@ class OPENFLUID_API ProjectManager
                 const std::string& Description, const std::string& Authors,
                 const bool Inc);
 
-    bool isOpened() const { return m_IsOpened; };
+    bool isOpened() const
+    { return m_IsOpened; };
 
     bool save();
 

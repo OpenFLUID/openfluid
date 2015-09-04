@@ -215,7 +215,7 @@ SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::ge
 // =====================================================================
 
 
-ModelItemSignatureInstance * SimulatorSignatureRegistry::getEmptyModelItemSignature()
+ModelItemSignatureInstance* SimulatorSignatureRegistry::getEmptyModelItemSignature()
 {
   openfluid::machine::ModelItemSignatureInstance* Signature =
       new openfluid::machine::ModelItemSignatureInstance();

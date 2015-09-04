@@ -100,6 +100,7 @@ class OPENFLUID_API WareSrcManager
 
     ~WareSrcManager();
 
+
   public:
 
     static WareSrcManager* instance();
@@ -122,9 +123,9 @@ class OPENFLUID_API WareSrcManager
      */
     PathInfo getPathInfo(const QString& Path);
 
-    QString getWaresdevPath();
+    QString getWaresdevPath() const;
 
-    QString getWorkspacePath();
+    QString getWorkspacePath() const;
 };
 
 } }  // namespaces

@@ -75,10 +75,10 @@ class OPENFLUID_API WareParamsTree
     const WareParamsTreeNode& root() const
     { return m_Root; }
 
-    openfluid::core::StringValue getValueUsingFullKey(const std::string& FullName);
+    openfluid::core::StringValue getValueUsingFullKey(const std::string& FullName) const;
 
     openfluid::core::StringValue getValueUsingFullKey(const std::string& FullName,
-                                                      const openfluid::core::StringValue& DefaultVal);
+                                                      const openfluid::core::StringValue& DefaultVal) const;
 
 };
 

@@ -57,11 +57,11 @@ QString ProjectManager::m_GroupName = "OpenFLUID Project";
 
 ProjectManager::ProjectManager() :
   mp_PrjFile(NULL),
-  m_Path(""), m_Name(""), m_Description(""), m_Authors(""), m_CreationDate(""),
-  m_LastModDate(""), m_IsIncOutputDir(false), m_IsOpened(false)
+  m_IsIncOutputDir(false), m_IsOpened(false)
 {
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -71,6 +71,7 @@ ProjectManager::~ProjectManager()
 {
   close();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -102,6 +103,7 @@ std::string ProjectManager::getFilePathFromProjectPath(std::string ProjectPath)
 {
   return ProjectPath.append("/").append(openfluid::config::PROJECT_FILE);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -276,6 +278,7 @@ void ProjectManager::close()
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -292,6 +295,7 @@ void ProjectManager::updateOutputDir()
   else
     m_OutputDir = getOuputDirFromProjectPath(m_Path);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -342,7 +346,9 @@ bool ProjectManager::getProjectInfos(const std::string& Path,
 
 QVariant ProjectManager::getConfigValue(const QString& Group, const QString& Key) const
 {
-  if (!m_IsOpened) return QVariant();
+  if (!m_IsOpened)
+    return QVariant();
+
   return mp_PrjFile->value(Group+"/"+Key);
 }
 
@@ -353,7 +359,9 @@ QVariant ProjectManager::getConfigValue(const QString& Group, const QString& Key
 
 void ProjectManager::setConfigValue(const QString& Group, const QString& Key, const QVariant& Value)
 {
-  if (!m_IsOpened) return;
+  if (!m_IsOpened)
+    return;
+
   mp_PrjFile->setValue(Group+"/"+Key,Value);
 }
 

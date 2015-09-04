@@ -88,11 +88,11 @@ void WareParamsTree::setParams(const WareParams_t& Params)
 // =====================================================================
 
 
-openfluid::core::StringValue WareParamsTree::getValueUsingFullKey(const std::string& FullName)
+openfluid::core::StringValue WareParamsTree::getValueUsingFullKey(const std::string& FullName) const
 {
   std::vector<std::string> SplittedKeys = openfluid::tools::splitString(FullName,".");
 
-  WareParamsTreeNode* CurrentNode = &m_Root;
+  const WareParamsTreeNode* CurrentNode = &m_Root;
 
   for (std::string& Key : SplittedKeys)
   {
@@ -111,7 +111,7 @@ openfluid::core::StringValue WareParamsTree::getValueUsingFullKey(const std::str
 
 
 openfluid::core::StringValue WareParamsTree::getValueUsingFullKey(const std::string& FullName,
-                                                      const openfluid::core::StringValue& DefaultVal)
+                                                                  const openfluid::core::StringValue& DefaultVal) const
 {
   try
   {
@@ -122,5 +122,6 @@ openfluid::core::StringValue WareParamsTree::getValueUsingFullKey(const std::str
     return DefaultVal;
   }
 }
+
 
 } }  // namespaces

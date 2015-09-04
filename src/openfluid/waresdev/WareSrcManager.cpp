@@ -228,7 +228,7 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 // =====================================================================
 
 
-QString WareSrcManager::getWaresdevPath()
+QString WareSrcManager::getWaresdevPath() const
 {
   return m_WaresdevPath;
 }
@@ -238,7 +238,7 @@ QString WareSrcManager::getWaresdevPath()
 // =====================================================================
 
 
-QString WareSrcManager::getWorkspacePath()
+QString WareSrcManager::getWorkspacePath() const
 {
   return m_WorkspacePath;
 }

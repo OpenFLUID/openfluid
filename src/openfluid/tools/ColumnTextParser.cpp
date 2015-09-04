@@ -322,7 +322,7 @@ bool ColumnTextParser::getDoubleValue(unsigned int Line, unsigned int Column, do
 // =====================================================================
 
 
-void ColumnTextParser::streamContents(std::ostream& OStream)
+void ColumnTextParser::streamContents(std::ostream& OStream) const
 {
   OStream << "" << std::endl;
   unsigned int i,j;

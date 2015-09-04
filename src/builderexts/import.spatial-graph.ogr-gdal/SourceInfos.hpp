@@ -112,7 +112,7 @@ class SourceInfos
 
     QString DatastoreID;
 
-    int getGeometryDimension();
+    int getGeometryDimension() const;
 
     SourceInfos();
 

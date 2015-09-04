@@ -378,9 +378,10 @@ WareSrcFiletypeManager* WareSrcFiletypeManager::instance()
 // =====================================================================
 
 
-QString WareSrcFiletypeManager::getFileType(const QString& FileName)
+QString WareSrcFiletypeManager::getFileType(const QString& FileName) const
 {
-  for (QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin(); it != m_WareSrcFiletypes.end(); ++it)
+  for (QMap<QString, WareSrcFiletype>::const_iterator it = m_WareSrcFiletypes.begin();
+       it != m_WareSrcFiletypes.end(); ++it)
   {
     if (QDir::match(it.value().m_Extensions, FileName))
       return it.key();
@@ -394,7 +395,7 @@ QString WareSrcFiletypeManager::getFileType(const QString& FileName)
 // =====================================================================
 
 
-QMap<QString, QString> WareSrcFiletypeManager::getIconsByFileExtensionList()
+QMap<QString, QString> WareSrcFiletypeManager::getIconsByFileExtensionList() const
 {
   return m_IconsByFileExtensionList;
 }
@@ -404,7 +405,7 @@ QMap<QString, QString> WareSrcFiletypeManager::getIconsByFileExtensionList()
 // =====================================================================
 
 
-WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::getHighlightingRules(const QString& FilePath)
+WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::getHighlightingRules(const QString& FilePath) const
 {
   QString FileType = getFileType(QFileInfo(FilePath).fileName());
 
@@ -416,12 +417,12 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::getHighlight
 // =====================================================================
 
 
-WareSrcFiletypeManager::CompletionRules_t WareSrcFiletypeManager::getCompletionRules(const QString& FilePath)
+WareSrcFiletypeManager::CompletionRules_t WareSrcFiletypeManager::getCompletionRules(const QString& FilePath) const
 {
   QString FileType = getFileType(QFileInfo(FilePath).fileName());
 
-  openfluid::waresdev::WareSrcManager::WareType WareType = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(
-      FilePath).m_WareType;
+  openfluid::waresdev::WareSrcManager::WareType WareType =
+      openfluid::waresdev::WareSrcManager::instance()->getPathInfo(FilePath).m_WareType;
 
   return m_WareSrcFiletypes.value(FileType, WareSrcFiletype()).m_CompRules.value(WareType, QVector<CompletionRule>());
 }

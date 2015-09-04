@@ -403,7 +403,7 @@ class OPENFLUID_API Tree
       Returns the size of the tree determined by the current node
       @return the size of the tree
     */
-    unsigned int size()
+    unsigned int size() const
     {
       int Size = 1;
 

@@ -160,7 +160,7 @@ class OPENFLUID_API ColumnTextParser
     */
     inline unsigned int getColsCount() const { return m_ColsCount;};
 
-    void streamContents(std::ostream& OStream);
+    void streamContents(std::ostream& OStream) const;
 
 };
 

@@ -147,7 +147,8 @@ class OPENFLUID_API WareSrcFiletypeManager
      */
     CompletionRulesByWareType_t parseCompletionFile(const QString& FilePath);
 
-    QString getFileType(const QString& FileName);
+    QString getFileType(const QString& FileName) const;
+
 
   public:
 
@@ -155,11 +156,11 @@ class OPENFLUID_API WareSrcFiletypeManager
 
     static WareSrcFiletypeManager* instance();
 
-    QMap<QString, QString> getIconsByFileExtensionList();
+    QMap<QString, QString> getIconsByFileExtensionList() const;
 
-    HighlightingRules_t getHighlightingRules(const QString& FilePath);
+    HighlightingRules_t getHighlightingRules(const QString& FilePath) const;
 
-    CompletionRules_t getCompletionRules(const QString& FilePath);
+    CompletionRules_t getCompletionRules(const QString& FilePath) const;
 };
 
 

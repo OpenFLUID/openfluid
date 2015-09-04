@@ -90,9 +90,8 @@ class OPENFLUID_API FluidXDescriptor
 
     openfluid::ware::WareParams_t extractParamsFromNode(QDomElement& Node);
 
-    openfluid::ware::WareParams_t mergeParams(
-        const openfluid::ware::WareParams_t& Params,
-        const openfluid::ware::WareParams_t& OverloadParams);
+    openfluid::ware::WareParams_t mergeParams(const openfluid::ware::WareParams_t& Params,
+                                              const openfluid::ware::WareParams_t& OverloadParams);
 
     void extractModelFromNode(QDomElement& Node);
 

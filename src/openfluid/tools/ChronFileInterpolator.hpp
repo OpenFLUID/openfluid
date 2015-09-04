@@ -55,11 +55,13 @@ class OPENFLUID_API ChronFileInterpolator
 
     enum PreProcess { PREPROCESS_NONE, PREPROCESS_CUMULATE };
 
+
   private:
 
     void checkPreload();
 
     void checkPostload();
+
 
   protected:
 
@@ -89,7 +91,7 @@ class OPENFLUID_API ChronFileInterpolator
 
     void loadInFile(ChronologicalSerie& Data);
 
-    void displayChronSerie(ChronologicalSerie& Data)
+    static void displayChronSerie(ChronologicalSerie& Data)
     {
       ChronologicalSerie::iterator it;
       ChronologicalSerie::iterator itb = Data.begin();
@@ -102,6 +104,7 @@ class OPENFLUID_API ChronFileInterpolator
       }
       std::cout << "--------------------------------" << std::endl;
     }
+
 
   public:
 

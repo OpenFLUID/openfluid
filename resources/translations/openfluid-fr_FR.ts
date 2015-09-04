@@ -630,53 +630,53 @@
         <translation>Tableau de projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="291"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="440"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="448"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="488"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="496"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="531"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="539"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="578"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="586"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="792"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="800"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="293"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="442"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="450"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="490"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="498"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="533"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="541"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="580"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="588"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="794"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="802"/>
         <source>Project error</source>
         <translation>Erreur dans le projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="373"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="375"/>
         <source>Close project</source>
         <translation>Fermer le projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="374"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="376"/>
         <source>Do you want to save the current project before closing?</source>
         <translation>Voulez vous sauvegarder le projet en cours avant de le fermer?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="400"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="402"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="401"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="403"/>
         <source>Are you sure you want to quit OpenFLUID-Builder?</source>
         <translation>Etes-vous sûr de vouloir quitter OpenFLUID-Builder?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="441"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="449"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="443"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="451"/>
         <source>Error creating project %1 in
 %2</source>
         <translation>Erreur à la création du projet %1 dans
 %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="497"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="540"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="587"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="801"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="499"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="542"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="589"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="803"/>
         <source>%1
 
 is not a valid OpenFLUID project</source>
@@ -689,32 +689,32 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation type="obsolete">Erreur à la création du projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="470"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="472"/>
         <source>Open project</source>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="814"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="816"/>
         <source>Reinstall examples projects</source>
         <translation>Réinstaller les projets exemples</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="815"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="817"/>
         <source>Reinstalling will overwrite all modifications and delete simulations results associated to these examples.</source>
         <translation>La réinstallation écrasera toutes les modifications et supprimera les résultats de simulation associés aux exemples.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="818"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="820"/>
         <source>Proceed anyway?</source>
         <translation>Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="832"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="834"/>
         <source>Restore examples projects</source>
         <translation>Restaurer les projets exemples</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="833"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="835"/>
         <source>Error restoring example projects</source>
         <translation>Erreur à la restauration des projets exemples</translation>
     </message>
@@ -1529,17 +1529,20 @@ Continuer quand même?</translation>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="44"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="36"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="39"/>
         <source>Simulators</source>
         <translation>Simulateurs</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="66"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="53"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="56"/>
         <source>Observers</source>
         <translation>Observateurs</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="88"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="70"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="73"/>
         <source>Builder extensions</source>
         <translation>Extensions Builder</translation>
     </message>
@@ -2514,49 +2517,49 @@ Continuer quand même?</translation>
         <translation>Le simulateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="710"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="744"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="779"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="709"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="743"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="778"/>
         <source>Unit class %1 does not exist for variable %2 produced by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 produite par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="726"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="725"/>
         <source>Variable %1 on %2 produced by %3 cannot be created because it is created by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 ne peut être créée car elle est déjà crée par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="761"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="760"/>
         <source>Variable %1 on %2 produced by %3 is already produced by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 est déjà produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="821"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="820"/>
         <source>Unit class %1 does not exist for variable %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 requise par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="835"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="834"/>
         <source>Variable %1 on %2 required by %3 is not produced by another simulator or generator</source>
         <translation>La variable %1 sur la classe d&apos;unités %2 requise par %3 n&apos;est pas produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="850"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="849"/>
         <source>No simulator or generator is enabled in model</source>
         <translation>Aucun simulateur ou générateur n&apos;est actif dans le modèle</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="883"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="882"/>
         <source>Unit class %1 does not exist for datastore item %2</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;élément du datastore %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="919"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="918"/>
         <source>Observer %1 is not available</source>
         <translation>L&apos;observateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="930"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="929"/>
         <source>No observer is enabled in monitoring</source>
         <translation>Aucun observateur n&apos;est actif dans le monitoring</translation>
     </message>
@@ -4355,17 +4358,17 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
         <translation>Dépendances</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/market/MarketClientAssistant.cpp" line="699"/>
+        <location filename="../../src/openfluid/ui/market/MarketClientAssistant.cpp" line="700"/>
         <source>0% complete</source>
         <translation>Complété à 0%</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/market/MarketClientAssistant.cpp" line="707"/>
+        <location filename="../../src/openfluid/ui/market/MarketClientAssistant.cpp" line="708"/>
         <source>Installation in progress...</source>
         <translation>Installation en cours...</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/market/MarketClientAssistant.cpp" line="712"/>
+        <location filename="../../src/openfluid/ui/market/MarketClientAssistant.cpp" line="713"/>
         <source>Success</source>
         <translation>Succés</translation>
     </message>

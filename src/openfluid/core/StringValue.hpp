@@ -168,7 +168,7 @@ class OPENFLUID_API StringValue : public SimpleValue
       Returns the string value as std::string type
       @return the string value
     */
-    inline std::string get()
+    inline std::string get() const
     { return m_Value; };
 
     /**

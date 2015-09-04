@@ -71,50 +71,51 @@ WareSrcSyntaxHighlighter::~WareSrcSyntaxHighlighter()
 
 void WareSrcSyntaxHighlighter::highlightBlock(const QString& Text)
 {
-  foreach(const WareSrcFiletypeManager::HighlightingRule& Rule, m_HighlightingRules){
-
-  QRegExp Expression(Rule.Pattern);
-
-  if(Rule.EndPattern == QRegExp())
+  for (const WareSrcFiletypeManager::HighlightingRule& Rule : m_HighlightingRules)
   {
-    int Index = Expression.indexIn(Text);
-    while (Index >= 0)
+
+    QRegExp Expression(Rule.Pattern);
+
+    if(Rule.EndPattern == QRegExp())
     {
-      int Length = Expression.matchedLength();
-      setFormat(Index, Length, Rule.Format);
-      Index = Expression.indexIn(Text, Index + Length);
+      int Index = Expression.indexIn(Text);
+      while (Index >= 0)
+      {
+        int Length = Expression.matchedLength();
+        setFormat(Index, Length, Rule.Format);
+        Index = Expression.indexIn(Text, Index + Length);
+      }
     }
-  }
-  else
-  {
-    QRegExp EndExpression(Rule.EndPattern);
-
-    setCurrentBlockState(0);
-
-    int StartIndex = 0;
-    if (previousBlockState() != 1)
-    StartIndex = Expression.indexIn(Text);
-
-    while (StartIndex >= 0)
+    else
     {
-      int EndIndex = EndExpression.indexIn(Text, StartIndex);
-      int MatchedLength;
-      if (EndIndex == -1)
-      {
-        setCurrentBlockState(1);
-        MatchedLength = Text.length() - StartIndex;
-      }
-      else
-      {
-        MatchedLength = EndIndex - StartIndex
-        + EndExpression.matchedLength();
-      }
-      setFormat(StartIndex, MatchedLength, Rule.Format);
-      StartIndex = Expression.indexIn(Text, StartIndex + MatchedLength);
-    }
-  }
+      QRegExp EndExpression(Rule.EndPattern);
 
-}
+      setCurrentBlockState(0);
+
+      int StartIndex = 0;
+      if (previousBlockState() != 1)
+        StartIndex = Expression.indexIn(Text);
+
+      while (StartIndex >= 0)
+      {
+        int EndIndex = EndExpression.indexIn(Text, StartIndex);
+        int MatchedLength;
+        if (EndIndex == -1)
+        {
+          setCurrentBlockState(1);
+          MatchedLength = Text.length() - StartIndex;
+        }
+        else
+        {
+          MatchedLength = EndIndex - StartIndex
+              + EndExpression.matchedLength();
+        }
+        setFormat(StartIndex, MatchedLength, Rule.Format);
+        StartIndex = Expression.indexIn(Text, StartIndex + MatchedLength);
+      }
+    }
+
+  }
 
 }
 

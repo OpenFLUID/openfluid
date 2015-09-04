@@ -116,7 +116,7 @@ class OPENFLUID_API WareSetDescriptor
     // =====================================================================
 
 
-    openfluid::ware::WareParams_t getGlobalParameters()
+    openfluid::ware::WareParams_t getGlobalParameters() const
     {
       return m_Params;
     }

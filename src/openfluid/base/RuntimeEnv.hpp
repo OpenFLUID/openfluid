@@ -66,9 +66,9 @@ class OPENFLUID_API RuntimeEnvironment
 
     static RuntimeEnvironment* mp_Singleton;
 
-    std::string m_Version;
-    std::string m_FullVersion;
-    std::string m_MajorMinorVersion;
+    const std::string m_Version;
+    const std::string m_FullVersion;
+    const std::string m_MajorMinorVersion;
 
     std::string m_OutputDir;
     std::string m_InputDir;
@@ -99,7 +99,7 @@ class OPENFLUID_API RuntimeEnvironment
 
     std::string m_UserID;
     std::string m_HostName;
-    std::string m_Arch;
+    const std::string m_Arch;
 
     unsigned int m_SimulatorsMaxNumThreads;
 
@@ -121,20 +121,13 @@ class OPENFLUID_API RuntimeEnvironment
 
     openfluid::base::EnvironmentProperties m_ExtraProperties;
 
-    openfluid::core::DateTime m_StartTime;
-
-    openfluid::core::DateTime m_EndTime;
-
-    // TODO set correct type for time step
-    int m_TimeStep;
-
     bool m_IsLinkedToProject;
-
 
     /**
       Default constructor
     */
     RuntimeEnvironment();
+
 
   public:
 
@@ -321,7 +314,7 @@ class OPENFLUID_API RuntimeEnvironment
       @param[in] Filename The given simulator plugin file name
       @return the first path found for a given simulator plugin file
     */
-    std::string getSimulatorPluginFullPath(std::string Filename);
+    std::string getSimulatorPluginFullPath(const std::string& Filename) const;
 
     /**
       Adds search paths for plugins, separated by semicolon characters (i.e. /path/to/plugs:another/path/to/plugs).
@@ -357,14 +350,14 @@ class OPENFLUID_API RuntimeEnvironment
       @param[in] Filename The given observer plugin file name
       @return the first path found for a given observer plugin file
     */
-    std::string getObserverPluginFullPath(std::string Filename);
+    std::string getObserverPluginFullPath(const std::string& Filename) const;
 
     /**
       Adds search paths for plugins, separated by semicolon characters (i.e. /path/to/plugs:another/path/to/plugs).
       These paths are added at the top of the search paths list.
       @param[in] SemicolonSeparatedPaths a collection of paths separated by semicolons, as a std::string
     */
-    void addExtraObserversPluginsPaths(std::string SemicolonSeparatedPaths);
+    void addExtraObserversPluginsPaths(const std::string& SemicolonSeparatedPaths);
 
     inline void resetExtraObserversPluginsPaths()
     { m_ExtraObserversPlugsDirs.clear(); };
@@ -515,7 +508,7 @@ class OPENFLUID_API RuntimeEnvironment
 
     void detachFromProject();
 
-    bool isLinkedToProject()
+    bool isLinkedToProject() const
       { return m_IsLinkedToProject; };
 
     bool isSimulationProfilingEnabled() const
@@ -524,7 +517,7 @@ class OPENFLUID_API RuntimeEnvironment
     void setSimulationProfilingEnabled(bool Profiling)
     { m_Profiling = Profiling; };
 
-    void processWareParams(openfluid::ware::WareParams_t& Params);
+    void processWareParams(openfluid::ware::WareParams_t& Params) const;
 };
 
 

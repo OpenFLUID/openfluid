@@ -55,6 +55,7 @@ class GeneratorSignature;
 // =====================================================================
 // =====================================================================
 
+
 class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<ModelItemSignatureInstance>
 {
   public:

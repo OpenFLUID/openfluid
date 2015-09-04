@@ -58,7 +58,7 @@ SourceInfos::SourceInfos():
 // =====================================================================
 
 
-int SourceInfos::getGeometryDimension()
+int SourceInfos::getGeometryDimension() const
 {
   int Dim = -1;
 

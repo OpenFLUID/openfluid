@@ -64,11 +64,10 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_FullVersion(openfluid::config::FULL_VERSION),
   m_MajorMinorVersion(openfluid::config::VERSION_MAJOR+"."+openfluid::config::VERSION_MINOR),
   m_InstallPrefix(openfluid::config::INSTALL_PREFIX),
+  m_Arch(OPENFLUID_OS_STRLABEL),
   m_SimulatorsMaxNumThreads(openfluid::config::SIMULATORS_MAXNUMTHREADS),
   m_Profiling(false), m_IsLinkedToProject(false)
 {
-
-  m_Arch = OPENFLUID_OS_STRLABEL;
 
   char *INSTALLEnvVar;
   INSTALLEnvVar = std::getenv("OPENFLUID_INSTALL_PREFIX");
@@ -172,7 +171,6 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_ValuesBufferSize = 0;
   m_IsUserValuesBufferSize = false;
 
-  m_TimeStep = 0;
 
   // ====== Simulator environnement ======
 
@@ -326,7 +324,7 @@ void RuntimeEnvironment::addExtraSimulatorsPluginsPaths(
 // =====================================================================
 
 
-std::string RuntimeEnvironment::getSimulatorPluginFullPath(std::string Filename)
+std::string RuntimeEnvironment::getSimulatorPluginFullPath(const std::string& Filename) const
 {
 
   std::vector<std::string> PluginsPaths = getSimulatorsPluginsPaths();
@@ -352,8 +350,7 @@ std::string RuntimeEnvironment::getSimulatorPluginFullPath(std::string Filename)
 // =====================================================================
 
 
-void RuntimeEnvironment::addExtraObserversPluginsPaths(
-    std::string SemicolonSeparatedPaths)
+void RuntimeEnvironment::addExtraObserversPluginsPaths(const std::string& SemicolonSeparatedPaths)
 {
   std::vector<std::string> ExtraPaths;
 
@@ -373,7 +370,7 @@ void RuntimeEnvironment::addExtraObserversPluginsPaths(
 // =====================================================================
 
 
-std::string RuntimeEnvironment::getObserverPluginFullPath(std::string Filename)
+std::string RuntimeEnvironment::getObserverPluginFullPath(const std::string& Filename) const
 {
 
   std::vector<std::string> PluginsPaths = getObserversPluginsPaths();
@@ -475,7 +472,7 @@ void RuntimeEnvironment::detachFromProject()
 // =====================================================================
 
 
-void RuntimeEnvironment::processWareParams(openfluid::ware::WareParams_t& Params)
+void RuntimeEnvironment::processWareParams(openfluid::ware::WareParams_t& Params) const
 {
   std::map<std::string,std::string> Replacements =
     {{"${dir.input}",m_InputDir},

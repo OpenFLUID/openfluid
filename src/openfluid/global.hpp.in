@@ -118,19 +118,19 @@
 
 
 #if defined(OPENFLUID_OS_LINUX64)
-  #define OPENFLUID_OS_STRLABEL "linux-x86-64";
+  #define OPENFLUID_OS_STRLABEL "linux-x86-64"
 #elif defined(OPENFLUID_OS_LINUX32)
-  #define OPENFLUID_OS_STRLABEL "linux-i386";
+  #define OPENFLUID_OS_STRLABEL "linux-i386"
 #elif defined(OPENFLUID_OS_WIN32) && !defined(OPENFLUID_OS_WIN64)
-  #define OPENFLUID_OS_STRLABEL "win32";
+  #define OPENFLUID_OS_STRLABEL "win32"
 #elif defined(OPENFLUID_OS_WIN64)
-  #define OPENFLUID_OS_STRLABEL "win64";
+  #define OPENFLUID_OS_STRLABEL "win64"
 #elif defined(OPENFLUID_OS_MAC64)
-  #define OPENFLUID_OS_STRLABEL "osx64";
+  #define OPENFLUID_OS_STRLABEL "osx64"
 #elif defined(OPENFLUID_OS_MAC32)
-  #define OPENFLUID_OS_STRLABEL "osx32";
+  #define OPENFLUID_OS_STRLABEL "osx32"
 #else
-  #define OPENFLUID_OS_STRLABEL "";
+  #define OPENFLUID_OS_STRLABEL ""
 #endif
 
 

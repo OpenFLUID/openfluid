@@ -51,7 +51,7 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
 {
   private:
 
-    void displayStatus(const openfluid::base::Listener::Status& Status)
+    static void displayStatus(const openfluid::base::Listener::Status& Status)
     {
       switch (Status)
       {
@@ -71,7 +71,7 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
 
     };
 
-    void displayStatusWithLeftMargin(const openfluid::base::Listener::Status& Status)
+    static void displayStatusWithLeftMargin(const openfluid::base::Listener::Status& Status)
     {
       switch (Status)
       {
@@ -93,25 +93,30 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
 
   public:
 
-    DefaultMachineListener() {};
+    DefaultMachineListener()
+    { };
 
-    ~DefaultMachineListener() {};
+    ~DefaultMachineListener()
+    { };
 
-    virtual void onModelBuild() {};
+    virtual void onModelBuild()
+    { };
 
     virtual void onModelBuildDone(const openfluid::base::Listener::Status& Status)
     {
       displayStatus(Status);
     };
 
-    virtual void onLandscapeBuild() {};
+    virtual void onLandscapeBuild()
+    { };
 
     virtual void onLandscapeBuildDone(const openfluid::base::Listener::Status& Status)
     {
       displayStatus(Status);
     };
 
-    virtual void onRunConfiguration() {};
+    virtual void onRunConfiguration()
+    { };
 
     virtual void onRunConfigurationDone(const openfluid::base::Listener::Status& Status)
     {
@@ -119,7 +124,8 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
     };
 
 
-    virtual void onInitParams() {};
+    virtual void onInitParams()
+    { };
 
     virtual void onInitParamsDone(const openfluid::base::Listener::Status& Status)
     {
@@ -127,7 +133,8 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
     };
 
 
-    virtual void onPrepareData() {};
+    virtual void onPrepareData()
+    { };
 
     virtual void onPrepareDataDone(const openfluid::base::Listener::Status& Status)
     {
@@ -135,7 +142,8 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
     };
 
 
-    virtual void onCheckConsistency() {};
+    virtual void onCheckConsistency()
+    { };
 
     virtual void onCheckConsistencyDone(const openfluid::base::Listener::Status& Status)
     {
