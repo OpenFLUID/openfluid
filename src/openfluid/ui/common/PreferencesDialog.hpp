@@ -115,6 +115,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void enableCurrentLineHighlighting(bool Enable);
 
+    void changeCurrentLineColor();
+
     void enableLineWrapping(bool Enable);
 
     void addMarketPlace();

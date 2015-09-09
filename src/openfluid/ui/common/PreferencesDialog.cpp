@@ -54,6 +54,7 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QColorDialog>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -151,6 +152,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QS
 
   connect(ui->SyntaxHLCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableSyntaxHighlighting(bool)));
   connect(ui->CurrentLineHLCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableCurrentLineHighlighting(bool)));
+  connect(ui->CurrentLineColorButton, SIGNAL(clicked()), this, SLOT(changeCurrentLineColor()));
   connect(ui->LineWrappingCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableLineWrapping(bool)));
   connect(ui->TextEditorApplyButton, SIGNAL(clicked()), this, SLOT(applyTextEditorSettings()));
 
@@ -267,6 +269,9 @@ void PreferencesDialog::initialize(const QStringList& ExtsPaths)
   // Code editor
   ui->SyntaxHLCheckBox->setChecked(PrefsMan->isSyntaxHighlightingEnabled());
   ui->CurrentLineHLCheckBox->setChecked(PrefsMan->isCurrentlineHighlightingEnabled());
+  QString Color = PrefsMan->getCurrentlineColor();
+  if(QColor::isValidColor(Color))
+    ui->CurrentLineColorLabel->setStyleSheet(QString("QLabel {background-color : %1}").arg(Color));
   ui->LineWrappingCheckBox->setChecked(PrefsMan->isLineWrappingEnabled());
 
 
@@ -450,6 +455,30 @@ void PreferencesDialog::enableCurrentLineHighlighting(bool Enable)
   m_TextEditorSettingsChanged = true;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::changeCurrentLineColor()
+{
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+
+  QColor Color = QColorDialog::getColor(PrefMgr->getCurrentlineColor(),this);
+
+  // Cancel on QColorDialog returns an invalid Color
+  if(Color.isValid())
+  {
+    QString ColorName = Color.name();
+
+    ui->CurrentLineColorLabel->setStyleSheet(QString("QLabel {background-color : %1}").arg(ColorName));
+
+    PrefMgr->setCurrentlineColor(ColorName);
+
+    m_TextEditorSettingsChanged = true;
+  }
+
+}
 
 // =====================================================================
 // =====================================================================

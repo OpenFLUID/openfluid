@@ -696,11 +696,60 @@ font : bold;
           </widget>
          </item>
          <item>
+          <widget class="QWidget" name="horizontalWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLabel" name="CurrentLineColorLabel">
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>Current line color</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="CurrentLineColorButton">
+              <property name="text">
+               <string>Change color...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="LineWrappingCheckBox">
            <property name="text">
             <string>Line wrapping enabled</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item>
           <widget class="QPushButton" name="TextEditorApplyButton">
@@ -859,5 +908,22 @@ font : bold;
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>CurrentLineHLCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>horizontalWidget</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>355</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
