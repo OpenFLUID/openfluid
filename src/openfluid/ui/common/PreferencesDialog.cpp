@@ -155,6 +155,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QS
   connect(ui->CurrentLineColorButton, SIGNAL(clicked()), this, SLOT(changeCurrentLineColor()));
   connect(ui->FontComboBox, SIGNAL(currentFontChanged(const QFont&)), this, SLOT(changeCurrentFont(const QFont&)));
   connect(ui->LineWrappingCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableLineWrapping(bool)));
+  connect(ui->IndentSpaceNbSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changeIndentSpaceNumber(int)));
   connect(ui->TextEditorApplyButton, SIGNAL(clicked()), this, SLOT(applyTextEditorSettings()));
 
   connect(ui->AddMarketPlaceButton,SIGNAL(clicked()),this,SLOT(addMarketPlace()));
@@ -277,6 +278,7 @@ void PreferencesDialog::initialize(const QStringList& ExtsPaths)
   ui->FontLabel->setStyleSheet(QString("QLabel {font-family : %1}").arg(FontName));
   ui->FontComboBox->setCurrentFont(QFont(FontName));
   ui->LineWrappingCheckBox->setChecked(PrefsMan->isLineWrappingEnabled());
+  ui->IndentSpaceNbSpinBox->setValue(PrefsMan->getIndentSpaceNb());
 
 
 #if OPENFLUID_MARKET_ENABLED
@@ -508,6 +510,17 @@ void PreferencesDialog::changeCurrentFont(const QFont& Font)
 void PreferencesDialog::enableLineWrapping(bool Enable)
 {
   openfluid::base::PreferencesManager::instance()->setLineWrappingEnabled(Enable);
+  m_TextEditorSettingsChanged = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::changeIndentSpaceNumber(int SpaceNb)
+{
+  openfluid::base::PreferencesManager::instance()->setIndentSpaceNb(SpaceNb);
   m_TextEditorSettingsChanged = true;
 }
 

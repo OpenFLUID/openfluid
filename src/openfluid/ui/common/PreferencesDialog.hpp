@@ -121,6 +121,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void enableLineWrapping(bool Enable);
 
+    void changeIndentSpaceNumber(int SpaceNb);
+
     void addMarketPlace();
 
     void editMarketPlace();
