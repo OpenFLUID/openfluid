@@ -878,4 +878,15 @@ void WareSrcWidgetCollection::closeEditor(const QString& FilePath)
 // =====================================================================
 
 
-} } }  //namespaces
+void WareSrcWidgetCollection::updateEditorsSettings()
+{
+  for (WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+    Ware->updateEditorsSettings();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } } //namespaces

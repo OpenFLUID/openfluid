@@ -62,8 +62,8 @@ namespace openfluid { namespace ui { namespace common {
 PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QStringList& ExtsPaths):
   OpenFLUIDDialog(Parent), ui(new Ui::PreferencesDialog),
   m_RecentsChanged(false),
-  m_SimPathsChanged(false), m_ObsPathsChanged(false), m_WaresWatchingChanged(false), m_OriginalLangIndex(0),
-  m_Mode(Mode)
+  m_SimPathsChanged(false), m_ObsPathsChanged(false), m_WaresWatchingChanged(false), m_TextEditorSettingsChanged(false),
+  m_OriginalLangIndex(0), m_Mode(Mode)
 {
   setWindowModality(Qt::ApplicationModal);
 
@@ -105,11 +105,9 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QS
   PrefItem->setText(0,tr("Development tools"));
   PrefItem->setData(0,Qt::UserRole,DEVENV_PAGE);
 
-#if 0  // TODO to enable when it will be developed
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0,tr("Code editor"));
   PrefItem->setData(0,Qt::UserRole,DEVEDITOR_PAGE);
-#endif
 
 #if OPENFLUID_MARKET_ENABLED
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
@@ -151,6 +149,10 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QS
   connect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(updatePeriodBegin(const QDateTime&)));
   connect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(updatePeriodEnd(const QDateTime&)));
 
+  connect(ui->SyntaxHLCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableSyntaxHighlighting(bool)));
+  connect(ui->CurrentLineHLCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableCurrentLineHighlighting(bool)));
+  connect(ui->LineWrappingCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableLineWrapping(bool)));
+  connect(ui->TextEditorApplyButton, SIGNAL(clicked()), this, SLOT(applyTextEditorSettings()));
 
   connect(ui->AddMarketPlaceButton,SIGNAL(clicked()),this,SLOT(addMarketPlace()));
   connect(ui->EditMarketPlaceButton,SIGNAL(clicked()),this,SLOT(editMarketPlace()));
@@ -261,6 +263,11 @@ void PreferencesDialog::initialize(const QStringList& ExtsPaths)
   ui->ConfigOptionsEdit->setText(PrefsMan->getWaresdevConfigOptions());
   ui->BuildPathEnvEdit->setText(PrefsMan->getWaresdevBuildEnv("PATH"));
   ui->ShowPathCheckBox->setChecked(PrefsMan->isWaresdevShowCommandEnv("PATH"));
+
+  // Code editor
+  ui->SyntaxHLCheckBox->setChecked(PrefsMan->isSyntaxHighlightingEnabled());
+  ui->CurrentLineHLCheckBox->setChecked(PrefsMan->isCurrentlineHighlightingEnabled());
+  ui->LineWrappingCheckBox->setChecked(PrefsMan->isLineWrappingEnabled());
 
 
 #if OPENFLUID_MARKET_ENABLED
@@ -420,6 +427,38 @@ void PreferencesDialog::updatePeriodBegin(const QDateTime& DT)
 void PreferencesDialog::updatePeriodEnd(const QDateTime& DT)
 {
   openfluid::base::PreferencesManager::instance()->setEnd(DT.toString("yyyy-MM-dd HH:mm:ss"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::enableSyntaxHighlighting(bool Enable)
+{
+  openfluid::base::PreferencesManager::instance()->setSyntaxHighlightingEnabled(Enable);
+  m_TextEditorSettingsChanged = true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::enableCurrentLineHighlighting(bool Enable)
+{
+  openfluid::base::PreferencesManager::instance()->setCurrentlineHighlightingEnabled(Enable);
+  m_TextEditorSettingsChanged = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::enableLineWrapping(bool Enable)
+{
+  openfluid::base::PreferencesManager::instance()->setLineWrappingEnabled(Enable);
+  m_TextEditorSettingsChanged = true;
 }
 
 
@@ -631,6 +670,17 @@ void PreferencesDialog::detectQtDevToolsMinGW()
     updateDevConfigPATH();
   }
 #endif
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::applyTextEditorSettings()
+{
+  if(m_TextEditorSettingsChanged)
+    emit applyTextEditorSettingsAsked();
 }
 
 

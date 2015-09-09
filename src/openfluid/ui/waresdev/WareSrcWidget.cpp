@@ -732,4 +732,15 @@ void WareSrcWidget::goToLine()
 // =====================================================================
 
 
-} } }  // namespaces
+void WareSrcWidget::updateEditorsSettings()
+{
+  for (WareSrcFileEditor* Editor : m_WareSrcFilesByPath.values())
+    Editor->updateSettings();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } } // namespaces

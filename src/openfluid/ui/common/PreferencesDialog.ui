@@ -116,7 +116,7 @@ font : bold;
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="EnvironmentPage">
         <layout class="QVBoxLayout" name="verticalLayout_11" stretch="0,1">
@@ -434,7 +434,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>8</month>
-                <day>20</day>
+                <day>18</day>
                </date>
               </property>
               <property name="displayFormat">
@@ -581,16 +581,7 @@ font : bold;
             <property name="spacing">
              <number>0</number>
             </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
+            <property name="margin">
              <number>0</number>
             </property>
             <item>
@@ -688,7 +679,38 @@ font : bold;
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="DevEditorPage"/>
+       <widget class="QWidget" name="DevEditorPage">
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <item>
+          <widget class="QCheckBox" name="SyntaxHLCheckBox">
+           <property name="text">
+            <string>Syntax highlighting enabled</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="CurrentLineHLCheckBox">
+           <property name="text">
+            <string>Current line highlighting enabled</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="LineWrappingCheckBox">
+           <property name="text">
+            <string>Line wrapping enabled</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="TextEditorApplyButton">
+           <property name="text">
+            <string>Apply now</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
        <widget class="QWidget" name="MarketPage">
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">

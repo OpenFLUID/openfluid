@@ -112,6 +112,10 @@ class ProjectWidget : public AbstractMainWidget
     void newSimulatorFromGhost(const openfluid::ware::SimulatorSignature& Signature);
 
     void newObserver();
+
+  public slots :
+
+    void updateWareSrcEditorsSettings();
 };
 
 

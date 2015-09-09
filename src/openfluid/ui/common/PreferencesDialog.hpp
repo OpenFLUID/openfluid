@@ -111,6 +111,12 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void updatePeriodEnd(const QDateTime& DT);
 
+    void enableSyntaxHighlighting(bool Enable);
+
+    void enableCurrentLineHighlighting(bool Enable);
+
+    void enableLineWrapping(bool Enable);
+
     void addMarketPlace();
 
     void editMarketPlace();
@@ -137,6 +143,7 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void detectQtDevToolsMinGW();
 
+    void applyTextEditorSettings();
 
   private:
 
@@ -149,6 +156,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
     bool m_ObsPathsChanged;
 
     bool m_WaresWatchingChanged;
+
+    bool m_TextEditorSettingsChanged;
 
     int m_OriginalLangIndex;
 
@@ -177,6 +186,12 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
     bool isWaresWatchingChanged() const
     { return m_WaresWatchingChanged; }
 
+    bool isTextEditorSettingsChanged() const
+    { return m_TextEditorSettingsChanged; }
+
+  signals:
+
+    void applyTextEditorSettingsAsked();
 
 };
 

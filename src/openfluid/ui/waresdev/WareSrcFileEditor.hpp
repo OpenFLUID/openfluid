@@ -228,6 +228,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void goToLine();
 
+    void updateSettings();
 
   public slots :
 

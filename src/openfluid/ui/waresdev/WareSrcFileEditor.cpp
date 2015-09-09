@@ -78,44 +78,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth()));
   connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
 
-
-  // Syntax highlighting management
-
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-
-  if (PrefMgr->isCurrentlineHighlightingEnabled() && QColor::isValidColor(PrefMgr->getCurrentlineColor()))
-  {
-    m_LineColor.setNamedColor(PrefMgr->getCurrentlineColor());
-    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
-
-    highlightCurrentLine();
-  }
-
-  if (PrefMgr->isSyntaxHighlightingEnabled())
-  {
-    mp_SyntaxHighlighter = new WareSrcSyntaxHighlighter(
-        document(), WareSrcFiletypeManager::instance()->getHighlightingRules(m_FilePath));
-  }
-
-  if (!PrefMgr->isLineWrappingEnabled())
-  {
-    QTextOption Option = document()->defaultTextOption();
-    Option.setWrapMode(QTextOption::NoWrap);
-    document()->setDefaultTextOption(Option);
-  }
-
-
-  // Font management
-
-  QFont Font;
-  Font.setFamily(PrefMgr->getFontName());
-  Font.setFixedPitch(true);
-  Font.setPointSize(10);
-  setFont(Font);
-
-  m_SpaceCharWidth = fontMetrics().width(' ');
-
-  m_IndentString = QString(" ").repeated(PrefMgr->getIndentSpaceNb());
+  updateSettings();
 
   // Code insertion and code completion management
 
@@ -242,6 +205,66 @@ WareSrcFileEditor::~WareSrcFileEditor()
 // =====================================================================
 
 
+void WareSrcFileEditor::updateSettings()
+{
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+
+  // Current line highlighting
+
+  if (PrefMgr->isCurrentlineHighlightingEnabled() && QColor::isValidColor(PrefMgr->getCurrentlineColor()))
+  {
+    m_LineColor.setNamedColor(PrefMgr->getCurrentlineColor());
+    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+
+    highlightCurrentLine();
+  }
+  else
+  {
+    disconnect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+    setExtraSelections(QList<QTextEdit::ExtraSelection>());
+  }
+
+  // Syntax highlighting
+
+  if (PrefMgr->isSyntaxHighlightingEnabled())
+  {
+    mp_SyntaxHighlighter = new WareSrcSyntaxHighlighter(
+        document(), WareSrcFiletypeManager::instance()->getHighlightingRules(m_FilePath));
+  }
+  else
+  {
+    delete mp_SyntaxHighlighter;
+    mp_SyntaxHighlighter = 0;
+  }
+
+  // Line wrapping
+
+  QTextOption Option = document()->defaultTextOption();
+  Option.setWrapMode(PrefMgr->isLineWrappingEnabled() ? QTextOption::WordWrap : QTextOption::NoWrap);
+  document()->setDefaultTextOption(Option);
+
+
+  // Fonts
+
+  QFont Font;
+  Font.setFamily(PrefMgr->getFontName());
+  Font.setFixedPitch(true);
+  Font.setPointSize(10);
+  setFont(Font);
+
+  // Indent
+
+  // TODO set in the init list
+  m_SpaceCharWidth = fontMetrics().width(' ');
+
+  m_IndentString = QString(" ").repeated(PrefMgr->getIndentSpaceNb());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
 {
   int Key = Event->key();
@@ -251,10 +274,10 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
     switch (Key)
     {
       case Qt::Key_Enter:
-      case Qt::Key_Return:
-      case Qt::Key_Escape:
-      case Qt::Key_Tab:
-      case Qt::Key_Backtab:
+        case Qt::Key_Return:
+        case Qt::Key_Escape:
+        case Qt::Key_Tab:
+        case Qt::Key_Backtab:
         Event->ignore();
         return;
       default:

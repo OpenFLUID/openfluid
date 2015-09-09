@@ -207,3 +207,15 @@ void ProjectWidget::newObserver()
 {
   mp_WareSrcCollection->newObserver();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectWidget::updateWareSrcEditorsSettings()
+{
+  mp_WareSrcCollection->updateEditorsSettings();
+}
+
+

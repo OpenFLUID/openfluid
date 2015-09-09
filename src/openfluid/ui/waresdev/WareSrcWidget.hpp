@@ -127,6 +127,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void checkModifiedStatus();
 
+    void updateEditorsSettings();
+
   public slots:
 
     void setReleaseMode();

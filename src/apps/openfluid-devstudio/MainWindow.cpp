@@ -364,7 +364,13 @@ void MainWindow::onPreferencesAsked()
 {
   openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),
                                                     openfluid::ui::common::PreferencesDialog::MODE_DEVSTUDIO);
+
+  connect(&PrefsDlg, SIGNAL(applyTextEditorSettingsAsked()), mp_Collection, SLOT(updateEditorsSettings()));
+
   PrefsDlg.exec();
+
+  if(PrefsDlg.isTextEditorSettingsChanged())
+    mp_Collection->updateEditorsSettings();
 }
 
 

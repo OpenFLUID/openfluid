@@ -1287,7 +1287,7 @@ bool PreferencesManager::isCurrentlineHighlightingEnabled()
 
 void PreferencesManager::setCurrentlineHighlightingEnabled(bool Enabled)
 {
-  mp_ConfFile->setValue("waresdev.texteditor/currentline_highlighting/enabled",Enabled);
+  mp_ConfFile->setValue("openfluid.waresdev.texteditor/currentline_highlighting/enabled",Enabled);
   mp_ConfFile->sync();
 }
 

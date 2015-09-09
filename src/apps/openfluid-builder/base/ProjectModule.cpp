@@ -434,6 +434,8 @@ void ProjectModule::whenPreferencesAsked()
       openfluid::ui::common::PreferencesDialog::MODE_BUILDER,
       openfluid::tools::toQStringList(ExtensionPluginsManager::instance()->getPluginsStandardSearchPaths()));
 
+  connect(&PrefsDlg, SIGNAL(applyTextEditorSettingsAsked()), mp_MainWidget, SLOT(updateWareSrcEditorsSettings()));
+
   PrefsDlg.exec();
 
 
@@ -481,6 +483,9 @@ void ProjectModule::whenPreferencesAsked()
   }
 
   emit refreshWaresEnabled(!PrefsMgr->isWaresWatchersActive());
+
+  if(PrefsDlg.isTextEditorSettingsChanged())
+    mp_MainWidget->updateWareSrcEditorsSettings();
 }
 
 
