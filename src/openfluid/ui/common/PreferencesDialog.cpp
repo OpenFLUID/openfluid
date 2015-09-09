@@ -153,6 +153,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QS
   connect(ui->SyntaxHLCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableSyntaxHighlighting(bool)));
   connect(ui->CurrentLineHLCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableCurrentLineHighlighting(bool)));
   connect(ui->CurrentLineColorButton, SIGNAL(clicked()), this, SLOT(changeCurrentLineColor()));
+  connect(ui->FontComboBox, SIGNAL(currentFontChanged(const QFont&)), this, SLOT(changeCurrentFont(const QFont&)));
   connect(ui->LineWrappingCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableLineWrapping(bool)));
   connect(ui->TextEditorApplyButton, SIGNAL(clicked()), this, SLOT(applyTextEditorSettings()));
 
@@ -272,6 +273,9 @@ void PreferencesDialog::initialize(const QStringList& ExtsPaths)
   QString Color = PrefsMan->getCurrentlineColor();
   if(QColor::isValidColor(Color))
     ui->CurrentLineColorLabel->setStyleSheet(QString("QLabel {background-color : %1}").arg(Color));
+  QString FontName = PrefsMan->getFontName();
+  ui->FontLabel->setStyleSheet(QString("QLabel {font-family : %1}").arg(FontName));
+  ui->FontComboBox->setCurrentFont(QFont(FontName));
   ui->LineWrappingCheckBox->setChecked(PrefsMan->isLineWrappingEnabled());
 
 
@@ -479,6 +483,23 @@ void PreferencesDialog::changeCurrentLineColor()
   }
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::changeCurrentFont(const QFont& Font)
+{
+  QString FontName = Font.family();
+
+  ui->FontLabel->setStyleSheet(QString("QLabel {font-family : %1}").arg(FontName));
+
+  openfluid::base::PreferencesManager::instance()->setFontName(FontName);
+
+  m_TextEditorSettingsChanged = true;
+}
+
 
 // =====================================================================
 // =====================================================================

@@ -117,6 +117,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void changeCurrentLineColor();
 
+    void changeCurrentFont(const QFont& Font);
+
     void enableLineWrapping(bool Enable);
 
     void addMarketPlace();
