@@ -62,18 +62,19 @@ class OPENFLUID_API WareSrcFiletypeManager
 
     struct HighlightingRule
     {
+        QString StyleName;
         QRegExp Pattern;
         QRegExp EndPattern;
         QTextCharFormat Format;
         HighlightingRule()
         {
         }
-        HighlightingRule(QRegExp APattern, QTextCharFormat AFormat) :
-            Pattern(APattern), EndPattern(QRegExp()), Format(AFormat)
+        HighlightingRule(const QString& AStyleName, QRegExp APattern, QTextCharFormat AFormat) :
+          StyleName(AStyleName), Pattern(APattern), EndPattern(QRegExp()), Format(AFormat)
         {
         }
-        HighlightingRule(QRegExp ABeginPattern, QRegExp AnEndPattern, QTextCharFormat AFormat) :
-            Pattern(ABeginPattern), EndPattern(AnEndPattern), Format(AFormat)
+        HighlightingRule(const QString& AStyleName, QRegExp ABeginPattern, QRegExp AnEndPattern, QTextCharFormat AFormat) :
+          StyleName(AStyleName), Pattern(ABeginPattern), EndPattern(AnEndPattern), Format(AFormat)
         {
         }
     };
@@ -155,6 +156,8 @@ class OPENFLUID_API WareSrcFiletypeManager
     ~WareSrcFiletypeManager();
 
     static WareSrcFiletypeManager* instance();
+
+    void updateStyles();
 
     QMap<QString, QString> getIconsByFileExtensionList() const;
 

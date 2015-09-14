@@ -228,6 +228,7 @@ void WareSrcFileEditor::updateSettings()
 
   if (PrefMgr->isSyntaxHighlightingEnabled())
   {
+    delete mp_SyntaxHighlighter;
     mp_SyntaxHighlighter = new WareSrcSyntaxHighlighter(
         document(), WareSrcFiletypeManager::instance()->getHighlightingRules(m_FilePath));
   }

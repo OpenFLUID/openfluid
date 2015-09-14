@@ -55,6 +55,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QColorDialog>
+#include <QSignalMapper>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -269,7 +270,10 @@ void PreferencesDialog::initialize(const QStringList& ExtsPaths)
   ui->ShowPathCheckBox->setChecked(PrefsMan->isWaresdevShowCommandEnv("PATH"));
 
   // Code editor
-  ui->SyntaxHLCheckBox->setChecked(PrefsMan->isSyntaxHighlightingEnabled());
+  bool IsHLEnabled = PrefsMan->isSyntaxHighlightingEnabled();
+  ui->SyntaxHLCheckBox->setChecked(IsHLEnabled);
+  intializeSyntaxSettings();
+  ui->scrollArea->setEnabled(IsHLEnabled);
   ui->CurrentLineHLCheckBox->setChecked(PrefsMan->isCurrentlineHighlightingEnabled());
   QString Color = PrefsMan->getCurrentlineColor();
   if(QColor::isValidColor(Color))
@@ -616,6 +620,142 @@ void PreferencesDialog::updateMarketplacesList()
   }
 
   ui->MarketPlacesListWidget->sortItems();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::intializeSyntaxSettings()
+{
+  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules =
+      openfluid::base::PreferencesManager::instance()->getSyntaxHighlightingRules();
+
+  QSignalMapper* SignalMapperCB = new QSignalMapper(this);
+  QSignalMapper* SignalMapperButton = new QSignalMapper(this);
+
+  int row = 1;
+  for(openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.begin() ;
+      it != Rules.end() ; ++ it)
+  {
+    QString StyleName = it.key();
+    QStringList Decorations = it.value().m_Decoration;
+    QString ColorName = it.value().m_Color;
+
+    QLabel* Label = new QLabel(StyleName,this);
+    ui->SyntaxGridLayout->addWidget(Label,row,0);
+
+    int col = 1;
+    for(const QString& Format : m_Formats)
+    {
+      QCheckBox* CB =  new QCheckBox(this);
+
+      CB->setChecked(Decorations.contains(Format));
+      SignalMapperCB->setMapping(CB, row);
+      connect(CB, SIGNAL(toggled(bool)), SignalMapperCB, SLOT(map()));
+
+      ui->SyntaxGridLayout->addWidget(CB, row, col, Qt::AlignHCenter);
+
+      col ++;
+    }
+
+    QPushButton* ChangeColorButton = new QPushButton("Change color...",this);
+    SignalMapperButton->setMapping(ChangeColorButton, row);
+    connect(ChangeColorButton, SIGNAL(clicked()), SignalMapperButton, SLOT(map()));
+    ui->SyntaxGridLayout->addWidget(ChangeColorButton);
+
+    updateSyntaxElementLabel(Label, Decorations, ColorName);
+
+    row ++;
+  }
+
+  connect(SignalMapperCB,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementDecoration(int)));
+  connect(SignalMapperButton,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementColor(int)));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateSyntaxElementLabel(QLabel* Label, const QStringList& Decorations, const QString& ColorName)
+{
+  QStringList Font = Decorations.filter(QRegExp("bold|italic"));
+  QStringList TextDecoration = Decorations.filter(QRegExp("underline|strike-through"));
+
+  QString Stylesheet = QString("QLabel {font: %1;text-decoration: %2;color: %3}")
+          .arg(Font.isEmpty() ? "none" : Font.join(" "))
+          .arg(TextDecoration.isEmpty() ? "none" : TextDecoration.join(" ").replace("strike-through","line-through"))
+          .arg(ColorName);
+
+  Label->setStyleSheet(Stylesheet);
+
+  Label->setProperty("ColorName",ColorName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::changeSyntaxElementDecoration(int ElementRow)
+{
+  QLabel* StyleNameLabel = qobject_cast<QLabel*>(ui->SyntaxGridLayout->itemAtPosition(ElementRow,0)->widget());
+  QString StyleName = StyleNameLabel->text();
+
+  QStringList Decorations;
+  int col = 1;
+  for(const QString& Format : m_Formats)
+  {
+    if(qobject_cast<QCheckBox*>(ui->SyntaxGridLayout->itemAtPosition(ElementRow,col)->widget())->isChecked())
+      Decorations << Format;
+
+    col ++;
+  }
+  QString ColorName = StyleNameLabel->property("ColorName").toString();
+
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules = PrefMgr->getSyntaxHighlightingRules();
+  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.find(StyleName);
+  if(it != Rules.end())
+  {
+    it->m_Decoration = Decorations;
+    it->m_Color = ColorName;
+  }
+  else
+    Rules.insert(StyleName, openfluid::base::PreferencesManager::SyntaxHighlightingRule_t(ColorName,Decorations));
+  openfluid::base::PreferencesManager::instance()->setSyntaxHighlightingRules(Rules);
+
+  updateSyntaxElementLabel(StyleNameLabel, Decorations,ColorName);
+
+  m_TextEditorSettingsChanged = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::changeSyntaxElementColor(int ElementRow)
+{
+  QLabel* StyleNameLabel = qobject_cast<QLabel*>(ui->SyntaxGridLayout->itemAtPosition(ElementRow,0)->widget());
+  QString ColorName = StyleNameLabel->property("ColorName").toString();
+
+  QColor Color = QColorDialog::getColor(QColor(ColorName),this);
+
+  // Cancel on QColorDialog returns an invalid Color
+  if(Color.isValid())
+  {
+    QString NewColorName = Color.name();
+
+    StyleNameLabel->setProperty("ColorName",NewColorName);
+
+    changeSyntaxElementDecoration(ElementRow);
+
+    m_TextEditorSettingsChanged = true;
+  }
+
 }
 
 

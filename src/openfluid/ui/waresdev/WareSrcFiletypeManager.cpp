@@ -59,29 +59,7 @@ WareSrcFiletypeManager* WareSrcFiletypeManager::mp_Instance = 0;
 
 WareSrcFiletypeManager::WareSrcFiletypeManager()
 {
-  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules = openfluid::base::PreferencesManager::instance()
-      ->getSyntaxHighlightingRules();
-
-  for (openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.begin(); it != Rules.end();
-      ++it)
-  {
-    QString StyleName = it.key();
-
-    QColor Color(it.value().m_Color);
-    if (Color.isValid())
-      m_Formats[StyleName].setForeground(Color);
-
-    foreach(QString Decoration,it.value().m_Decoration){
-    if(Decoration == "bold")
-    m_Formats[StyleName].setFontWeight(QFont::Bold);
-    else if(Decoration == "italic")
-    m_Formats[StyleName].setFontItalic(true);
-    else if(Decoration == "underline")
-    m_Formats[StyleName].setFontUnderline(true);
-    else if(Decoration == "strike-through")
-    m_Formats[StyleName].setFontStrikeOut(true);
-  }
-}
+  updateStyles();
 
   QDir WaresdevDir(
       QString("%1/%2").arg(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()))
@@ -110,6 +88,48 @@ WareSrcFiletypeManager::WareSrcFiletypeManager()
 
 WareSrcFiletypeManager::~WareSrcFiletypeManager()
 {
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFiletypeManager::updateStyles()
+{
+  m_Formats.clear();
+
+  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules = openfluid::base::PreferencesManager::instance()
+      ->getSyntaxHighlightingRules();
+
+  for (openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.begin(); it != Rules.end();
+      ++it)
+  {
+    QString StyleName = it.key();
+
+    QColor Color(it.value().m_Color);
+    if (Color.isValid())
+      m_Formats[StyleName].setForeground(Color);
+
+    for(const QString& Decoration : it.value().m_Decoration)
+    {
+      if(Decoration == "bold")
+      m_Formats[StyleName].setFontWeight(QFont::Bold);
+      else if(Decoration == "italic")
+      m_Formats[StyleName].setFontItalic(true);
+      else if(Decoration == "underline")
+      m_Formats[StyleName].setFontUnderline(true);
+      else if(Decoration == "strike-through")
+      m_Formats[StyleName].setFontStrikeOut(true);
+    }
+  }
+
+  for(QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin() ; it != m_WareSrcFiletypes.end() ; ++it)
+  {
+    for(WareSrcFiletypeManager::HighlightingRules_t::iterator itt = it->m_HlRules.begin() ; itt != it->m_HlRules.end(); ++ itt)
+      itt->Format = m_Formats.value(itt->StyleName, QTextCharFormat());
+  }
 
 }
 
@@ -247,7 +267,7 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
         QDomNodeList Items = HlElem.elementsByTagName("item");
         for (int i = 0; i < Items.size(); i++)
         {
-          Rules.append(HighlightingRule(QRegExp(QString("\\b%1\\b").arg(Items.at(i).toElement().text())), Format));
+          Rules.append(HighlightingRule(StyleName, QRegExp(QString("\\b%1\\b").arg(Items.at(i).toElement().text())), Format));
         }
       }
     }
@@ -269,11 +289,11 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
           QString EndPatternValue = Pattern.attribute("end", "");
           if (!SimplePatternValue.isEmpty())
           {
-            Rules.append(HighlightingRule(QRegExp(SimplePatternValue), Format));
+            Rules.append(HighlightingRule(StyleName, QRegExp(SimplePatternValue), Format));
           }
           else if (!BeginPatternValue.isEmpty() && !EndPatternValue.isEmpty())
           {
-            Rules.append(HighlightingRule(QRegExp(BeginPatternValue), QRegExp(EndPatternValue), Format));
+            Rules.append(HighlightingRule(StyleName, QRegExp(BeginPatternValue), QRegExp(EndPatternValue), Format));
           }
         }
       }

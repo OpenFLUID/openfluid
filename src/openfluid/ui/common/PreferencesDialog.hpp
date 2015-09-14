@@ -113,6 +113,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void enableSyntaxHighlighting(bool Enable);
 
+    void changeSyntaxElementDecoration(int ElementRow);
+
     void enableCurrentLineHighlighting(bool Enable);
 
     void changeCurrentLineColor();
@@ -122,6 +124,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
     void enableLineWrapping(bool Enable);
 
     void changeIndentSpaceNumber(int SpaceNb);
+
+    void changeSyntaxElementColor(int ElementRow);
 
     void addMarketPlace();
 
@@ -169,10 +173,15 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     DisplayMode m_Mode;
 
+    QStringList m_Formats {"bold", "italic", "underline", "strike-through"};
+
     void initialize(const QStringList& ExtsPaths);
 
     void updateMarketplacesList();
 
+    void intializeSyntaxSettings();
+
+    void updateSyntaxElementLabel(QLabel* Label, const QStringList& Decorations, const QString& ColorName);
 
   public:
 

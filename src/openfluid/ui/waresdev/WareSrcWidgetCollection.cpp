@@ -880,6 +880,7 @@ void WareSrcWidgetCollection::closeEditor(const QString& FilePath)
 
 void WareSrcWidgetCollection::updateEditorsSettings()
 {
+  openfluid::ui::waresdev::WareSrcFiletypeManager::instance()->updateStyles();
   for (WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
     Ware->updateEditorsSettings();
 }
