@@ -158,6 +158,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QS
   connect(ui->LineWrappingCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableLineWrapping(bool)));
   connect(ui->IndentSpaceNbSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changeIndentSpaceNumber(int)));
   connect(ui->TextEditorApplyButton, SIGNAL(clicked()), this, SLOT(applyTextEditorSettings()));
+  connect(ui->TextEditorRestoreDefaultsButton, SIGNAL(clicked()), this, SLOT(restoreDefaultsTextEditorSettings()));
 
   connect(ui->AddMarketPlaceButton,SIGNAL(clicked()),this,SLOT(addMarketPlace()));
   connect(ui->EditMarketPlaceButton,SIGNAL(clicked()),this,SLOT(editMarketPlace()));
@@ -270,19 +271,7 @@ void PreferencesDialog::initialize(const QStringList& ExtsPaths)
   ui->ShowPathCheckBox->setChecked(PrefsMan->isWaresdevShowCommandEnv("PATH"));
 
   // Code editor
-  bool IsHLEnabled = PrefsMan->isSyntaxHighlightingEnabled();
-  ui->SyntaxHLCheckBox->setChecked(IsHLEnabled);
-  intializeSyntaxSettings();
-  ui->scrollArea->setEnabled(IsHLEnabled);
-  ui->CurrentLineHLCheckBox->setChecked(PrefsMan->isCurrentlineHighlightingEnabled());
-  QString Color = PrefsMan->getCurrentlineColor();
-  if(QColor::isValidColor(Color))
-    ui->CurrentLineColorLabel->setStyleSheet(QString("QLabel {background-color : %1}").arg(Color));
-  QString FontName = PrefsMan->getFontName();
-  ui->FontLabel->setStyleSheet(QString("QLabel {font-family : %1}").arg(FontName));
-  ui->FontComboBox->setCurrentFont(QFont(FontName));
-  ui->LineWrappingCheckBox->setChecked(PrefsMan->isLineWrappingEnabled());
-  ui->IndentSpaceNbSpinBox->setValue(PrefsMan->getIndentSpaceNb());
+  intializeTextEditorSettings();
 
 
 #if OPENFLUID_MARKET_ENABLED
@@ -627,13 +616,27 @@ void PreferencesDialog::updateMarketplacesList()
 // =====================================================================
 
 
-void PreferencesDialog::intializeSyntaxSettings()
+void PreferencesDialog::intializeTextEditorSettings()
 {
+  openfluid::base::PreferencesManager* PrefsMan = openfluid::base::PreferencesManager::instance();
+
+
+  // Syntax highlighting
+
+  bool IsHLEnabled = PrefsMan->isSyntaxHighlightingEnabled();
+  ui->SyntaxHLCheckBox->setChecked(IsHLEnabled);
+
   openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules =
-      openfluid::base::PreferencesManager::instance()->getSyntaxHighlightingRules();
+      PrefsMan->getSyntaxHighlightingRules();
 
   QSignalMapper* SignalMapperCB = new QSignalMapper(this);
   QSignalMapper* SignalMapperButton = new QSignalMapper(this);
+
+  for(int row = ui->SyntaxGridLayout->rowCount() - 1 ; row > 0 ; row--)
+  {
+    for(int col = ui->SyntaxGridLayout->columnCount() - 1; col >= 0 ; col--)
+      delete ui->SyntaxGridLayout->itemAtPosition(row,col)->widget();
+  }
 
   int row = 1;
   for(openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.begin() ;
@@ -663,7 +666,7 @@ void PreferencesDialog::intializeSyntaxSettings()
     QPushButton* ChangeColorButton = new QPushButton("Change color...",this);
     SignalMapperButton->setMapping(ChangeColorButton, row);
     connect(ChangeColorButton, SIGNAL(clicked()), SignalMapperButton, SLOT(map()));
-    ui->SyntaxGridLayout->addWidget(ChangeColorButton);
+    ui->SyntaxGridLayout->addWidget(ChangeColorButton, row, col);
 
     updateSyntaxElementLabel(Label, Decorations, ColorName);
 
@@ -672,6 +675,30 @@ void PreferencesDialog::intializeSyntaxSettings()
 
   connect(SignalMapperCB,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementDecoration(int)));
   connect(SignalMapperButton,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementColor(int)));
+
+  ui->scrollArea->setEnabled(IsHLEnabled);
+
+
+  // Current line highlighting
+
+  ui->CurrentLineHLCheckBox->setChecked(PrefsMan->isCurrentlineHighlightingEnabled());
+
+  QString Color = PrefsMan->getCurrentlineColor();
+  if(QColor::isValidColor(Color))
+    ui->CurrentLineColorLabel->setStyleSheet(QString("QLabel {background-color : %1}").arg(Color));
+
+
+  // Font
+
+  QString FontName = PrefsMan->getFontName();
+  ui->FontLabel->setStyleSheet(QString("QLabel {font-family : %1}").arg(FontName));
+  ui->FontComboBox->setCurrentFont(QFont(FontName));
+
+
+  // Others
+
+  ui->LineWrappingCheckBox->setChecked(PrefsMan->isLineWrappingEnabled());
+  ui->IndentSpaceNbSpinBox->setValue(PrefsMan->getIndentSpaceNb());
 }
 
 
@@ -885,6 +912,22 @@ void PreferencesDialog::applyTextEditorSettings()
   if(m_TextEditorSettingsChanged)
     emit applyTextEditorSettingsAsked();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::restoreDefaultsTextEditorSettings()
+{
+  openfluid::base::PreferencesManager::instance()->setTextEditorDefaults(true);
+  intializeTextEditorSettings();
+  m_TextEditorSettingsChanged = true;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 } } } // namespaces

@@ -155,6 +155,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void applyTextEditorSettings();
 
+    void restoreDefaultsTextEditorSettings();
+
   private:
 
     Ui::PreferencesDialog *ui;
@@ -179,7 +181,7 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void updateMarketplacesList();
 
-    void intializeSyntaxSettings();
+    void intializeTextEditorSettings();
 
     void updateSyntaxElementLabel(QLabel* Label, const QStringList& Decorations, const QString& ColorName);
 

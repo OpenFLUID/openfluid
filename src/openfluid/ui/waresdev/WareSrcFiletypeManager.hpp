@@ -73,7 +73,8 @@ class OPENFLUID_API WareSrcFiletypeManager
           StyleName(AStyleName), Pattern(APattern), EndPattern(QRegExp()), Format(AFormat)
         {
         }
-        HighlightingRule(const QString& AStyleName, QRegExp ABeginPattern, QRegExp AnEndPattern, QTextCharFormat AFormat) :
+        HighlightingRule(const QString& AStyleName, QRegExp ABeginPattern, QRegExp AnEndPattern,
+          QTextCharFormat AFormat) :
           StyleName(AStyleName), Pattern(ABeginPattern), EndPattern(AnEndPattern), Format(AFormat)
         {
         }

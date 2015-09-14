@@ -434,7 +434,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>8</month>
-                <day>17</day>
+                <day>16</day>
                </date>
               </property>
               <property name="displayFormat">
@@ -708,6 +708,14 @@ font : bold;
               <bool>true</bool>
              </property>
              <widget class="QWidget" name="scrollAreaWidgetContents">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>557</width>
+                <height>179</height>
+               </rect>
+              </property>
               <layout class="QVBoxLayout" name="verticalLayout_9">
                <item>
                 <layout class="QGridLayout" name="SyntaxGridLayout">
@@ -897,11 +905,35 @@ font : bold;
           </layout>
          </item>
          <item>
-          <widget class="QPushButton" name="TextEditorApplyButton">
-           <property name="text">
-            <string>Apply now</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <spacer name="horizontalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="TextEditorRestoreDefaultsButton">
+             <property name="text">
+              <string>Restore defaults</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="TextEditorApplyButton">
+             <property name="text">
+              <string>Apply now</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -1061,12 +1093,12 @@ font : bold;
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>584</x>
-     <y>186</y>
+     <x>798</x>
+     <y>293</y>
     </hint>
     <hint type="destinationlabel">
-     <x>792</x>
-     <y>237</y>
+     <x>798</x>
+     <y>344</y>
     </hint>
    </hints>
   </connection>

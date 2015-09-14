@@ -127,7 +127,8 @@ void WareSrcFiletypeManager::updateStyles()
 
   for(QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin() ; it != m_WareSrcFiletypes.end() ; ++it)
   {
-    for(WareSrcFiletypeManager::HighlightingRules_t::iterator itt = it->m_HlRules.begin() ; itt != it->m_HlRules.end(); ++ itt)
+    for(WareSrcFiletypeManager::HighlightingRules_t::iterator itt = it->m_HlRules.begin() ;
+        itt != it->m_HlRules.end(); ++ itt)
       itt->Format = m_Formats.value(itt->StyleName, QTextCharFormat());
   }
 
@@ -267,7 +268,8 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
         QDomNodeList Items = HlElem.elementsByTagName("item");
         for (int i = 0; i < Items.size(); i++)
         {
-          Rules.append(HighlightingRule(StyleName, QRegExp(QString("\\b%1\\b").arg(Items.at(i).toElement().text())), Format));
+          Rules.append(HighlightingRule(StyleName, QRegExp(QString("\\b%1\\b").arg(Items.at(i).toElement().text())),
+                                        Format));
         }
       }
     }
