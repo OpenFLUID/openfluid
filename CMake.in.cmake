@@ -179,6 +179,11 @@ SET(OPENFLUID_GHOSTSIMULATORS_SUFFIX "_ofghost-sim")
 SET(DEBUG_PREFIX "[OpenFLUID debug]")
 
 
+################### 3rd party headers and libraries ###################
+
+SET(RapidJSON_GIT_URL "https://github.com/miloyip/rapidjson.git")
+
+
 ################### parts and libraries build ###################
 
 SET(OPENFLUID_ENABLE_GUI 1)
