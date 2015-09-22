@@ -44,6 +44,7 @@
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 #include <QDateTime>
+#include <QToolButton>
 
 
 namespace Ui
@@ -184,6 +185,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
     void intializeTextEditorSettings();
 
     void updateSyntaxElementLabel(QLabel* Label, const QStringList& Decorations, const QString& ColorName);
+
+    void updateSyntaxElementColorButton(QToolButton* Button, const QString& ColorName);
 
   public:
 

@@ -470,7 +470,8 @@ void PreferencesDialog::changeCurrentLineColor()
   {
     QString ColorName = Color.name();
 
-    ui->CurrentLineColorLabel->setStyleSheet(QString("QLabel {background-color : %1}").arg(ColorName));
+    ui->CurrentLineColorButton->setStyleSheet(
+        QString("border: 2px solid grey; border-radius: 4px; background-color: %1").arg(ColorName));
 
     PrefMgr->setCurrentlineColor(ColorName);
 
@@ -488,7 +489,7 @@ void PreferencesDialog::changeCurrentFont(const QFont& Font)
 {
   QString FontName = Font.family();
 
-  ui->FontLabel->setStyleSheet(QString("QLabel {font-family : %1}").arg(FontName));
+  ui->FontComboBox->setFont(Font);
 
   openfluid::base::PreferencesManager::instance()->setFontName(FontName);
 
@@ -663,12 +664,14 @@ void PreferencesDialog::intializeTextEditorSettings()
       col ++;
     }
 
-    QPushButton* ChangeColorButton = new QPushButton("Change color...",this);
+    QToolButton* ChangeColorButton = new QToolButton(this);
+    ChangeColorButton->setText("...");
     SignalMapperButton->setMapping(ChangeColorButton, row);
     connect(ChangeColorButton, SIGNAL(clicked()), SignalMapperButton, SLOT(map()));
-    ui->SyntaxGridLayout->addWidget(ChangeColorButton, row, col);
+    ui->SyntaxGridLayout->addWidget(ChangeColorButton, row, col, Qt::AlignHCenter);
 
     updateSyntaxElementLabel(Label, Decorations, ColorName);
+    updateSyntaxElementColorButton(ChangeColorButton,ColorName);
 
     row ++;
   }
@@ -685,13 +688,14 @@ void PreferencesDialog::intializeTextEditorSettings()
 
   QString Color = PrefsMan->getCurrentlineColor();
   if(QColor::isValidColor(Color))
-    ui->CurrentLineColorLabel->setStyleSheet(QString("QLabel {background-color : %1}").arg(Color));
+    ui->CurrentLineColorButton->setStyleSheet(
+        QString("border: 1px solid grey; border-radius: 4px; background-color: %1").arg(Color));
 
 
   // Font
 
   QString FontName = PrefsMan->getFontName();
-  ui->FontLabel->setStyleSheet(QString("QLabel {font-family : %1}").arg(FontName));
+  ui->FontComboBox->setFont(QFont(FontName));
   ui->FontComboBox->setCurrentFont(QFont(FontName));
 
 
@@ -719,6 +723,17 @@ void PreferencesDialog::updateSyntaxElementLabel(QLabel* Label, const QStringLis
   Label->setStyleSheet(Stylesheet);
 
   Label->setProperty("ColorName",ColorName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateSyntaxElementColorButton(QToolButton* Button, const QString& ColorName)
+{
+  Button->setStyleSheet(QString("border: 1px solid grey; border-radius: 4px; color: white; background-color: %1")
+                        .arg(ColorName));
 }
 
 
@@ -755,6 +770,10 @@ void PreferencesDialog::changeSyntaxElementDecoration(int ElementRow)
   openfluid::base::PreferencesManager::instance()->setSyntaxHighlightingRules(Rules);
 
   updateSyntaxElementLabel(StyleNameLabel, Decorations,ColorName);
+
+  QToolButton* ColorButton = qobject_cast<QToolButton*>(
+      ui->SyntaxGridLayout->itemAtPosition(ElementRow, m_Formats.size() + 1)->widget());
+  updateSyntaxElementColorButton(ColorButton, ColorName);
 
   m_TextEditorSettingsChanged = true;
 }

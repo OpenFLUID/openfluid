@@ -434,7 +434,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>8</month>
-                <day>16</day>
+                <day>14</day>
                </date>
               </property>
               <property name="displayFormat">
@@ -695,26 +695,18 @@ font : bold;
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
+               <verstretch>0</verstretch>
               </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>100</height>
-              </size>
              </property>
              <property name="widgetResizable">
               <bool>true</bool>
              </property>
              <widget class="QWidget" name="scrollAreaWidgetContents">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>557</width>
-                <height>179</height>
-               </rect>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_9">
                <item>
@@ -781,11 +773,27 @@ font : bold;
                  <item row="0" column="5">
                   <widget class="QLabel" name="label_18">
                    <property name="text">
-                    <string/>
+                    <string>color</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </widget>
@@ -794,29 +802,22 @@ font : bold;
           </layout>
          </item>
          <item>
-          <widget class="QCheckBox" name="CurrentLineHLCheckBox">
-           <property name="text">
-            <string>Current line highlighting enabled</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QWidget" name="horizontalWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <property name="margin">
+             <number>0</number>
+            </property>
             <item>
-             <widget class="QLabel" name="CurrentLineColorLabel">
-              <property name="autoFillBackground">
-               <bool>true</bool>
-              </property>
+             <widget class="QCheckBox" name="CurrentLineHLCheckBox">
               <property name="text">
-               <string>Current line color</string>
+               <string>Current line highlighting enabled, color:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="CurrentLineColorButton">
+             <widget class="QToolButton" name="CurrentLineColorButton">
               <property name="text">
-               <string>Change color...</string>
+               <string>...</string>
               </property>
              </widget>
             </item>
@@ -841,12 +842,16 @@ font : bold;
            <item>
             <widget class="QLabel" name="FontLabel">
              <property name="text">
-              <string>Font family</string>
+              <string>Font family:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QFontComboBox" name="FontComboBox"/>
+            <widget class="QFontComboBox" name="FontComboBox">
+             <property name="writingSystem">
+              <enum>QFontDatabase::Latin</enum>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="horizontalSpacer_5">
@@ -875,7 +880,7 @@ font : bold;
            <item>
             <widget class="QLabel" name="label_12">
              <property name="text">
-              <string>Default indent space number</string>
+              <string>Default indent space number:</string>
              </property>
             </widget>
            </item>
@@ -885,7 +890,7 @@ font : bold;
               <number>1</number>
              </property>
              <property name="maximum">
-              <number>10</number>
+              <number>99</number>
              </property>
             </widget>
            </item>
@@ -1087,22 +1092,6 @@ font : bold;
  <resources/>
  <connections>
   <connection>
-   <sender>CurrentLineHLCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>horizontalWidget</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>798</x>
-     <y>293</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>798</x>
-     <y>344</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>SyntaxHLCheckBox</sender>
    <signal>toggled(bool)</signal>
    <receiver>scrollArea</receiver>
@@ -1115,6 +1104,22 @@ font : bold;
     <hint type="destinationlabel">
      <x>303</x>
      <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CurrentLineHLCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>CurrentLineColorButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>323</x>
+     <y>313</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>558</x>
+     <y>325</y>
     </hint>
    </hints>
   </connection>
