@@ -89,6 +89,10 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void onPreferencesAsked();
 
+    void onImportWareSourcesAsked();
+
+    void onExportWareSourcesAsked();
+
     void onAboutAsked();
 
     void onOnlineWebAsked();

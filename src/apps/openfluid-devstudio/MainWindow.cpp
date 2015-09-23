@@ -53,10 +53,12 @@
 #include <openfluid/ui/common/AboutDialog.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
+#include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 
-
+#include <QDebug>
 MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
     QMainWindow(), ui(new Ui::MainWindow)
 {
@@ -125,6 +127,9 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
   connect(m_Actions["Quit"], SIGNAL(triggered()), this, SLOT(onQuitRequested()));
 
   connect(m_Actions["Preferences"], SIGNAL(triggered()), this, SLOT(onPreferencesAsked()));
+
+  connect(m_Actions["ImportWareSources"], SIGNAL(triggered()), this, SLOT(onImportWareSourcesAsked()));
+  connect(m_Actions["ExportWareSources"], SIGNAL(triggered()), this, SLOT(onExportWareSourcesAsked()));
 
   connect(m_Actions["HelpAbout"], SIGNAL(triggered()), this, SLOT(onAboutAsked()));
   connect(m_Actions["HelpOnlineWeb"], SIGNAL(triggered()), this, SLOT(onOnlineWebAsked()));
@@ -227,6 +232,9 @@ void MainWindow::createLocalActions()
   m_Actions["Preferences"]->setMenuRole(QAction::PreferencesRole);
 
 
+  // Tools menu
+  m_Actions["ImportWareSources"] = new QAction(tr("Import wares sources..."), this);
+  m_Actions["ExportWareSources"] = new QAction(tr("Export wares sources..."), this);
 
   //Help menu
   m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
@@ -292,6 +300,9 @@ void MainWindow::createMenus()
   Menu = menuBar()->addMenu(tr("Tools"));
   Menu->addAction(mp_Toolbar->action("OpenTerminal"));
   Menu->addAction(mp_Toolbar->action("OpenExplorer"));
+  Menu->addSeparator();
+  Menu->addAction(m_Actions["ImportWareSources"]);
+  Menu->addAction(m_Actions["ExportWareSources"]);
 
   Menu = menuBar()->addMenu(tr("&Help"));
   SubMenu = Menu->addMenu(tr("OpenFLUID online"));
@@ -318,7 +329,7 @@ void MainWindow::setWorkspaceDefaults()
 
   QStringList LastOpenWares = Mgr->getLastOpenWares();
 
-  for (QString WarePath :LastOpenWares)
+  for (QString WarePath : LastOpenWares)
     mp_Collection->openPath(WarePath);
 
   mp_Collection->setCurrent(Mgr->getLastActiveWare());
@@ -369,8 +380,32 @@ void MainWindow::onPreferencesAsked()
 
   PrefsDlg.exec();
 
-  if(PrefsDlg.isTextEditorSettingsChanged())
+  if (PrefsDlg.isTextEditorSettingsChanged())
     mp_Collection->updateEditorsSettings();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onImportWareSourcesAsked()
+{
+  openfluid::ui::waresdev::WaresSrcImportDialog Dialog(this);
+  Dialog.exec();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onExportWareSourcesAsked()
+{
+  openfluid::ui::waresdev::WaresSrcExportDialog Dialog(this);
+  if (Dialog.exec())
+    qDebug() << Dialog.getPackageFilePath() << Dialog.getPackagers() << Dialog.getPackageDesciption()
+             << Dialog.getSelectedWares();
 }
 
 
