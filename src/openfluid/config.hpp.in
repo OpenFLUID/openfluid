@@ -182,12 +182,14 @@ const unsigned int SIMULATORS_MAXNUMTHREADS = @OPENFLUID_SIMSMAXNUMTHREADS@;
 
 
 // URLs
-const std::string URL_WEBSITE = "http://www.openfluid-project.org";
-const std::string URL_COMMUNITY = "http://www.openfluid-project.org/community";
-const std::string URL_DEV = "https://github.com/OpenFLUID/";
-const std::string URL_BUG = "https://github.com/OpenFLUID/openfluid/issues";
-const std::string URL_EMAIL = "mailto:contact@openfluid-project.org";
-const std::string URL_APIDOC = "http://www.openfluid-project.org/resources/docs/manuals/en/openfluid/"
+const std::string WEBSITE_DOMAIN = "www.openfluid-project.org";
+const std::string WEBSITE_URL = "http://"+WEBSITE_DOMAIN;
+const std::string COMMUNITY_URL = "http://www.openfluid-project.org/community";
+const std::string DEVSITE_URL = "https://github.com/OpenFLUID/";
+const std::string BUG_URL = "https://github.com/OpenFLUID/openfluid/issues";
+const std::string CONTACTEMAIL_ADDRESS = "contact@openfluid-project.org";
+const std::string CONTACTEMAIL_URL = "mailto:"+CONTACTEMAIL_ADDRESS;
+const std::string APIDOC_URL = "http://www.openfluid-project.org/resources/docs/manuals/en/openfluid/"
                                "@VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@/main/html/";
 
 } } //namespaces

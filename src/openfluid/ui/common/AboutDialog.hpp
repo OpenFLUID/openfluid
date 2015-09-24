@@ -40,10 +40,13 @@
 #ifndef __OPENFLUID_UICOMMON_ABOUTDIALOG_HPP__
 #define __OPENFLUID_UICOMMON_ABOUTDIALOG_HPP__
 
+
 #include <openfluid/dllexport.hpp>
+
 
 #include <QDialog>
 #include <QAction>
+
 
 namespace Ui
 {
@@ -66,15 +69,9 @@ class OPENFLUID_API AboutDialog : public QDialog
 
     Ui::AboutDialog* ui;
 
-    openfluid::ui::common::ClickableLabel* mp_WebLabel;
-
     const QAction* mp_WebAction;
 
-    openfluid::ui::common::ClickableLabel* mp_ContactLabel;
-
     const QAction* mp_ContactAction;
-
-    openfluid::ui::common::ActionLabel* mp_SwitchLabel;
 
     bool m_InfoIsCredits;
 

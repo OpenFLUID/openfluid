@@ -41,6 +41,7 @@
 #include <QPushButton>
 #include <QPixmap>
 
+#include <openfluid/config.hpp>
 #include <openfluid/ui/common/ActionLabel.hpp>
 #include <openfluid/ui/common/ClickableLabel.hpp>
 #include <openfluid/ui/config.hpp>
@@ -61,37 +62,32 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
 
   setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 
-  mp_WebLabel =
-      new openfluid::ui::common::ClickableLabel("<A HREF='http://www.openfluid-project.org'>"
-                                                "www.openfluid-project.org</A>",this);
-  mp_WebLabel->setCursor(Qt::PointingHandCursor);
-  mp_ContactLabel =
-      new openfluid::ui::common::ClickableLabel("<A HREF='mailto:contact@openfluid-project.org'>"
-                                                "contact@openfluid-project.org</A>",this);
-  mp_ContactLabel->setCursor(Qt::PointingHandCursor);
-
-  ui->InfosLayout->insertWidget(1,mp_WebLabel);
-  ui->InfosLayout->insertWidget(2,mp_ContactLabel);
-
   ui->IconLabel->setPixmap(QPixmap(":/ui/common/images/openfluid_icon_about.png"));
   ui->TitleLabel->setPixmap(QPixmap(":/ui/common/images/openfluid_title.png"));
+
+  ui->VersionLabel->setText(QString::fromStdString(openfluid::config::FULL_VERSION));
+
+  ui->WebLabel->setText("<A HREF='"+QString::fromStdString(openfluid::config::WEBSITE_URL)+"'>"+
+                        QString::fromStdString(openfluid::config::WEBSITE_DOMAIN)+"</A>");
+  ui->WebLabel->setCursor(Qt::PointingHandCursor);
+
+  ui->ContactLabel->setText("<A HREF='"+QString::fromStdString(openfluid::config::CONTACTEMAIL_URL)+"'>"+
+                            QString::fromStdString(openfluid::config::CONTACTEMAIL_ADDRESS)+"</A>");
+  ui->ContactLabel->setCursor(Qt::PointingHandCursor);
 
   ui->IconLabel->setFocus();
 
   ui->ButtonBox->button(QDialogButtonBox::Close)->setCursor(Qt::PointingHandCursor);
 
-  mp_SwitchLabel = new openfluid::ui::common::ActionLabel("action",this);
-  mp_SwitchLabel->setAlignment(Qt::AlignBottom);
-  ui->DescLayout->addWidget(mp_SwitchLabel);
 
   toggleInfos();
 
   ui->BottomFrame->setStyleSheet(QString("QFrame#BottomFrame {background-color: %1;}")
                                           .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
 
-  connect(mp_WebLabel,SIGNAL(clicked()),mp_WebAction,SLOT(trigger()));
-  connect(mp_ContactLabel,SIGNAL(clicked()),mp_ContactAction,SLOT(trigger()));
-  connect(mp_SwitchLabel,SIGNAL(clicked()),this,SLOT(toggleInfos()));
+  connect(ui->WebLabel,SIGNAL(clicked()),mp_WebAction,SLOT(trigger()));
+  connect(ui->ContactLabel,SIGNAL(clicked()),mp_ContactAction,SLOT(trigger()));
+  connect(ui->SwitchLabel,SIGNAL(clicked()),this,SLOT(toggleInfos()));
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
@@ -121,14 +117,14 @@ void AboutDialog::toggleInfos()
   if (m_InfoIsCredits)
   {
     ui->DescLabel->setText(tr("Credits")+":");
-    mp_SwitchLabel->setText(tr("View license"));
+    ui->SwitchLabel->setText(tr("View license"));
     ui->InfosEdit->setText(openfluid::ui::config::AUTHORS_TEXT);
     ui->InfosEdit->setStyleSheet("font-size: 13px;");
   }
   else
   {
     ui->DescLabel->setText(tr("License")+":");
-    mp_SwitchLabel->setText(tr("View credits"));
+    ui->SwitchLabel->setText(tr("View credits"));
     ui->InfosEdit->setStyleSheet("font-size: 12px;");
     ui->InfosEdit->setText(openfluid::ui::config::LICENSE_TEXT);
   }

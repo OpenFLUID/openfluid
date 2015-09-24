@@ -763,7 +763,7 @@ void AppCoordinator::whenMarketAsked()
 
 void AppCoordinator::whenOnlineWebAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_WEBSITE), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::WEBSITE_URL), QUrl::TolerantMode));
 }
 
 
@@ -773,7 +773,7 @@ void AppCoordinator::whenOnlineWebAsked()
 
 void AppCoordinator::whenOnlineCommunityAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_COMMUNITY), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::COMMUNITY_URL), QUrl::TolerantMode));
 }
 
 
@@ -782,7 +782,7 @@ void AppCoordinator::whenOnlineCommunityAsked()
 
 void AppCoordinator::whenEmailAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_EMAIL), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::CONTACTEMAIL_URL), QUrl::TolerantMode));
 }
 
 

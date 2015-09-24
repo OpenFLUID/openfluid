@@ -380,7 +380,7 @@ void MainWindow::onPreferencesAsked()
 
 void MainWindow::onOnlineWebAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_WEBSITE), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::WEBSITE_URL), QUrl::TolerantMode));
 }
 
 
@@ -390,7 +390,7 @@ void MainWindow::onOnlineWebAsked()
 
 void MainWindow::onOnlineCommunityAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_COMMUNITY), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::COMMUNITY_URL), QUrl::TolerantMode));
 }
 
 
