@@ -40,11 +40,14 @@
 #ifndef __OPENFLUID_BUILDERAPP_APPACTIONS_HPP__
 #define __OPENFLUID_BUILDERAPP_APPACTIONS_HPP__
 
+
 #include <QAction>
+#include <QToolBar>
 
 #include <openfluid/ware/PluggableWare.hpp>
 
 #include "MainWindow.hpp"
+
 
 class AppActions : QObject
 {
@@ -90,15 +93,14 @@ class AppActions : QObject
 
     QAction* action(const std::string& ID) const;
 
+    QToolBar* mainToolbar() const
+    { return mp_MainToolbar; }
+
     const std::vector<QAction*>& recentProjectActions() const
-    {
-      return m_RecentProjectsActions;
-    }
+    { return m_RecentProjectsActions; }
 
     const std::map<openfluid::ware::WareID_t,QAction*>& extensionsActions() const
-    {
-      return m_ExtensionsActions;
-    }
+    { return m_ExtensionsActions; }
 
     void setProjectMode();
 

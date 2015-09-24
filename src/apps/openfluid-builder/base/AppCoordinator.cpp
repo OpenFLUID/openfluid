@@ -116,6 +116,8 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   // View
   connect(m_Actions.action("ViewDashboard"), SIGNAL(triggered()),
           this, SLOT(whenViewDashboardAsked()));
+  connect(m_Actions.action("ViewToolbar"), SIGNAL(triggered()),
+          this, SLOT(whenViewToolbarAsked()));
   connect(m_Actions.action("ViewRestore"), SIGNAL(triggered()),
           this, SLOT(whenViewRestoreAsked()));
 
@@ -702,12 +704,29 @@ void AppCoordinator::whenExtensionAsked()
 
 void AppCoordinator::whenViewDashboardAsked()
 {
-  if (mp_DockWidget == NULL) return;
+  if (mp_DockWidget == NULL)
+    return;
 
   if (mp_DockWidget->isVisible())
     mp_DockWidget->setVisible(false);
   else
     mp_DockWidget->setVisible(true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenViewToolbarAsked()
+{
+  if (!m_Actions.mainToolbar())
+    return;
+
+  if (m_Actions.mainToolbar()->isVisible())
+    m_Actions.mainToolbar()->setVisible(false);
+  else
+    m_Actions.mainToolbar()->setVisible(true);
 }
 
 
@@ -722,6 +741,9 @@ void AppCoordinator::whenViewRestoreAsked()
   openfluid::base::PreferencesManager::instance()->setDockPosition(Qt::LeftDockWidgetArea);
   mp_DockWidget->setFloating(false);
   mp_DockWidget->setVisible(true);
+
+  if (m_Actions.mainToolbar())
+    m_Actions.mainToolbar()->setVisible(true);
 }
 
 

@@ -59,7 +59,7 @@ AppActions::AppActions():
   mp_ResultsExtensionsMenu(NULL), mp_OtherExtensionsMenu(NULL),
   mp_ViewMenu(NULL),
   mp_RecentProjectsMenu(NULL),
-  mp_MainToolbar(NULL)
+  mp_MainToolbar(nullptr)
 {
   createActions();
 
@@ -175,6 +175,7 @@ void AppActions::createActions()
 
   //View Menu
   m_Actions["ViewDashboard"] = new QAction(tr("Show/Hide project dashboard"), this);
+  m_Actions["ViewToolbar"] = new QAction(tr("Show/Hide main toolbar"), this);
   m_Actions["ViewRestore"] = new QAction(tr("Restore default view"), this);
 
 
@@ -435,6 +436,7 @@ void AppActions::createMenus(MainWindow& MainWin)
 
   mp_ViewMenu = MainWin.menuBar()->addMenu(tr("&View"));
   mp_ViewMenu->addAction(action("ViewDashboard"));
+  mp_ViewMenu->addAction(action("ViewToolbar"));
   mp_ViewMenu->addAction(action("ViewRestore"));
 
 
@@ -461,7 +463,7 @@ void AppActions::createMenus(MainWindow& MainWin)
 
 void AppActions::createToolbar(MainWindow& MainWin)
 {
-  if (mp_MainToolbar == NULL)
+  if (!mp_MainToolbar)
   {
     mp_MainToolbar = new QToolBar(&MainWin);
     mp_MainToolbar->setAllowedAreas(Qt::LeftToolBarArea |

@@ -107,6 +107,8 @@ class AppCoordinator : public QObject
 
     void whenViewDashboardAsked();
 
+    void whenViewToolbarAsked();
+
     void whenViewRestoreAsked();
 
     void whenMarketAsked();
