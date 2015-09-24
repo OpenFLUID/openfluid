@@ -46,9 +46,9 @@
 
 namespace openfluid { namespace core {
 
+
 class OPENFLUID_API SimpleValue : public Value
 {
-
   public:
 
     inline bool isSimple() const

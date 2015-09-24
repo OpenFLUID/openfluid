@@ -276,7 +276,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       OPENFLUID_UNITS_ORDERED_LOOP("TU", TU)
       {
         OPENFLUID_SetAttribute(TU,"indatadbl",double(TU->getID())*0.1);
-        OPENFLUID_SetAttribute(TU,"indatastr","C0DE1");
+        OPENFLUID_SetAttribute(TU,"indatastr",openfluid::core::StringValue("C0DE1"));
       }
 
 

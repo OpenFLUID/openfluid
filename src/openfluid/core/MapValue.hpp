@@ -117,8 +117,8 @@ namespace openfluid { namespace core {
   openfluid::core::MapValue Val2;
 
   // to MapValue, using a string values separator
-  StringVal.set("myvalue1=toto;myvalue2=12.56;myvalue3=17;myvalue3=false");
-  StringVal.toMapValue(";",Val2);
+  StringVal.set("{\"myvalue1\":toto,\"myvalue2\"=12.56,\"myvalue3\"=17,\"myvalue3\"=false");
+  StringVal.toMapValue(Val2);
 
   // all values are stored as strings, that can be converted to other types
   openfluid::core::IntegerValue TmpInt;
@@ -174,6 +174,9 @@ class OPENFLUID_API MapValue : public CompoundValue
 
     void writeToStream(std::ostream& OutStm) const;
 
+    void writeQuotedToStream(std::ostream& OutStm) const
+    { writeToStream(OutStm); }
+
     /**
       Sets a new value at the given key
       @param[in] Key the key to add
@@ -187,7 +190,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setDouble(const std::string& Key, const double& Val)
-      { set(Key,new DoubleValue(Val)); };
+    { set(Key,new DoubleValue(Val)); };
 
     /**
       Sets a new long value at the given key
@@ -196,7 +199,7 @@ class OPENFLUID_API MapValue : public CompoundValue
 
     */
     inline void setInteger(const std::string& Key, const long& Val)
-      { set(Key,new IntegerValue(Val)); };
+    { set(Key,new IntegerValue(Val)); };
 
     /**
       Sets a new boolean value at the given key
@@ -212,7 +215,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setString(const std::string& Key, const std::string& Val)
-      { set(Key,new StringValue(Val)); };
+    { set(Key,new StringValue(Val)); };
 
     /**
       Sets a new VectorValue value at the given key
@@ -220,7 +223,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setVectorValue(const std::string& Key, const VectorValue& Val)
-      { set(Key,new VectorValue(Val)); };
+    { set(Key,new VectorValue(Val)); };
 
     /**
       Sets a new MatrixValue value at the given key
@@ -228,7 +231,15 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setMatrixValue(const std::string& Key, const MatrixValue& Val)
-      { set(Key,new MatrixValue(Val)); };
+    { set(Key,new MatrixValue(Val)); };
+
+    /**
+      Sets a new MapValue value at the given key
+      @param[in] Key the key to add
+      @param[in] Val the value to add
+    */
+    inline void setMapValue(const std::string& Key, const MapValue& Val)
+    { set(Key,new MapValue(Val)); };
 
     /**
       Operator to get/set a value at a key given between []
@@ -244,46 +255,67 @@ class OPENFLUID_API MapValue : public CompoundValue
     Value& at(const std::string& Key);
 
     /**
+      Returns a const reference to the value of the map at the given key
+      @param[in] Key the key of the requested value
+      @return the value at the given key
+    */
+    const Value& at(const std::string& Key) const;
+
+    /**
       Returns the double value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline double getDouble(const std::string& Key) { return at(Key).asDoubleValue().get(); };
+    inline double getDouble(const std::string& Key) const
+    { return at(Key).asDoubleValue().get(); };
 
     /**
       Returns the long value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline long getInteger(const std::string& Key) { return at(Key).asIntegerValue().get(); };
+    inline long getInteger(const std::string& Key) const
+    { return at(Key).asIntegerValue().get(); };
 
     /**
       Returns the boolean value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline bool getBoolean(const std::string& Key) { return at(Key).asBooleanValue().get(); };
+    inline bool getBoolean(const std::string& Key) const
+    { return at(Key).asBooleanValue().get(); };
 
     /**
       Returns the string value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline std::string getString(const std::string& Key) { return at(Key).asStringValue().get(); };
+    inline std::string getString(const std::string& Key) const
+    { return at(Key).asStringValue().get(); };
 
     /**
       Returns the VectorValue value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline VectorValue getVectorValue(const std::string& Key) { return at(Key).asVectorValue(); };
+    inline VectorValue getVectorValue(const std::string& Key) const
+    { return at(Key).asVectorValue(); };
 
     /**
       Returns the MatrixValue value of the map at the given key
       @param[in] Key the key of the requested value
       @return the value at the given key
     */
-    inline MatrixValue getMatrixValue(const std::string& Key) { return at(Key).asMatrixValue(); };
+    inline MatrixValue getMatrixValue(const std::string& Key) const
+    { return at(Key).asMatrixValue(); };
+
+    /**
+      Returns the MapValue value of the map at the given key
+      @param[in] Key the key of the requested value
+      @return the value at the given key
+    */
+    inline MapValue getMapValue(const std::string& Key) const
+    { return at(Key).asMapValue(); };
 
     /**
       Removes the value corresponding to the given key

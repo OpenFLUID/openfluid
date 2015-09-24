@@ -69,6 +69,8 @@ class OPENFLUID_API ColumnTextParser
 
     std::vector<std::string> tokenizeLine(const std::string& Line);
 
+    std::vector<std::string> tokenizeString(const std::string& String);
+
     bool checkContents();
 
     bool isCommentLineStr(const std::string& LineStr);

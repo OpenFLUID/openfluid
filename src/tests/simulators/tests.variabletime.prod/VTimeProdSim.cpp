@@ -144,7 +144,7 @@ class VariableTimeProdSimulator : public openfluid::ware::PluggableSimulator
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
       OPENFLUID_InitializeVariable(TU,"tests.double",0.0);
-      OPENFLUID_InitializeVariable(TU,"tests.string","empty");
+      OPENFLUID_InitializeVariable(TU,"tests.string",std::string("empty"));
 
       OPENFLUID_InitializeVariable(TU,"tests.null",TheNull);
 

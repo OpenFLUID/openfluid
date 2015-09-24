@@ -40,6 +40,9 @@
 
 
 #include <openfluid/core/Attributes.hpp>
+#include <openfluid/core/MapValue.hpp>
+#include <openfluid/core/TreeValue.hpp>
+#include <openfluid/core/NullValue.hpp>
 
 
 namespace openfluid { namespace core {
@@ -74,7 +77,7 @@ bool Attributes::setValue(const AttributeName_t& aName, const Value& aValue)
   if (isAttributeExist(aName))
     return false;
 
-  m_Data[aName] = StringValue(aValue.toString());
+  m_Data[aName].reset(aValue.clone());
 
   return true;
 }
@@ -89,7 +92,107 @@ bool Attributes::setValue(const AttributeName_t& aName, const std::string& aValu
   if (isAttributeExist(aName))
     return false;
 
-  m_Data[aName] = StringValue(aValue);
+  m_Data[aName].reset(new StringValue(aValue));
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::string& aValue)
+{
+  if (isAttributeExist(aName))
+    return false;
+
+  StringValue TmpStrValue(aValue);
+
+  switch (TmpStrValue.guessTypeConversion())
+  {
+    case Value::DOUBLE :
+    {
+      double TmpVal;
+      if (!TmpStrValue.toDouble(TmpVal))
+        return false;
+      m_Data[aName].reset(new DoubleValue(TmpVal));
+      break;
+    }
+
+
+    case Value::INTEGER :
+    {
+      long TmpVal;
+      if (!TmpStrValue.toInteger(TmpVal))
+        return false;
+      m_Data[aName].reset(new IntegerValue(TmpVal));
+      break;
+    }
+
+    case Value::BOOLEAN :
+    {
+      bool TmpVal;
+      if (!TmpStrValue.toBoolean(TmpVal))
+        return false;
+      m_Data[aName].reset(new BooleanValue(TmpVal));
+      break;
+    }
+
+    case Value::STRING :
+    {
+      m_Data[aName].reset(new StringValue(aValue));
+      break;
+    }
+
+    case Value::VECTOR :
+    {
+      VectorValue TmpVal;
+      if (!TmpStrValue.toVectorValue(TmpVal))
+        return false;
+      m_Data[aName].reset(TmpVal.clone());
+      break;
+    }
+
+    case Value::MATRIX :
+    {
+      MatrixValue TmpVal;
+      if (!TmpStrValue.toMatrixValue(TmpVal))
+        return false;
+      m_Data[aName].reset(TmpVal.clone());
+      break;
+    }
+
+    case Value::MAP :
+    {
+      MapValue TmpVal;
+      if (!TmpStrValue.toMapValue(TmpVal))
+        return false;
+      m_Data[aName].reset(TmpVal.clone());
+      break;
+    }
+
+    case Value::TREE :
+    {
+      TreeValue TmpVal;
+      if (!TmpStrValue.toTreeValue(TmpVal))
+        return false;
+      m_Data[aName].reset(TmpVal.clone());
+      break;
+    }
+
+    case Value::NULLL :
+    {
+      NullValue TmpVal;
+      if (!TmpStrValue.toNullValue(TmpVal))
+        return false;
+      m_Data[aName].reset(TmpVal.clone());
+      break;
+    }
+
+    default :
+      return false;
+  }
 
   return true;
 }
@@ -107,7 +210,7 @@ bool Attributes::getValue(const AttributeName_t& aName, openfluid::core::StringV
 
   if (it != m_Data.end())
   {
-    aValue.set(it->second.data());
+    aValue.set(it->second.get()->toString());
 
     return true;
   }
@@ -120,12 +223,12 @@ bool Attributes::getValue(const AttributeName_t& aName, openfluid::core::StringV
 // =====================================================================
 
 
-const openfluid::core::StringValue* Attributes::value(const AttributeName_t& aName) const
+const openfluid::core::Value* Attributes::value(const AttributeName_t& aName) const
 {
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
-    return &(it->second);
+    return it->second.get();
 
   return nullptr;
 }
@@ -141,8 +244,7 @@ bool Attributes::getValue(const AttributeName_t& aName, std::string& aValue) con
 
   if (it != m_Data.end())
   {
-    aValue = it->second.data();
-
+    aValue = it->second.get()->toString();
     return true;
   }
 
@@ -158,9 +260,11 @@ bool Attributes::getValueAsDouble(const AttributeName_t& aName, double& aValue) 
 {
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
-  if (it != m_Data.end())
-    return it->second.toDouble(aValue);
-
+  if (it != m_Data.end() && it->second.get()->isDoubleValue())
+  {
+    aValue = it->second.get()->asDoubleValue();
+    return true;
+  }
   return false;
 }
 
@@ -173,9 +277,11 @@ bool Attributes::getValueAsLong(const AttributeName_t& aName, long& aValue) cons
 {
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
-  if (it != m_Data.end())
-    return it->second.toInteger(aValue);
-
+  if (it != m_Data.end() && it->second.get()->isIntegerValue())
+  {
+    aValue = it->second.get()->asIntegerValue();
+    return true;
+  }
   return false;
 }
 
@@ -215,7 +321,7 @@ bool Attributes::replaceValue(const AttributeName_t& aName, const StringValue& a
 {
   if(isAttributeExist(aName))
   {
-    m_Data[aName].set(aValue.data());
+    m_Data[aName].reset(new StringValue(aValue));
 
     return true;
   }
@@ -232,7 +338,7 @@ bool Attributes::replaceValue(const AttributeName_t& aName, const std::string& a
 {
   if(isAttributeExist(aName))
   {
-    m_Data[aName].set(aValue);
+    m_Data[aName].reset(new StringValue(aValue));
 
     return true;
   }

@@ -145,6 +145,8 @@ class OPENFLUID_API IntegerValue : public SimpleValue
     Value* clone() const
     { return new IntegerValue(*this); };
 
+    bool convert(Value& Val) const;
+
     /**
       Returns the integer value as a plain old type
       @return the integer value
@@ -160,6 +162,9 @@ class OPENFLUID_API IntegerValue : public SimpleValue
     { m_Value = Val; };
 
     void writeToStream(std::ostream& OutStm) const;
+
+    void writeQuotedToStream(std::ostream& OutStm) const
+    { writeToStream(OutStm); }
 
 };
 

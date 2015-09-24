@@ -142,11 +142,14 @@ class OPENFLUID_API DoubleValue : public SimpleValue
     Value* clone() const
     { return new DoubleValue(*this); };
 
+    bool convert(Value& Val) const;
+
     /**
       Returns the double value as plain old type
       @return the double value
     */
-    inline double get() const { return m_Value; };
+    inline double get() const
+    { return m_Value; };
 
     /**
       Sets the plain old type double value
@@ -156,6 +159,9 @@ class OPENFLUID_API DoubleValue : public SimpleValue
     { m_Value = Val; };
 
     void writeToStream(std::ostream& OutStm) const;
+
+    void writeQuotedToStream(std::ostream& OutStm) const
+    { writeToStream(OutStm); }
 
 };
 

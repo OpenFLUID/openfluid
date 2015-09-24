@@ -103,6 +103,7 @@ class OPENFLUID_API StringValue : public SimpleValue
     std::vector<std::string> split(const std::string& Separators,
                                    bool ReturnsEmpty = false) const;
 
+
   public:
 
     /**
@@ -114,7 +115,8 @@ class OPENFLUID_API StringValue : public SimpleValue
     /**
       Copy constructor
     */
-    StringValue(const StringValue& Val) : SimpleValue(Val), m_Value(Val.m_Value)
+    StringValue(const StringValue& Val) : SimpleValue(Val),
+      m_Value(Val.m_Value)
     { };
 
     /**
@@ -147,7 +149,7 @@ class OPENFLUID_API StringValue : public SimpleValue
     /**
       Assignment operator
     */
-    Value& operator =(const Value& Other);
+    Value& operator=(const Value& Other);
 
     /**
       Cast operator
@@ -163,6 +165,8 @@ class OPENFLUID_API StringValue : public SimpleValue
 
     Value* clone() const
     { return new StringValue(*this); };
+
+    bool convert(Value& Val) const;
 
     /**
       Returns the string value as std::string type
@@ -196,7 +200,11 @@ class OPENFLUID_API StringValue : public SimpleValue
     inline void clear()
     { m_Value.clear(); }
 
+
     void writeToStream(std::ostream& OutStm) const;
+
+    void writeQuotedToStream(std::ostream& OutStm) const
+    { OutStm << "\"" ; writeToStream(OutStm); OutStm << "\"" ; }
 
     /**
       Returns the size of the string
@@ -220,6 +228,14 @@ class OPENFLUID_API StringValue : public SimpleValue
       @return the number of occurences
     */
     unsigned int replaceAll(const std::string& FindStr,const std::string& ReplaceStr);
+
+
+    /**
+      Try to find the the most adapted type for conversion
+      @return the most adapted type for conversion (if the value is empty)
+    */
+    Value::Type guessTypeConversion() const;
+
 
     /**
       Converts the contained string to a double value (if possible)
@@ -278,37 +294,41 @@ class OPENFLUID_API StringValue : public SimpleValue
 
     /**
       Converts the contained string to a VectorValue value (if possible)
-      @param[in] Sep the separator used to split the string into vector items
       @param[out] Val the converted value
       @return bool true if the conversion is correct, false otherwise
     */
-    bool toVectorValue(const std::string& Sep, VectorValue& Val) const;
+    bool toVectorValue(VectorValue& Val) const;
 
     /**
       Converts the contained string to a MatrixValue value (if possible)
-      @param[in] ColSep the column separator used to split the string columns
-      @param[in] RowSep the row separator used to split the string rows
       @param[out] Val the converted value
       @return bool true if the conversion is correct, false otherwise
     */
-    bool toMatrixValue(const std::string& ColSep, const std::string& RowSep, MatrixValue& Val) const;
+    bool toMatrixValue(MatrixValue& Val) const;
 
     /**
       Converts the contained string to a MatrixValue value (if possible)
-      @param[in] Sep the separator used to split the string
       @param[in] RowLength the size of a row
       @param[out] Val the converted value
       @return bool true if the conversion is correct, false otherwise
     */
-    bool toMatrixValue(const std::string& Sep, const unsigned int& RowLength, MatrixValue& Val) const;
+    bool toMatrixValue(const unsigned int& RowLength, MatrixValue& Val) const;
 
     /**
       Converts the contained string to a MapValue value (if possible)
-      @param[in] Sep the separator used to split the string into map items
       @param[out] Val the converted value
       @return bool true if the conversion is correct, false otherwise
     */
-    bool toMapValue(const std::string& Sep, MapValue& Val) const;
+    bool toMapValue(MapValue& Val) const;
+
+    /**
+      Converts the contained string to a TreeValue value (if possible)
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+      @throw FrameworkException when called
+      @warning This method is currently not implement and always throws a FrameworkException
+    */
+    bool toTreeValue(TreeValue& Val) const;
 
 };
 

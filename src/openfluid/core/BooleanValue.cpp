@@ -38,8 +38,12 @@
  */
 
 
-
 #include <openfluid/core/BooleanValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/VectorValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
+
 
 namespace openfluid { namespace core {
 
@@ -61,9 +65,40 @@ Value& BooleanValue::operator =(const Value& Other)
 // =====================================================================
 
 
+bool BooleanValue::convert(Value& Val) const
+{
+  if (Val.getType() == Value::DOUBLE)
+  {
+    Val = DoubleValue(m_Value);
+    return true;
+  }
+  else if (Val.getType() == Value::INTEGER)
+  {
+    Val = IntegerValue(m_Value);
+    return true;
+  }
+  else if (Val.getType() == Value::VECTOR)
+  {
+    Val = VectorValue(1,m_Value);
+    return true;
+  }
+  else if (Val.getType() == Value::MATRIX)
+  {
+    Val = MatrixValue(1,1,m_Value);
+    return true;
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BooleanValue::writeToStream(std::ostream& OutStm) const
 {
-  OutStm << m_Value;
+  OutStm << std::boolalpha << m_Value << std::noboolalpha;
 }
 
 

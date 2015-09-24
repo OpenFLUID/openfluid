@@ -87,6 +87,9 @@ class OPENFLUID_API NullValue : public Value
     { return false; };
 
     void writeToStream(std::ostream& OutStm) const;
+
+    void writeQuotedToStream(std::ostream& OutStm) const
+    { writeToStream(OutStm); }
 };
 
 

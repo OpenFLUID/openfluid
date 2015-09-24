@@ -45,6 +45,8 @@
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/VectorValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
 
 
 // =====================================================================
@@ -75,4 +77,27 @@ BOOST_AUTO_TEST_CASE(check_double)
   std::cout << Val2 << " " << Val2.get() << " " << Val2.toString() << std::endl;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_convert)
+{
+  {
+    openfluid::core::VectorValue Val;
+    BOOST_REQUIRE(openfluid::core::DoubleValue(19.47).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.size(),1);
+    BOOST_REQUIRE_CLOSE(Val.get(0),19.47,0.000001);
+  }
+
+  {
+    openfluid::core::MatrixValue Val;
+    BOOST_REQUIRE(openfluid::core::DoubleValue(19.47).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.size(),1);
+    BOOST_REQUIRE_EQUAL(Val.getColsNbr(),1);
+    BOOST_REQUIRE_EQUAL(Val.getRowsNbr(),1);
+    BOOST_REQUIRE_CLOSE(Val.get(0,0),19.47,0.000001);
+  }
+}
 

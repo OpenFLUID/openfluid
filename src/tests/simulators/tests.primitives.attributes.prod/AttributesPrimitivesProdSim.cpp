@@ -168,19 +168,25 @@ class AttributesPrimitivesProdSimulator : public openfluid::ware::PluggableSimul
         OPENFLUID_SetAttribute(TU,"indataString2",Str);
         OPENFLUID_SetAttribute(TU,"indataString3",openfluid::core::StringValue(Str));
 
-        OPENFLUID_SetAttribute(TU,"indataBool2",Bl ? "true" : "false");
+        OPENFLUID_SetAttribute(TU,"indataBool2",Bl ? true : false);
         OPENFLUID_SetAttribute(TU,"indataBool3",openfluid::core::BooleanValue(Bl));
 
-        OPENFLUID_SetAttribute(TU,"indataVector2","1.1;1.2;1.3");
+        openfluid::core::VectorValue TmpVV;
+        openfluid::core::StringValue("[1.1,1.2,1.3]").toVectorValue(TmpVV);
+        OPENFLUID_SetAttribute(TU,"indataVector2",TmpVV);
         OPENFLUID_SetAttribute(TU,"indataVector3",aVector);
 
-        OPENFLUID_SetAttribute(TU,"indataMatrix2","0.0;1.0|0.1;1.1|0.2;1.2");
+        openfluid::core::MatrixValue TmpMV;
+        openfluid::core::StringValue("[[0.0,1.0],[0.1,1.1],[0.2,1.2]]").toMatrixValue(TmpMV);
+        OPENFLUID_SetAttribute(TU,"indataMatrix2",TmpMV);
         OPENFLUID_SetAttribute(TU,"indataMatrix3",aMatrix);
 
-        OPENFLUID_SetAttribute(TU,"indataMap2","key1=2.1;key2=a string;key3=true");
+        openfluid::core::MapValue TmpMpV;
+        openfluid::core::StringValue(R"({"key1":2.1,"key2":"a string","key3":true})").toMapValue(TmpMpV);
+        OPENFLUID_SetAttribute(TU,"indataMap2",TmpMpV);
         OPENFLUID_SetAttribute(TU,"indataMap3",aMap);
 
-        OPENFLUID_SetAttribute(TU,"indataNull2","null");
+        OPENFLUID_SetAttribute(TU,"indataNull2",openfluid::core::NullValue());
         OPENFLUID_SetAttribute(TU,"indataNull3",openfluid::core::NullValue());
       }
 

@@ -66,15 +66,18 @@ void VectorValue::writeToStream(std::ostream& OutStm) const
 
   if (s == 0)
   {
-    OutStm << "empty";
+    OutStm << "[]";
   }
   else
   {
+    OutStm << "[";
     for (unsigned int i = 0; i<s ;i++ )
     {
       OutStm << m_Data[i];
-      if (i != s-1) OutStm << m_StreamSeparators[0];
+      if (i != s-1)
+        OutStm << ",";
     }
+    OutStm << "]";
   }
 }
 

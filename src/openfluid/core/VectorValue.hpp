@@ -105,8 +105,8 @@ namespace openfluid { namespace core {
   openfluid::core::VectorValue Val2;
 
   // to VectorValue, using a string values separator
-  StringVal.set("3;5;2.8;6;17.999923;1;1;1;1;1;2.11;2.12;2.13;2.14;2.15");
-  StringVal.toVectorValue(";",Val2);
+  StringVal.set("[3,5,2.8,6,17.999923,1,1,1,1,1,2.11,2.12,2.13,2.14,2.15]");
+  StringVal.toVectorValue(Val2);
 @endcode
 
 
@@ -164,6 +164,9 @@ class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
     { return new VectorValue(*this); };
 
     void writeToStream(std::ostream& OutStm) const;
+
+    void writeQuotedToStream(std::ostream& OutStm) const
+    { writeToStream(OutStm); }
 
 };
 

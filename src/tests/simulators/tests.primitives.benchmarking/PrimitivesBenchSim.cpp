@@ -185,9 +185,9 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
       {
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
         {
-          OPENFLUID_GetAttribute(TU,"indataDouble")->toDouble(VarDouble);
+          VarDouble = OPENFLUID_GetAttribute(TU,"indataDouble")->asDoubleValue();
           XVal = VarDouble;
-          OPENFLUID_GetAttribute(TU,"indataDouble")->toDouble(VarDouble);
+          VarDouble = OPENFLUID_GetAttribute(TU,"indataDouble")->asDoubleValue();
           XVal += VarDouble;
         }
       }

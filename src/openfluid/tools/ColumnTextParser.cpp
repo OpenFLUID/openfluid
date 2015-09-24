@@ -42,6 +42,7 @@
 #include <iostream>
 #include <fstream>
 #include <boost/algorithm/string.hpp>
+#include <boost/tokenizer.hpp>
 
 #include <openfluid/tools/ColumnTextParser.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
@@ -76,14 +77,41 @@ ColumnTextParser::~ColumnTextParser()
 // =====================================================================
 
 
-
 std::vector<std::string> ColumnTextParser::tokenizeLine(const std::string& Line)
 {
-  std::vector<std::string> NewLine;
+  std::vector<std::string> Splitted;
 
-  tokenizeString(Line,NewLine,m_Delimiter);
+  boost::tokenizer<boost::escaped_list_separator<char>>
+    Tokenizer(Line, boost::escaped_list_separator<char>("\\",m_Delimiter,"\""));
 
-  return NewLine;
+  for (auto it=Tokenizer.begin(); it!=Tokenizer.end(); ++it)
+  {
+    if (!(*it).empty())
+      Splitted.push_back(*it);
+  }
+
+  return Splitted;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> ColumnTextParser::tokenizeString(const std::string& Str)
+{
+  std::vector<std::string> Splitted;
+
+  boost::tokenizer<boost::escaped_list_separator<char>>
+    Tokenizer(Str, boost::escaped_list_separator<char>("\\",m_Delimiter,"\""));
+
+  for (auto it=Tokenizer.begin(); it!=Tokenizer.end(); ++it)
+  {
+    if (!(*it).empty())
+      Splitted.push_back(*it);
+  }
+
+  return Splitted;
 }
 
 
@@ -158,17 +186,20 @@ bool ColumnTextParser::loadFromFile(const std::string& Filename)
   m_ColsCount = 0;
 
   // check if file exists
-  if (!openfluid::tools::Filesystem::isFile(Filename)) return false;
+  if (!openfluid::tools::Filesystem::isFile(Filename))
+    return false;
 
   std::ifstream FileContent(Filename.c_str());
 
   // check if file is "openable"
-  if (!FileContent) return false;
+  if (!FileContent)
+    return false;
 
   // parse and loads file contents
   while(std::getline(FileContent,StrLine))
   {
-    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) m_Contents.push_back(tokenizeLine(StrLine));
+    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine))
+      m_Contents.push_back(ColumnTextParser::tokenizeLine(StrLine));
   }
 
   return checkContents();
@@ -188,12 +219,12 @@ bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int C
 
   */
 
-  std::vector<std::string> Tokens;
+
   std::vector<std::string>::iterator it;
 
   bool IsOK = true;
 
-  tokenizeString(Contents,Tokens,m_Delimiter);
+  std::vector<std::string> Tokens = ColumnTextParser::tokenizeString(Contents);
 
   if (Tokens.size() % ColumnsNbr == 0)
   {
@@ -210,7 +241,6 @@ bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int C
 
       if (LineStr.size() == ColumnsNbr)
       {
-
         // if current line has ColumnsNbr columns, it is added to the contents
         m_Contents.push_back(LineStr);
 
@@ -227,9 +257,7 @@ bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int C
     }
   }
   else
-  {
     IsOK = false;
-  }
 
   return IsOK && checkContents();
 }
@@ -324,9 +352,9 @@ bool ColumnTextParser::getDoubleValue(unsigned int Line, unsigned int Column, do
 
 void ColumnTextParser::streamContents(std::ostream& OStream) const
 {
-  OStream << "" << std::endl;
   unsigned int i,j;
 
+  OStream << std::endl;
   for (i=0;i<m_LinesCount;i++)
   {
     for (j=0;j<m_ColsCount;j++)
@@ -334,10 +362,9 @@ void ColumnTextParser::streamContents(std::ostream& OStream) const
       OStream << getValue(i,j) << "\t";
 
     }
-    OStream.flush();
-
+    OStream << "\n";
   }
-  OStream << "" << std::endl;
+  OStream << std::endl;
 }
 
 

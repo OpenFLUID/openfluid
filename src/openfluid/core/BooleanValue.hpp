@@ -141,11 +141,13 @@ class OPENFLUID_API BooleanValue : public SimpleValue
     Value* clone() const
     { return new BooleanValue(*this); };
 
+    bool convert(Value& Val) const;
+
     /**
       Returns the boolean value as plain old type
       @return the boolean value
     */
-    inline bool get()
+    inline bool get() const
     { return m_Value; };
 
     /**
@@ -156,6 +158,9 @@ class OPENFLUID_API BooleanValue : public SimpleValue
     { m_Value = Val; };
 
     void writeToStream(std::ostream& OutStm) const;
+
+    void writeQuotedToStream(std::ostream& OutStm) const
+    { writeToStream(OutStm); }
 
 };
 

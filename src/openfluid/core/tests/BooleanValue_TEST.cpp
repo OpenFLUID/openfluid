@@ -45,6 +45,10 @@
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/core/BooleanValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/VectorValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
 
 
 // =====================================================================
@@ -78,4 +82,50 @@ BOOST_AUTO_TEST_CASE(check_boolean)
   Val3 = Val1;
   BOOST_REQUIRE_EQUAL( Val3.get(), Val2.get());
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_convert)
+{
+  {
+    openfluid::core::DoubleValue Val;
+    BOOST_REQUIRE(openfluid::core::BooleanValue(false).convert(Val));
+    BOOST_REQUIRE_CLOSE(Val.get(),0,0.00000001);
+    BOOST_REQUIRE(openfluid::core::BooleanValue(true).convert(Val));
+    BOOST_REQUIRE_CLOSE(Val.get(),1.0,000001);
+  }
+
+  {
+    openfluid::core::IntegerValue Val;
+    BOOST_REQUIRE(openfluid::core::BooleanValue(false).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.get(),0);
+    BOOST_REQUIRE(openfluid::core::BooleanValue(true).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.get(),1);
+  }
+
+  {
+    openfluid::core::VectorValue Val;
+    BOOST_REQUIRE(openfluid::core::BooleanValue(false).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.size(),1);
+    BOOST_REQUIRE_EQUAL(Val.get(0),0);
+    BOOST_REQUIRE(openfluid::core::BooleanValue(true).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.size(),1);
+    BOOST_REQUIRE_EQUAL(Val.get(0),1);
+  }
+
+  {
+    openfluid::core::MatrixValue Val;
+    BOOST_REQUIRE(openfluid::core::BooleanValue(false).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.size(),1);
+    BOOST_REQUIRE_EQUAL(Val.getColsNbr(),1);
+    BOOST_REQUIRE_EQUAL(Val.getRowsNbr(),1);
+    BOOST_REQUIRE_EQUAL(Val.get(0,0),0);
+    BOOST_REQUIRE(openfluid::core::BooleanValue(true).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.size(),1);
+    BOOST_REQUIRE_EQUAL(Val.get(0,0),1);
+  }
 }

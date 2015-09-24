@@ -378,7 +378,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
             else
               (*FLIt)->FileHandle << OPENFLUID_GetCurrentDate().getAsString((*SetIt).second.Format->DateFormat);
             (*FLIt)->FileHandle << (*SetIt).second.Format->ColSeparator;
-            Val->writeToStream((*FLIt)->FileHandle);
+            Val->writeQuotedToStream((*FLIt)->FileHandle);
             (*FLIt)->FileHandle << "\n";
           }
         }

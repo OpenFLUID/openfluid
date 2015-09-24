@@ -319,7 +319,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       if (!OPENFLUID_GetSimulatorParameter(Params,"longarrayparam",ParamStrVal))
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (longarrayparam) into StringValue");
-      if(ParamStrVal.get() != "11;12;13;14;15")
+      if(ParamStrVal.get() != "[11,12,13,14,15]")
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (longarrayparam, value) into StringValue");
 
       if (!OPENFLUID_GetSimulatorParameter(Params,"longarrayparam",ParamVectorVal))
@@ -355,7 +355,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       if (!OPENFLUID_GetSimulatorParameter(Params,"matrixparam",ParamStrVal))
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (matrixparam) into StringValue");
-      if(ParamStrVal.get() != "1.1;1.2|2.1;2.2|3.1;3.2")
+      if(ParamStrVal.get() != "[[1.1,1.2],[2.1,2.2],[3.1,3.2]]")
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (matrixparam, value) into StringValue");
 
 
@@ -363,7 +363,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       if (!OPENFLUID_GetSimulatorParameter(Params,"mapparam",ParamStrVal))
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam) into StringValue");
-      if(!ParamStrVal.toMapValue(";",ParamMapVal))
+      if(!ParamStrVal.toMapValue(ParamMapVal))
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, type)");
       if(ParamMapVal.size() != 3)
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, size)");

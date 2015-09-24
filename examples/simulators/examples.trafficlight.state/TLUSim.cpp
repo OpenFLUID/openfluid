@@ -132,8 +132,8 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
     void checkConsistency()
     {
       openfluid::core::SpatialUnit * TLU;
-      openfluid::core::StringValue Period;
-      openfluid::core::IntegerValue PeriodInt;
+      openfluid::core::IntegerValue Period;
+
 
       unsigned int DeltaT;
       int ID, Modulo;
@@ -144,11 +144,11 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
       OPENFLUID_UNITS_ORDERED_LOOP("TLU",TLU)
       {
         OPENFLUID_GetAttribute(TLU,"duration",Period);
-        Period.toIntegerValue(PeriodInt);
-        if (PeriodInt>DeltaT)
-          Modulo=PeriodInt%DeltaT;
+
+        if (Period>DeltaT)
+          Modulo = Period % DeltaT;
         else
-          Modulo=DeltaT%PeriodInt;
+          Modulo = DeltaT % Period;
 
         if (Modulo!=0)
         {
@@ -169,21 +169,16 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest initializeRun()
     {
-
-      bool StateBool;
       openfluid::core::SpatialUnit * pTLU;
-      openfluid::core::StringValue PeriodString;
-      openfluid::core::IntegerValue PeriodInt;
-      openfluid::core::StringValue State;
+      openfluid::core::IntegerValue Period;
+      openfluid::core::BooleanValue State;
 
       OPENFLUID_UNITS_ORDERED_LOOP("TLU",pTLU)
       {
-        OPENFLUID_GetAttribute(pTLU,"duration",PeriodString);
-        PeriodString.toIntegerValue(PeriodInt);
+        OPENFLUID_GetAttribute(pTLU,"duration",Period);
         OPENFLUID_GetAttribute(pTLU,"state",State);
-        State.toBoolean(StateBool);
-        OPENFLUID_InitializeVariable(pTLU,"examples.TLU.T.changeTime",PeriodInt);
-        OPENFLUID_InitializeVariable(pTLU,"examples.TLU.S.state",StateBool);
+        OPENFLUID_InitializeVariable(pTLU,"examples.TLU.T.changeTime",Period);
+        OPENFLUID_InitializeVariable(pTLU,"examples.TLU.S.state",State);
       }
       return DefaultDeltaT();
     }
@@ -196,36 +191,31 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
       openfluid::core::SpatialUnit * pTLU;
-      openfluid::core::StringValue PeriodString;
-      openfluid::core::IntegerValue PeriodInt;
+      openfluid::core::IntegerValue Period;
       openfluid::core::IntegerValue NextPeriod;
-
-      openfluid::core::StringValue State;
-      bool StateBool;
+      openfluid::core::BooleanValue State;
 
       unsigned int CurrentTimeIndex = (OPENFLUID_GetCurrentTimeIndex());
 
       OPENFLUID_UNITS_ORDERED_LOOP("TLU",pTLU)
       {
-        OPENFLUID_GetAttribute(pTLU,"duration",PeriodString);
-        PeriodString.toIntegerValue(PeriodInt);
+        OPENFLUID_GetAttribute(pTLU,"duration",Period);
 
         OPENFLUID_GetAttribute(pTLU,"state",State);
-        State.toBoolean(StateBool);
 
         OPENFLUID_GetVariable(pTLU,"examples.TLU.T.changeTime",
                               CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),NextPeriod);
-        OPENFLUID_GetVariable(pTLU,"examples.TLU.S.state",CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),StateBool);
+        OPENFLUID_GetVariable(pTLU,"examples.TLU.S.state",CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),State);
 
 
         if (unsigned(NextPeriod)==OPENFLUID_GetCurrentTimeIndex())
         {
-          StateBool=1-StateBool;
-          NextPeriod=NextPeriod+PeriodInt;
+          State = !State;
+          NextPeriod = NextPeriod + Period;
         }
 
         OPENFLUID_AppendVariable(pTLU,"examples.TLU.T.changeTime",NextPeriod);
-        OPENFLUID_AppendVariable(pTLU,"examples.TLU.S.state",StateBool);
+        OPENFLUID_AppendVariable(pTLU,"examples.TLU.S.state",State);
 
       }
 

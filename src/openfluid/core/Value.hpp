@@ -91,11 +91,16 @@ class OPENFLUID_API Value
     virtual Value* clone() const
     { throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Value is not cloneable"); };
 
+    virtual bool convert(Value& /*Val*/) const
+    { return false; };
+
     virtual bool isSimple() const = 0;
 
     virtual bool isCompound() const = 0;
 
     virtual void writeToStream(std::ostream& OutStm) const = 0;
+
+    virtual void writeQuotedToStream(std::ostream& OutStm) const = 0;
 
     friend std::ostream& operator<<(std::ostream& OutStm, const Value& Val)
     { Val.writeToStream(OutStm); return OutStm; };

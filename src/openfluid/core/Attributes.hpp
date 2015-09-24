@@ -41,6 +41,9 @@
 #ifndef __OPENFLUID_CORE_ATTRIBUTES_HPP__
 #define __OPENFLUID_CORE_ATTRIBUTES_HPP__
 
+
+#include <memory>
+
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/Value.hpp>
@@ -48,14 +51,14 @@
 #include <openfluid/core/IntegerValue.hpp>
 
 
-namespace openfluid {
-namespace core {
+namespace openfluid { namespace core {
+
 
 class OPENFLUID_API Attributes
 {
   private:
 
-    typedef std::map<AttributeName_t, StringValue> AttributesMap_t;
+    typedef std::map<AttributeName_t,std::shared_ptr<Value>> AttributesMap_t;
 
     AttributesMap_t m_Data;
 
@@ -68,17 +71,19 @@ class OPENFLUID_API Attributes
 
     bool setValue(const AttributeName_t& aName, const Value& aValue);
 
-    bool setValue(const AttributeName_t& aName, const std::string& aValue);
+    bool setValue(const AttributeName_t& aName, const std::string& aValue) OPENFLUID_DEPRECATED;
 
-    bool getValue(const AttributeName_t& aName, openfluid::core::StringValue& aValue) const;
+    bool setValueFromRawString(const AttributeName_t& aName, const std::string& aValue);
 
-    bool getValue(const AttributeName_t& aName, std::string& aValue) const;
+    bool getValue(const AttributeName_t& aName, openfluid::core::StringValue& aValue) const OPENFLUID_DEPRECATED;
 
-    const openfluid::core::StringValue* value(const AttributeName_t& aName) const;
+    bool getValue(const AttributeName_t& aName, std::string& aValue) const OPENFLUID_DEPRECATED;
 
-    bool getValueAsDouble(const AttributeName_t& aName, double& aValue) const;
+    const openfluid::core::Value* value(const AttributeName_t& aName) const;
 
-    bool getValueAsLong(const AttributeName_t& aName, long& aValue) const;
+    bool getValueAsDouble(const AttributeName_t& aName, double& aValue) const OPENFLUID_DEPRECATED;
+
+    bool getValueAsLong(const AttributeName_t& aName, long& aValue) const OPENFLUID_DEPRECATED;
 
     bool isAttributeExist(const AttributeName_t& aName) const;
 

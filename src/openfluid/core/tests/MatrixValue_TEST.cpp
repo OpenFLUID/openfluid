@@ -108,14 +108,25 @@ BOOST_AUTO_TEST_CASE(check_matrix)
   BOOST_REQUIRE_EQUAL(Val3.getColsNbr(),2);
   BOOST_REQUIRE_EQUAL(Val3.getRowsNbr(),3);
   std::cout << Val3.toString() << std::endl;
-  BOOST_REQUIRE_EQUAL(Val3.toString(),"0;0|0;0|0;0");
+  BOOST_REQUIRE_EQUAL(Val3.toString(),"[[0,0],[0,0],[0,0]]");
 
-  openfluid::core::StringValue StrTest("1.1;1.2|2.1;2.2|3.1;3.2");
-  Val3.clear();
-  StrTest.toMatrixValue(";","|",Val3);
-  BOOST_REQUIRE_CLOSE(Val3.get(1,1),2.2,0.00001);
-  std::cout << Val3.toString() << std::endl;
-  BOOST_REQUIRE_EQUAL(Val3.toString(),"1.1;1.2|2.1;2.2|3.1;3.2");
+  openfluid::core::MatrixValue ValStr;
+  openfluid::core::StringValue StrTest("[[1.1,1.2],[2.1,2.2],[3.1,3.2]]");
+  BOOST_REQUIRE(StrTest.toMatrixValue(ValStr));
+  BOOST_REQUIRE_EQUAL(ValStr.getColsNbr(),2);
+  BOOST_REQUIRE_EQUAL(ValStr.getRowsNbr(),3);
+  BOOST_REQUIRE_CLOSE(ValStr.get(1,1),2.2,0.00001);
+  std::cout << ValStr.toString() << std::endl;
+  BOOST_REQUIRE_EQUAL(ValStr.toString(),"[[1.1,1.2],[2.1,2.2],[3.1,3.2]]");
+
+  ValStr.clear();
+  openfluid::core::StringValue StrTestOld("1.1;1.2|2.1;2.2|3.1;3.2");
+  BOOST_REQUIRE(StrTestOld.toMatrixValue(ValStr));
+  BOOST_REQUIRE_EQUAL(ValStr.getColsNbr(),2);
+  BOOST_REQUIRE_EQUAL(ValStr.getRowsNbr(),3);
+  BOOST_REQUIRE_CLOSE(ValStr.get(1,1),2.2,0.00001);
+  std::cout << ValStr.toString() << " (from old format)" << std::endl;
+  BOOST_REQUIRE_EQUAL(ValStr.toString(),"[[1.1,1.2],[2.1,2.2],[3.1,3.2]]");
 
   Val3.set(1,2,9.99);
   BOOST_REQUIRE_CLOSE( Val3.get(1,2), 9.99,0.000001 );

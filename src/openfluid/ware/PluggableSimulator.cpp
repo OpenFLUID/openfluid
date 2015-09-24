@@ -162,7 +162,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
-    return it->second.toVectorValue(Val.getStreamSeparator(1),Val);
+    return it->second.toVectorValue(Val);
 
   return false;
 }
@@ -180,7 +180,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
-    return it->second.toMatrixValue(Val.getStreamSeparator(1),Val.getStreamSeparator(2),Val);
+    return it->second.toMatrixValue(Val);
 
   return false;
 }
@@ -335,7 +335,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   {
     openfluid::core::VectorValue Vect;
 
-    IsOK = it->second.toVectorValue(";",Vect);
+    IsOK = it->second.toVectorValue(Vect);
 
     if(IsOK)
     {
@@ -366,7 +366,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   {
     openfluid::core::VectorValue Vect;
 
-    IsOK = it->second.toVectorValue(";",Vect);
+    IsOK = it->second.toVectorValue(Vect);
 
     if(IsOK)
     {

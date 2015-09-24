@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file CompoundValue.hpp
 
@@ -40,8 +39,6 @@
 
 #ifndef __OPENFLUID_CORE_COMPOUNDVALUE_HPP__
 #define __OPENFLUID_CORE_COMPOUNDVALUE_HPP__
-
-#include <vector>
 
 #include <openfluid/core/Value.hpp>
 #include <openfluid/dllexport.hpp>
@@ -53,20 +50,6 @@ namespace openfluid { namespace core {
 class OPENFLUID_API CompoundValue : public Value
 {
   public:
-
-    typedef std::vector<std::string> SeparatorsByLevels_t;
-
-
-  protected:
-
-    static SeparatorsByLevels_t m_StreamSeparators;
-
-
-  public:
-
-    static std::string getStreamSeparator(const unsigned int& Level);
-
-    static void setStreamSeparator(const unsigned int& Level, const std::string& Sep);
 
     inline bool isSimple() const
     { return false; };

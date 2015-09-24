@@ -81,23 +81,19 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
                                                        const openfluid::core::AttributeName_t& AttrName,
                                                        const double& Val)
 {
-  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  OPENFLUID_SetAttribute(UnitPtr,AttrName,openfluid::core::DoubleValue(Val));
+}
 
-  if (UnitPtr != NULL)
-  {
-    if (!UnitPtr->attributes()->setValue(AttrName,openfluid::core::DoubleValue(Val)))
-    {
-      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
-          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
-      throw openfluid::base::FrameworkException(Context,
-                                                "Unable to set double value for attribute "+ AttrName);
-    }
-  }
-  else
-    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
+                                                       const openfluid::core::AttributeName_t& AttrName,
+                                                       bool Val)
+{
+  OPENFLUID_SetAttribute(UnitPtr,AttrName,openfluid::core::BooleanValue(Val));
 }
 
 
@@ -109,23 +105,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
                                                        const openfluid::core::AttributeName_t& AttrName,
                                                        const long& Val)
 {
-  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-
-  if (UnitPtr != NULL)
-  {
-    if (!UnitPtr->attributes()->setValue(AttrName,openfluid::core::IntegerValue(Val)))
-    {
-      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
-          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
-      throw openfluid::base::FrameworkException(Context,
-                                                "Unable to set long value for attribute "+ AttrName);
-    }
-  }
-  else
-    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  OPENFLUID_SetAttribute(UnitPtr,AttrName,openfluid::core::IntegerValue(Val));
 }
 
 
@@ -137,23 +117,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
                                                        const openfluid::core::AttributeName_t& AttrName,
                                                        const std::string& Val)
 {
-  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-
-  if (UnitPtr != NULL)
-  {
-    if (!UnitPtr->attributes()->setValue(AttrName,Val))
-    {
-      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
-          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
-      throw openfluid::base::FrameworkException(Context,
-                                                "Unable to set string value for attribute "+ AttrName);
-    }
-  }
-  else
-    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  OPENFLUID_SetAttribute(UnitPtr,AttrName,openfluid::core::StringValue(Val));
 }
 
 

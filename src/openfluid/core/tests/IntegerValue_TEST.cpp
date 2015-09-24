@@ -45,6 +45,9 @@
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
+#include <openfluid/core/VectorValue.hpp>
 
 
 // =====================================================================
@@ -73,7 +76,35 @@ BOOST_AUTO_TEST_CASE(check_integer)
 
   Val2.set(17*7/45);
   std::cout << Val2 << " " << Val2.get() << " " << Val2.toString() << std::endl;
+}
 
 
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_convert)
+{
+  {
+    openfluid::core::DoubleValue Val;
+    BOOST_REQUIRE(openfluid::core::IntegerValue(1947).convert(Val));
+    BOOST_REQUIRE_CLOSE(Val.get(),1947,0.000001);
+  }
+
+  {
+    openfluid::core::VectorValue Val;
+    BOOST_REQUIRE(openfluid::core::IntegerValue(19).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.size(),1);
+    BOOST_REQUIRE_CLOSE(Val.get(0),19,0.000001);
+  }
+
+  {
+    openfluid::core::MatrixValue Val;
+    BOOST_REQUIRE(openfluid::core::IntegerValue(47).convert(Val));
+    BOOST_REQUIRE_EQUAL(Val.size(),1);
+    BOOST_REQUIRE_EQUAL(Val.getColsNbr(),1);
+    BOOST_REQUIRE_EQUAL(Val.getRowsNbr(),1);
+    BOOST_REQUIRE_CLOSE(Val.get(0,0),47,0.000001);
+  }
 }
 

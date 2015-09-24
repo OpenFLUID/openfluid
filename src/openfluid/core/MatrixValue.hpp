@@ -97,12 +97,12 @@ namespace openfluid { namespace core {
   openfluid::core::MatrixValue Val2;
 
   // to MatrixValue, using two string values separators
-  StringVal.set("3;5;2.8;6;17.999923|1;1;1;1;1|2.11;2.12;2.13;2.14;2.15");
-  StringVal.toMatrixValue(";","|",Val2);
+  StringVal.set("[[3,5,2.8,6,17.999923],[1,1,1,1,1],[2.11,2.12,2.13,2.14,2.15]]");
+  StringVal.toMatrixValue(Val2);
 
   // to MatrixValue, using a single string values separator and row length
-  StringVal.set("3;5;2.8;6;17.999923;1;1;1;1;1;2.11;2.12;2.13;2.14;2.15");
-  StringVal.toMatrixValue(";",5,Val2);
+  StringVal.set("[3,5,2.8,6,17.999923,1,1,1,1,1,2.11,2.12,2.13,2.14,2.15]");
+  StringVal.toMatrixValue(5,Val2);
 @endcode
 
 
@@ -154,6 +154,9 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
     { return new MatrixValue(*this); };
 
     void writeToStream(std::ostream& OutStm) const;
+
+    void writeQuotedToStream(std::ostream& OutStm) const
+    { writeToStream(OutStm); }
 
 };
 

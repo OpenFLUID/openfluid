@@ -69,8 +69,7 @@ class OPENFLUID_API Variables
 
     bool appendValue(const VariableName_t& aName, const TimeIndex_t& anIndex, const Value& aValue);
 
-    bool getValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
-        Value* aValue) const;
+    bool getValue(const VariableName_t& aName, const TimeIndex_t& anIndex,Value* aValue) const;
 
     const Value* value(const VariableName_t& aName, const TimeIndex_t& anIndex) const;
 

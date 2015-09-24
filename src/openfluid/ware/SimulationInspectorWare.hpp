@@ -83,6 +83,19 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
     bool OPENFLUID_IsAttributeExist(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::AttributeName_t& AttrName) const;
 
+
+    /**
+      Gets attribute for a unit
+      @param[in] UnitPtr a Unit
+      @param[in] AttrName the name of the requested attribute
+      @param[out] Val the value of the requested attribute
+    */
+    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
+                                const openfluid::core::AttributeName_t& AttrName,
+                                openfluid::core::Value& Val) const;
+
+    // TODO
+#if 0
     /**
       Gets attribute for a unit, as a StringValue
       @param[in] UnitPtr a Unit
@@ -122,7 +135,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
     void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                 const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::MatrixValue& Val) const;
-
+#endif
     /**
       Gets attribute for a unit, as a double
       @param[in] UnitPtr a Unit
@@ -159,8 +172,8 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] AttrName the name of the requested attribute
       @return constant pointer to the value of the requested attribute
     */
-    const openfluid::core::StringValue* OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
-                                                               const openfluid::core::AttributeName_t& AttrName) const;
+    const openfluid::core::Value* OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
+                                                         const openfluid::core::AttributeName_t& AttrName) const;
 
     /**
        Returns true if a distributed variable exists, false otherwise

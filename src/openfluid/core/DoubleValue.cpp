@@ -35,10 +35,13 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/core/DoubleValue.hpp>
 
-namespace openfluid {
-namespace core {
+#include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/VectorValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
+
+
+namespace openfluid { namespace core {
 
 
 Value& DoubleValue::operator =(const Value& Other)
@@ -53,6 +56,28 @@ Value& DoubleValue::operator =(const Value& Other)
   return *this;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool DoubleValue::convert(Value& Val) const
+{
+  if (Val.getType() == Value::VECTOR)
+  {
+    Val = VectorValue(1,m_Value);
+    return true;
+  }
+  else if (Val.getType() == Value::MATRIX)
+  {
+    Val = MatrixValue(1,1,m_Value);
+    return true;
+  }
+
+  return false;
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -62,9 +87,9 @@ void DoubleValue::writeToStream(std::ostream& OutStm) const
   OutStm << m_Value;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-}
-} // namespaces
+} } // namespaces

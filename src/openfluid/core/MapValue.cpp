@@ -65,7 +65,7 @@ MapValue::MapValue(const MapValue& Val)
 // =====================================================================
 
 
-Value& MapValue::operator =(const Value& Other)
+Value& MapValue::operator=(const Value& Other)
 {
   if (this == &Other) return *this;
 
@@ -96,22 +96,29 @@ MapValue::~MapValue()
 
 void MapValue::writeToStream(std::ostream& OutStm) const
 {
-
   if (m_Value.empty())
   {
-    OutStm << "empty";
+    OutStm << "{}";
   }
   else
   {
     Map_t::const_iterator it;
 
+    OutStm << "{";
     for (it=m_Value.begin(); it!=m_Value.end(); ++it)
     {
-      if (it != m_Value.begin()) OutStm << m_StreamSeparators[0];
-      OutStm << (*it).first << "=" << (*(*it).second);
-    }
-  }
+      if (it != m_Value.begin())
+        OutStm << ",";
 
+      OutStm << "\"" << (*it).first << "\":";
+
+      if ((*it).second->isStringValue())
+        OutStm << "\"" << (*(*it).second) << "\"";
+      else
+        OutStm << (*(*it).second);
+    }
+    OutStm << "}";
+  }
 }
 
 
@@ -148,6 +155,19 @@ Value& MapValue::at(const std::string& Key)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Requested key " + Key + " does not exist");
 
   return (*(m_Value[Key]));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+const Value& MapValue::at(const std::string& Key) const
+{
+  if (!isKeyExist(Key))
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Requested key " + Key + " does not exist");
+
+  return (*(m_Value.at(Key)));
 }
 
 

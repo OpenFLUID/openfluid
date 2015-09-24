@@ -74,6 +74,16 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
                                  const double& Val);
 
      /**
+       Sets attribute for a unit, as a boolean
+       @param[in] UnitPtr a Unit
+       @param[in] AttrName the name of the set attribute
+       @param[in] Val the value of the set attribute
+     */
+     void OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
+                                 const openfluid::core::AttributeName_t& AttrName,
+                                 bool Val);
+
+     /**
        Sets attribute for a unit, as a long integer
        @param[in] UnitPtr a Unit
        @param[in] AttrName the name of the set attribute
@@ -149,10 +159,12 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] UnitPtr a Unit
        @param[in] VarName the name of the variable
        @param[in] Val the added value of the variable (string)
+       @warning Use std::string("text") instead of "text" as a value for the Val parameter
+                to avoid the automatic overloading between char* and bool types
      */
      void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                   const openfluid::core::VariableName_t& VarName,
-                                   const std::string& Val);
+                                       const openfluid::core::VariableName_t& VarName,
+                                       const std::string& Val);
 
     /**
       Appends a distributed variable value for a unit at the end
@@ -215,6 +227,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (string)
+      @warning Use std::string("text") instead of "text" as a value for the Val parameter
+               to avoid the automatic overloading between char* and bool types
     */
     void OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
                                   const openfluid::core::VariableName_t& VarName,

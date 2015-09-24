@@ -138,7 +138,7 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
       OPENFLUID_InitializeVariable(TU,"tests.double.dt",0.0);
-      OPENFLUID_InitializeVariable(TU,"tests.string.dt","emptydt");
+      OPENFLUID_InitializeVariable(TU,"tests.string.dt",std::string("emptydt"));
 
       OPENFLUID_InitializeVariable(TU,"tests.null.dt",TheNull);
 

@@ -39,6 +39,10 @@
 
 
 #include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/VectorValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
+
 
 namespace openfluid { namespace core {
 
@@ -58,6 +62,33 @@ Value& IntegerValue::operator =(const Value& Other)
 
 // =====================================================================
 // =====================================================================
+
+
+bool IntegerValue::convert(Value& Val) const
+{
+  if (Val.getType() == Value::DOUBLE)
+  {
+    Val = DoubleValue(m_Value);
+    return true;
+  }
+  else if (Val.getType() == Value::VECTOR)
+  {
+    Val = VectorValue(1,m_Value);
+    return true;
+  }
+  else if (Val.getType() == Value::MATRIX)
+  {
+    Val = MatrixValue(1,1,m_Value);
+    return true;
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void IntegerValue::writeToStream(std::ostream& OutStm) const
 {

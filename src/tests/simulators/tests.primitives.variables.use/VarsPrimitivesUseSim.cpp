@@ -1058,10 +1058,12 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           NewMap.setString("key1",NewString);
           NewMap.setDouble("key2",NewDouble);
           NewMap.setBoolean("key3",NewBool);
+          NewMap.setVectorValue("key4",openfluid::core::VectorValue(4,4.44));
+          NewMap.setMatrixValue("key5",openfluid::core::MatrixValue(5,5,5.55));
           OPENFLUID_SetVariable(TU,"tests.typed.map",NewMap);
 
           OPENFLUID_GetVariable(TU,"tests.typed.map",CurrIndex,VarMapVal);
-          if (VarMapVal.getSize() != 3)
+          if (VarMapVal.getSize() != 5)
             OPENFLUID_RaiseError("incorrect map size after update");
           if (VarMapVal.getString("key1") != NewString)
             OPENFLUID_RaiseError("incorrect map value at key key1 after update");

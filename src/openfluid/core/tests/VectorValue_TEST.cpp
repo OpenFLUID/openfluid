@@ -45,6 +45,7 @@
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/core/VectorValue.hpp>
+#include <openfluid/core/StringValue.hpp>
 
 
 // =====================================================================
@@ -73,6 +74,24 @@ BOOST_AUTO_TEST_CASE(check_vector)
 
   std::cout << Val1 << std::endl;
 
+
+  openfluid::core::VectorValue ValStr;
+  openfluid::core::StringValue StrTest("[1.1,1.2,2.1,2.2,3.1,3.2]");
+  BOOST_REQUIRE(StrTest.toVectorValue(ValStr));
+  BOOST_REQUIRE_EQUAL(ValStr.size(),6);
+  BOOST_REQUIRE_CLOSE(ValStr.at(1),1.2,0.00001);
+  std::cout << ValStr.toString() << std::endl;
+  BOOST_REQUIRE_EQUAL(ValStr.toString(),"[1.1,1.2,2.1,2.2,3.1,3.2]");
+
+  ValStr.clear();
+  openfluid::core::StringValue StrTestOld("1.1;1.2;2.1;2.2;3.1;3.2");
+  BOOST_REQUIRE(StrTest.toVectorValue(ValStr));
+  BOOST_REQUIRE_EQUAL(ValStr.size(),6);
+  BOOST_REQUIRE_CLOSE(ValStr.at(1),1.2,0.00001);
+  std::cout << ValStr.toString() << " (from old format)" << std::endl;
+  BOOST_REQUIRE_EQUAL(ValStr.toString(),"[1.1,1.2,2.1,2.2,3.1,3.2]");
+
+
   for (openfluid::core::VectorValue::iterator it = Val1.begin(); it!=Val1.end(); ++it)
       std::cout << "using iterator, " << (*it) << std::endl;
 
@@ -87,7 +106,6 @@ BOOST_AUTO_TEST_CASE(check_vector)
   Val2[28] = 28.28;
   BOOST_REQUIRE_CLOSE( Val2[28], 28.28,0.000001 );
   BOOST_REQUIRE_CLOSE( Val1[28], 1.3,0.000001 );
-
 
   std::cout << Val2 << std::endl;
 

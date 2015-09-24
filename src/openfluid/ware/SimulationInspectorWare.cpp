@@ -71,65 +71,42 @@ bool SimulationInspectorWare::IsUnitIDInPtrList(const openfluid::core::UnitsPtrL
 
 void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                                      const openfluid::core::AttributeName_t& AttrName,
-                                                     openfluid::core::StringValue& Val) const
+                                                     openfluid::core::Value& Val) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                              "Attributes cannot be accessed during INITPARAMS stage")
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->attributes()->getValue(AttrName,Val))
+    const openfluid::core::Value* ValPtr = UnitPtr->attributes()->value(AttrName);
+
+    if (!ValPtr)
     {
       openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
           .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
       throw openfluid::base::FrameworkException(Context,
-                                                "StringValue for attribute "+ AttrName +" does not exist");
+                                                "Value for attribute "+ AttrName +" does not exist");
+    }
+
+    if (ValPtr->getType() == Val.getType())
+      Val = *(ValPtr->clone());
+    else if (ValPtr->convert(Val)) // try to convert to compatible type
+      return;
+    else
+    {
+      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+                .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
+            throw openfluid::base::FrameworkException(Context,
+                    "Value for attribute "+ AttrName +" is not the right type " +
+                    "(" +
+                    openfluid::core::Value::getStringFromValueType(Val.getType()) +
+                    " expected but " +
+                    openfluid::core::Value::getStringFromValueType(ValPtr->getType()) +
+                    " found)");
     }
   }
   else
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
-                                                     const openfluid::core::AttributeName_t& AttrName,
-                                                     openfluid::core::DoubleValue& Val) const
-{
-  double TmpVal;
-  OPENFLUID_GetAttribute(UnitPtr,AttrName,TmpVal);
-  Val.set(TmpVal);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
-                                                     const openfluid::core::AttributeName_t& AttrName,
-                                                     openfluid::core::VectorValue& Val) const
-{
-  openfluid::core::StringValue TmpVal;
-  OPENFLUID_GetAttribute(UnitPtr,AttrName,TmpVal);
-  TmpVal.toVectorValue(Val.getStreamSeparator(1),Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
-                                                     const openfluid::core::AttributeName_t& AttrName,
-                                                     openfluid::core::MatrixValue& Val) const
-{
-  openfluid::core::StringValue TmpVal;
-  OPENFLUID_GetAttribute(UnitPtr,AttrName,TmpVal);
-  TmpVal.toMatrixValue(Val.getStreamSeparator(1),Val.getStreamSeparator(2),Val);
 }
 
 
@@ -141,21 +118,9 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
                                                      const openfluid::core::AttributeName_t& AttrName,
                                                      double& Val) const
 {
-  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "Attributes cannot be accessed during INITPARAMS stage")
-
-  if (UnitPtr != NULL)
-  {
-    if (!UnitPtr->attributes()->getValueAsDouble(AttrName,Val))
-    {
-      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
-          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
-      throw openfluid::base::FrameworkException(Context,
-                                                "Double value for attribute "+ AttrName +" does not exist");
-    }
-  }
-  else
-    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  openfluid::core::DoubleValue TmpDoubleVal;
+  OPENFLUID_GetAttribute(UnitPtr,AttrName,TmpDoubleVal);
+  Val = TmpDoubleVal.get();
 }
 
 
@@ -167,21 +132,9 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
                                                      const openfluid::core::AttributeName_t& AttrName,
                                                      long& Val) const
 {
-  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "Attributes cannot be accessed during INITPARAMS stage")
-
-  if (UnitPtr != NULL)
-  {
-    if (!UnitPtr->attributes()->getValueAsLong(AttrName,Val))
-    {
-      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
-          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
-      throw openfluid::base::FrameworkException(Context,
-                                                "Long integer for attribute "+ AttrName +" does not exist");
-    }
-  }
-  else
-    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  openfluid::core::IntegerValue TmpLongVal;
+  OPENFLUID_GetAttribute(UnitPtr,AttrName,TmpLongVal);
+  Val = TmpLongVal.get();
 }
 
 
@@ -193,21 +146,9 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
                                                      const openfluid::core::AttributeName_t& AttrName,
                                                      std::string& Val) const
 {
-  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "Attributes cannot be accessed during INITPARAMS stage")
-
-  if (UnitPtr != NULL)
-  {
-    if (!UnitPtr->attributes()->getValue(AttrName,Val))
-    {
-      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
-          .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
-      throw openfluid::base::FrameworkException(Context,
-                                                "String value for attribute "+ AttrName +" does not exist");
-    }
-  }
-  else
-    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  openfluid::core::StringValue TmpStrVal;
+  OPENFLUID_GetAttribute(UnitPtr,AttrName,TmpStrVal);
+  Val = TmpStrVal.get();
 }
 
 
@@ -215,7 +156,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
 // =====================================================================
 
 
-const openfluid::core::StringValue* SimulationInspectorWare::OPENFLUID_GetAttribute(
+const openfluid::core::Value* SimulationInspectorWare::OPENFLUID_GetAttribute(
                                                              const openfluid::core::SpatialUnit *UnitPtr,
                                                              const openfluid::core::AttributeName_t& AttrName) const
 {
@@ -224,7 +165,7 @@ const openfluid::core::StringValue* SimulationInspectorWare::OPENFLUID_GetAttrib
 
   if (UnitPtr != NULL)
   {
-    const openfluid::core::StringValue* ValPtr = UnitPtr->attributes()->value(AttrName);
+    const openfluid::core::Value* ValPtr = UnitPtr->attributes()->value(AttrName);
     if (!ValPtr)
     {
       openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)

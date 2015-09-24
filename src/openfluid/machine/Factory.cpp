@@ -176,7 +176,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
                                                       itUnitAttr->first + " on units class "+
                                                       (*itAttrsDesc).getUnitsClass());
 
-          TheUnit->attributes()->setValue(itUnitAttr->first,itUnitAttr->second);
+          TheUnit->attributes()->setValueFromRawString(itUnitAttr->first,itUnitAttr->second);
         }
       }
     }

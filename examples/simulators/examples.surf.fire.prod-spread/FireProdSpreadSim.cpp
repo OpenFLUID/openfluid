@@ -90,7 +90,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
     openfluid::core::IDDoubleMap m_UnitsCombustionFactor;
 
-    openfluid::core::IDDoubleMap m_UnitsStockIni;
+    openfluid::core::IDIntMap m_UnitsStockIni;
 
   public:
 
@@ -141,11 +141,16 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
         // FOREST 1
         // CULTIVATED 0.6
         // URBAN 0.2
-        if (CoverCode.get() == "WATER") m_UnitsCombustionFactor[LU->getID()] = 0.0;
-        else if (CoverCode.get() == "URBAN") m_UnitsCombustionFactor[LU->getID()] = 15.0/3600.0;
-        else if (CoverCode.get() == "CULTIVATED") m_UnitsCombustionFactor[LU->getID()] = 45.0/3600.0;
-        else if (CoverCode.get() == "FOREST") m_UnitsCombustionFactor[LU->getID()] = 75.0/3600.0;
-        else OPENFLUID_RaiseError("unknown cover code");
+        if (CoverCode.get() == "WATER")
+          m_UnitsCombustionFactor[LU->getID()] = 0.0;
+        else if (CoverCode.get() == "URBAN")
+          m_UnitsCombustionFactor[LU->getID()] = 15.0/3600.0;
+        else if (CoverCode.get() == "CULTIVATED")
+          m_UnitsCombustionFactor[LU->getID()] = 45.0/3600.0;
+        else if (CoverCode.get() == "FOREST")
+          m_UnitsCombustionFactor[LU->getID()] = 75.0/3600.0;
+        else
+          OPENFLUID_RaiseError("unknown cover code");
       }
 
       // set fire ignition on the land units
@@ -183,13 +188,12 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {
 
-        double StockIni = 0.0;
+        openfluid::core::IntegerValue StockIni;
         OPENFLUID_GetAttribute(LU,"stockini",StockIni);
 
         m_UnitsStockIni[LU->getID()] = StockIni;
 
-        openfluid::core::IntegerValue Stock((long int)(StockIni));
-        OPENFLUID_InitializeVariable(LU,"fire.surf.Q.stocklevel",Stock);
+        OPENFLUID_InitializeVariable(LU,"fire.surf.Q.stocklevel",StockIni);
         OPENFLUID_InitializeVariable(LU,"fire.surf.Q.stockratio",1.0);
       }
 

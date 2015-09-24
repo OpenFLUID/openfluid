@@ -147,7 +147,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
       openfluid::core::SpatialUnit* RU;
       openfluid::core::SpatialUnit* TLU;
-      openfluid::core::DoubleValue StockValue;
+      openfluid::core::IntegerValue StockValue;
 
       m_UseTLUStateFromTLUVar=false;
 
@@ -179,15 +179,14 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest runStep()
     {
-
       openfluid::core::SpatialUnit* RU;
       openfluid::core::SpatialUnit* UpRU;
       openfluid::core::SpatialUnit* UpTLU;
-      openfluid::core::DoubleValue StockValue;
-      openfluid::core::DoubleValue Capacity;
-      openfluid::core::DoubleValue CapacityByDeltaT;
-      openfluid::core::DoubleValue StockValueUp;
-      openfluid::core::DoubleValue TmpValue;
+      openfluid::core::IntegerValue StockValue;
+      openfluid::core::IntegerValue Capacity;
+      openfluid::core::IntegerValue CapacityByDeltaT;
+      openfluid::core::IntegerValue StockValueUp;
+      openfluid::core::IntegerValue TmpValue;
       bool TLUState;
       std::list<openfluid::core::SpatialUnit*>* UpRUsList;
       std::list<openfluid::core::SpatialUnit*>* UpTLUsList;
@@ -213,7 +212,6 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
                                 OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
           OPENFLUID_AppendVariable(RU,"examples.RU.S.stock",StockValue);
         }
-
         else
         {
           UpRUsList = RU->fromSpatialUnits("RU");
@@ -225,16 +223,15 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
           {
             OPENFLUID_GetAttribute(RU,"capacity",Capacity);
          //   CapacityByDeltaT=std::ceil(Capacity/60*DeltaT);
-            CapacityByDeltaT=(Capacity*m_MultiCapacity)/60*DeltaT;
+            CapacityByDeltaT = (Capacity*m_MultiCapacity)/60*DeltaT;
 
 
             if (OPENFLUID_IsVariableExist(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()))
               OPENFLUID_GetVariable(RU,"examples.RU.S.stock",StockValue);
-
-
             else
               OPENFLUID_GetVariable(RU,"examples.RU.S.stock",
                                     OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
+
 
             for (UpRUiter=UpRUsList->begin(); UpRUiter != UpRUsList->end(); ++UpRUiter)
             {
@@ -251,14 +248,18 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
                 StockValue=StockValue+StockValueUp;
                 StockValueUp=0;
               }
+
               OPENFLUID_SetVariable(UpRU,"examples.RU.S.stock",StockValueUp);
+
             }
           }
+
           OPENFLUID_AppendVariable(RU,"examples.RU.S.stock",StockValue);
 
         }
 
       }
+
       return DefaultDeltaT();
     }
 
