@@ -1,27 +1,40 @@
 language: cpp
 
-compiler:
-  - gcc
+sudo: false
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - kubuntu-backports
+    - boost-latest
+    packages:
+    - cmake
+    - git
+    - gcc-4.8
+    - g++-4.8
+    - gfortran-4.8
+    - libboost1.55-dev
+    - libboost-test1.55-dev
+    - libqt4-dev 
+    - libgdal1h 
+    - libgdal1-dev 
+    - libgeos++-dev 
+    - p7zip-full 
+    - gnuplot 
+    - graphviz
+
 
 env:
   global:
-    - GCC_VERSION="4.8"
+    - GCC_VERSION_SUFFIX="-4.8"
   matrix:
     - OFBUILD_TRAVIS_BUILDTYPE=debug
     - OFBUILD_TRAVIS_BUILDTYPE=release
 
-before_install:
-  - sudo add-apt-repository ppa:ubuntugis/ppa -y
-  - sudo add-apt-repository ppa:czchen/travis-ci -y
-  - sudo add-apt-repository ppa:boost-latest/ppa -y
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update -qq
-
-install:
-  - sudo apt-get install -qq openssh-server openssh-client "g++-${GCC_VERSION}" gfortran cmake libboost1.54-all-dev libqt4-dev libgdal1h libgdal1-dev libgeos++-dev p7zip-full gnuplot graphviz
-  - sudo update-alternatives --install /usr/bin/g++ g++ "/usr/bin/g++-${GCC_VERSION}" 90
 
 before_script:
+  - export CC=gcc${GCC_VERSION_SUFFIX} && export CXX=g++${GCC_VERSION_SUFFIX} && export FC=gfortran${GCC_VERSION_SUFFIX}
   - echo "SET(BUILD_FORTRAN_SIMULATORS 1)" > CMake.in.local.cmake
   - echo "SET(OPENFLUID_ENABLE_MARKET 1)" >> CMake.in.local.cmake
   - mkdir _build
@@ -30,8 +43,9 @@ before_script:
   - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "release" ] ; then cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ; fi
 
 script:
-  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "debug" ] ; then make && ctest ; fi
-  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "release" ] ; then make && cpack -G DEB ; fi
+  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "debug" ] ; then make && ctest --output-on-failure ; fi
+  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "release" ] ; then make && cpack ; fi
+
 
 notifications:
   email:
