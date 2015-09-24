@@ -381,12 +381,12 @@
 <context>
     <name>OGRGDALImportExtension</name>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="91"/>
+        <location filename="OGRGDALImportExtension.cpp" line="93"/>
         <source>Spatial data import (OGR/GDAL)</source>
         <translation>Import de données spatiales (OGR/GDAL)</translation>
     </message>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="273"/>
+        <location filename="OGRGDALImportExtension.cpp" line="276"/>
         <source>You are about to remove the selected source to import.
 Import configuration for this source will be lost.
 
@@ -397,7 +397,7 @@ La configuration d&apos;import pour cette source sera perdue.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="349"/>
+        <location filename="OGRGDALImportExtension.cpp" line="352"/>
         <source>You have at least one source configured for import.
 The configuration(s) will be lost.
 
@@ -566,7 +566,7 @@ Abandon.</translation>
 <context>
     <name>signature</name>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="60"/>
+        <location filename="OGRGDALImportExtension.cpp" line="62"/>
         <source>Spatial data import (OGR/GDAL)</source>
         <translation>Import de données spatiales (OGR/GDAL)</translation>
     </message>

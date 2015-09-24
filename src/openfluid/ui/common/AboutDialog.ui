@@ -143,7 +143,7 @@
           </font>
          </property>
          <property name="text">
-          <string>VersionLabel</string>
+          <string notr="true">VersionLabel</string>
          </property>
         </widget>
        </item>
@@ -166,14 +166,14 @@
        <item>
         <widget class="openfluid::ui::common::ClickableLabel" name="WebLabel">
          <property name="text">
-          <string>WebLabel</string>
+          <string notr="true">WebLabel</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="openfluid::ui::common::ClickableLabel" name="ContactLabel">
          <property name="text">
-          <string>ContactLabel</string>
+          <string notr="true">ContactLabel</string>
          </property>
         </widget>
        </item>
@@ -247,7 +247,7 @@
        <item>
         <widget class="openfluid::ui::common::ActionLabel" name="SwitchLabel">
          <property name="text">
-          <string>SwitchLabel</string>
+          <string notr="true">SwitchLabel</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
