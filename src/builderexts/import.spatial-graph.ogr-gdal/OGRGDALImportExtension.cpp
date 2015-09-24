@@ -46,6 +46,8 @@
 
 #include "ogr_api.h"
 
+#include <openfluid/ui/common/UIHelpers.hpp>
+
 #include <QMessageBox>
 #include <QThread>
 
@@ -205,6 +207,7 @@ void OGRGDALImportExtension::update(openfluid::builderext::FluidXUpdateFlags::Fl
 
 // =====================================================================
 // =====================================================================
+
 
 void OGRGDALImportExtension::addSource(const SourceInfos& SrcInfos)
 {
@@ -661,6 +664,7 @@ void OGRGDALImportExtension::updateIsXCentroidComputeInfos()
   m_SourcesInfos[m_CurrentSrcIndex].IsXCentroidCompute = ui->ComputeXCentroidCheckBox->isChecked();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -669,6 +673,7 @@ void OGRGDALImportExtension::updateXCentroidComputeAttrInfos()
 {
   m_SourcesInfos[m_CurrentSrcIndex].XCentroidComputeAttribute = ui->ComputeXCentroidLineEdit->text();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -718,7 +723,7 @@ void OGRGDALImportExtension::updateZCentroidComputeAttrInfos()
 
 void OGRGDALImportExtension::updateIsDatasetImportInfos()
 {
-  ui->DatastoreIDLineEdit->setText(ui->DatastoreIDLineEdit->text().replace(QRegExp("[^\\w]"),"_"));
+  openfluid::ui::common::fixLineEdit(ui->DatastoreIDLineEdit);
 
   if (!(ui->DatasetImportCheckBox->isChecked() ||
       m_SourcesInfos[m_CurrentSrcIndex].IsAlreadyInDataset))

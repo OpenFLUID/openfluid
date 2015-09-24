@@ -39,8 +39,9 @@
 
 #include "ui_EditDatastoreItemDialog.h"
 #include "AddDatastoreItemDialog.hpp"
-#include <openfluid/ui/config.hpp>
 
+#include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/utils/GDALHelpers.hpp>
 
@@ -125,7 +126,7 @@ AddDatastoreItemDialog::~AddDatastoreItemDialog()
 
 void AddDatastoreItemDialog::checkGlobal()
 {
-  ui->IDEdit->setText(ui->IDEdit->text().replace(QRegExp("[^\\w]"),"_"));
+  openfluid::ui::common::fixLineEdit(ui->IDEdit);
 
   ui->UnitsClassEdit->setEnabled(ui->UnitsClassCheckBox->isChecked());
   if (ui->UnitsClassEdit->isEnabled())

@@ -40,6 +40,7 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 
 #include "ui_SaveAsDialog.h"
@@ -103,7 +104,7 @@ void SaveAsDialog::browseClicked()
 
 void SaveAsDialog::projectChanged()
 {
-  ui->ProjectNameEdit->setText(ui->ProjectNameEdit->text().replace(QRegExp("[^\\w]"),"_"));
+  openfluid::ui::common::fixLineEdit(ui->ProjectNameEdit);
 
   m_PrjDir.setPath(QDir::fromNativeSeparators(ui->DirectoryLabel->text()+"/"+ui->ProjectNameEdit->text()));
 

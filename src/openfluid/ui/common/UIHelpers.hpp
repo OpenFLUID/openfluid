@@ -29,25 +29,45 @@
   
 */
 
-
 /**
-  @file AppTools.hpp
+  @file UIHelpers.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_APPTOOLS_HPP__
-#define __OPENFLUID_BUILDERAPP_APPTOOLS_HPP__
+
+#ifndef __OPENFLUID_UICOMMON_UIHELPERS_HPP__
+#define __OPENFLUID_UICOMMON_UIHELPERS_HPP__
 
 
-#include <QString>
 #include <QColor>
+#include <QRegExp>
+#include <QLineEdit>
 
 
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
-
-void launchDevStudio();
+namespace openfluid { namespace ui { namespace common {
 
 
-#endif /* __OPENFLUID_BUILDERAPP_APPTOOLS_HPP__ */
+inline QColor getRandomColor()
+{
+  return QColor(qrand() % 256,qrand() % 256,qrand() % 256);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline void fixLineEdit(QLineEdit* LineEdit,QRegExp SearchRegExp = QRegExp("[^\\w]"),QString NewStr = "_")
+{
+  int CPos = LineEdit->cursorPosition();
+  LineEdit->setText(LineEdit->text().replace(SearchRegExp,NewStr));
+  LineEdit->setCursorPosition(CPos);
+}
+
+
+} } }  // namespaces
+
+
+#endif /* __OPENFLUID_UICOMMON_UIHELPERS_HPP__ */

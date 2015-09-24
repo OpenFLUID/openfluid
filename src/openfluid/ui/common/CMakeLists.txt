@@ -19,7 +19,8 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashS
                             PathsManagementWidget.hpp WaresSearchPathsWidget.hpp
                             LogExplorerDialog.hpp
                             EditMarketplaceDialog.hpp
-                            PreferencesDialog.hpp DetectQtDevToolsDialog.hpp 
+                            PreferencesDialog.hpp DetectQtDevToolsDialog.hpp
+                            UIHelpers.hpp
                             )
 
 

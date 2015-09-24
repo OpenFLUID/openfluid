@@ -84,16 +84,6 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
 // =====================================================================
 
 
-QColor getRandomColor()
-{
-  return QColor(qrand() % 256,qrand() % 256,qrand() % 256);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void launchDevStudio()
 {
   QString ExeName = QString::fromStdString(DEVSTUDIO_APP);

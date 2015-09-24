@@ -43,6 +43,7 @@
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_NewProjectDialog.h"
 #include "NewProjectDialog.hpp"
@@ -95,7 +96,7 @@ NewProjectDialog::~NewProjectDialog()
 
 void NewProjectDialog::onGlobalCheck()
 {
-  ui->NameEdit->setText(ui->NameEdit->text().replace(QRegExp("[^\\w]"),"_"));
+  openfluid::ui::common::fixLineEdit(ui->NameEdit);
 
   if (ui->NameEdit->text().isEmpty())
   {

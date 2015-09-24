@@ -44,6 +44,7 @@
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include <QColorDialog>
 #include <QMessageBox>
@@ -118,7 +119,7 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
   }
   else
   {
-    m_LineColor = getRandomColor();
+    m_LineColor = openfluid::ui::common::getRandomColor();
     openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
                                                                    m_ClassName+".linecolor",m_LineColor.name());
   }
@@ -134,7 +135,7 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
   }
   else
   {
-    m_FillColor = getRandomColor();
+    m_FillColor = openfluid::ui::common::getRandomColor();
     openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
                                                                    m_ClassName+".fillcolor",m_FillColor.name());
   }
