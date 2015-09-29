@@ -140,9 +140,8 @@ A specific type is available for storing non-existing values:
 
 Simulation data are stored using these types : 
 <ul>
-<li>Simulation variables : stored as any type
-<li>Spatial attributes : stored as openfluid::core::StringValue, 
-and can be converted to any other type
+<li>Simulation variables : stored as their native type
+<li>Spatial attributes : stored as their native type
 <li>Simulator parameters : stored as openfluid::core::StringValue, 
 and can be converted to any other type
 <li>Informations associated to events : stored as openfluid::core::StringValue, 
@@ -150,6 +149,7 @@ and can be converted to any other type
 </ul>
 
 Each data type can be converted to and from openfluid::core::StringValue (as far as the string format is correct). 
+String representations of values are (see \ref apdx_values) 
 
 
 Simulation variables can be typed or untyped. 

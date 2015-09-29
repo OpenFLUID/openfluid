@@ -128,6 +128,7 @@
 % TODO to be completed
 %\chapter{\-Structure of an openfluid project}\label{apdx_prj}\hypertarget{apdx_prj}{}\input{apdx_prj}
 \chapter{\-Datetime formats}\label{apdx_datetime}\hypertarget{apdx_datetime}{}\input{apdx_datetime}
+\chapter{\-String representations of values}\label{apdx_values}\hypertarget{apdx_values}{}\input{apdx_values}
 \chapter{\-File formats for generators}\label{apdx_generators}\hypertarget{apdx_generators}{}\input{apdx_generators}
 % TODO to be completed
 %\chapter{\-Observers parameters}\label{apdx_obsparams}\hypertarget{apdx_obsparams}{}\input{apdx_obsparams}

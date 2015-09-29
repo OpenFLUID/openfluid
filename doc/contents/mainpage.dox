@@ -43,6 +43,7 @@ This manual is made of different parts.
   <li> \subpage apdx_prj
 \endif  
   <li> \subpage apdx_datetime
+  <li> \subpage apdx_values
   <li> \subpage apdx_generators
 \if TodoIsDone  
   <li> \subpage apdx_obsparams

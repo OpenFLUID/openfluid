@@ -17,12 +17,15 @@
   * Added API primitive to get a list of spatial units in a given class
   * Improved OpenFLUID-LandR library
   * Improved OpenFLUID-Builder look'n'feel
+  * Improved management of attributes, now stored in their native type
+    instead of string
   * Modified usage of OpenFLUID command line application 
   * Renamed classes for better understanding, with compatibility aliases
   * Renamed accessor methods according to the evolution of the coding style
   * Introduced openfluid::scientific namespace for scientific helpers
   * Refactored openfluid::tools namespace with the introduction of 
-    the openfluid::scientific namespace 
+    the openfluid::scientific namespace
+  * Refactored management of literal representations for OpenFLUID values 
   * Removed wares dependencies to boost libraries
   * Updated OpenFLUID applications icons
   * Updated documentation
