@@ -70,6 +70,9 @@ const std::string CONFIGTESTS_VERSION_PATCH = "@VERSION_PATCH@";
 const std::string CONFIGTESTS_VERSION_STATUS = "@VERSION_STATUS@";
 const std::string CONFIGTESTS_FULL_VERSION = "@FULL_VERSION@";
 
+// FluidHub API
+const std::string CONFIGTESTS_FLUIDHUB_URL = "@TESTS_FLUIDHUB_URL@";
+
 
 #endif  /* __OPENFLUID_TESTSCONFIG_IN_HPP__ */
 

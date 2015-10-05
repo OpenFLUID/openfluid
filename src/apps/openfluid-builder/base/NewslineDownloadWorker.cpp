@@ -39,7 +39,7 @@
 
 
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/utils/FileDownloader.hpp>
+#include <openfluid/utils/FluidHubClient.hpp>
 
 #include "NewslineDownloadWorker.hpp"
 #include "builderconfig.hpp"
@@ -71,6 +71,41 @@ NewslineDownloadWorker::~NewslineDownloadWorker()
 // =====================================================================
 
 
+bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const QString& ShortLocale) const
+{
+  openfluid::utils::FluidHubClient FHClient;
+
+  if (FHClient.connect(BUILDER_NEWSLINE_SOURCEURL.toStdString()))
+  {
+    std::string Content = FHClient.getNews(ShortLocale.toStdString());
+
+    if (Content.empty())
+      Content = FHClient.getNews();
+
+    FHClient.disconnect();
+
+    if (!Content.empty())
+    {
+      QFile RSSFile(RSSFilename);
+
+      if (!RSSFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
+
+      QTextStream OutFile(&RSSFile);
+
+      OutFile << QString::fromUtf8(Content.c_str());
+    }
+
+    return !Content.empty();
+  }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void NewslineDownloadWorker::run()
 {
   QDir().mkpath(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()
@@ -89,21 +124,7 @@ void NewslineDownloadWorker::run()
       .arg(BUILDER_NEWSLINE_CACHERELDIR,m_ShortLocale);
 
 
-  bool DownloadSucceeded = false;
-
-  if (openfluid::utils::FileDownloader::downloadToFile(BUILDER_NEWSLINE_SOURCEURL.toStdString()+
-                                                       "?request=rss&lang="+m_ShortLocale.toStdString(),
-                                                       RSSFile.toStdString()))
-  {
-    DownloadSucceeded = true;
-  }
-  else if(openfluid::utils::FileDownloader::downloadToFile(BUILDER_NEWSLINE_SOURCEURL.toStdString()+"?request=rss",
-                                                       RSSDefaultFile.toStdString()))
-  {
-    DownloadSucceeded = true;
-  }
-
-  if (DownloadSucceeded)
+  if (donwloadRSSToFile(RSSFile,m_ShortLocale))
   {
     QFile LastUpdF(LastUpdFile);
     if (LastUpdF.open(QIODevice::WriteOnly | QIODevice::Text))

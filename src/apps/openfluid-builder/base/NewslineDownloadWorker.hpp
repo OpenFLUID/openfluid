@@ -52,6 +52,8 @@ class NewslineDownloadWorker : public QObject
 
     const QString m_ShortLocale;
 
+    bool donwloadRSSToFile(const QString& RSSFilename, const QString& ShortLocale) const;
+
   signals:
 
     void finished();

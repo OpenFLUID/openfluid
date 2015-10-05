@@ -249,6 +249,11 @@ SET(OPENFLUID_WARESDEV_CMAKE_OBSCPPVAR "OBS_CPP")
 SET(OPENFLUID_WARESDEV_CMAKE_BEXTCPPVAR "BEXT_CPP")
 
 
+################### fluidhub ###################
+
+SET(TESTS_FLUIDHUB_URL "http://www.openfluid-project.org/resources/fluidhubapi-testing/")
+
+
 ################### market ###################
 
 SET(OPENFLUID_MARKETBAGDIR "market-bag")
