@@ -80,6 +80,9 @@ class OPENFLUID_API CppPage: public QWizardPage
 
   protected:
 
+    /**
+     * Reimplemented function
+     */
     bool isComplete() const;
 
   public:
@@ -112,6 +115,9 @@ class OPENFLUID_API CMakeConfigPage: public QWizardPage
 
   protected:
 
+    /**
+     * Reimplemented function
+     */
     bool isComplete() const;
 
   public:
@@ -151,6 +157,9 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
   protected:
 
+    /**
+     * Reimplemented function
+     */
     void initializePage(int ID);
 
 
@@ -160,8 +169,14 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
     ~NewSrcFileAssistant();
 
-    int getNextButtonID() const;
+    /**
+     * Reimplemented function
+     */
+    int nextId() const;
 
+    /**
+     * Reimplemented function
+     */
     void accept();
 
     QString getNewFilePath();

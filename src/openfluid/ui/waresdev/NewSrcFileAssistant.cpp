@@ -371,7 +371,7 @@ NewSrcFileAssistant::~NewSrcFileAssistant()
 // =====================================================================
 
 
-int NewSrcFileAssistant::getNextButtonID() const
+int NewSrcFileAssistant::nextId() const
 {
   int CheckedID = ui->buttonGroup->checkedId();
 
