@@ -60,6 +60,9 @@ class OPENFLUID_API WareSrcSyntaxHighlighter: public QSyntaxHighlighter
 
   protected:
 
+    /**
+     * Reimplemented function
+     */
     void highlightBlock(const QString& Text);
 
   public:
