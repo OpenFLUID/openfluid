@@ -41,10 +41,16 @@
 
 #include "ui_WaresSrcImportDialog.h"
 
-#include <QFileDialog>
+#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
+#include <openfluid/ui/config.hpp>
+#include <openfluid/config.hpp>
 
+#include <QFileDialog>
+#include <QThread>
 
 namespace openfluid { namespace ui { namespace waresdev {
+
 
 // =====================================================================
 // =====================================================================
@@ -55,6 +61,13 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
+  ui->ButtonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
+  ui->ButtonBox->button(QDialogButtonBox::Close)->setVisible(false);
+
+  m_ListWidgetsByWareTypeName[openfluid::config::SIMULATORS_PLUGINS_SUBDIR] = ui->SimListWidget;
+  m_ListWidgetsByWareTypeName[openfluid::config::OBSERVERS_PLUGINS_SUBDIR] = ui->ObsListWidget;
+  m_ListWidgetsByWareTypeName[openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR] = ui->ExtListWidget;
+
   ui->WareshubWidget->setVisible(false);
 
   onPackageSourceChoosen(true);
@@ -63,6 +76,60 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   connect(ui->WareshubRadioButton, SIGNAL(toggled(bool)), this, SLOT(onGitSourceChoosen(bool)));
 
   connect(ui->PackagePathButton, SIGNAL(clicked()), this, SLOT(onPackagePathButtonClicked()));
+
+  for (QListWidget* Widget : m_ListWidgetsByWareTypeName)
+  {
+    connect(Widget, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
+  }
+
+  connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(importPackage()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WaresSrcImportDialog::check()
+{
+  QStringList Msg;
+
+  if (ui->PackagePathLineEdit->text().isEmpty())
+    Msg << "No package file defined.";
+
+  if (getSelectedWares().isEmpty())
+    Msg << "No ware selected.";
+
+  if (!Msg.isEmpty())
+  {
+    setMessage(Msg.join("\n"));
+    return false;
+  }
+
+  setMessage();
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcImportDialog::setMessage(const QString& Msg)
+{
+  if (Msg.isEmpty())
+  {
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
+    ui->MessageLabel->setText(tr("Import wares sources"));
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  }
+  else
+  {
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->MessageFrame->setStyleSheet(
+        QString("background-color: %1").arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
+    ui->MessageLabel->setText(Msg);
+  }
 }
 
 
@@ -76,6 +143,8 @@ void WaresSrcImportDialog::onPackageSourceChoosen(bool Checked)
     return;
 
   ui->WaresGroupBox->setTitle("Available wares in package");
+
+  updatePackageInfo(mp_ImportFilePkg);
 }
 
 
@@ -89,7 +158,10 @@ void WaresSrcImportDialog::onGitSourceChoosen(bool Checked)
     return;
 
   ui->WaresGroupBox->setTitle("Available wares on wareshub site");
+
+  updatePackageInfo(mp_ImportFilePkg);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -97,14 +169,189 @@ void WaresSrcImportDialog::onGitSourceChoosen(bool Checked)
 
 void WaresSrcImportDialog::onPackagePathButtonClicked()
 {
-  QString PackageFilePath = QFileDialog::getOpenFileName(this, tr("Choose the package to open"),
+  QString PackageFilePath = QFileDialog::getOpenFileName(this, tr("Choose the package file to open"),
                                                          QDir::homePath(),
                                                          tr("OpenFLUID wares packages (*.ofwdp)"));
 
   if (PackageFilePath.isEmpty())
     return;
 
+
   ui->PackagePathLineEdit->setText(PackageFilePath);
+
+
+  QThread* Thread = new QThread();
+
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog("Fetching ware sources information:", this);
+
+  try
+  {
+    mp_ImportFilePkg = new openfluid::waresdev::WaresDevImportPackage(PackageFilePath);
+
+    mp_ImportFilePkg->moveToThread(Thread);
+
+    connect(Thread, SIGNAL(started()), mp_ImportFilePkg, SLOT(fetchInformation()));
+    connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
+
+    connect(mp_ImportFilePkg, SIGNAL(finished()), Thread, SLOT(quit()));
+    connect(mp_ImportFilePkg, SIGNAL(finished()), &ProgressDialog, SLOT(finish()));
+
+    connect(mp_ImportFilePkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
+    connect(mp_ImportFilePkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
+    connect(mp_ImportFilePkg, SIGNAL(progressed(int)), &ProgressDialog, SLOT(progress(int)));
+
+    Thread->start();
+  }
+  catch (std::exception& e)
+  {
+    ProgressDialog.writeError(e.what());
+  }
+
+  ProgressDialog.exec();
+
+  updatePackageInfo(mp_ImportFilePkg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcImportDialog::updatePackageInfo(openfluid::waresdev::WaresDevImportPackage* ImportPackage)
+{
+  if (!ImportPackage)
+    return;
+
+  ui->PackagersLineEdit->setText(ImportPackage->getPackagers());
+
+  ui->PackageDescriptionTextEdit->setPlainText(ImportPackage->getPackageDescription());
+
+  updateWaresList(ImportPackage);
+
+  ui->WaresTabWidget->setCurrentIndex(0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcImportDialog::updateWaresList(openfluid::waresdev::WaresDevImportPackage* ImportPackage)
+{
+  for (QListWidget* ListWidget : m_ListWidgetsByWareTypeName.values())
+    ListWidget->clear();
+
+  if (!ImportPackage)
+    return;
+
+  QDir WaresDevDir(openfluid::waresdev::WareSrcManager::instance()->getWaresdevPath());
+  QDir PackageTempDir = ImportPackage->getPackageTempDir();
+
+  for (const QString& WarePath : ImportPackage->getWaresPaths())
+  {
+    QFileInfo WareFileInfo(WarePath);
+
+    QString WareName = WareFileInfo.fileName();
+    QString WareTypeName = WareFileInfo.dir().dirName();
+
+    QListWidgetItem* Item = new QListWidgetItem(WareName);
+    Item->setData(Qt::UserRole, WareFileInfo.absoluteFilePath());
+
+    if (WaresDevDir.exists(PackageTempDir.relativeFilePath(WarePath)))
+    {
+      Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
+      Item->setCheckState(Qt::Unchecked);
+      Item->setToolTip(QString("%1 already exists in your workspace").arg(WareName));
+    }
+    else
+    {
+      Item->setCheckState(Qt::Checked);
+      Item->setToolTip("");
+    }
+
+    m_ListWidgetsByWareTypeName[WareTypeName.toStdString()]->addItem(Item);
+  }
+
+  check();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList WaresSrcImportDialog::getSelectedWares()
+{
+  QStringList Wares;
+
+  for (QMap<std::string, QListWidget*>::iterator it = m_ListWidgetsByWareTypeName.begin();
+      it != m_ListWidgetsByWareTypeName.end();
+      ++it)
+  {
+    for (const QListWidgetItem* Item : it.value()->findItems("*", Qt::MatchWildcard))
+    {
+      if (Item->checkState() == Qt::Checked)
+        Wares << Item->data(Qt::UserRole).toString();
+    }
+  }
+
+  return Wares;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcImportDialog::importPackage()
+{
+  if (!check())
+    return;
+
+  openfluid::waresdev::WaresDevImportPackage* Pkg = 0;
+
+  if (ui->PackageRadioButton->isChecked())
+    Pkg = mp_ImportFilePkg;
+  else
+    Pkg = mp_ImportGitPkg;
+
+  if (!Pkg)
+    return;
+
+  Pkg->setSelectedWares(getSelectedWares());
+
+
+  QThread* Thread = new QThread();
+
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog("Processing ware sources import:", this);
+
+  Pkg->moveToThread(Thread);
+
+  connect(Thread, SIGNAL(started()), Pkg, SLOT(copyWares()));
+  connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
+
+  connect(Pkg, SIGNAL(finished()), Thread, SLOT(quit()));
+  connect(Pkg, SIGNAL(finished()), &ProgressDialog, SLOT(finish()));
+
+  connect(Pkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
+  connect(Pkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
+  connect(Pkg, SIGNAL(progressed(int)), &ProgressDialog, SLOT(progress(int)));
+
+  try
+  {
+    Thread->start();
+  }
+  catch (std::exception& e)
+  {
+    ProgressDialog.writeError(e.what());
+  }
+
+  ProgressDialog.exec();
+
+  ui->ButtonBox->button(QDialogButtonBox::Close)->setVisible(true);
+  ui->ButtonBox->button(QDialogButtonBox::Cancel)->setVisible(false);
+
+  updateWaresList(Pkg);
 }
 
 

@@ -179,7 +179,7 @@ font : bold;
         <item>
          <widget class="QTabWidget" name="WaresTabWidget">
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab">
            <attribute name="title">
@@ -235,7 +235,7 @@ font : bold;
         </sizepolicy>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Close|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
@@ -249,31 +249,15 @@ font : bold;
    <sender>ButtonBox</sender>
    <signal>rejected()</signal>
    <receiver>WaresSrcExportDialog</receiver>
-   <slot>reject()</slot>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>565</x>
-     <y>604</y>
+     <x>50</x>
+     <y>597</y>
     </hint>
     <hint type="destinationlabel">
-     <x>523</x>
-     <y>620</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ButtonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>WaresSrcExportDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>670</x>
-     <y>601</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>707</x>
-     <y>567</y>
+     <x>44</x>
+     <y>619</y>
     </hint>
    </hints>
   </connection>

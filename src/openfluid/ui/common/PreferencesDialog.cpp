@@ -710,7 +710,8 @@ void PreferencesDialog::intializeTextEditorSettings()
 // =====================================================================
 
 
-void PreferencesDialog::updateSyntaxElementLabel(QLabel* Label, const QStringList& Decorations, const QString& ColorName)
+void PreferencesDialog::updateSyntaxElementLabel(QLabel* Label, const QStringList& Decorations,
+  const QString& ColorName)
 {
   QStringList Font = Decorations.filter(QRegExp("bold|italic"));
   QStringList TextDecoration = Decorations.filter(QRegExp("underline|strike-through"));

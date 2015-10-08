@@ -42,12 +42,17 @@
 
 
 #include <QDialog>
+#include <QListWidget>
 
 #include <openfluid/dllexport.hpp>
 
-namespace Ui { class WaresSrcImportDialog;
+namespace Ui {
+class WaresSrcImportDialog;
 }
 
+namespace openfluid { namespace waresdev {
+class WaresDevImportPackage;
+} }
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -59,13 +64,31 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
 
     Ui::WaresSrcImportDialog* ui;
 
+    QMap<std::string, QListWidget*> m_ListWidgetsByWareTypeName;
+
+    openfluid::waresdev::WaresDevImportPackage* mp_ImportFilePkg = 0;
+
+    openfluid::waresdev::WaresDevImportPackage* mp_ImportGitPkg = 0;
+
+    void setMessage(const QString& Msg = "");
+
+    void updatePackageInfo(openfluid::waresdev::WaresDevImportPackage* ImportPackage);
+
+    void updateWaresList(openfluid::waresdev::WaresDevImportPackage* ImportPackage);
+
+    QStringList getSelectedWares();
+
   private slots :
+
+    bool check();
 
     void onPackageSourceChoosen(bool Checked);
 
     void onGitSourceChoosen(bool Checked);
 
     void onPackagePathButtonClicked();
+
+    void importPackage();
 
   public:
 
