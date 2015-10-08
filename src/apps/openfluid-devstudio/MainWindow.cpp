@@ -55,6 +55,7 @@
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
+#include <openfluid/waresdev/WaresDevPackage.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 
@@ -391,8 +392,14 @@ void MainWindow::onPreferencesAsked()
 
 void MainWindow::onImportWareSourcesAsked()
 {
-  openfluid::ui::waresdev::WaresSrcImportDialog Dialog(this);
-  Dialog.exec();
+
+  if (openfluid::waresdev::WaresDevPackage::checkSevenZProgram())
+  {
+    openfluid::ui::waresdev::WaresSrcImportDialog Dialog(this);
+    Dialog.exec();
+  }
+  else
+    QMessageBox::warning(this, "Import not available", "7zip programm is not installed.");
 }
 
 
@@ -402,10 +409,13 @@ void MainWindow::onImportWareSourcesAsked()
 
 void MainWindow::onExportWareSourcesAsked()
 {
-  openfluid::ui::waresdev::WaresSrcExportDialog Dialog(this);
-  if (Dialog.exec())
-    qDebug() << Dialog.getPackageFilePath() << Dialog.getPackagers() << Dialog.getPackageDesciption()
-             << Dialog.getSelectedWares();
+  if (openfluid::waresdev::WaresDevPackage::checkSevenZProgram())
+  {
+    openfluid::ui::waresdev::WaresSrcExportDialog Dialog(this);
+    Dialog.exec();
+  }
+  else
+    QMessageBox::warning(this, "Export not available", "7zip programm is not installed.");
 }
 
 

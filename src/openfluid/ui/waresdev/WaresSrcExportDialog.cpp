@@ -41,8 +41,12 @@
 
 #include "ui_WaresSrcExportDialog.h"
 
-#include <QFileDialog>
+#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
+#include <openfluid/ui/config.hpp>
 
+#include <QFileDialog>
+#include <QThread>
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -55,6 +59,9 @@ WaresSrcExportDialog::WaresSrcExportDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
+  ui->ButtonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
+  ui->ButtonBox->button(QDialogButtonBox::Close)->setVisible(false);
+
   m_ListWidgetsByWareType[openfluid::waresdev::WareSrcManager::SIMULATOR] = ui->SimListWidget;
   m_ListWidgetsByWareType[openfluid::waresdev::WareSrcManager::OBSERVER] = ui->ObsListWidget;
   m_ListWidgetsByWareType[openfluid::waresdev::WareSrcManager::BUILDEREXT] = ui->ExtListWidget;
@@ -62,11 +69,68 @@ WaresSrcExportDialog::WaresSrcExportDialog(QWidget* Parent) :
   initWaresLists();
 
   connect(ui->PackagePathButton, SIGNAL(clicked()), this, SLOT(onPackagePathButtonClicked()));
+
+  connect(ui->PackagePathLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(check()));
+
+  for (QListWidget* Widget : m_ListWidgetsByWareType)
+  {
+    connect(Widget, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
+  }
+
+  connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(exportToPackage()));
 }
 
 
 // =====================================================================
 // =====================================================================
+
+
+bool WaresSrcExportDialog::check()
+{
+  QStringList Msg;
+
+  if (ui->PackagePathLineEdit->text().isEmpty())
+    Msg << "No package file defined.";
+
+  if (getSelectedWares().isEmpty())
+    Msg << "No ware selected.";
+
+  if (!Msg.isEmpty())
+  {
+    setMessage(Msg.join("\n"));
+    return false;
+  }
+
+  setMessage();
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcExportDialog::setMessage(const QString& Msg)
+{
+  if (Msg.isEmpty())
+  {
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
+    ui->MessageLabel->setText(tr("Export wares sources"));
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  }
+  else
+  {
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->MessageFrame->setStyleSheet(
+        QString("background-color: %1").arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
+    ui->MessageLabel->setText(Msg);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void WaresSrcExportDialog::initWaresLists()
 {
@@ -75,11 +139,12 @@ void WaresSrcExportDialog::initWaresLists()
   for (ListWidgetsByWareType_t::iterator it = m_ListWidgetsByWareType.begin(); it != m_ListWidgetsByWareType.end();
       ++it)
   {
-    for (const QString& WareId : QDir(Manager->getWareTypePath(it.key())).entryList(
-                                                                                    QDir::Dirs | QDir::NoDotAndDotDot,
-                                                                                    QDir::Name))
+    for (const QFileInfo& WareFileInfo : QDir(Manager->getWareTypePath(it.key())).entryInfoList(
+        QDir::Dirs | QDir::NoDotAndDotDot,
+        QDir::Name))
     {
-      QListWidgetItem* Item = new QListWidgetItem(WareId);
+      QListWidgetItem* Item = new QListWidgetItem(WareFileInfo.fileName());
+      Item->setData(Qt::UserRole, WareFileInfo.absoluteFilePath());
       Item->setCheckState(Qt::Unchecked);
       it.value()->addItem(Item);
     }
@@ -87,6 +152,7 @@ void WaresSrcExportDialog::initWaresLists()
 
   ui->WaresTabWidget->setCurrentIndex(0);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -111,9 +177,45 @@ void WaresSrcExportDialog::onPackagePathButtonClicked()
 // =====================================================================
 
 
-QString WaresSrcExportDialog::getPackageFilePath()
+void WaresSrcExportDialog::exportToPackage()
 {
-  return ui->PackagePathLineEdit->text();
+  if (!check())
+    return;
+
+  QThread* Thread = new QThread();
+
+  openfluid::waresdev::WaresDevExportPackage Pkg(ui->PackagePathLineEdit->text(),
+                                                 getSelectedWares(),
+                                                 ui->PackagersLineEdit->text(),
+                                                 ui->PackageDescriptionTextEdit->toPlainText());
+
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog("Processing ware sources compression:", this);
+
+  Pkg.moveToThread(Thread);
+
+  connect(Thread, SIGNAL(started()), &Pkg, SLOT(exportToPackage()));
+  connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
+
+  connect(&Pkg, SIGNAL(finished()), Thread, SLOT(quit()));
+  connect(&Pkg, SIGNAL(finished()), &ProgressDialog, SLOT(finish()));
+
+  connect(&Pkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
+  connect(&Pkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
+  connect(&Pkg, SIGNAL(progressed(int)), &ProgressDialog, SLOT(progress(int)));
+
+  try
+  {
+    Thread->start();
+  }
+  catch (std::exception& e)
+  {
+    ProgressDialog.writeError(e.what());
+  }
+
+  ProgressDialog.exec();
+
+  ui->ButtonBox->button(QDialogButtonBox::Close)->setVisible(true);
+  ui->ButtonBox->button(QDialogButtonBox::Cancel)->setVisible(false);
 }
 
 
@@ -121,29 +223,9 @@ QString WaresSrcExportDialog::getPackageFilePath()
 // =====================================================================
 
 
-QString WaresSrcExportDialog::getPackagers()
+QStringList WaresSrcExportDialog::getSelectedWares()
 {
-  return ui->PackagersLineEdit->text();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString WaresSrcExportDialog::getPackageDesciption()
-{
-  return ui->PackageDescriptionTextEdit->toPlainText();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QMap<openfluid::waresdev::WareSrcManager::WareType, QStringList> WaresSrcExportDialog::getSelectedWares()
-{
-  QMap<openfluid::waresdev::WareSrcManager::WareType, QStringList> Wares;
+  QStringList Wares;
 
   for (ListWidgetsByWareType_t::iterator it = m_ListWidgetsByWareType.begin(); it != m_ListWidgetsByWareType.end();
       ++it)
@@ -151,7 +233,7 @@ QMap<openfluid::waresdev::WareSrcManager::WareType, QStringList> WaresSrcExportD
     for (const QListWidgetItem* Item : it.value()->findItems("*", Qt::MatchWildcard))
     {
       if (Item->checkState() == Qt::Checked)
-        Wares[it.key()] << Item->text();
+        Wares << Item->data(Qt::UserRole).toString();
     }
   }
 

@@ -30,69 +30,53 @@
  */
 
 /**
- @file WaresSrcExportDialog.hpp
+ @file WaresSrcIOProgressDialog.hpp
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_WARESSRCEXPORTDIALOG_HPP__
-#define __OPENFLUID_UIWARESDEV_WARESSRCEXPORTDIALOG_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__
 
 
 #include <QDialog>
 
 #include <openfluid/dllexport.hpp>
 
-#include <QListWidget>
-#include <openfluid/waresdev/WareSrcManager.hpp>
-
 namespace Ui {
-class WaresSrcExportDialog;
+class WaresSrcIOProgressDialog;
 }
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WaresSrcExportDialog: public QDialog
+class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
 {
   Q_OBJECT
 
   private:
 
-    Ui::WaresSrcExportDialog* ui;
+    Ui::WaresSrcIOProgressDialog* ui;
 
-    typedef QMap<openfluid::waresdev::WareSrcManager::WareType, QListWidget*> ListWidgetsByWareType_t;
+  public slots :
 
-    ListWidgetsByWareType_t m_ListWidgetsByWareType;
+    void writeInfo(const QString& Message);
 
-    void setMessage(const QString& Msg = "");
+    void writeError(const QString& Message);
 
-    void initWaresLists();
+    void finish();
 
-  private slots :
-
-    bool check();
-
-    void onPackagePathButtonClicked();
-
-    void exportToPackage();
+    void progress(int Value);
 
   public:
 
-    WaresSrcExportDialog(QWidget* Parent);
+    WaresSrcIOProgressDialog(const QString& Description, QWidget* Parent);
 
-    QString getPackageFilePath();
-
-    QString getPackagers();
-
-    QString getPackageDesciption();
-
-    QStringList getSelectedWares();
 };
 
 } } } //namespaces
 
-#endif /* __OPENFLUID_UIWARESDEV_WARESSRCEXPORTDIALOG_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__ */
