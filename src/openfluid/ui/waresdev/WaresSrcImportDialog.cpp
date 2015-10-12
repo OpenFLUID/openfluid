@@ -222,9 +222,9 @@ void WaresSrcImportDialog::updatePackageInfo(openfluid::waresdev::WaresDevImport
   if (!ImportPackage)
     return;
 
-  ui->PackagersLineEdit->setText(ImportPackage->getPackagers());
+  ui->PackagersLabel->setText(ImportPackage->getPackagers());
 
-  ui->PackageDescriptionTextEdit->setPlainText(ImportPackage->getPackageDescription());
+  ui->PackageDescriptionLabel->setText(ImportPackage->getPackageDescription());
 
   updateWaresList(ImportPackage);
 
