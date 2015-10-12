@@ -43,13 +43,14 @@
 #include <set>
 #include <string>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 
 
 namespace openfluid { namespace utils {
 
 
-class FluidHubClient
+class OPENFLUID_API FluidHubClient
 {
   public:
 
