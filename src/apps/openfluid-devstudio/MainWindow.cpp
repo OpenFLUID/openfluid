@@ -59,7 +59,7 @@
 
 #include "DevStudioPreferencesManager.hpp"
 
-#include <QDebug>
+
 MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
     QMainWindow(), ui(new Ui::MainWindow)
 {
