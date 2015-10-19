@@ -61,9 +61,6 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  ui->ButtonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
-  ui->ButtonBox->button(QDialogButtonBox::Close)->setVisible(false);
-
   m_ListWidgetsByWareTypeName[openfluid::config::SIMULATORS_PLUGINS_SUBDIR] = ui->SimListWidget;
   m_ListWidgetsByWareTypeName[openfluid::config::OBSERVERS_PLUGINS_SUBDIR] = ui->ObsListWidget;
   m_ListWidgetsByWareTypeName[openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR] = ui->ExtListWidget;
@@ -83,6 +80,8 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   }
 
   connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(importPackage()));
+
+  check();
 }
 
 
@@ -94,7 +93,7 @@ bool WaresSrcImportDialog::check()
 {
   QStringList Msg;
 
-  if (ui->PackagePathLineEdit->text().isEmpty())
+  if (ui->PackagePathLabel->text().isEmpty())
     Msg << "No package file defined.";
 
   if (getSelectedWares().isEmpty())
@@ -177,7 +176,7 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
     return;
 
 
-  ui->PackagePathLineEdit->setText(PackageFilePath);
+  ui->PackagePathLabel->setText(PackageFilePath);
 
 
   QThread* Thread = new QThread();
@@ -193,8 +192,8 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
     connect(Thread, SIGNAL(started()), mp_ImportFilePkg, SLOT(fetchInformation()));
     connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
 
-    connect(mp_ImportFilePkg, SIGNAL(finished()), Thread, SLOT(quit()));
-    connect(mp_ImportFilePkg, SIGNAL(finished()), &ProgressDialog, SLOT(finish()));
+    connect(mp_ImportFilePkg, SIGNAL(finished(bool)), Thread, SLOT(quit()));
+    connect(mp_ImportFilePkg, SIGNAL(finished(bool)), &ProgressDialog, SLOT(finish(bool)));
 
     connect(mp_ImportFilePkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
     connect(mp_ImportFilePkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
@@ -330,8 +329,8 @@ void WaresSrcImportDialog::importPackage()
   connect(Thread, SIGNAL(started()), Pkg, SLOT(copyWares()));
   connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
 
-  connect(Pkg, SIGNAL(finished()), Thread, SLOT(quit()));
-  connect(Pkg, SIGNAL(finished()), &ProgressDialog, SLOT(finish()));
+  connect(Pkg, SIGNAL(finished(bool)), Thread, SLOT(quit()));
+  connect(Pkg, SIGNAL(finished(bool)), &ProgressDialog, SLOT(finish(bool)));
 
   connect(Pkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
   connect(Pkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
@@ -346,12 +345,8 @@ void WaresSrcImportDialog::importPackage()
     ProgressDialog.writeError(e.what());
   }
 
-  ProgressDialog.exec();
-
-  ui->ButtonBox->button(QDialogButtonBox::Close)->setVisible(true);
-  ui->ButtonBox->button(QDialogButtonBox::Cancel)->setVisible(false);
-
-  updateWaresList(Pkg);
+  if(ProgressDialog.exec())
+    accept();
 }
 
 

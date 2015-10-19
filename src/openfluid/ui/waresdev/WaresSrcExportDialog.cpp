@@ -59,9 +59,6 @@ WaresSrcExportDialog::WaresSrcExportDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  ui->ButtonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
-  ui->ButtonBox->button(QDialogButtonBox::Close)->setVisible(false);
-
   m_ListWidgetsByWareType[openfluid::waresdev::WareSrcManager::SIMULATOR] = ui->SimListWidget;
   m_ListWidgetsByWareType[openfluid::waresdev::WareSrcManager::OBSERVER] = ui->ObsListWidget;
   m_ListWidgetsByWareType[openfluid::waresdev::WareSrcManager::BUILDEREXT] = ui->ExtListWidget;
@@ -78,6 +75,8 @@ WaresSrcExportDialog::WaresSrcExportDialog(QWidget* Parent) :
   }
 
   connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(exportToPackage()));
+
+  check();
 }
 
 
@@ -196,8 +195,8 @@ void WaresSrcExportDialog::exportToPackage()
   connect(Thread, SIGNAL(started()), &Pkg, SLOT(exportToPackage()));
   connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
 
-  connect(&Pkg, SIGNAL(finished()), Thread, SLOT(quit()));
-  connect(&Pkg, SIGNAL(finished()), &ProgressDialog, SLOT(finish()));
+  connect(&Pkg, SIGNAL(finished(bool)), Thread, SLOT(quit()));
+  connect(&Pkg, SIGNAL(finished(bool)), &ProgressDialog, SLOT(finish(bool)));
 
   connect(&Pkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
   connect(&Pkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
@@ -212,10 +211,8 @@ void WaresSrcExportDialog::exportToPackage()
     ProgressDialog.writeError(e.what());
   }
 
-  ProgressDialog.exec();
-
-  ui->ButtonBox->button(QDialogButtonBox::Close)->setVisible(true);
-  ui->ButtonBox->button(QDialogButtonBox::Cancel)->setVisible(false);
+  if (ProgressDialog.exec())
+    accept();
 }
 
 

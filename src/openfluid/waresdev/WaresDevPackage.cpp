@@ -233,13 +233,18 @@ void WaresDevExportPackage::exportToPackage()
 
   compress();
 
-  if (mp_Process->exitCode())
-    emit error("Export failed");
-  else
-    emit info("Export done");
-
   emit progressed(100);
-  emit finished();
+
+  if (mp_Process->exitCode())
+  {
+    emit error("Export failed");
+    emit finished(false);
+  }
+  else
+  {
+    emit info("Export done");
+    emit finished(true);
+  }
 }
 
 
@@ -326,13 +331,18 @@ void WaresDevImportPackage::fetchInformation()
       m_WaresPaths << m_PackageTempDir.absoluteFilePath("%1/%2").arg(WareTypeFolder).arg(WareFolder);
   }
 
-  if (mp_Process->exitCode())
-    emit error("Fetching information failed");
-  else
-    emit info("Fetching information done");
-
   emit progressed(100);
-  emit finished();
+
+  if (mp_Process->exitCode())
+  {
+    emit error("Fetching information failed");
+    emit finished(false);
+  }
+  else
+  {
+    emit info("Fetching information done");
+    emit finished(true);
+  }
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());
@@ -417,13 +427,18 @@ void WaresDevImportPackage::copyWares()
     emit progressed(Progress);
   }
 
-  if (!Ok)
-    emit error("Import done with errors");
-  else
-    emit info("Import done");
-
   emit progressed(100);
-  emit finished();
+
+  if (!Ok)
+  {
+    emit error("Import done with errors");
+    emit finished(false);
+  }
+  else
+  {
+    emit info("Import done");
+    emit finished(true);
+  }
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());
