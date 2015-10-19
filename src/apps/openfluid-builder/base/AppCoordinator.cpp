@@ -236,9 +236,10 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
 {
   try
   {
+    unsetCurrentModule();
+
     AbstractModule* Module = new ProjectModule(ProjectPath);
 
-    unsetCurrentModule();
     setCurrentModule(Module);
 
     m_Actions.setProjectMode();
