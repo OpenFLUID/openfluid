@@ -26,37 +26,38 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
-  @file FluidHubClient.hpp
+  @file FluidHubAPIClient.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#ifndef __OPENFLUID_UTILS_FLUIDHUBCLIENT_HPP__
-#define __OPENFLUID_UTILS_FLUIDHUBCLIENT_HPP__
+#ifndef __OPENFLUID_UTILS_FLUIDHUBAPICLIENT_HPP__
+#define __OPENFLUID_UTILS_FLUIDHUBAPICLIENT_HPP__
 
 
 #include <set>
-#include <string>
+
+#include <QString>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/utils/RESTClient.hpp>
 
 
 namespace openfluid { namespace utils {
 
 
-class OPENFLUID_API FluidHubClient
+class OPENFLUID_API FluidHubAPIClient
 {
   public:
 
     // TODO unify with other waretype definitions (PluggableWare, WareSrcManager, ...)
     enum WareType { UNDEFINED, OBSERVER, SIMULATOR, BUILDEREXT, OTHER };
-
 
     class WareDetailedDescription
     {
@@ -66,46 +67,53 @@ class OPENFLUID_API FluidHubClient
 
         std::string GitUrl;
 
+        std::vector<std::string> GitBranches;
+
+        std::map<std::string,unsigned int> IssuesCounters;
+
         std::set<std::string> ROUsers;
 
         std::set<std::string> RWUsers;
     };
 
+    typedef std::map<WareType,std::set<openfluid::ware::WareID_t>> WaresListByType_t;
 
-    typedef std::map<WareType,std::set<openfluid::ware::WareID_t>> WaresDescByType_t;
-
-    typedef std::map<WareType,std::map<openfluid::ware::WareID_t,WareDetailedDescription>> WaresDetailedDescByType_t;
+    typedef std::map<openfluid::ware::WareID_t,WareDetailedDescription> WaresDetailsByID_t;
 
 
   private:
 
-    std::string m_HubURL;
+    RESTClient m_RESTClient;
 
-    std::string m_HubName;
+    QString m_HubName;
 
-    std::string m_HubStatus;
+    QString m_HubStatus;
 
-    std::string m_HubAPIVersion;
+    QString m_HubAPIVersion;
 
-    std::set<std::string> m_HubCapabilities;
+    std::set<QString> m_HubCapabilities;
 
     void reset();
 
-    bool isCapable(const std::string& Capacity) const;
+    bool isCapable(const QString& Capacity) const;
+
+    static QString wareTypeToString(WareType);
 
 
   public:
 
-    FluidHubClient();
+    FluidHubAPIClient()
+    { }
 
-    ~FluidHubClient();
+    ~FluidHubAPIClient()
+    { }
 
     /**
       Connects to the FluidHub given by the URL
       @param[in] URL the URL of the FluidHub to connect to
       @return true if the connection is OK, false otherwise
     */
-    bool connect(const std::string& URL);
+    bool connect(const QString& URL);
 
     /**
       Disconnects from the connected FluidHub
@@ -117,62 +125,63 @@ class OPENFLUID_API FluidHubClient
       @return true if connected
     */
     bool isConnected() const
-    { return !(m_HubURL.empty()); }
+    { return !(m_RESTClient.getBaseURL().isEmpty()); }
 
     /**
       Returns the URL of the current FluidHub
       @return the FluidHub URL
     */
-    std::string getHubURL() const
-    { return m_HubURL; }
+    QString getHubURL() const
+    { return m_RESTClient.getBaseURL(); }
 
     /**
       Returns the API version of the current FluidHub
       @return the FluidHub API version
     */
-    std::string getHubAPIVersion() const
+    QString getHubAPIVersion() const
     { return m_HubAPIVersion; }
 
     /**
       Returns the status of the current FluidHub
       @return the FluidHub status
     */
-    std::string getHubStatus() const
+    QString getHubStatus() const
     { return m_HubStatus; }
 
     /**
       Returns the name of the current FluidHub
       @return the FluidHub name
     */
-    std::string getHubName() const
+    QString getHubName() const
     { return m_HubName; }
 
     /**
       Returns the capabilities list of the current FluidHub ("news","wareshub", ...)
       @return the FluidHub capabilities
     */
-    std::set<std::string> getHubCapabilities() const
+    std::set<QString> getHubCapabilities() const
     { return m_HubCapabilities; }
 
     /**
       Returns the list of all available wares in the current FluidHub
       @return the list of wares categorized by ware type
     */
-    WaresDescByType_t getAvailableWares() const;
+    WaresListByType_t getAllAvailableWares() const;
 
     /**
       Returns the detailed list of all available wares in the current FluidHub
+      @param[in] Type the type of wares to list
       @param[in] Username Optional username used in returned git URL
-      @return the detailed list of wares categorized by ware type
+      @return the detailed list of wares of the give type
     */
-    WaresDetailedDescByType_t getAvailableWaresWithDetails(const std::string& Username = "") const;
+    WaresDetailsByID_t getAvailableWaresWithDetails(WareType Type, const QString& Username = "") const;
 
     /**
       Returns the news as an RSS string content
       @param[in] Lang Optional lang for news content
       @return the RSS content
     */
-    std::string getNews(const std::string& Lang = "") const;
+    QString getNews(const QString& Lang = "") const;
 
 
 };
@@ -181,4 +190,4 @@ class OPENFLUID_API FluidHubClient
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_UTILS_FLUIDHUBCLIENT_HPP__ */
+#endif /* __OPENFLUID_UTILS_FLUIDHUBAPICLIENT_HPP__ */

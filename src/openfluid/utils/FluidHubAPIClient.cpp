@@ -26,26 +26,26 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
 /**
-  @file FluidHubClient.cpp
+  @file FluidHubAPIClient.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#include <openfluid/utils/FluidHubClient.hpp>
-#include <openfluid/utils/FileDownloader.hpp>
+#include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <rapidjson/document.h>
 
 
 namespace openfluid { namespace utils {
 
 
-void JSONArrayToStringSet(const rapidjson::Value& Obj, std::set<std::string>& Set)
+template<class T>
+void JSONArrayToStringSet(const rapidjson::Value& Obj, std::set<T>& Set)
 {
   Set.clear();
 
@@ -54,7 +54,26 @@ void JSONArrayToStringSet(const rapidjson::Value& Obj, std::set<std::string>& Se
     for (unsigned int i=0;i<Obj.Capacity();i++)
     {
       if (Obj[i].IsString())
-        Set.insert(std::string(Obj[i].GetString()));
+        Set.insert(T(Obj[i].GetString()));
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void JSONArrayToStringVector(const rapidjson::Value& Obj, std::vector<std::string>& Vector)
+{
+  Vector.clear();
+
+  if (Obj.IsArray() && !Obj.Empty())
+  {
+    for (unsigned int i=0;i<Obj.Capacity();i++)
+    {
+      if (Obj[i].IsString())
+        Vector.push_back(std::string(Obj[i].GetString()));
     }
   }
 }
@@ -65,7 +84,7 @@ void JSONArrayToStringSet(const rapidjson::Value& Obj, std::set<std::string>& Se
 
 
 void JSONObjectToDetailedWares(const rapidjson::Value& Obj,
-                               std::map<std::string,openfluid::utils::FluidHubClient::WareDetailedDescription>& WMap)
+                               FluidHubAPIClient::WaresDetailsByID_t& WMap)
 {
   WMap.clear();
 
@@ -77,18 +96,36 @@ void JSONObjectToDetailedWares(const rapidjson::Value& Obj,
       {
         std::string WareID = it->name.GetString();
 
-        WMap[WareID] = openfluid::utils::FluidHubClient::WareDetailedDescription();
+        WMap[WareID] = FluidHubAPIClient::WareDetailedDescription();
 
-        rapidjson::Value::ConstMemberIterator itMember = it->value.FindMember("git-url");
+        rapidjson::Value::ConstMemberIterator itMember = it->value.FindMember("shortdesc");
+        if (itMember != it->value.MemberEnd() && itMember->value.IsString())
+        {
+          WMap[WareID].ShortDescription = std::string(itMember->value.GetString());
+        }
+
+        itMember = it->value.FindMember("git-url");
         if (itMember != it->value.MemberEnd() && itMember->value.IsString())
         {
           WMap[WareID].GitUrl = std::string(itMember->value.GetString());
         }
 
-        itMember = it->value.FindMember("shortdesc");
-        if (itMember != it->value.MemberEnd() && itMember->value.IsString())
+        itMember = it->value.FindMember("git-branches");
+        if (itMember != it->value.MemberEnd() && itMember->value.IsArray())
         {
-          WMap[WareID].ShortDescription = std::string(itMember->value.GetString());
+          JSONArrayToStringVector(itMember->value,WMap[WareID].GitBranches);
+        }
+
+        itMember = it->value.FindMember("issues-counts");
+        if (itMember != it->value.MemberEnd() && itMember->value.IsObject())
+        {
+          for (rapidjson::Value::ConstMemberIterator itCounters = itMember->value.MemberBegin();
+               itCounters != itMember->value.MemberEnd();
+               ++itCounters)
+          {
+            if (itCounters->value.IsInt())
+              WMap[WareID].IssuesCounters[itCounters->name.GetString()] = itCounters->value.GetInt();
+          }
         }
 
         itMember = it->value.FindMember("users-ro");
@@ -112,29 +149,9 @@ void JSONObjectToDetailedWares(const rapidjson::Value& Obj,
 // =====================================================================
 
 
-FluidHubClient::FluidHubClient()
+void FluidHubAPIClient::reset()
 {
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-FluidHubClient::~FluidHubClient()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void FluidHubClient::reset()
-{
-  m_HubURL.clear();
+  m_RESTClient.setBaseURL("");
   m_HubAPIVersion.clear();
   m_HubCapabilities.clear();
   m_HubName.clear();
@@ -146,7 +163,7 @@ void FluidHubClient::reset()
 // =====================================================================
 
 
-bool FluidHubClient::isCapable(const std::string& Capacity) const
+bool FluidHubAPIClient::isCapable(const QString& Capacity) const
 {
   return (m_HubCapabilities.find(Capacity) != m_HubCapabilities.end());
 }
@@ -156,27 +173,48 @@ bool FluidHubClient::isCapable(const std::string& Capacity) const
 // =====================================================================
 
 
-bool FluidHubClient::connect(const std::string& URL)
+QString FluidHubAPIClient::wareTypeToString(WareType Type)
 {
-  std::string Content;
+  if (Type == SIMULATOR)
+    return "simulators";
+  else if (Type == OBSERVER)
+    return "observers";
+  else if (Type == BUILDEREXT)
+    return "builderexts";
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool FluidHubAPIClient::connect(const QString& URL)
+{
+  RESTClient::Reply Reply;
+  bool ValidNature = false;
 
   disconnect();
+  m_RESTClient.setBaseURL(URL);
 
-  if (FileDownloader::downloadToString(URL,Content))
+  Reply = m_RESTClient.getResource("/");
+
+  if (Reply.isOK())
   {
     rapidjson::Document JSONDoc;
 
-    if (JSONDoc.Parse<0>(Content.c_str()).HasParseError())
+    if (JSONDoc.Parse<0>(Reply.getContent().toStdString().c_str()).HasParseError())
       return false;
 
     if (JSONDoc.IsObject())
     {
       for (rapidjson::Value::ConstMemberIterator it = JSONDoc.MemberBegin();it != JSONDoc.MemberEnd(); ++it)
       {
-        std::string Key = std::string(it->name.GetString());
+        QString Key = QString(it->name.GetString());
 
-        if (Key == "nature" && it->value.IsString() && std::string(it->value.GetString()) == "OpenFLUID FluidHub")
-          m_HubURL = URL; // URL is really a FluidHub
+        if (Key == "nature" && it->value.IsString() && QString(it->value.GetString()) == "OpenFLUID FluidHub")
+          ValidNature = true; // URL is really a FluidHub
         else if (Key == "api-version" && it->value.IsString())
           m_HubAPIVersion = it->value.GetString();
         else if (Key == "name" && it->value.IsString())
@@ -189,6 +227,9 @@ bool FluidHubClient::connect(const std::string& URL)
     }
   }
 
+  if (!ValidNature)
+    disconnect();
+
   return isConnected();
 }
 
@@ -197,7 +238,7 @@ bool FluidHubClient::connect(const std::string& URL)
 // =====================================================================
 
 
-void FluidHubClient::disconnect()
+void FluidHubAPIClient::disconnect()
 {
   reset();
 }
@@ -207,9 +248,9 @@ void FluidHubClient::disconnect()
 // =====================================================================
 
 
-FluidHubClient::WaresDescByType_t FluidHubClient::getAvailableWares() const
+FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() const
 {
-  WaresDescByType_t WaresDesc;
+  WaresListByType_t WaresDesc;
 
   WaresDesc[SIMULATOR] = std::set<openfluid::ware::WareID_t>();
   WaresDesc[OBSERVER] = std::set<openfluid::ware::WareID_t>();
@@ -217,26 +258,20 @@ FluidHubClient::WaresDescByType_t FluidHubClient::getAvailableWares() const
 
   if (isConnected() && isCapable("wareshub"))
   {
-    std::string URL = m_HubURL;
+    RESTClient::Reply Reply = m_RESTClient.getResource("/wares");
 
-    if (URL.back() != '/')
-      URL += '/';
-    URL += "wares";
-
-    std::string Content;
-
-    if (FileDownloader::downloadToString(URL,Content))
+    if (Reply.isOK())
     {
       rapidjson::Document JSONDoc;
 
-      if (JSONDoc.Parse<0>(Content.c_str()).HasParseError())
+      if (JSONDoc.Parse<0>(Reply.getContent().toStdString().c_str()).HasParseError())
         return WaresDesc;
 
       if (JSONDoc.IsObject())
       {
         for (rapidjson::Value::ConstMemberIterator it = JSONDoc.MemberBegin();it != JSONDoc.MemberEnd(); ++it)
         {
-          std::string Key = std::string(it->name.GetString());
+          QString Key = QString(it->name.GetString());
 
           if (Key == "simulators")
             JSONArrayToStringSet(it->value,WaresDesc[SIMULATOR]);
@@ -257,49 +292,31 @@ FluidHubClient::WaresDescByType_t FluidHubClient::getAvailableWares() const
 // =====================================================================
 
 
-FluidHubClient::WaresDetailedDescByType_t
-  FluidHubClient::getAvailableWaresWithDetails(const std::string& Username) const
+FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDetails(WareType Type,
+                                                                                const QString& Username) const
 {
-  WaresDetailedDescByType_t WaresDesc;
+  WaresDetailsByID_t WaresDesc = std::map<openfluid::ware::WareID_t,WareDetailedDescription>();
 
-  WaresDesc[SIMULATOR] = std::map<openfluid::ware::WareID_t,WareDetailedDescription>();
-  WaresDesc[OBSERVER] = std::map<openfluid::ware::WareID_t,WareDetailedDescription>();
-  WaresDesc[BUILDEREXT] = std::map<openfluid::ware::WareID_t,WareDetailedDescription>();
+  QString Path = wareTypeToString(Type);
 
-  if (isConnected() && isCapable("wareshub"))
+  if (isConnected() && isCapable("wareshub") && !(Path.isEmpty()))
   {
-    std::string URL = m_HubURL;
+    Path = "/wares/"+Path;
 
-    if (URL.back() != '/')
-      URL += '/';
-    URL += "wares?detailed=yes";
+    if (!Username.isEmpty())
+      Path += "?username="+Username;
 
-    if (!Username.empty())
-      URL += "&username="+Username;
+    RESTClient::Reply Reply = m_RESTClient.getResource(Path);
 
-    std::string Content;
-
-    if (FileDownloader::downloadToString(URL,Content))
+    if (Reply.isOK())
     {
       rapidjson::Document JSONDoc;
 
-      if (JSONDoc.Parse<0>(Content.c_str()).HasParseError())
+      if (JSONDoc.Parse<0>(Reply.getContent().toStdString().c_str()).HasParseError())
         return WaresDesc;
 
       if (JSONDoc.IsObject())
-      {
-        for (rapidjson::Value::ConstMemberIterator it = JSONDoc.MemberBegin();it != JSONDoc.MemberEnd(); ++it)
-        {
-          std::string Key = std::string(it->name.GetString());
-
-          if (Key == "simulators")
-            JSONObjectToDetailedWares(it->value,WaresDesc[SIMULATOR]);
-          else if (Key == "observers")
-            JSONObjectToDetailedWares(it->value,WaresDesc[OBSERVER]);
-          else if (Key == "builderexts")
-            JSONObjectToDetailedWares(it->value,WaresDesc[BUILDEREXT]);
-        }
-      }
+        JSONObjectToDetailedWares(JSONDoc,WaresDesc);
     }
   }
 
@@ -311,27 +328,25 @@ FluidHubClient::WaresDetailedDescByType_t
 // =====================================================================
 
 
-std::string FluidHubClient::getNews(const std::string& Lang) const
+QString FluidHubAPIClient::getNews(const QString& Lang) const
 {
-  std::string Content;
+  QString Content;
 
   if (isConnected() && isCapable("news"))
   {
-    std::string URL = m_HubURL;
+    QString Path = "/news";
 
-    if (URL.back() != '/')
-      URL += '/';
-    URL += "news";
+    if (!Lang.isEmpty())
+      Path += "?lang="+Lang;
 
-    if (!Lang.empty())
-      URL += "?lang="+Lang;
+    RESTClient::Reply Reply = m_RESTClient.getResource(Path);
 
-    FileDownloader::downloadToString(URL,Content);
+    if (Reply.isOK())
+      return Reply.getContent();
   }
 
-  return Content;
+  return "";
 }
 
 
 } }  // namespaces
-

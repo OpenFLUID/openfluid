@@ -39,7 +39,7 @@
 
 
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/utils/FluidHubClient.hpp>
+#include <openfluid/utils/FluidHubAPIClient.hpp>
 
 #include "NewslineDownloadWorker.hpp"
 #include "builderconfig.hpp"
@@ -73,18 +73,18 @@ NewslineDownloadWorker::~NewslineDownloadWorker()
 
 bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const QString& ShortLocale) const
 {
-  openfluid::utils::FluidHubClient FHClient;
+  openfluid::utils::FluidHubAPIClient FHClient;
 
-  if (FHClient.connect(BUILDER_NEWSLINE_SOURCEURL.toStdString()))
+  if (FHClient.connect(BUILDER_NEWSLINE_SOURCEURL))
   {
-    std::string Content = FHClient.getNews(ShortLocale.toStdString());
+    QString Content = FHClient.getNews(ShortLocale);
 
-    if (Content.empty())
+    if (Content.isEmpty())
       Content = FHClient.getNews();
 
     FHClient.disconnect();
 
-    if (!Content.empty())
+    if (!Content.isEmpty())
     {
       QFile RSSFile(RSSFilename);
 
@@ -93,10 +93,10 @@ bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const
 
       QTextStream OutFile(&RSSFile);
 
-      OutFile << QString::fromUtf8(Content.c_str());
+      OutFile << QString::fromUtf8(Content.toStdString().c_str());
     }
 
-    return !Content.empty();
+    return !Content.isEmpty();
   }
 
   return false;
