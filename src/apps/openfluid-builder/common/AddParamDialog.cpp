@@ -73,6 +73,8 @@ AddParamDialog::AddParamDialog(const QStringList& ExistingParams,const QStringLi
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
+  ui->NameEdit->setFocus();
+
   checkGlobal();
 }
 

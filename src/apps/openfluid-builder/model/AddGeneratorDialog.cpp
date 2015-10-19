@@ -92,6 +92,8 @@ AddGeneratorDialog::AddGeneratorDialog(const QStringList& UnitsClasses, QWidget*
   Completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
   ui->UnitsClassEdit->setCompleter(Completer);
 
+  ui->VarNameEdit->setFocus();
+
   checkGlobal();
 }
 

@@ -76,6 +76,8 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
 
   ui->DataGroupBox->setChecked(false);
 
+  ui->NameEdit->setFocus();
+
   onGlobalCheck();
 }
 

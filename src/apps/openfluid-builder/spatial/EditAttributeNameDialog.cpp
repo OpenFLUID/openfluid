@@ -91,6 +91,9 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
+  if (m_Mode == EDIT_ADD || m_Mode == EDIT_RENAME)
+    ui->NewNameEdit->setFocus();
+
   adjustSize();
 
   checkGlobal();

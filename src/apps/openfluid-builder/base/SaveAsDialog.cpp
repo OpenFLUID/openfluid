@@ -68,6 +68,10 @@ SaveAsDialog::SaveAsDialog(QWidget* Parent) :
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
+  ui->ProjectNameEdit->setFocus();
+  ui->ProjectNameEdit->deselect();
+  ui->ProjectNameEdit->setCursorPosition(ui->ProjectNameEdit->text().size()-1);
+
   adjustSize();
 }
 
