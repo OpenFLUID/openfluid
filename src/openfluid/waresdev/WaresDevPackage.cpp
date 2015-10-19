@@ -128,12 +128,19 @@ QStringList WaresDevPackage::getWaresPaths()
 
 void WaresDevPackage::createAndLauchProcess(const QString& Command)
 {
-  mp_Process = new QProcess();
+  if (mp_Process)
+  {
+    mp_Process->close();
+    delete mp_Process;
+  }
+
+  mp_Process = new QProcess(this);
 
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutput()));
 
   mp_Process->start(Command);
+
   mp_Process->waitForFinished(-1);
   mp_Process->waitForReadyRead(-1);
 }
@@ -327,8 +334,8 @@ void WaresDevImportPackage::fetchInformation()
   emit progressed(100);
   emit finished();
 
-  if(QCoreApplication::instance())
-    moveToThread(QCoreApplication::instance()->thread());
+  if (qApp && qApp->thread() != thread())
+    moveToThread(qApp->thread());
 }
 
 
@@ -379,7 +386,10 @@ void WaresDevImportPackage::copyWares()
 
   bool Ok = true;
 
-  double ProgressRatio = 100 / m_SelectedWarePaths.size();
+  double ProgressRatio = 100;
+  if (int SelectedWarePathsNb = m_SelectedWarePaths.size())
+    ProgressRatio /= SelectedWarePathsNb;
+
   int Progress = 0;
 
   for (const QString& WarePath : m_SelectedWarePaths)
@@ -415,8 +425,8 @@ void WaresDevImportPackage::copyWares()
   emit progressed(100);
   emit finished();
 
-  if(QCoreApplication::instance())
-    moveToThread(QCoreApplication::instance()->thread());
+  if (qApp && qApp->thread() != thread())
+    moveToThread(qApp->thread());
 }
 
 

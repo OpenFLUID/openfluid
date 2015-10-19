@@ -36,7 +36,7 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#define BOOST_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WaresDevPackage
@@ -47,11 +47,13 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/config.hpp>
 #include "tests-config.hpp"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QSettings>
-#include <QApplication>
 
 
 // =====================================================================
@@ -60,21 +62,50 @@
 
 class F
 {
+  private:
+
+    openfluid::waresdev::WareSrcManager* Mgr;
+
+    QString WorkspaceForExportPath;
+    QString WorkspaceForImportPath;
+
+    QStringList DirPathsCreated;
+
+    QString getCleanedPath(const QString& MainDirPath, const QString& RelativeSubPath)
+    {
+      QDir MainDir(MainDirPath);
+      QString AbsoluteSubPath = MainDir.absoluteFilePath(RelativeSubPath);
+
+      openfluid::tools::emptyDirectoryRecursively(AbsoluteSubPath.toStdString());
+      MainDir.rmdir(AbsoluteSubPath);
+
+      return AbsoluteSubPath;
+    }
+
   public:
+
+    QString TestPackagePath = QDir(QString::fromStdString(CONFIGTESTS_INPUT_MISCDATA_DIR)).absoluteFilePath(
+        "ofwdp/my_package.ofwdp");
+
+    QString WaresdevForExportPath;
+    QString WaresdevForImportPath;
+
+    QString OutOfwdpPath;
+    QDir OutOfwdpDir;
+
+    QDir TempPackageExportDir;
+    QDir TempPackageImportFileDir;
 
     QStringList ToExportWareFolders = {
                                         "simulators/sim1",
                                         "simulators/sim3",
                                         "builderexts/bext2",
     };
+    QStringList ToExportWareFoldersPaths;
     QStringList NotToExportWareFolders = {
                                            "simulators/sim2",
                                            "builderexts/bext1",
                                            "builderexts/bext3",
-    };
-    QStringList ToImportWareFolders = {
-                                        "simulators/sim3",
-                                        "builderexts/bext2"
     };
 
     QStringList ToExportContentFolders = {
@@ -107,61 +138,89 @@ class F
                                             "_build_debug/bdfile2",
     };
 
-
-    QDir WaresDevDir;
-    QDir TempOfwdpDir;
-    QDir OutOfwdpDir;
-
-    QStringList ToExportWareFoldersPaths;
-
     F()
     {
-      WaresDevDir = QDir(openfluid::waresdev::WareSrcManager::instance()->getWaresdevPath());
-      TempOfwdpDir = QDir(getOfwdpPath(openfluid::base::RuntimeEnvironment::instance()->getTempDir(), true));
-      OutOfwdpDir = QDir(getOfwdpPath(CONFIGTESTS_OUTPUT_DATA_DIR, true));
+      Mgr = openfluid::waresdev::WareSrcManager::instance();
 
-      createDummyWaresSources();
+      QString TempOFPath = QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getTempDir());
+      QDir TempOFDir(TempOFPath);
+
+      WorkspaceForExportPath = TempOFDir.absoluteFilePath("ofwdp_export_workspace");
+      WorkspaceForImportPath = TempOFDir.absoluteFilePath("ofwdp_import_workspace");
+
+      WaresdevForExportPath = getCleanedPath(WorkspaceForExportPath, "wares-dev");
+      WaresdevForImportPath = getCleanedPath(WorkspaceForImportPath, "wares-dev");
+
+      OutOfwdpPath = getCleanedPath(QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR), "ofwdp");
+      OutOfwdpDir = QDir(OutOfwdpPath);
+
+      QString TempOfwdpPath = getCleanedPath(TempOFPath, "ofwdp");
+      QDir TempOfwdpDir(TempOfwdpPath);
+      TempPackageExportDir = QDir(TempOfwdpDir.filePath("export/my_package"));
+      TempPackageImportFileDir = QDir(TempOfwdpDir.filePath("import_file/my_package"));
+
+      DirPathsCreated << WorkspaceForExportPath << WorkspaceForImportPath << OutOfwdpPath << TempOfwdpPath;
     }
 
-    void createDummyWaresSources()
+    ~F()
     {
-      openfluid::tools::emptyDirectoryRecursively(WaresDevDir.absolutePath().toStdString());
+      QDir Temp(QDir::temp());
 
+      for (const QString& DirPath : DirPathsCreated)
+      {
+        QDir Dir(DirPath);
+
+        if (Dir.exists())
+        {
+          openfluid::tools::emptyDirectoryRecursively(DirPath.toStdString());
+          Dir.rmdir(DirPath);
+        }
+      }
+
+    }
+
+    void createExportConfiguration()
+    {
       QStringList WareFolders = ToExportWareFolders + NotToExportWareFolders;
       QStringList ContentFolders = ToExportContentFolders + NotToExportContentFolders;
       QStringList ContentFiles = ToExportContentFiles + NotToExportContentFiles;
 
-      for (const QString& WareFile : WareFolders)
+      writeWaresdevContent(WaresdevForExportPath, WareFolders, ContentFolders, ContentFiles);
+
+      Mgr->switchWorkspace(WorkspaceForExportPath);
+    }
+
+    void createImportConfiguration()
+    {
+      QStringList WareFolders = NotToExportWareFolders;
+      QStringList ContentFolders = ToExportContentFolders + NotToExportContentFolders;
+      QStringList ContentFiles = ToExportContentFiles + NotToExportContentFiles;
+
+      writeWaresdevContent(WaresdevForImportPath, WareFolders, ContentFolders, ContentFiles);
+
+      Mgr->switchWorkspace(WorkspaceForImportPath);
+    }
+
+    void writeWaresdevContent(QDir WaresDevDir, const QStringList& WareFolders, const QStringList& ContentFolders,
+      const QStringList& ContentFiles)
+    {
+      for (const QString& WareFolder : WareFolders)
       {
-        WaresDevDir.mkpath(WareFile);
+        WaresDevDir.mkpath(WareFolder);
 
-        QString WarePath = WaresDevDir.absoluteFilePath(WareFile);
+        QString WarePath = WaresDevDir.absoluteFilePath(WareFolder);
 
-        if (ToExportWareFolders.contains(WareFile))
+        if (ToExportWareFolders.contains(WareFolder))
           ToExportWareFoldersPaths << WarePath;
 
         QDir WareDir(WarePath);
 
-        for (const QString& WareFolder : ContentFolders)
-          WareDir.mkpath(WareDir.absoluteFilePath(WareFolder));
+        for (const QString& ContentFolder : ContentFolders)
+          WareDir.mkpath(WareDir.absoluteFilePath(ContentFolder));
 
-        for (const QString& WareContentFile : ContentFiles)
-          QFile(WareDir.absoluteFilePath(WareContentFile)).open(QIODevice::WriteOnly);
+        for (const QString& ContentFile : ContentFiles)
+          QFile(WareDir.absoluteFilePath(ContentFile)).open(QIODevice::WriteOnly);
       }
-    }
-
-    QString getOfwdpPath(std::string MainDirPath, bool RemovedItBefore)
-    {
-      QDir MainDir(QString::fromStdString(MainDirPath));
-      QString OfwdpPath = MainDir.absoluteFilePath("ofwdp");
-
-      if (RemovedItBefore)
-      {
-        openfluid::tools::emptyDirectoryRecursively(OfwdpPath.toStdString());
-        MainDir.rmdir(OfwdpPath);
-      }
-
-      return OfwdpPath;
     }
 };
 
@@ -169,12 +228,12 @@ class F
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(constructor)
+BOOST_FIXTURE_TEST_CASE(PkgExport,F)
 {
-  F f;
+  createExportConfiguration();
 
-  openfluid::waresdev::WaresDevExportPackage PkgExport(f.OutOfwdpDir.absoluteFilePath("my_package.ofwdp"),
-                                                       f.ToExportWareFoldersPaths,
+  openfluid::waresdev::WaresDevExportPackage PkgExport(OutOfwdpDir.absoluteFilePath("my_package.ofwdp"),
+                                                       ToExportWareFoldersPaths,
                                                        "the packager",
                                                        "the description");
 
@@ -182,48 +241,83 @@ BOOST_AUTO_TEST_CASE(constructor)
 
   PkgExport.exportToPackage();
 
-  BOOST_CHECK(f.TempOfwdpDir.exists("export/my_package"));
-  BOOST_CHECK(f.TempOfwdpDir.exists("export/my_package/ofwdp.conf"));
+  BOOST_CHECK(TempPackageExportDir.exists());
+  BOOST_CHECK(TempPackageExportDir.exists("ofwdp.conf"));
 
-  QSettings FileConfSettings(f.TempOfwdpDir.filePath("export/my_package/ofwdp.conf"), QSettings::IniFormat);
+  QSettings FileConfSettings(TempPackageExportDir.filePath("ofwdp.conf"), QSettings::IniFormat);
   FileConfSettings.beginGroup("OpenFLUID waresdev package");
   BOOST_CHECK_EQUAL(FileConfSettings.value("packager").toString().toStdString(), "the packager");
   BOOST_CHECK_EQUAL(FileConfSettings.value("description").toString().toStdString(), "the description");
   FileConfSettings.endGroup();
 
-  BOOST_CHECK(f.OutOfwdpDir.exists("my_package.ofwdp"));
+  BOOST_CHECK(OutOfwdpDir.exists("my_package.ofwdp"));
 
+  QString Cmd = openfluid::utils::ExternalProgram::getRegisteredProgram(
+      openfluid::utils::ExternalProgram::SevenZipProgram).getFullProgramPath();
+  Cmd.append(
+      QString(" x \"%1\" \"-o%2\" -aoa").arg(OutOfwdpDir.absoluteFilePath("my_package.ofwdp")).arg(OutOfwdpPath));
+  BOOST_CHECK(!QProcess::execute(Cmd));
 
-  // -> importPkg
+  QStringList FilesInPackage = OutOfwdpDir.entryList(QDir::NoDotAndDotDot | QDir::Files);
+  BOOST_CHECK(FilesInPackage.contains("ofwdp.conf"));
 
-  openfluid::waresdev::WaresDevImportPackage PkgImport(f.OutOfwdpDir.absoluteFilePath("my_package.ofwdp"));
-
-  PkgImport.fetchInformation();
-
-  QDir TempPackageDir(f.TempOfwdpDir.filePath("import_file/my_package"));
-
-  BOOST_CHECK(TempPackageDir.exists());
-
-  QStringList FilesInPackage = TempPackageDir.entryList(QDir::NoDotAndDotDot | QDir::Files);
-  BOOST_CHECK_EQUAL(FilesInPackage.size(), 1);
-  BOOST_CHECK_EQUAL(FilesInPackage[0].toStdString(), "ofwdp.conf");
-
-  for (const QString& WareFile : f.ToExportWareFolders)
+  for (const QString& WareFile : ToExportWareFolders)
   {
-    QDir WareDir(TempPackageDir.absoluteFilePath(WareFile));
+    QDir WareDir(OutOfwdpDir.absoluteFilePath(WareFile));
 
     BOOST_CHECK(WareDir.exists());
 
-    for (const QString& WareContent : (f.ToExportContentFolders + f.ToExportContentFiles))
+    for (const QString& WareContent : (ToExportContentFolders + ToExportContentFiles))
       BOOST_CHECK(WareDir.exists(WareContent));
 
-    for (const QString& WareContent : (f.NotToExportContentFolders + f.NotToExportContentFiles))
+    for (const QString& WareContent : (NotToExportContentFolders + NotToExportContentFiles))
       BOOST_CHECK(!WareDir.exists(WareContent));
   }
 
-  for (const QString& WareFile : f.NotToExportWareFolders)
+  for (const QString& WareFile : NotToExportWareFolders)
   {
-    QDir WareDir(TempPackageDir.absoluteFilePath(WareFile));
+    QDir WareDir(OutOfwdpDir.absoluteFilePath(WareFile));
+
+    BOOST_CHECK(!WareDir.exists());
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_FIXTURE_TEST_CASE(PkgImport_fetchInformation,F)
+{
+  createImportConfiguration();
+
+  openfluid::waresdev::WaresDevImportPackage PkgImport(TestPackagePath);
+
+  PkgImport.fetchInformation();
+
+  BOOST_CHECK(TempPackageImportFileDir.exists());
+
+  QStringList FilesInPackage = TempPackageImportFileDir.entryList(QDir::NoDotAndDotDot | QDir::Files);
+  BOOST_CHECK_EQUAL(FilesInPackage.size(), 1);
+  BOOST_CHECK_EQUAL(FilesInPackage[0].toStdString(), "ofwdp.conf");
+
+  for (const QString& WareFile : ToExportWareFolders)
+  {
+    QDir WareDir(TempPackageImportFileDir.absoluteFilePath(WareFile));
+
+    BOOST_CHECK(WareDir.exists());
+
+    for (const QString& WareContent : (ToExportContentFolders + ToExportContentFiles))
+      BOOST_CHECK(WareDir.exists(WareContent));
+
+    for (const QString& WareContent : (NotToExportContentFolders + NotToExportContentFiles))
+      BOOST_CHECK(!WareDir.exists(WareContent));
+  }
+
+  for (const QString& WareFile : NotToExportWareFolders)
+  {
+    QDir WareDir(TempPackageImportFileDir.absoluteFilePath(WareFile));
 
     BOOST_CHECK(!WareDir.exists());
   }
@@ -233,32 +327,56 @@ BOOST_AUTO_TEST_CASE(constructor)
 
   QStringList WarePathsToDisplay = PkgImport.getWaresPaths();
   BOOST_CHECK_EQUAL(WarePathsToDisplay.size(), 3);
-  for (const QString& WareFolder : f.ToExportWareFolders)
-    BOOST_CHECK(WarePathsToDisplay.contains(TempPackageDir.absoluteFilePath(WareFolder)));
+  for (const QString& WareFolder : ToExportWareFolders)
+    BOOST_CHECK(WarePathsToDisplay.contains(TempPackageImportFileDir.absoluteFilePath(WareFolder)));
+}
 
-  // delete some wares to test copy
 
-  for (const QString& ToImportFolder : f.ToImportWareFolders)
-    openfluid::tools::Filesystem::removeDirectory(f.WaresDevDir.filePath(ToImportFolder).toStdString());
+// =====================================================================
+// =====================================================================
+
+
+BOOST_FIXTURE_TEST_CASE(PkgImport_copyWares,F)
+{
+  createImportConfiguration();
+
+  openfluid::waresdev::WaresDevImportPackage PkgImport(TestPackagePath);
+
+  PkgImport.fetchInformation();
 
   QStringList SelectedWares;
-  for (const QString& WareFile : f.ToExportWareFolders)
-    SelectedWares << TempPackageDir.absoluteFilePath(WareFile);
+  for (const QString& WareFile : ToExportWareFolders)
+    SelectedWares << TempPackageImportFileDir.absoluteFilePath(WareFile);
 
   PkgImport.setSelectedWares(SelectedWares);
+
   PkgImport.copyWares();
 
-  for (const QString& WareFile : f.ToImportWareFolders)
+  QDir WaresdevForImportDir(WaresdevForImportPath);
+
+  for (const QString& WareFile : ToExportWareFolders)
   {
-    QDir WareDir(f.WaresDevDir.absoluteFilePath(WareFile));
+    QDir WareDir(WaresdevForImportDir.absoluteFilePath(WareFile));
 
     BOOST_CHECK(WareDir.exists());
 
-    for (const QString& WareContent : (f.ToExportContentFolders + f.ToExportContentFiles))
+    for (const QString& WareContent : (ToExportContentFolders + ToExportContentFiles))
       BOOST_CHECK(WareDir.exists(WareContent));
 
-    for (const QString& WareContent : (f.NotToExportContentFolders + f.NotToExportContentFiles))
+    for (const QString& WareContent : (NotToExportContentFolders + NotToExportContentFiles))
       BOOST_CHECK(!WareDir.exists(WareContent));
   }
+
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+int main(int argc, char *argv[])
+{
+  QCoreApplication app(argc, argv);
+
+  return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
+}
