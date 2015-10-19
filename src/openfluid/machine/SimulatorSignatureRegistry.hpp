@@ -66,7 +66,7 @@ class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<Mo
       std::map<openfluid::fluidx::GeneratorDescriptor::GeneratorMethod,
                openfluid::machine::ModelItemSignatureInstance*> GenSignaturesByMethod_t;
 
-    typedef std::map<openfluid::fluidx::ModelItemDescriptor::WareType,
+    typedef std::map<openfluid::ware::WareType,
                      SimSignaturesByName_t> SimSignaturesByTypeByName_t;
 
 

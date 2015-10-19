@@ -97,7 +97,7 @@ CppPage::~CppPage()
 // =====================================================================
 
 
-void CppPage::initialize(bool IsHpp, bool IsUi, openfluid::waresdev::WareSrcManager::WareType Type)
+void CppPage::initialize(bool IsHpp, bool IsUi, openfluid::ware::WareType Type)
 {
   m_IsHpp = IsHpp;
 
@@ -130,15 +130,15 @@ void CppPage::initialize(bool IsHpp, bool IsUi, openfluid::waresdev::WareSrcMana
   {
     switch (Type)
     {
-      case openfluid::waresdev::WareSrcManager::SIMULATOR:
+      case openfluid::ware::WareType::SIMULATOR:
         ClassName = "MySimulator";
         SourceFilename = "MySim";
         break;
-      case openfluid::waresdev::WareSrcManager::OBSERVER:
+      case openfluid::ware::WareType::OBSERVER:
         ClassName = "MyObserver";
         SourceFilename = "MyObs";
         break;
-      case openfluid::waresdev::WareSrcManager::BUILDEREXT:
+      case openfluid::ware::WareType::BUILDEREXT:
         ClassName = "MyExtension";
         SourceFilename = "MyExt";
         break;
@@ -164,7 +164,7 @@ void CppPage::initialize(bool IsHpp, bool IsUi, openfluid::waresdev::WareSrcMana
   ui->SourceFilename_lineEdit->setText(SourceFilename);
   ui->ClassName_lineEdit->setText(ClassName);
 
-  bool IsBuilderExt = (Type == openfluid::waresdev::WareSrcManager::BUILDEREXT);
+  bool IsBuilderExt = (Type == openfluid::ware::WareType::BUILDEREXT);
   ui->BuilderExt_widget->setVisible(IsBuilderExt);
   ui->BuilderExt_groupBox->setVisible(IsBuilderExt && !IsHpp);
 }
@@ -209,7 +209,7 @@ bool CppPage::isComplete() const
 // =====================================================================
 
 
-CMakeConfigPage::CMakeConfigPage(openfluid::waresdev::WareSrcManager::WareType Type, QWidget* Parent) :
+CMakeConfigPage::CMakeConfigPage(openfluid::ware::WareType Type, QWidget* Parent) :
     QWizardPage(Parent), ui(new Ui::CMakeConfigPage)
 {
   ui->setupUi(this);
@@ -219,14 +219,14 @@ CMakeConfigPage::CMakeConfigPage(openfluid::waresdev::WareSrcManager::WareType T
 
   switch (Type)
   {
-    case openfluid::waresdev::WareSrcManager::SIMULATOR:
+    case openfluid::ware::WareType::SIMULATOR:
       IsSim = true;
       RootFilename = "MySim.cpp";
       break;
-    case openfluid::waresdev::WareSrcManager::OBSERVER:
+    case openfluid::ware::WareType::OBSERVER:
       RootFilename = "MyObs.cpp";
       break;
-    case openfluid::waresdev::WareSrcManager::BUILDEREXT:
+    case openfluid::ware::WareType::BUILDEREXT:
       RootFilename = "MyExt.cpp";
       break;
     default:
@@ -331,9 +331,9 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
       Bt->setToolTip(tr("This file already exists"));
   }
 
-  openfluid::waresdev::WareSrcManager::WareType Type = mref_Container.getType();
+  openfluid::ware::WareType Type = mref_Container.getType();
 
-  if (Type == openfluid::waresdev::WareSrcManager::BUILDEREXT)
+  if (Type == openfluid::ware::WareType::BUILDEREXT)
   {
     ui->CppUi_radioButton->setVisible(false);
     ui->HppUi_radioButton->setVisible(false);
@@ -468,7 +468,7 @@ void NewSrcFileAssistant::accept()
     {
       openfluid::waresdev::WareSrcFactory::Replacements R;
 
-      bool IsBuilderExt = (mref_Container.getType() == openfluid::waresdev::WareSrcManager::BUILDEREXT);
+      bool IsBuilderExt = (mref_Container.getType() == openfluid::ware::WareType::BUILDEREXT);
 
       switch (ui->buttonGroup->checkedId())
       {

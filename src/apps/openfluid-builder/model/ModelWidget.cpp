@@ -457,7 +457,7 @@ void ModelWidget::updateCoupledModel()
 
   for (it = itb; it!= ite; ++it)
   {
-    if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator)
+    if ((*it)->getType() == openfluid::ware::WareType::SIMULATOR)
     {
       SimulatorWidget* SimWidget = new SimulatorWidget(this,*it,m_Model.getID(*it),0);
       mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(SimWidget);
@@ -471,7 +471,7 @@ void ModelWidget::updateCoupledModel()
       connect(SimWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
       connect(SimWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
     }
-    else if ((*it)->getType() == openfluid::fluidx::WareDescriptor::Generator)
+    else if ((*it)->getType() == openfluid::ware::WareType::GENERATOR)
     {
       // TODO see if a more elegant method is possible for generators signature
       // than passing signature instance to constructor
@@ -516,7 +516,7 @@ void ModelWidget::dispatchChangesFromChildren()
 
 void ModelWidget::notifySrcEditAsked(const QString& ID, bool Ghost)
 {
-  emit srcEditAsked(ID,openfluid::ware::PluggableWare::SIMULATOR,Ghost);
+  emit srcEditAsked(ID,openfluid::ware::WareType::SIMULATOR,Ghost);
 }
 
 

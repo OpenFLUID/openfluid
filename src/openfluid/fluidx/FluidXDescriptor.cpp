@@ -827,7 +827,7 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
+    if ((*it)->isType(openfluid::ware::WareType::SIMULATOR))
     {
       openfluid::fluidx::SimulatorDescriptor* SimDesc =
           dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it);
@@ -838,7 +838,7 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
       Contents << getParamsAsStr(SimDesc->getParameters());
       Contents << m_IndentStr << m_IndentStr << "</simulator>\n";
     }
-    else if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
+    else if ((*it)->isType(openfluid::ware::WareType::GENERATOR))
     {
       openfluid::fluidx::GeneratorDescriptor* GenDesc =
           dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);

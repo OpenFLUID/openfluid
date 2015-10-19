@@ -363,18 +363,18 @@ WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::pars
       QString Context = ItemElem.attribute("context");
       if (Context.contains("anyware") || Context.isEmpty())
       {
-        Rules[openfluid::waresdev::WareSrcManager::SIMULATOR].append(Rule);
-        Rules[openfluid::waresdev::WareSrcManager::OBSERVER].append(Rule);
-        Rules[openfluid::waresdev::WareSrcManager::BUILDEREXT].append(Rule);
+        Rules[openfluid::ware::WareType::SIMULATOR].append(Rule);
+        Rules[openfluid::ware::WareType::OBSERVER].append(Rule);
+        Rules[openfluid::ware::WareType::BUILDEREXT].append(Rule);
       }
       else
       {
         if (Context.contains("simulator"))
-          Rules[openfluid::waresdev::WareSrcManager::SIMULATOR].append(Rule);
+          Rules[openfluid::ware::WareType::SIMULATOR].append(Rule);
         if (Context.contains("observer"))
-          Rules[openfluid::waresdev::WareSrcManager::OBSERVER].append(Rule);
+          Rules[openfluid::ware::WareType::OBSERVER].append(Rule);
         if (Context.contains("builderext"))
-          Rules[openfluid::waresdev::WareSrcManager::BUILDEREXT].append(Rule);
+          Rules[openfluid::ware::WareType::BUILDEREXT].append(Rule);
       }
     }
   }
@@ -443,7 +443,7 @@ WareSrcFiletypeManager::CompletionRules_t WareSrcFiletypeManager::getCompletionR
 {
   QString FileType = getFileType(QFileInfo(FilePath).fileName());
 
-  openfluid::waresdev::WareSrcManager::WareType WareType =
+  openfluid::ware::WareType WareType =
       openfluid::waresdev::WareSrcManager::instance()->getPathInfo(FilePath).m_WareType;
 
   return m_WareSrcFiletypes.value(FileType, WareSrcFiletype()).m_CompRules.value(WareType, QVector<CompletionRule>());

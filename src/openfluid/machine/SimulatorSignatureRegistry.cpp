@@ -111,9 +111,9 @@ void SimulatorSignatureRegistry::addSimulatorSignature(openfluid::machine::Model
 {
   if (Signature->Signature)
   {
-    Signature->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
+    Signature->ItemType = openfluid::ware::WareType::SIMULATOR;
 
-    m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator][Signature->Signature->ID] = Signature;
+    m_SimSignatures[openfluid::ware::WareType::SIMULATOR][Signature->Signature->ID] = Signature;
   }
   else
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -129,9 +129,9 @@ void SimulatorSignatureRegistry::addGeneratorSignature(openfluid::machine::Model
 {
   if (Signature->Signature)
   {
-    Signature->ItemType = openfluid::fluidx::ModelItemDescriptor::Generator;
+    Signature->ItemType = openfluid::ware::WareType::GENERATOR;
 
-    m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::Generator][Signature->Signature->ID] = Signature;
+    m_SimSignatures[openfluid::ware::WareType::GENERATOR][Signature->Signature->ID] = Signature;
   }
   else
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -146,7 +146,7 @@ void SimulatorSignatureRegistry::addGeneratorSignature(openfluid::machine::Model
 void SimulatorSignatureRegistry::update()
 {
   // TODO see if deleting all pointers in map is necessary to avoid memory leaks
-  m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].clear();
+  m_SimSignatures[openfluid::ware::WareType::SIMULATOR].clear();
 
   openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
 
@@ -171,9 +171,9 @@ void SimulatorSignatureRegistry::update()
   for (unsigned int i = 0; i < GhostsSignatures.size(); i++)
   {
     if (GhostsSignatures[i]->Signature &&
-        m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator]
+        m_SimSignatures[openfluid::ware::WareType::SIMULATOR]
         .find(GhostsSignatures[i]->Signature->ID)
-          == m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].end())
+          == m_SimSignatures[openfluid::ware::WareType::SIMULATOR].end())
     {
       addSimulatorSignature(GhostsSignatures[i]);
     }
@@ -197,7 +197,7 @@ SimulatorSignatureRegistry::SimSignaturesByTypeByName_t SimulatorSignatureRegist
 
 SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::getGeneratorSignatures()
 {
-  return m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::Generator];
+  return m_SimSignatures[openfluid::ware::WareType::GENERATOR];
 }
 
 
@@ -207,7 +207,7 @@ SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::ge
 
 SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::getSimulatorSignatures()
 {
-  return m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator];
+  return m_SimSignatures[openfluid::ware::WareType::SIMULATOR];
 }
 
 
@@ -231,7 +231,7 @@ ModelItemSignatureInstance* SimulatorSignatureRegistry::getEmptyModelItemSignatu
 
 bool SimulatorSignatureRegistry::isSimulatorAvailable(const openfluid::ware::WareID_t& ID)
 {
-  return m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].count(ID);
+  return m_SimSignatures[openfluid::ware::WareType::SIMULATOR].count(ID);
 }
 
 
@@ -243,10 +243,10 @@ const openfluid::machine::ModelItemSignatureInstance*
   SimulatorSignatureRegistry::signature(const openfluid::ware::WareID_t& ID)
 {
   if (isSimulatorAvailable(ID))
-    return m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator][ID];
+    return m_SimSignatures[openfluid::ware::WareType::SIMULATOR][ID];
 
-  if (m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::Generator].count(ID))
-    return m_SimSignatures[openfluid::fluidx::ModelItemDescriptor::Generator][ID];
+  if (m_SimSignatures[openfluid::ware::WareType::GENERATOR].count(ID))
+    return m_SimSignatures[openfluid::ware::WareType::GENERATOR][ID];
 
   return (openfluid::machine::ModelItemSignatureInstance*) 0;
 }
@@ -261,9 +261,9 @@ const ModelItemSignatureInstance*
 {
   openfluid::ware::WareID_t ItemID = "";
 
-  if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedSimulator))
+  if (Item->isType(openfluid::ware::WareType::SIMULATOR))
     ItemID = (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getID();
-  else if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
+  else if (Item->isType(openfluid::ware::WareType::GENERATOR))
     ItemID = openfluid::fluidx::GeneratorDescriptor::getGeneratorName(
                  (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratorMethod());
 

@@ -722,7 +722,7 @@ bool ProjectModule::findGhostSignature(const QString& ID,
 // =====================================================================
 
 
-void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType,bool Ghost)
+void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::WareType WType,bool Ghost)
 {
   if (Ghost)
   {

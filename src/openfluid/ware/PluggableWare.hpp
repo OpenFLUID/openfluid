@@ -96,11 +96,6 @@ namespace openfluid { namespace ware {
 
 class OPENFLUID_API PluggableWare
 {
-  public:
-
-    enum WareType { UNDEFINED, OBSERVER, SIMULATOR, OTHER };
-
-
   private:
 
     /**

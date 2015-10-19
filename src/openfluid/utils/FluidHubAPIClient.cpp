@@ -173,13 +173,13 @@ bool FluidHubAPIClient::isCapable(const QString& Capacity) const
 // =====================================================================
 
 
-QString FluidHubAPIClient::wareTypeToString(WareType Type)
+QString FluidHubAPIClient::wareTypeToString(openfluid::ware::WareType Type)
 {
-  if (Type == SIMULATOR)
+  if (Type == openfluid::ware::WareType::SIMULATOR)
     return "simulators";
-  else if (Type == OBSERVER)
+  else if (Type == openfluid::ware::WareType::OBSERVER)
     return "observers";
-  else if (Type == BUILDEREXT)
+  else if (Type == openfluid::ware::WareType::BUILDEREXT)
     return "builderexts";
 
   return "";
@@ -252,9 +252,9 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
 {
   WaresListByType_t WaresDesc;
 
-  WaresDesc[SIMULATOR] = std::set<openfluid::ware::WareID_t>();
-  WaresDesc[OBSERVER] = std::set<openfluid::ware::WareID_t>();
-  WaresDesc[BUILDEREXT] = std::set<openfluid::ware::WareID_t>();
+  WaresDesc[openfluid::ware::WareType::SIMULATOR] = std::set<openfluid::ware::WareID_t>();
+  WaresDesc[openfluid::ware::WareType::OBSERVER] = std::set<openfluid::ware::WareID_t>();
+  WaresDesc[openfluid::ware::WareType::BUILDEREXT] = std::set<openfluid::ware::WareID_t>();
 
   if (isConnected() && isCapable("wareshub"))
   {
@@ -274,11 +274,11 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
           QString Key = QString(it->name.GetString());
 
           if (Key == "simulators")
-            JSONArrayToStringSet(it->value,WaresDesc[SIMULATOR]);
+            JSONArrayToStringSet(it->value,WaresDesc[openfluid::ware::WareType::SIMULATOR]);
           else if (Key == "observers")
-            JSONArrayToStringSet(it->value,WaresDesc[OBSERVER]);
+            JSONArrayToStringSet(it->value,WaresDesc[openfluid::ware::WareType::OBSERVER]);
           else if (Key == "builderexts")
-            JSONArrayToStringSet(it->value,WaresDesc[BUILDEREXT]);
+            JSONArrayToStringSet(it->value,WaresDesc[openfluid::ware::WareType::BUILDEREXT]);
         }
       }
     }
@@ -292,7 +292,7 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
 // =====================================================================
 
 
-FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDetails(WareType Type,
+FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDetails(openfluid::ware::WareType Type,
                                                                                 const QString& Username) const
 {
   WaresDetailsByID_t WaresDesc = std::map<openfluid::ware::WareID_t,WareDetailedDescription>();

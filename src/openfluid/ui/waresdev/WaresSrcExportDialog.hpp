@@ -64,7 +64,7 @@ class OPENFLUID_API WaresSrcExportDialog: public QDialog
 
     Ui::WaresSrcExportDialog* ui;
 
-    typedef QMap<openfluid::waresdev::WareSrcManager::WareType, QListWidget*> ListWidgetsByWareType_t;
+    typedef QMap<openfluid::ware::WareType, QListWidget*> ListWidgetsByWareType_t;
 
     ListWidgetsByWareType_t m_ListWidgetsByWareType;
 
@@ -79,6 +79,7 @@ class OPENFLUID_API WaresSrcExportDialog: public QDialog
     void onPackagePathButtonClicked();
 
     void exportToPackage();
+
 
   public:
 

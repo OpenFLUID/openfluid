@@ -143,7 +143,7 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
   Contents += "<b>" + tr("Name") + ":</b> " + convertStdString(Signature->Signature->Name) + "<br/>";
   Contents += "<b>" + tr("Description") + ":</b> " + convertStdString(Signature->Signature->Description);
 
-  if (Signature->ItemType == openfluid::fluidx::WareDescriptor::PluggedSimulator)
+  if (Signature->ItemType == openfluid::ware::WareType::SIMULATOR)
   {
     Contents += "<hr>";
     Contents += "<b>" + tr("Author(s)") + ":</b> ";

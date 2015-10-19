@@ -105,31 +105,31 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
     openfluid::utils::FluidHubAPIClient::WaresListByType_t WaresDesc = FHClient.getAllAvailableWares();
 
-    BOOST_REQUIRE_EQUAL(WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].size(),4);
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].find("examples.sim.A") !=
-        WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].end());
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].find("examples.sim.B") !=
-        WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].end());
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].find("examples.sim.C") !=
-        WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].end());
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].find("examples.sim.D") !=
-        WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].end());
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].find("examples.sim.E") ==
-        WaresDesc[openfluid::utils::FluidHubAPIClient::SIMULATOR].end());
+    BOOST_REQUIRE_EQUAL(WaresDesc[openfluid::ware::WareType::SIMULATOR].size(),4);
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::SIMULATOR].find("examples.sim.A") !=
+        WaresDesc[openfluid::ware::WareType::SIMULATOR].end());
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::SIMULATOR].find("examples.sim.B") !=
+        WaresDesc[openfluid::ware::WareType::SIMULATOR].end());
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::SIMULATOR].find("examples.sim.C") !=
+        WaresDesc[openfluid::ware::WareType::SIMULATOR].end());
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::SIMULATOR].find("examples.sim.D") !=
+        WaresDesc[openfluid::ware::WareType::SIMULATOR].end());
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::SIMULATOR].find("examples.sim.E") ==
+        WaresDesc[openfluid::ware::WareType::SIMULATOR].end());
 
-    BOOST_REQUIRE_EQUAL(WaresDesc[openfluid::utils::FluidHubAPIClient::OBSERVER].size(),2);
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::OBSERVER].find("examples.obs.J") !=
-        WaresDesc[openfluid::utils::FluidHubAPIClient::OBSERVER].end());
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::OBSERVER].find("examples.obs.K") !=
-        WaresDesc[openfluid::utils::FluidHubAPIClient::OBSERVER].end());
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::OBSERVER].find("examples.obs.L") ==
-        WaresDesc[openfluid::utils::FluidHubAPIClient::OBSERVER].end());
+    BOOST_REQUIRE_EQUAL(WaresDesc[openfluid::ware::WareType::OBSERVER].size(),2);
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::OBSERVER].find("examples.obs.J") !=
+        WaresDesc[openfluid::ware::WareType::OBSERVER].end());
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::OBSERVER].find("examples.obs.K") !=
+        WaresDesc[openfluid::ware::WareType::OBSERVER].end());
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::OBSERVER].find("examples.obs.L") ==
+        WaresDesc[openfluid::ware::WareType::OBSERVER].end());
 
-    BOOST_REQUIRE_EQUAL(WaresDesc[openfluid::utils::FluidHubAPIClient::BUILDEREXT].size(),1);
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::BUILDEREXT].find("examples.bext.X") !=
-        WaresDesc[openfluid::utils::FluidHubAPIClient::BUILDEREXT].end());
-    BOOST_REQUIRE(WaresDesc[openfluid::utils::FluidHubAPIClient::BUILDEREXT].find("examples.bext.Y") ==
-        WaresDesc[openfluid::utils::FluidHubAPIClient::BUILDEREXT].end());
+    BOOST_REQUIRE_EQUAL(WaresDesc[openfluid::ware::WareType::BUILDEREXT].size(),1);
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::BUILDEREXT].find("examples.bext.X") !=
+        WaresDesc[openfluid::ware::WareType::BUILDEREXT].end());
+    BOOST_REQUIRE(WaresDesc[openfluid::ware::WareType::BUILDEREXT].find("examples.bext.Y") ==
+        WaresDesc[openfluid::ware::WareType::BUILDEREXT].end());
 
   }
 
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
     // simulators
 
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t SimsDetailedDesc =
-        FHClient.getAvailableWaresWithDetails(openfluid::utils::FluidHubAPIClient::SIMULATOR);
+        FHClient.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR);
 
 
     BOOST_REQUIRE_EQUAL(SimsDetailedDesc.size(),4);
@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
     // observers
 
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t ObssDetailedDesc =
-        FHClient.getAvailableWaresWithDetails(openfluid::utils::FluidHubAPIClient::OBSERVER);
+        FHClient.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER);
 
 
     BOOST_REQUIRE_EQUAL(ObssDetailedDesc.size(),2);
@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
     // builderexts
 
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t BextsDetailedDesc =
-        FHClient.getAvailableWaresWithDetails(openfluid::utils::FluidHubAPIClient::BUILDEREXT);
+        FHClient.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT);
 
     BOOST_REQUIRE_EQUAL(BextsDetailedDesc.size(),1);
     BOOST_REQUIRE(BextsDetailedDesc.find("examples.bext.X") != BextsDetailedDesc.end());
@@ -300,17 +300,17 @@ BOOST_AUTO_TEST_CASE(check_operations)
     // with username
 
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t SimsDetailedDesc =
-        FHClient.getAvailableWaresWithDetails(openfluid::utils::FluidHubAPIClient::SIMULATOR,"fakeuser");
+        FHClient.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR,"fakeuser");
     BOOST_REQUIRE_EQUAL(SimsDetailedDesc["examples.sim.C"].GitUrl,
                         "https://fakeuser@host.domain.org/foo-wareshub/git/simulators/examples.sim.C");
 
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t ObssDetailedDesc =
-        FHClient.getAvailableWaresWithDetails(openfluid::utils::FluidHubAPIClient::OBSERVER,"fakeuser");
+        FHClient.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER,"fakeuser");
     BOOST_REQUIRE_EQUAL(ObssDetailedDesc["examples.obs.J"].GitUrl,
                         "https://fakeuser@host.domain.org/foo-wareshub/git/observers/examples.obs.J");
 
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t BextsDetailedDesc =
-        FHClient.getAvailableWaresWithDetails(openfluid::utils::FluidHubAPIClient::BUILDEREXT,"fakeuser");
+        FHClient.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT,"fakeuser");
     BOOST_REQUIRE_EQUAL(BextsDetailedDesc["examples.bext.X"].GitUrl,
                         "https://fakeuser@host.domain.org/foo-wareshub/git/builderexts/examples.bext.X");
 

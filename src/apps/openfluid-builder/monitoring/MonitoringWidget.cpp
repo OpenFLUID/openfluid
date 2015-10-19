@@ -228,7 +228,7 @@ void MonitoringWidget::dispatchChangesFromChildren()
 
 void MonitoringWidget::notifySrcEditAsked(const QString& ID)
 {
-  emit srcEditAsked(ID,openfluid::ware::PluggableWare::OBSERVER,false);
+  emit srcEditAsked(ID,openfluid::ware::WareType::OBSERVER,false);
 }
 
 

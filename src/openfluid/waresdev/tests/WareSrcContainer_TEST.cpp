@@ -297,39 +297,39 @@ BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
 
   QStringList List;
 
-  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(0), openfluid::waresdev::WareSrcManager::SIMULATOR, "")
+  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(0), openfluid::ware::WareType::SIMULATOR, "")
       .getDefaultFilesPaths();
   BOOST_CHECK_EQUAL(List.count(), 2);
   BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(), m_CMakeConfigFile.toStdString());
   BOOST_CHECK_EQUAL(QFileInfo(List.value(1)).fileName().toStdString(), "main.cpp");
 
-  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(1), openfluid::waresdev::WareSrcManager::SIMULATOR, "")
+  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(1), openfluid::ware::WareType::SIMULATOR, "")
       .getDefaultFilesPaths();
   BOOST_CHECK_EQUAL(List.count(), 2);
   BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(), m_CMakeConfigFile.toStdString());
   BOOST_CHECK_EQUAL(QFileInfo(List.value(1)).fileName().toStdString(), "main.cpp");
 
-  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(2), openfluid::waresdev::WareSrcManager::SIMULATOR, "")
+  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(2), openfluid::ware::WareType::SIMULATOR, "")
       .getDefaultFilesPaths();
   BOOST_CHECK_EQUAL(List.count(), 2);
   BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(), m_CMakeConfigFile.toStdString());
   BOOST_CHECK_EQUAL(QFileInfo(List.value(1)).fileName().toStdString(), "other.cpp");
 
-  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(3), openfluid::waresdev::WareSrcManager::SIMULATOR, "")
+  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(3), openfluid::ware::WareType::SIMULATOR, "")
       .getDefaultFilesPaths();
   BOOST_CHECK_EQUAL(List.count(), 1);
   BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(), "main.cpp");
 
-  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(4), openfluid::waresdev::WareSrcManager::SIMULATOR, "")
+  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(4), openfluid::ware::WareType::SIMULATOR, "")
       .getDefaultFilesPaths();
   BOOST_CHECK_EQUAL(List.count(), 1);
   BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(), m_CMakeConfigFile.toStdString());
 
-  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(5), openfluid::waresdev::WareSrcManager::SIMULATOR, "")
+  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(5), openfluid::ware::WareType::SIMULATOR, "")
       .getDefaultFilesPaths();
   BOOST_CHECK_EQUAL(List.count(), 0);
 
-  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(6), openfluid::waresdev::WareSrcManager::SIMULATOR, "")
+  List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(6), openfluid::ware::WareType::SIMULATOR, "")
       .getDefaultFilesPaths();
   BOOST_CHECK_EQUAL(List.count(), 0);
 

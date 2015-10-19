@@ -59,6 +59,43 @@ typedef std::string WareVersion_t;
 // =====================================================================
 
 
+enum class WareType
+{
+  /**
+    Ware type is undefined
+  */
+  UNDEFINED,
+
+  /**
+    Ware type is simulator
+  */
+  SIMULATOR,
+
+  /**
+    Ware type is generator
+  */
+  GENERATOR,
+
+  /**
+    Ware type is observer
+  */
+  OBSERVER,
+
+  /**
+    Ware type is builder-extension
+  */
+  BUILDEREXT,
+
+  /**
+    Ware type is none of the other types
+  */
+  OTHER
+};
+
+
+// =====================================================================
+// =====================================================================
+
 
 /**
   Ware status

@@ -74,7 +74,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QString m_AbsolutePath;
 
-    WareSrcManager::WareType m_Type;
+    openfluid::ware::WareType m_Type;
 
     QString m_Name;
 
@@ -142,7 +142,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
   public:
 
-    WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type, const QString& WareName);
+    WareSrcContainer(const QString& AbsolutePath, openfluid::ware::WareType Type, const QString& WareName);
 
     ~WareSrcContainer();
 
@@ -165,7 +165,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QString getAbsolutePath() const;
 
-    WareSrcManager::WareType getType() const;
+    openfluid::ware::WareType getType() const;
 
     QString getName() const;
 

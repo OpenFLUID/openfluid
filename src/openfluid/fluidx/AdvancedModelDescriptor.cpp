@@ -79,10 +79,10 @@ void AdvancedModelDescriptor::check()
 
 openfluid::ware::WareID_t AdvancedModelDescriptor::getID(ModelItemDescriptor* Item) const
 {
-  if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedSimulator))
+  if (Item->isType(openfluid::ware::WareType::SIMULATOR))
     return (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getID();
 
-  if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
+  if (Item->isType(openfluid::ware::WareType::GENERATOR))
     return (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratedID();
 
   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -104,10 +104,10 @@ void AdvancedModelDescriptor::getItemsCountByType(unsigned int& SimCount, unsign
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
-    if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator)
+    if ((*it)->getType() == openfluid::ware::WareType::SIMULATOR)
       SimCount++;
 
-    if ((*it)->getType() == openfluid::fluidx::WareDescriptor::Generator)
+    if ((*it)->getType() == openfluid::ware::WareType::GENERATOR)
           GenCount++;
   }
 }

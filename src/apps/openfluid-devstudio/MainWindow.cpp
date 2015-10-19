@@ -103,9 +103,9 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
 
   openfluid::waresdev::WareSrcManager* Manager = openfluid::waresdev::WareSrcManager::instance();
 
-  ui->SimExplorer->configure(Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::SIMULATOR), true);
-  ui->ObsExplorer->configure(Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::OBSERVER), true);
-  ui->ExtExplorer->configure(Manager->getWareTypePath(openfluid::waresdev::WareSrcManager::BUILDEREXT), true);
+  ui->SimExplorer->configure(Manager->getWareTypePath(openfluid::ware::WareType::SIMULATOR), true);
+  ui->ObsExplorer->configure(Manager->getWareTypePath(openfluid::ware::WareType::OBSERVER), true);
+  ui->ExtExplorer->configure(Manager->getWareTypePath(openfluid::ware::WareType::BUILDEREXT), true);
 
   mp_Collection = new openfluid::ui::waresdev::WareSrcWidgetCollection(ui->WareSrcCollection, false);
 

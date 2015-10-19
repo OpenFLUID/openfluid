@@ -262,8 +262,10 @@ void WareWidget::notifyRemoveClicked()
   {
     QString TypeStr = tr("the generator");
 
-    if (getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator) TypeStr = tr("the simulator");
-    else if (getType() == openfluid::fluidx::WareDescriptor::PluggedObserver) TypeStr = tr("the observer");
+    if (getType() == openfluid::ware::WareType::SIMULATOR)
+      TypeStr = tr("the simulator");
+    else if (getType() == openfluid::ware::WareType::OBSERVER)
+      TypeStr = tr("the observer");
 
 
     OK = (QMessageBox::question(QApplication::activeWindow(),

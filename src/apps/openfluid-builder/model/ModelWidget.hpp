@@ -106,7 +106,7 @@ class ModelWidget : public WorkspaceWidget
 
   signals:
 
-    void srcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType,bool Ghost);
+    void srcEditAsked(const QString& ID,openfluid::ware::WareType WType,bool Ghost);
 
     void srcGenerateAsked(const QString& ID);
 

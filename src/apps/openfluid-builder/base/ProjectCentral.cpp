@@ -471,7 +471,7 @@ void ProjectCentral::checkModel()
 
         std::vector<std::string>& ReqFiles = Sign->HandledData.RequiredExtraFiles;
 
-        if ((*itModelItem)->isType(openfluid::fluidx::WareDescriptor::Generator))
+        if ((*itModelItem)->isType(openfluid::ware::WareType::GENERATOR))
         {
           openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
               (static_cast<openfluid::fluidx::GeneratorDescriptor*>(*itModelItem))->getGeneratorMethod();
@@ -561,7 +561,7 @@ void ProjectCentral::checkModel()
         }
 
         // check Generators Params
-        if ((*itModelItem)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
+        if ((*itModelItem)->isType(openfluid::ware::WareType::GENERATOR))
         {
           openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
               (static_cast<openfluid::ware::GeneratorSignature*>(Sign))->m_GeneratorMethod;
@@ -658,7 +658,7 @@ void ProjectCentral::checkModel()
       else
       {
         m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
-        if ((*itModelItem)->getType() == openfluid::fluidx::ModelItemDescriptor::PluggedSimulator)
+        if ((*itModelItem)->getType() == openfluid::ware::WareType::SIMULATOR)
           m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("Simulator %1 is not available")
                                                                          .arg(QString::fromStdString(ID)));
       }
@@ -730,7 +730,7 @@ void ProjectCentral::checkModel()
           }
         }
 
-        if ((*itModelItem)->isType(openfluid::fluidx::WareDescriptor::Generator))
+        if ((*itModelItem)->isType(openfluid::ware::WareType::GENERATOR))
         {
           openfluid::fluidx::GeneratorDescriptor* GenDesc =
               dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*itModelItem);

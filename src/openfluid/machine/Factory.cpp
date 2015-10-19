@@ -246,11 +246,11 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
     if ((*it)->isEnabled())
     {
 
-      if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
+      if ((*it)->isType(openfluid::ware::WareType::UNDEFINED))
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "unknown model item type");
 
-      if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
+      if ((*it)->isType(openfluid::ware::WareType::SIMULATOR))
       {
         openfluid::ware::WareID_t ID = ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID();
 
@@ -262,10 +262,10 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         IInstance = SimulatorPluginsManager::instance()->loadWareSignatureOnly(ID);
 
         IInstance->Params = (*it)->getParameters();
-        IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
+        IInstance->ItemType = openfluid::ware::WareType::SIMULATOR;
       }
 
-      if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
+      if ((*it)->isType(openfluid::ware::WareType::GENERATOR))
       {
         // instanciation of a data generator
         openfluid::fluidx::GeneratorDescriptor* GenDesc = (openfluid::fluidx::GeneratorDescriptor*)(*it);
@@ -273,7 +273,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         IInstance = new ModelItemInstance();
         IInstance->Verified = true;
         IInstance->Params = (*it)->getParameters();
-        IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::Generator;
+        IInstance->ItemType = openfluid::ware::WareType::GENERATOR;
 
         openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature();
 

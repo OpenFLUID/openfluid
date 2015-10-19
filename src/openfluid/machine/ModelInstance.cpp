@@ -317,10 +317,10 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
   {
     CurrentSimulator = (*SimIter);
 
-    if(CurrentSimulator->ItemType == openfluid::fluidx::ModelItemDescriptor::PluggedSimulator)
+    if(CurrentSimulator->ItemType == openfluid::ware::WareType::SIMULATOR)
       FPlugsMgr->completeSignatureWithWareBody(CurrentSimulator);
 
-    if (CurrentSimulator->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator &&
+    if (CurrentSimulator->ItemType == openfluid::ware::WareType::GENERATOR &&
         CurrentSimulator->GeneratorInfo != NULL)
     {
       if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Fixed)

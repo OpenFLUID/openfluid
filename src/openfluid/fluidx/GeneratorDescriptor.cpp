@@ -50,7 +50,7 @@ GeneratorDescriptor::GeneratorDescriptor() :
     ModelItemDescriptor(), m_VarName(""), m_UnitsClass(""), m_GenMethod(
         NoGenMethod), m_VarSize(1), m_GeneratedID("")
 {
-  m_WareType = Generator;
+  m_WareType = openfluid::ware::WareType::GENERATOR;
 }
 
 
@@ -64,7 +64,7 @@ GeneratorDescriptor::GeneratorDescriptor(
     unsigned int VarSize) :
     ModelItemDescriptor()
 {
-  m_WareType = Generator;
+  m_WareType = openfluid::ware::WareType::GENERATOR;
   m_VarName = VarName;
   m_UnitsClass = UnitsClass;
   m_GenMethod = GenMethod;

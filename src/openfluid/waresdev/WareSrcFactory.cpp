@@ -56,20 +56,20 @@ namespace openfluid { namespace waresdev {
 // =====================================================================
 
 
-WareSrcFactory::WareSrcFactory(WareSrcManager::WareType Type) :
+WareSrcFactory::WareSrcFactory(openfluid::ware::WareType Type) :
     m_WareId("")
 {
   QString TypeSubDir;
 
   switch (Type)
   {
-    case WareSrcManager::SIMULATOR:
+    case openfluid::ware::WareType::SIMULATOR:
       TypeSubDir = QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR);
       break;
-    case WareSrcManager::OBSERVER:
+    case openfluid::ware::WareType::OBSERVER:
       TypeSubDir = QString::fromStdString(openfluid::config::OBSERVERS_PLUGINS_SUBDIR);
       break;
-    case WareSrcManager::BUILDEREXT:
+    case openfluid::ware::WareType::BUILDEREXT:
       TypeSubDir = QString::fromStdString(openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR);
       break;
     default:

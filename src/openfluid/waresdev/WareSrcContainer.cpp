@@ -59,7 +59,7 @@ namespace openfluid { namespace waresdev {
 // =====================================================================
 
 
-WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type,
+WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware::WareType Type,
                                    const QString& WareName) :
     QObject(), m_AbsolutePath(AbsolutePath), m_Type(Type), m_Name(WareName), m_AbsoluteCMakeConfigPath(""),
         m_AbsoluteMainCppPath(""), m_AbsoluteUiParamCppPath(""), m_AbsoluteCMakeListsPath(""), m_AbsoluteJsonPath(""),
@@ -256,7 +256,7 @@ QString WareSrcContainer::getAbsolutePath() const
 // =====================================================================
 
 
-WareSrcManager::WareType WareSrcContainer::getType() const
+openfluid::ware::WareType WareSrcContainer::getType() const
 {
   return m_Type;
 }

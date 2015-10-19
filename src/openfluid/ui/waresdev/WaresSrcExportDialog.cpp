@@ -59,9 +59,9 @@ WaresSrcExportDialog::WaresSrcExportDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  m_ListWidgetsByWareType[openfluid::waresdev::WareSrcManager::SIMULATOR] = ui->SimListWidget;
-  m_ListWidgetsByWareType[openfluid::waresdev::WareSrcManager::OBSERVER] = ui->ObsListWidget;
-  m_ListWidgetsByWareType[openfluid::waresdev::WareSrcManager::BUILDEREXT] = ui->ExtListWidget;
+  m_ListWidgetsByWareType[openfluid::ware::WareType::SIMULATOR] = ui->SimListWidget;
+  m_ListWidgetsByWareType[openfluid::ware::WareType::OBSERVER] = ui->ObsListWidget;
+  m_ListWidgetsByWareType[openfluid::ware::WareType::BUILDEREXT] = ui->ExtListWidget;
 
   initWaresLists();
 

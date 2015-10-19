@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::fluidx::SimulatorDescriptor SimDesc("test.id");
 
   BOOST_REQUIRE_EQUAL(SimDesc.getID(),"test.id");
-  BOOST_REQUIRE_EQUAL(SimDesc.isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),true);
+  BOOST_REQUIRE_EQUAL(SimDesc.isType(openfluid::ware::WareType::SIMULATOR),true);
   BOOST_REQUIRE_EQUAL(SimDesc.getParameters().size(),0);
 
   openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   it = ModelItems.begin();
-  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator),true);
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::GENERATOR),true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),"test.var");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(),"test.unitclass");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
@@ -134,12 +134,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),1);
 
   it++;
-  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),true);
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::SIMULATOR),true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID(),"test.id");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),3);
 
   it++;
-  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator),true);
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::GENERATOR),true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),"test.var2");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(),"test.unitclass2");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),

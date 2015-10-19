@@ -173,7 +173,7 @@ class OPENFLUID_API WareSrcFactory
 
   public:
 
-    WareSrcFactory(WareSrcManager::WareType Type);
+    WareSrcFactory(openfluid::ware::WareType Type);
 
     ~WareSrcFactory();
 

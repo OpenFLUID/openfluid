@@ -95,9 +95,9 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void closeWareTab(WareSrcWidget* Ware);
 
-    void openWare(openfluid::waresdev::WareSrcManager::WareType Type, const QString& Title);
+    void openWare(openfluid::ware::WareType Type, const QString& Title);
 
-    void newWare(openfluid::waresdev::WareSrcManager::WareType Type);
+    void newWare(openfluid::ware::WareType Type);
 
   public:
 

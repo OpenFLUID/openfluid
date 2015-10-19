@@ -133,7 +133,7 @@ void ModelScene::refresh()
         Position.setY(int(CurrentRect.y()+CurrentRect.height()/2));
       }
 
-      if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator &&
+      if ((*it)->getType() == openfluid::ware::WareType::SIMULATOR &&
           openfluid::machine::SimulatorSignatureRegistry::instance()->isSimulatorAvailable(ID.toStdString()))
       {
         SimulatorGraphics* SimG =
@@ -148,7 +148,7 @@ void ModelScene::refresh()
         m_GraphicsItems.append(SimG);
         connect(SimG,SIGNAL(srcEditAsked(const QString&,bool)),this,SLOT(notifySrcEditAsked(const QString&,bool)));
       }
-      if ((*it)->getType() == openfluid::fluidx::WareDescriptor::Generator)
+      if ((*it)->getType() == openfluid::ware::WareType::GENERATOR)
       {
 
         openfluid::fluidx::GeneratorDescriptor* GenDesc =

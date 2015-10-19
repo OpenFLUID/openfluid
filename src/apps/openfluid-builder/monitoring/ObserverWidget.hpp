@@ -88,8 +88,8 @@ class ObserverWidget : public ClickableWareWidget
 
     void updateWare();
 
-    openfluid::fluidx::WareDescriptor::WareType getType()
-    { return openfluid::fluidx::WareDescriptor::PluggedObserver; }
+    openfluid::ware::WareType getType()
+    { return openfluid::ware::WareType::OBSERVER; }
 
 };
 

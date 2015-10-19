@@ -160,7 +160,7 @@ class WareWidget : public QWidget
     openfluid::ware::WareID_t getID() const
     { return m_ID; };
 
-    virtual openfluid::fluidx::WareDescriptor::WareType getType() = 0;
+    virtual openfluid::ware::WareType getType() = 0;
 
 };
 

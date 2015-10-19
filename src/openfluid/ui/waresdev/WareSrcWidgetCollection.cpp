@@ -587,17 +587,27 @@ bool WareSrcWidgetCollection::isBuildNoInstallMode()
 
 void WareSrcWidgetCollection::openSimulator()
 {
-  openWare(openfluid::waresdev::WareSrcManager::SIMULATOR, tr("Open a simulator"));
+  openWare(openfluid::ware::WareType::SIMULATOR, tr("Open a simulator"));
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 void WareSrcWidgetCollection::openObserver()
 {
-  openWare(openfluid::waresdev::WareSrcManager::OBSERVER, tr("Open an observer"));
+  openWare(openfluid::ware::WareType::OBSERVER, tr("Open an observer"));
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 void WareSrcWidgetCollection::openBuilderExtension()
 {
-  openWare(openfluid::waresdev::WareSrcManager::BUILDEREXT, tr("Open a Builder extension"));
+  openWare(openfluid::ware::WareType::BUILDEREXT, tr("Open a Builder extension"));
 }
 
 
@@ -631,7 +641,7 @@ void WareSrcWidgetCollection::deleteCurrentFile()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::openWare(openfluid::waresdev::WareSrcManager::WareType Type, const QString& Title)
+void WareSrcWidgetCollection::openWare(openfluid::ware::WareType Type, const QString& Title)
 {
   QString PathToOpen = openfluid::ui::waresdev::WareExplorerDialog::getOpenWarePath(QApplication::activeWindow(),
                                                                                     mp_Manager->getWareTypePath(Type),
@@ -684,7 +694,7 @@ void WareSrcWidgetCollection::newFile()
 
 void WareSrcWidgetCollection::newSimulator()
 {
-  newWare(openfluid::waresdev::WareSrcManager::SIMULATOR);
+  newWare(openfluid::ware::WareType::SIMULATOR);
 }
 
 
@@ -711,7 +721,7 @@ void WareSrcWidgetCollection::newSimulatorFromGhost(const openfluid::ware::Simul
 
 void WareSrcWidgetCollection::newObserver()
 {
-  newWare(openfluid::waresdev::WareSrcManager::OBSERVER);
+  newWare(openfluid::ware::WareType::OBSERVER);
 }
 
 
@@ -721,7 +731,7 @@ void WareSrcWidgetCollection::newObserver()
 
 void WareSrcWidgetCollection::newBuilderExtension()
 {
-  newWare(openfluid::waresdev::WareSrcManager::BUILDEREXT);
+  newWare(openfluid::ware::WareType::BUILDEREXT);
 }
 
 
@@ -729,7 +739,7 @@ void WareSrcWidgetCollection::newBuilderExtension()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::newWare(openfluid::waresdev::WareSrcManager::WareType Type)
+void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
 {
   openfluid::ui::waresdev::NewWareDialog Dialog(Type, QApplication::activeWindow());
   if (Dialog.exec())

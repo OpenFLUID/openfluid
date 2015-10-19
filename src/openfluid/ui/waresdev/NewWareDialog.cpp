@@ -58,7 +58,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-NewWareDialog::NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type, QWidget* Parent) :
+NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
     QDialog(Parent), ui(new Ui::NewWareDialog), m_WareType(Type), m_NewWarePath(""),
     m_UseSimSignature(false)
 {
@@ -76,14 +76,14 @@ NewWareDialog::NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type,
 
   switch (m_WareType)
   {
-    case openfluid::waresdev::WareSrcManager::SIMULATOR:
+    case openfluid::ware::WareType::SIMULATOR:
       m_DefaultMsg = tr("Create a new simulator");
       WareId = "sim.id";
       SrcFilename = "MySim.cpp";
       SrcClassname = "MySimulator";
       ui->BuilderExt_widget->setVisible(false);
       break;
-    case openfluid::waresdev::WareSrcManager::OBSERVER:
+    case openfluid::ware::WareType::OBSERVER:
       m_DefaultMsg = tr("Create a new observer");
       WareId = "obs.id";
       SrcFilename = "MyObs.cpp";
@@ -91,7 +91,7 @@ NewWareDialog::NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type,
       ui->Sim2doc_widget->setVisible(false);
       ui->BuilderExt_widget->setVisible(false);
       break;
-    case openfluid::waresdev::WareSrcManager::BUILDEREXT:
+    case openfluid::ware::WareType::BUILDEREXT:
       m_DefaultMsg = tr("Create a new Builder extension");
       WareId = "bext.id";
       SrcFilename = "MyExt.cpp";
@@ -145,7 +145,7 @@ NewWareDialog::NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type,
 
 
 NewWareDialog::NewWareDialog(const openfluid::ware::SimulatorSignature& Signature, QWidget* Parent) :
-  NewWareDialog(openfluid::waresdev::WareSrcManager::SIMULATOR,Parent)
+  NewWareDialog(openfluid::ware::WareType::SIMULATOR,Parent)
 {
   m_SimSignature = Signature;
   m_UseSimSignature = true;
@@ -249,7 +249,7 @@ void NewWareDialog::accept()
 
   R.LinkUID = QUuid::createUuid().toString();
 
-  if (m_WareType == openfluid::waresdev::WareSrcManager::SIMULATOR)
+  if (m_WareType == openfluid::ware::WareType::SIMULATOR)
   {
     R.Sim2docModeIndex = ui->Sim2doc_comboBox->currentIndex();
     R.Sim2docInstall = ui->Sim2doc_checkBox->isChecked();
@@ -265,11 +265,11 @@ void NewWareDialog::accept()
       R.SimulatorSchedulingReturn = openfluid::waresdev::WareSrcFactory::getSimulatorSchedulingReturn(m_SimSignature);
     }
   }
-  else if (m_WareType == openfluid::waresdev::WareSrcManager::OBSERVER)
+  else if (m_WareType == openfluid::ware::WareType::OBSERVER)
   {
 
   }
-  else if (m_WareType == openfluid::waresdev::WareSrcManager::BUILDEREXT)
+  else if (m_WareType == openfluid::ware::WareType::BUILDEREXT)
   {
     R.BuilderExtModeIndex = ui->BextType_comboBox->currentIndex();
     R.BuilderExtCategoryIndex = ui->BextCategory_comboBox->currentIndex();
@@ -280,8 +280,8 @@ void NewWareDialog::accept()
 
 
   if (WithUiParam &&
-      (m_WareType == openfluid::waresdev::WareSrcManager::SIMULATOR ||
-      m_WareType == openfluid::waresdev::WareSrcManager::OBSERVER))
+      (m_WareType == openfluid::ware::WareType::SIMULATOR ||
+      m_WareType == openfluid::ware::WareType::OBSERVER))
   {
     R.ParamsUiEnabled = true;
     R.ParamsUiClassname = ui->UiParamClassName_lineEdit->text();

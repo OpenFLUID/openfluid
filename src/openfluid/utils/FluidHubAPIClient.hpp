@@ -56,9 +56,6 @@ class OPENFLUID_API FluidHubAPIClient
 {
   public:
 
-    // TODO unify with other waretype definitions (PluggableWare, WareSrcManager, ...)
-    enum WareType { UNDEFINED, OBSERVER, SIMULATOR, BUILDEREXT, OTHER };
-
     class WareDetailedDescription
     {
       public:
@@ -76,7 +73,7 @@ class OPENFLUID_API FluidHubAPIClient
         std::set<std::string> RWUsers;
     };
 
-    typedef std::map<WareType,std::set<openfluid::ware::WareID_t>> WaresListByType_t;
+    typedef std::map<openfluid::ware::WareType,std::set<openfluid::ware::WareID_t>> WaresListByType_t;
 
     typedef std::map<openfluid::ware::WareID_t,WareDetailedDescription> WaresDetailsByID_t;
 
@@ -97,7 +94,7 @@ class OPENFLUID_API FluidHubAPIClient
 
     bool isCapable(const QString& Capacity) const;
 
-    static QString wareTypeToString(WareType);
+    static QString wareTypeToString(openfluid::ware::WareType Type);
 
 
   public:
@@ -174,7 +171,8 @@ class OPENFLUID_API FluidHubAPIClient
       @param[in] Username Optional username used in returned git URL
       @return the detailed list of wares of the give type
     */
-    WaresDetailsByID_t getAvailableWaresWithDetails(WareType Type, const QString& Username = "") const;
+    WaresDetailsByID_t getAvailableWaresWithDetails(openfluid::ware::WareType Type,
+                                                    const QString& Username = "") const;
 
     /**
       Returns the news as an RSS string content

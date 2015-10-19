@@ -101,7 +101,7 @@ class OPENFLUID_API WareSignature
       Name.clear();
       Description.clear();
       Version.clear();
-      Status = EXPERIMENTAL;
+      Status = WareStatus_t::EXPERIMENTAL;
       ABIVersion.clear();
       Authors.clear();
     }

@@ -47,17 +47,9 @@ namespace openfluid { namespace fluidx {
 
 class OPENFLUID_API WareDescriptor
 {
-  public:
-
-    enum WareType
-    {
-      NoWareType, PluggedSimulator, Generator, PluggedObserver
-    };
-
-
   protected:
 
-    WareType m_WareType;
+    openfluid::ware::WareType m_WareType;
 
     openfluid::ware::WareParams_t m_Params;  // Simulator parameters set
 
@@ -79,9 +71,9 @@ class OPENFLUID_API WareDescriptor
 
     openfluid::ware::WareParams_t& parameters();
 
-    bool isType(WareType MIType) const;
+    bool isType(openfluid::ware::WareType MIType) const;
 
-    WareType getType() const;
+    openfluid::ware::WareType getType() const;
 
     void eraseParameter(const openfluid::ware::WareParamKey_t& Key);
 

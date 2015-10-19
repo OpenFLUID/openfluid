@@ -91,7 +91,7 @@ class OPENFLUID_API CppPage: public QWizardPage
 
     ~CppPage();
 
-    void initialize(bool IsHpp, bool IsUi, openfluid::waresdev::WareSrcManager::WareType Type);
+    void initialize(bool IsHpp, bool IsUi, openfluid::ware::WareType Type);
 
   private slots:
 
@@ -122,7 +122,7 @@ class OPENFLUID_API CMakeConfigPage: public QWizardPage
 
   public:
 
-    CMakeConfigPage(openfluid::waresdev::WareSrcManager::WareType Type, QWidget* Parent = 0);
+    CMakeConfigPage(openfluid::ware::WareType Type, QWidget* Parent = 0);
 
     ~CMakeConfigPage();
 

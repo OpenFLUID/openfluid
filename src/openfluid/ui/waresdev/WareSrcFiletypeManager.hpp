@@ -102,7 +102,7 @@ class OPENFLUID_API WareSrcFiletypeManager
     };
 
     typedef QVector<CompletionRule> CompletionRules_t;
-    typedef QMap<openfluid::waresdev::WareSrcManager::WareType, CompletionRules_t> CompletionRulesByWareType_t;
+    typedef QMap<openfluid::ware::WareType, CompletionRules_t> CompletionRulesByWareType_t;
 
   private:
 

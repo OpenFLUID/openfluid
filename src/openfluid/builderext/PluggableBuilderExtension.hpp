@@ -89,7 +89,7 @@ class OPENFLUID_API PluggableBuilderExtension : public openfluid::ware::Pluggabl
 
   public:
 
-    PluggableBuilderExtension() : PluggableWare(openfluid::ware::PluggableWare::OTHER)
+    PluggableBuilderExtension() : PluggableWare(openfluid::ware::WareType::BUILDEREXT)
     {
 
     }

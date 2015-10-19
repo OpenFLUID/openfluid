@@ -98,11 +98,11 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
 
   QDir WaresdevDir(m_WaresdevPath);
 
-  m_WareTypePathByWareType[SIMULATOR] = WaresdevDir.filePath(
+  m_WareTypePathByWareType[openfluid::ware::WareType::SIMULATOR] = WaresdevDir.filePath(
       QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
-  m_WareTypePathByWareType[OBSERVER] = WaresdevDir.filePath(
+  m_WareTypePathByWareType[openfluid::ware::WareType::OBSERVER] = WaresdevDir.filePath(
       QString::fromStdString(openfluid::config::OBSERVERS_PLUGINS_SUBDIR));
-  m_WareTypePathByWareType[BUILDEREXT] = WaresdevDir.filePath(
+  m_WareTypePathByWareType[openfluid::ware::WareType::BUILDEREXT] = WaresdevDir.filePath(
       QString::fromStdString(openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR));
 
   foreach(QString Path,m_WareTypePathByWareType)
@@ -118,7 +118,7 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
 // =====================================================================
 
 
-QString WareSrcManager::getWareTypePath(WareType WareSrcType)
+QString WareSrcManager::getWareTypePath(openfluid::ware::WareType WareSrcType)
 {
   if (m_WareTypePathByWareType.contains(WareSrcType))
     return m_WareTypePathByWareType.value(WareSrcType);
@@ -131,18 +131,18 @@ QString WareSrcManager::getWareTypePath(WareType WareSrcType)
 // =====================================================================
 
 
-QString WareSrcManager::getWarePath(const QString& WareID, openfluid::ware::PluggableWare::WareType OFWareType,
+QString WareSrcManager::getWarePath(const QString& WareID, openfluid::ware::WareType OFWareType,
                                     QString& ErrMsg)
 {
-  openfluid::waresdev::WareSrcManager::WareType Type;
+  openfluid::ware::WareType Type;
 
   switch (OFWareType)
   {
-    case openfluid::ware::PluggableWare::SIMULATOR:
-      Type = openfluid::waresdev::WareSrcManager::SIMULATOR;
+    case openfluid::ware::WareType::SIMULATOR:
+      Type = openfluid::ware::WareType::SIMULATOR;
       break;
-    case openfluid::ware::PluggableWare::OBSERVER:
-      Type = openfluid::waresdev::WareSrcManager::OBSERVER;
+    case openfluid::ware::WareType::OBSERVER:
+      Type = openfluid::ware::WareType::OBSERVER;
       break;
     default:
       ErrMsg = QObject::tr("Unknown ware type");
@@ -180,8 +180,8 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 
   Info.m_IsInCurrentWorkspace = true;
 
-  for (QMap<WareType, QString>::iterator it = m_WareTypePathByWareType.begin(); it != m_WareTypePathByWareType.end();
-      ++it)
+  for (QMap<openfluid::ware::WareType,QString>::iterator it = m_WareTypePathByWareType.begin();
+       it != m_WareTypePathByWareType.end(); ++it)
   {
     // we *are* this waretype directory
     if (Info.m_AbsolutePath == it.value())

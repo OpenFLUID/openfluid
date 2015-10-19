@@ -54,16 +54,11 @@ class OPENFLUID_API WareSrcManager
 {
   public:
 
-    enum WareType
-    {
-      SIMULATOR = 1, OBSERVER = 2, BUILDEREXT = 3
-    };
-
     struct PathInfo
     {
         QString m_AbsolutePath;
         bool m_IsInCurrentWorkspace;
-        WareType m_WareType;
+        openfluid::ware::WareType m_WareType;
         QString m_WareName;
         bool m_isAWare;
         bool m_isAWareFile;
@@ -73,9 +68,10 @@ class OPENFLUID_API WareSrcManager
 
 
         PathInfo() :
-            m_AbsolutePath(""), m_IsInCurrentWorkspace(false), m_WareType(WareType(0)), m_WareName(""),
-            m_isAWare(false), m_isAWareFile(false), m_RelativePathToWareDir(""), m_AbsolutePathOfWare(""),
-            m_FileName("")
+          m_AbsolutePath(""), m_IsInCurrentWorkspace(false), m_WareType(openfluid::ware::WareType::UNDEFINED),
+          m_WareName(""),
+          m_isAWare(false), m_isAWareFile(false), m_RelativePathToWareDir(""), m_AbsolutePathOfWare(""),
+          m_FileName("")
         {
         }
     };
@@ -94,7 +90,7 @@ class OPENFLUID_API WareSrcManager
     /**
      * Absolute paths of each ware type sub-directory in the current workspace
      */
-    QMap<WareType, QString> m_WareTypePathByWareType;
+    QMap<openfluid::ware::WareType, QString> m_WareTypePathByWareType;
 
     WareSrcManager();
 
@@ -112,9 +108,9 @@ class OPENFLUID_API WareSrcManager
      */
     void switchWorkspace(const QString& NewAbsoluteWorkspacePath);
 
-    QString getWareTypePath(WareType WareSrcType);
+    QString getWareTypePath(openfluid::ware::WareType WareSrcType);
 
-    QString getWarePath(const QString& WareID, openfluid::ware::PluggableWare::WareType OFWareType, QString& ErrMsg);
+    QString getWarePath(const QString& WareID, openfluid::ware::WareType OFWareType, QString& ErrMsg);
 
     /**
      * Make Path absolute then splits it to retrieve PathInfo attributes.

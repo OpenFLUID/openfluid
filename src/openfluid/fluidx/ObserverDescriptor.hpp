@@ -54,7 +54,7 @@ class ObserverDescriptor : public WareDescriptor
   public:
 
     ObserverDescriptor(const std::string& ID) : WareDescriptor(), m_ID(ID)
-    { m_WareType = PluggedObserver; }
+    { m_WareType = openfluid::ware::WareType::OBSERVER; }
 
     std::string getID() const
     { return m_ID; }

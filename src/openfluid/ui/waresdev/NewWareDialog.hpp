@@ -66,7 +66,7 @@ class OPENFLUID_API NewWareDialog: public QDialog
 
     QString m_DefaultMsg;
 
-    openfluid::waresdev::WareSrcManager::WareType m_WareType;
+    openfluid::ware::WareType m_WareType;
 
     QDir m_WareTypeDir;
 
@@ -86,7 +86,7 @@ class OPENFLUID_API NewWareDialog: public QDialog
 
   public:
 
-    NewWareDialog(openfluid::waresdev::WareSrcManager::WareType Type, QWidget* Parent = 0);
+    NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent = 0);
 
     NewWareDialog(const openfluid::ware::SimulatorSignature& Signature, QWidget* Parent = 0);
 

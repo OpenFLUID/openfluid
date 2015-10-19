@@ -79,8 +79,8 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
     // =====================================================================
 
 
-    static openfluid::base::ExceptionContext computeContext(const openfluid::ware::PluggableWare::WareType WType,
-                                                            const openfluid::ware::WareID_t& ID)
+    static openfluid::base::ExceptionContext computeContext(const WareType WType,
+                                                            const WareID_t& ID)
     {
 
       openfluid::base::ExceptionContext Context;
@@ -88,9 +88,9 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
       Context["source"] = "ware";
       Context["waretype"] = "unknown";
 
-      if (WType == PluggableWare::OBSERVER)
+      if (WType == WareType::OBSERVER)
         Context["waretype"] = "observer";
-      else if (WType == PluggableWare::SIMULATOR)
+      else if (WType == WareType::SIMULATOR)
         Context["waretype"] = "simulator";
 
       Context["wareid"] = ID;
@@ -103,8 +103,8 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
     // =====================================================================
 
 
-    static openfluid::base::ExceptionContext computeContext(const openfluid::ware::PluggableWare::WareType WType,
-                                                            const openfluid::ware::WareID_t& ID,
+    static openfluid::base::ExceptionContext computeContext(const WareType WType,
+                                                            const WareID_t& ID,
                                                             const openfluid::base::SimulationStatus::SimulationStage
                                                               Stage)
     {
@@ -121,8 +121,8 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
     // =====================================================================
 
 
-    static openfluid::base::ExceptionContext computeContext(const openfluid::ware::PluggableWare::WareType WType,
-                                                            const openfluid::ware::WareID_t& ID,
+    static openfluid::base::ExceptionContext computeContext(const WareType WType,
+                                                            const WareID_t& ID,
                                                             const openfluid::base::SimulationStatus::SimulationStage
                                                               Stage,
                                                             openfluid::core::TimeIndex_t TimeIndex)

@@ -107,7 +107,7 @@ void TestDataset(std::string DatasetPath)
 
   it = ModelItems.begin();
   BOOST_REQUIRE_EQUAL(
-      (*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator), true);
+      (*it)->isType(openfluid::ware::WareType::GENERATOR), true);
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),
       "tests.generator.interp");
@@ -130,7 +130,7 @@ void TestDataset(std::string DatasetPath)
 
   ++it;
   BOOST_REQUIRE_EQUAL(
-      (*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),
+      (*it)->isType(openfluid::ware::WareType::SIMULATOR),
       true);
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID(),
@@ -141,7 +141,7 @@ void TestDataset(std::string DatasetPath)
 
   ++it;
   BOOST_REQUIRE_EQUAL(
-      (*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator), true);
+      (*it)->isType(openfluid::ware::WareType::GENERATOR), true);
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),
       "tests.generator.fixed");
@@ -161,7 +161,7 @@ void TestDataset(std::string DatasetPath)
 
   ++it;
   BOOST_REQUIRE_EQUAL(
-      (*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator), true);
+      (*it)->isType(openfluid::ware::WareType::GENERATOR), true);
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),
       "tests.generator.random");
@@ -184,7 +184,7 @@ void TestDataset(std::string DatasetPath)
 
   ++it;
   BOOST_REQUIRE_EQUAL(
-      (*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),
+      (*it)->isType(openfluid::ware::WareType::SIMULATOR),
       true);
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID(),
@@ -404,7 +404,7 @@ void TestDataset(std::string DatasetPath)
    // output.files.csv
 
    BOOST_CHECK(
-       (*ObsIt)->isType(openfluid::fluidx::WareDescriptor::PluggedObserver));
+       (*ObsIt)->isType(openfluid::ware::WareType::OBSERVER));
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.csv");
 
 

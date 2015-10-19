@@ -54,7 +54,7 @@ class AbstractModule : public QObject
 
   public slots:
 
-    virtual void whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType,
+    virtual void whenSrcEditAsked(const QString&,openfluid::ware::WareType WType,
                                   bool Ghost) = 0;
 
 

@@ -52,10 +52,10 @@ class OPENFLUID_API WareSignatureInstance : public WareContainer
 {
   public:
 
-    openfluid::fluidx::WareDescriptor::WareType ItemType;
+    openfluid::ware::WareType ItemType;
 
     WareSignatureInstance() : WareContainer(),
-        ItemType(openfluid::fluidx::WareDescriptor::NoWareType)
+      ItemType(openfluid::ware::WareType::UNDEFINED)
     {  }
 
 };

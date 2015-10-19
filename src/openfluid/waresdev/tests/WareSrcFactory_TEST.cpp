@@ -65,12 +65,12 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   QDir TypedTemplatesDir = QDir(CommonTemplatesDir.absoluteFilePath("simulators"));
 
   QString WareTypePath = openfluid::waresdev::WareSrcManager::instance()->getWareTypePath(
-      openfluid::waresdev::WareSrcManager::SIMULATOR);
+      openfluid::ware::WareType::SIMULATOR);
   QDir WareTypeDir = QDir(WareTypePath);
 
   openfluid::tools::emptyDirectoryRecursively(WareTypePath.toStdString());
 
-  openfluid::waresdev::WareSrcFactory Factory(openfluid::waresdev::WareSrcManager::SIMULATOR);
+  openfluid::waresdev::WareSrcFactory Factory(openfluid::ware::WareType::SIMULATOR);
 
   QString NewFilePath, ErrMsg;
   openfluid::waresdev::WareSrcFactory::Replacements R;
@@ -190,12 +190,12 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   QDir TypedTemplatesDir = QDir(CommonTemplatesDir.absoluteFilePath("builderexts"));
 
   QString WareTypePath = openfluid::waresdev::WareSrcManager::instance()->getWareTypePath(
-      openfluid::waresdev::WareSrcManager::BUILDEREXT);
+      openfluid::ware::WareType::BUILDEREXT);
   QDir WareTypeDir = QDir(WareTypePath);
 
   openfluid::tools::emptyDirectoryRecursively(WareTypePath.toStdString());
 
-  openfluid::waresdev::WareSrcFactory Factory(openfluid::waresdev::WareSrcManager::BUILDEREXT);
+  openfluid::waresdev::WareSrcFactory Factory(openfluid::ware::WareType::BUILDEREXT);
 
   QString NewFilePath, ErrMsg;
   openfluid::waresdev::WareSrcFactory::Replacements R;

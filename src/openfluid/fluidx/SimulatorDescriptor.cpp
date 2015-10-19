@@ -50,7 +50,7 @@ namespace openfluid { namespace fluidx {
 SimulatorDescriptor::SimulatorDescriptor(const std::string& ID) : ModelItemDescriptor(),
   m_ID(ID)
 {
-  m_WareType = PluggedSimulator;
+  m_WareType = openfluid::ware::WareType::SIMULATOR;
 }
 
 

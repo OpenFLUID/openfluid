@@ -44,7 +44,7 @@
 namespace openfluid { namespace ware {
 
 
-PluggableObserver::PluggableObserver() : SimulationInspectorWare(OBSERVER)
+PluggableObserver::PluggableObserver() : SimulationInspectorWare(WareType::OBSERVER)
 {
 
 }

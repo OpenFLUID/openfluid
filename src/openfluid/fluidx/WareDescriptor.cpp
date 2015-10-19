@@ -46,7 +46,7 @@ namespace openfluid { namespace fluidx {
 
 
 WareDescriptor::WareDescriptor() :
-    m_WareType(NoWareType), m_Enabled(true)
+    m_WareType(openfluid::ware::WareType::UNDEFINED), m_Enabled(true)
 {
 
 }
@@ -109,7 +109,7 @@ openfluid::ware::WareParams_t& WareDescriptor::parameters()
 // =====================================================================
 
 
-bool WareDescriptor::isType(WareType MIType) const
+bool WareDescriptor::isType(openfluid::ware::WareType MIType) const
 {
   return (m_WareType == MIType);
 }
@@ -119,7 +119,7 @@ bool WareDescriptor::isType(WareType MIType) const
 // =====================================================================
 
 
-WareDescriptor::WareType WareDescriptor::getType() const
+openfluid::ware::WareType WareDescriptor::getType() const
 {
   return m_WareType;
 }

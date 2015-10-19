@@ -80,8 +80,8 @@ class GeneratorWidget : public WareWidget
 
     ~GeneratorWidget();
 
-    openfluid::fluidx::WareDescriptor::WareType getType()
-    { return openfluid::fluidx::WareDescriptor::Generator; }
+    openfluid::ware::WareType getType()
+    { return openfluid::ware::WareType::GENERATOR; }
 
 };
 

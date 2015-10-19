@@ -57,7 +57,7 @@ class HomeModule : public AbstractModule
 
   public slots:
 
-    void whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType,bool Ghost);
+    void whenSrcEditAsked(const QString& ID,openfluid::ware::WareType WType,bool Ghost);
 
 
   public:
