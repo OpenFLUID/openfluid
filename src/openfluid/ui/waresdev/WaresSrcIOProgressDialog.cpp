@@ -114,6 +114,19 @@ void WaresSrcIOProgressDialog::finish(bool Ok)
 // =====================================================================
 
 
+void WaresSrcIOProgressDialog::finishAndQuit(bool Ok)
+{
+  if(Ok)
+    accept();
+  else
+    finish(Ok);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WaresSrcIOProgressDialog::progress(int Value)
 {
   ui->progressBar->setValue(Value);

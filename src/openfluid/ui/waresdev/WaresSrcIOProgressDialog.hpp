@@ -69,6 +69,8 @@ class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
 
     void finish(bool Ok);
 
+    void finishAndQuit(bool Ok);
+
     void progress(int Value);
 
   public:

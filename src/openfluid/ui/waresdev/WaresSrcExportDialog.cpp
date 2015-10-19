@@ -86,17 +86,15 @@ WaresSrcExportDialog::WaresSrcExportDialog(QWidget* Parent) :
 
 bool WaresSrcExportDialog::check()
 {
-  QStringList Msg;
-
   if (ui->PackagePathLineEdit->text().isEmpty())
-    Msg << "No package file defined.";
+  {
+    setMessage("No package file defined.");
+    return false;
+  }
 
   if (getSelectedWares().isEmpty())
-    Msg << "No ware selected.";
-
-  if (!Msg.isEmpty())
   {
-    setMessage(Msg.join("\n"));
+    setMessage("No ware selected.");
     return false;
   }
 
