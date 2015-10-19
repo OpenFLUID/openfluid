@@ -99,8 +99,13 @@ void WaresSrcIOProgressDialog::writeError(const QString& Message)
 // =====================================================================
 
 
-void WaresSrcIOProgressDialog::finish()
+void WaresSrcIOProgressDialog::finish(bool Ok)
 {
+  if (Ok)
+    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(accept()));
+  else
+    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(reject()));
+
   ui->buttonBox->setEnabled(true);
 }
 

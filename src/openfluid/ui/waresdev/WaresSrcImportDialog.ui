@@ -88,7 +88,7 @@ font : bold;
      </property>
      <item>
       <widget class="QWidget" name="widget" native="true">
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,0">
         <item>
          <widget class="QRadioButton" name="PackageRadioButton">
           <property name="text">
@@ -103,12 +103,12 @@ font : bold;
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="PackagePathLineEdit">
-          <property name="enabled">
-           <bool>false</bool>
+         <widget class="QLabel" name="PackagePathLabel">
+          <property name="styleSheet">
+           <string notr="true"/>
           </property>
-          <property name="readOnly">
-           <bool>true</bool>
+          <property name="text">
+           <string>&lt;i&gt;choose a package to import&lt;/i&gt;</string>
           </property>
          </widget>
         </item>
@@ -293,7 +293,7 @@ font : bold;
         </sizepolicy>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Close|QDialogButtonBox::Ok</set>
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
@@ -332,22 +332,6 @@ font : bold;
     <hint type="destinationlabel">
      <x>685</x>
      <y>139</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>PackageRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>PackagePathLineEdit</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>105</x>
-     <y>85</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>267</x>
-     <y>88</y>
     </hint>
    </hints>
   </connection>
