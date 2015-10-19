@@ -91,17 +91,15 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
 
 bool WaresSrcImportDialog::check()
 {
-  QStringList Msg;
-
   if (ui->PackagePathLabel->text().isEmpty())
-    Msg << "No package file defined.";
+  {
+    setMessage("No package file defined.");
+    return false;
+  }
 
   if (getSelectedWares().isEmpty())
-    Msg << "No ware selected.";
-
-  if (!Msg.isEmpty())
   {
-    setMessage(Msg.join("\n"));
+    setMessage("No ware selected.");
     return false;
   }
 
@@ -193,7 +191,7 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
     connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
 
     connect(mp_ImportFilePkg, SIGNAL(finished(bool)), Thread, SLOT(quit()));
-    connect(mp_ImportFilePkg, SIGNAL(finished(bool)), &ProgressDialog, SLOT(finish(bool)));
+    connect(mp_ImportFilePkg, SIGNAL(finished(bool)), &ProgressDialog, SLOT(finishAndQuit(bool)));
 
     connect(mp_ImportFilePkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
     connect(mp_ImportFilePkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
@@ -345,7 +343,7 @@ void WaresSrcImportDialog::importPackage()
     ProgressDialog.writeError(e.what());
   }
 
-  if(ProgressDialog.exec())
+  if (ProgressDialog.exec())
     accept();
 }
 
