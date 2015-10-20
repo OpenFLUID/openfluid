@@ -42,11 +42,11 @@
 
 
 #include <QDialog>
+#include <QListWidget>
 
 #include <openfluid/dllexport.hpp>
-
-#include <QListWidget>
 #include <openfluid/waresdev/WareSrcManager.hpp>
+
 
 namespace Ui {
 class WaresSrcExportDialog;

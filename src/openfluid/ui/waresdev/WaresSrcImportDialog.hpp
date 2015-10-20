@@ -46,6 +46,7 @@
 
 #include <openfluid/dllexport.hpp>
 
+
 namespace Ui {
 class WaresSrcImportDialog;
 }
@@ -53,6 +54,7 @@ class WaresSrcImportDialog;
 namespace openfluid { namespace waresdev {
 class WaresDevImportPackage;
 } }
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 

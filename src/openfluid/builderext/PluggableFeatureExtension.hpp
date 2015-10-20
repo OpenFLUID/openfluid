@@ -109,7 +109,7 @@
 namespace openfluid { namespace builderext {
 
 
-class PluggableFeatureExtension : public PluggableBuilderExtension
+class OPENFLUID_API PluggableFeatureExtension : public PluggableBuilderExtension
 {
 
   protected:

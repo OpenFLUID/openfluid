@@ -64,6 +64,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
 
     void processErrorOutput();
 
+
   protected:
 
     static QString m_SevenZCmd;
@@ -81,6 +82,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
     QString m_PackageName;
 
     QDir m_PackageTempDir;
+
     QString m_PackageTempPath;
 
     QString m_ConfFilePath;
@@ -90,6 +92,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
     WaresDevPackage(const QString& PackageFilePath, const QString& TempSubFolderName);
 
     void createAndLauchProcess(const QString& Command);
+
 
   public:
 
@@ -104,6 +107,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
     QString getPackageDescription();
 
     QDir getPackageTempDir();
+
 
   signals:
 
@@ -121,7 +125,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
 // =====================================================================
 
 
-class WaresDevExportPackage: public WaresDevPackage
+class OPENFLUID_API WaresDevExportPackage: public WaresDevPackage
 {
   Q_OBJECT
 
@@ -131,10 +135,11 @@ class WaresDevExportPackage: public WaresDevPackage
 
     void compress();
 
+
   public:
 
     WaresDevExportPackage(const QString& PackageFilePath, const QStringList& WaresPaths,
-      const QString& Packagers, const QString& PackageDescription);
+                          const QString& Packagers, const QString& PackageDescription);
 
   public slots:
 
@@ -146,7 +151,7 @@ class WaresDevExportPackage: public WaresDevPackage
 // =====================================================================
 
 
-class WaresDevImportPackage: public WaresDevPackage
+class OPENFLUID_API WaresDevImportPackage: public WaresDevPackage
 {
   Q_OBJECT
 
@@ -158,11 +163,13 @@ class WaresDevImportPackage: public WaresDevPackage
 
     void readConfFile();
 
+
   public:
 
     WaresDevImportPackage(const QString& PackageFilePath);
 
     void setSelectedWares(const QStringList& SelectedWarePaths);
+
 
   public slots:
 
@@ -170,11 +177,6 @@ class WaresDevImportPackage: public WaresDevPackage
 
     void copyWares();
 };
-
-
-// =====================================================================
-// =====================================================================
-
 
 } } // namespaces
 
