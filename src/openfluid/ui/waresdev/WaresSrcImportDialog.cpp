@@ -305,7 +305,7 @@ void WaresSrcImportDialog::importPackage()
   if (!check())
     return;
 
-  openfluid::waresdev::WaresDevImportPackage* Pkg = 0;
+  openfluid::waresdev::WaresDevImportPackage* Pkg = nullptr;
 
   if (ui->PackageRadioButton->isChecked())
     Pkg = mp_ImportFilePkg;

@@ -175,7 +175,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
         {
           ToUnitsPtrList = const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->toSpatialUnits(ClassVector[i]));
 
-          if (ToUnitsPtrList != NULL)
+          if (ToUnitsPtrList != nullptr)
           {
             // std::string DestClassStr = ClassVector[i];
 
@@ -213,7 +213,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
           FromUnitsPtrList =
               const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->fromSpatialUnits(ClassVector[i]));
 
-          if (FromUnitsPtrList != NULL)
+          if (FromUnitsPtrList != nullptr)
           {
             // std::string DestClassStr = ClassVector[i];
 

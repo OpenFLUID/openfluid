@@ -86,5 +86,5 @@ void CMakeSimParamsWidget::update()
 
 void CMakeSimParamsWidget::showMessage()
 {
-  QMessageBox::information(NULL,tr("Clicked!"),"You clicked on me!");
+  QMessageBox::information(nullptr,tr("Clicked!"),"You clicked on me!");
 }

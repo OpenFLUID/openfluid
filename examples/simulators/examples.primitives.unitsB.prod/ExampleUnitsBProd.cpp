@@ -167,7 +167,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
 
         FromAList = B->fromSpatialUnits("unitsA");
 
-        if (FromAList != NULL)
+        if (FromAList != nullptr)
         {
           OPENFLUID_UNITSLIST_LOOP(FromAList,FromA)
           {
@@ -195,7 +195,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
         {
           FromBList = B->fromSpatialUnits("unitsB");
 
-          if (FromBList != NULL)
+          if (FromBList != nullptr)
           {
             OPENFLUID_UNITSLIST_LOOP(FromBList,FromB)
             {

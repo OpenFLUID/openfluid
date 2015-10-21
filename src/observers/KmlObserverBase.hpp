@@ -121,7 +121,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
 
       DataSource = OGRSFDriverRegistrar::Open(LayerInfo.SourceFilename.c_str(), FALSE );
-      if( DataSource == NULL )
+      if( DataSource == nullptr )
       {
         OPENFLUID_LogWarning("Cannot open shapefile "+LayerInfo.SourceFilename+". This Kml output is ignored.");
         return false;
@@ -131,7 +131,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       Layer = DataSource->GetLayerByName(LayerName.c_str());
 
-      if (Layer == NULL)
+      if (Layer == nullptr)
       {
         OPENFLUID_LogWarning("Cannot open shapefile layer from " + LayerInfo.SourceFilename +
                                ". This Kml output is ignored.");
@@ -150,7 +150,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
 
       Layer->ResetReading();
-      while((Feature = Layer->GetNextFeature()) != NULL)
+      while((Feature = Layer->GetNextFeature()) != nullptr)
       {
         openfluid::core::UnitID_t UnitID = Feature->GetFieldAsInteger(OfldIDFieldIndex);
 
@@ -169,7 +169,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
           KUI.UnitID = UnitID;
 
-          if (Geometry != NULL)
+          if (Geometry != nullptr)
           {
 
             if (Geometry->getGeometryType() != wkbPolygon && Geometry->getGeometryType() != wkbLineString)

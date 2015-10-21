@@ -81,5 +81,5 @@ void CMakeObsParamsWidget::update()
 
 void CMakeObsParamsWidget::showMessage()
 {
-  QMessageBox::information(NULL,tr("Clicked!"),"You clicked on me!");
+  QMessageBox::information(nullptr,tr("Clicked!"),"You clicked on me!");
 }

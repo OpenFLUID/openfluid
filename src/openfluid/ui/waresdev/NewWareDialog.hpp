@@ -86,9 +86,9 @@ class OPENFLUID_API NewWareDialog: public QDialog
 
   public:
 
-    NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent = 0);
+    NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent = nullptr);
 
-    NewWareDialog(const openfluid::ware::SimulatorSignature& Signature, QWidget* Parent = 0);
+    NewWareDialog(const openfluid::ware::SimulatorSignature& Signature, QWidget* Parent = nullptr);
 
     ~NewWareDialog();
 

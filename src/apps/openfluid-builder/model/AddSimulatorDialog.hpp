@@ -60,7 +60,7 @@ class AddSimulatorDialog : public AddWareDialog
 
   public:
 
-    AddSimulatorDialog(const QStringList& SimIDList, QWidget* Parent = 0);
+    AddSimulatorDialog(const QStringList& SimIDList, QWidget* Parent = nullptr);
 
     ~AddSimulatorDialog();
 };

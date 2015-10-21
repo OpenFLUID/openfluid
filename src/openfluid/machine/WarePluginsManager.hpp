@@ -99,7 +99,7 @@ class OPENFLUID_API WarePluginsManager
 
       std::string PluginFilename = ID+getPluginFilenameSuffix()+openfluid::config::PLUGINS_EXT;
       std::string PluginFullPath = getPluginFullPath(PluginFilename);
-      M* Plug = NULL;
+      M* Plug = nullptr;
 
       QLibrary* PlugLib = loadWare(PluginFullPath);
 
@@ -129,7 +129,7 @@ class OPENFLUID_API WarePluginsManager
           {
             Plug->Signature = SignatureProc();
 
-            if (Plug->Signature == NULL)
+            if (Plug->Signature == nullptr)
               throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                         "Signature from plugin file " + PluginFilename +
                                                         " cannot be instanciated");
@@ -166,7 +166,7 @@ class OPENFLUID_API WarePluginsManager
     S* getWareSignature(const std::string& PluginFilename)
     {
       std::string PluginFullPath = getPluginFullPath(PluginFilename);
-      S* Plug = NULL;
+      S* Plug = nullptr;
 
       openfluid::base::ExceptionContext ECtxt =
           openfluid::base::FrameworkException::computeContext(OPENFLUID_CODE_LOCATION)
@@ -210,7 +210,7 @@ class OPENFLUID_API WarePluginsManager
                 throw openfluid::base::FrameworkException(ECtxt,E.getMessage());
               }
 
-              if (Plug->Signature == NULL)
+              if (Plug->Signature == nullptr)
                 throw openfluid::base::FrameworkException(ECtxt,"Signature cannot be instanciated from plugin file");
 
               Plug->Verified =
@@ -320,7 +320,7 @@ class OPENFLUID_API WarePluginsManager
       }
 
 
-      S* CurrentPlug = NULL;
+      S* CurrentPlug = nullptr;
 
       for (i=0;i<PluginFiles.size();i++)
       {
@@ -333,7 +333,7 @@ class OPENFLUID_API WarePluginsManager
           SearchResults.ErroredFiles[E.getContext().at("pluginfullpath")] = E.getMessage();
         }
 
-        if (CurrentPlug != NULL && CurrentPlug->Verified)
+        if (CurrentPlug != nullptr && CurrentPlug->Verified)
         {
           if (Pattern != "")
           {
@@ -356,9 +356,9 @@ class OPENFLUID_API WarePluginsManager
     {
       M* Plug = buildWareContainerWithSignatureOnly(ID);
 
-      if (Plug != NULL && Plug->Verified) return Plug;
+      if (Plug != nullptr && Plug->Verified) return Plug;
 
-      return NULL;
+      return nullptr;
     }
 
 
@@ -382,7 +382,7 @@ class OPENFLUID_API WarePluginsManager
         {
           Item->Body = BodyProc();
 
-          if (Item->Body == NULL)
+          if (Item->Body == nullptr)
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Ware from plugin file " + PluginFullPath +
                                                       " cannot be instanciated");

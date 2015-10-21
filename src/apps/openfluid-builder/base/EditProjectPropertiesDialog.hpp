@@ -63,7 +63,7 @@ class EditProjectPropertiesDialog : public openfluid::ui::common::OpenFLUIDDialo
 
   public:
 
-    EditProjectPropertiesDialog(QWidget* Parent = NULL);
+    EditProjectPropertiesDialog(QWidget* Parent = nullptr);
 
     ~EditProjectPropertiesDialog();
 

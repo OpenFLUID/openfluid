@@ -154,7 +154,7 @@ UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitsClass_t& aClass)
 
   if (it != m_ToUnits.end())
     return &(it->second);
-  else return NULL;
+  else return nullptr;
 }
 
 // =====================================================================
@@ -167,7 +167,7 @@ UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitsClass_t& aClass)
 
   if (it != m_FromUnits.end())
     return &(it->second);
-  else return NULL;
+  else return nullptr;
 }
 
 // =====================================================================
@@ -180,7 +180,7 @@ UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitsClass_t& aClass)
 
   if (it != m_ParentUnits.end())
     return &(it->second);
-  else return NULL;
+  else return nullptr;
 }
 
 // =====================================================================
@@ -193,7 +193,7 @@ UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitsClass_t& aClass)
 
   if (it != m_ChildrenUnits.end())
     return &(it->second);
-  else return NULL;
+  else return nullptr;
 }
 
 

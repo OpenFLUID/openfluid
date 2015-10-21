@@ -77,7 +77,7 @@ class KmlUnitInfoExtra : public KmlUnitInfo
 
     std::ofstream* DataFile;
 
-    KmlUnitInfoExtra() : KmlUnitInfo(), IsPlotted(true), DataFile(NULL)
+    KmlUnitInfoExtra() : KmlUnitInfo(), IsPlotted(true), DataFile(nullptr)
     { };
 };
 
@@ -547,7 +547,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
             UU = OPENFLUID_GetUnit((*it).UnitsClass,(*it2).second.UnitID);
 
-            if (UU != NULL)
+            if (UU != nullptr)
             {
               (*((*it2).second.DataFile)) << OPENFLUID_GetCurrentDate().getAsString("%Y%m%d-%H%M%S");
 
@@ -616,7 +616,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
         {
           if ((*it2).second.IsPlotted)
           {
-            if ((*it2).second.DataFile!=NULL && (*it2).second.DataFile->is_open())
+            if ((*it2).second.DataFile!=nullptr && (*it2).second.DataFile->is_open())
               (*it2).second.DataFile->close();
             delete (*it2).second.DataFile;
           }

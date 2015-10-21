@@ -58,7 +58,7 @@ GeneratorExtraInfo::GeneratorExtraInfo():
 
 
 ModelItemSignatureInstance::ModelItemSignatureInstance():
-  WareSignatureInstance(), Signature(NULL), GeneratorInfo(NULL), Ghost(false)
+  WareSignatureInstance(), Signature(nullptr), GeneratorInfo(nullptr), Ghost(false)
 {
   ItemType = openfluid::ware::WareType::UNDEFINED;
 }
@@ -70,7 +70,7 @@ ModelItemSignatureInstance::ModelItemSignatureInstance():
 
 ModelItemSignatureInstance::~ModelItemSignatureInstance()
 {
-  if (GeneratorInfo != NULL) delete GeneratorInfo;
+  if (GeneratorInfo != nullptr) delete GeneratorInfo;
 }
 
 
@@ -80,7 +80,7 @@ ModelItemSignatureInstance::~ModelItemSignatureInstance()
 
 
 ModelItemInstance::ModelItemInstance():
-  ModelItemSignatureInstance(), Body(NULL), OriginalPosition(0)
+  ModelItemSignatureInstance(), Body(nullptr), OriginalPosition(0)
 {
 
 }

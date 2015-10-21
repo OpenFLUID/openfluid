@@ -61,7 +61,7 @@ class AddUnitDialog : public openfluid::ui::common::OpenFLUIDDialog
 
   public:
 
-    AddUnitDialog(QWidget* Parent = NULL);
+    AddUnitDialog(QWidget* Parent = nullptr);
 
     ~AddUnitDialog();
 };

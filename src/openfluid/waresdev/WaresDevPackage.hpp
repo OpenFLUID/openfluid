@@ -87,7 +87,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
 
     QString m_ConfFilePath;
 
-    QProcess* mp_Process = 0;
+    QProcess* mp_Process = nullptr;
 
     WaresDevPackage(const QString& PackageFilePath, const QString& TempSubFolderName);
 

@@ -52,13 +52,13 @@
 
 
 AppActions::AppActions():
-  mp_DevelopmentMenu(NULL),
-  mp_SimulationMenu(NULL),
-  mp_ExtensionsMenu(NULL),
-  mp_SpatialExtensionsMenu(NULL), mp_ModelExtensionsMenu(NULL),
-  mp_ResultsExtensionsMenu(NULL), mp_OtherExtensionsMenu(NULL),
-  mp_ViewMenu(NULL),
-  mp_RecentProjectsMenu(NULL),
+  mp_DevelopmentMenu(nullptr),
+  mp_SimulationMenu(nullptr),
+  mp_ExtensionsMenu(nullptr),
+  mp_SpatialExtensionsMenu(nullptr), mp_ModelExtensionsMenu(nullptr),
+  mp_ResultsExtensionsMenu(nullptr), mp_OtherExtensionsMenu(nullptr),
+  mp_ViewMenu(nullptr),
+  mp_RecentProjectsMenu(nullptr),
   mp_MainToolbar(nullptr)
 {
   createActions();
@@ -98,7 +98,7 @@ void AppActions::updateRecentProjectsActions()
   for (int i=RFCount;i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
     m_RecentProjectsActions[i]->setVisible(false);
 
-  if (mp_RecentProjectsMenu != NULL)
+  if (mp_RecentProjectsMenu != nullptr)
     mp_RecentProjectsMenu->setEnabled(!RPList.empty());
 }
 
@@ -254,7 +254,7 @@ void AppActions::setProjectMode()
   mp_SimulationMenu->menuAction()->setVisible(true);
   mp_ViewMenu->menuAction()->setVisible(true);
   mp_ExtensionsMenu->menuAction()->setVisible(true);
-  if (mp_MainToolbar != NULL) mp_MainToolbar->show();
+  if (mp_MainToolbar != nullptr) mp_MainToolbar->show();
 }
 
 
@@ -281,7 +281,7 @@ void AppActions::setHomeMode()
   mp_SimulationMenu->menuAction()->setVisible(false);
   mp_ViewMenu->menuAction()->setVisible(false);
   mp_ExtensionsMenu->menuAction()->setVisible(false);
-  if (mp_MainToolbar != NULL) mp_MainToolbar->hide();
+  if (mp_MainToolbar != nullptr) mp_MainToolbar->hide();
 }
 
 

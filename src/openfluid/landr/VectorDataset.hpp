@@ -169,7 +169,7 @@ class OPENFLUID_API VectorDataset
       @param LayerName The name of the layer to create.
       @param LayerType The type of the layer to create, default wkbUnknown.
       @param SpatialRef The coordinate system to use for the new layer,
-      or NULL (default) if no coordinate system is available.
+      or nullptr (default) if no coordinate system is available.
       @throw openfluid::base::FrameworkException if the creation of layer failed.
     */
     void addALayer(std::string LayerName = "",

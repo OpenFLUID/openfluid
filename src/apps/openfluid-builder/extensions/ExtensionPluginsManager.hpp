@@ -96,7 +96,7 @@ class ExtensionPluginsManager :
 
     static ExtensionPluginsManager* instance(const QStringList& ExtraSearchPaths)
     {
-      if (mp_Singleton == NULL)
+      if (mp_Singleton == nullptr)
         mp_Singleton = new ExtensionPluginsManager(ExtraSearchPaths);
 
       return mp_Singleton;
@@ -109,7 +109,7 @@ class ExtensionPluginsManager :
 
     static ExtensionPluginsManager* instance()
     {
-      if (mp_Singleton == NULL)
+      if (mp_Singleton == nullptr)
         mp_Singleton = new ExtensionPluginsManager(QStringList());
 
       return mp_Singleton;

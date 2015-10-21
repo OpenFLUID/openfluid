@@ -85,7 +85,7 @@ class AddConnectionDialog : public openfluid::ui::common::OpenFLUIDDialog
 
     AddConnectionDialog(const QString& SrcClass, const QString& SrcID,
                         const openfluid::fluidx::AdvancedDomainDescriptor* Domain,
-                        QWidget* Parent = NULL);
+                        QWidget* Parent = nullptr);
 
     ~AddConnectionDialog();
 

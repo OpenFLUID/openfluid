@@ -57,7 +57,7 @@ class DashboardWidget : public QWidget
 
   public:
 
-    DashboardWidget(QWidget* Parent = 0);
+    DashboardWidget(QWidget* Parent = nullptr);
 
     ~DashboardWidget();
 

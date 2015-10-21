@@ -101,7 +101,7 @@ class OPENFLUID_API LogExplorerDialog : public QDialog
 
   public:
 
-    LogExplorerDialog(QString LogDir, QWidget *Parent = 0);
+    LogExplorerDialog(QString LogDir, QWidget *Parent = nullptr);
 
     virtual ~LogExplorerDialog();
 

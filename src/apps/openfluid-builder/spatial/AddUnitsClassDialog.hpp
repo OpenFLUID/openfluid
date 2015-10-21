@@ -62,7 +62,7 @@ class AddUnitsClassDialog : public AddUnitDialog
 
   public:
 
-    AddUnitsClassDialog(const QStringList& ExistingClasses, QWidget* Parent = NULL);
+    AddUnitsClassDialog(const QStringList& ExistingClasses, QWidget* Parent = nullptr);
 
     ~AddUnitsClassDialog();
 

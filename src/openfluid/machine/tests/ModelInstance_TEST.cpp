@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
                                                             openfluid::core::DateTime(2012,1,1,14,46,39),60);
 
-  openfluid::machine::ModelInstance MI(SB,NULL);
+  openfluid::machine::ModelInstance MI(SB,nullptr);
 
   BOOST_REQUIRE(!MI.hasTimePointToProcess());
 }
@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
                                                             openfluid::core::DateTime(2012,1,1,0,3,19),60);
 
-  openfluid::machine::ModelInstance MI(SB,NULL);
+  openfluid::machine::ModelInstance MI(SB,nullptr);
 
   openfluid::machine::ModelItemInstance* MII;
 
@@ -278,7 +278,7 @@ BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
 
   openfluid::machine::SimulationBlob SB;
 
-  ModelInstanceSub MI(SB, NULL);
+  ModelInstanceSub MI(SB, nullptr);
 
   openfluid::machine::ModelItemInstance* MII = new openfluid::machine::ModelItemInstance();
   MII->Body = (openfluid::ware::PluggableSimulator*) (new SimA());

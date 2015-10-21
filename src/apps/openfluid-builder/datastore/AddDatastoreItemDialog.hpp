@@ -82,7 +82,7 @@ class AddDatastoreItemDialog : public openfluid::ui::common::OpenFLUIDDialog
   public:
 
     AddDatastoreItemDialog(const QStringList& ExistingUnitsClass,const QStringList& ExistingIDs,
-                           QWidget* Parent = 0);
+                           QWidget* Parent = nullptr);
 
     ~AddDatastoreItemDialog();
 

@@ -66,13 +66,13 @@ namespace openfluid { namespace machine {
 Engine::Engine(SimulationBlob& SimBlob,
                ModelInstance& MInstance, MonitoringInstance& OLInstance,
                openfluid::machine::MachineListener* MachineListener)
-       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_MonitoringInstance(OLInstance), mp_SimLogger(NULL)
+       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_MonitoringInstance(OLInstance), mp_SimLogger(nullptr)
 {
 
   mp_RunEnv = openfluid::base::RuntimeEnvironment::instance();
 
   mp_MachineListener = MachineListener;
-  if (mp_MachineListener == NULL) mp_MachineListener = new openfluid::machine::MachineListener();
+  if (mp_MachineListener == nullptr) mp_MachineListener = new openfluid::machine::MachineListener();
 
   mp_SimStatus = &(m_SimulationBlob.simulationStatus());
 
@@ -103,7 +103,7 @@ Engine::Engine(SimulationBlob& SimBlob,
 
 Engine::~Engine()
 {
-  if (mp_SimLogger != NULL) delete mp_SimLogger;
+  if (mp_SimLogger != nullptr) delete mp_SimLogger;
 }
 
 
@@ -119,7 +119,7 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
   openfluid::core::UnitsList_t::const_iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
-  UnitList = NULL;
+  UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else
@@ -160,7 +160,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
   openfluid::core::UnitsList_t::iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
-  UnitList = NULL;
+  UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else
@@ -206,7 +206,7 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
   openfluid::core::UnitsList_t::const_iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
-  UnitList = NULL;
+  UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else
@@ -241,7 +241,7 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
   openfluid::core::UnitsList_t::iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
-  UnitList = NULL;
+  UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,

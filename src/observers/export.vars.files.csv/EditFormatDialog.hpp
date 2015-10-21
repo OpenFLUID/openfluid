@@ -84,7 +84,7 @@ class EditFormatDialog: public QDialog
 
   public:
 
-    EditFormatDialog(const QStringList& ExistingFormats,QWidget* Parent = NULL);
+    EditFormatDialog(const QStringList& ExistingFormats,QWidget* Parent = nullptr);
 
     ~EditFormatDialog();
 

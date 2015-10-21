@@ -67,13 +67,13 @@ namespace openfluid { namespace machine {
     while (_M_SimIter != m_ModelItems.end()) \
     { \
       ModelItemInstance* _M_CurrentSimulator = *_M_SimIter; \
-      if (_M_CurrentSimulator != NULL) \
+      if (_M_CurrentSimulator != nullptr) \
       { \
         mp_Listener->onSimulator##listenermethod(_M_CurrentSimulator->Signature->ID); \
         std::chrono::high_resolution_clock::time_point _M_TimeProfileStart = \
           std::chrono::high_resolution_clock::now(); \
         _M_CurrentSimulator->Body->calledmethod; \
-        if (mp_SimProfiler != NULL)\
+        if (mp_SimProfiler != nullptr)\
         { \
           mp_SimProfiler->addDuration(_M_CurrentSimulator->Signature->ID,\
                                       timeprofilepart, \
@@ -98,10 +98,10 @@ namespace openfluid { namespace machine {
 
 ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
                              openfluid::machine::MachineListener* Listener)
-             : mp_Listener(Listener), mp_SimLogger(NULL), mp_SimProfiler(NULL),
+             : mp_Listener(Listener), mp_SimLogger(nullptr), mp_SimProfiler(nullptr),
                m_SimulationBlob(SimulationBlob), m_Initialized(false)
 {
-  if (mp_Listener == NULL)
+  if (mp_Listener == nullptr)
     mp_Listener = new openfluid::machine::MachineListener();
 }
 
@@ -288,8 +288,8 @@ void ModelInstance::clear()
 
   for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
   {
-    if ((*it)->Body != NULL) delete (*it)->Body;
-    if ((*it)->Signature != NULL) delete (*it)->Signature;
+    if ((*it)->Body != nullptr) delete (*it)->Body;
+    if ((*it)->Signature != nullptr) delete (*it)->Signature;
   }
 
   m_ModelItems.clear();
@@ -321,7 +321,7 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
       FPlugsMgr->completeSignatureWithWareBody(CurrentSimulator);
 
     if (CurrentSimulator->ItemType == openfluid::ware::WareType::GENERATOR &&
-        CurrentSimulator->GeneratorInfo != NULL)
+        CurrentSimulator->GeneratorInfo != nullptr)
     {
       if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Fixed)
         CurrentSimulator->Body = new FixedGenerator();
@@ -391,8 +391,8 @@ void ModelInstance::finalize()
     ++SimIter;
   }
 
-  if (mp_SimProfiler != NULL) delete mp_SimProfiler;
-  mp_SimProfiler = NULL;
+  if (mp_SimProfiler != nullptr) delete mp_SimProfiler;
+  mp_SimProfiler = nullptr;
 
   m_Initialized = false;
 }
@@ -489,7 +489,7 @@ void ModelInstance::call_initializeRun()
   while (SimIter != m_ModelItems.end())
   {
     ModelItemInstance* CurrentSimulator = *SimIter;
-    if (CurrentSimulator != NULL)
+    if (CurrentSimulator != nullptr)
     {
       mp_Listener->onSimulatorInitializeRun(CurrentSimulator->Signature->ID);
 
@@ -497,7 +497,7 @@ void ModelInstance::call_initializeRun()
 
       openfluid::base::SchedulingRequest SchedReq = CurrentSimulator->Body->initializeRun();
 
-      if (mp_SimProfiler != NULL)
+      if (mp_SimProfiler != nullptr)
         mp_SimProfiler->addDuration(CurrentSimulator->Signature->ID,
                                     openfluid::base::SimulationStatus::INITIALIZERUN,
                                     std::chrono::duration_cast<SimulationProfiler::TimeResolution_t>(
@@ -560,7 +560,7 @@ void ModelInstance::processNextTimePoint()
 
     openfluid::base::SchedulingRequest SchedReq = m_TimePointList.front().processNextItem();
 
-    if (mp_SimProfiler != NULL)
+    if (mp_SimProfiler != nullptr)
       mp_SimProfiler->addDuration(NextItem->Signature->ID,
                                   openfluid::base::SimulationStatus::RUNSTEP,
                                   std::chrono::duration_cast<SimulationProfiler::TimeResolution_t>(

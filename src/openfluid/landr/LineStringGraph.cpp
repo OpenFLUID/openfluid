@@ -262,7 +262,7 @@ LineStringEntity* LineStringGraph::lastLineStringEntity()
   std::vector<LineStringEntity*> EndEntities = getEndLineStringEntities();
 
   if (EndEntities.size() != 1)
-    return (LineStringEntity*) 0;
+    return nullptr;
 
   return *EndEntities.begin();
 }
@@ -276,7 +276,7 @@ std::vector<LineStringEntity*> LineStringGraph::getEndLineStringEntities()
 {
   std::vector<LineStringEntity*> EndEntities;
 
-  LineStringEntity* CurrentEntity = 0;
+  LineStringEntity* CurrentEntity = nullptr;
 
   unsigned int iEnd=getEdges()->size();
   for (unsigned int i = 0; i < iEnd; i++)
@@ -301,7 +301,7 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
 {
   std::vector<LineStringEntity*> StartEntities;
 
-  LineStringEntity* CurrentEntity = 0;
+  LineStringEntity* CurrentEntity = nullptr;
 
   unsigned int iEnd=getEdges()->size();
   for (unsigned int i = 0; i < iEnd; i++)
@@ -577,8 +577,8 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity,
 
 
   // Four possibility of coincidence
-  geos::geom::CoordinateSequence *CoordsOne=0;
-  geos::geom::CoordinateSequence *CoordsTwo=0;
+  geos::geom::CoordinateSequence *CoordsOne = nullptr;
+  geos::geom::CoordinateSequence *CoordsTwo = nullptr;
 
   if ((EndNode->getCoordinate()).equals(StartNode2->getCoordinate()))
   {

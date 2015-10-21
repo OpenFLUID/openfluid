@@ -50,7 +50,7 @@
 
 
 HomeModule::HomeModule(const AppActions* Actions):
-AbstractModule(), mp_Widget(NULL), mp_Actions(Actions)
+AbstractModule(), mp_Widget(nullptr), mp_Actions(Actions)
 {
 
 }
@@ -71,7 +71,7 @@ HomeModule::~HomeModule()
 
 AbstractMainWidget* HomeModule::mainWidgetRebuilt(QWidget* Parent)
 {
-  if (mp_Widget != NULL)
+  if (mp_Widget != nullptr)
     delete mp_Widget;
 
   mp_Widget = new HomeWidget(Parent,mp_Actions);

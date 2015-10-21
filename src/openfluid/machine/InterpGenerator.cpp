@@ -48,7 +48,7 @@ namespace openfluid { namespace machine {
 
 InterpGenerator::InterpGenerator() : Generator(),
   m_IsMin(false), m_IsMax(false), m_Min(0.0), m_Max(0.0),
-  m_SourcesFile(""),m_DistriFile(""),m_DistriBindings(NULL)
+  m_SourcesFile(""),m_DistriFile(""),m_DistriBindings(nullptr)
 {
 
 }
@@ -60,7 +60,7 @@ InterpGenerator::InterpGenerator() : Generator(),
 
 InterpGenerator::~InterpGenerator()
 {
-  if( m_DistriBindings != NULL) delete m_DistriBindings;
+  if( m_DistriBindings != nullptr) delete m_DistriBindings;
 
 }
 

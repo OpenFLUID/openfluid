@@ -56,7 +56,7 @@ ProjectCentral* ProjectCentral::mp_Instance = nullptr;
 
 
 ProjectCentral::ProjectCentral(const QString& PrjPath):
-  mp_FXDesc(NULL),mp_AdvancedFXDesc(NULL)
+  mp_FXDesc(nullptr),mp_AdvancedFXDesc(nullptr)
 {
   openfluid::base::RuntimeEnvironment::instance()->linkToProject();
 
@@ -173,13 +173,13 @@ void ProjectCentral::deleteData()
   if (mp_AdvancedFXDesc)
   {
     delete mp_AdvancedFXDesc;
-    mp_AdvancedFXDesc = NULL;
+    mp_AdvancedFXDesc = nullptr;
   }
 
   if (mp_FXDesc)
   {
     delete mp_FXDesc;
-    mp_FXDesc = NULL;
+    mp_FXDesc = nullptr;
   }
 
   openfluid::base::RuntimeEnvironment::instance()->detachFromProject();
@@ -449,7 +449,7 @@ void ProjectCentral::checkModel()
       const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
       std::string ID = Model.getID(*itModelItem);
 
-      if (SignII != NULL)
+      if (SignII != nullptr)
       {
         // checking if simulator is a ghost
 
@@ -690,7 +690,7 @@ void ProjectCentral::checkModel()
     {
       const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
 
-      if (SignII != NULL)
+      if (SignII != nullptr)
       {
         Sign = SignII->Signature;
         std::string ID = Model.getID(*itModelItem);
@@ -802,7 +802,7 @@ void ProjectCentral::checkModel()
       const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
       std::string ID = Model.getID(*itModelItem);
 
-      if (SignII != NULL)
+      if (SignII != nullptr)
       {
 
         Sign = SignII->Signature;
@@ -912,7 +912,7 @@ void ProjectCentral::checkMonitoring()
 
       const openfluid::machine::ObserverSignatureInstance* SignII = Reg->signature((*itMonitoring)->getID());
 
-      if (SignII == NULL)
+      if (SignII == nullptr)
       {
         m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).updateStatus(PRJ_ERROR);
         m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("Observer %1 is not available")

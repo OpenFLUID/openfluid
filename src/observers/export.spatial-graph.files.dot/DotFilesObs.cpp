@@ -123,7 +123,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       std::ofstream DotFile;
       std::string OutputDir;
       const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_SpatialData->allSpatialUnitsByClass();
-      const openfluid::core::UnitsList_t* UnitsList = NULL;
+      const openfluid::core::UnitsList_t* UnitsList = nullptr;
       std::vector<openfluid::core::UnitsClass_t> ClassVector;
       openfluid::core::SpatialUnit* TheUnit;
 
@@ -198,7 +198,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
             const openfluid::core::UnitsPtrList_t* ToUnits =
                 const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->toSpatialUnits(ClassVector[i]));
 
-            if (ToUnits != NULL)
+            if (ToUnits != nullptr)
             {
               std::string DestClassStr = ClassVector[i];
               openfluid::core::UnitsPtrList_t::const_iterator itToUnits;
@@ -216,7 +216,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
             const openfluid::core::UnitsPtrList_t* ParentUnits =
                 const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->parentSpatialUnits(ClassVector[i]));
 
-            if (ParentUnits != NULL)
+            if (ParentUnits != nullptr)
             {
               std::string DestClassStr = ClassVector[i];
               openfluid::core::UnitsPtrList_t::const_iterator itParentUnits;

@@ -541,7 +541,7 @@ void ModelWidget::prepareWaresUpdate()
   for (int i=0;i<=LastIndex;i++)
   {
     WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->itemAt(i)->widget());
-    if (W != NULL) W->prepareWareUpdate();
+    if (W != nullptr) W->prepareWareUpdate();
   }
 }
 
@@ -557,7 +557,7 @@ void ModelWidget::updateWares()
   for (int i=0;i<=LastIndex;i++)
   {
     WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->itemAt(i)->widget());
-    if (W != NULL) W->updateWare();
+    if (W != nullptr) W->updateWare();
   }
 
   mp_ModelScene->refresh();

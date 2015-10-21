@@ -69,7 +69,7 @@ class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public Pluggab
   public:
 
     PluggableWorkspaceExtension():
-      QWidget(NULL), PluggableFeatureExtension()
+      QWidget(nullptr), PluggableFeatureExtension()
     { }
 
 

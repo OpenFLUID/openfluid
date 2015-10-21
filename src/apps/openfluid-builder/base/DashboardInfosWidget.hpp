@@ -65,7 +65,7 @@ class DashboardInfosWidget : public DashboardWidget
 
   public:
 
-    DashboardInfosWidget(const openfluid::fluidx::AdvancedFluidXDescriptor& Desc, QWidget* Parent = 0);
+    DashboardInfosWidget(const openfluid::fluidx::AdvancedFluidXDescriptor& Desc, QWidget* Parent = nullptr);
 
     ~DashboardInfosWidget();
 

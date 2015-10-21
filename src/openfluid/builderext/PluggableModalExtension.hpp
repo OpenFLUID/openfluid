@@ -72,7 +72,7 @@ class OPENFLUID_API PluggableModalExtension : public QDialog, public PluggableFe
   public:
 
     PluggableModalExtension():
-      QDialog(NULL), PluggableFeatureExtension()
+      QDialog(nullptr), PluggableFeatureExtension()
     { }
 
 

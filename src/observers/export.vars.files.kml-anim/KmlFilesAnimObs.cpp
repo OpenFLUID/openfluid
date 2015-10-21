@@ -195,7 +195,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
         UU = OPENFLUID_GetUnit(m_AnimLayerInfo.UnitsClass,(*it2).second.UnitID);
 
-        if (UU != NULL)
+        if (UU != nullptr)
         {
           if (OPENFLUID_IsVariableExist(UU,m_AnimLayerInfo.VarName,CurrentTI,openfluid::core::Value::DOUBLE))
           {

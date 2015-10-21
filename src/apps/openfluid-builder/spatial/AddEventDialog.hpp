@@ -76,7 +76,7 @@ class AddEventDialog : public openfluid::ui::common::OpenFLUIDDialog
 
     AddEventDialog(const QString& ClassName, const QStringList& IDsList,
                    const openfluid::core::DateTime& CurrentDateTime,
-                   QWidget* Parent = NULL);
+                   QWidget* Parent = nullptr);
 
     ~AddEventDialog();
 

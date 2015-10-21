@@ -71,7 +71,7 @@ class OPENFLUID_API PluggableModelessExtension : public QDialog, public Pluggabl
   public:
 
     PluggableModelessExtension():
-      QDialog(NULL), PluggableFeatureExtension()
+      QDialog(nullptr), PluggableFeatureExtension()
     { }
 
 

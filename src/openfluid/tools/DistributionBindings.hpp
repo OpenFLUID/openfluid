@@ -58,7 +58,7 @@ class ReaderNextValue
 
     bool isAvailable;
 
-    ReaderNextValue(): Reader(NULL), isAvailable(false)
+    ReaderNextValue(): Reader(nullptr), isAvailable(false)
     { }
 };
 

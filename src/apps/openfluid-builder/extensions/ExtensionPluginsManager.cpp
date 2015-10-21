@@ -40,4 +40,4 @@
 
 #include "ExtensionPluginsManager.hpp"
 
-ExtensionPluginsManager* ExtensionPluginsManager::mp_Singleton = NULL;
+ExtensionPluginsManager* ExtensionPluginsManager::mp_Singleton = nullptr;

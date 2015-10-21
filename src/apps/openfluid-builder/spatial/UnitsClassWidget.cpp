@@ -62,7 +62,7 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
                                    const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList,
                                    QWidget* Parent):
   QFrame(Parent),ui(new Ui::UnitsClassWidget),
-  m_Selected(false), m_ClassName(ClassName), mp_LayerSource(NULL)
+  m_Selected(false), m_ClassName(ClassName), mp_LayerSource(nullptr)
 {
   setObjectName("UnitsClassFrame");
 
@@ -356,7 +356,7 @@ void UnitsClassWidget::changeVisible()
 
 void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList)
 {
-  mp_LayerSource = NULL;
+  mp_LayerSource = nullptr;
 
   // disconnect signal to avoid multiple refresh of map,
   // due to changeVisible slot
@@ -385,7 +385,7 @@ void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::Da
 
 void UnitsClassWidget::setLayerVisible()
 {
-  if (mp_LayerSource != NULL)
+  if (mp_LayerSource != nullptr)
     ui->VisibleCheckBox->setChecked(true);
 }
 

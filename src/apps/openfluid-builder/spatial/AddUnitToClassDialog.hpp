@@ -68,7 +68,7 @@ class AddUnitToClassDialog : public AddUnitDialog
     AddUnitToClassDialog(const QString& ClassName,
                          const QStringList& AttrsNames,
                          const QStringList& UnitsIDs,
-                         QWidget* Parent = NULL);
+                         QWidget* Parent = nullptr);
 
     ~AddUnitToClassDialog();
 

@@ -86,7 +86,7 @@ modalSession has been exited prematurely - check for a reentrant call to endModa
 
 OGRGDALImportExtension::OGRGDALImportExtension() :
   openfluid::builderext::PluggableModalExtension(), ui(new Ui::OGRGDALDialog),
-  m_CurrentSrcIndex(-1), mp_PrecheckImportDlg(NULL)
+  m_CurrentSrcIndex(-1), mp_PrecheckImportDlg(nullptr)
 {
   ui->setupUi(this);
 
@@ -164,7 +164,7 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
 
 OGRGDALImportExtension::~OGRGDALImportExtension()
 {
-  CPLSetErrorHandler(NULL);
+  CPLSetErrorHandler(nullptr);
   delete ui;
 }
 
@@ -188,7 +188,7 @@ bool OGRGDALImportExtension::initialize()
 
   OGRRegisterAll();
 
-  if (OGRGetDriverByName("WFS") == NULL)
+  if (OGRGetDriverByName("WFS") == nullptr)
     ui->AddWFSButton->setEnabled(false);
 
   return true;
@@ -307,7 +307,7 @@ void OGRGDALImportExtension::processButtonBoxClicked(QAbstractButton* Button)
 void OGRGDALImportExtension::proceedToImport()
 {
 
-  if (mp_PrecheckImportDlg != NULL)
+  if (mp_PrecheckImportDlg != nullptr)
     delete mp_PrecheckImportDlg;
 
   mp_PrecheckImportDlg = new PrecheckImportDialog(OGRGDALEXT_PRECHECK_STEPS+m_SourcesInfos.size()+2,this);
@@ -529,7 +529,7 @@ void OGRGDALImportExtension::updateUI()
 
 void OGRGDALImportExtension::runPrecheck()
 {
-  if (mp_PrecheckImportDlg != NULL)
+  if (mp_PrecheckImportDlg != nullptr)
     delete mp_PrecheckImportDlg;
 
   mp_PrecheckImportDlg = new PrecheckImportDialog(OGRGDALEXT_PRECHECK_STEPS,this);

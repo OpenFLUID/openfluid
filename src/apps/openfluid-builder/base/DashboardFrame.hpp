@@ -76,7 +76,7 @@ class DashboardFrame : public QFrame
 
   public:
 
-    DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent = 0);
+    DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent = nullptr);
 
     ~DashboardFrame();
 

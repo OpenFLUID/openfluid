@@ -119,7 +119,7 @@ class OPENFLUID_API PluggableWare
 
   protected:
 
-    virtual bool isLinked() const { return mp_WareEnv != NULL; };
+    virtual bool isLinked() const { return mp_WareEnv != nullptr; };
 
     bool m_Initialized;
 

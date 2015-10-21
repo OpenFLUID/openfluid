@@ -72,7 +72,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
 
 
     virtual bool isLinked() const
-    { return (SimulationDrivenWare::isLinked() && mp_SpatialData != NULL && mp_Datastore != NULL); };
+    { return (SimulationDrivenWare::isLinked() && mp_SpatialData != nullptr && mp_Datastore != nullptr); };
 
 
     /**
@@ -507,7 +507,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       Returns a pointer to the queried unit if exists
       @param[in] ClassName the queried class name
       @param[in] ID the queried unit ID
-      @param[out] aUnit a pointer to the requested Unit, NULL if the unit does not exist
+      @param[out] aUnit a pointer to the requested Unit, nullptr if the unit does not exist
       @return false if the unit does not exist
     */
     bool OPENFLUID_GetUnit(const openfluid::core::UnitsClass_t& ClassName,
@@ -572,7 +572,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
                                   const openfluid::core::UnitID_t& IDChild) const;
 
 
-    SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType), mp_Datastore(NULL), mp_SpatialData(NULL)
+    SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType), mp_Datastore(nullptr), mp_SpatialData(nullptr)
     {};
 
 

@@ -209,7 +209,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     {
       openfluid::core::UnitsPtrList_t* ParentAU = U->parentSpatialUnits("AU");
 
-      if (ParentAU != NULL && ParentAU->size()==1)
+      if (ParentAU != nullptr && ParentAU->size()==1)
       {
         openfluid::core::IndexedValue WindSpeed;
         OPENFLUID_GetLatestVariable(ParentAU->front(),"gas.atm.V.windspeed",WindSpeed);
@@ -293,7 +293,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
       // - and the from land unit is burning
       // - and the from unit stock is burnt at 75%
       if (!m_UnitsStatus[U->getID()] &&
-          FromLU != NULL && FromLU->size()==1)
+          FromLU != nullptr && FromLU->size()==1)
       {
         openfluid::core::IntegerValue Stock;
         OPENFLUID_GetVariable(U,"fire.surf.Q.stocklevel",Stock);

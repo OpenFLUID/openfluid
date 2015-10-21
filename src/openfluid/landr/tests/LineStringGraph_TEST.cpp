@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
   openfluid::landr::LineStringEntity* CurrentEntity;
   int i = 0;
 
-  openfluid::landr::LineStringGraph* NullGraph = 0;
+  openfluid::landr::LineStringGraph* NullGraph = nullptr;
 
   DECLARE_ENTITIES_GRAPH_LOOP(1);
   BEGIN_ENTITIES_GRAPH_LOOP(1,NullGraph,CurrentEntity)
@@ -1103,7 +1103,7 @@ BOOST_AUTO_TEST_CASE(check_construction_from_non_LineType)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
-  openfluid::landr::LineStringGraph* Graph1 = NULL;
+  openfluid::landr::LineStringGraph* Graph1 = nullptr;
   BOOST_CHECK_THROW(Graph1 = openfluid::landr::LineStringGraph::create(*Val),openfluid::base::FrameworkException);
 
   delete Val;
@@ -1116,7 +1116,7 @@ BOOST_AUTO_TEST_CASE(check_construction_from_non_LineType)
   openfluid::landr::VectorDataset* Vect =
       new openfluid::landr::VectorDataset(Val2);
 
-  openfluid::landr::LineStringGraph* Graph2=NULL;
+  openfluid::landr::LineStringGraph* Graph2=nullptr;
   BOOST_CHECK_THROW( Graph2 = openfluid::landr::LineStringGraph::create(*Vect),
                      openfluid::base::FrameworkException);
 
@@ -1126,7 +1126,7 @@ BOOST_AUTO_TEST_CASE(check_construction_from_non_LineType)
   openfluid::core::GeoVectorValue* Val3 = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "PU.shp");
 
-  openfluid::landr::LineStringGraph* Graph3 = NULL;
+  openfluid::landr::LineStringGraph* Graph3 = nullptr;
   BOOST_CHECK_THROW(Graph3 = openfluid::landr::LineStringGraph::create(*Val3),openfluid::base::FrameworkException);
 
   delete Val3;

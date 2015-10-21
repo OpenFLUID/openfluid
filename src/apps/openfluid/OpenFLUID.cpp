@@ -91,10 +91,10 @@ std::string msecsToString(qint64 MSecs)
 
 
 OpenFLUIDApp::OpenFLUIDApp() :
-  mp_RunEnv(NULL)
+  mp_RunEnv(nullptr)
 {
   m_RunType = None;
-  mp_Engine = NULL;
+  mp_Engine = nullptr;
   m_BuddyToRun.first = "";
   m_BuddyToRun.second = "";
 }
@@ -116,7 +116,7 @@ OpenFLUIDApp::~OpenFLUIDApp()
 
 void OpenFLUIDApp::printlnExecMessagesStats()
 {
-  if (mp_Engine != NULL) std::cout << mp_Engine->getWarningsCount() << " warning(s)" << std::endl;
+  if (mp_Engine != nullptr) std::cout << mp_Engine->getWarningsCount() << " warning(s)" << std::endl;
 }
 
 // =====================================================================
@@ -169,7 +169,7 @@ void OpenFLUIDApp::printSimulatorsList(bool PrintErrors)
 
   for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
   {
-    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature!=NULL)
+    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature!=nullptr)
     {
       std::cout << " - " << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
       OneAtLeast = true;
@@ -212,7 +212,7 @@ void OpenFLUIDApp::printObserversList(bool PrintErrors)
 
   for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
   {
-    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature!=NULL)
+    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature!=nullptr)
     {
       std::cout << "  - " << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
       OneAtLeast = true;
@@ -551,7 +551,7 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
   std::cout << std::endl;
   std::cout.flush();
 
-  if (mp_Engine != NULL) delete mp_Engine;
+  if (mp_Engine != nullptr) delete mp_Engine;
 
   return 127;
 
@@ -769,7 +769,7 @@ void OpenFLUIDApp::runSimulation()
   mp_Engine->finalize();
 
   delete mp_Engine;
-  mp_Engine = NULL;
+  mp_Engine = nullptr;
 
 }
 
@@ -1096,7 +1096,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
 void OpenFLUIDApp::runBuddy()
 {
-  openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
+  openfluid::buddies::OpenFLUIDBuddy* Buddy = nullptr;
   openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
   if (m_BuddyToRun.first == "newsim" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
 #ifndef __APPLE__
@@ -1107,7 +1107,7 @@ void OpenFLUIDApp::runBuddy()
   if (m_BuddyToRun.first == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
   if (m_BuddyToRun.first == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
 
-  if (Buddy != NULL)
+  if (Buddy != nullptr)
   {
     Buddy->parseOptions(m_BuddyToRun.second);
     Buddy->run();

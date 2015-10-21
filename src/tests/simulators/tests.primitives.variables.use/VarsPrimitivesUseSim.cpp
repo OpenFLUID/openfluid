@@ -1162,7 +1162,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           OPENFLUID_SetVariable(TU,"tests.typed.none",openfluid::core::NullValue());
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.typed.none",CurrIndex,openfluid::core::Value::NULLL))
-            OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.none, NULL)");
+            OPENFLUID_RaiseError("incorrect OPENFLUID_IsVariableExist (tests.none, nullptr)");
 
 
           OPENFLUID_SetVariable(TU,"tests.typed.none",NewBool);

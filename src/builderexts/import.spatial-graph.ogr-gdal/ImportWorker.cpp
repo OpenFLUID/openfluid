@@ -203,7 +203,7 @@ bool ImportWorker::processFilesAndDatastore(int Step)
 
       OGRDataSource* SrcDS = OGRSFDriverRegistrar::Open(FullSrcFilePath.toStdString().c_str(),FALSE);
 
-      if (SrcDS != NULL)
+      if (SrcDS != nullptr)
       {
         OGRSFDriver *CopyDriver;
 
@@ -213,7 +213,7 @@ bool ImportWorker::processFilesAndDatastore(int Step)
 
         CopyDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(DriverName.toStdString().c_str());
 
-        if (CopyDriver != NULL)
+        if (CopyDriver != nullptr)
         {
           OGRDataSource* DestDS = CopyDriver->CopyDataSource(SrcDS,
                                                              FullDestFilePath.toStdString().c_str());

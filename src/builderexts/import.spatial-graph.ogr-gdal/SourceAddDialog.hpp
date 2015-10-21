@@ -99,7 +99,7 @@ class SourceAddDialog : public QDialog
 
   public:
 
-    SourceAddDialog(QWidget* Parent = NULL);
+    SourceAddDialog(QWidget* Parent = nullptr);
 
     ~SourceAddDialog();
 

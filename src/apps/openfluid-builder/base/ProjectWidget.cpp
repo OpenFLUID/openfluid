@@ -88,12 +88,12 @@ void WorkspaceTabWidget::addWorkspaceTab(QWidget* Tab, const QString& Label, boo
 
   if (!Closable)
   {
-    if (tabBar()->tabButton(Pos, QTabBar::RightSide) != NULL)
+    if (tabBar()->tabButton(Pos, QTabBar::RightSide) != nullptr)
     {
       tabBar()->tabButton(Pos, QTabBar::RightSide)->resize(0,0);
       tabBar()->tabButton(Pos, QTabBar::RightSide)->setVisible(false);
     }
-    if (tabBar()->tabButton(Pos, QTabBar::LeftSide) != NULL)
+    if (tabBar()->tabButton(Pos, QTabBar::LeftSide) != nullptr)
     {
       tabBar()->tabButton(Pos, QTabBar::LeftSide)->resize(0,0);
       tabBar()->tabButton(Pos, QTabBar::LeftSide)->setVisible(false);
@@ -108,7 +108,7 @@ void WorkspaceTabWidget::addWorkspaceTab(QWidget* Tab, const QString& Label, boo
 
 
 ProjectWidget::ProjectWidget(QWidget* Parent):
-  AbstractMainWidget(Parent), ui(new Ui::ProjectWidget), mp_WorkspaceTabWidget(NULL)
+  AbstractMainWidget(Parent), ui(new Ui::ProjectWidget), mp_WorkspaceTabWidget(nullptr)
 {
   ui->setupUi(this);
 

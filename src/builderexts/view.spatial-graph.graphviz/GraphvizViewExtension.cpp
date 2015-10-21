@@ -67,7 +67,7 @@ END_BUILDEREXT_SIGNATURE
 
 GraphvizViewExtension::GraphvizViewExtension() :
   openfluid::builderext::PluggableWorkspaceExtension(), ui(new Ui::GraphvizWidget),
-  mp_GraphvizScene(NULL)
+  mp_GraphvizScene(nullptr)
 {
   ui->setupUi(this);
 }

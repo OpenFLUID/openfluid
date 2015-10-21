@@ -47,7 +47,7 @@
 
 SourceAddDialog::SourceAddDialog(QWidget* Parent):
   QDialog(Parent), ui(new Ui::SourceAddDialog),
-  mp_DataSource(NULL), m_CurrentSourceURI("")
+  mp_DataSource(nullptr), m_CurrentSourceURI("")
 {
   ui->setupUi(this);
 
@@ -216,7 +216,7 @@ void SourceAddDialog::globalCheck()
   if (LayerCount == 0) ui->StatusLabel->setText(tr("No layer"));
   else ui->StatusLabel->setText(tr("%1 layer(s) available").arg(LayerCount));
 
-  bool OK = mp_DataSource != NULL &&
+  bool OK = mp_DataSource != nullptr &&
             !m_CurrentSourceURI.isEmpty() &&
             ui->LayersTableWidget->selectedItems().size() > 0;
 
@@ -230,7 +230,7 @@ void SourceAddDialog::globalCheck()
 
 bool SourceAddDialog::checkRequiredFields()
 {
-  if (mp_DataSource == NULL) return false;
+  if (mp_DataSource == nullptr) return false;
 
   OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
 

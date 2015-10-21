@@ -50,12 +50,12 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::UnitsCollection* pUC = NULL;
+  openfluid::core::UnitsCollection* pUC = nullptr;
 
   pUC = new openfluid::core::UnitsCollection();
 
   BOOST_REQUIRE_EQUAL(pUC->list()->size(),0);
-  BOOST_REQUIRE(pUC->spatialUnit(1) == NULL);
+  BOOST_REQUIRE(pUC->spatialUnit(1) == nullptr);
 
   delete pUC;
 }
@@ -67,24 +67,24 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_populate)
 {
-  openfluid::core::UnitsCollection* pUC = NULL;
+  openfluid::core::UnitsCollection* pUC = nullptr;
 
   pUC = new openfluid::core::UnitsCollection();
 
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",1,1)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",2,1)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",5,1)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",4,2)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",17,1)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",4,3)) == NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",17,3)) == NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",1,1)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",2,1)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",5,1)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",4,2)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",17,1)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",4,3)) == nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",17,3)) == nullptr);
 
 
   BOOST_REQUIRE_EQUAL(pUC->list()->size(),5);
 
-  BOOST_REQUIRE(pUC->spatialUnit(1) != NULL);
-  BOOST_REQUIRE(pUC->spatialUnit(17) != NULL);
-  BOOST_REQUIRE(pUC->spatialUnit(9) == NULL);
+  BOOST_REQUIRE(pUC->spatialUnit(1) != nullptr);
+  BOOST_REQUIRE(pUC->spatialUnit(17) != nullptr);
+  BOOST_REQUIRE(pUC->spatialUnit(9) == nullptr);
 
   delete pUC;
 }
@@ -96,19 +96,19 @@ BOOST_AUTO_TEST_CASE(check_populate)
 
 BOOST_AUTO_TEST_CASE(check_sortbypcsorder)
 {
-  openfluid::core::UnitsCollection* pUC = NULL;
+  openfluid::core::UnitsCollection* pUC = nullptr;
   openfluid::core::PcsOrd_t LastOrd;
   openfluid::core::UnitsList_t::iterator it;
 
   pUC = new openfluid::core::UnitsCollection();
 
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",1,1)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",2,5)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",5,2)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",4,7)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",17,3)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",13,1)) != NULL);
-  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",15,2)) != NULL);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",1,1)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",2,5)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",5,2)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",4,7)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",17,3)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",13,1)) != nullptr);
+  BOOST_REQUIRE(pUC->addSpatialUnit(openfluid::core::SpatialUnit("Test",15,2)) != nullptr);
 
   pUC->sortByProcessOrder();
 

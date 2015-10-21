@@ -46,7 +46,7 @@
 namespace openfluid { namespace machine {
 
 
-SimulatorPluginsManager* SimulatorPluginsManager::mp_Singleton = NULL;
+SimulatorPluginsManager* SimulatorPluginsManager::mp_Singleton = nullptr;
 
 
 // =====================================================================

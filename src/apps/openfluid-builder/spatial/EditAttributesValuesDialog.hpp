@@ -72,7 +72,7 @@ class EditAttributesValuesDialog : public openfluid::ui::common::OpenFLUIDDialog
 
     enum EditMode { EDIT_REPLACE, EDIT_MULTIPLY, EDIT_ADD, EDIT_UNKNOWN };
 
-    EditAttributesValuesDialog(QWidget* Parent = NULL);
+    EditAttributesValuesDialog(QWidget* Parent = nullptr);
 
     ~EditAttributesValuesDialog();
 

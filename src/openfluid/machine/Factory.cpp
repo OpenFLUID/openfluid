@@ -96,7 +96,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
       FromUnit = SGraph.spatialUnit((*itUnits).getUnitsClass(),(*itUnits).getID());
       ToUnit = SGraph.spatialUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
 
-      if (ToUnit != NULL)
+      if (ToUnit != nullptr)
       {
         FromUnit->addToUnit(ToUnit);
         ToUnit->addFromUnit(FromUnit);
@@ -124,7 +124,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
       ChildUnit = SGraph.spatialUnit((*itUnits).getUnitsClass(),(*itUnits).getID());
       ParentUnit = SGraph.spatialUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
 
-      if (ParentUnit != NULL)
+      if (ParentUnit != nullptr)
       {
         ParentUnit->addChildUnit(ChildUnit);
         ChildUnit->addParentUnit(ParentUnit);
@@ -164,7 +164,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
     {
       TheUnit = SGraph.spatialUnit((*itAttrsDesc).getUnitsClass(),itUnit->first);
 
-      if (TheUnit != NULL)
+      if (TheUnit != nullptr)
       {
         openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::const_iterator itUnitAttr;
 
@@ -194,7 +194,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
 
     EventUnit = SGraph.spatialUnit((*itEvent).getUnitsClass(),(*itEvent).getUnitID());
 
-    if (EventUnit != NULL)
+    if (EventUnit != nullptr)
     {
       EventUnit->events()->addEvent((*itEvent).event());
     }
@@ -314,7 +314,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "unknown generator type");
 
-        IInstance->Body = NULL;
+        IInstance->Body = nullptr;
         IInstance->Signature = Signature;
       }
 

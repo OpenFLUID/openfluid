@@ -410,7 +410,7 @@ BOOST_AUTO_TEST_CASE(check_add_replace_getAttr)
   BOOST_CHECK_EQUAL(Domain.getAttributesNames("unitsA").size(), 2);
   BOOST_CHECK(Domain.getAttributesNames("unitsA").count("NewData"));
 
-  std::string* FXValue = 0;
+  std::string* FXValue = nullptr; // TODO review why a pointer is used!
 
   std::list<openfluid::fluidx::AttributesDescriptor>* Attrs =
       &(FXDesc.spatialDomainDescriptor().attributes());

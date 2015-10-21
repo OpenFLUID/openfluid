@@ -93,7 +93,7 @@ DatastoreItem* Datastore::item(const std::string& ItemID)
   if (it != m_ItemsById.end())
     return it->second;
 
-  return (DatastoreItem*) 0;
+  return nullptr;
 }
 
 

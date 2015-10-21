@@ -264,7 +264,7 @@ openfluid::fluidx::DatastoreItemDescriptor* AdvancedDatastoreDescriptor::item(co
       return (*it) ;
   }
 
-  return (openfluid::fluidx::DatastoreItemDescriptor*) 0;
+  return nullptr;
 
 }
 

@@ -69,7 +69,7 @@ class HomeModule : public AbstractModule
     AbstractMainWidget* mainWidgetRebuilt(QWidget* Parent);
 
     QWidget* dockWidgetRebuilt(QWidget* /*Parent*/)
-    { return NULL; }
+    { return nullptr; }
 
     bool whenQuitAsked();
 

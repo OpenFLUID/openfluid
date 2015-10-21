@@ -264,7 +264,7 @@ Vector<T>::Vector(unsigned long Size, T InitValue)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
 
 
-  if (m_Data != NULL)
+  if (m_Data != nullptr)
   {
     unsigned long i;
     for (i=0;i<m_Size;i++) m_Data[i] = InitValue;
@@ -295,7 +295,7 @@ Vector<T>::Vector(T* Data, unsigned long Size)
 template <class T>
 Vector<T>::~Vector()
 {
-  if (m_Data != NULL) clear();
+  if (m_Data != nullptr) clear();
 }
 
 
@@ -310,7 +310,7 @@ bool Vector<T>::allocate(unsigned long Size)
   if (Size > 0)
   {
     m_Data = new T[Size];
-    if (m_Data != NULL)
+    if (m_Data != nullptr)
       m_Size = Size;
     else
       return false;
@@ -402,7 +402,7 @@ Vector<T>& Vector<T>::operator=(const Vector &A)
 template <class T>
 void Vector<T>::init()
 {
-  m_Data = NULL;
+  m_Data = nullptr;
   m_Size = 0;
 }
 

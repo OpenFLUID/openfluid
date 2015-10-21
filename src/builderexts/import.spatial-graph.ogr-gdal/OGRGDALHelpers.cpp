@@ -95,12 +95,12 @@ bool OGRGDALHelpers::convertFieldToAttribute(const OGRFeature* Feature,
                                              const int FieldIndex,
                                              QString& Attr)
 {
-  if (Feature == NULL) return false;
+  if (Feature == nullptr) return false;
   if (FieldIndex < 0) return false;
 
   const OGRFieldDefn* FieldDef = const_cast<OGRFeature*>(Feature)->GetFieldDefnRef(FieldIndex);
 
-  if (FieldDef == NULL) return false;
+  if (FieldDef == nullptr) return false;
 
   const OGRFieldType FieldType = const_cast<OGRFieldDefn*>(FieldDef)->GetType();
 

@@ -64,7 +64,7 @@
 
 #define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitsclass,funcptr,...) \
   openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->spatialUnits(unitsclass)->list(); \
-  if (_UNITSLISTID(id) != NULL) \
+  if (_UNITSLISTID(id) != nullptr) \
   { \
     openfluid::core::UnitsList_t::iterator _UNITSLISTITERID(id) = _UNITSLISTID(id)->begin(); \
     if (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
@@ -114,7 +114,7 @@
 
 #define _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(id,funcptr,...) \
   openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_SpatialData->allSpatialUnits(); \
-  if (_UNITSPTRLISTID(id) != NULL) \
+  if (_UNITSPTRLISTID(id) != nullptr) \
   { \
     openfluid::core::UnitsPtrList_t::iterator _UNITSPTRLISTITERID(id) = _UNITSPTRLISTID(id)->begin(); \
     if (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \

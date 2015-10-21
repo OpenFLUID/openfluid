@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(Vars.getVariableValuesCount("foo"),-1);
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",0,&Value),false);
   BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("bar",0,&Value),false);
-  BOOST_REQUIRE(Vars.currentValueIfIndex("bar",0) == NULL);
+  BOOST_REQUIRE(Vars.currentValueIfIndex("bar",0) == nullptr);
   BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("bar",15,&Value),false);
   BOOST_REQUIRE_EQUAL(Vars.modifyCurrentValue("bar",Value),false);
 }
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("foo",14,&DblValue),true);
   BOOST_REQUIRE_CLOSE(DblValue.get(),4.0,0.001);
   BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("foo",15,&DblValue),false);
-  BOOST_REQUIRE(Vars.currentValueIfIndex("foo",15) == NULL);
+  BOOST_REQUIRE(Vars.currentValueIfIndex("foo",15) == nullptr);
   BOOST_REQUIRE_CLOSE(DblValue.get(),4.0,0.001);
 
   BOOST_REQUIRE_EQUAL(Vars.modifyCurrentValue("foo",openfluid::core::DoubleValue(4.5)),true);

@@ -97,7 +97,7 @@ class ModelItemGraphics : public QGraphicsRectItem
   public:
 
     ModelItemGraphics(const QPointF &Coords, const QString& ID,
-                      QGraphicsItem* Parent = 0);
+                      QGraphicsItem* Parent = nullptr);
 
     ~ModelItemGraphics();
 

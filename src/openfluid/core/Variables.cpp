@@ -171,7 +171,7 @@ const Value* Variables::value(const VariableName_t& aName, const TimeIndex_t& an
   if (it != m_Data.end())
     return it->second.first.value(anIndex);
 
-  return (Value*) 0;
+  return nullptr;
 }
 
 
@@ -186,7 +186,7 @@ const Value* Variables::currentValue(const VariableName_t& aName) const
   if (it != m_Data.end())
     return it->second.first.currentValue();
 
-  return (Value*) 0;
+  return nullptr;
 }
 
 
@@ -253,7 +253,7 @@ Value* Variables::currentValueIfIndex(const VariableName_t& aName, const TimeInd
   if (it != m_Data.end() && it->second.first.getCurrentIndex() == Index)
     return it->second.first.currentValue();
 
-  return (Value*) 0;
+  return nullptr;
 }
 
 
@@ -403,5 +403,6 @@ void Variables::displayContent(const VariableName_t& aName, std::ostream& OStrea
     it->second.first.displayContent(OStream);
   }
 }
+
 
 } } //namespaces

@@ -69,7 +69,7 @@ class RecentProjectLabel : public openfluid::ui::common::ClickableLabel
 
   public:
 
-    RecentProjectLabel(const QString& Text, QWidget* Parent = NULL);
+    RecentProjectLabel(const QString& Text, QWidget* Parent = nullptr);
 
     virtual ~RecentProjectLabel()
     { }

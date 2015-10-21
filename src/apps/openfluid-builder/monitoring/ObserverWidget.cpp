@@ -85,7 +85,7 @@ void ObserverWidget::refresh()
   const openfluid::machine::ObserverSignatureInstance* Signature =
     openfluid::machine::ObserverSignatureRegistry::instance()->signature(m_ID);
 
-  if (Signature != NULL)
+  if (Signature != nullptr)
   {
     if (!m_IsTranslated)
     {
@@ -101,7 +101,7 @@ void ObserverWidget::refresh()
 
     // TODO begin to be refactored, see also SimulatorWidget =========
 
-    mp_ParamsWidget = NULL;
+    mp_ParamsWidget = nullptr;
 
     if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Signature->LinkUID))
     {
@@ -240,7 +240,7 @@ void ObserverWidget::prepareWareUpdate()
   {
     ui->ParameterizationStackWidget->removeWidget(mp_ParamsWidget);
     delete mp_ParamsWidget;
-    mp_ParamsWidget = NULL;
+    mp_ParamsWidget = nullptr;
   }
 }
 

@@ -115,7 +115,7 @@ class UnitsClassWidget : public QFrame
 
     UnitsClassWidget(const QString& ClassName,
                      const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList,
-                     QWidget* Parent = NULL);
+                     QWidget* Parent = nullptr);
 
     ~UnitsClassWidget();
 

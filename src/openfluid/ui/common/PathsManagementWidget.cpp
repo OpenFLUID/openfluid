@@ -177,7 +177,7 @@ QStringList PathsManagementWidget::getPathsList() const
 
 void PathsManagementWidget::setPathsList(const QStringList& Paths)
 {
-  QListWidgetItem* ItemToErase = NULL;
+  QListWidgetItem* ItemToErase = nullptr;
 
   do
   {
@@ -185,7 +185,7 @@ void PathsManagementWidget::setPathsList(const QStringList& Paths)
     if (ItemToErase)
     {
       delete ItemToErase;
-      ItemToErase = NULL;
+      ItemToErase = nullptr;
     }
   }
   while (ItemToErase);

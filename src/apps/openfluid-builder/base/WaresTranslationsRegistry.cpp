@@ -45,7 +45,7 @@
 #include "WaresTranslationsRegistry.hpp"
 
 
-WaresTranslationsRegistry* WaresTranslationsRegistry::mp_Instance = NULL;
+WaresTranslationsRegistry* WaresTranslationsRegistry::mp_Instance = nullptr;
 
 
 // =====================================================================

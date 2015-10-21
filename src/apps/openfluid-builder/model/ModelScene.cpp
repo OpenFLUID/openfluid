@@ -194,7 +194,7 @@ void ModelScene::buildConnections()
     {
       foreach (QString VarName, itTo.value())
       {
-        ProviderItem = NULL;
+        ProviderItem = nullptr;
 
         foreach (ModelItemGraphics* FromMItemG, m_GraphicsItems)
         {
@@ -217,7 +217,7 @@ void ModelScene::buildConnections()
         }
 
         // use the latest provider item
-        if (ProviderItem != NULL)
+        if (ProviderItem != nullptr)
         {
           addConnection(ProviderItem,ProviderOutNode,
                         ToMItemG,ConnectorGraphics::NODE_REQ,
@@ -235,7 +235,7 @@ void ModelScene::buildConnections()
     {
       foreach (QString VarName, itTo.value())
       {
-        ProviderItem = NULL;
+        ProviderItem = nullptr;
         foreach (ModelItemGraphics* FromMItemG, m_GraphicsItems)
         {
           if (ToMItemG != FromMItemG)
@@ -256,7 +256,7 @@ void ModelScene::buildConnections()
         }
 
         // use the latest provider item
-        if (ProviderItem != NULL)
+        if (ProviderItem != nullptr)
         {
           addConnection(ProviderItem,ProviderOutNode,
                         ToMItemG,ConnectorGraphics::NODE_US,
@@ -274,7 +274,7 @@ void ModelScene::buildConnections()
     {
       foreach (QString VarName, itTo.value())
       {
-        ProviderItem = NULL;
+        ProviderItem = nullptr;
         foreach (ModelItemGraphics* FromMItemG, m_GraphicsItems)
         {
 
@@ -297,7 +297,7 @@ void ModelScene::buildConnections()
         }
 
         // use the latest provider item
-        if (ProviderItem != NULL)
+        if (ProviderItem != nullptr)
         {
           addConnection(ProviderItem,ProviderOutNode,
                         ToMItemG,ConnectorGraphics::NODE_INUP,

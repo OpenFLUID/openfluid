@@ -187,7 +187,7 @@ Value* ValuesBuffer::value(const TimeIndex_t& anIndex) const
     return (*It).m_Value.get();
   }
 
-  return (Value*)0;
+  return nullptr;
 }
 
 

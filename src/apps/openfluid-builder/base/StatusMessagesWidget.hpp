@@ -62,7 +62,7 @@ class StatusMessagesWidget : public QWidget
 
   public:
 
-    StatusMessagesWidget(const QString& Category, QWidget* Parent = 0);
+    StatusMessagesWidget(const QString& Category, QWidget* Parent = nullptr);
 
     ~StatusMessagesWidget();
 

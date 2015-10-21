@@ -75,7 +75,7 @@ class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverS
 
     static ObserverPluginsManager* instance()
     {
-      if (mp_Singleton == NULL) mp_Singleton = new ObserverPluginsManager();
+      if (mp_Singleton == nullptr) mp_Singleton = new ObserverPluginsManager();
        return mp_Singleton;
     }
 

@@ -114,7 +114,7 @@ class SerieInfo
     std::string Color;
 
     SerieInfo() : Type(SERIE_UNKNOWN),
-        SourceFile(""), FileHandle(NULL), VarName(""), UnitsClass(""), UnitID(1), Unit(NULL),
+        SourceFile(""), FileHandle(nullptr), VarName(""), UnitsClass(""), UnitID(1), Unit(nullptr),
         Label(""), Style("line"), Color("")
     { }
 
@@ -234,7 +234,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         {
           openfluid::core::SpatialUnit* TmpU;
           TmpU = mp_SpatialData->spatialUnit(SInfo.UnitsClass,SInfo.UnitID);
-          if (TmpU != NULL)
+          if (TmpU != nullptr)
           {
             SInfo.Type = SerieInfo::SERIE_VAR;
             SInfo.Unit = TmpU;
@@ -296,7 +296,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
               (*Sit).second.Unit->variables()->currentValueIfIndex((*Sit).second.VarName,
                                                                    OPENFLUID_GetCurrentTimeIndex());
 
-          if (Val!= NULL)
+          if (Val!= nullptr)
           {
             *((*Sit).second.FileHandle) << OPENFLUID_GetCurrentDate().getAsString("%Y-%m-%dT%H:%M:%S");
             *((*Sit).second.FileHandle) << " ";
@@ -324,7 +324,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       {
         if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
         {
-          if ((*Sit).second.FileHandle!=NULL && (*Sit).second.FileHandle->is_open())
+          if ((*Sit).second.FileHandle!=nullptr && (*Sit).second.FileHandle->is_open())
             (*Sit).second.FileHandle->close();
         }
       }

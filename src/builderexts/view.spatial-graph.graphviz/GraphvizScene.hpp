@@ -54,7 +54,7 @@ class GraphvizScene : public QGraphicsScene
 
   public:
 
-    GraphvizScene(const QString& SVGFileName, QObject* Parent = 0);
+    GraphvizScene(const QString& SVGFileName, QObject* Parent = nullptr);
 
     ~GraphvizScene();
 

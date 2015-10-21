@@ -87,7 +87,7 @@ SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID)
     if (it->getID() == aUnitID) return &(*it);
   }
 
-  return NULL;
+  return nullptr;
 }
 
 
@@ -99,12 +99,13 @@ SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID)
 SpatialUnit* UnitsCollection::addSpatialUnit(const SpatialUnit& aUnit)
 {
 
-  if (spatialUnit(aUnit.getID()) == NULL)
+  if (spatialUnit(aUnit.getID()) == nullptr)
   {
     m_Data.push_back(aUnit);
     return &(m_Data.back());
   }
-  else return NULL;
+  else
+    return nullptr;
 }
 
 // =====================================================================

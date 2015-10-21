@@ -102,9 +102,9 @@ void NewslineWidget::setItems(const QList<NewsItemData>& Items)
   QBoxLayout* Layout = dynamic_cast<QBoxLayout*>(ui->NewslineContents->layout());
   QLayoutItem* LayoutItem;
 
-  while ((LayoutItem = Layout->takeAt(0)) != NULL)
+  while ((LayoutItem = Layout->takeAt(0)) != nullptr)
   {
-    if (LayoutItem->widget() != NULL)
+    if (LayoutItem->widget() != nullptr)
       LayoutItem->widget()->deleteLater();
 
     delete LayoutItem;

@@ -66,7 +66,7 @@ class AddWareDialog : public openfluid::ui::common::OpenFLUIDDialog
 
   public:
 
-    AddWareDialog(QWidget* Parent = 0);
+    AddWareDialog(QWidget* Parent = nullptr);
 
     ~AddWareDialog();
 

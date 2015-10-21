@@ -202,7 +202,7 @@ PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(geos::geom::LineString&
       return *it;
   }
 
-  return (PolygonEdge*) 0;
+  return nullptr;
 }
 
 
@@ -258,7 +258,7 @@ void PolygonEntity::computeNeighbours()
   {
     PolygonEdge* Edge = m_PolyEdges[i];
 
-    PolygonEntity* OtherFace = 0;
+    PolygonEntity* OtherFace = nullptr;
 
     if (Edge->getFaces().size() > 1)
       OtherFace =
@@ -456,8 +456,8 @@ geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge,
   geos::geom::Point *StartPoint2=EdgeToMerge->line()->getStartPoint();
   geos::geom::Point *EndPoint2=EdgeToMerge->line()->getEndPoint();
 
-  geos::geom::CoordinateSequence *CoordsOne=0;
-  geos::geom::CoordinateSequence *CoordsTwo=0;
+  geos::geom::CoordinateSequence *CoordsOne = nullptr;
+  geos::geom::CoordinateSequence *CoordsTwo = nullptr;
 
   if (EndPoint->getCoordinate()->equals(*(StartPoint2->getCoordinate())))
   {
@@ -611,7 +611,7 @@ PolygonEntity * PolygonEntity::neighbourWithCommonEdge(PolygonEdge * Edge)
 			return (*it).first;
 
 	}
-	return (PolygonEntity*) 0;
+	return nullptr;
 
 }
 
@@ -660,7 +660,7 @@ std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(V
   if (!mp_NeighboursMap)
     computeNeighbours();
 
-  openfluid::landr::LandREntity* Down=0;
+  openfluid::landr::LandREntity* Down = nullptr;
   double FlowLength=0.0;
   std::pair<LandREntity*, double > pairNeighLength;
 
@@ -672,7 +672,7 @@ std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(V
   }
 
   geos::geom::Geometry* PtIntersect=(LineTopology.geometries());
-  geos::geom::LineString* Line=0;
+  geos::geom::LineString* Line = nullptr;
   bool cover=false;
   unsigned int i=0;
   while (i<PtIntersect->getNumGeometries()&&!cover)

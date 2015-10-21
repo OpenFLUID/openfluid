@@ -60,7 +60,7 @@ class ModelView : public QGraphicsView
 
   public:
 
-    ModelView(QWidget* Parent = 0);
+    ModelView(QWidget* Parent = nullptr);
 
     void wheelEvent(QWheelEvent* Event);
 

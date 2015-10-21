@@ -248,7 +248,7 @@ Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr, T InitValue)
 template <class T>
 void Matrix<T>::init()
 {
-  m_Data = NULL;
+  m_Data = nullptr;
   m_ColsNbr = 0;
   m_RowsNbr = 0;
 }

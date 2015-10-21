@@ -56,26 +56,26 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(TU.getClass(),"Test");
   BOOST_REQUIRE_EQUAL(TU.getID(),25);
   BOOST_REQUIRE_EQUAL(TU.getProcessOrder(),3);
-  BOOST_REQUIRE(TU.fromSpatialUnits("TestFrom") == NULL);
-  BOOST_REQUIRE(TU.toSpatialUnits("TestTo") == NULL);
-  BOOST_REQUIRE(TU.parentSpatialUnits("TestParent") == NULL);
-  BOOST_REQUIRE(TU.childSpatialUnits("TestChildren") == NULL);
+  BOOST_REQUIRE(TU.fromSpatialUnits("TestFrom") == nullptr);
+  BOOST_REQUIRE(TU.toSpatialUnits("TestTo") == nullptr);
+  BOOST_REQUIRE(TU.parentSpatialUnits("TestParent") == nullptr);
+  BOOST_REQUIRE(TU.childSpatialUnits("TestChildren") == nullptr);
   BOOST_REQUIRE_EQUAL(TU.events()->getCount(),0);
   BOOST_REQUIRE_EQUAL(TU.attributes()->isAttributeExist("testattr"),false);
   BOOST_REQUIRE_EQUAL(TU.variables()->isVariableExist("testvar"),false);
 
 
-  openfluid::core::SpatialUnit* pTU = NULL;
+  openfluid::core::SpatialUnit* pTU = nullptr;
 
   pTU = new openfluid::core::SpatialUnit("pTest",25,3);
 
   BOOST_REQUIRE_EQUAL(pTU->getClass(),"pTest");
   BOOST_REQUIRE_EQUAL(pTU->getID(),25);
   BOOST_REQUIRE_EQUAL(pTU->getProcessOrder(),3);
-  BOOST_REQUIRE(pTU->fromSpatialUnits("pTestFrom") == NULL);
-  BOOST_REQUIRE(pTU->toSpatialUnits("pTestTo") == NULL);
-  BOOST_REQUIRE(pTU->parentSpatialUnits("pTestParent") == NULL);
-  BOOST_REQUIRE(pTU->childSpatialUnits("pTestChildren") == NULL);
+  BOOST_REQUIRE(pTU->fromSpatialUnits("pTestFrom") == nullptr);
+  BOOST_REQUIRE(pTU->toSpatialUnits("pTestTo") == nullptr);
+  BOOST_REQUIRE(pTU->parentSpatialUnits("pTestParent") == nullptr);
+  BOOST_REQUIRE(pTU->childSpatialUnits("pTestChildren") == nullptr);
   BOOST_REQUIRE_EQUAL(pTU->events()->getCount(),0);
   BOOST_REQUIRE_EQUAL(pTU->attributes()->isAttributeExist("testattr"),false);
   BOOST_REQUIRE_EQUAL(pTU->variables()->isVariableExist("testvar"),false);
@@ -118,20 +118,20 @@ BOOST_AUTO_TEST_CASE(check_from_to)
   TU.addChildUnit(new openfluid::core::SpatialUnit("ChildrenTest",1,1));
   TU.addChildUnit(new openfluid::core::SpatialUnit("ChildrenTest",2,1));
 
-  BOOST_REQUIRE(TU.fromSpatialUnits("FromTest") != NULL);
-  BOOST_REQUIRE(TU.fromSpatialUnits("FromTest2") != NULL);
-  BOOST_REQUIRE(TU.fromSpatialUnits("FromTest3") == NULL);
-  BOOST_REQUIRE(TU.toSpatialUnits("FromTest") == NULL);
+  BOOST_REQUIRE(TU.fromSpatialUnits("FromTest") != nullptr);
+  BOOST_REQUIRE(TU.fromSpatialUnits("FromTest2") != nullptr);
+  BOOST_REQUIRE(TU.fromSpatialUnits("FromTest3") == nullptr);
+  BOOST_REQUIRE(TU.toSpatialUnits("FromTest") == nullptr);
 
-  BOOST_REQUIRE(TU.toSpatialUnits("ToTest") != NULL);
-  BOOST_REQUIRE(TU.toSpatialUnits("ToTest2") != NULL);
-  BOOST_REQUIRE(TU.toSpatialUnits("ToTest3") == NULL);
-  BOOST_REQUIRE(TU.fromSpatialUnits("ToTest") == NULL);
+  BOOST_REQUIRE(TU.toSpatialUnits("ToTest") != nullptr);
+  BOOST_REQUIRE(TU.toSpatialUnits("ToTest2") != nullptr);
+  BOOST_REQUIRE(TU.toSpatialUnits("ToTest3") == nullptr);
+  BOOST_REQUIRE(TU.fromSpatialUnits("ToTest") == nullptr);
 
-  BOOST_REQUIRE(TU.parentSpatialUnits("ParentTest") != NULL);
-  BOOST_REQUIRE(TU.childSpatialUnits("ChildrenTest") != NULL);
-  BOOST_REQUIRE(TU.parentSpatialUnits("ToTest3") == NULL);
-  BOOST_REQUIRE(TU.childSpatialUnits("ToTest") == NULL);
+  BOOST_REQUIRE(TU.parentSpatialUnits("ParentTest") != nullptr);
+  BOOST_REQUIRE(TU.childSpatialUnits("ChildrenTest") != nullptr);
+  BOOST_REQUIRE(TU.parentSpatialUnits("ToTest3") == nullptr);
+  BOOST_REQUIRE(TU.childSpatialUnits("ToTest") == nullptr);
 
 
   BOOST_REQUIRE_EQUAL(TU.fromSpatialUnits("FromTest")->size(),3);
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(check_from_to)
   for (itUnits=FromUnits->begin();itUnits!=FromUnits->end();++itUnits)
   {
     BOOST_REQUIRE_EQUAL((*itUnits)->getClass(),"FromTest");
-    BOOST_REQUIRE((*itUnits)->fromSpatialUnits("FakeFrom") == NULL);
+    BOOST_REQUIRE((*itUnits)->fromSpatialUnits("FakeFrom") == nullptr);
     UnitsCount++;
   }
   BOOST_REQUIRE_EQUAL(UnitsCount,3);
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(check_from_to)
   for (itUnits=ToUnits->begin();itUnits!=ToUnits->end();++itUnits)
   {
     BOOST_REQUIRE_EQUAL((*itUnits)->getClass(),"ToTest");
-    BOOST_REQUIRE((*itUnits)->toSpatialUnits("FakeTo") == NULL);
+    BOOST_REQUIRE((*itUnits)->toSpatialUnits("FakeTo") == nullptr);
     UnitsCount++;
   }
   BOOST_REQUIRE_EQUAL(UnitsCount,2);

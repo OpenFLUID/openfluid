@@ -81,7 +81,7 @@ class NewsItemWidget : public QWidget
   public:
 
     NewsItemWidget(const NewsItemData& Data,
-                   QWidget* Parent = 0);
+                   QWidget* Parent = nullptr);
 
     ~NewsItemWidget();
 

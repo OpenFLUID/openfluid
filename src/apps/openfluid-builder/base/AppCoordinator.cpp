@@ -66,7 +66,7 @@
 
 AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   m_MainWindow(MainWin),m_Actions(Actions),
-  mp_DockWidget(NULL), mp_CurrentModule(NULL)
+  mp_DockWidget(nullptr), mp_CurrentModule(nullptr)
 {
   m_Actions.action("ProjectSave")->setEnabled(false);
 
@@ -184,11 +184,11 @@ void AppCoordinator::connectExtensions()
 
 void AppCoordinator::unsetCurrentModule()
 {
-  if (mp_CurrentModule != NULL) delete mp_CurrentModule;
-  mp_CurrentModule = NULL;
+  if (mp_CurrentModule != nullptr) delete mp_CurrentModule;
+  mp_CurrentModule = nullptr;
 
-  if (mp_DockWidget != NULL) delete mp_DockWidget;
-  mp_DockWidget = NULL;
+  if (mp_DockWidget != nullptr) delete mp_DockWidget;
+  mp_DockWidget = nullptr;
 }
 
 
@@ -211,11 +211,11 @@ void AppCoordinator::setCurrentModule(AbstractModule* Module)
 
 void AppCoordinator::setHomeModule()
 {
-  if (mp_DockWidget != NULL)
+  if (mp_DockWidget != nullptr)
   {
     m_MainWindow.removeDockWidget(mp_DockWidget);
     delete mp_DockWidget;
-    mp_DockWidget = NULL;
+    mp_DockWidget = nullptr;
   }
 
   AbstractModule* Module = new HomeModule(&m_Actions);
@@ -245,7 +245,7 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
     m_Actions.setProjectMode();
 
 
-    if (mp_DockWidget == NULL)
+    if (mp_DockWidget == nullptr)
       mp_DockWidget = new QDockWidget(tr("Project dashboard"),&m_MainWindow);
 
     DashboardFrame* DockedWidget =
@@ -293,7 +293,7 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
   catch (openfluid::base::Exception& E)
   {
     QApplication::restoreOverrideCursor();
-    QMessageBox::critical(NULL,tr("Project error"),QString(E.getMessage().c_str()));
+    QMessageBox::critical(nullptr,tr("Project error"),QString(E.getMessage().c_str()));
     return false;
   }
 
@@ -320,7 +320,7 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
 
   if (IType == NewProjectDialog::IMPORT_NONE)
   {
-    openfluid::fluidx::FluidXDescriptor FXD(NULL);
+    openfluid::fluidx::FluidXDescriptor FXD(nullptr);
     openfluid::core::DateTime DT;
     DT.setFromISOString(PrefsMan->getBegin().toStdString());
     FXD.runDescriptor().setBeginDate(DT);
@@ -694,7 +694,7 @@ void AppCoordinator::whenRunAsked()
 void AppCoordinator::whenExtensionAsked()
 {
   QAction* Sender = (QAction*)(QObject::sender());
-  if ( Sender != NULL)
+  if ( Sender != nullptr)
     mp_CurrentModule->whenExtensionAsked(Sender->data().toString());
 }
 
@@ -705,7 +705,7 @@ void AppCoordinator::whenExtensionAsked()
 
 void AppCoordinator::whenViewDashboardAsked()
 {
-  if (mp_DockWidget == NULL)
+  if (mp_DockWidget == nullptr)
     return;
 
   if (mp_DockWidget->isVisible())
@@ -843,7 +843,7 @@ void AppCoordinator::whenRestoreExamplesAsked()
                             tr("Proceed anyway?"),
                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {
-    openfluid::buddies::ExamplesBuddy Buddy(NULL);
+    openfluid::buddies::ExamplesBuddy Buddy(nullptr);
     Buddy.parseOptions("force=1");
     try
     {

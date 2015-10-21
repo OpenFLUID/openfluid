@@ -134,7 +134,7 @@ void GeneratorWidget::updateParams()
 void GeneratorWidget::refresh()
 {
 
-  if (mp_SignInstance != NULL)
+  if (mp_SignInstance != nullptr)
   {
     setAvailableWare(true);
     ui->NameLabel->setText(QString::fromStdString(mp_SignInstance->Signature->Name));

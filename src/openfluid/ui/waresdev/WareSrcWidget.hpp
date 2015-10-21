@@ -97,7 +97,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
                   openfluid::waresdev::WareSrcContainer::ConfigMode Config,
-                  openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent = 0);
+                  openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent = nullptr);
 
     ~WareSrcWidget();
 

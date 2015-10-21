@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::string StrValue;
 
   SimEnv = openfluid::base::RuntimeEnvironment::instance()->wareEnvironment();
-  BOOST_REQUIRE(SimEnv != NULL);
+  BOOST_REQUIRE(SimEnv != nullptr);
 
   BOOST_REQUIRE_EQUAL(SimEnv->getValue("wrong.fake",StrValue),false);
   BOOST_REQUIRE_EQUAL(SimEnv->getValue("fake.wrong",BoolValue),false);

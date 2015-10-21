@@ -75,7 +75,7 @@ class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelIte
 
     static SimulatorPluginsManager* instance()
     {
-      if (mp_Singleton == NULL) mp_Singleton = new SimulatorPluginsManager();
+      if (mp_Singleton == nullptr) mp_Singleton = new SimulatorPluginsManager();
        return mp_Singleton;
     }
 

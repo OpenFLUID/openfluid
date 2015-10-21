@@ -861,7 +861,7 @@ void AdvancedDomainDescriptor::modifyEvent(const openfluid::fluidx::EventID_t& E
 
 openfluid::fluidx::EventDescriptor* AdvancedDomainDescriptor::eventDescriptor(const openfluid::fluidx::EventID_t& ID)
 {
-  openfluid::fluidx::EventDescriptor* EvDesc = NULL;
+  openfluid::fluidx::EventDescriptor* EvDesc = nullptr;
 
   std::list<openfluid::fluidx::EventDescriptor>* EventsDescs =
       &(mp_DomainDesc->events());
@@ -870,7 +870,7 @@ openfluid::fluidx::EventDescriptor* AdvancedDomainDescriptor::eventDescriptor(co
   std::list<openfluid::fluidx::EventDescriptor>::iterator ite = EventsDescs->end();
 
 
-  while (it != ite && EvDesc == NULL)
+  while (it != ite && EvDesc == nullptr)
   {
     if ((*it).getID() == ID)
     {

@@ -87,7 +87,7 @@ class OPENFLUID_API CppPage: public QWizardPage
 
   public:
 
-    CppPage(const QDir& WareDir, QWidget* Parent = 0);
+    CppPage(const QDir& WareDir, QWidget* Parent = nullptr);
 
     ~CppPage();
 
@@ -122,7 +122,7 @@ class OPENFLUID_API CMakeConfigPage: public QWizardPage
 
   public:
 
-    CMakeConfigPage(openfluid::ware::WareType Type, QWidget* Parent = 0);
+    CMakeConfigPage(openfluid::ware::WareType Type, QWidget* Parent = nullptr);
 
     ~CMakeConfigPage();
 
@@ -165,7 +165,7 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
   public:
 
-    NewSrcFileAssistant(const openfluid::waresdev::WareSrcContainer& Container, QWidget* Parent = 0);
+    NewSrcFileAssistant(const openfluid::waresdev::WareSrcContainer& Container, QWidget* Parent = nullptr);
 
     ~NewSrcFileAssistant();
 

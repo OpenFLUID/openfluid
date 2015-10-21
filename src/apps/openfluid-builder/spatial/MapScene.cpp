@@ -57,7 +57,7 @@
 
 MapScene::MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
                    QObject* Parent):
-  QGraphicsScene(Parent), m_Domain(Domain), m_ActiveLayer(NULL)
+  QGraphicsScene(Parent), m_Domain(Domain), m_ActiveLayer(nullptr)
 {
 
 }
@@ -75,9 +75,9 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
 {
   if (DSItemDesc->getType() == openfluid::core::UnstructuredValue::GeoVectorValue)
   {
-    openfluid::core::DatastoreItem* DSItem = NULL;
+    openfluid::core::DatastoreItem* DSItem = nullptr;
 
-    if (m_LocalDatastore.item(DSItemDesc->getID()) == NULL)
+    if (m_LocalDatastore.item(DSItemDesc->getID()) == nullptr)
     {
       DSItem = new openfluid::core::DatastoreItem(DSItemDesc->getID(),
                                                   DSItemDesc->getPrefixPath(),
@@ -92,7 +92,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
     openfluid::core::GeoVectorValue* VectorData =
         dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
 
-    if (VectorData->data() != NULL && VectorData->containsField("OFLD_ID",0))
+    if (VectorData->data() != nullptr && VectorData->containsField("OFLD_ID",0))
     {
       OGRLayer* Layer = VectorData->layer();
 
@@ -105,7 +105,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
       OGRFeature *Feature;
       Layer->ResetReading();
 
-      while ((Feature = Layer->GetNextFeature()) != NULL )
+      while ((Feature = Layer->GetNextFeature()) != nullptr )
       {
         OGRGeometry* Geometry = Feature->GetGeometryRef();
         int ID = Feature->GetFieldAsInteger("OFLD_ID");
@@ -202,7 +202,7 @@ void MapScene::updateActiveLayer()
     }
   }
 
-  if (m_ActiveLayer != NULL)
+  if (m_ActiveLayer != nullptr)
   {
     foreach(MapItemGraphics* Item,*m_ActiveLayer)
     {
@@ -219,7 +219,7 @@ void MapScene::updateActiveLayer()
 void MapScene::setActiveLayer(const QString& UnitClass)
 {
   if (UnitClass.isEmpty() || !m_MapItems.contains(UnitClass.toStdString()))
-    m_ActiveLayer = NULL;
+    m_ActiveLayer = nullptr;
   else
     m_ActiveLayer = &m_MapItems[UnitClass.toStdString()];
 

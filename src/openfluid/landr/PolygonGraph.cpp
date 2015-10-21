@@ -277,7 +277,7 @@ LandREntity* PolygonGraph::createNewEntity(const geos::geom::Geometry* Geom,
 PolygonEdge* PolygonGraph::createEdge(geos::geom::LineString& LineString)
 {
   if (LineString.isEmpty())
-    return (PolygonEdge*) 0;
+    return nullptr;
 
   geos::geom::CoordinateSequence* Coordinates =
       geos::geom::CoordinateSequence::removeRepeatedPoints(

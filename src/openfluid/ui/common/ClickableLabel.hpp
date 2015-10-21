@@ -65,9 +65,9 @@ class OPENFLUID_API ClickableLabel : public QLabel
 
   public:
 
-    ClickableLabel(QWidget* Parent = NULL);
+    ClickableLabel(QWidget* Parent = nullptr);
 
-    ClickableLabel(const QString& Text, QWidget* Parent = NULL);
+    ClickableLabel(const QString& Text, QWidget* Parent = nullptr);
 
     virtual ~ClickableLabel()
     { }

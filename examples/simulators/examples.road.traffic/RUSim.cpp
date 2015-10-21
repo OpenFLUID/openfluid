@@ -200,7 +200,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
         if (m_UseTLUStateFromTLUVar)
         {
           UpTLUsList = RU->fromSpatialUnits("TLU");
-          if (UpTLUsList != NULL)
+          if (UpTLUsList != nullptr)
           {
             UpTLU = *UpTLUsList->begin();
             OPENFLUID_GetVariable(UpTLU,("examples.TLU.S.state"),TLUState);
@@ -216,7 +216,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
         {
           UpRUsList = RU->fromSpatialUnits("RU");
 
-          if (UpRUsList == NULL)
+          if (UpRUsList == nullptr)
             OPENFLUID_GetVariable(RU,"examples.RU.S.stock",
                                   OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
           else

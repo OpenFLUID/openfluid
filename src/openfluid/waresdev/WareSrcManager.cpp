@@ -49,7 +49,7 @@
 namespace openfluid { namespace waresdev {
 
 
-WareSrcManager* WareSrcManager::mp_Instance = 0;
+WareSrcManager* WareSrcManager::mp_Instance = nullptr;
 
 
 // =====================================================================

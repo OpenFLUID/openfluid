@@ -52,7 +52,7 @@ class EditEventDialog : public AddEventDialog
                     const QString& CurrentUnitID,
                     const openfluid::core::DateTime& CurrentDateTime,
                     const openfluid::core::Event::EventInfosMap_t& CurrentInfos,
-                    QWidget* Parent = NULL);
+                    QWidget* Parent = nullptr);
 
 };
 

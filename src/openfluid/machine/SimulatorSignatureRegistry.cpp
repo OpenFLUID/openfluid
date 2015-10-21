@@ -248,7 +248,7 @@ const openfluid::machine::ModelItemSignatureInstance*
   if (m_SimSignatures[openfluid::ware::WareType::GENERATOR].count(ID))
     return m_SimSignatures[openfluid::ware::WareType::GENERATOR][ID];
 
-  return (openfluid::machine::ModelItemSignatureInstance*) 0;
+  return nullptr;
 }
 
 

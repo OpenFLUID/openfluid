@@ -82,7 +82,7 @@ class ModelScene : public QGraphicsScene
 
   public:
 
-    ModelScene(const openfluid::fluidx::AdvancedModelDescriptor& ModelDesc, QObject* Parent = 0);
+    ModelScene(const openfluid::fluidx::AdvancedModelDescriptor& ModelDesc, QObject* Parent = nullptr);
 
     ~ModelScene();
 

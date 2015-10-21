@@ -83,7 +83,7 @@ const ObserverSignatureInstance* ObserverSignatureRegistry::signature(const std:
     if ((*it)->Signature->ID == ObserverID)
       return (*it);
   }
-  return NULL;
+  return nullptr;
 }
 
 

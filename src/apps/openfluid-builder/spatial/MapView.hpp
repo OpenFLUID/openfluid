@@ -74,7 +74,7 @@ class MapView : public QGraphicsView
 
   public:
 
-    MapView(QWidget* Parent = NULL);
+    MapView(QWidget* Parent = nullptr);
 
 };
 

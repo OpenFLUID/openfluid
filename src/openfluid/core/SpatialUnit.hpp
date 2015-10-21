@@ -171,7 +171,7 @@ class OPENFLUID_API SpatialUnit
 
     /**
       Returns a list of units, of the requested class, connected to this unit.
-      Returns NULL if no units of the requested class are connected to this unit.
+      Returns nullptr if no units of the requested class are connected to this unit.
       @param[in] aClass the requested class
     */
     UnitsPtrList_t* toSpatialUnits(const UnitsClass_t& aClass);
@@ -193,7 +193,7 @@ class OPENFLUID_API SpatialUnit
 
     /**
       Returns a list of units, of the requested class, connected from this unit.
-      Returns NULL if no units of the requested class are connected from this unit.
+      Returns nullptr if no units of the requested class are connected from this unit.
       @param[in] aClass the requested class
     */
     UnitsPtrList_t* fromSpatialUnits(const UnitsClass_t& aClass);
@@ -216,7 +216,7 @@ class OPENFLUID_API SpatialUnit
 
     /**
       Returns a list of parent units of the requested class.
-      Returns NULL if this unit has no parent
+      Returns nullptr if this unit has no parent
       @param[in] aClass the requested class
     */
     UnitsPtrList_t* parentSpatialUnits(const UnitsClass_t& aClass);
@@ -238,7 +238,7 @@ class OPENFLUID_API SpatialUnit
 
     /**
       Returns a list of children units of the requested class.
-      Returns NULL if this unit has no child
+      Returns nullptr if this unit has no child
       @param[in] aClass the requested class
     */
     UnitsPtrList_t* childSpatialUnits(const UnitsClass_t& aClass);

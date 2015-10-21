@@ -60,7 +60,7 @@ class GraphvizView : public QGraphicsView
 
   public:
 
-    GraphvizView(QWidget* Parent = 0);
+    GraphvizView(QWidget* Parent = nullptr);
 
     void wheelEvent(QWheelEvent* Event);
 

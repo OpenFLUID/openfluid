@@ -44,7 +44,7 @@ namespace openfluid { namespace machine {
 
 
 ObserverSignatureInstance::ObserverSignatureInstance()
-: WareSignatureInstance(), Signature(NULL)
+: WareSignatureInstance(), Signature(nullptr)
 {
   ItemType = openfluid::ware::WareType::OBSERVER;
 }
@@ -65,7 +65,7 @@ ObserverSignatureInstance::~ObserverSignatureInstance()
 
 
 ObserverInstance::ObserverInstance()
-: ObserverSignatureInstance(), Body(NULL)
+: ObserverSignatureInstance(), Body(nullptr)
 {
 
 }

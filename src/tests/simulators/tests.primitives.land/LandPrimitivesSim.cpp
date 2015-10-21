@@ -225,7 +225,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
 
 
-      openfluid::core::SpatialUnit* CurrentUnit = NULL;
+      openfluid::core::SpatialUnit* CurrentUnit = nullptr;
 
       CurrentUnit = OPENFLUID_GetUnit("TU",1);
       if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"TU",22))
@@ -285,7 +285,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       CurrentUnit = OPENFLUID_GetUnit("TU",2);
 
-      if (CurrentUnit == NULL)
+      if (CurrentUnit == nullptr)
         OPENFLUID_RaiseError("incorrect unit TU#2 before deletion");
 
       CurrentUnit = OPENFLUID_GetUnit("TU",22);
@@ -301,7 +301,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       OPENFLUID_DeleteUnit("TU",2);
 
       CurrentUnit = OPENFLUID_GetUnit("TU",2);
-      if (CurrentUnit != NULL)
+      if (CurrentUnit != nullptr)
         OPENFLUID_RaiseError("incorrect deletion for unit TU#2");
 
 

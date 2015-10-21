@@ -82,7 +82,7 @@ class OPENFLUID_API PathsManagementWidget : public QWidget
 
   public:
 
-    PathsManagementWidget(QWidget* Parent = NULL);
+    PathsManagementWidget(QWidget* Parent = nullptr);
 
     ~PathsManagementWidget();
 

@@ -73,7 +73,7 @@ class ConnectorGraphics : public QGraphicsPathItem
 
     ConnectorGraphics(ModelItemGraphics* FromItem, OutNodeType FromOutNode,
                       ModelItemGraphics* ToItem, InNodeType ToInNode,
-                      QGraphicsItem* Parent = 0);
+                      QGraphicsItem* Parent = nullptr);
 
     ~ConnectorGraphics();
 

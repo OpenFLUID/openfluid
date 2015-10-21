@@ -142,7 +142,7 @@ class ProjectModule : public AbstractModule
 
   private slots:
 
-    void releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender = NULL);
+    void releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender = nullptr);
 
     void dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 

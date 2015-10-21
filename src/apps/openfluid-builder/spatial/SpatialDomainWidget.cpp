@@ -264,7 +264,7 @@ void SpatialDomainWidget::refresh()
 
   for (int j=0;j<Layout->count();j++)
   {
-    if (Layout->itemAt(j)->widget() != NULL)
+    if (Layout->itemAt(j)->widget() != nullptr)
     {
 
       UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(j)->widget());
@@ -696,7 +696,7 @@ void SpatialDomainWidget::refreshMap()
     ClassW->linkToDatastoreItem(m_Datastore.getItems(ClassW->getClassName().toStdString(),
                                   openfluid::core::UnstructuredValue::GeoVectorValue));
 
-    if (ClassW->layerSource() != NULL && ClassW->isLayerVisible())
+    if (ClassW->layerSource() != nullptr && ClassW->isLayerVisible())
     {
       mp_MapScene->addLayer(ClassW->layerSource(),
                             -i,

@@ -78,7 +78,7 @@ class AddParamDialog : public openfluid::ui::common::OpenFLUIDDialog
   public:
 
     AddParamDialog(const QStringList& ExistingParams,const QStringList& CompletingParams,
-                   QWidget* Parent = 0);
+                   QWidget* Parent = nullptr);
 
     ~AddParamDialog();
 

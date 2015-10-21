@@ -80,7 +80,7 @@ class EditAttributeNameDialog : public openfluid::ui::common::OpenFLUIDDialog
 
     EditAttributeNameDialog(EditMode Mode,
                             const QStringList& AttrsList,
-                            QWidget* Parent = NULL);
+                            QWidget* Parent = nullptr);
 
     ~EditAttributeNameDialog();
 

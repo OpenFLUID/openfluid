@@ -143,7 +143,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {
-        m_PotentialConnections[LU->getID()].assign(8,(openfluid::core::SpatialUnit*)NULL);
+        m_PotentialConnections[LU->getID()].assign(8,nullptr);
 
         long int TargetID;
 
@@ -224,14 +224,14 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
         // remove existing connection
         openfluid::core::UnitsPtrList_t* ToLU = LU->toSpatialUnits("LU");
 
-        if (ToLU != NULL && ToLU->size()==1)
+        if (ToLU != nullptr && ToLU->size()==1)
         {
           OPENFLUID_RemoveFromToConnection(LU,ToLU->front());
         }
 
 
         // set new connection
-        if (m_PotentialConnections[LU->getID()][FireTargetIndex] != NULL)
+        if (m_PotentialConnections[LU->getID()][FireTargetIndex] != nullptr)
           OPENFLUID_AddFromToConnection(LU,m_PotentialConnections[LU->getID()][FireTargetIndex]);
       }
     }

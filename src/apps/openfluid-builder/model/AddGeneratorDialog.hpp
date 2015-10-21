@@ -80,7 +80,7 @@ class AddGeneratorDialog : public openfluid::ui::common::OpenFLUIDDialog
 
   public:
 
-    AddGeneratorDialog(const QStringList& UnitsClasses, QWidget* Parent = 0);
+    AddGeneratorDialog(const QStringList& UnitsClasses, QWidget* Parent = nullptr);
 
     ~AddGeneratorDialog();
 

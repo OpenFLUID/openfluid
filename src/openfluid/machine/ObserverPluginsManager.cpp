@@ -44,7 +44,7 @@
 namespace openfluid { namespace machine {
 
 
-ObserverPluginsManager* ObserverPluginsManager::mp_Singleton = NULL;
+ObserverPluginsManager* ObserverPluginsManager::mp_Singleton = nullptr;
 
 
 } }  // namespaces

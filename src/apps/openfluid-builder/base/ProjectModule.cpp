@@ -92,8 +92,8 @@
 
 ProjectModule::ProjectModule(const QString& ProjectPath):
   AbstractModule(),
-  mp_MainWidget(NULL), mp_DashboardFrame(NULL),
-  m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
+  mp_MainWidget(nullptr), mp_DashboardFrame(nullptr),
+  m_ProjectPath(ProjectPath), mp_ProjectCentral(nullptr)
 {
   mp_ProjectCentral = ProjectCentral::initInstance(ProjectPath);
 
@@ -233,41 +233,41 @@ void ProjectModule::resetInputDirWatcher()
 
 AbstractMainWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
 {
-  if (mp_MainWidget != NULL)
+  if (mp_MainWidget != nullptr)
   {
     delete mp_MainWidget;
-    mp_MainWidget = NULL;
+    mp_MainWidget = nullptr;
   }
 
   mp_MainWidget = new ProjectWidget(Parent);
 
 
-  mp_ModelTab = new ModelWidget(NULL,mp_ProjectCentral->advancedDescriptors());
+  mp_ModelTab = new ModelWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
   connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
   connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)),
           this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)));
   connect(mp_ModelTab,SIGNAL(srcGenerateAsked(const QString&)),this,SLOT(whenSrcGenerateAsked(const QString&)));
 
-  mp_SpatialTab = new SpatialDomainWidget(NULL,mp_ProjectCentral->advancedDescriptors());
+  mp_SpatialTab = new SpatialDomainWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
   connect(mp_SpatialTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
-  mp_DatastoreTab = new DatastoreWidget(NULL,mp_ProjectCentral->advancedDescriptors());
+  mp_DatastoreTab = new DatastoreWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
   connect(mp_DatastoreTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
-  mp_MonitoringTab = new MonitoringWidget(NULL,mp_ProjectCentral->advancedDescriptors());
+  mp_MonitoringTab = new MonitoringWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
   connect(mp_MonitoringTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
   connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)),
           this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)));
 
-  mp_RunConfigTab = new RunConfigurationWidget(NULL,mp_ProjectCentral->advancedDescriptors());
+  mp_RunConfigTab = new RunConfigurationWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
   connect(mp_RunConfigTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
-  mp_OutputsTab = new OutputsWidget(NULL,mp_ProjectCentral->advancedDescriptors());
+  mp_OutputsTab = new OutputsWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
 
 
   mp_MainWidget->addWorkspaceTab(mp_ModelTab,tr("Model"));
@@ -287,10 +287,10 @@ AbstractMainWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
 
 QWidget* ProjectModule::dockWidgetRebuilt(QWidget* Parent)
 {
-  if (mp_DashboardFrame != NULL)
+  if (mp_DashboardFrame != nullptr)
   {
     delete mp_DashboardFrame;
-    mp_DashboardFrame = NULL;
+    mp_DashboardFrame = nullptr;
   }
 
   mp_DashboardFrame = new DashboardFrame(mp_ProjectCentral,Parent);
@@ -916,7 +916,7 @@ void ProjectModule::dispatchChangesFromExtension(openfluid::builderext::FluidXUp
 
 void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender)
 {
-  if (Sender == NULL)
+  if (Sender == nullptr)
     Sender = (openfluid::builderext::PluggableModelessExtension*)(QObject::sender());
 
   if (Sender)

@@ -47,7 +47,7 @@
 namespace openfluid { namespace base {
 
 
-ProjectManager* ProjectManager::mp_Singleton = NULL;
+ProjectManager* ProjectManager::mp_Singleton = nullptr;
 QString ProjectManager::m_GroupName = "OpenFLUID Project";
 
 
@@ -56,7 +56,7 @@ QString ProjectManager::m_GroupName = "OpenFLUID Project";
 
 
 ProjectManager::ProjectManager() :
-  mp_PrjFile(NULL),
+  mp_PrjFile(nullptr),
   m_IsIncOutputDir(false), m_IsOpened(false)
 {
 
@@ -79,7 +79,7 @@ ProjectManager::~ProjectManager()
 
 ProjectManager* ProjectManager::instance()
 {
-  if (mp_Singleton == NULL)
+  if (mp_Singleton == nullptr)
     mp_Singleton = new ProjectManager();
   return mp_Singleton;
 }
@@ -274,7 +274,7 @@ void ProjectManager::close()
     mp_PrjFile->sync();
 
     delete mp_PrjFile;
-    mp_PrjFile = NULL;
+    mp_PrjFile = nullptr;
   }
 }
 

@@ -124,19 +124,19 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   // *** existing units
-  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassA",17) != NULL);
-  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassA",1000) == NULL);
+  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassA",17) != nullptr);
+  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassA",1000) == nullptr);
   U = SGraph->spatialUnit("UnitClassA",17);
   BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassA");
   BOOST_REQUIRE_EQUAL(U->getID(),17);
 
-  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassB",1333) != NULL);
-  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassB",10000) == NULL);
+  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassB",1333) != nullptr);
+  BOOST_REQUIRE(SGraph->spatialUnit("UnitClassB",10000) == nullptr);
   U = SGraph->spatialUnit("UnitClassB",1333);
   BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassB");
   BOOST_REQUIRE_EQUAL(U->getID(),1333);
 
-  BOOST_REQUIRE(SGraph->spatialUnit("WrongClass",1) == NULL);
+  BOOST_REQUIRE(SGraph->spatialUnit("WrongClass",1) == nullptr);
 
 
   SGraph->clearUnits();

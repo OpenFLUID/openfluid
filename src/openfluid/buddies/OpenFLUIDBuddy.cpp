@@ -51,7 +51,8 @@ OpenFLUIDBuddy::OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener)
 {
   mp_Listener = Listener;
 
-  if (mp_Listener == NULL) mp_Listener = new openfluid::buddies::BuddiesListener();
+  if (mp_Listener == nullptr)
+    mp_Listener = new openfluid::buddies::BuddiesListener();
 }
 
 

@@ -42,7 +42,7 @@
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 
 
-ExtensionsRegistry* ExtensionsRegistry::mp_Instance = NULL;
+ExtensionsRegistry* ExtensionsRegistry::mp_Instance = nullptr;
 
 
 ExtensionsRegistry::ExtensionsRegistry():
@@ -173,7 +173,7 @@ void ExtensionsRegistry::releaseAllFeatureExtensions()
     if ((*it).second->Active)
       (*it).second->Active = false;
 
-    if ((*it).second->Body != NULL && (*it).second->Signature != NULL &&
+    if ((*it).second->Body != nullptr && (*it).second->Signature != nullptr &&
         (*it).second->Signature->Mode == openfluid::builderext::MODE_MODELESS)
     {
       dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body)->close();

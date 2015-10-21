@@ -130,7 +130,7 @@ void EditAttributesValuesDialog::checkGlobal()
 void EditAttributesValuesDialog::adaptSelection()
 {
   QLineEdit* Sender = (QLineEdit*)(QObject::sender());
-  if (Sender != NULL)
+  if (Sender != nullptr)
   {
     if (Sender == ui->ReplaceEdit)
       ui->ReplaceRadioButton->setChecked(true);

@@ -70,7 +70,7 @@ namespace openfluid { namespace landr {
 
 geos::geom::LineString* LandRTools::computeMergedLineStringFromGeometry(geos::geom::Geometry* Geom)
 {
-  geos::geom::LineString* LS = 0;
+  geos::geom::LineString* LS = nullptr;
 
   std::vector<geos::geom::LineString*>* Lines =
       computeMergedLineStringsFromGeometry(Geom);
@@ -96,7 +96,7 @@ geos::geom::LineString* LandRTools::computeMergedLineStringFromGeometry(geos::ge
 
 std::vector<geos::geom::LineString*>* LandRTools::computeMergedLineStringsFromGeometry(geos::geom::Geometry* Geom)
 {
-  std::vector<geos::geom::LineString*>* LS = 0;
+  std::vector<geos::geom::LineString*>* LS = nullptr;
 
   geos::operation::linemerge::LineMerger Merger;
 
@@ -227,7 +227,7 @@ std::vector<geos::geom::LineString*>* LandRTools::computeNodedLines(geos::geom::
         + std::string(e.what()) + ")");
   }
 
-  return (std::vector<geos::geom::LineString*>*) 0;
+  return nullptr;
 }
 
 
@@ -600,7 +600,7 @@ std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(std::vector<g
         + std::string(e.what()) + ")");
   }
 
-  return (std::vector<geos::geom::LineString*>*) 0;
+  return nullptr;
 
 }
 

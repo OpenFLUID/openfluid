@@ -43,7 +43,7 @@
 #include <QCloseEvent>
 
 
-PrecheckImportDialog::PrecheckImportDialog(int StepsCount, QWidget* Parent = NULL):
+PrecheckImportDialog::PrecheckImportDialog(int StepsCount, QWidget* Parent = nullptr):
   QDialog(Parent),ui(new Ui::PrecheckImportDialog),
   m_IsFinished(false), m_IsCloseRequired(false)
 {

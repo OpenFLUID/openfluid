@@ -179,11 +179,11 @@ void DatastoreWidget::addItem()
             QDir::fromNativeSeparators(AddItemDlg.getSourceFilePath()).toStdString().c_str(),
             FALSE);
 
-        if (SrcDS != NULL)
+        if (SrcDS != nullptr)
         {
           OGRSFDriver *CopyDriver = SrcDS->GetDriver();
 
-          if (CopyDriver != NULL)
+          if (CopyDriver != nullptr)
           {
             // creation of the destination directory if not exists
             QDir().mkpath(QFileInfo(DestFile).absolutePath());
@@ -250,11 +250,11 @@ void DatastoreWidget::addItem()
             QDir::fromNativeSeparators(AddItemDlg.getSourceFilePath()).toStdString().c_str(),
             GA_ReadOnly);
 
-        if (SrcDS != NULL)
+        if (SrcDS != nullptr)
         {
           GDALDriver *CopyDriver = SrcDS->GetDriver();
 
-          if (CopyDriver != NULL)
+          if (CopyDriver != nullptr)
           {
             QDir().mkpath(QFileInfo(DestFile).absolutePath());
 

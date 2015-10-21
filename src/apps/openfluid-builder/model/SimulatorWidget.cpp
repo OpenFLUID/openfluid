@@ -190,7 +190,7 @@ void SimulatorWidget::refresh()
 
   m_Ghost = false;
 
-  if (Signature != NULL)
+  if (Signature != nullptr)
   {
     m_Ghost = Signature->Ghost;
 
@@ -209,7 +209,7 @@ void SimulatorWidget::refresh()
 
     // TODO begin to be refactored, see also ObserverWidget =========
 
-    mp_ParamsWidget = NULL;
+    mp_ParamsWidget = nullptr;
 
     if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Signature->LinkUID))
     {
@@ -316,7 +316,7 @@ void SimulatorWidget::prepareWareUpdate()
   {
     ui->ParameterizationStackWidget->removeWidget(mp_ParamsWidget);
     delete mp_ParamsWidget;
-    mp_ParamsWidget = NULL;
+    mp_ParamsWidget = nullptr;
   }
 }
 

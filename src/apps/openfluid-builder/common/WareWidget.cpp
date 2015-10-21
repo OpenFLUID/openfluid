@@ -53,7 +53,7 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
                        bool Enabled, const QString& BGColor, int Index):
   QWidget(Parent),ui(new Ui::WareWidget), m_ID(ID), m_EnabledBGColor(BGColor),
   m_Available(false),m_Ghost(false),m_Enabled(Enabled), m_CurrentIndex(Index),
-  m_ParamsExpanded(false), mp_ParamsWidget(NULL)
+  m_ParamsExpanded(false), mp_ParamsWidget(nullptr)
 {
   ui->setupUi(this);
   ui->IDLabel->setText(QString::fromStdString(m_ID));
@@ -374,9 +374,9 @@ void WareWidget::clearParameterWidgets()
   QBoxLayout* Layout = ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()));
   QLayoutItem* Item;
 
-  while ((Item = Layout->takeAt(0)) != NULL)
+  while ((Item = Layout->takeAt(0)) != nullptr)
   {
-    if (Item->widget() != NULL)
+    if (Item->widget() != nullptr)
       Item->widget()->deleteLater();
 
     delete Item;

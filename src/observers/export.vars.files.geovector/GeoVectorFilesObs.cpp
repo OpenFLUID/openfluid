@@ -122,7 +122,7 @@ class GeoVectorSerie
       UnitsClass(UClass),
       VariablesSet(VarsSet),
       WhenMode(Mode), WhenContinuousDelay(ContModeDelay), LatestContinuousIndex(0),
-      GeoSource(NULL), GeoLayer(NULL),
+      GeoSource(nullptr), GeoLayer(nullptr),
       OutfilePattern(SName+"_"+"%1"+"."+OutfileExt),
       OFLDIDFieldIndex(-1)
     {
@@ -379,9 +379,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
         std::string CreatedLayerName = QFileInfo(QString::fromStdString(FullFilePath)).completeBaseName().toStdString();
 
-        OGRLayer* CreatedLayer = CreatedFile->CreateLayer(CreatedLayerName.c_str(),NULL,
+        OGRLayer* CreatedLayer = CreatedFile->CreateLayer(CreatedLayerName.c_str(),nullptr,
                                                           Serie.GeoLayer->GetLayerDefn()->GetGeomType(),
-                                                          NULL);
+                                                          nullptr);
 
         OGRFieldDefn IDField("OFLD_ID",OFTInteger);
         CreatedLayer->CreateField(&IDField);
@@ -407,7 +407,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
         openfluid::core::SpatialUnit* UU;
 
         Serie.GeoLayer->ResetReading();
-        while ((SourceFeature = Serie.GeoLayer->GetNextFeature()) != NULL)
+        while ((SourceFeature = Serie.GeoLayer->GetNextFeature()) != nullptr)
         {
           int SourceID = SourceFeature->GetFieldAsInteger(Serie.OFLDIDFieldIndex);
           openfluid::core::DoubleValue CreatedValue = 0.0;
@@ -476,7 +476,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       if (Serie.GeoSource)
       {
         OGRDataSource::DestroyDataSource(Serie.GeoSource);
-        Serie.GeoSource = NULL;
+        Serie.GeoSource = nullptr;
       }
     }
 
@@ -631,13 +631,13 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       // removal of wrong formatted source geovector file
       for (it=m_Series.begin();it!=m_Series.end(); )
       {
-        if ((*it).GeoSource == NULL)
+        if ((*it).GeoSource == nullptr)
         {
           OPENFLUID_LogWarning("Cannot open geographic source for serie "+(*it).SerieName);
           closeSerie(*it);
           it = m_Series.erase(it);
         }
-        else if ((*it).GeoLayer == NULL)
+        else if ((*it).GeoLayer == nullptr)
         {
           OPENFLUID_LogWarning("Cannot open layer in geographic source for serie "+(*it).SerieName);
           closeSerie(*it);

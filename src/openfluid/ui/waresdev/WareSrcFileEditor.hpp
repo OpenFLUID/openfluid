@@ -193,7 +193,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
   public:
 
-    WareSrcFileEditor(const QString& FilePath, QWidget* Parent = 0);
+    WareSrcFileEditor(const QString& FilePath, QWidget* Parent = nullptr);
 
     ~WareSrcFileEditor();
 

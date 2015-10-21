@@ -73,7 +73,7 @@ class EditSetDialog: public QDialog
   public:
 
     EditSetDialog(const QStringList& SetNames, const QStringList& FormatNames, const QStringList& ClassNames,
-                 QWidget* Parent = NULL);
+                 QWidget* Parent = nullptr);
 
     ~EditSetDialog();
 

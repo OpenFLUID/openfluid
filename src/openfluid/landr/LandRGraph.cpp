@@ -286,7 +286,7 @@ LandREntity* LandRGraph::entity(int OfldId)
   if (m_EntitiesByOfldId.count(OfldId))
     return m_EntitiesByOfldId.find(OfldId)->second;
 
-  return (LandREntity*) 0;
+  return nullptr;
 }
 
 

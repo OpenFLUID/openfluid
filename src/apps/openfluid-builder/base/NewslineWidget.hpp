@@ -73,7 +73,7 @@ class NewslineWidget : public QWidget
 
   public:
 
-    NewslineWidget(QWidget* Parent = NULL);
+    NewslineWidget(QWidget* Parent = nullptr);
 
     ~NewslineWidget();
 

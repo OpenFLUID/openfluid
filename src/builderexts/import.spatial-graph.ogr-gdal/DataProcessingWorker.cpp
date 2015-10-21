@@ -122,7 +122,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
     OGRDataSource* DS = OGRSFDriverRegistrar::Open(RealURI.toStdString().c_str(),FALSE);
 
-    if (DS == NULL)
+    if (DS == nullptr)
     {
       emit stepCompleted(Step,getStyledText(tr("[Error] Unable to open datasource for layer \"%1\"")
                                             .arg(m_SourcesInfos[i].LayerName),"red"));
@@ -136,11 +136,11 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
     // For cached layers as GeoJSON files
     // TODO do better for that!
-    if (Layer == NULL)
+    if (Layer == nullptr)
       Layer = DS->GetLayer(0);
 
     Layer->ResetReading();
-    while((Feature = Layer->GetNextFeature()) != NULL )
+    while((Feature = Layer->GetNextFeature()) != nullptr )
     {
       SourceUnit CurrentUnit;
       int CurrentUnitID;
@@ -434,7 +434,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
     }
 
     OGRDataSource::DestroyDataSource(DS);
-    DS = NULL;
+    DS = nullptr;
   }
 
   emit stepCompleted(Step,getStyledText(tr("[OK]"),"green"));

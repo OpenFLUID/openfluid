@@ -60,7 +60,7 @@ class AddObserverDialog : public AddWareDialog
 
   public:
 
-    AddObserverDialog(QWidget* Parent = 0);
+    AddObserverDialog(QWidget* Parent = nullptr);
 
     ~AddObserverDialog();
 };

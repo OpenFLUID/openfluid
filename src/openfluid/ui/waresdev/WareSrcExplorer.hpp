@@ -88,7 +88,7 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
   public:
 
-    WareSrcExplorer(QWidget* Parent = 0);
+    WareSrcExplorer(QWidget* Parent = nullptr);
 
     ~WareSrcExplorer();
 

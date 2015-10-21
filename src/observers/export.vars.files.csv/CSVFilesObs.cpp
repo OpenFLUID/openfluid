@@ -68,7 +68,7 @@ class CSVFile
     openfluid::core::VariableName_t VarName;
 
     CSVFile() :
-      Unit(NULL), FileBuffer(NULL), FileHandle(NULL)
+      Unit(nullptr), FileBuffer(nullptr), FileHandle(nullptr)
     { }
 
     ~CSVFile()
@@ -95,7 +95,7 @@ class CSVSetFiles
 
     CSVSet SetDefinition;
 
-    CSVSetFiles() : Format(NULL)
+    CSVSetFiles() : Format(nullptr)
     { };
 };
 
@@ -294,11 +294,11 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
             for (unsigned int i = 0; i < UIDArray.size(); i++)
             {
-              TmpU = NULL;
+              TmpU = nullptr;
               if (openfluid::tools::convertString(UIDArray[i],&UID))
               {
                 TmpU = mp_SpatialData->spatialUnit(SetFiles.second.SetDefinition.UnitsClass,UID);
-                if (TmpU != NULL)
+                if (TmpU != nullptr)
                 {
                   for (unsigned int i = 0; i < VarArray.size(); i++)
                   {
@@ -371,7 +371,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
           openfluid::core::Value* Val =
               (*FLIt)->Unit->variables()->currentValueIfIndex((*FLIt)->VarName,OPENFLUID_GetCurrentTimeIndex());
 
-          if (Val!=NULL)
+          if (Val!=nullptr)
           {
             if ((*SetIt).second.Format->IsTimeIndexDateFormat)
               (*FLIt)->FileHandle << OPENFLUID_GetCurrentTimeIndex();

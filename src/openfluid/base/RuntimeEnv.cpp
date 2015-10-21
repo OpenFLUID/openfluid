@@ -56,7 +56,7 @@
 namespace openfluid { namespace base {
 
 
-RuntimeEnvironment* RuntimeEnvironment::mp_Singleton = NULL;
+RuntimeEnvironment* RuntimeEnvironment::mp_Singleton = nullptr;
 
 
 RuntimeEnvironment::RuntimeEnvironment() :
@@ -72,7 +72,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   char *INSTALLEnvVar;
   INSTALLEnvVar = std::getenv("OPENFLUID_INSTALL_PREFIX");
 
-  if (INSTALLEnvVar != NULL)
+  if (INSTALLEnvVar != nullptr)
   {
     m_InstallPrefix = std::string(INSTALLEnvVar);
   }
@@ -95,21 +95,21 @@ RuntimeEnvironment::RuntimeEnvironment() :
     m_HostName = ChHostName;
   }
 
-  char* ChUserName = NULL;
+  char* ChUserName = nullptr;
   ChUserName= std::getenv("USER");
-  if (ChUserName != NULL) m_UserID= ChUserName;
+  if (ChUserName != nullptr) m_UserID= ChUserName;
 
   m_UserDataDir = m_HomeDir + "/." + openfluid::config::RELATIVEDIR;
 
 #elif defined(OPENFLUID_OS_WINDOWS)
 
-  char* ChHostName = NULL;
+  char* ChHostName = nullptr;
   ChHostName= std::getenv("COMPUTERNAME");
-  if (ChHostName != NULL) m_HostName = ChHostName;
+  if (ChHostName != nullptr) m_HostName = ChHostName;
 
-  char* ChUserName = NULL;
+  char* ChUserName = nullptr;
   ChUserName= std::getenv("USERNAME");
-  if (ChUserName != NULL) m_UserID= ChUserName;
+  if (ChUserName != nullptr) m_UserID= ChUserName;
 
   m_UserDataDir = m_HomeDir+"/"+openfluid::config::RELATIVEDIR;
 
@@ -119,7 +119,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   char *USERDATAEnvVar;
   USERDATAEnvVar = std::getenv("OPENFLUID_USERDATA_PATH");
 
-  if (USERDATAEnvVar != NULL)
+  if (USERDATAEnvVar != nullptr)
   {
     m_UserDataDir = std::string(USERDATAEnvVar);
   }
@@ -128,7 +128,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   char *TEMPEnvVar;
   TEMPEnvVar = std::getenv("OPENFLUID_TEMP_PATH");
 
-  if (TEMPEnvVar != NULL)
+  if (TEMPEnvVar != nullptr)
   {
     m_TempDir = std::string(TEMPEnvVar);
   }
@@ -195,7 +195,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   char *SIMSPATHEnvVar;
   SIMSPATHEnvVar = std::getenv("OPENFLUID_SIMS_PATH");
 
-  if (SIMSPATHEnvVar != NULL)
+  if (SIMSPATHEnvVar != nullptr)
   {
     addExtraSimulatorsPluginsPaths(std::string(SIMSPATHEnvVar));
   }
@@ -223,7 +223,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   char *OBSSPATHEnvVar;
   OBSSPATHEnvVar = std::getenv("OPENFLUID_OBSS_PATH");
 
-  if (OBSSPATHEnvVar != NULL)
+  if (OBSSPATHEnvVar != nullptr)
   {
     addExtraObserversPluginsPaths(std::string(OBSSPATHEnvVar));
   }
@@ -257,8 +257,9 @@ RuntimeEnvironment::~RuntimeEnvironment()
 
 RuntimeEnvironment* RuntimeEnvironment::instance()
 {
-  if (mp_Singleton == NULL)
+  if (mp_Singleton == nullptr)
     mp_Singleton = new RuntimeEnvironment();
+
   return mp_Singleton;
 }
 

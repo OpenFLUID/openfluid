@@ -42,10 +42,10 @@
 
 
 SourceWorker::SourceWorker(const QString& URI, OGRDataSource* Src):
-  m_URI(URI), mp_DataSource(NULL)
+  m_URI(URI), mp_DataSource(nullptr)
 {
   OGRDataSource::DestroyDataSource(Src);
-  Src = NULL;
+  Src = nullptr;
 }
 
 
@@ -69,7 +69,7 @@ void SourceWorker::run()
 
   mp_DataSource = OGRSFDriverRegistrar::Open(m_URI.toStdString().c_str(), FALSE );
 
-  if (mp_DataSource != NULL)
+  if (mp_DataSource != nullptr)
   {
     emit sourceLinked((void*)mp_DataSource);
 

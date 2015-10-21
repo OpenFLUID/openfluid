@@ -152,7 +152,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
 
 
     virtual bool isLinked() const
-    { return (PluggableWare::isLinked() &&  mp_SimLogger != NULL && mp_SimStatus != NULL); };
+    { return (PluggableWare::isLinked() &&  mp_SimLogger != nullptr && mp_SimStatus != nullptr); };
 
     void appendToLog(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const;
 
@@ -254,7 +254,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     virtual void OPENFLUID_RaiseError(const std::string& Source, const std::string& Msg) OPENFLUID_DEPRECATED;
 
     SimulationDrivenWare(WareType WType) : PluggableWare(WType),
-        mp_SimStatus(NULL), mp_SimLogger(NULL), m_PreviousTimeIndex(0) { };
+        mp_SimStatus(nullptr), mp_SimLogger(nullptr), m_PreviousTimeIndex(0) { };
 
 
   public:

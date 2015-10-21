@@ -59,8 +59,8 @@ bool matchWithWildcard(const std::string& Pattern, const std::string& Str)
 
   // source : http://www.codeproject.com/KB/string/wildcmp.aspx
 
-  const char *cp = NULL;
-  const char *mp = NULL;
+  const char *cp = nullptr;
+  const char *mp = nullptr;
 
   const char *StrToCheck = Str.c_str();
   const char *WildStr = Pattern.c_str();

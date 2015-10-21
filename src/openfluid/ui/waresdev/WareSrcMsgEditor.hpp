@@ -63,7 +63,7 @@ class OPENFLUID_API WareSrcMsgEditor: public QPlainTextEdit
 
   public:
 
-    WareSrcMsgEditor(QWidget* Parent = 0);
+    WareSrcMsgEditor(QWidget* Parent = nullptr);
 
     ~WareSrcMsgEditor();
 

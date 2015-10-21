@@ -586,7 +586,7 @@ BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
 
   std::string RefParamStr = "< ' > && \"hula hoop\"";
 
-  openfluid::fluidx::ObserverDescriptor* ObsDesc = NULL;
+  openfluid::fluidx::ObserverDescriptor* ObsDesc = nullptr;
   {
     openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
 

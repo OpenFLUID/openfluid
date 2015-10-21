@@ -70,7 +70,7 @@ class OPENFLUID_API MarketWizardPage : public QWizardPage
 
   public:
 
-    MarketWizardPage(QWidget *Parent = 0);
+    MarketWizardPage(QWidget *Parent = nullptr);
 
     virtual bool isComplete() const;
 

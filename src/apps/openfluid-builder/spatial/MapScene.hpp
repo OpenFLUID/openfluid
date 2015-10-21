@@ -73,7 +73,7 @@ class MapScene : public QGraphicsScene
   public:
 
     MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
-             QObject* Parent = 0);
+             QObject* Parent = nullptr);
 
     void addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
                      int ZLayer,

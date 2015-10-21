@@ -234,7 +234,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           {
             ToUnitsPtrList = const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->toSpatialUnits(ClassVector[i]));
 
-            if (ToUnitsPtrList != NULL)
+            if (ToUnitsPtrList != nullptr)
             {
               std::string DestClassStr = ClassVector[i];
 
@@ -272,7 +272,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
             FromUnitsPtrList =
                 const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->fromSpatialUnits(ClassVector[i]));
 
-            if (FromUnitsPtrList != NULL)
+            if (FromUnitsPtrList != nullptr)
             {
               std::string DestClassStr = ClassVector[i];
 
@@ -302,15 +302,15 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest runStep()
     {
-      openfluid::core::SpatialUnit *TU = NULL;
-      openfluid::core::SpatialUnit *OU = NULL;
-      openfluid::core::SpatialUnit *ZU = NULL;
-      openfluid::core::SpatialUnit *FU = NULL;
-      openfluid::core::SpatialUnit *ToUnit = NULL;
-      openfluid::core::SpatialUnit *FromUnit = NULL;
-      openfluid::core::UnitsPtrList_t *ToList = NULL;
-      openfluid::core::UnitsPtrList_t *FromList = NULL;
-      openfluid::core::UnitsPtrList_t *FakeList = NULL;
+      openfluid::core::SpatialUnit *TU = nullptr;
+      openfluid::core::SpatialUnit *OU = nullptr;
+      openfluid::core::SpatialUnit *ZU = nullptr;
+      openfluid::core::SpatialUnit *FU = nullptr;
+      openfluid::core::SpatialUnit *ToUnit = nullptr;
+      openfluid::core::SpatialUnit *FromUnit = nullptr;
+      openfluid::core::UnitsPtrList_t *ToList = nullptr;
+      openfluid::core::UnitsPtrList_t *FromList = nullptr;
+      openfluid::core::UnitsPtrList_t *FakeList = nullptr;
       unsigned int CountInside;
       bool LoopIsOK;
 
@@ -348,10 +348,10 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
         if (TU->getID() == 22)
         {
-          if (TU->fromSpatialUnits("TestUnits") == NULL || TU->fromSpatialUnits("TestUnits")->size() != 2)
+          if (TU->fromSpatialUnits("TestUnits") == nullptr || TU->fromSpatialUnits("TestUnits")->size() != 2)
             OPENFLUID_RaiseError("wrong from-units(TestUnits) count for TestUnit 22");
 
-          if (TU->toSpatialUnits("TestUnits") == NULL || TU->toSpatialUnits("TestUnits")->size() != 1)
+          if (TU->toSpatialUnits("TestUnits") == nullptr || TU->toSpatialUnits("TestUnits")->size() != 1)
             OPENFLUID_RaiseError("wrong to-units(TestUnits) count for TestUnit 22");
 
         }
@@ -365,13 +365,13 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
         if (OU->getID() == 5)
         {
 
-          if (OU->fromSpatialUnits("TestUnits") == NULL || OU->fromSpatialUnits("TestUnits")->size() != 2)
+          if (OU->fromSpatialUnits("TestUnits") == nullptr || OU->fromSpatialUnits("TestUnits")->size() != 2)
             OPENFLUID_RaiseError("wrong from-units(TestUnits) count for OtherUnit 5");
 
-          if (OU->fromSpatialUnits("OtherUnits") == NULL || OU->fromSpatialUnits("OtherUnits")->size() != 1)
+          if (OU->fromSpatialUnits("OtherUnits") == nullptr || OU->fromSpatialUnits("OtherUnits")->size() != 1)
             OPENFLUID_RaiseError("wrong from-units(OtherUnits) count for OtherUnit 5");
 
-          if (OU->toSpatialUnits("OtherUnits") == NULL || OU->toSpatialUnits("OtherUnits")->size() != 1)
+          if (OU->toSpatialUnits("OtherUnits") == nullptr || OU->toSpatialUnits("OtherUnits")->size() != 1)
             OPENFLUID_RaiseError("wrong To-units(OtherUnits) count for OtherUnit 5");
 
           FromList = OU->fromSpatialUnits("TestUnits");
