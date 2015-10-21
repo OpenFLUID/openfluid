@@ -245,8 +245,8 @@ AbstractMainWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
   mp_ModelTab = new ModelWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
   connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
-  connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)),
-          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)));
+  connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::WareType,bool)),
+          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::WareType,bool)));
   connect(mp_ModelTab,SIGNAL(srcGenerateAsked(const QString&)),this,SLOT(whenSrcGenerateAsked(const QString&)));
 
   mp_SpatialTab = new SpatialDomainWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
@@ -260,8 +260,8 @@ AbstractMainWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
   mp_MonitoringTab = new MonitoringWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
   connect(mp_MonitoringTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
-  connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)),
-          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType,bool)));
+  connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::WareType,bool)),
+          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::WareType,bool)));
 
   mp_RunConfigTab = new RunConfigurationWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
   connect(mp_RunConfigTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
