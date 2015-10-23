@@ -43,6 +43,8 @@
 
 #include <QDialog>
 #include <QListWidget>
+#include <QAbstractButton>
+#include <QButtonGroup>
 
 #include <openfluid/dllexport.hpp>
 
@@ -66,6 +68,8 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
 
     Ui::WaresSrcImportDialog* ui;
 
+    QButtonGroup m_SourceBtGroup;
+
     QMap<std::string, QListWidget*> m_ListWidgetsByWareTypeName;
 
     openfluid::waresdev::WaresDevImportPackage* mp_ImportFilePkg = 0;
@@ -84,11 +88,11 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
 
     bool check();
 
-    void onPackageSourceChoosen(bool Checked);
-
-    void onGitSourceChoosen(bool Checked);
+    void onSourceChanged(QAbstractButton* ClickedButton);
 
     void onPackagePathButtonClicked();
+
+    void onWareshubConnectButtonClicked();
 
     void importPackage();
 

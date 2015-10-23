@@ -37,16 +37,15 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <QSettings>
+#include <QApplication>
 
+#include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
-
-#include <QSettings>
-#include <QApplication>
 
 
 namespace openfluid { namespace waresdev {
@@ -65,11 +64,10 @@ WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& 
 
   m_PackageName = QFileInfo(m_PackageFilePath).completeBaseName();
 
+  QString TempOfwdpSubDirPath = QDir(
+      QString::fromStdString(openfluid::base::Environment::getTempDir())).absoluteFilePath("ofwdp");
 
-  m_TempOfwdpSubDirPath = QDir(QString::fromStdString(openfluid::base::Environment::getTempDir()))
-      .absoluteFilePath("ofwdp");
-
-  m_PackageTempDir = QDir(QString("%1/%2/%3").arg(m_TempOfwdpSubDirPath).arg(TempSubFolderName).arg(m_PackageName));
+  m_PackageTempDir = QDir(QString("%1/%2/%3").arg(TempOfwdpSubDirPath).arg(TempSubFolderName).arg(m_PackageName));
   m_PackageTempPath = m_PackageTempDir.absolutePath();
 
   if (m_PackageTempDir.exists())

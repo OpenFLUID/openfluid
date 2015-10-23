@@ -108,7 +108,7 @@ font : bold;
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>&lt;i&gt;choose a package to import&lt;/i&gt;</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -124,86 +124,83 @@ font : bold;
      </item>
      <item>
       <widget class="QWidget" name="WareshubWidget" native="true">
-       <layout class="QHBoxLayout" name="WareshubLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_10">
         <item>
-         <widget class="QRadioButton" name="WareshubRadioButton">
-          <property name="text">
-           <string>Wareshub URL:</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">SourceButtonGroup</string>
-          </attribute>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="lineEdit_2">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Connect</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_8">
-     <property name="leftMargin">
-      <number>12</number>
-     </property>
-     <property name="rightMargin">
-      <number>12</number>
-     </property>
-     <item>
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="title">
-        <string>Informations</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_9">
-        <item>
-         <layout class="QGridLayout" name="gridLayout" columnstretch="0,1">
-          <property name="spacing">
-           <number>12</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
+         <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0,0,0,0,0">
+          <item row="0" column="5">
+           <widget class="QPushButton" name="WareshubConnectButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
-             <string>Packager(s)</string>
+             <string>Connect</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_3">
+          <item row="1" column="4">
+           <widget class="QLineEdit" name="PasswordLineEdit_2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QRadioButton" name="WareshubRadioButton">
             <property name="text">
-             <string>Description:</string>
+             <string/>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">SourceButtonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="UsernameLineEdit">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="label_4">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Password:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLabel" name="PackagersLabel">
+           <widget class="QLabel" name="label_5">
             <property name="text">
-             <string/>
+             <string>Wareshub URL:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="PackageDescriptionLabel">
+           <widget class="QLabel" name="label">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
-             <string/>
+             <string>Username:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" colspan="3">
+           <widget class="QLineEdit" name="WareshubUrlLineEdit">
+            <property name="enabled">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -213,6 +210,65 @@ font : bold;
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="InformationWidget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_8">
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Information</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_9">
+         <item>
+          <layout class="QGridLayout" name="gridLayout" columnstretch="0,1">
+           <property name="spacing">
+            <number>12</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Packager(s):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Description:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="PackagersLabel">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="PackageDescriptionLabel">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -304,38 +360,6 @@ font : bold;
  <resources/>
  <connections>
   <connection>
-   <sender>WareshubRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineEdit_2</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>78</x>
-     <y>136</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>362</x>
-     <y>139</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>WareshubRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>pushButton_2</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>136</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>685</x>
-     <y>139</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>PackageRadioButton</sender>
    <signal>toggled(bool)</signal>
    <receiver>PackagePathButton</receiver>
@@ -364,6 +388,118 @@ font : bold;
     <hint type="destinationlabel">
      <x>555</x>
      <y>603</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>WareshubRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>WareshubConnectButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>693</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>WareshubRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>WareshubUrlLineEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>517</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>WareshubRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>31</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>116</x>
+     <y>161</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>WareshubRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>UsernameLineEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>208</x>
+     <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>WareshubRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>31</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>374</x>
+     <y>155</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>WareshubRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>PasswordLineEdit_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>35</x>
+     <y>122</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>459</x>
+     <y>164</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>PackageRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>PackagePathLabel</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>97</x>
+     <y>79</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>139</x>
+     <y>78</y>
     </hint>
    </hints>
   </connection>

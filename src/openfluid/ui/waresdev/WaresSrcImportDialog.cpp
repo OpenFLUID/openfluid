@@ -37,17 +37,17 @@
  */
 
 
+#include <QFileDialog>
+#include <QThread>
+
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
-
-#include "ui_WaresSrcImportDialog.h"
-
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/config.hpp>
 
-#include <QFileDialog>
-#include <QThread>
+#include "ui_WaresSrcImportDialog.h"
+
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -62,21 +62,18 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   m_ListWidgetsByWareTypeName[openfluid::config::OBSERVERS_PATH] = ui->ObsListWidget;
   m_ListWidgetsByWareTypeName[openfluid::config::BUILDEREXTS_PATH] = ui->ExtListWidget;
 
-  ui->WareshubWidget->setVisible(false);
+  m_SourceBtGroup.addButton(ui->PackageRadioButton);
+  m_SourceBtGroup.addButton(ui->WareshubRadioButton);
+  m_SourceBtGroup.setExclusive(true);
 
-  onPackageSourceChoosen(true);
-
-  connect(ui->PackageRadioButton, SIGNAL(toggled(bool)), this, SLOT(onPackageSourceChoosen(bool)));
-  connect(ui->WareshubRadioButton, SIGNAL(toggled(bool)), this, SLOT(onGitSourceChoosen(bool)));
-
+  connect(&m_SourceBtGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onSourceChanged(QAbstractButton*)));
   connect(ui->PackagePathButton, SIGNAL(clicked()), this, SLOT(onPackagePathButtonClicked()));
-
+  connect(ui->WareshubConnectButton, SIGNAL(clicked()), this, SLOT(onWareshubConnectButtonClicked()));
   for (QListWidget* Widget : m_ListWidgetsByWareTypeName)
-  {
     connect(Widget, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
-  }
-
   connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(importPackage()));
+
+  ui->PackageRadioButton->click();
 
   check();
 }
@@ -88,9 +85,14 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
 
 bool WaresSrcImportDialog::check()
 {
-  if (ui->PackagePathLabel->text().isEmpty())
+  if (ui->PackageRadioButton->isChecked() && ui->PackagePathLabel->text().isEmpty())
   {
     setMessage(tr("No package file selected"));
+    return false;
+  }
+  else if (ui->WareshubRadioButton->isChecked() && ui->WareshubUrlLineEdit->text().isEmpty())
+  {
+    setMessage("No wareshub url defined.");
     return false;
   }
 
@@ -131,29 +133,22 @@ void WaresSrcImportDialog::setMessage(const QString& Msg)
 // =====================================================================
 
 
-void WaresSrcImportDialog::onPackageSourceChoosen(bool Checked)
+void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
 {
-  if (!Checked)
-    return;
+  if (ClickedButton == ui->PackageRadioButton)
+  {
+    ui->WaresGroupBox->setTitle(tr("Available wares in package"));
+    updatePackageInfo(mp_ImportFilePkg);
+    ui->InformationWidget->setEnabled(true);
+  }
+  else
+  {
+    ui->WaresGroupBox->setTitle(tr("Available wares on wareshub site"));
+    updatePackageInfo(mp_ImportGitPkg);
+    ui->InformationWidget->setEnabled(false);
+  }
 
-  ui->WaresGroupBox->setTitle(tr("Available wares in package"));
-
-  updatePackageInfo(mp_ImportFilePkg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WaresSrcImportDialog::onGitSourceChoosen(bool Checked)
-{
-  if (!Checked)
-    return;
-
-  ui->WaresGroupBox->setTitle(tr("Available wares on wareshub site"));
-
-  updatePackageInfo(mp_ImportFilePkg);
+  check();
 }
 
 
@@ -211,14 +206,28 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
 // =====================================================================
 
 
+void WaresSrcImportDialog::onWareshubConnectButtonClicked()
+{
+  QString WareshubUrl = ui->WareshubUrlLineEdit->text();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WaresSrcImportDialog::updatePackageInfo(openfluid::waresdev::WaresDevImportPackage* ImportPackage)
 {
   if (!ImportPackage)
-    return;
-
-  ui->PackagersLabel->setText(ImportPackage->getPackagers());
-
-  ui->PackageDescriptionLabel->setText(ImportPackage->getPackageDescription());
+  {
+    ui->PackagersLabel->setText("");
+    ui->PackageDescriptionLabel->setText("");
+  }
+  else
+  {
+    ui->PackagersLabel->setText(ImportPackage->getPackagers());
+    ui->PackageDescriptionLabel->setText(ImportPackage->getPackageDescription());
+  }
 
   updateWaresList(ImportPackage);
 

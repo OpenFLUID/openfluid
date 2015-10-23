@@ -40,16 +40,14 @@
 #ifndef __OPENFLUID_WARESDEV_WARESDEVPACKAGE_HPP__
 #define __OPENFLUID_WARESDEV_WARESDEVPACKAGE_HPP__
 
-#include <openfluid/dllexport.hpp>
-
-#include <openfluid/base/Environment.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
-
 #include <QString>
 #include <QMap>
 #include <QDir>
 #include <QProcess>
 
+#include <openfluid/dllexport.hpp>
+#include <openfluid/base/Environment.hpp>
+#include <openfluid/waresdev/WareSrcManager.hpp>
 
 namespace openfluid { namespace waresdev {
 
@@ -68,8 +66,6 @@ class OPENFLUID_API WaresDevPackage: public QObject
   protected:
 
     static QString m_CMakeCmd;
-
-    QString m_TempOfwdpSubDirPath;
 
     QString m_PackageFilePath;
 
