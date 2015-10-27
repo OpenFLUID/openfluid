@@ -63,6 +63,7 @@ class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<Obs
 
     ObserverSignatureRegistry();
 
+
   public:
 
     static ObserverSignatureRegistry* instance();
@@ -71,14 +72,14 @@ class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<Obs
      * @brief Returns the Signature of the Observer with ObserverID if available
      * @throw openfluid::base::FrameworkException if this Observer plugin is not available
      */
-    const openfluid::machine::ObserverSignatureInstance* signature(const openfluid::ware::WareID_t& ID);
+    const openfluid::machine::ObserverSignatureInstance* signature(const openfluid::ware::WareID_t& ID) const;
 
     /**
      * @brief Updates the list of available signatures, according to Runtime environment paths
      */
     void update();
 
-    std::vector<openfluid::machine::ObserverSignatureInstance*> getAvailableSignatures();
+    const std::vector<openfluid::machine::ObserverSignatureInstance*>& getAvailableSignatures() const;
 
     void unloadAll();
 

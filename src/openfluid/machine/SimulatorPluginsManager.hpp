@@ -48,12 +48,14 @@
 
 namespace openfluid { namespace machine {
 
+
 class ModelItemSignatureInstance;
 class ModelItemInstance;
 
 
 // =====================================================================
 // =====================================================================
+
 
 class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelItemSignatureInstance,ModelItemInstance,
                                                          openfluid::ware::GetPluggableSimulatorSignatureProc,

@@ -40,20 +40,16 @@
 #ifndef __OPENFLUID_MACHINE_OBSERVERPLUGINSMANAGER_HPP__
 #define __OPENFLUID_MACHINE_OBSERVERPLUGINSMANAGER_HPP__
 
+
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
 
 namespace openfluid { namespace machine {
 
-class ObserverSignatureInstance;
-class ObserverInstance;
-
-
-// =====================================================================
-// =====================================================================
 
 class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverSignatureInstance,ObserverInstance,
                                                          openfluid::ware::GetPluggableObserverSignatureProc,

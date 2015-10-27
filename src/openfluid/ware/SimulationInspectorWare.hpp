@@ -572,8 +572,9 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
                                   const openfluid::core::UnitID_t& IDChild) const;
 
 
-    SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType), mp_Datastore(nullptr), mp_SpatialData(nullptr)
-    {};
+    SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType),
+      mp_Datastore(nullptr), mp_SpatialData(nullptr)
+    { };
 
 
   public:

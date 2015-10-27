@@ -42,7 +42,9 @@
 
 #include <vector>
 #include <map>
+#include <set>
 #include <string>
+#include <memory>
 
 #include <QLibrary>
 #include <QFileInfo>
@@ -67,26 +69,26 @@ typedef std::string (*GetWareLinkUIDProc)();
 
 /**
   Management class for pluggable ware
-  @tparam S class defining the container for ware signature only
-  @tparam M class defining the container for ware signature and body
-  @tparam SP procedure definition for instantiation of the signature
-  @tparam BP procedure definition for instantiation of the body
+  @tparam SignatureType class defining the container for ware signature only
+  @tparam ItemType class defining the container for ware signature and body
+  @tparam SignatureProc procedure definition for instantiation of the signature
+  @tparam BodyProc procedure definition for instantiation of the body
 */
-template<class S, class M, typename SP, typename BP>
+template<class SignatureType, class ItemType, typename SignatureProc, typename BodyProc>
 class OPENFLUID_API WarePluginsManager
 {
   private:
 
-    QLibrary* loadWare(const std::string& FullFilePath)
+    QLibrary* loadPluginLibrary(const std::string& FullFilePath)
     {
       std::string PluginFileName = QFileInfo(QString::fromStdString(FullFilePath)).fileName().toStdString();
 
-      if (m_LoadedPlugins.find(PluginFileName) == m_LoadedPlugins.end())
+      if (m_LoadedPluginsLibraries.find(PluginFileName) == m_LoadedPluginsLibraries.end())
       {
-        m_LoadedPlugins[PluginFileName] = new QLibrary(QString::fromStdString(FullFilePath));
+        m_LoadedPluginsLibraries[PluginFileName].reset(new QLibrary(QString::fromStdString(FullFilePath)));
       }
 
-      return m_LoadedPlugins[PluginFileName];
+      return m_LoadedPluginsLibraries[PluginFileName].get();
     }
 
 
@@ -94,54 +96,53 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    M* buildWareContainerWithSignatureOnly(const std::string& ID)
+    ItemType* buildWareContainerWithSignatureOnly(const std::string& ID)
     {
-
       std::string PluginFilename = ID+getPluginFilenameSuffix()+openfluid::config::PLUGINS_EXT;
       std::string PluginFullPath = getPluginFullPath(PluginFilename);
-      M* Plug = nullptr;
+      ItemType* WareItem = nullptr;
 
-      QLibrary* PlugLib = loadWare(PluginFullPath);
+      QLibrary* PlugLib = loadPluginLibrary(PluginFullPath);
 
       // library loading
       if (PlugLib && PlugLib->load())
       {
-        Plug = new M();
-        Plug->FileFullPath = PluginFullPath;
+        WareItem = new ItemType();
+        WareItem->FileFullPath = PluginFullPath;
 
         GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
 
         if (ABIVersionProc)
         {
-          Plug->Verified =
+          WareItem->Verified =
               (openfluid::tools::compareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
         }
-        else Plug->Verified = false;
+        else WareItem->Verified = false;
 
 
-        if (Plug->Verified)
+        if (WareItem->Verified)
         {
-          BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
-          SP SignatureProc = (SP)PlugLib->resolve(WARESIGNATURE_PROC_NAME);
+          BodyProc BProc = (BodyProc)PlugLib->resolve(WAREBODY_PROC_NAME);
+          SignatureProc SProc = (SignatureProc)PlugLib->resolve(WARESIGNATURE_PROC_NAME);
 
           // checks if the handle procs exist
-          if (SignatureProc && BodyProc)
+          if (SProc && BProc)
           {
-            Plug->Signature = SignatureProc();
+            WareItem->Signature.reset(SProc());
 
-            if (Plug->Signature == nullptr)
+            if (WareItem->Signature == nullptr)
               throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                         "Signature from plugin file " + PluginFilename +
                                                         " cannot be instanciated");
 
-            Plug->Verified = (Plug->Signature->ID == ID);
+            WareItem->Verified = (WareItem->Signature->ID == ID);
 
-            Plug->Body = 0;
+            WareItem->Body = 0;
 
             GetWareLinkUIDProc LinkUIDProc = (GetWareLinkUIDProc)PlugLib->resolve(WARELINKUID_PROC_NAME);
 
             if (LinkUIDProc)
-              Plug->LinkUID = LinkUIDProc();
+              WareItem->LinkUID = LinkUIDProc();
           }
           else
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -155,7 +156,7 @@ class OPENFLUID_API WarePluginsManager
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Unable to load plugin from file " + PluginFilename);
 
-      return Plug;
+      return WareItem;
     }
 
 
@@ -163,63 +164,63 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    S* getWareSignature(const std::string& PluginFilename)
+    SignatureType* getWareSignature(const std::string& PluginFilename)
     {
       std::string PluginFullPath = getPluginFullPath(PluginFilename);
-      S* Plug = nullptr;
+      SignatureType* Sign = nullptr;
 
       openfluid::base::ExceptionContext ECtxt =
           openfluid::base::FrameworkException::computeContext(OPENFLUID_CODE_LOCATION)
           .addInfos({{"pluginfullpath",PluginFullPath},{"pluginfilename",PluginFilename}});
 
       // library loading
-      QLibrary* PlugLib = loadWare(PluginFullPath);
+      QLibrary* PlugLib = loadPluginLibrary(PluginFullPath);
 
 
       if (PlugLib)
       {
         if (PlugLib->load())
         {
-          Plug = new M();
-          Plug->FileFullPath = PluginFullPath;
+          Sign = new SignatureType();
+          Sign->FileFullPath = PluginFullPath;
 
           GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
 
           if (ABIVersionProc)
           {
-            Plug->Verified =
-                (openfluid::tools::compareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
+            Sign->Verified =
+              (openfluid::tools::compareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
           }
-          else Plug->Verified = false;
+          else Sign->Verified = false;
 
 
-          if (Plug->Verified)
+          if (Sign->Verified)
           {
-            BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
-            SP SignatureProc = (SP)PlugLib->resolve(WARESIGNATURE_PROC_NAME);
+            BodyProc BProc = (BodyProc)PlugLib->resolve(WAREBODY_PROC_NAME);
+            SignatureProc SProc = (SignatureProc)PlugLib->resolve(WARESIGNATURE_PROC_NAME);
 
             // checks if the handle procs exist
-            if (SignatureProc && BodyProc)
+            if (SProc && BProc)
             {
               try
               {
-                Plug->Signature = SignatureProc();
+                Sign->Signature.reset(SProc());
               }
               catch (openfluid::base::FrameworkException& E)
               {
                 throw openfluid::base::FrameworkException(ECtxt,E.getMessage());
               }
 
-              if (Plug->Signature == nullptr)
+              if (Sign->Signature == nullptr)
                 throw openfluid::base::FrameworkException(ECtxt,"Signature cannot be instanciated from plugin file");
 
-              Plug->Verified =
-                  QString::fromStdString(PluginFilename).startsWith(QString::fromStdString(Plug->Signature->ID));
+              Sign->Verified =
+                  QString::fromStdString(PluginFilename).startsWith(QString::fromStdString(Sign->Signature->ID));
 
               GetWareLinkUIDProc LinkUIDProc = (GetWareLinkUIDProc)PlugLib->resolve(WARELINKUID_PROC_NAME);
 
               if (LinkUIDProc)
-                Plug->LinkUID = LinkUIDProc();
+                Sign->LinkUID = LinkUIDProc();
             }
             else
               throw openfluid::base::FrameworkException(ECtxt,"Format error in plugin file");
@@ -233,7 +234,7 @@ class OPENFLUID_API WarePluginsManager
       else
         throw openfluid::base::FrameworkException(ECtxt,"Unable to find plugin file");
 
-      return Plug;
+      return Sign;
     }
 
 
@@ -243,7 +244,7 @@ class OPENFLUID_API WarePluginsManager
 
   protected:
 
-    std::map<std::string,QLibrary*> m_LoadedPlugins;
+    std::map<std::string,std::unique_ptr<QLibrary>> m_LoadedPluginsLibraries;
 
 
     WarePluginsManager()
@@ -261,7 +262,8 @@ class OPENFLUID_API WarePluginsManager
     class PluginsSearchResults
     {
       public:
-        std::vector<S*> AvailablePlugins;
+
+        std::vector<SignatureType*> AvailablePlugins;
 
         std::map<std::string,std::string> ErroredFiles;
     };
@@ -320,7 +322,7 @@ class OPENFLUID_API WarePluginsManager
       }
 
 
-      S* CurrentPlug = nullptr;
+      SignatureType* CurrentPlug = nullptr;
 
       for (i=0;i<PluginFiles.size();i++)
       {
@@ -352,11 +354,12 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    M* loadWareSignatureOnly(const std::string& ID)
+    ItemType* loadWareSignatureOnly(const std::string& ID)
     {
-      M* Plug = buildWareContainerWithSignatureOnly(ID);
+      ItemType* WareItem = buildWareContainerWithSignatureOnly(ID);
 
-      if (Plug != nullptr && Plug->Verified) return Plug;
+      if (WareItem != nullptr && WareItem->Verified)
+        return WareItem;
 
       return nullptr;
     }
@@ -366,23 +369,23 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    void completeSignatureWithWareBody(M* Item)
+    void completeSignatureWithWareBody(ItemType* WareItem)
     {
-      std::string PluginFullPath = Item->FileFullPath;
+      std::string PluginFullPath = WareItem->FileFullPath;
 
-      QLibrary* PlugLib = loadWare(PluginFullPath);
+      QLibrary* PlugLib = loadPluginLibrary(PluginFullPath);
 
       // library loading
       if (PlugLib && PlugLib->load())
       {
-        BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
+        BodyProc BProc = (BodyProc)PlugLib->resolve(WAREBODY_PROC_NAME);
 
         // checks if the handle proc exists
-        if(BodyProc)
+        if (BProc)
         {
-          Item->Body = BodyProc();
+          WareItem->Body.reset(BProc());
 
-          if (Item->Body == nullptr)
+          if (WareItem->Body == nullptr)
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Ware from plugin file " + PluginFullPath +
                                                       " cannot be instanciated");
@@ -402,24 +405,16 @@ class OPENFLUID_API WarePluginsManager
 
     void unloadAllWares()
     {
-      std::map<std::string,QLibrary*>::iterator it;
+      for (auto it=m_LoadedPluginsLibraries.begin();it != m_LoadedPluginsLibraries.end(); ++it)
+        it->second.get()->unload();
 
-      for (it=m_LoadedPlugins.begin();it != m_LoadedPlugins.end(); ++it)
-      {
-        it->second->unload();
-        delete (it->second);
-      }
-
-      m_LoadedPlugins.clear();
+      m_LoadedPluginsLibraries.clear();
     }
 
 };
 
 
-
 } } //namespaces
-
-
 
 
 #endif /* __OPENFLUID_MACHINE_WAREPLUGINSMANAGER_HPP__ */

@@ -68,16 +68,6 @@ ModelItemSignatureInstance::ModelItemSignatureInstance():
 // =====================================================================
 
 
-ModelItemSignatureInstance::~ModelItemSignatureInstance()
-{
-  if (GeneratorInfo != nullptr) delete GeneratorInfo;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 
 ModelItemInstance::ModelItemInstance():
   ModelItemSignatureInstance(), Body(nullptr), OriginalPosition(0)

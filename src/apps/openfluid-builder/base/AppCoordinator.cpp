@@ -184,10 +184,12 @@ void AppCoordinator::connectExtensions()
 
 void AppCoordinator::unsetCurrentModule()
 {
-  if (mp_CurrentModule != nullptr) delete mp_CurrentModule;
+  if (mp_CurrentModule != nullptr)
+    delete mp_CurrentModule;
   mp_CurrentModule = nullptr;
 
-  if (mp_DockWidget != nullptr) delete mp_DockWidget;
+  if (mp_DockWidget != nullptr)
+    delete mp_DockWidget;
   mp_DockWidget = nullptr;
 }
 
@@ -378,16 +380,22 @@ bool AppCoordinator::closeProject()
                               tr("Close project"),
                               tr("Do you want to save the current project before closing?"),
                               QMessageBox::Cancel | QMessageBox::Save | QMessageBox::Discard);
+
     if (Ret != QMessageBox::Cancel)
     {
-      if (Ret == QMessageBox::Save) whenSaveAsked();
+      if (Ret == QMessageBox::Save)
+        whenSaveAsked();
+
       m_Actions.action("ProjectSave")->setEnabled(false);
       openfluid::base::ProjectManager::instance()->close();
+
       return true;
     }
     return false;
   }
+
   openfluid::base::ProjectManager::instance()->close();
+
   return true;
 }
 

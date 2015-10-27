@@ -128,7 +128,7 @@ openfluid::builderext::PluggableBuilderExtension*
       ->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::instance()->wareEnvironment());
     m_FeatureExtensions[ID]->Body->initializeWare(ID);
     m_FeatureExtensions[ID]->Active = true;
-    return m_FeatureExtensions[ID]->Body;
+    return m_FeatureExtensions[ID]->Body.release(); // pointer is released to let Qt manage the lifecycle
   }
 
   return nullptr;
@@ -176,11 +176,10 @@ void ExtensionsRegistry::releaseAllFeatureExtensions()
     if ((*it).second->Body != nullptr && (*it).second->Signature != nullptr &&
         (*it).second->Signature->Mode == openfluid::builderext::MODE_MODELESS)
     {
-      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body)->close();
-      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body)->deleteLater();
+      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body.get())->close();
+      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body.get())->deleteLater();
     }
   }
-
 }
 
 
@@ -203,11 +202,13 @@ openfluid::builderext::PluggableBuilderExtension*
   if (isParameterizationExtensionRegistered(UUID))
   {
     ExtensionPluginsManager::instance()->completeSignatureWithWareBody(m_ParameterizationExtensions[UUID]);
+
     m_ParameterizationExtensions[UUID]->Body
       ->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::instance()->wareEnvironment());
     m_ParameterizationExtensions[UUID]->Body->initializeWare(m_ParameterizationExtensions[UUID]->Signature->ID);
     m_ParameterizationExtensions[UUID]->Active = true;
-    return m_ParameterizationExtensions[UUID]->Body;
+
+    return m_ParameterizationExtensions[UUID]->Body.release(); // pointer is released to let Qt manage the lifecycle
   }
 
   return nullptr;

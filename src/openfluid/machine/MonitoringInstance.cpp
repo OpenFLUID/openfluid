@@ -134,7 +134,8 @@ void MonitoringInstance::finalize()
   ObsIter = m_Observers.begin();
   while (ObsIter != m_Observers.end())
   {
-    delete (*ObsIter)->Body;
+    (*ObsIter)->Body.reset();
+    (*ObsIter)->Signature.reset();
     ++ObsIter;
   }
 

@@ -40,6 +40,8 @@
 #ifndef __OPENFLUID_MACHINE_OBSERVERINSTANCE_HPP__
 #define __OPENFLUID_MACHINE_OBSERVERINSTANCE_HPP__
 
+#include <memory>
+
 #include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/machine/WareSignatureInstance.hpp>
@@ -47,10 +49,12 @@
 
 namespace openfluid { namespace machine {
 
+
 class OPENFLUID_API ObserverSignatureInstance : public WareSignatureInstance
 {
   public:
-    openfluid::ware::ObserverSignature* Signature;
+
+    std::unique_ptr<openfluid::ware::ObserverSignature> Signature;
 
     ObserverSignatureInstance();
 
@@ -65,8 +69,11 @@ class OPENFLUID_API ObserverSignatureInstance : public WareSignatureInstance
 class OPENFLUID_API ObserverInstance : public ObserverSignatureInstance
 {
   public:
+
     openfluid::ware::WareParams_t Params;
-    openfluid::ware::PluggableObserver* Body;
+
+    std::unique_ptr<openfluid::ware::PluggableObserver> Body;
+
 
     ObserverInstance();
 

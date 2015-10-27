@@ -53,18 +53,5 @@ ExtensionContainer::ExtensionContainer():
 
 ExtensionContainer::~ExtensionContainer()
 {
-  if (Signature)
-  {
-    delete Signature;
-    Signature = nullptr;
-  }
 
-  // TODO this crashes if uncommented (double free)
-  /*
-  if (Body)
-  {
-    delete Body;
-    Body = nullptr;
-  }
-*/
 }

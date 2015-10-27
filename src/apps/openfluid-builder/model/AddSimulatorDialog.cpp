@@ -57,10 +57,10 @@ AddSimulatorDialog::AddSimulatorDialog(const QStringList& SimIDList, QWidget* Pa
   openfluid::machine::SimulatorSignatureRegistry* Reg =
     openfluid::machine::SimulatorSignatureRegistry::instance();
 
-  openfluid::machine::SimulatorSignatureRegistry::SimSignaturesByName_t SimSigns =
+  const openfluid::machine::SimulatorSignatureRegistry::SimSignaturesByName_t& SimSigns =
     Reg->getSimulatorSignatures();
 
-  for (openfluid::machine::SimulatorSignatureRegistry::SimSignaturesByName_t::iterator it =
+  for (openfluid::machine::SimulatorSignatureRegistry::SimSignaturesByName_t::const_iterator it =
       SimSigns.begin(); it != SimSigns.end(); ++it)
   {
     QString ID = QString::fromStdString(it->second->Signature->ID);

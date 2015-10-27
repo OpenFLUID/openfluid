@@ -275,7 +275,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         IInstance->Params = (*it)->getParameters();
         IInstance->ItemType = openfluid::ware::WareType::GENERATOR;
 
-        openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature();
+        std::unique_ptr<openfluid::ware::SimulatorSignature> Signature(new openfluid::ware::SimulatorSignature());
 
         std::string TypedVarName = GenDesc->getVariableName();
         GenDesc->isVectorVariable() ? TypedVarName += "[vector]" : TypedVarName += "[double]";
@@ -285,7 +285,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         Signature->HandledData.ProducedVars
         .push_back(openfluid::ware::SignatureTypedSpatialDataItem(TypedVarName,GenDesc->getUnitsClass(),"",""));
 
-        IInstance->GeneratorInfo = new GeneratorExtraInfo();
+        IInstance->GeneratorInfo.reset(new GeneratorExtraInfo());
         IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();
         IInstance->GeneratorInfo->UnitsClass = GenDesc->getUnitsClass();
         IInstance->GeneratorInfo->VariableSize = GenDesc->getVariableSize();
@@ -315,7 +315,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
                                                     "unknown generator type");
 
         IInstance->Body = nullptr;
-        IInstance->Signature = Signature;
+        IInstance->Signature = std::move(Signature);
       }
 
       openfluid::base::RuntimeEnvironment::instance()->processWareParams(IInstance->Params);

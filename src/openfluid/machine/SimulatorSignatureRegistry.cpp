@@ -61,28 +61,32 @@ SimulatorSignatureRegistry::SimulatorSignatureRegistry():
 {
   openfluid::machine::ModelItemSignatureInstance* FixedSignature = new openfluid::machine::ModelItemSignatureInstance();
   FixedSignature->Verified = true;
-  FixedSignature->Signature = new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Fixed);
+  FixedSignature->Signature.reset(
+    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Fixed));
   addGeneratorSignature(FixedSignature);
   m_GenSignatures[openfluid::fluidx::GeneratorDescriptor::Fixed] = FixedSignature;
 
   openfluid::machine::ModelItemSignatureInstance* RandomSignature =
-      new openfluid::machine::ModelItemSignatureInstance();
+    new openfluid::machine::ModelItemSignatureInstance();
   RandomSignature->Verified = true;
-  RandomSignature->Signature = new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Random);
+  RandomSignature->Signature.reset(
+    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Random));
   addGeneratorSignature(RandomSignature);
   m_GenSignatures[openfluid::fluidx::GeneratorDescriptor::Random] = RandomSignature;
 
   openfluid::machine::ModelItemSignatureInstance* InterpSignature =
-      new openfluid::machine::ModelItemSignatureInstance();
+    new openfluid::machine::ModelItemSignatureInstance();
   InterpSignature->Verified = true;
-  InterpSignature->Signature = new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Interp);
+  InterpSignature->Signature.reset(
+    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Interp));
   addGeneratorSignature(InterpSignature);
   m_GenSignatures[openfluid::fluidx::GeneratorDescriptor::Interp] = InterpSignature;
 
   openfluid::machine::ModelItemSignatureInstance* InjectSignature =
-      new openfluid::machine::ModelItemSignatureInstance();
+    new openfluid::machine::ModelItemSignatureInstance();
   InjectSignature->Verified = true;
-  InjectSignature->Signature = new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Inject);
+  InjectSignature->Signature.reset(
+    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Inject));
   addGeneratorSignature(InjectSignature);
   m_GenSignatures[openfluid::fluidx::GeneratorDescriptor::Inject] = InjectSignature;
 
@@ -145,10 +149,7 @@ void SimulatorSignatureRegistry::addGeneratorSignature(openfluid::machine::Model
 
 void SimulatorSignatureRegistry::update()
 {
-  // TODO see if deleting all pointers in map is necessary to avoid memory leaks
-  m_SimSignatures[openfluid::ware::WareType::SIMULATOR].clear();
-
-  openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
+  unloadAll();
 
   // searching for pluggable simulators
   std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
@@ -171,8 +172,7 @@ void SimulatorSignatureRegistry::update()
   for (unsigned int i = 0; i < GhostsSignatures.size(); i++)
   {
     if (GhostsSignatures[i]->Signature &&
-        m_SimSignatures[openfluid::ware::WareType::SIMULATOR]
-        .find(GhostsSignatures[i]->Signature->ID)
+        m_SimSignatures[openfluid::ware::WareType::SIMULATOR].find(GhostsSignatures[i]->Signature->ID)
           == m_SimSignatures[openfluid::ware::WareType::SIMULATOR].end())
     {
       addSimulatorSignature(GhostsSignatures[i]);
@@ -185,7 +185,7 @@ void SimulatorSignatureRegistry::update()
 // =====================================================================
 
 
-SimulatorSignatureRegistry::SimSignaturesByTypeByName_t SimulatorSignatureRegistry::getSimSignatures()
+const SimulatorSignatureRegistry::SimSignaturesByTypeByName_t& SimulatorSignatureRegistry::getSimSignatures() const
 {
   return m_SimSignatures;
 }
@@ -195,9 +195,9 @@ SimulatorSignatureRegistry::SimSignaturesByTypeByName_t SimulatorSignatureRegist
 // =====================================================================
 
 
-SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::getGeneratorSignatures()
+const SimulatorSignatureRegistry::SimSignaturesByName_t& SimulatorSignatureRegistry::getGeneratorSignatures() const
 {
-  return m_SimSignatures[openfluid::ware::WareType::GENERATOR];
+  return m_SimSignatures.at(openfluid::ware::WareType::GENERATOR);
 }
 
 
@@ -205,9 +205,9 @@ SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::ge
 // =====================================================================
 
 
-SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::getSimulatorSignatures()
+const SimulatorSignatureRegistry::SimSignaturesByName_t& SimulatorSignatureRegistry::getSimulatorSignatures() const
 {
-  return m_SimSignatures[openfluid::ware::WareType::SIMULATOR];
+  return m_SimSignatures.at(openfluid::ware::WareType::SIMULATOR);
 }
 
 
@@ -215,23 +215,9 @@ SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::ge
 // =====================================================================
 
 
-ModelItemSignatureInstance* SimulatorSignatureRegistry::getEmptyModelItemSignature()
+bool SimulatorSignatureRegistry::isSimulatorAvailable(const openfluid::ware::WareID_t& ID) const
 {
-  openfluid::machine::ModelItemSignatureInstance* Signature =
-      new openfluid::machine::ModelItemSignatureInstance();
-  Signature->Signature = new openfluid::ware::SimulatorSignature();
-
-  return Signature;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool SimulatorSignatureRegistry::isSimulatorAvailable(const openfluid::ware::WareID_t& ID)
-{
-  return m_SimSignatures[openfluid::ware::WareType::SIMULATOR].count(ID);
+  return m_SimSignatures.at(openfluid::ware::WareType::SIMULATOR).count(ID);
 }
 
 
@@ -240,13 +226,13 @@ bool SimulatorSignatureRegistry::isSimulatorAvailable(const openfluid::ware::War
 
 
 const openfluid::machine::ModelItemSignatureInstance*
-  SimulatorSignatureRegistry::signature(const openfluid::ware::WareID_t& ID)
+  SimulatorSignatureRegistry::signature(const openfluid::ware::WareID_t& ID) const
 {
   if (isSimulatorAvailable(ID))
-    return m_SimSignatures[openfluid::ware::WareType::SIMULATOR][ID];
+    return m_SimSignatures.at(openfluid::ware::WareType::SIMULATOR).at(ID);
 
-  if (m_SimSignatures[openfluid::ware::WareType::GENERATOR].count(ID))
-    return m_SimSignatures[openfluid::ware::WareType::GENERATOR][ID];
+  if (m_SimSignatures.at(openfluid::ware::WareType::GENERATOR).count(ID))
+    return m_SimSignatures.at(openfluid::ware::WareType::GENERATOR).at(ID);
 
   return nullptr;
 }
@@ -257,7 +243,7 @@ const openfluid::machine::ModelItemSignatureInstance*
 
 
 const ModelItemSignatureInstance*
-  SimulatorSignatureRegistry::signature(openfluid::fluidx::ModelItemDescriptor* Item)
+  SimulatorSignatureRegistry::signature(openfluid::fluidx::ModelItemDescriptor* Item) const
 {
   openfluid::ware::WareID_t ItemID = "";
 
@@ -276,9 +262,9 @@ const ModelItemSignatureInstance*
 
 
 const ModelItemSignatureInstance*
-  SimulatorSignatureRegistry::signature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method)
+  SimulatorSignatureRegistry::signature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const
 {
-  return m_GenSignatures[Method];
+  return m_GenSignatures.at(Method);
 }
 
 
@@ -288,6 +274,10 @@ const ModelItemSignatureInstance*
 
 void SimulatorSignatureRegistry::unloadAll()
 {
+  for (auto Sign : m_SimSignatures[openfluid::ware::WareType::SIMULATOR])
+    delete Sign.second;
+  m_SimSignatures[openfluid::ware::WareType::SIMULATOR].clear();
+
   openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
 }
 

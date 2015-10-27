@@ -462,7 +462,7 @@ void ProjectCentral::checkModel()
         }
 
 
-        Sign = SignII->Signature;
+        Sign = SignII->Signature.get();
 
 
         // ========== external constraints
@@ -692,7 +692,7 @@ void ProjectCentral::checkModel()
 
       if (SignII != nullptr)
       {
-        Sign = SignII->Signature;
+        Sign = SignII->Signature.get();
         std::string ID = Model.getID(*itModelItem);
 
         // check produced Vars
@@ -805,7 +805,7 @@ void ProjectCentral::checkModel()
       if (SignII != nullptr)
       {
 
-        Sign = SignII->Signature;
+        Sign = SignII->Signature.get();
 
         // check required Vars
         std::vector<openfluid::ware::SignatureTypedSpatialDataItem>& ReqVars = Sign->HandledData.RequiredVars;

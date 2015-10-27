@@ -56,7 +56,7 @@ class WareSignatureRegistry
 
     virtual void unloadAll() = 0;
 
-    virtual  const S* signature(const openfluid::ware::WareID_t& ID) = 0;
+    virtual  const S* signature(const openfluid::ware::WareID_t& ID) const = 0;
 
 };
 

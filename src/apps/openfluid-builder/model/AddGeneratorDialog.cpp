@@ -38,8 +38,6 @@
  */
 
 
-
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 

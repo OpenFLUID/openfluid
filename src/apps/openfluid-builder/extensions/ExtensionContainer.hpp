@@ -41,6 +41,8 @@
 #define __OPENFLUID_BUILDERAPP_EXTENSIONCONTAINER_HPP__
 
 
+#include <memory>
+
 #include <openfluid/machine/WareContainer.hpp>
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
 
@@ -51,9 +53,9 @@ class ExtensionContainer : public openfluid::machine::WareContainer
 
     bool Active;
 
-    openfluid::builderext::BuilderExtensionSignature* Signature;
+    std::unique_ptr<openfluid::builderext::BuilderExtensionSignature> Signature;
 
-    openfluid::builderext::PluggableBuilderExtension* Body;
+    std::unique_ptr<openfluid::builderext::PluggableBuilderExtension> Body;
 
     openfluid::ware::WareParams_t Params;
 

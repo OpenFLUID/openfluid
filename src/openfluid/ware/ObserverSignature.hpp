@@ -55,7 +55,7 @@ class OPENFLUID_API ObserverSignature : public WareSignature
   public:
 
     ObserverSignature() : WareSignature()
-      {}
+    { }
 
 };
 

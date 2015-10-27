@@ -41,7 +41,9 @@
 #ifndef __OPENFLUID_MACHINE_MODELITEMINSTANCE_HPP__
 #define __OPENFLUID_MACHINE_MODELITEMINSTANCE_HPP__
 
+
 #include <string>
+#include <memory>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
@@ -53,6 +55,7 @@
 
 
 namespace openfluid { namespace machine {
+
 
 class OPENFLUID_API GeneratorExtraInfo
 {
@@ -66,24 +69,24 @@ class OPENFLUID_API GeneratorExtraInfo
     GeneratorExtraInfo();
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 class OPENFLUID_API ModelItemSignatureInstance : public WareSignatureInstance
 {
   public:
 
-    // TODO see if a pointer is mandatory
-    openfluid::ware::SimulatorSignature* Signature;
+    std::unique_ptr<openfluid::ware::SimulatorSignature> Signature;
 
-    GeneratorExtraInfo* GeneratorInfo;
+    std::unique_ptr<GeneratorExtraInfo> GeneratorInfo;
 
     bool Ghost;
 
 
     ModelItemSignatureInstance();
 
-    ~ModelItemSignatureInstance();
 };
 
 
@@ -97,7 +100,7 @@ class OPENFLUID_API ModelItemInstance : public ModelItemSignatureInstance
 
     openfluid::ware::WareParams_t Params;
 
-    openfluid::ware::PluggableSimulator* Body;
+    std::unique_ptr<openfluid::ware::PluggableSimulator> Body;
 
     unsigned int OriginalPosition;
 

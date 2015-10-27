@@ -74,17 +74,15 @@ SimulatorPluginsManager::getAvailableGhostsSignatures(const std::string& /*Patte
 
   for (i=0;i<GhostsFiles.size();i++)
   {
-    openfluid::ware::SimulatorSignature* TmpSignature = new openfluid::ware::SimulatorSignature();
+    std::unique_ptr<openfluid::ware::SimulatorSignature> TmpSignature(new openfluid::ware::SimulatorSignature());
     if (openfluid::machine::GhostSimulatorFileIO::loadFromFile(GhostsFiles[i],*TmpSignature))
     {
       ModelItemSignatureInstance* CurrentGhost = new ModelItemSignatureInstance();
       CurrentGhost->Ghost = true;
       CurrentGhost->FileFullPath = GhostsFiles[i];
-      CurrentGhost->Signature = TmpSignature;
+      CurrentGhost->Signature = std::move(TmpSignature);
       PluginsContainers.push_back(CurrentGhost);
     }
-    else
-      delete TmpSignature;
   }
 
   return PluginsContainers;

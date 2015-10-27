@@ -174,7 +174,7 @@ void ProjectModule::updateWaresWatchersPaths()
 
     Paths.removeDuplicates();
 
-    foreach (QString P,Paths)
+    for (QString P : Paths)
     {
       if (QDir(P).exists())
         mp_SimulatorsPlugsWatcher->addPath(P);
@@ -198,7 +198,7 @@ void ProjectModule::updateWaresWatchersPaths()
 
     Paths.removeDuplicates();
 
-    foreach (QString P,Paths)
+    for (QString P : Paths)
     {
       if (QDir(P).exists())
         mp_ObserversPlugsWatcher->addPath(P);

@@ -188,22 +188,22 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::machine::ModelItemInstance* MII;
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableSimulator*)(new SimA());
-  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimA()));
+  MII->Signature.reset(new openfluid::ware::SimulatorSignature());
   MII->Signature->ID = "sim.a";
   MII->OriginalPosition = 1;
   MI.appendItem(MII);
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableSimulator*)(new SimB());
-  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimB()));
+  MII->Signature.reset(new openfluid::ware::SimulatorSignature());
   MII->Signature->ID = "sim.b";
   MII->OriginalPosition = 2;
   MI.appendItem(MII);
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableSimulator*)(new SimC());
-  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimC()));
+  MII->Signature.reset(new openfluid::ware::SimulatorSignature());
   MII->Signature->ID = "sim.c";
   MII->OriginalPosition = 3;
   MI.appendItem(MII);
@@ -281,8 +281,8 @@ BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
   ModelInstanceSub MI(SB, nullptr);
 
   openfluid::machine::ModelItemInstance* MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableSimulator*) (new SimA());
-  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Body.reset((openfluid::ware::PluggableSimulator*) (new SimA()));
+  MII->Signature.reset(new openfluid::ware::SimulatorSignature());
   MII->Signature->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("A1","",""));
   MII->Signature->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("B1.C1","",""));
   MII->Signature->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("D1.E1.F1","",""));

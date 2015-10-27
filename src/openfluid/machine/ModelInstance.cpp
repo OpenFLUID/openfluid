@@ -288,8 +288,8 @@ void ModelInstance::clear()
 
   for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
   {
-    if ((*it)->Body != nullptr) delete (*it)->Body;
-    if ((*it)->Signature != nullptr) delete (*it)->Signature;
+    (*it)->Body.reset();
+    (*it)->Signature.reset();
   }
 
   m_ModelItems.clear();
@@ -324,19 +324,19 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
         CurrentSimulator->GeneratorInfo != nullptr)
     {
       if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Fixed)
-        CurrentSimulator->Body = new FixedGenerator();
+        CurrentSimulator->Body.reset(new FixedGenerator());
 
       if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Random)
-        CurrentSimulator->Body = new RandomGenerator();
+        CurrentSimulator->Body.reset(new RandomGenerator());
 
       if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Inject)
-        CurrentSimulator->Body = new InjectGenerator();
+        CurrentSimulator->Body.reset(new InjectGenerator());
 
       if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Interp)
-        CurrentSimulator->Body = new InterpGenerator();
+        CurrentSimulator->Body.reset(new InterpGenerator());
 
       ((openfluid::machine::Generator*)
-          (CurrentSimulator->Body))->setInfos(CurrentSimulator->GeneratorInfo->VariableName,
+          (CurrentSimulator->Body.get()))->setInfos(CurrentSimulator->GeneratorInfo->VariableName,
                                               CurrentSimulator->GeneratorInfo->UnitsClass,
                                               CurrentSimulator->GeneratorInfo->GeneratorMethod,
                                               CurrentSimulator->GeneratorInfo->VariableSize);
@@ -387,11 +387,13 @@ void ModelInstance::finalize()
   SimIter = m_ModelItems.begin();
   while (SimIter != m_ModelItems.end())
   {
-    delete (*SimIter)->Body;
+    (*SimIter)->Body.reset();
+    (*SimIter)->Signature.reset();
     ++SimIter;
   }
 
-  if (mp_SimProfiler != nullptr) delete mp_SimProfiler;
+  if (mp_SimProfiler != nullptr)
+    delete mp_SimProfiler;
   mp_SimProfiler = nullptr;
 
   m_Initialized = false;

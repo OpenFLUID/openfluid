@@ -92,23 +92,21 @@ class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<Mo
 
     static SimulatorSignatureRegistry* instance();
 
-    SimSignaturesByTypeByName_t getSimSignatures();
+    const SimSignaturesByTypeByName_t& getSimSignatures() const;
 
-    SimSignaturesByName_t getGeneratorSignatures();
+    const SimSignaturesByName_t& getGeneratorSignatures() const;
 
-    SimSignaturesByName_t getSimulatorSignatures();
+    const SimSignaturesByName_t& getSimulatorSignatures() const;
 
     void update();
 
-    static ModelItemSignatureInstance* getEmptyModelItemSignature();
+    bool isSimulatorAvailable(const openfluid::ware::WareID_t& ID) const;
 
-    bool isSimulatorAvailable(const openfluid::ware::WareID_t& ID);
+    const ModelItemSignatureInstance* signature(const openfluid::ware::WareID_t& ID) const;
 
-    const ModelItemSignatureInstance* signature(const openfluid::ware::WareID_t& ID);
+    const ModelItemSignatureInstance* signature(openfluid::fluidx::ModelItemDescriptor* Item) const;
 
-    const ModelItemSignatureInstance* signature(openfluid::fluidx::ModelItemDescriptor* Item);
-
-    const ModelItemSignatureInstance* signature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method);
+    const ModelItemSignatureInstance* signature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const;
 
     void unloadAll();
 };
