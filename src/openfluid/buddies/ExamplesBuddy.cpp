@@ -90,6 +90,7 @@ bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
     openfluid::tools::Filesystem::copyDirectory(ProjectsSourcePath+"/"+ProjectDir,
                                                 ProjectsInstallPath);
     mp_Listener->onSubstageCompleted("Done");
+
     return true;
   }
   else

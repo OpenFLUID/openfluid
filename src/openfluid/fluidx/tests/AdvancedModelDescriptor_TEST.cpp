@@ -49,6 +49,7 @@
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
+#include <openfluid/base/IOListener.hpp>
 
 
 // =====================================================================
@@ -74,9 +75,10 @@ class AdvancedModelDescriptorSub: public openfluid::fluidx::AdvancedModelDescrip
 
 BOOST_AUTO_TEST_CASE(check_duplicates)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
 
   BOOST_CHECK_NO_THROW(openfluid::fluidx::AdvancedModelDescriptor(FXDesc.modelDescriptor()));
 }
@@ -88,9 +90,10 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   AdvancedModelDescriptorSub Model(FXDesc.modelDescriptor());
 
@@ -149,9 +152,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   AdvancedModelDescriptorSub Model(FXDesc.modelDescriptor());
 

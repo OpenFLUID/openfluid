@@ -551,7 +551,8 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
   std::cout << std::endl;
   std::cout.flush();
 
-  if (mp_Engine != nullptr) delete mp_Engine;
+  if (mp_Engine)
+    mp_Engine.reset();
 
   return 127;
 
@@ -632,24 +633,24 @@ void OpenFLUIDApp::runSimulation()
   openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.quiet",IsQuiet);
 
 
-  openfluid::machine::MachineListener* MListener;
-  openfluid::base::IOListener* IOListener = new DefaultIOListener();
+  std::unique_ptr<openfluid::machine::MachineListener> MListener;
+  std::unique_ptr<openfluid::base::IOListener>IOListener(new DefaultIOListener());
 
 
   if (IsQuiet)
   {
-    MListener = new openfluid::machine::MachineListener();
+    MListener.reset(new openfluid::machine::MachineListener());
   }
   else
   {
     if (IsVerbose)
     {
-      MListener = new VerboseMachineListener();
+      MListener.reset(new VerboseMachineListener());
     }
-    else MListener = new DefaultMachineListener();
+    else MListener.reset(new DefaultMachineListener());
   }
 
-  openfluid::machine::ModelInstance Model(m_SimBlob,MListener);
+  openfluid::machine::ModelInstance Model(m_SimBlob,MListener.get());
   openfluid::machine::MonitoringInstance Monitoring(m_SimBlob);
 
   printOpenFLUIDInfos();
@@ -659,7 +660,7 @@ void OpenFLUIDApp::runSimulation()
 
 
   std::cout << "* Loading data... " << std::endl; std::cout.flush();
-  openfluid::fluidx::FluidXDescriptor FXDesc(IOListener);
+  openfluid::fluidx::FluidXDescriptor FXDesc(IOListener.get());
   FXDesc.loadFromDirectory(openfluid::base::RuntimeEnvironment::instance()->getInputDir());
 
 
@@ -678,7 +679,7 @@ void OpenFLUIDApp::runSimulation()
                                                                 Monitoring);
   std::cout << "[OK]" << std::endl; std::cout.flush();
 
-  mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, Monitoring, MListener);
+  mp_Engine.reset(new openfluid::machine::Engine(m_SimBlob, Model, Monitoring, MListener.get()));
 
   mp_Engine->initialize();
 
@@ -768,9 +769,7 @@ void OpenFLUIDApp::runSimulation()
 
   mp_Engine->finalize();
 
-  delete mp_Engine;
-  mp_Engine = nullptr;
-
+  mp_Engine.reset();
 }
 
 // =====================================================================
@@ -1096,26 +1095,29 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
 void OpenFLUIDApp::runBuddy()
 {
-  openfluid::buddies::OpenFLUIDBuddy* Buddy = nullptr;
-  openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
-  if (m_BuddyToRun.first == "newsim" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
+  std::unique_ptr<openfluid::buddies::OpenFLUIDBuddy> Buddy;
+  std::unique_ptr<openfluid::buddies::BuddiesListener> BuddyObs(new DefaultBuddiesListener());
+
+  if (m_BuddyToRun.first == "newsim" )
+    Buddy.reset(new openfluid::buddies::NewSimulatorBuddy(BuddyObs.get()));
 #ifndef __APPLE__
     // Disabled for compilation errors due to boost.spirit usage under MacOSX
     // TODO Should be re-enabled later
-  if (m_BuddyToRun.first == "sim2doc" ) Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
+  else if (m_BuddyToRun.first == "sim2doc" )
+    Buddy.reset(new openfluid::buddies::Sim2DocBuddy(BuddyObs.get()));
 #endif
-  if (m_BuddyToRun.first == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
-  if (m_BuddyToRun.first == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
+  if (m_BuddyToRun.first == "newdata" )
+    Buddy.reset(new openfluid::buddies::NewDataBuddy(BuddyObs.get()));
+  else if (m_BuddyToRun.first == "examples" )
+    Buddy.reset(new openfluid::buddies::ExamplesBuddy(BuddyObs.get()));
 
-  if (Buddy != nullptr)
+  if (Buddy)
   {
     Buddy->parseOptions(m_BuddyToRun.second);
     Buddy->run();
-    delete Buddy;
   }
   else throw openfluid::base::ApplicationException(openfluid::base::ApplicationException::computeContext("openfluid"),
                                                    "Buddy " + m_BuddyToRun.first + " does not exists");
-
 }
 
 
@@ -1130,8 +1132,7 @@ void OpenFLUIDApp::run()
   {
     runSimulation();
   }
-
-  if (m_RunType == Buddy)
+  else if (m_RunType == Buddy)
   {
     runBuddy();
   }

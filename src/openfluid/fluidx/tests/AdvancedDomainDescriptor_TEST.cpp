@@ -44,6 +44,7 @@
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <algorithm>
 
 
@@ -53,9 +54,9 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());
@@ -161,12 +162,15 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL(std::count(P1_Children.begin(), P1_Children.end(),B11), 1);
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_wrong_construction)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+    std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+    openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/wrongattrs");
@@ -185,12 +189,15 @@ BOOST_AUTO_TEST_CASE(check_wrong_construction)
       openfluid::base::FrameworkException);
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_addUnit)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
@@ -234,14 +241,16 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   BOOST_CHECK_THROW(Domain.addUnit(&U3), openfluid::base::FrameworkException);
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_deleteUnit)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());
@@ -313,14 +322,17 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
   BOOST_CHECK_EQUAL(Domain.getAttributesNames("unitsB").size(), 0);
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_deleteUnit_manyAttrsDesc)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/manyattrdescs");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/manyattrdescs");
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());
@@ -350,14 +362,17 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit_manyAttrsDesc)
   BOOST_CHECK_EQUAL(AttrsNames.size(), 0);
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_deleteAttrs_manyAttrsDesc)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/manyattrdescs");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/manyattrdescs");
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());
@@ -387,14 +402,17 @@ BOOST_AUTO_TEST_CASE(check_deleteAttrs_manyAttrsDesc)
   FXDesc.writeToManyFiles(OutputDirMany);
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_add_replace_getAttr)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());
@@ -454,14 +472,17 @@ BOOST_AUTO_TEST_CASE(check_add_replace_getAttr)
   BOOST_CHECK_EQUAL(*FXValue, "789");
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_deleteAttrs)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());
@@ -487,9 +508,10 @@ BOOST_AUTO_TEST_CASE(check_deleteAttrs)
 
 BOOST_AUTO_TEST_CASE(check_renameAttrs)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());
@@ -517,10 +539,10 @@ BOOST_AUTO_TEST_CASE(check_renameAttrs)
 
 BOOST_AUTO_TEST_CASE(check_operations_on_events)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
-  openfluid::fluidx::AdvancedDomainDescriptor Domain(
-      FXDesc.spatialDomainDescriptor());
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(FXDesc.spatialDomainDescriptor());
 
   openfluid::fluidx::SpatialUnitDescriptor UnitDesc;
   UnitDesc.setUnitsClass("TU");
@@ -544,9 +566,10 @@ BOOST_AUTO_TEST_CASE(check_operations_on_events)
 
 BOOST_AUTO_TEST_CASE(check_operations_on_relations)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());
@@ -646,12 +669,15 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   BOOST_CHECK(Domain.toSpatialUnits(A3).empty());
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_operations_on_relations_afterAdd)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());
@@ -692,14 +718,17 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations_afterAdd)
   BOOST_CHECK_EQUAL(A2Froms.size(), 1);
   BOOST_CHECK(std::count(A2Froms.begin(),A2Froms.end(), A1));
 }
+
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_clearDomain)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.spatialDomainDescriptor());

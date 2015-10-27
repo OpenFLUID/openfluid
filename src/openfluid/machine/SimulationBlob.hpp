@@ -45,7 +45,9 @@
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/core/SpatialGraph.hpp>
 
+
 namespace openfluid { namespace machine {
+
 
 class OPENFLUID_API SimulationBlob
 {
@@ -59,36 +61,41 @@ class OPENFLUID_API SimulationBlob
 
     openfluid::base::SimulationStatus m_Status;
 
+
   public:
 
     SimulationBlob();
 
     ~SimulationBlob();
 
-    inline openfluid::core::SpatialGraph& spatialGraph() { return m_SpatialGraph; };
+    inline openfluid::core::SpatialGraph& spatialGraph()
+    { return m_SpatialGraph; };
 
-    inline openfluid::fluidx::RunDescriptor& runDescriptor() {return m_RunDescriptor; };
+    inline openfluid::fluidx::RunDescriptor& runDescriptor()
+    {return m_RunDescriptor; };
 
-    inline openfluid::base::SimulationStatus& simulationStatus() {return m_Status; };
+    inline openfluid::base::SimulationStatus& simulationStatus()
+    {return m_Status; };
 
-    inline openfluid::core::Datastore& datastore() { return m_Datastore; };
+    inline openfluid::core::Datastore& datastore()
+    { return m_Datastore; };
 
-    inline const openfluid::core::SpatialGraph& spatialGraph() const { return m_SpatialGraph; };
+    inline const openfluid::core::SpatialGraph& spatialGraph() const
+    { return m_SpatialGraph; };
 
-    inline const openfluid::fluidx::RunDescriptor& runDescriptor() const {return m_RunDescriptor; };
+    inline const openfluid::fluidx::RunDescriptor& runDescriptor() const
+    {return m_RunDescriptor; };
 
-    inline const openfluid::base::SimulationStatus& simulationStatus() const {return m_Status; };
+    inline const openfluid::base::SimulationStatus& simulationStatus() const
+    {return m_Status; };
 
-    inline const openfluid::core::Datastore& datastore() const { return m_Datastore; };
+    inline const openfluid::core::Datastore& datastore() const
+    { return m_Datastore; };
 
 };
 
 
-
-
 } } //namespaces
-
-
 
 
 #endif /* __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__ */

@@ -59,7 +59,7 @@ FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
     mp_Listener(Listener)
 {
   if (!mp_Listener)
-    mp_Listener = new openfluid::base::IOListener();
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Listener can not be NULL");
 }
 
 
@@ -753,9 +753,6 @@ void FluidXDescriptor::parseFile(std::string Filename)
 
 void FluidXDescriptor::loadFromDirectory(const std::string& DirPath)
 {
-  if (!mp_Listener)
-    mp_Listener = new openfluid::base::IOListener();
-
   if (!openfluid::tools::Filesystem::isDirectory(DirPath))
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "directory " + DirPath + " does not exist");
@@ -1175,9 +1172,12 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
 
   prepareFluidXDir(DirPath);
 
+
   // model
   OutFilename = DirPath + "/model.fluidx";
+
   mp_Listener->onFileWrite(OutFilename);
+
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
@@ -1188,11 +1188,15 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
   OutFile << "\n";
 
   OutFile.close();
+
   mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
+
 
   // domain
   OutFilename = DirPath + "/domain.fluidx";
+
   mp_Listener->onFileWrite(OutFilename);
+
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
@@ -1203,11 +1207,15 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
   OutFile << "\n";
 
   OutFile.close();
+
   mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
+
 
   // datastore
   OutFilename = DirPath + "/datastore.fluidx";
+
   mp_Listener->onFileWrite(OutFilename);
+
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
@@ -1218,11 +1226,15 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
   OutFile << "\n";
 
   OutFile.close();
+
   mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
+
 
   // monitoring
   OutFilename = DirPath + "/monitoring.fluidx";
+
   mp_Listener->onFileWrite(OutFilename);
+
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
@@ -1233,12 +1245,15 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
   OutFile << "\n";
 
   OutFile.close();
+
   mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
 
 
   // run
   OutFilename = DirPath + "/run.fluidx";
+
   mp_Listener->onFileWrite(OutFilename);
+
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
@@ -1249,9 +1264,8 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
   OutFile << "\n";
 
   OutFile.close();
+
   mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
-
-
 
   mp_Listener->onWritten(openfluid::base::Listener::LISTEN_OK);
 }
@@ -1268,7 +1282,9 @@ void FluidXDescriptor::writeToSingleFile(const std::string& FilePath)
   prepareFluidXDir(openfluid::tools::Filesystem::dirname(FilePath));
 
   std::string OutFilename = FilePath;
+
   mp_Listener->onFileWrite(OutFilename);
+
   OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
@@ -1289,8 +1305,8 @@ void FluidXDescriptor::writeToSingleFile(const std::string& FilePath)
   OutFile << "\n";
 
   OutFile.close();
-  mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
 
+  mp_Listener->onFileWritten(openfluid::base::Listener::LISTEN_OK);
   mp_Listener->onWritten(openfluid::base::Listener::LISTEN_OK);
 }
 

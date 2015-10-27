@@ -175,7 +175,6 @@ void Sim2DocBuddy::copyDocDirectory()
       mp_Listener->onSubstageCompleted("** Processing doc directory...");
       openfluid::tools::Filesystem::copyDirectory(InputDocDirPath,m_OutputDirPath,true);
       mp_Listener->onStageCompleted(" done");
-
     }
   }
 }
@@ -208,7 +207,6 @@ void Sim2DocBuddy::extractLatexDocFromCPP()
   m_ExtractedLatexDoc = extractBetweenTags(CPPFileContent,m_BeginSim2DocTag,m_EndSim2DocTag);
 
   mp_Listener->onStageCompleted(" done");
-
 }
 
 
@@ -236,6 +234,7 @@ void Sim2DocBuddy::cpreprocessCPP()
 
   if (!openfluid::tools::Filesystem::isFile(m_CProcessedFilePath))
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"C preprocessed file not generated");
+
 
   mp_Listener->onStageCompleted(" done");
 
@@ -575,7 +574,6 @@ void Sim2DocBuddy::processSignature()
   turnIntoLatexSyntax();
 
   mp_Listener->onStageCompleted(" done");
-
 }
 
 
@@ -719,7 +717,6 @@ void Sim2DocBuddy::generateLatex()
   OutputFile << m_LatexOutFile;
   OutputFile.close();
 
-
   mp_Listener->onStageCompleted(" done");
 }
 
@@ -860,6 +857,7 @@ bool Sim2DocBuddy::run()
   setOptionIfNotSet("pdf","0");
   setOptionIfNotSet("html","0");
 
+
   mp_Listener->onInfo("Input CPP file: " + m_Options["inputcpp"]);
   mp_Listener->onInfo("Output directory: " + m_Options["outputdir"]);
   mp_Listener->onInfo("Template file: " + m_Options["tplfile"]);
@@ -867,22 +865,24 @@ bool Sim2DocBuddy::run()
   mp_Listener->onInfo("Generate HTML: " + getYesNoFromOneZero(m_Options["html"]));
 
   if (m_GCCProgram.isFound())
+  {
     mp_Listener->onInfo("Using C preprocessor: " + m_GCCProgram.getFullProgramPath().toStdString());
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"C preprocessor (gcc) not found");
+  }
+  else
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"C preprocessor (gcc) not found");
 
 
   if (m_Options["pdf"] == "1")
   {
-
     if (m_PDFLatexProgram.isFound() && m_BibtexProgram.isFound())
     {
-      mp_Listener->onInfo("Using PDFLatex compiler: " + m_PDFLatexProgram.getFullProgramPath().toStdString());
-      mp_Listener->onInfo("Using Bibtex compiler: " + m_BibtexProgram.getFullProgramPath().toStdString());
+        mp_Listener->onInfo("Using PDFLatex compiler: " + m_PDFLatexProgram.getFullProgramPath().toStdString());
+        mp_Listener->onInfo("Using Bibtex compiler: " + m_BibtexProgram.getFullProgramPath().toStdString());
     }
     else
     {
-      mp_Listener->onInfo("!! PDFLatex compiler and/or Bibtex compiler not found. Skipped. ");
       m_Options["pdf"] = "0";
+      mp_Listener->onInfo("!! PDFLatex compiler and/or Bibtex compiler not found. Skipped. ");
     }
   }
 
@@ -891,13 +891,11 @@ bool Sim2DocBuddy::run()
     m_HTMLPackageLatexCommand = "\\usepackage{html}";
 
     if (m_Latex2HTMLProgram.isFound())
-    {
       mp_Listener->onInfo("Using Latex2HTML converter: " + m_Latex2HTMLProgram.getFullProgramPath().toStdString());
-    }
     else
     {
-      mp_Listener->onInfo("!! Latex2HTML converter not found. Skipped. ");
       m_Options["html"] = "0";
+      mp_Listener->onInfo("!! Latex2HTML converter not found. Skipped. ");
     }
   }
 

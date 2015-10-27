@@ -44,6 +44,7 @@
 #define BOOST_TEST_MODULE unittest_ModelInstance
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+#include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
@@ -162,13 +163,17 @@ BOOST_AUTO_TEST_CASE(check_construction)
   SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
                                                             openfluid::core::DateTime(2012,1,1,14,46,39),60);
 
-  openfluid::machine::ModelInstance MI(SB,nullptr);
+  std::unique_ptr<openfluid::machine::MachineListener> Listener(new openfluid::machine::MachineListener());
+
+  openfluid::machine::ModelInstance MI(SB,Listener.get());
 
   BOOST_REQUIRE(!MI.hasTimePointToProcess());
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -177,13 +182,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::machine::SimulationBlob SB;
 
-  /*SB.getSimulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
-                                                                 openfluid::core::DateTime(2012,1,1,14,46,39),60);*/
-
   SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
                                                             openfluid::core::DateTime(2012,1,1,0,3,19),60);
 
-  openfluid::machine::ModelInstance MI(SB,nullptr);
+  std::unique_ptr<openfluid::machine::MachineListener> Listener(new openfluid::machine::MachineListener());
+
+  openfluid::machine::ModelInstance MI(SB,Listener.get());
 
   openfluid::machine::ModelItemInstance* MII;
 
@@ -247,11 +251,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 // =====================================================================
 // =====================================================================
+
 
 class ModelInstanceSub: public openfluid::machine::ModelInstance
 {
@@ -271,6 +277,7 @@ class ModelInstanceSub: public openfluid::machine::ModelInstance
 
 };
 
+
 BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
 {
   openfluid::base::RuntimeEnvironment::instance()
@@ -278,7 +285,8 @@ BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
 
   openfluid::machine::SimulationBlob SB;
 
-  ModelInstanceSub MI(SB, nullptr);
+  std::unique_ptr<openfluid::machine::MachineListener> Listener(new openfluid::machine::MachineListener());
+  ModelInstanceSub MI(SB,Listener.get());
 
   openfluid::machine::ModelItemInstance* MII = new openfluid::machine::ModelItemInstance();
   MII->Body.reset((openfluid::ware::PluggableSimulator*) (new SimA()));
@@ -353,6 +361,3 @@ BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
   BOOST_CHECK_EQUAL(OutParams["B1.C1"].get(),"B1.C1local");
   BOOST_CHECK_EQUAL(OutParams["D1.E1.F1"].get(),"D1.E1.F1local");
 }
-
-// =====================================================================
-// =====================================================================

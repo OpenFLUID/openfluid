@@ -126,7 +126,7 @@ RunSimulationListener::RunSimulationListener()
     m_AbortedByUser(false)
 {
 
-};
+}
 
 
 // =====================================================================
@@ -136,7 +136,7 @@ RunSimulationListener::RunSimulationListener()
 RunSimulationListener::~RunSimulationListener()
 {
 
-};
+}
 
 
 // =====================================================================
@@ -336,7 +336,8 @@ RunSimulationWorker::RunSimulationWorker(openfluid::fluidx::FluidXDescriptor* FX
                                          RunSimulationListener* Listener)
   : mp_FXDesc(FXDesc), mp_Listener(Listener)
 {
-
+  if (!Listener)
+    emit error(QString("Listener can not be NULL"),openfluid::base::ExceptionContext());
 }
 
 

@@ -152,15 +152,20 @@ class OPENFLUID_API Engine
 
     void finalize();
 
-    const openfluid::base::SimulationStatus* simulationStatus() { return mp_SimStatus; };
+    const openfluid::base::SimulationStatus* simulationStatus()
+    { return mp_SimStatus; };
 
-    SimulationBlob* simulationBlob() { return &m_SimulationBlob; };
+    SimulationBlob* simulationBlob()
+    { return &m_SimulationBlob; };
 
-    MachineListener* machineListener() { return mp_MachineListener; };
+    MachineListener* machineListener()
+    { return mp_MachineListener; };
 
-    ModelInstance* modelInstance() { return &m_ModelInstance; };
+    ModelInstance* modelInstance()
+    { return &m_ModelInstance; };
 
-    unsigned int getWarningsCount() const { return mp_SimLogger->getWarningsCount(); };
+    unsigned int getWarningsCount() const
+    { return mp_SimLogger->getWarningsCount(); };
 };
 
 

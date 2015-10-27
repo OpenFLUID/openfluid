@@ -55,9 +55,11 @@ class DefaultIOListener : public openfluid::base::IOListener
 
   public:
 
-    DefaultIOListener() {};
+    DefaultIOListener()
+    { };
 
-    ~DefaultIOListener() {};
+    ~DefaultIOListener()
+    { };
 
     void onFileLoad(std::string Filename)
     {

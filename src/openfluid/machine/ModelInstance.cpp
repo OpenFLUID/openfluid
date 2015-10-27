@@ -101,8 +101,8 @@ ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
              : mp_Listener(Listener), mp_SimLogger(nullptr), mp_SimProfiler(nullptr),
                m_SimulationBlob(SimulationBlob), m_Initialized(false)
 {
-  if (mp_Listener == nullptr)
-    mp_Listener = new openfluid::machine::MachineListener();
+  if (!mp_Listener)
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Listener can not be NULL");
 }
 
 

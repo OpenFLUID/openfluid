@@ -42,6 +42,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 
@@ -50,9 +51,10 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDatastoreDescriptor DS(
       FXDesc.datastoreDescriptor());
@@ -106,14 +108,17 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK(DS.isItemAlreadyExist("RastWOClass"));
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedDatastoreDescriptor DS(
       FXDesc.datastoreDescriptor());

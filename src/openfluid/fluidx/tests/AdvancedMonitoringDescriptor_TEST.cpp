@@ -45,20 +45,23 @@
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
 
-  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
-      FXDesc.monitoringDescriptor());
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+
+  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(FXDesc.monitoringDescriptor());
 
   BOOST_CHECK_EQUAL(Monit.items().size(), 2);
 }
@@ -70,9 +73,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_duplicates)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
 
   BOOST_CHECK_NO_THROW(openfluid::fluidx::AdvancedMonitoringDescriptor(FXDesc.monitoringDescriptor()));
 }
@@ -84,9 +88,10 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+
+  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
   openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.monitoringDescriptor());

@@ -77,14 +77,15 @@ int main(int argc, char **argv)
                                                   "Incorrect number of arguments, "
                                                   "should be <inputdir> <outputdir> <pluginsdirs>");
     }
-    openfluid::machine::Engine* Engine;
+
+    std::unique_ptr<openfluid::machine::Engine> Engine;
     openfluid::machine::SimulationBlob SBlob;
     openfluid::base::RuntimeEnvironment* RunEnv;
-    openfluid::base::IOListener* IOListen = new openfluid::base::IOListener();
-    openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
-    openfluid::machine::ModelInstance Model(SBlob,MachineListen);
+    std::unique_ptr<openfluid::base::IOListener> IOListen(new openfluid::base::IOListener());
+    std::unique_ptr<openfluid::machine::MachineListener> MachineListen(new openfluid::machine::MachineListener());
+    openfluid::machine::ModelInstance Model(SBlob,MachineListen.get());
     openfluid::machine::MonitoringInstance Monitoring(SBlob);
-    openfluid::fluidx::FluidXDescriptor FXDesc(IOListen);
+    openfluid::fluidx::FluidXDescriptor FXDesc(IOListen.get());
 
 
     RunEnv = openfluid::base::RuntimeEnvironment::instance();
@@ -105,7 +106,7 @@ int main(int argc, char **argv)
     openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoringDescriptor(),
                                                                   Monitoring);
 
-    Engine = new openfluid::machine::Engine(SBlob, Model, Monitoring, MachineListen);
+    Engine.reset(new openfluid::machine::Engine(SBlob, Model, Monitoring, MachineListen.get()));
 
     Engine->initialize();
 
@@ -115,8 +116,6 @@ int main(int argc, char **argv)
     Engine->run();
 
     Engine->finalize();
-
-    delete Engine;
 
     return 0;
   }

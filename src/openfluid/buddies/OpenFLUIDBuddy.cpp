@@ -47,12 +47,11 @@
 namespace openfluid { namespace buddies {
 
 
-OpenFLUIDBuddy::OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener)
+OpenFLUIDBuddy::OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener):
+  mp_Listener(Listener)
 {
-  mp_Listener = Listener;
-
-  if (mp_Listener == nullptr)
-    mp_Listener = new openfluid::buddies::BuddiesListener();
+  if (!mp_Listener)
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Listener can not be NULL");
 }
 
 

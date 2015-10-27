@@ -41,9 +41,12 @@
 #ifndef __OPENFLUID_BASE_LISTENER_HPP__
 #define __OPENFLUID_BASE_LISTENER_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 
+
 namespace openfluid { namespace base {
+
 
 // =====================================================================
 // =====================================================================
@@ -51,20 +54,20 @@ namespace openfluid { namespace base {
 
 class OPENFLUID_API Listener
 {
-  private:
-
-
   public:
 
     enum Status {LISTEN_OK, LISTEN_WARNING, LISTEN_ERROR};
 
-    Listener() {};
+    Listener()
+    { };
 
-    virtual ~Listener() {};
+    virtual ~Listener()
+    { };
 
 };
 
 
 } } //namespaces
+
 
 #endif /* __OPENFLUID_BASE_LISTENER_HPP__ */

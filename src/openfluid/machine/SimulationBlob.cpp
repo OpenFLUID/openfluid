@@ -40,6 +40,7 @@
 
 #include <openfluid/machine/SimulationBlob.hpp>
 
+
 namespace openfluid { namespace machine {
 
 
@@ -48,6 +49,7 @@ SimulationBlob::SimulationBlob()
                                              openfluid::core::DateTime(),
                                              1))
 {
+
 }
 
 
@@ -59,7 +61,6 @@ SimulationBlob::~SimulationBlob()
 {
 
 }
-
 
 
 } } //namespaces

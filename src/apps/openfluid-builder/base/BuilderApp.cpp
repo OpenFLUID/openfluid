@@ -47,6 +47,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 
 #include "ExtensionsRegistry.hpp"
+#include "ProjectCentral.hpp"
 
 
 BuilderApp::BuilderApp(openfluid::ui::common::OpenFLUIDSplashScreen* Splash):
@@ -63,6 +64,7 @@ BuilderApp::BuilderApp(openfluid::ui::common::OpenFLUIDSplashScreen* Splash):
 BuilderApp::~BuilderApp()
 {
   delete ExtensionsRegistry::instance();
+  ProjectCentral::resetInstance();
 }
 
 

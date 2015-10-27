@@ -66,13 +66,15 @@ namespace openfluid { namespace machine {
 Engine::Engine(SimulationBlob& SimBlob,
                ModelInstance& MInstance, MonitoringInstance& OLInstance,
                openfluid::machine::MachineListener* MachineListener)
-       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_MonitoringInstance(OLInstance), mp_SimLogger(nullptr)
+  : m_SimulationBlob(SimBlob), mp_MachineListener(MachineListener),
+    m_ModelInstance(MInstance), m_MonitoringInstance(OLInstance),
+    mp_SimLogger(nullptr)
 {
+  if (!mp_MachineListener)
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Listener can not be NULL");
+
 
   mp_RunEnv = openfluid::base::RuntimeEnvironment::instance();
-
-  mp_MachineListener = MachineListener;
-  if (mp_MachineListener == nullptr) mp_MachineListener = new openfluid::machine::MachineListener();
 
   mp_SimStatus = &(m_SimulationBlob.simulationStatus());
 
@@ -103,7 +105,8 @@ Engine::Engine(SimulationBlob& SimBlob,
 
 Engine::~Engine()
 {
-  if (mp_SimLogger != nullptr) delete mp_SimLogger;
+  if (mp_SimLogger != nullptr)
+    delete mp_SimLogger;
 }
 
 
@@ -561,9 +564,7 @@ void Engine::prepareData()
   else
     mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_OK);
 
-
   mp_SimLogger->resetCurrentWarningFlag();
-
 }
 
 
@@ -605,13 +606,13 @@ void Engine::checkConsistency()
     throw;
   }
 
+
   if (mp_SimLogger->isCurrentWarningFlag())
     mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_WARNING);
   else
     mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_OK);
 
   mp_SimLogger->resetCurrentWarningFlag();
-
 }
 
 
@@ -625,6 +626,7 @@ void Engine::run()
   checkSimulationVarsProduction(0);
 
   // ============= initializeRun() =============
+
 
   mp_MachineListener->onInitializeRun();
 
@@ -654,8 +656,8 @@ void Engine::run()
   // ============= runStep() =============
 
 
-
   mp_MachineListener->onBeforeRunSteps();
+
   mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::RUNSTEP);
 
 

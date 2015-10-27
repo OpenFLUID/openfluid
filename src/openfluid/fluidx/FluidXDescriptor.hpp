@@ -136,8 +136,8 @@ class OPENFLUID_API FluidXDescriptor
 
     void writeMonitoringToStream(std::ostream& Contents);
 
-  public:
 
+  public:
 
     FluidXDescriptor(openfluid::base::IOListener* Listener);
 

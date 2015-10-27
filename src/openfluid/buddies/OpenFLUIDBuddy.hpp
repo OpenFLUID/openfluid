@@ -55,6 +55,7 @@ namespace openfluid { namespace buddies {
 class OPENFLUID_API OpenFLUIDBuddy
 {
   protected:
+
     std::map<std::string,std::string> m_Options;
 
     std::map<std::string,std::string> m_RequiredOptionsHelp;
@@ -66,7 +67,9 @@ class OPENFLUID_API OpenFLUIDBuddy
 
     openfluid::buddies::BuddiesListener* mp_Listener;
 
+
   public:
+
     OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener);
 
     virtual ~OpenFLUIDBuddy();
