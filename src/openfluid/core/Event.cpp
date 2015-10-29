@@ -251,5 +251,4 @@ void Event::println() const
 }
 
 
-
-} }
+} }  // namespaces

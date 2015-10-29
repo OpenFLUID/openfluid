@@ -51,11 +51,14 @@ class OPENFLUID_API SimpleValue : public Value
 {
   public:
 
+    SimpleValue() : Value()
+    { }
+
     inline bool isSimple() const
-    { return true; };
+    { return true; }
 
     inline bool isCompound() const
-    { return false; };
+    { return false; }
 };
 
 

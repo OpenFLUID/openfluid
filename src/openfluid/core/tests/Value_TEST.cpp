@@ -216,7 +216,7 @@ class ValueCapsule
 {
   public:
 
-    std::shared_ptr<openfluid::core::Value> m_Val;
+    std::unique_ptr<openfluid::core::Value> m_Val;
 
     ValueCapsule()
     : m_Val(new openfluid::core::NullValue())
@@ -229,11 +229,10 @@ class ValueCapsule
       m_Val.reset(Val.clone());
     };
 
-    void get(openfluid::core::Value* Val)
+    openfluid::core::Value* get()
     {
-      *Val = *m_Val;
+      return m_Val.get();
     }
-
 };
 
 
@@ -247,10 +246,9 @@ BOOST_AUTO_TEST_CASE(check_capsule)
 
   Capsule.set(openfluid::core::DoubleValue(3.14));
 
-  Capsule.get(&DblVal);
+  DblVal = *(Capsule.get());
 
   BOOST_REQUIRE_CLOSE(DblVal.get(),3.14,0.0001);
-
 }
 
 
@@ -321,7 +319,6 @@ BOOST_AUTO_TEST_CASE(check_performance)
 
   MARK_TEST_TICKER(DBLVAL);
   std::cout << "Duration [DoubleValue], accessing: " << TEST_DURATION_AS_MS(DBLVAL) << "ms" << std::endl;
-
 }
 
 

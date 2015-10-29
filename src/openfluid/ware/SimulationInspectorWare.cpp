@@ -89,7 +89,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
     }
 
     if (ValPtr->getType() == Val.getType())
-      Val = *(ValPtr->clone());
+      Val = *ValPtr;
     else if (ValPtr->convert(Val)) // try to convert to compatible type
       return;
     else

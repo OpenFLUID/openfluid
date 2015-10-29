@@ -111,19 +111,23 @@ class OPENFLUID_API BooleanValue : public SimpleValue
     /**
       Default constructor
     */
-    BooleanValue() : m_Value(false) {};
+    BooleanValue() : SimpleValue(), m_Value(false)
+    { }
 
     /**
       Copy constructor
     */
-    BooleanValue(const BooleanValue& Val) : SimpleValue(Val), m_Value(Val.m_Value)
-    { };
+    BooleanValue(const BooleanValue& Val) : SimpleValue(), m_Value(Val.m_Value)
+    { }
 
     /**
       Constructor from plain old type
     */
     BooleanValue(const bool& POD) : SimpleValue(), m_Value(POD)
-    { };
+    { }
+
+    virtual ~BooleanValue()
+    { }
 
     Value& operator =(const Value& Other);
 
@@ -131,15 +135,13 @@ class OPENFLUID_API BooleanValue : public SimpleValue
     * Cast operator
     */
     operator bool() const
-    { return m_Value; };
-
-    virtual ~BooleanValue() {};
+    { return m_Value; }
 
     inline Type getType() const
-    { return Value::BOOLEAN; };
+    { return Value::BOOLEAN; }
 
     Value* clone() const
-    { return new BooleanValue(*this); };
+    { return new BooleanValue(*this); }
 
     bool convert(Value& Val) const;
 
@@ -148,14 +150,14 @@ class OPENFLUID_API BooleanValue : public SimpleValue
       @return the boolean value
     */
     inline bool get() const
-    { return m_Value; };
+    { return m_Value; }
 
     /**
       Sets the plain old type boolean value
       @param[in] Val the boolean value
     */
     inline void set(const bool& Val)
-    { m_Value = Val; };
+    { m_Value = Val; }
 
     void writeToStream(std::ostream& OutStm) const;
 

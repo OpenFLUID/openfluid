@@ -47,7 +47,6 @@
 
 int main(int argc, char **argv)
 {
-
   int ReturnValue = 0;
 
   INIT_OPENFLUID_APPLICATION(argc,argv);

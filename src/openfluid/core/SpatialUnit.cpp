@@ -38,11 +38,8 @@
 
 #include <openfluid/core/SpatialUnit.hpp>
 
+
 namespace openfluid { namespace core {
-
-
-// =====================================================================
-// =====================================================================
 
 
 SpatialUnit::SpatialUnit(const UnitsClass_t& aClass, const UnitID_t anID,

@@ -152,7 +152,8 @@ class OPENFLUID_API MapValue : public CompoundValue
     /**
       Default constructor
     */
-    MapValue() : CompoundValue() {};
+    MapValue() : CompoundValue()
+    { }
 
     /**
       Copy constructor
@@ -160,17 +161,18 @@ class OPENFLUID_API MapValue : public CompoundValue
     MapValue(const MapValue& Val);
 
     MapValue(const Map_t& Val) : CompoundValue(), m_Value(Val)
-    { };
-
-    Value& operator =(const Value& Other);
+    { }
 
     ~MapValue();
 
+    Value& operator =(const Value& Other);
+
+
     inline Type getType() const
-    { return Value::MAP; };
+    { return Value::MAP; }
 
     Value* clone() const
-    { return new MapValue(*this); };
+    { return new MapValue(*this); }
 
     void writeToStream(std::ostream& OutStm) const;
 
@@ -190,7 +192,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setDouble(const std::string& Key, const double& Val)
-    { set(Key,new DoubleValue(Val)); };
+    { set(Key,new DoubleValue(Val)); }
 
     /**
       Sets a new long value at the given key
@@ -199,7 +201,7 @@ class OPENFLUID_API MapValue : public CompoundValue
 
     */
     inline void setInteger(const std::string& Key, const long& Val)
-    { set(Key,new IntegerValue(Val)); };
+    { set(Key,new IntegerValue(Val)); }
 
     /**
       Sets a new boolean value at the given key
@@ -207,7 +209,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setBoolean(const std::string& Key, const bool& Val)
-      { set(Key,new BooleanValue(Val)); };
+      { set(Key,new BooleanValue(Val)); }
 
     /**
       Sets a new string value at the given key
@@ -215,7 +217,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setString(const std::string& Key, const std::string& Val)
-    { set(Key,new StringValue(Val)); };
+    { set(Key,new StringValue(Val)); }
 
     /**
       Sets a new VectorValue value at the given key
@@ -223,7 +225,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setVectorValue(const std::string& Key, const VectorValue& Val)
-    { set(Key,new VectorValue(Val)); };
+    { set(Key,new VectorValue(Val)); }
 
     /**
       Sets a new MatrixValue value at the given key
@@ -231,7 +233,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setMatrixValue(const std::string& Key, const MatrixValue& Val)
-    { set(Key,new MatrixValue(Val)); };
+    { set(Key,new MatrixValue(Val)); }
 
     /**
       Sets a new MapValue value at the given key
@@ -239,7 +241,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @param[in] Val the value to add
     */
     inline void setMapValue(const std::string& Key, const MapValue& Val)
-    { set(Key,new MapValue(Val)); };
+    { set(Key,new MapValue(Val)); }
 
     /**
       Operator to get/set a value at a key given between []
@@ -267,7 +269,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @return the value at the given key
     */
     inline double getDouble(const std::string& Key) const
-    { return at(Key).asDoubleValue().get(); };
+    { return at(Key).asDoubleValue().get(); }
 
     /**
       Returns the long value of the map at the given key
@@ -275,7 +277,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @return the value at the given key
     */
     inline long getInteger(const std::string& Key) const
-    { return at(Key).asIntegerValue().get(); };
+    { return at(Key).asIntegerValue().get(); }
 
     /**
       Returns the boolean value of the map at the given key
@@ -283,7 +285,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @return the value at the given key
     */
     inline bool getBoolean(const std::string& Key) const
-    { return at(Key).asBooleanValue().get(); };
+    { return at(Key).asBooleanValue().get(); }
 
     /**
       Returns the string value of the map at the given key
@@ -291,7 +293,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @return the value at the given key
     */
     inline std::string getString(const std::string& Key) const
-    { return at(Key).asStringValue().get(); };
+    { return at(Key).asStringValue().get(); }
 
     /**
       Returns the VectorValue value of the map at the given key
@@ -299,7 +301,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @return the value at the given key
     */
     inline VectorValue getVectorValue(const std::string& Key) const
-    { return at(Key).asVectorValue(); };
+    { return at(Key).asVectorValue(); }
 
     /**
       Returns the MatrixValue value of the map at the given key
@@ -307,7 +309,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @return the value at the given key
     */
     inline MatrixValue getMatrixValue(const std::string& Key) const
-    { return at(Key).asMatrixValue(); };
+    { return at(Key).asMatrixValue(); }
 
     /**
       Returns the MapValue value of the map at the given key
@@ -315,7 +317,7 @@ class OPENFLUID_API MapValue : public CompoundValue
       @return the value at the given key
     */
     inline MapValue getMapValue(const std::string& Key) const
-    { return at(Key).asMapValue(); };
+    { return at(Key).asMapValue(); }
 
     /**
       Removes the value corresponding to the given key
@@ -327,20 +329,23 @@ class OPENFLUID_API MapValue : public CompoundValue
       Returns the size of the map
       @return size of the map
     */
-    inline unsigned long getSize() const { return m_Value.size(); };
+    inline unsigned long getSize() const
+    { return m_Value.size(); }
 
     /**
       Returns the size of the map
       @return size of the map
     */
-    unsigned long size() const { return m_Value.size(); };
+    unsigned long size() const
+    { return m_Value.size(); }
 
     /**
       Checks if the given key exists
       @param[in] Key the key to check
       @return true if the given key is present
     */
-    inline bool isKeyExist(const std::string& Key) const { return (m_Value.find(Key) != m_Value.end()); };
+    inline bool isKeyExist(const std::string& Key) const
+    { return (m_Value.find(Key) != m_Value.end()); }
 
     /**
       Returns the list of keys of the map

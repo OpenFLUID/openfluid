@@ -110,20 +110,23 @@ class OPENFLUID_API DoubleValue : public SimpleValue
     /**
       Default constructor
     */
-    DoubleValue() : m_Value(0.0) {};
+    DoubleValue() : SimpleValue(), m_Value(0.0)
+    { }
 
     /**
       Copy constructor
     */
-    DoubleValue(const DoubleValue& Val) : SimpleValue(Val), m_Value(Val.m_Value)
-    { };
-
+    DoubleValue(const DoubleValue& Val) : SimpleValue(), m_Value(Val.m_Value)
+    { }
 
     /**
       Constructor from plain old type
     */
     DoubleValue(const double& POD) : SimpleValue(), m_Value(POD)
-    { };
+    { }
+
+    virtual ~DoubleValue()
+    { }
 
     Value& operator =(const Value& Other);
 
@@ -131,16 +134,13 @@ class OPENFLUID_API DoubleValue : public SimpleValue
       Cast operator
      */
     operator double() const
-    { return m_Value; };
-
-    virtual ~DoubleValue()
-    { };
+    { return m_Value; }
 
     inline Type getType() const
-    { return Value::DOUBLE; };
+    { return Value::DOUBLE; }
 
     Value* clone() const
-    { return new DoubleValue(*this); };
+    { return new DoubleValue(*this); }
 
     bool convert(Value& Val) const;
 
@@ -149,14 +149,14 @@ class OPENFLUID_API DoubleValue : public SimpleValue
       @return the double value
     */
     inline double get() const
-    { return m_Value; };
+    { return m_Value; }
 
     /**
       Sets the plain old type double value
       @param[in] Val the double value
     */
     inline void set(const double& Val)
-    { m_Value = Val; };
+    { m_Value = Val; }
 
     void writeToStream(std::ostream& OutStm) const;
 

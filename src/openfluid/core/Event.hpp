@@ -59,6 +59,7 @@ namespace openfluid { namespace core {
 class OPENFLUID_API Event
 {
   public:
+
     typedef std::map<std::string, openfluid::core::StringValue> EventInfosMap_t;
 
   private:

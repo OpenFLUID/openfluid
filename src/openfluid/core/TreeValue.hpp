@@ -58,23 +58,23 @@ class OPENFLUID_API TreeValue : public CompoundValue, public Tree<std::string,do
       Default constructor
     */
     TreeValue() : CompoundValue(), Tree<std::string,double>()
-    { };
+    { }
 
     /**
       Copy constructor
     */
     TreeValue(const TreeValue& Val) :
-      CompoundValue(static_cast<const CompoundValue&>(Val)),
+      CompoundValue(),
       Tree<std::string,double>(static_cast<const Tree<std::string,double>& >(Val))
-    {  };
+    { }
+
+    virtual ~TreeValue()
+    { }
 
     Value& operator =(const Value& Other);
 
-    virtual ~TreeValue()
-    {  };
-
     inline Type getType() const
-    { return Value::TREE; };
+    { return Value::TREE; }
 
     Value* clone() const
     { return new TreeValue(*this); };

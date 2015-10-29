@@ -62,13 +62,13 @@ class OPENFLUID_API NullValue : public Value
     /**
       Default constructor
     */
-    NullValue()
+    NullValue() : Value()
     { };
 
     /**
       Copy constructor
     */
-    NullValue(const NullValue& Val): Value(Val)
+    NullValue(const NullValue& /*Val*/): Value()
     { };
 
     virtual ~NullValue()

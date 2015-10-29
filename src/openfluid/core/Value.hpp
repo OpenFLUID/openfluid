@@ -67,24 +67,17 @@ class OPENFLUID_API Value
 
     enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, MAP, TREE, NULLL };
 
-    /**
-      Default constructor
-    */
-    Value() {};
+    Value()
+    { }
 
-    /**
-      Copy constructor
-    */
-    Value(const Value& /*Val*/) {};
+    virtual ~Value()
+    { }
 
     /**
       Assignment operator
     */
     virtual Value& operator =(const Value& /*Other*/)
     { return *this; }
-
-    virtual ~Value()
-    { };
 
     virtual Type getType() const = 0;
 
