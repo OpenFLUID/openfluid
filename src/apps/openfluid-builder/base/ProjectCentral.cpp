@@ -122,7 +122,7 @@ ProjectCentral* ProjectCentral::initInstance(const QString& PrjPath)
 // =====================================================================
 
 
-void ProjectCentral::resetInstance()
+void ProjectCentral::kill()
 {
   if (mp_Instance)
     delete mp_Instance;

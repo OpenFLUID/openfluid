@@ -39,15 +39,16 @@
 #ifndef __OPENFLUID_BASE_PREFERENCESMANAGER_HPP__
 #define __OPENFLUID_BASE_PREFERENCESMANAGER_HPP__
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/core/DateTime.hpp>
 
 #include <map>
 #include <vector>
 
-
 #include <QSettings>
 #include <QStringList>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/core/DateTime.hpp>
+#include <openfluid/utils/KillableSingleton.hpp>
 
 
 namespace openfluid { namespace base {
@@ -57,18 +58,20 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-class OPENFLUID_API PreferencesManager
+class OPENFLUID_API PreferencesManager : public openfluid::utils::KillableSingleton<PreferencesManager>
 {
 
-  private:
+  friend class openfluid::utils::KillableSingleton<PreferencesManager>;
 
-    static PreferencesManager* mp_Instance;
+  private:
 
     static QString m_FileName;
 
     QSettings* mp_ConfFile;
 
     PreferencesManager();
+
+    ~PreferencesManager();
 
     void setDefaultValues();
 
@@ -108,10 +111,6 @@ class OPENFLUID_API PreferencesManager
     typedef QMap<QString,SyntaxHighlightingRule_t> SyntaxHighlightingRules_t;
 
     typedef std::map<QString, QString> MarketPlaces_t;
-
-    static PreferencesManager* instance();
-
-    ~PreferencesManager();
 
     /* Used only if we want to set another file name for the conf file
      * instead of the default one (for tests eg.)

@@ -65,6 +65,10 @@ class ProjectCentral : QObject
 
     openfluid::base::IOListener m_IOListener;
 
+    ProjectCentral(const QString& PrjPath = "");
+
+    ~ProjectCentral();
+
     void deleteData();
 
     void setDefaultDescriptors();
@@ -97,18 +101,13 @@ class ProjectCentral : QObject
         const std::vector<openfluid::ware::SignatureUnitsClassItem>& UnitsClassesVector);
 
 
-    ProjectCentral(const QString& PrjPath = "");
-
-
   public:
 
     static ProjectCentral* initInstance(const QString& PrjPath = "");
 
-    static void resetInstance();
+    static void kill();
 
     static ProjectCentral* instance();
-
-    ~ProjectCentral();
 
     void run();
 

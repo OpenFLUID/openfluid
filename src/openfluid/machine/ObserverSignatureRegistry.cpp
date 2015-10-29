@@ -44,13 +44,6 @@
 namespace openfluid { namespace machine {
 
 
-ObserverSignatureRegistry* ObserverSignatureRegistry::m_Instance = 0;
-
-
-// =====================================================================
-// =====================================================================
-
-
 ObserverSignatureRegistry::ObserverSignatureRegistry():
     WareSignatureRegistry<ObserverSignatureInstance>()
 {
@@ -62,12 +55,9 @@ ObserverSignatureRegistry::ObserverSignatureRegistry():
 // =====================================================================
 
 
-ObserverSignatureRegistry* ObserverSignatureRegistry::instance()
+ObserverSignatureRegistry::~ObserverSignatureRegistry()
 {
-  if (!m_Instance)
-    m_Instance = new ObserverSignatureRegistry();
 
-  return m_Instance;
 }
 
 

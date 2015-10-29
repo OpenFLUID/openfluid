@@ -65,14 +65,14 @@ BOOST_AUTO_TEST_CASE(test_SetFileName)
   BOOST_CHECK(PrefMgr->getFileName().toStdString() ==
               openfluid::base::RuntimeEnvironment::instance()->getDefaultConfigFile());
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 
   openfluid::base::PreferencesManager::setFileName(CFile);
   PrefMgr = openfluid::base::PreferencesManager::instance();
 
   BOOST_CHECK(PrefMgr->getFileName() == CFile);
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 
 }
 
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   BOOST_CHECK(PrefMgr->getBegin() == "2222-11-11T00:11:22");
   BOOST_CHECK(PrefMgr->getEnd() == "2221-12-12=11;22;33");
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 }
 
 // =====================================================================
@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
 
   BOOST_CHECK_EQUAL(Recents.size(),0);
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 }
 
 
@@ -259,7 +259,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
   BOOST_CHECK(ExtraPaths[0] == "cc/dd/dir1");
   BOOST_CHECK(ExtraPaths[1] == "cc/dd/dir2");
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 }
 
 // =====================================================================
@@ -345,7 +345,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
   BOOST_CHECK(ExtraPaths[0] == "cc/dd/dir1");
   BOOST_CHECK(ExtraPaths[1] == "cc/dd/dir2");
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 }
 
 
@@ -433,7 +433,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
   BOOST_CHECK(ExtraPaths[0] == "cc/dd/dir1");
   BOOST_CHECK(ExtraPaths[1] == "cc/dd/dir2");
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 }
 
 
@@ -494,7 +494,7 @@ BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
   Places = PrefMgr->getMarketplaces();
   BOOST_CHECK(Places["Place;A"] == "http://aa/aa/");
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 }
 
 
@@ -521,7 +521,7 @@ BOOST_AUTO_TEST_CASE(test_DockToolbarPositionsManagement)
   BOOST_CHECK_EQUAL(PrefMgr->getToolBarPosition(),Qt::BottomToolBarArea);
   BOOST_CHECK_EQUAL(PrefMgr->getDockPosition(),Qt::RightDockWidgetArea);
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 }
 
 
@@ -556,7 +556,7 @@ BOOST_AUTO_TEST_CASE(test_textEditorProperties)
   BOOST_CHECK_EQUAL(PrefMgr->isSyntaxHighlightingEnabled(),true);
   BOOST_CHECK_EQUAL(PrefMgr->getSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");
 
-  delete PrefMgr;
+  openfluid::base::PreferencesManager::kill();
 }
 
 // =====================================================================

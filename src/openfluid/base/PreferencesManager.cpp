@@ -50,22 +50,10 @@
 
 namespace openfluid { namespace base {
 
-PreferencesManager* PreferencesManager::mp_Instance = nullptr;
+
 QString PreferencesManager::m_FileName = "";
 const int PreferencesManager::RecentProjectsLimit = 10;
 
-
-// =====================================================================
-// =====================================================================
-
-
-PreferencesManager* PreferencesManager::instance()
-{
-  if (!mp_Instance)
-    mp_Instance = new PreferencesManager();
-
-  return mp_Instance;
-}
 
 // =====================================================================
 // =====================================================================
@@ -104,7 +92,7 @@ PreferencesManager::PreferencesManager():
 
 PreferencesManager::~PreferencesManager()
 {
-  mp_Instance = 0;
+
 }
 
 

@@ -35,51 +35,61 @@
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
 #ifndef __OPENFLUID_WARESDEV_WARESRCMANAGER_HPP__
 #define __OPENFLUID_WARESDEV_WARESRCMANAGER_HPP__
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
-
 #include <QString>
 #include <QMap>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/utils/MeyerSingleton.hpp>
 
 
 namespace openfluid { namespace waresdev {
 
-class OPENFLUID_API WareSrcManager
+class OPENFLUID_API WareSrcManager : public openfluid::utils::MeyerSingleton<WareSrcManager>
 {
+
+  friend class openfluid::utils::MeyerSingleton<WareSrcManager>;
+
+
   public:
 
     struct PathInfo
     {
-        QString m_AbsolutePath;
-        bool m_IsInCurrentWorkspace;
-        openfluid::ware::WareType m_WareType;
-        QString m_WareName;
-        bool m_isAWare;
-        bool m_isAWareFile;
-        QString m_RelativePathToWareDir;
-        QString m_AbsolutePathOfWare;
-        QString m_FileName;
+      QString m_AbsolutePath;
 
+      bool m_IsInCurrentWorkspace;
 
-        PathInfo() :
-          m_AbsolutePath(""), m_IsInCurrentWorkspace(false), m_WareType(openfluid::ware::WareType::UNDEFINED),
-          m_WareName(""),
-          m_isAWare(false), m_isAWareFile(false), m_RelativePathToWareDir(""), m_AbsolutePathOfWare(""),
-          m_FileName("")
-        {
-        }
+      openfluid::ware::WareType m_WareType;
+
+      QString m_WareName;
+
+      bool m_isAWare;
+
+      bool m_isAWareFile;
+
+      QString m_RelativePathToWareDir;
+
+      QString m_AbsolutePathOfWare;
+
+      QString m_FileName;
+
+      PathInfo() :
+        m_AbsolutePath(""), m_IsInCurrentWorkspace(false), m_WareType(openfluid::ware::WareType::UNDEFINED),
+        m_WareName(""),
+        m_isAWare(false), m_isAWareFile(false), m_RelativePathToWareDir(""), m_AbsolutePathOfWare(""),
+        m_FileName("")
+      { }
     };
 
 
   private:
-
-    static WareSrcManager* mp_Instance;
 
     QString m_WaresdevDirName;
 
@@ -98,8 +108,6 @@ class OPENFLUID_API WareSrcManager
 
 
   public:
-
-    static WareSrcManager* instance();
 
     /**
      * Set default internal paths (workspace and waresdev sub dirs) and create them if they don't exist.

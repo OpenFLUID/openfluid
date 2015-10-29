@@ -35,13 +35,13 @@
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCFILETYPEMANAGER_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCFILETYPEMANAGER_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QTextCharFormat>
 #include <QMap>
@@ -49,77 +49,91 @@
 #include <QDomElement>
 #include <QFile>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/utils/MeyerSingleton.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
+
 class WareSrcFiletype;
 
-class OPENFLUID_API WareSrcFiletypeManager
+
+class OPENFLUID_API WareSrcFiletypeManager : public openfluid::utils::MeyerSingleton<WareSrcFiletypeManager>
 {
+  friend class openfluid::utils::MeyerSingleton<WareSrcFiletypeManager>;
+
+
   public:
 
     struct HighlightingRule
     {
-        QString StyleName;
-        QRegExp Pattern;
-        QRegExp EndPattern;
-        QTextCharFormat Format;
-        HighlightingRule()
-        {
-        }
-        HighlightingRule(const QString& AStyleName, QRegExp APattern, QTextCharFormat AFormat) :
-          StyleName(AStyleName), Pattern(APattern), EndPattern(QRegExp()), Format(AFormat)
-        {
-        }
-        HighlightingRule(const QString& AStyleName, QRegExp ABeginPattern, QRegExp AnEndPattern,
-          QTextCharFormat AFormat) :
-          StyleName(AStyleName), Pattern(ABeginPattern), EndPattern(AnEndPattern), Format(AFormat)
-        {
-        }
+      QString StyleName;
+
+      QRegExp Pattern;
+
+      QRegExp EndPattern;
+
+      QTextCharFormat Format;
+
+      HighlightingRule()
+      { }
+
+      HighlightingRule(const QString& AStyleName, QRegExp APattern, QTextCharFormat AFormat) :
+        StyleName(AStyleName), Pattern(APattern), EndPattern(QRegExp()), Format(AFormat)
+      { }
+
+      HighlightingRule(const QString& AStyleName, QRegExp ABeginPattern, QRegExp AnEndPattern,
+                       QTextCharFormat AFormat) :
+        StyleName(AStyleName), Pattern(ABeginPattern), EndPattern(AnEndPattern), Format(AFormat)
+      { }
     };
 
     typedef QVector<HighlightingRule> HighlightingRules_t;
 
     struct CompletionRule
     {
-        QString MenuPath;
-        QString Title;
-        QString Content;
-        bool IsForCompletion;
-        QString IconPath;
-        CompletionRule() :
-            IsForCompletion(false)
-        {
-        }
-        CompletionRule(const QString& AMenuPath, const QString& ATitle, const QString& AContent, bool AIsForCompletion,
-                       const QString& AIconPath) :
-            MenuPath(AMenuPath), Title(ATitle), Content(AContent), IsForCompletion(AIsForCompletion),
-            IconPath(AIconPath)
-        {
-        }
+      QString MenuPath;
+
+      QString Title;
+
+      QString Content;
+
+      bool IsForCompletion;
+
+      QString IconPath;
+
+      CompletionRule() :
+        IsForCompletion(false)
+      { }
+
+      CompletionRule(const QString& AMenuPath, const QString& ATitle, const QString& AContent, bool AIsForCompletion,
+                     const QString& AIconPath) :
+        MenuPath(AMenuPath), Title(ATitle), Content(AContent), IsForCompletion(AIsForCompletion), IconPath(AIconPath)
+      { }
     };
 
     typedef QVector<CompletionRule> CompletionRules_t;
     typedef QMap<openfluid::ware::WareType, CompletionRules_t> CompletionRulesByWareType_t;
 
+
   private:
 
     struct WareSrcFiletype
     {
-        QString m_Extensions;
+      QString m_Extensions;
 
-        QString m_IconPath;
+      QString m_IconPath;
 
-        QString m_HlFilename;
-        QString m_CompFilename;
+      QString m_HlFilename;
 
-        WareSrcFiletypeManager::HighlightingRules_t m_HlRules;
-        WareSrcFiletypeManager::CompletionRulesByWareType_t m_CompRules;
+      QString m_CompFilename;
+
+      WareSrcFiletypeManager::HighlightingRules_t m_HlRules;
+
+      WareSrcFiletypeManager::CompletionRulesByWareType_t m_CompRules;
     };
-
-    static WareSrcFiletypeManager* mp_Instance;
 
     QMap<QString, QTextCharFormat> m_Formats;
 
@@ -128,6 +142,8 @@ class OPENFLUID_API WareSrcFiletypeManager
     QMap<QString, WareSrcFiletype> m_WareSrcFiletypes;
 
     WareSrcFiletypeManager();
+
+    ~WareSrcFiletypeManager();
 
     /**
      * @throw openfluid::base::FrameworkException
@@ -153,10 +169,6 @@ class OPENFLUID_API WareSrcFiletypeManager
 
 
   public:
-
-    ~WareSrcFiletypeManager();
-
-    static WareSrcFiletypeManager* instance();
 
     void updateStyles();
 

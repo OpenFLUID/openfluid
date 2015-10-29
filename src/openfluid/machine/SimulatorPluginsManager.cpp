@@ -46,13 +46,6 @@
 namespace openfluid { namespace machine {
 
 
-SimulatorPluginsManager* SimulatorPluginsManager::mp_Singleton = nullptr;
-
-
-// =====================================================================
-// =====================================================================
-
-
 std::vector<ModelItemSignatureInstance*>
 SimulatorPluginsManager::getAvailableGhostsSignatures(const std::string& /*Pattern*/) const
 {

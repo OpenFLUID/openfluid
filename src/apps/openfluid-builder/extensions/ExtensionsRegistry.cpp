@@ -42,26 +42,10 @@
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 
 
-ExtensionsRegistry* ExtensionsRegistry::mp_Instance = nullptr;
-
-
 ExtensionsRegistry::ExtensionsRegistry():
   m_IsRegistered(false)
 {
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-ExtensionsRegistry* ExtensionsRegistry::instance()
-{
-  if (!mp_Instance)
-    mp_Instance = new ExtensionsRegistry();
-
-  return mp_Instance;
 }
 
 
@@ -187,7 +171,7 @@ void ExtensionsRegistry::releaseAllFeatureExtensions()
 // =====================================================================
 
 
-bool ExtensionsRegistry::isFeatureExtensionRegistered(const openfluid::ware::WareID_t& ID)
+bool ExtensionsRegistry::isFeatureExtensionRegistered(const openfluid::ware::WareID_t& ID) const
 {
   return (m_FeatureExtensions.find(ID) != m_FeatureExtensions.end());
 }
@@ -219,7 +203,7 @@ openfluid::builderext::PluggableBuilderExtension*
 // =====================================================================
 
 
-bool ExtensionsRegistry::isParameterizationExtensionRegistered(const openfluid::machine::UUID_t& UUID)
+bool ExtensionsRegistry::isParameterizationExtensionRegistered(const openfluid::machine::UUID_t& UUID) const
 {
   return (m_ParameterizationExtensions.find(UUID) != m_ParameterizationExtensions.end());
 }
@@ -229,10 +213,10 @@ bool ExtensionsRegistry::isParameterizationExtensionRegistered(const openfluid::
 // =====================================================================
 
 
-openfluid::builderext::ExtensionMode ExtensionsRegistry::getExtensionMode(const openfluid::ware::WareID_t& ID)
+openfluid::builderext::ExtensionMode ExtensionsRegistry::getExtensionMode(const openfluid::ware::WareID_t& ID) const
 {
   if (isFeatureExtensionRegistered(ID))
-    return m_FeatureExtensions[ID]->Signature->Mode;
+    return m_FeatureExtensions.at(ID)->Signature->Mode;
 
   return openfluid::builderext::MODE_UNKNOWN;
 }

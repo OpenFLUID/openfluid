@@ -46,6 +46,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
+#include <openfluid/utils/KillableSingleton.hpp>
 
 #include "ExtensionContainer.hpp"
 #include "builderconfig.hpp"
@@ -54,120 +55,39 @@
 class ExtensionPluginsManager :
     public openfluid::machine::WarePluginsManager<ExtensionContainer,ExtensionContainer,
                                                   openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,
-                                                  openfluid::builderext::GetPluggableBuilderExtensionBodyProc>
+                                                  openfluid::builderext::GetPluggableBuilderExtensionBodyProc>,
+    public openfluid::utils::KillableSingleton<ExtensionPluginsManager>
 {
 
-  private:
+  friend class openfluid::utils::KillableSingleton<ExtensionPluginsManager>;
 
-    static ExtensionPluginsManager* mp_Singleton;
+
+  private:
 
     std::vector<std::string> m_SearchPaths;
 
     std::vector<std::string> m_StandardSearchPaths;
 
 
-    ExtensionPluginsManager(const QStringList& ExtraSearchPaths):
-      WarePluginsManager()
-    {
-      for (int i=0; i <ExtraSearchPaths.size();i++)
-        m_SearchPaths.push_back(ExtraSearchPaths[i].toStdString());
+    ExtensionPluginsManager(const QStringList& ExtraSearchPaths = QStringList());
 
-      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()
-                                  ->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
-      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getMarketBagBuildVersionDir()+
-                              "/"+
-                              openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir());
-      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()+
-                              "/"+
-                              BUILDEREXTS_INSTALL_PATH);
-
-      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()
-                                          ->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
-      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getMarketBagBuildVersionDir()+
-                                      "/"+
-                                      openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir());
-      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()+
-                                      "/"+
-                                      BUILDEREXTS_INSTALL_PATH);
-    };
+    ~ExtensionPluginsManager();
 
 
   public:
 
-    static ExtensionPluginsManager* instance(const QStringList& ExtraSearchPaths)
-    {
-      if (mp_Singleton == nullptr)
-        mp_Singleton = new ExtensionPluginsManager(ExtraSearchPaths);
+    static ExtensionPluginsManager* instance(const QStringList& ExtraSearchPaths = QStringList());
 
-      return mp_Singleton;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    static ExtensionPluginsManager* instance()
-    {
-      if (mp_Singleton == nullptr)
-        mp_Singleton = new ExtensionPluginsManager(QStringList());
-
-      return mp_Singleton;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    std::string getPluginFullPath(const std::string& Filename) const
-    {
-      std::string PlugFullPath = "";
-
-      unsigned int i = 0;
-
-      while ((PlugFullPath.length() == 0) && (i < m_SearchPaths.size()))
-      {
-        QFileInfo TmpPath(QString(m_SearchPaths[i].c_str()) + "/" + QString(Filename.c_str()));
-
-        if (TmpPath.exists())
-          PlugFullPath = TmpPath.absoluteFilePath().toStdString();
-
-        i++;
-      }
-
-      return PlugFullPath;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
+    std::string getPluginFullPath(const std::string& Filename) const;
 
     std::vector<std::string> getPluginsSearchPaths() const
-    {
-      return m_SearchPaths;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
+    { return m_SearchPaths; }
 
     std::string getPluginFilenameSuffix() const
-    {
-      return openfluid::config::BUILDEREXTS_PLUGINS_SUFFIX;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
+    { return openfluid::config::BUILDEREXTS_PLUGINS_SUFFIX; }
 
     std::vector<std::string> getPluginsStandardSearchPaths() const
-    {
-      return m_StandardSearchPaths;
-    }
+    { return m_StandardSearchPaths; }
 };
 
 

@@ -43,22 +43,23 @@
 
 #include <QSettings>
 
+#include <openfluid/utils/MeyerSingleton.hpp>
 
-class DevStudioPreferencesManager
+
+class DevStudioPreferencesManager : public openfluid::utils::MeyerSingleton<DevStudioPreferencesManager>
 {
-  private:
+  friend class openfluid::utils::MeyerSingleton<DevStudioPreferencesManager>;
 
-    static DevStudioPreferencesManager* mp_Instance;
+  private:
 
     QSettings* mp_Settings;
 
     DevStudioPreferencesManager();
 
-  public:
-
     ~DevStudioPreferencesManager();
 
-    static DevStudioPreferencesManager* instance();
+
+  public:
 
     void switchWorkspace(const QString& NewAbsoluteWorkspacePath);
 

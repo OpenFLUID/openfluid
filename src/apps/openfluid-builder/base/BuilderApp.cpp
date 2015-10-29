@@ -40,13 +40,12 @@
 #include <QApplication>
 #include <QTime>
 
-#include "BuilderApp.hpp"
-
-
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
+#include "BuilderApp.hpp"
 #include "ExtensionsRegistry.hpp"
+#include "WaresTranslationsRegistry.hpp"
 #include "ProjectCentral.hpp"
 
 
@@ -63,8 +62,10 @@ BuilderApp::BuilderApp(openfluid::ui::common::OpenFLUIDSplashScreen* Splash):
 
 BuilderApp::~BuilderApp()
 {
-  delete ExtensionsRegistry::instance();
-  ProjectCentral::resetInstance();
+  ProjectCentral::kill();
+  openfluid::base::PreferencesManager::kill();
+  WaresTranslationsRegistry::kill();
+  ExtensionPluginsManager::kill();
 }
 
 

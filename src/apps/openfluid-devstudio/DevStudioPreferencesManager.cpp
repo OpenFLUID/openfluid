@@ -37,21 +37,21 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "DevStudioPreferencesManager.hpp"
 
 #include <QDir>
+
 #include <openfluid/base/PreferencesManager.hpp>
+
+#include "DevStudioPreferencesManager.hpp"
 #include "devstudioconfig.hpp"
 
-
-DevStudioPreferencesManager* DevStudioPreferencesManager::mp_Instance = 0;
 
 // =====================================================================
 // =====================================================================
 
 
 DevStudioPreferencesManager::DevStudioPreferencesManager() :
-    mp_Settings(0)
+    mp_Settings(nullptr)
 {
   switchWorkspace(openfluid::base::PreferencesManager::instance()->getWorkspacePath());
 }
@@ -63,20 +63,7 @@ DevStudioPreferencesManager::DevStudioPreferencesManager() :
 
 DevStudioPreferencesManager::~DevStudioPreferencesManager()
 {
-  delete mp_Instance;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-DevStudioPreferencesManager* DevStudioPreferencesManager::instance()
-{
-  if (!mp_Instance)
-    mp_Instance = new DevStudioPreferencesManager();
-
-  return mp_Instance;
+  delete mp_Settings;
 }
 
 

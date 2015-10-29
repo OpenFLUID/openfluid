@@ -35,7 +35,8 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 #include <QDir>
 #include <QFile>
@@ -49,12 +50,6 @@
 
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-WareSrcFiletypeManager* WareSrcFiletypeManager::mp_Instance = 0;
-
-// =====================================================================
-// =====================================================================
 
 
 WareSrcFiletypeManager::WareSrcFiletypeManager()
@@ -78,7 +73,6 @@ WareSrcFiletypeManager::WareSrcFiletypeManager()
     if (!it.value().m_CompFilename.isEmpty())
       it.value().m_CompRules = parseCompletionFile(WaresdevDir.filePath(it.value().m_CompFilename));
   }
-
 }
 
 
@@ -380,19 +374,6 @@ WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::pars
   }
 
   return Rules;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-WareSrcFiletypeManager* WareSrcFiletypeManager::instance()
-{
-  if (!mp_Instance)
-    mp_Instance = new WareSrcFiletypeManager();
-
-  return mp_Instance;
 }
 
 

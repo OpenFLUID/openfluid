@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_MACHINE_SIMULATORPLUGINSMANAGER_HPP__
 #define __OPENFLUID_MACHINE_SIMULATORPLUGINSMANAGER_HPP__
 
+
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
@@ -59,31 +60,27 @@ class ModelItemInstance;
 
 class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelItemSignatureInstance,ModelItemInstance,
                                                          openfluid::ware::GetPluggableSimulatorSignatureProc,
-                                                         openfluid::ware::GetPluggableSimulatorBodyProc>
+                                                         openfluid::ware::GetPluggableSimulatorBodyProc>,
+                                              public openfluid::utils::MeyerSingleton<SimulatorPluginsManager>
 {
 
-  private:
+  friend class openfluid::utils::MeyerSingleton<SimulatorPluginsManager>;
 
-    static SimulatorPluginsManager* mp_Singleton;
+
+  private:
 
     SimulatorPluginsManager() : WarePluginsManager<ModelItemSignatureInstance,
                                                    ModelItemInstance,
                                                    openfluid::ware::GetPluggableSimulatorSignatureProc,
                                                    openfluid::ware::GetPluggableSimulatorBodyProc>()
-    { };
+    { }
+
+
+    ~SimulatorPluginsManager()
+    { }
 
 
   public:
-
-    static SimulatorPluginsManager* instance()
-    {
-      if (mp_Singleton == nullptr) mp_Singleton = new SimulatorPluginsManager();
-       return mp_Singleton;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
 
 
     std::string getPluginFullPath(const std::string& Filename) const

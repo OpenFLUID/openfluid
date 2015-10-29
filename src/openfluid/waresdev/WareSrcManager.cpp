@@ -49,13 +49,6 @@
 namespace openfluid { namespace waresdev {
 
 
-WareSrcManager* WareSrcManager::mp_Instance = nullptr;
-
-
-// =====================================================================
-// =====================================================================
-
-
 WareSrcManager::WareSrcManager() :
     m_WaresdevDirName(QString::fromStdString(openfluid::config::WARESDEV_SUBDIR))
 {
@@ -70,19 +63,6 @@ WareSrcManager::WareSrcManager() :
 WareSrcManager::~WareSrcManager()
 {
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-WareSrcManager* WareSrcManager::instance()
-{
-  if (!mp_Instance)
-    mp_Instance = new WareSrcManager();
-
-  return mp_Instance;
 }
 
 

@@ -49,13 +49,6 @@
 namespace openfluid { namespace machine {
 
 
-SimulatorSignatureRegistry* SimulatorSignatureRegistry::mp_Instance = 0;
-
-
-// =====================================================================
-// =====================================================================
-
-
 SimulatorSignatureRegistry::SimulatorSignatureRegistry():
   WareSignatureRegistry<ModelItemSignatureInstance>()
 {
@@ -98,12 +91,9 @@ SimulatorSignatureRegistry::SimulatorSignatureRegistry():
 // =====================================================================
 
 
-SimulatorSignatureRegistry* SimulatorSignatureRegistry::instance()
+SimulatorSignatureRegistry::~SimulatorSignatureRegistry()
 {
-  if (!mp_Instance)
-    mp_Instance = new SimulatorSignatureRegistry();
 
-  return mp_Instance;
 }
 
 

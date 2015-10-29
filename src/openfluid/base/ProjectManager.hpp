@@ -42,23 +42,24 @@
 #define __OPENFLUID_BASE_PROJECTMANAGER_HPP__
 
 
-#include <openfluid/dllexport.hpp>
 #include <string>
+
 #include <QString>
 #include <QVariant>
 #include <QSettings>
 
+#include <openfluid/dllexport.hpp>
+#include <openfluid/utils/MeyerSingleton.hpp>
+
 namespace openfluid { namespace base {
 
 
-// =====================================================================
-// =====================================================================
-
-class OPENFLUID_API ProjectManager
+class OPENFLUID_API ProjectManager : public openfluid::utils::MeyerSingleton<ProjectManager>
 {
-  private:
 
-    static ProjectManager* mp_Singleton;
+  friend class openfluid::utils::MeyerSingleton<ProjectManager>;
+
+  private:
 
     QSettings* mp_PrjFile;
 
@@ -78,8 +79,9 @@ class OPENFLUID_API ProjectManager
 
     static QString m_GroupName;
 
-
     ProjectManager();
+
+    ~ProjectManager();
 
     static std::string getNow();
 
@@ -94,57 +96,53 @@ class OPENFLUID_API ProjectManager
 
   public:
 
-    static ProjectManager* instance();
-
-    ~ProjectManager();
-
     std::string getPath() const
-    { return m_Path; };
+    { return m_Path; }
 
     std::string getName() const
-    { return m_Name; };
+    { return m_Name; }
 
     void setName(const std::string& Name)
-    { m_Name = Name; };
+    { m_Name = Name; }
 
     std::string getDescription() const
-    { return m_Description; };
+    { return m_Description; }
 
     void setDescription(const std::string& Description)
-    { m_Description = Description; };
+    { m_Description = Description; }
 
     std::string getAuthors() const
-    { return m_Authors; };
+    { return m_Authors; }
 
     void setAuthors(const std::string& Authors)
-    { m_Authors = Authors; };
+    { m_Authors = Authors; }
 
     std::string getCreationDate() const
-    { return m_CreationDate; };
+    { return m_CreationDate; }
 
     void setCreationDate(const std::string& CreationDate)
-    { m_CreationDate = CreationDate; };
+    { m_CreationDate = CreationDate; }
 
     void setCreationDateAsNow()
-    { m_CreationDate = getNow(); };
+    { m_CreationDate = getNow(); }
 
     std::string getLastModDate() const
-    { return m_LastModDate; };
+    { return m_LastModDate; }
 
     void setLastModDate(const std::string& LastModDate)
-    { m_LastModDate = LastModDate; };
+    { m_LastModDate = LastModDate; }
 
     std::string getOutputDir() const
-    { return m_OutputDir; };
+    { return m_OutputDir; }
 
     std::string getInputDir() const
-    { return m_InputDir; };
+    { return m_InputDir; }
 
     bool isIncrementalOutputDir() const
-    { return m_IsIncOutputDir; };
+    { return m_IsIncOutputDir; }
 
     void setIncrementalOutputDir(const bool Inc)
-    { m_IsIncOutputDir = Inc; };
+    { m_IsIncOutputDir = Inc; }
 
     bool open(const std::string& Path);
 
@@ -153,7 +151,7 @@ class OPENFLUID_API ProjectManager
                 const bool Inc);
 
     bool isOpened() const
-    { return m_IsOpened; };
+    { return m_IsOpened; }
 
     bool save();
 

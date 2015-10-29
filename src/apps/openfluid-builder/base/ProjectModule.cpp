@@ -145,7 +145,7 @@ ProjectModule::~ProjectModule()
 {
   ExtensionsRegistry::instance()->releaseAllFeatureExtensions();
 
-  ProjectCentral::resetInstance();
+  ProjectCentral::kill();
   mp_SimulatorsPlugsWatcher->deleteLater();
   mp_ObserversPlugsWatcher->deleteLater();
   mp_InputDirWatcher->deleteLater();

@@ -45,6 +45,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/WareSignatureRegistry.hpp>
+#include <openfluid/utils/MeyerSingleton.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -53,20 +54,22 @@ namespace openfluid { namespace machine {
 class ObserverSignatureInstance;
 
 
-class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<ObserverSignatureInstance>
+class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<ObserverSignatureInstance>,
+                                                public openfluid::utils::MeyerSingleton<ObserverSignatureRegistry>
 {
-  private:
+  friend class openfluid::utils::MeyerSingleton<ObserverSignatureRegistry>;
 
-    static ObserverSignatureRegistry* m_Instance;
+
+  private:
 
     std::vector<ObserverSignatureInstance*> m_AvailableSignatures;
 
     ObserverSignatureRegistry();
 
+    ~ObserverSignatureRegistry();
+
 
   public:
-
-    static ObserverSignatureRegistry* instance();
 
     /**
      * @brief Returns the Signature of the Observer with ObserverID if available

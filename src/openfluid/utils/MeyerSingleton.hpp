@@ -30,49 +30,77 @@
 */
 
 /**
-  @file WaresTranslationsRegistry.hpp
+  @file MeyerSingleton.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#ifndef __OPENFLUID_BUILDERAPP_WARESTRANSLATIONSREGISTRY_HPP__
-#define __OPENFLUID_BUILDERAPP_WARESTRANSLATIONSREGISTRY_HPP__
+#ifndef __OPENFLUID_UTILS_MEYERSINGLETON_HPP__
+#define __OPENFLUID_UTILS_MEYERSINGLETON_HPP__
 
 
-#include <map>
-#include <memory>
-
-#include <QString>
-#include <QTranslator>
-
-#include <openfluid/utils/MeyerSingleton.hpp>
-#include <openfluid/utils/KillableSingleton.hpp>
+namespace openfluid { namespace utils {
 
 
-class WaresTranslationsRegistry : public openfluid::utils::KillableSingleton<WaresTranslationsRegistry>
+/**
+  Singleton template class implementing the Meyer's singleton design.
+  This implementation is thread safe in C++11.
+
+  Example of use to design an Example class as a singleton
+  @code
+class Example : public openfluid::utils::MeyerSingleton<Example>
 {
-  friend class openfluid::utils::KillableSingleton<WaresTranslationsRegistry>;
+  friend class openfluid::utils::MeyerSingleton<Example>;
+
 
   private:
 
-    typedef std::map<QString, std::unique_ptr<QTranslator>> TranslatorsByFile_t;
+    Example();
 
-    TranslatorsByFile_t m_TranslatorsByFile;
-
-    QString m_LangCode;
-
-    WaresTranslationsRegistry();
-
-    ~WaresTranslationsRegistry();
+    ~Example();
 
 
   public:
 
-    QTranslator* tryLoadWareTranslation(const QString& WareFullPath);
+    // some public members
+};
+  @endcode
+*/
+template<typename T>
+class MeyerSingleton
+{
 
-    QString tryTranslate(const QString& WareFullPath, const QString& Context, const QString& Text);
+  private:
+
+    MeyerSingleton<T>(T const&) = delete;
+
+    void operator=(T const&) = delete;
+
+
+  protected:
+
+    MeyerSingleton<T>()
+    { }
+
+
+  public:
+
+
+    /**
+      Returns a pointer to the singleton object.
+      Instantiates the class if it not has not been instantiated before.
+      @return A pointer to the singleton object
+    */
+    static T* instance()
+    {
+       static T m_Instance;
+       return &m_Instance;
+    }
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_WARESTRANSLATIONSREGISTRY_HPP__ */
+} }  // namespaces
+
+
+#endif /* __OPENFLUID_UTILS_MEYERSINGLETON_HPP__ */

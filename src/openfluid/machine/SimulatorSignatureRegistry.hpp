@@ -40,9 +40,11 @@
 #ifndef __OPENFLUID_MACHINE_SIMULATORSIGNATUREREGISTRY_HPP__
 #define __OPENFLUID_MACHINE_SIMULATORSIGNATUREREGISTRY_HPP__
 
+
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/machine/WareSignatureRegistry.hpp>
+#include <openfluid/utils/MeyerSingleton.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -56,8 +58,12 @@ class GeneratorSignature;
 // =====================================================================
 
 
-class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<ModelItemSignatureInstance>
+class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<ModelItemSignatureInstance>,
+                                                 public openfluid::utils::MeyerSingleton<SimulatorSignatureRegistry>
 {
+  friend class openfluid::utils::MeyerSingleton<SimulatorSignatureRegistry>;
+
+
   public:
 
     typedef std::map<std::string, openfluid::machine::ModelItemSignatureInstance*> SimSignaturesByName_t;
@@ -72,16 +78,13 @@ class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<Mo
 
   private:
 
-    static SimulatorSignatureRegistry* mp_Instance;
-
-
-  protected:
-
     SimSignaturesByTypeByName_t m_SimSignatures;
 
     GenSignaturesByMethod_t m_GenSignatures;
 
     SimulatorSignatureRegistry();
+
+    ~SimulatorSignatureRegistry();
 
     void addSimulatorSignature(openfluid::machine::ModelItemSignatureInstance* Signature);
 
@@ -89,8 +92,6 @@ class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<Mo
 
 
   public:
-
-    static SimulatorSignatureRegistry* instance();
 
     const SimSignaturesByTypeByName_t& getSimSignatures() const;
 

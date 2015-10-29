@@ -293,11 +293,11 @@ void AppActions::updateExtensionsActionsAndMenus()
 {
   ExtensionsRegistry* ExtReg = ExtensionsRegistry::instance();
 
-  ExtensionsRegistry::ExtensionsByName_t* Extensions = ExtReg->registeredFeatureExtensions();
+  const ExtensionsRegistry::ExtensionsByName_t* Extensions = ExtReg->registeredFeatureExtensions();
 
-  ExtensionsRegistry::ExtensionsByName_t::iterator it;
-  ExtensionsRegistry::ExtensionsByName_t::iterator itb = Extensions->begin();
-  ExtensionsRegistry::ExtensionsByName_t::iterator ite = Extensions->end();
+  ExtensionsRegistry::ExtensionsByName_t::const_iterator it;
+  ExtensionsRegistry::ExtensionsByName_t::const_iterator itb = Extensions->begin();
+  ExtensionsRegistry::ExtensionsByName_t::const_iterator ite = Extensions->end();
 
   mp_SpatialExtensionsMenu->clear();
   mp_ModelExtensionsMenu->clear();

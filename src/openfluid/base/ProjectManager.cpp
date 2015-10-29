@@ -35,19 +35,18 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #include <QFile>
 #include <QDir>
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
-
 #include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace base {
 
 
-ProjectManager* ProjectManager::mp_Singleton = nullptr;
 QString ProjectManager::m_GroupName = "OpenFLUID Project";
 
 
@@ -70,18 +69,6 @@ ProjectManager::ProjectManager() :
 ProjectManager::~ProjectManager()
 {
   close();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-ProjectManager* ProjectManager::instance()
-{
-  if (mp_Singleton == nullptr)
-    mp_Singleton = new ProjectManager();
-  return mp_Singleton;
 }
 
 

@@ -56,9 +56,6 @@
 namespace openfluid { namespace base {
 
 
-RuntimeEnvironment* RuntimeEnvironment::mp_Singleton = nullptr;
-
-
 RuntimeEnvironment::RuntimeEnvironment() :
   m_Version(openfluid::config::VERSION_MAJOR+"."+openfluid::config::VERSION_MINOR+"."+openfluid::config::VERSION_PATCH),
   m_FullVersion(openfluid::config::FULL_VERSION),
@@ -237,7 +234,6 @@ RuntimeEnvironment::RuntimeEnvironment() :
   // install directory
   std::string ObserversPluginsInstallPath = m_InstallPrefix + "/" + openfluid::config::OBSERVERS_PLUGINS_STDDIR;
   m_DefaultObserversPlugsDirs.push_back(ObserversPluginsInstallPath);
-
 }
 
 
@@ -248,19 +244,6 @@ RuntimeEnvironment::RuntimeEnvironment() :
 RuntimeEnvironment::~RuntimeEnvironment()
 {
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-RuntimeEnvironment* RuntimeEnvironment::instance()
-{
-  if (mp_Singleton == nullptr)
-    mp_Singleton = new RuntimeEnvironment();
-
-  return mp_Singleton;
 }
 
 

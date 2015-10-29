@@ -40,4 +40,78 @@
 
 #include "ExtensionPluginsManager.hpp"
 
-ExtensionPluginsManager* ExtensionPluginsManager::mp_Singleton = nullptr;
+
+ExtensionPluginsManager::ExtensionPluginsManager(const QStringList& ExtraSearchPaths):
+  openfluid::machine::WarePluginsManager<ExtensionContainer,ExtensionContainer,
+                                         openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,
+                                         openfluid::builderext::GetPluggableBuilderExtensionBodyProc>()
+{
+  for (int i=0; i <ExtraSearchPaths.size();i++)
+    m_SearchPaths.push_back(ExtraSearchPaths[i].toStdString());
+
+  m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()
+  ->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
+  m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getMarketBagBuildVersionDir()+
+                          "/"+
+                          openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir());
+  m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()+
+                          "/"+
+                          BUILDEREXTS_INSTALL_PATH);
+
+  m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()
+  ->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
+  m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getMarketBagBuildVersionDir()+
+                                  "/"+
+                                  openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir());
+  m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()+
+                                  "/"+
+                                  BUILDEREXTS_INSTALL_PATH);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ExtensionPluginsManager::~ExtensionPluginsManager()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ExtensionPluginsManager* ExtensionPluginsManager::instance(const QStringList& ExtraSearchPaths)
+{
+  if (mp_Instance == nullptr)
+    mp_Instance = new ExtensionPluginsManager(ExtraSearchPaths);
+
+  return mp_Instance;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string ExtensionPluginsManager::getPluginFullPath(const std::string& Filename) const
+{
+  std::string PlugFullPath = "";
+
+  unsigned int i = 0;
+
+  while ((PlugFullPath.length() == 0) && (i < m_SearchPaths.size()))
+  {
+    QFileInfo TmpPath(QString(m_SearchPaths[i].c_str()) + "/" + QString(Filename.c_str()));
+
+    if (TmpPath.exists())
+      PlugFullPath = TmpPath.absoluteFilePath().toStdString();
+
+    i++;
+  }
+
+  return PlugFullPath;
+}
+

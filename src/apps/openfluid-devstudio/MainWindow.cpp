@@ -56,6 +56,7 @@
 #include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 
@@ -194,6 +195,7 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
 
 MainWindow::~MainWindow()
 {
+  openfluid::base::PreferencesManager::kill();
   delete ui;
 }
 

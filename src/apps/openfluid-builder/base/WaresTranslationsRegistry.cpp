@@ -45,9 +45,6 @@
 #include "WaresTranslationsRegistry.hpp"
 
 
-WaresTranslationsRegistry* WaresTranslationsRegistry::mp_Instance = nullptr;
-
-
 // =====================================================================
 // =====================================================================
 
@@ -62,25 +59,9 @@ WaresTranslationsRegistry::WaresTranslationsRegistry()
 // =====================================================================
 
 
-WaresTranslationsRegistry* WaresTranslationsRegistry::instance()
-{
-  if (!mp_Instance)
-    mp_Instance = new WaresTranslationsRegistry();
-
-  return mp_Instance;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 WaresTranslationsRegistry::~WaresTranslationsRegistry()
 {
-  for (auto& LangFile : m_TranslatorsByFile)
-  {
-    delete LangFile.second;
-  }
+
 }
 
 
@@ -107,10 +88,10 @@ QTranslator* WaresTranslationsRegistry::tryLoadWareTranslation(const QString& Wa
       QTranslator* Translator = new QTranslator(QApplication::instance());
       Translator->load(LangFile);
       QApplication::installTranslator(Translator);
-      m_TranslatorsByFile[LangFile] = Translator;
+      m_TranslatorsByFile[LangFile].reset(Translator);
     }
 
-    return m_TranslatorsByFile[LangFile];
+    return m_TranslatorsByFile[LangFile].get();
   }
 
   return nullptr;

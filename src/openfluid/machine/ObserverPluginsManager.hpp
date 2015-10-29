@@ -53,31 +53,27 @@ namespace openfluid { namespace machine {
 
 class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverSignatureInstance,ObserverInstance,
                                                          openfluid::ware::GetPluggableObserverSignatureProc,
-                                                         openfluid::ware::GetPluggableObserverBodyProc>
+                                                         openfluid::ware::GetPluggableObserverBodyProc>,
+                                             public openfluid::utils::MeyerSingleton<ObserverPluginsManager>
 {
 
-  private:
+  friend class openfluid::utils::MeyerSingleton<ObserverPluginsManager>;
 
-    static ObserverPluginsManager* mp_Singleton;
+
+  private:
 
     ObserverPluginsManager() : WarePluginsManager<ObserverSignatureInstance,
                                                   ObserverInstance,
                                                   openfluid::ware::GetPluggableObserverSignatureProc,
                                                   openfluid::ware::GetPluggableObserverBodyProc>()
-    { };
+    { }
+
+
+    ~ObserverPluginsManager()
+    { }
 
 
   public:
-
-    static ObserverPluginsManager* instance()
-    {
-      if (mp_Singleton == nullptr) mp_Singleton = new ObserverPluginsManager();
-       return mp_Singleton;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
 
 
     std::string getPluginFullPath(const std::string& Filename) const
