@@ -37,12 +37,10 @@
 */
 
 
-#include <thread>
-#include <chrono>
-
 #include <QApplication>
 
 #include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -73,7 +71,7 @@ void OpenFLUIDSplashScreen::setMessage(const QString& Message)
 {
   showMessage(Message,Qt::AlignCenter|Qt::AlignBottom,QColor(71,97,123));
   QApplication::instance()->processEvents();
-  std::this_thread::sleep_for(std::chrono::milliseconds(150));
+  openfluid::tools::millisleep(150);
 }
 
 } } } // namespaces

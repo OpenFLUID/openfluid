@@ -103,10 +103,17 @@ int OPENFLUID_API compareVersions(const std::string& VersionA, const std::string
 
 
 /*
-  Suspend execution for microseconds
-  @param[in] MSec the microseconds interval
+  Suspend execution of current thread for milliseconds
+  @param[in] MSec the milliseconds interval
 */
-void OPENFLUID_API sleep(const unsigned int MSec);
+void OPENFLUID_API millisleep(const unsigned long MSec);
+
+
+/*
+  Suspend execution of current thread for microseconds
+  @param[in] USec the microseconds interval
+*/
+void OPENFLUID_API microsleep(const unsigned long USec);
 
 
 } } //namespaces

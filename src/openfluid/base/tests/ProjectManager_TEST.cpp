@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::ProjectManager::instance()->setDescription("This is a modified test project");
   openfluid::base::ProjectManager::instance()->setAuthors("John Doe, Tom Morello");
 
-  openfluid::tools::sleep(1000000);
+  openfluid::tools::millisleep(1000);
 
   openfluid::base::ProjectManager::instance()->save();
   openfluid::base::ProjectManager::instance()->close();

@@ -43,6 +43,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/OtherException.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
@@ -58,15 +59,6 @@
 // =====================================================================
 
 
-class QThreadWithPublicSleep : public QThread
-{
-  public:
-
-    static void millisleep(unsigned long msecs)
-    { msleep(msecs); }
-};
-
-
 #define HANDLE_USER_PAUSE_ABORT \
   { \
     while (m_PausedByUser) \
@@ -80,7 +72,7 @@ class QThreadWithPublicSleep : public QThread
       { \
         throw UserAbortException(); \
       } \
-      QThreadWithPublicSleep::millisleep(200); \
+      openfluid::tools::millisleep(200); \
     } \
   }
 

@@ -37,18 +37,15 @@
 */
 
 
+#include <thread>
+#include <chrono>
+
 #include <QDir>
 
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
-
-#if defined (OPENFLUID_OS_WINDOWS)
-#include <windows.h> // for Sleep
-#else
-#include <unistd.h>
-#endif
 
 namespace openfluid { namespace tools {
 
@@ -212,13 +209,19 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
 // =====================================================================
 
 
-void sleep(const unsigned int MSec)
+void millisleep(const unsigned long MSec)
 {
-#if defined(OPENFLUID_OS_WINDOWS)
-  Sleep(MSec);
-#else
-  usleep(MSec);
-#endif
+  std::this_thread::sleep_for(std::chrono::milliseconds(MSec));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+void microsleep(const unsigned long USec)
+{
+  std::this_thread::sleep_for(std::chrono::microseconds(USec));
+}
+
 
 } } // namespaces
