@@ -43,12 +43,13 @@
 
 #include <QSettings>
 
-#include <openfluid/utils/MeyerSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 
-class DevStudioPreferencesManager : public openfluid::utils::MeyerSingleton<DevStudioPreferencesManager>
+class DevStudioPreferencesManager
 {
-  friend class openfluid::utils::MeyerSingleton<DevStudioPreferencesManager>;
+
+  OPENFLUID_SINGLETON_DEFINITION(DevStudioPreferencesManager)
 
   private:
 

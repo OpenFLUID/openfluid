@@ -60,11 +60,10 @@ class ModelItemInstance;
 
 class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelItemSignatureInstance,ModelItemInstance,
                                                          openfluid::ware::GetPluggableSimulatorSignatureProc,
-                                                         openfluid::ware::GetPluggableSimulatorBodyProc>,
-                                              public openfluid::utils::MeyerSingleton<SimulatorPluginsManager>
+                                                         openfluid::ware::GetPluggableSimulatorBodyProc>
 {
 
-  friend class openfluid::utils::MeyerSingleton<SimulatorPluginsManager>;
+  OPENFLUID_SINGLETON_DEFINITION(SimulatorPluginsManager)
 
 
   private:

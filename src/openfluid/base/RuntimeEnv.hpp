@@ -46,7 +46,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/utils/MeyerSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 
 
@@ -61,9 +61,9 @@ namespace openfluid { namespace base {
 /**
 
 */
-class OPENFLUID_API RuntimeEnvironment : public openfluid::utils::MeyerSingleton<RuntimeEnvironment>
+class OPENFLUID_API RuntimeEnvironment
 {
-  friend class openfluid::utils::MeyerSingleton<RuntimeEnvironment>;
+  OPENFLUID_SINGLETON_DEFINITION(RuntimeEnvironment)
 
   private:
 

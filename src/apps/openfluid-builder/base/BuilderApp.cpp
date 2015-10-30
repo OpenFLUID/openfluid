@@ -30,18 +30,24 @@
 */
 
 
-
 /**
   @file BuilderApp.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #include <QApplication>
 #include <QTime>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverPluginsManager.hpp>
+#include <openfluid/machine/SimulatorPluginsManager.hpp>
 
 #include "BuilderApp.hpp"
 #include "ExtensionsRegistry.hpp"
@@ -63,9 +69,17 @@ BuilderApp::BuilderApp(openfluid::ui::common::OpenFLUIDSplashScreen* Splash):
 BuilderApp::~BuilderApp()
 {
   ProjectCentral::kill();
-  openfluid::base::PreferencesManager::kill();
+  openfluid::waresdev::WareSrcManager::kill();
+  openfluid::ui::waresdev::WareSrcFiletypeManager::kill();
+  openfluid::machine::ObserverSignatureRegistry::kill();
+  openfluid::machine::SimulatorSignatureRegistry::kill();
+  openfluid::machine::ObserverPluginsManager::kill();
+  openfluid::machine::SimulatorPluginsManager::kill();
   WaresTranslationsRegistry::kill();
+  ExtensionsRegistry::kill();
   ExtensionPluginsManager::kill();
+  openfluid::base::PreferencesManager::kill();
+  openfluid::base::RuntimeEnvironment::kill();
 }
 
 

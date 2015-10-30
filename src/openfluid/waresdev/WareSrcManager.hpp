@@ -42,20 +42,22 @@
 #ifndef __OPENFLUID_WARESDEV_WARESRCMANAGER_HPP__
 #define __OPENFLUID_WARESDEV_WARESRCMANAGER_HPP__
 
+
 #include <QString>
 #include <QMap>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/utils/MeyerSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace waresdev {
 
-class OPENFLUID_API WareSrcManager : public openfluid::utils::MeyerSingleton<WareSrcManager>
+
+class OPENFLUID_API WareSrcManager
 {
 
-  friend class openfluid::utils::MeyerSingleton<WareSrcManager>;
+  OPENFLUID_SINGLETON_DEFINITION(WareSrcManager)
 
 
   public:
@@ -131,6 +133,7 @@ class OPENFLUID_API WareSrcManager : public openfluid::utils::MeyerSingleton<War
 
     QString getWorkspacePath() const;
 };
+
 
 } }  // namespaces
 

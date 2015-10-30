@@ -49,6 +49,9 @@
 namespace openfluid { namespace machine {
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(SimulatorSignatureRegistry)
+
+
 SimulatorSignatureRegistry::SimulatorSignatureRegistry():
   WareSignatureRegistry<ModelItemSignatureInstance>()
 {

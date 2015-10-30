@@ -45,7 +45,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/WareSignatureRegistry.hpp>
-#include <openfluid/utils/MeyerSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -54,10 +54,10 @@ namespace openfluid { namespace machine {
 class ObserverSignatureInstance;
 
 
-class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<ObserverSignatureInstance>,
-                                                public openfluid::utils::MeyerSingleton<ObserverSignatureRegistry>
+class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<ObserverSignatureInstance>
 {
-  friend class openfluid::utils::MeyerSingleton<ObserverSignatureRegistry>;
+
+  OPENFLUID_SINGLETON_DEFINITION(ObserverSignatureRegistry)
 
 
   private:
@@ -66,7 +66,7 @@ class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<Obs
 
     ObserverSignatureRegistry();
 
-    ~ObserverSignatureRegistry();
+    virtual ~ObserverSignatureRegistry();
 
 
   public:

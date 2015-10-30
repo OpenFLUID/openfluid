@@ -47,6 +47,9 @@ namespace openfluid { namespace utils {
   Singleton template class implementing a killable singleton design.
   This implementation is not thread safe.
 
+  @warning This template class does not work in a cross-dll context on Windows.
+  Due to this restriction, it must not be used in the OpenFLUID framework.
+
   Example of use to design an Example class as a killable singleton
   @code
 class Example : public openfluid::utils::KillableSingleton<Example>

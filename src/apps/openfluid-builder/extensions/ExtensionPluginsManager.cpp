@@ -41,6 +41,9 @@
 #include "ExtensionPluginsManager.hpp"
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(ExtensionPluginsManager)
+
+
 ExtensionPluginsManager::ExtensionPluginsManager(const QStringList& ExtraSearchPaths):
   openfluid::machine::WarePluginsManager<ExtensionContainer,ExtensionContainer,
                                          openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,

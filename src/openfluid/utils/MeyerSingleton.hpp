@@ -47,6 +47,9 @@ namespace openfluid { namespace utils {
   Singleton template class implementing the Meyer's singleton design.
   This implementation is thread safe in C++11.
 
+  @warning This template class does not work in a cross-dll context on Windows.
+  Due to this restriction, it must not be used in the OpenFLUID framework.
+
   Example of use to design an Example class as a singleton
   @code
 class Example : public openfluid::utils::MeyerSingleton<Example>

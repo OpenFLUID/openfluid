@@ -42,15 +42,16 @@
 
 #include <QWidget>
 
-#include <openfluid/utils/MeyerSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 #include "ExtensionPluginsManager.hpp"
 #include "ExtensionContainer.hpp"
 
 
-class ExtensionsRegistry : public openfluid::utils::MeyerSingleton<ExtensionsRegistry>
+class ExtensionsRegistry
 {
-  friend class openfluid::utils::MeyerSingleton<ExtensionsRegistry>;
+
+  OPENFLUID_SINGLETON_DEFINITION(ExtensionsRegistry)
 
   public:
 

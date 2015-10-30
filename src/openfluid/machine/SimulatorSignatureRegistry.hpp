@@ -44,7 +44,7 @@
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/machine/WareSignatureRegistry.hpp>
-#include <openfluid/utils/MeyerSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -58,11 +58,10 @@ class GeneratorSignature;
 // =====================================================================
 
 
-class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<ModelItemSignatureInstance>,
-                                                 public openfluid::utils::MeyerSingleton<SimulatorSignatureRegistry>
+class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<ModelItemSignatureInstance>
 {
-  friend class openfluid::utils::MeyerSingleton<SimulatorSignatureRegistry>;
 
+  OPENFLUID_SINGLETON_DEFINITION(SimulatorSignatureRegistry)
 
   public:
 
@@ -84,7 +83,7 @@ class OPENFLUID_API SimulatorSignatureRegistry : public WareSignatureRegistry<Mo
 
     SimulatorSignatureRegistry();
 
-    ~SimulatorSignatureRegistry();
+    virtual ~SimulatorSignatureRegistry();
 
     void addSimulatorSignature(openfluid::machine::ModelItemSignatureInstance* Signature);
 

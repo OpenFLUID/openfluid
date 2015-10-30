@@ -48,7 +48,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/utils/KillableSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace base {
@@ -58,10 +58,10 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-class OPENFLUID_API PreferencesManager : public openfluid::utils::KillableSingleton<PreferencesManager>
+class OPENFLUID_API PreferencesManager
 {
 
-  friend class openfluid::utils::KillableSingleton<PreferencesManager>;
+  OPENFLUID_SINGLETON_DEFINITION(PreferencesManager)
 
   private:
 

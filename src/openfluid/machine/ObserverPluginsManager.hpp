@@ -53,11 +53,10 @@ namespace openfluid { namespace machine {
 
 class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverSignatureInstance,ObserverInstance,
                                                          openfluid::ware::GetPluggableObserverSignatureProc,
-                                                         openfluid::ware::GetPluggableObserverBodyProc>,
-                                             public openfluid::utils::MeyerSingleton<ObserverPluginsManager>
+                                                         openfluid::ware::GetPluggableObserverBodyProc>
 {
 
-  friend class openfluid::utils::MeyerSingleton<ObserverPluginsManager>;
+    OPENFLUID_SINGLETON_DEFINITION(ObserverPluginsManager)
 
 
   private:

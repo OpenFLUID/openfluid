@@ -37,16 +37,19 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/waresdev/WareSrcManager.hpp>
 
 #include <QDir>
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/waresdev/WareSrcManager.hpp>
 
 
 namespace openfluid { namespace waresdev {
+
+
+OPENFLUID_SINGLETON_INITIALIZATION(WareSrcManager)
 
 
 WareSrcManager::WareSrcManager() :

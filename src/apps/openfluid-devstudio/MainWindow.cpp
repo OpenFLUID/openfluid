@@ -195,7 +195,9 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
 
 MainWindow::~MainWindow()
 {
+  openfluid::waresdev::WareSrcManager::kill();
   openfluid::base::PreferencesManager::kill();
+  openfluid::base::RuntimeEnvironment::kill();
   delete ui;
 }
 

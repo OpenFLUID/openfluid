@@ -42,6 +42,9 @@
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(ExtensionsRegistry)
+
+
 ExtensionsRegistry::ExtensionsRegistry():
   m_IsRegistered(false)
 {

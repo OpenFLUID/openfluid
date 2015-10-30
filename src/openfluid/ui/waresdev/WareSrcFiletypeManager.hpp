@@ -51,7 +51,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/utils/MeyerSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -60,10 +60,10 @@ namespace openfluid { namespace ui { namespace waresdev {
 class WareSrcFiletype;
 
 
-class OPENFLUID_API WareSrcFiletypeManager : public openfluid::utils::MeyerSingleton<WareSrcFiletypeManager>
+class OPENFLUID_API WareSrcFiletypeManager
 {
-  friend class openfluid::utils::MeyerSingleton<WareSrcFiletypeManager>;
 
+  OPENFLUID_SINGLETON_DEFINITION(WareSrcFiletypeManager)
 
   public:
 

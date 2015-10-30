@@ -51,6 +51,8 @@
 namespace openfluid { namespace base {
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(PreferencesManager)
+
 QString PreferencesManager::m_FileName = "";
 const int PreferencesManager::RecentProjectsLimit = 10;
 

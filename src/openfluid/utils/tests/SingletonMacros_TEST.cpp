@@ -32,7 +32,7 @@
 
 
 /**
-  @file KillableSingleton_TEST.cpp
+  @file SingletonMacros_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -41,11 +41,11 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_killablesingleton
+#define BOOST_TEST_MODULE unittest_singletonmacros
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
-#include <openfluid/utils/KillableSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 #include <iostream>
 
@@ -54,9 +54,9 @@
 // =====================================================================
 
 
-class MyClass : public openfluid::utils::KillableSingleton<MyClass>
+class MyClass
 {
-  friend class openfluid::utils::KillableSingleton<MyClass>;
+  OPENFLUID_SINGLETON_DEFINITION(MyClass)
 
   public:
 
@@ -89,11 +89,14 @@ class MyClass : public openfluid::utils::KillableSingleton<MyClass>
 };
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(MyClass)
+
+
 // =====================================================================
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_killable_singleton)
+BOOST_AUTO_TEST_CASE(check_singleton_macros)
 {
   MyClass::instance();
 
@@ -131,7 +134,7 @@ BOOST_AUTO_TEST_CASE(check_killable_singleton)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_killable_singleton_more)
+BOOST_AUTO_TEST_CASE(check_singleton_macros_more)
 {
   BOOST_REQUIRE_EQUAL(MyClass::instance()->getCounter(),2);
 
@@ -144,5 +147,9 @@ BOOST_AUTO_TEST_CASE(check_killable_singleton_more)
   MyObj->incAndPrint();
   BOOST_REQUIRE_EQUAL(MyObj->getCounter(),4);
   BOOST_REQUIRE_EQUAL(MyClass::instance()->getCounter(),4);
+
+  MyObj->kill();
+  BOOST_REQUIRE_EQUAL(MyClass::instance()->getCounter(),0);
+  MyClass::kill();
 }
 

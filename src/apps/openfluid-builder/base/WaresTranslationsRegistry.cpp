@@ -45,6 +45,9 @@
 #include "WaresTranslationsRegistry.hpp"
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(WaresTranslationsRegistry)
+
+
 // =====================================================================
 // =====================================================================
 

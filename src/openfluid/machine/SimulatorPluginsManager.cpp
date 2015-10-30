@@ -46,6 +46,9 @@
 namespace openfluid { namespace machine {
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(SimulatorPluginsManager)
+
+
 std::vector<ModelItemSignatureInstance*>
 SimulatorPluginsManager::getAvailableGhostsSignatures(const std::string& /*Pattern*/) const
 {

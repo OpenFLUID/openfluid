@@ -52,6 +52,9 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(WareSrcFiletypeManager)
+
+
 WareSrcFiletypeManager::WareSrcFiletypeManager()
 {
   updateStyles();
@@ -73,6 +76,7 @@ WareSrcFiletypeManager::WareSrcFiletypeManager()
     if (!it.value().m_CompFilename.isEmpty())
       it.value().m_CompRules = parseCompletionFile(WaresdevDir.filePath(it.value().m_CompFilename));
   }
+
 }
 
 

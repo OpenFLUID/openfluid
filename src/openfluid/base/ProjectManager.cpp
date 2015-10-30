@@ -47,6 +47,8 @@
 namespace openfluid { namespace base {
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(ProjectManager)
+
 QString ProjectManager::m_GroupName = "OpenFLUID Project";
 
 

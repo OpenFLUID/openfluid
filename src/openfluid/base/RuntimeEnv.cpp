@@ -56,6 +56,9 @@
 namespace openfluid { namespace base {
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(RuntimeEnvironment)
+
+
 RuntimeEnvironment::RuntimeEnvironment() :
   m_Version(openfluid::config::VERSION_MAJOR+"."+openfluid::config::VERSION_MINOR+"."+openfluid::config::VERSION_PATCH),
   m_FullVersion(openfluid::config::FULL_VERSION),
@@ -234,6 +237,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   // install directory
   std::string ObserversPluginsInstallPath = m_InstallPrefix + "/" + openfluid::config::OBSERVERS_PLUGINS_STDDIR;
   m_DefaultObserversPlugsDirs.push_back(ObserversPluginsInstallPath);
+
 }
 
 

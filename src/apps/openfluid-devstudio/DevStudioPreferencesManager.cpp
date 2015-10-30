@@ -46,6 +46,9 @@
 #include "devstudioconfig.hpp"
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(DevStudioPreferencesManager)
+
+
 // =====================================================================
 // =====================================================================
 

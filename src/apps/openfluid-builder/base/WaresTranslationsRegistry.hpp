@@ -46,13 +46,13 @@
 #include <QString>
 #include <QTranslator>
 
-#include <openfluid/utils/MeyerSingleton.hpp>
-#include <openfluid/utils/KillableSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 
-class WaresTranslationsRegistry : public openfluid::utils::KillableSingleton<WaresTranslationsRegistry>
+class WaresTranslationsRegistry
 {
-  friend class openfluid::utils::KillableSingleton<WaresTranslationsRegistry>;
+
+  OPENFLUID_SINGLETON_DEFINITION(WaresTranslationsRegistry)
 
   private:
 

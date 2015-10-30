@@ -49,15 +49,15 @@
 #include <QSettings>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/utils/MeyerSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 namespace openfluid { namespace base {
 
 
-class OPENFLUID_API ProjectManager : public openfluid::utils::MeyerSingleton<ProjectManager>
+class OPENFLUID_API ProjectManager
 {
 
-  friend class openfluid::utils::MeyerSingleton<ProjectManager>;
+  OPENFLUID_SINGLETON_DEFINITION(ProjectManager)
 
   private:
 

@@ -46,7 +46,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
-#include <openfluid/utils/KillableSingleton.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 #include "ExtensionContainer.hpp"
 #include "builderconfig.hpp"
@@ -55,12 +55,10 @@
 class ExtensionPluginsManager :
     public openfluid::machine::WarePluginsManager<ExtensionContainer,ExtensionContainer,
                                                   openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,
-                                                  openfluid::builderext::GetPluggableBuilderExtensionBodyProc>,
-    public openfluid::utils::KillableSingleton<ExtensionPluginsManager>
+                                                  openfluid::builderext::GetPluggableBuilderExtensionBodyProc>
 {
 
-  friend class openfluid::utils::KillableSingleton<ExtensionPluginsManager>;
-
+  OPENFLUID_SINGLETON_DEFINITION(ExtensionPluginsManager)
 
   private:
 
@@ -76,7 +74,7 @@ class ExtensionPluginsManager :
 
   public:
 
-    static ExtensionPluginsManager* instance(const QStringList& ExtraSearchPaths = QStringList());
+    static ExtensionPluginsManager* instance(const QStringList& ExtraSearchPaths);
 
     std::string getPluginFullPath(const std::string& Filename) const;
 

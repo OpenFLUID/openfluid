@@ -106,7 +106,9 @@ OpenFLUIDApp::OpenFLUIDApp() :
 
 OpenFLUIDApp::~OpenFLUIDApp()
 {
-
+  openfluid::machine::SimulatorPluginsManager::kill();
+  openfluid::machine::ObserverPluginsManager::kill();
+  openfluid::base::RuntimeEnvironment::kill();
 }
 
 

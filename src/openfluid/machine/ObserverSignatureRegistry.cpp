@@ -44,6 +44,9 @@
 namespace openfluid { namespace machine {
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(ObserverSignatureRegistry)
+
+
 ObserverSignatureRegistry::ObserverSignatureRegistry():
     WareSignatureRegistry<ObserverSignatureInstance>()
 {

@@ -44,4 +44,7 @@
 namespace openfluid { namespace machine {
 
 
+OPENFLUID_SINGLETON_INITIALIZATION(ObserverPluginsManager)
+
+
 } }  // namespaces
