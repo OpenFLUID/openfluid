@@ -60,7 +60,8 @@ OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
 
   // installation of missing examples
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-  openfluid::buddies::ExamplesBuddy(nullptr).run();
+  openfluid::buddies::BuddiesListener Listener;
+  openfluid::buddies::ExamplesBuddy(&Listener).run();
   QApplication::restoreOverrideCursor();
 
   m_ProjectsRootPath = QString(openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir().c_str()) +
