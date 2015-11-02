@@ -135,7 +135,7 @@ void MonitoringInstance::finalize()
   while (ObsIter != m_Observers.end())
   {
     (*ObsIter)->Body.reset();
-    (*ObsIter)->Signature.reset();
+    // TODO reset Signature?
     ++ObsIter;
   }
 

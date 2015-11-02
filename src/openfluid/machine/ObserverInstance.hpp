@@ -54,7 +54,9 @@ class OPENFLUID_API ObserverSignatureInstance : public WareSignatureInstance
 {
   public:
 
-    std::unique_ptr<openfluid::ware::ObserverSignature> Signature;
+    // Declared as a classic pointer because of DLL cross-boundaries hell on Windows systems
+    // TODO should be replaced by a factory for memory management across DLLs
+    openfluid::ware::ObserverSignature* Signature;
 
     ObserverSignatureInstance();
 

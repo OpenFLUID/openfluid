@@ -48,7 +48,7 @@ SimulatorGraphics::SimulatorGraphics(const QPointF& Coords, const QString& ID,
                                      QGraphicsItem* Parent):
   ModelItemGraphics(Coords,ID,Parent)
 {
-  openfluid::ware::SimulatorSignature* SimSign = Signature->Signature.get();
+  openfluid::ware::SimulatorSignature* SimSign = Signature->Signature;
   std::vector<openfluid::ware::SignatureTypedSpatialDataItem> VarList;
 
   m_Ghost = Signature->Ghost;

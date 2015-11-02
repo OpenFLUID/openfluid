@@ -57,32 +57,32 @@ SimulatorSignatureRegistry::SimulatorSignatureRegistry():
 {
   openfluid::machine::ModelItemSignatureInstance* FixedSignature = new openfluid::machine::ModelItemSignatureInstance();
   FixedSignature->Verified = true;
-  FixedSignature->Signature.reset(
-    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Fixed));
+  FixedSignature->Signature =
+    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Fixed);
   addGeneratorSignature(FixedSignature);
   m_GenSignatures[openfluid::fluidx::GeneratorDescriptor::Fixed] = FixedSignature;
 
   openfluid::machine::ModelItemSignatureInstance* RandomSignature =
     new openfluid::machine::ModelItemSignatureInstance();
   RandomSignature->Verified = true;
-  RandomSignature->Signature.reset(
-    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Random));
+  RandomSignature->Signature =
+    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Random);
   addGeneratorSignature(RandomSignature);
   m_GenSignatures[openfluid::fluidx::GeneratorDescriptor::Random] = RandomSignature;
 
   openfluid::machine::ModelItemSignatureInstance* InterpSignature =
     new openfluid::machine::ModelItemSignatureInstance();
   InterpSignature->Verified = true;
-  InterpSignature->Signature.reset(
-    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Interp));
+  InterpSignature->Signature =
+    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Interp);
   addGeneratorSignature(InterpSignature);
   m_GenSignatures[openfluid::fluidx::GeneratorDescriptor::Interp] = InterpSignature;
 
   openfluid::machine::ModelItemSignatureInstance* InjectSignature =
     new openfluid::machine::ModelItemSignatureInstance();
   InjectSignature->Verified = true;
-  InjectSignature->Signature.reset(
-    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Inject));
+  InjectSignature->Signature =
+    new openfluid::ware::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::Inject);
   addGeneratorSignature(InjectSignature);
   m_GenSignatures[openfluid::fluidx::GeneratorDescriptor::Inject] = InjectSignature;
 

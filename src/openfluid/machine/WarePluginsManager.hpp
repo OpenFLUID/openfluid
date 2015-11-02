@@ -128,7 +128,7 @@ class OPENFLUID_API WarePluginsManager
           // checks if the handle procs exist
           if (SProc && BProc)
           {
-            WareItem->Signature.reset(SProc());
+            WareItem->Signature = SProc();
 
             if (WareItem->Signature == nullptr)
               throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -204,7 +204,7 @@ class OPENFLUID_API WarePluginsManager
             {
               try
               {
-                Sign->Signature.reset(SProc());
+                Sign->Signature = SProc();
               }
               catch (openfluid::base::FrameworkException& E)
               {

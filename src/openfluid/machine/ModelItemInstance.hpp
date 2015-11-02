@@ -78,7 +78,9 @@ class OPENFLUID_API ModelItemSignatureInstance : public WareSignatureInstance
 {
   public:
 
-    std::unique_ptr<openfluid::ware::SimulatorSignature> Signature;
+    // Declared as a classic pointer because of DLL cross-boundaries hell on Windows systems
+    // TODO should be replaced by a factory for memory management across DLLs
+    openfluid::ware::SimulatorSignature* Signature;
 
     std::unique_ptr<GeneratorExtraInfo> GeneratorInfo;
 

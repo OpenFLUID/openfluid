@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   MII = new openfluid::machine::ModelItemInstance();
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimA()));
   MII->Body->linkToSimulation(&SimStatus);
-  MII->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
   MII->Signature->ID = "sim.a";
   MII->OriginalPosition = 1;
   TP.appendItem(MII);
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   MII = new openfluid::machine::ModelItemInstance();
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimC()));
   MII->Body->linkToSimulation(&SimStatus);
-  MII->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
   MII->Signature->ID = "sim.c";
   MII->OriginalPosition = 3;
   TP.appendItem(MII);
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   MII = new openfluid::machine::ModelItemInstance();
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimB()));
   MII->Body->linkToSimulation(&SimStatus);
-  MII->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
   MII->Signature->ID = "sim.b";
   MII->OriginalPosition = 2;
   TP.appendItem(MII);

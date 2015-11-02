@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim1";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureTypedSpatialDataItem("var1",
                                                                                                            "UA",
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim0";
   MIInstance->Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureTypedSpatialDataItem("var1",
                                                                                                            "UA",
@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim2";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureTypedSpatialDataItem("var5[]",
                                                                                                            "UB",
@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim0.5";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureTypedSpatialDataItem("var1",
                                                                                                            "UA",
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim3";
 
   Model.resetInitialized();
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim4";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureTypedSpatialDataItem("var1",
                                                                                                            "UA",
@@ -277,7 +277,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim1";
   MIInstance->Signature->HandledData.RequiredVars.push_back(
       openfluid::ware::SignatureTypedSpatialDataItem("var1[double]","UA","",""));
@@ -297,7 +297,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim0";
   MIInstance->Signature->HandledData.ProducedVars.push_back(
       openfluid::ware::SignatureTypedSpatialDataItem("var1[double]","UA","",""));
@@ -312,7 +312,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim2";
   MIInstance->Signature->HandledData.RequiredVars.push_back(
       openfluid::ware::SignatureTypedSpatialDataItem("var5[vector]","UB","",""));
@@ -328,7 +328,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim0.5";
   MIInstance->Signature->HandledData.RequiredVars.push_back(
       openfluid::ware::SignatureTypedSpatialDataItem("var1","UA","",""));
@@ -344,7 +344,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim3";
 
   Model.resetInitialized();
@@ -357,7 +357,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
   MIInstance->Verified = true;
-  MIInstance->Signature.reset(new openfluid::ware::SimulatorSignature());
+  MIInstance->Signature = new openfluid::ware::SimulatorSignature();
   MIInstance->Signature->ID = "MySim4";
   MIInstance->Signature->HandledData.RequiredVars.push_back(
       openfluid::ware::SignatureTypedSpatialDataItem("var1","UA","",""));

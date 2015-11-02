@@ -53,7 +53,7 @@ class ExtensionContainer : public openfluid::machine::WareContainer
 
     bool Active;
 
-    std::unique_ptr<openfluid::builderext::BuilderExtensionSignature> Signature;
+    openfluid::builderext::BuilderExtensionSignature* Signature;
 
     std::unique_ptr<openfluid::builderext::PluggableBuilderExtension> Body;
 

@@ -289,7 +289,7 @@ void ModelInstance::clear()
   for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
   {
     (*it)->Body.reset();
-    (*it)->Signature.reset();
+    // TODO reset Signature?
   }
 
   m_ModelItems.clear();
@@ -388,7 +388,7 @@ void ModelInstance::finalize()
   while (SimIter != m_ModelItems.end())
   {
     (*SimIter)->Body.reset();
-    (*SimIter)->Signature.reset();
+    // TODO reset Signature?
     ++SimIter;
   }
 

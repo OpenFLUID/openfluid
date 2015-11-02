@@ -526,7 +526,7 @@ void OpenFLUIDApp::printObserversReport(const std::string& Pattern)
     for (unsigned int i=0;i<PlugContainers.size();i++)
     {
       std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
-      printWareInfosReport((openfluid::ware::WareSignature*)(PlugContainers[i]->Signature.get()),
+      printWareInfosReport((openfluid::ware::WareSignature*)(PlugContainers[i]->Signature),
                            PlugContainers[i]->FileFullPath);
 
       if (i != PlugContainers.size()-1)
