@@ -42,7 +42,6 @@
 
 #include <string>
 
-const int CONFIGTESTS_NOTRUN_EXITCODE = @TESTS_NOTRUN_EXITCODE@;
 
 // Directories
 const std::string CONFIGTESTS_OUTPUT_BINARY_DIR = "@TEST_OUTPUT_PATH@";

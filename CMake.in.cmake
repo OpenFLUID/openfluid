@@ -276,11 +276,7 @@ SET(OPENFLUID_TRANSLATIONS_DIRSTOSCAN "${CMAKE_SOURCE_DIR}/src/openfluid/ui"
 
 ################### tests configuration ###################
 
-SET(TESTS_NOTRUN_EXITCODE 0) # for usage with cmake 2.8.x
-IF(${CMAKE_MAJOR_VERSION} EQUAL 3 OR ${CMAKE_MAJOR_VERSION} GREATER 3)
-  SET(TESTS_NOTRUN_EXITCODE 100) # for usage with cmake 3.0.0 and later versions
-ENDIF()
-SET(TESTS_RESTSERVICE_URL "http://reqr.es/api")
+SET(TESTS_RESTSERVICE_URL "http://jsonplaceholder.typicode.com")
 SET(TESTS_FLUIDHUB_URL "http://www.openfluid-project.org/resources/fluidhub-api/testing")
 
 

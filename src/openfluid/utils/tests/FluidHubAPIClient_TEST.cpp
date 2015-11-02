@@ -353,7 +353,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 int main(int argc, char *argv[])
 {
   if (CONFIGTESTS_FLUIDHUB_URL.empty())
-    return CONFIGTESTS_NOTRUN_EXITCODE;
+    return 0;
 
   QCoreApplication app(argc, argv);
 
@@ -363,7 +363,7 @@ int main(int argc, char *argv[])
   if (!Client.getResource("/").isOK())
   {
     std::cout << "** Test not run due to failing connection to remote service **" << std::endl;
-    return CONFIGTESTS_NOTRUN_EXITCODE;
+    return 0;
   }
 
 

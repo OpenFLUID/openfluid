@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(check_get)
   std::cout << "GET /users : " << Reply.getStatusCode() << std::endl;
   BOOST_REQUIRE(Reply.isOK());
   BOOST_REQUIRE_EQUAL(Reply.getStatusCode(),200);
-  BOOST_REQUIRE_NE(Reply.getContent().indexOf("\"total\":12"),-1);
+  BOOST_REQUIRE_NE(Reply.getContent().indexOf("\"username\": \"Bret\""),-1);
 
   Reply = Client.getResource("/users/23");
   std::cout << "GET /users/23 : " << Reply.getStatusCode() << std::endl;
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(check_get)
   std::cout << "GET /users/2 : " << Reply.getStatusCode() << std::endl;
   BOOST_REQUIRE(Reply.isOK());
   BOOST_REQUIRE_EQUAL(Reply.getStatusCode(),200);
-  BOOST_REQUIRE_NE(Reply.getContent().indexOf("\"first_name\":\"lucille\""),-1);
+  BOOST_REQUIRE_NE(Reply.getContent().indexOf("\"username\": \"Antonette\""),-1);
 }
 
 
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(check_post)
 {
   openfluid::utils::RESTClient Client;
 
-  BOOST_REQUIRE_THROW(Client.patchResource("",""), openfluid::base::FrameworkException);
+  BOOST_REQUIRE_THROW(Client.postResource("",""), openfluid::base::FrameworkException);
 }
 
 
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(check_put)
 {
   openfluid::utils::RESTClient Client;
 
-  BOOST_REQUIRE_THROW(Client.patchResource("",""), openfluid::base::FrameworkException);
+  BOOST_REQUIRE_THROW(Client.putResource("",""), openfluid::base::FrameworkException);
 }
 
 
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(check_delete)
 int main(int argc, char *argv[])
 {
   if (CONFIGTESTS_RESTSERVICE_URL.empty())
-    return CONFIGTESTS_NOTRUN_EXITCODE;
+    return 0;
 
   QCoreApplication app(argc, argv);
 
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
   if (!Client.getResource("/users").isOK())
   {
     std::cout << "** Test not run due to failing connection to remote service **" << std::endl;
-    return CONFIGTESTS_NOTRUN_EXITCODE;
+    return 0;
   }
 
   return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
