@@ -34,7 +34,7 @@ CONFIGURE_FILE(global.hpp.in global.hpp @ONLY)
 CONFIGURE_FILE(config.hpp.in config.hpp @ONLY)
 
 
-INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp ware.hpp 
+INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp ware.hpp scientific.hpp 
               dllexport.hpp debug.hpp deprecation.hpp
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
 
