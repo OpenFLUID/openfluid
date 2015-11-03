@@ -336,6 +336,6 @@ INSTALL(TARGETS openfluid-builder-main
 INSTALL(TARGETS openfluid-builder
         RUNTIME DESTINATION ${BIN_INSTALL_PATH})       
                                    
-IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
+IF(OPENFLUID_ENABLE_TESTING)
   ADD_SUBDIRECTORY(extensions/tests)
 ENDIF()         
