@@ -1,4 +1,4 @@
-FIND_PACKAGE(Qt5 QUIET COMPONENTS Core Widgets Network Xml Svg Declarative Concurrent)
+FIND_PACKAGE(Qt5 QUIET COMPONENTS Core Widgets Network Xml Svg Concurrent)
 
   IF(WIN32 AND Qt5Core_NOTFOUND)
     MESSAGE(FATAL_ERROR "Qt5 is required on Windows platforms")
@@ -23,8 +23,7 @@ FIND_PACKAGE(Qt5 QUIET COMPONENTS Core Widgets Network Xml Svg Declarative Concu
     ENDMACRO()
 
     SET(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
-                    ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS}
-                    ${Qt5Svg_INCLUDE_DIRS} ${Qt5Declarative_INCLUDE_DIRS} )
+                    ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS})
                   
     SET(QT_QTCORE_LIBRARIES ${Qt5Core_LIBRARIES})
     SET(QT_QTGUI_LIBRARIES ${Qt5Widgets_LIBRARIES})

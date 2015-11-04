@@ -40,13 +40,12 @@
 #ifndef __OPENFLUID_UICOMMON_RUNSIMULATIONWORKER_HPP__
 #define __OPENFLUID_UICOMMON_RUNSIMULATIONWORKER_HPP__
 
+
 #include <QApplication>
-#include <QtDeclarative>
+#include <QMetaType>
 
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/base/Exception.hpp>
-
-
 #include <openfluid/dllexport.hpp>
 
 

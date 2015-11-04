@@ -55,7 +55,7 @@ FOREACH(CURRENT_TARGET ${WINDEPLOYQT_TARGETS})
                                         --dir \"\${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}\" 
                                         --libdir \"\${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}\"
                                         --release --compiler-runtime
-                                        -xml -network -concurrent -declarative
+                                        -xml -network -concurrent
                                         --verbose 1
                                 WORKING_DIRECTORY \"\${CMAKE_BINARY_DIR}\"
                                 OUTPUT_FILE windeployqt_exec_${CURRENT_TARGET}.log 

@@ -36,6 +36,7 @@
  */
 
 
+#include <QDir>
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
