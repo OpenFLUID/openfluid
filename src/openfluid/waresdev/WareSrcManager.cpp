@@ -53,7 +53,7 @@ OPENFLUID_SINGLETON_INITIALIZATION(WareSrcManager)
 
 
 WareSrcManager::WareSrcManager() :
-    m_WaresdevDirName(QString::fromStdString(openfluid::config::WARESDEV_SUBDIR))
+    m_WaresdevDirName(QString::fromStdString(openfluid::config::WARESDEV_PATH))
 {
   switchWorkspace(openfluid::base::PreferencesManager::instance()->getWorkspacePath());
 }
@@ -82,11 +82,11 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
   QDir WaresdevDir(m_WaresdevPath);
 
   m_WareTypePathByWareType[openfluid::ware::WareType::SIMULATOR] = WaresdevDir.filePath(
-      QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
+      QString::fromStdString(openfluid::config::SIMULATORS_PATH));
   m_WareTypePathByWareType[openfluid::ware::WareType::OBSERVER] = WaresdevDir.filePath(
-      QString::fromStdString(openfluid::config::OBSERVERS_PLUGINS_SUBDIR));
+      QString::fromStdString(openfluid::config::OBSERVERS_PATH));
   m_WareTypePathByWareType[openfluid::ware::WareType::BUILDEREXT] = WaresdevDir.filePath(
-      QString::fromStdString(openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR));
+      QString::fromStdString(openfluid::config::BUILDEREXTS_PATH));
 
   foreach(QString Path,m_WareTypePathByWareType)
   {

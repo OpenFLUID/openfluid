@@ -76,7 +76,7 @@
   { \
     OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL() \
     { \
-      return std::string(openfluid::config::FULL_VERSION); \
+      return std::string(openfluid::config::VERSION_FULL); \
     } \
     \
     OPENFLUID_PLUGIN openfluid::ware::PluggableSimulator* WAREBODY_PROC_DECL() \

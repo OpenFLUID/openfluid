@@ -8,7 +8,7 @@ ENDIF()
 
 ADD_EXECUTABLE(openfluid-logexplorer ${LOGEXPLORER_GUI_OPTION} main.cpp ${LOGEXPLORER_WIN32RC})
 
-SET_TARGET_PROPERTIES(openfluid-logexplorer PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}"
+SET_TARGET_PROPERTIES(openfluid-logexplorer PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_BIN_DIR}"
                                                    AUTOMOC ON)
                                                    
 SET_TARGET_PROPERTIES(openfluid-logexplorer PROPERTIES OUTPUT_NAME ${OPENFLUID_LOGEXPLORER_APP})
@@ -22,4 +22,4 @@ TARGET_LINK_LIBRARIES(openfluid-logexplorer
                                    
                
 INSTALL(TARGETS openfluid-logexplorer
-        RUNTIME DESTINATION ${BIN_INSTALL_PATH})       
+        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH})       

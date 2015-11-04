@@ -4,4 +4,4 @@ INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}/src/tests")
 # cf. https://fedoraproject.org/wiki/UnderstandingDSOLinkChange
 SET(UNITTEST_LINK_LIBRARIES openfluid-core openfluid-base openfluid-landr -lgeos)
 
-OPNFLD_DISCOVER_UNITTESTS(api)
+OFBUILD_DISCOVER_UNITTESTS(api)

@@ -62,7 +62,7 @@ BEGIN_OBSERVER_SIGNATURE("export.spatial-graph.files.dot")
       "  when.everytime : set to 1 to export the graph at every simulation time point\n"
       "  when.final : set to 1 to export the graph at finalization time\n"
       "  style.<unitsclass>.<attribute> : the value of a Dot attribute for all nodes of a unit class\n");
-  DECLARE_VERSION(openfluid::config::FULL_VERSION);
+  DECLARE_VERSION(openfluid::config::VERSION_FULL);
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 END_OBSERVER_SIGNATURE
 

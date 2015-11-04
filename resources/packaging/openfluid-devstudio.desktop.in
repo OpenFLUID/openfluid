@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
 Name=OpenFLUID-DevStudio
-Version=@FULL_VERSION@
+Version=@OPENFLUID_VERSION_FULL@
 Comment=The OpenFLUID development studio for modelers
-TryExec=@CMAKE_INSTALL_PREFIX@/@BIN_INSTALL_PATH@/openfluid-devstudio
-Exec=@CMAKE_INSTALL_PREFIX@/@BIN_INSTALL_PATH@/openfluid-devstudio
-Icon=@CMAKE_INSTALL_PREFIX@/@SHARE_OPENFLUID_INSTALL_PATH@/common/openfluid_icon_devstudio.png
+TryExec=@CMAKE_INSTALL_PREFIX@/@OFBUILD_BIN_INSTALL_PATH@/openfluid-devstudio
+Exec=@CMAKE_INSTALL_PREFIX@/@OFBUILD_BIN_INSTALL_PATH@/openfluid-devstudio
+Icon=@CMAKE_INSTALL_PREFIX@/@OPENFLUID_SHARE_INSTALL_PATH@/common/openfluid_icon_devstudio.png
 Categories=Science;Education;Applications

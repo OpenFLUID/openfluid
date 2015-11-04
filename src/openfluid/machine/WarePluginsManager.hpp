@@ -115,7 +115,7 @@ class OPENFLUID_API WarePluginsManager
         if (ABIVersionProc)
         {
           WareItem->Verified =
-              (openfluid::tools::compareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
+              (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,ABIVersionProc(),false) == 0);
         }
         else WareItem->Verified = false;
 
@@ -189,7 +189,7 @@ class OPENFLUID_API WarePluginsManager
           if (ABIVersionProc)
           {
             Sign->Verified =
-              (openfluid::tools::compareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
+              (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,ABIVersionProc(),false) == 0);
           }
           else Sign->Verified = false;
 

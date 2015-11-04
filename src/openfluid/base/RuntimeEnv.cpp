@@ -61,7 +61,7 @@ OPENFLUID_SINGLETON_INITIALIZATION(RuntimeEnvironment)
 
 RuntimeEnvironment::RuntimeEnvironment() :
   m_Version(openfluid::config::VERSION_MAJOR+"."+openfluid::config::VERSION_MINOR+"."+openfluid::config::VERSION_PATCH),
-  m_FullVersion(openfluid::config::FULL_VERSION),
+  m_FullVersion(openfluid::config::VERSION_FULL),
   m_MajorMinorVersion(openfluid::config::VERSION_MAJOR+"."+openfluid::config::VERSION_MINOR),
   m_InstallPrefix(openfluid::config::INSTALL_PREFIX),
   m_Arch(OPENFLUID_OS_STRLABEL),
@@ -99,7 +99,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   ChUserName= std::getenv("USER");
   if (ChUserName != nullptr) m_UserID= ChUserName;
 
-  m_UserDataDir = m_HomeDir + "/." + openfluid::config::RELATIVEDIR;
+  m_UserDataDir = m_HomeDir + "/." + openfluid::config::RELATIVE_PATH;
 
 #elif defined(OPENFLUID_OS_WINDOWS)
 
@@ -111,7 +111,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   ChUserName= std::getenv("USERNAME");
   if (ChUserName != nullptr) m_UserID= ChUserName;
 
-  m_UserDataDir = m_HomeDir+"/"+openfluid::config::RELATIVEDIR;
+  m_UserDataDir = m_HomeDir+"/"+openfluid::config::RELATIVE_PATH;
 
 #endif
 
@@ -134,12 +134,12 @@ RuntimeEnvironment::RuntimeEnvironment() :
   }
 
 
-  m_OutputDir = m_UserDataDir + "/" + openfluid::config::DEFAULT_OUTDIR;
-  m_InputDir = m_UserDataDir + "/" + openfluid::config::DEFAULT_INDIR;
+  m_OutputDir = m_UserDataDir + "/" + openfluid::config::DEFAULT_OUTPUT_PATH;
+  m_InputDir = m_UserDataDir + "/" + openfluid::config::DEFAULT_INPUT_PATH;
 
   // ====== Market ======
 
-  m_MarketBagDir = m_UserDataDir + "/" + openfluid::config::MARKETBAG_SUBDIR;
+  m_MarketBagDir = m_UserDataDir + "/" + openfluid::config::MARKETBAG_PATH;
   m_MarketBagVersionDir = m_MarketBagDir + "/" + m_Version;
 
   m_MarketBagSimVersionDir = m_MarketBagVersionDir + "/" + "simulators";
@@ -157,9 +157,9 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   // ====== Examples ======
 
-  m_UserExamplesDir = m_UserDataDir + "/" + openfluid::config::EXAMPLES_SUBDIR;
+  m_UserExamplesDir = m_UserDataDir + "/" + openfluid::config::EXAMPLES_PATH;
 
-  m_ProvidedExamplesDir = m_InstallPrefix + "/" + openfluid::config::EXAMPLES_STDDIR;
+  m_ProvidedExamplesDir = m_InstallPrefix + "/" + openfluid::config::EXAMPLES_STD_PATH;
 
 
   // ====== Default values ======
@@ -201,13 +201,13 @@ RuntimeEnvironment::RuntimeEnvironment() :
   }
 
   // user dir
-  m_DefaultSimulatorsPlugsDirs.push_back(m_UserDataDir + "/" + openfluid::config::SIMULATORS_PLUGINS_USRDIR);
+  m_DefaultSimulatorsPlugsDirs.push_back(m_UserDataDir + "/" + openfluid::config::SIMULATORS_WARESBIN_USR_PATH);
 
   // market-bag dir (for current version)
   m_DefaultSimulatorsPlugsDirs.push_back(m_MarketBagSimVersionDir + "/" + m_MarketBagBinSubDir);
 
   // install directory
-  std::string SimulatorsPluginsInstallPath =  m_InstallPrefix + "/" + openfluid::config::SIMULATORS_PLUGINS_STDDIR;
+  std::string SimulatorsPluginsInstallPath =  m_InstallPrefix + "/" + openfluid::config::SIMULATORS_WARESBIN_STD_PATH;
   m_DefaultSimulatorsPlugsDirs.push_back(SimulatorsPluginsInstallPath);
 
 
@@ -229,13 +229,13 @@ RuntimeEnvironment::RuntimeEnvironment() :
   }
 
   // user dir
-  m_DefaultObserversPlugsDirs.push_back(m_UserDataDir + "/" + openfluid::config::OBSERVERS_PLUGINS_USRDIR);
+  m_DefaultObserversPlugsDirs.push_back(m_UserDataDir + "/" + openfluid::config::OBSERVERS_WARESBIN_USR_PATH);
 
   // market-bag dir (for current version)
    m_DefaultObserversPlugsDirs.push_back(m_MarketBagObsVersionDir + "/" + m_MarketBagBinSubDir);
 
   // install directory
-  std::string ObserversPluginsInstallPath = m_InstallPrefix + "/" + openfluid::config::OBSERVERS_PLUGINS_STDDIR;
+  std::string ObserversPluginsInstallPath = m_InstallPrefix + "/" + openfluid::config::OBSERVERS_WARESBIN_STD_PATH;
   m_DefaultObserversPlugsDirs.push_back(ObserversPluginsInstallPath);
 
 }
@@ -259,20 +259,20 @@ void RuntimeEnvironment::prepareUserDataDirectory() const
 {
   openfluid::tools::Filesystem::makeDirectory(m_UserDataDir);
 
-  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::SIMULATORS_PLUGINS_USRDIR));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::OBSERVERS_PLUGINS_USRDIR));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::SIMULATORS_WARESBIN_USR_PATH));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::OBSERVERS_WARESBIN_USR_PATH));
 
-  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR+"/"+
-                                                              openfluid::config::PROJECTS_SUBDIR));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR+"/"+
-                                                              openfluid::config::WARESDEV_SUBDIR));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR+"/"+
-                                                              openfluid::config::WARESDEV_SUBDIR+"/"+
-                                                              openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_SUBDIR+"/"+
-                                                              openfluid::config::WARESDEV_SUBDIR+"/"+
-                                                              openfluid::config::OBSERVERS_PLUGINS_SUBDIR));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_PATH));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_PATH+"/"+
+                                                              openfluid::config::PROJECTS_PATH));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_PATH+"/"+
+                                                              openfluid::config::WARESDEV_PATH));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_PATH+"/"+
+                                                              openfluid::config::WARESDEV_PATH+"/"+
+                                                              openfluid::config::SIMULATORS_PATH));
+  openfluid::tools::Filesystem::makeDirectory(getUserDataPath(openfluid::config::WORKSPACE_PATH+"/"+
+                                                              openfluid::config::WARESDEV_PATH+"/"+
+                                                              openfluid::config::OBSERVERS_PATH));
 }
 
 
@@ -428,7 +428,7 @@ std::string RuntimeEnvironment::getAppResourceFilePath(std::string AppName,
 
 std::string RuntimeEnvironment::getTranslationsDir() const
 {
-  return m_InstallPrefix + "/" + openfluid::config::SHARE_TRANSLATIONS_PATH;
+  return m_InstallPrefix + "/" + openfluid::config::SHARE_TRANSLATIONS_INSTALL_PATH;
 }
 
 

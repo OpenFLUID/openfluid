@@ -65,7 +65,7 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
   ui->IconLabel->setPixmap(QPixmap(":/ui/common/images/openfluid_icon_about.png"));
   ui->TitleLabel->setPixmap(QPixmap(":/ui/common/images/openfluid_title.png"));
 
-  ui->VersionLabel->setText(QString::fromStdString(openfluid::config::FULL_VERSION));
+  ui->VersionLabel->setText(QString::fromStdString(openfluid::config::VERSION_FULL));
 
   ui->WebLabel->setText("<A HREF='"+QString::fromStdString(openfluid::config::WEBSITE_URL)+"'>"+
                         QString::fromStdString(openfluid::config::WEBSITE_DOMAIN)+"</A>");

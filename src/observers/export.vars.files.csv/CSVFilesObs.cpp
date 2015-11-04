@@ -118,7 +118,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv")
          "Use * to include all variables\n"
       "  set.<setname>.format : the <formatname> used, must be defined by a format parameter");
 
-  DECLARE_VERSION(openfluid::config::FULL_VERSION);
+  DECLARE_VERSION(openfluid::config::VERSION_FULL);
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
 END_OBSERVER_SIGNATURE

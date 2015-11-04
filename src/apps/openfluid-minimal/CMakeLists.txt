@@ -3,7 +3,7 @@
 ADD_EXECUTABLE(openfluid-minimal    
                main.cpp)
 
-SET_TARGET_PROPERTIES(openfluid-minimal PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
+SET_TARGET_PROPERTIES(openfluid-minimal PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_BIN_DIR}")
 
 TARGET_LINK_LIBRARIES(openfluid-minimal
                       ${QT_QTCORE_LIBRARIES}
@@ -16,7 +16,7 @@ TARGET_LINK_LIBRARIES(openfluid-minimal
 
 
 #INSTALL(TARGETS openfluid-minimal
-#        RUNTIME DESTINATION ${BIN_INSTALL_PATH})
+#        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH})
 
        
       

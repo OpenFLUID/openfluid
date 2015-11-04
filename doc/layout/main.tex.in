@@ -57,7 +57,7 @@
 %     \draw (7.85,-2.0) node {\includegraphics[width=110mm]{openfluid.pdf}};
 %     \draw (16, -12) node [anchor=east] {\fontsize{60}{72}\selectfont{\textbf{OpenFLUID}}};
 %     \draw (16, -14) node [anchor=east] {\fontsize{50}{60}\selectfont{\textbf{in a nutshell}}};
-%     \draw (16, -15.5) node [anchor=east] {\Large{\textbf{Manual for OpenFLUID v$$@LATEX_FULL_VERSION@$$}}};
+%     \draw (16, -15.5) node [anchor=east] {\Large{\textbf{Manual for OpenFLUID v$$@OFBUILD_LATEX_VERSION_FULL@$$}}};
 %     \draw (1,-24) node [anchor=west] {\includegraphics[width=40mm]{LISAH.png}};
 %     \draw (16,-24) node [anchor=east,text centered,text width=6cm]{\Large{\textit{Jean-Christophe Fabre, \the\year}}};
 %  \end{tikzpicture}
@@ -71,7 +71,7 @@
     \draw (7,-3.0) node {\includegraphics[width=130mm]{openfluid.pdf}};
     \draw (15.85, -11) node [anchor=east] {\color{white}\fontsize{60}{72}\selectfont{\textbf{OpenFLUID}}}; 
     \draw (15.85, -13) node [anchor=east] {\color{white}\fontsize{50}{60}\selectfont{\textbf{in a nutshell}}};
-    \draw (15.85, -14.5) node [anchor=east] {\color{white}\Large{\textbf{Manual for OpenFLUID v$$@LATEX_FULL_VERSION@$$}}};
+    \draw (15.85, -14.5) node [anchor=east] {\color{white}\Large{\textbf{Manual for OpenFLUID v$$@OFBUILD_LATEX_VERSION_FULL@$$}}};
     \draw (-0.5,-23.5) node [anchor=west] {\includegraphics[width=40mm]{LISAH.png}};
     \draw (16,-23.5) node [anchor=east,text centered,text width=6cm]{\Large{\textit{Jean-Christophe Fabre, \the\year}}};
  \end{tikzpicture}

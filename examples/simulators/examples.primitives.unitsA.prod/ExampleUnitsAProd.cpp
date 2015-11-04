@@ -49,7 +49,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.prod")
   DECLARE_NAME("Example of data production on units of class A");
   DECLARE_DESCRIPTION("");
 
-  DECLARE_VERSION(openfluid::config::FULL_VERSION);
+  DECLARE_VERSION(openfluid::config::VERSION_FULL);
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_DOMAIN("examples");

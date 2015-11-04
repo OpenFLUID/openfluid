@@ -79,10 +79,10 @@ BOOST_AUTO_TEST_CASE(check_names_operations)
 
 BOOST_AUTO_TEST_CASE(check_test_operations)
 {
-  BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_BINARY_DIR));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_BINARY_DIR));
   BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(CONFIGTESTS_SRC_DIR+"/CMakeLists.txt"));
 
-  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_BINARY_DIR));
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(CONFIGTESTS_BINARY_DIR));
   BOOST_REQUIRE(!openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_SRC_DIR+"/CMakeLists.txt"));
 }
 

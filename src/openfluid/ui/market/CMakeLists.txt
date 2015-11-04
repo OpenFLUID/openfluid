@@ -22,11 +22,11 @@ ADD_LIBRARY(openfluid-ui-market SHARED ${OPENFLUID_UI_MARKET_CPP} ${OPENFLUID_UI
                                        ${OPENFLUID_UI_MARKET_RC})
 
 
-SET_TARGET_PROPERTIES(openfluid-ui-market PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
-                                          SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
-                                          LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                          RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                          ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+SET_TARGET_PROPERTIES(openfluid-ui-market PROPERTIES VERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}" 
+                                          SOVERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}"
+                                          LIBRARY_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
+                                          RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
+                                          ARCHIVE_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
                                           AUTOMOC ON
                                           COMPILE_DEFINITIONS "OPENFLUID_DLL"
                                           DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
@@ -46,12 +46,12 @@ TARGET_LINK_LIBRARIES(openfluid-ui-market
 
 
 INSTALL(TARGETS openfluid-ui-market
-        RUNTIME DESTINATION ${BIN_INSTALL_PATH}
-        LIBRARY DESTINATION ${LIB_INSTALL_PATH}
-        ARCHIVE DESTINATION ${LIB_INSTALL_PATH})
+        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH}
+        LIBRARY DESTINATION ${OFBUILD_LIB_INSTALL_PATH}
+        ARCHIVE DESTINATION ${OFBUILD_LIB_INSTALL_PATH})
    
 
-INSTALL(FILES ${OPENFLUID_UI_MARKET_HPP} DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH}/ui/market)
+INSTALL(FILES ${OPENFLUID_UI_MARKET_HPP} DESTINATION ${OPENFLUID_INCLUDE_INSTALL_PATH}/ui/market)
 
 
 

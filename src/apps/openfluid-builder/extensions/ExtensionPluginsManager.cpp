@@ -53,7 +53,7 @@ ExtensionPluginsManager::ExtensionPluginsManager(const QStringList& ExtraSearchP
     m_SearchPaths.push_back(ExtraSearchPaths[i].toStdString());
 
   m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()
-  ->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
+  ->getUserDataPath(openfluid::config::BUILDEREXTS_WARESBIN_USR_PATH));
   m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getMarketBagBuildVersionDir()+
                           "/"+
                           openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir());
@@ -62,7 +62,7 @@ ExtensionPluginsManager::ExtensionPluginsManager(const QStringList& ExtraSearchP
                           BUILDEREXTS_INSTALL_PATH);
 
   m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()
-  ->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
+  ->getUserDataPath(openfluid::config::BUILDEREXTS_WARESBIN_USR_PATH));
   m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::instance()->getMarketBagBuildVersionDir()+
                                   "/"+
                                   openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir());

@@ -95,7 +95,7 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   ui->ImageLabel->setText("");
   ui->ImageLabel->setPixmap(QPixmap(":/images/openfluid_official.png"));
 
-  ui->VersionLabel->setText(std::string("OpenFLUID v"+openfluid::config::FULL_VERSION).c_str());
+  ui->VersionLabel->setText(std::string("OpenFLUID v"+openfluid::config::VERSION_FULL).c_str());
 
   ui->URLLabel->setText("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>");
   connect(ui->URLLabel,SIGNAL(clicked()),Actions->action("HelpOnlineWeb"),SLOT(trigger()));

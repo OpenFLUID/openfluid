@@ -68,7 +68,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.geovector")
         "between two outputs (e.g. continuous;7200 for a minimal delay of 2 hours)."
       );
 
-  DECLARE_VERSION(openfluid::config::FULL_VERSION);
+  DECLARE_VERSION(openfluid::config::VERSION_FULL);
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
 END_OBSERVER_SIGNATURE

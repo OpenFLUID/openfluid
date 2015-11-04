@@ -51,7 +51,7 @@
     OPENFLUID_PLUGIN openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL() \
     { \
       openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature(); \
-      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+      Signature->setABIVersion(openfluid::config::VERSION_FULL); \
       Signature->ID = (id);
 
 

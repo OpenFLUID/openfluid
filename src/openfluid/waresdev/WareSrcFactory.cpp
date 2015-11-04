@@ -64,13 +64,13 @@ WareSrcFactory::WareSrcFactory(openfluid::ware::WareType Type) :
   switch (Type)
   {
     case openfluid::ware::WareType::SIMULATOR:
-      TypeSubDir = QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR);
+      TypeSubDir = QString::fromStdString(openfluid::config::SIMULATORS_PATH);
       break;
     case openfluid::ware::WareType::OBSERVER:
-      TypeSubDir = QString::fromStdString(openfluid::config::OBSERVERS_PLUGINS_SUBDIR);
+      TypeSubDir = QString::fromStdString(openfluid::config::OBSERVERS_PATH);
       break;
     case openfluid::ware::WareType::BUILDEREXT:
-      TypeSubDir = QString::fromStdString(openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR);
+      TypeSubDir = QString::fromStdString(openfluid::config::BUILDEREXTS_PATH);
       break;
     default:
       break;

@@ -41,6 +41,7 @@
 
 
 #include <QWidget>
+#include <QTableWidget>
 #include <QList>
 
 #include <openfluid/dllexport.hpp>

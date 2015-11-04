@@ -4,61 +4,62 @@ IF(DOXYGEN)
 
   CONFIGURE_FILE(HTML-Doxyfile.in HTML-Doxyfile)
 
-  FILE(MAKE_DIRECTORY "${DOC_MAIN_OUTPUT_PATH}")
+  FILE(MAKE_DIRECTORY "${OFBUILD_DIST_MAIN_DOC_DIR}")
 
   # TODO A voir autrement    
-  CONFIGURE_FILE(${DOC_CONTENTS_DIR}/openfluid.png ${MAIN_DOC_OUTPUT_PATH}/html/openfluid.png COPYONLY)
-  CONFIGURE_FILE(${DOC_CONTENTS_DIR}/API_stack.png ${MAIN_DOC_OUTPUT_PATH}/html/API_stack.png COPYONLY)
+  CONFIGURE_FILE(${OFBUILD_DOC_CONTENTS_DIR}/openfluid.png ${OFBUILD_DIST_MAIN_DOC_DIR}/html/openfluid.png COPYONLY)
+  CONFIGURE_FILE(${OFBUILD_DOC_CONTENTS_DIR}/API_stack.png ${OFBUILD_DIST_MAIN_DOC_DIR}/html/API_stack.png COPYONLY)
  
     
   ADD_CUSTOM_COMMAND(
-    OUTPUT "${MAIN_DOC_OUTPUT_PATH}/html/index.html"
+    OUTPUT "${OFBUILD_DIST_MAIN_DOC_DIR}/html/index.html"
     DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile"
     COMMAND "${DOXYGEN}"
        ARGS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile")
 
   ADD_CUSTOM_TARGET(openfluid-doc-html ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile"
-    "${MAIN_DOC_OUTPUT_PATH}/html/index.html" VERBATIM)
+    "${OFBUILD_DIST_MAIN_DOC_DIR}/html/index.html" VERBATIM)
 
 
-  INSTALL(DIRECTORY "${MAIN_DOC_OUTPUT_PATH}/"
-          DESTINATION "${MAIN_DOC_INSTALL_PATH}")
+  INSTALL(DIRECTORY "${OFBUILD_DIST_MAIN_DOC_DIR}/"
+          DESTINATION "${OPENFLUID_MAIN_DOC_INSTALL_PATH}")
           
           
   IF(PDFLATEX_COMPILER)
     CONFIGURE_FILE(LaTeX-Doxyfile.in LaTeX-Doxyfile)
     
-    STRING(REPLACE "~" "$\\sim$" LATEX_FULL_VERSION "${FULL_VERSION}")
+    STRING(REPLACE "~" "$\\sim$" OFBUILD_LATEX_VERSION_FULL "${OPENFLUID_VERSION_FULL}")
 
-    FILE(MAKE_DIRECTORY "${DOC_BUILD_DIR}")
+    FILE(MAKE_DIRECTORY "${OFBUILD_DOCBUILD_DIR}")
     FILE(COPY "${CMAKE_CURRENT_SOURCE_DIR}/contents/" 
-       DESTINATION "${DOC_BUILD_DIR}/latex"
+       DESTINATION "${OFBUILD_DOCBUILD_DIR}/latex"
        PATTERN "*.png"
        PATTERN "*.pdf")
     FILE(COPY "${CMAKE_CURRENT_SOURCE_DIR}/layout/" 
-       DESTINATION "${DOC_BUILD_DIR}/latex"
+       DESTINATION "${OFBUILD_DOCBUILD_DIR}/latex"
        PATTERN "*.sty")
    
-    CONFIGURE_FILE(layout/main.tex.in "${DOC_BUILD_DIR}/latex/main.tex")
+    CONFIGURE_FILE(layout/main.tex.in "${OFBUILD_DOCBUILD_DIR}/latex/main.tex")
    
     ADD_CUSTOM_COMMAND(
-      OUTPUT "${DOC_BUILD_DIR}/latex/main.pdf"
+      OUTPUT "${OFBUILD_DOCBUILD_DIR}/latex/main.pdf"
       DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/LaTeX-Doxyfile"
       COMMAND "${DOXYGEN}"
          ARGS "${CMAKE_CURRENT_BINARY_DIR}/LaTeX-Doxyfile"
       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_COMMAND} 
-              "-DDOC_BUILD_DIR=${DOC_BUILD_DIR}" "-DPDFLATEX_COMPILER=${PDFLATEX_COMPILER}"
+              "-DDOC_BUILD_DIR=${OFBUILD_DOCBUILD_DIR}" "-DPDFLATEX_COMPILER=${PDFLATEX_COMPILER}"
               "-P" "BuildPDF.cmake"       
     )
 
     ADD_CUSTOM_COMMAND(    
-      OUTPUT  "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf"
-      DEPENDS "${DOC_BUILD_DIR}/latex/main.pdf"      
-      COMMAND ${CMAKE_COMMAND} -E copy "${DOC_BUILD_DIR}/latex/main.pdf" "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf"       
+      OUTPUT  "${OFBUILD_DIST_MAIN_DOC_DIR}/openfluid_manual_${OPENFLUID_VERSION_FULL}.pdf"
+      DEPENDS "${OFBUILD_DOCBUILD_DIR}/latex/main.pdf"      
+      COMMAND ${CMAKE_COMMAND} -E copy "${OFBUILD_DOCBUILD_DIR}/latex/main.pdf" 
+                                       "${OFBUILD_DIST_MAIN_DOC_DIR}/openfluid_manual_${OPENFLUID_VERSION_FULL}.pdf"       
     )  
 
 
-    ADD_CUSTOM_TARGET(openfluid-doc-pdf ALL DEPENDS "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf" VERBATIM)   
+    ADD_CUSTOM_TARGET(openfluid-doc-pdf ALL DEPENDS "${OFBUILD_DIST_MAIN_DOC_DIR}/openfluid_manual_${OPENFLUID_VERSION_FULL}.pdf" VERBATIM)   
 
   ENDIF() 
     

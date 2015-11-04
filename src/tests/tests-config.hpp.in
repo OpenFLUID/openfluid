@@ -44,19 +44,19 @@
 
 
 // Directories
-const std::string CONFIGTESTS_OUTPUT_BINARY_DIR = "@TEST_OUTPUT_PATH@";
-const std::string CONFIGTESTS_OUTPUT_DATA_DIR = "@TESTS_OUTPUTDATA_PATH@";
-const std::string CONFIGTESTS_INPUT_DATASETS_DIR = "@TESTS_DATASETS_PATH@";
-const std::string CONFIGTESTS_INPUT_MISCDATA_DIR = "@TESTS_MISCDATA_PATH@";
+const std::string CONFIGTESTS_BINARY_DIR = "@OFBUILD_TESTS_BINARY_DIR@";
+const std::string CONFIGTESTS_OUTPUT_DATA_DIR = "@OFBUILD_TESTS_OUTPUT_DATA_DIR@";
+const std::string CONFIGTESTS_INPUT_DATASETS_DIR = "@OFBUILD_TESTS_INPUT_DATASETS_DIR@";
+const std::string CONFIGTESTS_INPUT_MISCDATA_DIR = "@OFBUILD_TESTS_INPUT_MISCDATA_DIR@";
 const std::string CONFIGTESTS_SRC_DIR = "@CMAKE_SOURCE_DIR@";
-const std::string CONFIGTESTS_DISTBIN_DIR = "@BIN_OUTPUT_PATH@";
-const std::string CONFIGTESTS_LIB_OUTPUT_PATH = "@LIB_OUTPUT_PATH@";
+const std::string CONFIGTESTS_BIN_DIR = "@OFBUILD_DIST_BIN_DIR@";
+const std::string CONFIGTESTS_LIB_DIR = "@OFBUILD_DIST_LIB_DIR@";
 const std::string CONFIGTESTS_INCLUDE_DIRS = "@CMAKE_SOURCE_DIR@/src";
 const std::string CONFIGTESTS_CMAKE_GENERATOR = "@CMAKE_GENERATOR@";
 const std::string CONFIGTESTS_OPTIONS_FOR_CMAKE = "-G \"@CMAKE_GENERATOR@\" "
-                                                  "-DOpenFLUIDHelpers_DIR=@CMAKE_MODULES_OUTPUT_PATH@ "
-                                                  "-DOpenFLUID_DIR=@CMAKE_MODULES_OUTPUT_PATH@ "
-                                                  "-DOpenFLUID_ROOT_DIR=@BUILD_OUTPUT_PATH@ "
+                                                  "-DOpenFLUIDHelpers_DIR=@OFBUILD_DIST_CMAKE_MODULES_DIR@ "
+                                                  "-DOpenFLUID_DIR=@OFBUILD_DIST_CMAKE_MODULES_DIR@ "
+                                                  "-DOpenFLUID_ROOT_DIR=@OFBUILD_DIST_DIR@ "
                                                   "-DSIM_INCLUDE_DIRS=@CMAKE_SOURCE_DIR@/src "
                                                   "-DOBS_INCLUDE_DIRS=@CMAKE_SOURCE_DIR@/src "
                                                   "-DOpenFLUID_EXTRA_SEARCH_PATHS=@CMAKE_BINARY_DIR@/src";
@@ -65,17 +65,17 @@ const std::string CONFIGTESTS_OPTIONS_FOR_CMAKE = "-G \"@CMAKE_GENERATOR@\" "
 const std::string CONFIGTESTS_PLUGINS_EXT = "@SIMULATORS_BINARY_EXTENSION@";
 
 // Version
-const std::string CONFIGTESTS_VERSION_MAJOR = "@VERSION_MAJOR@";
-const std::string CONFIGTESTS_VERSION_MINOR = "@VERSION_MINOR@";
-const std::string CONFIGTESTS_VERSION_PATCH = "@VERSION_PATCH@";
-const std::string CONFIGTESTS_VERSION_STATUS = "@VERSION_STATUS@";
-const std::string CONFIGTESTS_FULL_VERSION = "@FULL_VERSION@";
+const std::string CONFIGTESTS_VERSION_MAJOR = "@OPENFLUID_VERSION_MAJOR@";
+const std::string CONFIGTESTS_VERSION_MINOR = "@OPENFLUID_VERSION_MINOR@";
+const std::string CONFIGTESTS_VERSION_PATCH = "@OPENFLUID_VERSION_PATCH@";
+const std::string CONFIGTESTS_VERSION_STATUS = "@OPENFLUID_VERSION_STATUS@";
+const std::string CONFIGTESTS_VERSION_FULL = "@OPENFLUID_VERSION_FULL@";
 
 // REST service
-const std::string CONFIGTESTS_RESTSERVICE_URL = "@TESTS_RESTSERVICE_URL@";
+const std::string CONFIGTESTS_RESTSERVICE_URL = "@OFBUILD_TESTS_RESTSERVICE_URL@";
 
 // FluidHub API
-const std::string CONFIGTESTS_FLUIDHUB_URL = "@TESTS_FLUIDHUB_URL@";
+const std::string CONFIGTESTS_FLUIDHUB_URL = "@OFBUILD_TESTS_FLUIDHUB_URL@";
 
 
 #endif  /* __OPENFLUID_TESTSCONFIG_IN_HPP__ */

@@ -61,9 +61,9 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  m_ListWidgetsByWareTypeName[openfluid::config::SIMULATORS_PLUGINS_SUBDIR] = ui->SimListWidget;
-  m_ListWidgetsByWareTypeName[openfluid::config::OBSERVERS_PLUGINS_SUBDIR] = ui->ObsListWidget;
-  m_ListWidgetsByWareTypeName[openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR] = ui->ExtListWidget;
+  m_ListWidgetsByWareTypeName[openfluid::config::SIMULATORS_PATH] = ui->SimListWidget;
+  m_ListWidgetsByWareTypeName[openfluid::config::OBSERVERS_PATH] = ui->ObsListWidget;
+  m_ListWidgetsByWareTypeName[openfluid::config::BUILDEREXTS_PATH] = ui->ExtListWidget;
 
   ui->WareshubWidget->setVisible(false);
 

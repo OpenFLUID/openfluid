@@ -66,7 +66,7 @@ OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
 
   m_ProjectsRootPath = QString(openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir().c_str()) +
                        QString("/") +
-                       QString(openfluid::config::PROJECTS_SUBDIR.c_str());
+                       QString(openfluid::config::PROJECTS_PATH.c_str());
 
   QStringList ExamplesDirs;
   ExamplesDirs = QDir(m_ProjectsRootPath).entryList(QStringList("*"),QDir::Dirs | QDir::NoDotAndDotDot);

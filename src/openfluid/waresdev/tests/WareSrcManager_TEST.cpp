@@ -68,10 +68,10 @@ struct F
       m_WorkspacePath = openfluid::base::PreferencesManager::instance()->getWorkspacePath();
 
       m_WaresdevPath = QString("%1/%2").arg(m_WorkspacePath).arg(
-          QString::fromStdString(openfluid::config::WARESDEV_SUBDIR));
+          QString::fromStdString(openfluid::config::WARESDEV_PATH));
 
       m_SimulatorsPath = QString("%1/%2").arg(m_WaresdevPath).arg(
-          QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
+          QString::fromStdString(openfluid::config::SIMULATORS_PATH));
 
       openfluid::tools::Filesystem::removeDirectory(m_WorkspacePath.toStdString());
     }

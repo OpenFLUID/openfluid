@@ -374,7 +374,7 @@ QStringList PreferencesManager::getWorkspacesPaths()
   if (PathsList.isEmpty())
   {
     PathsList.append(QString(openfluid::base::RuntimeEnvironment::instance()
-                             ->getUserDataPath(openfluid::config::WORKSPACE_SUBDIR).c_str()));
+                             ->getUserDataPath(openfluid::config::WORKSPACE_PATH).c_str()));
   }
 
   return PathsList;
@@ -402,7 +402,7 @@ QString PreferencesManager::getWorkspacePath()
 
 QString PreferencesManager::getProjectsPath()
 {
-  return getWorkspacePath()+"/"+QString::fromStdString(openfluid::config::PROJECTS_SUBDIR);
+  return getWorkspacePath()+"/"+QString::fromStdString(openfluid::config::PROJECTS_PATH);
 }
 
 

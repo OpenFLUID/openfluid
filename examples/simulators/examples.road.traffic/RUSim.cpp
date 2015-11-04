@@ -49,7 +49,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.road.traffic")
 DECLARE_NAME("Road Unit (RU) function transfert and stockage for cars");
 DECLARE_DESCRIPTION("");
 
-DECLARE_VERSION(openfluid::config::FULL_VERSION);
+DECLARE_VERSION(openfluid::config::VERSION_FULL);
 
 DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 

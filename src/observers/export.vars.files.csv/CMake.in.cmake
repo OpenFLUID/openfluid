@@ -8,7 +8,7 @@ SET(EXT_UIFILES export.vars.files.csv/EditFormatDialog.ui export.vars.files.csv/
                 export.vars.files.csv/CSVObsParamsWidget.ui)
 SET(EXT_INSTALL_ENABLED ON)
 SET(EXT_TRANSLATIONS_ENABLED OFF)
-SET(EXT_BINDIR ${BUILDEREXTS_OUTPUT_PATH})
+SET(EXT_BINDIR ${OFBUILD_DIST_BUILDEREXTS_DIR})
 SET(EXT_EXTRA_LINKS openfluid-ui-common openfluid-tools)
 SET(EXT_ID_SUFFIX "-parameterizationUI")
 

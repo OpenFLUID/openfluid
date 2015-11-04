@@ -47,11 +47,11 @@ TARGET_LINK_LIBRARIES(openfluid-devstudio-main
        
        
                       
-SET_TARGET_PROPERTIES(openfluid-devstudio-main PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
-                                        SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
-                                        LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+SET_TARGET_PROPERTIES(openfluid-devstudio-main PROPERTIES VERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}" 
+                                        SOVERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}"
+                                        LIBRARY_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
+                                        RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
+                                        ARCHIVE_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
                                         AUTOMOC ON
                                         COMPILE_DEFINITIONS "OPENFLUID_DLL"
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
@@ -65,7 +65,7 @@ ENDIF()
 
 ADD_EXECUTABLE(openfluid-devstudio ${DEVSTUDIO_GUI_OPTION} main.cpp ${DEVSTUDIO_WIN32RC})
 
-SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}"
+SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_BIN_DIR}"
                                                    AUTOMOC ON)
 
 
@@ -80,10 +80,10 @@ TARGET_LINK_LIBRARIES(openfluid-devstudio
                      )
                                    
 INSTALL(TARGETS openfluid-devstudio-main
-        RUNTIME DESTINATION ${BIN_INSTALL_PATH}
-        LIBRARY DESTINATION ${LIB_INSTALL_PATH}
-        ARCHIVE DESTINATION ${LIB_INSTALL_PATH})
+        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH}
+        LIBRARY DESTINATION ${OFBUILD_LIB_INSTALL_PATH}
+        ARCHIVE DESTINATION ${OFBUILD_LIB_INSTALL_PATH})
                
 INSTALL(TARGETS openfluid-devstudio
-        RUNTIME DESTINATION ${BIN_INSTALL_PATH})       
+        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH})       
       

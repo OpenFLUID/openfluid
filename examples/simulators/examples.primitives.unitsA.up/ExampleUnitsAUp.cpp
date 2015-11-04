@@ -48,7 +48,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.up")
   DECLARE_NAME("Example of data update on units of class A");
   DECLARE_DESCRIPTION("");
 
-  DECLARE_VERSION(openfluid::config::FULL_VERSION);
+  DECLARE_VERSION(openfluid::config::VERSION_FULL);
 
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 

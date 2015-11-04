@@ -243,7 +243,7 @@ IF(ENABLE_WARESDEV_BUILDER_INTEGRATION)
 ENDIF()  
 
 
-IF(OPENFLUID_ENABLE_MARKET AND ENABLE_MARKET_BUILDER_INTEGRATION)
+IF(OFBUILD_ENABLE_MARKET AND OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION)
   ADD_DEFINITIONS(-DENABLE_MARKET_INTEGRATION)
 ENDIF()  
 
@@ -278,18 +278,18 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-ui-waresdev
                       openfluid-waresdev)
 
-IF(OPENFLUID_ENABLE_MARKET)
+IF(OFBUILD_ENABLE_MARKET)
   TARGET_LINK_LIBRARIES(openfluid-builder-main
                         openfluid-ui-market
                         openfluid-market)
 ENDIF()
        
                       
-SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
-                                        SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
-                                        LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}" 
+                                        SOVERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}"
+                                        LIBRARY_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
+                                        RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
+                                        ARCHIVE_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
                                         AUTOMOC ON
                                         COMPILE_DEFINITIONS "OPENFLUID_DLL"
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
@@ -303,7 +303,7 @@ ENDIF()
 
 ADD_EXECUTABLE(openfluid-builder ${BUILDER_GUI_OPTION} main.cpp ${BUILDER_WIN32RC})
 
-SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}"
+SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_BIN_DIR}"
                                                    AUTOMOC ON)
 
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES OUTPUT_NAME ${OPENFLUID_BUILDER_APP})
@@ -323,19 +323,19 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-ui-waresdev
                       openfluid-waresdev)
 
-IF(OPENFLUID_ENABLE_MARKET)
+IF(OFBUILD_ENABLE_MARKET)
   TARGET_LINK_LIBRARIES(openfluid-builder
                         openfluid-ui-market)
 ENDIF()
                                    
 INSTALL(TARGETS openfluid-builder-main
-        RUNTIME DESTINATION ${BIN_INSTALL_PATH}
-        LIBRARY DESTINATION ${LIB_INSTALL_PATH}
-        ARCHIVE DESTINATION ${LIB_INSTALL_PATH})
+        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH}
+        LIBRARY DESTINATION ${OFBUILD_LIB_INSTALL_PATH}
+        ARCHIVE DESTINATION ${OFBUILD_LIB_INSTALL_PATH})
                
 INSTALL(TARGETS openfluid-builder
-        RUNTIME DESTINATION ${BIN_INSTALL_PATH})       
+        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH})       
                                    
-IF(OPENFLUID_ENABLE_TESTING)
+IF(OFBUILD_ENABLE_TESTING)
   ADD_SUBDIRECTORY(extensions/tests)
 ENDIF()         

@@ -55,7 +55,7 @@
     { \
       openfluid::builderext::BuilderExtensionSignature* Signature =\
         new openfluid::builderext::BuilderExtensionSignature(); \
-      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+      Signature->setABIVersion(openfluid::config::VERSION_FULL); \
       Signature->ID = (id); \
       Signature->Mode = (extmode);\
       Signature->Type = openfluid::builderext::TYPE_FEATURE;

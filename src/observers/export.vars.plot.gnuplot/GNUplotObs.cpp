@@ -78,7 +78,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.plot.gnuplot")
       "  persistent : set to 1 to set GNUplot persistent if run after simulation ends\n"
       );
 
-  DECLARE_VERSION(openfluid::config::FULL_VERSION);
+  DECLARE_VERSION(openfluid::config::VERSION_FULL);
   DECLARE_STATUS(openfluid::ware::STABLE);
 
 END_OBSERVER_SIGNATURE

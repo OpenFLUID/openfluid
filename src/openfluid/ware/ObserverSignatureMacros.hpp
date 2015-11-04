@@ -51,7 +51,7 @@
     OPENFLUID_PLUGIN openfluid::ware::ObserverSignature* WARESIGNATURE_PROC_DECL() \
     { \
       openfluid::ware::ObserverSignature* Signature = new openfluid::ware::ObserverSignature(); \
-      Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+      Signature->setABIVersion(openfluid::config::VERSION_FULL); \
       Signature->ID = (id);
 
 

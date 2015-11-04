@@ -133,9 +133,9 @@ bool ExamplesBuddy::run()
 {
   setOptionIfNotSet("selection","*");
   setOptionIfNotSet("sourcedir",openfluid::base::RuntimeEnvironment::instance()->getProvidedExamplesDir()+
-                                "/"+openfluid::config::PROJECTS_SUBDIR);
+                                "/"+openfluid::config::PROJECTS_PATH);
   setOptionIfNotSet("installdir",openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir()+"/"+
-                                 openfluid::config::PROJECTS_SUBDIR);
+                                 openfluid::config::PROJECTS_PATH);
   setOptionIfNotSet("force","0");
 
   if (m_Options["selection"] == "*")

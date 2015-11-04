@@ -69,7 +69,7 @@
 /**
   Macro for declaration of ABI version used to build the ware
 */
-#define DECLARE_SDKVERSION Signature->setABIVersion(openfluid::config::FULL_VERSION);
+#define DECLARE_SDKVERSION Signature->setABIVersion(openfluid::config::VERSION_FULL);
 
 
 #endif /* __OPENFLUID_WARE_WARESIGNATUREMACROS_HPP__ */
