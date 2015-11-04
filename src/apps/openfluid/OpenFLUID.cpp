@@ -171,7 +171,7 @@ void OpenFLUIDApp::printSimulatorsList(bool PrintErrors)
 
   for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
   {
-    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature!=nullptr)
+    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature)
     {
       std::cout << " - " << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
       OneAtLeast = true;
@@ -434,11 +434,9 @@ void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHa
 
 void OpenFLUIDApp::printSimulatorsReport(const std::string& Pattern)
 {
-
   std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
       openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures(Pattern).AvailablePlugins;
   std::string StatusStr;
-
 
   if (PlugContainers.size() > 0)
   {

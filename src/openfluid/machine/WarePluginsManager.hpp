@@ -317,6 +317,7 @@ class OPENFLUID_API WarePluginsManager
         TmpFiles = openfluid::tools::findFilesBySuffixAndExtension(PluginsPaths[i],
                                                                    getPluginFilenameSuffix(),
                                                                    openfluid::config::PLUGINS_EXT,false,true);
+
         for (j=0;j<TmpFiles.size();j++)
           PluginFiles.push_back(TmpFiles[j]);
       }
@@ -329,20 +330,18 @@ class OPENFLUID_API WarePluginsManager
         try
         {
           CurrentPlug = getWareSignature(PluginFiles[i]);
+
+          if (CurrentPlug && CurrentPlug->Verified)
+          {
+            if (Pattern.empty())
+              SearchResults.AvailablePlugins.push_back(CurrentPlug);
+            else if (openfluid::tools::matchWithWildcard(Pattern,CurrentPlug->Signature->ID))
+              SearchResults.AvailablePlugins.push_back(CurrentPlug);
+          }
         }
         catch (openfluid::base::FrameworkException& E)
         {
           SearchResults.ErroredFiles[E.getContext().at("pluginfullpath")] = E.getMessage();
-        }
-
-        if (CurrentPlug != nullptr && CurrentPlug->Verified)
-        {
-          if (Pattern != "")
-          {
-            if (openfluid::tools::matchWithWildcard(Pattern,CurrentPlug->Signature->ID))
-              SearchResults.AvailablePlugins.push_back(CurrentPlug);
-          }
-          else SearchResults.AvailablePlugins.push_back(CurrentPlug);
         }
       }
 
