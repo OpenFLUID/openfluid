@@ -154,46 +154,28 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
 
 void OpenFLUIDApp::printSimulatorsList(bool PrintErrors)
 {
-
   openfluid::machine::SimulatorPluginsManager::PluginsSearchResults SearchResults =
     openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();
-
-  std::cout << "Available simulators:" << std::endl;
-
-  bool OneAtLeast = false;
 
   for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
   {
     if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature)
-    {
-      std::cout << " - " << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
-      OneAtLeast = true;
-    }
+      std::cout << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
   }
-
-  if (!OneAtLeast)
-  {
-    std::cout << "  (none)" << std::endl;
-  }
-  std::cout << std::endl;
 
   if (PrintErrors && !SearchResults.ErroredFiles.empty())
   {
-    std::cout << "Errored simulators files:" << std::endl;
-
     for (auto& it : SearchResults.ErroredFiles)
-      std::cout << " - " << it.first <<  ": " << it.second << std::endl;
+      std::cerr << "Error on file " << it.first <<  ": " << it.second << std::endl;
   }
 
   std::cout.flush();
-
 }
 
 
@@ -207,33 +189,16 @@ void OpenFLUIDApp::printObserversList(bool PrintErrors)
   openfluid::machine::ObserverPluginsManager::PluginsSearchResults SearchResults =
     openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures();
 
-
-  std::cout << "Available observers:" << std::endl;
-
-  bool OneAtLeast = false;
-
   for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
   {
-    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature!=nullptr)
-    {
-      std::cout << "  - " << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
-      OneAtLeast = true;
-    }
+    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature)
+      std::cout << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
   }
-
-  if (!OneAtLeast)
-  {
-    std::cout << "  (none)" << std::endl;
-  }
-  std::cout << std::endl;
-
 
   if (PrintErrors && !SearchResults.ErroredFiles.empty())
   {
-    std::cout << "Errored observers files:" << std::endl;
-
     for (auto& it : SearchResults.ErroredFiles)
-      std::cout << it.first <<  ": " << it.second << std::endl;
+      std::cerr << "Error on file " << it.first <<  ": " << it.second << std::endl;
   }
 
   std::cout.flush();

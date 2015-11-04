@@ -45,6 +45,7 @@
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 
+
 namespace openfluid {
 namespace base {
 class RuntimeEnvironment;
