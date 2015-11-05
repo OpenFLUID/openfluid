@@ -55,16 +55,16 @@
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_connection)
+void checkConnection(const std::string& URL,
+                     const openfluid::utils::RESTClient::SSLConfiguration& SSLConfig)
 {
   openfluid::utils::FluidHubAPIClient FHClient;
-
-  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL)));
+  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(URL),SSLConfig));
 
   BOOST_REQUIRE(FHClient.isConnected());
   BOOST_REQUIRE_EQUAL(FHClient.getHubStatus().toStdString(),"testing");
   BOOST_REQUIRE_EQUAL(FHClient.getHubName().toStdString(),"fluidhub for testing");
-  BOOST_REQUIRE_EQUAL(FHClient.getHubURL().toStdString(),CONFIGTESTS_FLUIDHUB_URL);
+  BOOST_REQUIRE_EQUAL(FHClient.getHubURL().toStdString(),URL);
   BOOST_REQUIRE(!FHClient.getHubAPIVersion().isEmpty());
   BOOST_REQUIRE_EQUAL(FHClient.getHubCapabilities().size(),2);
 
@@ -92,12 +92,12 @@ BOOST_AUTO_TEST_CASE(check_connection)
 // =====================================================================
 // =====================================================================
 
-
-BOOST_AUTO_TEST_CASE(check_operations)
+void checkOperations(const std::string& URL,
+                     const openfluid::utils::RESTClient::SSLConfiguration& SSLConfig)
 {
   openfluid::utils::FluidHubAPIClient FHClient;
 
-  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL)));
+  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(URL),SSLConfig));
   BOOST_REQUIRE(FHClient.isConnected());
 
   {
@@ -337,12 +337,68 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
 
-  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL)));
+  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(URL),SSLConfig));
   BOOST_REQUIRE(FHClient.isConnected());
 
 
   FHClient.disconnect();
   BOOST_REQUIRE(!FHClient.isConnected());
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_http)
+{
+  if (!CONFIGTESTS_FLUIDHUB_URL_HTTP.empty())
+  {
+    std::cout << " ======== " << CONFIGTESTS_FLUIDHUB_URL_HTTP << " ========" << std::endl;
+
+    openfluid::utils::RESTClient Client;
+    Client.setBaseURL(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL_HTTP));
+
+    if (Client.getResource("/").isOK())
+    {
+      checkConnection(CONFIGTESTS_FLUIDHUB_URL_HTTP,openfluid::utils::RESTClient::SSLConfiguration());
+      checkOperations(CONFIGTESTS_FLUIDHUB_URL_HTTP,openfluid::utils::RESTClient::SSLConfiguration());
+    }
+    else
+      std::cout << "not reachable" << std::endl;
+  }
+  else
+    std::cout << "http URL is empty" << std::endl;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_https)
+{
+  openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
+  SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
+
+  if (!CONFIGTESTS_FLUIDHUB_URL_HTTPS.empty())
+  {
+    std::cout << " ======== " << CONFIGTESTS_FLUIDHUB_URL_HTTP << " ========" << std::endl;
+
+    openfluid::utils::RESTClient Client;
+    Client.setBaseURL(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL_HTTPS));
+    Client.setSSLConfiguration(SSLConfig);
+
+    if (Client.getResource("/").isOK())
+    {
+      checkConnection(CONFIGTESTS_FLUIDHUB_URL_HTTPS,SSLConfig);
+      checkOperations(CONFIGTESTS_FLUIDHUB_URL_HTTPS,SSLConfig);
+    }
+    else
+      std::cout << "not reachable" << std::endl;
+  }
+  else
+    std::cout << "https URL is empty" << std::endl;
 }
 
 
@@ -352,13 +408,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 int main(int argc, char *argv[])
 {
-  if (CONFIGTESTS_FLUIDHUB_URL.empty())
+  if (CONFIGTESTS_FLUIDHUB_URL_HTTP.empty())
     return 0;
 
   QCoreApplication app(argc, argv);
 
   openfluid::utils::RESTClient Client;
-  Client.setBaseURL(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL));
+  Client.setBaseURL(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL_HTTP));
 
   if (!Client.getResource("/").isOK())
   {

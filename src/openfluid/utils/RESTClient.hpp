@@ -40,6 +40,8 @@
 #define __OPENFLUID_UTILS_RESTCLIENT_HPP__
 
 
+#include <QSslSocket>
+
 #include <openfluid/dllexport.hpp>
 
 
@@ -98,10 +100,30 @@ class OPENFLUID_API RESTClient
         }
     };
 
+    class SSLConfiguration
+    {
+      private:
+
+        QSslSocket::PeerVerifyMode m_CertificateVerifyMode;
+
+      public:
+
+        SSLConfiguration() : m_CertificateVerifyMode(QSslSocket::AutoVerifyPeer)
+        { }
+
+        QSslSocket::PeerVerifyMode getCertificateVerifyMode() const
+        { return m_CertificateVerifyMode; }
+
+        void setCertificateVerifyMode(QSslSocket::PeerVerifyMode Mode)
+        { m_CertificateVerifyMode = Mode; }
+    };
+
 
   private:
 
     QString m_BaseURL;
+
+    SSLConfiguration m_SSLConfiguration;
 
     Reply performRequest(const QString& Path, const QString& Method, const QString& Data = "") const;
 
@@ -117,6 +139,12 @@ class OPENFLUID_API RESTClient
 
     QString getBaseURL() const
     { return m_BaseURL; }
+
+    void setSSLConfiguration(const SSLConfiguration& Config)
+    { m_SSLConfiguration = Config; }
+
+    SSLConfiguration getSSLConfiguration() const
+    { return m_SSLConfiguration; }
 
     Reply getResource(const QString& Path) const;
 

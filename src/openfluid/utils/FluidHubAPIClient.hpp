@@ -82,6 +82,8 @@ class OPENFLUID_API FluidHubAPIClient
 
     RESTClient m_RESTClient;
 
+    RESTClient::SSLConfiguration  m_SSLConfig;
+
     QString m_HubName;
 
     QString m_HubStatus;
@@ -108,9 +110,10 @@ class OPENFLUID_API FluidHubAPIClient
     /**
       Connects to the FluidHub given by the URL
       @param[in] URL the URL of the FluidHub to connect to
+      @param[in] SSLConfiguration the SSL configuration for the connection (if needed)
       @return true if the connection is OK, false otherwise
     */
-    bool connect(const QString& URL);
+    bool connect(const QString& URL, const RESTClient::SSLConfiguration& SSLConfig = RESTClient::SSLConfiguration());
 
     /**
       Disconnects from the connected FluidHub

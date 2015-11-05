@@ -41,15 +41,13 @@
 #include <QBuffer>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
+#include <QSslConfiguration>
 #include <QNetworkReply>
 #include <QEventLoop>
 
 #include <openfluid/utils/RESTClient.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
-
-// TODO to remove
-#include <iostream>
 
 namespace openfluid { namespace utils {
 
@@ -105,13 +103,19 @@ class RequestExecutionImpl : public QObject
       ~RequestExecutionImpl()
       { }
 
-      void run(const QString& URL, const QString& Method, const QString& Body)
+      void run(const QString& URL, const RESTClient::SSLConfiguration& SSLConfig,
+               const QString& Method, const QString& Body)
       {
         m_Reply.clear();
         m_DataBuffer.setData("");
 
         m_DataBuffer.setData(Body.toUtf8());
+
         QNetworkRequest Request(URL);
+
+        QSslConfiguration RequestSSLConfig = Request.sslConfiguration();
+        RequestSSLConfig.setPeerVerifyMode(SSLConfig.getCertificateVerifyMode());
+        Request.setSslConfiguration(RequestSSLConfig);
 
         m_Manager.sendCustomRequest(Request,Method.toUtf8(),&m_DataBuffer);
       }
@@ -145,7 +149,7 @@ RESTClient::Reply RESTClient::performRequest(const QString& Path, const QString&
 
   QString FullURL = m_BaseURL + Path;
 
-  RequestMan.run(FullURL, Method, Data);
+  RequestMan.run(FullURL, m_SSLConfiguration, Method, Data);
 
   QEventLoop Loop;
   QObject::connect(&RequestMan, SIGNAL(completed()), &Loop, SLOT(quit()));

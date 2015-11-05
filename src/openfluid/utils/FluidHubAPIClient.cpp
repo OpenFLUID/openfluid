@@ -152,6 +152,7 @@ void JSONObjectToDetailedWares(const rapidjson::Value& Obj,
 void FluidHubAPIClient::reset()
 {
   m_RESTClient.setBaseURL("");
+  m_RESTClient.setSSLConfiguration(RESTClient::SSLConfiguration());
   m_HubAPIVersion.clear();
   m_HubCapabilities.clear();
   m_HubName.clear();
@@ -190,13 +191,14 @@ QString FluidHubAPIClient::wareTypeToString(openfluid::ware::WareType Type)
 // =====================================================================
 
 
-bool FluidHubAPIClient::connect(const QString& URL)
+bool FluidHubAPIClient::connect(const QString& URL,const RESTClient::SSLConfiguration& SSLConfig)
 {
   RESTClient::Reply Reply;
   bool ValidNature = false;
 
   disconnect();
   m_RESTClient.setBaseURL(URL);
+  m_RESTClient.setSSLConfiguration(SSLConfig);
 
   Reply = m_RESTClient.getResource("/");
 

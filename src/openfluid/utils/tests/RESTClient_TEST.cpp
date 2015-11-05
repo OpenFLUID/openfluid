@@ -59,12 +59,9 @@
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_get)
+void checkGet(const openfluid::utils::RESTClient& Client)
 {
-  openfluid::utils::RESTClient Client;
   openfluid::utils::RESTClient::Reply Reply;
-
-  Client.setBaseURL(QString::fromStdString(CONFIGTESTS_RESTSERVICE_URL));
 
   Reply = Client.getResource("/users");
   std::cout << "GET /users : " << Reply.getStatusCode() << std::endl;
@@ -75,7 +72,7 @@ BOOST_AUTO_TEST_CASE(check_get)
   Reply = Client.getResource("/users/23");
   std::cout << "GET /users/23 : " << Reply.getStatusCode() << std::endl;
   std::cout << "  - " << Reply.getNetworkErrorCode() << ": " <<
-                         Reply.getNetworkErrorString().toStdString() << std::endl;
+               Reply.getNetworkErrorString().toStdString() << std::endl;
   BOOST_REQUIRE(!Reply.isOK());
   BOOST_REQUIRE_EQUAL(Reply.getStatusCode(),404);
 
@@ -91,10 +88,8 @@ BOOST_AUTO_TEST_CASE(check_get)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_post)
+void checkPost(const openfluid::utils::RESTClient& Client)
 {
-  openfluid::utils::RESTClient Client;
-
   BOOST_REQUIRE_THROW(Client.postResource("",""), openfluid::base::FrameworkException);
 }
 
@@ -103,10 +98,8 @@ BOOST_AUTO_TEST_CASE(check_post)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_put)
+void checkPut(const openfluid::utils::RESTClient& Client)
 {
-  openfluid::utils::RESTClient Client;
-
   BOOST_REQUIRE_THROW(Client.putResource("",""), openfluid::base::FrameworkException);
 }
 
@@ -115,10 +108,8 @@ BOOST_AUTO_TEST_CASE(check_put)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_patch)
+void checkPatch(const openfluid::utils::RESTClient& Client)
 {
-  openfluid::utils::RESTClient Client;
-
   BOOST_REQUIRE_THROW(Client.patchResource("",""), openfluid::base::FrameworkException);
 }
 
@@ -127,11 +118,70 @@ BOOST_AUTO_TEST_CASE(check_patch)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_delete)
+void checkDelete(const openfluid::utils::RESTClient& Client)
 {
-  openfluid::utils::RESTClient Client;
-
   BOOST_REQUIRE_THROW(Client.deleteResource("",""), openfluid::base::FrameworkException);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_http)
+{
+  if (!CONFIGTESTS_RESTSERVICE_URL_HTTP.empty())
+  {
+    std::cout << " ======== " << CONFIGTESTS_RESTSERVICE_URL_HTTP << " ========" << std::endl;
+    openfluid::utils::RESTClient Client;
+    Client.setBaseURL(QString::fromStdString(CONFIGTESTS_RESTSERVICE_URL_HTTP));
+
+    if (Client.getResource("/users").isOK())
+    {
+      checkGet(Client);
+      checkPost(Client);
+      checkPut(Client);
+      checkPatch(Client);
+      checkDelete(Client);
+    }
+    else
+      std::cout << "not reachable" << std::endl;
+  }
+  else
+    std::cout << "http URL is empty" << std::endl;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_https)
+{
+  if (!CONFIGTESTS_RESTSERVICE_URL_HTTPS.empty())
+  {
+    std::cout << " ======== " << CONFIGTESTS_RESTSERVICE_URL_HTTPS << " ========" << std::endl;
+
+    openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
+    SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
+
+    openfluid::utils::RESTClient Client;
+    Client.setBaseURL(QString::fromStdString(CONFIGTESTS_RESTSERVICE_URL_HTTPS));
+    Client.setSSLConfiguration(SSLConfig);
+
+    if (Client.getResource("/users").isOK())
+    {
+      checkGet(Client);
+      checkPost(Client);
+      checkPut(Client);
+      checkPatch(Client);
+      checkDelete(Client);
+    }
+    else
+      std::cout << "not reachable" << std::endl;
+  }
+  else
+    std::cout << "https URL is empty" << std::endl;
 }
 
 
@@ -141,19 +191,7 @@ BOOST_AUTO_TEST_CASE(check_delete)
 
 int main(int argc, char *argv[])
 {
-  if (CONFIGTESTS_RESTSERVICE_URL.empty())
-    return 0;
-
   QCoreApplication app(argc, argv);
-
-  openfluid::utils::RESTClient Client;
-  Client.setBaseURL(QString::fromStdString(CONFIGTESTS_RESTSERVICE_URL));
-
-  if (!Client.getResource("/users").isOK())
-  {
-    std::cout << "** Test not run due to failing connection to remote service **" << std::endl;
-    return 0;
-  }
 
   return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
 }

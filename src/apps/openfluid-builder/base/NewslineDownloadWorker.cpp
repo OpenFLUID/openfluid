@@ -73,9 +73,11 @@ NewslineDownloadWorker::~NewslineDownloadWorker()
 
 bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const QString& ShortLocale) const
 {
+  openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
+  SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
   openfluid::utils::FluidHubAPIClient FHClient;
 
-  if (FHClient.connect(BUILDER_NEWSLINE_SOURCEURL))
+  if (FHClient.connect(BUILDER_NEWSLINE_SOURCEURL,SSLConfig))
   {
     QString Content = FHClient.getNews(ShortLocale);
 

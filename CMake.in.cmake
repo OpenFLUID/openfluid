@@ -261,8 +261,10 @@ SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR)
 #SET(OFBUILD_TESTS_ENABLE_FORTRAN 1)
 
 
-SET(OFBUILD_TESTS_RESTSERVICE_URL "http://jsonplaceholder.typicode.com")
-SET(OFBUILD_TESTS_FLUIDHUB_URL "http://www.openfluid-project.org/resources/fluidhub-api/testing")
+SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTP "http://jsonplaceholder.typicode.com")
+SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTPS "https://jsonplaceholder.typicode.com")
+SET(OFBUILD_TESTS_FLUIDHUB_URL_HTTP "http://www.openfluid-project.org/resources/fluidhub-api/testing")
+SET(OFBUILD_TESTS_FLUIDHUB_URL_HTTPS "https://www.openfluid-project.org/resources/fluidhub-api/testing")
 
 
 ################### cppcheck ###################
