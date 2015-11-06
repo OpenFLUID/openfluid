@@ -126,8 +126,8 @@ font : bold;
       <widget class="QWidget" name="WareshubWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout_10">
         <item>
-         <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0,0,0,0,0">
-          <item row="0" column="5">
+         <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0,0,0,0,0,0">
+          <item row="0" column="6">
            <widget class="QPushButton" name="WareshubConnectButton">
             <property name="enabled">
              <bool>false</bool>
@@ -138,9 +138,15 @@ font : bold;
            </widget>
           </item>
           <item row="1" column="4">
-           <widget class="QLineEdit" name="PasswordLineEdit_2">
+           <widget class="QLineEdit" name="PasswordLineEdit">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
             </property>
            </widget>
           </item>
@@ -158,6 +164,9 @@ font : bold;
            <widget class="QLineEdit" name="UsernameLineEdit">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -197,10 +206,26 @@ font : bold;
             </property>
            </widget>
           </item>
-          <item row="0" column="2" colspan="3">
+          <item row="1" column="5">
+           <widget class="QCheckBox" name="SslVerifyCheckBox">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Ssl verify</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" colspan="4">
            <widget class="QLineEdit" name="WareshubUrlLineEdit">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -357,6 +382,21 @@ font : bold;
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>PackageRadioButton</tabstop>
+  <tabstop>PackagePathButton</tabstop>
+  <tabstop>WareshubRadioButton</tabstop>
+  <tabstop>WareshubUrlLineEdit</tabstop>
+  <tabstop>UsernameLineEdit</tabstop>
+  <tabstop>PasswordLineEdit</tabstop>
+  <tabstop>SslVerifyCheckBox</tabstop>
+  <tabstop>WareshubConnectButton</tabstop>
+  <tabstop>WaresTabWidget</tabstop>
+  <tabstop>SimListWidget</tabstop>
+  <tabstop>ButtonBox</tabstop>
+  <tabstop>ExtListWidget</tabstop>
+  <tabstop>ObsListWidget</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -466,7 +506,7 @@ font : bold;
      <y>126</y>
     </hint>
     <hint type="destinationlabel">
-     <x>374</x>
+     <x>325</x>
      <y>155</y>
     </hint>
    </hints>
@@ -474,7 +514,7 @@ font : bold;
   <connection>
    <sender>WareshubRadioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>PasswordLineEdit_2</receiver>
+   <receiver>PasswordLineEdit</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -500,6 +540,38 @@ font : bold;
     <hint type="destinationlabel">
      <x>139</x>
      <y>78</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>WareshubRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>SslVerifyCheckBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>35</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>558</x>
+     <y>161</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>WareshubRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>InformationWidget</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>60</x>
+     <y>202</y>
     </hint>
    </hints>
   </connection>

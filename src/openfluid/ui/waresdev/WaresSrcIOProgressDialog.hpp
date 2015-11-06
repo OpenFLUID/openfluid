@@ -45,8 +45,7 @@
 
 #include <openfluid/dllexport.hpp>
 
-namespace Ui {
-class WaresSrcIOProgressDialog;
+namespace Ui { class WaresSrcIOProgressDialog;
 }
 
 
@@ -75,7 +74,7 @@ class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
 
   public:
 
-    WaresSrcIOProgressDialog(const QString& Description, QWidget* Parent);
+    WaresSrcIOProgressDialog(const QString& Description, bool IsMaxUndefined, QWidget* Parent);
 
 };
 

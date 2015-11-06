@@ -343,8 +343,6 @@ void WaresDevImportPackage::fetchInformation()
       m_WaresPaths << m_PackageTempDir.absoluteFilePath("%1/%2").arg(WareTypeFolder).arg(WareFolder);
   }
 
-  emit progressed(100);
-
   if (mp_Process->exitCode())
   {
     emit error("Fetching information failed");

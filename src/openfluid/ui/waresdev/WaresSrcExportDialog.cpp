@@ -186,7 +186,7 @@ void WaresSrcExportDialog::exportToPackage()
                                                  ui->PackagersLineEdit->text(),
                                                  ui->PackageDescriptionTextEdit->toPlainText());
 
-  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Compression of wares sources:"), this);
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Compression of wares sources:"), false, this);
 
   Pkg.moveToThread(Thread);
 

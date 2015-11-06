@@ -49,7 +49,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, QWidget* Parent) :
+WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, bool IsMaxUndefined, QWidget* Parent) :
     QDialog(Parent), ui(new Ui::WaresSrcIOProgressDialog)
 {
   ui->setupUi(this);
@@ -57,6 +57,9 @@ WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, Q
   ui->DescriptionLabel->setText(Description);
 
   ui->buttonBox->setEnabled(false);
+
+  if (IsMaxUndefined)
+    ui->progressBar->setMaximum(0);
 }
 
 
@@ -66,6 +69,8 @@ WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, Q
 
 void WaresSrcIOProgressDialog::writeInfo(const QString& Message)
 {
+  ui->textEdit->append("\n");
+
   ui->textEdit->append(Message);
 
   ui->textEdit->ensureCursorVisible();
@@ -78,6 +83,8 @@ void WaresSrcIOProgressDialog::writeInfo(const QString& Message)
 
 void WaresSrcIOProgressDialog::writeError(const QString& Message)
 {
+  ui->textEdit->append("\n");
+
   QTextCursor Cursor = ui->textEdit->textCursor();
 
   QTextCharFormat OriginalFormat = Cursor.charFormat();
@@ -107,6 +114,8 @@ void WaresSrcIOProgressDialog::finish(bool Ok)
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(reject()));
 
   ui->buttonBox->setEnabled(true);
+  ui->progressBar->setMaximum(100);
+  progress(100);
 }
 
 
@@ -116,7 +125,7 @@ void WaresSrcIOProgressDialog::finish(bool Ok)
 
 void WaresSrcIOProgressDialog::finishAndQuit(bool Ok)
 {
-  if(Ok)
+  if (Ok)
     accept();
   else
     finish(Ok);

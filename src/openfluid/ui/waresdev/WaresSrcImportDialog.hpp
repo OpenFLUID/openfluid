@@ -47,6 +47,8 @@
 #include <QButtonGroup>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace Ui {
@@ -55,6 +57,7 @@ class WaresSrcImportDialog;
 
 namespace openfluid { namespace waresdev {
 class WaresDevImportPackage;
+class WaresHubImportWorker;
 } }
 
 
@@ -70,19 +73,28 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
 
     QButtonGroup m_SourceBtGroup;
 
-    QMap<std::string, QListWidget*> m_ListWidgetsByWareTypeName;
+    std::map<openfluid::ware::WareType, QListWidget*> m_ListWidgetsByWareType;
 
-    openfluid::waresdev::WaresDevImportPackage* mp_ImportFilePkg = 0;
+    std::map<QString, openfluid::ware::WareType> m_WareTypeConverter = {
+        { QString::fromStdString(openfluid::config::SIMULATORS_PATH), openfluid::ware::WareType::SIMULATOR },
+        { QString::fromStdString(openfluid::config::OBSERVERS_PATH), openfluid::ware::WareType::OBSERVER },
+        { QString::fromStdString(openfluid::config::BUILDEREXTS_PATH), openfluid::ware::WareType::BUILDEREXT } };
 
-    openfluid::waresdev::WaresDevImportPackage* mp_ImportGitPkg = 0;
+    openfluid::waresdev::WaresDevImportPackage* mp_ImportFilePkg = nullptr;
+
+    openfluid::waresdev::WaresHubImportWorker* mp_WaresHubImportWorker = nullptr;
 
     void setMessage(const QString& Msg = "");
 
-    void updatePackageInfo(openfluid::waresdev::WaresDevImportPackage* ImportPackage);
+    void updatePackageInfo();
 
-    void updateWaresList(openfluid::waresdev::WaresDevImportPackage* ImportPackage);
+    void updatePackageWaresList();
+
+    void updateWaresHubWaresList();
 
     QStringList getSelectedWares();
+
+    std::map<openfluid::ware::WareType, QStringList> getSelectedWaresByType();
 
   private slots :
 
@@ -94,11 +106,15 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
 
     void onWareshubConnectButtonClicked();
 
-    void importPackage();
+    void import();
+
+    void connectionInfoChanged();
 
   public:
 
     WaresSrcImportDialog(QWidget* Parent);
+
+    ~WaresSrcImportDialog();
 };
 
 } } } //namespaces

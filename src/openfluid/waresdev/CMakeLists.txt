@@ -1,14 +1,14 @@
 
 
 
-INCLUDE_DIRECTORIES(${QT_INCLUDES})
+INCLUDE_DIRECTORIES(${QT_INCLUDES} ${LIBGIT2_INCLUDE_DIR})
 
 
 FILE(GLOB OPENFLUID_WARESDEV_CPP WareSrcManager.cpp WareSrcContainer.cpp OStreamMsgStream.cpp
-                                 WareSrcFactory.cpp WareSrcMsgParser.cpp WaresDevPackage.cpp)
+                                 WareSrcFactory.cpp WareSrcMsgParser.cpp WaresDevPackage.cpp WaresHubImportWorker.cpp)
 
 FILE(GLOB OPENFLUID_WARESDEV_HPP WareSrcManager.hpp WareSrcContainer.hpp WareSrcMsgStream.hpp OStreamMsgStream.cpp
-                                 WareSrcFactory.hpp WareSrcMsgParser.hpp WaresDevPackage.hpp)
+                                 WareSrcFactory.hpp WareSrcMsgParser.hpp WaresDevPackage.hpp WaresHubImportWorker.hpp)
 
 
 ADD_LIBRARY(openfluid-waresdev SHARED ${OPENFLUID_WARESDEV_CPP} ${OPENFLUID_WARESDEV_HPP})
@@ -26,6 +26,7 @@ TARGET_LINK_LIBRARIES(openfluid-waresdev
                       openfluid-base
                       openfluid-utils
                       ${QT_QTCORE_LIBRARIES}
+                      ${LIBGIT2_LIBRARIES} 
                      )
 
 
