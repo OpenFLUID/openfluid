@@ -1494,5 +1494,30 @@ void PreferencesManager::setWaresdevShowCommandEnv(const QString& Name, bool Ena
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isSslNoVerify()
+{
+  return mp_ConfFile->value("openfluid.waresdev.commands/sslNoVerify", false).toBool();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setSslNoVerify(bool NoVerify)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.commands/sslNoVerify", NoVerify);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 } } //namespaces
 

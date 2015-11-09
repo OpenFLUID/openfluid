@@ -40,9 +40,10 @@
 #include <QFileDialog>
 #include <QThread>
 
-#include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
+#include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
 #include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
 #include <openfluid/ui/config.hpp>
 
@@ -66,6 +67,8 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   m_SourceBtGroup.addButton(ui->WareshubRadioButton);
   m_SourceBtGroup.setExclusive(true);
 
+  ui->SslNoVerifyCheckBox->setChecked(openfluid::base::PreferencesManager::instance()->isSslNoVerify());
+
   connect(&m_SourceBtGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onSourceChanged(QAbstractButton*)));
 
   connect(ui->PackagePathButton, SIGNAL(clicked()), this, SLOT(onPackagePathButtonClicked()));
@@ -76,7 +79,7 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   connect(ui->WareshubUrlLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(connectionInfoChanged()));
   connect(ui->UsernameLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(connectionInfoChanged()));
   connect(ui->PasswordLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(connectionInfoChanged()));
-  connect(ui->SslVerifyCheckBox, SIGNAL(stateChanged(int)), this, SLOT(connectionInfoChanged()));
+  connect(ui->SslNoVerifyCheckBox, SIGNAL(stateChanged(int)), this, SLOT(connectionInfoChanged()));
 
   for (const auto& Pair : m_ListWidgetsByWareType)
     connect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
@@ -266,7 +269,7 @@ void WaresSrcImportDialog::onWareshubConnectButtonClicked()
     mp_WaresHubImportWorker = new openfluid::waresdev::WaresHubImportWorker(WaresHubUrl,
                                                                             ui->UsernameLineEdit->text(),
                                                                             ui->PasswordLineEdit->text(),
-                                                                            ui->SslVerifyCheckBox->isChecked());
+                                                                            ui->SslNoVerifyCheckBox->isChecked());
 
     mp_WaresHubImportWorker->moveToThread(Thread);
 

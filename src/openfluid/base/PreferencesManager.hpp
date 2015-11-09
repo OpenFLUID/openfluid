@@ -301,6 +301,9 @@ class OPENFLUID_API PreferencesManager
 
     void setWaresdevShowCommandEnv(const QString& Name, bool Enabled);
 
+    bool isSslNoVerify();
+
+    void setSslNoVerify(bool NoVerify);
 
 };
 

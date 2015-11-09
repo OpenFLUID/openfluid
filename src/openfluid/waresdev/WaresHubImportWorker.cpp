@@ -57,9 +57,9 @@ int CertCheckNb;
 
 
 WaresHubImportWorker::WaresHubImportWorker(const QString& WareshubUrl, const QString& Username,
-  const QString& Password, bool SslVerify) :
+  const QString& Password, bool SslNoVerify) :
     mp_WareshubClient(new openfluid::utils::FluidHubAPIClient()), m_WaresHubUrl(WareshubUrl), m_Username(Username),
-        m_Password(Password), m_SslVerify(SslVerify)
+        m_Password(Password), m_SslNoVerify(SslNoVerify)
 {
 
 }
@@ -116,7 +116,7 @@ bool WaresHubImportWorker::connect()
   m_AvailableWaresDetailsByIDByType.clear();
 
   openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
-  if (!m_SslVerify)
+  if (m_SslNoVerify)
     SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
 
   bool Ok = mp_WareshubClient->connect(m_WaresHubUrl, SSLConfig);
@@ -189,7 +189,7 @@ bool WaresHubImportWorker::clone()
   opts.fetch_opts.callbacks.payload = &user_pass;
   opts.fetch_opts.callbacks.credentials = git_cred_userpass;
 
-  if (!m_SslVerify)
+  if (m_SslNoVerify)
     opts.fetch_opts.callbacks.certificate_check = certificateCheckCb;
 
   opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE;

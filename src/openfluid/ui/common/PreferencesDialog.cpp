@@ -177,7 +177,10 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   connect(ui->DetectQtDevButton,SIGNAL(clicked()),this,SLOT(detectQtDevToolsMinGW()));
 #endif
 
-
+  if(Mode == MODE_DEVSTUDIO || Mode == MODE_FULL)
+    connect(ui->SslNoVerifyCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateDevSslNoVerify(bool)));
+  else
+    ui->GitGroupBox->setVisible(false);
 
   connect(ui->PrefsTreeWidget,
           SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
@@ -265,6 +268,7 @@ void PreferencesDialog::initialize()
   ui->ConfigOptionsEdit->setText(PrefsMan->getWaresdevConfigOptions());
   ui->BuildPathEnvEdit->setText(PrefsMan->getWaresdevBuildEnv("PATH"));
   ui->ShowPathCheckBox->setChecked(PrefsMan->isWaresdevShowCommandEnv("PATH"));
+  ui->SslNoVerifyCheckBox->setChecked(PrefsMan->isSslNoVerify());
 
   // Code editor
   intializeTextEditorSettings();
@@ -894,6 +898,16 @@ void PreferencesDialog::updateDevBuildPATH()
 void PreferencesDialog::updateDevShowPATH(bool Enabled)
 {
   openfluid::base::PreferencesManager::instance()->setWaresdevShowCommandEnv("PATH",Enabled);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateDevSslNoVerify(bool NoVerify)
+{
+  openfluid::base::PreferencesManager::instance()->setSslNoVerify(NoVerify);
 }
 
 

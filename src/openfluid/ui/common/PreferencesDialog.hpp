@@ -152,6 +152,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void updateDevShowPATH(bool Enabled);
 
+    void updateDevSslNoVerify(bool NoVerify);
+
     void detectQtDevToolsMinGW();
 
     void applyTextEditorSettings();

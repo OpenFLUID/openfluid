@@ -122,9 +122,9 @@ BOOST_AUTO_TEST_CASE(connect_https_fails)
   BOOST_CHECK_EQUAL(W.connect(), false);
 }
 
-BOOST_AUTO_TEST_CASE(connect_https_sslverifyFalse_ok)
+BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_ok)
 {
-  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "", "", false);
+  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "", "", true);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
 }
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(ware_list_http_ok)
 
 BOOST_AUTO_TEST_CASE(ware_list_https_ok)
 {
-  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "", "", false);
+  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "", "", true);
   W.connect();
   BOOST_CHECK(!W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).empty());
 }
@@ -193,7 +193,7 @@ BOOST_FIXTURE_TEST_CASE(clone_https_default_fails,F)
 BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 {
   openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "wrongname",
-                                              "wrongpass", false);
+                                              "wrongpass", true);
   W.connect();
 
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
@@ -207,7 +207,7 @@ BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 //BOOST_FIXTURE_TEST_CASE(clone_https_sslverify_fails,F)
 //{
 //  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "rightuser",
-//                                              "rightpwd", true);
+//                                              "rightpwd", false);
 //  W.connect();
 //
 //  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
@@ -221,7 +221,7 @@ BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 //BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
 //{
 //  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "rightuser",
-//                                              "rightpwd", false);
+//                                              "rightpwd", true);
 //  W.connect();
 //
 //  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });

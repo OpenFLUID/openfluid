@@ -73,7 +73,7 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
 
     QString m_Password;
 
-    bool m_SslVerify;
+    bool m_SslNoVerify;
 
     WaresDetailsByIDByType_t m_AvailableWaresDetailsByIDByType;
 
@@ -84,7 +84,7 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
   public:
 
     WaresHubImportWorker(const QString& WareshubUrl, const QString& Username = "", const QString& Password = "",
-      bool SslVerify = true);
+      bool SslNoVerify = false);
 
     ~WaresHubImportWorker();
 

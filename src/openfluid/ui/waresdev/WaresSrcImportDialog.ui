@@ -206,19 +206,6 @@ font : bold;
             </property>
            </widget>
           </item>
-          <item row="1" column="5">
-           <widget class="QCheckBox" name="SslVerifyCheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Ssl verify</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="2" colspan="4">
            <widget class="QLineEdit" name="WareshubUrlLineEdit">
             <property name="enabled">
@@ -226,6 +213,16 @@ font : bold;
             </property>
             <property name="text">
              <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5" colspan="2">
+           <widget class="QCheckBox" name="SslNoVerifyCheckBox">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Deactivate ssl verification</string>
             </property>
            </widget>
           </item>
@@ -389,7 +386,7 @@ font : bold;
   <tabstop>WareshubUrlLineEdit</tabstop>
   <tabstop>UsernameLineEdit</tabstop>
   <tabstop>PasswordLineEdit</tabstop>
-  <tabstop>SslVerifyCheckBox</tabstop>
+  <tabstop>SslNoVerifyCheckBox</tabstop>
   <tabstop>WareshubConnectButton</tabstop>
   <tabstop>WaresTabWidget</tabstop>
   <tabstop>SimListWidget</tabstop>
@@ -546,7 +543,7 @@ font : bold;
   <connection>
    <sender>WareshubRadioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>SslVerifyCheckBox</receiver>
+   <receiver>SslNoVerifyCheckBox</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
