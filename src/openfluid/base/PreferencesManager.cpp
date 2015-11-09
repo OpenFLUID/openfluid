@@ -1498,7 +1498,7 @@ void PreferencesManager::setWaresdevShowCommandEnv(const QString& Name, bool Ena
 // =====================================================================
 
 
-bool PreferencesManager::isSslNoVerify()
+bool PreferencesManager::isWaresdevSslNoVerify()
 {
   return mp_ConfFile->value("openfluid.waresdev.commands/sslNoVerify", false).toBool();
 }
@@ -1508,9 +1508,51 @@ bool PreferencesManager::isSslNoVerify()
 // =====================================================================
 
 
-void PreferencesManager::setSslNoVerify(bool NoVerify)
+void PreferencesManager::setWaresdevSslNoVerify(bool NoVerify)
 {
   mp_ConfFile->setValue("openfluid.waresdev.commands/sslNoVerify", NoVerify);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::getWaresdevImportWaresHubLastUrl()
+{
+  return mp_ConfFile->value("openfluid.waresdev.import/last_wareshub_url", "").toString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevImportWaresHubLastUrl(const QString& Url)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.import/last_wareshub_url", Url);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::getWaresdevImportWaresHubLastUsername()
+{
+  return mp_ConfFile->value("openfluid.waresdev.import/last_wareshub_username", "").toString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevImportWaresHubLastUsername(const QString& Username)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.import/last_wareshub_username", Username);
   mp_ConfFile->sync();
 }
 

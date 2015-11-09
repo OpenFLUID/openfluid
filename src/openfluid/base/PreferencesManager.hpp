@@ -301,10 +301,17 @@ class OPENFLUID_API PreferencesManager
 
     void setWaresdevShowCommandEnv(const QString& Name, bool Enabled);
 
-    bool isSslNoVerify();
+    bool isWaresdevSslNoVerify();
 
-    void setSslNoVerify(bool NoVerify);
+    void setWaresdevSslNoVerify(bool NoVerify);
 
+    QString getWaresdevImportWaresHubLastUrl();
+
+    void setWaresdevImportWaresHubLastUrl(const QString& Url);
+
+    QString getWaresdevImportWaresHubLastUsername();
+
+    void setWaresdevImportWaresHubLastUsername(const QString& Username);
 };
 
 } } //namespaces

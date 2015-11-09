@@ -67,7 +67,11 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   m_SourceBtGroup.addButton(ui->WareshubRadioButton);
   m_SourceBtGroup.setExclusive(true);
 
-  ui->SslNoVerifyCheckBox->setChecked(openfluid::base::PreferencesManager::instance()->isSslNoVerify());
+  ui->SslNoVerifyCheckBox->setChecked(openfluid::base::PreferencesManager::instance()->isWaresdevSslNoVerify());
+  ui->WareshubUrlLineEdit->setText(
+      openfluid::base::PreferencesManager::instance()->getWaresdevImportWaresHubLastUrl());
+  ui->UsernameLineEdit->setText(
+      openfluid::base::PreferencesManager::instance()->getWaresdevImportWaresHubLastUsername());
 
   connect(&m_SourceBtGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onSourceChanged(QAbstractButton*)));
 
@@ -295,6 +299,9 @@ void WaresSrcImportDialog::onWareshubConnectButtonClicked()
   updateWaresHubWaresList();
 
   ui->WareshubConnectButton->setText(tr("Connect"));
+
+  openfluid::base::PreferencesManager::instance()->setWaresdevImportWaresHubLastUrl(ui->WareshubUrlLineEdit->text());
+  openfluid::base::PreferencesManager::instance()->setWaresdevImportWaresHubLastUsername(ui->UsernameLineEdit->text());
 }
 
 
