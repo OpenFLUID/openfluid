@@ -36,8 +36,7 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_polygonedge
 #include <boost/test/unit_test.hpp>
@@ -51,6 +50,7 @@
 #include <geos/geom/GeometryFactory.h>
 #include <openfluid/core/IntegerValue.hpp>
 #include <openfluid/core/StringValue.hpp>
+#include <openfluid/base/Environment.hpp>
 
 
 // =====================================================================
@@ -173,3 +173,10 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 // =====================================================================
 // =====================================================================
 
+
+int main(int argc, char *argv[])
+{
+  openfluid::base::Environment::init();
+
+  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
+}

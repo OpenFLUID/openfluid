@@ -37,7 +37,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 
 #include "builderconfig.hpp"
 
@@ -114,7 +114,8 @@ QVariant ModelItemGraphics::itemChange(GraphicsItemChange Change,
 {
   if (m_Initialized && Change == QGraphicsItem::ItemPositionChange)
   {
-    openfluid::base::ProjectManager::instance()->setConfigValue("builder.model.graphicalview",m_ID,pos().toPoint());
+    openfluid::base::RunContextManager::instance()
+      ->setProjectConfigValue("builder.model.graphicalview",m_ID,pos().toPoint());
 
     foreach (ConnectorGraphics* Conn, m_Connectors)
     {

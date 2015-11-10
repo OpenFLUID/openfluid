@@ -47,8 +47,8 @@
 
 #include <openfluid/ui/common/RunSimulationDialog.hpp>
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/Environment.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/ModelInstance.hpp>

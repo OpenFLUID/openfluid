@@ -49,7 +49,7 @@
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>
 #include <openfluid/config.hpp>
 
@@ -851,8 +851,7 @@ bool Sim2DocBuddy::run()
 #if defined(OPENFLUID_OS_UNIX)
 
   setOptionIfNotSet("tplfile",
-                    openfluid::base::RuntimeEnvironment::instance()
-                    ->getCommonResourceFilePath(openfluid::config::SIM2DOC_TPLFILE_NAME));
+                    openfluid::base::Environment::getCommonResourcesFullPath(openfluid::config::SIM2DOC_TPLFILE_NAME));
   setOptionIfNotSet("outputdir",openfluid::tools::Filesystem::currentPath());
   setOptionIfNotSet("pdf","0");
   setOptionIfNotSet("html","0");

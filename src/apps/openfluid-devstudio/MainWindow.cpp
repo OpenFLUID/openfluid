@@ -57,6 +57,7 @@
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 
@@ -197,7 +198,7 @@ MainWindow::~MainWindow()
 {
   openfluid::waresdev::WareSrcManager::kill();
   openfluid::base::PreferencesManager::kill();
-  openfluid::base::RuntimeEnvironment::kill();
+  openfluid::base::RunContextManager::kill();
   delete ui;
 }
 

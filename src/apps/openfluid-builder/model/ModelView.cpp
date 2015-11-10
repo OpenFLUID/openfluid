@@ -38,8 +38,7 @@
  */
 
 
-#include <openfluid/base/ProjectManager.hpp>
-
+#include <openfluid/base/RunContextManager.hpp>
 #include "ModelView.hpp"
 
 #include <QWheelEvent>
@@ -135,8 +134,9 @@ void ModelView::exportSceneAsSVG()
     SvgGen.setSize(QSize((int)ExportRect.width(),
                          (int)ExportRect.height()));
     SvgGen.setViewBox(QRectF(0,0,ExportRect.width(),ExportRect.height()));
-    SvgGen.setTitle(QString::fromStdString(openfluid::base::ProjectManager::instance()->getName()));
-    SvgGen.setDescription(QString::fromStdString(openfluid::base::ProjectManager::instance()->getDescription()));
+    SvgGen.setTitle(QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectName()));
+    SvgGen.setDescription(QString::fromStdString(openfluid::base::RunContextManager::instance()
+                            ->getProjectDescription()));
 
     QPainter Painter(&SvgGen);
     scene()->render(&Painter);

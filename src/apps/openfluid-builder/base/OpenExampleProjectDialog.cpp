@@ -37,19 +37,18 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <QPushButton>
 #include <QDir>
 
 #include <openfluid/config.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include "ui_OpenExampleProjectDialog.h"
 #include "OpenExampleProjectDialog.hpp"
 
 #include "AppTools.hpp"
-#include <openfluid/ui/config.hpp>
 
 
 OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
@@ -64,7 +63,7 @@ OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
   openfluid::buddies::ExamplesBuddy(&Listener).run();
   QApplication::restoreOverrideCursor();
 
-  m_ProjectsRootPath = QString(openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir().c_str()) +
+  m_ProjectsRootPath = QString(openfluid::base::Environment::getUserExamplesDir().c_str()) +
                        QString("/") +
                        QString(openfluid::config::PROJECTS_PATH.c_str());
 
@@ -77,7 +76,7 @@ OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
   {
     QString CurrentFullDir(m_ProjectsRootPath+"/"+ExamplesDirs[i]);
 
-    if (openfluid::base::ProjectManager::isProject(CurrentFullDir.toStdString()))
+    if (openfluid::base::RunContextManager::isProject(CurrentFullDir.toStdString()))
       ui->ProjectsListWidget->addItem(ExamplesDirs[i]);
   }
 

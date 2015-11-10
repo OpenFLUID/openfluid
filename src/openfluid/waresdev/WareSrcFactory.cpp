@@ -40,7 +40,7 @@
 
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/config.hpp>
 
 #include <QObject>
@@ -59,6 +59,8 @@ namespace openfluid { namespace waresdev {
 WareSrcFactory::WareSrcFactory(openfluid::ware::WareType Type) :
     m_WareId("")
 {
+  openfluid::base::Environment::init();
+
   QString TypeSubDir;
 
   switch (Type)
@@ -78,7 +80,7 @@ WareSrcFactory::WareSrcFactory(openfluid::ware::WareType Type) :
 
   m_SharedTemplatesDir = QDir(
       QString("%1/%2/templates").arg(
-          QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix())).arg(
+          QString::fromStdString(openfluid::base::Environment::getInstallPrefix())).arg(
           QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
   m_TypedTemplatesDir = QDir(m_SharedTemplatesDir.absoluteFilePath(TypeSubDir));
 

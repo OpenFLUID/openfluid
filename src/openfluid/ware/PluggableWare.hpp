@@ -44,7 +44,6 @@
 #include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/ware/WareSignature.hpp>
 
 
@@ -90,6 +89,7 @@ namespace openfluid { namespace ware {
     } \
   }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -101,7 +101,7 @@ class OPENFLUID_API PluggableWare
     /**
       Ware execution environment
     */
-    const openfluid::base::EnvironmentProperties* mp_WareEnv;
+    const openfluid::core::MapValue* mp_WareEnv;
 
 
     /**
@@ -166,7 +166,7 @@ class OPENFLUID_API PluggableWare
 
     virtual ~PluggableWare();
 
-    void linkToRunEnvironment(const openfluid::base::EnvironmentProperties* Env)
+    void linkToRunEnvironment(const openfluid::core::MapValue* Env)
     {
       mp_WareEnv = Env;
     };

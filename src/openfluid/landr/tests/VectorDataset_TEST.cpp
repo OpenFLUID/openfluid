@@ -49,7 +49,7 @@
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <geos/geom/Geometry.h>
 
@@ -78,6 +78,7 @@ void deleteIfExists(std::string Path)
 
 BOOST_AUTO_TEST_CASE(check_constructor_empty)
 {
+  openfluid::base::Environment::init();
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       "test.shp");
@@ -105,6 +106,7 @@ BOOST_AUTO_TEST_CASE(check_constructor_empty)
 
 BOOST_AUTO_TEST_CASE(check_constructor_WrongVectorFormat)
 {
+  openfluid::base::Environment::init();
 
   BOOST_CHECK_THROW(
       new openfluid::landr::VectorDataset(CONFIGTESTS_INPUT_MISCDATA_DIR +"/GeoVectorValue/SU.gml"),
@@ -135,6 +137,8 @@ BOOST_AUTO_TEST_CASE(check_constructor_WrongVectorFormat)
 
 BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                         "landr/SU.shp");
 
@@ -161,6 +165,8 @@ BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
 
 BOOST_AUTO_TEST_CASE(check_copyToDisk)
 {
+  openfluid::base::Environment::init();
+
   std::string NewPath = openfluid::core::GeoValue::computeAbsolutePath(
       CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp");
 
@@ -200,6 +206,8 @@ BOOST_AUTO_TEST_CASE(check_copyToDisk)
 
 BOOST_AUTO_TEST_CASE(check_Properties)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue Value(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
@@ -224,6 +232,8 @@ BOOST_AUTO_TEST_CASE(check_Properties)
 
 BOOST_AUTO_TEST_CASE(check_addField)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue Value(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
@@ -248,6 +258,8 @@ BOOST_AUTO_TEST_CASE(check_addField)
 
 BOOST_AUTO_TEST_CASE(check_parse)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue Value(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
@@ -311,6 +323,8 @@ BOOST_AUTO_TEST_CASE(check_parse)
 
 BOOST_AUTO_TEST_CASE(check_Geometry_Properties)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue ValuePolyg(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
@@ -354,6 +368,8 @@ BOOST_AUTO_TEST_CASE(check_Geometry_Properties)
 
 BOOST_AUTO_TEST_CASE(check_setIndexIntField)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue Value(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
@@ -383,6 +399,8 @@ BOOST_AUTO_TEST_CASE(check_setIndexIntField)
 
 BOOST_AUTO_TEST_CASE(check_envelope)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue Value(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
@@ -407,6 +425,8 @@ BOOST_AUTO_TEST_CASE(check_envelope)
 
 BOOST_AUTO_TEST_CASE(check_findOverlap)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue ValueSU(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_overlap.shp");
 
@@ -440,6 +460,8 @@ BOOST_AUTO_TEST_CASE(check_findOverlap)
 
 BOOST_AUTO_TEST_CASE(check_findGap)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue ValueSU(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
 
@@ -470,6 +492,8 @@ BOOST_AUTO_TEST_CASE(check_findGap)
 
 BOOST_AUTO_TEST_CASE(check_checkTopology)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue ValueSU(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
 
@@ -503,6 +527,8 @@ BOOST_AUTO_TEST_CASE(check_checkTopology)
 
 BOOST_AUTO_TEST_CASE(check_snapVertices)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue ValueRS(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "RS_To_Snap.shp");
 
@@ -551,6 +577,8 @@ BOOST_AUTO_TEST_CASE(check_snapVertices)
 
 BOOST_AUTO_TEST_CASE(check_Overlap_and_Snap_Polygon)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue ValueSU(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
 
@@ -583,6 +611,8 @@ BOOST_AUTO_TEST_CASE(check_Overlap_and_Snap_Polygon)
 
 BOOST_AUTO_TEST_CASE(check_DuplicateGeometry)
 {
+  openfluid::base::Environment::init();
+
   openfluid::core::GeoVectorValue ValueSU(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "SU.shp");
 
@@ -614,6 +644,7 @@ BOOST_AUTO_TEST_CASE(check_DuplicateGeometry)
 
 BOOST_AUTO_TEST_CASE(check_parsing_Bad_Polygon_Geometry)
 {
+  openfluid::base::Environment::init();
 
   openfluid::core::GeoVectorValue ValueSU(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "BAD_POLYGEOM.shp");

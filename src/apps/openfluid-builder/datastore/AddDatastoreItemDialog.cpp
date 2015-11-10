@@ -37,14 +37,6 @@
  */
 
 
-#include "ui_EditDatastoreItemDialog.h"
-#include "AddDatastoreItemDialog.hpp"
-
-#include <openfluid/ui/config.hpp>
-#include <openfluid/ui/common/UIHelpers.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/utils/GDALHelpers.hpp>
-
 #include <gdal.h>
 #include <ogr_api.h>
 #include <openfluid/tools/DataHelpers.hpp>
@@ -52,6 +44,13 @@
 #include <QPushButton>
 #include <QFileDialog>
 
+#include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/utils/GDALHelpers.hpp>
+#include <openfluid/base/RunContextManager.hpp>
+
+#include "ui_EditDatastoreItemDialog.h"
+#include "AddDatastoreItemDialog.hpp"
 
 
 AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingUnitsClass,
@@ -307,7 +306,7 @@ bool AddDatastoreItemDialog::isSourceFileInInputDataset() const
   if (SourceFile.isEmpty())
     return false;
 
-  QString InputPath = QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInputDir());
+  QString InputPath = QString::fromStdString(openfluid::base::RunContextManager::instance()->getInputDir());
 
   if (QDir::fromNativeSeparators(SourceFile).startsWith(QDir::fromNativeSeparators(InputPath)))
     return true;

@@ -35,16 +35,16 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/Factory.hpp>
+#include <openfluid/core/Datastore.hpp>
+#include <openfluid/core/DatastoreItem.hpp>
+#include <openfluid/core/SpatialGraph.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-#include <openfluid/core/Datastore.hpp>
-#include <openfluid/core/DatastoreItem.hpp>
-#include <openfluid/core/SpatialGraph.hpp>
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -318,7 +318,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
         IInstance->Signature = Signature;
       }
 
-      openfluid::base::RuntimeEnvironment::instance()->processWareParams(IInstance->Params);
+      openfluid::base::RunContextManager::instance()->processWareParams(IInstance->Params);
 
       IInstance->OriginalPosition = MInstance.getItemsCount()+1;
       MInstance.appendItem(IInstance);
@@ -353,7 +353,7 @@ void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::Monitorin
       // instanciation of a plugged observer using the plugin manager
       OInstance = ObserverPluginsManager::instance()->loadWareSignatureOnly(ID);
       OInstance->Params = (*it)->getParameters();
-      openfluid::base::RuntimeEnvironment::instance()->processWareParams(OInstance->Params);
+      openfluid::base::RunContextManager::instance()->processWareParams(OInstance->Params);
 
       MonInstance.appendObserver(OInstance);
     }
@@ -374,11 +374,11 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor&
 
   if (RunDesc.isUserValuesBufferSize())
   {
-    openfluid::base::RuntimeEnvironment::instance()->setValuesBufferSize(RunDesc.getValuesBufferSize());
+    openfluid::base::RunContextManager::instance()->setValuesBufferUserSize(RunDesc.getValuesBufferSize());
   }
   else
   {
-    openfluid::base::RuntimeEnvironment::instance()->unsetUserValuesBufferSize();
+    openfluid::base::RunContextManager::instance()->unsetValuesBufferUserSize();
   }
 }
 

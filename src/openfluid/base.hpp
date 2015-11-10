@@ -48,8 +48,8 @@
 #include <openfluid/base/Listener.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
 

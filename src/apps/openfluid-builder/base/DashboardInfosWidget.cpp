@@ -37,7 +37,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 
 #include "ui_DashboardInfosWidget.h"
 #include "DashboardInfosWidget.hpp"
@@ -137,9 +137,10 @@ void DashboardInfosWidget::refresh()
 void DashboardInfosWidget::refreshProjectInfos()
 {
   QString NativePath =
-      QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::instance()->getPath()));
+      QDir::toNativeSeparators(QString::fromStdString(openfluid::base::RunContextManager::instance()
+                                                        ->getProjectPath()));
 
-  ui->TitleLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::instance()->getName()));
+  ui->TitleLabel->setText(QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectName()));
   ui->PathLabel->setText(NativePath);
   ui->PathLabel->setToolTip(NativePath);
 }

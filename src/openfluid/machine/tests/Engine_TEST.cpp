@@ -54,7 +54,7 @@
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 
 
 
@@ -98,7 +98,7 @@ void displayModel(openfluid::machine::ModelInstance& MI)
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
+  openfluid::base::RunContextManager::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
 
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_pretests)
 {
-  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
+  openfluid::base::RunContextManager::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
 
   openfluid::machine::ModelItemInstance* MIInstance;
 
@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
 BOOST_AUTO_TEST_CASE(check_typed_pretests)
 {
-  openfluid::base::RuntimeEnvironment::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
+  openfluid::base::RunContextManager::instance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
 
   openfluid::machine::ModelItemInstance* MIInstance;
 

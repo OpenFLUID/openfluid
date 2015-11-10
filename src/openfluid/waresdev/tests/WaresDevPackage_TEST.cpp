@@ -44,7 +44,7 @@
 
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
@@ -142,7 +142,7 @@ class F
     {
       Mgr = openfluid::waresdev::WareSrcManager::instance();
 
-      QString TempOFPath = QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getTempDir());
+      QString TempOFPath = QString::fromStdString(openfluid::base::Environment::getTempDir());
       QDir TempOFDir(TempOFPath);
 
       WorkspaceForExportPath = TempOFDir.absoluteFilePath("ofwdp_export_workspace");
@@ -376,6 +376,8 @@ BOOST_FIXTURE_TEST_CASE(PkgImport_copyWares,F)
 
 int main(int argc, char *argv[])
 {
+  openfluid::base::Environment::init();
+
   QCoreApplication app(argc, argv);
 
   return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);

@@ -43,7 +43,6 @@
 #include <QFileInfo>
 #include <QStringList>
 
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
 #include <openfluid/utils/SingletonMacros.hpp>
@@ -67,25 +66,28 @@ class ExtensionPluginsManager :
     std::vector<std::string> m_StandardSearchPaths;
 
 
-    ExtensionPluginsManager(const QStringList& ExtraSearchPaths = QStringList());
+    ExtensionPluginsManager(): openfluid::machine::WarePluginsManager<ExtensionContainer,ExtensionContainer,
+                                   openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,
+                                   openfluid::builderext::GetPluggableBuilderExtensionBodyProc>()
+    { }
 
-    ~ExtensionPluginsManager();
+    ~ExtensionPluginsManager()
+    { }
+
 
 
   public:
 
-    static ExtensionPluginsManager* instance(const QStringList& ExtraSearchPaths);
+    std::string getPluginFullPath(const std::string& Filename) const
+    { return openfluid::base::Environment::getBuilderextFullPath(Filename); }
 
-    std::string getPluginFullPath(const std::string& Filename) const;
 
     std::vector<std::string> getPluginsSearchPaths() const
-    { return m_SearchPaths; }
+    { return openfluid::base::Environment::getBuilderextsDirs(); }
 
     std::string getPluginFilenameSuffix() const
     { return openfluid::config::BUILDEREXTS_PLUGINS_SUFFIX; }
 
-    std::vector<std::string> getPluginsStandardSearchPaths() const
-    { return m_StandardSearchPaths; }
 };
 
 

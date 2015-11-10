@@ -38,9 +38,8 @@
  */
 
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/base/ProjectManager.hpp>
-
 #include "ui_AddGeneratorDialog.h"
 #include "AddGeneratorDialog.hpp"
 #include <openfluid/ui/config.hpp>
@@ -243,7 +242,7 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
 
 void AddGeneratorDialog::selectSourcesFile()
 {
-  QString CurrentDir = QString::fromStdString(openfluid::base::ProjectManager::instance()->getInputDir());
+  QString CurrentDir = QString::fromStdString(openfluid::base::RunContextManager::instance()->getInputDir());
 
   QString FileName = QFileDialog::getOpenFileName(this,
                                                   tr("Select sources file"),
@@ -268,7 +267,7 @@ void AddGeneratorDialog::selectSourcesFile()
 
 void AddGeneratorDialog::selectDistriFile()
 {
-  QString CurrentDir = QString::fromStdString(openfluid::base::ProjectManager::instance()->getInputDir());
+  QString CurrentDir = QString::fromStdString(openfluid::base::RunContextManager::instance()->getInputDir());
 
   QString FileName = QFileDialog::getOpenFileName(this,
                                                   tr("Select distribution file"),

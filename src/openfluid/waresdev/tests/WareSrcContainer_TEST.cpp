@@ -43,7 +43,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/waresdev/WareSrcContainer.hpp>
-
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
@@ -144,6 +144,8 @@ struct F
 
 BOOST_AUTO_TEST_CASE(searchMainCppFileName)
 {
+  openfluid::base::Environment::init();
+
   BOOST_CHECK_EQUAL(openfluid::waresdev::WareSrcContainer::searchMainCppFileName("AEIOU").toStdString(), "");
 
   BOOST_CHECK_EQUAL(
@@ -226,6 +228,8 @@ BOOST_AUTO_TEST_CASE(searchMainCppFileName)
 
 BOOST_AUTO_TEST_CASE(searchUiParamCppFileName)
 {
+  openfluid::base::Environment::init();
+
   BOOST_CHECK_EQUAL(openfluid::waresdev::WareSrcContainer::searchUiParamCppFileName("AEIOU").toStdString(), "");
 
   BOOST_CHECK_EQUAL(
@@ -290,6 +294,8 @@ BOOST_AUTO_TEST_CASE(searchUiParamCppFileName)
 
 BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
 {
+  openfluid::base::Environment::init();
+
   openfluid::tools::Filesystem::removeDirectory(m_WorkspacePath.toStdString());
 
   createTestFiles();

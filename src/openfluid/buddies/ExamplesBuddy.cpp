@@ -39,7 +39,7 @@
 
 
 #include <openfluid/buddies/ExamplesBuddy.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
 
@@ -132,9 +132,9 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
 bool ExamplesBuddy::run()
 {
   setOptionIfNotSet("selection","*");
-  setOptionIfNotSet("sourcedir",openfluid::base::RuntimeEnvironment::instance()->getProvidedExamplesDir()+
+  setOptionIfNotSet("sourcedir",openfluid::base::Environment::getProvidedExamplesDir()+
                                 "/"+openfluid::config::PROJECTS_PATH);
-  setOptionIfNotSet("installdir",openfluid::base::RuntimeEnvironment::instance()->getUserExamplesDir()+"/"+
+  setOptionIfNotSet("installdir",openfluid::base::Environment::getUserExamplesDir()+"/"+
                                  openfluid::config::PROJECTS_PATH);
   setOptionIfNotSet("force","0");
 

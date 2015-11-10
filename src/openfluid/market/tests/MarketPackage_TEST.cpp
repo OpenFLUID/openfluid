@@ -184,7 +184,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::market::MarketPackage::initialize(true);
 
-  std::string Arch = openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir();
+  std::string Arch = openfluid::base::Environment::getMarketBagBinSubDir();
 
   openfluid::market::MarketBinSimulatorPackage BSPack("tests.market.sim.binonly",
                                                       "file://"+

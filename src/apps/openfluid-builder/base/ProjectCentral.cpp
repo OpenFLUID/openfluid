@@ -38,16 +38,14 @@
 
 #include <QDir>
 
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/ui/common/RunSimulationDialog.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/base/ApplicationException.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include "ProjectCentral.hpp"
 #include "AppTools.hpp"
@@ -59,8 +57,6 @@ ProjectCentral* ProjectCentral::mp_Instance = nullptr;
 ProjectCentral::ProjectCentral(const QString& PrjPath):
   mp_FXDesc(nullptr),mp_AdvancedFXDesc(nullptr)
 {
-  openfluid::base::RuntimeEnvironment::instance()->linkToProject();
-
   mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(&m_IOListener);
 
   if (PrjPath == "")
@@ -71,7 +67,7 @@ ProjectCentral::ProjectCentral(const QString& PrjPath):
   {
     try
     {
-      mp_FXDesc->loadFromDirectory(openfluid::base::ProjectManager::instance()->getInputDir());
+      mp_FXDesc->loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
     }
     catch (openfluid::base::Exception& E)
     {
@@ -182,8 +178,6 @@ void ProjectCentral::deleteData()
     delete mp_FXDesc;
     mp_FXDesc = nullptr;
   }
-
-  openfluid::base::RuntimeEnvironment::instance()->detachFromProject();
 }
 
 
@@ -219,9 +213,9 @@ void ProjectCentral::run()
 
 bool ProjectCentral::save()
 {
-  QString InputDir = QString(openfluid::base::ProjectManager::instance()->getInputDir().c_str());
+  QString InputDir = QString(openfluid::base::RunContextManager::instance()->getInputDir().c_str());
 
-  openfluid::base::ProjectManager::instance()->save();
+  openfluid::base::RunContextManager::instance()->saveProject();
 
   QDir InputPath(InputDir);
 
@@ -245,12 +239,12 @@ bool ProjectCentral::save()
 
 bool ProjectCentral::saveAs(const QString& NewPrjName, const QString& NewPrjPath)
 {
-  openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::instance();
+  openfluid::base::RunContextManager* PrjCtxt = openfluid::base::RunContextManager::instance();
 
-  QString OldPrjPath = QString::fromStdString(PrjMan->getPath());
+  QString OldPrjPath = QString::fromStdString(PrjCtxt->getProjectPath());
 
   // close current project
-  PrjMan->close();
+  PrjCtxt->closeProject();
 
   // create new project dir
   QDir().mkpath(NewPrjPath);
@@ -259,16 +253,14 @@ bool ProjectCentral::saveAs(const QString& NewPrjName, const QString& NewPrjPath
   openfluid::tools::copyDirectoryContentsRecursively(OldPrjPath.toStdString(),NewPrjPath.toStdString());
 
   // open renamed project
-  PrjMan->open(NewPrjPath.toStdString());
-
-  openfluid::base::RuntimeEnvironment::instance()->linkToProject();
+  PrjCtxt->openProject(NewPrjPath.toStdString());
 
   // update project metadata
-  PrjMan->setName(NewPrjName.toStdString());
-  PrjMan->setCreationDateAsNow();
+  PrjCtxt->setProjectName(NewPrjName.toStdString());
+  PrjCtxt->setProjectCreationDateAsNow();
 
   // save project and project metadata
-  PrjMan->save();
+  PrjCtxt->saveProject();
   save();
 
   return true;
@@ -429,7 +421,7 @@ void ProjectCentral::checkModel()
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = Model.items();
 
   openfluid::machine::SimulatorSignatureRegistry* Reg = openfluid::machine::SimulatorSignatureRegistry::instance();
-  openfluid::base::RuntimeEnvironment* RunEnv = openfluid::base::RuntimeEnvironment::instance();
+  openfluid::base::RunContextManager* RunCtxt = openfluid::base::RunContextManager::instance();
 
   openfluid::ware::SimulatorSignature* Sign;
 
@@ -484,7 +476,7 @@ void ProjectCentral::checkModel()
             std::string FileNameFromParam = (*itModelItem)->getParameters()["sources"];
 
             if (!FileNameFromParam.empty() &&
-                !QFileInfo(QString::fromStdString(RunEnv->getInputFullPath(FileNameFromParam))).exists())
+                !QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(FileNameFromParam))).exists())
             {
               m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
               m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
@@ -497,7 +489,7 @@ void ProjectCentral::checkModel()
             FileNameFromParam = (*itModelItem)->getParameters()["distribution"];
 
             if (!FileNameFromParam.empty() &&
-                !QFileInfo(QString::fromStdString(RunEnv->getInputFullPath(FileNameFromParam))).exists())
+                !QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(FileNameFromParam))).exists())
             {
               m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
               m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
@@ -511,7 +503,7 @@ void ProjectCentral::checkModel()
         {
           for (std::vector<std::string>::iterator itFile = ReqFiles.begin(); itFile != ReqFiles.end(); ++itFile)
           {
-            if (!QFileInfo(QString::fromStdString(RunEnv->getInputFullPath(*itFile))).exists())
+            if (!QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(*itFile))).exists())
             {
               m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
               m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)

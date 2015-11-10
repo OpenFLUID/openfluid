@@ -66,7 +66,7 @@ WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& 
   m_PackageName = QFileInfo(m_PackageFilePath).completeBaseName();
 
 
-  m_TempOfwdpSubDirPath = QDir(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getTempDir()))
+  m_TempOfwdpSubDirPath = QDir(QString::fromStdString(openfluid::base::Environment::getTempDir()))
       .absoluteFilePath("ofwdp");
 
   m_PackageTempDir = QDir(QString("%1/%2/%3").arg(m_TempOfwdpSubDirPath).arg(TempSubFolderName).arg(m_PackageName));

@@ -44,9 +44,8 @@
 #include <QElapsedTimer>
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/ApplicationException.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/utils/CommandLineParser.hpp>
 #include <openfluid/machine/Engine.hpp>
@@ -97,6 +96,9 @@ OpenFLUIDApp::OpenFLUIDApp() :
   mp_Engine = nullptr;
   m_BuddyToRun.first = "";
   m_BuddyToRun.second = "";
+
+  openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.verbose",false);
+  openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.quiet",false);
 }
 
 
@@ -108,7 +110,7 @@ OpenFLUIDApp::~OpenFLUIDApp()
 {
   openfluid::machine::SimulatorPluginsManager::kill();
   openfluid::machine::ObserverPluginsManager::kill();
-  openfluid::base::RuntimeEnvironment::kill();
+  openfluid::base::RunContextManager::kill();
 }
 
 
@@ -529,18 +531,16 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
 void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
-  std::vector<std::string> SimulatorsPaths =
-      openfluid::base::RuntimeEnvironment::instance()->getSimulatorsPluginsPaths();
+  std::vector<std::string> SimulatorsPaths = openfluid::base::Environment::getSimulatorsDirs();
 
-  std::vector<std::string> ObserversPaths =
-      openfluid::base::RuntimeEnvironment::instance()->getObserversPluginsPaths();
+  std::vector<std::string> ObserversPaths = openfluid::base::Environment::getObserversDirs();
 
   unsigned int i;
 
 
-  std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::instance()->getInputDir() << std::endl;
+  std::cout << "Input dir: " << openfluid::base::RunContextManager::instance()->getInputDir() << std::endl;
 
-  std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::instance()->getOutputDir() << std::endl;
+  std::cout << "Output dir: " << openfluid::base::RunContextManager::instance()->getOutputDir() << std::endl;
 
   std::cout << "Simulators search path(s):" << std::endl;
   for (i=0;i<SimulatorsPaths.size();i++)
@@ -551,7 +551,7 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
     std::cout << " #" << (i+1) << " " << ObserversPaths[i] << std::endl;
 
   if (ShowTemp)
-    std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::instance()->getTempDir() << std::endl;
+    std::cout << "Temp dir: " << openfluid::base::Environment::getTempDir() << std::endl;
 }
 
 // =====================================================================
@@ -560,15 +560,12 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
 
 void OpenFLUIDApp::printEnvInfos()
 {
-  bool IsVerbose = false;
-  openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.verbose",IsVerbose);
-  bool IsQuiet = false;
-  openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.quiet",IsQuiet);
-
+  bool IsVerbose = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.verbose");
+  bool IsQuiet = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.quiet");
 
   printPaths(false);
 
-  if (openfluid::base::RuntimeEnvironment::instance()->isClearOutputDir())
+  if (openfluid::base::RunContextManager::instance()->isClearOutputDir())
     std::cout << "Output directory cleared before simulation" << std::endl;
 
   if (IsQuiet)
@@ -592,10 +589,8 @@ void OpenFLUIDApp::runSimulation()
 
   FullTimer.start();
 
-  bool IsVerbose = false;
-  openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.verbose",IsVerbose);
-  bool IsQuiet = false;
-  openfluid::base::RuntimeEnvironment::instance()->extraProperties().getValue("display.quiet",IsQuiet);
+  bool IsVerbose = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.verbose");
+  bool IsQuiet = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.quiet");
 
 
   std::unique_ptr<openfluid::machine::MachineListener> MListener;
@@ -626,7 +621,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Loading data... " << std::endl; std::cout.flush();
   openfluid::fluidx::FluidXDescriptor FXDesc(IOListener.get());
-  FXDesc.loadFromDirectory(openfluid::base::RuntimeEnvironment::instance()->getInputDir());
+  FXDesc.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
 
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
@@ -705,7 +700,7 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "Size of buffers for variables is set to "
             << openfluid::core::ValuesBufferProperties::getBufferSize();
 
-  if (openfluid::base::RuntimeEnvironment::instance()->isUserValuesBufferSize())
+  if (openfluid::base::RunContextManager::instance()->isValuesBufferUserSize())
     std::cout << " (using dataset run configuration)";
   else
     std::cout << " (automatically computed)";
@@ -842,33 +837,32 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   {
     if (Parser.command(ActiveCommandStr).isOptionActive("simulators-paths"))
     {
-      openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(
+      openfluid::base::Environment::addExtraSimulatorsDirs(
           Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
     }
 
     if (Parser.command(ActiveCommandStr).isOptionActive("observers-paths"))
     {
-      openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(
+      openfluid::base::Environment::addExtraObserversDirs(
           Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
     }
 
     if (Parser.extraArgs().size() >= 1)
     {
-      if (openfluid::base::ProjectManager::instance()->open(Parser.extraArgs().at(0)))
+      if (openfluid::base::RunContextManager::instance()->openProject(Parser.extraArgs().at(0)))
       {
-        openfluid::base::RuntimeEnvironment::instance()->linkToProject();
-        openfluid::base::ProjectManager::instance()->updateOutputDir();
+        openfluid::base::RunContextManager::instance()->updateProjectOutputDir();
       }
       else
       {
-        openfluid::base::RuntimeEnvironment::instance()->setInputDir(Parser.extraArgs().at(0));
+        openfluid::base::RunContextManager::instance()->setInputDir(Parser.extraArgs().at(0));
 
         if (Parser.extraArgs().size() >= 2)
-          openfluid::base::RuntimeEnvironment::instance()->setOutputDir(Parser.extraArgs().at(1));
+          openfluid::base::RunContextManager::instance()->setOutputDir(Parser.extraArgs().at(1));
 
         if (Parser.command(ActiveCommandStr).isOptionActive("automatic-output-dir"))
         {
-          openfluid::base::RuntimeEnvironment::instance()->setDateTimeOutputDir();
+          openfluid::base::RunContextManager::instance()->setDateTimeOutputDir();
         }
       }
     }
@@ -880,7 +874,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       std::cout << Parser.command(ActiveCommandStr).getOptionValue("max-threads") << std::endl;
 
       if (openfluid::tools::convertString(Parser.command(ActiveCommandStr).getOptionValue("max-threads"),&MaxThreads))
-        openfluid::base::RuntimeEnvironment::instance()->setSimulatorsMaxNumThreads(MaxThreads);
+        openfluid::base::RunContextManager::instance()->setWaresMaxNumThreads(MaxThreads);
       else
         throw openfluid::base::ApplicationException(
             openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
@@ -889,24 +883,24 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
     if (Parser.command(ActiveCommandStr).isOptionActive("clean-output-dir"))
     {
-      openfluid::base::RuntimeEnvironment::instance()->setClearOutputDir(true);
+      openfluid::base::RunContextManager::instance()->setClearOutputDir(true);
     }
 
     if (Parser.command(ActiveCommandStr).isOptionActive("quiet"))
     {
-      openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.quiet",true);
-      openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.verbose",false);
+      openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.quiet",true);
+      openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.verbose",false);
     }
 
     if (Parser.command(ActiveCommandStr).isOptionActive("verbose"))
     {
-      openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.verbose",true);
-      openfluid::base::RuntimeEnvironment::instance()->extraProperties().setValue("display.quiet",false);
+      openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.verbose",true);
+      openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.quiet",false);
     }
 
     if (Parser.command(ActiveCommandStr).isOptionActive("profiling"))
     {
-      openfluid::base::RuntimeEnvironment::instance()->setSimulationProfilingEnabled(true);
+      openfluid::base::RunContextManager::instance()->setProfiling(true);
     }
 
     m_RunType = Simulation;
@@ -936,7 +930,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     {
       if (Parser.command(ActiveCommandStr).isOptionActive("simulators-paths"))
       {
-        openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(
+        openfluid::base::Environment::addExtraSimulatorsDirs(
             Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
       }
 
@@ -958,7 +952,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     {
       if (Parser.command(ActiveCommandStr).isOptionActive("observers-paths"))
       {
-        openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(
+        openfluid::base::Environment::addExtraObserversDirs(
             Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
       }
 
@@ -1031,13 +1025,13 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   {
     if (Parser.command(ActiveCommandStr).isOptionActive("simulators-paths"))
     {
-      openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(
+      openfluid::base::Environment::addExtraSimulatorsDirs(
           Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
     }
 
     if (Parser.command(ActiveCommandStr).isOptionActive("observers-paths"))
     {
-      openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(
+      openfluid::base::Environment::addExtraObserversDirs(
           Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
     }
 

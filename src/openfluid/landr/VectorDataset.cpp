@@ -52,10 +52,11 @@
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
 #include <openfluid/landr/GdalCompat.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+
 
 namespace openfluid { namespace landr {
 
@@ -221,8 +222,7 @@ std::string VectorDataset::getTimestampedPath(const std::string& OriginalFileNam
 
 std::string VectorDataset::getInitializedTmpPath()
 {
-  std::string TmpPath =
-      openfluid::base::RuntimeEnvironment::instance()->getTempDir();
+  std::string TmpPath = openfluid::base::Environment::getTempDir();
 
   if (!openfluid::tools::Filesystem::isDirectory(TmpPath))
     openfluid::tools::Filesystem::makeDirectory(TmpPath);
@@ -1167,3 +1167,4 @@ std::list<OGRFeature*> VectorDataset::hasDuplicateGeometry(unsigned int LayerInd
 
 
 } } // namespaces openfluid, landr
+

@@ -37,9 +37,9 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
@@ -344,17 +344,18 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 
     CurrentSimulator->Body->linkToSimulationLogger(mp_SimLogger);
     CurrentSimulator->Body->linkToSimulation(&(m_SimulationBlob.simulationStatus()));
-    CurrentSimulator->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::instance()->wareEnvironment());
+    CurrentSimulator->Body->linkToRunEnvironment(&openfluid::base::RunContextManager::instance()
+                                                   ->getWaresEnvironment());
     CurrentSimulator->Body->linkToSpatialGraph(&(m_SimulationBlob.spatialGraph()));
     CurrentSimulator->Body->linkToDatastore(&(m_SimulationBlob.datastore()));
     CurrentSimulator->Body->initializeWare(CurrentSimulator->Signature->ID,
-                                    openfluid::base::RuntimeEnvironment::instance()->getSimulatorsMaxNumThreads());
+                                           openfluid::base::RunContextManager::instance()->getWaresMaxNumThreads());
     SimSequence.push_back(CurrentSimulator->Signature->ID);
 
     ++SimIter;
   }
 
-  if (openfluid::base::RuntimeEnvironment::instance()->isSimulationProfilingEnabled())
+  if (openfluid::base::RunContextManager::instance()->isProfiling())
     mp_SimProfiler = new SimulationProfiler(&(m_SimulationBlob.simulationStatus()), SimSequence);
 
   m_Initialized = true;

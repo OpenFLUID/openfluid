@@ -45,8 +45,8 @@
 #include <QFileDialog>
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/Exception.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
@@ -312,17 +312,18 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
                                    NewProjectDialog::ImportType IType, const QString& ISource)
 {
 
-  openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::instance();
+  openfluid::base::RunContextManager* PrjMan = openfluid::base::RunContextManager::instance();
   openfluid::base::PreferencesManager* PrefsMan = openfluid::base::PreferencesManager::instance();
 
-  if (!PrjMan->create(Path.toStdString(), Name.toStdString(),
-                      Description.toStdString(), Authors.toStdString(),
-                      false))
+  if (!PrjMan->createProject(Path.toStdString(), Name.toStdString(),
+                             Description.toStdString(), Authors.toStdString(),
+                             false))
     return false;
 
   if (IType == NewProjectDialog::IMPORT_NONE)
   {
-    openfluid::fluidx::FluidXDescriptor FXD(nullptr);
+    openfluid::base::IOListener Listener;
+    openfluid::fluidx::FluidXDescriptor FXD(&Listener);
     openfluid::core::DateTime DT;
     DT.setFromISOString(PrefsMan->getBegin().toStdString());
     FXD.runDescriptor().setBeginDate(DT);
@@ -356,8 +357,8 @@ void AppCoordinator::openProject(const QString& Name, const QString& Path)
 {
   // update recents projects
   openfluid::base::PreferencesManager::instance()->addRecentProject(
-        QString::fromStdString(openfluid::base::ProjectManager::instance()->getName()),
-        QString::fromStdString(openfluid::base::ProjectManager::instance()->getPath()));
+        QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectName()),
+        QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectPath()));
 
   if (setProjectModule(Path))
   {
@@ -387,14 +388,14 @@ bool AppCoordinator::closeProject()
         whenSaveAsked();
 
       m_Actions.action("ProjectSave")->setEnabled(false);
-      openfluid::base::ProjectManager::instance()->close();
+      openfluid::base::RunContextManager::instance()->closeProject();
 
       return true;
     }
     return false;
   }
 
-  openfluid::base::ProjectManager::instance()->close();
+  openfluid::base::RunContextManager::instance()->closeProject();
 
   return true;
 }
@@ -484,9 +485,9 @@ void AppCoordinator::whenOpenAsked()
                                           openfluid::base::PreferencesManager::instance()->getProjectsPath());
     if (SelectedDir !=  "")
     {
-      if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
+      if (openfluid::base::RunContextManager::isProject(SelectedDir.toStdString()))
       {
-        openfluid::base::ProjectManager::instance()->open(SelectedDir.toStdString());
+        openfluid::base::RunContextManager::instance()->openProject(SelectedDir.toStdString());
 
         try
         {
@@ -496,7 +497,7 @@ void AppCoordinator::whenOpenAsked()
         }
         catch (openfluid::base::Exception& E)
         {
-          openfluid::base::ProjectManager::instance()->close();
+          openfluid::base::RunContextManager::instance()->closeProject();
           QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;
@@ -527,9 +528,9 @@ void AppCoordinator::whenOpenRecentAsked()
     {
       QString ProjectPath = Action->data().toString();
 
-      if (openfluid::base::ProjectManager::isProject(ProjectPath.toStdString()))
+      if (openfluid::base::RunContextManager::isProject(ProjectPath.toStdString()))
       {
-        openfluid::base::ProjectManager::instance()->open(ProjectPath.toStdString());
+        openfluid::base::RunContextManager::instance()->openProject(ProjectPath.toStdString());
 
         try
         {
@@ -539,7 +540,7 @@ void AppCoordinator::whenOpenRecentAsked()
         }
         catch (openfluid::base::Exception& E)
         {
-          openfluid::base::ProjectManager::instance()->close();
+          openfluid::base::RunContextManager::instance()->closeProject();
           QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;
@@ -563,21 +564,21 @@ void AppCoordinator::whenOpenRecentAsked()
 
 void AppCoordinator::whenReloadAsked()
 {
-  QString ProjectDir = QString::fromStdString(openfluid::base::ProjectManager::instance()->getPath());
+  QString ProjectDir = QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectPath());
 
   if (mp_CurrentModule->whenReloadAsked())
   {
-    openfluid::base::ProjectManager::instance()->close();
+    openfluid::base::RunContextManager::instance()->closeProject();
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     if (ProjectDir !=  "")
     {
-      if (openfluid::base::ProjectManager::isProject(ProjectDir.toStdString()))
+      if (openfluid::base::RunContextManager::isProject(ProjectDir.toStdString()))
       {
         unsetCurrentModule();
 
-        openfluid::base::ProjectManager::instance()->open(ProjectDir.toStdString());
+        openfluid::base::RunContextManager::instance()->openProject(ProjectDir.toStdString());
 
         try
         {
@@ -586,7 +587,7 @@ void AppCoordinator::whenReloadAsked()
         }
         catch (openfluid::base::Exception& E)
         {
-          openfluid::base::ProjectManager::instance()->close();
+          openfluid::base::RunContextManager::instance()->closeProject();
           QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;
@@ -626,14 +627,14 @@ void AppCoordinator::whenSaveAsAsked()
 {
   if (mp_CurrentModule->whenSaveAsAsked())
   {
-    openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::instance();
+    openfluid::base::RunContextManager* PrjMan = openfluid::base::RunContextManager::instance();
 
     openfluid::base::PreferencesManager::instance()->addRecentProject(
-          QString::fromStdString(PrjMan->getName()),
-          QString::fromStdString(PrjMan->getPath()));
+          QString::fromStdString(PrjMan->getProjectName()),
+          QString::fromStdString(PrjMan->getProjectPath()));
 
     m_Actions.updateRecentProjectsActions();
-    m_MainWindow.setProjectName(QString::fromStdString(PrjMan->getName()));
+    m_MainWindow.setProjectName(QString::fromStdString(PrjMan->getProjectName()));
   }
 }
 
@@ -808,9 +809,9 @@ void AppCoordinator::whenOpenExampleAsked()
     {
       QString SelectedDir = OpenExDlg.getSelectedProjectPath();
 
-      if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
+      if (openfluid::base::RunContextManager::isProject(SelectedDir.toStdString()))
       {
-        openfluid::base::ProjectManager::instance()->open(SelectedDir.toStdString());
+        openfluid::base::RunContextManager::instance()->openProject(SelectedDir.toStdString());
 
         try
         {
@@ -820,7 +821,7 @@ void AppCoordinator::whenOpenExampleAsked()
         }
         catch (openfluid::base::Exception& E)
         {
-          openfluid::base::ProjectManager::instance()->close();
+          openfluid::base::RunContextManager::instance()->closeProject();
           QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;

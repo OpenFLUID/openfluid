@@ -42,7 +42,7 @@
 
 #include <openfluid/dllexport.hpp>
 
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
 #include <QString>

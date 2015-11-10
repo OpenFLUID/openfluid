@@ -37,18 +37,18 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <QFile>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QThread>
+
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/Environment.hpp>
 
 #include "ui_NewslineWidget.h"
 #include "NewslineWidget.hpp"
 #include "NewslineDownloadWorker.hpp"
 #include "builderconfig.hpp"
-
-#include <QFile>
-#include <QDomDocument>
-#include <QDomElement>
-#include <QThread>
 
 
 NewslineWidget::NewslineWidget(QWidget* Parent):
@@ -203,11 +203,11 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const QString& FilePath)
 void NewslineWidget::refreshFromCache()
 {
   QString RSSDefaultFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/en.rss"))
+      QString::fromStdString(openfluid::base::Environment::getUserDataFullPath("%1/en.rss"))
       .arg(BUILDER_NEWSLINE_CACHERELDIR);
 
   QString RSSFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/%2.rss"))
+      QString::fromStdString(openfluid::base::Environment::getUserDataFullPath("%1/%2.rss"))
       .arg(BUILDER_NEWSLINE_CACHERELDIR,NewsItemWidget::getLocale().name().left(2));
 
   QList<NewsItemData> News = loadRSSFile(RSSFile);

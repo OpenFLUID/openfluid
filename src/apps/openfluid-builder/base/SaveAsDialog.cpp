@@ -39,7 +39,7 @@
 
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 
@@ -58,7 +58,8 @@ SaveAsDialog::SaveAsDialog(QWidget* Parent) :
 
   ui->DirectoryLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
                                                           ->getProjectsPath()));
-  ui->ProjectNameEdit->setText(QString::fromStdString(openfluid::base::ProjectManager::instance()->getName()));
+  ui->ProjectNameEdit->setText(
+      QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectName()));
 
   projectChanged();
 
@@ -122,7 +123,7 @@ void SaveAsDialog::projectChanged()
 
 void SaveAsDialog::checkGlobal()
 {
-  if (openfluid::base::ProjectManager::isProject(m_PrjDir.path().toStdString()))
+  if (openfluid::base::RunContextManager::isProject(m_PrjDir.path().toStdString()))
     setMessage(tr("Project already exists"));
   else if (m_PrjDir.exists())
     setMessage(tr("Project directory already exist"));

@@ -37,13 +37,13 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <QFileSystemModel>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QMessageBox>
 #include <QApplication>
 
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/ui/common/LogExplorerDialog.hpp>
 #include <openfluid/config.hpp>
@@ -57,7 +57,7 @@ OutputsWidget::OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXD
 {
   ui->setupUi(this);
 
-  QDir("").mkpath(QString(openfluid::base::ProjectManager::instance()->getOutputDir().c_str()));
+  QDir("").mkpath(QString(openfluid::base::RunContextManager::instance()->getOutputDir().c_str()));
 
   ui->OutputDirView->setModel(mp_FSModel);
   refreshOutputDir();
@@ -87,7 +87,7 @@ OutputsWidget::~OutputsWidget()
 void OutputsWidget::refreshOutputDir() const
 {
   QString NativePath =
-      QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::instance()->getOutputDir()));
+      QDir::toNativeSeparators(QString::fromStdString(openfluid::base::RunContextManager::instance()->getOutputDir()));
 
   ui->OutputDirLabel->setText(NativePath);
   ui->OutputDirLabel->setToolTip(NativePath);
@@ -135,7 +135,7 @@ void OutputsWidget::clearOutputDir()
                            tr("This will delete all files and directories in the output directory.\n\nProceed anyway?"),
                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {
-    QDir OutDir(QString::fromStdString(openfluid::base::ProjectManager::instance()->getOutputDir()));
+    QDir OutDir(QString::fromStdString(openfluid::base::RunContextManager::instance()->getOutputDir()));
 
     foreach (QFileInfo FI, OutDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
     {
@@ -183,7 +183,7 @@ void OutputsWidget::tryToExploreOutputDir()
 {
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
   QDesktopServices::openUrl(QUrl::fromLocalFile(
-      QString(openfluid::base::ProjectManager::instance()->getOutputDir().c_str())));
+      QString(openfluid::base::RunContextManager::instance()->getOutputDir().c_str())));
   QApplication::restoreOverrideCursor();
 }
 
@@ -195,7 +195,7 @@ void OutputsWidget::tryToExploreOutputDir()
 void OutputsWidget::openLogExplorer()
 {
   openfluid::ui::common::LogExplorerDialog
-    LogDlg(QString::fromStdString(openfluid::base::ProjectManager::instance()->getOutputDir()),this);
+    LogDlg(QString::fromStdString(openfluid::base::RunContextManager::instance()->getOutputDir()),this);
 
   LogDlg.setDirectoryVisible(false);
 

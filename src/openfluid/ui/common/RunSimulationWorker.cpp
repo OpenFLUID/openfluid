@@ -40,9 +40,9 @@
 
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
 
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/base/OtherException.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/Engine.hpp>
@@ -352,9 +352,7 @@ void RunSimulationWorker::run()
 
   try
   {
-    openfluid::base::ProjectManager::instance()->updateOutputDir();
-
-    openfluid::base::RuntimeEnvironment::instance()->linkToProject();
+    openfluid::base::RunContextManager::instance()->updateProjectOutputDir();
 
     openfluid::machine::SimulationBlob SimBlob;
 

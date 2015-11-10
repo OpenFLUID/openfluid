@@ -41,12 +41,15 @@
 #define __OPENFLUID_BASE_INIT_HPP__
 
 
-
 #include <QApplication>
 
 
 #include <openfluid/debug.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
+
+
+// =====================================================================
+// =====================================================================
 
 
 #define OPENFLUID_APPLICATION _M_qapp
@@ -54,20 +57,18 @@
 #define INIT_OPENFLUID_APPLICATION(ac,av) \
   OFDBG_BANNER; \
   QCoreApplication OPENFLUID_APPLICATION(ac,av); \
-  openfluid::base::RuntimeEnvironment::instance()->prepareUserDataDirectory();
-
+  openfluid::base::Environment::init(); \
+  openfluid::base::Environment::prepareUserDataDirectory();
 
 #define INIT_OPENFLUID_APPLICATION_WITH_GUI(ac,av) \
   OFDBG_BANNER; \
   QApplication OPENFLUID_APPLICATION(ac,av); \
-  openfluid::base::RuntimeEnvironment::instance()->prepareUserDataDirectory();
+  openfluid::base::Environment::init(); \
+  openfluid::base::Environment::prepareUserDataDirectory();
 
 
 #define CLOSE_OPENFLUID_APPLICATION_WITH_GUI \
   OPENFLUID_APPLICATION.exec();
-
-
-
 
 
 #endif /* __OPENFLUID_BASE_INIT_HPP__ */

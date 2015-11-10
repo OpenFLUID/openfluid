@@ -48,7 +48,7 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <tests-config.hpp>
 
 
@@ -155,8 +155,8 @@ class SimC : openfluid::ware::PluggableSimulator
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::base::RuntimeEnvironment::instance()
-  ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+  openfluid::base::RunContextManager::instance()
+    ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
 
   openfluid::machine::SimulationBlob SB;
 
@@ -177,8 +177,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::base::RuntimeEnvironment::instance()
-  ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+  openfluid::base::RunContextManager::instance()
+    ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
 
   openfluid::machine::SimulationBlob SB;
 
@@ -280,8 +280,8 @@ class ModelInstanceSub: public openfluid::machine::ModelInstance
 
 BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
 {
-  openfluid::base::RuntimeEnvironment::instance()
-  ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+  openfluid::base::RunContextManager::instance()
+    ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
 
   openfluid::machine::SimulationBlob SB;
 

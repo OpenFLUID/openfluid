@@ -45,7 +45,8 @@
 #include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -77,7 +78,7 @@ class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverS
 
     std::string getPluginFullPath(const std::string& Filename) const
     {
-      return openfluid::base::RuntimeEnvironment::instance()->getObserverPluginFullPath(Filename);
+      return openfluid::base::Environment::getObserverFullPath(Filename);
     }
 
 
@@ -87,7 +88,7 @@ class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverS
 
     std::vector<std::string> getPluginsSearchPaths() const
     {
-      return openfluid::base::RuntimeEnvironment::instance()->getObserversPluginsPaths();
+      return openfluid::base::Environment::getObserversDirs();
     }
 
 

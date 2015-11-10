@@ -42,7 +42,7 @@
 #include <QFile>
 #include <QDomDocument>
 
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
@@ -57,10 +57,12 @@ OPENFLUID_SINGLETON_INITIALIZATION(WareSrcFiletypeManager)
 
 WareSrcFiletypeManager::WareSrcFiletypeManager()
 {
+  openfluid::base::Environment::init();
+
   updateStyles();
 
   QDir WaresdevDir(
-      QString("%1/%2").arg(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix()))
+      QString("%1/%2").arg(QString::fromStdString(openfluid::base::Environment::getInstallPrefix()))
           .arg(QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
 
   parseFiletypeFile(WaresdevDir.filePath("filetypes.ofdev.xml"));

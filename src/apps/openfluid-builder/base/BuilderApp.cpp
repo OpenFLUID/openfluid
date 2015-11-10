@@ -41,7 +41,7 @@
 #include <QTime>
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
@@ -79,7 +79,7 @@ BuilderApp::~BuilderApp()
   ExtensionsRegistry::kill();
   ExtensionPluginsManager::kill();
   openfluid::base::PreferencesManager::kill();
-  openfluid::base::RuntimeEnvironment::kill();
+  openfluid::base::RunContextManager::kill();
 }
 
 
@@ -101,20 +101,21 @@ void BuilderApp::initialize()
 
   QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
+    openfluid::base::Environment::addExtraSimulatorsDirs(ExtraPaths[i].toStdString());
 
   ExtraPaths = PrefsMgr->getExtraObserversPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
+    openfluid::base::Environment::addExtraObserversDirs(ExtraPaths[i].toStdString());
 
+  ExtraPaths = PrefsMgr->getExtraExtensionsPaths();
+  for (int i=0;i<ExtraPaths.size(); i++)
+    openfluid::base::Environment::addExtraBuilderextsDirs(ExtraPaths[i].toStdString());
 
 
   // Extensions
 
   mp_Splash->setMessage(tr("Loading extensions"));
 
-  ExtraPaths = PrefsMgr->getExtraExtensionsPaths();
-  ExtensionPluginsManager::instance(ExtraPaths); // initialization parameterized with extra paths
   ExtensionsRegistry::instance()->registerExtensions();
 
 

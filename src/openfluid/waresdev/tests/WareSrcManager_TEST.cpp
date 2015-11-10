@@ -43,8 +43,8 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
-
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
@@ -120,6 +120,8 @@ struct F
 
 BOOST_FIXTURE_TEST_CASE(constructor,F)
 {
+  openfluid::base::Environment::init();
+
   BOOST_CHECK(!QDir(m_WaresdevPath).exists());
   BOOST_CHECK(!QDir(m_SimulatorsPath).exists());
 
@@ -136,6 +138,8 @@ BOOST_FIXTURE_TEST_CASE(constructor,F)
 
 BOOST_FIXTURE_TEST_CASE(getWareTypePath,F)
 {
+  openfluid::base::Environment::init();
+
   BOOST_CHECK_EQUAL(
       openfluid::waresdev::WareSrcManager::instance()->getWareTypePath(openfluid::ware::WareType::SIMULATOR)
           .toStdString(),
@@ -149,6 +153,8 @@ BOOST_FIXTURE_TEST_CASE(getWareTypePath,F)
 
 BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
 {
+  openfluid::base::Environment::init();
+
   createTestFiles();
 
 

@@ -42,8 +42,8 @@
 #include "UnitsClassWidget.hpp"
 #include "AppTools.hpp"
 
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include <QColorDialog>
@@ -93,8 +93,9 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
 
   // initialize line width
 
-  QVariant TmpLineWidth = openfluid::base::ProjectManager::instance()->getConfigValue("builder.spatial.unitsclasses",
-                                                                                         m_ClassName+".linewidth");
+  QVariant TmpLineWidth =
+      openfluid::base::RunContextManager::instance()->getProjectConfigValue("builder.spatial.unitsclasses",
+                                                                            m_ClassName+".linewidth");
 
   if (TmpLineWidth.type() == QVariant::String)
   {
@@ -104,15 +105,16 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
   {
     m_LineWidth = 1;
 
-    openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
+    openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
                                                                    m_ClassName+".linewidth",m_LineWidth);
   }
 
 
   // initialize line color
 
-  QVariant TmpLineColor = openfluid::base::ProjectManager::instance()->getConfigValue("builder.spatial.unitsclasses",
-                                                                                         m_ClassName+".linecolor");
+  QVariant TmpLineColor =
+      openfluid::base::RunContextManager::instance()->getProjectConfigValue("builder.spatial.unitsclasses",
+                                                                            m_ClassName+".linecolor");
   if (TmpLineColor.type() == QVariant::String)
   {
     m_LineColor = TmpLineColor.toString();
@@ -120,15 +122,16 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
   else
   {
     m_LineColor = openfluid::ui::common::getRandomColor();
-    openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
-                                                                   m_ClassName+".linecolor",m_LineColor.name());
+    openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
+                                                                          m_ClassName+".linecolor",m_LineColor.name());
   }
 
 
   // initialize fill color
 
-  QVariant TmpFillColor = openfluid::base::ProjectManager::instance()->getConfigValue("builder.spatial.unitsclasses",
-                                                                                         m_ClassName+".fillcolor");
+  QVariant TmpFillColor =
+      openfluid::base::RunContextManager::instance()->getProjectConfigValue("builder.spatial.unitsclasses",
+                                                                            m_ClassName+".fillcolor");
   if (TmpFillColor.type() == QVariant::String)
   {
     m_FillColor = TmpFillColor.toString();
@@ -136,8 +139,8 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
   else
   {
     m_FillColor = openfluid::ui::common::getRandomColor();
-    openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
-                                                                   m_ClassName+".fillcolor",m_FillColor.name());
+    openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
+                                                                          m_ClassName+".fillcolor",m_FillColor.name());
   }
 
 
@@ -297,8 +300,8 @@ void UnitsClassWidget::changeLineColor()
     m_LineColor = TmpColor;
     ui->LineColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_LineColor.name()));
 
-    openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
-                                                                   m_ClassName+".linecolor",m_LineColor.name());
+    openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
+                                                                          m_ClassName+".linecolor",m_LineColor.name());
     emit styleChanged(m_ClassName);
   }
 }
@@ -317,8 +320,8 @@ void UnitsClassWidget::changeFillColor()
     m_FillColor = TmpColor;
     ui->FillColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_FillColor.name()));
 
-    openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
-                                                                   m_ClassName+".fillcolor",m_FillColor.name());
+    openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
+                                                                          m_ClassName+".fillcolor",m_FillColor.name());
 
     emit styleChanged(m_ClassName);
   }
@@ -333,8 +336,8 @@ void UnitsClassWidget::changeLineWidth(int Width)
 {
   m_LineWidth = Width;
 
-  openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
-                                                                 m_ClassName+".linewidth",m_LineWidth);
+  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
+                                                                        m_ClassName+".linewidth",m_LineWidth);
 
   //emit styleChanged(m_ClassName);
 }

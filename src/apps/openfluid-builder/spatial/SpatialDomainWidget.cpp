@@ -50,8 +50,8 @@
 #include "EditEventDialog.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
 
@@ -211,12 +211,12 @@ void SpatialDomainWidget::refresh()
 
   // get display order for classes from project config file
   QVariant TmpList =
-      openfluid::base::ProjectManager::instance()->getConfigValue("builder.spatial.unitsclasses","order");
+      openfluid::base::RunContextManager::instance()->getProjectConfigValue("builder.spatial.unitsclasses","order");
 
   if (!TmpList.isValid())
   {
-    openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses","order",
-                                                                OriginalClassesList);
+    openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses","order",
+                                                                          OriginalClassesList);
     ClassesList = OriginalClassesList;
   }
   else
@@ -249,7 +249,8 @@ void SpatialDomainWidget::refresh()
         ClassesList.append(OriginalClassesList[i]);
     }
 
-    openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses","order",ClassesList);
+    openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses","order",
+                                                                          ClassesList);
   }
 
 
@@ -771,9 +772,9 @@ void SpatialDomainWidget::moveUnitsClassUp(QString ClassName)
 
   updateUpDownButtons();
 
-  openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
-                                                                 "order",
-                                                                 getClassesOrderedStringList());
+  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
+                                                                        "order",
+                                                                        getClassesOrderedStringList());
 
   refreshMap();
 }
@@ -801,9 +802,9 @@ void SpatialDomainWidget::moveUnitsClassDown(QString ClassName)
 
   updateUpDownButtons();
 
-  openfluid::base::ProjectManager::instance()->setConfigValue("builder.spatial.unitsclasses",
-                                                                 "order",
-                                                                 getClassesOrderedStringList());
+  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
+                                                                        "order",
+                                                                        getClassesOrderedStringList());
 
   refreshMap();
 }

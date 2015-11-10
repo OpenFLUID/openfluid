@@ -40,6 +40,7 @@
 
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/ware/WareException.hpp>
+#include <openfluid/core/MapValue.hpp>
 
 
 namespace openfluid { namespace ware {
@@ -77,7 +78,13 @@ void PluggableWare::OPENFLUID_RaiseError(const std::string& Msg)
 
 bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, std::string& Value)
 {
-  return mp_WareEnv->getValue(Key,Value);
+  if (mp_WareEnv->isKeyExist(Key) && mp_WareEnv->at(Key).isStringValue())
+  {
+    Value = mp_WareEnv->getString(Key);
+    return true;
+  }
+
+  return false;
 }
 
 
@@ -87,7 +94,13 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, std::str
 
 bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, bool &Value)
 {
-  return mp_WareEnv->getValue(Key,Value);
+  if (mp_WareEnv->isKeyExist(Key) && mp_WareEnv->at(Key).isBooleanValue())
+  {
+    Value = mp_WareEnv->getBoolean(Key);
+    return true;
+  }
+
+  return false;
 }
 
 

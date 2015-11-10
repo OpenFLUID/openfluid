@@ -158,6 +158,7 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void restoreDefaultsTextEditorSettings();
 
+
   private:
 
     Ui::PreferencesDialog *ui;
@@ -178,7 +179,7 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     QStringList m_Formats {"bold", "italic", "underline", "strike-through"};
 
-    void initialize(const QStringList& ExtsPaths);
+    void initialize();
 
     void updateMarketplacesList();
 
@@ -190,7 +191,7 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
   public:
 
-    PreferencesDialog(QWidget *Parent, DisplayMode Mode = MODE_FULL, const QStringList& ExtsPaths = QStringList());
+    PreferencesDialog(QWidget *Parent, DisplayMode Mode = MODE_FULL);
 
     virtual ~PreferencesDialog();
 

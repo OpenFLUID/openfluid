@@ -39,9 +39,9 @@
 
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/Init.hpp>
 #include <openfluid/base/ApplicationException.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
@@ -80,7 +80,6 @@ int main(int argc, char **argv)
 
     std::unique_ptr<openfluid::machine::Engine> Engine;
     openfluid::machine::SimulationBlob SBlob;
-    openfluid::base::RuntimeEnvironment* RunEnv;
     std::unique_ptr<openfluid::base::IOListener> IOListen(new openfluid::base::IOListener());
     std::unique_ptr<openfluid::machine::MachineListener> MachineListen(new openfluid::machine::MachineListener());
     openfluid::machine::ModelInstance Model(SBlob,MachineListen.get());
@@ -88,11 +87,10 @@ int main(int argc, char **argv)
     openfluid::fluidx::FluidXDescriptor FXDesc(IOListen.get());
 
 
-    RunEnv = openfluid::base::RuntimeEnvironment::instance();
-    RunEnv->setInputDir(InputDir);
-    RunEnv->setOutputDir(OutputDir);
-    RunEnv->addExtraSimulatorsPluginsPaths(PlugsDir);
-    RunEnv->addExtraObserversPluginsPaths(PlugsDir);
+    openfluid::base::Environment::addExtraSimulatorsDirs(PlugsDir);
+    openfluid::base::Environment::addExtraObserversDirs(PlugsDir);
+    openfluid::base::RunContextManager::instance()->setInputDir(InputDir);
+    openfluid::base::RunContextManager::instance()->setOutputDir(OutputDir);
 
 
     FXDesc.loadFromDirectory(InputDir);

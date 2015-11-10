@@ -71,11 +71,8 @@ int main(int argc, char** argv)
 
       // load provided OpenFLUID translations
       OpenFLUIDTranslator.load(
-          QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang
-          + ".qm",
-          QString(
-              openfluid::base::RuntimeEnvironment::instance()
-                  ->getTranslationsDir().c_str()));
+          QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang + ".qm",
+          QString(openfluid::base::Environment::getTranslationsDir().c_str()));
     }
     OPENFLUID_APPLICATION.installTranslator(&QtTranslator);
     OPENFLUID_APPLICATION.installTranslator(&OpenFLUIDTranslator);

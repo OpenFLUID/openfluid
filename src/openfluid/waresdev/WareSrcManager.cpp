@@ -43,6 +43,7 @@
 #include <openfluid/config.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
 
@@ -55,6 +56,8 @@ OPENFLUID_SINGLETON_INITIALIZATION(WareSrcManager)
 WareSrcManager::WareSrcManager() :
     m_WaresdevDirName(QString::fromStdString(openfluid::config::WARESDEV_PATH))
 {
+  openfluid::base::Environment::init();
+
   switchWorkspace(openfluid::base::PreferencesManager::instance()->getWorkspacePath());
 }
 

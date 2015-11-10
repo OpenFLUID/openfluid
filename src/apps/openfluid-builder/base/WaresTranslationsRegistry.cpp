@@ -41,6 +41,7 @@
 #include <QFileInfo>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/Environment.hpp>
 
 #include "WaresTranslationsRegistry.hpp"
 
@@ -54,6 +55,8 @@ OPENFLUID_SINGLETON_INITIALIZATION(WaresTranslationsRegistry)
 
 WaresTranslationsRegistry::WaresTranslationsRegistry()
 {
+  openfluid::base::Environment::init();
+
   m_LangCode = openfluid::base::PreferencesManager::instance()->getLang();
 }
 

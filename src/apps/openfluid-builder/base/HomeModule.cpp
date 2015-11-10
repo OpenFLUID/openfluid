@@ -165,10 +165,8 @@ bool HomeModule::whenCloseAsked()
 
 void HomeModule::whenPreferencesAsked()
 {
-  openfluid::ui::common::PreferencesDialog PrefsDlg(
-      QApplication::activeWindow(),
-      openfluid::ui::common::PreferencesDialog::MODE_BUILDER,
-      openfluid::tools::toQStringList(ExtensionPluginsManager::instance()->getPluginsStandardSearchPaths()));
+  openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),
+                                                    openfluid::ui::common::PreferencesDialog::MODE_BUILDER);
 
   PrefsDlg.exec();
 }

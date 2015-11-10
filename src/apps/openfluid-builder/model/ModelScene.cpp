@@ -37,7 +37,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 
 
@@ -121,7 +121,7 @@ void ModelScene::refresh()
       QString ID = QString::fromStdString(m_Model.getID(*it));
 
       QVariant ConfigPos =
-          openfluid::base::ProjectManager::instance()->getConfigValue("builder.model.graphicalview",ID);
+          openfluid::base::RunContextManager::instance()->getProjectConfigValue("builder.model.graphicalview",ID);
       QPoint Position(0,0);
 
       if (ConfigPos.type() == QVariant::Point)

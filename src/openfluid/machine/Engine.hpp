@@ -48,7 +48,6 @@
 
 namespace openfluid {
 namespace base {
-class RuntimeEnvironment;
 class SimulationStatus;
 }
 namespace core {
@@ -79,8 +78,6 @@ class OPENFLUID_API Engine
   private:
 
      SimulationBlob& m_SimulationBlob;
-
-     openfluid::base::RuntimeEnvironment* mp_RunEnv;
 
      openfluid::base::SimulationStatus* mp_SimStatus;
 

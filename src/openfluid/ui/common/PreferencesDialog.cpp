@@ -40,7 +40,7 @@
 
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
 #include <openfluid/ui/config.hpp>
@@ -61,7 +61,7 @@
 namespace openfluid { namespace ui { namespace common {
 
 
-PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QStringList& ExtsPaths):
+PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   OpenFLUIDDialog(Parent), ui(new Ui::PreferencesDialog),
   m_RecentsChanged(false),
   m_SimPathsChanged(false), m_ObsPathsChanged(false), m_WaresWatchingChanged(false), m_TextEditorSettingsChanged(false),
@@ -125,7 +125,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode, const QS
     ui->WaresPathsTabWidget->removeTab(2);
 
 
-  initialize(ExtsPaths);
+  initialize();
 
   connect(ui->LangComboBox,SIGNAL(currentIndexChanged(const QString&)),this,SLOT(updateLanguage(const QString&)));
   connect(ui->RecentMaxSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateRecentsMax(int)));
@@ -205,14 +205,9 @@ PreferencesDialog::~PreferencesDialog()
 // =====================================================================
 
 
-void PreferencesDialog::initialize(const QStringList& ExtsPaths)
+void PreferencesDialog::initialize()
 {
-  openfluid::base::PreferencesManager* PrefsMan =
-    openfluid::base::PreferencesManager::instance();
-
-  openfluid::base::RuntimeEnvironment* RunEnv =
-      openfluid::base::RuntimeEnvironment::instance();
-
+  openfluid::base::PreferencesManager* PrefsMan = openfluid::base::PreferencesManager::instance();
 
   // Interface
   // TODO set up a fancier languages list
@@ -234,10 +229,13 @@ void PreferencesDialog::initialize(const QStringList& ExtsPaths)
     // Wares search paths
     ui->SimulatorsSearchPathsWidget->initialize(PrefsMan->getExtraSimulatorsPaths(),
                                                 openfluid::tools::toQStringList(
-                                                    RunEnv->getDefaultSimulatorsPluginsPaths()));
+                                                    openfluid::base::Environment::getDefaultSimulatorsDirs()));
     ui->ObserversSearchPathsWidget->initialize(PrefsMan->getExtraObserversPaths(),
                                                openfluid::tools::toQStringList(
-                                                   RunEnv->getDefaultObserversPluginsPaths()));
+                                                   openfluid::base::Environment::getDefaultObserversDirs()));
+    ui->BuilderextsSearchPathsWidget->initialize(PrefsMan->getExtraExtensionsPaths(),
+                                                 openfluid::tools::toQStringList(
+                                                     openfluid::base::Environment::getDefaultBuilderextsDirs()));
 
     // interface
     ui->RecentMaxSpinBox->setValue(PrefsMan->getRecentMax());
@@ -259,8 +257,6 @@ void PreferencesDialog::initialize(const QStringList& ExtsPaths)
     ui->BeginDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getBegin(),"yyyy-MM-dd HH:mm:ss"));
     ui->EndDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getEnd(),"yyyy-MM-dd HH:mm:ss"));
 
-
-    ui->BuilderextsSearchPathsWidget->initialize(PrefsMan->getExtraExtensionsPaths(),ExtsPaths);
   }
 
   // Development tools

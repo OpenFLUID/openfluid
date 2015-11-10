@@ -37,12 +37,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <QDir>
 #include <QApplication>
 #include <QMessageBox>
 #include <QProcess>
 
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/core/DateTime.hpp>
 
 #include "builderconfig.hpp"
@@ -54,7 +54,7 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
   QString InfosStr;
   std::string Name, Description, Authors, CreationDate, LastModDate;
 
-  if (openfluid::base::ProjectManager::getProjectInfos(ProjectPath.toStdString(),
+  if (openfluid::base::RunContextManager::getProjectInfos(ProjectPath.toStdString(),
                                                        Name, Description, Authors, CreationDate, LastModDate))
   {
     openfluid::core::DateTime TmpDate;

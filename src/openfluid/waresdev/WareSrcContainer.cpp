@@ -42,7 +42,7 @@
 #include <QDir>
 
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
@@ -68,7 +68,7 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware:
 {
   update();
 
-  m_OFVersion = QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getMajorMinorVersion());
+  m_OFVersion = QString::fromStdString(openfluid::base::Environment::getVersionMajorMinor());
 
   setConfigMode(CONFIG_RELEASE);
   setBuildMode(BUILD_WITHINSTALL);

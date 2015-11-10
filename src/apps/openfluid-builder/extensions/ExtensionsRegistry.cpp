@@ -38,8 +38,10 @@
  */
 
 
-#include "ExtensionsRegistry.hpp"
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
+#include <openfluid/base/RunContextManager.hpp>
+
+#include "ExtensionsRegistry.hpp"
 
 
 OPENFLUID_SINGLETON_INITIALIZATION(ExtensionsRegistry)
@@ -48,7 +50,7 @@ OPENFLUID_SINGLETON_INITIALIZATION(ExtensionsRegistry)
 ExtensionsRegistry::ExtensionsRegistry():
   m_IsRegistered(false)
 {
-
+  openfluid::base::Environment::init();
 }
 
 
@@ -112,7 +114,7 @@ openfluid::builderext::PluggableBuilderExtension*
   {
     ExtensionPluginsManager::instance()->completeSignatureWithWareBody(m_FeatureExtensions[ID]);
     m_FeatureExtensions[ID]->Body
-      ->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::instance()->wareEnvironment());
+      ->linkToRunEnvironment(&openfluid::base::RunContextManager::instance()->getWaresEnvironment());
     m_FeatureExtensions[ID]->Body->initializeWare(ID);
     m_FeatureExtensions[ID]->Active = true;
     return m_FeatureExtensions[ID]->Body.release(); // pointer is released to let Qt manage the lifecycle
@@ -191,7 +193,7 @@ openfluid::builderext::PluggableBuilderExtension*
     ExtensionPluginsManager::instance()->completeSignatureWithWareBody(m_ParameterizationExtensions[UUID]);
 
     m_ParameterizationExtensions[UUID]->Body
-      ->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::instance()->wareEnvironment());
+      ->linkToRunEnvironment(&openfluid::base::RunContextManager::instance()->getWaresEnvironment());
     m_ParameterizationExtensions[UUID]->Body->initializeWare(m_ParameterizationExtensions[UUID]->Signature->ID);
     m_ParameterizationExtensions[UUID]->Active = true;
 

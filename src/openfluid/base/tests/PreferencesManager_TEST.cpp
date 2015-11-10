@@ -49,7 +49,8 @@
 #include <openfluid/config.hpp>
 #include "tests-config.hpp"
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -62,8 +63,7 @@ BOOST_AUTO_TEST_CASE(test_SetFileName)
 
   BOOST_CHECK_THROW(openfluid::base::PreferencesManager::setFileName(CFile),openfluid::base::FrameworkException);
 
-  BOOST_CHECK(PrefMgr->getFileName().toStdString() ==
-              openfluid::base::RuntimeEnvironment::instance()->getDefaultConfigFile());
+  BOOST_CHECK(PrefMgr->getFileName().toStdString() == openfluid::base::Environment::getConfigFile());
 
   openfluid::base::PreferencesManager::kill();
 

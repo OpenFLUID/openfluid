@@ -36,14 +36,14 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_polygonentity
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/landr/GdalCompat.hpp>
@@ -1202,3 +1202,10 @@ BOOST_AUTO_TEST_CASE(check_computeNeighbourByLineTopology)
 // =====================================================================
 // =====================================================================
 
+
+int main(int argc, char *argv[])
+{
+  openfluid::base::Environment::init();
+
+  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
+}

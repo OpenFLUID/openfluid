@@ -38,21 +38,22 @@
  */
 
 
-#include "ui_DatastoreWidget.h"
-#include "DatastoreWidget.hpp"
-#include "AddDatastoreItemDialog.hpp"
-
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <gdal.h>
 #include <gdal_priv.h>
 #include <ogr_api.h>
-#include <openfluid/tools/QtHelpers.hpp>
-#include "ogrsf_frmts.h"
+#include <ogrsf_frmts.h>
 
 #include <QFileInfo>
 #include <QDir>
 #include <QMessageBox>
+
+#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/base/RunContextManager.hpp>
+
+#include "ui_DatastoreWidget.h"
+#include "DatastoreWidget.hpp"
+#include "AddDatastoreItemDialog.hpp"
 
 
 DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
@@ -169,8 +170,7 @@ void DatastoreWidget::addItem()
 
       QString DestFile =
           QDir::fromNativeSeparators(QString::fromStdString(
-              openfluid::base::RuntimeEnvironment::instance()->getInputDir()) +
-              "/"+Subdir+"/"+SourceFilename);
+              openfluid::base::RunContextManager::instance()->getInputDir()) + "/"+Subdir+"/"+SourceFilename);
 
       if (AddItemDlg.getItemType() == openfluid::core::UnstructuredValue::GeoVectorValue)
       {
@@ -304,12 +304,12 @@ void DatastoreWidget::addItem()
 
       // build of the relative path for the file associated with the item
       QString RelativeDSItemFile =
-          QDir(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInputDir()))
+          QDir(QString::fromStdString(openfluid::base::RunContextManager::instance()->getInputDir()))
           .relativeFilePath(DSItemFile);
 
       openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc =
           new openfluid::fluidx::DatastoreItemDescriptor(AddItemDlg.getItemID().toStdString(),
-                                                         openfluid::base::RuntimeEnvironment::instance()->getInputDir(),
+                                                         openfluid::base::RunContextManager::instance()->getInputDir(),
                                                          QDir::fromNativeSeparators(RelativeDSItemFile).toStdString(),
                                                          AddItemDlg.getItemType());
 

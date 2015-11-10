@@ -110,7 +110,7 @@ class OPENFLUID_API FluidHubAPIClient
     /**
       Connects to the FluidHub given by the URL
       @param[in] URL the URL of the FluidHub to connect to
-      @param[in] SSLConfiguration the SSL configuration for the connection (if needed)
+      @param[in] SSLConfig the SSL configuration for the connection (if needed)
       @return true if the connection is OK, false otherwise
     */
     bool connect(const QString& URL, const RESTClient::SSLConfiguration& SSLConfig = RESTClient::SSLConfiguration());

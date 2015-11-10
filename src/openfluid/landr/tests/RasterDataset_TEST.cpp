@@ -36,20 +36,20 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_rasterdataset
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <tests-config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 #include <geos/geom/Coordinate.h>
 
@@ -323,4 +323,16 @@ BOOST_AUTO_TEST_CASE(check_envelope)
 
   delete Rast;
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int main(int argc, char *argv[])
+{
+  openfluid::base::Environment::init();
+
+  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
 }

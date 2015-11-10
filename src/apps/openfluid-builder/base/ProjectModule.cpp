@@ -41,10 +41,8 @@
 #include <QMessageBox>
 #include <QMainWindow>
 
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/base/ProjectManager.hpp>
-
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 #include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
@@ -167,10 +165,8 @@ void ProjectModule::updateWaresWatchersPaths()
 
   if (openfluid::base::PreferencesManager::instance()->isWaresWatchersActive())
   {
-    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()
-                                                 ->getSimulatorsPluginsPaths())
-          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()
-                                                 ->getExtraSimulatorsPluginsPaths());
+    Paths << openfluid::tools::toQStringList(openfluid::base::Environment::getSimulatorsDirs())
+          << openfluid::tools::toQStringList(openfluid::base::Environment::getExtraSimulatorsDirs());
 
     Paths.removeDuplicates();
 
@@ -191,10 +187,8 @@ void ProjectModule::updateWaresWatchersPaths()
   if (openfluid::base::PreferencesManager::instance()->isWaresWatchersActive())
   {
 
-    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()
-                                                 ->getObserversPluginsPaths())
-          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::instance()
-                                                 ->getExtraObserversPluginsPaths());
+    Paths << openfluid::tools::toQStringList(openfluid::base::Environment::getObserversDirs())
+          << openfluid::tools::toQStringList(openfluid::base::Environment::getExtraObserversDirs());
 
     Paths.removeDuplicates();
 
@@ -403,9 +397,9 @@ void ProjectModule::whenPropertiesAsked()
 
   if (EditDlg.exec() == QDialog::Accepted)
   {
-    openfluid::base::ProjectManager::instance()->setDescription(EditDlg.getDescription().toStdString());
-    openfluid::base::ProjectManager::instance()->setAuthors(EditDlg.getAuthors().toStdString());
-    openfluid::base::ProjectManager::instance()->save();
+    openfluid::base::RunContextManager::instance()->setProjectDescription(EditDlg.getDescription().toStdString());
+    openfluid::base::RunContextManager::instance()->setProjectAuthors(EditDlg.getAuthors().toStdString());
+    openfluid::base::RunContextManager::instance()->saveProject();
   }
 
 }
@@ -429,10 +423,8 @@ void ProjectModule::whenPreferencesAsked()
 {
   bool WaresWatchingUpdated = false;
 
-  openfluid::ui::common::PreferencesDialog PrefsDlg(
-      QApplication::activeWindow(),
-      openfluid::ui::common::PreferencesDialog::MODE_BUILDER,
-      openfluid::tools::toQStringList(ExtensionPluginsManager::instance()->getPluginsStandardSearchPaths()));
+  openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),
+                                                    openfluid::ui::common::PreferencesDialog::MODE_BUILDER);
 
   connect(&PrefsDlg, SIGNAL(applyTextEditorSettingsAsked()), mp_MainWidget, SLOT(updateWareSrcEditorsSettings()));
 
@@ -446,9 +438,9 @@ void ProjectModule::whenPreferencesAsked()
   {
     QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
 
-    openfluid::base::RuntimeEnvironment::instance()->resetExtraSimulatorsPluginsPaths();
+    openfluid::base::Environment::resetExtraSimulatorsDirs();
     for (int i=0;i<ExtraPaths.size(); i++)
-      openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
+      openfluid::base::Environment::addExtraSimulatorsDirs(ExtraPaths[i].toStdString());
 
     updateWaresWatchersPaths();
     WaresWatchingUpdated = true;
@@ -460,9 +452,9 @@ void ProjectModule::whenPreferencesAsked()
   {
     QStringList ExtraPaths = PrefsMgr->getExtraObserversPaths();
 
-    openfluid::base::RuntimeEnvironment::instance()->resetExtraObserversPluginsPaths();
+    openfluid::base::Environment::resetExtraObserversDirs();
     for (int i=0;i<ExtraPaths.size(); i++)
-      openfluid::base::RuntimeEnvironment::instance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
+      openfluid::base::Environment::addExtraObserversDirs(ExtraPaths[i].toStdString());
 
     updateWaresWatchersPaths();
     WaresWatchingUpdated = true;
@@ -815,7 +807,7 @@ void ProjectModule::whenNewGhostSimulatorAsked()
     openfluid::ware::SimulatorSignature Signature = Dlg.getSignature();
     openfluid::machine::GhostSimulatorFileIO::saveToFile(
         Signature,
-        openfluid::base::RuntimeEnvironment::instance()->getDefaultSimulatorsPluginsPaths().front());
+        openfluid::base::Environment::getDefaultSimulatorsDirs().front());
     updateSimulatorsWares();
   }
 }

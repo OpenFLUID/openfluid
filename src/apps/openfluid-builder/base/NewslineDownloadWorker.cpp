@@ -38,16 +38,16 @@
  */
 
 
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/utils/FluidHubAPIClient.hpp>
-
-#include "NewslineDownloadWorker.hpp"
-#include "builderconfig.hpp"
-
 #include <QFile>
 #include <QDir>
 #include <QTextStream>
 #include <QDateTime>
+
+#include <openfluid/utils/FluidHubAPIClient.hpp>
+#include <openfluid/base/Environment.hpp>
+
+#include "NewslineDownloadWorker.hpp"
+#include "builderconfig.hpp"
 
 
 NewslineDownloadWorker::NewslineDownloadWorker(const QString& ShortLocale):
@@ -110,20 +110,17 @@ bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const
 
 void NewslineDownloadWorker::run()
 {
-  QDir().mkpath(QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()
-                                           ->getUserDataPath(BUILDER_NEWSLINE_CACHERELDIR.toStdString())));
+  QDir().mkpath(QString::fromStdString(
+      openfluid::base::Environment::getUserDataFullPath(BUILDER_NEWSLINE_CACHERELDIR.toStdString())));
 
-  QString LastUpdFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/lastupdate.info"))
-       .arg(BUILDER_NEWSLINE_CACHERELDIR);
+  QString LastUpdFile = QString::fromStdString(openfluid::base::Environment::getUserDataFullPath("%1/lastupdate.info"))
+                        .arg(BUILDER_NEWSLINE_CACHERELDIR);
 
-  QString RSSDefaultFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/en.rss"))
-      .arg(BUILDER_NEWSLINE_CACHERELDIR);
+  QString RSSDefaultFile = QString::fromStdString(openfluid::base::Environment::getUserDataFullPath("%1/en.rss"))
+                           .arg(BUILDER_NEWSLINE_CACHERELDIR);
 
-  QString RSSFile =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/%2.rss"))
-      .arg(BUILDER_NEWSLINE_CACHERELDIR,m_ShortLocale);
+  QString RSSFile = QString::fromStdString(openfluid::base::Environment::getUserDataFullPath("%1/%2.rss"))
+                    .arg(BUILDER_NEWSLINE_CACHERELDIR,m_ShortLocale);
 
 
   if (donwloadRSSToFile(RSSFile,m_ShortLocale))
@@ -147,8 +144,8 @@ void NewslineDownloadWorker::run()
 bool NewslineDownloadWorker::isTimeForDownload(const QString& ShortLocale)
 {
   QDir CacheDir =
-      QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()
-                                 ->getUserDataPath(BUILDER_NEWSLINE_CACHERELDIR.toStdString()));
+      QString::fromStdString(
+          openfluid::base::Environment::getUserDataFullPath(BUILDER_NEWSLINE_CACHERELDIR.toStdString()));
 
   if (!CacheDir.exists("lastupdate.info"))
    return true;
@@ -156,7 +153,7 @@ bool NewslineDownloadWorker::isTimeForDownload(const QString& ShortLocale)
   {
     // check date
     QString LastUpdFile =
-        QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getUserDataPath("%1/lastupdate.info"))
+        QString::fromStdString(openfluid::base::Environment::getUserDataFullPath("%1/lastupdate.info"))
         .arg(BUILDER_NEWSLINE_CACHERELDIR);
     QByteArray Line;
 

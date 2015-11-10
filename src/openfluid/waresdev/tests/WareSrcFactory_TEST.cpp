@@ -46,7 +46,7 @@
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/config.hpp>
 
 #include <QDir>
@@ -58,9 +58,11 @@
 
 BOOST_AUTO_TEST_CASE(create_files_sim)
 {
+  openfluid::base::Environment::init();
+
   QDir CommonTemplatesDir = QDir(
       QString("%1/%2/templates").arg(
-          QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix())).arg(
+          QString::fromStdString(openfluid::base::Environment::getInstallPrefix())).arg(
           QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
   QDir TypedTemplatesDir = QDir(CommonTemplatesDir.absoluteFilePath("simulators"));
 
@@ -183,9 +185,11 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
 
 BOOST_AUTO_TEST_CASE(create_files_bext)
 {
+  openfluid::base::Environment::init();
+
   QDir CommonTemplatesDir = QDir(
       QString("%1/%2/templates").arg(
-          QString::fromStdString(openfluid::base::RuntimeEnvironment::instance()->getInstallPrefix())).arg(
+          QString::fromStdString(openfluid::base::Environment::getInstallPrefix())).arg(
           QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
   QDir TypedTemplatesDir = QDir(CommonTemplatesDir.absoluteFilePath("builderexts"));
 

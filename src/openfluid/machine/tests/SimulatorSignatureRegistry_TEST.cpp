@@ -93,8 +93,7 @@ BOOST_AUTO_TEST_CASE(test_getsignatureiteminstance)
 
 BOOST_AUTO_TEST_CASE(test_ghostsimulators)
 {
-  openfluid::base::RuntimeEnvironment::instance()->addExtraSimulatorsPluginsPaths(CONFIGTESTS_INPUT_MISCDATA_DIR+"/"+
-                                                                                  "GhostSimulators");
+  openfluid::base::Environment::addExtraSimulatorsDirs(CONFIGTESTS_INPUT_MISCDATA_DIR+"/"+"GhostSimulators");
 
   openfluid::machine::SimulatorSignatureRegistry* Reg =
       openfluid::machine::SimulatorSignatureRegistry::instance();

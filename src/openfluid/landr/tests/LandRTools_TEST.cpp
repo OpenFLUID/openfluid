@@ -73,8 +73,7 @@
   @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_landrtools
 #include <boost/test/unit_test.hpp>
@@ -84,6 +83,7 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
@@ -1234,4 +1234,9 @@ BOOST_AUTO_TEST_CASE(check_envelope)
 // =====================================================================
 
 
+int main(int argc, char *argv[])
+{
+  openfluid::base::Environment::init();
 
+  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
+}

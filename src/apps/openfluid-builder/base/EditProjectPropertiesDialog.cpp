@@ -37,7 +37,8 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
+
 #include <openfluid/ui/config.hpp>
 
 #include "ui_EditProjectPropertiesDialog.h"
@@ -51,24 +52,24 @@
 EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
   openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::EditProjectPropertiesDialog)
 {
-  openfluid::base::ProjectManager* PrjMan =
-      openfluid::base::ProjectManager::instance();
+  openfluid::base::RunContextManager* PrjMan =
+      openfluid::base::RunContextManager::instance();
 
   ui->setupUi(this);
 
   setMessage();
 
-  ui->ProjectNameLabel->setText(QString::fromStdString(PrjMan->getName()));
-  ui->DescriptionTextEdit->setPlainText(QString::fromStdString(PrjMan->getDescription()));
-  ui->AuthorsLineEdit->setText(QString::fromStdString(PrjMan->getAuthors()));
+  ui->ProjectNameLabel->setText(QString::fromStdString(PrjMan->getProjectName()));
+  ui->DescriptionTextEdit->setPlainText(QString::fromStdString(PrjMan->getProjectDescription()));
+  ui->AuthorsLineEdit->setText(QString::fromStdString(PrjMan->getProjectAuthors()));
 
-  QDateTime DT = QDateTime::fromString(QString::fromStdString(PrjMan->getCreationDate()),"yyyyMMdd'T'hhmmss");
+  QDateTime DT = QDateTime::fromString(QString::fromStdString(PrjMan->getProjectCreationDate()),"yyyyMMdd'T'hhmmss");
   if (DT.isValid())
     ui->CreationDateLabel->setText(DT.toString("yyyy-MM-dd, hh:mm:ss"));
   else
     ui->CreationDateLabel->setText(tr("unknown"));
 
-  DT = QDateTime::fromString(QString::fromStdString(PrjMan->getLastModDate()),"yyyyMMdd'T'hhmmss");
+  DT = QDateTime::fromString(QString::fromStdString(PrjMan->getProjectLastModDate()),"yyyyMMdd'T'hhmmss");
   if (DT.isValid())
     ui->LastModDateLabel->setText(DT.toString("yyyy-MM-dd, hh:mm:ss"));
   else

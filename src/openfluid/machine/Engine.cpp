@@ -38,6 +38,7 @@
 */
 
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/Engine.hpp>
 
 #include <iostream>
@@ -46,7 +47,6 @@
 #include <cmath>
 
 #include <openfluid/config.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -74,14 +74,12 @@ Engine::Engine(SimulationBlob& SimBlob,
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Listener can not be NULL");
 
 
-  mp_RunEnv = openfluid::base::RuntimeEnvironment::instance();
-
   mp_SimStatus = &(m_SimulationBlob.simulationStatus());
 
   prepareOutputDir();
 
-  mp_SimLogger =
-    new openfluid::base::SimulationLogger(mp_RunEnv->getOutputFullPath(openfluid::config::MESSAGES_LOG_FILE));
+  mp_SimLogger = new openfluid::base::SimulationLogger(
+    openfluid::base::RunContextManager::instance()->getOutputFullPath(openfluid::config::MESSAGES_LOG_FILE));
 
   std::chrono::system_clock::time_point TimePoint = std::chrono::system_clock::now();
   std::time_t Time = std::chrono::system_clock::to_time_t(TimePoint);
@@ -89,13 +87,13 @@ Engine::Engine(SimulationBlob& SimBlob,
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
                         "Date: " + std::string(std::ctime(&Time)));
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
-                        "Computer: " + mp_RunEnv->getHostName());
+                        "Computer: " + openfluid::base::Environment::getHostName());
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
-                        "User: " + mp_RunEnv->getUserID());
+                        "User: " + openfluid::base::Environment::getUserName());
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
-                        "Input directory: " + mp_RunEnv->getInputDir());
+                        "Input directory: " + openfluid::base::RunContextManager::instance()->getInputDir());
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
-                        "Output directory: " + mp_RunEnv->getOutputDir());
+                        "Output directory: " + openfluid::base::RunContextManager::instance()->getOutputDir());
 }
 
 
@@ -456,7 +454,8 @@ void Engine::checkExtraFilesConsistency()
 
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
-      if (!openfluid::tools::Filesystem::isFile(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i])))
+      if (!openfluid::tools::Filesystem::isFile(openfluid::base::RunContextManager::instance()
+                                                  ->getInputFullPath(HData.RequiredExtraFiles[i])))
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "File " + HData.RequiredExtraFiles[i] +
                                                   " required by " + CurrentSimulator->Signature->ID + " not found");
@@ -471,17 +470,18 @@ void Engine::checkExtraFilesConsistency()
 
 void Engine::prepareOutputDir()
 {
-  if (!openfluid::tools::Filesystem::isDirectory(mp_RunEnv->getOutputDir()))
+  if (!openfluid::tools::Filesystem::isDirectory(openfluid::base::RunContextManager::instance()->getOutputDir()))
   {
-    openfluid::tools::Filesystem::makeDirectory(mp_RunEnv->getOutputDir());
-    if (!openfluid::tools::Filesystem::isDirectory(mp_RunEnv->getOutputDir()))
+    openfluid::tools::Filesystem::makeDirectory(openfluid::base::RunContextManager::instance()->getOutputDir());
+    if (!openfluid::tools::Filesystem::isDirectory(openfluid::base::RunContextManager::instance()->getOutputDir()))
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error creating output directory");
   }
   else
   {
-    if (mp_RunEnv->isClearOutputDir())
+    if (openfluid::base::RunContextManager::instance()->isClearOutputDir())
     {
-      openfluid::tools::emptyDirectoryRecursively(mp_RunEnv->getOutputDir().c_str());
+      openfluid::tools::emptyDirectoryRecursively(openfluid::base::RunContextManager::instance()
+                                                    ->getOutputDir().c_str());
     }
   }
 }
@@ -496,9 +496,10 @@ void Engine::initialize()
   m_ModelInstance.initialize(mp_SimLogger);
   m_MonitoringInstance.initialize(mp_SimLogger);
 
-  if (mp_RunEnv->isUserValuesBufferSize())
+  if (openfluid::base::RunContextManager::instance()->isValuesBufferUserSize())
   {
-    openfluid::core::ValuesBufferProperties::setBufferSize(mp_RunEnv->getValuesBufferSize());
+    openfluid::core::ValuesBufferProperties::setBufferSize(
+      openfluid::base::RunContextManager::instance()->getValuesBufferUserSize());
   }
   else
   {

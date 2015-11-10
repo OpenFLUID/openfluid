@@ -49,6 +49,7 @@
 #include <QLibrary>
 #include <QFileInfo>
 
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/dllexport.hpp>
@@ -249,7 +250,7 @@ class OPENFLUID_API WarePluginsManager
 
     WarePluginsManager()
     {
-
+      openfluid::base::Environment::init();
     }
 
 

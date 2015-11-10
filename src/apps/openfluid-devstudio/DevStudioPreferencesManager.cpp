@@ -41,6 +41,7 @@
 #include <QDir>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/Environment.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 #include "devstudioconfig.hpp"
@@ -56,6 +57,8 @@ OPENFLUID_SINGLETON_INITIALIZATION(DevStudioPreferencesManager)
 DevStudioPreferencesManager::DevStudioPreferencesManager() :
     mp_Settings(nullptr)
 {
+  openfluid::base::Environment::init();
+
   switchWorkspace(openfluid::base::PreferencesManager::instance()->getWorkspacePath());
 }
 

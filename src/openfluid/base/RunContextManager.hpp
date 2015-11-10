@@ -1,0 +1,254 @@
+/*
+
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
+
+
+ == GNU General Public License Usage ==
+
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+
+
+ == Other Usage ==
+
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
+  
+*/
+
+
+
+/**
+  @file RunContextManager.hpp
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+ */
+
+
+#ifndef __OPENFLUID_BASE_RUNCONTEXTMANAGER_HPP__
+#define __OPENFLUID_BASE_RUNCONTEXTMANAGER_HPP__
+
+
+#include <string>
+
+#include <QString>
+#include <QVariant>
+#include <QSettings>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/base/Environment.hpp>
+#include <openfluid/core/MapValue.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/utils/SingletonMacros.hpp>
+
+
+namespace openfluid { namespace base {
+
+
+class OPENFLUID_API RunContextManager : public Environment
+{
+
+  OPENFLUID_SINGLETON_DEFINITION(RunContextManager)
+
+  private:
+
+    std::string m_OutputDir;
+
+    std::string m_InputDir;
+
+    bool m_IsClearOutputDir;
+
+    bool m_IsProfiling;
+
+    unsigned int m_ValuesBufferSize;
+
+    unsigned int m_WaresMaxNumThreads;
+
+    openfluid::core::MapValue m_WaresSharedEnvironment;
+
+    openfluid::core::MapValue m_ExtraProperties;
+
+    QSettings* mp_ProjectFile;
+
+    std::string m_ProjectPath;
+
+    std::string m_ProjectName;
+
+    std::string m_ProjectDescription;
+
+    std::string m_ProjectAuthors;
+
+    std::string m_ProjectCreationDate;
+
+    std::string m_ProjectLastModDate;
+
+    bool m_ProjectIncOutputDir;
+
+    bool m_ProjectIsOpen;
+
+    static QString m_ProjectFileGroupName;
+
+    RunContextManager();
+
+    ~RunContextManager();
+
+    static std::string getNow();
+
+    void updateWaresEnvironment();
+
+    static std::string getFilePathFromProjectPath(const std::string& ProjectPath);
+
+    static std::string getInputDirFromProjectPath(const std::string& ProjectPath);
+
+    static std::string getOuputDirFromProjectPath(const std::string& ProjectPath);
+
+    static bool checkProject(const std::string& ProjectPath);
+
+
+  public:
+
+    std::string getInputDir() const
+    { return m_InputDir; }
+
+    std::string getInputFullPath(const std::string& Filename) const
+    { return m_InputDir + "/" + Filename; }
+
+    void setInputDir(const std::string& InputDir);
+
+    std::string getOutputDir() const
+    { return m_OutputDir; }
+
+    std::string getOutputFullPath(const std::string& Filename) const
+    { return m_OutputDir + "/" + Filename; }
+
+    void setOutputDir(const std::string& OutputDir);
+
+    void setDateTimeOutputDir();
+
+    bool isClearOutputDir() const
+    { return m_IsClearOutputDir; }
+
+    void setClearOutputDir(bool Enabled)
+    { m_IsClearOutputDir = Enabled; }
+
+    bool isProfiling() const
+    { return m_IsProfiling; }
+
+    void setProfiling(bool Enabled)
+    { m_IsProfiling = Enabled; }
+
+    unsigned int getValuesBufferUserSize() const
+    { return m_ValuesBufferSize; }
+
+    void setValuesBufferUserSize(unsigned int Size)
+    { m_ValuesBufferSize = Size; }
+
+    void unsetValuesBufferUserSize()
+    { m_ValuesBufferSize = 0; }
+
+    bool isValuesBufferUserSize() const
+    { return (m_ValuesBufferSize > 0); }
+
+    unsigned int getWaresMaxNumThreads() const
+    { return m_WaresMaxNumThreads; }
+
+    void setWaresMaxNumThreads(unsigned int Num)
+    { m_WaresMaxNumThreads = Num; }
+
+    void resetWaresMaxNumThreads();
+
+    openfluid::core::MapValue& extraProperties()
+    { return m_ExtraProperties; }
+
+    const openfluid::core::MapValue& getWaresEnvironment() const
+    { return m_WaresSharedEnvironment; }
+
+    void processWareParams(openfluid::ware::WareParams_t& Params) const;
+
+    std::string getProjectPath() const
+    { return m_ProjectPath; }
+
+    std::string getProjectName() const
+    { return m_ProjectName; }
+
+    void setProjectName(const std::string& Name)
+    { m_ProjectName = Name; }
+
+    std::string getProjectDescription() const
+    { return m_ProjectDescription; }
+
+    void setProjectDescription(const std::string& Description)
+    { m_ProjectDescription = Description; }
+
+    std::string getProjectAuthors() const
+    { return m_ProjectAuthors; }
+
+    void setProjectAuthors(const std::string& Authors)
+    { m_ProjectAuthors = Authors; }
+
+    std::string getProjectCreationDate() const
+    { return m_ProjectCreationDate; }
+
+    void setProjectCreationDate(const std::string& CreationDate)
+    { m_ProjectCreationDate = CreationDate; }
+
+    void setProjectCreationDateAsNow()
+    { m_ProjectCreationDate = getNow(); }
+
+    std::string getProjectLastModDate() const
+    { return m_ProjectLastModDate; }
+
+    void setProjectLastModDate(const std::string& LastModDate)
+    { m_ProjectLastModDate = LastModDate; }
+
+    bool isProjectIncrementalOutputDir() const
+    { return m_ProjectIncOutputDir; }
+
+    void setProjectIncrementalOutputDir(const bool Inc)
+    { m_ProjectIncOutputDir = Inc; }
+
+    bool openProject(const std::string& Path);
+
+    bool createProject(const std::string& Path, const std::string& Name,
+                const std::string& Description, const std::string& Authors,
+                const bool Inc);
+
+    bool isProjectOpen() const
+    { return m_ProjectIsOpen; }
+
+    bool saveProject();
+
+    void closeProject();
+
+    static bool isProject(const std::string& Path);
+
+    static bool getProjectInfos(const std::string& Path,
+                                std::string& Name, std::string& Description, std::string& Authors,
+                                std::string& CreationDate, std::string& LastModDate);
+
+    void updateProjectOutputDir();
+
+    QVariant getProjectConfigValue(const QString& Group, const QString& Key) const;
+
+    void setProjectConfigValue(const QString& Group, const QString& Key, const QVariant& Value);
+
+};
+
+
+} } //namespaces
+
+
+#endif /* __OPENFLUID_BASE_RUNCONTEXTMANAGER_HPP__ */

@@ -71,14 +71,14 @@ MarketClient::MarketClient() :
     m_IsConnected(false), m_IsLogEnabled(false)
 {
 
-  std::string m_TempDir = openfluid::base::RuntimeEnvironment::instance()->getTempDir()+"/market";
+  std::string m_TempDir = openfluid::base::Environment::getTempDir()+"/market";
   MarketPackage::setWorksDirs(m_TempDir,
-                              openfluid::base::RuntimeEnvironment::instance()->getMarketBagSimVersionDir(),
-                              openfluid::base::RuntimeEnvironment::instance()->getMarketBagObsVersionDir(),
-                              openfluid::base::RuntimeEnvironment::instance()->getMarketBagBuildVersionDir(),
-                              openfluid::base::RuntimeEnvironment::instance()->getMarketBagDataVersionDir(),
-                              openfluid::base::RuntimeEnvironment::instance()->getMarketBagBinSubDir(),
-                              openfluid::base::RuntimeEnvironment::instance()->getMarketBagSrcSubDir());
+                              openfluid::base::Environment::getMarketBagSimVersionDir(),
+                              openfluid::base::Environment::getMarketBagObsVersionDir(),
+                              openfluid::base::Environment::getMarketBagBuildVersionDir(),
+                              openfluid::base::Environment::getMarketBagDataVersionDir(),
+                              openfluid::base::Environment::getMarketBagBinSubDir(),
+                              openfluid::base::Environment::getMarketBagSrcSubDir());
 
   openfluid::tools::Filesystem::makeDirectory(m_TempDir);
 
@@ -304,11 +304,11 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
   MetaPackagesCatalog_t& MetaPackagesCatalog = m_TypesMetaPackagesCatalogs[CatalogType];
   MetaPackagesCatalog.clear();
 
-  if (openfluid::base::RuntimeEnvironment::instance()->getArch().empty())
+  if (openfluid::base::Environment::getArch().empty())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "undetermined system architecture");
 
-  std::string BinaryArchKey= "arch." + openfluid::base::RuntimeEnvironment::instance()->getArch();
+  std::string BinaryArchKey= "arch." + openfluid::base::Environment::getArch();
 
   QSettings CatalogData(QString::fromStdString(CatalogFile),QSettings::IniFormat);
 
@@ -401,7 +401,7 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
                  MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL =
                      m_URL + "/"+
                      getTypeName(CatalogType,false,true)+"/"+
-                     openfluid::base::RuntimeEnvironment::instance()->getArch()+"/"+
+                     openfluid::base::Environment::getArch()+"/"+
                      openfluid::tools::fromIniCompatible(CatalogData.value(QString::fromStdString(BinaryArchKey)+
                                                                            ".file"));
 
@@ -508,7 +508,7 @@ void MarketClient::connect(const std::string& URL)
   CatalogsFileURL[PackageInfo::DATA] = "";
 
   // Downloading OpenFLUID-Marketplace file
-  std::string MarketFileLocal = openfluid::base::RuntimeEnvironment::instance()->getTempDir()+"/marketplace.tmp";
+  std::string MarketFileLocal = openfluid::base::Environment::getTempDir()+"/marketplace.tmp";
 
   if (!m_IsConnected && openfluid::utils::FileDownloader::downloadToFile(MarketFileURL, MarketFileLocal))
   {
@@ -526,10 +526,10 @@ void MarketClient::connect(const std::string& URL)
     {
       // building url
       CUit->second = m_URL+"/"+openfluid::config::MARKETPLACE_CATALOGFILE+getTypeName(CUit->first,true,true)+"_"+
-                     openfluid::base::RuntimeEnvironment::instance()->getVersion();
+                     openfluid::base::Environment::getVersion();
 
       std::string CatalogFileLocal =
-          openfluid::base::RuntimeEnvironment::instance()->getTempDir()+"/"+
+          openfluid::base::Environment::getTempDir()+"/"+
           QString("catalog_%1.tmp").arg(CUit->first).toStdString();
 
       if (openfluid::utils::FileDownloader::downloadToFile(CUit->second, CatalogFileLocal))
@@ -822,7 +822,7 @@ std::string MarketClient::selectionTypeToString(const MetaPackageInfo::Selection
   if (Selec == MetaPackageInfo::BIN)
   {
     if(WithArch)
-      return openfluid::base::RuntimeEnvironment::instance()->getArch();
+      return openfluid::base::Environment::getArch();
     else
       return "BIN";
   }

@@ -41,8 +41,8 @@
 #include <QMessageBox>
 #include <QFileSystemModel>
 
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_NewProjectDialog.h"
@@ -179,7 +179,7 @@ void NewProjectDialog::onProjectButtonClicked()
   {
     QString NativePath = QDir::toNativeSeparators(SelectedDir);
 
-    if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
+    if (openfluid::base::RunContextManager::isProject(SelectedDir.toStdString()))
     {
       ui->ProjectLabel->setText(NativePath);
       ui->ProjectLabel->setToolTip(NativePath);

@@ -37,6 +37,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
@@ -97,7 +98,7 @@ void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger
 
     CurrentObserver->Body->linkToSimulationLogger(SimLogger);
     CurrentObserver->Body->linkToSimulation(&(m_SimulationBlob.simulationStatus()));
-    CurrentObserver->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::instance()->wareEnvironment());
+    CurrentObserver->Body->linkToRunEnvironment(&openfluid::base::RunContextManager::instance()->getWaresEnvironment());
     CurrentObserver->Body->linkToSpatialGraph(&(m_SimulationBlob.spatialGraph()));
     CurrentObserver->Body->linkToDatastore(&(m_SimulationBlob.datastore()));
     CurrentObserver->Body->initializeWare(CurrentObserver->Signature->ID);
