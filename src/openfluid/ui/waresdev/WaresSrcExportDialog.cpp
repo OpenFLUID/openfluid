@@ -88,13 +88,13 @@ bool WaresSrcExportDialog::check()
 {
   if (ui->PackagePathLineEdit->text().isEmpty())
   {
-    setMessage("No package file defined.");
+    setMessage(tr("No package file selected"));
     return false;
   }
 
   if (getSelectedWares().isEmpty())
   {
-    setMessage("No ware selected.");
+    setMessage(tr("No ware selected"));
     return false;
   }
 
@@ -157,7 +157,7 @@ void WaresSrcExportDialog::initWaresLists()
 
 void WaresSrcExportDialog::onPackagePathButtonClicked()
 {
-  QString PackageFilePath = QFileDialog::getSaveFileName(this, tr("Set the package name and location"),
+  QString PackageFilePath = QFileDialog::getSaveFileName(this, tr("Export wares sources as package"),
                                                          QDir::homePath());
 
   if (PackageFilePath.isEmpty())
@@ -186,7 +186,7 @@ void WaresSrcExportDialog::exportToPackage()
                                                  ui->PackagersLineEdit->text(),
                                                  ui->PackageDescriptionTextEdit->toPlainText());
 
-  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog("Processing ware sources compression:", this);
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Compression of wares sources:"), this);
 
   Pkg.moveToThread(Thread);
 
@@ -234,10 +234,6 @@ QStringList WaresSrcExportDialog::getSelectedWares()
 
   return Wares;
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } //namespaces

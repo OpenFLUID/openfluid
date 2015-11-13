@@ -49,11 +49,8 @@
 #include <QFileDialog>
 #include <QThread>
 
+
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
@@ -93,13 +90,13 @@ bool WaresSrcImportDialog::check()
 {
   if (ui->PackagePathLabel->text().isEmpty())
   {
-    setMessage("No package file defined.");
+    setMessage(tr("No package file selected"));
     return false;
   }
 
   if (getSelectedWares().isEmpty())
   {
-    setMessage("No ware selected.");
+    setMessage(tr("No ware selected"));
     return false;
   }
 
@@ -139,7 +136,7 @@ void WaresSrcImportDialog::onPackageSourceChoosen(bool Checked)
   if (!Checked)
     return;
 
-  ui->WaresGroupBox->setTitle("Available wares in package");
+  ui->WaresGroupBox->setTitle(tr("Available wares in package"));
 
   updatePackageInfo(mp_ImportFilePkg);
 }
@@ -154,7 +151,7 @@ void WaresSrcImportDialog::onGitSourceChoosen(bool Checked)
   if (!Checked)
     return;
 
-  ui->WaresGroupBox->setTitle("Available wares on wareshub site");
+  ui->WaresGroupBox->setTitle(tr("Available wares on wareshub site"));
 
   updatePackageInfo(mp_ImportFilePkg);
 }
@@ -166,7 +163,7 @@ void WaresSrcImportDialog::onGitSourceChoosen(bool Checked)
 
 void WaresSrcImportDialog::onPackagePathButtonClicked()
 {
-  QString PackageFilePath = QFileDialog::getOpenFileName(this, tr("Choose the package file to open"),
+  QString PackageFilePath = QFileDialog::getOpenFileName(this, tr("Select package file"),
                                                          QDir::homePath(),
                                                          tr("OpenFLUID wares packages (*.ofwdp)"));
 
@@ -179,7 +176,7 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
 
   QThread* Thread = new QThread();
 
-  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog("Fetching ware sources information:", this);
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Fetching information from ware sources:"), this);
 
   try
   {
@@ -258,7 +255,7 @@ void WaresSrcImportDialog::updateWaresList(openfluid::waresdev::WaresDevImportPa
     {
       Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
       Item->setCheckState(Qt::Unchecked);
-      Item->setToolTip(QString("%1 already exists in your workspace").arg(WareName));
+      Item->setToolTip(QString(tr("%1 already exists in the workspace")).arg(WareName));
     }
     else
     {
@@ -320,7 +317,7 @@ void WaresSrcImportDialog::importPackage()
 
   QThread* Thread = new QThread();
 
-  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog("Processing ware sources import:", this);
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Importing wares sources:"), this);
 
   Pkg->moveToThread(Thread);
 
@@ -346,10 +343,6 @@ void WaresSrcImportDialog::importPackage()
   if (ProgressDialog.exec())
     accept();
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } //namespaces

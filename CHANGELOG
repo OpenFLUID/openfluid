@@ -1,7 +1,10 @@
 2.1.1
 
-  * Introduced API client for FluidHub services 
+  * Introduced API client for FluidHub services
   * Introduced packages for exporting and importing wares sources codes
+  * Updated UI design for better consistency
+  * Improved usage of C++11 features
+  * Improved memory management to avoid potential memory leaks
   * Cleaned code
   * Fixed bugs
 
