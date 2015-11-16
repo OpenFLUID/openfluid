@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -39,17 +39,17 @@
 #include "RasterDataset.hpp"
 
 #include <string.h>
+
 #include <gdal_alg.h>
+
 #include <geos/geom/Coordinate.h>
+
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 
+
 namespace openfluid { namespace landr {
-
-
-// =====================================================================
-// =====================================================================
 
 
 RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
@@ -66,10 +66,9 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
 
   if (!mp_Dataset)
   {
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "Error while creating a virtual copy of " + Value.getAbsolutePath()
-        + " (" + CPLGetLastErrorMsg() + ")");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Error while creating a virtual copy of " + Value.getAbsolutePath() +
+                                              " (" + CPLGetLastErrorMsg() + ")");
   }
 }
 
@@ -92,11 +91,9 @@ RasterDataset::RasterDataset(const RasterDataset& Other) :
 
   if (!mp_Dataset)
   {
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "Error while creating a virtual copy (" + std::string(
-            CPLGetLastErrorMsg())
-        + ")");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Error while creating a virtual copy (" +
+                                              std::string(CPLGetLastErrorMsg())  + ")");
   }
 }
 
@@ -177,9 +174,7 @@ void RasterDataset::computeGeoTransform()
   mp_GeoTransform = new double[6];
 
   if (GDALGetGeoTransform(mp_Dataset, mp_GeoTransform) != CE_None)
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "Error while getting GeoTransform information");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Error while getting GeoTransform information");
 }
 
 
@@ -213,8 +208,7 @@ double RasterDataset::getPixelHeight()
 // =====================================================================
 
 
-std::vector<float> RasterDataset::getValuesOfLine(int LineIndex,
-                                                  unsigned int RasterBandIndex)
+std::vector<float> RasterDataset::getValuesOfLine(int LineIndex, unsigned int RasterBandIndex)
 {
   std::vector<float> Val;
 
@@ -239,8 +233,7 @@ std::vector<float> RasterDataset::getValuesOfLine(int LineIndex,
 // =====================================================================
 
 
-std::vector<float> RasterDataset::getValuesOfColumn(int ColIndex,
-                                                    unsigned int RasterBandIndex)
+std::vector<float> RasterDataset::getValuesOfColumn(int ColIndex, unsigned int RasterBandIndex)
 {
   std::vector<float> Val;
 
@@ -276,11 +269,10 @@ float RasterDataset::getValueOfPixel(int ColIndex,
   //  The pixel values will automatically be translated from the GDALRasterBand data type as needed.
   if (rasterBand(RasterBandIndex)->RasterIO(GF_Read, ColIndex, LineIndex, 1,
                                                1, ScanLine, 1, 1, GDT_Float32,
-                                               0, 0)
-      != CE_None)
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "Error while getting value from raster.");
+                                               0, 0) != CE_None)
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Error while getting value from raster.");
+  }
 
   Val = ScanLine[0];
 
@@ -313,27 +305,20 @@ openfluid::landr::VectorDataset* RasterDataset::polygonize(const std::string& Fi
 {
   if (!mp_PolygonizedByRasterBandIndex.count(RasterBandIndex))
   {
-    FieldName =
-        (FieldName == "" ? getDefaultPolygonizedFieldName() : FieldName);
+    FieldName = (FieldName == "" ? getDefaultPolygonizedFieldName() : FieldName);
 
     mp_PolygonizedByRasterBandIndex.insert(
         std::make_pair(RasterBandIndex,
                        new openfluid::landr::VectorDataset(FileName)));
 
-    mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->addALayer("",
-                                                                   wkbPolygon);
-    mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->addAField(FieldName,
-                                                                   OFTReal);
-    int FieldIndex =
-        mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->getFieldIndex(
-            FieldName);
+    mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->addALayer("",wkbPolygon);
+    mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->addAField(FieldName,OFTReal);
 
-    OGRLayer* Layer =
-        mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->layer(0);
+    int FieldIndex = mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->getFieldIndex(FieldName);
 
-    if (GDALFPolygonize(rasterBand(RasterBandIndex), nullptr, Layer, FieldIndex,
-                        nullptr, nullptr, nullptr)
-        != CE_None)
+    OGRLayer* Layer = mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->layer(0);
+
+    if (GDALFPolygonize(rasterBand(RasterBandIndex), nullptr, Layer, FieldIndex,nullptr, nullptr, nullptr) != CE_None)
     {
       delete mp_PolygonizedByRasterBandIndex.at(RasterBandIndex);
       mp_PolygonizedByRasterBandIndex.erase(RasterBandIndex);
@@ -369,20 +354,12 @@ OGREnvelope RasterDataset::envelope()
     Envelope.MinX = adfGeoTransform[0];
     Envelope.MaxY = adfGeoTransform[3];
     // Extent computation
-    Envelope.MaxX = adfGeoTransform[0]
-                                    + (source()->GetRasterXSize() * adfGeoTransform[1]);
-    Envelope.MinY = adfGeoTransform[3]
-                                    + (source()->GetRasterYSize() * adfGeoTransform[5]);
+    Envelope.MaxX = adfGeoTransform[0] + (source()->GetRasterXSize() * adfGeoTransform[1]);
+    Envelope.MinY = adfGeoTransform[3] + (source()->GetRasterYSize() * adfGeoTransform[5]);
   }
 
   return Envelope;
-
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-
-} } // namespaces landr openfluid
+} } // namespaces

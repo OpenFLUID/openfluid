@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -39,10 +39,15 @@
 #ifndef __OPENFLUID_LANDR_LANDRGRAPH_HPP__
 #define __OPENFLUID_LANDR_LANDRGRAPH_HPP__
 
-#include <geos/planargraph/PlanarGraph.h>
-#include <openfluid/dllexport.hpp>
-#include <ogrsf_frmts.h>
+
 #include <list>
+
+#include <ogrsf_frmts.h>
+
+#include <geos/planargraph/PlanarGraph.h>
+
+#include <openfluid/dllexport.hpp>
+
 
 namespace geos { namespace geom {
 class Geometry;
@@ -359,6 +364,8 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
 
 };
 
-} } // namespace landr, openfluid
+
+} }  // namespaces
+
 
 #endif /* __OPENFLUID_LANDR_LANDRGRAPH_HPP__ */

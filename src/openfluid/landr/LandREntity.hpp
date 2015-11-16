@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -36,14 +36,19 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
+
 #ifndef __OPENFLUID_LANDR_LANDRENTITY_HPP__
 #define __OPENFLUID_LANDR_LANDRENTITY_HPP__
 
-#include <geos/planargraph/GraphComponent.h>
+
 #include <map>
 #include <set>
 #include <string>
+
+#include <geos/planargraph/GraphComponent.h>
+
 #include <openfluid/dllexport.hpp>
+
 
 namespace geos { namespace geom {
 class Geometry;
@@ -53,8 +58,9 @@ class Point;
 namespace openfluid {
 namespace core {
 class Value;
-
 }
+
+
 namespace landr {
 
 /**

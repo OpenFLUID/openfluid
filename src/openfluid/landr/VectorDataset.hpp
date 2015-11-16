@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -344,7 +344,8 @@ class OPENFLUID_API VectorDataset
 
 };
 
-} } // namespaces openfluid, landr
+
+} }  // namespaces
 
 
 #endif /* __OPENFLUID_LANDR_VECTORDATASET_HPP__ */

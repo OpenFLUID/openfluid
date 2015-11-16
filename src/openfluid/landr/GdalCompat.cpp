@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -36,7 +36,9 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
+
 #include <gdal_version.h>
+
 #include <openfluid/landr/GdalCompat.hpp>
 
 
@@ -74,4 +76,3 @@ OGRGeometry* convertGEOSGeometryToOGR(const GEOSGeom Geometry)
 
 
 } }  // namespaces
-

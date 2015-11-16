@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -39,10 +39,13 @@
 #ifndef __OPENFLUID_LANDR_POLYGONEDGE_HPP__
 #define __OPENFLUID_LANDR_POLYGONEDGE_HPP__
 
-#include <geos/planargraph/Edge.h>
-#include <openfluid/dllexport.hpp>
 
 #include <map>
+
+#include <geos/planargraph/Edge.h>
+
+#include <openfluid/dllexport.hpp>
+
 
 namespace geos {
 namespace geom {
@@ -58,7 +61,9 @@ namespace core {
 class Value;
 }
 
+
 namespace landr {
+
 
 class PolygonEntity;
 
@@ -157,5 +162,8 @@ class OPENFLUID_API PolygonEdge: public geos::planargraph::Edge
 
 };
 
-} } // namespace landr, openfluid
+
+} }  // namespaces
+
+
 #endif /* __OPENFLUID_LANDR_POLYGONEDGE_HPP__ */

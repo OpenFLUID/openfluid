@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -39,15 +39,20 @@
 #ifndef __OPENFLUID_LANDR_RASTERDATASET_HPP__
 #define __OPENFLUID_LANDR_RASTERDATASET_HPP__
 
+
 #include <map>
-#include "gdal_priv.h"
+
+#include <gdal_priv.h>
 #include <ogrsf_frmts.h>
-#include "cpl_conv.h" // for CPLMalloc()
+#include <cpl_conv.h> // for CPLMalloc()
+
 #include <openfluid/dllexport.hpp>
+
 
 namespace geos { namespace geom {
 class Coordinate;
 } }
+
 namespace openfluid {
 
 namespace core {
@@ -57,6 +62,8 @@ class GeoRasterValue;
 namespace landr {
 
 class VectorDataset;
+
+
 /**
   @brief Interface for managing Raster Data format.
 */
@@ -177,8 +184,7 @@ class OPENFLUID_API RasterDataset
       @param RasterBandIndex The raster band index (default is 1).
       @return The pixel value.
     */
-    float getValueOfCoordinate(geos::geom::Coordinate Coo,
-                               unsigned int RasterBandIndex = 1);
+    float getValueOfCoordinate(geos::geom::Coordinate Coo, unsigned int RasterBandIndex = 1);
 
     /**
       @brief Creates a new VectorDataset with polygons for all connected regions of pixels
@@ -204,6 +210,7 @@ class OPENFLUID_API RasterDataset
 
 };
 
-} } // namespaces openfluid, landr
+
+} }  // namespaces
 
 #endif /* __OPENFLUID_LANDR_RASTERDATASET_HPP__ */

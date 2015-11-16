@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -44,6 +44,7 @@
 
 #include <openfluid/config.hpp>
 
+
 namespace openfluid { namespace landr {
 
 #if GEOS_VERSION_GREATER_OR_EQUAL_3_3_0
@@ -51,8 +52,9 @@ namespace openfluid { namespace landr {
     D = P->getDangles();
 #else
   #define GET_DANGLES(P,D) \
-    std::vector<const geos::geom::LineString*>* TheDangles = P->getDangles(); \
-    if (TheDangles) D = *TheDangles;
+    std::vector<const geos::geom::LineString*>* _M_TheDangles = P->getDangles(); \
+    if (_M_TheDangles) \
+      D = *_M_TheDangles;
 #endif
 
 #if GEOS_VERSION_GREATER_OR_EQUAL_3_3_2
@@ -62,7 +64,7 @@ namespace openfluid { namespace landr {
 #endif
 
 
-}}
+} }  // namespaces
 
 
 #endif /* __OPENFLUID_LANDR_GEOSCOMPAT_HPP__ */

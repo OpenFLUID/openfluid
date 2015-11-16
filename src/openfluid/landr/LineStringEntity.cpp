@@ -36,13 +36,15 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
-#include "LineStringEntity.hpp"
 
 #include <geos/geom/LineString.h>
 #include <geos/geom/Point.h>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
+
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/landr/LineStringEntity.hpp>
+
 
 namespace openfluid { namespace landr {
 
@@ -51,26 +53,20 @@ namespace openfluid { namespace landr {
 // =====================================================================
 
 
-LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
-		unsigned int OfldId) :
-    		LandREntity(NewLine, OfldId), geos::planargraph::Edge(), mp_LOUpNeighbours(
-    				0), mp_LODownNeighbours(0)
+LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,unsigned int OfldId) :
+  LandREntity(NewLine, OfldId), geos::planargraph::Edge(),
+  mp_LOUpNeighbours(0), mp_LODownNeighbours(0)
 {
 	if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_LINESTRING)
-		throw openfluid::base::FrameworkException(
-		    OPENFLUID_CODE_LOCATION,
-				"Geometry is not a LineString.");
+		throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Geometry is not a LineString");
 
-	mp_Line =
-			dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(mp_Geom));
+	mp_Line = dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(mp_Geom));
 
 	if (mp_Line->isEmpty())
 	{
 		delete mp_Centroid;
 
-		throw openfluid::base::FrameworkException(
-		    OPENFLUID_CODE_LOCATION,
-				"The LineString is empty");
+		throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"The LineString is empty");
 	}
 }
 
@@ -82,6 +78,7 @@ LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
 LineStringEntity::~LineStringEntity()
 {
 	unsigned int iEnd=dirEdge.size();
+
 	for (unsigned int i = 0; i < iEnd; i++)
 		delete dirEdge[i];
 
@@ -143,8 +140,8 @@ void LineStringEntity::computeNeighbours()
 	geos::planargraph::DirectedEdgeStar* UpStar = startNode()->getOutEdges();
 	geos::planargraph::DirectedEdgeStar* DownStar = endNode()->getOutEdges();
 
-	std::vector<geos::planargraph::DirectedEdge*>::iterator it=UpStar->iterator();
-	std::vector<geos::planargraph::DirectedEdge*>::iterator ite=UpStar->end();
+	std::vector<geos::planargraph::DirectedEdge*>::iterator it = UpStar->iterator();
+	std::vector<geos::planargraph::DirectedEdge*>::iterator ite = UpStar->end();
 	for (; it != ite; ++it)
 	{
 		LandREntity* Ent = dynamic_cast<LandREntity*>((*it)->getEdge());
@@ -152,15 +149,17 @@ void LineStringEntity::computeNeighbours()
 		if (Ent != this)
 			mp_Neighbours->insert(Ent);
 	}
+
 	it = DownStar->iterator();
 	ite = DownStar->end();
+
 	for (; it != ite; ++it)
 	{
 		LandREntity* Ent = dynamic_cast<LandREntity*>((*it)->getEdge());
+
 		if (Ent != this)
 			mp_Neighbours->insert(Ent);
 	}
-
 }
 
 
@@ -189,10 +188,9 @@ void LineStringEntity::computeLineOrientUpNeighbours()
 
 	geos::geom::Coordinate UpNodeCoo = startNode()->getCoordinate();
 
-	std::vector<geos::planargraph::DirectedEdge*>::iterator it =
-			UpStar->iterator();
-	std::vector<geos::planargraph::DirectedEdge*>::iterator ite =
-			UpStar->end();
+	std::vector<geos::planargraph::DirectedEdge*>::iterator it = UpStar->iterator();
+	std::vector<geos::planargraph::DirectedEdge*>::iterator ite = UpStar->end();
+
 	for (; it != ite; ++it)
 	{
 		LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
@@ -228,10 +226,9 @@ void LineStringEntity::computeLineOrientDownNeighbours()
 
 	geos::geom::Coordinate DownNodeCoo = endNode()->getCoordinate();
 
-	std::vector<geos::planargraph::DirectedEdge*>::iterator it =
-			DownStar->iterator();
-	std::vector<geos::planargraph::DirectedEdge*>::iterator ite =
-			DownStar->end();
+	std::vector<geos::planargraph::DirectedEdge*>::iterator it = DownStar->iterator();
+	std::vector<geos::planargraph::DirectedEdge*>::iterator ite = DownStar->end();
+
 	for (; it != ite; ++it)
 	{
 		LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
@@ -248,35 +245,28 @@ void LineStringEntity::computeLineOrientDownNeighbours()
 
 std::vector<LineStringEntity*>  LineStringEntity::getLineNeighboursDegree2()
 {
-
 	std::vector<LineStringEntity*> vNeighbours;
 
-	int StartDegree=startNode()->getDegree();
-	int EndDegree=endNode()->getDegree();
+	int StartDegree = startNode()->getDegree();
+	int EndDegree = endNode()->getDegree();
 
 	computeNeighbours();
 
-	if (StartDegree<=2)
+	if (StartDegree <= 2)
 	{
-		std::vector<LineStringEntity*> vUpNeighbours;
-		vUpNeighbours= getLineOrientUpNeighbours();
+		std::vector<LineStringEntity*> vUpNeighbours = getLineOrientUpNeighbours();
 		vNeighbours.insert (vNeighbours.end(),vUpNeighbours.begin(),vUpNeighbours.end());
 	}
 
-	if (EndDegree<=2)
+	if (EndDegree <= 2)
 	{
 		std::vector<LineStringEntity*> vDownNeighbours;
-		vDownNeighbours=getLineOrientDownNeighbours();
+		vDownNeighbours = getLineOrientDownNeighbours();
 		vNeighbours.insert (vNeighbours.end(),vDownNeighbours.begin(),vDownNeighbours.end());
 	}
 
 	return vNeighbours;
-
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-} } // namespace landr, openfluid
+} }  // namespaces

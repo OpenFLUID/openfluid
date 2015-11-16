@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -36,17 +36,19 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
-#include "PolygonEdge.hpp"
 
+ #include <algorithm>
+ #include <sstream>
+
+ #include <geos/geom/LineString.h>
+ #include <geos/geom/Polygon.h>
+ #include <geos/geom/Point.h>
+ #include <geos/planargraph/DirectedEdge.h>
+
+#include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/core/Value.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <geos/geom/LineString.h>
-#include <geos/geom/Polygon.h>
-#include <geos/geom/Point.h>
-#include <geos/planargraph/DirectedEdge.h>
-#include <algorithm>
-#include <sstream>
 
 
 namespace openfluid { namespace landr {
@@ -70,6 +72,7 @@ PolygonEdge::PolygonEdge(geos::geom::LineString& Line) :
 PolygonEdge::~PolygonEdge()
 {
   unsigned int iEnd=dirEdge.size();
+
   for (unsigned int i = 0; i < iEnd; i++)
     delete dirEdge[i];
 }
@@ -97,8 +100,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
     s << "Can not add Polygon " << NewFace.getOfldId()
       << " as neighbour of this edge, because it doesn't contain edge line.";
 
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION, s.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s.str());
 
     return;
   }
@@ -122,9 +124,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
 
 bool PolygonEdge::isLineInFace(PolygonEntity& Face)
 {
-  return (m_Line.relate(Face.polygon(), "F1F"
-                        "F*F"
-                        "***"));
+  return (m_Line.relate(Face.polygon(), "F1F" "F*F" "***"));
 }
 
 
@@ -159,8 +159,7 @@ void PolygonEdge::removeFace(PolygonEntity* Face)
 bool PolygonEdge::getAttributeValue(const std::string& AttributeName,
                                     core::Value& Value) const
 {
-  std::map<std::string, core::Value*>::const_iterator it = m_EdgeAttributes.find(
-      AttributeName);
+  std::map<std::string, core::Value*>::const_iterator it = m_EdgeAttributes.find(AttributeName);
 
   if (it != m_EdgeAttributes.end() && it->second)
   {
@@ -179,14 +178,15 @@ bool PolygonEdge::getAttributeValue(const std::string& AttributeName,
 bool PolygonEdge::setAttributeValue(const std::string& AttributeName,
                                     const core::Value* Value)
 {
-  std::map<std::string, core::Value*>::const_iterator it = m_EdgeAttributes.find(
-      AttributeName);
+  std::map<std::string, core::Value*>::const_iterator it = m_EdgeAttributes.find(AttributeName);
 
   if (it != m_EdgeAttributes.end())
   {
     if (it->second)
       delete it->second;
+
     m_EdgeAttributes[AttributeName] = const_cast<core::Value*>(Value->clone());
+
     return true;
   }
 
@@ -201,8 +201,7 @@ bool PolygonEdge::setAttributeValue(const std::string& AttributeName,
 void PolygonEdge::removeAttribute(const std::string& AttributeName)
 {
 
-  std::map<std::string, core::Value*>::iterator it = m_EdgeAttributes.find(
-      AttributeName);
+  std::map<std::string, core::Value*>::iterator it = m_EdgeAttributes.find(AttributeName);
 
   if (it != m_EdgeAttributes.end())
   {
@@ -227,12 +226,15 @@ bool PolygonEdge::isCoincident(PolygonEdge *Edge)
   geos::geom::Point *StartPoint2=Edge->line()->getStartPoint();
   geos::geom::Point *EndPoint2=Edge->line()->getEndPoint();
 
-  bool Coincident=false;
-  if ((StartPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||
-      (StartPoint->getCoordinate())->equals(*(EndPoint2->getCoordinate()))||
-      (EndPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||
+  bool Coincident = false;
+
+  if ((StartPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate())) ||
+      (StartPoint->getCoordinate())->equals(*(EndPoint2->getCoordinate())) ||
+      (EndPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate())) ||
       (EndPoint->getCoordinate())->equals(*(EndPoint2->getCoordinate())))
-    Coincident=true;
+  {
+    Coincident = true;
+  }
 
   delete StartPoint;
   delete StartPoint2;
@@ -242,8 +244,4 @@ bool PolygonEdge::isCoincident(PolygonEdge *Edge)
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-} } // namespace landr, openfluid
+} }  // namespaces

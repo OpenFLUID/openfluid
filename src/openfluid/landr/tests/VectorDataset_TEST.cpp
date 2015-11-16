@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -36,8 +36,7 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_vectordataset
 #include <boost/test/unit_test.hpp>
@@ -68,7 +67,6 @@ void deleteIfExists(std::string Path)
     OGRDataSource::DestroyDataSource(DS);
     Driver->DeleteDataSource(Path.c_str());
   }
-
 }
 
 
@@ -78,10 +76,7 @@ void deleteIfExists(std::string Path)
 
 BOOST_AUTO_TEST_CASE(check_constructor_empty)
 {
-  openfluid::base::Environment::init();
-
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-      "test.shp");
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset("test.shp");
 
   OGRDataSource* DS = Vect->source();
 
@@ -106,28 +101,20 @@ BOOST_AUTO_TEST_CASE(check_constructor_empty)
 
 BOOST_AUTO_TEST_CASE(check_constructor_WrongVectorFormat)
 {
-  openfluid::base::Environment::init();
+  BOOST_CHECK_THROW(new openfluid::landr::VectorDataset(CONFIGTESTS_INPUT_MISCDATA_DIR +"/GeoVectorValue/SU.gml"),
+                    openfluid::base::FrameworkException);
 
-  BOOST_CHECK_THROW(
-      new openfluid::landr::VectorDataset(CONFIGTESTS_INPUT_MISCDATA_DIR +"/GeoVectorValue/SU.gml"),
-      openfluid::base::FrameworkException);
-
-  BOOST_CHECK_THROW(
-      new openfluid::landr::VectorDataset(CONFIGTESTS_INPUT_MISCDATA_DIR +"/GeoVectorValue/SU.geojson"),
-      openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(new openfluid::landr::VectorDataset(CONFIGTESTS_INPUT_MISCDATA_DIR +"/GeoVectorValue/SU.geojson"),
+                  openfluid::base::FrameworkException);
 
 
-  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,
-                                        "/GeoVectorValue/SU.geojson");
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,"/GeoVectorValue/SU.geojson");
 
-  BOOST_CHECK_THROW( new openfluid::landr::VectorDataset(Value),
-                     openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(new openfluid::landr::VectorDataset(Value),openfluid::base::FrameworkException);
 
-  openfluid::core::GeoVectorValue Value2(CONFIGTESTS_INPUT_MISCDATA_DIR,
-                                         "/GeoVectorValue/SU.gml");
+  openfluid::core::GeoVectorValue Value2(CONFIGTESTS_INPUT_MISCDATA_DIR,"/GeoVectorValue/SU.gml");
 
-  BOOST_CHECK_THROW( new openfluid::landr::VectorDataset(Value2),
-                     openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(new openfluid::landr::VectorDataset(Value2),openfluid::base::FrameworkException);
 }
 
 
@@ -137,13 +124,9 @@ BOOST_AUTO_TEST_CASE(check_constructor_WrongVectorFormat)
 
 BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,"landr/SU.shp");
 
-  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,
-                                        "landr/SU.shp");
-
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-      Value);
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
 
   OGRDataSource* DS = Vect->source();
 
@@ -151,8 +134,7 @@ BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
   BOOST_CHECK(DS->GetDriver());
   BOOST_CHECK_EQUAL(DS->GetDriver()->GetName(), "ESRI Shapefile");
 
-  openfluid::landr::VectorDataset* Vect2 = new openfluid::landr::VectorDataset(
-      Value);
+  openfluid::landr::VectorDataset* Vect2 = new openfluid::landr::VectorDataset(Value);
 
   delete Vect;
   delete Vect2;
@@ -165,36 +147,31 @@ BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
 
 BOOST_AUTO_TEST_CASE(check_copyToDisk)
 {
-  openfluid::base::Environment::init();
-
-  std::string NewPath = openfluid::core::GeoValue::computeAbsolutePath(
-      CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp");
+  std::string NewPath =
+      openfluid::core::GeoValue::computeAbsolutePath(CONFIGTESTS_OUTPUT_DATA_DIR,
+                                                     "OPENFLUID.OUT.VectorDataset/new_test.shp");
 
   deleteIfExists(NewPath);
 
   if (!openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR + "/OPENFLUID.OUT.VectorDataset"))
+  {
     openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR + "/OPENFLUID.OUT.VectorDataset");
+  }
 
-  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,
-                                        "landr/SU.shp");
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR,"landr/SU.shp");
 
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-      Value);
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
 
-  Vect->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR,
-                   "OPENFLUID.OUT.VectorDataset/new_test.shp", false);
+  Vect->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR,"OPENFLUID.OUT.VectorDataset/new_test.shp", false);
 
-  openfluid::core::GeoVectorValue NewVal(
-      CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp");
+  openfluid::core::GeoVectorValue NewVal(CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp");
 
   BOOST_CHECK_EQUAL(NewVal.data()->GetLayer(0)->GetFeatureCount(), 24);
 
-  BOOST_CHECK_THROW(
-      Vect->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp", false),
-      openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Vect->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp", false),
+                    openfluid::base::FrameworkException);
 
-  Vect->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR,
-                   "OPENFLUID.OUT.VectorDataset/new_test.shp", true);
+  Vect->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR,"OPENFLUID.OUT.VectorDataset/new_test.shp", true);
 
   delete Vect;
 }
@@ -206,13 +183,9 @@ BOOST_AUTO_TEST_CASE(check_copyToDisk)
 
 BOOST_AUTO_TEST_CASE(check_Properties)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
-  openfluid::core::GeoVectorValue Value(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
-
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-      Value);
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
 
   BOOST_CHECK(!Vect->isLineType());
   BOOST_CHECK(Vect->isPolygonType());
@@ -232,13 +205,9 @@ BOOST_AUTO_TEST_CASE(check_Properties)
 
 BOOST_AUTO_TEST_CASE(check_addField)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
-  openfluid::core::GeoVectorValue Value(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
-
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-      Value);
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
 
   Vect->addAField("NewField", OFTInteger);
 
@@ -258,21 +227,15 @@ BOOST_AUTO_TEST_CASE(check_addField)
 
 BOOST_AUTO_TEST_CASE(check_parse)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
-  openfluid::core::GeoVectorValue Value(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
 
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-      Value);
-
-  openfluid::landr::VectorDataset::FeaturesList_t Features =
-      Vect->features();
+  openfluid::landr::VectorDataset::FeaturesList_t Features = Vect->features();
 
   BOOST_CHECK_EQUAL(Features.size(), 24);
 
-  for (openfluid::landr::VectorDataset::FeaturesList_t::iterator it =
-      Features.begin(); it != Features.end(); ++it)
+  for (openfluid::landr::VectorDataset::FeaturesList_t::iterator it = Features.begin(); it != Features.end(); ++it)
   {
     geos::geom::Geometry* GeosGeom =
         (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(it->first->GetGeometryRef());
@@ -288,8 +251,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
   delete Vect;
   delete Geom;
 
-  Value = openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
+  Value = openfluid::core::GeoVectorValue(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
   Vect = new openfluid::landr::VectorDataset(Value);
 
@@ -297,8 +259,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
 
   BOOST_CHECK_EQUAL(Features.size(), 8);
 
-  for (openfluid::landr::VectorDataset::FeaturesList_t::iterator it =
-      Features.begin(); it != Features.end(); ++it)
+  for (openfluid::landr::VectorDataset::FeaturesList_t::iterator it = Features.begin(); it != Features.end(); ++it)
   {
     geos::geom::Geometry* GeosGeom =
         (geos::geom::Geometry*) openfluid::landr::convertOGRGeometryToGEOS(it->first->GetGeometryRef());
@@ -323,13 +284,9 @@ BOOST_AUTO_TEST_CASE(check_parse)
 
 BOOST_AUTO_TEST_CASE(check_Geometry_Properties)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue ValuePolyg(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
-  openfluid::core::GeoVectorValue ValuePolyg(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
-
-  openfluid::landr::VectorDataset* VectPolyg = new openfluid::landr::VectorDataset(
-      ValuePolyg);
+  openfluid::landr::VectorDataset* VectPolyg = new openfluid::landr::VectorDataset(ValuePolyg);
 
   BOOST_CHECK(!VectPolyg->isLineType());
   BOOST_CHECK(!VectPolyg->isPointType());
@@ -338,8 +295,7 @@ BOOST_AUTO_TEST_CASE(check_Geometry_Properties)
   openfluid::core::GeoVectorValue ValueLine(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS.shp");
 
-  openfluid::landr::VectorDataset* VectLine = new openfluid::landr::VectorDataset(
-      ValueLine);
+  openfluid::landr::VectorDataset* VectLine = new openfluid::landr::VectorDataset(ValueLine);
 
   BOOST_CHECK(VectLine->isLineType());
   BOOST_CHECK(!VectLine->isPointType());
@@ -350,8 +306,7 @@ BOOST_AUTO_TEST_CASE(check_Geometry_Properties)
   openfluid::core::GeoVectorValue ValuePoint(
       CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "PU.shp");
 
-  openfluid::landr::VectorDataset* VectPoint = new openfluid::landr::VectorDataset(
-      ValuePoint);
+  openfluid::landr::VectorDataset* VectPoint = new openfluid::landr::VectorDataset(ValuePoint);
 
   BOOST_CHECK(!VectPoint->isLineType());
   BOOST_CHECK(VectPoint->isPointType());
@@ -368,17 +323,12 @@ BOOST_AUTO_TEST_CASE(check_Geometry_Properties)
 
 BOOST_AUTO_TEST_CASE(check_setIndexIntField)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
-  openfluid::core::GeoVectorValue Value(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
 
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-      Value);
+  BOOST_CHECK_THROW(Vect->setIndexIntField("WrongField"),openfluid::base::FrameworkException);
 
-
-  BOOST_CHECK_THROW(Vect->setIndexIntField("WrongField"),
-                    openfluid::base::FrameworkException);
   Vect->addAField("Enum",OFTInteger);
   Vect->setIndexIntField("Enum",10);
   BOOST_CHECK_EQUAL(Vect-> isIntValueSet("Enum",10),true);
@@ -386,8 +336,6 @@ BOOST_AUTO_TEST_CASE(check_setIndexIntField)
   BOOST_CHECK_EQUAL(Vect-> isIntValueSet("Enum",12),true);
   BOOST_CHECK_EQUAL(Vect-> isIntValueSet("Enum",33),true);
   BOOST_CHECK_EQUAL(Vect-> isIntValueSet("Enum",34),false);
-
-
 
   delete Vect;
 }
@@ -399,13 +347,9 @@ BOOST_AUTO_TEST_CASE(check_setIndexIntField)
 
 BOOST_AUTO_TEST_CASE(check_envelope)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
-  openfluid::core::GeoVectorValue Value(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
-
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-      Value);
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
 
   OGREnvelope envelope=Vect->envelope();
 
@@ -425,13 +369,9 @@ BOOST_AUTO_TEST_CASE(check_envelope)
 
 BOOST_AUTO_TEST_CASE(check_findOverlap)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue ValueSU(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_overlap.shp");
 
-  openfluid::core::GeoVectorValue ValueSU(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_overlap.shp");
-
-  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
-      ValueSU);
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(ValueSU);
 
   std::list<std::pair<OGRFeature*, OGRFeature*> > lOverlap=VectSU->findOverlap();
   BOOST_CHECK_EQUAL(lOverlap.size(),4);
@@ -460,17 +400,16 @@ BOOST_AUTO_TEST_CASE(check_findOverlap)
 
 BOOST_AUTO_TEST_CASE(check_findGap)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue ValueSU(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
 
-  openfluid::core::GeoVectorValue ValueSU(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(ValueSU);
 
-  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
-      ValueSU);
   std::list<std::pair<OGRFeature*, OGRFeature*> > lGap=VectSU->findGap(0.0001);
   BOOST_CHECK_EQUAL(lGap.size(),0);
+
   lGap=VectSU->findGap(0.1);
   BOOST_CHECK_EQUAL(lGap.size(),3);
+
   std::list<std::pair<OGRFeature*, OGRFeature*> >::iterator it = lGap.begin();
 
   BOOST_CHECK_EQUAL((*it).first->GetFID(),0);
@@ -492,31 +431,29 @@ BOOST_AUTO_TEST_CASE(check_findGap)
 
 BOOST_AUTO_TEST_CASE(check_checkTopology)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue ValueSU(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
 
-  openfluid::core::GeoVectorValue ValueSU(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(ValueSU);
 
-  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
-      ValueSU);
+  std::string Msg = VectSU->checkTopology(0.1);
 
-  std::string Msg=VectSU->checkTopology(0.1);
   BOOST_CHECK_EQUAL(Msg.empty(),false);
   BOOST_CHECK_EQUAL(Msg.size(),173);
   Msg.clear();
+
   Msg=VectSU->checkTopology(4);
+
   BOOST_CHECK_EQUAL(Msg.empty(),false);
   BOOST_CHECK_EQUAL(Msg.size(),216);
 
   delete VectSU;
 
-  openfluid::core::GeoVectorValue ValueRS(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "RS_To_Snap.shp");
+  openfluid::core::GeoVectorValue ValueRS(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "RS_To_Snap.shp");
 
-  openfluid::landr::VectorDataset* VectRS = new openfluid::landr::VectorDataset(
-      ValueRS);
+  openfluid::landr::VectorDataset* VectRS = new openfluid::landr::VectorDataset(ValueRS);
 
   BOOST_CHECK_THROW(VectRS->checkTopology(0.1),openfluid::base::FrameworkException);
+
   delete VectRS;
 }
 
@@ -527,37 +464,29 @@ BOOST_AUTO_TEST_CASE(check_checkTopology)
 
 BOOST_AUTO_TEST_CASE(check_snapVertices)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue ValueRS(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "RS_To_Snap.shp");
 
-  openfluid::core::GeoVectorValue ValueRS(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "RS_To_Snap.shp");
-
-  openfluid::landr::LineStringGraph* Graph0 =
-      openfluid::landr::LineStringGraph::create(ValueRS);
+  openfluid::landr::LineStringGraph* Graph0 = openfluid::landr::LineStringGraph::create(ValueRS);
   BOOST_CHECK_EQUAL(Graph0->isLineStringGraphArborescence(),false);
 
-  openfluid::landr::VectorDataset* VectRS = new openfluid::landr::VectorDataset(
-      ValueRS);
+  openfluid::landr::VectorDataset* VectRS = new openfluid::landr::VectorDataset(ValueRS);
 
   VectRS->snapVertices(2);
-  VectRS->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR,
-                     "OPENFLUID.OUT.VectorDataset/snapRS.shp", true);
+  VectRS->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR,"OPENFLUID.OUT.VectorDataset/snapRS.shp", true);
 
 
-  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.VectorDataset","snapRS.shp");
-  openfluid::landr::LineStringGraph* Graph1 =
-      openfluid::landr::LineStringGraph::create(*ValRS);
+  openfluid::core::GeoVectorValue* ValRS =
+    new openfluid::core::GeoVectorValue(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.VectorDataset","snapRS.shp");
+
+  openfluid::landr::LineStringGraph* Graph1 = openfluid::landr::LineStringGraph::create(*ValRS);
   BOOST_CHECK_EQUAL(Graph1->isLineStringGraphArborescence(),true);
 
   delete Graph0;
   delete Graph1;
   delete VectRS;
 
-  openfluid::core::GeoVectorValue ValueSU(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "SU_To_Snap.shp");
-  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
-      ValueSU);
+  openfluid::core::GeoVectorValue ValueSU(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "SU_To_Snap.shp");
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(ValueSU);
 
   std::list<std::pair<OGRFeature*, OGRFeature*> > lGap=VectSU->findGap(2);
   BOOST_CHECK_EQUAL(lGap.size(),2);
@@ -567,7 +496,6 @@ BOOST_AUTO_TEST_CASE(check_snapVertices)
   BOOST_CHECK_EQUAL(lGap.size(),0);
 
   delete VectSU;
-
 }
 
 
@@ -577,17 +505,13 @@ BOOST_AUTO_TEST_CASE(check_snapVertices)
 
 BOOST_AUTO_TEST_CASE(check_Overlap_and_Snap_Polygon)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue ValueSU(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
 
-  openfluid::core::GeoVectorValue ValueSU(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "badSU_non_snapped.shp");
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(ValueSU);
 
-  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
-      ValueSU);
-
-  std::list<std::pair<OGRFeature*, OGRFeature*> > lGap=VectSU->findGap(0.1);
+  std::list<std::pair<OGRFeature*, OGRFeature*>> lGap=VectSU->findGap(0.1);
   BOOST_CHECK_EQUAL(lGap.size(),3);
-  std::list<std::pair<OGRFeature*, OGRFeature*> > lOverlap=VectSU->findOverlap();
+  std::list<std::pair<OGRFeature*, OGRFeature*>> lOverlap=VectSU->findOverlap();
   BOOST_CHECK_EQUAL(lOverlap.size(),1);
 
   VectSU->snapVertices(3);
@@ -600,7 +524,6 @@ BOOST_AUTO_TEST_CASE(check_Overlap_and_Snap_Polygon)
   lOverlap=VectSU->findOverlap();
   BOOST_CHECK_EQUAL(lOverlap.size(),0);
 
-
   delete VectSU;
 }
 
@@ -611,27 +534,21 @@ BOOST_AUTO_TEST_CASE(check_Overlap_and_Snap_Polygon)
 
 BOOST_AUTO_TEST_CASE(check_DuplicateGeometry)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue ValueSU(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "SU.shp");
 
-  openfluid::core::GeoVectorValue ValueSU(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "SU.shp");
-
-  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
-      ValueSU);
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(ValueSU);
 
   std::list<OGRFeature*>  lDuplicate=VectSU->hasDuplicateGeometry();
   BOOST_CHECK_EQUAL(lDuplicate.size(),0);
 
-  openfluid::core::GeoVectorValue DuplicateSU(
-        CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "duplicateSU.shp");
+  openfluid::core::GeoVectorValue DuplicateSU(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "duplicateSU.shp");
 
-  VectSU = new openfluid::landr::VectorDataset(
-        DuplicateSU);
+  VectSU = new openfluid::landr::VectorDataset(DuplicateSU);
 
-  lDuplicate=VectSU->hasDuplicateGeometry();
+  lDuplicate = VectSU->hasDuplicateGeometry();
   BOOST_CHECK_EQUAL(lDuplicate.size(),2);
   VectSU->geometries();
-  std::string error=VectSU->checkTopology(0.5);
+  std::string error = VectSU->checkTopology(0.5);
   BOOST_CHECK_EQUAL(error.size(),0);
 
   delete VectSU;
@@ -644,16 +561,11 @@ BOOST_AUTO_TEST_CASE(check_DuplicateGeometry)
 
 BOOST_AUTO_TEST_CASE(check_parsing_Bad_Polygon_Geometry)
 {
-  openfluid::base::Environment::init();
+  openfluid::core::GeoVectorValue ValueSU(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "BAD_POLYGEOM.shp");
 
-  openfluid::core::GeoVectorValue ValueSU(
-      CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr/", "BAD_POLYGEOM.shp");
-
-  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
-      ValueSU);
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(ValueSU);
 
   BOOST_CHECK_THROW(VectSU->features(),openfluid::base::FrameworkException);
-
 
   delete VectSU;
 }
@@ -662,3 +574,10 @@ BOOST_AUTO_TEST_CASE(check_parsing_Bad_Polygon_Geometry)
 // =====================================================================
 // =====================================================================
 
+
+int main(int argc, char *argv[])
+{
+  openfluid::base::Environment::init();
+
+  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
+}

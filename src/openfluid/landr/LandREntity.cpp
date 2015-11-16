@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -36,18 +36,17 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
-#include "LandREntity.hpp"
 
-#include <openfluid/core/Value.hpp>
-#include <geos/geom/Geometry.h>
-#include <geos/geom/Point.h>
 #include <algorithm>
 
+#include <geos/geom/Geometry.h>
+#include <geos/geom/Point.h>
+
+#include <openfluid/landr/LandREntity.hpp>
+#include <openfluid/core/Value.hpp>
+
+
 namespace openfluid { namespace landr {
-
-
-// =====================================================================
-// =====================================================================
 
 
 LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int OfldId) :
@@ -146,8 +145,7 @@ std::set<LandREntity*>* LandREntity::neighbours()
 bool LandREntity::getAttributeValue(const std::string& AttributeName,
                                     core::Value& Value) const
 {
-  std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(
-      AttributeName);
+  std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(AttributeName);
 
   if (it != m_Attributes.end() && it->second)
   {
@@ -166,17 +164,17 @@ bool LandREntity::getAttributeValue(const std::string& AttributeName,
 bool LandREntity::setAttributeValue(const std::string& AttributeName,
                                     const core::Value* Value)
 {
-  std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(
-      AttributeName);
+  std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(AttributeName);
 
   if (it != m_Attributes.end())
   {
     if (it->second)
       delete it->second;
+
     m_Attributes[AttributeName] = const_cast<core::Value*>(Value);
+
     return true;
   }
-
   return false;
 }
 
@@ -212,17 +210,10 @@ LandREntity* LandREntity::neighbour_MinDistCentroCentro()
     NeighByDist[Dist] = Neigh;
   }
 
-  std::map<double, LandREntity*>::iterator itMin = std::min_element(
-      NeighByDist.begin(), NeighByDist.end());
+  std::map<double, LandREntity*>::iterator itMin = std::min_element(NeighByDist.begin(), NeighByDist.end());
 
-  return
-      (itMin != NeighByDist.end() && itMin->first > 0) ? itMin->second :
-                                                         (LandREntity*) 0;
+  return (itMin != NeighByDist.end() && itMin->first > 0) ? itMin->second : nullptr;
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-} }// namespaces landr, openfluid
+} }  // namespaces

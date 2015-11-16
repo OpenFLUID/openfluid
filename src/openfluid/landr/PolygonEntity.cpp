@@ -36,13 +36,9 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
-#include "PolygonEntity.hpp"
 
-#include <openfluid/landr/PolygonEdge.hpp>
-#include <openfluid/landr/LandRTools.hpp>
-#include <openfluid/landr/LineStringEntity.hpp>
-#include <openfluid/landr/LineStringGraph.hpp>
-#include <openfluid/base/FrameworkException.hpp>
+#include <algorithm>
+
 #include <geos/geom/Polygon.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/MultiLineString.h>
@@ -50,39 +46,34 @@
 #include <geos/geom/Point.h>
 #include <geos/planargraph/Node.h>
 #include <geos/planargraph/DirectedEdge.h>
-#include <algorithm>
+
+#include <openfluid/landr/PolygonEntity.hpp>
+#include <openfluid/landr/PolygonEdge.hpp>
+#include <openfluid/landr/LandRTools.hpp>
+#include <openfluid/landr/LineStringEntity.hpp>
+#include <openfluid/landr/LineStringGraph.hpp>
+#include <openfluid/base/FrameworkException.hpp>
+
 
 namespace openfluid { namespace landr {
 
 
-// =====================================================================
-// =====================================================================
 
-
-PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
-                             unsigned int OfldId) :
-                        LandREntity(NewPolygon, OfldId), mp_NeighboursMap(0), mp_LineStringNeighboursMap(
-                            0)
+PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon, unsigned int OfldId) :
+  LandREntity(NewPolygon, OfldId), mp_NeighboursMap(0),
+  mp_LineStringNeighboursMap(0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "Geometry is not a Polygon.");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Geometry is not a Polygon");
 
-
-
-  mp_Polygon =
-      dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(mp_Geom));
+  mp_Polygon = dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(mp_Geom));
 
   if (!mp_Polygon->isValid())
   {
     delete mp_Centroid;
 
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "Polygon is not valid.");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Polygon is not valid");
   }
-
 }
 
 
@@ -143,19 +134,14 @@ void PolygonEntity::addEdge(PolygonEdge& Edge)
 
 void PolygonEntity::removeEdge(PolygonEdge* Edge)
 {
-  std::vector<PolygonEdge*>::iterator itEdge = std::find(m_PolyEdges.begin(),
-                                                         m_PolyEdges.end(),
-                                                         Edge);
+  std::vector<PolygonEdge*>::iterator itEdge = std::find(m_PolyEdges.begin(),m_PolyEdges.end(),Edge);
 
   if (itEdge != m_PolyEdges.end())
     m_PolyEdges.erase(itEdge);
   else
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "Edge doesn't exist in Edge vector.");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Edge doesn't exist in Edge vector.");
 
   mp_NeighboursMap = 0;
-
   mp_LineStringNeighboursMap = 0;
 
   delete Edge;
@@ -170,12 +156,9 @@ std::vector<geos::geom::LineString*> PolygonEntity::computeLineIntersectionsWith
 {
   std::vector<geos::geom::LineString*> Lines;
 
-  if (mp_Polygon->relate(Other.mp_Polygon, "FFT"
-                         "F1*"
-                         "***"))
+  if (mp_Polygon->relate(Other.mp_Polygon, "FFT" "F1*" "***"))
   {
-    geos::geom::Geometry* SharedGeom = mp_Polygon->intersection(
-        Other.mp_Polygon);
+    geos::geom::Geometry* SharedGeom = mp_Polygon->intersection(Other.mp_Polygon);
 
     Lines = *LandRTools::computeMergedLineStringsFromGeometry(SharedGeom);
 
@@ -194,11 +177,10 @@ PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(geos::geom::LineString&
 {
   std::vector<PolygonEdge*>::iterator it = m_PolyEdges.begin();
   std::vector<PolygonEdge*>::iterator ite = m_PolyEdges.end();
+
   for (; it != ite; ++it)
   {
-    if (Segment.relate((*it)->line(), "1**"
-                       "***"
-                       "***"))
+    if (Segment.relate((*it)->line(), "1**" "***" "***"))
       return *it;
   }
 
@@ -232,6 +214,7 @@ std::vector<int> PolygonEntity::getOrderedNeighbourOfldIds()
 
   NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
   NeighboursMap_t::iterator ite = mp_NeighboursMap->end();
+
   for (; it != ite; ++it)
     Ids.push_back(it->first->getOfldId());
 
@@ -261,9 +244,7 @@ void PolygonEntity::computeNeighbours()
     PolygonEntity* OtherFace = nullptr;
 
     if (Edge->getFaces().size() > 1)
-      OtherFace =
-          Edge->getFaces()[0] == this ? Edge->getFaces()[1] :
-              Edge->getFaces()[0];
+      OtherFace = (Edge->getFaces()[0] == this ? Edge->getFaces()[1] : Edge->getFaces()[0]);
 
     if (OtherFace)
     {
@@ -282,17 +263,14 @@ void PolygonEntity::computeNeighbours()
 bool PolygonEntity::isComplete()
 {
   std::vector<geos::geom::Geometry*> Geoms;
+  unsigned int iEnd = m_PolyEdges.size();
 
-  unsigned int iEnd=m_PolyEdges.size();
   for (unsigned int i = 0; i < iEnd; i++)
     Geoms.push_back(m_PolyEdges.at(i)->line());
 
-  geos::geom::MultiLineString* MLS =
-      geos::geom::GeometryFactory::getDefaultInstance()->createMultiLineString(
-          Geoms);
-
-  geos::geom::LineString* LS = LandRTools::computeMergedLineStringFromGeometry(
-      dynamic_cast<geos::geom::Geometry*>(MLS));
+  geos::geom::MultiLineString* MLS = geos::geom::GeometryFactory::getDefaultInstance()->createMultiLineString(Geoms);
+  geos::geom::LineString* LS =
+    LandRTools::computeMergedLineStringFromGeometry(dynamic_cast<geos::geom::Geometry*>(MLS));
 
   bool Complete = LS && LS->equals(mp_Polygon->getExteriorRing());
 
@@ -340,10 +318,10 @@ void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
                                                 double BufferDistance,
                                                 double ContactLength)
 {
-  if (Relation == LandRTools::TOUCHES && ContactLength==0)
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "ContactLength must be superior to 0 for LandRTools::TOUCHES Relationship");
+  if (Relation == LandRTools::TOUCHES && ContactLength == 0)
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "ContactLength must be greater than 0 "
+                                              "for LandRTools::TOUCHES relationship");
 
   if (!mp_NeighboursMap)
     computeNeighbours();
@@ -357,6 +335,7 @@ void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
 
   openfluid::landr::LandRGraph::Entities_t::const_iterator it = LSs.begin();
   openfluid::landr::LandRGraph::Entities_t::const_iterator ite = LSs.end();
+
   for (; it != ite; ++it)
   {
     LineStringEntity* LS = dynamic_cast<LineStringEntity*>(*it);
@@ -365,6 +344,7 @@ void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
     {
       geos::geom::Geometry* EdgeBuff;
       unsigned int jEnd=m_PolyEdges.size();
+
       for (unsigned int j = 0; j < jEnd; j++)
       {
         EdgeBuff = m_PolyEdges[j]->line()->buffer(BufferDistance);
@@ -376,49 +356,40 @@ void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
         }
         delete EdgeBuff;
       }
-
     }
-
-    else if (Relation == LandRTools::INTERSECTS
-        && LS->line()->intersects(PolyBuff))
+    else if (Relation == LandRTools::INTERSECTS && LS->line()->intersects(PolyBuff))
     {
-      mp_LineStringNeighboursMap->insert(
-          std::make_pair(LS, (openfluid::landr::PolygonEdge*) 0));
+      mp_LineStringNeighboursMap->insert(std::make_pair(LS, (openfluid::landr::PolygonEdge*) 0));
       mp_Neighbours->insert(*it);
     }
-
-    else if (Relation == LandRTools::TOUCHES
-        && LS->line()->intersects(PolyBuff))
-
+    else if (Relation == LandRTools::TOUCHES && LS->line()->intersects(PolyBuff))
     {
       geos::geom::Geometry* EdgeBuff;
       unsigned int jEnd=m_PolyEdges.size();
+
       for (unsigned int j = 0; j < jEnd; j++)
       {
         EdgeBuff = m_PolyEdges[j]->line()->buffer(BufferDistance);
 
-        geos::geom::Geometry * Inter=LS->line()->intersection(EdgeBuff);
-        double lengthInter=0.0;
-        unsigned int iEnd=Inter->getNumGeometries();
+        geos::geom::Geometry * Inter = LS->line()->intersection(EdgeBuff);
+        double lengthInter = 0.0;
+        unsigned int iEnd = Inter->getNumGeometries();
+
         for (unsigned int i = 0; i < iEnd; i++)
         {
           geos::geom::LineString* LineIntersect =
-              dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
-                  i)));
-          lengthInter=lengthInter+LineIntersect->getLength();
+              dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(i)));
+          lengthInter = lengthInter+LineIntersect->getLength();
         }
 
         if(lengthInter>ContactLength)
         {
-          mp_LineStringNeighboursMap->insert(
-              std::make_pair(LS, m_PolyEdges[j]));
+          mp_LineStringNeighboursMap->insert(std::make_pair(LS, m_PolyEdges[j]));
           mp_Neighbours->insert(*it);
         }
         delete EdgeBuff;
       }
-
     }
-
   }
 
   delete PolyBuff;
@@ -442,13 +413,9 @@ PolygonEntity::LineStringNeighboursMap_t* PolygonEntity::lineStringNeighbours()
 geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge,
                                                   PolygonEdge* EdgeToMerge)
 {
-
   //ensure that the two PolygonEdges are coincident
   if (!Edge->isCoincident(EdgeToMerge))
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "The PolygonEdges are not coincident");
-
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"The PolygonEdges are not coincident");
 
   geos::geom::Point *StartPoint=Edge->line()->getStartPoint();
   geos::geom::Point *EndPoint=Edge->line()->getEndPoint();
@@ -509,26 +476,22 @@ void PolygonEntity::computeNeighboursWithBarriers(LineStringGraph& Graph,
                                                   double ContactLength)
 {
 	if (Relation == LandRTools::TOUCHES && ContactLength==0)
-		throw openfluid::base::FrameworkException(
-		    OPENFLUID_CODE_LOCATION,
-				"ContactLength must be superior to 0 for LandRTools::Relationship TOUCHES ");
+		throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "ContactLength must be greater than 0 "
+                                              "for LandRTools::Relationship TOUCHES ");
 
 	if (Relation == LandRTools::INTERSECTS)
-		throw openfluid::base::FrameworkException(
-		    OPENFLUID_CODE_LOCATION,
-				"LandRTools::Relationship INTERSECTS is not allowed");
-
+		throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+				                                      "LandRTools::Relationship INTERSECTS is not allowed");
 
 	if (!mp_NeighboursMap)
 		computeNeighbours();
 
-
 	geos::geom::Geometry* PolyBuff = getBufferedBoundary(BufferDistance);
-
 	openfluid::landr::LandRGraph::Entities_t LSs = Graph.getEntities();
-
 	openfluid::landr::LandRGraph::Entities_t::const_iterator it = LSs.begin();
 	openfluid::landr::LandRGraph::Entities_t::const_iterator ite = LSs.end();
+
 	for (; it != ite; ++it)
 	{
 		LineStringEntity* LS = dynamic_cast<LineStringEntity*>(*it);
@@ -537,6 +500,7 @@ void PolygonEntity::computeNeighboursWithBarriers(LineStringGraph& Graph,
 		{
 			geos::geom::Geometry* EdgeBuff;
 			unsigned int jEnd=m_PolyEdges.size();
+
 			for (unsigned int j = 0; j < jEnd; j++)
 			{
 				EdgeBuff = m_PolyEdges[j]->line()->buffer(BufferDistance);
@@ -548,42 +512,34 @@ void PolygonEntity::computeNeighboursWithBarriers(LineStringGraph& Graph,
 				}
 				delete EdgeBuff;
 			}
-
 		}
-
-		else if (Relation == LandRTools::TOUCHES
-				&& LS->line()->intersects(PolyBuff))
-
+		else if (Relation == LandRTools::TOUCHES && LS->line()->intersects(PolyBuff))
 		{
 			geos::geom::Geometry* EdgeBuff;
 			unsigned int jEnd=m_PolyEdges.size();
 			for (unsigned int j = 0; j < jEnd; j++)
 			{
 				EdgeBuff = m_PolyEdges[j]->line()->buffer(BufferDistance);
-
-				geos::geom::Geometry * Inter=LS->line()->intersection(EdgeBuff);
-				double lengthInter=0.0;
+				geos::geom::Geometry * Inter = LS->line()->intersection(EdgeBuff);
+				double lengthInter = 0.0;
 				unsigned int iEnd=Inter->getNumGeometries();
+
 				for (unsigned int i = 0; i < iEnd; i++)
 				{
 					geos::geom::LineString* LineIntersect =
-							dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
-									i)));
-					lengthInter=lengthInter+LineIntersect->getLength();
+							dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(i)));
+					lengthInter = lengthInter+LineIntersect->getLength();
 				}
 
 				if (lengthInter>ContactLength)
 				{
-
 					// remove from mp_Neighbours and mp_NeighboursMap the polygon which share this Edge
 					mp_Neighbours->erase(neighbourWithCommonEdge(m_PolyEdges[j]));
 					mp_NeighboursMap->erase(neighbourWithCommonEdge(m_PolyEdges[j]));
 				}
 				delete EdgeBuff;
 			}
-
 		}
-
 	}
 
 	delete PolyBuff;
@@ -601,18 +557,17 @@ PolygonEntity * PolygonEntity::neighbourWithCommonEdge(PolygonEdge * Edge)
 
 	NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
 	NeighboursMap_t::iterator ite = mp_NeighboursMap->end();
+
 	for (; it != ite; ++it)
 	{
-		std::vector<PolygonEdge*> vEdges=(*it).second;
+		std::vector<PolygonEdge*> vEdges = (*it).second;
 		std::vector<PolygonEdge*>::iterator jt;
 
 		jt = find (vEdges.begin(), vEdges.end(), Edge);
 		if (jt != vEdges.end())
 			return (*it).first;
-
 	}
 	return nullptr;
-
 }
 
 
@@ -632,17 +587,17 @@ std::multimap<double,PolygonEntity*> PolygonEntity::getOrderedNeighboursByLength
 
   for (; it != ite; ++it)
   {
-    std::vector<PolygonEdge*>::iterator jt=it->second.begin();
-    std::vector<PolygonEdge*>::iterator jte=it->second.end();
-    double length=0.0;
-    for (; jt != jte; ++jt)
-    {
-      length=length+(*jt)->line()->getLength();
-    }
-    mNeighbours.insert ( std::pair<double,PolygonEntity*>(length,&(*it->first) ));
-  }
-  return mNeighbours;
+    std::vector<PolygonEdge*>::iterator jt = it->second.begin();
+    std::vector<PolygonEdge*>::iterator jte = it->second.end();
+    double length = 0.0;
 
+    for (; jt != jte; ++jt)
+      length += (*jt)->line()->getLength();
+
+    mNeighbours.insert (std::pair<double,PolygonEntity*>(length,&(*it->first) ));
+  }
+
+  return mNeighbours;
 }
 
 
@@ -653,15 +608,14 @@ std::multimap<double,PolygonEntity*> PolygonEntity::getOrderedNeighboursByLength
 std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(VectorDataset LineTopology)
 {
   if (!LineTopology.isLineType())
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "The VectorDataset is not Line Type ");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"The VectorDataset is not Line Type ");
 
   if (!mp_NeighboursMap)
     computeNeighbours();
 
   openfluid::landr::LandREntity* Down = nullptr;
-  double FlowLength=0.0;
+  double FlowLength = 0.0;
+
   std::pair<LandREntity*, double > pairNeighLength;
 
   // no Intersection between this PolygonEntity and the lines of the VectorDataset
@@ -671,22 +625,23 @@ std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(V
     return pairNeighLength;
   }
 
-  geos::geom::Geometry* PtIntersect=(LineTopology.geometries());
+  geos::geom::Geometry* PtIntersect = (LineTopology.geometries());
   geos::geom::LineString* Line = nullptr;
-  bool cover=false;
-  unsigned int i=0;
+  bool cover = false;
+  unsigned int i = 0;
+
   while (i<PtIntersect->getNumGeometries()&&!cover)
   {
-    const geos::geom::Geometry* GeomL=PtIntersect->getGeometryN(i);
+    const geos::geom::Geometry* GeomL = PtIntersect->getGeometryN(i);
     Line = dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(GeomL));
-    geos::geom::Point* Point=Line->getStartPoint();
+    geos::geom::Point* Point = Line->getStartPoint();
 
     if (geometry()->covers(Point))
       cover=true;
     else
       i++;
-    delete Point;
 
+    delete Point;
   }
 
   // no Intersection between this PolygonEntity and the lines of the VectorDataset
@@ -696,10 +651,8 @@ std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(V
     return pairNeighLength;
   }
 
-
-  geos::geom::Point* EndPoint=Line->getEndPoint();
-  bool downUnit=false;
-
+  geos::geom::Point* EndPoint = Line->getEndPoint();
+  bool downUnit = false;
 
   NeighboursMap_t::iterator jt = mp_NeighboursMap->begin();
   NeighboursMap_t::iterator jte = mp_NeighboursMap->end();
@@ -708,9 +661,9 @@ std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(V
   {
     if (((*jt).first->geometry())->covers(EndPoint)&& (getOfldId()!=(*jt).first->getOfldId()))
     {
-      Down=(*jt).first;
-      downUnit=true;
-      FlowLength=Line->getLength();
+      Down = (*jt).first;
+      downUnit = true;
+      FlowLength = Line->getLength();
     }
     else
       ++jt;
@@ -720,35 +673,33 @@ std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(V
 
   if (mp_LineStringNeighboursMap)
   {
-
     LineStringNeighboursMap_t::iterator ht = mp_LineStringNeighboursMap->begin();
     LineStringNeighboursMap_t::iterator hte = mp_LineStringNeighboursMap->end();
-    downUnit=false;
+    downUnit = false;
+
     while (ht != hte&&!downUnit)
     {
       if ((*ht).first->line()->intersects(Line))
       {
-        Down=(*ht).first;
-        downUnit=true;
-        geos::geom::Geometry *Intersect=
-            Line->difference((*ht).first->line());
+        Down = (*ht).first;
+        downUnit = true;
+        geos::geom::Geometry *Intersect = Line->difference((*ht).first->line());
         unsigned int hEnd=Intersect->getNumGeometries();
 
         for (unsigned int h = 0; h < hEnd; h++)
         {
-          geos::geom::LineString* LinePart=
-              (dynamic_cast<geos::geom::LineString*>
-          (const_cast<geos::geom::Geometry*>(Intersect->getGeometryN(h))));
+          geos::geom::LineString* LinePart =
+            (dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Intersect->getGeometryN(h))));
 
           // FLowLength is the length of the line which EndPoint touches the LineString Neighbour
-          if (LinePart->getEndPoint()->isWithinDistance((*ht).first->line(),0.0001)
-              && geometry()->covers(LinePart->getStartPoint()))
+          if (LinePart->getEndPoint()->isWithinDistance((*ht).first->line(),0.0001) &&
+              geometry()->covers(LinePart->getStartPoint()))
+          {
             FlowLength=LinePart->getLength();
+          }
 
           delete LinePart;
-
         }
-
       }
       else
         ++ht;
@@ -757,13 +708,9 @@ std::pair<LandREntity *, double> PolygonEntity::computeNeighbourByLineTopology(V
 
   delete EndPoint;
   pairNeighLength = std::make_pair(Down,FlowLength);
-  return pairNeighLength;
 
+  return pairNeighLength;
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-} } // namespace landr, openfluid
+} } // namespaces

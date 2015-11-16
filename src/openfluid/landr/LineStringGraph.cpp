@@ -36,8 +36,19 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
-#include "LineStringGraph.hpp"
 
+ #include <algorithm>
+ #include <sstream>
+
+ #include <geos/planargraph/DirectedEdge.h>
+ #include <geos/planargraph/Node.h>
+ #include <geos/geom/CoordinateSequence.h>
+ #include <geos/geom/LineString.h>
+ #include <geos/geom/GeometryFactory.h>
+ #include <geos/geom/LineSegment.h>
+ #include <geos/geom/Point.h>
+
+#include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
@@ -48,26 +59,12 @@
 #include <openfluid/core/IntegerValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <geos/planargraph/DirectedEdge.h>
-#include <geos/planargraph/Node.h>
-#include <geos/geom/CoordinateSequence.h>
-#include <geos/geom/LineString.h>
-#include <geos/geom/GeometryFactory.h>
-#include <geos/geom/LineSegment.h>
-#include <geos/geom/Point.h>
-#include <algorithm>
-#include <sstream>
 
 
 namespace openfluid { namespace landr {
 
 
-// =====================================================================
-// =====================================================================
-
-
-LineStringGraph::LineStringGraph() :
-            LandRGraph()
+LineStringGraph::LineStringGraph() : LandRGraph()
 {
 
 }
@@ -77,8 +74,7 @@ LineStringGraph::LineStringGraph() :
 // =====================================================================
 
 
-LineStringGraph::LineStringGraph(openfluid::core::GeoVectorValue& Val) :
-            LandRGraph(Val)
+LineStringGraph::LineStringGraph(openfluid::core::GeoVectorValue& Val) : LandRGraph(Val)
 {
 
 }
@@ -88,8 +84,7 @@ LineStringGraph::LineStringGraph(openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 
 
-LineStringGraph::LineStringGraph(openfluid::landr::VectorDataset& Vect) :
-            LandRGraph(Vect)
+LineStringGraph::LineStringGraph(openfluid::landr::VectorDataset& Vect) : LandRGraph(Vect)
 {
 
 }
@@ -112,9 +107,7 @@ LineStringGraph::~LineStringGraph()
 LineStringGraph* LineStringGraph::create(openfluid::core::GeoVectorValue& Val)
 {
   if (!Val.isLineType())
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "GeoVectorValue is not Line type");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "GeoVectorValue is not Line type");
 
   LineStringGraph* Graph = new LineStringGraph(Val);
   Graph->addEntitiesFromGeoVector();
@@ -129,11 +122,8 @@ LineStringGraph* LineStringGraph::create(openfluid::core::GeoVectorValue& Val)
 
 LineStringGraph* LineStringGraph::create(openfluid::landr::VectorDataset& Vect)
 {
-
   if (!Vect.isLineType())
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "VectorDataset is not Line type");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "VectorDataset is not Line type");
 
   LineStringGraph* Graph = new LineStringGraph(Vect);
   Graph->addEntitiesFromGeoVector();
@@ -176,24 +166,19 @@ void LineStringGraph::addEntity(LandREntity* Entity)
   const geos::geom::LineString* LineString = Edge->line();
 
   geos::geom::CoordinateSequence* Coordinates =
-      geos::geom::CoordinateSequence::removeRepeatedPoints(
-          LineString->getCoordinatesRO());
+      geos::geom::CoordinateSequence::removeRepeatedPoints(LineString->getCoordinatesRO());
 
   const geos::geom::Coordinate& StartCoordinate = Coordinates->getAt(0);
-  const geos::geom::Coordinate& EndCoordinate = Coordinates->getAt(
-      Coordinates->getSize() - 1);
+  const geos::geom::Coordinate& EndCoordinate = Coordinates->getAt(Coordinates->getSize() - 1);
 
   geos::planargraph::Node* StartNode = node(StartCoordinate);
   geos::planargraph::Node* EndNode = node(EndCoordinate);
 
   geos::planargraph::DirectedEdge* DirectedEdge0 =
-      new geos::planargraph::DirectedEdge(StartNode, EndNode,
-                                          Coordinates->getAt(1), true);
+      new geos::planargraph::DirectedEdge(StartNode, EndNode, Coordinates->getAt(1), true);
 
   geos::planargraph::DirectedEdge* DirectedEdge1 =
-      new geos::planargraph::DirectedEdge(
-          EndNode, StartNode, Coordinates->getAt(Coordinates->getSize() - 2),
-          false);
+      new geos::planargraph::DirectedEdge(EndNode, StartNode, Coordinates->getAt(Coordinates->getSize() - 2),false);
 
   Edge->setDirectedEdges(DirectedEdge0, DirectedEdge1);
 
@@ -324,17 +309,10 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
 
 double LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entity)
 {
-
-
   if (!mp_Raster)
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "No raster associated to the LineStringGraph");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No raster associated to the LineStringGraph");
 
-  double	Val = (double)
-      (mp_Raster->getValueOfCoordinate(
-          Entity.startNode()->getCoordinate()));
-
+  double	Val = (double)(mp_Raster->getValueOfCoordinate(Entity.startNode()->getCoordinate()));
 
   return Val;
 }
@@ -346,16 +324,10 @@ double LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entit
 
 double LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
 {
-
-
   if (!mp_Raster)
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "No raster associated to the LineStringGraph");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No raster associated to the LineStringGraph");
 
-  double	Val = (double)
-      (mp_Raster->getValueOfCoordinate(Entity.endNode()->getCoordinate()));
-
+  double	Val = (double)(mp_Raster->getValueOfCoordinate(Entity.endNode()->getCoordinate()));
 
   return Val;
 }
@@ -368,12 +340,13 @@ double LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
 void LineStringGraph::setAttributeFromRasterValueAtStartNode(const std::string& AttributeName)
 {
   addAttribute(AttributeName);
+
   LandRGraph::Entities_t::iterator it = m_Entities.begin();
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
+
   for (; it != ite; ++it)
   {
-    float* Val = new float(getRasterValueForEntityStartNode(
-        *dynamic_cast<LineStringEntity*>(*it)));
+    float* Val = new float(getRasterValueForEntityStartNode(*dynamic_cast<LineStringEntity*>(*it)));
 
     if (!Val)
     {
@@ -386,7 +359,6 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(const std::string& 
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
     delete Val;
   }
-
 }
 
 
@@ -400,10 +372,10 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(const std::string& At
 
   LandRGraph::Entities_t::iterator it = m_Entities.begin();
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
+
   for (; it != ite; ++it)
   {
-    float* Val = new float (getRasterValueForEntityEndNode(
-        *dynamic_cast<LineStringEntity*>(*it)));
+    float* Val = new float (getRasterValueForEntityEndNode(*dynamic_cast<LineStringEntity*>(*it)));
 
     if (!Val)
     {
@@ -416,7 +388,6 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(const std::string& At
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
     delete Val;
   }
-
 }
 
 
@@ -426,21 +397,24 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(const std::string& At
 
 void LineStringGraph::reverseLineStringEntity(LineStringEntity& Entity)
 {
-
   const geos::geom::LineString* Ent=Entity.line();
   geos::geom::Geometry* ReverseEnt=Ent->reverse();
-  LandREntity* LandEnt = dynamic_cast<LandREntity*>(&Entity);
-  int OfldId=LandEnt->getOfldId();
-  removeEntity(OfldId);
-  try {
-    addEntity(new LineStringEntity(ReverseEnt,OfldId));
-  } catch (openfluid::base::FrameworkException& e) {
-    std::ostringstream s;
-    s << "Reverse orientation impossible for entity" << OfldId<<" : "<<e.what() ;
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,s.str());
-  }
 
+  LandREntity* LandEnt = dynamic_cast<LandREntity*>(&Entity);
+  int OfldId = LandEnt->getOfldId();
+
+  removeEntity(OfldId);
+  try
+  {
+    addEntity(new LineStringEntity(ReverseEnt,OfldId));
+  }
+  catch (openfluid::base::FrameworkException& e)
+  {
+    std::ostringstream s;
+    s << "Reverse orientation impossible for entity" << OfldId<<" : "<<e.what();
+
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,s.str());
+  }
 }
 
 
@@ -450,8 +424,8 @@ void LineStringGraph::reverseLineStringEntity(LineStringEntity& Entity)
 
 bool LineStringGraph::isLineStringGraphArborescence( )
 {
-  int nEntities=this->getSize();
-  int nNodes=std::distance(this->nodeBegin(), this->nodeEnd());
+  int nEntities = this->getSize();
+  int nNodes = std::distance(this->nodeBegin(), this->nodeEnd());
 
   if (nNodes!=(nEntities+1))
     return false;
@@ -465,18 +439,18 @@ bool LineStringGraph::isLineStringGraphArborescence( )
 
   std::vector<geos::planargraph::Node*>::iterator it=vNode.begin();
   std::vector<geos::planargraph::Node*>::iterator ite=vNode.end();
+
   for (; it!=ite;++it)
-      (*it)->setVisited(false);
+    (*it)->setVisited(false);
 
   // mark all edges as non marked
    std::vector<geos::planargraph::Edge *> *vEdge= this->getEdges();
 
    std::vector<geos::planargraph::Edge*>::iterator itE=vEdge->begin();
    std::vector<geos::planargraph::Edge*>::iterator itEe=vEdge->end();
+
    for (; itE!=itEe;++itE)
      (*itE)->setVisited(false);
-
-
 
   //call DFS method on an arbitrary node
   openfluid::landr::LandRTools::markVisitedNodesUsingDFS(vNode[0]);
@@ -488,6 +462,7 @@ bool LineStringGraph::isLineStringGraphArborescence( )
 
   it=vNode.begin();
   ite=vNode.end();
+
   for (; it!=ite;++it)
   {
     if (!(*it)->isVisited())
@@ -495,7 +470,6 @@ bool LineStringGraph::isLineStringGraphArborescence( )
   }
 
   return true;
-
 }
 
 
@@ -509,10 +483,10 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
 
   LandRGraph::Entities_t::iterator it = m_Entities.begin();
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
+
   for (; it != ite; ++it)
   {
-    float* EndVal = new float(getRasterValueForEntityEndNode(
-        *dynamic_cast<LineStringEntity*>(*it)));
+    float* EndVal = new float(getRasterValueForEntityEndNode(*dynamic_cast<LineStringEntity*>(*it)));
 
     if (!EndVal)
     {
@@ -522,8 +496,7 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s.str());
     }
 
-    float* StartVal = new float( getRasterValueForEntityStartNode(
-        *dynamic_cast<LineStringEntity*>(*it)));
+    float* StartVal = new float( getRasterValueForEntityStartNode(*dynamic_cast<LineStringEntity*>(*it)));
 
     if (!StartVal)
     {
@@ -538,12 +511,11 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
       return;
     }
 
-    float Val=(*StartVal+*EndVal)/2;
-    (*it)->setAttributeValue(AttributeName, new core::DoubleValue(Val));
+    float Val = (*StartVal+*EndVal) / 2;
+    (*it)->setAttributeValue(AttributeName,new core::DoubleValue(Val));
 
     delete EndVal;
     delete StartVal;
-
   }
 }
 
@@ -557,23 +529,21 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity,
 {
 
   //ensure that the two LineStrings are coincident
-  bool Coincident=false;
+  bool Coincident = false;
   geos::planargraph::Node* StartNode=Entity.startNode();
   geos::planargraph::Node* EndNode=Entity.endNode();
 
   geos::planargraph::Node* StartNode2=EntityToMerge.startNode();
   geos::planargraph::Node* EndNode2=EntityToMerge.endNode();
 
-  if ((StartNode->getCoordinate()).equals(StartNode2->getCoordinate())||
-      (StartNode->getCoordinate()).equals(EndNode2->getCoordinate())||
-      (EndNode->getCoordinate()).equals(StartNode2->getCoordinate())||
+  if ((StartNode->getCoordinate()).equals(StartNode2->getCoordinate()) ||
+      (StartNode->getCoordinate()).equals(EndNode2->getCoordinate()) ||
+      (EndNode->getCoordinate()).equals(StartNode2->getCoordinate()) ||
       (EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
     Coincident=true;
 
   if (!Coincident)
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "The LineStringEntities are not coincident");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"The LineStringEntities are not coincident");
 
 
   // Four possibility of coincidence
@@ -582,53 +552,49 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity,
 
   if ((EndNode->getCoordinate()).equals(StartNode2->getCoordinate()))
   {
-    CoordsOne=(Entity.line())->getCoordinates();
-    CoordsTwo=(EntityToMerge.line())->getCoordinates();
+    CoordsOne = (Entity.line())->getCoordinates();
+    CoordsTwo = (EntityToMerge.line())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
   else if ((StartNode->getCoordinate()).equals(EndNode2->getCoordinate()))
   {
-    CoordsOne=(EntityToMerge.line())->getCoordinates();
-    CoordsTwo=(Entity.line())->getCoordinates();
+    CoordsOne = (EntityToMerge.line())->getCoordinates();
+    CoordsTwo = (Entity.line())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
   else if ((EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
   {
-    CoordsOne=(Entity.line())->getCoordinates();
-    CoordsTwo=(EntityToMerge.line())->getCoordinates();
+    CoordsOne = (Entity.line())->getCoordinates();
+    CoordsTwo = (EntityToMerge.line())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,false);
   }
   else if ((StartNode->getCoordinate()).equals(StartNode2->getCoordinate()))
   {
     reverseLineStringEntity(EntityToMerge);
 
-    CoordsOne=(EntityToMerge.line())->getCoordinates();
-    CoordsTwo=(Entity.line())->getCoordinates();
+    CoordsOne = (EntityToMerge.line())->getCoordinates();
+    CoordsTwo = (Entity.line())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
 
-  geos::geom::LineString * NewLine=mp_Factory->createLineString(CoordsOne);
+  geos::geom::LineString* NewLine=mp_Factory->createLineString(CoordsOne);
 
+  int OfldId = Entity.getOfldId();
+  int OfldIdToMerge = EntityToMerge.getOfldId();
 
-  int OfldId=Entity.getOfldId();
-  int OfldIdToMerge=EntityToMerge.getOfldId();
-
-  try {
-
-    openfluid::landr::LineStringEntity* Entity2 =
-        new openfluid::landr::LineStringEntity(NewLine,
-                                               OfldId);
+  try
+  {
+    openfluid::landr::LineStringEntity* Entity2 = new openfluid::landr::LineStringEntity(NewLine,OfldId);
     removeEntity(OfldId);
     removeEntity(OfldIdToMerge);
     addEntity(Entity2);
-
-  } catch (openfluid::base::FrameworkException& e) {
-    std::ostringstream s;
-    s << "Merge operation impossible for entity" << OfldId<<" : "<<e.what() ;
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,s.str());
   }
-
+  catch (openfluid::base::FrameworkException& e)
+  {
+    std::ostringstream s;
+    s << "Merge operation impossible for entity" << OfldId<<" : " << e.what() ;
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,s.str());
+  }
 }
 
 
@@ -640,43 +606,43 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
                                                                                             bool rmDangle,
                                                                                             bool HighDegree)
 {
-  if (MinLength<=0.0)
-    throw  openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "Threshold must be superior to 0.0");
+  if (MinLength <= 0.0)
+    throw  openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Threshold must be greater than 0.0");
 
-  std::list<LandREntity*> lEntities=getOfldIdOrderedEntities();
+  std::list<LandREntity*> lEntities = getOfldIdOrderedEntities();
   std::list<LandREntity*>::iterator it = lEntities.begin();
   std::list<LandREntity*>::iterator ite = lEntities.end();
   std::multimap<double, LineStringEntity*> mOrderedLength;
+
   for (;it!=ite;++it)
   {
-
-    if ((*it)->getLength()<MinLength)
+    if ((*it)->getLength() < MinLength)
     {
 
-      int StartDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->startNode()->getDegree();
-      int EndDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->endNode()->getDegree();
-      bool LineCounted=true;
+      int StartDegree = dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->startNode()->getDegree();
+      int EndDegree = dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->endNode()->getDegree();
+      bool LineCounted = true;
+
       //is Line between two confluences ? StartNode and EndNode are in contact with three or more Edges
-      if(HighDegree &&(StartDegree>=3 && EndDegree>=3))
-        LineCounted=false;
+      if(HighDegree && (StartDegree>=3 && EndDegree>=3))
+        LineCounted = false;
+
       if(LineCounted)
       {
         // is Line a dangle ? postulate : LineStringGraph  is not well-oriented.
         //A dangle has StartNode in contact with one Edge and EndNode with three or more Edges
         // or has EndNode in contact with one Edge and StartNode with three or more Edges
-        if (!((StartDegree==1 && EndDegree>=3 && rmDangle==false)||(EndDegree==1 && StartDegree>=3 && rmDangle==false)))
-          mOrderedLength.insert ( std::pair<double, LineStringEntity*>((*it)->getLength(),
-                                  dynamic_cast<openfluid::landr::LineStringEntity*>(*it)) );
-
+        if (!((StartDegree == 1 && EndDegree >= 3 && rmDangle == false) ||
+              (EndDegree == 1 && StartDegree >= 3 && rmDangle == false)))
+        {
+          mOrderedLength.insert(std::pair<double,LineStringEntity*>
+                                  ((*it)->getLength(),dynamic_cast<openfluid::landr::LineStringEntity*>(*it)) );
+        }
       }
-
     }
   }
 
   return mOrderedLength;
-
 }
 
 
@@ -688,9 +654,8 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
 {
 
   if (!this->isLineStringGraphArborescence())
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "The LineStringGraph is not a correct arborescence.");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "The LineStringGraph is not a correct arborescence");
 
   // get the node of this edge
   openfluid::landr::LineStringEntity* lineEntity=this->entity(OfldId);
@@ -700,64 +665,65 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
     std::ostringstream s;
     s << "Entity " << OfldId<< " is not a correct Line  entity.";
 
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION
-        +s.str());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,s.str());
   }
 
-  if (lineEntity->startNode()->getDegree()==1)
+  if (lineEntity->startNode()->getDegree() == 1)
     this->reverseLineStringEntity(*lineEntity);    // reverse the outlet if necessary
 
   // mark all nodes as non marked
 
-  geos::planargraph::PlanarGraph *planGraph=dynamic_cast<geos::planargraph::PlanarGraph*>(this);;
+  geos::planargraph::PlanarGraph *planGraph = dynamic_cast<geos::planargraph::PlanarGraph*>(this);;
   std::vector<geos::planargraph::Node *> vNode;
   planGraph->getNodes(vNode);
 
-  std::vector<geos::planargraph::Node*>::iterator it=vNode.begin();
-  std::vector<geos::planargraph::Node*>::iterator ite=vNode.end();
+  std::vector<geos::planargraph::Node*>::iterator it = vNode.begin();
+  std::vector<geos::planargraph::Node*>::iterator ite = vNode.end();
+
   for (; it!=ite;++it)
     (*it)->setVisited(false);
 
   // mark all edges as non marked
-  std::vector<geos::planargraph::Edge *> *vEdge= planGraph->getEdges();
+  std::vector<geos::planargraph::Edge *> *vEdge = planGraph->getEdges();
 
-  std::vector<geos::planargraph::Edge*>::iterator itEdge=vEdge->begin();
-  std::vector<geos::planargraph::Edge*>::iterator itEdgeE=vEdge->end();
+  std::vector<geos::planargraph::Edge*>::iterator itEdge = vEdge->begin();
+  std::vector<geos::planargraph::Edge*>::iterator itEdgeE = vEdge->end();
+
   for (; itEdge!=itEdgeE;++itEdge)
     (*itEdge)->setVisited(false);
 
-
-
-  lineEntity=this->entity(OfldId);
-  geos::planargraph::Node * firstNode=lineEntity->endNode();
+  lineEntity = this->entity(OfldId);
+  geos::planargraph::Node * firstNode = lineEntity->endNode();
   std::vector<int> vectIdent;
 
   openfluid::landr::LandRTools::markInvertedLineStringEntityUsingDFS(firstNode,vectIdent);
 
   // mark all node as non marked
-  planGraph=dynamic_cast<geos::planargraph::PlanarGraph*>(this);;
+  planGraph=dynamic_cast<geos::planargraph::PlanarGraph*>(this);
   vNode.clear();
   planGraph->getNodes(vNode);
 
-  it=vNode.begin();
-  ite=vNode.end();
+  it = vNode.begin();
+  ite = vNode.end();
+
   for (; it!=ite;++it)
     (*it)->setVisited(false);
 
   // mark all edges as non marked
   vEdge->clear();
-  vEdge= planGraph->getEdges();
+  vEdge = planGraph->getEdges();
 
-  itEdge=vEdge->begin();
-  itEdgeE=vEdge->end();
+  itEdge = vEdge->begin();
+  itEdgeE = vEdge->end();
+
   for (; itEdge!=itEdgeE;++itEdge)
     (*itEdge)->setVisited(false);
 
 
   // reverse the lineStringEntity
-  std::vector<int>::iterator itV=vectIdent.begin();
-  std::vector<int>::iterator itVe=vectIdent.end();
+  std::vector<int>::iterator itV = vectIdent.begin();
+  std::vector<int>::iterator itVe = vectIdent.end();
+
   for (; itV!=itVe;++itV)
     this->reverseLineStringEntity(*(this->entity(*itV)));
 
@@ -771,18 +737,14 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
 void LineStringGraph::mergeLineStringEntitiesByMinLength(double MinLength,bool rmDangle)
 {
 
-  if (MinLength<=0.0)
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "Threshold must be superior to 0.0");
+  if (MinLength <= 0.0)
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Threshold must be greater than 0.0");
 
-  if (getEntities().size()==1)
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "RSGRaph have just one RS Entity");
+  if (getEntities().size() == 1)
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"RSGRaph have just one RS Entity");
 
   std::multimap<double, LineStringEntity*>  mOrderedLength;
-  mOrderedLength=getLineStringEntitiesByMinLength(MinLength,rmDangle);
+  mOrderedLength = getLineStringEntitiesByMinLength(MinLength,rmDangle);
 
   if (mOrderedLength.empty())
     return ;
@@ -790,14 +752,14 @@ void LineStringGraph::mergeLineStringEntitiesByMinLength(double MinLength,bool r
 
   while (!mOrderedLength.empty())
   {
-    std::multimap<double, LineStringEntity*>::iterator jt=mOrderedLength.begin();
-    LineStringEntity* EntityToMerge=(*jt).second;
-    std::vector<LineStringEntity*> vNeighbours=EntityToMerge->getLineNeighboursDegree2();
+    std::multimap<double, LineStringEntity*>::iterator jt = mOrderedLength.begin();
+    LineStringEntity* EntityToMerge = (*jt).second;
+    std::vector<LineStringEntity*> vNeighbours = EntityToMerge->getLineNeighboursDegree2();
 
-    int StartDegree=EntityToMerge->startNode()->getDegree();
-    int EndDegree=EntityToMerge->endNode()->getDegree();
+    int StartDegree = EntityToMerge->startNode()->getDegree();
+    int EndDegree = EntityToMerge->endNode()->getDegree();
 
-    if (StartDegree==1 && EndDegree>=3 && rmDangle==true)
+    if (StartDegree == 1 && EndDegree >= 3 && rmDangle == true)
       removeEntity(EntityToMerge->getOfldId());
 
     else if (!vNeighbours.empty())
@@ -808,15 +770,14 @@ void LineStringGraph::mergeLineStringEntitiesByMinLength(double MinLength,bool r
 
       for (;it2!=it2e;++it2)
       {
-        LandREntity* Line =
-            dynamic_cast<LineStringEntity*>(*it2);
-        mLengthNeighbours.insert ( std::pair<double, LandREntity*>(Line->getLength(),Line) );
+        LandREntity* Line = dynamic_cast<LineStringEntity*>(*it2);
+        mLengthNeighbours.insert(std::pair<double,LandREntity*>(Line->getLength(),Line));
       }
-      std::multimap<double, LandREntity*>::iterator itMapEnd=mLengthNeighbours.end();
+      std::multimap<double, LandREntity*>::iterator itMapEnd = mLengthNeighbours.end();
       --itMapEnd;
 
       LineStringEntity* Entity;
-      Entity=dynamic_cast<LineStringEntity*>((*itMapEnd).second);
+      Entity = dynamic_cast<LineStringEntity*>((*itMapEnd).second);
 
       try
       {
@@ -824,24 +785,15 @@ void LineStringGraph::mergeLineStringEntitiesByMinLength(double MinLength,bool r
       }
       catch (std::exception& e)
       {
-        throw openfluid::base::FrameworkException(
-            OPENFLUID_CODE_LOCATION,
-            "Unable to merge LineStringEntity.");
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Unable to merge LineStringEntity");
       }
 
     }
     //TODO change this part to improve speed : just remove from the list the Entity and the Entity to Merge if necessary
     mOrderedLength.clear();
     mOrderedLength=getLineStringEntitiesByMinLength(MinLength,rmDangle);
-
   }
-
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-} } // namespace landr, openfluid
-
+} }  // namespaces

@@ -36,17 +36,17 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
+
 #ifndef __OPENFLUID_LANDR_POLYGONGRAPH_HPP__
 #define __OPENFLUID_LANDR_POLYGONGRAPH_HPP__
+
 
 #include <openfluid/core/Value.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/landr/LandRGraph.hpp>
-
-
-// for covariant return type of getEntity
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace landr {
 
@@ -64,12 +64,14 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
     */
     typedef std::map<geos::geom::Polygon*, double> RastValByRastPoly_t;
 
+
   private:
 
     /**
       @brief Creates a new PolygonGraph from an other PolygonGraph.
     */
     PolygonGraph(PolygonGraph& Other);
+
 
   protected:
 
@@ -305,9 +307,10 @@ class OPENFLUID_API PolygonGraph: public LandRGraph
     */
     void mergePolygonEntitiesByCompactness(double Compactness);
 
-
-
 };
 
-} } // namespace landr, openfluid
+
+} }  // namespaces
+
+
 #endif /* __OPENFLUID_LANDR_POLYGONGRAPH_HPP__ */

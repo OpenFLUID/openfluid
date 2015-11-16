@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -41,9 +41,12 @@
 
 #include <vector>
 #include <list>
+
+#include <geos/geom/CoordinateArraySequenceFactory.h>
+
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/dllexport.hpp>
-#include <geos/geom/CoordinateArraySequenceFactory.h>
+
 
 namespace geos { namespace geom {
 class Geometry;
@@ -110,9 +113,9 @@ class OPENFLUID_API LandRTools
       @return A vector of geos::geom::LineString, representing all input lines, cut at each node.
     */
     static std::vector<geos::geom::LineString*>* computeNodedLines(geos::geom::Geometry* Geom1,
-                                                               geos::geom::Geometry* Geom2,
-                                                               double SnapTolerance = 0,
-                                                               double PrecisionReducer=10000000);
+                                                                   geos::geom::Geometry* Geom2,
+                                                                   double SnapTolerance = 0,
+                                                                   double PrecisionReducer=10000000);
 
     /**
       @brief Same as from geos::operation::overlay::snap::SnapOverlayOp::Union(),
@@ -203,7 +206,7 @@ class OPENFLUID_API LandRTools
       @return A vector of geos::geom::Point.
     */
     static std::vector<geos::geom::Point*> computeNodesFromVectorOfLines(
-									                         std::vector<geos::geom::LineString*>& NodedLines);
+                                               std::vector<geos::geom::LineString*>& NodedLines);
 
     /**
       @brief Returns the inverted openfluid::landr::LineStringEntity of a geos::planargraph using a recursive method.
@@ -220,5 +223,8 @@ class OPENFLUID_API LandRTools
 
 };
 
-} } // namespace openfluid, landr
+
+} } // namespaces
+
+
 #endif /* __OPENFLUID_LANDR_LANDRTOOLS_HPP__ */

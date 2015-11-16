@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -39,14 +39,17 @@
 #ifndef __OPENFLUID_LANDR_LINESTRINGENTITY_HPP__
 #define __OPENFLUID_LANDR_LINESTRINGENTITY_HPP__
 
+
+#include <geos/planargraph/Edge.h>
+
 #include <openfluid/landr/LandREntity.hpp>
 #include <openfluid/dllexport.hpp>
-#include <geos/planargraph/Edge.h>
 
 
 namespace geos { namespace geom {
 class LineString;
 } }
+
 
 namespace openfluid { namespace landr {
 
@@ -54,7 +57,7 @@ namespace openfluid { namespace landr {
   @brief A LandREntity representing a geos::geom::LineString.
   @details A LineStringEntity has a StartNode and an EndNode, relatives to its LineString orientation.
 */
-class OPENFLUID_API LineStringEntity: public LandREntity, public geos::planargraph::Edge
+class OPENFLUID_API LineStringEntity : public LandREntity, public geos::planargraph::Edge
 {
   private:
 
@@ -73,6 +76,7 @@ class OPENFLUID_API LineStringEntity: public LandREntity, public geos::planargra
     std::vector<LineStringEntity*>* mp_LODownNeighbours;
 
     LineStringEntity();
+
     LineStringEntity(const LineStringEntity&);
 
     /**
@@ -84,6 +88,7 @@ class OPENFLUID_API LineStringEntity: public LandREntity, public geos::planargra
       @brief Computes the up neighbour of this LineStringEntity.
     */
     void computeLineOrientDownNeighbours();
+
 
   public:
 
@@ -139,6 +144,8 @@ class OPENFLUID_API LineStringEntity: public LandREntity, public geos::planargra
 
 };
 
-} } // namespace landr, openfluid
+
+} }  // namespaces
+
 
 #endif /* __OPENFLUID_LANDR_LINESTRINGENTITY_HPP__ */

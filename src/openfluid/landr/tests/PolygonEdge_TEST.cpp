@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -68,16 +68,13 @@ BOOST_AUTO_TEST_CASE(check_isLineInFace)
   geos::geom::CoordinateArraySequenceFactory SeqFactory;
   geos::geom::GeometryFactory Factory;
 
-  std::vector<geos::geom::Coordinate>* CoosLS = new std::vector<
-      geos::geom::Coordinate>();
+  std::vector<geos::geom::Coordinate>* CoosLS = new std::vector<geos::geom::Coordinate>();
   CoosLS->push_back(geos::geom::Coordinate(2, 0));
   CoosLS->push_back(geos::geom::Coordinate(2, 1));
-  geos::geom::LineString* LS = Factory.createLineString(
-      SeqFactory.create(CoosLS));
+  geos::geom::LineString* LS = Factory.createLineString(SeqFactory.create(CoosLS));
   openfluid::landr::PolygonEdge Edge(*LS);
 
-  std::vector<geos::geom::Coordinate>* CoosPoly = new std::vector<
-      geos::geom::Coordinate>();
+  std::vector<geos::geom::Coordinate>* CoosPoly = new std::vector<geos::geom::Coordinate>();
   CoosPoly->push_back(geos::geom::Coordinate(0, 0));
   CoosPoly->push_back(geos::geom::Coordinate(0, 2));
   CoosPoly->push_back(geos::geom::Coordinate(2, 2));
@@ -90,15 +87,13 @@ BOOST_AUTO_TEST_CASE(check_isLineInFace)
 
   BOOST_CHECK(Edge.isLineInFace(Entity));
 
-  std::vector<geos::geom::Coordinate>* CoosWrongPoly = new std::vector<
-      geos::geom::Coordinate>();
+  std::vector<geos::geom::Coordinate>* CoosWrongPoly = new std::vector<geos::geom::Coordinate>();
   CoosWrongPoly->push_back(geos::geom::Coordinate(0, 0));
   CoosWrongPoly->push_back(geos::geom::Coordinate(0, 2));
   CoosWrongPoly->push_back(geos::geom::Coordinate(1, 2));
   CoosWrongPoly->push_back(geos::geom::Coordinate(1, 0));
   CoosWrongPoly->push_back(geos::geom::Coordinate(0, 0));
-  geos::geom::LinearRing* WrongLR = Factory.createLinearRing(
-      SeqFactory.create(CoosWrongPoly));
+  geos::geom::LinearRing* WrongLR = Factory.createLinearRing(SeqFactory.create(CoosWrongPoly));
   geos::geom::Polygon* WrongP = Factory.createPolygon(WrongLR, nullptr);
   openfluid::landr::PolygonEntity WrongEntity(WrongP, 0);
 
@@ -121,43 +116,36 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
   geos::geom::CoordinateArraySequenceFactory SeqFactory;
   geos::geom::GeometryFactory Factory;
 
-  std::vector<geos::geom::Coordinate>* CoosLS = new std::vector<
-      geos::geom::Coordinate>();
+  std::vector<geos::geom::Coordinate>* CoosLS = new std::vector<geos::geom::Coordinate>();
   CoosLS->push_back(geos::geom::Coordinate(2, 0));
   CoosLS->push_back(geos::geom::Coordinate(2, 1));
-  geos::geom::LineString* LS = Factory.createLineString(
-      SeqFactory.create(CoosLS));
+  geos::geom::LineString* LS = Factory.createLineString(SeqFactory.create(CoosLS));
   openfluid::landr::PolygonEdge Edge(*LS);
 
-  std::vector<geos::geom::Coordinate>* CoosPoly = new std::vector<
-      geos::geom::Coordinate>();
+  std::vector<geos::geom::Coordinate>* CoosPoly = new std::vector<geos::geom::Coordinate>();
   CoosPoly->push_back(geos::geom::Coordinate(0, 0));
   CoosPoly->push_back(geos::geom::Coordinate(0, 2));
   CoosPoly->push_back(geos::geom::Coordinate(2, 2));
   CoosPoly->push_back(geos::geom::Coordinate(2, 0));
   CoosPoly->push_back(geos::geom::Coordinate(0, 0));
-  geos::geom::LinearRing* LR = Factory.createLinearRing(
-      SeqFactory.create(CoosPoly));
+  geos::geom::LinearRing* LR = Factory.createLinearRing(SeqFactory.create(CoosPoly));
   geos::geom::Polygon* P = Factory.createPolygon(LR, nullptr);
   openfluid::landr::PolygonEntity Entity(P, 0);
 
 
-  BOOST_CHECK(
-      !Edge.setAttributeValue("att",new openfluid::core::IntegerValue(9999)));
+  BOOST_CHECK(!Edge.setAttributeValue("att",new openfluid::core::IntegerValue(9999)));
 
-  Edge.m_EdgeAttributes["att"]=0;
+  Edge.m_EdgeAttributes["att"] = 0;
 
   Edge.setAttributeValue("att",new openfluid::core::IntegerValue(123));
-  BOOST_CHECK(
-      Edge.setAttributeValue("att",new openfluid::core::IntegerValue(123)));
+  BOOST_CHECK(Edge.setAttributeValue("att",new openfluid::core::IntegerValue(123)));
   openfluid::core::IntegerValue Val;
   Edge.getAttributeValue("att",Val);
   BOOST_CHECK_EQUAL(Val.get(),123);
 
 
   Edge.setAttributeValue("att",new openfluid::core::StringValue("val"));
-  BOOST_CHECK(
-      Edge.setAttributeValue("att",new openfluid::core::StringValue("val")));
+  BOOST_CHECK(Edge.setAttributeValue("att",new openfluid::core::StringValue("val")));
   openfluid::core::StringValue StrVal;
   Edge.getAttributeValue("att",StrVal);
   BOOST_CHECK_EQUAL(StrVal.get(),"val");
@@ -165,8 +153,6 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
   Edge.removeAttribute("att");
   BOOST_CHECK(!Edge.getAttributeValue("att",StrVal));
   BOOST_CHECK((Edge.m_EdgeAttributes).empty());
-
-
 }
 
 

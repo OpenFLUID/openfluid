@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -42,7 +42,9 @@
 
 
 #include <geos/geom/GeometryFactory.h>
+
 #include <ogrsf_frmts.h>
+
 #include <openfluid/dllexport.hpp>
 
 
