@@ -64,6 +64,11 @@ class F
 
     QString FirstAvailSimId;
 
+    static const QString UrlHttp;
+    static const QString UrlHttps;
+    static const QString Username;
+    static const QString Password;
+
     F()
     {
       TestWorkspacePath = QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR);
@@ -85,15 +90,35 @@ class F
 
     QString getFirstAvailSimUrl(openfluid::waresdev::WaresHubImportWorker& W)
     {
-      QString Url = QString::fromStdString(
-          W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).begin()->second.GitUrl);
+      openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t Wares = W.getAvailableWaresWithDetails(
+          openfluid::ware::WareType::SIMULATOR);
+
+      if (Wares.empty())
+        return "";
+
+      QString Url = QString::fromStdString(Wares.begin()->second.GitUrl);
 
       FirstAvailSimId = QFileInfo(Url).fileName();
 
       return Url;
     }
+
+    static bool checkHttps(const std::string& TestName)
+    {
+      if (!UrlHttps.isEmpty())
+        return true;
+
+      std::cout << "** Test not run due to empty wareshub https url ** (\"" << TestName << "\")" << std::endl;
+
+      return false;
+    }
 };
 
+
+const QString F::UrlHttp = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_HTTP);
+const QString F::UrlHttps = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_HTTPS);
+const QString F::Username = QString::fromStdString(CONFIGTESTS_WARESHUB_USERNAME);
+const QString F::Password = QString::fromStdString(CONFIGTESTS_WARESHUB_PASSWORD);
 
 // =====================================================================
 // =====================================================================
@@ -111,20 +136,26 @@ BOOST_AUTO_TEST_CASE(connect_wrong_url_fails)
 
 BOOST_AUTO_TEST_CASE(connect_http_ok)
 {
-  openfluid::waresdev::WaresHubImportWorker W(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL_HTTP));
+  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttp);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
 }
 
 BOOST_AUTO_TEST_CASE(connect_https_fails)
 {
-  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api");
+  if (!F::checkHttps("connect_https_fails"))
+    return;
+
+  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps);
   BOOST_CHECK_EQUAL(W.connect(), false);
 }
 
 BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_ok)
 {
-  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "", "", true);
+  if (!F::checkHttps("connect_https_sslNoverify_ok"))
+    return;
+
+  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps, "", "", true);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
 }
@@ -143,7 +174,7 @@ BOOST_AUTO_TEST_CASE(ware_list_not_connected_ok)
 
 BOOST_AUTO_TEST_CASE(ware_list_http_ok)
 {
-  openfluid::waresdev::WaresHubImportWorker W(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL_HTTP));
+  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttp);
   W.connect();
   BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
   BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
@@ -153,7 +184,10 @@ BOOST_AUTO_TEST_CASE(ware_list_http_ok)
 
 BOOST_AUTO_TEST_CASE(ware_list_https_ok)
 {
-  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "", "", true);
+  if (!F::checkHttps("ware_list_https_ok"))
+    return;
+
+  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps, "", "", true);
   W.connect();
   BOOST_CHECK(!W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).empty());
 }
@@ -163,24 +197,12 @@ BOOST_AUTO_TEST_CASE(ware_list_https_ok)
 // =====================================================================
 
 
-//TODO
-//BOOST_FIXTURE_TEST_CASE(clone_http_default_ok,F)
-//{
-//  openfluid::waresdev::WaresHubImportWorker W();
-//  W.connect();
-//
-//  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
-//
-//  BOOST_CHECK(W.clone());
-//
-//  QDir WareDir(TestWaresDevSimulatorsDir.absoluteFilePath(FirstAvailSimId));
-//  BOOST_CHECK(WareDir.exists());
-//  BOOST_CHECK(!WareDir.entryList(QDir::Files).isEmpty());
-//}
-
 BOOST_FIXTURE_TEST_CASE(clone_https_default_fails,F)
 {
-  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api");
+  if (!checkHttps("clone_https_default_fails"))
+    return;
+
+  openfluid::waresdev::WaresHubImportWorker W(UrlHttps);
   W.connect();
 
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
@@ -192,8 +214,10 @@ BOOST_FIXTURE_TEST_CASE(clone_https_default_fails,F)
 
 BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 {
-  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "wrongname",
-                                              "wrongpass", true);
+  if (!checkHttps("clone_https_wrongauth_fails"))
+    return;
+
+  openfluid::waresdev::WaresHubImportWorker W(UrlHttps, "wrongname", "wrongpass", true);
   W.connect();
 
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
@@ -203,35 +227,37 @@ BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
   BOOST_CHECK(TestWaresDevSimulatorsDir.entryList(QDir::Files).empty());
 }
 
-// TODO
-//BOOST_FIXTURE_TEST_CASE(clone_https_sslverify_fails,F)
-//{
-//  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "rightuser",
-//                                              "rightpwd", false);
-//  W.connect();
-//
-//  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
-//
-//  BOOST_CHECK_EQUAL(W.clone(), false);
-//
-//  BOOST_CHECK(TestWaresDevSimulatorsDir.entryList(QDir::Files).empty());
-//}
+BOOST_FIXTURE_TEST_CASE(clone_https_sslverify_fails,F)
+{
+  if (!checkHttps("clone_https_sslverify_fails"))
+    return;
 
-// TODO
-//BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
-//{
-//  openfluid::waresdev::WaresHubImportWorker W("https://coding.umr-lisah.fr/lisah-wareshub/api", "rightuser",
-//                                              "rightpwd", true);
-//  W.connect();
-//
-//  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
-//
-//  BOOST_CHECK(W.clone());
-//
-//  QDir WareDir(TestWaresDevSimulatorsDir.absoluteFilePath(FirstAvailSimId));
-//  BOOST_CHECK(WareDir.exists());
-//  BOOST_CHECK(!WareDir.entryList(QDir::Files).isEmpty());
-//}
+  openfluid::waresdev::WaresHubImportWorker W(UrlHttps, Username, Password, false);
+  W.connect();
+
+  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
+
+  BOOST_CHECK_EQUAL(W.clone(), false);
+
+  BOOST_CHECK(TestWaresDevSimulatorsDir.entryList(QDir::Files).empty());
+}
+
+BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
+{
+  if (!checkHttps("clone_https_ok"))
+    return;
+
+  openfluid::waresdev::WaresHubImportWorker W(UrlHttps, Username, Password, true);
+  W.connect();
+
+  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
+
+  BOOST_CHECK(W.clone());
+
+  QDir WareDir(TestWaresDevSimulatorsDir.absoluteFilePath(FirstAvailSimId));
+  BOOST_CHECK(WareDir.exists());
+  BOOST_CHECK(!WareDir.entryList(QDir::Files).isEmpty());
+}
 
 
 // =====================================================================
