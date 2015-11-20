@@ -73,6 +73,11 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
 
     QButtonGroup m_SourceBtGroup;
 
+    QString m_PackagePathLabelDefault = "<i>No package selected</i>";
+
+    QList<QWidget*> m_WaresHubConnectionInfoWidgets;
+    QString m_WaresHubButtonDisconnectLabel = tr("Disconnect");
+
     std::map<openfluid::ware::WareType, QListWidget*> m_ListWidgetsByWareType;
 
     std::map<QString, openfluid::ware::WareType> m_WareTypeConverter = {
@@ -83,6 +88,8 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
     openfluid::waresdev::WaresDevImportPackage* mp_ImportFilePkg = nullptr;
 
     openfluid::waresdev::WaresHubImportWorker* mp_WaresHubImportWorker = nullptr;
+
+    QMap<openfluid::ware::WareType, QStringList> m_AlreadySelectedWaresHubWares;
 
     void setMessage(const QString& Msg = "");
 
@@ -107,8 +114,6 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
     void onWareshubConnectButtonClicked();
 
     void import();
-
-    void connectionInfoChanged();
 
   public:
 

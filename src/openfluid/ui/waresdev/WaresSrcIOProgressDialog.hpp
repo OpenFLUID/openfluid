@@ -60,15 +60,19 @@ class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
 
     Ui::WaresSrcIOProgressDialog* ui;
 
+    void write(const QString& Message, const QColor& Color = QColor());
+
   public slots :
 
     void writeInfo(const QString& Message);
 
     void writeError(const QString& Message);
 
-    void finish(bool Ok);
+    void writeSuccess(const QString& Message);
 
-    void finishAndQuit(bool Ok);
+    void finish(bool Ok, const QString& Message);
+
+    void finishAndQuit(bool Ok, const QString& Message);
 
     void progress(int Value);
 

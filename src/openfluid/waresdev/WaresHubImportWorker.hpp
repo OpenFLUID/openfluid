@@ -99,6 +99,8 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
 
     bool connect();
 
+    void disconnect();
+
     bool clone();
 
   signals:
@@ -107,7 +109,7 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
 
     void error(const QString& Message);
 
-    void finished(bool Ok);
+    void finished(bool Ok, const QString& Message);
 
     void progressed(int Value);
 

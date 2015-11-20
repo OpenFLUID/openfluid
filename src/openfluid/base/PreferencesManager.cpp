@@ -1498,9 +1498,9 @@ void PreferencesManager::setWaresdevShowCommandEnv(const QString& Name, bool Ena
 // =====================================================================
 
 
-bool PreferencesManager::isWaresdevSslNoVerify()
+bool PreferencesManager::isWaresdevGitSslNoVerify()
 {
-  return mp_ConfFile->value("openfluid.waresdev.commands/sslNoVerify", false).toBool();
+  return mp_ConfFile->value("openfluid.waresdev.commands/git_sslNoVerify", false).toBool();
 }
 
 
@@ -1508,9 +1508,9 @@ bool PreferencesManager::isWaresdevSslNoVerify()
 // =====================================================================
 
 
-void PreferencesManager::setWaresdevSslNoVerify(bool NoVerify)
+void PreferencesManager::setWaresdevGitSslNoVerify(bool NoVerify)
 {
-  mp_ConfFile->setValue("openfluid.waresdev.commands/sslNoVerify", NoVerify);
+  mp_ConfFile->setValue("openfluid.waresdev.commands/git_sslNoVerify", NoVerify);
   mp_ConfFile->sync();
 }
 

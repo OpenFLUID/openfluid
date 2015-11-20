@@ -193,8 +193,8 @@ void WaresSrcExportDialog::exportToPackage()
   connect(Thread, SIGNAL(started()), &Pkg, SLOT(exportToPackage()));
   connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
 
-  connect(&Pkg, SIGNAL(finished(bool)), Thread, SLOT(quit()));
-  connect(&Pkg, SIGNAL(finished(bool)), &ProgressDialog, SLOT(finish(bool)));
+  connect(&Pkg, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
+  connect(&Pkg, SIGNAL(finished(bool, const QString&)), &ProgressDialog, SLOT(finish(bool, const QString&)));
 
   connect(&Pkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
   connect(&Pkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));

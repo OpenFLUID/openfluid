@@ -64,8 +64,8 @@ WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& 
 
   m_PackageName = QFileInfo(m_PackageFilePath).completeBaseName();
 
-  QString TempOfwdpSubDirPath = QDir(
-      QString::fromStdString(openfluid::base::Environment::getTempDir())).absoluteFilePath("ofwdp");
+  QString TempOfwdpSubDirPath = QDir(QString::fromStdString(openfluid::base::Environment::getTempDir()))
+      .absoluteFilePath("ofwdp");
 
   m_PackageTempDir = QDir(QString("%1/%2/%3").arg(TempOfwdpSubDirPath).arg(TempSubFolderName).arg(m_PackageName));
   m_PackageTempPath = m_PackageTempDir.absolutePath();
@@ -234,15 +234,9 @@ void WaresDevExportPackage::exportToPackage()
   emit progressed(100);
 
   if (mp_Process->exitCode())
-  {
-    emit error("Export failed");
-    emit finished(false);
-  }
+    emit finished(false, tr("Export failed"));
   else
-  {
-    emit info("Export done");
-    emit finished(true);
-  }
+    emit finished(true, tr("Export done"));
 }
 
 
@@ -344,15 +338,9 @@ void WaresDevImportPackage::fetchInformation()
   }
 
   if (mp_Process->exitCode())
-  {
-    emit error("Fetching information failed");
-    emit finished(false);
-  }
+    emit finished(false, tr("Fetching information failed"));
   else
-  {
-    emit info("Fetching information done");
-    emit finished(true);
-  }
+    emit finished(true, tr("Fetching information done"));
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());
@@ -420,17 +408,17 @@ void WaresDevImportPackage::copyWares()
 
     if (!QDir(DestinationPath).exists())
     {
-      emit info(QString("Importing \"%1\"").arg(DestinationPath));
+      emit info(tr("Importing \"%1\"").arg(DestinationPath));
 
       if (!openfluid::tools::Filesystem::copyDirectory(WarePath.toStdString(), DestinationUpDir.toStdString()))
       {
-        emit error(QString("Unable to copy \"%1\" to \"%2\"").arg(WarePath).arg(DestinationUpDir));
+        emit error(tr("Unable to copy \"%1\" to \"%2\"").arg(WarePath).arg(DestinationUpDir));
         Ok = false;
       }
     }
     else
     {
-      emit info(QString("\"%1\" already exists : ignored").arg(DestinationPath));
+      emit info(tr("\"%1\" already exists : ignored").arg(DestinationPath));
     }
 
     Progress += ProgressRatio;
@@ -440,15 +428,9 @@ void WaresDevImportPackage::copyWares()
   emit progressed(100);
 
   if (!Ok)
-  {
-    emit error("Import done with errors");
-    emit finished(false);
-  }
+    emit finished(false, "Import done with errors");
   else
-  {
-    emit info("Import done");
-    emit finished(true);
-  }
+    emit finished(true, "Import done");
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());

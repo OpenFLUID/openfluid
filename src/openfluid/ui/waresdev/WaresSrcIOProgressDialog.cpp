@@ -69,11 +69,7 @@ WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, b
 
 void WaresSrcIOProgressDialog::writeInfo(const QString& Message)
 {
-  ui->textEdit->append("\n");
-
-  ui->textEdit->append(Message);
-
-  ui->textEdit->ensureCursorVisible();
+  write(Message);
 }
 
 
@@ -83,20 +79,44 @@ void WaresSrcIOProgressDialog::writeInfo(const QString& Message)
 
 void WaresSrcIOProgressDialog::writeError(const QString& Message)
 {
+  write(Message, QColor("red"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcIOProgressDialog::writeSuccess(const QString& Message)
+{
+  write(Message, QColor("green"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcIOProgressDialog::write(const QString& Message, const QColor& Color)
+{
   ui->textEdit->append("\n");
 
-  QTextCursor Cursor = ui->textEdit->textCursor();
+  if (!Color.isValid())
+    ui->textEdit->append(Message);
+  else
+  {
+    QTextCursor Cursor = ui->textEdit->textCursor();
 
-  QTextCharFormat OriginalFormat = Cursor.charFormat();
+    QTextCharFormat OriginalFormat = Cursor.charFormat();
 
-  QTextCharFormat RedFormat;
-  RedFormat.setForeground(QColor("red"));
-  Cursor.setCharFormat(RedFormat);
+    QTextCharFormat ColoredFormat;
+    ColoredFormat.setForeground(Color);
+    Cursor.setCharFormat(ColoredFormat);
 
-  Cursor.insertText(Message);
+    Cursor.insertText(Message);
 
-  Cursor.setCharFormat(OriginalFormat);
-
+    Cursor.setCharFormat(OriginalFormat);
+  }
 
   ui->textEdit->ensureCursorVisible();
 }
@@ -106,12 +126,18 @@ void WaresSrcIOProgressDialog::writeError(const QString& Message)
 // =====================================================================
 
 
-void WaresSrcIOProgressDialog::finish(bool Ok)
+void WaresSrcIOProgressDialog::finish(bool Ok, const QString& Message)
 {
   if (Ok)
+  {
+    writeSuccess(Message);
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(accept()));
+  }
   else
+  {
+    writeError(Message);
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(reject()));
+  }
 
   ui->buttonBox->setEnabled(true);
   ui->progressBar->setMaximum(100);
@@ -123,12 +149,15 @@ void WaresSrcIOProgressDialog::finish(bool Ok)
 // =====================================================================
 
 
-void WaresSrcIOProgressDialog::finishAndQuit(bool Ok)
+void WaresSrcIOProgressDialog::finishAndQuit(bool Ok, const QString& Message)
 {
   if (Ok)
+  {
+    writeSuccess(Message);
     accept();
+  }
   else
-    finish(Ok);
+    finish(Ok, Message);
 }
 
 

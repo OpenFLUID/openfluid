@@ -126,20 +126,24 @@ bool WaresHubImportWorker::connect()
                                                                                                       m_Username);
 
   if (!Ok)
-  {
-    emit error("Fetching information failed");
-    emit finished(false);
-  }
+    emit finished(false, tr("Fetching information failed"));
   else
-  {
-    emit info("Fetching information done");
-    emit finished(true);
-  }
+    emit finished(true, tr("Fetching information done"));
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());
 
   return Ok;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresHubImportWorker::disconnect()
+{
+  mp_WareshubClient->disconnect();
 }
 
 
@@ -244,15 +248,9 @@ bool WaresHubImportWorker::clone()
   bool Ok = ErrStr.isEmpty();
 
   if (Ok)
-  {
-    emit info(tr("Cloning done"));
-    emit finished(true);
-  }
+    emit finished(true, tr("Cloning done"));
   else
-  {
-    emit error(tr("Cloning failed %1").arg(ErrStr));
-    emit finished(false);
-  }
+    emit finished(false, tr("Cloning failed %1").arg(ErrStr));
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());

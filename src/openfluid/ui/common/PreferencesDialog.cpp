@@ -268,7 +268,7 @@ void PreferencesDialog::initialize()
   ui->ConfigOptionsEdit->setText(PrefsMan->getWaresdevConfigOptions());
   ui->BuildPathEnvEdit->setText(PrefsMan->getWaresdevBuildEnv("PATH"));
   ui->ShowPathCheckBox->setChecked(PrefsMan->isWaresdevShowCommandEnv("PATH"));
-  ui->SslNoVerifyCheckBox->setChecked(PrefsMan->isWaresdevSslNoVerify());
+  ui->SslNoVerifyCheckBox->setChecked(PrefsMan->isWaresdevGitSslNoVerify());
 
   // Code editor
   intializeTextEditorSettings();
@@ -907,7 +907,7 @@ void PreferencesDialog::updateDevShowPATH(bool Enabled)
 
 void PreferencesDialog::updateDevSslNoVerify(bool NoVerify)
 {
-  openfluid::base::PreferencesManager::instance()->setWaresdevSslNoVerify(NoVerify);
+  openfluid::base::PreferencesManager::instance()->setWaresdevGitSslNoVerify(NoVerify);
 }
 
 

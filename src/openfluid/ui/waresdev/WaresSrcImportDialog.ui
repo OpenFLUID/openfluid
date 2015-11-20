@@ -115,7 +115,7 @@ font : bold;
         <item>
          <widget class="QPushButton" name="PackagePathButton">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>
@@ -150,16 +150,6 @@ font : bold;
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QRadioButton" name="WareshubRadioButton">
-            <property name="text">
-             <string/>
-            </property>
-            <attribute name="buttonGroup">
-             <string notr="true">SourceButtonGroup</string>
-            </attribute>
-           </widget>
-          </item>
           <item row="1" column="2">
            <widget class="QLineEdit" name="UsernameLineEdit">
             <property name="enabled">
@@ -171,7 +161,7 @@ font : bold;
            </widget>
           </item>
           <item row="1" column="3">
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="PasswordLabel">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -183,18 +173,8 @@ font : bold;
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Wareshub URL:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="UsernameLabel">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -224,6 +204,16 @@ font : bold;
             <property name="text">
              <string>Deactivate ssl verification</string>
             </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QRadioButton" name="WareshubRadioButton">
+            <property name="text">
+             <string>Wareshub URL:</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">SourceButtonGroup</string>
+            </attribute>
            </widget>
           </item>
          </layout>
@@ -429,102 +419,6 @@ font : bold;
    </hints>
   </connection>
   <connection>
-   <sender>WareshubRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>WareshubConnectButton</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>41</x>
-     <y>134</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>693</x>
-     <y>137</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>WareshubRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>WareshubUrlLineEdit</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>41</x>
-     <y>134</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>517</x>
-     <y>137</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>WareshubRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>31</x>
-     <y>124</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>116</x>
-     <y>161</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>WareshubRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>UsernameLineEdit</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>33</x>
-     <y>131</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>208</x>
-     <y>158</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>WareshubRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_4</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>31</x>
-     <y>126</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>325</x>
-     <y>155</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>WareshubRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>PasswordLineEdit</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>35</x>
-     <y>122</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>459</x>
-     <y>164</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>PackageRadioButton</sender>
    <signal>toggled(bool)</signal>
    <receiver>PackagePathLabel</receiver>
@@ -537,22 +431,6 @@ font : bold;
     <hint type="destinationlabel">
      <x>139</x>
      <y>78</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>WareshubRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>SslNoVerifyCheckBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>35</x>
-     <y>124</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>558</x>
-     <y>161</y>
     </hint>
    </hints>
   </connection>

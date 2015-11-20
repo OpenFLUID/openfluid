@@ -111,7 +111,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
 
     void error(const QString& Message);
 
-    void finished(bool Ok);
+    void finished(bool Ok, const QString& Message);
 
     void progressed(int Value);
 };
