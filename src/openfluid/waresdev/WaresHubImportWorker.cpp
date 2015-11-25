@@ -157,6 +157,15 @@ bool WaresHubImportWorker::clone()
 
   bool Ok = false;
 
+  double ProgressRatio = 100;
+  int SelectedWarePathsNb = 0;
+  for (const auto& Pair : m_SelectedWaresUrlByType)
+    SelectedWarePathsNb += Pair.second.size();
+  if (SelectedWarePathsNb)
+    ProgressRatio /= SelectedWarePathsNb;
+
+  int Progress = 0;
+
   for (const auto& Pair : m_SelectedWaresUrlByType)
   {
     QString WareTypePath = Mgr->getWareTypePath(Pair.first);
@@ -173,6 +182,9 @@ bool WaresHubImportWorker::clone()
 
       if (!Ok)
         break;
+
+      Progress += ProgressRatio;
+      emit progressed(Progress);
     }
   }
 
