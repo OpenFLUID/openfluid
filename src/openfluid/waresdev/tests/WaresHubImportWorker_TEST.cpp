@@ -98,7 +98,7 @@ class F
 
       QString Url = QString::fromStdString(Wares.begin()->second.GitUrl);
 
-      FirstAvailSimId = QFileInfo(Url).fileName();
+      FirstAvailSimId = QString::fromStdString(Wares.begin()->first);
 
       return Url;
     }

@@ -41,15 +41,10 @@
 #include <QApplication>
 #include <QFileInfo>
 
-#include <git2/cred_helpers.h>
-
 #include <openfluid/waresdev/WareSrcManager.hpp>
-
+#include <openfluid/utils/GitClient.hpp>
 
 namespace openfluid { namespace waresdev {
-
-
-int CertCheckNb;
 
 
 // =====================================================================
@@ -151,24 +146,6 @@ void WaresHubImportWorker::disconnect()
 // =====================================================================
 
 
-int WaresHubImportWorker::certificateCheckCb(git_cert* cert, int valid, const char* host, void* payload)
-{
-  (void) (cert);
-  (void) (valid);
-
-  if (CertCheckNb > 10)
-    return GIT_EUSER;
-
-  CertCheckNb++;
-
-  return 1;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool WaresHubImportWorker::clone()
 {
   if (!isConnected())
@@ -178,25 +155,7 @@ bool WaresHubImportWorker::clone()
 
   openfluid::waresdev::WareSrcManager* Mgr = openfluid::waresdev::WareSrcManager::instance();
 
-  git_libgit2_init();
-
-  git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
-  opts.fetch_opts = GIT_FETCH_OPTIONS_INIT;
-  opts.checkout_opts = GIT_CHECKOUT_OPTIONS_INIT;
-
-  // keep the std::string "transitional" values, otherwise the pointers returned by c_str() are lost
-  std::string username = m_Username.toStdString();
-  std::string password = m_Password.toStdString();
-
-  git_cred_userpass_payload user_pass = { username.c_str(), password.c_str() };
-
-  opts.fetch_opts.callbacks.payload = &user_pass;
-  opts.fetch_opts.callbacks.credentials = git_cred_userpass;
-
-  if (m_SslNoVerify)
-    opts.fetch_opts.callbacks.certificate_check = certificateCheckCb;
-
-  opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE;
+  bool Ok = false;
 
   for (const auto& Pair : m_SelectedWaresUrlByType)
   {
@@ -204,48 +163,18 @@ bool WaresHubImportWorker::clone()
 
     for (const auto& GitUrl : Pair.second)
     {
-      CertCheckNb = 0;
-
-      git_repository* repo = 0;
-
       QString DestPath = QString("%1/%2").arg(WareTypePath).arg(QFileInfo(GitUrl).fileName());
 
       emit info(tr("Cloning from \"%1\" to \"%2\"").arg(GitUrl).arg(DestPath));
 
-      int error = git_clone(&repo, GitUrl.toStdString().c_str(), DestPath.toStdString().c_str(), &opts);
+      ErrStr = openfluid::utils::GitClient::clone(GitUrl, DestPath, m_Username, m_Password, m_SslNoVerify);
 
-      if (error < 0)
-      {
-        const git_error* e = giterr_last();
+      Ok = ErrStr.isEmpty();
 
-        switch (error)
-        {
-          case GIT_ECERTIFICATE:
-            ErrStr = tr("Server certificate is invalid (you can try to uncheck ssl verification and re-connect)");
-            break;
-          case GIT_EUSER:
-            ErrStr = tr("Authentication error");
-            break;
-          default:
-            ErrStr = QString(e->message);
-            break;
-        }
-
-        ErrStr.prepend(tr("(code %1/%2): ").arg(error).arg(e->klass));
-
-        git_repository_free(repo);
-
+      if (!Ok)
         break;
-      }
-
-      git_repository_free(repo);
     }
   }
-
-  git_libgit2_shutdown();
-
-
-  bool Ok = ErrStr.isEmpty();
 
   if (Ok)
     emit finished(true, tr("Cloning done"));

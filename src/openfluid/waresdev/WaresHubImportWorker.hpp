@@ -45,8 +45,6 @@
 #include <QMap>
 #include <QStringList>
 
-#include <git2.h>
-
 #include <openfluid/dllexport.hpp>
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 
@@ -78,8 +76,6 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
     WaresDetailsByIDByType_t m_AvailableWaresDetailsByIDByType;
 
     std::map<openfluid::ware::WareType, QStringList> m_SelectedWaresUrlByType;
-
-    static int certificateCheckCb(git_cert* cert, int valid, const char* host, void* payload);
 
   public:
 
