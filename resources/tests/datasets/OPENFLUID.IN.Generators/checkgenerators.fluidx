@@ -7,12 +7,21 @@
       <param name="fixedvalue" value="12.7" />
     </generator>
 
+    <generator varname="tests.fixed-vector" unitsclass="TestUnits" varsize="7" method="fixed">
+      <param name="fixedvalue" value="12.7" />
+    </generator>
+
     <generator varname="tests.fixeddt" unitsclass="TestUnits" method="fixed">
       <param name="fixedvalue" value="1.27" />
       <param name="deltat" value="300" />
     </generator>
 
     <generator varname="tests.random" unitsclass="TestUnits" method="random">
+      <param name="min" value="20.53" />
+      <param name="max" value="50" />
+    </generator>
+
+    <generator varname="tests.random-vector" unitsclass="TestUnits" varsize="9" method="random">
       <param name="min" value="20.53" />
       <param name="max" value="50" />
     </generator>
@@ -24,6 +33,11 @@
     </generator>    
 
     <generator varname="tests.interp" unitsclass="TestUnits" method="interp">
+      <param name="sources" value="sourcesinterp.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.interp-vector" unitsclass="TestUnits" varsize="11" method="interp">
       <param name="sources" value="sourcesinterp.xml" />
       <param name="distribution" value="distri.dat" />
     </generator>
@@ -51,10 +65,15 @@
       <param name="distribution" value="distri.dat" />
     </generator>
 
+    <generator varname="tests.injectasync-vector" unitsclass="TestUnits" varsize="13" method="inject">
+      <param name="sources" value="sourcesinjectasync.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
 
     <simulator ID="tests.generators" />
 
-    <generator varname="tests.fixedprev" unitsclass="TestUnits" varsize="11" method="fixed">
+    <generator varname="tests.fixedprev-vector" unitsclass="TestUnits" varsize="11" method="fixed">
       <param name="fixedvalue" value="5.3" />
     </generator>
 

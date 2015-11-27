@@ -62,11 +62,20 @@ BEGIN_SIMULATOR_SIGNATURE("tests.generators")
 
 
   DECLARE_REQUIRED_VARIABLE("tests.fixed[double]","TestUnits","fixed value from generators for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.fixed-vector[vector]","TestUnits","fixed value from generators for tests","");
   DECLARE_REQUIRED_VARIABLE("tests.random[double]","TestUnits","random value from generators for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.random-vector[vector]","TestUnits","random value from generators for tests","");
   DECLARE_REQUIRED_VARIABLE("tests.interp[double]","TestUnits","interpolated value from generators for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.interp-vector[vector]","TestUnits",
+                            "interpolated value from generators for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.inject[double]","TestUnits",
+                            "injected value from generators for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.injectasync[double]","TestUnits","injected value from generators for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.injectasync-vector[vector]","TestUnits",
+                            "injected value from generators for tests","");
 
-  DECLARE_REQUIRED_VARIABLE("tests.fixedprev[vector]","TestUnits",
-                       "fixed value from generators at a previous time step for tests","");
+  DECLARE_REQUIRED_VARIABLE("tests.fixedprev-vector[vector]","TestUnits",
+                            "fixed value from generators at a previous time step for tests","");
 
 END_SIMULATOR_SIGNATURE
 
@@ -207,9 +216,10 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
 
       if (OPENFLUID_GetCurrentTimeIndex() > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
       {
-        OPENFLUID_GetVariable(TU,"tests.fixedprev",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),VValue);
+        OPENFLUID_GetVariable(TU,"tests.fixedprev-vector",
+                              OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),VValue);
         if (!openfluid::scientific::isCloseEnough(VValue[0],5.3))
-          OPENFLUID_RaiseError("incorrect value for tests.fixedprev variable");
+          OPENFLUID_RaiseError("incorrect value for tests.fixedprev-vector variable");
       }
 
     }

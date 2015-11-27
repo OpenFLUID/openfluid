@@ -180,7 +180,7 @@ openfluid::base::SchedulingRequest InjectGenerator::runStep()
       if (isVectorVariable())
       {
         openfluid::core::VectorValue VV(m_VarSize,Value);
-        OPENFLUID_InitializeVariable(LU,m_VarName,VV);
+        OPENFLUID_AppendVariable(LU,m_VarName,VV);
       }
       else
         OPENFLUID_AppendVariable(LU,m_VarName,Value);
