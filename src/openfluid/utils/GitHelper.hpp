@@ -31,36 +31,90 @@
 
 
 /**
- @file GitClient.hpp
+ @file GitHelper.hpp
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef __OPENFLUID_UTILS_GITCLIENT_HPP__
-#define __OPENFLUID_UTILS_GITCLIENT_HPP__
+#ifndef __OPENFLUID_UTILS_GITHELPER_HPP__
+#define __OPENFLUID_UTILS_GITHELPER_HPP__
 
 #include <QString>
-#include <git2.h>
+#include <QObject>
+#include <QProcess>
+#include <QMap>
+#include <QFile>
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace utils {
 
-class OPENFLUID_API GitClient
+class OPENFLUID_API GitHelper: public QObject
 {
-  private:
-
-    static int certificateCheckCb(git_cert* cert, int valid, const char* host, void* payload);
+  Q_OBJECT
 
   public:
 
-    static QString clone(const QString& FromUrl, const QString& ToPath, const QString& Username = "",
-      const QString& Password = "",
-      bool SslNoVerify = false);
+    enum class FileStatus
+    {
+      TRACKED, UNTRACKED, IGNORED, CONFLICT, ADDED, DELETED, MODIFIED
+    };
+
+    struct FileStatusInfo
+    {
+        bool m_IsDirty = false;
+
+        FileStatus m_IndexStatus = FileStatus::TRACKED;
+    };
+
+    struct TreeStatusInfo
+    {
+        bool m_IsGitTracked = false;
+
+        QString m_BranchName = "";
+
+        QMap<QString, FileStatusInfo> m_FileStatusByTreePath;
+    };
+
+  private:
+
+    QString m_GitPgm;
+
+    QProcess* mp_Process = nullptr;
+
+    QString m_TmpPath;
+
+    QFile m_AskPassFile;
+
+  private slots:
+
+    void processStandardOutput();
+
+    void processErrorOutput();
+
+    void processErrorOutputAsInfo();
+
+  public:
+
+    GitHelper();
+
+    ~GitHelper();
+
+    bool clone(const QString& FromUrl, const QString& ToPath, const QString& Username = "", const QString& Password =
+        "", bool SslNoVerify = false);
+
+    TreeStatusInfo status(const QString& Path);
+
+  signals:
+
+    void info(const QString& Message);
+
+    void error(const QString& Message);
 };
+
 
 } } // namespaces
 
-#endif /* __OPENFLUID_UTILS_GITCLIENT_HPP__ */
+#endif /* __OPENFLUID_UTILS_GITHELPER_HPP__ */

@@ -187,6 +187,16 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "latex2html.exe";
 #endif
   }
+  else if (Prog == GitProgram)
+  {
+#if defined(OPENFLUID_OS_UNIX)
+    ProgNames << "git";
+#endif
+
+#if defined(OPENFLUID_OS_WINDOWS)
+    ProgNames << "git.exe";
+#endif
+  }
 
   return ExternalProgram(ProgNames,ModSearchPaths,UsePathEnv);
 }

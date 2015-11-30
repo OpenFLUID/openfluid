@@ -108,7 +108,6 @@ OPENFLUID_CHECK_GDAL_VERSION()
 FIND_PACKAGE(RapidJSON REQUIRED)
 FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(LATEX)
-FIND_PACKAGE(Libgit2 REQUIRED)
 
 
 # Detection of external translations tools and setup of common translations targets

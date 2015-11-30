@@ -42,7 +42,7 @@
 #include <QFileInfo>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/utils/GitClient.hpp>
+#include <openfluid/utils/GitHelper.hpp>
 
 namespace openfluid { namespace waresdev {
 
@@ -151,11 +151,7 @@ bool WaresHubImportWorker::clone()
   if (!isConnected())
     return false;
 
-  QString ErrStr;
-
   openfluid::waresdev::WareSrcManager* Mgr = openfluid::waresdev::WareSrcManager::instance();
-
-  bool Ok = false;
 
   double ProgressRatio = 100;
   int SelectedWarePathsNb = 0;
@@ -165,6 +161,7 @@ bool WaresHubImportWorker::clone()
     ProgressRatio /= SelectedWarePathsNb;
 
   int Progress = 0;
+  bool Ok = true;
 
   for (const auto& Pair : m_SelectedWaresUrlByType)
   {
@@ -174,14 +171,15 @@ bool WaresHubImportWorker::clone()
     {
       QString DestPath = QString("%1/%2").arg(WareTypePath).arg(QFileInfo(GitUrl).fileName());
 
-      emit info(tr("Cloning from \"%1\" to \"%2\"").arg(GitUrl).arg(DestPath));
+      openfluid::utils::GitHelper Git;
+      QObject::connect(&Git, SIGNAL(info(const QString&)), this, SIGNAL(info(const QString&)));
+      QObject::connect(&Git, SIGNAL(error(const QString&)), this, SIGNAL(error(const QString&)));
 
-      ErrStr = openfluid::utils::GitClient::clone(GitUrl, DestPath, m_Username, m_Password, m_SslNoVerify);
-
-      Ok = ErrStr.isEmpty();
-
-      if (!Ok)
+      if (!Git.clone(GitUrl, DestPath, m_Username, m_Password, m_SslNoVerify))
+      {
+        Ok = false;
         break;
+      }
 
       Progress += ProgressRatio;
       emit progressed(Progress);
@@ -189,9 +187,9 @@ bool WaresHubImportWorker::clone()
   }
 
   if (Ok)
-    emit finished(true, tr("Cloning done"));
+    emit finished(true,tr("Import done"));
   else
-    emit finished(false, tr("Cloning failed %1").arg(ErrStr));
+    emit finished(false, tr("Import failed"));
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());
