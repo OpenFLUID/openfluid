@@ -86,6 +86,28 @@ ENDMACRO()
 
 ###########################################################################
 
+# Macro for checking and displaying GDAL version
+MACRO(OPENFLUID_CHECK_GDAL_VERSION)
+  
+  IF(NOT GDAL_INCLUDE_DIR)
+    MESSAGE(FATAL_ERROR "Error checking GDAL version: GDAL_INCLUDE_DIR variable is not set")
+  ENDIF()
+  
+  FILE(STRINGS "${GDAL_INCLUDE_DIR}/gdal_version.h" _GDAL_VERSION_CONFIG_LINE REGEX "#[\ ]*define[\ ]+GDAL_RELEASE_NAME")
+
+  STRING(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+(~[a-z]+[0-9]*)?" GDAL_VERSION "${_GDAL_VERSION_CONFIG_LINE}")
+
+  IF(GDAL_VERSION VERSION_LESS "2.0")
+    MESSAGE(STATUS "GDAL version : ${GDAL_VERSION}")
+  ELSE()
+    MESSAGE(FATAL_ERROR "OpenFLUID does not support GDAL version ${GDAL_VERSION}. Only versions 1.x are currently supported")
+  ENDIF()  
+
+ENDMACRO()
+
+
+###########################################################################
+
 
 MACRO(_OPENFLUID_WARE_INIT _WARETYPE_STR)
 

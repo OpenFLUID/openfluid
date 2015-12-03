@@ -23,7 +23,7 @@ SET(OFBUILD_CUSTOM_CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.
 SET(OPENFLUID_VERSION_MAJOR 2)
 SET(OPENFLUID_VERSION_MINOR 1)
 SET(OPENFLUID_VERSION_PATCH 1)
-SET(OPENFLUID_VERSION_STATUS "beta1") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
+SET(OPENFLUID_VERSION_STATUS "rc1") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
 
 SET(OPENFLUID_VERSION_FULL "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}")
 
@@ -247,10 +247,10 @@ ENDIF()
 
 SET(OFBUILD_TRANSLATIONS_TSDIR "${CMAKE_SOURCE_DIR}/resources/translations")
 SET(OFBUILD_TRANSLATIONS_DIRSTOSCAN "${CMAKE_SOURCE_DIR}/src/openfluid/ui"
-                                      "${CMAKE_SOURCE_DIR}/src/openfluid/ui/config.hpp.in"
-                                      "${CMAKE_SOURCE_DIR}/src/openfluid/waresdev"                                      
-                                      "${CMAKE_SOURCE_DIR}/src/apps/openfluid-builder"
-                                      "${CMAKE_SOURCE_DIR}/src/apps/openfluid-devstudio")
+                                    "${CMAKE_SOURCE_DIR}/src/openfluid/ui/config.hpp.in"
+                                    "${CMAKE_SOURCE_DIR}/src/openfluid/waresdev"                                      
+                                    "${CMAKE_SOURCE_DIR}/src/apps/openfluid-builder"
+                                    "${CMAKE_SOURCE_DIR}/src/apps/openfluid-devstudio")
 SET(OPENFLUID_TRANSLATIONS_FILEROOT openfluid)
 SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR)
 
