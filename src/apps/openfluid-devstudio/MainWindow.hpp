@@ -105,6 +105,7 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void onDeleteWareRequested();
 
+    void updateExplorer();
 
   public:
 

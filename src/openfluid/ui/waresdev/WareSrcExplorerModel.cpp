@@ -41,9 +41,11 @@
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
 
 #include <QFont>
+#include <QPainter>
 
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
+#include <openfluid/utils/GitHelper.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -62,6 +64,9 @@ WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
 
   connect(this, SIGNAL(directoryLoaded(const QString&)), this, SLOT(onDirectoryLoaded(const QString&)));
 
+  connect(&m_Watcher, SIGNAL(fileChanged(const QString&)), this, SLOT(onGitIndexFileChanged(const QString&)));
+  connect(&m_Watcher, SIGNAL(directoryChanged(const QString&)), this, SLOT(onGitDirObjectsChanged(const QString&)));
+
   setRootPath(Path);
 }
 
@@ -74,6 +79,22 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
 {
   QModelIndex Parent = index(Path);
 
+  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
+
+  // fetching git info
+  if (Info.m_isAWare)
+    getGitStatusInfo(Path);
+  else
+  {
+    for (const auto& WarePathsTracked : m_GitBranchByWarePath.keys())
+    {
+      // if Path is a sub dir of a tracked ware, we reload git status on this ware
+      if (Path.startsWith(WarePathsTracked) && Path != WarePathsTracked)
+        getGitStatusInfo(Info.m_AbsolutePathOfWare);
+    }
+  }
+
+  // fetching path info
   for (int Row = 0; Row < rowCount(Parent); ++Row)
   {
     QString ChildPath = filePath(index(Row, 0, Parent));
@@ -88,29 +109,116 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
 // =====================================================================
 
 
-QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
+void WareSrcExplorerModel::getGitStatusInfo(const QString& WarePath)
 {
+  openfluid::utils::GitHelper Git;
+  openfluid::utils::GitHelper::TreeStatusInfo TreeStatus = Git.status(WarePath);
+
+  if (TreeStatus.m_IsGitTracked)
+  {
+    // cleaning git info
+
+    QMap<QString, QString>::iterator it = m_GitIconByWareFilePath.begin();
+    while (it != m_GitIconByWareFilePath.end())
+    {
+      if (it.key().startsWith(WarePath))
+        it = m_GitIconByWareFilePath.erase(it);
+      else
+        ++it;
+    }
+    QStringList::iterator it2 = m_GitDirties.begin();
+    while (it2 != m_GitDirties.end())
+    {
+      if (it2->startsWith(WarePath))
+        it2 = m_GitDirties.erase(it2);
+      else
+        ++it2;
+    }
+    it = m_GitBranchByWarePath.begin();
+    while (it != m_GitBranchByWarePath.end())
+    {
+      if (it.key().startsWith(WarePath))
+        it = m_GitBranchByWarePath.erase(it);
+      else
+        ++it;
+    }
+
+
+    // watching git changes
+
+    QString FileToWatch = QString("%1/.git/index").arg(WarePath);
+    if (!m_Watcher.files().contains(FileToWatch))
+      m_Watcher.addPath(FileToWatch);
+
+    QString DirToWatch = QString("%1/.git/objects").arg(WarePath);
+    if (!m_Watcher.directories().contains(DirToWatch))
+      m_Watcher.addPath(DirToWatch);
+
+
+    m_GitBranchByWarePath[WarePath] = TreeStatus.m_BranchName;
+
+
+    // setting default with TRACKED
+
+    applyIconRecursively(WarePath, m_IconByGitStatus[openfluid::utils::GitHelper::FileStatus::TRACKED]);
+
+
+    // parsing status outputs
+
+    QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> FileStatus = TreeStatus.m_FileStatusByTreePath;
+    for (QMap<QString, openfluid::utils::GitHelper::FileStatusInfo>::iterator it = FileStatus.begin();
+        it != FileStatus.end(); ++it)
+    {
+      QString AbsolutePath = QString("%1/%2").arg(WarePath).arg(it.key());
+
+      if (it.value().m_IsDirty)
+        m_GitDirties << AbsolutePath;
+
+      m_GitIconByWareFilePath[AbsolutePath] = m_IconByGitStatus[it.value().m_IndexStatus];
+
+      if (AbsolutePath.endsWith("/"))
+      {
+        AbsolutePath.chop(1);
+
+        applyIconRecursively(AbsolutePath, m_IconByGitStatus[openfluid::utils::GitHelper::FileStatus::UNTRACKED]);
+      }
+    }
+  }
+
+  emit dataChanged(index(0, 0), index(rowCount(), 0));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorerModel::applyIconRecursively(const QString& CurrDir, const QString& IconPath)
+{
+  QDir Dir(CurrDir);
+
+  if (Dir.dirName().startsWith("_build") || Dir.dirName() == ".git")
+    return;
+
+  for (const auto& SubFile : Dir.entryList(QDir::Files))
+    m_GitIconByWareFilePath[QString("%1/%2").arg(CurrDir).arg(SubFile)] = IconPath;
+
+  for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+    applyIconRecursively(QString("%1/%2").arg(CurrDir).arg(SubDir), IconPath);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
+  {
   if (!Index.isValid())
     return QFileSystemModel::data(Index, Role);
 
   if (Role == Qt::ForegroundRole && fileName(Index).startsWith("_build"))
     return QVariant(QColor("#A3A3A3"));
-
-  if (Role == QFileSystemModel::FileIconRole)
-  {
-    if (!isDir(Index))
-    {
-      for (QMap<QString, QString>::const_iterator it = m_UserIcons.begin(); it != m_UserIcons.end(); ++it)
-      {
-        if (QDir::match(it.key(), fileName(Index)))
-          return QIcon(it.value());
-      }
-
-      return QIcon(":/ui/common/icons/notype.png");
-    }
-    else if (m_PathInfos.value(filePath(Index)).m_isAWare)
-      return QIcon(":/ui/common/icons/waredir.png");
-  }
 
   if (Role == Qt::FontRole && !isDir(Index) && fileInfo(Index).suffix() == "cpp")
   {
@@ -127,6 +235,48 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
 
   }
 
+  if (Role == Qt::DisplayRole && m_GitDirties.contains(filePath(Index)))
+    return QVariant(QString("> %1").arg(QFileSystemModel::data(Index, Role).toString()));
+
+  if (Role == Qt::DisplayRole && m_GitBranchByWarePath.contains(filePath(Index)))
+    return QVariant(
+        QString("%1 [%2]").arg(QFileSystemModel::data(Index, Role).toString()).arg(
+            m_GitBranchByWarePath[filePath(Index)]));
+
+  if (Role == QFileSystemModel::FileIconRole)
+  {
+    if (m_PathInfos.value(filePath(Index)).m_isAWare)
+      return QIcon(":/ui/common/icons/waredir.png");
+
+    if (!isDir(Index))
+    {
+      QString FilePath = filePath(Index);
+      QString BaseIconPath = ":/ui/common/icons/notype.png";
+
+      for (QMap<QString, QString>::const_iterator it = m_UserIcons.begin(); it != m_UserIcons.end(); ++it)
+      {
+        if (QDir::match(it.key(), FilePath))
+        {
+          BaseIconPath = it.value();
+          break;
+        }
+      }
+
+      QString DecoratorPath = m_GitIconByWareFilePath.value(FilePath, "");
+      if (!DecoratorPath.isEmpty())
+      {
+        QPixmap Base(BaseIconPath);
+        QPixmap Overlay(DecoratorPath);
+
+        QPainter painter(&Base);
+        painter.drawPixmap(Base.width() / 2, Base.height() / 2, Base.width() / 2, Base.height() / 2, Overlay);
+        return QIcon(Base);
+      }
+
+      return QIcon(BaseIconPath);
+    }
+  }
+
   return QFileSystemModel::data(Index, Role);
 }
 
@@ -135,9 +285,12 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
 // =====================================================================
 
 
-void WareSrcExplorerModel::emitDataChanged()
+void WareSrcExplorerModel::onGitIndexFileChanged(const QString& Path)
 {
-  emit dataChanged(index(0, 0), index(rowCount(), 0));
+  QString WarePath = Path;
+  WarePath.chop(11); // removing "/.git/index" at the end
+
+  getGitStatusInfo(WarePath);
 }
 
 
@@ -145,4 +298,17 @@ void WareSrcExplorerModel::emitDataChanged()
 // =====================================================================
 
 
-} } }  // namespaces
+void WareSrcExplorerModel::onGitDirObjectsChanged(const QString& Path)
+{
+  QString WarePath = Path;
+  WarePath.chop(13); // removing "/.git/objects" at the end
+
+  getGitStatusInfo(WarePath);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } } // namespaces

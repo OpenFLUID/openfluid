@@ -207,7 +207,7 @@ GitHelper::TreeStatusInfo GitHelper::status(const QString& Path)
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  QString Cmd = QString("\"%1\" status --porcelain -b").arg(m_GitPgm);
+  QString Cmd = QString("\"%1\" status --porcelain --ignored -b").arg(m_GitPgm);
 
   mp_Process->start(Cmd);
 

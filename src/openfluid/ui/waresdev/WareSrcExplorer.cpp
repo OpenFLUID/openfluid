@@ -98,7 +98,8 @@ void WareSrcExplorer::configure(const QString& TopDirectoryPath, bool WithContex
   if (WithContextMenu)
   {
     setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(onCustomContextMenuRequested(const QPoint&)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
+            SLOT(onCustomContextMenuRequested(const QPoint&)));
   }
 }
 
@@ -240,16 +241,6 @@ void WareSrcExplorer::scrollToCurrent()
 // =====================================================================
 
 
-void WareSrcExplorer::emitDataChanged()
-{
-  mp_Model->emitDataChanged();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void WareSrcExplorer::onNewFileAsked()
 {
   if (!currentIndex().isValid())
@@ -319,4 +310,14 @@ void WareSrcExplorer::onDeleteFileAsked()
 // =====================================================================
 
 
-} } }  // namespaces
+void WareSrcExplorer::updateExplorerModel(const QString& Path)
+{
+  mp_Model->getGitStatusInfo(Path);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } } // namespaces
