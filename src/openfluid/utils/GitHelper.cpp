@@ -45,6 +45,7 @@
 
 namespace openfluid { namespace utils {
 
+QString GitHelper::m_GitPgm = "";
 
 // =====================================================================
 // =====================================================================
@@ -52,7 +53,7 @@ namespace openfluid { namespace utils {
 
 GitHelper::GitHelper()
 {
-  m_GitPgm = ExternalProgram::getRegisteredProgram(ExternalProgram::GitProgram).getFullProgramPath();
+  checkGitProgram();
 
   m_TmpPath = QString::fromStdString(openfluid::base::Environment::getTempDir());
 }
@@ -68,6 +69,20 @@ GitHelper::~GitHelper()
 
   if (!m_AskPassFile.fileName().isEmpty())
     m_AskPassFile.remove();
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool GitHelper::checkGitProgram()
+{
+  if (m_GitPgm.isEmpty())
+    m_GitPgm = ExternalProgram::getRegisteredProgram(ExternalProgram::GitProgram).getFullProgramPath();
+
+  return (!m_GitPgm.isEmpty());
 }
 
 

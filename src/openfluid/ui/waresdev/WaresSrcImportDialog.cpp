@@ -41,6 +41,7 @@
 #include <QThread>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/utils/GitHelper.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
@@ -91,6 +92,12 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(import()));
 
   ui->PackageRadioButton->click();
+
+  if(!openfluid::utils::GitHelper::checkGitProgram())
+  {
+    ui->WareshubRadioButton->setEnabled(false);
+    ui->WareshubRadioButton->setToolTip("git program not found");
+  }
 
   check();
 }

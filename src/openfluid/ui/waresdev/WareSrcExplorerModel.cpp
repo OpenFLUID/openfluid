@@ -111,6 +111,9 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
 
 void WareSrcExplorerModel::getGitStatusInfo(const QString& WarePath)
 {
+  if (!openfluid::utils::GitHelper::checkGitProgram())
+    return;
+
   openfluid::utils::GitHelper Git;
   openfluid::utils::GitHelper::TreeStatusInfo TreeStatus = Git.status(WarePath);
 

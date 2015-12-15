@@ -399,6 +399,12 @@ int main(int argc, char *argv[])
 
   openfluid::base::Environment::init();
 
+  if (!openfluid::utils::GitHelper::checkGitProgram())
+  {
+    std::cout << "** Test not run due to failing to find git program **" << std::endl;
+    return 0;
+  }
+
   return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
 }
 

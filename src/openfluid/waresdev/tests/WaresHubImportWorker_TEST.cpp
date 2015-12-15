@@ -48,6 +48,7 @@
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/utils/GitHelper.hpp>
 
 #include "tests-config.hpp"
 
@@ -271,6 +272,12 @@ BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
 int main(int argc, char *argv[])
 {
   QCoreApplication app(argc, argv);
+
+  if (!openfluid::utils::GitHelper::checkGitProgram())
+  {
+    std::cout << "** Test not run due to failing to find git program **" << std::endl;
+    return 0;
+  }
 
   return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
 }

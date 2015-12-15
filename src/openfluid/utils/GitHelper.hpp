@@ -80,7 +80,7 @@ class OPENFLUID_API GitHelper: public QObject
 
   private:
 
-    QString m_GitPgm;
+    static QString m_GitPgm;
 
     QProcess* mp_Process = nullptr;
 
@@ -101,6 +101,8 @@ class OPENFLUID_API GitHelper: public QObject
     GitHelper();
 
     ~GitHelper();
+
+    static bool checkGitProgram();
 
     bool clone(const QString& FromUrl, const QString& ToPath, const QString& Username = "", const QString& Password =
         "", bool SslNoVerify = false);
