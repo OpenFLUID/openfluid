@@ -78,6 +78,8 @@ class F
     QString FirstAvailSimUrl;
     std::string FirstAvailSimId;
 
+    std::string CurrentOFBranchName;
+
     F()
     {
       TestPath = CONFIGTESTS_OUTPUT_DATA_DIR + "/gitclient";
@@ -86,6 +88,8 @@ class F
       DestDir = DestPath;
 
       openfluid::tools::Filesystem::removeDirectory(TestPath);
+
+      CurrentOFBranchName = openfluid::utils::GitHelper::getOpenfluidCurrentBranchName();
     }
 
     ~F()
@@ -122,13 +126,25 @@ class F
         return false;
       }
 
-      FirstAvailSimUrl = QString::fromStdString(Wares.begin()->second.GitUrl);
-      FirstAvailSimId = Wares.begin()->first;
+      for (const auto& Ware : Wares)
+      {
+        std::vector<std::string> Branches = Ware.second.GitBranches;
 
-      DestPath = QString::fromStdString(TestPath + "/" + FirstAvailSimId);
-      DestDir = DestPath;
+        if (std::find(Branches.begin(), Branches.end(), CurrentOFBranchName) != Branches.end())
+        {
+          FirstAvailSimUrl = QString::fromStdString(Ware.second.GitUrl);
+          FirstAvailSimId = Ware.first;
 
-      return true;
+          DestPath = QString::fromStdString(TestPath + "/" + FirstAvailSimId);
+          DestDir = DestPath;
+
+          return true;
+        }
+      }
+
+      std::cout << "** Test not run due to lack of ware on wareshub on current openfluid branch  ** (\"" << TestName
+                << "\")" << std::endl;
+      return false;
     }
 
     void launchGitCommand(const QString& Args)

@@ -90,6 +90,16 @@ bool GitHelper::checkGitProgram()
 // =====================================================================
 
 
+std::string GitHelper::getOpenfluidCurrentBranchName()
+{
+  return "openfluid-" + openfluid::base::Environment::getVersionMajorMinor();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void GitHelper::processStandardOutput()
 {
   mp_Process->setReadChannel(QProcess::StandardOutput);

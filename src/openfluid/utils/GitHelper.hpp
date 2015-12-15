@@ -104,6 +104,8 @@ class OPENFLUID_API GitHelper: public QObject
 
     static bool checkGitProgram();
 
+    static std::string getOpenfluidCurrentBranchName();
+
     bool clone(const QString& FromUrl, const QString& ToPath, const QString& Username = "", const QString& Password =
         "", bool SslNoVerify = false);
 

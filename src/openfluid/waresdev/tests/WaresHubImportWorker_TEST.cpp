@@ -70,6 +70,8 @@ class F
     static const QString Username;
     static const QString Password;
 
+    std::string CurrentOFBranchName;
+
     F()
     {
       TestWorkspacePath = QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR);
@@ -82,6 +84,8 @@ class F
       Mgr->switchWorkspace(TestWorkspacePath);
 
       TestWaresDevSimulatorsDir = Mgr->getWareTypePath(openfluid::ware::WareType::SIMULATOR);
+
+      CurrentOFBranchName = openfluid::utils::GitHelper::getOpenfluidCurrentBranchName();
     }
 
     ~F()
@@ -97,11 +101,21 @@ class F
       if (Wares.empty())
         return "";
 
-      QString Url = QString::fromStdString(Wares.begin()->second.GitUrl);
+      for (const auto& Ware : Wares)
+      {
+        std::vector<std::string> Branches = Ware.second.GitBranches;
 
-      FirstAvailSimId = QString::fromStdString(Wares.begin()->first);
+        if (std::find(Branches.begin(), Branches.end(), CurrentOFBranchName) != Branches.end())
+        {
+          QString Url = QString::fromStdString(Ware.second.GitUrl);
 
-      return Url;
+          FirstAvailSimId = QString::fromStdString(Ware.first);
+
+          return Url;
+        }
+      }
+
+      return "";
     }
 
     static bool checkHttps(const std::string& TestName)
