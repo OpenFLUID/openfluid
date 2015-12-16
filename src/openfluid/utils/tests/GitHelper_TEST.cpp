@@ -231,7 +231,7 @@ BOOST_FIXTURE_TEST_CASE(clone_auth_ok,F)
 
 BOOST_FIXTURE_TEST_CASE(clone_no_valid_cert_sslverify_fails,F)
 {
-  if (!checkWareshub("clone_no_valid_cert_ok"))
+  if (!checkWareshub("clone_no_valid_cert_sslverify_fails"))
     return;
 
   openfluid::utils::GitHelper Git;

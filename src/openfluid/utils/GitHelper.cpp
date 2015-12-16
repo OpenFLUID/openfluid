@@ -153,7 +153,18 @@ bool GitHelper::clone(const QString& FromUrl, const QString& ToPath, const QStri
 
   if (!Password.isEmpty())
   {
-    QString AskPassFilePath = QDir(m_TmpPath).absoluteFilePath("askpass.sh");
+    QString AskPassFileName;
+    QString AskPassContent;
+
+#if defined(OPENFLUID_OS_WINDOWS)
+    AskPassFileName = "askpass.bat";
+    AskPassContent = QString("@ echo off\necho %1\n").arg(Password);
+#else
+    AskPassFileName = "askpass.sh";
+    AskPassContent = QString("#! /bin/sh\necho '%1'\n").arg(Password);
+#endif
+
+    QString AskPassFilePath = QDir(m_TmpPath).absoluteFilePath(AskPassFileName);
 
     m_AskPassFile.setFileName(AskPassFilePath);
 
@@ -161,25 +172,20 @@ bool GitHelper::clone(const QString& FromUrl, const QString& ToPath, const QStri
     if (!TmpDir.exists() && !TmpDir.mkpath(m_TmpPath))
     {
       emit error(tr("Unable to create temporary askpass directory"));
+      qDebug("Unable to create temporary askpass directory");
       return false;
     }
 
     if (!m_AskPassFile.open(QFile::ReadWrite))
     {
       emit error(tr("Unable to create temporary askpass file"));
+      qDebug("Unable to create temporary askpass file");
       return false;
     }
 
     QTextStream out(&m_AskPassFile);
+    out << AskPassContent;
 
-    //TODO
-#if defined(OPENFLUID_OS_WINDOWS)
-    out << "@ echo off";
-#else
-    out << "#! /bin/sh\n";
-#endif
-
-    out << QString("echo '%1'\n").arg(Password);
     m_AskPassFile.close();
 
     m_AskPassFile.setPermissions(QFile::ReadOwner | QFile::ExeOwner);
