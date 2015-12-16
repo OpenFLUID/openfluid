@@ -58,6 +58,7 @@
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/utils/GitHelper.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 
@@ -395,14 +396,13 @@ void MainWindow::onPreferencesAsked()
 
 void MainWindow::onImportWareSourcesAsked()
 {
-
-  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram())
+  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram() || openfluid::utils::GitHelper::checkGitProgram())
   {
     openfluid::ui::waresdev::WaresSrcImportDialog Dialog(this);
     Dialog.exec();
   }
   else
-    QMessageBox::warning(this, tr("Import not available"), tr("CMake program is not installed."));
+    QMessageBox::warning(this, tr("Import not available"), tr("Neither CMake nor git program is installed."));
 }
 
 

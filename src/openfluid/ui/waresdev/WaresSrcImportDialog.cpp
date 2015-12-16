@@ -96,7 +96,13 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   if(!openfluid::utils::GitHelper::checkGitProgram())
   {
     ui->WareshubRadioButton->setEnabled(false);
-    ui->WareshubRadioButton->setToolTip("git program not found");
+    ui->WareshubRadioButton->setToolTip(tr("git program not found"));
+  }
+  if(!openfluid::waresdev::WaresDevPackage::checkCMakeProgram())
+  {
+    ui->PackagePathButton->setEnabled(false);
+    ui->WareshubRadioButton->setToolTip(tr("CMake program not found"));
+    ui->WareshubConnectButton->click();
   }
 
   check();
