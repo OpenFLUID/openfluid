@@ -47,7 +47,6 @@
 
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/GitHelper.hpp>
 
 #include "tests-config.hpp"
@@ -77,7 +76,7 @@ class F
       TestWorkspacePath = QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR);
       TestWorkspacePath.append("/wareshubimport");
 
-      openfluid::tools::Filesystem::removeDirectory(TestWorkspacePath.toStdString());
+      forceRemove(TestWorkspacePath);
 
       openfluid::waresdev::WareSrcManager* Mgr = openfluid::waresdev::WareSrcManager::instance();
 
@@ -90,7 +89,24 @@ class F
 
     ~F()
     {
-      openfluid::tools::Filesystem::removeDirectory(TestWorkspacePath.toStdString());
+      forceRemove(TestWorkspacePath);
+    }
+
+    void forceRemove(const QString& Path)
+    {
+      QDir Dir(Path);
+
+      for (const auto& SubFile : Dir.entryList(QDir::Files | QDir::System | QDir::Hidden))
+      {
+        QFile f(QString("%1/%2").arg(Path).arg(SubFile));
+        f.setPermissions(QFile::WriteUser);
+        f.remove();
+      }
+
+      for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::System | QDir::Hidden))
+        forceRemove(QString("%1/%2").arg(Path).arg(SubDir));
+
+      Dir.rmdir(Path);
     }
 
     QString getFirstAvailSimUrl(openfluid::waresdev::WaresHubImportWorker& W)

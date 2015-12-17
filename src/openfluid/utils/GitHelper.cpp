@@ -72,7 +72,6 @@ GitHelper::~GitHelper()
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -142,6 +141,13 @@ void GitHelper::processErrorOutputAsInfo()
 bool GitHelper::clone(const QString& FromUrl, const QString& ToPath, const QString& Username, const QString& Password,
   bool SslNoVerify)
 {
+  if(FromUrl.isEmpty() || ToPath.isEmpty())
+  {
+    emit error(tr("Empty remote url or empty destination path"));
+    qDebug("Empty remote url or empty destination path");
+    return false;
+  }
+
   QString Url = FromUrl;
   QString Options = "";
 
@@ -215,7 +221,10 @@ bool GitHelper::clone(const QString& FromUrl, const QString& ToPath, const QStri
   mp_Process = nullptr;
 
   if (!m_AskPassFile.fileName().isEmpty())
+  {
+    m_AskPassFile.setPermissions(QFile::WriteUser);
     m_AskPassFile.remove();
+  }
 
   return (ErrCode == 0);
 }

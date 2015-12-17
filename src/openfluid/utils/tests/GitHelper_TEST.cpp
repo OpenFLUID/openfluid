@@ -45,7 +45,6 @@
 #include <QString>
 #include <QDir>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/GitHelper.hpp>
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
@@ -87,14 +86,31 @@ class F
       DestPath = QString::fromStdString(TestPath + "/" + "TestGitRepository");
       DestDir = DestPath;
 
-      openfluid::tools::Filesystem::removeDirectory(TestPath);
+      forceRemove(QString::fromStdString(TestPath));
 
       CurrentOFBranchName = openfluid::utils::GitHelper::getOpenfluidCurrentBranchName();
     }
 
     ~F()
     {
-      openfluid::tools::Filesystem::removeDirectory(TestPath);
+      forceRemove(QString::fromStdString(TestPath));
+    }
+
+    void forceRemove(const QString& Path)
+    {
+      QDir Dir(Path);
+
+      for (const auto& SubFile : Dir.entryList(QDir::Files | QDir::System | QDir::Hidden))
+      {
+        QFile f(QString("%1/%2").arg(Path).arg(SubFile));
+        f.setPermissions(QFile::WriteUser);
+        f.remove();
+      }
+
+      for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::System | QDir::Hidden))
+        forceRemove(QString("%1/%2").arg(Path).arg(SubDir));
+
+      Dir.rmdir(Path);
     }
 
     bool checkWareshub(const std::string& TestName)
