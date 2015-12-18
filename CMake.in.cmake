@@ -4,10 +4,10 @@
 # Author : Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 #
 # This file is included by the main CMakeLists.txt file, and defines variables
-# to configure the build and install 
+# to configure the build and install
 #
-# The variables in this file can also be overriden through the  
-# CMake.in.local.config file 
+# The variables in this file can also be overriden through the
+# CMake.in.local.config file
 #
 
 
@@ -76,7 +76,7 @@ IF (WIN32)
 ELSE()
   SET(OPENFLUID_CMAKE_MODULES_INSTALL_PATH "${OFBUILD_LIB_INSTALL_PATH}/${OPENFLUID_RELATIVE_PATH}/cmake")
   SET(OPENFLUID_CMAKE_HELPERSMODULES_INSTALL_PATH "${OFBUILD_LIB_INSTALL_PATH}/${OPENFLUID_RELATIVE_PATH}helpers/cmake")
-ENDIF()  
+ENDIF()
 
 SET(OPENFLUID_DOC_INSTALL_PATH "${OFBUILD_SHARE_INSTALL_PATH}/doc/${OPENFLUID_RELATIVE_PATH}")
 SET(OPENFLUID_MAIN_DOC_INSTALL_PATH "${OPENFLUID_DOC_INSTALL_PATH}/main")
@@ -147,11 +147,15 @@ ENDIF()
 
 ################### compilation and build ###################
 
-IF(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC) 
+IF(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
   SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Wextra")
   SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra")
   SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Wall -Wextra")
-  SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wextra")  
+  SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wextra")
+ENDIF()
+
+IF(APPLE)
+  SET(CMAKE_FIND_FRAMEWORK LAST)
 ENDIF()
 
 SET(OPENFLUID_PLUGINS_BINARY_EXTENSION "${CMAKE_SHARED_LIBRARY_SUFFIX}")
@@ -248,7 +252,7 @@ ENDIF()
 SET(OFBUILD_TRANSLATIONS_TSDIR "${CMAKE_SOURCE_DIR}/resources/translations")
 SET(OFBUILD_TRANSLATIONS_DIRSTOSCAN "${CMAKE_SOURCE_DIR}/src/openfluid/ui"
                                     "${CMAKE_SOURCE_DIR}/src/openfluid/ui/config.hpp.in"
-                                    "${CMAKE_SOURCE_DIR}/src/openfluid/waresdev"                                      
+                                    "${CMAKE_SOURCE_DIR}/src/openfluid/waresdev"
                                     "${CMAKE_SOURCE_DIR}/src/apps/openfluid-builder"
                                     "${CMAKE_SOURCE_DIR}/src/apps/openfluid-devstudio")
 SET(OPENFLUID_TRANSLATIONS_FILEROOT openfluid)
@@ -260,7 +264,6 @@ SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR)
 # uncomment this to build simulators mixing C++ and fortran source codes (in this source tree)
 #SET(OFBUILD_TESTS_ENABLE_FORTRAN 1)
 
-
 SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTP "http://jsonplaceholder.typicode.com")
 SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTPS "https://jsonplaceholder.typicode.com")
 SET(OFBUILD_TESTS_FLUIDHUB_URL_HTTP "http://www.openfluid-project.org/resources/fluidhub-api/testing")
@@ -269,8 +272,7 @@ SET(OFBUILD_TESTS_FLUIDHUB_URL_HTTPS "https://www.openfluid-project.org/resource
 
 ################### cppcheck ###################
 
-SET(OFBUILD_CPPCHECK_EXTRA_OPTIONS "-q" 
-                           "--enable=style,information,performance,portability,missingInclude" 
+SET(OFBUILD_CPPCHECK_EXTRA_OPTIONS "-q"
+                           "--enable=style,information,performance,portability,missingInclude"
                            "--suppress=variableScope"
                            "--force")
-

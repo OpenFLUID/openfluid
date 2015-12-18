@@ -94,9 +94,9 @@ ELSEIF(UNIX)
       HINTS
         $ENV{GEOS_ROOT_DIR}
         $ENV{GEOS_HOME}
-        ${GEOS_CONFIG_EXTRA_SEARCH_PATHS}
         /usr/local
         /usr
+        ${GEOS_CONFIG_EXTRA_SEARCH_PATHS}
       PATH_SUFFIXES
         bin
     )
@@ -132,7 +132,8 @@ ELSEIF(UNIX)
         $ENV{GEOS_ROOT_DIR}
         ${GEOS_PREFIX}
         /usr
-        /usr/local/
+        /usr/local
+        ${GEOS_CONFIG_EXTRA_SEARCH_PATHS}
       PATH_SUFFIXES
         include
     )
