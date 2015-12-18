@@ -264,6 +264,9 @@ SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR)
 # uncomment this to build simulators mixing C++ and fortran source codes (in this source tree)
 #SET(OFBUILD_TESTS_ENABLE_FORTRAN 1)
 
+# set options passed to unit tests programs. ex: "--log_level=all"
+SET(OFBUILD_UNITTESTS_RUN_OPTIONS "")
+
 SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTP "http://jsonplaceholder.typicode.com")
 SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTPS "https://jsonplaceholder.typicode.com")
 SET(OFBUILD_TESTS_FLUIDHUB_URL_HTTP "http://www.openfluid-project.org/resources/fluidhub-api/testing")
