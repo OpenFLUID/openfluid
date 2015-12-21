@@ -86,6 +86,10 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void onDeleteFileAsked();
 
+    void onGitStatusAsked();
+
+    void onGitLogAsked();
+
   public:
 
     WareSrcExplorer(QWidget* Parent = nullptr);

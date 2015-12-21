@@ -141,7 +141,7 @@ void GitHelper::processErrorOutputAsInfo()
 bool GitHelper::clone(const QString& FromUrl, const QString& ToPath, const QString& Username, const QString& Password,
   bool SslNoVerify)
 {
-  if(FromUrl.isEmpty() || ToPath.isEmpty())
+  if (FromUrl.isEmpty() || ToPath.isEmpty())
   {
     emit error(tr("Empty remote url or empty destination path"));
     qDebug("Empty remote url or empty destination path");
@@ -298,6 +298,67 @@ GitHelper::TreeStatusInfo GitHelper::status(const QString& Path)
   mp_Process = nullptr;
 
   return TreeStatus;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString GitHelper::statusHtml(const QString& Path, bool WithColorCodes)
+{
+  QDir PathDir(Path);
+
+  if (!PathDir.exists(".git"))
+    return "";
+
+  mp_Process = new QProcess();
+  mp_Process->setWorkingDirectory(Path);
+
+  QString Cmd = QString("\"%1\" %2 -c encoding=UTF-8 status").arg(m_GitPgm).arg(
+      WithColorCodes ? "-c color.status=always" : "");
+
+  mp_Process->start(Cmd);
+
+  mp_Process->waitForReadyRead(-1);
+  mp_Process->waitForFinished(-1);
+
+  QString Res = QString::fromUtf8(mp_Process->readAll());
+
+  delete mp_Process;
+  mp_Process = nullptr;
+
+  return Res;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString GitHelper::logHtml(const QString& Path, bool WithColorCodes)
+{
+  QDir PathDir(Path);
+
+  if (!PathDir.exists(".git"))
+    return "";
+
+  mp_Process = new QProcess();
+  mp_Process->setWorkingDirectory(Path);
+
+  QString Cmd = QString("\"%1\" -c encoding=UTF-8 log %2").arg(m_GitPgm).arg(WithColorCodes ? "--color" : "");
+
+  mp_Process->start(Cmd);
+
+  mp_Process->waitForReadyRead(-1);
+  mp_Process->waitForFinished(-1);
+
+  QString Res = QString::fromUtf8(mp_Process->readAll());
+
+  delete mp_Process;
+  mp_Process = nullptr;
+
+  return Res;
 }
 
 

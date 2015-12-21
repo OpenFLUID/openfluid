@@ -45,6 +45,7 @@
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
 #include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
+#include <openfluid/ui/waresdev/WareGitDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -126,6 +127,19 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   Menu.addAction(tr("Open a terminal"), this, SLOT(onOpenTerminalAsked()));
   Menu.addAction(tr("Open a file explorer"), this, SLOT(onOpenExplorerAsked()));
+
+  Menu.addSeparator();
+
+  QMenu GitMenu;
+  GitMenu.setTitle("Git");
+  GitMenu.addAction("Status", this, SLOT(onGitStatusAsked()));
+  GitMenu.addAction("Log", this, SLOT(onGitLogAsked()));
+  Menu.addMenu(&GitMenu);
+
+  GitMenu.setEnabled(true);
+
+  if (currentIndex().data(Qt::DisplayRole).toString().contains("[") && openfluid::utils::GitHelper::checkGitProgram())
+    GitMenu.setEnabled(true);
 
   Menu.exec(viewport()->mapToGlobal(Point));
 }
@@ -303,6 +317,36 @@ void WareSrcExplorer::onDeleteFileAsked()
     emit fileDeleted(CurrentPath);
   else
     QMessageBox::critical(0, tr("Error"), tr("Unable to remove the file \"%1\"").arg(CurrentPath));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onGitStatusAsked()
+{
+  openfluid::utils::GitHelper Git;
+
+  openfluid::ui::waresdev::WareGitDialog Dialog;
+  Dialog.setWindowTitle("git status");
+  Dialog.setContent(Git.statusHtml(mp_Model->filePath(currentIndex()), true));
+  Dialog.exec();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onGitLogAsked()
+{
+  openfluid::utils::GitHelper Git;
+
+  openfluid::ui::waresdev::WareGitDialog Dialog;
+  Dialog.setWindowTitle("git log");
+  Dialog.setContent(Git.logHtml(mp_Model->filePath(currentIndex()), true));
+  Dialog.exec();
 }
 
 

@@ -111,6 +111,10 @@ class OPENFLUID_API GitHelper: public QObject
 
     TreeStatusInfo status(const QString& Path);
 
+    QString statusHtml(const QString& Path, bool WithColorCodes);
+
+    QString logHtml(const QString& Path, bool WithColorCodes);
+
   signals:
 
     void info(const QString& Message);
