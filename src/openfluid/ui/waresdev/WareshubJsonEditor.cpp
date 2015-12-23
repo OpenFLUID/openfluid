@@ -40,10 +40,12 @@
 #include <rapidjson/prettywriter.h>
 #include <rapidjson/stringbuffer.h>
 #include <QTextStream>
+#include <QMessageBox>
 #include <openfluid/ui/waresdev/WareshubJsonEditor.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
 #include "ui_WareshubJsonEditor.h"
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -75,7 +77,13 @@ WareshubJsonEditor::WareshubJsonEditor(const QString& FilePath, QWidget* Parent)
   connect(ui->LicenseComboBox, SIGNAL(editTextChanged(const QString &)), this, SLOT(onChanged()));
   connect(ui->DevStatusComboBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(onChanged()));
 
+  connect(ui->RemoveButton, SIGNAL(clicked()), this, SLOT(onRemoveIssueClicked()));
+
   updateContent();
+
+//  connect(ui->IssuesTable->model(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this,
+//          SLOT(onChanged()));
+  connect(ui->IssuesTable->model(), SIGNAL(rowsRemoved(const QModelIndex&, int, int)), this, SLOT(onChanged()));
 }
 
 
@@ -222,8 +230,9 @@ void WareshubJsonEditor::updateContent()
   Doc.Parse(QTextStream(&File).readAll().toStdString().c_str());
 
   if (Doc.HasParseError())
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              QString("Error while parsing json file %1").arg(m_FilePath).toStdString());
+    throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION,
+        QString("Error while parsing json file %1").arg(m_FilePath).toStdString());
 
   if (!Doc.IsObject())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -236,6 +245,8 @@ void WareshubJsonEditor::updateContent()
 
   jsonStringToComboBox("license", ui->LicenseComboBox);
   jsonStringToComboBox("status", ui->DevStatusComboBox);
+
+  populateIssuesTable();
 
   m_IsModified = false;
 }
@@ -296,6 +307,101 @@ void WareshubJsonEditor::jsonStringToComboBox(const QString& Key, QComboBox* Com
 // =====================================================================
 
 
+void WareshubJsonEditor::populateIssuesTable()
+{
+  ui->IssuesTable->clear();
+
+  QStringList Values;
+
+  rapidjson::Value::MemberIterator it = Doc.FindMember("issues");
+
+  if (it != Doc.MemberEnd())
+  {
+    rapidjson::Value& IssuesValue = it->value;
+
+    if (IssuesValue.IsObject())
+    {
+      for (rapidjson::Value::MemberIterator itr = IssuesValue.MemberBegin();
+          itr != IssuesValue.MemberEnd(); ++itr)
+      {
+        QString ID = QString::fromUtf8(itr->name.GetString());
+
+        rapidjson::Value& IssueContentValue = itr->value;
+
+        if (IssueContentValue.IsObject())
+        {
+          Issue I;
+
+          rapidjson::Value::MemberIterator itI;
+
+          itI = IssueContentValue.FindMember("title");
+          if (itI != IssueContentValue.MemberEnd())
+            I.m_Title = itI->value.GetString();
+
+          itI = IssueContentValue.FindMember("creator");
+          if (itI != IssueContentValue.MemberEnd())
+            I.m_Creator = itI->value.GetString();
+
+          itI = IssueContentValue.FindMember("date");
+          if (itI != IssueContentValue.MemberEnd())
+            I.m_Date = QDate::fromString(itI->value.GetString(), "yyyy-MM-dd");
+
+          itI = IssueContentValue.FindMember("type");
+          if (itI != IssueContentValue.MemberEnd())
+            I.m_Type = itI->value.GetString();
+
+          itI = IssueContentValue.FindMember("state");
+          if (itI != IssueContentValue.MemberEnd())
+            I.m_State = itI->value.GetString();
+
+          itI = IssueContentValue.FindMember("description");
+          if (itI != IssueContentValue.MemberEnd())
+            I.m_Description = itI->value.GetString();
+
+          itI = IssueContentValue.FindMember("urgency");
+          if (itI != IssueContentValue.MemberEnd())
+          {
+            I.m_Urgency = itI->value.GetString();
+            I.m_Urgency.replace("normal", "medium");
+          }
+
+          m_IssuesByID[ID] = I;
+        }
+
+      }
+
+    }
+  }
+
+  ui->IssuesTable->setRowCount(m_IssuesByID.size());
+  int row = 0;
+  bool Ok;
+  for (const auto& ID : m_IssuesByID.keys())
+  {
+    QTableWidgetItem* IDItem = new QTableWidgetItem("");
+    int IDInt = ID.toInt(&Ok);
+    if (Ok)
+      IDItem->setData(Qt::DisplayRole, IDInt);
+    else
+      IDItem->setData(Qt::DisplayRole, ID);
+    ui->IssuesTable->setItem(row, 0, IDItem);
+
+    ui->IssuesTable->setItem(row, 1, new QTableWidgetItem(m_IssuesByID[ID].m_Title));
+    ui->IssuesTable->setItem(row, 2, new QTableWidgetItem(m_IssuesByID[ID].m_Type));
+    ui->IssuesTable->setItem(row, 3, new QTableWidgetItem(m_IssuesByID[ID].m_State));
+
+    row++;
+  }
+
+  ui->IssuesTable->resizeColumnsToContents();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool WareshubJsonEditor::findReplace(FindReplaceDialog::FindReplaceAction /*Action*/, const QString& /*StringToFind*/,
   const QString& /*StringForReplace*/, QTextDocument::FindFlags /*Options*/, QString& /*Message*/)
 {
@@ -331,6 +437,25 @@ QWidget* WareshubJsonEditor::getWidget()
   return this;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+void WareshubJsonEditor::onRemoveIssueClicked()
+{
+  QModelIndexList selectedList = ui->IssuesTable->selectionModel()->selectedRows();
+
+  if (!selectedList.isEmpty())
+  {
+    QModelIndex Selected = selectedList.at(0);
+    if (QMessageBox::question(
+        this, tr("Remove an issue"),
+        tr("Are you sure you want to remove issue %1 ?").arg(Selected.data(Qt::DisplayRole).toString()),
+        QMessageBox::Ok | QMessageBox::Cancel)
+        == QMessageBox::Ok)
+      ui->IssuesTable->removeRow(selectedList.at(0).row());
+  }
+}
 
 // =====================================================================
 // =====================================================================

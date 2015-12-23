@@ -44,6 +44,7 @@
 #include <rapidjson/document.h>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QDate>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
 
@@ -115,11 +116,26 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
 
     QStringList m_Statuses = { "stable", "experimental", "beta" };
 
+    struct Issue
+    {
+        QString m_Title;
+        QString m_Creator;
+        QDate m_Date;
+        QString m_Type;
+        QString m_State;
+        QString m_Description;
+        QString m_Urgency;
+    };
+
+    QMap<QString, Issue> m_IssuesByID;
+
     void jsonStringArrayToLineEdit(const QString& Key, QLineEdit* LineEdit);
     void lineEditToJsonStringArray(const QString& Key, QLineEdit* LineEdit);
 
     void jsonStringToComboBox(const QString& Key, QComboBox* Combo);
     void comboBoxToJsonString(const QString& Key, QComboBox* Combo);
+
+    void populateIssuesTable();
 
   public:
 
@@ -185,6 +201,8 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
   private slots:
 
     void onChanged();
+
+    void onRemoveIssueClicked();
 
   signals :
 
