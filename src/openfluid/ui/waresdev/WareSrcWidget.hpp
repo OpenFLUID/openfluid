@@ -53,7 +53,7 @@ class WareSrcWidget;
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-class WareSrcFileEditor;
+class WareFileEditor;
 class TextEditMsgStream;
 class WareSrcToolbar;
 
@@ -71,7 +71,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     /**
      * List of opened source file editors by their absolute path
      */
-    QMap<QString, WareSrcFileEditor*> m_WareSrcFilesByPath;
+    QMap<QString, WareFileEditor*> m_WareFilesByPath;
 
     openfluid::ui::waresdev::TextEditMsgStream* mp_TextEditMsgStream;
 
@@ -85,7 +85,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
      * Deletes Editor
      * @return Editor index before it was removed
      */
-    int closeFileTab(WareSrcFileEditor* Editor);
+    int closeFileTab(WareFileEditor* Editor);
 
     void clearEditorsMessages();
 
@@ -119,7 +119,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void closeAllFileTabs();
 
-    WareSrcFileEditor* currentEditor();
+    WareFileEditor* currentEditor();
 
     QString getCurrentFilePath();
 
@@ -174,7 +174,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
   private slots:
 
-    void onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified);
+    void onEditorTxtModified(WareFileEditor* Editor, bool Modified);
 
     void onCurrentTabChanged(int Index);
 

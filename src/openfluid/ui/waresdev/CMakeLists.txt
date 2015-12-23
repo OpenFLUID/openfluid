@@ -1,7 +1,7 @@
 
 
 
-INCLUDE_DIRECTORIES(${QT_INCLUDES})
+INCLUDE_DIRECTORIES(${QT_INCLUDES} ${RapidJSON_INCLUDE_DIR})
 
 
 SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp WareSrcWidgetCollection.cpp
@@ -9,19 +9,19 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEd
                               WareSrcExplorer.cpp WareSrcExplorerModel.cpp WareExplorerDialog.cpp
                               NewSrcFileAssistant.cpp NewWareDialog.cpp FindReplaceDialog.cpp WareSrcMsgViewer.cpp
                               WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp WaresSrcIOProgressDialog.cpp
-                              WareGitDialog.cpp)
+                              WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp)
 
 SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp WareSrcWidgetCollection.hpp
                               WareSrcSyntaxHighlighter.hpp WareSrcFiletypeManager.hpp TextEditMsgStream.hpp
                               WareSrcExplorer.hpp WareSrcExplorerModel.hpp WareExplorerDialog.hpp
                               NewSrcFileAssistant.hpp NewWareDialog.hpp FindReplaceDialog.hpp WareSrcMsgViewer.hpp
                               WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp
-                              WareGitDialog.hpp)
+                              WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp)
 
 QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui EmptyPage.ui CppPage.ui CMakeConfigPage.ui
                               NewSrcFileAssistant.ui NewWareDialog.ui FindReplaceDialog.ui
                               WaresSrcExportDialog.ui WaresSrcImportDialog.ui WaresSrcIOProgressDialog.ui
-                              WareGitDialog.ui)
+                              WareGitDialog.ui WareshubJsonEditor.ui)
                                    
 
 #QT4_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)
