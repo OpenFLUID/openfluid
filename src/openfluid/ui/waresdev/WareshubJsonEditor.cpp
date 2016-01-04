@@ -311,6 +311,9 @@ void WareshubJsonEditor::populateIssuesTable()
 {
   ui->IssuesTable->clear();
 
+  ui->IssuesTable->setHorizontalHeaderLabels(QStringList( { tr("ID"), tr("Title"), tr("Type"), tr("State") }));
+  ui->IssuesTable->verticalHeader()->setVisible(false);
+
   QStringList Values;
 
   rapidjson::Value::MemberIterator it = Doc.FindMember("issues");
