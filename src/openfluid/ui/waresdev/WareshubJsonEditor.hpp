@@ -44,9 +44,9 @@
 #include <rapidjson/document.h>
 #include <QLineEdit>
 #include <QComboBox>
-#include <QDate>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
+#include <openfluid/ui/waresdev/WareshubIssueDialog.hpp>
 
 namespace Ui { class WareshubJsonEditor;
 }
@@ -116,18 +116,7 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
 
     QStringList m_Statuses = { "stable", "experimental", "beta" };
 
-    struct Issue
-    {
-        QString m_Title;
-        QString m_Creator;
-        QDate m_Date;
-        QString m_Type;
-        QString m_State;
-        QString m_Description;
-        QString m_Urgency;
-    };
-
-    QMap<QString, Issue> m_IssuesByID;
+    QMap<QString, WareshubIssueDialog::Issue> m_IssuesByID;
 
     void jsonStringArrayToLineEdit(const QString& Key, QLineEdit* LineEdit);
     void lineEditToJsonStringArray(const QString& Key, QLineEdit* LineEdit);
@@ -135,7 +124,10 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
     void jsonStringToComboBox(const QString& Key, QComboBox* Combo);
     void comboBoxToJsonString(const QString& Key, QComboBox* Combo);
 
-    void populateIssuesTable();
+    void jsonIssuesToIssuesMap();
+    void issuesMapToJsonIssues();
+
+    void updateIssuesTable();
 
   public:
 
@@ -203,6 +195,10 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
     void onChanged();
 
     void onRemoveIssueClicked();
+
+    void onEditIssueClicked();
+
+    void onAddIssueClicked();
 
   signals :
 

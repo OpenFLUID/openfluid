@@ -78,11 +78,14 @@ WareshubJsonEditor::WareshubJsonEditor(const QString& FilePath, QWidget* Parent)
   connect(ui->DevStatusComboBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(onChanged()));
 
   connect(ui->RemoveButton, SIGNAL(clicked()), this, SLOT(onRemoveIssueClicked()));
+  connect(ui->EditButton, SIGNAL(clicked()), this, SLOT(onEditIssueClicked()));
+  connect(ui->AddButton, SIGNAL(clicked()), this, SLOT(onAddIssueClicked()));
 
   updateContent();
 
-//  connect(ui->IssuesTable->model(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this,
-//          SLOT(onChanged()));
+  connect(ui->IssuesTable->model(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this,
+          SLOT(onChanged()));
+  connect(ui->IssuesTable->model(), SIGNAL(rowsInserted(const QModelIndex&, int, int)), this, SLOT(onChanged()));
   connect(ui->IssuesTable->model(), SIGNAL(rowsRemoved(const QModelIndex&, int, int)), this, SLOT(onChanged()));
 }
 
@@ -149,6 +152,8 @@ void WareshubJsonEditor::saveContentToPath(const QString& Path)
 
   comboBoxToJsonString("license", ui->LicenseComboBox);
   comboBoxToJsonString("status", ui->DevStatusComboBox);
+
+  issuesMapToJsonIssues();
 
   rapidjson::StringBuffer Buffer;
   rapidjson::PrettyWriter<rapidjson::StringBuffer> Writer(Buffer);
@@ -219,6 +224,55 @@ void WareshubJsonEditor::comboBoxToJsonString(const QString& Key, QComboBox* Com
 // =====================================================================
 
 
+void WareshubJsonEditor::issuesMapToJsonIssues()
+{
+  rapidjson::Value JsonIssuesObject(rapidjson::kObjectType);
+  rapidjson::Document::AllocatorType& Alloc = Doc.GetAllocator();
+
+  for (const auto& Issue : m_IssuesByID.values())
+  {
+    rapidjson::Value JsonIssueObject(rapidjson::kObjectType);
+
+
+    rapidjson::Value TitleValue(Issue.m_Title.toStdString().c_str(), Alloc);
+    JsonIssueObject.AddMember(rapidjson::Value("title", Alloc), TitleValue, Alloc);
+
+    rapidjson::Value CreatorValue(Issue.m_Creator.toStdString().c_str(), Alloc);
+    JsonIssueObject.AddMember(rapidjson::Value("creator", Alloc), CreatorValue, Alloc);
+
+    rapidjson::Value DateValue(Issue.m_Date.toString("yyyy-MM-dd").toStdString().c_str(), Alloc);
+    JsonIssueObject.AddMember(rapidjson::Value("date", Alloc), DateValue, Alloc);
+
+    rapidjson::Value TypeValue(Issue.m_Type.toStdString().c_str(), Alloc);
+    JsonIssueObject.AddMember(rapidjson::Value("type", Alloc), TypeValue, Alloc);
+
+    rapidjson::Value StateValue(Issue.m_State.toStdString().c_str(), Alloc);
+    JsonIssueObject.AddMember(rapidjson::Value("state", Alloc), StateValue, Alloc);
+
+    rapidjson::Value DescValue(Issue.m_Description.toStdString().c_str(), Alloc);
+    JsonIssueObject.AddMember(rapidjson::Value("description", Alloc), DescValue, Alloc);
+
+    rapidjson::Value UrgValue(Issue.m_Urgency.toStdString().c_str(), Alloc);
+    JsonIssueObject.AddMember(rapidjson::Value("urgency", Alloc), UrgValue, Alloc);
+
+
+    JsonIssuesObject.AddMember(rapidjson::Value(Issue.m_ID.toStdString().c_str(), Alloc), JsonIssueObject, Alloc);
+  }
+
+
+  rapidjson::Value::MemberIterator it = Doc.FindMember("issues");
+
+  if (it == Doc.MemberEnd())
+    Doc.AddMember(rapidjson::Value("issues", Alloc), JsonIssuesObject, Alloc);
+  else
+    it->value = JsonIssuesObject;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareshubJsonEditor::updateContent()
 {
   QFile File(m_FilePath);
@@ -246,7 +300,8 @@ void WareshubJsonEditor::updateContent()
   jsonStringToComboBox("license", ui->LicenseComboBox);
   jsonStringToComboBox("status", ui->DevStatusComboBox);
 
-  populateIssuesTable();
+  jsonIssuesToIssuesMap();
+  updateIssuesTable();
 
   m_IsModified = false;
 }
@@ -307,13 +362,8 @@ void WareshubJsonEditor::jsonStringToComboBox(const QString& Key, QComboBox* Com
 // =====================================================================
 
 
-void WareshubJsonEditor::populateIssuesTable()
+void WareshubJsonEditor::jsonIssuesToIssuesMap()
 {
-  ui->IssuesTable->clear();
-
-  ui->IssuesTable->setHorizontalHeaderLabels(QStringList( { tr("ID"), tr("Title"), tr("Type"), tr("State") }));
-  ui->IssuesTable->verticalHeader()->setVisible(false);
-
   QStringList Values;
 
   rapidjson::Value::MemberIterator it = Doc.FindMember("issues");
@@ -333,7 +383,7 @@ void WareshubJsonEditor::populateIssuesTable()
 
         if (IssueContentValue.IsObject())
         {
-          Issue I;
+          WareshubIssueDialog::Issue I;
 
           rapidjson::Value::MemberIterator itI;
 
@@ -368,6 +418,8 @@ void WareshubJsonEditor::populateIssuesTable()
             I.m_Urgency.replace("normal", "medium");
           }
 
+          I.m_ID = ID;
+
           m_IssuesByID[ID] = I;
         }
 
@@ -376,7 +428,22 @@ void WareshubJsonEditor::populateIssuesTable()
     }
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareshubJsonEditor::updateIssuesTable()
+{
+  ui->IssuesTable->clear();
+
+  ui->IssuesTable->setHorizontalHeaderLabels(QStringList( { tr("ID"), tr("Title"), tr("Type"), tr("State") }));
+  ui->IssuesTable->verticalHeader()->setVisible(false);
+
   ui->IssuesTable->setRowCount(m_IssuesByID.size());
+
   int row = 0;
   bool Ok;
   for (const auto& ID : m_IssuesByID.keys())
@@ -397,7 +464,6 @@ void WareshubJsonEditor::populateIssuesTable()
   }
 
   ui->IssuesTable->resizeColumnsToContents();
-
 }
 
 
@@ -451,14 +517,106 @@ void WareshubJsonEditor::onRemoveIssueClicked()
   if (!selectedList.isEmpty())
   {
     QModelIndex Selected = selectedList.at(0);
+    QString ID = Selected.data(Qt::DisplayRole).toString();
+
     if (QMessageBox::question(
-        this, tr("Remove an issue"),
-        tr("Are you sure you want to remove issue %1 ?").arg(Selected.data(Qt::DisplayRole).toString()),
-        QMessageBox::Ok | QMessageBox::Cancel)
+                              this,
+                              tr("Remove an issue"),
+                              tr("Are you sure you want to remove issue \"%1\" ?").arg(ID),
+                              QMessageBox::Ok | QMessageBox::Cancel)
         == QMessageBox::Ok)
-      ui->IssuesTable->removeRow(selectedList.at(0).row());
+    {
+      ui->IssuesTable->removeRow(Selected.row());
+      m_IssuesByID.remove(ID);
+    }
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareshubJsonEditor::onEditIssueClicked()
+{
+  QModelIndexList selectedList = ui->IssuesTable->selectionModel()->selectedRows();
+
+  if (!selectedList.isEmpty())
+  {
+    QModelIndex Selected = selectedList.at(0);
+    QString ID = Selected.data(Qt::DisplayRole).toString();
+
+    WareshubIssueDialog Dialog(m_IssuesByID.keys(), this, m_IssuesByID[ID]);
+
+    if (Dialog.exec() == QDialog::Accepted)
+    {
+      int Row = Selected.row();
+
+      WareshubIssueDialog::Issue I = Dialog.getIssue();
+
+      if (ID != I.m_ID)
+      {
+        QTableWidgetItem* IDItem = ui->IssuesTable->item(Row, 0);
+        bool Ok;
+        int IDInt = I.m_ID.toInt(&Ok);
+        if (Ok)
+          IDItem->setData(Qt::DisplayRole, IDInt);
+        else
+          IDItem->setData(Qt::DisplayRole, I.m_ID);
+
+        Row = IDItem->row();
+      }
+
+      ui->IssuesTable->item(Row, 1)->setData(Qt::DisplayRole, I.m_Title);
+      ui->IssuesTable->item(Row, 2)->setData(Qt::DisplayRole, I.m_Type);
+      ui->IssuesTable->item(Row, 3)->setData(Qt::DisplayRole, I.m_State);
+
+      m_IssuesByID[I.m_ID] = I;
+
+      ui->IssuesTable->selectRow(Row);
+    }
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareshubJsonEditor::onAddIssueClicked()
+{
+  WareshubIssueDialog Dialog(m_IssuesByID.keys(), this);
+
+  if (Dialog.exec() == QDialog::Accepted)
+  {
+    WareshubIssueDialog::Issue I = Dialog.getIssue();
+
+    int RowCountBefore = ui->IssuesTable->rowCount();
+
+    ui->IssuesTable->setRowCount(RowCountBefore + 1);
+
+    QTableWidgetItem* IDItem = new QTableWidgetItem("");
+    bool Ok;
+    int IDInt = I.m_ID.toInt(&Ok);
+    if (Ok)
+      IDItem->setData(Qt::DisplayRole, IDInt);
+    else
+      IDItem->setData(Qt::DisplayRole, I.m_ID);
+    ui->IssuesTable->setItem(RowCountBefore, 0, IDItem);
+
+    int NewRow = IDItem->row();
+
+    ui->IssuesTable->setItem(NewRow, 1, new QTableWidgetItem(I.m_Title));
+    ui->IssuesTable->setItem(NewRow, 2, new QTableWidgetItem(I.m_Type));
+    ui->IssuesTable->setItem(NewRow, 3, new QTableWidgetItem(I.m_State));
+
+    m_IssuesByID[I.m_ID] = I;
+
+    ui->IssuesTable->selectRow(NewRow);
+  }
+}
+
 
 // =====================================================================
 // =====================================================================
