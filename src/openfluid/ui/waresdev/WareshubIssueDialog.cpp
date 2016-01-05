@@ -37,7 +37,9 @@
  */
 
 
+#include <QPushButton>
 #include <openfluid/ui/waresdev/WareshubIssueDialog.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include "ui_WareshubIssueDialog.h"
 
@@ -59,7 +61,34 @@ WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent
   ui->UrgencyComboBox->addItems(m_Urgencies);
 
 
-  ui->IDLineEdit->setText(I.m_ID);
+  if (I.m_ID.isEmpty())
+  {
+    m_DefaultMessage = tr("New issue");
+
+    QList<int> SortedIntIDs;
+    bool Ok;
+    for (const auto& ID : IDs)
+    {
+      int IntID = ID.toInt(&Ok);
+      if (Ok)
+        SortedIntIDs << IntID;
+    }
+    if (SortedIntIDs.isEmpty())
+      ui->IDLineEdit->setText("1");
+    else
+    {
+      int Max = *std::max_element(SortedIntIDs.begin(), SortedIntIDs.end());
+      ui->IDLineEdit->setText(QString("%1").arg(Max + 1));
+    }
+  }
+  else
+  {
+    m_DefaultMessage = tr("Edit issue");
+    m_IDs.removeAll(I.m_ID);
+    ui->IDLineEdit->setText(I.m_ID);
+  }
+  ui->IDLineEdit->setValidator(new QRegExpValidator(QRegExp("^[0-9a-zA-Z_-]*$"), this));
+
   ui->TitleLineEdit->setText(I.m_Title);
   ui->CreatorLineEdit->setText(I.m_Creator);
   ui->DateDateEdit->setDate(I.m_Date);
@@ -77,6 +106,12 @@ WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent
   Index = ui->UrgencyComboBox->findText(I.m_Urgency, Qt::MatchFixedString);
   if (Index > -1)
     ui->UrgencyComboBox->setCurrentIndex(Index);
+
+  connect(ui->IDLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(onChanged()));
+  connect(ui->TitleLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(onChanged()));
+  connect(ui->TypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onChanged()));
+
+  onChanged();
 }
 
 
@@ -108,6 +143,48 @@ WareshubIssueDialog::Issue WareshubIssueDialog::getIssue()
   I.m_Urgency = ui->UrgencyComboBox->currentText();
 
   return I;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareshubIssueDialog::onChanged()
+{
+  QString ID = ui->IDLineEdit->text();
+  if (ID.isEmpty())
+    setMessage(tr("ID can't be empty"));
+  else if (m_IDs.contains(ID))
+    setMessage(tr("This ID already exists"));
+  if (ui->TitleLineEdit->text().isEmpty())
+    setMessage(tr("Title can't be empty"));
+  else if (ui->TypeComboBox->currentText().isEmpty())
+    setMessage(tr("Type can't be empty"));
+  else
+    setMessage();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareshubIssueDialog::setMessage(const QString& Msg)
+{
+  if (Msg.isEmpty())
+  {
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
+    ui->MessageLabel->setText(m_DefaultMessage);
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  }
+  else
+  {
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->MessageFrame->setStyleSheet(
+        QString("background-color: %1").arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
+    ui->MessageLabel->setText(Msg);
+  }
 }
 
 

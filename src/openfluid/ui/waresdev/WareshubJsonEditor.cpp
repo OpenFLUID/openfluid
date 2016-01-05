@@ -81,12 +81,9 @@ WareshubJsonEditor::WareshubJsonEditor(const QString& FilePath, QWidget* Parent)
   connect(ui->EditButton, SIGNAL(clicked()), this, SLOT(onEditIssueClicked()));
   connect(ui->AddButton, SIGNAL(clicked()), this, SLOT(onAddIssueClicked()));
 
-  updateContent();
+  connect(ui->IssuesTable, SIGNAL(cellDoubleClicked(int, int)), this, SLOT(onEditIssueClicked()));
 
-  connect(ui->IssuesTable->model(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this,
-          SLOT(onChanged()));
-  connect(ui->IssuesTable->model(), SIGNAL(rowsInserted(const QModelIndex&, int, int)), this, SLOT(onChanged()));
-  connect(ui->IssuesTable->model(), SIGNAL(rowsRemoved(const QModelIndex&, int, int)), this, SLOT(onChanged()));
+  updateContent();
 }
 
 
@@ -510,6 +507,7 @@ QWidget* WareshubJsonEditor::getWidget()
 // =====================================================================
 // =====================================================================
 
+
 void WareshubJsonEditor::onRemoveIssueClicked()
 {
   QModelIndexList selectedList = ui->IssuesTable->selectionModel()->selectedRows();
@@ -527,7 +525,10 @@ void WareshubJsonEditor::onRemoveIssueClicked()
         == QMessageBox::Ok)
     {
       ui->IssuesTable->removeRow(Selected.row());
+
       m_IssuesByID.remove(ID);
+
+      onChanged();
     }
   }
 }
@@ -565,6 +566,8 @@ void WareshubJsonEditor::onEditIssueClicked()
           IDItem->setData(Qt::DisplayRole, I.m_ID);
 
         Row = IDItem->row();
+
+        m_IssuesByID.remove(ID);
       }
 
       ui->IssuesTable->item(Row, 1)->setData(Qt::DisplayRole, I.m_Title);
@@ -574,6 +577,8 @@ void WareshubJsonEditor::onEditIssueClicked()
       m_IssuesByID[I.m_ID] = I;
 
       ui->IssuesTable->selectRow(Row);
+
+      onChanged();
     }
   }
 
@@ -614,6 +619,8 @@ void WareshubJsonEditor::onAddIssueClicked()
     m_IssuesByID[I.m_ID] = I;
 
     ui->IssuesTable->selectRow(NewRow);
+
+    onChanged();
   }
 }
 

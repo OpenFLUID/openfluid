@@ -79,11 +79,15 @@ class OPENFLUID_API WareshubIssueDialog: public QDialog
 
     QStringList m_IDs;
 
+    QString m_DefaultMessage;
+
     QStringList m_Types = { "", "bug", "feature", "review" };
 
     QStringList m_Statuses = { "open", "closed" };
 
     QStringList m_Urgencies = { "low", "medium", "high" };
+
+    void setMessage(const QString& Msg = "");
 
   public:
 
@@ -92,6 +96,10 @@ class OPENFLUID_API WareshubIssueDialog: public QDialog
     ~WareshubIssueDialog();
 
     Issue getIssue();
+
+  private slots:
+
+    void onChanged();
 };
 
 
