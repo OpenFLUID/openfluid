@@ -243,7 +243,7 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
 
   if (Role == Qt::DisplayRole && m_GitBranchByWarePath.contains(filePath(Index)))
     return QVariant(
-        QString("%1 [%2]").arg(QFileSystemModel::data(Index, Role).toString()).arg(
+        QString("%1  [%2]").arg(QFileSystemModel::data(Index, Role).toString()).arg(
             m_GitBranchByWarePath[filePath(Index)]));
 
   if (Role == QFileSystemModel::FileIconRole)

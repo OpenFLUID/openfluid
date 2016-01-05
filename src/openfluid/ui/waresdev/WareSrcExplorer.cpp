@@ -136,7 +136,7 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   GitMenu.addAction("Log", this, SLOT(onGitLogAsked()));
   Menu.addMenu(&GitMenu);
 
-  GitMenu.setEnabled(true);
+  GitMenu.setEnabled(false);
 
   if (currentIndex().data(Qt::DisplayRole).toString().contains("[") && openfluid::utils::GitHelper::checkGitProgram())
     GitMenu.setEnabled(true);

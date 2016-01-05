@@ -68,7 +68,7 @@ void WareGitDialog::setContent(const QString& Content)
   Html.replace("\x1b[30m", "<span style='color:black'>");
   Html.replace("\x1b[31m", "<span style='color:red'>");
   Html.replace("\x1b[32m", "<span style='color:green'>");
-  Html.replace("\x1b[33m", "<span style='color:orange'>"); // yellow is to bright
+  Html.replace("\x1b[33m", "<span style='color:orange'>"); // yellow is too bright
   Html.replace("\x1b[34m", "<span style='color:blue'>");
   Html.replace("\x1b[m", "</span>");
 
