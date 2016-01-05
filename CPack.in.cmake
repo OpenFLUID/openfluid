@@ -48,7 +48,11 @@ ENDIF()
 
 
 SET(CPACK_SOURCE_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_src")
-SET(CPACK_SOURCE_IGNORE_FILES "${CMAKE_BINARY_DIR}/*;/\\\\.svn/" "/\\\\..+$")
+SET(CPACK_SOURCE_IGNORE_FILES "/\\\\_build*" 
+                              "/\\\\.git/" "/\\\\.git*"
+                              "/\\\\.svn/" 
+                              "/\\\\.settings/" "/\\\\..*project"  # eclipse files
+                              "CMake.in.local.cmake") 
 
 INCLUDE(CPack)
 
