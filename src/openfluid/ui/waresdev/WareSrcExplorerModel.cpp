@@ -81,8 +81,44 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
 
   openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
 
+
+  // fetching path info of direct children
+  for (int Row = 0; Row < rowCount(Parent); ++Row)
+  {
+    QString ChildPath = filePath(index(Row, 0, Parent));
+
+    m_PathInfos[ChildPath] = mp_Manager->getPathInfo(ChildPath);
+  }
+
+
   // fetching git info
-  if (Info.m_isAWare)
+  if (Path == rootPath() && openfluid::utils::GitHelper::checkGitProgram())
+  {
+    // we get branch name for direct children that are tracked wares
+    // (we have to do it here because onDirectoryLoaded is not called if the ware is not expanded)
+    openfluid::utils::GitHelper Git;
+    for (const auto& ChildPathInfo : m_PathInfos)
+    {
+      if (ChildPathInfo.m_isAWare)
+      {
+        QString WarePath = ChildPathInfo.m_AbsolutePath;
+
+        openfluid::utils::GitHelper::TreeStatusInfo TreeStatus = Git.status(WarePath);
+
+        if (TreeStatus.m_IsGitTracked)
+        {
+          m_GitBranchByWarePath[WarePath] = TreeStatus.m_BranchName;
+
+          // we add the ware dir to the watcher right now, because in case of a cloned ware,
+          // the ware directory is created with a temporary branch name, so display will have to be updated
+          QString DirToWatch = QString("%1/.git/objects").arg(WarePath);
+          if (QFile(DirToWatch).exists() && !m_Watcher.directories().contains(DirToWatch))
+            m_Watcher.addPath(DirToWatch);
+        }
+      }
+    }
+  }
+  else if (Info.m_isAWare)
     getGitStatusInfo(Path);
   else
   {
@@ -92,14 +128,6 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
       if (Path.startsWith(WarePathsTracked) && Path != WarePathsTracked)
         getGitStatusInfo(Info.m_AbsolutePathOfWare);
     }
-  }
-
-  // fetching path info
-  for (int Row = 0; Row < rowCount(Parent); ++Row)
-  {
-    QString ChildPath = filePath(index(Row, 0, Parent));
-
-    m_PathInfos[ChildPath] = mp_Manager->getPathInfo(ChildPath);
   }
 
 }
@@ -150,11 +178,11 @@ void WareSrcExplorerModel::getGitStatusInfo(const QString& WarePath)
     // watching git changes
 
     QString FileToWatch = QString("%1/.git/index").arg(WarePath);
-    if (!m_Watcher.files().contains(FileToWatch))
+    if (QFile(FileToWatch).exists() && !m_Watcher.files().contains(FileToWatch))
       m_Watcher.addPath(FileToWatch);
 
     QString DirToWatch = QString("%1/.git/objects").arg(WarePath);
-    if (!m_Watcher.directories().contains(DirToWatch))
+    if (QFile(DirToWatch).exists() && !m_Watcher.directories().contains(DirToWatch))
       m_Watcher.addPath(DirToWatch);
 
 
