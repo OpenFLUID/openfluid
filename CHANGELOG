@@ -3,8 +3,12 @@
   * Introduced API client for FluidHub services
   * Introduced packages for exporting and importing wares sources codes
   * Updated UI design for better consistency
+  * Updated output of command line reporting of wares
   * Improved usage of C++11 features
   * Improved memory management to avoid potential memory leaks
+  * Improved build configuration for OSX
+  * Refactored internal management of run context
+  * Removed unused dependencies
   * Cleaned code
   * Fixed bugs
 
