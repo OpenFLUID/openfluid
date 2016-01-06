@@ -51,7 +51,7 @@
 
 namespace openfluid { namespace waresdev {
 
-QString WaresDevPackage::m_SevenZCmd = "";
+QString WaresDevPackage::m_CMakeCmd = "";
 
 
 // =====================================================================
@@ -61,7 +61,7 @@ QString WaresDevPackage::m_SevenZCmd = "";
 WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& TempSubFolderName) :
     m_PackageFilePath(PackageFilePath)
 {
-  checkSevenZProgram();
+  checkCMakeProgram();
 
   m_PackageName = QFileInfo(m_PackageFilePath).completeBaseName();
 
@@ -102,13 +102,13 @@ WaresDevPackage::~WaresDevPackage()
 // =====================================================================
 
 
-bool WaresDevPackage::checkSevenZProgram()
+bool WaresDevPackage::checkCMakeProgram()
 {
-  if (m_SevenZCmd.isEmpty())
-    m_SevenZCmd = openfluid::utils::ExternalProgram::getRegisteredProgram(
-        openfluid::utils::ExternalProgram::SevenZipProgram).getFullProgramPath();
+  if (m_CMakeCmd.isEmpty())
+    m_CMakeCmd = openfluid::utils::ExternalProgram::getRegisteredProgram(
+        openfluid::utils::ExternalProgram::CMakeProgram).getFullProgramPath();
 
-  return (!m_SevenZCmd.isEmpty());
+  return (!m_CMakeCmd.isEmpty());
 }
 
 
@@ -291,12 +291,26 @@ void WaresDevExportPackage::compress()
     }
   }
 
-  QString Command = QString("\"%1\" a \"%2\" \"%3\" \"%4\"").arg(m_SevenZCmd).arg(m_PackageFilePath).arg(
-      m_ConfFilePath).arg(RelativePathsToExport.join("\" \""));
+  // With cmake tar, the paths are stored only relatively to the current dir: a file out of the current dir will
+  // produce a path starting with "../", that cmake untar won't be able to uncompress.
+  // So we copy the config file into the current dir before the compression and remove it after that.
+  QString ConFileName = QString::fromStdString(openfluid::config::WARESDEV_PACKAGE_CONFFILE);
+  QString ConfFileInWareDirAbsPath = WaresdevDir.filePath(ConFileName);
+  if (QFile(m_ConfFilePath).copy(ConfFileInWareDirAbsPath))
+    RelativePathsToExport << ConFileName;
+  else
+    emit error(tr("Unable to write configuration file in \"%1\".\nPackage may contain errors.").arg(WaresdevPath));
+
+  QString Command = QString("\"%1\" -E chdir \"%2\" "
+                            "\"%1\" -E tar cfzv \"%3\" \"%4\"").arg(m_CMakeCmd).arg(WaresdevPath).arg(
+      m_PackageFilePath).arg(RelativePathsToExport.join("\" \""));
 
   QDir::setCurrent(WaresdevPath);
 
   createAndLauchProcess(Command);
+
+  if (!QFile(ConfFileInWareDirAbsPath).remove())
+    emit error(tr("Unable to delete configuration file \"%1\".").arg(ConfFileInWareDirAbsPath));
 }
 
 
@@ -355,8 +369,8 @@ void WaresDevImportPackage::fetchInformation()
 
 void WaresDevImportPackage::uncompress()
 {
-  QString Command = QString("\"%1\" x \"%2\" \"-o%3\" -aoa").arg(m_SevenZCmd).arg(m_PackageFilePath).arg(
-      m_PackageTempPath);
+  QString Command = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfzv \"%3\"").arg(m_CMakeCmd).arg(m_PackageTempPath)
+      .arg(m_PackageFilePath);
 
   createAndLauchProcess(Command);
 }
@@ -410,7 +424,7 @@ void WaresDevImportPackage::copyWares()
 
     if (!QDir(DestinationPath).exists())
     {
-      emit info(QString("Importing \"%1\"").arg(DestinationUpDir));
+      emit info(QString("Importing \"%1\"").arg(DestinationPath));
 
       if (!openfluid::tools::Filesystem::copyDirectory(WarePath.toStdString(), DestinationUpDir.toStdString()))
       {

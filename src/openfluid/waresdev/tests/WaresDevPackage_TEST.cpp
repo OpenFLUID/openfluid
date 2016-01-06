@@ -77,7 +77,6 @@ class F
       QString AbsoluteSubPath = MainDir.absoluteFilePath(RelativeSubPath);
 
       openfluid::tools::emptyDirectoryRecursively(AbsoluteSubPath.toStdString());
-      MainDir.rmdir(AbsoluteSubPath);
 
       return AbsoluteSubPath;
     }
@@ -164,8 +163,6 @@ class F
 
     ~F()
     {
-      QDir Temp(QDir::temp());
-
       for (const QString& DirPath : DirPathsCreated)
       {
         QDir Dir(DirPath);
@@ -223,65 +220,6 @@ class F
       }
     }
 };
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_FIXTURE_TEST_CASE(PkgExport,F)
-{
-  createExportConfiguration();
-
-  openfluid::waresdev::WaresDevExportPackage PkgExport(OutOfwdpDir.absoluteFilePath("my_package.ofwdp"),
-                                                       ToExportWareFoldersPaths,
-                                                       "the packager",
-                                                       "the description");
-
-  BOOST_CHECK_EQUAL(PkgExport.getWaresPaths().size(), 3);
-
-  PkgExport.exportToPackage();
-
-  BOOST_CHECK(TempPackageExportDir.exists());
-  BOOST_CHECK(TempPackageExportDir.exists("ofwdp.conf"));
-
-  QSettings FileConfSettings(TempPackageExportDir.filePath("ofwdp.conf"), QSettings::IniFormat);
-  FileConfSettings.beginGroup("OpenFLUID waresdev package");
-  BOOST_CHECK_EQUAL(FileConfSettings.value("packager").toString().toStdString(), "the packager");
-  BOOST_CHECK_EQUAL(FileConfSettings.value("description").toString().toStdString(), "the description");
-  FileConfSettings.endGroup();
-
-  BOOST_CHECK(OutOfwdpDir.exists("my_package.ofwdp"));
-
-  QString Cmd = openfluid::utils::ExternalProgram::getRegisteredProgram(
-      openfluid::utils::ExternalProgram::SevenZipProgram).getFullProgramPath();
-  Cmd.append(
-      QString(" x \"%1\" \"-o%2\" -aoa").arg(OutOfwdpDir.absoluteFilePath("my_package.ofwdp")).arg(OutOfwdpPath));
-  BOOST_CHECK(!QProcess::execute(Cmd));
-
-  QStringList FilesInPackage = OutOfwdpDir.entryList(QDir::NoDotAndDotDot | QDir::Files);
-  BOOST_CHECK(FilesInPackage.contains("ofwdp.conf"));
-
-  for (const QString& WareFile : ToExportWareFolders)
-  {
-    QDir WareDir(OutOfwdpDir.absoluteFilePath(WareFile));
-
-    BOOST_CHECK(WareDir.exists());
-
-    for (const QString& WareContent : (ToExportContentFolders + ToExportContentFiles))
-      BOOST_CHECK(WareDir.exists(WareContent));
-
-    for (const QString& WareContent : (NotToExportContentFolders + NotToExportContentFiles))
-      BOOST_CHECK(!WareDir.exists(WareContent));
-  }
-
-  for (const QString& WareFile : NotToExportWareFolders)
-  {
-    QDir WareDir(OutOfwdpDir.absoluteFilePath(WareFile));
-
-    BOOST_CHECK(!WareDir.exists());
-  }
-
-}
 
 
 // =====================================================================
@@ -365,6 +303,68 @@ BOOST_FIXTURE_TEST_CASE(PkgImport_copyWares,F)
 
     for (const QString& WareContent : (NotToExportContentFolders + NotToExportContentFiles))
       BOOST_CHECK(!WareDir.exists(WareContent));
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_FIXTURE_TEST_CASE(PkgExport,F)
+{
+  createExportConfiguration();
+
+  openfluid::waresdev::WaresDevExportPackage PkgExport(OutOfwdpDir.absoluteFilePath("my_package.ofwdp"),
+                                                       ToExportWareFoldersPaths,
+                                                       "the packager",
+                                                       "the description");
+
+  BOOST_CHECK_EQUAL(PkgExport.getWaresPaths().size(), 3);
+
+  PkgExport.exportToPackage();
+
+  BOOST_CHECK(TempPackageExportDir.exists());
+  BOOST_CHECK(TempPackageExportDir.exists("ofwdp.conf"));
+
+  QSettings FileConfSettings(TempPackageExportDir.filePath("ofwdp.conf"), QSettings::IniFormat);
+  FileConfSettings.beginGroup("OpenFLUID waresdev package");
+  BOOST_CHECK_EQUAL(FileConfSettings.value("packager").toString().toStdString(), "the packager");
+  BOOST_CHECK_EQUAL(FileConfSettings.value("description").toString().toStdString(), "the description");
+  FileConfSettings.endGroup();
+
+  BOOST_CHECK(OutOfwdpDir.exists("my_package.ofwdp"));
+
+  QString CMakeCmd = openfluid::utils::ExternalProgram::getRegisteredProgram(
+      openfluid::utils::ExternalProgram::CMakeProgram).getFullProgramPath();
+
+  QString Command = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"").arg(CMakeCmd).arg(OutOfwdpPath)
+        .arg(OutOfwdpDir.absoluteFilePath("my_package.ofwdp"));
+
+  BOOST_CHECK(!QProcess::execute(Command));
+
+  QStringList FilesInPackage = OutOfwdpDir.entryList(QDir::NoDotAndDotDot | QDir::Files);
+  BOOST_CHECK(FilesInPackage.contains("ofwdp.conf"));
+
+  for (const QString& WareFile : ToExportWareFolders)
+  {
+    QDir WareDir(OutOfwdpDir.absoluteFilePath(WareFile));
+
+    BOOST_CHECK(WareDir.exists());
+
+    for (const QString& WareContent : (ToExportContentFolders + ToExportContentFiles))
+      BOOST_CHECK(WareDir.exists(WareContent));
+
+    for (const QString& WareContent : (NotToExportContentFolders + NotToExportContentFiles))
+      BOOST_CHECK(!WareDir.exists(WareContent));
+  }
+
+  for (const QString& WareFile : NotToExportWareFolders)
+  {
+    QDir WareDir(OutOfwdpDir.absoluteFilePath(WareFile));
+
+    BOOST_CHECK(!WareDir.exists());
   }
 
 }

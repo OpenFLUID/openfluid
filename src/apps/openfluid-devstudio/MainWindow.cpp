@@ -398,13 +398,13 @@ void MainWindow::onPreferencesAsked()
 void MainWindow::onImportWareSourcesAsked()
 {
 
-  if (openfluid::waresdev::WaresDevPackage::checkSevenZProgram())
+  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram())
   {
     openfluid::ui::waresdev::WaresSrcImportDialog Dialog(this);
     Dialog.exec();
   }
   else
-    QMessageBox::warning(this, "Import not available", "7zip programm is not installed.");
+    QMessageBox::warning(this, tr("Import not available"), tr("CMake program is not installed."));
 }
 
 
@@ -414,13 +414,13 @@ void MainWindow::onImportWareSourcesAsked()
 
 void MainWindow::onExportWareSourcesAsked()
 {
-  if (openfluid::waresdev::WaresDevPackage::checkSevenZProgram())
+  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram())
   {
     openfluid::ui::waresdev::WaresSrcExportDialog Dialog(this);
     Dialog.exec();
   }
   else
-    QMessageBox::warning(this, "Export not available", "7zip programm is not installed.");
+    QMessageBox::warning(this, tr("Export not available"), tr("CMake program is not installed."));
 }
 
 

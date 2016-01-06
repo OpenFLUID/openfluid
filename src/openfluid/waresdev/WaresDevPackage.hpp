@@ -67,7 +67,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
 
   protected:
 
-    static QString m_SevenZCmd;
+    static QString m_CMakeCmd;
 
     QString m_TempOfwdpSubDirPath;
 
@@ -100,7 +100,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
 
     QStringList getWaresPaths();
 
-    static bool checkSevenZProgram();
+    static bool checkCMakeProgram();
 
     QString getPackagers();
 
