@@ -106,9 +106,11 @@ struct F
 
       QDir Dir(m_WorkspacePath);
 
-      foreach(QString D,m_RealDirs)Dir.mkpath(D);
+      for(const QString& D : m_RealDirs)
+        Dir.mkpath(D);
 
-      foreach(QString F,m_RealFiles)QFile(F).open(QIODevice::ReadWrite);
+      for(const QString& F : m_RealFiles)
+        QFile(F).open(QIODevice::ReadWrite);
     }
 
   };

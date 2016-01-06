@@ -31,15 +31,15 @@
 
 
 /**
- @file WareSrcMsgEditor.hpp
+ @file WareSrcMsgViewer.hpp
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_WARESRCMSGEDITOR_HPP__
-#define __OPENFLUID_UIWARESDEV_WARESRCMSGEDITOR_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCMSGVIEWER_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESRCMSGVIEWER_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -51,7 +51,7 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WareSrcMsgEditor: public QPlainTextEdit
+class OPENFLUID_API WareSrcMsgViewer: public QPlainTextEdit
 {
   Q_OBJECT
 
@@ -63,9 +63,9 @@ class OPENFLUID_API WareSrcMsgEditor: public QPlainTextEdit
 
   public:
 
-    WareSrcMsgEditor(QWidget* Parent = nullptr);
+    WareSrcMsgViewer(QWidget* Parent = nullptr);
 
-    ~WareSrcMsgEditor();
+    ~WareSrcMsgViewer();
 
     void clearMessages();
 
@@ -83,4 +83,4 @@ class OPENFLUID_API WareSrcMsgEditor: public QPlainTextEdit
 
 } } }  // namespaces
 
-#endif /* __OPENFLUID_UIWARESDEV_WARESRCMSGEDITOR_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCMSGVIEWER_HPP__ */

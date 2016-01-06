@@ -58,7 +58,7 @@ class OPENFLUID_API FindReplaceDialog: public QDialog
 
   public:
 
-    enum FindReplaceAction
+    enum class FindReplaceAction
     {
       FindOnly, ReplaceOnly, ReplaceFind, ReplaceAll
     };

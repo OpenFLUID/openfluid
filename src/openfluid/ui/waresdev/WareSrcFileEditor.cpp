@@ -158,7 +158,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
     // setItem(...QIcon()...) doesn't allow to resize icon
     QPixmap PM = QPixmap::fromImage(QImage(it->IconPath));
     CompletionModel->setData(CompletionModel->index(row, 0), PM.scaled(QSize(15, 15), Qt::KeepAspectRatio),
-                                Qt::DecorationRole);
+                             Qt::DecorationRole);
     CompletionModel->setItem(row, 1, new QStandardItem(ContentForDetail));
     CompletionModel->setItem(row, 2, new QStandardItem(Content));
 
@@ -255,7 +255,6 @@ void WareSrcFileEditor::updateSettings()
 
   // Indent
 
-  // TODO set in the init list
   m_SpaceCharWidth = fontMetrics().width(' ');
 
   m_IndentString = QString(" ").repeated(PrefMgr->getIndentSpaceNb());
@@ -715,18 +714,18 @@ void WareSrcFileEditor::insertNewLine()
 
 
 bool WareSrcFileEditor::findReplace(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
-                                    const QString& StringForReplace, QTextDocument::FindFlags Options, QString& Message)
+  const QString& StringForReplace, QTextDocument::FindFlags Options, QString& Message)
 {
   switch (Action)
   {
-    case FindReplaceDialog::FindOnly:
+    case FindReplaceDialog::FindReplaceAction::FindOnly:
       if (findString(StringToFind, Options))
       {
         Message = "";
         return true;
       }
       break;
-    case FindReplaceDialog::ReplaceOnly:
+    case FindReplaceDialog::FindReplaceAction::ReplaceOnly:
       if (replaceString(StringToFind, StringForReplace,
                         Options & QTextDocument::FindCaseSensitively ? Qt::CaseSensitive : Qt::CaseInsensitive))
       {
@@ -734,7 +733,7 @@ bool WareSrcFileEditor::findReplace(FindReplaceDialog::FindReplaceAction Action,
         return false;
       }
       break;
-    case FindReplaceDialog::ReplaceFind:
+    case FindReplaceDialog::FindReplaceAction::ReplaceFind:
       if (replaceString(StringToFind, StringForReplace,
                         Options & QTextDocument::FindCaseSensitively ? Qt::CaseSensitive : Qt::CaseInsensitive))
       {
@@ -742,8 +741,8 @@ bool WareSrcFileEditor::findReplace(FindReplaceDialog::FindReplaceAction Action,
         return findString(StringToFind, Options);
       }
       break;
-    case FindReplaceDialog::ReplaceAll:
-    {
+    case FindReplaceDialog::FindReplaceAction::ReplaceAll:
+      {
       QTextCursor Cursor = textCursor();
       Cursor.movePosition((Options & QTextDocument::FindBackward) ? QTextCursor::End : QTextCursor::Start);
       setTextCursor(Cursor);
@@ -752,7 +751,8 @@ bool WareSrcFileEditor::findReplace(FindReplaceDialog::FindReplaceAction Action,
 
       if (findString(StringToFind, Options))
       {
-        while (findReplace(FindReplaceDialog::ReplaceFind, StringToFind, StringForReplace, Options, Message))
+        while (findReplace(FindReplaceDialog::FindReplaceAction::ReplaceFind, StringToFind, StringForReplace, Options,
+                           Message))
           ReplaceCount++;
       }
 
@@ -794,7 +794,7 @@ bool WareSrcFileEditor::findString(const QString& StringToFind, QTextDocument::F
 
 
 bool WareSrcFileEditor::replaceString(const QString& StringToFind, const QString& StringForReplace,
-                                      Qt::CaseSensitivity Cs)
+  Qt::CaseSensitivity Cs)
 {
   QTextCursor Cursor = textCursor();
 
@@ -949,4 +949,4 @@ void WareSrcFileEditor::goToLine()
 // =====================================================================
 
 
-} } }  // namespaces
+} } } // namespaces

@@ -1227,7 +1227,7 @@ PreferencesManager::SyntaxHighlightingRules_t PreferencesManager::getSyntaxHighl
   mp_ConfFile->beginGroup("openfluid.waresdev.texteditor/syntax_highlighting");
 
   QStringList StyleNames = mp_ConfFile->childGroups();
-  foreach(QString StyleName,StyleNames)
+  for(const QString& StyleName : StyleNames)
   {
     mp_ConfFile->beginGroup(StyleName);
     Rules.insert(StyleName, SyntaxHighlightingRule_t(mp_ConfFile->value("color","").toString(),

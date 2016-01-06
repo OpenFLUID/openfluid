@@ -60,12 +60,12 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
   public:
 
-    enum ConfigMode
+    enum class ConfigMode
     {
       CONFIG_DEBUG, CONFIG_RELEASE
     };
 
-    enum BuildMode
+    enum class BuildMode
     {
       BUILD_WITHINSTALL, BUILD_NOINSTALL
     };

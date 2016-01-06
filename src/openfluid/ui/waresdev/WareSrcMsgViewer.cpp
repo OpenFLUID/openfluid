@@ -31,13 +31,13 @@
 
 
 /**
- @file WareSrcMsgEditor.cpp
+ @file WareSrcMsgViewer.cpp
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/ui/waresdev/WareSrcMsgEditor.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgViewer.hpp>
 
 #include <QTextBlock>
 
@@ -49,13 +49,17 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcMsgEditor::WareSrcMsgEditor(QWidget* Parent) :
+WareSrcMsgViewer::WareSrcMsgViewer(QWidget* Parent) :
     QPlainTextEdit(Parent)
 {
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_COMMAND].setForeground(QColor("blue"));
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_STANDARD].setForeground(QColor("black"));
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_WARNING].setForeground(QColor("orange"));
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_ERROR].setForeground(QColor("red"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND].setForeground(
+      QColor("blue"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD].setForeground(
+      QColor("black"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING].setForeground(
+      QColor("orange"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR].setForeground(
+      QColor("red"));
 }
 
 
@@ -63,7 +67,7 @@ WareSrcMsgEditor::WareSrcMsgEditor(QWidget* Parent) :
 // =====================================================================
 
 
-WareSrcMsgEditor::~WareSrcMsgEditor()
+WareSrcMsgViewer::~WareSrcMsgViewer()
 {
 
 }
@@ -73,7 +77,7 @@ WareSrcMsgEditor::~WareSrcMsgEditor()
 // =====================================================================
 
 
-void WareSrcMsgEditor::clearMessages()
+void WareSrcMsgViewer::clearMessages()
 {
   clear();
 
@@ -87,7 +91,7 @@ void WareSrcMsgEditor::clearMessages()
 // =====================================================================
 
 
-void WareSrcMsgEditor::writeMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
+void WareSrcMsgViewer::writeMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
 {
   QTextCursor Cursor = textCursor();
 
@@ -106,7 +110,7 @@ void WareSrcMsgEditor::writeMessage(openfluid::waresdev::WareSrcMsgParser::WareS
 // =====================================================================
 
 
-void WareSrcMsgEditor::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
+void WareSrcMsgViewer::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
 {
   QMap<int, openfluid::waresdev::WareSrcMsgParser::WareSrcMsg>::iterator it = m_MessagesByBlockNumber.find(
       textCursor().blockNumber());
@@ -120,4 +124,4 @@ void WareSrcMsgEditor::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
 // =====================================================================
 
 
-} } }  // namespaces
+} } } // namespaces

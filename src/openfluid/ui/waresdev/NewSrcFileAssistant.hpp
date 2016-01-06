@@ -142,7 +142,7 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
   private:
 
-    enum
+    enum class PageType
     {
       INTRO_PAGE = 0, EMPTY_PAGE = 1, CMAKECONFIG_PAGE = 2, CPP_PAGE = 3, HPP_PAGE = 4, CPP_UI_PAGE = 5, HPP_UI_PAGE = 6
     };

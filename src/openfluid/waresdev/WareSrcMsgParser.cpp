@@ -59,8 +59,9 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLi
     Msg.m_Path = m_GccMsgParseRx.cap(1);
     Msg.m_LineNb = m_GccMsgParseRx.cap(2).toInt();
     Msg.m_ColNb = m_GccMsgParseRx.cap(3).toInt();
-    Msg.m_Type = (m_GccMsgParseRx.cap(4) == "warning" || m_GccMsgParseRx.cap(4) == "note") ? WareSrcMsg::MSG_WARNING :
-                                                                                             WareSrcMsg::MSG_ERROR;
+    Msg.m_Type =
+        (m_GccMsgParseRx.cap(4) == "warning" ||
+         m_GccMsgParseRx.cap(4) == "note") ? WareSrcMsg::MessageType::MSG_WARNING : WareSrcMsg::MessageType::MSG_ERROR;
     Msg.m_Content = m_GccMsgParseRx.cap(5);
   }
 
@@ -97,7 +98,7 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& Message
   {
     Msg.m_Path = m_AbsoluteDir.absoluteFilePath(m_CMakeMsgParseRx.cap(1));
     Msg.m_LineNb = m_CMakeMsgParseRx.cap(2).toInt();
-    Msg.m_Type = WareSrcMsg::MSG_ERROR;
+    Msg.m_Type = WareSrcMsg::MessageType::MSG_ERROR;
     Msg.m_Content = m_CMakeMsgParseRx.cap(4);
   }
 

@@ -115,12 +115,12 @@ void CppPage::initialize(bool IsHpp, bool IsUi, openfluid::ware::WareType Type)
     ClassName = "ParamsUiWidget";
     SourceFilename = "ParamsUiWidget";
 
-    if (IsHpp)  // UiHpp
+    if (IsHpp) // UiHpp
     {
       m_DefaultMsg = tr("Create the parameterization UI header file (.hpp)");
       SourceFilename_label = tr("Widget header file name (.hpp)");
     }
-    else  // UiCpp
+    else // UiCpp
     {
       m_DefaultMsg = tr("Create the parameterization UI source file (.cpp)");
       SourceFilename_label = tr("Widget source file name (.cpp)");
@@ -146,12 +146,12 @@ void CppPage::initialize(bool IsHpp, bool IsUi, openfluid::ware::WareType Type)
         break;
     }
 
-    if (IsHpp)  // MainHpp
+    if (IsHpp) // MainHpp
     {
       m_DefaultMsg = tr("Create the main C++ header file (.hpp)");
       SourceFilename_label = tr("Header file name (.hpp)");
     }
-    else  // MainCpp
+    else // MainCpp
     {
       m_DefaultMsg = tr("Create the main C++ source file (.cpp)");
       SourceFilename_label = tr("Source file name (.cpp)");
@@ -307,12 +307,12 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
 
   ui->buttonGroup->setId(ui->Wareshub_radioButton, -1);
   ui->buttonGroup->setId(ui->CMakeLists_radioButton, -1);
-  ui->buttonGroup->setId(ui->Empty_radioButton, EMPTY_PAGE);
-  ui->buttonGroup->setId(ui->CMakeConfig_radioButton, CMAKECONFIG_PAGE);
-  ui->buttonGroup->setId(ui->Cpp_radioButton, CPP_PAGE);
-  ui->buttonGroup->setId(ui->Hpp_radioButton, HPP_PAGE);
-  ui->buttonGroup->setId(ui->CppUi_radioButton, CPP_UI_PAGE);
-  ui->buttonGroup->setId(ui->HppUi_radioButton, HPP_UI_PAGE);
+  ui->buttonGroup->setId(ui->Empty_radioButton, static_cast<int>(PageType::EMPTY_PAGE));
+  ui->buttonGroup->setId(ui->CMakeConfig_radioButton, static_cast<int>(PageType::CMAKECONFIG_PAGE));
+  ui->buttonGroup->setId(ui->Cpp_radioButton, static_cast<int>(PageType::CPP_PAGE));
+  ui->buttonGroup->setId(ui->Hpp_radioButton, static_cast<int>(PageType::HPP_PAGE));
+  ui->buttonGroup->setId(ui->CppUi_radioButton, static_cast<int>(PageType::CPP_UI_PAGE));
+  ui->buttonGroup->setId(ui->HppUi_radioButton, static_cast<int>(PageType::HPP_UI_PAGE));
 
   QString MainCpp = mref_Container.getMainCppPath();
   QString UiParamCpp = mref_Container.getUiParamCppPath();
@@ -325,9 +325,9 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   ui->CppUi_radioButton->setEnabled(UiParamCpp.isEmpty());
   ui->HppUi_radioButton->setEnabled(!QFile::exists(openfluid::waresdev::WareSrcFactory::getHppFilename(UiParamCpp)));
 
-  foreach(QRadioButton* Bt,findChildren<QRadioButton*>())
+  for (QRadioButton* Bt : findChildren<QRadioButton*>())
   {
-    if(!Bt->isEnabled())
+    if (!Bt->isEnabled())
       Bt->setToolTip(tr("This file already exists"));
   }
 
@@ -345,8 +345,8 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   }
 
 // existing pages : IntroPage (index 0), EmptyPage (index 1)
-  addPage(new CMakeConfigPage(Type, this));  // index 2
-  addPage(new CppPage(QDir(mref_Container.getAbsolutePath()), this));  // index 3
+  addPage(new CMakeConfigPage(Type, this)); // index 2
+  addPage(new CppPage(QDir(mref_Container.getAbsolutePath()), this)); // index 3
 
   mp_Factory = new openfluid::waresdev::WareSrcFactory(Type);
   mp_Factory->setWareId(Container.getName());
@@ -375,11 +375,11 @@ int NewSrcFileAssistant::nextId() const
 {
   int CheckedID = ui->buttonGroup->checkedId();
 
-  if (currentId() != INTRO_PAGE || CheckedID < 0)
+  if (currentId() != static_cast<int>(PageType::INTRO_PAGE) || CheckedID < 0)
     return -1;
 
-  if (CheckedID >= CPP_PAGE)
-    return CPP_PAGE;
+  if (CheckedID >= static_cast<int>(PageType::CPP_PAGE))
+    return static_cast<int>(PageType::CPP_PAGE);
 
   return CheckedID;
 }
@@ -391,14 +391,17 @@ int NewSrcFileAssistant::nextId() const
 
 void NewSrcFileAssistant::initializePage(int Id)
 {
-  if (Id == CPP_PAGE)
+  if (Id == static_cast<int>(PageType::CPP_PAGE))
   {
     int CheckedId = ui->buttonGroup->checkedId();
 
-    bool IsHpp = (CheckedId == HPP_PAGE || CheckedId == HPP_UI_PAGE);
-    bool IsUi = (CheckedId == CPP_UI_PAGE || CheckedId == HPP_UI_PAGE);
+    bool IsHpp = (CheckedId == static_cast<int>(PageType::HPP_PAGE)
+                  || CheckedId == static_cast<int>(PageType::HPP_UI_PAGE));
+    bool IsUi = (CheckedId == static_cast<int>(PageType::CPP_UI_PAGE)
+                 || CheckedId == static_cast<int>(PageType::HPP_UI_PAGE));
 
-    qobject_cast<CppPage*>(page(CPP_PAGE))->initialize(IsHpp, IsUi, mref_Container.getType());
+    qobject_cast<CppPage*>(page(static_cast<int>(PageType::CPP_PAGE)))->initialize(IsHpp, IsUi,
+                                                                                   mref_Container.getType());
   }
 }
 
@@ -443,14 +446,14 @@ void NewSrcFileAssistant::accept()
 
   switch (currentId())
   {
-    case INTRO_PAGE:
+    case static_cast<int>(PageType::INTRO_PAGE):
       if (ui->Wareshub_radioButton->isChecked())
         Ok = mp_Factory->createJsonFile(NewFilePath, ErrMsg);
       else if (ui->CMakeLists_radioButton->isChecked())
         Ok = mp_Factory->createCMakeListsFile(NewFilePath, ErrMsg);
       break;
-    case EMPTY_PAGE:
-    {
+    case static_cast<int>(PageType::EMPTY_PAGE):
+      {
       NewFilePath = m_NewFilePath;
 
       Ok = QDir().mkpath(QFileInfo(NewFilePath).absolutePath());
@@ -464,16 +467,16 @@ void NewSrcFileAssistant::accept()
       }
       break;
     }
-    case CPP_PAGE:
-    {
+    case static_cast<int>(PageType::CPP_PAGE):
+      {
       openfluid::waresdev::WareSrcFactory::Replacements R;
 
       bool IsBuilderExt = (mref_Container.getType() == openfluid::ware::WareType::BUILDEREXT);
 
       switch (ui->buttonGroup->checkedId())
       {
-        case CPP_PAGE:
-        {
+        case static_cast<int>(PageType::CPP_PAGE):
+          {
           R.ClassName = field("Classname").toString();
           R.RootCppFilename = field("SourceFilename").toString();
           if (IsBuilderExt)
@@ -487,8 +490,8 @@ void NewSrcFileAssistant::accept()
           Ok = mp_Factory->createCppFile(R, NewFilePath, ErrMsg);
           break;
         }
-        case HPP_PAGE:
-        {
+        case static_cast<int>(PageType::HPP_PAGE):
+          {
           R.ClassName = field("Classname").toString();
           R.RootHppFilename = field("SourceFilename").toString();
           if (IsBuilderExt)
@@ -500,14 +503,14 @@ void NewSrcFileAssistant::accept()
           Ok = mp_Factory->createHppFile(R, NewFilePath, ErrMsg);
           break;
         }
-        case CPP_UI_PAGE:
+        case static_cast<int>(PageType::CPP_UI_PAGE):
           R.ParamsUiClassname = field("Classname").toString();
           R.ParamsUiRootCppFilename = field("SourceFilename").toString();
           R.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.ParamsUiRootCppFilename);
 
           Ok = mp_Factory->createParamUiCppFile(R, NewFilePath, ErrMsg);
           break;
-        case HPP_UI_PAGE:
+        case static_cast<int>(PageType::HPP_UI_PAGE):
           R.ParamsUiClassname = field("Classname").toString();
           R.ParamsUiRootHppFilename = field("SourceFilename").toString();
           R.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.ParamsUiRootHppFilename);
@@ -520,8 +523,8 @@ void NewSrcFileAssistant::accept()
       }
       break;
     }
-    case CMAKECONFIG_PAGE:
-    {
+    case static_cast<int>(PageType::CMAKECONFIG_PAGE):
+      {
       openfluid::waresdev::WareSrcFactory::Replacements R;
       R.RootCppFilename = field("RootFilename").toString();
       R.LinkUID = QUuid::createUuid().toString();
@@ -560,7 +563,7 @@ QString NewSrcFileAssistant::getNewFilePath()
 
 
 void NewSrcFileAssistant::setStatus(const QString DefaultMsg, const QString WarningMsg, QLabel* MsgLabel,
-                                    QFrame* MsgFrame)
+  QFrame* MsgFrame)
 {
   bool Ok = WarningMsg.isEmpty();
 
@@ -576,4 +579,4 @@ void NewSrcFileAssistant::setStatus(const QString DefaultMsg, const QString Warn
 // =====================================================================
 
 
-} } }  // namespaces
+} } } // namespaces

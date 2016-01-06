@@ -46,7 +46,7 @@
 #include <openfluid/dllexport.hpp>
 
 #include <QPlainTextEdit>
-#include <openfluid/ui/waresdev/WareSrcMsgEditor.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgViewer.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -56,11 +56,11 @@ class OPENFLUID_API TextEditMsgStream: public openfluid::waresdev::WareSrcMsgStr
 {
   private:
 
-    WareSrcMsgEditor* mp_Edit;
+    WareSrcMsgViewer* mp_Edit;
 
   public:
 
-    TextEditMsgStream(WareSrcMsgEditor* Edit);
+    TextEditMsgStream(WareSrcMsgViewer* Edit);
 
     void clear();
 

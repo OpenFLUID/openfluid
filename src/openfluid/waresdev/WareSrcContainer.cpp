@@ -60,7 +60,7 @@ namespace openfluid { namespace waresdev {
 
 
 WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware::WareType Type,
-                                   const QString& WareName) :
+  const QString& WareName) :
     QObject(), m_AbsolutePath(AbsolutePath), m_Type(Type), m_Name(WareName), m_AbsoluteCMakeConfigPath(""),
         m_AbsoluteMainCppPath(""), m_AbsoluteUiParamCppPath(""), m_AbsoluteCMakeListsPath(""), m_AbsoluteJsonPath(""),
         m_CMakeProgramPath(""), mp_Stream(new openfluid::waresdev::OStreamMsgStream()), mp_Process(new QProcess()),
@@ -70,8 +70,8 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware:
 
   m_OFVersion = QString::fromStdString(openfluid::base::Environment::getVersionMajorMinor());
 
-  setConfigMode(CONFIG_RELEASE);
-  setBuildMode(BUILD_WITHINSTALL);
+  setConfigMode(ConfigMode::CONFIG_RELEASE);
+  setBuildMode(BuildMode::BUILD_WITHINSTALL);
 
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutput()));
@@ -325,10 +325,10 @@ void WareSrcContainer::setConfigMode(ConfigMode Mode)
   QString ConfigTag;
   switch (m_ConfigMode)
   {
-    case CONFIG_RELEASE:
+    case ConfigMode::CONFIG_RELEASE:
       ConfigTag = "-release";
       break;
-    case CONFIG_DEBUG:
+    case ConfigMode::CONFIG_DEBUG:
       ConfigTag = "-debug";
       break;
     default:
@@ -384,7 +384,8 @@ void WareSrcContainer::configure()
   else if (!QDir().mkpath(m_BuildDirPath))
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to create build directory");
 
-  QString Options = QString(" -DCMAKE_BUILD_TYPE=%1").arg(m_ConfigMode == CONFIG_RELEASE ? "Release" : "Debug");
+  QString Options = QString(" -DCMAKE_BUILD_TYPE=%1").arg(
+      m_ConfigMode == ConfigMode::CONFIG_RELEASE ? "Release" : "Debug");
 
 
   // Use OPENFLUID_INSTALL_PREFIX env. var. if defined
@@ -484,7 +485,7 @@ void WareSrcContainer::build()
   QString Command = QString("\"%1\" -E chdir \"%2\" \"%1\" --build . %3")
 		                .arg(m_CMakeProgramPath)
 		                .arg(m_BuildDirPath)
-		                .arg(m_BuildMode == BUILD_WITHINSTALL ? "--target install" : "");
+		                .arg(m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "--target install" : "");
 
   runCommand(Command, RunEnv);
 }
@@ -502,12 +503,12 @@ void WareSrcContainer::processStandardOutput()
   {
     QString MsgLine = QString::fromUtf8(mp_Process->readLine());
 
-    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(MsgLine,
-                                                                   WareSrcMsgParser::WareSrcMsg::MSG_STANDARD);
+    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(
+        MsgLine, WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD);
 
     mp_Stream->write(Message);
 
-    if (Message.m_Type != WareSrcMsgParser::WareSrcMsg::MSG_STANDARD)
+    if (Message.m_Type != WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD)
       m_Messages.append(Message);
   }
 
@@ -526,8 +527,8 @@ void WareSrcContainer::processErrorOutput()
   {
     QString MsgLine = QString::fromUtf8(mp_Process->readLine());
 
-    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(MsgLine,
-                                                                   WareSrcMsgParser::WareSrcMsg::MSG_WARNING);
+    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(
+        MsgLine, WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING);
 
     mp_Stream->write(Message);
 
@@ -544,14 +545,14 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
 {
   if (!ExitCode)
   {
-    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg("\nCommand ended\n\n",
-                                                                        WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(
+        "\nCommand ended\n\n", WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
     mp_Stream->write(Message);
   }
   else
   {
-    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg("\nCommand ended with error\n\n",
-                                                                        WareSrcMsgParser::WareSrcMsg::MSG_ERROR);
+    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(
+        "\nCommand ended with error\n\n", WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR);
     mp_Stream->write(Message);
   }
 
@@ -571,12 +572,12 @@ void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironm
   if (openfluid::base::PreferencesManager::instance()->isWaresdevShowCommandEnv("PATH"))
   {
     WareSrcMsgParser::WareSrcMsg PATHMessage = WareSrcMsgParser::WareSrcMsg(
-        QString("PATH=%1\n").arg(Env.value("PATH", "")), WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+        QString("PATH=%1\n").arg(Env.value("PATH", "")), WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
     mp_Stream->write(PATHMessage);
   }
 
   WareSrcMsgParser::WareSrcMsg CommandMessage = WareSrcMsgParser::WareSrcMsg(
-      QString("%1\n").arg(Command), WareSrcMsgParser::WareSrcMsg::MSG_COMMAND);
+      QString("%1\n").arg(Command), WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
   mp_Stream->write(CommandMessage);
 
   mp_Process->setProcessEnvironment(Env);

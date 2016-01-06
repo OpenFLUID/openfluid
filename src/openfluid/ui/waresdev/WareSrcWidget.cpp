@@ -259,9 +259,8 @@ int WareSrcWidget::closeFileTab(WareSrcFileEditor* Editor)
 
 void WareSrcWidget::saveAllFileTabs()
 {
-  foreach(WareSrcFileEditor* Editor,m_WareSrcFilesByPath){
-  Editor->saveContent();
-}
+  for(WareSrcFileEditor* Editor : m_WareSrcFilesByPath.values())
+    Editor->saveContent();
 }
 
 
@@ -271,9 +270,8 @@ void WareSrcWidget::saveAllFileTabs()
 
 void WareSrcWidget::closeAllFileTabs()
 {
-  foreach(WareSrcFileEditor* Editor,m_WareSrcFilesByPath){
-  closeFileTab(Editor);
-}
+  for(WareSrcFileEditor* Editor : m_WareSrcFilesByPath.values())
+    closeFileTab(Editor);
 }
 
 
@@ -336,10 +334,11 @@ bool WareSrcWidget::eventFilter(QObject* Obj, QEvent* Event)
 
 void WareSrcWidget::openDefaultFiles()
 {
-  foreach(QString F,m_Container.getDefaultFilesPaths()){
-  QString FileName = QFileInfo(F).fileName();
-  addNewFileTab(-1,F, FileName, QDir::toNativeSeparators(FileName));
-}
+  for(const QString& F : m_Container.getDefaultFilesPaths())
+  {
+    QString FileName = QFileInfo(F).fileName();
+    addNewFileTab(-1,F, FileName, QDir::toNativeSeparators(FileName));
+  }
 }
 
 
@@ -374,7 +373,7 @@ openfluid::waresdev::WareSrcContainer& WareSrcWidget::wareSrcContainer()
 
 void WareSrcWidget::setReleaseMode()
 {
-  m_Container.setConfigMode(openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE);
+  m_Container.setConfigMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE);
 }
 
 
@@ -385,7 +384,7 @@ void WareSrcWidget::setReleaseMode()
 void WareSrcWidget::setDebugMode()
 
 {
-  m_Container.setConfigMode(openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG);
+  m_Container.setConfigMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG);
 }
 
 
@@ -396,7 +395,7 @@ void WareSrcWidget::setDebugMode()
 void WareSrcWidget::setBuildWithInstallMode()
 
 {
-  m_Container.setBuildMode(openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL);
+  m_Container.setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL);
 }
 
 
@@ -407,7 +406,7 @@ void WareSrcWidget::setBuildWithInstallMode()
 void WareSrcWidget::setBuildNoInstallMode()
 
 {
-  m_Container.setBuildMode(openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL);
+  m_Container.setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL);
 }
 
 
@@ -467,10 +466,11 @@ void WareSrcWidget::onEditorTxtModified(WareSrcFileEditor* Editor, bool Modified
 
 bool WareSrcWidget::isWareModified()
 {
-  foreach(WareSrcFileEditor* Editor,m_WareSrcFilesByPath.values()){
-  if(Editor->document()->isModified())
-  return true;
-}
+  for(WareSrcFileEditor* Editor : m_WareSrcFilesByPath.values())
+  {
+    if(Editor->document()->isModified())
+      return true;
+  }
 
 return false;
 }

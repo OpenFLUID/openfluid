@@ -91,7 +91,7 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
   m_WareTypePathByWareType[openfluid::ware::WareType::BUILDEREXT] = WaresdevDir.filePath(
       QString::fromStdString(openfluid::config::BUILDEREXTS_PATH));
 
-  foreach(QString Path,m_WareTypePathByWareType)
+  for(const QString& Path : m_WareTypePathByWareType)
   {
     if (!QDir(Path).mkpath(Path))
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -137,7 +137,7 @@ QString WareSrcManager::getWarePath(const QString& WareID, openfluid::ware::Ware
 
   QDir Dir(getWareTypePath(Type));
 
-  // TODO add check of other workspaces than current
+  // TODO later, add check of other workspaces than current
   if (Dir.exists(WareID))
     return Dir.filePath(WareID);
 

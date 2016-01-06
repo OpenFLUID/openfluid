@@ -134,7 +134,7 @@ void FindReplaceDialog::onTextChanged(const QString& Text)
 
 void FindReplaceDialog::onFindClicked()
 {
-  emit findReplaceRequested(FindOnly, ui->Find_lineEdit->text(), "", getFindOptions());
+  emit findReplaceRequested(FindReplaceAction::FindOnly, ui->Find_lineEdit->text(), "", getFindOptions());
 }
 
 
@@ -144,7 +144,8 @@ void FindReplaceDialog::onFindClicked()
 
 void FindReplaceDialog::onReplaceClicked()
 {
-  emit findReplaceRequested(ReplaceOnly, ui->Find_lineEdit->text(), ui->Replace_lineEdit->text(), getFindOptions());
+  emit findReplaceRequested(FindReplaceAction::ReplaceOnly, ui->Find_lineEdit->text(), ui->Replace_lineEdit->text(),
+                            getFindOptions());
 }
 
 // =====================================================================
@@ -153,7 +154,8 @@ void FindReplaceDialog::onReplaceClicked()
 
 void FindReplaceDialog::onReplaceFindClicked()
 {
-  emit findReplaceRequested(ReplaceFind, ui->Find_lineEdit->text(), ui->Replace_lineEdit->text(), getFindOptions());
+  emit findReplaceRequested(FindReplaceAction::ReplaceFind, ui->Find_lineEdit->text(), ui->Replace_lineEdit->text(),
+                            getFindOptions());
 }
 
 
@@ -163,7 +165,8 @@ void FindReplaceDialog::onReplaceFindClicked()
 
 void FindReplaceDialog::onReplaceAllClicked()
 {
-  emit findReplaceRequested(ReplaceAll, ui->Find_lineEdit->text(), ui->Replace_lineEdit->text(), getFindOptions());
+  emit findReplaceRequested(FindReplaceAction::ReplaceAll, ui->Find_lineEdit->text(), ui->Replace_lineEdit->text(),
+                            getFindOptions());
 }
 
 
@@ -192,4 +195,4 @@ QTextDocument::FindFlags FindReplaceDialog::getFindOptions()
 // =====================================================================
 
 
-} } }  // namespaces
+} } } // namespaces

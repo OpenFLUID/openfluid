@@ -210,7 +210,8 @@ void WareSrcToolbar::createActions()
   m_Actions["APIDoc"] = new QAction(tr("API documentation"), this);
   m_Actions["APIDoc"]->setShortcuts(QKeySequence::HelpContents);
 
-  foreach(QAction* Action,m_Actions.values())Action->setIconVisibleInMenu(true);
+  for(QAction* Action : m_Actions.values())
+    Action->setIconVisibleInMenu(true);
 }
 
 

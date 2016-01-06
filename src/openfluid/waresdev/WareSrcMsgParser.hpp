@@ -62,7 +62,7 @@ class OPENFLUID_API WareSrcMsgParser
     {
       public:
 
-        enum MessageType
+        enum class MessageType
         {
           MSG_COMMAND, MSG_STANDARD, MSG_WARNING, MSG_ERROR,
         };
@@ -74,7 +74,7 @@ class OPENFLUID_API WareSrcMsgParser
         int m_ColNb = -1;
         QString m_Content;
 
-        WareSrcMsg(const QString& MessageLine, MessageType MsgType = MSG_STANDARD) :
+        WareSrcMsg(const QString& MessageLine, MessageType MsgType = MessageType::MSG_STANDARD) :
             m_Type(MsgType)
         {
           m_OriginalMsgLine = MessageLine.toUtf8();

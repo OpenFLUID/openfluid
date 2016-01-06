@@ -46,7 +46,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-TextEditMsgStream::TextEditMsgStream(WareSrcMsgEditor* Edit) :
+TextEditMsgStream::TextEditMsgStream(WareSrcMsgViewer* Edit) :
     mp_Edit(Edit)
 {
 

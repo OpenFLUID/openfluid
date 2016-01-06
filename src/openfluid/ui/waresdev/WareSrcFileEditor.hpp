@@ -91,7 +91,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
         QColor getColor() const
         {
-          if (m_MajorMarkerType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_ERROR)
+          if (m_MajorMarkerType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR)
             return Red;
           return Orange;
         }
@@ -119,7 +119,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
         void update(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content)
         {
-          if (MsgType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MSG_ERROR)
+          if (MsgType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR)
             m_MajorMarkerType = MsgType;
 
           m_ContentList.append(Content.trimmed());

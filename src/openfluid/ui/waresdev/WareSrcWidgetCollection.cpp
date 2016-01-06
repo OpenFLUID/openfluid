@@ -67,8 +67,8 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone) :
     mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(openfluid::waresdev::WareSrcManager::instance()),
-    m_DefaultConfigMode(openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE),
-    m_DefaultBuildMode(openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL), mp_FindReplaceDialog(0)
+    m_DefaultConfigMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE),
+    m_DefaultBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL), mp_FindReplaceDialog(0)
 {
   connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseWareTabRequested(int)));
   connect(mp_TabWidget, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
@@ -321,9 +321,10 @@ WareSrcWidget* WareSrcWidgetCollection::currentWareWidget()
 
 void WareSrcWidgetCollection::setReleaseMode()
 {
-  m_DefaultConfigMode = openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE;
+  m_DefaultConfigMode = openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE;
 
-  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)Ware->setReleaseMode();
+  for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+    Ware->setReleaseMode();
 }
 
 
@@ -333,9 +334,10 @@ void WareSrcWidgetCollection::setReleaseMode()
 
 void WareSrcWidgetCollection::setDebugMode()
 {
-  m_DefaultConfigMode = openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG;
+  m_DefaultConfigMode = openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG;
 
-  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)Ware->setDebugMode();
+  for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+    Ware->setDebugMode();
 }
 
 
@@ -345,9 +347,10 @@ void WareSrcWidgetCollection::setDebugMode()
 
 void WareSrcWidgetCollection::setBuildWithInstallMode()
 {
-  m_DefaultBuildMode = openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL;
+  m_DefaultBuildMode = openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL;
 
-  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)Ware->setBuildWithInstallMode();
+  for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+    Ware->setBuildWithInstallMode();
 }
 
 
@@ -357,9 +360,10 @@ void WareSrcWidgetCollection::setBuildWithInstallMode()
 
 void WareSrcWidgetCollection::setBuildNoInstallMode()
 {
-  m_DefaultBuildMode = openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL;
+  m_DefaultBuildMode = openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL;
 
-  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)Ware->setBuildNoInstallMode();
+  for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+    Ware->setBuildNoInstallMode();
 }
 
 
@@ -423,12 +427,13 @@ void WareSrcWidgetCollection::onWareTxtModified(WareSrcWidget* Widget, bool Modi
 
 bool WareSrcWidgetCollection::isModified()
 {
-  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath){
-  if(Ware->isWareModified())
-  return true;
-}
+  for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+  {
+    if(Ware->isWareModified())
+      return true;
+  }
 
-return false;
+  return false;
 }
 
 
@@ -532,21 +537,20 @@ bool WareSrcWidgetCollection::closeAllWidgets()
   switch (Choice)
   {
     case QMessageBox::SaveAll:
-      foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath){
-      Ware->saveAllFileTabs();
-    }
+      for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+        Ware->saveAllFileTabs();
     case QMessageBox::Discard:
-    foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)
-    {
-      Ware->closeAllFileTabs();
-      closeWareTab(Ware);
-    }
-    return true;
-    break;
+      for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+      {
+        Ware->closeAllFileTabs();
+        closeWareTab(Ware);
+      }
+      return true;
+      break;
     case QMessageBox::Cancel:
     default:
-    return false;
-    break;
+      return false;
+      break;
   }
 }
 
@@ -567,7 +571,7 @@ QStringList WareSrcWidgetCollection::getOpenWarePaths()
 
 bool WareSrcWidgetCollection::isDebugMode()
 {
-  return m_DefaultConfigMode == openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG;
+  return m_DefaultConfigMode == openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG;
 }
 
 
@@ -577,7 +581,7 @@ bool WareSrcWidgetCollection::isDebugMode()
 
 bool WareSrcWidgetCollection::isBuildNoInstallMode()
 {
-  return m_DefaultBuildMode == openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL;
+  return m_DefaultBuildMode == openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL;
 }
 
 
