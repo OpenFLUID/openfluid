@@ -544,13 +544,14 @@ QString WareSrcWidget::saveAs(const QString& TopDirectory)
 void WareSrcWidget::newFile()
 {
   NewSrcFileAssistant Assistant(m_Container, this);
-  Assistant.exec();
-
-  QString NewFilePath = Assistant.getNewFilePath();
-  if (!NewFilePath.isEmpty())
+  if(Assistant.exec() == QDialog::Accepted)
   {
-    m_Container.update();
-    openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(NewFilePath));
+    QString NewFilePath = Assistant.getNewFilePath();
+    if (!NewFilePath.isEmpty())
+    {
+      m_Container.update();
+      openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(NewFilePath));
+    }
   }
 }
 
