@@ -227,15 +227,15 @@
           <pattern value='\"[^\"]*\"' />
           <pattern value="\'[^\']*\'" />
         </rule>
-        
+
+        <rule name="comment-multiline" style="comment">
+          <pattern start="/\*" end="\*/" />
+        </rule>
+
         <rule name="comment-singleline" style="comment">
           <pattern value="//.*$" />
         </rule>
-
-        <rule name="comment-multiline" style="comment">
-          <pattern start="(^|[^/])/{1}\*" end="\*/" />
-        </rule>
-
+        
       </highlighting>
       
     </language>
