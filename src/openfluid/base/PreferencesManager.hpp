@@ -75,13 +75,13 @@ class OPENFLUID_API PreferencesManager
 
     void setDefaultValues();
 
-    void setExtraPaths(const QString& Key, const QStringList& Paths);
+    void setBuilderExtraPaths(const QString& Key, const QStringList& Paths);
 
-    void addExtraPath(const QString& Key, const QString& Path);
+    void addBuilderExtraPath(const QString& Key, const QString& Path);
 
-    void removeExtraPath(const QString& Key, const QString& Path);
+    void removeBuilderExtraPath(const QString& Key, const QString& Path);
 
-    QStringList getExtraPaths(const QString& Key);
+    QStringList getBuilderExtraPaths(const QString& Key);
 
     static QString guessLang();
 
@@ -131,67 +131,67 @@ class OPENFLUID_API PreferencesManager
 
     static bool isAvailableLang(const QString& Lang);
 
-    void setRecentMax(int RecentMax);
+    void setBuilderRecentMax(int RecentMax);
 
-    int getRecentMax();
+    int getBuilderRecentMax();
 
-    bool addRecentProject(const QString& ProjectName, const QString& ProjectPath = "");
+    bool addBuilderRecentProject(const QString& ProjectName, const QString& ProjectPath = "");
 
-    RecentProjectsList_t getRecentProjects();
+    RecentProjectsList_t getBuilderRecentProjects();
 
-    void clearRecentProjects();
+    void clearBuilderRecentProjects();
 
-    void adaptRecentProjects();
-
-
-    void setWorkspacesPaths(const QStringList& Paths);
-
-    QStringList getWorkspacesPaths();
-
-    QString getWorkspacePath();
-
-    QString getProjectsPath();
+    void adaptBuilderRecentProjects();
 
 
-    void setExtraSimulatorsPaths(const QStringList& Paths);
+    void setBuilderWorkspacesPaths(const QStringList& Paths);
 
-    void addExtraSimulatorsPath(const QString& Path);
+    QStringList getBuilderWorkspacesPaths();
 
-    void removeExtraSimulatorsPath(const QString& Path);
+    QString getBuilderWorkspacePath();
 
-    QStringList getExtraSimulatorsPaths();
-
-
-    void setExtraExtensionsPaths(const QStringList& Paths);
-
-    void addExtraExtensionsPath(const QString& Path);
-
-    void removeExtraExtensionsPath(const QString& Path);
-
-    QStringList getExtraExtensionsPaths();
+    QString getBuilderProjectsPath();
 
 
-    void setExtraObserversPaths(const QStringList& Paths);
+    void setBuilderExtraSimulatorsPaths(const QStringList& Paths);
 
-    void addExtraObserversPath(const QString& Path);
+    void addBuilderExtraSimulatorsPath(const QString& Path);
 
-    void removeExtraObserversPath(const QString& Path);
+    void removeBuilderExtraSimulatorsPath(const QString& Path);
 
-    QStringList getExtraObserversPaths();
-
-
-    void setDeltaT(openfluid::core::Duration_t DeltaT);
-
-    openfluid::core::Duration_t getDeltaT();
+    QStringList getBuilderExtraSimulatorsPaths();
 
 
-    void setBegin(const QString& Begin);
+    void setBuilderExtraExtensionsPaths(const QStringList& Paths);
 
-    QString getBegin();
+    void addBuilderExtraExtensionsPath(const QString& Path);
 
-    void setEnd(const QString& End);
+    void removeBuilderExtraExtensionsPath(const QString& Path);
 
-    QString getEnd();
+    QStringList getBuilderExtraExtensionsPaths();
+
+
+    void setBuilderExtraObserversPaths(const QStringList& Paths);
+
+    void addBuilderExtraObserversPath(const QString& Path);
+
+    void removeBuilderExtraObserversPath(const QString& Path);
+
+    QStringList getBuilderExtraObserversPaths();
+
+
+    void setBuilderDeltaT(openfluid::core::Duration_t DeltaT);
+
+    openfluid::core::Duration_t getBuilderDeltaT();
+
+
+    void setBuilderBegin(const QString& Begin);
+
+    QString getBuilderBegin();
+
+    void setBuilderEnd(const QString& End);
+
+    QString getBuilderEnd();
 
 
     bool addMarketplace(const QString& PlaceName, const QString& PlaceUrl);
@@ -201,85 +201,85 @@ class OPENFLUID_API PreferencesManager
     MarketPlaces_t getMarketplaces();
 
 
-    bool isExtensionValueExist(const QString& PluginName, const QString& Key);
+    bool isBuilderExtensionValueExist(const QString& PluginName, const QString& Key);
 
-    QString getExtensionValue(const QString& PluginName, const QString& Key);
+    QString getBuilderExtensionValue(const QString& PluginName, const QString& Key);
 
-    void setExtensionValue(const QString& PluginName, const QString& Key, const QString& Value);
-
-
-    Qt::DockWidgetArea getDockPosition();
-
-    void setDockPosition(Qt::DockWidgetArea Position);
-
-    Qt::ToolBarArea getToolBarPosition();
-
-    void setToolBarPosition(Qt::ToolBarArea Position);
+    void setBuilderExtensionValue(const QString& PluginName, const QString& Key, const QString& Value);
 
 
-    bool isItemRemovalConfirm();
+    Qt::DockWidgetArea getBuilderDockPosition();
 
-    void setItemRemovalConfirm(bool Confirm);
+    void setBuilderDockPosition(Qt::DockWidgetArea Position);
 
-    bool isParamRemovalConfirm();
+    Qt::ToolBarArea getBuilderToolBarPosition();
 
-    void setParamRemovalConfirm(bool Confirm);
-
-    bool isWaresWatchersActive();
-
-    void setWaresWatchersActive(bool Active);
-
-    bool isAutomaticSaveBeforeRun();
-
-    void setAutomaticSaveBeforeRun(bool AutoSave);
-
-    bool isSpatialUnitsRemovalConfirm();
-
-    void setSpatialUnitsRemovalConfirm(bool Confirm);
-
-    bool isSpatialConnsRemovalConfirm();
-
-    void setSpatialConnsRemovalConfirm(bool Confirm);
-
-    bool isSpatialAttrsRemovalConfirm();
-
-    void setSpatialAttrsRemovalConfirm(bool Confirm);
+    void setBuilderToolBarPosition(Qt::ToolBarArea Position);
 
 
-    bool isAutomaticSaveBeforeBuild();
+    bool isBuilderItemRemovalConfirm();
 
-    void setAutomaticSaveBeforeBuild(bool AutoSave);
+    void setBuilderItemRemovalConfirm(bool Confirm);
+
+    bool isBuilderParamRemovalConfirm();
+
+    void setBuilderParamRemovalConfirm(bool Confirm);
+
+    bool isBuilderWaresWatchersActive();
+
+    void setBuilderWaresWatchersActive(bool Active);
+
+    bool isBuilderAutomaticSaveBeforeRun();
+
+    void setBuilderAutomaticSaveBeforeRun(bool AutoSave);
+
+    bool isBuilderSpatialUnitsRemovalConfirm();
+
+    void setBuilderSpatialUnitsRemovalConfirm(bool Confirm);
+
+    bool isBuilderSpatialConnsRemovalConfirm();
+
+    void setBuilderSpatialConnsRemovalConfirm(bool Confirm);
+
+    bool isBuilderSpatialAttrsRemovalConfirm();
+
+    void setBuilderSpatialAttrsRemovalConfirm(bool Confirm);
 
 
-    void setTextEditorDefaults(bool ForceReset);
+    bool isWaresdevAutomaticSaveBeforeBuild();
 
-    bool isSyntaxHighlightingEnabled();
+    void setWaresdevAutomaticSaveBeforeBuild(bool AutoSave);
 
-    void setSyntaxHighlightingEnabled(bool Enabled);
 
-    SyntaxHighlightingRules_t getSyntaxHighlightingRules();
+    void setWaresdevTextEditorDefaults(bool ForceReset);
 
-    void setSyntaxHighlightingRules(const SyntaxHighlightingRules_t& Rules);
+    bool isWaresdevSyntaxHighlightingEnabled();
 
-    bool isCurrentlineHighlightingEnabled();
+    void setWaresdevSyntaxHighlightingEnabled(bool Enabled);
 
-    void setCurrentlineHighlightingEnabled(bool Enabled);
+    SyntaxHighlightingRules_t getWaresdevSyntaxHighlightingRules();
 
-    QString getCurrentlineColor();
+    void setWaresdevSyntaxHighlightingRules(const SyntaxHighlightingRules_t& Rules);
 
-    void setCurrentlineColor(const QString& Color);
+    bool isWaresdevCurrentlineHighlightingEnabled();
 
-    QString getFontName();
+    void setWaresdevCurrentlineHighlightingEnabled(bool Enabled);
 
-    void setFontName(const QString& FontName);
+    QString getWaresdevCurrentlineColor();
 
-    bool isLineWrappingEnabled();
+    void setWaresdevCurrentlineColor(const QString& Color);
 
-    void setLineWrappingEnabled(bool Enabled);
+    QString getWaresdevFontName();
 
-    int getIndentSpaceNb();
+    void setWaresdevFontName(const QString& FontName);
 
-    void setIndentSpaceNb(int SpaceNumber);
+    bool isWaresdevLineWrappingEnabled();
+
+    void setWaresdevLineWrappingEnabled(bool Enabled);
+
+    int getWaresdevIndentSpaceNb();
+
+    void setWaresdevIndentSpaceNb(int SpaceNumber);
 
     QString getWaresdevConfigEnv(const QString& Name);
 

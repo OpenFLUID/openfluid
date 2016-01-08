@@ -84,7 +84,7 @@ void AppActions::updateRecentProjectsActions()
 {
   openfluid::base::PreferencesManager::RecentProjectsList_t RPList;
 
-  RPList = openfluid::base::PreferencesManager::instance()->getRecentProjects();
+  RPList = openfluid::base::PreferencesManager::instance()->getBuilderRecentProjects();
 
   int RFCount = qMin(int(RPList.size()),openfluid::base::PreferencesManager::RecentProjectsLimit);
 
@@ -495,7 +495,7 @@ void AppActions::createToolbar(MainWindow& MainWin)
                                               openfluid::ui::config::TOOLBARBUTTON_BORDERCOLOR));
   }
 
-  MainWin.addToolBar(openfluid::base::PreferencesManager::instance()->getToolBarPosition(),
+  MainWin.addToolBar(openfluid::base::PreferencesManager::instance()->getBuilderToolBarPosition(),
                      mp_MainToolbar);
 }
 

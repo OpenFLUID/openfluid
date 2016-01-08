@@ -58,7 +58,7 @@ WareSrcManager::WareSrcManager() :
 {
   openfluid::base::Environment::init();
 
-  switchWorkspace(openfluid::base::PreferencesManager::instance()->getWorkspacePath());
+  switchWorkspace(openfluid::base::PreferencesManager::instance()->getBuilderWorkspacePath());
 }
 
 

@@ -58,7 +58,7 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
   ui->setupUi(this);
 
   ui->WorkdirLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
-                                                         ->getProjectsPath()));
+                                                         ->getBuilderProjectsPath()));
 
   ui->NameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 

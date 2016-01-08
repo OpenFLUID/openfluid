@@ -86,7 +86,7 @@ PreferencesManager::PreferencesManager():
     mp_ConfFile->sync();
   }
 
-  setTextEditorDefaults(false);
+  setWaresdevTextEditorDefaults(false);
 }
 
 
@@ -106,8 +106,8 @@ PreferencesManager::~PreferencesManager()
 
 void PreferencesManager::setDefaultValues()
 {
-  setRecentMax(5);
-  setDeltaT(300);
+  setBuilderRecentMax(5);
+  setBuilderDeltaT(300);
 }
 
 
@@ -220,7 +220,7 @@ QString PreferencesManager::guessLang()
 // =====================================================================
 
 
-void PreferencesManager::setRecentMax(int RecentMax)
+void PreferencesManager::setBuilderRecentMax(int RecentMax)
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   if (RecentMax > RecentProjectsLimit)
@@ -229,14 +229,14 @@ void PreferencesManager::setRecentMax(int RecentMax)
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
 
-  adaptRecentProjects();
+  adaptBuilderRecentProjects();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-int PreferencesManager::getRecentMax()
+int PreferencesManager::getBuilderRecentMax()
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
 
@@ -253,7 +253,7 @@ int PreferencesManager::getRecentMax()
 // =====================================================================
 
 
-bool PreferencesManager::addRecentProject(const QString& ProjectName,
+bool PreferencesManager::addBuilderRecentProject(const QString& ProjectName,
                                           const QString& ProjectPath)
 {
   if (ProjectPath.indexOf("=") >= 0)
@@ -267,7 +267,7 @@ bool PreferencesManager::addRecentProject(const QString& ProjectName,
   mp_ConfFile->endGroup();
 
   QString NewRecentPair = ProjectName+"|"+ProjectPath;
-  int RecentMax = getRecentMax();
+  int RecentMax = getBuilderRecentMax();
 
   Recents.removeAll(NewRecentPair); // remove similar existing projects/paths
   Recents.prepend(NewRecentPair); // add the new project/path at the beginning
@@ -286,7 +286,7 @@ bool PreferencesManager::addRecentProject(const QString& ProjectName,
 // =====================================================================
 
 
-void PreferencesManager::clearRecentProjects()
+void PreferencesManager::clearBuilderRecentProjects()
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   mp_ConfFile->remove("list");
@@ -299,7 +299,7 @@ void PreferencesManager::clearRecentProjects()
 // =====================================================================
 
 
-void PreferencesManager::adaptRecentProjects()
+void PreferencesManager::adaptBuilderRecentProjects()
 {
   QStringList Recents;
 
@@ -308,7 +308,7 @@ void PreferencesManager::adaptRecentProjects()
     Recents = mp_ConfFile->value("list").toStringList();
   mp_ConfFile->endGroup();
 
-  int RecentMax = getRecentMax();
+  int RecentMax = getBuilderRecentMax();
 
   while (Recents.size() > RecentMax) Recents.removeLast();
 
@@ -323,7 +323,7 @@ void PreferencesManager::adaptRecentProjects()
 // =====================================================================
 
 
-PreferencesManager::RecentProjectsList_t PreferencesManager::getRecentProjects()
+PreferencesManager::RecentProjectsList_t PreferencesManager::getBuilderRecentProjects()
 {
   QStringList Recents;
 
@@ -354,7 +354,7 @@ PreferencesManager::RecentProjectsList_t PreferencesManager::getRecentProjects()
 // =====================================================================
 
 
-void PreferencesManager::setWorkspacesPaths(const QStringList& Paths)
+void PreferencesManager::setBuilderWorkspacesPaths(const QStringList& Paths)
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
   mp_ConfFile->setValue("workspace",Paths);
@@ -367,7 +367,7 @@ void PreferencesManager::setWorkspacesPaths(const QStringList& Paths)
 // =====================================================================
 
 
-QStringList PreferencesManager::getWorkspacesPaths()
+QStringList PreferencesManager::getBuilderWorkspacesPaths()
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
   QStringList PathsList = mp_ConfFile->value("workspace").toStringList();
@@ -387,9 +387,9 @@ QStringList PreferencesManager::getWorkspacesPaths()
 // =====================================================================
 
 
-QString PreferencesManager::getWorkspacePath()
+QString PreferencesManager::getBuilderWorkspacePath()
 {
-  QStringList Paths = getWorkspacesPaths();
+  QStringList Paths = getBuilderWorkspacesPaths();
 
   if (!Paths.isEmpty())
     return Paths[0];
@@ -402,9 +402,9 @@ QString PreferencesManager::getWorkspacePath()
 // =====================================================================
 
 
-QString PreferencesManager::getProjectsPath()
+QString PreferencesManager::getBuilderProjectsPath()
 {
-  return getWorkspacePath()+"/"+QString::fromStdString(openfluid::config::PROJECTS_PATH);
+  return getBuilderWorkspacePath()+"/"+QString::fromStdString(openfluid::config::PROJECTS_PATH);
 }
 
 
@@ -412,7 +412,7 @@ QString PreferencesManager::getProjectsPath()
 // =====================================================================
 
 
-void PreferencesManager::setExtraPaths(const QString& Key, const QStringList& Paths)
+void PreferencesManager::setBuilderExtraPaths(const QString& Key, const QStringList& Paths)
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
   if (Paths.isEmpty())
@@ -429,7 +429,7 @@ void PreferencesManager::setExtraPaths(const QString& Key, const QStringList& Pa
 // =====================================================================
 
 
-void PreferencesManager::addExtraPath(const QString& Key, const QString& Path)
+void PreferencesManager::addBuilderExtraPath(const QString& Key, const QString& Path)
 {
   if (Path.indexOf("=") >= 0)
     return;
@@ -452,7 +452,7 @@ void PreferencesManager::addExtraPath(const QString& Key, const QString& Path)
 // =====================================================================
 
 
-void PreferencesManager::removeExtraPath(const QString& Key, const QString& Path)
+void PreferencesManager::removeBuilderExtraPath(const QString& Key, const QString& Path)
 {
   if (Path.indexOf("=") >= 0)
     return;
@@ -477,7 +477,7 @@ void PreferencesManager::removeExtraPath(const QString& Key, const QString& Path
 // =====================================================================
 
 
-QStringList PreferencesManager::getExtraPaths(const QString& Key)
+QStringList PreferencesManager::getBuilderExtraPaths(const QString& Key)
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
   QStringList Paths = mp_ConfFile->value(Key).toStringList();
@@ -492,46 +492,36 @@ QStringList PreferencesManager::getExtraPaths(const QString& Key)
 
 
 
-void PreferencesManager::setExtraSimulatorsPaths(const QStringList& Paths)
+void PreferencesManager::setBuilderExtraSimulatorsPaths(const QStringList& Paths)
 {
-  setExtraPaths("extrasimpaths",Paths);
+  setBuilderExtraPaths("extrasimpaths",Paths);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void PreferencesManager::addExtraSimulatorsPath(const QString& Path)
+void PreferencesManager::addBuilderExtraSimulatorsPath(const QString& Path)
 {
-  addExtraPath("extrasimpaths",Path);
+  addBuilderExtraPath("extrasimpaths",Path);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void PreferencesManager::removeExtraSimulatorsPath(const QString& Path)
+void PreferencesManager::removeBuilderExtraSimulatorsPath(const QString& Path)
 {
-  removeExtraPath("extrasimpaths",Path);
+  removeBuilderExtraPath("extrasimpaths",Path);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-QStringList PreferencesManager::getExtraSimulatorsPaths()
+QStringList PreferencesManager::getBuilderExtraSimulatorsPaths()
 {
-  return getExtraPaths("extrasimpaths");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesManager::setExtraExtensionsPaths(const QStringList& Paths)
-{
-  setExtraPaths("extraextpaths",Paths);
+  return getBuilderExtraPaths("extrasimpaths");
 }
 
 
@@ -539,9 +529,9 @@ void PreferencesManager::setExtraExtensionsPaths(const QStringList& Paths)
 // =====================================================================
 
 
-void PreferencesManager::addExtraExtensionsPath(const QString& Path)
+void PreferencesManager::setBuilderExtraExtensionsPaths(const QStringList& Paths)
 {
-  addExtraPath("extraextpaths",Path);
+  setBuilderExtraPaths("extraextpaths",Paths);
 }
 
 
@@ -549,27 +539,9 @@ void PreferencesManager::addExtraExtensionsPath(const QString& Path)
 // =====================================================================
 
 
-void PreferencesManager::removeExtraExtensionsPath(const QString& Path)
+void PreferencesManager::addBuilderExtraExtensionsPath(const QString& Path)
 {
-  removeExtraPath("extraextpaths",Path);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-QStringList PreferencesManager::getExtraExtensionsPaths()
-{
-  return getExtraPaths("extraextpaths");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-void PreferencesManager::setExtraObserversPaths(const QStringList& Paths)
-{
-  setExtraPaths("extraobspaths",Paths);
+  addBuilderExtraPath("extraextpaths",Path);
 }
 
 
@@ -577,34 +549,67 @@ void PreferencesManager::setExtraObserversPaths(const QStringList& Paths)
 // =====================================================================
 
 
-void PreferencesManager::addExtraObserversPath(const QString& Path)
+void PreferencesManager::removeBuilderExtraExtensionsPath(const QString& Path)
 {
-  addExtraPath("extraobspaths",Path);
+  removeBuilderExtraPath("extraextpaths",Path);
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void PreferencesManager::removeExtraObserversPath(const QString& Path)
+QStringList PreferencesManager::getBuilderExtraExtensionsPaths()
 {
-  removeExtraPath("extraobspaths",Path);
+  return getBuilderExtraPaths("extraextpaths");
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-QStringList PreferencesManager::getExtraObserversPaths()
+void PreferencesManager::setBuilderExtraObserversPaths(const QStringList& Paths)
 {
-  return getExtraPaths("extraobspaths");
+  setBuilderExtraPaths("extraobspaths",Paths);
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void PreferencesManager::setDeltaT(openfluid::core::Duration_t DeltaT)
+void PreferencesManager::addBuilderExtraObserversPath(const QString& Path)
+{
+  addBuilderExtraPath("extraobspaths",Path);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::removeBuilderExtraObserversPath(const QString& Path)
+{
+  removeBuilderExtraPath("extraobspaths",Path);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList PreferencesManager::getBuilderExtraObserversPaths()
+{
+  return getBuilderExtraPaths("extraobspaths");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setBuilderDeltaT(openfluid::core::Duration_t DeltaT)
 {
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
   mp_ConfFile->setValue("deltat",DeltaT);
@@ -617,7 +622,7 @@ void PreferencesManager::setDeltaT(openfluid::core::Duration_t DeltaT)
 // =====================================================================
 
 
-openfluid::core::Duration_t PreferencesManager::getDeltaT()
+openfluid::core::Duration_t PreferencesManager::getBuilderDeltaT()
 {
   openfluid::core::Duration_t DeltaT;
 
@@ -635,7 +640,7 @@ openfluid::core::Duration_t PreferencesManager::getDeltaT()
 // =====================================================================
 
 
-void PreferencesManager::setBegin(const QString& Begin)
+void PreferencesManager::setBuilderBegin(const QString& Begin)
 {
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
   mp_ConfFile->setValue("begin",Begin);
@@ -648,7 +653,7 @@ void PreferencesManager::setBegin(const QString& Begin)
 // =====================================================================
 
 
-QString PreferencesManager::getBegin()
+QString PreferencesManager::getBuilderBegin()
 {
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
   QString DateStr = mp_ConfFile->value("begin").toString();
@@ -660,7 +665,7 @@ QString PreferencesManager::getBegin()
     Now[10] = ' ';
     openfluid::core::DateTime DT;
     DT.setFromISOString(Now);
-    setBegin(QString(DT.getAsISOString().c_str()));
+    setBuilderBegin(QString(DT.getAsISOString().c_str()));
     DateStr = QString(DT.getAsISOString().c_str());
   }
 
@@ -672,13 +677,12 @@ QString PreferencesManager::getBegin()
 // =====================================================================
 
 
-void PreferencesManager::setEnd(const QString& End)
+void PreferencesManager::setBuilderEnd(const QString& End)
 {
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
   mp_ConfFile->setValue("end",End);
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
-
 }
 
 
@@ -686,7 +690,7 @@ void PreferencesManager::setEnd(const QString& End)
 // =====================================================================
 
 
-QString PreferencesManager::getEnd()
+QString PreferencesManager::getBuilderEnd()
 {
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
   QString DateStr = mp_ConfFile->value("end").toString();
@@ -695,9 +699,9 @@ QString PreferencesManager::getEnd()
   if (DateStr.isEmpty())
   {
     openfluid::core::DateTime DT;
-    DT.setFromISOString(getBegin().toStdString());
+    DT.setFromISOString(getBuilderBegin().toStdString());
     DT = DT + openfluid::core::DateTime::Day();
-    setEnd(QString(DT.getAsISOString().c_str()));
+    setBuilderEnd(QString(DT.getAsISOString().c_str()));
     DateStr = QString(DT.getAsISOString().c_str());
   }
 
@@ -760,7 +764,7 @@ PreferencesManager::MarketPlaces_t PreferencesManager::getMarketplaces()
 // =====================================================================
 
 
-bool PreferencesManager::isExtensionValueExist(const QString& PluginName, const QString& Key)
+bool PreferencesManager::isBuilderExtensionValueExist(const QString& PluginName, const QString& Key)
 {
   QString GroupName = "openfluid.builder.extensions:"+PluginName;
 
@@ -772,7 +776,7 @@ bool PreferencesManager::isExtensionValueExist(const QString& PluginName, const 
 // =====================================================================
 
 
-QString PreferencesManager::getExtensionValue(const QString& PluginName,
+QString PreferencesManager::getBuilderExtensionValue(const QString& PluginName,
                                               const QString& Key)
 {
   QString GroupName = "openfluid.builder.extensions:"+PluginName;
@@ -788,7 +792,7 @@ QString PreferencesManager::getExtensionValue(const QString& PluginName,
 // =====================================================================
 
 
-void PreferencesManager::setExtensionValue(const QString& PluginName,
+void PreferencesManager::setBuilderExtensionValue(const QString& PluginName,
                                            const QString& Key, const QString& Value)
 {
   QString GroupName = "openfluid.builder.extensions:"+PluginName;
@@ -804,7 +808,7 @@ void PreferencesManager::setExtensionValue(const QString& PluginName,
 // =====================================================================
 
 
-Qt::DockWidgetArea PreferencesManager::getDockPosition()
+Qt::DockWidgetArea PreferencesManager::getBuilderDockPosition()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("dockpos")) mp_ConfFile->setValue("dockpos",Qt::LeftDockWidgetArea);
@@ -822,7 +826,7 @@ Qt::DockWidgetArea PreferencesManager::getDockPosition()
 // =====================================================================
 
 
-void PreferencesManager::setDockPosition(Qt::DockWidgetArea Position)
+void PreferencesManager::setBuilderDockPosition(Qt::DockWidgetArea Position)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("dockpos",Position);
@@ -835,7 +839,7 @@ void PreferencesManager::setDockPosition(Qt::DockWidgetArea Position)
 // =====================================================================
 
 
-Qt::ToolBarArea PreferencesManager::getToolBarPosition()
+Qt::ToolBarArea PreferencesManager::getBuilderToolBarPosition()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("toolbarpos"))
@@ -854,7 +858,7 @@ Qt::ToolBarArea PreferencesManager::getToolBarPosition()
 // =====================================================================
 
 
-void PreferencesManager::setToolBarPosition(Qt::ToolBarArea Position)
+void PreferencesManager::setBuilderToolBarPosition(Qt::ToolBarArea Position)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("toolbarpos",Position);
@@ -867,7 +871,7 @@ void PreferencesManager::setToolBarPosition(Qt::ToolBarArea Position)
 // =====================================================================
 
 
-bool PreferencesManager::isItemRemovalConfirm()
+bool PreferencesManager::isBuilderItemRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("itemremovalconfirm"))
@@ -886,7 +890,7 @@ bool PreferencesManager::isItemRemovalConfirm()
 // =====================================================================
 
 
-void PreferencesManager::setItemRemovalConfirm(bool Confirm)
+void PreferencesManager::setBuilderItemRemovalConfirm(bool Confirm)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("itemremovalconfirm",Confirm);
@@ -899,7 +903,7 @@ void PreferencesManager::setItemRemovalConfirm(bool Confirm)
 // =====================================================================
 
 
-bool PreferencesManager::isParamRemovalConfirm()
+bool PreferencesManager::isBuilderParamRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("paramremovalconfirm"))
@@ -918,7 +922,7 @@ bool PreferencesManager::isParamRemovalConfirm()
 // =====================================================================
 
 
-void PreferencesManager::setParamRemovalConfirm(bool Confirm)
+void PreferencesManager::setBuilderParamRemovalConfirm(bool Confirm)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("paramremovalconfirm",Confirm);
@@ -931,7 +935,7 @@ void PreferencesManager::setParamRemovalConfirm(bool Confirm)
 // =====================================================================
 
 
-bool PreferencesManager::isWaresWatchersActive()
+bool PreferencesManager::isBuilderWaresWatchersActive()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("wareswatchers"))
@@ -950,7 +954,7 @@ bool PreferencesManager::isWaresWatchersActive()
 // =====================================================================
 
 
-void PreferencesManager::setWaresWatchersActive(bool Active)
+void PreferencesManager::setBuilderWaresWatchersActive(bool Active)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("wareswatchers",Active);
@@ -963,7 +967,7 @@ void PreferencesManager::setWaresWatchersActive(bool Active)
 // =====================================================================
 
 
-bool PreferencesManager::isSpatialUnitsRemovalConfirm()
+bool PreferencesManager::isBuilderSpatialUnitsRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("spatialunitsremovalconfirm"))
@@ -982,7 +986,7 @@ bool PreferencesManager::isSpatialUnitsRemovalConfirm()
 // =====================================================================
 
 
-void PreferencesManager::setSpatialUnitsRemovalConfirm(bool Confirm)
+void PreferencesManager::setBuilderSpatialUnitsRemovalConfirm(bool Confirm)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("spatialunitsremovalconfirm",Confirm);
@@ -995,7 +999,7 @@ void PreferencesManager::setSpatialUnitsRemovalConfirm(bool Confirm)
 // =====================================================================
 
 
-bool PreferencesManager::isSpatialConnsRemovalConfirm()
+bool PreferencesManager::isBuilderSpatialConnsRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("spatialconnsremovalconfirm"))
@@ -1014,7 +1018,7 @@ bool PreferencesManager::isSpatialConnsRemovalConfirm()
 // =====================================================================
 
 
-void PreferencesManager::setSpatialConnsRemovalConfirm(bool Confirm)
+void PreferencesManager::setBuilderSpatialConnsRemovalConfirm(bool Confirm)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("spatialconnsremovalconfirm",Confirm);
@@ -1027,7 +1031,7 @@ void PreferencesManager::setSpatialConnsRemovalConfirm(bool Confirm)
 // =====================================================================
 
 
-bool PreferencesManager::isSpatialAttrsRemovalConfirm()
+bool PreferencesManager::isBuilderSpatialAttrsRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("spatialattrsremovalconfirm"))
@@ -1046,7 +1050,7 @@ bool PreferencesManager::isSpatialAttrsRemovalConfirm()
 // =====================================================================
 
 
-void PreferencesManager::setSpatialAttrsRemovalConfirm(bool Confirm)
+void PreferencesManager::setBuilderSpatialAttrsRemovalConfirm(bool Confirm)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("spatialattrsremovalconfirm",Confirm);
@@ -1059,7 +1063,7 @@ void PreferencesManager::setSpatialAttrsRemovalConfirm(bool Confirm)
 // =====================================================================
 
 
-bool PreferencesManager::isAutomaticSaveBeforeRun()
+bool PreferencesManager::isBuilderAutomaticSaveBeforeRun()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("savebeforerun"))
@@ -1078,7 +1082,7 @@ bool PreferencesManager::isAutomaticSaveBeforeRun()
 // =====================================================================
 
 
-void PreferencesManager::setAutomaticSaveBeforeRun(bool AutoSave)
+void PreferencesManager::setBuilderAutomaticSaveBeforeRun(bool AutoSave)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("savebeforerun",AutoSave);
@@ -1091,7 +1095,7 @@ void PreferencesManager::setAutomaticSaveBeforeRun(bool AutoSave)
 // =====================================================================
 
 
-bool PreferencesManager::isAutomaticSaveBeforeBuild()
+bool PreferencesManager::isWaresdevAutomaticSaveBeforeBuild()
 {
   mp_ConfFile->beginGroup("openfluid.waresdev.interface");
   if (!mp_ConfFile->contains("savebeforebuild"))
@@ -1108,7 +1112,7 @@ bool PreferencesManager::isAutomaticSaveBeforeBuild()
 
 
 
-void PreferencesManager::setAutomaticSaveBeforeBuild(bool AutoSave)
+void PreferencesManager::setWaresdevAutomaticSaveBeforeBuild(bool AutoSave)
 {
   mp_ConfFile->beginGroup("openfluid.waresdev.interface");
   mp_ConfFile->setValue("savebeforebuild",AutoSave);
@@ -1121,7 +1125,7 @@ void PreferencesManager::setAutomaticSaveBeforeBuild(bool AutoSave)
 // =====================================================================
 
 
-void PreferencesManager::setTextEditorDefaults(bool ForceReset)
+void PreferencesManager::setWaresdevTextEditorDefaults(bool ForceReset)
 {
   mp_ConfFile->beginGroup("openfluid.waresdev.texteditor");
 
@@ -1199,7 +1203,7 @@ void PreferencesManager::setTextEditorDefaults(bool ForceReset)
 // =====================================================================
 
 
-bool PreferencesManager::isSyntaxHighlightingEnabled()
+bool PreferencesManager::isWaresdevSyntaxHighlightingEnabled()
 {
   return mp_ConfFile->value("openfluid.waresdev.texteditor/syntax_highlighting/enabled",true).toBool();
 }
@@ -1209,7 +1213,7 @@ bool PreferencesManager::isSyntaxHighlightingEnabled()
 // =====================================================================
 
 
-void PreferencesManager::setSyntaxHighlightingEnabled(bool Enabled)
+void PreferencesManager::setWaresdevSyntaxHighlightingEnabled(bool Enabled)
 {
   mp_ConfFile->setValue("openfluid.waresdev.texteditor/syntax_highlighting/enabled",Enabled);
   mp_ConfFile->sync();
@@ -1220,7 +1224,7 @@ void PreferencesManager::setSyntaxHighlightingEnabled(bool Enabled)
 // =====================================================================
 
 
-PreferencesManager::SyntaxHighlightingRules_t PreferencesManager::getSyntaxHighlightingRules()
+PreferencesManager::SyntaxHighlightingRules_t PreferencesManager::getWaresdevSyntaxHighlightingRules()
 {
   SyntaxHighlightingRules_t Rules;
 
@@ -1245,7 +1249,7 @@ PreferencesManager::SyntaxHighlightingRules_t PreferencesManager::getSyntaxHighl
 // =====================================================================
 
 
-void PreferencesManager::setSyntaxHighlightingRules(const SyntaxHighlightingRules_t& Rules)
+void PreferencesManager::setWaresdevSyntaxHighlightingRules(const SyntaxHighlightingRules_t& Rules)
 {
   mp_ConfFile->beginGroup("openfluid.waresdev.texteditor/syntax_highlighting");
 
@@ -1267,7 +1271,7 @@ void PreferencesManager::setSyntaxHighlightingRules(const SyntaxHighlightingRule
 // =====================================================================
 
 
-bool PreferencesManager::isCurrentlineHighlightingEnabled()
+bool PreferencesManager::isWaresdevCurrentlineHighlightingEnabled()
 {
   return mp_ConfFile->value("openfluid.waresdev.texteditor/currentline_highlighting/enabled",true).toBool();
 }
@@ -1277,7 +1281,7 @@ bool PreferencesManager::isCurrentlineHighlightingEnabled()
 // =====================================================================
 
 
-void PreferencesManager::setCurrentlineHighlightingEnabled(bool Enabled)
+void PreferencesManager::setWaresdevCurrentlineHighlightingEnabled(bool Enabled)
 {
   mp_ConfFile->setValue("openfluid.waresdev.texteditor/currentline_highlighting/enabled",Enabled);
   mp_ConfFile->sync();
@@ -1288,7 +1292,7 @@ void PreferencesManager::setCurrentlineHighlightingEnabled(bool Enabled)
 // =====================================================================
 
 
-QString PreferencesManager::getCurrentlineColor()
+QString PreferencesManager::getWaresdevCurrentlineColor()
 {
   return mp_ConfFile->value("openfluid.waresdev.texteditor/currentline_highlighting/color","").toString();
 }
@@ -1298,7 +1302,7 @@ QString PreferencesManager::getCurrentlineColor()
 // =====================================================================
 
 
-void PreferencesManager::setCurrentlineColor(const QString& Color)
+void PreferencesManager::setWaresdevCurrentlineColor(const QString& Color)
 {
   mp_ConfFile->setValue("openfluid.waresdev.texteditor/currentline_highlighting/color",Color);
   mp_ConfFile->sync();
@@ -1309,7 +1313,7 @@ void PreferencesManager::setCurrentlineColor(const QString& Color)
 // =====================================================================
 
 
-QString PreferencesManager::getFontName()
+QString PreferencesManager::getWaresdevFontName()
 {
   return mp_ConfFile->value("openfluid.waresdev.texteditor/fontname","").toString();
 }
@@ -1319,7 +1323,7 @@ QString PreferencesManager::getFontName()
 // =====================================================================
 
 
-void PreferencesManager::setFontName(const QString& FontName)
+void PreferencesManager::setWaresdevFontName(const QString& FontName)
 {
   mp_ConfFile->setValue("openfluid.waresdev.texteditor/fontname",FontName);
   mp_ConfFile->sync();
@@ -1330,7 +1334,7 @@ void PreferencesManager::setFontName(const QString& FontName)
 // =====================================================================
 
 
-bool PreferencesManager::isLineWrappingEnabled()
+bool PreferencesManager::isWaresdevLineWrappingEnabled()
 {
   return mp_ConfFile->value("openfluid.waresdev.texteditor/linewrapping/enabled",true).toBool();
 }
@@ -1340,7 +1344,7 @@ bool PreferencesManager::isLineWrappingEnabled()
 // =====================================================================
 
 
-void PreferencesManager::setLineWrappingEnabled(bool Enabled)
+void PreferencesManager::setWaresdevLineWrappingEnabled(bool Enabled)
 {
   mp_ConfFile->setValue("openfluid.waresdev.texteditor/linewrapping/enabled",Enabled);
   mp_ConfFile->sync();
@@ -1350,7 +1354,7 @@ void PreferencesManager::setLineWrappingEnabled(bool Enabled)
 // =====================================================================
 
 
-int PreferencesManager::getIndentSpaceNb()
+int PreferencesManager::getWaresdevIndentSpaceNb()
 {
   return mp_ConfFile->value("openfluid.waresdev.texteditor/indent/spacenumber",0).toInt();
 }
@@ -1360,7 +1364,7 @@ int PreferencesManager::getIndentSpaceNb()
 // =====================================================================
 
 
-void PreferencesManager::setIndentSpaceNb(int SpaceNumber)
+void PreferencesManager::setWaresdevIndentSpaceNb(int SpaceNumber)
 {
   mp_ConfFile->setValue("openfluid.waresdev.texteditor/indent/spacenumber",SpaceNumber);
   mp_ConfFile->sync();

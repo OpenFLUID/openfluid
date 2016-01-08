@@ -211,9 +211,10 @@ void WareSrcFileEditor::updateSettings()
 
   // Current line highlighting
 
-  if (PrefMgr->isCurrentlineHighlightingEnabled() && QColor::isValidColor(PrefMgr->getCurrentlineColor()))
+  if (PrefMgr->isWaresdevCurrentlineHighlightingEnabled()
+      && QColor::isValidColor(PrefMgr->getWaresdevCurrentlineColor()))
   {
-    m_LineColor.setNamedColor(PrefMgr->getCurrentlineColor());
+    m_LineColor.setNamedColor(PrefMgr->getWaresdevCurrentlineColor());
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
     highlightCurrentLine();
@@ -226,7 +227,7 @@ void WareSrcFileEditor::updateSettings()
 
   // Syntax highlighting
 
-  if (PrefMgr->isSyntaxHighlightingEnabled())
+  if (PrefMgr->isWaresdevSyntaxHighlightingEnabled())
   {
     delete mp_SyntaxHighlighter;
     mp_SyntaxHighlighter = new WareSrcSyntaxHighlighter(
@@ -241,14 +242,14 @@ void WareSrcFileEditor::updateSettings()
   // Line wrapping
 
   QTextOption Option = document()->defaultTextOption();
-  Option.setWrapMode(PrefMgr->isLineWrappingEnabled() ? QTextOption::WordWrap : QTextOption::NoWrap);
+  Option.setWrapMode(PrefMgr->isWaresdevLineWrappingEnabled() ? QTextOption::WordWrap : QTextOption::NoWrap);
   document()->setDefaultTextOption(Option);
 
 
   // Fonts
 
   QFont Font;
-  Font.setFamily(PrefMgr->getFontName());
+  Font.setFamily(PrefMgr->getWaresdevFontName());
   Font.setFixedPitch(true);
   Font.setPointSize(10);
   setFont(Font);
@@ -257,7 +258,7 @@ void WareSrcFileEditor::updateSettings()
 
   m_SpaceCharWidth = fontMetrics().width(' ');
 
-  m_IndentString = QString(" ").repeated(PrefMgr->getIndentSpaceNb());
+  m_IndentString = QString(" ").repeated(PrefMgr->getWaresdevIndentSpaceNb());
 }
 
 

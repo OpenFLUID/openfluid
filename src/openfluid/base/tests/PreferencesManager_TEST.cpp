@@ -95,22 +95,22 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   WksPaths.append("xx/yy/zz");
 
   PrefMgr->setLang("oc");
-  PrefMgr->setRecentMax(10);
-  PrefMgr->setWorkspacesPaths(WksPaths);
-  PrefMgr->setDeltaT(777);
-  PrefMgr->setBegin("2222-11-11T00:11:22");
-  PrefMgr->setEnd("2221-12-12=11;22;33");
+  PrefMgr->setBuilderRecentMax(10);
+  PrefMgr->setBuilderWorkspacesPaths(WksPaths);
+  PrefMgr->setBuilderDeltaT(777);
+  PrefMgr->setBuilderBegin("2222-11-11T00:11:22");
+  PrefMgr->setBuilderEnd("2221-12-12=11;22;33");
 
-  BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),10);
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderRecentMax(),10);
   BOOST_CHECK(PrefMgr->getLang() == "oc");
-  BOOST_CHECK_EQUAL(PrefMgr->getWorkspacesPaths().count(),3);
-  BOOST_CHECK(PrefMgr->getWorkspacePath() == "aa/bb/cc");
-  BOOST_CHECK(PrefMgr->getWorkspacesPaths()[0] == "aa/bb/cc");
-  BOOST_CHECK(PrefMgr->getWorkspacesPaths()[2] == "xx/yy/zz");
-  BOOST_CHECK(PrefMgr->getProjectsPath() == "aa/bb/cc/projects");
-  BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),777);
-  BOOST_CHECK(PrefMgr->getBegin() == "2222-11-11T00:11:22");
-  BOOST_CHECK(PrefMgr->getEnd() == "2221-12-12=11;22;33");
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderWorkspacesPaths().count(),3);
+  BOOST_CHECK(PrefMgr->getBuilderWorkspacePath() == "aa/bb/cc");
+  BOOST_CHECK(PrefMgr->getBuilderWorkspacesPaths()[0] == "aa/bb/cc");
+  BOOST_CHECK(PrefMgr->getBuilderWorkspacesPaths()[2] == "xx/yy/zz");
+  BOOST_CHECK(PrefMgr->getBuilderProjectsPath() == "aa/bb/cc/projects");
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderDeltaT(),777);
+  BOOST_CHECK(PrefMgr->getBuilderBegin() == "2222-11-11T00:11:22");
+  BOOST_CHECK(PrefMgr->getBuilderEnd() == "2221-12-12=11;22;33");
 
   openfluid::base::PreferencesManager::kill();
 }
@@ -127,14 +127,14 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
-  BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),5);
-  BOOST_CHECK_EQUAL(PrefMgr->getRecentProjects().size(),0);
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderRecentMax(),5);
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderRecentProjects().size(),0);
 
-  BOOST_REQUIRE(PrefMgr->addRecentProject("pj1","aa/bb/file1.txt"));
-  BOOST_REQUIRE(PrefMgr->addRecentProject("","aa/bb/file2.txt"));
-  BOOST_REQUIRE(PrefMgr->addRecentProject("pj3","aa/bb/file3.txt"));
+  BOOST_REQUIRE(PrefMgr->addBuilderRecentProject("pj1","aa/bb/file1.txt"));
+  BOOST_REQUIRE(PrefMgr->addBuilderRecentProject("","aa/bb/file2.txt"));
+  BOOST_REQUIRE(PrefMgr->addBuilderRecentProject("pj3","aa/bb/file3.txt"));
 
-  openfluid::base::PreferencesManager::RecentProjectsList_t Recents = PrefMgr->getRecentProjects();
+  openfluid::base::PreferencesManager::RecentProjectsList_t Recents = PrefMgr->getBuilderRecentProjects();
 
   BOOST_CHECK_EQUAL(Recents.size(),3);
   BOOST_CHECK(Recents[0].Path == "aa/bb/file3.txt");
@@ -144,9 +144,9 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
   BOOST_CHECK(Recents[2].Path == "aa/bb/file1.txt");
   BOOST_CHECK(Recents[2].Name == "pj1");
 
-  PrefMgr->addRecentProject("","aa/bb/file2.txt");
+  PrefMgr->addBuilderRecentProject("","aa/bb/file2.txt");
 
-  Recents = PrefMgr->getRecentProjects();
+  Recents = PrefMgr->getBuilderRecentProjects();
 
   BOOST_CHECK_EQUAL(Recents.size(),3);
   BOOST_CHECK(Recents[0].Path == "aa/bb/file2.txt");
@@ -156,18 +156,18 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
   BOOST_CHECK(Recents[2].Path == "aa/bb/file1.txt");
   BOOST_CHECK(Recents[2].Name == "pj1");
 
-  PrefMgr->addRecentProject("","aa/bb/file20.txt");
-  PrefMgr->addRecentProject("","aa/bb/file21.txt");
-  PrefMgr->addRecentProject("","aa/bb/file22.txt");
-  PrefMgr->addRecentProject("","aa/bb/file23.txt");
+  PrefMgr->addBuilderRecentProject("","aa/bb/file20.txt");
+  PrefMgr->addBuilderRecentProject("","aa/bb/file21.txt");
+  PrefMgr->addBuilderRecentProject("","aa/bb/file22.txt");
+  PrefMgr->addBuilderRecentProject("","aa/bb/file23.txt");
 
-  Recents = PrefMgr->getRecentProjects();
+  Recents = PrefMgr->getBuilderRecentProjects();
 
-  BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),Recents.size());
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderRecentMax(),Recents.size());
 
-  PrefMgr->clearRecentProjects();
+  PrefMgr->clearBuilderRecentProjects();
 
-  Recents = PrefMgr->getRecentProjects();
+  Recents = PrefMgr->getBuilderRecentProjects();
 
   BOOST_CHECK_EQUAL(Recents.size(),0);
 
@@ -189,47 +189,47 @@ BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
 
-  QStringList ExtraPaths = PrefMgr->getExtraSimulatorsPaths();
+  QStringList ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
 
-  PrefMgr->addExtraSimulatorsPath("aa/bb/dir1");
-  PrefMgr->addExtraSimulatorsPath("aa/bb/dir2");
-  PrefMgr->addExtraSimulatorsPath("aa/bb/dir3");
+  PrefMgr->addBuilderExtraSimulatorsPath("aa/bb/dir1");
+  PrefMgr->addBuilderExtraSimulatorsPath("aa/bb/dir2");
+  PrefMgr->addBuilderExtraSimulatorsPath("aa/bb/dir3");
 
-  ExtraPaths = PrefMgr->getExtraSimulatorsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
   BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir2");
   BOOST_CHECK(ExtraPaths[2] == "aa/bb/dir3");
 
-  PrefMgr->removeExtraSimulatorsPath("aa/bb/dir2");
+  PrefMgr->removeBuilderExtraSimulatorsPath("aa/bb/dir2");
 
-  ExtraPaths = PrefMgr->getExtraSimulatorsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
-
-  PrefMgr->removeExtraSimulatorsPath("aa/bb/wrongdir");
-
-  ExtraPaths = PrefMgr->getExtraSimulatorsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
   BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
 
-  PrefMgr->removeExtraSimulatorsPath("aa/bb/dir1");
+  PrefMgr->removeBuilderExtraSimulatorsPath("aa/bb/wrongdir");
 
-  ExtraPaths = PrefMgr->getExtraSimulatorsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
+
+  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
+  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
+  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
+
+  PrefMgr->removeBuilderExtraSimulatorsPath("aa/bb/dir1");
+
+  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),1);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir3");
 
-  PrefMgr->removeExtraSimulatorsPath("aa/bb/dir3");
+  PrefMgr->removeBuilderExtraSimulatorsPath("aa/bb/dir3");
 
-  ExtraPaths = PrefMgr->getExtraSimulatorsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
 
@@ -238,9 +238,9 @@ BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
   Paths.append("aa/bb/dir2");
   Paths.append("aa/bb/dir3");
 
-  PrefMgr->setExtraSimulatorsPaths(Paths);
+  PrefMgr->setBuilderExtraSimulatorsPaths(Paths);
 
-  ExtraPaths = PrefMgr->getExtraSimulatorsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
@@ -251,9 +251,9 @@ BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
   Paths.push_back("cc/dd/dir1");
   Paths.push_back("cc/dd/dir2");
 
-  PrefMgr->setExtraSimulatorsPaths(Paths);
+  PrefMgr->setBuilderExtraSimulatorsPaths(Paths);
 
-  ExtraPaths = PrefMgr->getExtraSimulatorsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
   BOOST_CHECK(ExtraPaths[0] == "cc/dd/dir1");
@@ -275,47 +275,47 @@ BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
 
-  QStringList ExtraPaths = PrefMgr->getExtraExtensionsPaths();
+  QStringList ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
 
-  PrefMgr->addExtraExtensionsPath("aa/bb/dir1");
-  PrefMgr->addExtraExtensionsPath("aa/bb/dir2");
-  PrefMgr->addExtraExtensionsPath("aa/bb/dir3");
+  PrefMgr->addBuilderExtraExtensionsPath("aa/bb/dir1");
+  PrefMgr->addBuilderExtraExtensionsPath("aa/bb/dir2");
+  PrefMgr->addBuilderExtraExtensionsPath("aa/bb/dir3");
 
-  ExtraPaths = PrefMgr->getExtraExtensionsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
   BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir2");
   BOOST_CHECK(ExtraPaths[2] == "aa/bb/dir3");
 
-  PrefMgr->removeExtraExtensionsPath("aa/bb/dir2");
+  PrefMgr->removeBuilderExtraExtensionsPath("aa/bb/dir2");
 
-  ExtraPaths = PrefMgr->getExtraExtensionsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
-
-  PrefMgr->removeExtraExtensionsPath("aa/bb/wrongdir");
-
-  ExtraPaths = PrefMgr->getExtraExtensionsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
   BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
 
-  PrefMgr->removeExtraExtensionsPath("aa/bb/dir1");
+  PrefMgr->removeBuilderExtraExtensionsPath("aa/bb/wrongdir");
 
-  ExtraPaths = PrefMgr->getExtraExtensionsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
+
+  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
+  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
+  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
+
+  PrefMgr->removeBuilderExtraExtensionsPath("aa/bb/dir1");
+
+  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),1);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir3");
 
-  PrefMgr->removeExtraExtensionsPath("aa/bb/dir3");
+  PrefMgr->removeBuilderExtraExtensionsPath("aa/bb/dir3");
 
-  ExtraPaths = PrefMgr->getExtraExtensionsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
 
@@ -324,9 +324,9 @@ BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
   Paths.append("aa/bb/dir2");
   Paths.append("aa/bb/dir3");
 
-  PrefMgr->setExtraExtensionsPaths(Paths);
+  PrefMgr->setBuilderExtraExtensionsPaths(Paths);
 
-  ExtraPaths = PrefMgr->getExtraExtensionsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
@@ -337,9 +337,9 @@ BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
   Paths.push_back("cc/dd/dir1");
   Paths.push_back("cc/dd/dir2");
 
-  PrefMgr->setExtraExtensionsPaths(Paths);
+  PrefMgr->setBuilderExtraExtensionsPaths(Paths);
 
-  ExtraPaths = PrefMgr->getExtraExtensionsPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
   BOOST_CHECK(ExtraPaths[0] == "cc/dd/dir1");
@@ -363,47 +363,47 @@ BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
 
-  QStringList ExtraPaths = PrefMgr->getExtraObserversPaths();
+  QStringList ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
 
-  PrefMgr->addExtraObserversPath("aa/bb/dir1");
-  PrefMgr->addExtraObserversPath("aa/bb/dir2");
-  PrefMgr->addExtraObserversPath("aa/bb/dir3");
+  PrefMgr->addBuilderExtraObserversPath("aa/bb/dir1");
+  PrefMgr->addBuilderExtraObserversPath("aa/bb/dir2");
+  PrefMgr->addBuilderExtraObserversPath("aa/bb/dir3");
 
-  ExtraPaths = PrefMgr->getExtraObserversPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
   BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir2");
   BOOST_CHECK(ExtraPaths[2] == "aa/bb/dir3");
 
-  PrefMgr->removeExtraObserversPath("aa/bb/dir2");
+  PrefMgr->removeBuilderExtraObserversPath("aa/bb/dir2");
 
-  ExtraPaths = PrefMgr->getExtraObserversPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
-
-  PrefMgr->removeExtraObserversPath("aa/bb/wrongdir");
-
-  ExtraPaths = PrefMgr->getExtraObserversPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
   BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
 
-  PrefMgr->removeExtraObserversPath("aa/bb/dir1");
+  PrefMgr->removeBuilderExtraObserversPath("aa/bb/wrongdir");
 
-  ExtraPaths = PrefMgr->getExtraObserversPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
+
+  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
+  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
+  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
+
+  PrefMgr->removeBuilderExtraObserversPath("aa/bb/dir1");
+
+  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),1);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir3");
 
-  PrefMgr->removeExtraObserversPath("aa/bb/dir3");
+  PrefMgr->removeBuilderExtraObserversPath("aa/bb/dir3");
 
-  ExtraPaths = PrefMgr->getExtraObserversPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
 
@@ -412,9 +412,9 @@ BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
   Paths.append("aa/bb/dir2");
   Paths.append("aa/bb/dir3");
 
-  PrefMgr->setExtraObserversPaths(Paths);
+  PrefMgr->setBuilderExtraObserversPaths(Paths);
 
-  ExtraPaths = PrefMgr->getExtraObserversPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
   BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
@@ -425,9 +425,9 @@ BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
   Paths.push_back("cc/dd/dir1");
   Paths.push_back("cc/dd/dir2");
 
-  PrefMgr->setExtraObserversPaths(Paths);
+  PrefMgr->setBuilderExtraObserversPaths(Paths);
 
-  ExtraPaths = PrefMgr->getExtraObserversPaths();
+  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
 
   BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
   BOOST_CHECK(ExtraPaths[0] == "cc/dd/dir1");
@@ -511,15 +511,15 @@ BOOST_AUTO_TEST_CASE(test_DockToolbarPositionsManagement)
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
-  PrefMgr->setToolBarPosition(Qt::LeftToolBarArea);
-  PrefMgr->setDockPosition(Qt::BottomDockWidgetArea);
-  BOOST_CHECK_EQUAL(PrefMgr->getToolBarPosition(),Qt::LeftToolBarArea);
-  BOOST_CHECK_EQUAL(PrefMgr->getDockPosition(),Qt::BottomDockWidgetArea);
+  PrefMgr->setBuilderToolBarPosition(Qt::LeftToolBarArea);
+  PrefMgr->setBuilderDockPosition(Qt::BottomDockWidgetArea);
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderToolBarPosition(),Qt::LeftToolBarArea);
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderDockPosition(),Qt::BottomDockWidgetArea);
 
-  PrefMgr->setToolBarPosition(Qt::BottomToolBarArea);
-  PrefMgr->setDockPosition(Qt::RightDockWidgetArea);
-  BOOST_CHECK_EQUAL(PrefMgr->getToolBarPosition(),Qt::BottomToolBarArea);
-  BOOST_CHECK_EQUAL(PrefMgr->getDockPosition(),Qt::RightDockWidgetArea);
+  PrefMgr->setBuilderToolBarPosition(Qt::BottomToolBarArea);
+  PrefMgr->setBuilderDockPosition(Qt::RightDockWidgetArea);
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderToolBarPosition(),Qt::BottomToolBarArea);
+  BOOST_CHECK_EQUAL(PrefMgr->getBuilderDockPosition(),Qt::RightDockWidgetArea);
 
   openfluid::base::PreferencesManager::kill();
 }
@@ -544,17 +544,20 @@ BOOST_AUTO_TEST_CASE(test_textEditorProperties)
   openfluid::base::PreferencesManager::SyntaxHighlightingRule_t ControlRule(QString("controlColor"),
                                                                             QStringList("none"));
 
-  BOOST_CHECK_EQUAL(PrefMgr->isSyntaxHighlightingEnabled(),true);
-  BOOST_CHECK_EQUAL(PrefMgr->getSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");
+  BOOST_CHECK_EQUAL(PrefMgr->isWaresdevSyntaxHighlightingEnabled(),true);
+  BOOST_CHECK_EQUAL(
+    PrefMgr->getWaresdevSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");
 
-  PrefMgr->setSyntaxHighlightingEnabled(false);
-  PrefMgr->setSyntaxHighlightingRules(Rules);
-  BOOST_CHECK_EQUAL(PrefMgr->isSyntaxHighlightingEnabled(),false);
-  BOOST_CHECK_EQUAL(PrefMgr->getSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"pink");
+  PrefMgr->setWaresdevSyntaxHighlightingEnabled(false);
+  PrefMgr->setWaresdevSyntaxHighlightingRules(Rules);
+  BOOST_CHECK_EQUAL(PrefMgr->isWaresdevSyntaxHighlightingEnabled(),false);
+  BOOST_CHECK_EQUAL(
+    PrefMgr->getWaresdevSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"pink");
 
-  PrefMgr->setTextEditorDefaults(true);
-  BOOST_CHECK_EQUAL(PrefMgr->isSyntaxHighlightingEnabled(),true);
-  BOOST_CHECK_EQUAL(PrefMgr->getSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");
+  PrefMgr->setWaresdevTextEditorDefaults(true);
+  BOOST_CHECK_EQUAL(PrefMgr->isWaresdevSyntaxHighlightingEnabled(),true);
+  BOOST_CHECK_EQUAL(
+    PrefMgr->getWaresdevSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");
 
   openfluid::base::PreferencesManager::kill();
 }

@@ -375,7 +375,7 @@ void WareSrcWidgetCollection::configure()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
-    if (openfluid::base::PreferencesManager::instance()->isAutomaticSaveBeforeBuild())
+    if (openfluid::base::PreferencesManager::instance()->isWaresdevAutomaticSaveBeforeBuild())
       CurrentWare->saveAllFileTabs();
     CurrentWare->configure();
   }
@@ -392,7 +392,7 @@ void WareSrcWidgetCollection::build()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
-    if (openfluid::base::PreferencesManager::instance()->isAutomaticSaveBeforeBuild())
+    if (openfluid::base::PreferencesManager::instance()->isWaresdevAutomaticSaveBeforeBuild())
       CurrentWare->saveAllFileTabs();
     CurrentWare->build();
   }

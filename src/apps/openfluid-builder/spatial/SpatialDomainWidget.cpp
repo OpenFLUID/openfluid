@@ -896,7 +896,7 @@ void SpatialDomainWidget::removeUnit()
 
   bool OK = true;
 
-  if (openfluid::base::PreferencesManager::instance()->isSpatialUnitsRemovalConfirm())
+  if (openfluid::base::PreferencesManager::instance()->isBuilderSpatialUnitsRemovalConfirm())
   {
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",
@@ -997,7 +997,7 @@ void SpatialDomainWidget::removeConnection()
     QString ConnStr = ui->ConnectionsTableWidget->item(Row,0)->text();
     int ConnCode = ui->ConnectionsTableWidget->item(Row,0)->data(Qt::UserRole).toInt();
 
-    if (openfluid::base::PreferencesManager::instance()->isSpatialConnsRemovalConfirm())
+    if (openfluid::base::PreferencesManager::instance()->isBuilderSpatialConnsRemovalConfirm())
     {
       OK = (QMessageBox::question(QApplication::activeWindow(),
                                   "OpenFLUID-Builder",
@@ -1199,7 +1199,7 @@ void SpatialDomainWidget::removeAttribute()
     EditAttributeNameDialog RemoveDlg(EditAttributeNameDialog::EDIT_REMOVE,AttrsNames,this);
     if (RemoveDlg.exec() == QDialog::Accepted)
     {
-      if (openfluid::base::PreferencesManager::instance()->isSpatialAttrsRemovalConfirm())
+      if (openfluid::base::PreferencesManager::instance()->isBuilderSpatialAttrsRemovalConfirm())
       {
         OK = (QMessageBox::question(QApplication::activeWindow(),
                                     "OpenFLUID-Builder",

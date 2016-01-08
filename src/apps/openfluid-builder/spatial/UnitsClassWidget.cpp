@@ -250,7 +250,7 @@ void UnitsClassWidget::notifyRemoveClicked()
 {
   bool OK = true;
 
-  if (openfluid::base::PreferencesManager::instance()->isSpatialUnitsRemovalConfirm())
+  if (openfluid::base::PreferencesManager::instance()->isBuilderSpatialUnitsRemovalConfirm())
   {
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",

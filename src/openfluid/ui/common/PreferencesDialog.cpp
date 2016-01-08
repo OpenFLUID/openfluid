@@ -221,41 +221,41 @@ void PreferencesDialog::initialize()
 
 
   // Workspaces paths
-  ui->WorkspacesPathsWidget->setPathsList(PrefsMan->getWorkspacesPaths());
+  ui->WorkspacesPathsWidget->setPathsList(PrefsMan->getBuilderWorkspacesPaths());
 
 
   if (m_Mode == MODE_BUILDER || m_Mode == MODE_FULL)
   {
     // Wares search paths
-    ui->SimulatorsSearchPathsWidget->initialize(PrefsMan->getExtraSimulatorsPaths(),
+    ui->SimulatorsSearchPathsWidget->initialize(PrefsMan->getBuilderExtraSimulatorsPaths(),
                                                 openfluid::tools::toQStringList(
                                                     openfluid::base::Environment::getDefaultSimulatorsDirs()));
-    ui->ObserversSearchPathsWidget->initialize(PrefsMan->getExtraObserversPaths(),
+    ui->ObserversSearchPathsWidget->initialize(PrefsMan->getBuilderExtraObserversPaths(),
                                                openfluid::tools::toQStringList(
                                                    openfluid::base::Environment::getDefaultObserversDirs()));
-    ui->BuilderextsSearchPathsWidget->initialize(PrefsMan->getExtraExtensionsPaths(),
+    ui->BuilderextsSearchPathsWidget->initialize(PrefsMan->getBuilderExtraExtensionsPaths(),
                                                  openfluid::tools::toQStringList(
                                                      openfluid::base::Environment::getDefaultBuilderextsDirs()));
 
     // interface
-    ui->RecentMaxSpinBox->setValue(PrefsMan->getRecentMax());
+    ui->RecentMaxSpinBox->setValue(PrefsMan->getBuilderRecentMax());
 
-    ui->AutoSaveCheckBox->setChecked(PrefsMan->isAutomaticSaveBeforeRun());
+    ui->AutoSaveCheckBox->setChecked(PrefsMan->isBuilderAutomaticSaveBeforeRun());
 
-    ui->ItemRemovalCheckBox->setChecked(PrefsMan->isItemRemovalConfirm());
-    ui->ParamRemovalCheckBox->setChecked(PrefsMan->isParamRemovalConfirm());
-    ui->WatchCheckBox->setChecked(PrefsMan->isWaresWatchersActive());
+    ui->ItemRemovalCheckBox->setChecked(PrefsMan->isBuilderItemRemovalConfirm());
+    ui->ParamRemovalCheckBox->setChecked(PrefsMan->isBuilderParamRemovalConfirm());
+    ui->WatchCheckBox->setChecked(PrefsMan->isBuilderWaresWatchersActive());
 
-    ui->UnitsRemovalCheckBox->setChecked(PrefsMan->isSpatialUnitsRemovalConfirm());
-    ui->ConnectionsRemovalCheckBox->setChecked(PrefsMan->isSpatialConnsRemovalConfirm());
-    ui->AttributesRemovalCheckBox->setChecked(PrefsMan->isSpatialAttrsRemovalConfirm());
+    ui->UnitsRemovalCheckBox->setChecked(PrefsMan->isBuilderSpatialUnitsRemovalConfirm());
+    ui->ConnectionsRemovalCheckBox->setChecked(PrefsMan->isBuilderSpatialConnsRemovalConfirm());
+    ui->AttributesRemovalCheckBox->setChecked(PrefsMan->isBuilderSpatialAttrsRemovalConfirm());
 
 
     // Simulations
-    ui->DeltaTSpinBox->setValue(PrefsMan->getDeltaT());
+    ui->DeltaTSpinBox->setValue(PrefsMan->getBuilderDeltaT());
 
-    ui->BeginDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getBegin(),"yyyy-MM-dd HH:mm:ss"));
-    ui->EndDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getEnd(),"yyyy-MM-dd HH:mm:ss"));
+    ui->BeginDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getBuilderBegin(),"yyyy-MM-dd HH:mm:ss"));
+    ui->EndDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getBuilderEnd(),"yyyy-MM-dd HH:mm:ss"));
 
   }
 
@@ -309,7 +309,7 @@ void PreferencesDialog::updateLanguage(const QString& Lang)
 
 void PreferencesDialog::clearRecentsList()
 {
-  openfluid::base::PreferencesManager::instance()->clearRecentProjects();
+  openfluid::base::PreferencesManager::instance()->clearBuilderRecentProjects();
   m_RecentsChanged = true;
 }
 
@@ -320,7 +320,7 @@ void PreferencesDialog::clearRecentsList()
 
 void PreferencesDialog::updateRecentsMax(int Val)
 {
-  openfluid::base::PreferencesManager::instance()->setRecentMax(Val);
+  openfluid::base::PreferencesManager::instance()->setBuilderRecentMax(Val);
   m_RecentsChanged = true;
 }
 
@@ -331,7 +331,7 @@ void PreferencesDialog::updateRecentsMax(int Val)
 
 void PreferencesDialog::confirmItemRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::instance()->setItemRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setBuilderItemRemovalConfirm(Confirm);
 }
 
 
@@ -341,7 +341,7 @@ void PreferencesDialog::confirmItemRemoval(bool Confirm)
 
 void PreferencesDialog::confirmParamRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::instance()->setParamRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setBuilderParamRemovalConfirm(Confirm);
 }
 
 
@@ -351,7 +351,7 @@ void PreferencesDialog::confirmParamRemoval(bool Confirm)
 
 void PreferencesDialog::confirmUnitsRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::instance()->setSpatialUnitsRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setBuilderSpatialUnitsRemovalConfirm(Confirm);
 }
 
 
@@ -361,7 +361,7 @@ void PreferencesDialog::confirmUnitsRemoval(bool Confirm)
 
 void PreferencesDialog::confirmConnectionsRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::instance()->setSpatialConnsRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setBuilderSpatialConnsRemovalConfirm(Confirm);
 }
 
 
@@ -371,7 +371,7 @@ void PreferencesDialog::confirmConnectionsRemoval(bool Confirm)
 
 void PreferencesDialog::confirmAttributesRemoval(bool Confirm)
 {
-  openfluid::base::PreferencesManager::instance()->setSpatialAttrsRemovalConfirm(Confirm);
+  openfluid::base::PreferencesManager::instance()->setBuilderSpatialAttrsRemovalConfirm(Confirm);
 }
 
 
@@ -381,7 +381,7 @@ void PreferencesDialog::confirmAttributesRemoval(bool Confirm)
 
 void PreferencesDialog::enableWatchers(bool Active)
 {
-  openfluid::base::PreferencesManager::instance()->setWaresWatchersActive(Active);
+  openfluid::base::PreferencesManager::instance()->setBuilderWaresWatchersActive(Active);
   m_WaresWatchingChanged = true;
 }
 
@@ -392,7 +392,7 @@ void PreferencesDialog::enableWatchers(bool Active)
 
 void PreferencesDialog::enableAutoSaveBeforeRun(bool AutoSave)
 {
-  openfluid::base::PreferencesManager::instance()->setAutomaticSaveBeforeRun(AutoSave);
+  openfluid::base::PreferencesManager::instance()->setBuilderAutomaticSaveBeforeRun(AutoSave);
 }
 
 
@@ -402,7 +402,7 @@ void PreferencesDialog::enableAutoSaveBeforeRun(bool AutoSave)
 
 void PreferencesDialog::updateDeltaT(int Val)
 {
-  openfluid::base::PreferencesManager::instance()->setDeltaT(Val);
+  openfluid::base::PreferencesManager::instance()->setBuilderDeltaT(Val);
 }
 
 
@@ -412,7 +412,7 @@ void PreferencesDialog::updateDeltaT(int Val)
 
 void PreferencesDialog::updatePeriodBegin(const QDateTime& DT)
 {
-  openfluid::base::PreferencesManager::instance()->setBegin(DT.toString("yyyy-MM-dd HH:mm:ss"));
+  openfluid::base::PreferencesManager::instance()->setBuilderBegin(DT.toString("yyyy-MM-dd HH:mm:ss"));
   if (ui->EndDateEdit->dateTime() <= DT)
   {
     ui->EndDateEdit->setDateTime(DT.addSecs(1));
@@ -426,7 +426,7 @@ void PreferencesDialog::updatePeriodBegin(const QDateTime& DT)
 
 void PreferencesDialog::updatePeriodEnd(const QDateTime& DT)
 {
-  openfluid::base::PreferencesManager::instance()->setEnd(DT.toString("yyyy-MM-dd HH:mm:ss"));
+  openfluid::base::PreferencesManager::instance()->setBuilderEnd(DT.toString("yyyy-MM-dd HH:mm:ss"));
 }
 
 
@@ -436,7 +436,7 @@ void PreferencesDialog::updatePeriodEnd(const QDateTime& DT)
 
 void PreferencesDialog::enableSyntaxHighlighting(bool Enable)
 {
-  openfluid::base::PreferencesManager::instance()->setSyntaxHighlightingEnabled(Enable);
+  openfluid::base::PreferencesManager::instance()->setWaresdevSyntaxHighlightingEnabled(Enable);
   m_TextEditorSettingsChanged = true;
 }
 
@@ -446,7 +446,7 @@ void PreferencesDialog::enableSyntaxHighlighting(bool Enable)
 
 void PreferencesDialog::enableCurrentLineHighlighting(bool Enable)
 {
-  openfluid::base::PreferencesManager::instance()->setCurrentlineHighlightingEnabled(Enable);
+  openfluid::base::PreferencesManager::instance()->setWaresdevCurrentlineHighlightingEnabled(Enable);
   m_TextEditorSettingsChanged = true;
 }
 
@@ -459,7 +459,7 @@ void PreferencesDialog::changeCurrentLineColor()
 {
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
 
-  QColor Color = QColorDialog::getColor(PrefMgr->getCurrentlineColor(),this);
+  QColor Color = QColorDialog::getColor(PrefMgr->getWaresdevCurrentlineColor(),this);
 
   // Cancel on QColorDialog returns an invalid Color
   if(Color.isValid())
@@ -469,7 +469,7 @@ void PreferencesDialog::changeCurrentLineColor()
     ui->CurrentLineColorButton->setStyleSheet(
         QString("border: 2px solid grey; border-radius: 4px; background-color: %1").arg(ColorName));
 
-    PrefMgr->setCurrentlineColor(ColorName);
+    PrefMgr->setWaresdevCurrentlineColor(ColorName);
 
     m_TextEditorSettingsChanged = true;
   }
@@ -487,7 +487,7 @@ void PreferencesDialog::changeCurrentFont(const QFont& Font)
 
   ui->FontComboBox->setFont(Font);
 
-  openfluid::base::PreferencesManager::instance()->setFontName(FontName);
+  openfluid::base::PreferencesManager::instance()->setWaresdevFontName(FontName);
 
   m_TextEditorSettingsChanged = true;
 }
@@ -499,7 +499,7 @@ void PreferencesDialog::changeCurrentFont(const QFont& Font)
 
 void PreferencesDialog::enableLineWrapping(bool Enable)
 {
-  openfluid::base::PreferencesManager::instance()->setLineWrappingEnabled(Enable);
+  openfluid::base::PreferencesManager::instance()->setWaresdevLineWrappingEnabled(Enable);
   m_TextEditorSettingsChanged = true;
 }
 
@@ -510,7 +510,7 @@ void PreferencesDialog::enableLineWrapping(bool Enable)
 
 void PreferencesDialog::changeIndentSpaceNumber(int SpaceNb)
 {
-  openfluid::base::PreferencesManager::instance()->setIndentSpaceNb(SpaceNb);
+  openfluid::base::PreferencesManager::instance()->setWaresdevIndentSpaceNb(SpaceNb);
   m_TextEditorSettingsChanged = true;
 }
 
@@ -620,11 +620,11 @@ void PreferencesDialog::intializeTextEditorSettings()
 
   // Syntax highlighting
 
-  bool IsHLEnabled = PrefsMan->isSyntaxHighlightingEnabled();
+  bool IsHLEnabled = PrefsMan->isWaresdevSyntaxHighlightingEnabled();
   ui->SyntaxHLCheckBox->setChecked(IsHLEnabled);
 
   openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules =
-      PrefsMan->getSyntaxHighlightingRules();
+      PrefsMan->getWaresdevSyntaxHighlightingRules();
 
   QSignalMapper* SignalMapperCB = new QSignalMapper(this);
   QSignalMapper* SignalMapperButton = new QSignalMapper(this);
@@ -680,9 +680,9 @@ void PreferencesDialog::intializeTextEditorSettings()
 
   // Current line highlighting
 
-  ui->CurrentLineHLCheckBox->setChecked(PrefsMan->isCurrentlineHighlightingEnabled());
+  ui->CurrentLineHLCheckBox->setChecked(PrefsMan->isWaresdevCurrentlineHighlightingEnabled());
 
-  QString Color = PrefsMan->getCurrentlineColor();
+  QString Color = PrefsMan->getWaresdevCurrentlineColor();
   if(QColor::isValidColor(Color))
     ui->CurrentLineColorButton->setStyleSheet(
         QString("border: 1px solid grey; border-radius: 4px; background-color: %1").arg(Color));
@@ -690,15 +690,15 @@ void PreferencesDialog::intializeTextEditorSettings()
 
   // Font
 
-  QString FontName = PrefsMan->getFontName();
+  QString FontName = PrefsMan->getWaresdevFontName();
   ui->FontComboBox->setFont(QFont(FontName));
   ui->FontComboBox->setCurrentFont(QFont(FontName));
 
 
   // Others
 
-  ui->LineWrappingCheckBox->setChecked(PrefsMan->isLineWrappingEnabled());
-  ui->IndentSpaceNbSpinBox->setValue(PrefsMan->getIndentSpaceNb());
+  ui->LineWrappingCheckBox->setChecked(PrefsMan->isWaresdevLineWrappingEnabled());
+  ui->IndentSpaceNbSpinBox->setValue(PrefsMan->getWaresdevIndentSpaceNb());
 }
 
 
@@ -755,7 +755,7 @@ void PreferencesDialog::changeSyntaxElementDecoration(int ElementRow)
   QString ColorName = StyleNameLabel->property("ColorName").toString();
 
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules = PrefMgr->getSyntaxHighlightingRules();
+  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules = PrefMgr->getWaresdevSyntaxHighlightingRules();
   openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.find(StyleName);
   if(it != Rules.end())
   {
@@ -764,7 +764,7 @@ void PreferencesDialog::changeSyntaxElementDecoration(int ElementRow)
   }
   else
     Rules.insert(StyleName, openfluid::base::PreferencesManager::SyntaxHighlightingRule_t(ColorName,Decorations));
-  openfluid::base::PreferencesManager::instance()->setSyntaxHighlightingRules(Rules);
+  openfluid::base::PreferencesManager::instance()->setWaresdevSyntaxHighlightingRules(Rules);
 
   updateSyntaxElementLabel(StyleNameLabel, Decorations,ColorName);
 
@@ -809,7 +809,7 @@ void PreferencesDialog::changeSyntaxElementColor(int ElementRow)
 void PreferencesDialog::processSimUserPathsUpdate()
 {
   openfluid::base::PreferencesManager::instance()
-      ->setExtraSimulatorsPaths(ui->SimulatorsSearchPathsWidget->getUserPaths());
+      ->setBuilderExtraSimulatorsPaths(ui->SimulatorsSearchPathsWidget->getUserPaths());
   m_SimPathsChanged = true;
 }
 
@@ -821,7 +821,7 @@ void PreferencesDialog::processSimUserPathsUpdate()
 void PreferencesDialog::processObsUserPathsUpdate()
 {
   openfluid::base::PreferencesManager::instance()
-      ->setExtraObserversPaths(ui->ObserversSearchPathsWidget->getUserPaths());
+      ->setBuilderExtraObserversPaths(ui->ObserversSearchPathsWidget->getUserPaths());
   m_ObsPathsChanged = true;
 }
 
@@ -833,7 +833,7 @@ void PreferencesDialog::processObsUserPathsUpdate()
 void PreferencesDialog::processBextUserPathsUpdate()
 {
   openfluid::base::PreferencesManager::instance()
-      ->setExtraExtensionsPaths(ui->BuilderextsSearchPathsWidget->getUserPaths());
+      ->setBuilderExtraExtensionsPaths(ui->BuilderextsSearchPathsWidget->getUserPaths());
 }
 
 
@@ -843,7 +843,7 @@ void PreferencesDialog::processBextUserPathsUpdate()
 
 void PreferencesDialog::processWorkspacesPathsUpdate()
 {
-  openfluid::base::PreferencesManager::instance()->setWorkspacesPaths(ui->WorkspacesPathsWidget->getPathsList());
+  openfluid::base::PreferencesManager::instance()->setBuilderWorkspacesPaths(ui->WorkspacesPathsWidget->getPathsList());
 }
 
 
@@ -936,7 +936,7 @@ void PreferencesDialog::applyTextEditorSettings()
 
 void PreferencesDialog::restoreDefaultsTextEditorSettings()
 {
-  openfluid::base::PreferencesManager::instance()->setTextEditorDefaults(true);
+  openfluid::base::PreferencesManager::instance()->setWaresdevTextEditorDefaults(true);
   intializeTextEditorSettings();
   m_TextEditorSettingsChanged = true;
 }

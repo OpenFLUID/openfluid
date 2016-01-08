@@ -163,7 +163,7 @@ void ProjectModule::updateWaresWatchersPaths()
   if (!mp_SimulatorsPlugsWatcher->directories().isEmpty())
     mp_SimulatorsPlugsWatcher->removePaths(mp_SimulatorsPlugsWatcher->directories());
 
-  if (openfluid::base::PreferencesManager::instance()->isWaresWatchersActive())
+  if (openfluid::base::PreferencesManager::instance()->isBuilderWaresWatchersActive())
   {
     Paths << openfluid::tools::toQStringList(openfluid::base::Environment::getSimulatorsDirs())
           << openfluid::tools::toQStringList(openfluid::base::Environment::getExtraSimulatorsDirs());
@@ -184,7 +184,7 @@ void ProjectModule::updateWaresWatchersPaths()
   if (!mp_ObserversPlugsWatcher->directories().isEmpty())
     mp_ObserversPlugsWatcher->removePaths(mp_ObserversPlugsWatcher->directories());
 
-  if (openfluid::base::PreferencesManager::instance()->isWaresWatchersActive())
+  if (openfluid::base::PreferencesManager::instance()->isBuilderWaresWatchersActive())
   {
 
     Paths << openfluid::tools::toQStringList(openfluid::base::Environment::getObserversDirs())
@@ -436,7 +436,7 @@ void ProjectModule::whenPreferencesAsked()
 
   if (PrefsDlg.isSimPathsChanged())
   {
-    QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
+    QStringList ExtraPaths = PrefsMgr->getBuilderExtraSimulatorsPaths();
 
     openfluid::base::Environment::resetExtraSimulatorsDirs();
     for (int i=0;i<ExtraPaths.size(); i++)
@@ -450,7 +450,7 @@ void ProjectModule::whenPreferencesAsked()
 
   if (PrefsDlg.isObsPathsChanged())
   {
-    QStringList ExtraPaths = PrefsMgr->getExtraObserversPaths();
+    QStringList ExtraPaths = PrefsMgr->getBuilderExtraObserversPaths();
 
     openfluid::base::Environment::resetExtraObserversDirs();
     for (int i=0;i<ExtraPaths.size(); i++)
@@ -466,7 +466,7 @@ void ProjectModule::whenPreferencesAsked()
   {
     updateWaresWatchersPaths();
 
-    if (PrefsMgr->isWaresWatchersActive())
+    if (PrefsMgr->isBuilderWaresWatchersActive())
     {
       // update wares when re-enabling watching
       updateSimulatorsWares();
@@ -474,7 +474,7 @@ void ProjectModule::whenPreferencesAsked()
     }
   }
 
-  emit refreshWaresEnabled(!PrefsMgr->isWaresWatchersActive());
+  emit refreshWaresEnabled(!PrefsMgr->isBuilderWaresWatchersActive());
 
   if(PrefsDlg.isTextEditorSettingsChanged())
     mp_MainWidget->updateWareSrcEditorsSettings();
@@ -497,7 +497,7 @@ void ProjectModule::whenRecentProjectsActionsChanged()
 
 void ProjectModule::whenRunAsked()
 {
-  if (openfluid::base::PreferencesManager::instance()->isAutomaticSaveBeforeRun())
+  if (openfluid::base::PreferencesManager::instance()->isBuilderAutomaticSaveBeforeRun())
     whenSaveAsked();
 
   emit simulationStarted();

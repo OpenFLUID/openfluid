@@ -99,15 +99,15 @@ void BuilderApp::initialize()
 
   mp_Splash->setMessage(tr("Initializing wares paths"));
 
-  QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
+  QStringList ExtraPaths = PrefsMgr->getBuilderExtraSimulatorsPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
     openfluid::base::Environment::addExtraSimulatorsDirs(ExtraPaths[i].toStdString());
 
-  ExtraPaths = PrefsMgr->getExtraObserversPaths();
+  ExtraPaths = PrefsMgr->getBuilderExtraObserversPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
     openfluid::base::Environment::addExtraObserversDirs(ExtraPaths[i].toStdString());
 
-  ExtraPaths = PrefsMgr->getExtraExtensionsPaths();
+  ExtraPaths = PrefsMgr->getBuilderExtraExtensionsPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
     openfluid::base::Environment::addExtraBuilderextsDirs(ExtraPaths[i].toStdString());
 

@@ -101,7 +101,7 @@ void WareSrcFiletypeManager::updateStyles()
   m_Formats.clear();
 
   openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules = openfluid::base::PreferencesManager::instance()
-      ->getSyntaxHighlightingRules();
+      ->getWaresdevSyntaxHighlightingRules();
 
   for (openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.begin(); it != Rules.end();
       ++it)

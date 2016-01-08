@@ -59,7 +59,7 @@ DevStudioPreferencesManager::DevStudioPreferencesManager() :
 {
   openfluid::base::Environment::init();
 
-  switchWorkspace(openfluid::base::PreferencesManager::instance()->getWorkspacePath());
+  switchWorkspace(openfluid::base::PreferencesManager::instance()->getBuilderWorkspacePath());
 }
 
 
