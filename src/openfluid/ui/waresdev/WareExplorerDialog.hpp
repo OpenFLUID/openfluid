@@ -95,7 +95,7 @@ class OPENFLUID_API WareExplorerDialog: public QDialog
     void setOpenWareMode();
     void setOpenFileMode();
     void setSaveFileMode();
-    void setCreateFileMode();
+    void setCreateFileMode(const QString& CurrentPath);
     void setCreateFolderMode();
 
     /*

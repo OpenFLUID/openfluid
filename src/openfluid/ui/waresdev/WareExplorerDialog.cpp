@@ -54,10 +54,10 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath,
-                                       const QString& Title, const QString& DefaultMessage,
-                                       const QString& AcceptButtonLabel) :
+  const QString& Title, const QString& DefaultMessage,
+  const QString& AcceptButtonLabel) :
     QDialog(Parent), ui(new Ui::WareExplorerDialog), mp_AcceptButton(0), m_DefaulMessage(DefaultMessage),
-    m_TopDir(QDir(TopDirectoryPath))
+        m_TopDir(QDir(TopDirectoryPath))
 {
   ui->setupUi(this);
 
@@ -100,7 +100,7 @@ WareExplorerDialog::~WareExplorerDialog()
 
 
 QString WareExplorerDialog::getOpenWarePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& Title,
-                                            const QString& CurrentPath)
+  const QString& CurrentPath)
 {
   WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath,
                             Title.isEmpty() ? tr("Open ware") : Title,
@@ -119,7 +119,7 @@ QString WareExplorerDialog::getOpenWarePath(QWidget* Parent, const QString& TopD
 
 
 QString WareExplorerDialog::getOpenFilePath(QWidget* Parent, const QString& TopDirectoryPath,
-                                            const QString& CurrentPath)
+  const QString& CurrentPath)
 {
   WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("Open file"),
                             tr("Open a file"),
@@ -138,7 +138,7 @@ QString WareExplorerDialog::getOpenFilePath(QWidget* Parent, const QString& TopD
 
 
 QString WareExplorerDialog::getSaveFilePath(QWidget* Parent, const QString& TopDirectoryPath,
-                                            const QString& CurrentPath)
+  const QString& CurrentPath)
 {
   WareExplorerDialog Dialog(
       Parent, TopDirectoryPath, CurrentPath, tr("Save as"),
@@ -169,12 +169,12 @@ QString WareExplorerDialog::getSaveFilePath(QWidget* Parent, const QString& TopD
 
 
 QString WareExplorerDialog::getCreateFilePath(QWidget* Parent, const QString& TopDirectoryPath,
-                                              const QString& CurrentPath)
+  const QString& CurrentPath)
 {
   WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("New file"),
                             tr("Create a file"),
                             tr("OK"));
-  Dialog.setCreateFileMode();
+  Dialog.setCreateFileMode(QDir(TopDirectoryPath).relativeFilePath(CurrentPath));
 
   if (Dialog.exec())
     return Dialog.getCompleteFilePath();
@@ -188,7 +188,7 @@ QString WareExplorerDialog::getCreateFilePath(QWidget* Parent, const QString& To
 
 
 QString WareExplorerDialog::getCreateFolderPath(QWidget* Parent, const QString& TopDirectoryPath,
-                                                const QString& CurrentPath)
+  const QString& CurrentPath)
 {
   WareExplorerDialog Dialog(Parent, TopDirectoryPath, CurrentPath, tr("New folder"),
                             tr("Create a folder"),
@@ -255,7 +255,7 @@ void WareExplorerDialog::setSaveFileMode()
 // =====================================================================
 
 
-void WareExplorerDialog::setCreateFileMode()
+void WareExplorerDialog::setCreateFileMode(const QString& CurrentPath)
 {
   connect(ui->Filepath_lineEdit, SIGNAL(textChanged(const QString &)), this,
           SLOT(onTextChangedCreateFileMode(const QString&)));
@@ -263,10 +263,7 @@ void WareExplorerDialog::setCreateFileMode()
   connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
           SLOT(onCurrentChangedSaveCreateMode(const QString&)));
 
-  onTextChangedCreateFileMode(ui->Filepath_lineEdit->text());
-  onCurrentChangedSaveCreateMode(ui->WareExplorer->getCurrentPath());
-
-  ui->Filepath_lineEdit->setText("file.txt");
+  ui->Filepath_lineEdit->setText(CurrentPath);
 }
 
 
@@ -425,4 +422,4 @@ void WareExplorerDialog::setStatus(const QString WarningMsg)
 // =====================================================================
 
 
-} } }  // namespaces
+} } } // namespaces

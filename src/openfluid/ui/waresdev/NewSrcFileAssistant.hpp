@@ -52,12 +52,53 @@
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 
-namespace Ui { class CppPage;
+namespace Ui {
+class EmptyPage;
+class CppPage;
 class CMakeConfigPage;
 class NewSrcFileAssistant;
 }
 
 namespace openfluid { namespace ui { namespace waresdev {
+
+
+// =====================================================================
+// =====================================================================
+
+
+class OPENFLUID_API EmptyPage: public QWizardPage
+{
+  Q_OBJECT
+
+  private:
+
+    Ui::EmptyPage* ui;
+
+    QString m_WarePath;
+
+    QString m_DefaultMsg = tr("Empty file");
+
+    QString m_FilePathPlaceholder = tr("<i>choose a file to create</i>");
+
+  protected:
+
+    /**
+     * Reimplemented function
+     */
+    bool isComplete() const;
+
+  public:
+
+    EmptyPage(const QString& WarePath, QWidget* Parent = nullptr);
+
+    ~EmptyPage();
+
+    void initialize();
+
+  private slots:
+
+    void onEmptyBrowseToolButtonClicked();
+};
 
 
 // =====================================================================
@@ -144,7 +185,13 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
     enum class PageType
     {
-      INTRO_PAGE = 0, EMPTY_PAGE = 1, CMAKECONFIG_PAGE = 2, CPP_PAGE = 3, HPP_PAGE = 4, CPP_UI_PAGE = 5, HPP_UI_PAGE = 6
+      INTRO_PAGE = 0,
+      EMPTY_PAGE = 1,
+      CMAKECONFIG_PAGE = 2,
+      CPP_PAGE = 3,
+      HPP_PAGE = 4,
+      CPP_UI_PAGE = 5,
+      HPP_UI_PAGE = 6
     };
 
     Ui::NewSrcFileAssistant* ui;
@@ -187,11 +234,9 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
   private slots :
 
     void onFileTypeButtonClicked(int ID);
-
-    void onEmptyBrowseToolButtonClicked();
 };
 
 
-} } }  // namespaces
+} } } // namespaces
 
 #endif /* __OPENFLUID_UIWARESDEV_NEWSRCFILEASSISTANT_HPP__ */

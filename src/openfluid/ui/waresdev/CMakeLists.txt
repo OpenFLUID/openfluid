@@ -16,7 +16,7 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEd
                               NewSrcFileAssistant.hpp NewWareDialog.hpp FindReplaceDialog.hpp WareSrcMsgViewer.hpp
                               WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp)
 
-QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui CppPage.ui CMakeConfigPage.ui
+QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui EmptyPage.ui CppPage.ui CMakeConfigPage.ui
                               NewSrcFileAssistant.ui NewWareDialog.ui FindReplaceDialog.ui
                               WaresSrcExportDialog.ui WaresSrcImportDialog.ui WaresSrcIOProgressDialog.ui)
                                    

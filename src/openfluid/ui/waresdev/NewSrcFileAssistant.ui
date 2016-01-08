@@ -27,16 +27,7 @@
     <string notr="true">0</string>
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
+    <property name="margin">
      <number>0</number>
     </property>
     <item>
@@ -87,16 +78,7 @@ font : bold;
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>9</number>
       </property>
       <item>
@@ -267,137 +249,6 @@ font : bold;
     </item>
    </layout>
   </widget>
-  <widget class="QWizardPage" name="Empty_Page">
-   <property name="title">
-    <string/>
-   </property>
-   <property name="subTitle">
-    <string/>
-   </property>
-   <attribute name="pageId">
-    <string notr="true">1</string>
-   </attribute>
-   <layout class="QVBoxLayout" name="verticalLayout_4">
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
-    <item>
-     <widget class="QFrame" name="MessageFrame_2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(71,97,123);</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Panel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Sunken</enum>
-      </property>
-      <property name="lineWidth">
-       <number>0</number>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0">
-       <property name="spacing">
-        <number>5</number>
-       </property>
-       <property name="leftMargin">
-        <number>12</number>
-       </property>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QLabel" name="MessageLabel_2">
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);
-font : bold;
-</string>
-           </property>
-           <property name="text">
-            <string notr="true">Empty file</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
-       <number>9</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>New file to create:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="EmptyFile_label">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="toolButton">
-          <property name="text">
-           <string>Browse...</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
-  </widget>
  </widget>
  <tabstops>
   <tabstop>Empty_radioButton</tabstop>
@@ -407,7 +258,6 @@ font : bold;
   <tabstop>CMakeLists_radioButton</tabstop>
   <tabstop>CMakeConfig_radioButton</tabstop>
   <tabstop>Wareshub_radioButton</tabstop>
-  <tabstop>toolButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

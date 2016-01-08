@@ -40,6 +40,7 @@
 
 #include "NewSrcFileAssistant.hpp"
 #include "ui_NewSrcFileAssistant.h"
+#include "ui_EmptyPage.h"
 #include "ui_CppPage.h"
 #include "ui_CMakeConfigPage.h"
 
@@ -52,6 +53,84 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
+
+// =====================================================================
+// =====================================================================
+
+
+EmptyPage::EmptyPage(const QString& WarePath, QWidget* Parent) :
+    QWizardPage(Parent), ui(new Ui::EmptyPage), m_WarePath(WarePath)
+{
+  ui->setupUi(this);
+
+  ui->EmptyFileLabel->setText(m_FilePathPlaceholder);
+
+  ui->EmptyFileLineEdit->setVisible(false);
+  registerField("EmptyFilepath", ui->EmptyFileLineEdit);
+
+  NewSrcFileAssistant::setStatus(m_DefaultMsg, tr("No file selected"), ui->MessageLabel, ui->MessageFrame);
+
+  connect(ui->toolButton, SIGNAL(clicked()), this, SLOT(onEmptyBrowseToolButtonClicked()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+EmptyPage::~EmptyPage()
+{
+  delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void EmptyPage::initialize()
+{
+  QString FilePathLabel = ui->EmptyFileLabel->text();
+
+  if (FilePathLabel != m_FilePathPlaceholder)
+    ui->EmptyFileLineEdit->setText(QDir(m_WarePath).absoluteFilePath(FilePathLabel));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool EmptyPage::isComplete() const
+{
+  return !ui->EmptyFileLineEdit->text().isEmpty();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void EmptyPage::onEmptyBrowseToolButtonClicked()
+{
+  QString LineEditPath = ui->EmptyFileLineEdit->text();
+
+  QString NewPath = WareExplorerDialog::getCreateFilePath(
+      this, m_WarePath, LineEditPath.isEmpty() ? QDir(m_WarePath).relativeFilePath("file.txt") : LineEditPath);
+
+  if (!NewPath.isEmpty())
+  {
+    ui->EmptyFileLabel->setText(QDir(m_WarePath).relativeFilePath(NewPath));
+    ui->EmptyFileLineEdit->setText(NewPath);
+    NewSrcFileAssistant::setStatus(m_DefaultMsg, "", ui->MessageLabel, ui->MessageFrame);
+  }
+
+  emit QWizardPage::completeChanged();
+}
+
+
+// =====================================================================
+// =====================================================================
 
 // =====================================================================
 // =====================================================================
@@ -303,7 +382,6 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
 
   QString BgColorCss = QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR);
   ui->MessageFrame->setStyleSheet(BgColorCss);
-  ui->MessageFrame_2->setStyleSheet(BgColorCss);
 
   ui->buttonGroup->setId(ui->Wareshub_radioButton, -1);
   ui->buttonGroup->setId(ui->CMakeLists_radioButton, -1);
@@ -344,7 +422,8 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
     ui->Hpp_radioButton->setVisible(false);
   }
 
-// existing pages : IntroPage (index 0), EmptyPage (index 1)
+// existing page : IntroPage (index 0)
+  addPage(new EmptyPage(mref_Container.getAbsolutePath(), this)); // index 1
   addPage(new CMakeConfigPage(Type, this)); // index 2
   addPage(new CppPage(QDir(mref_Container.getAbsolutePath()), this)); // index 3
 
@@ -352,7 +431,6 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   mp_Factory->setWareId(Container.getName());
 
   connect(ui->buttonGroup, SIGNAL(buttonClicked(int)), this, SLOT(onFileTypeButtonClicked(int)));
-  connect(ui->toolButton, SIGNAL(clicked()), this, SLOT(onEmptyBrowseToolButtonClicked()));
 }
 
 
@@ -403,6 +481,8 @@ void NewSrcFileAssistant::initializePage(int Id)
     qobject_cast<CppPage*>(page(static_cast<int>(PageType::CPP_PAGE)))->initialize(IsHpp, IsUi,
                                                                                    mref_Container.getType());
   }
+  else if (Id == static_cast<int>(PageType::EMPTY_PAGE))
+    qobject_cast<EmptyPage*>(page(static_cast<int>(PageType::EMPTY_PAGE)))->initialize();
 }
 
 
@@ -413,25 +493,6 @@ void NewSrcFileAssistant::initializePage(int Id)
 void NewSrcFileAssistant::onFileTypeButtonClicked(int Id)
 {
   currentPage()->setFinalPage(Id < 0);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void NewSrcFileAssistant::onEmptyBrowseToolButtonClicked()
-{
-  QString WarePath = mref_Container.getAbsolutePath();
-
-  QString NewPath = WareExplorerDialog::getCreateFilePath(this, WarePath, "");
-
-  if (NewPath.isEmpty())
-    return;
-
-  ui->EmptyFile_label->setText(QDir(WarePath).relativeFilePath(NewPath));
-
-  m_NewFilePath = NewPath;
 }
 
 
@@ -454,7 +515,7 @@ void NewSrcFileAssistant::accept()
       break;
     case static_cast<int>(PageType::EMPTY_PAGE):
       {
-      NewFilePath = m_NewFilePath;
+      NewFilePath = field("EmptyFilepath").toString();
 
       Ok = QDir().mkpath(QFileInfo(NewFilePath).absolutePath());
       if (!Ok)
