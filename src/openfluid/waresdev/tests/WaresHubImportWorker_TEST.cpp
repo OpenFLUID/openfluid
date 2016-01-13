@@ -172,15 +172,6 @@ BOOST_AUTO_TEST_CASE(connect_http_ok)
   BOOST_CHECK(W.isConnected());
 }
 
-BOOST_AUTO_TEST_CASE(connect_https_fails)
-{
-  if (!F::checkHttps("connect_https_fails"))
-    return;
-
-  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps);
-  BOOST_CHECK_EQUAL(W.connect(), false);
-}
-
 BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_ok)
 {
   if (!F::checkHttps("connect_https_sslNoverify_ok"))
@@ -223,47 +214,12 @@ BOOST_AUTO_TEST_CASE(ware_list_https_ok)
   BOOST_CHECK(!W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).empty());
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_FIXTURE_TEST_CASE(clone_https_default_fails,F)
-{
-  if (!checkHttps("clone_https_default_fails"))
-    return;
-
-  openfluid::waresdev::WaresHubImportWorker W(UrlHttps);
-  W.connect();
-
-  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
-
-  BOOST_CHECK_EQUAL(W.clone(), false);
-
-  BOOST_CHECK(TestWaresDevSimulatorsDir.entryList(QDir::Files).empty());
-}
-
 BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 {
   if (!checkHttps("clone_https_wrongauth_fails"))
     return;
 
   openfluid::waresdev::WaresHubImportWorker W(UrlHttps, "wrongname", "wrongpass", true);
-  W.connect();
-
-  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
-
-  BOOST_CHECK_EQUAL(W.clone(), false);
-
-  BOOST_CHECK(TestWaresDevSimulatorsDir.entryList(QDir::Files).empty());
-}
-
-BOOST_FIXTURE_TEST_CASE(clone_https_sslverify_fails,F)
-{
-  if (!checkHttps("clone_https_sslverify_fails"))
-    return;
-
-  openfluid::waresdev::WaresHubImportWorker W(UrlHttps, Username, Password, false);
   W.connect();
 
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });

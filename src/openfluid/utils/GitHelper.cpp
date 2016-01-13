@@ -39,6 +39,7 @@
 
 #include <QDir>
 #include <QTextStream>
+#include <QDebug>
 #include <openfluid/utils/GitHelper.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
@@ -117,7 +118,11 @@ void GitHelper::processErrorOutput()
   mp_Process->setReadChannel(QProcess::StandardError);
 
   while (mp_Process->canReadLine())
-    emit error(QString::fromUtf8(mp_Process->readLine()));
+  {
+    QString Msg = QString::fromUtf8(mp_Process->readLine());
+    qDebug() << Msg;
+    emit error(Msg);
+  }
 }
 
 
@@ -130,7 +135,11 @@ void GitHelper::processErrorOutputAsInfo()
   mp_Process->setReadChannel(QProcess::StandardError);
 
   while (mp_Process->canReadLine())
-    emit info(QString::fromUtf8(mp_Process->readLine()));
+  {
+    QString Msg = QString::fromUtf8(mp_Process->readLine());
+    qDebug() << Msg;
+    emit info(Msg);
+  }
 }
 
 
