@@ -63,7 +63,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
-    QPlainTextEdit(Parent), m_FilePath(FilePath), mp_SyntaxHighlighter(0)
+    QPlainTextEdit(Parent), WareFileEditor(FilePath)
 {
   m_SelectionTagsRegExp.setPattern("%%SEL_(START|END)%%");
   m_AllTagsRegExp.setPattern("%%(SEL_(START|END)|CURSOR|INDENT)%%");
@@ -236,7 +236,7 @@ void WareSrcFileEditor::updateSettings()
   else
   {
     delete mp_SyntaxHighlighter;
-    mp_SyntaxHighlighter = 0;
+    mp_SyntaxHighlighter = nullptr;
   }
 
   // Line wrapping
@@ -596,16 +596,6 @@ void WareSrcFileEditor::onChanged(bool Changed)
 // =====================================================================
 
 
-QString WareSrcFileEditor::getFilePath()
-{
-  return m_FilePath;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void WareSrcFileEditor::saveContent()
 {
   saveContentToPath(m_FilePath);
@@ -943,6 +933,66 @@ void WareSrcFileEditor::goToLine()
 
   if (Nb < document()->lineCount())
     selectLine(Nb);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcFileEditor::isModified()
+{
+  return document()->isModified();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QWidget* WareSrcFileEditor::getWidget()
+{
+  return this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::copy()
+{
+  QPlainTextEdit::copy();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::cut()
+{
+  QPlainTextEdit::cut();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::paste()
+{
+  QPlainTextEdit::paste();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::setFocus()
+{
+  QPlainTextEdit::setFocus();
 }
 
 

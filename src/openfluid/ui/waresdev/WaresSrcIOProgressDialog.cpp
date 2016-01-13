@@ -49,7 +49,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, QWidget* Parent) :
+WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, bool IsMaxUndefined, QWidget* Parent) :
     QDialog(Parent), ui(new Ui::WaresSrcIOProgressDialog)
 {
   ui->setupUi(this);
@@ -57,6 +57,9 @@ WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, Q
   ui->DescriptionLabel->setText(Description);
 
   ui->buttonBox->setEnabled(false);
+
+  if (IsMaxUndefined)
+    ui->progressBar->setMaximum(0);
 }
 
 
@@ -66,9 +69,7 @@ WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, Q
 
 void WaresSrcIOProgressDialog::writeInfo(const QString& Message)
 {
-  ui->textEdit->append(Message);
-
-  ui->textEdit->ensureCursorVisible();
+  write(Message);
 }
 
 
@@ -78,18 +79,44 @@ void WaresSrcIOProgressDialog::writeInfo(const QString& Message)
 
 void WaresSrcIOProgressDialog::writeError(const QString& Message)
 {
-  QTextCursor Cursor = ui->textEdit->textCursor();
+  write(Message, QColor("red"));
+}
 
-  QTextCharFormat OriginalFormat = Cursor.charFormat();
 
-  QTextCharFormat RedFormat;
-  RedFormat.setForeground(QColor("red"));
-  Cursor.setCharFormat(RedFormat);
+// =====================================================================
+// =====================================================================
 
-  Cursor.insertText(Message);
 
-  Cursor.setCharFormat(OriginalFormat);
+void WaresSrcIOProgressDialog::writeSuccess(const QString& Message)
+{
+  write(Message, QColor("green"));
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcIOProgressDialog::write(const QString& Message, const QColor& Color)
+{
+  ui->textEdit->append("\n");
+
+  if (!Color.isValid())
+    ui->textEdit->append(Message);
+  else
+  {
+    QTextCursor Cursor = ui->textEdit->textCursor();
+
+    QTextCharFormat OriginalFormat = Cursor.charFormat();
+
+    QTextCharFormat ColoredFormat;
+    ColoredFormat.setForeground(Color);
+    Cursor.setCharFormat(ColoredFormat);
+
+    Cursor.insertText(Message);
+
+    Cursor.setCharFormat(OriginalFormat);
+  }
 
   ui->textEdit->ensureCursorVisible();
 }
@@ -99,14 +126,22 @@ void WaresSrcIOProgressDialog::writeError(const QString& Message)
 // =====================================================================
 
 
-void WaresSrcIOProgressDialog::finish(bool Ok)
+void WaresSrcIOProgressDialog::finish(bool Ok, const QString& Message)
 {
   if (Ok)
+  {
+    writeSuccess(Message);
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(accept()));
+  }
   else
+  {
+    writeError(Message);
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(reject()));
+  }
 
   ui->buttonBox->setEnabled(true);
+  ui->progressBar->setMaximum(100);
+  progress(100);
 }
 
 
@@ -114,12 +149,15 @@ void WaresSrcIOProgressDialog::finish(bool Ok)
 // =====================================================================
 
 
-void WaresSrcIOProgressDialog::finishAndQuit(bool Ok)
+void WaresSrcIOProgressDialog::finishAndQuit(bool Ok, const QString& Message)
 {
-  if(Ok)
+  if (Ok)
+  {
+    writeSuccess(Message);
     accept();
+  }
   else
-    finish(Ok);
+    finish(Ok, Message);
 }
 
 

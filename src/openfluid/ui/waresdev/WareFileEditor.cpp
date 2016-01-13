@@ -30,58 +30,46 @@
  */
 
 /**
- @file WaresSrcIOProgressDialog.hpp
- @brief Header of ...
+ @file WareFileEditor.cpp
+ @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-
-#ifndef __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__
-#define __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__
-
-
-#include <QDialog>
-
-#include <openfluid/dllexport.hpp>
-
-namespace Ui { class WaresSrcIOProgressDialog;
-}
-
+#include <openfluid/ui/waresdev/WareFileEditor.hpp>
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
+// =====================================================================
+// =====================================================================
+
+
+WareFileEditor::WareFileEditor(const QString& FilePath) :
+    m_FilePath(FilePath)
 {
-  Q_OBJECT
+}
 
-  private:
+// =====================================================================
+// =====================================================================
 
-    Ui::WaresSrcIOProgressDialog* ui;
 
-    void write(const QString& Message, const QColor& Color = QColor());
+WareFileEditor::~WareFileEditor()
+{
+}
 
-  public slots :
+// =====================================================================
+// =====================================================================
 
-    void writeInfo(const QString& Message);
 
-    void writeError(const QString& Message);
+QString WareFileEditor::getFilePath()
+{
+  return m_FilePath;
+}
 
-    void writeSuccess(const QString& Message);
 
-    void finish(bool Ok, const QString& Message);
+// =====================================================================
+// =====================================================================
 
-    void finishAndQuit(bool Ok, const QString& Message);
 
-    void progress(int Value);
-
-  public:
-
-    WaresSrcIOProgressDialog(const QString& Description, bool IsMaxUndefined, QWidget* Parent);
-
-};
-
-} } } //namespaces
-
-#endif /* __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__ */
+} } } // namespaces

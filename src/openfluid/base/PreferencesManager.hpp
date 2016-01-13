@@ -108,7 +108,7 @@ class OPENFLUID_API PreferencesManager
 
     typedef std::vector<RecentProject_t> RecentProjectsList_t;
 
-    typedef QMap<QString,SyntaxHighlightingRule_t> SyntaxHighlightingRules_t;
+    typedef QMap<QString, SyntaxHighlightingRule_t> SyntaxHighlightingRules_t;
 
     typedef std::map<QString, QString> MarketPlaces_t;
 
@@ -283,7 +283,7 @@ class OPENFLUID_API PreferencesManager
 
     QString getWaresdevConfigEnv(const QString& Name);
 
-    void setWaresdevConfigEnv(const QString& Name,const QString& Value);
+    void setWaresdevConfigEnv(const QString& Name, const QString& Value);
 
     QString getWaresdevConfigOptions();
 
@@ -295,13 +295,23 @@ class OPENFLUID_API PreferencesManager
 
     QString getWaresdevBuildEnv(const QString& Name);
 
-    void setWaresdevBuildEnv(const QString& Name,const QString& Value);
+    void setWaresdevBuildEnv(const QString& Name, const QString& Value);
 
     bool isWaresdevShowCommandEnv(const QString& Name);
 
     void setWaresdevShowCommandEnv(const QString& Name, bool Enabled);
 
+    bool isWaresdevGitSslNoVerify();
 
+    void setWaresdevGitSslNoVerify(bool NoVerify);
+
+    QString getWaresdevImportWaresHubLastUrl();
+
+    void setWaresdevImportWaresHubLastUrl(const QString& Url);
+
+    QString getWaresdevImportWaresHubLastUsername();
+
+    void setWaresdevImportWaresHubLastUsername(const QString& Username);
 };
 
 } } //namespaces

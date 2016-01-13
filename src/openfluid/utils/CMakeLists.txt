@@ -1,4 +1,4 @@
-INCLUDE_DIRECTORIES(${QT_INCLUDES} ${GDAL_INCLUDE_DIR} ${RapidJSON_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${QT_INCLUDES} ${GDAL_INCLUDE_DIR} ${RapidJSON_INCLUDE_DIR} ${LIBGIT2_INCLUDE_DIR})
 
 FILE(GLOB OPENFLUID_UTILS_CPP *.cpp)
 FILE(GLOB OPENFLUID_UTILS_HPP *.hpp)
@@ -15,10 +15,12 @@ SET_TARGET_PROPERTIES(openfluid-utils PROPERTIES VERSION "${OPENFLUID_VERSION_MA
                                         COMPILE_DEFINITIONS "OPENFLUID_DLL"
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
-TARGET_LINK_LIBRARIES(openfluid-utils 
+TARGET_LINK_LIBRARIES(openfluid-utils
+                      openfluid-base
                       ${QT_QTCORE_LIBRARY}
                       ${QT_QTNETWORK_LIBRARY}
-                      ${GDAL_LIBRARIES})
+                      ${GDAL_LIBRARIES}
+                      ${LIBGIT2_LIBRARIES})
 
 
 

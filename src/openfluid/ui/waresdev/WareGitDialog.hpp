@@ -30,58 +30,41 @@
  */
 
 /**
- @file WaresSrcIOProgressDialog.hpp
+ @file WareGitDialog.hpp
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__
-#define __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WAREGITDIALOG_HPP__
+#define __OPENFLUID_UIWARESDEV_WAREGITDIALOG_HPP__
 
 
 #include <QDialog>
 
 #include <openfluid/dllexport.hpp>
 
-namespace Ui { class WaresSrcIOProgressDialog;
+namespace Ui { class WareGitDialog;
 }
-
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-
-class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
+class OPENFLUID_API WareGitDialog: public QDialog
 {
   Q_OBJECT
 
   private:
 
-    Ui::WaresSrcIOProgressDialog* ui;
-
-    void write(const QString& Message, const QColor& Color = QColor());
-
-  public slots :
-
-    void writeInfo(const QString& Message);
-
-    void writeError(const QString& Message);
-
-    void writeSuccess(const QString& Message);
-
-    void finish(bool Ok, const QString& Message);
-
-    void finishAndQuit(bool Ok, const QString& Message);
-
-    void progress(int Value);
+    Ui::WareGitDialog* ui;
 
   public:
 
-    WaresSrcIOProgressDialog(const QString& Description, bool IsMaxUndefined, QWidget* Parent);
+    WareGitDialog(QWidget* Parent = nullptr);
 
+    void setContent(const QString& Content);
 };
 
-} } } //namespaces
+} } } // namespaces
 
-#endif /* __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WAREGITDIALOG_HPP__ */

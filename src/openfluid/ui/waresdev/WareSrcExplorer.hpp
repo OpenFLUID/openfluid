@@ -86,6 +86,10 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void onDeleteFileAsked();
 
+    void onGitStatusAsked();
+
+    void onGitLogAsked();
+
   public:
 
     WareSrcExplorer(QWidget* Parent = nullptr);
@@ -97,6 +101,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
     bool setCurrentPath(const QString& Path);
 
     QString getCurrentPath();
+
+    void updateExplorerModel(const QString& Path);
 
   signals:
 
@@ -116,9 +122,6 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void fileDeleted(const QString& Path);
 
-  public slots:
-
-    void emitDataChanged();
 };
 
 } } }  // namespaces

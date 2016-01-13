@@ -271,6 +271,15 @@ SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTP "http://jsonplaceholder.typicode.com")
 SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTPS "https://jsonplaceholder.typicode.com")
 SET(OFBUILD_TESTS_FLUIDHUB_URL_HTTP "http://www.openfluid-project.org/resources/fluidhub-api/testing")
 SET(OFBUILD_TESTS_FLUIDHUB_URL_HTTPS "https://www.openfluid-project.org/resources/fluidhub-api/testing")
+SET(OFBUILD_TESTS_WARESHUB_URL_HTTP ${OFBUILD_TESTS_FLUIDHUB_URL_HTTP})
+SET(OFBUILD_TESTS_WARESHUB_URL_HTTPS "")
+SET(OFBUILD_TESTS_WARESHUB_USERNAME "")
+SET(OFBUILD_TESTS_WARESHUB_PASSWORD "")
+SET(OFBUILD_TESTS_GITHELPER_URL "https://github.com/libgit2/TestGitRepository")
+SET(OFBUILD_TESTS_GITHELPER_EMPTYREPOS_URL "https://github.com/libgit2/TestEmptyRepository")
+SET(OFBUILD_TESTS_GITHELPER_AUTH_URL "https://bitbucket.org/libgit2/testgitrepository.git")
+SET(OFBUILD_TESTS_GITHELPER_AUTH_USERNAME "libgit2")
+SET(OFBUILD_TESTS_GITHELPER_AUTH_PASSWORD "libgit2")
 
 
 ################### cppcheck ###################

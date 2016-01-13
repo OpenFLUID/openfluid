@@ -47,8 +47,7 @@
 #include <QMenu>
 
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
-#include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
-#include <openfluid/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/ui/waresdev/WareFileEditor.hpp>
 #include <openfluid/ui/config.hpp>
 
 
@@ -56,7 +55,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 class WareSrcSyntaxHighlighter;
 
-class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
+class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEditor
 {
   Q_OBJECT
 
@@ -126,9 +125,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
         }
     };
 
-    QString m_FilePath;
-
-    WareSrcSyntaxHighlighter* mp_SyntaxHighlighter;
+    WareSrcSyntaxHighlighter* mp_SyntaxHighlighter = nullptr;
 
     QRegExp m_SelectionTagsRegExp;
     QRegExp m_AllTagsRegExp;
@@ -201,8 +198,6 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     int lineNumberAreaWidth();
 
-    QString getFilePath();
-
     void saveContent();
 
     void saveContentToPath(const QString& Path);
@@ -230,14 +225,25 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void updateSettings();
 
+    bool isModified();
+
+    QWidget* getWidget();
+
+    void copy();
+
+    void cut();
+
+    void paste();
+
+    void setFocus();
+
   public slots :
 
     void setShowLineMarkers(bool ShowMarkers);
 
-
   signals :
 
-    void editorTxtChanged(WareSrcFileEditor* Editor, bool Changed);
+    void editorTxtChanged(WareFileEditor* Editor, bool Changed);
 
     void editorSaved();
 

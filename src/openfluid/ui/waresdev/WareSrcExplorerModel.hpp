@@ -42,10 +42,10 @@
 #define __OPENFLUID_UIWARESDEV_WARESRCEXPLORERMODEL_HPP__
 
 #include <QFileSystemModel>
-
+#include <QFileSystemWatcher>
 #include <openfluid/dllexport.hpp>
-
 #include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/utils/GitHelper.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -69,19 +69,44 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
      */
     QMap<QString, openfluid::waresdev::WareSrcManager::PathInfo> m_PathInfos;
 
+    std::map<openfluid::utils::GitHelper::FileStatus, QString> m_IconByGitStatus =
+        {
+          { openfluid::utils::GitHelper::FileStatus::TRACKED, ":/ui/common/icons/git_tracked.png" },
+          { openfluid::utils::GitHelper::FileStatus::UNTRACKED, ":/ui/common/icons/git_untracked.png" },
+          { openfluid::utils::GitHelper::FileStatus::IGNORED, "" },
+          { openfluid::utils::GitHelper::FileStatus::CONFLICT, ":/ui/common/icons/git_conflict.png" },
+          { openfluid::utils::GitHelper::FileStatus::ADDED, ":/ui/common/icons/git_added.png" },
+          { openfluid::utils::GitHelper::FileStatus::DELETED, "" },
+          { openfluid::utils::GitHelper::FileStatus::MODIFIED, ":/ui/common/icons/git_staged.png" }
+        };
+
+    QMap<QString, QString> m_GitBranchByWarePath;
+    QMap<QString, QString> m_GitIconByWareFilePath;
+    QList<QString> m_GitDirties;
+
+    QFileSystemWatcher m_Watcher;
+
+    void applyIconRecursively(const QString& CurrDir, const QString& IconPath);
+
   public:
 
     WareSrcExplorerModel(const QString& Path);
 
     QVariant data(const QModelIndex& Index, int Role) const;
 
-    void emitDataChanged();
+    void getGitStatusInfo(const QString& WarePath);
+
+  public slots:
+
+    void onDirectoryLoaded(const QString& Path);
 
   private slots:
 
-    void onDirectoryLoaded(const QString& Path);
+    void onGitIndexFileChanged(const QString& Path);
+
+    void onGitDirObjectsChanged(const QString& Path);
 };
 
-} } }  // namespaces
+} } } // namespaces
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESRCEXPLORERMODEL_HPP__ */

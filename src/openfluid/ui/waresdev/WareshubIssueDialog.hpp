@@ -30,58 +30,79 @@
  */
 
 /**
- @file WaresSrcIOProgressDialog.hpp
+ @file WareshubIssueDialog.hpp
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__
-#define __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__
-
+#ifndef __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__
 
 #include <QDialog>
-
+#include <QDate>
 #include <openfluid/dllexport.hpp>
 
-namespace Ui { class WaresSrcIOProgressDialog;
+namespace Ui { class WareshubIssueDialog;
 }
-
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
+class OPENFLUID_API WareshubIssueDialog: public QDialog
 {
   Q_OBJECT
 
+  public:
+
+    struct Issue
+    {
+        QString m_ID;
+        QString m_Title;
+        QString m_Creator;
+        QDate m_Date;
+        QString m_Type;
+        QString m_State;
+        QString m_Description;
+        QString m_Urgency;
+
+        Issue() :
+            m_Date(QDate::currentDate())
+        {
+        }
+    };
+
   private:
 
-    Ui::WaresSrcIOProgressDialog* ui;
+    Ui::WareshubIssueDialog* ui;
 
-    void write(const QString& Message, const QColor& Color = QColor());
+    QStringList m_IDs;
 
-  public slots :
+    QString m_DefaultMessage;
 
-    void writeInfo(const QString& Message);
+    QStringList m_Types = { "", "bug", "feature", "review" };
 
-    void writeError(const QString& Message);
+    QStringList m_Statuses = { "open", "closed" };
 
-    void writeSuccess(const QString& Message);
+    QStringList m_Urgencies = { "low", "medium", "high" };
 
-    void finish(bool Ok, const QString& Message);
-
-    void finishAndQuit(bool Ok, const QString& Message);
-
-    void progress(int Value);
+    void setMessage(const QString& Msg = "");
 
   public:
 
-    WaresSrcIOProgressDialog(const QString& Description, bool IsMaxUndefined, QWidget* Parent);
+    WareshubIssueDialog(const QStringList& IDs, QWidget* Parent = nullptr, const Issue& I = Issue());
 
+    ~WareshubIssueDialog();
+
+    Issue getIssue();
+
+  private slots:
+
+    void onChanged();
 };
 
-} } } //namespaces
 
-#endif /* __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__ */
+} } } // namespaces
+
+#endif /* __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__ */

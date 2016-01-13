@@ -58,6 +58,7 @@
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/utils/GitHelper.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 
@@ -174,13 +175,11 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
     connect(Explorer, SIGNAL(openPathAsked(const QString&)), mp_Collection, SLOT(openPath(const QString&)));
     connect(Explorer, SIGNAL(deleteWareAsked()), this, SLOT(onDeleteWareRequested()));
     connect(Explorer, SIGNAL(fileDeleted(const QString&)), mp_Collection, SLOT(closeEditor(const QString&)));
-
-    connect(mp_Collection, SIGNAL(editorSaved()), Explorer, SLOT(emitDataChanged()));
   }
 
   connect(mp_Collection, SIGNAL(currentTabChanged(const QString&)), this, SLOT(setCurrentPath(const QString&)));
   connect(mp_Collection, SIGNAL(modifiedStatusChanged(bool, bool)), this, SLOT(updateSaveButtonsStatus(bool, bool)));
-
+  connect(mp_Collection, SIGNAL(editorSaved()), this, SLOT(updateExplorer()));
 
   Splash->setMessage(tr("Initializing workspace"));
 
@@ -397,14 +396,13 @@ void MainWindow::onPreferencesAsked()
 
 void MainWindow::onImportWareSourcesAsked()
 {
-
-  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram())
+  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram() || openfluid::utils::GitHelper::checkGitProgram())
   {
     openfluid::ui::waresdev::WaresSrcImportDialog Dialog(this);
     Dialog.exec();
   }
   else
-    QMessageBox::warning(this, tr("Import not available"), tr("CMake program is not installed."));
+    QMessageBox::warning(this, tr("Import not available"), tr("Neither CMake nor git program is installed."));
 }
 
 
@@ -523,4 +521,21 @@ void MainWindow::onDeleteWareRequested()
 // =====================================================================
 // =====================================================================
 
+
+void MainWindow::updateExplorer()
+{
+  QString CurrentWarePath = mp_Collection->getCurrentWarePath();
+  QWidget* CurrentWidget = ui->TabWidget->currentWidget();
+
+  if (CurrentWidget == ui->SimPage)
+    ui->SimExplorer->updateExplorerModel(CurrentWarePath);
+  else if (CurrentWidget == ui->ObsPage)
+    ui->ObsExplorer->updateExplorerModel(CurrentWarePath);
+  else if (CurrentWidget == ui->ExtPage)
+    ui->ExtExplorer->updateExplorerModel(CurrentWarePath);
+}
+
+
+// =====================================================================
+// =====================================================================
 

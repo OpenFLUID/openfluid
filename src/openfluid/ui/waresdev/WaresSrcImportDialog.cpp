@@ -37,17 +37,18 @@
  */
 
 
-#include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
-
-#include "ui_WaresSrcImportDialog.h"
-
-#include <openfluid/waresdev/WaresDevPackage.hpp>
-#include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
-#include <openfluid/ui/config.hpp>
-#include <openfluid/config.hpp>
-
 #include <QFileDialog>
 #include <QThread>
+
+#include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/utils/GitHelper.hpp>
+#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <openfluid/waresdev/WaresHubImportWorker.hpp>
+#include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
+#include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
+#include <openfluid/ui/config.hpp>
+
+#include "ui_WaresSrcImportDialog.h"
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -58,25 +59,51 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  m_ListWidgetsByWareTypeName[openfluid::config::SIMULATORS_PATH] = ui->SimListWidget;
-  m_ListWidgetsByWareTypeName[openfluid::config::OBSERVERS_PATH] = ui->ObsListWidget;
-  m_ListWidgetsByWareTypeName[openfluid::config::BUILDEREXTS_PATH] = ui->ExtListWidget;
+  m_ListWidgetsByWareType[openfluid::ware::WareType::SIMULATOR] = ui->SimListWidget;
+  m_ListWidgetsByWareType[openfluid::ware::WareType::OBSERVER] = ui->ObsListWidget;
+  m_ListWidgetsByWareType[openfluid::ware::WareType::BUILDEREXT] = ui->ExtListWidget;
 
-  ui->WareshubWidget->setVisible(false);
+  m_SourceBtGroup.addButton(ui->PackageRadioButton);
+  m_SourceBtGroup.addButton(ui->WareshubRadioButton);
+  m_SourceBtGroup.setExclusive(true);
 
-  onPackageSourceChoosen(true);
+  ui->PackagePathLabel->setText(m_PackagePathLabelDefault);
 
-  connect(ui->PackageRadioButton, SIGNAL(toggled(bool)), this, SLOT(onPackageSourceChoosen(bool)));
-  connect(ui->WareshubRadioButton, SIGNAL(toggled(bool)), this, SLOT(onGitSourceChoosen(bool)));
+  m_WaresHubConnectionInfoWidgets << ui->WareshubUrlLineEdit << ui->UsernameLineEdit << ui->PasswordLineEdit
+                                  << ui->SslNoVerifyCheckBox
+                                  << ui->UsernameLabel << ui->PasswordLabel;
+
+  ui->SslNoVerifyCheckBox->setChecked(openfluid::base::PreferencesManager::instance()->isWaresdevGitSslNoVerify());
+  ui->WareshubUrlLineEdit->setText(
+      openfluid::base::PreferencesManager::instance()->getWaresdevImportWaresHubLastUrl());
+  ui->UsernameLineEdit->setText(
+      openfluid::base::PreferencesManager::instance()->getWaresdevImportWaresHubLastUsername());
+
+  connect(&m_SourceBtGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onSourceChanged(QAbstractButton*)));
 
   connect(ui->PackagePathButton, SIGNAL(clicked()), this, SLOT(onPackagePathButtonClicked()));
+  connect(ui->WareshubConnectButton, SIGNAL(clicked()), this, SLOT(onWareshubConnectButtonClicked()));
 
-  for (QListWidget* Widget : m_ListWidgetsByWareTypeName)
+  connect(ui->WareshubUrlLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(check()));
+
+  for (const auto& Pair : m_ListWidgetsByWareType)
+    connect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
+
+  connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(import()));
+
+  ui->PackageRadioButton->click();
+
+  if(!openfluid::utils::GitHelper::checkGitProgram())
   {
-    connect(Widget, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
+    ui->WareshubRadioButton->setEnabled(false);
+    ui->WareshubRadioButton->setToolTip(tr("git program not found"));
   }
-
-  connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(importPackage()));
+  if(!openfluid::waresdev::WaresDevPackage::checkCMakeProgram())
+  {
+    ui->PackagePathButton->setEnabled(false);
+    ui->WareshubRadioButton->setToolTip(tr("CMake program not found"));
+    ui->WareshubConnectButton->click();
+  }
 
   check();
 }
@@ -86,12 +113,44 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
 // =====================================================================
 
 
+WaresSrcImportDialog::~WaresSrcImportDialog()
+{
+  delete mp_ImportFilePkg;
+  delete mp_WaresHubImportWorker;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool WaresSrcImportDialog::check()
 {
-  if (ui->PackagePathLabel->text().isEmpty())
+  if (ui->PackageRadioButton->isChecked() && (ui->PackagePathLabel->text().isEmpty()
+                                              || ui->PackagePathLabel->text() == m_PackagePathLabelDefault))
   {
     setMessage(tr("No package file selected"));
     return false;
+  }
+  else if (ui->WareshubRadioButton->isChecked())
+  {
+    if (ui->WareshubUrlLineEdit->text().isEmpty())
+    {
+      setMessage(tr("No wareshub url defined"));
+      ui->WareshubConnectButton->setEnabled(false);
+      return false;
+    }
+    else
+    {
+      setMessage("");
+      ui->WareshubConnectButton->setEnabled(true);
+    }
+
+    if (!mp_WaresHubImportWorker || !mp_WaresHubImportWorker->isConnected())
+    {
+      setMessage(tr("Wareshub not connected"));
+      return false;
+    }
   }
 
   if (getSelectedWares().isEmpty())
@@ -131,29 +190,32 @@ void WaresSrcImportDialog::setMessage(const QString& Msg)
 // =====================================================================
 
 
-void WaresSrcImportDialog::onPackageSourceChoosen(bool Checked)
+void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
 {
-  if (!Checked)
-    return;
+  if (ClickedButton == ui->PackageRadioButton)
+  {
+    ui->WaresGroupBox->setTitle(tr("Available wares in package"));
 
-  ui->WaresGroupBox->setTitle(tr("Available wares in package"));
+    for (auto& Widget : m_WaresHubConnectionInfoWidgets)
+      Widget->setEnabled(false);
+    ui->WareshubConnectButton->setEnabled(false);
 
-  updatePackageInfo(mp_ImportFilePkg);
-}
+    updatePackageWaresList();
+  }
+  else
+  {
+    ui->WaresGroupBox->setTitle(tr("Available wares on wareshub site"));
 
+    bool DisableConnInfos = (ui->WareshubConnectButton->text() == m_WaresHubButtonDisconnectLabel);
+    for (auto& Widget : m_WaresHubConnectionInfoWidgets)
+      Widget->setEnabled(!DisableConnInfos);
+    ui->WareshubConnectButton->setEnabled(true);
 
-// =====================================================================
-// =====================================================================
+    updateWaresHubWaresList();
+  }
 
-
-void WaresSrcImportDialog::onGitSourceChoosen(bool Checked)
-{
-  if (!Checked)
-    return;
-
-  ui->WaresGroupBox->setTitle(tr("Available wares on wareshub site"));
-
-  updatePackageInfo(mp_ImportFilePkg);
+  updatePackageInfo();
+  check();
 }
 
 
@@ -176,7 +238,8 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
 
   QThread* Thread = new QThread();
 
-  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Fetching information from ware sources:"), this);
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Fetching information from ware sources:"), true,
+                                                                   this);
 
   try
   {
@@ -187,12 +250,12 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
     connect(Thread, SIGNAL(started()), mp_ImportFilePkg, SLOT(fetchInformation()));
     connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
 
-    connect(mp_ImportFilePkg, SIGNAL(finished(bool)), Thread, SLOT(quit()));
-    connect(mp_ImportFilePkg, SIGNAL(finished(bool)), &ProgressDialog, SLOT(finishAndQuit(bool)));
+    connect(mp_ImportFilePkg, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
+    connect(mp_ImportFilePkg, SIGNAL(finished(bool, const QString&)), &ProgressDialog,
+            SLOT(finishAndQuit(bool, const QString&)));
 
     connect(mp_ImportFilePkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
     connect(mp_ImportFilePkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
-    connect(mp_ImportFilePkg, SIGNAL(progressed(int)), &ProgressDialog, SLOT(progress(int)));
 
     Thread->start();
   }
@@ -203,7 +266,8 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
 
   ProgressDialog.exec();
 
-  updatePackageInfo(mp_ImportFilePkg);
+  updatePackageInfo();
+  updatePackageWaresList();
 }
 
 
@@ -211,16 +275,105 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
 // =====================================================================
 
 
-void WaresSrcImportDialog::updatePackageInfo(openfluid::waresdev::WaresDevImportPackage* ImportPackage)
+void WaresSrcImportDialog::onWareshubConnectButtonClicked()
 {
-  if (!ImportPackage)
+  if (ui->WareshubConnectButton->text() == m_WaresHubButtonDisconnectLabel)
+  {
+    m_AlreadySelectedWaresHubWares = QMap<openfluid::ware::WareType, QStringList>(getSelectedWaresByType());
+
+    if (mp_WaresHubImportWorker)
+      mp_WaresHubImportWorker->disconnect();
+
+    for (const auto& WidgetPair : m_ListWidgetsByWareType)
+      WidgetPair.second->clear();
+
+    ui->WareshubConnectButton->setText(tr("Connect"));
+
+    for (auto& Widget : m_WaresHubConnectionInfoWidgets)
+      Widget->setEnabled(true);
+
+
+    return;
+  }
+
+  QString WaresHubUrl = ui->WareshubUrlLineEdit->text();
+
+  if (WaresHubUrl.isEmpty())
     return;
 
-  ui->PackagersLabel->setText(ImportPackage->getPackagers());
+  if (!WaresHubUrl.contains("www.openfluid-project.org/resources/fluidhub-api/testing"))
+    WaresHubUrl.append("/api");
 
-  ui->PackageDescriptionLabel->setText(ImportPackage->getPackageDescription());
+  if (mp_WaresHubImportWorker)
+  {
+    delete mp_WaresHubImportWorker;
+    mp_WaresHubImportWorker = nullptr;
+  }
 
-  updateWaresList(ImportPackage);
+  QThread* Thread = new QThread();
+
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Connecting to wareshub:"), true, this);
+
+  try
+  {
+    mp_WaresHubImportWorker = new openfluid::waresdev::WaresHubImportWorker(WaresHubUrl,
+                                                                            ui->UsernameLineEdit->text(),
+                                                                            ui->PasswordLineEdit->text(),
+                                                                            ui->SslNoVerifyCheckBox->isChecked());
+
+    mp_WaresHubImportWorker->moveToThread(Thread);
+
+    connect(Thread, SIGNAL(started()), mp_WaresHubImportWorker, SLOT(connect()));
+    connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
+
+    connect(mp_WaresHubImportWorker, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
+    connect(mp_WaresHubImportWorker, SIGNAL(finished(bool, const QString&)), &ProgressDialog,
+            SLOT(finishAndQuit(bool, const QString&)));
+
+    connect(mp_WaresHubImportWorker, SIGNAL(info(const QString&)), &ProgressDialog,
+            SLOT(writeInfo(const QString&)));
+    connect(mp_WaresHubImportWorker, SIGNAL(error(const QString&)), &ProgressDialog,
+            SLOT(writeError(const QString&)));
+
+    Thread->start();
+  }
+  catch (std::exception& e)
+  {
+    ProgressDialog.writeError(e.what());
+  }
+
+  if (ProgressDialog.exec())
+  {
+    ui->WareshubConnectButton->setText(m_WaresHubButtonDisconnectLabel);
+
+    for (auto& Widget : m_WaresHubConnectionInfoWidgets)
+      Widget->setEnabled(false);
+  }
+
+  updatePackageInfo();
+  updateWaresHubWaresList();
+
+  openfluid::base::PreferencesManager::instance()->setWaresdevImportWaresHubLastUrl(ui->WareshubUrlLineEdit->text());
+  openfluid::base::PreferencesManager::instance()->setWaresdevImportWaresHubLastUsername(ui->UsernameLineEdit->text());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcImportDialog::updatePackageInfo()
+{
+  if (mp_ImportFilePkg)
+  {
+    ui->PackagersLabel->setText(mp_ImportFilePkg->getPackagers());
+    ui->PackageDescriptionLabel->setText(mp_ImportFilePkg->getPackageDescription());
+  }
+  else
+  {
+    ui->PackagersLabel->setText("");
+    ui->PackageDescriptionLabel->setText("");
+  }
 
   ui->WaresTabWidget->setCurrentIndex(0);
 }
@@ -230,18 +383,18 @@ void WaresSrcImportDialog::updatePackageInfo(openfluid::waresdev::WaresDevImport
 // =====================================================================
 
 
-void WaresSrcImportDialog::updateWaresList(openfluid::waresdev::WaresDevImportPackage* ImportPackage)
+void WaresSrcImportDialog::updatePackageWaresList()
 {
-  for (QListWidget* ListWidget : m_ListWidgetsByWareTypeName.values())
-    ListWidget->clear();
+  for (const auto& Pair : m_ListWidgetsByWareType)
+    Pair.second->clear();
 
-  if (!ImportPackage)
+  if (!mp_ImportFilePkg)
     return;
 
   QDir WaresDevDir(openfluid::waresdev::WareSrcManager::instance()->getWaresdevPath());
-  QDir PackageTempDir = ImportPackage->getPackageTempDir();
+  QDir PackageTempDir = mp_ImportFilePkg->getPackageTempDir();
 
-  for (const QString& WarePath : ImportPackage->getWaresPaths())
+  for (const QString& WarePath : mp_ImportFilePkg->getWaresPaths())
   {
     QFileInfo WareFileInfo(WarePath);
 
@@ -263,7 +416,63 @@ void WaresSrcImportDialog::updateWaresList(openfluid::waresdev::WaresDevImportPa
       Item->setToolTip("");
     }
 
-    m_ListWidgetsByWareTypeName[WareTypeName.toStdString()]->addItem(Item);
+    if (m_WareTypeConverter.count(WareTypeName))
+      m_ListWidgetsByWareType[m_WareTypeConverter[WareTypeName]]->addItem(Item);
+  }
+
+  check();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcImportDialog::updateWaresHubWaresList()
+{
+  for (const auto& Pair : m_ListWidgetsByWareType)
+    Pair.second->clear();
+
+  if (!mp_WaresHubImportWorker)
+    return;
+
+  openfluid::waresdev::WareSrcManager* Mgr = openfluid::waresdev::WareSrcManager::instance();
+  QString UserName = ui->UsernameLineEdit->text();
+  QString ErrStr;
+
+  for (const auto& WidgetPair : m_ListWidgetsByWareType)
+  {
+    openfluid::ware::WareType Type = WidgetPair.first;
+
+    for (const auto& WarePair : mp_WaresHubImportWorker->getAvailableWaresWithDetails(Type))
+    {
+      QString WareId = QString::fromStdString(WarePair.first);
+      QString WareUrl = QString::fromStdString(WarePair.second.GitUrl);
+
+      QListWidgetItem* Item = new QListWidgetItem(WareId);
+
+      Item->setData(Qt::UserRole, WareUrl);
+
+      std::set<std::string> Users = WarePair.second.ROUsers;
+
+      if (!Mgr->getWarePath(WareId, Type, ErrStr).isEmpty())
+      {
+        Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
+        Item->setToolTip(tr("\"%1\" already exists in your workspace").arg(WareId));
+      }
+      else if (!Users.count("*") && !Users.count(UserName.toStdString()))
+      {
+        Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
+        Item->setToolTip(tr("Access to \"%1\" is not permitted to user \"%2\"").arg(WareId).arg(UserName));
+        Item->setBackgroundColor(QColor("orange"));
+      }
+
+      Item->setCheckState(
+          (m_AlreadySelectedWaresHubWares.contains(Type) && !m_AlreadySelectedWaresHubWares[Type].filter(
+              QFileInfo(WareUrl).fileName()).isEmpty()) ? Qt::Checked : Qt::Unchecked);
+
+      m_ListWidgetsByWareType[Type]->addItem(Item);
+    }
   }
 
   check();
@@ -278,11 +487,9 @@ QStringList WaresSrcImportDialog::getSelectedWares()
 {
   QStringList Wares;
 
-  for (QMap<std::string, QListWidget*>::iterator it = m_ListWidgetsByWareTypeName.begin();
-      it != m_ListWidgetsByWareTypeName.end();
-      ++it)
+  for (auto& Pair : m_ListWidgetsByWareType)
   {
-    for (const QListWidgetItem* Item : it.value()->findItems("*", Qt::MatchWildcard))
+    for (const QListWidgetItem* Item : Pair.second->findItems("*", Qt::MatchWildcard))
     {
       if (Item->checkState() == Qt::Checked)
         Wares << Item->data(Qt::UserRole).toString();
@@ -297,39 +504,75 @@ QStringList WaresSrcImportDialog::getSelectedWares()
 // =====================================================================
 
 
-void WaresSrcImportDialog::importPackage()
+std::map<openfluid::ware::WareType, QStringList> WaresSrcImportDialog::getSelectedWaresByType()
+{
+  std::map<openfluid::ware::WareType, QStringList> Wares;
+
+  for (auto& Pair : m_ListWidgetsByWareType)
+  {
+    for (const QListWidgetItem* Item : Pair.second->findItems("*", Qt::MatchWildcard))
+    {
+      if (Item->checkState() == Qt::Checked)
+        Wares[Pair.first] << Item->data(Qt::UserRole).toString();
+    }
+  }
+
+  return Wares;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcImportDialog::import()
 {
   if (!check())
     return;
 
-  openfluid::waresdev::WaresDevImportPackage* Pkg = nullptr;
-
-  if (ui->PackageRadioButton->isChecked())
-    Pkg = mp_ImportFilePkg;
-  else
-    Pkg = mp_ImportGitPkg;
-
-  if (!Pkg)
-    return;
-
-  Pkg->setSelectedWares(getSelectedWares());
-
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Importing wares sources:"), false, this);
 
   QThread* Thread = new QThread();
-
-  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Importing wares sources:"), this);
-
-  Pkg->moveToThread(Thread);
-
-  connect(Thread, SIGNAL(started()), Pkg, SLOT(copyWares()));
   connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
 
-  connect(Pkg, SIGNAL(finished(bool)), Thread, SLOT(quit()));
-  connect(Pkg, SIGNAL(finished(bool)), &ProgressDialog, SLOT(finish(bool)));
+  if (ui->PackageRadioButton->isChecked())
+  {
+    if (!mp_ImportFilePkg)
+      return;
 
-  connect(Pkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
-  connect(Pkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
-  connect(Pkg, SIGNAL(progressed(int)), &ProgressDialog, SLOT(progress(int)));
+    mp_ImportFilePkg->setSelectedWares(getSelectedWares());
+
+    mp_ImportFilePkg->moveToThread(Thread);
+
+    connect(Thread, SIGNAL(started()), mp_ImportFilePkg, SLOT(copyWares()));
+
+    connect(mp_ImportFilePkg, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
+    connect(mp_ImportFilePkg, SIGNAL(finished(bool, const QString&)), &ProgressDialog,
+            SLOT(finish(bool, const QString&)));
+
+    connect(mp_ImportFilePkg, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
+    connect(mp_ImportFilePkg, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
+    connect(mp_ImportFilePkg, SIGNAL(progressed(int)), &ProgressDialog, SLOT(progress(int)));
+  }
+  else
+  {
+    if (!mp_WaresHubImportWorker)
+      return;
+
+    mp_WaresHubImportWorker->setSelectedWaresUrl(getSelectedWaresByType());
+
+    mp_WaresHubImportWorker->moveToThread(Thread);
+
+    connect(Thread, SIGNAL(started()), mp_WaresHubImportWorker, SLOT(clone()));
+
+    connect(mp_WaresHubImportWorker, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
+    connect(mp_WaresHubImportWorker, SIGNAL(finished(bool, const QString&)), &ProgressDialog,
+            SLOT(finish(bool, const QString&)));
+
+    connect(mp_WaresHubImportWorker, SIGNAL(info(const QString&)), &ProgressDialog, SLOT(writeInfo(const QString&)));
+    connect(mp_WaresHubImportWorker, SIGNAL(error(const QString&)), &ProgressDialog, SLOT(writeError(const QString&)));
+    connect(mp_WaresHubImportWorker, SIGNAL(progressed(int)), &ProgressDialog, SLOT(progress(int)));
+  }
+
 
   try
   {
@@ -343,6 +586,10 @@ void WaresSrcImportDialog::importPackage()
   if (ProgressDialog.exec())
     accept();
 }
+
+
+// =====================================================================
+// =====================================================================
 
 
 } } } //namespaces
