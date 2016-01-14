@@ -404,7 +404,7 @@ void MainWindow::onImportWareSourcesAsked()
     Dialog.exec();
   }
   else
-    QMessageBox::warning(this, tr("Import not available"), tr("CMake program is not installed."));
+    QMessageBox::warning(this, tr("Import not available"), tr("CMake program can not be found."));
 }
 
 
@@ -420,7 +420,7 @@ void MainWindow::onExportWareSourcesAsked()
     Dialog.exec();
   }
   else
-    QMessageBox::warning(this, tr("Export not available"), tr("CMake program is not installed."));
+    QMessageBox::warning(this, tr("Export not available"), tr("CMake program can not be found."));
 }
 
 

@@ -98,7 +98,7 @@ font : bold;
        <item>
         <widget class="QPushButton" name="PackagePathButton">
          <property name="text">
-          <string>...</string>
+          <string>Browse...</string>
          </property>
         </widget>
        </item>

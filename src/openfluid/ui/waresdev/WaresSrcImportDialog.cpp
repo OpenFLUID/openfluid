@@ -151,7 +151,7 @@ void WaresSrcImportDialog::onGitSourceChoosen(bool Checked)
   if (!Checked)
     return;
 
-  ui->WaresGroupBox->setTitle(tr("Available wares on wareshub site"));
+  ui->WaresGroupBox->setTitle(tr("Available wares on WaresHub site"));
 
   updatePackageInfo(mp_ImportFilePkg);
 }
