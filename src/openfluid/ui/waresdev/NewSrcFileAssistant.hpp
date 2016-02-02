@@ -78,7 +78,7 @@ class OPENFLUID_API EmptyPage: public QWizardPage
 
     QString m_DefaultMsg = tr("Empty file");
 
-    QString m_FilePathPlaceholder = tr("<i>choose a file to create</i>");
+    QString m_FilePathPlaceholder = "<i>"+tr("choose a file to create")+"</i>";
 
   protected:
 

@@ -204,7 +204,7 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
   }
   else
   {
-    ui->WaresGroupBox->setTitle(tr("Available wares on wareshub site"));
+    ui->WaresGroupBox->setTitle(tr("Available wares on waresHub site"));
 
     bool DisableConnInfos = (ui->WareshubConnectButton->text() == m_WaresHubButtonDisconnectLabel);
     for (auto& Widget : m_WaresHubConnectionInfoWidgets)
