@@ -51,6 +51,7 @@
 
 namespace openfluid { namespace utils {
 
+
 class OPENFLUID_API GitHelper: public QObject
 {
   Q_OBJECT
@@ -78,6 +79,7 @@ class OPENFLUID_API GitHelper: public QObject
         QMap<QString, FileStatusInfo> m_FileStatusByTreePath;
     };
 
+
   private:
 
     static QString m_GitPgm;
@@ -88,6 +90,7 @@ class OPENFLUID_API GitHelper: public QObject
 
     QFile m_AskPassFile;
 
+
   private slots:
 
     void processStandardOutput();
@@ -95,6 +98,14 @@ class OPENFLUID_API GitHelper: public QObject
     void processErrorOutput();
 
     void processErrorOutputAsInfo();
+
+
+  signals:
+
+    void info(const QString& Message);
+
+    void error(const QString& Message);
+
 
   public:
 
@@ -106,8 +117,9 @@ class OPENFLUID_API GitHelper: public QObject
 
     static std::string getOpenfluidCurrentBranchName();
 
-    bool clone(const QString& FromUrl, const QString& ToPath, const QString& Username = "", const QString& Password =
-        "", bool SslNoVerify = false);
+    bool clone(const QString& FromUrl, const QString& ToPath,
+               const QString& Username = "", const QString& Password = "",
+               bool SslNoVerify = false);
 
     TreeStatusInfo status(const QString& Path);
 
@@ -115,14 +127,10 @@ class OPENFLUID_API GitHelper: public QObject
 
     QString logHtml(const QString& Path, bool WithColorCodes);
 
-  signals:
-
-    void info(const QString& Message);
-
-    void error(const QString& Message);
 };
 
 
 } } // namespaces
+
 
 #endif /* __OPENFLUID_UTILS_GITHELPER_HPP__ */

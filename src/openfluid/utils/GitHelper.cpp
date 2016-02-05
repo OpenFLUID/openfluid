@@ -44,9 +44,12 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 
+
 namespace openfluid { namespace utils {
 
+
 QString GitHelper::m_GitPgm = "";
+
 
 // =====================================================================
 // =====================================================================
@@ -147,8 +150,9 @@ void GitHelper::processErrorOutputAsInfo()
 // =====================================================================
 
 
-bool GitHelper::clone(const QString& FromUrl, const QString& ToPath, const QString& Username, const QString& Password,
-  bool SslNoVerify)
+bool GitHelper::clone(const QString& FromUrl, const QString& ToPath,
+                      const QString& Username, const QString& Password,
+                      bool SslNoVerify)
 {
   if (FromUrl.isEmpty() || ToPath.isEmpty())
   {
@@ -369,10 +373,6 @@ QString GitHelper::logHtml(const QString& Path, bool WithColorCodes)
 
   return Res;
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces

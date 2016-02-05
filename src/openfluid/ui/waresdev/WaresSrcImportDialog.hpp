@@ -103,6 +103,7 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
 
     std::map<openfluid::ware::WareType, QStringList> getSelectedWaresByType();
 
+
   private slots :
 
     bool check();
@@ -114,6 +115,7 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
     void onWareshubConnectButtonClicked();
 
     void import();
+
 
   public:
 

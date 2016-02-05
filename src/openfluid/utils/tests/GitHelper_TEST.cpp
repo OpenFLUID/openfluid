@@ -181,6 +181,8 @@ class F
 
 // =====================================================================
 // =====================================================================
+// =====================================================================
+// =====================================================================
 
 
 BOOST_FIXTURE_TEST_CASE(clone_wrong_url_fails,F)
@@ -192,6 +194,11 @@ BOOST_FIXTURE_TEST_CASE(clone_wrong_url_fails,F)
   BOOST_CHECK(!DestDir.exists());
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_FIXTURE_TEST_CASE(clone_empty_url_fails,F)
 {
   openfluid::utils::GitHelper Git;
@@ -200,6 +207,11 @@ BOOST_FIXTURE_TEST_CASE(clone_empty_url_fails,F)
 
   BOOST_CHECK(!DestDir.exists());
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(clone_empty_dest_fails,F)
 {
@@ -216,6 +228,11 @@ BOOST_FIXTURE_TEST_CASE(clone_empty_dest_fails,F)
     std::cout << "** Test not run due to empty URL  ** (\"clone_empty_dest_fails\")" << std::endl;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(clone_noauth_ok,F)
 {
@@ -234,8 +251,10 @@ BOOST_FIXTURE_TEST_CASE(clone_noauth_ok,F)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(clone_wrong_auth_fails,F)
 {
@@ -252,6 +271,11 @@ BOOST_FIXTURE_TEST_CASE(clone_wrong_auth_fails,F)
     std::cout << "** Test not run due to empty URL  ** (\"clone_wrong_auth_fails\")" << std::endl;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(clone_auth_ok,F)
 {
@@ -270,8 +294,10 @@ BOOST_FIXTURE_TEST_CASE(clone_auth_ok,F)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(clone_no_valid_cert_ok,F)
 {
@@ -294,8 +320,10 @@ BOOST_FIXTURE_TEST_CASE(clone_no_valid_cert_ok,F)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(status_no_git,F)
 {
@@ -305,6 +333,11 @@ BOOST_FIXTURE_TEST_CASE(status_no_git,F)
 
   BOOST_CHECK_EQUAL(Git.status(DestPath).m_IsGitTracked, false);
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(status_git_unchanged,F)
 {
@@ -323,6 +356,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_unchanged,F)
     std::cout << "** Test not run due to empty URL  ** (\"status_git_unchanged\")" << std::endl;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(status_git_untracked,F)
 {
@@ -344,6 +382,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_untracked,F)
     std::cout << "** Test not run due to empty URL  ** (\"status_git_untracked\")" << std::endl;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(status_git_added,F)
 {
@@ -367,6 +410,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_added,F)
     std::cout << "** Test not run due to empty URL  ** (\"status_git_added\")" << std::endl;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(status_git_added_modified,F)
 {
@@ -396,6 +444,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_added_modified,F)
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_FIXTURE_TEST_CASE(status_git_modified,F)
 {
   if (!Url.isEmpty())
@@ -419,6 +472,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified,F)
     std::cout << "** Test not run due to empty URL  ** (\"status_git_modified\")" << std::endl;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(status_git_modified_staged,F)
 {
@@ -445,6 +503,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_staged,F)
     std::cout << "** Test not run due to empty URL  ** (\"status_git_modified_staged\")" << std::endl;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(status_git_modified_partially_staged,F)
 {
@@ -476,6 +539,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_partially_staged,F)
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_FIXTURE_TEST_CASE(status_git_deleted,F)
 {
   if (!Url.isEmpty())
@@ -496,9 +564,9 @@ BOOST_FIXTURE_TEST_CASE(status_git_deleted,F)
   }
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 // =====================================================================
 // =====================================================================
 
