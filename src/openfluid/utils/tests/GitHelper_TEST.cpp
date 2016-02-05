@@ -203,21 +203,35 @@ BOOST_FIXTURE_TEST_CASE(clone_empty_url_fails,F)
 
 BOOST_FIXTURE_TEST_CASE(clone_empty_dest_fails,F)
 {
-  openfluid::utils::GitHelper Git;
+  if (!Url.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
 
-  BOOST_CHECK(!Git.clone(Url, ""));
+    BOOST_CHECK(!Git.clone(Url, ""));
 
-  BOOST_CHECK(!DestDir.exists());
+    BOOST_CHECK(!DestDir.exists());
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"clone_empty_dest_fails\")" << std::endl;
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(clone_noauth_ok,F)
 {
-  openfluid::utils::GitHelper Git;
+  if (!Url.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
 
-  BOOST_CHECK(Git.clone(Url, DestPath));
+    BOOST_CHECK(Git.clone(Url, DestPath));
 
-  BOOST_CHECK(DestDir.exists());
-  BOOST_CHECK(!DestDir.entryList(QDir::Files).isEmpty());
+    BOOST_CHECK(DestDir.exists());
+    BOOST_CHECK(!DestDir.entryList(QDir::Files).isEmpty());
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"clone_noauth_ok\")" << std::endl;
+  }
 }
 
 // =====================================================================
@@ -225,21 +239,35 @@ BOOST_FIXTURE_TEST_CASE(clone_noauth_ok,F)
 
 BOOST_FIXTURE_TEST_CASE(clone_wrong_auth_fails,F)
 {
-  openfluid::utils::GitHelper Git;
+  if (!AuthUrl.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
 
-  BOOST_CHECK(!Git.clone(AuthUrl, DestPath, "wrongname", "wrongpass"));
+    BOOST_CHECK(!Git.clone(AuthUrl, DestPath, "wrongname", "wrongpass"));
 
-  BOOST_CHECK(!DestDir.exists());
+    BOOST_CHECK(!DestDir.exists());
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"clone_wrong_auth_fails\")" << std::endl;
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(clone_auth_ok,F)
 {
-  openfluid::utils::GitHelper Git;
+  if (!AuthUrl.isEmpty() && !AuthUsername.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
 
-  BOOST_CHECK(Git.clone(AuthUrl, DestPath, AuthUsername, AuthPassword));
+    BOOST_CHECK(Git.clone(AuthUrl, DestPath, AuthUsername, AuthPassword));
 
-  BOOST_CHECK(DestDir.exists());
-  BOOST_CHECK(!DestDir.entryList(QDir::Files).isEmpty());
+    BOOST_CHECK(DestDir.exists());
+    BOOST_CHECK(!DestDir.entryList(QDir::Files).isEmpty());
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL or empty username ** (\"clone_auth_ok\")" << std::endl;
+  }
 }
 
 // =====================================================================
@@ -250,12 +278,20 @@ BOOST_FIXTURE_TEST_CASE(clone_no_valid_cert_ok,F)
   if (!checkWareshub("clone_no_valid_cert_ok"))
     return;
 
-  openfluid::utils::GitHelper Git;
 
-  BOOST_CHECK(Git.clone(FirstAvailSimUrl, DestPath, NoValidCertUsername, NoValidCertPassword, true));
+  if (!FirstAvailSimUrl.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
 
-  BOOST_CHECK(DestDir.exists());
-  BOOST_CHECK(!DestDir.entryList(QDir::Files).isEmpty());
+    BOOST_CHECK(Git.clone(FirstAvailSimUrl, DestPath, NoValidCertUsername, NoValidCertPassword, true));
+
+    BOOST_CHECK(DestDir.exists());
+    BOOST_CHECK(!DestDir.entryList(QDir::Files).isEmpty());
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"clone_no_valid_cert_ok\")" << std::endl;
+  }
 }
 
 // =====================================================================
@@ -272,47 +308,71 @@ BOOST_FIXTURE_TEST_CASE(status_no_git,F)
 
 BOOST_FIXTURE_TEST_CASE(status_git_unchanged,F)
 {
-  openfluid::utils::GitHelper Git;
+  if (!Url.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
 
-  Git.clone(Url, DestPath);
+    Git.clone(Url, DestPath);
 
-  BOOST_CHECK_EQUAL(Git.status(DestPath).m_IsGitTracked, true);
-  BOOST_CHECK(Git.status(DestPath).m_BranchName == QString("master"));
-  BOOST_CHECK(Git.status(DestPath).m_FileStatusByTreePath.isEmpty());
+    BOOST_CHECK_EQUAL(Git.status(DestPath).m_IsGitTracked, true);
+    BOOST_CHECK(Git.status(DestPath).m_BranchName == QString("master"));
+    BOOST_CHECK(Git.status(DestPath).m_FileStatusByTreePath.isEmpty());
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"status_git_unchanged\")" << std::endl;
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(status_git_untracked,F)
 {
-  openfluid::utils::GitHelper Git;
-  Git.clone(Url, DestPath);
+  if (!Url.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
+    Git.clone(Url, DestPath);
 
-  QFile File(DestDir.filePath("new_file.txt"));
-  File.open(QIODevice::WriteOnly);
+    QFile File(DestDir.filePath("new_file.txt"));
+    File.open(QIODevice::WriteOnly);
 
-  QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
-  BOOST_CHECK_EQUAL(Paths.size(), 1);
-  BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, false);
-  BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::UNTRACKED);
+    QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    BOOST_CHECK_EQUAL(Paths.size(), 1);
+    BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, false);
+    BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::UNTRACKED);
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"status_git_untracked\")" << std::endl;
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(status_git_added,F)
 {
-  openfluid::utils::GitHelper Git;
-  Git.clone(Url, DestPath);
+  if (!Url.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
+    Git.clone(Url, DestPath);
 
-  QFile File(DestDir.filePath("new_file.txt"));
-  File.open(QIODevice::WriteOnly);
+    QFile File(DestDir.filePath("new_file.txt"));
+    File.open(QIODevice::WriteOnly);
 
-  launchGitCommand("add new_file.txt");
+    launchGitCommand("add new_file.txt");
 
-  QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
-  BOOST_CHECK_EQUAL(Paths.size(), 1);
-  BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, false);
-  BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::ADDED);
+    QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    BOOST_CHECK_EQUAL(Paths.size(), 1);
+    BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, false);
+    BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::ADDED);
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"status_git_added\")" << std::endl;
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(status_git_added_modified,F)
 {
+  if (!Url.isEmpty())
+  {
+
   openfluid::utils::GitHelper Git;
   Git.clone(Url, DestPath);
 
@@ -329,78 +389,111 @@ BOOST_FIXTURE_TEST_CASE(status_git_added_modified,F)
   BOOST_CHECK_EQUAL(Paths.size(), 1);
   BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, true);
   BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::ADDED);
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"status_git_added_modified\")" << std::endl;
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(status_git_modified,F)
 {
-  openfluid::utils::GitHelper Git;
-  Git.clone(Url, DestPath);
+  if (!Url.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
+    Git.clone(Url, DestPath);
 
-  QFile File(DestDir.filePath("a/a1.txt"));
-  File.open(QIODevice::WriteOnly);
-  QTextStream FileContent(&File);
-  FileContent << "some text";
-  File.close();
+    QFile File(DestDir.filePath("a/a1.txt"));
+    File.open(QIODevice::WriteOnly);
+    QTextStream FileContent(&File);
+    FileContent << "some text";
+    File.close();
 
-  QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
-  BOOST_CHECK_EQUAL(Paths.size(), 1);
-  BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, true);
-  BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::TRACKED);
+    QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    BOOST_CHECK_EQUAL(Paths.size(), 1);
+    BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, true);
+    BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::TRACKED);
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"status_git_modified\")" << std::endl;
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(status_git_modified_staged,F)
 {
-  openfluid::utils::GitHelper Git;
-  Git.clone(Url, DestPath);
+  if (!Url.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
+    Git.clone(Url, DestPath);
 
-  QFile File(DestDir.filePath("a/a1.txt"));
-  File.open(QIODevice::WriteOnly);
-  QTextStream FileContent(&File);
-  FileContent << "some text";
-  File.close();
+    QFile File(DestDir.filePath("a/a1.txt"));
+    File.open(QIODevice::WriteOnly);
+    QTextStream FileContent(&File);
+    FileContent << "some text";
+    File.close();
 
-  launchGitCommand("add a/a1.txt");
+    launchGitCommand("add a/a1.txt");
 
-  QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
-  BOOST_CHECK_EQUAL(Paths.size(), 1);
-  BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, false);
-  BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::MODIFIED);
+    QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    BOOST_CHECK_EQUAL(Paths.size(), 1);
+    BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, false);
+    BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::MODIFIED);
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"status_git_modified_staged\")" << std::endl;
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(status_git_modified_partially_staged,F)
 {
-  openfluid::utils::GitHelper Git;
-  Git.clone(Url, DestPath);
+  if (!Url.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
+    Git.clone(Url, DestPath);
 
-  QFile File(DestDir.filePath("a/a1.txt"));
-  File.open(QIODevice::WriteOnly);
-  QTextStream FileContent(&File);
-  FileContent << "some text";
-  File.close();
+    QFile File(DestDir.filePath("a/a1.txt"));
+    File.open(QIODevice::WriteOnly);
+    QTextStream FileContent(&File);
+    FileContent << "some text";
+    File.close();
 
-  launchGitCommand("add a/a1.txt");
+    launchGitCommand("add a/a1.txt");
 
-  File.open(QIODevice::WriteOnly);
-  FileContent << "other text";
-  File.close();
+    File.open(QIODevice::WriteOnly);
+    FileContent << "other text";
+    File.close();
 
-  QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
-  BOOST_CHECK_EQUAL(Paths.size(), 1);
-  BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, true);
-  BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::MODIFIED);
+    QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    BOOST_CHECK_EQUAL(Paths.size(), 1);
+    BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, true);
+    BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::MODIFIED);
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"status_git_modified_partially_staged\")" << std::endl;
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(status_git_deleted,F)
 {
-  openfluid::utils::GitHelper Git;
-  Git.clone(Url, DestPath);
+  if (!Url.isEmpty())
+  {
+    openfluid::utils::GitHelper Git;
+    Git.clone(Url, DestPath);
 
-  launchGitCommand("rm a/a1.txt");
+    launchGitCommand("rm a/a1.txt");
 
-  QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
-  BOOST_CHECK_EQUAL(Paths.size(), 1);
-  BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, false);
-  BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::DELETED);
+    QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    BOOST_CHECK_EQUAL(Paths.size(), 1);
+    BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, false);
+    BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitHelper::FileStatus::DELETED);
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"status_git_deleted\")" << std::endl;
+  }
 }
 
 // =====================================================================
