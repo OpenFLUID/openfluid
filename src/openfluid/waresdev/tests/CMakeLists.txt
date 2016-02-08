@@ -3,9 +3,9 @@ INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}/src/tests")
 
 SET(UNITTEST_LINK_LIBRARIES openfluid-base openfluid-waresdev openfluid-utils)
 
-OFBUILD_DISCOVER_UNITTESTS(api)
+OFBUILD_DISCOVER_UNITTESTS(waresdev)
 
-set_tests_properties(unit-api-WareSrcFactory_TEST PROPERTIES RUN_SERIAL true)
-set_tests_properties(unit-api-WareSrcContainer_TEST PROPERTIES RUN_SERIAL true)
-set_tests_properties(unit-api-WareSrcManager_TEST PROPERTIES RUN_SERIAL true)
-set_tests_properties(unit-api-WaresDevPackage_TEST PROPERTIES RUN_SERIAL true)
+SET_TESTS_PROPERTIES(unit-waresdev-WareSrcFactory_TEST PROPERTIES RUN_SERIAL true)
+SET_TESTS_PROPERTIES(unit-waresdev-WareSrcContainer_TEST PROPERTIES RUN_SERIAL true)
+SET_TESTS_PROPERTIES(unit-waresdev-WareSrcManager_TEST PROPERTIES RUN_SERIAL true)
+SET_TESTS_PROPERTIES(unit-waresdev-WaresDevPackage_TEST PROPERTIES RUN_SERIAL true)
