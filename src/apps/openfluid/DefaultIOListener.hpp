@@ -43,7 +43,8 @@
 
 
 #include <openfluid/base/IOListener.hpp>
-#include <iostream>
+#include <openfluid/tools/Console.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -51,32 +52,45 @@
 
 class DefaultIOListener : public openfluid::base::IOListener
 {
-  private:
-
   public:
 
     DefaultIOListener()
-    { };
+    { }
+
 
     ~DefaultIOListener()
-    { };
+    { }
+
 
     void onFileLoad(std::string Filename)
     {
       std::cout << "    file: " << Filename << " ";
-    };
+    }
+
 
     void onFileLoaded(openfluid::base::Listener::Status Status)
     {
       if (Status == openfluid::base::Listener::LISTEN_OK)
-        std::cout << "[OK]" << std::endl;
+      {
+        openfluid::tools::Console::setOKColor();
+        std::cout << "[OK]";
+        openfluid::tools::Console::resetAttributes();
+      }
+      else if (Status == openfluid::base::Listener::LISTEN_WARNING)
+      {
+        openfluid::tools::Console::setWarningColor();
+        std::cout << "[Warning]";
+        openfluid::tools::Console::resetAttributes();
+      }
+      else if (Status == openfluid::base::Listener::LISTEN_ERROR)
+      {
+        openfluid::tools::Console::setErrorColor();
+        std::cout << "[Error]";
+        openfluid::tools::Console::resetAttributes();
+      }
 
-      if (Status == openfluid::base::Listener::LISTEN_WARNING)
-        std::cout << "[Warning]" << std::endl;
-
-      if (Status == openfluid::base::Listener::LISTEN_ERROR)
-        std::cout << "[Error]" << std::endl;
-    };
+      std::cout << std::endl;
+    }
 
 };
 

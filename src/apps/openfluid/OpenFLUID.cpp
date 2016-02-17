@@ -47,6 +47,7 @@
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/Console.hpp>
 #include <openfluid/utils/CommandLineParser.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
@@ -65,9 +66,9 @@
 #include "DefaultBuddiesListener.hpp"
 
 
+// =====================================================================
+// =====================================================================
 
-// =====================================================================
-// =====================================================================
 
 std::string msecsToString(qint64 MSecs)
 {
@@ -120,8 +121,18 @@ OpenFLUIDApp::~OpenFLUIDApp()
 
 void OpenFLUIDApp::printlnExecMessagesStats()
 {
-  if (mp_Engine != nullptr) std::cout << mp_Engine->getWarningsCount() << " warning(s)" << std::endl;
+  if (mp_Engine != nullptr)
+  {
+    if (mp_Engine->getWarningsCount())
+      openfluid::tools::Console::setWarningColor();
+
+    std::cout << mp_Engine->getWarningsCount() << " warning(s)" << std::endl;
+
+    if (mp_Engine->getWarningsCount())
+      openfluid::tools::Console::resetAttributes();
+  }
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -507,13 +518,18 @@ void OpenFLUIDApp::printObserversReport(const std::string& Pattern)
 // =====================================================================
 
 
-int OpenFLUIDApp::stopAppReturn(std::string Msg)
+int OpenFLUIDApp::stopAppReturn(const std::string& ErrorType, const std::string& Msg)
 {
   std::cout << std::endl;
 
   printlnExecMessagesStats();
 
-  std::cout << std::endl << Msg << std::endl;
+  std::cout << std::endl;
+  openfluid::tools::Console::setErrorColor();
+  std::cout << ErrorType << ": ";
+  openfluid::tools::Console::resetAttributes();
+  std::cout << Msg;
+  std::cout << std::endl;
 
   std::cout << std::endl;
   std::cout.flush();
@@ -617,8 +633,6 @@ void OpenFLUIDApp::runSimulation()
   printEnvInfos();
 
 
-
-
   std::cout << "* Loading data... " << std::endl; std::cout.flush();
   openfluid::fluidx::FluidXDescriptor FXDesc(IOListener.get());
   FXDesc.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
@@ -626,18 +640,27 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,m_SimBlob);
-  std::cout << "[OK]" << std::endl; std::cout.flush();
+  openfluid::tools::Console::setOKColor();
+  std::cout << "[OK]";
+  openfluid::tools::Console::resetAttributes();
+  std::cout << std::endl;
 
 
   std::cout << "* Building model... "; std::cout.flush();
   openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.modelDescriptor(),
                                                                 Model);
-  std::cout << "[OK]" << std::endl; std::cout.flush();
+  openfluid::tools::Console::setOKColor();
+  std::cout << "[OK]";
+  openfluid::tools::Console::resetAttributes();
+  std::cout << std::endl;
 
   std::cout << "* Building monitoring... "; std::cout.flush();
   openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoringDescriptor(),
                                                                 Monitoring);
-  std::cout << "[OK]" << std::endl; std::cout.flush();
+  openfluid::tools::Console::setOKColor();
+  std::cout << "[OK]";
+  openfluid::tools::Console::resetAttributes();
+  std::cout << std::endl;
 
   mp_Engine.reset(new openfluid::machine::Engine(m_SimBlob, Model, Monitoring, MListener.get()));
 
@@ -1086,6 +1109,7 @@ void OpenFLUIDApp::runBuddy()
 
 void OpenFLUIDApp::run()
 {
+  openfluid::tools::Console::saveAttributes();
 
   if (m_RunType == Simulation)
   {

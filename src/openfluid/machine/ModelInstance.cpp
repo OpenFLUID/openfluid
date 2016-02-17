@@ -550,12 +550,15 @@ void ModelInstance::processNextTimePoint()
   else
     return;
 
+  bool AtLeastOneWarningFlag = false;
+
   m_TimePointList.front().sortByOriginalPosition();
 
   mp_Listener->onRunStep(&m_SimulationBlob.simulationStatus());
 
   while (m_TimePointList.front().hasItemsToProcess())
   {
+
     openfluid::machine::ModelItemInstance* NextItem = m_TimePointList.front().nextItem();
 
     mp_Listener->onSimulatorRunStep(NextItem->Signature->ID);
@@ -571,7 +574,10 @@ void ModelInstance::processNextTimePoint()
                                  );
 
     if (mp_SimLogger->isCurrentWarningFlag())
+    {
+      AtLeastOneWarningFlag = true;
       mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING,NextItem->Signature->ID);
+    }
     else
       mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_OK,NextItem->Signature->ID);
 
@@ -591,7 +597,7 @@ void ModelInstance::processNextTimePoint()
     }
   }
 
-  if (mp_SimLogger->isCurrentWarningFlag())
+  if (AtLeastOneWarningFlag)
     mp_Listener->onRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING);
   else
     mp_Listener->onRunStepDone(openfluid::machine::MachineListener::LISTEN_OK);

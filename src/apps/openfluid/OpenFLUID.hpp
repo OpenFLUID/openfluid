@@ -125,7 +125,7 @@ class OpenFLUIDApp
 
     ~OpenFLUIDApp();
 
-    int stopAppReturn(std::string Msg);
+    int stopAppReturn(const std::string& ErrorType, const std::string& Msg);
 
     void processOptions(int ArgC, char **ArgV);
 

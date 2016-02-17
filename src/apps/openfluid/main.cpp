@@ -60,20 +60,21 @@ int main(int argc, char **argv)
   }
   catch (openfluid::base::Exception& E)
   {
-    ReturnValue = App.stopAppReturn("OpenFLUID ERROR: " + E.getMessage() + " [" + E.getContext().toString() + "]");
+    ReturnValue = App.stopAppReturn("OpenFLUID ERROR",
+                                    E.getMessage() + " [" + E.getContext().toString() + "]");
   }
   catch (std::bad_alloc& E)
   {
-    ReturnValue = App.stopAppReturn("MEMORY ALLOCATION ERROR: " + std::string(E.what()) +
-                                    ". Possibly not enough memory available");
+    ReturnValue = App.stopAppReturn("MEMORY ALLOCATION ERROR",
+                                    std::string(E.what()) +". Possibly not enough memory available");
   }
   catch (std::exception& E)
   {
-    ReturnValue = App.stopAppReturn("SYSTEM ERROR: " + std::string(E.what()));
+    ReturnValue = App.stopAppReturn("SYSTEM ERROR",std::string(E.what()));
   }
   catch (...)
   {
-    ReturnValue = App.stopAppReturn("UNKNOWN ERROR");
+    ReturnValue = App.stopAppReturn("UNKNOWN ERROR","no information");
   }
 
   return ReturnValue;

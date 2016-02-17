@@ -58,13 +58,19 @@ class VerboseMachineListener : public DefaultMachineListener
       switch (Status)
       {
         case openfluid::machine::MachineListener::LISTEN_ERROR :
+          openfluid::tools::Console::setErrorColor();
           std::cout << std::setw(12) << "[Error]";
+          openfluid::tools::Console::resetAttributes();
           break;
         case openfluid::machine::MachineListener::LISTEN_OK :
+          openfluid::tools::Console::setOKColor();
           std::cout << std::setw(12) << "[OK]";
+          openfluid::tools::Console::resetAttributes();
           break;
         case openfluid::machine::MachineListener::LISTEN_WARNING :
+          openfluid::tools::Console::setWarningColor();
           std::cout << std::setw(12) << "[Warning]";
+          openfluid::tools::Console::resetAttributes();
           break;
       }
 
@@ -87,7 +93,7 @@ class VerboseMachineListener : public DefaultMachineListener
     };
 
     virtual void onSimulatorInitParamsDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*SimulatorID*/)
+                                            const std::string& /*SimulatorID*/)
     {
       displaySimulatorStatus(Status);
     };
@@ -102,7 +108,7 @@ class VerboseMachineListener : public DefaultMachineListener
 
 
     virtual void onSimulatorPrepareDataDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*SimulatorID*/)
+                                            const std::string& /*SimulatorID*/)
     {
       displaySimulatorStatus(Status);
     };
@@ -117,7 +123,7 @@ class VerboseMachineListener : public DefaultMachineListener
 
 
     virtual void onSimulatorCheckConsistencyDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*SimulatorID*/)
+                                                 const std::string& /*SimulatorID*/)
     {
       displaySimulatorStatus(Status);
     };
@@ -132,7 +138,7 @@ class VerboseMachineListener : public DefaultMachineListener
 
 
     virtual void onSimulatorInitializeRunDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*SimulatorID*/)
+                                              const std::string& /*SimulatorID*/)
     {
       displaySimulatorStatus(Status);
     };
@@ -147,7 +153,7 @@ class VerboseMachineListener : public DefaultMachineListener
 
 
     virtual void onSimulatorRunStepDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*SimulatorID*/)
+                                        const std::string& /*SimulatorID*/)
     {
       displaySimulatorStatus(Status);
     };
@@ -162,7 +168,7 @@ class VerboseMachineListener : public DefaultMachineListener
 
 
     virtual void onSimulatorFinalizeRunDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*SimulatorID*/)
+                                            const std::string& /*SimulatorID*/)
     {
       displaySimulatorStatus(Status);
     };
