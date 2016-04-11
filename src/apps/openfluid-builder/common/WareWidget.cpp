@@ -49,7 +49,8 @@
 #include <QMessageBox>
 
 
-WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
+WareWidget::WareWidget(QWidget* Parent,
+                       const openfluid::ware::WareID_t& ID,
                        bool Enabled, const QString& BGColor, int Index):
   QWidget(Parent),ui(new Ui::WareWidget), m_ID(ID), m_EnabledBGColor(BGColor),
   m_Available(false),m_Ghost(false),m_Enabled(Enabled), m_CurrentIndex(Index),
@@ -57,6 +58,7 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
 {
   ui->setupUi(this);
   ui->IDLabel->setText(QString::fromStdString(m_ID));
+  ui->OrderLabel->setText(QString("#%1").arg(Index));
   ui->NameLabel->setElideMode(Qt::ElideRight);
 
   ui->UpButton->setText("");
@@ -227,6 +229,7 @@ void WareWidget::setDownButtonEnabled(bool Enabled)
 void WareWidget::setCurrentIndex(int Index)
 {
   m_CurrentIndex = Index;
+  ui->OrderLabel->setText(QString("#%1").arg(m_CurrentIndex+1));
 }
 
 

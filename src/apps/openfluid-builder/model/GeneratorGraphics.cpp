@@ -44,10 +44,11 @@
 
 
 
-GeneratorGraphics::GeneratorGraphics(const QPointF& Coords, const QString& ID,
+GeneratorGraphics::GeneratorGraphics(const QPointF& Coords,
+                                     const QString& ID, unsigned int Order,
                                      const QString& VarName, const QString& UnitClass,
                                      QGraphicsItem* Parent):
-  ModelItemGraphics(Coords,ID,Parent)
+  ModelItemGraphics(Coords,ID,Order,Parent)
 {
   m_ProducedVars[UnitClass].append(VarName);
 

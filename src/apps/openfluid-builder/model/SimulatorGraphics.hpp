@@ -62,7 +62,8 @@ class SimulatorGraphics : public QObject, public ModelItemGraphics
 
   public:
 
-    SimulatorGraphics(const QPointF &Coords, const QString& ID,
+    SimulatorGraphics(const QPointF &Coords,
+                      const QString& ID, unsigned int Order,
                       const openfluid::machine::ModelItemSignatureInstance* Signature,
                       QGraphicsItem* Parent = nullptr);
 

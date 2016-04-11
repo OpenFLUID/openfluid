@@ -43,10 +43,11 @@
 #include <QBrush>
 
 
-SimulatorGraphics::SimulatorGraphics(const QPointF& Coords, const QString& ID,
+SimulatorGraphics::SimulatorGraphics(const QPointF& Coords,
+                                     const QString& ID, unsigned int Order,
                                      const openfluid::machine::ModelItemSignatureInstance* Signature,
                                      QGraphicsItem* Parent):
-  ModelItemGraphics(Coords,ID,Parent)
+  ModelItemGraphics(Coords,ID,Order,Parent)
 {
   openfluid::ware::SimulatorSignature* SimSign = Signature->Signature;
   std::vector<openfluid::ware::SignatureTypedSpatialDataItem> VarList;

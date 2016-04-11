@@ -51,7 +51,7 @@
 #include <QGraphicsSceneMouseEvent>
 
 
-QSize ModelItemGraphics::m_DefaultSize = QSize(200,70);
+QSize ModelItemGraphics::m_DefaultSize = QSize(200,80);
 
 QPointF ModelItemGraphics::m_RequiredIOFromCenter = QPoint(-60,-ModelItemGraphics::m_DefaultSize.height()/2);
 QPointF ModelItemGraphics::m_UsedIOFromCenter = QPoint(0,-ModelItemGraphics::m_DefaultSize.height()/2);
@@ -64,7 +64,8 @@ QPointF ModelItemGraphics::m_UpOutIOFromCenter = QPoint(30,ModelItemGraphics::m_
 // =====================================================================
 
 
-ModelItemGraphics::ModelItemGraphics(const QPointF& Coords, const QString& ID,
+ModelItemGraphics::ModelItemGraphics(const QPointF& Coords,
+                                     const QString& ID, unsigned int Order,
                                      QGraphicsItem* Parent):
   QGraphicsRectItem(Coords.x(),Coords.y(),m_DefaultSize.width(),m_DefaultSize.height(),Parent),
   m_ID(ID), m_Ghost(false), m_Initialized(false)
@@ -78,19 +79,37 @@ ModelItemGraphics::ModelItemGraphics(const QPointF& Coords, const QString& ID,
 
 
   // Model item ID
-  QGraphicsSimpleTextItem* IDGraphics = new QGraphicsSimpleTextItem(ID,Parent);
+
+  QGraphicsTextItem* IDGraphics = new QGraphicsTextItem(ID,Parent);
   IDGraphics->setParentItem(this);
 
   QFont TmpFont = IDGraphics->font();
   TmpFont.setPointSize(10);
+  TmpFont.setWeight(QFont::Bold);
   IDGraphics->setFont(TmpFont);
 
-  QRectF IDRect = IDGraphics->boundingRect();
+  QRectF TmpRect = IDGraphics->boundingRect();
 
-  if (rect().width() < IDRect.width()+20)
-  setRect(Coords.x(),Coords.y(),IDRect.width()+20,m_DefaultSize.height());
+  if (rect().width() < TmpRect.width()+20)
+  setRect(Coords.x(),Coords.y(),TmpRect.width()+20,m_DefaultSize.height());
 
-  IDGraphics->setPos((rect().width()/2)-(IDRect.width()/2),(m_DefaultSize.height()/2)-(IDRect.height()/2));
+  IDGraphics->setPos((rect().width()/2)-(TmpRect.width()/2),(m_DefaultSize.height()/2)-(TmpRect.height()/2));
+
+
+  // Model item Order
+
+  QGraphicsTextItem* OrderGraphics = new QGraphicsTextItem(QString("#%1").arg(Order),Parent);
+  OrderGraphics->setParentItem(this);
+
+  TmpFont = OrderGraphics->font();
+  TmpFont.setPointSize(9);
+  TmpFont.setStyle(QFont::StyleItalic);
+  OrderGraphics->setFont(TmpFont);
+
+  TmpRect = OrderGraphics->boundingRect();
+
+  OrderGraphics->setPos(rect().width()-TmpRect.width()-2,m_DefaultSize.height()-TmpRect.height());
+
 }
 
 

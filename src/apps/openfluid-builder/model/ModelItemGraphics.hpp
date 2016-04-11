@@ -70,6 +70,8 @@ class ModelItemGraphics : public QGraphicsRectItem
 
     QString m_ID;
 
+    unsigned int m_Order;
+
     bool m_Ghost;
 
     bool m_Initialized;
@@ -96,7 +98,9 @@ class ModelItemGraphics : public QGraphicsRectItem
 
   public:
 
-    ModelItemGraphics(const QPointF &Coords, const QString& ID,
+    ModelItemGraphics(const QPointF &Coords,
+                      const QString& ID,
+                      unsigned int Order,
                       QGraphicsItem* Parent = nullptr);
 
     ~ModelItemGraphics();
@@ -109,13 +113,13 @@ class ModelItemGraphics : public QGraphicsRectItem
 
     QPointF getUpInIOPosition();
 
-    virtual QPointF getProducedIOPosition() =0;
+    virtual QPointF getProducedIOPosition() = 0;
 
     QPointF getUpOutIOPosition();
 
     void addConnector(ConnectorGraphics* Connector);
 
-    /* TODo to be definitely removed if unused
+    /* TODO to be definitely removed if unused
     void removeConnector(ConnectorGraphics* Connector);
 
     void removeConnectors();*/

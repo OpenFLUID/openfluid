@@ -52,7 +52,8 @@ class GeneratorGraphics : public ModelItemGraphics
 
   public:
 
-    GeneratorGraphics(const QPointF &Coords, const QString& ID,
+    GeneratorGraphics(const QPointF &Coords,
+                      const QString& ID, unsigned int Order,
                       const QString& VarName, const QString& UnitClass,
                       QGraphicsItem* Parent = nullptr);
 

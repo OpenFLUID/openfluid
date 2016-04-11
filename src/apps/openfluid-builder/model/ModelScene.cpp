@@ -136,30 +136,33 @@ void ModelScene::refresh()
       if ((*it)->getType() == openfluid::ware::WareType::SIMULATOR &&
           openfluid::machine::SimulatorSignatureRegistry::instance()->isSimulatorAvailable(ID.toStdString()))
       {
+        SimCount++;
+
         SimulatorGraphics* SimG =
             new SimulatorGraphics(QPoint(0,0),
-                                  ID,
+                                  ID, SimCount+GenCount,
                                   openfluid::machine::SimulatorSignatureRegistry::instance()
                                   ->signature(ID.toStdString()));
+
         addItem(SimG);
         SimG->moveBy(Position.x(),Position.y());
-        SimCount++;
         SimG->initialize();
         m_GraphicsItems.append(SimG);
         connect(SimG,SIGNAL(srcEditAsked(const QString&,bool)),this,SLOT(notifySrcEditAsked(const QString&,bool)));
       }
-      if ((*it)->getType() == openfluid::ware::WareType::GENERATOR)
+      else if ((*it)->getType() == openfluid::ware::WareType::GENERATOR)
       {
-
         openfluid::fluidx::GeneratorDescriptor* GenDesc =
                  dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
 
-        GeneratorGraphics* GenG = new GeneratorGraphics(QPoint(0,0),ID,
+        GenCount++;
+
+        GeneratorGraphics* GenG = new GeneratorGraphics(QPoint(0,0),
+                                                        ID,SimCount+GenCount,
                                                         QString::fromStdString(GenDesc->getVariableName()),
                                                         QString::fromStdString(GenDesc->getUnitsClass()));
         addItem(GenG);
         GenG->moveBy(Position.x(),Position.y());
-        GenCount++;
         GenG->initialize();
         m_GraphicsItems.append(GenG);
       }
