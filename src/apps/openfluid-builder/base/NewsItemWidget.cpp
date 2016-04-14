@@ -76,7 +76,7 @@ QWidget(Parent), ui(new Ui::NewsItemWidget)
                                  "a:link {color:%1;}"
                                  "</style></head><body>%2</body></html>").arg(BUILDER_NEWSLINE_LINKSCOLOR,HTMLText));*/
 
-  foreach (QString Tag, Data.Tags)
+  for (QString Tag : Data.Tags)
   {
     QWidget* TagWidget = new QWidget(this);
     TagWidget->setMinimumWidth(75);

@@ -136,7 +136,7 @@ QVariant ModelItemGraphics::itemChange(GraphicsItemChange Change,
     openfluid::base::RunContextManager::instance()
       ->setProjectConfigValue("builder.model.graphicalview",m_ID,pos().toPoint());
 
-    foreach (ConnectorGraphics* Conn, m_Connectors)
+    for (ConnectorGraphics* Conn : m_Connectors)
     {
       Conn->updatePosition();
     }
@@ -303,7 +303,7 @@ void ModelItemGraphics::removeConnector(ConnectorGraphics* Connector)
 
 void ModelItemGraphics::removeConnectors()
 {
-  foreach (ConnectorGraphics* Connector, m_Connectors)
+  for (ConnectorGraphics* Connector : m_Connectors)
   {
     Connector->getFromItem()->removeConnector(Connector);
     Connector->getToItem()->removeConnector(Connector);

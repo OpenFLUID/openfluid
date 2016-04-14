@@ -194,9 +194,9 @@ void MapScene::clear()
 
 void MapScene::updateActiveLayer()
 {
-  foreach(QList<MapItemGraphics*> Layer,m_MapItems)
+  for (QList<MapItemGraphics*> Layer : m_MapItems)
   {
-    foreach(MapItemGraphics* Item,Layer)
+    for (MapItemGraphics* Item : Layer)
     {
       Item->setFlag(QGraphicsItem::ItemIsSelectable,false);
     }
@@ -204,7 +204,7 @@ void MapScene::updateActiveLayer()
 
   if (m_ActiveLayer != nullptr)
   {
-    foreach(MapItemGraphics* Item,*m_ActiveLayer)
+    for (MapItemGraphics* Item :*m_ActiveLayer)
     {
       Item->setFlag(QGraphicsItem::ItemIsSelectable,true);
     }

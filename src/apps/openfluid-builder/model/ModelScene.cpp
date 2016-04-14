@@ -82,7 +82,7 @@ void ModelScene::refresh()
   // clear existing scene
 
   // clear model items
-  foreach (ModelItemGraphics* MItemG, m_GraphicsItems)
+  for (ModelItemGraphics* MItemG : m_GraphicsItems)
   {
     removeItem(MItemG);
     delete MItemG;
@@ -90,7 +90,7 @@ void ModelScene::refresh()
   m_GraphicsItems.clear();
 
   // clear connections
-  foreach (ConnectorGraphics* ConnG, m_GraphicsConnections)
+  for  (ConnectorGraphics* ConnG : m_GraphicsConnections)
   {
     removeItem(ConnG);
     delete ConnG;
@@ -181,7 +181,7 @@ void ModelScene::refresh()
 
 void ModelScene::buildConnections()
 {
-  foreach (ModelItemGraphics* ToMItemG, m_GraphicsItems)
+  for (ModelItemGraphics* ToMItemG : m_GraphicsItems)
   {
     const ModelItemGraphics::IOSet_t* VarsSet;
     ModelItemGraphics::IOSet_t::const_iterator itTo;
@@ -195,11 +195,11 @@ void ModelScene::buildConnections()
 
     for (itTo = VarsSet->constBegin(); itTo != VarsSet->constEnd(); ++itTo)
     {
-      foreach (QString VarName, itTo.value())
+      for (QString VarName : itTo.value())
       {
         ProviderItem = nullptr;
 
-        foreach (ModelItemGraphics* FromMItemG, m_GraphicsItems)
+        for  (ModelItemGraphics* FromMItemG : m_GraphicsItems)
         {
           if (ToMItemG != FromMItemG)
           {
@@ -236,10 +236,10 @@ void ModelScene::buildConnections()
 
     for (itTo = VarsSet->constBegin(); itTo != VarsSet->constEnd(); ++itTo)
     {
-      foreach (QString VarName, itTo.value())
+      for (QString VarName : itTo.value())
       {
         ProviderItem = nullptr;
-        foreach (ModelItemGraphics* FromMItemG, m_GraphicsItems)
+        for (ModelItemGraphics* FromMItemG : m_GraphicsItems)
         {
           if (ToMItemG != FromMItemG)
           {
@@ -275,10 +275,10 @@ void ModelScene::buildConnections()
 
     for (itTo = VarsSet->constBegin(); itTo != VarsSet->constEnd(); ++itTo)
     {
-      foreach (QString VarName, itTo.value())
+      for (QString VarName : itTo.value())
       {
         ProviderItem = nullptr;
-        foreach (ModelItemGraphics* FromMItemG, m_GraphicsItems)
+        for (ModelItemGraphics* FromMItemG : m_GraphicsItems)
         {
 
           if (ToMItemG != FromMItemG)
@@ -322,7 +322,7 @@ void ModelScene::addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::O
 {
   bool Found = false;
 
-  foreach(ConnectorGraphics* Conn, m_GraphicsConnections)
+  for (ConnectorGraphics* Conn : m_GraphicsConnections)
   {
     if (Conn->fromItem() == FromItem && Conn->getFromNode() == FromOutNode &&
         Conn->toItem() == ToItem && Conn->getToNode() == ToInNode)
@@ -356,7 +356,7 @@ void ModelScene::addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::O
 
 void ModelScene::showVariables(bool Show)
 {
-  foreach(ConnectorGraphics* Conn, m_GraphicsConnections)
+  for (ConnectorGraphics* Conn : m_GraphicsConnections)
   {
     Conn->setVariablesNamesVisible(Show);
   }

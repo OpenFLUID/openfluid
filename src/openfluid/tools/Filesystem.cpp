@@ -54,13 +54,12 @@ bool removeDirectoryRecursively(const QString& Path)
 
   if (CurrentDir.exists(Path))
   {
-    Q_FOREACH(QFileInfo Info,
-              CurrentDir.entryInfoList(QDir::NoDotAndDotDot |
-                                       QDir::System |
-                                       QDir::Hidden  |
-                                       QDir::AllDirs |
-                                       QDir::Files,
-                                       QDir::DirsFirst))
+    for (QFileInfo Info : CurrentDir.entryInfoList(QDir::NoDotAndDotDot |
+                                                   QDir::System |
+                                                   QDir::Hidden  |
+                                                   QDir::AllDirs |
+                                                   QDir::Files,
+                                                   QDir::DirsFirst))
     {
       if (Info.isDir())
       {
@@ -101,13 +100,12 @@ bool copyDirectoryRecursively(const QString& SrcPath,
 
   QDir CurrentDir(SrcPath);
 
-  Q_FOREACH(QFileInfo Info,
-            CurrentDir.entryInfoList(QDir::NoDotAndDotDot |
-                                     QDir::System |
-                                     QDir::Hidden  |
-                                     QDir::AllDirs |
-                                     QDir::Files,
-                                     QDir::DirsFirst))
+  for (QFileInfo Info : CurrentDir.entryInfoList(QDir::NoDotAndDotDot |
+                                                 QDir::System |
+                                                 QDir::Hidden  |
+                                                 QDir::AllDirs |
+                                                 QDir::Files,
+                                                 QDir::DirsFirst))
   {
     if (Info.isDir())
     {

@@ -1078,7 +1078,7 @@ void SpatialDomainWidget::editAttributesValues()
       if (EditDlg.getEditMode() == EditAttributesValuesDialog::EDIT_REPLACE)
       {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        foreach(QTableWidgetItem* Item,ui->AttributesTableWidget->selectedItems())
+        for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
         {
           Item->setText(EditDlg.getReplaceValue());
         }
@@ -1092,7 +1092,7 @@ void SpatialDomainWidget::editAttributesValues()
         bool LocalOK;
 
         // check if selected attributes values are numeric values (required for math operations)
-        foreach(QTableWidgetItem* Item,ui->AttributesTableWidget->selectedItems())
+        for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
         {
           Item->text().toDouble(&LocalOK);
           GlobalOK &= LocalOK;
@@ -1103,7 +1103,7 @@ void SpatialDomainWidget::editAttributesValues()
           if (EditDlg.getEditMode() == EditAttributesValuesDialog::EDIT_MULTIPLY)
           {
             double MultValue = EditDlg.getMultiplyValue();
-            foreach(QTableWidgetItem* Item,ui->AttributesTableWidget->selectedItems())
+            for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
             {
               double Value = Item->text().toDouble();
               Value *= MultValue;
@@ -1113,7 +1113,7 @@ void SpatialDomainWidget::editAttributesValues()
           else
           {
             double AddValue = EditDlg.getAddValue();
-            foreach(QTableWidgetItem* Item,ui->AttributesTableWidget->selectedItems())
+            for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
             {
               double Value = Item->text().toDouble();
               Value += AddValue;

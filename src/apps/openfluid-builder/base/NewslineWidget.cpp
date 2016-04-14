@@ -113,7 +113,7 @@ void NewslineWidget::setItems(const QList<NewsItemData>& Items)
 
   bool isFirst = true;
 
-  foreach (NewsItemData IData, Items)
+  for (NewsItemData IData : Items)
   {
     if (isFirst) isFirst = false;
     else

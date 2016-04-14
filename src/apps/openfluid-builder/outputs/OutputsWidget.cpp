@@ -104,7 +104,7 @@ bool OutputsWidget::removeDirectory(QDir Dir)
   if (!Dir.exists())
     return false;
 
-  foreach (QFileInfo FI, Dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
+  for  (QFileInfo FI : Dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
   {
     if ( FI.isSymLink() || FI.isFile() )
     {
@@ -137,7 +137,7 @@ void OutputsWidget::clearOutputDir()
   {
     QDir OutDir(QString::fromStdString(openfluid::base::RunContextManager::instance()->getOutputDir()));
 
-    foreach (QFileInfo FI, OutDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
+    for (QFileInfo FI : OutDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
     {
       if (FI.isSymLink() || FI.isFile())
       {

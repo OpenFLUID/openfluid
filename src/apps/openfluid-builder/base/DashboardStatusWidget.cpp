@@ -141,7 +141,7 @@ void DashboardStatusWidget::refresh()
 
     QStringList Msgs = Check->part((*it).first).getMessages();
 
-    foreach (QString Msg, Msgs)
+    for (QString Msg : Msgs)
     {
       (*it).second->addMessage(Msg);
     }

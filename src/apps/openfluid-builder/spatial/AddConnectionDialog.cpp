@@ -62,7 +62,7 @@ AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString&
 
   QStringList Classes = openfluid::tools::toQStringList(mp_Domain->getClassNames());
 
-  foreach(QString ClassName, Classes)
+  for (QString ClassName : Classes)
     m_ClassID[ClassName] = QStringList();
 
   ui->DestClassComboBox->addItems(Classes);
