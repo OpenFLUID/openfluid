@@ -113,8 +113,8 @@ void ConnectorGraphics::updatePosition()
 
   Path.moveTo(FromPos);
 
-  // intermediate position helps for correct bezier curve shape
-  // and for positionning of variable names as curve label
+  // intermediate position helps for correct Bezier curve shape
+  // and for positionning of variables names as curve label
   QPointF InterPos;
 
 
@@ -143,7 +143,7 @@ void ConnectorGraphics::updatePosition()
 
 
   // variables names
-  mp_VarsText->setText(m_Variables.join("\n"));
+  mp_VarsText->setText(getVariablesString());
 
   QPointF TextPos(InterPos.x()-mp_VarsText->boundingRect().width()/2,
                   InterPos.y()-mp_VarsText->boundingRect().height()/2);
@@ -151,10 +151,17 @@ void ConnectorGraphics::updatePosition()
   mp_VarsText->setPos(TextPos);
 
 
-
   // variables names background box
   mp_VarsTextBox->setRect(TextPos.x()-2,TextPos.y()-2,
                           mp_VarsText->boundingRect().width()+4, mp_VarsText->boundingRect().height()+4);
+
+
+  // ToolTips
+  QString ToolTipString = getToolTipString();
+  mp_VarsText->setToolTip(ToolTipString);
+  mp_VarsTextBox->setToolTip(ToolTipString);
+  setToolTip(ToolTipString);
+
 }
 
 
@@ -162,9 +169,9 @@ void ConnectorGraphics::updatePosition()
 // =====================================================================
 
 
-void ConnectorGraphics::addVariable(const QString& UnitClass, const QString& VarName)
+void ConnectorGraphics::addVariable(const openfluid::ware::SignatureTypedSpatialDataItem& VarInfos)
 {
-  m_Variables.append(VarName+" {"+UnitClass+"}");
+  m_VariablesInfos.append(VarInfos);
   updatePosition();
 }
 
@@ -177,5 +184,59 @@ void ConnectorGraphics::setVariablesNamesVisible(bool Visible) const
 {
   mp_VarsText->setVisible(Visible);
   mp_VarsTextBox->setVisible(Visible);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString ConnectorGraphics::getVariablesString() const
+{
+  QString Text;
+
+  for (auto& VarInfo : m_VariablesInfos)
+  {
+    if (!Text.isEmpty())
+      Text += "\n";
+
+    Text += QString::fromStdString(VarInfo.DataName);
+  }
+
+  return Text;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString ConnectorGraphics::getToolTipString() const
+{
+  QString Text;
+
+  if (!m_VariablesInfos.empty())
+  {
+    Text += "<h3 style='white-space:pre'>"+mp_FromItem->getID()+" &rarr; "+mp_ToItem->getID()+"</h3>";
+    Text += "<ul>";
+
+    for (auto& VarInfos : m_VariablesInfos)
+    {
+      Text += "<li>";
+      Text += "<p style='white-space:pre'>";
+      Text += "<b>" + QString::fromStdString(VarInfos.DataName) + "</b>" +
+              " {" + QString::fromStdString(VarInfos.UnitsClass) + "}";
+
+      if (VarInfos.DataType != openfluid::core::Value::NONE)
+        Text += "," + QString::fromStdString(openfluid::core::Value::getStringFromValueType(VarInfos.DataType));
+
+      Text += "</p>";
+      Text += "</li>";
+    }
+
+    Text += "</ul>";
+  }
+
+  return Text;
 }
 

@@ -44,7 +44,7 @@
 #include "ModelItemGraphics.hpp"
 
 
-class SimulatorGraphics : public QObject, public ModelItemGraphics
+class SimulatorGraphics : public ModelItemGraphics
 {
   Q_OBJECT;
 

@@ -50,33 +50,20 @@ SimulatorGraphics::SimulatorGraphics(const QPointF& Coords,
   ModelItemGraphics(Coords,ID,Order,Parent)
 {
   openfluid::ware::SimulatorSignature* SimSign = Signature->Signature;
-  std::vector<openfluid::ware::SignatureTypedSpatialDataItem> VarList;
 
   m_Ghost = Signature->Ghost;
 
-  VarList = SimSign->HandledData.RequiredVars;
-  for (unsigned int i=0;i<VarList.size();i++)
-    m_RequiredVars[QString::fromStdString(VarList[i].UnitsClass)].append(QString::fromStdString(VarList[i].DataName));
-
-  VarList = SimSign->HandledData.UsedVars;
-  for (unsigned int i=0;i<VarList.size();i++)
-    m_UsedVars[QString::fromStdString(VarList[i].UnitsClass)].append(QString::fromStdString(VarList[i].DataName));
-
-  VarList = SimSign->HandledData.ProducedVars;
-  for (unsigned int i=0;i<VarList.size();i++)
-    m_ProducedVars[QString::fromStdString(VarList[i].UnitsClass)].append(QString::fromStdString(VarList[i].DataName));
-
-  VarList = SimSign->HandledData.UpdatedVars;
-  for (unsigned int i=0;i<VarList.size();i++)
-    m_UpdatedVars[QString::fromStdString(VarList[i].UnitsClass)].append(QString::fromStdString(VarList[i].DataName));
-
+  m_RequiredVars = SimSign->HandledData.RequiredVars;
+  m_UsedVars = SimSign->HandledData.UsedVars;
+  m_ProducedVars = SimSign->HandledData.ProducedVars;
+  m_UpdatedVars = SimSign->HandledData.UpdatedVars;
 
   // In/Out slots
-  drawIOSlot(getRequiredIOPosition(),"Req",!m_RequiredVars.isEmpty());
-  drawIOSlot(getUsedIOPosition(),"Us",!m_UsedVars.isEmpty());
-  drawIOSlot(getUpInIOPosition(),"Upd",!m_UpdatedVars.isEmpty());
-  drawIOSlot(getProducedIOPosition(),"Prod",!m_ProducedVars.isEmpty());
-  drawIOSlot(getUpOutIOPosition(),"Upd",!m_UpdatedVars.isEmpty());
+  drawIOSlot(getRequiredIOPosition(),SlotType::SLOT_REQ,m_RequiredVars);
+  drawIOSlot(getUsedIOPosition(),SlotType::SLOT_US,m_UsedVars);
+  drawIOSlot(getUpInIOPosition(),SlotType::SLOT_UPIN,m_UpdatedVars);
+  drawIOSlot(getProducedIOPosition(),SlotType::SLOT_PROD,m_ProducedVars);
+  drawIOSlot(getUpOutIOPosition(),SlotType::SLOT_UPOUT,m_UpdatedVars);
 
   if (!m_Ghost)
     setBrush(QBrush(QColor(BUILDER_SIMULATOR_BGCOLOR)));

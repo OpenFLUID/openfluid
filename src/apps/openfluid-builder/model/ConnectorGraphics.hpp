@@ -40,10 +40,15 @@
 #ifndef __OPENFLUID_BUILDERAPP_CONNECTORGRAPHICS_HPP__
 #define __OPENFLUID_BUILDERAPP_CONNECTORGRAPHICS_HPP__
 
+
 class ModelItemGraphics;
+
 
 #include <QGraphicsPathItem>
 #include <QGraphicsSceneMouseEvent>
+
+
+
 
 class ConnectorGraphics : public QGraphicsPathItem
 {
@@ -62,11 +67,15 @@ class ConnectorGraphics : public QGraphicsPathItem
     ModelItemGraphics* mp_ToItem;
     InNodeType m_ToInNode;
 
-    QStringList m_Variables;
+    QList<openfluid::ware::SignatureTypedSpatialDataItem> m_VariablesInfos;
 
     QGraphicsSimpleTextItem* mp_VarsText;
 
     QGraphicsRectItem* mp_VarsTextBox;
+
+    QString getVariablesString() const;
+
+    QString getToolTipString() const;
 
 
   public:
@@ -79,7 +88,7 @@ class ConnectorGraphics : public QGraphicsPathItem
 
     void updatePosition();
 
-    void addVariable(const QString& UnitClass, const QString& VarName);
+    void addVariable(const openfluid::ware::SignatureTypedSpatialDataItem& VarInfos);
 
     ModelItemGraphics* fromItem()
     { return mp_FromItem; }

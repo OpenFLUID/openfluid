@@ -194,12 +194,24 @@ QPointF ModelItemGraphics::getCenterFromOrigin()
 // =====================================================================
 
 
-void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const QString& Name, bool Active)
+void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const SlotType& Type,
+                                   const IOSet_t& VarsInfos)
 {
+
+  QString SlotName;
+
+  if (Type == SlotType::SLOT_REQ)
+    SlotName = "Req";
+  else if (Type == SlotType::SLOT_US)
+    SlotName = "Us";
+  else if (Type == SlotType::SLOT_PROD)
+    SlotName = "Prod";
+  else
+    SlotName = "Upd";
 
   QGraphicsEllipseItem* SlotShape = new QGraphicsEllipseItem(Pos.x()-6,Pos.y()-6,12,12);
 
-  QGraphicsSimpleTextItem* TextShape = new QGraphicsSimpleTextItem(Name);
+  QGraphicsSimpleTextItem* TextShape = new QGraphicsSimpleTextItem(SlotName);
 
   QFont TmpFont = TextShape->font();
   TmpFont.setPointSize(8);
@@ -216,14 +228,55 @@ void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const QString& Name, bool
   TextShape->setPos(TextShapeX,TextShapeY);
 
 
-  if (Active)
+  if (!VarsInfos.empty())
   {
+    QString ToolTipString = "<h3>";
+
+    if (Type == SlotType::SLOT_REQ)
+      ToolTipString += tr("Required variable(s)");
+    else if (Type == SlotType::SLOT_US)
+      ToolTipString += tr("Used variable(s)");
+    else if (Type == SlotType::SLOT_PROD)
+      ToolTipString += tr("Produced variable(s)");
+    else
+      ToolTipString += tr("Updated variable(s)");
+
+    ToolTipString += "</h3><ul>";
+
+    // Build of the tooltip text
+    for (auto& VarInfos : VarsInfos)
+    {
+      ToolTipString += "<li>";
+      ToolTipString += "<p style='white-space:pre'><b>" + QString::fromStdString(VarInfos.DataName) + "</b>" +
+                       " {"+QString::fromStdString(VarInfos.UnitsClass)+ "}";
+
+      if (VarInfos.DataType != openfluid::core::Value::NONE)
+        ToolTipString += "," +
+                         QString::fromStdString(openfluid::core::Value::getStringFromValueType(VarInfos.DataType));
+
+      if (!VarInfos.Description.empty())
+        ToolTipString += ": " + QString::fromStdString(VarInfos.Description);
+
+      if (!VarInfos.DataUnit.empty())
+        ToolTipString += " (" + QString::fromStdString(VarInfos.DataUnit)+")";
+
+      ToolTipString += "</p></li>";
+    }
+
+    ToolTipString += "</ul>";
+
+
+    // color for active slots
     SlotShape->setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_ACTIVECOLOR)),1));
     SlotShape->setBrush(QBrush(QColor(BUILDER_MODELVIEW_ACTIVECOLOR)));
     TextShape->setBrush(QBrush(QColor(BUILDER_MODELVIEW_ACTIVECOLOR)));
+
+    // tooltip
+    SlotShape->setToolTip(ToolTipString);
   }
   else
   {
+    // color for inactive slots
     SlotShape->setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_INACTIVECOLOR)),1));
     SlotShape->setBrush(QBrush(QColor(BUILDER_MODELVIEW_INACTIVECOLOR)));
     TextShape->setBrush(QBrush(QColor(BUILDER_MODELVIEW_INACTIVECOLOR)));
@@ -231,9 +284,6 @@ void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const QString& Name, bool
 
   SlotShape->setParentItem(this);
   TextShape->setParentItem(this);
-
-
-
 }
 
 
@@ -317,9 +367,15 @@ void ModelItemGraphics::removeConnectors()
 // =====================================================================
 
 
-bool ModelItemGraphics::hasProducedVariable(const QString& UnitClass, const QString& Name)
+bool ModelItemGraphics::hasProducedVariable(const std::string& UnitsClass, const std::string& Name)
 {
-  return (m_ProducedVars.find(UnitClass)!=m_ProducedVars.end() && m_ProducedVars[UnitClass].contains(Name));
+  for (auto& Var : m_ProducedVars)
+  {
+    if (Var.UnitsClass == UnitsClass && Var.DataName == Name)
+      return true;
+  }
+
+  return false;
 }
 
 
@@ -327,7 +383,13 @@ bool ModelItemGraphics::hasProducedVariable(const QString& UnitClass, const QStr
 // =====================================================================
 
 
-bool ModelItemGraphics::hasUpdatedVariable(const QString& UnitClass, const QString& Name)
+bool ModelItemGraphics::hasUpdatedVariable(const std::string& UnitsClass, const std::string& Name)
 {
-  return (m_UpdatedVars.find(UnitClass)!=m_UpdatedVars.end() && m_UpdatedVars[UnitClass].contains(Name));
+  for (auto& Var : m_UpdatedVars)
+  {
+    if (Var.UnitsClass == UnitsClass && Var.DataName == Name)
+      return true;
+  }
+
+  return false;
 }

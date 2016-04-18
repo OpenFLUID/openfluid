@@ -50,11 +50,19 @@
 #include "ConnectorGraphics.hpp"
 
 
-class ModelItemGraphics : public QGraphicsRectItem
+class ModelItemGraphics : public QObject, public QGraphicsRectItem
 {
+  Q_OBJECT;
+
   public:
 
-    typedef QMap<QString,QStringList> IOSet_t;
+    enum class SlotType {SLOT_REQ, SLOT_US, SLOT_UPIN, SLOT_PROD, SLOT_UPOUT };
+
+    /**
+      Structure for storage of input/output variables in graphical view of models
+    */
+    typedef std::vector<openfluid::ware::SignatureTypedSpatialDataItem> IOSet_t;
+
 
   protected:
 
@@ -92,7 +100,8 @@ class ModelItemGraphics : public QGraphicsRectItem
 
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *Event);
 
-    void drawIOSlot(const QPointF& Pos, const QString& Name, bool Active = false);
+    void drawIOSlot(const QPointF& Pos, const SlotType& Type,
+                    const IOSet_t& VarsInfos);
 
     QPointF getCenterFromOrigin();
 
@@ -106,6 +115,9 @@ class ModelItemGraphics : public QGraphicsRectItem
     ~ModelItemGraphics();
 
     void initialize();
+
+    QString getID() const
+    { return m_ID; }
 
     QPointF getRequiredIOPosition();
 
@@ -136,9 +148,9 @@ class ModelItemGraphics : public QGraphicsRectItem
     const IOSet_t* usedVariables() const
     { return &m_UsedVars; }
 
-    bool hasProducedVariable(const QString& UnitClass, const QString& Name);
+    bool hasProducedVariable(const std::string& UnitsClass, const std::string& Name);
 
-    bool hasUpdatedVariable(const QString& UnitClass, const QString& Name);
+    bool hasUpdatedVariable(const std::string& UnitsClass, const std::string& Name);
 
 
 };

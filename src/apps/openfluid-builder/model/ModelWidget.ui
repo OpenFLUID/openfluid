@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>764</width>
-    <height>575</height>
+    <width>770</width>
+    <height>618</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -110,7 +110,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>694</width>
+                <width>708</width>
                 <height>148</height>
                </rect>
               </property>
@@ -280,7 +280,44 @@
                  <string notr="true">color : #909090;</string>
                 </property>
                 <property name="text">
-                 <string>Use Ctrl key + mouse wheel for zooming</string>
+                 <string>Use&lt;br/&gt;Ctrl key + mouse wheel&lt;br/&gt;for zooming</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>8</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="font">
+                 <font>
+                  <italic>true</italic>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color : #909090;</string>
+                </property>
+                <property name="text">
+                 <string>Hover the mouse&lt;br/&gt;on slots and connectors&lt;br/&gt;for detailed informations</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>

@@ -46,14 +46,15 @@
 
 GeneratorGraphics::GeneratorGraphics(const QPointF& Coords,
                                      const QString& ID, unsigned int Order,
-                                     const QString& VarName, const QString& UnitClass,
+                                     const QString& VarName, const QString& UnitsClass,
                                      QGraphicsItem* Parent):
   ModelItemGraphics(Coords,ID,Order,Parent)
 {
-  m_ProducedVars[UnitClass].append(VarName);
+  m_ProducedVars.push_back(
+    openfluid::ware::SignatureTypedSpatialDataItem(VarName.toStdString(),UnitsClass.toStdString(),"",""));
 
   // Out slot
-  drawIOSlot(getProducedIOPosition(),"Prod",true);
+  drawIOSlot(getProducedIOPosition(),SlotType::SLOT_PROD,m_ProducedVars);
 
   setBrush(QBrush(QColor(BUILDER_GENERATOR_BGCOLOR)));
 }
