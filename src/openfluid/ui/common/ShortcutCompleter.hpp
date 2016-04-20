@@ -29,75 +29,66 @@
   
 */
 
-
 /**
-  @file AddGeneratorDialog.hpp
+  @file ShortcutCompleter.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_ADDGENERATORDIALOG_HPP__
-#define __OPENFLUID_BUILDERAPP_ADDGENERATORDIALOG_HPP__
+
+#ifndef __OPENFLUID_UICOMMON_SHORTCUTCOMPLETER_HPP__
+#define __OPENFLUID_UICOMMON_SHORTCUTCOMPLETER_HPP__
 
 
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <QCompleter>
+#include <QAction>
+#include <QKeySequence>
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
-
-#include <QStringList>
-
-
-namespace Ui
-{
-  class AddGeneratorDialog;
-}
+class QLineEdit;
 
 
-class AddGeneratorDialog : public openfluid::ui::common::OpenFLUIDDialog
+namespace openfluid { namespace ui { namespace common {
+
+
+class ShortcutCompleter : public QCompleter
 {
   Q_OBJECT;
 
-  private slots:
-
-    void switchGeneratorOptions();
-
-    void checkGlobal();
-
-    void selectSourcesFile();
-
-    void selectDistriFile();
-
-
   private:
 
-    Ui::AddGeneratorDialog* ui;
-
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_Method;
-
-    void setMessage(const QString& Msg = "");
-
+    QAction* mp_ShortcutAction = nullptr;
 
   public:
 
-    AddGeneratorDialog(QWidget* Parent = nullptr);
+    ShortcutCompleter(QObject* Parent = nullptr);
 
-    ~AddGeneratorDialog();
+    ShortcutCompleter(QAbstractItemModel* Model,QObject* Parent = nullptr);
 
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod getMethod() const
-    { return m_Method; }
+    ShortcutCompleter(const QStringList& List,QObject* Parent = nullptr);
 
-    QString getVariableName() const;
+    /**
+      Sets the shortcut sequence to open the completer popup
+      @param[in] Shortcut the shortcut sequence
+    */
+    void setShortcut(const QKeySequence& Shortcut = QKeySequence(Qt::CTRL+Qt::Key_Space));
 
-    QString getUnitClass() const;
+    /**
+      Links the completer to a line edit
+      @param[in] Widget the line edit to link to
+    */
+    void linkToLineEdit(QLineEdit* Widget = nullptr);
 
-    unsigned int getVariableSize() const;
-
-    openfluid::ware::WareParams_t getParams() const;
-
+    /**
+      Returns the QAction for the popup shortcut
+      @return the QAction for the popup shortcut
+    */
+    QAction* shortcutAction() const
+    { return mp_ShortcutAction; }
 };
 
 
+} } } // namespaces
 
 
-#endif /* __OPENFLUID_BUILDERAPP_ADDGENERATORDIALOG_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_SHORTCUTCOMPLETER_HPP__ */

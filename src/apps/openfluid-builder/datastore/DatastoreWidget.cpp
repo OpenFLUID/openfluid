@@ -148,8 +148,7 @@ void DatastoreWidget::refresh()
 
 void DatastoreWidget::addItem()
 {
-  AddDatastoreItemDialog AddItemDlg(openfluid::tools::toQStringList(m_AdvFluidxDesc.spatialDomain().getClassNames()),
-                                    openfluid::tools::toQStringList(m_Datastore.getItemsIDs()),
+  AddDatastoreItemDialog AddItemDlg(openfluid::tools::toQStringList(m_Datastore.getItemsIDs()),
                                     this);
 
   if (AddItemDlg.exec() == QDialog::Accepted)

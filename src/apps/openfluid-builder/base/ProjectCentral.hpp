@@ -40,6 +40,8 @@
 
 
 #include <QObject>
+#include <QMap>
+#include <QStringListModel>
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
@@ -64,6 +66,39 @@ class ProjectCentral : QObject
     ProjectCheckInfos m_CheckInfos;
 
     openfluid::base::IOListener m_IOListener;
+
+    /**
+      List of simulators IDs involved in the model
+    */
+    QStringList m_SimulatorsIDsList;
+
+    /**
+      List of observer IDs involved in the monitoring
+    */
+    QStringList m_ObserversIDsList;
+
+    /**
+      List of parameters by simulators involved in the model
+    */
+    QMap<QString,QStringList> m_SimulatorsParamsLists;
+
+    /**
+      List of variables by units classes involved in the model
+    */
+    QMap<QString,QStringList> m_VariablesNamesLists;
+
+    /**
+      List of units classes in the spatial domain
+    */
+    QStringList m_UnitsClassesList;
+
+    /**
+      List of spatial attributes by units classes
+    */
+    QMap<QString,QStringList> m_AttributesLists;
+
+    QStringListModel* mp_AllNamesListModel;
+
 
     ProjectCentral(const QString& PrjPath = "");
 
@@ -125,6 +160,47 @@ class ProjectCentral : QObject
 
     const openfluid::fluidx::AdvancedFluidXDescriptor& advancedDescriptors() const
     { return *mp_AdvancedFXDesc; }
+
+    const QStringList& simulatorsIDsList() const
+    { return m_SimulatorsIDsList; }
+
+    const QStringList& observersIDsList() const
+    { return m_ObserversIDsList; }
+
+    const QMap<QString,QStringList>& simulatorsParamsLists() const
+    { return m_SimulatorsParamsLists; }
+
+    /**
+      Returns a list of all parameters for simulators involved in the model, sorted without duplicate
+    */
+    QStringList getSimulatorsParamsList() const;
+
+    const QMap<QString,QStringList>& variablesNamesLists() const
+    { return m_VariablesNamesLists; }
+
+    /**
+      Returns a list of all variables names for all units class, sorted without duplicate
+    */
+    QStringList getVariablesNamesList() const;
+
+    const QStringList& unitsClassesList() const
+    { return m_UnitsClassesList; }
+
+    const QMap<QString,QStringList>& attributesLists() const
+    { return m_AttributesLists; }
+
+    /**
+      Returns a list of all attributes for all units class, sorted without duplicate
+    */
+    QStringList getAttributesList() const;
+
+    /**
+      Returns a list of all names from all lists, sorted without duplicate
+    */
+    QStringList getAllNamesList() const;
+
+    QStringListModel* allNamesListModel() const
+    { return mp_AllNamesListModel; }
 
 };
 

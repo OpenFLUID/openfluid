@@ -46,15 +46,16 @@
 
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/common/ShortcutCompleter.hpp>
 #include <openfluid/utils/GDALHelpers.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 
 #include "ui_EditDatastoreItemDialog.h"
 #include "AddDatastoreItemDialog.hpp"
+#include "ProjectCentral.hpp"
 
 
-AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingUnitsClass,
-  const QStringList& ExistingIDs, QWidget* Parent):
+AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingIDs, QWidget* Parent):
   openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new(Ui::EditDatastoreItemDialog)),
   m_ExistingIDs(ExistingIDs)
 {
@@ -90,15 +91,11 @@ AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingUnitsC
   connect(ui->GeorasterBrowseButton,SIGNAL(clicked()),this,SLOT(selectRasterFile()));
 
   // completer for units classes
-  if (!ExistingUnitsClass.isEmpty())
-  {
-    mp_Completer = new QCompleter(ExistingUnitsClass, this);
-    mp_Completer->setCaseSensitivity(Qt::CaseInsensitive);
-    mp_Completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
-    ui->UnitsClassEdit->setCompleter(mp_Completer);
+  openfluid::ui::common::ShortcutCompleter* Completer =
+      new openfluid::ui::common::ShortcutCompleter(ProjectCentral::instance()->unitsClassesList(),this);
+  Completer->linkToLineEdit(ui->UnitsClassEdit);
 
-    connect(mp_Completer,SIGNAL(activated(const QString&)),this,SLOT(checkGlobal()));
-  }
+  connect(Completer,SIGNAL(activated(const QString&)),this,SLOT(checkGlobal()));
 
   ui->IDEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 

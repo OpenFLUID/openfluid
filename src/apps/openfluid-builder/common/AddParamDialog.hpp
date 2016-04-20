@@ -43,7 +43,6 @@
 
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
-#include <QCompleter>
 #include <QStringList>
 
 
@@ -65,8 +64,6 @@ class AddParamDialog : public openfluid::ui::common::OpenFLUIDDialog
   private:
 
     Ui::AddParamDialog* ui;
-
-    QCompleter* mp_Completer;
 
     const QStringList m_ExistingParams;
 

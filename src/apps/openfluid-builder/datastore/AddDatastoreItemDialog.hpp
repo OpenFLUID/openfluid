@@ -42,8 +42,6 @@
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
 
-#include <QCompleter>
-
 
 namespace Ui
 {
@@ -74,14 +72,13 @@ class AddDatastoreItemDialog : public openfluid::ui::common::OpenFLUIDDialog
 
     QString m_OGRFormatsStr;
 
-    QCompleter* mp_Completer;
 
     void setMessage(const QString& Msg = "");
 
 
   public:
 
-    AddDatastoreItemDialog(const QStringList& ExistingUnitsClass,const QStringList& ExistingIDs,
+    AddDatastoreItemDialog(const QStringList& ExistingIDs,
                            QWidget* Parent = nullptr);
 
     ~AddDatastoreItemDialog();

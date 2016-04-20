@@ -304,15 +304,7 @@ void ModelWidget::addSimulator()
 
 void ModelWidget::addGenerator()
 {
-  QStringList UnitsClasses;
-
-  std::set<std::string> ClassNames = m_AdvFluidxDesc.spatialDomain().getClassNames();
-  for (std::set<std::string>::iterator it = ClassNames.begin();
-       it != ClassNames.end(); ++it)
-    UnitsClasses.append(QString::fromStdString(*it));
-
-
-  AddGeneratorDialog AddGenDlg(UnitsClasses,this);
+  AddGeneratorDialog AddGenDlg(this);
 
   if (AddGenDlg.exec() == QDialog::Accepted)
   {

@@ -4,7 +4,8 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp OpenFLUIDSplashS
                             RunSimulationDialog.cpp RunSimulationWorker.cpp
                             SignatureDataEditorWidget.cpp
                             SignatureEditorWidget.cpp EditSignatureDialog.cpp                                
-                            ClickableLabel.cpp ActionLabel.cpp ElidedLabel.cpp                             
+                            ClickableLabel.cpp ActionLabel.cpp ElidedLabel.cpp
+                            ShortcutCompleter.cpp
                             PathsManagementWidget.cpp WaresSearchPathsWidget.cpp
                             LogExplorerDialog.cpp 
                             EditMarketplaceDialog.cpp
@@ -15,7 +16,8 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashS
                             RunSimulationDialog.hpp RunSimulationWorker.hpp
                             SignatureDataEditorWidget.hpp
                             SignatureEditorWidget.hpp EditSignatureDialog.hpp
-                            ClickableLabel.hpp ActionLabel.hpp ElidedLabel.hpp                            
+                            ClickableLabel.hpp ActionLabel.hpp ElidedLabel.hpp
+                            ShortcutCompleter.hpp                         
                             PathsManagementWidget.hpp WaresSearchPathsWidget.hpp
                             LogExplorerDialog.hpp
                             EditMarketplaceDialog.hpp

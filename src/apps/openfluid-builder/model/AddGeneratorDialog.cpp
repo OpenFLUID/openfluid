@@ -38,19 +38,21 @@
  */
 
 
-#include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include "ui_AddGeneratorDialog.h"
-#include "AddGeneratorDialog.hpp"
-#include <openfluid/ui/config.hpp>
-
 #include <QPushButton>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QCompleter>
+
+#include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/ui/common/ShortcutCompleter.hpp>
+#include <openfluid/ui/config.hpp>
+
+#include "ui_AddGeneratorDialog.h"
+#include "AddGeneratorDialog.hpp"
+#include "ProjectCentral.hpp"
 
 
-AddGeneratorDialog::AddGeneratorDialog(const QStringList& UnitsClasses, QWidget* Parent) :
+AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
   openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::AddGeneratorDialog)
 {
   ui->setupUi(this);
@@ -84,10 +86,10 @@ AddGeneratorDialog::AddGeneratorDialog(const QStringList& UnitsClasses, QWidget*
   ui->VarNameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
   ui->UnitsClassEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
-  QCompleter* Completer = new QCompleter(UnitsClasses, this);
-  Completer->setCaseSensitivity(Qt::CaseInsensitive);
-  Completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
-  ui->UnitsClassEdit->setCompleter(Completer);
+  openfluid::ui::common::ShortcutCompleter* Completer =
+      new openfluid::ui::common::ShortcutCompleter(ProjectCentral::instance()->unitsClassesList(),this);
+  Completer->linkToLineEdit(ui->UnitsClassEdit);
+  connect(Completer,SIGNAL(activated(const QString&)),this,SLOT(checkGlobal()));
 
   ui->VarNameEdit->setFocus();
 

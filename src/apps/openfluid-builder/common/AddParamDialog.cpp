@@ -38,18 +38,18 @@
  */
 
 
+#include <QPushButton>
+
+#include <openfluid/ui/common/ShortcutCompleter.hpp>
 #include <openfluid/ui/config.hpp>
 
 #include "ui_AddParamDialog.h"
 #include "AddParamDialog.hpp"
 
-#include <QPushButton>
-
 
 AddParamDialog::AddParamDialog(const QStringList& ExistingParams,const QStringList& CompletingParams,
                                QWidget* Parent):
   openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new(Ui::AddParamDialog)),
-  mp_Completer(nullptr),
   m_ExistingParams(ExistingParams), m_CompletingParams(CompletingParams)
 {
   ui->setupUi(this);
@@ -58,12 +58,11 @@ AddParamDialog::AddParamDialog(const QStringList& ExistingParams,const QStringLi
 
   if (!CompletingParams.isEmpty())
   {
-    mp_Completer = new QCompleter(CompletingParams, this);
-    mp_Completer->setCaseSensitivity(Qt::CaseInsensitive);
-    mp_Completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
-    ui->NameEdit->setCompleter(mp_Completer);
+    openfluid::ui::common::ShortcutCompleter* Completer =
+        new openfluid::ui::common::ShortcutCompleter(CompletingParams,this);
+    Completer->linkToLineEdit(ui->NameEdit);
 
-    connect(mp_Completer,SIGNAL(activated(const QString&)),this,SLOT(checkGlobal()));
+    connect(Completer,SIGNAL(activated(const QString&)),this,SLOT(checkGlobal()));
   }
 
   connect(ui->NameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));

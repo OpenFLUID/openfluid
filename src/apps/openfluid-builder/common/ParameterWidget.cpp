@@ -41,10 +41,12 @@
 #include <QMessageBox>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/ui/common/ShortcutCompleter.hpp>
 #include <openfluid/ui/config.hpp>
 
 #include "ui_ParameterWidget.h"
 #include "ParameterWidget.hpp"
+#include "ProjectCentral.hpp"
 
 
 ParameterWidget::ParameterWidget(QWidget* Parent,
@@ -65,7 +67,16 @@ ParameterWidget::ParameterWidget(QWidget* Parent,
     ui->ValueEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
 
 
+  // Completer
+  openfluid::ui::common::ShortcutCompleter* Completer =
+      new openfluid::ui::common::ShortcutCompleter(ProjectCentral::instance()->allNamesListModel(),this);
+  Completer->linkToLineEdit(ui->ValueEdit);
+  // TODO FIXME notifyValueChanged() not activated when hitting escape key!
+
+
+  connect(Completer,SIGNAL(activated(const QString&)),this,SLOT(notifyValueChanged()));
   connect(ui->ValueEdit,SIGNAL(textEdited(const QString&)),this,SLOT(notifyValueChanged()));
+
 
   if (Removable)
   {

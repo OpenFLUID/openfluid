@@ -38,26 +38,25 @@
  */
 
 
-#include "ui_SpatialDomainWidget.h"
-#include "SpatialDomainWidget.hpp"
-#include "UnitsClassWidget.hpp"
-
-#include "EditAttributesValuesDialog.hpp"
-#include "EditAttributeNameDialog.hpp"
-#include "AddUnitsClassDialog.hpp"
-#include "AddUnitToClassDialog.hpp"
-#include "AddConnectionDialog.hpp"
-#include "EditEventDialog.hpp"
+#include <QTableWidgetItem>
+#include <QMessageBox>
+#include <QTimer>
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
-
-#include <QTableWidgetItem>
-#include <QMessageBox>
-#include <QTimer>
+#include "ui_SpatialDomainWidget.h"
+#include "SpatialDomainWidget.hpp"
+#include "UnitsClassWidget.hpp"
+#include "EditAttributesValuesDialog.hpp"
+#include "EditAttributeNameDialog.hpp"
+#include "AddUnitsClassDialog.hpp"
+#include "AddUnitToClassDialog.hpp"
+#include "AddConnectionDialog.hpp"
+#include "EditEventDialog.hpp"
+#include "ProjectCentral.hpp"
 
 
 // for storing Event IDs in QTableWidget
@@ -1048,9 +1047,9 @@ void SpatialDomainWidget::removeConnection()
 
 void SpatialDomainWidget::addAttribute()
 {
-  QStringList AttrsNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+  EditAttributeNameDialog AddDlg(EditAttributeNameDialog::EDIT_ADD,
+                                 ProjectCentral::instance()->attributesLists().value(m_ActiveClass),this);
 
-  EditAttributeNameDialog AddDlg(EditAttributeNameDialog::EDIT_ADD,AttrsNames,this);
   if (AddDlg.exec() == QDialog::Accepted)
   {
     m_Domain.addAttribute(m_ActiveClass.toStdString(),

@@ -47,6 +47,8 @@
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
+
 #include "ProjectCentral.hpp"
 #include "AppTools.hpp"
 
@@ -87,6 +89,9 @@ ProjectCentral::ProjectCentral(const QString& PrjPath):
     deleteData();
     throw;
   }
+
+  // initialization of models for completion
+  mp_AllNamesListModel = new QStringListModel(this);
 
   check();
 }
@@ -300,6 +305,9 @@ void ProjectCentral::check()
   }
 
   checkRunConfig();
+
+  // update of models for completion
+  mp_AllNamesListModel->setStringList(getAllNamesList());
 }
 
 
@@ -429,18 +437,27 @@ void ProjectCentral::checkModel()
 
   std::set<std::pair<std::string, std::string> > AttrsUnits;
 
+
   bool AtLeastOneEnabled = false;
+
+  m_SimulatorsIDsList.clear();
+  m_SimulatorsParamsLists.clear();
 
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itModelItem = Items.begin();
       itModelItem != Items.end(); ++itModelItem)
   {
+    std::string ID = Model.getID(*itModelItem);
+
+    m_SimulatorsIDsList << QString::fromStdString(ID);
+
+
     if ((*itModelItem)->isEnabled())
     {
       AtLeastOneEnabled = true;
 
       const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
-      std::string ID = Model.getID(*itModelItem);
+
 
       if (SignII != nullptr)
       {
@@ -527,6 +544,8 @@ void ProjectCentral::checkModel()
 
         for (auto itParam = ReqParams.begin();itParam != ReqParams.end(); ++itParam)
         {
+          m_SimulatorsParamsLists[QString::fromStdString(ID)] << QString::fromStdString(itParam->DataName);
+
           if (!isParamSet(*itModelItem, itParam->DataName))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
@@ -543,6 +562,8 @@ void ProjectCentral::checkModel()
 
         for (auto itParam = UsParams.begin();itParam != UsParams.end(); ++itParam)
         {
+          m_SimulatorsParamsLists[QString::fromStdString(ID)] << QString::fromStdString(itParam->DataName);
+
           if (!isParamSet(*itModelItem, itParam->DataName))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_WARNING);
@@ -693,6 +714,7 @@ void ProjectCentral::checkModel()
 
         for (itData = ProdVars.begin(); itData != ProdVars.end(); ++itData)
         {
+          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
 
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
@@ -763,6 +785,8 @@ void ProjectCentral::checkModel()
             Sign->HandledData.UpdatedVars;
         for (itData = UpVars.begin(); itData != UpVars.end(); ++itData)
         {
+          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
+
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
@@ -805,6 +829,8 @@ void ProjectCentral::checkModel()
 
         for (itData = ReqVars.begin(); itData != ReqVars.end(); ++itData)
         {
+          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
+
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
@@ -831,6 +857,14 @@ void ProjectCentral::checkModel()
                                         .arg(QString::fromStdString(ID)));
           }
         }
+
+        // check used Vars
+        std::vector<openfluid::ware::SignatureTypedSpatialDataItem>& UsedVars = Sign->HandledData.UsedVars;
+
+        for (itData = UsedVars.begin(); itData != UsedVars.end(); ++itData)
+        {
+          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
+        }
       }
     }
   }
@@ -841,6 +875,20 @@ void ProjectCentral::checkModel()
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_DISABLED);
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("No simulator or generator is enabled in model"));
   }
+
+
+  // sorting names lists
+
+  m_SimulatorsIDsList.sort();
+
+  for (auto& PList : m_SimulatorsParamsLists)
+    PList.sort();
+
+  for (auto& PList : m_VariablesNamesLists)
+  {
+    PList.removeDuplicates();
+    PList.sort();
+  }
 }
 
 
@@ -850,7 +898,18 @@ void ProjectCentral::checkModel()
 
 void ProjectCentral::checkSpatialDomain()
 {
+  // Build list of units classes
+  m_UnitsClassesList = openfluid::tools::toQStringList(mp_AdvancedFXDesc->spatialDomain().getClassNames());
 
+
+  // Build list of attributes by units class
+  m_AttributesLists.clear();
+  for (const auto& UClass : m_UnitsClassesList)
+  {
+    m_AttributesLists[UClass] =
+      openfluid::tools::toQStringList(mp_AdvancedFXDesc->spatialDomain().getAttributesNames(UClass.toStdString()));
+    m_AttributesLists[UClass].sort();
+  }
 }
 
 
@@ -931,4 +990,92 @@ void ProjectCentral::checkMonitoring()
 void ProjectCentral::checkRunConfig()
 {
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList ProjectCentral::getSimulatorsParamsList() const
+{
+  QStringList Names;
+
+  QMapIterator<QString, QStringList> it(m_SimulatorsParamsLists);
+  while (it.hasNext())
+  {
+    it.next();
+    Names << it.value();
+  }
+
+  Names.removeDuplicates();
+  Names.sort();
+
+  return Names;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList ProjectCentral::getVariablesNamesList() const
+{
+  QStringList Names;
+
+  QMapIterator<QString, QStringList> it(m_VariablesNamesLists);
+  while (it.hasNext())
+  {
+    it.next();
+    Names << it.value();
+  }
+
+  Names.removeDuplicates();
+  Names.sort();
+
+  return Names;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList ProjectCentral::getAttributesList() const
+{
+  QStringList Names;
+
+  QMapIterator<QString, QStringList> it(m_AttributesLists);
+  while (it.hasNext())
+  {
+    it.next();
+    Names << it.value();
+  }
+
+  Names.removeDuplicates();
+  Names.sort();
+
+  return Names;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList ProjectCentral::getAllNamesList() const
+{
+  QStringList Names;
+
+  Names << m_SimulatorsIDsList;
+  Names << m_ObserversIDsList;
+  Names << getSimulatorsParamsList();
+  Names << getVariablesNamesList();
+  Names << m_UnitsClassesList;
+  Names << getAttributesList();
+
+  Names.removeDuplicates();
+  Names.sort();
+
+  return Names;
 }
