@@ -49,7 +49,8 @@
 EditSetDialog::EditSetDialog(const QStringList& SetNames,
                              const QStringList& FormatNames, const QStringList& ClassNames,
                              QWidget* Parent):
-  QDialog(Parent), ui(new Ui::EditSetDialog), m_ExistingSetsNames(SetNames)
+  openfluid::ui::common::OpenFLUIDDialog(Parent),
+  ui(new Ui::EditSetDialog), m_ExistingSetsNames(SetNames)
 {
   ui->setupUi(this);
 
@@ -59,7 +60,7 @@ EditSetDialog::EditSetDialog(const QStringList& SetNames,
   ui->AllUnitsRadioButton->setChecked(true);
   ui->AllVariablesRadioButton->setChecked(true);
 
-  ui->SetNameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->SetNameEdit->setPlaceholderText(getPlaceholderRequired());
 
   connect(ui->SetNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->UnitsClassComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(checkGlobal()));

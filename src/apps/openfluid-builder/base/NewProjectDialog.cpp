@@ -60,7 +60,8 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
   ui->WorkdirLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
                                                          ->getBuilderProjectsPath()));
 
-  ui->NameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  // "required" placeholder
+  ui->NameEdit->setPlaceholderText(getPlaceholderRequired());
 
   connect(ui->WorkdirButton,SIGNAL(clicked()),this,SLOT(onWorkdirButtonClicked()));
   connect(ui->ProjectButton,SIGNAL(clicked()),this,SLOT(onProjectButtonClicked()));

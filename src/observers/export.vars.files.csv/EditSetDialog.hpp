@@ -41,10 +41,10 @@
 #define __EDITSETDIALOG_HPP__
 
 
-#include <QDialog>
 #include <QStringList>
 
 #include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 
 namespace Ui
@@ -53,7 +53,7 @@ namespace Ui
 }
 
 
-class EditSetDialog: public QDialog
+class EditSetDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 

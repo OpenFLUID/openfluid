@@ -66,7 +66,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-class OPENFLUID_API EmptyPage: public QWizardPage
+class OPENFLUID_API EmptyPage : public QWizardPage
 {
   Q_OBJECT
 

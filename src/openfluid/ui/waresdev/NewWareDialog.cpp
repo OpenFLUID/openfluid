@@ -59,7 +59,8 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
-    QDialog(Parent), ui(new Ui::NewWareDialog), m_WareType(Type), m_NewWarePath(""),
+    openfluid::ui::common::OpenFLUIDDialog(Parent),
+    ui(new Ui::NewWareDialog), m_WareType(Type), m_NewWarePath(""),
     m_UseSimSignature(false)
 {
   ui->setupUi(this);
@@ -108,22 +109,26 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
   QString ClassTooltip;
   QRegExp CppRegExp = openfluid::waresdev::WareSrcFactory::getCppFilenameRegExp(CppTooltip);
   QRegExp ClassnameRegExp = openfluid::waresdev::WareSrcFactory::getClassnameRegExp(ClassTooltip);
+
+  // "required" placeholder
+  QString PlaceholderStr = getPlaceholderRequired();
+
   ui->Id_lineEdit->setValidator(
       new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getWareIdRegExp(IDTooltip), this));
   ui->Id_lineEdit->setToolTip(IDTooltip);
-  ui->Id_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->Id_lineEdit->setPlaceholderText(PlaceholderStr);
   ui->SourceFilename_lineEdit->setValidator(new QRegExpValidator(CppRegExp, this));
   ui->SourceFilename_lineEdit->setToolTip(CppTooltip);
-  ui->SourceFilename_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->SourceFilename_lineEdit->setPlaceholderText(PlaceholderStr);
   ui->UiParamSourceFilename_lineEdit->setValidator(new QRegExpValidator(CppRegExp, this));
   ui->UiParamSourceFilename_lineEdit->setToolTip(CppTooltip);
-  ui->UiParamSourceFilename_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->UiParamSourceFilename_lineEdit->setPlaceholderText(PlaceholderStr);
   ui->ClassName_lineEdit->setValidator(new QRegExpValidator(ClassnameRegExp, this));
   ui->ClassName_lineEdit->setToolTip(ClassTooltip);
-  ui->ClassName_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->ClassName_lineEdit->setPlaceholderText(PlaceholderStr);
   ui->UiParamClassName_lineEdit->setValidator(new QRegExpValidator(ClassnameRegExp, this));
   ui->UiParamClassName_lineEdit->setToolTip(ClassTooltip);
-  ui->UiParamClassName_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->UiParamClassName_lineEdit->setPlaceholderText(PlaceholderStr);
 
   connect(ui->Id_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
   connect(ui->SourceFilename_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));

@@ -52,7 +52,7 @@ AddUnitsClassDialog::AddUnitsClassDialog(const QStringList& ExistingClasses, QWi
   ui->ClassLabel->setVisible(false);
   ui->AttributesWidget->setVisible(false);
 
-  ui->ClassEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->ClassEdit->setPlaceholderText(getPlaceholderRequired());
   ui->UnitIDEdit->setText("1");
 
   connect(ui->ClassEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));

@@ -97,7 +97,7 @@ AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingIDs, Q
 
   connect(Completer,SIGNAL(activated(const QString&)),this,SLOT(checkGlobal()));
 
-  ui->IDEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->IDEdit->setPlaceholderText(getPlaceholderRequired());
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
@@ -122,31 +122,34 @@ AddDatastoreItemDialog::~AddDatastoreItemDialog()
 
 void AddDatastoreItemDialog::checkGlobal()
 {
+  // "required" placeholder
+  QString PlaceholderStr = getPlaceholderRequired();
+
   openfluid::ui::common::fixLineEdit(ui->IDEdit);
 
   ui->UnitsClassEdit->setEnabled(ui->UnitsClassCheckBox->isChecked());
   if (ui->UnitsClassEdit->isEnabled())
-    ui->UnitsClassEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+    ui->UnitsClassEdit->setPlaceholderText(PlaceholderStr);
   else
     ui->UnitsClassEdit->setPlaceholderText("");
 
   ui->GeovectorEdit->setEnabled(ui->GeovectorRadioButton->isChecked());
   ui->GeovectorBrowseButton->setEnabled(ui->GeovectorRadioButton->isChecked());
   if (ui->GeovectorEdit->isEnabled())
-    ui->GeovectorEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+    ui->GeovectorEdit->setPlaceholderText(PlaceholderStr);
   else
     ui->GeovectorEdit->setPlaceholderText("");
 
   ui->GeorasterEdit->setEnabled(ui->GeorasterRadioButton->isChecked());
   ui->GeorasterBrowseButton->setEnabled(ui->GeorasterRadioButton->isChecked());
   if (ui->GeorasterEdit->isEnabled())
-    ui->GeorasterEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+    ui->GeorasterEdit->setPlaceholderText(PlaceholderStr);
   else
     ui->GeorasterEdit->setPlaceholderText("");
 
   ui->CopySubdirEdit->setEnabled(ui->CopySubdirRadioButton->isChecked());
   if (ui->CopySubdirEdit->isEnabled())
-    ui->CopySubdirEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+    ui->CopySubdirEdit->setPlaceholderText(PlaceholderStr);
   else
     ui->CopySubdirEdit->setPlaceholderText("");
 

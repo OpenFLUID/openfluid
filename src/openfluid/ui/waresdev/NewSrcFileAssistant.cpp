@@ -148,8 +148,11 @@ CppPage::CppPage(const QDir& WareDir, QWidget* Parent) :
   ui->ClassName_lineEdit->setValidator(
       new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getClassnameRegExp(Tooltip), this));
   ui->ClassName_lineEdit->setToolTip(Tooltip);
-  ui->ClassName_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
-  ui->SourceFilename_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+
+  // "required" placeholder
+  QString PlaceholderStr = QApplication::translate("openfluid::ui::config",openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->ClassName_lineEdit->setPlaceholderText(PlaceholderStr);
+  ui->SourceFilename_lineEdit->setPlaceholderText(PlaceholderStr);
 
   registerField("SourceFilename", ui->SourceFilename_lineEdit);
   registerField("Classname", ui->ClassName_lineEdit);
@@ -321,7 +324,8 @@ CMakeConfigPage::CMakeConfigPage(openfluid::ware::WareType Type, QWidget* Parent
   ui->RootFilename_lineEdit->setValidator(
       new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getCppFilenameRegExp(Tooltip), this));
   ui->RootFilename_lineEdit->setToolTip(Tooltip);
-  ui->RootFilename_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->RootFilename_lineEdit->setPlaceholderText(QApplication::translate("openfluid::ui::config",
+                                                                        openfluid::ui::config::PLACEHOLDER_REQUIRED));
 
   m_DefaultMsg = tr("Create the \"CMake.in.config\" file");
   NewSrcFileAssistant::setStatus(m_DefaultMsg, "", ui->MessageLabel, ui->MessageFrame);

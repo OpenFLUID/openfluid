@@ -434,7 +434,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>8</month>
-                <day>10</day>
+                <day>7</day>
                </date>
               </property>
               <property name="displayFormat">
@@ -581,7 +581,16 @@ font : bold;
             <property name="spacing">
              <number>0</number>
             </property>
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
@@ -667,13 +676,13 @@ font : bold;
          <item>
           <widget class="QGroupBox" name="GitGroupBox">
            <property name="title">
-            <string>Git</string>
+            <string notr="true">Git</string>
            </property>
            <layout class="QFormLayout" name="formLayout_3">
             <item row="0" column="0">
              <widget class="QCheckBox" name="SslNoVerifyCheckBox">
               <property name="text">
-               <string>Deactivate ssl verification</string>
+               <string>Disable SSL verification</string>
               </property>
              </widget>
             </item>
@@ -722,8 +731,8 @@ font : bold;
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>557</width>
-                <height>227</height>
+                <width>324</width>
+                <height>83</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -828,7 +837,16 @@ font : bold;
          <item>
           <widget class="QWidget" name="horizontalWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_8">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>

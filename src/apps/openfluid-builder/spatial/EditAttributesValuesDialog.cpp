@@ -93,21 +93,24 @@ EditAttributesValuesDialog::~EditAttributesValuesDialog()
 
 void EditAttributesValuesDialog::checkGlobal()
 {
+  // "required" placeholder
+  QString PlaceholderStr = getPlaceholderRequired();
+
   ui->ReplaceEdit->setEnabled(ui->ReplaceRadioButton->isChecked());
   if (ui->ReplaceEdit->isEnabled())
-    ui->ReplaceEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+    ui->ReplaceEdit->setPlaceholderText(PlaceholderStr);
   else
     ui->ReplaceEdit->setPlaceholderText("");
 
   ui->MultEdit->setEnabled(ui->MultRadioButton->isChecked());
   if (ui->MultEdit->isEnabled())
-    ui->MultEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+    ui->MultEdit->setPlaceholderText(PlaceholderStr);
   else
     ui->MultEdit->setPlaceholderText("");
 
   ui->AddEdit->setEnabled(ui->AddRadioButton->isChecked());
   if (ui->AddEdit->isEnabled())
-    ui->AddEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+    ui->AddEdit->setPlaceholderText(PlaceholderStr);
   else
     ui->AddEdit->setPlaceholderText("");
 

@@ -43,19 +43,22 @@
 
 #include <openfluid/dllexport.hpp>
 
-#include <QDialog>
 #include <QPushButton>
 #include <QDir>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
-namespace Ui { class WareExplorerDialog;
+
+namespace Ui {
+class WareExplorerDialog;
 }
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WareExplorerDialog: public QDialog
+class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT
 

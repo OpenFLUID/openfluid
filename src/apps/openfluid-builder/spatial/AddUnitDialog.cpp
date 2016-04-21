@@ -57,7 +57,7 @@ AddUnitDialog::AddUnitDialog(QWidget* Parent):
 
   ui->UnitIDEdit->setValidator(IDValidator);
 
-  ui->UnitIDEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->UnitIDEdit->setPlaceholderText(getPlaceholderRequired());
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));

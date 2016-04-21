@@ -42,21 +42,23 @@
 #define __OPENFLUID_UIWARESDEV_NEWWAREDIALOG_HPP__
 
 
-#include <QDialog>
 #include <QDir>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 
 namespace Ui {
 class NewWareDialog;
 }
 
+
 namespace openfluid { namespace ui { namespace waresdev {
 
-class OPENFLUID_API NewWareDialog: public QDialog
+
+class OPENFLUID_API NewWareDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT
 

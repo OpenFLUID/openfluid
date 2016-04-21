@@ -53,6 +53,8 @@ class OPENFLUID_API OpenFLUIDDialog : public QDialog
 
     OpenFLUIDDialog(QWidget* Parent = nullptr, const QString& Title = "OpenFLUID");
 
+    QString getPlaceholderRequired() const;
+
 };
 
 

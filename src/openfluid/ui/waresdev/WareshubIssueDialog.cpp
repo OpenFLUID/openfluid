@@ -154,13 +154,13 @@ void WareshubIssueDialog::onChanged()
 {
   QString ID = ui->IDLineEdit->text();
   if (ID.isEmpty())
-    setMessage(tr("ID can't be empty"));
+    setMessage(tr("ID cannot be empty"));
   else if (m_IDs.contains(ID))
     setMessage(tr("This ID already exists"));
   if (ui->TitleLineEdit->text().isEmpty())
-    setMessage(tr("Title can't be empty"));
+    setMessage(tr("Title cannot be empty"));
   else if (ui->TypeComboBox->currentText().isEmpty())
-    setMessage(tr("Type can't be empty"));
+    setMessage(tr("Type cannot be empty"));
   else
     setMessage();
 }

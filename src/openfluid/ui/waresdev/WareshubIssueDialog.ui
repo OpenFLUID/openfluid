@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string notr="true">Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -80,13 +80,25 @@ font : bold;
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
-     <property name="margin">
+     <property name="labelAlignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="leftMargin">
+      <number>9</number>
+     </property>
+     <property name="topMargin">
+      <number>9</number>
+     </property>
+     <property name="rightMargin">
+      <number>9</number>
+     </property>
+     <property name="bottomMargin">
       <number>9</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="IDLabel">
        <property name="text">
-        <string>ID</string>
+        <string>ID:</string>
        </property>
       </widget>
      </item>
@@ -96,7 +108,7 @@ font : bold;
      <item row="1" column="0">
       <widget class="QLabel" name="TitleLabel">
        <property name="text">
-        <string>Title</string>
+        <string>Title:</string>
        </property>
       </widget>
      </item>
@@ -106,7 +118,7 @@ font : bold;
      <item row="2" column="0">
       <widget class="QLabel" name="CreatorLabel">
        <property name="text">
-        <string>Creator</string>
+        <string>Creator:</string>
        </property>
       </widget>
      </item>
@@ -116,14 +128,14 @@ font : bold;
      <item row="3" column="0">
       <widget class="QLabel" name="DateLabel">
        <property name="text">
-        <string>Date</string>
+        <string>Date:</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
       <widget class="QDateEdit" name="DateDateEdit">
        <property name="displayFormat">
-        <string>dd/MM/yyyy</string>
+        <string>yyyy-MM-dd</string>
        </property>
        <property name="calendarPopup">
         <bool>true</bool>
@@ -133,7 +145,7 @@ font : bold;
      <item row="4" column="0">
       <widget class="QLabel" name="TypeLabel">
        <property name="text">
-        <string>Type</string>
+        <string>Type:</string>
        </property>
       </widget>
      </item>
@@ -143,7 +155,7 @@ font : bold;
      <item row="5" column="0">
       <widget class="QLabel" name="StateLabel">
        <property name="text">
-        <string>State</string>
+        <string>State:</string>
        </property>
       </widget>
      </item>
@@ -153,7 +165,7 @@ font : bold;
      <item row="6" column="0">
       <widget class="QLabel" name="DescriptionLabel">
        <property name="text">
-        <string>Description</string>
+        <string>Description:</string>
        </property>
       </widget>
      </item>
@@ -163,7 +175,7 @@ font : bold;
      <item row="7" column="0">
       <widget class="QLabel" name="UrgencyLabel">
        <property name="text">
-        <string>Urgency</string>
+        <string>Urgency:</string>
        </property>
       </widget>
      </item>

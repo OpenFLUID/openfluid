@@ -170,7 +170,7 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const 
     }
     catch (std::exception& e)
     {
-      QMessageBox::critical(this, tr("Unable to open file"), QString::fromUtf8(e.what()));
+      QMessageBox::critical(this, tr("File error"), QString::fromUtf8(e.what()));
       return;
     }
   }

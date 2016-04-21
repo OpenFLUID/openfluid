@@ -104,7 +104,8 @@ void SignatureEditorWidget::initializeID(const QString& ID)
      ui->IDLabel->setVisible(false);
      ui->IDEdit->setVisible(true);
      ui->IDEdit->setText("");
-     ui->IDEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+     ui->IDEdit->setPlaceholderText(QApplication::translate("openfluid::ui::config",
+                                                            openfluid::ui::config::PLACEHOLDER_REQUIRED));
      m_StaticID = false;
      connect(ui->IDEdit,SIGNAL(textEdited(const QString&)),this,SLOT(notifyChanged()));
    }

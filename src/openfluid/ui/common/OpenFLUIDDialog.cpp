@@ -38,8 +38,10 @@
  */
 
 
+#include <QApplication>
 
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/config.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -52,5 +54,16 @@ OpenFLUIDDialog::OpenFLUIDDialog(QWidget* Parent, const QString& Title) :
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+QString OpenFLUIDDialog::getPlaceholderRequired() const
+{
+  return QApplication::translate("openfluid::ui::config",openfluid::ui::config::PLACEHOLDER_REQUIRED);
+}
+
+
 } } } // namespaces
+
 

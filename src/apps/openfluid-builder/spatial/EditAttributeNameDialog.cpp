@@ -77,8 +77,10 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
     m_DefaultMsg = tr("Remove attribute");
   }
 
-  ui->NewNameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
-  ui->DefaultValueEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  // "required" placeholder
+  QString PlaceholderStr = getPlaceholderRequired();
+  ui->NewNameEdit->setPlaceholderText(PlaceholderStr);
+  ui->DefaultValueEdit->setPlaceholderText(PlaceholderStr);
 
   ui->OriginalNameWidget->setVisible(m_Mode == EDIT_REMOVE ||
                                      m_Mode == EDIT_RENAME);

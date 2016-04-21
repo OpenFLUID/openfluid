@@ -67,7 +67,8 @@ AddParamDialog::AddParamDialog(const QStringList& ExistingParams,const QStringLi
 
   connect(ui->NameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
 
-  ui->NameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  // "required" placeholder
+  ui->NameEdit->setPlaceholderText(getPlaceholderRequired());
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));

@@ -129,32 +129,32 @@ Continuer quand même?</translation>
         <translation>Prévisualisation:</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="63"/>
+        <location filename="EditFormatDialog.cpp" line="66"/>
         <source>Columns names as comments</source>
         <translation>Noms des colonnes en commentaire</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="63"/>
+        <location filename="EditFormatDialog.cpp" line="66"/>
         <source>Columns names as data</source>
         <translation>Noms des colonnes comme donnée</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="63"/>
+        <location filename="EditFormatDialog.cpp" line="66"/>
         <source>Full</source>
         <translation>Complet</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="63"/>
+        <location filename="EditFormatDialog.cpp" line="66"/>
         <source>None</source>
         <translation>Aucun</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="66"/>
+        <location filename="EditFormatDialog.cpp" line="69"/>
         <source>6 columns</source>
         <translation>6 colonnes</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="66"/>
+        <location filename="EditFormatDialog.cpp" line="69"/>
         <source>Time index</source>
         <translation>Index de temps</translation>
     </message>

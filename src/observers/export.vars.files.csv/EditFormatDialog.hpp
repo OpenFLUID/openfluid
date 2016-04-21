@@ -41,10 +41,10 @@
 #define __EDITFORMATDIALOG_HPP__
 
 
-#include <QDialog>
-
 #include "CSVObsTools.hpp"
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+
 
 namespace Ui
 {
@@ -52,7 +52,7 @@ namespace Ui
 }
 
 
-class EditFormatDialog: public QDialog
+class EditFormatDialog: public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 

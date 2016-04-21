@@ -46,6 +46,7 @@
 
 #include <openfluid/ui/config.hpp>
 
+
 namespace openfluid { namespace ui { namespace waresdev {
 
 
@@ -54,10 +55,11 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath,
-  const QString& Title, const QString& DefaultMessage,
-  const QString& AcceptButtonLabel) :
-    QDialog(Parent), ui(new Ui::WareExplorerDialog), mp_AcceptButton(0), m_DefaulMessage(DefaultMessage),
-        m_TopDir(QDir(TopDirectoryPath))
+                                       const QString& Title, const QString& DefaultMessage,
+                                       const QString& AcceptButtonLabel) :
+  openfluid::ui::common::OpenFLUIDDialog(Parent),
+  ui(new Ui::WareExplorerDialog), mp_AcceptButton(0),
+  m_DefaulMessage(DefaultMessage), m_TopDir(QDir(TopDirectoryPath))
 {
   ui->setupUi(this);
 
@@ -70,7 +72,9 @@ WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirect
   ui->Filepath_lineEdit->setToolTip(
       tr("Accepts only letters, digits, dashes ('-'), underscores ('_'), dots ('.') and paths separators ('%1').").arg(
           QDir::separator()));
-  ui->Filepath_lineEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+
+  // "required" placeholder
+  ui->Filepath_lineEdit->setPlaceholderText(getPlaceholderRequired());
 
   ui->WareExplorer->configure(TopDirectoryPath, false);
   ui->ParentDir_label->setText(QDir::toNativeSeparators(TopDirectoryPath));

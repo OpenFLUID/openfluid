@@ -83,8 +83,10 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
   ui->DoubleRadioButton->setChecked(true);
   ui->VectorSpinBox->setEnabled(false);
 
-  ui->VarNameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
-  ui->UnitsClassEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  // "required" placeholder
+  QString PlaceholderStr = getPlaceholderRequired();
+  ui->UnitsClassEdit->setPlaceholderText(PlaceholderStr);
+  ui->VarNameEdit->setPlaceholderText(PlaceholderStr);
 
   openfluid::ui::common::ShortcutCompleter* Completer =
       new openfluid::ui::common::ShortcutCompleter(ProjectCentral::instance()->unitsClassesList(),this);

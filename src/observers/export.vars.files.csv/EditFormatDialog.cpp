@@ -48,13 +48,16 @@
 
 
 EditFormatDialog::EditFormatDialog(const QStringList& ExistingFormats,QWidget* Parent):
-  QDialog(Parent), ui(new Ui::EditFormatDialog), m_ExistingFormatsNames(ExistingFormats)
+  openfluid::ui::common::OpenFLUIDDialog(Parent),
+  ui(new Ui::EditFormatDialog), m_ExistingFormatsNames(ExistingFormats)
 {
   ui->setupUi(this);
 
-  ui->FormatNameEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
-  ui->ColSepEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
-  ui->CommentCharEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  // "required" placeholder
+  QString PlaceholderStr = getPlaceholderRequired();
+  ui->FormatNameEdit->setPlaceholderText(PlaceholderStr);
+  ui->ColSepEdit->setPlaceholderText(PlaceholderStr);
+  ui->CommentCharEdit->setPlaceholderText(PlaceholderStr);
 
   ui->ColSepEdit->setText(QString::fromStdString(m_Format.ColSeparator).replace("\t","\\t"));
   ui->CommentCharEdit->setText(QString::fromStdString(m_Format.CommentChar));
@@ -129,7 +132,7 @@ void EditFormatDialog::checkGlobal()
 
   ui->CustomDateEdit->setEnabled(ui->CustomDateRadioButton->isChecked());
   if (ui->CustomDateEdit->isEnabled())
-    ui->CustomDateEdit->setPlaceholderText(openfluid::ui::config::PLACEHOLDER_REQUIRED);
+    ui->CustomDateEdit->setPlaceholderText(getPlaceholderRequired());
   else
     ui->CustomDateEdit->setPlaceholderText("");
 
