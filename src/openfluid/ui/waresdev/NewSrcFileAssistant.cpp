@@ -141,27 +141,27 @@ CppPage::CppPage(const QDir& WareDir, QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  ui->BextType_comboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtTypeTexts());
-  ui->BextCategory_comboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtCategoryTexts());
+  ui->BextTypeComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtTypeTexts());
+  ui->BextCategoryComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtCategoryTexts());
 
   QString Tooltip;
-  ui->ClassName_lineEdit->setValidator(
+  ui->ClassNameEdit->setValidator(
       new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getClassnameRegExp(Tooltip), this));
-  ui->ClassName_lineEdit->setToolTip(Tooltip);
+  ui->ClassNameEdit->setToolTip(Tooltip);
 
   // "required" placeholder
   QString PlaceholderStr = QApplication::translate("openfluid::ui::config",openfluid::ui::config::PLACEHOLDER_REQUIRED);
-  ui->ClassName_lineEdit->setPlaceholderText(PlaceholderStr);
-  ui->SourceFilename_lineEdit->setPlaceholderText(PlaceholderStr);
+  ui->ClassNameEdit->setPlaceholderText(PlaceholderStr);
+  ui->SourceFilenameEdit->setPlaceholderText(PlaceholderStr);
 
-  registerField("SourceFilename", ui->SourceFilename_lineEdit);
-  registerField("Classname", ui->ClassName_lineEdit);
-  registerField("BextType", ui->BextType_comboBox);
-  registerField("BextCategory", ui->BextCategory_comboBox);
-  registerField("BextMenutext", ui->BextMenutext_lineEdit);
+  registerField("SourceFilename", ui->SourceFilenameEdit);
+  registerField("Classname", ui->ClassNameEdit);
+  registerField("BextType", ui->BextTypeComboBox);
+  registerField("BextCategory", ui->BextCategoryComboBox);
+  registerField("BextMenutext", ui->BextMenutextEdit);
 
-  connect(ui->SourceFilename_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
-  connect(ui->ClassName_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
+  connect(ui->SourceFilenameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
+  connect(ui->ClassNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
 }
 
 
@@ -184,9 +184,9 @@ void CppPage::initialize(bool IsHpp, bool IsUi, openfluid::ware::WareType Type)
   m_IsHpp = IsHpp;
 
   QString Tooltip;
-  ui->SourceFilename_lineEdit->setValidator(
+  ui->SourceFilenameEdit->setValidator(
       new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getCppFilenameRegExp(Tooltip, IsHpp), this));
-  ui->SourceFilename_lineEdit->setToolTip(Tooltip);
+  ui->SourceFilenameEdit->setToolTip(Tooltip);
 
   QString ClassName;
   QString SourceFilename;
@@ -243,12 +243,12 @@ void CppPage::initialize(bool IsHpp, bool IsUi, openfluid::ware::WareType Type)
   SourceFilename.append(IsHpp ? ".hpp" : ".cpp");
 
   ui->SourceFilename_label->setText(SourceFilename_label);
-  ui->SourceFilename_lineEdit->setText(SourceFilename);
-  ui->ClassName_lineEdit->setText(ClassName);
+  ui->SourceFilenameEdit->setText(SourceFilename);
+  ui->ClassNameEdit->setText(ClassName);
 
   bool IsBuilderExt = (Type == openfluid::ware::WareType::BUILDEREXT);
-  ui->BuilderExt_widget->setVisible(IsBuilderExt);
-  ui->BuilderExt_groupBox->setVisible(IsBuilderExt && !IsHpp);
+  ui->BuilderExtWidget->setVisible(IsBuilderExt);
+  ui->BuilderExtGroupBox->setVisible(IsBuilderExt && !IsHpp);
 }
 
 
@@ -260,11 +260,11 @@ void CppPage::onInformationChanged()
 {
   QString WarningMsg = "";
 
-  if (!ui->SourceFilename_lineEdit->hasAcceptableInput())
+  if (!ui->SourceFilenameEdit->hasAcceptableInput())
     WarningMsg = QString(tr("File name must be of the form \"filexxx.%1\"")).arg(m_IsHpp ? "hpp" : "cpp");
-  else if (m_WareDir.exists(ui->SourceFilename_lineEdit->text()))
+  else if (m_WareDir.exists(ui->SourceFilenameEdit->text()))
     WarningMsg = tr("File already exists");
-  else if (!ui->ClassName_lineEdit->hasAcceptableInput())
+  else if (!ui->ClassNameEdit->hasAcceptableInput())
     WarningMsg = tr("Class name is empty");
 
   NewSrcFileAssistant::setStatus(m_DefaultMsg, WarningMsg, ui->MessageLabel, ui->MessageFrame);
@@ -279,8 +279,8 @@ void CppPage::onInformationChanged()
 
 bool CppPage::isComplete() const
 {
-  return (ui->SourceFilename_lineEdit->hasAcceptableInput() && !m_WareDir.exists(ui->SourceFilename_lineEdit->text())
-          && ui->ClassName_lineEdit->hasAcceptableInput());
+  return (ui->SourceFilenameEdit->hasAcceptableInput() && !m_WareDir.exists(ui->SourceFilenameEdit->text())
+          && ui->ClassNameEdit->hasAcceptableInput());
 }
 
 
@@ -315,26 +315,26 @@ CMakeConfigPage::CMakeConfigPage(openfluid::ware::WareType Type, QWidget* Parent
       break;
   }
 
-  ui->RootFilename_lineEdit->setText(RootFilename);
+  ui->RootFilenameEdit->setText(RootFilename);
 
-  ui->Sim2doc_comboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getSim2docModeTexts());
-  ui->Sim2doc_widget->setVisible(IsSim);
+  ui->Sim2docComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getSim2docModeTexts());
+  ui->Sim2docWidget->setVisible(IsSim);
 
   QString Tooltip;
-  ui->RootFilename_lineEdit->setValidator(
+  ui->RootFilenameEdit->setValidator(
       new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getCppFilenameRegExp(Tooltip), this));
-  ui->RootFilename_lineEdit->setToolTip(Tooltip);
-  ui->RootFilename_lineEdit->setPlaceholderText(QApplication::translate("openfluid::ui::config",
+  ui->RootFilenameEdit->setToolTip(Tooltip);
+  ui->RootFilenameEdit->setPlaceholderText(QApplication::translate("openfluid::ui::config",
                                                                         openfluid::ui::config::PLACEHOLDER_REQUIRED));
 
   m_DefaultMsg = tr("Create the \"CMake.in.config\" file");
   NewSrcFileAssistant::setStatus(m_DefaultMsg, "", ui->MessageLabel, ui->MessageFrame);
 
-  registerField("RootFilename", ui->RootFilename_lineEdit);
-  registerField("Sim2docMode", ui->Sim2doc_comboBox);
-  registerField("Sim2docInstall", ui->Sim2doc_checkBox);
+  registerField("RootFilename", ui->RootFilenameEdit);
+  registerField("Sim2docMode", ui->Sim2docComboBox);
+  registerField("Sim2docInstall", ui->Sim2docCheckBox);
 
-  connect(ui->RootFilename_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onRootfilenameTextChanged()));
+  connect(ui->RootFilenameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onRootfilenameTextChanged()));
 }
 
 
@@ -354,7 +354,7 @@ CMakeConfigPage::~CMakeConfigPage()
 
 bool CMakeConfigPage::isComplete() const
 {
-  return ui->RootFilename_lineEdit->hasAcceptableInput();
+  return ui->RootFilenameEdit->hasAcceptableInput();
 }
 
 
@@ -365,7 +365,7 @@ void CMakeConfigPage::onRootfilenameTextChanged()
 {
   NewSrcFileAssistant::setStatus(
       m_DefaultMsg,
-      ui->RootFilename_lineEdit->hasAcceptableInput() ? "" : tr("File name must be of the form \"filexxx.cpp\""),
+      ui->RootFilenameEdit->hasAcceptableInput() ? "" : tr("File name must be of the form \"filexxx.cpp\""),
       ui->MessageLabel, ui->MessageFrame);
 
   emit QWizardPage::completeChanged();
@@ -387,25 +387,25 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   QString BgColorCss = QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR);
   ui->MessageFrame->setStyleSheet(BgColorCss);
 
-  ui->buttonGroup->setId(ui->Wareshub_radioButton, -1);
-  ui->buttonGroup->setId(ui->CMakeLists_radioButton, -1);
-  ui->buttonGroup->setId(ui->Empty_radioButton, static_cast<int>(PageType::EMPTY_PAGE));
-  ui->buttonGroup->setId(ui->CMakeConfig_radioButton, static_cast<int>(PageType::CMAKECONFIG_PAGE));
-  ui->buttonGroup->setId(ui->Cpp_radioButton, static_cast<int>(PageType::CPP_PAGE));
-  ui->buttonGroup->setId(ui->Hpp_radioButton, static_cast<int>(PageType::HPP_PAGE));
-  ui->buttonGroup->setId(ui->CppUi_radioButton, static_cast<int>(PageType::CPP_UI_PAGE));
-  ui->buttonGroup->setId(ui->HppUi_radioButton, static_cast<int>(PageType::HPP_UI_PAGE));
+  ui->buttonGroup->setId(ui->WareshubRadioButton, -1);
+  ui->buttonGroup->setId(ui->CMakeListsRadioButton, -1);
+  ui->buttonGroup->setId(ui->EmptyRadioButton, static_cast<int>(PageType::EMPTY_PAGE));
+  ui->buttonGroup->setId(ui->CMakeConfigRadioButton, static_cast<int>(PageType::CMAKECONFIG_PAGE));
+  ui->buttonGroup->setId(ui->CppRadioButton, static_cast<int>(PageType::CPP_PAGE));
+  ui->buttonGroup->setId(ui->HppRadioButton, static_cast<int>(PageType::HPP_PAGE));
+  ui->buttonGroup->setId(ui->CppUiRadioButton, static_cast<int>(PageType::CPP_UI_PAGE));
+  ui->buttonGroup->setId(ui->HppUiRadioButton, static_cast<int>(PageType::HPP_UI_PAGE));
 
   QString MainCpp = mref_Container.getMainCppPath();
   QString UiParamCpp = mref_Container.getUiParamCppPath();
 
-  ui->Wareshub_radioButton->setEnabled(mref_Container.getJsonPath().isEmpty());
-  ui->CMakeLists_radioButton->setEnabled(mref_Container.getCMakeListsPath().isEmpty());
-  ui->CMakeConfig_radioButton->setEnabled(mref_Container.getCMakeConfigPath().isEmpty());
-  ui->Cpp_radioButton->setEnabled(MainCpp.isEmpty());
-  ui->Hpp_radioButton->setEnabled(!QFile::exists(openfluid::waresdev::WareSrcFactory::getHppFilename(MainCpp)));
-  ui->CppUi_radioButton->setEnabled(UiParamCpp.isEmpty());
-  ui->HppUi_radioButton->setEnabled(!QFile::exists(openfluid::waresdev::WareSrcFactory::getHppFilename(UiParamCpp)));
+  ui->WareshubRadioButton->setEnabled(mref_Container.getJsonPath().isEmpty());
+  ui->CMakeListsRadioButton->setEnabled(mref_Container.getCMakeListsPath().isEmpty());
+  ui->CMakeConfigRadioButton->setEnabled(mref_Container.getCMakeConfigPath().isEmpty());
+  ui->CppRadioButton->setEnabled(MainCpp.isEmpty());
+  ui->HppRadioButton->setEnabled(!QFile::exists(openfluid::waresdev::WareSrcFactory::getHppFilename(MainCpp)));
+  ui->CppUiRadioButton->setEnabled(UiParamCpp.isEmpty());
+  ui->HppUiRadioButton->setEnabled(!QFile::exists(openfluid::waresdev::WareSrcFactory::getHppFilename(UiParamCpp)));
 
   for (QRadioButton* Bt : findChildren<QRadioButton*>())
   {
@@ -417,13 +417,13 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
 
   if (Type == openfluid::ware::WareType::BUILDEREXT)
   {
-    ui->CppUi_radioButton->setVisible(false);
-    ui->HppUi_radioButton->setVisible(false);
-    ui->Ui_line->setVisible(false);
+    ui->CppUiRadioButton->setVisible(false);
+    ui->HppUiRadioButton->setVisible(false);
+    ui->UiLine->setVisible(false);
   }
   else
   {
-    ui->Hpp_radioButton->setVisible(false);
+    ui->HppRadioButton->setVisible(false);
   }
 
 // existing page : IntroPage (index 0)
@@ -512,9 +512,9 @@ void NewSrcFileAssistant::accept()
   switch (currentId())
   {
     case static_cast<int>(PageType::INTRO_PAGE):
-      if (ui->Wareshub_radioButton->isChecked())
+      if (ui->WareshubRadioButton->isChecked())
         Ok = mp_Factory->createJsonFile(NewFilePath, ErrMsg);
-      else if (ui->CMakeLists_radioButton->isChecked())
+      else if (ui->CMakeListsRadioButton->isChecked())
         Ok = mp_Factory->createCMakeListsFile(NewFilePath, ErrMsg);
       break;
     case static_cast<int>(PageType::EMPTY_PAGE):

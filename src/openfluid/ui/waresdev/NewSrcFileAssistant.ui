@@ -27,7 +27,16 @@
     <string notr="true">0</string>
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -78,11 +87,20 @@ font : bold;
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <item>
-       <widget class="QRadioButton" name="Empty_radioButton">
+       <widget class="QRadioButton" name="EmptyRadioButton">
         <property name="text">
          <string>Empty file</string>
         </property>
@@ -108,7 +126,7 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="Cpp_radioButton">
+       <widget class="QRadioButton" name="CppRadioButton">
         <property name="text">
          <string>Main C++ source file (.cpp)</string>
         </property>
@@ -118,7 +136,7 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="Hpp_radioButton">
+       <widget class="QRadioButton" name="HppRadioButton">
         <property name="text">
          <string>Main C++ header file (.hpp)</string>
         </property>
@@ -128,7 +146,7 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="Line" name="Ui_line">
+       <widget class="Line" name="UiLine">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -141,7 +159,7 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="CppUi_radioButton">
+       <widget class="QRadioButton" name="CppUiRadioButton">
         <property name="text">
          <string>Parameterization UI source file (.cpp)</string>
         </property>
@@ -151,7 +169,7 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="HppUi_radioButton">
+       <widget class="QRadioButton" name="HppUiRadioButton">
         <property name="text">
          <string>Parameterization UI header file (.hpp)</string>
         </property>
@@ -174,7 +192,7 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="CMakeLists_radioButton">
+       <widget class="QRadioButton" name="CMakeListsRadioButton">
         <property name="text">
          <string>CMakeLists.txt file</string>
         </property>
@@ -184,7 +202,7 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="CMakeConfig_radioButton">
+       <widget class="QRadioButton" name="CMakeConfigRadioButton">
         <property name="text">
          <string>CMake.in.config file</string>
         </property>
@@ -207,7 +225,7 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="Wareshub_radioButton">
+       <widget class="QRadioButton" name="WareshubRadioButton">
         <property name="text">
          <string>wareshub.json file</string>
         </property>
@@ -251,13 +269,13 @@ font : bold;
   </widget>
  </widget>
  <tabstops>
-  <tabstop>Empty_radioButton</tabstop>
-  <tabstop>Cpp_radioButton</tabstop>
-  <tabstop>Hpp_radioButton</tabstop>
-  <tabstop>HppUi_radioButton</tabstop>
-  <tabstop>CMakeLists_radioButton</tabstop>
-  <tabstop>CMakeConfig_radioButton</tabstop>
-  <tabstop>Wareshub_radioButton</tabstop>
+  <tabstop>EmptyRadioButton</tabstop>
+  <tabstop>CppRadioButton</tabstop>
+  <tabstop>HppRadioButton</tabstop>
+  <tabstop>HppUiRadioButton</tabstop>
+  <tabstop>CMakeListsRadioButton</tabstop>
+  <tabstop>CMakeConfigRadioButton</tabstop>
+  <tabstop>WareshubRadioButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

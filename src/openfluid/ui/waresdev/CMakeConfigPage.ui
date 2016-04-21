@@ -102,7 +102,7 @@ font : bold;
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="RootFilename_lineEdit">
+        <widget class="QLineEdit" name="RootFilenameEdit">
          <property name="text">
           <string notr="true"/>
          </property>
@@ -114,7 +114,7 @@ font : bold;
       </layout>
      </item>
      <item>
-      <widget class="QWidget" name="Sim2doc_widget" native="true">
+      <widget class="QWidget" name="Sim2docWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <property name="spacing">
          <number>6</number>
@@ -145,7 +145,7 @@ font : bold;
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="Sim2doc_groupBox">
+         <widget class="QGroupBox" name="Sim2docGroupBox">
           <property name="title">
            <string notr="true">sim2doc</string>
           </property>
@@ -173,7 +173,7 @@ font : bold;
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QComboBox" name="Sim2doc_comboBox"/>
+            <widget class="QComboBox" name="Sim2docComboBox"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="enableBuildOfDocumentationUsingSim2docLabel">
@@ -183,7 +183,7 @@ font : bold;
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QCheckBox" name="Sim2doc_checkBox">
+            <widget class="QCheckBox" name="Sim2docCheckBox">
              <property name="text">
               <string/>
              </property>

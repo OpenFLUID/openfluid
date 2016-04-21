@@ -117,7 +117,7 @@ font : bold;
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="Id_lineEdit"/>
+        <widget class="QLineEdit" name="IdEdit"/>
        </item>
       </layout>
      </item>
@@ -166,7 +166,7 @@ font : bold;
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLineEdit" name="SourceFilename_lineEdit">
+         <widget class="QLineEdit" name="SourceFilenameEdit">
           <property name="text">
            <string/>
           </property>
@@ -186,7 +186,7 @@ font : bold;
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLineEdit" name="ClassName_lineEdit">
+         <widget class="QLineEdit" name="ClassNameEdit">
           <property name="text">
            <string/>
           </property>
@@ -199,7 +199,7 @@ font : bold;
       </widget>
      </item>
      <item>
-      <widget class="QWidget" name="Ui_widget" native="true">
+      <widget class="QWidget" name="UiWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <property name="spacing">
          <number>6</number>
@@ -230,7 +230,7 @@ font : bold;
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="UiParam_groupBox">
+         <widget class="QGroupBox" name="UiParamGroupBox">
           <property name="title">
            <string>Generate UI parameterization files</string>
           </property>
@@ -257,7 +257,7 @@ font : bold;
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="UiParam_widget" native="true">
+            <widget class="QWidget" name="UiParamWidget" native="true">
              <layout class="QFormLayout" name="formLayout_9">
               <property name="labelAlignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -282,7 +282,7 @@ font : bold;
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QLineEdit" name="UiParamSourceFilename_lineEdit">
+               <widget class="QLineEdit" name="UiParamSourceFilenameEdit">
                 <property name="text">
                  <string/>
                 </property>
@@ -299,7 +299,7 @@ font : bold;
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QLineEdit" name="UiParamClassName_lineEdit">
+               <widget class="QLineEdit" name="UiParamClassNameEdit">
                 <property name="text">
                  <string/>
                 </property>
@@ -318,7 +318,7 @@ font : bold;
       </widget>
      </item>
      <item>
-      <widget class="QWidget" name="Sim2doc_widget" native="true">
+      <widget class="QWidget" name="Sim2docWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <property name="spacing">
          <number>6</number>
@@ -349,7 +349,7 @@ font : bold;
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="Sim2doc_groupBox">
+         <widget class="QGroupBox" name="Sim2docGroupBox">
           <property name="title">
            <string notr="true">sim2doc</string>
           </property>
@@ -380,7 +380,7 @@ font : bold;
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QComboBox" name="Sim2doc_comboBox"/>
+            <widget class="QComboBox" name="Sim2docComboBox"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="enableBuildOfDocumentationUsingSim2docLabel">
@@ -390,7 +390,7 @@ font : bold;
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QCheckBox" name="Sim2doc_checkBox">
+            <widget class="QCheckBox" name="Sim2docCheckBox">
              <property name="text">
               <string/>
              </property>
@@ -406,7 +406,7 @@ font : bold;
       </widget>
      </item>
      <item>
-      <widget class="QWidget" name="BuilderExt_widget" native="true">
+      <widget class="QWidget" name="BuilderExtWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <property name="spacing">
          <number>6</number>
@@ -449,12 +449,12 @@ font : bold;
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="BextType_comboBox"/>
+           <widget class="QComboBox" name="BextTypeComboBox"/>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QGroupBox" name="BuilderExt_groupBox">
+         <widget class="QGroupBox" name="BuilderExtGroupBox">
           <property name="title">
            <string>Extension parameters</string>
           </property>
@@ -482,7 +482,7 @@ font : bold;
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QComboBox" name="BextCategory_comboBox"/>
+            <widget class="QComboBox" name="BextCategoryComboBox"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="BextMenutext_label">
@@ -492,7 +492,7 @@ font : bold;
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="BextMenutext_lineEdit"/>
+            <widget class="QLineEdit" name="BextMenutextEdit"/>
            </item>
           </layout>
          </widget>
@@ -514,7 +514,7 @@ font : bold;
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="Json_checkBox">
+      <widget class="QCheckBox" name="JsonCheckBox">
        <property name="font">
         <font>
          <weight>75</weight>
@@ -570,18 +570,18 @@ font : bold;
   </layout>
  </widget>
  <tabstops>
-  <tabstop>Id_lineEdit</tabstop>
-  <tabstop>SourceFilename_lineEdit</tabstop>
-  <tabstop>ClassName_lineEdit</tabstop>
-  <tabstop>UiParam_groupBox</tabstop>
-  <tabstop>UiParamSourceFilename_lineEdit</tabstop>
-  <tabstop>UiParamClassName_lineEdit</tabstop>
-  <tabstop>Sim2doc_comboBox</tabstop>
-  <tabstop>Sim2doc_checkBox</tabstop>
-  <tabstop>BextType_comboBox</tabstop>
-  <tabstop>BextCategory_comboBox</tabstop>
-  <tabstop>BextMenutext_lineEdit</tabstop>
-  <tabstop>Json_checkBox</tabstop>
+  <tabstop>IdEdit</tabstop>
+  <tabstop>SourceFilenameEdit</tabstop>
+  <tabstop>ClassNameEdit</tabstop>
+  <tabstop>UiParamGroupBox</tabstop>
+  <tabstop>UiParamSourceFilenameEdit</tabstop>
+  <tabstop>UiParamClassNameEdit</tabstop>
+  <tabstop>Sim2docComboBox</tabstop>
+  <tabstop>Sim2docCheckBox</tabstop>
+  <tabstop>BextTypeComboBox</tabstop>
+  <tabstop>BextCategoryComboBox</tabstop>
+  <tabstop>BextMenutextEdit</tabstop>
+  <tabstop>JsonCheckBox</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>

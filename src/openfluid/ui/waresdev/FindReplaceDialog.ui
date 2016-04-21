@@ -33,7 +33,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="Find_lineEdit"/>
+      <widget class="QLineEdit" name="FindEdit"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="replaceLabel">
@@ -43,7 +43,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="Replace_lineEdit"/>
+      <widget class="QLineEdit" name="ReplaceEdit"/>
      </item>
     </layout>
    </item>
@@ -56,7 +56,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_3">
         <item row="0" column="0">
-         <widget class="QRadioButton" name="Forward_radioButton">
+         <widget class="QRadioButton" name="ForwardRadioButton">
           <property name="text">
            <string>Forward</string>
           </property>
@@ -66,7 +66,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QRadioButton" name="Backward_radioButton">
+         <widget class="QRadioButton" name="BackwardRadioButton">
           <property name="text">
            <string>Backward</string>
           </property>
@@ -85,7 +85,7 @@
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
         <item row="0" column="0">
-         <widget class="QCheckBox" name="CaseSensitive_checkBox"/>
+         <widget class="QCheckBox" name="CaseSensitiveCheckBox"/>
         </item>
         <item row="0" column="1">
          <widget class="QLabel" name="caseSensitiveLabel_2">
@@ -95,7 +95,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QCheckBox" name="WholeWord_checkBox"/>
+         <widget class="QCheckBox" name="WholeWordCheckBox"/>
         </item>
         <item row="1" column="1">
          <widget class="QLabel" name="wholeWordLabel">
@@ -140,28 +140,28 @@
      <item>
       <layout class="QGridLayout" name="gridLayout" rowstretch="1,1" columnstretch="1,1">
        <item row="0" column="0">
-        <widget class="QPushButton" name="Find_pushButton">
+        <widget class="QPushButton" name="FindButton">
          <property name="text">
           <string>Find</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QPushButton" name="Replace_pushButton">
+        <widget class="QPushButton" name="ReplaceButton">
          <property name="text">
           <string>Replace</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QPushButton" name="ReplaceFind_pushButton">
+        <widget class="QPushButton" name="ReplaceFindButton">
          <property name="text">
           <string>Replace/Find</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="ReplaceAll_pushButton">
+        <widget class="QPushButton" name="ReplaceAllButton">
          <property name="text">
           <string>Replace all</string>
          </property>
@@ -174,7 +174,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="Msg_label">
+      <widget class="QLabel" name="MsgLabel">
        <property name="text">
         <string/>
        </property>
@@ -192,12 +192,12 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>Find_lineEdit</tabstop>
-  <tabstop>Replace_lineEdit</tabstop>
-  <tabstop>Find_pushButton</tabstop>
-  <tabstop>ReplaceFind_pushButton</tabstop>
-  <tabstop>Replace_pushButton</tabstop>
-  <tabstop>ReplaceAll_pushButton</tabstop>
+  <tabstop>FindEdit</tabstop>
+  <tabstop>ReplaceEdit</tabstop>
+  <tabstop>FindButton</tabstop>
+  <tabstop>ReplaceFindButton</tabstop>
+  <tabstop>ReplaceButton</tabstop>
+  <tabstop>ReplaceAllButton</tabstop>
  </tabstops>
  <resources/>
  <connections>

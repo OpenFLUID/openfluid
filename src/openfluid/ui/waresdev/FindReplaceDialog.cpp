@@ -54,17 +54,17 @@ FindReplaceDialog::FindReplaceDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  connect(ui->Find_pushButton, SIGNAL(clicked()), this, SLOT(onFindClicked()));
-  connect(ui->Replace_pushButton, SIGNAL(clicked()), this, SLOT(onReplaceClicked()));
-  connect(ui->ReplaceFind_pushButton, SIGNAL(clicked()), this, SLOT(onReplaceFindClicked()));
-  connect(ui->ReplaceAll_pushButton, SIGNAL(clicked()), this, SLOT(onReplaceAllClicked()));
+  connect(ui->FindButton, SIGNAL(clicked()), this, SLOT(onFindClicked()));
+  connect(ui->ReplaceButton, SIGNAL(clicked()), this, SLOT(onReplaceClicked()));
+  connect(ui->ReplaceFindButton, SIGNAL(clicked()), this, SLOT(onReplaceFindClicked()));
+  connect(ui->ReplaceAllButton, SIGNAL(clicked()), this, SLOT(onReplaceAllClicked()));
 
-  connect(ui->Find_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onTextChanged(const QString&)));
+  connect(ui->FindEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onTextChanged(const QString&)));
 
-  ui->Find_pushButton->setEnabled(false);
-  ui->ReplaceAll_pushButton->setEnabled(false);
-  ui->ReplaceFind_pushButton->setEnabled(false);
-  ui->Replace_pushButton->setEnabled(false);
+  ui->FindButton->setEnabled(false);
+  ui->ReplaceAllButton->setEnabled(false);
+  ui->ReplaceFindButton->setEnabled(false);
+  ui->ReplaceButton->setEnabled(false);
 }
 
 
@@ -86,11 +86,11 @@ void FindReplaceDialog::show(const QString& SelectedText)
 {
   bool EmptySelection = SelectedText.isEmpty();
 
-  ui->ReplaceFind_pushButton->setEnabled(!EmptySelection);
-  ui->Replace_pushButton->setEnabled(!EmptySelection);
+  ui->ReplaceFindButton->setEnabled(!EmptySelection);
+  ui->ReplaceButton->setEnabled(!EmptySelection);
 
   if (!EmptySelection)
-    ui->Find_lineEdit->setText(SelectedText);
+    ui->FindEdit->setText(SelectedText);
 
   QWidget::show();
 }
@@ -102,10 +102,10 @@ void FindReplaceDialog::show(const QString& SelectedText)
 
 void FindReplaceDialog::setMessage(const QString& Message, bool TextFound)
 {
-  ui->Msg_label->setText(Message);
+  ui->MsgLabel->setText(Message);
 
-  ui->ReplaceFind_pushButton->setEnabled(TextFound);
-  ui->Replace_pushButton->setEnabled(TextFound);
+  ui->ReplaceFindButton->setEnabled(TextFound);
+  ui->ReplaceButton->setEnabled(TextFound);
 }
 
 
@@ -117,13 +117,13 @@ void FindReplaceDialog::onTextChanged(const QString& Text)
 {
   bool IsEmpty = Text.isEmpty();
 
-  ui->Find_pushButton->setEnabled(!IsEmpty);
-  ui->ReplaceAll_pushButton->setEnabled(!IsEmpty);
+  ui->FindButton->setEnabled(!IsEmpty);
+  ui->ReplaceAllButton->setEnabled(!IsEmpty);
 
   if (IsEmpty)
   {
-    ui->ReplaceFind_pushButton->setEnabled(false);
-    ui->Replace_pushButton->setEnabled(false);
+    ui->ReplaceFindButton->setEnabled(false);
+    ui->ReplaceButton->setEnabled(false);
   }
 }
 
@@ -134,7 +134,7 @@ void FindReplaceDialog::onTextChanged(const QString& Text)
 
 void FindReplaceDialog::onFindClicked()
 {
-  emit findReplaceRequested(FindReplaceAction::FindOnly, ui->Find_lineEdit->text(), "", getFindOptions());
+  emit findReplaceRequested(FindReplaceAction::FindOnly, ui->FindEdit->text(), "", getFindOptions());
 }
 
 
@@ -144,7 +144,7 @@ void FindReplaceDialog::onFindClicked()
 
 void FindReplaceDialog::onReplaceClicked()
 {
-  emit findReplaceRequested(FindReplaceAction::ReplaceOnly, ui->Find_lineEdit->text(), ui->Replace_lineEdit->text(),
+  emit findReplaceRequested(FindReplaceAction::ReplaceOnly, ui->FindEdit->text(), ui->ReplaceEdit->text(),
                             getFindOptions());
 }
 
@@ -154,7 +154,7 @@ void FindReplaceDialog::onReplaceClicked()
 
 void FindReplaceDialog::onReplaceFindClicked()
 {
-  emit findReplaceRequested(FindReplaceAction::ReplaceFind, ui->Find_lineEdit->text(), ui->Replace_lineEdit->text(),
+  emit findReplaceRequested(FindReplaceAction::ReplaceFind, ui->FindEdit->text(), ui->ReplaceEdit->text(),
                             getFindOptions());
 }
 
@@ -165,7 +165,7 @@ void FindReplaceDialog::onReplaceFindClicked()
 
 void FindReplaceDialog::onReplaceAllClicked()
 {
-  emit findReplaceRequested(FindReplaceAction::ReplaceAll, ui->Find_lineEdit->text(), ui->Replace_lineEdit->text(),
+  emit findReplaceRequested(FindReplaceAction::ReplaceAll, ui->FindEdit->text(), ui->ReplaceEdit->text(),
                             getFindOptions());
 }
 
@@ -178,13 +178,13 @@ QTextDocument::FindFlags FindReplaceDialog::getFindOptions()
 {
   QTextDocument::FindFlags Options;
 
-  if (ui->Backward_radioButton->isChecked())
+  if (ui->BackwardRadioButton->isChecked())
     Options |= QTextDocument::FindBackward;
 
-  if (ui->CaseSensitive_checkBox->isChecked())
+  if (ui->CaseSensitiveCheckBox->isChecked())
     Options |= QTextDocument::FindCaseSensitively;
 
-  if (ui->WholeWord_checkBox->isChecked())
+  if (ui->WholeWordCheckBox->isChecked())
     Options |= QTextDocument::FindWholeWords;
 
   return Options;

@@ -67,9 +67,9 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
 
   m_WareTypeDir.setPath(openfluid::waresdev::WareSrcManager::instance()->getWareTypePath(m_WareType));
 
-  ui->Sim2doc_comboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getSim2docModeTexts());
-  ui->BextType_comboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtTypeTexts());
-  ui->BextCategory_comboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtCategoryTexts());
+  ui->Sim2docComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getSim2docModeTexts());
+  ui->BextTypeComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtTypeTexts());
+  ui->BextCategoryComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtCategoryTexts());
 
   QString WareId;
   QString SrcFilename;
@@ -82,23 +82,23 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
       WareId = "sim.id";
       SrcFilename = "MySim.cpp";
       SrcClassname = "MySimulator";
-      ui->BuilderExt_widget->setVisible(false);
+      ui->BuilderExtWidget->setVisible(false);
       break;
     case openfluid::ware::WareType::OBSERVER:
       m_DefaultMsg = tr("Create a new observer");
       WareId = "obs.id";
       SrcFilename = "MyObs.cpp";
       SrcClassname = "MyObserver";
-      ui->Sim2doc_widget->setVisible(false);
-      ui->BuilderExt_widget->setVisible(false);
+      ui->Sim2docWidget->setVisible(false);
+      ui->BuilderExtWidget->setVisible(false);
       break;
     case openfluid::ware::WareType::BUILDEREXT:
       m_DefaultMsg = tr("Create a new Builder extension");
       WareId = "bext.id";
       SrcFilename = "MyExt.cpp";
       SrcClassname = "MyExtension";
-      ui->Ui_widget->setVisible(false);
-      ui->Sim2doc_widget->setVisible(false);
+      ui->UiWidget->setVisible(false);
+      ui->Sim2docWidget->setVisible(false);
       break;
     default:
       break;
@@ -113,35 +113,35 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
   // "required" placeholder
   QString PlaceholderStr = getPlaceholderRequired();
 
-  ui->Id_lineEdit->setValidator(
+  ui->IdEdit->setValidator(
       new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getWareIdRegExp(IDTooltip), this));
-  ui->Id_lineEdit->setToolTip(IDTooltip);
-  ui->Id_lineEdit->setPlaceholderText(PlaceholderStr);
-  ui->SourceFilename_lineEdit->setValidator(new QRegExpValidator(CppRegExp, this));
-  ui->SourceFilename_lineEdit->setToolTip(CppTooltip);
-  ui->SourceFilename_lineEdit->setPlaceholderText(PlaceholderStr);
-  ui->UiParamSourceFilename_lineEdit->setValidator(new QRegExpValidator(CppRegExp, this));
-  ui->UiParamSourceFilename_lineEdit->setToolTip(CppTooltip);
-  ui->UiParamSourceFilename_lineEdit->setPlaceholderText(PlaceholderStr);
-  ui->ClassName_lineEdit->setValidator(new QRegExpValidator(ClassnameRegExp, this));
-  ui->ClassName_lineEdit->setToolTip(ClassTooltip);
-  ui->ClassName_lineEdit->setPlaceholderText(PlaceholderStr);
-  ui->UiParamClassName_lineEdit->setValidator(new QRegExpValidator(ClassnameRegExp, this));
-  ui->UiParamClassName_lineEdit->setToolTip(ClassTooltip);
-  ui->UiParamClassName_lineEdit->setPlaceholderText(PlaceholderStr);
+  ui->IdEdit->setToolTip(IDTooltip);
+  ui->IdEdit->setPlaceholderText(PlaceholderStr);
+  ui->SourceFilenameEdit->setValidator(new QRegExpValidator(CppRegExp, this));
+  ui->SourceFilenameEdit->setToolTip(CppTooltip);
+  ui->SourceFilenameEdit->setPlaceholderText(PlaceholderStr);
+  ui->UiParamSourceFilenameEdit->setValidator(new QRegExpValidator(CppRegExp, this));
+  ui->UiParamSourceFilenameEdit->setToolTip(CppTooltip);
+  ui->UiParamSourceFilenameEdit->setPlaceholderText(PlaceholderStr);
+  ui->ClassNameEdit->setValidator(new QRegExpValidator(ClassnameRegExp, this));
+  ui->ClassNameEdit->setToolTip(ClassTooltip);
+  ui->ClassNameEdit->setPlaceholderText(PlaceholderStr);
+  ui->UiParamClassNameEdit->setValidator(new QRegExpValidator(ClassnameRegExp, this));
+  ui->UiParamClassNameEdit->setToolTip(ClassTooltip);
+  ui->UiParamClassNameEdit->setPlaceholderText(PlaceholderStr);
 
-  connect(ui->Id_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
-  connect(ui->SourceFilename_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
-  connect(ui->UiParam_groupBox, SIGNAL(toggled(bool)), this, SLOT(onInformationChanged()));
-  connect(ui->UiParamSourceFilename_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
-  connect(ui->ClassName_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
-  connect(ui->UiParamClassName_lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
+  connect(ui->IdEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
+  connect(ui->SourceFilenameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
+  connect(ui->UiParamGroupBox, SIGNAL(toggled(bool)), this, SLOT(onInformationChanged()));
+  connect(ui->UiParamSourceFilenameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
+  connect(ui->ClassNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
+  connect(ui->UiParamClassNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
 
-  ui->Id_lineEdit->setText(WareId);
-  ui->SourceFilename_lineEdit->setText(SrcFilename);
-  ui->ClassName_lineEdit->setText(SrcClassname);
-  ui->UiParamSourceFilename_lineEdit->setText("ParamsUiWidget.cpp");
-  ui->UiParamClassName_lineEdit->setText("ParamsUiWidget");
+  ui->IdEdit->setText(WareId);
+  ui->SourceFilenameEdit->setText(SrcFilename);
+  ui->ClassNameEdit->setText(SrcClassname);
+  ui->UiParamSourceFilenameEdit->setText("ParamsUiWidget.cpp");
+  ui->UiParamClassNameEdit->setText("ParamsUiWidget");
 }
 
 
@@ -155,8 +155,8 @@ NewWareDialog::NewWareDialog(const openfluid::ware::SimulatorSignature& Signatur
   m_SimSignature = Signature;
   m_UseSimSignature = true;
 
-  ui->Id_lineEdit->setText(QString::fromStdString(Signature.ID));
-  ui->Id_lineEdit->setReadOnly(true);
+  ui->IdEdit->setText(QString::fromStdString(Signature.ID));
+  ui->IdEdit->setReadOnly(true);
 }
 
 
@@ -178,17 +178,17 @@ void NewWareDialog::onInformationChanged()
 {
   QString WarningMsg = "";
 
-  if (!ui->Id_lineEdit->hasAcceptableInput())
+  if (!ui->IdEdit->hasAcceptableInput())
     WarningMsg = tr("Ware ID is empty");
-  else if (m_WareTypeDir.exists(ui->Id_lineEdit->text()))
+  else if (m_WareTypeDir.exists(ui->IdEdit->text()))
     WarningMsg = tr("Ware ID already exists");
-  else if (!ui->SourceFilename_lineEdit->hasAcceptableInput())
+  else if (!ui->SourceFilenameEdit->hasAcceptableInput())
     WarningMsg = tr("Source file name must be of the form \"filexxx.cpp\"");
-  else if (!ui->ClassName_lineEdit->hasAcceptableInput())
+  else if (!ui->ClassNameEdit->hasAcceptableInput())
     WarningMsg = tr("Main class name is empty");
-  else if (ui->UiParam_groupBox->isChecked() && !ui->UiParamSourceFilename_lineEdit->hasAcceptableInput())
+  else if (ui->UiParamGroupBox->isChecked() && !ui->UiParamSourceFilenameEdit->hasAcceptableInput())
     WarningMsg = tr("UI parameterization file name must be of the form \"filexxx.cpp\"");
-  else if (ui->UiParam_groupBox->isChecked() && !ui->UiParamClassName_lineEdit->hasAcceptableInput())
+  else if (ui->UiParamGroupBox->isChecked() && !ui->UiParamClassNameEdit->hasAcceptableInput())
     WarningMsg = tr("UI parameterization class name is empty");
 
   setStatus(WarningMsg);
@@ -228,9 +228,9 @@ void NewWareDialog::setStatus(const QString WarningMsg)
 
 void NewWareDialog::accept()
 {
-  QString WareId = ui->Id_lineEdit->text();
+  QString WareId = ui->IdEdit->text();
 
-  bool WithUiParam = ui->UiParam_groupBox->isChecked();
+  bool WithUiParam = ui->UiParamGroupBox->isChecked();
   bool WithHpp = false;
 
   openfluid::waresdev::WareSrcFactory Factory(m_WareType);
@@ -241,8 +241,8 @@ void NewWareDialog::accept()
 
   openfluid::waresdev::WareSrcFactory::Replacements R;
 
-  R.ClassName = ui->ClassName_lineEdit->text();
-  R.RootCppFilename = ui->SourceFilename_lineEdit->text();
+  R.ClassName = ui->ClassNameEdit->text();
+  R.RootCppFilename = ui->SourceFilenameEdit->text();
   R.RootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.RootCppFilename);
   R.HppHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.RootHppFilename);
 
@@ -256,8 +256,8 @@ void NewWareDialog::accept()
 
   if (m_WareType == openfluid::ware::WareType::SIMULATOR)
   {
-    R.Sim2docModeIndex = ui->Sim2doc_comboBox->currentIndex();
-    R.Sim2docInstall = ui->Sim2doc_checkBox->isChecked();
+    R.Sim2docModeIndex = ui->Sim2docComboBox->currentIndex();
+    R.Sim2docInstall = ui->Sim2docCheckBox->isChecked();
 
     R.SimulatorSchedulingReturn = "DefaultDeltaT()";
 
@@ -276,9 +276,9 @@ void NewWareDialog::accept()
   }
   else if (m_WareType == openfluid::ware::WareType::BUILDEREXT)
   {
-    R.BuilderExtModeIndex = ui->BextType_comboBox->currentIndex();
-    R.BuilderExtCategoryIndex = ui->BextCategory_comboBox->currentIndex();
-    R.BuilderExtMenuText = ui->BextMenutext_lineEdit->text();
+    R.BuilderExtModeIndex = ui->BextTypeComboBox->currentIndex();
+    R.BuilderExtCategoryIndex = ui->BextCategoryComboBox->currentIndex();
+    R.BuilderExtMenuText = ui->BextMenutextEdit->text();
     WithHpp = true;
     WithUiParam = false;
   }
@@ -289,8 +289,8 @@ void NewWareDialog::accept()
       m_WareType == openfluid::ware::WareType::OBSERVER))
   {
     R.ParamsUiEnabled = true;
-    R.ParamsUiClassname = ui->UiParamClassName_lineEdit->text();
-    R.ParamsUiRootCppFilename = ui->UiParamSourceFilename_lineEdit->text();
+    R.ParamsUiClassname = ui->UiParamClassNameEdit->text();
+    R.ParamsUiRootCppFilename = ui->UiParamSourceFilenameEdit->text();
     R.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.ParamsUiRootCppFilename);
     R.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.ParamsUiRootHppFilename);
     R.ParamsUiComment = "";
@@ -318,7 +318,7 @@ void NewWareDialog::accept()
   if (Ok && WithUiParam)
     Ok = Factory.createParamUiHppFile(R, NewFilePath, ErrMsg);
 
-  if (Ok && ui->Json_checkBox->isChecked())
+  if (Ok && ui->JsonCheckBox->isChecked())
     Ok = Factory.createJsonFile(NewFilePath, ErrMsg);
 
   if (Ok)

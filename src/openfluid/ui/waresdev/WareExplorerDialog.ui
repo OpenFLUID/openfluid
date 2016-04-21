@@ -87,7 +87,7 @@ font : bold;
       <number>9</number>
      </property>
      <item>
-      <widget class="QWidget" name="ParentDir_widget" native="true">
+      <widget class="QWidget" name="ParentDirWidget" native="true">
        <layout class="QFormLayout" name="formLayout">
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -137,7 +137,7 @@ font : bold;
       <widget class="openfluid::ui::waresdev::WareSrcExplorer" name="WareExplorer"/>
      </item>
      <item>
-      <widget class="QWidget" name="Filepath_widget" native="true">
+      <widget class="QWidget" name="FilepathWidget" native="true">
        <layout class="QHBoxLayout" name="FilenameLayout">
         <property name="leftMargin">
          <number>0</number>
@@ -159,7 +159,7 @@ font : bold;
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="Filepath_lineEdit"/>
+         <widget class="QLineEdit" name="FilepathEdit"/>
         </item>
        </layout>
       </widget>
