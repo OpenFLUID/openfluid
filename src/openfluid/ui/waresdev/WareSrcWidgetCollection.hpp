@@ -62,10 +62,12 @@ namespace waresdev {
 class WareSrcManager;
 }
 
+
 namespace ui { namespace waresdev {
 
 class WareSrcWidget;
 class FindReplaceDialog;
+
 
 class OPENFLUID_API WareSrcWidgetCollection: public QObject
 {

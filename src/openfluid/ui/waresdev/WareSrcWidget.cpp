@@ -446,7 +446,15 @@ void WareSrcWidget::configure()
 
 {
   clearEditorsMessages();
-  m_Container.configure();
+
+  try
+  {
+    m_Container.configure();
+  }
+  catch (openfluid::base::FrameworkException& E )
+  {
+    QMessageBox::critical(nullptr, tr("Configure error"), QString::fromStdString(E.getMessage()));
+  }
 }
 
 
@@ -458,7 +466,15 @@ void WareSrcWidget::build()
 
 {
   clearEditorsMessages();
-  m_Container.build();
+
+  try
+  {
+    m_Container.build();
+  }
+  catch (openfluid::base::FrameworkException& E )
+  {
+    QMessageBox::critical(nullptr, tr("Build error"), QString::fromStdString(E.getMessage()));
+  }
 }
 
 

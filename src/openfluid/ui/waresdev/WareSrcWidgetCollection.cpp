@@ -378,10 +378,11 @@ void WareSrcWidgetCollection::configure()
   {
     if (openfluid::base::PreferencesManager::instance()->isWaresdevAutomaticSaveBeforeBuild())
       CurrentWare->saveAllFileTabs();
+
     CurrentWare->configure();
   }
   else
-    QMessageBox::warning(0, "No open ware", "At least one ware must be open to perform this action");
+    QMessageBox::warning(nullptr,tr("Configure"),tr("At least one ware must be open to perform this action"));
 }
 
 
@@ -395,10 +396,11 @@ void WareSrcWidgetCollection::build()
   {
     if (openfluid::base::PreferencesManager::instance()->isWaresdevAutomaticSaveBeforeBuild())
       CurrentWare->saveAllFileTabs();
+
     CurrentWare->build();
   }
   else
-    QMessageBox::warning(0, tr("No open ware"), tr("At least one ware must be open to perform this action"));
+    QMessageBox::warning(0, tr("Build"), tr("At least one ware must be open to perform this action"));
 }
 
 
@@ -447,7 +449,7 @@ void WareSrcWidgetCollection::saveCurrentEditor()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     CurrentWare->saveCurrentEditor();
   else
-    QMessageBox::warning(0, tr("No open ware"), tr("At least one ware must be open to perform this action"));
+    QMessageBox::warning(0, tr("Save"), tr("At least one ware must be open to perform this action"));
 }
 
 
@@ -486,7 +488,7 @@ QString WareSrcWidgetCollection::saveAs(const QString& TopDirectory)
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     return CurrentWare->saveAs(TopDirectory);
 
-  QMessageBox::warning(0, tr("No open ware"), tr("At least one ware must be open to perform this action"));
+  QMessageBox::warning(0, tr("Save"), tr("At least one ware must be open to perform this action"));
   return "";
 }
 
@@ -500,7 +502,7 @@ void WareSrcWidgetCollection::saveAllCurrent()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     CurrentWare->saveAllFileTabs();
   else
-    QMessageBox::warning(0, tr("No open ware"), tr("At least one ware must be open to perform this action"));
+    QMessageBox::warning(0, tr("Save"), tr("At least one ware must be open to perform this action"));
 }
 
 
@@ -513,7 +515,7 @@ void WareSrcWidgetCollection::closeCurrentEditor()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     CurrentWare->closeCurrentEditor();
   else
-    QMessageBox::warning(0, tr("No open ware"), tr("At least one ware must be open to perform this action"));
+    QMessageBox::warning(0, tr("Close"), tr("At least one ware must be open to perform this action"));
 }
 
 
@@ -625,7 +627,7 @@ void WareSrcWidgetCollection::openFile()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     CurrentWare->openFile();
   else
-    QMessageBox::warning(0, tr("No open ware"), tr("At least one ware must be open to perform this action"));
+    QMessageBox::warning(0, tr("Open file"), tr("At least one ware must be open to perform this action"));
 }
 
 
@@ -638,7 +640,7 @@ void WareSrcWidgetCollection::deleteCurrentFile()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     CurrentWare->deleteCurrentFile();
   else
-    QMessageBox::warning(0, tr("No open ware"), tr("At least one ware must be open to perform this action"));
+    QMessageBox::warning(0, tr("Delete file"), tr("At least one ware must be open to perform this action"));
 }
 
 
@@ -676,7 +678,7 @@ void WareSrcWidgetCollection::deleteWare(const QString& WarePath)
     closeWareTab(it.value());
 
   if (!openfluid::tools::Filesystem::removeDirectory(WarePath.toStdString()))
-    QMessageBox::critical(0, tr("Error"), tr("Unable to remove the directory \"%1\"").arg(WarePath));
+    QMessageBox::critical(0, tr("Delete ware"), tr("Unable to remove the directory \"%1\"").arg(WarePath));
 }
 
 
@@ -689,7 +691,7 @@ void WareSrcWidgetCollection::newFile()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     CurrentWare->newFile();
   else
-    QMessageBox::warning(0, tr("No open ware"), tr("At least one ware must be open to perform this action"));
+    QMessageBox::warning(0, tr("New file"), tr("At least one ware must be open to perform this action"));
 }
 
 
@@ -871,7 +873,7 @@ void WareSrcWidgetCollection::goToLine()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
     CurrentWare->goToLine();
   else
-    QMessageBox::warning(0, tr("No open ware"), tr("At least one ware must be open to perform this action"));
+    QMessageBox::warning(0, tr("Go to line"), tr("At least one ware must be open to perform this action"));
 }
 
 
