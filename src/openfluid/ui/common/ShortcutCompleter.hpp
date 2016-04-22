@@ -45,13 +45,16 @@
 #include <QAction>
 #include <QKeySequence>
 
+#include <openfluid/dllexport.hpp>
+
+
 class QLineEdit;
 
 
 namespace openfluid { namespace ui { namespace common {
 
 
-class ShortcutCompleter : public QCompleter
+class OPENFLUID_API ShortcutCompleter : public QCompleter
 {
   Q_OBJECT;
 
