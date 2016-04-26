@@ -483,45 +483,54 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
       *AuthorIt = toLatexFriendly(*AuthorIt);
   }
 
+
   SignatureData_t::iterator ParamIt;
-  unsigned int i;
 
   for (ParamIt = m_ParamsData.begin(); ParamIt != m_ParamsData.end(); ++ParamIt)
   {
-    for (i = 0; i < ParamIt->second.size(); ++i)
-      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
-    if (ParamIt->second[1].empty())
-      ParamIt->second[1] = "-";
+    ParamIt->second[0] = toLatexFriendly(ParamIt->second[0]);
+    ParamIt->second[1] = toLatexFriendly(ParamIt->second[1]);
+
+    if (ParamIt->second[2].empty())
+      ParamIt->second[2] = "-";
   }
 
   for (ParamIt = m_InVars.begin(); ParamIt != m_InVars.end(); ++ParamIt)
   {
-    for (i = 2; i < ParamIt->second.size(); ++i)
-      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
+    ParamIt->second[0] = toLatexFriendly(ParamIt->second[0]);
+    ParamIt->second[1] = toLatexFriendly(ParamIt->second[1]);
+    ParamIt->second[2] = toLatexFriendly(ParamIt->second[2]);
+
     if (ParamIt->second[3].empty())
       ParamIt->second[3] = "-";
   }
 
   for (ParamIt = m_OutVars.begin(); ParamIt != m_OutVars.end(); ++ParamIt)
   {
-    for (i = 2; i < ParamIt->second.size(); ++i)
-      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
+    ParamIt->second[0] = toLatexFriendly(ParamIt->second[0]);
+    ParamIt->second[1] = toLatexFriendly(ParamIt->second[1]);
+    ParamIt->second[2] = toLatexFriendly(ParamIt->second[2]);
+
     if (ParamIt->second[3].empty())
       ParamIt->second[3] = "-";
   }
 
   for (ParamIt = m_InAttrs.begin(); ParamIt != m_InAttrs.end(); ++ParamIt)
   {
-    for (i = 2; i < ParamIt->second.size(); ++i)
-      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
+    ParamIt->second[0] = toLatexFriendly(ParamIt->second[0]);
+    ParamIt->second[1] = toLatexFriendly(ParamIt->second[1]);
+    ParamIt->second[2] = toLatexFriendly(ParamIt->second[2]);
+
     if (ParamIt->second[3].empty())
       ParamIt->second[3] = "-";
   }
 
   for (ParamIt = m_OutAttrs.begin(); ParamIt != m_OutAttrs.end(); ++ParamIt)
   {
-    for (i = 2; i < ParamIt->second.size(); ++i)
-      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
+    ParamIt->second[0] = toLatexFriendly(ParamIt->second[0]);
+    ParamIt->second[1] = toLatexFriendly(ParamIt->second[1]);
+    ParamIt->second[2] = toLatexFriendly(ParamIt->second[2]);
+
     if (ParamIt->second[3].empty())
       ParamIt->second[3] = "-";
   }
@@ -649,7 +658,7 @@ void Sim2DocBuddy::generateLatex()
     for (it = m_InVars.begin(); it != m_InVars.end(); ++it)
     {
       m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] +
-                  "&" + it->second[2] + "&" + it->second[3] + "$\\\\" + "\n";
+                  "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
 
     if (!m_InVars.empty() && !m_OutVars.empty())
