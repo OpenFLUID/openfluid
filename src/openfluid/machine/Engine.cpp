@@ -267,7 +267,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   openfluid::core::UnitsList_t::const_iterator UnitsIter;
   const openfluid::core::UnitsListByClassMap_t* AllUnits;
   const openfluid::core::UnitsList_t* UnitsList;
-
+  openfluid::core::VariableName_t ErrorVarName = "";
 
   AllUnits = m_SimulationBlob.spatialGraph().allSpatialUnitsByClass();
 
@@ -277,8 +277,16 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 
     for (UnitsIter = UnitsList->begin();UnitsIter != UnitsList->end();++UnitsIter)
     {
-      if (!((*UnitsIter).variables()->isAllVariablesCount(ExpectedVarsCount)))
-        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Variable production error");
+      if (!((*UnitsIter).variables()->checkAllVariablesCount(ExpectedVarsCount,ErrorVarName)))
+      {
+        openfluid::base::ExceptionContext Ctxt;
+        Ctxt.addCodeLocation(OPENFLUID_CODE_LOCATION);
+        std::string UnitStr = (*UnitsIter).getClass() + "#" + std::to_string((*UnitsIter).getID());
+        Ctxt.addSpatialUnit(UnitStr);
+
+        throw openfluid::base::FrameworkException(Ctxt,"Production error for variable " +
+                                                       ErrorVarName + " on " + UnitStr);
+      }
     }
   }
 }

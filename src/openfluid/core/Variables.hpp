@@ -45,12 +45,15 @@
 
 namespace openfluid { namespace core {
 
+
 class OPENFLUID_API Variables
 {
   private:
 
     typedef std::map<VariableName_t, std::pair<ValuesBuffer,Value::Type> > VariablesMap_t;
+
     VariablesMap_t m_Data;
+
 
   public:
 
@@ -106,7 +109,7 @@ class OPENFLUID_API Variables
 
     int getVariableValuesCount(const VariableName_t& aName) const;
 
-    bool isAllVariablesCount(unsigned int Count) const;
+    bool checkAllVariablesCount(unsigned int Count, VariableName_t& ErrorVarName) const;
 
     void clear();
 
@@ -114,7 +117,8 @@ class OPENFLUID_API Variables
 
 };
 
-}  } // namespaces
+
+} } // namespaces
 
 
 #endif /* __VARIABLES_H_ */

@@ -373,7 +373,7 @@ OFBUILD_ADD_SIMULATOR(tests.fakesimulator ${OFBUILD_TESTS_BINARY_DIR})
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.wrongprod tests.wrongprod ${OFBUILD_TESTS_BINARY_DIR} OFF)
+OFBUILD_ADD_SIMULATOR(tests.wrongprod ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-WrongProduction
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"

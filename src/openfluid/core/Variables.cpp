@@ -367,12 +367,15 @@ int Variables::getVariableValuesCount(const VariableName_t& aName) const
 // =====================================================================
 
 
-bool Variables::isAllVariablesCount(unsigned int Count) const
+bool Variables::checkAllVariablesCount(unsigned int Count, VariableName_t& ErrorVarName) const
 {
   for (VariablesMap_t::const_iterator it = m_Data.begin(); it != m_Data.end(); ++it)
   {
     if (it->second.first.getValuesCount() != Count)
+    {
+      ErrorVarName = it->first;
       return false;
+    }
   }
 
   return true;

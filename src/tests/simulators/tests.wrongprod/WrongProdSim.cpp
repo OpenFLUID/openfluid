@@ -125,6 +125,15 @@ class WrongProductionSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest initializeRun()
   {
+    openfluid::core::SpatialUnit* TU;
+
+
+    OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+    {
+      OPENFLUID_InitializeVariable(TU,"tests.scalarok",double(TU->getID()));
+    }
+
+
     return DefaultDeltaT();
   }
 
