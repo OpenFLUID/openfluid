@@ -181,7 +181,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
                          << m_AnimLayerInfo.LineWidth
                          << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
         else
-          OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
+          OPENFLUID_LogWarning("Unsupported geometry format in source geometry file");
       }
 
 
@@ -264,7 +264,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
                           << "</coordinates></LineString>\n";
         }
         else
-          OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
+          OPENFLUID_LogWarning("Unsupported geometry format in source geometry file");
 
 
         CurrentKmlFile << "    </Placemark>\n";
@@ -297,7 +297,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
       m_MinSamplingDelay(0),m_LatestSamplingIndex(0)
     {
       m_OutputFileName = "kmlanim.kmz";
-      m_TmpSubDir = "export.vars.files.kml-anim";
+      m_TmpSubDirRoot = "export.vars.files.kml-anim";
     }
 
 
@@ -325,7 +325,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
       }
       catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(E.getMessage());
+        OPENFLUID_LogWarning(E.getMessage());
       }
 
       OGRRegisterAll();
@@ -371,6 +371,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
           if (m_AnimLayerInfo.SourceFilename.empty())
           {
             OPENFLUID_LogWarning("wrong sourcefile format");
+            m_OKToGo = false;
             return;
           }
           m_AnimLayerInfo.SourceFilename = m_InputDir + "/" + m_AnimLayerInfo.SourceFilename;
@@ -386,6 +387,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
         if (ColorScaleVector.size() % 2 == 0)
         {
           OPENFLUID_LogWarning("wrong colorscale format");
+          m_OKToGo = false;
           return;
         }
         else
@@ -401,6 +403,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
               if (ColorScaleVector[i].size() != 8)
               {
                 OPENFLUID_LogWarning("Wrong color scale color format on last item");
+                m_OKToGo = false;
                 return;
               }
               TmpColorValue = std::make_pair("",0.0);
@@ -416,6 +419,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
                 if (ColorScaleVector[i].size() != 8)
                 {
                   OPENFLUID_LogWarning("Wrong color scale color format");
+                  m_OKToGo = false;
                   return;
                 }
 
@@ -432,6 +436,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
                 else
                 {
                   OPENFLUID_LogWarning("Wrong color scale value format");
+                  m_OKToGo = false;
                   return;
                 }
 
@@ -444,6 +449,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
         if (!transformVectorLayerToKmlGeometry(m_AnimLayerInfo))
         {
+          OPENFLUID_LogWarning("Unable to transform vector layer to KML");
           m_OKToGo = false;
           return;
         }
@@ -489,7 +495,9 @@ class KmlFilesAnimObserver : public KmlObserverBase
       }
       catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(E.getMessage());
+        OPENFLUID_LogWarning(E.getMessage());
+        m_OKToGo = false;
+        return;
       }
 
       m_OKToGo = true;
@@ -504,16 +512,14 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
     void onPrepared()
     {
-      if(!m_OKToGo) return;
-
-
-
-      if(!m_OKToGo) return;
+      if (!m_OKToGo)
+        return;
 
 
       prepareTempDirectory();
 
-      if(!m_OKToGo) return;
+      if (!m_OKToGo)
+        return;
 
 
       // open and initialize doc.kml file
@@ -586,7 +592,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
     void onInitializedRun()
     {
-      if(!m_OKToGo) return;
+      if (!m_OKToGo)
+        return;
 
       m_UpdateBeginDate = OPENFLUID_GetCurrentDate();
     }
@@ -598,7 +605,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
     void onStepCompleted()
     {
-      if(!m_OKToGo) return;
+      if (!m_OKToGo)
+        return;
 
 
       if (m_LatestSamplingIndex + m_MinSamplingDelay <= OPENFLUID_GetCurrentTimeIndex())
@@ -615,7 +623,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
     void onFinalizedRun()
     {
-      if(!m_OKToGo) return;
+      if (!m_OKToGo)
+        return;
 
       m_KmlFile << "</Document>\n";
       m_KmlFile << "</kml>\n";

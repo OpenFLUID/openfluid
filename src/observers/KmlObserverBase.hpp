@@ -50,6 +50,9 @@
 #include <QDir>
 
 
+// =====================================================================
+// =====================================================================
+
 
 class KmlUnitInfo
 {
@@ -65,12 +68,15 @@ class KmlUnitInfo
                     {};
 };
 
+
+// =====================================================================
+// =====================================================================
+
+
 template<class T>
 class KmlLayerInfo
 {
   public:
-
-    std::string GroupName;
 
     openfluid::core::UnitsClass_t UnitsClass;
 
@@ -83,7 +89,7 @@ class KmlLayerInfo
 
     int LineWidth;
 
-    KmlLayerInfo() : GroupName(""), UnitsClass(""),
+    KmlLayerInfo() : UnitsClass(""),
                      SourceIsDatastore(false), SourceID(""), SourceFilename (""),
                      LineWidth(1)
       {};
@@ -91,11 +97,15 @@ class KmlLayerInfo
 };
 
 
+// =====================================================================
+// =====================================================================
+
+
 class KmlObserverBase : public openfluid::ware::PluggableObserver
 {
   protected:
 
-    std::string m_TmpSubDir;
+    std::string m_TmpSubDirRoot;
     std::string m_KmzSubDir;
     const std::string m_KmzDataSubDir;
 
@@ -315,7 +325,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       OPENFLUID_GetRunEnvironment("dir.temp",TmpDir);
 
-      m_TmpDir = TmpDir+"/"+m_TmpSubDir;
+      m_TmpDir = openfluid::tools::Filesystem::makeUniqueSubdirectory(TmpDir,m_TmpSubDirRoot);
 
       openfluid::tools::Filesystem::makeDirectory(m_TmpDir);
 

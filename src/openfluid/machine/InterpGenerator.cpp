@@ -97,18 +97,10 @@ void InterpGenerator::prepareData()
   OPENFLUID_GetRunEnvironment("dir.input",InputDir);
   OPENFLUID_GetRunEnvironment("dir.temp",BaseTmpDir);
 
-  unsigned int DirNameIncr = 0;
-  do
-  {
-    std::ostringstream TmpSubDir;
-    TmpSubDir << "interp-generator-" << DirNameIncr;
-    TmpDir = BaseTmpDir+"/"+TmpSubDir.str();
-    DirNameIncr++;
-  }
-  while (openfluid::tools::Filesystem::isDirectory(TmpDir));
+  TmpDir = openfluid::tools::Filesystem::makeUniqueSubdirectory(BaseTmpDir,"interp-generator");
 
-
-  openfluid::tools::Filesystem::makeDirectory(TmpDir);
+  if (TmpDir.empty())
+    OPENFLUID_RaiseError("Unable to create temporary directory");
 
   DistriTables.build(InputDir,m_SourcesFile,m_DistriFile);
 

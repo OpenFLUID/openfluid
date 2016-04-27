@@ -93,6 +93,11 @@ BOOST_AUTO_TEST_CASE(check_test_operations)
 
 BOOST_AUTO_TEST_CASE(check_readwrite_operations)
 {
+  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem"));
+
+
+  // Directories
+
   BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDir"));
   BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDir"));
   BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDir"));
@@ -117,6 +122,8 @@ BOOST_AUTO_TEST_CASE(check_readwrite_operations)
   BOOST_REQUIRE(!openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDir"));
 
 
+  // Files
+
   BOOST_REQUIRE(openfluid::tools::Filesystem::copyFile(CONFIGTESTS_SRC_DIR+"/CMakeLists.txt",
                                                        CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists.txt"));
   BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists.txt"));
@@ -136,5 +143,47 @@ BOOST_AUTO_TEST_CASE(check_readwrite_operations)
 
   BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/dircopy"));
   BOOST_REQUIRE(!openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/dircopy"));
+
+
+  // Unique subdirs
+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                            "/Filesystem/MadeDirForUnique"));
+
+  BOOST_REQUIRE_EQUAL(
+    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                         "Unique"),
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique"
+  );
+
+  BOOST_REQUIRE_EQUAL(
+    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                         "Unique"),
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique1"
+  );
+
+  BOOST_REQUIRE_EQUAL(
+    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                         "Unique"),
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique2"
+  );
+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                                "/Filesystem/MadeDirForUnique/Unique1"));
+
+  BOOST_REQUIRE_EQUAL(
+    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                         "Unique"),
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique1"
+  );
+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                                "/Filesystem/MadeDirForUnique/Unique"));
+
+  BOOST_REQUIRE_EQUAL(
+    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                         "Unique"),
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique"
+  );
 }
 

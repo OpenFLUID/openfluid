@@ -220,6 +220,38 @@ bool Filesystem::removeDirectory(const std::string& Path)
 // =====================================================================
 
 
+std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const std::string& SubdirName)
+{
+  if (SubdirName.empty())
+    return std::string();
+
+  if (QDir().mkpath(QString::fromStdString(Path)))
+  {
+    QString FullSubdirPath = QString::fromStdString(Path)+"/"+QString::fromStdString(SubdirName)+"%1";
+
+    QString CandidateFullPath = FullSubdirPath.arg("");
+    int IncSuffix = 0;
+
+    while (QFileInfo(CandidateFullPath).isDir())
+    {
+      IncSuffix++;
+      CandidateFullPath = FullSubdirPath.arg(IncSuffix);
+    }
+
+    if (QDir().mkpath(CandidateFullPath))
+      return CandidateFullPath.toStdString();
+    else
+      return std::string();
+  }
+
+  return std::string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool Filesystem::removeFile(const std::string& Path)
 {
   return QFile(QString::fromStdString(Path)).remove();

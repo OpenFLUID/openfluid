@@ -68,10 +68,10 @@ END_OBSERVER_SIGNATURE
 // =====================================================================
 // =====================================================================
 
+
 class KmlUnitInfoExtra : public KmlUnitInfo
 {
   public:
-
 
     bool IsPlotted;
 
@@ -131,7 +131,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
     // =====================================================================
 
 
-    void buildGnuplotImages(std::string WorkDir, std::string DestDir)
+    void buildGnuplotImages(const std::string& WorkDir, const std::string& DestDir)
     {
       for (std::list<KmlSerieInfo>::iterator it=m_KmlSeriesInfos.begin();it!=m_KmlSeriesInfos.end();++it)
       {
@@ -144,10 +144,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
           {
             std::string ScriptFilename = WorkDir+"/tmpscript.gp";
             std::string DataFilename = buildFilePath(WorkDir,(*it).UnitsClass,
-                                                     (*it2).second.UnitID,(*it).GroupName,"dat");
+                                                     (*it2).second.UnitID,"","dat");
             std::string OutputFilename = buildFilePath(DestDir,(*it).UnitsClass,
-                                                       (*it2).second.UnitID,(*it).GroupName,"png");
-
+                                                       (*it2).second.UnitID,"","png");
 
             unsigned int Columns = 1;
             unsigned int Rows = 1;
@@ -244,7 +243,11 @@ class KmlFilesPlotObserver : public KmlObserverBase
                   << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
         }
         else
-          OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
+        {
+          OPENFLUID_LogWarning("Unsupported geometry format in source geometry file");
+          m_OKToGo = false;
+          return;
+        }
 
         KmlFile << "    <Folder>\n";
         KmlFile << "      <name>" << (*it).UnitsClass << "</name>\n";
@@ -267,7 +270,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
           if ((*it2).second.IsPlotted)
           {
             KmlFile << "<img src=\"" << buildFilePath(m_KmzDataSubDir,(*it).UnitsClass,
-                                                      (*it2).second.UnitID,(*it).GroupName,"png") << "\"/>\n";
+                                                      (*it2).second.UnitID,"","png") << "\"/>\n";
           }
 
           KmlFile << "\n]]>\n      </description>\n";
@@ -295,7 +298,11 @@ class KmlFilesPlotObserver : public KmlObserverBase
                     << "</coordinates></LineString>\n";
           }
           else
-            OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
+          {
+            OPENFLUID_LogWarning("Unsupported geometry format in source geometry file");
+            m_OKToGo = false;
+            return;
+          }
 
 
           KmlFile << "    </Placemark>\n";
@@ -315,9 +322,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
     // =====================================================================
 
 
-    static std::string buildFilePath(std::string Dir,std::string UnitsClass,
-                                     openfluid::core::UnitID_t ID, std::string VarName,
-                                     std::string Ext)
+    static std::string buildFilePath(const std::string& Dir,const openfluid::core::UnitsClass_t& UnitsClass,
+                                     openfluid::core::UnitID_t ID, const openfluid::core::VariableName_t& VarName,
+                                     const std::string& Ext)
     {
       std::ostringstream oss;
 
@@ -335,7 +342,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
       m_PlotProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(
           openfluid::utils::ExternalProgram::GnuplotProgram))
     {
-      m_TmpSubDir = "export.vars.files.kml-plot";
+      m_TmpSubDirRoot = "export.vars.files.kml-plot";
       m_OutputFileName = "kmlplot.kmz";
     }
 
@@ -364,7 +371,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
       }
       catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(E.getMessage());
+        OPENFLUID_LogWarning(E.getMessage());
+        m_OKToGo = false;
+        return;
       }
 
 
@@ -384,8 +393,11 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
 
         if (!ParamsTree.root().hasChild("layers"))
-          OPENFLUID_RaiseError("No layer defined");
-
+        {
+          OPENFLUID_LogWarning("No layer defined");
+          m_OKToGo = false;
+          return;
+        }
 
         for (auto& Layer : ParamsTree.root().child("layers"))
         {
@@ -416,6 +428,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
             if (KSI.SourceFilename.empty())
             {
               OPENFLUID_LogWarning("wrong sourcefile format");
+              m_OKToGo = false;
               return;
             }
             KSI.SourceFilename = m_InputDir + "/" + KSI.SourceFilename;
@@ -430,7 +443,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
       }
       catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(E.getMessage());
+        OPENFLUID_LogWarning(E.getMessage());
+        m_OKToGo = false;
+        return;
       }
 
       m_OKToGo = true;
@@ -446,10 +461,8 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
     void onPrepared()
     {
-      if (!m_OKToGo) return;
-
-
-      if (!m_OKToGo) return;
+      if (!m_OKToGo)
+        return;
 
       if (!m_PlotProgram.isFound())
       {
@@ -468,7 +481,8 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       prepareTempDirectory();
 
-      if (!m_OKToGo) return;
+      if (!m_OKToGo)
+        return;
 
 
       openfluid::tools::Filesystem::removeDirectory(m_TmpDir+"/"+m_GNUPlotSubDir);
@@ -496,8 +510,10 @@ class KmlFilesPlotObserver : public KmlObserverBase
         {
           openfluid::tools::tokenizeString((*it).VarsListStr,(*it).VarsList,";");
         }
+
         if ((*it).VarsList.empty())
         {
+          OPENFLUID_LogWarning("Variable list is empty");
           m_OKToGo = false;
           return;
         }
@@ -513,7 +529,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
             std::string DataFilename =
                 buildFilePath(m_TmpDir+"/"+m_GNUPlotSubDir,
                               (*it).UnitsClass,(*it2).second.UnitID,
-                              (*it).GroupName,"dat");
+                              "","dat");
 
             (*it2).second.DataFile = new std::ofstream(DataFilename.c_str());
             (*((*it2).second.DataFile)) << "#" << DataFilename << "\n";
@@ -530,7 +546,8 @@ class KmlFilesPlotObserver : public KmlObserverBase
     void appendToDataFiles()
     {
 
-      if (!m_OKToGo) return;
+      if (!m_OKToGo)
+        return;
 
       openfluid::core::SpatialUnit* UU;
 
@@ -604,7 +621,8 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
     void onFinalizedRun()
     {
-      if (!m_OKToGo) return;
+      if (!m_OKToGo)
+        return;
 
       // close data files
 
