@@ -83,9 +83,11 @@ class SourceTreeChecker:
     
     self.FileList = list()
     
-    self.ErrorsCount = {'LLEN': 0, 'LICH': 0, 'HGRD': 0, 'AUTH':0, 'FNAM': 0};
+    self.ErrorsCount = {'LLEN': 0, 'LICH': 0, 'HGRD': 0, 'AUTH':0, 'FNAM': 0, 'PRTY': 0};
     
     self.MaxLineLength = 120;
+    
+    self.PrettyCodeTag = '#prettycode';
     
     for Dirname, Dirnames, Filenames in os.walk(self.SrcRootPath):
       for Filename in Filenames:
@@ -138,6 +140,18 @@ class SourceTreeChecker:
     for Line in Lines :
       if len(Line) > self.MaxLineLength:
         self.addProblem('LLEN',Filename,'line',i,'is too long (exceeds',self.MaxLineLength,'characters)')
+      i += 1
+
+
+############################################################################
+
+
+  def checkPrettyCode(self, Filename, Lines):
+     
+    i = 1
+    for Line in Lines :
+      if self.PrettyCodeTag in Line.lower():
+        self.addProblem('PRTY',Filename,'line',i,'contains the',self.PrettyCodeTag,'tag')
       i += 1
 
 
@@ -228,6 +242,7 @@ class SourceTreeChecker:
     FileLines = FileContent.split('\n')
     
     self.checkLineLength(Filename,FileLines)
+    self.checkPrettyCode(Filename,FileLines)
     self.checkLicenseHeader(Filename,FileContent)
     self.checkFileInfo(Filename,FileContent)
     self.checkHeaderGuard(Filename,FileContent)
