@@ -168,7 +168,6 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const QString& FilePath)
               QDomElement CurrElement = CurrNode.toElement();
               if (!CurrElement.isNull() && CurrElement.tagName() == "item")
               {
-                // TODO
                 NewsItemData Item;
                 Item.Title = CurrNode.firstChildElement("title").toElement().text();
                 Item.Text = CurrNode.firstChildElement("description").toElement().text();

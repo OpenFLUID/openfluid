@@ -103,6 +103,9 @@ class OPENFLUID_API EventDescriptor
     inline openfluid::core::Event& event()
     { return m_Event; };
 
+    inline const openfluid::core::Event& event() const
+    { return m_Event; };
+
     inline EventID_t getID() const
     { return m_ID; };
 

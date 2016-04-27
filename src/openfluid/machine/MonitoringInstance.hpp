@@ -49,8 +49,10 @@
 
 namespace openfluid { namespace machine {
 
+
 class SimulationBlob;
 class ObserverInstance;
+
 
 class OPENFLUID_API MonitoringInstance
 {

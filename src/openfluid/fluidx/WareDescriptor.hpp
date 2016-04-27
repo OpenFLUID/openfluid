@@ -79,7 +79,7 @@ class OPENFLUID_API WareDescriptor
 
     void clearParameters();
 
-    bool hasParameter(std::string ParameterKey);
+    bool hasParameter(const std::string& ParameterKey) const;
 
     void setEnabled(bool Enabled);
 

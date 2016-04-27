@@ -83,7 +83,7 @@ bool DatastoreDescriptor::appendItem(DatastoreItemDescriptor* Item)
 // =====================================================================
 
 
-bool DatastoreDescriptor::isItemIDAlreadyExist(std::string ItemID) const
+bool DatastoreDescriptor::isItemIDAlreadyExist(const std::string& ItemID) const
 {
   for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator it =
       m_DatastoreDescription.begin(); it != m_DatastoreDescription.end(); ++it)

@@ -67,7 +67,7 @@ class OPENFLUID_API DatastoreDescriptor
 
     bool appendItem(DatastoreItemDescriptor* Item);
 
-    bool isItemIDAlreadyExist(std::string ItemID) const;
+    bool isItemIDAlreadyExist(const std::string& ItemID) const;
 
 };
 

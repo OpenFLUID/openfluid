@@ -39,7 +39,6 @@
 
 #include <QDir>
 #include <QTextStream>
-#include <QDebug>
 #include <openfluid/utils/GitHelper.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
@@ -59,6 +58,7 @@ GitHelper::GitHelper()
 {
   checkGitProgram();
 
+  // TODO use a subdir in tmp dir given by openfluid::tools::Filesystem::makeUniqueSubdirectory()
   m_TmpPath = QString::fromStdString(openfluid::base::Environment::getTempDir());
 }
 
@@ -123,7 +123,6 @@ void GitHelper::processErrorOutput()
   while (mp_Process->canReadLine())
   {
     QString Msg = QString::fromUtf8(mp_Process->readLine());
-    qDebug() << Msg;
     emit error(Msg);
   }
 }
@@ -140,7 +139,6 @@ void GitHelper::processErrorOutputAsInfo()
   while (mp_Process->canReadLine())
   {
     QString Msg = QString::fromUtf8(mp_Process->readLine());
-    qDebug() << Msg;
     emit info(Msg);
   }
 }
@@ -157,7 +155,6 @@ bool GitHelper::clone(const QString& FromUrl, const QString& ToPath,
   if (FromUrl.isEmpty() || ToPath.isEmpty())
   {
     emit error(tr("Empty remote url or empty destination path"));
-    qDebug("Empty remote url or empty destination path");
     return false;
   }
 
@@ -191,14 +188,12 @@ bool GitHelper::clone(const QString& FromUrl, const QString& ToPath,
     if (!TmpDir.exists() && !TmpDir.mkpath(m_TmpPath))
     {
       emit error(tr("Unable to create temporary askpass directory"));
-      qDebug("Unable to create temporary askpass directory");
       return false;
     }
 
     if (!m_AskPassFile.open(QFile::ReadWrite))
     {
       emit error(tr("Unable to create temporary askpass file"));
-      qDebug("Unable to create temporary askpass file");
       return false;
     }
 

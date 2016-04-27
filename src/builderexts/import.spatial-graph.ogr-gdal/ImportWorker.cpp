@@ -207,8 +207,6 @@ bool ImportWorker::processFilesAndDatastore(int Step)
       {
         OGRSFDriver *CopyDriver;
 
-
-        // TODO use openfluid/tools/GDALHelpers.hpp
         QString DriverName = OGRGDALHelpers::getDriverFromFileExt(DestExtension);
 
         CopyDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(DriverName.toStdString().c_str());

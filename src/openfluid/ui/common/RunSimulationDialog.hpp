@@ -77,7 +77,7 @@ class OPENFLUID_API RunSimulationDialog : public QDialog
 
     Ui::RunSimulationDialog *ui;
 
-    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
+    const openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
     openfluid::ui::common::RunSimulationListener* mp_Listener;
 
@@ -117,8 +117,7 @@ class OPENFLUID_API RunSimulationDialog : public QDialog
 
   public:
 
-    // TODO FXDesc should be const
-    RunSimulationDialog(QWidget* Parent, openfluid::fluidx::FluidXDescriptor* FXDesc);
+    RunSimulationDialog(QWidget* Parent, const openfluid::fluidx::FluidXDescriptor* FXDesc);
 
     virtual ~RunSimulationDialog();
 

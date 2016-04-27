@@ -74,6 +74,7 @@ UnitsCollection::~UnitsCollection()
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -84,7 +85,27 @@ SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID)
 
   for (it=m_Data.begin();it!=m_Data.end();++it)
   {
-    if (it->getID() == aUnitID) return &(*it);
+    if (it->getID() == aUnitID)
+      return &(*it);
+  }
+
+  return nullptr;
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+const SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID) const
+{
+  UnitsList_t::const_iterator it;
+
+  for (it=m_Data.begin();it!=m_Data.end();++it)
+  {
+    if (it->getID() == aUnitID)
+      return &(*it);
   }
 
   return nullptr;
@@ -93,7 +114,6 @@ SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID)
 
 // =====================================================================
 // =====================================================================
-
 
 
 SpatialUnit* UnitsCollection::addSpatialUnit(const SpatialUnit& aUnit)

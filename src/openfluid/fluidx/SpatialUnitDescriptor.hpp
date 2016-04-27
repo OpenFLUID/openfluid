@@ -86,9 +86,14 @@ class OPENFLUID_API SpatialUnitDescriptor
     inline std::list<openfluid::core::UnitClassID_t>& toSpatialUnits()
     { return m_ToUnits; };
 
+    inline const std::list<openfluid::core::UnitClassID_t>& toSpatialUnits() const
+    { return m_ToUnits; };
+
     inline std::list<openfluid::core::UnitClassID_t>& parentSpatialUnits()
     { return m_ParentUnits; };
 
+    inline const std::list<openfluid::core::UnitClassID_t>& parentSpatialUnits() const
+    { return m_ParentUnits; };
 };
 
 

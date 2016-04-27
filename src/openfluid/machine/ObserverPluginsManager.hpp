@@ -57,7 +57,7 @@ class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverS
                                                          openfluid::ware::GetPluggableObserverBodyProc>
 {
 
-    OPENFLUID_SINGLETON_DEFINITION(ObserverPluginsManager)
+  OPENFLUID_SINGLETON_DEFINITION(ObserverPluginsManager)
 
 
   private:

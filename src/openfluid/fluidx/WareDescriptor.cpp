@@ -149,7 +149,7 @@ void WareDescriptor::clearParameters()
 // =====================================================================
 
 
-bool WareDescriptor::hasParameter(std::string ParameterKey)
+bool WareDescriptor::hasParameter(const std::string& ParameterKey) const
 {
   return m_Params.count(ParameterKey);
 }

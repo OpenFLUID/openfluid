@@ -324,7 +324,7 @@ void RunSimulationListener::onSimulatorFinalizeRun(const std::string& /*Simulato
 // =====================================================================
 
 
-RunSimulationWorker::RunSimulationWorker(openfluid::fluidx::FluidXDescriptor* FXDesc,
+RunSimulationWorker::RunSimulationWorker(const openfluid::fluidx::FluidXDescriptor* FXDesc,
                                          RunSimulationListener* Listener)
   : mp_FXDesc(FXDesc), mp_Listener(Listener)
 {
@@ -356,8 +356,7 @@ void RunSimulationWorker::run()
 
     openfluid::machine::SimulationBlob SimBlob;
 
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc,
-                                                                    SimBlob);
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc, SimBlob);
 
     emit periodChanged(QString(SimBlob.simulationStatus().getBeginDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
                        QString(SimBlob.simulationStatus().getEndDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
@@ -370,14 +369,13 @@ void RunSimulationWorker::run()
     openfluid::machine::Engine Engine(SimBlob, ModelInstance, MonitInstance,
                                       mp_Listener);
 
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(
-        mp_FXDesc->modelDescriptor(), ModelInstance);
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(mp_FXDesc->modelDescriptor(),
+                                                                  ModelInstance);
 
-    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(
-        mp_FXDesc->monitoringDescriptor(), MonitInstance);
+    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(mp_FXDesc->monitoringDescriptor(),
+                                                                       MonitInstance);
 
-    openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
-        mp_FXDesc->runDescriptor());
+    openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(mp_FXDesc->runDescriptor());
 
     SimBlob.spatialGraph().sortUnitsByProcessOrder();
 

@@ -70,6 +70,8 @@ class OPENFLUID_API UnitsCollection
 
     SpatialUnit* spatialUnit(UnitID_t aUnitID);
 
+    const SpatialUnit* spatialUnit(UnitID_t aUnitID) const;
+
     SpatialUnit* addSpatialUnit(const SpatialUnit& aUnit);
 
     void sortByProcessOrder();

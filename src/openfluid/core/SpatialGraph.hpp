@@ -78,6 +78,8 @@ class OPENFLUID_API SpatialGraph
 
     SpatialUnit* spatialUnit(const UnitsClass_t& UnitsClass, UnitID_t UnitID);
 
+    const SpatialUnit* spatialUnit(const UnitsClass_t& UnitsClass, UnitID_t UnitID) const;
+
     UnitsCollection* spatialUnits(const UnitsClass_t& UnitsClass);
 
     const UnitsCollection* spatialUnits(const UnitsClass_t& UnitsClass) const;

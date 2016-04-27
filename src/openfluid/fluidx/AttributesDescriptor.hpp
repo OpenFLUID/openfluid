@@ -72,7 +72,7 @@ class OPENFLUID_API AttributesDescriptor
 
     void parseDataBlob(const std::string& Data);
 
-    inline const openfluid::core::UnitsClass_t getUnitsClass()
+    inline const openfluid::core::UnitsClass_t getUnitsClass() const
     { return m_UnitsClass; };
 
     inline void setUnitsClass(const openfluid::core::UnitsClass_t& UClass)

@@ -112,12 +112,12 @@ class OPENFLUID_API Engine
                          bool UpdateMode,
                          const std::string& SimulatorID);
 
-     void checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
-                                 openfluid::core::UnitsClass_t ClassName,
+     void checkExistingAttribute(const openfluid::core::AttributeName_t AttrName,
+                                 const openfluid::core::UnitsClass_t ClassName,
                                  const std::string& SimulatorID);
 
-     void createAttribute(openfluid::core::AttributeName_t AttrName,
-                          openfluid::core::UnitsClass_t ClassName,
+     void createAttribute(const openfluid::core::AttributeName_t AttrName,
+                          const openfluid::core::UnitsClass_t ClassName,
                           const std::string& SimulatorID);
 
      void prepareOutputDir();

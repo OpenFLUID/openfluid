@@ -200,8 +200,8 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
 // =====================================================================
 
 
-void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
-                                    openfluid::core::UnitsClass_t ClassName,
+void Engine::checkExistingAttribute(const openfluid::core::AttributeName_t AttrName,
+                                    const openfluid::core::UnitsClass_t ClassName,
                                     const std::string& SimulatorID)
 {
   openfluid::core::UnitsList_t::const_iterator UnitIter;

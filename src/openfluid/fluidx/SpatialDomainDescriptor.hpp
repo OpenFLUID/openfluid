@@ -67,13 +67,23 @@ class OPENFLUID_API SpatialDomainDescriptor
 
     ~SpatialDomainDescriptor();
 
-    inline std::list<SpatialUnitDescriptor>& spatialUnits() { return m_DefDescriptor; };
+    inline std::list<SpatialUnitDescriptor>& spatialUnits()
+    { return m_DefDescriptor; };
 
-    inline const std::list<SpatialUnitDescriptor>& spatialUnits() const { return m_DefDescriptor; };
+    inline const std::list<SpatialUnitDescriptor>& spatialUnits() const
+    { return m_DefDescriptor; };
 
-    inline std::list<AttributesDescriptor>& attributes() { return m_AttrsDescriptor; };
+    inline std::list<AttributesDescriptor>& attributes()
+    { return m_AttrsDescriptor; };
 
-    inline std::list<EventDescriptor>& events() { return m_EventsDescriptor; };
+    inline const std::list<AttributesDescriptor>& attributes() const
+    { return m_AttrsDescriptor; };
+
+    inline std::list<EventDescriptor>& events()
+    { return m_EventsDescriptor; };
+
+    inline const std::list<EventDescriptor>& events() const
+    { return m_EventsDescriptor; };
 
 
 };

@@ -100,9 +100,6 @@ void MarketPackage::initialize(bool EnableLog = false)
   if (!m_CMakeProgram.isFound())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Required CMake program not found");
 
-  // TODO
-  //m_CommonBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
-
   m_IsLogEnabled = EnableLog;
 
   resetLogFile();

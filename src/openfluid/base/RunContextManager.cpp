@@ -134,7 +134,7 @@ bool RunContextManager::checkProject(const std::string& ProjectPath)
 {
   QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(ProjectPath));
 
-  // TODO to be removed in a later version (after mid-2015)
+  // TODO to be removed in a later version (after mid-2016)
   // try to convert a former .openfluidprj project
   if (!QFile::exists(PrjFilePath))
   {

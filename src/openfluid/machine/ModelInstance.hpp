@@ -89,6 +89,7 @@ class OPENFLUID_API ModelInstance
 
     void checkDeltaTMode(openfluid::base::SchedulingRequest& SReq, const openfluid::ware::WareID_t& ID);
 
+
   protected:
 
     openfluid::ware::WareParams_t mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const;
@@ -119,15 +120,19 @@ class OPENFLUID_API ModelInstance
 
     void clear();
 
-    unsigned int getItemsCount() const { return m_ModelItems.size(); };
+    unsigned int getItemsCount() const
+    { return m_ModelItems.size(); };
 
-    openfluid::ware::WareParams_t& globalParameters() { return m_GlobalParams; };
+    openfluid::ware::WareParams_t& globalParameters()
+    { return m_GlobalParams; };
 
     void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamValue_t& Value);
 
-    void setGlobalParameters(const openfluid::ware::WareParams_t& Params) { m_GlobalParams = Params; };
+    void setGlobalParameters(const openfluid::ware::WareParams_t& Params)
+    { m_GlobalParams = Params; };
 
-    const std::list<ModelItemInstance*>& items() const { return m_ModelItems; };
+    const std::list<ModelItemInstance*>& items() const
+    { return m_ModelItems; };
 
     void initialize(openfluid::base::SimulationLogger* SimLogger);
 
@@ -154,7 +159,8 @@ class OPENFLUID_API ModelInstance
 
     void call_finalizeRun() const;
 
-    void resetInitialized() { m_Initialized = false; }
+    void resetInitialized()
+    { m_Initialized = false; }
 
 };
 

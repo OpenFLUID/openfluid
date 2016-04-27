@@ -77,22 +77,22 @@ class OPENFLUID_API Factory
 {
   public:
 
-    static void buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
+    static void buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
                                           openfluid::core::SpatialGraph& SGraph);
 
-    static void buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescriptor& Descriptor,
+    static void buildDatastoreFromDescriptor(const openfluid::fluidx::DatastoreDescriptor& Descriptor,
                                              openfluid::core::Datastore& Store);
 
 
-    static void buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
+    static void buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
                                                  ModelInstance& MInstance);
 
-    static void buildMonitoringInstanceFromDescriptor(openfluid::fluidx::MonitoringDescriptor& MonDesc,
+    static void buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::MonitoringDescriptor& MonDesc,
                                                       MonitoringInstance& MonInstance);
 
-    static void fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor& RunDescr);
+    static void fillRunEnvironmentFromDescriptor(const openfluid::fluidx::RunDescriptor& RunDescr);
 
-    static void buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescriptor& FluidXDesc,
+    static void buildSimulationBlobFromDescriptors(const openfluid::fluidx::FluidXDescriptor& FluidXDesc,
                                                    SimulationBlob& SimBlob);
 
     static std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,

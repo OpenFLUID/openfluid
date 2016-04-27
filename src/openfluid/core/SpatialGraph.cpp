@@ -248,6 +248,7 @@ bool SpatialGraph::isUnitsClassExist(const UnitsClass_t& UnitsClass) const
   return m_PcsOrderedUnitsByClass.find(UnitsClass) != m_PcsOrderedUnitsByClass.end();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -255,6 +256,25 @@ bool SpatialGraph::isUnitsClassExist(const UnitsClass_t& UnitsClass) const
 SpatialUnit* SpatialGraph::spatialUnit(const UnitsClass_t& UnitsClass, UnitID_t UnitID)
 {
   UnitsListByClassMap_t::iterator it;
+
+  it = m_PcsOrderedUnitsByClass.find(UnitsClass);
+
+  if (it != m_PcsOrderedUnitsByClass.end())
+  {
+    return (it->second.spatialUnit(UnitID));
+  }
+
+  return nullptr;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+const SpatialUnit* SpatialGraph::spatialUnit(const UnitsClass_t& UnitsClass, UnitID_t UnitID) const
+{
+  UnitsListByClassMap_t::const_iterator it;
 
   it = m_PcsOrderedUnitsByClass.find(UnitsClass);
 

@@ -159,7 +159,7 @@ class RunSimulationWorker : public QObject
 
   private:
 
-    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
+    const openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
     RunSimulationListener* mp_Listener;
 
@@ -184,7 +184,7 @@ class RunSimulationWorker : public QObject
 
   public:
 
-    RunSimulationWorker(openfluid::fluidx::FluidXDescriptor* FXDesc, RunSimulationListener* Listener);
+    RunSimulationWorker(const openfluid::fluidx::FluidXDescriptor* FXDesc, RunSimulationListener* Listener);
 
     ~RunSimulationWorker();
 

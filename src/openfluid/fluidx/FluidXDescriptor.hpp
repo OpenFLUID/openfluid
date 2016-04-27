@@ -175,9 +175,6 @@ class OPENFLUID_API FluidXDescriptor
     inline const openfluid::fluidx::MonitoringDescriptor& monitoringDescriptor() const
     { return m_MonitoringDescriptor; }
 
-    // =====================================================================
-    // =====================================================================
-
     void writeToManyFiles(const std::string& DirPath);
 
     void writeToSingleFile(const std::string& FilePath);

@@ -66,14 +66,14 @@ namespace openfluid { namespace machine {
 // =====================================================================
 
 
-void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
+void Factory::buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
                                         openfluid::core::SpatialGraph& SGraph)
 {
 
   // ============== Domain definition ==============
 
-  std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator itUnits;
-  std::list<openfluid::core::UnitClassID_t>::iterator itLinkedUnits;
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>::const_iterator itUnits;
+  std::list<openfluid::core::UnitClassID_t>::const_iterator itLinkedUnits;
 
   openfluid::core::SpatialUnit *FromUnit, *ToUnit, *ParentUnit, *ChildUnit;
 
@@ -148,7 +148,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
   // ============== Attributes ==============
 
 
-  std::list<openfluid::fluidx::AttributesDescriptor>::iterator itAttrsDesc;
+  std::list<openfluid::fluidx::AttributesDescriptor>::const_iterator itAttrsDesc;
 
   for (itAttrsDesc = Descriptor.attributes().begin();itAttrsDesc != Descriptor.attributes().end();++itAttrsDesc)
   {
@@ -186,7 +186,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
   // ============== Events ==============
 
 
-  std::list<openfluid::fluidx::EventDescriptor>::iterator itEvent;
+  std::list<openfluid::fluidx::EventDescriptor>::const_iterator itEvent;
   openfluid::core::SpatialUnit* EventUnit;
 
   for (itEvent = Descriptor.events().begin();itEvent != Descriptor.events().end();++itEvent)
@@ -209,8 +209,8 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescript
 // =====================================================================
 
 
-void Factory::buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescriptor& Descriptor,
-                                          openfluid::core::Datastore& Store)
+void Factory::buildDatastoreFromDescriptor(const openfluid::fluidx::DatastoreDescriptor& Descriptor,
+                                           openfluid::core::Datastore& Store)
 {
   openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t Items = Descriptor.items();
 
@@ -230,7 +230,7 @@ void Factory::buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescripto
 // =====================================================================
 
 
-void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
+void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
                                                ModelInstance& MInstance)
 {
   openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::const_iterator it;
@@ -334,7 +334,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 // =====================================================================
 
 
-void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::MonitoringDescriptor& MonDesc,
+void Factory::buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::MonitoringDescriptor& MonDesc,
                                                     MonitoringInstance& MonInstance)
 {
   openfluid::fluidx::MonitoringDescriptor::SetDescription_t::const_iterator it;
@@ -365,7 +365,7 @@ void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::Monitorin
 // =====================================================================
 
 
-void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor& RunDesc)
+void Factory::fillRunEnvironmentFromDescriptor(const openfluid::fluidx::RunDescriptor& RunDesc)
 {
   if (!RunDesc.isFilled())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -387,8 +387,8 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor&
 // =====================================================================
 
 
-void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescriptor& FluidXDesc,
-    SimulationBlob& SimBlob)
+void Factory::buildSimulationBlobFromDescriptors(const openfluid::fluidx::FluidXDescriptor& FluidXDesc,
+                                                 SimulationBlob& SimBlob)
 {
   buildDomainFromDescriptor(FluidXDesc.spatialDomainDescriptor(),SimBlob.spatialGraph());
 

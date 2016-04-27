@@ -76,7 +76,7 @@
 namespace openfluid { namespace ui { namespace common {
 
 
-RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::FluidXDescriptor* FXDesc):
+RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluidx::FluidXDescriptor* FXDesc):
   QDialog(Parent,Qt::CustomizeWindowHint|Qt::WindowTitleHint), ui(new Ui::RunSimulationDialog), mp_FXDesc(FXDesc),
   m_Launched(false), m_Success(false)
 {
