@@ -98,6 +98,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("/foo/bar/baz//"),"/foo/bar/baz");
 #endif
 
+  for (int i =0; i<10; i++)
+    std::cout << "10 chars: " << openfluid::tools::generatePseudoUniqueIdentifier(10) << std::endl;
+
+  for (int i =0; i<8; i++)
+    std::cout << (2*(i+1)) << " chars: " << openfluid::tools::generatePseudoUniqueIdentifier(2*(i+1)) << std::endl;
+
 }
 
 

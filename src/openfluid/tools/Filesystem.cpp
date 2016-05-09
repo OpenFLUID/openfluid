@@ -40,8 +40,11 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QFile>
+#include <QString>
+#include <QCoreApplication>
 
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -225,12 +228,22 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
   if (SubdirName.empty())
     return std::string();
 
+  static QString PID = QString("%1").arg(QCoreApplication::applicationPid());
+
   if (QDir().mkpath(QString::fromStdString(Path)))
   {
-    QString FullSubdirPath = QString::fromStdString(Path)+"/"+QString::fromStdString(SubdirName)+"%1";
 
-    QString CandidateFullPath = FullSubdirPath.arg("");
+    // Process ID - Pseudo Unique Identifier of 16 chars length
+    QString PIDPUI = PID + "-" +QString::fromStdString(openfluid::tools::generatePseudoUniqueIdentifier(16));
+
+    // pattern for subdir : {SubdirName}-{PID}-{PUI}-%1
+    QString FullSubdirPath = QString::fromStdString(Path)+"/"+QString::fromStdString(SubdirName)+"-"+PIDPUI+"-%1";
+
+    // Suffix replacing the "%1" string for potential duplicates
+    // (duplicates should never happen, so suffix should be 0)
     int IncSuffix = 0;
+
+    QString CandidateFullPath = FullSubdirPath.arg(IncSuffix);
 
     while (QFileInfo(CandidateFullPath).isDir())
     {

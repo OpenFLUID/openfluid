@@ -218,9 +218,33 @@ void millisleep(const unsigned long MSec)
 // =====================================================================
 // =====================================================================
 
+
 void microsleep(const unsigned long USec)
 {
   std::this_thread::sleep_for(std::chrono::microseconds(USec));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string generatePseudoUniqueIdentifier(const unsigned int Length)
+{
+  static const std::string PUICharSet("abcdefghijklmnopqrstuvwxyz"
+                                      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                      "0123456789");
+  static std::random_device PUIRandomDevice;
+  static std::mt19937 PUIRandomEngine(PUIRandomDevice());
+  static std::uniform_int_distribution<std::size_t> PUIUniformDist(0u,PUICharSet.size()-1);
+
+
+  std::string PUI(Length,' ');
+
+  for (unsigned int i = 0; i < Length; i++)
+    PUI[i] = PUICharSet[PUIUniformDist(PUIRandomEngine)];
+
+  return PUI;
 }
 
 

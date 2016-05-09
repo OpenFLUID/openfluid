@@ -116,6 +116,10 @@ void OPENFLUID_API millisleep(const unsigned long MSec);
 void OPENFLUID_API microsleep(const unsigned long USec);
 
 
+
+std::string OPENFLUID_API generatePseudoUniqueIdentifier(const unsigned int Length);
+
+
 } } //namespaces
 
 

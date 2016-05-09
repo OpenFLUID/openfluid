@@ -47,6 +47,8 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <tests-config.hpp>
 
+#include <set>
+
 
 // =====================================================================
 // =====================================================================
@@ -147,43 +149,30 @@ BOOST_AUTO_TEST_CASE(check_readwrite_operations)
 
   // Unique subdirs
 
-  BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                            "/Filesystem/MadeDirForUnique"));
+  std::set<std::string> UniqueDirs;
+  std::string Dir;
 
-  BOOST_REQUIRE_EQUAL(
-    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
-                                                         "Unique"),
-    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique"
+  BOOST_REQUIRE(
+      openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique")
   );
 
-  BOOST_REQUIRE_EQUAL(
-    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
-                                                         "Unique"),
-    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique1"
-  );
+  Dir = openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                             "Unique");
+  BOOST_REQUIRE(!Dir.empty());
+  UniqueDirs.insert(Dir);
+  BOOST_REQUIRE_EQUAL(UniqueDirs.size(),1);
 
-  BOOST_REQUIRE_EQUAL(
-    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
-                                                         "Unique"),
-    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique2"
-  );
+  Dir = openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                             "Unique");
+  BOOST_REQUIRE(!Dir.empty());
+  UniqueDirs.insert(Dir);
+  BOOST_REQUIRE_EQUAL(UniqueDirs.size(),2);
 
-  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                                "/Filesystem/MadeDirForUnique/Unique1"));
+  Dir = openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                             "Unique");
+  BOOST_REQUIRE(!Dir.empty());
+  UniqueDirs.insert(Dir);
+  BOOST_REQUIRE_EQUAL(UniqueDirs.size(),3);
 
-  BOOST_REQUIRE_EQUAL(
-    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
-                                                         "Unique"),
-    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique1"
-  );
-
-  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                                "/Filesystem/MadeDirForUnique/Unique"));
-
-  BOOST_REQUIRE_EQUAL(
-    openfluid::tools::Filesystem::makeUniqueSubdirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
-                                                         "Unique"),
-    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique/Unique"
-  );
 }
 
