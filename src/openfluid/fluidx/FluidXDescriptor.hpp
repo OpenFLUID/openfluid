@@ -36,8 +36,12 @@
   @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #ifndef __OPENFLUID_FLUIDX_FLUIDXDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_FLUIDXDESCRIPTOR_HPP__
+
+
+#include <QDomElement>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
@@ -47,16 +51,18 @@
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
-#include <QDomElement>
 
 
 namespace openfluid {
+
 
 namespace base {
 class IOListener;
 }
 
+
 namespace fluidx {
+
 
 class OPENFLUID_API FluidXDescriptor
 {
@@ -180,6 +186,8 @@ class OPENFLUID_API FluidXDescriptor
     void writeToSingleFile(const std::string& FilePath);
 };
 
+
 } } // namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_FLUIDXDESCRIPTOR_HPP__ */

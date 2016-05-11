@@ -33,9 +33,14 @@
   @file FluidXDescriptor.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include "FluidXDescriptor.hpp"
+
+#include <fstream>
+
+#include <QDomDocument>
+#include <QFile>
 
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
@@ -44,10 +49,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
-#include <QDomDocument>
-#include <QFile>
-
-#include <fstream>
+#include "FluidXDescriptor.hpp"
 
 
 namespace openfluid { namespace fluidx {
@@ -983,7 +985,7 @@ void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
   for (std::list<AttributesDescriptor>::iterator it = Attrs.begin();
       it != Attrs.end(); ++it)
   {
-    Contents << m_IndentStr << m_IndentStr << "<attributes unitclass=\""
+    Contents << m_IndentStr << m_IndentStr << "<attributes unitsclass=\""
              << it->getUnitsClass() << "\" colorder=\"";
 
     std::vector<std::string> Cols = it->columnsOrder();
@@ -1270,8 +1272,10 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
   mp_Listener->onWritten(openfluid::base::Listener::LISTEN_OK);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::writeToSingleFile(const std::string& FilePath)
 {
@@ -1327,10 +1331,6 @@ void FluidXDescriptor::prepareFluidXDir(const std::string& DirPath)
                                                 "Error creating output directory");
   }
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces
