@@ -34,10 +34,9 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
-#include "MainWindow.hpp"
-#include "ui_MainWindow.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -61,6 +60,8 @@
 #include <openfluid/utils/GitHelper.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
+#include "MainWindow.hpp"
+#include "ui_MainWindow.h"
 
 
 MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
@@ -354,21 +355,27 @@ void MainWindow::showNotYetImplemented()
 // =====================================================================
 // =====================================================================
 
+
 void MainWindow::onQuitRequested()
 {
-  DevStudioPreferencesManager* Mgr = DevStudioPreferencesManager::instance();
+  if (QMessageBox::question(this,
+                            tr("Quit"),tr("Are you sure you want to quit OpenFLUID-DevStudio?"),
+                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+  {
+    DevStudioPreferencesManager* Mgr = DevStudioPreferencesManager::instance();
 
-  QStringList Mode;
-  Mode << (mp_Collection->isDebugMode() ? "DEBUG" : "RELEASE");
-  Mode << (mp_Collection->isBuildNoInstallMode() ? "BUILDONLY" : "BUILDINSTALL");
-  Mgr->setConfigBuildMode(Mode.join("|"));
+    QStringList Mode;
+    Mode << (mp_Collection->isDebugMode() ? "DEBUG" : "RELEASE");
+    Mode << (mp_Collection->isBuildNoInstallMode() ? "BUILDONLY" : "BUILDINSTALL");
+    Mgr->setConfigBuildMode(Mode.join("|"));
 
-  Mgr->setLastOpenWares(mp_Collection->getOpenWarePaths());
+    Mgr->setLastOpenWares(mp_Collection->getOpenWarePaths());
 
-  Mgr->setLastActiveWare(mp_Collection->getCurrentWarePath());
+    Mgr->setLastActiveWare(mp_Collection->getCurrentWarePath());
 
-  if (mp_Collection->closeAllWidgets())
-    qApp->quit();
+    if (mp_Collection->closeAllWidgets())
+      qApp->quit();
+  }
 }
 
 
@@ -534,8 +541,4 @@ void MainWindow::updateExplorer()
   else if (CurrentWidget == ui->ExtPage)
     ui->ExtExplorer->updateExplorerModel(CurrentWarePath);
 }
-
-
-// =====================================================================
-// =====================================================================
 

@@ -409,19 +409,12 @@ void AppCoordinator::whenQuitAsked()
 {
   if (mp_CurrentModule->whenQuitAsked())
   {
-    if (closeProject())
-    {
-      if (QMessageBox::question(&m_MainWindow,tr("Quit"),
-                                tr("Are you sure you want to quit OpenFLUID-Builder?"),
-                                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
-      {
-        QCoreApplication::exit(0);
-      }
-      else
-      {
-        setHomeModule();
-      }
-    }
+    bool ReallyQuit = (QMessageBox::question(&m_MainWindow,tr("Quit"),
+                                             tr("Are you sure you want to quit OpenFLUID-Builder?"),
+                                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes);
+
+    if ( ReallyQuit && closeProject())
+      QCoreApplication::exit(0);
   }
 }
 

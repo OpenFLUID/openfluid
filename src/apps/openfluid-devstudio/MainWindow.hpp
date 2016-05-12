@@ -36,8 +36,10 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #ifndef __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__
 #define __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__
+
 
 #include <QMainWindow>
 #include <QMap>
@@ -107,6 +109,7 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void updateExplorer();
 
+
   public:
 
     MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash);
@@ -115,5 +118,6 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void closeEvent(QCloseEvent* Event);
 };
+
 
 #endif /* __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__ */
