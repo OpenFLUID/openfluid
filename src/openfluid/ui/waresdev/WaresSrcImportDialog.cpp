@@ -96,8 +96,9 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   if(!openfluid::utils::GitHelper::checkGitProgram())
   {
     ui->WareshubRadioButton->setEnabled(false);
-    ui->WareshubRadioButton->setToolTip(tr("git program not found"));
+    ui->WareshubRadioButton->setToolTip(tr("Git program not found"));
   }
+
   if(!openfluid::waresdev::WaresDevPackage::checkCMakeProgram())
   {
     ui->PackagePathButton->setEnabled(false);
@@ -136,7 +137,7 @@ bool WaresSrcImportDialog::check()
   {
     if (ui->WareshubUrlLineEdit->text().isEmpty())
     {
-      setMessage(tr("No wareshub url defined"));
+      setMessage(tr("No WaresHub URL defined"));
       ui->WareshubConnectButton->setEnabled(false);
       return false;
     }
@@ -148,7 +149,7 @@ bool WaresSrcImportDialog::check()
 
     if (!mp_WaresHubImportWorker || !mp_WaresHubImportWorker->isConnected())
     {
-      setMessage(tr("Wareshub not connected"));
+      setMessage(tr("Not connected to a WaresHub"));
       return false;
     }
   }
@@ -204,7 +205,7 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
   }
   else
   {
-    ui->WaresGroupBox->setTitle(tr("Available wares on waresHub site"));
+    ui->WaresGroupBox->setTitle(tr("Available wares on WaresHub site"));
 
     bool DisableConnInfos = (ui->WareshubConnectButton->text() == m_WaresHubButtonDisconnectLabel);
     for (auto& Widget : m_WaresHubConnectionInfoWidgets)
@@ -312,7 +313,7 @@ void WaresSrcImportDialog::onWareshubConnectButtonClicked()
 
   QThread* Thread = new QThread();
 
-  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Connecting to wareshub:"), true, this);
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Connecting to WaresHub:"), true, this);
 
   try
   {
@@ -408,7 +409,7 @@ void WaresSrcImportDialog::updatePackageWaresList()
     {
       Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
       Item->setCheckState(Qt::Unchecked);
-      Item->setToolTip(QString(tr("%1 already exists in the workspace")).arg(WareName));
+      Item->setToolTip(QString(tr("\"%1\" already exists in the workspace")).arg(WareName));
     }
     else
     {
@@ -458,12 +459,12 @@ void WaresSrcImportDialog::updateWaresHubWaresList()
       if (!Mgr->getWarePath(WareId, Type, ErrStr).isEmpty())
       {
         Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
-        Item->setToolTip(tr("\"%1\" already exists in your workspace").arg(WareId));
+        Item->setToolTip(tr("\"%1\" already exists in the workspace").arg(WareId));
       }
       else if (!Users.count("*") && !Users.count(UserName.toStdString()))
       {
         Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
-        Item->setToolTip(tr("Access to \"%1\" is not permitted to user \"%2\"").arg(WareId).arg(UserName));
+        Item->setToolTip(tr("User \"%2\" is not authorized to access to \"%1\"").arg(WareId).arg(UserName));
         Item->setBackgroundColor(QColor("orange"));
       }
 

@@ -123,7 +123,7 @@ bool WaresHubImportWorker::connect()
   if (!Ok)
     emit finished(false, tr("Fetching information failed"));
   else
-    emit finished(true, tr("Fetching information done"));
+    emit finished(true, tr("Fetching information completed"));
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());
@@ -187,7 +187,7 @@ bool WaresHubImportWorker::clone()
   }
 
   if (Ok)
-    emit finished(true,tr("Import done"));
+    emit finished(true,tr("Import completed"));
   else
     emit finished(false, tr("Import failed"));
 

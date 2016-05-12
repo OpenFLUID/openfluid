@@ -594,16 +594,16 @@
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="298"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="454"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="462"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="502"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="510"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="545"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="553"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="592"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="600"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="826"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="834"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="447"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="455"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="495"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="503"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="538"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="546"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="585"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="593"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="819"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="827"/>
         <source>Project error</source>
         <translation>Erreur dans le projet</translation>
     </message>
@@ -618,28 +618,28 @@
         <translation>Voulez vous sauvegarder le projet en cours avant de le fermer?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="414"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="412"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="415"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="413"/>
         <source>Are you sure you want to quit OpenFLUID-Builder?</source>
         <translation>Etes-vous sûr de vouloir quitter OpenFLUID-Builder?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="455"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="463"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="448"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="456"/>
         <source>Error creating project %1 in
 %2</source>
         <translation>Erreur à la création du projet %1 dans
 %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="511"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="554"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="601"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="835"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="504"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="547"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="594"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="828"/>
         <source>%1
 
 is not a valid OpenFLUID project</source>
@@ -648,32 +648,32 @@ is not a valid OpenFLUID project</source>
 n&apos;est pas un projet OpenFLUID valide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="484"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="477"/>
         <source>Open project</source>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="848"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="841"/>
         <source>Reinstall examples projects</source>
         <translation>Réinstaller les projets exemples</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="849"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="842"/>
         <source>Reinstalling will overwrite all modifications and delete simulations results associated to these examples.</source>
         <translation>La réinstallation écrasera toutes les modifications et supprimera les résultats de simulation associés aux exemples.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="852"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="845"/>
         <source>Proceed anyway?</source>
         <translation>Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="866"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="859"/>
         <source>Restore examples projects</source>
         <translation>Restaurer les projets exemples</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="867"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="860"/>
         <source>Error restoring example projects</source>
         <translation>Erreur à la restauration des projets exemples</translation>
     </message>
@@ -1429,165 +1429,171 @@ Continuer quand même?</translation>
         <translation>Extensions Builder</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="211"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="215"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="212"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="216"/>
         <source>Simulator...</source>
         <translation>Simulateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="212"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="216"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="213"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="217"/>
         <source>Observer...</source>
         <translation>Observateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="213"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="217"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="214"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="218"/>
         <source>Builder extension...</source>
         <translation>Extension Builder...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="219"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="220"/>
         <source>Save as...</source>
         <translation>Enregistrer sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="220"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="221"/>
         <source>Save the current file as...</source>
         <translation>Enregistrer le fichier courant sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="222"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="223"/>
         <source>Delete ware</source>
         <translation>Supprimer le ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="69"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="70"/>
         <source>Preparing user interface</source>
         <translation>Préparation de l&apos;interface utilisateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="105"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="106"/>
         <source>Initializing sources codes management</source>
         <translation>Initialisation du management des codes sources</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="116"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="117"/>
         <source>Configuring UI</source>
         <translation>Configuration de l&apos;interface utilisateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="184"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="185"/>
         <source>Initializing workspace</source>
         <translation>Initialisation de l&apos;espace de travail</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="227"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="228"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="362"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="236"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="237"/>
         <source>Preferences...</source>
         <translation>Préférences...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="241"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="242"/>
         <source>Import wares sources...</source>
         <translation>Importer des codes sources de wares...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="242"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="243"/>
         <source>Export wares sources...</source>
         <translation>Exporter des codes sources de wares...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="245"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="246"/>
         <source>Web site</source>
         <translation>Site web</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="246"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="247"/>
         <source>Community site</source>
         <translation>Site Community</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="247"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="248"/>
         <source>Email</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="249"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="250"/>
         <source>About</source>
         <translation>A propos</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="263"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="264"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="264"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="265"/>
         <source>New ware</source>
         <translation>Nouveau ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="268"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="269"/>
         <source>Open ware</source>
         <translation>Ouvrir un ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="286"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="287"/>
         <source>Edit</source>
         <translation>Edition</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="295"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="296"/>
         <source>Build</source>
         <translation>Construire</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="297"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="298"/>
         <source>Active configuration</source>
         <translation>Configuration active</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="301"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="302"/>
         <source>Active build action</source>
         <translation>Action de construction active</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="305"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="306"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="312"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="313"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="313"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="314"/>
         <source>OpenFLUID online</source>
         <translation>OpenFLUID en ligne</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="405"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="362"/>
+        <source>Are you sure you want to quit OpenFLUID-DevStudio?</source>
+        <translation>Etes-vous sûr de vouloir quitter OpenFLUID-DevStudio?</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="412"/>
         <source>Import not available</source>
         <translation>Import non disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="405"/>
-        <source>Neither CMake nor git program can be found.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="412"/>
+        <source>Neither CMake program nor Git program can be found.</source>
+        <translation>Ni le programme CMake ni le programme Git n&apos;ont été trouvés.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="421"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="428"/>
         <source>CMake program can not be found.</source>
         <translation>Le programme CMake n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="421"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="428"/>
         <source>Export not available</source>
         <translation>Export non disponible</translation>
     </message>
@@ -1854,47 +1860,47 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation>Nouveau fichier</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="70"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="79"/>
         <source>New file</source>
         <translation>Nouveau fichier</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="87"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="105"/>
         <source>Empty file</source>
         <translation>Fichier vide</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="113"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="131"/>
         <source>Main C++ source file (.cpp)</source>
         <translation>Fichier source C++ principal (.cpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="123"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="141"/>
         <source>Main C++ header file (.hpp)</source>
         <translation>Fichier en-tête C++ principal (.hpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="156"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="174"/>
         <source>Parameterization UI header file (.hpp)</source>
         <translation>Fichier en-tête C++ d&apos;interface de paramétrage (.hpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="146"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="164"/>
         <source>Parameterization UI source file (.cpp)</source>
         <translation>Fichier source C++ d&apos;interface de paramétrage (.cpp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="179"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="197"/>
         <source>CMakeLists.txt file</source>
         <translation>Fichier CMakeLists.txt</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="189"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="207"/>
         <source>CMake.in.config file</source>
         <translation>Fichier CMake.in.config</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="212"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.ui" line="230"/>
         <source>wareshub.json file</source>
         <translation>Fichier wareshub.json</translation>
     </message>
@@ -1995,7 +2001,7 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/NewslineWidget.cpp" line="184"/>
+        <location filename="../../src/apps/openfluid-builder/base/NewslineWidget.cpp" line="183"/>
         <source>misc</source>
         <translation></translation>
     </message>
@@ -3605,17 +3611,12 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="169"/>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot de passe:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="182"/>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="205"/>
-        <source>Deactivate ssl verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisateur:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="212"/>
@@ -3625,17 +3626,26 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="238"/>
         <source>Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="249"/>
         <source>Packager(s):</source>
-        <translation type="unfinished"></translation>
+        <translation>Empaqueteur(s):</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="136"/>
         <source>Connect</source>
         <translation>Connecter</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="205"/>
+        <source>Disable SSL verification</source>
+        <translation>Désactiver la vérification SSL</translation>
+    </message>
+    <message>
+        <source>Informations</source>
+        <translation type="obsolete">Informations</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="256"/>
@@ -3711,82 +3721,90 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="86"/>
         <source>File path:</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="110"/>
         <source>General information</source>
-        <translation type="unfinished"></translation>
+        <translation>Information générales</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="116"/>
         <source>Tags:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tags:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="126"/>
         <source>Contacts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Contacts:</translation>
+    </message>
+    <message>
+        <source>General informations</source>
+        <translation type="obsolete">Information générales</translation>
+    </message>
+    <message>
+        <source>Development informations</source>
+        <translation type="obsolete">Informations de développement</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="143"/>
         <source>Development information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations de développement</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="152"/>
         <source>License:</source>
-        <translation type="unfinished">Licence:</translation>
+        <translation>Licence:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="166"/>
         <source>Development status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Etat du développement:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="176"/>
         <source>Dependencies:</source>
-        <translation type="unfinished">Dépendances:</translation>
+        <translation>Dépendances:Dépendances:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="189"/>
         <source>Issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Incidents</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="214"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="219"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="224"/>
         <source>Type</source>
-        <translation type="unfinished">Type</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="229"/>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>Etat</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="239"/>
         <source>Add...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter...</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="246"/>
         <source>Edit...</source>
-        <translation type="unfinished"></translation>
+        <translation>Editer...</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="253"/>
         <source>Remove...</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer...</translation>
     </message>
 </context>
 <context>
@@ -4167,7 +4185,7 @@ Continuer quand même?</translation>
 <context>
     <name>openfluid::ui::config</name>
     <message>
-        <location filename="../../src/openfluid/ui/config.hpp.in" line="64"/>
+        <location filename="../../src/openfluid/ui/config.hpp.in" line="63"/>
         <source>required</source>
         <translation>requis</translation>
     </message>
@@ -5068,9 +5086,9 @@ Do you want to replace it?</source>
         <translation>Le document a été modifié.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="527"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="611"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="756"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="543"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="627"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="772"/>
         <source>No open file</source>
         <translation>Aucun fichier ouvert</translation>
     </message>
@@ -5085,32 +5103,42 @@ Do you want to replace it?</source>
         <translation>Erreur fichier</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="527"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="456"/>
+        <source>Configure error</source>
+        <translation>Erreur à la configuration</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="476"/>
+        <source>Build error</source>
+        <translation>Erreur à la construction</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="543"/>
         <source>No file to save</source>
         <translation>Aucun fichier à enregistrer</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="597"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="613"/>
         <source>Delete file</source>
         <translation>Supprimer le fichier</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="597"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="613"/>
         <source>Are you sure you want to delete &quot;%1&quot;?</source>
         <translation>Etes-vous sûr de vouloir supprimer &quot;%1&quot;?</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="608"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="624"/>
         <source>Unable to remove the file &quot;%1&quot;</source>
         <translation>Impossible de supprimer le fichier &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="611"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="627"/>
         <source>No file to delete</source>
         <translation>Aucun fichier à supprimer</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="756"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="772"/>
         <source>No open editor</source>
         <translation>Aucun éditeur ouvert</translation>
     </message>
@@ -5119,19 +5147,18 @@ Do you want to replace it?</source>
     <name>openfluid::ui::waresdev::WareSrcWidgetCollection</name>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="152"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="531"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="533"/>
         <source>Documents have been modified.</source>
         <translation>Des documents ont été modifiés.</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="290"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="679"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="153"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="532"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="534"/>
         <source>Do you want to save changes?</source>
         <translation>Voulez-vous enregistrer les changements?</translation>
     </message>
@@ -5141,60 +5168,95 @@ Do you want to replace it?</source>
         <translation>Aucun terminal trouvé</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="401"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="450"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="489"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="503"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="516"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="628"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="641"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="692"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="874"/>
         <source>No open ware</source>
-        <translation>Aucun ware ouvert</translation>
+        <translation type="obsolete">Aucun ware ouvert</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="401"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="450"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="489"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="503"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="516"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="628"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="641"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="692"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="874"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="385"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="403"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="452"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="491"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="505"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="518"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="630"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="643"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="694"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="876"/>
         <source>At least one ware must be open to perform this action</source>
         <translation>Au moins un ware doit être ouvert pour réaliser cette action</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="595"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="385"/>
+        <source>Configure</source>
+        <translation>Configurer</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="403"/>
+        <source>Build</source>
+        <translation>Construire</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="452"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="491"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="505"/>
+        <source>Save</source>
+        <translation>Enregistrer</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="518"/>
+        <source>Close</source>
+        <translation>Fermer</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="597"/>
         <source>Open a simulator</source>
         <translation>Ouvrir un simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="605"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="607"/>
         <source>Open an observer</source>
         <translation>Ouvrir un observateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="615"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="617"/>
         <source>Open a Builder extension</source>
         <translation>Ouvrir une extension Builder</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="668"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="630"/>
+        <source>Open file</source>
+        <translation>Ouvrir un fichier</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="643"/>
+        <source>Delete file</source>
+        <translation>Supprimer un fichier</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="670"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="681"/>
         <source>Delete ware</source>
         <translation>Supprimer le ware</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="669"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="671"/>
         <source>Are you sure you want to delete &quot;%1&quot; and all its content?</source>
         <translation>Etes-vous sûr de vouloir supprimer &quot;%1&quot; et son contenu?</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="679"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="681"/>
         <source>Unable to remove the directory &quot;%1&quot;</source>
         <translation>Impossible de supprimer le répertoire &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="694"/>
+        <source>New file</source>
+        <translation>Nouveau fichier</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="876"/>
+        <source>Go to line</source>
+        <translation>Aller à la ligne</translation>
     </message>
 </context>
 <context>
@@ -5228,99 +5290,103 @@ Do you want to replace it?</source>
 <context>
     <name>openfluid::ui::waresdev::WaresSrcImportDialog</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="99"/>
-        <source>git program not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="104"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="105"/>
         <source>CMake program not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Programme CMake non trouvé</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="132"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="133"/>
         <source>No package file selected</source>
         <translation>Aucun paquet sélectionné</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="139"/>
-        <source>No wareshub url defined</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="140"/>
+        <source>No WaresHub URL defined</source>
+        <translation>Aucune URL de Wareshub définie</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="151"/>
-        <source>Wareshub not connected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="158"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="159"/>
         <source>No ware selected</source>
         <translation>Aucun ware sélectionné</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="176"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="177"/>
         <source>Import wares sources</source>
         <translation>Importer des sources de wares</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="197"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="198"/>
         <source>Available wares in package</source>
         <translation>Wares disponibles dans le paquet</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="207"/>
         <source>Available wares on waresHub site</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Wares disponibles sur le site Wareshub</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="228"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="99"/>
+        <source>Git program not found</source>
+        <translation>Programme Git non trouvé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="152"/>
+        <source>Not connected to a WaresHub</source>
+        <translation>Non connecté a un WaresHub</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="208"/>
+        <source>Available wares on WaresHub site</source>
+        <translation>Wares disponibles sur le site Wareshub</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="229"/>
         <source>Select package file</source>
         <translation>Sélectionner le paquet</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="241"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="242"/>
         <source>Fetching information from ware sources:</source>
         <translation>Recherche de l&apos;information depuis les sources des wares:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="290"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="291"/>
         <source>Connect</source>
-        <translation type="unfinished">Connecter</translation>
+        <translation>Connecter</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="315"/>
-        <source>Connecting to wareshub:</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="316"/>
+        <source>Connecting to WaresHub:</source>
+        <translation>Connexion au WaresHub:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="411"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="412"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="462"/>
+        <source>&quot;%1&quot; already exists in the workspace</source>
+        <translation>&quot;%1&quot; existe déjà dans le workspace</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="467"/>
+        <source>User &quot;%2&quot; is not authorized to access to &quot;%1&quot;</source>
+        <translation>L&apos;utilisateur &quot;%2&quot; n&apos;est pas autorisé à accéder à &quot;%1&quot;</translation>
+    </message>
+    <message>
         <source>%1 already exists in the workspace</source>
-        <translation>%1 existe déjà dans le workspace</translation>
+        <translation type="obsolete">%1 existe déjà dans le workspace</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="461"/>
-        <source>&quot;%1&quot; already exists in your workspace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="466"/>
-        <source>Access to &quot;%1&quot; is not permitted to user &quot;%2&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="533"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="534"/>
         <source>Importing wares sources:</source>
         <translation>Importation des sources de wares:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="230"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="231"/>
         <source>OpenFLUID wares packages (*.ofwdp)</source>
         <translation>Paquets OpenFLUID wares (*.ofwdp)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.hpp" line="79"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.hpp" line="81"/>
         <source>Disconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Déconnecter</translation>
     </message>
 </context>
 <context>
@@ -5328,32 +5394,32 @@ Do you want to replace it?</source>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubIssueDialog.cpp" line="66"/>
         <source>New issue</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvel incident</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubIssueDialog.cpp" line="86"/>
         <source>Edit issue</source>
-        <translation type="unfinished"></translation>
+        <translation>Edition de l&apos;incident</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubIssueDialog.cpp" line="157"/>
         <source>ID cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>ID ne peut être vide</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubIssueDialog.cpp" line="161"/>
         <source>Title cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Le titre ne peut être vide</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubIssueDialog.cpp" line="163"/>
         <source>Type cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Le type ne peut être vide</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubIssueDialog.cpp" line="159"/>
         <source>This ID already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Cet ID existe déjà</translation>
     </message>
 </context>
 <context>
@@ -5361,32 +5427,32 @@ Do you want to replace it?</source>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.cpp" line="439"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.cpp" line="439"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.cpp" line="439"/>
         <source>Type</source>
-        <translation type="unfinished">Type</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.cpp" line="439"/>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>Etat</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.cpp" line="522"/>
         <source>Remove an issue</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer un incident</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.cpp" line="523"/>
         <source>Are you sure you want to remove issue &quot;%1&quot; ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Etes-vous sûr de vouloir supprimer l&apos;incident &quot;%1&quot;?</translation>
     </message>
 </context>
 <context>
@@ -5394,12 +5460,12 @@ Do you want to replace it?</source>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="237"/>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;export a échoué</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="239"/>
-        <source>Export done</source>
-        <translation type="unfinished"></translation>
+        <source>Export completed</source>
+        <translation>L&apos;export est terminé</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="294"/>
@@ -5419,27 +5485,27 @@ Le paquet peut contenir des erreurs.</translation>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="341"/>
         <source>Fetching information failed</source>
-        <translation type="unfinished"></translation>
+        <translation>La recherche d&apos;informations a échoué</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="343"/>
-        <source>Fetching information done</source>
-        <translation type="unfinished"></translation>
+        <source>Fetching information completed</source>
+        <translation>La recherche d&apos;informations est terminée</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="411"/>
         <source>Importing &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Importation de &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="415"/>
         <source>Unable to copy &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de copier &quot;%1&quot; vers &quot;%2&quot; </translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="421"/>
-        <source>&quot;%1&quot; already exists : ignored</source>
-        <translation type="unfinished"></translation>
+        <source>&quot;%1&quot; already exists (ignored)</source>
+        <translation>&quot;%1&quot; existe déjà (ignoré)</translation>
     </message>
 </context>
 <context>
@@ -5447,22 +5513,22 @@ Le paquet peut contenir des erreurs.</translation>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresHubImportWorker.cpp" line="124"/>
         <source>Fetching information failed</source>
-        <translation type="unfinished"></translation>
+        <translation>La recherche d&apos;informations a échoué</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresHubImportWorker.cpp" line="126"/>
-        <source>Fetching information done</source>
-        <translation type="unfinished"></translation>
+        <source>Fetching information completed</source>
+        <translation>La recherche d&apos;informations est terminée</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresHubImportWorker.cpp" line="190"/>
-        <source>Import done</source>
-        <translation type="unfinished"></translation>
+        <source>Import completed</source>
+        <translation>L&apos;import est terminé</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresHubImportWorker.cpp" line="192"/>
         <source>Import failed</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;import a échoué</translation>
     </message>
 </context>
 </TS>

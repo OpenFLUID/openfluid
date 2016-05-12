@@ -201,7 +201,7 @@
     <message>
         <location filename="ImportWorker.cpp" line="121"/>
         <location filename="ImportWorker.cpp" line="167"/>
-        <location filename="ImportWorker.cpp" line="253"/>
+        <location filename="ImportWorker.cpp" line="251"/>
         <source>[OK]</source>
         <translation></translation>
     </message>
@@ -216,17 +216,17 @@
         <translation>Copie des fichiers et insertion dans le datastore...</translation>
     </message>
     <message>
-        <location filename="ImportWorker.cpp" line="292"/>
+        <location filename="ImportWorker.cpp" line="290"/>
         <source>Consistency error, import could not be performed with current import configuration</source>
         <translation>Erreur de cohérence, l&apos;import ne peut être réalisé avec cette configuration</translation>
     </message>
     <message>
-        <location filename="ImportWorker.cpp" line="299"/>
+        <location filename="ImportWorker.cpp" line="297"/>
         <source>Import sucessful</source>
         <translation>Import réalisé avec succès</translation>
     </message>
     <message>
-        <location filename="ImportWorker.cpp" line="304"/>
+        <location filename="ImportWorker.cpp" line="302"/>
         <source>Import error. Import may be uncompleted or inconsistent</source>
         <translation>Erreur d&apos;import. L&apos;import peut être incomplet ou incohérent</translation>
     </message>

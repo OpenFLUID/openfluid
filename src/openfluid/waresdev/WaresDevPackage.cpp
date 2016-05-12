@@ -236,7 +236,7 @@ void WaresDevExportPackage::exportToPackage()
   if (mp_Process->exitCode())
     emit finished(false, tr("Export failed"));
   else
-    emit finished(true, tr("Export done"));
+    emit finished(true, tr("Export completed"));
 }
 
 
@@ -340,7 +340,7 @@ void WaresDevImportPackage::fetchInformation()
   if (mp_Process->exitCode())
     emit finished(false, tr("Fetching information failed"));
   else
-    emit finished(true, tr("Fetching information done"));
+    emit finished(true, tr("Fetching information completed"));
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());
@@ -418,7 +418,7 @@ void WaresDevImportPackage::copyWares()
     }
     else
     {
-      emit info(tr("\"%1\" already exists : ignored").arg(DestinationPath));
+      emit info(tr("\"%1\" already exists (ignored)").arg(DestinationPath));
     }
 
     Progress += ProgressRatio;
@@ -428,17 +428,13 @@ void WaresDevImportPackage::copyWares()
   emit progressed(100);
 
   if (!Ok)
-    emit finished(false, "Import done with errors");
+    emit finished(false, "Import completed with errors");
   else
-    emit finished(true, "Import done");
+    emit finished(true, "Import completed");
 
   if (qApp && qApp->thread() != thread())
     moveToThread(qApp->thread());
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces

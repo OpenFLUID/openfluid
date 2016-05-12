@@ -37,8 +37,10 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #ifndef __OPENFLUID_WARESDEV_WARESDEVPACKAGE_HPP__
 #define __OPENFLUID_WARESDEV_WARESDEVPACKAGE_HPP__
+
 
 #include <QString>
 #include <QMap>
@@ -48,6 +50,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
+
 
 namespace openfluid { namespace waresdev {
 
@@ -173,6 +176,7 @@ class OPENFLUID_API WaresDevImportPackage: public WaresDevPackage
 
     void copyWares();
 };
+
 
 } } // namespaces
 

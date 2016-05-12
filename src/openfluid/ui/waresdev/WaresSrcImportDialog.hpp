@@ -63,6 +63,7 @@ class WaresHubImportWorker;
 
 namespace openfluid { namespace ui { namespace waresdev {
 
+
 class OPENFLUID_API WaresSrcImportDialog: public QDialog
 {
   Q_OBJECT
@@ -76,6 +77,7 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
     QString m_PackagePathLabelDefault = "<i>No package selected</i>";
 
     QList<QWidget*> m_WaresHubConnectionInfoWidgets;
+
     QString m_WaresHubButtonDisconnectLabel = tr("Disconnect");
 
     std::map<openfluid::ware::WareType, QListWidget*> m_ListWidgetsByWareType;

@@ -409,7 +409,7 @@ void MainWindow::onImportWareSourcesAsked()
     Dialog.exec();
   }
   else
-    QMessageBox::warning(this, tr("Import not available"), tr("Neither CMake nor git program can be found."));
+    QMessageBox::warning(this, tr("Import not available"), tr("Neither CMake program nor Git program can be found."));
 }
 
 

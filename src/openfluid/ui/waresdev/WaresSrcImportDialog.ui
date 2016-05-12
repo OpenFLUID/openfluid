@@ -202,7 +202,7 @@ font : bold;
              <bool>false</bool>
             </property>
             <property name="text">
-             <string>Deactivate ssl verification</string>
+             <string>Disable SSL verification</string>
             </property>
            </widget>
           </item>
