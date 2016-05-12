@@ -1,3 +1,26 @@
+2.1.2
+
+  * Introduced import of wares from WaresHub sites in OpenFLUID-DevStudio
+  * Introduced git notifications and minimal tools in OpenFLUID-DevStudio
+  * Introduced wareshub.json file editor in OpenFLUID-DevStudio
+  * Introduced console colors in OpenFLUID command line tool
+  * Introduced global completion system in OpenFLUID-Builder
+    with specific shortcut
+  * Added tooltips on connections and slots of model graphical view 
+    in OpenFLUID-Builder
+  * Added wares list order in model management, model graphical view 
+    and monitoring management in OpenFLUID-Builder
+  * Added detection of #prettycode tag in checkstyle tool    
+  * Improved use of C++11
+  * Updated tests naming
+  * Cleaned code 
+  * Fixed minor bugs : CMake detection from OpenFLUID-DevStudio, 
+    LaTeX formatted SI units in sim2doc buddy, not translated strings, 
+    temporary files in multi-simulations, uncaught exceptions in 
+    OpenFLUID-DevStudio
+
+
+
 2.1.1
 
   * Introduced API client for FluidHub services
@@ -130,7 +153,7 @@
   * Added workspace directory for future development system of wares     
   * Added environment variables for overriding default user and temp paths
   * Switched to version 3 of the Boost filesystem library  
-  * Deeply refactored OpenFLUID source code, with many internal improvements
+  * Refactored OpenFLUID source code, with many internal improvements
   * Improved internal test system
   * Fixed bugs
 
