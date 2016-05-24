@@ -41,11 +41,11 @@
 #ifndef __OPENFLUID_UIWARESDEV_TEXTEDITMSGSTREAM_HPP__
 #define __OPENFLUID_UIWARESDEV_TEXTEDITMSGSTREAM_HPP__
 
-#include <openfluid/waresdev/WareSrcMsgStream.hpp>
-
-#include <openfluid/dllexport.hpp>
 
 #include <QPlainTextEdit>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/waresdev/WareSrcMsgStream.hpp>
 #include <openfluid/ui/waresdev/WareSrcMsgViewer.hpp>
 
 
@@ -64,9 +64,12 @@ class OPENFLUID_API TextEditMsgStream: public openfluid::waresdev::WareSrcMsgStr
 
     void clear();
 
-    void write(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+    void write(const openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+
 };
 
+
 } } }  // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_TEXTEDITMSGSTREAM_HPP__ */

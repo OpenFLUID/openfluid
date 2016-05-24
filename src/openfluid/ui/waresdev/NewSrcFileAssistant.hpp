@@ -41,7 +41,6 @@
 #ifndef __OPENFLUID_UIWARESDEV_NEWSRCFILEASSISTANT_HPP__
 #define __OPENFLUID_UIWARESDEV_NEWSRCFILEASSISTANT_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QWizard>
 #include <QDir>
@@ -49,8 +48,10 @@
 #include <QFrame>
 #include <QLabel>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
+
 
 namespace Ui {
 class EmptyPage;
@@ -60,10 +61,6 @@ class NewSrcFileAssistant;
 }
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 class OPENFLUID_API EmptyPage : public QWizardPage
@@ -238,5 +235,6 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
 
 } } } // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_NEWSRCFILEASSISTANT_HPP__ */

@@ -41,10 +41,11 @@
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP__
 
-#include <openfluid/dllexport.hpp>
 
-#include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <QSyntaxHighlighter>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -70,8 +71,11 @@ class OPENFLUID_API WareSrcSyntaxHighlighter: public QSyntaxHighlighter
     WareSrcSyntaxHighlighter(QTextDocument* Document, WareSrcFiletypeManager::HighlightingRules_t HighlightingRules);
 
     ~WareSrcSyntaxHighlighter();
+
 };
 
+
 } } }  // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP__ */

@@ -40,12 +40,17 @@
 #ifndef __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__
 
+
 #include <QDialog>
 #include <QDate>
+
 #include <openfluid/dllexport.hpp>
 
-namespace Ui { class WareshubIssueDialog;
+
+namespace Ui {
+class WareshubIssueDialog;
 }
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -53,6 +58,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 class OPENFLUID_API WareshubIssueDialog: public QDialog
 {
   Q_OBJECT
+
 
   public:
 
@@ -73,6 +79,12 @@ class OPENFLUID_API WareshubIssueDialog: public QDialog
         }
     };
 
+
+  private slots:
+
+    void onChanged();
+
+
   private:
 
     Ui::WareshubIssueDialog* ui;
@@ -89,6 +101,7 @@ class OPENFLUID_API WareshubIssueDialog: public QDialog
 
     void setMessage(const QString& Msg = "");
 
+
   public:
 
     WareshubIssueDialog(const QStringList& IDs, QWidget* Parent = nullptr, const Issue& I = Issue());
@@ -97,12 +110,10 @@ class OPENFLUID_API WareshubIssueDialog: public QDialog
 
     Issue getIssue();
 
-  private slots:
-
-    void onChanged();
 };
 
 
 } } } // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__ */

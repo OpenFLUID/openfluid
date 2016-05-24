@@ -37,7 +37,6 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 
 #include <QTabWidget>
 #include <QDesktopServices>
@@ -49,7 +48,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
-
+#include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
@@ -60,10 +59,6 @@
 
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone) :
@@ -901,10 +896,6 @@ void WareSrcWidgetCollection::updateEditorsSettings()
   for (WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
     Ware->updateEditorsSettings();
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } //namespaces

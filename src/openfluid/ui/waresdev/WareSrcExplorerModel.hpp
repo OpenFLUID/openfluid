@@ -41,8 +41,10 @@
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCEXPLORERMODEL_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCEXPLORERMODEL_HPP__
 
+
 #include <QFileSystemModel>
 #include <QFileSystemWatcher>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/utils/GitHelper.hpp>
@@ -54,6 +56,14 @@ namespace openfluid { namespace ui { namespace waresdev {
 class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
 {
   Q_OBJECT
+
+
+  private slots:
+
+    void onGitIndexFileChanged(const QString& Path);
+
+    void onGitDirObjectsChanged(const QString& Path);
+
 
   private:
 
@@ -81,12 +91,20 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
         };
 
     QMap<QString, QString> m_GitBranchByWarePath;
+
     QMap<QString, QString> m_GitIconByWareFilePath;
+
     QList<QString> m_GitDirties;
 
     QFileSystemWatcher m_Watcher;
 
     void applyIconRecursively(const QString& CurrDir, const QString& IconPath);
+
+
+  public slots:
+
+    void onDirectoryLoaded(const QString& Path);
+
 
   public:
 
@@ -96,17 +114,10 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
 
     void getGitStatusInfo(const QString& WarePath);
 
-  public slots:
-
-    void onDirectoryLoaded(const QString& Path);
-
-  private slots:
-
-    void onGitIndexFileChanged(const QString& Path);
-
-    void onGitDirObjectsChanged(const QString& Path);
 };
 
+
 } } } // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESRCEXPLORERMODEL_HPP__ */

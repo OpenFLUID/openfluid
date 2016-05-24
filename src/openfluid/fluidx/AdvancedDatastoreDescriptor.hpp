@@ -73,11 +73,11 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
                openfluid::core::UnstructuredValue::UnstructuredType Type) const;
 
     /**
-     * Move the Item located at the given From position to the To position (positions starts at index 0)
-     * @param From
-     * @param To
-     * @throw openfluid::base::FrameworkException a position is out of range
-     */
+      Move the Item located at the given From position to the To position (positions starts at index 0)
+      @param From
+      @param To
+      @throw openfluid::base::FrameworkException a position is out of range
+    */
     void moveItem(unsigned int From, unsigned int To);
 
     void appendItem(openfluid::fluidx::DatastoreItemDescriptor* Item);
@@ -88,7 +88,7 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
      @param[in] Position the position, should be between zero and list size - 1.
      To insert an Item at the end of the list, use appendItem instead.
      @throw openfluid::base::FrameworkException if Position is out of range
-     */
+    */
     void insertItem(openfluid::fluidx::DatastoreItemDescriptor* Item,
                     unsigned int Position);
 
@@ -97,7 +97,7 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
      This doesn't delete the DatastoreItemDescriptor pointer.
      @param[in] Position the position
      @throw openfluid::base::FrameworkException if Position is out of range
-     */
+    */
     void removeItem(unsigned int Position);
 
     std::list<std::string> getItemsIDs() const;
@@ -105,11 +105,11 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
     bool isItemAlreadyExist(std::string ItemID) const;
 
     /**
-     * @brief Gets the item of the datastore matching the given ID.
-     *
-     * @param ItemID ID of the expected item.
-     * @return The item with the given ID, or 0 if not found.
-     */
+      @brief Gets the item of the datastore matching the given ID.
+
+      @param ItemID ID of the expected item.
+      @return The item with the given ID, or 0 if not found.
+    */
     openfluid::fluidx::DatastoreItemDescriptor* item(const std::string& ItemID);
 
 

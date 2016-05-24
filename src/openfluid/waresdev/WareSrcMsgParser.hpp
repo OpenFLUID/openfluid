@@ -41,17 +41,14 @@
 #ifndef __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__
 #define __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QRegExp>
 #include <QDir>
 
+#include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 class OPENFLUID_API WareSrcMsgParser
@@ -82,10 +79,10 @@ class OPENFLUID_API WareSrcMsgParser
     };
 
     virtual ~WareSrcMsgParser()
-    {
-    }
+    { }
 
-    virtual WareSrcMsg parse(const QString& MessageLine, WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType) = 0;
+    virtual WareSrcMsg parse(const QString& MessageLine,
+                             WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType) = 0;
 };
 
 
@@ -102,7 +99,7 @@ class OPENFLUID_API WareSrcMsgParserGcc: public WareSrcMsgParser
   public:
 
     WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine,
-      WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType);
+                                       WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType);
 };
 
 
@@ -123,12 +120,8 @@ class OPENFLUID_API WareSrcMsgParserCMake: public WareSrcMsgParser
     WareSrcMsgParserCMake(const QString& AbsolutePath);
 
     WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine,
-      WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType);
+                                       WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType);
 };
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces

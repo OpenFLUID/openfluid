@@ -60,6 +60,16 @@ class OPENFLUID_API WaresSrcExportDialog: public QDialog
 {
   Q_OBJECT
 
+
+  private slots :
+
+    bool check();
+
+    void onPackagePathButtonClicked();
+
+    void exportToPackage();
+
+
   private:
 
     Ui::WaresSrcExportDialog* ui;
@@ -71,14 +81,6 @@ class OPENFLUID_API WaresSrcExportDialog: public QDialog
     void setMessage(const QString& Msg = "");
 
     void initWaresLists();
-
-  private slots :
-
-    bool check();
-
-    void onPackagePathButtonClicked();
-
-    void exportToPackage();
 
 
   public:
@@ -92,8 +94,11 @@ class OPENFLUID_API WaresSrcExportDialog: public QDialog
     QString getPackageDesciption();
 
     QStringList getSelectedWares();
+
 };
 
+
 } } } //namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESSRCEXPORTDIALOG_HPP__ */

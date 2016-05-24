@@ -112,10 +112,10 @@ class OPENFLUID_API WareSrcManager
   public:
 
     /**
-     * Set default internal paths (workspace and waresdev sub dirs) and create them if they don't exist.
-     * @param NewAbsoluteWorkspacePath
-     * @throws openfluid::base::FrameworkException if a path can not be created
-     */
+      Set default internal paths (workspace and waresdev sub dirs) and create them if they don't exist.
+      @param NewAbsoluteWorkspacePath
+      @throws openfluid::base::FrameworkException if a path can not be created
+    */
     void switchWorkspace(const QString& NewAbsoluteWorkspacePath);
 
     QString getWareTypePath(openfluid::ware::WareType WareSrcType);
@@ -123,15 +123,16 @@ class OPENFLUID_API WareSrcManager
     QString getWarePath(const QString& WareID, openfluid::ware::WareType OFWareType, QString& ErrMsg);
 
     /**
-     * Make Path absolute then splits it to retrieve PathInfo attributes.
-     * @param Path
-     * @return A new PathInfo
-     */
+      Make Path absolute then splits it to retrieve PathInfo attributes.
+      @param Path
+      @return A new PathInfo
+    */
     PathInfo getPathInfo(const QString& Path);
 
     QString getWaresdevPath() const;
 
     QString getWorkspacePath() const;
+
 };
 
 

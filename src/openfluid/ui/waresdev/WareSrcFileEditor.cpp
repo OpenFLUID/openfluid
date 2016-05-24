@@ -36,7 +36,6 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 
 #include <QDir>
 #include <QPainter>
@@ -52,14 +51,11 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
+#include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
@@ -994,10 +990,6 @@ void WareSrcFileEditor::setFocus()
 {
   QPlainTextEdit::setFocus();
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } // namespaces

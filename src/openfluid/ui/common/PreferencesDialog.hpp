@@ -191,6 +191,7 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void updateSyntaxElementColorButton(QToolButton* Button, const QString& ColorName);
 
+
   public:
 
     PreferencesDialog(QWidget *Parent, DisplayMode Mode = MODE_FULL);
@@ -211,6 +212,7 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     bool isTextEditorSettingsChanged() const
     { return m_TextEditorSettingsChanged; }
+
 
   signals:
 

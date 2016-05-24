@@ -41,11 +41,11 @@
 #ifndef __OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP__
 #define __OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP__
 
-#include <openfluid/dllexport.hpp>
-
-#include <openfluid/waresdev/WareSrcMsgStream.hpp>
 
 #include <iostream>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/waresdev/WareSrcMsgStream.hpp>
 
 
 namespace openfluid { namespace waresdev {
@@ -63,7 +63,7 @@ class OPENFLUID_API OStreamMsgStream: public WareSrcMsgStream
 
     void clear();
 
-    void write(WareSrcMsgParser::WareSrcMsg& Msg);
+    void write(const WareSrcMsgParser::WareSrcMsg& Msg);
 };
 
 

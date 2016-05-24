@@ -39,13 +39,13 @@
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCFILEEDITOR_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCFILEEDITOR_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QPlainTextEdit>
 #include <QCompleter>
 #include <QSignalMapper>
 #include <QMenu>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
 #include <openfluid/ui/config.hpp>
@@ -53,11 +53,30 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
+
 class WareSrcSyntaxHighlighter;
 
 class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEditor
 {
   Q_OBJECT
+
+
+  private slots:
+
+    void updateLineNumberAreaWidth();
+
+    void highlightCurrentLine();
+
+    void updateLineNumberArea(const QRect& Rect, int);
+
+    void onChanged(bool Changed);
+
+    void onInsertRequested(const QString& Str);
+
+    void insertCompletion();
+
+    void onCompletionPopupCurrentRowChanged(const QModelIndex &Current, const QModelIndex& Previous);
+
 
   private:
 
@@ -162,23 +181,6 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
     bool replaceString(const QString& StringToFind, const QString& StringForReplace, Qt::CaseSensitivity Cs);
 
 
-  private slots:
-
-    void updateLineNumberAreaWidth();
-
-    void highlightCurrentLine();
-
-    void updateLineNumberArea(const QRect& Rect, int);
-
-    void onChanged(bool Changed);
-
-    void onInsertRequested(const QString& Str);
-
-    void insertCompletion();
-
-    void onCompletionPopupCurrentRowChanged(const QModelIndex &Current, const QModelIndex& Previous);
-
-
   protected:
 
     void resizeEvent(QResizeEvent* Event);
@@ -186,6 +188,18 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
     void contextMenuEvent(QContextMenuEvent* Event);
 
     void keyPressEvent(QKeyEvent* Event);
+
+
+  signals :
+
+    void editorTxtChanged(WareFileEditor* Editor, bool Changed);
+
+    void editorSaved();
+
+
+  public slots :
+
+    void setShowLineMarkers(bool ShowMarkers);
 
 
   public:
@@ -236,16 +250,6 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
     void paste();
 
     void setFocus();
-
-  public slots :
-
-    void setShowLineMarkers(bool ShowMarkers);
-
-  signals :
-
-    void editorTxtChanged(WareFileEditor* Editor, bool Changed);
-
-    void editorSaved();
 
 };
 

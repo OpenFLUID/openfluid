@@ -68,6 +68,7 @@ class OPENFLUID_API RunSimulationListener : public QObject, public openfluid::ma
     enum Stage { RUNW_BEFORE, RUNW_PRESIM, RUNW_INIT, RUNW_RUN, RUNW_FINAL, RUNW_AFTER };
 
   private:
+
     unsigned int m_CurrentIndex;
     std::string m_CurrentIndexStr;
     unsigned int m_CurrentSimulator;

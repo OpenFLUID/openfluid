@@ -69,14 +69,10 @@ void OStreamMsgStream::clear()
 // =====================================================================
 
 
-void OStreamMsgStream::write(WareSrcMsgParser::WareSrcMsg& Msg)
+void OStreamMsgStream::write(const WareSrcMsgParser::WareSrcMsg& Msg)
 {
   m_Stream << Msg.m_OriginalMsgLine.constData();
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } }  // namespaces

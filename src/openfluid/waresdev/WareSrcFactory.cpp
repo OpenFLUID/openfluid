@@ -38,22 +38,18 @@
  */
 
 
-#include <openfluid/waresdev/WareSrcFactory.hpp>
-
-#include <openfluid/base/Environment.hpp>
-#include <openfluid/config.hpp>
-
 #include <QObject>
 #include <QApplication>
 #include <QRegExp>
 #include <QTextStream>
 
 
+#include <openfluid/waresdev/WareSrcFactory.hpp>
+#include <openfluid/base/Environment.hpp>
+#include <openfluid/config.hpp>
+
+
 namespace openfluid { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WareSrcFactory::WareSrcFactory(openfluid::ware::WareType Type) :

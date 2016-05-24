@@ -428,7 +428,7 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
         }
 
         /**
-         * @return Main rule of parsing content
+          @return Main rule of parsing content
         */
         rule<ScannerT> const& start() const { return signature; }
       };

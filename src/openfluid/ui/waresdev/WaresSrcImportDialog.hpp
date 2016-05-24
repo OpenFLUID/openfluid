@@ -68,6 +68,19 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
 {
   Q_OBJECT
 
+  private slots :
+
+    bool check();
+
+    void onSourceChanged(QAbstractButton* ClickedButton);
+
+    void onPackagePathButtonClicked();
+
+    void onWareshubConnectButtonClicked();
+
+    void import();
+
+
   private:
 
     Ui::WaresSrcImportDialog* ui;
@@ -106,26 +119,16 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
     std::map<openfluid::ware::WareType, QStringList> getSelectedWaresByType();
 
 
-  private slots :
-
-    bool check();
-
-    void onSourceChanged(QAbstractButton* ClickedButton);
-
-    void onPackagePathButtonClicked();
-
-    void onWareshubConnectButtonClicked();
-
-    void import();
-
-
   public:
 
     WaresSrcImportDialog(QWidget* Parent);
 
     ~WaresSrcImportDialog();
+
 };
 
+
 } } } //namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESSRCIMPORTDIALOG_HPP__ */

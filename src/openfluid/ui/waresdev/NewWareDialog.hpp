@@ -62,6 +62,12 @@ class OPENFLUID_API NewWareDialog : public openfluid::ui::common::OpenFLUIDDialo
 {
   Q_OBJECT
 
+
+  private slots:
+
+    void onInformationChanged();
+
+
   private:
 
     Ui::NewWareDialog* ui;
@@ -81,11 +87,6 @@ class OPENFLUID_API NewWareDialog : public openfluid::ui::common::OpenFLUIDDialo
     void setStatus(const QString WarningMsg);
 
 
-  private slots:
-
-    void onInformationChanged();
-
-
   public:
 
     NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent = nullptr);
@@ -97,8 +98,11 @@ class OPENFLUID_API NewWareDialog : public openfluid::ui::common::OpenFLUIDDialo
     QString getNewWarePath();
 
     void accept();
+
 };
 
+
 } } }  // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_NEWWAREDIALOG_HPP__ */

@@ -56,10 +56,12 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
 {
   Q_OBJECT
 
+
   public:
 
     typedef QMap<openfluid::ware::WareType, openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t>
-    WaresDetailsByIDByType_t;
+      WaresDetailsByIDByType_t;
+
 
   private:
 
@@ -77,6 +79,27 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
 
     std::map<openfluid::ware::WareType, QStringList> m_SelectedWaresUrlByType;
 
+
+  signals:
+
+    void info(const QString& Message);
+
+    void error(const QString& Message);
+
+    void finished(bool Ok, const QString& Message);
+
+    void progressed(int Value);
+
+
+  public slots :
+
+    bool connect();
+
+    void disconnect();
+
+    bool clone();
+
+
   public:
 
     WaresHubImportWorker(const QString& WareshubUrl, const QString& Username = "", const QString& Password = "",
@@ -90,24 +113,6 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
       openfluid::ware::WareType Type) const;
 
     void setSelectedWaresUrl(const std::map<openfluid::ware::WareType, QStringList>& SelectedWaresUrlByType);
-
-  public slots :
-
-    bool connect();
-
-    void disconnect();
-
-    bool clone();
-
-  signals:
-
-    void info(const QString& Message);
-
-    void error(const QString& Message);
-
-    void finished(bool Ok, const QString& Message);
-
-    void progressed(int Value);
 
 };
 

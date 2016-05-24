@@ -37,16 +37,12 @@
  */
 
 
-#include "ui_WaresSrcIOProgressDialog.h"
+#include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
 
-#include "WaresSrcIOProgressDialog.hpp"
+#include "ui_WaresSrcIOProgressDialog.h"
 
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, bool IsMaxUndefined, QWidget* Parent) :
@@ -169,10 +165,6 @@ void WaresSrcIOProgressDialog::progress(int Value)
 {
   ui->progressBar->setValue(Value);
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } //namespaces

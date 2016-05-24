@@ -37,13 +37,11 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <openfluid/ui/waresdev/TextEditMsgStream.hpp>
 
+
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 TextEditMsgStream::TextEditMsgStream(WareSrcMsgViewer* Edit) :
@@ -67,14 +65,10 @@ void TextEditMsgStream::clear()
 // =====================================================================
 
 
-void TextEditMsgStream::write(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
+void TextEditMsgStream::write(const openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
 {
   mp_Edit->writeMessage(Msg);
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } }  // namespaces

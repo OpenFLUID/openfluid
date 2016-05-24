@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_MACHINE_OBSERVERSIGNATUREREGISTRY_HPP__
 #define __OPENFLUID_MACHINE_OBSERVERSIGNATUREREGISTRY_HPP__
 
+
 #include <vector>
 #include <string>
 
@@ -72,14 +73,14 @@ class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<Obs
   public:
 
     /**
-     * @brief Returns the Signature of the Observer with ObserverID if available
-     * @throw openfluid::base::FrameworkException if this Observer plugin is not available
-     */
+      @brief Returns the Signature of the Observer with ObserverID if available
+      @throw openfluid::base::FrameworkException if this Observer plugin is not available
+    */
     const openfluid::machine::ObserverSignatureInstance* signature(const openfluid::ware::WareID_t& ID) const;
 
     /**
-     * @brief Updates the list of available signatures, according to Runtime environment paths
-     */
+      @brief Updates the list of available signatures, according to Runtime environment paths
+    */
     void update();
 
     const std::vector<openfluid::machine::ObserverSignatureInstance*>& getAvailableSignatures() const;
@@ -87,6 +88,7 @@ class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<Obs
     void unloadAll();
 
 };
+
 
 } } // namespaces
 

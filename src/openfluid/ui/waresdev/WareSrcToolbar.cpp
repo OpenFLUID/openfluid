@@ -36,18 +36,15 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 
 #include <QMenu>
 #include <QToolButton>
+
+#include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
@@ -227,10 +224,6 @@ QAction* WareSrcToolbar::action(const QString& ActionName)
   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                             "Action \"" + ActionName.toStdString() + "\" does'nt exist.");
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } }  // namespaces

@@ -38,24 +38,20 @@
  */
 
 
-#include "NewSrcFileAssistant.hpp"
-#include "ui_NewSrcFileAssistant.h"
-#include "ui_EmptyPage.h"
-#include "ui_CppPage.h"
-#include "ui_CMakeConfigPage.h"
-
 #include <QMessageBox>
 #include <QUuid>
 
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/config.hpp>
 
+#include "NewSrcFileAssistant.hpp"
+#include "ui_NewSrcFileAssistant.h"
+#include "ui_EmptyPage.h"
+#include "ui_CppPage.h"
+#include "ui_CMakeConfigPage.h"
+
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 EmptyPage::EmptyPage(const QString& WarePath, QWidget* Parent) :
@@ -638,10 +634,6 @@ void NewSrcFileAssistant::setStatus(const QString DefaultMsg, const QString Warn
       QString("background-color: %1;").arg(
           Ok ? openfluid::ui::config::DIALOGBANNER_BGCOLOR : openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } // namespaces

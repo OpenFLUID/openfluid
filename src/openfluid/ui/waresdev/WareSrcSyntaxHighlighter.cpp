@@ -37,14 +37,11 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WareSrcSyntaxHighlighter::WareSrcSyntaxHighlighter(QTextDocument* Document,
@@ -118,10 +115,6 @@ void WareSrcSyntaxHighlighter::highlightBlock(const QString& Text)
   }
 
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } }  // namespaces

@@ -41,13 +41,12 @@
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCWIDGETCOLLECTION_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCWIDGETCOLLECTION_HPP__
 
-#include <openfluid/dllexport.hpp>
-
 #include <QObject>
 #include <QMap>
 #include <QString>
 #include <QTextDocument>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
@@ -72,6 +71,21 @@ class FindReplaceDialog;
 class OPENFLUID_API WareSrcWidgetCollection: public QObject
 {
   Q_OBJECT
+
+
+  private slots:
+
+    void onWareTxtModified(WareSrcWidget* Widget, bool Modified);
+
+    void onCloseWareTabRequested(int Index);
+
+    void onCurrentTabChanged(int Index);
+
+    void onFindReplaceRequested(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
+                                const QString& StringForReplace, QTextDocument::FindFlags Options);
+
+    void checkModifiedStatus();
+
 
   private:
 
@@ -101,26 +115,15 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void newWare(openfluid::ware::WareType Type);
 
-  public:
 
-    WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone);
+  signals:
 
-    ~WareSrcWidgetCollection();
+    void editorSaved();
 
-    /**
-     * Returns false is there is unchanged modifications and user chooses to cancel closing, true otherwise
-     */
-    bool closeAllWidgets();
+    void currentTabChanged(const QString& Path);
 
-    QStringList getOpenWarePaths();
+    void modifiedStatusChanged(bool CurrentEditorModified, bool CurrentWareModified);
 
-    QString getCurrentWarePath();
-
-    bool isDebugMode();
-
-    bool isBuildNoInstallMode();
-
-    void deleteWare(const QString& WarePath);
 
   public slots:
 
@@ -149,10 +152,10 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void saveAsMayBeAboveWare();
 
     /**
-     * @param TopDirectory The path to the topmost directory where may be saved the file,
-     * an empty string meaning the current ware directory
-     * @return The path where has been saved the file if it's above this ware, an empty string otherwise
-     */
+      @param TopDirectory The path to the topmost directory where may be saved the file,
+      an empty string meaning the current ware directory
+      @return The path where has been saved the file if it's above this ware, an empty string otherwise
+    */
     QString saveAs(const QString& TopDirectory = "");
 
     void saveAllCurrent();
@@ -162,7 +165,9 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void openFile();
 
     void openSimulator();
+
     void openObserver();
+
     void openBuilderExtension();
 
     void newFile();
@@ -193,27 +198,30 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void updateEditorsSettings();
 
-  private slots:
 
-    void onWareTxtModified(WareSrcWidget* Widget, bool Modified);
+  public:
 
-    void onCloseWareTabRequested(int Index);
+    WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone);
 
-    void onCurrentTabChanged(int Index);
+    ~WareSrcWidgetCollection();
 
-    void onFindReplaceRequested(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
-                                const QString& StringForReplace, QTextDocument::FindFlags Options);
+    /**
+      Returns false is there is unchanged modifications and user chooses to cancel closing, true otherwise
+    */
+    bool closeAllWidgets();
 
-    void checkModifiedStatus();
+    QStringList getOpenWarePaths();
 
-  signals:
+    QString getCurrentWarePath();
 
-    void editorSaved();
+    bool isDebugMode();
 
-    void currentTabChanged(const QString& Path);
+    bool isBuildNoInstallMode();
 
-    void modifiedStatusChanged(bool CurrentEditorModified, bool CurrentWareModified);
+    void deleteWare(const QString& WarePath);
+
 };
+
 
 } } }  // namespaces
 

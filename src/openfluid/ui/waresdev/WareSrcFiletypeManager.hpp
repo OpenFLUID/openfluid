@@ -146,23 +146,23 @@ class OPENFLUID_API WareSrcFiletypeManager
     ~WareSrcFiletypeManager();
 
     /**
-     * @throw openfluid::base::FrameworkException
-     */
+      @throw openfluid::base::FrameworkException
+    */
     QDomElement openWaresdevFile(const QString& FilePath);
 
     /**
-     * @throw openfluid::base::FrameworkException
-     */
+      @throw openfluid::base::FrameworkException
+    */
     void parseFiletypeFile(const QString& FilePath);
 
     /**
-     * @throw openfluid::base::FrameworkException
-     */
+      @throw openfluid::base::FrameworkException
+    */
     HighlightingRules_t parseSyntaxFile(const QString& FilePath);
 
     /**
-     * @throw openfluid::base::FrameworkException
-     */
+      @throw openfluid::base::FrameworkException
+    */
     CompletionRulesByWareType_t parseCompletionFile(const QString& FilePath);
 
     QString getFileType(const QString& FileName) const;
@@ -177,13 +177,11 @@ class OPENFLUID_API WareSrcFiletypeManager
     HighlightingRules_t getHighlightingRules(const QString& FilePath) const;
 
     CompletionRules_t getCompletionRules(const QString& FilePath) const;
+
 };
 
 
-// =====================================================================
-// =====================================================================
-
-
 } } }  // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESRCFILETYPEMANAGER_HPP__ */

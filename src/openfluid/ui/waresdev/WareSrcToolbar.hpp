@@ -36,15 +36,19 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCTOOLBAR_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCTOOLBAR_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QToolBar>
 #include <QAction>
 
+#include <openfluid/dllexport.hpp>
+
+
 namespace openfluid { namespace ui { namespace waresdev {
+
 
 class OPENFLUID_API WareSrcToolbar: public QToolBar
 {
@@ -63,8 +67,11 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
     ~WareSrcToolbar();
 
     QAction* action(const QString& ActionName);
+
 };
 
+
 } } }  // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESRCTOOLBAR_HPP__ */

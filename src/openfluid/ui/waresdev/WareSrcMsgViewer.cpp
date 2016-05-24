@@ -37,29 +37,26 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/ui/waresdev/WareSrcMsgViewer.hpp>
 
 #include <QTextBlock>
+
+#include <openfluid/ui/waresdev/WareSrcMsgViewer.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-// =====================================================================
-// =====================================================================
-
-
 WareSrcMsgViewer::WareSrcMsgViewer(QWidget* Parent) :
     QPlainTextEdit(Parent)
 {
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND].setForeground(
-      QColor("blue"));
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD].setForeground(
-      QColor("black"));
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING].setForeground(
-      QColor("orange"));
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR].setForeground(
-      QColor("red"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND]
+                    .setForeground(QColor("blue"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD]
+                    .setForeground(QColor("black"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING]
+                    .setForeground(QColor("orange"));
+  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR]
+                    .setForeground(QColor("red"));
 }
 
 
@@ -91,7 +88,7 @@ void WareSrcMsgViewer::clearMessages()
 // =====================================================================
 
 
-void WareSrcMsgViewer::writeMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
+void WareSrcMsgViewer::writeMessage(const openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
 {
   QTextCursor Cursor = textCursor();
 
@@ -118,10 +115,6 @@ void WareSrcMsgViewer::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
   if (it != m_MessagesByBlockNumber.end())
     emit messageClicked(it.value());
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } // namespaces

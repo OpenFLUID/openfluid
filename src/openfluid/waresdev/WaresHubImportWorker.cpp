@@ -36,19 +36,16 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "WaresHubImportWorker.hpp"
 
 #include <QApplication>
 #include <QFileInfo>
 
+#include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/utils/GitHelper.hpp>
 
+
 namespace openfluid { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WaresHubImportWorker::WaresHubImportWorker(const QString& WareshubUrl, const QString& Username,
@@ -196,10 +193,6 @@ bool WaresHubImportWorker::clone()
 
   return Ok;
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces

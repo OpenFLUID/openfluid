@@ -38,6 +38,7 @@
  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
 */
 
+
 #include <QDir>
 #include <QFile>
 #include <QDomDocument>
@@ -435,10 +436,6 @@ WareSrcFiletypeManager::CompletionRules_t WareSrcFiletypeManager::getCompletionR
 
   return m_WareSrcFiletypes.value(FileType, WareSrcFiletype()).m_CompRules.value(WareType, QVector<CompletionRule>());
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } }  // namespaces

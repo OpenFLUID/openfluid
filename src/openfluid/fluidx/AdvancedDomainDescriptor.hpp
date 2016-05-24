@@ -38,12 +38,14 @@
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDDOMAINDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_ADVANCEDDOMAINDESCRIPTOR_HPP__
 
+
+#include <map>
+#include <set>
+
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/EventDescriptor.hpp>
 
-#include <map>
-#include <set>
 
 namespace openfluid {
 
@@ -124,106 +126,101 @@ class OPENFLUID_API AdvancedDomainDescriptor
     bool isSpatialUnitExist(const std::string& ClassName, int ID) const;
 
     /**
-     *
-     * @return May return an empty map. Never throws.
-     */
+      @return May return an empty map. Never throws.
+    */
     const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >& spatialUnitsByIdByClass() const;
 
     /**
-     * @throw openfluid::base::FrameworkException if Unit doesn't exist
-     * @param ClassName
-     * @param ID
-     * @return
-     */
+      @throw openfluid::base::FrameworkException if Unit doesn't exist
+      @param ClassName
+      @param ID
+      @return
+    */
     const AdvancedUnitDescriptor& spatialUnit(const std::string& ClassName, int ID) const;
 
     /**
-     * @throw openfluid::base::FrameworkException if Unit doesn't exist
-     * @param ClassName
-     * @param ID
-     * @return
-     */
+      @throw openfluid::base::FrameworkException if Unit doesn't exist
+      @param ClassName
+      @param ID
+      @return
+    */
     const openfluid::fluidx::SpatialUnitDescriptor& spatialUnitDescriptor(const std::string& ClassName,
                                                                           int ID) const;
 
     /**
-     *
-     * @param ClassName
-     * @return An empty set if ClassName doesn't exist. Never throws.
-     */
+      @param ClassName
+      @return An empty set if ClassName doesn't exist. Never throws.
+    */
     std::set<int> getIDsOfClass(const std::string& ClassName) const;
 
     bool isClassNameExists(const std::string& ClassName) const;
 
     /**
-     *
-     * @return May return an empty set. Never throws.
-     */
+      @return May return an empty set. Never throws.
+    */
     std::set<std::string> getClassNames() const;
 
     unsigned int getUnitsCount() const;
 
     /**
       @details Add this UnitDesc ID to the descriptor for all attributes of this UnitDesc class,
-      with a default value of "-"
+               with a default value of "-"
       @warning Invalidate UnitDesc
       @throw openfluid::base::FrameworkException if Unit already exists or if Unit has a relation
-      with a non-existent Unit
+             with a non-existent Unit
       @param UnitDesc
     */
     void addUnit(openfluid::fluidx::SpatialUnitDescriptor* UnitDesc);
 
     /**
-     * Does nothing if Unit doesn't exist
-     *
-     * @param ClassName
-     * @param ID
-     */
+      Does nothing if Unit doesn't exist
+      @param ClassName
+      @param ID
+    */
     void deleteUnit(const std::string& ClassName, int ID);
 
     /**
-     * @throw openfluid::base::FrameworkException if Unit or DataName doesn't exist
-     * @param ClassName
-     * @param ID
-     * @param AttrName
-     * @return
-     */
+      @throw openfluid::base::FrameworkException if Unit or DataName doesn't exist
+      @param ClassName
+      @param ID
+      @param AttrName
+      @return
+    */
     std::string& attribute(const std::string& ClassName, int ID,
                            const std::string& AttrName);
 
     /**
-     *
-     * @param ClassName
-     * @return An empty set if ClassName doesn't exist or has no attribute. Never throws.
-     */
+      @param ClassName
+      @return An empty set if ClassName doesn't exist or has no attribute. Never throws.
+    */
     std::set<std::string> getAttributesNames(const std::string& ClassName) const;
 
     /**
-     * @throw openfluid::base::FrameworkException if ClassName doesn't exist
-     * or if AttrName already exists for class ClassName
-     * @param ClassName
-     * @param AttrName
-     * @param DefaultValue
-     */
+      @throw openfluid::base::FrameworkException if ClassName doesn't exist
+             or if AttrName already exists for class ClassName
+      @param ClassName
+      @param AttrName
+      @param DefaultValue
+    */
     void addAttribute(const std::string& ClassName, const std::string& AttrName,
                       const std::string& DefaultValue);
 
     /**
-     * @throw openfluid::base::FrameworkException if ClassName doesn't exist
-     * or if AttrName doesn't exist for class ClassName
-     * @param ClassName
-     * @param AttrName
-     */
+      @throw openfluid::base::FrameworkException if ClassName doesn't exist
+             or if AttrName doesn't exist for class ClassName
+      @param ClassName
+      @param AttrName
+    */
     void deleteAttribute(const std::string& ClassName, const std::string& AttrName);
 
     /**
-     * Does nothing if NewDataName is the same as OldDataName
-     * @throw openfluid::base::FrameworkException if ClassName doesn't exist
-     * or if OldDataName doesn't exist for the class ClassName
-     * @param ClassName
-     * @param OldAttrName
-     * @param NewAttrName
-     */
+      Does nothing if NewDataName is the same as OldDataName
+      @throw openfluid::base::FrameworkException if ClassName doesn't exist
+             or if OldDataName doesn't exist for the class ClassName
+      @param ClassName
+      @param OldAttrName
+      @param NewAttrName
+    */
     void renameAttribute(const std::string& ClassName, const std::string& OldAttrName,
                          const std::string& NewAttrName);
 
@@ -270,25 +267,25 @@ class OPENFLUID_API AdvancedDomainDescriptor
     std::list<openfluid::core::UnitClassID_t> getChildSpatialUnits(const openfluid::core::UnitClassID_t Unit) const;
 
     /**
-     * @brief Add ToUnit to the list of "Tos" of FromUnit
-     * @details Does nothing if the relation already exists
-     * @throw openfluid::base::FrameworkException if FromUnit or ToUnit doesn't exist
-     */
+      @brief Add ToUnit to the list of "Tos" of FromUnit
+      @details Does nothing if the relation already exists
+      @throw openfluid::base::FrameworkException if FromUnit or ToUnit doesn't exist
+    */
     void addFromToRelation(const openfluid::core::UnitClassID_t FromUnit,
                            const openfluid::core::UnitClassID_t ToUnit);
 
     /**
-     * @brief Remove ToUnit from the list of "Tos" of FromUnit
-     * @throw openfluid::base::FrameworkException if FromUnit or ToUnit doesn't exist or if the relation doesn't exists
-     */
+      @brief Remove ToUnit from the list of "Tos" of FromUnit
+      @throw openfluid::base::FrameworkException if FromUnit or ToUnit doesn't exist or if the relation doesn't exists
+    */
     void removeFromToRelation(const openfluid::core::UnitClassID_t FromUnit,
                               const openfluid::core::UnitClassID_t ToUnit);
 
     /**
-     * @brief Add ChildUnit to the list of "Children" of ParentUnit
-     * @details Does nothing if the relation already exists
-     * @throw openfluid::base::FrameworkException if ParentUnit or ChildUnit doesn't exist
-     */
+      @brief Add ChildUnit to the list of "Children" of ParentUnit
+      @details Does nothing if the relation already exists
+      @throw openfluid::base::FrameworkException if ParentUnit or ChildUnit doesn't exist
+    */
     void addParentChildRelation(const openfluid::core::UnitClassID_t ParentUnit,
                                 const openfluid::core::UnitClassID_t ChildUnit);
 
@@ -302,21 +299,18 @@ class OPENFLUID_API AdvancedDomainDescriptor
         const openfluid::core::UnitClassID_t ChildUnit);
 
     /**
-     * @brief Clear the list of "Tos" and "Parents" of Unit,
-     * and remove Unit from the list of "Tos" and "Parents" of all other Units of the Domain
-     * @throw openfluid::base::FrameworkException if Unit doesn't exist
-     */
+      @brief Clear the list of "Tos" and "Parents" of Unit,
+      and remove Unit from the list of "Tos" and "Parents" of all other Units of the Domain
+      @throw openfluid::base::FrameworkException if Unit doesn't exist
+    */
     void clearRelations(const openfluid::core::UnitClassID_t Unit);
 
     void clearDomain();
 };
 
 
-// =====================================================================
-// =====================================================================
-
-
 } } // namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_ADVANCEDDOMAINDESCRIPTOR_HPP__ */
 

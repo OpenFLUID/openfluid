@@ -37,21 +37,18 @@
  */
 
 
-#include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
-
-#include "ui_WaresSrcExportDialog.h"
-
-#include <openfluid/waresdev/WaresDevPackage.hpp>
-#include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
-#include <openfluid/ui/config.hpp>
-
 #include <QFileDialog>
 #include <QThread>
 
-namespace openfluid { namespace ui { namespace waresdev {
+#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
+#include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
+#include <openfluid/ui/config.hpp>
 
-// =====================================================================
-// =====================================================================
+#include "ui_WaresSrcExportDialog.h"
+
+
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 WaresSrcExportDialog::WaresSrcExportDialog(QWidget* Parent) :

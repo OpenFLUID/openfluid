@@ -41,11 +41,11 @@
 #ifndef __OPENFLUID_UIWARESDEV_WAREEXPLORERDIALOG_HPP__
 #define __OPENFLUID_UIWARESDEV_WAREEXPLORERDIALOG_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QPushButton>
 #include <QDir>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
@@ -61,6 +61,24 @@ namespace openfluid { namespace ui { namespace waresdev {
 class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT
+
+
+  private slots:
+
+    void onCurrentChangedOpenWareMode(const QString& Path);
+
+    void onCurrentChangedOpenFileMode(const QString& Path);
+
+    void onCurrentChangedSaveCreateMode(const QString& Path);
+
+    void onTextChangedSaveMode(const QString& Text);
+
+    void onTextChangedCreateFileMode(const QString& Text);
+
+    void onTextChangedCreateFolderMode(const QString& Text);
+
+    void onDoubleClickedFileMode();
+
 
   private:
 
@@ -79,6 +97,7 @@ class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::OpenFLUID
 
     void setStatus(const QString WarningMsg);
 
+
   public:
 
     ~WareExplorerDialog();
@@ -96,9 +115,13 @@ class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::OpenFLUID
                                        const QString& CurrentPath = "");
 
     void setOpenWareMode();
+
     void setOpenFileMode();
+
     void setSaveFileMode();
+
     void setCreateFileMode(const QString& CurrentPath);
+
     void setCreateFolderMode();
 
     /*
@@ -111,19 +134,10 @@ class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::OpenFLUID
      */
     QString getCompleteFilePath();
 
-  private slots:
-
-    void onCurrentChangedOpenWareMode(const QString& Path);
-    void onCurrentChangedOpenFileMode(const QString& Path);
-    void onCurrentChangedSaveCreateMode(const QString& Path);
-
-    void onTextChangedSaveMode(const QString& Text);
-    void onTextChangedCreateFileMode(const QString& Text);
-    void onTextChangedCreateFolderMode(const QString& Text);
-
-    void onDoubleClickedFileMode();
 };
 
+
 } } }  // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WAREEXPLORERDIALOG_HPP__ */

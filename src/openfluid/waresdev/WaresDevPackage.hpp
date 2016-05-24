@@ -93,6 +93,17 @@ class OPENFLUID_API WaresDevPackage: public QObject
     void createAndLauchProcess(const QString& Command);
 
 
+  signals:
+
+    void info(const QString& Message);
+
+    void error(const QString& Message);
+
+    void finished(bool Ok, const QString& Message);
+
+    void progressed(int Value);
+
+
   public:
 
     virtual ~WaresDevPackage();
@@ -107,16 +118,6 @@ class OPENFLUID_API WaresDevPackage: public QObject
 
     QDir getPackageTempDir();
 
-
-  signals:
-
-    void info(const QString& Message);
-
-    void error(const QString& Message);
-
-    void finished(bool Ok, const QString& Message);
-
-    void progressed(int Value);
 };
 
 
@@ -135,14 +136,16 @@ class OPENFLUID_API WaresDevExportPackage: public WaresDevPackage
     void compress();
 
 
+  public slots:
+
+    void exportToPackage();
+
+
   public:
 
     WaresDevExportPackage(const QString& PackageFilePath, const QStringList& WaresPaths,
                           const QString& Packagers, const QString& PackageDescription);
 
-  public slots:
-
-    void exportToPackage();
 };
 
 
@@ -163,18 +166,19 @@ class OPENFLUID_API WaresDevImportPackage: public WaresDevPackage
     void readConfFile();
 
 
+  public slots:
+
+    void fetchInformation();
+
+    void copyWares();
+
+
   public:
 
     WaresDevImportPackage(const QString& PackageFilePath);
 
     void setSelectedWares(const QStringList& SelectedWarePaths);
 
-
-  public slots:
-
-    void fetchInformation();
-
-    void copyWares();
 };
 
 

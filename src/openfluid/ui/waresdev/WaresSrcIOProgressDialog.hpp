@@ -45,6 +45,7 @@
 
 #include <openfluid/dllexport.hpp>
 
+
 namespace Ui { class WaresSrcIOProgressDialog;
 }
 
@@ -62,6 +63,7 @@ class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
 
     void write(const QString& Message, const QColor& Color = QColor());
 
+
   public slots :
 
     void writeInfo(const QString& Message);
@@ -76,12 +78,15 @@ class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
 
     void progress(int Value);
 
+
   public:
 
     WaresSrcIOProgressDialog(const QString& Description, bool IsMaxUndefined, QWidget* Parent);
 
 };
 
+
 } } } //namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESSRCIOPROGRESSDIALOG_HPP__ */

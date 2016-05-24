@@ -36,6 +36,7 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCEXPLORER_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCEXPLORER_HPP__
 
@@ -43,8 +44,8 @@
 #include <QContextMenuEvent>
 
 #include <openfluid/dllexport.hpp>
-
 #include <openfluid/waresdev/WareSrcManager.hpp>
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -56,13 +57,6 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 {
   Q_OBJECT
 
-  private:
-
-    WareSrcExplorerModel* mp_Model;
-
-    QString m_TopDirectoryPath;
-
-    QString getCurrentDir();
 
   private slots:
 
@@ -90,19 +84,15 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void onGitLogAsked();
 
-  public:
 
-    WareSrcExplorer(QWidget* Parent = nullptr);
+  private:
 
-    ~WareSrcExplorer();
+    WareSrcExplorerModel* mp_Model;
 
-    void configure(const QString& TopDirectoryPath, bool WithContextMenu);
+    QString m_TopDirectoryPath;
 
-    bool setCurrentPath(const QString& Path);
+    QString getCurrentDir();
 
-    QString getCurrentPath();
-
-    void updateExplorerModel(const QString& Path);
 
   signals:
 
@@ -122,8 +112,25 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void fileDeleted(const QString& Path);
 
+
+  public:
+
+    WareSrcExplorer(QWidget* Parent = nullptr);
+
+    ~WareSrcExplorer();
+
+    void configure(const QString& TopDirectoryPath, bool WithContextMenu);
+
+    bool setCurrentPath(const QString& Path);
+
+    QString getCurrentPath();
+
+    void updateExplorerModel(const QString& Path);
+
 };
 
+
 } } }  // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESRCEXPLORER_HPP__ */

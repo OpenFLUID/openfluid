@@ -70,6 +70,16 @@ class OPENFLUID_API WareSrcContainer: public QObject
       BUILD_WITHINSTALL, BUILD_NOINSTALL
     };
 
+
+  private slots:
+
+    void processStandardOutput();
+
+    void processErrorOutput();
+
+    void processFinishedOutput(int ExitCode);
+
+
   private:
 
     QString m_AbsolutePath;
@@ -124,20 +134,16 @@ class OPENFLUID_API WareSrcContainer: public QObject
     QList<WareSrcMsgParser::WareSrcMsg> m_Messages;
 
     /**
-     * @throw openfluid::base::FrameworkException
-     */
+      @throw openfluid::base::FrameworkException
+    */
     void findCMake();
 
     void runCommand(const QString& Command, const QProcessEnvironment& Env);
 
 
-  private slots:
+  signals:
 
-    void processStandardOutput();
-
-    void processErrorOutput();
-
-    void processFinishedOutput(int ExitCode);
+    void processFinished();
 
 
   public:
@@ -153,14 +159,14 @@ class OPENFLUID_API WareSrcContainer: public QObject
     static QString searchUiParamCppFileName(const QString& CMakeFileContent);
 
     /**
-     * Return the absolute paths of:
-     * - the CMake config file if it exists on disk,
-     * - the main .cpp file as set in the CMakeLists.txt, if this .cpp exists on disk.
-     * If no .cpp file was found (because it doesn't exists, it wasn't found in CMake file,
-     * or CMake file doesn't exist):
-     * - the first .cpp file found in this ware directory (not recursive).
-     * @return a list of existing absolute paths into this ware directory. It can be empty.
-     */
+      Return the absolute paths of:
+      - the CMake config file if it exists on disk,
+      - the main .cpp file as set in the CMakeLists.txt, if this .cpp exists on disk.
+      If no .cpp file was found (because it doesn't exists, it wasn't found in CMake file,
+      or CMake file doesn't exist):
+      - the first .cpp file found in this ware directory (not recursive).
+      @return a list of existing absolute paths into this ware directory. It can be empty.
+    */
     QStringList getDefaultFilesPaths();
 
     QString getAbsolutePath() const;
@@ -172,33 +178,33 @@ class OPENFLUID_API WareSrcContainer: public QObject
     QString getTypeSubDir() const;
 
     /**
-     * Return the absolute path of the main .cpp as set in the CMake config file, if this .cpp file exists,
-     * otherwise an empty string
-     */
+      Returns the absolute path of the main .cpp as set in the CMake config file, if this .cpp file exists,
+      otherwise an empty string
+    */
     QString getMainCppPath() const;
 
     /**
-     * Return the absolute path of the ui-parameterization .cpp as set in the CMake config file,
-     * if this .cpp file exists, otherwise an empty string
-     */
+      Returns the absolute path of the ui-parameterization .cpp as set in the CMake config file,
+      if this .cpp file exists, otherwise an empty string
+    */
     QString getUiParamCppPath() const;
 
     /**
-     * Return the absolute path of the CMake config file, if this file exists,
-     * otherwise an empty string
-     */
+      Returns the absolute path of the CMake config file, if this file exists,
+      otherwise an empty string
+    */
     QString getCMakeConfigPath() const;
 
     /**
-     * Return the absolute path of the CMakeLists.txt file, if this file exists,
-     * otherwise an empty string
-     */
+      Returns the absolute path of the CMakeLists.txt file, if this file exists,
+      otherwise an empty string
+    */
     QString getCMakeListsPath() const;
 
     /**
-     * Return the absolute path of the wareshub.json file, if this file exists,
-     * otherwise an empty string
-     */
+      Returns the absolute path of the wareshub.json file, if this file exists,
+      otherwise an empty string
+    */
     QString getJsonPath() const;
 
     void setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream);
@@ -213,9 +219,6 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QList<WareSrcMsgParser::WareSrcMsg> getMessages();
 
-  signals:
-
-    void processFinished();
 };
 
 

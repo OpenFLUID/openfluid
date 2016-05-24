@@ -157,9 +157,11 @@ class OPENFLUID_API WareSrcFactory
 
     };
 
+
   private:
 
     QDir m_SharedTemplatesDir;
+
     QDir m_TypedTemplatesDir;
 
     QDir m_WareTypeDir;
@@ -180,85 +182,94 @@ class OPENFLUID_API WareSrcFactory
     void setWareId(const QString& Id);
 
     /**
-     * Creates a CMakeLists file in the ware directory, from the CMakeLists file template of the ware type.
-     * @param NewFilePath A QString that will be filled with the absolute path of the created file
-     * @param ErrMsg A QString that will be filled with error messages if the file creation fails
-     * @return bool False if the file creation fails, true otherwise
-     */
+      Creates a CMakeLists file in the ware directory, from the CMakeLists file template of the ware type.
+      @param NewFilePath A QString that will be filled with the absolute path of the created file
+      @param ErrMsg A QString that will be filled with error messages if the file creation fails
+      @return bool False if the file creation fails, true otherwise
+    */
     bool createCMakeListsFile(QString& NewFilePath, QString& ErrMsg);
 
     /**
-     * Creates a wareshub.json file in the ware directory, from the (shared) Json file template.
-     * @param NewFilePath A QString that will be filled with the absolute path of the created file
-     * @param ErrMsg A QString that will be filled with error messages if the file creation fails
-     * @return bool False if the file creation fails, true otherwise
-     */
+      Creates a wareshub.json file in the ware directory, from the (shared) Json file template.
+      @param NewFilePath A QString that will be filled with the absolute path of the created file
+      @param ErrMsg A QString that will be filled with error messages if the file creation fails
+      @return bool False if the file creation fails, true otherwise
+    */
     bool createJsonFile(QString& NewFilePath, QString& ErrMsg);
 
     /**
-     * Creates a main cpp file in the ware directory, from the source file template of the ware type,
-     * depending on the builder extension type (set to TYPE_UNKNOWN means it is not a Builder extension).
-     * @param R Replacements struct containing the replacements to perform
-     * @param NewFilePath A QString that will be filled with the absolute path of the created file
-     * @param ErrMsg A QString that will be filled with error messages if the file creation fails
-     * @return bool False if the file creation fails, true otherwise
-     */
+      Creates a main cpp file in the ware directory, from the source file template of the ware type,
+      depending on the builder extension type (set to TYPE_UNKNOWN means it is not a Builder extension).
+      @param R Replacements struct containing the replacements to perform
+      @param NewFilePath A QString that will be filled with the absolute path of the created file
+      @param ErrMsg A QString that will be filled with error messages if the file creation fails
+      @return bool False if the file creation fails, true otherwise
+    */
     bool createCppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg);
 
     /**
-     * Creates a main hpp file in the ware directory, from the header file template of the ware type
-     * depending on the builder extension type (set to TYPE_UNKNOWN means it is not a Builder extension).
-     * @param R Replacements struct containing the replacements to perform
-     * @param NewFilePath A QString that will be filled with the absolute path of the created file
-     * @param ErrMsg A QString that will be filled with error messages if the file creation fails
-     * @return bool False if the file creation fails, true otherwise
-     */
+      Creates a main hpp file in the ware directory, from the header file template of the ware type
+      depending on the builder extension type (set to TYPE_UNKNOWN means it is not a Builder extension).
+      @param R Replacements struct containing the replacements to perform
+      @param NewFilePath A QString that will be filled with the absolute path of the created file
+      @param ErrMsg A QString that will be filled with error messages if the file creation fails
+      @return bool False if the file creation fails, true otherwise
+    */
     bool createHppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg);
 
     /**
-     * Creates a ui-parameterization cpp file in the ware directory,
-     * from the ui-parameterization source file template of the ware type.
-     * @param R Replacements struct containing the replacements to perform
-     * @param NewFilePath A QString that will be filled with the absolute path of the created file
-     * @param ErrMsg A QString that will be filled with error messages if the file creation fails
-     * @return bool False if the file creation fails, true otherwise
-     */
+      Creates a ui-parameterization cpp file in the ware directory,
+      from the ui-parameterization source file template of the ware type.
+      @param R Replacements struct containing the replacements to perform
+      @param NewFilePath A QString that will be filled with the absolute path of the created file
+      @param ErrMsg A QString that will be filled with error messages if the file creation fails
+      @return bool False if the file creation fails, true otherwise
+    */
     bool createParamUiCppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg);
 
     /**
-     * Creates a ui-parameterization hpp file in the ware directory,
-     * from the ui-parameterization header file template of the ware type.
-     * @param R Replacements struct containing the replacements to perform
-     * @param NewFilePath A QString that will be filled with the absolute path of the created file
-     * @param ErrMsg A QString that will be filled with error messages if the file creation fails
-     * @return bool False if the file creation fails, true otherwise
-     */
+      Creates a ui-parameterization hpp file in the ware directory,
+      from the ui-parameterization header file template of the ware type.
+      @param R Replacements struct containing the replacements to perform
+      @param NewFilePath A QString that will be filled with the absolute path of the created file
+      @param ErrMsg A QString that will be filled with error messages if the file creation fails
+      @return bool False if the file creation fails, true otherwise
+    */
     bool createParamUiHppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg);
 
     /**
-     * Creates a Cmake.in.config file in the ware directory, from the Cmake.in.config file template of the ware type.
-     * @param R Replacements struct containing the replacements to perform
-     * @param NewFilePath A QString that will be filled with the absolute path of the created file
-     * @param ErrMsg A QString that will be filled with error messages if the file creation fails
-     * @return bool False if the file creation fails, true otherwise
-     */
+      Creates a Cmake.in.config file in the ware directory, from the Cmake.in.config file template of the ware type.
+      @param R Replacements struct containing the replacements to perform
+      @param NewFilePath A QString that will be filled with the absolute path of the created file
+      @param ErrMsg A QString that will be filled with error messages if the file creation fails
+      @return bool False if the file creation fails, true otherwise
+    */
     bool createCmakeConfigFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg);
 
     static QRegExp getCppFilenameRegExp(QString& Tooltip, bool IsHpp = false);
+
     static QRegExp getClassnameRegExp(QString& Tooltip);
+
     static QRegExp getWareIdRegExp(QString& Tooltip);
 
     static QString getHeaderGuard(const QString& HppFilename);
+
     static QString getHppFilename(const QString& CppFilename);
 
     static QString getSimulatorSignatureInfos(const openfluid::ware::SimulatorSignature& Signature);
+
     static QString getSimulatorSignatureData(const openfluid::ware::SimulatorSignature& Signature);
+
     static QString getSimulatorInitCode(const openfluid::ware::SimulatorSignature& Signature);
+
     static QString getSimulatorRunCode(const openfluid::ware::SimulatorSignature& Signature);
+
     static QString getSimulatorSchedulingReturn(const openfluid::ware::SimulatorSignature& Signature);
 
 };
 
+
 } }  // namespaces
+
 
 #endif /* __OPENFLUID_WARESDEV_WARESRCFACTORY_HPP__ */

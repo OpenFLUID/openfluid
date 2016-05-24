@@ -36,22 +36,27 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #ifndef __OPENFLUID_UIWARESDEV_WAREFILEEDITOR_HPP__
 #define __OPENFLUID_UIWARESDEV_WAREFILEEDITOR_HPP__
 
 
 #include <QString>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcMsgParser.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
 
+
 namespace openfluid { namespace ui { namespace waresdev {
+
 
 class OPENFLUID_API WareFileEditor
 {
   protected:
 
     QString m_FilePath;
+
 
   public:
 
@@ -95,8 +100,11 @@ class OPENFLUID_API WareFileEditor
     virtual void updateSettings() = 0;
 
     virtual void setFocus() = 0;
+
 };
 
+
 } } } // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WAREFILEEDITOR_HPP__ */

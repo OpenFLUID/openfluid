@@ -39,12 +39,13 @@
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QWidget>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
+
 
 namespace Ui {
 class WareSrcWidget;
@@ -52,6 +53,7 @@ class WareSrcWidget;
 
 
 namespace openfluid { namespace ui { namespace waresdev {
+
 
 class WareFileEditor;
 class TextEditMsgStream;
@@ -61,6 +63,18 @@ class WareSrcToolbar;
 class OPENFLUID_API WareSrcWidget: public QWidget
 {
   Q_OBJECT
+
+
+  private slots:
+
+    void onEditorTxtModified(WareFileEditor* Editor, bool Modified);
+
+    void onCurrentTabChanged(int Index);
+
+    void onProcessFinished();
+
+    void onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+
 
   private:
 
@@ -82,52 +96,37 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void addNewFileTab(int Index, const QString& AbsolutePath, const QString& TabLabel, const QString& TabTooltip = "");
 
     /**
-     * Deletes Editor
-     * @return Editor index before it was removed
-     */
+      Deletes Editor
+      @return Editor index before it was removed
+    */
     int closeFileTab(WareFileEditor* Editor);
 
     void clearEditorsMessages();
+
 
   protected:
 
     bool eventFilter(QObject* Obj, QEvent* Event);
 
-  public:
 
-    WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
-                  openfluid::waresdev::WareSrcContainer::ConfigMode Config,
-                  openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent = nullptr);
+  signals:
 
-    ~WareSrcWidget();
+    void wareTextModified(WareSrcWidget* Widget, bool Modified);
 
-    void openFileTab(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index = -1);
+    void editorSaved();
 
-    void openDefaultFiles();
+    void currentTabChanged(const QString& Path);
 
-    /**
-     * Set the file editor for the absolute path of Info as the current tab
-     * @details Check if the file editor is already opened. If true, set this editor as the current tab.
-     * Otherwise does nothing.
-     * @return true if the file editor was already opened, false otherwise
-     */
-    bool setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
+    void findReplaceRequested();
 
-    openfluid::waresdev::WareSrcContainer& wareSrcContainer();
+    void openTerminalRequested();
 
-    bool isWareModified();
+    void openExplorerRequested();
 
-    void closeAllFileTabs();
+    void modifiedStatusChanged(bool CurrentEditorModified, bool WareModified);
 
-    WareFileEditor* currentEditor();
+    void openAPIDocRequested();
 
-    QString getCurrentFilePath();
-
-    int closeFileTab(const QString& Path);
-
-    void checkModifiedStatus();
-
-    void updateEditorsSettings();
 
   public slots:
 
@@ -158,10 +157,10 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void openFile();
 
     /**
-     * @param TopDirectory The path to the topmost directory where may be saved the file,
-     * an empty string meaning this ware directory
-     * @return The path where has been saved the file if it's above this ware, an empty string otherwise
-     */
+      @param TopDirectory The path to the topmost directory where may be saved the file,
+      an empty string meaning this ware directory
+      @return The path where has been saved the file if it's above this ware, an empty string otherwise
+    */
     QString saveAs(const QString& TopDirectory = "");
 
     void copyText();
@@ -172,35 +171,47 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void goToLine();
 
-  private slots:
 
-    void onEditorTxtModified(WareFileEditor* Editor, bool Modified);
+  public:
 
-    void onCurrentTabChanged(int Index);
+    WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
+                  openfluid::waresdev::WareSrcContainer::ConfigMode Config,
+                  openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent = nullptr);
 
-    void onProcessFinished();
+    ~WareSrcWidget();
 
-    void onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+    void openFileTab(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index = -1);
 
-  signals:
+    void openDefaultFiles();
 
-    void wareTextModified(WareSrcWidget* Widget, bool Modified);
+    /**
+      Set the file editor for the absolute path of Info as the current tab
+      @details Check if the file editor is already opened. If true, set this editor as the current tab.
+      Otherwise does nothing.
+      @return true if the file editor was already opened, false otherwise
+    */
+    bool setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
 
-    void editorSaved();
+    openfluid::waresdev::WareSrcContainer& wareSrcContainer();
 
-    void currentTabChanged(const QString& Path);
+    bool isWareModified();
 
-    void findReplaceRequested();
+    void closeAllFileTabs();
 
-    void openTerminalRequested();
+    WareFileEditor* currentEditor();
 
-    void openExplorerRequested();
+    QString getCurrentFilePath();
 
-    void modifiedStatusChanged(bool CurrentEditorModified, bool WareModified);
+    int closeFileTab(const QString& Path);
 
-    void openAPIDocRequested();
+    void checkModifiedStatus();
+
+    void updateEditorsSettings();
+
 };
 
+
 } } }  // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__ */

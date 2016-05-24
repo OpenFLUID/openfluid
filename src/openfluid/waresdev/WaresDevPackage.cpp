@@ -37,6 +37,7 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <QSettings>
 #include <QApplication>
 

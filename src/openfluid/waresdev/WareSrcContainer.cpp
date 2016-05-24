@@ -37,7 +37,6 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/waresdev/WareSrcContainer.hpp>
 
 #include <QDir>
 
@@ -47,16 +46,12 @@
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/config.hpp>
-
+#include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/waresdev/WareSrcMsgParser.hpp>
 #include <openfluid/waresdev/OStreamMsgStream.hpp>
 
 
 namespace openfluid { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware::WareType Type,
@@ -593,10 +588,6 @@ QList<WareSrcMsgParser::WareSrcMsg> WareSrcContainer::getMessages()
 {
   return m_Messages;
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces

@@ -36,7 +36,6 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ui_WareSrcWidget.h"
 
 #include <QList>
 #include <QDir>
@@ -55,12 +54,10 @@
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/waresdev/WareshubJsonEditor.hpp>
 
+#include "ui_WareSrcWidget.h"
+
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
@@ -782,10 +779,6 @@ void WareSrcWidget::updateEditorsSettings()
   for (WareFileEditor* Editor : m_WareFilesByPath.values())
     Editor->updateSettings();
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } // namespaces

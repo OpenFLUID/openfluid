@@ -37,18 +37,15 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <openfluid/waresdev/WareSrcMsgParser.hpp>
 
 
 namespace openfluid { namespace waresdev {
 
 
-// =====================================================================
-// =====================================================================
-
-
 WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLine,
-  WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType)
+                                                        WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType)
 {
   WareSrcMsgParser::WareSrcMsg Msg(MessageLine);
 
@@ -104,10 +101,6 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& Message
 
   return Msg;
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces

@@ -41,13 +41,19 @@
 #ifndef __OPENFLUID_UIWARESDEV_FINDREPLACEDIALOG_HPP__
 #define __OPENFLUID_UIWARESDEV_FINDREPLACEDIALOG_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QDialog>
 #include <QTextDocument>
 
-namespace Ui { class FindReplaceDialog;
+#include <openfluid/dllexport.hpp>
+
+
+namespace Ui {
+
+class FindReplaceDialog;
+
 }
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -63,28 +69,13 @@ class OPENFLUID_API FindReplaceDialog: public QDialog
       FindOnly, ReplaceOnly, ReplaceFind, ReplaceAll
     };
 
+
   private:
 
     Ui::FindReplaceDialog* ui;
 
     QTextDocument::FindFlags getFindOptions();
 
-  public:
-
-    FindReplaceDialog(QWidget* Parent);
-
-    ~FindReplaceDialog();
-
-    void setMessage(const QString& Message, bool TextFound);
-
-  signals :
-
-    void findReplaceRequested(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
-                              const QString& StringForReplace, QTextDocument::FindFlags Flags);
-
-  public slots:
-
-    void show(const QString& SelectedText);
 
   private slots:
 
@@ -97,6 +88,27 @@ class OPENFLUID_API FindReplaceDialog: public QDialog
     void onReplaceFindClicked();
 
     void onReplaceAllClicked();
+
+
+  signals :
+
+    void findReplaceRequested(FindReplaceDialog::FindReplaceAction Action, const QString& StringToFind,
+                              const QString& StringForReplace, QTextDocument::FindFlags Flags);
+
+
+  public slots:
+
+    void show(const QString& SelectedText);
+
+
+  public:
+
+    FindReplaceDialog(QWidget* Parent);
+
+    ~FindReplaceDialog();
+
+    void setMessage(const QString& Message, bool TextFound);
+
 };
 
 

@@ -58,9 +58,9 @@ class OPENFLUID_API ClickableLabel : public QLabel
     void mouseDoubleClickEvent(QMouseEvent* Event);
 
 
-   signals:
+  signals:
 
-      void clicked();
+    void clicked();
 
 
   public:

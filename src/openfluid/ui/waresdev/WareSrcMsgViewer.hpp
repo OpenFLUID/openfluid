@@ -41,10 +41,10 @@
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCMSGVIEWER_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCMSGVIEWER_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QPlainTextEdit>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcMsgParser.hpp>
 
 
@@ -61,15 +61,6 @@ class OPENFLUID_API WareSrcMsgViewer: public QPlainTextEdit
 
     QMap<int, openfluid::waresdev::WareSrcMsgParser::WareSrcMsg> m_MessagesByBlockNumber;
 
-  public:
-
-    WareSrcMsgViewer(QWidget* Parent = nullptr);
-
-    ~WareSrcMsgViewer();
-
-    void clearMessages();
-
-    void writeMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
 
   protected:
 
@@ -78,6 +69,18 @@ class OPENFLUID_API WareSrcMsgViewer: public QPlainTextEdit
   signals:
 
     void messageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+
+
+  public:
+
+    WareSrcMsgViewer(QWidget* Parent = nullptr);
+
+    ~WareSrcMsgViewer();
+
+    void clearMessages();
+
+    void writeMessage(const openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+
 };
 
 

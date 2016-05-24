@@ -41,8 +41,8 @@
 #ifndef __OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP__
 #define __OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP__
 
-#include <openfluid/dllexport.hpp>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcMsgParser.hpp>
 
 
@@ -59,7 +59,7 @@ class OPENFLUID_API WareSrcMsgStream
 
     virtual void clear() = 0;
 
-    virtual void write(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg) = 0;
+    virtual void write(const openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg) = 0;
 };
 
 

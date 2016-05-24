@@ -45,26 +45,35 @@
 
 #include <openfluid/dllexport.hpp>
 
-namespace Ui { class WareGitDialog;
+
+namespace Ui {
+class WareGitDialog;
 }
 
+
 namespace openfluid { namespace ui { namespace waresdev {
+
 
 class OPENFLUID_API WareGitDialog: public QDialog
 {
   Q_OBJECT
 
+
   private:
 
     Ui::WareGitDialog* ui;
+
 
   public:
 
     WareGitDialog(QWidget* Parent = nullptr);
 
     void setContent(const QString& Content);
+
 };
 
+
 } } } // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WAREGITDIALOG_HPP__ */

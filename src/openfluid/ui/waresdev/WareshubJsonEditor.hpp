@@ -42,21 +42,27 @@
 
 
 #include <rapidjson/document.h>
+
 #include <QLineEdit>
 #include <QComboBox>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
 #include <openfluid/ui/waresdev/WareshubIssueDialog.hpp>
 
-namespace Ui { class WareshubJsonEditor;
+
+namespace Ui {
+class WareshubJsonEditor;
 }
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
+
 class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
 {
   Q_OBJECT
+
 
   private:
 
@@ -119,15 +125,37 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
     QMap<QString, WareshubIssueDialog::Issue> m_IssuesByID;
 
     void jsonStringArrayToLineEdit(const QString& Key, QLineEdit* LineEdit);
+
     void lineEditToJsonStringArray(const QString& Key, QLineEdit* LineEdit);
 
     void jsonStringToComboBox(const QString& Key, QComboBox* Combo);
+
     void comboBoxToJsonString(const QString& Key, QComboBox* Combo);
 
     void jsonIssuesToIssuesMap();
+
     void issuesMapToJsonIssues();
 
     void updateIssuesTable();
+
+
+  private slots:
+
+    void onChanged();
+
+    void onRemoveIssueClicked();
+
+    void onEditIssueClicked();
+
+    void onAddIssueClicked();
+
+
+  signals :
+
+    void editorChanged(WareFileEditor* Editor, bool Changed);
+
+    void editorSaved();
+
 
   public:
 
@@ -151,62 +179,39 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
     QWidget* getWidget();
 
     void clearLineMessages()
-    {
-    }
+    { }
 
     void addLineMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg /*Message*/)
-    {
-    }
+    { }
 
     void updateLineNumberArea()
-    {
-    }
+    { }
 
     void copy()
-    {
-    }
+    { }
 
     void cut()
-    {
-    }
+    { }
 
     void paste()
-    {
-    }
+    { }
 
     void selectLine(int /*LineNumber*/)
-    {
-    }
+    { }
 
     void goToLine()
-    {
-    }
+    { }
 
     void updateSettings()
-    {
-    }
+    { }
 
     void setFocus()
-    {
-    }
+    { }
 
-  private slots:
-
-    void onChanged();
-
-    void onRemoveIssueClicked();
-
-    void onEditIssueClicked();
-
-    void onAddIssueClicked();
-
-  signals :
-
-    void editorChanged(WareFileEditor* Editor, bool Changed);
-
-    void editorSaved();
 };
 
+
 } } } // namespaces
+
 
 #endif /* __OPENFLUID_UIWARESDEV_WARESHUBJSONEDITOR_HPP__ */
