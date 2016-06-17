@@ -296,6 +296,7 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
   {
     QApplication::restoreOverrideCursor();
     QMessageBox::critical(nullptr,tr("Project error"),QString(E.getMessage().c_str()));
+    setHomeModule();
     return false;
   }
 
