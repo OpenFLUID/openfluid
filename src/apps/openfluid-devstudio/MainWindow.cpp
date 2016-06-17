@@ -128,6 +128,7 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
   connect(m_Actions["OpenObserver"], SIGNAL(triggered()), mp_Collection, SLOT(openObserver()));
   connect(m_Actions["OpenExtension"], SIGNAL(triggered()), mp_Collection, SLOT(openBuilderExtension()));
   connect(m_Actions["SaveAsFile"], SIGNAL(triggered()), mp_Collection, SLOT(saveAsMayBeAboveWare()));
+  connect(m_Actions["CloseWares"], SIGNAL(triggered()), this, SLOT(onCloseAllWaresRequested()));
   connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this, SLOT(onDeleteWareRequested()));
   // TODO to enable again when developped
   //connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this, SLOT(showNotYetImplemented()));
@@ -226,6 +227,8 @@ void MainWindow::createLocalActions()
   m_Actions["SaveAsFile"] = new QAction(QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
   m_Actions["SaveAsFile"]->setToolTip(tr("Save the current file as..."));
 
+  m_Actions["CloseWares"] = new QAction(tr("Close all wares"), this);
+
   m_Actions["DeleteWare"] = new QAction(tr("Delete ware"), this);
 
   // TODO to enable again when developped
@@ -276,6 +279,7 @@ void MainWindow::createMenus()
   SubMenu->addAction(m_Actions["OpenSimulator"]);
   SubMenu->addAction(m_Actions["OpenObserver"]);
   SubMenu->addAction(m_Actions["OpenExtension"]);
+  Menu->addAction(m_Actions["CloseWares"]);
   Menu->addAction(m_Actions["DeleteWare"]);
   Menu->addSeparator();
   Menu->addAction(mp_Toolbar->action("NewFile"));
@@ -528,6 +532,17 @@ void MainWindow::onDeleteWareRequested()
     if (WarePath != "")
       mp_Collection->deleteWare(WarePath);
   }
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onCloseAllWaresRequested()
+{
+  mp_Collection->closeAllWidgets();
 }
 
 
