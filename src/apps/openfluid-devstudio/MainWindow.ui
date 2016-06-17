@@ -24,14 +24,14 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QTabWidget" name="TabWidget">
+      <widget class="QTabWidget" name="WaresTabWidget">
        <property name="currentIndex">
         <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideRight</enum>
        </property>
-       <widget class="QWidget" name="SimPage" native="true">
+       <widget class="QWidget" name="SimPage">
         <attribute name="title">
          <string>Simulators</string>
         </attribute>
@@ -46,9 +46,33 @@
            </attribute>
           </widget>
          </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="openfluid::ui::common::ActionLabel" name="CollapseAllSimActionLabel">
+             <property name="text">
+              <string>collapse all</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="ObsPage" native="true">
+       <widget class="QWidget" name="ObsPage">
         <attribute name="title">
          <string>Observers</string>
         </attribute>
@@ -63,9 +87,33 @@
            </attribute>
           </widget>
          </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="openfluid::ui::common::ActionLabel" name="CollapseAllObsActionLabel">
+             <property name="text">
+              <string>collapse all</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="ExtPage" native="true">
+       <widget class="QWidget" name="ExtPage">
         <attribute name="title">
          <string>Builder extensions</string>
         </attribute>
@@ -79,6 +127,30 @@
             <bool>false</bool>
            </attribute>
           </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="openfluid::ui::common::ActionLabel" name="CollapseAllExtActionLabel">
+             <property name="text">
+              <string>collapse all</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -118,6 +190,11 @@
    <class>openfluid::ui::waresdev::WareSrcExplorer</class>
    <extends>QTreeView</extends>
    <header location="global">openfluid/ui/waresdev/WareSrcExplorer.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>openfluid::ui::common::ActionLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">openfluid/ui/common/ActionLabel.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

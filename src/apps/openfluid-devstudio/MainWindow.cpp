@@ -107,6 +107,8 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
 
   openfluid::waresdev::WareSrcManager* Manager = openfluid::waresdev::WareSrcManager::instance();
 
+  ui->WaresTabWidget->setCurrentIndex(0);
+
   ui->SimExplorer->configure(Manager->getWareTypePath(openfluid::ware::WareType::SIMULATOR), true);
   ui->ObsExplorer->configure(Manager->getWareTypePath(openfluid::ware::WareType::OBSERVER), true);
   ui->ExtExplorer->configure(Manager->getWareTypePath(openfluid::ware::WareType::BUILDEREXT), true);
@@ -181,6 +183,10 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
   connect(mp_Collection, SIGNAL(currentTabChanged(const QString&)), this, SLOT(setCurrentPath(const QString&)));
   connect(mp_Collection, SIGNAL(modifiedStatusChanged(bool, bool)), this, SLOT(updateSaveButtonsStatus(bool, bool)));
   connect(mp_Collection, SIGNAL(editorSaved()), this, SLOT(updateExplorer()));
+
+  connect(ui->CollapseAllSimActionLabel, SIGNAL(clicked()), ui->SimExplorer, SLOT(collapseAll()));
+  connect(ui->CollapseAllObsActionLabel, SIGNAL(clicked()), ui->ObsExplorer, SLOT(collapseAll()));
+  connect(ui->CollapseAllExtActionLabel, SIGNAL(clicked()), ui->ExtExplorer, SLOT(collapseAll()));
 
   Splash->setMessage(tr("Initializing workspace"));
 
@@ -479,11 +485,11 @@ void MainWindow::closeEvent(QCloseEvent* Event)
 void MainWindow::setCurrentPath(const QString& Path)
 {
   if (ui->SimExplorer->setCurrentPath(Path))
-    ui->TabWidget->setCurrentWidget(ui->SimPage);
+    ui->WaresTabWidget->setCurrentWidget(ui->SimPage);
   else if (ui->ObsExplorer->setCurrentPath(Path))
-    ui->TabWidget->setCurrentWidget(ui->ObsPage);
+    ui->WaresTabWidget->setCurrentWidget(ui->ObsPage);
   else if (ui->ExtExplorer->setCurrentPath(Path))
-    ui->TabWidget->setCurrentWidget(ui->ExtPage);
+    ui->WaresTabWidget->setCurrentWidget(ui->ExtPage);
 }
 
 
@@ -506,7 +512,7 @@ void MainWindow::updateSaveButtonsStatus(bool FileModified, bool WareModified)
 
 void MainWindow::onDeleteWareRequested()
 {
-  QWidget* CurrentWidget = ui->TabWidget->currentWidget();
+  QWidget* CurrentWidget = ui->WaresTabWidget->currentWidget();
   QString SelectedPath = "";
 
   if (CurrentWidget == ui->SimPage)
@@ -532,7 +538,7 @@ void MainWindow::onDeleteWareRequested()
 void MainWindow::updateExplorer()
 {
   QString CurrentWarePath = mp_Collection->getCurrentWarePath();
-  QWidget* CurrentWidget = ui->TabWidget->currentWidget();
+  QWidget* CurrentWidget = ui->WaresTabWidget->currentWidget();
 
   if (CurrentWidget == ui->SimPage)
     ui->SimExplorer->updateExplorerModel(CurrentWarePath);
