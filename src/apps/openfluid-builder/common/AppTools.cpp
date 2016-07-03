@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -92,10 +92,20 @@ void launchDevStudio()
   ExeName += ".exe";
 #endif
 
+#if defined OPENFLUID_OS_MAC
+  ExeName += ".app";
+#endif
+
   QString ExePath = QApplication::applicationDirPath()+"/"+ExeName;
 
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+#if defined OPENFLUID_OS_MAC
+  bool ExecOK = QProcess::startDetached("open",QStringList("/Applications/"+ExeName));
+#else
   bool ExecOK = QProcess::startDetached(ExePath);
+#endif
+
+
   QApplication::restoreOverrideCursor();
 
   if (!ExecOK)
@@ -103,4 +113,3 @@ void launchDevStudio()
                           QObject::tr("OpenFLUID-DevStudio could not be launched"),
                           QMessageBox::Close);
 }
-

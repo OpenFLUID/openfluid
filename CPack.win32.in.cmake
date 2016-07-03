@@ -1,6 +1,6 @@
 SET(CPACK_GENERATOR "NSIS")
 SET(CPACK_SOURCE_GENERATOR "ZIP")
-SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/resources/packaging;${CMAKE_MODULE_PATH}")        
+SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/resources/packaging/windows;${CMAKE_MODULE_PATH}")        
 
 SET(CPACK_PACKAGE_INSTALL_DIRECTORY "OpenFLUID-${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}")
   
@@ -10,7 +10,7 @@ SET(CPACK_NSIS_DISPLAY_NAME "OpenFLUID")
 SET(CPACK_NSIS_HELP_LINK "http://www.openfluid-project.org/")
 SET(CPACK_NSIS_URL_INFO_ABOUT "http://www.openfluid-project.org/")
 SET(CPACK_NSIS_CONTACT "OpenFLUID contact <contact@openfluid-project.org>")  
-SET(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/resources/packaging\\\\OF_logo.bmp")  
+SET(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/resources/packaging/windows\\\\OF_logo.bmp")  
 SET(CPACK_NSIS_MENU_LINKS 
     "http://www.openfluid-project.org/" "OpenFLUID web site"
     "http://www.openfluid-project.org/community/" "OpenFLUID community site")

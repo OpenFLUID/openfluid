@@ -71,7 +71,7 @@ FIND_PACKAGE(OpenFLUIDHelpers)
 
 
 # Set default build type (if not already set)
-IF(NOT CMAKE_BUILD_TYPE) 
+IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE "Debug")
 ENDIF()
 
@@ -123,20 +123,20 @@ FILE(MAKE_DIRECTORY "${OFBUILD_DIST_SIMULATORS_DOC_DIR}")
 
 IF(OFBUILD_ENABLE_TESTING)
   INCLUDE(CTest)
-  ENABLE_TESTING()  
+  ENABLE_TESTING()
   FILE(MAKE_DIRECTORY ${OFBUILD_TESTS_USERDATA_DIR})
   FILE(MAKE_DIRECTORY ${OFBUILD_TESTS_TEMP_DIR})
-ENDIF()  
+ENDIF()
 
 ADD_SUBDIRECTORY(resources)
 
-ADD_SUBDIRECTORY(src)  
+ADD_SUBDIRECTORY(src)
 
 ADD_SUBDIRECTORY(examples)
 
 IF(BUILD_DOCS)
   ADD_SUBDIRECTORY(doc)
-ENDIF()  
+ENDIF()
 
 
 
@@ -146,19 +146,19 @@ INCLUDE(CPack.in.cmake)
 # Installation of common files
 INSTALL(FILES "COPYING"
         "AUTHORS"
-        "README.md"   
+        "README.md"
         "CHANGELOG"
         DESTINATION "${OPENFLUID_DOC_INSTALL_PATH}")
-  
-  
-FILE(COPY "share/" 
+
+
+FILE(COPY "share/"
      DESTINATION "${OFBUILD_DIST_DIR}/${OFBUILD_SHARE_INSTALL_PATH}"
      PATTERN ".svn" EXCLUDE)
-            
-INSTALL(DIRECTORY "share" 
+
+INSTALL(DIRECTORY "share"
         DESTINATION "." PATTERN ".svn" EXCLUDE)
-            
-  
+
+
 # Display of main informations about build configuration
 
 MESSAGE(STATUS "****************************************")
@@ -166,7 +166,7 @@ MESSAGE(STATUS "OpenFLUID version: ${OPENFLUID_VERSION_FULL} (numeric: ${OPENFLU
 MESSAGE(STATUS "System architecture: ${OFBUILD_SYSTEM_ARCH}")
 MESSAGE(STATUS "Distribution architecture: ${OFBUILD_DISTRO_ARCH}")
 MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")  
+MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
 MESSAGE(STATUS "Compiler flags: ${CMAKE_CXX_FLAGS}")
 MESSAGE(STATUS "Extra compiler flags for ${CMAKE_BUILD_TYPE}: ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
 MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
@@ -175,66 +175,66 @@ MESSAGE(STATUS "****************************************")
 
 MESSAGE(STATUS "Build optional libraries")
 IF(OFBUILD_ENABLE_LANDR)
-  MESSAGE(STATUS "  openfluid-landr : yes")  
+  MESSAGE(STATUS "  openfluid-landr : yes")
 ELSE()
-  MESSAGE(STATUS "  openfluid-landr : no")  
+  MESSAGE(STATUS "  openfluid-landr : no")
 ENDIF()
 
 IF(OFBUILD_ENABLE_GUI)
-  MESSAGE(STATUS "  openfluid-ui-* : yes")  
+  MESSAGE(STATUS "  openfluid-ui-* : yes")
 ELSE()
-  MESSAGE(STATUS "  openfluid-ui-* : no")  
+  MESSAGE(STATUS "  openfluid-ui-* : no")
 ENDIF()
 
 IF(OFBUILD_ENABLE_MARKET)
-  MESSAGE(STATUS "  openfluid-market : yes")  
+  MESSAGE(STATUS "  openfluid-market : yes")
 ELSE()
-  MESSAGE(STATUS "  openfluid-market : no")  
+  MESSAGE(STATUS "  openfluid-market : no")
 ENDIF()
 
 
 MESSAGE(STATUS "Build applications")
 IF(OFBUILD_ENABLE_APP_CMD)
-  MESSAGE(STATUS "  openfluid (cmd. line) : yes")  
+  MESSAGE(STATUS "  openfluid (cmd. line) : yes")
 ELSE()
-  MESSAGE(STATUS "  openfluid (command line) : no")  
+  MESSAGE(STATUS "  openfluid (command line) : no")
 ENDIF()
 
 IF(OFBUILD_ENABLE_APP_MINIMAL)
-  MESSAGE(STATUS "  openfluid-minimal : yes")  
+  MESSAGE(STATUS "  openfluid-minimal : yes")
 ELSE()
-  MESSAGE(STATUS "  openfluid-minimal : no")  
+  MESSAGE(STATUS "  openfluid-minimal : no")
 ENDIF()
 
 IF(OFBUILD_ENABLE_APP_BUILDER AND OFBUILD_ENABLE_GUI)
-  MESSAGE(STATUS "  openfluid-builder : yes")  
+  MESSAGE(STATUS "  openfluid-builder : yes")
 ELSE()
-  MESSAGE(STATUS "  openfluid-builder : no")  
+  MESSAGE(STATUS "  openfluid-builder : no")
 ENDIF()
 
 IF(OFBUILD_ENABLE_APP_DEVSTUDIO AND OFBUILD_ENABLE_GUI)
-  MESSAGE(STATUS "  openfluid-devstudio : yes")  
+  MESSAGE(STATUS "  openfluid-devstudio : yes")
 ELSE()
-  MESSAGE(STATUS "  openfluid-devstudio : no")  
+  MESSAGE(STATUS "  openfluid-devstudio : no")
 ENDIF()
-  
+
 IF(OFBUILD_ENABLE_APP_LOGEXPLORER AND OFBUILD_ENABLE_GUI)
-  MESSAGE(STATUS "  openfluid-logexplorer : yes")  
+  MESSAGE(STATUS "  openfluid-logexplorer : yes")
 ELSE()
-  MESSAGE(STATUS "  openfluid-logexplorer : no")  
-ENDIF()  
+  MESSAGE(STATUS "  openfluid-logexplorer : no")
+ENDIF()
 
 
 MESSAGE(STATUS "Build tests")
 IF(OFBUILD_ENABLE_TESTING)
-  MESSAGE(STATUS "  basic : yes")  
+  MESSAGE(STATUS "  basic : yes")
 ELSE()
-  MESSAGE(STATUS "  basic : no")  
+  MESSAGE(STATUS "  basic : no")
 ENDIF()
 IF(OFBUILD_ENABLE_HEAVYTESTING)
-  MESSAGE(STATUS "  heavy : yes")  
+  MESSAGE(STATUS "  heavy : yes")
 ELSE()
-  MESSAGE(STATUS "  heavy : no")  
+  MESSAGE(STATUS "  heavy : no")
 ENDIF()
 
 
@@ -242,21 +242,15 @@ MESSAGE(STATUS "Build documentation")
 IF(BUILD_DOCS AND DOXYGEN)
   IF(PDFLATEX_COMPILER)
     MESSAGE(STATUS "  html : yes")
-    MESSAGE(STATUS "  pdf : yes") 
+    MESSAGE(STATUS "  pdf : yes")
   ELSE()
     MESSAGE(STATUS "  html : yes")
-    MESSAGE(STATUS "  pdf : no") 
+    MESSAGE(STATUS "  pdf : no")
   ENDIF()
 ELSE()
   MESSAGE(STATUS "  html : no")
-  MESSAGE(STATUS "  pdf : no") 
+  MESSAGE(STATUS "  pdf : no")
 ENDIF()
 
 
 MESSAGE(STATUS "****************************************")
-
-
-
-
-
-

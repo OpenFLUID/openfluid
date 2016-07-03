@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -222,6 +222,12 @@ QString ExternalProgram::findUsingPATHEnvVar(const QStringList& ProgramNames)
     PathsList = PATHStr.split(";",QString::SkipEmptyParts);
 #endif
   }
+
+#if defined(OPENFLUID_OS_UNIX)
+  if (!PathsList.contains("/usr/local/bin"))
+   PathsList.append("/usr/local/bin");
+#endif
+
 
   return findUsingPathsList(ProgramNames,PathsList);
 }

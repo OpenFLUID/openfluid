@@ -1,0 +1,47 @@
+#!/bin/bash
+
+
+function findBrewPackage()
+{
+  for P in $1
+  do
+    if [ "$P" = "$2" ]
+    then
+#      echo "found $2"
+      return
+    fi
+  done
+
+  exit 2
+}
+
+
+#######################################################################
+
+
+export PATH=$PATH:/usr/local/bin
+
+
+# check if brew is installed
+
+BREW_CMD=`which brew`
+
+if [ -z "$BREW_CMD" ]
+then
+  exit 1
+fi
+
+
+# check if required packages are installed with brew
+
+BREW_PACK_LIST=`$BREW_CMD list`
+
+findBrewPackage "$BREW_PACK_LIST" cmake
+findBrewPackage "$BREW_PACK_LIST" doxygen
+findBrewPackage "$BREW_PACK_LIST" qt
+findBrewPackage "$BREW_PACK_LIST" gdal
+findBrewPackage "$BREW_PACK_LIST" boost
+findBrewPackage "$BREW_PACK_LIST" geos
+
+
+exit 0

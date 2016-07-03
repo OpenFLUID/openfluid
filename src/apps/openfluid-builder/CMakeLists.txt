@@ -5,38 +5,38 @@ INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 
 INCLUDE_DIRECTORIES(base common datastore model monitoring spatial outputs runconfig extensions)
-  
+
 
 ### BASE #
 
 SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp base/WaresTranslationsRegistry.cpp
-                     base/BuilderApp.cpp base/MainWindow.cpp 
-                     base/HomeModule.cpp base/HomeWidget.cpp                       
-                     base/ProjectModule.cpp base/ProjectWidget.cpp                     
+                     base/BuilderApp.cpp base/MainWindow.cpp
+                     base/HomeModule.cpp base/HomeWidget.cpp
+                     base/ProjectModule.cpp base/ProjectWidget.cpp
                      base/ProjectCentral.cpp base/ProjectCheckInfos.cpp
                      base/NewProjectDialog.cpp
                      base/OpenExampleProjectDialog.cpp
                      base/StatusMessagesWidget.cpp
-                     base/DashboardFrame.cpp 
+                     base/DashboardFrame.cpp
                      base/DashboardWidget.cpp base/DashboardInfosWidget.cpp base/DashboardStatusWidget.cpp
                      base/SaveAsDialog.cpp
                      base/NewslineWidget.cpp base/NewsItemWidget.cpp base/NewslineDownloadWorker.cpp
                      base/EditProjectPropertiesDialog.cpp
                      )
-                     
+
 SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp base/WaresTranslationsRegistry.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
                      base/HomeModule.hpp base/HomeWidget.hpp
-                     base/ProjectModule.hpp base/ProjectWidget.hpp                     
+                     base/ProjectModule.hpp base/ProjectWidget.hpp
                      base/ProjectCentral.hpp base/ProjectCheckInfos.hpp
                      base/NewProjectDialog.hpp
                      base/OpenExampleProjectDialog.hpp
                      base/StatusMessagesWidget.hpp
-                     base/DashboardFrame.hpp 
+                     base/DashboardFrame.hpp
                      base/DashboardWidget.hpp base/DashboardInfosWidget.hpp base/DashboardStatusWidget.hpp
                      base/SaveAsDialog.hpp
                      base/NewslineWidget.hpp base/NewsItemWidget.hpp base/NewslineDownloadWorker.hpp
-                     base/EditProjectPropertiesDialog.hpp         
+                     base/EditProjectPropertiesDialog.hpp
                      )
 
 QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
@@ -53,18 +53,18 @@ QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
 
 ### COMMON #
 
-SET(BUILDER_COMMON_CPP common/AppTools.cpp                       
-                       common/WaresManagementWidget.cpp common/WareWidget.cpp common/ClickableWareWidget.cpp 
+SET(BUILDER_COMMON_CPP common/AppTools.cpp
+                       common/WaresManagementWidget.cpp common/WareWidget.cpp common/ClickableWareWidget.cpp
                        common/SignatureWidget.cpp common/ParameterWidget.cpp
                        common/AddWareDialog.cpp
                        common/AddParamDialog.cpp
                        )
-                     
+
 SET(BUILDER_COMMON_HPP common/AbstractModule.hpp common/AbstractMainWidget.hpp
                        common/WorkspaceWidget.hpp
                        common/AppTools.hpp
-                       common/WaresManagementWidget.hpp common/WareWidget.hpp common/ClickableWareWidget.hpp 
-                       common/SignatureWidget.hpp common/ParameterWidget.hpp  
+                       common/WaresManagementWidget.hpp common/WareWidget.hpp common/ClickableWareWidget.hpp
+                       common/SignatureWidget.hpp common/ParameterWidget.hpp
                        common/AddWareDialog.hpp
                        common/AddParamDialog.hpp
                       )
@@ -82,7 +82,7 @@ SET(BUILDER_MODEL_CPP model/ModelWidget.cpp
                       model/SimulatorWidget.cpp
                       model/GeneratorWidget.cpp
                       model/ModelScene.cpp model/ModelView.cpp
-                      model/ModelItemGraphics.cpp 
+                      model/ModelItemGraphics.cpp
                       model/SimulatorGraphics.cpp model/GeneratorGraphics.cpp
                       model/ConnectorGraphics.cpp
                       model/AddSimulatorDialog.cpp model/AddGeneratorDialog.cpp
@@ -92,9 +92,9 @@ SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
                       model/SimulatorWidget.hpp
                       model/GeneratorWidget.hpp
                       model/ModelScene.hpp model/ModelView.hpp
-                      model/ModelItemGraphics.hpp 
+                      model/ModelItemGraphics.hpp
                       model/SimulatorGraphics.hpp model/GeneratorGraphics.hpp
-                      model/ConnectorGraphics.hpp 
+                      model/ConnectorGraphics.hpp
                       model/AddSimulatorDialog.hpp model/AddGeneratorDialog.hpp
                      )
 
@@ -108,11 +108,11 @@ QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
 SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
                         spatial/UnitsClassWidget.cpp
                         spatial/MapScene.cpp spatial/MapView.cpp
-                        spatial/MapItemGraphics.cpp 
+                        spatial/MapItemGraphics.cpp
                         spatial/PunctualGraphics.cpp spatial/LinearGraphics.cpp spatial/SurfacicGraphics.cpp
                         spatial/PointGraphics.cpp spatial/MultiPointGraphics.cpp
-                        spatial/LineStringGraphics.cpp spatial/MultiLineStringGraphics.cpp 
-                        spatial/PolygonGraphics.cpp spatial/MultiPolygonGraphics.cpp 
+                        spatial/LineStringGraphics.cpp spatial/MultiLineStringGraphics.cpp
+                        spatial/PolygonGraphics.cpp spatial/MultiPolygonGraphics.cpp
                         spatial/EditAttributesValuesDialog.cpp
                         spatial/EditAttributeNameDialog.cpp
                         spatial/AddUnitDialog.cpp spatial/AddUnitsClassDialog.cpp spatial/AddUnitToClassDialog.cpp
@@ -124,11 +124,11 @@ SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
 SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
                         spatial/UnitsClassWidget.hpp
                         spatial/MapScene.hpp spatial/MapView.hpp
-                        spatial/MapItemGraphics.hpp 
+                        spatial/MapItemGraphics.hpp
                         spatial/PunctualGraphics.hpp spatial/LinearGraphics.hpp spatial/SurfacicGraphics.hpp
                         spatial/PointGraphics.hpp spatial/MultiPointGraphics.hpp
-                        spatial/LineStringGraphics.hpp spatial/MultiLineStringGraphics.hpp 
-                        spatial/PolygonGraphics.hpp spatial/MultiPolygonGraphics.hpp 
+                        spatial/LineStringGraphics.hpp spatial/MultiLineStringGraphics.hpp
+                        spatial/PolygonGraphics.hpp spatial/MultiPolygonGraphics.hpp
                         spatial/EditAttributesValuesDialog.hpp
                         spatial/EditAttributeNameDialog.hpp
                         spatial/AddUnitDialog.hpp spatial/AddUnitsClassDialog.hpp spatial/AddUnitToClassDialog.hpp
@@ -201,12 +201,12 @@ QT4_WRAP_UI(BUILDER_OUTPUTS_UI outputs/OutputsWidget.ui
 
 ### EXTENSION #
 
-SET(BUILDER_EXTENSIONS_CPP extensions/ExtensionPluginsManager.cpp 
+SET(BUILDER_EXTENSIONS_CPP extensions/ExtensionPluginsManager.cpp
                            extensions/ExtensionContainer.cpp
                            extensions/ExtensionsRegistry.cpp
                           )
 
-SET(BUILDER_EXTENSIONS_HPP extensions/ExtensionPluginsManager.hpp 
+SET(BUILDER_EXTENSIONS_HPP extensions/ExtensionPluginsManager.hpp
                            extensions/ExtensionContainer.hpp
                            extensions/ExtensionsRegistry.hpp
                            )
@@ -224,9 +224,9 @@ IF(WIN32)
   IF(MINGW)
     # resource compilation for MinGW
     ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/resources/openfluidbuilder-win32.o
-                       COMMAND windres.exe 
-                       ARGS -I${CMAKE_CURRENT_SOURCE_DIR}/resources 
-                            -i${CMAKE_CURRENT_SOURCE_DIR}/resources/openfluidbuilder-win32.rc 
+                       COMMAND windres.exe
+                       ARGS -I${CMAKE_CURRENT_SOURCE_DIR}/resources
+                            -i${CMAKE_CURRENT_SOURCE_DIR}/resources/openfluidbuilder-win32.rc
                             -o${CMAKE_CURRENT_BINARY_DIR}/resources/openfluidbuilder-win32.o)
     SET(BUILDER_WIN32RC ${CMAKE_CURRENT_BINARY_DIR}/resources/openfluidbuilder-win32.o)
   ELSE()
@@ -240,12 +240,12 @@ ENDIF()
 
 IF(ENABLE_WARESDEV_BUILDER_INTEGRATION)
   ADD_DEFINITIONS(-DENABLE_WARESDEV_INTEGRATION)
-ENDIF()  
+ENDIF()
 
 
 IF(OFBUILD_ENABLE_MARKET AND OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION)
   ADD_DEFINITIONS(-DENABLE_MARKET_INTEGRATION)
-ENDIF()  
+ENDIF()
 
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP} ${BUILDER_BASE_UI}
@@ -260,7 +260,7 @@ ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP
                                           ${BUILDER_QRC})
 
 
-TARGET_LINK_LIBRARIES(openfluid-builder-main 
+TARGET_LINK_LIBRARIES(openfluid-builder-main
                       ${GDAL_LIBRARIES}
                       ${QT_QTCORE_LIBRARIES}
                       ${QT_QTGUI_LIBRARIES}
@@ -271,7 +271,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-machine
                       openfluid-ware
                       openfluid-tools
-                      openfluid-utils                      
+                      openfluid-utils
                       openfluid-ui-common
                       openfluid-builderext
                       openfluid-fluidx
@@ -283,9 +283,9 @@ IF(OFBUILD_ENABLE_MARKET)
                         openfluid-ui-market
                         openfluid-market)
 ENDIF()
-       
-                      
-SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}" 
+
+
+SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}"
                                         SOVERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}"
                                         LIBRARY_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
                                         RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
@@ -301,12 +301,24 @@ IF(WIN32)
   SET(BUILDER_GUI_OPTION WIN32)
 ENDIF()
 
-ADD_EXECUTABLE(openfluid-builder ${BUILDER_GUI_OPTION} main.cpp ${BUILDER_WIN32RC})
+IF(APPLE)
+  SET(BUILDER_GUI_OPTION MACOSX_BUNDLE )
+  SET(BUILDER_ICON_FILE "resources/icons/openfluid_icon_builder.icns")
+  SET(MACOSX_BUNDLE_ICON_FILE openfluid_icon_builder.icns)
+  SET_SOURCE_FILES_PROPERTIES("resources/icons/openfluid_icon_builder.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+ENDIF()
+
+ADD_EXECUTABLE(openfluid-builder ${BUILDER_GUI_OPTION} main.cpp ${BUILDER_WIN32RC} ${BUILDER_ICON_FILE})
 
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_BIN_DIR}"
                                                    AUTOMOC ON)
 
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES OUTPUT_NAME ${OPENFLUID_BUILDER_APP})
+
+IF(APPLE)
+  SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES MACOSX_BUNDLE_ICON_FILE
+                                                     openfluid_icon_builder.icns)
+ENDIF()
 
 TARGET_LINK_LIBRARIES(openfluid-builder
                       ${GDAL_LIBRARIES}
@@ -327,15 +339,16 @@ IF(OFBUILD_ENABLE_MARKET)
   TARGET_LINK_LIBRARIES(openfluid-builder
                         openfluid-ui-market)
 ENDIF()
-                                   
+
 INSTALL(TARGETS openfluid-builder-main
         RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH}
         LIBRARY DESTINATION ${OFBUILD_LIB_INSTALL_PATH}
         ARCHIVE DESTINATION ${OFBUILD_LIB_INSTALL_PATH})
-               
+
 INSTALL(TARGETS openfluid-builder
-        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH})       
-                                   
+        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH}
+        BUNDLE DESTINATION ${OFBUILD_BIN_INSTALL_PATH})
+
 IF(OFBUILD_ENABLE_TESTING)
   ADD_SUBDIRECTORY(extensions/tests)
-ENDIF()         
+ENDIF()

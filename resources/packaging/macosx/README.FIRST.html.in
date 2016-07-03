@@ -1,0 +1,85 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>OpenFLUID installation instructions for OSX</title>
+
+  <style media="screen" type="text/css">
+    html {
+      color : #555555;
+      font-family : sans-serif;
+      padding : 20px;
+    }
+
+    pre {
+      border : 1px solid #999999;
+      padding : 5px;
+      background-color : #f1f0ef;
+      color : #888888;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    h2 {
+      padding-top : 15px;
+      color : #42556c;
+    }
+    code {
+      background-color : #e7e7e7;
+      border-left : 4px solid #ffa039;
+      padding : 1em;
+    }
+  </style>
+</head>
+
+<body>
+  <center><a href="http://www.openfluid-project.org" target="_blank">www.openfluid-project.org</a></center>
+  <h1>OpenFLUID installation instructions for OSX</h1>
+  <center>version @README_VERSION_FULL@</center>
+  <br/>
+  <h2>Prerequisites</h2>
+  OpenFLUID for OSX relies on packages provided by the <a href="http://brew.sh" target="_blank">Homebrew package manager</a>.
+  Installation instructions for Homebrew are available on <a href="http://brew.sh" target="_blank">http://brew.sh</a>.<br/>
+  <br/>
+  Once the Homebrew manager installed, you have to install the following packages:
+  <ul>
+    <li>cmake</li>
+    <li>doxygen</li>
+    <li>boost</li>
+    <li>qt4</li>
+    <li>gdal</li>
+    <li>geos</li>
+  </ul>
+  <i>command line:</i><br/>
+  <p><code>brew install cmake doxygen boost qt4 gdal geos</code></p><br/>
+  <br/>
+  For full usage of OpenFLUID features, the packages below have to be installed (recommended):
+  <ul>
+    <li>graphviz</li>
+    <li>gnuplot</li>
+    <li>p7zip</li>
+  </ul>
+  <i>command line:</i><br/>
+  <p><code>brew install graphviz gnuplot p7zip</code></p><br/>
+  <br/>
+
+  <h2>Installation of OpenFLUID</h2>
+  To install OpenFLUID, double-click on the <tt>@INSTALLER_PKG_NAME@</tt> file and follow the instructions.<br/>
+  OpenFLUID will be installed in <tt>@OSXPACK_INSTALL_PREFIX@</tt>
+  and shortcuts will be created in the <tt>/Applications</tt> folder.<br/>
+  <br/>
+  <u>Note:</u> The installation may fail if Homebrew and required packages have not been previously installed.
+  <br/>
+
+  <h2>Uninstall</h2>
+  There is no automatic tool to uninstall OpenFLUID for OSX.
+  You have to manually remove the OpenFLUID shortcuts located in the <tt>/Applications</tt> folder
+  and manually remove the files listed below (located in <tt>@OSXPACK_INSTALL_PREFIX@</tt>).
+  <br/>
+  <pre>@FILES_TO_UNINSTALL@</pre>
+
+</body>
+</html>

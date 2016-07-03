@@ -1,0 +1,107 @@
+###
+### Usage: cmake -P ofpack-osxdmgbuild.cmake
+###
+
+
+
+SET(SOURCE_DIR @CMAKE_SOURCE_DIR@)
+SET(BUILD_DIR @CMAKE_BINARY_DIR@)
+
+SET(OSXPACK_DIR "${BUILD_DIR}/_osx_packaging")
+SET(PKG_BUILD_DIR "${OSXPACK_DIR}/pkg")
+SET(PKGROOT_BUILD_DIR "${PKG_BUILD_DIR}/root")
+SET(PKGSCRIPTS_BUILD_DIR "${PKG_BUILD_DIR}/scripts")
+SET(DMG_BUILD_DIR "${OSXPACK_DIR}/dmg")
+
+SET(INSTALLER_PKG_NAME "OpenFLUIDinstaller.pkg")
+
+SET(OSXPACK_INSTALL_PREFIX @CMAKE_INSTALL_PREFIX@)
+
+# Prepare temporary directories for build
+FILE(REMOVE_RECURSE "${OSXPACK_DIR}")
+FILE(MAKE_DIRECTORY "${PKG_BUILD_DIR}")
+FILE(MAKE_DIRECTORY "${PKGROOT_BUILD_DIR}")
+FILE(MAKE_DIRECTORY "${PKGSCRIPTS_BUILD_DIR}")
+FILE(MAKE_DIRECTORY "${DMG_BUILD_DIR}")
+
+
+#############################################################################
+
+
+# detection of required command line tools
+
+FIND_PROGRAM(_PKGBUILD_PROGRAM NAME "pkgbuild"
+                               HINTS /usr/local/bin /usr/bin)
+
+IF (NOT _PKGBUILD_PROGRAM)
+  MESSAGE(FATAL_ERROR "Error : pkgbuild not found.")
+ENDIF()
+
+
+FIND_PROGRAM(_HDIUTIL_PROGRAM NAME "hdiutil"
+                              HINTS /usr/local/bin /usr/bin)
+
+IF (NOT _HDIUTIL_PROGRAM)
+  MESSAGE(FATAL_ERROR "Error : hdiutil not found.")
+ENDIF()
+
+
+#############################################################################
+#############################################################################
+
+
+MESSAGE(STATUS "Running fake install ------------------")
+
+EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" "--build" "${BUILD_DIR}"
+                                           "--target" "install"
+                                           "--" "DESTDIR=${PKGROOT_BUILD_DIR}")
+
+
+#############################################################################
+
+
+MESSAGE(STATUS "Copying package scripts ------------------")
+
+# copy pre and post installation scripts
+FILE(COPY "${BUILD_DIR}/resources/packaging/macosx/preinstall" DESTINATION "${PKGSCRIPTS_BUILD_DIR}"
+          FILE_PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+FILE(COPY "${BUILD_DIR}/resources/packaging/macosx/postinstall" DESTINATION "${PKGSCRIPTS_BUILD_DIR}"
+          FILE_PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+
+
+#############################################################################
+
+
+MESSAGE(STATUS "Building .pkg package (${_PKGBUILD_PROGRAM}) ------------------")
+
+EXECUTE_PROCESS(COMMAND "${_PKGBUILD_PROGRAM}" "--identifier" "org.lisah.openfluid"
+                                               "--root" "${PKGROOT_BUILD_DIR}"
+                                               "--scripts" "${PKGSCRIPTS_BUILD_DIR}"
+                                               "--install-location" "/"
+                                               "--version" "@OPENFLUID_VERSION_FULL@"
+                                             "${DMG_BUILD_DIR}/${INSTALLER_PKG_NAME}")
+
+
+#############################################################################
+
+
+MESSAGE(STATUS "Creating .dmg disk image file (${_HDIUTIL_PROGRAM}) ------------------")
+
+SET(README_VERSION_FULL @OPENFLUID_VERSION_FULL@)
+
+# create list of installed files, and remove leading dot in paths
+EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${PKGROOT_BUILD_DIR}"
+                        "find" "." "-type" "f" "-print"
+                COMMAND "sed" "s|.||"
+                OUTPUT_VARIABLE FILES_TO_UNINSTALL)
+
+CONFIGURE_FILE("${SOURCE_DIR}/resources/packaging/macosx/README.FIRST.html.in" "${DMG_BUILD_DIR}/README.FIRST.html" @ONLY)
+
+
+EXECUTE_PROCESS(COMMAND "${_HDIUTIL_PROGRAM}"
+                        "create"
+                        "-volname" "OpenFLUID-@OPENFLUID_VERSION_FULL@"
+                        "-srcfolder" "${DMG_BUILD_DIR}"
+                        "-ov"
+                        "-format" "UDZO"
+                        "openfluid_@OPENFLUID_VERSION_FULL@_@OFBUILD_SYSTEM_ARCH@.dmg")

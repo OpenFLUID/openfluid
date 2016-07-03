@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# create shortcuts in /Applications for Builder and Devstudio
+
+ln -s @CMAKE_INSTALL_PREFIX@/@OFBUILD_BIN_INSTALL_PATH@/@OPENFLUID_BUILDER_APP@.app /Applications/@OPENFLUID_BUILDER_APP@.app
+ln -s @CMAKE_INSTALL_PREFIX@/@OFBUILD_BIN_INSTALL_PATH@/@OPENFLUID_DEVSTUDIO_APP@.app /Applications/@OPENFLUID_DEVSTUDIO_APP@.app
