@@ -41,47 +41,54 @@
 #ifndef __OPENFLUID_BASE_IOLISTENER_HPP__
 #define __OPENFLUID_BASE_IOLISTENER_HPP__
 
+
 #include <string>
 #include <iostream>
 
 #include <openfluid/base/Listener.hpp>
 
-namespace openfluid { namespace base {
 
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace base {
 
 
 class IOListener : public openfluid::base::Listener
 {
-  private:
-
   public:
 
-    IOListener() {};
+    IOListener()
+    { };
 
-    virtual ~IOListener() {};
+    virtual ~IOListener()
+    { };
 
-    virtual void onLoad() {};
+    virtual void onLoad()
+    { };
 
-    virtual void onLoaded(openfluid::base::Listener::Status /*Status*/) {};
+    virtual void onLoaded(openfluid::base::Listener::Status /*Status*/)
+    { };
 
-    virtual void onFileLoad(std::string /*Filename*/) {};
+    virtual void onFileLoad(std::string /*Filename*/)
+    { };
 
-    virtual void onFileLoaded(openfluid::base::Listener::Status /*Status*/) {};
+    virtual void onFileLoaded(openfluid::base::Listener::Status /*Status*/)
+    { };
 
-    virtual void onWrite() {};
+    virtual void onWrite()
+    { };
 
-    virtual void onWritten(openfluid::base::Listener::Status /*Status*/) {};
+    virtual void onWritten(openfluid::base::Listener::Status /*Status*/)
+    { };
 
-    virtual void onFileWrite(std::string /*Filename*/) {};
+    virtual void onFileWrite(std::string /*Filename*/)
+    { };
 
-    virtual void onFileWritten(openfluid::base::Listener::Status /*Status*/) {};
-
+    virtual void onFileWritten(openfluid::base::Listener::Status /*Status*/)
+    { };
 
 };
 
 
 } } //namespaces
+
 
 #endif /* __OPENFLUID_BASE_IOLISTENER_HPP__ */

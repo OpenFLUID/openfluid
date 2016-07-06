@@ -37,9 +37,9 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
+
 #include <iostream>
 #include <string>
-
 
 #include <QElapsedTimer>
 
@@ -610,7 +610,7 @@ void OpenFLUIDApp::runSimulation()
 
 
   std::unique_ptr<openfluid::machine::MachineListener> MListener;
-  std::unique_ptr<openfluid::base::IOListener>IOListener(new DefaultIOListener());
+  std::unique_ptr<openfluid::base::IOListener> IOListener(new DefaultIOListener());
 
 
   if (IsQuiet)
@@ -633,12 +633,14 @@ void OpenFLUIDApp::runSimulation()
   printEnvInfos();
 
 
-  std::cout << "* Loading data... " << std::endl; std::cout.flush();
+  std::cout << "* Loading data... " << std::endl;
+  std::cout.flush();
   openfluid::fluidx::FluidXDescriptor FXDesc(IOListener.get());
   FXDesc.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
 
 
-  std::cout << "* Building spatial domain... "; std::cout.flush();
+  std::cout << "* Building spatial domain... ";
+  std::cout.flush();
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,m_SimBlob);
   openfluid::tools::Console::setOKColor();
   std::cout << "[OK]";
@@ -646,19 +648,21 @@ void OpenFLUIDApp::runSimulation()
   std::cout << std::endl;
 
 
-  std::cout << "* Building model... "; std::cout.flush();
+  std::cout << "* Building model...";
+  std::cout.flush();
   openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.modelDescriptor(),
                                                                 Model);
   openfluid::tools::Console::setOKColor();
-  std::cout << "[OK]";
+  std::cout << " [OK]";
   openfluid::tools::Console::resetAttributes();
   std::cout << std::endl;
 
-  std::cout << "* Building monitoring... "; std::cout.flush();
+  std::cout << "* Building monitoring...";
+  std::cout.flush();
   openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoringDescriptor(),
-                                                                Monitoring);
+                                                                     Monitoring);
   openfluid::tools::Console::setOKColor();
-  std::cout << "[OK]";
+  std::cout << " [OK]";
   openfluid::tools::Console::resetAttributes();
   std::cout << std::endl;
 
@@ -666,14 +670,11 @@ void OpenFLUIDApp::runSimulation()
 
   mp_Engine->initialize();
 
-  std::cout << "* Initializing parameters... "; std::cout.flush();
+
   mp_Engine->initParams();
 
-  std::cout << "* Preparing data... "; std::cout.flush();
   mp_Engine->prepareData();
 
-
-  std::cout << "* Checking consistency... "; std::cout.flush();
   mp_Engine->checkConsistency();
 
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;

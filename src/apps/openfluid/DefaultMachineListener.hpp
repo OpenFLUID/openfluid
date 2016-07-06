@@ -113,33 +113,12 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
     ~DefaultMachineListener()
     { };
 
-    virtual void onModelBuild()
-    { };
-
-    virtual void onModelBuildDone(const openfluid::base::Listener::Status& Status)
-    {
-      displayStatus(Status);
-    };
-
-    virtual void onLandscapeBuild()
-    { };
-
-    virtual void onLandscapeBuildDone(const openfluid::base::Listener::Status& Status)
-    {
-      displayStatus(Status);
-    };
-
-    virtual void onRunConfiguration()
-    { };
-
-    virtual void onRunConfigurationDone(const openfluid::base::Listener::Status& Status)
-    {
-      displayStatus(Status);
-    };
-
 
     virtual void onInitParams()
-    { };
+    {
+      std::cout << "* Initializing parameters...";
+      std::cout.flush();
+    };
 
     virtual void onInitParamsDone(const openfluid::base::Listener::Status& Status)
     {
@@ -148,7 +127,10 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
 
 
     virtual void onPrepareData()
-    { };
+    {
+      std::cout << "* Preparing data...";
+      std::cout.flush();
+    };
 
     virtual void onPrepareDataDone(const openfluid::base::Listener::Status& Status)
     {
@@ -157,7 +139,10 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
 
 
     virtual void onCheckConsistency()
-    { };
+    {
+      std::cout << "* Checking consistency...";
+      std::cout.flush();
+    };
 
     virtual void onCheckConsistencyDone(const openfluid::base::Listener::Status& Status)
     {

@@ -41,15 +41,15 @@
 #ifndef __OPENFLUID_MACHINE_MACHINELISTENER_HPP__
 #define __OPENFLUID_MACHINE_MACHINELISTENER_HPP__
 
+
+#include <string>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Listener.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
-#include <string>
+
 
 namespace openfluid { namespace machine {
-
-// =====================================================================
-// =====================================================================
 
 
 class OPENFLUID_API MachineListener : public openfluid::base::Listener
@@ -125,5 +125,6 @@ class OPENFLUID_API MachineListener : public openfluid::base::Listener
 
 
 } } //namespaces
+
 
 #endif /* __OPENFLUID_MACHINE_MACHINELISTENER_HPP__ */

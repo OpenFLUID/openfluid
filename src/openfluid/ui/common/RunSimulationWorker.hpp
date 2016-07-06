@@ -189,8 +189,8 @@ class RunSimulationWorker : public QObject
 
     ~RunSimulationWorker();
 
-
 };
+
 
 } } } //namespaces
 

@@ -49,6 +49,7 @@
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 
+
 namespace openfluid {
 
 namespace base {
@@ -75,6 +76,7 @@ class MonitoringInstance;
 
 class OPENFLUID_API Factory
 {
+
   public:
 
     static void buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
@@ -90,7 +92,7 @@ class OPENFLUID_API Factory
     static void buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::MonitoringDescriptor& MonDesc,
                                                       MonitoringInstance& MonInstance);
 
-    static void fillRunEnvironmentFromDescriptor(const openfluid::fluidx::RunDescriptor& RunDescr);
+    static void fillRunContextFromDescriptor(const openfluid::fluidx::RunDescriptor& RunDescr);
 
     static void buildSimulationBlobFromDescriptors(const openfluid::fluidx::FluidXDescriptor& FluidXDesc,
                                                    SimulationBlob& SimBlob);

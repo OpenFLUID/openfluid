@@ -42,8 +42,10 @@
 #define __OPENFLUID_CMDLINEAPP_VERBOSEMACHINELISTENER_HPP__
 
 
-#include "DefaultMachineListener.hpp"
 #include <iostream>
+
+#include "DefaultMachineListener.hpp"
+
 
 // =====================================================================
 // =====================================================================
@@ -93,7 +95,7 @@ class VerboseMachineListener : public DefaultMachineListener
     };
 
     virtual void onSimulatorInitParamsDone(const openfluid::base::Listener::Status& Status,
-                                            const std::string& /*SimulatorID*/)
+                                           const std::string& /*SimulatorID*/)
     {
       displaySimulatorStatus(Status);
     };

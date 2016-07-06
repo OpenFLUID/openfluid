@@ -375,7 +375,6 @@ void RunSimulationWorker::run()
     openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(mp_FXDesc->monitoringDescriptor(),
                                                                        MonitInstance);
 
-    openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(mp_FXDesc->runDescriptor());
 
     SimBlob.spatialGraph().sortUnitsByProcessOrder();
 

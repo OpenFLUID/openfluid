@@ -365,12 +365,11 @@ void Factory::buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::Mon
 // =====================================================================
 
 
-void Factory::fillRunEnvironmentFromDescriptor(const openfluid::fluidx::RunDescriptor& RunDesc)
+void Factory::fillRunContextFromDescriptor(const openfluid::fluidx::RunDescriptor& RunDesc)
 {
   if (!RunDesc.isFilled())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Wrong or undefined run configuration");
-
 
   if (RunDesc.isUserValuesBufferSize())
   {
@@ -401,7 +400,7 @@ void Factory::buildSimulationBlobFromDescriptors(const openfluid::fluidx::FluidX
 
   SimBlob.runDescriptor() = FluidXDesc.runDescriptor();
 
-  fillRunEnvironmentFromDescriptor(FluidXDesc.runDescriptor());
+  fillRunContextFromDescriptor(FluidXDesc.runDescriptor());
 }
 
 
