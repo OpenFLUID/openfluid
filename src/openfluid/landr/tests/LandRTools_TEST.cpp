@@ -79,7 +79,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <tests-config.hpp>
-#include <openfluid/landr/GeosCompat.hpp>
+#include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>

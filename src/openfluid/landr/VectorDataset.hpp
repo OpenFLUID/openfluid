@@ -39,28 +39,28 @@
 #ifndef __OPENFLUID_LANDR_VECTORDATASET_HPP__
 #define __OPENFLUID_LANDR_VECTORDATASET_HPP__
 
+
 #include <string>
 #include <map>
 #include <list>
+
 #include <ogrsf_frmts.h>
+
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/GeoVectorValue.hpp>
 
 
 namespace geos { namespace geom {
 class Geometry;
 } }
 
-namespace openfluid {
 
-namespace core {
-class GeoVectorValue;
-}
+namespace openfluid { namespace landr {
 
-namespace landr {
+
 /**
   @brief Interface for managing Vector Data format.
 */
-
 class OPENFLUID_API VectorDataset
 {
   public:
@@ -75,7 +75,7 @@ class OPENFLUID_API VectorDataset
     /**
       @brief The OGRDataSource related to this VectorDataset.
     */
-    OGRDataSource* mp_DataSource;
+    GDALDataset_COMPAT* mp_DataSource;
 
     /**
       @brief A list of all features of layers of this VectorDataset, indexed by layer index.
@@ -147,12 +147,12 @@ class OPENFLUID_API VectorDataset
     /**
       @brief Returns the OGRDataSource associated to this VectorDataset.
     */
-    OGRDataSource* source();
+    GDALDataset_COMPAT* source();
 
     /**
       @brief Returns the const OGRDataSource associated to this VectorDataset.
     */
-    OGRDataSource* source() const;
+    GDALDataset_COMPAT* source() const;
 
     /**
       @brief Write to disk a copy of the OGRDataSource.

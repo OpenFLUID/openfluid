@@ -44,6 +44,8 @@
 
 #include <QObject>
 
+#include <openfluid/utils/GDALCompatibility.hpp>
+
 
 class SourceWorker : public QObject
 {
@@ -54,7 +56,7 @@ class SourceWorker : public QObject
 
     QString m_URI;
 
-    OGRDataSource* mp_DataSource;
+    GDALDataset_COMPAT* mp_DataSource;
 
 
   signals:
@@ -77,7 +79,7 @@ class SourceWorker : public QObject
 
   public:
 
-    SourceWorker(const QString& URI, OGRDataSource* Src);
+    SourceWorker(const QString& URI, GDALDataset_COMPAT* Src);
 
     ~SourceWorker();
 

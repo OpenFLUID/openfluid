@@ -33,24 +33,21 @@
   @file GeoVectorValue.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/core/GeoVectorValue.hpp>
 
+#include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
-namespace openfluid {
-namespace core {
 
-
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace core {
 
 
 GeoVectorValue::GeoVectorValue(const std::string& FilePath, const std::string& FileName) :
-    GeoValue(FilePath, FileName), mp_Data(0)
+  GeoValue(FilePath, FileName), mp_Data(nullptr)
 {
-  OGRRegisterAll();
+  GDALAllRegister_COMPAT();
 }
 
 
@@ -72,8 +69,8 @@ void GeoVectorValue::destroyDataSource()
 {
   if (mp_Data)
   {
-    OGRDataSource::DestroyDataSource(mp_Data);
-    mp_Data = 0;
+    GDALClose_COMPAT(mp_Data);
+    mp_Data = nullptr;
   }
 }
 
@@ -92,7 +89,7 @@ openfluid::core::UnstructuredValue::UnstructuredType GeoVectorValue::getType() c
 // =====================================================================
 
 
-OGRDataSource* GeoVectorValue::data()
+GDALDataset_COMPAT* GeoVectorValue::data()
 {
   if (!mp_Data)
     tryToOpenSource();
@@ -107,7 +104,7 @@ OGRDataSource* GeoVectorValue::data()
 
 void GeoVectorValue::tryToOpenSource()
 {
-  mp_Data = OGRSFDriverRegistrar::Open(m_AbsolutePath.c_str(), false);
+  mp_Data = GDALOpenRO_COMPAT(m_AbsolutePath.c_str());
 
   if (!mp_Data)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -201,6 +198,7 @@ bool GeoVectorValue::isPointType(unsigned int LayerIndex)
   return layerDef(LayerIndex)->GetGeomType() == wkbPoint;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -230,11 +228,4 @@ bool GeoVectorValue::isMultiPointType(unsigned int LayerIndex)
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-
-
-}
-} // namespaces
+} }  // namespaces

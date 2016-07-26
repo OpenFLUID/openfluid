@@ -62,7 +62,7 @@ AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingIDs, Q
   ui->setupUi(this);
 
   GDALAllRegister();
-  OGRRegisterAll();
+  GDALAllRegister_COMPAT();
 
   m_OGRFormatsStr =
       openfluid::utils::getOGRGDALFormatsForQFileDialogs(openfluid::utils::getOGRFilesDriversForOpenFLUID(),

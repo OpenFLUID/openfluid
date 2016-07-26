@@ -50,6 +50,7 @@
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/utils/GDALCompatibility.hpp>
 
 #include "ui_DatastoreWidget.h"
 #include "DatastoreWidget.hpp"
@@ -174,13 +175,12 @@ void DatastoreWidget::addItem()
       if (AddItemDlg.getItemType() == openfluid::core::UnstructuredValue::GeoVectorValue)
       {
         // copy vector file
-        OGRDataSource* SrcDS = OGRSFDriverRegistrar::Open(
-            QDir::fromNativeSeparators(AddItemDlg.getSourceFilePath()).toStdString().c_str(),
-            FALSE);
+        GDALDataset_COMPAT* SrcDS =
+          GDALOpenRO_COMPAT(QDir::fromNativeSeparators(AddItemDlg.getSourceFilePath()).toStdString().c_str());
 
         if (SrcDS != nullptr)
         {
-          OGRSFDriver *CopyDriver = SrcDS->GetDriver();
+          GDALDriver_COMPAT* CopyDriver = SrcDS->GetDriver();
 
           if (CopyDriver != nullptr)
           {
@@ -188,11 +188,11 @@ void DatastoreWidget::addItem()
             QDir().mkpath(QFileInfo(DestFile).absolutePath());
 
             // temporary datasource to see if the file already exists
-            OGRDataSource* DestAlreadyExists = CopyDriver->Open(DestFile.toStdString().c_str());
+            GDALDataset_COMPAT* DestAlreadyExists = GDALOpenRO_COMPAT(DestFile.toStdString().c_str());
 
             if (DestAlreadyExists)
             {
-              OGRDataSource::DestroyDataSource(DestAlreadyExists);
+              GDALClose_COMPAT(DestAlreadyExists);
 
               OKToCreateItem =
                   (QMessageBox::question(QApplication::activeWindow(),
@@ -208,18 +208,17 @@ void DatastoreWidget::addItem()
               if (OKToCreateItem)
               {
                 // if file already exists, it is deleted
-                CopyDriver->DeleteDataSource(DestFile.toStdString().c_str());
+                GDALDelete_COMPAT(CopyDriver,DestFile.toStdString().c_str());
               }
             }
 
             if (OKToCreateItem)
             {
-              OGRDataSource* DestDS = CopyDriver->CopyDataSource(SrcDS,
-                                                                 DestFile.toStdString().c_str());
-              OGRDataSource::DestroyDataSource(DestDS);
+              GDALDataset_COMPAT* DestDS = GDALCopy_COMPAT(CopyDriver,SrcDS,DestFile.toStdString().c_str());
+              GDALClose_COMPAT(DestDS);
             }
 
-            OGRDataSource::DestroyDataSource(SrcDS);
+            GDALClose_COMPAT(SrcDS);
           }
           else
           {

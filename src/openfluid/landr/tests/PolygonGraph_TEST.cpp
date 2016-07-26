@@ -49,7 +49,7 @@
 #include <openfluid/core/IntegerValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
-#include <openfluid/landr/GdalCompat.hpp>
+#include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>

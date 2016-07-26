@@ -50,10 +50,9 @@
 #include <geos/geom/Polygon.h>
 #include <geos/geom/Coordinate.h>
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
-#include <openfluid/landr/GdalCompat.hpp>
+#include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
@@ -64,24 +63,43 @@ namespace openfluid { namespace landr {
 VectorDataset::VectorDataset(const std::string& FileName)
 {
   std::string DefaultDriverName = "ESRI Shapefile";
+
+#if (GDAL_VERSION_MAJOR >= 2)
+  GDALAllRegister();
+#else
   OGRRegisterAll();
+#endif
 
-  OGRDataSource  *poDS= OGRSFDriverRegistrar::Open( FileName.c_str(),FALSE);
-  if (poDS!=nullptr)
+  GDALDataset_COMPAT* poDS = GDALOpenRO_COMPAT(FileName.c_str());
+
+  if (poDS != nullptr)
   {
-    std::string DriverName=poDS->GetDriver()->GetName();
+#if (GDAL_VERSION_MAJOR >= 2)
+    std::string DriverName = poDS->GetDriver()->GetDescription();
+#else
+    std::string DriverName = poDS->GetDriver()->GetName();
+#endif
 
-    if (DriverName!=DefaultDriverName)
+
+    if (DriverName != DefaultDriverName)
     {
-      OGRDataSource::DestroyDataSource(poDS);
+      GDALClose_COMPAT(poDS);
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "\"" + DriverName + "\" driver not supported.");
     }
   }
-  OGRDataSource::DestroyDataSource( poDS );
+  GDALClose_COMPAT(poDS);
 
-  OGRSFDriver* Driver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(
-      DefaultDriverName.c_str());
+
+  GDALDriver_COMPAT* Driver = nullptr;
+
+#if (GDAL_VERSION_MAJOR >= 2)
+  Driver = GetGDALDriverManager()->GetDriverByName(DefaultDriverName.c_str());
+#else
+  Driver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(DefaultDriverName.c_str());
+#endif
+
+
 
   if (!Driver)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -89,14 +107,19 @@ VectorDataset::VectorDataset(const std::string& FileName)
 
   std::string Path = getTimestampedPath(FileName);
 
-  mp_DataSource = Driver->CreateDataSource(Path.c_str(), nullptr);
+  mp_DataSource = GDALCreate_COMPAT(Driver,Path.c_str());
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while creating " + Path + " : " +
-                                              "Creation of OGRDataSource failed.");
+                                              "Creation of data source failed.");
 
+#if (GDAL_VERSION_MAJOR >= 2)
+
+#else
   mp_DataSource->SetDriver(Driver);
+#endif
+
 }
 
 
@@ -106,36 +129,53 @@ VectorDataset::VectorDataset(const std::string& FileName)
 
 VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
 {
+#if (GDAL_VERSION_MAJOR >= 2)
+  GDALAllRegister();
+#else
   OGRRegisterAll();
+#endif
 
-  OGRDataSource* DS = Value.data();
-  OGRSFDriver* Driver = DS->GetDriver();
-  std::string DriverName=Driver->GetName();
+  GDALDataset_COMPAT* DS = Value.data();
+  GDALDriver_COMPAT* Driver = DS->GetDriver();
+
+#if (GDAL_VERSION_MAJOR >= 2)
+  std::string DriverName = Driver->GetDescription();
+#else
+  std::string DriverName = Driver->GetName();
+#endif
 
   if (DriverName!="ESRI Shapefile")
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "\"" + DriverName + "\" driver not supported.");
 
+#if (GDAL_VERSION_MAJOR >= 2)
+  std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetDescription()));
+#else
   std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetName()));
+#endif
 
-  mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), nullptr);
+  mp_DataSource = GDALCopy_COMPAT(Driver,DS,Path.c_str());
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while creating " + Path + " : " +
-                                              "Creation of OGRDataSource failed.");
+                                              "Creation of data source failed.");
 
+#if (GDAL_VERSION_MAJOR >= 2)
+
+#else
   mp_DataSource->SetDriver(Driver);
+#endif
+
 
   // necessary to ensure headers are written out in an orderly way and all resources are recovered
-  OGRDataSource::DestroyDataSource(mp_DataSource);
-
-  mp_DataSource = OGRSFDriverRegistrar::Open(Path.c_str(), true);
+  GDALClose_COMPAT(mp_DataSource);
+  mp_DataSource = GDALOpenRW_COMPAT(Path.c_str());
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while opening " + Path + " : " +
-                                              "Creation of OGRDataSource failed.");
+                                              "Loading of data source failed.");
 }
 
 
@@ -145,36 +185,53 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
 
 VectorDataset::VectorDataset(const VectorDataset& Other)
 {
+#if (GDAL_VERSION_MAJOR >= 2)
+  GDALAllRegister();
+#else
   OGRRegisterAll();
+#endif
 
-  OGRDataSource* DS = Other.source();
-  OGRSFDriver* Driver = DS->GetDriver();
+  GDALDataset_COMPAT* DS = Other.source();
+  GDALDriver_COMPAT* Driver = DS->GetDriver();
 
-  std::string DriverName=Driver->GetName();
+#if (GDAL_VERSION_MAJOR >= 2)
+  std::string DriverName = Driver->GetDescription();
+#else
+  std::string DriverName = Driver->GetName();
+#endif
 
   if (DriverName!="ESRI Shapefile")
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        "\"" + DriverName + "\" driver not supported.");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "\"" + DriverName + "\" driver not supported.");
 
+#if (GDAL_VERSION_MAJOR >= 2)
+  std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetDescription()));
+#else
   std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetName()));
+#endif
 
-  mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), nullptr);
+  mp_DataSource = GDALCopy_COMPAT(Driver,DS,Path.c_str());
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Error while creating " + Path + " : Creation of OGRDataSource failed.");
+                                              "Error while creating " + Path + " : " +
+                                              "Creation of data source failed.");
 
+#if (GDAL_VERSION_MAJOR >= 2)
+
+#else
   mp_DataSource->SetDriver(Driver);
+#endif
+
 
   // necessary to ensure headers are written out in an orderly way and all resources are recovered
-  OGRDataSource::DestroyDataSource(mp_DataSource);
-
-  mp_DataSource = OGRSFDriverRegistrar::Open(Path.c_str(), true);
+  GDALClose_COMPAT(mp_DataSource);
+  mp_DataSource = GDALOpenRW_COMPAT(Path.c_str());
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Error while opening " + Path + " : Creation of OGRDataSource failed.");
+                                              "Error while opening " + Path + " : " +
+                                              "Loading of data source failed.");
 }
 
 
@@ -222,11 +279,11 @@ std::string VectorDataset::getInitializedTmpPath()
 
 bool VectorDataset::isAlreadyExisting(const std::string& Path)
 {
-  OGRDataSource* DS = OGRSFDriverRegistrar::Open(Path.c_str(), false);
+  GDALDataset_COMPAT* DS = GDALOpenRO_COMPAT(Path.c_str());;
 
   if (DS)
   {
-    OGRDataSource::DestroyDataSource(DS);
+    GDALClose_COMPAT(DS);
     return true;
   }
 
@@ -240,14 +297,20 @@ bool VectorDataset::isAlreadyExisting(const std::string& Path)
 
 VectorDataset::~VectorDataset()
 {
-  OGRSFDriver* Driver = mp_DataSource->GetDriver();
+  GDALDriver_COMPAT* Driver = mp_DataSource->GetDriver();
+
+#if (GDAL_VERSION_MAJOR >= 2)
+  std::string Path = mp_DataSource->GetDescription();
+#else
   std::string Path = mp_DataSource->GetName();
+#endif
+
 
   // if the Datasource was not flushed to disk
   if (isAlreadyExisting(Path))
   {
-    OGRDataSource::DestroyDataSource(mp_DataSource);
-    Driver->DeleteDataSource(Path.c_str());
+    GDALClose_COMPAT(mp_DataSource);
+    GDALDelete_COMPAT(Driver,Path.c_str());
   }
 }
 
@@ -256,7 +319,7 @@ VectorDataset::~VectorDataset()
 // =====================================================================
 
 
-OGRDataSource* VectorDataset::source()
+GDALDataset_COMPAT* VectorDataset::source()
 {
   return mp_DataSource;
 }
@@ -266,7 +329,7 @@ OGRDataSource* VectorDataset::source()
 // =====================================================================
 
 
-OGRDataSource* VectorDataset::source() const
+GDALDataset_COMPAT* VectorDataset::source() const
 {
   return mp_DataSource;
 }
@@ -280,7 +343,7 @@ void VectorDataset::copyToDisk(const std::string& FilePath,
                                const std::string& FileName,
                                bool ReplaceIfExists)
 {
-  OGRSFDriver* Driver = mp_DataSource->GetDriver();
+  GDALDriver_COMPAT* Driver = mp_DataSource->GetDriver();
 
   if (!openfluid::tools::Filesystem::isDirectory(FilePath))
     openfluid::tools::Filesystem::makeDirectory(FilePath);
@@ -288,34 +351,35 @@ void VectorDataset::copyToDisk(const std::string& FilePath,
   std::string Path = openfluid::core::GeoValue::computeAbsolutePath(FilePath,
                                                                     FileName);
 
-  OGRDataSource* DS = OGRSFDriverRegistrar::Open(Path.c_str(), false);
+  GDALDataset_COMPAT* DS = GDALOpenRO_COMPAT(Path.c_str());
 
   if (DS)
   {
     if (ReplaceIfExists)
     {
-      OGRSFDriver* Driver = DS->GetDriver();
-      OGRDataSource::DestroyDataSource(DS);
-      Driver->DeleteDataSource(Path.c_str());
+      GDALDriver_COMPAT* Driver = DS->GetDriver();
+      GDALClose_COMPAT(DS);
+      GDALDelete_COMPAT(Driver,Path.c_str());
     }
     else
     {
-      OGRDataSource::DestroyDataSource(DS);
+      GDALClose_COMPAT(DS);
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Error while creating " + Path +
                                                 " : This VectorDataset already exists.");
     }
   }
 
-  OGRDataSource* NewDS = Driver->CopyDataSource(mp_DataSource, Path.c_str(),
-                                                nullptr);
+  GDALDataset_COMPAT* NewDS = nullptr;
+
+  NewDS = GDALCopy_COMPAT(Driver,mp_DataSource,Path.c_str());
 
   if (!NewDS)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while creating " + Path + " : Copying of OGRDataSource failed.");
 
   // necessary to ensure headers are written out in an orderly way and all resources are recovered
-  OGRDataSource::DestroyDataSource(NewDS);
+  GDALClose_COMPAT(NewDS);
 }
 
 
@@ -327,9 +391,16 @@ void VectorDataset::addALayer(std::string LayerName,
                               OGRwkbGeometryType LayerType,
                               OGRSpatialReference* SpatialRef)
 {
+#if (GDAL_VERSION_MAJOR >= 2)
+  std::string Path = mp_DataSource->GetDescription();
+#else
+  std::string Path = mp_DataSource->GetName();
+#endif
+
+
   if (mp_DataSource->GetLayerByName(LayerName.c_str()) != nullptr)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Error while adding a layer to " + std::string(mp_DataSource->GetName()) +
+                                              "Error while adding a layer to " + Path +
                                               ": a layer named " + LayerName + " already exists.");
 
   OGRLayer* Layer = mp_DataSource->CreateLayer(LayerName.c_str(), SpatialRef,
@@ -337,15 +408,13 @@ void VectorDataset::addALayer(std::string LayerName,
 
   if (!Layer)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Error while adding a layer to " + std::string(mp_DataSource->GetName()) +
+                                              "Error while adding a layer to " + Path +
                                               ": creation of layer " + LayerName + " failed.");
 
-  std::string Path = mp_DataSource->GetName();
-
   // necessary to ensure headers are written out in an orderly way and all resources are recovered
-  OGRDataSource::DestroyDataSource(mp_DataSource);
+  GDALClose_COMPAT(mp_DataSource);
 
-  mp_DataSource = OGRSFDriverRegistrar::Open(Path.c_str(), true);
+  mp_DataSource = GDALOpenRW_COMPAT(Path.c_str());
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,

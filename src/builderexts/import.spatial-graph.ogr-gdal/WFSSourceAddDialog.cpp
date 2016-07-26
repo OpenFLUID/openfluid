@@ -37,13 +37,15 @@
  */
 
 
-#include "ui_SourceAddDialog.h"
-#include "WFSSourceAddDialog.hpp"
-
 #include <QPushButton>
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
+
+#include <openfluid/utils/GDALCompatibility.hpp>
+
+#include "ui_SourceAddDialog.h"
+#include "WFSSourceAddDialog.hpp"
 
 
 WFSSourceAddDialog::WFSSourceAddDialog(const QString& TempDir, QWidget* Parent):
@@ -155,7 +157,7 @@ void WFSSourceAddDialog::updateAfterOpen()
 bool WFSSourceAddDialog::prepareToImport()
 {
   QString ConfigFilePath = getXMLConfigFilePath();
-  OGRSFDriver *CopyDriver;
+  GDALDriver_COMPAT* CopyDriver;
 
   // determine the exact URI for the selected layer to import
   QString LayerURI = m_RealSourceURI.section("?",0,0) +
@@ -169,9 +171,9 @@ bool WFSSourceAddDialog::prepareToImport()
 
   generateXMLConfigFile(LayerURI);
 
-  OGRRegisterAll();
+  GDALAllRegister_COMPAT();
 
-  OGRDataSource* LayerDS = OGRSFDriverRegistrar::Open(ConfigFilePath.toStdString().c_str(), FALSE );
+  GDALDataset_COMPAT* LayerDS = GDALOpenRO_COMPAT(ConfigFilePath.toStdString().c_str());
 
   if (LayerDS)
   {
@@ -189,15 +191,15 @@ bool WFSSourceAddDialog::prepareToImport()
 
 
     // copy layer in cache using geoJSON format
-    CopyDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName("GeoJSON");
+    CopyDriver = GDALGetDriverByName_COMPAT("GeoJSON");
 
-    OGRDataSource *CopiedDS;
-    CopiedDS = CopyDriver->CopyDataSource(LayerDS,CachedURI.toStdString().c_str());
-    OGRDataSource::DestroyDataSource(LayerDS);
+    GDALDataset_COMPAT *CopiedDS;
+    CopiedDS = GDALCopy_COMPAT(CopyDriver,LayerDS,CachedURI.toStdString().c_str());
+    GDALClose_COMPAT(LayerDS);
 
     if (CopiedDS)
     {
-      OGRDataSource::DestroyDataSource(CopiedDS);
+      GDALClose_COMPAT(CopiedDS);
       m_SrcInfos.CachedSourceURI = CachedURI;
     }
   }

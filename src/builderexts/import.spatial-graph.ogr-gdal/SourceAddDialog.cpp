@@ -37,12 +37,12 @@
  */
 
 
+#include <QThread>
+#include <QMessageBox>
+
 #include "ui_SourceAddDialog.h"
 #include "SourceAddDialog.hpp"
 #include "SourceWorker.hpp"
-
-#include <QThread>
-#include <QMessageBox>
 
 
 SourceAddDialog::SourceAddDialog(QWidget* Parent):
@@ -75,7 +75,7 @@ SourceAddDialog::SourceAddDialog(QWidget* Parent):
 
 SourceAddDialog::~SourceAddDialog()
 {
-  OGRDataSource::DestroyDataSource(mp_DataSource);
+  GDALClose_COMPAT(mp_DataSource);
   delete ui;
 }
 
@@ -123,7 +123,7 @@ void SourceAddDialog::openDataSource()
 
 void SourceAddDialog::handleSourceLinked(void* Src)
 {
-  mp_DataSource = (OGRDataSource*)Src;
+  mp_DataSource = static_cast<GDALDataset_COMPAT*>(Src);
 }
 
 
@@ -230,7 +230,8 @@ void SourceAddDialog::globalCheck()
 
 bool SourceAddDialog::checkRequiredFields()
 {
-  if (mp_DataSource == nullptr) return false;
+  if (mp_DataSource == nullptr)
+    return false;
 
   OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
 

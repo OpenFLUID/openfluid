@@ -36,13 +36,14 @@
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
  */
 
+
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_vectordataset
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <tests-config.hpp>
-#include <openfluid/landr/GdalCompat.hpp>
+#include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
@@ -59,13 +60,13 @@
 
 void deleteIfExists(std::string Path)
 {
-  OGRDataSource* DS = OGRSFDriverRegistrar::Open(Path.c_str(), false);
+  GDALDataset_COMPAT* DS = GDALOpenRO_COMPAT(Path.c_str());
 
   if (DS)
   {
-    OGRSFDriver* Driver = DS->GetDriver();
-    OGRDataSource::DestroyDataSource(DS);
-    Driver->DeleteDataSource(Path.c_str());
+    GDALDriver_COMPAT* Driver = DS->GetDriver();
+    GDALClose_COMPAT(DS);
+    GDALDelete_COMPAT(Driver,Path.c_str());
   }
 }
 
@@ -78,16 +79,19 @@ BOOST_AUTO_TEST_CASE(check_constructor_empty)
 {
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset("test.shp");
 
-  OGRDataSource* DS = Vect->source();
+  GDALDataset_COMPAT* DS = Vect->source();
 
   BOOST_CHECK(DS);
   BOOST_CHECK(DS->GetDriver());
+#if (GDAL_VERSION_MAJOR >= 2)
+  BOOST_CHECK_EQUAL(DS->GetDriver()->GetDescription(), "ESRI Shapefile");
+#else
   BOOST_CHECK_EQUAL(DS->GetDriver()->GetName(), "ESRI Shapefile");
+#endif
 
   delete Vect;
 
-  Vect = new openfluid::landr::VectorDataset(
-      "test.shp");
+  Vect = new openfluid::landr::VectorDataset("test.shp");
 
   Vect->addALayer();
 
@@ -128,11 +132,15 @@ BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
 
-  OGRDataSource* DS = Vect->source();
+  GDALDataset_COMPAT* DS = Vect->source();
 
   BOOST_CHECK(DS);
   BOOST_CHECK(DS->GetDriver());
+#if (GDAL_VERSION_MAJOR >= 2)
+  BOOST_CHECK_EQUAL(DS->GetDriver()->GetDescription(), "ESRI Shapefile");
+#else
   BOOST_CHECK_EQUAL(DS->GetDriver()->GetName(), "ESRI Shapefile");
+#endif
 
   openfluid::landr::VectorDataset* Vect2 = new openfluid::landr::VectorDataset(Value);
 

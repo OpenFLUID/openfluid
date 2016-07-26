@@ -42,12 +42,15 @@
 
 
 #include <ogrsf_frmts.h>
-#include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
 
-#include <openfluid/ware/PluggableObserver.hpp>
 #include <QProcess>
 #include <QDir>
+
+
+#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/ware/PluggableObserver.hpp>
+#include <openfluid/utils/GDALCompatibility.hpp>
 
 
 // =====================================================================
@@ -125,12 +128,12 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       // TODO manage when data are coming from datastore
 
-      OGRDataSource *DataSource;
+      GDALDataset_COMPAT* DataSource;
       OGRLayer *Layer;
       OGRFeature *Feature;
 
 
-      DataSource = OGRSFDriverRegistrar::Open(LayerInfo.SourceFilename.c_str(), FALSE );
+      DataSource = GDALOpenRO_COMPAT(LayerInfo.SourceFilename.c_str());
       if( DataSource == nullptr )
       {
         OPENFLUID_LogWarning("Cannot open shapefile "+LayerInfo.SourceFilename+". This Kml output is ignored.");
@@ -255,7 +258,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       }
 
 
-      OGRDataSource::DestroyDataSource(DataSource);
+      GDALClose_COMPAT(DataSource);
 
 
       return true;
@@ -376,3 +379,4 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
 
 #endif /* __KMLOBSERVERBASE_HPP__ */
+

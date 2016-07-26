@@ -46,7 +46,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
-#include <openfluid/landr/GdalCompat.hpp>
+#include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>

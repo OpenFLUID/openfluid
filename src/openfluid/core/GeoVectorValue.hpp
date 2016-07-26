@@ -34,32 +34,36 @@
 
   @author Aline LIBRES <libres@supagro.inra.fr>
   @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
+
 
 #ifndef __OPENFLUID_CORE_GEOVECTORVALUE_HPP__
 #define __OPENFLUID_CORE_GEOVECTORVALUE_HPP__
 
-#include <openfluid/core/GeoValue.hpp>
-#include <openfluid/dllexport.hpp>
 
+#include <gdal_priv.h>
 #include <ogrsf_frmts.h>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/core/GeoValue.hpp>
+#include <openfluid/utils/GDALCompatibility.hpp>
+
 
 namespace openfluid { namespace core {
 
-/**
-  Container class for geospatial vector data, represented by an OGR datasource.
-*/
+
 class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
 {
   protected:
 
     /**
-      The OGRDataSource associated to this GeoVectorValue.
+      The vector data source associated to this GeoVectorValue.
     */
-    OGRDataSource* mp_Data;
+
+    GDALDataset_COMPAT* mp_Data;
 
     /**
-      Open the OGRDataSource of this GeoVectorValue.
+      Open the data source of this GeoVectorValue.
       @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
     */
     void tryToOpenSource();
@@ -98,7 +102,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       @return The opened OGR datasource.
       @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
     */
-    OGRDataSource* data();
+    GDALDataset_COMPAT* data();
 
     /**
       Gets a layer of the shape.

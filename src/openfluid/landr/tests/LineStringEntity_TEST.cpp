@@ -46,7 +46,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/landr/GdalCompat.hpp>
+#include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/VectorDataset.hpp>

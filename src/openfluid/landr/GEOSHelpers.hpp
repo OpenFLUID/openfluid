@@ -29,16 +29,18 @@
 
 */
 
+
+
 /**
-  @file GdalCompat.hpp
+  @file GEOSHelpers.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
-*/
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+ */
 
 
-
-#ifndef __OPENFLUID_LANDR_GDALCOMPAT_HPP__
-#define __OPENFLUID_LANDR_GDALCOMPAT_HPP__
+#ifndef __OPENFLUID_LANDR_GEOSHELPERS_HPP__
+#define __OPENFLUID_LANDR_GEOSHELPERS_HPP__
 
 
 #include <geos/geom/GeometryFactory.h>
@@ -46,9 +48,32 @@
 #include <ogrsf_frmts.h>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace landr {
+
+
+#if GEOS_VERSION_GREATER_OR_EQUAL_3_3_0
+  #define GET_DANGLES(P,D) \
+    D = P->getDangles();
+#else
+  #define GET_DANGLES(P,D) \
+    std::vector<const geos::geom::LineString*>* _M_TheDangles = P->getDangles(); \
+    if (_M_TheDangles) \
+      D = *_M_TheDangles;
+#endif
+
+
+#if GEOS_VERSION_GREATER_OR_EQUAL_3_3_2
+  #define GEOM_PTR_PAIR geos::geom::GeomPtrPair
+#else
+  #define GEOM_PTR_PAIR std::pair<std::unique_ptr<geos::geom::Geometry>,std::unique_ptr<geos::geom::Geometry> >
+#endif
+
+
+// =====================================================================
+// =====================================================================
 
 
 GEOSGeom OPENFLUID_API convertOGRGeometryToGEOS(const OGRGeometry* Geometry);
@@ -60,4 +85,4 @@ OGRGeometry* /*OPENFLUID_API*/ convertGEOSGeometryToOGR(const GEOSGeom Geometry)
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_LANDR_GDALCOMPAT_HPP__ */
+#endif /* __OPENFLUID_LANDR_GEOSHELPERS_HPP__ */

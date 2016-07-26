@@ -40,11 +40,10 @@
 #include "SourceWorker.hpp"
 
 
-
-SourceWorker::SourceWorker(const QString& URI, OGRDataSource* Src):
+SourceWorker::SourceWorker(const QString& URI, GDALDataset_COMPAT* Src):
   m_URI(URI), mp_DataSource(nullptr)
 {
-  OGRDataSource::DestroyDataSource(Src);
+  GDALClose_COMPAT(Src);
   Src = nullptr;
 }
 
@@ -65,9 +64,9 @@ SourceWorker::~SourceWorker()
 
 void SourceWorker::run()
 {
-  OGRRegisterAll();
+  GDALAllRegister_COMPAT();
 
-  mp_DataSource = OGRSFDriverRegistrar::Open(m_URI.toStdString().c_str(), FALSE );
+  mp_DataSource = GDALOpenRO_COMPAT(m_URI.toStdString().c_str());
 
   if (mp_DataSource != nullptr)
   {

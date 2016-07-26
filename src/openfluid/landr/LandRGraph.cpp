@@ -48,7 +48,7 @@
  #include <geos/operation/overlay/snap/GeometrySnapper.h>
 
 #include <openfluid/landr/LandRGraph.hpp>
-#include <openfluid/landr/GdalCompat.hpp>
+#include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/landr/LandREntity.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/VectorDataset.hpp>

@@ -42,6 +42,7 @@
 #include <QDir>
 #include <ogrsf_frmts.h>
 
+#include <openfluid/utils/GDALCompatibility.hpp>
 #include <openfluid/utils/GDALHelpers.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
@@ -101,7 +102,7 @@ class GeoVectorSerie
 
     openfluid::core::TimeIndex_t LatestContinuousIndex;
 
-    OGRDataSource* GeoSource;
+    GDALDataset_COMPAT* GeoSource;
 
     OGRLayer* GeoLayer;
 
@@ -136,7 +137,7 @@ class GeoVectorSerie
 
     ~GeoVectorSerie()
     {
-      OGRDataSource::DestroyDataSource(GeoSource);
+      GDALClose_COMPAT(GeoSource);
     }
 
 };
@@ -304,7 +305,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
     void prepareSerie(GeoVectorSerie& Serie)
     {
       // opening and checking of source files
-      Serie.GeoSource = OGRSFDriverRegistrar::Open(Serie.GeoSourceFilePath.c_str(),FALSE);
+      Serie.GeoSource = GDALOpenRO_COMPAT(Serie.GeoSourceFilePath.c_str());
 
 
       if (Serie.GeoSource)
@@ -374,8 +375,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
             m_OutputPath + "/" + QString(QString::fromStdString(Serie.OutfilePattern).arg(IndexStr)).toStdString();
 
 
-        OGRSFDriver* Driver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(m_GDALFormat.c_str());
-        OGRDataSource* CreatedFile = Driver->CreateDataSource(FullFilePath.c_str());
+        GDALDriver_COMPAT* Driver = GDALGetDriverByName_COMPAT(m_GDALFormat.c_str());
+        GDALDataset_COMPAT* CreatedFile = GDALCreate_COMPAT(Driver,FullFilePath.c_str());
 
         std::string CreatedLayerName = QFileInfo(QString::fromStdString(FullFilePath)).completeBaseName().toStdString();
 
@@ -462,7 +463,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
           }
         }
-        OGRDataSource::DestroyDataSource(CreatedFile);
+        GDALClose_COMPAT(CreatedFile);
       }
     }
 
@@ -475,7 +476,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
     {
       if (Serie.GeoSource)
       {
-        OGRDataSource::DestroyDataSource(Serie.GeoSource);
+        GDALClose_COMPAT(Serie.GeoSource);
         Serie.GeoSource = nullptr;
       }
     }
@@ -489,7 +490,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
     GeoVectorFilesObserver() : PluggableObserver()
     {
-      OGRRegisterAll();
+      GDALAllRegister_COMPAT();
     }
 
 

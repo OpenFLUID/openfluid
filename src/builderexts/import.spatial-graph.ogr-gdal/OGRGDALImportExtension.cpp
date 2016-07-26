@@ -37,6 +37,14 @@
  */
 
 
+#include <QMessageBox>
+#include <QThread>
+
+#include "ogr_api.h"
+
+#include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/utils/GDALCompatibility.hpp>
+
 #include "ui_OGRGDALDialog.h"
 #include "OGRGDALImportExtension.hpp"
 #include "FileSourceAddDialog.hpp"
@@ -44,12 +52,8 @@
 #include "PrecheckWorker.hpp"
 #include "ImportWorker.hpp"
 
-#include "ogr_api.h"
 
-#include <openfluid/ui/common/UIHelpers.hpp>
 
-#include <QMessageBox>
-#include <QThread>
 
 
 // =====================================================================
@@ -186,7 +190,7 @@ bool OGRGDALImportExtension::initialize()
 
   CPLSetErrorHandler(CPLOGRGDALErrorHandler);
 
-  OGRRegisterAll();
+  GDALAllRegister_COMPAT();
 
   if (OGRGetDriverByName("WFS") == nullptr)
     ui->AddWFSButton->setEnabled(false);
@@ -225,7 +229,6 @@ void OGRGDALImportExtension::addSource(const SourceInfos& SrcInfos)
                                   new QTableWidgetItem(QString(OGRGeometryTypeToName(SrcInfos.SourceGeomType))));
 
   ui->SourcesTableWidget->selectRow(RowIndex);
-
   ui->SourcesTableWidget->setFocus();
 
   updateUI();

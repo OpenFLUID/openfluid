@@ -39,11 +39,12 @@
 #ifndef __DATAPROCESSINGWORKER_HPP__
 #define __DATAPROCESSINGWORKER_HPP__
 
-#include "SourceInfos.hpp"
-#include "SourceData.hpp"
+#include <QObject>
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <QObject>
+
+#include "SourceInfos.hpp"
+#include "SourceData.hpp"
 
 
 #define OGRGDALEXT_PRECHECK_STEPS 4

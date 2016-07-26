@@ -39,12 +39,15 @@
 #ifndef __OPENFLUID_UTILS_GDALHELPERS_HPP__
 #define __OPENFLUID_UTILS_GDALHELPERS_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <vector>
 #include <map>
 #include <set>
+
 #include <QString>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/utils/GDALCompatibility.hpp>
 
 
 namespace openfluid { namespace utils {

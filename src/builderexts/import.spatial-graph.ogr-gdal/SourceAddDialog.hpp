@@ -44,9 +44,11 @@ namespace Ui
   class SourceAddDialog;
 }
 
-#include "SourceInfos.hpp"
-
 #include <QDialog>
+
+#include <openfluid/utils/GDALCompatibility.hpp>
+
+#include "SourceInfos.hpp"
 
 
 class SourceAddDialog : public QDialog
@@ -82,7 +84,7 @@ class SourceAddDialog : public QDialog
 
     Ui::SourceAddDialog* ui;
 
-    OGRDataSource* mp_DataSource;
+    GDALDataset_COMPAT* mp_DataSource;
 
     QString m_CurrentSourceURI;
 

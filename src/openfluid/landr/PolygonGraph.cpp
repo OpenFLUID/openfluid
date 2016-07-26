@@ -49,7 +49,7 @@
  #include <geos/planargraph/DirectedEdge.h>
 
 #include <openfluid/landr/PolygonGraph.hpp>
-#include <openfluid/landr/GdalCompat.hpp>
+#include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/LandRTools.hpp>

@@ -36,13 +36,16 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include "ImportWorker.hpp"
-#include "OGRGDALHelpers.hpp"
 
 #include <QFileInfo>
 #include <QDir>
 
 #include <ogrsf_frmts.h>
+
+#include <openfluid/utils/GDALCompatibility.hpp>
+
+#include "ImportWorker.hpp"
+#include "OGRGDALHelpers.hpp"
 
 
 ImportWorker::ImportWorker(const SourcesInfosList_t& SourcesInfos,
@@ -199,27 +202,26 @@ bool ImportWorker::processFilesAndDatastore(int Step)
 
       QDir().mkpath(FullDestPath);
 
-      OGRRegisterAll();
+      GDALAllRegister_COMPAT();
 
-      OGRDataSource* SrcDS = OGRSFDriverRegistrar::Open(FullSrcFilePath.toStdString().c_str(),FALSE);
+      GDALDataset_COMPAT* SrcDS = GDALOpenRO_COMPAT(FullSrcFilePath.toStdString().c_str());
 
       if (SrcDS != nullptr)
       {
-        OGRSFDriver *CopyDriver;
+        GDALDriver_COMPAT *CopyDriver;
 
         QString DriverName = OGRGDALHelpers::getDriverFromFileExt(DestExtension);
 
-        CopyDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(DriverName.toStdString().c_str());
+        CopyDriver = GDALGetDriverByName_COMPAT(DriverName.toStdString().c_str());
 
         if (CopyDriver != nullptr)
         {
-          OGRDataSource* DestDS = CopyDriver->CopyDataSource(SrcDS,
-                                                             FullDestFilePath.toStdString().c_str());
+          GDALDataset_COMPAT* DestDS = GDALCopy_COMPAT(CopyDriver,SrcDS,FullDestFilePath.toStdString().c_str());
 
-          OGRDataSource::DestroyDataSource(DestDS);
+          GDALClose_COMPAT(DestDS);
         }
 
-        OGRDataSource::DestroyDataSource(SrcDS);
+        GDALClose_COMPAT(SrcDS);
 
       }
     }

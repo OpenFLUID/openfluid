@@ -37,12 +37,15 @@
  */
 
 
+#include <ogrsf_frmts.h>
+
+#include <QFileInfo>
+
+#include <openfluid/utils/GDALHelpers.hpp>
+#include <openfluid/utils/GDALCompatibility.hpp>
+
 #include "DataProcessingWorker.hpp"
 #include "OGRGDALHelpers.hpp"
-
-#include <ogrsf_frmts.h>
-#include <openfluid/utils/GDALHelpers.hpp>
-#include <QFileInfo>
 
 
 DataProcessingWorker::DataProcessingWorker(const SourcesInfosList_t& SourcesInfos,
@@ -110,7 +113,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
   emit stepEntered(tr("Loading and checking data from sources..."));
 
 
-  OGRRegisterAll();
+  GDALAllRegister_COMPAT();
 
   for (int i=0; i<m_SourcesInfos.size();i++)
   {
@@ -120,7 +123,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       RealURI = m_SourcesInfos[i].CachedSourceURI;
 
 
-    OGRDataSource* DS = OGRSFDriverRegistrar::Open(RealURI.toStdString().c_str(),FALSE);
+    GDALDataset_COMPAT* DS = GDALOpenRO_COMPAT(RealURI.toStdString().c_str());
 
     if (DS == nullptr)
     {
@@ -154,7 +157,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
       if (FieldIndex < 0)
       {
-        OGRDataSource::DestroyDataSource(DS);
+        GDALClose_COMPAT(DS);
         emit stepCompleted(Step,getStyledText(tr("[Error] Field for unit ID not found in layer \"%1\"")
                                               .arg(m_SourcesInfos[i].LayerName),"red"));
         return false;
@@ -164,7 +167,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
       if (CurrentUnitID <= 0)
       {
-        OGRDataSource::DestroyDataSource(DS);
+        GDALClose_COMPAT(DS);
         emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field format for unit ID in layer \"%1\"")
                                               .arg(m_SourcesInfos[i].LayerName),"red"));
         return false;
@@ -172,7 +175,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
       if (m_SourcesData[i].isUnitExists(CurrentUnitID))
       {
-        OGRDataSource::DestroyDataSource(DS);
+        GDALClose_COMPAT(DS);
         emit stepCompleted(Step,getStyledText(tr("[Error] Unit ID %2 already exist in layer \"%1\"")
                                                  .arg(m_SourcesInfos[i].LayerName)
                                                  .arg(CurrentUnitID),
@@ -193,7 +196,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         if (FieldIndex < 0)
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Field for process order not found in layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName),
                                                 "red"));
@@ -204,7 +207,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         if (PcsOrd <= 0)
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field format for process order in layer \"%1\"")
                                                  .arg(m_SourcesInfos[i].LayerName),
                                                 "red"));
@@ -223,7 +226,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         if (FieldIndex < 0)
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Field for \"To\" connections not found in layer \"%1\"")
                                                 .arg(m_SourcesInfos[i].LayerName),"red"));
           return false;
@@ -251,7 +254,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         if (FieldIndex < 0)
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,
                              getStyledText(tr("[Error] Field for \"Child Of\" connections not found in layer \"%1\"")
                                            .arg(m_SourcesInfos[i].LayerName),"red"));
@@ -280,7 +283,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         if (FieldIndex <0)
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Field for attribute \"%2\" not found in layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
                                                    .arg(m_SourcesInfos[i].ImportedFields[j]),
@@ -293,7 +296,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         if (!OGRGDALHelpers::convertFieldToAttribute(Feature,FieldIndex,Attr))
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field format for attribute \"%2\" in layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
                                                    .arg(m_SourcesInfos[i].ImportedFields[j]),
@@ -312,7 +315,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       {
         if (m_SourcesInfos[i].ImportedFields.contains(m_SourcesInfos[i].AreaComputeAttribute))
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Attribute \"%2\" for computed area attribute "
                                                    "is already imported from layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
@@ -334,7 +337,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       {
         if (m_SourcesInfos[i].ImportedFields.contains(m_SourcesInfos[i].LengthComputeAttribute))
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Attribute \"%2\" for computed length attribute "
                                                    "is already imported from layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
@@ -356,7 +359,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
       if (Feature->GetGeometryRef()->Centroid(&Centroid) != OGRERR_NONE)
       {
-        OGRDataSource::DestroyDataSource(DS);
+        GDALClose_COMPAT(DS);
         emit stepCompleted(Step,
                            getStyledText(tr("[Error] Unable to compute centroid coordinates "
                                             "for geometries in layer \"%1\"."
@@ -373,7 +376,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       {
         if (m_SourcesInfos[i].ImportedFields.contains(m_SourcesInfos[i].XCentroidComputeAttribute))
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Attribute \"%2\" for computed centroid X attribute "
                                                    "is already imported from layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
@@ -394,7 +397,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       {
         if (m_SourcesInfos[i].ImportedFields.contains(m_SourcesInfos[i].YCentroidComputeAttribute))
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Attribute \"%2\" for computed centroid Y attribute "
                                                    "is already imported from layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
@@ -415,7 +418,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       {
         if (m_SourcesInfos[i].ImportedFields.contains(m_SourcesInfos[i].ZCentroidComputeAttribute))
         {
-          OGRDataSource::DestroyDataSource(DS);
+          GDALClose_COMPAT(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Attribute \"%2\" for computed centroid Z attribute "
                                                    "is already imported from layer \"%1\"")
                                                    .arg(m_SourcesInfos[i].LayerName)
@@ -433,7 +436,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
       m_SourcesData[i].Units[CurrentUnitID] = CurrentUnit;
     }
 
-    OGRDataSource::DestroyDataSource(DS);
+    GDALClose_COMPAT(DS);
     DS = nullptr;
   }
 

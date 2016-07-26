@@ -56,7 +56,7 @@
 #include <geos/geom/PrecisionModel.h>
 #include <geos/precision/SimpleGeometryPrecisionReducer.h>
 
-#include <openfluid/landr/GeosCompat.hpp>
+#include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/LandRTools.hpp>
 
