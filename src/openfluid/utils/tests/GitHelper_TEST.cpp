@@ -45,7 +45,7 @@
 #include <QString>
 #include <QDir>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utils/GitHelper.hpp>
+#include <openfluid/utils/GitHelpers.hpp>
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 #include "tests-config.hpp"

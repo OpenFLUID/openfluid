@@ -38,14 +38,13 @@
  */
 
 
-#include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
-
 #include <QFont>
 #include <QPainter>
 
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
-#include <openfluid/utils/GitHelper.hpp>
+#include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
+#include <openfluid/utils/GitHelpers.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {

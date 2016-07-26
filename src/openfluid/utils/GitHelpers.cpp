@@ -30,7 +30,7 @@
  */
 
 /**
- @file GitHelper.cpp
+ @file GitHelpers.cpp
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
@@ -39,7 +39,8 @@
 
 #include <QDir>
 #include <QTextStream>
-#include <openfluid/utils/GitHelper.hpp>
+
+#include <openfluid/utils/GitHelpers.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 

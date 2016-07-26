@@ -41,7 +41,7 @@
 #include <QThread>
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/utils/GitHelper.hpp>
+#include <openfluid/utils/GitHelpers.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>

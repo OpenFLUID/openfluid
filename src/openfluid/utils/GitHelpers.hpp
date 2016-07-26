@@ -31,15 +31,15 @@
 
 
 /**
- @file GitHelper.hpp
+ @file GitHelpers.hpp
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef __OPENFLUID_UTILS_GITHELPER_HPP__
-#define __OPENFLUID_UTILS_GITHELPER_HPP__
+#ifndef __OPENFLUID_UTILS_GITHELPERS_HPP__
+#define __OPENFLUID_UTILS_GITHELPERS_HPP__
 
 #include <QString>
 #include <QObject>
@@ -133,4 +133,4 @@ class OPENFLUID_API GitHelper: public QObject
 } } // namespaces
 
 
-#endif /* __OPENFLUID_UTILS_GITHELPER_HPP__ */
+#endif /* __OPENFLUID_UTILS_GITHELPERS_HPP__ */

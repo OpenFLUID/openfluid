@@ -47,7 +47,7 @@
 
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/utils/GitHelper.hpp>
+#include <openfluid/utils/GitHelpers.hpp>
 
 #include "tests-config.hpp"
 

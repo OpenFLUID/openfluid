@@ -57,7 +57,7 @@
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/utils/GitHelper.hpp>
+#include <openfluid/utils/GitHelpers.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 #include "MainWindow.hpp"
