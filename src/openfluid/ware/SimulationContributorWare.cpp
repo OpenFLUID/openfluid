@@ -612,6 +612,7 @@ void SimulationContributorWare::OPENFLUID_DeleteUnit(const openfluid::core::Unit
   mp_SpatialData->sortUnitsByProcessOrder();
 }
 
+
 // =====================================================================
 // =====================================================================
 

@@ -767,12 +767,12 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/DashboardInfosWidget.cpp" line="122"/>
         <source>&lt;u&gt;Coupled model:&lt;/u&gt; %1 simulator(s) and %2 generator(s)</source>
-        <translation>&lt;u&gt;Modèle couplé:&lt;/u&gt; %1 simulateur(s) and %2 generateur(s)</translation>
+        <translation>&lt;u&gt;Modèle couplé:&lt;/u&gt; %1 simulateur(s) et %2 generateur(s)</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/DashboardInfosWidget.cpp" line="123"/>
         <source>&lt;u&gt;Spatial domain:&lt;/u&gt; %1 spatial unit(s) in %2 units class(es)</source>
-        <translation>&lt;u&gt;Domaine spatial:&lt;/u&gt; %1 unité(s) spatiales dans %2 class(es) d&apos;unités</translation>
+        <translation>&lt;u&gt;Domaine spatial:&lt;/u&gt; %1 unité(s) spatiales dans %2 classe(s) d&apos;unités</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/DashboardInfosWidget.cpp" line="125"/>
@@ -782,7 +782,7 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/DashboardInfosWidget.cpp" line="127"/>
         <source>&lt;u&gt;Run configuration:&lt;/u&gt; total duration of %1 seconds with a default DeltaT of %2 seconds and %3</source>
-        <translation>&lt;u&gt;Configuration de simulation:&lt;/u&gt; durée totale de %1 seconds avec un DeltaT par défaut de %2 seconds et %3</translation>
+        <translation>&lt;u&gt;Configuration de simulation:&lt;/u&gt; durée totale de %1 secondes avec un DeltaT par défaut de %2 secondes et %3</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/DashboardInfosWidget.cpp" line="126"/>
@@ -1421,7 +1421,7 @@ Continuer quand même?</translation>
         <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="108"/>
         <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="149"/>
         <source>collapse all</source>
-        <translation type="unfinished">tout replier</translation>
+        <translation>tout replier</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-devstudio/MainWindow.ui" line="77"/>
