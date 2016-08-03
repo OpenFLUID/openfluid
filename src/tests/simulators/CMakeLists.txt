@@ -4,11 +4,14 @@ INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
 
 ###########################################################################
 
+
 OFBUILD_ADD_SIMULATOR(tests.coupling.A ${OFBUILD_TESTS_BINARY_DIR})
 OFBUILD_ADD_SIMULATOR(tests.coupling.B ${OFBUILD_TESTS_BINARY_DIR})
 OFBUILD_ADD_SIMULATOR(tests.coupling.C ${OFBUILD_TESTS_BINARY_DIR})
 OFBUILD_ADD_SIMULATOR(tests.coupling.D ${OFBUILD_TESTS_BINARY_DIR})
 OFBUILD_ADD_SIMULATOR(tests.coupling.E ${OFBUILD_TESTS_BINARY_DIR})
+
+OFBUILD_ADD_SIMULATOR(tests.dotobs ${OFBUILD_TESTS_BINARY_DIR})
                                                    
 
 ###########################################################################

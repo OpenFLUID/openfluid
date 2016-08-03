@@ -68,9 +68,13 @@ OPENFLUID_ADD_TEST(NAME observers-DotFiles
                         "-p" "${OFBUILD_TESTS_BINARY_DIR}"
                         "-n" "${OFBUILD_TESTS_BINARY_DIR}"
                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver"
-                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/spatial-graph_t0.dot"
-                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/spatial-graph_init.dot"
-                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/spatial-graph_final.dot"
+                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/spatial-graph_final.dot"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/graph_vars_init.dot"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/graph_vars_final.dot"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/graph_attrs_t3600.dot"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/graph_full_init.dot"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/graph_full_final.dot"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DotObserver/graph_full_t10800.dot"
                    )
 
 

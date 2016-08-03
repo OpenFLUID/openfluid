@@ -58,6 +58,10 @@ BEGIN_OBSERVER_SIGNATURE("export.spatial-graph.files.dot")
       "and can be post-processed with GraphViz\n"
       "Parameters can be\n"
       "  title : the main title of the graph\n"
+      "  basefilename : base of the generated files names\n"
+      "  show.pcsord : set to 1 to include the process order of the spatial unit in graph nodes\n"
+      "  show.attributes : set to 1 to include the attributes of the spatial unit in graph nodes\n"
+      "  show.variables : set to 1 to include the variables of the spatial unit in graph nodes\n"
       "  when.init : set to 1 to export the graph at initialization time\n"
       "  when.everytime : set to 1 to export the graph at every simulation time point\n"
       "  when.final : set to 1 to export the graph at finalization time\n"
@@ -88,6 +92,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
     bool m_Init;
     bool m_EveryTime;
     bool m_Final;
+    bool m_ShowPcsOrd;
+    bool m_ShowAttributes;
+    bool m_ShowVariables;
 
 
     // =====================================================================
@@ -98,7 +105,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
                                        const std::string& DestClass, const std::string& DestID,
                                        const std::string& Options)
     {
-      return "\""+SrcClass+" #"+SrcID+"\" -> \""+DestClass+" #"+DestID+"\" " + Options;
+      return "\""+SrcClass+"#"+SrcID+"\" -> \""+DestClass+"#"+DestID+"\" " + Options;
     }
 
 
@@ -106,10 +113,59 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
     // =====================================================================
 
 
-    static std::string generateDotNode(const std::string& UClass, const std::string& UID,
-                                       const std::string& Options)
+    std::string generateDotNode(const openfluid::core::SpatialUnit* Unit,
+                                const std::string& Options)
     {
-      return "\""+UClass+" #"+UID+"\" " + Options;
+      std::string IDStr;
+      openfluid::tools::convertValue(Unit->getID(),&IDStr);
+      std::string IDClassStr = Unit->getClass()+"#"+IDStr;
+
+      std::string NodeLabel = "<b>"+IDClassStr+"</b>";
+
+      if (m_ShowPcsOrd)
+      {
+        std::string PcsOrdStr;
+        openfluid::tools::convertValue(Unit->getProcessOrder(),&PcsOrdStr);
+        NodeLabel += "<br/>("+PcsOrdStr+")";
+      }
+
+      if (m_ShowAttributes)
+      {
+        std::vector<openfluid::core::AttributeName_t> AttrsNames = Unit->attributes()->getAttributesNames();
+
+        if (!AttrsNames.empty())
+        {
+          NodeLabel += "<br/><br/><u>Attributes</u>";
+
+          for (auto& Name : AttrsNames)
+            NodeLabel += "<br/>"+Name+"="+Unit->attributes()->value(Name)->toString();
+        }
+      }
+
+      if (m_ShowVariables &&
+          OPENFLUID_GetCurrentStage() >= openfluid::base::SimulationStatus::SimulationStage::INITIALIZERUN)
+      {
+        std::vector<openfluid::core::VariableName_t> VarsNames = Unit->variables()->getVariablesNames();
+
+        if (!VarsNames.empty())
+        {
+          NodeLabel += "<br/><br/><u>Variables</u>";
+          for (auto& Name : VarsNames)
+          {
+            const openfluid::core::Value* Val = Unit->variables()->currentValue(Name);
+
+            if (Val)
+              NodeLabel += "<br/>"+Name+"="+Val->toString();
+          }
+        }
+      }
+
+
+      std::string OptsStr = Options;
+      if (!OptsStr.empty())
+        OptsStr = ","+OptsStr;
+
+      return "\""+IDClassStr+"\" [label=<"+NodeLabel+">"+OptsStr+"];";
     }
 
 
@@ -153,7 +209,6 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
         if (ItStyle != m_UnitsClassStyles.end())
         {
-          Options = "[";
 
           StyleAttibutes_t::iterator ItAttr = (*ItStyle).second.begin();
 
@@ -164,8 +219,6 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
             Options += (*ItAttr).first+"="+(*ItAttr).second;
           }
-
-          Options += "];";
         }
 
         UnitsList=((*itUnitsClass).second).list();
@@ -175,7 +228,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
           TheUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
           std::string IDStr = "";
           openfluid::tools::convertValue(TheUnit->getID(),&IDStr);
-          DotFile << generateDotNode(ClassStr,IDStr,Options) << "\n";
+          DotFile << generateDotNode(TheUnit,Options) << "\n";
         }
       }
 
@@ -247,7 +300,8 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
     DotFilesObserver() : PluggableObserver(),
       m_Title("Spatial domain graph"), m_BaseFileName("spatial-graph"),
-      m_Init(false),m_EveryTime(false),m_Final(false)
+      m_Init(false),m_EveryTime(false),m_Final(false),
+      m_ShowPcsOrd(false), m_ShowAttributes(false), m_ShowVariables(false)
     {
 
     }
@@ -285,9 +339,15 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       {
         m_Title = ParamsTree.root().getChildValue("title",m_Title);
 
+        m_BaseFileName = ParamsTree.root().getChildValue("basefilename",m_BaseFileName);
+
         ParamsTree.root().child("when").getChildValue("init",false).toBoolean(m_Init);
         ParamsTree.root().child("when").getChildValue("everytime",false).toBoolean(m_EveryTime);
         ParamsTree.root().child("when").getChildValue("final",false).toBoolean(m_Final);
+
+        ParamsTree.getValueUsingFullKey("show.pcsord",false).toBoolean(m_ShowPcsOrd);
+        ParamsTree.getValueUsingFullKey("show.attributes",false).toBoolean(m_ShowAttributes);
+        ParamsTree.getValueUsingFullKey("show.variables",false).toBoolean(m_ShowVariables);
 
         for (auto& Style : ParamsTree.root().child("style"))
         {
@@ -315,7 +375,8 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
     void onPrepared()
     {
-      if (m_Init) ExportUnitsGraphAsDotFile(m_BaseFileName+"_init.dot","at initialization");
+      if (m_Init)
+        ExportUnitsGraphAsDotFile(m_BaseFileName+"_init.dot","at initialization");
     }
 
 
@@ -355,7 +416,8 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
     void onFinalizedRun()
     {
-      if (m_Final) ExportUnitsGraphAsDotFile(m_BaseFileName+"_final.dot","at finalization");
+      if (m_Final)
+        ExportUnitsGraphAsDotFile(m_BaseFileName+"_final.dot","at finalization");
     }
 
 

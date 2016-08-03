@@ -1,11 +1,10 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
 
-    <model>
-
-   
-      <simulator ID="tests.fakesimulator" />       
+  <model>
                 
+    <simulator ID="tests.dotobs" />
     
   </model>
+  
 </openfluid>

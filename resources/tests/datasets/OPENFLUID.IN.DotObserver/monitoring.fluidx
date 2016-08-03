@@ -2,7 +2,11 @@
 <openfluid>
   <monitoring>
 
+    <observer ID="export.spatial-graph.files.dot" />
+      
     <observer ID="export.spatial-graph.files.dot" >
+      <param name="basefilename" value="graph_pcsord" />
+
       <param name="style.OU.shape" value="egg" />
       <param name="style.OU.style" value="filled" />
       <param name="style.OU.fillcolor" value="cornsilk" />
@@ -10,11 +14,78 @@
       <param name="style.PU.style" value="filled" />
       <param name="style.PU.fillcolor" value="plum" />
       
-      <param name="title" value="test of the Dot observer" />
+      <param name="title" value="test of the dot observer : process order" />
       <param name="when.init" value="1" />
       <param name="when.everytime" value="1" />
       <param name="when.final" value="1" />
+      
+      <param name="show.pcsord" value="1" />
+      <param name="show.attributes" value="0" />
+      <param name="show.variables" value="0" />
     </observer>
+    
+    <observer ID="export.spatial-graph.files.dot" >
+      <param name="basefilename" value="graph_attrs" />
+
+      <param name="style.OU.shape" value="egg" />
+      <param name="style.OU.style" value="filled" />
+      <param name="style.OU.fillcolor" value="cornsilk" />
+      
+      <param name="style.PU.style" value="filled" />
+      <param name="style.PU.fillcolor" value="plum" />
+      
+      <param name="title" value="test of the dot observer : attributes" />
+      <param name="when.init" value="1" />
+      <param name="when.everytime" value="1" />
+      <param name="when.final" value="1" />
+      
+      <param name="show.pcsord" value="0" />
+      <param name="show.attributes" value="1" />
+      <param name="show.variables" value="0" />
+    </observer>
+
+
+    <observer ID="export.spatial-graph.files.dot" >
+      <param name="basefilename" value="graph_vars" />
+
+      <param name="style.OU.shape" value="egg" />
+      <param name="style.OU.style" value="filled" />
+      <param name="style.OU.fillcolor" value="cornsilk" />
+      
+      <param name="style.PU.style" value="filled" />
+      <param name="style.PU.fillcolor" value="plum" />
+      
+      <param name="title" value="test of the dot observer : variables" />
+      <param name="when.init" value="1" />
+      <param name="when.everytime" value="1" />
+      <param name="when.final" value="1" />
+      
+      <param name="show.pcsord" value="0" />
+      <param name="show.attributes" value="0" />
+      <param name="show.variables" value="1" />
+    </observer>
+    
+    
+    <observer ID="export.spatial-graph.files.dot" >
+      <param name="basefilename" value="graph_full" />
+
+      <param name="style.OU.shape" value="egg" />
+      <param name="style.OU.style" value="filled" />
+      <param name="style.OU.fillcolor" value="cornsilk" />
+      
+      <param name="style.PU.style" value="filled" />
+      <param name="style.PU.fillcolor" value="plum" />
+      
+      <param name="title" value="test of the dot observer : full" />
+      <param name="when.init" value="1" />
+      <param name="when.everytime" value="1" />
+      <param name="when.final" value="1" />
+      
+      <param name="show.pcsord" value="1" />
+      <param name="show.attributes" value="1" />
+      <param name="show.variables" value="1" />
+    </observer>
+    
     
   </monitoring>
 </openfluid>
