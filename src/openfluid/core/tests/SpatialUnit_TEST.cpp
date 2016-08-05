@@ -32,7 +32,7 @@
 
 
 /**
-  @file Unit_TEST.cpp
+  @file SpatialUnit_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
@@ -45,8 +45,9 @@
 #define BOOST_TEST_MODULE unittest_unit
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+#include <iostream>
+#include <ogr_geometry.h>
 #include <openfluid/core/SpatialUnit.hpp>
-
 
 
 BOOST_AUTO_TEST_CASE(check_construction)
@@ -177,4 +178,33 @@ BOOST_AUTO_TEST_CASE(check_from_to)
 }
 
 
+// =====================================================================
+// =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_geometry)
+{
+  openfluid::core::SpatialUnit TU("Test",35,17);
+
+  BOOST_REQUIRE(TU.geometry()== nullptr);
+  BOOST_REQUIRE_EQUAL(TU.exportGeometryToWkt(),"");
+
+  BOOST_REQUIRE(TU.importGeometryFromWkt("POLYGON((1 1,5 1,5 5,1 5,1 1))"));
+  BOOST_REQUIRE_EQUAL(TU.geometry()->getDimension(),2);
+  BOOST_REQUIRE_EQUAL(TU.geometry()->getGeometryType(),wkbPolygon);
+  BOOST_REQUIRE_EQUAL(TU.exportGeometryToWkt(),"POLYGON ((1 1,5 1,5 5,1 5,1 1))");
+
+  TU.deleteGeometry();
+  BOOST_REQUIRE(TU.geometry() == nullptr);
+  BOOST_REQUIRE_EQUAL(TU.exportGeometryToWkt(),"");
+
+  BOOST_REQUIRE(TU.importGeometryFromWkt("LINESTRING (15.21 57.58, 15.81 57.12)"));
+  BOOST_REQUIRE_EQUAL(TU.geometry()->getDimension(),1);
+  BOOST_REQUIRE_EQUAL(TU.geometry()->getCoordinateDimension(),2);
+  BOOST_REQUIRE_EQUAL(TU.geometry()->getGeometryType(),wkbLineString);
+  BOOST_REQUIRE_EQUAL(TU.exportGeometryToWkt(),"LINESTRING (15.21 57.58,15.81 57.12)");
+
+  TU.deleteGeometry();
+  BOOST_REQUIRE(TU.geometry() == nullptr);
+  BOOST_REQUIRE_EQUAL(TU.exportGeometryToWkt(),"");
+}

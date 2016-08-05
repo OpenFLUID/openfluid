@@ -56,11 +56,11 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.geovector")
   DECLARE_NAME("Exports simulation variables to geographical vector files");
   DECLARE_DESCRIPTION("This observer exports simulation variables to geographical vector files\n"
       "Parameters can be\n"
-      "  format : the GDAL format for output files (mandatory)"
+      "  format : the GDAL format for output files (mandatory)\n"
       "  outsubdir : the subdirectory to store output files, relative to the output directory (optional)\n"
       "  geoserie.<seriename>.sourcefile : the sourcefile for geometry of the serie (mandatory)\n"
       "  geoserie.<seriename>.unitsclass : the unit class of the serie (mandatory)\n"
-      "  geoserie.<seriename>.vars : the list of variables of the serie (mandatory)."
+      "  geoserie.<seriename>.vars : the list of variables of the serie (mandatory)\n"
       "The field name for the variable can be explicitely given by using the varname=>fieldname\n"
       "  geoserie.<seriename>.when : the time mode for output files production (optional). "
       "Values for geoserie.<seriename>.when can be init for output at initialization only, "

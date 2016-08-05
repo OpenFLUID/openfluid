@@ -36,6 +36,8 @@
 */
 
 
+#include <ogr_geometry.h>
+
 #include <openfluid/core/SpatialUnit.hpp>
 
 
@@ -44,7 +46,7 @@ namespace openfluid { namespace core {
 
 SpatialUnit::SpatialUnit(const UnitsClass_t& aClass, const UnitID_t anID,
                          const PcsOrd_t aPcsOrder) :
-  m_ID(anID), m_Class(aClass), m_PcsOrder(aPcsOrder)
+  m_ID(anID), m_Class(aClass), m_PcsOrder(aPcsOrder), m_Geometry(nullptr)
 {
 
 }
@@ -59,6 +61,7 @@ SpatialUnit::~SpatialUnit()
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -68,6 +71,7 @@ bool SpatialUnit::addToUnit(SpatialUnit* aUnit)
   m_ToUnits[aUnit->getClass()].push_back(aUnit);
   return true;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -80,6 +84,7 @@ bool SpatialUnit::addFromUnit(SpatialUnit* aUnit)
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -89,6 +94,7 @@ bool SpatialUnit::addParentUnit(SpatialUnit* aUnit)
   m_ParentUnits[aUnit->getClass()].push_back(aUnit);
   return true;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -101,6 +107,7 @@ bool SpatialUnit::addChildUnit(SpatialUnit* aUnit)
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -110,6 +117,7 @@ const UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitsClass_t& aClass) co
   return const_cast<UnitsPtrList_t*>(toSpatialUnits(aClass));
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -130,6 +138,7 @@ const UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitsClass_t& aClass
   return const_cast<UnitsPtrList_t*>(parentSpatialUnits(aClass));
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -155,6 +164,7 @@ UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitsClass_t& aClass)
     return nullptr;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -169,6 +179,7 @@ UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitsClass_t& aClass)
     return nullptr;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -182,6 +193,7 @@ UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitsClass_t& aClass)
   else
     return nullptr;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -249,6 +261,63 @@ void SpatialUnit::streamContents(std::ostream& OStream)
   OStream << std::endl;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool SpatialUnit::importGeometryFromWkt(const std::string& WKT)
+{
+  if (m_Geometry)
+    deleteGeometry();
+
+  char* WktBuffer = (char*)(WKT.c_str());
+
+  // TODO set spatial reference (from name given as method argument?)
+  OGRErr Error = OGRGeometryFactory::createFromWkt(&WktBuffer,nullptr,&m_Geometry);
+
+  if (Error != OGRERR_NONE)
+  {
+    deleteGeometry();
+    return false;
+  }
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string SpatialUnit::exportGeometryToWkt() const
+{
+  if (!m_Geometry)
+    return "";
+
+  char* WktBuffer = nullptr;
+
+  m_Geometry->exportToWkt(&WktBuffer);
+  std::string WKT(WktBuffer);
+
+  OGRFree(WktBuffer);
+
+  return WKT;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialUnit::deleteGeometry()
+{
+  if (m_Geometry)
+  {
+    OGRGeometryFactory::destroyGeometry(m_Geometry);
+    m_Geometry = nullptr;
+  }
+}
 
 
 } } // namespaces

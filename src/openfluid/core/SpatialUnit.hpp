@@ -52,6 +52,9 @@
 #include <openfluid/core/UnitsCollection.hpp>
 
 
+class OGRGeometry;
+
+
 namespace openfluid { namespace core {
 
 
@@ -125,6 +128,8 @@ class OPENFLUID_API SpatialUnit
     Variables m_Variables;
 
     EventsCollection m_Events;
+
+    OGRGeometry* m_Geometry;
 
 
   public:
@@ -280,6 +285,18 @@ class OPENFLUID_API SpatialUnit
 
     void setProcessOrder(unsigned int PcsOrder)
     { m_PcsOrder = PcsOrder; };
+
+    OGRGeometry* geometry()
+    { return m_Geometry; };
+
+    const OGRGeometry* geometry() const
+    { return m_Geometry; };
+
+    bool importGeometryFromWkt(const std::string& WKT);
+
+    std::string exportGeometryToWkt() const;
+
+    void deleteGeometry();
 
 };
 
