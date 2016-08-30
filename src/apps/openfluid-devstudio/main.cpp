@@ -48,6 +48,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include "MainWindow.hpp"
 
@@ -56,47 +57,58 @@ int main(int argc, char** argv)
 {
   try
   {
+    int ExitCode = 0;
+
     INIT_OPENFLUID_APPLICATION_WITH_GUI(argc, argv);
 
-    openfluid::ui::common::OpenFLUIDSplashScreen Splash(QPixmap(":/images/openfluid_splash_devstudio.png"));
-    Splash.show();
-
-    Splash.setMessage("i18n");
-
-    // translations management
-    QString Lang = openfluid::base::PreferencesManager::instance()->getLang();
-
-    QTranslator QtTranslator;
-    QTranslator OpenFLUIDTranslator;
-    if (Lang != "default")
+    do
     {
-      // load provided default translations
-      QtTranslator.load("qt_" + Lang.left(2) + ".qm", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+      openfluid::ui::common::OpenFLUIDSplashScreen Splash(QPixmap(":/images/openfluid_splash_devstudio.png"));
+      Splash.show();
 
-      // load provided OpenFLUID translations
-      OpenFLUIDTranslator.load(QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang + ".qm",
-                               QString(openfluid::base::Environment::getTranslationsDir().c_str()));
-    }
-    OPENFLUID_APPLICATION.installTranslator(&QtTranslator);
-    OPENFLUID_APPLICATION.installTranslator(&OpenFLUIDTranslator);
+      Splash.setMessage("i18n");
 
-//    OPENFLUID_APPLICATION.setStyleSheet(QString("QToolTip { color: #FFFFFF; background-color: %1; "
-//                                                "border: 1px solid %2; }")
-//                                        .arg(BUILDER_TOOLTIP_BGCOLOR,BUILDER_TOOLTIP_BORDERCOLOR));
+      // translations management
+      QString Lang = openfluid::base::PreferencesManager::instance()->getLang();
+
+      QTranslator QtTranslator;
+      QTranslator OpenFLUIDTranslator;
+      if (Lang != "default")
+      {
+        // load provided default translations
+        QtTranslator.load("qt_" + Lang.left(2) + ".qm", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+
+        // load provided OpenFLUID translations
+        OpenFLUIDTranslator.load(QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang + ".qm",
+                                 QString(openfluid::base::Environment::getTranslationsDir().c_str()));
+      }
+      OPENFLUID_APPLICATION.installTranslator(&QtTranslator);
+      OPENFLUID_APPLICATION.installTranslator(&OpenFLUIDTranslator);
+
+      //    OPENFLUID_APPLICATION.setStyleSheet(QString("QToolTip { color: #FFFFFF; background-color: %1; "
+      //                                                "border: 1px solid %2; }")
+      //                                        .arg(BUILDER_TOOLTIP_BGCOLOR,BUILDER_TOOLTIP_BORDERCOLOR));
 
 
-// TODO remove the #if linux when icons problem on win32 will be solved
+      // TODO remove the #if linux when icons problem on win32 will be solved
 #if linux
-    Q_INIT_RESOURCE(openfluiduicommon);
+      Q_INIT_RESOURCE(openfluiduicommon);
 #endif
 
-//    OPENFLUID_APPLICATION.setAttribute(Qt::AA_DontShowIconsInMenus);
+      //    OPENFLUID_APPLICATION.setAttribute(Qt::AA_DontShowIconsInMenus);
 
-    MainWindow m_MainWindow(&Splash);
-    m_MainWindow.show();
-    Splash.finish(&m_MainWindow);
+      MainWindow m_MainWindow(&Splash);
+      m_MainWindow.show();
+      Splash.finish(&m_MainWindow);
 
-    return CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
+      ExitCode = CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
+
+      OPENFLUID_APPLICATION.flush();
+
+    }
+    while (ExitCode == openfluid::ui::config::EXIT_CODE_FOR_RESTART);
+
+    return ExitCode;
   }
   catch (std::bad_alloc & E)
   {

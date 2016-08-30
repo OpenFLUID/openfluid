@@ -65,6 +65,8 @@ const char* const PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::confi
 const QString LINEMARKER_ERRCOLOR = "#FFA3A3";
 const QString LINEMARKER_WARNCOLOR = "#FFD6A3";
 
+const int EXIT_CODE_FOR_RESTART = -8121186;
+
 
 } } } // namespaces
 

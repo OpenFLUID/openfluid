@@ -39,6 +39,7 @@
 
 
 #include <QApplication>
+#include <QMessageBox>
 
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 #include <openfluid/ui/config.hpp>
@@ -61,6 +62,21 @@ OpenFLUIDDialog::OpenFLUIDDialog(QWidget* Parent, const QString& Title) :
 QString OpenFLUIDDialog::getPlaceholderRequired() const
 {
   return QApplication::translate("openfluid::ui::config",openfluid::ui::config::PLACEHOLDER_REQUIRED);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool OpenFLUIDDialog::confirmRestartAfterPreferences(QWidget* Parent)
+{
+  return (QMessageBox::question(Parent,
+                                tr("Restart"),
+                                tr("Modified preferences require the restart of the application to take effect.")+"\n"+
+                                tr("Would you like to restart now?")+"\n"+
+                                tr("Any unsaved data will be lost."),
+                                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes);
 }
 
 

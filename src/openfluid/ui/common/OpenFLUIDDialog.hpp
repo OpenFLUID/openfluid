@@ -49,11 +49,16 @@ namespace openfluid { namespace ui { namespace common {
 
 class OPENFLUID_API OpenFLUIDDialog : public QDialog
 {
+  Q_OBJECT;
+
+
   public:
 
     OpenFLUIDDialog(QWidget* Parent = nullptr, const QString& Title = "OpenFLUID");
 
     QString getPlaceholderRequired() const;
+
+    static bool confirmRestartAfterPreferences(QWidget* Parent = nullptr);
 
 };
 

@@ -65,6 +65,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   OpenFLUIDDialog(Parent), ui(new Ui::PreferencesDialog),
   m_RecentsChanged(false),
   m_SimPathsChanged(false), m_ObsPathsChanged(false), m_WaresWatchingChanged(false), m_TextEditorSettingsChanged(false),
+  m_RestartRequired(false),
   m_OriginalLangIndex(0), m_Mode(Mode)
 {
   setWindowModality(Qt::ApplicationModal);
@@ -220,11 +221,13 @@ void PreferencesDialog::initialize()
 
   m_OriginalLangIndex = ui->LangComboBox->currentIndex();
 
-  ui->LangRestartLabel->setText("");
+  ui->RestartLabel->setText("");
 
 
   // Workspaces paths
   ui->WorkspacesPathsWidget->setPathsList(PrefsMan->getBuilderWorkspacesPaths());
+
+  m_OriginalActiveWorkspace = PrefsMan->getBuilderWorkspacePath();
 
 
   if (m_Mode == MODE_BUILDER || m_Mode == MODE_FULL)
@@ -300,10 +303,7 @@ void PreferencesDialog::updateLanguage(const QString& Lang)
 {
   openfluid::base::PreferencesManager::instance()->setLang(Lang);
 
-  if (ui->LangComboBox->currentIndex() != m_OriginalLangIndex)
-    ui->LangRestartLabel->setText(tr("Restart required"));
-  else
-    ui->LangRestartLabel->setText("");
+  updateRestartStatus();
 }
 
 
@@ -848,6 +848,7 @@ void PreferencesDialog::processBextUserPathsUpdate()
 void PreferencesDialog::processWorkspacesPathsUpdate()
 {
   openfluid::base::PreferencesManager::instance()->setBuilderWorkspacesPaths(ui->WorkspacesPathsWidget->getPathsList());
+  updateRestartStatus();
 }
 
 
@@ -958,6 +959,25 @@ void PreferencesDialog::restoreDefaultsTextEditorSettings()
 
 // =====================================================================
 // =====================================================================
+
+
+void PreferencesDialog::updateRestartStatus()
+{
+  QString CurrentWorkspace = ui->WorkspacesPathsWidget->getPathsList().value(0,"");
+
+
+  if (ui->LangComboBox->currentIndex() != m_OriginalLangIndex ||
+      CurrentWorkspace != m_OriginalActiveWorkspace)
+  {
+    ui->RestartLabel->setText(tr("Restart required"));
+    m_RestartRequired = true;
+  }
+  else
+  {
+    ui->RestartLabel->setText("");
+    m_RestartRequired = false;
+  }
+}
 
 
 } } } // namespaces

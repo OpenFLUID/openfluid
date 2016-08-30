@@ -663,10 +663,15 @@ void AppCoordinator::whenCloseAsked()
 
 void AppCoordinator::whenPreferencesAsked()
 {
-  mp_CurrentModule->whenPreferencesAsked();
+  bool RestartRequired = mp_CurrentModule->whenPreferencesAsked();
 
   m_Actions.updateRecentProjectsActions();
   mp_CurrentModule->whenRecentProjectsActionsChanged();
+
+  if (RestartRequired && openfluid::ui::common::OpenFLUIDDialog::confirmRestartAfterPreferences(&m_MainWindow))
+  {
+    QCoreApplication::exit(openfluid::ui::config::EXIT_CODE_FOR_RESTART);
+  }
 }
 
 

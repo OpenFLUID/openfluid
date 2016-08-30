@@ -419,7 +419,7 @@ bool ProjectModule::whenCloseAsked()
 // =====================================================================
 
 
-void ProjectModule::whenPreferencesAsked()
+bool ProjectModule::whenPreferencesAsked()
 {
   bool WaresWatchingUpdated = false;
 
@@ -478,6 +478,8 @@ void ProjectModule::whenPreferencesAsked()
 
   if(PrefsDlg.isTextEditorSettingsChanged())
     mp_MainWidget->updateWareSrcEditorsSettings();
+
+  return PrefsDlg.isRestartRequired();
 }
 
 

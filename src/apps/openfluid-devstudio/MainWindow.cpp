@@ -411,6 +411,12 @@ void MainWindow::onPreferencesAsked()
 
   if (PrefsDlg.isTextEditorSettingsChanged())
     mp_Collection->updateEditorsSettings();
+
+  if (PrefsDlg.isRestartRequired() &&
+      openfluid::ui::common::OpenFLUIDDialog::confirmRestartAfterPreferences(this))
+  {
+    QCoreApplication::exit(openfluid::ui::config::EXIT_CODE_FOR_RESTART);
+  }
 }
 
 

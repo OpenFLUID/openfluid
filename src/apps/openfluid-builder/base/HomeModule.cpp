@@ -163,12 +163,14 @@ bool HomeModule::whenCloseAsked()
 // =====================================================================
 
 
-void HomeModule::whenPreferencesAsked()
+bool HomeModule::whenPreferencesAsked()
 {
   openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),
                                                     openfluid::ui::common::PreferencesDialog::MODE_BUILDER);
 
   PrefsDlg.exec();
+
+  return PrefsDlg.isRestartRequired();
 }
 
 

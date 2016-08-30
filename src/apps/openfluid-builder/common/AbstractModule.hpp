@@ -90,7 +90,10 @@ class AbstractModule : public QObject
 
     virtual bool whenCloseAsked() = 0;
 
-    virtual void whenPreferencesAsked() = 0;
+    /**
+      @return true if restart is required after modified preferences
+    */
+    virtual bool whenPreferencesAsked() = 0;
 
     virtual void whenRecentProjectsActionsChanged() = 0;
 

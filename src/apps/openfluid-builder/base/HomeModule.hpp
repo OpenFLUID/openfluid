@@ -87,7 +87,7 @@ class HomeModule : public AbstractModule
 
     bool whenCloseAsked();
 
-    void whenPreferencesAsked();
+    bool whenPreferencesAsked();
 
     void whenRecentProjectsActionsChanged();
 

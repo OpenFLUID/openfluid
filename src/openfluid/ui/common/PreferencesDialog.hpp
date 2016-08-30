@@ -175,7 +175,11 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     bool m_TextEditorSettingsChanged;
 
+    bool m_RestartRequired;
+
     int m_OriginalLangIndex;
+
+    QString m_OriginalActiveWorkspace;
 
     DisplayMode m_Mode;
 
@@ -190,6 +194,13 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
     void updateSyntaxElementLabel(QLabel* Label, const QStringList& Decorations, const QString& ColorName);
 
     void updateSyntaxElementColorButton(QToolButton* Button, const QString& ColorName);
+
+    void updateRestartStatus();
+
+
+  signals:
+
+    void applyTextEditorSettingsAsked();
 
 
   public:
@@ -213,10 +224,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
     bool isTextEditorSettingsChanged() const
     { return m_TextEditorSettingsChanged; }
 
-
-  signals:
-
-    void applyTextEditorSettingsAsked();
+    bool isRestartRequired()
+    { return m_RestartRequired; }
 
 };
 
