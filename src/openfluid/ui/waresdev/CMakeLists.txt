@@ -9,19 +9,22 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEd
                               WareSrcExplorer.cpp WareSrcExplorerModel.cpp WareExplorerDialog.cpp
                               NewSrcFileAssistant.cpp NewWareDialog.cpp FindReplaceDialog.cpp WareSrcMsgViewer.cpp
                               WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp WaresSrcIOProgressDialog.cpp
-                              WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp WareshubIssueDialog.cpp)
+                              WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp WareshubIssueDialog.cpp
+                              WorkspaceGitDashboardWorker.cpp WorkspaceGitDashboardDialog.cpp GitDashboardItemWidget.cpp)
 
 SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp WareSrcWidgetCollection.hpp
                               WareSrcSyntaxHighlighter.hpp WareSrcFiletypeManager.hpp TextEditMsgStream.hpp
                               WareSrcExplorer.hpp WareSrcExplorerModel.hpp WareExplorerDialog.hpp
                               NewSrcFileAssistant.hpp NewWareDialog.hpp FindReplaceDialog.hpp WareSrcMsgViewer.hpp
                               WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp
-                              WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp WareshubIssueDialog.hpp)
+                              WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp WareshubIssueDialog.hpp
+                              WorkspaceGitDashboardWorker.hpp WorkspaceGitDashboardDialog.hpp GitDashboardItemWidget.hpp)
 
 QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui EmptyPage.ui CppPage.ui CMakeConfigPage.ui
                               NewSrcFileAssistant.ui NewWareDialog.ui FindReplaceDialog.ui
                               WaresSrcExportDialog.ui WaresSrcImportDialog.ui WaresSrcIOProgressDialog.ui
-                              WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui)
+                              WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui
+                              WorkspaceGitDashboardDialog.ui GitDashboardItemWidget.ui)
                                    
 
 #QT4_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)

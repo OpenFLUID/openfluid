@@ -31,10 +31,10 @@
 
 /**
  @file WareSrcExplorer.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
+
 
 #include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 
@@ -49,10 +49,6 @@
 
 
 namespace openfluid { namespace ui { namespace waresdev {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
@@ -356,7 +352,7 @@ void WareSrcExplorer::onGitLogAsked()
 
 void WareSrcExplorer::updateExplorerModel(const QString& Path)
 {
-  mp_Model->getGitStatusInfo(Path);
+  mp_Model->updateGitStatusInfo(Path);
 }
 
 

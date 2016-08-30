@@ -54,6 +54,7 @@
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
+#include <openfluid/ui/waresdev/WorkspaceGitDashboardDialog.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
@@ -138,6 +139,7 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
 
   connect(m_Actions["ImportWareSources"], SIGNAL(triggered()), this, SLOT(onImportWareSourcesAsked()));
   connect(m_Actions["ExportWareSources"], SIGNAL(triggered()), this, SLOT(onExportWareSourcesAsked()));
+  connect(m_Actions["GitDashboard"], SIGNAL(triggered()), this, SLOT(onGitDashboardAsked()));
 
   connect(m_Actions["HelpAbout"], SIGNAL(triggered()), this, SLOT(onAboutAsked()));
   connect(m_Actions["HelpOnlineWeb"], SIGNAL(triggered()), this, SLOT(onOnlineWebAsked()));
@@ -250,6 +252,8 @@ void MainWindow::createLocalActions()
   // Tools menu
   m_Actions["ImportWareSources"] = new QAction(tr("Import wares sources..."), this);
   m_Actions["ExportWareSources"] = new QAction(tr("Export wares sources..."), this);
+  m_Actions["GitDashboard"] = new QAction(tr("Dashboard..."), this);
+  m_Actions["GitDashboard"]->setEnabled(openfluid::utils::GitHelper::checkGitProgram());
 
   //Help menu
   m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
@@ -319,6 +323,9 @@ void MainWindow::createMenus()
   Menu->addSeparator();
   Menu->addAction(m_Actions["ImportWareSources"]);
   Menu->addAction(m_Actions["ExportWareSources"]);
+  Menu->addSeparator();
+  SubMenu = Menu->addMenu("Git");
+  SubMenu->addAction(m_Actions["GitDashboard"]);
 
   Menu = menuBar()->addMenu(tr("&Help"));
   SubMenu = Menu->addMenu(tr("OpenFLUID online"));
@@ -436,6 +443,19 @@ void MainWindow::onExportWareSourcesAsked()
   }
   else
     QMessageBox::warning(this, tr("Export not available"), tr("CMake program can not be found."));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onGitDashboardAsked()
+{
+  openfluid::ui::waresdev::WorkspaceGitDashboardDialog Dialog(this);
+  Dialog.setWindowTitle("Git Dashboard");
+
+  Dialog.exec();
 }
 
 

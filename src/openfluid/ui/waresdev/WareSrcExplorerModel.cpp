@@ -77,7 +77,6 @@ WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
 void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
 {
   QModelIndex Parent = index(Path);
-
   openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
 
 
@@ -118,14 +117,14 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
     }
   }
   else if (Info.m_isAWare)
-    getGitStatusInfo(Path);
+    updateGitStatusInfo(Path);
   else
   {
     for (const auto& WarePathsTracked : m_GitBranchByWarePath.keys())
     {
       // if Path is a sub dir of a tracked ware, we reload git status on this ware
       if (Path.startsWith(WarePathsTracked) && Path != WarePathsTracked)
-        getGitStatusInfo(Info.m_AbsolutePathOfWare);
+        updateGitStatusInfo(Info.m_AbsolutePathOfWare);
     }
   }
 
@@ -136,7 +135,7 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
 // =====================================================================
 
 
-void WareSrcExplorerModel::getGitStatusInfo(const QString& WarePath)
+void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
 {
   if (!openfluid::utils::GitHelper::checkGitProgram())
     return;
@@ -156,6 +155,7 @@ void WareSrcExplorerModel::getGitStatusInfo(const QString& WarePath)
       else
         ++it;
     }
+
     QStringList::iterator it2 = m_GitDirties.begin();
     while (it2 != m_GitDirties.end())
     {
@@ -164,6 +164,7 @@ void WareSrcExplorerModel::getGitStatusInfo(const QString& WarePath)
       else
         ++it2;
     }
+
     it = m_GitBranchByWarePath.begin();
     while (it != m_GitBranchByWarePath.end())
     {
@@ -197,7 +198,7 @@ void WareSrcExplorerModel::getGitStatusInfo(const QString& WarePath)
 
     QMap<QString, openfluid::utils::GitHelper::FileStatusInfo> FileStatus = TreeStatus.m_FileStatusByTreePath;
     for (QMap<QString, openfluid::utils::GitHelper::FileStatusInfo>::iterator it = FileStatus.begin();
-        it != FileStatus.end(); ++it)
+         it != FileStatus.end(); ++it)
     {
       QString AbsolutePath = QString("%1/%2").arg(WarePath).arg(it.key());
 
@@ -269,14 +270,25 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
     return QVariant(QString("> %1").arg(QFileSystemModel::data(Index, Role).toString()));
 
   if (Role == Qt::DisplayRole && m_GitBranchByWarePath.contains(filePath(Index)))
-    return QVariant(
-        QString("%1  [%2]").arg(QFileSystemModel::data(Index, Role).toString()).arg(
-            m_GitBranchByWarePath[filePath(Index)]));
+    return QVariant(QString("%1  [%2]").arg(QFileSystemModel::data(Index, Role).toString())
+                                       .arg(m_GitBranchByWarePath[filePath(Index)]));
 
   if (Role == QFileSystemModel::FileIconRole)
   {
     if (m_PathInfos.value(filePath(Index)).m_isAWare)
+    {
+      if (m_GitBranchByWarePath.contains(filePath(Index)))
+      {
+        QPixmap Base(":/ui/common/icons/waredir.png");
+        QPixmap Overlay(":/ui/common/icons/git_linked.png");
+
+        QPainter painter(&Base);
+        painter.drawPixmap(Base.width()*0.4, Base.height()*0.4, Base.width()*0.6, Base.height()*0.6, Overlay);
+        return QIcon(Base);
+      }
+
       return QIcon(":/ui/common/icons/waredir.png");
+    }
 
     if (!isDir(Index))
     {
@@ -320,7 +332,7 @@ void WareSrcExplorerModel::onGitIndexFileChanged(const QString& Path)
   QString WarePath = Path;
   WarePath.chop(11); // removing "/.git/index" at the end
 
-  getGitStatusInfo(WarePath);
+  updateGitStatusInfo(WarePath);
 }
 
 
@@ -333,7 +345,7 @@ void WareSrcExplorerModel::onGitDirObjectsChanged(const QString& Path)
   QString WarePath = Path;
   WarePath.chop(13); // removing "/.git/objects" at the end
 
-  getGitStatusInfo(WarePath);
+  updateGitStatusInfo(WarePath);
 }
 
 

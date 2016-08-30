@@ -112,7 +112,7 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
 
     QVariant data(const QModelIndex& Index, int Role) const;
 
-    void getGitStatusInfo(const QString& WarePath);
+    void updateGitStatusInfo(const QString& WarePath);
 
 };
 

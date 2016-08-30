@@ -95,6 +95,8 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void onExportWareSourcesAsked();
 
+    void onGitDashboardAsked();
+
     void onAboutAsked();
 
     void onOnlineWebAsked();

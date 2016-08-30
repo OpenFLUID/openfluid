@@ -32,6 +32,7 @@
     <file>icons/menu.png</file>
     <file>icons/cppcode.png</file>
     <file>icons/OFcode.png</file>
+    <file>icons/git_linked.png</file>
     <file>icons/git_added.png</file>
     <file>icons/git_conflict.png</file>
     <file>icons/git_staged.png</file>
