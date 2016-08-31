@@ -42,6 +42,7 @@
 #include <QDesktopWidget>
 #include <QAction>
 #include <QUrl>
+#include <QDir>
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -196,6 +197,10 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
   setWorkspaceDefaults();
 
   updateSaveButtonsStatus(false, false);
+
+  statusBar()->showMessage(tr("Current workspace: %1")
+                           .arg(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
+                                                           ->getBuilderWorkspacePath())));
 }
 
 

@@ -39,6 +39,7 @@
 
 
 #include <QUrl>
+#include <QStatusBar>
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QApplication>
@@ -148,6 +149,10 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
     connect(RecentActions[i], SIGNAL(triggered()), this, SLOT(whenOpenRecentAsked()));
 
   m_MainWindow.setQuitAction(m_Actions.action("ProjectQuit"));
+
+  m_MainWindow.statusBar()->showMessage(tr("Current workspace: %1")
+                                        .arg(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
+                                                                        ->getBuilderWorkspacePath())));
 
 }
 
