@@ -42,7 +42,7 @@
 
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/utils/GitHelpers.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 
 
 namespace openfluid { namespace waresdev {
@@ -168,7 +168,7 @@ bool WaresHubImportWorker::clone()
     {
       QString DestPath = QString("%1/%2").arg(WareTypePath).arg(QFileInfo(GitUrl).fileName());
 
-      openfluid::utils::GitHelper Git;
+      openfluid::utils::GitProxy Git;
       QObject::connect(&Git, SIGNAL(info(const QString&)), this, SIGNAL(info(const QString&)));
       QObject::connect(&Git, SIGNAL(error(const QString&)), this, SIGNAL(error(const QString&)));
 

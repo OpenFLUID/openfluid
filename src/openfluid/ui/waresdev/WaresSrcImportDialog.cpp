@@ -41,7 +41,7 @@
 #include <QThread>
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/utils/GitHelpers.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
@@ -93,7 +93,7 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
 
   ui->PackageRadioButton->click();
 
-  if(!openfluid::utils::GitHelper::checkGitProgram())
+  if(!openfluid::utils::GitProxy::isAvailable())
   {
     ui->WareshubRadioButton->setEnabled(false);
     ui->WareshubRadioButton->setToolTip(tr("Git program not found"));

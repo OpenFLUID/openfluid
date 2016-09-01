@@ -30,53 +30,57 @@
 */
 
 /**
-  @file GitDashboardItemWidget.hpp
+  @file ProgramProxy.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_GITDASHBOARDITEMWIDGET_HPP__
-#define __OPENFLUID_UIWARESDEV_GITDASHBOARDITEMWIDGET_HPP__
-
-
-#include <QFrame>
-
+#include <QString>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ui/waresdev/WorkspaceGitDashboardWorker.hpp>
 
 
-namespace Ui {
-class GitDashboardItemWidget;
-}
+#ifndef __OPENFLUID_UTILS_PROGRAMPROXY_HPP__
+#define __OPENFLUID_UTILS_PROGRAMPROXY_HPP__
 
 
-namespace openfluid { namespace ui { namespace waresdev {
+namespace openfluid { namespace utils {
 
 
-class OPENFLUID_API GitDashboardItemWidget: public QFrame
+template<typename T>
+class ProgramProxy
 {
-  Q_OBJECT;
+  protected:
 
+     static QString m_ExecutablePath;
 
-  private:
-
-    Ui::GitDashboardItemWidget* ui;
-
-    static void updateStatusString(QString& CurrentStr, const QString& State, int Counter);
-
-    static QString getStatusString(const WorkspaceGitDashboardWorker::WareStatusInfo& Infos);
+     static QString m_Version;
 
 
   public:
 
-    GitDashboardItemWidget(const WorkspaceGitDashboardWorker::WareStatusInfo& Infos, QWidget* Parent = nullptr);
+    static bool isAvailable()
+    { return false; }
 
-    virtual ~GitDashboardItemWidget();
+    static QString getVersion()
+    { return m_Version; }
+
+    static QString getExecutablePath()
+    { return m_ExecutablePath; }
+
 };
 
 
-} } } // namespaces
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __OPENFLUID_UIWARESDEV_GITDASHBOARDITEMWIDGET_HPP__ */
+template<typename T> QString ProgramProxy<T>::m_ExecutablePath = "";
+
+template<typename T>QString ProgramProxy<T>::m_Version = "";
+
+
+} }  // namespaces
+
+
+#endif /* __OPENFLUID_UTILS_PROGRAMPROXY_HPP__ */

@@ -47,7 +47,7 @@
 
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/utils/GitHelpers.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 
 #include "tests-config.hpp"
 
@@ -84,7 +84,7 @@ class F
 
       TestWaresDevSimulatorsDir = Mgr->getWareTypePath(openfluid::ware::WareType::SIMULATOR);
 
-      CurrentOFBranchName = openfluid::utils::GitHelper::getOpenfluidCurrentBranchName();
+      CurrentOFBranchName = openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName().toStdString();
     }
 
     ~F()
@@ -259,7 +259,7 @@ int main(int argc, char *argv[])
 {
   QCoreApplication app(argc, argv);
 
-  if (!openfluid::utils::GitHelper::checkGitProgram())
+  if (!openfluid::utils::GitProxy::isAvailable())
   {
     std::cout << "** Test not run due to failing to find git program **" << std::endl;
     return 0;

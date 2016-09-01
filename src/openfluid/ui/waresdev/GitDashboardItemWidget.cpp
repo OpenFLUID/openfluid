@@ -39,6 +39,7 @@
 
 #include <openfluid/ui/waresdev/GitDashboardItemWidget.hpp>
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 
 #include "ui_GitDashboardItemWidget.h"
 
@@ -53,8 +54,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 GitDashboardItemWidget::GitDashboardItemWidget(const WorkspaceGitDashboardWorker::WareStatusInfo& Infos,
                                                QWidget* Parent) :
-    QFrame(Parent), ui(new Ui::GitDashboardItemWidget),
-    m_ExpectedBranchName("openfluid-"+QString::fromStdString(openfluid::base::Environment::getVersionMajorMinor()))
+    QFrame(Parent), ui(new Ui::GitDashboardItemWidget)
 {
   ui->setupUi(this);
 
@@ -62,7 +62,7 @@ GitDashboardItemWidget::GitDashboardItemWidget(const WorkspaceGitDashboardWorker
   ui->WareIDLabel->setText(Infos.ID);
 
 
-  if (Infos.BranchName != m_ExpectedBranchName)
+  if (Infos.BranchName != openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName())
     ui->BranchLabel->setText("<font style='color: "+COLOR_WARN+";'>"+Infos.BranchName+"</font>");
   else
     ui->BranchLabel->setText("<font style='color: "+COLOR_OK+";'>"+Infos.BranchName+"</font>");
@@ -109,15 +109,15 @@ QString GitDashboardItemWidget::getStatusString(const WorkspaceGitDashboardWorke
   updateStatusString(StatusStr,
                      tr("dirty"),Infos.DirtyCounter);
   updateStatusString(StatusStr,
-                     tr("untracked"),Infos.IndexCounters.at(openfluid::utils::GitHelper::FileStatus::UNTRACKED));
+                     tr("untracked"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::UNTRACKED));
   updateStatusString(StatusStr,
-                     tr("modified"),Infos.IndexCounters.at(openfluid::utils::GitHelper::FileStatus::MODIFIED));
+                     tr("modified"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::MODIFIED));
   updateStatusString(StatusStr,
-                     tr("added"),Infos.IndexCounters.at(openfluid::utils::GitHelper::FileStatus::ADDED));
+                     tr("added"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::ADDED));
   updateStatusString(StatusStr,
-                     tr("deleted"),Infos.IndexCounters.at(openfluid::utils::GitHelper::FileStatus::DELETED));
+                     tr("deleted"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::DELETED));
   updateStatusString(StatusStr,
-                     tr("conflict"),Infos.IndexCounters.at(openfluid::utils::GitHelper::FileStatus::CONFLICT));
+                     tr("conflict"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::CONFLICT));
 
   if (StatusStr.isEmpty())
     StatusStr = "<font style='color: "+COLOR_OK+";'>"+tr("clean")+"</font>";

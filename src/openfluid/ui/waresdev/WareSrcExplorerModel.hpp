@@ -47,7 +47,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/utils/GitHelpers.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -79,15 +79,15 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
      */
     QMap<QString, openfluid::waresdev::WareSrcManager::PathInfo> m_PathInfos;
 
-    std::map<openfluid::utils::GitHelper::FileStatus, QString> m_IconByGitStatus =
+    std::map<openfluid::utils::GitProxy::FileStatus, QString> m_IconByGitStatus =
         {
-          { openfluid::utils::GitHelper::FileStatus::TRACKED, ":/ui/common/icons/git_tracked.png" },
-          { openfluid::utils::GitHelper::FileStatus::UNTRACKED, ":/ui/common/icons/git_untracked.png" },
-          { openfluid::utils::GitHelper::FileStatus::IGNORED, "" },
-          { openfluid::utils::GitHelper::FileStatus::CONFLICT, ":/ui/common/icons/git_conflict.png" },
-          { openfluid::utils::GitHelper::FileStatus::ADDED, ":/ui/common/icons/git_added.png" },
-          { openfluid::utils::GitHelper::FileStatus::DELETED, "" },
-          { openfluid::utils::GitHelper::FileStatus::MODIFIED, ":/ui/common/icons/git_staged.png" }
+          { openfluid::utils::GitProxy::FileStatus::TRACKED, ":/ui/common/icons/git_tracked.png" },
+          { openfluid::utils::GitProxy::FileStatus::UNTRACKED, ":/ui/common/icons/git_untracked.png" },
+          { openfluid::utils::GitProxy::FileStatus::IGNORED, "" },
+          { openfluid::utils::GitProxy::FileStatus::CONFLICT, ":/ui/common/icons/git_conflict.png" },
+          { openfluid::utils::GitProxy::FileStatus::ADDED, ":/ui/common/icons/git_added.png" },
+          { openfluid::utils::GitProxy::FileStatus::DELETED, "" },
+          { openfluid::utils::GitProxy::FileStatus::MODIFIED, ":/ui/common/icons/git_staged.png" }
         };
 
     QMap<QString, QString> m_GitBranchByWarePath;

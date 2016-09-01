@@ -31,28 +31,31 @@
 
 
 /**
- @file GitHelpers.hpp
- @brief Header of ...
+ @file GitProxy.hpp
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
-#ifndef __OPENFLUID_UTILS_GITHELPERS_HPP__
-#define __OPENFLUID_UTILS_GITHELPERS_HPP__
+#ifndef __OPENFLUID_UTILS_GITPROXY_HPP__
+#define __OPENFLUID_UTILS_GITPROXY_HPP__
+
 
 #include <QString>
 #include <QObject>
 #include <QProcess>
 #include <QMap>
 #include <QFile>
+
 #include <openfluid/dllexport.hpp>
+#include <openfluid/utils/ProgramProxy.hpp>
 
 
 namespace openfluid { namespace utils {
 
 
-class OPENFLUID_API GitHelper: public QObject
+class OPENFLUID_API GitProxy : public QObject, public ProgramProxy<GitProxy>
 {
   Q_OBJECT
 
@@ -82,13 +85,13 @@ class OPENFLUID_API GitHelper: public QObject
 
   private:
 
-    static QString m_GitPgm;
-
     QProcess* mp_Process = nullptr;
 
     QString m_TmpPath;
 
     QFile m_AskPassFile;
+
+    static void findGitProgram();
 
 
   private slots:
@@ -109,13 +112,13 @@ class OPENFLUID_API GitHelper: public QObject
 
   public:
 
-    GitHelper();
+    GitProxy();
 
-    ~GitHelper();
+    ~GitProxy();
 
-    static bool checkGitProgram();
+    static bool isAvailable();
 
-    static std::string getOpenfluidCurrentBranchName();
+    static QString getCurrentOpenFLUIDBranchName();
 
     bool clone(const QString& FromUrl, const QString& ToPath,
                const QString& Username = "", const QString& Password = "",
@@ -133,4 +136,4 @@ class OPENFLUID_API GitHelper: public QObject
 } } // namespaces
 
 
-#endif /* __OPENFLUID_UTILS_GITHELPERS_HPP__ */
+#endif /* __OPENFLUID_UTILS_GITPROXY_HPP__ */

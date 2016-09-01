@@ -134,7 +134,7 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   GitMenu.setEnabled(false);
 
-  if (currentIndex().data(Qt::DisplayRole).toString().contains("[") && openfluid::utils::GitHelper::checkGitProgram())
+  if (currentIndex().data(Qt::DisplayRole).toString().contains("[") && openfluid::utils::GitProxy::isAvailable())
     GitMenu.setEnabled(true);
 
   Menu.exec(viewport()->mapToGlobal(Point));
@@ -322,7 +322,7 @@ void WareSrcExplorer::onDeleteFileAsked()
 
 void WareSrcExplorer::onGitStatusAsked()
 {
-  openfluid::utils::GitHelper Git;
+  openfluid::utils::GitProxy Git;
 
   openfluid::ui::waresdev::WareGitDialog Dialog;
   Dialog.setWindowTitle("git status");
@@ -337,7 +337,7 @@ void WareSrcExplorer::onGitStatusAsked()
 
 void WareSrcExplorer::onGitLogAsked()
 {
-  openfluid::utils::GitHelper Git;
+  openfluid::utils::GitProxy Git;
 
   openfluid::ui::waresdev::WareGitDialog Dialog;
   Dialog.setWindowTitle("git log");

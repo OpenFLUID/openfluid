@@ -45,7 +45,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/utils/GitHelpers.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -71,15 +71,15 @@ class OPENFLUID_API WorkspaceGitDashboardWorker : public QObject
 
       int DirtyCounter = 0;
 
-      std::map<openfluid::utils::GitHelper::FileStatus,int> IndexCounters =
+      std::map<openfluid::utils::GitProxy::FileStatus,int> IndexCounters =
       {
-        {openfluid::utils::GitHelper::FileStatus::UNTRACKED,0},
-        {openfluid::utils::GitHelper::FileStatus::TRACKED,0},
-        {openfluid::utils::GitHelper::FileStatus::IGNORED,0},
-        {openfluid::utils::GitHelper::FileStatus::CONFLICT,0},
-        {openfluid::utils::GitHelper::FileStatus::ADDED,0},
-        {openfluid::utils::GitHelper::FileStatus::DELETED,0},
-        {openfluid::utils::GitHelper::FileStatus::MODIFIED,0}
+        {openfluid::utils::GitProxy::FileStatus::UNTRACKED,0},
+        {openfluid::utils::GitProxy::FileStatus::TRACKED,0},
+        {openfluid::utils::GitProxy::FileStatus::IGNORED,0},
+        {openfluid::utils::GitProxy::FileStatus::CONFLICT,0},
+        {openfluid::utils::GitProxy::FileStatus::ADDED,0},
+        {openfluid::utils::GitProxy::FileStatus::DELETED,0},
+        {openfluid::utils::GitProxy::FileStatus::MODIFIED,0}
       };
 
     };

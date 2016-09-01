@@ -59,7 +59,7 @@
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/utils/GitHelpers.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 #include "MainWindow.hpp"
@@ -258,7 +258,7 @@ void MainWindow::createLocalActions()
   m_Actions["ImportWareSources"] = new QAction(tr("Import wares sources..."), this);
   m_Actions["ExportWareSources"] = new QAction(tr("Export wares sources..."), this);
   m_Actions["GitDashboard"] = new QAction(tr("Dashboard..."), this);
-  m_Actions["GitDashboard"]->setEnabled(openfluid::utils::GitHelper::checkGitProgram());
+  m_Actions["GitDashboard"]->setEnabled(openfluid::utils::GitProxy::isAvailable());
 
   //Help menu
   m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
@@ -431,7 +431,7 @@ void MainWindow::onPreferencesAsked()
 
 void MainWindow::onImportWareSourcesAsked()
 {
-  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram() || openfluid::utils::GitHelper::checkGitProgram())
+  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram() || openfluid::utils::GitProxy::isAvailable())
   {
     openfluid::ui::waresdev::WaresSrcImportDialog Dialog(this);
     Dialog.exec();

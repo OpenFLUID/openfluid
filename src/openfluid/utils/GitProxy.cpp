@@ -30,17 +30,17 @@
  */
 
 /**
- @file GitHelpers.cpp
- @brief Implements ...
+ @file GitProxy.cpp
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
 #include <QDir>
 #include <QTextStream>
 
-#include <openfluid/utils/GitHelpers.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 
@@ -48,16 +48,9 @@
 namespace openfluid { namespace utils {
 
 
-QString GitHelper::m_GitPgm = "";
-
-
-// =====================================================================
-// =====================================================================
-
-
-GitHelper::GitHelper()
+GitProxy::GitProxy()
 {
-  checkGitProgram();
+  findGitProgram();
 
   // TODO use a subdir in tmp dir given by openfluid::tools::Filesystem::makeUniqueSubdirectory()
   m_TmpPath = QString::fromStdString(openfluid::base::Environment::getTempDir());
@@ -68,7 +61,7 @@ GitHelper::GitHelper()
 // =====================================================================
 
 
-GitHelper::~GitHelper()
+GitProxy::~GitProxy()
 {
   delete mp_Process;
 
@@ -81,12 +74,30 @@ GitHelper::~GitHelper()
 // =====================================================================
 
 
-bool GitHelper::checkGitProgram()
+void GitProxy::findGitProgram()
 {
-  if (m_GitPgm.isEmpty())
-    m_GitPgm = ExternalProgram::getRegisteredProgram(ExternalProgram::GitProgram).getFullProgramPath();
+  if (m_ExecutablePath.isEmpty())
+  {
+    m_ExecutablePath = ExternalProgram::getRegisteredProgram(ExternalProgram::GitProgram).getFullProgramPath();
 
-  return (!m_GitPgm.isEmpty());
+    if (!m_ExecutablePath.isEmpty())
+    {
+      QProcess Pcs;
+
+      Pcs.start(QString("\"%1\" --version").arg(m_ExecutablePath));
+
+      Pcs.waitForReadyRead(-1);
+      Pcs.waitForFinished(-1);
+
+      QString Res = QString::fromUtf8(Pcs.readAll());
+
+      if (Res.startsWith("git version "))
+      {
+        Res.remove(0,12);
+        m_Version = Res;
+      }
+    }
+  }
 }
 
 
@@ -94,9 +105,11 @@ bool GitHelper::checkGitProgram()
 // =====================================================================
 
 
-std::string GitHelper::getOpenfluidCurrentBranchName()
+bool GitProxy::isAvailable()
 {
-  return "openfluid-" + openfluid::base::Environment::getVersionMajorMinor();
+  findGitProgram();
+
+  return (!m_ExecutablePath.isEmpty() && !m_Version.isEmpty());
 }
 
 
@@ -104,7 +117,17 @@ std::string GitHelper::getOpenfluidCurrentBranchName()
 // =====================================================================
 
 
-void GitHelper::processStandardOutput()
+QString GitProxy::getCurrentOpenFLUIDBranchName()
+{
+  return "openfluid-" + QString::fromStdString(openfluid::base::Environment::getVersionMajorMinor());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void GitProxy::processStandardOutput()
 {
   mp_Process->setReadChannel(QProcess::StandardOutput);
 
@@ -117,7 +140,7 @@ void GitHelper::processStandardOutput()
 // =====================================================================
 
 
-void GitHelper::processErrorOutput()
+void GitProxy::processErrorOutput()
 {
   mp_Process->setReadChannel(QProcess::StandardError);
 
@@ -133,7 +156,7 @@ void GitHelper::processErrorOutput()
 // =====================================================================
 
 
-void GitHelper::processErrorOutputAsInfo()
+void GitProxy::processErrorOutputAsInfo()
 {
   mp_Process->setReadChannel(QProcess::StandardError);
 
@@ -149,7 +172,7 @@ void GitHelper::processErrorOutputAsInfo()
 // =====================================================================
 
 
-bool GitHelper::clone(const QString& FromUrl, const QString& ToPath,
+bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
                       const QString& Username, const QString& Password,
                       bool SslNoVerify)
 {
@@ -211,7 +234,7 @@ bool GitHelper::clone(const QString& FromUrl, const QString& ToPath,
   if (SslNoVerify)
     Options += " -c http.sslverify=false";
 
-  QString Cmd = QString("\"%1\" clone --progress %2 %3 %4").arg(m_GitPgm).arg(Options).arg(Url).arg(ToPath);
+  QString Cmd = QString("\"%1\" clone --progress %2 %3 %4").arg(m_ExecutablePath).arg(Options).arg(Url).arg(ToPath);
 
   mp_Process = new QProcess();
 
@@ -243,7 +266,7 @@ bool GitHelper::clone(const QString& FromUrl, const QString& ToPath,
 // =====================================================================
 
 
-GitHelper::TreeStatusInfo GitHelper::status(const QString& Path)
+GitProxy::TreeStatusInfo GitProxy::status(const QString& Path)
 {
   TreeStatusInfo TreeStatus;
   QDir PathDir(Path);
@@ -256,7 +279,7 @@ GitHelper::TreeStatusInfo GitHelper::status(const QString& Path)
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  QString Cmd = QString("\"%1\" status --porcelain --ignored -b").arg(m_GitPgm);
+  QString Cmd = QString("\"%1\" status --porcelain --ignored -b").arg(m_ExecutablePath);
 
   mp_Process->start(Cmd);
 
@@ -314,7 +337,7 @@ GitHelper::TreeStatusInfo GitHelper::status(const QString& Path)
 // =====================================================================
 
 
-QString GitHelper::statusHtml(const QString& Path, bool WithColorCodes)
+QString GitProxy::statusHtml(const QString& Path, bool WithColorCodes)
 {
   QDir PathDir(Path);
 
@@ -324,7 +347,7 @@ QString GitHelper::statusHtml(const QString& Path, bool WithColorCodes)
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  QString Cmd = QString("\"%1\" %2 -c encoding=UTF-8 status").arg(m_GitPgm).arg(
+  QString Cmd = QString("\"%1\" %2 -c encoding=UTF-8 status").arg(m_ExecutablePath).arg(
       WithColorCodes ? "-c color.status=always" : "");
 
   mp_Process->start(Cmd);
@@ -345,7 +368,7 @@ QString GitHelper::statusHtml(const QString& Path, bool WithColorCodes)
 // =====================================================================
 
 
-QString GitHelper::logHtml(const QString& Path, bool WithColorCodes)
+QString GitProxy::logHtml(const QString& Path, bool WithColorCodes)
 {
   QDir PathDir(Path);
 
@@ -355,7 +378,7 @@ QString GitHelper::logHtml(const QString& Path, bool WithColorCodes)
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  QString Cmd = QString("\"%1\" -c encoding=UTF-8 log %2").arg(m_GitPgm).arg(WithColorCodes ? "--color" : "");
+  QString Cmd = QString("\"%1\" -c encoding=UTF-8 log %2").arg(m_ExecutablePath).arg(WithColorCodes ? "--color" : "");
 
   mp_Process->start(Cmd);
 

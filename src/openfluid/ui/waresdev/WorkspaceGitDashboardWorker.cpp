@@ -80,7 +80,7 @@ void WorkspaceGitDashboardWorker::run()
   };
 
 
-  openfluid::utils::GitHelper Git;
+  openfluid::utils::GitProxy Git;
 
   for (auto& RootPath : RootPathsByType)
   {
@@ -90,7 +90,7 @@ void WorkspaceGitDashboardWorker::run()
     {
       QString WarePath = CurrentDir.absoluteFilePath(FileInfo.fileName());
 
-      openfluid::utils::GitHelper::TreeStatusInfo TreeStatus = Git.status(WarePath);
+      openfluid::utils::GitProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
 
       if (TreeStatus.m_IsGitTracked)
       {
