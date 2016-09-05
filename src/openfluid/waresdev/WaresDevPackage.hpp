@@ -68,8 +68,6 @@ class OPENFLUID_API WaresDevPackage: public QObject
 
   protected:
 
-    static QString m_CMakeCmd;
-
     QString m_PackageFilePath;
 
     QStringList m_WaresPaths;
@@ -109,8 +107,6 @@ class OPENFLUID_API WaresDevPackage: public QObject
     virtual ~WaresDevPackage();
 
     QStringList getWaresPaths();
-
-    static bool checkCMakeProgram();
 
     QString getPackagers();
 

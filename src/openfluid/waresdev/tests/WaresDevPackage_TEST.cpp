@@ -47,7 +47,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/config.hpp>
 #include "tests-config.hpp"
 
@@ -336,11 +336,9 @@ BOOST_FIXTURE_TEST_CASE(PkgExport,F)
 
   BOOST_CHECK(OutOfwdpDir.exists("my_package.ofwdp"));
 
-  QString CMakeCmd = openfluid::utils::ExternalProgram::getRegisteredProgram(
-      openfluid::utils::ExternalProgram::CMakeProgram).getFullProgramPath();
-
-  QString Command = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"").arg(CMakeCmd).arg(OutOfwdpPath)
-        .arg(OutOfwdpDir.absoluteFilePath("my_package.ofwdp"));
+  QString Command =
+      openfluid::utils::CMakeProxy::getTarUncompressCommand(OutOfwdpPath,
+                                                            OutOfwdpDir.absoluteFilePath("my_package.ofwdp"),"z");
 
   BOOST_CHECK(!QProcess::execute(Command));
 

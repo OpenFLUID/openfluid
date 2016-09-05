@@ -34,7 +34,7 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
 
 
 #include <QFileDialog>
@@ -42,6 +42,7 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
@@ -99,7 +100,7 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
     ui->WareshubRadioButton->setToolTip(tr("Git program not found"));
   }
 
-  if(!openfluid::waresdev::WaresDevPackage::checkCMakeProgram())
+  if(!openfluid::utils::CMakeProxy::isAvailable())
   {
     ui->PackagePathButton->setEnabled(false);
     ui->WareshubRadioButton->setToolTip(tr("CMake program not found"));

@@ -115,8 +115,6 @@ class OPENFLUID_API WareSrcContainer: public QObject
      */
     QString m_AbsoluteJsonPath;
 
-    QString m_CMakeProgramPath;
-
     openfluid::waresdev::WareSrcMsgStream* mp_Stream;
 
     ConfigMode m_ConfigMode;

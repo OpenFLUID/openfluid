@@ -35,7 +35,8 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
 #include <QSettings>
@@ -44,25 +45,17 @@
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace waresdev {
 
-QString WaresDevPackage::m_CMakeCmd = "";
-
-
-// =====================================================================
-// =====================================================================
-
 
 WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& TempSubFolderName) :
     m_PackageFilePath(PackageFilePath)
 {
-  checkCMakeProgram();
-
   m_PackageName = QFileInfo(m_PackageFilePath).completeBaseName();
 
   QString TempOfwdpSubDirPath = QDir(QString::fromStdString(openfluid::base::Environment::getTempDir()))
@@ -94,20 +87,6 @@ WaresDevPackage::~WaresDevPackage()
     mp_Process->close();
 
   delete mp_Process;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WaresDevPackage::checkCMakeProgram()
-{
-  if (m_CMakeCmd.isEmpty())
-    m_CMakeCmd = openfluid::utils::ExternalProgram::getRegisteredProgram(
-        openfluid::utils::ExternalProgram::CMakeProgram).getFullProgramPath();
-
-  return (!m_CMakeCmd.isEmpty());
 }
 
 
@@ -294,9 +273,9 @@ void WaresDevExportPackage::compress()
   else
     emit error(tr("Unable to write configuration file in \"%1\".\nPackage may contain errors.").arg(WaresdevPath));
 
-  QString Command = QString("\"%1\" -E chdir \"%2\" "
-                            "\"%1\" -E tar cfzv \"%3\" \"%4\"").arg(m_CMakeCmd).arg(WaresdevPath).arg(
-      m_PackageFilePath).arg(RelativePathsToExport.join("\" \""));
+
+  QString Command = openfluid::utils::CMakeProxy::getTarCompressCommand(WaresdevPath,m_PackageFilePath,
+                                                                        RelativePathsToExport,"vz");
 
   QDir::setCurrent(WaresdevPath);
 
@@ -354,8 +333,7 @@ void WaresDevImportPackage::fetchInformation()
 
 void WaresDevImportPackage::uncompress()
 {
-  QString Command = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfzv \"%3\"").arg(m_CMakeCmd).arg(m_PackageTempPath)
-      .arg(m_PackageFilePath);
+  QString Command = openfluid::utils::CMakeProxy::getTarUncompressCommand(m_PackageTempPath,m_PackageFilePath,"vz");
 
   createAndLauchProcess(Command);
 }

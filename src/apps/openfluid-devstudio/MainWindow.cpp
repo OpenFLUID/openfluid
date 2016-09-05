@@ -60,6 +60,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 
 #include "DevStudioPreferencesManager.hpp"
 #include "MainWindow.hpp"
@@ -431,7 +432,7 @@ void MainWindow::onPreferencesAsked()
 
 void MainWindow::onImportWareSourcesAsked()
 {
-  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram() || openfluid::utils::GitProxy::isAvailable())
+  if (openfluid::utils::CMakeProxy::isAvailable() || openfluid::utils::GitProxy::isAvailable())
   {
     openfluid::ui::waresdev::WaresSrcImportDialog Dialog(this);
     Dialog.exec();
@@ -447,7 +448,7 @@ void MainWindow::onImportWareSourcesAsked()
 
 void MainWindow::onExportWareSourcesAsked()
 {
-  if (openfluid::waresdev::WaresDevPackage::checkCMakeProgram())
+  if (openfluid::utils::CMakeProxy::isAvailable())
   {
     openfluid::ui::waresdev::WaresSrcExportDialog Dialog(this);
     Dialog.exec();

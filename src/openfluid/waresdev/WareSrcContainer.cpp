@@ -35,15 +35,17 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
 
 
 #include <QDir>
+#include <QApplication>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
@@ -55,11 +57,12 @@ namespace openfluid { namespace waresdev {
 
 
 WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware::WareType Type,
-  const QString& WareName) :
-    QObject(), m_AbsolutePath(AbsolutePath), m_Type(Type), m_Name(WareName), m_AbsoluteCMakeConfigPath(""),
-        m_AbsoluteMainCppPath(""), m_AbsoluteUiParamCppPath(""), m_AbsoluteCMakeListsPath(""), m_AbsoluteJsonPath(""),
-        m_CMakeProgramPath(""), mp_Stream(new openfluid::waresdev::OStreamMsgStream()), mp_Process(new QProcess()),
-        mp_CurrentParser(new openfluid::waresdev::WareSrcMsgParserGcc())
+                                   const QString& WareName) : QObject(),
+    m_AbsolutePath(AbsolutePath), m_Type(Type), m_Name(WareName),
+    m_AbsoluteCMakeConfigPath(""), m_AbsoluteMainCppPath(""), m_AbsoluteUiParamCppPath(""),
+    m_AbsoluteCMakeListsPath(""), m_AbsoluteJsonPath(""),
+    mp_Stream(new openfluid::waresdev::OStreamMsgStream()), mp_Process(new QProcess()),
+    mp_CurrentParser(new openfluid::waresdev::WareSrcMsgParserGcc())
 {
   update();
 
@@ -349,67 +352,47 @@ void WareSrcContainer::setBuildMode(BuildMode Mode)
 // =====================================================================
 
 
-void WareSrcContainer::findCMake()
-{
-  openfluid::utils::ExternalProgram CMakeProg = openfluid::utils::ExternalProgram::getRegisteredProgram(
-      openfluid::utils::ExternalProgram::CMakeProgram);
-
-  if (!CMakeProg.isFound())
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to find CMake program");
-
-  m_CMakeProgramPath = CMakeProg.getFullProgramPath();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void WareSrcContainer::configure()
 {
-  if (m_CMakeProgramPath.isEmpty())
-    findCMake();
+  if (!openfluid::utils::CMakeProxy::isAvailable())
+    return;
+
 
   mp_Stream->clear();
   m_Messages.clear();
 
+
+  // === prepare build directory
   QFile BuildDir(m_BuildDirPath);
   if (BuildDir.exists())
     openfluid::tools::emptyDirectoryRecursively(QString(m_BuildDirPath).toStdString());
   else if (!QDir().mkpath(m_BuildDirPath))
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to create build directory");
 
-  QString Options = QString(" -DCMAKE_BUILD_TYPE=%1").arg(
-      m_ConfigMode == ConfigMode::CONFIG_RELEASE ? "Release" : "Debug");
 
+  // === CMake variables for command line
+
+  std::map<QString,QString> Vars;
+
+  // build type
+  Vars["CMAKE_BUILD_TYPE"] = (m_ConfigMode == ConfigMode::CONFIG_RELEASE ? "Release" : "Debug");
 
   // Use OPENFLUID_INSTALL_PREFIX env. var. if defined
   QByteArray OpenFLUIDInstallPrefix = qgetenv("OPENFLUID_INSTALL_PREFIX");
 
   if (!OpenFLUIDInstallPrefix.isNull())
-  {
-    Options.prepend(" -DCMAKE_PREFIX_PATH=" + OpenFLUIDInstallPrefix + "/lib/cmake");
-  }
+    Vars["CMAKE_PREFIX_PATH"] = OpenFLUIDInstallPrefix + "/lib/cmake";
 
 
-  // Use specific options if configured
+  // === Use specific options if configured
   QString ExtraOptions = openfluid::base::PreferencesManager::instance()->getWaresdevConfigOptions();
-  if (!Options.isEmpty())
-  {
-    ExtraOptions = " " + ExtraOptions;
-    Options.prepend(ExtraOptions);
-  }
 
 
-  // Use specific generator if configured
+  // === Use specific generator if configured
   QString Generator = openfluid::base::PreferencesManager::instance()->getWaresdevConfigGenerator();
-  if (!Generator.isEmpty())
-  {
-    QString GeneratorOption = QString(" -G \"%1\"").arg(Generator);
-    Options.prepend(GeneratorOption);
-  }
 
 
+  // === set process environment
   QProcessEnvironment RunEnv = QProcessEnvironment::systemEnvironment();
 
   // Set PATH env. var. if configured
@@ -429,11 +412,10 @@ void WareSrcContainer::configure()
   mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserCMake(m_AbsolutePath);
 
 
-  QString Command = QString("\"%1\" -E chdir \"%2\" \"%1\" \"%3\" %4")
-		                .arg(m_CMakeProgramPath)
-		                .arg(m_BuildDirPath)
-		                .arg(m_AbsolutePath)
-		                .arg(Options);
+  // === build and run command
+
+  QString Command = openfluid::utils::CMakeProxy::getConfigureCommand(m_BuildDirPath,m_AbsolutePath,
+                                                                      Vars, Generator, {ExtraOptions});
 
   runCommand(Command, RunEnv);
 }
@@ -445,18 +427,35 @@ void WareSrcContainer::configure()
 
 void WareSrcContainer::build()
 {
-  if (m_CMakeProgramPath.isEmpty())
-    findCMake();
+  if (!openfluid::utils::CMakeProxy::isAvailable())
+    return;
+
 
   mp_Stream->clear();
   m_Messages.clear();
 
+
+  // run configure if build dir does not exist
   if (!QFile(m_BuildDirPath).exists())
   {
     configure();
-    mp_Process->waitForFinished(-1);
+
+    while (!mp_Process->waitForFinished(200))  // TODO better to replace this by a threaded process
+    {
+      qApp->processEvents();
+    }
+
+    mp_Stream->write(WareSrcMsgParser::WareSrcMsg("\n========================================"
+                                                  "========================================\n\n\n",
+                                                  WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND));
   }
 
+
+  // set build target to "install" if current build mode is BUILD_WITHINSTALL
+  QString Target = (m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "install" : "");
+
+
+  // === set process environment
 
   QProcessEnvironment RunEnv = QProcessEnvironment::systemEnvironment();
 
@@ -477,10 +476,9 @@ void WareSrcContainer::build()
   mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserGcc();
 
 
-  QString Command = QString("\"%1\" -E chdir \"%2\" \"%1\" --build . %3")
-		                .arg(m_CMakeProgramPath)
-		                .arg(m_BuildDirPath)
-		                .arg(m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "--target install" : "");
+  // === build and run command
+
+  QString Command = openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target);
 
   runCommand(Command, RunEnv);
 }
@@ -498,8 +496,8 @@ void WareSrcContainer::processStandardOutput()
   {
     QString MsgLine = QString::fromUtf8(mp_Process->readLine());
 
-    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(
-        MsgLine, WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD);
+    WareSrcMsgParser::WareSrcMsg Message =
+        mp_CurrentParser->parse(MsgLine, WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD);
 
     mp_Stream->write(Message);
 
@@ -522,8 +520,8 @@ void WareSrcContainer::processErrorOutput()
   {
     QString MsgLine = QString::fromUtf8(mp_Process->readLine());
 
-    WareSrcMsgParser::WareSrcMsg Message = mp_CurrentParser->parse(
-        MsgLine, WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING);
+    WareSrcMsgParser::WareSrcMsg Message =
+        mp_CurrentParser->parse(MsgLine,WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING);
 
     mp_Stream->write(Message);
 
@@ -540,14 +538,15 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
 {
   if (!ExitCode)
   {
-    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(
-        "\nCommand ended\n\n", WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
+    WareSrcMsgParser::WareSrcMsg Message =
+        WareSrcMsgParser::WareSrcMsg("\nCommand ended\n\n", WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
     mp_Stream->write(Message);
   }
   else
   {
-    WareSrcMsgParser::WareSrcMsg Message = WareSrcMsgParser::WareSrcMsg(
-        "\nCommand ended with error\n\n", WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR);
+    WareSrcMsgParser::WareSrcMsg Message =
+        WareSrcMsgParser::WareSrcMsg("\nCommand ended with error\n\n",
+                                     WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR);
     mp_Stream->write(Message);
   }
 
