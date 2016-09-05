@@ -56,6 +56,7 @@
 #include <tests-config.hpp>
 #include <QCoreApplication>
 
+
 // =====================================================================
 // =====================================================================
 
@@ -163,8 +164,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(DPack.getInstallPath(), openfluid::market::MarketPackage::getMarketBagDatasetDir());
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -327,11 +330,15 @@ BOOST_AUTO_TEST_CASE(check_operations)
   );
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 int main(int argc, char *argv[])
 {
+  openfluid::base::Environment::init();
+
   QCoreApplication app(argc, argv);
 
   return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );

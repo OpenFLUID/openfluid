@@ -37,11 +37,14 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
-#include <openfluid/market/MarketBinPackage.hpp>
 
 #include <cstdlib>
 
 #include <QProcess>
+
+#include <openfluid/market/MarketBinPackage.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
+
 
 namespace openfluid { namespace market {
 
@@ -69,15 +72,13 @@ void MarketBinPackage::process()
                                               "package "+m_PackageFilename+" cannot be processed before download");
 
 
-  if (!m_CMakeProgram.isFound())
+  if (!openfluid::utils::CMakeProxy::isAvailable())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"CMake command not defined");
 
 
-  QString ProcessCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"")
-                                  .arg(m_CMakeProgram.getFullProgramPath(),
-                                       QString::fromStdString(getInstallPath()),
-                                       QString::fromStdString(m_PackageDest));
-
+  QString ProcessCommand =
+      openfluid::utils::CMakeProxy::getTarUncompressCommand(QString::fromStdString(getInstallPath()),
+                                                            QString::fromStdString(m_PackageDest),"z");
 
   appendToLogFile(m_PackageFilename,getPackageType(),"processing binaries",ProcessCommand.toStdString());
 

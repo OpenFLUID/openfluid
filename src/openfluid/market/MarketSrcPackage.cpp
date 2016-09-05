@@ -39,6 +39,7 @@
 
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -70,7 +71,7 @@ void MarketSrcPackage::process()
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" cannot be processed before download");
 
-  if (!m_CMakeProgram.isFound())
+  if (!openfluid::utils::CMakeProxy::isAvailable())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"CMake command not defined");
 
 
@@ -98,20 +99,19 @@ void MarketSrcPackage::process()
 
   // == Building commands ==
 
-  QString UntarCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"")
-                                .arg(m_CMakeProgram.getFullProgramPath(),
-                                     QString::fromStdString(SrcInstallDir),
-                                     QString::fromStdString(m_PackageDest));
+  QString UntarCommand = openfluid::utils::CMakeProxy::getTarUncompressCommand(QString::fromStdString(SrcInstallDir),
+                                                                               QString::fromStdString(m_PackageDest),
+                                                                               "z");
 
-  QString BuildConfigCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" \"%3\" %4")
-                                      .arg(m_CMakeProgram.getFullProgramPath(),
-                                           QString::fromStdString(BuildDir),
-                                           QString::fromStdString(SrcInstallDir),
-                                           QString::fromStdString(BuildConfigOptions));
+  QString BuildConfigCommand =
+      openfluid::utils::CMakeProxy::getConfigureCommand(QString::fromStdString(BuildDir),
+                                                        QString::fromStdString(SrcInstallDir),
+                                                        {},"",
+                                                        {QString::fromStdString(BuildConfigOptions)});
 
-  QString BuildCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" --build .")
-                                      .arg(m_CMakeProgram.getFullProgramPath(),
-                                           QString::fromStdString(BuildDir));
+
+  QString BuildCommand = openfluid::utils::CMakeProxy::getBuildCommand(QString::fromStdString(BuildDir));
+
 
   // uncompressing package
   {

@@ -50,6 +50,7 @@
 #include <tests-config.hpp>
 #include <QCoreApplication>
 
+
 // =====================================================================
 // =====================================================================
 
@@ -61,12 +62,13 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(MC.isConnected(),false);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-
   openfluid::market::MarketClient MC;
   openfluid::market::MarketInfo MI;
 
@@ -210,11 +212,15 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(MC.isConnected(),false);
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 int main(int argc, char *argv[])
 {
+  openfluid::base::Environment::init();
+
   QCoreApplication app(argc, argv);
 
   return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );

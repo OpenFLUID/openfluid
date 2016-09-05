@@ -73,10 +73,10 @@ MarketClient::MarketClient() :
 
   std::string m_TempDir = openfluid::base::Environment::getTempDir()+"/market";
   MarketPackage::setWorksDirs(m_TempDir,
-                              openfluid::base::Environment::getMarketBagSimVersionDir(),
-                              openfluid::base::Environment::getMarketBagObsVersionDir(),
-                              openfluid::base::Environment::getMarketBagBuildVersionDir(),
-                              openfluid::base::Environment::getMarketBagDataVersionDir(),
+                              openfluid::base::Environment::getMarketBagSimulatorsDir(),
+                              openfluid::base::Environment::getMarketBagObserversDir(),
+                              openfluid::base::Environment::getMarketBagBuilderextsDir(),
+                              openfluid::base::Environment::getMarketBagDataDir(),
                               openfluid::base::Environment::getMarketBagBinSubDir(),
                               openfluid::base::Environment::getMarketBagSrcSubDir());
 
@@ -304,11 +304,11 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
   MetaPackagesCatalog_t& MetaPackagesCatalog = m_TypesMetaPackagesCatalogs[CatalogType];
   MetaPackagesCatalog.clear();
 
-  if (openfluid::base::Environment::getArch().empty())
+  if (openfluid::base::Environment::getSystemArch().empty())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "undetermined system architecture");
 
-  std::string BinaryArchKey= "arch." + openfluid::base::Environment::getArch();
+  std::string BinaryArchKey= "arch." + openfluid::base::Environment::getSystemArch();
 
   QSettings CatalogData(QString::fromStdString(CatalogFile),QSettings::IniFormat);
 
@@ -401,7 +401,7 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
                  MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL =
                      m_URL + "/"+
                      getTypeName(CatalogType,false,true)+"/"+
-                     openfluid::base::Environment::getArch()+"/"+
+                     openfluid::base::Environment::getSystemArch()+"/"+
                      openfluid::tools::fromIniCompatible(CatalogData.value(QString::fromStdString(BinaryArchKey)+
                                                                            ".file"));
 

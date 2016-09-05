@@ -44,6 +44,7 @@
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/FileDownloader.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 
 
 namespace openfluid { namespace market {
@@ -63,9 +64,6 @@ std::string MarketPackage::m_MarketBagBinSubDir = "";
 std::string MarketPackage::m_MarketBagSrcSubDir = "";
 std::string MarketPackage::m_LogFile = "";
 bool MarketPackage::m_IsLogEnabled = false;
-
-openfluid::utils::ExternalProgram MarketPackage::m_CMakeProgram =
-    openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::CMakeProgram);
 std::string MarketPackage::m_SimulatorBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 std::string MarketPackage::m_ObserverBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 std::string MarketPackage::m_BuilderextBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
@@ -97,7 +95,7 @@ MarketPackage::~MarketPackage()
 
 void MarketPackage::initialize(bool EnableLog = false)
 {
-  if (!m_CMakeProgram.isFound())
+  if (!openfluid::utils::CMakeProxy::isAvailable())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Required CMake program not found");
 
   m_IsLogEnabled = EnableLog;

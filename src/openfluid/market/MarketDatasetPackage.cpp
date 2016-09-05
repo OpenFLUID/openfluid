@@ -37,10 +37,11 @@
 */
 
 
+#include <QProcess>
+
 #include <openfluid/market/MarketDatasetPackage.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-
-#include <QProcess>
+#include <openfluid/utils/CMakeProxy.hpp>
 
 
 namespace openfluid { namespace market {
@@ -89,7 +90,7 @@ void MarketDatasetPackage::process()
                                               "package "+m_PackageFilename+" cannot be processed before download");
 
 
-  if (!m_CMakeProgram.isFound())
+  if (!openfluid::utils::CMakeProxy::isAvailable())
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"CMake command not defined");
 
 
@@ -102,10 +103,10 @@ void MarketDatasetPackage::process()
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "unable to create dataset directory for "+m_ID+" package");
 
-  QString ProcessCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"")
-                                    .arg(m_CMakeProgram.getFullProgramPath(),
-                                         QString::fromStdString(DatasetInstallDir),
-                                         QString::fromStdString(m_PackageDest));
+  QString ProcessCommand =
+      openfluid::utils::CMakeProxy::getTarUncompressCommand(QString::fromStdString(DatasetInstallDir),
+                                                            QString::fromStdString(m_PackageDest),"z");
+
   // uncompressing package
   appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing datasets",ProcessCommand.toStdString());
 
