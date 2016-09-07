@@ -32,8 +32,9 @@
 /**
  @file CMakeProxy_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+*/
+
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN

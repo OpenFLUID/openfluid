@@ -197,6 +197,12 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "git.exe";
 #endif
   }
+  else if (Prog == GrassGisProgram)
+  {
+#if defined(OPENFLUID_OS_UNIX)
+    ProgNames << "grass";
+#endif
+  }
 
   return ExternalProgram(ProgNames,ModSearchPaths,UsePathEnv);
 }

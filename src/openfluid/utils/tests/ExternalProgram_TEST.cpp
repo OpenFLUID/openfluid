@@ -48,6 +48,7 @@
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_registered)
 {
   openfluid::utils::ExternalProgram ExtProg =
@@ -79,6 +80,10 @@ BOOST_AUTO_TEST_CASE(check_registered)
   ExtProg =
       openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::Latex2HTMLProgram);
   std::cout << "Looking for latex2html: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+
+  ExtProg =
+      openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GrassGisProgram);
+  std::cout << "Looking for GRASS GIS: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
 }
 
 

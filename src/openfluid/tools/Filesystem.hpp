@@ -132,7 +132,7 @@ class OPENFLUID_API Filesystem
     static bool removeDirectory(const std::string& Path);
 
     /**
-      Creates a unique subdirectory in the given path, using the given prefix.
+      Creates a unique subdirectory in the given path, using the given subdirectory name as a prefix.
       If the subdirectory already exists, it adds an incremental suffix to the subdirectory name.
       It creates all parent directories necessary to create the subdirectory.
       @param[in] Path the given path
@@ -140,6 +140,17 @@ class OPENFLUID_API Filesystem
       @return the full path of the created unique subdirectory
     */
     static std::string makeUniqueSubdirectory(const std::string& Path, const std::string& SubdirName);
+
+    /**
+      Creates a unique file in the given path, using the given File name and extension as prefix and suffix.
+      If the file already exists, it adds an incremental part to the file name.
+      If the Path does not exists, it creates all needed parent directories.
+      @param[in] Path the given path for the file
+      @param[in] FileName the file name used to make a unique one
+      @return the full path of the created unique file
+    */
+    static std::string makeUniqueFile(const std::string& Path, const std::string& FileName);
+
 
     /**
       Removes the file of the given path.

@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(check_readwrite_operations)
   BOOST_REQUIRE(!openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/dircopy"));
 
 
-  // Unique subdirs
+  // Unique subdirs and files
 
   std::set<std::string> UniqueDirs;
   std::string Dir;
@@ -174,5 +174,23 @@ BOOST_AUTO_TEST_CASE(check_readwrite_operations)
   UniqueDirs.insert(Dir);
   BOOST_REQUIRE_EQUAL(UniqueDirs.size(),3);
 
+
+  std::string File;
+
+  File = openfluid::tools::Filesystem::makeUniqueFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                      "uniquefile.sh");
+  BOOST_REQUIRE(!File.empty());
+
+  File = openfluid::tools::Filesystem::makeUniqueFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                      "uniquefile.sh");
+  BOOST_REQUIRE(!File.empty());
+
+  File = openfluid::tools::Filesystem::makeUniqueFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                      "uniquefile.tar.gz");
+  BOOST_REQUIRE(!File.empty());
+
+  File = openfluid::tools::Filesystem::makeUniqueFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/MadeDirForUnique",
+                                                      "uniquefile");
+  BOOST_REQUIRE(!File.empty());
 }
 

@@ -71,7 +71,7 @@ class OPENFLUID_API ExternalProgram
     enum RegisteredPrograms { CMakeProgram, ZipProgram, SevenZipProgram,
                               GnuplotProgram, GoogleEarthProgram, GccProgram,
                               PdfLatexProgram, BibTexProgram, Latex2HTMLProgram,
-                              GitProgram };
+                              GitProgram, GrassGisProgram };
 
     /**
       Constructor for a given external programs. Automatically searches for the program at construction

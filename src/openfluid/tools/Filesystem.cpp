@@ -245,7 +245,7 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
 
     QString CandidateFullPath = FullSubdirPath.arg(IncSuffix);
 
-    while (QFileInfo(CandidateFullPath).isDir())
+    while (QFileInfo(CandidateFullPath).isDir()) // FIXME problem if file exists with same name, use exists() instead?
     {
       IncSuffix++;
       CandidateFullPath = FullSubdirPath.arg(IncSuffix);
@@ -255,6 +255,55 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
       return CandidateFullPath.toStdString();
     else
       return std::string();
+  }
+
+  return std::string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::makeUniqueFile(const std::string& Path, const std::string& FileName)
+{
+  if (QDir().mkpath(QString::fromStdString(Path)))
+  {
+    static QString PID = QString("%1").arg(QCoreApplication::applicationPid());
+
+    QString FileRoot = QFileInfo(QString::fromStdString(FileName)).baseName();
+    QString FileExt = QFileInfo(QString::fromStdString(FileName)).completeSuffix();
+
+    if (!FileExt.isEmpty())
+      FileExt = "."+FileExt;
+
+    // Process ID - Pseudo Unique Identifier of 16 chars length
+    QString PIDPUI = PID + "-" +QString::fromStdString(openfluid::tools::generatePseudoUniqueIdentifier(16));
+
+    // pattern for file : {Path}/{Filename root}-{PID}-{PUI}-%1.{Filename ext}
+    QString FullFilePath = QString::fromStdString(Path) + "/" +
+                           FileRoot + "-" +
+                           PIDPUI + "-%1" +
+                           FileExt;
+
+    // Suffix replacing the "%1" string for potential duplicates
+    // (duplicates should never happen, so suffix should be 0)
+    int IncSuffix = 0;
+
+    QString CandidateFilePath = FullFilePath.arg(IncSuffix);
+
+    while (QFileInfo(CandidateFilePath).exists())
+    {
+      IncSuffix++;
+      CandidateFilePath = FullFilePath.arg(IncSuffix);
+    }
+
+    QFile EmptyFile(CandidateFilePath);
+    if (EmptyFile.open(QIODevice::WriteOnly))
+    {
+      EmptyFile.close();
+      return CandidateFilePath.toStdString();
+    }
   }
 
   return std::string();
