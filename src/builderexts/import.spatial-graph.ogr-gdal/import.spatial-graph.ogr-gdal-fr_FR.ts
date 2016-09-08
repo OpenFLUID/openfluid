@@ -4,176 +4,176 @@
 <context>
     <name>DataProcessingWorker</name>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="110"/>
+        <location filename="DataProcessingWorker.cpp" line="113"/>
         <source>Loading and checking data from sources...</source>
         <translation>Chargement et vérification des données des sources...</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="127"/>
+        <location filename="DataProcessingWorker.cpp" line="130"/>
         <source>[Error] Unable to open datasource for layer &quot;%1&quot;</source>
         <translation>[Erreur] Impossible d&apos;ouvrir la source de données pour la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="158"/>
+        <location filename="DataProcessingWorker.cpp" line="161"/>
         <source>[Error] Field for unit ID not found in layer &quot;%1&quot;</source>
         <translation>[Erreur] Le champ pour l&apos;ID des unités n&apos;a pas été trouvé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="168"/>
+        <location filename="DataProcessingWorker.cpp" line="171"/>
         <source>[Error] Wrong field format for unit ID in layer &quot;%1&quot;</source>
         <translation>[Erreur] Le format du champ d&apos;ID des unités est incorrect dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="176"/>
+        <location filename="DataProcessingWorker.cpp" line="179"/>
         <source>[Error] Unit ID %2 already exist in layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;ID de l&apos;unité %2 existe déjà dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="197"/>
+        <location filename="DataProcessingWorker.cpp" line="200"/>
         <source>[Error] Field for process order not found in layer &quot;%1&quot;</source>
         <translation>[Erreur] Le champ pour l&apos;ordre de traitement n&apos;a pas été trouvé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="208"/>
+        <location filename="DataProcessingWorker.cpp" line="211"/>
         <source>[Error] Wrong field format for process order in layer &quot;%1&quot;</source>
         <translation>[Erreur] Le format du champ d&apos;ordre de traitement est incorrect dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="227"/>
+        <location filename="DataProcessingWorker.cpp" line="230"/>
         <source>[Error] Field for &quot;To&quot; connections not found in layer &quot;%1&quot;</source>
         <oldsource>[Error] Field for &quot;to&quot; connections not found in layer &quot;%1&quot;</oldsource>
         <translation>[Erreur] Le champ pour les connexions &quot;To&quot; n&apos;a pas été trouvé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="236"/>
+        <location filename="DataProcessingWorker.cpp" line="239"/>
         <source>[Error] Wrong field &quot;%2&quot; format for &quot;To&quot; connections in layer &quot;%1&quot;</source>
         <oldsource>[Error] Wrong field &quot;%2&quot; format for &quot;to&quot; connections in layer &quot;%1&quot;</oldsource>
         <translation>[Erreur] Le format du champ &quot;%2&quot; des connexions &quot;To&quot; est incorrect dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="256"/>
+        <location filename="DataProcessingWorker.cpp" line="259"/>
         <source>[Error] Field for &quot;Child Of&quot; connections not found in layer &quot;%1&quot;</source>
         <oldsource>[Error] Field for &quot;childof&quot; connections not found in layer &quot;%1&quot;</oldsource>
         <translation>[Erreur] Le champ pour les connexions &quot;Child Of&quot; n&apos;a pas été trouvé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="265"/>
+        <location filename="DataProcessingWorker.cpp" line="268"/>
         <source>[Error] Wrong field &quot;%2&quot; format for &quot;Child Of&quot; connections in layer &quot;%1&quot;</source>
         <oldsource>[Error] Wrong field &quot;%2&quot; format for &quot;childof&quot; connections in layer &quot;%1&quot;</oldsource>
         <translation>[Erreur] Le format du champ &quot;%2&quot; des connexions &quot;Child Of&quot; est incorrect dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="284"/>
+        <location filename="DataProcessingWorker.cpp" line="287"/>
         <source>[Error] Field for attribute &quot;%2&quot; not found in layer &quot;%1&quot;</source>
         <translation>[Erreur] Le champ pour l&apos;attribut &quot;%2&quot; n&apos;a pas été trouvé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="297"/>
+        <location filename="DataProcessingWorker.cpp" line="300"/>
         <source>[Error] Wrong field format for attribute &quot;%2&quot; in layer &quot;%1&quot;</source>
         <translation>[Erreur] Le format du champ de l&apos;attribut &quot;%2&quot; est incorrect dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="316"/>
+        <location filename="DataProcessingWorker.cpp" line="319"/>
         <source>[Error] Attribute &quot;%2&quot; for computed area attribute is already imported from layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;attribut &quot;%2&quot; pour l&apos;attribut de surface calculé est déjà importé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="338"/>
+        <location filename="DataProcessingWorker.cpp" line="341"/>
         <source>[Error] Attribute &quot;%2&quot; for computed length attribute is already imported from layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;attribut &quot;%2&quot; pour l&apos;attribut de longueur calculé est déjà importé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="361"/>
+        <location filename="DataProcessingWorker.cpp" line="364"/>
         <source>[Error] Unable to compute centroid coordinates for geometries in layer &quot;%1&quot;.Computing centroid coordinates should be unchecked in computed attributes.</source>
         <translation>[Erreur] Impossible de calculer les coordonnées du centroïde pour les géométries de la couche &quot;%1&quot;. Le calcul des coordonnées du centroïde devrait être décoché dans les attributs calculés.</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="377"/>
+        <location filename="DataProcessingWorker.cpp" line="380"/>
         <source>[Error] Attribute &quot;%2&quot; for computed centroid X attribute is already imported from layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;attribut &quot;%2&quot; pour l&apos;attribut X du centroïde calculé est déjà importé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="398"/>
+        <location filename="DataProcessingWorker.cpp" line="401"/>
         <source>[Error] Attribute &quot;%2&quot; for computed centroid Y attribute is already imported from layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;attribut &quot;%2&quot; pour l&apos;attribut Y du centroïde calculé est déjà importé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="419"/>
+        <location filename="DataProcessingWorker.cpp" line="422"/>
         <source>[Error] Attribute &quot;%2&quot; for computed centroid Z attribute is already imported from layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;attribut &quot;%2&quot; pour l&apos;attribut Z du centroïde calculé est déjà importé dans la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="440"/>
-        <location filename="DataProcessingWorker.cpp" line="494"/>
-        <location filename="DataProcessingWorker.cpp" line="538"/>
-        <location filename="DataProcessingWorker.cpp" line="599"/>
+        <location filename="DataProcessingWorker.cpp" line="443"/>
+        <location filename="DataProcessingWorker.cpp" line="497"/>
+        <location filename="DataProcessingWorker.cpp" line="541"/>
+        <location filename="DataProcessingWorker.cpp" line="602"/>
         <source>[OK]</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="452"/>
+        <location filename="DataProcessingWorker.cpp" line="455"/>
         <source>Checking connectivity consistency...</source>
         <translation>Vérification de la cohérence de la connectivité...</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="467"/>
+        <location filename="DataProcessingWorker.cpp" line="470"/>
         <source>[Error] Destination unit of &quot;To&quot; connection does not exist for unit %2 of layer &quot;%1&quot;</source>
         <oldsource>[Error] Destination unit of &quot;to&quot; connection does not exist for unit %2 of layer &quot;%1&quot;</oldsource>
         <translation>[Erreur] L&apos;unité cible de la connexion &quot;To&quot; n&apos;existe pas pour l&apos;unité %2 de la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="483"/>
+        <location filename="DataProcessingWorker.cpp" line="486"/>
         <source>[Error] Parent unit of &quot;Child Of&quot; connection does not exist for unit %2 of layer &quot;%1&quot;</source>
         <oldsource>[Error] Parent unit of &quot;childof&quot; connection does not exist for unit %2 of layer &quot;%1&quot;</oldsource>
         <translation>[Erreur] L&apos;unité parente de la connexion &quot;Child Of&quot; n&apos;existe pas pour l&apos;unité %2 de la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="506"/>
+        <location filename="DataProcessingWorker.cpp" line="509"/>
         <source>Checking units classes...</source>
         <translation>Vérification des classes d&apos;unités...</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="512"/>
+        <location filename="DataProcessingWorker.cpp" line="515"/>
         <source>[Error] Class name for layer &quot;%1&quot; is empty</source>
         <translation>[Erreur] Le nom de classe d&apos;unités pour la couche &quot;%1&quot; est vide</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="520"/>
+        <location filename="DataProcessingWorker.cpp" line="523"/>
         <source>[Error] Class name for layer &quot;%1&quot; already exists</source>
         <translation>[Erreur] Le nom de classe d&apos;unités pour la couche &quot;%1&quot; existe déjà</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="530"/>
+        <location filename="DataProcessingWorker.cpp" line="533"/>
         <source>[Error] Units class &quot;%1&quot; is imported twice</source>
         <translation>[Erreur] La classe d&apos;unités &quot;%1&quot; est importé plusieurs fois</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="541"/>
+        <location filename="DataProcessingWorker.cpp" line="544"/>
         <source>Checking configuration of files copies and datastore...</source>
         <translation>Vérification de la configuration des copies de fichiers et du datastore...</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="551"/>
+        <location filename="DataProcessingWorker.cpp" line="554"/>
         <source>[Error] Missing file name for copy of layer &quot;%1&quot; in project dataset</source>
         <translation>[Erreur] Le nom de fichier est manquant pour la copie de la couche &quot;%1&quot; dans le jeu de données du projet</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="563"/>
+        <location filename="DataProcessingWorker.cpp" line="566"/>
         <source>[Error] Missing file extension for layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;extension du nom de fichier est manquanet pour la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="572"/>
+        <location filename="DataProcessingWorker.cpp" line="575"/>
         <source>[Error] Wrong file extension for layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;extension du nom de fichier est incorrecte pour la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="581"/>
+        <location filename="DataProcessingWorker.cpp" line="584"/>
         <source>[Error] Missing datastore ID for layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;ID du datastore est manquant pour la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="591"/>
+        <location filename="DataProcessingWorker.cpp" line="594"/>
         <source>[Error] Datastore ID for layer &quot;%1&quot; already exists</source>
         <translation>[Erreur] L&apos;ID du datastore pour la couche &quot;%1&quot; existe déjà</translation>
     </message>
@@ -194,39 +194,39 @@
 <context>
     <name>ImportWorker</name>
     <message>
-        <location filename="ImportWorker.cpp" line="73"/>
+        <location filename="ImportWorker.cpp" line="76"/>
         <source>Importing layer &quot;%1&quot;...</source>
         <translation>Import de la couche &quot;%1&quot;...</translation>
     </message>
     <message>
-        <location filename="ImportWorker.cpp" line="121"/>
-        <location filename="ImportWorker.cpp" line="167"/>
-        <location filename="ImportWorker.cpp" line="251"/>
+        <location filename="ImportWorker.cpp" line="124"/>
+        <location filename="ImportWorker.cpp" line="170"/>
+        <location filename="ImportWorker.cpp" line="253"/>
         <source>[OK]</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ImportWorker.cpp" line="133"/>
+        <location filename="ImportWorker.cpp" line="136"/>
         <source>Building connections...</source>
         <translation>Construction des connexions...</translation>
     </message>
     <message>
-        <location filename="ImportWorker.cpp" line="180"/>
+        <location filename="ImportWorker.cpp" line="183"/>
         <source>Copying files and populating datastore...</source>
         <translation>Copie des fichiers et insertion dans le datastore...</translation>
     </message>
     <message>
-        <location filename="ImportWorker.cpp" line="290"/>
+        <location filename="ImportWorker.cpp" line="292"/>
         <source>Consistency error, import could not be performed with current import configuration</source>
         <translation>Erreur de cohérence, l&apos;import ne peut être réalisé avec cette configuration</translation>
     </message>
     <message>
-        <location filename="ImportWorker.cpp" line="297"/>
+        <location filename="ImportWorker.cpp" line="299"/>
         <source>Import sucessful</source>
         <translation>Import réalisé avec succès</translation>
     </message>
     <message>
-        <location filename="ImportWorker.cpp" line="302"/>
+        <location filename="ImportWorker.cpp" line="304"/>
         <source>Import error. Import may be uncompleted or inconsistent</source>
         <translation>Erreur d&apos;import. L&apos;import peut être incomplet ou incohérent</translation>
     </message>
@@ -381,12 +381,12 @@
 <context>
     <name>OGRGDALImportExtension</name>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="93"/>
+        <location filename="OGRGDALImportExtension.cpp" line="97"/>
         <source>Spatial data import (OGR/GDAL)</source>
         <translation>Import de données spatiales (OGR/GDAL)</translation>
     </message>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="276"/>
+        <location filename="OGRGDALImportExtension.cpp" line="279"/>
         <source>You are about to remove the selected source to import.
 Import configuration for this source will be lost.
 
@@ -397,7 +397,7 @@ La configuration d&apos;import pour cette source sera perdue.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="352"/>
+        <location filename="OGRGDALImportExtension.cpp" line="355"/>
         <source>You have at least one source configured for import.
 The configuration(s) will be lost.
 
@@ -510,19 +510,19 @@ Quitter l&apos;import quand même?</translation>
     </message>
     <message>
         <location filename="SourceAddDialog.cpp" line="189"/>
-        <location filename="SourceAddDialog.cpp" line="281"/>
-        <location filename="SourceAddDialog.cpp" line="290"/>
+        <location filename="SourceAddDialog.cpp" line="282"/>
+        <location filename="SourceAddDialog.cpp" line="291"/>
         <source>Aborting.</source>
         <translation>Abandon.</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="278"/>
-        <location filename="SourceAddDialog.cpp" line="288"/>
+        <location filename="SourceAddDialog.cpp" line="279"/>
+        <location filename="SourceAddDialog.cpp" line="289"/>
         <source>Error importing from source</source>
         <translation>Erreur d&apos;&apos;import depuis la source</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="280"/>
+        <location filename="SourceAddDialog.cpp" line="281"/>
         <source>The mandatory field &quot;OFLD_ID&quot; cannot be found.</source>
         <translation>Le champ obligatoire &quot;OFLD_ID&quot; ne peut être trouvé.</translation>
     </message>
@@ -540,8 +540,8 @@ Abandon.</translation>
         <translation>%1 couche(s) disponible(s)</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="277"/>
-        <location filename="SourceAddDialog.cpp" line="287"/>
+        <location filename="SourceAddDialog.cpp" line="278"/>
+        <location filename="SourceAddDialog.cpp" line="288"/>
         <source>Import error</source>
         <translation>Erreur d&apos;import</translation>
     </message>
@@ -566,7 +566,7 @@ Abandon.</translation>
 <context>
     <name>signature</name>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="62"/>
+        <location filename="OGRGDALImportExtension.cpp" line="66"/>
         <source>Spatial data import (OGR/GDAL)</source>
         <translation>Import de données spatiales (OGR/GDAL)</translation>
     </message>

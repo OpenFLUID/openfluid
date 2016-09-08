@@ -1,3 +1,24 @@
+2.1.3
+
+  * Introduced packaging for Mac OSX, depending on homebrew package manager  
+  * Introduced explicit geometry of spatial units, as a technology preview
+  * Introduced proxies for easier interactions with external programs
+  * Added git, CMake and GRASS GIS proxies
+  * Improved dot graph observer with possible selection of data
+    to be displayed in nodes
+  * Improved DevStudio UI : closing menu for all open wares sources,
+    collapsing of source explorer, git decorations in source explorer,
+    git dashboard, status bar, ability to restart application when required
+    by preferences updates
+  * Improved Builder UI : status bar, ability to restart application when
+    required by preferences updates
+  * Ensured compatibility with GDAL for both 1.xx and 2.xx versions 
+    of the library
+  * Cleaned code
+  * Fixed small bugs
+
+
+
 2.1.2
 
   * Introduced import of wares from WaresHub sites in OpenFLUID-DevStudio
