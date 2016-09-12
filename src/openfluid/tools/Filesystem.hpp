@@ -41,6 +41,8 @@
 #define __OPENFLUID_TOOLS_FILESYSTEM_HPP__
 
 
+#include <string>
+
 #include <openfluid/dllexport.hpp>
 
 
