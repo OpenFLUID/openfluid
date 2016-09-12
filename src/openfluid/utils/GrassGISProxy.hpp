@@ -78,6 +78,7 @@ class GrassGISProxy : public ProgramProxy<GrassGISProxy>
 
     int executeGrassJob(const QString& JobFilePath) const;
 
+    int executeGrassJobReturningData(const QString& JobFilePath, QStringList& Lines) const;
 
 
   public:
@@ -157,6 +158,17 @@ class GrassGISProxy : public ProgramProxy<GrassGISProxy>
     */
     const QStringList& jobLines() const
     { return m_JobLines; }
+
+    bool isLocationExist() const;
+
+    bool createLocation(const QString& EPSG) const;
+
+    std::map<std::string,double> region() const;
+
+    std::map<std::string,std::string> gisenv() const;
+
+    std::vector<std::string> mapsets() const;
+
 
 };
 

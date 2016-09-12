@@ -65,10 +65,27 @@ BOOST_AUTO_TEST_CASE(check_init)
 
 BOOST_AUTO_TEST_CASE(check_singletask)
 {
+  std::cout << "======  single task  ======" << std::endl;
+
+
   openfluid::utils::GrassGISProxy GRASS(BaseWorkDir+"/data","single");
+
+
+  GRASS.setOutputFile(BaseWorkDir+"/check_singletask_fail.out");
+  GRASS.setErrorFile(BaseWorkDir+"/check_singletask_fail.err");
+
+  BOOST_REQUIRE(!GRASS.isLocationExist());
+
+  BOOST_REQUIRE_EQUAL(GRASS.runSingleTask("g.gisenv"),-99);
+
+
+  GRASS.createLocation("EPSG:2154");
+
+  BOOST_REQUIRE(GRASS.isLocationExist());
 
   GRASS.setOutputFile(BaseWorkDir+"/check_singletask.out");
   GRASS.setErrorFile(BaseWorkDir+"/check_singletask.err");
+
 
   BOOST_REQUIRE_EQUAL(GRASS.runSingleTask("g.gisenv"),0);
 }
@@ -80,12 +97,30 @@ BOOST_AUTO_TEST_CASE(check_singletask)
 
 BOOST_AUTO_TEST_CASE(check_job)
 {
+  std::cout << "======  job  ======" << std::endl;
+
   openfluid::utils::GrassGISProxy GRASS(BaseWorkDir+"/data","job");
+
+
+  GRASS.setOutputFile(BaseWorkDir+"/check_job_fail.out");
+  GRASS.setErrorFile(BaseWorkDir+"/check_job_fail.err");
+
+  BOOST_REQUIRE(!GRASS.isLocationExist());
+
+  GRASS.appendTask("g.version",{},{"-e"});
+  GRASS.appendTask("g.gisenv");
+
+  BOOST_REQUIRE_EQUAL(GRASS.runJob(),-99);
+
+
+  GRASS.createLocation("EPSG:2154");
 
   GRASS.setOutputFile(BaseWorkDir+"/check_job.out");
   GRASS.setErrorFile(BaseWorkDir+"/check_job.err");
 
   BOOST_REQUIRE_EQUAL(GRASS.jobLines().size(),0);
+
+  BOOST_REQUIRE(GRASS.isLocationExist());
 
   GRASS.appendTask("g.version",{},{"-e"});
   GRASS.appendTask("g.gisenv");
@@ -106,7 +141,16 @@ BOOST_AUTO_TEST_CASE(check_job)
 
 BOOST_AUTO_TEST_CASE(check_process1)
 {
+  std::cout << "======  process 1  ======" << std::endl;
+
+
   openfluid::utils::GrassGISProxy GRASS(BaseWorkDir+"/data","process1");
+
+  BOOST_REQUIRE(!GRASS.isLocationExist());
+
+  GRASS.createLocation("EPSG:2154");
+
+  BOOST_REQUIRE(GRASS.isLocationExist());
 
   GRASS.setOutputFile(BaseWorkDir+"/check_process1.out");
   GRASS.setErrorFile(BaseWorkDir+"/check_process1.err");
@@ -129,6 +173,103 @@ BOOST_AUTO_TEST_CASE(check_process1)
   BOOST_REQUIRE_EQUAL(GRASS.jobLines().size(),0);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_region)
+{
+  std::cout << "======  region  ======" << std::endl;
+
+
+  openfluid::utils::GrassGISProxy GRASS(BaseWorkDir+"/data","region");
+
+  BOOST_REQUIRE(!GRASS.isLocationExist());
+
+  GRASS.createLocation("EPSG:2154");
+
+  BOOST_REQUIRE(GRASS.isLocationExist());
+
+
+  std::map<std::string,double> RegionValues = GRASS.region();
+
+  BOOST_REQUIRE(RegionValues.find("n") != RegionValues.end());
+  BOOST_REQUIRE(RegionValues.find("s") != RegionValues.end());
+  BOOST_REQUIRE(RegionValues.find("w") != RegionValues.end());
+  BOOST_REQUIRE(RegionValues.find("e") != RegionValues.end());
+  BOOST_REQUIRE(RegionValues.find("nsres") != RegionValues.end());
+  BOOST_REQUIRE(RegionValues.find("ewres") != RegionValues.end());
+
+  for (auto& Val : RegionValues)
+    std::cout << Val.first << " = " << Val.second << std::endl;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_gisenv)
+{
+  std::cout << "======  gisenv  ======" << std::endl;
+
+  openfluid::utils::GrassGISProxy GRASS(BaseWorkDir+"/data","gisenv");
+
+  BOOST_REQUIRE(!GRASS.isLocationExist());
+
+  GRASS.createLocation("EPSG:2154");
+
+  BOOST_REQUIRE(GRASS.isLocationExist());
+
+
+  std::map<std::string,std::string> GisenvValues = GRASS.gisenv();
+
+  BOOST_REQUIRE_EQUAL(GisenvValues["GISDBASE"],QString(BaseWorkDir+"/data").toStdString());
+  BOOST_REQUIRE_EQUAL(GisenvValues["LOCATION_NAME"],"gisenv");
+  BOOST_REQUIRE_EQUAL(GisenvValues["MAPSET"],"PERMANENT");
+
+  for (auto& Val : GisenvValues)
+    std::cout << Val.first << " = " << Val.second << std::endl;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_mapsets)
+{
+  std::cout << "======  mapsets  ======" << std::endl;
+
+  openfluid::utils::GrassGISProxy GRASS(BaseWorkDir+"/data","mapsets");
+
+  BOOST_REQUIRE(!GRASS.isLocationExist());
+
+  GRASS.createLocation("EPSG:2154");
+
+  BOOST_REQUIRE(GRASS.isLocationExist());
+
+
+  GRASS.appendTask("g.mapset",{{"mapset","fortest"}},{"-c"});
+  BOOST_REQUIRE_EQUAL(GRASS.runJob(),0);
+
+  std::vector<std::string> MapsetsValues = GRASS.mapsets();
+
+  BOOST_REQUIRE(!MapsetsValues.empty());
+
+  BOOST_REQUIRE_EQUAL(MapsetsValues.size(),2);
+
+  BOOST_REQUIRE(std::find(MapsetsValues.begin(),MapsetsValues.end(),"PERMANENT") != MapsetsValues.end());
+  BOOST_REQUIRE(std::find(MapsetsValues.begin(),MapsetsValues.end(),"fortest") != MapsetsValues.end());
+  BOOST_REQUIRE(std::find(MapsetsValues.begin(),MapsetsValues.end(),"nonexistent") == MapsetsValues.end());
+
+  for (auto& Val : MapsetsValues)
+    std::cout << Val << std::endl;
+
+}
 
 
 // =====================================================================

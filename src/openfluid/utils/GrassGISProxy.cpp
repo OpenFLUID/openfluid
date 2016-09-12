@@ -139,6 +139,8 @@ QString GrassGISProxy::writeJobFile(const QStringList& Lines, const QString& Dir
     {
       QTextStream Out(&JobFile);
 
+      Out << "#!/bin/sh\n\n";
+
       Out << Lines.join("\n") << "\n";
 
       JobFile.close();
@@ -171,6 +173,9 @@ bool GrassGISProxy::isAvailable()
 
 int GrassGISProxy::executeGrassJob(const QString& JobFilePath) const
 {
+  if (!isLocationExist())
+    return -99;
+
   QProcessEnvironment PcsEnv = QProcessEnvironment::systemEnvironment();
   PcsEnv.insert("GRASS_BATCH_JOB",JobFilePath);
 
@@ -187,21 +192,47 @@ int GrassGISProxy::executeGrassJob(const QString& JobFilePath) const
   else
     Pcs.setStandardErrorFile(m_ErrorFile);
 
-  QString Opts;
-  QString Path = QString("%1/%2").arg(m_GISBase).arg(m_Location);;
 
+  QString Path = QString("%1/%2/%3").arg(m_GISBase).arg(m_Location).arg(m_Mapset);
 
-  if (!openfluid::tools::Filesystem::isDirectory(Path.toStdString()))
-    Opts = " -c";  // if the location does not exist, create it
-  else
-    Path = QString("%1/%2/%3").arg(m_GISBase).arg(m_Location).arg(m_Mapset); // use the existing mapset
-
-
-  QString Command = QString("\"%1\"%2 \"%3\"").arg(m_ExecutablePath).arg(Opts).arg(Path);
+  QString Command = QString("\"%1\" \"%2\"").arg(m_ExecutablePath).arg(Path);
 
   Pcs.start(Command);
   Pcs.waitForStarted(-1);
   Pcs.waitForFinished(-1);
+
+  return Pcs.exitCode();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int GrassGISProxy::executeGrassJobReturningData(const QString& JobFilePath, QStringList& Lines) const
+{
+  if (!isLocationExist())
+    return -99;
+
+  QProcessEnvironment PcsEnv = QProcessEnvironment::systemEnvironment();
+  PcsEnv.insert("GRASS_BATCH_JOB",JobFilePath);
+
+  QProcess Pcs;
+  Pcs.setProcessEnvironment(PcsEnv);
+
+
+  QString Path = QString("%1/%2/%3").arg(m_GISBase).arg(m_Location).arg(m_Mapset);
+
+  QString Command = QString("\"%1\" \"%2\"").arg(m_ExecutablePath).arg(Path);
+
+  Pcs.start(Command);
+  Pcs.waitForStarted(-1);
+  Pcs.waitForFinished(-1);
+
+  if (Pcs.exitCode() == 0)
+  {
+    Lines = QString(Pcs.readAllStandardOutput()).split("\n");
+  }
 
   return Pcs.exitCode();
 }
@@ -258,6 +289,141 @@ int GrassGISProxy::runSingleTask(const QString& Command,
   }
 
   return RetValue;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool GrassGISProxy::isLocationExist() const
+{
+  QString Path = QString("%1/%2").arg(m_GISBase).arg(m_Location);
+
+  return openfluid::tools::Filesystem::isDirectory(Path.toStdString());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool GrassGISProxy::createLocation(const QString& EPSG) const
+{
+  QProcessEnvironment PcsEnv = QProcessEnvironment::systemEnvironment();
+
+  QProcess Pcs;
+  Pcs.setProcessEnvironment(PcsEnv);
+
+  QString Path = QString("%1/%2").arg(m_GISBase).arg(m_Location);
+
+  QString Command = QString("\"%1\" -c \"\%2\" -e \"%3\"").arg(m_ExecutablePath).arg(EPSG).arg(Path);
+
+  Pcs.start(Command);
+  Pcs.waitForStarted(-1);
+  Pcs.waitForFinished(-1);
+
+  return Pcs.exitCode();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::map<std::string,double> GrassGISProxy::region() const
+{
+  std::map<std::string,double> Values;
+
+  QString JobFilePath = writeJobFile(QStringList() << getCommandLine("g.region",{},{"-gucep"}),
+                                       QString::fromStdString(openfluid::base::Environment::getTempDir()));
+
+  if (!JobFilePath.isEmpty())
+  {
+    QStringList Lines;
+    if (executeGrassJobReturningData(JobFilePath,Lines) == 0)
+    {
+      bool ConvertOK;
+      double ConvertedVal;
+
+      for (QString& Ln : Lines)
+      {
+        QStringList Parts = Ln.split("=",QString::SkipEmptyParts);
+
+        if (Parts.size() == 2)
+        {
+          ConvertedVal = Parts[1].toDouble(&ConvertOK);
+          if (ConvertOK)
+          {
+            Values[Parts[0].toStdString()] = ConvertedVal;
+          }
+        }
+      }
+    }
+  }
+
+  return Values;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::map<std::string,std::string> GrassGISProxy::gisenv() const
+{
+  std::map<std::string,std::string> Values;
+
+  QString JobFilePath = writeJobFile(QStringList() << getCommandLine("g.gisenv",{},{"-n","--q"}),
+                                       QString::fromStdString(openfluid::base::Environment::getTempDir()));
+
+  if (!JobFilePath.isEmpty())
+  {
+    QStringList Lines;
+    if (executeGrassJobReturningData(JobFilePath,Lines) == 0)
+    {
+      for (QString& Ln : Lines)
+      {
+        QStringList Parts = Ln.split("=",QString::SkipEmptyParts);
+
+        if (Parts.size() == 2)
+        {
+            Values[Parts[0].toStdString()] = Parts[1].toStdString();
+        }
+      }
+    }
+  }
+
+  return Values;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> GrassGISProxy::mapsets() const
+{
+  std::vector<std::string> Values;
+
+
+  QString JobFilePath = writeJobFile(QStringList() << getCommandLine("g.mapsets",{{"separator","'\\n'"}},{"-l"}),
+                                       QString::fromStdString(openfluid::base::Environment::getTempDir()));
+
+  if (!JobFilePath.isEmpty())
+  {
+    QStringList Lines;
+    if (executeGrassJobReturningData(JobFilePath,Lines) == 0)
+    {
+      for (QString& Ln : Lines)
+      {
+        if (!Ln.trimmed().isEmpty())
+          Values.push_back(Ln.toStdString());
+      }
+    }
+  }
+
+  return Values;
 }
 
 
