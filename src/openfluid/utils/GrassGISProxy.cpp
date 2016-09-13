@@ -323,7 +323,7 @@ bool GrassGISProxy::createLocation(const QString& EPSG) const
   Pcs.waitForStarted(-1);
   Pcs.waitForFinished(-1);
 
-  return Pcs.exitCode();
+  return (Pcs.exitCode() == 0);
 }
 
 

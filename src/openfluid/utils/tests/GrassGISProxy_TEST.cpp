@@ -53,9 +53,37 @@
 QString BaseWorkDir = QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR+"/GrassGISProxy");
 
 
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(check_init)
 {
   BOOST_REQUIRE(!openfluid::utils::GrassGISProxy::getVersion().isEmpty());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_locationops)
+{
+  std::cout << "======  location ops  ======" << std::endl;
+
+
+  openfluid::utils::GrassGISProxy GRASS(BaseWorkDir+"/data","locationops");
+
+
+  BOOST_REQUIRE(!GRASS.isLocationExist());
+
+  BOOST_REQUIRE(GRASS.createLocation("EPSG:2154"));
+
+  BOOST_REQUIRE(GRASS.isLocationExist());
+
+  BOOST_REQUIRE(!GRASS.createLocation("EPSG:2154"));
+
+  BOOST_REQUIRE(GRASS.isLocationExist());
 }
 
 
@@ -79,7 +107,7 @@ BOOST_AUTO_TEST_CASE(check_singletask)
   BOOST_REQUIRE_EQUAL(GRASS.runSingleTask("g.gisenv"),-99);
 
 
-  GRASS.createLocation("EPSG:2154");
+  BOOST_REQUIRE(GRASS.createLocation("EPSG:2154"));
 
   BOOST_REQUIRE(GRASS.isLocationExist());
 
@@ -113,7 +141,7 @@ BOOST_AUTO_TEST_CASE(check_job)
   BOOST_REQUIRE_EQUAL(GRASS.runJob(),-99);
 
 
-  GRASS.createLocation("EPSG:2154");
+  BOOST_REQUIRE(GRASS.createLocation("EPSG:2154"));
 
   GRASS.setOutputFile(BaseWorkDir+"/check_job.out");
   GRASS.setErrorFile(BaseWorkDir+"/check_job.err");
@@ -148,7 +176,7 @@ BOOST_AUTO_TEST_CASE(check_process1)
 
   BOOST_REQUIRE(!GRASS.isLocationExist());
 
-  GRASS.createLocation("EPSG:2154");
+  BOOST_REQUIRE(GRASS.createLocation("EPSG:2154"));
 
   BOOST_REQUIRE(GRASS.isLocationExist());
 
@@ -187,7 +215,7 @@ BOOST_AUTO_TEST_CASE(check_region)
 
   BOOST_REQUIRE(!GRASS.isLocationExist());
 
-  GRASS.createLocation("EPSG:2154");
+  BOOST_REQUIRE(GRASS.createLocation("EPSG:2154"));
 
   BOOST_REQUIRE(GRASS.isLocationExist());
 
@@ -219,7 +247,7 @@ BOOST_AUTO_TEST_CASE(check_gisenv)
 
   BOOST_REQUIRE(!GRASS.isLocationExist());
 
-  GRASS.createLocation("EPSG:2154");
+  BOOST_REQUIRE(GRASS.createLocation("EPSG:2154"));
 
   BOOST_REQUIRE(GRASS.isLocationExist());
 
@@ -248,7 +276,7 @@ BOOST_AUTO_TEST_CASE(check_mapsets)
 
   BOOST_REQUIRE(!GRASS.isLocationExist());
 
-  GRASS.createLocation("EPSG:2154");
+  BOOST_REQUIRE(GRASS.createLocation("EPSG:2154"));
 
   BOOST_REQUIRE(GRASS.isLocationExist());
 

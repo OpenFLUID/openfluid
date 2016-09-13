@@ -47,12 +47,13 @@
 #include <QStringList>
 
 #include <openfluid/utils/ProgramProxy.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace utils {
 
 
-class GrassGISProxy : public ProgramProxy<GrassGISProxy>
+class OPENFLUID_API GrassGISProxy : public ProgramProxy<GrassGISProxy>
 {
   private:
 
@@ -159,14 +160,41 @@ class GrassGISProxy : public ProgramProxy<GrassGISProxy>
     const QStringList& jobLines() const
     { return m_JobLines; }
 
+
+    /**
+      Returns true if the location already exists
+      @return true  if the location already exists, false otherwise
+    */
     bool isLocationExist() const;
 
+
+    /**
+      Creates the location defined for the current GRASS session, with the given EPSG code
+      @param[in] EPSG the EPSG code for the location
+      @return true  if the location has been created, false if it could not be created
+              or if it already exists
+    */
     bool createLocation(const QString& EPSG) const;
 
+    /**
+      Returns the region informations as a key-value map,
+      given by the results of the "g.region -gucep" GRASS command
+      @return a key-value map about containing region informations
+    */
     std::map<std::string,double> region() const;
 
+    /**
+      Returns the environment informations as a key-value map,
+      given by the results of the "g.gisenv -n --q" GRASS command
+      @return a key-value map about containing environment informations
+    */
     std::map<std::string,std::string> gisenv() const;
 
+    /**
+      Returns the list of mapsets in the current location,
+      given by the results of the "g.mapsets separator='\n' -l" GRASS command
+      @return a vector of strings containing the mapsets list
+    */
     std::vector<std::string> mapsets() const;
 
 
