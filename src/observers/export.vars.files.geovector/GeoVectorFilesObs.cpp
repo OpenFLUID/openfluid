@@ -40,10 +40,12 @@
 
 #include <QStringList>
 #include <QDir>
+
 #include <ogrsf_frmts.h>
 
 #include <openfluid/utils/GDALCompatibility.hpp>
 #include <openfluid/utils/GDALHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
@@ -376,6 +378,13 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
 
         GDALDriver_COMPAT* Driver = GDALGetDriverByName_COMPAT(m_GDALFormat.c_str());
+
+        if (openfluid::tools::Filesystem::isFile(FullFilePath))
+        {
+          // deletion of an existing file or files set
+          GDALDelete_COMPAT(Driver,FullFilePath.c_str());
+        }
+
         GDALDataset_COMPAT* CreatedFile = GDALCreate_COMPAT(Driver,FullFilePath.c_str());
 
         std::string CreatedLayerName = QFileInfo(QString::fromStdString(FullFilePath)).completeBaseName().toStdString();
