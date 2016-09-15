@@ -128,7 +128,7 @@ class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
     */
     std::vector<geos::geom::Polygon*>* mp_RasterPolygonizedPolys;
 
-    static int FileNum;
+    static int m_FileNum;
 
     LandRGraph();
 

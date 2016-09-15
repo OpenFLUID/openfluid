@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   Str = "abcd";
   BOOST_REQUIRE_EQUAL(openfluid::tools::convertString(Str,&BoolValue),false);
-  BOOST_REQUIRE_THROW(bool Test = openfluid::tools::convertString<bool>(Str),openfluid::base::FrameworkException);
+  BOOST_REQUIRE_THROW(openfluid::tools::convertString<bool>(Str),openfluid::base::FrameworkException);
 
   Str = "1";
   BOOST_REQUIRE_EQUAL(openfluid::tools::convertString(Str,&BoolValue),true);

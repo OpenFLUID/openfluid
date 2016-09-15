@@ -37,15 +37,15 @@
  */
 
 
- #include <sstream>
+#include <sstream>
 
- #include <geos/planargraph/Node.h>
- #include <geos/geom/Polygon.h>
- #include <geos/geom/Point.h>
- #include <geos/geom/LineString.h>
- #include <geos/geom/LineSegment.h>
- #include <geos/geom/GeometryFactory.h>
- #include <geos/operation/overlay/snap/GeometrySnapper.h>
+#include <geos/planargraph/Node.h>
+#include <geos/geom/Polygon.h>
+#include <geos/geom/Point.h>
+#include <geos/geom/LineString.h>
+#include <geos/geom/LineSegment.h>
+#include <geos/geom/GeometryFactory.h>
+#include <geos/operation/overlay/snap/GeometrySnapper.h>
 
 #include <openfluid/landr/LandRGraph.hpp>
 #include <openfluid/landr/GEOSHelpers.hpp>
@@ -63,7 +63,7 @@
 namespace openfluid { namespace landr {
 
 
-int LandRGraph::FileNum = 0;
+int LandRGraph::m_FileNum = 0;
 
 
 // =====================================================================
@@ -72,8 +72,8 @@ int LandRGraph::FileNum = 0;
 
 LandRGraph::LandRGraph() :
   geos::planargraph::PlanarGraph(),
-  mp_Vector(0), mp_Factory(geos::geom::GeometryFactory::getDefaultInstance()),
-  mp_Raster(0), mp_RasterPolygonized(0), mp_RasterPolygonizedPolys(0)
+  mp_Vector(nullptr), mp_Factory(geos::geom::GeometryFactory::getDefaultInstance()),
+  mp_Raster(nullptr), mp_RasterPolygonized(nullptr), mp_RasterPolygonizedPolys(nullptr)
 {
 
 }
@@ -86,7 +86,7 @@ LandRGraph::LandRGraph() :
 LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
   geos::planargraph::PlanarGraph(),
   mp_Factory(geos::geom::GeometryFactory::getDefaultInstance()),
-  mp_Raster(0), mp_RasterPolygonized(0), mp_RasterPolygonizedPolys(0)
+  mp_Raster(nullptr), mp_RasterPolygonized(nullptr), mp_RasterPolygonizedPolys(nullptr)
 {
   mp_Vector = new VectorDataset(Val);
 
@@ -119,9 +119,8 @@ LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
 
 
 LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
-        geos::planargraph::PlanarGraph(), mp_Factory(
-            geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
-                0), mp_RasterPolygonizedPolys(0)
+        geos::planargraph::PlanarGraph(), mp_Factory(geos::geom::GeometryFactory::getDefaultInstance()),
+        mp_Raster(nullptr), mp_RasterPolygonized(nullptr), mp_RasterPolygonizedPolys(nullptr)
 {
   mp_Vector = new openfluid::landr::VectorDataset(Vect);
 
@@ -407,8 +406,8 @@ void LandRGraph::addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster)
 
   mp_Raster = new RasterDataset(Raster);
 
-  mp_RasterPolygonized = 0;
-  mp_RasterPolygonizedPolys = 0;
+  mp_RasterPolygonized = nullptr;
+  mp_RasterPolygonizedPolys = nullptr;
 }
 
 
@@ -423,8 +422,8 @@ void LandRGraph::addAGeoRasterValue(const openfluid::landr::RasterDataset& Raste
 
   mp_Raster = new RasterDataset(Raster);
 
-  mp_RasterPolygonized = 0;
-  mp_RasterPolygonizedPolys = 0;
+  mp_RasterPolygonized = nullptr;
+  mp_RasterPolygonizedPolys = nullptr;
 }
 
 
@@ -434,7 +433,7 @@ void LandRGraph::addAGeoRasterValue(const openfluid::landr::RasterDataset& Raste
 
 bool LandRGraph::hasAnAssociatedRaster()
 {
-  return (mp_Raster != 0);
+  return (mp_Raster != nullptr);
 }
 
 
@@ -450,10 +449,10 @@ openfluid::landr::VectorDataset* LandRGraph::rasterPolygonized()
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No raster associated to the PolygonGraph");
 
     std::ostringstream FileName;
-    FileName << "Polygonized_" << FileNum++ << ".shp";
+    FileName << "Polygonized_" << m_FileNum++ << ".shp";
 
     mp_RasterPolygonized = mp_Raster->polygonize(FileName.str());
-    mp_RasterPolygonizedPolys = 0;
+    mp_RasterPolygonizedPolys = nullptr;
   }
 
   return mp_RasterPolygonized;

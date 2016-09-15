@@ -105,7 +105,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
 
   DECLARE_PRODUCED_VARIABLE("tests.prodvector[]","TestUnits","produced vector on TestUnits","");
   DECLARE_PRODUCED_VARIABLE("tests.prodscalar","TestUnits","produced scalar on TestUnits",
-                            "\sqrt{batman \cdot joker^{-1}}");
+                            "\\sqrt{batman \\cdot joker^{-1}}");
 
   DECLARE_UPDATED_VARIABLE("tests.updscalar","TestUnits","updated scalar on TestUnits","");
   DECLARE_UPDATED_VARIABLE("tests.updint[integer]","TestUnits","updated int on TestUnits","m^3");
@@ -117,7 +117,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
 
   DECLARE_PRODUCED_ATTRIBUTE("attr1","TestUnits","a description","")
   DECLARE_PRODUCED_ATTRIBUTE("attrp","TestUnits","another description","m^3")
-  DECLARE_REQUIRED_ATTRIBUTE("indataA","TestUnits","required attribute A on TestUnits","\sqrt{m}")
+  DECLARE_REQUIRED_ATTRIBUTE("indataA","TestUnits","required attribute A on TestUnits","\\sqrt{m}")
   DECLARE_USED_ATTRIBUTE("indataB","TestUnits","used attribute B on TestUnits","mm/h")
   DECLARE_USED_ATTRIBUTE("indata_CC","TestUnits","used attribute CC on TestUnits","")
 

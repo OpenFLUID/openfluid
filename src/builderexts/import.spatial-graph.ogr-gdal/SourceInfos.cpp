@@ -81,6 +81,7 @@ int SourceInfos::getGeometryDimension() const
     case wkbMultiLineString25D: Dim = 1; break;
     case wkbMultiPolygon25D: Dim = 2; break;
     case wkbGeometryCollection25D: Dim = -1; break;
+    default : break;
   }
 
   return Dim;

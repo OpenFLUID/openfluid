@@ -144,19 +144,16 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
                            "Variables can be initialized during INITIALIZERUN stage only")
 
-  if (&aUnit != nullptr)
+  if (!aUnit.variables()->appendValue(VarName,0,Val))
   {
-    if (!aUnit.variables()->appendValue(VarName,0,Val))
-    {
-      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
-          .addSpatialUnit(openfluid::tools::classIDToString(aUnit.getClass(),aUnit.getID()));
-      throw openfluid::base::FrameworkException(Context,
-                                                "Error initializing value for variable "+ VarName);
-    }
+    openfluid::base::ExceptionContext Context =
+        computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+        .addSpatialUnit(openfluid::tools::classIDToString(aUnit.getClass(),aUnit.getID()));
+
+    throw openfluid::base::FrameworkException(Context,"Error initializing value for variable "+ VarName);
   }
-  else
-    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -288,18 +285,14 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "Variables values cannot be added outside RUNSTEP stage")
 
-  if (&aUnit != nullptr)
+  if (!aUnit.variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
   {
-    if (!aUnit.variables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
-    {
-      openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
-          .addSpatialUnit(openfluid::tools::classIDToString(aUnit.getClass(),aUnit.getID()));
-      throw openfluid::base::FrameworkException(Context,
-                                                "Error appending value for variable "+ VarName);
-    }
+    openfluid::base::ExceptionContext Context =
+        computeFrameworkContext(OPENFLUID_CODE_LOCATION)
+        .addSpatialUnit(openfluid::tools::classIDToString(aUnit.getClass(),aUnit.getID()));
+
+    throw openfluid::base::FrameworkException(Context,"Error appending value for variable "+ VarName);
   }
-  else
-    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
 }
 
 
