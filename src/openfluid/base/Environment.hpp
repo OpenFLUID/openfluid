@@ -132,107 +132,280 @@ class OPENFLUID_API Environment
 
   public:
 
+    /**
+      Initializes OpenFLUID environment
+    */
     static void init();
 
+    /**
+      Returns the current host name
+      @return the host name
+    */
     static std::string getHostName()
     { return m_HostName; }
 
+    /**
+      Returns the current system architecture. Possible values are defined in the global.hpp file
+      with the OPENFLUID_OS_STRLABEL definition
+      @return the system architecture
+    */
     static std::string getSystemArch()
     { return m_SystemArch; }
 
+    /**
+      Returns the ideal thread count for the current running system
+      @return the number of threads
+    */
     static int getIdealThreadCount()
     { return m_IdealThreadCount; }
 
+    /**
+      Returns the current user name
+      @return the user name
+    */
     static std::string getUserName()
     { return m_UserName; }
 
+    /**
+      Returns the current OpenFLUID version using the MAJOR.MINOR.PATCH format
+      @return the version number
+    */
     static std::string getVersion()
     { return m_Version; }
 
+    /**
+      Returns the current OpenFLUID version using the MAJOR.MINOR.PATCH~STATUS format
+      @return the fully qualified version number
+    */
     static std::string getVersionFull()
     { return m_VersionFull; }
 
+    /**
+      Returns the current OpenFLUID version using the MAJOR.MINOR format
+      @return the simplified version number
+    */
     static std::string getVersionMajorMinor()
     { return m_VersionMajorMinor; }
 
+    /**
+      Returns the current OpenFLUID temporary directory. It is automatically defined but can be forced using
+      the OPENFLUID_TEMP_PATH environment variable.
+      @return the full path to the directory
+    */
     static std::string getTempDir()
     { return m_TempDir; }
 
+    /**
+      Returns the OpenFLUID install prefix directory. It is defined at build time but can be forced using
+      the OPENFLUID_INSTALL_PREFIX environment variable.
+      @return the full path to the directory
+    */
     static std::string getInstallPrefix()
     { return m_InstallPrefix; }
 
+    /**
+      Returns the current user home directory
+      @return the full path to the directory
+    */
     static std::string getUserHomeDir()
     { return m_UserHomeDir; }
 
-    static std::string getConfigFile()
-    { return m_ConfigFile; }
-
+    /**
+      Returns the OpenFLUID data directory for the current user
+      @return the full path to the directory
+    */
     static std::string getUserDataDir()
     { return m_UserDataDir; }
 
+    /**
+      Returns the full path of a file or directory relative to the OpenFLUID data directory for the current user
+      @param[in] Path the path relative to the OpenFLUID user data directory
+      @return the full path to the file or directory
+    */
     static std::string getUserDataFullPath(const std::string& Path)
     { return m_UserDataDir + "/" + Path; }
 
+    /**
+      Returns the full path of the examples directory for the current user
+      @return the full path to the directory
+    */
     static std::string getUserExamplesDir()
     { return m_UserExamplesDir; }
 
+    /**
+      Returns the full path of the directory where examples provided by OpenFLUID or models installations are stored
+      @return the full path to the directory
+    */
+    static std::string getProvidedExamplesDir()
+    { return m_ProvidedExamplesDir; }
+
+    /**
+      Automatically prepares the user data directory
+    */
     static void prepareUserDataDirectory();
 
+    /**
+      Returns the configuration file path for the current user
+      @return the full path to the file
+    */
+    static std::string getConfigFile()
+    { return m_ConfigFile; }
+
+    /**
+      Returns the OpenFLUID translations directory
+      @return the full path to the directory
+    */
     static std::string getTranslationsDir()
     { return m_TranslationsDir; }
 
+    /**
+      Returns the OpenFLUID common resources directory
+      @return the full path to the directory
+    */
     static std::string getCommonResourcesDir()
     { return m_CommonResourcesDir; }
 
+    /**
+      Returns the full path of a file or directory relative to the OpenFLUID common resources directory
+      @param[in] Path the path relative to the OpenFLUID common resources directory
+      @return the full path to the file or directory
+    */
     static std::string getCommonResourcesFullPath(const std::string& Path)
     { return m_CommonResourcesDir + "/" + Path; }
 
+    /**
+      Returns the resources directory for a given OpenFLUID software application
+      @param[in] AppName the name of the OpenFLUID application
+      @return the full path to the directory
+    */
     static std::string getAppResourcesDir(const std::string& AppName)
     { return m_AppsResourcesDir + "/" + AppName; }
 
+    /**
+      Returns the full path of a file or directory relative to the resources directory
+      of a given OpenFLUID software application
+      @param[in] AppName the name of the OpenFLUID application
+      @param[in] Path the path relative to the OpenFLUID application resources directory
+      @return the full path to the file or directory
+    */
     static std::string getAppResourcesFullPath(const std::string& AppName, const std::string& Path)
     { return getAppResourcesDir(AppName) + "/" + Path; }
 
+    /**
+      Returns the list of directories full paths where OpenFLUID searches for simulators.
+      Extra directories added at run time are at the beginning of the list, followed by standard search paths.
+      @return the list of directories full paths
+    */
     static std::vector<std::string> getSimulatorsDirs();
 
+    /**
+      Returns the list of default directories full paths where OpenFLUID searches for simulators.
+      @return the list of directories full paths
+    */
     static std::vector<std::string> getDefaultSimulatorsDirs()
     { return m_DefaultSimulatorsDirs; }
 
+    /**
+      Returns the list of extra added directories full paths where OpenFLUID searches for simulators.
+      @return the list of directories full paths
+    */
     static std::vector<std::string> getExtraSimulatorsDirs()
     { return m_ExtraSimulatorsDirs; }
 
+    /**
+      Adds paths to the list of directories where OpenFLUID searches for simulators.
+      The paths are given as a single string of paths separated by ":" (on Unices systems) or ";" (on Windows systems)
+      @param[in] Paths the list of full paths as a single string
+    */
     static void addExtraSimulatorsDirs(const std::string& Paths);
 
+    /**
+      Resets the list of extra directories where OpenFLUID searches for simulators to empty
+    */
     static void resetExtraSimulatorsDirs();
 
+    /**
+      Returns the full path of a searched simulator file
+      @return the full path of the searched file, empty if not found
+    */
     static std::string getSimulatorFullPath(const std::string& Filename);
 
+    /**
+      Returns the list of directories full paths where OpenFLUID searches for observers.
+      Extra directories added at run time are at the beginning of the list, followed by standard search paths.
+      @return the list of directories full paths
+    */
     static std::vector<std::string> getObserversDirs();
 
+    /**
+      Returns the list of default directories full paths where OpenFLUID searches for observers.
+      @return the list of directories full paths
+    */
     static std::vector<std::string> getDefaultObserversDirs()
     { return m_DefaultObserversDirs; }
 
+    /**
+      Returns the list of extra added directories full paths where OpenFLUID searches for observers.
+      @return the list of directories full paths
+    */
     static std::vector<std::string> getExtraObserversDirs()
     { return m_ExtraObserversDirs; }
 
+    /**
+      Adds paths to the list of directories where OpenFLUID searches for observers.
+      The paths are given as a single string of paths separated by ":" (on Unices systems) or ";" (on Windows systems)
+      @param[in] Paths the list of full paths as a single string
+    */
     static void addExtraObserversDirs(const std::string& Paths);
 
+    /**
+      Resets the list of extra directories where OpenFLUID searches for observers to empty
+    */
     static void resetExtraObserversDirs();
 
+    /**
+      Returns the full path of a searched observer file
+      @return the full path of the searched file, empty if not found
+    */
     static std::string getObserverFullPath(const std::string& Filename);
 
+    /**
+      Returns the list of directories full paths where OpenFLUID searches for builder-extensions.
+      Extra directories added at run time are at the beginning of the list, followed by standard search paths.
+      @return the list of directories full paths
+    */
     static std::vector<std::string> getBuilderextsDirs();
 
+    /**
+      Returns the list of default directories full paths where OpenFLUID searches for builder-extensions.
+      @return the list of directories full paths
+    */
     static std::vector<std::string> getDefaultBuilderextsDirs()
     { return m_DefaultBuilderextsDirs; }
 
+    /**
+      Returns the list of extra added directories full paths where OpenFLUID searches for builder-extensions.
+      @return the list of directories full paths
+    */
     static std::vector<std::string> getExtraBuilderextsDirs()
     { return m_ExtraBuilderextsDirs; }
 
+    /**
+      Adds paths to the list of directories where OpenFLUID searches for builder-extensions.
+      The paths are given as a single string of paths separated by ":" (on Unices systems) or ";" (on Windows systems)
+      @param[in] Paths the list of full paths as a single string
+    */
     static void addExtraBuilderextsDirs(const std::string& Paths);
 
+    /**
+      Resets the list of extra directories where OpenFLUID searches for builder-extensions to empty
+    */
     static void resetExtraBuilderextsDirs();
 
+    /**
+      Returns the full path of a searched builder-extension file
+      @return the full path of the searched file, empty if not found
+    */
     static std::string getBuilderextFullPath(const std::string& Filename);
 
     static std::string getMarketBagBinSubDir()
@@ -259,8 +432,6 @@ class OPENFLUID_API Environment
     static std::string getMarketBagVersionDir()
     { return m_MarketBagVersionDir; }
 
-    static std::string getProvidedExamplesDir()
-    { return m_ProvidedExamplesDir; }
 };
 
 

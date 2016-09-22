@@ -15,6 +15,7 @@
   * Ensured compatibility with GDAL for both 1.xx and 2.xx versions 
     of the library
   * Cleaned code
+  * Updated doc content
   * Fixed small bugs
 
 

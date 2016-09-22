@@ -63,6 +63,7 @@ class OPENFLUID_API RunContextManager : public Environment
 
   OPENFLUID_SINGLETON_DEFINITION(RunContextManager)
 
+
   private:
 
     std::string m_OutputDir;
@@ -120,54 +121,124 @@ class OPENFLUID_API RunContextManager : public Environment
 
   public:
 
+    /**
+      Returns the full path of the simulation input directory
+      @return the full path of the directory
+    */
     std::string getInputDir() const
     { return m_InputDir; }
 
+    /**
+      Returns the full path of a file or directory relative to the simulation input directory
+      @param[in] Filename the path relative to the simulation input directory
+      @return the full path to the file or directory
+    */
     std::string getInputFullPath(const std::string& Filename) const
     { return m_InputDir + "/" + Filename; }
 
+    /**
+      Sets the full path of the simulation input directory
+      @return the full path of the directory
+    */
     void setInputDir(const std::string& InputDir);
 
+    /**
+      Returns the full path of the simulation output directory
+      @return the full path of the directory
+    */
     std::string getOutputDir() const
     { return m_OutputDir; }
 
+    /**
+      Returns the full path of a file or directory relative to the simulation output directory
+      @param[in] Filename the path relative to the simulation output directory
+      @return the full path to the file or directory
+    */
     std::string getOutputFullPath(const std::string& Filename) const
     { return m_OutputDir + "/" + Filename; }
 
+    /**
+      Sets the full path of the simulation output directory
+      @return the full path of the directory
+    */
     void setOutputDir(const std::string& OutputDir);
 
     void setDateTimeOutputDir();
 
+    /**
+      Returns the status of automatic cleaning of output directory before simulation run
+      @return true if enabled, false if disabled
+    */
     bool isClearOutputDir() const
     { return m_IsClearOutputDir; }
 
+    /**
+      Sets the status of automatic cleaning of output directory before simulation run
+      @param Enabled set to true to enable
+    */
     void setClearOutputDir(bool Enabled)
     { m_IsClearOutputDir = Enabled; }
 
+    /**
+      Returns the status of simulation profiling
+      @return true if enabled, false if disabled
+    */
     bool isProfiling() const
     { return m_IsProfiling; }
 
+    /**
+      Sets the status of simulation profiling
+      @param Enabled set to true to enable
+    */
     void setProfiling(bool Enabled)
     { m_IsProfiling = Enabled; }
 
+    /**
+      Returns the size of the buffer set by the user for simulation variables values
+      @return the size of the buffer
+    */
     unsigned int getValuesBufferUserSize() const
     { return m_ValuesBufferSize; }
 
+    /**
+      Sets the size of the buffer set by the user for simulation variables values
+      @param[in] Size the size of the buffer
+    */
     void setValuesBufferUserSize(unsigned int Size)
     { m_ValuesBufferSize = Size; }
 
+    /**
+      Unsets the size of the buffer set by the user for simulation variables values
+      @return the size of the buffer
+    */
     void unsetValuesBufferUserSize()
     { m_ValuesBufferSize = 0; }
 
+    /**
+      Returns true if the size of the buffer for simulation variables values has been set by the user
+      @return true if set by user (size > 0), false otherwise
+    */
     bool isValuesBufferUserSize() const
     { return (m_ValuesBufferSize > 0); }
 
+    /**
+      Returns the value for maximum threads count to be used in OpenFLUID wares (simulators, observers, ...)
+      @return the maximum threads count
+    */
     unsigned int getWaresMaxNumThreads() const
     { return m_WaresMaxNumThreads; }
 
+    /**
+      Sets the value for maximum threads count to be used in OpenFLUID wares (simulators, observers, ...)
+      @param[in] Num the maximum threads count
+    */
     void setWaresMaxNumThreads(unsigned int Num)
     { m_WaresMaxNumThreads = Num; }
 
+    /**
+      Resets the value for maximum threads count to be used in OpenFLUID wares (simulators, observers, ...).
+      The value is reset to the ideal thread count given by the OpenFLUID environment
+    */
     void resetWaresMaxNumThreads();
 
     openfluid::core::MapValue& extraProperties()

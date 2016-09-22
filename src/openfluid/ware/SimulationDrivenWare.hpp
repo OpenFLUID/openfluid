@@ -50,6 +50,9 @@
 #include <openfluid/deprecation.hpp>
 
 
+/**
+  @internal
+*/
 #define REQUIRE_SIMULATION_STAGE(stage,msg) \
   if (OPENFLUID_GetCurrentStage() != (stage)) \
   { \
@@ -57,6 +60,9 @@
     throw openfluid::base::FrameworkException(Context,msg); \
   }
 
+/**
+  @internal
+*/
 #define REQUIRE_SIMULATION_STAGE_GE(stage,msg) \
   if (OPENFLUID_GetCurrentStage() < (stage)) \
   { \
@@ -64,6 +70,9 @@
     throw openfluid::base::FrameworkException(Context,msg); \
   }
 
+/**
+  @internal
+*/
 #define REQUIRE_SIMULATION_STAGE_LE(stage,msg) \
   if (OPENFLUID_GetCurrentStage() > (stage)) \
   { \
@@ -76,17 +85,45 @@
 // =====================================================================
 
 
+/**
+  @internal
+*/
 #define _STREAMTOSTRING(_stream) ((static_cast<std::ostringstream&>(std::ostringstream().flush() << _stream)).str())
 
 
 // Log macros for warnings
 
+/**
+  Adds a warning message to simulation log file
+
+  Exemple:
+  @code{.cpp}
+    OPENFLUID_LogWarning("This is a logged warning message for " << "TestUnits#" << TU->getID());
+  @endcode
+*/
 #define OPENFLUID_LogWarning(_stream) \
   appendToLog(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
 
+/**
+  Displays a warning message to stdout (on screen by default)
+
+  Exemple:
+  @code{.cpp}
+    OPENFLUID_DisplayWarning("This is a displayed warning message for " << "TestUnits#" << TU->getID());
+  @endcode
+*/
 #define OPENFLUID_DisplayWarning(_stream) \
   displayToConsole(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
 
+/**
+  Adds a warning message to simulation log file and displays it to stdout (on screen by default)
+
+  Exemple:
+  @code{.cpp}
+    OPENFLUID_LogAndDisplayWarning("This is a logged and displayed warning message for " <<
+                                   "TestUnits#" << TU->getID());
+  @endcode
+*/
 #define OPENFLUID_LogAndDisplayWarning(_stream) \
   OPENFLUID_LogWarning(_stream); \
   OPENFLUID_DisplayWarning(_stream)
@@ -94,18 +131,74 @@
 
 // Log macros for infos
 
+/**
+  Adds an information message to simulation log file
+
+  Exemple:
+  @code{.cpp}
+    OPENFLUID_LogInfo("This is a logged information message for " << "TestUnits#" << TU->getID());
+  @endcode
+*/
 #define OPENFLUID_LogInfo(_stream) \
   appendToLog(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
 
+/**
+  Displays an information message to stdout (on screen by default)
+
+  Exemple:
+  @code{.cpp}
+    OPENFLUID_DisplayInfo("This is a displayed information message for " << "TestUnits#" << TU->getID());
+  @endcode
+*/
 #define OPENFLUID_DisplayInfo(_stream) \
   displayToConsole(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
 
+/**
+  Adds an information message to simulation log file and displays it to stdout (on screen by default)
+
+  Exemple:
+  @code{.cpp}
+    OPENFLUID_LogAndDisplayInfo("This is a logged and displayed information message for " <<
+                                "TestUnits#" << TU->getID());
+  @endcode
+*/
 #define OPENFLUID_LogAndDisplayInfo(_stream) \
   OPENFLUID_LogInfo(_stream); \
   OPENFLUID_DisplayInfo(_stream)
 
 
 // Log macros for debug
+
+/**
+  @def OPENFLUID_LogDebug
+  Adds a debug message to simulation log file
+
+  Exemple:
+  @code{.cpp}
+    OPENFLUID_LogDebug("This is a logged debug message for " << "TestUnits#" << TU->getID());
+  @endcode
+*/
+
+
+/**
+  @def OPENFLUID_DisplayDebug
+  Displays a debug message to stdout (on screen by default)
+
+  Exemple:
+  @code{.cpp}
+    OPENFLUID_DisplayDebug("This is a displayed debug message for " << "TestUnits#" << TU->getID());
+  @endcode
+*/
+
+/**
+  @def OPENFLUID_LogAndDisplayDebug
+  Adds a debug message to simulation log file and displays it to stdout (on screen by default)
+
+  Exemple:
+  @code{.cpp}
+    OPENFLUID_LogAndDisplayDebug("This is a logged and displayed debug message for " << "TestUnits#" << TU->getID());
+  @endcode
+*/
 
 #ifndef NDEBUG
 

@@ -282,19 +282,40 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
     */
     void OPENFLUID_SetSimulatorMaxThreads(const int& MaxNumThreads);
 
-
+    /**
+      Returns a scheduling request to a single scheduling at the end
+      Return the corresponding scheduling request
+    */
     inline openfluid::base::SchedulingRequest AtTheEnd() const
     { return openfluid::base::SchedulingRequest(openfluid::base::SchedulingRequest::ATTHEEND); };
 
+    /**
+      Returns a scheduling request to never be scheduled again
+      Return the corresponding scheduling request
+    */
     inline openfluid::base::SchedulingRequest Never() const
     { return openfluid::base::SchedulingRequest(openfluid::base::SchedulingRequest::NEVER); };
 
+    /**
+      Returns a scheduling request for the default DeltaT value
+      Return the corresponding scheduling request
+    */
     inline openfluid::base::SchedulingRequest DefaultDeltaT() const
     { return openfluid::base::SchedulingRequest(OPENFLUID_GetDefaultDeltaT()); };
 
+    /**
+      Returns a scheduling request for the default DeltaT value multiplied by a factor
+      @param[in] Mult the multiplication factor
+      Return the corresponding scheduling request
+    */
     inline openfluid::base::SchedulingRequest MultipliedDefaultDeltaT(const double& Mult) const
     { return openfluid::base::SchedulingRequest(Mult * OPENFLUID_GetDefaultDeltaT()); };
 
+    /**
+      Returns a scheduling request for a given duration
+      @param[in] D a duration in seconds
+      Return the corresponding scheduling request
+    */
     inline openfluid::base::SchedulingRequest Duration(const openfluid::core::Duration_t& D) const
     { return openfluid::base::SchedulingRequest(D); };
 

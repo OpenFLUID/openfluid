@@ -68,7 +68,7 @@ to never be called again
 </ul>
 
 <i>Example for a fixed time step simulator, with a time step equal to the default DeltaT value given in the input dataset:</i>
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest initializeRun()
 {
   // do something here
@@ -86,7 +86,7 @@ openfluid::base::SchedulingRequest runStep()
 
 
 <i>Example for a variable time step simulator, based on the internal computation of the simulator:</i>
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest initializeRun()
 {
   // do something here
@@ -202,7 +202,7 @@ The source code below shows spatial graph parsing examples.
 The first part of the source code shows how to browse all units of the SU units class, 
 and how to browse the \"From\" units for each SU unit.
 The second part of the source code shows how to browse all units of the spatial domain. 
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest runStep()
 {
   openfluid::core::SpatialUnit* SU;
@@ -249,7 +249,7 @@ a pointer to an \if DocIsLaTeX \b openfluid::core::SpatialUnit \endif
 
 \n
 The code below shows how to apply a method in parallel over the spatial graph:
-\code
+\code{.cpp}
 void computeA(openfluid::core::SpatialUnit* U)
 {
  // compute something
@@ -376,7 +376,7 @@ In order to add and remove connections, you can use the following methods, whene
 \n
 <i>Example:</i>
 \n
-\code
+\code{.cpp}
 void prepareData()
 {
 
@@ -504,7 +504,7 @@ and is available from the runStep() and finalizeRun() methods of the simulator
 
 \n
 <i>Example of code:</i>
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest runStep()
 {
   long int Duration = OPENFLUID_GetSimulationDuration();
@@ -539,7 +539,7 @@ The requested parameter name must be the same as the one used in the model.fluid
 or be filled from the OpenFLUID-Builder graphical interface.\n
 \n
 <i>Example of initParams method:</i>
-\code
+\code{.cpp}
 void initParams(const openfluid::ware::WareParams_t& Params)
 {
   m_MyParam = 0; //default value
@@ -586,7 +586,7 @@ The names of the attributes must match the names in the input dataset (see \ref 
 or the name of an attribute created by a simulator.
 
 <i>Example of use:</i>
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest runStep()
 {
   openfluid::core::SpatialUnit* SU;
@@ -660,7 +660,7 @@ and finalizeRun() parts of the simulator.
 \n
 <i>Example:</i>
 \n
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest runStep()
 {
   openfluid::core::DoubleValue TmpValue;
@@ -714,7 +714,7 @@ An event can be added on a specific spatial unit at a given date using:
 \endif
 </ul>
 <i>Example of process of events occurring on the current time step:</i>
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest runStep()
 {
   openfluid::core::SpatialUnit* TU;
@@ -784,7 +784,7 @@ class MySimulator : public openfluid::ware::PluggableSimulator
 
 
 <i>Example of usage of the ID-map structures:</i>
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest runStep()@tableofcontents
 {
   int ID;
@@ -821,7 +821,7 @@ They are accessible from simulators using:
 </ul>
 
 <i>Example:</i>
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest initializeRun()
 {
   std::string InputDir;
@@ -899,7 +899,7 @@ Using these methods is the recommended way to log and display messages. Please a
 or similar C++ facilities in production or released simulators.
 
 <i>Example:</i>
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest runStep()
 {
   openfluid::core::SpatialUnit* TU;
@@ -935,7 +935,7 @@ Errors can be raised using
 
 <i>Example:</i>
 
-\code
+\code{.cpp}
 void checkConsistency()
 {
   double TmpValue;
@@ -996,7 +996,7 @@ to log and display debug messages simultaneously
 </ul>
 
 <i>Example:</i>
-\code
+\code{.cpp}
 openfluid::base::SchedulingRequest runStep()
 {
   OPENFLUID_LogDebug("Entering runStep at time index " << OPENFLUID_GetCurrentTimeIndex());
@@ -1006,60 +1006,7 @@ openfluid::base::SchedulingRequest runStep()
 \endcode
 
 
-Additional macros are available for debugging:
-<ul>
-<li>\if DocIsLaTeX \b OFDBG_LOCATE
-\else #OFDBG_LOCATE
-\endif
-for file/line location where the macro is called 
-<li>\if DocIsLaTeX \b OFDBG_MESSAGE
-\else #OFDBG_MESSAGE
-\endif
-adding the message given as an argument 
-<li>\if DocIsLaTeX \b OFDBG_UNIT
-\else #OFDBG_UNIT
-\endif
-for information about the unit given as an argument
-<li>\if DocIsLaTeX \b OFDBG_UNIT_EXTENDED
-\else #OFDBG_UNIT_EXTENDED
-\endif
-for extended information about the unit given as an argument
-<li>\if DocIsLaTeX \b OFDBG_EVENT
-\else #OFDBG_EVENT
-\endif
-for information about the event given as an argument
-<li>\if DocIsLaTeX \b OFDBG_EVENTCOLLECTION
-\else #OFDBG_EVENTCOLLECTION
-\endif
-for information about the event collection given as an argument
-</ul>
-\n
-<i>Example:</i>
-\code
-openfluid::base::SchedulingRequest runStep()
-{
-  openfluid::core::SpatialUnit* TU;
-  openfluid::core::DateTime BeginDate,EndDate;
-  openfluid::core::EventsCollection EvColl;
-
-  OFDBG_LOCATE;
-
-  BeginDate = OPENFLUID_GetCurrentDate();
-  EndDate = OPENFLUID_GetCurrentDate() + OPENFLUID_GetDefaultDeltaT() - 1;
-
-
-  OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
-  {
-     OFDBG_UNIT_EXTENDED(TU);
-
-     EvColl.clear();
-     OPENFLUID_GetEvents(TU,BeginDate,EndDate,EvColl);
-     OFDBG_EVENTCOLLECTION(EvColl);
-  }
-
-  return DefaultDeltaT();
-}
-\endcode
+Additional macros are available for debugging, see file debug.hpp:
 
 
 
@@ -1076,7 +1023,7 @@ You are invited to read the FortranCPP.hpp file to get more information about th
 
 \n
 <i>Example of Fortran source code (FSubr.f90):</i>
-\code
+\code{.f90}
 subroutine displayvector(Fsize,vect)
 
 implicit none
@@ -1099,7 +1046,7 @@ END_EXTERN_FORTRAN
 \endcode
 \n
 <i>Example of call of the fortran subroutine from the initializeRun method (MySim.cpp):</i>
-\code
+\code{.cpp}
 #include <openfluid/tools/FortranCPP.hpp>
 
 openfluid::base::SchedulingRequest initializeRun()

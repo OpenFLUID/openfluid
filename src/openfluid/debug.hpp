@@ -34,11 +34,34 @@
   @file debug.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+
+Example of use:
+@code{.cpp}
+openfluid::base::SchedulingRequest runStep()
+{
+  openfluid::core::SpatialUnit* TU;
+  openfluid::core::DateTime BeginDate,EndDate;
+  openfluid::core::EventsCollection EvColl;
+  OFDBG_LOCATE;
+  BeginDate = OPENFLUID_GetCurrentDate();
+  EndDate = OPENFLUID_GetCurrentDate() + OPENFLUID_GetDefaultDeltaT() - 1;
+  OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
+  {
+     OFDBG_UNIT_EXTENDED(TU);
+     EvColl.clear();
+     OPENFLUID_GetEvents(TU,BeginDate,EndDate,EvColl);
+     OFDBG_EVENTCOLLECTION(EvColl);
+  }
+  return DefaultDeltaT();
+}
+@endcode
+
+*/
 
 
 #ifndef __OPENFLUID_DEBUG_HPP__
 #define __OPENFLUID_DEBUG_HPP__
+
 
 // =====================================================================
 // =====================================================================
@@ -62,6 +85,12 @@
 
 // =====================================================================
 // =====================================================================
+
+
+/**
+  @def OFDBG_LOCATE
+  Displays file/line location where the macro is called
+*/
 
 
 #ifndef NDEBUG
@@ -102,6 +131,12 @@
 // =====================================================================
 
 
+/**
+  @def OFDBG_MESSAGE
+  Displays the given message
+*/
+
+
 #ifndef NDEBUG
 
 #define OFDBG_MESSAGE(stream) \
@@ -116,6 +151,12 @@
 
 // =====================================================================
 // =====================================================================
+
+
+/**
+  @def OFDBG_UNIT
+  Displays information about the given spatial unit
+*/
 
 
 #ifndef NDEBUG
@@ -135,6 +176,12 @@
 
 // =====================================================================
 // =====================================================================
+
+
+/**
+  @def OFDBG_UNIT_EXTENDED
+  Displays extended information about the given spatial unit
+*/
 
 
 #ifndef NDEBUG
@@ -164,6 +211,12 @@
 // =====================================================================
 
 
+/**
+  @def OFDBG_EVENT
+  Displays information about the given event
+*/
+
+
 #ifndef NDEBUG
 
 #define OFDBG_EVENT(eventptr) \
@@ -188,6 +241,12 @@
 
 // =====================================================================
 // =====================================================================
+
+
+/**
+@def OFDBG_EVENTCOLLECTION
+Displays information about the given event collection
+*/
 
 
 #ifndef NDEBUG

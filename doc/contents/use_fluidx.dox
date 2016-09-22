@@ -125,7 +125,7 @@ The coupled model must be defined in a section delimited by the
   attribute giving the value of the parameter.
 </ul>
 
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <model>
@@ -194,7 +194,7 @@ tag, and must be structured following these rules:
   \c class attribute giving the class of the parent unit   
 </ul>
 
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <domain>
@@ -239,7 +239,7 @@ tag, and must be structured following these rules:
   Values for the data can be real, integer, string, vector or matrix.
 </ul>
 
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <domain>
@@ -278,7 +278,7 @@ tag, and must be structured following these rules:
   \c value attribute giving the value for this key.
 </ul>  
   
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <domain>
@@ -321,7 +321,7 @@ The datastore content must be defined in a section delimited by the
   attribute is possible for giving the spatial unit class associated to the data. 
 </ul>
 
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <datastore>
@@ -367,7 +367,7 @@ The monitoring must be defined in a section delimited by the
 \note Refer to observers signatures for details about specific parameters for each observer. 
 
 
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <monitoring>
@@ -441,7 +441,7 @@ The run configuration must be defined in a section delimited by the
   through a \c size attribute. If not present, all values are kept in memory.
 </ul>
 
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <run>
@@ -466,7 +466,7 @@ These variables are :
 <li><tt>${dir.temp}</tt> is replaced by the complete path to the directory dedicated to temporary files
 </ul> 
 
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <model>
@@ -486,7 +486,7 @@ These variables are :
 
 \section use_fluidx_exmpl Example of an input dataset as a single FluidX file
 
-\code
+\code{.xml}
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
 

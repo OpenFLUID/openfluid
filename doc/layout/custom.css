@@ -143,7 +143,7 @@ h2 {
 
 
 .memproto, dl.reflist dt {
-  background-color: #F9FAFC;
+  background-color: #eaeef5;
   background-image: none;
   border-bottom: 1px solid;
   border-color: #ccc;  
@@ -205,4 +205,9 @@ div.ah {
   background-color : #666;
   border : none;
   background-image: none;
+}
+
+div.fragment {
+	border : none;
+	background-color: #eee
 }
