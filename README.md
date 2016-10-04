@@ -13,7 +13,7 @@ Further informations are available on the OpenFLUID web site and community site:
 - http://www.openfluid-project.org/
 - http://www.openfluid-project.org/community/
 
-See also COPYING and AUTHORS files included in the sources
+See also LICENSE and AUTHORS files included in the sources
 
 
 ## OpenFLUID sources 
@@ -29,7 +29,7 @@ The OpenFLUID source tree is organized as follow
 
 ### Requirements
 
-OpenFLUID relies on open-source libraries, required to build or use OpenFLUID.
+OpenFLUID is written in C++11. It relies on open-source libraries required to build or use OpenFLUID.
 
 For the OpenFLUID framework libraries:
   - C++ STL
@@ -78,7 +78,7 @@ Commands to be executed from source tree for building and packaging on linux (Ub
     make
     cpack
     
-Detailed informations about building OpenFLUID from sources for Linux and Windows systems 
+Detailed informations about building OpenFLUID from sources for Linux, Windows and macOS systems 
 are available on the community site: 
 http://www.openfluid-project.org/community/index.php/How_to_build_OpenFLUID
 

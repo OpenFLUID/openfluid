@@ -144,10 +144,7 @@ INCLUDE(CPack.in.cmake)
 
 
 # Installation of common files
-INSTALL(FILES "COPYING"
-        "AUTHORS"
-        "README.md"
-        "CHANGELOG"
+INSTALL(FILES "LICENSE" "AUTHORS" "README.md" "CHANGELOG"
         DESTINATION "${OPENFLUID_DOC_INSTALL_PATH}")
 
 
