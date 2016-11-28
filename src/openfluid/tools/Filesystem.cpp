@@ -97,7 +97,8 @@ bool copyDirectoryRecursively(const QString& SrcPath,
 
   QString DestDirPath = DestPath+"/"+QFileInfo(SrcPath).fileName();
 
-  if (QFileInfo(DestDirPath).isDir()) removeDirectoryRecursively(DestDirPath);
+  if (QFileInfo(DestDirPath).isDir())
+    removeDirectoryRecursively(DestDirPath);
 
   QDir().mkpath(DestDirPath);
 

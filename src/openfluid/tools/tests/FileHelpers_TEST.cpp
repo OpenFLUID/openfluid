@@ -70,13 +70,24 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
                                                           "/FileHelpers/dircopycontents/subdir/another_subdir"));
 
+  openfluid::tools::emptyDirectoryRecursively(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileHelpers/dircopycontents");
+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileHelpers/dircopycontents"));
+
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                      "/FileHelpers/dircopycontents/README"));
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                      "/FileHelpers/dircopycontents/README.TOO"));
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                      "/FileHelpers/dircopycontents/subdir/another_subdir/README"));
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                      "/FileHelpers/dircopycontents/subdir2/README.TXT"));
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
+                                                           "/FileHelpers/dircopycontents/subdir/another_subdir"));
+
   BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+
                                                               "/FileHelpers/dircopycontents"));
   BOOST_REQUIRE(!openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileHelpers/dircopycontents"));
 
 }
-
-
-// =====================================================================
-// =====================================================================
 

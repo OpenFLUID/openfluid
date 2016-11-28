@@ -76,6 +76,8 @@ class F
       QDir MainDir(MainDirPath);
       QString AbsoluteSubPath = MainDir.absoluteFilePath(RelativeSubPath);
 
+      openfluid::tools::Filesystem::makeDirectory(AbsoluteSubPath.toStdString());
+
       openfluid::tools::emptyDirectoryRecursively(AbsoluteSubPath.toStdString());
 
       return AbsoluteSubPath;

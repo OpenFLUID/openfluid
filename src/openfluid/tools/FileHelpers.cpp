@@ -146,10 +146,30 @@ std::vector<std::string> findDirectories(const std::string& Path,
 // =====================================================================
 
 
-// TODO to be fixed: should not delete the given path, may not work on win32
 bool emptyDirectoryRecursively(const std::string& Path)
 {
-  return (Filesystem::removeDirectory(Path) && Filesystem::makeDirectory(Path));
+  QDir CurrentDir(QString::fromStdString(Path));
+
+  for (QFileInfo Info : CurrentDir.entryInfoList(QDir::NoDotAndDotDot |
+                                                 QDir::System |
+                                                 QDir::Hidden  |
+                                                 QDir::AllDirs |
+                                                 QDir::Files,
+                                                 QDir::DirsFirst))
+  {
+    if (Info.isDir())
+    {
+      if (!Filesystem::removeDirectory(Info.absoluteFilePath().toStdString()))
+        return false;
+    }
+    else
+    {
+      if (!Filesystem::removeFile(Info.absoluteFilePath().toStdString()))
+        return false;
+    }
+  }
+
+  return true;
 }
 
 

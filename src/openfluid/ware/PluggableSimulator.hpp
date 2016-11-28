@@ -274,7 +274,8 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       Returns the maximum number of threads that can be concurrently run in threaded spatial loops
       @return the number of threads
     */
-    inline int OPENFLUID_GetSimulatorMaxThreads() const { return m_MaxThreads; };
+    inline int OPENFLUID_GetSimulatorMaxThreads() const
+    { return m_MaxThreads; };
 
     /**
       Sets the maximum number of threads that can be concurrently run in threaded spatial loops
