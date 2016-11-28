@@ -38,11 +38,11 @@
  */
 
 
-
 #include "ui_RunConfigurationWidget.h"
 #include "RunConfigurationWidget.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 
 
 RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
@@ -53,6 +53,11 @@ RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluid
   ui->ConstraintComboBox->addItem(tr("None"));
   ui->ConstraintComboBox->addItem(tr("Checked - Simulators scheduling requests are checked to be equal to DeltaT"));
   ui->ConstraintComboBox->addItem(tr("Forced - Simulators scheduling requests are forced to DeltaT"));
+
+  ui->ResetThreadsButton->setText("");
+  ui->ResetThreadsButton->setIcon(QIcon(":/ui/common/icons/refresh.png"));
+  ui->ResetThreadsButton->setIconSize(QSize(16,16));
+
 
   refresh();
 
@@ -67,6 +72,11 @@ RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluid
 
   connect(ui->MemoryGroupBox,SIGNAL(toggled(bool)),this,SLOT(updateMemoryFXDesc(bool)));
   connect(ui->MemoryStepsSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateMemoryStepsFXDesc(int)));
+
+  connect(ui->ClearOutputCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateClearOutput(bool)));
+  connect(ui->ProfilingCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateProfiling(bool)));
+  connect(ui->ThreadsSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateMaxThreads(int)));
+  connect(ui->ResetThreadsButton,SIGNAL(clicked()),this,SLOT(resetThreadsToIdeal()));
 }
 
 
@@ -103,6 +113,22 @@ void RunConfigurationWidget::refresh()
 
   if (ui->MemoryGroupBox->isEnabled())
     ui->MemoryStepsSpinBox->setValue(m_AdvFluidxDesc.runDescriptor().getValuesBufferSize());
+
+
+  ui->ClearOutputCheckBox->setChecked(openfluid::base::RunContextManager::instance()
+                                      ->getProjectConfigValue("builder.runconfig.options","clearoutdir").toBool());
+
+  ui->ProfilingCheckBox->setChecked(openfluid::base::RunContextManager::instance()
+                                      ->getProjectConfigValue("builder.runconfig.options","profiling").toBool());
+
+  int MaxThreads = openfluid::base::RunContextManager::instance()
+                    ->getProjectConfigValue("builder.runconfig.options","maxthreads").toInt();
+
+  if (MaxThreads < 1)
+    resetThreadsToIdeal();
+
+  ui->ThreadsSpinBox->setValue(MaxThreads);
+
 }
 
 
@@ -192,3 +218,47 @@ void RunConfigurationWidget::updateMemoryStepsFXDesc(int Value)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void RunConfigurationWidget::updateClearOutput(bool On)
+{
+  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.runconfig.options","clearoutdir",
+                                                                         QVariant(On));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunConfigurationWidget::updateProfiling(bool On)
+{
+  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.runconfig.options","profiling",
+                                                                         QVariant(On));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunConfigurationWidget::updateMaxThreads(int Num)
+{
+  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.runconfig.options","maxthreads",
+                                                                         QVariant(Num));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunConfigurationWidget::resetThreadsToIdeal()
+{
+  int MaxThreads = openfluid::base::Environment::getIdealThreadCount();
+  updateMaxThreads(MaxThreads);
+
+  ui->ThreadsSpinBox->setValue(MaxThreads);
+}

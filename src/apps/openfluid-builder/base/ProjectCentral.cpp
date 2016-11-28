@@ -202,6 +202,13 @@ void ProjectCentral::setDefaultDescriptors()
 
 void ProjectCentral::run()
 {
+  openfluid::base::RunContextManager* CtxtMan = openfluid::base::RunContextManager::instance();
+
+  CtxtMan->setClearOutputDir(CtxtMan->getProjectConfigValue("builder.runconfig.options","clearoutdir").toBool());
+  CtxtMan->setProfiling(CtxtMan->getProjectConfigValue("builder.runconfig.options","profiling").toBool());
+  CtxtMan->setWaresMaxNumThreads(CtxtMan->getProjectConfigValue("builder.runconfig.options","maxthreads").toInt());
+
+
   openfluid::ui::common::RunSimulationDialog RunDlg(QApplication::activeWindow(),mp_FXDesc);
 
   RunDlg.execute();

@@ -73,6 +73,15 @@ class RunConfigurationWidget : public WorkspaceWidget
 
       void updateMemoryStepsFXDesc(int Value);
 
+      void updateClearOutput(bool On);
+
+      void updateProfiling(bool On);
+
+      void updateMaxThreads(int Num);
+
+      void resetThreadsToIdeal();
+
+
   public slots:
 
     void refresh();

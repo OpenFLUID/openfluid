@@ -119,7 +119,7 @@ void AppActions::createActions()
   m_Actions["ProjectOpen"]->setIcon(QIcon(":/ui/common/icons/file-open.png"));
 
   m_Actions["ProjectReload"] = new QAction(tr("Reload"), this);
-  m_Actions["ProjectReload"]->setIcon(QIcon(":/ui/common/icons/refresh.png"));
+  m_Actions["ProjectReload"]->setIcon(QIcon(":/ui/common/icons/reload.png"));
 
   m_Actions["ProjectSave"] = new QAction(tr("&Save"), this);
   m_Actions["ProjectSave"]->setShortcuts(QKeySequence::Save);
