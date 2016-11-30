@@ -56,21 +56,29 @@ class SimA : openfluid::ware::PluggableSimulator
 {
   public:
 
-    SimA() : openfluid::ware::PluggableSimulator() {};
+    SimA() : openfluid::ware::PluggableSimulator()
+    { };
 
-    ~SimA() {};
+    ~SimA()
+    { };
 
-    void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
+    void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+    { }
 
-    void prepareData() { }
+    void prepareData()
+    { }
 
-    void checkConsistency() { }
+    void checkConsistency()
+    { }
 
-    openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest initializeRun()
+    { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.a" << std::endl; return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest runStep()
+    { std::cout << "sim.a" << std::endl; return DefaultDeltaT(); }
 
-    void finalizeRun() { }
+    void finalizeRun()
+    { }
 
 };
 

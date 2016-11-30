@@ -276,10 +276,13 @@ NewProjectDialog::ImportType NewProjectDialog::getImportType() const
 {
   if (ui->DataGroupBox->isChecked())
   {
-    if (ui->ProjectRadioButton->isChecked()) return IMPORT_PROJECT;
-    else return IMPORT_DIRECTORY;
+    if (ui->ProjectRadioButton->isChecked())
+      return IMPORT_PROJECT;
+    else
+      return IMPORT_DIRECTORY;
   }
-  else return IMPORT_NONE;
+  else
+    return IMPORT_NONE;
 }
 
 
@@ -289,8 +292,11 @@ NewProjectDialog::ImportType NewProjectDialog::getImportType() const
 
 QString NewProjectDialog::getImportSource() const
 {
-  if (getImportType() == IMPORT_PROJECT) return ui->ProjectLabel->text();
-  if (getImportType() == IMPORT_DIRECTORY) return ui->DirectoryLabel->text();
+  if (getImportType() == IMPORT_PROJECT)
+    return ui->ProjectLabel->text();
+  if (getImportType() == IMPORT_DIRECTORY)
+    return ui->DirectoryLabel->text();
+
   return "";
 }
 

@@ -59,7 +59,8 @@ std::string fromIniCompatible(const QVariant& Var)
 {
   if (Var.type() == QVariant::StringList)
     return Var.toStringList().join(", ").toStdString();
-  else return Var.toString().toStdString();
+  else
+    return Var.toString().toStdString();
 }
 
 

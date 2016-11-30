@@ -63,17 +63,22 @@ class EmptySimulator : public openfluid::ware::PluggableSimulator
 {
   public:
 
-  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { };
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+  { };
 
-  void prepareData() { };
+  void prepareData()
+  { };
 
   void checkConsistency() { };
 
-  openfluid::base::SchedulingRequest initializeRun()  { return DefaultDeltaT(); };
+  openfluid::base::SchedulingRequest initializeRun()
+  { return DefaultDeltaT(); };
 
-  openfluid::base::SchedulingRequest runStep() {  return 1; };
+  openfluid::base::SchedulingRequest runStep()
+  {  return 1; };
 
-  void finalizeRun() { };
+  void finalizeRun()
+  { };
 };
 
 

@@ -328,7 +328,8 @@ template <class T>
 Matrix<T>& Matrix<T>::operator=(const Matrix &A)
 {
 
-  if (this == &A) return *this; // in case somebody tries assign array to itself
+  if (this == &A) // in case somebody tries assign array to itself
+    return *this;
 
   clear();
 

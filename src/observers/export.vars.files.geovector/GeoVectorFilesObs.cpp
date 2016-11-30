@@ -624,7 +624,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
     void onPrepared()
     {
-      if (m_Series.empty()) return;
+      if (m_Series.empty())
+        return;
 
       std::vector<GeoVectorSerie>::iterator it;
 
@@ -684,7 +685,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
     void onInitializedRun()
     {
-      if (m_Series.empty()) return;
+      if (m_Series.empty())
+        return;
 
       std::vector<GeoVectorSerie>::iterator it;
 
@@ -700,7 +702,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
     void onStepCompleted()
     {
-      if (m_Series.empty()) return;
+      if (m_Series.empty())
+        return;
 
       std::vector<GeoVectorSerie>::iterator it;
 
@@ -716,7 +719,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
     void onFinalizedRun()
     {
-      if (m_Series.empty()) return;
+      if (m_Series.empty())
+        return;
 
       std::vector<GeoVectorSerie>::iterator it;
 

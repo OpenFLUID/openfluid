@@ -91,8 +91,10 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
     inline  openfluid::core::Value::Type getVariableType() const
     {
-      if (isVectorVariable()) return openfluid::core::Value::VECTOR;
-      else return openfluid::core::Value::DOUBLE;
+      if (isVectorVariable())
+        return openfluid::core::Value::VECTOR;
+      else
+        return openfluid::core::Value::DOUBLE;
     };
 
     inline std::string getGeneratedID() const { return m_GeneratedID; };

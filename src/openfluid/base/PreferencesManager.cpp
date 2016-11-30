@@ -211,8 +211,10 @@ QString PreferencesManager::guessLang()
 {
   QString Locale = QLocale::system().name();
 
-  if (isAvailableLang(Locale)) return Locale;
-  else return "default";
+  if (isAvailableLang(Locale))
+    return Locale;
+  else
+    return "default";
 }
 
 

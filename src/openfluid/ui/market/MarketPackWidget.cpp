@@ -221,7 +221,9 @@ void MarketPackWidget::updateDisplayedInfos()
 
 QString MarketPackWidget::replaceByUnknownIfEmpty(const QString& Str)
 {
-  if (Str.isEmpty()) return tr("<i>unknown</i>");
+  if (Str.isEmpty())
+    return tr("<i>unknown</i>");
+
   return Str;
 }
 
@@ -233,7 +235,9 @@ QString MarketPackWidget::replaceByUnknownIfEmpty(const QString& Str)
 
 QString MarketPackWidget::replaceByNoneIfEmpty(const QString& Str)
 {
-  if (Str.isEmpty()) return tr("<i>none</i>");
+  if (Str.isEmpty())
+    return tr("<i>none</i>");
+
   return Str;
 }
 

@@ -83,7 +83,8 @@ void WFSSourceAddDialog::generateXMLConfigFile(const QString& URL)
 
   QString ConfigFilePath = getXMLConfigFilePath();
 
-  if (!QDir().mkpath(QFileInfo(ConfigFilePath).absolutePath())) return;
+  if (!QDir().mkpath(QFileInfo(ConfigFilePath).absolutePath()))
+    return;
 
   QFile ConfigFile(ConfigFilePath);
   if (!ConfigFile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -167,7 +168,8 @@ bool WFSSourceAddDialog::prepareToImport()
 
   // prepare temp directory for cached layer file
   QString TempCacheDir = m_TempDir+"/import.spatial-graph.ogr-gdal";
-  if (!QDir().mkpath(TempCacheDir)) return false;
+  if (!QDir().mkpath(TempCacheDir))
+    return false;
 
   generateXMLConfigFile(LayerURI);
 

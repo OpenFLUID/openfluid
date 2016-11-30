@@ -233,7 +233,8 @@ class OPENFLUID_API AdvancedWareSetDescriptor
     */
     void moveItem(unsigned int indexFrom, unsigned int indexTo)
     {
-      if (indexFrom == indexTo) return;
+      if (indexFrom == indexTo)
+        return;
 
       std::list<I*>& Items = mp_Descriptor->items();
 

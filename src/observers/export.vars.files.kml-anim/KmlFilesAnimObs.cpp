@@ -90,7 +90,8 @@ class KmlAnimLayerInfo : public KmlLayerInfo<KmlUnitInfo>
 
       for (unsigned int i=0;i<ColorScale.size()-1;i++)
       {
-        if (Val < ColorScale[i].second) return i;
+        if (Val < ColorScale[i].second)
+          return i;
       }
 
       return ColorScale.size()-1;

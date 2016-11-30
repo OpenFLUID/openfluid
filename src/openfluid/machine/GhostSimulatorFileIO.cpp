@@ -361,7 +361,8 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                     Signature.Status = openfluid::ware::BETA;
                   else if (StatusStr == "stable")
                     Signature.Status = openfluid::ware::STABLE;
-                  else return false;
+                  else
+                    return false;
                 }
                 else if (InfoNode.tagName() == "domain")
                   Signature.Domain = InfoNode.text().toStdString();

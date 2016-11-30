@@ -61,7 +61,8 @@ class ValuesBuffer::PrivateImpl
 
     DataContainer_t::iterator findAtIndex(const TimeIndex_t& anIndex)
     {
-      if (m_Data.empty()) return m_Data.end();
+      if (m_Data.empty())
+        return m_Data.end();
 
       if (anIndex < m_Data.front().m_Index || anIndex > m_Data.back().m_Index)
         return m_Data.end();
@@ -98,7 +99,8 @@ class ValuesBuffer::PrivateImpl
 
     DataContainer_t::const_iterator findAtIndex(const TimeIndex_t& anIndex) const
     {
-      if (m_Data.empty()) return m_Data.end();
+      if (m_Data.empty())
+        return m_Data.end();
 
       if (anIndex < m_Data.front().m_Index || anIndex > m_Data.back().m_Index)
         return m_Data.end();
@@ -333,7 +335,8 @@ bool ValuesBuffer::modifyValue(const TimeIndex_t& anIndex, const Value& aValue)
 
 bool ValuesBuffer::modifyCurrentValue(const Value& aValue)
 {
-  if (m_PImpl->m_Data.empty()) return false;
+  if (m_PImpl->m_Data.empty())
+    return false;
 
   PrivateImpl::DataContainer_t::iterator It = m_PImpl->m_Data.end();
   --It;
@@ -349,7 +352,8 @@ bool ValuesBuffer::modifyCurrentValue(const Value& aValue)
 
 bool ValuesBuffer::appendValue(const TimeIndex_t& anIndex, const openfluid::core::Value& aValue)
 {
-  if (!m_PImpl->m_Data.empty() && anIndex <= m_PImpl->m_Data.back().m_Index) return false;
+  if (!m_PImpl->m_Data.empty() && anIndex <= m_PImpl->m_Data.back().m_Index)
+    return false;
 
   m_PImpl->m_Data.push_back(IndexedValue(anIndex,aValue));
 

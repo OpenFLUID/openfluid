@@ -313,7 +313,8 @@ void SimulationDrivenWare::OPENFLUID_RaiseError(const std::string& /*Source*/, c
 
 void SimulationDrivenWare::initializeWare(const WareID_t& ID)
 {
-  if (m_Initialized) return;
+  if (m_Initialized)
+    return;
 
   PluggableWare::initializeWare(ID);
 

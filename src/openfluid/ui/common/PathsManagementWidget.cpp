@@ -110,7 +110,8 @@ void PathsManagementWidget::addPath()
 
 void PathsManagementWidget::removePath()
 {
-  if (!m_AllowEmpty && ui->PathsListWidget->count() < 2) return;
+  if (!m_AllowEmpty && ui->PathsListWidget->count() < 2)
+    return;
 
   if (ui->PathsListWidget->currentRow() >= 0)
   {

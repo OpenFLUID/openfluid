@@ -86,7 +86,8 @@ ExtensionsRegistry::~ExtensionsRegistry()
 
 void ExtensionsRegistry::registerExtensions()
 {
-  if (m_IsRegistered) return;
+  if (m_IsRegistered)
+    return;
 
   std::vector<ExtensionContainer*> ExtVector =
       ExtensionPluginsManager::instance()->getAvailableWaresSignatures().AvailablePlugins;

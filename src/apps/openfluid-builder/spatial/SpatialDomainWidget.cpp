@@ -761,7 +761,8 @@ void SpatialDomainWidget::moveUnitsClassUp(QString ClassName)
 {
   int Position = getClassIndex(ClassName);
 
-  if (Position < 1 ) return;
+  if (Position < 1 )
+    return;
 
   int From = Position;
   int To = Position-1;
@@ -787,11 +788,13 @@ void SpatialDomainWidget::moveUnitsClassDown(QString ClassName)
 {
   int Position = getClassIndex(ClassName);
 
-  if (Position < 0) return;
+  if (Position < 0)
+    return;
 
   QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
 
-  if (Position > Layout->count()-2) return;
+  if (Position > Layout->count()-2)
+    return;
 
   int From = Position;
   int To = Position+1;

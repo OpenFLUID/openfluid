@@ -106,7 +106,8 @@ class OPENFLUID_API PluggableBuilderExtension : public openfluid::ware::Pluggabl
     */
     void initializeWare(const openfluid::ware::WareID_t& ID)
     {
-      if (m_Initialized) return;
+      if (m_Initialized)
+        return;
 
       PluggableWare::initializeWare(ID);
     }

@@ -48,7 +48,8 @@ namespace openfluid { namespace ware {
 bool SimulationInspectorWare::IsUnitIDInPtrList(const openfluid::core::UnitsPtrList_t* UnitsList,
                                                 const openfluid::core::UnitID_t& ID)
 {
-  if (UnitsList == nullptr) return false;
+  if (UnitsList == nullptr)
+    return false;
 
   bool Found = false;
   openfluid::core::UnitsPtrList_t::const_iterator UnitsIt = UnitsList->begin();
@@ -764,7 +765,8 @@ bool SimulationInspectorWare::OPENFLUID_GetUnitsCount(const openfluid::core::Uni
     UnitsCount = mp_SpatialData->spatialUnits(ClassName)->list()->size();
     return true;
   }
-  else return false;
+  else
+    return false;
 }
 
 
@@ -872,7 +874,9 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedTo(openfluid::core::Spati
                                                           const openfluid::core::UnitsClass_t& ClassNameTo,
                                                           const openfluid::core::UnitID_t& IDTo) const
 {
-  if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameTo)) return false;
+  if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameTo))
+    return false;
+
   return IsUnitIDInPtrList(aUnit->toSpatialUnits(ClassNameTo),IDTo);
 }
 
@@ -885,7 +889,9 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedFrom(openfluid::core::Spa
                                                             const openfluid::core::UnitsClass_t& ClassNameFrom,
                                                             const openfluid::core::UnitID_t& IDFrom) const
 {
-  if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameFrom)) return false;
+  if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameFrom))
+    return false;
+
   return IsUnitIDInPtrList(aUnit->fromSpatialUnits(ClassNameFrom),IDFrom);
 }
 
@@ -898,7 +904,9 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitChildOf(openfluid::core::SpatialUn
                                                       const openfluid::core::UnitsClass_t& ClassNameParent,
                                                       const openfluid::core::UnitID_t& IDParent) const
 {
-  if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameParent)) return false;
+  if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameParent))
+    return false;
+
   return IsUnitIDInPtrList(aUnit->parentSpatialUnits(ClassNameParent),IDParent);
 }
 
@@ -911,7 +919,9 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitParentOf(openfluid::core::SpatialU
                                                        const openfluid::core::UnitsClass_t& ClassNameChild,
                                                        const openfluid::core::UnitID_t& IDChild) const
 {
-  if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameChild)) return false;
+  if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameChild))
+    return false;
+
   return IsUnitIDInPtrList(aUnit->childSpatialUnits(ClassNameChild),IDChild);
 }
 

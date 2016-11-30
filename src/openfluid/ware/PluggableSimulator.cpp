@@ -76,7 +76,8 @@ PluggableSimulator::~PluggableSimulator()
 
 void PluggableSimulator::initializeWare(const WareID_t& ID,const unsigned int& MaxThreads)
 {
-  if (m_Initialized) return;
+  if (m_Initialized)
+    return;
 
   SimulationContributorWare::initializeWare(ID);
 

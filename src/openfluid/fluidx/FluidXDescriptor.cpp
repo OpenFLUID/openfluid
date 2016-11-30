@@ -89,7 +89,8 @@ bool FluidXDescriptor::extractWareEnabledFromNode(QDomElement& Node)
   {
     if (xmlEnabled == "1" || xmlEnabled == "true")
       return true;
-    else return false;
+    else
+      return false;
   }
   return true;
 }

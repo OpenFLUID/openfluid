@@ -147,7 +147,8 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
   std::string LowCaseA = QString::fromStdString(VersionA).toLower().toStdString();
   std::string LowCaseB = QString::fromStdString(VersionB).toLower().toStdString();
 
-  if (LowCaseA == LowCaseB) return 0;
+  if (LowCaseA == LowCaseB)
+    return 0;
 
   std::vector<std::string> SplittedA, SplittedB;
 
@@ -170,32 +171,45 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
       convertString(SplittedB[0],&MajorB) && convertString(SplittedB[1],&MinorB) &&
       convertString(SplittedB[2],&PatchB))
   {
-    if (MajorA > MajorB) return 1;
-    if (MajorA < MajorB) return -1;
+    if (MajorA > MajorB)
+      return 1;
+    if (MajorA < MajorB)
+      return -1;
     if (MajorA == MajorB)
     {
-      if (MinorA > MinorB) return 1;
-      if (MinorA < MinorB) return -1;
+      if (MinorA > MinorB)
+        return 1;
+      if (MinorA < MinorB)
+        return -1;
       if (MinorA == MinorB)
       {
-        if (PatchA > PatchB) return 1;
-        if (PatchA < PatchB) return -1;
+        if (PatchA > PatchB)
+          return 1;
+        if (PatchA < PatchB)
+          return -1;
         if (PatchA == PatchB)
         {
-          if (!Strict) return 0;
+          if (!Strict)
+            return 0;
           else
           {
 
-            if (StatusA.empty() && StatusB.empty()) return 0;
+            if (StatusA.empty() && StatusB.empty())
+              return 0;
 
-            if (StatusA == StatusB) return 0;
+            if (StatusA == StatusB)
+              return 0;
 
-            if (StatusA.empty() && !StatusB.empty()) return 1;
-            if (!StatusA.empty() && StatusB.empty()) return -1;
+            if (StatusA.empty() && !StatusB.empty())
+              return 1;
+            if (!StatusA.empty() && StatusB.empty())
+              return -1;
 
 
-            if (StatusA > StatusB) return 1;
-            if (StatusA < StatusB) return -1;
+            if (StatusA > StatusB)
+              return 1;
+            if (StatusA < StatusB)
+              return -1;
           }
         }
       }

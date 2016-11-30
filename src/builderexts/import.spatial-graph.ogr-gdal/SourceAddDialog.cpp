@@ -238,9 +238,10 @@ bool SourceAddDialog::checkRequiredFields()
   int FIndex = Defn->GetFieldIndex(OGRGDAL_UNITID_FIELD);
   if (FIndex >=0 && (Defn->GetFieldDefn(FIndex)->GetType() == OFTInteger ||
                      Defn->GetFieldDefn(FIndex)->GetType() == OFTReal ||
-                     Defn->GetFieldDefn(FIndex)->GetType() == OFTString)) return true;
+                     Defn->GetFieldDefn(FIndex)->GetType() == OFTString))
+    return true;
 
-    return false;
+  return false;
 }
 
 

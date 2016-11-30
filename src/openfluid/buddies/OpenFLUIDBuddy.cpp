@@ -83,8 +83,10 @@ void OpenFLUIDBuddy::setOptionIfNotSet(std::string OptionName, std::string Optio
 
 std::string OpenFLUIDBuddy::getYesNoFromOneZero(std::string VStr)
 {
-  if (VStr == "1") return "yes";
-  else return "no";
+  if (VStr == "1")
+    return "yes";
+  else
+    return "no";
 }
 
 

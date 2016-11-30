@@ -108,7 +108,8 @@ bool DateTime::set(int Year, int Month, int Day, int Hour, int Minute, int Secon
 
     return true;
   }
-  else return false;
+  else
+    return false;
 }
 
 

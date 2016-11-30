@@ -153,7 +153,8 @@ class OPENFLUID_API ModelInstance
 
     inline openfluid::core::Duration_t getNextTimePointIndex() const
     {
-      if (m_TimePointList.empty()) return -2;
+      if (m_TimePointList.empty())
+        return -2;
       return m_TimePointList.front().getTimeIndex();
     }
 

@@ -204,7 +204,8 @@ unsigned int AddGeneratorDialog::getVariableSize() const
 {
   if (ui->DoubleRadioButton->isChecked())
     return 1;
-  else return ui->VectorSpinBox->value();
+  else
+    return ui->VectorSpinBox->value();
 }
 
 

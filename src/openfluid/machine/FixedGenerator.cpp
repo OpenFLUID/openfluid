@@ -97,8 +97,10 @@ openfluid::base::SchedulingRequest FixedGenerator::initializeRun()
 
   }
 
-  if (m_DeltaT > 0) return Duration(m_DeltaT);
-  else return DefaultDeltaT();
+  if (m_DeltaT > 0)
+    return Duration(m_DeltaT);
+  else
+    return DefaultDeltaT();
 }
 
 // =====================================================================
@@ -124,8 +126,10 @@ openfluid::base::SchedulingRequest FixedGenerator::runStep()
     }
   }
 
-  if (m_DeltaT > 0) return Duration(m_DeltaT);
-  else return DefaultDeltaT();
+  if (m_DeltaT > 0)
+    return Duration(m_DeltaT);
+  else
+    return DefaultDeltaT();
 }
 
 

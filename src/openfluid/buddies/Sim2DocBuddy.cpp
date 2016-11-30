@@ -742,7 +742,8 @@ bool Sim2DocBuddy::isErrorInPDFLatexLog()
   std::ifstream LogFile(LogFilePath.c_str());
 
   // check if file exists and if it is "openable"
-  if (!LogFile) return true;
+  if (!LogFile)
+    return true;
 
   std::string LogFileContent = "";
   std::string StrLine = "";

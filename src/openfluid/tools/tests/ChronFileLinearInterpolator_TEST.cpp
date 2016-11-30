@@ -56,10 +56,14 @@
 
 #include <tests-config.hpp>
 
+
 // =====================================================================
 // =====================================================================
 
-bool validateException(const openfluid::base::FrameworkException& /*E*/) { return true; }
+
+bool validateException(const openfluid::base::FrameworkException& /*E*/)
+{ return true; }
+
 
 // =====================================================================
 // =====================================================================

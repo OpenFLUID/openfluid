@@ -114,8 +114,10 @@ openfluid::base::SchedulingRequest RandomGenerator::initializeRun()
       OPENFLUID_InitializeVariable(LU,m_VarName,openfluid::core::DoubleValue(0.0));
   }
 
-  if (m_DeltaT > 0) return Duration(m_DeltaT);
-  else return DefaultDeltaT();
+  if (m_DeltaT > 0)
+    return Duration(m_DeltaT);
+  else
+    return DefaultDeltaT();
 }
 
 
@@ -142,8 +144,10 @@ openfluid::base::SchedulingRequest RandomGenerator::runStep()
 
   }
 
-  if (m_DeltaT > 0) return Duration(m_DeltaT);
-  else return DefaultDeltaT();
+  if (m_DeltaT > 0)
+    return Duration(m_DeltaT);
+  else
+    return DefaultDeltaT();
 }
 
 

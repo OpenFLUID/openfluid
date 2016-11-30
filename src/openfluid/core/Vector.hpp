@@ -384,7 +384,8 @@ T& Vector<T>::operator[](unsigned long Index)
 template <class T>
 Vector<T>& Vector<T>::operator=(const Vector &A)
 {
-  if (this == &A) return *this; // in case somebody tries assign array to itself
+  if (this == &A) // in case somebody tries assign array to itself
+    return *this;
 
   clear();
 

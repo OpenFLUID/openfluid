@@ -95,12 +95,16 @@ bool OGRGDALHelpers::convertFieldToAttribute(const OGRFeature* Feature,
                                              const int FieldIndex,
                                              QString& Attr)
 {
-  if (Feature == nullptr) return false;
-  if (FieldIndex < 0) return false;
+  if (Feature == nullptr)
+    return false;
+
+  if (FieldIndex < 0)
+    return false;
 
   const OGRFieldDefn* FieldDef = const_cast<OGRFeature*>(Feature)->GetFieldDefnRef(FieldIndex);
 
-  if (FieldDef == nullptr) return false;
+  if (FieldDef == nullptr)
+    return false;
 
   const OGRFieldType FieldType = const_cast<OGRFieldDefn*>(FieldDef)->GetType();
 
@@ -141,7 +145,8 @@ bool OGRGDALHelpers::convertConnectionsStringToList(const QString& ConnStr,
     {
       QStringList ClassIDPair = UnitsList[i].split("#",QString::SkipEmptyParts);
 
-      if (ClassIDPair.size() != 2) return false;
+      if (ClassIDPair.size() != 2)
+        return false;
 
       ClassIDPair[0] = ClassIDPair[0].trimmed();
       ClassIDPair[1] = ClassIDPair[1].trimmed();
@@ -149,7 +154,8 @@ bool OGRGDALHelpers::convertConnectionsStringToList(const QString& ConnStr,
       bool OK = false;
       int ID = ClassIDPair[1].toInt(&OK);
 
-      if (!OK) return false;
+      if (!OK)
+        return false;
 
       ConnList.append(SourceConnection(ClassIDPair[0],ID));
     }

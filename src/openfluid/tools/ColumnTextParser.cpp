@@ -124,7 +124,8 @@ bool ColumnTextParser::checkContents()
   unsigned int LineColCount;
   unsigned int LineCount = m_Contents.size();
 
-  if (LineCount == 0) return true;
+  if (LineCount == 0)
+    return true;
 
   // checks that all lines have the same size
   // i.e. same columns number
@@ -302,7 +303,8 @@ bool ColumnTextParser::getStringValue(unsigned int Line, unsigned int Column,
 {
   std::string StrValue = getValue(Line,Column);
 
-  if (StrValue.length() == 0) return false;
+  if (StrValue.length() == 0)
+    return false;
 
   *Value = StrValue;
 

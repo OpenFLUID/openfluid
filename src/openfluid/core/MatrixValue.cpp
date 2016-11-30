@@ -45,7 +45,8 @@ namespace openfluid { namespace core {
 
 Value& MatrixValue::operator=(const Value& Other)
 {
-  if (this == &Other) return *this;
+  if (this == &Other)
+    return *this;
 
   const MatrixValue* CastedValue = dynamic_cast<const MatrixValue*> (&Other);
 

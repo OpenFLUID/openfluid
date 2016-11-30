@@ -67,7 +67,8 @@ MapValue::MapValue(const MapValue& Val)
 
 Value& MapValue::operator=(const Value& Other)
 {
-  if (this == &Other) return *this;
+  if (this == &Other)
+    return *this;
 
   const MapValue* CastedValue = dynamic_cast<const MapValue*> (&Other);
 
