@@ -75,6 +75,14 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
 
+    void notifyConfigureLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void notifyConfigureFinished(openfluid::ware::WareType Type, const QString& ID);
+
+    void notifyBuildLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void notifyBuildFinished(openfluid::ware::WareType Type, const QString& ID);
+
 
   private:
 
@@ -126,6 +134,14 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void modifiedStatusChanged(bool CurrentEditorModified, bool WareModified);
 
     void openAPIDocRequested();
+
+    void configureLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void configureFinished(openfluid::ware::WareType Type, const QString& ID);
+
+    void buildLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void buildFinished(openfluid::ware::WareType Type, const QString& ID);
 
 
   public slots:

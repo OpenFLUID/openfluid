@@ -110,6 +110,19 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
 
   connect(&m_Container, SIGNAL(processFinished()), this, SLOT(onProcessFinished()));
 
+  connect(&m_Container, SIGNAL(configureProcessLaunched(openfluid::ware::WareType, const QString&)),
+          this, SLOT(notifyConfigureLaunched(openfluid::ware::WareType, const QString&)));
+
+  connect(&m_Container, SIGNAL(configureProcessFinished(openfluid::ware::WareType, const QString&)),
+          this, SLOT(notifyConfigureFinished(openfluid::ware::WareType, const QString&)));
+
+  connect(&m_Container, SIGNAL(buildProcessLaunched(openfluid::ware::WareType, const QString&)),
+          this, SLOT(notifyBuildLaunched(openfluid::ware::WareType, const QString&)));
+
+  connect(&m_Container, SIGNAL(buildProcessFinished(openfluid::ware::WareType, const QString&)),
+          this, SLOT(notifyBuildFinished(openfluid::ware::WareType, const QString&)));
+
+
   m_Container.setConfigMode(Config);
   m_Container.setBuildMode(Build);
 
@@ -778,6 +791,46 @@ void WareSrcWidget::updateEditorsSettings()
 {
   for (WareFileEditor* Editor : m_WareFilesByPath.values())
     Editor->updateSettings();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::notifyConfigureLaunched(openfluid::ware::WareType Type, const QString& ID)
+{
+  emit configureLaunched(Type,ID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::notifyConfigureFinished(openfluid::ware::WareType Type, const QString& ID)
+{
+  emit configureFinished(Type,ID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::notifyBuildLaunched(openfluid::ware::WareType Type, const QString& ID)
+{
+  emit buildLaunched(Type,ID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::notifyBuildFinished(openfluid::ware::WareType Type, const QString& ID)
+{
+  emit buildFinished(Type,ID);
 }
 
 

@@ -158,6 +158,7 @@ void ProjectModule::updateWaresWatchersPaths()
 {
   QStringList Paths;
 
+
   // simulators
 
   if (!mp_SimulatorsPlugsWatcher->directories().isEmpty())
@@ -176,6 +177,7 @@ void ProjectModule::updateWaresWatchersPaths()
         mp_SimulatorsPlugsWatcher->addPath(P);
     }
   }
+
 
   // observers
 
@@ -270,6 +272,16 @@ AbstractMainWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
   mp_MainWidget->addWorkspaceTab(mp_MonitoringTab,tr("Monitoring"));
   mp_MainWidget->addWorkspaceTab(mp_RunConfigTab,tr("Simulation configuration"));
   mp_MainWidget->addWorkspaceTab(mp_OutputsTab,tr("Outputs browser"));
+
+
+  // signal-slots connection for wares builds management
+
+  connect(mp_MainWidget, SIGNAL(buildLaunched(openfluid::ware::WareType, const QString&)),
+          this, SLOT(onBuildLaunched(openfluid::ware::WareType, const QString&)));
+
+  connect(mp_MainWidget, SIGNAL(buildFinished(openfluid::ware::WareType, const QString&)),
+          this, SLOT(onBuildFinished(openfluid::ware::WareType, const QString&)));
+
 
   return mp_MainWidget;
 }
@@ -502,9 +514,26 @@ void ProjectModule::whenRunAsked()
   if (openfluid::base::PreferencesManager::instance()->isBuilderAutomaticSaveBeforeRun())
     whenSaveAsked();
 
+
   emit simulationStarted();
 
+
+  // pausing plugs watchers
+
+  QStringList SimPlugsPaths = mp_SimulatorsPlugsWatcher->directories();
+  mp_SimulatorsPlugsWatcher->removePaths(SimPlugsPaths);
+
+  QStringList ObsPlugsPaths = mp_ObserversPlugsWatcher->directories();
+  mp_ObserversPlugsWatcher->removePaths(ObsPlugsPaths);
+
+
   mp_ProjectCentral->run();
+
+
+  // resuming plugs watchers
+
+  mp_SimulatorsPlugsWatcher->addPaths(SimPlugsPaths);
+  mp_ObserversPlugsWatcher->addPaths(ObsPlugsPaths);
 
   // following two lines are added in conjunction with removal of equivalent lines in ProjectCentral::run()
   updateSimulatorsWares();
@@ -927,6 +956,8 @@ void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableMod
 
 void ProjectModule::updateSimulatorsWares()
 {
+  emit runEnabled(false);
+
   mp_ModelTab->prepareWaresUpdate();
   openfluid::machine::SimulatorSignatureRegistry::instance()->update();
   mp_ModelTab->updateWares();
@@ -941,6 +972,8 @@ void ProjectModule::updateSimulatorsWares()
 
 void ProjectModule::updateObserversWares()
 {
+  emit runEnabled(false);
+
   mp_MonitoringTab->prepareWaresUpdate();
   openfluid::machine::ObserverSignatureRegistry::instance()->update();
   mp_MonitoringTab->updateWares();
@@ -978,4 +1011,31 @@ void ProjectModule::doCheck()
   mp_ProjectCentral->check();
   mp_DashboardFrame->refresh();
   emit runEnabled(mp_ProjectCentral->checkInfos()->isOKForSimulation());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::onBuildLaunched(openfluid::ware::WareType /*Type*/, const QString& /*ID*/)
+{
+  emit runEnabled(false);
+  m_ActiveBuilds++;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::onBuildFinished(openfluid::ware::WareType /*Type*/, const QString& /*ID*/)
+{
+  m_ActiveBuilds--;
+
+  if (!m_ActiveBuilds)
+  {
+    updateSimulatorsWares();
+    updateObserversWares();
+  }
 }

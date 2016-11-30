@@ -57,11 +57,11 @@ namespace openfluid { namespace waresdev {
 
 
 WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware::WareType Type,
-                                   const QString& WareName) : QObject(),
-    m_AbsolutePath(AbsolutePath), m_Type(Type), m_Name(WareName),
+                                   const QString& WareID) : QObject(),
+    m_AbsolutePath(AbsolutePath), m_Type(Type), m_ID(WareID),
     m_AbsoluteCMakeConfigPath(""), m_AbsoluteMainCppPath(""), m_AbsoluteUiParamCppPath(""),
     m_AbsoluteCMakeListsPath(""), m_AbsoluteJsonPath(""),
-    mp_Stream(new openfluid::waresdev::OStreamMsgStream()), mp_Process(new QProcess()),
+    mp_Stream(new openfluid::waresdev::OStreamMsgStream()), mp_Process(new WareSrcProcess()),
     mp_CurrentParser(new openfluid::waresdev::WareSrcMsgParserGcc())
 {
   update();
@@ -84,7 +84,7 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware:
 
 WareSrcContainer::~WareSrcContainer()
 {
-  if (mp_Process->state() != QProcess::NotRunning)
+  if (mp_Process->state() != WareSrcProcess::NotRunning)
     mp_Process->close();
 
   delete mp_Process;
@@ -264,9 +264,9 @@ openfluid::ware::WareType WareSrcContainer::getType() const
 // =====================================================================
 
 
-QString WareSrcContainer::getName() const
+QString WareSrcContainer::getID() const
 {
-  return m_Name;
+  return m_ID;
 }
 
 
@@ -417,7 +417,7 @@ void WareSrcContainer::configure()
   QString Command = openfluid::utils::CMakeProxy::getConfigureCommand(m_BuildDirPath,m_AbsolutePath,
                                                                       Vars, Generator, {ExtraOptions});
 
-  runCommand(Command, RunEnv);
+  runCommand(Command, RunEnv, WareSrcProcess::Type::CONFIGURE);
 }
 
 
@@ -480,7 +480,7 @@ void WareSrcContainer::build()
 
   QString Command = openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target);
 
-  runCommand(Command, RunEnv);
+  runCommand(Command, RunEnv, WareSrcProcess::Type::BUILD);
 }
 
 
@@ -490,7 +490,7 @@ void WareSrcContainer::build()
 
 void WareSrcContainer::processStandardOutput()
 {
-  mp_Process->setReadChannel(QProcess::StandardOutput);
+  mp_Process->setReadChannel(WareSrcProcess::StandardOutput);
 
   while (mp_Process->canReadLine())
   {
@@ -514,7 +514,7 @@ void WareSrcContainer::processStandardOutput()
 
 void WareSrcContainer::processErrorOutput()
 {
-  mp_Process->setReadChannel(QProcess::StandardError);
+  mp_Process->setReadChannel(WareSrcProcess::StandardError);
 
   while (mp_Process->canReadLine())
   {
@@ -550,7 +550,15 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
     mp_Stream->write(Message);
   }
 
+
   emit processFinished();
+
+  if (mp_Process->getType() == WareSrcProcess::Type::CONFIGURE)
+    emit configureProcessFinished(m_Type,m_ID);
+  else if (mp_Process->getType() == WareSrcProcess::Type::BUILD)
+    emit buildProcessFinished(m_Type,m_ID);
+
+  mp_Process->setType(WareSrcProcess::Type::NONE);
 }
 
 
@@ -558,10 +566,21 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
 // =====================================================================
 
 
-void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironment& Env)
+void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironment& Env, WareSrcProcess::Type CmdType)
 {
-  if (mp_Process->state() != QProcess::NotRunning)
+  if (mp_Process->state() != WareSrcProcess::NotRunning)
     mp_Process->close();
+
+
+  mp_Process->setType(CmdType);
+
+  emit processLaunched();
+
+  if (CmdType == WareSrcProcess::Type::CONFIGURE)
+    emit configureProcessLaunched(m_Type,m_ID);
+  else if (CmdType == WareSrcProcess::Type::BUILD)
+    emit buildProcessLaunched(m_Type,m_ID);
+
 
   if (openfluid::base::PreferencesManager::instance()->isWaresdevShowCommandEnv("PATH"))
   {

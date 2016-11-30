@@ -428,7 +428,7 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   addPage(new CppPage(QDir(mref_Container.getAbsolutePath()), this)); // index 3
 
   mp_Factory = new openfluid::waresdev::WareSrcFactory(Type);
-  mp_Factory->setWareId(Container.getName());
+  mp_Factory->setWareId(Container.getID());
 
   connect(ui->buttonGroup, SIGNAL(buttonClicked(int)), this, SLOT(onFileTypeButtonClicked(int)));
 }

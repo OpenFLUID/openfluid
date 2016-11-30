@@ -44,10 +44,10 @@
 
 #include <QString>
 #include <QObject>
-#include <QProcess>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/waresdev/WareSrcMsgStream.hpp>
+#include <openfluid/waresdev/WareSrcProcess.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -86,7 +86,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     openfluid::ware::WareType m_Type;
 
-    QString m_Name;
+    QString m_ID;
 
     /**
      * Absolute path of the CMake config file if it exists, otherwise an empty string
@@ -123,7 +123,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QString m_BuildDirPath;
 
-    QProcess* mp_Process;
+    WareSrcProcess* mp_Process;
 
     QString m_OFVersion;
 
@@ -136,17 +136,28 @@ class OPENFLUID_API WareSrcContainer: public QObject
     */
     void findCMake();
 
-    void runCommand(const QString& Command, const QProcessEnvironment& Env);
+    void runCommand(const QString& Command, const QProcessEnvironment& Env,
+                    WareSrcProcess::Type CmdType = WareSrcProcess::Type::NONE);
 
 
   signals:
 
+    void processLaunched();
+
     void processFinished();
+
+    void configureProcessLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void configureProcessFinished(openfluid::ware::WareType Type, const QString& ID);
+
+    void buildProcessLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void buildProcessFinished(openfluid::ware::WareType Type, const QString& ID);
 
 
   public:
 
-    WareSrcContainer(const QString& AbsolutePath, openfluid::ware::WareType Type, const QString& WareName);
+    WareSrcContainer(const QString& AbsolutePath, openfluid::ware::WareType Type, const QString& WareID);
 
     ~WareSrcContainer();
 
@@ -171,7 +182,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     openfluid::ware::WareType getType() const;
 
-    QString getName() const;
+    QString getID() const;
 
     QString getTypeSubDir() const;
 

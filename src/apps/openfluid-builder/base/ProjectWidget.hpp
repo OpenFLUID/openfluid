@@ -82,6 +82,18 @@ class ProjectWidget : public AbstractMainWidget
 {
   Q_OBJECT;
 
+
+  private slots:
+
+    void notifyConfigureLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void notifyConfigureFinished(openfluid::ware::WareType Type, const QString& ID);
+
+    void notifyBuildLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void notifyBuildFinished(openfluid::ware::WareType Type, const QString& ID);
+
+
   private:
 
     Ui::ProjectWidget* ui;
@@ -89,6 +101,22 @@ class ProjectWidget : public AbstractMainWidget
     WorkspaceTabWidget* mp_WorkspaceTabWidget;
 
     openfluid::ui::waresdev::WareSrcWidgetCollection* mp_WareSrcCollection;
+
+
+  signals:
+
+    void configureLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void configureFinished(openfluid::ware::WareType Type, const QString& ID);
+
+    void buildLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void buildFinished(openfluid::ware::WareType Type, const QString& ID);
+
+
+  public slots :
+
+    void updateWareSrcEditorsSettings();
 
 
   public:
@@ -113,9 +141,6 @@ class ProjectWidget : public AbstractMainWidget
 
     void newObserver();
 
-  public slots :
-
-    void updateWareSrcEditorsSettings();
 };
 
 

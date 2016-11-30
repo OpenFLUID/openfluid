@@ -86,6 +86,14 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void checkModifiedStatus();
 
+    void notifyConfigureLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void notifyConfigureFinished(openfluid::ware::WareType Type, const QString& ID);
+
+    void notifyBuildLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void notifyBuildFinished(openfluid::ware::WareType Type, const QString& ID);
+
 
   private:
 
@@ -123,6 +131,14 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void currentTabChanged(const QString& Path);
 
     void modifiedStatusChanged(bool CurrentEditorModified, bool CurrentWareModified);
+
+    void configureLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void configureFinished(openfluid::ware::WareType Type, const QString& ID);
+
+    void buildLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void buildFinished(openfluid::ware::WareType Type, const QString& ID);
 
 
   public slots:

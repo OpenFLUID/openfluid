@@ -113,6 +113,8 @@ class ProjectModule : public AbstractModule
 
     QTimer* mp_InputDirUpdateTimer;
 
+    unsigned int m_ActiveBuilds = 0;
+
     void updateWaresWatchersPaths();
 
     void doCheck();
@@ -153,6 +155,10 @@ class ProjectModule : public AbstractModule
     void updateObserversWares();
 
     void checkInputDir();
+
+    void onBuildLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void onBuildFinished(openfluid::ware::WareType Type, const QString& ID);
 
 
   public slots:

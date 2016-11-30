@@ -116,6 +116,18 @@ ProjectWidget::ProjectWidget(QWidget* Parent):
   layout()->addWidget(mp_WorkspaceTabWidget);
 
   mp_WareSrcCollection = new openfluid::ui::waresdev::WareSrcWidgetCollection(mp_WorkspaceTabWidget, true);
+
+  connect(mp_WareSrcCollection, SIGNAL(configureLaunched(openfluid::ware::WareType, const QString&)),
+          this, SLOT(notifyConfigureLaunched(openfluid::ware::WareType, const QString&)));
+
+  connect(mp_WareSrcCollection, SIGNAL(configureFinished(openfluid::ware::WareType, const QString&)),
+          this, SLOT(notifyConfigureFinished(openfluid::ware::WareType, const QString&)));
+
+  connect(mp_WareSrcCollection, SIGNAL(buildLaunched(openfluid::ware::WareType, const QString&)),
+          this, SLOT(notifyBuildLaunched(openfluid::ware::WareType, const QString&)));
+
+  connect(mp_WareSrcCollection, SIGNAL(buildFinished(openfluid::ware::WareType, const QString&)),
+          this, SLOT(notifyBuildFinished(openfluid::ware::WareType, const QString&)));
 }
 
 
@@ -219,3 +231,41 @@ void ProjectWidget::updateWareSrcEditorsSettings()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void ProjectWidget::notifyConfigureLaunched(openfluid::ware::WareType Type, const QString& ID)
+{
+  emit configureLaunched(Type,ID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectWidget::notifyConfigureFinished(openfluid::ware::WareType Type, const QString& ID)
+{
+  emit configureFinished(Type,ID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectWidget::notifyBuildLaunched(openfluid::ware::WareType Type, const QString& ID)
+{
+  emit buildLaunched(Type,ID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectWidget::notifyBuildFinished(openfluid::ware::WareType Type, const QString& ID)
+{
+  emit buildFinished(Type,ID);
+}
