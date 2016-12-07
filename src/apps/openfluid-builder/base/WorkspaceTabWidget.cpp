@@ -31,86 +31,64 @@
 
 
 /**
-  @file HomeWidget.hpp
+  @file WorkspaceTabWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_HOMEWIDGET_HPP__
-#define __OPENFLUID_BUILDERAPP_HOMEWIDGET_HPP__
+#include <QVariant>
+#include <QTabBar>
 
-#include <QWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QVBoxLayout>
+#include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 
-#include <openfluid/ui/common/ClickableLabel.hpp>
-
-#include "AbstractMainWidget.hpp"
+#include "WorkspaceTabWidget.hpp"
+#include "ExtensionsRegistry.hpp"
 
 
-class AppActions;
-
-
-// =====================================================================
-// =====================================================================
-
-
-class RecentProjectLabel : public openfluid::ui::common::ClickableLabel
+WorkspaceTabWidget::WorkspaceTabWidget(QWidget* Parent):
+  QTabWidget(Parent)
 {
-  Q_OBJECT;
-
-  protected:
-
-    void enterEvent(QEvent* Event);
-
-    void leaveEvent(QEvent* Event);
-
-  public:
-
-    RecentProjectLabel(const QString& Text, QWidget* Parent = nullptr);
-
-    virtual ~RecentProjectLabel()
-    { }
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-namespace Ui
-{
-  class HomeWidget;
+  setTabsClosable(true);
+  connect(this,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));
 }
 
 
-class HomeWidget : public AbstractMainWidget
+// =====================================================================
+// =====================================================================
+
+
+void WorkspaceTabWidget::closeTab(int Index)
 {
-  Q_OBJECT;
+  if(qobject_cast<openfluid::ui::waresdev::WareSrcWidget*>(widget(Index)))
+    return;
 
-  private:
+  ExtensionsRegistry::instance()->releaseFeatureExtension(widget(Index)->property("ID").toString().toStdString());
 
-    Ui::HomeWidget* ui;
-
-    QVBoxLayout* mp_RecentsLayout;
-
-    QLabel* mp_RecentProjectsLabel;
-
-    const AppActions* mp_Actions;
-
-    QPushButton* createButton(const QAction* Action, const QString& Text);
-
-  public:
-
-    HomeWidget(QWidget* Parent, const AppActions* Actions);
-
-    ~HomeWidget();
-
-    void refreshRecentProjects();
-};
+  widget(Index)->deleteLater();
+  removeTab(Index);
+}
 
 
-#endif /* __OPENFLUID_BUILDERAPP_HOMEWIDGET_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+void WorkspaceTabWidget::addWorkspaceTab(QWidget* Tab, const QString& Label, bool Closable)
+{
+  int Pos = addTab(Tab,Label);
+
+  if (!Closable)
+  {
+    if (tabBar()->tabButton(Pos, QTabBar::RightSide) != nullptr)
+    {
+      tabBar()->tabButton(Pos, QTabBar::RightSide)->resize(0,0);
+      tabBar()->tabButton(Pos, QTabBar::RightSide)->setVisible(false);
+    }
+    if (tabBar()->tabButton(Pos, QTabBar::LeftSide) != nullptr)
+    {
+      tabBar()->tabButton(Pos, QTabBar::LeftSide)->resize(0,0);
+      tabBar()->tabButton(Pos, QTabBar::LeftSide)->setVisible(false);
+    }
+  }
+}

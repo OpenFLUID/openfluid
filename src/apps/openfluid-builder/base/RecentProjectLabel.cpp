@@ -30,26 +30,20 @@
 */
 
 
-
 /**
-  @file ClickableLabel.cpp
+  @file RecentProjectLabel.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#include "ClickableLabel.hpp"
-
-#include <QMouseEvent>
+#include "RecentProjectLabel.hpp"
 
 
-namespace openfluid { namespace ui { namespace common {
-
-
-ClickableLabel::ClickableLabel(QWidget* Parent) :
-  QLabel(Parent)
+void RecentProjectLabel::enterEvent(QEvent* /*Event*/)
 {
-
+  // TODO check why underline does not work on QLabel
+  setStyleSheet("QLabel {text-decoration : underline;} QToolTip { text-decoration : none; padding: 5px; }");
 }
 
 
@@ -57,10 +51,9 @@ ClickableLabel::ClickableLabel(QWidget* Parent) :
 // =====================================================================
 
 
-ClickableLabel::ClickableLabel(const QString& Text, QWidget* Parent) :
-  QLabel(Text,Parent)
+void RecentProjectLabel::leaveEvent(QEvent* /*Event*/)
 {
-
+  setStyleSheet("QLabel {text-decoration : none;} QToolTip { text-decoration : none; padding: 5px; }");
 }
 
 
@@ -68,25 +61,9 @@ ClickableLabel::ClickableLabel(const QString& Text, QWidget* Parent) :
 // =====================================================================
 
 
-void ClickableLabel::mouseReleaseEvent(QMouseEvent* /*Event*/)
+RecentProjectLabel::RecentProjectLabel(const QString& Text, QWidget* Parent):
+  ClickableLabel(Text,Parent)
 {
-  emit clicked();
 
-  //QLabel::mouseReleaseEvent(Event);
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ClickableLabel::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
-{
-  emit clicked();
-
-  //QLabel::mouseDoubleClickEvent(Event);
-}
-
-
-} } } // namespaces
 

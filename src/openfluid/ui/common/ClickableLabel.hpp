@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_UICOMMON_CLICKABLELABEL_HPP__
 #define __OPENFLUID_UICOMMON_CLICKABLELABEL_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <QLabel>
 

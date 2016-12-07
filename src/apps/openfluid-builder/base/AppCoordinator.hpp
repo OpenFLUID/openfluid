@@ -40,18 +40,22 @@
 #ifndef __OPENFLUID_BUILDERAPP_APPCOORDINATOR_HPP__
 #define __OPENFLUID_BUILDERAPP_APPCOORDINATOR_HPP__
 
+
 #include <QObject>
 #include <QDockWidget>
 
 #include "NewProjectDialog.hpp"
 
+
 class MainWindow;
 class AppActions;
-class AbstractModule;
+class AbstractModuleWidget;
+
 
 class AppCoordinator : public QObject
 {
   Q_OBJECT
+
 
   private:
 
@@ -61,11 +65,11 @@ class AppCoordinator : public QObject
 
     QDockWidget* mp_DockWidget;
 
-    AbstractModule* mp_CurrentModule;
+    AbstractModuleWidget* mp_CurrentModule;
 
     void unsetCurrentModule();
 
-    void setCurrentModule(AbstractModule* Module);
+    void setCurrentModule(AbstractModuleWidget* Module);
 
     bool setProjectModule(const QString& ProjectPath);
 

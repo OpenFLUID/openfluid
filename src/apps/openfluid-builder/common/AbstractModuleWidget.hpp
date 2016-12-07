@@ -29,48 +29,39 @@
   
 */
 
-
 /**
-  @file AbstractModule.hpp
+  @file AbstractModuleWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_ABSTRACTMODULE_HPP__
-#define __OPENFLUID_BUILDERAPP_ABSTRACTMODULE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ABSTRACTMODULEWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_ABSTRACTMODULEWIDGET_HPP__
 
 
-#include <QString>
-
-#include "AbstractMainWidget.hpp"
+#include <QWidget>
 
 #include <openfluid/ware/PluggableWare.hpp>
 
 
-class AbstractModule : public QObject
+class AbstractModuleWidget : public QWidget
 {
   Q_OBJECT;
 
+
   public slots:
 
-    virtual void whenSrcEditAsked(const QString&,openfluid::ware::WareType WType,
-                                  bool Ghost) = 0;
+    virtual void whenSrcEditAsked(const QString&,openfluid::ware::WareType WType,bool Ghost) = 0;
 
 
   public:
 
-    AbstractModule()
-    {
+    AbstractModuleWidget(QWidget* Parent = nullptr) : QWidget(Parent)
+    {  }
 
-    }
-
-    virtual ~AbstractModule()
-    {
-
-    }
-
-    virtual AbstractMainWidget* mainWidgetRebuilt(QWidget* Parent) = 0;
+    virtual ~AbstractModuleWidget()
+    {  }
 
     virtual QWidget* dockWidgetRebuilt(QWidget* Parent) = 0;
 
@@ -119,8 +110,7 @@ class AbstractModule : public QObject
 
     virtual void whenLaunchDevStudioAsked() = 0;
 
-
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_ABSTRACTMODULE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ABSTRACTMODULEWIDGET_HPP__ */

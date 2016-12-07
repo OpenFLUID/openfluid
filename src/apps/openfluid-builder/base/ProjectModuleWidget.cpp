@@ -30,16 +30,14 @@
 */
 
 
-
 /**
-  @file ProjectModule.cpp
+  @file ProjectModuleWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
-#include <QApplication>
+
 #include <QMessageBox>
-#include <QMainWindow>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
@@ -60,9 +58,9 @@
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
+#include "ProjectModuleWidget.hpp"
 #include "AppTools.hpp"
 #include "ProjectCentral.hpp"
-#include "ProjectModule.hpp"
 #include "SaveAsDialog.hpp"
 #include "EditProjectPropertiesDialog.hpp"
 
@@ -71,7 +69,7 @@
 
 #include "DashboardFrame.hpp"
 
-#include "ProjectWidget.hpp"
+#include "ProjectModuleWidget.hpp"
 #include "ModelWidget.hpp"
 #include "SpatialDomainWidget.hpp"
 #include "MonitoringWidget.hpp"
@@ -88,11 +86,25 @@
 // =====================================================================
 
 
-ProjectModule::ProjectModule(const QString& ProjectPath):
-  AbstractModule(),
-  mp_MainWidget(nullptr), mp_DashboardFrame(nullptr),
+ProjectModuleWidget::ProjectModuleWidget(const QString& ProjectPath, QWidget* Parent):
+  AbstractModuleWidget(Parent),
+  ui(new Ui::ProjectModuleWidget), mp_WorkspaceTabWidget(nullptr), mp_DashboardFrame(nullptr),
   m_ProjectPath(ProjectPath), mp_ProjectCentral(nullptr)
 {
+  ui->setupUi(this);
+
+  mp_WorkspaceTabWidget = new WorkspaceTabWidget(this);
+  layout()->addWidget(mp_WorkspaceTabWidget);
+
+  mp_WareSrcCollection = new openfluid::ui::waresdev::WareSrcWidgetCollection(mp_WorkspaceTabWidget, true);
+
+  connect(mp_WareSrcCollection, SIGNAL(buildLaunched(openfluid::ware::WareType, const QString&)),
+          this, SLOT(onBuildLaunched(openfluid::ware::WareType, const QString&)));
+
+  connect(mp_WareSrcCollection, SIGNAL(buildFinished(openfluid::ware::WareType, const QString&)),
+          this, SLOT(onBuildFinished(openfluid::ware::WareType, const QString&)));
+
+
   mp_ProjectCentral = ProjectCentral::initInstance(ProjectPath);
 
 
@@ -132,6 +144,43 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
   connect(mp_InputDirUpdateTimer,SIGNAL(timeout()),SLOT(checkInputDir()));
 
   resetInputDirWatcher();
+
+
+  mp_ModelTab = new ModelWidget(this,mp_ProjectCentral->advancedDescriptors());
+  connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
+  connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::WareType,bool)),
+          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::WareType,bool)));
+  connect(mp_ModelTab,SIGNAL(srcGenerateAsked(const QString&)),this,SLOT(whenSrcGenerateAsked(const QString&)));
+
+  mp_SpatialTab = new SpatialDomainWidget(this,mp_ProjectCentral->advancedDescriptors());
+  connect(mp_SpatialTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
+
+  mp_DatastoreTab = new DatastoreWidget(this,mp_ProjectCentral->advancedDescriptors());
+  connect(mp_DatastoreTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
+
+  mp_MonitoringTab = new MonitoringWidget(this,mp_ProjectCentral->advancedDescriptors());
+  connect(mp_MonitoringTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
+  connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::WareType,bool)),
+          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::WareType,bool)));
+
+  mp_RunConfigTab = new RunConfigurationWidget(this,mp_ProjectCentral->advancedDescriptors());
+  connect(mp_RunConfigTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
+
+  mp_OutputsTab = new OutputsWidget(this,mp_ProjectCentral->advancedDescriptors());
+
+
+  addWorkspaceTab(mp_ModelTab,tr("Model"));
+  addWorkspaceTab(mp_SpatialTab,tr("Spatial domain"));
+  addWorkspaceTab(mp_DatastoreTab,tr("Datastore"));
+  addWorkspaceTab(mp_MonitoringTab,tr("Monitoring"));
+  addWorkspaceTab(mp_RunConfigTab,tr("Simulation configuration"));
+  addWorkspaceTab(mp_OutputsTab,tr("Outputs browser"));
+
 }
 
 
@@ -139,7 +188,7 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
 // =====================================================================
 
 
-ProjectModule::~ProjectModule()
+ProjectModuleWidget::~ProjectModuleWidget()
 {
   ExtensionsRegistry::instance()->releaseAllFeatureExtensions();
 
@@ -147,6 +196,8 @@ ProjectModule::~ProjectModule()
   mp_SimulatorsPlugsWatcher->deleteLater();
   mp_ObserversPlugsWatcher->deleteLater();
   mp_InputDirWatcher->deleteLater();
+
+  delete ui;
 }
 
 
@@ -154,7 +205,7 @@ ProjectModule::~ProjectModule()
 // =====================================================================
 
 
-void ProjectModule::updateWaresWatchersPaths()
+void ProjectModuleWidget::updateWaresWatchersPaths()
 {
   QStringList Paths;
 
@@ -207,7 +258,7 @@ void ProjectModule::updateWaresWatchersPaths()
 // =====================================================================
 
 
-void ProjectModule::disableInputDirWatcher()
+void ProjectModuleWidget::disableInputDirWatcher()
 {
   mp_InputDirWatcher->removePaths(mp_InputDirWatcher->directories());
 }
@@ -217,7 +268,7 @@ void ProjectModule::disableInputDirWatcher()
 // =====================================================================
 
 
-void ProjectModule::resetInputDirWatcher()
+void ProjectModuleWidget::resetInputDirWatcher()
 {
   mp_InputDirWatcher->addPath(m_ProjectPath+"/IN");
 }
@@ -227,71 +278,7 @@ void ProjectModule::resetInputDirWatcher()
 // =====================================================================
 
 
-AbstractMainWidget* ProjectModule::mainWidgetRebuilt(QWidget* Parent)
-{
-  if (mp_MainWidget != nullptr)
-  {
-    delete mp_MainWidget;
-    mp_MainWidget = nullptr;
-  }
-
-  mp_MainWidget = new ProjectWidget(Parent);
-
-
-  mp_ModelTab = new ModelWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
-  connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
-          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
-  connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::WareType,bool)),
-          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::WareType,bool)));
-  connect(mp_ModelTab,SIGNAL(srcGenerateAsked(const QString&)),this,SLOT(whenSrcGenerateAsked(const QString&)));
-
-  mp_SpatialTab = new SpatialDomainWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
-  connect(mp_SpatialTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
-          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
-
-  mp_DatastoreTab = new DatastoreWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
-  connect(mp_DatastoreTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
-          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
-
-  mp_MonitoringTab = new MonitoringWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
-  connect(mp_MonitoringTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
-          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
-  connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::WareType,bool)),
-          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::WareType,bool)));
-
-  mp_RunConfigTab = new RunConfigurationWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
-  connect(mp_RunConfigTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
-          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
-
-  mp_OutputsTab = new OutputsWidget(nullptr,mp_ProjectCentral->advancedDescriptors());
-
-
-  mp_MainWidget->addWorkspaceTab(mp_ModelTab,tr("Model"));
-  mp_MainWidget->addWorkspaceTab(mp_SpatialTab,tr("Spatial domain"));
-  mp_MainWidget->addWorkspaceTab(mp_DatastoreTab,tr("Datastore"));
-  mp_MainWidget->addWorkspaceTab(mp_MonitoringTab,tr("Monitoring"));
-  mp_MainWidget->addWorkspaceTab(mp_RunConfigTab,tr("Simulation configuration"));
-  mp_MainWidget->addWorkspaceTab(mp_OutputsTab,tr("Outputs browser"));
-
-
-  // signal-slots connection for wares builds management
-
-  connect(mp_MainWidget, SIGNAL(buildLaunched(openfluid::ware::WareType, const QString&)),
-          this, SLOT(onBuildLaunched(openfluid::ware::WareType, const QString&)));
-
-  connect(mp_MainWidget, SIGNAL(buildFinished(openfluid::ware::WareType, const QString&)),
-          this, SLOT(onBuildFinished(openfluid::ware::WareType, const QString&)));
-
-
-  return mp_MainWidget;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QWidget* ProjectModule::dockWidgetRebuilt(QWidget* Parent)
+QWidget* ProjectModuleWidget::dockWidgetRebuilt(QWidget* Parent)
 {
   if (mp_DashboardFrame != nullptr)
   {
@@ -309,7 +296,7 @@ QWidget* ProjectModule::dockWidgetRebuilt(QWidget* Parent)
 // =====================================================================
 
 
-bool ProjectModule::whenQuitAsked()
+bool ProjectModuleWidget::whenQuitAsked()
 {
   return true;
 }
@@ -319,7 +306,7 @@ bool ProjectModule::whenQuitAsked()
 // =====================================================================
 
 
-bool ProjectModule::whenNewAsked()
+bool ProjectModuleWidget::whenNewAsked()
 {
   return true;
 }
@@ -328,7 +315,7 @@ bool ProjectModule::whenNewAsked()
 // =====================================================================
 
 
-bool ProjectModule::whenOpenAsked()
+bool ProjectModuleWidget::whenOpenAsked()
 {
   return true;
 }
@@ -338,7 +325,7 @@ bool ProjectModule::whenOpenAsked()
 // =====================================================================
 
 
-bool ProjectModule::whenReloadAsked()
+bool ProjectModuleWidget::whenReloadAsked()
 {
   if (QMessageBox::question(QApplication::activeWindow(),tr("Reload project"),
                               tr("Reloading project from disk will overwrite all unsaved modifications if any.")+
@@ -359,7 +346,7 @@ bool ProjectModule::whenReloadAsked()
 // =====================================================================
 
 
-void ProjectModule::whenSaveAsked()
+void ProjectModuleWidget::whenSaveAsked()
 {
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
   disableInputDirWatcher();
@@ -376,7 +363,7 @@ void ProjectModule::whenSaveAsked()
 // =====================================================================
 
 
-bool ProjectModule::whenSaveAsAsked()
+bool ProjectModuleWidget::whenSaveAsAsked()
 {
   SaveAsDialog SaveAsDlg(QApplication::activeWindow());
 
@@ -403,7 +390,7 @@ bool ProjectModule::whenSaveAsAsked()
 // =====================================================================
 
 
-void ProjectModule::whenPropertiesAsked()
+void ProjectModuleWidget::whenPropertiesAsked()
 {
   EditProjectPropertiesDialog EditDlg(QApplication::activeWindow());
 
@@ -421,7 +408,7 @@ void ProjectModule::whenPropertiesAsked()
 // =====================================================================
 
 
-bool ProjectModule::whenCloseAsked()
+bool ProjectModuleWidget::whenCloseAsked()
 {
   return true;
 }
@@ -431,14 +418,14 @@ bool ProjectModule::whenCloseAsked()
 // =====================================================================
 
 
-bool ProjectModule::whenPreferencesAsked()
+bool ProjectModuleWidget::whenPreferencesAsked()
 {
   bool WaresWatchingUpdated = false;
 
   openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),
                                                     openfluid::ui::common::PreferencesDialog::MODE_BUILDER);
 
-  connect(&PrefsDlg, SIGNAL(applyTextEditorSettingsAsked()), mp_MainWidget, SLOT(updateWareSrcEditorsSettings()));
+  connect(&PrefsDlg, SIGNAL(applyTextEditorSettingsAsked()), this, SLOT(updateWareSrcEditorsSettings()));
 
   PrefsDlg.exec();
 
@@ -489,7 +476,7 @@ bool ProjectModule::whenPreferencesAsked()
   emit refreshWaresEnabled(!PrefsMgr->isBuilderWaresWatchersActive());
 
   if(PrefsDlg.isTextEditorSettingsChanged())
-    mp_MainWidget->updateWareSrcEditorsSettings();
+    updateWareSrcEditorsSettings();
 
   return PrefsDlg.isRestartRequired();
 }
@@ -499,7 +486,7 @@ bool ProjectModule::whenPreferencesAsked()
 // =====================================================================
 
 
-void ProjectModule::whenRecentProjectsActionsChanged()
+void ProjectModuleWidget::whenRecentProjectsActionsChanged()
 {
 
 }
@@ -509,7 +496,7 @@ void ProjectModule::whenRecentProjectsActionsChanged()
 // =====================================================================
 
 
-void ProjectModule::whenRunAsked()
+void ProjectModuleWidget::whenRunAsked()
 {
   if (openfluid::base::PreferencesManager::instance()->isBuilderAutomaticSaveBeforeRun())
     whenSaveAsked();
@@ -547,7 +534,7 @@ void ProjectModule::whenRunAsked()
 // =====================================================================
 
 
-void ProjectModule::whenExtensionAsked(const QString& ID)
+void ProjectModuleWidget::whenExtensionAsked(const QString& ID)
 {
   // TODO provide simulators and observers registries to extensions?
   // for model and monitoring handling for example
@@ -645,7 +632,7 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
           TabText = QString::fromStdString(openfluid::tools::replaceEmptyString(TabText.toStdString(),WareID));
 
           ExtWork->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
-          mp_MainWidget->addWorkspaceExtensionTab(ExtWork,TabText);
+          this->addWorkspaceExtensionTab(ExtWork,TabText);
         }
         else
         {
@@ -685,7 +672,7 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
 // =====================================================================
 
 
-void ProjectModule::whenMarketAsked()
+void ProjectModuleWidget::whenMarketAsked()
 {
 
 }
@@ -695,7 +682,7 @@ void ProjectModule::whenMarketAsked()
 // =====================================================================
 
 
-void ProjectModule::whenWaresRefreshAsked()
+void ProjectModuleWidget::whenWaresRefreshAsked()
 {
   updateSimulatorsWares();
   updateObserversWares();
@@ -706,7 +693,7 @@ void ProjectModule::whenWaresRefreshAsked()
 // =====================================================================
 
 
-bool ProjectModule::whenOpenExampleAsked()
+bool ProjectModuleWidget::whenOpenExampleAsked()
 {
   return true;
 }
@@ -716,7 +703,7 @@ bool ProjectModule::whenOpenExampleAsked()
 // =====================================================================
 
 
-bool ProjectModule::findGhostSignature(const QString& ID,
+bool ProjectModuleWidget::findGhostSignature(const QString& ID,
                                        openfluid::ware::SimulatorSignature& Signature, std::string& FileFullPath)
 {
   std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
@@ -745,7 +732,7 @@ bool ProjectModule::findGhostSignature(const QString& ID,
 // =====================================================================
 
 
-void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::WareType WType,bool Ghost)
+void ProjectModuleWidget::whenSrcEditAsked(const QString& ID,openfluid::ware::WareType WType,bool Ghost)
 {
   if (Ghost)
   {
@@ -754,7 +741,7 @@ void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::WareType
 
     if (findGhostSignature(ID,Signature,FileFullPath))
     {
-      openfluid::ui::common::EditSignatureDialog Dlg(mp_MainWidget);
+      openfluid::ui::common::EditSignatureDialog Dlg(this);
       Dlg.initialize(Signature);
       if (Dlg.exec() == QDialog::Accepted)
       {
@@ -779,7 +766,7 @@ void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::WareType
     QString Path = openfluid::waresdev::WareSrcManager::instance()->getWarePath(ID,WType,ErrMsg);
 
     if(!Path.isEmpty())
-      mp_MainWidget->addWorkspaceWareSrcTab(Path);
+      addWorkspaceWareSrcTab(Path);
     else
       QMessageBox::critical(QApplication::activeWindow(),
                             tr("Source code edition error"),
@@ -793,13 +780,13 @@ void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::WareType
 // =====================================================================
 
 
-void ProjectModule::whenSrcGenerateAsked(const QString& ID)
+void ProjectModuleWidget::whenSrcGenerateAsked(const QString& ID)
 {
   openfluid::ware::SimulatorSignature Signature;
   std::string FileFullPath;
 
   if (findGhostSignature(ID,Signature,FileFullPath))
-    mp_MainWidget->newSimulatorFromGhost(Signature);
+    mp_WareSrcCollection->newSimulatorFromGhost(Signature);
   else
     QMessageBox::critical(QApplication::activeWindow(),
                           tr("Source code generation error"),
@@ -813,9 +800,9 @@ void ProjectModule::whenSrcGenerateAsked(const QString& ID)
 // =====================================================================
 
 
-void ProjectModule::whenNewSimulatorSrcAsked()
+void ProjectModuleWidget::whenNewSimulatorSrcAsked()
 {
-  mp_MainWidget->newSimulator();
+  mp_WareSrcCollection->newSimulator();
 }
 
 
@@ -823,14 +810,14 @@ void ProjectModule::whenNewSimulatorSrcAsked()
 // =====================================================================
 
 
-void ProjectModule::whenNewGhostSimulatorAsked()
+void ProjectModuleWidget::whenNewGhostSimulatorAsked()
 {
   QStringList ExistingIDs;
 
   for (auto Sign : openfluid::machine::SimulatorPluginsManager::instance()->getAvailableGhostsSignatures())
     ExistingIDs.append(QString::fromStdString(Sign->Signature->ID));
 
-  openfluid::ui::common::EditSignatureDialog Dlg(mp_MainWidget);
+  openfluid::ui::common::EditSignatureDialog Dlg(this);
   Dlg.initialize(openfluid::ware::SimulatorSignature(),ExistingIDs);
 
   if (Dlg.exec() == QDialog::Accepted)
@@ -848,9 +835,9 @@ void ProjectModule::whenNewGhostSimulatorAsked()
 // =====================================================================
 
 
-void ProjectModule::whenOpenSimulatorSrcAsked()
+void ProjectModuleWidget::whenOpenSimulatorSrcAsked()
 {
-  mp_MainWidget->openSimulatorSrc();
+  mp_WareSrcCollection->openSimulator();
 }
 
 
@@ -858,9 +845,9 @@ void ProjectModule::whenOpenSimulatorSrcAsked()
 // =====================================================================
 
 
-void ProjectModule::whenNewObserverSrcAsked()
+void ProjectModuleWidget::whenNewObserverSrcAsked()
 {
-  mp_MainWidget->newObserver();
+  mp_WareSrcCollection->newObserver();
 }
 
 
@@ -868,9 +855,9 @@ void ProjectModule::whenNewObserverSrcAsked()
 // =====================================================================
 
 
-void ProjectModule::whenOpenObserverSrcAsked()
+void ProjectModuleWidget::whenOpenObserverSrcAsked()
 {
-  mp_MainWidget->openObserverSrc();
+  mp_WareSrcCollection->openObserver();
 }
 
 
@@ -878,7 +865,7 @@ void ProjectModule::whenOpenObserverSrcAsked()
 // =====================================================================
 
 
-void ProjectModule::whenLaunchDevStudioAsked()
+void ProjectModuleWidget::whenLaunchDevStudioAsked()
 {
   launchDevStudio();
 }
@@ -888,7 +875,7 @@ void ProjectModule::whenLaunchDevStudioAsked()
 // =====================================================================
 
 
-void ProjectModule::dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
+void ProjectModuleWidget::dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
   if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL))
   {
@@ -913,7 +900,7 @@ void ProjectModule::dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Fl
 // =====================================================================
 
 
-void ProjectModule::dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
+void ProjectModuleWidget::dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
 
   if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS) ||
@@ -937,7 +924,7 @@ void ProjectModule::dispatchChangesFromExtension(openfluid::builderext::FluidXUp
 // =====================================================================
 
 
-void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender)
+void ProjectModuleWidget::releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender)
 {
   if (Sender == nullptr)
     Sender = (openfluid::builderext::PluggableModelessExtension*)(QObject::sender());
@@ -954,7 +941,7 @@ void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableMod
 // =====================================================================
 
 
-void ProjectModule::updateSimulatorsWares()
+void ProjectModuleWidget::updateSimulatorsWares()
 {
   emit runEnabled(false);
 
@@ -970,7 +957,7 @@ void ProjectModule::updateSimulatorsWares()
 // =====================================================================
 
 
-void ProjectModule::updateObserversWares()
+void ProjectModuleWidget::updateObserversWares()
 {
   emit runEnabled(false);
 
@@ -986,7 +973,7 @@ void ProjectModule::updateObserversWares()
 // =====================================================================
 
 
-void ProjectModule::checkInputDir()
+void ProjectModuleWidget::checkInputDir()
 {
   doCheck();
 }
@@ -996,7 +983,7 @@ void ProjectModule::checkInputDir()
 // =====================================================================
 
 
-bool ProjectModule::isOkForSimulation() const
+bool ProjectModuleWidget::isOkForSimulation() const
 {
   return mp_ProjectCentral->checkInfos()->isOKForSimulation();
 }
@@ -1006,7 +993,7 @@ bool ProjectModule::isOkForSimulation() const
 // =====================================================================
 
 
-void ProjectModule::doCheck()
+void ProjectModuleWidget::doCheck()
 {
   mp_ProjectCentral->check();
   mp_DashboardFrame->refresh();
@@ -1018,7 +1005,7 @@ void ProjectModule::doCheck()
 // =====================================================================
 
 
-void ProjectModule::onBuildLaunched(openfluid::ware::WareType /*Type*/, const QString& /*ID*/)
+void ProjectModuleWidget::onBuildLaunched(openfluid::ware::WareType /*Type*/, const QString& /*ID*/)
 {
   emit runEnabled(false);
   m_ActiveBuilds++;
@@ -1029,7 +1016,7 @@ void ProjectModule::onBuildLaunched(openfluid::ware::WareType /*Type*/, const QS
 // =====================================================================
 
 
-void ProjectModule::onBuildFinished(openfluid::ware::WareType /*Type*/, const QString& /*ID*/)
+void ProjectModuleWidget::onBuildFinished(openfluid::ware::WareType /*Type*/, const QString& /*ID*/)
 {
   m_ActiveBuilds--;
 
@@ -1039,3 +1026,44 @@ void ProjectModule::onBuildFinished(openfluid::ware::WareType /*Type*/, const QS
     updateObserversWares();
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModuleWidget::addWorkspaceTab(QWidget* Tab, const QString& Label)
+{
+  mp_WorkspaceTabWidget->addWorkspaceTab(Tab,Label);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModuleWidget::addWorkspaceExtensionTab(QWidget* Tab, const QString& Label)
+{
+  mp_WorkspaceTabWidget->addWorkspaceTab(Tab,Label,true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModuleWidget::addWorkspaceWareSrcTab(const QString& Path)
+{
+  mp_WareSrcCollection->openPath(Path);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModuleWidget::updateWareSrcEditorsSettings()
+{
+  mp_WareSrcCollection->updateEditorsSettings();
+}
+

@@ -29,30 +29,48 @@
   
 */
 
-
 /**
-  @file HomeModule.hpp
+  @file HomeModuleWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_HOMEMODULE_HPP__
-#define __OPENFLUID_BUILDERAPP_HOMEMODULE_HPP__
-
-#include "AbstractModule.hpp"
-#include "HomeWidget.hpp"
+#ifndef __OPENFLUID__BUILDERAPP_HOMEMODULEWIDGET_HPP__
+#define __OPENFLUID__BUILDERAPP_HOMEMODULEWIDGET_HPP__
 
 
-class HomeModule : public AbstractModule
+#include <QLabel>
+#include <QPushButton>
+#include <QVBoxLayout>
+
+#include "AbstractModuleWidget.hpp"
+
+
+class AppActions;
+
+namespace Ui
+{
+  class HomeModuleWidget;
+}
+
+
+class HomeModuleWidget : public AbstractModuleWidget
 {
   Q_OBJECT;
 
+
   private:
 
-     HomeWidget* mp_Widget;
+     Ui::HomeModuleWidget* ui;
 
      const AppActions* mp_Actions;
+
+     QVBoxLayout* mp_RecentsLayout;
+
+     QLabel* mp_RecentProjectsLabel;
+
+     QPushButton* createButton(const QAction* Action, const QString& Text);
 
 
   public slots:
@@ -62,11 +80,9 @@ class HomeModule : public AbstractModule
 
   public:
 
-    HomeModule(const AppActions* Actions);
+    HomeModuleWidget(const AppActions* Actions, QWidget* Parent = nullptr);
 
-    ~HomeModule();
-
-    AbstractMainWidget* mainWidgetRebuilt(QWidget* Parent);
+    ~HomeModuleWidget();
 
     QWidget* dockWidgetRebuilt(QWidget* /*Parent*/)
     { return nullptr; }
@@ -113,7 +129,10 @@ class HomeModule : public AbstractModule
 
     void whenLaunchDevStudioAsked();
 
+    void refreshRecentProjects();
+
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_HOMEMODULE_HPP__ */
+
+#endif /* __OPENFLUID__BUILDERAPP_HOMEMODULEWIDGET_HPP__ */

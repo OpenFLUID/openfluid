@@ -37,6 +37,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #include <QCloseEvent>
 #include <QLayout>
 #include <QApplication>
@@ -76,7 +77,7 @@ MainWindow::~MainWindow()
 // =====================================================================
 
 
-void MainWindow::setWidget(AbstractMainWidget* Widget)
+void MainWindow::setWidget(AbstractModuleWidget* Widget)
 {
   mp_CentralWidget = Widget;
   setCentralWidget(mp_CentralWidget);

@@ -30,35 +30,38 @@
 */
 
 /**
-  @file AbstractMainWidget.hpp
+  @file RecentProjectLabel.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-
-#ifndef __OPENFLUID_BUILDERAPP_ABSTRACTMAINWIDGET_HPP__
-#define __OPENFLUID_BUILDERAPP_ABSTRACTMAINWIDGET_HPP__
-
-
-#include <QWidget>
+#ifndef __OPENFLUID_BUILDERAPP_RECENTPROJECTLABEL_HPP__
+#define __OPENFLUID_BUILDERAPP_RECENTPROJECTLABEL_HPP__
 
 
-class AbstractMainWidget : public QWidget
+#include <openfluid/ui/common/ClickableLabel.hpp>
+
+
+class RecentProjectLabel : public openfluid::ui::common::ClickableLabel
 {
   Q_OBJECT;
 
+  protected:
+
+    void enterEvent(QEvent* Event);
+
+    void leaveEvent(QEvent* Event);
+
   public:
 
-    AbstractMainWidget(QWidget* Parent = nullptr) : QWidget(Parent)
-    {
+    RecentProjectLabel(const QString& Text, QWidget* Parent = nullptr);
 
-    }
-
-    virtual ~AbstractMainWidget()
-    {  }
+    virtual ~RecentProjectLabel()
+    { }
 
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_ABSTRACTMAINWIDGET_HPP__ */
+
+#endif /* __OPENFLUID_BUILDERAPP_RECENTPROJECTLABEL_HPP__ */

@@ -40,10 +40,11 @@
 #ifndef __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
 #define __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
 
+
 #include <QMainWindow>
 #include <QAction>
 
-#include "AbstractMainWidget.hpp"
+#include "AbstractModuleWidget.hpp"
 
 
 class MainWindow : public QMainWindow
@@ -54,7 +55,7 @@ class MainWindow : public QMainWindow
 
     QAction* mp_QuitAction;
 
-    AbstractMainWidget* mp_CentralWidget;
+    AbstractModuleWidget* mp_CentralWidget;
 
 
   public:
@@ -63,7 +64,7 @@ class MainWindow : public QMainWindow
 
     ~MainWindow();
 
-    void setWidget(AbstractMainWidget* Widget);
+    void setWidget(AbstractModuleWidget* Widget);
 
     void unsetWidget()
     { setWidget(nullptr); }
@@ -72,7 +73,8 @@ class MainWindow : public QMainWindow
 
     void closeEvent(QCloseEvent* Event);
 
-    void setQuitAction(QAction* Action) { mp_QuitAction = Action; }
+    void setQuitAction(QAction* Action)
+    { mp_QuitAction = Action; }
 
     void setProjectName(const QString& PrjName = "");
 

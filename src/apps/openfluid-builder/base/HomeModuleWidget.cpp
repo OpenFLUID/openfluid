@@ -30,65 +30,30 @@
 */
 
 
-
 /**
-  @file HomeWidget.cpp
+  @file HomeModuleWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
-#include <QLabel>
-#include <QFrame>
+
 #include <QDir>
 
-#include "ui_HomeWidget.h"
-#include "HomeWidget.hpp"
+#include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/ui/market/MarketClientAssistant.hpp>
+#include <openfluid/ui/common/PreferencesDialog.hpp>
+
+#include "ui_HomeModuleWidget.h"
+#include "HomeModuleWidget.hpp"
+#include "RecentProjectLabel.hpp"
 #include "AppActions.hpp"
 #include "AppTools.hpp"
-
-#include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/config.hpp>
+#include "ExtensionPluginsManager.hpp"
 
 
-
-// =====================================================================
-// =====================================================================
-
-
-void RecentProjectLabel::enterEvent(QEvent* /*Event*/)
-{
-  // TODO check why underline does not work on QLabel
-  setStyleSheet("QLabel {text-decoration : underline;} QToolTip { text-decoration : none; padding: 5px; }");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void RecentProjectLabel::leaveEvent(QEvent* /*Event*/)
-{
-  setStyleSheet("QLabel {text-decoration : none;} QToolTip { text-decoration : none; padding: 5px; }");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-RecentProjectLabel::RecentProjectLabel(const QString& Text, QWidget* Parent):
-  ClickableLabel(Text,Parent)
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
-  AbstractMainWidget(Parent), ui(new Ui::HomeWidget), mp_Actions(Actions)
+HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
+  AbstractModuleWidget(Parent),ui(new Ui::HomeModuleWidget), mp_Actions(Actions)
 {
   ui->setupUi(this);
 
@@ -199,7 +164,7 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
 // =====================================================================
 
 
-HomeWidget::~HomeWidget()
+HomeModuleWidget::~HomeModuleWidget()
 {
   delete ui;
 }
@@ -209,7 +174,236 @@ HomeWidget::~HomeWidget()
 // =====================================================================
 
 
-QPushButton* HomeWidget::createButton(const QAction* Action, const QString& Text)
+bool HomeModuleWidget::whenQuitAsked()
+{
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool HomeModuleWidget::whenNewAsked()
+{
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool HomeModuleWidget::whenOpenAsked()
+{
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool HomeModuleWidget::whenReloadAsked()
+{
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenSaveAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool HomeModuleWidget::whenSaveAsAsked()
+{
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenPropertiesAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool HomeModuleWidget::whenCloseAsked()
+{
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool HomeModuleWidget::whenPreferencesAsked()
+{
+  openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),
+                                                    openfluid::ui::common::PreferencesDialog::MODE_BUILDER);
+
+  PrefsDlg.exec();
+
+  return PrefsDlg.isRestartRequired();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenRecentProjectsActionsChanged()
+{
+  refreshRecentProjects();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenRunAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenExtensionAsked(const QString& /*ID*/)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenMarketAsked()
+{
+#if defined(ENABLE_MARKET_INTEGRATION)
+  openfluid::ui::market::MarketClientAssistant MarketAssistant(QApplication::activeWindow());
+  MarketAssistant.exec();
+#endif
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenWaresRefreshAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool HomeModuleWidget::whenOpenExampleAsked()
+{
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenNewSimulatorSrcAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenNewGhostSimulatorAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenOpenSimulatorSrcAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenNewObserverSrcAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenOpenObserverSrcAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenLaunchDevStudioAsked()
+{
+  launchDevStudio();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModuleWidget::whenSrcEditAsked(const QString& /*ID*/,openfluid::ware::WareType /*WType*/,
+                                        bool /*Ghost*/)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QPushButton* HomeModuleWidget::createButton(const QAction* Action, const QString& Text)
 {
   QPushButton* Button = new QPushButton(Text,ui->ButtonsFrame);
   Button->setMinimumHeight(65);
@@ -226,7 +420,7 @@ QPushButton* HomeWidget::createButton(const QAction* Action, const QString& Text
 // =====================================================================
 
 
-void HomeWidget::refreshRecentProjects()
+void HomeModuleWidget::refreshRecentProjects()
 {
   std::vector<QAction*> RecentActions = mp_Actions->recentProjectActions();
 
@@ -266,3 +460,4 @@ void HomeWidget::refreshRecentProjects()
     }
   }
 }
+

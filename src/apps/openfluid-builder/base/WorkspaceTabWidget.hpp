@@ -29,64 +29,37 @@
   
 */
 
-
-
 /**
-  @file ClickableLabel.cpp
+  @file WorkspaceTabWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#include "ClickableLabel.hpp"
-
-#include <QMouseEvent>
-
-
-namespace openfluid { namespace ui { namespace common {
+#ifndef __OPENFLUID_BUILDERAPP_WORKSPACETABWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_WORKSPACETABWIDGET_HPP__
 
 
-ClickableLabel::ClickableLabel(QWidget* Parent) :
-  QLabel(Parent)
+#include <QTabWidget>
+
+
+class WorkspaceTabWidget : public QTabWidget
 {
-
-}
-
-
-// =====================================================================
-// =====================================================================
+  Q_OBJECT;
 
 
-ClickableLabel::ClickableLabel(const QString& Text, QWidget* Parent) :
-  QLabel(Text,Parent)
-{
+  private slots:
 
-}
+    void closeTab(int Index);
 
 
-// =====================================================================
-// =====================================================================
+  public:
+
+    WorkspaceTabWidget(QWidget* Parent);
+
+    void addWorkspaceTab(QWidget* Tab, const QString& Label, bool Closable = false);
+
+};
 
 
-void ClickableLabel::mouseReleaseEvent(QMouseEvent* /*Event*/)
-{
-  emit clicked();
-
-  //QLabel::mouseReleaseEvent(Event);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ClickableLabel::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
-{
-  emit clicked();
-
-  //QLabel::mouseDoubleClickEvent(Event);
-}
-
-
-} } } // namespaces
-
+#endif /* __OPENFLUID_BUILDERAPP_WORKSPACETABWIDGET_HPP__ */

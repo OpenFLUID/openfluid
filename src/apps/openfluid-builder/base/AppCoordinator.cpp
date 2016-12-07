@@ -59,8 +59,8 @@
 #include "MainWindow.hpp"
 #include "AppActions.hpp"
 #include "OpenExampleProjectDialog.hpp"
-#include "HomeModule.hpp"
-#include "ProjectModule.hpp"
+#include "HomeModuleWidget.hpp"
+#include "ProjectModuleWidget.hpp"
 #include "DashboardFrame.hpp"
 #include "builderconfig.hpp"
 
@@ -203,12 +203,12 @@ void AppCoordinator::unsetCurrentModule()
 // =====================================================================
 
 
-void AppCoordinator::setCurrentModule(AbstractModule* Module)
+void AppCoordinator::setCurrentModule(AbstractModuleWidget* Module)
 {
   unsetCurrentModule();
   mp_CurrentModule = Module;
 
-  m_MainWindow.setWidget(Module->mainWidgetRebuilt(&m_MainWindow));
+  m_MainWindow.setWidget(Module);
 }
 
 
@@ -225,7 +225,7 @@ void AppCoordinator::setHomeModule()
     mp_DockWidget = nullptr;
   }
 
-  AbstractModule* Module = new HomeModule(&m_Actions);
+  AbstractModuleWidget* Module = new HomeModuleWidget(&m_Actions,&m_MainWindow);
 
   setCurrentModule(Module);
 
@@ -245,7 +245,7 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
   {
     unsetCurrentModule();
 
-    AbstractModule* Module = new ProjectModule(ProjectPath);
+    AbstractModuleWidget* Module = new ProjectModuleWidget(ProjectPath,&m_MainWindow);
 
     setCurrentModule(Module);
 
@@ -256,7 +256,7 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
       mp_DockWidget = new QDockWidget(tr("Project dashboard"),&m_MainWindow);
 
     DashboardFrame* DockedWidget =
-      static_cast<DashboardFrame*>(static_cast<ProjectModule*>(Module)->dockWidgetRebuilt(mp_DockWidget));
+      static_cast<DashboardFrame*>(static_cast<ProjectModuleWidget*>(Module)->dockWidgetRebuilt(mp_DockWidget));
     DockedWidget->updateOrientation(openfluid::base::PreferencesManager::instance()->getBuilderDockPosition());
 
     mp_DockWidget->setObjectName("DockWidget");
@@ -279,20 +279,20 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
             this,SLOT(saveDockArea(Qt::DockWidgetArea)));
 
 
-    connect(static_cast<ProjectModule*>(mp_CurrentModule),
+    connect(static_cast<ProjectModuleWidget*>(mp_CurrentModule),
             SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
             this,SLOT(enableSave()));
 
-    connect(static_cast<ProjectModule*>(mp_CurrentModule),SIGNAL(savePerformed()),
+    connect(static_cast<ProjectModuleWidget*>(mp_CurrentModule),SIGNAL(savePerformed()),
             this,SLOT(disableSave()));
 
-    connect(static_cast<ProjectModule*>(mp_CurrentModule),SIGNAL(runEnabled(bool)),
+    connect(static_cast<ProjectModuleWidget*>(mp_CurrentModule),SIGNAL(runEnabled(bool)),
             this,SLOT(enableRun(bool)));
 
-    connect(static_cast<ProjectModule*>(mp_CurrentModule),SIGNAL(refreshWaresEnabled(bool)),
+    connect(static_cast<ProjectModuleWidget*>(mp_CurrentModule),SIGNAL(refreshWaresEnabled(bool)),
             m_Actions.action("WaresRefresh"),SLOT(setEnabled(bool)));
 
-    enableRun(static_cast<ProjectModule*>(Module)->isOkForSimulation());
+    enableRun(static_cast<ProjectModuleWidget*>(Module)->isOkForSimulation());
 
     m_Actions.action("WaresRefresh")
         ->setEnabled(!openfluid::base::PreferencesManager::instance()->isBuilderWaresWatchersActive());

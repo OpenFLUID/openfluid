@@ -29,33 +29,36 @@
   
 */
 
-
 /**
-  @file ProjectModule.hpp
+  @file ProjectModuleWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_PROJECTMODULE_HPP__
-#define __OPENFLUID_BUILDERAPP_PROJECTMODULE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_PROJECTMODULEWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_PROJECTMODULEWIDGET_HPP__
 
-
-#include "AbstractModule.hpp"
-
-
-#include <openfluid/builderext/FluidXUpdateFlags.hpp>
 
 #include <QString>
 #include <QDockWidget>
 #include <QFileSystemWatcher>
 #include <QTimer>
 
+#include <openfluid/builderext/FluidXUpdateFlags.hpp>
+#include <openfluid/builderext/PluggableBuilderExtension.hpp>
+#include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
+#include <openfluid/ui/waresdev/WareSrcWidget.hpp>
+
+#include "ui_ProjectModuleWidget.h"
+#include "ProjectModuleWidget.hpp"
+#include "AbstractModuleWidget.hpp"
+#include "WorkspaceTabWidget.hpp"
+#include "ExtensionsRegistry.hpp"
+
 
 class ProjectCentral;
-
 class DashboardFrame;
-
 class ProjectWidget;
 class ModelWidget;
 class SpatialDomainWidget;
@@ -72,16 +75,52 @@ namespace openfluid {
   namespace ware {
     class SimulatorSignature;
   }
+  namespace ui {
+    namespace waresdev {
+      class WareSrcWidgetCollection;
+    }
+  }
+}
+
+namespace Ui
+{
+  class ProjectModuleWidget;
 }
 
 
-class ProjectModule : public AbstractModule
+// =====================================================================
+// =====================================================================
+
+
+class ProjectModuleWidget : public AbstractModuleWidget
 {
   Q_OBJECT;
 
+
+  private slots:
+
+    void releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender = nullptr);
+
+    void dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+
+    void dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+
+    void updateSimulatorsWares();
+
+    void updateObserversWares();
+
+    void checkInputDir();
+
+    void onBuildLaunched(openfluid::ware::WareType Type, const QString& ID);
+
+    void onBuildFinished(openfluid::ware::WareType Type, const QString& ID);
+
+
   private:
 
-    ProjectWidget* mp_MainWidget;
+    Ui::ProjectModuleWidget* ui;
+
+    WorkspaceTabWidget* mp_WorkspaceTabWidget;
 
     DashboardFrame* mp_DashboardFrame;
 
@@ -113,6 +152,8 @@ class ProjectModule : public AbstractModule
 
     QTimer* mp_InputDirUpdateTimer;
 
+    openfluid::ui::waresdev::WareSrcWidgetCollection* mp_WareSrcCollection;
+
     unsigned int m_ActiveBuilds = 0;
 
     void updateWaresWatchersPaths();
@@ -124,7 +165,14 @@ class ProjectModule : public AbstractModule
     void resetInputDirWatcher();
 
     bool findGhostSignature(const QString& ID,
-                            openfluid::ware::SimulatorSignature& Signature,std::string& FileFullPath);
+                            openfluid::ware::SimulatorSignature& Signature,
+                            std::string& FileFullPath);
+
+    void addWorkspaceTab(QWidget* Tab, const QString& Label);
+
+    void addWorkspaceExtensionTab(QWidget* Tab, const QString& Label);
+
+    void addWorkspaceWareSrcTab(const QString& Path);
 
 
   signals:
@@ -142,39 +190,20 @@ class ProjectModule : public AbstractModule
     void refreshWaresEnabled(bool Enabled);
 
 
-  private slots:
-
-    void releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender = nullptr);
-
-    void dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
-
-    void dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
-
-    void updateSimulatorsWares();
-
-    void updateObserversWares();
-
-    void checkInputDir();
-
-    void onBuildLaunched(openfluid::ware::WareType Type, const QString& ID);
-
-    void onBuildFinished(openfluid::ware::WareType Type, const QString& ID);
-
-
   public slots:
 
     void whenSrcEditAsked(const QString& ID,openfluid::ware::WareType WType,bool Ghost);
 
     void whenSrcGenerateAsked(const QString& ID);
 
+    void updateWareSrcEditorsSettings();
+
 
   public:
 
-    ProjectModule(const QString& ProjectPath);
+    ProjectModuleWidget(const QString& ProjectPath, QWidget* Parent = nullptr);
 
-    ~ProjectModule();
-
-    AbstractMainWidget* mainWidgetRebuilt(QWidget* Parent);
+    ~ProjectModuleWidget();
 
     QWidget* dockWidgetRebuilt(QWidget* Parent);
 
@@ -225,4 +254,5 @@ class ProjectModule : public AbstractModule
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_PROJECTMODULE_HPP__ */
+
+#endif /* __OPENFLUID_BUILDERAPP_PROJECTMODULEWIDGET_HPP__ */
