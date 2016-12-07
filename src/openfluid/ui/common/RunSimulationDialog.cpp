@@ -62,15 +62,15 @@
 #include <iostream>
 
 
-#define WARNINGS_STYLE_ANY "QLabel {font-weight: bold;}"
-#define STATUS_STYLE_NONE ""
-#define STATUS_STYLE_PAUSEREQUEST "QLabel {color: #336DA5;}"
-#define STATUS_STYLE_PAUSED "QLabel {color: #336DA5; font-weight: bold;}"
-#define STATUS_STYLE_ABORTREQUEST "QLabel {color: #D11919;}"
-#define STATUS_STYLE_ABORTED "QLabel {color: #D11919; font-weight: bold;}"
-#define STATUS_STYLE_FAILED "QLabel {color: #D11919; font-weight: bold;} "\
-                            "QToolTip {color: #D11919; background-color: #F7F7F7;} "
-#define STATUS_STYLE_SUCCEEDED "QLabel {color: #4E983E; font-weight: bold;}"
+constexpr const char* WARNINGS_STYLE_ANY = "QLabel {font-weight: bold;}";
+constexpr const char* STATUS_STYLE_NONE = "";
+constexpr const char* STATUS_STYLE_PAUSEREQUEST = "QLabel {color: #336DA5;}";
+constexpr const char* STATUS_STYLE_PAUSED = "QLabel {color: #336DA5; font-weight: bold;}";
+constexpr const char* STATUS_STYLE_ABORTREQUEST = "QLabel {color: #D11919;}";
+constexpr const char* STATUS_STYLE_ABORTED = "QLabel {color: #D11919; font-weight: bold;}";
+constexpr const char* STATUS_STYLE_FAILED = "QLabel {color: #D11919; font-weight: bold;} "
+                                            "QToolTip {color: #D11919; background-color: #F7F7F7;} ";
+constexpr const char* STATUS_STYLE_SUCCEEDED = "QLabel {color: #4E983E; font-weight: bold;}";
 
 
 namespace openfluid { namespace ui { namespace common {

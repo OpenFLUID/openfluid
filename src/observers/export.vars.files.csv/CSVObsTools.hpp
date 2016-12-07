@@ -47,7 +47,7 @@
 #include <openfluid/ware/WareParamsTree.hpp>
 
 
-#define CSV_FILES_EXT "csv"
+constexpr const char* CSV_FILES_EXT = "csv";
 
 
 // =====================================================================

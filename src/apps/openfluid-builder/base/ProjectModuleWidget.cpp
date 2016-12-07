@@ -78,8 +78,8 @@
 #include "OutputsWidget.hpp"
 
 
-#define BUILDER_WARE_WATCHERS_DELAY 2000
-#define BUILDER_INPUTDIR_WATCHERS_DELAY 2000
+constexpr unsigned int BUILDER_WARE_WATCHERS_DELAY = 2000;
+constexpr unsigned int BUILDER_INPUTDIR_WATCHERS_DELAY = 2000;
 
 
 // =====================================================================

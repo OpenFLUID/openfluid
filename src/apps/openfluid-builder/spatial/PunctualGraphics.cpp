@@ -42,7 +42,7 @@
 #include <QBrush>
 
 
-#define POINT_OFFSET 3
+constexpr unsigned int POINT_OFFSET = 3;
 
 
 void PunctualGraphics::drawPoint(QPainterPath& Path, const OGRPoint* OGRPt)

@@ -47,7 +47,7 @@
 #include "SourceData.hpp"
 
 
-#define OGRGDALEXT_PRECHECK_STEPS 4
+constexpr unsigned int OGRGDALEXT_PRECHECK_STEPS = 4;
 
 
 class DataProcessingWorker : public QObject

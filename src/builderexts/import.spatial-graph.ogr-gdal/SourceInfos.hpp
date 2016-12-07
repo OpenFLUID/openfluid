@@ -45,15 +45,14 @@
 #include "ogrsf_frmts.h"
 
 
-#define OGRGDAL_UNITID_FIELD "OFLD_ID"
-#define OGRGDAL_PSORD_FIELD "OFLD_PSORD"
-#define OGRGDAL_TOCONN_FIELD "OFLD_TO"
-#define OGRGDAL_CHILDOF_FIELD "OFLD_CHILD"
+constexpr const char* OGRGDAL_UNITID_FIELD = "OFLD_ID";
+constexpr const char* OGRGDAL_PSORD_FIELD = "OFLD_PSORD";
+constexpr const char* OGRGDAL_TOCONN_FIELD = "OFLD_TO";
+constexpr const char* OGRGDAL_CHILDOF_FIELD = "OFLD_CHILD";
 
 
 // =====================================================================
 // =====================================================================
-
 
 
 class SourceInfos
