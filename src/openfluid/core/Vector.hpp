@@ -105,7 +105,7 @@ class OPENFLUID_API Vector
     /**
       Destructor
     */
-    ~Vector();
+    virtual ~Vector();
 
     /**
       Returns the size of the vector
@@ -292,10 +292,11 @@ Vector<T>::Vector(T* Data, unsigned long Size)
 // =====================================================================
 // =====================================================================
 
+
 template <class T>
 Vector<T>::~Vector()
 {
-  if (m_Data != nullptr) clear();
+  clear();
 }
 
 

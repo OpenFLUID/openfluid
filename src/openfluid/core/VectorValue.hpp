@@ -174,5 +174,4 @@ class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
 } }  // namespaces
 
 
-
 #endif /* __OPENFLUID_CORE_VECTORVALUE_HPP__ */

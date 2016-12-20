@@ -276,6 +276,8 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
         }
       }
 
+      delete[] MTmpResult;
+
       return DefaultDeltaT();
     }
 

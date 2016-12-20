@@ -93,8 +93,7 @@ class OPENFLUID_API Matrix
     /**
       Destructor
     */
-    virtual ~Matrix()
-    { };
+    virtual ~Matrix();
 
     /**
       Returns the number of columns of the Matrix
@@ -238,6 +237,17 @@ Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr, T InitValue)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
 
   fill(InitValue);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template <class T>
+Matrix<T>::~Matrix()
+{
+  clear();
 }
 
 
