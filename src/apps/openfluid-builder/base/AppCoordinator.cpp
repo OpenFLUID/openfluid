@@ -856,7 +856,9 @@ void AppCoordinator::whenRestoreExamplesAsked()
                             tr("Proceed anyway?"),
                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {
-    openfluid::buddies::ExamplesBuddy Buddy(nullptr);
+    openfluid::buddies::BuddiesListener Listener;
+
+    openfluid::buddies::ExamplesBuddy Buddy(&Listener);
     Buddy.parseOptions("force=1");
     try
     {
