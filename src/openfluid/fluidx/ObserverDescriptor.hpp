@@ -42,6 +42,7 @@
 
 #include <openfluid/fluidx/WareDescriptor.hpp>
 
+
 namespace openfluid { namespace fluidx {
 
 
@@ -60,6 +61,7 @@ class ObserverDescriptor : public WareDescriptor
     { return m_ID; }
 
 };
+
 
 } } // namespaces
 

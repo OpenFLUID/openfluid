@@ -40,11 +40,8 @@
 
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 
+
 namespace openfluid { namespace fluidx {
-
-
-// =====================================================================
-// =====================================================================
 
 
 SpatialDomainDescriptor::SpatialDomainDescriptor()

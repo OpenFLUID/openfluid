@@ -35,8 +35,10 @@
   @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDFLUIDXDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_ADVANCEDFLUIDXDESCRIPTOR_HPP__
+
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
@@ -47,6 +49,7 @@
 
 
 namespace openfluid { namespace fluidx {
+
 
 class OPENFLUID_API AdvancedFluidXDescriptor
 {
@@ -93,6 +96,8 @@ class OPENFLUID_API AdvancedFluidXDescriptor
     const AdvancedMonitoringDescriptor& monitoring() const;
 };
 
+
 } } // namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_ADVANCEDFLUIDXDESCRIPTOR_HPP__ */

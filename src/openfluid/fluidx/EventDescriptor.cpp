@@ -40,6 +40,7 @@
 
 #include <openfluid/fluidx/EventDescriptor.hpp>
 
+
 namespace openfluid { namespace fluidx {
 
 
@@ -86,7 +87,6 @@ EventID_t EventDescriptor::assignID()
   m_NextID++;
   return m_NextID;
 }
-
 
 
 } } // namespaces

@@ -41,8 +41,10 @@
 #ifndef __OPENFLUID_FLUIDX_SIMULATORDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_SIMULATORDESCRIPTOR_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
+
 
 namespace openfluid { namespace fluidx {
 
@@ -65,5 +67,6 @@ class OPENFLUID_API SimulatorDescriptor : public ModelItemDescriptor
 
 
 } } // namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_SIMULATORDESCRIPTOR_HPP__ */

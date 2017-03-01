@@ -40,12 +40,12 @@
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDWARESETDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_ADVANCEDWARESETDESCRIPTOR_HPP__
 
+#include <list>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 
-#include <list>
 
 namespace openfluid { namespace fluidx {
 
@@ -379,5 +379,6 @@ class OPENFLUID_API AdvancedWareSetDescriptor
 
 
 } }
+
 
 #endif /* __OPENFLUID_FLUIDX_ADVANCEDWARESETDESCRIPTOR_HPP__ */

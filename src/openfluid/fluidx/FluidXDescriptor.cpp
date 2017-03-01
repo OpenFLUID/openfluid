@@ -983,45 +983,69 @@ void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
   openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::iterator itData;
   openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::iterator itVal;
 
-  for (std::list<AttributesDescriptor>::iterator it = Attrs.begin();
-      it != Attrs.end(); ++it)
+  // temporary structures for aggregated output of attributes
+  std::map<openfluid::core::UnitsClass_t,openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t> AggregatedData;
+  std::map<openfluid::core::UnitsClass_t,std::set<openfluid::core::AttributeName_t>> AttributesModel;
+
+
+  // rebuild attributes model by units class for later usage on each spatial unit
+  for (auto& Desc : Attrs)
+  {
+    AttributesModel[Desc.getUnitsClass()].insert(Desc.columnsOrder().begin(),Desc.columnsOrder().end());
+  }
+
+  // populate the aggregated data structure
+  for (auto& AttrsSet : Attrs)
+  {
+    for (auto& UnitAttrs : AttrsSet.attributes())
+    {
+      for (auto& Attr : UnitAttrs.second)
+      {
+        AggregatedData[AttrsSet.getUnitsClass()][UnitAttrs.first][Attr.first] = Attr.second;
+      }
+    }
+  }
+
+
+  // write attributes tag and column order to stream
+  for (auto& AggByClass : AggregatedData)
   {
     Contents << m_IndentStr << m_IndentStr << "<attributes unitsclass=\""
-             << it->getUnitsClass() << "\" colorder=\"";
+                 << AggByClass.first << "\" colorder=\"";
 
-    std::vector<std::string> Cols = it->columnsOrder();
-    if (!Cols.empty())
+    auto& AttrModel = AttributesModel[AggByClass.first];
+
+    if (!AttrModel.empty())
     {
-      int Max = Cols.size() - 1;
-      for (int i = 0; i < Max; i++)
-        Contents << Cols[i] << ";";
-      Contents << Cols[Max];
+      bool isFirstItem = true;
+      for (auto& AttrName : AttrModel)
+      {
+        if (isFirstItem)
+          isFirstItem = false;
+        else
+          Contents << ";";
+
+        Contents << AttrName;
+      }
     }
 
     Contents << "\">\n";
 
-    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t& DataMap =
-        it->attributes();
-    for (itData = DataMap.begin(); itData != DataMap.end(); ++itData)
+    // write attributes contents to stream
+    for (auto& AggByUnit : AggByClass.second)
     {
-      Contents << itData->first << "\t";
+      Contents << AggByUnit.first;
 
-      openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t& DataVals =
-          itData->second;
-
-      unsigned int i = 0;
-      for (; i < Cols.size() - 1; i++)
+      for (auto& AttrName : AttrModel)
       {
-        Contents << DataVals[Cols[i]] << "\t";
+        Contents << "\t" << AggByUnit.second[AttrName];
       }
-      Contents << DataVals[Cols[i]];
 
       Contents << "\n";
     }
 
     Contents << m_IndentStr << m_IndentStr << "</attributes>\n";
   }
-
 }
 
 

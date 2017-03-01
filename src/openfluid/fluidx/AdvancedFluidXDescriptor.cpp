@@ -35,13 +35,11 @@
   @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
+
 namespace openfluid { namespace fluidx {
-
-
-// =====================================================================
-// =====================================================================
 
 
 AdvancedFluidXDescriptor::AdvancedFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc)

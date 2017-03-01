@@ -35,6 +35,7 @@
   @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #ifndef __OPENFLUID_FLUIDX_WARESETDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_WARESETDESCRIPTOR_HPP__
 

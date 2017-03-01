@@ -37,16 +37,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/fluidx/RunDescriptor.hpp>
 
+#include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace fluidx {
-
-
-// =====================================================================
-// =====================================================================
 
 
 RunDescriptor::RunDescriptor():
@@ -76,11 +72,11 @@ RunDescriptor::RunDescriptor(int DeltaT,
 // =====================================================================
 // =====================================================================
 
+
 RunDescriptor::~RunDescriptor()
 {
 
 }
-
 
 
 } } // namespaces

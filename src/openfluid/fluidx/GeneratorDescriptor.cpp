@@ -35,15 +35,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/machine/Factory.hpp>
 
+
 namespace openfluid { namespace fluidx {
-
-
-// =====================================================================
-// =====================================================================
 
 
 GeneratorDescriptor::GeneratorDescriptor() :
@@ -129,10 +126,6 @@ std::string GeneratorDescriptor::getGeneratorName(GeneratorDescriptor::Generator
       return "unknown";
   }
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces

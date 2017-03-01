@@ -48,7 +48,9 @@
 
 namespace openfluid { namespace fluidx {
 
+
 typedef unsigned long long EventID_t;
+
 
 class OPENFLUID_API EventDescriptor
 {
@@ -113,5 +115,6 @@ class OPENFLUID_API EventDescriptor
 
 
 } } // namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_EVENTDESCRIPTOR_HPP__ */

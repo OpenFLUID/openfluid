@@ -35,14 +35,11 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #include <openfluid/fluidx/WareDescriptor.hpp>
 
 
 namespace openfluid { namespace fluidx {
-
-
-// =====================================================================
-// =====================================================================
 
 
 WareDescriptor::WareDescriptor() :

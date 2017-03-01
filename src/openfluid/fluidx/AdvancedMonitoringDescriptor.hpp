@@ -44,7 +44,6 @@
 #include <openfluid/fluidx/AdvancedWareSetDescriptor.hpp>
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
-
 #include <openfluid/dllexport.hpp>
 
 
@@ -68,5 +67,6 @@ class OPENFLUID_API AdvancedMonitoringDescriptor : public AdvancedWareSetDescrip
 
 
 } } //namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_ADVANCEDMONITORINGDESCRIPTOR_HPP__ */

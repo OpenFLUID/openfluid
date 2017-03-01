@@ -44,9 +44,12 @@
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
 
+
 namespace openfluid { namespace fluidx {
 
+
 typedef WareSetDescriptor<ObserverDescriptor> MonitoringDescriptor;
+
 
 } } // namespaces
 

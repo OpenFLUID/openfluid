@@ -75,8 +75,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 // =====================================================================
 
 
-void TestDataset(std::string DatasetPath)
+void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
 {
+  std::cout << "Checking " << DatasetPath << std::endl;
+
   openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
 
   boost::onullstream ONullStream;
@@ -242,35 +244,63 @@ void TestDataset(std::string DatasetPath)
 
   std::list<openfluid::fluidx::AttributesDescriptor>::iterator AttrsIt;
 
-  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().attributes().size(), 3);
+  if (AggregatedAttributes)
+  {
+    BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().attributes().size(), 2);
 
-  AttrsIt = FXDesc.spatialDomainDescriptor().attributes().begin();
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsA");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataA");
-  BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(8).at("indataA"), "1.1");
+    AttrsIt = FXDesc.spatialDomainDescriptor().attributes().begin();
+    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsA");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataA");
+    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(8).at("indataA"), "1.1");
 
-  ++AttrsIt;
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 2);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB1");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[1], "indataB3");
-  BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB1"), "7.1");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB3"), "7.3");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB1"), "11.1");
+    ++AttrsIt;
+    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 3);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB1");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[1], "indataB2");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[2], "indataB3");
+    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB1"), "7.1");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB3"), "7.3");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB1"), "11.1");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB2"), "codeA");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB2"), "codeE");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(2).at("indataB2"), "codeC");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(1).at("indataB2"), "codeD");
+  }
+  else
+  {
+    BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().attributes().size(), 3);
 
-  ++AttrsIt;
-  BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB2");
-  BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
-  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB2"), "codeA");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB2"), "codeE");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(2).at("indataB2"), "codeC");
-  BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(1).at("indataB2"), "codeD");
+    AttrsIt = FXDesc.spatialDomainDescriptor().attributes().begin();
+    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsA");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataA");
+    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(8).at("indataA"), "1.1");
 
+    ++AttrsIt;
+    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 2);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB1");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[1], "indataB3");
+    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB1"), "7.1");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB3"), "7.3");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB1"), "11.1");
+
+    ++AttrsIt;
+    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB2");
+    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB2"), "codeA");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB2"), "codeE");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(2).at("indataB2"), "codeC");
+    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(1).at("indataB2"), "codeD");
+  }
 
   // Domain calendar
   // ====================================================================
@@ -494,7 +524,7 @@ BOOST_AUTO_TEST_CASE(check_write_operations)
   DatasetPaths.push_back(OutputDirMany);
 
   for (const auto& Path : DatasetPaths)
-    TestDataset(Path);
+    TestDataset(Path,true);
 }
 
 

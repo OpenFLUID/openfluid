@@ -46,7 +46,9 @@
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
 
+
 namespace openfluid { namespace fluidx {
+
 
 typedef WareSetDescriptor<ModelItemDescriptor> CoupledModelDescriptor;
 

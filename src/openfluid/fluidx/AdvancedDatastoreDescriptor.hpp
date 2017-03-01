@@ -35,8 +35,10 @@
   @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDDATASTOREDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_ADVANCEDDATASTOREDESCRIPTOR_HPP__
+
 
 #include <list>
 #include <string>
@@ -48,8 +50,10 @@
 
 namespace openfluid { namespace fluidx {
 
+
 class DatastoreDescriptor;
 class DatastoreItemDescriptor;
+
 
 class OPENFLUID_API AdvancedDatastoreDescriptor
 {
@@ -112,10 +116,10 @@ class OPENFLUID_API AdvancedDatastoreDescriptor
     */
     openfluid::fluidx::DatastoreItemDescriptor* item(const std::string& ItemID);
 
-
-
 };
 
+
 } } // namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_ADVANCEDDATASTOREDESCRIPTOR_HPP__ */

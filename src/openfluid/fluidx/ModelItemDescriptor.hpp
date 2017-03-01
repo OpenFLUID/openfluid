@@ -41,6 +41,7 @@
 #ifndef __OPENFLUID_FLUIDX_MODELITEMDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_MODELITEMDESCRIPTOR_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/WareDescriptor.hpp>
 

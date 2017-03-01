@@ -101,4 +101,5 @@ class OPENFLUID_API DatastoreItemDescriptor
 
 } } // namespaces
 
+
 #endif /* __OPENFLUID_FLUIDX_DATASTOREITEMDESCRIPTOR_HPP__ */

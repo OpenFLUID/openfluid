@@ -37,14 +37,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #include <openfluid/fluidx/AttributesDescriptor.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
 
+
 namespace openfluid { namespace fluidx {
-
-
-// =====================================================================
-// =====================================================================
 
 
 AttributesDescriptor::AttributesDescriptor() :
@@ -109,7 +107,6 @@ void AttributesDescriptor::parseDataBlob(const std::string& Data)
   else
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error in attributes, cannot be parsed");
-
 }
 
 

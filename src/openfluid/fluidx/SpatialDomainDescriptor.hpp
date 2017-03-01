@@ -41,6 +41,7 @@
 #ifndef __OPENFLUID_FLUIDX_SPATIALDOMAINDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_SPATIALDOMAINDESCRIPTOR_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/AttributesDescriptor.hpp>
 #include <openfluid/fluidx/EventDescriptor.hpp>
@@ -85,10 +86,10 @@ class OPENFLUID_API SpatialDomainDescriptor
     inline const std::list<EventDescriptor>& events() const
     { return m_EventsDescriptor; };
 
-
 };
 
 
 } } // namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_SPATIALDOMAINDESCRIPTOR_HPP__ */

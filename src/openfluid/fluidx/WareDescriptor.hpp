@@ -35,8 +35,10 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #ifndef __OPENFLUID_FLUIDX_WAREDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_WAREDESCRIPTOR_HPP__
+
 
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
@@ -86,6 +88,7 @@ class OPENFLUID_API WareDescriptor
     bool isEnabled() const;
 
 };
+
 
 } }  // namespaces
 

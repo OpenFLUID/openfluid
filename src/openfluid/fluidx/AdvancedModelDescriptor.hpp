@@ -69,4 +69,5 @@ class OPENFLUID_API AdvancedModelDescriptor : public AdvancedWareSetDescriptor<C
 
 } } // namespaces
 
+
 #endif /* __OPENFLUID_FLUIDX_ADVANCEDMODELDESCRIPTOR_HPP__ */

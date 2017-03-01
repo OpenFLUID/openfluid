@@ -37,13 +37,11 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #include <openfluid/fluidx/SpatialUnitDescriptor.hpp>
 
+
 namespace openfluid { namespace fluidx {
-
-
-// =====================================================================
-// =====================================================================
 
 
 SpatialUnitDescriptor::SpatialUnitDescriptor():

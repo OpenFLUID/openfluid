@@ -41,6 +41,7 @@
 #ifndef __OPENFLUID_FLUIDX_RUNDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_RUNDESCRIPTOR_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
@@ -120,6 +121,7 @@ class OPENFLUID_API RunDescriptor
     }
 
 };
+
 
 } } // namespaces
 

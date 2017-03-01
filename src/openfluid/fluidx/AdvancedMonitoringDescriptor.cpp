@@ -37,9 +37,9 @@
 */
 
 
-#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
-
 #include <set>
+
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
 
 namespace openfluid { namespace fluidx {

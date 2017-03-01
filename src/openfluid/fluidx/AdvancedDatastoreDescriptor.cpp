@@ -35,6 +35,7 @@
   @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include "AdvancedDatastoreDescriptor.hpp"
 
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
@@ -267,13 +268,6 @@ openfluid::fluidx::DatastoreItemDescriptor* AdvancedDatastoreDescriptor::item(co
   return nullptr;
 
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-
 
 
 } } // namespaces

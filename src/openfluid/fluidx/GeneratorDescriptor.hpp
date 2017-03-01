@@ -41,8 +41,10 @@
 #ifndef __OPENFLUID_FLUIDX_GENERATORDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_GENERATORDESCRIPTOR_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
+
 
 namespace openfluid { namespace fluidx {
 
@@ -104,5 +106,6 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
 
 } } // namespaces
+
 
 #endif /* __OPENFLUID_FLUIDX_GENERATORDESCRIPTOR_HPP__ */

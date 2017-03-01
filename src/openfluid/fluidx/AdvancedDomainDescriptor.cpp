@@ -45,6 +45,7 @@
 #include <algorithm>
 #include <sstream>
 
+
 namespace openfluid { namespace fluidx {
 
 
@@ -1213,10 +1214,6 @@ void AdvancedDomainDescriptor::clearDomain()
   m_Units.clear();
   m_AttrsNames.clear();
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces
