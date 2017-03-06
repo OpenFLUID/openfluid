@@ -41,9 +41,10 @@
 
 
 
-ClickableWareWidget::ClickableWareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
+ClickableWareWidget::ClickableWareWidget(QWidget* Parent,
+                                         const openfluid::ware::WareID_t& ID, const QString& DisplayedText,
                                          bool Enabled, const QString& BGColor, int Index):
-  WareWidget(Parent,ID,Enabled,BGColor, Index)
+  WareWidget(Parent,ID,DisplayedText,Enabled,BGColor, Index)
 {
 
 }

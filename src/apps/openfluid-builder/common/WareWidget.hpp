@@ -140,6 +140,7 @@ class WareWidget : public QWidget
 
     WareWidget(QWidget* Parent,
                const openfluid::ware::WareID_t& ID,
+               const QString& DisplayedText,
                bool Enabled, const QString& BGColor, int Index);
 
     virtual ~WareWidget();

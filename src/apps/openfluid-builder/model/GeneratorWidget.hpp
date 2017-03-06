@@ -56,6 +56,8 @@ class GeneratorWidget : public WareWidget
 
     void updateParamValue(const QString& Name, const QString& Value);
 
+    static QString generateDisplayedTitle(const openfluid::fluidx::ModelItemDescriptor* Desc);
+
   private:
 
     openfluid::fluidx::ModelItemDescriptor* mp_Desc;

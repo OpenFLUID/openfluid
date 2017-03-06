@@ -61,7 +61,8 @@ class ClickableWareWidget : public WareWidget
 
   public:
 
-    ClickableWareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
+    ClickableWareWidget(QWidget* Parent,
+                        const openfluid::ware::WareID_t& ID, const QString& DisplayedText,
                         bool Enabled, const QString& BGColor, int Index);
 
 };

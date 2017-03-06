@@ -332,9 +332,8 @@ void ModelWidget::addGenerator()
     connect(GenWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
     connect(GenWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
 
-    // compute position in layout, taking into account the ending spacer
-    int Position = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;
-    ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(Position,GenWidget);
+    // Insert newly created generator at the top of the model items list
+    ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(0,GenWidget);
 
     mp_WaresManWidget->updateIndexesAndButtons();
 
