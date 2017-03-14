@@ -316,7 +316,7 @@ void ModelWidget::addGenerator()
 
     GenDesc->setParameters(AddGenDlg.getParams());
 
-    m_Model.appendItem(GenDesc);
+    m_Model.insertItem(GenDesc,0);
 
     std::string ID = m_Model.getID(GenDesc);
 
