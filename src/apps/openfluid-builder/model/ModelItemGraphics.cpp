@@ -37,11 +37,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/base/RunContextManager.hpp>
 
-#include "builderconfig.hpp"
-
-#include "ModelItemGraphics.hpp"
 #include <QPen>
 #include <QBrush>
 #include <QCursor>
@@ -49,6 +45,11 @@
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+
+#include <openfluid/base/RunContextManager.hpp>
+
+#include "builderconfig.hpp"
+#include "ModelItemGraphics.hpp"
 
 
 QSize ModelItemGraphics::m_DefaultSize = QSize(200,80);
@@ -59,13 +60,14 @@ QPointF ModelItemGraphics::m_UpInIOFromCenter = QPoint(60,-ModelItemGraphics::m_
 QPointF ModelItemGraphics::m_UpOutIOFromCenter = QPoint(30,ModelItemGraphics::m_DefaultSize.height()/2);
 
 
-
 // =====================================================================
 // =====================================================================
 
 
 ModelItemGraphics::ModelItemGraphics(const QPointF& Coords,
-                                     const QString& ID, unsigned int Order,
+                                     const QString& ID,
+                                     const QString& DisplayedTitle,
+                                     unsigned int Order,
                                      QGraphicsItem* Parent):
   QGraphicsRectItem(Coords.x(),Coords.y(),m_DefaultSize.width(),m_DefaultSize.height(),Parent),
   m_ID(ID), m_Ghost(false), m_Initialized(false)
@@ -80,20 +82,20 @@ ModelItemGraphics::ModelItemGraphics(const QPointF& Coords,
 
   // Model item ID
 
-  QGraphicsTextItem* IDGraphics = new QGraphicsTextItem(ID,Parent);
-  IDGraphics->setParentItem(this);
+  QGraphicsTextItem* TitleGraphics = new QGraphicsTextItem(DisplayedTitle,Parent);
+  TitleGraphics->setParentItem(this);
 
-  QFont TmpFont = IDGraphics->font();
+  QFont TmpFont = TitleGraphics->font();
   TmpFont.setPointSize(10);
   TmpFont.setWeight(QFont::Bold);
-  IDGraphics->setFont(TmpFont);
+  TitleGraphics->setFont(TmpFont);
 
-  QRectF TmpRect = IDGraphics->boundingRect();
+  QRectF TmpRect = TitleGraphics->boundingRect();
 
   if (rect().width() < TmpRect.width()+20)
   setRect(Coords.x(),Coords.y(),TmpRect.width()+20,m_DefaultSize.height());
 
-  IDGraphics->setPos((rect().width()/2)-(TmpRect.width()/2),(m_DefaultSize.height()/2)-(TmpRect.height()/2));
+  TitleGraphics->setPos((rect().width()/2)-(TmpRect.width()/2),(m_DefaultSize.height()/2)-(TmpRect.height()/2));
 
 
   // Model item Order

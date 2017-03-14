@@ -37,17 +37,18 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include "builderconfig.hpp"
-#include "SimulatorGraphics.hpp"
 
 #include <QBrush>
+
+#include "builderconfig.hpp"
+#include "SimulatorGraphics.hpp"
 
 
 SimulatorGraphics::SimulatorGraphics(const QPointF& Coords,
                                      const QString& ID, unsigned int Order,
                                      const openfluid::machine::ModelItemSignatureInstance* Signature,
                                      QGraphicsItem* Parent):
-  ModelItemGraphics(Coords,ID,Order,Parent)
+  ModelItemGraphics(Coords,ID,ID,Order,Parent)
 {
   openfluid::ware::SimulatorSignature* SimSign = Signature->Signature;
 

@@ -38,7 +38,6 @@
  */
 
 
-
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include "builderconfig.hpp"
 
@@ -47,16 +46,13 @@
 #include "ParameterWidget.hpp"
 
 
-
-
-
 GeneratorWidget::GeneratorWidget(QWidget* Parent,
                                  openfluid::fluidx::ModelItemDescriptor* Desc,
                                  const openfluid::ware::WareID_t& ID,
                                  int Index,
                                  const openfluid::machine::ModelItemSignatureInstance* SignInstance):
-  WareWidget(Parent,ID,generateDisplayedTitle(Desc),
-             Desc->isEnabled(),BUILDER_GENERATOR_BGCOLOR, Index),mp_Desc(Desc), mp_SignInstance(SignInstance)
+  WareWidget(Parent,ID,tr("Generator"),Desc->isEnabled(),BUILDER_GENERATOR_BGCOLOR, Index),
+  mp_Desc(Desc), mp_SignInstance(SignInstance)
 {
   ui->AddParamButton->setVisible(false);
   ui->ParameterizationSwitchLabel->setVisible(false);
@@ -71,26 +67,12 @@ GeneratorWidget::GeneratorWidget(QWidget* Parent,
 
 GeneratorWidget::~GeneratorWidget()
 {
+
 }
 
 
 // =====================================================================
 // =====================================================================
-
-
-QString GeneratorWidget::generateDisplayedTitle(const openfluid::fluidx::ModelItemDescriptor* Desc)
-{
-  return tr("Generator for variable %1 on %2")
-         .arg(QString::fromStdString(static_cast<const openfluid::fluidx::GeneratorDescriptor*>(Desc)
-                                     ->getVariableName()))
-         .arg(QString::fromStdString(static_cast<const openfluid::fluidx::GeneratorDescriptor*>(Desc)
-                                     ->getUnitsClass()));
-}
-
-
-// =====================================================================
-// =====================================================================
-
 
 
 void GeneratorWidget::updateParams()
@@ -156,7 +138,19 @@ void GeneratorWidget::refresh()
   if (mp_SignInstance != nullptr)
   {
     setAvailableWare(true);
-    ui->NameLabel->setText(QString::fromStdString(mp_SignInstance->Signature->Name));
+
+    QString DimStr = tr("scalar");
+    if (static_cast<const openfluid::fluidx::GeneratorDescriptor*>(mp_Desc)->getVariableSize() > 1)
+      DimStr = tr("vector");
+
+    ui->NameLabel->setText(
+        tr("Produces %1 variable %2 on %3 (%4)")
+        .arg(DimStr)
+        .arg(QString::fromStdString(static_cast<const openfluid::fluidx::GeneratorDescriptor*>(mp_Desc)
+                                    ->getVariableName()))
+        .arg(QString::fromStdString(static_cast<const openfluid::fluidx::GeneratorDescriptor*>(mp_Desc)
+                                    ->getUnitsClass()))
+        .arg(QString::fromStdString(mp_SignInstance->Signature->Name)));
 
     // TODO add produced variable in signature
     ui->InfosSideWidget->update(mp_SignInstance);

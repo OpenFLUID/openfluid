@@ -37,18 +37,18 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include "builderconfig.hpp"
-#include "GeneratorGraphics.hpp"
 
 #include <QBrush>
 
+#include "builderconfig.hpp"
+#include "GeneratorGraphics.hpp"
 
 
 GeneratorGraphics::GeneratorGraphics(const QPointF& Coords,
                                      const QString& ID, unsigned int Order,
                                      const QString& VarName, const QString& UnitsClass,
                                      QGraphicsItem* Parent):
-  ModelItemGraphics(Coords,ID,Order,Parent)
+  ModelItemGraphics(Coords,ID,tr("Generator"),Order,Parent)
 {
   m_ProducedVars.push_back(
     openfluid::ware::SignatureTypedSpatialDataItem(VarName.toStdString(),UnitsClass.toStdString(),"",""));

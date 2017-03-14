@@ -41,11 +41,10 @@
 #define __OPENFLUID_BUILDERAPP_MODELITEMGRAPHICS_HPP__
 
 
+#include <QGraphicsRectItem>
+
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
-
-
-#include <QGraphicsRectItem>
 
 #include "ConnectorGraphics.hpp"
 
@@ -109,6 +108,7 @@ class ModelItemGraphics : public QObject, public QGraphicsRectItem
 
     ModelItemGraphics(const QPointF &Coords,
                       const QString& ID,
+                      const QString& DisplayedTitle,
                       unsigned int Order,
                       QGraphicsItem* Parent = nullptr);
 
