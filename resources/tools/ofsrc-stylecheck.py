@@ -250,6 +250,16 @@ class SourceTreeChecker:
 
 ############################################################################
 
+  @staticmethod
+  def stringIfMoreThanOne(s,c):
+    if c > 1:
+      return s
+    else:
+      return ""
+
+
+############################################################################
+
 
   def run(self):
     
@@ -259,9 +269,18 @@ class SourceTreeChecker:
     for File in self.FileList:
       self.checkFile(File)
     
-    print len(self.FileList),"files checked,",sum(self.ErrorsCount.values()),"potential style problems detected"
-    for Code in self.ErrorsCount:
-      print '    - ['+Code+']:',self.ErrorsCount[Code],'problems'
+    FileCount = len(self.FileList)
+
+    print FileCount,"file"+self.stringIfMoreThanOne('s',FileCount)+" checked"
+
+    TotalErrorsCount = sum(self.ErrorsCount.values())
+
+    if TotalErrorsCount:
+      print TotalErrorsCount,"potential problem"+self.stringIfMoreThanOne('s',TotalErrorsCount)+" detected"
+      for Code in self.ErrorsCount:
+        print '    - ['+Code+']:',self.ErrorsCount[Code],'problem'+self.stringIfMoreThanOne('s',self.ErrorsCount[Code])
+    else:
+      print "No potential style problem detected"
 
 
 
