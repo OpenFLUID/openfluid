@@ -37,13 +37,13 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
+#include <iostream>
+
 #include <QPushButton>
 #include <QShowEvent>
 #include <QMessageBox>
 #include <QThread>
-
-
-#include "ui_RunSimulationDialog.h"
 
 #include <openfluid/ui/common/RunSimulationDialog.hpp>
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
@@ -58,8 +58,13 @@
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 
-#include <iostream>
+#include "ui_RunSimulationDialog.h"
+
+
+// =====================================================================
+// =====================================================================
 
 
 constexpr const char* WARNINGS_STYLE_ANY = "QLabel {font-weight: bold;}";
@@ -71,6 +76,10 @@ constexpr const char* STATUS_STYLE_ABORTED = "QLabel {color: #D11919; font-weigh
 constexpr const char* STATUS_STYLE_FAILED = "QLabel {color: #D11919; font-weight: bold;} "
                                             "QToolTip {color: #D11919; background-color: #F7F7F7;} ";
 constexpr const char* STATUS_STYLE_SUCCEEDED = "QLabel {color: #4E983E; font-weight: bold;}";
+
+
+// =====================================================================
+// =====================================================================
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -89,6 +98,7 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluid
   ui->MessageLabel->setText(tr("Run Simulation"));
 
   ui->DurationLabel->setText("");
+  ui->ElapsedLabel->setText("-");
 
   ui->SimulationBar->setValue(0);
   ui->SimulationBar->setMinimum(0);
@@ -153,6 +163,7 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluid
   adjustSize();
 
   WThread->start();
+  m_ElapsedTimer.start();
 }
 
 
@@ -343,10 +354,23 @@ void RunSimulationDialog::setStage(openfluid::ui::common::RunSimulationListener:
 // =====================================================================
 
 
-void RunSimulationDialog::handleError(QString Msg,openfluid::base::ExceptionContext Context)
+void RunSimulationDialog::setCompleted()
 {
   ui->PauseButton->setEnabled(false);
   ui->StopButton->setEnabled(false);
+
+  ui->ElapsedLabel
+    ->setText(QString::fromStdString(openfluid::tools::convertMSecsToDurationString(m_ElapsedTimer.elapsed())));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationDialog::handleError(QString Msg,openfluid::base::ExceptionContext Context)
+{
+  setCompleted();
 
   ui->StatusLabel->setStyleSheet(STATUS_STYLE_FAILED);
   ui->StatusLabel->setText(tr("failed due to simulation error"));
@@ -372,8 +396,7 @@ void RunSimulationDialog::handleError(QString Msg,openfluid::base::ExceptionCont
 
 void RunSimulationDialog::handleUserAbort()
 {
-  ui->PauseButton->setEnabled(false);
-  ui->StopButton->setEnabled(false);
+  setCompleted();
 
   ui->StatusLabel->setText(tr("aborted by user"));
   ui->StatusLabel->setStyleSheet(STATUS_STYLE_ABORTED);
@@ -386,8 +409,7 @@ void RunSimulationDialog::handleUserAbort()
 
 void RunSimulationDialog::handleFinish()
 {
-  ui->PauseButton->setEnabled(false);
-  ui->StopButton->setEnabled(false);
+  setCompleted();
 
   ui->ButtonBox->button(QDialogButtonBox::Close)->setEnabled(true);
 
@@ -404,6 +426,7 @@ void RunSimulationDialog::showErrorDetails()
   ui->ErrorDetailsWidget->setVisible(true);
   ui->ShowErrorLabel->setVisible(false);
 }
+
 
 } } } // namespaces
 

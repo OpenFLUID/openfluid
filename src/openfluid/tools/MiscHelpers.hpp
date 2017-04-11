@@ -103,7 +103,7 @@ int OPENFLUID_API compareVersions(const std::string& VersionA, const std::string
 
 
 /*
-  Suspend execution of current thread for milliseconds
+  Suspends execution of current thread for milliseconds
   @param[in] MSec the milliseconds interval
 */
 void OPENFLUID_API millisleep(const unsigned long MSec);
@@ -116,8 +116,23 @@ void OPENFLUID_API millisleep(const unsigned long MSec);
 void OPENFLUID_API microsleep(const unsigned long USec);
 
 
-
+/**
+  Generates a pseudo-unique identifier using alphanumeric characters and Mersenne Twister random engine.
+  @param[in] Length the length of the identifier to generate
+  @return the generated identifier
+*/
 std::string OPENFLUID_API generatePseudoUniqueIdentifier(const unsigned int Length);
+
+
+/**
+  Converts the milliseconds value into a string representing the duration as days, hours, minutes and decimal seconds.
+  @code
+  openfluid::tools::convertMSecsToDurationString(123456789); // returns "1d 10h 17m 36.789s"
+  @endcode
+  @param[in] MSecs the duration in milliseconds
+  @return the converted duration as a string
+*/
+std::string OPENFLUID_API convertMSecsToDurationString(long int MSecs);
 
 
 } } //namespaces

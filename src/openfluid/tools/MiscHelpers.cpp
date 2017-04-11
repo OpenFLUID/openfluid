@@ -263,4 +263,24 @@ std::string generatePseudoUniqueIdentifier(const unsigned int Length)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+std::string convertMSecsToDurationString(long int MSecs)
+{
+  int LeftMSecs = (int) (MSecs % 1000);
+  int Seconds = (int) (MSecs / 1000) % 60;
+  int Minutes = (int) ((MSecs / (1000*60)) % 60);
+  int Hours   = (int) ((MSecs / (1000*60*60)) % 24);
+  int Days   = (int) (MSecs / (1000*60*60*24));
+
+  return openfluid::tools::convertValue(Days)+"d "+
+         openfluid::tools::convertValue(Hours)+"h "+
+         openfluid::tools::convertValue(Minutes)+"m "+
+         openfluid::tools::convertValue(Seconds)+"."+
+         openfluid::tools::convertValue(LeftMSecs)+"s";
+}
+
+
 } } // namespaces

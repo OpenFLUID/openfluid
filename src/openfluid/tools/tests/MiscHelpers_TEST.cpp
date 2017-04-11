@@ -104,6 +104,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   for (int i =0; i<8; i++)
     std::cout << (2*(i+1)) << " chars: " << openfluid::tools::generatePseudoUniqueIdentifier(2*(i+1)) << std::endl;
 
+
+  std::cout << openfluid::tools::convertMSecsToDurationString(123456789) << std::endl;
+
 }
 
 

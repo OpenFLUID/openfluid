@@ -47,6 +47,7 @@
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/Console.hpp>
 #include <openfluid/utils/CommandLineParser.hpp>
 #include <openfluid/machine/Engine.hpp>
@@ -64,26 +65,6 @@
 #include "DefaultMachineListener.hpp"
 #include "VerboseMachineListener.hpp"
 #include "DefaultBuddiesListener.hpp"
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string msecsToString(qint64 MSecs)
-{
-  int LeftMSecs = (int) (MSecs % 1000);
-  int Seconds = (int) (MSecs / 1000) % 60;
-  int Minutes = (int) ((MSecs / (1000*60)) % 60);
-  int Hours   = (int) ((MSecs / (1000*60*60)) % 24);
-  int Days   = (int) (MSecs / (1000*60*60*24));
-
-  return openfluid::tools::convertValue(Days)+"d "+
-         openfluid::tools::convertValue(Hours)+"h "+
-         openfluid::tools::convertValue(Minutes)+"m "+
-         openfluid::tools::convertValue(Seconds)+"."+
-         openfluid::tools::convertValue(LeftMSecs)+"s";
-}
 
 
 // =====================================================================
@@ -747,8 +728,9 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << std::endl;
 
-  std::cout << "Simulation run time: " << msecsToString(EffectiveTime) << std::endl;
-  std::cout << "     Total run time: " << msecsToString(FullTimer.elapsed()) << std::endl;
+  std::cout << "Simulation run time: " << openfluid::tools::convertMSecsToDurationString(EffectiveTime) << std::endl;
+  std::cout << "     Total run time: "
+            << openfluid::tools::convertMSecsToDurationString(FullTimer.elapsed()) << std::endl;
   std::cout << std::endl;
 
   mp_Engine->finalize();

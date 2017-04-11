@@ -42,7 +42,7 @@
 
 #include <QObject>
 #include <QDialog>
-#include <QTimer>
+#include <QElapsedTimer>
 
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
@@ -81,11 +81,15 @@ class OPENFLUID_API RunSimulationDialog : public QDialog
 
     openfluid::ui::common::RunSimulationListener* mp_Listener;
 
+    QElapsedTimer m_ElapsedTimer;
+
     bool m_Launched;
 
     bool m_Success;
 
     static QString getDurationAsDaysHoursMinsSecsString(openfluid::core::Duration_t Duration);
+
+    void setCompleted();
 
 
   private slots:
