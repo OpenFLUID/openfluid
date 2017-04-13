@@ -37,12 +37,14 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
+#include <QDir>
+
 #include <openfluid/base/RunContextManager.hpp>
 
 #include "ui_DashboardInfosWidget.h"
 #include "DashboardInfosWidget.hpp"
-
-#include <QDir>
+#include "builderconfig.hpp"
 
 
 DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::AdvancedFluidXDescriptor& Desc, QWidget* Parent):
@@ -52,12 +54,14 @@ DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::AdvancedFlui
 
   refreshProjectInfos();
 
-  ui->ContentsFrame->setStyleSheet("#ContentsFrame "
+  ui->ContentsFrame->setStyleSheet(QString("#ContentsFrame "
                                        "{background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
-                                           "stop:0 #314054, "
-                                           "stop:1 #3F546E); "
+                                           "stop:0 %1, "
+                                           "stop:1 %2); "
                                            "border-radius: 6px;"
-                                           "border : 1px solid #AAAAAA;}");
+                                           "border : 1px solid %3;}").arg(BUILDER_DASHBOARD_DARKCOLOR)
+                                                                     .arg(BUILDER_DASHBOARD_LIGHTCOLOR)
+                                                                     .arg(BUILDER_DASHBOARD_OUTLINECOLOR));
 
   ui->TitleLabel->setStyleSheet("color: white;");
   ui->PathLabel->setStyleSheet("color: white;");

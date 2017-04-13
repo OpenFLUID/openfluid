@@ -51,6 +51,7 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_DatastoreWidget.h"
 #include "DatastoreWidget.hpp"
@@ -62,19 +63,19 @@ DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFlu
 {
   ui->setupUi(this);
 
-  ui->AddButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddButton->setIconSize(QSize(20,20));
 
-  ui->EditButton->setIcon(QIcon(":/ui/common/icons/modify.png"));
+  ui->EditButton->setIcon(openfluid::ui::common::getIcon("modify","/ui/common"));
   ui->EditButton->setIconSize(QSize(20,20));
 
-  ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveButton->setIconSize(QSize(20,20));
 
-  ui->UpButton->setIcon(QIcon(":/ui/common/icons/go-up.png"));
+  ui->UpButton->setIcon(openfluid::ui::common::getIcon("go-up","/ui/common"));
   ui->UpButton->setIconSize(QSize(20,20));
 
-  ui->DownButton->setIcon(QIcon(":/ui/common/icons/go-down.png"));
+  ui->DownButton->setIcon(openfluid::ui::common::getIcon("go-down","/ui/common"));
   ui->DownButton->setIconSize(QSize(20,20));
 
   // TODO to re-enable

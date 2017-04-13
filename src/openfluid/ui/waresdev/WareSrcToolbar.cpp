@@ -42,15 +42,16 @@
 
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
-    QToolBar(Parent)
+    QToolBar(Parent), m_IsIncluded(IsIncluded)
 {
-  if (!IsIncluded)
+  if (!m_IsIncluded)
   {
     setIconSize(QSize(32, 32));
     setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -65,7 +66,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
   addAction(m_Actions["ConfigureWMenu"]);
   addAction(m_Actions["BuildWMenu"]);
 
-  if (IsIncluded)
+  if (m_IsIncluded)
   {
     QWidget* Spacer = new QWidget();
     Spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -108,7 +109,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
 
     QToolButton* MenuButton = new QToolButton(this);
     MenuButton->setToolTip(tr("Menu"));
-    MenuButton->setIcon(QIcon(":/ui/common/icons/menu.png"));
+    MenuButton->setIcon(openfluid::ui::common::getIcon("menu","/ui/common"));
     MenuButton->setPopupMode(QToolButton::InstantPopup);
     MenuButton->setMenu(Menu);
     addWidget(MenuButton);
@@ -132,26 +133,32 @@ WareSrcToolbar::~WareSrcToolbar()
 
 void WareSrcToolbar::createActions()
 {
-  m_Actions["NewFile"] = new QAction(QIcon(":/ui/common/icons/file-new.png"), tr("New..."), this);
+  m_Actions["NewFile"] = new QAction(openfluid::ui::common::getIcon("file-new","/ui/common",!m_IsIncluded),
+                                     tr("New..."), this);
   m_Actions["NewFile"]->setToolTip(tr("Create a new file"));
-  m_Actions["OpenFile"] = new QAction(QIcon(":/ui/common/icons/file-open.png"), tr("Open..."), this);
+  m_Actions["OpenFile"] = new QAction(openfluid::ui::common::getIcon("file-open","/ui/common",!m_IsIncluded),
+                                      tr("Open..."), this);
   m_Actions["OpenFile"]->setToolTip(tr("Open a file"));
 
-  m_Actions["SaveFile"] = new QAction(QIcon(":/ui/common/icons/file-save.png"), tr("Save"), this);
+  m_Actions["SaveFile"] = new QAction(openfluid::ui::common::getIcon("file-save","/ui/common",!m_IsIncluded),
+                                      tr("Save"), this);
   m_Actions["SaveFile"]->setShortcut(QKeySequence::Save);
   m_Actions["SaveFile"]->setToolTip(tr("Save the current file"));
   m_Actions["SaveFile"]->setEnabled(false);
 
-  m_Actions["SaveAsFile"] = new QAction(QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
+  m_Actions["SaveAsFile"] = new QAction(openfluid::ui::common::getIcon("file-save-as","/ui/common",!m_IsIncluded),
+                                        tr("Save as..."), this);
   m_Actions["SaveAsFile"]->setToolTip(tr("Save the current file as..."));
   m_Actions["SaveAsFile"]->setEnabled(false);
 
-  m_Actions["SaveAllFiles"] = new QAction(QIcon(":/ui/common/icons/file-save.png"), tr("Save all"), this);
+  m_Actions["SaveAllFiles"] = new QAction(openfluid::ui::common::getIcon("file-save","/ui/common",!m_IsIncluded),
+                                          tr("Save all"), this);
   m_Actions["SaveAllFiles"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S));
   m_Actions["SaveAllFiles"]->setToolTip(tr("Save all files of the ware"));
   m_Actions["SaveAllFiles"]->setEnabled(false);
 
-  m_Actions["CloseFile"] = new QAction(QIcon(":/ui/common/icons/file-close.png"), tr("Close"), this);
+  m_Actions["CloseFile"] = new QAction(openfluid::ui::common::getIcon("close","/ui/common",!m_IsIncluded),
+                                       tr("Close"), this);
   m_Actions["CloseFile"]->setToolTip(tr("Close the current file"));
   m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
   m_Actions["DeleteFile"]->setToolTip(tr("Delete the current file"));
@@ -171,9 +178,11 @@ void WareSrcToolbar::createActions()
   m_Actions["GoToLine"] = new QAction(tr("Go to line..."), this);
   m_Actions["GoToLine"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
 
-  m_Actions["Configure"] = new QAction(QIcon(":/ui/common/icons/configure.png"), tr("Configure ware"), this);
+  m_Actions["Configure"] = new QAction(openfluid::ui::common::getIcon("configure","/ui/common",!m_IsIncluded),
+                                       tr("Configure ware"), this);
   m_Actions["Configure"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B));
-  m_Actions["ConfigureWMenu"] = new QAction(QIcon(":/ui/common/icons/configure.png"), tr("Configure"), this);
+  m_Actions["ConfigureWMenu"] = new QAction(openfluid::ui::common::getIcon("configure","/ui/common",!m_IsIncluded),
+                                            tr("Configure"), this);
   QActionGroup* ConfigureGroup = new QActionGroup(this);
   QMenu* Menu = new QMenu();
   m_Actions["Release"] = new QAction("Release", ConfigureGroup);
@@ -186,9 +195,11 @@ void WareSrcToolbar::createActions()
   m_Actions["ConfigureWMenu"]->setMenu(Menu);
   connect(m_Actions["ConfigureWMenu"], SIGNAL(triggered()), m_Actions["Configure"], SLOT(trigger()));
 
-  m_Actions["Build"] = new QAction(QIcon(":/ui/common/icons/build.png"), tr("Build ware"), this);
+  m_Actions["Build"] = new QAction(openfluid::ui::common::getIcon("build","/ui/common",!m_IsIncluded),
+                                   tr("Build ware"), this);
   m_Actions["Build"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
-  m_Actions["BuildWMenu"] = new QAction(QIcon(":/ui/common/icons/build.png"), tr("Build"), this);
+  m_Actions["BuildWMenu"] = new QAction(openfluid::ui::common::getIcon("build","/ui/common",!m_IsIncluded),
+                                        tr("Build"), this);
   QActionGroup* BuildGroup = new QActionGroup(this);
   Menu = new QMenu();
   m_Actions["BuildInstall"] = new QAction(tr("Build and install"), BuildGroup);
@@ -207,8 +218,6 @@ void WareSrcToolbar::createActions()
   m_Actions["APIDoc"] = new QAction(tr("API documentation"), this);
   m_Actions["APIDoc"]->setShortcuts(QKeySequence::HelpContents);
 
-  for(QAction* Action : m_Actions.values())
-    Action->setIconVisibleInMenu(true);
 }
 
 

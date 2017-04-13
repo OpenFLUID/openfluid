@@ -1,7 +1,10 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-  <qresource>
-    <file>icons/openfluid_icon_devstudio.png</file>
+  <qresource prefix="/devstudio">
+  
     <file>images/openfluid_splash_devstudio.png</file>
+  
+    <file>icons/openfluid_icon_devstudio.png</file>
+  
   </qresource>
 </RCC>

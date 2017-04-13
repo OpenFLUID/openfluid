@@ -52,6 +52,7 @@
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
@@ -232,7 +233,8 @@ void MainWindow::createLocalActions()
   m_Actions["OpenObserver"] = new QAction(tr("Observer..."), this);
   m_Actions["OpenExtension"] = new QAction(tr("Builder extension..."), this);
 
-  m_Actions["SaveAsFile"] = new QAction(QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
+  m_Actions["SaveAsFile"] = new QAction(openfluid::ui::common::getIcon("file-save-as","/ui/common"),
+                                        tr("Save as..."), this);
   m_Actions["SaveAsFile"]->setToolTip(tr("Save the current file as..."));
 
   m_Actions["CloseWares"] = new QAction(tr("Close all wares"), this);

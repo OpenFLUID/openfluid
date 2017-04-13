@@ -43,6 +43,7 @@
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/ui/market/MarketClientAssistant.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_HomeModuleWidget.h"
 #include "HomeModuleWidget.hpp"
@@ -58,7 +59,7 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
   ui->setupUi(this);
 
   ui->ImageLabel->setText("");
-  ui->ImageLabel->setPixmap(QPixmap(":/images/openfluid_official.png"));
+  ui->ImageLabel->setPixmap(QPixmap(":/builder/images/openfluid_official.png"));
 
   ui->VersionLabel->setText(std::string("OpenFLUID v"+openfluid::config::VERSION_FULL).c_str());
 
@@ -70,10 +71,12 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
   QPushButton* TheButton;
   QVBoxLayout* ButtonsLayout = new QVBoxLayout(ui->ButtonsFrame);
 
-  TheButton = createButton(Actions->action("ProjectNew"),tr("Create a project..."));
+  TheButton = createButton(Actions->action("ProjectNew"),tr("Create a project..."),
+                           openfluid::ui::common::getIcon("project-new","/ui/common"));
   ButtonsLayout->addWidget(TheButton);
 
-  TheButton = createButton(Actions->action("ProjectOpen"),tr("Open a project..."));
+  TheButton = createButton(Actions->action("ProjectOpen"),tr("Open a project..."),
+                           openfluid::ui::common::getIcon("project-open","/ui/common"));
   ButtonsLayout->addWidget(TheButton);
 
   QFrame* ButtonsHLine = new QFrame(ui->ButtonsFrame);
@@ -81,7 +84,8 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
   ButtonsHLine->setLineWidth(1);
   ButtonsLayout->addWidget(ButtonsHLine);
 
-  TheButton = createButton(Actions->action("HelpExamplesOpen"),tr("Open an example project..."));
+  TheButton = createButton(Actions->action("HelpExamplesOpen"),tr("Open an example project..."),
+                           openfluid::ui::common::getIcon("project-open-example","/builder"));
   ButtonsLayout->addWidget(TheButton);
 
   ButtonsHLine = new QFrame(ui->ButtonsFrame);
@@ -93,12 +97,14 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
 #endif
 
 #ifdef ENABLE_MARKET_INTEGRATION
-  TheButton = createButton(Actions->action("MarketAccess"),tr("Access to OpenFLUID-Market..."));
+  TheButton = createButton(Actions->action("MarketAccess"),tr("Access to OpenFLUID-Market..."),
+                           openfluid::ui::common::getIcon("market","/builder"));
   ButtonsLayout->addWidget(TheButton);
 #endif
 
 #ifdef ENABLE_WARESDEV_INTEGRATION
-  TheButton = createButton(Actions->action("DevLaunchDevStudio"),tr("Launch OpenFLUID-DevStudio..."));
+  TheButton = createButton(Actions->action("DevLaunchDevStudio"),tr("Launch OpenFLUID-DevStudio..."),
+                           openfluid::ui::common::getIcon("dev-wares","/builder"));
   ButtonsLayout->addWidget(TheButton);
 #endif
 
@@ -113,7 +119,7 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
   mp_RecentProjectsLabel->setStyleSheet("font : bold;");
   mp_RecentsLayout->addWidget(mp_RecentProjectsLabel);
 
-  QPixmap DotPix(":/images/dot.png");
+  QPixmap DotPix(":/builder/images/dot.png");
 
   std::vector<QAction*> RecentActions = mp_Actions->recentProjectActions();
 
@@ -403,12 +409,15 @@ void HomeModuleWidget::whenSrcEditAsked(const QString& /*ID*/,openfluid::ware::W
 // =====================================================================
 
 
-QPushButton* HomeModuleWidget::createButton(const QAction* Action, const QString& Text)
+QPushButton* HomeModuleWidget::createButton(const QAction* Action, const QString& Text, const QIcon& AltIcon)
 {
   QPushButton* Button = new QPushButton(Text,ui->ButtonsFrame);
   Button->setMinimumHeight(65);
   Button->setIconSize(QSize(48,48));
-  Button->setIcon(Action->icon());
+  if (AltIcon.isNull())
+    Button->setIcon(Action->icon());
+  else
+    Button->setIcon(AltIcon);
 
   connect(Button,SIGNAL(clicked()),Action,SLOT(trigger()));
 

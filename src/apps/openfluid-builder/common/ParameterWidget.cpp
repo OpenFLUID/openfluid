@@ -42,6 +42,7 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/common/ShortcutCompleter.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 
 #include "ui_ParameterWidget.h"
@@ -82,7 +83,7 @@ ParameterWidget::ParameterWidget(QWidget* Parent,
   if (Removable)
   {
     ui->RemoveButton->setText("");
-    ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+    ui->RemoveButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
     ui->RemoveButton->setIconSize(QSize(16,16));
 
     connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(notifyRemoveClicked()));

@@ -38,24 +38,23 @@
  */
 
 
-
-#include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/base/Environment.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
-
-#include <openfluid/ui/config.hpp>
-
-#include "ui_PreferencesDialog.h"
-#include <openfluid/ui/common/PreferencesDialog.hpp>
-#include "ui_WaresSearchPathsWidget.h"
-#include <openfluid/ui/common/WaresSearchPathsWidget.hpp>
-#include <openfluid/ui/common/EditMarketplaceDialog.hpp>
-#include <openfluid/ui/common/DetectQtDevToolsDialog.hpp>
-
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QColorDialog>
 #include <QSignalMapper>
+
+#include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/Environment.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/common/PreferencesDialog.hpp>
+#include <openfluid/ui/common/WaresSearchPathsWidget.hpp>
+#include <openfluid/ui/common/EditMarketplaceDialog.hpp>
+#include <openfluid/ui/common/DetectQtDevToolsDialog.hpp>
+
+#include "ui_PreferencesDialog.h"
+#include "ui_WaresSearchPathsWidget.h"
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -76,15 +75,15 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
                                   .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
 
   ui->AddMarketPlaceButton->setText("");
-  ui->AddMarketPlaceButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddMarketPlaceButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddMarketPlaceButton->setIconSize(QSize(20,20));
 
   ui->EditMarketPlaceButton->setText("");
-  ui->EditMarketPlaceButton->setIcon(QIcon(":/ui/common/icons/modify.png"));
+  ui->EditMarketPlaceButton->setIcon(openfluid::ui::common::getIcon("modify","/ui/common"));
   ui->EditMarketPlaceButton->setIconSize(QSize(20,20));
 
   ui->RemoveMarketPlaceButton->setText("");
-  ui->RemoveMarketPlaceButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveMarketPlaceButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveMarketPlaceButton->setIconSize(QSize(20,20));
 
   QTreeWidgetItem *PrefItem;

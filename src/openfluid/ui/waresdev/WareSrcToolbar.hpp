@@ -60,6 +60,8 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
 
     void createActions();
 
+    bool m_IsIncluded;
+
   public:
 
     WareSrcToolbar(bool IsIncluded, QWidget* Parent = nullptr);

@@ -70,7 +70,7 @@ class HomeModuleWidget : public AbstractModuleWidget
 
      QLabel* mp_RecentProjectsLabel;
 
-     QPushButton* createButton(const QAction* Action, const QString& Text);
+     QPushButton* createButton(const QAction* Action, const QString& Text, const QIcon& AltIcon = QIcon());
 
 
   public slots:

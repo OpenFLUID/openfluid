@@ -42,6 +42,7 @@
 
 #include <QComboBox>
 
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/core/Value.hpp>
 
 
@@ -54,11 +55,11 @@ SignatureDataEditorWidget::SignatureDataEditorWidget(QWidget* Parent):
   ui->setupUi(this);
 
   ui->AddButton->setText("");
-  ui->AddButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddButton->setIconSize(QSize(20,20));
 
   ui->RemoveButton->setText("");
-  ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveButton->setIconSize(QSize(20,20));
 
   connect(ui->AddButton,SIGNAL(clicked()),this,SLOT(addDataLine()));

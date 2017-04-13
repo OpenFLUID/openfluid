@@ -100,9 +100,9 @@ void StatusMessagesWidget::addMessage(const QString& Msg)
 void StatusMessagesWidget::setStatusLevel(ProjectStatusLevel Level)
 {
   if (Level == PRJ_WARNING)
-    ui->StatusIconLabel->setPixmap(QPixmap(":/images/check-warn.png"));
+    ui->StatusIconLabel->setPixmap(QPixmap(":/builder/images/check-warn.png"));
   else if (Level == PRJ_ERROR)
-    ui->StatusIconLabel->setPixmap(QPixmap(":/images/check-error.png"));
+    ui->StatusIconLabel->setPixmap(QPixmap(":/builder/images/check-error.png"));
   else if (Level == PRJ_DISABLED)
-      ui->StatusIconLabel->setPixmap(QPixmap(":/images/check-disabled.png"));
+      ui->StatusIconLabel->setPixmap(QPixmap(":/builder/images/check-disabled.png"));
 }

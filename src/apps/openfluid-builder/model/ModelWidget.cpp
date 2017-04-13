@@ -38,11 +38,14 @@
  */
 
 
+#include <QMessageBox>
+#include <QImage>
+
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
-
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_WaresManagementWidget.h"
 #include "ui_ModelWidget.h"
@@ -53,10 +56,6 @@
 #include "AddSimulatorDialog.hpp"
 #include "AddGeneratorDialog.hpp"
 #include "AddParamDialog.hpp"
-
-#include <QMessageBox>
-#include <QImage>
-
 
 
 ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
@@ -77,7 +76,7 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
   ui->GlobalParamsManagementWidget->setVisible(false);
 
   ui->AddGlobalParamButton->setText("");
-  ui->AddGlobalParamButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddGlobalParamButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddGlobalParamButton->setIconSize(QSize(20,20));
 
   mp_WaresManWidget->ui->AddWareFirstButton->setText(tr("Add simulator"));

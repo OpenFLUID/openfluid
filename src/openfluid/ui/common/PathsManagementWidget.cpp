@@ -38,11 +38,13 @@
  */
 
 
-#include "ui_PathsManagementWidget.h"
-#include "PathsManagementWidget.hpp"
-
 #include <QDir>
 #include <QFileDialog>
+
+#include <openfluid/ui/common/UIHelpers.hpp>
+
+#include "ui_PathsManagementWidget.h"
+#include "PathsManagementWidget.hpp"
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -55,19 +57,19 @@ PathsManagementWidget::PathsManagementWidget(QWidget* Parent):
   ui->setupUi(this);
 
   ui->AddButton->setText("");
-  ui->AddButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddButton->setIconSize(QSize(20,20));
 
   ui->RemoveButton->setText("");
-  ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveButton->setIconSize(QSize(20,20));
 
   ui->UpButton->setText("");
-  ui->UpButton->setIcon(QIcon(":/ui/common/icons/go-up.png"));
+  ui->UpButton->setIcon(openfluid::ui::common::getIcon("go-up","/ui/common"));
   ui->UpButton->setIconSize(QSize(20,20));
 
   ui->DownButton->setText("");
-  ui->DownButton->setIcon(QIcon(":/ui/common/icons/go-down.png"));
+  ui->DownButton->setIcon(openfluid::ui::common::getIcon("go-down","/ui/common"));
   ui->DownButton->setIconSize(QSize(20,20));
 
   connect(ui->AddButton,SIGNAL(clicked()),this,SLOT(addPath()));

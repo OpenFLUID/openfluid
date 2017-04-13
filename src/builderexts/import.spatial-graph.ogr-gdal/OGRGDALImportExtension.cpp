@@ -96,13 +96,13 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
 
   setWindowTitle(tr("Spatial data import (OGR/GDAL)"));
 
-  ui->AddFileButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddFileButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddFileButton->setIconSize(QSize(16,16));
 
-  ui->AddWFSButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddWFSButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddWFSButton->setIconSize(QSize(16,16));
 
-  ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveButton->setIconSize(QSize(16,16));
 
   ui->PrecheckButton->setEnabled(false);

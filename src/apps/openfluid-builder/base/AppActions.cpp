@@ -45,6 +45,7 @@
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "AppActions.hpp"
 #include "ExtensionsRegistry.hpp"
@@ -112,27 +113,27 @@ void AppActions::createActions()
   // Project menu
   m_Actions["ProjectNew"] = new QAction(tr("&New..."), this);
   m_Actions["ProjectNew"]->setShortcuts(QKeySequence::New);
-  m_Actions["ProjectNew"]->setIcon(QIcon(":/ui/common/icons/file-new.png"));
+  m_Actions["ProjectNew"]->setIcon(openfluid::ui::common::getIcon("project-new","/ui/common",true));
 
   m_Actions["ProjectOpen"] = new QAction(tr("&Open..."), this);
   m_Actions["ProjectOpen"]->setShortcuts(QKeySequence::Open);
-  m_Actions["ProjectOpen"]->setIcon(QIcon(":/ui/common/icons/file-open.png"));
+  m_Actions["ProjectOpen"]->setIcon(openfluid::ui::common::getIcon("project-open","/ui/common",true));
 
   m_Actions["ProjectReload"] = new QAction(tr("Reload"), this);
-  m_Actions["ProjectReload"]->setIcon(QIcon(":/ui/common/icons/reload.png"));
+  m_Actions["ProjectReload"]->setIcon(openfluid::ui::common::getIcon("reload","/ui/common",true));
 
   m_Actions["ProjectSave"] = new QAction(tr("&Save"), this);
   m_Actions["ProjectSave"]->setShortcuts(QKeySequence::Save);
-  m_Actions["ProjectSave"]->setIcon(QIcon(":/ui/common/icons/file-save.png"));
+  m_Actions["ProjectSave"]->setIcon(openfluid::ui::common::getIcon("project-save","/ui/common",true));
 
   m_Actions["ProjectSaveAs"] = new QAction(tr("Save as..."), this);
-  m_Actions["ProjectSaveAs"]->setIcon(QIcon(":/ui/common/icons/file-save-as.png"));
+  m_Actions["ProjectSaveAs"]->setIcon(openfluid::ui::common::getIcon("project-save-as","/ui/common",true));
 
   m_Actions["ProjectProperties"] = new QAction(tr("Properties"), this);
 
   m_Actions["ProjectClose"] = new QAction(tr("Close"), this);
   m_Actions["ProjectClose"]->setShortcuts(QKeySequence::Close);
-  m_Actions["ProjectClose"]->setIcon(QIcon(":/ui/common/icons/file-close.png"));
+  m_Actions["ProjectClose"]->setIcon(openfluid::ui::common::getIcon("close","/ui/common",true));
 
   m_Actions["ProjectQuit"] = new QAction(tr("Quit"), this);
   m_Actions["ProjectQuit"]->setShortcuts(QKeySequence::Quit);
@@ -162,7 +163,7 @@ void AppActions::createActions()
   m_Actions["DevOpenObserver"] = new QAction(tr("Open observer..."), this);
 
   m_Actions["DevLaunchDevStudio"] = new QAction("OpenFLUID-DevStudio", this);
-  m_Actions["DevLaunchDevStudio"]->setIcon(QIcon(":/icons/wares-development.png"));
+  m_Actions["DevLaunchDevStudio"]->setIcon(openfluid::ui::common::getIcon("dev-wares","/builder",false));
 
 
   //Simulation menu
@@ -170,7 +171,7 @@ void AppActions::createActions()
   m_Actions["WaresRefresh"]->setShortcut(QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_R));
 
   m_Actions["SimulationRun"] = new QAction(tr("Run simulation"), this);
-  m_Actions["SimulationRun"]->setIcon(QIcon(":/ui/common/icons/start.png"));
+  m_Actions["SimulationRun"]->setIcon(openfluid::ui::common::getIcon("run","/ui/common",true));
 
 
   //View Menu
@@ -185,7 +186,7 @@ void AppActions::createActions()
   m_Actions["HelpEmail"] = new QAction(tr("Email"), this);
 
   m_Actions["HelpExamplesOpen"] = new QAction(tr("Open an example project..."), this);
-  m_Actions["HelpExamplesOpen"]->setIcon(QIcon(":/icons/file-open-example.png"));
+  m_Actions["HelpExamplesOpen"]->setIcon(openfluid::ui::common::getIcon("project-open-example","/builder"));
 
   m_Actions["HelpExamplesRestore"] = new QAction(tr("Reinstall examples projects"), this);
 
@@ -195,7 +196,7 @@ void AppActions::createActions()
 
   //Other
   m_Actions["MarketAccess"] = new QAction(tr("Access to OpenFLUID-Market"), this);
-  m_Actions["MarketAccess"]->setIcon(QIcon(":/icons/market.png"));
+  m_Actions["MarketAccess"]->setIcon(openfluid::ui::common::getIcon("market","/ui/common"));
 
 
   for (int i=0; i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
@@ -486,7 +487,7 @@ void AppActions::createToolbar(MainWindow& MainWin)
 
     mp_MainToolbar->setObjectName("MainToolbar");
     mp_MainToolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
-    mp_MainToolbar->setStyleSheet(QString("QWidget {color: white; padding-left : 10px; padding-right : 10px;} "
+    mp_MainToolbar->setStyleSheet(QString("QWidget {color: #f0f0f0; padding-left : 10px; padding-right : 10px;} "
                                           "#MainToolbar {background-color: %1; border: 1px solid %1;}"
                                           "QToolButton::hover "
                                             "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }")

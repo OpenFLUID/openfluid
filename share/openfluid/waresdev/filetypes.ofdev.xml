@@ -3,7 +3,7 @@
   <waresdev>
     <filetypes>
 
-      <filetype name="cpp" icon=":/ui/common/icons/cpp.png">
+      <filetype name="cpp" icon=":/ui/common/filetypes/cpp.png">
         <extensions>*.c++;*.cxx;*.cpp;*.cc;*.C;*.moc;*.c</extensions>
         <edition internal="yes">
           <highlighting specsfile="cpp.syntaxhl.ofdev.xml" />
@@ -11,7 +11,7 @@
         </edition>
       </filetype>
       
-      <filetype name="hpp" icon=":/ui/common/icons/hpp.png">
+      <filetype name="hpp" icon=":/ui/common/filetypes/hpp.png">
         <extensions>*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc</extensions>
         <edition internal="yes">
           <highlighting specsfile="cpp.syntaxhl.ofdev.xml" />
@@ -19,21 +19,21 @@
         </edition>
       </filetype>
 
-      <filetype name="cmakelists" icon=":/ui/common/icons/cmakelists.png">
+      <filetype name="cmakelists" icon=":/ui/common/filetypes/cmakelists.png">
         <extensions>CMakeLists.txt</extensions>
         <edition internal="yes">
           <highlighting specsfile="cmake.syntaxhl.ofdev.xml" />
         </edition>
       </filetype>
       
-      <filetype name="cmake" icon=":/ui/common/icons/cmake.png">
+      <filetype name="cmake" icon=":/ui/common/filetypes/cmake.png">
         <extensions>CMake.in.config;*.cmake</extensions>
         <edition internal="yes">
           <highlighting specsfile="cmake.syntaxhl.ofdev.xml" />
         </edition>
       </filetype>
       
-      <filetype name="fortran" icon=":/ui/common/icons/fortran.png">
+      <filetype name="fortran" icon=":/ui/common/filetypes/fortran.png">
         <extensions>*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95</extensions>
         <edition internal="no">
           <highlighting specsfile="fortran.syntaxhl.ofdev.xml" />
@@ -52,12 +52,12 @@
         <edition internal="no" />
       </filetype>
       
-      <filetype name="qt-ui" icon=":/ui/common/icons/qt-ui.png">
+      <filetype name="qt-ui" icon=":/ui/common/filetypes/qt-ui.png">
         <extensions>*.ui;*.ts</extensions>
         <edition internal="no" />
       </filetype>
       
-      <filetype name="wareshub" icon=":/ui/common/icons/wareshub.png">
+      <filetype name="wareshub" icon=":/ui/common/filetypes/wareshub.png">
         <extensions>wareshub.json</extensions>
         <edition internal="no" />
       </filetype> 

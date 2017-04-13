@@ -37,16 +37,17 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
+#include <QMessageBox>
+
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "builderconfig.hpp"
 
 #include "ui_WareWidget.h"
 #include "WareWidget.hpp"
 #include "ParameterWidget.hpp"
-
-
-#include <QMessageBox>
 
 
 WareWidget::WareWidget(QWidget* Parent,
@@ -63,18 +64,18 @@ WareWidget::WareWidget(QWidget* Parent,
   ui->NameLabel->setElideMode(Qt::ElideRight);
 
   ui->UpButton->setText("");
-  ui->UpButton->setIcon(QIcon(":/ui/common/icons/go-up.png"));
+  ui->UpButton->setIcon(openfluid::ui::common::getIcon("go-up","/ui/common"));
   ui->UpButton->setIconSize(QSize(16,16));
 
   ui->DownButton->setText("");
-  ui->DownButton->setIcon(QIcon(":/ui/common/icons/go-down.png"));
+  ui->DownButton->setIcon(openfluid::ui::common::getIcon("go-down","/ui/common"));
   ui->DownButton->setIconSize(QSize(16,16));
 
   ui->RemoveButton->setText("");
-  ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveButton->setIconSize(QSize(16,16));
 
-  ui->AddParamButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddParamButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddParamButton->setIconSize(QSize(16,16));
 
 
@@ -157,9 +158,10 @@ void WareWidget::updateWidgetBackground()
     BGColor = BUILDER_DISABLEDWARE_BGCOLOR;
 
   if (!m_Available)
-    BGPattern = " background-image:url(:/images/warn-pattern-lightgray.png);";
+    BGPattern = " background-image:url(:/builder/images/warn-pattern-lightgray.png); ";
 
-  setStyleSheet("#WareFrame { background-color:"+BGColor+"; "+BGPattern+"}");
+  setStyleSheet(QString("#WareFrame { background-color: %1; %2border: 1px solid %3}")
+                .arg(BGColor).arg(BGPattern).arg(BUILDER_WARE_BORDERCOLOR));
 }
 
 

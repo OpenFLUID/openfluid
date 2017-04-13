@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 
     do
     {
-      openfluid::ui::common::OpenFLUIDSplashScreen Splash(QPixmap(":/images/openfluid_splash_builder.png"));
+      openfluid::ui::common::OpenFLUIDSplashScreen Splash(QPixmap(":/builder/images/openfluid_splash_builder.png"));
       Splash.show();
 
       Splash.setMessage("i18n");

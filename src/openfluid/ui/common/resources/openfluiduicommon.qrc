@@ -1,43 +1,82 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
   <qresource prefix="/ui/common">
+
+    <!-- images -->
     <file>images/openfluid_title.png</file>
     <file>images/openfluid_icon_about.png</file>
-    <file>icons/add.png</file>
-    <file>icons/remove.png</file>
-    <file>icons/refresh.png</file>    
-    <file>icons/go-up.png</file>
-    <file>icons/go-down.png</file>
-    <file>icons/file-new.png</file>
-    <file>icons/file-open.png</file>
-    <file>icons/file-close.png</file>
-    <file>icons/file-save.png</file>
-    <file>icons/file-save-as.png</file>
-    <file>icons/reload.png</file>
-    <file>icons/modify.png</file>
-    <file>icons/start.png</file>
-    <file>icons/stop.png</file>
-    <file>icons/pause.png</file>
-    <file>icons/magic.png</file> 
-    <file>icons/cmake.png</file>
-    <file>icons/cmakelists.png</file>
-    <file>icons/cpp.png</file>
-    <file>icons/fortran.png</file>
-    <file>icons/hpp.png</file>
-    <file>icons/notype.png</file>
-    <file>icons/qt-ui.png</file>
-    <file>icons/waredir.png</file>
-    <file>icons/wareshub.png</file>
-    <file>icons/build.png</file>
-    <file>icons/configure.png</file>
-    <file>icons/menu.png</file>
+    
+    <!-- icons for toolbars -->
+    <file>icons/project-new_light.png</file>
+    <file>icons/project-new_grayed.png</file>
+    <file>icons/project-new_dark.png</file>
+    <file>icons/project-open_light.png</file>    
+    <file>icons/project-open_grayed.png</file>
+    <file>icons/project-open_dark.png</file>
+    <file>icons/project-save_light.png</file>
+    <file>icons/project-save_grayed.png</file>
+    <file>icons/project-save-as_light.png</file>
+    <file>icons/project-save-as_grayed.png</file>
+    <file>icons/file-new_light.png</file>
+    <file>icons/file-new_grayed.png</file>
+    <file>icons/file-new_dark.png</file>
+    <file>icons/file-open_light.png</file>
+    <file>icons/file-open_grayed.png</file>
+    <file>icons/file-open_dark.png</file>
+    <file>icons/file-save_light.png</file>
+    <file>icons/file-save_grayed.png</file>
+    <file>icons/file-save_dark.png</file>
+    <file>icons/file-save-as_light.png</file>     
+    <file>icons/file-save-as_grayed.png</file>
+    <file>icons/file-save-as_dark.png</file>
+    <file>icons/close_light.png</file>
+    <file>icons/close_grayed.png</file>
+    <file>icons/reload_light.png</file>
+    <file>icons/reload_grayed.png</file>
+    <file>icons/run_light.png</file>
+    <file>icons/run_grayed.png</file>
+    <file>icons/build_light.png</file>
+    <file>icons/build_grayed.png</file>
+    <file>icons/build_dark.png</file>
+    <file>icons/configure_light.png</file>
+    <file>icons/configure_grayed.png</file>
+    <file>icons/configure_dark.png</file>
+    
+    <!-- icons for buttons -->
+    <file>icons/add_dark.png</file>
+    <file>icons/remove_dark.png</file>
+    <file>icons/refresh_dark.png</file>    
+    <file>icons/go-up_dark.png</file>
+    <file>icons/go-down_dark.png</file>
+    <file>icons/modify_dark.png</file>
+    <file>icons/start_dark.png</file>
+    <file>icons/stop_dark.png</file>    
+    <file>icons/pause_dark.png</file>
+    <file>icons/magic_dark.png</file> 
+    <file>icons/menu_dark.png</file>
+    
+    <!-- icons for completion -->
     <file>icons/cppcode.png</file>
     <file>icons/OFcode.png</file>
-    <file>icons/git_linked.png</file>
-    <file>icons/git_added.png</file>
-    <file>icons/git_conflict.png</file>
-    <file>icons/git_staged.png</file>
-    <file>icons/git_tracked.png</file>
-    <file>icons/git_untracked.png</file>
+    
+    <!-- icons for filetypes -->
+    <file>filetypes/cmake.png</file>
+    <file>filetypes/cmakelists.png</file>
+    <file>filetypes/cpp.png</file>
+    <file>filetypes/fortran.png</file>
+    <file>filetypes/hpp.png</file>
+    <file>filetypes/notype.png</file>
+    <file>filetypes/qt-ui.png</file>
+    <file>filetypes/waredir.png</file>
+    <file>filetypes/wareshub.png</file>        
+    
+    <!-- git emblems -->
+    <file>emblems/git_linked.png</file>
+    <file>emblems/git_added.png</file>
+    <file>emblems/git_conflict.png</file>
+    <file>emblems/git_staged.png</file>
+    <file>emblems/git_tracked.png</file>
+    <file>emblems/git_untracked.png</file>
+    
   </qresource>
 </RCC>

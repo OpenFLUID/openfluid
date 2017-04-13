@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 
     do
     {
-      openfluid::ui::common::OpenFLUIDSplashScreen Splash(QPixmap(":/images/openfluid_splash_devstudio.png"));
+      openfluid::ui::common::OpenFLUIDSplashScreen Splash(QPixmap(":/devstudio/images/openfluid_splash_devstudio.png"));
       Splash.show();
 
       Splash.setMessage("i18n");
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
       Q_INIT_RESOURCE(openfluiduicommon);
 #endif
 
-      //    OPENFLUID_APPLICATION.setAttribute(Qt::AA_DontShowIconsInMenus);
+      QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
 
       MainWindow m_MainWindow(&Splash);
       m_MainWindow.show();

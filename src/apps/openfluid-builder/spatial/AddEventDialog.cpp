@@ -37,11 +37,13 @@
  */
 
 
+#include <QPushButton>
+
+#include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
+
 #include "ui_EditEventDialog.h"
 #include "AddEventDialog.hpp"
-#include <openfluid/ui/config.hpp>
-
-#include <QPushButton>
 
 
 AddEventDialog::AddEventDialog(const QString& ClassName, const QStringList& IDsList,
@@ -51,10 +53,10 @@ AddEventDialog::AddEventDialog(const QString& ClassName, const QStringList& IDsL
 {
   ui->setupUi(this);
 
-  ui->AddInfoButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddInfoButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddInfoButton->setIconSize(QSize(20,20));
 
-  ui->RemoveInfoButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveInfoButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveInfoButton->setIconSize(QSize(20,20));
 
   ui->UnitsClassLabel->setText(ClassName);

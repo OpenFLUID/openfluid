@@ -68,7 +68,7 @@ AddObserverDialog::AddObserverDialog(QWidget* Parent) :
 
     QListWidgetItem* Item = new QListWidgetItem(ID);
 
-    Item->setIcon(QIcon(":/images/ware-obs-plugged.png"));
+    Item->setIcon(QIcon(":/builder/images/ware-obs-plugged.png"));
 
     ui->WaresListWidget->addItem(Item);
   }

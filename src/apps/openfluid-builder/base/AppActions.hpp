@@ -43,6 +43,7 @@
 
 #include <QAction>
 #include <QToolBar>
+#include <QIcon>
 
 #include <openfluid/ware/PluggableWare.hpp>
 

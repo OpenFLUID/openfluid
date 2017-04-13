@@ -38,10 +38,11 @@
  */
 
 
+#include <QVBoxLayout>
+
 #include "ui_DashboardStatusWidget.h"
 #include "DashboardStatusWidget.hpp"
-
-#include <QVBoxLayout>
+#include "builderconfig.hpp"
 
 
 DashboardStatusWidget::DashboardStatusWidget(const ProjectCentral* PrjCentral,QWidget* Parent):
@@ -55,14 +56,15 @@ DashboardStatusWidget::DashboardStatusWidget(const ProjectCentral* PrjCentral,QW
 
   ui->NoMessageLabel->setStyleSheet("color:white; font:italic;");
 
-  ui->InnerWidget->setStyleSheet("#InnerWidget "
-                                    "{background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
-                                        "stop:0 #314054, "
-                                        "stop:1 #3F546E); "
+  ui->InnerWidget->setStyleSheet(QString("#InnerWidget "
+                                        "{background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
+                                        "stop:0 %1, "
+                                        "stop:1 %2); "
                                         "border-top-left-radius: 1px;"
                                         "border-top-right-radius: 1px;"
                                         "border-bottom-left-radius: 6px;"
-                                        "border-bottom-right-radius: 6px;}");
+                                        "border-bottom-right-radius: 6px;}").arg(BUILDER_DASHBOARD_DARKCOLOR)
+                                                                            .arg(BUILDER_DASHBOARD_LIGHTCOLOR));
 
   ui->ContentsScrollArea->setStyleSheet("QFrame {background-color: rgba(0,0,0,0);}");
 

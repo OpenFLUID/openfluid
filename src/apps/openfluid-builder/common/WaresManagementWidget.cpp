@@ -38,6 +38,8 @@
  */
 
 
+#include <openfluid/ui/common/UIHelpers.hpp>
+
 #include "ui_WaresManagementWidget.h"
 #include "WaresManagementWidget.hpp"
 #include "WareWidget.hpp"
@@ -58,14 +60,14 @@ WaresManagementWidget::WaresManagementWidget(QWidget* Parent,
   connect(mp_CollapseAllWaresLabel,SIGNAL(clicked()),this,SLOT(collapseAll()));
 
 
-  ui->AddWareFirstButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddWareFirstButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddWareFirstButton->setIconSize(QSize(20,20));
 
   ui->AddWareSecondButton->setVisible(WithSecondAddWareButton);
 
   if (WithSecondAddWareButton)
   {
-    ui->AddWareSecondButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+    ui->AddWareSecondButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
     ui->AddWareSecondButton->setIconSize(QSize(20,20));
 
   }

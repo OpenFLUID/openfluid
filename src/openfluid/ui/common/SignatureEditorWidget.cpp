@@ -41,6 +41,7 @@
 #include <openfluid/ui/common/SignatureEditorWidget.hpp>
 
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
 
 
@@ -56,11 +57,11 @@ SignatureEditorWidget::SignatureEditorWidget(QWidget* Parent):
   ui->IDLabel->setVisible(false);
 
   ui->AddAuthorButton->setText("");
-  ui->AddAuthorButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddAuthorButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddAuthorButton->setIconSize(QSize(20,20));
 
   ui->RemoveAuthorButton->setText("");
-  ui->RemoveAuthorButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveAuthorButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveAuthorButton->setIconSize(QSize(20,20));
 
   ui->FixedSchedValueEdit->setValidator(new QIntValidator(ui->FixedSchedValueEdit));

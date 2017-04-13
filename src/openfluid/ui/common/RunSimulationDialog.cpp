@@ -47,6 +47,7 @@
 
 #include <openfluid/ui/common/RunSimulationDialog.hpp>
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
@@ -104,10 +105,10 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluid
   ui->SimulationBar->setMinimum(0);
   ui->SimulationBar->setMaximum(100);
 
-  ui->PauseButton->setIcon(QIcon(":/ui/common/icons/pause.png"));
+  ui->PauseButton->setIcon(openfluid::ui::common::getIcon("pause","/ui/common"));
   ui->PauseButton->setIconSize(QSize(16,16));
 
-  ui->StopButton->setIcon(QIcon(":/ui/common/icons/stop.png"));
+  ui->StopButton->setIcon(openfluid::ui::common::getIcon("stop","/ui/common"));
   ui->StopButton->setIconSize(QSize(16,16));
   ui->StopButton->setEnabled(false);
 
@@ -229,7 +230,7 @@ void RunSimulationDialog::requestSuspendResume()
   else
   {
     ui->StopButton->setEnabled(false);
-    ui->PauseButton->setIcon(QIcon(":/ui/common/icons/pause.png"));
+    ui->PauseButton->setIcon(openfluid::ui::common::getIcon("pause","/ui/common"));
     ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
     ui->StatusLabel->setText(tr("running"));
   }
@@ -244,7 +245,7 @@ void RunSimulationDialog::requestSuspendResume()
 
 void RunSimulationDialog::validateSuspend()
 {
-  ui->PauseButton->setIcon(QIcon(":/ui/common/icons/start.png"));
+  ui->PauseButton->setIcon(openfluid::ui::common::getIcon("start","/ui/common"));
   ui->PauseButton->setEnabled(true);
   ui->StopButton->setEnabled(true);
   ui->StatusLabel->setText(tr("paused"));

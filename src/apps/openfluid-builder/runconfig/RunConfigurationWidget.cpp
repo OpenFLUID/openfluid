@@ -38,11 +38,12 @@
  */
 
 
-#include "ui_RunConfigurationWidget.h"
-#include "RunConfigurationWidget.hpp"
-
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
+
+#include "ui_RunConfigurationWidget.h"
+#include "RunConfigurationWidget.hpp"
 
 
 RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
@@ -55,7 +56,7 @@ RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluid
   ui->ConstraintComboBox->addItem(tr("Forced - Simulators scheduling requests are forced to DeltaT"));
 
   ui->ResetThreadsButton->setText("");
-  ui->ResetThreadsButton->setIcon(QIcon(":/ui/common/icons/refresh.png"));
+  ui->ResetThreadsButton->setIcon(openfluid::ui::common::getIcon("refresh","/ui/common"));
   ui->ResetThreadsButton->setIconSize(QSize(16,16));
 
 

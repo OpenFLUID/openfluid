@@ -40,12 +40,12 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_WareWidget.h"
 #include "SimulatorWidget.hpp"
 #include "ParameterWidget.hpp"
 #include "AddParamDialog.hpp"
-
 #include "builderconfig.hpp"
 #include "ProjectCentral.hpp"
 #include "ExtensionsRegistry.hpp"
@@ -61,8 +61,8 @@ SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDe
   refresh();
 
   ui->GenerateSrcButton->setText("");
-  ui->GenerateSrcButton->setIcon(QIcon(":/icons/ghost2sim.png"));
-  ui->GenerateSrcButton->setIconSize(QSize(32,16));
+  ui->GenerateSrcButton->setIcon(openfluid::ui::common::getIcon("ghost2sim","/builder"));
+  ui->GenerateSrcButton->setIconSize(QSize(16,16));
 
   connect(ui->AddParamButton,SIGNAL(clicked()),this,SLOT(addParameterToList()));
   connect(ui->GenerateSrcButton,SIGNAL(clicked()),this,SLOT(notifySrcGenerateAsked()));

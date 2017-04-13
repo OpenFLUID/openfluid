@@ -46,6 +46,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_SpatialDomainWidget.h"
 #include "SpatialDomainWidget.hpp"
@@ -84,40 +85,40 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   mp_MapScene = new MapScene(m_Domain,this);
   ui->GlobalMapView->setScene(mp_MapScene);
 
-  ui->AddUnitsClassButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddUnitsClassButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddUnitsClassButton->setIconSize(QSize(20,20));
 
-  ui->AddUnitButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddUnitButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddUnitButton->setIconSize(QSize(20,20));
 
-  ui->RemoveUnitButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveUnitButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveUnitButton->setIconSize(QSize(20,20));
 
-  ui->AddConnectionButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddConnectionButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddConnectionButton->setIconSize(QSize(20,20));
 
-  ui->RemoveConnectionButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveConnectionButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveConnectionButton->setIconSize(QSize(20,20));
 
-  ui->AddAttributeButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddAttributeButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddAttributeButton->setIconSize(QSize(20,20));
 
-  ui->EditAttributesButton->setIcon(QIcon(":/ui/common/icons/modify.png"));
+  ui->EditAttributesButton->setIcon(openfluid::ui::common::getIcon("modify","/ui/common"));
   ui->EditAttributesButton->setIconSize(QSize(20,20));
 
-  ui->RenameAttributeButton->setIcon(QIcon(":/icons/rename-attribute.png"));
+  ui->RenameAttributeButton->setIcon(openfluid::ui::common::getIcon("rename-column","/builder"));
   ui->RenameAttributeButton->setIconSize(QSize(20,20));
 
-  ui->RemoveAttributeButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveAttributeButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveAttributeButton->setIconSize(QSize(20,20));
 
-  ui->AddEventButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddEventButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddEventButton->setIconSize(QSize(20,20));
 
-  ui->EditEventButton->setIcon(QIcon(":/ui/common/icons/modify.png"));
+  ui->EditEventButton->setIcon(openfluid::ui::common::getIcon("modify","/ui/common"));
   ui->EditEventButton->setIconSize(QSize(20,20));
 
-  ui->RemoveEventsButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveEventsButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveEventsButton->setIconSize(QSize(20,20));
 
 

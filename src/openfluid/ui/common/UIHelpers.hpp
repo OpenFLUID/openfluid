@@ -44,6 +44,7 @@
 #include <QColor>
 #include <QRegExp>
 #include <QLineEdit>
+#include <QIcon>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -64,6 +65,25 @@ inline void fixLineEdit(QLineEdit* LineEdit,QRegExp SearchRegExp = QRegExp("[^\\
   int CPos = LineEdit->cursorPosition();
   LineEdit->setText(LineEdit->text().replace(SearchRegExp,NewStr));
   LineEdit->setCursorPosition(CPos);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline QIcon getIcon(const QString& IconName,const QString& ResourcePath,bool IsLight = false)
+{
+  QString IconSuffix = "dark";
+  if (IsLight)
+    IconSuffix = "light";
+
+  QIcon TmpIcon(QString(":%1/icons/%2_%3.png").arg(ResourcePath).arg(IconName).arg(IconSuffix));
+
+  if (IsLight)
+    TmpIcon.addPixmap(QPixmap(QString(":%1/icons/%2_grayed.png").arg(ResourcePath).arg(IconName)),QIcon::Disabled);
+
+  return TmpIcon;
 }
 
 

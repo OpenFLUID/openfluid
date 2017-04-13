@@ -37,10 +37,11 @@
 */
 
 
+#include <QMessageBox>
+
 #include <observers/export.vars.files.csv/EditSetDialog.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
-
-#include <QMessageBox>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "CSVObsParamsWidget.hpp"
 #include "ui_CSVObsParamsWidget.h"
@@ -59,25 +60,25 @@ CSVObsParamsWidget::CSVObsParamsWidget(): openfluid::builderext::PluggableParame
   ui->setupUi(this);
   setAutoFillBackground(true);
 
-  ui->AddFormatButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddFormatButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddFormatButton->setIconSize(QSize(16,16));
 
-  ui->EditFormatButton->setIcon(QIcon(":/ui/common/icons/modify.png"));
+  ui->EditFormatButton->setIcon(openfluid::ui::common::getIcon("modify","/ui/common"));
   ui->EditFormatButton->setIconSize(QSize(16,16));
 
-  ui->RemoveFormatButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveFormatButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveFormatButton->setIconSize(QSize(16,16));
 
-  ui->AddSetButton->setIcon(QIcon(":/ui/common/icons/add.png"));
+  ui->AddSetButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddSetButton->setIconSize(QSize(16,16));
 
-  ui->EditSetButton->setIcon(QIcon(":/ui/common/icons/modify.png"));
+  ui->EditSetButton->setIcon(openfluid::ui::common::getIcon("modify","/ui/common"));
   ui->EditSetButton->setIconSize(QSize(16,16));
 
-  ui->RemoveSetButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
+  ui->RemoveSetButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveSetButton->setIconSize(QSize(16,16));
 
-  ui->AutoButton->setIcon(QIcon(":/ui/common/icons/magic.png"));
+  ui->AutoButton->setIcon(openfluid::ui::common::getIcon("magic","/ui/common"));
   ui->AutoButton->setIconSize(QSize(16,16));
 
   connect(ui->AddFormatButton,SIGNAL(clicked()),this,SLOT(addFormat()));

@@ -279,21 +279,21 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
     {
       if (m_GitBranchByWarePath.contains(filePath(Index)))
       {
-        QPixmap Base(":/ui/common/icons/waredir.png");
-        QPixmap Overlay(":/ui/common/icons/git_linked.png");
+        QPixmap Base(":/ui/common/filetypes/waredir.png");
+        QPixmap Overlay(":/ui/common/emblems/git_linked.png");
 
         QPainter painter(&Base);
         painter.drawPixmap(Base.width()*0.4, Base.height()*0.4, Base.width()*0.6, Base.height()*0.6, Overlay);
         return QIcon(Base);
       }
 
-      return QIcon(":/ui/common/icons/waredir.png");
+      return QIcon(":/ui/common/filetypes/waredir.png");
     }
 
     if (!isDir(Index))
     {
       QString FilePath = filePath(Index);
-      QString BaseIconPath = ":/ui/common/icons/notype.png";
+      QString BaseIconPath = ":/ui/common/filetypes/notype.png";
 
       for (QMap<QString, QString>::const_iterator it = m_UserIcons.begin(); it != m_UserIcons.end(); ++it)
       {
