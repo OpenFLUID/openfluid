@@ -361,7 +361,7 @@ void RunSimulationDialog::setCompleted()
   ui->StopButton->setEnabled(false);
 
   ui->ElapsedLabel
-    ->setText(QString::fromStdString(openfluid::tools::convertMSecsToDurationString(m_ElapsedTimer.elapsed())));
+    ->setText(QString::fromStdString(openfluid::tools::getDurationAsPrettyString(m_ElapsedTimer.elapsed())));
 }
 
 

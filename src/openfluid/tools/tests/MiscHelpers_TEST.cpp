@@ -70,6 +70,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::matchWithWildcard("foo???foo","foobarfoo"),true);
 
 
+  // =====================================================================
+
+
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.1"),0);
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.1",false),0);
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~alpha8","1.6.1"),-1);
@@ -86,6 +89,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~rc1","1.6.1~RC1"),0);
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~rc1","1.6.1+18"),-2);
 
+
+  // =====================================================================
+
+
 #if defined(OPENFLUID_OS_WINDOWS)
   BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("c:\\foo"),"c:\\foo");
   BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("c:\\foo\\"),"c:\\foo");
@@ -98,6 +105,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("/foo/bar/baz//"),"/foo/bar/baz");
 #endif
 
+
+  // =====================================================================
+
+
   for (int i =0; i<10; i++)
     std::cout << "10 chars: " << openfluid::tools::generatePseudoUniqueIdentifier(10) << std::endl;
 
@@ -105,11 +116,33 @@ BOOST_AUTO_TEST_CASE(check_operations)
     std::cout << (2*(i+1)) << " chars: " << openfluid::tools::generatePseudoUniqueIdentifier(2*(i+1)) << std::endl;
 
 
-  std::cout << openfluid::tools::convertMSecsToDurationString(123456789) << std::endl;
+  // =====================================================================
+
+  int MSecs, Seconds, Minutes, Hours, Days  = 0;
+
+  openfluid::tools::splitDuration(0,Days,Hours,Minutes,Seconds,MSecs);
+  BOOST_REQUIRE_EQUAL(Days,0);
+  BOOST_REQUIRE_EQUAL(Hours,0);
+  BOOST_REQUIRE_EQUAL(Minutes,0);
+  BOOST_REQUIRE_EQUAL(Seconds,0);
+  BOOST_REQUIRE_EQUAL(MSecs,0);
+
+  openfluid::tools::splitDuration(86400000+3600000+60000+1000+1,Days,Hours,Minutes,Seconds,MSecs);
+  BOOST_REQUIRE_EQUAL(Days,1);
+  BOOST_REQUIRE_EQUAL(Hours,1);
+  BOOST_REQUIRE_EQUAL(Minutes,1);
+  BOOST_REQUIRE_EQUAL(Seconds,1);
+  BOOST_REQUIRE_EQUAL(MSecs,1);
+
+
+  // =====================================================================
+
+
+  for (auto D : {123456789,12345678,1234567,123456,12345,1234,123,12,1,0})
+    std::cout << D << "ms = " << openfluid::tools::getDurationAsPrettyString(D) << std::endl;
+
+  for (auto D : {86400000,3600000,60000,1000,86460001,3601000})
+    std::cout << D << "ms = " << openfluid::tools::getDurationAsPrettyString(D) << std::endl;
 
 }
-
-
-// =====================================================================
-// =====================================================================
 

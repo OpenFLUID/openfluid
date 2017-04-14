@@ -125,14 +125,30 @@ std::string OPENFLUID_API generatePseudoUniqueIdentifier(const unsigned int Leng
 
 
 /**
-  Converts the milliseconds value into a string representing the duration as days, hours, minutes and decimal seconds.
+  splits the given duration in milliseconds into days, hours, minutes, seconds and milliseconds.
+  @param[in] MSecsDuration the duration in milliseconds
+  @param[out] Days the number of days
+  @param[out] Hours the number of hours
+  @param[out] Minutes the number of minutes
+  @param[out] Seconds the number of seconds
+  @param[out] MSecs the number of milliseconds
+*/
+void OPENFLUID_API splitDuration(long int MSecsDuration, int& Days, int& Hours, int& Minutes, int& Seconds, int& MSecs);
+
+
+/**
+  returns the given duration as a pretty string representing days, hours, minutes and decimal seconds.
   @code
-  openfluid::tools::convertMSecsToDurationString(123456789); // returns "1d 10h 17m 36.789s"
+  openfluid::tools::getDurationAsPrettyString(123456789); // returns "1d 10h 17m 36.789s"
+  openfluid::tools::getDurationAsPrettyString(12345678);  // returns "3h 25m 45.678s"
+  openfluid::tools::getDurationAsPrettyString(123456);    // returns "2m 3.456s"
+  openfluid::tools::getDurationAsPrettyString(1234);      // returns "1.234s"
+  openfluid::tools::getDurationAsPrettyString(12);        // returns "0.012s"
   @endcode
-  @param[in] MSecs the duration in milliseconds
+  @param[in] MSecsDuration the duration in milliseconds
   @return the converted duration as a string
 */
-std::string OPENFLUID_API convertMSecsToDurationString(long int MSecs);
+std::string OPENFLUID_API getDurationAsPrettyString(long int MSecsDuration);
 
 
 } } //namespaces

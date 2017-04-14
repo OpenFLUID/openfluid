@@ -40,6 +40,8 @@
 #include <thread>
 #include <chrono>
 #include <random>
+#include <sstream>
+#include <iomanip>
 
 #include <QDir>
 
@@ -267,19 +269,73 @@ std::string generatePseudoUniqueIdentifier(const unsigned int Length)
 // =====================================================================
 
 
-std::string convertMSecsToDurationString(long int MSecs)
+void splitDuration(long int MSecsDuration, int& Days, int& Hours, int& Minutes, int& Seconds, int& MSecs)
 {
-  int LeftMSecs = (int) (MSecs % 1000);
-  int Seconds = (int) (MSecs / 1000) % 60;
-  int Minutes = (int) ((MSecs / (1000*60)) % 60);
-  int Hours   = (int) ((MSecs / (1000*60*60)) % 24);
-  int Days   = (int) (MSecs / (1000*60*60*24));
+  MSecs = (int) (MSecsDuration % 1000);
+  Seconds = (int) (MSecsDuration / 1000) % 60;
+  Minutes = (int) ((MSecsDuration / (1000*60)) % 60);
+  Hours   = (int) ((MSecsDuration / (1000*60*60)) % 24);
+  Days   = (int) (MSecsDuration / (1000*60*60*24));
+}
 
-  return openfluid::tools::convertValue(Days)+"d "+
-         openfluid::tools::convertValue(Hours)+"h "+
-         openfluid::tools::convertValue(Minutes)+"m "+
-         openfluid::tools::convertValue(Seconds)+"."+
-         openfluid::tools::convertValue(LeftMSecs)+"s";
+
+// =====================================================================
+// =====================================================================
+
+
+std::string getDurationAsPrettyString(long int MSecsDuration)
+{
+  int MSecs, Seconds, Minutes, Hours, Days  = 0;
+
+  splitDuration(MSecsDuration,Days,Hours,Minutes,Seconds,MSecs);
+
+  std::stringstream MSecsSS;
+  MSecsSS << std::setw(3) << std::setfill('0') << MSecs;
+
+  std::string TmpStr = MSecsSS.str()+"s";
+
+  if (!Days)
+  {
+    if (!Hours)
+    {
+      if (!Minutes)
+      {
+        if (!Seconds)
+        {
+          TmpStr = "0."+
+                   TmpStr;
+        }
+        else
+        {
+          TmpStr = openfluid::tools::convertValue(Seconds)+"."+
+                   TmpStr;
+        }
+      }
+      else
+      {
+        TmpStr = openfluid::tools::convertValue(Minutes)+"m "+
+                 openfluid::tools::convertValue(Seconds)+"."+
+                 TmpStr;
+      }
+    }
+    else
+    {
+      TmpStr = openfluid::tools::convertValue(Hours)+"h "+
+               openfluid::tools::convertValue(Minutes)+"m "+
+               openfluid::tools::convertValue(Seconds)+"."+
+               TmpStr;
+    }
+  }
+  else
+  {
+    TmpStr = openfluid::tools::convertValue(Days)+"d "+
+             openfluid::tools::convertValue(Hours)+"h "+
+             openfluid::tools::convertValue(Minutes)+"m "+
+             openfluid::tools::convertValue(Seconds)+"."+
+             TmpStr;
+  }
+
+  return TmpStr;
 }
 
 

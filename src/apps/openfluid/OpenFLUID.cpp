@@ -728,9 +728,9 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << std::endl;
 
-  std::cout << "Simulation run time: " << openfluid::tools::convertMSecsToDurationString(EffectiveTime) << std::endl;
+  std::cout << "Simulation run time: " << openfluid::tools::getDurationAsPrettyString(EffectiveTime) << std::endl;
   std::cout << "     Total run time: "
-            << openfluid::tools::convertMSecsToDurationString(FullTimer.elapsed()) << std::endl;
+            << openfluid::tools::getDurationAsPrettyString(FullTimer.elapsed()) << std::endl;
   std::cout << std::endl;
 
   mp_Engine->finalize();
