@@ -79,6 +79,8 @@ class AbstractModuleWidget : public QWidget
 
     virtual void whenPropertiesAsked() = 0;
 
+    virtual void whenExploreAsked() = 0;
+
     virtual bool whenCloseAsked() = 0;
 
     /**

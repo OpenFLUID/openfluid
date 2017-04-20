@@ -221,6 +221,8 @@ class ProjectModuleWidget : public AbstractModuleWidget
 
     void whenPropertiesAsked();
 
+    void whenExploreAsked();
+
     bool whenCloseAsked();
 
     bool whenPreferencesAsked();

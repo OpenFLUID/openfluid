@@ -101,6 +101,8 @@ class AppCoordinator : public QObject
 
     void whenPropertiesAsked();
 
+    void whenExploreAsked();
+
     void whenPreferencesAsked();
 
     void whenWaresRefreshAsked();

@@ -88,6 +88,8 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
           this, SLOT(whenSaveAsAsked()));
   connect(m_Actions.action("ProjectProperties"), SIGNAL(triggered()),
           this, SLOT(whenPropertiesAsked()));
+  connect(m_Actions.action("ProjectExplore"), SIGNAL(triggered()),
+          this, SLOT(whenExploreAsked()));
   connect(m_Actions.action("ProjectClose"), SIGNAL(triggered()),
           this, SLOT(whenCloseAsked()));
 
@@ -646,6 +648,16 @@ void AppCoordinator::whenSaveAsAsked()
 void AppCoordinator::whenPropertiesAsked()
 {
   mp_CurrentModule->whenPropertiesAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenExploreAsked()
+{
+  mp_CurrentModule->whenExploreAsked();
 }
 
 

@@ -38,23 +38,21 @@
 
 
 #include <QMessageBox>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 #include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
-
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 #include <openfluid/machine/GhostSimulatorFileIO.hpp>
-
 #include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
-
 #include <openfluid/waresdev/WareSrcManager.hpp>
-
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
@@ -401,6 +399,19 @@ void ProjectModuleWidget::whenPropertiesAsked()
     openfluid::base::RunContextManager::instance()->saveProject();
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModuleWidget::whenExploreAsked()
+{
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  QDesktopServices::openUrl(QUrl::fromLocalFile(
+      QString(openfluid::base::RunContextManager::instance()->getProjectPath().c_str())));
+  QApplication::restoreOverrideCursor();
 }
 
 

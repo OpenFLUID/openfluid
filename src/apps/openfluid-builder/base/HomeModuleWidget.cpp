@@ -250,6 +250,16 @@ void HomeModuleWidget::whenPropertiesAsked()
 // =====================================================================
 
 
+void HomeModuleWidget::whenExploreAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool HomeModuleWidget::whenCloseAsked()
 {
   return false;

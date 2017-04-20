@@ -129,11 +129,14 @@ void AppActions::createActions()
   m_Actions["ProjectSaveAs"] = new QAction(tr("Save as..."), this);
   m_Actions["ProjectSaveAs"]->setIcon(openfluid::ui::common::getIcon("project-save-as","/ui/common",true));
 
-  m_Actions["ProjectProperties"] = new QAction(tr("Properties"), this);
-
   m_Actions["ProjectClose"] = new QAction(tr("Close"), this);
   m_Actions["ProjectClose"]->setShortcuts(QKeySequence::Close);
   m_Actions["ProjectClose"]->setIcon(openfluid::ui::common::getIcon("close","/ui/common",true));
+
+  m_Actions["ProjectProperties"] = new QAction(tr("Properties"), this);
+
+  m_Actions["ProjectExplore"] = new QAction(tr("Open in file explorer"), this);
+  m_Actions["ProjectExplore"]->setShortcut(QKeySequence(Qt::ALT+Qt::Key_X));
 
   m_Actions["ProjectQuit"] = new QAction(tr("Quit"), this);
   m_Actions["ProjectQuit"]->setShortcuts(QKeySequence::Quit);
@@ -172,6 +175,7 @@ void AppActions::createActions()
 
   m_Actions["SimulationRun"] = new QAction(tr("Run simulation"), this);
   m_Actions["SimulationRun"]->setIcon(openfluid::ui::common::getIcon("run","/ui/common",true));
+  m_Actions["SimulationRun"]->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
 
 
   //View Menu
@@ -274,15 +278,18 @@ void AppActions::setHomeMode()
 
   m_Actions["ProjectSave"]->setVisible(false);
   m_Actions["ProjectSaveAs"]->setVisible(false);
-  m_Actions["ProjectProperties"]->setVisible(false);
   m_Actions["ProjectReload"]->setVisible(false);
   m_Actions["ProjectClose"]->setVisible(false);
+  m_Actions["ProjectProperties"]->setVisible(false);
+  m_Actions["ProjectExplore"]->setVisible(false);
 
   mp_DevelopmentMenu->menuAction()->setVisible(false);
   mp_SimulationMenu->menuAction()->setVisible(false);
   mp_ViewMenu->menuAction()->setVisible(false);
   mp_ExtensionsMenu->menuAction()->setVisible(false);
-  if (mp_MainToolbar != nullptr) mp_MainToolbar->hide();
+
+  if (mp_MainToolbar != nullptr)
+    mp_MainToolbar->hide();
 }
 
 
@@ -396,8 +403,10 @@ void AppActions::createMenus(MainWindow& MainWin)
   Menu->addAction(action("ProjectReload"));
   Menu->addAction(action("ProjectSave"));
   Menu->addAction(action("ProjectSaveAs"));
-  Menu->addAction(action("ProjectProperties"));
   Menu->addAction(action("ProjectClose"));
+  Menu->addSeparator();
+  Menu->addAction(action("ProjectProperties"));
+  Menu->addAction(action("ProjectExplore"));
   Menu->addSeparator();
   Menu->addAction(action("ProjectQuit"));
 
