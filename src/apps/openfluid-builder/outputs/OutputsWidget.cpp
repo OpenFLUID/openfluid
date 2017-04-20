@@ -37,15 +37,17 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
-#include <openfluid/base/RunContextManager.hpp>
+
 #include <QFileSystemModel>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QMessageBox>
 #include <QApplication>
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/ui/common/LogExplorerDialog.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/config.hpp>
 
 #include "ui_OutputsWidget.h"
@@ -56,6 +58,16 @@ OutputsWidget::OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXD
   WorkspaceWidget(Parent,AFXDesc), ui(new Ui::OutputsWidget), mp_FSModel(new QFileSystemModel(this))
 {
   ui->setupUi(this);
+
+  ui->ExploreButton->setIcon(openfluid::ui::common::getIcon("file-explorer","/ui/common"));
+  ui->ExploreButton->setIconSize(QSize(20,20));
+
+  ui->ClearButton->setIcon(openfluid::ui::common::getIcon("delete","/ui/common"));
+  ui->ClearButton->setIconSize(QSize(20,20));
+
+  ui->LogButton->setIcon(openfluid::ui::common::getIcon("log-view","/ui/common"));
+  ui->LogButton->setIconSize(QSize(20,20));
+
 
   QDir("").mkpath(QString(openfluid::base::RunContextManager::instance()->getOutputDir().c_str()));
 

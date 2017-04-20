@@ -200,9 +200,11 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
 
   updateSaveButtonsStatus(false, false);
 
-  statusBar()->showMessage(tr("Current workspace: %1")
-                           .arg(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
-                                                           ->getBuilderWorkspacePath())));
+
+  QString TmpLabel = tr("Current workspace: %1")
+                     .arg(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
+                                                     ->getBuilderWorkspacePath()));
+  statusBar()->addPermanentWidget(new QLabel(TmpLabel),1);
 }
 
 

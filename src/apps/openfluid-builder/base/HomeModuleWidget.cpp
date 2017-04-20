@@ -414,6 +414,7 @@ QPushButton* HomeModuleWidget::createButton(const QAction* Action, const QString
   QPushButton* Button = new QPushButton(Text,ui->ButtonsFrame);
   Button->setMinimumHeight(65);
   Button->setIconSize(QSize(48,48));
+  Button->setStyleSheet("text-align:left; padding-left : 20px");
   if (AltIcon.isNull())
     Button->setIcon(Action->icon());
   else

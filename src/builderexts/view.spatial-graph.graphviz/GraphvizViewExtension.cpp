@@ -38,15 +38,16 @@
  */
 
 
+#include <QDir>
+#include <QThread>
+#include <QMessageBox>
+
 #include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_GraphvizWidget.h"
 #include "GraphvizViewExtension.hpp"
 #include "SVGFileGeneratorWorker.hpp"
-
-#include <QDir>
-#include <QThread>
-#include <QMessageBox>
 
 
 // =====================================================================
@@ -70,6 +71,12 @@ GraphvizViewExtension::GraphvizViewExtension() :
   mp_GraphvizScene(nullptr)
 {
   ui->setupUi(this);
+
+  ui->PNGExportButton->setIcon(openfluid::ui::common::getIcon("export","/ui/common"));
+  ui->PNGExportButton->setIconSize(QSize(20,20));
+
+  ui->SVGExportButton->setIcon(openfluid::ui::common::getIcon("export","/ui/common"));
+  ui->SVGExportButton->setIconSize(QSize(20,20));
 }
 
 

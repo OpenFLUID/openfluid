@@ -45,6 +45,7 @@
     <!-- icons for buttons -->
     <file>icons/add_dark.png</file>
     <file>icons/remove_dark.png</file>
+    <file>icons/delete_dark.png</file>
     <file>icons/refresh_dark.png</file>    
     <file>icons/go-up_dark.png</file>
     <file>icons/go-down_dark.png</file>
@@ -52,8 +53,11 @@
     <file>icons/start_dark.png</file>
     <file>icons/stop_dark.png</file>    
     <file>icons/pause_dark.png</file>
+    <file>icons/export_dark.png</file>
     <file>icons/magic_dark.png</file> 
     <file>icons/menu_dark.png</file>
+    <file>icons/file-explorer_dark.png</file>
+    <file>icons/log-view_dark.png</file>
     
     <!-- icons for completion -->
     <file>icons/cppcode.png</file>

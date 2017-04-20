@@ -51,14 +51,14 @@
        <item>
         <widget class="QPushButton" name="ExploreButton">
          <property name="text">
-          <string>Explore contents</string>
+          <string>Explore</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="ClearButton">
          <property name="text">
-          <string>Delete contents</string>
+          <string>Delete</string>
          </property>
         </widget>
        </item>

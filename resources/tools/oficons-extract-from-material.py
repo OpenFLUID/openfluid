@@ -96,6 +96,8 @@ BaseSet['market'] = ['action','shopping_cart',False,True,False]
 ExtSet['file-explorer'] = ['file-tree',False,True,False]
 ExtSet['dev-wares'] = ['code-braces',False,True,False]
 ExtSet['ghost2sim'] = ['json',False,True,False]
+ExtSet['log-view'] = ['message-text-outline',False,True,False]
+ExtSet['export'] = ['export',False,True,False]
 
 
 BaseSetVersion = '1x_web'

@@ -82,6 +82,12 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
   mp_WaresManWidget->ui->AddWareFirstButton->setText(tr("Add simulator"));
   mp_WaresManWidget->ui->AddWareSecondButton->setText(tr("Add generator"));
 
+  ui->PNGExportButton->setIcon(openfluid::ui::common::getIcon("export","/ui/common"));
+  ui->PNGExportButton->setIconSize(QSize(20,20));
+
+  ui->SVGExportButton->setIcon(openfluid::ui::common::getIcon("export","/ui/common"));
+  ui->SVGExportButton->setIconSize(QSize(20,20));
+
   connect(mp_ShowHideGlobalParamsLabel,SIGNAL(clicked()),this,SLOT(updateShowHideGlobalParams()));
   connect(ui->AddGlobalParamButton,SIGNAL(clicked()),this,SLOT(addGlobalParam()));
 

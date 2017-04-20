@@ -44,6 +44,7 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QFileDialog>
+#include <QLabel>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/Exception.hpp>
@@ -150,10 +151,10 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
 
   m_MainWindow.setQuitAction(m_Actions.action("ProjectQuit"));
 
-  m_MainWindow.statusBar()->showMessage(tr("Current workspace: %1")
-                                        .arg(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
-                                                                        ->getBuilderWorkspacePath())));
-
+  QString TmpLabel = tr("Current workspace: %1")
+                     .arg(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
+                                                     ->getBuilderWorkspacePath()));
+  m_MainWindow.statusBar()->addPermanentWidget(new QLabel(TmpLabel),1);
 }
 
 
