@@ -38,6 +38,7 @@
  */
 
 
+#include <QLocale>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QColorDialog>
@@ -127,7 +128,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
 
   initialize();
 
-  connect(ui->LangComboBox,SIGNAL(currentIndexChanged(const QString&)),this,SLOT(updateLanguage(const QString&)));
+  connect(ui->LangComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateLanguage(int)));
   connect(ui->RecentMaxSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateRecentsMax(int)));
   connect(ui->ClearRecentsButton,SIGNAL(clicked()),this,SLOT(clearRecentsList()));
   connect(ui->AutoSaveCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableAutoSaveBeforeRun(bool)));
@@ -208,15 +209,40 @@ PreferencesDialog::~PreferencesDialog()
 // =====================================================================
 
 
+QString PreferencesDialog::getLanguageAsPrettyString(const QString& LangCode)
+{
+  QLocale Loc(LangCode);
+  QString LangName;
+
+  if (Loc.language() == QLocale::English)
+    LangName = QLocale::languageToString(Loc.language());
+  else
+    LangName = Loc.nativeLanguageName();
+
+  LangName[0] = LangName[0].toUpper();
+  QString CountryName = Loc.nativeCountryName();
+
+  return QString("%1 (%2)").arg(LangName).arg(Loc.nativeCountryName());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void PreferencesDialog::initialize()
 {
   openfluid::base::PreferencesManager* PrefsMan = openfluid::base::PreferencesManager::instance();
 
-  // Interface
-  // TODO set up a fancier languages list
-  ui->LangComboBox->addItem("default");
-  ui->LangComboBox->addItems(openfluid::base::PreferencesManager::getAvailableLangs());
-  ui->LangComboBox->setCurrentIndex(ui->LangComboBox->findText(PrefsMan->getLang()));
+  // Interface language
+  QStringList AvailLangCodes = openfluid::base::PreferencesManager::getAvailableLangs();
+
+  ui->LangComboBox->addItem(getLanguageAsPrettyString("en_GB"),"default");
+  for (auto Code : AvailLangCodes)
+  {
+    ui->LangComboBox->addItem(getLanguageAsPrettyString(Code),Code);
+  }
+  ui->LangComboBox->setCurrentIndex(ui->LangComboBox->findData(PrefsMan->getLang()));
 
   m_OriginalLangIndex = ui->LangComboBox->currentIndex();
 
@@ -298,8 +324,10 @@ void PreferencesDialog::changePage(QTreeWidgetItem* Current, QTreeWidgetItem* Pr
 // =====================================================================
 
 
-void PreferencesDialog::updateLanguage(const QString& Lang)
+void PreferencesDialog::updateLanguage(int Index)
 {
+  QString Lang = ui->LangComboBox->itemData(Index).toString();
+
   openfluid::base::PreferencesManager::instance()->setLang(Lang);
 
   updateRestartStatus();

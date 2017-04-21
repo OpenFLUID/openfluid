@@ -27,7 +27,7 @@
 <context>
     <name>GraphvizViewExtension</name>
     <message>
-        <location filename="GraphvizViewExtension.cpp" line="100"/>
+        <location filename="GraphvizViewExtension.cpp" line="107"/>
         <source>GraphViz software (dot) cannot be found!
 Please make sure the dot program is accessible in the PATH
 and try launching this extension again.</source>
@@ -102,7 +102,7 @@ et essayez de lancer cette extension à nouveau.</translation>
 <context>
     <name>signature</name>
     <message>
-        <location filename="GraphvizViewExtension.cpp" line="59"/>
+        <location filename="GraphvizViewExtension.cpp" line="60"/>
         <source>Spatial graph viewer (GraphViz)</source>
         <translation>Visualisateur du graphe d&apos;espace (GraphViz)</translation>
     </message>

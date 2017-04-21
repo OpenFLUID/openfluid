@@ -86,7 +86,7 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 
     void changePage(QTreeWidgetItem* Current, QTreeWidgetItem* Previous);
 
-    void updateLanguage(const QString& Lang);
+    void updateLanguage(int Index);
 
     void clearRecentsList();
 
@@ -196,6 +196,8 @@ class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
     void updateSyntaxElementColorButton(QToolButton* Button, const QString& ColorName);
 
     void updateRestartStatus();
+
+    static QString getLanguageAsPrettyString(const QString& LangCode);
 
 
   signals:

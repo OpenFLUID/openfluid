@@ -510,19 +510,19 @@ Quitter l&apos;import quand même?</translation>
     </message>
     <message>
         <location filename="SourceAddDialog.cpp" line="189"/>
-        <location filename="SourceAddDialog.cpp" line="282"/>
-        <location filename="SourceAddDialog.cpp" line="291"/>
+        <location filename="SourceAddDialog.cpp" line="283"/>
+        <location filename="SourceAddDialog.cpp" line="292"/>
         <source>Aborting.</source>
         <translation>Abandon.</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="279"/>
-        <location filename="SourceAddDialog.cpp" line="289"/>
+        <location filename="SourceAddDialog.cpp" line="280"/>
+        <location filename="SourceAddDialog.cpp" line="290"/>
         <source>Error importing from source</source>
         <translation>Erreur d&apos;&apos;import depuis la source</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="281"/>
+        <location filename="SourceAddDialog.cpp" line="282"/>
         <source>The mandatory field &quot;OFLD_ID&quot; cannot be found.</source>
         <translation>Le champ obligatoire &quot;OFLD_ID&quot; ne peut être trouvé.</translation>
     </message>
@@ -540,8 +540,8 @@ Abandon.</translation>
         <translation>%1 couche(s) disponible(s)</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="278"/>
-        <location filename="SourceAddDialog.cpp" line="288"/>
+        <location filename="SourceAddDialog.cpp" line="279"/>
+        <location filename="SourceAddDialog.cpp" line="289"/>
         <source>Import error</source>
         <translation>Erreur d&apos;import</translation>
     </message>
