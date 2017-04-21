@@ -1,6 +1,16 @@
 2.1.4
 
-  * Introduced run options in Builder, acccording to command line options
+  * Introduced run options in Builder, acccording to existing 
+    command line options
+  * Added elapsed execution time for simulations in Builder
+  * Added menu entry in Builder to open the current project directory 
+    in a file explorer 
+  * Added keyboard shortcuts in Builder
+  * Updated icons sets for Builder and Devstudio, now based on material design
+  * Modified default behaviour when inserting generators in Builder, 
+    now inserted at the beginning of the model
+  * Modified title for generators widgets in Builder to be more explicit
+  * Modified writing system of fluidx files to avoid data fragmentation
   * Refactored Builder software architecture
   * Cleaned code
   * Fixed bugs
