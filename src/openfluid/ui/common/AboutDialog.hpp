@@ -41,11 +41,10 @@
 #define __OPENFLUID_UICOMMON_ABOUTDIALOG_HPP__
 
 
-#include <openfluid/dllexport.hpp>
-
-
 #include <QDialog>
 #include <QAction>
+
+#include <openfluid/dllexport.hpp>
 
 
 namespace Ui
@@ -56,9 +55,6 @@ namespace Ui
 
 namespace openfluid { namespace ui { namespace common {
 
-
-class ClickableLabel;
-class ActionLabel;
 
 
 class OPENFLUID_API AboutDialog : public QDialog
@@ -75,10 +71,11 @@ class OPENFLUID_API AboutDialog : public QDialog
 
     bool m_InfoIsCredits;
 
+    QString resourceToString(const QString& ResName);
 
-  private slots:
+    QString generateBuildInfoText();
 
-    void toggleInfos();
+    static QString quickndirtyMardown2HTML(const QString& Content);
 
 
   public:

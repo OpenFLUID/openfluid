@@ -37,14 +37,16 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #include <QLabel>
 #include <QPushButton>
 #include <QPixmap>
+#include <QFile>
 
 #include <openfluid/config.hpp>
-#include <openfluid/ui/common/ActionLabel.hpp>
-#include <openfluid/ui/common/ClickableLabel.hpp>
+#include <openfluid/buildinfo.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
 #include "ui_AboutDialog.h"
 #include "AboutDialog.hpp"
@@ -77,17 +79,21 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
 
   ui->IconLabel->setFocus();
 
+  ui->ContentTabWidget->setCurrentIndex(0);
+
+  ui->CreditsEdit->setText(quickndirtyMardown2HTML(resourceToString(":/ui/common/texts/AUTHORS.md")));
+  ui->ChangelogEdit->setText(quickndirtyMardown2HTML(resourceToString(":/ui/common/texts/CHANGELOG.md")));
+  ui->LicenseEdit->setText(resourceToString(":/ui/common/texts/LICENSE"));
+  ui->BuildInfoEdit->setText(generateBuildInfoText());
+
+
   ui->ButtonBox->button(QDialogButtonBox::Close)->setCursor(Qt::PointingHandCursor);
-
-
-  toggleInfos();
 
   ui->BottomFrame->setStyleSheet(QString("QFrame#BottomFrame {background-color: %1;}")
                                           .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
 
   connect(ui->WebLabel,SIGNAL(clicked()),mp_WebAction,SLOT(trigger()));
   connect(ui->ContactLabel,SIGNAL(clicked()),mp_ContactAction,SLOT(trigger()));
-  connect(ui->SwitchLabel,SIGNAL(clicked()),this,SLOT(toggleInfos()));
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
@@ -108,26 +114,87 @@ AboutDialog::~AboutDialog()
 // =====================================================================
 
 
-void AboutDialog::toggleInfos()
+QString AboutDialog::resourceToString(const QString& ResName)
 {
-  ui->IconLabel->setFocus();
+  QFile Res(ResName);
 
-  m_InfoIsCredits = !m_InfoIsCredits;
+  if (!Res.open(QIODevice::ReadOnly | QIODevice::Text))
+    return "";
 
-  if (m_InfoIsCredits)
+  return QString::fromUtf8(Res.readAll());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString AboutDialog::generateBuildInfoText()
+{
+  QString Text = tr("<b>Build environment</b><br/>"
+                    "* Build type : %1<br/>"
+                    "* CMake version : %2<br/>"
+                    "* Compiler ID : %3<br/>"
+                    "* Compiler version : %4<br/>"
+                    "<br/>"
+                    "<b>Dependencies</b><br/>"
+                    "* Boost version : %5<br/>"
+                    "* Qt version : %6<br/>"
+                    "* RapidJSON version : %7<br/>"
+                    "* GDAL version : %8<br/>"
+                    "* GEOS version : %9<br/>")
+                 .arg(QString::fromStdString(openfluid::config::BUILD_TYPE))
+                 .arg(QString::fromStdString(openfluid::config::BUILD_CMAKE_VERSION))
+                 .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_ID))
+                 .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_VERSION))
+                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_BOOST_VERSION))
+                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_QT_VERSION))
+                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_RAPIDJSON_VERSION))
+                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_GDAL_VERSION))
+                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_GEOS_VERSION));
+
+  return Text;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString AboutDialog::quickndirtyMardown2HTML(const QString& Content)
+{
+  QStringList Lines = Content.split(QRegExp("[\r\n]"));
+
+  QStringList ProcessedLines;
+
+  for (auto& Line : Lines)
   {
-    ui->DescLabel->setText(tr("Credits")+":");
-    ui->SwitchLabel->setText(tr("View license"));
-    ui->InfosEdit->setText(openfluid::ui::config::AUTHORS_TEXT);
-    ui->InfosEdit->setStyleSheet("font-size: 13px;");
+    Line = openfluid::tools::escapeXMLEntities(Line);
+    if (Line.startsWith("### "))
+    {
+      Line.remove(0,4);
+      ProcessedLines.append("<i>"+Line+"</i><br/>");
+    }
+    else if (Line.startsWith("## "))
+    {
+      Line.remove(0,3);
+      ProcessedLines.append("<b>"+Line+"</b><br/>");
+    }
+    else if (Line.startsWith("# "))
+    {
+      Line.remove(0,2);
+      ProcessedLines.append("<b><u>"+Line+"</u></b><br/>");
+    }
+    else if (Line.startsWith("* "))
+    {
+      Line.remove(0,2);
+      ProcessedLines.append(Line+"<br/>");
+    }
+    else
+      ProcessedLines.append(Line+"<br/>");
   }
-  else
-  {
-    ui->DescLabel->setText(tr("License")+":");
-    ui->SwitchLabel->setText(tr("View credits"));
-    ui->InfosEdit->setStyleSheet("font-size: 12px;");
-    ui->InfosEdit->setText(openfluid::ui::config::LICENSE_TEXT);
-  }
+
+  return ProcessedLines.join("");
 }
 
 

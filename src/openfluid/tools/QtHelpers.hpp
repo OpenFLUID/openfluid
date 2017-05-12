@@ -41,8 +41,6 @@
 #define __OPENFLUID_TOOLS_QTHELPERS_HPP__
 
 
-#include <openfluid/core/DateTime.hpp>
-
 #include <string>
 #include <list>
 #include <vector>
@@ -54,6 +52,7 @@
 #include <QDateTime>
 #include <QColor>
 
+#include <openfluid/core/DateTime.hpp>
 #include <openfluid/dllexport.hpp>
 
 

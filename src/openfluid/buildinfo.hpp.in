@@ -30,42 +30,37 @@
 */
 
 /**
-  @file config.hpp
- 
+  @file buildinfo.hpp
+
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
 
-#ifndef __OPENFLUID_UI_CONFIG_HPP__
-#define __OPENFLUID_UI_CONFIG_HPP__
+#ifndef __OPENFLUID_BUILDINFO_HPP__
+#define __OPENFLUID_BUILDINFO_HPP__
 
 
-#include <QString>
+#include <string>
 
 
-namespace openfluid { namespace ui { namespace config {
+namespace openfluid { namespace config {
+
+const std::string BUILD_TYPE = "@CMAKE_BUILD_TYPE@";
+    
+const std::string BUILD_CMAKE_VERSION = "@CMAKE_VERSION@";
+
+const std::string BUILD_COMPILER_ID = "@CMAKE_CXX_COMPILER_ID@";
+const std::string BUILD_COMPILER_VERSION = "@CMAKE_CXX_COMPILER_VERSION@";
+
+const std::string BUILD_LIB_QT_VERSION = "@QT_VERSION_MAJOR@.@QT_VERSION_MINOR@.@QT_VERSION_PATCH@";
+const std::string BUILD_LIB_BOOST_VERSION = "@Boost_MAJOR_VERSION@.@Boost_MINOR_VERSION@.@Boost_SUBMINOR_VERSION@";
+const std::string BUILD_LIB_GDAL_VERSION = "@GDAL_VERSION@";
+const std::string BUILD_LIB_GEOS_VERSION = "@GEOS_VERSION@";
+const std::string BUILD_LIB_RAPIDJSON_VERSION = "@RapidJSON_VERSION@";
 
 
-const QString DIALOGBANNER_BGCOLOR = "#384A61";
-const QString DIALOGBANNER_WARNBGCOLOR = "#F59122";
-
-const QString TOOLBAR_BGCOLOR = "#2C3A4C";
-const QString TOOLBARBUTTON_BGCOLOR = "#3B4E66";
-const QString TOOLBARBUTTON_BORDERCOLOR = "#2C3A4C";
-
-const QString TOOLTIP_BGCOLOR = "#393F3F";
-const QString TOOLTIP_BORDERCOLOR = "#676767";
-
-const char* const PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::config","required");
-
-const QString LINEMARKER_ERRCOLOR = "#FFA3A3";
-const QString LINEMARKER_WARNCOLOR = "#FFD6A3";
-
-const int EXIT_CODE_FOR_RESTART = -8121186;
+} }  // namespaces
 
 
-} } } // namespaces
-
-
-#endif /* __OPENFLUID_UI_CONFIG_HPP__ */
+#endif /* __OPENFLUID_BUILDINFO_HPP__ */

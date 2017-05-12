@@ -2,6 +2,11 @@
 <RCC version="1.0">
   <qresource prefix="/ui/common">
 
+    <!-- texts -->
+    <file alias="texts/AUTHORS.md">../../../../../AUTHORS.md</file>
+    <file alias="texts/LICENSE">../../../../../LICENSE</file>
+    <file alias="texts/CHANGELOG.md">../../../../../CHANGELOG.md</file>
+
     <!-- images -->
     <file>images/openfluid_title.png</file>
     <file>images/openfluid_icon_about.png</file>
@@ -81,6 +86,6 @@
     <file>emblems/git_staged.png</file>
     <file>emblems/git_tracked.png</file>
     <file>emblems/git_untracked.png</file>
-    
+        
   </qresource>
 </RCC>

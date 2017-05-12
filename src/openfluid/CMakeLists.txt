@@ -32,6 +32,7 @@ ENDIF()
 
 CONFIGURE_FILE(global.hpp.in global.hpp @ONLY)
 CONFIGURE_FILE(config.hpp.in config.hpp @ONLY)
+CONFIGURE_FILE(buildinfo.hpp.in buildinfo.hpp @ONLY)
 
 
 INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp ware.hpp scientific.hpp 
@@ -45,5 +46,6 @@ ENDIF()
 
 INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.hpp" 
               "${CMAKE_CURRENT_BINARY_DIR}/global.hpp"
+              "${CMAKE_CURRENT_BINARY_DIR}/buildinfo.hpp"
         DESTINATION ${OPENFLUID_INCLUDE_INSTALL_PATH})
                        

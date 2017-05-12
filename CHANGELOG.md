@@ -1,4 +1,4 @@
-2.1.4
+## 2.1.4
 
   * Introduced run options in Builder, acccording to existing 
     command line options
@@ -17,7 +17,7 @@
 
 
 
-2.1.3
+## 2.1.3
 
   * Introduced packaging for Mac OSX, depending on homebrew package manager  
   * Introduced explicit geometry of spatial units, as a technology preview
@@ -39,7 +39,7 @@
 
 
 
-2.1.2
+## 2.1.2
 
   * Introduced import of wares from WaresHub sites in OpenFLUID-DevStudio
   * Introduced git notifications and minimal tools in OpenFLUID-DevStudio
@@ -62,7 +62,7 @@
 
 
 
-2.1.1
+## 2.1.1
 
   * Introduced API client for FluidHub services
   * Introduced packages for exporting and importing wares sources codes
@@ -78,7 +78,7 @@
 
 
 
-2.1.0
+## 2.1.0
 
   * Introduced OpenFLUID-DevStudio, an integrated development environment
     for simulators, observers and builder-extensions
@@ -117,7 +117,7 @@
 
 
 
-2.0.2
+## 2.0.2
 
   * Introduced management of multiple workspaces
   * Added geographic file format observer based on GDAL, in order to export
@@ -136,7 +136,7 @@
 
 
 
-2.0.1
+## 2.0.1
   
   * Added display of points, multipoints and multilines
     in map view of OpenFLUID-Builder
@@ -156,7 +156,7 @@
 
 
 
-2.0.0
+## 2.0.0
 
   * Updated simulation engine for variable time coupling, 
     including scheduling system with constraints
@@ -200,7 +200,7 @@
 
 
 
-1.7.2
+## 1.7.2
 
   * Added ROpenFLUID package for using OpenFLUID within the GNU R environment
   * Added improved macros for spatial units loops, as a preview of future
@@ -215,7 +215,7 @@
 
 
 
-1.7.1
+## 1.7.1
 
   * Added map view component in OpenFLUID-Builder, for spatial geometry
     vizualization
@@ -233,7 +233,7 @@
 
 
 
-1.7.0
+## 1.7.0
 
   * Added definitions of value types for OpenFLUID data : 
     DoubleValue, IntegerValue, BooleanValue, StringValue,
@@ -250,7 +250,7 @@
 
 
 
-1.6.2
+## 1.6.2
 
   * Released OpenFLUID-Builder application (GUI), as a preview release
   * Released OpenFLUID::guicommon API, as a preview release
@@ -269,7 +269,7 @@
 
 
 
-1.6.1
+## 1.6.1
 
   * Fixed bug in spatial loops when units class does not exist
   * Added getSeconds() method in SimulationStatus, giving the number 
@@ -278,7 +278,7 @@
 
 
 
-1.6.0
+## 1.6.0
 
   * Refactored framework architecture
   * Introduced global process order (transverse to units classes)
@@ -297,7 +297,7 @@
 
 
 
-1.5.0
+## 1.5.0
 
   * Added data generators useable in models descriptions
   * Introduced global parameters for models descriptions
@@ -327,13 +327,13 @@
   * Fixed various small bugs
 
 
-1.4.2
+## 1.4.2
 
   * Fixed major bug in OPENFLUID_Is*VariableExist() primitives
 
 
 
-1.4.1
+## 1.4.1
 
   * Introduced buddies tools : dataset conversion tools (1.3 to 1.4), function 
     documentation (func2doc), generation of empty dataset , generation of 
@@ -351,7 +351,7 @@
 
 
 
-1.4.0
+## 1.4.0
 
   * Introduced new "generic units" feature
   * Introduced new "progressive output" feature (on data and execution messages)
@@ -376,7 +376,7 @@
 
 
 
-1.3.1
+## 1.3.1
 
   * Modified management of errors (now uses exceptions)
   * Fixed bug in Vector.h (VectorValue) 
@@ -387,7 +387,7 @@
 
 
 
-1.3.0
+## 1.3.0
 
   * Changed names to OpenFLUID
   * Modified date and time management
@@ -397,7 +397,7 @@
 
 
 
-1.2-340
+## 1.2-340
 
   * Modified simulation period configuration, now with a begin and end date
   * Removed rain from required data for simulation
@@ -412,7 +412,7 @@
 
 
 
-1.1-300
+## 1.1-300
 
   * Added loading of distributed discrete events
   * Modified formats of distributed properties and initial conditions files 
@@ -422,7 +422,7 @@
 
 
 
-1.0-168
+## 1.0-168
 
   * Fixed bug in the name of generated trace files (trace mode only)
   * Fixed bug in error messages for distributed properties and initial
@@ -430,7 +430,7 @@
 
 
 
-0.7-163
+## 0.7-163
 
   * Fixed requirement of output.xml file even if results saving is disabled
     (-z command line option)
@@ -440,7 +440,7 @@
 
 
 
-0.7-161
+## 0.7-161
 
   * Added development status (experimental, beta, stable) in reports 
   (comand line options -r or -x)
@@ -450,7 +450,7 @@
 
 
 
-0.7-155
+## 0.7-155
 
   * Added save of vector variables in trace mode
   * Added HayamiRSGU simulation function
@@ -459,40 +459,40 @@
 
 
 
-0.7-153
+## 0.7-153
 
   * Fixed bug in column text file read method. Double empty lines at the end 
     of files are not needed anymore
 
 
 
-0.7-152
+## 0.7-152
 
   * Fixed bug in simulation engine
   * Modified engine for handling of vector simulation variables
 
 
 
-0.7-150
+## 0.7-150
 
   * Fixed bug in hayamirs simulation function
   * Added data production consistency checking for NaN values
 
 
 
-0.7-149
+## 0.7-149
 
   * Update rebuild taking into account SDK modifications
 
 
 
-0.7-148
+## 0.7-148
 
   * Fixed bug in Hayami tools used by hayamisu and hayamirs
 
 
 
-0.7-147
+## 0.7-147
 
   * Modified file name for rain distribution on SU
   * Added file loading for rain distribution on RS
@@ -500,26 +500,26 @@
 
 
 
-0.7-146
+## 0.7-146
 
   * Fixed -c command line option behaviour
   * Fixed segmentation fault during results saves
 
 
 
-0.7-143
+## 0.7-143
 
   * Modified code taking into account last SDK modifications
 
 
 
-0.7-142
+## 0.7-142
 
   *  Fixed error in consistency checking for updated simulation variables
 
 
 
-0.7-141
+## 0.7-141
 
   * Fixed output directory creation when only the simulation report is saved
   * Added variable production control during simulation
@@ -534,7 +534,7 @@
 
 
 
-0.7-135
+## 0.7-135
 
   * Modified mm/h to m/s rain intensity transformation method
   * Modified model.xml file format, file and ID attributes of the function 
@@ -545,7 +545,7 @@
 
 
 
-0.7-132
+## 0.7-132
 
   * Modified simulation functions signatures according to SDK modifications
   * Added display of SDK version number used to build the simulation functions

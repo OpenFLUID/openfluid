@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>650</width>
-    <height>470</height>
+    <height>550</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,13 +22,13 @@
   <property name="minimumSize">
    <size>
     <width>650</width>
-    <height>470</height>
+    <height>550</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>650</width>
-    <height>470</height>
+    <height>550</height>
    </size>
   </property>
   <property name="baseSize">
@@ -43,7 +43,7 @@
   <property name="styleSheet">
    <string notr="true">QDialog {background-color : white;}</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -196,103 +196,66 @@
       <number>12</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="DescLayout">
-       <property name="leftMargin">
+      <widget class="QTabWidget" name="ContentTabWidget">
+       <property name="currentIndex">
         <number>0</number>
        </property>
-       <property name="bottomMargin">
-        <number>6</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="DescLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string notr="true">DescLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="openfluid::ui::common::ActionLabel" name="SwitchLabel">
-         <property name="text">
-          <string notr="true">SwitchLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>50</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QTextEdit" name="InfosEdit">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="documentTitle">
-        <string notr="true"/>
-       </property>
-       <property name="html">
-        <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="textInteractionFlags">
-        <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-       </property>
+       <widget class="QWidget" name="CreditsTab">
+        <attribute name="title">
+         <string>Credits</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QTextEdit" name="CreditsEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="ChangelogTab">
+        <attribute name="title">
+         <string>Changelog</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QTextEdit" name="ChangelogEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="LicenceTab">
+        <attribute name="title">
+         <string>License</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QTextEdit" name="LicenseEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="BuildInfoTab">
+        <attribute name="title">
+         <string>Build information</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <widget class="QTextEdit" name="BuildInfoEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -327,27 +290,7 @@ p, li { white-space: pre-wrap; }
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-color: white;
-background-color: rgb(71,97,123);
-border-width: 2px;
-border-color: white;
-border-style: solid;
-border-radius: 7;
-padding: 3px;
-font-size: 13px;
-padding-left: 5px;
-padding-right: 5px;
-min-width: 80px;
-max-width: 80px;
-min-height: 20px;
-max-height: 20px;
-font : bold;
-}
-QPushButton:pressed{ background-color: white; }
-QPushButton:focus:pressed{ background-color: white; }
-QPushButton:focus{ background-color: white; }
-QPushButton:hover{ background-color: #86AE39; }</string>
+         <string notr="true"/>
         </property>
         <property name="standardButtons">
          <set>QDialogButtonBox::Close</set>
@@ -364,11 +307,6 @@ QPushButton:hover{ background-color: #86AE39; }</string>
    <class>openfluid::ui::common::ClickableLabel</class>
    <extends>QLabel</extends>
    <header location="global">openfluid/ui/common/ClickableLabel.hpp</header>
-  </customwidget>
-  <customwidget>
-   <class>openfluid::ui::common::ActionLabel</class>
-   <extends>QLabel</extends>
-   <header location="global">openfluid/ui/common/ActionLabel.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>
