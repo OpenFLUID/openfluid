@@ -1,22 +1,19 @@
 language: cpp
 
+dist: trusty
 sudo: false
 
 addons:
   apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - kubuntu-backports
-    - boost-latest
     packages:
     - cmake
     - git
-    - gcc-4.8
-    - g++-4.8
-    - gfortran-4.8
-    - libboost1.55-dev
-    - libboost-test1.55-dev
-    - libqt4-dev 
+    - gcc
+    - g++
+    - gfortran
+    - libboost-dev
+    - libboost-test-dev
+    - libqt4-dev
     - libgdal1h 
     - libgdal1-dev 
     - libgeos++-dev 
@@ -26,15 +23,12 @@ addons:
 
 
 env:
-  global:
-    - GCC_VERSION_SUFFIX="-4.8"
   matrix:
     - OFBUILD_TRAVIS_BUILDTYPE=debug
     - OFBUILD_TRAVIS_BUILDTYPE=release
 
 
 before_script:
-  - export CC=gcc${GCC_VERSION_SUFFIX} && export CXX=g++${GCC_VERSION_SUFFIX} && export FC=gfortran${GCC_VERSION_SUFFIX}
   - echo "SET(OPENFLUID_ENABLE_MARKET 1)" > CMake.in.local.cmake
   - echo "SET(OFBUILD_TESTS_ENABLE_FORTRAN 1)" >> CMake.in.local.cmake  
   - echo "SET(OFBUILD_UNITTESTS_RUN_OPTIONS \"--log_level=all\")" >> CMake.in.local.cmake
