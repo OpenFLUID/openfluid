@@ -30,53 +30,62 @@
 */
 
 /**
-  @file GitDashboardItemWidget.hpp
+  @file WorkspaceDevConfigureBuildWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_GITDASHBOARDITEMWIDGET_HPP__
-#define __OPENFLUID_UIWARESDEV_GITDASHBOARDITEMWIDGET_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVCONFIGUREBUILDWORKER_HPP__
+#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVCONFIGUREBUILDWORKER_HPP__
 
-
-#include <QFrame>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ui/waresdev/WorkspaceGitDashboardWorker.hpp>
-
-
-namespace Ui {
-class GitDashboardItemWidget;
-}
+#include <openfluid/ui/waresdev/WorkspaceDevProcessWorker.hpp>
+#include <openfluid/waresdev/WareSrcContainer.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API GitDashboardItemWidget: public QFrame
+class OPENFLUID_API WorkspaceDevConfigureBuildWorker : public WorkspaceDevProcessWorker
 {
   Q_OBJECT;
 
 
+  private slots:
+
+    void processStdOut();
+
+    void processStdErr();
+
+
   private:
 
-    Ui::GitDashboardItemWidget* ui;
+    QProcess* mp_Process;
 
-    static void updateStatusString(QString& CurrentStr, const QString& State, int Counter);
+    openfluid::waresdev::WareSrcContainer::ConfigMode m_ConfigMode;
 
-    static QString getStatusString(const WorkspaceGitDashboardWorker::WareStatusInfo& Infos);
+    openfluid::waresdev::WareSrcContainer::BuildMode m_BuildMode;
+
+
+  public slots:
+
+    void run();
 
 
   public:
 
-    GitDashboardItemWidget(const WorkspaceGitDashboardWorker::WareStatusInfo& Infos, QWidget* Parent = nullptr);
+    WorkspaceDevConfigureBuildWorker(const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection,
+                                     openfluid::waresdev::WareSrcContainer::ConfigMode CMode,
+                                     openfluid::waresdev::WareSrcContainer::BuildMode BMode);
 
-    virtual ~GitDashboardItemWidget();
+    ~WorkspaceDevConfigureBuildWorker();
+
 };
 
 
-} } } // namespaces
+} } }  // namespaces
 
 
-#endif /* __OPENFLUID_UIWARESDEV_GITDASHBOARDITEMWIDGET_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVCONFIGUREBUILDWORKER_HPP__ */

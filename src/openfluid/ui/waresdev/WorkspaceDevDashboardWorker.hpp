@@ -30,14 +30,14 @@
 */
 
 /**
-  @file WorkspaceGitDashboardWorker.hpp
+  @file WorkspaceDevDashboardWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEGITDASHBOARDWORKER_HPP__
-#define __OPENFLUID_UIWARESDEV_WORKSPACEGITDASHBOARDWORKER_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVDASHBOARDWORKER_HPP__
+#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVDASHBOARDWORKER_HPP__
 
 
 #include <QObject>
@@ -45,49 +45,21 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevDashboardTypes.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WorkspaceGitDashboardWorker : public QObject
+class OPENFLUID_API WorkspaceDevDashboardWorker : public QObject
 {
 
   Q_OBJECT;
 
 
-  public:
-
-    struct WareStatusInfo
-    {
-      openfluid::ware::WareType Type = openfluid::ware::WareType::UNDEFINED;
-
-      QString ID = "";
-
-      QString BranchName = "";
-
-      bool IsDirty = false;
-
-      int DirtyCounter = 0;
-
-      std::map<openfluid::utils::GitProxy::FileStatus,int> IndexCounters =
-      {
-        {openfluid::utils::GitProxy::FileStatus::UNTRACKED,0},
-        {openfluid::utils::GitProxy::FileStatus::TRACKED,0},
-        {openfluid::utils::GitProxy::FileStatus::IGNORED,0},
-        {openfluid::utils::GitProxy::FileStatus::CONFLICT,0},
-        {openfluid::utils::GitProxy::FileStatus::ADDED,0},
-        {openfluid::utils::GitProxy::FileStatus::DELETED,0},
-        {openfluid::utils::GitProxy::FileStatus::MODIFIED,0}
-      };
-
-    };
-
-
   signals:
 
-    void wareParsed(openfluid::ui::waresdev::WorkspaceGitDashboardWorker::WareStatusInfo);
+    void wareParsed(openfluid::ui::waresdev::WorkspaceDevDashboardTypes::WareGitInfos);
 
     void finished();
 
@@ -99,9 +71,9 @@ class OPENFLUID_API WorkspaceGitDashboardWorker : public QObject
 
   public:
 
-    WorkspaceGitDashboardWorker();
+    WorkspaceDevDashboardWorker();
 
-    ~WorkspaceGitDashboardWorker();
+    ~WorkspaceDevDashboardWorker();
 
 };
 
@@ -109,7 +81,7 @@ class OPENFLUID_API WorkspaceGitDashboardWorker : public QObject
 } } }  // namespaces
 
 
-Q_DECLARE_METATYPE(openfluid::ui::waresdev::WorkspaceGitDashboardWorker::WareStatusInfo);
+Q_DECLARE_METATYPE(openfluid::ui::waresdev::WorkspaceDevDashboardTypes::WareGitInfos);
 
 
-#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEGITDASHBOARDWORKER_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVDASHBOARDWORKER_HPP__ */

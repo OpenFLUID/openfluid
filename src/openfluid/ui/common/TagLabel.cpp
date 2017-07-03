@@ -26,30 +26,27 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
- */
+  
+*/
 
 
 /**
-  @file ElidedLabel.cpp
+  @file TagLabel.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#include <QPainter>
-#include <QResizeEvent>
-
-#include <openfluid/ui/common/ElidedLabel.hpp>
+#include <openfluid/ui/common/TagLabel.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {
 
 
-ElidedLabel::ElidedLabel(QWidget* Parent, Qt::WindowFlags Flags):
-  QLabel(Parent, Flags), m_ElideMode(Qt::ElideMiddle)
+TagLabel::TagLabel(QWidget* Parent) :
+  QLabel(Parent)
 {
-  setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+  applyStyle();
 }
 
 
@@ -57,10 +54,10 @@ ElidedLabel::ElidedLabel(QWidget* Parent, Qt::WindowFlags Flags):
 // =====================================================================
 
 
-ElidedLabel::ElidedLabel(const QString& Text, QWidget* Parent, Qt::WindowFlags Flags):
-  QLabel(Text, Parent, Flags), m_ElideMode(Qt::ElideMiddle)
+TagLabel::TagLabel(const QString& Text, QWidget* Parent) :
+    QLabel(Text,Parent)
 {
-  setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+  applyStyle();
 }
 
 
@@ -68,11 +65,12 @@ ElidedLabel::ElidedLabel(const QString& Text, QWidget* Parent, Qt::WindowFlags F
 // =====================================================================
 
 
-ElidedLabel::ElidedLabel(const QString& Text, Qt::TextElideMode ElideMode,
-                         QWidget* Parent, Qt::WindowFlags Flags):
-  QLabel(Text, Parent, Flags), m_ElideMode(ElideMode)
+TagLabel::TagLabel(const QString& Text,
+                   const QString& CSSTextColor, const QString& CSSBackgroundColor,
+                   QWidget* Parent) :
+    QLabel(Text,Parent), m_CSSTextColor(CSSTextColor), m_CSSBackgroundColor(CSSBackgroundColor)
 {
-  setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+  applyStyle();
 }
 
 
@@ -80,28 +78,20 @@ ElidedLabel::ElidedLabel(const QString& Text, Qt::TextElideMode ElideMode,
 // =====================================================================
 
 
-void ElidedLabel::resizeEvent(QResizeEvent* Ev)
+void TagLabel::applyStyle()
 {
-  QLabel::resizeEvent(Ev);
-  cacheElidedText(Ev->size().width());
-}
 
-
-// =====================================================================
-// =====================================================================
-
-
-void ElidedLabel::paintEvent(QPaintEvent* Ev)
-{
-  if(m_ElideMode == Qt::ElideNone)
+  if (m_Outlined)
   {
-    QLabel::paintEvent(Ev);
+    setStyleSheet(QString("qproperty-alignment: AlignCenter; color : %1; border : 1px solid %1; "
+                          "background-color : none ; border-radius: 4px; padding : 4px; font-size : %2pt;")
+                          .arg(m_CSSBackgroundColor).arg(m_TextSize));
   }
   else
   {
-    QPainter p(this);
-    p.drawText(0, 0, geometry().width(), geometry().height(),
-               alignment(),m_CachedElidedText);
+    setStyleSheet(QString("qproperty-alignment: AlignCenter; color : %1; "
+                          "background-color : %2 ; border-radius: 4px; padding : 4px; font-size : %3pt;")
+                          .arg(m_CSSTextColor).arg(m_CSSBackgroundColor).arg(m_TextSize));
   }
 }
 
@@ -110,9 +100,11 @@ void ElidedLabel::paintEvent(QPaintEvent* Ev)
 // =====================================================================
 
 
-void ElidedLabel::cacheElidedText(int Width)
+void TagLabel::setTextColor(const QString& CSSColor)
 {
-  m_CachedElidedText = fontMetrics().elidedText(text(), m_ElideMode, Width, Qt::TextShowMnemonic);
+  m_CSSTextColor = CSSColor;
+
+  applyStyle();
 }
 
 
@@ -120,10 +112,11 @@ void ElidedLabel::cacheElidedText(int Width)
 // =====================================================================
 
 
-void ElidedLabel::setElideMode(Qt::TextElideMode ElideMode)
+void TagLabel::setBackgroundColor(const QString& CSSColor)
 {
-  m_ElideMode = ElideMode;
-  updateGeometry();
+  m_CSSBackgroundColor = CSSColor;
+
+  applyStyle();
 }
 
 
@@ -131,14 +124,24 @@ void ElidedLabel::setElideMode(Qt::TextElideMode ElideMode)
 // =====================================================================
 
 
-void ElidedLabel::setText(const QString& Text)
+void TagLabel::setTextSize(int Pt)
 {
-  QLabel::setText(Text);
-  cacheElidedText(geometry().width());
+  m_TextSize = Pt;
 
-  setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+  applyStyle();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void TagLabel::setOutlined(bool Enabled)
+{
+  m_Outlined = Enabled;
+
+  applyStyle();
 }
 
 
 } } } // namespaces
-

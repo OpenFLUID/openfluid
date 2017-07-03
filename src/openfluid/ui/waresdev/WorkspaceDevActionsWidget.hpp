@@ -26,73 +26,50 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
- */
+  
+*/
 
 /**
-  @file ElidedLabel.hpp
+  @file WorkspaceDevActionsWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
-#define __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVACTIONSWIDGET_HPP__
+#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVACTIONSWIDGET_HPP__
 
 
-#include <QLabel>
+#include <QWidget>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevDashboardTypes.hpp>
+#include <openfluid/ui/common/TagLabel.hpp>
 
 
-namespace openfluid { namespace ui { namespace common {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
-/**
-  Single line elided label class, based on QLabel
-*/
-class OPENFLUID_API ElidedLabel : public QLabel
+class OPENFLUID_API WorkspaceDevActionsWidget: public QWidget
 {
-  Q_OBJECT
+  Q_OBJECT;
 
   private:
 
-    QString m_CachedElidedText;
-
-    Qt::TextElideMode m_ElideMode;
-
-
-  protected:
-
-    void paintEvent(QPaintEvent *Ev);
-
-    void resizeEvent(QResizeEvent *Ev);
-
-
-  protected:
-
-    void cacheElidedText(int w);
+    std::map<QString,openfluid::ui::common::TagLabel*> m_ActionsMap;
 
 
   public:
 
-    ElidedLabel(QWidget* Parent = nullptr, Qt::WindowFlags Flags=0);
+    WorkspaceDevActionsWidget(const WorkspaceDevDashboardTypes::ActionsByRows& Actions, QWidget* Parent = nullptr);
 
-    ElidedLabel(const QString& Text, QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
+    virtual ~WorkspaceDevActionsWidget();
 
-    ElidedLabel(const QString& Text, Qt::TextElideMode ElideMode = Qt::ElideRight,
-                QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
-
-    void setElideMode(Qt::TextElideMode ElideMode);
-
-    Qt::TextElideMode getElideMode() const
-    { return m_ElideMode; }
-
-    void setText(const QString& Text);
+    void setState(const QString& ActionName, bool IsOK);
 };
 
 
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVACTIONSWIDGET_HPP__ */

@@ -180,6 +180,8 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QString getAbsolutePath() const;
 
+    QString getBuildDirPath() const;
+
     openfluid::ware::WareType getType() const;
 
     QString getID() const;
@@ -215,6 +217,18 @@ class OPENFLUID_API WareSrcContainer: public QObject
       otherwise an empty string
     */
     QString getJsonPath() const;
+
+    std::map<QString,QString> getConfigureVariables() const;
+
+    QString getConfigureGenerator() const;
+
+    QString getConfigureExtraOptions() const;
+
+    QProcessEnvironment getConfigureEnvironment() const;
+
+    QProcessEnvironment getBuildEnvironment() const;
+
+    void prepareBuildDirectory() const;
 
     void setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream);
 

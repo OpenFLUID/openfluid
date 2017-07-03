@@ -31,44 +31,43 @@
 
 
 /**
-  @file GitDashboardItemWidget.cpp
+  @file WorkspaceDevGitWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#include <openfluid/ui/waresdev/GitDashboardItemWidget.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevGitWidget.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 
-#include "ui_GitDashboardItemWidget.h"
+#include "ui_WorkspaceDevGitWidget.h"
 
-
-static const QString COLOR_WARN = "#ffa90b"; //#ffb327
-static const QString COLOR_OK = "#0fb727";
-static const QString COLOR_LIGHT = "#555555";
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-GitDashboardItemWidget::GitDashboardItemWidget(const WorkspaceGitDashboardWorker::WareStatusInfo& Infos,
-                                               QWidget* Parent) :
-    QFrame(Parent), ui(new Ui::GitDashboardItemWidget)
+WorkspaceDevGitWidget::WorkspaceDevGitWidget(const WorkspaceDevDashboardTypes::WareGitInfos& Infos,
+                                             QWidget* Parent) :
+    QWidget(Parent), ui(new Ui::WorkspaceDevGitWidget)
 {
   ui->setupUi(this);
 
+  if (Infos.IsTracked)
+  {
+    ui->InfosWidget->setCurrentIndex(0);
+    if (Infos.BranchName != openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName())
+      ui->BranchLabel->setText("<font style='color: orange;'>"+Infos.BranchName+"</font>");
+    else
+      ui->BranchLabel->setText("<font style='color: green;'>"+Infos.BranchName+"</font>");
 
-  ui->WareIDLabel->setText(Infos.ID);
-
-
-  if (Infos.BranchName != openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName())
-    ui->BranchLabel->setText("<font style='color: "+COLOR_WARN+";'>"+Infos.BranchName+"</font>");
+    ui->StatusLabel->setText(getStatusString(Infos));
+  }
   else
-    ui->BranchLabel->setText("<font style='color: "+COLOR_OK+";'>"+Infos.BranchName+"</font>");
+    ui->InfosWidget->setCurrentIndex(1);
 
-
-  ui->StatusLabel->setText(getStatusString(Infos));
+  adjustSize();
 }
 
 
@@ -76,7 +75,7 @@ GitDashboardItemWidget::GitDashboardItemWidget(const WorkspaceGitDashboardWorker
 // =====================================================================
 
 
-GitDashboardItemWidget::~GitDashboardItemWidget()
+WorkspaceDevGitWidget::~WorkspaceDevGitWidget()
 {
   delete ui;
 }
@@ -86,7 +85,7 @@ GitDashboardItemWidget::~GitDashboardItemWidget()
 // =====================================================================
 
 
-void GitDashboardItemWidget::updateStatusString(QString& CurrentStr, const QString& State, int Counter)
+void WorkspaceDevGitWidget::updateStatusString(QString& CurrentStr, const QString& State, int Counter)
 {
   if (Counter)
   {
@@ -102,7 +101,7 @@ void GitDashboardItemWidget::updateStatusString(QString& CurrentStr, const QStri
 // =====================================================================
 
 
-QString GitDashboardItemWidget::getStatusString(const WorkspaceGitDashboardWorker::WareStatusInfo& Infos)
+QString WorkspaceDevGitWidget::getStatusString(const WorkspaceDevDashboardTypes::WareGitInfos& Infos)
 {
   QString StatusStr;
 
@@ -120,9 +119,9 @@ QString GitDashboardItemWidget::getStatusString(const WorkspaceGitDashboardWorke
                      tr("conflict"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::CONFLICT));
 
   if (StatusStr.isEmpty())
-    StatusStr = "<font style='color: "+COLOR_OK+";'>"+tr("clean")+"</font>";
+    StatusStr = "<font style='color: green;'>"+tr("clean")+"</font>";
   else
-    StatusStr = "<font style='color: "+COLOR_WARN+";'>"+StatusStr+"</font>";
+    StatusStr = "<font style='color: orange;'>"+StatusStr+"</font>";
 
   return StatusStr;
 }

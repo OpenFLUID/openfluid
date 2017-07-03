@@ -38,14 +38,13 @@
  */
 
 
+#include <QDateTime>
+
+#include <openfluid/ui/common/TagLabel.hpp>
 
 #include "ui_NewsItemWidget.h"
 #include "NewsItemWidget.hpp"
 #include "builderconfig.hpp"
-
-#include <QLabel>
-#include <QDateTime>
-
 
 QLocale NewsItemWidget::m_Locale = QLocale(QLocale::English);
 
@@ -87,13 +86,9 @@ QWidget(Parent), ui(new Ui::NewsItemWidget)
     QString TagLabelText = Tag;
     TagLabelText.replace(" ","\n");
 
-    QLabel* TagLabel = new QLabel(TagLabelText,TagWidget);
+    openfluid::ui::common::TagLabel* TagLabel = new openfluid::ui::common::TagLabel(TagLabelText,"white",
+                                                                                    getCSSColorFromTag(Tag),TagWidget);
     TagLabel->setWordWrap(true);
-
-    TagLabel->setStyleSheet(QString("qproperty-alignment: AlignCenter; color : %1; "
-                                    "background-color : %2 ; border-radius: 4px; padding : 4px; font-size : 9pt;")
-                            .arg("white",getCSSColorFromTag(Tag)));
-
 
     TagLayout->addStretch();
     TagLayout->addWidget(TagLabel);

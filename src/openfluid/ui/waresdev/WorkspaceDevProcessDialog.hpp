@@ -26,73 +26,72 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
- */
+  
+*/
 
 /**
-  @file ElidedLabel.hpp
+  @file WorkspaceDevProcessDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
-#define __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVPROCESSDIALOG_HPP__
+#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVPROCESSDIALOG_HPP__
 
 
-#include <QLabel>
+#include <QDialog>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevDashboardTypes.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevProcessWorker.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
 
 
-namespace openfluid { namespace ui { namespace common {
+namespace Ui {
+class WorkspaceDevProcessDialog;
+}
 
 
-/**
-  Single line elided label class, based on QLabel
-*/
-class OPENFLUID_API ElidedLabel : public QLabel
+namespace openfluid { namespace ui { namespace waresdev {
+
+
+class WorkspaceDevDashboardDialog;
+
+
+class OPENFLUID_API WorkspaceDevProcessDialog: public QDialog
 {
-  Q_OBJECT
+  Q_OBJECT;
 
-  private:
 
-    QString m_CachedElidedText;
+  private slots:
 
-    Qt::TextElideMode m_ElideMode;
+    void handleWorkerFinished();
+
+    void handleWorkerProcessed();
+
+    void handleWorkerMessage(QString Msg);
+
+    void copyToClipboard();
+
+    void saveToFile();
 
 
   protected:
 
-    void paintEvent(QPaintEvent *Ev);
-
-    void resizeEvent(QResizeEvent *Ev);
-
-
-  protected:
-
-    void cacheElidedText(int w);
+    Ui::WorkspaceDevProcessDialog* ui;
 
 
   public:
 
-    ElidedLabel(QWidget* Parent = nullptr, Qt::WindowFlags Flags=0);
+    WorkspaceDevProcessDialog(const QString& Title, WorkspaceDevProcessWorker* Worker,
+                              WorkspaceDevDashboardDialog* Parent);
 
-    ElidedLabel(const QString& Text, QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
-
-    ElidedLabel(const QString& Text, Qt::TextElideMode ElideMode = Qt::ElideRight,
-                QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
-
-    void setElideMode(Qt::TextElideMode ElideMode);
-
-    Qt::TextElideMode getElideMode() const
-    { return m_ElideMode; }
-
-    void setText(const QString& Text);
+    virtual ~WorkspaceDevProcessDialog();
 };
 
 
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVPROCESSDIALOG_HPP__ */

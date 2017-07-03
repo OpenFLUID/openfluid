@@ -26,73 +26,53 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
- */
+  
+*/
 
 /**
-  @file ElidedLabel.hpp
+  @file WorkspaceDevPurgeWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
-#define __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVPURGEWORKER_HPP__
+#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVPURGEWORKER_HPP__
 
-
-#include <QLabel>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevProcessWorker.hpp>
 
 
-namespace openfluid { namespace ui { namespace common {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
-/**
-  Single line elided label class, based on QLabel
-*/
-class OPENFLUID_API ElidedLabel : public QLabel
+class OPENFLUID_API WorkspaceDevPurgeWorker : public WorkspaceDevProcessWorker
 {
-  Q_OBJECT
+  Q_OBJECT;
+
 
   private:
 
-    QString m_CachedElidedText;
-
-    Qt::TextElideMode m_ElideMode;
+    QString m_BuildDirRegexStr = "_build-%1-%2";
 
 
-  protected:
+  public slots:
 
-    void paintEvent(QPaintEvent *Ev);
-
-    void resizeEvent(QResizeEvent *Ev);
-
-
-  protected:
-
-    void cacheElidedText(int w);
+    void run();
 
 
   public:
 
-    ElidedLabel(QWidget* Parent = nullptr, Qt::WindowFlags Flags=0);
+    WorkspaceDevPurgeWorker(const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection,
+                            bool CurrentVersion, bool OtherVersions, bool ReleaseMode, bool DebugMode);
 
-    ElidedLabel(const QString& Text, QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
+    ~WorkspaceDevPurgeWorker();
 
-    ElidedLabel(const QString& Text, Qt::TextElideMode ElideMode = Qt::ElideRight,
-                QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
-
-    void setElideMode(Qt::TextElideMode ElideMode);
-
-    Qt::TextElideMode getElideMode() const
-    { return m_ElideMode; }
-
-    void setText(const QString& Text);
 };
 
 
-} } } // namespaces
+} } }  // namespaces
 
 
-#endif /* __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVPURGEWORKER_HPP__ */

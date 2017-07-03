@@ -10,7 +10,11 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEd
                               NewSrcFileAssistant.cpp NewWareDialog.cpp FindReplaceDialog.cpp WareSrcMsgViewer.cpp
                               WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp WaresSrcIOProgressDialog.cpp
                               WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp WareshubIssueDialog.cpp
-                              WorkspaceGitDashboardWorker.cpp WorkspaceGitDashboardDialog.cpp GitDashboardItemWidget.cpp)
+                              WorkspaceDevDashboardWorker.cpp
+                              WorkspaceDevProcessWorker.cpp 
+                              WorkspaceDevConfigureBuildWorker.cpp WorkspaceDevCheckWorker.cpp WorkspaceDevPurgeWorker.cpp
+                              WorkspaceDevDashboardDialog.cpp WorkspaceDevWaresWidget.cpp WorkspaceDevGitWidget.cpp WorkspaceDevActionsWidget.cpp
+                              WorkspaceDevProcessDialog.cpp)
 
 SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp WareSrcWidgetCollection.hpp
                               WareSrcSyntaxHighlighter.hpp WareSrcFiletypeManager.hpp TextEditMsgStream.hpp
@@ -18,13 +22,18 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEd
                               NewSrcFileAssistant.hpp NewWareDialog.hpp FindReplaceDialog.hpp WareSrcMsgViewer.hpp
                               WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp
                               WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp WareshubIssueDialog.hpp
-                              WorkspaceGitDashboardWorker.hpp WorkspaceGitDashboardDialog.hpp GitDashboardItemWidget.hpp)
+                              WorkspaceDevDashboardTypes.hpp WorkspaceDevDashboardWorker.hpp 
+                              WorkspaceDevProcessWorker.hpp 
+                              WorkspaceDevConfigureBuildWorker.hpp WorkspaceDevCheckWorker.hpp WorkspaceDevPurgeWorker.hpp
+                              WorkspaceDevDashboardDialog.hpp WorkspaceDevWaresWidget.hpp WorkspaceDevGitWidget.hpp WorkspaceDevActionsWidget.hpp
+                              WorkspaceDevProcessDialog.hpp)
 
 QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui EmptyPage.ui CppPage.ui CMakeConfigPage.ui
                               NewSrcFileAssistant.ui NewWareDialog.ui FindReplaceDialog.ui
                               WaresSrcExportDialog.ui WaresSrcImportDialog.ui WaresSrcIOProgressDialog.ui
                               WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui
-                              WorkspaceGitDashboardDialog.ui GitDashboardItemWidget.ui)
+                              WorkspaceDevProcessDialog.ui
+                              WorkspaceDevDashboardDialog.ui WorkspaceDevWaresWidget.ui WorkspaceDevGitWidget.ui)
                                    
 
 #QT4_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)

@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
     return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
   }
   else
-    std::cout << "** Test not run due to failing to find GRASS GIS program **" << std::endl;
+    std::cout << "** Test not run due to failing to find CMake program **" << std::endl;
 
   return 0;
 }

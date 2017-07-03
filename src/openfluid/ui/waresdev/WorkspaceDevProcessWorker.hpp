@@ -30,63 +30,59 @@
 */
 
 /**
-  @file WorkspaceGitDashboardDialog.hpp
+  @file WorkspaceDevProcessWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEGITDASHBOARDDIALOG_HPP__
-#define __OPENFLUID_UIWARESDEV_WORKSPACEGITDASHBOARDDIALOG_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVPROCESSWORKER_HPP__
+#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVPROCESSWORKER_HPP__
 
 
-#include <QDialog>
-#include <QTabWidget>
-#include <QTableWidget>
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/ui/waresdev/WorkspaceGitDashboardWorker.hpp>
-
-
-namespace Ui {
-class WorkspaceGitDashboardDialog;
-}
+#include <openfluid/ui/waresdev/WorkspaceDevDashboardTypes.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WorkspaceGitDashboardDialog: public QDialog
+class OPENFLUID_API WorkspaceDevProcessWorker : public QObject
 {
   Q_OBJECT;
 
 
-  private slots:
+  protected:
 
-    void addWareInfos(openfluid::ui::waresdev::WorkspaceGitDashboardWorker::WareStatusInfo Infos);
+    WorkspaceDevDashboardTypes::WaresSelectionByType m_Selection;
+
+    void writeMessage(const QString& Msg = "");
 
 
-  private:
+  signals:
 
-    Ui::WorkspaceGitDashboardDialog* ui;
+    void finished();
 
-    int m_SimCount = 0;
+    void processed(openfluid::ware::WareType Type,QString ID,QString ActionName, bool Status);
 
-    int m_ObsCount = 0;
+    void messageWritten(QString Msg);
 
-    int m_BextCount = 0;
+
+  public slots:
+
+    virtual void run() = 0;
 
 
   public:
 
-    WorkspaceGitDashboardDialog(QWidget* Parent = nullptr);
+    WorkspaceDevProcessWorker(const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection);
 
-    virtual ~WorkspaceGitDashboardDialog();
+    virtual ~WorkspaceDevProcessWorker();
 
+    unsigned int getWaresCount() const;
 };
 
 
-} } } // namespaces
+} } }  // namespaces
 
 
-#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEGITDASHBOARDDIALOG_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVPROCESSWORKER_HPP__ */

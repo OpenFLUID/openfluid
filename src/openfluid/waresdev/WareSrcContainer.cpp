@@ -254,6 +254,16 @@ QString WareSrcContainer::getAbsolutePath() const
 // =====================================================================
 
 
+QString WareSrcContainer::getBuildDirPath() const
+{
+  return m_BuildDirPath;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::ware::WareType WareSrcContainer::getType() const
 {
   return m_Type;
@@ -297,6 +307,111 @@ QString WareSrcContainer::getCMakeListsPath() const
 QString WareSrcContainer::getJsonPath() const
 {
   return m_AbsoluteJsonPath;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::map<QString,QString> WareSrcContainer::getConfigureVariables() const
+{
+  std::map<QString,QString> Vars;
+
+  // build type
+  Vars["CMAKE_BUILD_TYPE"] = (m_ConfigMode == ConfigMode::CONFIG_RELEASE ? "Release" : "Debug");
+
+  // Use OPENFLUID_INSTALL_PREFIX env. var. if defined
+  QByteArray OpenFLUIDInstallPrefix = qgetenv("OPENFLUID_INSTALL_PREFIX");
+
+  if (!OpenFLUIDInstallPrefix.isNull())
+    Vars["CMAKE_PREFIX_PATH"] = OpenFLUIDInstallPrefix + "/lib/cmake";
+
+  return Vars;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcContainer::getConfigureGenerator() const
+{
+  return openfluid::base::PreferencesManager::instance()->getWaresdevConfigGenerator();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcContainer::getConfigureExtraOptions() const
+{
+  return openfluid::base::PreferencesManager::instance()->getWaresdevConfigOptions();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QProcessEnvironment WareSrcContainer::getConfigureEnvironment() const
+{
+  // === set process environment
+  QProcessEnvironment Env = QProcessEnvironment::systemEnvironment();
+
+  // Set PATH env. var. if configured
+  QString CustomPath = openfluid::base::PreferencesManager::instance()->getWaresdevConfigEnv("PATH");
+  if (!CustomPath.isEmpty())
+  {
+    QByteArray ExistingPath = qgetenv("PATH");
+    if (!ExistingPath.isNull())
+    {
+      CustomPath.replace("%%PATH%%", ExistingPath);
+      Env.insert("PATH", CustomPath);
+    }
+  }
+
+  return Env;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QProcessEnvironment WareSrcContainer::getBuildEnvironment() const
+{
+  QProcessEnvironment RunEnv = QProcessEnvironment::systemEnvironment();
+
+  // Set PATH env. var. if configured
+  QString CustomPath = openfluid::base::PreferencesManager::instance()->getWaresdevBuildEnv("PATH");
+  if (!CustomPath.isEmpty())
+  {
+    QByteArray ExistingPath = qgetenv("PATH");
+    if (!ExistingPath.isNull())
+    {
+      CustomPath.replace("%%PATH%%", ExistingPath);
+      RunEnv.insert("PATH", CustomPath);
+    }
+  }
+
+  return RunEnv;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::prepareBuildDirectory() const
+{
+  QFile BuildDir(m_BuildDirPath);
+
+  if (BuildDir.exists())
+    openfluid::tools::emptyDirectoryRecursively(QString(m_BuildDirPath).toStdString());
+  else if (!QDir().mkpath(m_BuildDirPath))
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to create build directory");
 }
 
 
@@ -362,51 +477,7 @@ void WareSrcContainer::configure()
   m_Messages.clear();
 
 
-  // === prepare build directory
-  QFile BuildDir(m_BuildDirPath);
-  if (BuildDir.exists())
-    openfluid::tools::emptyDirectoryRecursively(QString(m_BuildDirPath).toStdString());
-  else if (!QDir().mkpath(m_BuildDirPath))
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to create build directory");
-
-
-  // === CMake variables for command line
-
-  std::map<QString,QString> Vars;
-
-  // build type
-  Vars["CMAKE_BUILD_TYPE"] = (m_ConfigMode == ConfigMode::CONFIG_RELEASE ? "Release" : "Debug");
-
-  // Use OPENFLUID_INSTALL_PREFIX env. var. if defined
-  QByteArray OpenFLUIDInstallPrefix = qgetenv("OPENFLUID_INSTALL_PREFIX");
-
-  if (!OpenFLUIDInstallPrefix.isNull())
-    Vars["CMAKE_PREFIX_PATH"] = OpenFLUIDInstallPrefix + "/lib/cmake";
-
-
-  // === Use specific options if configured
-  QString ExtraOptions = openfluid::base::PreferencesManager::instance()->getWaresdevConfigOptions();
-
-
-  // === Use specific generator if configured
-  QString Generator = openfluid::base::PreferencesManager::instance()->getWaresdevConfigGenerator();
-
-
-  // === set process environment
-  QProcessEnvironment RunEnv = QProcessEnvironment::systemEnvironment();
-
-  // Set PATH env. var. if configured
-  QString CustomPath = openfluid::base::PreferencesManager::instance()->getWaresdevConfigEnv("PATH");
-  if (!CustomPath.isEmpty())
-  {
-    QByteArray ExistingPath = qgetenv("PATH");
-    if (!ExistingPath.isNull())
-    {
-      CustomPath.replace("%%PATH%%", ExistingPath);
-      RunEnv.insert("PATH", CustomPath);
-    }
-  }
-
+  prepareBuildDirectory();
 
   delete mp_CurrentParser;
   mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserCMake(m_AbsolutePath);
@@ -415,9 +486,11 @@ void WareSrcContainer::configure()
   // === build and run command
 
   QString Command = openfluid::utils::CMakeProxy::getConfigureCommand(m_BuildDirPath,m_AbsolutePath,
-                                                                      Vars, Generator, {ExtraOptions});
+                                                                      getConfigureVariables(),
+                                                                      getConfigureGenerator(),
+                                                                      {getConfigureExtraOptions()});
 
-  runCommand(Command, RunEnv, WareSrcProcess::Type::CONFIGURE);
+  runCommand(Command, getConfigureEnvironment(), WareSrcProcess::Type::CONFIGURE);
 }
 
 
@@ -455,23 +528,6 @@ void WareSrcContainer::build()
   QString Target = (m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "install" : "");
 
 
-  // === set process environment
-
-  QProcessEnvironment RunEnv = QProcessEnvironment::systemEnvironment();
-
-  // Set PATH env. var. if configured
-  QString CustomPath = openfluid::base::PreferencesManager::instance()->getWaresdevBuildEnv("PATH");
-  if (!CustomPath.isEmpty())
-  {
-    QByteArray ExistingPath = qgetenv("PATH");
-    if (!ExistingPath.isNull())
-    {
-      CustomPath.replace("%%PATH%%", ExistingPath);
-      RunEnv.insert("PATH", CustomPath);
-    }
-  }
-
-
   delete mp_CurrentParser;
   mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserGcc();
 
@@ -480,7 +536,7 @@ void WareSrcContainer::build()
 
   QString Command = openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target);
 
-  runCommand(Command, RunEnv, WareSrcProcess::Type::BUILD);
+  runCommand(Command, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
 }
 
 

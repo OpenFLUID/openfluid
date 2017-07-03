@@ -26,73 +26,58 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
- */
+  
+*/
 
 /**
-  @file ElidedLabel.hpp
+  @file WorkspaceDevGitWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
-#define __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
+
+#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVGITWIDGET_HPP__
+#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVGITWIDGET_HPP__
 
 
-#include <QLabel>
+#include <QWidget>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevDashboardTypes.hpp>
 
 
-namespace openfluid { namespace ui { namespace common {
+namespace Ui {
+class WorkspaceDevGitWidget;
+}
 
 
-/**
-  Single line elided label class, based on QLabel
-*/
-class OPENFLUID_API ElidedLabel : public QLabel
+namespace openfluid { namespace ui { namespace waresdev {
+
+
+class OPENFLUID_API WorkspaceDevGitWidget: public QWidget
 {
-  Q_OBJECT
+  Q_OBJECT;
+
 
   private:
 
-    QString m_CachedElidedText;
+    Ui::WorkspaceDevGitWidget* ui;
 
-    Qt::TextElideMode m_ElideMode;
+    static void updateStatusString(QString& CurrentStr, const QString& State, int Counter);
 
-
-  protected:
-
-    void paintEvent(QPaintEvent *Ev);
-
-    void resizeEvent(QResizeEvent *Ev);
-
-
-  protected:
-
-    void cacheElidedText(int w);
+    static QString getStatusString(const WorkspaceDevDashboardTypes::WareGitInfos& Infos);
 
 
   public:
 
-    ElidedLabel(QWidget* Parent = nullptr, Qt::WindowFlags Flags=0);
+    WorkspaceDevGitWidget(const WorkspaceDevDashboardTypes::WareGitInfos& Infos, QWidget* Parent = nullptr);
 
-    ElidedLabel(const QString& Text, QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
-
-    ElidedLabel(const QString& Text, Qt::TextElideMode ElideMode = Qt::ElideRight,
-                QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
-
-    void setElideMode(Qt::TextElideMode ElideMode);
-
-    Qt::TextElideMode getElideMode() const
-    { return m_ElideMode; }
-
-    void setText(const QString& Text);
+    virtual ~WorkspaceDevGitWidget();
 };
 
 
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVGITWIDGET_HPP__ */

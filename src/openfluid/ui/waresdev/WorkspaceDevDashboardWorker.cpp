@@ -31,7 +31,7 @@
 
 
 /**
-  @file WorkspaceGitDashboardWorker.cpp
+  @file WorkspaceDevDashboardWorker.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
@@ -39,14 +39,14 @@
 
 #include <QDir>
 
-#include <openfluid/ui/waresdev/WorkspaceGitDashboardWorker.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevDashboardWorker.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-WorkspaceGitDashboardWorker::WorkspaceGitDashboardWorker()
+WorkspaceDevDashboardWorker::WorkspaceDevDashboardWorker()
 {
 
 }
@@ -56,7 +56,7 @@ WorkspaceGitDashboardWorker::WorkspaceGitDashboardWorker()
 // =====================================================================
 
 
-WorkspaceGitDashboardWorker::~WorkspaceGitDashboardWorker()
+WorkspaceDevDashboardWorker::~WorkspaceDevDashboardWorker()
 {
 
 }
@@ -66,7 +66,7 @@ WorkspaceGitDashboardWorker::~WorkspaceGitDashboardWorker()
 // =====================================================================
 
 
-void WorkspaceGitDashboardWorker::run()
+void WorkspaceDevDashboardWorker::run()
 {
 
   openfluid::waresdev::WareSrcManager* Manager = openfluid::waresdev::WareSrcManager::instance();
@@ -88,16 +88,16 @@ void WorkspaceGitDashboardWorker::run()
 
     for (QFileInfo FileInfo : CurrentDir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllDirs))
     {
-      QString WarePath = CurrentDir.absoluteFilePath(FileInfo.fileName());
+      WorkspaceDevDashboardTypes::WareGitInfos Infos;
 
-      openfluid::utils::GitProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
+      Infos.Type = RootPath.first;
+      Infos.ID = FileInfo.fileName();
+      Infos.Path = CurrentDir.absoluteFilePath(FileInfo.fileName());
+      openfluid::utils::GitProxy::TreeStatusInfo TreeStatus = Git.status(Infos.Path);
 
       if (TreeStatus.m_IsGitTracked)
       {
-        WareStatusInfo Infos;
-
-        Infos.Type = RootPath.first;
-        Infos.ID = FileInfo.fileName();
+        Infos.IsTracked = true;
         Infos.BranchName = TreeStatus.m_BranchName;
 
         for (auto& Status : TreeStatus.m_FileStatusByTreePath.values())
@@ -105,9 +105,9 @@ void WorkspaceGitDashboardWorker::run()
           Infos.IndexCounters[Status.m_IndexStatus]++;// = Infos.Counters[Status.m_IndexStatus]+1;
           Infos.DirtyCounter += Status.m_IsDirty;
         }
-
-        emit wareParsed(Infos);
       }
+
+      emit wareParsed(Infos);
     }
   }
 

@@ -26,18 +26,19 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
- */
+  
+*/
 
 /**
-  @file ElidedLabel.hpp
+  @file TagLabel.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
-#define __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
+
+#ifndef __OPENFLUID_UICOMMON_TAGLABEL_HPP__
+#define __OPENFLUID_UICOMMON_TAGLABEL_HPP__
 
 
 #include <QLabel>
@@ -48,51 +49,45 @@
 namespace openfluid { namespace ui { namespace common {
 
 
-/**
-  Single line elided label class, based on QLabel
-*/
-class OPENFLUID_API ElidedLabel : public QLabel
+class OPENFLUID_API TagLabel : public QLabel
 {
   Q_OBJECT
 
   private:
 
-    QString m_CachedElidedText;
+    QString m_CSSTextColor = "#FFFFFF";
 
-    Qt::TextElideMode m_ElideMode;
+    QString m_CSSBackgroundColor = "#555555";
 
+    int m_TextSize = 9;
 
-  protected:
+    bool m_Outlined = false;
 
-    void paintEvent(QPaintEvent *Ev);
-
-    void resizeEvent(QResizeEvent *Ev);
-
-
-  protected:
-
-    void cacheElidedText(int w);
+    void applyStyle();
 
 
   public:
 
-    ElidedLabel(QWidget* Parent = nullptr, Qt::WindowFlags Flags=0);
+    TagLabel(QWidget* Parent = nullptr);
 
-    ElidedLabel(const QString& Text, QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
+    TagLabel(const QString& Text, QWidget* Parent = nullptr);
 
-    ElidedLabel(const QString& Text, Qt::TextElideMode ElideMode = Qt::ElideRight,
-                QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
+    TagLabel(const QString& Text,
+             const QString& CSSTextColor, const QString& CSSBackgroundColor,
+             QWidget* Parent = nullptr);
 
-    void setElideMode(Qt::TextElideMode ElideMode);
+    void setTextColor(const QString& CSSColor);
 
-    Qt::TextElideMode getElideMode() const
-    { return m_ElideMode; }
+    void setBackgroundColor(const QString& CSSColor);
 
-    void setText(const QString& Text);
+    void setTextSize(int Pt);
+
+    void setOutlined(bool Enabled);
+
 };
 
 
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_TAGLABEL_HPP__ */
