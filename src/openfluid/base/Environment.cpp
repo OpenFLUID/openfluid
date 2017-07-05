@@ -223,8 +223,10 @@ void Environment::init()
   // user dir
   m_DefaultSimulatorsDirs.push_back(m_UserDataDir + "/" + openfluid::config::SIMULATORS_WARESBIN_USR_PATH);
 
+#if OPENFLUID_MARKET_ENABLED
   // market-bag dir (for current version)
   m_DefaultSimulatorsDirs.push_back(m_MarketBagSimulatorsDir + "/" + m_MarketBagBinSubDir);
+#endif
 
   // install directory
   std::string SimulatorsInstallPath =  m_InstallPrefix + "/" + openfluid::config::SIMULATORS_WARESBIN_STD_PATH;
@@ -252,8 +254,10 @@ void Environment::init()
   // user dir
   m_DefaultObserversDirs.push_back(m_UserDataDir + "/" + openfluid::config::OBSERVERS_WARESBIN_USR_PATH);
 
+#if OPENFLUID_MARKET_ENABLED
   // market-bag dir (for current version)
    m_DefaultObserversDirs.push_back(m_MarketBagObserversDir + "/" + m_MarketBagBinSubDir);
+#endif
 
   // install directory
   std::string ObserversInstallPath = m_InstallPrefix + "/" + openfluid::config::OBSERVERS_WARESBIN_STD_PATH;
@@ -281,8 +285,10 @@ void Environment::init()
   // user dir
   m_DefaultBuilderextsDirs.push_back(m_UserDataDir + "/" + openfluid::config::BUILDEREXTS_WARESBIN_USR_PATH);
 
+#if OPENFLUID_MARKET_ENABLED
   // market-bag dir (for current version)
    m_DefaultBuilderextsDirs.push_back(m_MarketBagBuilderextsDir + "/" + m_MarketBagBinSubDir);
+#endif
 
   // install directory
   std::string BuilderextsInstallPath = m_InstallPrefix + "/" + openfluid::config::BUILDEREXTS_WARESBIN_STD_PATH;
