@@ -6,9 +6,6 @@
 # Usage for debug build:
 #  cmake <path to sources>
 #
-# Usage for debug build with heavy tests enabled:
-#  cmake <path to sources> -DOFBUILD_ENABLE_HEAVYTESTING=1
-#
 # Usage for release build:
 #  cmake <path to sources> -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<prefix for install path>
 #
@@ -25,12 +22,7 @@ CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
 IF(COMPILER_SUPPORTS_CXX11)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 ELSE()
-  CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-  IF(COMPILER_SUPPORTS_CXX0X)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-  ELSE()
-    MESSAGE(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} does not support C++11.")
-  ENDIF()
+  MESSAGE(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} does not support C++11.")
 ENDIF()
 
 
@@ -74,15 +66,23 @@ ENDIF()
 
 STRING(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE_STR)
 
+
+IF(OFBUILD_ENABLE_SANITIZER)
+  OFBUILD_CONFIGURE_SANITIZER()
+ENDIF()
+
+
+# Force basic testing when heavy testing is enabled
+IF(OFBUILD_ENABLE_HEAVYTESTING)
+  SET(OFBUILD_ENABLE_TESTING 1)
+ENDIF()
+
+# Force basic testing in debug mode
 IF(CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
   IF(NOT DEFINED OFBUILD_ENABLE_TESTING)
     SET(OFBUILD_ENABLE_TESTING 1)
   ENDIF()
-ELSE()
-  SET(OFBUILD_ENABLE_TESTING 0)
-  SET(OFBUILD_ENABLE_HEAVYTESTING 0)
 ENDIF()
-
 
 IF(OFBUILD_ENABLE_TESTING)
   SET(CMAKE_INSTALL_PREFIX "${OFBUILD_DIST_DIR}")
@@ -160,6 +160,11 @@ MESSAGE(STATUS "OpenFLUID version: ${OPENFLUID_VERSION_FULL} (numeric: ${OPENFLU
 MESSAGE(STATUS "System architecture: ${OFBUILD_SYSTEM_ARCH}")
 MESSAGE(STATUS "Distribution architecture: ${OFBUILD_DISTRO_ARCH}")
 MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+IF(OFBUILD_ENABLE_SANITIZER)
+MESSAGE(STATUS "Sanitizer: enabled")
+ELSE()
+MESSAGE(STATUS "Sanitizer: disabled")
+ENDIF()
 MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
 MESSAGE(STATUS "Compiler flags: ${CMAKE_CXX_FLAGS}")
 MESSAGE(STATUS "Extra compiler flags for ${CMAKE_BUILD_TYPE}: ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")

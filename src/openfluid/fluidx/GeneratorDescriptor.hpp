@@ -54,6 +54,7 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
   public:
     enum GeneratorMethod { NoGenMethod, Fixed, Random, Interp, Inject };
 
+
   private:
 
     openfluid::core::VariableName_t m_VarName;
@@ -65,6 +66,7 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
     unsigned int m_VarSize;
 
     std::string m_GeneratedID;
+
 
   public:
 

@@ -51,6 +51,16 @@ DatastoreDescriptor::DatastoreDescriptor()
 // =====================================================================
 
 
+DatastoreDescriptor::~DatastoreDescriptor()
+{
+  // TODO Manage deletion of items, in relation with advanced descriptors
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::items()
 {
   return m_DatastoreDescription;

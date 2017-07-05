@@ -56,9 +56,8 @@ Datastore::Datastore()
 
 Datastore::~Datastore()
 {
-  for (DataItemsById_t::iterator it = m_ItemsById.begin(); it
-      != m_ItemsById.end(); ++it)
-    delete it->second;
+  for (DataItemsById_t::iterator it = m_ItemsById.begin(); it != m_ItemsById.end(); ++it)
+    delete (*it).second;
 }
 
 
@@ -110,10 +109,6 @@ void Datastore::addItem(const DatastoreItem* Item)
 
   m_ItemsById[Item->getID()] = const_cast<DatastoreItem*>(Item);
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces

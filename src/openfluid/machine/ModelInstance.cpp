@@ -112,8 +112,18 @@ ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
 
 ModelInstance::~ModelInstance()
 {
-  if (m_Initialized)
+  if (!m_Initialized)
+  {
+    clear();
+
+    if (mp_SimProfiler != nullptr)
+      delete mp_SimProfiler;
+    mp_SimProfiler = nullptr;
+  }
+  else
+  {
     finalize();
+  }
 }
 
 
@@ -282,19 +292,15 @@ void ModelInstance::clear()
 {
   if (m_Initialized)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Trying to clear model after model initialization");
+                                              "Trying to clear model after while the model is initialized");
 
   std::list<ModelItemInstance*>::iterator it;
 
   for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
-  {
-    (*it)->Body.reset();
-    // TODO reset Signature?
-  }
+    (*it)->Body.reset();  // TODO how to delete signatures?
 
   m_ModelItems.clear();
 }
-
 
 
 // =====================================================================
@@ -383,21 +389,14 @@ void ModelInstance::finalize()
     ++SimIter;
   }
 
+  m_Initialized = false;
 
-  // destroy of each simulator
-  SimIter = m_ModelItems.begin();
-  while (SimIter != m_ModelItems.end())
-  {
-    (*SimIter)->Body.reset();
-    // TODO reset Signature?
-    ++SimIter;
-  }
+
+  clear();
 
   if (mp_SimProfiler != nullptr)
     delete mp_SimProfiler;
   mp_SimProfiler = nullptr;
-
-  m_Initialized = false;
 }
 
 

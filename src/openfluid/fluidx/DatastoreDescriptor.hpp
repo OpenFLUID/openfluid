@@ -55,6 +55,7 @@ class OPENFLUID_API DatastoreDescriptor
 
     typedef std::list<DatastoreItemDescriptor*> DatastoreDescription_t;
 
+
   private:
 
     DatastoreDescription_t m_DatastoreDescription;
@@ -62,6 +63,8 @@ class OPENFLUID_API DatastoreDescriptor
   public:
 
     DatastoreDescriptor();
+
+    ~DatastoreDescriptor();
 
     DatastoreDescription_t& items();
 

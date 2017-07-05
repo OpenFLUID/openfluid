@@ -143,6 +143,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(SGraph->spatialUnits("UnitClassA")->list()->size(),0);
   BOOST_REQUIRE_EQUAL(SGraph->spatialUnits("UnitClassB")->list()->size(),0);
 
+  delete SGraph;
 }
 
 // =====================================================================

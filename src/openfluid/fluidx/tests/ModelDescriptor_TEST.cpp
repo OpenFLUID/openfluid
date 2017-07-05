@@ -37,6 +37,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
+
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
@@ -47,6 +48,7 @@
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -84,8 +86,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -121,7 +125,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::iterator it;
 
 
-
   it = ModelItems.begin();
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::GENERATOR),true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),"test.var");
@@ -150,6 +153,3 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),2);
 
 }
-
-// =====================================================================
-// =====================================================================

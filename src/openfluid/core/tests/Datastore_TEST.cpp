@@ -35,6 +35,7 @@
   @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
+
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
@@ -44,8 +45,8 @@
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-
 #include <iostream>
+
 
 // =====================================================================
 // =====================================================================
@@ -60,8 +61,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   delete Store;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_addItem_regular)
 {
@@ -89,10 +92,10 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   BOOST_CHECK_EQUAL(Store->getItems().find("mymap")->second->getID(),"mymap");
 
   openfluid::core::Datastore::DataItemsById_t::iterator i;
-  openfluid::core::DatastoreItem* Item;
+  openfluid::core::DatastoreItem* Item = nullptr;
 
   i = Store->getItems().find("mymap");
-  Item = i->second;
+  Item = (*i).second;
   BOOST_REQUIRE(Item != 0);
   BOOST_CHECK_EQUAL(Item->getID(),"mymap");
   BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path1");
@@ -102,7 +105,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   BOOST_CHECK_EQUAL(Item->value()->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
 
   i = Store->getItems().find("mymap2");
-  Item = i->second;
+  Item = (*i).second;
   BOOST_REQUIRE(Item != 0);
   BOOST_CHECK_EQUAL(Item->getID(),"mymap2");
   BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path2");
@@ -112,7 +115,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   BOOST_CHECK_EQUAL(Item->value()->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
 
   i = Store->getItems().find("myrast");
-  Item = i->second;
+  Item = (*i).second;
   BOOST_REQUIRE(Item != 0);
   BOOST_CHECK_EQUAL(Item->getID(),"myrast");
   BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path3");
@@ -124,8 +127,10 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   delete Store;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getItem)
 {
@@ -149,5 +154,3 @@ BOOST_AUTO_TEST_CASE(check_getItem)
   delete Store;
 }
 
-// =====================================================================
-// =====================================================================

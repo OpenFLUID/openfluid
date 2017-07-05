@@ -73,6 +73,16 @@ class OPENFLUID_API WareSetDescriptor
     // =====================================================================
 
 
+    ~WareSetDescriptor<T>()
+    {
+      // TODO Manage deletion of items, in relation with advanced descriptors
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
     inline SetDescription_t& items()
     {
       return (m_SetDescription);

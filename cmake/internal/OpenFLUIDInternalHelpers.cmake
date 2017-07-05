@@ -31,6 +31,7 @@
 
 
 INCLUDE(CMakeParseArguments)
+INCLUDE(CheckCXXCompilerFlag)
 
 
 ###########################################################################
@@ -372,5 +373,18 @@ MACRO(OFBUILD_DISCOVER_HEAVYUNITTESTS TEST_CAT)
       GET_FILENAME_COMPONENT(CPPFILE_WE ${CPPFILE} NAME_WE)
       OFBUILD_ADD_UNITTEST(${TEST_CAT} ${CPPFILE_WE} ${CPPFILE})
     ENDFOREACH()
+  ENDIF()
+ENDMACRO()
+
+
+###########################################################################
+
+
+MACRO(OFBUILD_CONFIGURE_SANITIZER)  
+  IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.8")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+  ELSE()
+    SET(OFBUILD_ENABLE_SANITIZER 0)    
   ENDIF()
 ENDMACRO()

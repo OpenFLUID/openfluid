@@ -434,12 +434,11 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
 
       if (!xmlUnitID.isNull() && !xmlUnitClass.isNull() && !xmlPcsOrd.isNull())
       {
-        openfluid::fluidx::SpatialUnitDescriptor* UnitDesc =
-            new openfluid::fluidx::SpatialUnitDescriptor();
+        openfluid::fluidx::SpatialUnitDescriptor UnitDesc;
         openfluid::core::PcsOrd_t PcsOrder;
         openfluid::core::UnitID_t UnitID;
 
-        UnitDesc->setUnitsClass(xmlUnitClass.toStdString());
+        UnitDesc.setUnitsClass(xmlUnitClass.toStdString());
 
         if (!openfluid::tools::convertString(xmlUnitID.toStdString(),&UnitID))
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -449,8 +448,8 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
               "wrong format for process order in unit definition (" + m_CurrentFile + ")");
 
-        UnitDesc->setProcessOrder(PcsOrder);
-        UnitDesc->setID(UnitID);
+        UnitDesc.setProcessOrder(PcsOrder);
+        UnitDesc.setID(UnitID);
 
 
         for(QDomElement CurrLinkNode = CurrNode.firstChildElement();
@@ -458,18 +457,16 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
         {
           if (CurrLinkNode.tagName() == QString("to"))
           {
-            UnitDesc->toSpatialUnits().push_back(
-                extractUnitClassIDFromNode(CurrLinkNode));
+            UnitDesc.toSpatialUnits().push_back(extractUnitClassIDFromNode(CurrLinkNode));
           }
 
           if (CurrLinkNode.tagName() == QString("childof"))
           {
-            UnitDesc->parentSpatialUnits().push_back(
-                extractUnitClassIDFromNode(CurrLinkNode));
+            UnitDesc.parentSpatialUnits().push_back(extractUnitClassIDFromNode(CurrLinkNode));
           }
         }
 
-        m_DomainDescriptor.spatialUnits().push_back(*UnitDesc);
+        m_DomainDescriptor.spatialUnits().push_back(UnitDesc);
       }
       else
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,

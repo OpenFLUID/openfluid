@@ -89,6 +89,7 @@ WareSrcContainer::~WareSrcContainer()
 
   delete mp_Process;
   delete mp_CurrentParser;
+  delete mp_Stream;
 }
 
 

@@ -96,7 +96,7 @@ PreferencesManager::PreferencesManager():
 
 PreferencesManager::~PreferencesManager()
 {
-
+  delete mp_ConfFile;
 }
 
 

@@ -177,6 +177,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,0);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,0);
 
+  delete Signature;
 }
 
 

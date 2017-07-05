@@ -52,6 +52,7 @@ namespace openfluid { namespace fluidx {
 
 typedef WareSetDescriptor<ModelItemDescriptor> CoupledModelDescriptor;
 
+
 } } // namespaces
 
 

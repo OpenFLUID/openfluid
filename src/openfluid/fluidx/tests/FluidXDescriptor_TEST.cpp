@@ -67,7 +67,11 @@ typedef boost::onullstream onullstream_type;
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
+  openfluid::base::IOListener* L = new openfluid::base::IOListener();
+
+  openfluid::fluidx::FluidXDescriptor FXDesc(L);
+
+  delete L;
 }
 
 
@@ -79,7 +83,9 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
 {
   std::cout << "Checking " << DatasetPath << std::endl;
 
-  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
+  openfluid::base::IOListener* L = new openfluid::base::IOListener();
+
+  openfluid::fluidx::FluidXDescriptor FXDesc(L);
 
   boost::onullstream ONullStream;
   FXDesc.loadFromDirectory(DatasetPath);
@@ -407,6 +413,7 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.vtk");
 
+   delete L;
 }
 
 
@@ -435,11 +442,12 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   bool HasFailed;
   boost::onullstream ONullStream;
 
+  openfluid::base::IOListener* L = new openfluid::base::IOListener();
+
   HasFailed = false;
   try
   {
-    openfluid::fluidx::FluidXDescriptor(
-        new openfluid::base::IOListener())
+    openfluid::fluidx::FluidXDescriptor(L)
           .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/pathdoesnotexist");
   }
   catch (...)
@@ -451,8 +459,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   HasFailed = false;
   try
   {
-    openfluid::fluidx::FluidXDescriptor(
-        new openfluid::base::IOListener())
+    openfluid::fluidx::FluidXDescriptor(L)
           .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/wrong-nofile");
   }
   catch (...)
@@ -464,8 +471,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   HasFailed = false;
   try
   {
-    openfluid::fluidx::FluidXDescriptor(
-        new openfluid::base::IOListener())
+    openfluid::fluidx::FluidXDescriptor(L)
           .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/wrong-twomodels");
   }
   catch (...)
@@ -477,8 +483,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   HasFailed = false;
   try
   {
-    openfluid::fluidx::FluidXDescriptor(
-        new openfluid::base::IOListener())
+    openfluid::fluidx::FluidXDescriptor(L)
           .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/wrong-runs");
   }
   catch (...)
@@ -488,17 +493,17 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   BOOST_REQUIRE_EQUAL(HasFailed, true);
 
   BOOST_REQUIRE_THROW(
-      openfluid::fluidx::FluidXDescriptor(
-          new openfluid::base::IOListener())
+      openfluid::fluidx::FluidXDescriptor(L)
             .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXDescriptor/wrong-unknowndatatype"),
       openfluid::base::FrameworkException);
 
   BOOST_REQUIRE_THROW(
-      openfluid::fluidx::FluidXDescriptor(
-          new openfluid::base::IOListener())
+      openfluid::fluidx::FluidXDescriptor(L)
             .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXDescriptor/wrong-missingdataid"),
       openfluid::base::FrameworkException);
 
+
+  delete L;
 }
 
 
@@ -512,7 +517,8 @@ BOOST_AUTO_TEST_CASE(check_write_operations)
   std::string OutputDirSingle = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXDescriptorSingle";
   std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXDescriptorMany";
 
-  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
+  openfluid::base::IOListener* L = new openfluid::base::IOListener();
+  openfluid::fluidx::FluidXDescriptor FXDesc(L);
 
   FXDesc.loadFromDirectory(InputDir);
 
@@ -525,6 +531,8 @@ BOOST_AUTO_TEST_CASE(check_write_operations)
 
   for (const auto& Path : DatasetPaths)
     TestDataset(Path,true);
+
+  delete L;
 }
 
 
@@ -538,12 +546,15 @@ BOOST_AUTO_TEST_CASE(check_write_operations_for_integration_tests)
   std::string OutputDirSingle = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXWriterSingle";
   std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXWriterMany";
 
-  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
+  openfluid::base::IOListener* L = new openfluid::base::IOListener();
+  openfluid::fluidx::FluidXDescriptor FXDesc(L);
 
   FXDesc.loadFromDirectory(InputDir);
 
   FXDesc.writeToManyFiles(OutputDirMany);
   FXDesc.writeToSingleFile(OutputDirSingle+"/all.fluidx");
+
+  delete L;
 }
 
 
@@ -557,9 +568,12 @@ BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
 
   std::string RefParamStr = "< ' > && \"hula hoop\"";
 
-  openfluid::fluidx::ObserverDescriptor* ObsDesc = nullptr;
+
+  openfluid::base::IOListener* L = new openfluid::base::IOListener();
+
   {
-    openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
+    openfluid::fluidx::ObserverDescriptor* ObsDesc = nullptr;
+    openfluid::fluidx::FluidXDescriptor FXDesc(L);
 
     FXDesc.runDescriptor().setBeginDate(openfluid::core::DateTime(2014,9,4,17,0,0));
     FXDesc.runDescriptor().setEndDate(openfluid::core::DateTime(2014,9,4,18,0,0));
@@ -574,11 +588,10 @@ BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
 
     FXDesc.writeToManyFiles(DatasetDir);
   }
-  delete ObsDesc;
 
 
   {
-    openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
+    openfluid::fluidx::FluidXDescriptor FXDesc(L);
 
     FXDesc.loadFromDirectory(DatasetDir);
 
@@ -586,5 +599,7 @@ BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
 
     BOOST_REQUIRE_EQUAL(Params["param1"].toString(),RefParamStr);
   }
+
+  delete L;
 
 }

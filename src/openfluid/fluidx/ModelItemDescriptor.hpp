@@ -52,6 +52,7 @@ namespace openfluid { namespace fluidx {
 class OPENFLUID_API ModelItemDescriptor : public WareDescriptor
 {
   public:
+
     ModelItemDescriptor() : WareDescriptor()
     { };
 
@@ -59,6 +60,7 @@ class OPENFLUID_API ModelItemDescriptor : public WareDescriptor
     { };
 
 };
+
 
 } } // namespaces
 

@@ -77,6 +77,15 @@ Commands to be executed from source tree for building and packaging on linux (Ub
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
     make
     cpack
+
+
+The following options are available to control the configure and build process
+Option | Default Value | Description
+-------| ------------- | -----------
+-DOFBUILD_ENABLE_SANITIZER | OFF | Enable the compiler sanitizer to track memory address errors
+-DOFBUILD_ENABLE_TESTING | ON (Debug), OFF (Release) | Enable the build of tests
+-DOFBUILD_ENABLE_HEAVYTESTING | OFF | Enable the build of tests
+
     
 Detailed informations about building OpenFLUID from sources for Linux, Windows and macOS systems 
 are available on the community site: 

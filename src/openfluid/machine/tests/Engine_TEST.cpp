@@ -123,8 +123,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   delete MachineListen;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_pretests)
 {
@@ -251,11 +253,15 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   displayModel(Model);
 
 
+
+
   delete MachineListen;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_typed_pretests)
 {
@@ -376,9 +382,6 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   displayModel(Model);
 
 
-
   delete MachineListen;
 }
 
-// =====================================================================
-// =====================================================================

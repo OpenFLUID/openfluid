@@ -52,6 +52,10 @@
 #include "tests-config.hpp"
 
 
+// =====================================================================
+// =====================================================================
+
+
 class F
 {
   private:
@@ -90,6 +94,7 @@ class F
     ~F()
     {
       forceRemove(TestWorkspacePath);
+      openfluid::waresdev::WareSrcManager::kill();
     }
 
     void forceRemove(const QString& Path)
@@ -151,9 +156,6 @@ const QString F::UrlHttps = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_HTTP
 const QString F::Username = QString::fromStdString(CONFIGTESTS_WARESHUB_USERNAME);
 const QString F::Password = QString::fromStdString(CONFIGTESTS_WARESHUB_PASSWORD);
 
-// =====================================================================
-// =====================================================================
-
 
 // =====================================================================
 // =====================================================================
@@ -165,12 +167,14 @@ BOOST_AUTO_TEST_CASE(connect_wrong_url_fails)
   BOOST_CHECK_EQUAL(W.connect(), false);
 }
 
+
 BOOST_AUTO_TEST_CASE(connect_http_ok)
 {
   openfluid::waresdev::WaresHubImportWorker W(F::UrlHttp);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
 }
+
 
 BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_ok)
 {
@@ -194,6 +198,7 @@ BOOST_AUTO_TEST_CASE(ware_list_not_connected_ok)
   BOOST_CHECK(W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).empty());
 }
 
+
 BOOST_AUTO_TEST_CASE(ware_list_http_ok)
 {
   openfluid::waresdev::WaresHubImportWorker W(F::UrlHttp);
@@ -204,6 +209,11 @@ BOOST_AUTO_TEST_CASE(ware_list_http_ok)
   BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::UNDEFINED).size(), 0);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(ware_list_https_ok)
 {
   if (!F::checkHttps("ware_list_https_ok"))
@@ -213,6 +223,7 @@ BOOST_AUTO_TEST_CASE(ware_list_https_ok)
   W.connect();
   BOOST_CHECK(!W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).empty());
 }
+
 
 BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 {
@@ -228,6 +239,11 @@ BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 
   BOOST_CHECK(TestWaresDevSimulatorsDir.entryList(QDir::Files).empty());
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
 {
@@ -245,10 +261,6 @@ BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
   BOOST_CHECK(WareDir.exists());
   BOOST_CHECK(!WareDir.entryList(QDir::Files).isEmpty());
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 // =====================================================================

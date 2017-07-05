@@ -38,6 +38,7 @@
 #ifndef __OPENFLUID_CORE_DATASTORE_HPP__
 #define __OPENFLUID_CORE_DATASTORE_HPP__
 
+
 #include <map>
 #include <string>
 #include <openfluid/dllexport.hpp>
@@ -105,6 +106,8 @@ class OPENFLUID_API Datastore
     void addItem(const DatastoreItem* Item);
 };
 
+
 } } // namespaces
+
 
 #endif /* __OPENFLUID_CORE_DATASTORE_HPP__ */
