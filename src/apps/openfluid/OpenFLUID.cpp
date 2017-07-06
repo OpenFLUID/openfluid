@@ -745,8 +745,8 @@ void OpenFLUIDApp::runSimulation()
 void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 {
 
-  std::string DefaultMaxThreadsStr;
-  openfluid::tools::convertValue(openfluid::config::SIMULATORS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
+  std::string DefaultMaxThreadsStr =
+      openfluid::tools::convertValue(openfluid::base::RunContextManager::instance()->getWaresMaxNumThreads());
 
 
   std::vector<openfluid::utils::CommandLineOption> RunOptions =

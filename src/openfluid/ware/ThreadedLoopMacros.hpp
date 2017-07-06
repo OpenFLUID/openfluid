@@ -42,15 +42,9 @@
 
 
 #include <functional>
-
-#include <QtGlobal>
-
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-#include <QtConcurrent>
-#endif
-
-#include <QtConcurrentRun>
-#include <QFutureSynchronizer>
+#include <thread>
+#include <vector>
+#include <system_error>
 
 #include <openfluid/ware/LoopMacros.hpp>
 
@@ -59,7 +53,12 @@
 // =====================================================================
 
 
-#define _THREADSYNCID(_id) _M_##_id##_Sync
+#define _THREADGROUPID(_id) _M_##_id##_ThreadGroup
+#define _THREADID(_id) _M_##_id##_Thread
+
+
+// =====================================================================
+// =====================================================================
 
 
 #define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitsclass,funcptr,...) \
@@ -72,31 +71,33 @@
       openfluid::core::PcsOrd_t _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
       while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
       { \
-        QFutureSynchronizer<void> _THREADSYNCID(id); \
+        std::vector<std::thread> _THREADGROUPID(id); \
         while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end() && \
                _UNITSLISTITERID(id)->getProcessOrder() == _PCSORDID(id)) \
         { \
           try \
           { \
-            _THREADSYNCID(id).addFuture(QtConcurrent::run(std::bind(&funcptr,\
-                                                                      this,\
-                                                                      &(*_UNITSLISTITERID(id)),## __VA_ARGS__)));\
-            if (_THREADSYNCID(id).futures().size() == OPENFLUID_GetSimulatorMaxThreads())\
+            _THREADGROUPID(id).push_back(std::thread(std::bind(&funcptr,this,\
+                                                    &(*_UNITSLISTITERID(id)),## __VA_ARGS__))); \
+            if (_THREADGROUPID(id).size() == (unsigned int)OPENFLUID_GetSimulatorMaxThreads()) \
             { \
-              _THREADSYNCID(id).waitForFinished(); \
-              _THREADSYNCID(id).clearFutures(); \
-            }\
-          }\
-          catch (QtConcurrent::UnhandledException& E) \
+              for (auto& _THREADID(id) : _THREADGROUPID(id)) \
+                _THREADID(id).join(); \
+              _THREADGROUPID(id).clear(); \
+            } \
+          } \
+          catch (std::system_error& E) \
           { \
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, \
-                                                      "QtConcurrent::UnhandledException in threaded loop"); \
+                                                      "Error in threaded loop (" + std::string(E.what()) +")"); \
           } \
           ++_UNITSLISTITERID(id); \
         } \
-        _THREADSYNCID(id).waitForFinished(); \
-        _THREADSYNCID(id).clearFutures(); \
-        if (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
+        for (auto& _THREADID(id) : _THREADGROUPID(id)) \
+          _THREADID(id).join(); \
+        _THREADGROUPID(id).clear(); \
+        if (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
+          _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
       } \
     } \
   }
@@ -111,6 +112,9 @@
     _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitsclass,funcptr,## __VA_ARGS__)
 
 
+// =====================================================================
+// =====================================================================
+
 
 #define _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(id,funcptr,...) \
   openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_SpatialData->allSpatialUnits(); \
@@ -122,30 +126,31 @@
       openfluid::core::PcsOrd_t _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
       while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \
       { \
-        QFutureSynchronizer<void> _THREADSYNCID(id); \
+        std::vector<std::thread> _THREADGROUPID(id); \
         while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end() && \
               (*_UNITSPTRLISTITERID(id))->getProcessOrder() == _PCSORDID(id)) \
         { \
           try \
           { \
-            _THREADSYNCID(id).addFuture(QtConcurrent::run(std::bind(&funcptr,\
-                                                                      this,\
-                                                                      (*_UNITSPTRLISTITERID(id)),## __VA_ARGS__)));\
-            if (_THREADSYNCID(id).futures().size() == OPENFLUID_GetSimulatorMaxThreads())\
+            _THREADGROUPID(id).push_back(std::thread(std::bind(&funcptr,this,\
+                                                    (*_UNITSPTRLISTITERID(id)),## __VA_ARGS__))); \
+            if (_THREADGROUPID(id).size() == (unsigned int)OPENFLUID_GetSimulatorMaxThreads()) \
             { \
-              _THREADSYNCID(id).waitForFinished(); \
-              _THREADSYNCID(id).clearFutures(); \
-            }\
+              for (auto& _THREADID(id) : _THREADGROUPID(id)) \
+                _THREADID(id).join(); \
+              _THREADGROUPID(id).clear(); \
+            } \
           }\
-          catch(QtConcurrent::UnhandledException& E) \
+          catch (std::system_error& E) \
           { \
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, \
-                                                      "QtConcurrent::UnhandledException in threaded loop"); \
+                                                      "Error in threaded loop (" + std::string(E.what()) +")"); \
           } \
           ++_UNITSPTRLISTITERID(id); \
         } \
-        _THREADSYNCID(id).waitForFinished(); \
-        _THREADSYNCID(id).clearFutures(); \
+        for (auto& _THREADID(id) : _THREADGROUPID(id)) \
+          _THREADID(id).join(); \
+        _THREADGROUPID(id).clear(); \
         if (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end())\
           _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
       } \
@@ -159,8 +164,6 @@
 */
 #define APPLY_ALLUNITS_ORDERED_LOOP_THREADED(funcptr,...) \
     _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,funcptr,## __VA_ARGS__)
-
-
 
 
 // =====================================================================

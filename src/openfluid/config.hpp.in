@@ -181,10 +181,6 @@ const std::string VERSION = "@OPENFLUID_VERSION_MAJOR@.@OPENFLUID_VERSION_MINOR@
 const std::string DEBUG_PREFIX = "@OPENFLUID_DEBUG_PREFIX@";
 
 
-// Simulators threads
-const unsigned int SIMULATORS_MAXNUMTHREADS = @OPENFLUID_SIMULATORS_MAXNUMTHREADS@;
-
-
 // URLs
 const std::string WEBSITE_DOMAIN = "www.openfluid-project.org";
 const std::string WEBSITE_URL = "http://"+WEBSITE_DOMAIN;
