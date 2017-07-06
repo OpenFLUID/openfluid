@@ -1329,13 +1329,34 @@ void SpatialDomainWidget::updateSelectionFromMap()
 
 void SpatialDomainWidget::updateFluidXAttributeFromCellValue(int Row, int Column)
 {
+  std::string Value = ui->AttributesTableWidget->item(Row,Column)->text().toStdString();
   std::string Attr = ui->AttributesTableWidget->horizontalHeaderItem(Column)->text().toStdString();
   int ID = ui->AttributesTableWidget->verticalHeaderItem(Row)->text().toInt();
-  std::string Value = ui->AttributesTableWidget->item(Row,Column)->text().toStdString();
 
-  m_Domain.attribute(m_ActiveClass.toStdString(),ID,Attr) = Value;
 
-  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+  if (Value.empty())
+  {
+    QMessageBox::critical(QApplication::activeWindow(),QString("OpenFLUID-builder"),
+                              tr("Spatial attribute cannot be empty"),QMessageBox::Close);
+
+    // disconnect to avoid emission of cellChanged() signal
+    disconnect(ui->AttributesTableWidget,SIGNAL(cellChanged(int,int)),this,
+            SLOT(updateFluidXAttributeFromCellValue(int,int)));
+
+    // revert to previous non-empty value
+    ui->AttributesTableWidget->item(Row,Column)
+      ->setText(QString::fromStdString(m_Domain.attribute(m_ActiveClass.toStdString(),ID,Attr)));
+
+    // reconnect to take into account later editing of the cell value
+    connect(ui->AttributesTableWidget,SIGNAL(cellChanged(int,int)),this,
+            SLOT(updateFluidXAttributeFromCellValue(int,int)));
+  }
+  else
+  {
+    m_Domain.attribute(m_ActiveClass.toStdString(),ID,Attr) = Value;
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+  }
 }
 
 

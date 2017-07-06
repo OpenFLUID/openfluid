@@ -78,13 +78,13 @@ std::vector<std::string> splitString(const std::string& StrToSplit,
   std::vector<std::string> SplitParts;
 
   boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
-  if (ReturnsEmpty) TokCompress = boost::token_compress_off;
+  if (ReturnsEmpty)
+    TokCompress = boost::token_compress_off;
 
   boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators),TokCompress);
 
   return SplitParts;
 }
-
 
 
 } } // namespaces
