@@ -37,9 +37,10 @@
 */
 
 
+#include <thread>
+
 #include <QDir>
 #include <QDesktopServices>
-#include <QThread>
 
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
@@ -305,7 +306,11 @@ void Environment::init()
 
   // ====== Threads ======
 
-  m_IdealThreadCount = QThread::idealThreadCount();
+  m_IdealThreadCount = std::thread::hardware_concurrency();
+
+  // if ideal thread count cannot be computed, set it to 1 thread
+  if (!m_IdealThreadCount)
+    m_IdealThreadCount = 1;
 
 
   m_Initialized = true;

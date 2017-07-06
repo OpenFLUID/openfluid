@@ -38,10 +38,12 @@
  */
 
 
-#include <openfluid/ware/ThreadedLoopMacros.hpp>
-#include <openfluid/ware/PluggableSimulator.hpp>
 #include <cmath>
 #include <chrono>
+
+#include <openfluid/ware/ThreadedLoopMacros.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -195,7 +197,8 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
     OPENFLUID_LogDebug(__PRETTY_FUNCTION__);
 #endif
 
-    for (unsigned int i=0; i<Times;i++ ) processUnit(aUnit);
+    for (unsigned int i=0; i<Times;i++ )
+      processUnit(aUnit);
   }
 
   // =====================================================================
@@ -222,7 +225,6 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
     Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
     std::cout << "TU Classic: " << Duration.count() << "ms" << std::endl;
 
-
     StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::processUnit);
@@ -238,7 +240,6 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
     EndTime = std::chrono::high_resolution_clock::now();
     Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
     std::cout << "TU Production Sequenced: " << Duration.count() << "ms"  << std::endl;
-
 
     StartTime = std::chrono::high_resolution_clock::now();
     APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::produceDataOnTUThreaded,
@@ -262,6 +263,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
     EndTime = std::chrono::high_resolution_clock::now();
     Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
     std::cout << "TU Threaded 3 times: " << Duration.count() << "ms"  << std::endl;
+
 
     // _-_-_-_-_-_-_-_-_-_-_-_-_
 

@@ -57,6 +57,7 @@ QString RunContextManager::m_ProjectFileGroupName = "OpenFLUID Project";
 
 
 RunContextManager::RunContextManager() :
+  Environment(),
   m_IsClearOutputDir(false), m_IsProfiling(false),
   m_ValuesBufferSize(0),
   mp_ProjectFile(nullptr),

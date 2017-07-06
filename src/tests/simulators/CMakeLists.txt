@@ -248,14 +248,28 @@ OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoopsDefault
                         "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.ThreadedLoops"
                         "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.ThreadedLoops" 
                         "-p" "${OFBUILD_TESTS_BINARY_DIR}")             
-OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoops9
+OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoops8
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
                         "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.ThreadedLoops"
                         "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.ThreadedLoops" 
                         "-p" "${OFBUILD_TESTS_BINARY_DIR}"
-                        "-t" "9")             
-                        
+                        "-t" "8")             
+OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoops4
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                        "run"
+                        "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.ThreadedLoops"
+                        "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.ThreadedLoops" 
+                        "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+                        "-t" "4")
+OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoops1
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                        "run"
+                        "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.ThreadedLoops"
+                        "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.ThreadedLoops" 
+                        "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+                        "-t" "1")                        
+
 
 ###########################################################################
 
