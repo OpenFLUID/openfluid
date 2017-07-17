@@ -41,7 +41,7 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp base/WaresTrans
                      base/EditProjectPropertiesDialog.hpp
                      )
 
-QT4_WRAP_UI(BUILDER_BASE_UI base/HomeModuleWidget.ui base/ProjectModuleWidget.ui
+QT5_WRAP_UI(BUILDER_BASE_UI base/HomeModuleWidget.ui base/ProjectModuleWidget.ui
                             base/NewProjectDialog.ui
                             base/OpenExampleProjectDialog.ui
                             base/StatusMessagesWidget.ui
@@ -71,7 +71,7 @@ SET(BUILDER_COMMON_HPP common/AbstractModuleWidget.hpp
                        common/AddParamDialog.hpp
                       )
 
-QT4_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
+QT5_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
                               common/AddWareDialog.ui
                               common/AddParamDialog.ui
                               )
@@ -100,7 +100,7 @@ SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
                       model/AddSimulatorDialog.hpp model/AddGeneratorDialog.hpp
                      )
 
-QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
+QT5_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
                              model/AddGeneratorDialog.ui
                            )
 
@@ -139,7 +139,7 @@ SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
                         spatial/AddEventDialog.hpp
                        )
 
-QT4_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
+QT5_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
                                spatial/UnitsClassWidget.ui
                                spatial/EditAttributesValuesDialog.ui
                                spatial/EditAttributeNameDialog.ui
@@ -159,7 +159,7 @@ SET(BUILDER_DATASTORE_HPP datastore/DatastoreWidget.hpp
                           datastore/AddDatastoreItemDialog.hpp
                           )
 
-QT4_WRAP_UI(BUILDER_DATASTORE_UI datastore/DatastoreWidget.ui
+QT5_WRAP_UI(BUILDER_DATASTORE_UI datastore/DatastoreWidget.ui
                                  datastore/EditDatastoreItemDialog.ui
                                  )
 
@@ -175,7 +175,7 @@ SET(BUILDER_MONITORING_HPP monitoring/MonitoringWidget.hpp
                            monitoring/AddObserverDialog.hpp
                            )
 
-QT4_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui
+QT5_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui
                                   )
 
 
@@ -185,7 +185,7 @@ SET(BUILDER_RUNCONFIG_CPP runconfig/RunConfigurationWidget.cpp)
 
 SET(BUILDER_RUNCONFIG_HPP runconfig/RunConfigurationWidget.hpp)
 
-QT4_WRAP_UI(BUILDER_RUNCONFIG_UI runconfig/RunConfigurationWidget.ui)
+QT5_WRAP_UI(BUILDER_RUNCONFIG_UI runconfig/RunConfigurationWidget.ui)
 
 
 
@@ -197,7 +197,7 @@ SET(BUILDER_OUTPUTS_CPP outputs/OutputsWidget.cpp
 SET(BUILDER_OUTPUTS_HPP outputs/OutputsWidget.hpp
                            )
 
-QT4_WRAP_UI(BUILDER_OUTPUTS_UI outputs/OutputsWidget.ui
+QT5_WRAP_UI(BUILDER_OUTPUTS_UI outputs/OutputsWidget.ui
                                  )
 
 
@@ -213,12 +213,12 @@ SET(BUILDER_EXTENSIONS_HPP extensions/ExtensionPluginsManager.hpp
                            extensions/ExtensionsRegistry.hpp
                            )
 
-QT4_WRAP_UI(BUILDER_EXTENSIONS_UI )
+QT5_WRAP_UI(BUILDER_EXTENSIONS_UI )
 
 
 ### RESOURCES #
 
-QT4_ADD_RESOURCES(BUILDER_QRC resources/openfluidbuilder.qrc)
+QT5_ADD_RESOURCES(BUILDER_QRC resources/openfluidbuilder.qrc)
 
 SET(BUILDER_WIN32RC)
 
@@ -263,10 +263,6 @@ ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP
 
 
 TARGET_LINK_LIBRARIES(openfluid-builder-main
-                      ${GDAL_LIBRARIES}
-                      ${QT_QTCORE_LIBRARIES}
-                      ${QT_QTGUI_LIBRARIES}
-                      ${QT_QTSVG_LIBRARIES}
                       openfluid-base
                       openfluid-buddies
                       openfluid-core
@@ -278,7 +274,12 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-builderext
                       openfluid-fluidx
                       openfluid-ui-waresdev
-                      openfluid-waresdev)
+                      openfluid-waresdev
+                      Qt5::Core
+                      Qt5::Widgets
+                      Qt5::Svg
+                      ${GDAL_LIBRARIES}
+                     )
 
 IF(OFBUILD_ENABLE_MARKET)
   TARGET_LINK_LIBRARIES(openfluid-builder-main

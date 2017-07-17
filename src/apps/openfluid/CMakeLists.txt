@@ -8,15 +8,15 @@ ADD_EXECUTABLE(${OPENFLUID_CMD_APP}
               )
 SET_TARGET_PROPERTIES(${OPENFLUID_CMD_APP} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_BIN_DIR}")
 
-TARGET_LINK_LIBRARIES(${OPENFLUID_CMD_APP} 
-                      ${QT_QTCORE_LIBRARIES}
+TARGET_LINK_LIBRARIES(${OPENFLUID_CMD_APP}                       
                       openfluid-base
                       openfluid-buddies
                       openfluid-core
                       openfluid-machine
                       openfluid-tools
                       openfluid-fluidx
-                      )
+                      Qt5::Core
+                     )
 
 
 

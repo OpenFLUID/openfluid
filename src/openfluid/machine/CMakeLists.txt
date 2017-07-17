@@ -22,7 +22,8 @@ TARGET_LINK_LIBRARIES(openfluid-machine
                       openfluid-base
                       openfluid-ware
                       openfluid-fluidx
-                      ${QT_QTCORE_LIBRARY})
+                      Qt5::Core
+                     )
 
 
 INSTALL(TARGETS openfluid-machine

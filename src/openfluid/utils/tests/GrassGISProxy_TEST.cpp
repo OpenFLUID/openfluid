@@ -43,7 +43,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <iostream>
-#include <QApplication>
+#include <QCoreApplication>
 #include <openfluid/utils/GrassGISProxy.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -309,7 +309,6 @@ int main(int argc, char *argv[])
   QCoreApplication app(argc, argv);
 
   openfluid::base::Environment::init();
-
 
   if (openfluid::utils::GrassGISProxy::isAvailable())
   {

@@ -40,7 +40,7 @@
 
 
 #include <QSettings>
-#include <QApplication>
+#include <QCoreApplication>
 
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/tools/FileHelpers.hpp>

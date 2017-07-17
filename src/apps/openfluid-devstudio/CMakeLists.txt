@@ -7,11 +7,11 @@ SET(DEVSTUDIO_CPP MainWindow.cpp DevStudioPreferencesManager.cpp)
 
 SET(DEVSTUDIO_HPP MainWindow.hpp DevStudioPreferencesManager.hpp)
 
-QT4_WRAP_UI(DEVSTUDIO_UI MainWindow.ui)
+QT5_WRAP_UI(DEVSTUDIO_UI MainWindow.ui)
 
 ### RESOURCES #
 
-QT4_ADD_RESOURCES(DEVSTUDIO_QRC resources/openfluiddevstudio.qrc)
+QT5_ADD_RESOURCES(DEVSTUDIO_QRC resources/openfluiddevstudio.qrc)
 
 SET(DEVSTUDIO_WIN32RC)
 
@@ -38,11 +38,11 @@ ADD_LIBRARY(openfluid-devstudio-main SHARED ${DEVSTUDIO_CPP} ${DEVSTUDIO_HPP}
 
 
 TARGET_LINK_LIBRARIES(openfluid-devstudio-main
-                      ${QT_QTCORE_LIBRARIES}
-                      ${QT_QTGUI_LIBRARIES}
                       openfluid-ui-common
                       openfluid-waresdev
                       openfluid-ui-waresdev
+                      Qt5::Core
+                      Qt5::Widgets                      
                      )
 
 

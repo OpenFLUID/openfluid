@@ -37,7 +37,7 @@
  */
 
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QFileInfo>
 
 #include <openfluid/waresdev/WaresHubImportWorker.hpp>

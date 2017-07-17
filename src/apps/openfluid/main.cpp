@@ -37,12 +37,11 @@
 */
 
 
-#include "OpenFLUID.hpp"
+#include <QCoreApplication>
+
 #include <openfluid/base/Init.hpp>
 
-
-// =====================================================================
-// =====================================================================
+#include "OpenFLUID.hpp"
 
 
 int main(int argc, char **argv)

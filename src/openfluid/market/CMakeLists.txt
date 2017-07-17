@@ -1,6 +1,6 @@
 
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${QT_INCLUDES})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
 FILE(GLOB OPENFLUID_MARKET_CPP *.cpp)
@@ -21,7 +21,8 @@ TARGET_LINK_LIBRARIES(openfluid-market
                       openfluid-base
                       openfluid-tools
                       openfluid-utils
-                      ${QT_QTCORE_LIBRARIES})
+                      Qt5::Core
+                     )
 
 
 INSTALL(TARGETS openfluid-market

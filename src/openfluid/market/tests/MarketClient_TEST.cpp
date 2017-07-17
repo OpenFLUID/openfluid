@@ -46,6 +46,7 @@
 
 #include <openfluid/market/MarketClient.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 
 #include <tests-config.hpp>
 #include <QCoreApplication>
@@ -219,9 +220,17 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 int main(int argc, char *argv[])
 {
-  openfluid::base::Environment::init();
-
   QCoreApplication app(argc, argv);
 
-  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
+  openfluid::base::Environment::init();
+
+  if (openfluid::utils::CMakeProxy::isAvailable())
+  {
+    std::cout << openfluid::utils::CMakeProxy::getVersion().toStdString() << std::endl;
+    return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
+  }
+  else
+    std::cout << "** Test not run due to failing to find CMake program **" << std::endl;
+
+  return 0;
 }

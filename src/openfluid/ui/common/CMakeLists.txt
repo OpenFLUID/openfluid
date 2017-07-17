@@ -26,7 +26,7 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashS
                             )
 
 
-QT4_WRAP_UI(OPENFLUID_UI_COMMON_UI RunSimulationDialog.ui AboutDialog.ui
+QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI RunSimulationDialog.ui AboutDialog.ui
                                    SignatureEditorWidget.ui SignatureDataEditorWidget.ui EditSignatureDialog.ui
                                    PathsManagementWidget.ui WaresSearchPathsWidget.ui
                                    LogExplorerDialog.ui
@@ -35,7 +35,7 @@ QT4_WRAP_UI(OPENFLUID_UI_COMMON_UI RunSimulationDialog.ui AboutDialog.ui
                                    )
                                    
 
-QT4_ADD_RESOURCES(OPENFLUID_UI_COMMON_RC resources/openfluiduicommon.qrc)
+QT5_ADD_RESOURCES(OPENFLUID_UI_COMMON_RC resources/openfluiduicommon.qrc)
 
 ADD_LIBRARY(openfluid-ui-common SHARED ${OPENFLUID_UI_COMMON_CPP} ${OPENFLUID_UI_COMMON_HPP}
                                        ${OPENFLUID_UI_COMMON_RC} ${OPENFLUID_UI_COMMON_UI})
@@ -55,8 +55,8 @@ TARGET_LINK_LIBRARIES(openfluid-ui-common
                       openfluid-tools
                       openfluid-machine
                       openfluid-fluidx
-                      ${QT_QTCORE_LIBRARIES}
-                      ${QT_QTGUI_LIBRARIES}    
+                      Qt5::Core
+                      Qt5::Widgets                      
                      )
 
 

@@ -1,7 +1,6 @@
 
 
-
-INCLUDE_DIRECTORIES(${QT_INCLUDES} ${RapidJSON_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${RapidJSON_INCLUDE_DIR})
 
 
 SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp WareSrcWidgetCollection.cpp
@@ -28,7 +27,7 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEd
                               WorkspaceDevDashboardDialog.hpp WorkspaceDevWaresWidget.hpp WorkspaceDevGitWidget.hpp WorkspaceDevActionsWidget.hpp
                               WorkspaceDevProcessDialog.hpp)
 
-QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui EmptyPage.ui CppPage.ui CMakeConfigPage.ui
+QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui EmptyPage.ui CppPage.ui CMakeConfigPage.ui
                               NewSrcFileAssistant.ui NewWareDialog.ui FindReplaceDialog.ui
                               WaresSrcExportDialog.ui WaresSrcImportDialog.ui WaresSrcIOProgressDialog.ui
                               WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui
@@ -36,7 +35,7 @@ QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui Empt
                               WorkspaceDevDashboardDialog.ui WorkspaceDevWaresWidget.ui WorkspaceDevGitWidget.ui)
                                    
 
-#QT4_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)
+#QT5_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)
 
 
 ADD_LIBRARY(openfluid-ui-waresdev SHARED ${OPENFLUID_UI_WARESDEV_CPP} ${OPENFLUID_UI_WARESDEV_HPP}
@@ -54,12 +53,12 @@ SET_TARGET_PROPERTIES(openfluid-ui-waresdev PROPERTIES VERSION "${OPENFLUID_VERS
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
-                      ${QT_QTCORE_LIBRARIES}
-                      ${QT_QTGUI_LIBRARIES}    
                       openfluid-ui-common
                       openfluid-waresdev
                       openfluid-utils
                       openfluid-tools
+                      Qt5::Core
+                      Qt5::Widgets                                            
                      )
 
 

@@ -34,7 +34,7 @@ OpenFLUID is written in C++11. It relies on open-source libraries required to bu
 For the OpenFLUID framework libraries:
   - C++ STL
   - Boost (headers only)
-  - Qt : Core, GUI (optional), Network, XML
+  - Qt5 : Core, GUI (optional), Network, XML
   - RapidJSON (automatically downloaded if locally missing)
   - GDAL/OGR
   - GEOS (optional)
@@ -42,18 +42,18 @@ For the OpenFLUID framework libraries:
 For openfluid command line application:
   - OpenFLUID framework libraries
   - C++ STL
-  - Qt : Core 
+  - Qt5 : Core 
 
 For openfluid-builder GUI application:
   - OpenFLUID framework libraries
   - C++ STL
-  - Qt : Core, GUI, SVG
+  - Qt5 : Core, GUI, SVG
   - GDAL/OGR
 
 For openfluid-devstudio GUI application:
   - OpenFLUID framework libraries
   - C++ STL
-  - Qt : Core, GUI
+  - Qt5 : Core, GUI
 
 For unit testing, the Boost unit testing framework is also required 
 (unit_test_framework)
@@ -64,7 +64,7 @@ For building Latex documents, required tools and packages are:
   - packages: a4wide, babel, ltxtable, pgf/tikz, tabularx, verbatim
   - fonts: cmbright
 
-OpenFLUID uses CMake version 2.8.11 or higher for build configuration, 
+OpenFLUID uses CMake version 2.8.12 or higher for build configuration, 
 and has been tested with the GCC 4.8+ compiling system
 
 

@@ -17,8 +17,8 @@ SET_TARGET_PROPERTIES(openfluid-logexplorer PROPERTIES OUTPUT_NAME ${OPENFLUID_L
 TARGET_LINK_LIBRARIES(openfluid-logexplorer
                       openfluid-tools
                       openfluid-ui-common
-                      ${QT_QTCORE_LIBRARIES}
-                      )
+                      Qt5::Core
+                     )
                                    
                
 INSTALL(TARGETS openfluid-logexplorer

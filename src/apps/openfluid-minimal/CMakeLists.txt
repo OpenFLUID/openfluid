@@ -6,12 +6,13 @@ ADD_EXECUTABLE(openfluid-minimal
 SET_TARGET_PROPERTIES(openfluid-minimal PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_BIN_DIR}")
 
 TARGET_LINK_LIBRARIES(openfluid-minimal
-                      ${QT_QTCORE_LIBRARIES}
                       openfluid-base
                       openfluid-core
                       openfluid-machine
                       openfluid-tools
-                      openfluid-fluidx)
+                      openfluid-fluidx
+                      Qt5::Core                      
+                     )
 
 
 

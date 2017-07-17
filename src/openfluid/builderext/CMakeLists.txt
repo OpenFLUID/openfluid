@@ -1,9 +1,5 @@
 
 
-
-INCLUDE_DIRECTORIES(${QT_INCLUDES})
-
-
 FILE(GLOB OPENFLUID_BUILDEREXT_CPP PluggableBuilderExtension.cpp
                                    PluggableParameterizationExtension.cpp
                                    PluggableFeatureExtension.cpp
@@ -39,8 +35,8 @@ TARGET_LINK_LIBRARIES(openfluid-builderext
                       openfluid-ware
                       openfluid-tools                                           
                       openfluid-fluidx
-                      ${QT_QTCORE_LIBRARIES}
-                      ${QT_QTGUI_LIBRARIES}    
+                      Qt5::Core
+                      Qt5::Widgets                      
                      )
 
 

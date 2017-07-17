@@ -43,8 +43,6 @@
 
 
 #include <QDir>
-#include <QValidator>
-#include <QRegExpValidator>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>

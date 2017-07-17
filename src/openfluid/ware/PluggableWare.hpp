@@ -119,9 +119,10 @@ class OPENFLUID_API PluggableWare
 
   protected:
 
-    virtual bool isLinked() const { return mp_WareEnv != nullptr; };
-
     bool m_Initialized;
+
+    virtual bool isLinked() const
+    { return mp_WareEnv != nullptr; };
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
@@ -131,14 +132,14 @@ class OPENFLUID_API PluggableWare
 
     /**
       Gets an environment string value associated to a Key
-      @param[in] Key the sender of the message
+      @param[in] Key the requested environment key
       @param[out] Val the value associated with the environment key
     */
     bool OPENFLUID_GetRunEnvironment(const std::string& Key, std::string& Val);
 
     /**
       Gets an environment boolean value associated to a Key
-      @param[in] Key the sender of the message
+      @param[in] Key the requested environment key
       @param[out] Val the value associated with the environment key
     */
     bool OPENFLUID_GetRunEnvironment(const std::string& Key, bool& Val);
@@ -183,9 +184,7 @@ class OPENFLUID_API PluggableWare
 };
 
 
-
-} } // openfluid::ware
-
+} }  // namespaces
 
 
 #endif /* __OPENFLUID_WARE_PLUGGABLEWARE_HPP__ */

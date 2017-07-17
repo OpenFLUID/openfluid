@@ -38,25 +38,22 @@
  */
 
 
+#include <iostream>
+#include <typeinfo>
 
-
-
-#include <openfluid/base/Init.hpp>
-
-#include "BuilderApp.hpp"
-#include "builderconfig.hpp"
-
+#include <QApplication>
 #include <QTranslator>
 #include <QLibraryInfo>
 
+#include <openfluid/base/Init.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 
-#include <iostream>
-#include <typeinfo>
+#include "BuilderApp.hpp"
+#include "builderconfig.hpp"
 
 
 int main(int argc, char** argv)

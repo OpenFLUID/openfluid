@@ -17,7 +17,7 @@ SET_TARGET_PROPERTIES(openfluid-fluidx PROPERTIES VERSION "${OPENFLUID_VERSION_M
 TARGET_LINK_LIBRARIES(openfluid-fluidx
                       openfluid-base
                       openfluid-core
-                      ${QT_QTXML_LIBRARY})
+                      Qt5::Xml)
 
 
 INSTALL(TARGETS openfluid-fluidx

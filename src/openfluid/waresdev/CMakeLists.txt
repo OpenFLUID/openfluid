@@ -1,9 +1,5 @@
 
 
-
-INCLUDE_DIRECTORIES(${QT_INCLUDES})
-
-
 FILE(GLOB OPENFLUID_WARESDEV_CPP WareSrcManager.cpp WareSrcContainer.cpp OStreamMsgStream.cpp
                                  WareSrcFactory.cpp WareSrcMsgParser.cpp WaresDevPackage.cpp WaresHubImportWorker.cpp)
 
@@ -25,7 +21,7 @@ SET_TARGET_PROPERTIES(openfluid-waresdev PROPERTIES VERSION "${OPENFLUID_VERSION
 TARGET_LINK_LIBRARIES(openfluid-waresdev
                       openfluid-base
                       openfluid-utils
-                      ${QT_QTCORE_LIBRARIES}
+                      Qt5::Core
                      )
 
 

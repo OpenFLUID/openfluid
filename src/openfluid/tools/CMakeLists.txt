@@ -1,4 +1,4 @@
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${QT_INCLUDES})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 FILE(GLOB OPENFLUID_TOOLS_CPP *.cpp)
 FILE(GLOB OPENFLUID_TOOLS_HPP *.hpp)
@@ -17,9 +17,9 @@ SET_TARGET_PROPERTIES(openfluid-tools PROPERTIES VERSION "${OPENFLUID_VERSION_MA
 
 TARGET_LINK_LIBRARIES(openfluid-tools 
                       openfluid-core
-                      ${QT_QTCORE_LIBRARY}
-                      ${QT_QTXML_LIBRARY}
-                      )
+                      Qt5::Core
+                      Qt5::Xml
+                     )
 
 
 INSTALL(TARGETS openfluid-tools

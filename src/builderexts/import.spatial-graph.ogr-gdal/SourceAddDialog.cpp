@@ -54,11 +54,7 @@ SourceAddDialog::SourceAddDialog(QWidget* Parent):
   ui->StatusLabel->setText(tr("No layer"));
   ui->StatusProgressBar->setVisible(false);
 
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-  ui->LayersTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-#else
   ui->LayersTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-#endif
 
   connect(ui->LayersTableWidget,SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)),
           this,SLOT(globalCheck()));

@@ -123,11 +123,8 @@ void SignatureDataEditorWidget::initialize(const QList<DataColumns>& Columns)
   ui->DataTableWidget->setColumnCount(m_Columns.size());
   ui->DataTableWidget->setHorizontalHeaderLabels(ColHeaders);
 
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-  ui->DataTableWidget->horizontalHeader()->setResizeMode(StretchedCol,QHeaderView::Stretch);
-#else
   ui->DataTableWidget->horizontalHeader()->setSectionResizeMode(StretchedCol,QHeaderView::Stretch);
-#endif
+
 }
 
 

@@ -39,7 +39,7 @@
 
 
 #include <QObject>
-#include <QApplication>
+#include <QCoreApplication>
 #include <QRegExp>
 #include <QTextStream>
 

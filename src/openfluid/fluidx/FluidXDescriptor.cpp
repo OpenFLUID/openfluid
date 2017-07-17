@@ -44,12 +44,11 @@
 
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
-
-#include "FluidXDescriptor.hpp"
 
 
 namespace openfluid { namespace fluidx {

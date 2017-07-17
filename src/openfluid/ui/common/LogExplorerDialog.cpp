@@ -338,12 +338,7 @@ void LogExplorerDialog::updateTable(bool WithFiltering)
     }
   }
 
-
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-  ui->LogTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-#else
   ui->LogTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-#endif
 
   if (ui->LogTableWidget->rowCount())
     ui->MessagesCountLabel->setText(tr("%1 message(s)").arg(ui->LogTableWidget->rowCount()));

@@ -65,7 +65,7 @@
 ##
 
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 IF(OpenFLUID_FOUND AND OpenFLUID_DIR)
   RETURN()
@@ -136,16 +136,12 @@ ENDIF()
 ###########################################################################
 
 
-FILE(STRINGS "${_OpenFLUID_INCLUDE_DIR}/openfluid/global.hpp" _OpenFLUID_VERSION_GLOBAL_LINE REGEX "#define OPENFLUID_VERSIONFULL_STRING \"[0-9.a-z~]+\"")
-STRING(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+(~[a-z]+[0-9]*)?" _OpenFLUID_VERSION "${_OpenFLUID_VERSION_GLOBAL_LINE}")
+FILE(STRINGS "${_OpenFLUID_INCLUDE_DIR}/openfluid/config.hpp" _OpenFLUID_VERSION_CONFIG_LINE REGEX "VERSION_FULL = \"[0-9.a-z~]+\"")
+STRING(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+(~[a-z]+[0-9]*)?" _OpenFLUID_VERSION "${_OpenFLUID_VERSION_CONFIG_LINE}")
 
-FILE(STRINGS "${_OpenFLUID_INCLUDE_DIR}/openfluid/global.hpp" _OpenFLUID_VERSION_NUMERIC_GLOBAL_LINE REGEX "#define OPENFLUID_VERSION_NUMERIC [0-9]+")
-STRING(REGEX MATCH "[0-9]+" _OpenFLUID_VERSION_NUMERIC "${_OpenFLUID_VERSION_NUMERIC_GLOBAL_LINE}")
-
-IF(NOT _OpenFLUID_VERSION OR NOT _OpenFLUID_VERSION_NUMERIC)
+IF(NOT _OpenFLUID_VERSION)
   _OpenFLUID_RETURN("Unable to determine the OpenFLUID version")
 ENDIF()
-
 
 
 ###########################################################################
@@ -165,7 +161,7 @@ ENDIF()
 ###########################################################################
 
 
-MESSAGE(STATUS "Found OpenFLUID version ${_OpenFLUID_VERSION} (${_OpenFLUID_VERSION_NUMERIC})")
+MESSAGE(STATUS "Found OpenFLUID version ${_OpenFLUID_VERSION}")
 
 SET(_OpenFLUID_FIND_COMPONENTS
   @OFBUILD_COMPONENTS_DEFAULT_LIST@
@@ -218,8 +214,7 @@ FIND_PATH(_OpenFLUID_HOME_DIR
 
 
 IF(_OpenFLUID_FOUND)
-  SET(OpenFLUID_VERSION ${_OpenFLUID_VERSION} CACHE STRING "OpenFLUID version")  
-  SET(OpenFLUID_VERSION_NUMERIC ${_OpenFLUID_VERSION_NUMERIC} CACHE STRING "OpenFLUID version as a numeric value")
+  SET(OpenFLUID_VERSION ${_OpenFLUID_VERSION} CACHE STRING "OpenFLUID version")
 
   SET(OpenFLUID_HOME_DIR ${_OpenFLUID_HOME_DIR} CACHE PATH "OpenFLUID home directory")
 

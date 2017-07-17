@@ -40,6 +40,7 @@
 #include <iostream>
 #include <typeinfo>
 
+#include <QApplication>
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QDir>

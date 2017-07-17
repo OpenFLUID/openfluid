@@ -50,7 +50,6 @@
 #include <QString>
 #include <QStringList>
 #include <QDateTime>
-#include <QColor>
 
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/dllexport.hpp>

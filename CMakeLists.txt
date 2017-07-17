@@ -11,7 +11,7 @@
 #
 
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 PROJECT(OpenFLUID CXX)
 
@@ -97,9 +97,16 @@ SET(CMAKE_AUTOMOC_MOC_OPTIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 
+# Detection of C++ headers, use shell script resources/tools/extract_std_headers to extract the list
+OFBUILD_CHECK_CXX_STDHEADERS(algorithm algorithm chrono cmath complex cstdlib ctime deque 
+                             exception fstream functional iomanip iosfwd iostream list map 
+                             memory ostream queue random regex set sstream stdexcept string 
+                             system_error thread typeinfo utility vector)
+
 # Detection of main dependencies
-INCLUDE(OpenFLUIDDetectQt)
 FIND_PACKAGE(Boost 1.54 REQUIRED COMPONENTS ${OFBUILD_BOOST_TEST_FRAMEWORK})
+FIND_PACKAGE(Qt5 COMPONENTS Core Widgets Network Xml Svg REQUIRED)
+MESSAGE(STATUS "Found Qt5 (version ${Qt5_VERSION})")
 FIND_PACKAGE(GDAL REQUIRED)
 OPENFLUID_CHECK_GDAL_VERSION()
 FIND_PACKAGE(RapidJSON REQUIRED)
@@ -108,8 +115,8 @@ FIND_PACKAGE(LATEX)
 
 
 # Detection of external translations tools and setup of common translations targets
-FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease lrelease-qt4)
-FIND_PROGRAM(LUPDATE_EXECUTABLE NAMES lupdate lupdate-qt4)
+FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease lrelease-qt5)
+FIND_PROGRAM(LUPDATE_EXECUTABLE NAMES lupdate lupdate-qt5)
 ADD_CUSTOM_TARGET(update-translations-strings)
 ADD_CUSTOM_TARGET(release-translations ALL)
 

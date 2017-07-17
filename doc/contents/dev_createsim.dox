@@ -301,7 +301,7 @@ SET(SIM_SIM2DOC_INSTALL_DISABLED OFF)
 \subsection dev_createsim_exmpl_cmakelists File CMakeLists.txt defining the build process
  
 \verbatim
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 INCLUDE(CMake.in.config)
 

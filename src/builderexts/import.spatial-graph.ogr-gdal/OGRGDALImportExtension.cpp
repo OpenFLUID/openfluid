@@ -110,11 +110,8 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
   ui->ConfigTabWidget->setEnabled(false);
   ui->ConfigTabWidget->setCurrentIndex(0);
 
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-  ui->SourcesTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-#else
   ui->SourcesTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-#endif
+
 
   connect(ui->AddFileButton,SIGNAL(clicked()),this,SLOT(addFileSource()));
   connect(ui->AddWFSButton,SIGNAL(clicked()),this,SLOT(addWFSSource()));

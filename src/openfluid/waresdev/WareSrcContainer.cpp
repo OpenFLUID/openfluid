@@ -40,7 +40,7 @@
 
 
 #include <QDir>
-#include <QApplication>
+#include <QCoreApplication>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
@@ -89,7 +89,6 @@ WareSrcContainer::~WareSrcContainer()
 
   delete mp_Process;
   delete mp_CurrentParser;
-  delete mp_Stream;
 }
 
 

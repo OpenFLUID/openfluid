@@ -13,7 +13,12 @@ addons:
     - gfortran
     - libboost-dev
     - libboost-test-dev
-    - libqt4-dev
+    - qt5-default
+    - qtbase5-dev
+    - qtbase5-dev-tools
+    - qttools5-dev
+    - qttools5-dev-tools
+    - libqt5svg5-dev
     - libgdal1h 
     - libgdal1-dev 
     - libgeos++-dev 

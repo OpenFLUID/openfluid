@@ -31,7 +31,6 @@
 
 
 INCLUDE(CMakeParseArguments)
-INCLUDE(CheckCXXCompilerFlag)
 
 
 ###########################################################################
@@ -125,7 +124,7 @@ FUNCTION(OFBUILD_ADD_SIMULATOR SIM_SRCDIR SIM_BINDIR)
                         openfluid-base
                         openfluid-ware
                         openfluid-tools
-                        ${QT_QTCORE_LIBRARIES}
+                        Qt5::Core
                         ${SIM_EXTRA_LINKS})
 
   IF(WARE_LINKUID)
@@ -194,7 +193,7 @@ FUNCTION(OFBUILD_ADD_OBSERVER OBS_SRCDIR OBS_BINDIR)
                         openfluid-base
                         openfluid-ware
                         openfluid-tools
-                        ${QT_QTCORE_LIBRARIES}
+                        Qt5::Core
                         ${OBS_EXTRA_LINKS})
 
   IF(WARE_LINKUID)
@@ -251,11 +250,10 @@ FUNCTION(OFBUILD_ADD_BUILDER_EXTENSION EXT_SRCDIR EXT_BINDIR)
   ENDIF()
 
 
-  QT4_WRAP_UI(EXT_UI ${EXT_UIFILES})
-  QT4_ADD_RESOURCES(EXT_RC ${EXT_RCFILES})
+  QT5_WRAP_UI(EXT_UI ${EXT_UIFILES})
+  QT5_ADD_RESOURCES(EXT_RC ${EXT_RCFILES})
 
   INCLUDE_DIRECTORIES(${EXT_SRCDIR})
-  INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
   IF(NOT EXT_ID)
     GET_FILENAME_COMPONENT(EXT_ID ${EXT_SRCDIR} NAME)
@@ -285,8 +283,8 @@ FUNCTION(OFBUILD_ADD_BUILDER_EXTENSION EXT_SRCDIR EXT_BINDIR)
                         openfluid-tools
                         openfluid-ware
                         openfluid-builderext
-                        ${QT_QTCORE_LIBRARIES}
-                        ${QT_QTGUI_LIBRARIES}
+                        Qt5::Core
+                        Qt5::Widgets
                         ${EXT_EXTRA_LINKS}
                        )
 
@@ -343,7 +341,8 @@ MACRO(OFBUILD_ADD_UNITTEST TEST_CAT TEST_NAME)
   TARGET_LINK_LIBRARIES("${TEST_CAT}-${TEST_NAME}"
                        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
                        ${UNITTEST_LINK_LIBRARIES})
-  SET_TARGET_PROPERTIES("${TEST_CAT}-${TEST_NAME}" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_TESTS_BINARY_DIR}")
+  SET_TARGET_PROPERTIES("${TEST_CAT}-${TEST_NAME}" 
+                        PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_TESTS_BINARY_DIR}")
   ADD_TEST("unit-${TEST_CAT}-${TEST_NAME}" "${OFBUILD_TESTS_BINARY_DIR}/${TEST_CAT}-${TEST_NAME}" ${OFBUILD_UNITTESTS_RUN_OPTIONS})
 
   SET_TESTS_PROPERTIES("unit-${TEST_CAT}-${TEST_NAME}"
@@ -387,4 +386,18 @@ MACRO(OFBUILD_CONFIGURE_SANITIZER)
   ELSE()
     SET(OFBUILD_ENABLE_SANITIZER 0)    
   ENDIF()
+ENDMACRO()
+
+
+###########################################################################
+
+
+MACRO(OFBUILD_CHECK_CXX_STDHEADERS)
+  INCLUDE(CheckIncludeFileCXX)
+  FOREACH(_ELEM ${ARGN})
+    CHECK_INCLUDE_FILE_CXX(${_ELEM} _HAVE_CXX_HEADER_${_ELEM})
+    IF(NOT _HAVE_CXX_HEADER_${_ELEM})
+      MESSAGE(FATAL_ERROR "Required C++ header <${_ELEM}> not found!")
+    ENDIF()
+  ENDFOREACH()  
 ENDMACRO()

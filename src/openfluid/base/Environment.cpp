@@ -40,7 +40,6 @@
 #include <thread>
 
 #include <QDir>
-#include <QDesktopServices>
 
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
@@ -54,6 +53,7 @@
 
 
 namespace openfluid { namespace base {
+
 
 bool Environment::m_Initialized = false;
 std::string Environment::m_SystemArch;

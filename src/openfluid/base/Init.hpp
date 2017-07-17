@@ -41,9 +41,6 @@
 #define __OPENFLUID_BASE_INIT_HPP__
 
 
-#include <QApplication>
-
-
 #include <openfluid/debug.hpp>
 #include <openfluid/base/Environment.hpp>
 

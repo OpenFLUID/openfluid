@@ -121,12 +121,7 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   ui->RemoveEventsButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveEventsButton->setIconSize(QSize(20,20));
 
-
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-  ui->ConnectionsTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-#else
   ui->ConnectionsTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-#endif
 
 
   connect(ui->AddUnitsClassButton,SIGNAL(clicked()),this,SLOT(addUnitsClass()));

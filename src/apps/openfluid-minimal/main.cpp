@@ -37,6 +37,9 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
+
+#include <QCoreApplication>
+
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/Init.hpp>
@@ -48,7 +51,6 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
-
 
 
 int main(int argc, char **argv)

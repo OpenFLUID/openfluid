@@ -43,7 +43,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <iostream>
-#include <QApplication>
+#include <QCoreApplication>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/base/Environment.hpp>
 #include "tests-config.hpp"

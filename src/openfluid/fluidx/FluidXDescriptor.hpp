@@ -41,8 +41,6 @@
 #define __OPENFLUID_FLUIDX_FLUIDXDESCRIPTOR_HPP__
 
 
-#include <QDomElement>
-
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
@@ -51,6 +49,9 @@
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
+
+
+class QDomElement;
 
 
 namespace openfluid {
@@ -116,9 +117,6 @@ class OPENFLUID_API FluidXDescriptor
     void extractDatastoreFromNode(QDomElement& Node);
 
     void parseFile(std::string Filename);
-
-    // =====================================================================
-    // =====================================================================
 
     void prepareFluidXDir(const std::string& DirPath);
 

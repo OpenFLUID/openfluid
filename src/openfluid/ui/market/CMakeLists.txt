@@ -1,9 +1,5 @@
 
 
-
-INCLUDE_DIRECTORIES(${QT_INCLUDES})
-
-
 SET(OPENFLUID_UI_MARKET_CPP MarketBuildOptionsDialog.cpp MarketClientAssistant.cpp MarketWizardPage.cpp 
                             MarketPackWidget.cpp MarketPackWidgetFormat.cpp
                             ViewLogFileWindow.cpp                                                         
@@ -15,7 +11,7 @@ SET(OPENFLUID_UI_MARKET_HPP MarketBuildOptionsDialog.hpp MarketClientAssistant.h
                             )
 
 
-QT4_ADD_RESOURCES(OPENFLUID_UI_MARKET_RC resources/openfluiduimarket.qrc)
+QT5_ADD_RESOURCES(OPENFLUID_UI_MARKET_RC resources/openfluiduimarket.qrc)
 
 
 ADD_LIBRARY(openfluid-ui-market SHARED ${OPENFLUID_UI_MARKET_CPP} ${OPENFLUID_UI_MARKET_HPP}
@@ -39,8 +35,8 @@ TARGET_LINK_LIBRARIES(openfluid-ui-market
                       openfluid-machine
                       openfluid-market
                       openfluid-fluidx
-                      ${QT_QTCORE_LIBRARIES}
-                      ${QT_QTGUI_LIBRARIES}    
+                      Qt5::Core
+                      Qt5::Widgets                          
                      )
 
 
