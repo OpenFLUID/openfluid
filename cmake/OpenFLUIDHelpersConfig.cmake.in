@@ -78,9 +78,10 @@ ENDMACRO()
 ###########################################################################
 
 
-# Macro for Qt detection, and automatic selection of Qt4 or Qt5
+# Macro for Qt detection - deprecated
 MACRO(OPENFLUID_FIND_QT)
-  MESSAGE(WARNING "The OPENFLUID_FIND_QT() macro is deprecated") 
+  MESSAGE(WARNING "The OPENFLUID_FIND_QT() macro is fully functional but deprecated."
+                  "See file ${OpenFLUIDHelpers_DIR}/OpenFLUIDDetectQt.cmake for more informations.") 
   INCLUDE(${OpenFLUIDHelpers_DIR}/OpenFLUIDDetectQt.cmake)
 ENDMACRO()
 
