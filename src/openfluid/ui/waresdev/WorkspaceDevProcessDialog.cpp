@@ -79,8 +79,8 @@ WorkspaceDevProcessDialog::WorkspaceDevProcessDialog(const QString& Title, Works
   qRegisterMetaType<openfluid::ware::WareType>("openfluid::ware::WareType");
   connect(Worker, SIGNAL(processed(openfluid::ware::WareType,QString,QString, bool)),
           Parent, SLOT(setWareActionStatus(openfluid::ware::WareType,QString,QString, bool)));
-  connect(Worker, SIGNAL(processed(openfluid::ware::WareType,QString,QString, bool)),
-          this, SLOT(handleWorkerProcessed()));
+  connect(Worker, SIGNAL(wareCompleted()),
+          this, SLOT(handleWorkerWareCompleted()));
   connect(Worker, SIGNAL(messageWritten(QString)),this, SLOT(handleWorkerMessage(QString)));
   connect(Worker, SIGNAL(finished()), Worker, SLOT(deleteLater()));
   connect(WThread, SIGNAL(finished()), WThread, SLOT(deleteLater()));
@@ -115,7 +115,7 @@ void WorkspaceDevProcessDialog::handleWorkerFinished()
 // =====================================================================
 
 
-void WorkspaceDevProcessDialog::handleWorkerProcessed()
+void WorkspaceDevProcessDialog::handleWorkerWareCompleted()
 {
   ui->ProgressBar->setValue(ui->ProgressBar->value()+1);
 }

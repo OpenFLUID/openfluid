@@ -64,6 +64,8 @@ class OPENFLUID_API WorkspaceDevProcessWorker : public QObject
 
     void processed(openfluid::ware::WareType Type,QString ID,QString ActionName, bool Status);
 
+    void wareCompleted();
+
     void messageWritten(QString Msg);
 
 

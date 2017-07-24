@@ -68,7 +68,7 @@ class OPENFLUID_API WorkspaceDevProcessDialog: public QDialog
 
     void handleWorkerFinished();
 
-    void handleWorkerProcessed();
+    void handleWorkerWareCompleted();
 
     void handleWorkerMessage(QString Msg);
 

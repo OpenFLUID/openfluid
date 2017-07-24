@@ -122,6 +122,8 @@ void WorkspaceDevPurgeWorker::run()
         }
       }
       writeMessage();
+
+      emit wareCompleted();
     }
   }
   emit finished();

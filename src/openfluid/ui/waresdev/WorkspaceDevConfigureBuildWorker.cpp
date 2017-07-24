@@ -139,6 +139,7 @@ void WorkspaceDevConfigureBuildWorker::run()
         else
           emit processed(WType.first,WItem.ID,"build", true);
       }
+      emit wareCompleted();
     }
   }
 

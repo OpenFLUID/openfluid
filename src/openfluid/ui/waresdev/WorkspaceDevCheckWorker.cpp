@@ -133,6 +133,7 @@ void WorkspaceDevCheckWorker::run()
           emit processed(WType.first,WItem.ID,"license", false);
         }
       }
+      emit wareCompleted();
     }
   }
   emit finished();
