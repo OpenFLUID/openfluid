@@ -37,6 +37,8 @@
 */
 
 
+#include <QRegExp>
+
 #include <openfluid/ui/waresdev/WorkspaceDevWaresWidget.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevGitWidget.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevActionsWidget.hpp>
@@ -68,6 +70,8 @@ WorkspaceDevWaresWidget::WorkspaceDevWaresWidget(QWidget* Parent) :
 
   connect(ui->SelectAllActionLabel, SIGNAL(clicked()), this, SLOT(selectAll()));
   connect(ui->SelectNoneActionLabel, SIGNAL(clicked()), this, SLOT(selectNone()));
+  connect(ui->SelectFilteredActionLabel, SIGNAL(clicked()), this, SLOT(selectFiltered()));
+  connect(ui->SelectInvertActionLabel, SIGNAL(clicked()), this, SLOT(invertSelection()));
 
   connect(ui->WaresTableWidget, SIGNAL(cellChanged(int,int)), this, SLOT(notifySelectionChanged()));
 }
@@ -104,6 +108,48 @@ void WorkspaceDevWaresWidget::selectNone()
     ui->WaresTableWidget->item(i,0)->setCheckState(Qt::Unchecked);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void WorkspaceDevWaresWidget::selectFiltered()
+{
+  QString REStr = ui->RegExpEdit->text();
+
+  if (!REStr.isEmpty())
+  {
+    QRegExp RE(REStr);
+    if (!ui->RegExpCheckBox->isChecked())
+      RE.setPatternSyntax(QRegExp::Wildcard);
+
+    for (unsigned int i =0; i < m_WaresCount; i++)
+    {
+      QTableWidgetItem* Item = ui->WaresTableWidget->item(i,0);
+
+      if (RE.exactMatch(Item->text()))
+        Item->setCheckState(Qt::Checked);
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WorkspaceDevWaresWidget::invertSelection()
+{
+  for (unsigned int i =0; i < m_WaresCount; i++)
+  {
+    QTableWidgetItem* Item = ui->WaresTableWidget->item(i,0);
+
+    if (Item->checkState() == Qt::Unchecked)
+      Item->setCheckState(Qt::Checked);
+    else
+      Item->setCheckState(Qt::Unchecked);
+  }
+}
 
 
 // =====================================================================

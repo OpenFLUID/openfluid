@@ -69,6 +69,10 @@ class OPENFLUID_API WorkspaceDevWaresWidget: public QWidget
 
     void selectNone();
 
+    void selectFiltered();
+
+    void invertSelection();
+
     void notifySelectionChanged();
 
 

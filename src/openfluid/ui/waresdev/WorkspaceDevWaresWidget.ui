@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>712</width>
     <height>300</height>
    </rect>
   </property>
@@ -75,6 +75,39 @@
       </widget>
      </item>
      <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="openfluid::ui::common::ActionLabel" name="SelectFilteredActionLabel">
+       <property name="text">
+        <string>select using filter:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="RegExpEdit"/>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="RegExpCheckBox">
+       <property name="text">
+        <string>Regular expression</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -86,6 +119,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="openfluid::ui::common::ActionLabel" name="SelectInvertActionLabel">
+       <property name="text">
+        <string>invert selection</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
