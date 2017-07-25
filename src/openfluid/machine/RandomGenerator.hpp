@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file RandomGenerator.hpp
 
@@ -53,12 +52,15 @@ namespace openfluid { namespace machine {
 class OPENFLUID_API RandomGenerator : public Generator
 {
   private:
+
     openfluid::core::DoubleValue m_Min;
+
     openfluid::core::DoubleValue m_Max;
 
     openfluid::core::Duration_t m_DeltaT;
 
     std::mt19937 m_RandomEngine;
+
 
   public:
 
@@ -74,13 +76,13 @@ class OPENFLUID_API RandomGenerator : public Generator
 
     openfluid::base::SchedulingRequest runStep();
 
-    void finalizeRun() {};
+    void finalizeRun()
+    { };
 
 };
 
 
-} } //namespaces
-
+} }  //namespaces
 
 
 #endif /* __OPENFLUID_MACHINE_RANDOMGENERATOR_HPP__ */
