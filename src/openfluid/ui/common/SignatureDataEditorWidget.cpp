@@ -37,13 +37,13 @@
 */
 
 
-#include "ui_SignatureDataEditorWidget.h"
-#include "SignatureDataEditorWidget.hpp"
-
 #include <QComboBox>
 
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/core/Value.hpp>
+
+#include "ui_SignatureDataEditorWidget.h"
+#include "SignatureDataEditorWidget.hpp"
 
 
 namespace openfluid { namespace ui { namespace common {

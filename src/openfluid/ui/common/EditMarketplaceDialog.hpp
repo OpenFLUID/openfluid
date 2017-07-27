@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_UICOMMON_EDITMARKETPLACEDIALOG_HPP__
 #define __OPENFLUID_UICOMMON_EDITMARKETPLACEDIALOG_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 #include <openfluid/base/PreferencesManager.hpp>

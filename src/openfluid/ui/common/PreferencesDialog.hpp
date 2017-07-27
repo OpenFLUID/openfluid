@@ -40,11 +40,12 @@
 #ifndef __OPENFLUID_UICOMMON_PREFERENCESDIALOG_HPP__
 #define __OPENFLUID_UICOMMON_PREFERENCESDIALOG_HPP__
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 #include <QDateTime>
 #include <QToolButton>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 
 namespace Ui

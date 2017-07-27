@@ -39,10 +39,10 @@
 
 #include <QPushButton>
 
-#include "ui_EditSignatureDialog.h"
-#include "EditSignatureDialog.hpp"
-
+#include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/config.hpp>
+
+#include "ui_EditSignatureDialog.h"
 
 
 namespace openfluid { namespace ui { namespace common {

@@ -38,9 +38,9 @@
  */
 
 
-#include "ClickableLabel.hpp"
-
 #include <QMouseEvent>
+
+#include <openfluid/ui/common/ClickableLabel.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {

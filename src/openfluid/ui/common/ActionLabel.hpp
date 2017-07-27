@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_UICOMMON_ACTIONLABEL_HPP__
 #define __OPENFLUID_UICOMMON_ACTIONLABEL_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/common/ClickableLabel.hpp>
 

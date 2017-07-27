@@ -41,8 +41,9 @@
 #define __OPENFLUID_UICOMMON_CLICKABLELABEL_HPP__
 
 
-#include <openfluid/dllexport.hpp>
 #include <QLabel>
+
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {

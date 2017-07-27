@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_UICOMMON_DETECTQTDEVTOOLSDIALOG_HPP__
 #define __OPENFLUID_UICOMMON_DETECTQTDEVTOOLSDIALOG_HPP__
 
+
 #include <QAbstractButton>
 
 #include <openfluid/dllexport.hpp>
@@ -98,7 +99,6 @@ class OPENFLUID_API DetectQtDevToolsDialog : public OpenFLUIDDialog
 
 
 } } } // namespaces
-
 
 
 #endif /* __OPENFLUID_UICOMMON_DETECTQTDEVTOOLSDIALOG_HPP__ */

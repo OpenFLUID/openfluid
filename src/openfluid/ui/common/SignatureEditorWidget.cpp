@@ -37,12 +37,12 @@
 */
 
 
-#include "ui_SignatureEditorWidget.h"
 #include <openfluid/ui/common/SignatureEditorWidget.hpp>
-
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
+
+#include "ui_SignatureEditorWidget.h"
 
 
 namespace openfluid { namespace ui { namespace common {

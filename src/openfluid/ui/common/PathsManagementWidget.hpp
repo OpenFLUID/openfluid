@@ -40,14 +40,16 @@
 #ifndef __OPENFLUID_UICOMMON_PATHSMANAGEMENTWIDGET_HPP__
 #define __OPENFLUID_UICOMMON_PATHSMANAGEMENTWIDGET_HPP__
 
+
+#include <QWidget>
+
 #include <openfluid/dllexport.hpp>
+
 
 namespace Ui
 {
   class PathsManagementWidget;
 }
-
-#include <QWidget>
 
 
 namespace openfluid { namespace ui { namespace common {

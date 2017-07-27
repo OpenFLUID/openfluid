@@ -38,8 +38,9 @@
  */
 
 
+#include <openfluid/ui/common/WaresSearchPathsWidget.hpp>
+
 #include "ui_WaresSearchPathsWidget.h"
-#include "WaresSearchPathsWidget.hpp"
 
 
 namespace openfluid { namespace ui { namespace common {

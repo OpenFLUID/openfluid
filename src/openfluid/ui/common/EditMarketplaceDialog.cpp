@@ -41,10 +41,9 @@
 #include <QPushButton>
 
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/EditMarketplaceDialog.hpp>
 
 #include "ui_EditMarketplaceDialog.h"
-#include "EditMarketplaceDialog.hpp"
-
 
 
 namespace openfluid { namespace ui { namespace common {

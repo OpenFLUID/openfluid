@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_UICOMMON_RUNSIMULATIONDIALOG_HPP__
 #define __OPENFLUID_UICOMMON_RUNSIMULATIONDIALOG_HPP__
 
+
 #include <QObject>
 #include <QDialog>
 #include <QElapsedTimer>
@@ -48,8 +49,6 @@
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
 #include <openfluid/base/Exception.hpp>
-
-
 #include <openfluid/dllexport.hpp>
 
 

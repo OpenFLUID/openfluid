@@ -36,9 +36,9 @@
 */
 
 
-
 #ifndef __OPENFLUID_UTILS_SINGLETONMACROS_HPP__
 #define __OPENFLUID_UTILS_SINGLETONMACROS_HPP__
+
 
 /**
   Macro for definition of a dynamic singleton,
@@ -102,6 +102,7 @@ OPENFLUID_SINGLETON_INITIALIZATION(Example)
 
 // =====================================================================
 // =====================================================================
+
 
 /**
   Macro for initialization of a dynamic singleton, must be put in the .cpp file.

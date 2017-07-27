@@ -42,9 +42,9 @@
 #include <QFileDialog>
 
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/common/PathsManagementWidget.hpp>
 
 #include "ui_PathsManagementWidget.h"
-#include "PathsManagementWidget.hpp"
 
 
 namespace openfluid { namespace ui { namespace common {

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>427</width>
-    <height>436</height>
+    <width>500</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -176,13 +176,6 @@
        </spacer>
       </item>
      </layout>
-     <zorder>LayoutGroupBox</zorder>
-     <zorder>ViewGroupBox</zorder>
-     <zorder>verticalSpacer_2</zorder>
-     <zorder>label</zorder>
-     <zorder>verticalSpacer</zorder>
-     <zorder>ExportGroupBox</zorder>
-     <zorder>verticalSpacer_3</zorder>
     </widget>
    </item>
   </layout>

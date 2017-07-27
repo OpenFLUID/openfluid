@@ -38,8 +38,6 @@
  */
 
 
-#include <iostream>
-
 #include <QPushButton>
 #include <QShowEvent>
 #include <QMessageBox>

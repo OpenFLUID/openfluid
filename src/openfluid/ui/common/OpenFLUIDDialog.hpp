@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_UICOMMON_OPENFLUIDDIALOG_HPP__
 #define __OPENFLUID_UICOMMON_OPENFLUIDDIALOG_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <QDialog>
 

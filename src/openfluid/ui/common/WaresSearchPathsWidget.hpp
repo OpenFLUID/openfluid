@@ -41,9 +41,10 @@
 #define __OPENFLUID_UICOMMON_WARESSEARCHPATHSWIDGET_HPP__
 
 
-#include <openfluid/dllexport.hpp>
 #include <QWidget>
 #include <QDir>
+
+#include <openfluid/dllexport.hpp>
 
 
 namespace Ui
@@ -98,5 +99,6 @@ class OPENFLUID_API WaresSearchPathsWidget : public QWidget
 
 
 } } } // namespaces
+
 
 #endif /* __OPENFLUID_UICOMMON_WARESSEARCHPATHSWIDGET_HPP__ */

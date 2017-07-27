@@ -88,4 +88,5 @@ class OPENFLUID_API AboutDialog : public QDialog
 
 } } } // namespaces
 
+
 #endif /* __OPENFLUID_UICOMMON_ABOUTDIALOG_HPP__ */

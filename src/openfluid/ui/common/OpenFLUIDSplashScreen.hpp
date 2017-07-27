@@ -41,9 +41,10 @@
 #define __OPENFLUID_UICOMMON_OPENFLUIDSPLASHSCREEN_HPP__
 
 
-#include <openfluid/dllexport.hpp>
 #include <QSplashScreen>
 #include <QPixmap>
+
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -62,7 +63,6 @@ class OPENFLUID_API OpenFLUIDSplashScreen : public QSplashScreen
 
 
 } } } // namespaces
-
 
 
 #endif /* __OPENFLUID_UICOMMON_OPENFLUIDSPLASHSCREEN_HPP__ */

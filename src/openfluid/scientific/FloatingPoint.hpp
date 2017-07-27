@@ -37,12 +37,12 @@
 */
 
 
-
 #ifndef __OPENFLUID_SCIENTIFIC_FLOATINGPOINT_HPP__
 #define __OPENFLUID_SCIENTIFIC_FLOATINGPOINT_HPP__
 
 
 #include <cmath>
+
 #include <openfluid/deprecation.hpp>
 
 

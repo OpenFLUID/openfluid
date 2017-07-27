@@ -43,8 +43,9 @@
 #include <QFileDialog>
 #include <QProcess>
 
+#include <openfluid/ui/common/DetectQtDevToolsDialog.hpp>
+
 #include "ui_DetectQtDevToolsDialog.h"
-#include "DetectQtDevToolsDialog.hpp"
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -266,7 +267,6 @@ void DetectQtDevToolsDialog::runDetection()
   setWidgetsEnabled(true);
   QApplication::instance()->processEvents();
 }
-
 
 
 } } } // namespaces

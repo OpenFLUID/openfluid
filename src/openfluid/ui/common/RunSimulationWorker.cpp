@@ -39,7 +39,6 @@
 
 
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
-
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/OtherException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
