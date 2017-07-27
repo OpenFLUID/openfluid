@@ -55,7 +55,7 @@ import subprocess
 
 
 BaseSet = dict() #['subdir','rootname',light,dark,grayed]
-ExtSet = dict() #['filename withput ext',light,dark,grayed]
+ExtSet = dict() #['filename without ext',light,dark,grayed]
 
 
 BaseSet['project-new'] = ['file','create_new_folder',True,True,True]
@@ -92,12 +92,15 @@ BaseSet['build'] = ['action','build',True,True,True]
 BaseSet['magic'] = ['image','flash_on',False,True,False]
 BaseSet['menu'] = ['navigation','menu',False,True,False]
 BaseSet['market'] = ['action','shopping_cart',False,True,False]
+BaseSet['link'] = ['content','link',False,True,False]
 
 ExtSet['file-explorer'] = ['file-tree',False,True,False]
 ExtSet['dev-wares'] = ['code-braces',False,True,False]
 ExtSet['ghost2sim'] = ['json',False,True,False]
 ExtSet['log-view'] = ['message-text-outline',False,True,False]
 ExtSet['export'] = ['export',False,True,False]
+ExtSet['linked'] = ['link-variant',False,True,False]
+ExtSet['unlinked'] = ['link-variant-off',False,True,False]
 
 
 BaseSetVersion = '1x_web'

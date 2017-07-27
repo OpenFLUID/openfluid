@@ -10,6 +10,7 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp OpenFLUIDSplashS
                             LogExplorerDialog.cpp 
                             EditMarketplaceDialog.cpp
                             PreferencesDialog.cpp DetectQtDevToolsDialog.cpp
+                            TimePeriodWidget.cpp
                             )
 
 SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashScreen.hpp
@@ -22,6 +23,7 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashS
                             LogExplorerDialog.hpp
                             EditMarketplaceDialog.hpp
                             PreferencesDialog.hpp DetectQtDevToolsDialog.hpp
+                            TimePeriodWidget.hpp
                             UIHelpers.hpp
                             )
 
@@ -31,6 +33,7 @@ QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI RunSimulationDialog.ui AboutDialog.ui
                                    PathsManagementWidget.ui WaresSearchPathsWidget.ui
                                    LogExplorerDialog.ui
                                    PreferencesDialog.ui DetectQtDevToolsDialog.ui
+                                   TimePeriodWidget.ui
                                    EditMarketplaceDialog.ui
                                    )
                                    

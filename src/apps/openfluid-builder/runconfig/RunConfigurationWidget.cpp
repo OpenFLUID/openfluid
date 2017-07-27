@@ -63,9 +63,9 @@ RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluid
   refresh();
 
 
-  connect(ui->BeginDateTimeEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+  connect(ui->PeriodWidget,SIGNAL(beginChanged(const QDateTime&)),
           this,SLOT(updateBeginDateFXDesc(const QDateTime&)));
-  connect(ui->EndDateTimeEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+  connect(ui->PeriodWidget,SIGNAL(endChanged(const QDateTime&)),
           this,SLOT(updateEndDateFXDesc(const QDateTime&)));
 
   connect(ui->DeltaTSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateDeltaTFXDesc(int)));
@@ -97,12 +97,12 @@ RunConfigurationWidget::~RunConfigurationWidget()
 
 void RunConfigurationWidget::refresh()
 {
-  ui->BeginDateTimeEdit->setDateTime(
+  ui->PeriodWidget->setBeginDateTime(
       QDateTime::fromString(
           QString(m_AdvFluidxDesc.runDescriptor().getBeginDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
           "yyyy-MM-dd HH:mm:ss"));
 
-  ui->EndDateTimeEdit->setDateTime(
+  ui->PeriodWidget->setEndDateTime(
       QDateTime::fromString(
           QString(m_AdvFluidxDesc.runDescriptor().getEndDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
           "yyyy-MM-dd HH:mm:ss"));
@@ -166,10 +166,6 @@ void RunConfigurationWidget::updateBeginDateFXDesc(const QDateTime& QDT)
   DT.setFromString(QDT.toString("yyyy-MM-dd HH:mm:ss").toStdString(),"%Y-%m-%d %H:%M:%S");
 
   m_AdvFluidxDesc.runDescriptor().setBeginDate(DT);
-  if (ui->EndDateTimeEdit->dateTime() <= QDT)
-  {
-    ui->EndDateTimeEdit->setDateTime(QDT.addSecs(1));
-  }
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
 }
@@ -185,10 +181,6 @@ void RunConfigurationWidget::updateEndDateFXDesc(const QDateTime& QDT)
   DT.setFromString(QDT.toString("yyyy-MM-dd HH:mm:ss").toStdString(),"%Y-%m-%d %H:%M:%S");
 
   m_AdvFluidxDesc.runDescriptor().setEndDate(DT);
-  if (ui->BeginDateTimeEdit->dateTime() >= QDT)
-  {
-    ui->BeginDateTimeEdit->setDateTime(QDT.addSecs(-1));
-  }
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
 }

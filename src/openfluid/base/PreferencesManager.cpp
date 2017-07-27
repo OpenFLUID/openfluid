@@ -663,7 +663,7 @@ QString PreferencesManager::getBuilderBegin()
 
   if (DateStr.isEmpty())
   {
-    std::string Now = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss").toStdString();
+    std::string Now = QDateTime(QDate::currentDate(),QTime(0, 0)).toString("yyyy-MM-dd hh:mm:ss").toStdString();
     Now[10] = ' ';
     openfluid::core::DateTime DT;
     DT.setFromISOString(Now);

@@ -10,6 +10,8 @@
     <!-- images -->
     <file>images/openfluid_title.png</file>
     <file>images/openfluid_icon_about.png</file>
+    <file>images/corner_upleft.png</file>
+    <file>images/corner_downleft.png</file>
     
     <!-- icons for toolbars -->
     <file>icons/project-new_light.png</file>
@@ -63,6 +65,8 @@
     <file>icons/menu_dark.png</file>
     <file>icons/file-explorer_dark.png</file>
     <file>icons/log-view_dark.png</file>
+    <file>icons/linked_dark.png</file>
+    <file>icons/unlinked_dark.png</file>
     
     <!-- icons for completion -->
     <file>icons/cppcode.png</file>
