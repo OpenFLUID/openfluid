@@ -664,4 +664,14 @@ QList<WareSrcMsgParser::WareSrcMsg> WareSrcContainer::getMessages()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcContainer::isProcessRunning() const
+{
+  return (mp_Process->state() != WareSrcProcess::NotRunning);
+}
+
+
 } } // namespaces

@@ -526,7 +526,18 @@ bool WareSrcWidget::isWareModified()
       return true;
   }
 
-return false;
+  return false;
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidget::isWareProcessRunning() const
+{
+  return m_Container.isProcessRunning();
 }
 
 

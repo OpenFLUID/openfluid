@@ -151,16 +151,25 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
 {
   if (WareSrcWidget* Ware = qobject_cast<WareSrcWidget*>(mp_TabWidget->widget(Index)))
   {
+    // check if a process is not running
+    if (Ware->isWareProcessRunning())
+    {
+      QMessageBox::warning(Ware,tr("Process running"),
+                           tr("Closing tab is not allowed while a configure or build process is running."),
+                           QMessageBox::Close,QMessageBox::Close);
+      return;
+    }
+
+
     int Choice = QMessageBox::Discard;
 
     if (Ware->isWareModified())
     {
-      QMessageBox MsgBox;
-      MsgBox.setText(tr("Documents have been modified."));
-      MsgBox.setInformativeText(tr("Do you want to save changes?"));
-      MsgBox.setStandardButtons(QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel);
-      MsgBox.setDefaultButton(QMessageBox::SaveAll);
-      Choice = MsgBox.exec();
+      Choice = QMessageBox::information(Ware,tr("Modified documents."),
+                                        tr("Documents have been modified.\n\n"
+                                           "Do you want to save changes?"),
+                                        QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel,
+                                        QMessageBox::SaveAll);
     }
 
     switch (Choice)
@@ -175,7 +184,6 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
       default:
         break;
     }
-
   }
 }
 
@@ -435,11 +443,27 @@ void WareSrcWidgetCollection::onWareTxtModified(WareSrcWidget* Widget, bool Modi
 // =====================================================================
 
 
-bool WareSrcWidgetCollection::isModified()
+bool WareSrcWidgetCollection::isModified() const
 {
   for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
   {
     if(Ware->isWareModified())
+      return true;
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidgetCollection::isProcessRunning() const
+{
+  for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+  {
+    if(Ware->isWareProcessRunning())
       return true;
   }
 
@@ -532,6 +556,15 @@ void WareSrcWidgetCollection::closeCurrentEditor()
 
 bool WareSrcWidgetCollection::closeAllWidgets()
 {
+  if (isProcessRunning())
+  {
+    QMessageBox::warning(nullptr,tr("Process running"),
+                         tr("Closing tab is not allowed while a configure or build process is running."),
+                         QMessageBox::Close,QMessageBox::Close);
+    return false;
+  }
+
+
   int Choice = QMessageBox::Discard;
 
   if (isModified())

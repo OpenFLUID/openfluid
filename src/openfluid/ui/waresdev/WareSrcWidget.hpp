@@ -212,6 +212,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     bool isWareModified();
 
+    bool isWareProcessRunning() const;
+
     void closeAllFileTabs();
 
     WareFileEditor* currentEditor();

@@ -115,7 +115,9 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     WareSrcWidget* currentWareWidget();
 
-    bool isModified();
+    bool isModified() const;
+
+    bool isProcessRunning() const;
 
     void closeWareTab(WareSrcWidget* Ware);
 

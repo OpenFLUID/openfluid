@@ -242,6 +242,8 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QList<WareSrcMsgParser::WareSrcMsg> getMessages();
 
+    bool isProcessRunning() const;
+
 };
 
 
