@@ -58,7 +58,11 @@
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
-#include <openfluid/buddies.hpp>
+#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
+#include <openfluid/buddies/NewSimBuddy.hpp>
+#include <openfluid/buddies/NewDataBuddy.hpp>
+#include <openfluid/buddies/ExamplesBuddy.hpp>
+#include <openfluid/buddies/Sim2DocBuddy.hpp>
 
 #include "OpenFLUID.hpp"
 #include "DefaultIOListener.hpp"

@@ -35,11 +35,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
-#include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/core.hpp>
 
 #include <QString>
 
+#include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/core/MapValue.hpp>
+#include <openfluid/core/TreeValue.hpp>
 
 
 // =====================================================================

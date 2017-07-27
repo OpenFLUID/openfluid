@@ -34,15 +34,20 @@ CONFIGURE_FILE(global.hpp.in global.hpp @ONLY)
 CONFIGURE_FILE(config.hpp.in config.hpp @ONLY)
 CONFIGURE_FILE(buildinfo.hpp.in buildinfo.hpp @ONLY)
 
+FOREACH(AGGREGATE_NS ${OFBUILD_AGGREGATE_HEADER_NAMESPACES})
+  string(TOUPPER ${AGGREGATE_NS} AGGREGATE_NS_UP)
+  CONFIGURE_FILE(aggregate_namespace_header.tpl ${AGGREGATE_NS}.hpp @ONLY)
+ENDFOREACH()
 
-INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp ware.hpp scientific.hpp 
-              dllexport.hpp debug.hpp deprecation.hpp
+
+INSTALL(FILES dllexport.hpp debug.hpp deprecation.hpp
         DESTINATION ${OPENFLUID_INCLUDE_INSTALL_PATH})
 
-IF(OFBUILD_ENABLE_MARKET)
-  INSTALL(FILES market.hpp
-          DESTINATION ${OPENFLUID_INCLUDE_INSTALL_PATH})  
-ENDIF()  
+FOREACH(AGGREGATE_NS ${OFBUILD_AGGREGATE_HEADER_NAMESPACES})
+  INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${AGGREGATE_NS}.hpp
+          DESTINATION ${OPENFLUID_INCLUDE_INSTALL_PATH})
+ENDFOREACH()
+
 
 INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.hpp" 
               "${CMAKE_CURRENT_BINARY_DIR}/global.hpp"

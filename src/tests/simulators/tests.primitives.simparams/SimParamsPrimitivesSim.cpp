@@ -36,10 +36,10 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
 */
 
-#include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/scientific/FloatingPoint.hpp>
 
+#include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
+#include <openfluid/core/MapValue.hpp>
 
 
 // =====================================================================

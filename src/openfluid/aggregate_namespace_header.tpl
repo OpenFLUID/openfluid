@@ -30,37 +30,19 @@
 */
 
 
-
 /**
-  @file core.hpp
+  @file @AGGREGATE_NS@.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
  */
 
 
-#ifndef __OPENFLUID_CORE_HPP__
-#define __OPENFLUID_CORE_HPP__
+#ifndef __OPENFLUID_@AGGREGATE_NS_UP@_HPP__
+#define __OPENFLUID_@AGGREGATE_NS_UP@_HPP__
 
 
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/Attributes.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/NullValue.hpp>
-#include <openfluid/core/BooleanValue.hpp>
-#include <openfluid/core/DoubleValue.hpp>
-#include <openfluid/core/EventsCollection.hpp>
-#include <openfluid/core/IntegerValue.hpp>
-#include <openfluid/core/StringValue.hpp>
-#include <openfluid/core/VectorValue.hpp>
-#include <openfluid/core/MatrixValue.hpp>
-#include <openfluid/core/MapValue.hpp>
-#include <openfluid/core/SpatialGraph.hpp>
-#include <openfluid/core/SpatialUnit.hpp>
-#include <openfluid/core/UnitsCollection.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
-#include <openfluid/core/TreeValue.hpp>
+#warning "The openfluid/@AGGREGATE_NS@.hpp file is deprecated. \
+Instead you have to include specific headers from openfluid/@AGGREGATE_NS@ include directory."
 
-#endif /* __OPENFLUID_CORE_HPP__ */
+
+#endif /* __OPENFLUID_@AGGREGATE_NS_UP@_HPP__ */

@@ -44,6 +44,7 @@
 #include <vector>
 #include <list>
 #include <map>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/deprecation.hpp>
 #include <openfluid/core/VectorValue.hpp>
@@ -52,7 +53,6 @@
 
 
 namespace openfluid { namespace core {
-
 
 
 /**
@@ -159,8 +159,6 @@ typedef IDMap<VectorValue*>::Type IDVectorValuePtrMap;
 typedef IDMap<SerieOfDoubleValue>::Type IDSerieOfDoubleValueMap;
 
 typedef IDMap<SerieOfDoubleValue*>::Type IDSerieOfDoubleValuePtrMap;
-
-
 
 
 } } // namespaces
