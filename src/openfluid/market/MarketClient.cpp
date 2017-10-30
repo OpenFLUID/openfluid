@@ -32,7 +32,7 @@
 /**
  @file MarketClient.cpp
 
- @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+ @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 

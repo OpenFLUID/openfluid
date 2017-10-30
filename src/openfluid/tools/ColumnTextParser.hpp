@@ -34,7 +34,7 @@
 /**
   @file ColumnTextParser.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 #ifndef __OPENFLUID_TOOLS_COLUMNTEXTPARSER_HPP__

@@ -33,7 +33,7 @@
   @file GeoValue.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
-  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
  */
 
 #include <openfluid/core/GeoValue.hpp>

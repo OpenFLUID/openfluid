@@ -32,7 +32,7 @@
 /**
   @file Variables.hpp
 
-  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 */
 
 #ifndef __OPENFLUID_CORE_VARIABLES_HPP__

@@ -34,7 +34,7 @@
 /**
   @file CMakeBExt.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 

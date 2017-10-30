@@ -33,7 +33,7 @@
 /**
   @file ExampleUnitsAProd.cpp
 
-  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 */
 
 
@@ -55,7 +55,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.prod")
   DECLARE_DOMAIN("examples");
   DECLARE_PROCESS("");
   DECLARE_METHOD("");
-  DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@supagro.inra.fr");
+  DECLARE_AUTHOR("Jean-Christophe Fabre","jean-christophe.fabre@inra.fr");
 
   DECLARE_REQUIRED_VARIABLE("var3","unitsA","the variable 3","");
   

@@ -32,7 +32,7 @@
 /**
   @file FortranCPP.hpp
 
-  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 
 
   @see http://www-h.eng.cam.ac.uk/help/tpl/languages/mixinglanguages.html

@@ -34,7 +34,7 @@
 /**
   @file Event.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 #ifndef __OPENFLUID_CORE_EVENT_HPP__

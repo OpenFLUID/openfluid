@@ -32,7 +32,7 @@
 /**
   @file AdvancedWareSetDescriptor.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Aline LIBRES <aline.libres@gmail.com>
 */
 

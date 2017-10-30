@@ -34,7 +34,7 @@
 /**
   @file SimulationLogger_TEST.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 #define BOOST_TEST_MAIN

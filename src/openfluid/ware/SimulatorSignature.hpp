@@ -34,7 +34,7 @@
 /**
   @file SimulatorSignature.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 #ifndef __OPENFLUID_WARE_SIMULATORSIGNATURE_HPP__

@@ -34,7 +34,7 @@
 /**
   @file ObserverPluginsManager.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 #include <openfluid/machine/ObserverPluginsManager.hpp>

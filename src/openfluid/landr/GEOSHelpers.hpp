@@ -35,7 +35,7 @@
   @file GEOSHelpers.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
-  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
  */
 
 

@@ -33,7 +33,7 @@
   @file GeoRasterValue.hpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
-  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
  */
 
 #ifndef __OPENFLUID_CORE_GEORASTERVALUE_HPP__

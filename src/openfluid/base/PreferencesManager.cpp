@@ -32,7 +32,7 @@
 /**
   @file PreferencesManager.cpp
 
-  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
   @author Aline LIBRES <libres@supagro.inra.fr>
  */
 

@@ -33,7 +33,7 @@
 /**
   @file MiscHelpers.cpp
 
-  @author Jean-Christophe Fabre <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 */
 
 

@@ -34,7 +34,7 @@
 /**
   @file Sim2DocSim.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
@@ -88,7 +88,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
   DECLARE_DOMAIN("Test");
   DECLARE_PROCESS("No process");
   DECLARE_METHOD("No method");
-  DECLARE_AUTHOR("JC Fabre","jean-christophe.fabre@supagro.inra.fr");
+  DECLARE_AUTHOR("JC Fabre","jean-christophe.fabre@inra.fr");
   DECLARE_AUTHOR("Manuel Chataigner","manuel.chataigner@supagro.inra.fr");
 
   DECLARE_USED_PARAMETER("testparam","a param just for test","")

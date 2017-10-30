@@ -32,7 +32,7 @@
 /**
   @file GDALCompatibility.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   
   This file contains macros to help ensuring compatibility 
   between GDAL version 1.xx and 2.xx of this library.
