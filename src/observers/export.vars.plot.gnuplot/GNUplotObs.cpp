@@ -34,18 +34,19 @@
 /**
   @file GNUplotObs.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@supagro.inra.fr>
- */
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+*/
 
 
+#include <QDir>
+#include <QProcess>
 
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
-#include <QDir>
-#include <QProcess>
+#include "GNUplotObsTools.hpp"
 
 
 // =====================================================================
@@ -87,85 +88,20 @@ END_OBSERVER_SIGNATURE
 // =====================================================================
 // =====================================================================
 
-class SerieInfo
-{
-  public:
-
-    enum SerieType {SERIE_UNKNOWN, SERIE_VAR, SERIE_FILE};
-
-    SerieType Type;
-
-    std::string SourceFile;
-
-    std::ofstream* FileHandle;
-
-    openfluid::core::VariableName_t VarName;
-
-    openfluid::core::UnitsClass_t UnitsClass;
-
-    openfluid::core::UnitID_t UnitID;
-
-    openfluid::core::SpatialUnit* Unit;
-
-    std::string Label;
-
-    std::string Style;
-
-    std::string Color;
-
-    SerieInfo() : Type(SERIE_UNKNOWN),
-        SourceFile(""), FileHandle(nullptr), VarName(""), UnitsClass(""), UnitID(1), Unit(nullptr),
-        Label(""), Style("line"), Color("")
-    { }
-
-};
-
-
-class GraphInfo
-{
-  public:
-
-    std::string Title;
-
-    std::string Key;
-
-    std::string YLabel;
-
-    std::list<SerieInfo*> Series;
-
-    GraphInfo() : Title(""), Key("default"), YLabel("")
-    { }
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
 
 class GNUplotObserver : public openfluid::ware::PluggableObserver
 {
   private:
 
-    std::map<std::string, SerieInfo> m_Series;
-
-    std::map<std::string,GraphInfo> m_Graphs;
+    GNUplotInfo m_Plot;
 
     std::string m_OutputDir;
     std::string m_InputDir;
 
-    bool m_TryOpenGNUplot;
-
-    bool m_Persistent;
-
-    std::string m_Terminal;
-    std::string m_Output;
-
 
   public:
 
-    GNUplotObserver() : PluggableObserver(), m_OutputDir(""),
-      m_TryOpenGNUplot(false), m_Persistent(false), m_Terminal(""), m_Output("")
+    GNUplotObserver() : PluggableObserver(), m_OutputDir("")
     {
 
     }
@@ -192,88 +128,79 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       {
         ParamsTree.setParams(Params);
 
-        ParamsTree.root().getChildValue("tryopengnuplot",m_TryOpenGNUplot).toBoolean(m_TryOpenGNUplot);
-        ParamsTree.root().getChildValue("persistent",m_Persistent).toBoolean(m_Persistent);
-        m_Terminal = ParamsTree.root().getChildValue("terminal",m_Terminal);
-        m_Output = ParamsTree.root().getChildValue("output",m_Output);
-
+        parsePlotFromParamsTree(Params, m_Plot);
       }
       catch (openfluid::base::FrameworkException& E)
       {
         OPENFLUID_RaiseError(E.getMessage());
       }
 
-      if (!ParamsTree.root().hasChild("serie"))
+
+      if (m_Plot.Series.empty())
         OPENFLUID_RaiseError("No serie defined");
 
-      if (!ParamsTree.root().hasChild("graph"))
+      if (m_Plot.Graphs.empty())
         OPENFLUID_RaiseError("No graph defined");
 
 
-      for (auto& Serie : ParamsTree.root().child("serie"))
+      // Remove of indicative format in terminal
+      auto Pos = m_Plot.Terminal.find("(");
+      if (Pos != std::string::npos)
+        m_Plot.Terminal.erase(Pos - 1);
+
+
+      // Add of Spatial Unit pointers
+
+      std::map<std::string, SerieInfo>::iterator Sit = m_Plot.Series.begin();
+      while (Sit != m_Plot.Series.end())
       {
-        std::string SerieID = Serie.first;
+        std::string SerieID = Sit->first;
 
-        SerieInfo SInfo;
-        SInfo.VarName = Serie.second.getChildValue("var","");
-        SInfo.UnitsClass = Serie.second.getChildValue("unitsclass","");
-        if (SInfo.UnitsClass == "")
+        // Check of attributes
+        if (Sit->second.Type == SerieInfo::SERIE_VAR)
         {
-          // search for deprecated "unitclass" parameter
-          SInfo.UnitsClass = Serie.second.getChildValue("unitclass","");
-        }
-        std::string UnitIDStr = Serie.second.getChildValue("unitID","");
-        SInfo.SourceFile = Serie.second.getChildValue("sourcefile","");
-        SInfo.Label = Serie.second.getChildValue("label","");
-        SInfo.Style = Serie.second.getChildValue("style","line");
-        SInfo.Color = Serie.second.getChildValue("color","");
-
-        if (!SInfo.VarName.empty() &&
-            !SInfo.UnitsClass.empty() &&
-            openfluid::tools::convertString(UnitIDStr,&SInfo.UnitID))
-        {
-          openfluid::core::SpatialUnit* TmpU;
-          TmpU = mp_SpatialData->spatialUnit(SInfo.UnitsClass,SInfo.UnitID);
-          if (TmpU != nullptr)
+          if (!Sit->second.VarName.empty() && !Sit->second.UnitsClass.empty())
           {
-            SInfo.Type = SerieInfo::SERIE_VAR;
-            SInfo.Unit = TmpU;
-            SInfo.SourceFile = SerieID + "_data.gnuplot";
+            openfluid::core::SpatialUnit* TmpU;
+            TmpU = mp_SpatialData->spatialUnit(Sit->second.UnitsClass, Sit->second.UnitID);
+            if (TmpU != nullptr)
+            {
+              Sit->second.Unit = TmpU;
+              Sit->second.SourceFile = SerieID + "_data.gnuplot";
+            }
           }
+
+          if (Sit->second.Unit == nullptr)
+            Sit->second.Type = SerieInfo::SERIE_UNKNOWN;
         }
-        else if (!SInfo.SourceFile.empty())
-          SInfo.Type = SerieInfo::SERIE_FILE;
+        else if (Sit->second.Type == SerieInfo::SERIE_FILE && Sit->second.SourceFile.empty())
+          Sit->second.Type = SerieInfo::SERIE_UNKNOWN;
 
-        if (SInfo.Type!=SerieInfo::SERIE_UNKNOWN) m_Series[SerieID] = SInfo;
-        else OPENFLUID_LogWarning("Serie " + SerieID + "ignored");
 
+        if (Sit->second.Type == SerieInfo::SERIE_UNKNOWN)
+        {
+          Sit = m_Plot.Series.erase(Sit);
+          OPENFLUID_LogWarning("Serie " + SerieID + " ignored");
+        }
+        else
+          ++Sit;
       }
 
 
-      for (auto& Graph : ParamsTree.root().child("graph"))
+      // Remove of incomplete graphs
+
+      std::map<std::string, GraphInfo>::iterator Git = m_Plot.Graphs.begin();
+      while (Git != m_Plot.Graphs.end())
       {
-        std::string GraphID = Graph.first;
+        std::string GraphID = Git->first;
 
-         GraphInfo GInfo;
-
-         GInfo.Title = Graph.second.getChildValue("title",GraphID);
-         GInfo.Key = Graph.second.getChildValue("key","default");
-         GInfo.YLabel = Graph.second.getChildValue("ylabel","");
-
-         std::vector<std::string> SeriesStr =
-             openfluid::tools::splitString(Graph.second.getChildValue("series",""),
-                                           ";",false);
-
-         for (std::vector<std::string>::const_iterator it = SeriesStr.begin();it != SeriesStr.end();++it)
-         {
-           if (m_Series.find(*it) != m_Series.end())
-             GInfo.Series.push_back(&(m_Series[*it]));
-         }
-
-         if (!GInfo.Series.empty())
-           m_Graphs[GraphID] = GInfo;
-         else
-           OPENFLUID_LogWarning("Graph " + GraphID + "ignored");
+        if (Git->second.Series.empty())
+        {
+          Git = m_Plot.Graphs.erase(Git);
+          OPENFLUID_LogWarning("Graph " + GraphID + " ignored");
+        }
+        else
+          ++Git;
       }
     }
 
@@ -285,8 +212,8 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
     void WriteDataToFiles()
     {
       std::map<std::string, SerieInfo>::iterator Sit;
-      std::map<std::string, SerieInfo>::iterator Sitb = m_Series.begin();
-      std::map<std::string, SerieInfo>::iterator Site = m_Series.end();
+      std::map<std::string, SerieInfo>::iterator Sitb = m_Plot.Series.begin();
+      std::map<std::string, SerieInfo>::iterator Site = m_Plot.Series.end();
 
       for (Sit = Sitb; Sit != Site; ++Sit)
       {
@@ -317,15 +244,20 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
     void CloseFiles()
     {
       std::map<std::string, SerieInfo>::iterator Sit;
-      std::map<std::string, SerieInfo>::iterator Sitb = m_Series.begin();
-      std::map<std::string, SerieInfo>::iterator Site = m_Series.end();
+      std::map<std::string, SerieInfo>::iterator Sitb = m_Plot.Series.begin();
+      std::map<std::string, SerieInfo>::iterator Site = m_Plot.Series.end();
 
       for (Sit = Sitb; Sit != Site; ++Sit)
       {
         if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
         {
-          if ((*Sit).second.FileHandle!=nullptr && (*Sit).second.FileHandle->is_open())
+          if ((*Sit).second.FileHandle != nullptr && (*Sit).second.FileHandle->is_open())
+          {
             (*Sit).second.FileHandle->close();
+
+            delete (*Sit).second.FileHandle;
+            (*Sit).second.FileHandle = nullptr;
+          }
         }
       }
 
@@ -342,8 +274,8 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       OPENFLUID_GetRunEnvironment("dir.input",m_InputDir);
 
       std::map<std::string, SerieInfo>::iterator Sit;
-      std::map<std::string, SerieInfo>::iterator Sitb = m_Series.begin();
-      std::map<std::string, SerieInfo>::iterator Site = m_Series.end();
+      std::map<std::string, SerieInfo>::iterator Sitb = m_Plot.Series.begin();
+      std::map<std::string, SerieInfo>::iterator Site = m_Plot.Series.end();
 
       for (Sit = Sitb; Sit != Site; ++Sit)
       {
@@ -382,7 +314,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
     void tryOpenGNUplot()
     {
-      if (m_TryOpenGNUplot)
+      if (m_Plot.TryOpenGNUplot)
       {
         openfluid::utils::ExternalProgram GNUPlotProgram =
             openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GnuplotProgram);
@@ -390,7 +322,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         if (GNUPlotProgram.isFound())
         {
           QString PersistOption = " ";
-          if (m_Persistent) PersistOption = " -persist ";
+          if (m_Plot.Persistent) PersistOption = " -persist ";
 
           QString GNUPlotCommand = QString("\"%1\"%2\"%3\"").arg(GNUPlotProgram.getFullProgramPath())
                                                     .arg(PersistOption)
@@ -417,11 +349,11 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
       std::ofstream ScriptFile(std::string(m_OutputDir+"/script.gnuplot").c_str());
 
-      if (!m_Terminal.empty())
+      if (!m_Plot.Terminal.empty())
       {
-        ScriptFile << "set terminal " << m_Terminal << "\n";
-        if (!m_Output.empty())
-          ScriptFile << "set output \"" << m_OutputDir << "/" << m_Output << "\"\n";
+        ScriptFile << "set terminal " << m_Plot.Terminal << "\n";
+        if (!m_Plot.Output.empty())
+          ScriptFile << "set output \"" << m_OutputDir << "/" << m_Plot.Output << "\"\n";
       }
 
       ScriptFile << "set xtics rotate font \",5\"\n";
@@ -437,24 +369,23 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       unsigned int Columns = 1;
       unsigned int Rows = 1;
 
-      if (m_Graphs.size() > 1)
+      if (m_Plot.Graphs.size() > 1)
       {
-        Columns = (unsigned int)(std::ceil(std::sqrt(m_Graphs.size())));
-        Rows = (unsigned int)(std::ceil(m_Graphs.size() / Columns));
+        Columns = (unsigned int)(std::ceil(std::sqrt(m_Plot.Graphs.size())));
+        Rows = (unsigned int)(std::ceil(m_Plot.Graphs.size() / Columns));
 
-        if (Columns*Rows < m_Graphs.size()) Rows++;
+        if (Columns*Rows < m_Plot.Graphs.size()) Rows++;
       }
 
       ScriptFile << "set multiplot layout " << Rows << "," << Columns << " rowsfirst scale 1,1\n";
 
-      std::map<std::string,GraphInfo>::iterator Git;
-      std::map<std::string,GraphInfo>::iterator Gitb = m_Graphs.begin();
-      std::map<std::string,GraphInfo>::iterator Gite = m_Graphs.end();
+      std::map<std::string, GraphInfo>::iterator Git;
+      std::map<std::string, GraphInfo>::iterator Gitb = m_Plot.Graphs.begin();
+      std::map<std::string, GraphInfo>::iterator Gite = m_Plot.Graphs.end();
 
 
       for (Git = Gitb; Git != Gite; ++Git)
       {
-
         ScriptFile << "set title \"" << (*Git).second.Title << "\" font \",10\"\n";
         ScriptFile << "set key " << (*Git).second.Key << "\n";
 
@@ -513,4 +444,6 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
 
 DEFINE_OBSERVER_CLASS(GNUplotObserver)
+
+DEFINE_WARE_LINKUID(WARE_LINKUID)
 

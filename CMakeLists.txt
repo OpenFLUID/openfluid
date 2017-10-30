@@ -97,7 +97,7 @@ SET(CMAKE_AUTOMOC_MOC_OPTIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 
-# Detection of C++ headers, use shell script resources/tools/extract_std_headers to extract the list
+# Detection of C++ headers, use shell script resources/tools/extract-stdheaders.sh to extract the list
 OFBUILD_CHECK_CXX_STDHEADERS(algorithm algorithm chrono cmath complex cstdlib ctime deque 
                              exception fstream functional iomanip iosfwd iostream list map 
                              memory ostream queue random regex set sstream stdexcept string 
