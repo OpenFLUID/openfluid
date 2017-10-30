@@ -673,7 +673,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 
     if (Entity)
     {
-      if (Vector.isFieldOfType(ValueColumn, OFTInteger))
+      if (Vector.isFieldOfType(ValueColumn, OFTInteger) || Vector.isFieldOfType(ValueColumn,GDALOFTInteger64_COMPAT))
       {
         int value=Feat->GetFieldAsInteger(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
@@ -735,7 +735,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
     openfluid::landr::LandREntity* Entity=entity(OfldId);
     if (Entity)
     {
-      if (Vector.isFieldOfType(ValueColumn, OFTInteger))
+      if (Vector.isFieldOfType(ValueColumn, OFTInteger) || Vector.isFieldOfType(ValueColumn,GDALOFTInteger64_COMPAT))
       {
         int value=Feat->GetFieldAsInteger(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
@@ -864,7 +864,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 
       if (IntPoint->isWithinDistance(GeosGeom,Thresh))
       {
-        if (Vector.isFieldOfType(Column, OFTInteger))
+        if (Vector.isFieldOfType(Column, OFTInteger) || Vector.isFieldOfType(Column,GDALOFTInteger64_COMPAT))
         {
           int value=Feat->GetFieldAsInteger(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
@@ -953,7 +953,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 
       if(IntPoint->isWithinDistance(GeosGeom,Thresh))
       {
-        if (Vector.isFieldOfType(Column, OFTInteger))
+        if (Vector.isFieldOfType(Column, OFTInteger) || Vector.isFieldOfType(Column,GDALOFTInteger64_COMPAT))
         {
           int value=Feat->GetFieldAsInteger(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));

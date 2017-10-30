@@ -46,6 +46,8 @@
 
 #include <QString>
 
+#include <ogr_api.h>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
 
@@ -105,6 +107,18 @@ const std::set<std::string> OPENFLUID_API getOGRFilesExtensionsForOpenFLUID();
 */
 QString OPENFLUID_API getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
                                                        const QString& AllFormatsLabel);
+
+
+/**
+  Returns true if the given field type is an OGR integer or an OGR 64bits integer,
+  taking into account the compatibility with both GDAL 1.xx and 2.xx
+  @param[in] FieldType the OGR field type
+  @return true if the field type is integer
+*/
+inline bool OPENFLUID_API isOGRInteger(OGRFieldType FieldType)
+{
+  return (FieldType == OFTInteger) || (FieldType == GDALOFTInteger64_COMPAT);
+}
 
 
 } } // namespaces

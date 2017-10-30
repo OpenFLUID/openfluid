@@ -37,7 +37,6 @@
  */
 
 #include <ogrsf_frmts.h>
-#include <ogr_api.h>
 #include <gdal.h>
 #include <openfluid/utils/GDALHelpers.hpp>
 

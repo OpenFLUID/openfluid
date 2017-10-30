@@ -37,9 +37,11 @@
  */
 
 
-#include "OGRGDALHelpers.hpp"
-
 #include <QStringList>
+
+#include <openfluid/utils/GDALHelpers.hpp>
+
+#include "OGRGDALHelpers.hpp"
 
 
 const QMap<QString,QString> OGRGDALHelpers::m_FileExtsDriversMap =
@@ -108,7 +110,7 @@ bool OGRGDALHelpers::convertFieldToAttribute(const OGRFeature* Feature,
 
   const OGRFieldType FieldType = const_cast<OGRFieldDefn*>(FieldDef)->GetType();
 
-  if (FieldType == OFTInteger)
+  if (openfluid::utils::isOGRInteger(FieldType))
   {
     Attr = QString::number(const_cast<OGRFeature*>(Feature)->GetFieldAsInteger(FieldIndex));
     return true;

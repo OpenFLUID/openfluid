@@ -524,7 +524,8 @@ bool VectorDataset::isIntValueSet(const std::string& FieldName,
                                   int Value,
                                   unsigned int LayerIndex)
 {
-  if (!isFieldOfType(FieldName, OFTInteger, LayerIndex))
+  if (!isFieldOfType(FieldName, OFTInteger, LayerIndex) &&
+      !isFieldOfType(FieldName, GDALOFTInteger64_COMPAT, LayerIndex))
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Field \"" + FieldName + "\" is not set or is not of type Int.");
 
@@ -669,7 +670,8 @@ void VectorDataset::setIndexIntField(const std::string& FieldName,
                                      unsigned int LayerIndex)
 
 {
-  if (!isFieldOfType(FieldName, OFTInteger, LayerIndex))
+  if (!isFieldOfType(FieldName, OFTInteger, LayerIndex)  &&
+      !isFieldOfType(FieldName, GDALOFTInteger64_COMPAT, LayerIndex))
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Field \"" + FieldName + "\" is not set or is not of type Int.");
 

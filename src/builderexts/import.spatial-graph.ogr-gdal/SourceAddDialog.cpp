@@ -40,6 +40,8 @@
 #include <QThread>
 #include <QMessageBox>
 
+#include <openfluid/utils/GDALHelpers.hpp>
+
 #include "ui_SourceAddDialog.h"
 #include "SourceAddDialog.hpp"
 #include "SourceWorker.hpp"
@@ -232,7 +234,7 @@ bool SourceAddDialog::checkRequiredFields()
   OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
 
   int FIndex = Defn->GetFieldIndex(OGRGDAL_UNITID_FIELD);
-  if (FIndex >=0 && (Defn->GetFieldDefn(FIndex)->GetType() == OFTInteger ||
+  if (FIndex >=0 && (openfluid::utils::isOGRInteger(Defn->GetFieldDefn(FIndex)->GetType()) ||
                      Defn->GetFieldDefn(FIndex)->GetType() == OFTReal ||
                      Defn->GetFieldDefn(FIndex)->GetType() == OFTString))
     return true;

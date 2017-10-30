@@ -175,5 +175,16 @@
 #endif
 
 
+/**
+  Macro for compatibility of Integer64 and Integer64List type
+*/
+#if (GDAL_VERSION_MAJOR >= 2)
+  #define GDALOFTInteger64_COMPAT OFTInteger64
+  #define GDALOFTIntegerList64_COMPAT OFTIntegerList64
+#else
+  #define GDALOFTInteger64_COMPAT OFTInteger
+  #define GDALOFTIntegerList64_COMPAT OFTIntegerList
+#endif
+
 
 #endif /* __OPENFLUID_UTILS_GDALCOMPATIBILITY_HPP__ */

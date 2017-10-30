@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE(check_addField)
   Vect->addAField("NewField", OFTInteger);
 
   BOOST_CHECK(Vect->containsField("NewField"));
-  BOOST_CHECK(Vect->isFieldOfType("NewField",OFTInteger));
+  BOOST_CHECK(Vect->isFieldOfType("NewField",OFTInteger) || Vect->isFieldOfType("NewField",GDALOFTInteger64_COMPAT));
   BOOST_CHECK(!Vect->isFieldOfType("NewField",OFTString));
   BOOST_CHECK_EQUAL(Vect->getFieldIndex("NewField"), 10);
   BOOST_CHECK(!Vect->isIntValueSet("NewField",123));
