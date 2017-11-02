@@ -2,6 +2,7 @@ OpenFLUID
 =========
 
 [![Build Status](https://travis-ci.org/OpenFLUID/openfluid.svg?branch=develop)](https://travis-ci.org/OpenFLUID/openfluid)
+[![Build status](https://ci.appveyor.com/api/projects/status/6icywvsumu608uft/branch/develop?svg=true)](https://ci.appveyor.com/project/fabrejc/openfluid-hm6ac/branch/develop)
 
 
 ## General informations

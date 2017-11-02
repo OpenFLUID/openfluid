@@ -1,0 +1,30 @@
+version: 'build-{build}'
+image: Visual Studio 2015
+clone_folder: C:\projects\openfluid
+skip_tags: true
+
+
+install:
+  - ps: Start-FileDownload 'http://www.openfluid-project.org/resources/tools/OpenFLUID-buildsupport-win32.zip' 
+  - cmd: 7z x "OpenFLUID-buildsupport-win32.zip" -o"C:\OpenFLUID-buildsupport\"
+
+
+environment:
+  SUPPORT_DIR : C:\OpenFLUID-buildsupport
+
+
+before_build:
+  - cmd: cd C:\projects\openfluid
+  - cmd: mkdir _build-release
+  - cmd: cd _build-release
+  # Remove entry with sh.exe from PATH to fix error with MinGW Generator for CMake
+  - cmd: set PATH=%PATH:C:\Program Files\Git\usr\bin;=%  
+  # Use MinGW from Qt tools instead of default installation
+  - cmd: set PATH=%PATH:C:\MinGW\bin;=% 
+  - cmd: set PATH=C:\Qt\Tools\mingw491_32\bin;C:\Qt\5.4\mingw491_32\bin;%PATH%
+  - cmd: cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=C:\OpenFLUID-buildsupport -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.
+
+  
+build_script:
+  - cmd: cd C:\projects\openfluid\_build-release
+  - cmd: mingw32-make -j 2
