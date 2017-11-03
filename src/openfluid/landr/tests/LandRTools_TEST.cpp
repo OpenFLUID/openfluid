@@ -110,23 +110,23 @@
 BOOST_AUTO_TEST_CASE(check_MergesWith1ResultLine)
 {
   geos::geom::CoordinateArraySequenceFactory SeqFactory;
-  geos::geom::GeometryFactory Factory;
+  const geos::geom::GeometryFactory* Factory = geos::geom::GeometryFactory::getDefaultInstance();
 
   std::vector<geos::geom::Geometry*> Geoms;
 
   std::vector<geos::geom::Coordinate> Coos1;
   Coos1.push_back(geos::geom::Coordinate(0, 1));
   Coos1.push_back(geos::geom::Coordinate(0, 2));
-  geos::geom::LineString* LS1 = Factory.createLineString(SeqFactory.create(&Coos1));
+  geos::geom::LineString* LS1 = Factory->createLineString(SeqFactory.create(&Coos1));
   Geoms.push_back(LS1);
 
   std::vector<geos::geom::Coordinate> Coos0;
   Coos0.push_back(geos::geom::Coordinate(0, 0));
   Coos0.push_back(geos::geom::Coordinate(0, 1));
-  geos::geom::LineString* LS2 = Factory.createLineString(SeqFactory.create(&Coos0));
+  geos::geom::LineString* LS2 = Factory->createLineString(SeqFactory.create(&Coos0));
   Geoms.push_back(LS2);
 
-  geos::geom::MultiLineString* MLS = Factory.createMultiLineString(Geoms);
+  geos::geom::MultiLineString* MLS = Factory->createMultiLineString(Geoms);
 
   BOOST_CHECK_EQUAL(MLS->getNumGeometries(), 2);
 
@@ -156,35 +156,35 @@ BOOST_AUTO_TEST_CASE(check_MergesWith1ResultLine)
 BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
 {
   geos::geom::CoordinateArraySequenceFactory SeqFactory;
-  geos::geom::GeometryFactory Factory;
+  const geos::geom::GeometryFactory* Factory = geos::geom::GeometryFactory::getDefaultInstance();
 
   std::vector<geos::geom::Geometry*> Geoms;
 
   std::vector<geos::geom::Coordinate> Coos1;
   Coos1.push_back(geos::geom::Coordinate(0, 1));
   Coos1.push_back(geos::geom::Coordinate(0, 2));
-  geos::geom::LineString* LS1 = Factory.createLineString(SeqFactory.create(&Coos1));
+  geos::geom::LineString* LS1 = Factory->createLineString(SeqFactory.create(&Coos1));
   Geoms.push_back(LS1);
 
   std::vector<geos::geom::Coordinate> Coos4;
   Coos4.push_back(geos::geom::Coordinate(0, 4));
   Coos4.push_back(geos::geom::Coordinate(0, 5));
-  geos::geom::LineString* LS4 = Factory.createLineString(SeqFactory.create(&Coos4));
+  geos::geom::LineString* LS4 = Factory->createLineString(SeqFactory.create(&Coos4));
   Geoms.push_back(LS4);
 
   std::vector<geos::geom::Coordinate> Coos0;
   Coos0.push_back(geos::geom::Coordinate(0, 0));
   Coos0.push_back(geos::geom::Coordinate(0, 1));
-  geos::geom::LineString* LS2 = Factory.createLineString(SeqFactory.create(&Coos0));
+  geos::geom::LineString* LS2 = Factory->createLineString(SeqFactory.create(&Coos0));
   Geoms.push_back(LS2);
 
   std::vector<geos::geom::Coordinate> Coos3;
   Coos3.push_back(geos::geom::Coordinate(0, 3));
   Coos3.push_back(geos::geom::Coordinate(0, 4));
-  geos::geom::LineString* LS3 = Factory.createLineString(SeqFactory.create(&Coos3));
+  geos::geom::LineString* LS3 = Factory->createLineString(SeqFactory.create(&Coos3));
   Geoms.push_back(LS3);
 
-  geos::geom::MultiLineString* MLS = Factory.createMultiLineString(Geoms);
+  geos::geom::MultiLineString* MLS = Factory->createMultiLineString(Geoms);
 
   BOOST_CHECK_EQUAL(MLS->getNumGeometries(), 4);
 
