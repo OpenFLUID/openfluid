@@ -228,6 +228,8 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QProcessEnvironment getBuildEnvironment() const;
 
+    QString getBuildTarget() const;
+
     void prepareBuildDirectory() const;
 
     void setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream);

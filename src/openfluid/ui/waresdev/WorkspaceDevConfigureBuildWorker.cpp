@@ -124,7 +124,7 @@ void WorkspaceDevConfigureBuildWorker::run()
         writeMessage();
 
         QString BuildCommand = openfluid::utils::CMakeProxy::getBuildCommand(Container.getBuildDirPath(),
-                                                                             "install");
+                                                                             Container.getBuildTarget());
 
         mp_Process->start(BuildCommand);
 

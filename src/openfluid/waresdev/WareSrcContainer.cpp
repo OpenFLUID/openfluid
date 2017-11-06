@@ -467,6 +467,17 @@ void WareSrcContainer::setBuildMode(BuildMode Mode)
 // =====================================================================
 
 
+QString WareSrcContainer::getBuildTarget() const
+{
+  // build target is "install" if current build mode is BUILD_WITHINSTALL, "" in other cases
+  return (m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "install" : "");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcContainer::configure()
 {
   if (!openfluid::utils::CMakeProxy::isAvailable())
@@ -524,8 +535,7 @@ void WareSrcContainer::build()
   }
 
 
-  // set build target to "install" if current build mode is BUILD_WITHINSTALL
-  QString Target = (m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "install" : "");
+  QString Target = getBuildTarget();
 
 
   delete mp_CurrentParser;
