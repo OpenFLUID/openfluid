@@ -212,12 +212,10 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
               Nbr++;
 
             (*itV).second = NewFieldName.toStdString();
-
           }
         }
       }
     }
-
 
 
     // =====================================================================
@@ -420,7 +418,6 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
         while ((SourceFeature = Serie.GeoLayer->GetNextFeature()) != nullptr)
         {
           int SourceID = SourceFeature->GetFieldAsInteger(Serie.OFLDIDFieldIndex);
-          openfluid::core::DoubleValue CreatedValue = 0.0;
 
           UU = OPENFLUID_GetUnit(Serie.UnitsClass,SourceID);
 
@@ -439,6 +436,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
             {
               std::string VarName = (*itV).first;
               std::string FieldName = (*itV).second;
+              openfluid::core::DoubleValue CreatedValue = 0.0;
+              bool IsValueCreated = false;
 
               if (FieldName.empty())
                 FieldName = VarName;
@@ -446,30 +445,39 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
               openfluid::core::IndexedValue VarValue;
 
               if (OPENFLUID_IsVariableExist(UU,VarName))
+              {
                 OPENFLUID_GetLatestVariable(UU,VarName,VarValue);
+
+                if (VarValue.value()->isDoubleValue()) // OpenFLUID value is double
+                {
+                  CreatedValue = VarValue.value()->asDoubleValue();
+                  IsValueCreated = true;
+                }
+                else if (VarValue.value()->convert(CreatedValue)) // OpenFLUID value can be converted to double
+                {
+                  IsValueCreated = true;
+                }
+                else
+                {
+                  QString Msg = QString("Variable %1 on unit %2#%3 is not a double or a compatible type")
+                                .arg(VarName.c_str()).arg(UU->getClass().c_str()).arg(UU->getID());
+                  OPENFLUID_LogWarning(Msg.toStdString());
+                }
+              }
               else
               {
-                QString Msg("Variable %1 does not exist on unit %2#%3");
-                Msg.arg(VarName.c_str()).arg(UU->getClass().c_str()).arg(UU->getID());
+                QString Msg = QString("Variable %1 does not exist on unit %2#%3")
+                              .arg(VarName.c_str()).arg(UU->getClass().c_str()).arg(UU->getID());
                 OPENFLUID_LogWarning(Msg.toStdString());
               }
 
-              if (VarValue.value()->isDoubleValue())
-                CreatedValue = VarValue.value()->asDoubleValue();
-              else
-              {
-                QString Msg("Variable %1 on unit %2#%3 is not a double. Only double are currently supported");
-                Msg.arg(VarName.c_str()).arg(UU->getClass().c_str()).arg(UU->getID());
-                OPENFLUID_LogWarning(Msg.toStdString());
-              }
-
-              CreatedFeature->SetField(FieldName.c_str(),VarValue.value()->asDoubleValue());
+              if (IsValueCreated) // OpenFLUID value is written to GIS file only if it is double or converted to double
+                CreatedFeature->SetField(FieldName.c_str(),CreatedValue);
             }
 
             CreatedLayer->CreateFeature(CreatedFeature);
 
             OGRFeature::DestroyFeature(CreatedFeature);
-
           }
         }
         GDALClose_COMPAT(CreatedFile);
