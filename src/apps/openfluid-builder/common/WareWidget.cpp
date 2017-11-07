@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file WareWidget.cpp
 
@@ -60,8 +59,13 @@ WareWidget::WareWidget(QWidget* Parent,
 {
   ui->setupUi(this);
   ui->IDLabel->setText(DisplayedText);
+  ui->IDLabel->setToolTip(DisplayedText);
+  ui->IDLabel->setElideMode(Qt::ElideRight);
+
   ui->OrderLabel->setText(QString("#%1").arg(Index));
+
   ui->NameLabel->setElideMode(Qt::ElideRight);
+
 
   ui->UpButton->setText("");
   ui->UpButton->setIcon(openfluid::ui::common::getIcon("go-up","/ui/common"));
@@ -183,9 +187,7 @@ void WareWidget::updateShowHideParams()
 void WareWidget::setExpanded(bool Expand)
 {
   if (m_Available)
-  {
     m_ParamsExpanded = Expand;
-  }
   else
     m_ParamsExpanded = false;
 }
@@ -198,6 +200,7 @@ void WareWidget::setExpanded(bool Expand)
 void WareWidget::displayParams()
 {
   ui->ParamInfoWidget->setVisible(m_ParamsExpanded);
+
   if (m_ParamsExpanded)
     ui->ShowHideParamsLabel->setText(tr("hide parameters and informations"));
   else
