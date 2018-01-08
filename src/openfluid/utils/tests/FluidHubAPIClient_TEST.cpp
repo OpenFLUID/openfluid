@@ -92,6 +92,7 @@ void checkConnection(const std::string& URL,
 // =====================================================================
 // =====================================================================
 
+
 void checkOperations(const std::string& URL,
                      const openfluid::utils::RESTClient::SSLConfiguration& SSLConfig)
 {
@@ -345,6 +346,7 @@ void checkOperations(const std::string& URL,
   BOOST_REQUIRE(!FHClient.isConnected());
 
 }
+
 
 // =====================================================================
 // =====================================================================

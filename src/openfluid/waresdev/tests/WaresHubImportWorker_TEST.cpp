@@ -31,7 +31,6 @@
 
 /**
  @file WaresHubImportWorker_TEST.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
@@ -168,12 +167,35 @@ BOOST_AUTO_TEST_CASE(connect_wrong_url_fails)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(connect_http_ok)
 {
   openfluid::waresdev::WaresHubImportWorker W(F::UrlHttp);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(connect_https_ssl_ok)
+{
+  if (!F::checkHttps("connect_https_ssl_ok"))
+    return;
+
+  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps);
+  BOOST_CHECK(W.connect());
+  BOOST_CHECK(W.isConnected());
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_ok)
@@ -199,6 +221,10 @@ BOOST_AUTO_TEST_CASE(ware_list_not_connected_ok)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(ware_list_http_ok)
 {
   openfluid::waresdev::WaresHubImportWorker W(F::UrlHttp);
@@ -217,12 +243,19 @@ BOOST_AUTO_TEST_CASE(ware_list_http_ok)
 BOOST_AUTO_TEST_CASE(ware_list_https_ok)
 {
   if (!F::checkHttps("ware_list_https_ok"))
-    return;
+      return;
 
-  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps, "", "", true);
+  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps);
   W.connect();
-  BOOST_CHECK(!W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).empty());
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT).size(), 1);
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::UNDEFINED).size(), 0);
 }
+
+
+// =====================================================================
+// =====================================================================
 
 
 BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
@@ -247,11 +280,14 @@ BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 
 BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
 {
+
+  // TODO to enable once cloning will be possible from the testing FluidHub service
+/*
   if (!checkHttps("clone_https_ok"))
     return;
 
   openfluid::waresdev::WaresHubImportWorker W(UrlHttps, Username, Password, true);
-  W.connect();
+  BOOST_CHECK(W.connect());
 
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
 
@@ -260,6 +296,7 @@ BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
   QDir WareDir(TestWaresDevSimulatorsDir.absoluteFilePath(FirstAvailSimId));
   BOOST_CHECK(WareDir.exists());
   BOOST_CHECK(!WareDir.entryList(QDir::Files).isEmpty());
+*/
 }
 
 
