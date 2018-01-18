@@ -69,6 +69,7 @@ class F
 
     static const QString UrlHttp;
     static const QString UrlHttps;
+    static const QString UrlHttpsRedirect;
     static const QString Username;
     static const QString Password;
 
@@ -152,6 +153,7 @@ class F
 
 const QString F::UrlHttp = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_HTTP);
 const QString F::UrlHttps = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_HTTPS);
+const QString F::UrlHttpsRedirect = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_REDIRECT_HTTPS);
 const QString F::Username = QString::fromStdString(CONFIGTESTS_WARESHUB_USERNAME);
 const QString F::Password = QString::fromStdString(CONFIGTESTS_WARESHUB_PASSWORD);
 
@@ -162,6 +164,8 @@ const QString F::Password = QString::fromStdString(CONFIGTESTS_WARESHUB_PASSWORD
 
 BOOST_AUTO_TEST_CASE(connect_wrong_url_fails)
 {
+  std::cout << " ======== <empty URL> ========" << std::endl;
+
   openfluid::waresdev::WaresHubImportWorker W("");
   BOOST_CHECK_EQUAL(W.connect(), false);
 }
@@ -173,6 +177,8 @@ BOOST_AUTO_TEST_CASE(connect_wrong_url_fails)
 
 BOOST_AUTO_TEST_CASE(connect_http_ok)
 {
+  std::cout << " ======== " << F::UrlHttp.toStdString() << " ========" << std::endl;
+
   openfluid::waresdev::WaresHubImportWorker W(F::UrlHttp);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
@@ -185,6 +191,8 @@ BOOST_AUTO_TEST_CASE(connect_http_ok)
 
 BOOST_AUTO_TEST_CASE(connect_https_ssl_ok)
 {
+  std::cout << " ======== " << F::UrlHttps.toStdString() << " (ok) ========" << std::endl;
+
   if (!F::checkHttps("connect_https_ssl_ok"))
     return;
 
@@ -198,10 +206,31 @@ BOOST_AUTO_TEST_CASE(connect_https_ssl_ok)
 // =====================================================================
 
 
+#if OPENFLUID_REST_URL_REDIRECT
+BOOST_AUTO_TEST_CASE(connect_https_ssl_ok_redirect)
+{
+  if (!F::checkHttps("connect_https_ssl_ok_redirect"))
+    return;
+
+  std::cout << " ======== " << F::UrlHttpsRedirect.toStdString() << " (ok) ========" << std::endl;
+
+  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttpsRedirect);
+  BOOST_CHECK(W.connect());
+  BOOST_CHECK(W.isConnected());
+}
+#endif
+
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_ok)
 {
   if (!F::checkHttps("connect_https_sslNoverify_ok"))
     return;
+
+  std::cout << " ======== " << F::UrlHttps.toStdString() << " (noverify) ========" << std::endl;
 
   openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps, "", "", true);
   BOOST_CHECK(W.connect());

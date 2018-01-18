@@ -117,6 +117,10 @@ class RequestExecutionImpl : public QObject
         RequestSSLConfig.setPeerVerifyMode(SSLConfig.getCertificateVerifyMode());
         Request.setSslConfiguration(RequestSSLConfig);
 
+#if OPENFLUID_REST_URL_REDIRECT
+        Request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+#endif
+
         m_Manager.sendCustomRequest(Request,Method.toUtf8(),&m_DataBuffer);
       }
 

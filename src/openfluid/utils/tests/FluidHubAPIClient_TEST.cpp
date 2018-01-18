@@ -385,7 +385,7 @@ BOOST_AUTO_TEST_CASE(check_https)
 
   if (!CONFIGTESTS_FLUIDHUB_URL_HTTPS.empty())
   {
-    std::cout << " ======== " << CONFIGTESTS_FLUIDHUB_URL_HTTP << " ========" << std::endl;
+    std::cout << " ======== " << CONFIGTESTS_FLUIDHUB_URL_HTTPS << " ========" << std::endl;
 
     openfluid::utils::RESTClient Client;
     Client.setBaseURL(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL_HTTPS));
@@ -402,6 +402,38 @@ BOOST_AUTO_TEST_CASE(check_https)
   else
     std::cout << "https URL is empty" << std::endl;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+#if OPENFLUID_REST_URL_REDIRECT
+BOOST_AUTO_TEST_CASE(check_https_redirect)
+{
+  openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
+  SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
+
+  if (!CONFIGTESTS_FLUIDHUB_URL_REDIRECT_HTTPS.empty())
+  {
+    std::cout << " ======== " << CONFIGTESTS_FLUIDHUB_URL_REDIRECT_HTTPS << " ========" << std::endl;
+
+    openfluid::utils::RESTClient Client;
+    Client.setBaseURL(QString::fromStdString(CONFIGTESTS_FLUIDHUB_URL_REDIRECT_HTTPS));
+    Client.setSSLConfiguration(SSLConfig);
+
+    if (Client.getResource("/").isOK())
+    {
+      checkConnection(CONFIGTESTS_FLUIDHUB_URL_REDIRECT_HTTPS,SSLConfig);
+      checkOperations(CONFIGTESTS_FLUIDHUB_URL_REDIRECT_HTTPS,SSLConfig);
+    }
+    else
+      std::cout << "not reachable" << std::endl;
+  }
+  else
+    std::cout << "https URL is empty" << std::endl;
+}
+#endif
 
 
 // =====================================================================

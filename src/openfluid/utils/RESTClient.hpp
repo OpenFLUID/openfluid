@@ -40,6 +40,13 @@
 #define __OPENFLUID_UTILS_RESTCLIENT_HPP__
 
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
+# define OPENFLUID_REST_URL_REDIRECT 1
+#else
+# define OPENFLUID_REST_URL_REDIRECT 0
+#endif
+
+
 #include <QSslSocket>
 
 #include <openfluid/dllexport.hpp>
