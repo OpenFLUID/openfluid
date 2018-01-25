@@ -104,6 +104,7 @@ bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 

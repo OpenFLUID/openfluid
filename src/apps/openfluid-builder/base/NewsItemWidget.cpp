@@ -50,7 +50,7 @@ QLocale NewsItemWidget::m_Locale = QLocale(QLocale::English);
 
 
 NewsItemWidget::NewsItemWidget(const NewsItemData& Data,QWidget *Parent) :
-QWidget(Parent), ui(new Ui::NewsItemWidget)
+  QWidget(Parent), ui(new Ui::NewsItemWidget)
 {
   ui->setupUi(this);
 
@@ -61,7 +61,7 @@ QWidget(Parent), ui(new Ui::NewsItemWidget)
   ui->TitleLabel->setText(QString("<b>%1</b>").arg(Data.Title));
 
   QDateTime DT = QDateTime::fromString(Data.ISODate,"yyyy-MM-dd'T'hh:mm:ss");
-  ui->DateLabel->setText(m_Locale.toString(DT));
+  ui->DateLabel->setText(QString("%1 | %2").arg(m_Locale.toString(DT.date())).arg(m_Locale.toString(DT.time())));
 
   QString HTMLText = Data.Text;
   HTMLText.replace("&gt;",">");
@@ -128,14 +128,10 @@ QString NewsItemWidget::getCSSColorFromTag(const QString& Tag)
   {
     TagColor = "#4F75D1";  // blue
   }
-  else if (Tag == "training" || Tag == "meeting")
+  else if (Tag == "training" || Tag == "meeting" || Tag == "community")
   {
     TagColor = "#A04FD1";  // purple
   }
-/*  else if (Tag == "meeting")
-  {
-    TagColor = "#FF78C7";  // pink
-  }*/
   else if (Tag == "research project")
   {
     TagColor = "#979797";  // grey
