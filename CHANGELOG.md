@@ -1,3 +1,23 @@
+## 2.1.5
+
+  * Introduced development dashboard in DevStudio to perform batch actions 
+    such as configure, build, check, clean
+  * Introduced parameterization UI for GNUplot observer
+  * Added numeric version number in binary filenames of wares
+  * Added handling of HTTP redirections for FluidHub connections (Qt>5.6 only)
+  * Updated About dialog box with richer information about build, changes, ...
+  * Improved UI for time period configuration in Builder  
+  * Improved continuous integration process (Travis CI, AppVeyor)
+  * Improved C++11 usage
+  * Switched from Qt4 to Qt5 for Linux, as already done for MacOS and Windows
+  * Deprecated aggregate headers (core.hpp, base.hpp, ...)
+  * Cleaned code
+  * Fixed minor bugs : initialization of random generator, potential memory leaks, 
+    market paths when disabled, DevStudio crash when closed while building ware,
+    GDAL compatibility on 64bits fields, data types management in GIS export observer
+
+
+
 ## 2.1.4
 
   * Introduced run options in Builder, acccording to existing 
