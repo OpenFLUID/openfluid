@@ -125,9 +125,11 @@ IF(PYTHONINTERP_FOUND)
 ENDIF()
 
 
-# Packaging tool for OSX
+# Packaging tools for OSX
 IF(APPLE)
   CONFIGURE_FILE("tools/ofpack-osxdmgbuild.cmake.in" "${CMAKE_BINARY_DIR}/ofpack-osxdmgbuild.cmake" @ONLY)
   CONFIGURE_FILE("packaging/macosx/preinstall.in" "packaging/macosx/preinstall" @ONLY)
   CONFIGURE_FILE("packaging/macosx/postinstall.in" "packaging/macosx/postinstall" @ONLY)
+  
+  CONFIGURE_FILE("tools/ofpack-osx-brewcask.cmake.in" "${CMAKE_BINARY_DIR}/ofpack-osx-brewcask.cmake" @ONLY)
 ENDIF()
