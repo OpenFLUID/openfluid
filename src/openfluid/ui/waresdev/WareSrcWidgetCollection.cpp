@@ -165,7 +165,7 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
 
     if (Ware->isWareModified())
     {
-      Choice = QMessageBox::information(Ware,tr("Modified documents."),
+      Choice = QMessageBox::information(Ware,tr("Modified documents"),
                                         tr("Documents have been modified.\n\n"
                                            "Do you want to save changes?"),
                                         QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel,

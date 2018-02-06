@@ -406,7 +406,7 @@ void GNUplotObsParamsWidget::removeSerie()
     QString SerieName = ui->SeriesListWidget->item(CurrentRow)->text();
 
     if (QMessageBox::question(QApplication::activeWindow(),
-                              tr("Remove serie"),
+                              tr("Removing serie"),
                               tr("You are removing serie %1.\n"
                                  "The parameters of this serie will also be deleted.\n"
                                  "\n"
@@ -743,7 +743,7 @@ void GNUplotObsParamsWidget::setSourceFileName()
       if (!FileInfo.absolutePath().startsWith(QString::fromStdString(InputDir)))
       {
           QMessageBox::critical(this, tr("Source file"),
-              tr("Chosen file is not located in the IN project folder"), QMessageBox::Close);
+              tr("Chosen file is not located in the IN folder of the project."), QMessageBox::Close);
       }
       else
       {
@@ -834,7 +834,7 @@ void GNUplotObsParamsWidget::removeGraph()
     QString GraphName = ui->GraphsListWidget->item(CurrentRow)->text();
 
     if (QMessageBox::question(QApplication::activeWindow(),
-                                tr("Remove graph"),
+                                tr("Removing graph"),
                                 tr("You are removing graph %1.\n"
                                    "The parameters of this graph will also be deleted.\n"
                                    "The series associated with this graph will not be deleted.\n"

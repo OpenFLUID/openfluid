@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>DataProcessingWorker</name>
     <message>
@@ -386,7 +386,7 @@
         <translation>Import de données spatiales (OGR/GDAL)</translation>
     </message>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="279"/>
+        <location filename="OGRGDALImportExtension.cpp" line="276"/>
         <source>You are about to remove the selected source to import.
 Import configuration for this source will be lost.
 
@@ -397,7 +397,7 @@ La configuration d&apos;import pour cette source sera perdue.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="355"/>
+        <location filename="OGRGDALImportExtension.cpp" line="352"/>
         <source>You have at least one source configured for import.
 The configuration(s) will be lost.
 
@@ -487,42 +487,42 @@ Quitter l&apos;import quand même?</translation>
         <translation>Type de géométrie</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="54"/>
-        <location filename="SourceAddDialog.cpp" line="216"/>
+        <location filename="SourceAddDialog.cpp" line="56"/>
+        <location filename="SourceAddDialog.cpp" line="214"/>
         <source>No layer</source>
         <translation>Aucune couche</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="98"/>
+        <location filename="SourceAddDialog.cpp" line="96"/>
         <source>Connecting to source</source>
         <translation>Connexion à la source</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="136"/>
+        <location filename="SourceAddDialog.cpp" line="134"/>
         <source>Fetching layers...</source>
         <translation>Récupération des couches...</translation>
     </message>
     <message>
+        <location filename="SourceAddDialog.cpp" line="183"/>
         <location filename="SourceAddDialog.cpp" line="185"/>
-        <location filename="SourceAddDialog.cpp" line="187"/>
         <source>Source error</source>
         <translation>Erreur de source</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="189"/>
-        <location filename="SourceAddDialog.cpp" line="283"/>
-        <location filename="SourceAddDialog.cpp" line="292"/>
+        <location filename="SourceAddDialog.cpp" line="187"/>
+        <location filename="SourceAddDialog.cpp" line="281"/>
+        <location filename="SourceAddDialog.cpp" line="290"/>
         <source>Aborting.</source>
         <translation>Abandon.</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="280"/>
-        <location filename="SourceAddDialog.cpp" line="290"/>
+        <location filename="SourceAddDialog.cpp" line="278"/>
+        <location filename="SourceAddDialog.cpp" line="288"/>
         <source>Error importing from source</source>
         <translation>Erreur d&apos;&apos;import depuis la source</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="282"/>
+        <location filename="SourceAddDialog.cpp" line="280"/>
         <source>The mandatory field &quot;OFLD_ID&quot; cannot be found.</source>
         <translation>Le champ obligatoire &quot;OFLD_ID&quot; ne peut être trouvé.</translation>
     </message>
@@ -535,13 +535,13 @@ Aborting.</source>
 Abandon.</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="217"/>
+        <location filename="SourceAddDialog.cpp" line="215"/>
         <source>%1 layer(s) available</source>
         <translation>%1 couche(s) disponible(s)</translation>
     </message>
     <message>
-        <location filename="SourceAddDialog.cpp" line="279"/>
-        <location filename="SourceAddDialog.cpp" line="289"/>
+        <location filename="SourceAddDialog.cpp" line="277"/>
+        <location filename="SourceAddDialog.cpp" line="287"/>
         <source>Import error</source>
         <translation>Erreur d&apos;import</translation>
     </message>
