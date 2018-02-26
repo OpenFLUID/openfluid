@@ -31,11 +31,11 @@
 
 
 /**
- @file WareSrcMsgParser.hpp
- @brief Header of ...
+  @file WareSrcMsgParser.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+*/
 
 
 #ifndef __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__
@@ -83,6 +83,20 @@ class OPENFLUID_API WareSrcMsgParser
 
     virtual WareSrcMsg parse(const QString& MessageLine,
                              WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType) = 0;
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class OPENFLUID_API WareSrcMsgParserNone: public WareSrcMsgParser
+{
+
+  public:
+
+    WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine,
+                                       WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType);
 };
 
 

@@ -54,7 +54,7 @@ class OPENFLUID_API WareSrcProcess : public QProcess
 
   public:
 
-    enum class Type { NONE, CONFIGURE, BUILD };
+    enum class Type { NONE, CONFIGURE, BUILD};
 
     void setType(Type PT)
     { m_Type = PT; };

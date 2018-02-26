@@ -351,8 +351,7 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorConfigure
                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                              "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                             "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
-                             "-DSIM_SIM2DOC_MODE=off"
+                             "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"                             
                    PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.sim.cmake")                                                                                          
 
 
@@ -534,7 +533,7 @@ SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration
 ###########################################################################
 
 
-IF(NOT APPLE)
+IF(OFBUILD_ENABLE_SIM2DOC)
   OPENFLUID_ADD_TEST(NAME integration-BuddySim2DocHelp 
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "buddy" 
@@ -547,7 +546,7 @@ ENDIF()
 ###########################################################################
 
 
-IF(NOT APPLE)
+IF(OFBUILD_ENABLE_SIM2DOC)
   OPENFLUID_ADD_TEST(NAME integration-BuddySim2Doc
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "buddy" 
@@ -561,7 +560,7 @@ ENDIF()
 ###########################################################################
 
 
-IF(NOT APPLE)
+IF(OFBUILD_ENABLE_SIM2DOC)
   OPENFLUID_ADD_TEST(NAME integration-BuddySim2DocPDF
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                                 "buddy" 
@@ -575,7 +574,7 @@ ENDIF()
 ###########################################################################
 
 
-IF(NOT APPLE)
+IF(OFBUILD_ENABLE_SIM2DOC)
   OPENFLUID_ADD_TEST(NAME integration-BuddySim2DocPDFHTML
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "buddy" 
@@ -658,7 +657,6 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyNewSimConfigure
                             "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                             "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
                             "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
-                            "-DSIM_SIM2DOC_MODE=off" 
                             ".")
 SET_PROPERTY(TEST integration-BuddyNewSimConfigure APPEND PROPERTY DEPENDS integration-BuddyNewSim)
 

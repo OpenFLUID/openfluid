@@ -31,10 +31,10 @@
 
 /**
  @file WareSrcWidget.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+*/
 
 
 #include <QList>
@@ -92,12 +92,14 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
     connect(mp_StandaloneToolBar->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
     connect(mp_StandaloneToolBar->action("GoToLine"), SIGNAL(triggered()), this, SLOT(goToLine()));
 
-    connect(mp_StandaloneToolBar->action("Release"), SIGNAL(triggered()), this, SLOT(setReleaseMode()));
-    connect(mp_StandaloneToolBar->action("Debug"), SIGNAL(triggered()), this, SLOT(setDebugMode()));
-    connect(mp_StandaloneToolBar->action("BuildInstall"), SIGNAL(triggered()), this, SLOT(setBuildWithInstallMode()));
-    connect(mp_StandaloneToolBar->action("BuildOnly"), SIGNAL(triggered()), this, SLOT(setBuildNoInstallMode()));
-    connect(mp_StandaloneToolBar->action("Configure"), SIGNAL(triggered()), this, SLOT(configure()));
-    connect(mp_StandaloneToolBar->action("Build"), SIGNAL(triggered()), this, SLOT(build()));
+    connect(mp_StandaloneToolBar->action("WareOptionsRelease"), SIGNAL(triggered()), this, SLOT(updateWareOptions()));
+    connect(mp_StandaloneToolBar->action("WareOptionsDebug"), SIGNAL(triggered()), this, SLOT(updateWareOptions()));
+    connect(mp_StandaloneToolBar->action("WareOptionsInstall"), SIGNAL(triggered()), this, SLOT(updateWareOptions()));
+    connect(mp_StandaloneToolBar->action("ConfigureWare"), SIGNAL(triggered()), this, SLOT(configure()));
+    connect(mp_StandaloneToolBar->action("BuildWare"), SIGNAL(triggered()), this, SLOT(build()));
+#if OPENFLUID_SIM2DOC_ENABLED
+    connect(mp_StandaloneToolBar->action("GenerateDoc"), SIGNAL(triggered()), this, SLOT(generateDoc()));
+#endif
 
     connect(mp_StandaloneToolBar->action("OpenTerminal"), SIGNAL(triggered()), this, SIGNAL(openTerminalRequested()));
     connect(mp_StandaloneToolBar->action("OpenExplorer"), SIGNAL(triggered()), this, SIGNAL(openExplorerRequested()));
@@ -409,9 +411,20 @@ openfluid::waresdev::WareSrcContainer& WareSrcWidget::wareSrcContainer()
 // =====================================================================
 
 
-void WareSrcWidget::setReleaseMode()
+void WareSrcWidget::updateWareOptions()
 {
-  m_Container.setConfigMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE);
+  if (m_IsStandalone)
+  {
+    if (mp_StandaloneToolBar->action("WareOptionsInstall")->isChecked())
+      setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL);
+    else
+      setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL);
+
+    if (mp_StandaloneToolBar->action("WareOptionsRelease")->isChecked())
+      setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE);
+    else if (mp_StandaloneToolBar->action("WareOptionsDebug")->isChecked())
+      setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG);
+  }
 }
 
 
@@ -419,10 +432,9 @@ void WareSrcWidget::setReleaseMode()
 // =====================================================================
 
 
-void WareSrcWidget::setDebugMode()
-
+void WareSrcWidget::setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode)
 {
-  m_Container.setConfigMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG);
+  m_Container.setConfigMode(Mode);
 }
 
 
@@ -430,21 +442,9 @@ void WareSrcWidget::setDebugMode()
 // =====================================================================
 
 
-void WareSrcWidget::setBuildWithInstallMode()
-
+void WareSrcWidget::setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode)
 {
-  m_Container.setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcWidget::setBuildNoInstallMode()
-
-{
-  m_Container.setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL);
+  m_Container.setBuildMode(Mode);
 }
 
 
@@ -484,6 +484,30 @@ void WareSrcWidget::build()
   catch (openfluid::base::FrameworkException& E )
   {
     QMessageBox::critical(nullptr, tr("Build error"), QString::fromStdString(E.getMessage()));
+  }
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::generateDoc()
+{
+  clearEditorsMessages();
+
+  try
+  {
+    if (m_Container.getType() == openfluid::ware::WareType::SIMULATOR)
+      m_Container.generateDoc();
+    else
+      QMessageBox::warning(nullptr,tr("Generate documentation"),
+                           tr("Documentation generator only works with simulators"));
+  }
+  catch (openfluid::base::FrameworkException& E )
+  {
+    QMessageBox::critical(nullptr, tr("generate doc error"), QString::fromStdString(E.getMessage()));
   }
 }
 

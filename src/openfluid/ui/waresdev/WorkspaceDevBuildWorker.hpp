@@ -30,14 +30,14 @@
 */
 
 /**
-  @file WorkspaceDevConfigureBuildWorker.hpp
+  @file WorkspaceDevBuildWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVCONFIGUREBUILDWORKER_HPP__
-#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVCONFIGUREBUILDWORKER_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVBUILDWORKER_HPP__
+#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVBUILDWORKER_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WorkspaceDevConfigureBuildWorker : public WorkspaceDevProcessWorker
+class OPENFLUID_API WorkspaceDevBuildWorker : public WorkspaceDevProcessWorker
 {
   Q_OBJECT;
 
@@ -64,6 +64,10 @@ class OPENFLUID_API WorkspaceDevConfigureBuildWorker : public WorkspaceDevProces
 
     QProcess* mp_Process;
 
+    bool m_BuildWare;
+
+    bool m_GenerateDoc;
+
     openfluid::waresdev::WareSrcContainer::ConfigMode m_ConfigMode;
 
     openfluid::waresdev::WareSrcContainer::BuildMode m_BuildMode;
@@ -76,11 +80,12 @@ class OPENFLUID_API WorkspaceDevConfigureBuildWorker : public WorkspaceDevProces
 
   public:
 
-    WorkspaceDevConfigureBuildWorker(const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection,
-                                     openfluid::waresdev::WareSrcContainer::ConfigMode CMode,
-                                     openfluid::waresdev::WareSrcContainer::BuildMode BMode);
+    WorkspaceDevBuildWorker(const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection,
+                            bool BuildWare, bool GenerateDoc,
+                            openfluid::waresdev::WareSrcContainer::ConfigMode CMode,
+                            openfluid::waresdev::WareSrcContainer::BuildMode BMode);
 
-    ~WorkspaceDevConfigureBuildWorker();
+    ~WorkspaceDevBuildWorker();
 
 };
 
@@ -88,4 +93,4 @@ class OPENFLUID_API WorkspaceDevConfigureBuildWorker : public WorkspaceDevProces
 } } }  // namespaces
 
 
-#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVCONFIGUREBUILDWORKER_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVBUILDWORKER_HPP__ */

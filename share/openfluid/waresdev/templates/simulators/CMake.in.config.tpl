@@ -66,12 +66,6 @@ SET(SIM_PARAMSUI_RC )
 #SET(SIM_INSTALL_PATH "/my/install/path/")
 
 
-# set this to ON or AUTO for build of simulator documentation using sim2doc
-SET(SIM_SIM2DOC_MODE %%SIM2DOCMODE%%)
-
-#set to ON to disable installation of sim2doc built documentation
-SET(SIM_SIM2DOC_INSTALL_DISABLED %%SIM2DOCINSTALLDISABLED%%)
-
 # set this if you want to use a specific sim2doc template
 #SET(SIM_SIM2DOC_TPL "/path/to/template")
 

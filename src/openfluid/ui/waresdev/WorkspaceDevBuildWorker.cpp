@@ -31,7 +31,7 @@
 
 
 /**
-  @file WorkspaceDevConfigureBuildWorker.cpp
+  @file WorkspaceDevBuildWorker.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
@@ -41,7 +41,7 @@
 #include <QProcess>
 #include <QMetaType>
 
-#include <openfluid/ui/waresdev/WorkspaceDevConfigureBuildWorker.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevBuildWorker.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 
@@ -49,11 +49,13 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-WorkspaceDevConfigureBuildWorker::WorkspaceDevConfigureBuildWorker(
+WorkspaceDevBuildWorker::WorkspaceDevBuildWorker(
     const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection,
+    bool BuildWare, bool GenerateDoc,
     openfluid::waresdev::WareSrcContainer::ConfigMode CMode,
     openfluid::waresdev::WareSrcContainer::BuildMode BMode) :
     WorkspaceDevProcessWorker(Selection), mp_Process(nullptr),
+    m_BuildWare(BuildWare), m_GenerateDoc(GenerateDoc),
     m_ConfigMode(CMode), m_BuildMode(BMode)
 {
   // be careful : anything performed here will be executed from the parent thread!
@@ -64,7 +66,7 @@ WorkspaceDevConfigureBuildWorker::WorkspaceDevConfigureBuildWorker(
 // =====================================================================
 
 
-WorkspaceDevConfigureBuildWorker::~WorkspaceDevConfigureBuildWorker()
+WorkspaceDevBuildWorker::~WorkspaceDevBuildWorker()
 {
 }
 
@@ -73,7 +75,7 @@ WorkspaceDevConfigureBuildWorker::~WorkspaceDevConfigureBuildWorker()
 // =====================================================================
 
 
-void WorkspaceDevConfigureBuildWorker::run()
+void WorkspaceDevBuildWorker::run()
 {
   // mp_Process must be created here to be in the same thread
   mp_Process = new QProcess();
@@ -119,25 +121,57 @@ void WorkspaceDevConfigureBuildWorker::run()
       {
         emit processed(WType.first,WItem.ID,"configure", true);
 
-        writeMessage();
-        writeMessage("====== "+tr("Building %1").arg(WItem.ID)+" ======");
-        writeMessage();
-
-        QString BuildCommand = openfluid::utils::CMakeProxy::getBuildCommand(Container.getBuildDirPath(),
-                                                                             Container.getBuildTarget());
-
-        mp_Process->start(BuildCommand);
-
-        mp_Process->waitForStarted(-1);
-        mp_Process->waitForReadyRead(-1);
-        mp_Process->waitForFinished(-1);
-
-        if (mp_Process->exitCode())
+        if (m_BuildWare)
         {
-          emit processed(WType.first,WItem.ID,"build", false);
+
+          writeMessage();
+          writeMessage("====== "+tr("Building %1").arg(WItem.ID)+" ======");
+          writeMessage();
+
+          QString BuildCommand = openfluid::utils::CMakeProxy::getBuildCommand(Container.getBuildDirPath(),
+                                                                               Container.getBuildTarget());
+
+          mp_Process->start(BuildCommand);
+
+          mp_Process->waitForStarted(-1);
+          mp_Process->waitForReadyRead(-1);
+          mp_Process->waitForFinished(-1);
+
+          if (mp_Process->exitCode())
+          {
+            emit processed(WType.first,WItem.ID,"build", false);
+          }
+          else
+          {
+            emit processed(WType.first,WItem.ID,"build", true);
+          }
         }
-        else
-          emit processed(WType.first,WItem.ID,"build", true);
+
+        if (WType.first == openfluid::ware::WareType::SIMULATOR && m_GenerateDoc)
+        {
+
+          writeMessage();
+          writeMessage("====== "+tr("Generating doc for %1").arg(WItem.ID)+" ======");
+          writeMessage();
+
+          QString DocCommand = openfluid::utils::CMakeProxy::getBuildCommand(Container.getBuildDirPath(),
+                                                                             Container.getGenerateDocTarget());
+
+          mp_Process->start(DocCommand);
+
+          mp_Process->waitForStarted(-1);
+          mp_Process->waitForReadyRead(-1);
+          mp_Process->waitForFinished(-1);
+
+          if (mp_Process->exitCode())
+          {
+            emit processed(WType.first,WItem.ID,"doc", false);
+          }
+          else
+          {
+            emit processed(WType.first,WItem.ID,"doc", true);
+          }
+        }
       }
       emit wareCompleted();
     }
@@ -157,7 +191,7 @@ void WorkspaceDevConfigureBuildWorker::run()
 // =====================================================================
 
 
-void WorkspaceDevConfigureBuildWorker::processStdOut()
+void WorkspaceDevBuildWorker::processStdOut()
 {
   if (!mp_Process)
     return;
@@ -177,7 +211,7 @@ void WorkspaceDevConfigureBuildWorker::processStdOut()
 // =====================================================================
 
 
-void WorkspaceDevConfigureBuildWorker::processStdErr()
+void WorkspaceDevBuildWorker::processStdErr()
 {
   if (!mp_Process)
     return;

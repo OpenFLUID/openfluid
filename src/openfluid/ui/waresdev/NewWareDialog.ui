@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>644</width>
-    <height>719</height>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -348,60 +348,6 @@ font : bold;
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QGroupBox" name="Sim2docGroupBox">
-          <property name="title">
-           <string notr="true">sim2doc</string>
-          </property>
-          <layout class="QFormLayout" name="formLayout">
-           <property name="labelAlignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="verticalSpacing">
-            <number>6</number>
-           </property>
-           <property name="leftMargin">
-            <number>9</number>
-           </property>
-           <property name="topMargin">
-            <number>9</number>
-           </property>
-           <property name="rightMargin">
-            <number>9</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="Sim2doc_label">
-             <property name="text">
-              <string>Run mode</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="Sim2docComboBox"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="enableBuildOfDocumentationUsingSim2docLabel">
-             <property name="text">
-              <string>Enable installation</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QCheckBox" name="Sim2docCheckBox">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
        </layout>
       </widget>
      </item>
@@ -423,19 +369,6 @@ font : bold;
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item>
-         <widget class="Line" name="BuilderExt_line">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
         <item>
          <layout class="QFormLayout" name="formLayout_2">
           <property name="fieldGrowthPolicy">
@@ -576,8 +509,6 @@ font : bold;
   <tabstop>UiParamGroupBox</tabstop>
   <tabstop>UiParamSourceFilenameEdit</tabstop>
   <tabstop>UiParamClassNameEdit</tabstop>
-  <tabstop>Sim2docComboBox</tabstop>
-  <tabstop>Sim2docCheckBox</tabstop>
   <tabstop>BextTypeComboBox</tabstop>
   <tabstop>BextCategoryComboBox</tabstop>
   <tabstop>BextMenutextEdit</tabstop>

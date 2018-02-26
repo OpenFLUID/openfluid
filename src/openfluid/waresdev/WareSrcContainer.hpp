@@ -230,6 +230,8 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QString getBuildTarget() const;
 
+    QString getGenerateDocTarget() const;
+
     void prepareBuildDirectory() const;
 
     void setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream);
@@ -241,6 +243,8 @@ class OPENFLUID_API WareSrcContainer: public QObject
     void configure();
 
     void build();
+
+    void generateDoc();
 
     QList<WareSrcMsgParser::WareSrcMsg> getMessages();
 

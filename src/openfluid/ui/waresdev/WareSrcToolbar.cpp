@@ -29,18 +29,27 @@
 
  */
 
+
 /**
  @file WareSrcToolbar.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+*/
 
 
 #include <QMenu>
 #include <QToolButton>
+#include <QWidget>
+#include <QLabel>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
+#include <openfluid/config.hpp>
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
+#include <openfluid/ui/waresdev/WareBuildOptionsWidget.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
@@ -49,7 +58,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
-    QToolBar(Parent), m_IsIncluded(IsIncluded)
+    QToolBar(Parent), mp_OptionsWidget(nullptr), m_IsIncluded(IsIncluded)
 {
   if (!m_IsIncluded)
   {
@@ -63,8 +72,11 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
   addAction(m_Actions["OpenFile"]);
   addAction(m_Actions["SaveFile"]);
   addAction(m_Actions["SaveAsFile"]);
-  addAction(m_Actions["ConfigureWMenu"]);
-  addAction(m_Actions["BuildWMenu"]);
+  addAction(m_Actions["ConfigureWare"]);
+  addAction(m_Actions["BuildWare"]);
+#if OPENFLUID_SIM2DOC_ENABLED
+  addAction(m_Actions["GenerateDoc"]);
+#endif
 
   if (m_IsIncluded)
   {
@@ -91,14 +103,15 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubMenu->addAction(m_Actions["GoToLine"]);
 
     SubMenu = Menu->addMenu(tr("Build"));
-    SubMenu->addAction(m_Actions["Configure"]);
-    QMenu* SubSubMenu = SubMenu->addMenu(tr("Active configuration"));
-    SubSubMenu->addAction(m_Actions["Release"]);
-    SubSubMenu->addAction(m_Actions["Debug"]);
-    SubMenu->addAction(m_Actions["Build"]);
-    SubSubMenu = SubMenu->addMenu(tr("Active build action"));
-    SubSubMenu->addAction(m_Actions["BuildInstall"]);
-    SubSubMenu->addAction(m_Actions["BuildOnly"]);
+    SubMenu->addAction(m_Actions["ConfigureWare"]);
+    SubMenu->addAction(m_Actions["BuildWare"]);
+    QMenu* SubSubMenu = SubMenu->addMenu(tr("Options"));
+    SubSubMenu->addAction(m_Actions["WareOptionsRelease"]);
+    SubSubMenu->addAction(m_Actions["WareOptionsDebug"]);
+    SubSubMenu->addSeparator();
+    SubSubMenu->addAction(m_Actions["WareOptionsInstall"]);
+
+    // TODO add doc generation?
 
     SubMenu = Menu->addMenu(tr("Tools"));
     SubMenu->addAction(m_Actions["OpenTerminal"]);
@@ -113,6 +126,14 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     MenuButton->setPopupMode(QToolButton::InstantPopup);
     MenuButton->setMenu(Menu);
     addWidget(MenuButton);
+  }
+  else
+  {
+    addSeparator();
+
+    mp_OptionsWidget = new openfluid::ui::waresdev::WareBuildOptionsWidget(this);
+
+    addWidget(mp_OptionsWidget);
   }
 }
 
@@ -133,6 +154,9 @@ WareSrcToolbar::~WareSrcToolbar()
 
 void WareSrcToolbar::createActions()
 {
+
+  // ====== File ======
+
   m_Actions["NewFile"] = new QAction(openfluid::ui::common::getIcon("file-new","/ui/common",!m_IsIncluded),
                                      tr("New..."), this);
   m_Actions["NewFile"]->setToolTip(tr("Create a new file"));
@@ -163,6 +187,9 @@ void WareSrcToolbar::createActions()
   m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
   m_Actions["DeleteFile"]->setToolTip(tr("Delete the current file"));
 
+
+  // ====== Edit ======
+
   m_Actions["Copy"] = new QAction(tr("Copy"), this);
   m_Actions["Copy"]->setShortcuts(QKeySequence::Copy);
 
@@ -178,42 +205,60 @@ void WareSrcToolbar::createActions()
   m_Actions["GoToLine"] = new QAction(tr("Go to line..."), this);
   m_Actions["GoToLine"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
 
-  m_Actions["Configure"] = new QAction(openfluid::ui::common::getIcon("configure","/ui/common",!m_IsIncluded),
+
+  // ====== Build ======
+
+  // Configure ware
+
+  m_Actions["ConfigureWare"] = new QAction(openfluid::ui::common::getIcon("configure","/ui/common",!m_IsIncluded),
                                        tr("Configure ware"), this);
-  m_Actions["Configure"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B));
-  m_Actions["ConfigureWMenu"] = new QAction(openfluid::ui::common::getIcon("configure","/ui/common",!m_IsIncluded),
-                                            tr("Configure"), this);
+  m_Actions["ConfigureWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B));
+
+
+  // Build ware
+
+  m_Actions["BuildWare"] = new QAction(openfluid::ui::common::getIcon("build","/ui/common",!m_IsIncluded),
+                                   tr("Build ware"), this);
+  m_Actions["BuildWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
+
+
+  // Generate doc
+
+#if OPENFLUID_SIM2DOC_ENABLED
+  m_Actions["GenerateDoc"] = new QAction(openfluid::ui::common::getIcon("generate-doc","/ui/common",!m_IsIncluded),
+                                   tr("Generate doc"), this);
+  m_Actions["GenerateDoc"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
+#endif
+
+
+  // Options
+
+  m_Actions["WareOptionsMenu"] = new QAction(openfluid::ui::common::getIcon("configure","/ui/common",!m_IsIncluded),
+                                             tr("Options"), this);
   QActionGroup* ConfigureGroup = new QActionGroup(this);
   QMenu* Menu = new QMenu();
-  m_Actions["Release"] = new QAction("Release", ConfigureGroup);
-  m_Actions["Release"]->setCheckable(true);
-  m_Actions["Release"]->setChecked(true);
-  Menu->addAction(m_Actions["Release"]);
-  m_Actions["Debug"] = new QAction("Debug", ConfigureGroup);
-  m_Actions["Debug"]->setCheckable(true);
-  Menu->addAction(m_Actions["Debug"]);
-  m_Actions["ConfigureWMenu"]->setMenu(Menu);
-  connect(m_Actions["ConfigureWMenu"], SIGNAL(triggered()), m_Actions["Configure"], SLOT(trigger()));
+  m_Actions["WareOptionsRelease"] = new QAction("Release mode", ConfigureGroup);
+  m_Actions["WareOptionsRelease"]->setCheckable(true);
+  m_Actions["WareOptionsRelease"]->setChecked(true);
+  Menu->addAction(m_Actions["WareOptionsRelease"]);
+  m_Actions["WareOptionsDebug"] = new QAction("Debug mode", ConfigureGroup);
+  m_Actions["WareOptionsDebug"]->setCheckable(true);
+  Menu->addAction(m_Actions["WareOptionsDebug"]);
+  Menu->addSeparator();
+  m_Actions["WareOptionsInstall"] = new QAction(tr("Make available automatically"),this);
+  m_Actions["WareOptionsInstall"]->setCheckable(true);
+  m_Actions["WareOptionsInstall"]->setChecked(true);
+  Menu->addAction(m_Actions["WareOptionsInstall"]);
+  m_Actions["WareOptionsMenu"]->setMenu(Menu);
 
-  m_Actions["Build"] = new QAction(openfluid::ui::common::getIcon("build","/ui/common",!m_IsIncluded),
-                                   tr("Build ware"), this);
-  m_Actions["Build"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
-  m_Actions["BuildWMenu"] = new QAction(openfluid::ui::common::getIcon("build","/ui/common",!m_IsIncluded),
-                                        tr("Build"), this);
-  QActionGroup* BuildGroup = new QActionGroup(this);
-  Menu = new QMenu();
-  m_Actions["BuildInstall"] = new QAction(tr("Build and install"), BuildGroup);
-  m_Actions["BuildInstall"]->setCheckable(true);
-  m_Actions["BuildInstall"]->setChecked(true);
-  Menu->addAction(m_Actions["BuildInstall"]);
-  m_Actions["BuildOnly"] = new QAction(tr("Build only"), BuildGroup);
-  m_Actions["BuildOnly"]->setCheckable(true);
-  Menu->addAction(m_Actions["BuildOnly"]);
-  m_Actions["BuildWMenu"]->setMenu(Menu);
-  connect(m_Actions["BuildWMenu"], SIGNAL(triggered()), m_Actions["Build"], SLOT(trigger()));
+
+  // ====== Tools ======
 
   m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
   m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
+
+
+  // ====== Help ======
 
   m_Actions["APIDoc"] = new QAction(tr("API documentation"), this);
   m_Actions["APIDoc"]->setShortcuts(QKeySequence::HelpContents);

@@ -31,9 +31,9 @@
 
 /**
  @file MainWindow.hpp
- @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
  */
 
 
@@ -72,7 +72,7 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     openfluid::ui::waresdev::WareSrcToolbar* mp_Toolbar;
 
-    openfluid::ui::waresdev::WareSrcWidgetCollection* mp_Collection;
+    openfluid::ui::waresdev::WareSrcWidgetCollection* mp_WidgetsCollection;
 
     QMap<QString, QAction*> m_Actions;
 
@@ -85,7 +85,9 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
   private slots:
 
-    void showNotYetImplemented();
+    void onBuildOptionsMenuChanged();
+
+    void onBuildOptionsToolbarChanged();
 
     void onQuitRequested();
 
@@ -125,3 +127,4 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
 
 #endif /* __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__ */
+

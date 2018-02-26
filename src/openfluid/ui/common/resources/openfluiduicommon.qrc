@@ -42,12 +42,15 @@
     <file>icons/reload_grayed.png</file>
     <file>icons/run_light.png</file>
     <file>icons/run_grayed.png</file>
-    <file>icons/build_light.png</file>
-    <file>icons/build_grayed.png</file>
-    <file>icons/build_dark.png</file>
     <file>icons/configure_light.png</file>
     <file>icons/configure_grayed.png</file>
     <file>icons/configure_dark.png</file>
+    <file>icons/build_light.png</file>
+    <file>icons/build_grayed.png</file>
+    <file>icons/build_dark.png</file>
+    <file>icons/generate-doc_light.png</file>
+    <file>icons/generate-doc_grayed.png</file>
+    <file>icons/generate-doc_dark.png</file>
     
     <!-- icons for buttons -->
     <file>icons/add_dark.png</file>

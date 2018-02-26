@@ -180,6 +180,7 @@ MACRO(_OPENFLUID_WARE_PREPROCESS _WARENAME)
   ENDIF()        
 
   MESSAGE(STATUS "===== ${_OPNFLD_WARETYPE_LONGSTR} ${${_WARENAME}_ID} =====")
+  MESSAGE(STATUS "    Mode: ${CMAKE_BUILD_TYPE}")
 
 ENDMACRO()
 
@@ -219,7 +220,7 @@ MACRO(_OPENFLUID_WARE_BUILD _WARENAME)
   FOREACH(_SRC_FILE ${${_WARENAME}_CPP} ${${_WARENAME}_FORTRAN})
     SET(_TEMP_SRC_STR "${_TEMP_SRC_STR} ${_SRC_FILE}")
   ENDFOREACH()
-  MESSAGE(STATUS "    Sources files:${_TEMP_SRC_STR}")
+  MESSAGE(STATUS "    Sources files: ${_TEMP_SRC_STR}")
   
   SET(_TEMP_UIRC ${${_WARENAME}_UI} ${${_WARENAME}_RC})  
   IF (_TEMP_UIRC)
@@ -227,7 +228,7 @@ MACRO(_OPENFLUID_WARE_BUILD _WARENAME)
     FOREACH(_UIRC_FILE ${_TEMP_UIRC})
       SET(_TEMP_UIRC_STR "${_TEMP_UIRC_STR} ${_UIRC_FILE}")
     ENDFOREACH()   
-    MESSAGE(STATUS "    Resources files:${_TEMP_UIRC_STR}")
+    MESSAGE(STATUS "    Resources files: ${_TEMP_UIRC_STR}")
   ENDIF()  
   MESSAGE(STATUS "    Target: ${${_WARENAME}_TARGET}")
   
@@ -381,8 +382,6 @@ ENDMACRO()
 # _SIMNAME_LIBRARY_DIRS : directories to link for simulator compilation
 # _SIMNAME_LINK_LIBS : extra libraries to link for simulator build
 # _SIMNAME_INSTALL_PATH : install path, replacing the default one
-# _SIMNAME_SIM2DOC_DISABLED : set to 1 to disable sim2doc pdf build
-# _SIMNAME_SIM2DOC_INSTALL_DISABLED : set to 1 to disable installation of sim2doc built pdf
 # _SIMNAME_SIM2DOC_TPL : user-defined template for documentation
 # _SIMNAME_TEST_DATASETS : list of dataset${_WARENAME}s for tests
 
@@ -397,62 +396,32 @@ MACRO(OPENFLUID_ADD_SIMULATOR _SIMNAME)
     
   # ====== doc ======  
   
-  IF(NOT DEFINED ${_SIMNAME}_SIM2DOC_MODE)
-    SET(${_SIMNAME}_SIM2DOC_MODE OFF)
+  LIST(GET ${_SIMNAME}_CPP 0 _CPP_FOR_DOC)
+  
+  SET(_DOCS_OUTPUT_PATH "${PROJECT_BINARY_DIR}")
+  
+  IF(${_SIMNAME}_SIM2DOC_TPL)
+     SET (_TPL_OPTION ",tplfile=${${_SIMNAME}_SIM2DOC_TPL}")
   ENDIF()
-  
-  
-  IF(${_SIMNAME}_SIM2DOC_MODE)
-    FIND_PACKAGE(LATEX)
- 
-    IF(PDFLATEX_COMPILER)
-  
-      STRING(TOUPPER ${${_SIMNAME}_SIM2DOC_MODE} ${_SIMNAME}_SIM2DOC_MODE)
-  
-      LIST(GET ${_SIMNAME}_CPP 0 _CPP_FOR_DOC)
     
-      IF(NOT ${_SIMNAME}_SIM2DOC_OUTPUT_PATH)
-        SET(_DOCS_OUTPUT_PATH "${PROJECT_BINARY_DIR}")
-      ELSE()
-        SET(_DOCS_OUTPUT_PATH "${_SIMNAME}_SIM2DOC_OUTPUT_PATH")
-      ENDIF()
-    
-      IF(${_SIMNAME}_SIM2DOC_TPL)
-        SET (_TPL_OPTION ",tplfile=${${_SIMNAME}_SIM2DOC_TPL}")
-      ENDIF()
-    
-      ADD_CUSTOM_COMMAND(
-        OUTPUT "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf"
-        DEPENDS "${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC}"
-        COMMAND "${OpenFLUID_CMD_PROGRAM}"
-        ARGS "buddy" "sim2doc" "--options=inputcpp=${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC},outputdir=${_DOCS_OUTPUT_PATH},pdf=1${_TPL_OPTION}"     
-      )
-    
-      IF(${${_SIMNAME}_SIM2DOC_MODE} STREQUAL "AUTO") 
-        ADD_CUSTOM_TARGET(${${_SIMNAME}_ID}-doc ALL DEPENDS "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf")
-        MESSAGE(STATUS "    sim2doc : enabled (automatic)")
-      ELSE()
-        ADD_CUSTOM_TARGET(${${_SIMNAME}_ID}-doc DEPENDS "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf")
-        MESSAGE(STATUS "    sim2doc : enabled")
-      ENDIF()  
-    ELSE()
-      MESSAGE(STATUS "    sim2doc : pdflatex not found")
-    ENDIF()
-  ELSE()
-    MESSAGE(STATUS "    sim2doc : disabled")
-  ENDIF()
+  ADD_CUSTOM_COMMAND(
+    OUTPUT "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf"
+    DEPENDS "${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC}"
+    COMMAND "${OpenFLUID_CMD_PROGRAM}"
+    ARGS "buddy" "sim2doc" "--options=inputcpp=${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC},outputdir=${_DOCS_OUTPUT_PATH},pdf=1${_TPL_OPTION}"     
+  )
 
+  ADD_CUSTOM_TARGET(doc-pdf DEPENDS "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf")    
 
   _OPENFLUID_WARE_TRANSLATIONS(${_SIMNAME})
 
-
   _OPENFLUID_WARE_TESTS(${_SIMNAME} "-p")
    
-    
-    
-  IF(PDFLATEX_COMPILER AND ${${_SIMNAME}_SIM2DOC_MODE} STREQUAL "AUTO" AND NOT ${_SIMNAME}_SIM2DOC_INSTALL_DISABLED)
-    INSTALL(FILES "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf" DESTINATION "${_OPNFLD_INSTALL_PATH}")
-  ENDIF()
+        
+  ADD_CUSTOM_TARGET(doc-pdf-install
+                    DEPENDS doc-pdf                      
+                    COMMAND "${CMAKE_COMMAND}" "-E" "copy" 
+                            "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf" "${_OPNFLD_INSTALL_PATH}/${${_SIMNAME}_ID}.pdf")
     
     
   IF(${_SIMNAME}_PARAMSUI_ENABLED)

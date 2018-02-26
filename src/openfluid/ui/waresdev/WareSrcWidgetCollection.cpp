@@ -32,10 +32,10 @@
 
 /**
  @file WareSrcWidgetCollection.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+*/
 
 
 #include <QTabWidget>
@@ -335,12 +335,12 @@ WareSrcWidget* WareSrcWidgetCollection::currentWareWidget()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::setReleaseMode()
+void WareSrcWidgetCollection::setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode)
 {
-  m_DefaultConfigMode = openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE;
+  m_DefaultConfigMode = Mode;
 
   for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
-    Ware->setReleaseMode();
+      Ware->setConfigureMode(Mode);
 }
 
 
@@ -348,38 +348,12 @@ void WareSrcWidgetCollection::setReleaseMode()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::setDebugMode()
+void WareSrcWidgetCollection::setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode)
 {
-  m_DefaultConfigMode = openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG;
+  m_DefaultBuildMode = Mode;
 
   for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
-    Ware->setDebugMode();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcWidgetCollection::setBuildWithInstallMode()
-{
-  m_DefaultBuildMode = openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL;
-
-  for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
-    Ware->setBuildWithInstallMode();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcWidgetCollection::setBuildNoInstallMode()
-{
-  m_DefaultBuildMode = openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL;
-
-  for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
-    Ware->setBuildNoInstallMode();
+    Ware->setBuildMode(Mode);
 }
 
 
@@ -415,7 +389,26 @@ void WareSrcWidgetCollection::build()
     CurrentWare->build();
   }
   else
-    QMessageBox::warning(0, tr("Build"), tr("At least one ware must be open to perform this action"));
+    QMessageBox::warning(nullptr, tr("Build"), tr("At least one ware must be open to perform this action"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::generateDoc()
+{
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
+    if (openfluid::base::PreferencesManager::instance()->isWaresdevAutomaticSaveBeforeBuild())
+      CurrentWare->saveAllFileTabs();
+
+    CurrentWare->generateDoc();
+  }
+  else
+    QMessageBox::warning(nullptr,tr("Generate documentation"),
+                         tr("At least one ware must be open to perform this action"));
 }
 
 

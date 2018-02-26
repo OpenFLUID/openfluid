@@ -30,77 +30,72 @@
 */
 
 /**
-  @file WorkspaceDevDashboardDialog.hpp
+  @file WareBuildOptionsWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
+#ifndef __OPENFLUID_UIWARESDEV_WAREBUILDOPTIONSWIDGET_HPP__
+#define __OPENFLUID_UIWARESDEV_WAREBUILDOPTIONSWIDGET_HPP__
 
-#ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVDASHBOARDDIALOG_HPP__
-#define __OPENFLUID_UIWARESDEV_WORKSPACEDEVDASHBOARDDIALOG_HPP__
 
-
-#include <QDialog>
+#include <QWidget>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ui/waresdev/WorkspaceDevDashboardTypes.hpp>
-#include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/waresdev/WareSrcContainer.hpp>
 
 
-namespace Ui {
-class WorkspaceDevDashboardDialog;
+namespace Ui
+{
+  class WareBuildOptionsWidget;
 }
-
-
-class QPushButton;
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WorkspaceDevDashboardDialog: public QDialog
+class OPENFLUID_API WareBuildOptionsWidget : public QWidget
 {
   Q_OBJECT;
 
 
   private slots:
 
-    void activateDialog();
+    void handleInstallChanged();
 
-    void updateBatchActionsGroup(unsigned int SelectionCount);
-
-    void addParsedWare(openfluid::ui::waresdev::WorkspaceDevDashboardTypes::WareGitInfos Infos);
-
-    void setWareActionStatus(openfluid::ware::WareType Type,QString ID,QString ActionName, bool Status);
-
-    void handleSelectionChanged();
-
-    void handleBuildChanged();
-
-    void handleCheckChanged();
-
-    void handlePurgeChanged();
-
-    void runBuildDoc();
-
-    void runCheck();
-
-    void runPurge();
+    void handleConfigureModeChanged();
 
 
   private:
 
-    Ui::WorkspaceDevDashboardDialog* ui;
+    Ui::WareBuildOptionsWidget *ui;
 
-    WorkspaceDevDashboardTypes::WaresSelectionByType getSelectionByType() const;
+
+  public slots:
+
+    void setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode);
+
+    void setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode);
+
+
+  signals:
+
+    void buildModeChanged(openfluid::waresdev::WareSrcContainer::BuildMode Mode);
+
+    void configureModeChanged(openfluid::waresdev::WareSrcContainer::ConfigMode Mode);
 
 
   public:
 
-    WorkspaceDevDashboardDialog(QWidget* Parent = nullptr);
+    WareBuildOptionsWidget(QWidget* Parent = nullptr);
 
-    virtual ~WorkspaceDevDashboardDialog();
+    virtual ~WareBuildOptionsWidget();
+
+    openfluid::waresdev::WareSrcContainer::BuildMode getBuildMode() const;
+
+    openfluid::waresdev::WareSrcContainer::ConfigMode getConfigureMode() const;
+
 
 };
 
@@ -108,4 +103,4 @@ class OPENFLUID_API WorkspaceDevDashboardDialog: public QDialog
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVDASHBOARDDIALOG_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WAREBUILDOPTIONSWIDGET_HPP__ */

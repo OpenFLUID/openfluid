@@ -132,8 +132,6 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   BOOST_CHECK(CMakeConfigFileContent.contains("SET(SIM_CPP MySim.cpp)"));
   BOOST_CHECK(CMakeConfigFileContent.contains("SET(SIM_PARAMSUI_ENABLED OFF)"));
   BOOST_CHECK(CMakeConfigFileContent.contains("SET(SIM_PARAMSUI_CPP )"));
-  BOOST_CHECK(CMakeConfigFileContent.contains("SET(SIM_SIM2DOC_MODE AUTO)"));
-  BOOST_CHECK(CMakeConfigFileContent.contains("SET(SIM_SIM2DOC_INSTALL_DISABLED OFF)"));
   CMakeConfigResult.close();
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);

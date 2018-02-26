@@ -48,7 +48,7 @@ ENDIF()
 
 
 SET(CPACK_SOURCE_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_src")
-SET(CPACK_SOURCE_IGNORE_FILES "/\\\\_build*" 
+SET(CPACK_SOURCE_IGNORE_FILES "/\\\\_.*" 
                               "/\\\\.git/" "/\\\\.git*"
                               "/\\\\.svn/" 
                               "/\\\\.settings/" "/\\\\..*project"  # eclipse files

@@ -101,6 +101,7 @@ ExtSet['log-view'] = ['message-text-outline',False,True,False]
 ExtSet['export'] = ['export',False,True,False]
 ExtSet['linked'] = ['link-variant',False,True,False]
 ExtSet['unlinked'] = ['link-variant-off',False,True,False]
+ExtSet['generate-doc'] = ['book-open-page-variant',True,True,True]
 
 
 BaseSetVersion = '1x_web'
@@ -125,7 +126,6 @@ def convertIcon(SrcFile,DestPath,IconName,Light,Dark,Grayed):
     print SrcFile,'=>',DestFile
     ConvertCmd = ['convert',SrcFile,'-fuzz','75%','-fill',LightColor,'-opaque',SrcColor,DestFile]
     subprocess.call(ConvertCmd)
-
 
   if Dark:
     #create dark icon

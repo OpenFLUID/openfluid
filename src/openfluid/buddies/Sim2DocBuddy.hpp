@@ -42,7 +42,10 @@
 #define __OPENFLUID_BUDDIES_SIM2DOCBUDDY_HPP__
 
 
-#if !defined(OPENFLUID_OS_MAC)
+#include <openfluid/config.hpp>
+
+
+#if OPENFLUID_SIM2DOC_ENABLED
 
 // Disabled for compilation errors due to boost.spirit usage under MacOSX
 // TODO Should be re-enabled later
@@ -51,15 +54,14 @@
 #include <map>
 #include <vector>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
-#include <openfluid/ware/SimulatorSignature.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
-
 #include <boost/spirit/include/classic_core.hpp>
 #include <boost/spirit/include/classic_file_iterator.hpp>
 #include <boost/bind.hpp>
 
+#include <openfluid/dllexport.hpp>
+#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 using namespace BOOST_SPIRIT_CLASSIC_NS;
 
@@ -439,6 +441,6 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
 
 } } //namespaces
 
-#endif /* !defined(OPENFLUID_OS_MAC) */
+#endif /* OPENFLUID_SIM2DOC_ENABLED */
 
 #endif  /* __OPENFLUID_BUDDIES_SIM2DOCBUDDY_HPP__ */

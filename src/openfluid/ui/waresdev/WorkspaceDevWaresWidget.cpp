@@ -39,6 +39,7 @@
 
 #include <QRegExp>
 
+#include <openfluid/config.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevWaresWidget.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevGitWidget.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevActionsWidget.hpp>
@@ -51,7 +52,11 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 const WorkspaceDevDashboardTypes::ActionsByRows WorkspaceDevWaresWidget::Actions =
 {
-  {{"configure","Configure"},{"build","Build"}},
+  {{"configure","Configure"},{"build","Build"}
+#if OPENFLUID_SIM2DOC_ENABLED
+  ,{"doc","Doc"}
+#endif
+  },
   {{"wareshub","wareshub.json"},{"readme","README"},{"license","LICENSE"}},
   {{"purge","Purge"}}
 };

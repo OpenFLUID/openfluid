@@ -31,10 +31,10 @@
 
 /**
  @file WareSrcWidget.hpp
- @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+*/
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__
@@ -82,6 +82,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void notifyBuildLaunched(openfluid::ware::WareType Type, const QString& ID);
 
     void notifyBuildFinished(openfluid::ware::WareType Type, const QString& ID);
+
+    void updateWareOptions();
 
 
   private:
@@ -146,17 +148,15 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
   public slots:
 
-    void setReleaseMode();
+    void setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode);
 
-    void setDebugMode();
-
-    void setBuildWithInstallMode();
-
-    void setBuildNoInstallMode();
+    void setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode);
 
     void configure();
 
     void build();
+
+    void generateDoc();
 
     void saveCurrentEditor();
 

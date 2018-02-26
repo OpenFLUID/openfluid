@@ -40,7 +40,7 @@
 
 #include <openfluid/buddies/Sim2DocBuddy.hpp>
 
-#if !defined(OPENFLUID_OS_MAC)
+#if OPENFLUID_SIM2DOC_ENABLED
 
 #include <iosfwd>
 #include <fstream>
@@ -952,4 +952,4 @@ bool Sim2DocBuddy::run()
 } } //namespaces
 
 
-#endif /* !defined(OPENFLUID_OS_MAC) */
+#endif /* OPENFLUID_SIM2DOC_ENABLED */

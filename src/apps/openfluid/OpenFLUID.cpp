@@ -998,7 +998,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       BuddyBody = new openfluid::buddies::NewDataBuddy(BuddyListener);
     else if (BuddyName == "examples")
       BuddyBody = new openfluid::buddies::ExamplesBuddy(BuddyListener);
-#if !defined(OPENFLUID_OS_MAC)
+#if OPENFLUID_SIM2DOC_ENABLED
     else if (BuddyName == "sim2doc")
       BuddyBody = new openfluid::buddies::Sim2DocBuddy(BuddyListener);
 #endif
@@ -1069,13 +1069,13 @@ void OpenFLUIDApp::runBuddy()
 
   if (m_BuddyToRun.first == "newsim" )
     Buddy.reset(new openfluid::buddies::NewSimulatorBuddy(BuddyObs.get()));
-#ifndef __APPLE__
+#if OPENFLUID_SIM2DOC_ENABLED
     // Disabled for compilation errors due to boost.spirit usage under MacOSX
     // TODO Should be re-enabled later
   else if (m_BuddyToRun.first == "sim2doc" )
     Buddy.reset(new openfluid::buddies::Sim2DocBuddy(BuddyObs.get()));
 #endif
-  if (m_BuddyToRun.first == "newdata" )
+  else if (m_BuddyToRun.first == "newdata" )
     Buddy.reset(new openfluid::buddies::NewDataBuddy(BuddyObs.get()));
   else if (m_BuddyToRun.first == "examples" )
     Buddy.reset(new openfluid::buddies::ExamplesBuddy(BuddyObs.get()));

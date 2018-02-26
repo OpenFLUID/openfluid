@@ -32,10 +32,10 @@
 
 /**
  @file WareSrcWidgetCollection.hpp
- @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+*/
 
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCWIDGETCOLLECTION_HPP__
@@ -153,17 +153,15 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void openTerminal(const QString& Path = "");
 
-    void setReleaseMode();
+    void setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode);
 
-    void setDebugMode();
-
-    void setBuildWithInstallMode();
-
-    void setBuildNoInstallMode();
+    void setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode);
 
     void configure();
 
     void build();
+
+    void generateDoc();
 
     void saveCurrentEditor();
 

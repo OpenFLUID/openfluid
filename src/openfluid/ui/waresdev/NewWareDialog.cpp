@@ -67,7 +67,6 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
 
   m_WareTypeDir.setPath(openfluid::waresdev::WareSrcManager::instance()->getWareTypePath(m_WareType));
 
-  ui->Sim2docComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getSim2docModeTexts());
   ui->BextTypeComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtTypeTexts());
   ui->BextCategoryComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtCategoryTexts());
 
@@ -239,35 +238,33 @@ void NewWareDialog::accept()
   QString NewFilePath, ErrMsg;
   bool Ok;
 
-  openfluid::waresdev::WareSrcFactory::Replacements R;
+  openfluid::waresdev::WareSrcFactory::Replacements Repl;
 
-  R.ClassName = ui->ClassNameEdit->text();
-  R.RootCppFilename = ui->SourceFilenameEdit->text();
-  R.RootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.RootCppFilename);
-  R.HppHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.RootHppFilename);
+  Repl.ClassName = ui->ClassNameEdit->text();
+  Repl.RootCppFilename = ui->SourceFilenameEdit->text();
+  Repl.RootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(Repl.RootCppFilename);
+  Repl.HppHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(Repl.RootHppFilename);
 
-  R.SignatureInfos = "  // Informations\n"
+  Repl.SignatureInfos = "  // Informations\n"
                      "  DECLARE_NAME(\"\")\n"
                      "  DECLARE_DESCRIPTION(\"\")\n"
                      "  DECLARE_VERSION(\"\")\n"
                      "  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL)\n";
 
-  R.LinkUID = QUuid::createUuid().toString();
+  Repl.LinkUID = QUuid::createUuid().toString();
 
   if (m_WareType == openfluid::ware::WareType::SIMULATOR)
   {
-    R.Sim2docModeIndex = ui->Sim2docComboBox->currentIndex();
-    R.Sim2docInstall = ui->Sim2docCheckBox->isChecked();
-
-    R.SimulatorSchedulingReturn = "DefaultDeltaT()";
+    Repl.SimulatorSchedulingReturn = "DefaultDeltaT()";
 
     if (m_UseSimSignature)
     {
-      R.SignatureInfos = openfluid::waresdev::WareSrcFactory::getSimulatorSignatureInfos(m_SimSignature);
-      R.SimulatorSignatureData = openfluid::waresdev::WareSrcFactory::getSimulatorSignatureData(m_SimSignature);
-      R.SimulatorInitCode = openfluid::waresdev::WareSrcFactory::getSimulatorInitCode(m_SimSignature);
-      R.SimulatorRunCode = openfluid::waresdev::WareSrcFactory::getSimulatorRunCode(m_SimSignature);
-      R.SimulatorSchedulingReturn = openfluid::waresdev::WareSrcFactory::getSimulatorSchedulingReturn(m_SimSignature);
+      Repl.SignatureInfos = openfluid::waresdev::WareSrcFactory::getSimulatorSignatureInfos(m_SimSignature);
+      Repl.SimulatorSignatureData = openfluid::waresdev::WareSrcFactory::getSimulatorSignatureData(m_SimSignature);
+      Repl.SimulatorInitCode = openfluid::waresdev::WareSrcFactory::getSimulatorInitCode(m_SimSignature);
+      Repl.SimulatorRunCode = openfluid::waresdev::WareSrcFactory::getSimulatorRunCode(m_SimSignature);
+      Repl.SimulatorSchedulingReturn =
+          openfluid::waresdev::WareSrcFactory::getSimulatorSchedulingReturn(m_SimSignature);
     }
   }
   else if (m_WareType == openfluid::ware::WareType::OBSERVER)
@@ -276,9 +273,9 @@ void NewWareDialog::accept()
   }
   else if (m_WareType == openfluid::ware::WareType::BUILDEREXT)
   {
-    R.BuilderExtModeIndex = ui->BextTypeComboBox->currentIndex();
-    R.BuilderExtCategoryIndex = ui->BextCategoryComboBox->currentIndex();
-    R.BuilderExtMenuText = ui->BextMenutextEdit->text();
+    Repl.BuilderExtModeIndex = ui->BextTypeComboBox->currentIndex();
+    Repl.BuilderExtCategoryIndex = ui->BextCategoryComboBox->currentIndex();
+    Repl.BuilderExtMenuText = ui->BextMenutextEdit->text();
     WithHpp = true;
     WithUiParam = false;
   }
@@ -288,12 +285,12 @@ void NewWareDialog::accept()
       (m_WareType == openfluid::ware::WareType::SIMULATOR ||
       m_WareType == openfluid::ware::WareType::OBSERVER))
   {
-    R.ParamsUiEnabled = true;
-    R.ParamsUiClassname = ui->UiParamClassNameEdit->text();
-    R.ParamsUiRootCppFilename = ui->UiParamSourceFilenameEdit->text();
-    R.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.ParamsUiRootCppFilename);
-    R.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.ParamsUiRootHppFilename);
-    R.ParamsUiComment = "";
+    Repl.ParamsUiEnabled = true;
+    Repl.ParamsUiClassname = ui->UiParamClassNameEdit->text();
+    Repl.ParamsUiRootCppFilename = ui->UiParamSourceFilenameEdit->text();
+    Repl.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(Repl.ParamsUiRootCppFilename);
+    Repl.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(Repl.ParamsUiRootHppFilename);
+    Repl.ParamsUiComment = "";
   }
 
 
@@ -304,19 +301,19 @@ void NewWareDialog::accept()
     Ok = Factory.createCMakeListsFile(NewFilePath, ErrMsg);
 
   if (Ok)
-    Ok = Factory.createCmakeConfigFile(R, NewFilePath, ErrMsg);
+    Ok = Factory.createCmakeConfigFile(Repl, NewFilePath, ErrMsg);
 
   if (Ok)
-    Ok = Factory.createCppFile(R, NewFilePath, ErrMsg);
+    Ok = Factory.createCppFile(Repl, NewFilePath, ErrMsg);
 
   if (Ok && WithHpp)
-    Ok = Factory.createHppFile(R, NewFilePath, ErrMsg);
+    Ok = Factory.createHppFile(Repl, NewFilePath, ErrMsg);
 
   if (Ok && WithUiParam)
-    Ok = Factory.createParamUiCppFile(R, NewFilePath, ErrMsg);
+    Ok = Factory.createParamUiCppFile(Repl, NewFilePath, ErrMsg);
 
   if (Ok && WithUiParam)
-    Ok = Factory.createParamUiHppFile(R, NewFilePath, ErrMsg);
+    Ok = Factory.createParamUiHppFile(Repl, NewFilePath, ErrMsg);
 
   if (Ok && ui->JsonCheckBox->isChecked())
     Ok = Factory.createJsonFile(NewFilePath, ErrMsg);

@@ -40,14 +40,15 @@
 #include <QMetaType>
 #include <QThread>
 
+#include <openfluid/config.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevDashboardDialog.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevDashboardWorker.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevDashboardTypes.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevProcessDialog.hpp>
-#include <openfluid/ui/waresdev/WorkspaceDevConfigureBuildWorker.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevCheckWorker.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevPurgeWorker.hpp>
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/ui/waresdev/WorkspaceDevBuildWorker.hpp>
 
 #include "ui_WorkspaceDevDashboardDialog.h"
 
@@ -64,16 +65,20 @@ WorkspaceDevDashboardDialog::WorkspaceDevDashboardDialog(QWidget* Parent) :
   ui->ActionsTabWidget->setCurrentIndex(0);
 
 
-  // Configure-Build tab
-  ui->ConfigComboBox->addItem("Release");
-  ui->ConfigComboBox->addItem("Debug");
-  ui->ConfigComboBox->setCurrentIndex(0);
+  // Build and doc tab
 
-  ui->BuildComboBox->addItem("Build and install");
-  ui->BuildComboBox->addItem("Build only");
-  ui->BuildComboBox->setCurrentIndex(0);
+  ui->BuildCheckBox->setChecked(true);
+  connect(ui->BuildCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleBuildChanged()));
 
-  connect(ui->ConfigureBuildRunButton,SIGNAL(clicked()),this,SLOT(runConfigureBuild()));
+#if OPENFLUID_SIM2DOC_ENABLED
+  ui->DocCheckBox->setChecked(true);
+  connect(ui->DocCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleBuildChanged()));
+#else
+  ui->DocCheckBox->setChecked(false);
+  ui->DocCheckBox->setVisible(false);
+#endif
+
+  connect(ui->BuildDocRunButton,SIGNAL(clicked()),this,SLOT(runBuildDoc()));
 
 
   // Check tab
@@ -253,6 +258,17 @@ void WorkspaceDevDashboardDialog::handleSelectionChanged()
 // =====================================================================
 
 
+void WorkspaceDevDashboardDialog::handleBuildChanged()
+{
+  ui->BuildDocRunButton->setEnabled(ui->BuildCheckBox->isChecked() ||
+                                    ui->DocCheckBox->isChecked());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WorkspaceDevDashboardDialog::handleCheckChanged()
 {
   ui->CheckRunButton->setEnabled(ui->WareshubCheckBox->isChecked() ||
@@ -278,19 +294,17 @@ void WorkspaceDevDashboardDialog::handlePurgeChanged()
 // =====================================================================
 
 
-void WorkspaceDevDashboardDialog::runConfigureBuild()
+void WorkspaceDevDashboardDialog::runBuildDoc()
 {
-  openfluid::waresdev::WareSrcContainer::ConfigMode ConfigM =
-    (ui->ConfigComboBox->currentIndex() == 0 ? openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE :
-                                               openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG);
+  openfluid::waresdev::WareSrcContainer::ConfigMode ConfigM = ui->BuildOptionsWidget->getConfigureMode();
+  openfluid::waresdev::WareSrcContainer::BuildMode BuildM = ui->BuildOptionsWidget->getBuildMode();
 
-  openfluid::waresdev::WareSrcContainer::BuildMode BuildM =
-    (ui->BuildComboBox->currentIndex() == 0 ? openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL :
-                                              openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL);
+  WorkspaceDevBuildWorker* Worker = new WorkspaceDevBuildWorker(getSelectionByType(),
+                                                                ui->BuildCheckBox->isChecked(),
+                                                                ui->DocCheckBox->isChecked(),
+                                                                ConfigM,BuildM);
 
-  WorkspaceDevConfigureBuildWorker* Worker = new WorkspaceDevConfigureBuildWorker(getSelectionByType(),ConfigM,BuildM);
-
-  WorkspaceDevProcessDialog Dialog(tr("Configure and Build"),Worker,this);
+  WorkspaceDevProcessDialog Dialog(tr("Build"),Worker,this);
 
   Dialog.exec();
 }

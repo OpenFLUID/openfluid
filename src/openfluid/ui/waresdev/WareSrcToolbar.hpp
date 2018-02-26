@@ -31,10 +31,10 @@
 
 /**
  @file WareSrcToolbar.hpp
- @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+*/
 
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCTOOLBAR_HPP__
@@ -45,6 +45,7 @@
 #include <QAction>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ui/waresdev/WareBuildOptionsWidget.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -58,9 +59,12 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
 
     QMap<QString, QAction*> m_Actions;
 
+    WareBuildOptionsWidget* mp_OptionsWidget;
+
     void createActions();
 
     bool m_IsIncluded;
+
 
   public:
 
@@ -69,6 +73,9 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
     ~WareSrcToolbar();
 
     QAction* action(const QString& ActionName);
+
+    WareBuildOptionsWidget* optionsWidget()
+    { return mp_OptionsWidget; }
 
 };
 

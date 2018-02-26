@@ -474,6 +474,13 @@ QString WareSrcContainer::getBuildTarget() const
 }
 
 
+QString WareSrcContainer::getGenerateDocTarget() const
+{
+  // build target is "doc-pdf-install" if current build mode is BUILD_WITHINSTALL, "doc-pdf" in other cases
+  return (m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "doc-pdf-install" : "doc-pdf");
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -547,6 +554,45 @@ void WareSrcContainer::build()
   QString Command = openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target);
 
   runCommand(Command, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::generateDoc()
+{
+  // run configure if build dir does not exist
+  if (!QFile(m_BuildDirPath).exists())
+  {
+    configure();
+
+    while (!mp_Process->waitForFinished(200))  // TODO better to replace this by a threaded process
+    {
+      qApp->processEvents();
+    }
+
+    mp_Stream->write(WareSrcMsgParser::WareSrcMsg("\n========================================"
+                                                  "========================================\n\n\n",
+                                                  WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND));
+  }
+
+
+  QString Target = getGenerateDocTarget();
+
+
+  delete mp_CurrentParser;
+  mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserNone();
+
+
+  // === build and run command
+
+  QString Command = openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target);
+
+  runCommand(Command, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
+
 }
 
 
@@ -647,16 +693,17 @@ void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironm
   else if (CmdType == WareSrcProcess::Type::BUILD)
     emit buildProcessLaunched(m_Type,m_ID);
 
-
   if (openfluid::base::PreferencesManager::instance()->isWaresdevShowCommandEnv("PATH"))
   {
-    WareSrcMsgParser::WareSrcMsg PATHMessage = WareSrcMsgParser::WareSrcMsg(
-        QString("PATH=%1\n").arg(Env.value("PATH", "")), WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
+    WareSrcMsgParser::WareSrcMsg PATHMessage =
+        WareSrcMsgParser::WareSrcMsg(QString("PATH=%1\n").arg(Env.value("PATH", "")),
+                                     WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
     mp_Stream->write(PATHMessage);
   }
 
-  WareSrcMsgParser::WareSrcMsg CommandMessage = WareSrcMsgParser::WareSrcMsg(
-      QString("%1\n").arg(Command), WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
+  WareSrcMsgParser::WareSrcMsg CommandMessage =
+      WareSrcMsgParser::WareSrcMsg(QString("%1\n").arg(Command),
+                                   WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
   mp_Stream->write(CommandMessage);
 
   mp_Process->setProcessEnvironment(Env);

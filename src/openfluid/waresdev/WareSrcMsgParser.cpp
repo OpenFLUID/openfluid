@@ -31,17 +31,35 @@
 
 
 /**
- @file WareSrcMsgParser.cpp
- @brief Implements ...
+  @file WareSrcMsgParser.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+*/
 
 
 #include <openfluid/waresdev/WareSrcMsgParser.hpp>
 
 
 namespace openfluid { namespace waresdev {
+
+
+WareSrcMsgParser::WareSrcMsg WareSrcMsgParserNone::parse(const QString& MessageLine,
+                                                         WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType)
+{
+  WareSrcMsgParser::WareSrcMsg Msg(MessageLine);
+
+  Msg.m_Type = DefaultMsgType;
+
+  return Msg;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
 
 
 WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLine,
