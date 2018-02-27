@@ -30,17 +30,20 @@
 */
 
 
-
 /**
   @file SimulatorWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
+
+#include <QDesktopServices>
+
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include "ui_WareWidget.h"
 #include "SimulatorWidget.hpp"
@@ -56,7 +59,7 @@ SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDe
                                  const openfluid::ware::WareID_t& ID,
                                  int Index):
   ClickableWareWidget(Parent,ID,QString::fromStdString(ID),Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR,Index),
-  mp_Desc(Desc),m_IsTranslated(false)
+  mp_Desc(Desc),m_IsTranslated(false),m_DocFilePath("")
 {
   refresh();
 
@@ -64,8 +67,14 @@ SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDe
   ui->GenerateSrcButton->setIcon(openfluid::ui::common::getIcon("ghost2sim","/builder"));
   ui->GenerateSrcButton->setIconSize(QSize(16,16));
 
+  ui->DocButton->setText("");
+  ui->DocButton->setIcon(openfluid::ui::common::getIcon("view-doc","/builder"));
+  ui->DocButton->setIconSize(QSize(16,16));
+
+
   connect(ui->AddParamButton,SIGNAL(clicked()),this,SLOT(addParameterToList()));
   connect(ui->GenerateSrcButton,SIGNAL(clicked()),this,SLOT(notifySrcGenerateAsked()));
+  connect(ui->DocButton,SIGNAL(clicked()),this,SLOT(openDocFile()));
 }
 
 
@@ -183,6 +192,26 @@ void SimulatorWidget::updateParametersList()
 // =====================================================================
 
 
+void SimulatorWidget::findDocFile(const openfluid::machine::ModelItemSignatureInstance* Signature)
+{
+  m_DocFilePath.clear();
+  if (Signature != nullptr)
+  {
+    std::string BasePath = openfluid::tools::Filesystem::dirname(Signature->FileFullPath);
+    std::string ExpectedFilePath = openfluid::tools::Filesystem::joinPath({BasePath,Signature->Signature->ID+".pdf"});
+
+    if (openfluid::tools::Filesystem::isFile(ExpectedFilePath))
+    {
+      m_DocFilePath = ExpectedFilePath;
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulatorWidget::refresh()
 {
   const openfluid::machine::ModelItemSignatureInstance* Signature =
@@ -192,6 +221,10 @@ void SimulatorWidget::refresh()
 
   if (Signature != nullptr)
   {
+    findDocFile(Signature);
+
+    ui->DocButton->setVisible(!m_DocFilePath.empty());
+
     m_Ghost = Signature->Ghost;
 
     if (!m_IsTranslated)
@@ -339,4 +372,19 @@ void SimulatorWidget::notifySrcGenerateAsked()
 {
   if (m_Ghost)
     emit srcGenerateAsked(QString::fromStdString(m_ID));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorWidget::openDocFile()
+{
+  if (!m_DocFilePath.empty())
+  {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(m_DocFilePath)));
+    QApplication::restoreOverrideCursor();
+  }
 }

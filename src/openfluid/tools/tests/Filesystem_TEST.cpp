@@ -54,6 +54,23 @@
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_path_operations)
+{
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::joinPath({"/my/joined","path/myfile.txt"}),
+                      "/my/joined/path/myfile.txt");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::joinPath({"/my/joined",""}),
+                        "/my/joined/");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::joinPath({"","path/myfile.txt"}),
+                        "/path/myfile.txt");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::joinPath({"",""}),
+                        "/");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(check_names_operations)
 {
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::filename("/my/path/myfile.txt"),"myfile.txt");

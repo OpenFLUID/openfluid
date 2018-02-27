@@ -102,6 +102,7 @@ ExtSet['export'] = ['export',False,True,False]
 ExtSet['linked'] = ['link-variant',False,True,False]
 ExtSet['unlinked'] = ['link-variant-off',False,True,False]
 ExtSet['generate-doc'] = ['book-open-page-variant',True,True,True]
+ExtSet['view-doc'] = ['book-open-variant',True,True,True]
 
 
 BaseSetVersion = '1x_web'

@@ -42,6 +42,7 @@
 
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
+
 #include "ClickableWareWidget.hpp"
 
 
@@ -55,9 +56,13 @@ class SimulatorWidget : public ClickableWareWidget
 
     bool m_IsTranslated;
 
+    std::string m_DocFilePath;
+
     void updateParametersListWithSignature(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
     void updateParametersList();
+
+    void findDocFile(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
 
   private slots:
@@ -71,6 +76,8 @@ class SimulatorWidget : public ClickableWareWidget
     void removeParameterFromList(const QString& Name);
 
     void notifySrcGenerateAsked();
+
+    void openDocFile();
 
 
   signals:

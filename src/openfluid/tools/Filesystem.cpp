@@ -37,6 +37,8 @@
 */
 
 
+#include <boost/algorithm/string/join.hpp>
+
 #include <QFileInfo>
 #include <QDir>
 #include <QFile>
@@ -45,6 +47,7 @@
 
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -130,6 +133,17 @@ bool copyDirectoryRecursively(const QString& SrcPath,
 
 // =====================================================================
 // =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::joinPath(const std::vector<std::string>& PathParts)
+{
+  return boost::algorithm::join(PathParts,"/");
+}
+
+
 // =====================================================================
 // =====================================================================
 

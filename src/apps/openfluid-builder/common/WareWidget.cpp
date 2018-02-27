@@ -67,6 +67,8 @@ WareWidget::WareWidget(QWidget* Parent,
   ui->NameLabel->setElideMode(Qt::ElideRight);
 
 
+  ui->DocButton->setVisible(false);
+
   ui->UpButton->setText("");
   ui->UpButton->setIcon(openfluid::ui::common::getIcon("go-up","/ui/common"));
   ui->UpButton->setIconSize(QSize(16,16));

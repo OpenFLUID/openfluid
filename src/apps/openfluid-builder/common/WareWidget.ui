@@ -45,7 +45,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1">
       <item>
-       <layout class="QHBoxLayout" name="IDButtonsLayout" stretch="1,0,0,0,0,0,0,0,0,0,0">
+       <layout class="QHBoxLayout" name="IDButtonsLayout" stretch="1,0,0,0,0,0,0,0,0,0,0,0">
         <item>
          <widget class="openfluid::ui::common::ElidedLabel" name="IDLabel">
           <property name="sizePolicy">
@@ -94,6 +94,28 @@
           </property>
           <property name="text">
            <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="DocButton">
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Open documentation</string>
+          </property>
+          <property name="text">
+           <string notr="true"/>
           </property>
          </widget>
         </item>

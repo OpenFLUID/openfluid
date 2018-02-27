@@ -24,6 +24,7 @@
     <file>icons/market_dark.png</file>
     <file>icons/rename-column_dark.png</file>
     <file>icons/ghost2sim_dark.png</file>
+    <file>icons/view-doc_dark.png</file>
 
   </qresource>  
 </RCC>

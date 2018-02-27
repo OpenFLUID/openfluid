@@ -42,6 +42,7 @@
 
 
 #include <string>
+#include <vector>
 
 #include <openfluid/dllexport.hpp>
 
@@ -53,6 +54,17 @@ class OPENFLUID_API Filesystem
 {
 
   public:
+
+    /**
+      Returns a joined path string from a vector of path parts
+      @code{.cpp}
+      path = openfluid::tools::Filesystem::joinPath({"/my/joined","path/myfile.txt"});
+      // path = /my/joined/path/myfile.txt
+      @endcode
+      @param[in] PathParts a vector of path parts
+      @return the joined path
+    */
+    static std::string joinPath(const std::vector<std::string>& PathParts);
 
     /**
       Returns the name of the file in the given path
