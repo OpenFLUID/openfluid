@@ -237,6 +237,8 @@ BOOST_FIXTURE_TEST_CASE(clone_noauth_ok,F)
 {
   if (!Url.isEmpty())
   {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
 
     BOOST_CHECK(Git.clone(Url, DestPath));
@@ -259,6 +261,8 @@ BOOST_FIXTURE_TEST_CASE(clone_wrong_auth_fails,F)
 {
   if (!AuthUrl.isEmpty())
   {
+    std::cout << "URL : " << AuthUrl.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
 
     BOOST_CHECK(!Git.clone(AuthUrl, DestPath, "wrongname", "wrongpass"));
@@ -280,6 +284,10 @@ BOOST_FIXTURE_TEST_CASE(clone_auth_ok,F)
 {
   if (!AuthUrl.isEmpty() && !AuthUsername.isEmpty())
   {
+    std::cout << "URL : " << AuthUrl.toStdString() << std::endl;
+    std::cout << "username : " << AuthUsername.toStdString() << std::endl;
+    std::cout << "password : " << AuthPassword.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
 
     BOOST_CHECK(Git.clone(AuthUrl, DestPath, AuthUsername, AuthPassword));
@@ -345,6 +353,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_unchanged,F)
 {
   if (!Url.isEmpty())
   {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
 
     Git.clone(Url, DestPath);
@@ -368,6 +378,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_untracked,F)
 {
   if (!Url.isEmpty())
   {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
     Git.clone(Url, DestPath);
 
@@ -394,6 +406,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_added,F)
 {
   if (!Url.isEmpty())
   {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
     Git.clone(Url, DestPath);
 
@@ -422,23 +436,24 @@ BOOST_FIXTURE_TEST_CASE(status_git_added_modified,F)
 {
   if (!Url.isEmpty())
   {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
 
-  openfluid::utils::GitProxy Git;
-  Git.clone(Url, DestPath);
+    openfluid::utils::GitProxy Git;
+    Git.clone(Url, DestPath);
 
-  QFile File(DestDir.filePath("new_file.txt"));
-  File.open(QIODevice::WriteOnly);
+    QFile File(DestDir.filePath("new_file.txt"));
+    File.open(QIODevice::WriteOnly);
 
-  launchGitCommand("add new_file.txt");
+    launchGitCommand("add new_file.txt");
 
-  QTextStream FileContent(&File);
-  FileContent << "some text";
-  File.close();
+    QTextStream FileContent(&File);
+    FileContent << "some text";
+    File.close();
 
-  QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
-  BOOST_CHECK_EQUAL(Paths.size(), 1);
-  BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, true);
-  BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitProxy::FileStatus::ADDED);
+    QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    BOOST_CHECK_EQUAL(Paths.size(), 1);
+    BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, true);
+    BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitProxy::FileStatus::ADDED);
   }
   else
   {
@@ -455,6 +470,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified,F)
 {
   if (!Url.isEmpty())
   {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
     Git.clone(Url, DestPath);
 
@@ -484,6 +501,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_staged,F)
 {
   if (!Url.isEmpty())
   {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
     Git.clone(Url, DestPath);
 
@@ -515,6 +534,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_partially_staged,F)
 {
   if (!Url.isEmpty())
   {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
     Git.clone(Url, DestPath);
 
@@ -550,6 +571,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_deleted,F)
 {
   if (!Url.isEmpty())
   {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
     openfluid::utils::GitProxy Git;
     Git.clone(Url, DestPath);
 
