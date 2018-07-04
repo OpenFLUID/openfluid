@@ -298,11 +298,13 @@ void WorkspaceDevDashboardDialog::runBuildDoc()
 {
   openfluid::waresdev::WareSrcContainer::ConfigMode ConfigM = ui->BuildOptionsWidget->getConfigureMode();
   openfluid::waresdev::WareSrcContainer::BuildMode BuildM = ui->BuildOptionsWidget->getBuildMode();
+  unsigned int BuildJ = ui->BuildOptionsWidget->getBuildJobs();
+
 
   WorkspaceDevBuildWorker* Worker = new WorkspaceDevBuildWorker(getSelectionByType(),
                                                                 ui->BuildCheckBox->isChecked(),
                                                                 ui->DocCheckBox->isChecked(),
-                                                                ConfigM,BuildM);
+                                                                ConfigM,BuildM,BuildJ);
 
   WorkspaceDevProcessDialog Dialog(tr("Build"),Worker,this);
 

@@ -62,7 +62,9 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
                              openfluid::waresdev::WareSrcContainer::ConfigMode Config,
-                             openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent) :
+                             openfluid::waresdev::WareSrcContainer::BuildMode Build,
+                             unsigned int Jobs,
+                             QWidget* Parent) :
     QWidget(Parent), ui(new Ui::WareSrcWidget),
     m_Container(Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName), m_IsStandalone(IsStandalone)
 {
@@ -127,6 +129,7 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
 
   m_Container.setConfigMode(Config);
   m_Container.setBuildMode(Build);
+  m_Container.setBuildJobs(Jobs);
 
   mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(ui->WareSrcMessageWidget);
   m_Container.setMsgStream(*mp_TextEditMsgStream);
@@ -254,6 +257,7 @@ int WareSrcWidget::onCloseFileTabRequested(int Index, bool WithConfirm)
     {
       case QMessageBox::Save:
         Editor->saveContent();
+        /* fall through */ // GCC marker comment for fall through
       case QMessageBox::Discard:
         ClosedTabPos = closeFileTab(Editor);
         break;
@@ -445,6 +449,15 @@ void WareSrcWidget::setConfigureMode(openfluid::waresdev::WareSrcContainer::Conf
 void WareSrcWidget::setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode)
 {
   m_Container.setBuildMode(Mode);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::setBuildJobs(unsigned int Jobs)
+{
+  m_Container.setBuildJobs(Jobs);
 }
 
 

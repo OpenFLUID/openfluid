@@ -38,6 +38,8 @@
 
 
 #include <openfluid/ui/waresdev/WareBuildOptionsWidget.hpp>
+#include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_WareBuildOptionsWidget.h"
 
@@ -55,8 +57,18 @@ WareBuildOptionsWidget::WareBuildOptionsWidget(QWidget* Parent):
 
   ui->InstallCheckBox->setChecked(true);
 
+  ui->ResetJobsButton->setText("");
+  ui->ResetJobsButton->setIcon(openfluid::ui::common::getIcon("refresh","/ui/common"));
+  ui->ResetJobsButton->setIconSize(QSize(16,16));
+
+  ui->JobsCheckBox->setChecked(true);
+  resetJobsToIdeal();
+
   connect(ui->InstallCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleInstallChanged()));
   connect(ui->ConfigureModeComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(handleConfigureModeChanged()));
+  connect(ui->JobsSpinBox,SIGNAL(valueChanged(int)),this,SLOT(handleBuildJobsChanged()));
+  connect(ui->JobsCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleBuildJobsChanged()));
+  connect(ui->ResetJobsButton,SIGNAL(clicked()),this,SLOT(resetJobsToIdeal()));
 }
 
 
@@ -93,6 +105,25 @@ void WareBuildOptionsWidget::handleConfigureModeChanged()
     emit configureModeChanged(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE);
   else
     emit configureModeChanged(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareBuildOptionsWidget::handleBuildJobsChanged()
+{
+  if (ui->JobsCheckBox->isChecked())
+  {
+    ui->JobsSpinBox->setEnabled(true);
+    emit buildJobsChanged(ui->JobsSpinBox->value());
+  }
+  else
+  {
+    ui->JobsSpinBox->setEnabled(false);
+    emit buildJobsChanged(0);
+  }
 }
 
 
@@ -142,6 +173,32 @@ openfluid::waresdev::WareSrcContainer::ConfigMode WareBuildOptionsWidget::getCon
     return openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE;
 
   return openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+unsigned int WareBuildOptionsWidget::getBuildJobs() const
+{
+  if (ui->JobsCheckBox->isChecked())
+  {
+    return ui->JobsSpinBox->value();
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void WareBuildOptionsWidget::resetJobsToIdeal()
+{
+  ui->JobsSpinBox->setValue(openfluid::base::Environment::getIdealJobsCount());
 }
 
 

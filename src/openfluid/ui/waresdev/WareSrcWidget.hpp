@@ -152,6 +152,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode);
 
+    void setBuildJobs(unsigned int Jobs);
+
     void configure();
 
     void build();
@@ -192,7 +194,9 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
                   openfluid::waresdev::WareSrcContainer::ConfigMode Config,
-                  openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent = nullptr);
+                  openfluid::waresdev::WareSrcContainer::BuildMode Build,
+                  unsigned int Jobs,
+                  QWidget* Parent = nullptr);
 
     ~WareSrcWidget();
 

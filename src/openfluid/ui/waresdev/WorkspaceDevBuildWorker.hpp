@@ -72,6 +72,8 @@ class OPENFLUID_API WorkspaceDevBuildWorker : public WorkspaceDevProcessWorker
 
     openfluid::waresdev::WareSrcContainer::BuildMode m_BuildMode;
 
+    unsigned int m_BuildJobs;
+
 
   public slots:
 
@@ -83,7 +85,9 @@ class OPENFLUID_API WorkspaceDevBuildWorker : public WorkspaceDevProcessWorker
     WorkspaceDevBuildWorker(const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection,
                             bool BuildWare, bool GenerateDoc,
                             openfluid::waresdev::WareSrcContainer::ConfigMode CMode,
-                            openfluid::waresdev::WareSrcContainer::BuildMode BMode);
+                            openfluid::waresdev::WareSrcContainer::BuildMode BMode,
+                            unsigned int BJobs
+                            );
 
     ~WorkspaceDevBuildWorker();
 

@@ -195,6 +195,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
           mp_WidgetsCollection, SLOT(setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode)));
   connect(mp_Toolbar->optionsWidget(), SIGNAL(buildModeChanged(openfluid::waresdev::WareSrcContainer::BuildMode)),
           mp_WidgetsCollection, SLOT(setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode)));
+  connect(mp_Toolbar->optionsWidget(), SIGNAL(buildJobsChanged(unsigned int)),
+          mp_WidgetsCollection, SLOT(setBuildJobs(unsigned int)));
   connect(mp_Toolbar->optionsWidget(), SIGNAL(configureModeChanged(openfluid::waresdev::WareSrcContainer::ConfigMode)),
           this, SLOT(onBuildOptionsToolbarChanged()));
   connect(mp_Toolbar->optionsWidget(), SIGNAL(buildModeChanged(openfluid::waresdev::WareSrcContainer::BuildMode)),
@@ -457,7 +459,6 @@ void MainWindow::onBuildOptionsToolbarChanged()
   else if (mp_Toolbar->optionsWidget()->getConfigureMode() ==
       openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG)
     mp_Toolbar->action("WareOptionsDebug")->setChecked(true);
-
 }
 
 

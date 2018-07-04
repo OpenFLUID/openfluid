@@ -160,6 +160,13 @@ class OPENFLUID_API Environment
     { return m_IdealThreadCount; }
 
     /**
+      Returns the ideal jobs count for the current running system
+      @return the number of jobs
+    */
+    static int getIdealJobsCount()
+    { return int(m_IdealThreadCount/2); }
+
+    /**
       Returns the current user name
       @return the user name
     */

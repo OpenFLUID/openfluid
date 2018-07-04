@@ -71,9 +71,18 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
                                        const std::map<QString,QString>& Variables = {},
                                        const QString& Generator = "", const std::vector<QString>& Options = {});
 
+    /**
+      Returns a build command prepared using the given arguments
+      @param[in] BuildDir the directory where the build will be performed
+      @param[in] Target the target to build (empty by default)
+      @param[in] Jobs the number of parallel jobs to use, 0 means that parallel build is not active (0 by default)
+      @param[in] CMakeOptions a string of options passed to CMake (empty by default)
+      @param[in] OtherOptions a string of options passed to the build tool (empty by default)
+    */
     static QString getBuildCommand(const QString& BuildDir,
                                    const QString& Target = "",
-                                   const QString& CMakeOptions = "", const QString& OtherOptions = {});
+                                   const unsigned int Jobs = 0,
+                                   const QString& CMakeOptions = "", const QString& OtherOptions = "");
 
     static QString getTarCompressCommand(const QString& WorkDir,
                                          const QString& TarFilePath, const QStringList& RelativePathsToCompress,

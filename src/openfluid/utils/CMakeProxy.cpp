@@ -117,23 +117,23 @@ QString CMakeProxy::getConfigureCommand(const QString& BuildDir, const QString& 
     return "";
 
 
-  QString ArgsOpts;
+  QString ArgsOptsStr;
 
   if (!Generator.isEmpty())
-    ArgsOpts += QString(" -G \"%1\"").arg(Generator);
+    ArgsOptsStr += QString(" -G \"%1\"").arg(Generator);
 
 
   for (const auto& Var : Variables)
-    ArgsOpts += QString(" -D%1=%2").arg(Var.first).arg(Var.second);
+    ArgsOptsStr += QString(" -D%1=%2").arg(Var.first).arg(Var.second);
 
   for (const auto& Opt : Options)
-    ArgsOpts += QString(" %1").arg(Opt);
+    ArgsOptsStr += QString(" %1").arg(Opt);
 
   QString Cmd = QString("\"%1\" -E chdir \"%2\" \"%1\" \"%3\"%4")
                 .arg(m_ExecutablePath)
                 .arg(BuildDir)
                 .arg(SrcDir)
-                .arg(ArgsOpts);
+                .arg(ArgsOptsStr);
 
   return Cmd;
 }
@@ -145,6 +145,7 @@ QString CMakeProxy::getConfigureCommand(const QString& BuildDir, const QString& 
 
 QString CMakeProxy::getBuildCommand(const QString& BuildDir,
                                     const QString& Target,
+                                    const unsigned int Jobs,
                                     const QString& CMakeOptions, const QString& OtherOptions)
 {
   if (!isAvailable())
@@ -161,8 +162,24 @@ QString CMakeProxy::getBuildCommand(const QString& BuildDir,
   if (!CMakeOptions.isEmpty())
     CMakeOpts = " " + CMakeOptions;
 
+  // Add Jobs option
+  if (Jobs)
+  {
+    OtherOpts = QString(" -- -j %1").arg(Jobs);
+  }
+
+  // Add other options
   if (!OtherOptions.isEmpty())
-    OtherOpts = QString(" -- %1").arg(OtherOptions);
+  {
+    if (OtherOpts.isEmpty())
+    {
+      OtherOpts = QString(" -- %1").arg(OtherOptions);
+    }
+    else
+    {
+      OtherOpts += " " + OtherOptions;
+    }
+  }
 
   QString Cmd = QString("\"%1\" -E chdir \"%2\" \"%1\" --build .%3%4%5")
                   .arg(m_ExecutablePath)

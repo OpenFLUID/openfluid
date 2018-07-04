@@ -100,11 +100,11 @@ BOOST_AUTO_TEST_CASE(check_buildcmd)
   std::cout << Cmd.toStdString() << std::endl;
   BOOST_REQUIRE(Cmd.endsWith("--build . --target install"));
 
-  Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install","--clean-first");
+  Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install",1,"--clean-first");
   std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("--build . --target install --clean-first"));
+  BOOST_REQUIRE(Cmd.endsWith("--build . --target install --clean-first -- -j 1"));
 
-  Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install","--clean-first","-j 4 VERBOSE=1");
+  Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install",4,"--clean-first","VERBOSE=1");
   std::cout << Cmd.toStdString() << std::endl;
   BOOST_REQUIRE(Cmd.endsWith("--build . --target install --clean-first -- -j 4 VERBOSE=1"));
 }

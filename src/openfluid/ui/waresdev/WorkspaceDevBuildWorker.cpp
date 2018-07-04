@@ -53,10 +53,11 @@ WorkspaceDevBuildWorker::WorkspaceDevBuildWorker(
     const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection,
     bool BuildWare, bool GenerateDoc,
     openfluid::waresdev::WareSrcContainer::ConfigMode CMode,
-    openfluid::waresdev::WareSrcContainer::BuildMode BMode) :
+    openfluid::waresdev::WareSrcContainer::BuildMode BMode,
+    unsigned int BJobs) :
     WorkspaceDevProcessWorker(Selection), mp_Process(nullptr),
     m_BuildWare(BuildWare), m_GenerateDoc(GenerateDoc),
-    m_ConfigMode(CMode), m_BuildMode(BMode)
+    m_ConfigMode(CMode), m_BuildMode(BMode), m_BuildJobs(BJobs)
 {
   // be careful : anything performed here will be executed from the parent thread!
 }
@@ -92,6 +93,7 @@ void WorkspaceDevBuildWorker::run()
 
       Container.setConfigMode(m_ConfigMode);
       Container.setBuildMode(m_BuildMode);
+      Container.setBuildJobs(m_BuildJobs);
 
       Container.prepareBuildDirectory();
 
@@ -129,7 +131,8 @@ void WorkspaceDevBuildWorker::run()
           writeMessage();
 
           QString BuildCommand = openfluid::utils::CMakeProxy::getBuildCommand(Container.getBuildDirPath(),
-                                                                               Container.getBuildTarget());
+                                                                               Container.getBuildTarget(),
+                                                                               Container.getBuildJobs());
 
           mp_Process->start(BuildCommand);
 

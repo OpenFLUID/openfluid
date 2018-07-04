@@ -45,6 +45,7 @@
 #include <QProcess>
 #include <QMessageBox>
 
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
@@ -64,7 +65,9 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone) :
     mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(openfluid::waresdev::WareSrcManager::instance()),
     m_DefaultConfigMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE),
-    m_DefaultBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL), mp_FindReplaceDialog(0)
+    m_DefaultBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL),
+    m_DefaultBuildJobs(openfluid::base::Environment::getIdealJobsCount()),
+    mp_FindReplaceDialog(0)
 {
   connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseWareTabRequested(int)));
   connect(mp_TabWidget, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
@@ -89,7 +92,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
 {
   openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
 
-// TODO manage other workspaces later
+  // TODO manage other workspaces later
   if (!Info.m_IsInCurrentWorkspace)
     return;
 
@@ -99,7 +102,8 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
 
     if (!Widget)
     {
-      Widget = new WareSrcWidget(Info, m_IsStandalone, m_DefaultConfigMode, m_DefaultBuildMode, mp_TabWidget);
+      Widget = new WareSrcWidget(Info, m_IsStandalone, m_DefaultConfigMode, m_DefaultBuildMode, m_DefaultBuildJobs,
+                                 mp_TabWidget);
 
       mp_TabWidget->addTab(Widget, Info.m_WareName);
 
@@ -176,11 +180,13 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
     {
       case QMessageBox::SaveAll:
         Ware->saveAllFileTabs();
+        /* fall through */
       case QMessageBox::Discard:
         Ware->closeAllFileTabs();
         closeWareTab(Ware);
         break;
       case QMessageBox::Cancel:
+        /* fall through */
       default:
         break;
     }
@@ -354,6 +360,19 @@ void WareSrcWidgetCollection::setBuildMode(openfluid::waresdev::WareSrcContainer
 
   for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
     Ware->setBuildMode(Mode);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::setBuildJobs(unsigned int Jobs)
+{
+  for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+  {
+    Ware->setBuildJobs(Jobs);
+  }
 }
 
 
@@ -575,6 +594,7 @@ bool WareSrcWidgetCollection::closeAllWidgets()
     case QMessageBox::SaveAll:
       for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
         Ware->saveAllFileTabs();
+      /* fall through */
     case QMessageBox::Discard:
       for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
       {

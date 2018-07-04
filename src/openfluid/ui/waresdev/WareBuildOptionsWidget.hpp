@@ -66,6 +66,10 @@ class OPENFLUID_API WareBuildOptionsWidget : public QWidget
 
     void handleConfigureModeChanged();
 
+    void handleBuildJobsChanged();
+
+    void resetJobsToIdeal();
+
 
   private:
 
@@ -85,6 +89,8 @@ class OPENFLUID_API WareBuildOptionsWidget : public QWidget
 
     void configureModeChanged(openfluid::waresdev::WareSrcContainer::ConfigMode Mode);
 
+    void buildJobsChanged(unsigned int Jobs);
+
 
   public:
 
@@ -96,6 +102,7 @@ class OPENFLUID_API WareBuildOptionsWidget : public QWidget
 
     openfluid::waresdev::WareSrcContainer::ConfigMode getConfigureMode() const;
 
+    unsigned int getBuildJobs() const;
 
 };
 

@@ -121,6 +121,8 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     BuildMode m_BuildMode;
 
+    unsigned int m_BuildJobs;
+
     QString m_BuildDirPath;
 
     WareSrcProcess* mp_Process;
@@ -230,6 +232,8 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     QString getBuildTarget() const;
 
+    unsigned int getBuildJobs() const;
+
     QString getGenerateDocTarget() const;
 
     void prepareBuildDirectory() const;
@@ -239,6 +243,8 @@ class OPENFLUID_API WareSrcContainer: public QObject
     void setConfigMode(ConfigMode Mode);
 
     void setBuildMode(BuildMode Mode);
+
+    void setBuildJobs(unsigned int Jobs);
 
     void configure();
 

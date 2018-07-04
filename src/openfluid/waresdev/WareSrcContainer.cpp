@@ -70,6 +70,7 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware:
 
   setConfigMode(ConfigMode::CONFIG_RELEASE);
   setBuildMode(BuildMode::BUILD_WITHINSTALL);
+  setBuildJobs(openfluid::base::Environment::getIdealJobsCount());
 
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutput()));
@@ -467,11 +468,35 @@ void WareSrcContainer::setBuildMode(BuildMode Mode)
 // =====================================================================
 
 
+void WareSrcContainer::setBuildJobs(unsigned int Jobs)
+{
+  m_BuildJobs = Jobs;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 QString WareSrcContainer::getBuildTarget() const
 {
   // build target is "install" if current build mode is BUILD_WITHINSTALL, "" in other cases
   return (m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "install" : "");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+unsigned int WareSrcContainer::getBuildJobs() const
+{
+  return m_BuildJobs;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 QString WareSrcContainer::getGenerateDocTarget() const
@@ -551,7 +576,7 @@ void WareSrcContainer::build()
 
   // === build and run command
 
-  QString Command = openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target);
+  QString Command = openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target,m_BuildJobs);
 
   runCommand(Command, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
 }

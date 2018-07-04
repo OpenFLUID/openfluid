@@ -110,6 +110,7 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     openfluid::waresdev::WareSrcContainer::ConfigMode m_DefaultConfigMode;
     openfluid::waresdev::WareSrcContainer::BuildMode m_DefaultBuildMode;
+    unsigned int m_DefaultBuildJobs;
 
     FindReplaceDialog* mp_FindReplaceDialog;
 
@@ -156,6 +157,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode);
 
     void setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode);
+
+    void setBuildJobs(unsigned int Jobs);
 
     void configure();
 
