@@ -673,16 +673,21 @@ void WareSrcContainer::processErrorOutput()
 
 void WareSrcContainer::processFinishedOutput(int ExitCode)
 {
+  QString ElapsedString =
+      QString("execution time : %1")
+      .arg(QString::fromStdString(openfluid::tools::getDurationAsPrettyString(m_ProcessTimer.elapsed())));
+
   if (!ExitCode)
   {
     WareSrcMsgParser::WareSrcMsg Message =
-        WareSrcMsgParser::WareSrcMsg("\nCommand ended\n\n", WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
+        WareSrcMsgParser::WareSrcMsg(QString("\nCommand ended (%1)\n\n").arg(ElapsedString),
+                                     WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
     mp_Stream->write(Message);
   }
   else
   {
     WareSrcMsgParser::WareSrcMsg Message =
-        WareSrcMsgParser::WareSrcMsg("\nCommand ended with error\n\n",
+        WareSrcMsgParser::WareSrcMsg(QString("\nCommand ended with error (%1)\n\n").arg(ElapsedString),
                                      WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR);
     mp_Stream->write(Message);
   }
@@ -708,6 +713,7 @@ void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironm
   if (mp_Process->state() != WareSrcProcess::NotRunning)
     mp_Process->close();
 
+  m_ProcessTimer.start();
 
   mp_Process->setType(CmdType);
 

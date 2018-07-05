@@ -44,6 +44,7 @@
 
 #include <QString>
 #include <QObject>
+#include <QElapsedTimer>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/waresdev/WareSrcMsgStream.hpp>
@@ -126,6 +127,8 @@ class OPENFLUID_API WareSrcContainer: public QObject
     QString m_BuildDirPath;
 
     WareSrcProcess* mp_Process;
+
+    QElapsedTimer m_ProcessTimer;
 
     QString m_OFVersion;
 
