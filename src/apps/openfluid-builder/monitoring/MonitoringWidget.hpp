@@ -43,6 +43,9 @@
 
 #include <QWidget>
 
+#include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+
 #include "WorkspaceWidget.hpp"
 #include "WaresManagementWidget.hpp"
 

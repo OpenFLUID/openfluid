@@ -21,7 +21,7 @@ before_build:
   - cmd: set PATH=%PATH:C:\Program Files\Git\usr\bin;=%  
   # Use MinGW from Qt tools instead of default installation
   - cmd: set PATH=%PATH:C:\MinGW\bin;=% 
-  - cmd: set PATH=C:\Qt\Tools\mingw491_32\bin;C:\Qt\5.4\mingw491_32\bin;%PATH%
+  - cmd: set PATH=C:\Qt\Tools\mingw492_32\bin;C:\Qt\5.6.3\mingw49_32\bin;%PATH%
   - cmd: cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=C:\OpenFLUID-buildsupport -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.
 
   
