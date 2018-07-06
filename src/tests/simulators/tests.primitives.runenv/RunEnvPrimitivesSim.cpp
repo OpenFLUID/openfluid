@@ -35,9 +35,8 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
-#include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/core.hpp>
 
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================

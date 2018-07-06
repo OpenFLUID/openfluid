@@ -37,6 +37,7 @@
 
 
 #include <ogr_geometry.h>
+#include <cpl_conv.h>
 
 #include <openfluid/core/SpatialUnit.hpp>
 
@@ -300,7 +301,7 @@ std::string SpatialUnit::exportGeometryToWkt() const
   m_Geometry->exportToWkt(&WktBuffer);
   std::string WKT(WktBuffer);
 
-  OGRFree(WktBuffer);
+  CPLFree(WktBuffer);
 
   return WKT;
 }

@@ -35,11 +35,13 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
-#include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/scientific/FloatingPoint.hpp>
-#include <QString>
+
 #include <chrono>
+
+#include <QString>
+
+#include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/scientific/FloatingPoint.hpp>
 
 
 // =====================================================================

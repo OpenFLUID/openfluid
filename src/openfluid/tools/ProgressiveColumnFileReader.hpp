@@ -49,6 +49,7 @@
 
 namespace openfluid { namespace tools {
 
+
 /**
   Progressive reader for column text files
 */
@@ -74,7 +75,7 @@ class OPENFLUID_API ProgressiveColumnFileReader
       @param[in] ColSeparators a list of columns separators. Default value is " \t\r\n"
     */
     ProgressiveColumnFileReader(const std::string& FileName,
-    		                    const std::string& ColSeparators = " \t\r\n");
+    		                        const std::string& ColSeparators = " \t\r\n");
 
     virtual ~ProgressiveColumnFileReader()
     { };

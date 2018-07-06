@@ -475,7 +475,13 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
                 CreatedFeature->SetField(FieldName.c_str(),CreatedValue);
             }
 
-            CreatedLayer->CreateFeature(CreatedFeature);
+            if (CreatedLayer->CreateFeature(CreatedFeature) != OGRERR_NONE)
+            {
+              QString Msg = QString("Feature for unit %1#%2 cannot be created")
+                            .arg(UU->getClass().c_str()).arg(UU->getID());
+              OPENFLUID_LogWarning(Msg.toStdString());
+            }
+
 
             OGRFeature::DestroyFeature(CreatedFeature);
           }
