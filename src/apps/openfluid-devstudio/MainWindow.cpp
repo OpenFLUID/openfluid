@@ -369,6 +369,9 @@ void MainWindow::createMenus()
   Menu = menuBar()->addMenu(tr("Build"));
   Menu->addAction(mp_Toolbar->action("ConfigureWare"));
   Menu->addAction(mp_Toolbar->action("BuildWare"));
+#if OPENFLUID_SIM2DOC_ENABLED
+  Menu->addAction(mp_Toolbar->action("GenerateDoc"));
+#endif
 
   SubMenu = Menu->addMenu(tr("Options"));
   SubMenu->addAction(mp_Toolbar->action("WareOptionsRelease"));

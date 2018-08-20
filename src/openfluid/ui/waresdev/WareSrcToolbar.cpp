@@ -105,6 +105,10 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubMenu = Menu->addMenu(tr("Build"));
     SubMenu->addAction(m_Actions["ConfigureWare"]);
     SubMenu->addAction(m_Actions["BuildWare"]);
+#if OPENFLUID_SIM2DOC_ENABLED
+    SubMenu->addAction(m_Actions["GenerateDoc"]);
+#endif
+
     QMenu* SubSubMenu = SubMenu->addMenu(tr("Options"));
     SubSubMenu->addAction(m_Actions["WareOptionsRelease"]);
     SubSubMenu->addAction(m_Actions["WareOptionsDebug"]);
@@ -203,7 +207,7 @@ void WareSrcToolbar::createActions()
   m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);
 
   m_Actions["GoToLine"] = new QAction(tr("Go to line..."), this);
-  m_Actions["GoToLine"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+  m_Actions["GoToLine"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 
 
   // ====== Build ======
@@ -211,14 +215,14 @@ void WareSrcToolbar::createActions()
   // Configure ware
 
   m_Actions["ConfigureWare"] = new QAction(openfluid::ui::common::getIcon("configure","/ui/common",!m_IsIncluded),
-                                       tr("Configure ware"), this);
+                                           tr("Configure ware"), this);
   m_Actions["ConfigureWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B));
 
 
   // Build ware
 
   m_Actions["BuildWare"] = new QAction(openfluid::ui::common::getIcon("build","/ui/common",!m_IsIncluded),
-                                   tr("Build ware"), this);
+                                       tr("Build ware"), this);
   m_Actions["BuildWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
 
 
@@ -226,8 +230,8 @@ void WareSrcToolbar::createActions()
 
 #if OPENFLUID_SIM2DOC_ENABLED
   m_Actions["GenerateDoc"] = new QAction(openfluid::ui::common::getIcon("generate-doc","/ui/common",!m_IsIncluded),
-                                   tr("Generate doc"), this);
-  m_Actions["GenerateDoc"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
+                                         tr("Generate doc"), this);
+  m_Actions["GenerateDoc"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
 #endif
 
 
@@ -245,7 +249,7 @@ void WareSrcToolbar::createActions()
   m_Actions["WareOptionsDebug"]->setCheckable(true);
   Menu->addAction(m_Actions["WareOptionsDebug"]);
   Menu->addSeparator();
-  m_Actions["WareOptionsInstall"] = new QAction(tr("Make available automatically"),this);
+  m_Actions["WareOptionsInstall"] = new QAction(tr("Make successful builds automatically available"),this);
   m_Actions["WareOptionsInstall"]->setCheckable(true);
   m_Actions["WareOptionsInstall"]->setChecked(true);
   Menu->addAction(m_Actions["WareOptionsInstall"]);
