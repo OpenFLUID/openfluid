@@ -88,16 +88,28 @@ QString SignatureWidget::convertStdString(const std::string& Str, const QString&
 
 void SignatureWidget::clearAllInfos()
 {
-  while (ui->InfosTabWidget->count() > 1) ui->InfosTabWidget->removeTab(1);
+  while (ui->InfosTabWidget->count() > 1)
+    ui->InfosTabWidget->removeTab(1);
 
   ui->GeneralLabel->setText("");
 
-  while (ui->ParametersTableWidget->rowCount() > 0) ui->ParametersTableWidget->removeRow(0);
-  while (ui->ExtrafilesTableWidget->rowCount() > 0) ui->ExtrafilesTableWidget->removeRow(0);
-  while (ui->VariablesTableWidget->rowCount() > 0) ui->VariablesTableWidget->removeRow(0);
-  while (ui->AttributesTableWidget->rowCount() > 0) ui->AttributesTableWidget->removeRow(0);
-  while (ui->EventsTableWidget->rowCount() > 0) ui->EventsTableWidget->removeRow(0);
-  while (ui->GraphTableWidget->rowCount() > 0) ui->GraphTableWidget->removeRow(0);
+  while (ui->ParametersTableWidget->rowCount() > 0)
+    ui->ParametersTableWidget->removeRow(0);
+
+  while (ui->ExtrafilesTableWidget->rowCount() > 0)
+    ui->ExtrafilesTableWidget->removeRow(0);
+
+  while (ui->VariablesTableWidget->rowCount() > 0)
+    ui->VariablesTableWidget->removeRow(0);
+
+  while (ui->AttributesTableWidget->rowCount() > 0)
+    ui->AttributesTableWidget->removeRow(0);
+
+  while (ui->EventsTableWidget->rowCount() > 0)
+    ui->EventsTableWidget->removeRow(0);
+
+  while (ui->GraphTableWidget->rowCount() > 0)
+    ui->GraphTableWidget->removeRow(0);
 }
 
 
@@ -140,6 +152,7 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
   if (Signature->Ghost)
     PathLabelStr = tr("Ghost path");
 
+  Contents += "<b>" + tr("ID") + ":</b> " + convertStdString(Signature->Signature->ID) + "<br/>";
   Contents += "<b>" + tr("Name") + ":</b> " + convertStdString(Signature->Signature->Name) + "<br/>";
   Contents += "<b>" + tr("Description") + ":</b> " + convertStdString(Signature->Signature->Description);
 
@@ -443,6 +456,7 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ObserverSignatureI
 {
   QString Contents;
 
+  Contents += "<b>" + tr("ID") + ":</b> " + convertStdString(Signature->Signature->ID) + "<br/>";
   Contents += "<b>" + tr("Name") + ":</b> " + convertStdString(Signature->Signature->Name) + "<br/>";
   Contents += "<b>" + tr("Description") + ":</b> " + convertStdString(Signature->Signature->Description);
 
@@ -473,18 +487,32 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ObserverSignatureI
 // =====================================================================
 
 
+void SignatureWidget::mute()
+{
+  setEnabled(false);
+  clearAllInfos();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SignatureWidget::update(const openfluid::machine::ModelItemSignatureInstance* Signature)
 {
-  clearAllInfos();
+  mute();
 
-  updateGeneral(Signature);
-
-  updateParameters(Signature);
-  updateExtrafiles(Signature);
-  updateVariables(Signature);
-  updateAttributes(Signature);
-  updateEvents(Signature);
-  updateSpatialGraph(Signature);
+  if (Signature != nullptr)
+  {
+    setEnabled(true);
+    updateGeneral(Signature);
+    updateParameters(Signature);
+    updateExtrafiles(Signature);
+    updateVariables(Signature);
+    updateAttributes(Signature);
+    updateEvents(Signature);
+    updateSpatialGraph(Signature);
+  }
 }
 
 
@@ -494,8 +522,12 @@ void SignatureWidget::update(const openfluid::machine::ModelItemSignatureInstanc
 
 void SignatureWidget::update(const openfluid::machine::ObserverSignatureInstance* Signature)
 {
-  clearAllInfos();
+  mute();
 
-  updateGeneral(Signature);
+  if (Signature != nullptr)
+  {
+    setEnabled(true);
+    updateGeneral(Signature);
+  }
 }
 

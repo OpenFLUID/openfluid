@@ -57,11 +57,19 @@ class AddWareDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 
+  protected slots:
+
+    /**
+      Labelizes items in wares list using IDs or Names. If the name is not available, the ID is used as a fallback.
+      A QStringList is associated to each item, with the ID at index 0 and the name at index 1
+      @param[in] NameFirst if true, the name is preferably used as the ware label
+    */
+    void labelizeItems(bool NameFirst);
+
+
   protected:
 
     Ui::AddWareDialog* ui;
-
-    SignatureWidget* mp_SignWidget;
 
 
   public:

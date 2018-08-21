@@ -38,15 +38,15 @@
  */
 
 
+#include <QPushButton>
+
+#include <openfluid/ui/config.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
 #include "ui_AddWareDialog.h"
 #include "AddSimulatorDialog.hpp"
 #include "SignatureWidget.hpp"
-#include <openfluid/ui/config.hpp>
-
-#include <QPushButton>
 
 
 AddSimulatorDialog::AddSimulatorDialog(const QStringList& SimIDList, QWidget* Parent) :
@@ -65,7 +65,14 @@ AddSimulatorDialog::AddSimulatorDialog(const QStringList& SimIDList, QWidget* Pa
   {
     QString ID = QString::fromStdString(it->second->Signature->ID);
 
-    QListWidgetItem* Item = new QListWidgetItem(ID);
+    QListWidgetItem* Item = new QListWidgetItem();
+
+    QStringList WareInfos = {
+      ID,
+      QString::fromStdString(it->second->Signature->Name)
+    };
+
+    Item->setData(Qt::UserRole,WareInfos);
 
     if (SimIDList.contains(ID))
       Item->setFlags(Qt::ItemIsSelectable);
@@ -78,7 +85,10 @@ AddSimulatorDialog::AddSimulatorDialog(const QStringList& SimIDList, QWidget* Pa
     ui->WaresListWidget->addItem(Item);
   }
 
+  labelizeItems(ui->UseNameCheckBox->isChecked());
+
   connect(ui->WaresListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(updateSignature()));
+  connect(ui->UseNameCheckBox,SIGNAL(toggled(bool)),this,SLOT(labelizeItems(bool)));
 
   setMessage(tr("Select simulator to add"));
 }
@@ -104,12 +114,9 @@ void AddSimulatorDialog::updateSignature()
     openfluid::machine::SimulatorSignatureRegistry::instance();
 
   const openfluid::machine::ModelItemSignatureInstance* Sign =
-      Reg->signature(ui->WaresListWidget->currentItem()->text().toStdString());
+      Reg->signature(ui->WaresListWidget->currentItem()->data(Qt::UserRole).toStringList().at(0).toStdString());
 
-  ui->EmptyLabel->setVisible(false);
-  mp_SignWidget->setVisible(true);
-
-  mp_SignWidget->update(Sign);
+  ui->WareSignatureWidget->update(Sign);
 
   setMessage();
 }

@@ -38,11 +38,11 @@
  */
 
 
+#include <QListWidgetItem>
+
 #include "ui_AddWareDialog.h"
 #include "AddWareDialog.hpp"
 #include "SignatureWidget.hpp"
-
-#include <QListWidgetItem>
 
 
 AddWareDialog::AddWareDialog(QWidget* Parent):
@@ -50,12 +50,9 @@ AddWareDialog::AddWareDialog(QWidget* Parent):
 {
   ui->setupUi(this);
 
-  mp_SignWidget = new SignatureWidget(this);
-  mp_SignWidget->setVisible(false);
-
-  ui->MainHorizontalLayout->addWidget(mp_SignWidget,0);
-
   ui->WaresListWidget->setIconSize(QSize(24,12));
+
+  ui->WareSignatureWidget->mute();
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
@@ -68,8 +65,33 @@ AddWareDialog::AddWareDialog(QWidget* Parent):
 
 AddWareDialog::~AddWareDialog()
 {
-  mp_SignWidget->deleteLater();
   delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AddWareDialog::labelizeItems(bool NameFirst)
+{
+  int ItemsCount = ui->WaresListWidget->count();
+
+  for (int i = 0; i< ItemsCount; i++)
+  {
+    QListWidgetItem* Item = ui->WaresListWidget->item(i);
+    QStringList WareInfos = Item->data(Qt::UserRole).toStringList();
+
+    if (NameFirst && !WareInfos.at(1).isEmpty())
+    {
+      Item->setText(WareInfos.at(1));
+    }
+    else
+    {
+      Item->setText(WareInfos.at(0));
+    }
+  }
+
 }
 
 
@@ -82,7 +104,7 @@ QString AddWareDialog::getSelectedID() const
   QListWidgetItem* Item = ui->WaresListWidget->currentItem();
 
   if (Item != 0)
-    return Item->text();
+    return Item->data(Qt::UserRole).toStringList().at(0);
   else
     return "";
 }

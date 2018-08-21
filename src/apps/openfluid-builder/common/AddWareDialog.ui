@@ -16,7 +16,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -25,6 +25,9 @@
    </property>
    <property name="rightMargin">
     <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
    </property>
    <item>
     <widget class="QFrame" name="MessageFrame">
@@ -73,7 +76,7 @@ font : bold;
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="MainHorizontalLayout" stretch="0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="leftMargin">
       <number>12</number>
      </property>
@@ -81,32 +84,32 @@ font : bold;
       <number>12</number>
      </property>
      <item>
-      <widget class="QListWidget" name="WaresListWidget">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>280</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QListWidget" name="WaresListWidget"/>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="UseNameCheckBox">
+         <property name="text">
+          <string>Display names instead of IDs (if available)</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="QLabel" name="EmptyLabel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="QSplitter" name="splitter">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-       <property name="text">
-        <string/>
-       </property>
+       <widget class="SignatureWidget" name="WareSignatureWidget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -130,6 +133,14 @@ font : bold;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SignatureWidget</class>
+   <extends>QWidget</extends>
+   <header>SignatureWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

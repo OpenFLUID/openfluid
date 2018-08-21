@@ -96,11 +96,14 @@ class SignatureWidget : public QWidget
 
     static QString convertStdString(const std::string& Str, const QString& ReplaceStr = "<i>unknown</i>");
 
+
   public:
 
     SignatureWidget(QWidget* Parent);
 
     ~SignatureWidget();
+
+    void mute();
 
     void update(const openfluid::machine::ModelItemSignatureInstance* Signature);
 

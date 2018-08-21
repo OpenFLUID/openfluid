@@ -38,15 +38,15 @@
  */
 
 
+#include <QPushButton>
+
+#include <openfluid/ui/config.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 
 #include "ui_AddWareDialog.h"
 #include "AddObserverDialog.hpp"
 #include "SignatureWidget.hpp"
-#include <openfluid/ui/config.hpp>
-
-#include <QPushButton>
 
 
 AddObserverDialog::AddObserverDialog(QWidget* Parent) :
@@ -64,16 +64,24 @@ AddObserverDialog::AddObserverDialog(QWidget* Parent) :
   for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
       ObsSigns.begin(); it != ObsSigns.end(); ++it)
   {
-    QString ID = QString::fromStdString((*it)->Signature->ID);
+    QListWidgetItem* Item = new QListWidgetItem();
 
-    QListWidgetItem* Item = new QListWidgetItem(ID);
+    QStringList WareInfos = {
+      QString::fromStdString((*it)->Signature->ID),
+      QString::fromStdString((*it)->Signature->Name)
+    };
+
+    Item->setData(Qt::UserRole,WareInfos);
 
     Item->setIcon(QIcon(":/builder/images/ware-obs-plugged.png"));
 
     ui->WaresListWidget->addItem(Item);
   }
 
+  labelizeItems(ui->UseNameCheckBox->isChecked());
+
   connect(ui->WaresListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(updateSignature()));
+  connect(ui->UseNameCheckBox,SIGNAL(toggled(bool)),this,SLOT(labelizeItems(bool)));
 
   setMessage(tr("Select observer to add"));
 }
@@ -99,12 +107,9 @@ void AddObserverDialog::updateSignature()
     openfluid::machine::ObserverSignatureRegistry::instance();
 
   const openfluid::machine::ObserverSignatureInstance* Sign =
-      Reg->signature(ui->WaresListWidget->currentItem()->text().toStdString());
+      Reg->signature(ui->WaresListWidget->currentItem()->data(Qt::UserRole).toStringList().at(0).toStdString());
 
-  ui->EmptyLabel->setVisible(false);
-  mp_SignWidget->setVisible(true);
-
-  mp_SignWidget->update(Sign);
+  ui->WareSignatureWidget->update(Sign);
 
   setMessage();
 }
