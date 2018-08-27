@@ -1,3 +1,27 @@
+## 2.1.6
+
+  * Added ability to display simulators and observers names instead of IDs 
+    in Builder when adding to model and monitoring
+  * Added button in Builder for direct access to documentations associated
+    to simulators (if available) 
+  * Added parallel build option for wares in Devstudio
+  * Added display of execution time for commands such as configure 
+    and build in DevStudio
+  * Added utilities classes to facilitate bindings with other 
+    languages or environments
+  * Improved generation of simulators documentation with direct access from DevStudio
+  * Improved UI layout in Devstudio and Builder
+  * Updated CMake templates for DevStudio
+  * Updated CI configurations (Travis, AppVeyor)
+  * Updated Homebrew cask file for Qt dependency
+  * Fixed ambiguous keyboard shortcuts in Devstudio
+  * Fixed CSS for documentation layout to match new Doxygen versions
+  * Fixed CMake configuration of OpenFLUID source code for better management 
+    of UI/not UI compilation 
+  * Cleaned code and tests
+
+
+
 ## 2.1.5
 
   * Introduced development dashboard in DevStudio to perform batch actions 
