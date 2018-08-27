@@ -42,7 +42,6 @@
 #include <QLayout>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QMessageBox>
 
 #include "MainWindow.hpp"
 

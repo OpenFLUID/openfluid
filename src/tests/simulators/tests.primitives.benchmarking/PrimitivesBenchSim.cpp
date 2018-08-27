@@ -38,8 +38,6 @@
 
 #include <chrono>
 
-#include <QString>
-
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 

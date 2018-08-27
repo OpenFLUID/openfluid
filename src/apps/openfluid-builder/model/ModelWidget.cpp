@@ -38,7 +38,6 @@
  */
 
 
-#include <QMessageBox>
 #include <QImage>
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>

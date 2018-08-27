@@ -39,7 +39,6 @@
 
 
 #include <QLocale>
-#include <QFileDialog>
 #include <QMessageBox>
 #include <QColorDialog>
 #include <QSignalMapper>

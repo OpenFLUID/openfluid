@@ -102,18 +102,19 @@ FOREACH(LANG ${OPENFLUID_TRANSLATIONS_LANGS})
 ENDFOREACH()
 
 
-# checkstyle tool
+
 FIND_PACKAGE(PythonInterp)
 
 IF(PYTHONINTERP_FOUND)
 
+  # checkstyle tool
   ADD_CUSTOM_TARGET(stylecheck
                     COMMENT "Checking source code style"
                     COMMAND "${PYTHON_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
                             "${CMAKE_SOURCE_DIR}"
                    )
-
+  # cppcheck tool
   ADD_CUSTOM_TARGET(cppcheck
                     COMMENT "Static analysis of source code "
                     COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${CMAKE_SOURCE_DIR}"

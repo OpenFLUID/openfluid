@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_BUILDERAPP_MODELVIEW_HPP__
 #define __OPENFLUID_BUILDERAPP_MODELVIEW_HPP__
 
+
 #include <QGraphicsView>
 
 

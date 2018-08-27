@@ -39,11 +39,10 @@
 
 #include <QList>
 #include <QDir>
-#include <QDesktopServices>
 #include <QUrl>
 #include <QMessageBox>
 #include <QTextStream>
-#include <QFileDialog>
+
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
@@ -520,7 +519,7 @@ void WareSrcWidget::generateDoc()
   }
   catch (openfluid::base::FrameworkException& E )
   {
-    QMessageBox::critical(nullptr, tr("generate doc error"), QString::fromStdString(E.getMessage()));
+    QMessageBox::critical(nullptr, tr("Generate doc error"), QString::fromStdString(E.getMessage()));
   }
 }
 
