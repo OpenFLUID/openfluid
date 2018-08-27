@@ -52,7 +52,7 @@ WareBuildOptionsWidget::WareBuildOptionsWidget(QWidget* Parent):
 {
   ui->setupUi(this);
 
-  ui->ConfigureModeComboBox->addItems(QStringList() << tr("Release") << tr("Debug"));
+  ui->ConfigureModeComboBox->addItems(QStringList() << "Release" << "Debug");
   ui->ConfigureModeComboBox->setCurrentIndex(0);
 
   ui->InstallCheckBox->setChecked(true);

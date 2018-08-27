@@ -154,7 +154,7 @@ void WorkspaceDevBuildWorker::run()
         {
 
           writeMessage();
-          writeMessage("====== "+tr("Generating doc for %1").arg(WItem.ID)+" ======");
+          writeMessage("====== "+tr("Generating doc : %1").arg(WItem.ID)+" ======");
           writeMessage();
 
           QString DocCommand = openfluid::utils::CMakeProxy::getBuildCommand(Container.getBuildDirPath(),
