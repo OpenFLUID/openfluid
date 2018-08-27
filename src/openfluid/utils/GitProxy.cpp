@@ -347,8 +347,7 @@ QString GitProxy::statusHtml(const QString& Path, bool WithColorCodes)
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  QString Cmd = QString("\"%1\" %2 -c encoding=UTF-8 status").arg(m_ExecutablePath).arg(
-      WithColorCodes ? "-c color.status=always" : "");
+  QString Cmd = QString("\"%1\" %2 status").arg(m_ExecutablePath).arg(WithColorCodes ? "-c color.status=always" : "");
 
   mp_Process->start(Cmd);
 
@@ -378,7 +377,7 @@ QString GitProxy::logHtml(const QString& Path, bool WithColorCodes)
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  QString Cmd = QString("\"%1\" -c encoding=UTF-8 log %2").arg(m_ExecutablePath).arg(WithColorCodes ? "--color" : "");
+  QString Cmd = QString("\"%1\" log %2").arg(m_ExecutablePath).arg(WithColorCodes ? "--color" : "");
 
   mp_Process->start(Cmd);
 
