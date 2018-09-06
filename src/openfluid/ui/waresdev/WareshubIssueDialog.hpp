@@ -27,24 +27,24 @@
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
 
- */
+*/
 
 /**
- @file WareshubIssueDialog.hpp
- @brief Header of ...
+  @file WareshubIssueDialog.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+*/
 
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__
 
 
-#include <QDialog>
 #include <QDate>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace Ui {
@@ -55,7 +55,7 @@ class WareshubIssueDialog;
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WareshubIssueDialog: public QDialog
+class OPENFLUID_API WareshubIssueDialog: public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT
 
@@ -98,8 +98,6 @@ class OPENFLUID_API WareshubIssueDialog: public QDialog
     QStringList m_Statuses = { "open", "closed" };
 
     QStringList m_Urgencies = { "low", "medium", "high" };
-
-    void setMessage(const QString& Msg = "");
 
 
   public:

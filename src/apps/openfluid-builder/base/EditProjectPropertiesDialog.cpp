@@ -50,13 +50,14 @@
 
 
 EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::EditProjectPropertiesDialog)
+  openfluid::ui::common::MessageDialog(Parent),ui(new Ui::EditProjectPropertiesDialog)
 {
   openfluid::base::RunContextManager* PrjMan =
       openfluid::base::RunContextManager::instance();
 
   ui->setupUi(this);
 
+  setupMessageUi(tr("Edit project properties"));
   setMessage();
 
   ui->ProjectNameLabel->setText(QString::fromStdString(PrjMan->getProjectName()));
@@ -74,10 +75,6 @@ EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
     ui->LastModDateLabel->setText(DT.toString("yyyy-MM-dd, hh:mm:ss"));
   else
     ui->LastModDateLabel->setText(tr("unknown"));
-
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 }
 
 
@@ -88,19 +85,6 @@ EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
 EditProjectPropertiesDialog::~EditProjectPropertiesDialog()
 {
   delete ui;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditProjectPropertiesDialog::setMessage()
-{
-  ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                  .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-  ui->MessageLabel->setText(tr("Edit project properties"));
-  ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
 

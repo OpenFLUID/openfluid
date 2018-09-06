@@ -52,9 +52,11 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WaresSrcExportDialog::WaresSrcExportDialog(QWidget* Parent) :
-    QDialog(Parent), ui(new Ui::WaresSrcExportDialog)
+    openfluid::ui::common::MessageDialog(Parent), ui(new Ui::WaresSrcExportDialog)
 {
   ui->setupUi(this);
+
+  setupMessageUi(tr("Export wares sources"));
 
   m_ListWidgetsByWareType[openfluid::ware::WareType::SIMULATOR] = ui->SimListWidget;
   m_ListWidgetsByWareType[openfluid::ware::WareType::OBSERVER] = ui->ObsListWidget;
@@ -71,7 +73,7 @@ WaresSrcExportDialog::WaresSrcExportDialog(QWidget* Parent) :
     connect(Widget, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
   }
 
-  connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(exportToPackage()));
+  connect(buttonBox(), SIGNAL(accepted()), this, SLOT(exportToPackage()));
 
   check();
 }
@@ -97,28 +99,6 @@ bool WaresSrcExportDialog::check()
 
   setMessage();
   return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WaresSrcExportDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Export wares sources"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(
-        QString("background-color: %1").arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

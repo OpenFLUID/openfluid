@@ -48,10 +48,6 @@ class AddObserverDialog : public AddWareDialog
 {
   Q_OBJECT;
 
-  private:
-
-    void setMessage(const QString& Msg = "");
-
 
   private slots:
 

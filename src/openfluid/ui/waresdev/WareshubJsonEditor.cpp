@@ -36,11 +36,12 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+#include <QTextStream>
+#include <QMessageBox>
 
 #include <rapidjson/prettywriter.h>
 #include <rapidjson/stringbuffer.h>
-#include <QTextStream>
-#include <QMessageBox>
+
 #include <openfluid/ui/waresdev/WareshubJsonEditor.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
@@ -58,6 +59,9 @@ WareshubJsonEditor::WareshubJsonEditor(const QString& FilePath, QWidget* Parent)
     QWidget(Parent), WareFileEditor(FilePath), ui(new Ui::WareshubJsonEditor)
 {
   ui->setupUi(this);
+
+  ui->MessageFrame->updateDefaultMessage("wareshub.json");
+  ui->MessageFrame->setMessage("");
 
   ui->FilePathLabel->setText(FilePath);
 

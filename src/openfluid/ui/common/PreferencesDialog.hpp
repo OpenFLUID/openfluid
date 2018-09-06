@@ -45,7 +45,7 @@
 #include <QToolButton>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace Ui
@@ -61,7 +61,7 @@ class WaresSearchPathsWidget;
 namespace openfluid { namespace ui { namespace common {
 
 
-class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
+class OPENFLUID_API PreferencesDialog : public MessageDialog
 {
   Q_OBJECT;
 

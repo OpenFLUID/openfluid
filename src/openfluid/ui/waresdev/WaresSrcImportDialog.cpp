@@ -30,10 +30,11 @@
  */
 
 /**
- @file WaresSrcImportDialog.cpp
- @brief Implements ...
+  @file WaresSrcImportDialog.cpp
+  @brief Implements ...
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
@@ -56,9 +57,11 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
-    QDialog(Parent), ui(new Ui::WaresSrcImportDialog)
+    openfluid::ui::common::MessageDialog(Parent), ui(new Ui::WaresSrcImportDialog)
 {
   ui->setupUi(this);
+
+  setupMessageUi(tr("Import wares sources"));
 
   m_ListWidgetsByWareType[openfluid::ware::WareType::SIMULATOR] = ui->SimListWidget;
   m_ListWidgetsByWareType[openfluid::ware::WareType::OBSERVER] = ui->ObsListWidget;
@@ -90,7 +93,7 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   for (const auto& Pair : m_ListWidgetsByWareType)
     connect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
 
-  connect(ui->ButtonBox, SIGNAL(accepted()), this, SLOT(import()));
+  connect(buttonBox(), SIGNAL(accepted()), this, SLOT(import()));
 
   ui->PackageRadioButton->click();
 
@@ -163,28 +166,6 @@ bool WaresSrcImportDialog::check()
 
   setMessage();
   return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WaresSrcImportDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Import wares sources"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(
-        QString("background-color: %1").arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

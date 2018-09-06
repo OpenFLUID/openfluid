@@ -40,7 +40,8 @@
 #ifndef __OPENFLUID_BUILDERAPP_NEWPROJECTDIALOG_HPP__
 #define __OPENFLUID_BUILDERAPP_NEWPROJECTDIALOG_HPP__
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 class QFileSystemModel;
@@ -52,7 +53,7 @@ namespace Ui
 }
 
 
-class NewProjectDialog : public openfluid::ui::common::OpenFLUIDDialog
+class NewProjectDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
@@ -62,7 +63,6 @@ class NewProjectDialog : public openfluid::ui::common::OpenFLUIDDialog
 
     QFileSystemModel *mp_DirectoryModel;
 
-    void setMessage(const QString& Msg = "");
 
   private slots:
 
@@ -73,6 +73,7 @@ class NewProjectDialog : public openfluid::ui::common::OpenFLUIDDialog
     void onProjectButtonClicked();
 
     void onDatadirButtonClicked();
+
 
   public:
 

@@ -52,11 +52,21 @@ namespace openfluid { namespace ui { namespace common {
 EditMarketplaceDialog::EditMarketplaceDialog(QWidget* Parent,
                                              const QString& Name, const QString& URL,
                                              const openfluid::base::PreferencesManager::MarketPlaces_t& MPlaces):
-  OpenFLUIDDialog(Parent), ui(new Ui::EditMarketplaceDialog),
+    MessageDialog(Parent), ui(new Ui::EditMarketplaceDialog),
   m_IsEditMode(!Name.isEmpty() && !URL.isEmpty()), m_OriginalName(Name),
   m_MPlaces(MPlaces)
 {
   ui->setupUi(this);
+
+  if (m_IsEditMode)
+  {
+    setupMessageUi(tr("Edit a marketplace"));
+  }
+  else
+  {
+    setupMessageUi(tr("Add a marketplace"));
+  }
+
 
   ui->NameEdit->setText(Name);
   ui->URLEdit->setText(URL);
@@ -70,9 +80,6 @@ EditMarketplaceDialog::EditMarketplaceDialog(QWidget* Parent,
   connect(ui->URLEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
 
   checkGlobally();
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 }
 
 
@@ -90,35 +97,8 @@ EditMarketplaceDialog::~EditMarketplaceDialog()
 // =====================================================================
 
 
-void EditMarketplaceDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    if (m_IsEditMode)
-      ui->MessageLabel->setText(tr("Edit a marketplace"));
-    else
-      ui->MessageLabel->setText(tr("Add a marketplace"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void EditMarketplaceDialog::checkGlobally()
 {
-
   if (ui->NameEdit->text().isEmpty())
   {
     setMessage(tr("Name of the marketplace cannot be empty"));

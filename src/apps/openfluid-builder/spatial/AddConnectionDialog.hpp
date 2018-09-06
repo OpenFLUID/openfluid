@@ -34,7 +34,7 @@
   @file AddConnectionDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_ADDCONNECTIONDIALOG_HPP__
@@ -55,11 +55,10 @@ namespace Ui
 
 
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
-
-class AddConnectionDialog : public openfluid::ui::common::OpenFLUIDDialog
+class AddConnectionDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
@@ -77,8 +76,6 @@ class AddConnectionDialog : public openfluid::ui::common::OpenFLUIDDialog
     QMap<QString,QStringList> m_ClassID;
 
     const openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
-
-    void setMessage(const QString& Msg = "");
 
 
   public:

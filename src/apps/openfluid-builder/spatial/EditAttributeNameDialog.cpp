@@ -48,7 +48,7 @@
 EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
                                                  const QStringList& AttrsList,
                                                  QWidget* Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::EditAttributeNameDialog),
+  openfluid::ui::common::MessageDialog(Parent),ui(new Ui::EditAttributeNameDialog),
   m_Mode(Mode), m_AttrsNames(AttrsList)
 {
   ui->setupUi(this);
@@ -57,7 +57,7 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
   {
     ui->NewNameLabel->setText(tr("Attribute name:"));
     ui->DefaultValueLabel->setText(tr("Default value:"));
-    m_DefaultMsg = tr("Add new attribute");
+    setupMessageUi(tr("Add new attribute"));
     connect(ui->NewNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
     connect(ui->DefaultValueEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   }
@@ -66,7 +66,7 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
     ui->OriginalNameLabel->setText(tr("Attribute to rename:"));
     ui->OriginalNameComboBox->addItems(AttrsList);
     ui->NewNameLabel->setText(tr("New attribute name:"));
-    m_DefaultMsg = tr("Rename attribute");
+    setupMessageUi(tr("Rename attribute"));
     connect(ui->OriginalNameComboBox,SIGNAL(currentIndexChanged(const QString&)),this,SLOT(checkGlobal()));
     connect(ui->NewNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   }
@@ -74,7 +74,7 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
   {
     ui->OriginalNameLabel->setText(tr("Attribute to remove:"));
     ui->OriginalNameComboBox->addItems(AttrsList);
-    m_DefaultMsg = tr("Remove attribute");
+    setupMessageUi(tr("Remove attribute"));
   }
 
   // "required" placeholder
@@ -89,9 +89,6 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
                                 m_Mode == EDIT_ADD);
 
   ui->DefaultValueWidget->setVisible(m_Mode == EDIT_ADD);
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   if (m_Mode == EDIT_ADD || m_Mode == EDIT_RENAME)
     ui->NewNameEdit->setFocus();
@@ -140,29 +137,6 @@ void EditAttributeNameDialog::checkGlobal()
   }
   else if (m_Mode == EDIT_REMOVE)
     setMessage();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditAttributeNameDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(m_DefaultMsg);
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

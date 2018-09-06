@@ -30,30 +30,26 @@
 */
 
 
+
 /**
-  @file EditSignatureDialog.cpp
+  @file MessageDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
-*/
+ */
 
 
-#include <QPushButton>
+#include <QVBoxLayout>
 
-#include <openfluid/ui/common/EditSignatureDialog.hpp>
-#include <openfluid/ui/config.hpp>
-
-#include "ui_EditSignatureDialog.h"
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {
 
 
-EditSignatureDialog::EditSignatureDialog(QWidget* Parent):
-    MessageDialog(Parent), ui(new Ui::EditSignatureDialog)
+MessageDialog::MessageDialog(QWidget* Parent) :
+  OpenFLUIDDialog(Parent), mp_MsgFrame(nullptr), mp_ButtonBox(nullptr)
 {
-  ui->setupUi(this);
 
-  setupMessageUi(tr("Edit signature"));
 }
 
 
@@ -61,9 +57,17 @@ EditSignatureDialog::EditSignatureDialog(QWidget* Parent):
 // =====================================================================
 
 
-EditSignatureDialog::~EditSignatureDialog()
+MessageDialog::~MessageDialog()
 {
-  delete ui;
+  if (mp_MsgFrame)
+  {
+    mp_MsgFrame->deleteLater();
+  }
+
+  if (mp_ButtonBox)
+  {
+    mp_ButtonBox->deleteLater();
+  }
 }
 
 
@@ -71,40 +75,28 @@ EditSignatureDialog::~EditSignatureDialog()
 // =====================================================================
 
 
-void EditSignatureDialog::initialize(const QStringList& ExistingIDs)
+void MessageDialog::setupMessageUi(const QString& DefaultMsg,
+                                   QDialogButtonBox::StandardButtons Buttons)
 {
-  m_ExistingIDs = ExistingIDs;
+  if (QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(layout()))
+  {
+    mp_MsgFrame = new MessageFrame(this,DefaultMsg);
 
-  checkGlobally();
+    Layout->insertWidget(0,mp_MsgFrame);
 
-  connect(ui->SignatureWidget,SIGNAL(changed()),this,SLOT(checkGlobally()));
-}
+    if (!Buttons.testFlag(QDialogButtonBox::NoButton))
+    {
+      mp_ButtonBox = new QDialogButtonBox(Buttons,this);
+      mp_ButtonBox->setContentsMargins(12,9,12,0);
+      Layout->addWidget(mp_ButtonBox);
 
-// =====================================================================
-// =====================================================================
+      connect(mp_ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
+      connect(mp_ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
+    }
 
-
-void EditSignatureDialog::checkGlobally()
-{
-  if (!ui->SignatureWidget->isValidID())
-    setMessage(tr("ID is not valid"));
-  else if (m_ExistingIDs.contains(ui->SignatureWidget->getEditedID()))
-    setMessage(tr("ID already exists"));
-  else
-    setMessage();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditSignatureDialog::initialize(const openfluid::ware::SimulatorSignature& Signature,
-                                     const QStringList& ExistingIDs)
-{
-  ui->SignatureWidget->initialize(Signature);
-
-  EditSignatureDialog::initialize(ExistingIDs);
+    Layout->setContentsMargins(0,0,0,9);
+    setContentsMargins(0,0,0,0);
+  }
 }
 
 
@@ -112,11 +104,54 @@ void EditSignatureDialog::initialize(const openfluid::ware::SimulatorSignature& 
 // =====================================================================
 
 
-openfluid::ware::SimulatorSignature EditSignatureDialog::getSignature() const
+void MessageDialog::updateDefaultMessage(const QString& Msg)
 {
-  return ui->SignatureWidget->getSignature();
+  if (mp_MsgFrame)
+  {
+    mp_MsgFrame->updateDefaultMessage(Msg);
+  }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void MessageDialog::setMessage(const QString& Msg)
+{
+  if (mp_MsgFrame)
+  {
+    mp_MsgFrame->setMessage(Msg);
+  }
+
+  if (mp_ButtonBox)
+  {
+    if (Msg.isEmpty())
+    {
+      mp_ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+    }
+    else
+    {
+      mp_ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QPushButton* MessageDialog::buttonOfButtonBox(QDialogButtonBox::StandardButton Which)
+{
+  if (mp_ButtonBox)
+  {
+    return mp_ButtonBox->button(Which);
+  }
+
+  return nullptr;
+}
 
 } } } // namespaces
+
 

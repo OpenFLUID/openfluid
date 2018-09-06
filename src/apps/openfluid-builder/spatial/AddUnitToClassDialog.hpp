@@ -29,16 +29,16 @@
   
 */
 
-
 /**
   @file AddUnitToClassDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_ADDUNITTOCLASSDIALOG_HPP__
 #define __OPENFLUID_BUILDERAPP_ADDUNITTOCLASSDIALOG_HPP__
+
 
 #include "AddUnitDialog.hpp"
 
@@ -59,8 +59,6 @@ class AddUnitToClassDialog : public AddUnitDialog
     QStringList m_AttrsNames;
 
     QStringList m_UnitsIDs;
-
-    void setMessage(const QString& Msg = "");
 
 
   public:

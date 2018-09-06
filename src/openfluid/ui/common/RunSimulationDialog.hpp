@@ -42,12 +42,12 @@
 
 
 #include <QObject>
-#include <QDialog>
 #include <QElapsedTimer>
 
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/dllexport.hpp>
 
@@ -68,7 +68,7 @@ namespace fluidx {
 namespace ui { namespace common {
 
 
-class OPENFLUID_API RunSimulationDialog : public QDialog
+class OPENFLUID_API RunSimulationDialog : public MessageDialog
 {
   Q_OBJECT;
 

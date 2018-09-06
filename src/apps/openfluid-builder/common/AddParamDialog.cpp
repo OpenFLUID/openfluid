@@ -49,12 +49,12 @@
 
 AddParamDialog::AddParamDialog(const QStringList& ExistingParams,const QStringList& CompletingParams,
                                QWidget* Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new(Ui::AddParamDialog)),
+  openfluid::ui::common::MessageDialog(Parent),ui(new(Ui::AddParamDialog)),
   m_ExistingParams(ExistingParams), m_CompletingParams(CompletingParams)
 {
   ui->setupUi(this);
 
-  ui->MessageLabel->setText(tr("Add parameter"));
+  setupMessageUi(tr("Add parameter"));
 
   if (!CompletingParams.isEmpty())
   {
@@ -69,9 +69,6 @@ AddParamDialog::AddParamDialog(const QStringList& ExistingParams,const QStringLi
 
   // "required" placeholder
   ui->NameEdit->setPlaceholderText(getPlaceholderRequired());
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   ui->NameEdit->setFocus();
 
@@ -101,29 +98,6 @@ void AddParamDialog::checkGlobal()
     setMessage(tr("Parameter already exists"));
   else
     setMessage();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AddParamDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Add parameter"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

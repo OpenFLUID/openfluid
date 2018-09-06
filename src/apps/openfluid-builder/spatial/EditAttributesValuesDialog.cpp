@@ -38,20 +38,21 @@
  */
 
 
+#include <QPushButton>
+#include <QDoubleValidator>
+
 #include <openfluid/ui/config.hpp>
 
 #include "ui_EditAttributesValuesDialog.h"
 #include "EditAttributesValuesDialog.hpp"
 
-#include <QPushButton>
-#include <QDoubleValidator>
-
 
 EditAttributesValuesDialog::EditAttributesValuesDialog(QWidget* Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent), ui(new Ui::EditAttributesValuesDialog)
+  openfluid::ui::common::MessageDialog(Parent), ui(new Ui::EditAttributesValuesDialog)
 {
-
   ui->setupUi(this);
+
+  setupMessageUi(tr("Edit values of selected attributes"));
 
   ui->ReplaceRadioButton->setChecked(true);
   ui->ReplaceEdit->setFocus();
@@ -69,9 +70,6 @@ EditAttributesValuesDialog::EditAttributesValuesDialog(QWidget* Parent):
   connect(ui->ReplaceEdit,SIGNAL(textEdited(const QString&)),this,SLOT(adaptSelection()));
   connect(ui->MultEdit,SIGNAL(textEdited(const QString&)),this,SLOT(adaptSelection()));
   connect(ui->AddEdit,SIGNAL(textEdited(const QString&)),this,SLOT(adaptSelection()));
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   checkGlobal();
 }
@@ -141,29 +139,6 @@ void EditAttributesValuesDialog::adaptSelection()
       ui->MultRadioButton->setChecked(true);
     else     if (Sender == ui->AddEdit)
       ui->AddRadioButton->setChecked(true);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditAttributesValuesDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Edit values of selected attributes"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
   }
 }
 

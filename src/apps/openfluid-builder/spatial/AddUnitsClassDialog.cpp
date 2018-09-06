@@ -49,6 +49,8 @@
 AddUnitsClassDialog::AddUnitsClassDialog(const QStringList& ExistingClasses, QWidget* Parent):
   AddUnitDialog(Parent), m_ExistingClasses(ExistingClasses)
 {
+  updateDefaultMessage(tr("Add spatial units class"));
+
   ui->ClassLabel->setVisible(false);
   ui->AttributesWidget->setVisible(false);
 
@@ -90,29 +92,6 @@ void AddUnitsClassDialog::checkGlobal()
     setMessage(tr("Unit ID cannot be empty"));
   else
     setMessage();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AddUnitsClassDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Add spatial units class"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

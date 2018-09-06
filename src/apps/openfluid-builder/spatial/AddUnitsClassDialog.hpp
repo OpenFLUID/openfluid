@@ -57,8 +57,6 @@ class AddUnitsClassDialog : public AddUnitDialog
 
     QStringList m_ExistingClasses;
 
-    void setMessage(const QString& Msg = "");
-
 
   public:
 

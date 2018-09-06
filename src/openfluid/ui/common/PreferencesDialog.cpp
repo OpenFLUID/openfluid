@@ -43,6 +43,7 @@
 #include <QColorDialog>
 #include <QSignalMapper>
 
+#include <openfluid/config.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
@@ -61,7 +62,7 @@ namespace openfluid { namespace ui { namespace common {
 
 
 PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
-  OpenFLUIDDialog(Parent), ui(new Ui::PreferencesDialog),
+  MessageDialog(Parent), ui(new Ui::PreferencesDialog),
   m_RecentsChanged(false),
   m_SimPathsChanged(false), m_ObsPathsChanged(false), m_WaresWatchingChanged(false), m_TextEditorSettingsChanged(false),
   m_RestartRequired(false),
@@ -71,8 +72,8 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
 
   ui->setupUi(this);
 
-  ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                  .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
+  setupMessageUi(tr("Preferences"),QDialogButtonBox::NoButton);
+
 
   ui->AddMarketPlaceButton->setText("");
   ui->AddMarketPlaceButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));

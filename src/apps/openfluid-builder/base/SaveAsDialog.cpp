@@ -52,9 +52,11 @@
 
 
 SaveAsDialog::SaveAsDialog(QWidget* Parent) :
-  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::SaveAsDialog)
+  openfluid::ui::common::MessageDialog(Parent),ui(new Ui::SaveAsDialog)
 {
   ui->setupUi(this);
+
+  setupMessageUi(tr("Save project as..."));
 
   ui->DirectoryLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
                                                           ->getBuilderProjectsPath()));
@@ -65,9 +67,6 @@ SaveAsDialog::SaveAsDialog(QWidget* Parent) :
 
   connect(ui->BrowseButton,SIGNAL(clicked()),this,SLOT(browseClicked()));
   connect(ui->ProjectNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(projectChanged()));
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   ui->ProjectNameEdit->setFocus();
   ui->ProjectNameEdit->deselect();
@@ -129,29 +128,6 @@ void SaveAsDialog::checkGlobal()
     setMessage(tr("Project directory already exist"));
   else
     setMessage();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SaveAsDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Save project as..."));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

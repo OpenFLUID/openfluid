@@ -30,27 +30,29 @@
 */
 
 
-
 /**
   @file AddConnectionDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
-#include <openfluid/tools/QtHelpers.hpp>
-#include "ui_AddConnectionDialog.h"
-#include "AddConnectionDialog.hpp"
-#include <openfluid/ui/config.hpp>
+*/
 
 #include <QPushButton>
+
+#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/ui/config.hpp>
+
+#include "ui_AddConnectionDialog.h"
+#include "AddConnectionDialog.hpp"
 
 
 AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString& SrcID,
                                          const openfluid::fluidx::AdvancedDomainDescriptor* Domain,
                                          QWidget* Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::AddConnectionDialog), mp_Domain(Domain)
+  openfluid::ui::common::MessageDialog(Parent),ui(new Ui::AddConnectionDialog), mp_Domain(Domain)
 {
   ui->setupUi(this);
+
+  setupMessageUi(tr("Add connection between spatial units"));
 
   ui->SrcClassLabel->setText(SrcClass);
   ui->SrcIDLabel->setText(SrcID);
@@ -70,8 +72,6 @@ AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString&
   updateDestIDs();
 
   connect(ui->DestClassComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateDestIDs()));
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   checkGlobal();
 
@@ -86,29 +86,6 @@ AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString&
 AddConnectionDialog::~AddConnectionDialog()
 {
   delete ui;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AddConnectionDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Add connection between spatial units"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

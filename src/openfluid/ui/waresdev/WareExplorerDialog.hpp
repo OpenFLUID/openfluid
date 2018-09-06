@@ -35,7 +35,8 @@
  @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+*/
 
 
 #ifndef __OPENFLUID_UIWARESDEV_WAREEXPLORERDIALOG_HPP__
@@ -47,7 +48,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace Ui {
@@ -58,7 +59,7 @@ class WareExplorerDialog;
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::OpenFLUIDDialog
+class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT
 
@@ -88,8 +89,6 @@ class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::OpenFLUID
 
     QPushButton* mp_AcceptButton;
 
-    QString m_DefaulMessage;
-
     QDir m_TopDir;
 
     WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath,
@@ -105,11 +104,14 @@ class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::OpenFLUID
     static QString getOpenWarePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& Title,
                                    const QString& CurrentPath = "");
 
-    static QString getOpenFilePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath = "");
+    static QString getOpenFilePath(QWidget* Parent, const QString& TopDirectoryPath,
+                                   const QString& CurrentPath = "");
 
-    static QString getSaveFilePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath = "");
+    static QString getSaveFilePath(QWidget* Parent, const QString& TopDirectoryPath,
+                                   const QString& CurrentPath = "");
 
-    static QString getCreateFilePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath = "");
+    static QString getCreateFilePath(QWidget* Parent, const QString& TopDirectoryPath,
+                                     const QString& CurrentPath = "");
 
     static QString getCreateFolderPath(QWidget* Parent, const QString& TopDirectoryPath,
                                        const QString& CurrentPath = "");
@@ -124,14 +126,14 @@ class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::OpenFLUID
 
     void setCreateFolderMode();
 
-    /*
-     * Returns the path selected in the explorer (may be a file or a directory)
-     */
+    /**
+      Returns the path selected in the explorer (may be a file or a directory)
+    */
     QString getSelectedPath();
 
-    /*
-     * Returns the combination of the entered filepath below the top directory
-     */
+    /**
+      Returns the combination of the entered filepath below the top directory
+    */
     QString getCompleteFilePath();
 
 };

@@ -41,11 +41,10 @@
 #define __OPENFLUID_BUILDERAPP_ADDGENERATORDIALOG_HPP__
 
 
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
-
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
-
 #include <QStringList>
+
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace Ui
@@ -54,7 +53,7 @@ namespace Ui
 }
 
 
-class AddGeneratorDialog : public openfluid::ui::common::OpenFLUIDDialog
+class AddGeneratorDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
@@ -74,8 +73,6 @@ class AddGeneratorDialog : public openfluid::ui::common::OpenFLUIDDialog
     Ui::AddGeneratorDialog* ui;
 
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_Method;
-
-    void setMessage(const QString& Msg = "");
 
 
   public:

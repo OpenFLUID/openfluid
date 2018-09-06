@@ -49,9 +49,11 @@
 AddEventDialog::AddEventDialog(const QString& ClassName, const QStringList& IDsList,
                                const openfluid::core::DateTime& CurrentDateTime,
                                QWidget* Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::EditEventDialog),m_DefaultMsg(tr("Add of a new event"))
+  openfluid::ui::common::MessageDialog(Parent),ui(new Ui::EditEventDialog)
 {
   ui->setupUi(this);
+
+  setupMessageUi(tr("Add of a new event"));
 
   ui->AddInfoButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddInfoButton->setIconSize(QSize(20,20));
@@ -70,9 +72,6 @@ AddEventDialog::AddEventDialog(const QString& ClassName, const QStringList& IDsL
   connect(ui->RemoveInfoButton,SIGNAL(clicked()),this,SLOT(removeInfoLine()));
 
   connect(ui->InfosTableWidget,SIGNAL(cellChanged(int,int)),this,SLOT(checkGlobal()));
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   checkGlobal();
 }
@@ -117,28 +116,6 @@ void AddEventDialog::checkGlobal()
     setMessage();
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-void AddEventDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(m_DefaultMsg);
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
-}
 
 // =====================================================================
 // =====================================================================

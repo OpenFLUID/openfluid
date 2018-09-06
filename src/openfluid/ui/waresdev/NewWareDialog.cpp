@@ -31,35 +31,30 @@
 
 
 /**
- @file NewWareDialog.cpp
- @brief Implements ...
+  @file NewWareDialog.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+*/
 
-#include <openfluid/ui/waresdev/NewWareDialog.hpp>
-
-#include "ui_NewWareDialog.h"
-
-#include <openfluid/ui/config.hpp>
 
 #include <QPushButton>
 #include <QMessageBox>
 #include <QUuid>
 
+#include <openfluid/ui/config.hpp>
+#include <openfluid/ui/waresdev/NewWareDialog.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
+
+#include "ui_NewWareDialog.h"
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-// =====================================================================
-// =====================================================================
-
-
 NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
-    openfluid::ui::common::OpenFLUIDDialog(Parent),
+    openfluid::ui::common::MessageDialog(Parent),
     ui(new Ui::NewWareDialog), m_WareType(Type), m_NewWarePath(""),
     m_UseSimSignature(false)
 {
@@ -77,14 +72,14 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
   switch (m_WareType)
   {
     case openfluid::ware::WareType::SIMULATOR:
-      m_DefaultMsg = tr("Create a new simulator");
+      setupMessageUi(tr("Create a new simulator"));
       WareId = "sim.id";
       SrcFilename = "MySim.cpp";
       SrcClassname = "MySimulator";
       ui->BuilderExtWidget->setVisible(false);
       break;
     case openfluid::ware::WareType::OBSERVER:
-      m_DefaultMsg = tr("Create a new observer");
+      setupMessageUi(tr("Create a new observer"));
       WareId = "obs.id";
       SrcFilename = "MyObs.cpp";
       SrcClassname = "MyObserver";
@@ -92,7 +87,7 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
       ui->BuilderExtWidget->setVisible(false);
       break;
     case openfluid::ware::WareType::BUILDEREXT:
-      m_DefaultMsg = tr("Create a new Builder extension");
+      setupMessageUi(tr("Create a new Builder extension"));
       WareId = "bext.id";
       SrcFilename = "MyExt.cpp";
       SrcClassname = "MyExtension";
@@ -212,14 +207,9 @@ void NewWareDialog::setStatus(const QString WarningMsg)
 {
   bool Ok = WarningMsg.isEmpty();
 
-  ui->MessageLabel->setText(Ok ? m_DefaultMsg : WarningMsg);
-
-  ui->MessageFrame->setStyleSheet(
-      QString("background-color: %1;").arg(
-          Ok ? openfluid::ui::config::DIALOGBANNER_BGCOLOR : openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-
-  ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(Ok);
+  setMessage(Ok ? "" : WarningMsg);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -330,10 +320,6 @@ void NewWareDialog::accept()
     QMessageBox::warning(this, tr("Error"), tr("Unable to create the ware \"%1\"").arg(ErrMsg));
   }
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } }  // namespaces

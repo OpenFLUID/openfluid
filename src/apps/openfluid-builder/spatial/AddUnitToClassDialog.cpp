@@ -30,21 +30,20 @@
 */
 
 
-
 /**
   @file AddUnitToClassDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 
-#include "ui_AddUnitDialog.h"
-#include "AddUnitToClassDialog.hpp"
+#include <QPushButton>
 
 #include <openfluid/ui/config.hpp>
 
-#include <QPushButton>
+#include "ui_AddUnitDialog.h"
+#include "AddUnitToClassDialog.hpp"
 
 
 AddUnitToClassDialog::AddUnitToClassDialog(const QString& ClassName,
@@ -53,6 +52,8 @@ AddUnitToClassDialog::AddUnitToClassDialog(const QString& ClassName,
                                            QWidget* Parent):
   AddUnitDialog(Parent), m_AttrsNames(AttrsNames), m_UnitsIDs(UnitsIDs)
 {
+  updateDefaultMessage(tr("Add spatial units class"));
+
   ui->ClassEdit->setVisible(false);
 
   ui->ClassLabel->setText(ClassName);
@@ -116,29 +117,6 @@ void AddUnitToClassDialog::checkGlobal()
 void AddUnitToClassDialog::checkAttribute(int /*Row*/,int /*Column*/)
 {
   checkGlobal();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AddUnitToClassDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Add spatial units class"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

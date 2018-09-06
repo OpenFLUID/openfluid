@@ -27,49 +27,16 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="MessageFrame">
+    <widget class="openfluid::ui::common::MessageFrame" name="MessageFrame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(71,97,123);</string>
+     <property name="toolTip">
+      <string notr="true"/>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <property name="lineWidth">
-      <number>0</number>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
-      <property name="spacing">
-       <number>5</number>
-      </property>
-      <property name="leftMargin">
-       <number>12</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="MessageLabel">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255);
-font : bold;
-</string>
-          </property>
-          <property name="text">
-           <string notr="true">wareshub.json</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
     </widget>
    </item>
    <item>
@@ -276,6 +243,14 @@ font : bold;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>openfluid::ui::common::MessageFrame</class>
+   <extends>QFrame</extends>
+   <header location="global">openfluid/ui/common/MessageFrame.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

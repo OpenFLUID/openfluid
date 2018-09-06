@@ -30,21 +30,20 @@
  */
 
 /**
- @file WareshubJsonEditor.hpp
- @brief Header of ...
+  @file WareshubJsonEditor.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
+  @author Aline LIBRES <aline.libres@gmail.com>
+*/
 
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESHUBJSONEDITOR_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESHUBJSONEDITOR_HPP__
 
 
-#include <rapidjson/document.h>
-
 #include <QLineEdit>
 #include <QComboBox>
+
+#include <rapidjson/document.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
@@ -52,7 +51,7 @@
 
 
 namespace Ui {
-class WareshubJsonEditor;
+  class WareshubJsonEditor;
 }
 
 

@@ -47,7 +47,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace Ui {
@@ -58,7 +58,7 @@ class NewWareDialog;
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API NewWareDialog : public openfluid::ui::common::OpenFLUIDDialog
+class OPENFLUID_API NewWareDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT
 

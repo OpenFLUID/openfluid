@@ -34,8 +34,7 @@
   @file EditEventDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
+*/
 
 
 #include "ui_EditEventDialog.h"
@@ -49,7 +48,7 @@ EditEventDialog::EditEventDialog(const QString& ClassName, const QStringList& ID
                                  QWidget* Parent):
   AddEventDialog(ClassName,IDsList,CurrentDateTime,Parent)
 {
-  m_DefaultMsg = tr("Edit of an event");
+  updateDefaultMessage(tr("Edit of an event"));
 
   ui->UnitIDComboBox->setCurrentIndex(ui->UnitIDComboBox->findText(CurrentUnitID));
 

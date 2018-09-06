@@ -34,7 +34,7 @@
   @file AddSimulatorDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_ADDSIMULATORDIALOG_HPP__
@@ -47,10 +47,6 @@
 class AddSimulatorDialog : public AddWareDialog
 {
   Q_OBJECT;
-
-  private:
-
-    void setMessage(const QString& Msg = "");
 
 
   private slots:

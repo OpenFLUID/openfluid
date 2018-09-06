@@ -31,29 +31,31 @@
 
 
 /**
-  @file EditSignatureDialog.cpp
+  @file MessageFrame.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
-#include <QPushButton>
-
-#include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/MessageFrame.hpp>
 
-#include "ui_EditSignatureDialog.h"
+#include "ui_MessageFrame.h"
 
 
 namespace openfluid { namespace ui { namespace common {
 
 
-EditSignatureDialog::EditSignatureDialog(QWidget* Parent):
-    MessageDialog(Parent), ui(new Ui::EditSignatureDialog)
+MessageFrame::MessageFrame(QWidget* Parent, const QString& DefaultMsg):
+  QFrame(Parent), ui(new Ui::MessageFrame), m_DefaultMsg(DefaultMsg)
 {
   ui->setupUi(this);
 
-  setupMessageUi(tr("Edit signature"));
+  ui->MessageLabel->setStyleSheet("color: #ffffff; font : bold;");
+  ui->MessageLabel->setText(m_DefaultMsg);
+
+  setStyleSheet(QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
+  setMinimumHeight(40);
 }
 
 
@@ -61,7 +63,7 @@ EditSignatureDialog::EditSignatureDialog(QWidget* Parent):
 // =====================================================================
 
 
-EditSignatureDialog::~EditSignatureDialog()
+MessageFrame::~MessageFrame()
 {
   delete ui;
 }
@@ -71,50 +73,28 @@ EditSignatureDialog::~EditSignatureDialog()
 // =====================================================================
 
 
-void EditSignatureDialog::initialize(const QStringList& ExistingIDs)
+void MessageFrame::updateDefaultMessage(const QString& Msg)
 {
-  m_ExistingIDs = ExistingIDs;
-
-  checkGlobally();
-
-  connect(ui->SignatureWidget,SIGNAL(changed()),this,SLOT(checkGlobally()));
+  m_DefaultMsg = Msg;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void EditSignatureDialog::checkGlobally()
+void MessageFrame::setMessage(const QString& Msg)
 {
-  if (!ui->SignatureWidget->isValidID())
-    setMessage(tr("ID is not valid"));
-  else if (m_ExistingIDs.contains(ui->SignatureWidget->getEditedID()))
-    setMessage(tr("ID already exists"));
+  if (Msg.isEmpty())
+  {
+    setStyleSheet(QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
+    ui->MessageLabel->setText(m_DefaultMsg);
+  }
   else
-    setMessage();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditSignatureDialog::initialize(const openfluid::ware::SimulatorSignature& Signature,
-                                     const QStringList& ExistingIDs)
-{
-  ui->SignatureWidget->initialize(Signature);
-
-  EditSignatureDialog::initialize(ExistingIDs);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::ware::SimulatorSignature EditSignatureDialog::getSignature() const
-{
-  return ui->SignatureWidget->getSignature();
+  {
+    setStyleSheet(QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
+    ui->MessageLabel->setText(Msg);
+  }
 }
 
 

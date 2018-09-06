@@ -46,11 +46,10 @@ namespace Ui
 
 
 #include <openfluid/core/Event.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
-
-class AddEventDialog : public openfluid::ui::common::OpenFLUIDDialog
+class AddEventDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
@@ -66,10 +65,6 @@ class AddEventDialog : public openfluid::ui::common::OpenFLUIDDialog
   protected:
 
     Ui::EditEventDialog* ui;
-
-    QString m_DefaultMsg;
-
-    void setMessage(const QString& Msg = "");
 
 
   public:

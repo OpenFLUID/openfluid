@@ -40,7 +40,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,1,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
    <property name="sizeConstraint">
     <enum>QLayout::SetMinimumSize</enum>
    </property>
@@ -53,52 +53,6 @@
    <property name="rightMargin">
     <number>0</number>
    </property>
-   <item>
-    <widget class="QFrame" name="MessageFrame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: #384A61;</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <property name="lineWidth">
-      <number>0</number>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
-      <property name="spacing">
-       <number>5</number>
-      </property>
-      <property name="leftMargin">
-       <number>12</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="MessageLabel">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255);
-font : bold;
-</string>
-          </property>
-          <property name="text">
-           <string>Run simulation</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
      <property name="leftMargin">
@@ -121,26 +75,6 @@ font : bold;
       <widget class="QLabel" name="DurationLabel">
        <property name="text">
         <string notr="true">DurationLabel</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_10">
-     <property name="leftMargin">
-      <number>12</number>
-     </property>
-     <property name="rightMargin">
-      <number>12</number>
-     </property>
-     <item>
-      <widget class="QFrame" name="frame_2">
-       <property name="frameShape">
-        <enum>QFrame::HLine</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
        </property>
       </widget>
      </item>
@@ -435,26 +369,6 @@ font : bold;
        </property>
        <property name="text">
         <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_9">
-     <property name="leftMargin">
-      <number>12</number>
-     </property>
-     <property name="rightMargin">
-      <number>12</number>
-     </property>
-     <item>
-      <widget class="QFrame" name="frame">
-       <property name="frameShape">
-        <enum>QFrame::HLine</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
        </property>
       </widget>
      </item>

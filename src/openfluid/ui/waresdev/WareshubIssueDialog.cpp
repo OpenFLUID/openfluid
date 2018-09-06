@@ -27,14 +27,15 @@
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
 
- */
+*/
 
 /**
  @file WareshubIssueDialog.cpp
- @brief Implements ...
+
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+ @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+*/
 
 
 #include <QPushButton>
@@ -52,7 +53,8 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent, const Issue& I) :
-    QDialog(Parent), ui(new Ui::WareshubIssueDialog), m_IDs(IDs)
+    openfluid::ui::common::MessageDialog(Parent),
+    ui(new Ui::WareshubIssueDialog), m_IDs(IDs)
 {
   ui->setupUi(this);
 
@@ -63,7 +65,7 @@ WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent
 
   if (I.m_ID.isEmpty())
   {
-    m_DefaultMessage = tr("New issue");
+    setupMessageUi(tr("New issue"));
 
     QList<int> SortedIntIDs;
     bool Ok;
@@ -83,7 +85,7 @@ WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent
   }
   else
   {
-    m_DefaultMessage = tr("Edit issue");
+    setupMessageUi(tr("Edit issue"));
     m_IDs.removeAll(I.m_ID);
     ui->IDLineEdit->setText(I.m_ID);
   }
@@ -164,32 +166,6 @@ void WareshubIssueDialog::onChanged()
   else
     setMessage();
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareshubIssueDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(m_DefaultMessage);
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(
-        QString("background-color: %1").arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } // namespaces

@@ -39,7 +39,7 @@
 #ifndef __OPENFLUID_BUILDERAPP_ADDDATASTOREITEMDIALOG_HPP__
 #define __OPENFLUID_BUILDERAPP_ADDDATASTOREITEMDIALOG_HPP__
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
 
 
@@ -49,7 +49,7 @@ namespace Ui
 }
 
 
-class AddDatastoreItemDialog : public openfluid::ui::common::OpenFLUIDDialog
+class AddDatastoreItemDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
@@ -71,9 +71,6 @@ class AddDatastoreItemDialog : public openfluid::ui::common::OpenFLUIDDialog
     QString m_GDALFormatsStr;
 
     QString m_OGRFormatsStr;
-
-
-    void setMessage(const QString& Msg = "");
 
 
   public:

@@ -47,10 +47,10 @@ namespace Ui
 }
 
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
-class AddUnitDialog : public openfluid::ui::common::OpenFLUIDDialog
+class AddUnitDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 

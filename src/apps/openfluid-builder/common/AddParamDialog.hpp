@@ -34,16 +34,16 @@
   @file AddParamDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_ADDPARAMDIALOG_HPP__
 #define __OPENFLUID_BUILDERAPP_ADDPARAMDIALOG_HPP__
 
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
-
 #include <QStringList>
+
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace Ui
@@ -52,7 +52,7 @@ namespace Ui
 }
 
 
-class AddParamDialog : public openfluid::ui::common::OpenFLUIDDialog
+class AddParamDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
@@ -68,8 +68,6 @@ class AddParamDialog : public openfluid::ui::common::OpenFLUIDDialog
     const QStringList m_ExistingParams;
 
     const QStringList m_CompletingParams;
-
-    void setMessage(const QString& Msg = "");
 
 
   public:

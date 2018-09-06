@@ -41,7 +41,6 @@
 #define __OPENFLUID_UIWARESDEV_WARESSRCIMPORTDIALOG_HPP__
 
 
-#include <QDialog>
 #include <QListWidget>
 #include <QAbstractButton>
 #include <QButtonGroup>
@@ -49,6 +48,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace Ui {
@@ -64,7 +64,7 @@ class WaresHubImportWorker;
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WaresSrcImportDialog: public QDialog
+class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT
 
@@ -105,8 +105,6 @@ class OPENFLUID_API WaresSrcImportDialog: public QDialog
     openfluid::waresdev::WaresHubImportWorker* mp_WaresHubImportWorker = nullptr;
 
     QMap<openfluid::ware::WareType, QStringList> m_AlreadySelectedWaresHubWares;
-
-    void setMessage(const QString& Msg = "");
 
     void updatePackageInfo();
 

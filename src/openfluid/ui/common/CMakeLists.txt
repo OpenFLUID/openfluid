@@ -1,6 +1,7 @@
 
 
-SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp OpenFLUIDSplashScreen.cpp
+SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp MessageDialog.cpp MessageFrame.cpp
+                            AboutDialog.cpp OpenFLUIDSplashScreen.cpp
                             RunSimulationDialog.cpp RunSimulationWorker.cpp
                             SignatureDataEditorWidget.cpp
                             SignatureEditorWidget.cpp EditSignatureDialog.cpp                                
@@ -13,7 +14,8 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp AboutDialog.cpp OpenFLUIDSplashS
                             TimePeriodWidget.cpp
                             )
 
-SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashScreen.hpp
+SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp MessageDialog.hpp MessageFrame.hpp
+                            AboutDialog.hpp OpenFLUIDSplashScreen.hpp
                             RunSimulationDialog.hpp RunSimulationWorker.hpp
                             SignatureDataEditorWidget.hpp
                             SignatureEditorWidget.hpp EditSignatureDialog.hpp
@@ -28,7 +30,8 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp AboutDialog.hpp OpenFLUIDSplashS
                             )
 
 
-QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI RunSimulationDialog.ui AboutDialog.ui
+QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI MessageFrame.ui
+                                   RunSimulationDialog.ui AboutDialog.ui
                                    SignatureEditorWidget.ui SignatureDataEditorWidget.ui EditSignatureDialog.ui
                                    PathsManagementWidget.ui WaresSearchPathsWidget.ui
                                    LogExplorerDialog.ui

@@ -47,10 +47,10 @@ namespace Ui
 }
 
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
-class EditAttributesValuesDialog : public openfluid::ui::common::OpenFLUIDDialog
+class EditAttributesValuesDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
@@ -64,8 +64,6 @@ class EditAttributesValuesDialog : public openfluid::ui::common::OpenFLUIDDialog
   private:
 
     Ui::EditAttributesValuesDialog* ui;
-
-    void setMessage(const QString& Msg = "");
 
 
   public:

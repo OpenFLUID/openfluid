@@ -31,52 +31,55 @@
 
 
 /**
-  @file OpenExampleProjectDialog.hpp
+  @file MessageFrame.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__
-#define __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_MESSAGEFRAME_HPP__
+#define __OPENFLUID_UICOMMON_MESSAGEFRAME_HPP__
 
 
-#include <openfluid/ui/common/MessageDialog.hpp>
+#include <QFrame>
 
-#include <QListWidgetItem>
+#include <openfluid/dllexport.hpp>
 
 
 namespace Ui
 {
-  class OpenExampleProjectDialog;
+  class MessageFrame;
 }
 
 
-class OpenExampleProjectDialog : public openfluid::ui::common::MessageDialog
+namespace openfluid { namespace ui { namespace common {
+
+
+class OPENFLUID_API MessageFrame : public QFrame
 {
   Q_OBJECT;
 
   private:
 
-    Ui::OpenExampleProjectDialog* ui;
+    Ui::MessageFrame *ui;
 
-    QString m_ProjectsRootPath;
-
-
-  private slots:
-
-    void updateProjectInfo();
+    QString m_DefaultMsg;
 
 
   public:
 
-    OpenExampleProjectDialog(QWidget *Parent);
+    MessageFrame(QWidget* Parent = nullptr, const QString& DefaultMsg = "");
 
-    virtual ~OpenExampleProjectDialog();
+    virtual ~MessageFrame();
 
-    QString getSelectedProjectPath() const;
+    void setMessage(const QString& Msg);
+
+    void updateDefaultMessage(const QString& Msg);
+
 };
 
 
+} } } // namespaces
 
-#endif /* __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__ */
+
+#endif /* __OPENFLUID_UICOMMON_MESSAGEWIDGET_HPP__ */

@@ -47,18 +47,16 @@ namespace Ui
 }
 
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
-class EditProjectPropertiesDialog : public openfluid::ui::common::OpenFLUIDDialog
+class EditProjectPropertiesDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
   private:
 
     Ui::EditProjectPropertiesDialog* ui;
-
-    void setMessage();
 
 
   public:

@@ -41,7 +41,7 @@
 
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 
 
@@ -54,7 +54,7 @@ namespace Ui
 namespace openfluid { namespace ui { namespace common {
 
 
-class OPENFLUID_API EditSignatureDialog : public OpenFLUIDDialog
+class OPENFLUID_API EditSignatureDialog : public MessageDialog
 {
   Q_OBJECT;
 
@@ -72,8 +72,6 @@ class OPENFLUID_API EditSignatureDialog : public OpenFLUIDDialog
   private:
 
     Ui::EditSignatureDialog* ui;
-
-    void setMessage(const QString& Msg = "");
 
     void initialize(const QStringList& ExistingIDs = QStringList());
 

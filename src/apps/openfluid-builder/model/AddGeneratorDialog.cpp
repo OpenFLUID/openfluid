@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file AddGeneratorDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <QPushButton>
@@ -53,11 +52,11 @@
 
 
 AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
-  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::AddGeneratorDialog)
+  openfluid::ui::common::MessageDialog(Parent),ui(new Ui::AddGeneratorDialog)
 {
   ui->setupUi(this);
 
-  ui->MessageLabel->setText(tr("Add generator"));
+  setupMessageUi(tr("Add generator"));
 
   connect(ui->FixedRadioButton,SIGNAL(toggled(bool)),this,SLOT(switchGeneratorOptions()));
   connect(ui->RandomRadioButton,SIGNAL(toggled(bool)),this,SLOT(switchGeneratorOptions()));
@@ -71,9 +70,6 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
 
   connect(ui->SourcesBrowseButton,SIGNAL(clicked()),this,SLOT(selectSourcesFile()));
   connect(ui->DistriBrowseButton,SIGNAL(clicked()),this,SLOT(selectDistriFile()));
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   switchGeneratorOptions();
 
@@ -106,29 +102,6 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
 AddGeneratorDialog::~AddGeneratorDialog()
 {
   delete ui;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AddGeneratorDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Add generator"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

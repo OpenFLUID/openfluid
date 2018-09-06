@@ -85,16 +85,16 @@ namespace openfluid { namespace ui { namespace common {
 
 
 RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluidx::FluidXDescriptor* FXDesc):
-  QDialog(Parent,Qt::CustomizeWindowHint|Qt::WindowTitleHint), ui(new Ui::RunSimulationDialog), mp_FXDesc(FXDesc),
+  MessageDialog(Parent), ui(new Ui::RunSimulationDialog), mp_FXDesc(FXDesc),
   m_Launched(false), m_Success(false)
 {
   setWindowModality(Qt::ApplicationModal);
 
   ui->setupUi(this);
 
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
+  setupMessageUi(tr("Run Simulation"),QDialogButtonBox::NoButton);
 
-  ui->MessageLabel->setText(tr("Run Simulation"));
+  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   ui->DurationLabel->setText("");
   ui->ElapsedLabel->setText("-");

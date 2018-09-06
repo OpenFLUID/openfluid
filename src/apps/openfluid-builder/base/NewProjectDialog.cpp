@@ -52,10 +52,12 @@
 
 
 NewProjectDialog::NewProjectDialog(QWidget *Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent), ui(new Ui::NewProjectDialog),
+  openfluid::ui::common::MessageDialog(Parent), ui(new Ui::NewProjectDialog),
   mp_DirectoryModel(new QFileSystemModel(this))
 {
   ui->setupUi(this);
+
+  setupMessageUi(tr("Creation of a new OpenFLUID project"));
 
   ui->WorkdirLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
                                                          ->getBuilderProjectsPath()));
@@ -72,8 +74,6 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
   connect(ui->ProjectRadioButton,SIGNAL(toggled(bool)),this,SLOT(onGlobalCheck()));
   connect(ui->DirectoryRadioButton,SIGNAL(toggled(bool)),this,SLOT(onGlobalCheck()));
 
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   ui->DataGroupBox->setChecked(false);
 
@@ -124,29 +124,6 @@ void NewProjectDialog::onGlobalCheck()
   else
     setMessage();
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void NewProjectDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Creation of a new OpenFLUID project"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

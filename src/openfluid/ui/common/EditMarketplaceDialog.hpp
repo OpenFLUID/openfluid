@@ -42,7 +42,7 @@
 
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 
 
@@ -55,7 +55,7 @@ namespace Ui
 namespace openfluid { namespace ui { namespace common {
 
 
-class OPENFLUID_API EditMarketplaceDialog : public OpenFLUIDDialog
+class OPENFLUID_API EditMarketplaceDialog : public MessageDialog
 {
   Q_OBJECT;
 
@@ -73,9 +73,6 @@ class OPENFLUID_API EditMarketplaceDialog : public OpenFLUIDDialog
     QString m_OriginalName;
 
     const openfluid::base::PreferencesManager::MarketPlaces_t m_MPlaces;
-
-    void setMessage(const QString& Msg = "");
-
 
 
   public:

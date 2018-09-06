@@ -56,10 +56,12 @@
 
 
 AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingIDs, QWidget* Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new(Ui::EditDatastoreItemDialog)),
+  openfluid::ui::common::MessageDialog(Parent),ui(new(Ui::EditDatastoreItemDialog)),
   m_ExistingIDs(ExistingIDs)
 {
   ui->setupUi(this);
+
+  setupMessageUi(tr("Add of a datastore item"));
 
   GDALAllRegister();
   GDALAllRegister_COMPAT();
@@ -98,9 +100,6 @@ AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingIDs, Q
   connect(Completer,SIGNAL(activated(const QString&)),this,SLOT(checkGlobal()));
 
   ui->IDEdit->setPlaceholderText(getPlaceholderRequired());
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   checkGlobal();
 }
@@ -173,29 +172,6 @@ void AddDatastoreItemDialog::checkGlobal()
     setMessage(tr("Wrong subdirectory name for data destination"));
   else
     setMessage();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AddDatastoreItemDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Add of a datastore item"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
 }
 
 

@@ -30,11 +30,12 @@
  */
 
 /**
- @file WaresSrcExportDialog.hpp
- @brief Header of ...
+  @file WaresSrcExportDialog.hpp
+  @brief Header of ...
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+*/
 
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESSRCEXPORTDIALOG_HPP__
@@ -46,17 +47,18 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace Ui {
-class WaresSrcExportDialog;
+  class WaresSrcExportDialog;
 }
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WaresSrcExportDialog: public QDialog
+class OPENFLUID_API WaresSrcExportDialog: public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT
 
@@ -77,8 +79,6 @@ class OPENFLUID_API WaresSrcExportDialog: public QDialog
     typedef QMap<openfluid::ware::WareType, QListWidget*> ListWidgetsByWareType_t;
 
     ListWidgetsByWareType_t m_ListWidgetsByWareType;
-
-    void setMessage(const QString& Msg = "");
 
     void initWaresLists();
 

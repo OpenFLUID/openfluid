@@ -47,13 +47,13 @@ namespace Ui
 }
 
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 #include <QDir>
 
 
-class SaveAsDialog : public openfluid::ui::common::OpenFLUIDDialog
+class SaveAsDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
@@ -69,8 +69,6 @@ class SaveAsDialog : public openfluid::ui::common::OpenFLUIDDialog
     Ui::SaveAsDialog* ui;
 
     QDir m_PrjDir;
-
-    void setMessage(const QString& Msg = "");
 
     void checkGlobal();
 

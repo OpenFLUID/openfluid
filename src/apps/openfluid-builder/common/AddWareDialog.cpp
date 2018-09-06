@@ -46,16 +46,15 @@
 
 
 AddWareDialog::AddWareDialog(QWidget* Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::AddWareDialog)
+  openfluid::ui::common::MessageDialog(Parent),ui(new Ui::AddWareDialog)
 {
   ui->setupUi(this);
+
+  setupMessageUi("");
 
   ui->WaresListWidget->setIconSize(QSize(24,12));
 
   ui->WareSignatureWidget->mute();
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 }
 
 

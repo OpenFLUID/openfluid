@@ -35,33 +35,31 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
 
-#include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
-
-#include "ui_WareExplorerDialog.h"
 
 #include <QFileInfo>
 #include <QMessageBox>
 
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
+
+#include "ui_WareExplorerDialog.h"
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-// =====================================================================
-// =====================================================================
-
-
 WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirectoryPath, const QString& CurrentPath,
                                        const QString& Title, const QString& DefaultMessage,
                                        const QString& AcceptButtonLabel) :
-  openfluid::ui::common::OpenFLUIDDialog(Parent),
-  ui(new Ui::WareExplorerDialog), mp_AcceptButton(0),
-  m_DefaulMessage(DefaultMessage), m_TopDir(QDir(TopDirectoryPath))
+  openfluid::ui::common::MessageDialog(Parent),
+  ui(new Ui::WareExplorerDialog), mp_AcceptButton(nullptr),
+  m_TopDir(QDir(TopDirectoryPath))
 {
   ui->setupUi(this);
+
+  setupMessageUi(DefaultMessage, QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
   setWindowTitle(Title);
 
@@ -70,8 +68,8 @@ WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirect
   QRegExp FilepathRx(QString("[a-zA-Z0-9._%1-]+").arg(QDir::separator()));
   ui->FilepathEdit->setValidator(new QRegExpValidator(FilepathRx, this));
   ui->FilepathEdit->setToolTip(
-      tr("Accepts only letters, digits, dashes ('-'), underscores ('_'), dots ('.') and paths separators ('%1').").arg(
-          QDir::separator()));
+      tr("Accepts only letters, digits, dashes ('-'), underscores ('_'), dots ('.') and paths separators ('%1').")
+      .arg(QDir::separator()));
 
   // "required" placeholder
   ui->FilepathEdit->setPlaceholderText(getPlaceholderRequired());
@@ -83,9 +81,11 @@ WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirect
 
   mp_Manager = openfluid::waresdev::WareSrcManager::instance();
 
-  mp_AcceptButton = ui->buttonBox->button(QDialogButtonBox::Open);
+  mp_AcceptButton = buttonOfButtonBox(QDialogButtonBox::Ok);
   if (mp_AcceptButton)
+  {
     mp_AcceptButton->setText(AcceptButtonLabel);
+  }
 }
 
 
@@ -214,8 +214,8 @@ void WareExplorerDialog::setOpenWareMode()
 {
   ui->FilepathWidget->setVisible(false);
 
-  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
-          SLOT(onCurrentChangedOpenWareMode(const QString&)));
+  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)),
+          this, SLOT(onCurrentChangedOpenWareMode(const QString&)));
 
   onCurrentChangedOpenWareMode(ui->WareExplorer->getCurrentPath());
 }
@@ -229,10 +229,11 @@ void WareExplorerDialog::setOpenFileMode()
 {
   ui->FilepathWidget->setVisible(false);
 
-  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
-          SLOT(onCurrentChangedOpenFileMode(const QString&)));
+  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)),
+          this, SLOT(onCurrentChangedOpenFileMode(const QString&)));
 
-  connect(ui->WareExplorer, SIGNAL(doubleClicked(const QString&)), this, SLOT(onDoubleClickedFileMode()));
+  connect(ui->WareExplorer, SIGNAL(doubleClicked(const QString&)),
+          this, SLOT(onDoubleClickedFileMode()));
 
   onCurrentChangedOpenFileMode(ui->WareExplorer->getCurrentPath());
 }
@@ -244,11 +245,11 @@ void WareExplorerDialog::setOpenFileMode()
 
 void WareExplorerDialog::setSaveFileMode()
 {
-  connect(ui->FilepathEdit, SIGNAL(textChanged(const QString &)), this,
-          SLOT(onTextChangedSaveMode(const QString&)));
+  connect(ui->FilepathEdit, SIGNAL(textChanged(const QString &)),
+          this, SLOT(onTextChangedSaveMode(const QString&)));
 
-  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
-          SLOT(onCurrentChangedSaveCreateMode(const QString&)));
+  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)),
+          this, SLOT(onCurrentChangedSaveCreateMode(const QString&)));
 
   onTextChangedSaveMode(ui->FilepathEdit->text());
   onCurrentChangedSaveCreateMode(ui->WareExplorer->getCurrentPath());
@@ -277,11 +278,11 @@ void WareExplorerDialog::setCreateFileMode(const QString& CurrentPath)
 
 void WareExplorerDialog::setCreateFolderMode()
 {
-  connect(ui->FilepathEdit, SIGNAL(textChanged(const QString &)), this,
-          SLOT(onTextChangedCreateFileMode(const QString&)));
+  connect(ui->FilepathEdit, SIGNAL(textChanged(const QString &)),
+          this, SLOT(onTextChangedCreateFileMode(const QString&)));
 
-  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)), this,
-          SLOT(onCurrentChangedSaveCreateMode(const QString&)));
+  connect(ui->WareExplorer, SIGNAL(currentChanged(const QString&)),
+          this, SLOT(onCurrentChangedSaveCreateMode(const QString&)));
 
   onTextChangedCreateFolderMode(ui->FilepathEdit->text());
   onCurrentChangedSaveCreateMode(ui->WareExplorer->getCurrentPath());
@@ -296,7 +297,7 @@ void WareExplorerDialog::setCreateFolderMode()
 
 void WareExplorerDialog::onCurrentChangedOpenWareMode(const QString& Path)
 {
-  setStatus(mp_Manager->getPathInfo(Path).m_isAWare ? "" : tr("No ware directory selected"));
+  setMessage(mp_Manager->getPathInfo(Path).m_isAWare ? "" : tr("No ware directory selected"));
 }
 
 
@@ -306,7 +307,7 @@ void WareExplorerDialog::onCurrentChangedOpenWareMode(const QString& Path)
 
 void WareExplorerDialog::onCurrentChangedOpenFileMode(const QString& Path)
 {
-  setStatus(QFileInfo(Path).isFile() ? "" : tr("No file selected"));
+  setMessage(QFileInfo(Path).isFile() ? "" : tr("No file selected"));
 }
 
 
@@ -334,7 +335,7 @@ void WareExplorerDialog::onTextChangedSaveMode(const QString& Text)
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
     Msg = tr("File path is not inside the parent directory");
 
-  setStatus(Msg);
+  setMessage(Msg);
 }
 
 
@@ -352,7 +353,7 @@ void WareExplorerDialog::onTextChangedCreateFileMode(const QString& Text)
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
     Msg = tr("File path is not inside the parent directory");
 
-  setStatus(Msg);
+  setMessage(Msg);
 }
 
 
@@ -370,7 +371,7 @@ void WareExplorerDialog::onTextChangedCreateFolderMode(const QString& Text)
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
     Msg = tr("Folder path is not inside the parent directory");
 
-  setStatus(Msg);
+  setMessage(Msg);
 }
 
 
@@ -402,28 +403,6 @@ QString WareExplorerDialog::getCompleteFilePath()
 {
   return m_TopDir.absoluteFilePath(QDir::fromNativeSeparators(ui->FilepathEdit->text()));
 }
-
-
-// =====================================================================
-// =====================================================================
-
-void WareExplorerDialog::setStatus(const QString WarningMsg)
-{
-  bool Ok = WarningMsg.isEmpty();
-
-  ui->MessageLabel->setText(Ok ? m_DefaulMessage : WarningMsg);
-
-  ui->MessageFrame->setStyleSheet(
-      QString("background-color: %1;").arg(
-          Ok ? openfluid::ui::config::DIALOGBANNER_BGCOLOR : openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-
-  if (mp_AcceptButton)
-    mp_AcceptButton->setEnabled(Ok);
-}
-
-
-// =====================================================================
-// =====================================================================
 
 
 } } } // namespaces

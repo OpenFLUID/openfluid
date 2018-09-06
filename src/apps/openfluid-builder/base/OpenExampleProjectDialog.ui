@@ -19,7 +19,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -29,52 +29,6 @@
    <property name="rightMargin">
     <number>0</number>
    </property>
-   <item>
-    <widget class="QFrame" name="MessageFrame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(71,97,123);</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <property name="lineWidth">
-      <number>0</number>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
-      <property name="spacing">
-       <number>5</number>
-      </property>
-      <property name="leftMargin">
-       <number>12</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="MessageLabel">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255);
-font : bold;
-</string>
-          </property>
-          <property name="text">
-           <string>Open an example project</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item>
     <widget class="QLabel" name="label">
      <property name="minimumSize">
@@ -146,8 +100,8 @@ font : bold;
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>316</width>
-          <height>354</height>
+          <width>320</width>
+          <height>452</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -178,23 +132,6 @@ font : bold;
          </item>
         </layout>
        </widget>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <property name="leftMargin">
-      <number>12</number>
-     </property>
-     <property name="rightMargin">
-      <number>12</number>
-     </property>
-     <item>
-      <widget class="QDialogButtonBox" name="ButtonBox">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-       </property>
       </widget>
      </item>
     </layout>

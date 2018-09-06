@@ -47,9 +47,10 @@ namespace Ui
 }
 
 
-#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+#include <openfluid/ui/common/MessageDialog.hpp>
 
-class EditAttributeNameDialog : public openfluid::ui::common::OpenFLUIDDialog
+
+class EditAttributeNameDialog : public openfluid::ui::common::MessageDialog
 {
   Q_OBJECT;
 
@@ -72,8 +73,6 @@ class EditAttributeNameDialog : public openfluid::ui::common::OpenFLUIDDialog
     QStringList m_AttrsNames;
 
     QString m_DefaultMsg;
-
-    void setMessage(const QString& Msg = "");
 
 
   public:

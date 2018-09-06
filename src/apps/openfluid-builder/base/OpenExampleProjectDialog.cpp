@@ -37,25 +37,26 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
-#include <openfluid/base/RunContextManager.hpp>
+
 #include <QPushButton>
 #include <QDir>
 
 #include <openfluid/config.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
-#include <openfluid/ui/config.hpp>
 
 #include "ui_OpenExampleProjectDialog.h"
 #include "OpenExampleProjectDialog.hpp"
-
 #include "AppTools.hpp"
 
 
 OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
-  openfluid::ui::common::OpenFLUIDDialog(Parent), ui(new Ui::OpenExampleProjectDialog)
+  openfluid::ui::common::MessageDialog(Parent),
+  ui(new Ui::OpenExampleProjectDialog)
 {
   ui->setupUi(this);
 
+  setupMessageUi(tr("Open an example project"));
 
   // installation of missing examples
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -86,9 +87,6 @@ OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
   connect(ui->ProjectsListWidget,
           SIGNAL(itemSelectionChanged()),
           this, SLOT(updateProjectInfo()));
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 }
 
 
@@ -106,32 +104,9 @@ OpenExampleProjectDialog::~OpenExampleProjectDialog()
 // =====================================================================
 
 
-void OpenExampleProjectDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Open an example project"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void OpenExampleProjectDialog::updateProjectInfo()
 {
-  if (ui->ProjectsListWidget->currentRow()<0)
+  if (ui->ProjectsListWidget->currentRow() < 0)
   {
     setMessage(tr("No project selected"));
     ui->ProjectInfosLabel->setText("(No project information)");

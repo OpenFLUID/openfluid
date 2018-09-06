@@ -31,52 +31,65 @@
 
 
 /**
-  @file OpenExampleProjectDialog.hpp
+  @file MessageDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#ifndef __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__
-#define __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_MESSAGEDIALOG_HPP__
+#define __OPENFLUID_UICOMMON_MESSAGEDIALOG_HPP__
 
 
-#include <openfluid/ui/common/MessageDialog.hpp>
+#include <QDialogButtonBox>
+#include <QPushButton>
 
-#include <QListWidgetItem>
-
-
-namespace Ui
-{
-  class OpenExampleProjectDialog;
-}
+#include <openfluid/dllexport.hpp>
+#include <openfluid/ui/common/MessageFrame.hpp>
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 
-class OpenExampleProjectDialog : public openfluid::ui::common::MessageDialog
+namespace openfluid { namespace ui { namespace common {
+
+
+class OPENFLUID_API MessageDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 
   private:
 
-    Ui::OpenExampleProjectDialog* ui;
+    MessageFrame* mp_MsgFrame;
 
-    QString m_ProjectsRootPath;
+    QDialogButtonBox* mp_ButtonBox;
 
 
-  private slots:
+  protected:
 
-    void updateProjectInfo();
+    void setupMessageUi(const QString& DefaultMsg,
+                        QDialogButtonBox::StandardButtons buttons = QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+    void updateDefaultMessage(const QString& Msg);
+
+    void setMessage(const QString& Msg = QString());
+
+    QPushButton* buttonOfButtonBox(QDialogButtonBox::StandardButton Which);
+
+    QDialogButtonBox* buttonBox()
+    {
+      return mp_ButtonBox;
+    }
 
 
   public:
 
-    OpenExampleProjectDialog(QWidget *Parent);
+    MessageDialog(QWidget* Parent = nullptr);
 
-    virtual ~OpenExampleProjectDialog();
+    virtual ~MessageDialog();
 
-    QString getSelectedProjectPath() const;
 };
 
 
+} } } // namespaces
 
-#endif /* __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__ */
+
+#endif /* __OPENFLUID_UICOMMON_MESSAGEDIALOG_HPP__ */
