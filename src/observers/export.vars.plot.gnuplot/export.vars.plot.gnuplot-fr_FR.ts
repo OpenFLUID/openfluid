@@ -119,13 +119,13 @@
         <translation>Séries :</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="409"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="408"/>
         <source>Removing serie</source>
         <oldsource>Remove serie</oldsource>
         <translation>Suppression de série</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="410"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="409"/>
         <source>You are removing serie %1.
 The parameters of this serie will also be deleted.
 
@@ -136,32 +136,32 @@ Les paramètres de cette série vont également être supprimés.
 Vouslez-vous continuer?</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="514"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="513"/>
         <source>Serie renaming</source>
         <translation>Renommage de série</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="514"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="513"/>
         <source>The serie name %1 already exists.</source>
         <translation>Le nom de série %1 existe déjà.</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="736"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="735"/>
         <source>Select source file</source>
         <translation>Sélectionner le fichier source</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="737"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="736"/>
         <source>Data files (*.dat)</source>
         <translation>Fichiers de données (*.dat)</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="745"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="744"/>
         <source>Source file</source>
         <translation>Fichier source</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="746"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="745"/>
         <source>Chosen file is not located in the IN folder of the project.</source>
         <oldsource>Chosen file is not located in the IN project folder</oldsource>
         <translation>Le fichier choisi n&apos;est pas présent dans le dossier IN du projet.</translation>

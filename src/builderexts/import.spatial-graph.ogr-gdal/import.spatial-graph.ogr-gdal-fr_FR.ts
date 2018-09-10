@@ -106,7 +106,7 @@
         <location filename="DataProcessingWorker.cpp" line="443"/>
         <location filename="DataProcessingWorker.cpp" line="497"/>
         <location filename="DataProcessingWorker.cpp" line="541"/>
-        <location filename="DataProcessingWorker.cpp" line="602"/>
+        <location filename="DataProcessingWorker.cpp" line="600"/>
         <source>[OK]</source>
         <translation></translation>
     </message>
@@ -148,32 +148,32 @@
         <translation>[Erreur] La classe d&apos;unités &quot;%1&quot; est importé plusieurs fois</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="544"/>
+        <location filename="DataProcessingWorker.cpp" line="543"/>
         <source>Checking configuration of files copies and datastore...</source>
         <translation>Vérification de la configuration des copies de fichiers et du datastore...</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="554"/>
+        <location filename="DataProcessingWorker.cpp" line="552"/>
         <source>[Error] Missing file name for copy of layer &quot;%1&quot; in project dataset</source>
         <translation>[Erreur] Le nom de fichier est manquant pour la copie de la couche &quot;%1&quot; dans le jeu de données du projet</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="566"/>
+        <location filename="DataProcessingWorker.cpp" line="564"/>
         <source>[Error] Missing file extension for layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;extension du nom de fichier est manquanet pour la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="575"/>
+        <location filename="DataProcessingWorker.cpp" line="573"/>
         <source>[Error] Wrong file extension for layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;extension du nom de fichier est incorrecte pour la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="584"/>
+        <location filename="DataProcessingWorker.cpp" line="582"/>
         <source>[Error] Missing datastore ID for layer &quot;%1&quot;</source>
         <translation>[Erreur] L&apos;ID du datastore est manquant pour la couche &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="DataProcessingWorker.cpp" line="594"/>
+        <location filename="DataProcessingWorker.cpp" line="592"/>
         <source>[Error] Datastore ID for layer &quot;%1&quot; already exists</source>
         <translation>[Erreur] L&apos;ID du datastore pour la couche &quot;%1&quot; existe déjà</translation>
     </message>
@@ -381,12 +381,12 @@
 <context>
     <name>OGRGDALImportExtension</name>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="97"/>
+        <location filename="OGRGDALImportExtension.cpp" line="94"/>
         <source>Spatial data import (OGR/GDAL)</source>
         <translation>Import de données spatiales (OGR/GDAL)</translation>
     </message>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="276"/>
+        <location filename="OGRGDALImportExtension.cpp" line="272"/>
         <source>You are about to remove the selected source to import.
 Import configuration for this source will be lost.
 
@@ -397,7 +397,7 @@ La configuration d&apos;import pour cette source sera perdue.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="352"/>
+        <location filename="OGRGDALImportExtension.cpp" line="348"/>
         <source>You have at least one source configured for import.
 The configuration(s) will be lost.
 
@@ -566,7 +566,7 @@ Abandon.</translation>
 <context>
     <name>signature</name>
     <message>
-        <location filename="OGRGDALImportExtension.cpp" line="66"/>
+        <location filename="OGRGDALImportExtension.cpp" line="63"/>
         <source>Spatial data import (OGR/GDAL)</source>
         <translation>Import de données spatiales (OGR/GDAL)</translation>
     </message>

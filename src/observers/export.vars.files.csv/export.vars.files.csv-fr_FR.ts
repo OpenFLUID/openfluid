@@ -65,12 +65,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.cpp" line="460"/>
+        <location filename="CSVObsParamsWidget.cpp" line="463"/>
         <source>Automatic generation</source>
         <translation>Génération automatique</translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.cpp" line="461"/>
+        <location filename="CSVObsParamsWidget.cpp" line="464"/>
         <source>A format and one or more sets configurations will be automatically generated.
 This will remove existing formats and sets.
 

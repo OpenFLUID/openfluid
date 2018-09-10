@@ -215,14 +215,14 @@ void WareSrcToolbar::createActions()
   // Configure ware
 
   m_Actions["ConfigureWare"] = new QAction(openfluid::ui::common::getIcon("configure","/ui/common",!m_IsIncluded),
-                                           tr("Configure ware"), this);
+                                           tr("Configure"), this);
   m_Actions["ConfigureWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B));
 
 
   // Build ware
 
   m_Actions["BuildWare"] = new QAction(openfluid::ui::common::getIcon("build","/ui/common",!m_IsIncluded),
-                                       tr("Build ware"), this);
+                                       tr("Build"), this);
   m_Actions["BuildWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
 
 
