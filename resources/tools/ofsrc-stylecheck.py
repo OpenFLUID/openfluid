@@ -31,6 +31,7 @@
 from argparse import ArgumentParser
 import os
 import re
+import sys
 
 
 ############################################################################
@@ -83,11 +84,26 @@ class SourceTreeChecker:
     
     self.FileList = list()
     
-    self.ErrorsCount = {'LLEN': 0, 'LICH': 0, 'HGRD': 0, 'AUTH':0, 'FNAM': 0, 'PRTY': 0};
+    self.ErrorsCount = {
+                         'LLEN': 0, 
+                         'LICH': 0, 
+                         'HGRD': 0, 
+                         'INCO': 0, 
+                         'INCS': 0, 
+                         'AUTH': 0, 
+                         'FNAM': 0, 
+                         'TMSP': 0,
+                         'SEPS': 0,
+                         'PRTY': 0
+                       }
     
-    self.MaxLineLength = 120;
+    self.DirectiveBase = "OpenFLUID:stylecheck"
     
-    self.PrettyCodeTag = '#prettycode';
+    self.MaxLineLength = 120
+    
+    self.PrettyCodeTag = '#prettycode'
+    
+    self.OFDependentIncludes = ["unistd.h"]
     
     for Dirname, Dirnames, Filenames in os.walk(self.SrcRootPath):
       for Filename in Filenames:
@@ -101,6 +117,7 @@ class SourceTreeChecker:
 
             
 ############################################################################            
+
 
   def runPreliminaryChecks(self):
     return (os.path.isdir(os.path.join(self.SrcRootPath,self.SrcOpenFLUIDDir)) and
@@ -119,16 +136,26 @@ class SourceTreeChecker:
       print
 
 
+############################################################################
+
+
+  def addProblem(self,Code,Filename,Line,*Args):
+    self.ErrorsCount[Code] += 1
+    ArgsStr = list()
+    for Arg in Args :
+      ArgsStr.append(str(Arg))   
+    Msg = '[{0}]{1}:{2}:{3}'.format(Code,Filename,Line," ".join(ArgsStr))
+    print Msg
+
 
 ############################################################################
 
 
-  def addProblem(self,Code,Filename,*Args):
-      self.ErrorsCount[Code] += 1
-      print '['+Code+']',Filename+':',
-      for Arg in Args:
-        print Arg,
-      print
+  def isDirective(self,StrData,Directive):
+    FullDirective = self.DirectiveBase + ":" + Directive
+    if FullDirective in StrData :
+      return True
+    return False 
 
 
 ############################################################################
@@ -139,7 +166,7 @@ class SourceTreeChecker:
     i = 1
     for Line in Lines :
       if len(Line) > self.MaxLineLength:
-        self.addProblem('LLEN',Filename,'line',i,'is too long (exceeds',self.MaxLineLength,'characters)')
+        self.addProblem('LLEN',Filename,i,'line is too long (exceeds',self.MaxLineLength,'characters)')
       i += 1
 
 
@@ -151,7 +178,7 @@ class SourceTreeChecker:
     i = 1
     for Line in Lines :
       if self.PrettyCodeTag in Line.lower():
-        self.addProblem('PRTY',Filename,'line',i,'contains the',self.PrettyCodeTag,'tag')
+        self.addProblem('PRTY',Filename,i,'line contains the',self.PrettyCodeTag,'tag')
       i += 1
 
 
@@ -161,7 +188,7 @@ class SourceTreeChecker:
   def checkLicenseHeader(self, Filename, Content):
 
     if not Content.startswith(self.LicenseHeader):
-      self.addProblem('LICH',Filename,'missing or malformed license header')
+      self.addProblem('LICH',Filename,1,'missing or malformed license header')
      
      
 ############################################################################
@@ -178,12 +205,12 @@ class SourceTreeChecker:
       ExpectedFilenameWithParentDir = os.path.basename(os.path.dirname(Filename))+'/'+ExpectedFilename;       
       Result = re.search( r'\@file '+re.escape(ExpectedFilenameWithParentDir), Content)
       if not Result:
-        self.addProblem('FNAM',Filename,'missing or malformed @file information (expected @file',ExpectedFilename,
+        self.addProblem('FNAM',Filename,1,'missing or malformed @file information (expected @file',ExpectedFilename,
                         'or @file',ExpectedFilenameWithParentDir+')')
       
     Result = re.search( r'\@author \w+', Content)
     if not Result:
-      self.addProblem('AUTH',Filename,'missing or malformed @author information (expected @author <authorname>)')
+      self.addProblem('AUTH',Filename,1,'missing or malformed @author information (expected @author <authorname>)')
       
 
 ############################################################################
@@ -229,7 +256,119 @@ class SourceTreeChecker:
     if ExpectedGuardName:
       Result = re.search( r'#ifndef '+re.escape(ExpectedGuardName)+'\s*\n#define '+re.escape(ExpectedGuardName), Content)
       if not Result:
-        self.addProblem('HGRD',Filename,'missing or malformed header guard (expected',ExpectedGuardName+')')
+        self.addProblem('HGRD',Filename,1,'missing or malformed header guard (expected',ExpectedGuardName+')')
+
+
+############################################################################
+
+
+  def checkIncludesOrder(self, Filename, Lines):
+
+    LocalIncStarted = False
+    OFIncStarted = False        
+     
+    i = 1
+    for Line in Lines :
+      if self.isDirective(Line, "!inco"):
+        return
+      NoSpaceLine = Line.replace(" ","")
+      if NoSpaceLine.startswith("#include\"") :
+        LocalIncStarted = True
+      elif NoSpaceLine.startswith("#include<openfluid") :
+        OFIncStarted = True
+        if LocalIncStarted :
+          self.addProblem('INCO',Filename,i,'wrong #include order')
+          return      
+      elif NoSpaceLine.startswith("#include<") :
+        if OFIncStarted :
+          if not any(Except in NoSpaceLine for Except in self.OFDependentIncludes):
+            self.addProblem('INCO',Filename,i,'wrong #include order')
+            return            
+        elif LocalIncStarted :
+          self.addProblem('INCO',Filename,i,'wrong #include order')
+          return
+      i += 1
+
+
+############################################################################
+
+
+  def checkIncludesSpacing(self, Filename, Lines):
+  
+    FirstIncLine = 0;
+    LastIncLine = 0;
+  
+    i = 1
+    for Line in Lines :
+      if self.isDirective(Line, "!incs"):
+        return
+      NoSpaceLine = Line.replace(" ","")
+      if NoSpaceLine.startswith("#include") :
+        LastIncLine = i
+        if FirstIncLine < 1 :
+          FirstIncLine = i 
+      i += 1
+
+    if LastIncLine == 0 :
+      return
+  
+    if FirstIncLine < 2 : 
+      self.addProblem('INCS',Filename,FirstIncLine,'not enough blank lines before first #include (2 blank lines expected)')
+    else : 
+      NoSpaceBeforeLines = (Lines[FirstIncLine-2]+Lines[FirstIncLine-3]).replace(" ","")
+      if len(NoSpaceBeforeLines) > 0:
+        self.addProblem('INCS',Filename,FirstIncLine,'not enough blank lines before first #include (2 blank lines expected)')
+    
+    if len(Lines) - LastIncLine < 2 :
+      self.addProblem('INCS',Filename,LastIncLine,'not enough blank lines after last #include (2 blank lines expected)')
+    else : 
+      NoSpaceAfterLines = (Lines[LastIncLine]+Lines[LastIncLine+1]).replace(" ","")
+      if len(NoSpaceAfterLines) > 0:
+        self.addProblem('INCS',Filename,LastIncLine,'not enough blank lines after last #include (2 blank lines expected)')
+
+
+############################################################################
+
+
+  def checkTooMuchSpacing(self, Filename, Lines):
+    
+    RunningTMS = 0
+    
+    i = 1
+    for Line in Lines :
+      if len(Line.replace(" ","")) == 0  :
+        RunningTMS += 1
+      else :
+        RunningTMS = 0
+      if RunningTMS == 3 :
+        self.addProblem('TMSP',Filename,i-2,'too many blank lines starting at line',(i-2))         
+      i += 1
+
+
+############################################################################
+
+
+  def checkSeparators(self, Filename, Lines):
+    
+    FirstProcessed = False 
+    i = 1
+    for Line in Lines :
+      if FirstProcessed :
+        FirstProcessed = False
+      else:  
+        NoSpaceLine = Line.replace(" ","")
+        if NoSpaceLine.startswith('//================================='):
+          if (i < 3) or (i > len(Lines)-3) :
+            self.addProblem('SEPS',Filename,i,'misplaced separator')
+          else:
+            FirstProcessed = True
+            if ((len(Lines[i-3].replace(" ","")) != 0) or
+                (len(Lines[i-2].replace(" ","")) != 0) or
+                (not Lines[i].replace(" ","").startswith('//=================================')) or
+                (len(Lines[i+1].replace(" ","")) != 0) or
+                (len(Lines[i+2].replace(" ","")) != 0)) :
+              self.addProblem('SEPS',Filename,i,'wrong separator')  
+      i += 1
 
 
 ############################################################################
@@ -246,9 +385,14 @@ class SourceTreeChecker:
     self.checkLicenseHeader(Filename,FileContent)
     self.checkFileInfo(Filename,FileContent)
     self.checkHeaderGuard(Filename,FileContent)
+    self.checkIncludesOrder(Filename,FileLines)
+    self.checkIncludesSpacing(Filename,FileLines)
+    self.checkTooMuchSpacing(Filename,FileLines)
+    self.checkSeparators(Filename,FileLines)
 
 
 ############################################################################
+
 
   @staticmethod
   def stringIfMoreThanOne(s,c):
@@ -288,7 +432,6 @@ class SourceTreeChecker:
 ############################################################################
 
 
-
 try:
 
   Parser = ArgumentParser(prog='ofsrc-stylecheck')
@@ -304,3 +447,4 @@ try:
 except Exception as e:
   print "Error:",
   print e
+  sys.exit(127)
