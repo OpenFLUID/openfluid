@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ThreadedLoopsSim.cpp
 
@@ -66,7 +65,6 @@ BEGIN_SIMULATOR_SIGNATURE("tests.threadedloops")
 
   DECLARE_PRODUCED_VARIABLE("tests.data.sequence[double]","TU","sequenced test data","");
   DECLARE_PRODUCED_VARIABLE("tests.data.threaded[double]","TU","threaded test data","");
-
 
 
 END_SIMULATOR_SIGNATURE
@@ -106,7 +104,10 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
 
   void initParams(const openfluid::ware::WareParams_t& /*Params*/)
-  {  }
+  {
+
+  }
+
 
   // =====================================================================
   // =====================================================================
@@ -125,7 +126,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
 
   void checkConsistency()
-  {  }
+  {
+
+  }
 
 
   // =====================================================================
@@ -201,9 +204,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
       processUnit(aUnit);
   }
 
-  // =====================================================================
-  // =====================================================================
 
+  // =====================================================================
+  // =====================================================================
 
 
   openfluid::base::SchedulingRequest runStep()
@@ -304,17 +307,22 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
 
   void finalizeRun()
-  {  }
+  {
+
+  }
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(ThreadedLoopsSimulator)
 

@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file GeoVectorValue.hpp
 
@@ -198,10 +199,8 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
      */
      bool isMultiPointType(unsigned int LayerIndex = 0);
 
-
-
-
 };
+
 
 } } // namespaces
 

@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file ModelItemGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <QPen>
@@ -127,7 +126,6 @@ ModelItemGraphics::~ModelItemGraphics()
 
 // =====================================================================
 // =====================================================================
-
 
 
 QVariant ModelItemGraphics::itemChange(GraphicsItemChange Change,
@@ -342,6 +340,7 @@ void ModelItemGraphics::addConnector(ConnectorGraphics* Connector)
 // =====================================================================
 // =====================================================================
 
+
 /*
 void ModelItemGraphics::removeConnector(ConnectorGraphics* Connector)
 {
@@ -364,6 +363,7 @@ void ModelItemGraphics::removeConnectors()
   }
 }
 */
+
 
 // =====================================================================
 // =====================================================================

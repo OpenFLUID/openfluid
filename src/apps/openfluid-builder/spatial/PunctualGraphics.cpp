@@ -34,12 +34,13 @@
   @file PunctualGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-#include "PunctualGraphics.hpp"
 
 #include <QPen>
 #include <QBrush>
+
+#include "PunctualGraphics.hpp"
 
 
 constexpr unsigned int POINT_OFFSET = 3;
@@ -54,7 +55,6 @@ void PunctualGraphics::drawPoint(QPainterPath& Path, const OGRPoint* OGRPt)
   Path.moveTo(OGRPt->getX(),OGRPt->getY()-POINT_OFFSET);
   Path.lineTo(OGRPt->getX(),OGRPt->getY()+POINT_OFFSET);
 }
-
 
 
 // =====================================================================

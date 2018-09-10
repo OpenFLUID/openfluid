@@ -40,13 +40,19 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_grassgisproxy
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <iostream>
+
 #include <QCoreApplication>
+
 #include <openfluid/utils/GrassGISProxy.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+
 #include "tests-config.hpp"
 
 

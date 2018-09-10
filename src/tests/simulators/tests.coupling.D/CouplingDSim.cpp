@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file CouplingDSim.cpp
 
@@ -98,21 +97,30 @@ class CouplingDSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+  {
+
+  }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  void prepareData() { }
+  void prepareData()
+  {
+
+  }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  void checkConsistency() { }
+  void checkConsistency()
+  {
+
+  }
 
 
   // =====================================================================
@@ -153,6 +161,7 @@ class CouplingDSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -164,8 +173,10 @@ class CouplingDSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(CouplingDSimulator)
 

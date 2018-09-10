@@ -29,12 +29,12 @@
   
 */
 
+
 /**
   @file Filesystem.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
-
 
 
 #ifndef __OPENFLUID_TOOLS_FILESYSTEM_HPP__
@@ -194,8 +194,8 @@ class OPENFLUID_API Filesystem
 
 };
 
-} }  // namespaces
 
+} }  // namespaces
 
 
 #endif /* __OPENFLUID_TOOLS_FILESYSTEM_HPP__ */

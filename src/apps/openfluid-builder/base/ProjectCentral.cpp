@@ -169,7 +169,6 @@ QStringList ProjectCentral::convertUpdatedUnitsClassesToQStringList(
 // =====================================================================
 
 
-
 void ProjectCentral::deleteData()
 {
   if (mp_AdvancedFXDesc)
@@ -607,8 +606,6 @@ void ProjectCentral::checkModel()
         }
 
 
-
-
         // populate updated units classes (created, modified)
         UpdatedUnitsClass.append(convertUpdatedUnitsClassesToQStringList(Sign->HandledUnitsGraph.UpdatedUnitsClass));
 
@@ -685,7 +682,6 @@ void ProjectCentral::checkModel()
       }
     }
   }
-
 
 
   // ========== internal constraints

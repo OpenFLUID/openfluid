@@ -29,25 +29,31 @@
   
 */
 
+
 /**
   @file GeoRasterValue_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_georastervalue
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <tests-config.hpp>
+
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 
+#include "tests-config.hpp"
+
 
 // =====================================================================
 // =====================================================================
+
 
 class GeoRasterValueSub: public openfluid::core::GeoRasterValue
 {
@@ -74,8 +80,10 @@ class GeoRasterValueSub: public openfluid::core::GeoRasterValue
     }
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
@@ -92,8 +100,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 {
@@ -107,8 +117,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Jpeg)
 {
@@ -122,8 +134,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Jpeg)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Gtiff)
 {
@@ -137,8 +151,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Gtiff)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Img)
 {
@@ -152,8 +168,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Img)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Ascii)
 {
@@ -166,8 +184,4 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Ascii)
 
   delete Val;
 }
-
-// =====================================================================
-// =====================================================================
-
 

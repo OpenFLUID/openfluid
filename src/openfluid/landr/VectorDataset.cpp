@@ -29,18 +29,19 @@
 
 */
 
+
 /**
   @file VectorDataset.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
 
-#include "VectorDataset.hpp"
 
 #include <algorithm>
 #include <utility>
 #include <chrono>
+
 #include <geos/geom/Geometry.h>
 #include <geos/geom/GeometryFactory.h>
 #include <geos/geom/LineString.h>
@@ -50,7 +51,9 @@
 #include <geos/geom/Polygon.h>
 #include <geos/geom/Coordinate.h>
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
+
 #include <openfluid/landr/GEOSHelpers.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -98,8 +101,6 @@ VectorDataset::VectorDataset(const std::string& FileName)
 #else
   Driver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(DefaultDriverName.c_str());
 #endif
-
-
 
   if (!Driver)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,

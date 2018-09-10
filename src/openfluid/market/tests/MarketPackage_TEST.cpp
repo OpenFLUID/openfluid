@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file MarketPackage_TEST.cpp
 
@@ -41,8 +40,11 @@
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_marketpackage
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <QCoreApplication>
 
 #include <openfluid/market/MarketSrcSimulatorPackage.hpp>
@@ -55,7 +57,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 
-#include <tests-config.hpp>
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -245,9 +247,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BBPack.process();
   BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
       CONFIGTESTS_OUTPUT_DATA_DIR+
-      "/market/packages/market-builderexts/bin/tests.market.bext.binonly"))
-  ;
-
+      "/market/packages/market-builderexts/bin/tests.market.bext.binonly"));
 
 
   std::cout << "CMake Options : " << CONFIGTESTS_OPTIONS_FOR_CMAKE << std::endl;

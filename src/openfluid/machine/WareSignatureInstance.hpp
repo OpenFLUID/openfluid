@@ -34,7 +34,7 @@
   @file WareSignatureInstance.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_MACHINE_WARESIGNATUREINSTANCE_HPP__
@@ -60,8 +60,8 @@ class OPENFLUID_API WareSignatureInstance : public WareContainer
 
 };
 
-} }  // namespaces
 
+} }  // namespaces
 
 
 #endif /* __OPENFLUID_MACHINE_WAREINSTANCE_HPP__ */

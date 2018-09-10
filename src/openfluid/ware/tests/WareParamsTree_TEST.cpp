@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file WareParamsTree_TEST.cpp
 
@@ -41,8 +40,9 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_wareparamstree
-#include <boost/test/unit_test.hpp>
 
+
+#include <boost/test/unit_test.hpp>
 
 #include <openfluid/ware/WareParamsTree.hpp>
 
@@ -107,7 +107,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_CHECK_THROW(WPT.getValueUsingFullKey("another.test.does.not.exist"),openfluid::base::FrameworkException);
   BOOST_REQUIRE_EQUAL(WPT.getValueUsingFullKey("this.does.not.exist.either","yes!").get(),"yes!");
 }
-
-
-
 

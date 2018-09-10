@@ -450,6 +450,7 @@ void WareSrcWidget::setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMod
   m_Container.setBuildMode(Mode);
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -498,7 +499,6 @@ void WareSrcWidget::build()
     QMessageBox::critical(nullptr, tr("Build error"), QString::fromStdString(E.getMessage()));
   }
 }
-
 
 
 // =====================================================================
@@ -564,7 +564,6 @@ bool WareSrcWidget::isWareModified()
 
   return false;
 }
-
 
 
 // =====================================================================

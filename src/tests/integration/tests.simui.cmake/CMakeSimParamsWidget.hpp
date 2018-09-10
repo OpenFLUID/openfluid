@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file CMakeSimParamsWidget.hpp
 
@@ -41,6 +42,7 @@
 
 
 #include <openfluid/builderext/PluggableParameterizationExtension.hpp>
+
 
 class QPushButton;
 

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ExceptionsSim.cpp
 
@@ -81,7 +80,6 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
     ExceptionsSimulator() : PluggableSimulator()
     {
 
-
     }
 
 
@@ -91,7 +89,6 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
 
     ~ExceptionsSimulator()
     {
-
 
     }
 
@@ -169,8 +166,10 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(ExceptionsSimulator)
 

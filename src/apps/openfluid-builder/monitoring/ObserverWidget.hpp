@@ -94,5 +94,4 @@ class ObserverWidget : public ClickableWareWidget
 };
 
 
-
 #endif /* __OPENFLUID_BUILDERAPP_OBSERVERWIDGET_HPP__ */

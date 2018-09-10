@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file ModelWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <QImage>
@@ -133,7 +132,6 @@ void ModelWidget::updateShowHideGlobalParams()
     mp_ShowHideGlobalParamsLabel->setText(tr("hide"));
   }
 }
-
 
 
 // =====================================================================
@@ -557,5 +555,4 @@ void ModelWidget::updateWares()
 
   mp_ModelScene->refresh();
 }
-
 

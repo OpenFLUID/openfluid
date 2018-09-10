@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file FileLogger_TEST.cpp
 
@@ -42,10 +41,14 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_filelogger
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/tools/FileLogger.hpp>
-#include <tests-config.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================

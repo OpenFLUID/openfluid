@@ -29,17 +29,18 @@
   
 */
 
+
 /**
   @file RunContextManager.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
-#include <openfluid/base/RunContextManager.hpp>
 #include <QFile>
 #include <QDir>
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/config.hpp>
 
@@ -285,6 +286,7 @@ bool RunContextManager::saveProject()
   return true;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -305,7 +307,6 @@ void RunContextManager::closeProject()
     mp_ProjectFile = nullptr;
   }
 }
-
 
 
 // =====================================================================
@@ -449,7 +450,5 @@ void RunContextManager::processWareParams(openfluid::ware::WareParams_t& Params)
 }
 
 
-
 } } //namespaces
-
 

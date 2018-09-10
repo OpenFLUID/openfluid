@@ -40,10 +40,11 @@
 #ifndef __OPENFLUID_BUILDERAPP_DASHBOARDFRAME_HPP__
 #define __OPENFLUID_BUILDERAPP_DASHBOARDFRAME_HPP__
 
-#include "ProjectCentral.hpp"
 
 #include <QFrame>
 #include <QBoxLayout>
+
+#include "ProjectCentral.hpp"
 
 
 class DashboardInfosWidget;

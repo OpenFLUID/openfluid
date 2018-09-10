@@ -36,6 +36,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+
 #include <QMutex>
 #include <QMutexLocker>
 
@@ -43,7 +44,6 @@
 
 
 namespace openfluid { namespace tools {
-
 
 
 FileLogger::FileLogger() :

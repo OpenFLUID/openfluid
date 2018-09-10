@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file QtHelpers.cpp
 
@@ -42,7 +41,6 @@
 
 
 namespace openfluid { namespace tools {
-
 
 
 QString toIniCompatible(const std::string& Str)
@@ -200,8 +198,6 @@ QString decodeXMLEntities(const QString& Str)
   DecodedStr.replace("&amp;","&").replace("&gt;",">").replace("&lt;","<").replace("&quot;","\"");
   return DecodedStr;
 }
-
-
 
 
 } } // namespaces

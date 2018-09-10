@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file StatusMessagesWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include "ui_StatusMessagesWidget.h"

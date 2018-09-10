@@ -34,11 +34,12 @@
   @file GeneratorWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_GENERATORWIDGET_HPP__
 #define __OPENFLUID_BUILDERAPP_GENERATORWIDGET_HPP__
+
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -85,7 +86,6 @@ class GeneratorWidget : public WareWidget
     { return openfluid::ware::WareType::GENERATOR; }
 
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_GENERATORWIDGET_HPP__ */

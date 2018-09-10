@@ -34,13 +34,13 @@
   @file OGRGDALImportExtension.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <QMessageBox>
 #include <QThread>
 
-#include "ogr_api.h"
+#include <ogr_api.h>
 
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
@@ -51,9 +51,6 @@
 #include "WFSSourceAddDialog.hpp"
 #include "PrecheckWorker.hpp"
 #include "ImportWorker.hpp"
-
-
-
 
 
 // =====================================================================
@@ -234,7 +231,6 @@ void OGRGDALImportExtension::addSource(const SourceInfos& SrcInfos)
 
 // =====================================================================
 // =====================================================================
-
 
 
 void OGRGDALImportExtension::addFileSource()
@@ -770,7 +766,6 @@ void OGRGDALImportExtension::handleCloseRequired()
 
 // =====================================================================
 // =====================================================================
-
 
 
 DEFINE_BUILDEREXT_CLASS(OGRGDALImportExtension)

@@ -34,7 +34,7 @@
   @file ConnectorGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_CONNECTORGRAPHICS_HPP__
@@ -46,8 +46,6 @@ class ModelItemGraphics;
 
 #include <QGraphicsPathItem>
 #include <QGraphicsSceneMouseEvent>
-
-
 
 
 class ConnectorGraphics : public QGraphicsPathItem

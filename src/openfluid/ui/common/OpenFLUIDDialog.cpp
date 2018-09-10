@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file OpenFLUIDDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <QApplication>
@@ -81,5 +80,4 @@ bool OpenFLUIDDialog::confirmRestartAfterPreferences(QWidget* Parent)
 
 
 } } } // namespaces
-
 

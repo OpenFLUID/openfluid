@@ -34,16 +34,16 @@
   @file FileSourceAddDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
+
+#include <QFileDialog>
 
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/utils/GDALHelpers.hpp>
 
 #include "ui_SourceAddDialog.h"
 #include "FileSourceAddDialog.hpp"
-
-#include <QFileDialog>
 
 
 FileSourceAddDialog::FileSourceAddDialog(const QString& InputDir, QWidget* Parent):
@@ -103,7 +103,6 @@ void FileSourceAddDialog::updateAfterOpen()
 
 // =====================================================================
 // =====================================================================
-
 
 
 bool FileSourceAddDialog::prepareToImport()

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file EventDescriptor.hpp
 
@@ -40,6 +39,7 @@
 
 #ifndef __OPENFLUID_FLUIDX_EVENTDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_EVENTDESCRIPTOR_HPP__
+
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>

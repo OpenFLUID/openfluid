@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_BUDDIES_EXAMPLESBUDDY_HPP__
 #define __OPENFLUID_BUDDIES_EXAMPLESBUDDY_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
 
@@ -63,7 +64,6 @@ class OPENFLUID_API ExamplesBuddy : public OpenFLUIDBuddy
     bool installAllExamplesProjects(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath,
                                     const bool Force = false);
 };
-
 
 
 } } // namespaces

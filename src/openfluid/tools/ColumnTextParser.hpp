@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file ColumnTextParser.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
+
 
 #ifndef __OPENFLUID_TOOLS_COLUMNTEXTPARSER_HPP__
 #define __OPENFLUID_TOOLS_COLUMNTEXTPARSER_HPP__
@@ -45,6 +45,7 @@
 #include <string>
 
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace tools {
 
@@ -166,9 +167,9 @@ class OPENFLUID_API ColumnTextParser
 
 };
 
+
 } }
 
 
 #endif
-
 

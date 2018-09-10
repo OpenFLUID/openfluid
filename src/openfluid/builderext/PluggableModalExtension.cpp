@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file PluggableModalExtension.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <openfluid/builderext/PluggableModalExtension.hpp>

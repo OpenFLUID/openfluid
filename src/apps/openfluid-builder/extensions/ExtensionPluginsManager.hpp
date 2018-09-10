@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_BUILDERAPP_EXTENSIONPLUGINSMANAGER_HPP__
 #define __OPENFLUID_BUILDERAPP_EXTENSIONPLUGINSMANAGER_HPP__
 
+
 #include <QFileInfo>
 #include <QStringList>
 
@@ -75,7 +76,6 @@ class ExtensionPluginsManager :
     { }
 
 
-
   public:
 
     std::string getPluginFullPath(const std::string& Filename) const
@@ -91,7 +91,5 @@ class ExtensionPluginsManager :
 };
 
 
-
-
-
 #endif /* __OPENFLUID_BUILDERAPP_EXTENSIONPLUGINSMANAGER_HPP__ */
+

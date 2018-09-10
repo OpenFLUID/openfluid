@@ -40,7 +40,6 @@
 #include <openfluid/market/MarketBinObserverPackage.hpp>
 
 
-
 namespace openfluid { namespace market {
 
 

@@ -328,6 +328,7 @@ QString WareSrcWidgetCollection::getCurrentWarePath()
 // =====================================================================
 // =====================================================================
 
+
 WareSrcWidget* WareSrcWidgetCollection::currentWareWidget()
 {
   if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(mp_TabWidget->currentWidget()))
@@ -882,6 +883,7 @@ void WareSrcWidgetCollection::cutText()
   if (WareSrcWidget* Ware = currentWareWidget())
     Ware->cutText();
 }
+
 
 // =====================================================================
 // =====================================================================

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file GlobalParamsSim.cpp
 
@@ -139,12 +138,15 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
       OPENFLUID_RaiseError("wrong value for gparam3");
   }
 
+
   // =====================================================================
   // =====================================================================
 
 
   void prepareData()
-  { }
+  {
+
+  }
 
 
   // =====================================================================
@@ -152,7 +154,9 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
 
 
   void checkConsistency()
-  { }
+  {
+
+  }
 
 
   // =====================================================================
@@ -164,6 +168,7 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -172,6 +177,7 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
   {
     return DefaultDeltaT();
   }
+
 
   // =====================================================================
   // =====================================================================
@@ -182,8 +188,10 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(GlobalParamsSimulator)
 

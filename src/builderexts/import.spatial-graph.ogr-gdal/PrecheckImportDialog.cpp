@@ -34,13 +34,13 @@
   @file PrecheckImportDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
+
+#include <QCloseEvent>
 
 #include "ui_PrecheckImportDialog.h"
 #include "PrecheckImportDialog.hpp"
-
-#include <QCloseEvent>
 
 
 PrecheckImportDialog::PrecheckImportDialog(int StepsCount, QWidget* Parent = nullptr):

@@ -36,24 +36,27 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #define BOOST_TEST_NO_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WaresDevPackage
+
+
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <QCoreApplication>
+#include <QDir>
+#include <QSettings>
 
+#include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/config.hpp>
-#include "tests-config.hpp"
 
-#include <QCoreApplication>
-#include <QDir>
-#include <QSettings>
+#include "tests-config.hpp"
 
 
 // =====================================================================

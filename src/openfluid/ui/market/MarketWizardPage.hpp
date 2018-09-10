@@ -39,8 +39,10 @@
 #ifndef __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__
 #define __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__
 
-#include <openfluid/dllexport.hpp>
+
 #include <QWizardPage>
+
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace ui { namespace market {

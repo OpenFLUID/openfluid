@@ -73,6 +73,7 @@ WorkspaceDevPurgeWorker::WorkspaceDevPurgeWorker(const WorkspaceDevDashboardType
   m_BuildDirRegexStr = m_BuildDirRegexStr.arg(ModeArg).arg(VersionArg);
 }
 
+
 // =====================================================================
 // =====================================================================
 

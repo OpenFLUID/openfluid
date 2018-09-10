@@ -39,6 +39,7 @@
 #ifndef __OPENFLUID_BUILDERAPP_EDITEVENTDIALOG_HPP__
 #define __OPENFLUID_BUILDERAPP_EDITEVENTDIALOG_HPP__
 
+
 #include "AddEventDialog.hpp"
 
 
@@ -57,6 +58,5 @@ class EditEventDialog : public AddEventDialog
 };
 
 
-
-
 #endif /* __OPENFLUID_BUILDERAPP_EDITEVENTDIALOG_HPP__ */
+

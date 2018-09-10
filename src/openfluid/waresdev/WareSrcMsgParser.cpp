@@ -58,9 +58,6 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserNone::parse(const QString& MessageL
 // =====================================================================
 // =====================================================================
 
-// =====================================================================
-// =====================================================================
-
 
 WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLine,
                                                         WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType)
@@ -82,9 +79,6 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLi
   return Msg;
 }
 
-
-// =====================================================================
-// =====================================================================
 
 // =====================================================================
 // =====================================================================

@@ -30,16 +30,15 @@
 */
 
 
-
 /**
   @file ModelInstance.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
+
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
-
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
@@ -368,7 +367,6 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -622,7 +620,6 @@ void ModelInstance::call_finalizeRun() const
 
 // =====================================================================
 // =====================================================================
-
 
 
 } } //namespaces

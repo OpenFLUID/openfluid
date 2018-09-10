@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file AppActions.cpp
 
@@ -508,7 +507,4 @@ void AppActions::createToolbar(MainWindow& MainWin)
   MainWin.addToolBar(openfluid::base::PreferencesManager::instance()->getBuilderToolBarPosition(),
                      mp_MainToolbar);
 }
-
-
-
 

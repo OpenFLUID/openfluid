@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_CORE_SIMPLEVALUE_HPP__
 #define __OPENFLUID_CORE_SIMPLEVALUE_HPP__
 
+
 #include <openfluid/core/Value.hpp>
 #include <openfluid/dllexport.hpp>
 
@@ -63,10 +64,6 @@ class OPENFLUID_API SimpleValue : public Value
 
 
 } }  // namespaces
-
-
-// =====================================================================
-// =====================================================================
 
 
 #endif /* __OPENFLUID_CORE_SIMPLEVALUE_HPP__ */

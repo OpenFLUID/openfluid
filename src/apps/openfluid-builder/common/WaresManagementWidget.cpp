@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file WaresManagementWidget.cpp
 
@@ -151,5 +150,4 @@ void WaresManagementWidget::updateIndexesAndButtons(bool WithFinalStretch)
     }
   }
 }
-
 

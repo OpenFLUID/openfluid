@@ -108,6 +108,4 @@ class MonitoringWidget : public WorkspaceWidget
 };
 
 
-
-
 #endif /* __OPENFLUID_BUILDERAPP_MONITORINGWIDGET_HPP__ */

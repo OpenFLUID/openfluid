@@ -29,11 +29,12 @@
   
 */
 
+
 /**
   @file WareSetDescriptor.hpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_FLUIDX_WARESETDESCRIPTOR_HPP__
@@ -41,6 +42,7 @@
 
 
 #include <list>
+
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
 

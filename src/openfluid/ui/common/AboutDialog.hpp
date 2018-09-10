@@ -56,7 +56,6 @@ namespace Ui
 namespace openfluid { namespace ui { namespace common {
 
 
-
 class OPENFLUID_API AboutDialog : public QDialog
 {
   Q_OBJECT;

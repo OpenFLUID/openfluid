@@ -30,16 +30,16 @@
 */
 
 
-
 /**
   @file NewSimBuddy.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUDDIES_NEWSIMBUDDY_HPP__
 #define __OPENFLUID_BUDDIES_NEWSIMBUDDY_HPP__
+
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
@@ -65,5 +65,6 @@ class OPENFLUID_API NewSimulatorBuddy : public OpenFLUIDBuddy
 
 
 } } //namespaces
+
 
 #endif /* __OPENFLUID_BUDDIES_NEWSIMBUDDY_HPP__ */

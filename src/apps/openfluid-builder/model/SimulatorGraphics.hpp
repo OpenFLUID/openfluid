@@ -34,7 +34,7 @@
   @file SimulatorGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_SIMULATORGRAPHICS_HPP__
@@ -71,7 +71,6 @@ class SimulatorGraphics : public ModelItemGraphics
 
     QPointF getProducedIOPosition();
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_SIMULATORGRAPHICS_HPP__ */

@@ -30,25 +30,23 @@
 */
 
 
-
 /**
   @file MarketBuildOptionsDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
-#include <openfluid/ui/market/MarketBuildOptionsDialog.hpp>
-#include <openfluid/market/MarketPackage.hpp>
-#include <openfluid/tools/MiscHelpers.hpp>
+
 #include <QBoxLayout>
 #include <QDialogButtonBox>
 #include <QLabel>
 
+#include <openfluid/ui/market/MarketBuildOptionsDialog.hpp>
+#include <openfluid/market/MarketPackage.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
+
 
 namespace openfluid { namespace ui { namespace market {
-
-// =====================================================================
-// =====================================================================
 
 
 MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOptions,
@@ -73,7 +71,6 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOpt
   }
   else
     CommonOptsLabel->setText("");
-
 
 
   QLabel *EditLabel = new QLabel();
@@ -117,9 +114,6 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOpt
   setLayout(MainLayout);
 }
 
-
-// =====================================================================
-// =====================================================================
 
 } } } // namespaces
 

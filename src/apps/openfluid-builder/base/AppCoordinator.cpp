@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file AppCoordinator.cpp
 
@@ -168,7 +167,6 @@ AppCoordinator::~AppCoordinator()
 {
 
 }
-
 
 
 // =====================================================================
@@ -806,6 +804,7 @@ void AppCoordinator::whenOnlineCommunityAsked()
 
 // =====================================================================
 // =====================================================================
+
 
 void AppCoordinator::whenEmailAsked()
 {

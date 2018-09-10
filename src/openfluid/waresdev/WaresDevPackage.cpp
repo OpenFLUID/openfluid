@@ -183,9 +183,6 @@ QDir WaresDevPackage::getPackageTempDir()
 // =====================================================================
 // =====================================================================
 
-// =====================================================================
-// =====================================================================
-
 
 WaresDevExportPackage::WaresDevExportPackage(const QString& PackageFilePath, const QStringList& WaresPaths,
   const QString& Packagers, const QString& PackageDescription) :
@@ -289,9 +286,6 @@ void WaresDevExportPackage::compress()
 // =====================================================================
 // =====================================================================
 
-// =====================================================================
-// =====================================================================
-
 
 WaresDevImportPackage::WaresDevImportPackage(const QString& PackageFilePath) :
     WaresDevPackage(PackageFilePath, "import_file")
@@ -352,6 +346,7 @@ void WaresDevImportPackage::readConfFile()
   m_PackageDescription = ConfFileSettings.value("description", m_PackageDescription).toString();
   ConfFileSettings.endGroup();
 }
+
 
 // =====================================================================
 // =====================================================================

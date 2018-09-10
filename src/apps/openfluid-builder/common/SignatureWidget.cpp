@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SignatureWidget.cpp
 
@@ -38,13 +37,12 @@
  */
 
 
-#include "ui_SignatureWidget.h"
-#include "SignatureWidget.hpp"
-
 #include <QDir>
 
 #include <openfluid/ui/config.hpp>
 
+#include "ui_SignatureWidget.h"
+#include "SignatureWidget.hpp"
 
 
 SignatureWidget::SignatureWidget(QWidget* Parent):
@@ -115,7 +113,6 @@ void SignatureWidget::clearAllInfos()
 
 // =====================================================================
 // =====================================================================
-
 
 
 QString SignatureWidget::formatAuthors(const openfluid::ware::WareSignature::AuthorsList_t& AuthList)
@@ -232,7 +229,6 @@ void SignatureWidget::updateParameters(const openfluid::machine::ModelItemSignat
   if (ui->ParametersTableWidget->rowCount() > 0)
     ui->InfosTabWidget->addTab(ui->ParametersTab,tr("Parameters"));
 }
-
 
 
 // =====================================================================

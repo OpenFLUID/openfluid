@@ -47,6 +47,10 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
+
+// OpenFLUID:stylecheck:!incs
+
+
 #if defined(OPENFLUID_OS_UNIX)
 #include <unistd.h>
 #endif
@@ -234,7 +238,6 @@ void Environment::init()
   m_DefaultSimulatorsDirs.push_back(SimulatorsInstallPath);
 
 
-
   // ====== Observers directories ======
   // search order:
   //  1) command line paths
@@ -263,7 +266,6 @@ void Environment::init()
   // install directory
   std::string ObserversInstallPath = m_InstallPrefix + "/" + openfluid::config::OBSERVERS_WARESBIN_STD_PATH;
   m_DefaultObserversDirs.push_back(ObserversInstallPath);
-
 
 
   // ====== Builderexts directories ======

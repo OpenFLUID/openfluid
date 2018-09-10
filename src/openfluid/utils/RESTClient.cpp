@@ -132,7 +132,6 @@ class RequestExecutionImpl : public QObject
 };
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -162,6 +161,7 @@ RESTClient::Reply RESTClient::performRequest(const QString& Path, const QString&
   return RequestMan.getReply();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -173,7 +173,6 @@ void RESTClient::setBaseURL(const QString& URL)
   while (m_BaseURL.endsWith('/' ))
     m_BaseURL.chop(1);
 }
-
 
 
 // =====================================================================

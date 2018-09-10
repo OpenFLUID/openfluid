@@ -67,6 +67,9 @@ openfluid::base::SchedulingRequest runStep()
 // =====================================================================
 
 
+// OpenFLUID:stylecheck:!incs
+
+
 #ifndef NDEBUG
 
 #include <iostream>

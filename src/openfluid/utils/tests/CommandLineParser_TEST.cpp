@@ -39,9 +39,13 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_commandlineparser
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <iostream>
+
 #include <openfluid/utils/CommandLineParser.hpp>
 
 
@@ -187,6 +191,4 @@ BOOST_AUTO_TEST_CASE(check_parser)
 
   std::cout << std::endl;
 }
-
-
 

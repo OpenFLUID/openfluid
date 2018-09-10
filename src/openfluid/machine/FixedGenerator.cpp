@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file FixedGenerator.cpp
 
@@ -103,6 +102,7 @@ openfluid::base::SchedulingRequest FixedGenerator::initializeRun()
     return DefaultDeltaT();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -134,6 +134,4 @@ openfluid::base::SchedulingRequest FixedGenerator::runStep()
 
 
 } } //namespaces
-
-
 

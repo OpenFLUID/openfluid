@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file GeneratorDescriptor.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_FLUIDX_GENERATORDESCRIPTOR_HPP__

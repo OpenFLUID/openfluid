@@ -29,11 +29,13 @@
   
 */
 
+
 /**
   @file Factory.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/Factory.hpp>
@@ -57,13 +59,7 @@
 #include <openfluid/tools/IDHelpers.hpp>
 
 
-
 namespace openfluid { namespace machine {
-
-
-
-// =====================================================================
-// =====================================================================
 
 
 void Factory::buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
@@ -144,7 +140,6 @@ void Factory::buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDe
   SGraph.sortUnitsByProcessOrder();
 
 
-
   // ============== Attributes ==============
 
 
@@ -202,7 +197,6 @@ void Factory::buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDe
   }
 
 }
-
 
 
 // =====================================================================
@@ -405,5 +399,4 @@ void Factory::buildSimulationBlobFromDescriptors(const openfluid::fluidx::FluidX
 
 
 } } //namespaces
-
 

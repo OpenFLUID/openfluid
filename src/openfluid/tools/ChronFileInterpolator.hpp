@@ -34,17 +34,20 @@
   @file ChronFileInterpolator.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_TOOLS_CHRONFILEINTERPOLATOR_HPP__
 #define __OPENFLUID_TOOLS_CHRONFILEINTERPOLATOR_HPP__
 
+
 #include <list>
 #include <iostream>
+
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/tools/ChronologicalSerie.hpp>
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace tools {
 

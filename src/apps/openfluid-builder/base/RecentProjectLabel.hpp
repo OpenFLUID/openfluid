@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file RecentProjectLabel.hpp
 
@@ -61,7 +62,6 @@ class RecentProjectLabel : public openfluid::ui::common::ClickableLabel
     { }
 
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_RECENTPROJECTLABEL_HPP__ */

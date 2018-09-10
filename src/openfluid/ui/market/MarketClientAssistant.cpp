@@ -30,15 +30,12 @@
 */
 
 
-
 /**
   @file MarketClientAssistant.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
-
-#include <openfluid/ui/market/MarketClientAssistant.hpp>
 
 #include <iostream>
 #include <QIcon>
@@ -49,6 +46,7 @@
 #include <QModelIndex>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/ui/market/MarketClientAssistant.hpp>
 #include <openfluid/ui/market/MarketBuildOptionsDialog.hpp>
 #include <openfluid/ui/market/ViewLogFileWindow.hpp>
 #include <openfluid/ui/market/MarketPackWidgetFormat.hpp>

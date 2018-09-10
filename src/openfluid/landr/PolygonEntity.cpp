@@ -29,12 +29,13 @@
 
  */
 
+
 /**
   @file PolygonEntity.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
 
 
 #include <algorithm>
@@ -56,7 +57,6 @@
 
 
 namespace openfluid { namespace landr {
-
 
 
 PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon, unsigned int OfldId) :

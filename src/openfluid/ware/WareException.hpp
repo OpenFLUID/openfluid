@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_WARE_WAREEXCEPTION_HPP__
 #define __OPENFLUID_WARE_WAREEXCEPTION_HPP__
 
+
 #include <sstream>
 
 #include <openfluid/base/Exception.hpp>
@@ -62,7 +63,6 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
       m_FullMessage = m_Message;
       m_FullMessage += " [" + m_Context.toString() + "]";
     }
-
 
 
   public:
@@ -135,13 +135,10 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
     }
 
 
-
 };
 
 
 } } // namespaces
-
-
 
 
 #endif /* __OPENFLUID_WARE_WAREEXCEPTION_HPP__ */

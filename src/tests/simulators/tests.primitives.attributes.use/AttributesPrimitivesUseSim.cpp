@@ -29,19 +29,20 @@
   
 */
 
+
 /**
   @file AttributesPrimitivesUseSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
+
+#include <QString>
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
-#include <QString>
-
 
 
 // =====================================================================
@@ -335,7 +336,6 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
           OPENFLUID_RaiseError("incorrect OPENFLUID_GetAttribute (indataLong3 conversion to double)");
 
 
-
         // bool
 
         VarBoolVal.set(false);
@@ -591,8 +591,10 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(AttributesPrimitivesUseSimulator)
 

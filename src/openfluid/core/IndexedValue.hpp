@@ -33,20 +33,20 @@
   @file IndexedValue.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
+*/
 
 
 #ifndef __OPENFLUID_CORE_INDEXEDVALUE_HPP__
 #define __OPENFLUID_CORE_INDEXEDVALUE_HPP__
 
+
+#include <list>
+#include <memory>
+
 #include <openfluid/deprecation.hpp>
 #include <openfluid/core/Value.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/DateTime.hpp>
-
-#include <list>
-#include <memory>
 
 
 namespace openfluid { namespace core {

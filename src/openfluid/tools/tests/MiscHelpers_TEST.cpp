@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file MiscHelpers_TEST.cpp
 
@@ -42,8 +41,11 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_mischelpers
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/global.hpp>
 
@@ -70,7 +72,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::matchWithWildcard("foo???foo","foobarfoo"),true);
 
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
 
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.1"),0);
@@ -90,7 +92,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~rc1","1.6.1+18"),-2);
 
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
 
 #if defined(OPENFLUID_OS_WINDOWS)
@@ -106,7 +108,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 #endif
 
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
 
   for (int i =0; i<10; i++)
@@ -116,7 +118,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
     std::cout << (2*(i+1)) << " chars: " << openfluid::tools::generatePseudoUniqueIdentifier(2*(i+1)) << std::endl;
 
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   int MSecs, Seconds, Minutes, Hours, Days  = 0;
 
@@ -135,7 +137,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(MSecs,1);
 
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
 
   for (auto D : {123456789,12345678,1234567,123456,12345,1234,123,12,1,0})

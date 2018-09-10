@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file FireProdSpreadSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
+
 
 #include <cmath>
 
@@ -120,6 +120,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     {
       OPENFLUID_GetSimulatorParameter(Params,"ignitionunits",m_IgnitionUnits);
     }
+
 
     // =====================================================================
     // =====================================================================

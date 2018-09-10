@@ -47,10 +47,9 @@ namespace Ui
 }
 
 
-#include <openfluid/ui/common/MessageDialog.hpp>
-
-
 #include <QDir>
+
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 class SaveAsDialog : public openfluid::ui::common::MessageDialog

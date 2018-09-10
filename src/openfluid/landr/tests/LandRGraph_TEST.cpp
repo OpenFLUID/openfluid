@@ -29,19 +29,26 @@
 
 */
 
+
 /**
   @file LandRGraph_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_landrgraph
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <tests-config.hpp>
+
+#include <geos/geom/LineString.h>
+#include <geos/geom/CoordinateSequence.h>
+
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
@@ -53,8 +60,8 @@
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
-#include <geos/geom/LineString.h>
-#include <geos/geom/CoordinateSequence.h>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -615,7 +622,6 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
   IntegerValue.set(0);
   Entity->getAttributeValue("attribut", IntegerValue);
   BOOST_CHECK_EQUAL( IntegerValue.get(), 11);
-
 
 
   openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS_complex.shp");

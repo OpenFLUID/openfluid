@@ -40,14 +40,19 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_cmakeproxy
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <iostream>
+
 #include <QCoreApplication>
+
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/base/Environment.hpp>
-#include "tests-config.hpp"
 
+#include "tests-config.hpp"
 
 
 BOOST_AUTO_TEST_CASE(check_configurecmd)

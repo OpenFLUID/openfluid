@@ -34,8 +34,7 @@
   @file PluggableBuilderExtension.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
+*/
 
 
 #ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEBUILDEREXTENSION_HPP__

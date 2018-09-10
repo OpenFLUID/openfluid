@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file RESTClient_TEST.cpp
 
@@ -41,18 +40,20 @@
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_restclient
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/cstdlib.hpp>
-
-#include <iostream>
 
 #include <QCoreApplication>
 
 #include <openfluid/utils/RESTClient.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
-#include <tests-config.hpp>
+#include "tests-config.hpp"
 
 
 // =====================================================================

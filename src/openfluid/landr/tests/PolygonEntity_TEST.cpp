@@ -29,19 +29,29 @@
 
 */
 
+
 /**
   @file PolygonEntity_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
 
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_polygonentity
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <tests-config.hpp>
+
+#include <geos/planargraph/Node.h>
+#include <geos/geom/Geometry.h>
+#include <geos/geom/LineString.h>
+#include <geos/geom/Polygon.h>
+#include <geos/geom/CoordinateArraySequenceFactory.h>
+#include <geos/geom/GeometryFactory.h>
+
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
@@ -52,12 +62,8 @@
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
-#include <geos/planargraph/Node.h>
-#include <geos/geom/Geometry.h>
-#include <geos/geom/LineString.h>
-#include <geos/geom/Polygon.h>
-#include <geos/geom/CoordinateArraySequenceFactory.h>
-#include <geos/geom/GeometryFactory.h>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -573,7 +579,6 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Contains)
   BOOST_CHECK_EQUAL((*jt),12);
 
 
-
   // line Neighbours of SU2
   BOOST_CHECK(!SU2->lineStringNeighbours());
   SU2->computeLineStringNeighbours(*RSGraph,openfluid::landr::LandRTools::CONTAINS, 0);
@@ -831,7 +836,6 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
   BOOST_CHECK_EQUAL((*jt),4);
 
 
-
   // line Neighbours of SU4
   SU4->computeLineStringNeighbours(*RSGraph,openfluid::landr::LandRTools::TOUCHES,0.1,0.2);
 
@@ -908,7 +912,6 @@ BOOST_AUTO_TEST_CASE(check_computeNeighbourWithCommonEdge)
 	delete SUGraph;
 	delete ValSU;
 
-
 }
 
 
@@ -942,7 +945,6 @@ BOOST_AUTO_TEST_CASE(check_computeNeighboursWithBarriers)
   BOOST_CHECK_EQUAL(SU3->getOrderedNeighbourOfldIds().size(),2);
   SU4->computeNeighbours();
   BOOST_CHECK_EQUAL(SU4->getOrderedNeighbourOfldIds().size(),2);
-
 
 
   BOOST_CHECK_THROW(SU1->computeNeighboursWithBarriers(*BarriersGraph,openfluid::landr::LandRTools::INTERSECTS,0.01),

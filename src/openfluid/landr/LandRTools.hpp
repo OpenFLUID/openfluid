@@ -29,15 +29,17 @@
 
 */
 
+
 /**
   @file LandRTools.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
 
 #ifndef __OPENFLUID_LANDR_LANDRTOOLS_HPP__
 #define __OPENFLUID_LANDR_LANDRTOOLS_HPP__
+
 
 #include <vector>
 #include <list>

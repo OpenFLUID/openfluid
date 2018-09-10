@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file DatastoreWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <gdal.h>

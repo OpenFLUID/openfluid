@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file MessageDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <QVBoxLayout>
@@ -153,5 +152,4 @@ QPushButton* MessageDialog::buttonOfButtonBox(QDialogButtonBox::StandardButton W
 }
 
 } } } // namespaces
-
 

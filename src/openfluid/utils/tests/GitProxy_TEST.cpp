@@ -40,15 +40,19 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_cmakeproxy
-#include <boost/test/unit_test.hpp>
+
 
 #include <QCoreApplication>
 #include <QString>
 #include <QDir>
+
+#include <boost/test/unit_test.hpp>
+
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
+
 #include "tests-config.hpp"
 
 

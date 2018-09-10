@@ -41,6 +41,7 @@
 #ifndef __OPENFLUID_WARESDEV_WARESHUBIMPORTWORKER_HPP__
 #define __OPENFLUID_WARESDEV_WARESHUBIMPORTWORKER_HPP__
 
+
 #include <QObject>
 #include <QMap>
 #include <QStringList>

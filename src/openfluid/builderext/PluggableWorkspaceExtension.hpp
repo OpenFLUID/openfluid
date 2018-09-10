@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__
 #define __OPENFLUID_BUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__
 
+
 #include <QWidget>
 
 #include <openfluid/builderext/PluggableFeatureExtension.hpp>
@@ -77,6 +78,7 @@ class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public Pluggab
     { return true; };
 
 };
+
 
 } } // namespaces
 

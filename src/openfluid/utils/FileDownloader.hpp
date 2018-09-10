@@ -37,11 +37,12 @@
  */
 
 
-
 #ifndef __OPENFLUID_UTILS_FILEDOWNLOADER_HPP__
 #define __OPENFLUID_UTILS_FILEDOWNLOADER_HPP__
 
+
 #include <string>
+
 #include <openfluid/dllexport.hpp>
 
 
@@ -78,7 +79,6 @@ class OPENFLUID_API FileDownloader
 
 
 } } // namespaces
-
 
 
 #endif /* __OPENFLUID_UTILS_FILEDOWNLOADER_HPP__ */

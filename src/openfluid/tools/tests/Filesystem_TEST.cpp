@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Filesystem_TEST.cpp
 
@@ -42,12 +41,16 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_filesystem
-#include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
-#include <openfluid/tools/Filesystem.hpp>
-#include <tests-config.hpp>
+
 
 #include <set>
+
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
+
+#include <openfluid/tools/Filesystem.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================

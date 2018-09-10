@@ -37,7 +37,6 @@
 */
 
 
-
 #include <QPushButton>
 
 #include <openfluid/ui/config.hpp>

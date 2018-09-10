@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file IDHelpers.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
+
 
 #include <QRegExp>
 
@@ -44,7 +44,6 @@
 
 
 namespace openfluid { namespace tools {
-
 
 
 std::string classIDToString(const openfluid::core::UnitsClass_t& Class, openfluid::core::UnitID_t ID)
@@ -172,8 +171,6 @@ bool extractVariableNameAndType(const openfluid::core::VariableName_t& Name,
   return openfluid::core::Value::getValueTypeFromString(Name.substr(InPos+1,Name.size()-InPos-2),VarType);
 
 }
-
-
 
 
 } } // namespaces

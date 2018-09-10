@@ -29,19 +29,31 @@
 
 */
 
+
 /**
   @file LineStringGraph_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_linestringgraph
+
+
+#include <algorithm>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <tests-config.hpp>
+
+#include <geos/planargraph/DirectedEdge.h>
+#include <geos/planargraph/Node.h>
+#include <geos/geom/CoordinateSequence.h>
+#include <geos/geom/LineString.h>
+#include <geos/geom/LineSegment.h>
+
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
@@ -54,12 +66,8 @@
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
-#include <geos/planargraph/DirectedEdge.h>
-#include <geos/planargraph/Node.h>
-#include <geos/geom/CoordinateSequence.h>
-#include <geos/geom/LineString.h>
-#include <geos/geom/LineSegment.h>
-#include <algorithm>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================

@@ -907,6 +907,7 @@ void WareSrcFileEditor::setShowLineMarkers(bool ShowMarkers)
 // =====================================================================
 // =====================================================================
 
+
 bool WareSrcFileEditor::getShowLineMarkers()
 {
   return m_ShowLineMarkers;

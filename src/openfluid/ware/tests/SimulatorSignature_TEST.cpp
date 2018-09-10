@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SimulatorSignature_TEST.cpp
 
@@ -41,6 +40,8 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_simsignature
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
@@ -63,8 +64,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Max,0);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -179,5 +182,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   delete Signature;
 }
-
 

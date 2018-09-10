@@ -80,5 +80,4 @@ class AddUnitToClassDialog : public AddUnitDialog
 };
 
 
-
 #endif /* __OPENFLUID_BUILDERAPP_ADDUNITTOCLASSDIALOG_HPP__ */

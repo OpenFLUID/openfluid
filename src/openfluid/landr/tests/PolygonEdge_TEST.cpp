@@ -29,28 +29,35 @@
 
 */
 
+
 /**
   @file PolygonEdge_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_polygonedge
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <tests-config.hpp>
-#include <openfluid/landr/PolygonEdge.hpp>
-#include <openfluid/landr/PolygonEntity.hpp>
+
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
 #include <geos/geom/CoordinateArraySequenceFactory.h>
 #include <geos/geom/GeometryFactory.h>
+
+#include <openfluid/landr/PolygonEdge.hpp>
+#include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/core/IntegerValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/base/Environment.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================

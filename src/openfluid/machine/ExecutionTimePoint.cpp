@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ExecutionTimePoint.cpp
 
@@ -43,7 +42,6 @@
 
 
 namespace openfluid { namespace machine {
-
 
 
 ExecutionTimePoint::ExecutionTimePoint(openfluid::core::TimeIndex_t TimeIndex) :
@@ -86,10 +84,5 @@ openfluid::base::SchedulingRequest ExecutionTimePoint::processNextItem()
 }
 
 
-
 } } //namespaces
-
-
-
-
 

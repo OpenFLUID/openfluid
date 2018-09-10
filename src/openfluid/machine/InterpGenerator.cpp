@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file InterpGenerator.cpp
 
@@ -63,6 +62,7 @@ InterpGenerator::~InterpGenerator()
   if( m_DistriBindings != nullptr) delete m_DistriBindings;
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -184,6 +184,7 @@ openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -228,5 +229,4 @@ openfluid::base::SchedulingRequest InterpGenerator::runStep()
 
 
 } } //namespaces
-
 

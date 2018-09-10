@@ -34,11 +34,12 @@
   @file PluggableModelessExtension.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__
 #define __OPENFLUID_BUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__
+
 
 #include <QDialog>
 #include <QCloseEvent>
@@ -91,10 +92,8 @@ class OPENFLUID_API PluggableModelessExtension : public QDialog, public Pluggabl
 
 };
 
+
 } } // namespaces
-
-
-
 
 
 #endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__ */

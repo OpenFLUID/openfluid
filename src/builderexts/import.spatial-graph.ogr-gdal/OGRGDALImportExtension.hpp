@@ -33,15 +33,21 @@
   @file OGRGDALImportExtension.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OGRGDALIMPORTEXTENSION_HPP__
 #define __OGRGDALIMPORTEXTENSION_HPP__
 
 
+#include <QAbstractButton>
+#include <QListWidgetItem>
+#include <QCloseEvent>
+
 #include <openfluid/builderext/PluggableModalExtension.hpp>
+
 #include "PrecheckImportDialog.hpp"
+#include "SourceInfos.hpp"
 
 
 // =====================================================================
@@ -52,12 +58,6 @@ namespace Ui
 {
   class OGRGDALDialog;
 }
-
-#include "SourceInfos.hpp"
-
-#include <QAbstractButton>
-#include <QListWidgetItem>
-#include <QCloseEvent>
 
 
 class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExtension

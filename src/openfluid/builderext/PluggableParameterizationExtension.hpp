@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file PluggableParameterizationExtension.hpp
 
@@ -40,9 +41,9 @@
 #define __OPENFLUID_BUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__
 
 
-#include <openfluid/builderext/PluggableBuilderExtension.hpp>
-
 #include <QWidget>
+
+#include <openfluid/builderext/PluggableBuilderExtension.hpp>
 
 
 /**
@@ -69,6 +70,7 @@
     } \
 }
 #endif
+
 
 // =====================================================================
 // =====================================================================

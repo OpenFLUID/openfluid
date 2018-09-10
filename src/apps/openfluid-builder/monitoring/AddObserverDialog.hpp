@@ -34,7 +34,7 @@
   @file AddObserverDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_ADDOBSERVERDIALOG_HPP__
@@ -60,8 +60,6 @@ class AddObserverDialog : public AddWareDialog
 
     ~AddObserverDialog();
 };
-
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_ADDOBSERVERDIALOG_HPP__ */

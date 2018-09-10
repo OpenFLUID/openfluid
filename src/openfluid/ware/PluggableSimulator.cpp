@@ -30,13 +30,11 @@
 */
 
 
-
 /**
   @file PluggableSimulator.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
-
 
 
 #include <openfluid/config.hpp>
@@ -50,7 +48,6 @@
 
 
 namespace openfluid { namespace ware {
-
 
 
 PluggableSimulator::PluggableSimulator() : SimulationContributorWare(WareType::SIMULATOR),
@@ -166,7 +163,6 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
 
   return false;
 }
-
 
 
 // =====================================================================

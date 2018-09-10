@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Sim2DocBuddy.hpp
 
@@ -40,9 +39,6 @@
 
 #ifndef __OPENFLUID_BUDDIES_SIM2DOCBUDDY_HPP__
 #define __OPENFLUID_BUDDIES_SIM2DOCBUDDY_HPP__
-
-
-#include <openfluid/config.hpp>
 
 
 #if OPENFLUID_SIM2DOC_ENABLED
@@ -58,12 +54,15 @@
 #include <boost/spirit/include/classic_file_iterator.hpp>
 #include <boost/bind.hpp>
 
+#include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 
+
 using namespace BOOST_SPIRIT_CLASSIC_NS;
+
 
 namespace openfluid { namespace buddies {
 
@@ -353,7 +352,6 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
            >> *(',' >> element[boost::bind(&Sim2DocBuddy::clearParsedParam, self.mp_Owner)]);
 
 
-
           /** List of rules for the different lines of signature **/
 
           IDRule =
@@ -440,6 +438,7 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
 
 
 } } //namespaces
+
 
 #endif /* OPENFLUID_SIM2DOC_ENABLED */
 

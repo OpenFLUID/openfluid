@@ -40,7 +40,6 @@
 #include <openfluid/core/MapValue.hpp>
 
 
-
 BEGIN_SIMULATOR_SIGNATURE("tests.dotobs")
 
   DECLARE_NAME("");
@@ -101,6 +100,7 @@ class DotObsSimulator : public openfluid::ware::PluggableSimulator
     {
 
     }
+
 
     // =====================================================================
     // =====================================================================
@@ -176,6 +176,7 @@ class DotObsSimulator : public openfluid::ware::PluggableSimulator
       return DefaultDeltaT();
     }
 
+
     // =====================================================================
     // =====================================================================
 
@@ -187,8 +188,10 @@ class DotObsSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(DotObsSimulator)
 

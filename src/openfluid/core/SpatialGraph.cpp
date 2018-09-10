@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file SpatialGraph.cpp
 
@@ -40,7 +41,6 @@
 
 
 namespace openfluid { namespace core {
-
 
 
 // =====================================================================
@@ -91,7 +91,6 @@ bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
 
   return Found;
 }
-
 
 
 // =====================================================================
@@ -157,7 +156,6 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
   }
 
 
-
   // remove unit pointer from the list global list
 
   UnitsPtrList_t::iterator UnitsIt;
@@ -173,7 +171,6 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
     else
       ++UnitsIt;
   }
-
 
 
   // remove unit object from the "by class" list
@@ -304,6 +301,7 @@ UnitsCollection* SpatialGraph::spatialUnits(const UnitsClass_t& UnitsClass)
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -343,6 +341,7 @@ bool SpatialGraph::sortUnitsByProcessOrder()
 
   return true;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -441,6 +440,7 @@ void SpatialGraph::clearUnits()
     deleteUnit(*(UnitPtrIt++));
   }
 }
+
 
 } } // namespaces
 

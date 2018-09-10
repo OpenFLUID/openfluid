@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file InterpGenerator.hpp
 
@@ -41,9 +40,11 @@
 #ifndef __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__
 #define __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/tools/DistributionBindings.hpp>
+
 
 namespace openfluid { namespace machine {
 
@@ -84,8 +85,8 @@ class OPENFLUID_API InterpGenerator : public Generator
 
 };
 
-} } //namespaces
 
+} } //namespaces
 
 
 #endif /* __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__ */

@@ -36,8 +36,8 @@
  @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
-#include <openfluid/market/MarketSrcSimulatorPackage.hpp>
 
+#include <openfluid/market/MarketSrcSimulatorPackage.hpp>
 
 
 namespace openfluid { namespace market {

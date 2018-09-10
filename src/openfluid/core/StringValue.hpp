@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file StringValue.hpp
 
@@ -46,9 +45,7 @@
 #include <vector>
 
 #include <openfluid/core/SimpleValue.hpp>
-
 #include <openfluid/dllexport.hpp>
-
 
 
 namespace openfluid { namespace core {
@@ -334,7 +331,6 @@ class OPENFLUID_API StringValue : public SimpleValue
 
 
 } }  // namespaces
-
 
 
 #endif /* __OPENFLUID_CORE_STRINGVALUE_HPP__ */

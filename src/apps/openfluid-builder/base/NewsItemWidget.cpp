@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file NewsItemWidget.cpp
 
@@ -45,6 +44,7 @@
 #include "ui_NewsItemWidget.h"
 #include "NewsItemWidget.hpp"
 #include "builderconfig.hpp"
+
 
 QLocale NewsItemWidget::m_Locale = QLocale(QLocale::English);
 

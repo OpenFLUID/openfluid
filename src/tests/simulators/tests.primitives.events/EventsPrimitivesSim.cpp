@@ -29,16 +29,15 @@
   
 */
 
-
 /**
   @file EventsPrimitivesSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
-
 
 
 // =====================================================================
@@ -314,8 +313,10 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(EventsPrimitivesUseSimulator)
 

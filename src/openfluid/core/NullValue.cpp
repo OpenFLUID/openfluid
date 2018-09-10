@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file NullValue.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <openfluid/core/NullValue.hpp>
@@ -50,10 +49,5 @@ void NullValue::writeToStream(std::ostream& OutStm) const
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
 } }  // namespaces
-
 

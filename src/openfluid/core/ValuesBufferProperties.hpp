@@ -40,10 +40,12 @@
 #ifndef __OPENFLUID_CORE_VALUESBUFFERPROPERTIES_HPP__
 #define __OPENFLUID_CORE_VALUESBUFFERPROPERTIES_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace core {
+
 
 class OPENFLUID_API ValuesBufferProperties
 {
@@ -66,7 +68,6 @@ class OPENFLUID_API ValuesBufferProperties
 
 
 } } // namespaces
-
 
 
 #endif /* __OPENFLUID_CORE_VALUESBUFFERPROPERTIES_HPP__ */

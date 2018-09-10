@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file AdvancedWareSetDescriptor.hpp
 
@@ -39,6 +40,7 @@
 
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDWARESETDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_ADVANCEDWARESETDESCRIPTOR_HPP__
+
 
 #include <list>
 
@@ -78,6 +80,7 @@ class OPENFLUID_API AdvancedWareSetDescriptor
 
     // =====================================================================
     // =====================================================================
+
 
     /**
       Runs checking of descriptors
@@ -169,6 +172,7 @@ class OPENFLUID_API AdvancedWareSetDescriptor
 
     // =====================================================================
     // =====================================================================
+
 
     /**
       Inserts a pointer to ware descriptor at a given index in the wares set descriptor
@@ -284,6 +288,7 @@ class OPENFLUID_API AdvancedWareSetDescriptor
     // =====================================================================
     // =====================================================================
 
+
     /**
       Finds the index of the first ware descriptor corresponding to the given descriptor
       @param[in] Item the searched descriptor
@@ -325,6 +330,7 @@ class OPENFLUID_API AdvancedWareSetDescriptor
 
     // =====================================================================
     // =====================================================================
+
 
     /**
       Returns the number of ware descriptors in the wares set descriptor

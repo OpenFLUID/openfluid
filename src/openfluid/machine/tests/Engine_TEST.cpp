@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Engine_TEST.cpp
 
@@ -42,10 +41,10 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_engine
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-
-#include <tests-config.hpp>
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
@@ -56,7 +55,7 @@
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 
-
+#include "tests-config.hpp"
 
 
 class EmptySimulator : public openfluid::ware::PluggableSimulator
@@ -147,7 +146,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   displayModel(Model);
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
@@ -161,14 +160,12 @@ BOOST_AUTO_TEST_CASE(check_pretests)
                                                                                                           "UB",
                                                                                                           "",""));
 
-
-
   Model.resetInitialized();
   Model.appendItem(MIInstance);
 
   displayModel(Model);
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
 
   MIInstance = new openfluid::machine::ModelItemInstance();
@@ -185,7 +182,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   displayModel(Model);
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
@@ -202,7 +199,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   displayModel(Model);
 
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
@@ -219,7 +216,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   displayModel(Model);
 
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
@@ -232,7 +229,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   displayModel(Model);
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
@@ -251,8 +248,6 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   Model.appendItem(MIInstance);
 
   displayModel(Model);
-
-
 
 
   delete MachineListen;
@@ -283,7 +278,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   displayModel(Model);
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
@@ -295,14 +290,12 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   MIInstance->Signature->HandledData.UpdatedVars.push_back(
       openfluid::ware::SignatureTypedSpatialDataItem("var5[vector]","UB","",""));
 
-
-
   Model.resetInitialized();
   Model.appendItem(MIInstance);
 
   displayModel(Model);
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
 
   MIInstance = new openfluid::machine::ModelItemInstance();
@@ -318,7 +311,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   displayModel(Model);
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
@@ -334,7 +327,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   displayModel(Model);
 
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
@@ -350,7 +343,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   displayModel(Model);
 
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());
@@ -363,7 +356,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   displayModel(Model);
 
-  // =====================================================================
+  // ---------------------------------------------------------------------
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body.reset(new EmptySimulator());

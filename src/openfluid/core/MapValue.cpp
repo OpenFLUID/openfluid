@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file MapValue.cpp
 
@@ -208,6 +207,4 @@ void MapValue::clear()
 }
 
 } }  // namespaces
-
-
 

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Fortran90Sim.cpp
 
@@ -38,12 +37,12 @@
 */
 
 
+#include <cmath>
+
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/FortranCPP.hpp>
 #include <openfluid/core/Value.hpp>
 #include <openfluid/core/MatrixValue.hpp>
-#include <cmath>
-
 
 
 // =====================================================================
@@ -67,6 +66,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.fortran90")
 
   DECLARE_SCHEDULING_DEFAULT;
 END_SIMULATOR_SIGNATURE
+
 
 // =====================================================================
 // =====================================================================
@@ -118,6 +118,7 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
 
     }
 
+
     // =====================================================================
     // =====================================================================
 
@@ -147,6 +148,7 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
 
       return DefaultDeltaT();
     }
+
 
     // =====================================================================
     // =====================================================================
@@ -223,7 +225,6 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
       std::cout << std::endl;
 
 
-
       std::cout << "MValue:"<< std::endl;
       for (j=0; j < MDim2;j++)
       {
@@ -280,6 +281,7 @@ class Fortran90Simulator : public openfluid::ware::PluggableSimulator
 
       return DefaultDeltaT();
     }
+
 
     // =====================================================================
     // =====================================================================

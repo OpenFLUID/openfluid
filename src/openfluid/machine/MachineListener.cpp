@@ -30,18 +30,17 @@
 */
 
 
-
 /**
   @file MachineListener.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
+
 #include <openfluid/machine/MachineListener.hpp>
 
 
 namespace openfluid { namespace machine {
-
 
 
 } } //namespaces

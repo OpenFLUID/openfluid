@@ -30,18 +30,16 @@
 */
 
 
-
 /**
   @file AddUnitDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <QPushButton>
 
 #include <openfluid/ui/config.hpp>
-
 
 #include "ui_AddUnitDialog.h"
 #include "AddUnitDialog.hpp"

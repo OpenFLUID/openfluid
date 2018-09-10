@@ -36,14 +36,16 @@
   @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
+
 #ifndef __OPENFLUID_UIMARKET_MARKETPACKWIDGETFORMAT_HPP__
 #define __OPENFLUID_UIMARKET_MARKETPACKWIDGETFORMAT_HPP__
 
 
-#include <openfluid/ui/market/MarketPackWidget.hpp>
 #include <QComboBox>
 #include <QList>
 #include <QStandardItemModel>
+
+#include <openfluid/ui/market/MarketPackWidget.hpp>
 
 
 namespace openfluid { namespace ui { namespace market {

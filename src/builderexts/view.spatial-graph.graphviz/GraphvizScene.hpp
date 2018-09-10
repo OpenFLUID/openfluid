@@ -34,11 +34,12 @@
   @file GraphvizScene.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __GRAPHVIZSCENE_HPP__
 #define __GRAPHVIZSCENE_HPP__
+
 
 #include <QGraphicsScene>
 

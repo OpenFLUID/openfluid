@@ -29,18 +29,21 @@
 
 */
 
+
 /**
   @file Variables.hpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 */
 
+
 #ifndef __OPENFLUID_CORE_VARIABLES_HPP__
 #define __OPENFLUID_CORE_VARIABLES_HPP__
 
+
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace core {

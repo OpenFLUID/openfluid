@@ -30,23 +30,21 @@
 */
 
 
-
 /**
   @file ViewLogFileWindow.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
-#include <openfluid/ui/market/ViewLogFileWindow.hpp>
-#include <openfluid/base/FrameworkException.hpp>
+
 #include <QFile>
 #include <QTextStream>
 
+#include <openfluid/ui/market/ViewLogFileWindow.hpp>
+#include <openfluid/base/FrameworkException.hpp>
+
+
 namespace openfluid { namespace ui { namespace market {
-
-
-// =====================================================================
-// =====================================================================
 
 
 ViewLogFileWindow::ViewLogFileWindow(const QString& PathToLogFile) : QDialog()

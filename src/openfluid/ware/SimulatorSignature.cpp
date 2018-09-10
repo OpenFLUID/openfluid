@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SimulatorSignature.cpp
 
@@ -56,7 +55,6 @@ SignatureTypedSpatialDataItem::SignatureTypedSpatialDataItem(std::string DName,
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Variable " + DName + " is not well formated.");
 }
-
 
 
 } } //namespaces

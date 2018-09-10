@@ -39,7 +39,6 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
-
 BEGIN_SIMULATOR_SIGNATURE("tests.fakesimulator")
 
   DECLARE_NAME("");
@@ -98,12 +97,15 @@ class FakeSimulator : public openfluid::ware::PluggableSimulator
 
     }
 
+
     // =====================================================================
     // =====================================================================
 
 
     void prepareData()
-    { }
+    {
+
+    }
 
 
     // =====================================================================
@@ -111,7 +113,9 @@ class FakeSimulator : public openfluid::ware::PluggableSimulator
 
 
     void checkConsistency()
-    { }
+    {
+
+    }
 
 
     // =====================================================================
@@ -123,6 +127,7 @@ class FakeSimulator : public openfluid::ware::PluggableSimulator
       return DefaultDeltaT();
     }
 
+
     // =====================================================================
     // =====================================================================
 
@@ -132,17 +137,22 @@ class FakeSimulator : public openfluid::ware::PluggableSimulator
       return DefaultDeltaT();
     }
 
+
     // =====================================================================
     // =====================================================================
 
 
     void finalizeRun()
-    { }
+    {
+
+    }
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(FakeSimulator)
 

@@ -29,19 +29,25 @@
 
 */
 
+
 /**
   @file RasterDataset_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_rasterdataset
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <tests-config.hpp>
+
+#include <geos/geom/Coordinate.h>
+
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
@@ -51,7 +57,8 @@
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
-#include <geos/geom/Coordinate.h>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================

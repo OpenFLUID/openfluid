@@ -44,7 +44,6 @@
 #include "ui_WorkspaceDevGitWidget.h"
 
 
-
 namespace openfluid { namespace ui { namespace waresdev {
 
 

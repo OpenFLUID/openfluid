@@ -30,16 +30,12 @@
 */
 
 
-
 /**
   @file Engine.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
-
-#include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/machine/Engine.hpp>
 
 #include <iostream>
 #include <iomanip>
@@ -54,13 +50,11 @@
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/machine/Engine.hpp>
 
 
 namespace openfluid { namespace machine {
-
-
-// =====================================================================
-// =====================================================================
 
 
 Engine::Engine(SimulationBlob& SimBlob,
@@ -514,9 +508,6 @@ void Engine::initialize()
     openfluid::core::ValuesBufferProperties::setBufferSize(
         (mp_SimStatus->getSimulationDuration()/mp_SimStatus->getDefaultDeltaT())+2);
   }
-
-
-
 }
 
 
@@ -740,6 +731,4 @@ void Engine::finalize()
 
 
 } } //namespaces
-
-
 

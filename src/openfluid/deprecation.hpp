@@ -34,7 +34,7 @@
   @file deprecation.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_DEPRECATION_HPP__
@@ -43,6 +43,7 @@
 
 // =====================================================================
 // =====================================================================
+
 
 #ifdef __GNUC__
   #if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
@@ -53,7 +54,6 @@
 #else
   #define OPENFLUID_DEPRECATED
 #endif
-
 
 
 #endif /* __OPENFLUID_DEPRECATION_HPP__ */

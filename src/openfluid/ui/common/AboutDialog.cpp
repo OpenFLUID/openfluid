@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file AboutDialog.cpp
 
@@ -47,9 +46,9 @@
 #include <openfluid/buildinfo.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/ui/common/AboutDialog.hpp>
 
 #include "ui_AboutDialog.h"
-#include "AboutDialog.hpp"
 
 
 namespace openfluid { namespace ui { namespace common {

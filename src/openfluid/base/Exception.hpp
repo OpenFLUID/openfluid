@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Exception.hpp
 
@@ -43,6 +42,7 @@
 
 
 #include <exception>
+
 #include <openfluid/base/ExceptionContext.hpp>
 
 

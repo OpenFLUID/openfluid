@@ -41,11 +41,11 @@
 #define __OPENFLUID_BUILDERAPP_DASHBOARDSTATUSWIDGET_HPP__
 
 
+#include <QPixmap>
+
 #include "ProjectCentral.hpp"
 #include "DashboardWidget.hpp"
 #include "StatusMessagesWidget.hpp"
-
-#include <QPixmap>
 
 
 namespace Ui
@@ -83,7 +83,6 @@ class DashboardStatusWidget : public DashboardWidget
     ~DashboardStatusWidget();
 
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_DASHBOARDSTATUSWIDGET_HPP__ */

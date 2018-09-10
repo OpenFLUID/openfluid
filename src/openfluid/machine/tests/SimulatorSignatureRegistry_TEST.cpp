@@ -29,23 +29,28 @@
   
 */
 
+
 /**
   @file SimulatorSignatureRegistry_TEST.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_SimulatorSignatureRegistry
+
+
 #include <boost/test/unit_test.hpp>
 
-#include "tests-config.hpp"
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================

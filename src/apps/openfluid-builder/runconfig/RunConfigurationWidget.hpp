@@ -95,6 +95,4 @@ class RunConfigurationWidget : public WorkspaceWidget
 };
 
 
-
-
 #endif /* __OPENFLUID_BUILDERAPP_RUNCONFIGURATIONWIDGET_HPP__ */

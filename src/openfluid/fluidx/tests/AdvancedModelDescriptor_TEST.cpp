@@ -34,22 +34,26 @@
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_AdvancedModelDescriptor
+
+
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/WareDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -352,5 +356,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
       (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
       openfluid::fluidx::GeneratorDescriptor::Random);
 }
-
 

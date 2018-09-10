@@ -832,7 +832,6 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
       }
 
 
-
       // typed
       {
         openfluid::core::SpatialUnit* TU;
@@ -1077,7 +1076,6 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_RaiseError("incorrect OPENFLUID_IsTypedVariableExist (tests.map, MAP)");
 
 
-
           // tree value
 
           VarTreeVal.clear();
@@ -1244,8 +1242,10 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(VarsPrimitivesUseSimulator)
 

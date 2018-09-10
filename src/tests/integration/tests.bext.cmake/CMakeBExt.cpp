@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file CMakeBExt.cpp
 
@@ -38,10 +37,10 @@
  */
 
 
+#include <QPushButton>
+
 #include "ui_bext.h"
 #include "CMakeBExt.hpp"
-
-#include <QPushButton>
 
 
 // =====================================================================

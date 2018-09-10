@@ -34,16 +34,18 @@
   @file DatastoreWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_DATASTOREWIDGET_HPP__
 #define __OPENFLUID_BUILDERAPP_DATASTOREWIDGET_HPP__
 
+
 #include <QWidget>
 
-#include "WorkspaceWidget.hpp"
 #include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+
+#include "WorkspaceWidget.hpp"
 
 
 namespace Ui

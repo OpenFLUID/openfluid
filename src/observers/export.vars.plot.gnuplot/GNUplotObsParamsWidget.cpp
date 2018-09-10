@@ -86,7 +86,6 @@ GNUplotObsParamsWidget::GNUplotObsParamsWidget(): openfluid::builderext::Pluggab
   ui->RenameGraphButton->setIconSize(QSize(16,16));
 
 
-
   ui->RemoveSerieButton->setEnabled(false);
   ui->RenameSerieButton->setEnabled(false);
 
@@ -758,6 +757,7 @@ void GNUplotObsParamsWidget::setSourceFileName()
     }
   }
 }
+
 
 // =====================================================================
 // =====================================================================

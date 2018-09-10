@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file PluggableBuilderExtension.cpp
 
@@ -40,5 +39,4 @@
 
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-
 

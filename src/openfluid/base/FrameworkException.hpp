@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_BASE_FRAMEWORKEXCEPTION_HPP__
 #define __OPENFLUID_BASE_FRAMEWORKEXCEPTION_HPP__
 
+
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/deprecation.hpp>
 

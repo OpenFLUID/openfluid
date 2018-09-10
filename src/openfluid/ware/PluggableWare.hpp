@@ -116,7 +116,6 @@ class OPENFLUID_API PluggableWare
     WareID_t m_WareID;
 
 
-
   protected:
 
     bool m_Initialized;

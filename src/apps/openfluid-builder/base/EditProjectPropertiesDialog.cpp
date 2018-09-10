@@ -30,23 +30,21 @@
 */
 
 
-
 /**
   @file EditProjectPropertiesDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
-#include <openfluid/base/RunContextManager.hpp>
-
-#include <openfluid/ui/config.hpp>
-
-#include "ui_EditProjectPropertiesDialog.h"
-#include "EditProjectPropertiesDialog.hpp"
+*/
 
 
 #include <QPushButton>
 #include <QDateTime>
+
+#include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/ui/config.hpp>
+
+#include "ui_EditProjectPropertiesDialog.h"
+#include "EditProjectPropertiesDialog.hpp"
 
 
 EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):

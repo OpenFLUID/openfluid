@@ -40,9 +40,10 @@
 #ifndef __OPENFLUID_UTILS_EXTERNALPROGRAM_HPP__
 #define __OPENFLUID_UTILS_EXTERNALPROGRAM_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <QStringList>
+
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace utils {

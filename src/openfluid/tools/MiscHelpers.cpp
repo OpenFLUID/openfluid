@@ -53,7 +53,6 @@
 namespace openfluid { namespace tools {
 
 
-
 bool matchWithWildcard(const std::string& Pattern, const std::string& Str)
 {
 
@@ -141,7 +140,6 @@ std::string removeTrailingSlashes(const std::string& Str)
 
 // =====================================================================
 // =====================================================================
-
 
 
 int compareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict)

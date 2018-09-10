@@ -30,17 +30,16 @@
 */
 
 
-
 /**
   @file ModelScene.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
-
 
 #include "ModelScene.hpp"
 #include "SimulatorGraphics.hpp"
@@ -109,7 +108,6 @@ void ModelScene::refresh()
 
   unsigned int SimCount = 0;
   unsigned int GenCount = 0;
-
 
 
   // add model items

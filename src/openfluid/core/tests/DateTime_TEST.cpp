@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DateTime_TEST.cpp
 
@@ -42,8 +41,11 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_datetime
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/core/DateTime.hpp>
 
 
@@ -71,6 +73,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(DT.getMinute(),11);
   BOOST_REQUIRE_EQUAL(DT.getSecond(),25);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -242,5 +245,4 @@ BOOST_AUTO_TEST_CASE(check_tofromstring)
 
   BOOST_REQUIRE_EQUAL(DT.setFromString("2013-06-25","%d %Hh%Mm%Ss"),false);
 }
-// =====================================================================
-// =====================================================================
+

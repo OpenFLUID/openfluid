@@ -34,11 +34,12 @@
   @file MarketClientAssistant.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_UIMARKET_MARKETCLIENTASSISTANT_HPP__
 #define __OPENFLUID_UIMARKET_MARKETCLIENTASSISTANT_HPP__
+
 
 #include <QWizard>
 #include <QBoxLayout>
@@ -174,8 +175,6 @@ class OPENFLUID_API MarketClientAssistant : public QWizard
 
     QRadioButton m_LicensesAcceptRadio;
     QRadioButton m_LicensesDoNotRadio;
-
-
 
 
     // ===== Download and install =====//

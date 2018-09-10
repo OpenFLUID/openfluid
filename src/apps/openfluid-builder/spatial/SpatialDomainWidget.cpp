@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SpatialDomainWidget.cpp
 
@@ -917,6 +916,7 @@ void SpatialDomainWidget::removeUnit()
     QApplication::restoreOverrideCursor();
   }
 }
+
 
 // =====================================================================
 // =====================================================================

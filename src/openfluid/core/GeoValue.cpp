@@ -29,12 +29,14 @@
   
 */
 
+
 /**
   @file GeoValue.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #include <openfluid/core/GeoValue.hpp>
 
@@ -83,8 +85,5 @@ std::string GeoValue::getFilePath()
   return m_FilePath;
 }
 
-
-// =====================================================================
-// =====================================================================
 
 } } // namesaces

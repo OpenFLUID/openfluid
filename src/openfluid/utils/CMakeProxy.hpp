@@ -92,7 +92,6 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
                                            const QString& Options = "");
 
 
-
 };
 
 

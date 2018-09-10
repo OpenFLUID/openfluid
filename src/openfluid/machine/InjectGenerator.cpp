@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file InjectGenerator.cpp
 
@@ -157,6 +156,7 @@ openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
     return Never();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -200,5 +200,4 @@ openfluid::base::SchedulingRequest InjectGenerator::runStep()
 
 
 } } //namespaces
-
 

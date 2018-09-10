@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_BUILDERAPP_PROJECTCHECKINFOS_HPP__
 #define __OPENFLUID_BUILDERAPP_PROJECTCHECKINFOS_HPP__
 
+
 #include <map>
 
 #include <QStringList>

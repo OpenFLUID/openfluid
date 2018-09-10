@@ -37,8 +37,9 @@
 */
 
 
-#include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <rapidjson/document.h>
+
+#include <openfluid/utils/FluidHubAPIClient.hpp>
 
 
 namespace openfluid { namespace utils {

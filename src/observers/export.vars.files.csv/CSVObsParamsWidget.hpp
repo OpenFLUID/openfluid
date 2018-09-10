@@ -29,12 +29,12 @@
   
 */
 
+
 /**
   @file CSVObsParamsWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
-
 
 
 #ifndef __CSVOBSPARAMSWIDGET_HPP__

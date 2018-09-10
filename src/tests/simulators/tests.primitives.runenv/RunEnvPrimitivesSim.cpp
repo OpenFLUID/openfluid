@@ -141,7 +141,10 @@ class RunEnvPrimitivesSimulator : public openfluid::ware::PluggableSimulator
     // =====================================================================
 
 
-    void checkConsistency() { }
+    void checkConsistency()
+    {
+
+    }
 
 
     // =====================================================================
@@ -177,8 +180,10 @@ class RunEnvPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(RunEnvPrimitivesSimulator)
 

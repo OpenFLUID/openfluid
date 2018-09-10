@@ -30,15 +30,14 @@
 */
 
 
-
 /**
   @file ObserverPluginsManager.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
-#include <openfluid/machine/ObserverPluginsManager.hpp>
 
+#include <openfluid/machine/ObserverPluginsManager.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -48,3 +47,4 @@ OPENFLUID_SINGLETON_INITIALIZATION(ObserverPluginsManager)
 
 
 } }  // namespaces
+

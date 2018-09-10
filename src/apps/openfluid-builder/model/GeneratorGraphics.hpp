@@ -34,7 +34,7 @@
   @file GeneratorGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_GENERATORGRAPHICS_HPP__
@@ -61,7 +61,6 @@ class GeneratorGraphics : public ModelItemGraphics
 
     QPointF getProducedIOPosition();
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_GENERATORGRAPHICS_HPP__ */

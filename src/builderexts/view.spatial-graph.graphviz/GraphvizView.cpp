@@ -30,19 +30,17 @@
 */
 
 
-
 /**
   @file GraphvizView.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-
-
-#include "GraphvizView.hpp"
 
 #include <QSvgGenerator>
 #include <QFileDialog>
+
+#include "GraphvizView.hpp"
 
 
 GraphvizView::GraphvizView(QWidget* Parent):

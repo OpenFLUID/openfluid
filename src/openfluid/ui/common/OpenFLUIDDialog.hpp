@@ -41,8 +41,9 @@
 #define __OPENFLUID_UICOMMON_OPENFLUIDDIALOG_HPP__
 
 
-#include <openfluid/dllexport.hpp>
 #include <QDialog>
+
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {

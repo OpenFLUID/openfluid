@@ -40,9 +40,9 @@
 #define __OPENFLUID_BUILDERAPP_POINTGRAPHICS_HPP__
 
 
-#include "PunctualGraphics.hpp"
-
 #include <ogr_geometry.h>
+
+#include "PunctualGraphics.hpp"
 
 
 class PointGraphics : public PunctualGraphics
@@ -54,6 +54,5 @@ class PointGraphics : public PunctualGraphics
 };
 
 
-
-
 #endif /* __OPENFLUID_BUILDERAPP_POINTGRAPHICS_HPP__ */
+

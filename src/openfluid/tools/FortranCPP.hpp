@@ -162,8 +162,10 @@ BEGIN_EXTERN_FORTRAN
   EXTERN_FSUBROUTINE(multrealmatrix)(FREAL8*,FINT*,FINT*,FINT*,FREAL8*);
 END_EXTERN_FORTRAN
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
@@ -228,8 +230,6 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 */
 
 
-
-
 #ifndef __OPENFLUID_TOOLS_FORTRANCPP_HPP__
 #define __OPENFLUID_TOOLS_FORTRANCPP_HPP__
 
@@ -243,6 +243,7 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 #  define BEGIN_EXTERN_FORTRAN
 #  define END_EXTERN_FORTRAN
 #endif
+
 
 // =====================================================================
 // =====================================================================

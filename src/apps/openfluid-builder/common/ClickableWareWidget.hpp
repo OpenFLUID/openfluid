@@ -29,20 +29,21 @@
   
 */
 
+
 /**
   @file ClickableWareWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__
 #define __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__
 
-#include "WareWidget.hpp"
 
 #include <QMouseEvent>
+
+#include "WareWidget.hpp"
 
 
 class ClickableWareWidget : public WareWidget

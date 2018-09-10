@@ -34,7 +34,8 @@
   @file WareSignature.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
@@ -150,9 +151,7 @@ class OPENFLUID_API WareSignature
 };
 
 
-
 } } // openfluid::ware
-
 
 
 #endif /* __OPENFLUID_WARE_WARESIGNATURE_HPP__ */

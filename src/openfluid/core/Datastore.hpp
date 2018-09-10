@@ -29,11 +29,13 @@
   
 */
 
+
 /**
   @file Datastore.hpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
+
 
 #ifndef __OPENFLUID_CORE_DATASTORE_HPP__
 #define __OPENFLUID_CORE_DATASTORE_HPP__
@@ -41,6 +43,7 @@
 
 #include <map>
 #include <string>
+
 #include <openfluid/dllexport.hpp>
 
 

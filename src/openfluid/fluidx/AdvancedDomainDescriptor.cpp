@@ -33,17 +33,17 @@
   @file AdvancedDomainDescriptor.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
 
 
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-
-#include <openfluid/fluidx/AttributesDescriptor.hpp>
-#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
-#include <openfluid/fluidx/SpatialUnitDescriptor.hpp>
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
+
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/fluidx/AttributesDescriptor.hpp>
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
+#include <openfluid/fluidx/SpatialUnitDescriptor.hpp>
 
 
 namespace openfluid { namespace fluidx {

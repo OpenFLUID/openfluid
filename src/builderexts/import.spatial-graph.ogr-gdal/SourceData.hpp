@@ -33,11 +33,12 @@
   @file SourceData.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __SOURCEDATA_HPP__
 #define __SOURCEDATA_HPP__
+
 
 #include <QString>
 #include <QList>

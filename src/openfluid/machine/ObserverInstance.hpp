@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_MACHINE_OBSERVERINSTANCE_HPP__
 #define __OPENFLUID_MACHINE_OBSERVERINSTANCE_HPP__
 
+
 #include <memory>
 
 #include <openfluid/ware/ObserverSignature.hpp>
@@ -84,7 +85,6 @@ class OPENFLUID_API ObserverInstance : public ObserverSignatureInstance
 
 
 } }  // namespaces
-
 
 
 #endif /* __OPENFLUID_MACHINE_OBSERVERINSTANCE_HPP__ */

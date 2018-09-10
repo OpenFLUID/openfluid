@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DashboardInfosWidget.cpp
 

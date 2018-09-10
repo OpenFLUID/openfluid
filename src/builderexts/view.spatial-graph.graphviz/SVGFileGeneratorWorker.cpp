@@ -30,21 +30,20 @@
 */
 
 
-
 /**
   @file SVGFileGeneratorWorker.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-#include <openfluid/utils/ExternalProgram.hpp>
-
-#include "SVGFileGeneratorWorker.hpp"
 
 #include <QTextStream>
 #include <QProcess>
 #include <QFile>
 
+#include <openfluid/utils/ExternalProgram.hpp>
+
+#include "SVGFileGeneratorWorker.hpp"
 
 
 SVGFileGeneratorWorker::SVGFileGeneratorWorker(const QString& GVFileName, const QString& SVGFileName,

@@ -136,5 +136,4 @@ class HomeModuleWidget : public AbstractModuleWidget
 };
 
 
-
 #endif /* __OPENFLUID__BUILDERAPP_HOMEMODULEWIDGET_HPP__ */

@@ -60,7 +60,6 @@
 #define _EVENTSLISTITERID(_id) _M_##_id##_EListit
 
 
-
 #define _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitsclass,unitptr,id) \
     openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->spatialUnits(unitsclass)->list(); \
     if (_UNITSLISTID(id) != nullptr && !(_UNITSLISTID(id)->empty())) \
@@ -78,8 +77,6 @@
     _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitsclass,unitptr,__LINE__)
 
 
-
-
 #define _OPENFLUID_ALLUNITS_ORDERED_LOOP_WITHID(unitptr,id) \
     openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_SpatialData->allSpatialUnits(); \
     for (openfluid::core::UnitsPtrList_t::iterator _UNITSPTRLISTITERID(id) = _UNITSPTRLISTID(id)->begin(); \
@@ -95,7 +92,6 @@
     _OPENFLUID_ALLUNITS_ORDERED_LOOP_WITHID(unitptr,__LINE__)
 
 
-
 #define _OPENFLUID_UNITSLIST_LOOP_WITHID(unitslist,unitptr,id) \
     if (unitslist != nullptr) \
       for (openfluid::core::UnitsPtrList_t::iterator _UNITSLISTITERID(id) = unitslist->begin(); \
@@ -109,7 +105,6 @@
   pointing to the current processed unit
 */#define OPENFLUID_UNITSLIST_LOOP(unitslist,unitptr) \
     _OPENFLUID_UNITSLIST_LOOP_WITHID(unitslist,unitptr,__LINE__)
-
 
 
 #define _OPENFLUID_EVENT_COLLECTION_LOOP_WITHID(id,evlist,evobj) \

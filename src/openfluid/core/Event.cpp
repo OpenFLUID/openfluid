@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Event.cpp
 
@@ -42,7 +41,9 @@
 #include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 
+
 namespace openfluid { namespace core {
+
 
 Event::Event():
   m_Date(DateTime())

@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file dllexport.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_DLLEXPORT_HPP__

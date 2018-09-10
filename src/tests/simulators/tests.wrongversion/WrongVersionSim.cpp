@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file WrongVersionSim.cpp
 
@@ -96,20 +95,30 @@ class WrongVersionSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+  {
 
-  // =====================================================================
-  // =====================================================================
-
-
-  void prepareData() { }
+  }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  void checkConsistency() { }
+  void prepareData()
+  {
+
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void checkConsistency()
+  {
+
+  }
 
 
   // =====================================================================
@@ -133,6 +142,7 @@ class WrongVersionSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -144,8 +154,10 @@ class WrongVersionSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 // below replaces DEFINE_SIMULATOR_CLASS(WrongVersionSimulator)
 
@@ -153,6 +165,7 @@ std::string GetWareABIVersion()
 {
   return std::string("0.0.0");
 }
+
 
 openfluid::ware::PluggableSimulator* GetWareBody()
 {

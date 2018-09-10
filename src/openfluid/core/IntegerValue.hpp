@@ -30,17 +30,15 @@
 */
 
 
-
 /**
   @file IntegerValue.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_CORE_INTEGERVALUE_HPP__
 #define __OPENFLUID_CORE_INTEGERVALUE_HPP__
-
 
 
 #include <openfluid/core/SimpleValue.hpp>

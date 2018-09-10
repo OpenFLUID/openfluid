@@ -29,15 +29,17 @@
   
 */
 
+
 /**
   @file PrecheckWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __PRECHECKWORKER_HPP__
 #define __PRECHECKWORKER_HPP__
+
 
 #include "DataProcessingWorker.hpp"
 

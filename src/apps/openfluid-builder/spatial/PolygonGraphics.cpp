@@ -30,17 +30,16 @@
 */
 
 
-
 /**
   @file PolygonGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
+#include <QBrush>
 
 #include "PolygonGraphics.hpp"
-#include <QBrush>
 
 
 PolygonGraphics::PolygonGraphics(OGRPolygon* OGRPoly, const QPen& Pen, const QBrush& Brush):

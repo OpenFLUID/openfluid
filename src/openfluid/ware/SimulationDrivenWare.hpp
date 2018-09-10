@@ -370,9 +370,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
 };
 
 
-
 } } // openfluid::ware
-
 
 
 #endif /* __OPENFLUID_WARE_SIMULATIONDRIVENWARE_HPP__ */

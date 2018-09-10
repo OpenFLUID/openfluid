@@ -171,6 +171,7 @@ QString WareSrcContainer::searchMainCppFileName(const QString& CMakeFileContent)
   return "";
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -580,7 +581,6 @@ void WareSrcContainer::build()
 
   runCommand(Command, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
 }
-
 
 
 // =====================================================================

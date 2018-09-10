@@ -30,21 +30,23 @@
 */
 
 
-
 /**
   @file ValuesBuffer_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_sserievalues
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
+
 #include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/NullValue.hpp>
@@ -77,8 +79,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -122,6 +126,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(IValueList.size(),3);
 
 
+  // ------
 
   BOOST_REQUIRE_EQUAL(VBuffer.getIndexedValues(1,2,IValueList),true);
   BOOST_REQUIRE_EQUAL(IValueList.size(),2);
@@ -186,6 +191,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
 //  BOOST_REQUIRE_EQUAL(VBuffer.deleteValues(8),true);
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_type_operations)
 {
@@ -329,5 +339,3 @@ BOOST_AUTO_TEST_CASE(check_type_operations)
 
 }
 
-// =====================================================================
-// =====================================================================

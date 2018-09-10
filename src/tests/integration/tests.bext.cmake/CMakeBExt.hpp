@@ -41,17 +41,16 @@
 #define __CMAKEBEXT_HPP__
 
 
+#include <QDialog>
+
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-
-#include <QDialog>
 
 
 namespace Ui
 {
   class BExtDialog;
 }
-
 
 
 class CMakeBuilderExtension : public openfluid::builderext::PluggableModalExtension

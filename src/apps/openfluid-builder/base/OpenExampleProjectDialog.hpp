@@ -34,16 +34,16 @@
   @file OpenExampleProjectDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__
 #define __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__
 
 
-#include <openfluid/ui/common/MessageDialog.hpp>
-
 #include <QListWidgetItem>
+
+#include <openfluid/ui/common/MessageDialog.hpp>
 
 
 namespace Ui
@@ -76,7 +76,6 @@ class OpenExampleProjectDialog : public openfluid::ui::common::MessageDialog
 
     QString getSelectedProjectPath() const;
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__ */

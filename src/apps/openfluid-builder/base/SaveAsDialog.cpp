@@ -30,13 +30,15 @@
 */
 
 
-
 /**
   @file SaveAsDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
+
+#include <QPushButton>
+#include <QFileDialog>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
@@ -45,10 +47,6 @@
 
 #include "ui_SaveAsDialog.h"
 #include "SaveAsDialog.hpp"
-
-
-#include <QPushButton>
-#include <QFileDialog>
 
 
 SaveAsDialog::SaveAsDialog(QWidget* Parent) :

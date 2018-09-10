@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file LoopsSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
+
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
@@ -82,7 +82,6 @@ TU.1         TU.2
     TU.52 --> OU.5 <-- OU.13
                |
                --> OU.25
-
 
 
 <?xml version="1.0" standalone="yes"?>
@@ -200,7 +199,6 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       openfluid::core::UnitsList_t::const_iterator itUnitsList;
       openfluid::core::UnitsPtrList_t::const_iterator itToUnitsPtrList;
       openfluid::core::UnitsPtrList_t::const_iterator itFromUnitsPtrList;
-
 
 
       UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_SpatialData->allSpatialUnitsByClass());
@@ -468,7 +466,6 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("error in list loop on fake units");
 
 
-
       // ===== performance =====
 
       LastPcsOrd = 0;
@@ -506,5 +503,4 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
 
 DEFINE_SIMULATOR_CLASS(LoopsSimulator);
-
 

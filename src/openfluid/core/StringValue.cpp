@@ -30,13 +30,11 @@
 */
 
 
-
 /**
   @file StringValue.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
+*/
 
 
 #include <sstream>
@@ -54,7 +52,6 @@
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
-
 #include <openfluid/base/FrameworkException.hpp>
 
 
@@ -754,5 +751,4 @@ bool StringValue::toTreeValue(TreeValue& /*Val*/) const
 
 
 } }  // namespaces
-
 

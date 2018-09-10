@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SimulationContributorWare.cpp
 
@@ -967,5 +966,4 @@ void SimulationContributorWare::OPENFLUID_BuildUnitsMatrix(const openfluid::core
 
 
 } } // namespaces
-
 

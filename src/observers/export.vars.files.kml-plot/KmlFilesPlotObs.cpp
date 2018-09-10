@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file KmlFilesPlotObs.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <fstream>
@@ -286,7 +285,6 @@ class KmlFilesPlotObserver : public KmlObserverBase
           }
 
 
-
           if ((*it2).second.GeometryType == wkbPolygon)
           {
             KmlFile << "<Polygon><tessellate>1</tessellate><outerBoundaryIs><LinearRing><coordinates>"
@@ -332,7 +330,6 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       return oss.str();
     }
-
 
 
   public:
@@ -496,7 +493,6 @@ class KmlFilesPlotObserver : public KmlObserverBase
       }
 
 
-
       // initialize data files
 
       for (std::list<KmlSerieInfo>::iterator it=m_KmlSeriesInfos.begin();it!=m_KmlSeriesInfos.end();++it)
@@ -655,7 +651,6 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
 
 };
-
 
 
 // =====================================================================

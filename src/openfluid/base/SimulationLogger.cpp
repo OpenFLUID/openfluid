@@ -39,11 +39,8 @@
 
 #include <openfluid/base/SimulationLogger.hpp>
 
+
 namespace openfluid { namespace base {
-
-
-// =====================================================================
-// =====================================================================
 
 
 SimulationLogger::SimulationLogger(const std::string& LogFilePath):
@@ -77,6 +74,4 @@ void SimulationLogger::add(LogType LType, const std::string& ContextStr, const s
 
 
 } } // namespace openfluid::base
-
-
 

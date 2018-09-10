@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file GeneratorsSim.cpp
 
@@ -112,14 +111,19 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
 
 
   void initParams(const openfluid::ware::WareParams_t& /*Params*/)
-  { }
+  {
+
+  }
+
 
   // =====================================================================
   // =====================================================================
 
 
   void prepareData()
-  { }
+  {
+
+  }
 
 
   // =====================================================================
@@ -127,7 +131,9 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
 
 
   void checkConsistency()
-  { }
+  {
+
+  }
 
 
   // =====================================================================
@@ -138,6 +144,7 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
   {
     return DefaultDeltaT();
   }
+
 
   // =====================================================================
   // =====================================================================
@@ -228,17 +235,22 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
 
   void finalizeRun()
-  { }
+  {
+
+  }
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(GeneratorsSimulator)
 

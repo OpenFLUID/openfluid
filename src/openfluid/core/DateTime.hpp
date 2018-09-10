@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DateTime.hpp
 
@@ -422,18 +421,8 @@ class OPENFLUID_API DateTime
 };
 
 
-
 } } // namespaces
 
+
 #endif
-
-
-
-
-
-
-
-
-
-
 

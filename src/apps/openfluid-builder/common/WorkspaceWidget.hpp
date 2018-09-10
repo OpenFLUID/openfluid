@@ -34,15 +34,17 @@
   @file WorkspaceWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_WORKSPACEWIDGET_HPP__
 #define __OPENFLUID_BUILDERAPP_WORKSPACEWIDGET_HPP__
 
-#include <openfluid/builderext/FluidXUpdateFlags.hpp>
 
 #include <QWidget>
+
+#include <openfluid/builderext/FluidXUpdateFlags.hpp>
+
 
 namespace openfluid { namespace fluidx {
   class AdvancedFluidXDescriptor;

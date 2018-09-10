@@ -30,20 +30,21 @@
 */
 
 
-
 /**
   @file DistributionTables.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
-#include <openfluid/tools/DistributionTables.hpp>
-#include <openfluid/tools/ColumnTextParser.hpp>
-#include <openfluid/tools/Filesystem.hpp>
 
 #include <QDomDocument>
 #include <QDomElement>
 #include <QFile>
+
+#include <openfluid/tools/DistributionTables.hpp>
+#include <openfluid/tools/ColumnTextParser.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+
 
 namespace openfluid { namespace tools {
 
@@ -118,11 +119,7 @@ void DistributionTables::build(const std::string& BasePath,
                                               SourcesFilePath);
 
 
-
-
-
   // Units distribution file
-
 
   long UnitID;
   std::string DataSrcID;

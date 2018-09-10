@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DefaultBuddiesListener.hpp
 
@@ -42,11 +41,9 @@
 #define __OPENFLUID_CMDLINEAPP_DEFAULTBUDDIESLISTENER_HPP__
 
 
-#include <openfluid/buddies/BuddiesListener.hpp>
 #include <iostream>
 
-// =====================================================================
-// =====================================================================
+#include <openfluid/buddies/BuddiesListener.hpp>
 
 
 class DefaultBuddiesListener : public openfluid::buddies::BuddiesListener
@@ -105,8 +102,6 @@ class DefaultBuddiesListener : public openfluid::buddies::BuddiesListener
       displayOptionsHelp(OptionsHelp);
       std::cout.flush();
     };
-
-
 
 };
 

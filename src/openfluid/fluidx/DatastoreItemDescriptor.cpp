@@ -33,10 +33,10 @@
   @file DatastoreItemDescriptor.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
 
 
-#include "DatastoreItemDescriptor.hpp"
+#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 
 
 namespace openfluid { namespace fluidx {
@@ -115,8 +115,5 @@ openfluid::core::UnitsClass_t DatastoreItemDescriptor::getUnitsClass() const
   return m_UnitsClass;
 }
 
-
-// =====================================================================
-// =====================================================================
 
 } } // namespaces

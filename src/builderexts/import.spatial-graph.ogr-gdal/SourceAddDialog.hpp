@@ -29,20 +29,23 @@
   
 */
 
+
 /**
   @file SourceAddDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __SOURCEADDDIALOG_HPP__
 #define __SOURCEADDDIALOG_HPP__
 
+
 namespace Ui
 {
   class SourceAddDialog;
 }
+
 
 #include <QDialog>
 

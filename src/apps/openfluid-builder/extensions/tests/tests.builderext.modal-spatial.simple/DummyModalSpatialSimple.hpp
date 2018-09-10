@@ -34,7 +34,7 @@
   @file DummyModalSpatialSimple.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __DUMMYMODALSPATIALSIMPLE_HPP__
@@ -56,8 +56,6 @@ class DummyModalSpatialSimple : public openfluid::builderext::PluggableModalExte
   public:
 
     DummyModalSpatialSimple();
-
-
 
 };
 

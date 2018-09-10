@@ -83,7 +83,6 @@ inline bool isVeryClose(const T1& A, const T2& B, const double& Epsilon = 0.0000
 }
 
 
-
 /**
   @deprecated Since version 2.1.0. Use openfluid::scientific::isCloseEnough instead
 */

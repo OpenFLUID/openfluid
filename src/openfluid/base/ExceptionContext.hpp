@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ExceptionContext.hpp
 
@@ -61,6 +60,7 @@ class ExceptionContext : public std::map<std::string, std::string>
 
       return (*this);
     }
+
 
     // =====================================================================
     // =====================================================================

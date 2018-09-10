@@ -88,5 +88,4 @@ class WaresManagementWidget : public QWidget
 };
 
 
-
 #endif /* __OPENFLUID_BUILDERAPP_WARESMANAGEMENTWIDGET_HPP__ */

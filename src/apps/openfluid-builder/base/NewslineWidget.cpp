@@ -198,7 +198,6 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const QString& FilePath)
 // =====================================================================
 
 
-
 void NewslineWidget::refreshFromCache()
 {
   QString RSSDefaultFile =
@@ -252,5 +251,4 @@ void NewslineWidget::handleDowloadFinished()
 
   refreshFromCache();
 }
-
 

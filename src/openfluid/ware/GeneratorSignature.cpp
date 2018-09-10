@@ -33,7 +33,8 @@
   @file GeneratorSignature.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
+
 
 #include <openfluid/ware/GeneratorSignature.hpp>
 

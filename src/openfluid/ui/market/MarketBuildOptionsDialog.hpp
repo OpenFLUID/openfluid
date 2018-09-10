@@ -40,16 +40,15 @@
 #ifndef __OPENFLUID_UIMARKET_MARKETBUILDOPTIONSDIALOG_HPP__
 #define __OPENFLUID_UIMARKET_MARKETBUILDOPTIONSDIALOG_HPP__
 
-#include <openfluid/dllexport.hpp>
+
 #include <QDialog>
 #include <QLineEdit>
 #include <QString>
 
+#include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace ui { namespace market {
-
-// =====================================================================
-// =====================================================================
 
 
 class OPENFLUID_API MarketBuildOptionsDialog : public QDialog

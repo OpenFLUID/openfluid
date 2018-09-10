@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file PreferencesDialog.cpp
 
@@ -466,6 +465,7 @@ void PreferencesDialog::enableSyntaxHighlighting(bool Enable)
   openfluid::base::PreferencesManager::instance()->setWaresdevSyntaxHighlightingEnabled(Enable);
   m_TextEditorSettingsChanged = true;
 }
+
 
 // =====================================================================
 // =====================================================================

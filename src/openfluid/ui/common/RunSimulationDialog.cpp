@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file RunSimulationDialog.cpp
 
@@ -428,5 +427,4 @@ void RunSimulationDialog::showErrorDetails()
 
 
 } } } // namespaces
-
 

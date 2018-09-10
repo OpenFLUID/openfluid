@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file IntegerValue.cpp
 
@@ -101,5 +100,4 @@ void IntegerValue::writeToStream(std::ostream& OutStm) const
 
 
 } }  // namespaces
-
 

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file RunDescriptor.cpp
 
@@ -80,5 +79,4 @@ RunDescriptor::~RunDescriptor()
 
 
 } } // namespaces
-
 

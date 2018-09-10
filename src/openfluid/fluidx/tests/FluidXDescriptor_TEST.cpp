@@ -29,16 +29,20 @@
   
 */
 
+
 /**
   @file FluidXDescriptor_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_fluidxdescriptor
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/parameterized_test.hpp>
@@ -52,13 +56,13 @@ typedef boost::test_tools::output_test_stream onullstream_type;
 typedef boost::onullstream onullstream_type;
 #endif
 
-#include <tests-config.hpp>
-
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -91,7 +95,7 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
   FXDesc.loadFromDirectory(DatasetPath);
 
   // Model
-  // ====================================================================
+  // -----
 
   BOOST_REQUIRE_EQUAL(FXDesc.modelDescriptor().getGlobalParameters().size(), 2);
   BOOST_REQUIRE_EQUAL(FXDesc.modelDescriptor().getGlobalParameters()["gparam1"].get(),
@@ -175,7 +179,7 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
 
 
   // Run
-  // ====================================================================
+  // ---
 
   BOOST_REQUIRE_EQUAL(FXDesc.runDescriptor().getDeltaT(), 4753);
   BOOST_REQUIRE(FXDesc.runDescriptor().getBeginDate() == openfluid::core::DateTime(1997,1,2,11,15,48));
@@ -185,7 +189,7 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
 
 
   // Domain definition
-  // ====================================================================
+  // -----------------
 
   std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator UnitsIt;
 
@@ -246,7 +250,7 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
 
 
   // Domain attributes
-  // ====================================================================
+  // -----------------
 
   std::list<openfluid::fluidx::AttributesDescriptor>::iterator AttrsIt;
 
@@ -309,7 +313,7 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
   }
 
   // Domain calendar
-  // ====================================================================
+  // ---------------
 
   std::list<openfluid::fluidx::EventDescriptor>::iterator EventIt;
 
@@ -350,7 +354,7 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
 
 
   // Datastore
-  // ====================================================================
+  // ---------
 
   openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t DataItems = FXDesc.datastoreDescriptor().items();
 
@@ -379,7 +383,7 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
 
 
   // Monitoring
-  // ====================================================================
+  // ----------
   openfluid::fluidx::MonitoringDescriptor::SetDescription_t Observers =
        FXDesc.monitoringDescriptor().items();
 

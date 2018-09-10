@@ -134,6 +134,7 @@ class CMakeSimulatorParamsUI : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -159,8 +160,11 @@ DEFINE_SIMULATOR_CLASS(CMakeSimulatorParamsUI)
 
 #ifdef OPENFLUID_PARAMSUI_ENABLED
 
+
 #include "CMakeSimParamsWidget.hpp"
 
+
 DEFINE_PARAMETERIZATIONWIDGET_CLASS(CMakeSimParamsWidget)
+
 
 #endif

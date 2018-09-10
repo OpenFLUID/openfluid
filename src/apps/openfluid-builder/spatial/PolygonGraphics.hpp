@@ -34,15 +34,16 @@
   @file PolygonGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_POLYGONGRAPHICS_HPP__
 #define __OPENFLUID_BUILDERAPP_POLYGONGRAPHICS_HPP__
 
 
-#include "SurfacicGraphics.hpp"
 #include <ogr_geometry.h>
+
+#include "SurfacicGraphics.hpp"
 
 
 class PolygonGraphics : public SurfacicGraphics

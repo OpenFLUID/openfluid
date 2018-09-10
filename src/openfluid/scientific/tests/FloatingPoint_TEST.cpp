@@ -30,20 +30,22 @@
 */
 
 
-
 /**
   @file FloatingPoint_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_scientifichelpers
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/scientific/FloatingPoint.hpp>
 
 

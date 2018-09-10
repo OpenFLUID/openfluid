@@ -34,11 +34,10 @@
   @file ClickableWareWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include "ClickableWareWidget.hpp"
-
 
 
 ClickableWareWidget::ClickableWareWidget(QWidget* Parent,

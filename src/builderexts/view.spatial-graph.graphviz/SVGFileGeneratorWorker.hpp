@@ -34,16 +34,17 @@
   @file SVGFileGeneratorWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __SVGFILEGENERATORWORKER_HPP__
 #define __SVGFILEGENERATORWORKER_HPP__
 
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include <QObject>
 #include <QMap>
+
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 
 class SVGFileGeneratorWorker : public QObject

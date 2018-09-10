@@ -177,7 +177,7 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
       std::cout << std::endl;
 
 
-      // =================================
+      // -----------------------------
 
 
       StartTime = std::chrono::high_resolution_clock::now();
@@ -214,7 +214,7 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
       std::cout << "attribute by reference: " << Duration.count() << "ms" << std::endl;
 
 
-      // =================================
+      // -----------------------------
 
 
       StartTime = std::chrono::high_resolution_clock::now();
@@ -251,7 +251,7 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
       std::cout << "current variable by reference: " << Duration.count() << "ms" << std::endl;
 
 
-      // =================================
+      // -----------------------------
 
 
       StartTime = std::chrono::high_resolution_clock::now();
@@ -266,7 +266,6 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
 
       Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
       std::cout << "latest variable by return: " << Duration.count() << "ms" << std::endl;
-
 
 
       StartTime = std::chrono::high_resolution_clock::now();
@@ -284,7 +283,6 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
       std::cout << "latest variable by reference: " << Duration.count() << "ms" << std::endl;
 
 
-
       return DefaultDeltaT();
     }
 
@@ -300,8 +298,10 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(PrimitivesBenchmarkingSimulator)
 

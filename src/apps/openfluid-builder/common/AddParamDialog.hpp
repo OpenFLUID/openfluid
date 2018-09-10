@@ -85,5 +85,4 @@ class AddParamDialog : public openfluid::ui::common::MessageDialog
 };
 
 
-
 #endif /* __OPENFLUID_BUILDERAPP_ADDPARAMDIALOG_HPP__ */

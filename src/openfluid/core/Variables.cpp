@@ -29,25 +29,25 @@
   
 */
 
+
 /**
   @file Variables.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
+
 
 #include <openfluid/core/Variables.hpp>
 
-namespace openfluid {
-namespace core {
 
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace core {
 
 
 Variables::Variables()
 {
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -57,6 +57,7 @@ Variables::~Variables()
 {
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -93,10 +94,11 @@ bool Variables::createVariable(const VariableName_t& aName, const Value::Type& a
 // =====================================================================
 // =====================================================================
 
+
 /**
- * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
- * either a NullValue or the same type than the existing Variable.
- */
+  The existing Variable must be untyped (NONE), otherwise the expecting Value must be
+  either a NullValue or the same type than the existing Variable.
+*/
 bool Variables::modifyValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
     const Value& aValue)
 {
@@ -109,13 +111,15 @@ bool Variables::modifyValue(const VariableName_t& aName, const TimeIndex_t& anIn
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 /**
- * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
- * either a NullValue or the same type than the existing Variable.
- */
+  The existing Variable must be untyped (NONE), otherwise the expecting Value must be
+  either a NullValue or the same type than the existing Variable.
+*/
 bool Variables::modifyCurrentValue(const VariableName_t& aName, const Value& aValue)
 {
   if (isVariableExist(aName)
@@ -131,10 +135,11 @@ bool Variables::modifyCurrentValue(const VariableName_t& aName, const Value& aVa
 // =====================================================================
 // =====================================================================
 
+
 /**
- * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
- * either a NullValue or the same type than the existing Variable.
- */
+  The existing Variable must be untyped (NONE), otherwise the expecting Value must be
+  either a NullValue or the same type than the existing Variable.
+*/
 bool Variables::appendValue(const VariableName_t& aName, const TimeIndex_t& anIndex, const Value& aValue)
 {
   if (isVariableExist(aName)

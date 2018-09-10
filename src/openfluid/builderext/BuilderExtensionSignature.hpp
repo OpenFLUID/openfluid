@@ -41,11 +41,11 @@
 #define __OPENFLUID_BUILDEREXT_BUILDEREXTENSIONSIGNATURE_HPP__
 
 
+#include <QString>
+
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
-
-#include <QString>
 
 
 namespace openfluid { namespace builderext {

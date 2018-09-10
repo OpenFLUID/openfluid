@@ -48,6 +48,7 @@ namespace Ui
 
 #include <QDialog>
 
+
 class PrecheckImportDialog : public QDialog
 {
   Q_OBJECT;

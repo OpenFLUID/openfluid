@@ -34,11 +34,12 @@
   @file MatrixValue.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_CORE_MATRIXVALUE_HPP__
 #define __OPENFLUID_CORE_MATRIXVALUE_HPP__
+
 
 #include <openfluid/core/CompoundValue.hpp>
 #include <openfluid/core/Matrix.hpp>
@@ -162,7 +163,6 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
 
 
 } }  // namespaces
-
 
 
 #endif /* __OPENFLUID_CORE_MATRIXVALUE_HPP__ */

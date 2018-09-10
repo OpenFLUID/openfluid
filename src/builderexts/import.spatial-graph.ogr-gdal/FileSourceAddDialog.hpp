@@ -40,7 +40,6 @@
 #define __FILESOURCEADDDIALOG_HPP__
 
 
-
 #include "SourceAddDialog.hpp"
 
 

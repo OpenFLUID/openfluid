@@ -127,7 +127,6 @@ class OPENFLUID_API MarketPackage
     static bool m_Initialized;
 
 
-
     openfluid::ware::WareID_t m_ID;
 
     std::string m_PackageURL;
@@ -226,8 +225,6 @@ class OPENFLUID_API MarketPackage
 
 
 };
-
-
 
 
 } } // namespaces

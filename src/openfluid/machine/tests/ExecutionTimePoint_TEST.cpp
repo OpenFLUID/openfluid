@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ExecutionTimePoint_TEST.cpp
 
@@ -42,8 +41,11 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_executiontimepoint
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/machine/ExecutionTimePoint.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 
@@ -143,8 +145,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE(!TP.hasItemsToProcess());
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -181,7 +185,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   TP.appendItem(MII);
 
 
-
 	BOOST_REQUIRE(TP.hasItemsToProcess());
 
 	TP.sortByOriginalPosition();
@@ -192,5 +195,3 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 }
 
-// =====================================================================
-// =====================================================================

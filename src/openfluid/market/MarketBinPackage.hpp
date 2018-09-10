@@ -44,6 +44,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 
+
 namespace openfluid { namespace market {
 
 class OPENFLUID_API MarketBinPackage : public MarketPackage
@@ -57,7 +58,6 @@ class OPENFLUID_API MarketBinPackage : public MarketPackage
     MetaPackageInfo::SelectionType getFormat() const { return MetaPackageInfo::BIN; };
 
 };
-
 
 
 } } // namespaces

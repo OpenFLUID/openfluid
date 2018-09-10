@@ -34,24 +34,24 @@
   @file UnitsClassWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_UNITSCLASSWIDGET_HPP__
 #define __OPENFLUID_BUILDERAPP_UNITSCLASSWIDGET_HPP__
 
 
+#include <QFrame>
+#include <QMouseEvent>
+#include <QColor>
+
+#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
+
+
 namespace Ui
 {
   class UnitsClassWidget;
 }
-
-
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-
-#include <QFrame>
-#include <QMouseEvent>
-#include <QColor>
 
 
 class UnitsClassWidget : public QFrame
@@ -147,7 +147,6 @@ class UnitsClassWidget : public QFrame
     { return mp_LayerSource; }
 
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_UNITSCLASSWIDGET_HPP__ */

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DataHelpers_TEST.cpp
 
@@ -42,8 +41,11 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_datahelpers
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/tools/DataHelpers.hpp>
 
 
@@ -102,8 +104,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(StrArray.size(),1);
 
 }
-
-
-// =====================================================================
-// =====================================================================
 

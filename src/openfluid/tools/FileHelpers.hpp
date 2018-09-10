@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file FileHelpers.hpp
 
@@ -36,13 +37,13 @@
 */
 
 
-
 #ifndef __OPENFLUID_TOOLS_FILEHELPERS_HPP__
 #define __OPENFLUID_TOOLS_FILEHELPERS_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <vector>
+
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace tools {

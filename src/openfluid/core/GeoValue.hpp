@@ -29,15 +29,18 @@
   
 */
 
+
 /**
   @file GeoValue.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #ifndef __OPENFLUID_CORE_GEOVALUE_HPP__
 #define __OPENFLUID_CORE_GEOVALUE_HPP__
+
 
 #include <openfluid/core/UnstructuredValue.hpp>
 #include <openfluid/dllexport.hpp>

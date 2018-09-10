@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file MatrixValue.cpp
 
@@ -39,6 +38,7 @@
 
 
 #include <openfluid/core/MatrixValue.hpp>
+
 
 namespace openfluid { namespace core {
 
@@ -97,7 +97,6 @@ void MatrixValue::writeToStream(std::ostream& OutStm) const
 // =====================================================================
 // =====================================================================
 
+
 } }  // namespaces
-
-
 

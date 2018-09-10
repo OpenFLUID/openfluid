@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file CMakeObsUI.cpp
 
@@ -70,6 +69,7 @@ class CMakeObserverParamsUI : public openfluid::ware::PluggableObserver
     {
 
     }
+
 
     // =====================================================================
     // =====================================================================
@@ -147,9 +147,12 @@ DEFINE_OBSERVER_CLASS(CMakeObserverParamsUI)
 
 #ifdef OPENFLUID_PARAMSUI_ENABLED
 
+
 #include "CMakeObsParamsWidget.hpp"
 
+
 DEFINE_PARAMETERIZATIONWIDGET_CLASS(CMakeObsParamsWidget)
+
 
 #endif
 

@@ -40,12 +40,14 @@
 #ifndef __OPENFLUID_BUILDERAPP_MAPSCENE_HPP__
 #define __OPENFLUID_BUILDERAPP_MAPSCENE_HPP__
 
-#include "MapItemGraphics.hpp"
 
 #include <QGraphicsScene>
+
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 #include <openfluid/core/Datastore.hpp>
+
+#include "MapItemGraphics.hpp"
 
 
 class MapScene : public QGraphicsScene

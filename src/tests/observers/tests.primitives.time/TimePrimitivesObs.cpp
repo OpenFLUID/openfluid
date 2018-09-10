@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file TimePrimitivesObs.cpp
 
@@ -74,6 +73,7 @@ class TimePrimitivesObserver : public openfluid::ware::PluggableObserver
     {
 
     }
+
 
     // =====================================================================
     // =====================================================================

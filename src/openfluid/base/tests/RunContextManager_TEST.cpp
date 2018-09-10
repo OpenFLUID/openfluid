@@ -30,17 +30,18 @@
 */
 
 
-
 /**
   @file RunContextManager_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_prjman
+
 
 #include <ctime>
 #include <chrono>
@@ -51,7 +52,8 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <tests-config.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -180,5 +182,4 @@ BOOST_AUTO_TEST_CASE(check_project_operations)
   BOOST_REQUIRE_EQUAL(openfluid::base::RunContextManager::instance()->isProjectOpen(), false);
 
 }
-
 

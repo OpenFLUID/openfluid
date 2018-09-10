@@ -30,13 +30,11 @@
 */
 
 
-
 /**
   @file Factory.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
-
 
 
 #ifndef __OPENFLUID_MACHINE_FACTORY_HPP__
@@ -51,6 +49,7 @@
 
 
 namespace openfluid {
+
 
 namespace base {
 class ExecutionMessages;

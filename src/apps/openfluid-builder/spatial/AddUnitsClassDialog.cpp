@@ -30,20 +30,19 @@
 */
 
 
-
 /**
   @file AddUnitsClassDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
-#include "ui_AddUnitDialog.h"
-#include "AddUnitsClassDialog.hpp"
+#include <QPushButton>
 
 #include <openfluid/ui/config.hpp>
 
-#include <QPushButton>
+#include "ui_AddUnitDialog.h"
+#include "AddUnitsClassDialog.hpp"
 
 
 AddUnitsClassDialog::AddUnitsClassDialog(const QStringList& ExistingClasses, QWidget* Parent):

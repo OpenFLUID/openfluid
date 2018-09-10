@@ -40,11 +40,13 @@
 #ifndef __OPENFLUID_TOOLS_DISTRIBUTIONTABLES_HPP__
 #define __OPENFLUID_TOOLS_DISTRIBUTIONTABLES_HPP__
 
+
 #include <map>
 #include <string>
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace tools {
 
@@ -73,7 +75,6 @@ class OPENFLUID_API DistributionTables
                const std::string& DistributionFileName);
 
 };
-
 
 
 } }

@@ -47,7 +47,6 @@
 #include <openfluid/tools/QtHelpers.hpp>
 
 
-
 namespace openfluid { namespace tools {
 
 

@@ -389,6 +389,7 @@ void WareExplorerDialog::onDoubleClickedFileMode()
 // =====================================================================
 // =====================================================================
 
+
 QString WareExplorerDialog::getSelectedPath()
 {
   return ui->WareExplorer->getCurrentPath();

@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file MonitoringInstance.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
+
 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>

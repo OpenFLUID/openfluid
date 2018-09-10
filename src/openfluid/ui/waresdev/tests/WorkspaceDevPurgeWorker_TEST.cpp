@@ -41,13 +41,19 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_purgeworker
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <iostream>
+
 #include <QApplication>
+
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevPurgeWorker.hpp>
+
 #include "tests-config.hpp"
 
 

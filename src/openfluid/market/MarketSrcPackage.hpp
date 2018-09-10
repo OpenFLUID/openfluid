@@ -44,6 +44,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 
+
 namespace openfluid { namespace market {
 
 

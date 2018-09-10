@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file NewProjectDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -44,11 +44,10 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include "ui_NewProjectDialog.h"
 #include "NewProjectDialog.hpp"
-#include <openfluid/ui/config.hpp>
-
 
 
 NewProjectDialog::NewProjectDialog(QWidget *Parent):

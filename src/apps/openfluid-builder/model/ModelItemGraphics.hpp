@@ -155,6 +155,6 @@ class ModelItemGraphics : public QObject, public QGraphicsRectItem
 
 };
 
-#endif /* __OPENFLUID_BUILDERAPP_MODELITEMGRAPHICS_HPP__ */
 
+#endif /* __OPENFLUID_BUILDERAPP_MODELITEMGRAPHICS_HPP__ */
 

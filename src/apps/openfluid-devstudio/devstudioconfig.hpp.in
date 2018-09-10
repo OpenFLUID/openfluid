@@ -29,9 +29,10 @@
   
 */
 
+
 /**
  @file devstudioconfig.hpp
- @brief Header of ...
+ 
 
  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  @author Aline LIBRES <libres@supagro.inra.fr>
@@ -39,6 +40,7 @@
 
 
 #include <QString>
+
 
 #ifndef __OPENFLUID_DEVSTUDIOAPP_DEVSTUDIOCONFIG_HPP__
 #define __OPENFLUID_DEVSTUDIOAPP_DEVSTUDIOCONFIG_HPP__

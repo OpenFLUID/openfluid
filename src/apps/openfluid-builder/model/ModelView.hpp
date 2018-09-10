@@ -34,7 +34,7 @@
   @file ModelView.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_MODELVIEW_HPP__
@@ -66,7 +66,6 @@ class ModelView : public QGraphicsView
     void wheelEvent(QWheelEvent* Event);
 
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_MODELVIEW_HPP__ */

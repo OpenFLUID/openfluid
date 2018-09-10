@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ObserverWidget.cpp
 
@@ -206,7 +205,6 @@ void ObserverWidget::addParameterToList()
 
 // =====================================================================
 // =====================================================================
-
 
 
 void ObserverWidget::updateParameterValue(const QString& Name, const QString& Value)

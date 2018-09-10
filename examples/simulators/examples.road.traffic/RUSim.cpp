@@ -167,8 +167,6 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
         }
       }
 
-
-
       return DefaultDeltaT();
     }
 
@@ -281,17 +279,4 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
 
 DEFINE_SIMULATOR_CLASS(RUSimulator);
-
-
-
-
-
-
-
-
-
-
-
-
-
 

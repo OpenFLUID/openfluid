@@ -40,11 +40,12 @@
 #ifndef __OPENFLUID_MACHINE_MONITORINGINSTANCE_HPP__
 #define __OPENFLUID_MACHINE_MONITORINGINSTANCE_HPP__
 
+
+#include <list>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/base/SimulationLogger.hpp>
-
-#include <list>
 
 
 namespace openfluid { namespace machine {

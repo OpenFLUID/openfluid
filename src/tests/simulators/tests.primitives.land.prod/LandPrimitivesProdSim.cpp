@@ -40,7 +40,6 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
-
 BEGIN_SIMULATOR_SIGNATURE("tests.primitives.land.prod")
 
   DECLARE_NAME("");
@@ -97,7 +96,9 @@ class LandPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
 
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)
-    {  }
+    {
+
+    }
 
 
     // =====================================================================
@@ -105,7 +106,9 @@ class LandPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
 
     void prepareData()
-    {  }
+    {
+
+    }
 
 
     // =====================================================================
@@ -113,7 +116,9 @@ class LandPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
 
     void checkConsistency()
-    { }
+    {
+
+    }
 
 
     // =====================================================================
@@ -159,6 +164,7 @@ class LandPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
       return DefaultDeltaT();
     }
 
+
     // =====================================================================
     // =====================================================================
 
@@ -170,8 +176,10 @@ class LandPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(LandPrimitivesProdSimulator)
 

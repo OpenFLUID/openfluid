@@ -30,16 +30,17 @@
 */
 
 
-
 /**
   @file LineStringGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
+
+#include <QPen>
 
 #include "LineStringGraphics.hpp"
-#include <QPen>
+
 
 LineStringGraphics::LineStringGraphics(OGRLineString* OGRLine, const QPen& Pen):
   LinearGraphics(Pen.color())

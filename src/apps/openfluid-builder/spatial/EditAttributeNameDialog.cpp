@@ -30,19 +30,19 @@
 */
 
 
-
 /**
   @file EditAttributeNameDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
+
+#include <QPushButton>
 
 #include <openfluid/ui/config.hpp>
 
 #include "ui_EditAttributeNameDialog.h"
 #include "EditAttributeNameDialog.hpp"
-
-#include <QPushButton>
 
 
 EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,

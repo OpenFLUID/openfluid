@@ -30,23 +30,22 @@
 */
 
 
-
 /**
   @file MonitoringWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+
 #include "ui_WaresManagementWidget.h"
 #include "ui_MonitoringWidget.h"
 #include "ui_AddWareDialog.h"
 #include "MonitoringWidget.hpp"
 #include "ObserverWidget.hpp"
 #include "AddObserverDialog.hpp"
-
 
 
 MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):

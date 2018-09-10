@@ -30,25 +30,25 @@
 */
 
 
-
 /**
   @file Value_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_value
-#include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
+
 
 #include <chrono>
 #include <list>
 #include <memory>
 
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
 #include <boost/circular_buffer.hpp>
 
 #include <openfluid/core/NullValue.hpp>
@@ -273,6 +273,8 @@ BOOST_AUTO_TEST_CASE(check_performance)
   boost::circular_buffer<std::shared_ptr<openfluid::core::Value> > BufferValue(5000);
 
 
+  // ------
+
   START_TEST_TICKER(DBL);
 
   for (unsigned int i=0; i< ElementsNbr;i++)
@@ -284,6 +286,7 @@ BOOST_AUTO_TEST_CASE(check_performance)
   std::cout << "Duration [double], populating: " << TEST_DURATION_AS_MS(DBL) << "ms" << std::endl;
 
 
+  // ------
 
   START_TEST_TICKER(DBLVAL);
 
@@ -297,6 +300,8 @@ BOOST_AUTO_TEST_CASE(check_performance)
   std::cout << "Duration [DoubleValue], populating: " << TEST_DURATION_AS_MS(DBLVAL) << "ms" << std::endl;
 
 
+  // ------
+
   START_TEST_TICKER(DBL);
 
   for (unsigned int i=0; i< BufferSize;i++)
@@ -308,6 +313,8 @@ BOOST_AUTO_TEST_CASE(check_performance)
   MARK_TEST_TICKER(DBL);
   std::cout << "Duration [double], accessing: " << TEST_DURATION_AS_MS(DBL) << "ms" << std::endl;
 
+
+  // ------
 
   START_TEST_TICKER(DBLVAL);
 

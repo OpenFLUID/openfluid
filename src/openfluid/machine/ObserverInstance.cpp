@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ObserverInstance.cpp
 
@@ -39,6 +38,7 @@
 
 
 #include <openfluid/machine/ObserverInstance.hpp>
+
 
 namespace openfluid { namespace machine {
 
@@ -79,6 +79,7 @@ ObserverInstance::~ObserverInstance()
 {
 
 }
+
 
 } }  // namespaces
 

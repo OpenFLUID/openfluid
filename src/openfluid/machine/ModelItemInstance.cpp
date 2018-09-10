@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ModelItemInstance.cpp
 
@@ -67,7 +66,6 @@ ModelItemSignatureInstance::ModelItemSignatureInstance():
 // =====================================================================
 
 
-
 ModelItemInstance::ModelItemInstance():
   ModelItemSignatureInstance(), Body(nullptr), OriginalPosition(0)
 {
@@ -76,5 +74,4 @@ ModelItemInstance::ModelItemInstance():
 
 
 } } //namespaces
-
 

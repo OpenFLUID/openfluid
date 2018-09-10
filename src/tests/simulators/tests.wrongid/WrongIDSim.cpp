@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file WrongIDSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
@@ -95,20 +94,30 @@ class WrongIDSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+  {
 
-  // =====================================================================
-  // =====================================================================
-
-
-  void prepareData() { }
+  }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  void checkConsistency() { }
+  void prepareData()
+  {
+
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void checkConsistency()
+  {
+
+  }
 
 
   // =====================================================================
@@ -132,6 +141,7 @@ class WrongIDSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -143,8 +153,10 @@ class WrongIDSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(WrongIDSimulator)
 

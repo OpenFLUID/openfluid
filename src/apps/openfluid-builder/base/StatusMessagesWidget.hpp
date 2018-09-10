@@ -34,7 +34,7 @@
   @file StatusMessagesWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_STATUSMESSAGESWIDGET_HPP__
@@ -46,9 +46,10 @@ namespace Ui
   class StatusMessagesWidget;
 }
 
-#include "ProjectCheckInfos.hpp"
 
 #include <QWidget>
+
+#include "ProjectCheckInfos.hpp"
 
 
 class StatusMessagesWidget : public QWidget

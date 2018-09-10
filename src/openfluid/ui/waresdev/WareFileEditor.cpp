@@ -36,7 +36,9 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -50,6 +52,7 @@ WareFileEditor::WareFileEditor(const QString& FilePath) :
 {
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -57,6 +60,7 @@ WareFileEditor::WareFileEditor(const QString& FilePath) :
 WareFileEditor::~WareFileEditor()
 {
 }
+
 
 // =====================================================================
 // =====================================================================

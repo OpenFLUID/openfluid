@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file ChronologicalSerie.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
+
 
 #include <openfluid/tools/ChronologicalSerie.hpp>
 
@@ -94,7 +94,6 @@ bool ChronologicalSerie::getSurroundingValues(const openfluid::core::DateTime& D
   }
 
 
-
   if (m_InternalIterator != end())
   {
     if ((*m_PreviousInternalIterator).first == DT)
@@ -122,6 +121,5 @@ bool ChronologicalSerie::getSurroundingValues(const openfluid::core::DateTime& D
 }
 
 
-
-
 } } // namespaces
+

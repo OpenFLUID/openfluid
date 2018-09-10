@@ -34,7 +34,7 @@
   @file ExecutionTimePoint.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_MACHINE_EXECUTIONTIMEPOINT_HPP__
@@ -62,7 +62,6 @@ struct SortModelItemsByOriginalPosition
 
 // =====================================================================
 // =====================================================================
-
 
 
 class OPENFLUID_API ExecutionTimePoint
@@ -101,7 +100,6 @@ class OPENFLUID_API ExecutionTimePoint
 
 
 } } //namespaces
-
 
 
 #endif /* __OPENFLUID_MACHINE_EXECUTIONTIMEPOINT_HPP__ */

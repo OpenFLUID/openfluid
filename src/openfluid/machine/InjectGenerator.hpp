@@ -30,16 +30,16 @@
 */
 
 
-
 /**
   @file InjectGenerator.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_MACHINE_INJECTGENERATOR_HPP__
 #define __OPENFLUID_MACHINE_INJECTGENERATOR_HPP__
+
 
 #include <queue>
 #include <map>
@@ -69,7 +69,6 @@ class OPENFLUID_API InjectGenerator : public Generator
     openfluid::tools::DistributionBindings* m_DistriBindings;
 
 
-
   public:
 
     InjectGenerator();
@@ -90,8 +89,8 @@ class OPENFLUID_API InjectGenerator : public Generator
 
 };
 
-} } //namespaces
 
+} } //namespaces
 
 
 #endif /* __OPENFLUID_MACHINE_INJECTGENERATOR_HPP__ */

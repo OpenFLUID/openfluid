@@ -28,7 +28,6 @@
   with the terms contained in the written agreement between You and INRA.
   
 */
-
 /**
   @file WareContainer.hpp
 
@@ -36,12 +35,12 @@
 */
 
 
-
 #ifndef __OPENFLUID_MACHINE_WARECONTAINER_HPP__
 #define __OPENFLUID_MACHINE_WARECONTAINER_HPP__
 
 
 #include <string>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 

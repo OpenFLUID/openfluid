@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SimulationDrivenWare.cpp
 
@@ -38,8 +37,9 @@
  */
 
 
-#include <openfluid/ware/SimulationDrivenWare.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/ware/SimulationDrivenWare.hpp>
+
 
 namespace openfluid { namespace ware {
 
@@ -297,6 +297,7 @@ void SimulationDrivenWare::OPENFLUID_RaiseError(const std::string& Msg)
   throw WareException(computeWareContext(),Msg);
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -330,7 +331,6 @@ void SimulationDrivenWare::finalizeWare()
 {
 
 }
-
 
 
 }  }  //namespaces

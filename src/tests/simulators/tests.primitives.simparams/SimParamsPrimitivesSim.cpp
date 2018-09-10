@@ -416,7 +416,10 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
     // =====================================================================
 
 
-    void checkConsistency() { }
+    void checkConsistency()
+    {
+
+    }
 
 
     // =====================================================================
@@ -452,8 +455,10 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(SimParamsPrimitivesSimulator)
 

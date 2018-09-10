@@ -41,10 +41,11 @@
 #define __OPENFLUID_BUILDERAPP_SIGNATUREWIDGET_HPP__
 
 
+#include <QWidget>
+
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 
-#include <QWidget>
 
 namespace Ui
 {

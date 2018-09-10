@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file DummyWorkspaceOtherSimple.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
@@ -43,7 +42,6 @@
 
 // =====================================================================
 // =====================================================================
-
 
 
 class DummyWorkspaceOtherSimple : public openfluid::builderext::PluggableWorkspaceExtension
@@ -64,5 +62,4 @@ class DummyWorkspaceOtherSimple : public openfluid::builderext::PluggableWorkspa
     }
 
 };
-
 

@@ -29,15 +29,17 @@
   
 */
 
+
 /**
   @file AddDatastoreItemDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_ADDDATASTOREITEMDIALOG_HPP__
 #define __OPENFLUID_BUILDERAPP_ADDDATASTOREITEMDIALOG_HPP__
+
 
 #include <openfluid/ui/common/MessageDialog.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>

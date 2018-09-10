@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ExternalProgram.cpp
 
@@ -38,9 +37,10 @@
  */
 
 
-#include <openfluid/utils/ExternalProgram.hpp>
 #include <QFileInfo>
 #include <QDir>
+
+#include <openfluid/utils/ExternalProgram.hpp>
 
 
 namespace openfluid { namespace utils {

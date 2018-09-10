@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file VectorValue.cpp
 
@@ -39,6 +38,7 @@
 
 
 #include <openfluid/core/VectorValue.hpp>
+
 
 namespace openfluid { namespace core {
 
@@ -80,10 +80,6 @@ void VectorValue::writeToStream(std::ostream& OutStm) const
     OutStm << "]";
   }
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } }  // namespaces

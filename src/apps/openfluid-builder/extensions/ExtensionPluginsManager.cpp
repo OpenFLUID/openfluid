@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ExtensionPluginsManager.cpp
 
@@ -44,5 +43,4 @@
 
 
 OPENFLUID_SINGLETON_INITIALIZATION(ExtensionPluginsManager)
-
 

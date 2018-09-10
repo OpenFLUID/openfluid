@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__
 #define __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__
 
+
 #include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>

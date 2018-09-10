@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file core/TypeDefs.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
+
 
 #ifndef __OPENFLUID_CORE_TYPEDEFS_HPP__
 #define __OPENFLUID_CORE_TYPEDEFS_HPP__
@@ -110,6 +110,7 @@ typedef std::vector<VectorValue> SerieOfVectorValue;
 
 // =====================================================================
 // =====================================================================
+
 
 /**
   Generic map container associating a unit ID to data

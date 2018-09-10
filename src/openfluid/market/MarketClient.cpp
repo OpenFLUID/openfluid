@@ -29,6 +29,7 @@
   
 */
 
+
 /**
  @file MarketClient.cpp
 
@@ -36,6 +37,14 @@
  @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
+
+#include <fstream>
+#include <deque>
+
+#include <QSettings>
+#include <QStringList>
+
+#include <openfluid/config.hpp>
 #include <openfluid/market/MarketClient.hpp>
 #include <openfluid/market/MarketBinSimulatorPackage.hpp>
 #include <openfluid/market/MarketSrcSimulatorPackage.hpp>
@@ -44,20 +53,12 @@
 #include <openfluid/market/MarketSrcBuilderextPackage.hpp>
 #include <openfluid/market/MarketBinBuilderextPackage.hpp>
 #include <openfluid/market/MarketDatasetPackage.hpp>
-#include <openfluid/config.hpp>
-
-#include <QSettings>
-#include <QStringList>
-
-#include <fstream>
-#include <deque>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/FileDownloader.hpp>
 
 
 namespace openfluid { namespace market {
-
 
 
 const std::string MarketClient::LOCK_FILE = ".lock";
@@ -657,6 +658,7 @@ void MarketClient::setSRCBuildOptions(const openfluid::ware::WareID_t& ID, const
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -813,6 +815,7 @@ void MarketClient::installNextSelectedPackage()
 
 // =====================================================================
 // =====================================================================
+
 
 /*
 std::string MarketClient::selectionTypeToString(const MetaPackageInfo::SelectionType& Selec) const

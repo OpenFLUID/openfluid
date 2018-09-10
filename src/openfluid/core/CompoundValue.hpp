@@ -34,11 +34,12 @@
   @file CompoundValue.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_CORE_COMPOUNDVALUE_HPP__
 #define __OPENFLUID_CORE_COMPOUNDVALUE_HPP__
+
 
 #include <openfluid/core/Value.hpp>
 #include <openfluid/dllexport.hpp>
@@ -63,7 +64,6 @@ class OPENFLUID_API CompoundValue : public Value
 
 
 } }  // namespaces
-
 
 
 #endif /* __OPENFLUID_CORE_COMPOUNDVALUE_HPP__ */

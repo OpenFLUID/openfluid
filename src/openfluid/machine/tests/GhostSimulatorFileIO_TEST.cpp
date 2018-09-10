@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file GhostSimulatorFileIO_TEST.cpp
 
@@ -42,11 +41,15 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_ghostsimulatorfileio
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/machine/GhostSimulatorFileIO.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <tests-config.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================

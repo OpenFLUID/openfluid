@@ -33,21 +33,27 @@
   @file AdvancedDatastoreDescriptor_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
+
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_AdvancedDatastoreDescriptor
+
+
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
-#include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+
+#include "tests-config.hpp"
+
 
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
@@ -129,7 +135,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_CHECK_EQUAL(Item->getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
   BOOST_CHECK_EQUAL(Item->getRelativePath(), "shapes/units_A.shp");
-
 
 
   BOOST_CHECK_EQUAL(DS.items().size(), 5);
@@ -235,7 +240,3 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_CHECK_EQUAL((*(++it))->getID(), "RastWOClass");
 
 }
-
-// =====================================================================
-// =====================================================================
-

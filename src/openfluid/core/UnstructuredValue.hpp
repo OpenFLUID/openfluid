@@ -29,22 +29,26 @@
   
 */
 
+
 /**
   @file UnstructuredValue.hpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #ifndef __OPENFLUID_CORE_UNSTRUCTUREDVALUE_HPP__
 #define __OPENFLUID_CORE_UNSTRUCTUREDVALUE_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include <string>
 
-namespace openfluid {
-namespace core {
+#include <openfluid/dllexport.hpp>
+
+
+namespace openfluid { namespace core {
+
 
 class OPENFLUID_API UnstructuredValue
 {
@@ -56,11 +60,15 @@ class OPENFLUID_API UnstructuredValue
     };
 
     UnstructuredValue()
-    {  }
+    {
+
+    }
 
 
     virtual ~UnstructuredValue()
-    {  }
+    {
+
+    }
 
     virtual UnstructuredType getType() const = 0;
 
@@ -70,6 +78,7 @@ class OPENFLUID_API UnstructuredValue
     static std::string getStringFromValueType(const UnstructuredValue::UnstructuredType ValueType);
 
 };
+
 
 } } // namespaces
 

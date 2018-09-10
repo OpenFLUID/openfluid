@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ParseUnitsSim.cpp
 
@@ -96,14 +95,19 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
 
   void initParams(const openfluid::ware::WareParams_t& /*Params*/)
-  {  }
+  {
+
+  }
+
 
   // =====================================================================
   // =====================================================================
 
 
   void prepareData()
-  {  }
+  {
+
+  }
 
 
   // =====================================================================
@@ -111,7 +115,9 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
 
   void checkConsistency()
-  {  }
+  {
+
+  }
 
 
   // =====================================================================
@@ -122,6 +128,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
   {
     return DefaultDeltaT();
   }
+
 
   // =====================================================================
   // =====================================================================
@@ -141,7 +148,6 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
     openfluid::core::UnitsList_t::const_iterator itUnitsList;
     openfluid::core::UnitsPtrList_t::const_iterator itToUnitsPtrList;
     openfluid::core::UnitsPtrList_t::const_iterator itFromUnitsPtrList;
-
 
 
     UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_SpatialData->allSpatialUnitsByClass());
@@ -237,17 +243,22 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
 
   void finalizeRun()
-  {  }
+  {
+
+  }
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(ParseUnitsSimulator)
 

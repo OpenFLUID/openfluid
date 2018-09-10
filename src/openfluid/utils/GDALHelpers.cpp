@@ -36,11 +36,13 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
+
 #include <ogrsf_frmts.h>
 #include <gdal.h>
-#include <openfluid/utils/GDALHelpers.hpp>
 
 #include <QStringList>
+
+#include <openfluid/utils/GDALHelpers.hpp>
 
 
 namespace openfluid { namespace utils {

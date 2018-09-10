@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file WindFireConnectSim.cpp
 
@@ -129,6 +128,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     {
 
     }
+
 
     // =====================================================================
     // =====================================================================
@@ -294,8 +294,10 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(WindFireConnectSimulator)
 

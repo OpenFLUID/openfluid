@@ -29,12 +29,13 @@
   
 */
 
+
 /**
   @file FluidXDescriptor.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <fstream>
@@ -797,9 +798,6 @@ void FluidXDescriptor::loadFromDirectory(const std::string& DirPath)
 
 }
 
-
-// =====================================================================
-// =====================================================================
 
 // =====================================================================
 // =====================================================================

@@ -29,16 +29,16 @@
 
 */
 
+
 /**
   @file RasterDataset.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
 
-#include "RasterDataset.hpp"
 
-#include <string.h>
+#include <string>
 
 #include <gdal_alg.h>
 
@@ -47,6 +47,7 @@
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
+#include <openfluid/landr/RasterDataset.hpp>
 
 
 namespace openfluid { namespace landr {

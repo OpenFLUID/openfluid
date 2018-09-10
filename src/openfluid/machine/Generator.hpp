@@ -30,16 +30,16 @@
 */
 
 
-
 /**
   @file Generator.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_MACHINE_GENERATOR_HPP__
 #define __OPENFLUID_MACHINE_GENERATOR_HPP__
+
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
@@ -102,8 +102,8 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 
 };
 
-} } //namespaces
 
+} } //namespaces
 
 
 #endif /* __OPENFLUID_MACHINE_GENERATOR_HPP__ */

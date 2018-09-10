@@ -41,7 +41,6 @@
 #define __OPENFLUID_BUILDERAPP_ADDCONNECTIONDIALOG_HPP__
 
 
-
 enum ConnectionCode { BUILDER_CONNCODE_TO = 0,
                       BUILDER_CONNCODE_FROM = 1,
                       BUILDER_CONNCODE_PARENTOF = 2,

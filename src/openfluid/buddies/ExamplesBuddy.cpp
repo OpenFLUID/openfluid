@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ExamplesBuddy.cpp
 
@@ -42,7 +41,6 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
-
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
@@ -108,8 +106,6 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
                                                const std::string& ProjectsInstallPath, const bool Force)
 {
 
-
-
   if (openfluid::tools::Filesystem::isDirectory(ProjectsSourcePath))
   {
     std::vector<std::string> FoundProjects = openfluid::tools::findDirectories(ProjectsSourcePath);
@@ -146,6 +142,7 @@ bool ExamplesBuddy::run()
 
   return true;
 }
+
 
 } } // namespaces
 

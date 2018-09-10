@@ -29,14 +29,15 @@
 
  */
 
+
 /**
   @file LandRTools.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
 
-#include <openfluid/base/FrameworkException.hpp>
+
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
@@ -56,6 +57,7 @@
 #include <geos/geom/PrecisionModel.h>
 #include <geos/precision/SimpleGeometryPrecisionReducer.h>
 
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/LandRTools.hpp>

@@ -29,23 +29,22 @@
   
 */
 
+
 /**
   @file DatastoreItem.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
 
-#include "DatastoreItem.hpp"
 
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
-namespace openfluid {
-namespace core {
+#include "DatastoreItem.hpp"
 
-// =====================================================================
-// =====================================================================
+
+namespace openfluid { namespace core {
 
 
 DatastoreItem::DatastoreItem(const std::string& ID,
@@ -70,6 +69,7 @@ DatastoreItem::DatastoreItem(const std::string& ID,
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -79,6 +79,7 @@ DatastoreItem::~DatastoreItem()
   delete m_Value;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -87,6 +88,7 @@ std::string DatastoreItem::getID() const
 {
   return m_ID;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -107,6 +109,7 @@ std::string DatastoreItem::getRelativePath() const
   return m_RelativePath;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -115,6 +118,7 @@ std::string DatastoreItem::getUnitsClass() const
 {
   return m_UnitsClass;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -135,8 +139,5 @@ const UnstructuredValue* DatastoreItem::value() const
   return m_Value;
 }
 
-// =====================================================================
-// =====================================================================
 
-}
-} // namespaces
+} } // namespaces

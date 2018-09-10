@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file GraphvizViewExtension.hpp
 
@@ -97,5 +96,4 @@ class GraphvizViewExtension : public openfluid::builderext::PluggableWorkspaceEx
     bool initialize();
 
 };
-
 

@@ -34,11 +34,12 @@
   @file SurfacicGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_SURFACICGRAPHICS_HPP__
 #define __OPENFLUID_BUILDERAPP_SURFACICGRAPHICS_HPP__
+
 
 #include "MapItemGraphics.hpp"
 
@@ -53,7 +54,6 @@ class SurfacicGraphics : public MapItemGraphics
     QVariant itemChange(GraphicsItemChange Change, const QVariant& Value);
 
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_SURFACICGRAPHICS_HPP__ */

@@ -29,12 +29,12 @@
   
 */
 
+
 /**
   @file DetectQtDevToolsDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
-
 
 
 #ifndef __OPENFLUID_UICOMMON_DETECTQTDEVTOOLSDIALOG_HPP__

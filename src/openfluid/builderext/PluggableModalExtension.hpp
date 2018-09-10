@@ -34,17 +34,17 @@
   @file PluggableModalExtension.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__
 #define __OPENFLUID_BUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__
 
+
 #include <QDialog>
 
 #include <openfluid/builderext/PluggableFeatureExtension.hpp>
 #include <openfluid/dllexport.hpp>
-
 
 
 namespace openfluid { namespace builderext {

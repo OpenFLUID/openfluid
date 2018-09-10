@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ChronFileLinearInterpolator_TEST.cpp
 
@@ -42,6 +41,11 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_chronfilelinearinterpolator
+
+
+#include <iostream>
+#include <fstream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/progress.hpp>
@@ -50,11 +54,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
-
-#include <iostream>
-#include <fstream>
-
-#include <tests-config.hpp>
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -145,7 +145,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
     BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::FrameworkException,validateException);
   }
-
 
 
   // real temperature file at 60sec
@@ -247,6 +246,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
   }
 
 }
-
-
 

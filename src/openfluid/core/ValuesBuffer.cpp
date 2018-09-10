@@ -29,12 +29,13 @@
   
 */
 
+
 /**
   @file ValuesBuffer.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <boost/circular_buffer.hpp>
@@ -44,8 +45,6 @@
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/IntegerValue.hpp>
-
-#include <iostream>
 
 
 namespace openfluid { namespace core {
@@ -291,7 +290,6 @@ bool ValuesBuffer::getIndexedValues(const TimeIndex_t& aBeginIndex, const TimeIn
 // =====================================================================
 
 
-
 TimeIndex_t ValuesBuffer::getCurrentIndex() const
 {
   if (!m_PImpl->m_Data.empty())
@@ -383,6 +381,7 @@ void ValuesBuffer::displayStatus(std::ostream& OStream) const
   OStream << "------------------------------" << std::endl;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -402,9 +401,6 @@ void ValuesBuffer::displayContent(std::ostream& OStream) const
   }
 
 }
-
-// =====================================================================
-// =====================================================================
 
 
 } } // namespaces

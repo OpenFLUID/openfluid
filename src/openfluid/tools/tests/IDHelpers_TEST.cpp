@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file IDHelpers_TEST.cpp
 
@@ -42,10 +41,12 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_idhelpers
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/tools/IDHelpers.hpp>
 
+#include <openfluid/tools/IDHelpers.hpp>
 
 
 // =====================================================================
@@ -219,8 +220,6 @@ BOOST_AUTO_TEST_CASE(check_variables_operations)
   BOOST_REQUIRE(!openfluid::tools::isValidTypedVariableName("abc.def.ghi[matrix"));
   BOOST_REQUIRE(!openfluid::tools::isValidTypedVariableName("abc.def.ghi[matrix][double]"));
   BOOST_REQUIRE(!openfluid::tools::isValidTypedVariableName("abc.def.ghi[matrix][matrix]"));
-
-
 
 
   openfluid::core::VariableName_t VarName;

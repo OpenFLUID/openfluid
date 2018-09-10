@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file GeoRasterValue.cpp
 
@@ -40,12 +41,8 @@
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
-namespace openfluid {
-namespace core {
 
-
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace core {
 
 
 GeoRasterValue::GeoRasterValue(const std::string& FilePath, const std::string& FileName) :

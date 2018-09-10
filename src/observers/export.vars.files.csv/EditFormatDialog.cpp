@@ -37,14 +37,14 @@
 */
 
 
-
 #include <QPushButton>
 
-#include "ui_EditFormatDialog.h"
-#include "EditFormatDialog.hpp"
 
 #include <openfluid/ui/config.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
+
+#include "ui_EditFormatDialog.h"
+#include "EditFormatDialog.hpp"
 
 
 EditFormatDialog::EditFormatDialog(const QStringList& ExistingFormats,QWidget* Parent):

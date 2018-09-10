@@ -34,7 +34,7 @@
   @file SpatialDomainWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_SPATIALDOMAINWIDGET_HPP__
@@ -43,11 +43,11 @@
 
 #include <QWidget>
 
-#include "WorkspaceWidget.hpp"
-#include "MapScene.hpp"
-
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+
+#include "WorkspaceWidget.hpp"
+#include "MapScene.hpp"
 
 
 namespace Ui

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DistributionBindings_TEST.cpp
 
@@ -42,15 +41,17 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_distributionbindings
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/tools/DistributionBindings.hpp>
 
+#include "tests-config.hpp"
 
-#include <iostream>
-
-#include <tests-config.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -128,8 +129,5 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE(ValueFound);
   BOOST_REQUIRE_CLOSE(Value.get(),7.0,0.0001);
 
-
 }
-
-
 

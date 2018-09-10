@@ -30,26 +30,28 @@
 */
 
 
-
 /**
   @file ColumnTextParser_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_coltextparser
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/tools/ColumnTextParser.hpp>
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/MapValue.hpp>
 
-#include <tests-config.hpp>
+#include "tests-config.hpp"
 
 
 // =====================================================================

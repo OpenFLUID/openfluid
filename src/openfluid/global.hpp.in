@@ -36,10 +36,8 @@
 */
 
 
-
 #ifndef __OPENFLUID_GLOBAL_HPP__
 #define __OPENFLUID_GLOBAL_HPP__
-
 
 
 // OpenFLUID version
@@ -165,7 +163,6 @@
 #else
   #define OPENFLUID_CODE_LOCATION __func__
 #endif
-
 
 
 #endif /* __OPENFLUID_GLOBAL_HPP__ */

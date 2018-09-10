@@ -52,8 +52,6 @@
 
 namespace openfluid { namespace ui { namespace market {
 
-// =====================================================================
-// =====================================================================
 
 class OPENFLUID_API MarketPackWidget : public QGroupBox
 {
@@ -118,6 +116,7 @@ class OPENFLUID_API MarketPackWidget : public QGroupBox
     virtual void updateDisplayedInfos();
 
 };
+
 
 } } } // namespaces
 

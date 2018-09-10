@@ -30,20 +30,20 @@
 */
 
 
-
 /**
   @file ModelView.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-
-#include <openfluid/base/RunContextManager.hpp>
-#include "ModelView.hpp"
 
 #include <QWheelEvent>
 #include <QSvgGenerator>
 #include <QFileDialog>
+
+#include <openfluid/base/RunContextManager.hpp>
+
+#include "ModelView.hpp"
 
 
 ModelView::ModelView(QWidget* Parent):

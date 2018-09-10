@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Value.hpp
 
@@ -40,6 +39,7 @@
 
 #ifndef __OPENFLUID_CORE_VALUE_HPP__
 #define __OPENFLUID_CORE_VALUE_HPP__
+
 
 #include <iostream>
 

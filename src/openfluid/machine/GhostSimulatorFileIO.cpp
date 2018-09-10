@@ -36,6 +36,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+
 #include <fstream>
 
 #include <QDomDocument>
@@ -76,7 +77,6 @@ class DataNodeFields
         IOMode.clear();
     }
 };
-
 
 
 // =====================================================================
@@ -140,7 +140,6 @@ std::string getXMLAttributeString(const openfluid::ware::SignatureSpatialDataIte
 
   return XMLStr;
 }
-
 
 
 // =====================================================================

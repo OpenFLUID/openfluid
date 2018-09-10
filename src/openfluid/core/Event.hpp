@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file Event.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
+
 
 #ifndef __OPENFLUID_CORE_EVENT_HPP__
 #define __OPENFLUID_CORE_EVENT_HPP__

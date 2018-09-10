@@ -29,22 +29,24 @@
   
 */
 
+
 /**
   @file OGRGDALHelpers.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OGRGDALHELPERS_HPP__
 #define __OGRGDALHELPERS_HPP__
 
-#include "SourceData.hpp"
 
 #include <QMap>
 #include <QString>
 
 #include <ogrsf_frmts.h>
+
+#include "SourceData.hpp"
 
 
 class OGRGDALHelpers
@@ -72,8 +74,5 @@ class OGRGDALHelpers
 };
 
 
-
-
-
-
 #endif /* __OGRGDALHELPERS_HPP__ */
+

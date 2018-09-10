@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file DashboardWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include "DashboardWidget.hpp"
@@ -56,5 +55,4 @@ DashboardWidget::~DashboardWidget()
 {
 
 }
-
 

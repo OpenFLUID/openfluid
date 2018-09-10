@@ -34,11 +34,12 @@
   @file SimulationContributorWare.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_WARE_SIMULATIONCONTRIBUTORWARE_HPP__
 #define __OPENFLUID_WARE_SIMULATIONCONTRIBUTORWARE_HPP__
+
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationInspectorWare.hpp>
@@ -427,9 +428,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
 };
 
 
-
 } } // openfluid::ware
-
 
 
 #endif /* __OPENFLUID_WARE_SIMULATIONCONTRIBUTORWARE_HPP__ */

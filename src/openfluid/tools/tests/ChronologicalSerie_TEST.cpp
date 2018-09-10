@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ChronologicalSerie_TEST.cpp
 
@@ -42,14 +41,17 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_chronologicalserie
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/tools/ChronologicalSerie.hpp>
 
-#include <iostream>
+#include "tests-config.hpp"
 
-#include <tests-config.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -60,8 +62,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::tools::ChronologicalSerie CS;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -151,6 +155,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(B.first.getAsISOString(),openfluid::core::DateTime(2013,06,26,8,30,0).getAsISOString());
   BOOST_REQUIRE_EQUAL(A.first.getAsISOString(),openfluid::core::DateTime(2013,06,26,9,23,51).getAsISOString());
 }
-
-
 

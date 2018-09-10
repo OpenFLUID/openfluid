@@ -30,15 +30,14 @@
 */
 
 
-
 /**
   @file ProjectCheckInfos.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
-#include "ProjectCheckInfos.hpp"
 
+#include "ProjectCheckInfos.hpp"
 
 
 ProjectPartCheckInfos::ProjectPartCheckInfos()
@@ -49,7 +48,6 @@ ProjectPartCheckInfos::ProjectPartCheckInfos()
 
 // =====================================================================
 // =====================================================================
-
 
 
 ProjectStatusLevel ProjectPartCheckInfos::getStatus() const
@@ -99,10 +97,8 @@ void ProjectPartCheckInfos::clear()
 }
 
 
-
 // =====================================================================
 // =====================================================================
-
 
 
 ProjectCheckInfos::ProjectCheckInfos()

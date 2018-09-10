@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_WARE_SIMULATIONINSPECTORWARE_HPP__
 #define __OPENFLUID_WARE_SIMULATIONINSPECTORWARE_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationDrivenWare.hpp>
 #include <openfluid/core/BooleanValue.hpp>
@@ -592,7 +593,6 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
     };
 
 };
-
 
 
 } } // openfluid::ware

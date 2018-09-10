@@ -263,4 +263,3 @@ void AddGeneratorDialog::selectDistriFile()
 
 }
 
-

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SimulatorSignature.hpp
 
@@ -46,7 +45,6 @@
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/ware/WareSignature.hpp>
-
 
 
 namespace openfluid { namespace ware {
@@ -361,9 +359,7 @@ class OPENFLUID_API SimulatorSignature : public WareSignature
 };
 
 
-
 } } // namespaces
-
 
 
 #endif

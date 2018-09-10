@@ -30,21 +30,21 @@
 */
 
 
-
 /**
   @file FileDownloader.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
-#include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/utils/FileDownloader.hpp>
+
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QEventLoop>
 #include <QFile>
 
+#include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/utils/FileDownloader.hpp>
 
 
 namespace openfluid { namespace utils {
@@ -86,7 +86,6 @@ class FileDownloaderImpl : public QObject
         Signal emitted when store of downloaded file content is finished
       */
       void processFinished();
-
 
 
   public:
@@ -149,8 +148,6 @@ class FileDownloaderImpl : public QObject
 
 // =====================================================================
 // =====================================================================
-// =====================================================================
-// =====================================================================
 
 
 bool FileDownloader::downloadToString(const std::string& URL, std::string& Contents)
@@ -201,6 +198,6 @@ bool FileDownloader::downloadToFile(const std::string& URL, const std::string& F
 
 #include "FileDownloader.moc"
 
-} } // namespaces
 
+} } // namespaces
 

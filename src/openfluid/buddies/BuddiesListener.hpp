@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file BuddiesListener.hpp
 
@@ -41,15 +40,15 @@
 #ifndef __OPENFLUID_BUDDIES_BUDDIESLISTENER_HPP__
 #define __OPENFLUID_BUDDIES_BUDDIESLISTENER_HPP__
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/base/Listener.hpp>
+
 #include <string>
 #include <map>
 
-namespace openfluid { namespace buddies {
+#include <openfluid/dllexport.hpp>
+#include <openfluid/base/Listener.hpp>
 
-// =====================================================================
-// =====================================================================
+
+namespace openfluid { namespace buddies {
 
 
 class OPENFLUID_API BuddiesListener : public openfluid::base::Listener
@@ -73,11 +72,10 @@ class OPENFLUID_API BuddiesListener : public openfluid::base::Listener
 
     virtual void onHelpOthers(const std::map<std::string,std::string>& /*OptionsHelp*/) {};
 
-
-
 };
 
 
 } } //namespaces
+
 
 #endif /* __OPENFLUID_BUDDIES_BUDDIESLISTENER_HPP__ */

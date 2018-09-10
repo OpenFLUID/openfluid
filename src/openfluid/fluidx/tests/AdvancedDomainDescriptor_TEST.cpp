@@ -29,23 +29,28 @@
   
 */
 
+
 /**
   @file AdvancedDomainDescriptor_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_AdvancedDomainDescriptor
+
+
+#include <algorithm>
+
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
-#include <algorithm>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================

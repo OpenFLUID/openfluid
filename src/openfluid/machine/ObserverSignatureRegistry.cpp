@@ -29,11 +29,12 @@
   
 */
 
+
 /**
   @file ObserverSignatureRegistry.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
 
 
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
@@ -115,5 +116,5 @@ void ObserverSignatureRegistry::unloadAll()
 }
 
 
-
 } } /* namespaces */
+

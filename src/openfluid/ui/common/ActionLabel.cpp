@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file ActionLabel.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <openfluid/ui/common/ActionLabel.hpp>
@@ -65,5 +64,4 @@ ActionLabel::ActionLabel(const QString& Text, QWidget* Parent):
 
 
 } } } // namespaces
-
 

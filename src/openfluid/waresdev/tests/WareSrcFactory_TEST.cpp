@@ -40,7 +40,12 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WareSrcManager
+
+
 #include <boost/test/unit_test.hpp>
+
+#include <QDir>
+#include <QTextStream>
 
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
@@ -49,8 +54,6 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/config.hpp>
 
-#include <QDir>
-#include <QTextStream>
 
 // =====================================================================
 // =====================================================================
@@ -341,9 +344,4 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
 
   openfluid::tools::Filesystem::removeDirectory(WareTypePath.toStdString());
 }
-
-
-// =====================================================================
-// =====================================================================
-
 

@@ -30,18 +30,19 @@
 */
 
 
-
 /**
   @file MarketPackWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+
+#include <QColor>
+
 #include <openfluid/ui/market/MarketPackWidget.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 #include <openfluid/ui/market/MarketClientAssistant.hpp>
 
-#include <QColor>
 
 namespace openfluid { namespace ui { namespace market {
 
@@ -228,7 +229,6 @@ QString MarketPackWidget::replaceByUnknownIfEmpty(const QString& Str)
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -242,5 +242,5 @@ QString MarketPackWidget::replaceByNoneIfEmpty(const QString& Str)
 }
 
 
-
 } } } // namespaces
+

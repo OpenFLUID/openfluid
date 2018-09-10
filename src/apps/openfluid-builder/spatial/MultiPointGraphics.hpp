@@ -33,14 +33,16 @@
   @file MultiPointGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_MULTIPOINTGRAPHICS_HPP__
 #define __OPENFLUID_BUILDERAPP_MULTIPOINTGRAPHICS_HPP__
 
-#include "PunctualGraphics.hpp"
+
 #include <QPen>
+
+#include "PunctualGraphics.hpp"
 
 
 class MultiPointGraphics : public PunctualGraphics
@@ -50,7 +52,6 @@ class MultiPointGraphics : public PunctualGraphics
     MultiPointGraphics(OGRMultiPoint* OGRMultiPt, const QPen& Pen);
 
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_MULTIPOINTGRAPHICS_HPP__ */

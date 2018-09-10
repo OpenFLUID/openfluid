@@ -41,9 +41,6 @@
 #define __OPENFLUID_TOOLS_DATAHELPERS_HPP__
 
 
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/base/FrameworkException.hpp>
-
 #include <string>
 #include <list>
 #include <sstream>
@@ -52,6 +49,8 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/deprecation.hpp>
+#include <openfluid/core/DateTime.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace tools {

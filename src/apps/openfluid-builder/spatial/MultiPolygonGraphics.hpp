@@ -41,8 +41,9 @@
 #define __OPENFLUID_BUILDERAPP_MULTIPOLYGONGRAPHICS_HPP__
 
 
-#include "SurfacicGraphics.hpp"
 #include <ogr_geometry.h>
+
+#include "SurfacicGraphics.hpp"
 
 
 class MultiPolygonGraphics : public SurfacicGraphics
@@ -53,8 +54,6 @@ class MultiPolygonGraphics : public SurfacicGraphics
     MultiPolygonGraphics(OGRMultiPolygon* OGRMultiPoly, const QPen& Pen, const QBrush& Brush);
 
 };
-
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_MULTIPOLYGONGRAPHICS_HPP__ */

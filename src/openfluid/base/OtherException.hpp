@@ -34,14 +34,16 @@
   @file OtherException.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BASE_OTHEREXCEPTION_HPP__
 #define __OPENFLUID_BASE_OTHEREXCEPTION_HPP__
 
+
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace base {
 

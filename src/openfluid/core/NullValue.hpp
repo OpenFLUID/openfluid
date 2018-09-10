@@ -30,18 +30,15 @@
 */
 
 
-
 /**
   @file NullValue.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_CORE_NULLVALUE_HPP__
 #define __OPENFLUID_CORE_NULLVALUE_HPP__
-
-
 
 
 #include <openfluid/core/Value.hpp>
@@ -49,6 +46,7 @@
 
 
 namespace openfluid { namespace core {
+
 
 /**
 NullValue is a container for null value, containing no data.\n
@@ -94,7 +92,6 @@ class OPENFLUID_API NullValue : public Value
 
 
 } }  // namespaces
-
 
 
 #endif /* __OPENFLUID_CORE_NULLVALUE_HPP__ */

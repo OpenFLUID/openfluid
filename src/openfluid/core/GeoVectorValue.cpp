@@ -29,12 +29,13 @@
   
 */
 
+
 /**
   @file GeoVectorValue.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <openfluid/core/GeoVectorValue.hpp>
@@ -201,6 +202,7 @@ bool GeoVectorValue::isPointType(unsigned int LayerIndex)
 
 // =====================================================================
 // =====================================================================
+
 
 bool GeoVectorValue::isMultiPolygonType(unsigned int LayerIndex)
 {

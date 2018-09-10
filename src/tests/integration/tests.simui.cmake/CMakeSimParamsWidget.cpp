@@ -36,13 +36,14 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QLabel>
 
-#include "CMakeSimParamsWidget.hpp"
 
+#include "CMakeSimParamsWidget.hpp"
 
 
 CMakeSimParamsWidget::CMakeSimParamsWidget(): openfluid::builderext::PluggableParameterizationExtension()

@@ -34,11 +34,12 @@
   @file IDHelpers.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_TOOLS_IDHELPERS_HPP__
 #define __OPENFLUID_TOOLS_IDHELPERS_HPP__
+
 
 #include <string>
 

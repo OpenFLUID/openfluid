@@ -292,4 +292,3 @@ void SourceAddDialog::proceedToImport()
   }
 }
 
-

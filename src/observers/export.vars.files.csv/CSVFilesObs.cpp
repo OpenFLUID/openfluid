@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file CSVFilesObs.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <chrono>
@@ -43,11 +42,11 @@
 #include <sstream>
 #include <iomanip>
 
-#include "CSVObsTools.hpp"
-
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+
+#include "CSVObsTools.hpp"
 
 
 // =====================================================================

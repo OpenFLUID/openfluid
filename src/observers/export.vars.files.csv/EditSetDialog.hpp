@@ -29,12 +29,12 @@
   
 */
 
+
 /**
   @file EditSetDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
-
 
 
 #ifndef __EDITSETDIALOG_HPP__

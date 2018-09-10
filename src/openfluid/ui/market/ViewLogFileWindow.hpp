@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_UIMARKET_VIEWLOGFILEWINDOW_HPP__
 #define __OPENFLUID_UIMARKET_VIEWLOGFILEWINDOW_HPP__
 
+
 #include <QDialog>
 #include <QString>
 #include <QVBoxLayout>
@@ -52,9 +53,6 @@
 
 namespace openfluid { namespace ui { namespace market {
 
-
-// =====================================================================
-// =====================================================================
 
 class OPENFLUID_API ViewLogFileWindow : public QDialog
 {
@@ -73,8 +71,8 @@ class OPENFLUID_API ViewLogFileWindow : public QDialog
     ViewLogFileWindow(const QString& PathToLogfile);
 };
 
-} } } //namespaces
 
+} } } //namespaces
 
 
 #endif /* __OPENFLUID_UIMARKET_VIEWLOGFILEWINDOW_HPP__ */

@@ -30,17 +30,16 @@
 */
 
 
-
 /**
   @file MultiPolygonGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
+#include <QBrush>
 
 #include "MultiPolygonGraphics.hpp"
-#include <QBrush>
 
 
 MultiPolygonGraphics::MultiPolygonGraphics(OGRMultiPolygon* OGRMultiPoly, const QPen& Pen, const QBrush& Brush):

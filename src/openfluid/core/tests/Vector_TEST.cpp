@@ -30,20 +30,22 @@
 */
 
 
-
 /**
   @file Vector_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_vector
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
+
 #include <openfluid/core/Vector.hpp>
 
 
@@ -108,7 +110,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
   V3.clear();
   BOOST_REQUIRE_EQUAL(V3.getSize(),0);
 }
-
-// =====================================================================
-// =====================================================================
 

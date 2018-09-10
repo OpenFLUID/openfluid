@@ -30,22 +30,26 @@
 */
 
 
-
 /**
   @file Attributes_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_attributes
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include <openfluid/core/Attributes.hpp>
+
 #include <vector>
+
+#include <openfluid/core/Attributes.hpp>
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/MapValue.hpp>
@@ -268,7 +272,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_vect",TheLong),false);
   BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_vect_str",TheLong),false);
-
 
 
   Names = Attrs.getAttributesNames();

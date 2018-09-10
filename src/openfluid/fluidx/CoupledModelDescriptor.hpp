@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file CoupledModelDescriptor.hpp
 

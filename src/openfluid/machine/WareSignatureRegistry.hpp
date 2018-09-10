@@ -36,7 +36,6 @@
 */
 
 
-
 #ifndef __OPENFLUID_MACHINE_WARESIGNATUREREGISTRY_HPP__
 #define __OPENFLUID_MACHINE_WARESIGNATUREREGISTRY_HPP__
 
@@ -45,6 +44,7 @@
 
 
 namespace openfluid { namespace machine {
+
 
 template<class S>
 class WareSignatureRegistry

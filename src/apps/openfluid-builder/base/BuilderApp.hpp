@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_BUILDERAPP_BUILDERAPP_HPP__
 #define __OPENFLUID_BUILDERAPP_BUILDERAPP_HPP__
 
+
 #include <QObject>
 
 #include <openfluid/dllexport.hpp>

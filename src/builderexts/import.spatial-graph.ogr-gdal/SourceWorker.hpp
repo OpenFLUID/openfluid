@@ -40,9 +40,9 @@
 #define __SOURCEWORKER_HPP__
 
 
-#include "ogrsf_frmts.h"
-
 #include <QObject>
+
+#include <ogrsf_frmts.h>
 
 #include <openfluid/utils/GDALCompatibility.hpp>
 
@@ -82,8 +82,6 @@ class SourceWorker : public QObject
     SourceWorker(const QString& URI, GDALDataset_COMPAT* Src);
 
     ~SourceWorker();
-
-
 
  };
 

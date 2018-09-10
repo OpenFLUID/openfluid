@@ -80,6 +80,7 @@ void EditSignatureDialog::initialize(const QStringList& ExistingIDs)
   connect(ui->SignatureWidget,SIGNAL(changed()),this,SLOT(checkGlobally()));
 }
 
+
 // =====================================================================
 // =====================================================================
 

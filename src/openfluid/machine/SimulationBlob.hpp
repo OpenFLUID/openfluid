@@ -34,11 +34,12 @@
   @file SimulationBlob.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__
 #define __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__
+
 
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/core/Datastore.hpp>

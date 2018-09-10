@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_MACHINE_WAREPLUGINSMANAGER_HPP__
 #define __OPENFLUID_MACHINE_WAREPLUGINSMANAGER_HPP__
 
+
 #include <vector>
 #include <map>
 #include <set>

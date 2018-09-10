@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCEXPLORER_HPP__
 #define __OPENFLUID_UIWARESDEV_WARESRCEXPLORER_HPP__
 
+
 #include <QTreeView>
 #include <QContextMenuEvent>
 

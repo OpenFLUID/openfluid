@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file WrongProdSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
@@ -101,14 +100,19 @@ class WrongProductionSimulator : public openfluid::ware::PluggableSimulator
 
 
   void initParams(const openfluid::ware::WareParams_t& /*Params*/)
-  {  }
+  {
+
+  }
+
 
   // =====================================================================
   // =====================================================================
 
 
   void prepareData()
-  {  }
+  {
+
+  }
 
 
   // =====================================================================
@@ -116,7 +120,9 @@ class WrongProductionSimulator : public openfluid::ware::PluggableSimulator
 
 
   void checkConsistency()
-  {  }
+  {
+
+  }
 
 
   // =====================================================================
@@ -137,6 +143,7 @@ class WrongProductionSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -155,6 +162,7 @@ class WrongProductionSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -164,8 +172,10 @@ class WrongProductionSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(WrongProductionSimulator)
 

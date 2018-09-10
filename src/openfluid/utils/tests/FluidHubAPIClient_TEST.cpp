@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file FluidHubAPIClient_TEST.cpp
 
@@ -41,6 +40,8 @@
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_fluidhubapiclient
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
@@ -48,7 +49,7 @@
 
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 
-#include <tests-config.hpp>
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -296,7 +297,6 @@ void checkOperations(const std::string& URL,
   }
 
 
-
   {
     // with username
 
@@ -335,7 +335,6 @@ void checkOperations(const std::string& URL,
 
   FHClient.disconnect();
   BOOST_REQUIRE(!FHClient.isConnected());
-
 
 
   BOOST_REQUIRE(FHClient.connect(QString::fromStdString(URL),SSLConfig));

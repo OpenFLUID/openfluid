@@ -30,20 +30,23 @@
 */
 
 
-
 /**
   @file Tree_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_tree
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
+
 #include <openfluid/core/Tree.hpp>
 
 
@@ -124,8 +127,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_CHECK_THROW(TreeIntInt.child(3),openfluid::base::FrameworkException);
   BOOST_REQUIRE_EQUAL(TreeIntInt.size(),3);
 }
-
-
-// =====================================================================
-// =====================================================================
 

@@ -39,13 +39,17 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_pluggableware
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/ware/PluggableWare.hpp>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_isWellFormated)
 {
@@ -79,7 +83,4 @@ BOOST_AUTO_TEST_CASE(check_isWellFormated)
   BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2.."));
   BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2.level3.."));
 }
-
-// =====================================================================
-// =====================================================================
 

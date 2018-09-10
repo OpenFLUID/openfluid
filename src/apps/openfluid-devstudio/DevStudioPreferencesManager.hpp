@@ -32,14 +32,14 @@
 
 /**
  @file DevStudioPreferencesManager.hpp
- @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
 
 
 #ifndef __OPENFLUID_DEVSTUDIOAPP_DEVSTUDIOPREFERENCESMANAGER_HPP__
 #define __OPENFLUID_DEVSTUDIOAPP_DEVSTUDIOPREFERENCESMANAGER_HPP__
+
 
 #include <QSettings>
 

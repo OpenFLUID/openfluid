@@ -82,7 +82,6 @@ QString OGRGDALHelpers::getDriverFromFileExt(const QString& FileExt)
 // =====================================================================
 
 
-
 bool OGRGDALHelpers::isFileExt(const QString& FileExt)
 {
   return m_FileExtsDriversMap.contains(FileExt);

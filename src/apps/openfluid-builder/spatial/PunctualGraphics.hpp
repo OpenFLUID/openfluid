@@ -29,20 +29,21 @@
   
 */
 
+
 /**
   @file PunctualGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_PUNCTUALGRAPHICS_HPP__
 #define __OPENFLUID_BUILDERAPP_PUNCTUALGRAPHICS_HPP__
 
 
-#include "MapItemGraphics.hpp"
-
 #include <ogr_geometry.h>
+
+#include "MapItemGraphics.hpp"
 
 
 class PunctualGraphics : public MapItemGraphics
@@ -61,8 +62,6 @@ class PunctualGraphics : public MapItemGraphics
     QVariant itemChange(GraphicsItemChange Change, const QVariant& Value);
 
 };
-
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_PUNCTUALGRAPHICS_HPP__ */

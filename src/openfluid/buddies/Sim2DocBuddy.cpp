@@ -30,34 +30,38 @@
 */
 
 
-
 /**
   @file Sim2DocBuddy.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
-#include <openfluid/buddies/Sim2DocBuddy.hpp>
+// OpenFLUID:stylecheck:!inco
+
+
+#include <openfluid/config.hpp>
+
 
 #if OPENFLUID_SIM2DOC_ENABLED
 
+
 #include <iosfwd>
 #include <fstream>
-#include <boost/algorithm/string/replace.hpp>
 
+#include <boost/algorithm/string/replace.hpp>
+#include <openfluid/buddies/Sim2DocBuddy.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>
-#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace buddies {
 
-typedef parse_info<std::string::const_iterator>   Parser_t;
 
+typedef parse_info<std::string::const_iterator>   Parser_t;
 
 
 Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
@@ -179,6 +183,7 @@ void Sim2DocBuddy::copyDocDirectory()
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -240,6 +245,7 @@ void Sim2DocBuddy::cpreprocessCPP()
 
 #endif
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -853,7 +859,6 @@ void Sim2DocBuddy::buildHTML()
 
 // =====================================================================
 // =====================================================================
-
 
 
 bool Sim2DocBuddy::run()

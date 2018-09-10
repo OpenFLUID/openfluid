@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file OpenFLUID.cpp
 
@@ -62,7 +61,10 @@
 #include <openfluid/buddies/NewSimBuddy.hpp>
 #include <openfluid/buddies/NewDataBuddy.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
+
+#if OPENFLUID_SIM2DOC_ENABLED
 #include <openfluid/buddies/Sim2DocBuddy.hpp>
+#endif
 
 #include "OpenFLUID.hpp"
 #include "DefaultIOListener.hpp"
@@ -390,7 +392,6 @@ void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHa
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -526,6 +527,7 @@ int OpenFLUIDApp::stopAppReturn(const std::string& ErrorType, const std::string&
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -555,6 +557,7 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
     std::cout << "Temp dir: " << openfluid::base::Environment::getTempDir() << std::endl;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -581,6 +584,7 @@ void OpenFLUIDApp::printEnvInfos()
 
 // =====================================================================
 // =====================================================================
+
 
 void OpenFLUIDApp::runSimulation()
 {
@@ -742,6 +746,7 @@ void OpenFLUIDApp::runSimulation()
   mp_Engine.reset();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -810,7 +815,6 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   Parser.addCommand(ReportCmd);
 
 
-
   // show paths
   openfluid::utils::CommandLineCommand ShowPathsCmd("show-paths","Show search paths for wares");
   for (auto& Opt : SearchOptions)
@@ -822,7 +826,6 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     throw openfluid::base::ApplicationException(
         openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
             Parser.getParsingMessage());
-
 
 
   if (Parser.isHelpAsked())
@@ -1107,9 +1110,4 @@ void OpenFLUIDApp::run()
     runBuddy();
   }
 }
-
-
-
-
-
 

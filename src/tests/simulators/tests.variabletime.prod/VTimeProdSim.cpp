@@ -30,13 +30,11 @@
 */
 
 
-
 /**
   @file VTimeProdSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
+*/
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
@@ -112,18 +110,25 @@ class VariableTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
   }
 
-  // =====================================================================
-  // =====================================================================
-
-
-  void prepareData() { }
-
 
   // =====================================================================
   // =====================================================================
 
 
-  void checkConsistency() { }
+  void prepareData()
+  {
+
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void checkConsistency()
+  {
+
+  }
 
 
   // =====================================================================
@@ -206,6 +211,7 @@ class VariableTimeProdSimulator : public openfluid::ware::PluggableSimulator
       return computeDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -218,8 +224,10 @@ class VariableTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(VariableTimeProdSimulator)
 

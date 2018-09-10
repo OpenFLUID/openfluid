@@ -41,10 +41,12 @@
 #define __OPENFLUID_TOOLS_CHRONFILELINEARINTERPOLATOR_HPP__
 
 
-#include <openfluid/tools/ChronFileInterpolator.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/tools/ChronFileInterpolator.hpp>
+
 
 namespace openfluid { namespace tools {
+
 
 class OPENFLUID_API ChronFileLinearInterpolator : public ChronFileInterpolator
 {
@@ -61,12 +63,10 @@ class OPENFLUID_API ChronFileLinearInterpolator : public ChronFileInterpolator
 
     void runInterpolation();
 
-
-
 };
 
-} } // namespaces
 
+} } // namespaces
 
 
 #endif /* __OPENFLUID_TOOLS_CHRONFILELINEARINTERPOLATOR_HPP__ */

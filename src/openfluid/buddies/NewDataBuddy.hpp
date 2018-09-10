@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file NewDataBuddy.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUDDIES_NEWDATABUDDY_HPP__

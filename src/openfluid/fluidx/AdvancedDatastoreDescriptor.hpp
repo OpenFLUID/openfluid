@@ -29,11 +29,12 @@
   
 */
 
+
 /**
   @file AdvancedDatastoreDescriptor.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
 
 
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDDATASTOREDESCRIPTOR_HPP__
@@ -42,8 +43,8 @@
 
 #include <list>
 #include <string>
-#include <openfluid/dllexport.hpp>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 

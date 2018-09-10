@@ -296,5 +296,4 @@
   Signature->TimeScheduling.setAsRange(min,max);
 
 
-
 #endif /* __OPENFLUID_WARE_SIMULATORSIGNATUREMACROS_HPP__ */

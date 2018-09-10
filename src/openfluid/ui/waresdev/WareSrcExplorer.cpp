@@ -36,12 +36,11 @@
 */
 
 
-#include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
-
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
 
+#include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
 #include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
@@ -224,6 +223,7 @@ QString WareSrcExplorer::getCurrentPath()
 
 // =====================================================================
 // =====================================================================
+
 
 bool WareSrcExplorer::setCurrentPath(const QString& Path)
 {

@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_BUILDERAPP_EXTENSIONSREGISTRY_HPP__
 #define __OPENFLUID_BUILDERAPP_EXTENSIONSREGISTRY_HPP__
 
+
 #include <QWidget>
 
 #include <openfluid/utils/SingletonMacros.hpp>
@@ -100,7 +101,6 @@ class ExtensionsRegistry
 
     openfluid::builderext::ExtensionMode getExtensionMode(const openfluid::ware::WareID_t& ID) const;
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_EXTENSIONSREGISTRY_HPP__ */

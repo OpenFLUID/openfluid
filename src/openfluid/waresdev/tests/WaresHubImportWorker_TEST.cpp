@@ -35,10 +35,13 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
+
 #define BOOST_TEST_NO_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WaresHubImportWorker
+
+
 #include <boost/test/unit_test.hpp>
 
 #include <QCoreApplication>

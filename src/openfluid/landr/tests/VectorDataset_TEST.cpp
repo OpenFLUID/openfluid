@@ -29,20 +29,25 @@
 
 */
 
+
 /**
   @file VectorDataset_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
 
 
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_vectordataset
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <tests-config.hpp>
+
+#include <geos/geom/Geometry.h>
+
 #include <openfluid/landr/GEOSHelpers.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
@@ -51,7 +56,8 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <geos/geom/Geometry.h>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================

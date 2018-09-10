@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file MarketClient_TEST.cpp
 
@@ -41,15 +40,18 @@
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_marketclient
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
+#include <QCoreApplication>
 
 #include <openfluid/market/MarketClient.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 
-#include <tests-config.hpp>
-#include <QCoreApplication>
+#include "tests-config.hpp"
 
 
 // =====================================================================

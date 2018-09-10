@@ -30,17 +30,16 @@
 */
 
 
-
 /**
   @file SurfacicGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-
-#include "SurfacicGraphics.hpp"
 
 #include <QBrush>
+
+#include "SurfacicGraphics.hpp"
 
 
 QVariant SurfacicGraphics::itemChange(GraphicsItemChange Change, const QVariant& Value)

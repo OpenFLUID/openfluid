@@ -34,12 +34,11 @@
   @file DashboardWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_DASHBOARDWIDGET_HPP__
 #define __OPENFLUID_BUILDERAPP_DASHBOARDWIDGET_HPP__
-
 
 
 #include <QWidget>
@@ -62,7 +61,6 @@ class DashboardWidget : public QWidget
     ~DashboardWidget();
 
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_DASHBOARDWIDGET_HPP__ */

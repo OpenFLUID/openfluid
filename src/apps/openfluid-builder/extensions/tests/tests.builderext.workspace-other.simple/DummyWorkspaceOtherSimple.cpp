@@ -30,21 +30,16 @@
 */
 
 
-
 /**
   @file DummyWorkspaceOtherSimple.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-
-#include "DummyWorkspaceOtherSimple.hpp"
 
 #include <QPushButton>
 
-
-// =====================================================================
-// =====================================================================
+#include "DummyWorkspaceOtherSimple.hpp"
 
 
 BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.workspace-other.simple", openfluid::builderext::MODE_WORKSPACE)
@@ -80,7 +75,6 @@ void DummyWorkspaceOtherSimple::change()
 
 // =====================================================================
 // =====================================================================
-
 
 
 DEFINE_BUILDEREXT_CLASS(DummyWorkspaceOtherSimple)

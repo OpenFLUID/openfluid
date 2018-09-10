@@ -34,17 +34,17 @@
   @file DummyModalSpatialClassic.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __DUMMYMODALSPATIALSIMPLE_HPP__
 #define __DUMMYMODALSPATIALSIMPLE_HPP__
 
 
+#include <QDialog>
+
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/builderext/PluggableModalExtension.hpp>
-
-#include <QDialog>
 
 
 namespace Ui

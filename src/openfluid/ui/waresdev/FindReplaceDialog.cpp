@@ -32,10 +32,11 @@
 
 /**
  @file FindReplaceDialog.cpp
- @brief Implements ...
+
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
+
 
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
 
@@ -147,6 +148,7 @@ void FindReplaceDialog::onReplaceClicked()
   emit findReplaceRequested(FindReplaceAction::ReplaceOnly, ui->FindEdit->text(), ui->ReplaceEdit->text(),
                             getFindOptions());
 }
+
 
 // =====================================================================
 // =====================================================================

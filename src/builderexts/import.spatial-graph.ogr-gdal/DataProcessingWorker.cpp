@@ -540,9 +540,7 @@ bool DataProcessingWorker::runCheck(int StartStep)
 
   emit stepCompleted(StartStep,getStyledText(tr("[OK]"),"green"));
 
-
   emit stepEntered(tr("Checking configuration of files copies and datastore..."));
-
 
 
   for (int i=0; i<m_SourcesInfos.size();i++)

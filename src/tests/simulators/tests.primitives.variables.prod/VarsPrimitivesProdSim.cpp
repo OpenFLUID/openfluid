@@ -64,7 +64,6 @@ BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
   DECLARE_AUTHOR("","");
 
 
-
   DECLARE_PRODUCED_VARIABLE("tests.double","TestUnits","double for tests","");
   DECLARE_PRODUCED_VARIABLE("tests.integer","TestUnits","integer for tests","");
   DECLARE_PRODUCED_VARIABLE("tests.bool","TestUnits","boolean for tests","");
@@ -310,7 +309,6 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
         openfluid::core::TreeValue TheTree;
         openfluid::core::IndexedValue IndValue;
         openfluid::core::IndexedValueList IndValueList;
-
 
 
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -1012,8 +1010,10 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(VarsPrimitivesProdSimulator)
 

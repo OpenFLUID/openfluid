@@ -144,13 +144,9 @@ QString DevStudioPreferencesManager::getConfigBuildMode()
 // =====================================================================
 // =====================================================================
 
+
 void DevStudioPreferencesManager::setConfigBuildMode(const QString& Mode)
 {
   mp_Settings->setValue("openfluid.workspace.waresdev/buildmode", Mode);
 }
-
-
-// =====================================================================
-// =====================================================================
-
 

@@ -40,6 +40,7 @@
 #ifndef __OPENFLUID_WARE_PLUGGABLEOBSERVER_HPP__
 #define __OPENFLUID_WARE_PLUGGABLEOBSERVER_HPP__
 
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationInspectorWare.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
@@ -136,9 +137,6 @@ typedef ObserverSignature* (*GetPluggableObserverSignatureProc)();
 
 
 } } // openfluid::ware
-
-
-
 
 
 #endif /* __OPENFLUID_WARE_PLUGGABLEOBSERVER_HPP__ */

@@ -41,7 +41,6 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
-
 BEGIN_SIMULATOR_SIGNATURE("tests.primitives.land")
 
   DECLARE_NAME("");
@@ -99,7 +98,10 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
 
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)
-    {  }
+    {
+
+    }
+
 
     // =====================================================================
     // =====================================================================
@@ -203,7 +205,6 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("incorrect number of units in FU units list");
 
 
-
       auto CheckUnitsList = [this,Cols,Rows](const openfluid::core::UnitsClass_t& ClassName)
       {
         openfluid::core::PcsOrd_t PrevPcsOrd = 0;
@@ -222,7 +223,6 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       CheckUnitsList("VU");
       CheckUnitsList("TU");
       CheckUnitsList("XU");
-
 
 
       openfluid::core::SpatialUnit* CurrentUnit = nullptr;
@@ -280,9 +280,6 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       }
 
 
-
-
-
       CurrentUnit = OPENFLUID_GetUnit("TU",2);
 
       if (CurrentUnit == nullptr)
@@ -312,7 +309,6 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       CurrentUnit = OPENFLUID_GetUnit("VU",1);
       if (OPENFLUID_IsUnitParentOf(CurrentUnit,"TU",2))
         OPENFLUID_RaiseError("incorrect parent-child connection after deletion of unit TU#2");
-
 
 
       CurrentUnit = OPENFLUID_GetUnit("OU",13);
@@ -349,7 +345,9 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
 
     void checkConsistency()
-    { }
+    {
+
+    }
 
 
     // =====================================================================
@@ -377,6 +375,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       return DefaultDeltaT();
     }
 
+
     // =====================================================================
     // =====================================================================
 
@@ -386,6 +385,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       return Never();
     }
+
 
     // =====================================================================
     // =====================================================================
@@ -398,8 +398,10 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(LandPrimitivesSimulator)
 

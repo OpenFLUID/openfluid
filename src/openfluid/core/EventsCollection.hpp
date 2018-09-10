@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file EventsCollection.hpp
 
@@ -41,10 +40,11 @@
 #ifndef __OPENFLUID_CORE_EVENTSCOLLECTION_HPP__
 #define __OPENFLUID_CORE_EVENTSCOLLECTION_HPP__
 
-#include <openfluid/core/Event.hpp>
-#include <openfluid/dllexport.hpp>
 
 #include <list>
+
+#include <openfluid/core/Event.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace core {
@@ -130,7 +130,6 @@ class OPENFLUID_API EventsCollection
 
 
 } } // namespace openfluid::core
-
 
 
 #endif /* __OPENFLUID_CORE_EVENTSCOLLECTION_HPP__*/

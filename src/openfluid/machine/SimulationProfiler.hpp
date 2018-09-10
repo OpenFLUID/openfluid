@@ -30,33 +30,27 @@
 */
 
 
-
 /**
   @file SimulationProfiler.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_MACHINE_SIMULATIONPROFILER_HPP__
 #define __OPENFLUID_MACHINE_SIMULATIONPROFILER_HPP__
-
-#include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/base/SimulationStatus.hpp>
-#include <openfluid/dllexport.hpp>
 
 
 #include <map>
 #include <list>
 #include <chrono>
 
+#include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
+#include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace machine {
-
-
-// =====================================================================
-// =====================================================================
-
 
 
 class OPENFLUID_API SimulationProfiler
@@ -109,7 +103,6 @@ class OPENFLUID_API SimulationProfiler
                      const TimeResolution_t& Duration);
 
 };
-
 
 
 } } //namespaces

@@ -30,25 +30,24 @@
 */
 
 
-
 /**
   @file UnitsClassWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
-#include "ui_UnitsClassWidget.h"
-#include "UnitsClassWidget.hpp"
-#include "AppTools.hpp"
+#include <QColorDialog>
+#include <QMessageBox>
+#include <QDir>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
-#include <QColorDialog>
-#include <QMessageBox>
-#include <QDir>
+#include "ui_UnitsClassWidget.h"
+#include "UnitsClassWidget.hpp"
+#include "AppTools.hpp"
 
 
 QString UnitsClassWidget::m_ColorButtonStyleSheet =
@@ -162,7 +161,6 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
 
 // =====================================================================
 // =====================================================================
-
 
 
 UnitsClassWidget::~UnitsClassWidget()

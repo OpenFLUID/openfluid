@@ -29,22 +29,23 @@
   
 */
 
+
 /**
   @file DatastoreItemDescriptor.hpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_FLUIDX_DATASTOREITEMDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_DATASTOREITEMDESCRIPTOR_HPP__
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 
 #include <string>
 
+#include <openfluid/dllexport.hpp>
+#include <openfluid/deprecation.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 

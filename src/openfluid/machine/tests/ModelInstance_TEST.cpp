@@ -30,26 +30,29 @@
 */
 
 
-
 /**
   @file ModelInstance_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_ModelInstance
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/base/RunContextManager.hpp>
-#include <tests-config.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -251,9 +254,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 }
 
-
-// =====================================================================
-// =====================================================================
 
 // =====================================================================
 // =====================================================================

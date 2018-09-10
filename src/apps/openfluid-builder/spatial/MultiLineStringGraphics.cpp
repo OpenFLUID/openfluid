@@ -34,11 +34,12 @@
   @file MultiLineStringGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
+
+#include <QPen>
 
 #include "MultiLineStringGraphics.hpp"
-#include <QPen>
 
 
 MultiLineStringGraphics::MultiLineStringGraphics(OGRMultiLineString* OGRMultiLine, const QPen& Pen):

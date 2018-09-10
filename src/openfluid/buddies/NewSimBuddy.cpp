@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file NewSimBuddy.cpp
 
@@ -233,6 +232,7 @@ void NewSimulatorBuddy::writeSimulatorCPP()
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -260,7 +260,6 @@ bool NewSimulatorBuddy::run()
 
   if (!openfluid::tools::Filesystem::isDirectory(OutputDirPath))
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Output directory does not exist");
-
 
 
   writeSimulatorCPP();

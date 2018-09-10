@@ -29,14 +29,14 @@
   
 */
 
+
 /**
   @file PreferencesManager.cpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
 
-#include "PreferencesManager.hpp"
 
 #include <QDir>
 #include <QFileInfo>
@@ -46,6 +46,8 @@
 #include <openfluid/config.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+
+#include "PreferencesManager.hpp"
 
 
 namespace openfluid { namespace base {
@@ -119,6 +121,7 @@ QString PreferencesManager::getFileName()
 {
   return m_FileName;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -233,6 +236,7 @@ void PreferencesManager::setBuilderRecentMax(int RecentMax)
 
   adaptBuilderRecentProjects();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -493,11 +497,11 @@ QStringList PreferencesManager::getBuilderExtraPaths(const QString& Key)
 // =====================================================================
 
 
-
 void PreferencesManager::setBuilderExtraSimulatorsPaths(const QStringList& Paths)
 {
   setBuilderExtraPaths("extrasimpaths",Paths);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -508,6 +512,7 @@ void PreferencesManager::addBuilderExtraSimulatorsPath(const QString& Path)
   addBuilderExtraPath("extrasimpaths",Path);
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -516,6 +521,7 @@ void PreferencesManager::removeBuilderExtraSimulatorsPath(const QString& Path)
 {
   removeBuilderExtraPath("extrasimpaths",Path);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -1113,7 +1119,6 @@ bool PreferencesManager::isWaresdevAutomaticSaveBeforeBuild()
 // =====================================================================
 
 
-
 void PreferencesManager::setWaresdevAutomaticSaveBeforeBuild(bool AutoSave)
 {
   mp_ConfFile->beginGroup("openfluid.waresdev.interface");
@@ -1351,6 +1356,7 @@ void PreferencesManager::setWaresdevLineWrappingEnabled(bool Enabled)
   mp_ConfFile->setValue("openfluid.waresdev.texteditor/linewrapping/enabled",Enabled);
   mp_ConfFile->sync();
 }
+
 
 // =====================================================================
 // =====================================================================

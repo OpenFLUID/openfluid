@@ -29,14 +29,17 @@
   
 */
 
+
 /**
   @file ValuesBuffer.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #ifndef __OPENFLUID_CORE_VALUESBUFFER_HPP__
 #define __OPENFLUID_CORE_VALUESBUFFER_HPP__
+
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/ValuesBufferProperties.hpp>
@@ -44,7 +47,6 @@
 
 
 namespace openfluid { namespace core {
-
 
 
 class OPENFLUID_API ValuesBuffer: public ValuesBufferProperties

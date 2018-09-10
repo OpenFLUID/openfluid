@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file UnitsCollection.hpp
 
@@ -83,6 +84,7 @@ class OPENFLUID_API UnitsCollection
     { return &m_Data; };
 
 };
+
 
 } } // namespaces
 

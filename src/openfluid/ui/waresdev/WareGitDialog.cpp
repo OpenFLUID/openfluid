@@ -29,17 +29,20 @@
 
  */
 
+
 /**
  @file WareGitDialog.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
+
 
 #include <QTextDocument>
+
 #include <openfluid/ui/waresdev/WareGitDialog.hpp>
 
 #include "ui_WareGitDialog.h"
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 

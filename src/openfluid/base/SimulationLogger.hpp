@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SimulationLogger.hpp
 
@@ -49,7 +48,6 @@
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
-
 #include <openfluid/tools/MiscHelpers.hpp>
 
 

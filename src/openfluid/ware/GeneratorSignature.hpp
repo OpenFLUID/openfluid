@@ -38,9 +38,11 @@
 #ifndef __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__
 #define __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__
 
+
+#include <openfluid/dllexport.hpp>
+
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace ware {

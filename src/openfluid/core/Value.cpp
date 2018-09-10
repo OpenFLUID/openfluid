@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Value.cpp
 
@@ -39,13 +38,11 @@
 
 
 #include <openfluid/core/Value.hpp>
-
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/IntegerValue.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/StringValue.hpp>
-
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/core/MapValue.hpp>
@@ -119,6 +116,7 @@ const NullValue& Value::asNullValue() const
 // =====================================================================
 // =====================================================================
 
+
 NullValue& Value::asNullValue()
 {
   if (!isNullValue())
@@ -143,6 +141,7 @@ const BooleanValue& Value::asBooleanValue() const
 
 // =====================================================================
 // =====================================================================
+
 
 BooleanValue& Value::asBooleanValue()
 {
@@ -169,6 +168,7 @@ const StringValue& Value::asStringValue() const
 // =====================================================================
 // =====================================================================
 
+
 StringValue& Value::asStringValue()
 {
   if (!isStringValue())
@@ -193,6 +193,7 @@ const VectorValue& Value::asVectorValue() const
 
 // =====================================================================
 // =====================================================================
+
 
 VectorValue& Value::asVectorValue()
 {
@@ -296,6 +297,7 @@ std::string Value::toString() const
 
 // =====================================================================
 // =====================================================================
+
 
 bool Value::getValueTypeFromString(const std::string& TypeName, Value::Type& ValueType)
 {

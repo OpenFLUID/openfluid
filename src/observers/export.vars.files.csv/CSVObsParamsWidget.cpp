@@ -53,6 +53,9 @@ BEGIN_BUILDEREXT_SIGNATURE(WARE_ID)
 END_BUILDEREXT_SIGNATURE
 
 
+// =====================================================================
+// =====================================================================
+
 
 CSVObsParamsWidget::CSVObsParamsWidget(): openfluid::builderext::PluggableParameterizationExtension(),
   ui(new Ui::CSVObsParamsWidget)

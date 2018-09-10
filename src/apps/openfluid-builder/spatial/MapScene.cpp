@@ -30,29 +30,26 @@
 */
 
 
-
 /**
   @file MapScene.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
-#include "MapScene.hpp"
+#include <QMessageBox>
+#include <QApplication>
 
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
 
+#include "MapScene.hpp"
 #include "PointGraphics.hpp"
 #include "MultiPointGraphics.hpp"
 #include "LineStringGraphics.hpp"
 #include "MultiLineStringGraphics.hpp"
 #include "PolygonGraphics.hpp"
 #include "MultiPolygonGraphics.hpp"
-
-
-#include <QMessageBox>
-#include <QApplication>
 
 
 MapScene::MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,

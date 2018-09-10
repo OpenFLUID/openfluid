@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ProgressiveColumnFileReader.cpp
 
@@ -103,7 +102,6 @@ void ProgressiveColumnFileReader::reset()
     m_File.seekg(0,std::ios::beg);
   }
 }
-
 
 
 } } // namespaces

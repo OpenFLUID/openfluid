@@ -30,23 +30,24 @@
 */
 
 
-
 /**
   @file EventsCollection.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
-#include <openfluid/core/EventsCollection.hpp>
+
 #include <iostream>
 
-namespace openfluid { namespace core
-{
+#include <openfluid/core/EventsCollection.hpp>
 
+
+namespace openfluid { namespace core {
 
 
 EventsCollection::EventsCollection()
 {
+
 }
 
 
@@ -56,6 +57,7 @@ EventsCollection::EventsCollection()
 
 EventsCollection::~EventsCollection()
 {
+
 }
 
 
@@ -164,8 +166,5 @@ void EventsCollection::println() const
 }
 
 
-
-
 } }  // namespaces
-
 

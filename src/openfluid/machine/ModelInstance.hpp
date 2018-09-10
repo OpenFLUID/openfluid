@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ModelInstance.hpp
 
@@ -41,6 +40,7 @@
 #ifndef __OPENFLUID_MACHINE_MODELINSTANCE_HPP__
 #define __OPENFLUID_MACHINE_MODELINSTANCE_HPP__
 
+
 #include <list>
 
 #include <openfluid/dllexport.hpp>
@@ -50,11 +50,8 @@
 #include <openfluid/machine/SimulationProfiler.hpp>
 
 
-
 namespace openfluid { namespace ware {
-
 class PluggableSimulator;
-
 }  }
 
 

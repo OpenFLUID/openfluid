@@ -37,7 +37,6 @@
  */
 
 
-
 #ifndef __OPENFLUID_TOOLS_CHRONOLOGICALSERIE_HPP__
 #define __OPENFLUID_TOOLS_CHRONOLOGICALSERIE_HPP__
 
@@ -46,6 +45,7 @@
 
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace tools {
 
@@ -88,6 +88,7 @@ class OPENFLUID_API ChronologicalSerie : public std::list<ChronItem_t>
     bool getSurroundingValues(const openfluid::core::DateTime& DT, ChronItem_t& Before, ChronItem_t& After);
 
 };
+
 
 } } // namespaces
 

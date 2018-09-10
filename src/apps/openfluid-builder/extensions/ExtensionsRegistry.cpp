@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ExtensionsRegistry.cpp
 
@@ -186,6 +185,7 @@ bool ExtensionsRegistry::isFeatureExtensionRegistered(const openfluid::ware::War
 // =====================================================================
 // =====================================================================
 
+
 openfluid::builderext::PluggableBuilderExtension*
   ExtensionsRegistry::instanciateParameterizationExtension(const openfluid::machine::UUID_t& UUID)
 {
@@ -226,5 +226,4 @@ openfluid::builderext::ExtensionMode ExtensionsRegistry::getExtensionMode(const 
 
   return openfluid::builderext::MODE_UNKNOWN;
 }
-
 

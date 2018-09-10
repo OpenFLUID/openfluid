@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file KmlFilesAnimObs.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <fstream>
@@ -62,7 +61,6 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.kml-anim")
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
 END_OBSERVER_SIGNATURE
-
 
 
 // =====================================================================
@@ -117,7 +115,6 @@ class KmlStaticLayerInfo : public KmlLayerInfo<KmlUnitInfo>
     { };
 
 };
-
 
 
 // =====================================================================
@@ -454,7 +451,6 @@ class KmlFilesAnimObserver : public KmlObserverBase
           m_OKToGo = false;
           return;
         }
-
 
 
         // static layers

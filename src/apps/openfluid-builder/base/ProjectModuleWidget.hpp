@@ -256,5 +256,5 @@ class ProjectModuleWidget : public AbstractModuleWidget
 };
 
 
-
 #endif /* __OPENFLUID_BUILDERAPP_PROJECTMODULEWIDGET_HPP__ */
+

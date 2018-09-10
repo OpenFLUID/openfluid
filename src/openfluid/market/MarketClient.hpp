@@ -37,10 +37,9 @@
 */
 
 
-
-
 #ifndef __OPENFLUID_MARKET_MARKETCLIENT_HPP__
 #define __OPENFLUID_MARKET_MARKETCLIENT_HPP__
+
 
 #include <string>
 #include <queue>
@@ -49,6 +48,7 @@
 #include <openfluid/market/MarketInfos.hpp>
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/market/MarketBinPackage.hpp>
+
 
 namespace openfluid { namespace market {
 
@@ -60,6 +60,7 @@ typedef std::map<PackageInfo::PackageType,std::string> CatalogsFileURL_t;
 typedef std::map<PackageInfo::PackageType,std::string> CatalogsData_t;
 // List of MetaPackagesCatalogs
 typedef std::map<PackageInfo::PackageType,MetaPackagesCatalog_t> TypesMetaPackagesCatalogs_t;
+
 
 // =====================================================================
 // =====================================================================

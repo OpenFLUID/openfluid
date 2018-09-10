@@ -52,7 +52,6 @@
 #include <openfluid/ui/common/LogExplorerDialog.hpp>
 
 
-
 int main(int argc, char** argv)
 {
   try

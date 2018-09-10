@@ -29,19 +29,31 @@
 
  */
 
+
 /**
   @file PolygonGraph_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_polygongraph
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <tests-config.hpp>
+
+#include <geos/geom/Geometry.h>
+#include <geos/geom/LineString.h>
+#include <geos/geom/Polygon.h>
+#include <geos/geom/CoordinateArraySequenceFactory.h>
+#include <geos/geom/GeometryFactory.h>
+#include <geos/geom/MultiLineString.h>
+#include <geos/planargraph/Node.h>
+
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
@@ -57,13 +69,8 @@
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
-#include <geos/geom/Geometry.h>
-#include <geos/geom/LineString.h>
-#include <geos/geom/Polygon.h>
-#include <geos/geom/CoordinateArraySequenceFactory.h>
-#include <geos/geom/GeometryFactory.h>
-#include <geos/geom/MultiLineString.h>
-#include <geos/planargraph/Node.h>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -1231,7 +1238,6 @@ BOOST_AUTO_TEST_CASE(check_mergePolygonEntities)
   openfluid::landr::PolygonGraph* Graph = openfluid::landr::PolygonGraph::create(*Vector);
 
 
-
   BOOST_CHECK_THROW(Graph->mergePolygonEntities(*(Graph->entity(18)),*(Graph->entity(5))),
                     openfluid::base::FrameworkException);
 
@@ -1427,8 +1433,6 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Contains_wi
   BOOST_CHECK_EQUAL(SU20->lineStringNeighbours()->size(), 2);
 
 
-
-
   // get the LineString Neighbours of Polygon with just one Line Neighbours
   BOOST_CHECK_EQUAL(SU2->lineStringNeighbours()->begin()->first->getOfldId(),16);
   BOOST_CHECK_EQUAL(SU4->lineStringNeighbours()->begin()->first->getOfldId(),3);
@@ -1537,7 +1541,6 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   openfluid::landr::PolygonEntity* SU22 = SUGraph->entity(22);
   openfluid::landr::PolygonEntity* SU23 = SUGraph->entity(23);
   openfluid::landr::PolygonEntity* SU24 = SUGraph->entity(24);
-
 
 
   BOOST_CHECK(!SU1->lineStringNeighbours());
@@ -2055,7 +2058,6 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   openfluid::landr::PolygonEntity* SU24 = SUGraph->entity(24);
 
 
-
   BOOST_CHECK(!SU1->lineStringNeighbours());
   BOOST_CHECK(!SU4->lineStringNeighbours());
   BOOST_CHECK(!SU17->lineStringNeighbours());
@@ -2304,7 +2306,6 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   BOOST_CHECK_EQUAL((*jt),15);
   ++jt;
   BOOST_CHECK_EQUAL((*jt),17);
-
 
 
   delete RSGraph;

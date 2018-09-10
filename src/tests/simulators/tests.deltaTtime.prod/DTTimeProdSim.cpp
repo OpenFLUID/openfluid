@@ -30,13 +30,11 @@
 */
 
 
-
 /**
   @file DTTimeProdSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
-
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
@@ -104,20 +102,29 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
 
   void initParams(const openfluid::ware::WareParams_t& /*Params*/)
-  {  }
+  {
 
-  // =====================================================================
-  // =====================================================================
-
-
-  void prepareData() { }
+  }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  void checkConsistency() { }
+  void prepareData()
+  {
+
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void checkConsistency()
+  {
+
+  }
 
 
   // =====================================================================
@@ -184,6 +191,7 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -196,8 +204,10 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(DeltaTTimeProdSimulator)
 

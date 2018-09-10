@@ -34,11 +34,12 @@
   @file MonitoringDescriptor.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_FLUIDX_MONITORINGDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_MONITORINGDESCRIPTOR_HPP__
+
 
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>

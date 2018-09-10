@@ -30,24 +30,17 @@
 */
 
 
-
 /**
   @file DummyModalSpatialClassic.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-
-
-#include "ui_DummyModalSpatialClassic.h"
-#include "DummyModalSpatialClassic.hpp"
 
 #include <QInputDialog>
 
-
-
-// =====================================================================
-// =====================================================================
+#include "ui_DummyModalSpatialClassic.h"
+#include "DummyModalSpatialClassic.hpp"
 
 
 BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.modal-spatial.classic", openfluid::builderext::MODE_MODAL)

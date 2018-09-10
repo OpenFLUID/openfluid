@@ -40,9 +40,10 @@
 #ifndef __OPENFLUID_TOOLS_DISTRIBUTIONBINDINGS_HPP__
 #define __OPENFLUID_TOOLS_DISTRIBUTIONBINDINGS_HPP__
 
+
+#include <openfluid/dllexport.hpp>
 #include <openfluid/tools/DistributionTables.hpp>
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
-#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -102,7 +103,6 @@ class OPENFLUID_API DistributionBindings
 
 
 } }
-
 
 
 #endif /* __OPENFLUID_TOOLS_DISTRIBUTIONBINDINGS_HPP__ */

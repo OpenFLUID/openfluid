@@ -40,9 +40,10 @@
 #ifndef __OPENFLUID_BUILDERAPP_LINESTRINGGRAPHICS_HPP__
 #define __OPENFLUID_BUILDERAPP_LINESTRINGGRAPHICS_HPP__
 
-#include "LinearGraphics.hpp"
 
 #include <ogr_geometry.h>
+
+#include "LinearGraphics.hpp"
 
 
 class LineStringGraphics : public LinearGraphics

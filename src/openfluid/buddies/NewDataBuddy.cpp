@@ -30,18 +30,19 @@
 */
 
 
-
 /**
   @file NewDataBuddy.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
+
+#include <fstream>
+#include <sstream>
 
 #include <openfluid/buddies/NewDataBuddy.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
-#include <fstream>
-#include <sstream>
 
 namespace openfluid { namespace buddies {
 
@@ -61,6 +62,7 @@ NewDataBuddy::~NewDataBuddy()
 {
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -114,6 +116,7 @@ void NewDataBuddy::generateRunXML()
   OutFile.close();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -139,6 +142,7 @@ void NewDataBuddy::generateModelXML()
   OutFile << Content.str();
   OutFile.close();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -170,6 +174,7 @@ void NewDataBuddy::generateOutputXML()
   OutFile << Content.str();
   OutFile.close();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -212,6 +217,7 @@ void NewDataBuddy::generateEventsXML()
   OutFile.close();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -248,6 +254,7 @@ void NewDataBuddy::generateDDefXML()
   OutFile.close();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -278,7 +285,6 @@ void NewDataBuddy::generateDDataXML()
   OutFileA.close();
 
 
-
   ContentB.clear();
   ContentB << getXMLHeader() << std::endl;
   ContentB << "  <domain>" << std::endl;
@@ -297,6 +303,7 @@ void NewDataBuddy::generateDDataXML()
   OutFileB.close();
 
 }
+
 
 // =====================================================================
 // =====================================================================

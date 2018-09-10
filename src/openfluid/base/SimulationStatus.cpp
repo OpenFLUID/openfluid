@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SimulationStatus.cpp
 
@@ -47,6 +46,7 @@ namespace openfluid { namespace base {
 
 // =====================================================================
 // =====================================================================
+
 
 SimulationStatus::SimulationStatus(const openfluid::core::DateTime& Begin,
                                    const openfluid::core::DateTime& End,
@@ -130,8 +130,6 @@ std::string SimulationStatus::getCurrentStageAsString() const
 {
   return getStageAsString(m_CurrentStage);
 }
-
-
 
 
 }  }  // namespaces

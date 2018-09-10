@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file CouplingCSim.cpp
 
@@ -105,21 +104,30 @@ class CouplingCSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+  {
+
+  }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  void prepareData() { }
+  void prepareData()
+  {
+
+  }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  void checkConsistency() { }
+  void checkConsistency()
+  {
+
+  }
 
 
   // =====================================================================
@@ -173,6 +181,7 @@ class CouplingCSimulator : public openfluid::ware::PluggableSimulator
     return DT;
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -184,8 +193,10 @@ class CouplingCSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(CouplingCSimulator)
 

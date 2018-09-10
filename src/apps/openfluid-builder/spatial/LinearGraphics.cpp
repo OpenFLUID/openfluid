@@ -30,16 +30,16 @@
 */
 
 
-
 /**
   @file LinearGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
-#include "LinearGraphics.hpp"
 
 #include <QPen>
+
+#include "LinearGraphics.hpp"
 
 
 QVariant LinearGraphics::itemChange(GraphicsItemChange Change, const QVariant& Value)

@@ -29,12 +29,13 @@
 
  */
 
+
 /**
  @file WareshubJsonEditor.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
+
 
 #include <QTextStream>
 #include <QMessageBox>
@@ -491,6 +492,7 @@ QString WareshubJsonEditor::getSelectedText()
 
 // =====================================================================
 // =====================================================================
+
 
 bool WareshubJsonEditor::isModified()
 {

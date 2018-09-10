@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file PluggableObserver.cpp
 

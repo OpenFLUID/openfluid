@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file OpenFLUID.hpp
 
@@ -135,5 +134,3 @@ class OpenFLUIDApp
 
 
 #endif /* __OPENFLUID_CMDLINEAPP_OPENFLUID_HPP__ */
-
-

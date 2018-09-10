@@ -75,6 +75,7 @@ typedef std::map<std::string,GDALDriverInfos_t> GDALDriversFilesExts_t;
 // =====================================================================
 // =====================================================================
 
+
 /**
   Returns a list of OGR drivers available in OpenFLUID for GIS vector files
   @return an openfluid::utils::GDALDriversFilesExts_t

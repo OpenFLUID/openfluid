@@ -30,13 +30,11 @@
 */
 
 
-
 /**
   @file OpenFLUIDBuddy.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
-
 
 
 #ifndef __OPENFLUID_BUDDIES_OPENFLUIDBUDDY_HPP__
@@ -48,6 +46,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>
+
 
 namespace openfluid { namespace buddies {
 

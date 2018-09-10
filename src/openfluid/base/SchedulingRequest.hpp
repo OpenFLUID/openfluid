@@ -34,11 +34,12 @@
   @file SchedulingRequest.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BASE_SCHEDULINGREQUEST_HPP__
 #define __OPENFLUID_BASE_SCHEDULINGREQUEST_HPP__
+
 
 #include <openfluid/core/DateTime.hpp>
 

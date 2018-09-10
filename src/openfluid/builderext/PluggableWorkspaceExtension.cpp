@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file PluggableWorkspaceExtension.cpp
 

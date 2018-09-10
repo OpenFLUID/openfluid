@@ -30,20 +30,19 @@
 */
 
 
-
 /**
   @file MarketSrcPackage.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+
+#include <QProcess>
+
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/config.hpp>
-
-
-#include <QProcess>
 
 
 namespace openfluid { namespace market {
@@ -200,7 +199,4 @@ void MarketSrcPackage::process()
 
 
 } } // namespaces
-
-
-
 

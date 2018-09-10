@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Interpolators_TEST.cpp
 
@@ -42,11 +41,15 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_interpolators
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
 #include <openfluid/scientific/Interpolators.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
-#include <iostream>
 
 
 // =====================================================================
@@ -89,7 +92,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::scientific::isVeryClose(ValX0,Val),true);
 
 
-
   // linear interpolation with long double
 
   long double LVal;
@@ -112,8 +114,4 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::scientific::isVeryClose(FVal,1.5f),true);
 
 }
-
-
-// =====================================================================
-// =====================================================================
 

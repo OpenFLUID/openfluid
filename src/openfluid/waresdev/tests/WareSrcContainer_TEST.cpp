@@ -40,7 +40,11 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WareSrcContainer
+
+
 #include <boost/test/unit_test.hpp>
+
+#include <QDir>
 
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/base/Environment.hpp>
@@ -48,11 +52,10 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
-#include <QDir>
-
 
 // =====================================================================
 // =====================================================================
+
 
 struct F
 {
@@ -344,9 +347,4 @@ BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
 
   openfluid::tools::Filesystem::removeDirectory(m_WorkspacePath.toStdString());
 }
-
-
-// =====================================================================
-// =====================================================================
-
 

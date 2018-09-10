@@ -30,12 +30,12 @@
 */
 
 
-
 /**
   @file DistributionBindings.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
+
 
 #include <openfluid/tools/DistributionBindings.hpp>
 
@@ -192,7 +192,6 @@ bool DistributionBindings::getValue(const openfluid::core::UnitID_t& UnitID,
 // =====================================================================
 
 
-
 void DistributionBindings::displayBindings()
 {
   UnitIDReader_t::iterator itb = m_UnitIDReaders.begin();
@@ -202,8 +201,6 @@ void DistributionBindings::displayBindings()
   {
     std::cout << (*it).first << " -> " << (*it).second->Reader->getFileName() << std::endl;
   }
-
-
 }
 
 

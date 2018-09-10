@@ -29,21 +29,24 @@
   
 */
 
+
 /**
   @file GeoRasterValue.hpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+*/
+
 
 #ifndef __OPENFLUID_CORE_GEORASTERVALUE_HPP__
 #define __OPENFLUID_CORE_GEORASTERVALUE_HPP__
 
+
+#include <gdal_priv.h>
+#include <cpl_conv.h> // for CPLMalloc()
+
 #include <openfluid/core/GeoValue.hpp>
 #include <openfluid/dllexport.hpp>
-
-#include "gdal_priv.h"
-#include "cpl_conv.h" // for CPLMalloc()
 
 
 namespace openfluid { namespace core {

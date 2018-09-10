@@ -40,7 +40,11 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WareSrcManager
+
+
 #include <boost/test/unit_test.hpp>
+
+#include <QDir>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
@@ -48,11 +52,10 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
-#include <QDir>
-
 
 // =====================================================================
 // =====================================================================
+
 
 struct F
 {
@@ -321,9 +324,4 @@ BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
   BOOST_CHECK_EQUAL(Info.m_AbsolutePathOfWare.toStdString(), QString("%1/ware2").arg(m_SimulatorsPath).toStdString());
   BOOST_CHECK_EQUAL(Info.m_FileName.toStdString(), "file10.txt");
 }
-
-
-// =====================================================================
-// =====================================================================
-
 

@@ -30,17 +30,16 @@
 */
 
 
-
 /**
   @file GraphvizScene.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-
-#include "GraphvizScene.hpp"
 
 #include <QGraphicsSvgItem>
+
+#include "GraphvizScene.hpp"
 
 
 GraphvizScene::GraphvizScene(const QString& SVGFileName, QObject* Parent):

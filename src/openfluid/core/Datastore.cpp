@@ -33,22 +33,21 @@
   @file Datastore.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
 
-#include "Datastore.hpp"
 
 #include <openfluid/core/DatastoreItem.hpp>
+#include "Datastore.hpp"
 
-namespace openfluid {
-namespace core {
 
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace core {
 
 
 Datastore::Datastore()
 {
+
 }
+
 
 // =====================================================================
 // =====================================================================

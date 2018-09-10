@@ -29,18 +29,16 @@
   
 */
 
-
-
 /**
   @file MapView.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-
-#include "MapView.hpp"
 
 #include <QWheelEvent>
+
+#include "MapView.hpp"
 
 
 MapView::MapView(QWidget* Parent):

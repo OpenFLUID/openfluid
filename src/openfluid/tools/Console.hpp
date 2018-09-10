@@ -29,11 +29,16 @@
   
 */
 
+
 /**
   @file Console.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
+
+
+// OpenFLUID:stylecheck:!inco
+// OpenFLUID:stylecheck:!incs
 
 
 #ifndef __OPENFLUID_TOOLS_CONSOLE_HPP__
@@ -44,7 +49,6 @@
 #include <iostream>
 
 #include <openfluid/global.hpp>
-
 
 #if defined(OPENFLUID_OS_WINDOWS)
 #include <windows.h>

@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file EditFormatDialog.hpp
 
@@ -36,14 +37,14 @@
 */
 
 
-
 #ifndef __EDITFORMATDIALOG_HPP__
 #define __EDITFORMATDIALOG_HPP__
 
 
-#include "CSVObsTools.hpp"
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+
+#include "CSVObsTools.hpp"
 
 
 namespace Ui

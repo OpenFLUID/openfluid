@@ -215,7 +215,6 @@ void LogExplorerDialog::updateTable(bool WithFiltering)
   updateDetails(-1);
 
 
-
   QStringList FilteredTypes;
   QStringList FilteredSimulators;
   QStringList FilteredObservers;
@@ -484,7 +483,5 @@ void LogExplorerDialog::applyFilters()
 }
 
 
-
 } } }  // namespaces
-
 

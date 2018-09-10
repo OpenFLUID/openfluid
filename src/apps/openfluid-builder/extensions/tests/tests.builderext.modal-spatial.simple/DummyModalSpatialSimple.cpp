@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DummyModalSpatialSimple.cpp
 
@@ -40,7 +39,6 @@
 
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 #include "DummyModalSpatialSimple.hpp"
-
 
 
 // =====================================================================

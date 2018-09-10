@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file RandomGenerator.cpp
 
@@ -154,5 +153,4 @@ openfluid::base::SchedulingRequest RandomGenerator::runStep()
 
 
 } } //namespaces
-
 

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file FileDownloader_TEST.cpp
 
@@ -41,17 +40,21 @@
 #define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_filedownloader
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
+
+#include <QCoreApplication>
 
 #include <openfluid/utils/FileDownloader.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <QCoreApplication>
 
-#include <iostream>
+#include "tests-config.hpp"
 
-#include <tests-config.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -62,8 +65,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -110,8 +115,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(LI1,LI2);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 int main(int argc, char *argv[])
 {
@@ -119,5 +126,4 @@ int main(int argc, char *argv[])
 
   return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
 }
-
 

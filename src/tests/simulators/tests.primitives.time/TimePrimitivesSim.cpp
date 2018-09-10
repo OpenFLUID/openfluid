@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file TimePrimitivesSim.cpp
 
@@ -39,7 +38,6 @@
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
-
 
 
 BEGIN_SIMULATOR_SIGNATURE("tests.primitives.time")
@@ -102,6 +100,7 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::INITPARAMS)
         OPENFLUID_RaiseError("wrong stage");
     }
+
 
     // =====================================================================
     // =====================================================================
@@ -198,6 +197,7 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       return Duration(47);
     }
+
 
     // =====================================================================
     // =====================================================================

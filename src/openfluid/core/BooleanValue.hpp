@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file BooleanValue.hpp
 
@@ -41,11 +40,13 @@
 #ifndef __OPENFLUID_CORE_BOOLEANVALUE_HPP__
 #define __OPENFLUID_CORE_BOOLEANVALUE_HPP__
 
+
 #include <openfluid/core/SimpleValue.hpp>
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace core {
+
 
 /**
 BooleanValue is a container for a true/false value.\n
@@ -168,7 +169,6 @@ class OPENFLUID_API BooleanValue : public SimpleValue
 
 
 } }  // namespaces
-
 
 
 #endif /* __OPENFLUID_CORE_BOOLEANVALUE_HPP__ */

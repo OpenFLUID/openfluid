@@ -30,18 +30,18 @@
 */
 
 
-
 /**
   @file SimulationProfiler.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-#include <openfluid/base/RunContextManager.hpp>
+
 #include <iomanip>
 
-#include <openfluid/machine/SimulationProfiler.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/machine/SimulationProfiler.hpp>
 
 
 namespace openfluid { namespace machine {

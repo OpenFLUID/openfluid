@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file OpenFLUIDBuddy.cpp
 
@@ -38,10 +37,10 @@
  */
 
 
-#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
 #include <vector>
 
+#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 
 
 namespace openfluid { namespace buddies {
@@ -76,6 +75,7 @@ void OpenFLUIDBuddy::setOptionIfNotSet(std::string OptionName, std::string Optio
     m_Options[OptionName] = OptionValue;
   }
 }
+
 
 // =====================================================================
 // =====================================================================

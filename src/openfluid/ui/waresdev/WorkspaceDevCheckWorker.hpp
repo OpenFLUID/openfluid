@@ -36,7 +36,6 @@
 */
 
 
-
 #ifndef __OPENFLUID_UIWARESDEV_WORKSPACEDEVCHECKWORKER_HPP__
 #define __OPENFLUID_UIWARESDEV_WORKSPACEDEVCHECKWORKER_HPP__
 
@@ -80,7 +79,6 @@ class OPENFLUID_API WorkspaceDevCheckWorker : public WorkspaceDevProcessWorker
 
 
 } } }  // namespaces
-
 
 
 #endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVCHECKWORKER_HPP__ */

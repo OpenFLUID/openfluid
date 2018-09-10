@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ColumnTextParser.cpp
   @brief implements column file parser
@@ -51,6 +50,7 @@
 
 // =====================================================================
 // =====================================================================
+
 
 namespace openfluid { namespace tools {
 

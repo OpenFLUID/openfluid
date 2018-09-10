@@ -130,5 +130,4 @@ void MarketDatasetPackage::process()
 }
 
 
-
 } } // namespaces

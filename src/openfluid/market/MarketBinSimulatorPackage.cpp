@@ -70,5 +70,4 @@ PackageInfo::PackageType MarketBinSimulatorPackage::getPackageType() const
 }
 
 
-
 } } // namespaces

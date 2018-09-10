@@ -36,7 +36,6 @@
 */
 
 
-
 #ifndef __OPENFLUID_WARE_TYPEDEFS_HPP__
 #define __OPENFLUID_WARE_TYPEDEFS_HPP__
 
@@ -52,7 +51,6 @@ typedef std::string WareID_t;
 typedef std::string WareName_t;
 
 typedef std::string WareVersion_t;
-
 
 
 // =====================================================================

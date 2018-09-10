@@ -30,20 +30,19 @@
 */
 
 
-
 /**
   @file ConnectorGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-#include "ModelItemGraphics.hpp"
-#include "ConnectorGraphics.hpp"
-
-#include "builderconfig.hpp"
 
 #include <QPen>
 #include <QFont>
+
+#include "ModelItemGraphics.hpp"
+#include "ConnectorGraphics.hpp"
+#include "builderconfig.hpp"
 
 
 ConnectorGraphics::ConnectorGraphics(ModelItemGraphics* FromItem, OutNodeType FromOutNode,
@@ -139,7 +138,6 @@ void ConnectorGraphics::updatePosition()
   }
 
   setPath(Path);
-
 
 
   // variables names

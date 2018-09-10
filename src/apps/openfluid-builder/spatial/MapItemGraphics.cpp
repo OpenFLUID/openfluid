@@ -30,18 +30,16 @@
 */
 
 
-
 /**
   @file MapItemGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
-
-
-#include "MapItemGraphics.hpp"
 
 #include <QStyleOptionGraphicsItem>
+
+#include "MapItemGraphics.hpp"
 
 
 QColor MapItemGraphics::m_SelectionColor = QColor("#FFC85F");

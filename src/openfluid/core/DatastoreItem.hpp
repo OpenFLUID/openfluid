@@ -29,20 +29,22 @@
   
 */
 
+
 /**
   @file DatastoreItem.hpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
+
 
 #ifndef __OPENFLUID_CORE_DATASTOREITEM_HPP__
 #define __OPENFLUID_CORE_DATASTOREITEM_HPP__
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 
 #include <string>
 
+#include <openfluid/dllexport.hpp>
+#include <openfluid/deprecation.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
 
 

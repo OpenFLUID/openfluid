@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DateTime.cpp
 
@@ -38,13 +37,13 @@
 */
 
 
-#include <openfluid/core/DateTime.hpp>
-
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
+
+#include <openfluid/core/DateTime.hpp>
 
 
 namespace openfluid { namespace core {
@@ -225,8 +224,6 @@ void DateTime::updateYMDHMSFromRawTime()
 
   m_TM.tm_sec = SecsLeft;
 
-
-
 }
 
 
@@ -272,8 +269,6 @@ void DateTime::updateRawTimeFromYMDHMS()
   std::cerr << "JDN: " << JDN << "    RawTime: " << m_RawTime << std::endl;
   #endif
 
-
-
 }
 
 
@@ -283,10 +278,7 @@ void DateTime::updateRawTimeFromYMDHMS()
 
 RawTime_t DateTime::getRawTime() const
 {
-
-
   return m_RawTime;
-
 }
 
 
@@ -326,7 +318,6 @@ std::string  DateTime::getAsString(std::string Format) const
 
   return Str;
 
-
 }
 
 
@@ -347,7 +338,6 @@ std::string DateTime::getDateAsISOString() const
 
   return Str;
 }
-
 
 
 // =====================================================================
@@ -584,7 +574,4 @@ bool DateTime::isSameTime(const DateTime& DT) const
 
 
 } } // namespaces
-
-
-
 

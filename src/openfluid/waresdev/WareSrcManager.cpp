@@ -149,6 +149,7 @@ QString WareSrcManager::getWarePath(const QString& WareID, openfluid::ware::Ware
 // =====================================================================
 // =====================================================================
 
+
 // TODO later, pass or use other workspace paths ?
 WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 {

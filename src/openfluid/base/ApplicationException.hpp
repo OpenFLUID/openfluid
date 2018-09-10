@@ -34,11 +34,12 @@
   @file ApplicationException.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BASE_APPLICATIONEXCEPTION_HPP__
 #define __OPENFLUID_BASE_APPLICATIONEXCEPTION_HPP__
+
 
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/deprecation.hpp>

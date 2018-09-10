@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file GeoVectorFilesObs.cpp
 
@@ -368,7 +367,6 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       }
 
 
-
       if (OKToWrite)
       {
         std::string FullFilePath =
@@ -429,7 +427,6 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
             CreatedFeature->SetGeometry(SourceFeature->GetGeometryRef()->clone());
             CreatedFeature->SetField("OFLD_ID",SourceID);
-
 
 
             for (itV = itVb; itV != itVe; ++itV)

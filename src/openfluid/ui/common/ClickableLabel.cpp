@@ -30,12 +30,11 @@
 */
 
 
-
 /**
   @file ClickableLabel.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #include <QMouseEvent>

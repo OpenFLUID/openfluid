@@ -30,20 +30,20 @@
 */
 
 
-
 /**
   @file VectorValue.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_CORE_VECTORVALUE_HPP__
 #define __OPENFLUID_CORE_VECTORVALUE_HPP__
 
+
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core/CompoundValue.hpp>
 #include <openfluid/core/Vector.hpp>
-#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace core {

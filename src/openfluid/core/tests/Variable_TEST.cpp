@@ -30,21 +30,23 @@
 */
 
 
-
 /**
   @file Variable_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_variable
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
+
 #include <openfluid/core/ValuesBufferProperties.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/NullValue.hpp>
@@ -71,8 +73,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(Vars.modifyCurrentValue("bar",Value),false);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -349,5 +353,3 @@ BOOST_AUTO_TEST_CASE(check_typed_operations)
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("aDouble",100,openfluid::core::Value::NONE),false);
 }
 
-// =====================================================================
-// =====================================================================

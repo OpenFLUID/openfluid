@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file AdvancedModelDescriptor.cpp
 
@@ -37,9 +38,9 @@
 */
 
 
-#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-
 #include <set>
+
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>

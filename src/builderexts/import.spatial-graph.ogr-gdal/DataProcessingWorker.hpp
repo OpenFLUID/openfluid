@@ -29,15 +29,17 @@
   
 */
 
+
 /**
   @file DataProcessingWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __DATAPROCESSINGWORKER_HPP__
 #define __DATAPROCESSINGWORKER_HPP__
+
 
 #include <QObject>
 

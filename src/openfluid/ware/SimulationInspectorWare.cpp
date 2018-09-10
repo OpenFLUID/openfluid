@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file SimulationInspectorWare.cpp
 
@@ -869,6 +868,7 @@ openfluid::core::UnitsPtrList_t SimulationInspectorWare::OPENFLUID_GetUnits(
 
 // =====================================================================
 // =====================================================================
+
 
 bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedTo(openfluid::core::SpatialUnit* aUnit,
                                                           const openfluid::core::UnitsClass_t& ClassNameTo,

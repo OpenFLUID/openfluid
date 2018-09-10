@@ -34,10 +34,12 @@
   @file PointGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
+
+
+#include <QPen>
 
 #include "PointGraphics.hpp"
-#include <QPen>
 
 
 PointGraphics::PointGraphics(OGRPoint* OGRPt, const QPen& Pen):

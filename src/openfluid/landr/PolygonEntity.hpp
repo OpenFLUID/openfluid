@@ -34,7 +34,8 @@
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
+
 
 #ifndef __OPENFLUID_LANDR_POLYGONENTITY_HPP__
 #define __OPENFLUID_LANDR_POLYGONENTITY_HPP__
@@ -53,7 +54,9 @@ class Polygon;
 class LineString;
 } }
 
+
 namespace openfluid { namespace landr {
+
 
 class PolygonEdge;
 class LineStringGraph;
@@ -274,9 +277,10 @@ class OPENFLUID_API PolygonEntity: public LandREntity
     */
    std::pair< LandREntity*, double> computeNeighbourByLineTopology(VectorDataset LineTopology);
 
-
-
 };
 
+
 } } // namespace landr, openfluid
+
+
 #endif /* __OPENFLUID_LANDR_POLYGONENTITY_HPP__ */

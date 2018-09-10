@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DebugSim.cpp
 
@@ -97,7 +96,10 @@ class DebugSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+  {
+
+  }
 
 
   // =====================================================================
@@ -120,7 +122,10 @@ class DebugSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void checkConsistency() { }
+  void checkConsistency()
+  {
+
+  }
 
 
   // =====================================================================
@@ -169,6 +174,7 @@ class DebugSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -182,8 +188,10 @@ class DebugSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(DebugSimulator)
 

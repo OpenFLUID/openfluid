@@ -36,6 +36,7 @@
  @author Manuel Chataigner <manuel.chataigner@supagro.inra.fr>
 */
 
+
 #include <openfluid/ui/market/MarketWizardPage.hpp>
 
 

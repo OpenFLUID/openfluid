@@ -29,19 +29,21 @@
   
 */
 
+
 /**
   @file MultiLineStringGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_MULTILINESTRINGGRAPHICS_HPP__
 #define __OPENFLUID_BUILDERAPP_MULTILINESTRINGGRAPHICS_HPP__
 
 
-#include "LinearGraphics.hpp"
 #include <ogr_geometry.h>
+
+#include "LinearGraphics.hpp"
 
 
 class MultiLineStringGraphics : public LinearGraphics
@@ -54,7 +56,5 @@ class MultiLineStringGraphics : public LinearGraphics
 };
 
 
-
-
-
 #endif /* __OPENFLUID_BUILDERAPP_MULTILINESTRINGGRAPHICS_HPP__ */
+

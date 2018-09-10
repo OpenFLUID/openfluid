@@ -36,11 +36,11 @@
  */
 
 
-#include "AdvancedDatastoreDescriptor.hpp"
-
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+
+#include "AdvancedDatastoreDescriptor.hpp"
 
 
 namespace openfluid { namespace fluidx {

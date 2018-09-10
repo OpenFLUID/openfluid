@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file MarketBinPackage.cpp
 
@@ -102,6 +101,4 @@ void MarketBinPackage::process()
 
 
 } } // namespaces
-
-
 

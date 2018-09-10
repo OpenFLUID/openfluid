@@ -37,15 +37,11 @@
 */
 
 
-
-
 #include <openfluid/ware/WareParamsTree.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
 
 namespace openfluid { namespace ware {
-
-
 
 
 // =====================================================================

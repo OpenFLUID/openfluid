@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file WareWidget.hpp
 

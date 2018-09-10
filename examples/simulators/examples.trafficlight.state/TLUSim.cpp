@@ -47,27 +47,26 @@
 
 BEGIN_SIMULATOR_SIGNATURE("examples.trafficlight.state")
 
-DECLARE_NAME("Traffic Light Unit (TLU) function state");
-DECLARE_DESCRIPTION("");
+  DECLARE_NAME("Traffic Light Unit (TLU) function state");
+  DECLARE_DESCRIPTION("");
 
-DECLARE_VERSION(openfluid::config::VERSION_FULL);
+  DECLARE_VERSION(openfluid::config::VERSION_FULL);
 
-DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-DECLARE_DOMAIN("examples");
-DECLARE_PROCESS("");
-DECLARE_METHOD("");
-DECLARE_AUTHOR("Michael Rabotin","rabotin@supagro.inra.fr");
+  DECLARE_DOMAIN("examples");
+  DECLARE_PROCESS("");
+  DECLARE_METHOD("");
+  DECLARE_AUTHOR("Michael Rabotin","rabotin@supagro.inra.fr");
 
 
+  DECLARE_PRODUCED_VARIABLE("examples.TLU.S.state","TLU","traffic light unit state ","");
+  DECLARE_PRODUCED_VARIABLE("examples.TLU.T.changeTime","TLU","traffic light unit state changing time","");
+  DECLARE_REQUIRED_ATTRIBUTE("state","TLU","","-");
+  DECLARE_REQUIRED_ATTRIBUTE("duration","TLU","","-");
 
-DECLARE_PRODUCED_VARIABLE("examples.TLU.S.state","TLU","traffic light unit state ","");
-DECLARE_PRODUCED_VARIABLE("examples.TLU.T.changeTime","TLU","traffic light unit state changing time","");
-DECLARE_REQUIRED_ATTRIBUTE("state","TLU","","-");
-DECLARE_REQUIRED_ATTRIBUTE("duration","TLU","","-");
-
-// Scheduling
-DECLARE_SCHEDULING_DEFAULT;
+  // Scheduling
+  DECLARE_SCHEDULING_DEFAULT;
 
 
 END_SIMULATOR_SIGNATURE
@@ -114,6 +113,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
     {
 
     }
+
 
     // =====================================================================
     // =====================================================================
@@ -240,17 +240,4 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
 
 
 DEFINE_SIMULATOR_CLASS(TLUSimulator);
-
-
-
-
-
-
-
-
-
-
-
-
-
 

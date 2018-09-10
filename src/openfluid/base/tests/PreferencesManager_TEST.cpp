@@ -29,31 +29,37 @@
   
 */
 
+
 /**
   @file PreferencesManager_TEST.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
+
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_PreferencesManager
+
+
 #include <boost/test/unit_test.hpp>
+
 #include <QString>
 #include <QStringList>
 #include <QFile>
 
 #include <openfluid/base/PreferencesManager.hpp>
-
 #include <openfluid/config.hpp>
-#include "tests-config.hpp"
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 
+#include "tests-config.hpp"
+
 
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_SetFileName)
 {
@@ -76,8 +82,10 @@ BOOST_AUTO_TEST_CASE(test_SetFileName)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
 {
@@ -115,8 +123,10 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   openfluid::base::PreferencesManager::kill();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
 {
@@ -262,8 +272,10 @@ BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
   openfluid::base::PreferencesManager::kill();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
 {
@@ -562,7 +574,7 @@ BOOST_AUTO_TEST_CASE(test_textEditorProperties)
   openfluid::base::PreferencesManager::kill();
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 

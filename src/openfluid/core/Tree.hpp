@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file Tree.hpp
 
@@ -38,6 +39,7 @@
 
 #ifndef __OPENFLUID_CORE_TREE_HPP__
 #define __OPENFLUID_CORE_TREE_HPP__
+
 
 #include <sstream>
 #include <iostream>
@@ -95,6 +97,7 @@ class OPENFLUID_API Tree
     // =====================================================================
     // =====================================================================
 
+
     /**
       Returns the value of the current tree node
       @return the value associated to the node
@@ -112,6 +115,7 @@ class OPENFLUID_API Tree
 
     // =====================================================================
     // =====================================================================
+
 
     /**
       Returns the value of the current tree node, or a default value if the node does not have a value
@@ -265,6 +269,7 @@ class OPENFLUID_API Tree
     // =====================================================================
     // =====================================================================
 
+
     /**
       Adds a child to the current node, identified by its key and with the given value
       @param[in] Key the key of the child node
@@ -324,6 +329,7 @@ class OPENFLUID_API Tree
 
     // =====================================================================
     // =====================================================================
+
 
     /**
       Returns an iterator referring to the first element of the children map

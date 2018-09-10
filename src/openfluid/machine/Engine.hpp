@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file Engine.hpp
 
@@ -45,6 +44,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/base/SimulationLogger.hpp>
+
 
 namespace openfluid {
 namespace base {
@@ -88,7 +88,6 @@ class OPENFLUID_API Engine
      MonitoringInstance& m_MonitoringInstance;
 
      openfluid::base::SimulationLogger* mp_SimLogger;
-
 
 
      void checkSimulationVarsProduction(int ExpectedVarsCount);
@@ -170,10 +169,4 @@ class OPENFLUID_API Engine
 
 
 #endif
-
-
-
-
-
-
 

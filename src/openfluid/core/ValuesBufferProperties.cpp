@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ValuesBufferProperties.cpp
 
@@ -40,6 +39,7 @@
 
 #include <openfluid/core/ValuesBufferProperties.hpp>
 
+
 namespace openfluid { namespace core {
 
 
@@ -47,5 +47,4 @@ unsigned int ValuesBufferProperties::BufferSize = 0;
 
 
 } } // namespaces
-
 

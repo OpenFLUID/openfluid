@@ -84,5 +84,4 @@ class EditAttributesValuesDialog : public openfluid::ui::common::MessageDialog
 };
 
 
-
 #endif /* __OPENFLUID_BUILDERAPP_EDITATTRIBUTESVALUESDIALOG_HPP__ */

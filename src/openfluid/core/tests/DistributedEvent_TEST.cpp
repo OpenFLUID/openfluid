@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DistributedEvent_TEST.cpp
 
@@ -42,9 +41,12 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_event
+
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
+
 #include <openfluid/core/Event.hpp>
 
 
@@ -60,6 +62,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::core::Event Ev2(openfluid::core::DateTime(2009,9,10,13,55,7));
   BOOST_REQUIRE_EQUAL(Ev2.getInfosCount(),0);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -114,6 +117,7 @@ BOOST_AUTO_TEST_CASE(check_infosoperations)
   BOOST_REQUIRE_CLOSE(DoubleValueInfo.get(),25.2,0.1);
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsDoubleValue("test",DoubleValueInfo),false);
 }
+
 
 // =====================================================================
 // =====================================================================

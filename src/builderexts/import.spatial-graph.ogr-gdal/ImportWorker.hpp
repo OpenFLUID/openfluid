@@ -33,11 +33,12 @@
   @file ImportWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __IMPORTWORKER_HPP__
 #define __IMPORTWORKER_HPP__
+
 
 #include "DataProcessingWorker.hpp"
 

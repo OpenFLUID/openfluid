@@ -33,7 +33,7 @@
   @file AdvancedDomainDescriptor.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
- */
+*/
 
 
 #ifndef __OPENFLUID_FLUIDX_ADVANCEDDOMAINDESCRIPTOR_HPP__

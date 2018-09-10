@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file DashboardStatusWidget.cpp
 
@@ -188,7 +187,6 @@ void DashboardStatusWidget::setLevel(const ProjectStatusLevel Level)
 
 // =====================================================================
 // =====================================================================
-
 
 
 void DashboardStatusWidget::applyStyleSheet()

@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ProgressiveChronFileReader_TEST.cpp
 
@@ -42,15 +41,17 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_progressivechronfilereader
+
+
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
 
+#include "tests-config.hpp"
 
-#include <iostream>
-
-#include <tests-config.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -63,8 +64,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::tools::ProgressiveChronFileReader PChronFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
@@ -86,17 +89,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
   }
 
 
-  // ========================================================
+  // ---------------------------------------------------------------------
+
 
   openfluid::tools::ChronItem_t CI;
 
   openfluid::tools::ProgressiveChronFileReader PChronFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
 
   while (PChronFR.getNextValue(CI)) std::cout << CI.second << " at " << CI.first.getAsISOString() << std::endl;
-
-
-
 }
-
-
 

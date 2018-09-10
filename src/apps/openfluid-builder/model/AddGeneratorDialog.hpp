@@ -95,6 +95,4 @@ class AddGeneratorDialog : public openfluid::ui::common::MessageDialog
 };
 
 
-
-
 #endif /* __OPENFLUID_BUILDERAPP_ADDGENERATORDIALOG_HPP__ */

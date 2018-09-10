@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file ToolsSim.cpp
 
@@ -42,7 +41,6 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-
 
 
 // =====================================================================
@@ -81,7 +79,6 @@ class ToolsSimulator : public openfluid::ware::PluggableSimulator
     void finalizeRun();
 
 };
-
 
 
 // =====================================================================
@@ -145,12 +142,15 @@ void ToolsSimulator::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
 void ToolsSimulator::prepareData()
-{  }
+{
+
+}
 
 
 // =====================================================================
@@ -158,7 +158,9 @@ void ToolsSimulator::prepareData()
 
 
 void ToolsSimulator::checkConsistency()
-{  }
+{
+
+}
 
 
 // =====================================================================
@@ -204,6 +206,7 @@ openfluid::base::SchedulingRequest ToolsSimulator::initializeRun()
   return DefaultDeltaT();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -213,6 +216,7 @@ openfluid::base::SchedulingRequest ToolsSimulator::runStep()
 
   return Never();
 }
+
 
 // =====================================================================
 // =====================================================================

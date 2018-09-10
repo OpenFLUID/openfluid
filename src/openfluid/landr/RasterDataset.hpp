@@ -29,12 +29,14 @@
 
 */
 
+
 /**
   @file RasterDataset.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Michael RABOTIN <michael.rabotin@supagro.inra.fr>
- */
+*/
+
 
 #ifndef __OPENFLUID_LANDR_RASTERDATASET_HPP__
 #define __OPENFLUID_LANDR_RASTERDATASET_HPP__
@@ -53,7 +55,9 @@ namespace geos { namespace geom {
 class Coordinate;
 } }
 
+
 namespace openfluid {
+
 
 namespace core {
 class GeoRasterValue;

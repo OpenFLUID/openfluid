@@ -34,11 +34,12 @@
   @file ObserverDescriptor.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_FLUIDX_OBSERVERDESCRIPTOR_HPP__
 #define __OPENFLUID_FLUIDX_OBSERVERDESCRIPTOR_HPP__
+
 
 #include <openfluid/fluidx/WareDescriptor.hpp>
 

@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file FileLogger.hpp
 
@@ -36,12 +37,14 @@
 */
 
 
-
 #ifndef __OPENFLUID_TOOLS_FILELOGGER_HPP__
 #define __OPENFLUID_TOOLS_FILELOGGER_HPP__
 
+
 #include <fstream>
+
 #include <openfluid/dllexport.hpp>
+
 
 class QMutex;
 
@@ -94,7 +97,6 @@ class OPENFLUID_API FileLogger
 
 
 } }  // namespaces
-
 
 
 #endif /* __OPENFLUID_TOOLS_FILELOGGER_HPP__ */

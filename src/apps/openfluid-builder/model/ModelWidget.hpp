@@ -128,5 +128,4 @@ class ModelWidget : public WorkspaceWidget
 };
 
 
-
 #endif /* __OPENFLUID_BUILDERAPP_MODELWIDGET_HPP__ */

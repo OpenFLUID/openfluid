@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file LogSim.cpp
 
@@ -109,12 +108,15 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
     OPENFLUID_DisplayWarning("This is a message to console only");
   }
 
+
   // =====================================================================
   // =====================================================================
 
 
   void prepareData()
-  { }
+  {
+
+  }
 
 
   // =====================================================================
@@ -122,7 +124,9 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
 
 
   void checkConsistency()
-  { }
+  {
+
+  }
 
 
   // =====================================================================
@@ -135,6 +139,7 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
 
     return DefaultDeltaT();
   }
+
 
   // =====================================================================
   // =====================================================================
@@ -156,6 +161,7 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
     return DefaultDeltaT();
   }
 
+
   // =====================================================================
   // =====================================================================
 
@@ -169,8 +175,10 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 DEFINE_SIMULATOR_CLASS(LoggerSimulator)
 

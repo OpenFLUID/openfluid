@@ -36,6 +36,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+
 #include <QPushButton>
 
 #include <openfluid/tools/QtHelpers.hpp>

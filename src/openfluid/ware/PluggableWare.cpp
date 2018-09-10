@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file PluggableWare.cpp
 
@@ -51,6 +50,7 @@ PluggableWare::PluggableWare(WareType WType)
 {
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -144,7 +144,6 @@ bool PluggableWare::isWellFormated(const openfluid::ware::WareParamKey_t& Parame
 
   return true;
 }
-
 
 
 }  }  // namespaces

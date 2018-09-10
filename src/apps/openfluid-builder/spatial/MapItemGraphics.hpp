@@ -34,17 +34,17 @@
   @file MapItemGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
 #ifndef __OPENFLUID_BUILDERAPP_MAPITEMGRAPHICS_HPP__
 #define __OPENFLUID_BUILDERAPP_MAPITEMGRAPHICS_HPP__
 
 
-#include <openfluid/core/TypeDefs.hpp>
-
 #include <QGraphicsPathItem>
 #include <QColor>
+
+#include <openfluid/core/TypeDefs.hpp>
 
 
 class MapItemGraphics : public QGraphicsPathItem
@@ -68,7 +68,6 @@ class MapItemGraphics : public QGraphicsPathItem
     openfluid::core::UnitID_t getUnitID() const { return m_UnitID; }
 
 };
-
 
 
 #endif /* __OPENFLUID_BUILDERAPP_MAPITEMGRAPHICS_HPP__ */

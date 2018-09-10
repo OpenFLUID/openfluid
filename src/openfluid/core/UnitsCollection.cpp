@@ -29,6 +29,7 @@
   
 */
 
+
 /**
   @file UnitsCollection.cpp
 
@@ -40,9 +41,7 @@
 #include <openfluid/core/UnitsCollection.hpp>
 
 
-
 namespace openfluid { namespace core {
-
 
 
 struct SortByProcessOrder
@@ -93,7 +92,6 @@ SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID)
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -128,6 +126,7 @@ SpatialUnit* UnitsCollection::addSpatialUnit(const SpatialUnit& aUnit)
     return nullptr;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -136,9 +135,6 @@ void UnitsCollection::sortByProcessOrder()
 {
   m_Data.sort(SortByProcessOrder());
 }
-
-
-
 
 
 } } // namespaces

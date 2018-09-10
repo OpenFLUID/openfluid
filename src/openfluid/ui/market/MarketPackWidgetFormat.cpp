@@ -41,6 +41,7 @@
 #include <openfluid/ui/market/MarketBuildOptionsDialog.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 
+
 namespace openfluid { namespace ui { namespace market {
 
 

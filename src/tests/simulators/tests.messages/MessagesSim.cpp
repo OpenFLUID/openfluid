@@ -30,7 +30,6 @@
 */
 
 
-
 /**
   @file MessagesSim.cpp
 
@@ -38,12 +37,9 @@
 */
 
 
-#include "MessagesSim.h"
-
 #include <openfluid/tools/DataHelpers.hpp>
 
-// =====================================================================
-// =====================================================================
+#include "MessagesSim.h"
 
 
 DEFINE_SIMULATOR_CLASS(MessagesSimulator)
@@ -135,6 +131,7 @@ openfluid::base::SchedulingRequest MessagesSimulator::initializeRun()
   return DefaultDeltaT();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -164,6 +161,7 @@ openfluid::base::SchedulingRequest MessagesSimulator::runStep()
 
   return DefaultDeltaT();
 }
+
 
 // =====================================================================
 // =====================================================================

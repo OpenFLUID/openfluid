@@ -29,12 +29,12 @@
   
 */
 
+
 /**
   @file OpenFLUIDSplashScreen.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
-
 
 
 #ifndef __OPENFLUID_UICOMMON_OPENFLUIDSPLASHSCREEN_HPP__

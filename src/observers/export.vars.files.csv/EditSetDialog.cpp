@@ -184,4 +184,3 @@ openfluid::ware::WareParams_t EditSetDialog::getSetParams()
                                         {ParamsRoot+"vars",VarsStr}});
 }
 
-
