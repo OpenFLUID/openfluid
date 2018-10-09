@@ -99,11 +99,11 @@ int main(int argc, char **argv)
 
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,SBlob);
 
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.modelDescriptor(),
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.model(),
                                                                   Model);
 
-    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoringDescriptor(),
-                                                                  Monitoring);
+    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoring(),
+                                                                       Monitoring);
 
     Engine.reset(new openfluid::machine::Engine(SBlob, Model, Monitoring, MachineListen.get()));
 

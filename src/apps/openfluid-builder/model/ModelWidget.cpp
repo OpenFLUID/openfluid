@@ -39,7 +39,7 @@
 
 #include <QImage>
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
@@ -56,8 +56,8 @@
 #include "AddParamDialog.hpp"
 
 
-ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::ModelWidget), m_Model(AFXDesc.model())
+ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& FXDesc):
+  WorkspaceWidget(Parent, FXDesc), ui(new Ui::ModelWidget), m_Model(FXDesc.model())
 {
   ui->setupUi(this);
 

@@ -31,56 +31,21 @@
 
 
 /**
-  @file AdvancedModelDescriptor.cpp
+  @file CoupledModelDescriptor.cpp
 
-  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
-  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
-#include <set>
-
-#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 
 
 namespace openfluid { namespace fluidx {
 
 
-AdvancedModelDescriptor::AdvancedModelDescriptor(CoupledModelDescriptor& Desc):
-  AdvancedWareSetDescriptor<CoupledModelDescriptor,ModelItemDescriptor>(Desc)
-{
-  check();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-AdvancedModelDescriptor::~AdvancedModelDescriptor()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AdvancedModelDescriptor::check()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::ware::WareID_t AdvancedModelDescriptor::getID(ModelItemDescriptor* Item) const
+openfluid::ware::WareID_t CoupledModelDescriptor::getID(ModelItemDescriptor* Item) const
 {
   if (Item->isType(openfluid::ware::WareType::SIMULATOR))
     return (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getID();
@@ -97,23 +62,25 @@ openfluid::ware::WareID_t AdvancedModelDescriptor::getID(ModelItemDescriptor* It
 // =====================================================================
 
 
-void AdvancedModelDescriptor::getItemsCountByType(unsigned int& SimCount, unsigned int& GenCount) const
+void CoupledModelDescriptor::getItemsCountByType(unsigned int& SimCount, unsigned int& GenCount) const
 {
   SimCount = 0;
   GenCount = 0;
 
-  std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = mp_Descriptor->items();
-
-  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
-      Items.begin(); it != Items.end(); ++it)
+  for (auto it = m_SetDescription.begin(); it != m_SetDescription.end(); ++it)
   {
     if ((*it)->getType() == openfluid::ware::WareType::SIMULATOR)
+    {
       SimCount++;
+    }
 
     if ((*it)->getType() == openfluid::ware::WareType::GENERATOR)
-          GenCount++;
+    {
+      GenCount++;
+    }
   }
 }
 
 
-}  } // namespaces
+} } // namespaces
+

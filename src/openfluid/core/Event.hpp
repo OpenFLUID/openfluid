@@ -49,6 +49,7 @@
 
 namespace openfluid { namespace core {
 
+
 /**
   Class defining  a discrete event, including attached information
 
@@ -61,6 +62,7 @@ class OPENFLUID_API Event
   public:
 
     typedef std::map<std::string, openfluid::core::StringValue> EventInfosMap_t;
+
 
   private:
 

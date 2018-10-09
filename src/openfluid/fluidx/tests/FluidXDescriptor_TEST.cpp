@@ -83,29 +83,27 @@ BOOST_AUTO_TEST_CASE(check_construction)
 // =====================================================================
 
 
-void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
+void TestDataset(std::string DatasetPath, bool /*AggregatedAttributes*/ = false)
 {
   std::cout << "Checking " << DatasetPath << std::endl;
+  BOOST_TEST_CHECKPOINT("Checking " << DatasetPath);
 
   openfluid::base::IOListener* L = new openfluid::base::IOListener();
-
   openfluid::fluidx::FluidXDescriptor FXDesc(L);
 
   boost::onullstream ONullStream;
   FXDesc.loadFromDirectory(DatasetPath);
 
-  // Model
-  // -----
 
-  BOOST_REQUIRE_EQUAL(FXDesc.modelDescriptor().getGlobalParameters().size(), 2);
-  BOOST_REQUIRE_EQUAL(FXDesc.modelDescriptor().getGlobalParameters()["gparam1"].get(),
-                      "100");
-  BOOST_REQUIRE_EQUAL(FXDesc.modelDescriptor().getGlobalParameters()["gparam2"].get(),
-                      "0.1");
+  BOOST_TEST_CHECKPOINT("-- Model");
+
+  BOOST_REQUIRE_EQUAL(FXDesc.model().getGlobalParameters().size(), 2);
+  BOOST_REQUIRE_EQUAL(FXDesc.model().getGlobalParameters()["gparam1"].get(),"100");
+  BOOST_REQUIRE_EQUAL(FXDesc.model().getGlobalParameters()["gparam2"].get(),"0.1");
 
   openfluid::fluidx::CoupledModelDescriptor::SetDescription_t ModelItems;
 
-  ModelItems = FXDesc.modelDescriptor().items();
+  ModelItems = FXDesc.model().items();
 
   BOOST_REQUIRE_EQUAL(ModelItems.size(), 5);
 
@@ -178,185 +176,72 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
                       "11");
 
 
-  // Run
-  // ---
+  BOOST_TEST_CHECKPOINT("-- Run");
 
-  BOOST_REQUIRE_EQUAL(FXDesc.runDescriptor().getDeltaT(), 4753);
-  BOOST_REQUIRE(FXDesc.runDescriptor().getBeginDate() == openfluid::core::DateTime(1997,1,2,11,15,48));
-  BOOST_REQUIRE(FXDesc.runDescriptor().getEndDate() == openfluid::core::DateTime(2005,11,30,6,53,7));
-  BOOST_REQUIRE_EQUAL(FXDesc.runDescriptor().isUserValuesBufferSize(), true);
-  BOOST_REQUIRE_EQUAL(FXDesc.runDescriptor().getValuesBufferSize(), 100);
-
-
-  // Domain definition
-  // -----------------
-
-  std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator UnitsIt;
-
-  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().spatialUnits().size(), 14);
-
-  UnitsIt = FXDesc.spatialDomainDescriptor().spatialUnits().begin();
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsP");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 0);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 0);
-
-  ++UnitsIt;
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsA");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 3);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().first, "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().second, 11);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().first, "unitsP");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().second, 1);
-
-  ++UnitsIt;
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsA");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().first, "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().second, 2);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 0);
-
-  ++UnitsIt;
-  ++UnitsIt;
-  ++UnitsIt;
-  ++UnitsIt;
-  ++UnitsIt;
-  ++UnitsIt;
-  ++UnitsIt;
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 11);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().first, "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().front().second, 3);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 1);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().first, "unitsP");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().front().second, 1);
-
-  ++UnitsIt;
-  ++UnitsIt;
-  ++UnitsIt;
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsClass(), "unitsB");
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getID(), 7);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(), 4);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).toSpatialUnits().size(), 0);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).parentSpatialUnits().size(), 0);
+  BOOST_REQUIRE_EQUAL(FXDesc.runConfiguration().getDeltaT(), 4753);
+  BOOST_REQUIRE(FXDesc.runConfiguration().getBeginDate() == openfluid::core::DateTime(1997,1,2,11,15,48));
+  BOOST_REQUIRE(FXDesc.runConfiguration().getEndDate() == openfluid::core::DateTime(2005,11,30,6,53,7));
+  BOOST_REQUIRE_EQUAL(FXDesc.runConfiguration().isUserValuesBufferSize(), true);
+  BOOST_REQUIRE_EQUAL(FXDesc.runConfiguration().getValuesBufferSize(), 100);
 
 
-  // Domain attributes
-  // -----------------
+  BOOST_TEST_CHECKPOINT("-- Domain definition");
 
-  std::list<openfluid::fluidx::AttributesDescriptor>::iterator AttrsIt;
+  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomain().getUnitsCount(), 14);
 
-  if (AggregatedAttributes)
-  {
-    BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().attributes().size(), 2);
+  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomain().getUnitsCount("unitsP"), 1);
+  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomain().getUnitsCount("unitsA"), 8);
+  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomain().getUnitsCount("unitsB"), 5);
+  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomain().getUnitsCount("unitsZ"), 0);
 
-    AttrsIt = FXDesc.spatialDomainDescriptor().attributes().begin();
-    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsA");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataA");
-    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(8).at("indataA"), "1.1");
+  auto Unit = FXDesc.spatialDomain().spatialUnit("unitsP",1);
+  BOOST_REQUIRE_EQUAL(Unit.getUnitsClass(),"unitsP");
+  BOOST_REQUIRE_EQUAL(Unit.getID(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.getProcessOrder(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().size(), 0);
+  BOOST_REQUIRE_EQUAL(Unit.parentSpatialUnits().size(), 0);
 
-    ++AttrsIt;
-    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 3);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB1");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[1], "indataB2");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[2], "indataB3");
-    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB1"), "7.1");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB3"), "7.3");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB1"), "11.1");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB2"), "codeA");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB2"), "codeE");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(2).at("indataB2"), "codeC");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(1).at("indataB2"), "codeD");
-  }
-  else
-  {
-    BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().attributes().size(), 3);
+  Unit = FXDesc.spatialDomain().spatialUnit("unitsA",3);
+  BOOST_REQUIRE_EQUAL(Unit.getUnitsClass(), "unitsA");
+  BOOST_REQUIRE_EQUAL(Unit.getID(), 3);
+  BOOST_REQUIRE_EQUAL(Unit.getProcessOrder(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().front().first, "unitsB");
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().front().second, 11);
+  BOOST_REQUIRE_EQUAL(Unit.parentSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.parentSpatialUnits().front().first, "unitsP");
+  BOOST_REQUIRE_EQUAL(Unit.parentSpatialUnits().front().second, 1);
 
-    AttrsIt = FXDesc.spatialDomainDescriptor().attributes().begin();
-    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsA");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataA");
-    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(8).at("indataA"), "1.1");
+  Unit = FXDesc.spatialDomain().spatialUnit("unitsA",1);
+  BOOST_REQUIRE_EQUAL(Unit.getUnitsClass(), "unitsA");
+  BOOST_REQUIRE_EQUAL(Unit.getID(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.getProcessOrder(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().front().first, "unitsB");
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().front().second, 2);
+  BOOST_REQUIRE_EQUAL(Unit.parentSpatialUnits().size(), 0);
 
-    ++AttrsIt;
-    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 2);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB1");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[1], "indataB3");
-    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB1"), "7.1");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB3"), "7.3");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB1"), "11.1");
+  Unit = FXDesc.spatialDomain().spatialUnit("unitsB",11);
+  BOOST_REQUIRE_EQUAL(Unit.getID(), 11);
+  BOOST_REQUIRE_EQUAL(Unit.getProcessOrder(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().front().first, "unitsB");
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().front().second, 3);
+  BOOST_REQUIRE_EQUAL(Unit.parentSpatialUnits().size(), 1);
+  BOOST_REQUIRE_EQUAL(Unit.parentSpatialUnits().front().first, "unitsP");
+  BOOST_REQUIRE_EQUAL(Unit.parentSpatialUnits().front().second, 1);
 
-    ++AttrsIt;
-    BOOST_REQUIRE_EQUAL((*AttrsIt).getUnitsClass(), "unitsB");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder().size(), 1);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).columnsOrder()[0], "indataB2");
-    BOOST_REQUIRE((*AttrsIt).attributes().size() > 0);
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(11).at("indataB2"), "codeA");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(7).at("indataB2"), "codeE");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(2).at("indataB2"), "codeC");
-    BOOST_REQUIRE_EQUAL((*AttrsIt).attributes().at(1).at("indataB2"), "codeD");
-  }
-
-  // Domain calendar
-  // ---------------
-
-  std::list<openfluid::fluidx::EventDescriptor>::iterator EventIt;
-
-  BOOST_REQUIRE_EQUAL(FXDesc.spatialDomainDescriptor().events().size(), 10);
-
-  EventIt = FXDesc.spatialDomainDescriptor().events().begin();
-  BOOST_REQUIRE_EQUAL((*EventIt).getUnitsClass(), "unitsA");
-  BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 1);
-  BOOST_REQUIRE((*EventIt).event().getDateTime() == openfluid::core::DateTime(1999,12,31,23,59,59));
-  BOOST_REQUIRE_EQUAL((*EventIt).event().getInfosCount(), 4);
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("when","before"));
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("where","1"));
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("numeric","1.13"));
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("string","EADGBE"));
-
-  ++EventIt;
-  BOOST_REQUIRE_EQUAL((*EventIt).getUnitsClass(), "unitsA");
-  BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 1);
-  BOOST_REQUIRE((*EventIt).event().getDateTime() == openfluid::core::DateTime(1999,12,1,12,0,0));
-  BOOST_REQUIRE_EQUAL((*EventIt).event().getInfosCount(), 4);
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("when","before"));
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("where","1"));
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("numeric","1.13"));
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("string","EADG"));
-
-  ++EventIt;
-  ++EventIt;
-  ++EventIt;
-  ++EventIt;
-  BOOST_REQUIRE_EQUAL((*EventIt).getUnitsClass(), "unitsB");
-  BOOST_REQUIRE_EQUAL((*EventIt).getUnitID(), 7);
-  BOOST_REQUIRE((*EventIt).event().getDateTime() == openfluid::core::DateTime(2000,1,1,2,18,12));
-  BOOST_REQUIRE_EQUAL((*EventIt).event().getInfosCount(), 4);
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("when","during"));
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("where","9"));
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("numeric","1.15"));
-  BOOST_REQUIRE((*EventIt).event().isInfoEqual("string","EADGBE"));
+  Unit = FXDesc.spatialDomain().spatialUnit("unitsB",7);
+  BOOST_REQUIRE_EQUAL(Unit.getUnitsClass(), "unitsB");
+  BOOST_REQUIRE_EQUAL(Unit.getID(), 7);
+  BOOST_REQUIRE_EQUAL(Unit.getProcessOrder(), 4);
+  BOOST_REQUIRE_EQUAL(Unit.toSpatialUnits().size(), 0);
+  BOOST_REQUIRE_EQUAL(Unit.parentSpatialUnits().size(), 0);
 
 
-  // Datastore
-  // ---------
+  BOOST_TEST_CHECKPOINT("-- Datastore");
 
-  openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t DataItems = FXDesc.datastoreDescriptor().items();
+  openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t DataItems = FXDesc.datastore().items();
 
   BOOST_REQUIRE_EQUAL(DataItems.size(),3);
 
@@ -382,10 +267,9 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
   BOOST_REQUIRE_EQUAL((*DataIt)->getUnitsClass(),"");
 
 
-  // Monitoring
-  // ----------
-  openfluid::fluidx::MonitoringDescriptor::SetDescription_t Observers =
-       FXDesc.monitoringDescriptor().items();
+  BOOST_TEST_CHECKPOINT("-- Monitoring");
+
+  openfluid::fluidx::MonitoringDescriptor::SetDescription_t Observers = FXDesc.monitoring().items();
 
    BOOST_CHECK_EQUAL(Observers.size(), 4);
 
@@ -428,12 +312,14 @@ void TestDataset(std::string DatasetPath, bool AggregatedAttributes = false)
 BOOST_AUTO_TEST_CASE(check_read_operations)
 {
   std::vector<std::string> DatasetPaths;
-  DatasetPaths.push_back(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/manyfiles1");
-  DatasetPaths.push_back(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/singlefile1");
-  DatasetPaths.push_back(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/singlefile2");
+  DatasetPaths.push_back(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/manyfiles1");
+  DatasetPaths.push_back(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile1");
+  DatasetPaths.push_back(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile2");
 
   for (const auto& Path : DatasetPaths)
+  {
     TestDataset(Path);
+  }
 }
 
 
@@ -452,7 +338,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   try
   {
     openfluid::fluidx::FluidXDescriptor(L)
-          .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/pathdoesnotexist");
+          .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/pathdoesnotexist");
   }
   catch (...)
   {
@@ -464,7 +350,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   try
   {
     openfluid::fluidx::FluidXDescriptor(L)
-          .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/wrong-nofile");
+          .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/wrong-nofile");
   }
   catch (...)
   {
@@ -476,7 +362,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   try
   {
     openfluid::fluidx::FluidXDescriptor(L)
-          .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/wrong-twomodels");
+          .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/wrong-twomodels");
   }
   catch (...)
   {
@@ -488,7 +374,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   try
   {
     openfluid::fluidx::FluidXDescriptor(L)
-          .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptor/wrong-runs");
+          .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/wrong-runs");
   }
   catch (...)
   {
@@ -498,12 +384,12 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
 
   BOOST_REQUIRE_THROW(
       openfluid::fluidx::FluidXDescriptor(L)
-            .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXDescriptor/wrong-unknowndatatype"),
+            .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXDescriptors/wrong-unknowndatatype"),
       openfluid::base::FrameworkException);
 
   BOOST_REQUIRE_THROW(
       openfluid::fluidx::FluidXDescriptor(L)
-            .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXDescriptor/wrong-missingdataid"),
+            .loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXDescriptors/wrong-missingdataid"),
       openfluid::base::FrameworkException);
 
 
@@ -517,7 +403,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
 
 BOOST_AUTO_TEST_CASE(check_write_operations)
 {
-  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXDescriptor/manyfiles1";
+  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXDescriptors/manyfiles1";
   std::string OutputDirSingle = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXDescriptorSingle";
   std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXDescriptorMany";
 
@@ -579,16 +465,16 @@ BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
     openfluid::fluidx::ObserverDescriptor* ObsDesc = nullptr;
     openfluid::fluidx::FluidXDescriptor FXDesc(L);
 
-    FXDesc.runDescriptor().setBeginDate(openfluid::core::DateTime(2014,9,4,17,0,0));
-    FXDesc.runDescriptor().setEndDate(openfluid::core::DateTime(2014,9,4,18,0,0));
-    FXDesc.runDescriptor().setDeltaT(60);
+    FXDesc.runConfiguration().setBeginDate(openfluid::core::DateTime(2014,9,4,17,0,0));
+    FXDesc.runConfiguration().setEndDate(openfluid::core::DateTime(2014,9,4,18,0,0));
+    FXDesc.runConfiguration().setDeltaT(60);
 
-    FXDesc.runDescriptor().setFilled(true);
+    FXDesc.runConfiguration().setFilled(true);
 
     ObsDesc = new openfluid::fluidx::ObserverDescriptor("tests.observer");
     ObsDesc->setParameter("param1",openfluid::core::StringValue(RefParamStr));
 
-    FXDesc.monitoringDescriptor().items().push_back(ObsDesc);
+    FXDesc.monitoring().items().push_back(ObsDesc);
 
     FXDesc.writeToManyFiles(DatasetDir);
   }
@@ -599,7 +485,7 @@ BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
 
     FXDesc.loadFromDirectory(DatasetDir);
 
-    openfluid::ware::WareParams_t Params = FXDesc.monitoringDescriptor().items().front()->getParameters();
+    openfluid::ware::WareParams_t Params = FXDesc.monitoring().items().front()->getParameters();
 
     BOOST_REQUIRE_EQUAL(Params["param1"].toString(),RefParamStr);
   }

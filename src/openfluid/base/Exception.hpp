@@ -65,14 +65,18 @@ class Exception : public std::exception
 
       Exception(const std::string& Msg) :
         m_Message(Msg), m_FullMessage("")
-      { }
+      {
+
+      }
 
       Exception(const ExceptionContext& Context, const std::string& Msg) :
         m_Message(Msg), m_Context(Context), m_FullMessage("")
-      { }
+      {
+
+      }
+
 
   public:
-
 
     virtual ~Exception() throw()
     {
@@ -86,7 +90,11 @@ class Exception : public std::exception
 
     const char * what() const throw()
     {
+#ifdef NDEBUG
       return m_Message.c_str();
+#else
+      return m_FullMessage.c_str();
+#endif
     }
 
 
@@ -95,7 +103,9 @@ class Exception : public std::exception
 
 
     const std::string getMessage() const
-    { return m_Message; }
+    {
+      return m_Message;
+    }
 
 
     // =====================================================================
@@ -113,7 +123,9 @@ class Exception : public std::exception
 
 
     const ExceptionContext getContext() const
-    { return m_Context; }
+    {
+      return m_Context;
+    }
 
 };
 

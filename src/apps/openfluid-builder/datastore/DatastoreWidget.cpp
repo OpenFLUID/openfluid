@@ -47,7 +47,7 @@
 #include <QMessageBox>
 
 #include <openfluid/tools/QtHelpers.hpp>
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
@@ -57,8 +57,8 @@
 #include "AddDatastoreItemDialog.hpp"
 
 
-DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::DatastoreWidget), m_Datastore(AFXDesc.datastore())
+DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& FXDesc):
+  WorkspaceWidget(Parent,FXDesc), ui(new Ui::DatastoreWidget), m_Datastore(FXDesc.datastore())
 {
   ui->setupUi(this);
 

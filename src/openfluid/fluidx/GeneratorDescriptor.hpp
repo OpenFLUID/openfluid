@@ -86,11 +86,20 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
     GeneratorMethod getGeneratorMethod() const;
 
-    inline bool isVectorVariable() const { return (m_VarSize > 1); };
+    inline bool isVectorVariable() const
+    {
+      return (m_VarSize > 1);
+    };
 
-    inline bool isScalarVariable() const { return (!isVectorVariable()); };
+    inline bool isScalarVariable() const
+    {
+      return (!isVectorVariable());
+    };
 
-    inline unsigned int getVariableSize() const { return m_VarSize; };
+    inline unsigned int getVariableSize() const
+    {
+      return m_VarSize;
+    };
 
     inline  openfluid::core::Value::Type getVariableType() const
     {
@@ -100,7 +109,10 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
         return openfluid::core::Value::DOUBLE;
     };
 
-    inline std::string getGeneratedID() const { return m_GeneratedID; };
+    inline std::string getGeneratedID() const
+    {
+      return m_GeneratedID;
+    };
 
     static std::string getGeneratorName(GeneratorDescriptor::GeneratorMethod GenMethod);
 };

@@ -40,8 +40,6 @@
 #define __OPENFLUID_UTILS_BINDING_HPP__
 
 
-#include <iostream>
-
 #include <QCoreApplication>
 
 #include <openfluid/config.hpp>
@@ -57,9 +55,9 @@
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
+#include <openfluid/fluidx/CoupledModelDescriptor.hpp>
+#include <openfluid/fluidx/MonitoringDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
@@ -84,7 +82,7 @@
 #define OPENFLUID_BINDING_DEFINE(erroutclass)\
   bool openfluid::utils::Binding::m_Initialized = false; \
   int openfluid::utils::Binding::m_qapp_argc = 1; \
-  char openfluid::utils::Binding::m_qapp_arg0[] = "ROpenFLUID"; \
+  char openfluid::utils::Binding::m_qapp_arg0[] = "OpenFLUID_Binding"; \
   char* openfluid::utils::Binding::m_qapp_argv[] = { openfluid::utils::Binding::m_qapp_arg0  , NULL }; \
   std::string openfluid::utils::Binding::m_LastErrorMsg = ""; \
   const openfluid::utils::BindingAbstractOutErr* openfluid::utils::Binding::mp_OutErr = new erroutclass();
@@ -202,11 +200,9 @@ class Binding
     {
       std::map<openfluid::core::UnitsClass_t,unsigned int> RetMap;
 
-      for (auto ItUnits : m_FluidXDesc.spatialDomainDescriptor().spatialUnits())
+      for (const auto& UnitsByClass : m_FluidXDesc.spatialDomain().spatialUnits())
       {
-        if (RetMap.find(ItUnits.getUnitsClass()) == RetMap.end())
-          RetMap[ItUnits.getUnitsClass()] = 0;
-        RetMap[ItUnits.getUnitsClass()]++;
+        RetMap[UnitsByClass.first] = UnitsByClass.second.size();
       }
 
       return RetMap;
@@ -666,9 +662,13 @@ class Binding
         std::unique_ptr<openfluid::machine::MachineListener> Listener;
 
         if (IsVerbose)
+        {
           Listener.reset(new BindingVerboseMachineListener(mp_OutErr));
+        }
         else
+        {
           Listener.reset(new openfluid::machine::MachineListener());
+        }
 
 
         // ===== spatial domain and run config
@@ -697,7 +697,7 @@ class Binding
 
         openfluid::machine::ModelInstance Model(SimBlob,Listener.get());
 
-        openfluid::machine::Factory::buildModelInstanceFromDescriptor(m_FluidXDesc.modelDescriptor(),Model);
+        openfluid::machine::Factory::buildModelInstanceFromDescriptor(m_FluidXDesc.model(),Model);
 
         if (IsVerbose)
         {
@@ -715,7 +715,7 @@ class Binding
 
         openfluid::machine::MonitoringInstance Monitoring(SimBlob);
 
-        openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(m_FluidXDesc.monitoringDescriptor(),
+        openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(m_FluidXDesc.monitoring(),
                                                                            Monitoring);
 
         if (IsVerbose)
@@ -780,44 +780,32 @@ class Binding
     {
       // Spatial domain
 
-      std::map<openfluid::core::UnitsClass_t,unsigned int> UnitsInfos;
-
-      for (auto& ItUnits : m_FluidXDesc.spatialDomainDescriptor().spatialUnits())
-      {
-        openfluid::core::UnitsClass_t ClassName = ItUnits.getUnitsClass();
-
-        if (UnitsInfos.find(ClassName) == UnitsInfos.end())
-          UnitsInfos[ClassName] = 0;
-
-        UnitsInfos[ClassName]++;
-      }
-
       mp_OutErr->printfOut("Spatial domain is made of %i spatial units\n",
-                          m_FluidXDesc.spatialDomainDescriptor().spatialUnits().size());
+                          m_FluidXDesc.spatialDomain().getUnitsCount());
 
-      for (auto& ItUnitsInfos : UnitsInfos)
+      for (const auto& UnitsClass : m_FluidXDesc.spatialDomain().spatialUnits())
       {
-        mp_OutErr->printfOut(" - %i units of class %s\n",ItUnitsInfos.second,ItUnitsInfos.first.c_str());
+        mp_OutErr->printfOut(" - %i units of class %s\n",UnitsClass.second.size(),UnitsClass.first.c_str());
       }
 
 
       // Model
 
-      mp_OutErr->printfOut("Model is made of %i simulation items\n",m_FluidXDesc.modelDescriptor().items().size());
+      mp_OutErr->printfOut("Model is made of %i simulation items\n",m_FluidXDesc.model().items().size());
 
-      for (auto& ItModelInfos : m_FluidXDesc.modelDescriptor().items())
+      for (const auto& ModelInfos : m_FluidXDesc.model().items())
       {
         mp_OutErr->printfOut(" - ");
 
-        if (ItModelInfos->isType(openfluid::ware::WareType::SIMULATOR))
+        if (ModelInfos->isType(openfluid::ware::WareType::SIMULATOR))
         {
           mp_OutErr->printfOut("%s simulator\n",
-                               ((openfluid::fluidx::SimulatorDescriptor*)(ItModelInfos))->getID().c_str());
+                               ((openfluid::fluidx::SimulatorDescriptor*)(ModelInfos))->getID().c_str());
         }
 
-        if (ItModelInfos->isType(openfluid::ware::WareType::GENERATOR))
+        if (ModelInfos->isType(openfluid::ware::WareType::GENERATOR))
         {
-          openfluid::fluidx::GeneratorDescriptor* pGenDesc = ((openfluid::fluidx::GeneratorDescriptor*)ItModelInfos);
+          openfluid::fluidx::GeneratorDescriptor* pGenDesc = ((openfluid::fluidx::GeneratorDescriptor*)ModelInfos);
 
           if (pGenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Fixed)
           {
@@ -847,12 +835,12 @@ class Binding
       // Time period
 
       mp_OutErr->printfOut("Simulation period from %s to %s\n",
-                          m_FluidXDesc.runDescriptor().getBeginDate().getAsISOString().c_str(),
-                          m_FluidXDesc.runDescriptor().getEndDate().getAsISOString().c_str());
+                          m_FluidXDesc.runConfiguration().getBeginDate().getAsISOString().c_str(),
+                          m_FluidXDesc.runConfiguration().getEndDate().getAsISOString().c_str());
 
       // Time step
 
-      mp_OutErr->printfOut("Simulation time step : %i\n",m_FluidXDesc.runDescriptor().getDeltaT());
+      mp_OutErr->printfOut("Simulation time step : %i\n",m_FluidXDesc.runConfiguration().getDeltaT());
 
     }
 
@@ -882,7 +870,7 @@ class Binding
     */
     int getDefaultDeltaT()
     {
-      return m_FluidXDesc.runDescriptor().getDeltaT();
+      return m_FluidXDesc.runConfiguration().getDeltaT();
     }
 
 
@@ -896,7 +884,7 @@ class Binding
     */
     void setDefaultDeltaT(int DeltaT)
     {
-      m_FluidXDesc.runDescriptor().setDeltaT(DeltaT);
+      m_FluidXDesc.runConfiguration().setDeltaT(DeltaT);
     }
 
 
@@ -911,7 +899,7 @@ class Binding
     */
     const char* getPeriodBeginDate()
     {
-      std::string DateStr = m_FluidXDesc.runDescriptor().getBeginDate().getAsString("%Y-%m-%d %H:%M:%S");
+      std::string DateStr = m_FluidXDesc.runConfiguration().getBeginDate().getAsString("%Y-%m-%d %H:%M:%S");
       STRING_TO_ALLOCATED_CARRAY(DateStr,CStr);
 
       return CStr;
@@ -929,7 +917,7 @@ class Binding
     */
     const char* getPeriodEndDate()
     {
-      std::string DateStr = m_FluidXDesc.runDescriptor().getEndDate().getAsString("%Y-%m-%d %H:%M:%S");
+      std::string DateStr = m_FluidXDesc.runConfiguration().getEndDate().getAsString("%Y-%m-%d %H:%M:%S");
       STRING_TO_ALLOCATED_CARRAY(DateStr,CStr);
 
       return CStr;
@@ -954,12 +942,12 @@ class Binding
 
       if (!StrBeginDate.empty() && DateToSet.setFromISOString(StrBeginDate))
       {
-        m_FluidXDesc.runDescriptor().setBeginDate(DateToSet);
+        m_FluidXDesc.runConfiguration().setBeginDate(DateToSet);
       }
 
       if (!StrEndDate.empty() && DateToSet.setFromISOString(StrEndDate))
       {
-        m_FluidXDesc.runDescriptor().setEndDate(DateToSet);
+        m_FluidXDesc.runConfiguration().setEndDate(DateToSet);
       }
     }
 
@@ -977,13 +965,13 @@ class Binding
       std::string SimIDsStr("");
       std::ostringstream ssSimIDs;
       std::string sep = "";
-      openfluid::fluidx::AdvancedModelDescriptor AdvModDesc(m_FluidXDesc.modelDescriptor());
+      openfluid::fluidx::CoupledModelDescriptor ModDesc(m_FluidXDesc.model());
 
-      for (auto& ItItem : AdvModDesc.items())
+      for (const auto& Item : ModDesc.items())
       {
-        if (ItItem->isType(openfluid::ware::WareType::SIMULATOR))
+        if (Item->isType(openfluid::ware::WareType::SIMULATOR))
         {
-          ssSimIDs << sep << AdvModDesc.getID(ItItem);
+          ssSimIDs << sep << ModDesc.getID(Item);
           sep = ";";
         }
       }
@@ -1009,23 +997,23 @@ class Binding
       std::string ParamNamesStr("");
       std::ostringstream ssParamNames;
       std::string sep = "";
-      openfluid::fluidx::AdvancedModelDescriptor AdvModDesc(m_FluidXDesc.modelDescriptor());
-      int ItemIndex = AdvModDesc.findFirstItem(SimIDStr);
+      openfluid::fluidx::CoupledModelDescriptor ModDesc(m_FluidXDesc.model());
+      int ItemIndex = ModDesc.findFirstItem(SimIDStr);
 
       if (ItemIndex < 0)
       {
         return "";
       }
 
-      openfluid::fluidx::ModelItemDescriptor Item = AdvModDesc.itemAt(ItemIndex);
+      openfluid::fluidx::ModelItemDescriptor Item = ModDesc.itemAt(ItemIndex);
       if (!Item.isType(openfluid::ware::WareType::SIMULATOR))
       {
         return "";
       }
 
-      for (auto& ItParam : Item.parameters())
+      for (const auto& Param : Item.parameters())
       {
-        ssParamNames << sep << ItParam.first;
+        ssParamNames << sep << Param.first;
         sep = ";";
       }
 
@@ -1052,12 +1040,12 @@ class Binding
       std::string SimIDStr(SimID);
       std::string ParamNameStr(ParamName);
 
-      for (auto& ItModelInfos : m_FluidXDesc.modelDescriptor().items())
+      for (const auto& ModelInfos : m_FluidXDesc.model().items())
       {
-        if (ItModelInfos->isType(openfluid::ware::WareType::SIMULATOR) &&
-            ((openfluid::fluidx::SimulatorDescriptor*)ItModelInfos)->getID() == SimIDStr)
+        if (ModelInfos->isType(openfluid::ware::WareType::SIMULATOR) &&
+            ((openfluid::fluidx::SimulatorDescriptor*)ModelInfos)->getID() == SimIDStr)
         {
-          openfluid::ware::WareParams_t Params = ItModelInfos->getParameters();
+          openfluid::ware::WareParams_t Params = ModelInfos->getParameters();
           openfluid::ware::WareParams_t::iterator ItParam = Params.find(ParamNameStr);
 
           if (ItParam != Params.end())
@@ -1090,11 +1078,11 @@ class Binding
       std::string ParamNameStr(ParamName);
       std::string ParamValStr(ParamVal);
 
-      for (auto& ItModelInfos : m_FluidXDesc.modelDescriptor().items())
+      for (auto& ModelInfos : m_FluidXDesc.model().items())
       {
-        if (ItModelInfos->isType(openfluid::ware::WareType::SIMULATOR) &&
-            ((openfluid::fluidx::SimulatorDescriptor*)ItModelInfos)->getID() == SimIDStr)
-          ItModelInfos->setParameter(ParamNameStr,ParamValStr);
+        if (ModelInfos->isType(openfluid::ware::WareType::SIMULATOR) &&
+            ((openfluid::fluidx::SimulatorDescriptor*)ModelInfos)->getID() == SimIDStr)
+          ModelInfos->setParameter(ParamNameStr,ParamValStr);
       }
     }
 
@@ -1113,12 +1101,12 @@ class Binding
       std::string SimIDStr(SimID);
       std::string ParamNameStr(ParamName);
 
-      for (auto& ItModelInfos : m_FluidXDesc.modelDescriptor().items())
+      for (auto& ModelInfos : m_FluidXDesc.model().items())
       {
-        if (ItModelInfos->isType(openfluid::ware::WareType::SIMULATOR) &&
-            ((openfluid::fluidx::SimulatorDescriptor*)ItModelInfos)->getID() == SimIDStr)
+        if (ModelInfos->isType(openfluid::ware::WareType::SIMULATOR) &&
+            ((openfluid::fluidx::SimulatorDescriptor*)ModelInfos)->getID() == SimIDStr)
         {
-          ItModelInfos->eraseParameter(ParamNameStr);
+          ModelInfos->eraseParameter(ParamNameStr);
         }
       }
     }
@@ -1142,15 +1130,15 @@ class Binding
       std::ostringstream ssParamNames;
       std::string sep = "";
 
-      for (auto& ItItem : m_FluidXDesc.modelDescriptor().items())
+      for (const auto& Item : m_FluidXDesc.model().items())
       {
-        if ( (ItItem->isType(openfluid::ware::WareType::GENERATOR))
-          && (((openfluid::fluidx::GeneratorDescriptor*)ItItem)->getVariableName() == VarNameStr)
-          && (((openfluid::fluidx::GeneratorDescriptor*)ItItem)->getUnitsClass() == UnitsClassStr) )
+        if ( (Item->isType(openfluid::ware::WareType::GENERATOR))
+          && (((openfluid::fluidx::GeneratorDescriptor*)Item)->getVariableName() == VarNameStr)
+          && (((openfluid::fluidx::GeneratorDescriptor*)Item)->getUnitsClass() == UnitsClassStr) )
         {
-          for (auto& ItParam : ItItem->parameters())
+          for (const auto& Param : Item->parameters())
           {
-            ssParamNames << sep << ItParam.first;
+            ssParamNames << sep << Param.first;
             sep = ";";
           }
           break;
@@ -1182,14 +1170,14 @@ class Binding
       std::string ParamNameStr(ParamName);
       std::string ParamValStr("");
 
-      for (auto& ItModelInfos : m_FluidXDesc.modelDescriptor().items())
+      for (const auto& ModelInfos : m_FluidXDesc.model().items())
       {
-        if (ItModelInfos->isType(openfluid::ware::WareType::GENERATOR) &&
-            ((openfluid::fluidx::GeneratorDescriptor*)ItModelInfos)->getUnitsClass() == UnitsClassStr &&
-            ((openfluid::fluidx::GeneratorDescriptor*)ItModelInfos)->getVariableName() == VarNameStr)
+        if (ModelInfos->isType(openfluid::ware::WareType::GENERATOR) &&
+            ((openfluid::fluidx::GeneratorDescriptor*)ModelInfos)->getUnitsClass() == UnitsClassStr &&
+            ((openfluid::fluidx::GeneratorDescriptor*)ModelInfos)->getVariableName() == VarNameStr)
         {
-          openfluid::ware::WareParams_t Params = ItModelInfos->getParameters();
-          openfluid::ware::WareParams_t::iterator ItParam = Params.find(ParamNameStr);
+          const openfluid::ware::WareParams_t& Params = ModelInfos->getParameters();
+          openfluid::ware::WareParams_t::const_iterator ItParam = Params.find(ParamNameStr);
 
           if (ItParam != Params.end())
           {
@@ -1224,7 +1212,7 @@ class Binding
       std::string ParamNameStr(ParamName);
       std::string ParamValStr(ParamVal);
 
-      for (auto& ItModelInfos : m_FluidXDesc.modelDescriptor().items())
+      for (auto& ItModelInfos : m_FluidXDesc.model().items())
       {
         if (ItModelInfos->isType(openfluid::ware::WareType::GENERATOR) &&
             ((openfluid::fluidx::GeneratorDescriptor*)ItModelInfos)->getUnitsClass() == UnitsClassStr &&
@@ -1253,12 +1241,12 @@ class Binding
       std::ostringstream ssVarNames;
       std::string sep = "";
 
-      for (auto& ItItem : m_FluidXDesc.modelDescriptor().items())
+      for (const auto& Item : m_FluidXDesc.model().items())
       {
-        if ( (ItItem->isType(openfluid::ware::WareType::GENERATOR))
-          && (((openfluid::fluidx::GeneratorDescriptor*)ItItem)->getUnitsClass() == UnitsClassStr) )
+        if ( (Item->isType(openfluid::ware::WareType::GENERATOR))
+          && (((openfluid::fluidx::GeneratorDescriptor*)Item)->getUnitsClass() == UnitsClassStr) )
         {
-          ssVarNames << sep << ((openfluid::fluidx::GeneratorDescriptor*)ItItem)->getVariableName();
+          ssVarNames << sep << ((openfluid::fluidx::GeneratorDescriptor*)Item)->getVariableName();
           sep = ";";
         }
       }
@@ -1284,9 +1272,9 @@ class Binding
       std::ostringstream ssParamNames;
       std::string sep = "";
 
-      for (auto& ItParam : m_FluidXDesc.modelDescriptor().getGlobalParameters())
+      for (const auto& Param : m_FluidXDesc.model().getGlobalParameters())
       {
-        ssParamNames << sep << ItParam.first;
+        ssParamNames << sep << Param.first;
         sep = ";";
       }
 
@@ -1310,8 +1298,8 @@ class Binding
       std::string ParamNameStr(ParamName);
       std::string ParamValStr("");
 
-      openfluid::ware::WareParams_t Params = m_FluidXDesc.modelDescriptor().getGlobalParameters();
-      openfluid::ware::WareParams_t::iterator ItParam = Params.find(ParamNameStr);
+      openfluid::ware::WareParams_t Params = m_FluidXDesc.model().getGlobalParameters();
+      openfluid::ware::WareParams_t::const_iterator ItParam = Params.find(ParamNameStr);
 
       if (ItParam != Params.end())
       {
@@ -1339,7 +1327,7 @@ class Binding
       std::string ParamNameStr(ParamName);
       std::string ParamValStr(ParamVal);
 
-      m_FluidXDesc.modelDescriptor().setGlobalParameter(ParamNameStr,ParamValStr);
+      m_FluidXDesc.model().setGlobalParameter(ParamNameStr,ParamValStr);
     }
 
 
@@ -1355,7 +1343,7 @@ class Binding
     {
       std::string ParamNameStr(ParamName);
 
-      m_FluidXDesc.modelDescriptor().eraseGlobalParameter(ParamNameStr);
+      m_FluidXDesc.model().eraseGlobalParameter(ParamNameStr);
     }
 
 
@@ -1372,11 +1360,11 @@ class Binding
       std::string ObsIDsStr("");
       std::ostringstream ssObsIDs;
       std::string sep = "";
-      openfluid::fluidx::AdvancedMonitoringDescriptor AdvMonDesc(m_FluidXDesc.monitoringDescriptor());
+      const openfluid::fluidx::MonitoringDescriptor& MonDesc = m_FluidXDesc.monitoring();
 
-      for (auto& ItItem : AdvMonDesc.items())
+      for (auto& ItItem : MonDesc.items())
       {
-        ssObsIDs << sep << AdvMonDesc.getID(ItItem);
+        ssObsIDs << sep << MonDesc.getID(ItItem);
         sep = ";";
       }
 
@@ -1401,23 +1389,23 @@ class Binding
       std::string ParamNamesStr("");
       std::ostringstream ssParamNames;
       std::string sep = "";
-      openfluid::fluidx::AdvancedMonitoringDescriptor AdvMonDesc(m_FluidXDesc.monitoringDescriptor());
+      const openfluid::fluidx::MonitoringDescriptor& MonDesc = m_FluidXDesc.monitoring();
 
-      int ItemIndex = AdvMonDesc.findFirstItem(ObsIDStr);
+      int ItemIndex = MonDesc.findFirstItem(ObsIDStr);
       if (ItemIndex < 0)
       {
         return "";
       }
 
-      openfluid::fluidx::ObserverDescriptor Item = AdvMonDesc.itemAt(ItemIndex);
+      openfluid::fluidx::ObserverDescriptor Item = MonDesc.itemAt(ItemIndex);
       if (!Item.isType(openfluid::ware::WareType::OBSERVER))
       {
         return "";
       }
 
-      for (auto& ItParam : Item.parameters())
+      for (const auto& Param : Item.parameters())
       {
-        ssParamNames << sep << ItParam.first;
+        ssParamNames << sep << Param.first;
         sep = ";";
       }
 
@@ -1444,13 +1432,13 @@ class Binding
       std::string ObsIDStr(ObsID);
       std::string ParamNameStr(ParamName);
 
-      for (auto& ItObsInfos : m_FluidXDesc.monitoringDescriptor().items())
+      for (const auto& ObsInfos : m_FluidXDesc.monitoring().items())
       {
-        if (ItObsInfos->isType(openfluid::ware::WareType::OBSERVER) &&
-            ((openfluid::fluidx::ObserverDescriptor*)ItObsInfos)->getID() == ObsIDStr)
+        if (ObsInfos->isType(openfluid::ware::WareType::OBSERVER) &&
+            ((openfluid::fluidx::ObserverDescriptor*)ObsInfos)->getID() == ObsIDStr)
         {
-          openfluid::ware::WareParams_t Params = ItObsInfos->getParameters();
-          openfluid::ware::WareParams_t::iterator ItParam = Params.find(ParamNameStr);
+          openfluid::ware::WareParams_t Params = ObsInfos->getParameters();
+          openfluid::ware::WareParams_t::const_iterator ItParam = Params.find(ParamNameStr);
 
           if (ItParam != Params.end())
           {
@@ -1482,12 +1470,12 @@ class Binding
       std::string ParamNameStr(ParamName);
       std::string ParamValStr(ParamVal);
 
-      for (auto& ItObsInfos : m_FluidXDesc.monitoringDescriptor().items())
+      for (auto& ObsInfos : m_FluidXDesc.monitoring().items())
       {
-        if (ItObsInfos->isType(openfluid::ware::WareType::OBSERVER) &&
-            ((openfluid::fluidx::ObserverDescriptor*)ItObsInfos)->getID() == ObsIDStr)
+        if (ObsInfos->isType(openfluid::ware::WareType::OBSERVER) &&
+            ((openfluid::fluidx::ObserverDescriptor*)ObsInfos)->getID() == ObsIDStr)
         {
-          ItObsInfos->setParameter(ParamNameStr,ParamValStr);
+          ObsInfos->setParameter(ParamNameStr,ParamValStr);
         }
       }
     }
@@ -1507,11 +1495,11 @@ class Binding
       std::string ObsIDStr(ObsID);
       std::string ParamNameStr(ParamName);
 
-      for (auto& ItObsInfos : m_FluidXDesc.monitoringDescriptor().items())
+      for (auto& ObsInfos : m_FluidXDesc.monitoring().items())
       {
-        if (ItObsInfos->isType(openfluid::ware::WareType::OBSERVER) &&
-            ((openfluid::fluidx::ObserverDescriptor*)ItObsInfos)->getID() == ObsIDStr)
-          ItObsInfos->eraseParameter(ParamNameStr);
+        if (ObsInfos->isType(openfluid::ware::WareType::OBSERVER) &&
+            ((openfluid::fluidx::ObserverDescriptor*)ObsInfos)->getID() == ObsIDStr)
+          ObsInfos->eraseParameter(ParamNameStr);
       }
     }
 
@@ -1529,7 +1517,6 @@ class Binding
       std::map<openfluid::core::UnitsClass_t,unsigned int> UnitsCountByClasses;
       UnitsCountByClasses = getUnitsCountByClasses();
 
-      std::map<openfluid::core::UnitsClass_t,unsigned int>::iterator ItUCC;
       const unsigned int Count = UnitsCountByClasses.size();
 
       char** Classes = (char**)malloc(Count*sizeof(char*));
@@ -1558,10 +1545,7 @@ class Binding
     */
     unsigned int getUnitsClassesCount()
     {
-      std::map<openfluid::core::UnitsClass_t,unsigned int> UnitsCountByClasses;
-      UnitsCountByClasses = getUnitsCountByClasses();
-
-      return UnitsCountByClasses.size();
+      return getUnitsCountByClasses().size();
     }
 
 
@@ -1575,23 +1559,20 @@ class Binding
     */
     int* getUnitsIDs(const char* UnitsClass)
     {
-      int Count = getUnitsIDsCount(UnitsClass);
-
       int* IDs = NULL;
 
-      if (Count > 0)
+      if (m_FluidXDesc.spatialDomain().isClassNameExists(UnitsClass))
       {
-        IDs = (int*)malloc(Count*sizeof(int));
+        const auto IDsOfClass = m_FluidXDesc.spatialDomain().getIDsOfClass(UnitsClass);
 
+        IDs = (int*)malloc(IDsOfClass.size()*sizeof(int));
         unsigned int i=0;
-        for (auto& ItUnits : m_FluidXDesc.spatialDomainDescriptor().spatialUnits())
+        for (const auto& ID : IDsOfClass)
         {
-          if (ItUnits.getUnitsClass() == std::string(UnitsClass))
-          {
-            IDs[i] = ItUnits.getID();
-            i++;
-          }
+          IDs[i] = ID;
+          i++;
         }
+
       }
 
       return IDs;
@@ -1608,17 +1589,12 @@ class Binding
     */
     unsigned int getUnitsIDsCount(const char* UnitsClass)
     {
-      std::map<openfluid::core::UnitsClass_t,unsigned int> UnitsCountByClasses;
-      UnitsCountByClasses = getUnitsCountByClasses();
-
-      unsigned int Count = 0;
-
-      if (UnitsCountByClasses.find(std::string(UnitsClass)) != UnitsCountByClasses.end())
+      if (m_FluidXDesc.spatialDomain().isClassNameExists(UnitsClass))
       {
-        Count = UnitsCountByClasses[std::string(UnitsClass)];
+        return m_FluidXDesc.spatialDomain().getUnitsCount(UnitsClass);
       }
 
-      return Count;
+      return 0;
     }
 
 
@@ -1637,11 +1613,10 @@ class Binding
       std::string AttrNamesStr("");
       std::ostringstream ssAttrNames;
       std::string sep = "";
-      openfluid::fluidx::AdvancedDomainDescriptor AdvDomDesc(m_FluidXDesc.spatialDomainDescriptor());
 
-      for (std::string ItName : AdvDomDesc.getAttributesNames(UnitsClass))
+      for (const auto& Name : m_FluidXDesc.spatialDomain().getAttributesNames(UnitsClass))
       {
-        ssAttrNames << sep << ItName;
+        ssAttrNames << sep << Name;
         sep = ";";
       }
 
@@ -1663,19 +1638,13 @@ class Binding
     */
     void createAttribute(const char* UnitsClass, const char* AttrName, const char* AttrVal)
     {
-      std::string UnitClassStr(UnitsClass);
+      std::string UnitsClassStr(UnitsClass);
       std::string AttrNameStr(AttrName);
       std::string AttrValStr(AttrVal);
 
-      for (auto& ItAttr : m_FluidXDesc.spatialDomainDescriptor().attributes())
+      if (m_FluidXDesc.spatialDomain().isClassNameExists(UnitsClassStr))
       {
-        if (ItAttr.getUnitsClass() == UnitClassStr)
-        {
-          for (auto & ItUnitData : ItAttr.attributes())
-          {
-            ItUnitData.second[AttrNameStr] = AttrValStr;
-          }
-        }
+        m_FluidXDesc.spatialDomain().addAttribute(UnitsClass,AttrNameStr,AttrValStr);
       }
     }
 
@@ -1697,22 +1666,13 @@ class Binding
       std::string AttrNameStr(AttrName);
       std::string AttrValStr("");
 
-      for (auto& ItAttr : m_FluidXDesc.spatialDomainDescriptor().attributes())
+      try
       {
-        if (ItAttr.getUnitsClass() == UnitClassStr)
-        {
-          openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator ItUnitData =
-              ItAttr.attributes().find(UnitID);
-          if (ItUnitData != ItAttr.attributes().end())
-          {
-            if ((*ItUnitData).second.find(AttrNameStr) != (*ItUnitData).second.end())
-            {
-              AttrValStr = (*ItUnitData).second.at(AttrNameStr);
-              STRING_TO_ALLOCATED_CARRAY(AttrValStr,CStr);
-              return CStr;
-            }
-          }
-        }
+        AttrValStr = m_FluidXDesc.spatialDomain().getAttribute(UnitClassStr,UnitID,AttrNameStr);
+      }
+      catch (openfluid::base::FrameworkException& E)
+      {
+        // do nothing
       }
 
       STRING_TO_ALLOCATED_CARRAY(AttrValStr,CStr);
@@ -1737,22 +1697,14 @@ class Binding
       std::string AttrNameStr(AttrName);
       std::string AttrValStr(AttrVal);
 
-      for (auto& ItAttr : m_FluidXDesc.spatialDomainDescriptor().attributes())
+      try
       {
-        if (ItAttr.getUnitsClass() == UnitClassStr)
-        {
-          openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::iterator ItUnitData =
-              ItAttr.attributes().find(UnitID);
-          if (ItUnitData != ItAttr.attributes().end())
-          {
-            if ((*ItUnitData).second.find(AttrNameStr) != (*ItUnitData).second.end())
-            {
-              (*ItUnitData).second[AttrNameStr] = AttrValStr;
-            }
-          }
-        }
+        m_FluidXDesc.spatialDomain().setAttribute(UnitClassStr,UnitID,AttrNameStr,AttrValStr);
       }
-
+      catch (openfluid::base::FrameworkException& E)
+      {
+        // do nothing
+      }
     }
 
 
@@ -1770,13 +1722,13 @@ class Binding
       std::string UnitClassStr(UnitsClass);
       std::string AttrNameStr(AttrName);
 
-      for (auto& ItAttr : m_FluidXDesc.spatialDomainDescriptor().attributes())
+      try
       {
-        if (ItAttr.getUnitsClass() == UnitClassStr)
-        {
-          for (auto& ItUnitData : ItAttr.attributes())
-            ItUnitData.second.erase(AttrNameStr);
-        }
+        m_FluidXDesc.spatialDomain().deleteAttribute(UnitClassStr,AttrNameStr);
+      }
+      catch (openfluid::base::FrameworkException& E)
+      {
+        // do nothing
       }
     }
 
@@ -1802,15 +1754,16 @@ class Binding
       std::string UnitsClassStr(UnitsClass);
       std::string UnitsIDsStr(UnitsIDs);
       std::string VarNameStr(VarName);
-      openfluid::fluidx::AdvancedMonitoringDescriptor AdvMonDesc(m_FluidXDesc.monitoringDescriptor());
+      openfluid::fluidx::MonitoringDescriptor& MonDesc = m_FluidXDesc.monitoring();
 
       // 1. add CSV observer if not present
 
-      if (AdvMonDesc.findFirstItem("export.vars.files.csv") < 0)
-        AdvMonDesc.appendItem(new openfluid::fluidx::ObserverDescriptor("export.vars.files.csv"));
+      if (MonDesc.findFirstItem("export.vars.files.csv") < 0)
+      {
+        MonDesc.appendItem(new openfluid::fluidx::ObserverDescriptor("export.vars.files.csv"));
+      }
 
-      openfluid::fluidx::ObserverDescriptor& ObsDesc =
-          AdvMonDesc.itemAt(AdvMonDesc.findFirstItem("export.vars.files.csv"));
+      openfluid::fluidx::ObserverDescriptor& ObsDesc = MonDesc.itemAt(MonDesc.findFirstItem("export.vars.files.csv"));
 
       // 2. add format for binding
       ObsDesc.setParameter("format."+BindingNameStr+".header",openfluid::core::StringValue("colnames-as-data"));

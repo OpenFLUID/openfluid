@@ -47,7 +47,7 @@
 
 
 AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString& SrcID,
-                                         const openfluid::fluidx::AdvancedDomainDescriptor* Domain,
+                                         const openfluid::fluidx::SpatialDomainDescriptor* Domain,
                                          QWidget* Parent):
   openfluid::ui::common::MessageDialog(Parent),ui(new Ui::AddConnectionDialog), mp_Domain(Domain)
 {

@@ -70,7 +70,6 @@ DummyModalSpatialClassic::DummyModalSpatialClassic() :
   connect(ui->ClearButton,SIGNAL(clicked()),this,SLOT(clearSpatialDomain()));
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
-
 }
 
 
@@ -99,12 +98,12 @@ void DummyModalSpatialClassic::addUnitClass()
 
   if (OK && !UnitClass.isEmpty())
   {
-    openfluid::fluidx::SpatialUnitDescriptor* UDesc = new openfluid::fluidx::SpatialUnitDescriptor();
+    openfluid::fluidx::SpatialUnitDescriptor UDesc;
 
-    UDesc->setUnitsClass(UnitClass.toStdString());
-    UDesc->setID(1);
-    UDesc->setProcessOrder(1);
-    mp_AdvancedDesc->spatialDomain().addUnit(UDesc);
+    UDesc.setUnitsClass(UnitClass.toStdString());
+    UDesc.setID(1);
+    UDesc.setProcessOrder(1);
+    mp_Desc->spatialDomain().addUnit(UDesc);
 
     emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
   }
@@ -117,7 +116,7 @@ void DummyModalSpatialClassic::addUnitClass()
 
 void DummyModalSpatialClassic::clearSpatialDomain()
 {
-  mp_AdvancedDesc->spatialDomain().clearDomain();
+  mp_Desc->spatialDomain().clearDomain();
 
   emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
                      openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
@@ -134,8 +133,10 @@ void DummyModalSpatialClassic::update(openfluid::builderext::FluidXUpdateFlags::
   if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL) ||
       UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS) ||
       UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT))
-  ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)")
-                          .arg(mp_AdvancedDesc->spatialDomain().getClassNames().size()));
+  {
+    ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)")
+                            .arg(mp_Desc->spatialDomain().getClassNames().size()));
+  }
 }
 
 

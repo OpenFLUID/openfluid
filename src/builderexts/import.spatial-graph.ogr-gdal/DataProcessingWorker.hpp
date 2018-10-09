@@ -43,7 +43,7 @@
 
 #include <QObject>
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 #include "SourceInfos.hpp"
 #include "SourceData.hpp"
@@ -63,7 +63,7 @@ class DataProcessingWorker : public QObject
 
     SourcesDataList_t m_SourcesData;
 
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvDesc;
+    openfluid::fluidx::FluidXDescriptor* mp_Desc;
 
     bool runCheck(int StartStep);
 
@@ -96,7 +96,7 @@ class DataProcessingWorker : public QObject
   public:
 
     DataProcessingWorker(const SourcesInfosList_t& SourcesInfos,
-                         openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc);
+                         openfluid::fluidx::FluidXDescriptor* Desc);
 
     ~DataProcessingWorker();
 

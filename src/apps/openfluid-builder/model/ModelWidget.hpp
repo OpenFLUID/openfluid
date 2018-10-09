@@ -70,7 +70,7 @@ class ModelWidget : public WorkspaceWidget
 
     ModelScene* mp_ModelScene;
 
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
+    openfluid::fluidx::CoupledModelDescriptor& m_Model;
 
     void updateGlobalParams();
 
@@ -118,7 +118,7 @@ class ModelWidget : public WorkspaceWidget
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    ModelWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     virtual ~ModelWidget();
 

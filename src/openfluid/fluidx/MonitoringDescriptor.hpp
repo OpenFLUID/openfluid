@@ -41,15 +41,22 @@
 #define __OPENFLUID_FLUIDX_MONITORINGDESCRIPTOR_HPP__
 
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
-#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace fluidx {
 
 
-typedef WareSetDescriptor<ObserverDescriptor> MonitoringDescriptor;
+class OPENFLUID_API MonitoringDescriptor : public WareSetDescriptor<ObserverDescriptor>
+{
+
+  public :
+
+    openfluid::ware::WareID_t getID(ObserverDescriptor* Item) const;
+
+};
 
 
 } } // namespaces

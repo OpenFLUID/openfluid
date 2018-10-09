@@ -50,7 +50,12 @@
 
 namespace openfluid { namespace tools {
 
-
+/**
+  Generates string from class and ID of a spatial unit using the "Class#ID" pattern.
+  @param[in] Class The units class
+  @param[in] ID The unit ID
+  @return the generated string
+*/
 std::string OPENFLUID_API classIDToString(const openfluid::core::UnitsClass_t& Class, openfluid::core::UnitID_t ID);
 
 

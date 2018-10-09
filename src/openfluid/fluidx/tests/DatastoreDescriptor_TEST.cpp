@@ -30,7 +30,7 @@
 */
 
 /**
-  @file AdvancedDatastoreDescriptor_TEST.cpp
+  @file DatastoreDescriptor_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
 */
@@ -39,12 +39,12 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_AdvancedDatastoreDescriptor
+#define BOOST_TEST_MODULE unittest_dDatastoredescriptor
 
 
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 
@@ -60,18 +60,15 @@ BOOST_AUTO_TEST_CASE(check_construction)
   std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 
-  openfluid::fluidx::AdvancedDatastoreDescriptor DS(
-      FXDesc.datastoreDescriptor());
+  openfluid::fluidx::DatastoreDescriptor DS = FXDesc.datastore();
 
   BOOST_CHECK_EQUAL(DS.items().size(), 5);
 
-  const std::list<openfluid::fluidx::DatastoreItemDescriptor*> Items =
-      DS.items();
+  const std::list<openfluid::fluidx::DatastoreItemDescriptor*> Items = DS.items();
 
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator it =
-      Items.begin();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator it = Items.begin();
 
   BOOST_CHECK_EQUAL((*it)->getID(), "units_A");
   BOOST_CHECK_EQUAL((*it)->getType(),
@@ -110,8 +107,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shapes/wrong_class.shp");
   BOOST_CHECK_EQUAL((*it)->getUnitsClass(), "wrongClass");
 
-  BOOST_CHECK(!DS.isItemAlreadyExist("wrong.item"));
-  BOOST_CHECK(DS.isItemAlreadyExist("RastWOClass"));
+  BOOST_CHECK(!DS.isItemExist("wrong.item"));
+  BOOST_CHECK(DS.isItemExist("RastWOClass"));
 }
 
 
@@ -124,10 +121,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 
-  openfluid::fluidx::AdvancedDatastoreDescriptor DS(
-      FXDesc.datastoreDescriptor());
+  openfluid::fluidx::DatastoreDescriptor DS = FXDesc.datastore();
 
 
   openfluid::fluidx::DatastoreItemDescriptor* Item =DS.item("units_A");

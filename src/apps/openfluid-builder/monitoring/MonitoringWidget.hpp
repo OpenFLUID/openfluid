@@ -44,7 +44,7 @@
 #include <QWidget>
 
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/fluidx/MonitoringDescriptor.hpp>
 
 #include "WorkspaceWidget.hpp"
 #include "WaresManagementWidget.hpp"
@@ -66,7 +66,7 @@ class MonitoringWidget : public WorkspaceWidget
 
     WaresManagementWidget* mp_WaresManWidget;
 
-    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monitoring;
+    openfluid::fluidx::MonitoringDescriptor& m_Monitoring;
 
 
   private slots:
@@ -96,7 +96,7 @@ class MonitoringWidget : public WorkspaceWidget
 
   public:
 
-    MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    MonitoringWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     virtual ~MonitoringWidget();
 

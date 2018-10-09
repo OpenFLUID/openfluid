@@ -333,11 +333,11 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
     openfluid::fluidx::FluidXDescriptor FXD(&Listener);
     openfluid::core::DateTime DT;
     DT.setFromISOString(PrefsMan->getBuilderBegin().toStdString());
-    FXD.runDescriptor().setBeginDate(DT);
+    FXD.runConfiguration().setBeginDate(DT);
     DT.setFromISOString(PrefsMan->getBuilderEnd().toStdString());
-    FXD.runDescriptor().setEndDate(DT);
-    FXD.runDescriptor().setDeltaT(PrefsMan->getBuilderDeltaT());
-    FXD.runDescriptor().setFilled(true);
+    FXD.runConfiguration().setEndDate(DT);
+    FXD.runConfiguration().setDeltaT(PrefsMan->getBuilderDeltaT());
+    FXD.runConfiguration().setFilled(true);
 
     FXD.writeToManyFiles(PrjMan->getInputDir());
 

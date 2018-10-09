@@ -31,14 +31,14 @@
 
 
 /**
-  @file RunDescriptor.hpp
+  @file RunConfigurationDescriptor.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#ifndef __OPENFLUID_FLUIDX_RUNDESCRIPTOR_HPP__
-#define __OPENFLUID_FLUIDX_RUNDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_RUNCONFIGURATIONDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_RUNCONFIGURATIONDESCRIPTOR_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -48,7 +48,8 @@
 
 namespace openfluid { namespace fluidx {
 
-class OPENFLUID_API RunDescriptor
+
+class OPENFLUID_API RunConfigurationDescriptor
 {
   private:
 
@@ -62,34 +63,50 @@ class OPENFLUID_API RunDescriptor
     bool m_IsUserValuesBufferSize;
     unsigned int m_ValuesBufferSize;
 
-   bool m_Filled;
+    /**
+      Indicates if the configuration is set up ("filled") or not
+    */
+    bool m_Filled;
+
 
   public:
 
-    RunDescriptor();
+   RunConfigurationDescriptor();
 
-    RunDescriptor(int DeltaT,
+   RunConfigurationDescriptor(int DeltaT,
                   openfluid::core::DateTime BeginDate,openfluid::core::DateTime EndDate);
 
-    ~RunDescriptor();
+    ~RunConfigurationDescriptor();
 
     inline openfluid::core::DateTime getBeginDate() const
-    {return m_BeginDate; };
+    {
+      return m_BeginDate;
+    };
 
     inline void setBeginDate(const openfluid::core::DateTime BeginDate)
-    { m_BeginDate = BeginDate; };
+    {
+      m_BeginDate = BeginDate;
+    };
 
     inline openfluid::core::DateTime getEndDate() const
-    {return m_EndDate; };
+    {
+      return m_EndDate;
+    };
 
     inline void setEndDate(const openfluid::core::DateTime EndDate)
-    { m_EndDate = EndDate; };
+    {
+      m_EndDate = EndDate;
+    };
 
     inline int getDeltaT() const
-    {return m_DeltaT; };
+    {
+      return m_DeltaT;
+    };
 
     inline void setDeltaT(const int DeltaT)
-    { m_DeltaT = DeltaT; };
+    {
+      m_DeltaT = DeltaT;
+    };
 
     inline void setValuesBufferSize(const unsigned int StepsNbr)
     {
@@ -97,22 +114,34 @@ class OPENFLUID_API RunDescriptor
     };
 
     inline bool isUserValuesBufferSize() const
-    { return m_IsUserValuesBufferSize; };
+    {
+      return m_IsUserValuesBufferSize;
+    };
 
     inline unsigned int getValuesBufferSize() const
-    { return m_ValuesBufferSize; };
+    {
+      return m_ValuesBufferSize;
+    };
 
     inline openfluid::base::SimulationStatus::SchedulingConstraint getSchedulingConstraint() const
-    { return m_SchedConstraint; };
+    {
+      return m_SchedConstraint;
+    };
 
     inline void setSchedulingConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst)
-    { m_SchedConstraint = SConst; };
+    {
+      m_SchedConstraint = SConst;
+    };
 
     inline bool isFilled() const
-    { return m_Filled; };
+    {
+      return m_Filled;
+    };
 
     inline void setFilled(const bool Filled)
-    { m_Filled = Filled; };
+    {
+      m_Filled = Filled;
+    };
 
     inline void unsetUserValuesBufferSize()
     {
@@ -125,4 +154,4 @@ class OPENFLUID_API RunDescriptor
 } } // namespaces
 
 
-#endif /* __OPENFLUID_FLUIDX_RUNDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_RUNCONFIGURATIONDESCRIPTOR_HPP__ */

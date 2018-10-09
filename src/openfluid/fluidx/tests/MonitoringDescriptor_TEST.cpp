@@ -29,8 +29,9 @@
   
 */
 
+
 /**
-  @file AdvancedMonitoringDescriptor_TEST.cpp
+  @file MonitoringDescriptor_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
 */
@@ -39,12 +40,12 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_AdvancedMonitoringDescriptor
+#define BOOST_TEST_MODULE unittest_monitoringdescriptor
 
 
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/fluidx/MonitoringDescriptor.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/IOListener.hpp>
@@ -63,11 +64,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
   std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
 
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 
-  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(FXDesc.monitoringDescriptor());
-
-  BOOST_CHECK_EQUAL(Monit.items().size(), 2);
+  BOOST_CHECK_EQUAL(FXDesc.monitoring().items().size(), 2);
 }
 
 
@@ -80,9 +79,9 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
   std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
 
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/duplicates");
 
-  BOOST_CHECK_NO_THROW(openfluid::fluidx::AdvancedMonitoringDescriptor(FXDesc.monitoringDescriptor()));
+  BOOST_CHECK_NO_THROW(FXDesc.monitoring());
 }
 
 
@@ -95,10 +94,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
 
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 
-  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
-      FXDesc.monitoringDescriptor());
+  openfluid::fluidx::MonitoringDescriptor Monit = FXDesc.monitoring();
 
   BOOST_CHECK_EQUAL(Monit.items().size(), 2);
 
@@ -122,10 +120,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::fluidx::ObserverDescriptor VTKObsDesc("export.vars.files.vtk");
   Monit.appendItem(&VTKObsDesc);
 
-  const std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
-      Monit.items();
-  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it =
-      Items.begin();
+  const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = Monit.items();
+  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it = Items.begin();
 
   BOOST_CHECK_EQUAL((*it)->getID(), "export.spatial-graph.files.dot");
   BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");

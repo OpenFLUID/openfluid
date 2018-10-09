@@ -49,11 +49,13 @@
 
 
 DataProcessingWorker::DataProcessingWorker(const SourcesInfosList_t& SourcesInfos,
-                                           openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc):
-  m_SourcesInfos(SourcesInfos), mp_AdvDesc(AdvDesc)
+                                           openfluid::fluidx::FluidXDescriptor* Desc):
+  m_SourcesInfos(SourcesInfos), mp_Desc(Desc)
 {
   for (int i=0; i<m_SourcesInfos.size();i++)
+  {
     m_SourcesData.append(SourceData());
+  }
 }
 
 
@@ -77,7 +79,9 @@ QString DataProcessingWorker::getStyledText(const QString& Text,
   QString BoldStyle;
 
   if (IsBold)
+  {
     BoldStyle = " font-weight: bold;";
+  }
 
   return QString("<font style='color: %1;%2'>%3</font>").arg(Color,BoldStyle,Text);
 }
@@ -100,7 +104,7 @@ bool DataProcessingWorker::isUnitExists(const QString& Class, int ID)
   }
 
   // is unit exist in existing units
-  return mp_AdvDesc->spatialDomain().isSpatialUnitExist(Class.toStdString(),ID);
+  return mp_Desc->spatialDomain().isSpatialUnitExist(Class.toStdString(),ID);
 }
 
 
@@ -140,7 +144,9 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
     // For cached layers as GeoJSON files
     // TODO do better for that!
     if (Layer == nullptr)
+    {
       Layer = DS->GetLayer(0);
+    }
 
     Layer->ResetReading();
     while((Feature = Layer->GetNextFeature()) != nullptr )
@@ -518,7 +524,7 @@ bool DataProcessingWorker::runCheck(int StartStep)
       return false;
     }
 
-    if (mp_AdvDesc->spatialDomain().isClassNameExists(m_SourcesInfos[i].UnitsClass.toStdString()))
+    if (mp_Desc->spatialDomain().isClassNameExists(m_SourcesInfos[i].UnitsClass.toStdString()))
     {
       emit stepCompleted(StartStep,getStyledText(tr("[Error] Class name for layer \"%1\" already exists")
                                                  .arg(m_SourcesInfos[i].LayerName),
@@ -587,7 +593,7 @@ bool DataProcessingWorker::runCheck(int StartStep)
 
     // check if datastore ID already exists
     if (m_SourcesInfos[i].IsDatastore &&
-        mp_AdvDesc->datastore().isItemAlreadyExist(m_SourcesInfos[i].DatastoreID.toStdString()))
+        mp_Desc->datastore().isItemExist(m_SourcesInfos[i].DatastoreID.toStdString()))
     {
       emit stepCompleted(StartStep,getStyledText(tr("[Error] Datastore ID for layer \"%1\" already exists")
                                                        .arg(m_SourcesInfos[i].LayerName),
@@ -602,11 +608,14 @@ bool DataProcessingWorker::runCheck(int StartStep)
 
   // load data from source
   if (!loadDataFromSources(StartStep+2))
+  {
     return false;
-
+  }
 
   if (!checkConnectivity(StartStep+3))
+  {
     return false;
+  }
 
   return true;
 }

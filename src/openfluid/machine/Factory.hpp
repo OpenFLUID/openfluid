@@ -91,7 +91,7 @@ class OPENFLUID_API Factory
     static void buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::MonitoringDescriptor& MonDesc,
                                                       MonitoringInstance& MonInstance);
 
-    static void fillRunContextFromDescriptor(const openfluid::fluidx::RunDescriptor& RunDescr);
+    static void fillRunContextFromDescriptor(const openfluid::fluidx::RunConfigurationDescriptor& RunDescr);
 
     static void buildSimulationBlobFromDescriptors(const openfluid::fluidx::FluidXDescriptor& FluidXDesc,
                                                    SimulationBlob& SimBlob);
@@ -106,8 +106,14 @@ class OPENFLUID_API Factory
       GenID += ".";
       GenID += ClassName;
       GenID += ".gen";
-      if (IsVector) GenID += "vector";
-      else GenID += "scalar";
+      if (IsVector)
+      {
+        GenID += "vector";
+      }
+      else
+      {
+        GenID += "scalar";
+      }
 
       return GenID;
     }

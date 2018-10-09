@@ -108,7 +108,7 @@ void ObserverWidget::refresh()
           ExtensionsRegistry::instance()->instanciateParameterizationExtension(Signature->LinkUID));
       mp_ParamsWidget->setParent(this);
       mp_ParamsWidget->linkParams(&(mp_Desc->parameters()));
-      mp_ParamsWidget->setFluidXDescriptor(&(ProjectCentral::instance()->advancedDescriptors()));
+      mp_ParamsWidget->setFluidXDescriptor(&(ProjectCentral::instance()->descriptors()));
 
       connect(mp_ParamsWidget,SIGNAL(changed()),this,SLOT(notifyChangedFromParameterizationWidget()));
 

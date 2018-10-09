@@ -43,7 +43,7 @@
 
 #include <QWidget>
 
-#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#include <openfluid/fluidx/DatastoreDescriptor.hpp>
 
 #include "WorkspaceWidget.hpp"
 
@@ -76,7 +76,7 @@ class DatastoreWidget : public WorkspaceWidget
 
     Ui::DatastoreWidget* ui;
 
-    openfluid::fluidx::AdvancedDatastoreDescriptor& m_Datastore;
+    openfluid::fluidx::DatastoreDescriptor& m_Datastore;
 
 
   public slots:
@@ -86,7 +86,7 @@ class DatastoreWidget : public WorkspaceWidget
 
   public:
 
-    DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    DatastoreWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     virtual ~DatastoreWidget();
 };

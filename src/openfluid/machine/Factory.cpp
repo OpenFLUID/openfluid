@@ -43,10 +43,10 @@
 #include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/core/SpatialGraph.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
-#include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
+#include <openfluid/fluidx/RunConfigurationDescriptor.hpp>
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -65,137 +65,106 @@ namespace openfluid { namespace machine {
 void Factory::buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
                                         openfluid::core::SpatialGraph& SGraph)
 {
-
-  // ============== Domain definition ==============
-
-  std::list<openfluid::fluidx::SpatialUnitDescriptor>::const_iterator itUnits;
-  std::list<openfluid::core::UnitClassID_t>::const_iterator itLinkedUnits;
-
   openfluid::core::SpatialUnit *FromUnit, *ToUnit, *ParentUnit, *ChildUnit;
+  const auto& SpatialUnitsByClass = Descriptor.spatialUnits();
 
-  // creating units
-  for (itUnits = Descriptor.spatialUnits().begin();itUnits != Descriptor.spatialUnits().end();++itUnits)
+  for (const auto& UnitsClass : SpatialUnitsByClass)
   {
-    SGraph.addUnit(openfluid::core::SpatialUnit((*itUnits).getUnitsClass(),
-                                               (*itUnits).getID(),
-                                               (*itUnits).getProcessOrder()));
-  }
-
-  // linking to units
-  for (itUnits = Descriptor.spatialUnits().begin();itUnits != Descriptor.spatialUnits().end();++itUnits)
-  {
-
-    for (itLinkedUnits = (*itUnits).toSpatialUnits().begin();
-        itLinkedUnits != (*itUnits).toSpatialUnits().end();
-        ++itLinkedUnits)
+    for (const auto& Unit : UnitsClass.second)
     {
-      FromUnit = SGraph.spatialUnit((*itUnits).getUnitsClass(),(*itUnits).getID());
-      ToUnit = SGraph.spatialUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
+      // Creation of the spatial unit
 
-      if (ToUnit != nullptr)
-      {
-        FromUnit->addToUnit(ToUnit);
-        ToUnit->addFromUnit(FromUnit);
-      }
-      else
-      {
-        std::ostringstream UnitStr;
-        UnitStr << FromUnit->getClass() << "#" << FromUnit->getID();
-        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Target -to- unit referenced by " + UnitStr.str() +
-                                                  " does not exist" );
-      }
-    }
-  }
-
-
-  // linking child units
-  for (itUnits = Descriptor.spatialUnits().begin();itUnits != Descriptor.spatialUnits().end();++itUnits)
-  {
-
-    for (itLinkedUnits = (*itUnits).parentSpatialUnits().begin();
-        itLinkedUnits != (*itUnits).parentSpatialUnits().end();
-        ++itLinkedUnits)
-    {
-      ChildUnit = SGraph.spatialUnit((*itUnits).getUnitsClass(),(*itUnits).getID());
-      ParentUnit = SGraph.spatialUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
-
-      if (ParentUnit != nullptr)
-      {
-        ParentUnit->addChildUnit(ChildUnit);
-        ChildUnit->addParentUnit(ParentUnit);
-      }
-      else
-      {
-        std::ostringstream UnitStr;
-        UnitStr << ChildUnit->getClass() << "#" << ChildUnit->getID();
-        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Target -parent- unit referenced by " + UnitStr.str() +
-                                                  " does not exist" );
-      }
-    }
-  }
-
-
-  SGraph.sortUnitsByProcessOrder();
-
-
-  // ============== Attributes ==============
-
-
-  std::list<openfluid::fluidx::AttributesDescriptor>::const_iterator itAttrsDesc;
-
-  for (itAttrsDesc = Descriptor.attributes().begin();itAttrsDesc != Descriptor.attributes().end();++itAttrsDesc)
-  {
-
-    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t UnitsAttrs = (*itAttrsDesc).attributes();
-    openfluid::core::SpatialUnit* TheUnit;
-
-    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnit;
-    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnitb = UnitsAttrs.begin();
-    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnite = UnitsAttrs.end();
-
-    for (itUnit=itUnitb; itUnit!=itUnite; ++itUnit)
-    {
-      TheUnit = SGraph.spatialUnit((*itAttrsDesc).getUnitsClass(),itUnit->first);
+      openfluid::core::SpatialUnit* TheUnit =
+          SGraph.addUnit(openfluid::core::SpatialUnit(Unit.second.getUnitsClass(),Unit.second.getID(),
+                                                      Unit.second.getProcessOrder()));
 
       if (TheUnit != nullptr)
       {
-        openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::const_iterator itUnitAttr;
+        // Add of attributes
 
-        for (itUnitAttr = itUnit->second.begin(); itUnitAttr!=itUnit->second.end(); ++itUnitAttr)
+        for (const auto& Attribute : Unit.second.attributes())
         {
-          if (!openfluid::tools::isValidAttributeName(itUnitAttr->first))
+          if (!openfluid::tools::isValidAttributeName(Attribute.first))
+          {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                      "Wrong syntax for attribute "+
-                                                      itUnitAttr->first + " on units class "+
-                                                      (*itAttrsDesc).getUnitsClass());
+                                                      "Wrong syntax for attribute "+ Attribute.first +
+                                                      " on units class "+ UnitsClass.first);
+          }
+          TheUnit->attributes()->setValueFromRawString(Attribute.first,Attribute.second);
+        }
 
-          TheUnit->attributes()->setValueFromRawString(itUnitAttr->first,itUnitAttr->second);
+        // Add of events
+
+        for (const auto& Event : Unit.second.events())
+        {
+          TheUnit->events()->addEvent(Event.event());
+        }
+      }
+      else
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                  "unit " + openfluid::tools::classIDToString(TheUnit->getClass(),
+                                                                                              TheUnit->getID()) +
+                                                                                              " not created correctly");
+      }
+
+    }
+  }
+
+
+  // units linking
+  for (const auto& UnitsClass : SpatialUnitsByClass)
+  {
+    for (const auto& Unit : UnitsClass.second)
+    {
+      // From-To links
+
+      for (const auto& LinkedUnit : Unit.second.toSpatialUnits())
+      {
+        FromUnit = SGraph.spatialUnit(Unit.second.getUnitsClass(),Unit.second.getID());
+        ToUnit = SGraph.spatialUnit(LinkedUnit.first,LinkedUnit.second);
+
+        if (ToUnit != nullptr)
+        {
+          FromUnit->addToUnit(ToUnit);
+          ToUnit->addFromUnit(FromUnit);
+        }
+        else
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                    "to unit referenced by " +
+                                                    openfluid::tools::classIDToString(FromUnit->getClass(),
+                                                                                      FromUnit->getID()) +
+                                                    " does not exist" );
+        }
+      }
+
+      // Parent-Child links
+
+      for (const auto& LinkedUnit : Unit.second.parentSpatialUnits())
+      {
+        ChildUnit = SGraph.spatialUnit(Unit.second.getUnitsClass(),Unit.second.getID());
+        ParentUnit = SGraph.spatialUnit(LinkedUnit.first,LinkedUnit.second);
+
+        if (ParentUnit != nullptr)
+        {
+          ParentUnit->addChildUnit(ChildUnit);
+          ChildUnit->addParentUnit(ParentUnit);
+        }
+        else
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                    "child unit referenced by " +
+                                                    openfluid::tools::classIDToString(ChildUnit->getClass(),
+                                                                                      ChildUnit->getID()) +
+                                                    " does not exist");
         }
       }
     }
   }
 
 
-  // ============== Events ==============
-
-
-  std::list<openfluid::fluidx::EventDescriptor>::const_iterator itEvent;
-  openfluid::core::SpatialUnit* EventUnit;
-
-  for (itEvent = Descriptor.events().begin();itEvent != Descriptor.events().end();++itEvent)
-  {
-
-    EventUnit = SGraph.spatialUnit((*itEvent).getUnitsClass(),(*itEvent).getUnitID());
-
-    if (EventUnit != nullptr)
-    {
-      EventUnit->events()->addEvent((*itEvent).event());
-    }
-
-  }
-
+  SGraph.sortUnitsByProcessOrder();
 }
 
 
@@ -232,7 +201,9 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
 
 
   if (ModelDesc.items().empty())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator in model");
+  }
 
 
   for (it=ModelDesc.items().begin();it!=ModelDesc.items().end();++it)
@@ -341,8 +312,9 @@ void Factory::buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::Mon
       openfluid::ware::WareID_t ID = ((openfluid::fluidx::ObserverDescriptor*)(*it))->getID();
 
       if (!openfluid::tools::isValidWareID(ID))
-        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "invalid observer ID \""+ID+"\"");
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"invalid observer ID \""+ID+"\"");
+      }
 
       // instanciation of a plugged observer using the plugin manager
       OInstance = ObserverPluginsManager::instance()->loadWareSignatureOnly(ID);
@@ -359,11 +331,12 @@ void Factory::buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::Mon
 // =====================================================================
 
 
-void Factory::fillRunContextFromDescriptor(const openfluid::fluidx::RunDescriptor& RunDesc)
+void Factory::fillRunContextFromDescriptor(const openfluid::fluidx::RunConfigurationDescriptor& RunDesc)
 {
   if (!RunDesc.isFilled())
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Wrong or undefined run configuration");
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Wrong or undefined run configuration");
+  }
 
   if (RunDesc.isUserValuesBufferSize())
   {
@@ -383,18 +356,19 @@ void Factory::fillRunContextFromDescriptor(const openfluid::fluidx::RunDescripto
 void Factory::buildSimulationBlobFromDescriptors(const openfluid::fluidx::FluidXDescriptor& FluidXDesc,
                                                  SimulationBlob& SimBlob)
 {
-  buildDomainFromDescriptor(FluidXDesc.spatialDomainDescriptor(),SimBlob.spatialGraph());
+  buildDomainFromDescriptor(FluidXDesc.spatialDomain(),SimBlob.spatialGraph());
 
-  buildDatastoreFromDescriptor(FluidXDesc.datastoreDescriptor(),SimBlob.datastore());
+  buildDatastoreFromDescriptor(FluidXDesc.datastore(),SimBlob.datastore());
 
-  SimBlob.simulationStatus() = openfluid::base::SimulationStatus(FluidXDesc.runDescriptor().getBeginDate(),
-                                                                 FluidXDesc.runDescriptor().getEndDate(),
-                                                                 FluidXDesc.runDescriptor().getDeltaT(),
-                                                                 FluidXDesc.runDescriptor().getSchedulingConstraint());
+  SimBlob.simulationStatus() =
+      openfluid::base::SimulationStatus(FluidXDesc.runConfiguration().getBeginDate(),
+                                        FluidXDesc.runConfiguration().getEndDate(),
+                                        FluidXDesc.runConfiguration().getDeltaT(),
+                                        FluidXDesc.runConfiguration().getSchedulingConstraint());
 
-  SimBlob.runDescriptor() = FluidXDesc.runDescriptor();
+  SimBlob.runConfiguration() = FluidXDesc.runConfiguration();
 
-  fillRunContextFromDescriptor(FluidXDesc.runDescriptor());
+  fillRunContextFromDescriptor(FluidXDesc.runConfiguration());
 }
 
 

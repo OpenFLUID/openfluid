@@ -43,7 +43,7 @@
 
 #include <QGraphicsScene>
 
-#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
+#include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 
 #include "ModelItemGraphics.hpp"
 
@@ -59,7 +59,7 @@ class ModelScene : public QGraphicsScene
 
   private:
 
-    const openfluid::fluidx::AdvancedModelDescriptor& m_Model;
+    const openfluid::fluidx::CoupledModelDescriptor& m_Model;
 
     QList<ModelItemGraphics*> m_GraphicsItems;
 
@@ -84,7 +84,7 @@ class ModelScene : public QGraphicsScene
 
   public:
 
-    ModelScene(const openfluid::fluidx::AdvancedModelDescriptor& ModelDesc, QObject* Parent = nullptr);
+    ModelScene(const openfluid::fluidx::CoupledModelDescriptor& ModelDesc, QObject* Parent = nullptr);
 
     ~ModelScene();
 

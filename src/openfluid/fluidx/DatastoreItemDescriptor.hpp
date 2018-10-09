@@ -80,7 +80,9 @@ class OPENFLUID_API DatastoreItemDescriptor
       Use openfluid::fluidx::DatastoreItemDescriptor::setUnitsClass(const std::string&) instead
     */
     void setUnitClass(const std::string& UnitsClass) OPENFLUID_DEPRECATED
-    { setUnitsClass(UnitsClass); };
+    {
+      setUnitsClass(UnitsClass);
+    };
 
     openfluid::core::UnitsClass_t getUnitsClass() const;
 
@@ -88,7 +90,9 @@ class OPENFLUID_API DatastoreItemDescriptor
       @deprecated Since version 2.1.0. Use openfluid::fluidx::DatastoreItemDescriptor::getUnitsClass() const instead
     */
     openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
-    { return getUnitsClass(); };
+    {
+      return getUnitsClass();
+    };
 
     std::string getID() const;
 

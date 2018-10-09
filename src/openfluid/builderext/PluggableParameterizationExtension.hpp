@@ -85,7 +85,7 @@ class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public 
 
   protected:
 
-    const openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
+    const openfluid::fluidx::FluidXDescriptor* mp_Desc;
 
     openfluid::ware::WareParams_t* mp_Params;
 
@@ -98,7 +98,7 @@ class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public 
   public:
 
     PluggableParameterizationExtension() : QWidget(),
-      mp_AdvancedDesc(nullptr), mp_Params(nullptr)
+      mp_Desc(nullptr), mp_Params(nullptr)
     {
 
     }
@@ -116,8 +116,10 @@ class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public 
     }
 
 
-    void setFluidXDescriptor(const openfluid::fluidx::AdvancedFluidXDescriptor* Desc)
-     { mp_AdvancedDesc = Desc; }
+    void setFluidXDescriptor(const openfluid::fluidx::FluidXDescriptor* Desc)
+    {
+      mp_Desc = Desc;
+    }
 
     virtual void update() = 0;
 

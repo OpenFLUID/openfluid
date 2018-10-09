@@ -52,7 +52,7 @@ DashboardFrame::DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent
   setStyleSheet(QString("QFrame#DashboardWidget {background-color: %1;}").arg(openfluid::ui::config::TOOLBAR_BGCOLOR));
   setFrameShape(QFrame::NoFrame);
 
-  mp_InfosWidget = new DashboardInfosWidget(PrjCentral->advancedDescriptors(),this);
+  mp_InfosWidget = new DashboardInfosWidget(PrjCentral->descriptors(),this);
   mp_StatusWidget = new DashboardStatusWidget(PrjCentral,this);
 
   mp_Layout = new QBoxLayout(QBoxLayout::TopToBottom,this);

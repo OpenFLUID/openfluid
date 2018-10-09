@@ -376,6 +376,8 @@ BOOST_AUTO_TEST_CASE(check_simulations)
 
   TB = openfluid::utils::Binding::openDataset(DSPath.c_str());
 
+  TB->addVariablesExportAsCSV("binding","TestUnits","*","*",10);
+
   BOOST_CHECK_EQUAL(TB->runSimulation(),1);
   std::cout << TB->getLastError() << std::endl;
 

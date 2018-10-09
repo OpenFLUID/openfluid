@@ -64,7 +64,7 @@ class OPENFLUID_API SpatialGraph
 
     SpatialGraph();
 
-    bool addUnit(const SpatialUnit& aUnit);
+    SpatialUnit* addUnit(const SpatialUnit& aUnit);
 
     bool deleteUnit(SpatialUnit* aUnit);
 

@@ -56,8 +56,19 @@ class FrameworkException : public Exception
     {
       m_FullMessage = m_Message;
       m_FullMessage += " (sent by OpenFLUID framework";
+
+      // framework part
       if (m_Context.find("part") != m_Context.end())
+      {
         m_FullMessage += ", from " + m_Context["part"];
+      }
+
+      // code location
+      if (m_Context.find("codeloc") != m_Context.end())
+      {
+        m_FullMessage += ", located at " + m_Context["codeloc"];
+      }
+
       m_FullMessage += ")";
     }
 

@@ -559,7 +559,7 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
       ui->VariableNameEdit->setText(QString::fromStdString(Serie.VarName));
       ui->UnitClassComboBox->clear();
 
-      QStringList ClassNames = openfluid::tools::toQStringList(mp_AdvancedDesc->spatialDomain().getClassNames());
+      QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
       for (auto& ClassName : ClassNames)
         ui->UnitClassComboBox->addItem(ClassName);
 
@@ -695,7 +695,7 @@ void GNUplotObsParamsWidget::updateClassIDs(const QString& UnitsClass)
 {
   ui->UnitIDComboBox->clear();
 
-  std::set<int> IDs = mp_AdvancedDesc->spatialDomain().getIDsOfClass(UnitsClass.toStdString());
+  std::set<int> IDs = mp_Desc->spatialDomain().getIDsOfClass(UnitsClass.toStdString());
 
   for (auto ID : IDs)
     ui->UnitIDComboBox->addItem(QString::number(ID));

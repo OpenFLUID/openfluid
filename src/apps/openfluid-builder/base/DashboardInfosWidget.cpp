@@ -46,8 +46,8 @@
 #include "builderconfig.hpp"
 
 
-DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::AdvancedFluidXDescriptor& Desc, QWidget* Parent):
-  DashboardWidget(Parent), ui(new Ui::DashboardInfosWidget), m_AdvFluidxDesc(Desc)
+DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::FluidXDescriptor& Desc, QWidget* Parent):
+  DashboardWidget(Parent), ui(new Ui::DashboardInfosWidget), m_FluidxDesc(Desc)
 {
   ui->setupUi(this);
 
@@ -98,22 +98,22 @@ DashboardInfosWidget::~DashboardInfosWidget()
 void DashboardInfosWidget::refresh()
 {
   unsigned int SimCount, GenCount;
-  m_AdvFluidxDesc.model().getItemsCountByType(SimCount,GenCount);
+  m_FluidxDesc.model().getItemsCountByType(SimCount,GenCount);
 
-  unsigned int UnitsCount = m_AdvFluidxDesc.spatialDomain().getUnitsCount();
-  int UnitsClassesCount = m_AdvFluidxDesc.spatialDomain().getClassNames().size();
+  unsigned int UnitsCount = m_FluidxDesc.spatialDomain().getUnitsCount();
+  int UnitsClassesCount = m_FluidxDesc.spatialDomain().getClassNames().size();
 
-  unsigned int DStoreCount = m_AdvFluidxDesc.datastoreDescriptor().items().size();
+  unsigned int DStoreCount = m_FluidxDesc.datastore().items().size();
 
-  unsigned int MonitoringCount = m_AdvFluidxDesc.monitoring().items().size();
+  unsigned int MonitoringCount = m_FluidxDesc.monitoring().items().size();
 
-  int DeltaT = m_AdvFluidxDesc.runDescriptor().getDeltaT();
+  int DeltaT = m_FluidxDesc.runConfiguration().getDeltaT();
 
   int Duration =
-      m_AdvFluidxDesc.runDescriptor().getEndDate().diffInSeconds(m_AdvFluidxDesc.runDescriptor().getBeginDate());
+      m_FluidxDesc.runConfiguration().getEndDate().diffInSeconds(m_FluidxDesc.runConfiguration().getBeginDate());
 
   openfluid::base::SimulationStatus::SchedulingConstraint SchedConst =
-      m_AdvFluidxDesc.runDescriptor().getSchedulingConstraint();
+      m_FluidxDesc.runConfiguration().getSchedulingConstraint();
   QString SchedConstStr = tr("no constraint");
 
   if (SchedConst == openfluid::base::SimulationStatus::SCHED_DTCHECKED)

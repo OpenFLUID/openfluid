@@ -46,7 +46,7 @@
 #include "GeneratorGraphics.hpp"
 
 
-ModelScene::ModelScene(const openfluid::fluidx::AdvancedModelDescriptor& ModelDesc, QObject* Parent):
+ModelScene::ModelScene(const openfluid::fluidx::CoupledModelDescriptor& ModelDesc, QObject* Parent):
   QGraphicsScene(Parent), m_Model(ModelDesc)
 {
 

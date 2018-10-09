@@ -31,14 +31,14 @@
 
 
 /**
-  @file AttributesDescriptor.hpp
+  @file AttributesTableDescriptor.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#ifndef __OPENFLUID_FLUIDX_ATTRIBUTESDESCRIPTOR_HPP__
-#define __OPENFLUID_FLUIDX_ATTRIBUTESDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_ATTRIBUTESTABLEDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_ATTRIBUTESTABLEDESCRIPTOR_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace fluidx {
 
 
-class OPENFLUID_API AttributesDescriptor
+class OPENFLUID_API AttributesTableDescriptor
 {
   public:
     typedef std::map<openfluid::core::AttributeName_t,std::string> AttributeNameValue_t;
@@ -67,23 +67,41 @@ class OPENFLUID_API AttributesDescriptor
 
   public:
 
-    AttributesDescriptor();
+    AttributesTableDescriptor();
 
-    ~AttributesDescriptor();
+    ~AttributesTableDescriptor();
 
     void parseDataBlob(const std::string& Data);
 
     inline const openfluid::core::UnitsClass_t getUnitsClass() const
-    { return m_UnitsClass; };
+    {
+      return m_UnitsClass;
+    };
 
     inline void setUnitsClass(const openfluid::core::UnitsClass_t& UClass)
-    { m_UnitsClass = UClass; };
+    {
+      m_UnitsClass = UClass;
+    };
 
-    inline std::vector<std::string>& columnsOrder() { return m_ColumnsOrder; };
+    inline const std::vector<std::string>& columnsOrder() const
+    {
+      return m_ColumnsOrder;
+    };
 
-    inline const UnitIDAttribute_t& attributes() const { return m_Data; };
+    inline void setColumnsOrder(const std::vector<std::string>& Cols)
+    {
+      m_ColumnsOrder = Cols;
+    };
 
-    inline UnitIDAttribute_t& attributes() { return m_Data; };
+    inline const UnitIDAttribute_t& attributes() const
+    {
+      return m_Data;
+    };
+
+    inline UnitIDAttribute_t& attributes()
+    {
+      return m_Data;
+    };
 
 };
 
@@ -91,4 +109,4 @@ class OPENFLUID_API AttributesDescriptor
 } } // namespaces
 
 
-#endif /* __OPENFLUID_FLUIDX_ATTRIBUTESDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_ATTRIBUTESTABLEDESCRIPTOR_HPP__ */

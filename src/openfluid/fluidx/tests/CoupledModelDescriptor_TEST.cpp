@@ -29,28 +29,27 @@
   
 */
 
-/**
-  @file AdvancedModelDescriptor_TEST.cpp
 
-  @author Aline LIBRES <aline.libres@gmail.com>
-  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+/**
+  @file CoupledModelDescriptor_TEST.cpp
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_AdvancedModelDescriptor
+#define BOOST_TEST_MODULE unittest_coupledmodeldescriptor
 
 
 #include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
 
-#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/fluidx/WareDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
 
 #include "tests-config.hpp"
@@ -60,31 +59,36 @@
 // =====================================================================
 
 
-class AdvancedModelDescriptorSub: public openfluid::fluidx::AdvancedModelDescriptor
+BOOST_AUTO_TEST_CASE(check_construction)
 {
-  public:
+  openfluid::fluidx::SimulatorDescriptor SimDesc("test.id");
 
-    AdvancedModelDescriptorSub(
-        openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
-        openfluid::fluidx::AdvancedModelDescriptor(ModelDesc)
-    {
+  BOOST_REQUIRE_EQUAL(SimDesc.getID(),"test.id");
+  BOOST_REQUIRE_EQUAL(SimDesc.isType(openfluid::ware::WareType::SIMULATOR),true);
+  BOOST_REQUIRE_EQUAL(SimDesc.getParameters().size(),0);
 
-    }
-};
+  openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",
+                                                  openfluid::fluidx::GeneratorDescriptor::Fixed);
 
+  BOOST_REQUIRE_EQUAL(GenDesc1.getVariableName(),"test.var");
+  BOOST_REQUIRE_EQUAL(GenDesc1.getUnitsClass(),"test.unitclass");
+  BOOST_REQUIRE_EQUAL(GenDesc1.getGeneratorMethod(),openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_REQUIRE_EQUAL(GenDesc1.getVariableSize(),1);
+  BOOST_REQUIRE_EQUAL(GenDesc1.getParameters().size(),0);
 
-// =====================================================================
-// =====================================================================
+  openfluid::fluidx::GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",
+                                                  openfluid::fluidx::GeneratorDescriptor::Interp,13);
 
+  BOOST_REQUIRE_EQUAL(GenDesc2.getVariableName(),"test.var2");
+  BOOST_REQUIRE_EQUAL(GenDesc2.getUnitsClass(),"test.unitclass2");
+  BOOST_REQUIRE_EQUAL(GenDesc2.getGeneratorMethod(),openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_REQUIRE_EQUAL(GenDesc2.getVariableSize(),13);
+  BOOST_REQUIRE_EQUAL(GenDesc2.getParameters().size(),0);
 
-BOOST_AUTO_TEST_CASE(check_duplicates)
-{
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
-  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+  openfluid::fluidx::CoupledModelDescriptor ModelDesc;
 
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
+  BOOST_REQUIRE_EQUAL(ModelDesc.items().size(),0);
 
-  BOOST_CHECK_NO_THROW(openfluid::fluidx::AdvancedModelDescriptor(FXDesc.modelDescriptor()));
 }
 
 
@@ -92,19 +96,86 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_construction)
+BOOST_AUTO_TEST_CASE(check_operations)
+{
+  openfluid::fluidx::SimulatorDescriptor SimDesc("test.id");
+  SimDesc.setParameter("param1",std::string("var1"));
+  SimDesc.setParameter("param2",std::string("var2"));
+  SimDesc.setParameter("param3",std::string("var3"));
+  SimDesc.setParameter("param2",std::string("var22"));
+
+  openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",
+                                                  openfluid::fluidx::GeneratorDescriptor::Fixed,7);
+  GenDesc1.setParameter("fixedvalue",std::string("20.5"));
+
+  openfluid::fluidx::GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",
+                                                  openfluid::fluidx::GeneratorDescriptor::Interp);
+  GenDesc2.setParameter("sources",std::string("datasources.xml"));
+  GenDesc2.setParameter("distribution",std::string("distribution.dat"));
+
+  openfluid::fluidx::CoupledModelDescriptor ModelDesc;
+
+  ModelDesc.appendItem(&GenDesc1);
+  ModelDesc.appendItem(&SimDesc);
+  ModelDesc.appendItem(&GenDesc2);
+
+  BOOST_REQUIRE_EQUAL(ModelDesc.items().size(),3);
+
+  openfluid::fluidx::CoupledModelDescriptor::SetDescription_t ModelItems;
+
+  ModelItems = ModelDesc.items();
+
+  BOOST_REQUIRE_EQUAL(ModelItems.size(),3);
+
+  openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::iterator it;
+
+
+  it = ModelItems.begin();
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::GENERATOR),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),"test.var");
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(),"test.unitclass");
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
+                      openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(),7);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->isScalarVariable(),false);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->isVectorVariable(),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),1);
+
+  it++;
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::SIMULATOR),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID(),"test.id");
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),3);
+
+  it++;
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::GENERATOR),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),"test.var2");
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(),"test.unitclass2");
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
+                      openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(),1);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->isScalarVariable(),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->isVectorVariable(),false);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),2);
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_construction_from_dataset)
 {
   std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 
-  AdvancedModelDescriptorSub Model(FXDesc.modelDescriptor());
+  openfluid::fluidx::CoupledModelDescriptor Model(FXDesc.model());
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 
-  const std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
-      Model.items();
+  const openfluid::fluidx::CoupledModelDescriptor::SetDescription_t Items =  Model.items();
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin();
@@ -154,19 +225,18 @@ BOOST_AUTO_TEST_CASE(check_construction)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_operations)
+BOOST_AUTO_TEST_CASE(check_advanced_operations)
 {
   std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 
-  AdvancedModelDescriptorSub Model(FXDesc.modelDescriptor());
+  openfluid::fluidx::CoupledModelDescriptor Model = FXDesc.model();
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 
-  const std::list<openfluid::fluidx::ModelItemDescriptor*>* Items =
-      &(Model.items());
+  const openfluid::fluidx::CoupledModelDescriptor::SetDescription_t* Items = &(Model.items());
 
   // appendItem
   openfluid::fluidx::SimulatorDescriptor AppItem("appended.item");

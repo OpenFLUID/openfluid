@@ -156,7 +156,7 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
           OPENFLUID_RaiseError("incorrect OPENFLUID_IsAttributeExist (indataDouble)");
 
         if (!OPENFLUID_IsAttributeExist(TU,"indataVector"))
-          OPENFLUID_RaiseError("incorrect OPENFLUID_IsAttributeExist (indataDouble)");
+          OPENFLUID_RaiseError("incorrect OPENFLUID_IsAttributeExist (indataVector)");
 
         VarDoubleVal.set(0.0);
         OPENFLUID_GetAttribute(TU,"indataDouble",VarDoubleVal);

@@ -365,7 +365,7 @@ void CSVObsParamsWidget::addSet()
   for (auto& Format : m_Formats)
     FormatNames << QString::fromStdString(Format.first);
 
-  QStringList ClassNames = openfluid::tools::toQStringList(mp_AdvancedDesc->spatialDomain().getClassNames());
+  QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
 
   EditSetDialog AddDlg(SetNames,FormatNames,ClassNames,this);
 
@@ -405,7 +405,7 @@ void CSVObsParamsWidget::editSet()
     for (auto& Format : m_Formats)
       FormatNames << QString::fromStdString(Format.first);
 
-    QStringList ClassNames = openfluid::tools::toQStringList(mp_AdvancedDesc->spatialDomain().getClassNames());
+    QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
 
     EditSetDialog EditDlg(SetNames,FormatNames,ClassNames,this);
 
@@ -472,7 +472,7 @@ void CSVObsParamsWidget::generateAutomaticFormatAndSets()
     mp_Params->insert({"format.auto.date","ISO"});
     mp_Params->insert({"format.auto.header","colnames-as-comment"});
 
-    std::set<std::string> ClassNames = mp_AdvancedDesc->spatialDomain().getClassNames();
+    std::set<std::string> ClassNames = mp_Desc->spatialDomain().getClassNames();
 
     for (auto& CName : ClassNames)
     {

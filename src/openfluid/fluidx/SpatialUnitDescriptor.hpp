@@ -43,6 +43,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/fluidx/EventDescriptor.hpp>
 
 
 namespace openfluid { namespace fluidx {
@@ -53,10 +54,19 @@ class OPENFLUID_API SpatialUnitDescriptor
   private:
 
     openfluid::core::UnitID_t m_UnitID;
+
     openfluid::core::UnitsClass_t m_UnitsClass;
+
     openfluid::core::PcsOrd_t m_PcsOrder;
+
     std::list<openfluid::core::UnitClassID_t> m_ToUnits;
+
     std::list<openfluid::core::UnitClassID_t> m_ParentUnits;
+
+    std::map<openfluid::core::AttributeName_t,std::string> m_Attributes;
+
+    std::list<openfluid::fluidx::EventDescriptor> m_Events;
+
 
   public:
 
@@ -66,34 +76,74 @@ class OPENFLUID_API SpatialUnitDescriptor
 
 
     inline openfluid::core::UnitID_t getID() const
-    { return m_UnitID; };
+    {
+      return m_UnitID;
+    };
 
     inline void setID(openfluid::core::UnitID_t ID)
-    { m_UnitID = ID; };
+    {
+      m_UnitID = ID;
+    };
 
     inline const openfluid::core::UnitsClass_t getUnitsClass() const
-    { return m_UnitsClass; };
+    {
+      return m_UnitsClass;
+    };
 
     inline void setUnitsClass(const openfluid::core::UnitsClass_t& UClass)
-    { m_UnitsClass = UClass; };
+    {
+      m_UnitsClass = UClass;
+    };
 
     inline openfluid::core::PcsOrd_t getProcessOrder() const
-    { return m_PcsOrder; };
+    {
+      return m_PcsOrder;
+    };
 
     inline void setProcessOrder(openfluid::core::PcsOrd_t Order)
-    { m_PcsOrder = Order; };
+    {
+      m_PcsOrder = Order;
+    };
 
     inline std::list<openfluid::core::UnitClassID_t>& toSpatialUnits()
-    { return m_ToUnits; };
+    {
+      return m_ToUnits;
+    };
 
     inline const std::list<openfluid::core::UnitClassID_t>& toSpatialUnits() const
-    { return m_ToUnits; };
+    {
+      return m_ToUnits;
+    };
 
     inline std::list<openfluid::core::UnitClassID_t>& parentSpatialUnits()
-    { return m_ParentUnits; };
+    {
+      return m_ParentUnits;
+    };
 
     inline const std::list<openfluid::core::UnitClassID_t>& parentSpatialUnits() const
-    { return m_ParentUnits; };
+    {
+      return m_ParentUnits;
+    };
+
+    inline std::map<openfluid::core::AttributeName_t,std::string>& attributes()
+    {
+      return m_Attributes;
+    };
+
+    inline const std::map<openfluid::core::AttributeName_t,std::string>& attributes() const
+    {
+      return m_Attributes;
+    };
+
+    inline const std::list<openfluid::fluidx::EventDescriptor>& events() const
+    {
+      return m_Events;
+    };
+
+    inline std::list<openfluid::fluidx::EventDescriptor>& events()
+    {
+      return m_Events;
+    };
 };
 
 

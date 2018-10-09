@@ -57,7 +57,7 @@ ProjectCentral* ProjectCentral::mp_Instance = nullptr;
 
 
 ProjectCentral::ProjectCentral(const QString& PrjPath):
-  mp_FXDesc(nullptr),mp_AdvancedFXDesc(nullptr)
+  mp_FXDesc(nullptr)
 {
   mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(&m_IOListener);
 
@@ -77,17 +77,6 @@ ProjectCentral::ProjectCentral(const QString& PrjPath):
       deleteData();
       throw;
     }
-  }
-
-  try
-  {
-    mp_AdvancedFXDesc = new openfluid::fluidx::AdvancedFluidXDescriptor(*mp_FXDesc);
-  }
-  catch (openfluid::base::Exception& E)
-  {
-    //because we're in a constructor catch, so destructor is not called
-    deleteData();
-    throw;
   }
 
   // initialization of models for completion
@@ -114,7 +103,9 @@ ProjectCentral::~ProjectCentral()
 ProjectCentral* ProjectCentral::initInstance(const QString& PrjPath)
 {
   if (!mp_Instance)
+  {
     mp_Instance = new ProjectCentral(PrjPath);
+  }
 
   return mp_Instance;
 }
@@ -171,12 +162,6 @@ QStringList ProjectCentral::convertUpdatedUnitsClassesToQStringList(
 
 void ProjectCentral::deleteData()
 {
-  if (mp_AdvancedFXDesc)
-  {
-    delete mp_AdvancedFXDesc;
-    mp_AdvancedFXDesc = nullptr;
-  }
-
   if (mp_FXDesc)
   {
     delete mp_FXDesc;
@@ -286,7 +271,7 @@ void ProjectCentral::check()
 {
   m_CheckInfos.clear();
 
-  if (!mp_FXDesc->modelDescriptor().items().empty())
+  if (!mp_FXDesc->model().items().empty())
   {
     checkModel();
   }
@@ -300,7 +285,7 @@ void ProjectCentral::check()
 
   checkDatastore();
 
-  if (!mp_FXDesc->monitoringDescriptor().items().empty())
+  if (!mp_FXDesc->monitoring().items().empty())
   {
     checkMonitoring();
   }
@@ -373,8 +358,8 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
 bool ProjectCentral::isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
                                 const std::string& ParamName)
 {
-  return (!Item->getParameters()[ParamName].get().empty()
-      || !mp_AdvancedFXDesc->model().getGlobalParameters()[ParamName].get().empty());
+  return (!Item->getParameters()[ParamName].get().empty() ||
+          !mp_FXDesc->model().getGlobalParameters()[ParamName].get().empty());
 }
 
 
@@ -390,8 +375,8 @@ bool ProjectCentral::isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Ite
 
   double d;
 
-  return (Item->getParameters()[ParamName].toDouble(d)
-      || mp_AdvancedFXDesc->model().getGlobalParameters()[ParamName].toDouble(d));
+  return (Item->getParameters()[ParamName].toDouble(d) ||
+          mp_FXDesc->model().getGlobalParameters()[ParamName].toDouble(d));
 }
 
 
@@ -417,7 +402,7 @@ double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* 
   if (Item->getParameters()[ParamName].toDouble(d))
     return d;
 
-  mp_AdvancedFXDesc->model().getGlobalParameters()[ParamName].toDouble(d);
+  mp_FXDesc->model().getGlobalParameters()[ParamName].toDouble(d);
 
   return d;
 }
@@ -429,8 +414,8 @@ double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* 
 
 void ProjectCentral::checkModel()
 {
-  openfluid::fluidx::AdvancedModelDescriptor& Model = mp_AdvancedFXDesc->model();
-  openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_AdvancedFXDesc->spatialDomain();
+  openfluid::fluidx::CoupledModelDescriptor& Model = mp_FXDesc->model();
+  openfluid::fluidx::SpatialDomainDescriptor& Domain = mp_FXDesc->spatialDomain();
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = Model.items();
 
@@ -902,7 +887,7 @@ void ProjectCentral::checkModel()
 void ProjectCentral::checkSpatialDomain()
 {
   // Build list of units classes
-  m_UnitsClassesList = openfluid::tools::toQStringList(mp_AdvancedFXDesc->spatialDomain().getClassNames());
+  m_UnitsClassesList = openfluid::tools::toQStringList(mp_FXDesc->spatialDomain().getClassNames());
 
 
   // Build list of attributes by units class
@@ -910,7 +895,7 @@ void ProjectCentral::checkSpatialDomain()
   for (const auto& UClass : m_UnitsClassesList)
   {
     m_AttributesLists[UClass] =
-      openfluid::tools::toQStringList(mp_AdvancedFXDesc->spatialDomain().getAttributesNames(UClass.toStdString()));
+      openfluid::tools::toQStringList(mp_FXDesc->spatialDomain().getAttributesNames(UClass.toStdString()));
     m_AttributesLists[UClass].sort();
   }
 }
@@ -922,9 +907,9 @@ void ProjectCentral::checkSpatialDomain()
 
 void ProjectCentral::checkDatastore()
 {
-  std::set<std::string> Classes = mp_AdvancedFXDesc->spatialDomain().getClassNames();
+  std::set<std::string> Classes = mp_FXDesc->spatialDomain().getClassNames();
 
-  const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items = mp_AdvancedFXDesc->datastore().items();
+  const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items = mp_FXDesc->datastore().items();
 
   for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator itDatastore = Items.begin();
        itDatastore != Items.end(); ++itDatastore)
@@ -950,7 +935,7 @@ void ProjectCentral::checkDatastore()
 
 void ProjectCentral::checkMonitoring()
 {
-  openfluid::fluidx::AdvancedMonitoringDescriptor& Monitoring = mp_AdvancedFXDesc->monitoring();
+  openfluid::fluidx::MonitoringDescriptor& Monitoring = mp_FXDesc->monitoring();
   const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = Monitoring.items();
 
   openfluid::machine::ObserverSignatureRegistry* Reg = openfluid::machine::ObserverSignatureRegistry::instance();

@@ -83,7 +83,7 @@ class OutputsWidget : public WorkspaceWidget
 
   public:
 
-    OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    OutputsWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     virtual ~OutputsWidget();
 

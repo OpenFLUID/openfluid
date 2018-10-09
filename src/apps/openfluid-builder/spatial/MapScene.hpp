@@ -44,7 +44,7 @@
 #include <QGraphicsScene>
 
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <openfluid/core/Datastore.hpp>
 
 #include "MapItemGraphics.hpp"
@@ -56,11 +56,11 @@ class MapScene : public QGraphicsScene
 
   private:
 
-    const openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
+    const openfluid::fluidx::SpatialDomainDescriptor& m_Domain;
 
     openfluid::core::Datastore m_LocalDatastore;
 
-    QMap<std::string,QList<MapItemGraphics*> > m_MapItems;
+    QMap<std::string,QList<MapItemGraphics*>> m_MapItems;
 
     QList<MapItemGraphics*>* m_ActiveLayer;
 
@@ -74,7 +74,7 @@ class MapScene : public QGraphicsScene
 
   public:
 
-    MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
+    MapScene(const openfluid::fluidx::SpatialDomainDescriptor& Domain,
              QObject* Parent = nullptr);
 
     void addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,

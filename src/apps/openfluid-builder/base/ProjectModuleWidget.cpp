@@ -144,32 +144,32 @@ ProjectModuleWidget::ProjectModuleWidget(const QString& ProjectPath, QWidget* Pa
   resetInputDirWatcher();
 
 
-  mp_ModelTab = new ModelWidget(this,mp_ProjectCentral->advancedDescriptors());
+  mp_ModelTab = new ModelWidget(this,mp_ProjectCentral->descriptors());
   connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
   connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::WareType,bool)),
           this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::WareType,bool)));
   connect(mp_ModelTab,SIGNAL(srcGenerateAsked(const QString&)),this,SLOT(whenSrcGenerateAsked(const QString&)));
 
-  mp_SpatialTab = new SpatialDomainWidget(this,mp_ProjectCentral->advancedDescriptors());
+  mp_SpatialTab = new SpatialDomainWidget(this,mp_ProjectCentral->descriptors());
   connect(mp_SpatialTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
-  mp_DatastoreTab = new DatastoreWidget(this,mp_ProjectCentral->advancedDescriptors());
+  mp_DatastoreTab = new DatastoreWidget(this,mp_ProjectCentral->descriptors());
   connect(mp_DatastoreTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
-  mp_MonitoringTab = new MonitoringWidget(this,mp_ProjectCentral->advancedDescriptors());
+  mp_MonitoringTab = new MonitoringWidget(this,mp_ProjectCentral->descriptors());
   connect(mp_MonitoringTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
   connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::WareType,bool)),
           this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::WareType,bool)));
 
-  mp_RunConfigTab = new RunConfigurationWidget(this,mp_ProjectCentral->advancedDescriptors());
+  mp_RunConfigTab = new RunConfigurationWidget(this,mp_ProjectCentral->descriptors());
   connect(mp_RunConfigTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
-  mp_OutputsTab = new OutputsWidget(this,mp_ProjectCentral->advancedDescriptors());
+  mp_OutputsTab = new OutputsWidget(this,mp_ProjectCentral->descriptors());
 
 
   addWorkspaceTab(mp_ModelTab,tr("Model"));
@@ -568,7 +568,7 @@ void ProjectModuleWidget::whenExtensionAsked(const QString& ID)
 
         // TODO set correct extension configuration
         ExtModal->setConfiguration(openfluid::ware::WareParams_t());
-        ExtModal->setFluidXDescriptor(&(mp_ProjectCentral->advancedDescriptors()));
+        ExtModal->setFluidXDescriptor(&(mp_ProjectCentral->descriptors()));
 
         connect(ExtModal,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));
@@ -595,7 +595,7 @@ void ProjectModuleWidget::whenExtensionAsked(const QString& ID)
 
         // TODO set correct extension configuration
         ExtModeless->setConfiguration(openfluid::ware::WareParams_t());
-        ExtModeless->setFluidXDescriptor(&(mp_ProjectCentral->advancedDescriptors()));
+        ExtModeless->setFluidXDescriptor(&(mp_ProjectCentral->descriptors()));
 
         connect(ExtModeless,SIGNAL(finished(int)),this, SLOT(releaseModelessExtension()));
         connect(ExtModeless,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
@@ -623,7 +623,7 @@ void ProjectModuleWidget::whenExtensionAsked(const QString& ID)
         // TODO set correct extension configuration
 
         ExtWork->setConfiguration(openfluid::ware::WareParams_t());
-        ExtWork->setFluidXDescriptor(&(mp_ProjectCentral->advancedDescriptors()));
+        ExtWork->setFluidXDescriptor(&(mp_ProjectCentral->descriptors()));
 
         connect(ExtWork,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));

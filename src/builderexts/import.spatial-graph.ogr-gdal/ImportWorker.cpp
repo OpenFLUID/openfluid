@@ -49,9 +49,9 @@
 
 
 ImportWorker::ImportWorker(const SourcesInfosList_t& SourcesInfos,
-                           openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc,
+                           openfluid::fluidx::FluidXDescriptor* Desc,
                            const QString& InputDir):
-  DataProcessingWorker(SourcesInfos,AdvDesc), m_InputDir(InputDir)
+  DataProcessingWorker(SourcesInfos,Desc), m_InputDir(InputDir)
 {
 
 }
@@ -84,13 +84,13 @@ bool ImportWorker::importLayer(int Step,int Index)
   {
     It.next();
 
-    openfluid::fluidx::SpatialUnitDescriptor* UDesc = new openfluid::fluidx::SpatialUnitDescriptor();
+    openfluid::fluidx::SpatialUnitDescriptor UDesc = openfluid::fluidx::SpatialUnitDescriptor();
 
-    UDesc->setUnitsClass(UnitsClass.toStdString());
-    UDesc->setID(It.key());
-    UDesc->setProcessOrder(It.value().ProcessOrder);
+    UDesc.setUnitsClass(UnitsClass.toStdString());
+    UDesc.setID(It.key());
+    UDesc.setProcessOrder(It.value().ProcessOrder);
 
-    mp_AdvDesc->spatialDomain().addUnit(UDesc);
+    mp_Desc->spatialDomain().addUnit(UDesc);
 
 
     QMapIterator<QString,QString> AttrsIt(It.value().Attributes);
@@ -101,8 +101,8 @@ bool ImportWorker::importLayer(int Step,int Index)
       while (AttrsIt.hasNext())
       {
         AttrsIt.next();
-        mp_AdvDesc->spatialDomain().addAttribute(UnitsClass.toStdString(),
-                                             AttrsIt.key().toStdString(),"-");
+        mp_Desc->spatialDomain().addAttribute(UnitsClass.toStdString(),
+                                              AttrsIt.key().toStdString(),"-");
       }
 
       AttrsIt.toFront();
@@ -114,9 +114,8 @@ bool ImportWorker::importLayer(int Step,int Index)
     {
       AttrsIt.next();
 
-      mp_AdvDesc->spatialDomain().attribute(UnitsClass.toStdString(),
-                                            It.key(),
-                                            AttrsIt.key().toStdString()) = AttrsIt.value().toStdString();
+      mp_Desc->spatialDomain().setAttribute(UnitsClass.toStdString(),It.key(),
+                                            AttrsIt.key().toStdString(),AttrsIt.value().toStdString());
     }
 
   }
@@ -149,7 +148,7 @@ bool ImportWorker::buildConnections(int Step)
       // "to" connections
       for (int j=0;j<It.value().ToConn.size();j++)
       {
-        mp_AdvDesc->spatialDomain().addFromToRelation(std::make_pair(m_SourcesInfos[i].UnitsClass.toStdString(),
+        mp_Desc->spatialDomain().addFromToRelation(std::make_pair(m_SourcesInfos[i].UnitsClass.toStdString(),
                                                                  It.key()),
                                                   std::make_pair(It.value().ToConn[j].DestClass.toStdString(),
                                                                  It.value().ToConn[j].DestID));
@@ -158,7 +157,7 @@ bool ImportWorker::buildConnections(int Step)
       // "childof" connections
       for (int j=0;j<It.value().ChildofConn.size();j++)
       {
-        mp_AdvDesc->spatialDomain().addParentChildRelation(
+        mp_Desc->spatialDomain().addParentChildRelation(
             std::make_pair(It.value().ChildofConn[j].DestClass.toStdString(),
                            It.value().ChildofConn[j].DestID),
             std::make_pair(m_SourcesInfos[i].UnitsClass.toStdString(),It.key()));
@@ -244,7 +243,7 @@ bool ImportWorker::processFilesAndDatastore(int Step)
                                                          openfluid::core::UnstructuredValue::GeoVectorValue);
       DSItem->setUnitsClass(m_SourcesInfos[i].UnitsClass.toStdString());
 
-      mp_AdvDesc->datastore().appendItem(DSItem);
+      mp_Desc->datastore().appendItem(DSItem);
     }
 
     i++;

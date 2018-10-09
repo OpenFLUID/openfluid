@@ -44,7 +44,6 @@
 #include <QStringListModel>
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/base/IOListener.hpp>
 
@@ -60,8 +59,6 @@ class ProjectCentral : QObject
     static ProjectCentral* mp_Instance;
 
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
-
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedFXDesc;
 
     ProjectCheckInfos m_CheckInfos;
 
@@ -153,22 +150,34 @@ class ProjectCentral : QObject
     bool saveAs(const QString& NewPrjName, const QString& NewPrjPath);
 
     const ProjectCheckInfos* checkInfos() const
-    {  return &m_CheckInfos; }
+    {
+      return &m_CheckInfos;
+    }
 
-    openfluid::fluidx::AdvancedFluidXDescriptor& advancedDescriptors()
-    { return *mp_AdvancedFXDesc; }
+    openfluid::fluidx::FluidXDescriptor& descriptors()
+    {
+      return *mp_FXDesc;
+    }
 
-    const openfluid::fluidx::AdvancedFluidXDescriptor& advancedDescriptors() const
-    { return *mp_AdvancedFXDesc; }
+    const openfluid::fluidx::FluidXDescriptor& descriptors() const
+    {
+      return *mp_FXDesc;
+    }
 
     const QStringList& simulatorsIDsList() const
-    { return m_SimulatorsIDsList; }
+    {
+      return m_SimulatorsIDsList;
+    }
 
     const QStringList& observersIDsList() const
-    { return m_ObserversIDsList; }
+    {
+      return m_ObserversIDsList;
+    }
 
     const QMap<QString,QStringList>& simulatorsParamsLists() const
-    { return m_SimulatorsParamsLists; }
+    {
+      return m_SimulatorsParamsLists;
+    }
 
     /**
       Returns a list of all parameters for simulators involved in the model, sorted without duplicate
@@ -176,7 +185,9 @@ class ProjectCentral : QObject
     QStringList getSimulatorsParamsList() const;
 
     const QMap<QString,QStringList>& variablesNamesLists() const
-    { return m_VariablesNamesLists; }
+    {
+      return m_VariablesNamesLists;
+    }
 
     /**
       Returns a list of all variables names for all units class, sorted without duplicate
@@ -184,10 +195,14 @@ class ProjectCentral : QObject
     QStringList getVariablesNamesList() const;
 
     const QStringList& unitsClassesList() const
-    { return m_UnitsClassesList; }
+    {
+      return m_UnitsClassesList;
+    }
 
     const QMap<QString,QStringList>& attributesLists() const
-    { return m_AttributesLists; }
+    {
+      return m_AttributesLists;
+    }
 
     /**
       Returns a list of all attributes for all units class, sorted without duplicate
@@ -200,7 +215,9 @@ class ProjectCentral : QObject
     QStringList getAllNamesList() const;
 
     QStringListModel* allNamesListModel() const
-    { return mp_AllNamesListModel; }
+    {
+      return mp_AllNamesListModel;
+    }
 
 };
 

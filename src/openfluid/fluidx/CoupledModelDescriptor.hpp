@@ -41,15 +41,23 @@
 #define __OPENFLUID_FLUIDX_COUPLEDMODELDESCRIPTOR_HPP__
 
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace fluidx {
 
 
-typedef WareSetDescriptor<ModelItemDescriptor> CoupledModelDescriptor;
+class OPENFLUID_API CoupledModelDescriptor : public WareSetDescriptor<ModelItemDescriptor>
+{
+
+  public :
+
+    openfluid::ware::WareID_t getID(ModelItemDescriptor* Item) const;
+
+    void getItemsCountByType(unsigned int& SimCount, unsigned int& GenCount) const;
+};
 
 
 } } // namespaces

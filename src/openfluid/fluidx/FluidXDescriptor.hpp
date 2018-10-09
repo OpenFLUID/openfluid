@@ -33,9 +33,9 @@
 /**
   @file FluidXDescriptor.hpp
 
-  @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- */
+  @author Aline LIBRES <aline.libres@gmail.com>
+*/
 
 
 #ifndef __OPENFLUID_FLUIDX_FLUIDXDESCRIPTOR_HPP__
@@ -44,12 +44,13 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
-#include <openfluid/fluidx/RunDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/dllexport.hpp>
+#include <openfluid/fluidx/RunConfigurationDescriptor.hpp>
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
+#include <openfluid/fluidx/AttributesTableDescriptor.hpp>
 
 
 class QDomElement;
@@ -70,11 +71,26 @@ class OPENFLUID_API FluidXDescriptor
 {
   private:
 
+    typedef std::list<SpatialUnitDescriptor> SpatialUnitsList_t;
+
+    typedef std::list<AttributesTableDescriptor> AttributesTableList_t;
+
+    typedef std::list<EventDescriptor> EventsList_t;
+
+    struct LoadingTempData
+    {
+      SpatialUnitsList_t SpatiaUnits;
+
+      AttributesTableList_t Attributes;
+
+      EventsList_t Events;
+    };
+
     openfluid::fluidx::CoupledModelDescriptor m_ModelDescriptor;
 
     openfluid::fluidx::SpatialDomainDescriptor m_DomainDescriptor;
 
-    openfluid::fluidx::RunDescriptor m_RunDescriptor;
+    openfluid::fluidx::RunConfigurationDescriptor m_RunDescriptor;
 
     openfluid::fluidx::DatastoreDescriptor m_DatastoreDescriptor;
 
@@ -92,6 +108,8 @@ class OPENFLUID_API FluidXDescriptor
 
     openfluid::base::IOListener* mp_Listener;
 
+    template<class T> std::string getSeparatedStrFromList(const T& Data,const std::string& Sep);
+
     bool extractWareEnabledFromNode(QDomElement& Node);
 
     void extractMonitoringFromNode(QDomElement& Node);
@@ -105,19 +123,21 @@ class OPENFLUID_API FluidXDescriptor
 
     void extractRunFromNode(QDomElement& Node);
 
-    void extractDomainFomNode(QDomElement& Node);
+    void extractDomainFomNode(QDomElement& Node, LoadingTempData& TempData);
 
     openfluid::core::UnitClassID_t extractUnitClassIDFromNode(QDomElement& Node);
 
-    void extractDomainDefinitionFromNode(QDomElement& Node);
+    SpatialUnitsList_t extractDomainDefinitionFromNode(QDomElement& Node);
 
-    void extractDomainAttributesFromNode(QDomElement& Node);
+    AttributesTableDescriptor extractDomainAttributesFromNode(QDomElement& Node);
 
-    void extractDomainCalendarFromNode(QDomElement& Node);
+    EventsList_t extractDomainCalendarFromNode(QDomElement& Node);
 
     void extractDatastoreFromNode(QDomElement& Node);
 
-    void parseFile(std::string Filename);
+    void parseFile(const std::string& Filename, LoadingTempData& TempData);
+
+    void rebuildSpatialDomainFromTemp(LoadingTempData& TempData);
 
     void prepareFluidXDir(const std::string& DirPath);
 
@@ -150,35 +170,55 @@ class OPENFLUID_API FluidXDescriptor
 
     void loadFromDirectory(const std::string& DirPath);
 
-    inline openfluid::fluidx::CoupledModelDescriptor& modelDescriptor()
-    { return m_ModelDescriptor; }
+    inline openfluid::fluidx::CoupledModelDescriptor& model()
+    {
+      return m_ModelDescriptor;
+    }
 
-    inline openfluid::fluidx::SpatialDomainDescriptor& spatialDomainDescriptor()
-    { return m_DomainDescriptor; }
+    inline const openfluid::fluidx::CoupledModelDescriptor& model() const
+    {
+      return m_ModelDescriptor;
+    }
 
-    inline openfluid::fluidx::RunDescriptor& runDescriptor()
-    { return m_RunDescriptor; }
+    inline openfluid::fluidx::SpatialDomainDescriptor& spatialDomain()
+    {
+      return m_DomainDescriptor;
+    }
 
-    inline openfluid::fluidx::DatastoreDescriptor& datastoreDescriptor()
-    { return m_DatastoreDescriptor; }
+    inline const openfluid::fluidx::SpatialDomainDescriptor& spatialDomain() const
+    {
+      return m_DomainDescriptor;
+    }
 
-    inline openfluid::fluidx::MonitoringDescriptor& monitoringDescriptor()
-    { return m_MonitoringDescriptor; }
+    inline openfluid::fluidx::RunConfigurationDescriptor& runConfiguration()
+    {
+      return m_RunDescriptor;
+    }
 
-    inline const openfluid::fluidx::CoupledModelDescriptor& modelDescriptor() const
-    { return m_ModelDescriptor; }
+    inline const openfluid::fluidx::RunConfigurationDescriptor& runConfiguration() const
+    {
+      return m_RunDescriptor;
+    }
 
-    inline const openfluid::fluidx::SpatialDomainDescriptor& spatialDomainDescriptor() const
-    { return m_DomainDescriptor; }
+    inline openfluid::fluidx::DatastoreDescriptor& datastore()
+    {
+      return m_DatastoreDescriptor;
+    }
 
-    inline const openfluid::fluidx::RunDescriptor& runDescriptor() const
-    { return m_RunDescriptor; }
+    inline const openfluid::fluidx::DatastoreDescriptor& datastore() const
+    {
+      return m_DatastoreDescriptor;
+    }
 
-    inline const openfluid::fluidx::DatastoreDescriptor& datastoreDescriptor() const
-    { return m_DatastoreDescriptor; }
+    inline openfluid::fluidx::MonitoringDescriptor& monitoring()
+    {
+      return m_MonitoringDescriptor;
+    }
 
-    inline const openfluid::fluidx::MonitoringDescriptor& monitoringDescriptor() const
-    { return m_MonitoringDescriptor; }
+    inline const openfluid::fluidx::MonitoringDescriptor& monitoring() const
+    {
+      return m_MonitoringDescriptor;
+    }
 
     void writeToManyFiles(const std::string& DirPath);
 

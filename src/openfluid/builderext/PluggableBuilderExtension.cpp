@@ -38,5 +38,5 @@
 
 
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 

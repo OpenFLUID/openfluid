@@ -312,7 +312,7 @@ void OGRGDALImportExtension::proceedToImport()
 
 
   QThread* WThread = new QThread;
-  ImportWorker* Worker = new ImportWorker(m_SourcesInfos,mp_AdvancedDesc,m_InputDir);
+  ImportWorker* Worker = new ImportWorker(m_SourcesInfos,mp_Desc,m_InputDir);
   Worker->moveToThread(WThread);
 
   connect(Worker, SIGNAL(stepEntered(QString)), mp_PrecheckImportDlg, SLOT(handleStepEntered(QString)));
@@ -534,7 +534,7 @@ void OGRGDALImportExtension::runPrecheck()
 
 
   QThread* WThread = new QThread;
-  PrecheckWorker* Worker = new PrecheckWorker(m_SourcesInfos,mp_AdvancedDesc);
+  PrecheckWorker* Worker = new PrecheckWorker(m_SourcesInfos,mp_Desc);
   Worker->moveToThread(WThread);
 
 

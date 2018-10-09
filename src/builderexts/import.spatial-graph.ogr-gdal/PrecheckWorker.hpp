@@ -56,7 +56,7 @@ class PrecheckWorker : public DataProcessingWorker
   public:
 
     PrecheckWorker(const SourcesInfosList_t& SourcesInfos,
-                   openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc);
+                   openfluid::fluidx::FluidXDescriptor* AdvDesc);
 
     ~PrecheckWorker();
 

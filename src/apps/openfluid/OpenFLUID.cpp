@@ -639,7 +639,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Building model...";
   std::cout.flush();
-  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.modelDescriptor(),
+  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.model(),
                                                                 Model);
   openfluid::tools::Console::setOKColor();
   std::cout << " [OK]";
@@ -648,7 +648,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Building monitoring...";
   std::cout.flush();
-  openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoringDescriptor(),
+  openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoring(),
                                                                      Monitoring);
   openfluid::tools::Console::setOKColor();
   std::cout << " [OK]";

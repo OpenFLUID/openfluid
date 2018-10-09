@@ -53,7 +53,7 @@ namespace Ui
 }
 
 
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
 
 
@@ -74,13 +74,13 @@ class AddConnectionDialog : public openfluid::ui::common::MessageDialog
 
     QMap<QString,QStringList> m_ClassID;
 
-    const openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
+    const openfluid::fluidx::SpatialDomainDescriptor* mp_Domain;
 
 
   public:
 
     AddConnectionDialog(const QString& SrcClass, const QString& SrcID,
-                        const openfluid::fluidx::AdvancedDomainDescriptor* Domain,
+                        const openfluid::fluidx::SpatialDomainDescriptor* Domain,
                         QWidget* Parent = nullptr);
 
     ~AddConnectionDialog();

@@ -31,20 +31,20 @@
 
 
 /**
-  @file AttributesDescriptor.cpp
+  @file AttributesTableDescriptor.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#include <openfluid/fluidx/AttributesDescriptor.hpp>
+#include <openfluid/fluidx/AttributesTableDescriptor.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
 
 
 namespace openfluid { namespace fluidx {
 
 
-AttributesDescriptor::AttributesDescriptor() :
+AttributesTableDescriptor::AttributesTableDescriptor() :
   m_UnitsClass("")
 {
 
@@ -55,7 +55,7 @@ AttributesDescriptor::AttributesDescriptor() :
 // =====================================================================
 
 
-AttributesDescriptor::~AttributesDescriptor()
+AttributesTableDescriptor::~AttributesTableDescriptor()
 {
 
 }
@@ -65,7 +65,7 @@ AttributesDescriptor::~AttributesDescriptor()
 // =====================================================================
 
 
-void AttributesDescriptor::parseDataBlob(const std::string& Data)
+void AttributesTableDescriptor::parseDataBlob(const std::string& Data)
 {
   m_Data.clear();
 

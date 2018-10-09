@@ -29,34 +29,26 @@
   
 */
 
+
 /**
-  @file AdvancedMonitoringDescriptor.cpp
+  @file RunConfigurationDescriptor.cpp
 
-  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
-  @author Aline LIBRES <aline.libres@gmail.com>
-*/
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+ */
 
 
-#include <set>
+#include <openfluid/fluidx/RunConfigurationDescriptor.hpp>
 
-#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace fluidx {
 
 
-AdvancedMonitoringDescriptor::AdvancedMonitoringDescriptor(MonitoringDescriptor& Desc):
-  AdvancedWareSetDescriptor<MonitoringDescriptor,ObserverDescriptor>(Desc)
-{
-  check();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-AdvancedMonitoringDescriptor::~AdvancedMonitoringDescriptor()
+RunConfigurationDescriptor::RunConfigurationDescriptor():
+  m_DeltaT(-1), m_SchedConstraint(openfluid::base::SimulationStatus::SCHED_NONE),
+  m_BeginDate(openfluid::core::DateTime()), m_EndDate(openfluid::core::DateTime()),
+  m_IsUserValuesBufferSize(false), m_ValuesBufferSize(0), m_Filled(false)
 {
 
 }
@@ -66,7 +58,12 @@ AdvancedMonitoringDescriptor::~AdvancedMonitoringDescriptor()
 // =====================================================================
 
 
-void AdvancedMonitoringDescriptor::check()
+RunConfigurationDescriptor::RunConfigurationDescriptor(int DeltaT,
+                                                       openfluid::core::DateTime BeginDate,
+                                                       openfluid::core::DateTime EndDate):
+  m_DeltaT(DeltaT), m_SchedConstraint(openfluid::base::SimulationStatus::SCHED_NONE),
+  m_BeginDate(BeginDate), m_EndDate(EndDate),
+  m_IsUserValuesBufferSize(false), m_ValuesBufferSize(0), m_Filled(false)
 {
 
 }
@@ -76,10 +73,11 @@ void AdvancedMonitoringDescriptor::check()
 // =====================================================================
 
 
-openfluid::ware::WareID_t AdvancedMonitoringDescriptor::getID(ObserverDescriptor* Item) const
+RunConfigurationDescriptor::~RunConfigurationDescriptor()
 {
-  return Item->getID();
+
 }
 
 
-} } //namespaces
+} } // namespaces
+

@@ -43,8 +43,8 @@
 
 #include <QWidget>
 
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
+#include <openfluid/fluidx/DatastoreDescriptor.hpp>
 
 #include "WorkspaceWidget.hpp"
 #include "MapScene.hpp"
@@ -109,9 +109,9 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     Ui::SpatialDomainWidget* ui;
 
-    openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
+    openfluid::fluidx::SpatialDomainDescriptor& m_Domain;
 
-    openfluid::fluidx::AdvancedDatastoreDescriptor& m_Datastore;
+    openfluid::fluidx::DatastoreDescriptor& m_Datastore;
 
     QString m_ActiveClass;
 
@@ -145,7 +145,7 @@ class SpatialDomainWidget : public WorkspaceWidget
 
   public:
 
-    SpatialDomainWidget(QWidget* Parent,openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    SpatialDomainWidget(QWidget* Parent,openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     virtual ~SpatialDomainWidget();
 };

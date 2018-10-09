@@ -43,7 +43,7 @@
 
 #include <QDialog>
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 
 

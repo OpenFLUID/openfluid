@@ -41,8 +41,8 @@
 
 
 PrecheckWorker::PrecheckWorker(const SourcesInfosList_t& SourcesInfos,
-                               openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc):
-  DataProcessingWorker(SourcesInfos,AdvDesc)
+                               openfluid::fluidx::FluidXDescriptor* Desc):
+  DataProcessingWorker(SourcesInfos,Desc)
 {
 
 }

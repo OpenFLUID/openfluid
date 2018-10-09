@@ -97,17 +97,16 @@ bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
 // =====================================================================
 
 
-bool SpatialGraph::addUnit(const SpatialUnit& aUnit)
+SpatialUnit* SpatialGraph::addUnit(const SpatialUnit& aUnit)
 {
   SpatialUnit* TheUnit = m_PcsOrderedUnitsByClass[aUnit.getClass()].addSpatialUnit(aUnit);
 
   if (TheUnit != nullptr)
   {
     m_PcsOrderedUnitsGlobal.push_back(TheUnit);
-    return true;
   }
 
-  return false;
+  return TheUnit;
 }
 
 

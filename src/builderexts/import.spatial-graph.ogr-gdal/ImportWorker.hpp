@@ -73,8 +73,8 @@ class ImportWorker : public DataProcessingWorker
   public:
 
     ImportWorker(const SourcesInfosList_t& SourcesInfos,
-                   openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc,
-                   const QString& InputDir);
+                 openfluid::fluidx::FluidXDescriptor* Desc,
+                 const QString& InputDir);
 
     ~ImportWorker();
 

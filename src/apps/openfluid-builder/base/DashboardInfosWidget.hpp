@@ -41,7 +41,7 @@
 #define __OPENFLUID_BUILDERAPP_DASHBOARDINFOSWIDGET_HPP__
 
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 #include "DashboardWidget.hpp"
 
@@ -60,12 +60,12 @@ class DashboardInfosWidget : public DashboardWidget
 
     Ui::DashboardInfosWidget* ui;
 
-    const openfluid::fluidx::AdvancedFluidXDescriptor& m_AdvFluidxDesc;
+    const openfluid::fluidx::FluidXDescriptor& m_FluidxDesc;
 
 
   public:
 
-    DashboardInfosWidget(const openfluid::fluidx::AdvancedFluidXDescriptor& Desc, QWidget* Parent = nullptr);
+    DashboardInfosWidget(const openfluid::fluidx::FluidXDescriptor& Desc, QWidget* Parent = nullptr);
 
     ~DashboardInfosWidget();
 

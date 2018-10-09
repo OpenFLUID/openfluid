@@ -114,27 +114,35 @@ class OPENFLUID_API PluggableFeatureExtension : public PluggableBuilderExtension
 
   protected:
 
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
+    openfluid::fluidx::FluidXDescriptor* mp_Desc;
 
     openfluid::ware::WareParams_t m_Config;
 
 
   public:
 
-    PluggableFeatureExtension() : PluggableBuilderExtension(), mp_AdvancedDesc(nullptr)
-    {  }
+    PluggableFeatureExtension() : PluggableBuilderExtension(), mp_Desc(nullptr)
+    {
+
+    }
 
 
     virtual ~PluggableFeatureExtension()
-    {  }
+    {
+
+    }
 
 
     virtual void setConfiguration(const openfluid::ware::WareParams_t& Config)
-    { m_Config = Config; }
+    {
+      m_Config = Config;
+    }
 
 
-    void setFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor* Desc)
-    { mp_AdvancedDesc = Desc; }
+    void setFluidXDescriptor(openfluid::fluidx::FluidXDescriptor* Desc)
+    {
+      mp_Desc = Desc;
+    }
 
 
     virtual bool initialize() = 0;

@@ -41,7 +41,7 @@
 #define __OPENFLUID_BUILDEREXT_PLUGGABLEBUILDEREXTENSION_HPP__
 
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
 #include <openfluid/dllexport.hpp>

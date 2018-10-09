@@ -44,7 +44,6 @@
 #include <QDialog>
 
 #include <openfluid/builderext/PluggableModalExtension.hpp>
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 
 namespace Ui

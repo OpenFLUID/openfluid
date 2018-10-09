@@ -33,7 +33,8 @@
 /**
   @file DatastoreDescriptor.hpp
 
-  @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Aline LIBRES <aline.libres@gmail.com>
 */
 
 
@@ -61,6 +62,7 @@ class OPENFLUID_API DatastoreDescriptor
 
     DatastoreDescription_t m_DatastoreDescription;
 
+
   public:
 
     DatastoreDescriptor();
@@ -73,7 +75,47 @@ class OPENFLUID_API DatastoreDescriptor
 
     bool appendItem(DatastoreItemDescriptor* Item);
 
-    bool isItemIDAlreadyExist(const std::string& ItemID) const;
+    bool isItemExist(const std::string& ItemID) const;
+
+    DatastoreDescription_t getItems(const openfluid::core::UnitsClass_t& UnitClass) const;
+
+    DatastoreDescription_t getItems(const openfluid::core::UnitsClass_t& UnitClass,
+                                    openfluid::core::UnstructuredValue::UnstructuredType Type) const;
+
+    /**
+      Move the Item located at the given From position to the To position (positions starts at index 0)
+      @param From
+      @param To
+      @throw openfluid::base::FrameworkException a position is out of range
+    */
+    void moveItem(unsigned int From, unsigned int To);
+
+    /**
+     Insert an Item before the given position (positions starts at index 0)
+     @param[in] Item the DatastoreItemDescriptor to insert
+     @param[in] Position the position, should be between zero and list size - 1.
+     To insert an Item at the end of the list, use appendItem instead.
+     @throw openfluid::base::FrameworkException if Position is out of range
+    */
+    void insertItem(openfluid::fluidx::DatastoreItemDescriptor* Item, unsigned int Position);
+
+    /**
+     Remove from the list the Item located at the given Position (positions starts at index 0).
+     This doesn't delete the DatastoreItemDescriptor pointer.
+     @param[in] Position the position
+     @throw openfluid::base::FrameworkException if Position is out of range
+    */
+    void removeItem(unsigned int Position);
+
+    std::list<std::string> getItemsIDs() const;
+
+    /**
+      @brief Gets the item of the datastore matching the given ID.
+
+      @param ItemID ID of the expected item.
+      @return The item with the given ID, or 0 if not found.
+    */
+    openfluid::fluidx::DatastoreItemDescriptor* item(const std::string& ItemID);
 
 };
 

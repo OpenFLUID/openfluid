@@ -89,7 +89,7 @@ class RunConfigurationWidget : public WorkspaceWidget
 
   public:
 
-    RunConfigurationWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    RunConfigurationWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     virtual ~RunConfigurationWidget();
 };

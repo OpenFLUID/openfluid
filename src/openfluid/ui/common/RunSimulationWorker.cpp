@@ -365,10 +365,10 @@ void RunSimulationWorker::run()
     openfluid::machine::Engine Engine(SimBlob, ModelInstance, MonitInstance,
                                       mp_Listener);
 
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(mp_FXDesc->modelDescriptor(),
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(mp_FXDesc->model(),
                                                                   ModelInstance);
 
-    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(mp_FXDesc->monitoringDescriptor(),
+    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(mp_FXDesc->monitoring(),
                                                                        MonitInstance);
 
 

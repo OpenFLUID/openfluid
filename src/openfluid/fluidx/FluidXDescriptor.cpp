@@ -44,7 +44,6 @@
 #include <QFile>
 
 #include <openfluid/base/IOListener.hpp>
-#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
@@ -61,7 +60,9 @@ FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
     mp_Listener(Listener)
 {
   if (!mp_Listener)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Listener can not be NULL");
+  }
 }
 
 
@@ -88,9 +89,13 @@ bool FluidXDescriptor::extractWareEnabledFromNode(QDomElement& Node)
   if (!xmlEnabled.isNull())
   {
     if (xmlEnabled == "1" || xmlEnabled == "true")
+    {
       return true;
+    }
     else
+    {
       return false;
+    }
   }
   return true;
 }
@@ -146,8 +151,10 @@ openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(QDomElemen
               xmlValue.toStdString());
         }
         else
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
               "missing name and/or param attribute(s) in parameter definition (" + m_CurrentFile+ ")");
+        }
       }
     }
   }
@@ -160,15 +167,15 @@ openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(QDomElemen
 // =====================================================================
 
 
-openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
-    const openfluid::ware::WareParams_t& Params,
-    const openfluid::ware::WareParams_t& OverloadParams)
+openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(const openfluid::ware::WareParams_t& Params,
+                                                            const openfluid::ware::WareParams_t& OverloadParams)
 {
   openfluid::ware::WareParams_t FinalParams = Params;
 
-  for (openfluid::ware::WareParams_t::const_iterator it =
-      OverloadParams.begin(); it != OverloadParams.end(); ++it)
+  for (openfluid::ware::WareParams_t::const_iterator it = OverloadParams.begin(); it != OverloadParams.end(); ++it)
+  {
     FinalParams[it->first] = it->second;
+  }
 
   return FinalParams;
 }
@@ -181,8 +188,10 @@ openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
 void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
 {
   if (m_ModelDefined)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Duplicate model definition (" + m_CurrentFile + ")");
+  }
 
   openfluid::fluidx::SimulatorDescriptor* SD;
   openfluid::fluidx::GeneratorDescriptor* GD;
@@ -255,7 +264,6 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "missing attribute(s) in generator description ("+m_CurrentFile+")");
     }
-
   }
 
   m_ModelDescriptor.setGlobalParameters(GParams);
@@ -270,8 +278,10 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
 void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
 {
   if (m_RunConfigDefined)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Duplicate run configuration (" + m_CurrentFile + ")");
+  }
 
   bool FoundDeltaT = false;
   bool FoundPeriod = false;
@@ -293,26 +303,34 @@ void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
           m_RunDescriptor.setBeginDate(ReadDate);
         }
         else
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "wrong format for begin date of period (" + m_CurrentFile + ")");
+        }
 
         if (ReadDate.setFromISOString(xmlEnd.toStdString()))
         {
           m_RunDescriptor.setEndDate(ReadDate);
         }
         else
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "wrong format for end date of period (" + m_CurrentFile + ")");
+        }
 
         FoundPeriod = true;
 
         if (!(m_RunDescriptor.getEndDate() > m_RunDescriptor.getBeginDate()))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
               "end date must be strictly greater than begin date for period (" + m_CurrentFile + ")");
+        }
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
             "missing begin and/or end attributes for period tag (" + m_CurrentFile+ ")");
+      }
     }
 
 
@@ -329,8 +347,10 @@ void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
         std::string ReadDeltaTStr = xmlDeltaT.toStdString();
 
         if (!openfluid::tools::convertString(ReadDeltaTStr, &DeltaT))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "empty or wrong value for deltat (" + m_CurrentFile + ")");
+        }
 
         m_RunDescriptor.setDeltaT(DeltaT);
         FoundDeltaT = true;
@@ -340,17 +360,27 @@ void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
       {
         std::string ReadConstraintStr = xmlConstraint.toStdString();
         if (ReadConstraintStr == "dt-checked")
+        {
           m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_DTCHECKED);
+        }
         else if (ReadConstraintStr == "dt-forced")
+        {
           m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_DTFORCED);
+        }
         else if (ReadConstraintStr == "none")
+        {
           m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_NONE);
+        }
         else
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "wrong value for scheduling constraint (" + m_CurrentFile + ")");
+        }
       }
       else
+      {
         m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_NONE);
+      }
     }
 
 
@@ -378,12 +408,14 @@ void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
   }
 
   if (!FoundPeriod)
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "run period not found (" + m_CurrentFile + ")");
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"run period not found (" + m_CurrentFile + ")");
+  }
 
   if (!FoundDeltaT)
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "deltat not found (" + m_CurrentFile + ")");
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"deltat not found (" + m_CurrentFile + ")");
+  }
 
   m_RunConfigDefined = true;
 
@@ -395,8 +427,7 @@ void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
 // =====================================================================
 
 
-openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
-    QDomElement& Node)
+openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(QDomElement& Node)
 {
   QString xmlUnitID = Node.attributeNode(QString("ID")).value();
   QString xmlUnitClass = Node.attributeNode(QString("class")).value();
@@ -405,16 +436,19 @@ openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
   {
     openfluid::core::UnitID_t UnitID;
 
-    if (!openfluid::tools::convertString(xmlUnitID.toStdString(),
-                                         &UnitID))
+    if (!openfluid::tools::convertString(xmlUnitID.toStdString(),&UnitID))
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "wrong format for ID in unit definition (" + m_CurrentFile + ")");
+    }
 
     return std::make_pair(xmlUnitClass.toStdString(), UnitID);
   }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
         "missing or wrong attribute(s) in units link definition (" + m_CurrentFile + ")");
+  }
 }
 
 
@@ -422,8 +456,10 @@ openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
 // =====================================================================
 
 
-void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
+FluidXDescriptor::SpatialUnitsList_t FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
 {
+  SpatialUnitsList_t UnitsList;
+
   for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
     if (CurrNode.tagName() == QString("unit"))
@@ -441,12 +477,16 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
         UnitDesc.setUnitsClass(xmlUnitClass.toStdString());
 
         if (!openfluid::tools::convertString(xmlUnitID.toStdString(),&UnitID))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
               "wrong format for ID in unit definition (" + m_CurrentFile + ")");
+        }
 
         if (!openfluid::tools::convertString(xmlPcsOrd.toStdString(),&PcsOrder))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
               "wrong format for process order in unit definition (" + m_CurrentFile + ")");
+        }
 
         UnitDesc.setProcessOrder(PcsOrder);
         UnitDesc.setID(UnitID);
@@ -466,13 +506,17 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
           }
         }
 
-        m_DomainDescriptor.spatialUnits().push_back(UnitDesc);
+        UnitsList.push_back(UnitDesc);
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
             "missing or wrong attribute(s) in unit definition (" + m_CurrentFile + ")");
+      }
     }
   }
+
+  return UnitsList;
 }
 
 
@@ -480,16 +524,21 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
 // =====================================================================
 
 
-void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
+AttributesTableDescriptor FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
 {
+
   QString xmlUnitClass = Node.attributeNode(QString("unitsclass")).value();
+
   if (xmlUnitClass.isEmpty())
+  {
     xmlUnitClass = Node.attributeNode(QString("unitclass")).value();
+  }
+
   QString xmlColOrder = Node.attributeNode(QString("colorder")).value();
 
   if (!xmlUnitClass.isNull() && !xmlColOrder.isNull())
   {
-    openfluid::fluidx::AttributesDescriptor AttrsDesc;
+    openfluid::fluidx::AttributesTableDescriptor AttrsDesc;
 
     AttrsDesc.setUnitsClass(xmlUnitClass.toStdString());
 
@@ -499,24 +548,32 @@ void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
                                              ";");
 
     if (ColOrder.empty())
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
           "wrong or empty colorder attribute in domain attributes (" + m_CurrentFile + ")");
+    }
 
-    AttrsDesc.columnsOrder() = ColOrder;
+    AttrsDesc.setColumnsOrder(ColOrder);
 
     QString xmlDataBlob = Node.text();
 
     if (!xmlDataBlob.isNull())
+    {
       AttrsDesc.parseDataBlob(xmlDataBlob.toStdString());
+    }
     else
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
           "wrong or empty data content in domain attributes (" + m_CurrentFile + ")");
+    }
 
-    m_DomainDescriptor.attributes().push_back(AttrsDesc);
+    return AttrsDesc;
   }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
         "missing or wrong unitsclass attribute(s) in domain attributes (" + m_CurrentFile + ")");
+  }
 }
 
 
@@ -524,8 +581,10 @@ void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
 // =====================================================================
 
 
-void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
+FluidXDescriptor::EventsList_t FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
 {
+  EventsList_t EventsList;
+
   for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
     if (CurrNode.tagName() == QString("event"))
@@ -533,7 +592,9 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
       QString xmlUnitID = CurrNode.attributeNode(QString("unitID")).value();
       QString xmlUnitClass = CurrNode.attributeNode(QString("unitsclass")).value();
       if (xmlUnitClass.isEmpty())
+      {
         xmlUnitClass = CurrNode.attributeNode(QString("unitclass")).value();
+      }
       QString xmlDate = CurrNode.attributeNode(QString("date")).value();
 
       if (!xmlUnitID.isNull() && !xmlUnitClass.isNull() && !xmlDate.isNull())
@@ -542,24 +603,27 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
 
         openfluid::core::UnitID_t UnitID;
 
-        if (!openfluid::tools::convertString(xmlUnitID.toStdString(),
-                                             &UnitID))
+        if (!openfluid::tools::convertString(xmlUnitID.toStdString(),&UnitID))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "wrong format for unit ID in event (" + m_CurrentFile + ")");
+        }
 
         openfluid::core::DateTime EventDate;
 
         if (!EventDate.setFromISOString(xmlDate.toStdString()))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "wrong format for date in event (" + m_CurrentFile + ")");
+        }
 
         EvDesc.setUnitsClass(xmlUnitClass.toStdString());
         EvDesc.setUnitID(UnitID);
-        EvDesc.event() = openfluid::core::Event(EventDate);
+        EvDesc.setEvent(openfluid::core::Event(EventDate));
 
 
-        for(QDomElement CurrInfoNode = CurrNode.firstChildElement();
-            !CurrInfoNode.isNull(); CurrInfoNode = CurrInfoNode.nextSiblingElement())
+        for(QDomElement CurrInfoNode = CurrNode.firstChildElement(); !CurrInfoNode.isNull();
+            CurrInfoNode = CurrInfoNode.nextSiblingElement())
         {
           if (CurrInfoNode.tagName() == QString("info"))
           {
@@ -569,8 +633,7 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
 
             if (!xmlKey.isNull() && !xmlValue.isNull())
             {
-              EvDesc.event().addInfo(xmlKey.toStdString(),
-                                        xmlValue.toStdString());
+              EvDesc.event().addInfo(xmlKey.toStdString(),xmlValue.toStdString());
             }
             else
               throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -579,14 +642,17 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
 
         }
 
-        m_DomainDescriptor.events().push_back(EvDesc);
+        EventsList.push_back(EvDesc);
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
             "wrong or missing attribute(s) in domain calendar event (" + m_CurrentFile + ")");
+      }
     }
-
   }
+
+  return EventsList;
 }
 
 
@@ -594,23 +660,26 @@ void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
 // =====================================================================
 
 
-void FluidXDescriptor::extractDomainFomNode(QDomElement& Node)
+void FluidXDescriptor::extractDomainFomNode(QDomElement& Node, FluidXDescriptor::LoadingTempData& TempData)
 {
   for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
     if (CurrNode.tagName() == QString("definition"))
     {
-      extractDomainDefinitionFromNode(CurrNode);
+
+      SpatialUnitsList_t List = extractDomainDefinitionFromNode(CurrNode);
+      TempData.SpatiaUnits.insert(TempData.SpatiaUnits.end(),List.begin(),List.end());
     }
 
     if (CurrNode.tagName() == QString("attributes"))
     {
-      extractDomainAttributesFromNode(CurrNode);
+      TempData.Attributes.push_back(extractDomainAttributesFromNode(CurrNode));
     }
 
     if (CurrNode.tagName() == QString("calendar"))
     {
-      extractDomainCalendarFromNode(CurrNode);
+      EventsList_t List = extractDomainCalendarFromNode(CurrNode);
+      TempData.Events.insert(TempData.Events.end(),List.begin(),List.end());
     }
 
   }
@@ -632,40 +701,47 @@ void FluidXDescriptor::extractDatastoreFromNode(QDomElement& Node)
       QString xmlDataSrc = CurrNode.attributeNode(QString("source")).value();
       QString xmlDataClass = CurrNode.attributeNode(QString("unitsclass")).value();
       if (xmlDataClass.isEmpty())
+      {
         xmlDataClass = CurrNode.attributeNode(QString("unitclass")).value();
+      }
 
       if (!xmlDataID.isNull() && !xmlDataType.isNull() && !xmlDataSrc.isNull())
       {
         std::string DataID;
 
-        if (!openfluid::tools::convertString(xmlDataID.toStdString(),
-                                             &DataID)
-            || DataID.empty())
+        if (!openfluid::tools::convertString(xmlDataID.toStdString(),&DataID) || DataID.empty())
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
               "wrong format or missing data ID in datastore (" + m_CurrentFile + ")");
+        }
 
         openfluid::core::UnstructuredValue::UnstructuredType DataType;
 
-        if (!openfluid::core::UnstructuredValue::getValueTypeFromString(
-            xmlDataType.toStdString(), DataType))
+        if (!openfluid::core::UnstructuredValue::getValueTypeFromString(xmlDataType.toStdString(), DataType))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
               "unknown or missing datatype in dataitem definition (" + m_CurrentFile + ")");
+        }
 
         openfluid::fluidx::DatastoreItemDescriptor* Item =
-            new openfluid::fluidx::DatastoreItemDescriptor(
-                DataID, m_CurrentDir, xmlDataSrc.toStdString(),
-                DataType);
+          new openfluid::fluidx::DatastoreItemDescriptor(DataID, m_CurrentDir, xmlDataSrc.toStdString(),DataType);
 
         if (!xmlDataClass.isNull())
+        {
           Item->setUnitsClass(xmlDataClass.toStdString());
+        }
 
         if (!m_DatastoreDescriptor.appendItem(Item))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
               "already existing dataitem ID: " + DataID + " (" + m_CurrentFile + ")");
+        }
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
             "missing or wrong attribute(s) in dataitem definition (" + m_CurrentFile + ")");
+      }
     }
 
   }
@@ -676,7 +752,7 @@ void FluidXDescriptor::extractDatastoreFromNode(QDomElement& Node)
 // =====================================================================
 
 
-void FluidXDescriptor::parseFile(std::string Filename)
+void FluidXDescriptor::parseFile(const std::string& Filename, FluidXDescriptor::LoadingTempData& TempData)
 {
   QDomDocument Doc;
   QDomElement Root;
@@ -686,8 +762,7 @@ void FluidXDescriptor::parseFile(std::string Filename)
   QFile File(QString(m_CurrentFile.c_str()));
   if (!File.open(QIODevice::ReadOnly))
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-        "error opening " + m_CurrentFile);
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"error opening " + m_CurrentFile);
   }
 
   bool Parsed = Doc.setContent(&File);
@@ -722,7 +797,7 @@ void FluidXDescriptor::parseFile(std::string Filename)
 
           if (CurrNode.tagName() == QString("domain"))
           {
-            extractDomainFomNode(CurrNode);
+            extractDomainFomNode(CurrNode,TempData);
           }
 
           if (CurrNode.tagName() == QString("datastore"))
@@ -743,7 +818,58 @@ void FluidXDescriptor::parseFile(std::string Filename)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "file " + m_CurrentFile + " cannot be parsed");
   }
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+void FluidXDescriptor::rebuildSpatialDomainFromTemp(LoadingTempData& TempData)
+{
+  // structure
+
+  for (const auto& SpatialUnit : TempData.SpatiaUnits)
+  {
+    m_DomainDescriptor.addUnit(SpatialUnit,false);
+  }
+
+
+  // attributes
+
+  for (const auto& AttrTable : TempData.Attributes)
+  {
+    openfluid::core::UnitsClass_t UnitsClass = AttrTable.getUnitsClass();
+
+    for (const auto& AttrName : AttrTable.columnsOrder())
+    {
+      m_DomainDescriptor.addAttribute(UnitsClass,AttrName,std::string(),false);
+    }
+  }
+
+  for (const auto& AttrTable : TempData.Attributes)
+  {
+    openfluid::core::UnitsClass_t UnitsClass = AttrTable.getUnitsClass();
+
+    for (const auto& UnitsAttrs : AttrTable.attributes())
+    {
+      for (const auto& Attr : UnitsAttrs.second)
+      {
+        m_DomainDescriptor.setAttribute(UnitsClass,UnitsAttrs.first,Attr.first,Attr.second);
+      }
+    }
+  }
+
+
+  // events
+
+  for (const auto& Event : TempData.Events)
+  {
+    m_DomainDescriptor.addEvent(Event);
+  }
+
+  m_DomainDescriptor.checkUnitsRelations();
+  m_DomainDescriptor.checkAttributesConsistency();
 }
 
 
@@ -754,25 +880,29 @@ void FluidXDescriptor::parseFile(std::string Filename)
 void FluidXDescriptor::loadFromDirectory(const std::string& DirPath)
 {
   if (!openfluid::tools::Filesystem::isDirectory(DirPath))
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "directory " + DirPath + " does not exist");
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"directory " + DirPath + " does not exist");
+  }
 
   std::vector<std::string> FluidXFilesToLoad = openfluid::tools::findFilesByExtension(DirPath, "fluidx", true);
 
   if (FluidXFilesToLoad.size() == 0)
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "no fluidx file found in directory " + DirPath);
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"no fluidx file found in directory " + DirPath);
+  }
 
   std::sort(FluidXFilesToLoad.begin(), FluidXFilesToLoad.end());
 
   m_ModelDescriptor = openfluid::fluidx::CoupledModelDescriptor();
-  m_RunDescriptor = openfluid::fluidx::RunDescriptor();
+  m_RunDescriptor = openfluid::fluidx::RunConfigurationDescriptor();
   m_DomainDescriptor = openfluid::fluidx::SpatialDomainDescriptor();
   m_DatastoreDescriptor = openfluid::fluidx::DatastoreDescriptor();
   m_MonitoringDescriptor = openfluid::fluidx::MonitoringDescriptor();
 
   m_RunConfigDefined = false;
   m_ModelDefined = false;
+
+  LoadingTempData TempData;
 
   unsigned int i = 0;
 
@@ -786,7 +916,7 @@ void FluidXDescriptor::loadFromDirectory(const std::string& DirPath)
     try
     {
       mp_Listener->onFileLoad(openfluid::tools::Filesystem::filename(CurrentFile));
-      parseFile(CurrentFile);
+      parseFile(CurrentFile,TempData);
       mp_Listener->onFileLoaded(openfluid::base::Listener::LISTEN_OK);
     }
     catch (...)
@@ -796,6 +926,7 @@ void FluidXDescriptor::loadFromDirectory(const std::string& DirPath)
     }
   }
 
+  rebuildSpatialDomainFromTemp(TempData);
 }
 
 
@@ -805,7 +936,6 @@ void FluidXDescriptor::loadFromDirectory(const std::string& DirPath)
 
 void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
 {
-
   Contents << m_IndentStr << "<model>\n";
 
   if (m_ModelDescriptor.getGlobalParameters().size() > 0)
@@ -815,11 +945,9 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
     Contents << m_IndentStr << m_IndentStr << "</gparams>\n";
   }
 
-  const std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
-      m_ModelDescriptor.items();
+  const std::list<openfluid::fluidx::ModelItemDescriptor*> Items = m_ModelDescriptor.items();
 
-  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
-      Items.begin(); it != Items.end(); ++it)
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it = Items.begin(); it != Items.end(); ++it)
   {
     if ((*it)->isType(openfluid::ware::WareType::SIMULATOR))
     {
@@ -844,7 +972,9 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
                << "\"";
 
       if (GenDesc->getVariableSize() != 1)
+      {
         Contents << " varsize=\"" << GenDesc->getVariableSize() << "\"";
+      }
 
 
       Contents << " enabled=\"" << GenDesc->isEnabled();
@@ -862,13 +992,11 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
 // =====================================================================
 
 
-std::string FluidXDescriptor::getParamsAsStr(
-    const openfluid::ware::WareParams_t& Params) const
+std::string FluidXDescriptor::getParamsAsStr(const openfluid::ware::WareParams_t& Params) const
 {
   std::string ParamsStr = "";
 
-  for (openfluid::ware::WareParams_t::const_iterator it = Params.begin();
-      it != Params.end(); ++it)
+  for (openfluid::ware::WareParams_t::const_iterator it = Params.begin();it != Params.end(); ++it)
   {
     std::string EscapedValueStr =
         openfluid::tools::escapeXMLEntities(QString::fromStdString(it->second.data())).toStdString();
@@ -886,7 +1014,7 @@ std::string FluidXDescriptor::getParamsAsStr(
 
 
 std::string FluidXDescriptor::getGeneratorMethodAsStr(
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const
+  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const
 {
   switch (Method)
   {
@@ -911,9 +1039,37 @@ std::string FluidXDescriptor::getGeneratorMethodAsStr(
 // =====================================================================
 
 
+template<class T>
+std::string FluidXDescriptor::getSeparatedStrFromList(const T& Data,const std::string& Sep)
+{
+  bool isFirstItem = true;
+
+  std::ostringstream ss;
+
+  for (auto& Item : Data)
+  {
+    if (isFirstItem)
+    {
+      isFirstItem = false;
+    }
+    else
+    {
+      ss << Sep;
+    }
+
+    ss << Item;
+  }
+
+  return ss.str();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void FluidXDescriptor::writeDomainToStream(std::ostream& Contents)
 {
-
   Contents << m_IndentStr << "<domain>\n";
 
   writeDomainDefinitionToStream(Contents);
@@ -923,7 +1079,6 @@ void FluidXDescriptor::writeDomainToStream(std::ostream& Contents)
   writeDomainCalendarToStream(Contents);
 
   Contents << m_IndentStr << "</domain>\n";
-
 }
 
 
@@ -935,31 +1090,27 @@ void FluidXDescriptor::writeDomainDefinitionToStream(std::ostream& Contents)
 {
   Contents << m_IndentStr << m_IndentStr << "<definition>\n";
 
-  std::list<openfluid::fluidx::SpatialUnitDescriptor>& Units =
-      m_DomainDescriptor.spatialUnits();
-
-  std::list<openfluid::core::UnitClassID_t>::iterator itRel;
-
-  for (std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator it =
-      Units.begin(); it != Units.end(); ++it)
+  for (const auto& UnitsClass : spatialDomain().spatialUnits())
   {
-    Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<unit class=\""
-             << it->getUnitsClass() << "\" ID=\"" << it->getID()
-             << "\" pcsorder=\"" << it->getProcessOrder() << "\">\n";
+    for (const auto& Unit : UnitsClass.second)
+    {
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr
+               << "<unit class=\"" << UnitsClass.first << "\" ID=\"" << Unit.second.getID()
+               << "\" pcsorder=\"" << Unit.second.getProcessOrder() << "\">\n";
 
-    std::list<openfluid::core::UnitClassID_t>& Tos = it->toSpatialUnits();
-    for (itRel = Tos.begin(); itRel != Tos.end(); ++itRel)
-      Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
-               << "<to class=\"" << itRel->first << "\" ID=\"" << itRel->second
-               << "\" />\n";
+      for (const auto& LinkedUnit : Unit.second.toSpatialUnits())
+      {
+        Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
+                 << "<to class=\"" << LinkedUnit.first << "\" ID=\"" << LinkedUnit.second << "\" />\n";
+      }
 
-    std::list<openfluid::core::UnitClassID_t>& Parents = it->parentSpatialUnits();
-    for (itRel = Parents.begin(); itRel != Parents.end(); ++itRel)
-      Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
-               << "<childof class=\"" << itRel->first << "\" ID=\""
-               << itRel->second << "\" />\n";
-
-    Contents << m_IndentStr << m_IndentStr << m_IndentStr << "</unit>\n";
+      for (const auto& LinkedUnit : Unit.second.parentSpatialUnits())
+      {
+        Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
+                 << "<childof class=\"" << LinkedUnit.first << "\" ID=\"" << LinkedUnit.second << "\" />\n";
+      }
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr << "</unit>\n";
+    }
   }
 
   Contents << m_IndentStr << m_IndentStr << "</definition>\n";
@@ -972,73 +1123,33 @@ void FluidXDescriptor::writeDomainDefinitionToStream(std::ostream& Contents)
 
 void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
 {
-  std::list<AttributesDescriptor>& Attrs = m_DomainDescriptor.attributes();
-
-  openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::iterator itData;
-  openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::iterator itVal;
-
-  // temporary structures for aggregated output of attributes
-  std::map<openfluid::core::UnitsClass_t,openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t> AggregatedData;
-  std::map<openfluid::core::UnitsClass_t,std::set<openfluid::core::AttributeName_t>> AttributesModel;
-
-
-  // rebuild attributes model by units class for later usage on each spatial unit
-  for (auto& Desc : Attrs)
+  for (const auto& UnitsClass : spatialDomain().spatialUnits())
   {
-    AttributesModel[Desc.getUnitsClass()].insert(Desc.columnsOrder().begin(),Desc.columnsOrder().end());
-  }
+    auto AttrsNames = spatialDomain().getAttributesNames(UnitsClass.first);
 
-  // populate the aggregated data structure
-  for (auto& AttrsSet : Attrs)
-  {
-    for (auto& UnitAttrs : AttrsSet.attributes())
+    if (!AttrsNames.empty())
     {
-      for (auto& Attr : UnitAttrs.second)
+
+      Contents << m_IndentStr << m_IndentStr << "<attributes unitsclass=\"" << UnitsClass.first << "\" colorder=\"";
+
+      Contents << getSeparatedStrFromList(AttrsNames,";");
+      Contents << "\">\n";
+
+      for (const auto& Unit : UnitsClass.second)
       {
-        AggregatedData[AttrsSet.getUnitsClass()][UnitAttrs.first][Attr.first] = Attr.second;
-      }
-    }
-  }
+        std::vector<std::string> Values;
+        const auto& Attributes = Unit.second.attributes();
+        transform(Attributes.begin(),Attributes.end(), back_inserter(Values),
+                  [](const std::map<openfluid::core::AttributeName_t,std::string>::value_type& Val)
+                     {
+                        return Val.second;
+                     });
 
-
-  // write attributes tag and column order to stream
-  for (auto& AggByClass : AggregatedData)
-  {
-    Contents << m_IndentStr << m_IndentStr << "<attributes unitsclass=\""
-                 << AggByClass.first << "\" colorder=\"";
-
-    auto& AttrModel = AttributesModel[AggByClass.first];
-
-    if (!AttrModel.empty())
-    {
-      bool isFirstItem = true;
-      for (auto& AttrName : AttrModel)
-      {
-        if (isFirstItem)
-          isFirstItem = false;
-        else
-          Contents << ";";
-
-        Contents << AttrName;
-      }
-    }
-
-    Contents << "\">\n";
-
-    // write attributes contents to stream
-    for (auto& AggByUnit : AggByClass.second)
-    {
-      Contents << AggByUnit.first;
-
-      for (auto& AttrName : AttrModel)
-      {
-        Contents << "\t" << AggByUnit.second[AttrName];
+        Contents << Unit.second.getID() << "\t" << getSeparatedStrFromList(Values,"\t") << "\n";
       }
 
-      Contents << "\n";
+      Contents << m_IndentStr << m_IndentStr << "</attributes>\n";
     }
-
-    Contents << m_IndentStr << m_IndentStr << "</attributes>\n";
   }
 }
 
@@ -1049,30 +1160,29 @@ void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
 
 void FluidXDescriptor::writeDomainCalendarToStream(std::ostream& Contents)
 {
-  std::list<EventDescriptor>& Events = m_DomainDescriptor.events();
-
-  if (Events.empty())
-    return;
-
   Contents << m_IndentStr << m_IndentStr << "<calendar>\n";
 
-  openfluid::core::Event::EventInfosMap_t::iterator itInfos;
-
-  for (std::list<EventDescriptor>::iterator it = Events.begin();
-      it != Events.end(); ++it)
+  for (const auto& UnitsClass : spatialDomain().spatialUnits())
   {
-    Contents << m_IndentStr << m_IndentStr << m_IndentStr
-             << "<event unitsclass=\"" << it->getUnitsClass() << "\" "
-             << "unitID=\"" << it->getUnitID() << "\" " << "date=\""
-             << it->event().getDateTime().getAsISOString() << "\">\n";
+    for (const auto& Unit : UnitsClass.second)
+    {
+      const auto& Events = Unit.second.events();
 
-    openfluid::core::Event::EventInfosMap_t Infos = it->event().getInfos();
-    for (itInfos = Infos.begin(); itInfos != Infos.end(); ++itInfos)
-      Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
-               << "<info key=\"" << itInfos->first << "\" value=\""
-               << itInfos->second << "\" />\n";
+      for (const auto& EvDesc : Events)
+      {
+        Contents << m_IndentStr << m_IndentStr << m_IndentStr
+                 << "<event unitsclass=\"" << UnitsClass.first << "\" " << "unitID=\"" << Unit.second.getID()
+                 << "\" " << "date=\""<< EvDesc.event().getDateTime().getAsISOString() << "\">\n";
 
-    Contents << m_IndentStr << m_IndentStr << m_IndentStr << "</event>\n";
+        const auto& Infos = EvDesc.event().getInfos();
+        for (const auto& Inf : Infos)
+        {
+          Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
+                   << "<info key=\"" << Inf.first << "\" value=\"" << Inf.second << "\" />\n";
+        }
+        Contents << m_IndentStr << m_IndentStr << m_IndentStr << "</event>\n";
+      }
+    }
   }
 
   Contents << m_IndentStr << m_IndentStr << "</calendar>\n";
@@ -1123,8 +1233,7 @@ void FluidXDescriptor::writeRunConfigurationToStream(std::ostream& Contents)
 
 void FluidXDescriptor::writeDatastoreToStream(std::ostream& Contents)
 {
-  openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t& Items =
-      m_DatastoreDescriptor.items();
+  openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t& Items = m_DatastoreDescriptor.items();
 
 
   Contents << m_IndentStr << "<datastore>\n";
@@ -1346,8 +1455,9 @@ void FluidXDescriptor::prepareFluidXDir(const std::string& DirPath)
     openfluid::tools::Filesystem::makeDirectory(DirPath);
 
     if (!openfluid::tools::Filesystem::isDirectory(DirPath))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                "Error creating output directory");
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error creating output directory");
+    }
   }
 }
 

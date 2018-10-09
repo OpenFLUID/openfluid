@@ -37,7 +37,7 @@
 */
 
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
 #include "ui_WaresManagementWidget.h"
@@ -48,8 +48,8 @@
 #include "AddObserverDialog.hpp"
 
 
-MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::MonitoringWidget), m_Monitoring(AFXDesc.monitoring())
+MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& FXDesc):
+  WorkspaceWidget(Parent, FXDesc), ui(new Ui::MonitoringWidget), m_Monitoring(FXDesc.monitoring())
 {
   ui->setupUi(this);
 

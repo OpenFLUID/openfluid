@@ -44,7 +44,7 @@
 #include <QObject>
 #include <QMap>
 
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 
 
 class SVGFileGeneratorWorker : public QObject
@@ -58,7 +58,7 @@ class SVGFileGeneratorWorker : public QObject
 
     const QString m_SVGFileName;
 
-    const openfluid::fluidx::AdvancedDomainDescriptor* mp_AdvDomainDesc;
+    const openfluid::fluidx::SpatialDomainDescriptor* mp_DomainDesc;
 
     QMap<QString,QString> m_Options;
 
@@ -76,7 +76,7 @@ class SVGFileGeneratorWorker : public QObject
   public:
 
     SVGFileGeneratorWorker(const QString& GVFileName, const QString& SVGFileName,
-                          openfluid::fluidx::AdvancedDomainDescriptor* AdvDomainDesc);
+                           openfluid::fluidx::SpatialDomainDescriptor* DomainDesc);
 
     ~SVGFileGeneratorWorker();
 

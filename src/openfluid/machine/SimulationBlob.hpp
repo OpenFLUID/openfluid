@@ -41,10 +41,10 @@
 #define __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__
 
 
-#include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/core/SpatialGraph.hpp>
+#include <openfluid/fluidx/RunConfigurationDescriptor.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -56,7 +56,7 @@ class OPENFLUID_API SimulationBlob
 
     openfluid::core::SpatialGraph m_SpatialGraph;
 
-    openfluid::fluidx::RunDescriptor m_RunDescriptor;
+    openfluid::fluidx::RunConfigurationDescriptor m_RunDescriptor;
 
     openfluid::core::Datastore m_Datastore;
 
@@ -70,28 +70,45 @@ class OPENFLUID_API SimulationBlob
     ~SimulationBlob();
 
     inline openfluid::core::SpatialGraph& spatialGraph()
-    { return m_SpatialGraph; };
-
-    inline openfluid::fluidx::RunDescriptor& runDescriptor()
-    {return m_RunDescriptor; };
-
-    inline openfluid::base::SimulationStatus& simulationStatus()
-    {return m_Status; };
-
-    inline openfluid::core::Datastore& datastore()
-    { return m_Datastore; };
+    {
+      return m_SpatialGraph;
+    }
 
     inline const openfluid::core::SpatialGraph& spatialGraph() const
-    { return m_SpatialGraph; };
+    {
+      return m_SpatialGraph;
+    }
 
-    inline const openfluid::fluidx::RunDescriptor& runDescriptor() const
-    {return m_RunDescriptor; };
+    inline openfluid::fluidx::RunConfigurationDescriptor& runConfiguration()
+    {
+      return m_RunDescriptor;
+    }
+
+    inline const openfluid::fluidx::RunConfigurationDescriptor& runConfiguration() const
+    {
+      return m_RunDescriptor;
+    }
+
+
+    inline openfluid::base::SimulationStatus& simulationStatus()
+    {
+      return m_Status;
+    }
 
     inline const openfluid::base::SimulationStatus& simulationStatus() const
-    {return m_Status; };
+    {
+      return m_Status;
+    }
+
+    inline openfluid::core::Datastore& datastore()
+    {
+      return m_Datastore;
+    }
 
     inline const openfluid::core::Datastore& datastore() const
-    { return m_Datastore; };
+    {
+      return m_Datastore;
+    }
 
 };
 

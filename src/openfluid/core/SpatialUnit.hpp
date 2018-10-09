@@ -150,20 +150,25 @@ class OPENFLUID_API SpatialUnit
       Returns the process order of the unit
     */
     inline PcsOrd_t getProcessOrder() const
-    { return m_PcsOrder; };
+    {
+      return m_PcsOrder;
+    };
 
     /**
       Returns the ID of the unit
     */
     inline UnitID_t getID() const
-    { return m_ID; };
-
+    {
+      return m_ID;
+    };
 
     /**
       Returns the class of the unit
     */
     inline UnitsClass_t getClass() const
-    { return m_Class; };
+    {
+      return m_Class;
+    };
 
     bool addToUnit(SpatialUnit* aUnit);
 
@@ -186,14 +191,18 @@ class OPENFLUID_API SpatialUnit
       @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::toSpatialUnits(const UnitsClass_t&) instead
     */
     UnitsPtrList_t* getToUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
-    { return toSpatialUnits(aClass); }
+    {
+      return toSpatialUnits(aClass);
+    }
 
     /**
       @deprecated Since version 2.1.0.
       Use openfluid::core::SpatialUnit::toSpatialUnits(const UnitsClass_t&) const instead
     */
     const UnitsPtrList_t* getToUnits(const UnitsClass_t& aClass) const OPENFLUID_DEPRECATED
-    { return toSpatialUnits(aClass); }
+    {
+      return toSpatialUnits(aClass);
+    }
 
     /**
       Returns a list of units, of the requested class, connected from this unit.
@@ -204,19 +213,22 @@ class OPENFLUID_API SpatialUnit
 
     const UnitsPtrList_t* fromSpatialUnits(const UnitsClass_t& aClass) const;
 
-
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::fromSpatialUnits(const UnitsClass_t&) instead
     */
     UnitsPtrList_t* getFromUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
-    { return fromSpatialUnits(aClass); }
+    {
+      return fromSpatialUnits(aClass);
+    }
 
     /**
       @deprecated Since version 2.1.0.
       Use openfluid::core::SpatialUnit::fromSpatialUnits(const UnitsClass_t&) const instead
     */
     const UnitsPtrList_t* getFromUnits(const UnitsClass_t& aClass) const
-    { return fromSpatialUnits(aClass); }
+    {
+      return fromSpatialUnits(aClass);
+    }
 
     /**
       Returns a list of parent units of the requested class.
@@ -231,14 +243,18 @@ class OPENFLUID_API SpatialUnit
       @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::parentSpatialUnits(const UnitsClass_t&) instead
     */
     UnitsPtrList_t* getParentUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
-    { return parentSpatialUnits(aClass); }
+    {
+      return parentSpatialUnits(aClass);
+    }
 
     /**
       @deprecated Since version 2.1.0.
       Use openfluid::core::SpatialUnit::parentSpatialUnits(const UnitsClass_t&) const instead
     */
     const UnitsPtrList_t* getParentUnits(const UnitsClass_t& aClass) const OPENFLUID_DEPRECATED
-    { return parentSpatialUnits(aClass); }
+    {
+      return parentSpatialUnits(aClass);
+    }
 
     /**
       Returns a list of children units of the requested class.
@@ -260,36 +276,56 @@ class OPENFLUID_API SpatialUnit
       Use openfluid::core::SpatialUnit::childSpatialUnits(const UnitsClass_t&) const instead
     */
     const UnitsPtrList_t* getChildrenUnits(const UnitsClass_t& aClass) const OPENFLUID_DEPRECATED
-    { return childSpatialUnits(aClass); }
+    {
+      return childSpatialUnits(aClass);
+    }
 
     inline Attributes* attributes()
-    { return &m_Attributes; };
+    {
+      return &m_Attributes;
+    };
 
     inline const Attributes* attributes() const
-    { return &m_Attributes; };
+    {
+      return &m_Attributes;
+    };
 
     Variables* variables()
-    { return &m_Variables; };
+    {
+      return &m_Variables;
+    };
 
     const Variables* variables() const
-    { return &m_Variables; };
+    {
+      return &m_Variables;
+    };
 
     inline EventsCollection* events()
-    { return &m_Events; };
+    {
+      return &m_Events;
+    };
 
     inline const EventsCollection* events() const
-    { return &m_Events; };
+    {
+      return &m_Events;
+    };
 
     void streamContents(std::ostream& OStream);
 
     void setProcessOrder(unsigned int PcsOrder)
-    { m_PcsOrder = PcsOrder; };
+    {
+      m_PcsOrder = PcsOrder;
+    };
 
     OGRGeometry* geometry()
-    { return m_Geometry; };
+    {
+      return m_Geometry;
+    };
 
     const OGRGeometry* geometry() const
-    { return m_Geometry; };
+    {
+      return m_Geometry;
+    };
 
     bool importGeometryFromWkt(const std::string& WKT);
 

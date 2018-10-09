@@ -52,7 +52,7 @@
 #include "MultiPolygonGraphics.hpp"
 
 
-MapScene::MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
+MapScene::MapScene(const openfluid::fluidx::SpatialDomainDescriptor& Domain,
                    QObject* Parent):
   QGraphicsScene(Parent), m_Domain(Domain), m_ActiveLayer(nullptr)
 {
@@ -86,8 +86,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
     else
       DSItem = m_LocalDatastore.item(DSItemDesc->getID());
 
-    openfluid::core::GeoVectorValue* VectorData =
-        dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
+    openfluid::core::GeoVectorValue* VectorData = dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
 
     if (VectorData->data() != nullptr && VectorData->containsField("OFLD_ID",0))
     {
@@ -113,8 +112,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
 
           if (GeomType == wkbPoint)
           {
-            PointGraphics* PointG = new PointGraphics(dynamic_cast<OGRPoint*>(Geometry),
-                                                      FeaturePen);
+            PointGraphics* PointG = new PointGraphics(dynamic_cast<OGRPoint*>(Geometry),FeaturePen);
             PointG->setZValue(ZLayer);
             PointG->setUnitID(ID);
             addItem(PointG);
@@ -122,8 +120,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
           }
           else if (GeomType == wkbLineString)
           {
-            LineStringGraphics* LineSG = new LineStringGraphics(dynamic_cast<OGRLineString*>(Geometry),
-                                                                FeaturePen);
+            LineStringGraphics* LineSG = new LineStringGraphics(dynamic_cast<OGRLineString*>(Geometry),FeaturePen);
             LineSG->setZValue(ZLayer);
             LineSG->setUnitID(ID);
             addItem(LineSG);
@@ -150,8 +147,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
           else if (GeomType == wkbMultiLineString)
           {
             MultiLineStringGraphics* MultiLineSG =
-                new MultiLineStringGraphics(dynamic_cast<OGRMultiLineString*>(Geometry),
-                                            FeaturePen);
+                new MultiLineStringGraphics(dynamic_cast<OGRMultiLineString*>(Geometry),FeaturePen);
             MultiLineSG->setZValue(ZLayer);
             MultiLineSG->setUnitID(ID);
             addItem(MultiLineSG);

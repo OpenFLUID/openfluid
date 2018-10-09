@@ -47,7 +47,7 @@
 
 
 namespace openfluid { namespace fluidx {
-  class AdvancedFluidXDescriptor;
+  class FluidXDescriptor;
 } }
 
 
@@ -57,22 +57,28 @@ class WorkspaceWidget : public QWidget
 
   protected:
 
-    openfluid::fluidx::AdvancedFluidXDescriptor& m_AdvFluidxDesc;
+    openfluid::fluidx::FluidXDescriptor& m_FluidxDesc;
 
   signals:
 
     void changed(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
-                     openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
+                 openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
+
 
   public slots:
 
-    virtual void refresh() { };
+    virtual void refresh()
+    {
+
+    };
 
   public:
 
-    WorkspaceWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& Desc):
-      QWidget(Parent), m_AdvFluidxDesc(Desc)
-    { };
+    WorkspaceWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& Desc):
+      QWidget(Parent), m_FluidxDesc(Desc)
+    {
+
+    };
 
 };
 
