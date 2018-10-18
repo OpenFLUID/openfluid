@@ -187,9 +187,13 @@ void SimulationProfiler::flushCurrentProfileToFiles()
   {
     CurrentTimeIndexModelProfile_t::const_iterator ItPrfT = m_CurrentTimeIndexModelProfile.find(*ItPrf);
     if (ItPrfT == m_CurrentTimeIndexModelProfile.end())
+    {
       m_CurrentProfileFile << ";NA";
+    }
     else
+    {
       m_CurrentProfileFile << ";" << getDurationInDecimalSeconds((*ItPrfT).second);
+    }
   }
 
 

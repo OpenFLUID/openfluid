@@ -65,23 +65,17 @@ class Exception : public std::exception
 
       Exception(const std::string& Msg) :
         m_Message(Msg), m_FullMessage("")
-      {
-
-      }
+      { }
 
       Exception(const ExceptionContext& Context, const std::string& Msg) :
         m_Message(Msg), m_Context(Context), m_FullMessage("")
-      {
-
-      }
+      { }
 
 
   public:
 
     virtual ~Exception() throw()
-    {
-
-    }
+    { }
 
 
     // =====================================================================

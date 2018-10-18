@@ -112,24 +112,32 @@ void Environment::init()
   char ChHostName[512];
 
   if (gethostname(ChHostName, 512) == 0)
+  {
     m_HostName = ChHostName;
+  }
 
   char* ChUserName = nullptr;
   ChUserName= std::getenv("USER");
   if (ChUserName != nullptr)
+  {
     m_UserName = std::string(ChUserName);
+  }
 
 #elif defined(OPENFLUID_OS_WINDOWS)
 
   char* ChHostName = nullptr;
   ChHostName= std::getenv("COMPUTERNAME");
   if (ChHostName != nullptr)
+  {
     m_HostName = ChHostName;
+  }
 
   char* ChUserName = nullptr;
   ChUserName= std::getenv("USERNAME");
   if (ChUserName != nullptr)
+  {
     m_UserName = ChUserName;
+  }
 
 #endif
 
@@ -161,7 +169,9 @@ void Environment::init()
   char *TEMPEnvVar = std::getenv("OPENFLUID_TEMP_PATH");
 
   if (TEMPEnvVar != nullptr)
+  {
     m_TempDir = std::string(TEMPEnvVar);
+  }
 
 
   // ====== User directories ======
@@ -180,7 +190,9 @@ void Environment::init()
   char *USERDATAEnvVar = std::getenv("OPENFLUID_USERDATA_PATH");
 
   if (USERDATAEnvVar != nullptr)
+  {
     m_UserDataDir = std::string(USERDATAEnvVar);
+  }
 
 
   // ====== Config file ======
@@ -312,7 +324,9 @@ void Environment::init()
 
   // if ideal thread count cannot be computed, set it to 1 thread
   if (!m_IdealThreadCount)
+  {
     m_IdealThreadCount = 1;
+  }
 
 
   m_Initialized = true;
@@ -330,7 +344,9 @@ std::string Environment::getWareFullPath(const std::vector<std::string>& Dirs, c
     std::string TmpPath = CurrentDir + "/" + Filename;
 
     if (openfluid::tools::Filesystem::isFile(TmpPath))
+    {
       return TmpPath;
+    }
   }
 
   return "";
@@ -395,8 +411,10 @@ void Environment::addExtraSimulatorsDirs(const std::string& Dirs)
 #endif
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
+  {
     m_ExtraSimulatorsDirs.insert(m_ExtraSimulatorsDirs.begin(), 1,
                                  openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
+  }
 }
 
 
@@ -427,9 +445,7 @@ std::string Environment::getSimulatorFullPath(const std::string& Filename)
 std::vector<std::string> Environment::getObserversDirs()
 {
   std::vector<std::string> ComposedDirs(m_ExtraObserversDirs);
-  ComposedDirs.insert(ComposedDirs.end(),
-                       m_DefaultObserversDirs.begin(),
-                       m_DefaultObserversDirs.end());
+  ComposedDirs.insert(ComposedDirs.end(),m_DefaultObserversDirs.begin(),m_DefaultObserversDirs.end());
   return ComposedDirs;
 }
 
@@ -449,8 +465,10 @@ void Environment::addExtraObserversDirs(const std::string& Dirs)
   #endif
 
     for (int i = ExtraDirs.size() - 1; i >= 0; i--)
+    {
       m_ExtraObserversDirs.insert(m_ExtraObserversDirs.begin(), 1,
                                    openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
+    }
 }
 
 
@@ -503,8 +521,10 @@ void Environment::addExtraBuilderextsDirs(const std::string& Dirs)
   #endif
 
     for (int i = ExtraDirs.size() - 1; i >= 0; i--)
+    {
       m_ExtraBuilderextsDirs.insert(m_ExtraBuilderextsDirs.begin(), 1,
                                    openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
+    }
 }
 
 

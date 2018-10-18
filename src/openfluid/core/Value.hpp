@@ -77,15 +77,21 @@ class OPENFLUID_API Value
       Assignment operator
     */
     virtual Value& operator =(const Value& /*Other*/)
-    { return *this; }
+    {
+      return *this;
+    }
 
     virtual Type getType() const = 0;
 
     virtual Value* clone() const
-    { throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Value is not cloneable"); };
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Value is not cloneable");
+    }
 
     virtual bool convert(Value& /*Val*/) const
-    { return false; };
+    {
+      return false;
+    }
 
     virtual bool isSimple() const = 0;
 
@@ -96,13 +102,17 @@ class OPENFLUID_API Value
     virtual void writeQuotedToStream(std::ostream& OutStm) const = 0;
 
     friend std::ostream& operator<<(std::ostream& OutStm, const Value& Val)
-    { Val.writeToStream(OutStm); return OutStm; };
+    {
+      Val.writeToStream(OutStm); return OutStm;
+    }
 
     /**
       Returns true if the Value is a DoubleValue
     */
     inline bool isDoubleValue() const
-    { return getType() == Value::DOUBLE; };
+    {
+      return getType() == Value::DOUBLE;
+    }
 
     /**
       Returns the value as a constant DoubleValue if the value is of the DoubleValue type
@@ -122,7 +132,9 @@ class OPENFLUID_API Value
       Returns true if the value is an IntegerValue
     */
     inline bool isIntegerValue() const
-    { return getType() == Value::INTEGER; };
+    {
+      return getType() == Value::INTEGER;
+    }
 
     /**
       Returns the value as a constant IntegerValue if the value is of the IntegerValue type
@@ -142,7 +154,9 @@ class OPENFLUID_API Value
       Returns true if the value is a BooleanValue
     */
     inline bool isBooleanValue() const
-    { return getType() == Value::BOOLEAN; };
+    {
+      return getType() == Value::BOOLEAN;
+    }
 
     /**
       Returns the value as a constant BooleanValue if the value is of the BooleanValue type
@@ -162,7 +176,9 @@ class OPENFLUID_API Value
       Returns true if the value is a StringValue
     */
     inline bool isStringValue() const
-    { return getType() == Value::STRING; };
+    {
+      return getType() == Value::STRING;
+    }
 
     /**
       Returns the value as a constant StringValue if the value is of the StringValue type
@@ -182,7 +198,9 @@ class OPENFLUID_API Value
       Returns true if the value is a NullValue
     */
     inline bool isNullValue() const
-    { return getType() == Value::NULLL; };
+    {
+      return getType() == Value::NULLL;
+    }
 
     /**
       Returns the value as a constant NullValue if the value is of the NullValue type
@@ -202,7 +220,9 @@ class OPENFLUID_API Value
       Returns true if the value is a VectorValue
     */
     inline bool isVectorValue() const
-    { return getType() == Value::VECTOR; };
+    {
+      return getType() == Value::VECTOR;
+    }
 
     /**
       Returns the value as a constant VectorValue if the value is of the VectorValue type
@@ -222,7 +242,9 @@ class OPENFLUID_API Value
       Returns true if the value is a MatrixValue
     */
     inline bool isMatrixValue() const
-    { return getType() == Value::MATRIX; };
+    {
+      return getType() == Value::MATRIX;
+    }
 
     /**
       Returns the value as a constant MatrixValue if the value is of the MatrixValue type
@@ -242,7 +264,9 @@ class OPENFLUID_API Value
       Returns true if the value is a MapValue
     */
     inline bool isMapValue() const
-    { return getType() == Value::MAP; };
+    {
+      return getType() == Value::MAP;
+    }
 
     /**
       Returns the value as a constant MapValue if the value is of the MapValue type
@@ -262,7 +286,9 @@ class OPENFLUID_API Value
       Returns true if the value is a TreeValue
     */
     inline bool isTreeValue() const
-    { return getType() == Value::TREE; };
+    {
+      return getType() == Value::TREE;
+    }
 
     /**
       Returns the value as a constant TreeValue if the value is of the TreeValue type

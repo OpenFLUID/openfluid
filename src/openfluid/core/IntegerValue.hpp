@@ -135,13 +135,19 @@ class OPENFLUID_API IntegerValue : public SimpleValue
     * Cast operator
     */
     operator long() const
-    { return m_Value; }
+    {
+      return m_Value;
+    }
 
     inline Type getType() const
-    { return Value::INTEGER; }
+    {
+      return Value::INTEGER;
+    }
 
     Value* clone() const
-    { return new IntegerValue(*this); };
+    {
+      return new IntegerValue(*this);
+    };
 
     bool convert(Value& Val) const;
 
@@ -150,19 +156,25 @@ class OPENFLUID_API IntegerValue : public SimpleValue
       @return the integer value
     */
     inline long get() const
-    { return m_Value; }
+    {
+      return m_Value;
+    }
 
     /**
       Sets the plain old type long integer value
       @param[in] Val the long integer value
     */
     inline void set(const long& Val)
-    { m_Value = Val; }
+    {
+      m_Value = Val;
+    }
 
     void writeToStream(std::ostream& OutStm) const;
 
     void writeQuotedToStream(std::ostream& OutStm) const
-    { writeToStream(OutStm); }
+    {
+      writeToStream(OutStm);
+    }
 
 };
 

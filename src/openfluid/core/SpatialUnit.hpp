@@ -111,8 +111,7 @@ class OPENFLUID_API SpatialUnit
 
     UnitsClass_t m_Class;
 
-    // TODO use openfluid::core::PcsOrd_t instead
-    unsigned int m_PcsOrder;
+    openfluid::core::PcsOrd_t m_PcsOrder;
 
     LinkedUnitsListByClassMap_t m_FromUnits;
 

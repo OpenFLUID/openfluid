@@ -74,7 +74,9 @@ Attributes::~Attributes()
 bool Attributes::setValue(const AttributeName_t& aName, const Value& aValue)
 {
   if (isAttributeExist(aName))
+  {
     return false;
+  }
 
   m_Data[aName].reset(aValue.clone());
 
@@ -89,7 +91,9 @@ bool Attributes::setValue(const AttributeName_t& aName, const Value& aValue)
 bool Attributes::setValue(const AttributeName_t& aName, const std::string& aValue)
 {
   if (isAttributeExist(aName))
+  {
     return false;
+  }
 
   m_Data[aName].reset(new StringValue(aValue));
 
@@ -104,7 +108,9 @@ bool Attributes::setValue(const AttributeName_t& aName, const std::string& aValu
 bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::string& aValue)
 {
   if (isAttributeExist(aName))
+  {
     return false;
+  }
 
   StringValue TmpStrValue(aValue);
 
@@ -114,7 +120,9 @@ bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::
     {
       double TmpVal;
       if (!TmpStrValue.toDouble(TmpVal))
+      {
         return false;
+      }
       m_Data[aName].reset(new DoubleValue(TmpVal));
       break;
     }
@@ -124,7 +132,9 @@ bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::
     {
       long TmpVal;
       if (!TmpStrValue.toInteger(TmpVal))
+      {
         return false;
+      }
       m_Data[aName].reset(new IntegerValue(TmpVal));
       break;
     }
@@ -133,7 +143,9 @@ bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::
     {
       bool TmpVal;
       if (!TmpStrValue.toBoolean(TmpVal))
+      {
         return false;
+      }
       m_Data[aName].reset(new BooleanValue(TmpVal));
       break;
     }
@@ -148,7 +160,9 @@ bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::
     {
       VectorValue TmpVal;
       if (!TmpStrValue.toVectorValue(TmpVal))
+      {
         return false;
+      }
       m_Data[aName].reset(TmpVal.clone());
       break;
     }
@@ -157,7 +171,9 @@ bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::
     {
       MatrixValue TmpVal;
       if (!TmpStrValue.toMatrixValue(TmpVal))
+      {
         return false;
+      }
       m_Data[aName].reset(TmpVal.clone());
       break;
     }
@@ -166,7 +182,9 @@ bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::
     {
       MapValue TmpVal;
       if (!TmpStrValue.toMapValue(TmpVal))
+      {
         return false;
+      }
       m_Data[aName].reset(TmpVal.clone());
       break;
     }
@@ -175,7 +193,9 @@ bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::
     {
       TreeValue TmpVal;
       if (!TmpStrValue.toTreeValue(TmpVal))
+      {
         return false;
+      }
       m_Data[aName].reset(TmpVal.clone());
       break;
     }
@@ -184,7 +204,9 @@ bool Attributes::setValueFromRawString(const AttributeName_t& aName, const std::
     {
       NullValue TmpVal;
       if (!TmpStrValue.toNullValue(TmpVal))
+      {
         return false;
+      }
       m_Data[aName].reset(TmpVal.clone());
       break;
     }
@@ -227,7 +249,9 @@ const openfluid::core::Value* Attributes::value(const AttributeName_t& aName) co
   AttributesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
+  {
     return it->second.get();
+  }
 
   return nullptr;
 }
@@ -306,7 +330,9 @@ std::vector<AttributeName_t> Attributes::getAttributesNames() const
   AttributesMap_t::const_iterator it;
 
   for (it = m_Data.begin(); it != m_Data.end(); ++it)
+  {
     TheNames.push_back(it->first);
+  }
 
   return TheNames;
 }

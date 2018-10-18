@@ -59,7 +59,10 @@ InterpGenerator::InterpGenerator() : Generator(),
 
 InterpGenerator::~InterpGenerator()
 {
-  if( m_DistriBindings != nullptr) delete m_DistriBindings;
+  if( m_DistriBindings != nullptr)
+  {
+    delete m_DistriBindings;
+  }
 
 }
 
@@ -71,17 +74,26 @@ InterpGenerator::~InterpGenerator()
 void InterpGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetSimulatorParameter(Params,"sources",m_SourcesFile))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "missing sources value for generator");
+  }
 
   if (!OPENFLUID_GetSimulatorParameter(Params,"distribution",m_DistriFile))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "missing distribution value for generator");
+  }
 
+  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmin",m_Min))
+  {
+    m_IsMin = true;
+  }
 
-  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmin",m_Min)) m_IsMin = true;
-
-  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmax",m_Max)) m_IsMax = true;
+  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmax",m_Max))
+  {
+    m_IsMax = true;
+  }
 }
 
 
@@ -100,7 +112,9 @@ void InterpGenerator::prepareData()
   TmpDir = openfluid::tools::Filesystem::makeUniqueSubdirectory(BaseTmpDir,"interp-generator");
 
   if (TmpDir.empty())
+  {
     OPENFLUID_RaiseError("Unable to create temporary directory");
+  }
 
   DistriTables.build(InputDir,m_SourcesFile,m_DistriFile);
 
@@ -132,9 +146,11 @@ void InterpGenerator::prepareData()
 void InterpGenerator::checkConsistency()
 {
   if (m_IsMin && m_IsMax && m_Min > m_Max)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "threshold max value must be greater or equal "
                                               "to threshold min value for generator");
+  }
 }
 
 
@@ -156,8 +172,14 @@ openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
     if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {
 
-      if (m_IsMax && Value > m_Max) Value = m_Max;
-      if (m_IsMin && Value < m_Min) Value = m_Min;
+      if (m_IsMax && Value > m_Max)
+      {
+        Value = m_Max;
+      }
+      if (m_IsMin && Value < m_Min)
+      {
+        Value = m_Min;
+      }
     }
     else
     {
@@ -170,7 +192,9 @@ openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
       OPENFLUID_InitializeVariable(LU,m_VarName,VV);
     }
     else
+    {
       OPENFLUID_InitializeVariable(LU,m_VarName,Value);
+    }
   }
 
   openfluid::core::DateTime NextDT;
@@ -180,8 +204,9 @@ openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
     return Duration(NextDT.diffInSeconds(CurrentDT));
   }
   else
+  {
     return Never();
-
+  }
 }
 
 

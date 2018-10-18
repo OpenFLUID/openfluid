@@ -56,7 +56,9 @@ Datastore::Datastore()
 Datastore::~Datastore()
 {
   for (DataItemsById_t::iterator it = m_ItemsById.begin(); it != m_ItemsById.end(); ++it)
+  {
     delete (*it).second;
+  }
 }
 
 
@@ -89,7 +91,9 @@ DatastoreItem* Datastore::item(const std::string& ItemID)
   DataItemsById_t::iterator it = m_ItemsById.find(ItemID);
 
   if (it != m_ItemsById.end())
+  {
     return it->second;
+  }
 
   return nullptr;
 }
@@ -104,7 +108,9 @@ void Datastore::addItem(const DatastoreItem* Item)
   DataItemsById_t::iterator it = m_ItemsById.find(Item->getID());
 
   if (it != m_ItemsById.end())
+  {
     delete it->second;
+  }
 
   m_ItemsById[Item->getID()] = const_cast<DatastoreItem*>(Item);
 }

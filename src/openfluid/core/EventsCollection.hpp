@@ -105,25 +105,33 @@ class OPENFLUID_API EventsCollection
       Returns the event collection as a list
     */
     inline EventsList_t* eventsList()
-    { return &m_Events; };
+    {
+      return &m_Events;
+    };
 
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::EventsCollection::eventsList() instead
     */
     inline EventsList_t* getEventsList() OPENFLUID_DEPRECATED
-    { return &m_Events; };
+    {
+      return &m_Events;
+    };
 
     /**
       Returns number of events in the event collection
     */
     inline int getCount() const
-    { return m_Events.size(); };
+    {
+      return m_Events.size();
+    };
 
     /**
       Clears the event collection
     */
     void clear()
-    { m_Events.clear(); };
+    {
+      m_Events.clear();
+    };
 
     void println() const;
 };

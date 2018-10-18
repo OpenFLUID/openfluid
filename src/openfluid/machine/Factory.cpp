@@ -212,16 +212,20 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
     {
 
       if ((*it)->isType(openfluid::ware::WareType::UNDEFINED))
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "unknown model item type");
+      }
 
       if ((*it)->isType(openfluid::ware::WareType::SIMULATOR))
       {
         openfluid::ware::WareID_t ID = ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID();
 
         if (!openfluid::tools::isValidWareID(ID))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "invalid simulator ID \""+ID+"\"");
+        }
 
         // instanciation of a plugged simulator using the plugin manager
         IInstance = SimulatorPluginsManager::instance()->loadWareSignatureOnly(ID);
@@ -256,10 +260,14 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
         IInstance->GeneratorInfo->VariableSize = GenDesc->getVariableSize();
 
         if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Fixed)
+        {
           IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Fixed;
+        }
 
         if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Random)
+        {
           IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Random;
+        }
 
         if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Interp)
         {
@@ -276,8 +284,10 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
         }
 
         if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "unknown generator type");
+        }
 
         IInstance->Body = nullptr;
         IInstance->Signature = Signature;

@@ -81,15 +81,21 @@ class OPENFLUID_API ExecutionTimePoint
     void appendItem(openfluid::machine::ModelItemInstance* Item);
 
     inline bool hasItemsToProcess() const
-    { return !m_ItemsPtrList.empty(); };
+    {
+      return !m_ItemsPtrList.empty();
+    }
 
     openfluid::base::SchedulingRequest processNextItem();
 
     inline openfluid::machine::ModelItemInstance* nextItem() const
-    { return m_ItemsPtrList.front(); };
+    {
+      return m_ItemsPtrList.front();
+    }
 
     inline openfluid::core::TimeIndex_t getTimeIndex() const
-    { return m_TimeIndex; };
+    {
+      return m_TimeIndex;
+    }
 
     inline void sortByOriginalPosition()
     {

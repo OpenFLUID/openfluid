@@ -134,13 +134,19 @@ class OPENFLUID_API DoubleValue : public SimpleValue
       Cast operator
      */
     operator double() const
-    { return m_Value; }
+    {
+      return m_Value;
+    }
 
     inline Type getType() const
-    { return Value::DOUBLE; }
+    {
+      return Value::DOUBLE;
+    }
 
     Value* clone() const
-    { return new DoubleValue(*this); }
+    {
+      return new DoubleValue(*this);
+    }
 
     bool convert(Value& Val) const;
 
@@ -149,19 +155,25 @@ class OPENFLUID_API DoubleValue : public SimpleValue
       @return the double value
     */
     inline double get() const
-    { return m_Value; }
+    {
+      return m_Value;
+    }
 
     /**
       Sets the plain old type double value
       @param[in] Val the double value
     */
     inline void set(const double& Val)
-    { m_Value = Val; }
+    {
+      m_Value = Val;
+    }
 
     void writeToStream(std::ostream& OutStm) const;
 
     void writeQuotedToStream(std::ostream& OutStm) const
-    { writeToStream(OutStm); }
+    {
+      writeToStream(OutStm);
+    }
 
 };
 

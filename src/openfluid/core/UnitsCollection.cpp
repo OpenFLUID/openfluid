@@ -103,7 +103,9 @@ const SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID) const
   for (it=m_Data.begin();it!=m_Data.end();++it)
   {
     if (it->getID() == aUnitID)
+    {
       return &(*it);
+    }
   }
 
   return nullptr;
@@ -116,14 +118,15 @@ const SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID) const
 
 SpatialUnit* UnitsCollection::addSpatialUnit(const SpatialUnit& aUnit)
 {
-
   if (spatialUnit(aUnit.getID()) == nullptr)
   {
     m_Data.push_back(aUnit);
     return &(m_Data.back());
   }
   else
+  {
     return nullptr;
+  }
 }
 
 

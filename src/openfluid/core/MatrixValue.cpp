@@ -46,7 +46,9 @@ namespace openfluid { namespace core {
 Value& MatrixValue::operator=(const Value& Other)
 {
   if (this == &Other)
+  {
     return *this;
+  }
 
   const MatrixValue* CastedValue = dynamic_cast<const MatrixValue*> (&Other);
 
@@ -68,7 +70,9 @@ void MatrixValue::writeToStream(std::ostream& OutStm) const
   const unsigned long s = getSize();
 
   if (s == 0)
+  {
     OutStm << "[[]]";
+  }
   else
   {
     const unsigned long ColsNbr = getColsNbr();
@@ -87,15 +91,13 @@ void MatrixValue::writeToStream(std::ostream& OutStm) const
       OutStm << "]";
 
       if (i != RowsNbr-1)
+      {
         OutStm << ",";
+      }
     }
     OutStm << "]";
   }
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 } }  // namespaces

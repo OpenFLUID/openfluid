@@ -1,8 +1,11 @@
-.cproject
-.project
-.pydevproject
-.settings
-.DS_Store
+# external configuration files
+.*
+!.travis.yml
+!.appveyor.yml
+
+# build directories
 _*
+
+# OpenFLUID local configuration files
 CMake.in.local.config
 CMake.in.local.cmake

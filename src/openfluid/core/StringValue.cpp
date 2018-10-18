@@ -189,7 +189,10 @@ std::vector<std::string> StringValue::splitString(const std::string& StrToSplit,
   std::vector<std::string> SplitParts;
 
   boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
-  if (ReturnsEmpty) TokCompress = boost::token_compress_off;
+  if (ReturnsEmpty)
+  {
+    TokCompress = boost::token_compress_off;
+  }
 
   boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators),TokCompress);
 
@@ -300,7 +303,9 @@ bool StringValue::toDoubleValue(DoubleValue& Val) const
   double PODVal;
 
   if (!toDouble(PODVal))
+  {
     return false;
+  }
 
   Val = DoubleValue(PODVal);
 
@@ -343,7 +348,9 @@ bool StringValue::toBooleanValue(BooleanValue& Val) const
   bool PODVal;
 
   if (!toBoolean(PODVal))
+  {
     return false;
+  }
 
   Val = BooleanValue(PODVal);
 
@@ -410,7 +417,9 @@ bool StringValue::toIntegerValue(IntegerValue& Val) const
   long PODVal;
 
   if (!toInteger(PODVal))
+  {
     return false;
+  }
 
   Val = IntegerValue(PODVal);
 
@@ -425,7 +434,9 @@ bool StringValue::toIntegerValue(IntegerValue& Val) const
 bool StringValue::toNullValue(NullValue& Val) const
 {
   if (m_Value != "null")
+  {
     return false;
+  }
 
   Val = NullValue();
 
@@ -459,7 +470,9 @@ bool StringValue::toVectorValue(VectorValue& Val) const
     for (unsigned long i=0;i<Splitted.size();i++)
     {
       if (!convertStringToDouble(Splitted[i],TmpDbl))
+      {
         return false;
+      }
       TmpVect.set(i,TmpDbl);
     }
 
@@ -479,7 +492,9 @@ bool StringValue::toVectorValue(VectorValue& Val) const
     for (unsigned long i=0;i<Splitted.size();i++)
     {
       if (!convertStringToDouble(Splitted[i],TmpDbl))
+      {
         return false;
+      }
       TmpVect.set(i,TmpDbl);
     }
 
@@ -511,8 +526,7 @@ bool StringValue::toMatrixValue(MatrixValue& Val) const
     boost::replace_all(TmpStr,"],[","|");
     boost::replace_all(TmpStr,",",";");
   }
-  else if (m_Value.size() >=2 &&
-           m_Value.front() == '[' && m_Value.back() == ']')
+  else if (m_Value.size() >=2 && m_Value.front() == '[' && m_Value.back() == ']')
   {
     TmpStr = m_Value.substr(1,m_Value.size()-2);
 
@@ -548,13 +562,16 @@ bool StringValue::toMatrixValue(MatrixValue& Val) const
     }
 
     if (TmpColsNbr != SplittedCols.size())
+    {
       return false;
-
+    }
 
     for (unsigned long j=0;j<TmpColsNbr;j++)
     {
       if (!convertStringToDouble(SplittedCols[j],TmpDbl))
+      {
         return false;
+      }
       TmpMatrix.set(j,i,TmpDbl);
     }
   }
@@ -588,7 +605,9 @@ bool StringValue::toMatrixValue(const unsigned int& RowLength, MatrixValue& Val)
   unsigned long TmpSize = Splitted.size();
 
   if ( TmpSize % RowLength != 0 )
+  {
     return false;
+  }
 
   unsigned long TmpRowsNbr = TmpSize / RowLength;
   unsigned long CurrentCol = 0;
@@ -600,7 +619,9 @@ bool StringValue::toMatrixValue(const unsigned int& RowLength, MatrixValue& Val)
   for (std::vector<std::string>::const_iterator it=Splitted.begin(); it!= Splitted.end(); ++it)
   {
     if (!convertStringToDouble(*it,TmpDbl))
+    {
       return false;
+    }
     TmpMatrix.set(CurrentCol,CurrentRow,TmpDbl);
 
     CurrentCol++;
@@ -625,7 +646,9 @@ bool StringValue::toMatrixValue(const unsigned int& RowLength, MatrixValue& Val)
 bool JSONObjectToMapValue(const rapidjson::Value& Obj, MapValue& Val)
 {
   if (!Obj.IsObject())
+  {
     return false;
+  }
 
   MapValue TmpMap;
 
@@ -634,19 +657,29 @@ bool JSONObjectToMapValue(const rapidjson::Value& Obj, MapValue& Val)
     std::string Key = std::string(it->name.GetString());
 
     if (it->value.IsDouble())
+    {
       TmpMap.setDouble(Key,it->value.GetDouble());
+    }
     else if (it->value.IsInt())
+    {
       TmpMap.setInteger(Key,it->value.GetInt());
+    }
     else if (it->value.IsString())
+    {
       TmpMap.setString(Key,it->value.GetString());
+    }
     else if (it->value.IsBool())
+    {
       TmpMap.setBoolean(Key,it->value.GetBool());
+    }
     else if (it->value.IsArray())
     {
       const rapidjson::Value& TmpJSONArray = it->value;
 
       if (TmpJSONArray.Empty())
+      {
         TmpMap.setVectorValue(Key,VectorValue(0));
+      }
       else if (TmpJSONArray[0].IsNumber())
       {
         VectorValue TmpVectVal(TmpJSONArray.Capacity());
@@ -654,7 +687,9 @@ bool JSONObjectToMapValue(const rapidjson::Value& Obj, MapValue& Val)
         for (unsigned int iVV=0;iVV<TmpJSONArray.Capacity();iVV++)
         {
           if (!TmpJSONArray[iVV].IsNumber())
+          {
             return false;
+          }
           TmpVectVal.set(iVV,TmpJSONArray[iVV].GetDouble());
         }
         TmpMap.setVectorValue(Key,TmpVectVal);
@@ -664,17 +699,23 @@ bool JSONObjectToMapValue(const rapidjson::Value& Obj, MapValue& Val)
         unsigned int ExpectedColCount = TmpJSONArray[0].Capacity();
 
         if (!ExpectedColCount)
+        {
           return false;
+        }
 
         MatrixValue TmpMatVal(ExpectedColCount,TmpJSONArray.Capacity());
 
         for (unsigned int iMVR=0;iMVR<TmpJSONArray.Capacity();iMVR++)
         {
           if (ExpectedColCount != TmpJSONArray[iMVR].Capacity())
+          {
             return false;
+          }
 
           for (unsigned int iMVC=0;iMVC<ExpectedColCount;iMVC++)
+          {
             TmpMatVal.set(iMVC,iMVR,TmpJSONArray[iMVR][iMVC].GetDouble());
+          }
         }
         TmpMap.setMatrixValue(Key,TmpMatVal);
       }
@@ -686,12 +727,18 @@ bool JSONObjectToMapValue(const rapidjson::Value& Obj, MapValue& Val)
       MapValue TmpMapVal;
 
       if (!JSONObjectToMapValue(it->value,TmpMapVal))
+      {
         return false;
+      }
       else
+      {
         TmpMap.setMapValue(Key,TmpMapVal);
+      }
     }
     else
+    {
       return false;
+    }
   }
 
   Val = TmpMap;
@@ -709,7 +756,9 @@ bool StringValue::toMapValue(MapValue& Val) const
   {
     rapidjson::Document JSONValue;
     if (JSONValue.Parse<0>(m_Value.c_str()).HasParseError() /*|| !JSONValue.IsObject()*/)
+    {
       return false;
+    }
 
     return JSONObjectToMapValue(JSONValue,Val);
   }
@@ -726,7 +775,9 @@ bool StringValue::toMapValue(MapValue& Val) const
       std::vector<std::string> KeyValue = splitString(*it,"=");
 
       if (KeyValue.size() != 2)
+      {
         return false;
+      }
 
       TmpMap.setString(KeyValue.front(),KeyValue.back());
     }

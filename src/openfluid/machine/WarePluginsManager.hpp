@@ -119,7 +119,10 @@ class OPENFLUID_API WarePluginsManager
           WareItem->Verified =
               (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,ABIVersionProc(),false) == 0);
         }
-        else WareItem->Verified = false;
+        else
+        {
+          WareItem->Verified = false;
+        }
 
 
         if (WareItem->Verified)
@@ -147,16 +150,22 @@ class OPENFLUID_API WarePluginsManager
               WareItem->LinkUID = LinkUIDProc();
           }
           else
+          {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Format error in plugin file " + PluginFilename);
+          }
         }
         else
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "Compatibility version mismatch for plugin file " + PluginFilename);
+        }
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Unable to load plugin from file " + PluginFilename);
+      }
 
       return WareItem;
     }
@@ -193,8 +202,10 @@ class OPENFLUID_API WarePluginsManager
             Sign->Verified =
               (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,ABIVersionProc(),false) == 0);
           }
-          else Sign->Verified = false;
-
+          else
+          {
+            Sign->Verified = false;
+          }
 
           if (Sign->Verified)
           {
@@ -214,7 +225,9 @@ class OPENFLUID_API WarePluginsManager
               }
 
               if (Sign->Signature == nullptr)
+              {
                 throw openfluid::base::FrameworkException(ECtxt,"Signature cannot be instanciated from plugin file");
+              }
 
               Sign->Verified =
                   QString::fromStdString(PluginFilename).startsWith(QString::fromStdString(Sign->Signature->ID));
@@ -225,7 +238,9 @@ class OPENFLUID_API WarePluginsManager
                 Sign->LinkUID = LinkUIDProc();
             }
             else
+            {
               throw openfluid::base::FrameworkException(ECtxt,"Format error in plugin file");
+            }
           }
         }
         else
@@ -234,7 +249,9 @@ class OPENFLUID_API WarePluginsManager
         }
       }
       else
+      {
         throw openfluid::base::FrameworkException(ECtxt,"Unable to find plugin file");
+      }
 
       return Sign;
     }
@@ -336,9 +353,13 @@ class OPENFLUID_API WarePluginsManager
           if (CurrentPlug && CurrentPlug->Verified)
           {
             if (Pattern.empty())
+            {
               SearchResults.AvailablePlugins.push_back(CurrentPlug);
+            }
             else if (openfluid::tools::matchWithWildcard(Pattern,CurrentPlug->Signature->ID))
+            {
               SearchResults.AvailablePlugins.push_back(CurrentPlug);
+            }
           }
         }
         catch (openfluid::base::FrameworkException& E)
@@ -360,7 +381,9 @@ class OPENFLUID_API WarePluginsManager
       ItemType* WareItem = buildWareContainerWithSignatureOnly(ID);
 
       if (WareItem != nullptr && WareItem->Verified)
+      {
         return WareItem;
+      }
 
       return nullptr;
     }
@@ -387,16 +410,24 @@ class OPENFLUID_API WarePluginsManager
           WareItem->Body.reset(BProc());
 
           if (WareItem->Body == nullptr)
+          {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Ware from plugin file " + PluginFullPath +
                                                       " cannot be instanciated");
+          }
 
         }
-        else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+        else
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                        "Format error in plugin file " + PluginFullPath);
+        }
       }
-      else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+      else
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                      "Unable to find plugin file " + PluginFullPath);
+      }
     }
 
 
@@ -407,7 +438,9 @@ class OPENFLUID_API WarePluginsManager
     void unloadAllWares()
     {
       for (auto it=m_LoadedPluginsLibraries.begin();it != m_LoadedPluginsLibraries.end(); ++it)
+      {
         it->second.get()->unload();
+      }
 
       m_LoadedPluginsLibraries.clear();
     }

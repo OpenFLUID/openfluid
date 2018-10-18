@@ -76,15 +76,21 @@ class OPENFLUID_API TreeValue : public CompoundValue, public Tree<std::string,do
     Value& operator =(const Value& Other);
 
     inline Type getType() const
-    { return Value::TREE; }
+    {
+      return Value::TREE;
+    }
 
     Value* clone() const
-    { return new TreeValue(*this); };
+    {
+      return new TreeValue(*this);
+    };
 
     void writeToStream(std::ostream& OutStm) const;
 
     void writeQuotedToStream(std::ostream& OutStm) const
-    { writeToStream(OutStm); }
+    {
+      writeToStream(OutStm);
+    }
 
 };
 

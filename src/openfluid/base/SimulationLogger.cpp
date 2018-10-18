@@ -67,7 +67,9 @@ SimulationLogger::~SimulationLogger()
 void SimulationLogger::add(LogType LType, const std::string& ContextStr, const std::string& Msg)
 {
   if (LType == LOG_WARNING)
+  {
     m_CurrentWarningFlag = true;
+  }
 
   FileLogger::add(LType,ContextStr,Msg);
 }

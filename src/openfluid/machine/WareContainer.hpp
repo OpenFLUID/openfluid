@@ -62,10 +62,8 @@ class OPENFLUID_API WareContainer
     UUID_t LinkUID;
 
 
-    WareContainer() :
-      FileFullPath(""),Verified(false), LinkUID("")
-    {  }
-
+    WareContainer() : FileFullPath(""),Verified(false), LinkUID("")
+    { }
 };
 
 

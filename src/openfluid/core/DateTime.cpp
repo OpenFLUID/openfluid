@@ -108,7 +108,9 @@ bool DateTime::set(int Year, int Month, int Day, int Hour, int Minute, int Secon
     return true;
   }
   else
+  {
     return false;
+  }
 }
 
 
@@ -125,11 +127,9 @@ bool DateTime::setFromISOString(const std::string& DateTimeStr)
   int Min;
   int Sec;
 
-
   // scan of the input string to break it down
   return (sscanf(DateTimeStr.c_str(),"%4d-%2d-%2d %2d:%2d:%2d",&Year,&Month,&Day,&Hour,&Min,&Sec) == 6 &&
           set(Year, Month, Day, Hour, Min, Sec));
-
 }
 
 
@@ -183,14 +183,10 @@ void DateTime::set(const RawTime_t& SecondsSince0000)
 
 void DateTime::updateYMDHMSFromRawTime()
 {
-
-
   /** @internal
 
     http://en.wikipedia.org/wiki/Talk:Julian_day
-
   */
-
 
   RawTime_t n, c, y, m, a, Year, Month, Day;
 
@@ -198,7 +194,6 @@ void DateTime::updateYMDHMSFromRawTime()
   RawTime_t SecsLeft = (RawTime_t)(m_RawTime % 86400);
 
   //n = JDN + 32082;
-
 
   n = JDN + 32044;
   c = (4*n + 3)/146097;
@@ -223,7 +218,6 @@ void DateTime::updateYMDHMSFromRawTime()
   SecsLeft = (RawTime_t)(SecsLeft % 60);
 
   m_TM.tm_sec = SecsLeft;
-
 }
 
 
@@ -250,7 +244,6 @@ void DateTime::updateRawTimeFromYMDHMS()
     using (number of days between 1-1-0000 and first day of 4713BC) is 1721059
 
   */
-
 
   RawTime_t JDN;
 
@@ -288,16 +281,12 @@ RawTime_t DateTime::getRawTime() const
 
 std::string DateTime::getAsISOString() const
 {
-
   char pCh[80];
   std::string Str;
 
   strftime(pCh,80,"%Y-%m-%d %H:%M:%S",&m_TM);
 
-  Str = std::string(pCh,strlen(pCh));
-
-  return Str;
-
+  return std::string(pCh,strlen(pCh));
 }
 
 
@@ -307,16 +296,12 @@ std::string DateTime::getAsISOString() const
 
 std::string  DateTime::getAsString(std::string Format) const
 {
-
   char pCh[80];
   std::string Str;
 
-
   strftime(pCh,80,Format.c_str(),&m_TM);
 
-  Str = std::string(pCh,strlen(pCh));
-
-  return Str;
+  return std::string(pCh,strlen(pCh));
 
 }
 
@@ -327,16 +312,12 @@ std::string  DateTime::getAsString(std::string Format) const
 
 std::string DateTime::getDateAsISOString() const
 {
-
   char pCh[80];
   std::string Str;
 
-
   strftime(pCh,80,"%Y-%m-%d",&m_TM);
 
-  Str = std::string(pCh,strlen(pCh));
-
-  return Str;
+  return std::string(pCh,strlen(pCh));
 }
 
 
@@ -346,15 +327,12 @@ std::string DateTime::getDateAsISOString() const
 
 std::string DateTime::getTimeAsISOString() const
 {
-
   char pCh[80];
   std::string Str;
 
   strftime(pCh,80,"%H:%M:%S",&m_TM);
 
-  Str = std::string(pCh,strlen(pCh));
-
-  return Str;
+  return std::string(pCh,strlen(pCh));
 
 }
 

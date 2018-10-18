@@ -135,19 +135,25 @@ class OPENFLUID_API Event
       Returns the number of information
     */
     inline int getInfosCount() const
-    { return m_Infos.size(); }
+    {
+      return m_Infos.size();
+    }
 
     /**
       Returns all the informations as an EventInfosMap
     */
     inline EventInfosMap_t getInfos() const
-    { return m_Infos; }
+    {
+      return m_Infos;
+    }
 
     /**
       Returns the date and time of the event
     */
     inline DateTime getDateTime() const
-    { return m_Date; }
+    {
+      return m_Date;
+    }
 
     /**
       Gets an information as a string

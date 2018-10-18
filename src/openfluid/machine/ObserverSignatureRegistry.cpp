@@ -75,7 +75,9 @@ const ObserverSignatureInstance* ObserverSignatureRegistry::signature(const std:
       m_AvailableSignatures.begin(); it != m_AvailableSignatures.end(); ++it)
   {
     if ((*it)->Signature->ID == ObserverID)
+    {
       return (*it);
+    }
   }
   return nullptr;
 }

@@ -68,12 +68,16 @@ FixedGenerator::~FixedGenerator()
 void FixedGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetSimulatorParameter(Params,"fixedvalue",m_VarValue))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing fixed value for generator");
+  }
 
   std::string DeltaTStr;
   if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) &&
       !openfluid::tools::convertString(DeltaTStr,&m_DeltaT))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"wrong value for deltat");
+  }
 }
 
 
@@ -92,14 +96,19 @@ openfluid::base::SchedulingRequest FixedGenerator::initializeRun()
       OPENFLUID_InitializeVariable(LU,m_VarName,VV);
     }
     else
+    {
       OPENFLUID_InitializeVariable(LU,m_VarName,0.0);
-
+    }
   }
 
   if (m_DeltaT > 0)
+  {
     return Duration(m_DeltaT);
+  }
   else
+  {
     return DefaultDeltaT();
+  }
 }
 
 
@@ -127,9 +136,13 @@ openfluid::base::SchedulingRequest FixedGenerator::runStep()
   }
 
   if (m_DeltaT > 0)
+  {
     return Duration(m_DeltaT);
+  }
   else
+  {
     return DefaultDeltaT();
+  }
 }
 
 

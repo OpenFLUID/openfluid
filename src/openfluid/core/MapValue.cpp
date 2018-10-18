@@ -67,7 +67,9 @@ MapValue::MapValue(const MapValue& Val)
 Value& MapValue::operator=(const Value& Other)
 {
   if (this == &Other)
+  {
     return *this;
+  }
 
   const MapValue* CastedValue = dynamic_cast<const MapValue*> (&Other);
 
@@ -139,7 +141,9 @@ void MapValue::set(const std::string& Key, Value* Element)
 Value& MapValue::operator[](const std::string& Key)
 {
   if (!isKeyExist(Key))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Requested key " + Key + " does not exist");
+  }
 
   return (*(m_Value[Key]));
 }
@@ -152,7 +156,9 @@ Value& MapValue::operator[](const std::string& Key)
 Value& MapValue::at(const std::string& Key)
 {
   if (!isKeyExist(Key))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Requested key " + Key + " does not exist");
+  }
 
   return (*(m_Value[Key]));
 }
@@ -165,7 +171,9 @@ Value& MapValue::at(const std::string& Key)
 const Value& MapValue::at(const std::string& Key) const
 {
   if (!isKeyExist(Key))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Requested key " + Key + " does not exist");
+  }
 
   return (*(m_Value.at(Key)));
 }
@@ -191,7 +199,9 @@ std::vector<std::string> MapValue::getKeys() const
   Map_t::const_iterator it;
 
   for (it=m_Value.begin(); it!=m_Value.end(); ++it)
+  {
     Keys.push_back((*it).first);
+  }
 
   return Keys;
 }

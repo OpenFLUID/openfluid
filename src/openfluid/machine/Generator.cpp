@@ -57,7 +57,6 @@ Generator::Generator() : PluggableSimulator(),
 Generator::~Generator()
 {
 
-
 }
 
 

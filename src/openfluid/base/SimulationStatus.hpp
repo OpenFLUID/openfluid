@@ -86,43 +86,61 @@ class OPENFLUID_API SimulationStatus
                      const openfluid::core::Duration_t DeltaT,
                      const SchedulingConstraint& SConst = SCHED_NONE);
 
-    ~SimulationStatus() {}
+    ~SimulationStatus() 
+    { }
 
     inline openfluid::core::DateTime getBeginDate() const
-    { return m_BeginDate; }
+    {
+      return m_BeginDate;
+    }
 
     inline openfluid::core::DateTime getEndDate() const
-    { return m_EndDate; }
+    {
+      return m_EndDate;
+    }
 
     inline openfluid::core::DateTime getCurrentDate() const
-    { return m_CurrentDate; }
+    {
+      return m_CurrentDate;
+    }
 
     inline openfluid::core::Duration_t getDefaultDeltaT() const
-    { return m_DefaultDeltaT; }
+    {
+      return m_DefaultDeltaT;
+    }
 
     inline openfluid::core::Duration_t getSimulationDuration() const
-    { return m_Duration; }
+    {
+      return m_Duration;
+    }
 
     inline openfluid::core::TimeIndex_t getCurrentTimeIndex() const
-    { return m_CurrentTimeIndex; }
+    {
+      return m_CurrentTimeIndex;
+    }
 
     inline SchedulingConstraint getSchedulingConstraint() const
-    { return m_SchedConstraint; }
+    {
+      return m_SchedConstraint;
+    }
 
     inline bool isFirstTimeIndex() const
-    { return m_CurrentTimeIndex == 0; }
+    {
+      return m_CurrentTimeIndex == 0;
+    }
 
     void setCurrentTimeIndex(const openfluid::core::TimeIndex_t& Index);
 
     inline SimulationStage getCurrentStage() const
-    { return m_CurrentStage; }
+    {
+      return m_CurrentStage;
+    }
 
     std::string getCurrentStageAsString() const;
 
     void setCurrentStage(const SimulationStage& Stage);
 
     static std::string getStageAsString(const SimulationStage& Stage);
-
 };
 
 }  }  // namespaces

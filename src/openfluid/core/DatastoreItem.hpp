@@ -110,7 +110,9 @@ class OPENFLUID_API DatastoreItem
       @deprecated Since version 2.1.0. Use openfluid::core::DatastoreItem::getUnitsClass() instead
     */
     std::string getUnitClass() const OPENFLUID_DEPRECATED
-    { return getUnitsClass(); }
+    {
+      return getUnitsClass();
+    }
 
     /**
       @brief Gets the associated value of the resource.

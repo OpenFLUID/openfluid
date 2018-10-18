@@ -65,7 +65,9 @@ Engine::Engine(SimulationBlob& SimBlob,
     mp_SimLogger(nullptr)
 {
   if (!mp_MachineListener)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Listener can not be NULL");
+  }
 
 
   mp_SimStatus = &(m_SimulationBlob.simulationStatus());
@@ -98,7 +100,9 @@ Engine::Engine(SimulationBlob& SimBlob,
 Engine::~Engine()
 {
   if (mp_SimLogger != nullptr)
+  {
     delete mp_SimLogger;
+  }
 }
 
 
@@ -116,11 +120,15 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
 
   UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
+  {
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+  }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unit class " + ClassName + " does not exist for " +
-                                              VarName + " variable required by " + SimulatorID);
+                                             VarName + " variable required by " + SimulatorID);
+  }
 
   bool Status = true;
 
@@ -128,14 +136,20 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
   while (UnitIter != UnitList->end())
   {
     if(VarType == openfluid::core::Value::NONE)
+    {
       Status = (*UnitIter).variables()->isVariableExist(VarName);
+    }
     else
+    {
       Status = (*UnitIter).variables()->isTypedVariableExist(VarName,VarType);
+    }
 
     if (!Status)
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 VarName + " variable on " + ClassName +
                                                 " required by " + SimulatorID + " does not exist");
+    }
 
     ++UnitIter;
   }
@@ -157,11 +171,15 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
 
   UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
+  {
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+  }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Unit class " + ClassName +
                                               " does not exist for " + VarName +
-                                              " variable produced by " + SimulatorID);
+                                             " variable produced by " + SimulatorID);
+  }
 
   bool Status = true;
 
@@ -174,10 +192,12 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
        Status = !((*UnitIter).variables()->isVariableExist(VarName));
 
       if (!Status)
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   VarName + " variable on " + ClassName +
                                                   " produced by " + SimulatorID +
                                                   " cannot be created because it is already created");
+      }
 
       ++UnitIter;
     }
@@ -203,11 +223,15 @@ void Engine::checkExistingAttribute(const openfluid::core::AttributeName_t AttrN
 
   UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
+  {
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+  }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unit " + ClassName + " class does not exist for " +
-                                              AttrName + " attribute required by " + SimulatorID);
+                                             AttrName + " attribute required by " + SimulatorID);
+  }
 
   bool Status = true;
 
@@ -216,9 +240,11 @@ void Engine::checkExistingAttribute(const openfluid::core::AttributeName_t AttrN
   {
     Status = (*UnitIter).attributes()->isAttributeExist(AttrName);
     if (!Status)
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 AttrName + " attribute on " + ClassName +
                                                 " required by " + SimulatorID + " is not available");
+    }
 
     ++UnitIter;
   }
@@ -238,11 +264,15 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
 
   UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
+  {
     UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
-  else throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+  }
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                  "Unit class " + ClassName + " does not exist for " +
                                                  AttrName + " attribute produced by " + SimulatorID);
-
+  }
 
   for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
   {
@@ -319,13 +349,17 @@ void Engine::checkParametersConsistency()
 
 
       if (!FoundParam)
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Cannot find parameter " + Param.DataName +
                                                   " required by " + IInstance->Signature->ID);
+      }
       else if (!FilledParam)
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Parameter " + Param.DataName +
                                                   " required by " + IInstance->Signature->ID + " is empty");
+      }
     }
   }
 }
@@ -360,21 +394,17 @@ void Engine::checkModelConsistency()
 
     // checking variables to create (produced)
     for (i=0;i< HData.ProducedVars.size();i++)
-      createVariable(HData.ProducedVars[i].DataName,
-                     HData.ProducedVars[i].DataType,
-                     HData.ProducedVars[i].UnitsClass,
-                     false,
-                     CurrentSimulator->Signature->ID);
-
+    {
+      createVariable(HData.ProducedVars[i].DataName,HData.ProducedVars[i].DataType,HData.ProducedVars[i].UnitsClass,
+                     false,CurrentSimulator->Signature->ID);
+    }
 
     // checking variables to update
     for (i=0;i<HData.UpdatedVars.size();i++)
-      createVariable(HData.UpdatedVars[i].DataName,
-                     HData.UpdatedVars[i].DataType,
-                     HData.UpdatedVars[i].UnitsClass,
-                     true,
-                     CurrentSimulator->Signature->ID);
-
+    {
+      createVariable(HData.UpdatedVars[i].DataName,HData.UpdatedVars[i].DataType,HData.UpdatedVars[i].UnitsClass,
+                     true,CurrentSimulator->Signature->ID);
+    }
     ++SimIter;
   }
 
@@ -388,10 +418,10 @@ void Engine::checkModelConsistency()
 
     // checking required variables
     for (i=0;i< HData.RequiredVars.size();i++)
-      checkExistingVariable(HData.RequiredVars[i].DataName,
-                            HData.RequiredVars[i].DataType,
-                            HData.RequiredVars[i].UnitsClass,
-                            CurrentSimulator->Signature->ID);
+    {
+      checkExistingVariable(HData.RequiredVars[i].DataName,HData.RequiredVars[i].DataType,
+                            HData.RequiredVars[i].UnitsClass,CurrentSimulator->Signature->ID);
+    }
 
     ++SimIter;
   }
@@ -420,15 +450,17 @@ void Engine::checkAttributesConsistency()
 
     // checking required attribute
     for(i=0; i < HData.RequiredAttribute.size();i++)
-      checkExistingAttribute(HData.RequiredAttribute[i].DataName,
-          HData.RequiredAttribute[i].UnitsClass,
-          CurrentSimulator->Signature->ID);
+    {
+      checkExistingAttribute(HData.RequiredAttribute[i].DataName,HData.RequiredAttribute[i].UnitsClass,
+                             CurrentSimulator->Signature->ID);
+    }
 
     // checking produced attribute
     for(i=0; i < HData.ProducedAttribute.size();i++)
-      createAttribute(HData.ProducedAttribute[i].DataName,
-          HData.ProducedAttribute[i].UnitsClass,
-          CurrentSimulator->Signature->ID);
+    {
+      createAttribute(HData.ProducedAttribute[i].DataName,HData.ProducedAttribute[i].UnitsClass,
+                      CurrentSimulator->Signature->ID);
+    }
 
     ++SimIter;
   }
@@ -458,9 +490,11 @@ void Engine::checkExtraFilesConsistency()
     {
       if (!openfluid::tools::Filesystem::isFile(openfluid::base::RunContextManager::instance()
                                                   ->getInputFullPath(HData.RequiredExtraFiles[i])))
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "File " + HData.RequiredExtraFiles[i] +
                                                   " required by " + CurrentSimulator->Signature->ID + " not found");
+      }
     }
   }
 }
@@ -476,7 +510,9 @@ void Engine::prepareOutputDir()
   {
     openfluid::tools::Filesystem::makeDirectory(openfluid::base::RunContextManager::instance()->getOutputDir());
     if (!openfluid::tools::Filesystem::isDirectory(openfluid::base::RunContextManager::instance()->getOutputDir()))
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error creating output directory");
+    }
   }
   else
   {
@@ -533,9 +569,13 @@ void Engine::initParams()
   }
 
   if (mp_SimLogger->isCurrentWarningFlag())
+  {
     mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  }
   else
+  {
     mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_OK);
+  }
 
   mp_SimLogger->resetCurrentWarningFlag();
 
@@ -562,9 +602,13 @@ void Engine::prepareData()
   }
 
   if (mp_SimLogger->isCurrentWarningFlag())
+  {
     mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  }
   else
+  {
     mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_OK);
+  }
 
   mp_SimLogger->resetCurrentWarningFlag();
 }
@@ -611,9 +655,13 @@ void Engine::checkConsistency()
 
 
   if (mp_SimLogger->isCurrentWarningFlag())
+  {
     mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  }
   else
+  {
     mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_OK);
+  }
 
   mp_SimLogger->resetCurrentWarningFlag();
 }
@@ -646,9 +694,13 @@ void Engine::run()
   }
 
   if (mp_SimLogger->isCurrentWarningFlag())
+  {
     mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  }
   else
+  {
     mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
+  }
 
   mp_SimLogger->resetCurrentWarningFlag();
 
@@ -707,9 +759,13 @@ void Engine::run()
 
 
   if (mp_SimLogger->isCurrentWarningFlag())
+  {
     mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  }
   else
+  {
     mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
+  }
 
   mp_SimLogger->resetCurrentWarningFlag();
 

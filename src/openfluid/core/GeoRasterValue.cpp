@@ -59,7 +59,9 @@ GeoRasterValue::GeoRasterValue(const std::string& FilePath, const std::string& F
 GeoRasterValue::~GeoRasterValue()
 {
   if (mp_Data)
+  {
     GDALClose(mp_Data);
+  }
 }
 
 
@@ -80,7 +82,9 @@ openfluid::core::UnstructuredValue::UnstructuredType GeoRasterValue::getType() c
 GDALDataset* GeoRasterValue::data()
 {
   if (!mp_Data)
+  {
     tryToOpenSource();
+  }
 
   return mp_Data;
 }

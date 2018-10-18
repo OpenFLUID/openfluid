@@ -66,40 +66,60 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 
     Generator();
 
-    ~Generator();
+    virtual ~Generator();
 
 
     void setInfos(openfluid::core::VariableName_t VarName, openfluid::core::UnitsClass_t UnitsClass,
                   openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, unsigned int VarSize=1)
-      { m_VarName = VarName; m_UnitsClass = UnitsClass; m_GenMethod = GenMethod; m_VarSize = VarSize; };
+    {
+      m_VarName = VarName;
+      m_UnitsClass = UnitsClass;
+      m_GenMethod = GenMethod;
+      m_VarSize = VarSize;
+    }
 
     openfluid::core::VariableName_t getVariableName() const
-    { return m_VarName; };
+    {
+      return m_VarName;
+    }
 
     openfluid::core::UnitsClass_t getUnitsClass() const
-    { return m_UnitsClass; };
+    {
+      return m_UnitsClass;
+    }
 
     /**
       @deprecated Since version 2.1.0. Use openfluid::machine::Generator::getUnitsClass() const instead
     */
     openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
-    { return m_UnitsClass; };
+    {
+      return m_UnitsClass;
+    }
 
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod getGeneratorMethod() const
-    { return m_GenMethod; };
+    {
+      return m_GenMethod;
+    }
 
     inline bool isVectorVariable() const
-    { return (m_VarSize > 1); };
+    {
+      return (m_VarSize > 1);
+    }
 
     inline bool isScalarVariable() const
-    { return (!isVectorVariable()); };
+    {
+      return (!isVectorVariable());
+    }
 
     inline unsigned int getVariableSize() const
-    { return m_VarSize; };
+    {
+      return m_VarSize;
+    }
 
+    virtual void prepareData()
+    {
 
-    virtual void prepareData() {};
-
+    }
 };
 
 

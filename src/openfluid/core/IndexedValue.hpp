@@ -69,13 +69,17 @@ class IndexedValue
       Default constructor
     */
     IndexedValue() : m_Index(0),m_Value(new NullValue())
-    { }
+    {
+
+    }
 
     /**
       Constructor from a time index and a value
     */
     IndexedValue(const TimeIndex_t& Ind, const Value& Val) : m_Index(Ind),m_Value(Val.clone())
-    { }
+    {
+
+    }
 
     /**
       Copy constructor
@@ -88,33 +92,43 @@ class IndexedValue
       @return the time index
     */
     inline TimeIndex_t getIndex() const
-    { return m_Index; }
+    {
+      return m_Index;
+    }
 
     /**
       Returns a pointer to the value of the indexed value
       @return a pointer to the value
     */
     inline Value* value() const
-    { return m_Value.get(); }
+    {
+      return m_Value.get();
+    }
 
     /**
       Returns a pointer to the value of the indexed value
       @return a pointer to the value
     */
     inline Value* value()
-    { return m_Value.get(); }
+    {
+      return m_Value.get();
+    }
 
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::IndexedValue::value() const instead
     */
     inline Value* getValue() const OPENFLUID_DEPRECATED
-    { return m_Value.get(); }
+    {
+      return m_Value.get();
+    }
 
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::IndexedValue::value() instead
     */
     inline Value* getValue() OPENFLUID_DEPRECATED
-    { return m_Value.get(); }
+    {
+      return m_Value.get();
+    }
 
 
     /**
@@ -122,7 +136,10 @@ class IndexedValue
       and the value is set to an openfluid::core::NullValue.
     */
     inline void clear()
-    { m_Index = 0; m_Value.reset(new NullValue()); }
+    {
+      m_Index = 0;
+      m_Value.reset(new NullValue());
+    }
 
 };
 

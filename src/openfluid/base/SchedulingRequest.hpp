@@ -61,11 +61,14 @@ class SchedulingRequest
     openfluid::core::Duration_t Duration;
 
 
-    SchedulingRequest() : RequestType(UNDEFINED) { };
+    SchedulingRequest() : RequestType(UNDEFINED)
+    { }
 
-    SchedulingRequest(const openfluid::core::Duration_t& D) : RequestType(DURATION), Duration(D) { };
+    SchedulingRequest(const openfluid::core::Duration_t& D) : RequestType(DURATION), Duration(D)
+    { }
 
-    SchedulingRequest(const RequestType_t& RT) : RequestType(RT) { };
+    SchedulingRequest(const RequestType_t& RT) : RequestType(RT)
+    { }
 };
 
 

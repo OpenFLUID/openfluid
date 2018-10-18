@@ -61,13 +61,19 @@ class ValuesBuffer::PrivateImpl
     DataContainer_t::iterator findAtIndex(const TimeIndex_t& anIndex)
     {
       if (m_Data.empty())
+      {
         return m_Data.end();
+      }
 
       if (anIndex < m_Data.front().m_Index || anIndex > m_Data.back().m_Index)
+      {
         return m_Data.end();
+      }
 
       if (anIndex == m_Data.front().m_Index)
+      {
         return m_Data.begin();
+      }
 
       if (anIndex == m_Data.back().m_Index)
       {
@@ -84,10 +90,14 @@ class ValuesBuffer::PrivateImpl
       while (It!=Ite)
       {
         if ((*It).m_Index == anIndex)
+        {
           return It;
+        }
 
         if ((*It).m_Index > anIndex)
+        {
           return m_Data.end();
+        }
 
         ++It;
       }
@@ -99,13 +109,19 @@ class ValuesBuffer::PrivateImpl
     DataContainer_t::const_iterator findAtIndex(const TimeIndex_t& anIndex) const
     {
       if (m_Data.empty())
+      {
         return m_Data.end();
+      }
 
       if (anIndex < m_Data.front().m_Index || anIndex > m_Data.back().m_Index)
+      {
         return m_Data.end();
+      }
 
       if (anIndex == m_Data.front().m_Index)
+      {
         return m_Data.begin();
+      }
 
       if (anIndex == m_Data.back().m_Index)
       {
@@ -121,10 +137,14 @@ class ValuesBuffer::PrivateImpl
       while (It!=Ite)
       {
         if ((*It).m_Index == anIndex)
+        {
           return It;
+        }
 
         if ((*It).m_Index > anIndex)
+        {
           return m_Data.end();
+        }
 
         ++It;
       }
@@ -276,7 +296,10 @@ bool ValuesBuffer::getIndexedValues(const TimeIndex_t& aBeginIndex, const TimeIn
 
     while (rIt != rIte && (*rIt).getIndex() >= aBeginIndex)
     {
-      if  ((*rIt).getIndex() <= anEndIndex) IndValueList.push_front(*rIt);
+      if  ((*rIt).getIndex() <= anEndIndex)
+      {
+        IndValueList.push_front(*rIt);
+      }
       ++rIt;
     }
 
@@ -334,7 +357,9 @@ bool ValuesBuffer::modifyValue(const TimeIndex_t& anIndex, const Value& aValue)
 bool ValuesBuffer::modifyCurrentValue(const Value& aValue)
 {
   if (m_PImpl->m_Data.empty())
+  {
     return false;
+  }
 
   PrivateImpl::DataContainer_t::iterator It = m_PImpl->m_Data.end();
   --It;
@@ -351,7 +376,9 @@ bool ValuesBuffer::modifyCurrentValue(const Value& aValue)
 bool ValuesBuffer::appendValue(const TimeIndex_t& anIndex, const openfluid::core::Value& aValue)
 {
   if (!m_PImpl->m_Data.empty() && anIndex <= m_PImpl->m_Data.back().m_Index)
+  {
     return false;
+  }
 
   m_PImpl->m_Data.push_back(IndexedValue(anIndex,aValue));
 

@@ -130,10 +130,14 @@ QString PreferencesManager::getFileName()
 void PreferencesManager::setFileName(const QString& AbsoluteFileName)
 {
   if (!mp_Instance)
+  {
     m_FileName = AbsoluteFileName;
+  }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "FileName can not be changed after PreferencesManager instantiation");
+  }
 }
 
 
@@ -168,7 +172,9 @@ QString PreferencesManager::getLang()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("lang"))
+  {
     mp_ConfFile->setValue("lang",guessLang());
+  }
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -190,7 +196,9 @@ QStringList PreferencesManager::getAvailableLangs()
 
   QStringList Langs;
   for (int i=0;i<QMFiles.size();++i)
+  {
     Langs.append(QMFiles[i].right(8).left(5));
+  }
 
   return Langs;
 }
@@ -215,9 +223,13 @@ QString PreferencesManager::guessLang()
   QString Locale = QLocale::system().name();
 
   if (isAvailableLang(Locale))
+  {
     return Locale;
+  }
   else
+  {
     return "default";
+  }
 }
 
 
@@ -229,7 +241,10 @@ void PreferencesManager::setBuilderRecentMax(int RecentMax)
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   if (RecentMax > RecentProjectsLimit)
+  {
     RecentMax = RecentProjectsLimit;
+  }
+
   mp_ConfFile->setValue("recentmax",RecentMax);
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
@@ -247,7 +262,9 @@ int PreferencesManager::getBuilderRecentMax()
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
 
   if (!mp_ConfFile->contains("recentmax"))
+  {
     mp_ConfFile->setValue("recentmax",(unsigned int)(RecentProjectsLimit/2));
+  }
 
   unsigned int RecentMax = mp_ConfFile->value("recentmax").toUInt();
   mp_ConfFile->endGroup();
@@ -263,13 +280,17 @@ bool PreferencesManager::addBuilderRecentProject(const QString& ProjectName,
                                           const QString& ProjectPath)
 {
   if (ProjectPath.indexOf("=") >= 0)
+  {
     return false;
+  }
 
   QStringList Recents;
 
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   if (mp_ConfFile->contains("list"))
+  {
     Recents = mp_ConfFile->value("list").toStringList();
+  }
   mp_ConfFile->endGroup();
 
   QString NewRecentPair = ProjectName+"|"+ProjectPath;
@@ -311,7 +332,9 @@ void PreferencesManager::adaptBuilderRecentProjects()
 
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   if (mp_ConfFile->contains("list"))
+  {
     Recents = mp_ConfFile->value("list").toStringList();
+  }
   mp_ConfFile->endGroup();
 
   int RecentMax = getBuilderRecentMax();
@@ -335,7 +358,9 @@ PreferencesManager::RecentProjectsList_t PreferencesManager::getBuilderRecentPro
 
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   if (mp_ConfFile->contains("list"))
+  {
     Recents = mp_ConfFile->value("list").toStringList();
+  }
   mp_ConfFile->endGroup();
 
   RecentProjectsList_t RPL;
@@ -398,9 +423,13 @@ QString PreferencesManager::getBuilderWorkspacePath()
   QStringList Paths = getBuilderWorkspacesPaths();
 
   if (!Paths.isEmpty())
+  {
     return Paths[0];
+  }
   else
+  {
     return "";
+  }
 }
 
 
@@ -421,10 +450,16 @@ QString PreferencesManager::getBuilderProjectsPath()
 void PreferencesManager::setBuilderExtraPaths(const QString& Key, const QStringList& Paths)
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
+
   if (Paths.isEmpty())
+  {
     mp_ConfFile->remove(Key);
+  }
   else
+  {
     mp_ConfFile->setValue(Key,Paths);
+  }
+
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
 
@@ -438,7 +473,9 @@ void PreferencesManager::setBuilderExtraPaths(const QString& Key, const QStringL
 void PreferencesManager::addBuilderExtraPath(const QString& Key, const QString& Path)
 {
   if (Path.indexOf("=") >= 0)
+  {
     return;
+  }
 
   mp_ConfFile->beginGroup("openfluid.builder.paths");
   QStringList Paths = mp_ConfFile->value(Key).toStringList();
@@ -461,7 +498,9 @@ void PreferencesManager::addBuilderExtraPath(const QString& Key, const QString& 
 void PreferencesManager::removeBuilderExtraPath(const QString& Key, const QString& Path)
 {
   if (Path.indexOf("=") >= 0)
+  {
     return;
+  }
 
   mp_ConfFile->beginGroup("openfluid.builder.paths");
   QStringList Paths = mp_ConfFile->value(Key).toStringList();
@@ -635,8 +674,12 @@ openfluid::core::Duration_t PreferencesManager::getBuilderDeltaT()
   openfluid::core::Duration_t DeltaT;
 
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
+
   if (!mp_ConfFile->contains("deltat"))
+  {
     mp_ConfFile->setValue("deltat",300);
+  }
+
   DeltaT = mp_ConfFile->value("deltat").toUInt();
   mp_ConfFile->endGroup();
 
@@ -725,7 +768,9 @@ bool PreferencesManager::addMarketplace(const QString& PlaceName,
                                         const QString& PlaceUrl)
 {
   if (PlaceName.indexOf('=') >= 0)
+  {
     return false;
+  }
 
   mp_ConfFile->beginGroup("openfluid.market.marketplaces");
   mp_ConfFile->setValue(PlaceName,PlaceUrl);
@@ -760,7 +805,9 @@ PreferencesManager::MarketPlaces_t PreferencesManager::getMarketplaces()
   QStringList PlacesKeys = mp_ConfFile->childKeys();
 
   for (int i = 0; i < PlacesKeys.size(); ++i)
+  {
     Places[PlacesKeys[i]] = mp_ConfFile->value(PlacesKeys[i]).toString();
+  }
 
   mp_ConfFile->endGroup();
 
@@ -819,7 +866,12 @@ void PreferencesManager::setBuilderExtensionValue(const QString& PluginName,
 Qt::DockWidgetArea PreferencesManager::getBuilderDockPosition()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
-  if (!mp_ConfFile->contains("dockpos")) mp_ConfFile->setValue("dockpos",Qt::LeftDockWidgetArea);
+
+  if (!mp_ConfFile->contains("dockpos"))
+  {
+    mp_ConfFile->setValue("dockpos",Qt::LeftDockWidgetArea);
+  }
+
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -851,7 +903,9 @@ Qt::ToolBarArea PreferencesManager::getBuilderToolBarPosition()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("toolbarpos"))
+  {
     mp_ConfFile->setValue("toolbarpos",Qt::TopToolBarArea);
+  }
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -883,7 +937,9 @@ bool PreferencesManager::isBuilderItemRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("itemremovalconfirm"))
+  {
     mp_ConfFile->setValue("itemremovalconfirm",true);
+  }
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -915,7 +971,9 @@ bool PreferencesManager::isBuilderParamRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("paramremovalconfirm"))
+  {
     mp_ConfFile->setValue("paramremovalconfirm",true);
+  }
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -947,7 +1005,9 @@ bool PreferencesManager::isBuilderWaresWatchersActive()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("wareswatchers"))
+  {
     mp_ConfFile->setValue("wareswatchers",true);
+  }
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -979,7 +1039,9 @@ bool PreferencesManager::isBuilderSpatialUnitsRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("spatialunitsremovalconfirm"))
+  {
     mp_ConfFile->setValue("spatialunitsremovalconfirm",true);
+  }
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -1011,7 +1073,9 @@ bool PreferencesManager::isBuilderSpatialConnsRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("spatialconnsremovalconfirm"))
+  {
     mp_ConfFile->setValue("spatialconnsremovalconfirm",true);
+  }
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -1043,7 +1107,9 @@ bool PreferencesManager::isBuilderSpatialAttrsRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("spatialattrsremovalconfirm"))
+  {
     mp_ConfFile->setValue("spatialattrsremovalconfirm",true);
+  }
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -1075,7 +1141,9 @@ bool PreferencesManager::isBuilderAutomaticSaveBeforeRun()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("savebeforerun"))
+  {
     mp_ConfFile->setValue("savebeforerun",false);
+  }
   mp_ConfFile->endGroup();
 
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -1107,7 +1175,9 @@ bool PreferencesManager::isWaresdevAutomaticSaveBeforeBuild()
 {
   mp_ConfFile->beginGroup("openfluid.waresdev.interface");
   if (!mp_ConfFile->contains("savebeforebuild"))
+  {
     mp_ConfFile->setValue("savebeforebuild",true);
+  }
   bool AutoSave = mp_ConfFile->value("savebeforebuild").toBool();
   mp_ConfFile->endGroup();
 
@@ -1174,7 +1244,9 @@ void PreferencesManager::setWaresdevTextEditorDefaults(bool ForceReset)
   for(QMap<QString,QString>::iterator it = DefaultHLRules.begin(); it != DefaultHLRules.end(); ++it)
   {
     if(! mp_ConfFile->contains(it.key()) || ForceReset)
+    {
       mp_ConfFile->setValue(it.key(),it.value().remove(" ").split(',',QString::SkipEmptyParts));
+    }
   }
 
   mp_ConfFile->endGroup();
@@ -1183,22 +1255,32 @@ void PreferencesManager::setWaresdevTextEditorDefaults(bool ForceReset)
   mp_ConfFile->beginGroup("currentline_highlighting");
 
   if(! mp_ConfFile->contains("enabled") || ForceReset)
+  {
     mp_ConfFile->setValue("enabled",true);
+  }
 
   if(! mp_ConfFile->contains("color") || ForceReset)
+  {
     mp_ConfFile->setValue("color","#EFF6FF");
+  }
 
   mp_ConfFile->endGroup();
 
 
   if(! mp_ConfFile->contains("fontname") || ForceReset)
+  {
     mp_ConfFile->setValue("fontname","DejaVu Sans Mono");
+  }
 
   if(! mp_ConfFile->contains("linewrapping/enabled") || ForceReset)
+  {
      mp_ConfFile->setValue("linewrapping/enabled",true);
+  }
 
   if(! mp_ConfFile->contains("indent/spacenumber") || ForceReset)
+  {
      mp_ConfFile->setValue("indent/spacenumber",2);
+  }
 
   mp_ConfFile->endGroup();
 
@@ -1431,7 +1513,9 @@ QString PreferencesManager::getWaresdevConfigGenerator()
   mp_ConfFile->beginGroup("openfluid.waresdev.commands");
 #ifdef Q_OS_WIN32
   if (!mp_ConfFile->contains("config/generator"))
+  {
     mp_ConfFile->setValue("config/generator","MinGW Makefiles");
+  }
 #endif
   Generator = mp_ConfFile->value("config/generator","").toString();
   mp_ConfFile->endGroup();
@@ -1482,7 +1566,9 @@ bool PreferencesManager::isWaresdevShowCommandEnv(const QString& Name)
   mp_ConfFile->beginGroup("openfluid.waresdev.commands");
 #ifdef Q_OS_WIN32
   if (!mp_ConfFile->contains("showenv/"+Name))
+  {
     mp_ConfFile->setValue("showenv/"+Name,false);
+  }
 #endif
   Shown = mp_ConfFile->value("showenv/"+Name,false).toBool();
   mp_ConfFile->endGroup();

@@ -117,7 +117,9 @@ std::string getXMLVariableString(const openfluid::ware::SignatureTypedSpatialDat
 
   XMLStr = "<variable name=\"" + Data.DataName + "\" iomode=\""+IoModeStr+"\" " + "unitsclass=\"" + Data.UnitsClass;
   if (Data.DataType != openfluid::core::Value::NONE)
+  {
     XMLStr += "\" type=\"" + openfluid::core::Value::getStringFromValueType(Data.DataType);
+  }
   XMLStr += "\" siunit=\"" + escapeXMLEntities(Data.DataUnit) + "\">"
                            + escapeXMLEntities(Data.Description) + "</variable>\n";
 
@@ -176,11 +178,17 @@ bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature&
   }
   OutFile << Indent << Indent << Indent << "<status>";
   if (Signature.Status == openfluid::ware::EXPERIMENTAL)
+  {
     OutFile << "experimental";
+  }
   else if (Signature.Status == openfluid::ware::BETA)
+  {
     OutFile << "beta";
+  }
   else if (Signature.Status == openfluid::ware::STABLE)
+  {
     OutFile << "stable";
+  }
   OutFile << "</status>\n";
 
   OutFile << Indent << Indent << Indent << "<domain>" << escapeXMLEntities(Signature.Domain) << "</domain>\n";
@@ -195,40 +203,64 @@ bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature&
   OutFile << Indent << Indent << "<data>\n";
 
   for (auto& Param: Signature.HandledData.RequiredParams)
+  {
     OutFile << Indent << Indent << Indent << getXMLParameterString(Param,"required");
+  }
 
   for (auto& Param: Signature.HandledData.UsedParams)
+  {
     OutFile << Indent << Indent << Indent << getXMLParameterString(Param,"used");
+  }
 
   for (auto& ExtraFile: Signature.HandledData.RequiredExtraFiles)
+  {
     OutFile << Indent << Indent << Indent << "<extrafile name=\"" << ExtraFile << "\" iomode=\"required\" />\n";
+  }
 
   for (auto& ExtraFile: Signature.HandledData.UsedExtraFiles)
+  {
     OutFile << Indent << Indent << Indent << "<extrafile name=\"" << ExtraFile << "\" iomode=\"used\" />\n";
+  }
 
   for (auto& EventClass: Signature.HandledData.UsedEventsOnUnits)
+  {
     OutFile << Indent << Indent << Indent << "<events unitsclass=\"" << EventClass << "\" />\n";
+  }
 
   for (auto& Var: Signature.HandledData.RequiredVars)
+  {
     OutFile << Indent << Indent << Indent << getXMLVariableString(Var,"required");
+  }
 
   for (auto& Var: Signature.HandledData.UsedVars)
+  {
     OutFile << Indent << Indent << Indent << getXMLVariableString(Var,"used");
+  }
 
   for (auto& Var: Signature.HandledData.ProducedVars)
+  {
     OutFile << Indent << Indent << Indent << getXMLVariableString(Var,"produced");
+  }
 
   for (auto& Var: Signature.HandledData.UpdatedVars)
+  {
     OutFile << Indent << Indent << Indent << getXMLVariableString(Var,"updated");
+  }
 
   for (auto& Var: Signature.HandledData.RequiredAttribute)
+  {
     OutFile << Indent << Indent << Indent << getXMLAttributeString(Var,"required");
+  }
 
   for (auto& Var: Signature.HandledData.UsedAttribute)
+  {
     OutFile << Indent << Indent << Indent << getXMLAttributeString(Var,"used");
+  }
 
   for (auto& Var: Signature.HandledData.ProducedAttribute)
+  {
     OutFile << Indent << Indent << Indent << getXMLAttributeString(Var,"produced");
+  }
 
   OutFile << Indent << Indent << "</data>\n";
 
@@ -255,9 +287,13 @@ bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature&
   std::string SchedStr;
 
   if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::UNDEFINED)
+  {
     SchedStr = "mode=\"undefined\"";
+  }
   else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::DEFAULT)
+  {
     SchedStr = "mode=\"default\"";
+  }
   else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED)
   {
     SchedStr = "mode=\"fixed\"";
@@ -323,7 +359,9 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
           QString GhostID = GhostNode.attributeNode("ID").value();
 
           if (!QFileInfo(FilePathQStr).fileName().startsWith(GhostID))
+          {
             return false;
+          }
 
           Signature.ID = GhostID.toStdString();
 
@@ -340,9 +378,13 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                    InfoNode = InfoNode.nextSiblingElement())
               {
                 if (InfoNode.tagName() == "name")
+                {
                   Signature.Name = InfoNode.text().toStdString();
+                }
                 else if (InfoNode.tagName() == "description")
+                {
                   Signature.Description = InfoNode.text().toStdString();
+                }
                 else if (InfoNode.tagName() == "author")
                 {
                   Signature.Authors.push_back(
@@ -355,22 +397,38 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                   std::string StatusStr = InfoNode.text().toLower().toStdString();
 
                   if (StatusStr == "experimental")
+                  {
                     Signature.Status = openfluid::ware::EXPERIMENTAL;
+                  }
                   else if (StatusStr == "beta")
+                  {
                     Signature.Status = openfluid::ware::BETA;
+                  }
                   else if (StatusStr == "stable")
+                  {
                     Signature.Status = openfluid::ware::STABLE;
+                  }
                   else
+                  {
                     return false;
+                  }
                 }
                 else if (InfoNode.tagName() == "domain")
+                {
                   Signature.Domain = InfoNode.text().toStdString();
+                }
                 else if (InfoNode.tagName() == "process")
+                {
                   Signature.Process = InfoNode.text().toStdString();
+                }
                 else if (InfoNode.tagName() == "method")
+                {
                   Signature.Method = InfoNode.text().toStdString();
+                }
                 else if (InfoNode.tagName() == "version")
+                {
                   Signature.Version = InfoNode.text().toStdString();
+                }
               }
             }
 
@@ -388,7 +446,9 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                   DataNodeFields Data(DataNode,QStringList() << "required" << "used");
 
                   if (Data.IOMode.empty() || Data.Name.empty())
+                  {
                     return false;
+                  }
 
                   openfluid::ware::SignatureDataItem Param;
                   Param.DataName = Data.Name;
@@ -396,28 +456,40 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                   Param.Description = Data.Description;
 
                   if (Data.IOMode == "required")
+                  {
                     Signature.HandledData.RequiredParams.push_back(Param);
+                  }
                   else if (Data.IOMode == "used")
+                  {
                     Signature.HandledData.UsedParams.push_back(Param);
+                  }
                 }
                 else if (DataNode.tagName() == "extrafile")
                 {
                   DataNodeFields Data(DataNode,QStringList() << "required" << "used");
 
                   if (Data.IOMode.empty() || Data.Name.empty())
+                  {
                     return false;
+                  }
 
                   if (Data.IOMode == "required")
+                  {
                     Signature.HandledData.RequiredExtraFiles.push_back(Data.Name);
+                  }
                   else if (Data.IOMode == "used")
+                  {
                     Signature.HandledData.UsedExtraFiles.push_back(Data.Name);
+                  }
                 }
                 else if (DataNode.tagName() == "events")
                 {
                   DataNodeFields Data(DataNode);
 
                   if (Data.UnitsClass.empty())
+                  {
                     return false;
+                  }
 
                   Signature.HandledData.UsedEventsOnUnits.push_back(Data.UnitsClass);
                 }
@@ -426,7 +498,9 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                   DataNodeFields Data(DataNode,QStringList() << "required" << "used" << "produced" << "updated");
 
                   if (Data.IOMode.empty() || Data.Name.empty() || Data.UnitsClass.empty())
+                  {
                     return false;
+                  }
 
                   openfluid::ware::SignatureTypedSpatialDataItem Variable;
                   Variable.DataName = Data.Name;
@@ -436,25 +510,37 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                   if (!Data.Type.empty())
                   {
                     if (!openfluid::core::Value::getValueTypeFromString(Data.Type,Variable.DataType))
+                    {
                       return false;
+                    }
                   }
 
 
                   if (Data.IOMode == "required")
+                  {
                     Signature.HandledData.RequiredVars.push_back(Variable);
+                  }
                   else if (Data.IOMode == "used")
+                  {
                     Signature.HandledData.UsedVars.push_back(Variable);
+                  }
                   else if (Data.IOMode == "produced")
+                  {
                     Signature.HandledData.ProducedVars.push_back(Variable);
+                  }
                   else if (Data.IOMode == "updated")
+                  {
                     Signature.HandledData.UpdatedVars.push_back(Variable);
+                  }
                 }
                 else if (DataNode.tagName() == "attribute")
                 {
                   DataNodeFields Data(DataNode,QStringList() << "required" << "used" << "produced");
 
                   if (Data.IOMode.empty() || Data.Name.empty() || Data.UnitsClass.empty())
+                  {
                     return false;
+                  }
 
                   openfluid::ware::SignatureSpatialDataItem Attribute;
                   Attribute.DataName = Data.Name;
@@ -463,11 +549,17 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                   Attribute.DataUnit = Data.SIUnit;
 
                   if (Data.IOMode == "required")
+                  {
                     Signature.HandledData.RequiredAttribute.push_back(Attribute);
+                  }
                   else if (Data.IOMode == "used")
+                  {
                     Signature.HandledData.UsedAttribute.push_back(Attribute);
+                  }
                   else if (Data.IOMode == "produced")
+                  {
                     Signature.HandledData.ProducedAttribute.push_back(Attribute);
+                  }
                 }
               }
 
@@ -482,12 +574,16 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
                    SpatialNode = SpatialNode.nextSiblingElement())
               {
                 if (SpatialNode.tagName() == "description")
+                {
                   Signature.HandledUnitsGraph.UpdatedUnitsGraph = SpatialNode.text().toStdString();
+                }
                 else if (SpatialNode.tagName() == "unitsclass")
                 {
                   std::string NameStr = SpatialNode.attribute("name").toStdString();
                   if (NameStr.empty())
+                  {
                     return false;
+                  }
 
                   openfluid::ware::SignatureUnitsClassItem UnitsClassItem;
                   UnitsClassItem.UnitsClass = NameStr;
@@ -519,7 +615,9 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
 
                 long Val = ValStr.toLong(&Converted);
                 if (!Converted)
+                {
                   return false;
+                }
 
                 Signature.TimeScheduling.setAsFixed(Val);
               }
@@ -532,28 +630,40 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
 
                 long Min = MinStr.toLong(&Converted);
                 if (!Converted)
+                {
                   return false;
+                }
 
                 long Max = MaxStr.toLong(&Converted);
                 if (!Converted)
+                {
                   return false;
+                }
 
                 Signature.TimeScheduling.setAsRange(Min,Max);
               }
               else
+              {
                 return false;
+              }
             }
           }
         }
         else
+        {
           return false;
+        }
       }
       else
+      {
         return false;
+      }
     }
   }
   else
+  {
     return false;
+  }
 
   return true;
 }

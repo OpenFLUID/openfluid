@@ -60,15 +60,11 @@ class OPENFLUID_API UnstructuredValue
     };
 
     UnstructuredValue()
-    {
-
-    }
+    { }
 
 
     virtual ~UnstructuredValue()
-    {
-
-    }
+    { }
 
     virtual UnstructuredType getType() const = 0;
 

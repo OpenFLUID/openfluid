@@ -73,16 +73,22 @@ RandomGenerator::~RandomGenerator()
 void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetSimulatorParameter(Params,"min",m_Min))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing min value for generator");
+  }
 
   if (!OPENFLUID_GetSimulatorParameter(Params,"max",m_Max))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing max value for generator");
+  }
 
   std::string DeltaTStr;
   if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) &&
       !openfluid::tools::convertString(DeltaTStr,&m_DeltaT))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"wrong value for deltat");
-};
+  }
+}
 
 
 // =====================================================================
@@ -92,8 +98,10 @@ void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 void RandomGenerator::checkConsistency()
 {
   if ( m_Min > m_Max)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "max value must be greater or equal to min value for generator");
+  }
 }
 
 
@@ -112,13 +120,19 @@ openfluid::base::SchedulingRequest RandomGenerator::initializeRun()
       OPENFLUID_InitializeVariable(LU,m_VarName,VV);
     }
     else
+    {
       OPENFLUID_InitializeVariable(LU,m_VarName,openfluid::core::DoubleValue(0.0));
+    }
   }
 
   if (m_DeltaT > 0)
+  {
     return Duration(m_DeltaT);
+  }
   else
+  {
     return DefaultDeltaT();
+  }
 }
 
 
@@ -141,14 +155,19 @@ openfluid::base::SchedulingRequest RandomGenerator::runStep()
       OPENFLUID_AppendVariable(LU,m_VarName,VV);
     }
     else
+    {
       OPENFLUID_AppendVariable(LU,m_VarName,Value);
-
+    }
   }
 
   if (m_DeltaT > 0)
+  {
     return Duration(m_DeltaT);
+  }
   else
+  {
     return DefaultDeltaT();
+  }
 }
 
 

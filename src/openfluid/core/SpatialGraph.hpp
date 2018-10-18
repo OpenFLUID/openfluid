@@ -85,13 +85,19 @@ class OPENFLUID_API SpatialGraph
     const UnitsCollection* spatialUnits(const UnitsClass_t& UnitsClass) const;
 
     inline const UnitsListByClassMap_t* allSpatialUnitsByClass() const
-    { return &m_PcsOrderedUnitsByClass; };
+    {
+      return &m_PcsOrderedUnitsByClass;
+    };
 
     inline const UnitsPtrList_t* allSpatialUnits() const
-    { return &m_PcsOrderedUnitsGlobal; };
+    {
+      return &m_PcsOrderedUnitsGlobal;
+    };
 
     inline UnitsPtrList_t* allSpatialUnits()
-    { return &m_PcsOrderedUnitsGlobal; };
+    {
+      return &m_PcsOrderedUnitsGlobal;
+    };
 
     bool isUnitsClassExist(const UnitsClass_t& UnitsClass) const;
 

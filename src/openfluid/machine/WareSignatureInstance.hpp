@@ -56,7 +56,7 @@ class OPENFLUID_API WareSignatureInstance : public WareContainer
 
     WareSignatureInstance() : WareContainer(),
       ItemType(openfluid::ware::WareType::UNDEFINED)
-    {  }
+    { }
 
 };
 

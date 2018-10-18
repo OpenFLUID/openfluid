@@ -58,67 +58,95 @@ class OPENFLUID_API MachineListener : public openfluid::base::Listener
 
   public:
 
-    MachineListener() {};
+    MachineListener()
+    { }
 
-    virtual ~MachineListener() {};
+    virtual ~MachineListener()
+    { }
 
-    virtual void onInitParams() {};
+    virtual void onInitParams()
+    { }
 
-    virtual void onInitParamsDone(const openfluid::base::Listener::Status& /*Status*/) {};
+    virtual void onInitParamsDone(const openfluid::base::Listener::Status& /*Status*/)
+    { }
 
-    virtual void onSimulatorInitParams(const std::string& /*SimulatorID*/) {};
+    virtual void onSimulatorInitParams(const std::string& /*SimulatorID*/)
+    { }
 
     virtual void onSimulatorInitParamsDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*SimulatorID*/) {};
+                                          const std::string& /*SimulatorID*/)
+    { }
 
-    virtual void onPrepareData() {};
+    virtual void onPrepareData()
+    { }
 
-    virtual void onPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/) {};
+    virtual void onPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/)
+    { }
 
-    virtual void onSimulatorPrepareData(const std::string& /*SimulatorID*/) {};
+    virtual void onSimulatorPrepareData(const std::string& /*SimulatorID*/)
+    { }
 
     virtual void onSimulatorPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*SimulatorID*/) {};
+                                          const std::string& /*SimulatorID*/)
+    { }
 
-    virtual void onCheckConsistency() {};
+    virtual void onCheckConsistency()
+    { }
 
-    virtual void onCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/) {};
+    virtual void onCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/)
+    { }
 
-    virtual void onSimulatorCheckConsistency(const std::string& /*SimulatorID*/) {};
+    virtual void onSimulatorCheckConsistency(const std::string& /*SimulatorID*/)
+    { }
 
     virtual void onSimulatorCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*SimulatorID*/) {};
+                                                 const std::string& /*SimulatorID*/)
+    { }
 
-    virtual void onInitializeRun() {};
+    virtual void onInitializeRun()
+    { }
 
-    virtual void onInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/) {};
+    virtual void onInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/)
+    { }
 
-    virtual void onSimulatorInitializeRun(const std::string& /*SimulatorID*/) {};
+    virtual void onSimulatorInitializeRun(const std::string& /*SimulatorID*/)
+    { }
 
     virtual void onSimulatorInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*SimulatorID*/) {};
+                                          const std::string& /*SimulatorID*/)
+    { }
 
-    virtual void onBeforeRunSteps() {};
+    virtual void onBeforeRunSteps()
+    { }
 
-    virtual void onRunStep(const openfluid::base::SimulationStatus* /*SimStatus*/) {};
+    virtual void onRunStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+    { }
 
-    virtual void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/) {};
+    virtual void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/)
+    { }
 
-    virtual void onSimulatorRunStep(const std::string& /*SimulatorID*/) {};
+    virtual void onSimulatorRunStep(const std::string& /*SimulatorID*/)
+    { }
 
     virtual void onSimulatorRunStepDone(const openfluid::base::Listener::Status& /*Status*/,
-                                       const std::string& /*SimulatorID*/) {};
+                                       const std::string& /*SimulatorID*/)
+    { }
 
-    virtual void onAfterRunSteps() {};
+    virtual void onAfterRunSteps()
+    { }
 
-    virtual void onFinalizeRun() {};
+    virtual void onFinalizeRun()
+    { }
 
-    virtual void onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/) {};
+    virtual void onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/)
+    { }
 
-    virtual void onSimulatorFinalizeRun(const std::string& /*SimulatorID*/) {};
+    virtual void onSimulatorFinalizeRun(const std::string& /*SimulatorID*/)
+    { }
 
     virtual void onSimulatorFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*SimulatorID*/) {};
+                                            const std::string& /*SimulatorID*/)
+    { }
 
 };
 

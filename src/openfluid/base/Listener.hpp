@@ -54,10 +54,10 @@ class OPENFLUID_API Listener
     enum Status {LISTEN_OK, LISTEN_WARNING, LISTEN_ERROR};
 
     Listener()
-    { };
+    { }
 
     virtual ~Listener()
-    { };
+    { }
 
 };
 

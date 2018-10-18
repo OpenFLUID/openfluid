@@ -68,8 +68,7 @@ class OPENFLUID_API Variables
 
     bool createVariable(const VariableName_t& aName, const Value::Type& aType);
 
-    bool modifyValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
-        const Value& aValue);
+    bool modifyValue(const VariableName_t& aName, const TimeIndex_t& anIndex, const Value& aValue);
 
     bool modifyCurrentValue(const VariableName_t& aName, const Value& aValue);
 
@@ -105,8 +104,8 @@ class OPENFLUID_API Variables
 
     bool isTypedVariableExist(const VariableName_t& aName, const Value::Type& VarType) const;
 
-    bool isTypedVariableExist(const VariableName_t& aName, const TimeIndex_t& anIndex,
-        const Value::Type& VarType) const;
+    bool isTypedVariableExist(const VariableName_t& aName,
+                              const TimeIndex_t& anIndex, const Value::Type& VarType) const;
 
     std::vector<VariableName_t> getVariablesNames() const;
 

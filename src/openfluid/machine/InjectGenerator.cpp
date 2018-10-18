@@ -57,7 +57,10 @@ InjectGenerator::InjectGenerator() : Generator(),
 
 InjectGenerator::~InjectGenerator()
 {
-  if (m_DistriBindings != nullptr) delete m_DistriBindings;
+  if (m_DistriBindings != nullptr)
+  {
+    delete m_DistriBindings;
+  }
 
 }
 
@@ -69,19 +72,28 @@ InjectGenerator::~InjectGenerator()
 void InjectGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetSimulatorParameter(Params,"sources",m_SourcesFile))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "missing sources value for generator");
+  }
 
   if (!OPENFLUID_GetSimulatorParameter(Params,"distribution",m_DistriFile))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "missing distribution value for generator");
+  }
 
 
-  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmin",m_Min)) m_IsMin = true;
+  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmin",m_Min))
+  {
+    m_IsMin = true;
+  }
 
-  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmax",m_Max)) m_IsMax = true;
-
-};
+  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmax",m_Max))
+  {
+    m_IsMax = true;
+  }
+}
 
 
 // =====================================================================
@@ -107,9 +119,11 @@ void InjectGenerator::prepareData()
 void InjectGenerator::checkConsistency()
 {
   if (m_IsMin && m_IsMax && m_Min > m_Max)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "threshold max value must be greater or equal "
                                               "to threshold min value for generator");
+  }
 }
 
 
@@ -129,8 +143,14 @@ openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
     if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {
 
-      if (m_IsMax && Value > m_Max) Value = m_Max;
-      if (m_IsMin && Value < m_Min) Value = m_Min;
+      if (m_IsMax && Value > m_Max)
+      {
+        Value = m_Max;
+      }
+      if (m_IsMin && Value < m_Min)
+      {
+        Value = m_Min;
+      }
     }
     else
     {
@@ -143,7 +163,9 @@ openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
       OPENFLUID_InitializeVariable(LU,m_VarName,VV);
     }
     else
+    {
       OPENFLUID_InitializeVariable(LU,m_VarName,Value);
+    }
   }
 
   openfluid::core::DateTime NextDT;
@@ -153,7 +175,9 @@ openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
     return Duration(NextDT.diffInSeconds(CurrentDT));
   }
   else
+  {
     return Never();
+  }
 }
 
 
@@ -174,8 +198,14 @@ openfluid::base::SchedulingRequest InjectGenerator::runStep()
     if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {
 
-      if (m_IsMax && Value > m_Max) Value = m_Max;
-      if (m_IsMin && Value < m_Min) Value = m_Min;
+      if (m_IsMax && Value > m_Max)
+      {
+        Value = m_Max;
+      }
+      if (m_IsMin && Value < m_Min)
+      {
+        Value = m_Min;
+      }
 
       if (isVectorVariable())
       {
@@ -183,8 +213,9 @@ openfluid::base::SchedulingRequest InjectGenerator::runStep()
         OPENFLUID_AppendVariable(LU,m_VarName,VV);
       }
       else
+      {
         OPENFLUID_AppendVariable(LU,m_VarName,Value);
-
+      }
     }
   }
 
@@ -195,7 +226,9 @@ openfluid::base::SchedulingRequest InjectGenerator::runStep()
     return Duration(NextDT.diffInSeconds(CurrentDT));
   }
   else
+  {
     return Never();
+  }
 }
 
 

@@ -150,10 +150,14 @@ bool RunContextManager::checkProject(const std::string& ProjectPath)
 
 
   if (!QFile::exists(PrjFilePath))
+  {
     return false;
+  }
 
   if (!QDir().exists(QString::fromStdString(getInputDirFromProjectPath(ProjectPath))))
+  {
     return false;
+  }
 
   QSettings PrjFile(PrjFilePath,QSettings::IniFormat);
 
@@ -234,7 +238,9 @@ bool RunContextManager::createProject(const std::string& Path,
     const std::string& Authors, const bool Inc)
 {
   if (m_ProjectIsOpen)
+  {
     return false;
+  }
 
   if (QDir().mkpath(QString::fromStdString(getInputDirFromProjectPath(Path))))
   {
@@ -269,7 +275,9 @@ bool RunContextManager::createProject(const std::string& Path,
 bool RunContextManager::saveProject()
 {
   if (!m_ProjectIsOpen)
+  {
     return false;
+  }
 
   m_ProjectLastModDate = getNow();
 
@@ -360,7 +368,9 @@ void RunContextManager::updateProjectOutputDir()
     m_OutputDir = getOuputDirFromProjectPath(m_ProjectPath).append("_").append(Now);
   }
   else
+  {
     m_OutputDir = getOuputDirFromProjectPath(m_ProjectPath);
+  }
 }
 
 
@@ -414,7 +424,9 @@ bool RunContextManager::getProjectInfos(const std::string& Path,
 QVariant RunContextManager::getProjectConfigValue(const QString& Group, const QString& Key) const
 {
   if (!m_ProjectIsOpen)
+  {
     return QVariant();
+  }
 
   return mp_ProjectFile->value(Group+"/"+Key);
 }
@@ -427,7 +439,9 @@ QVariant RunContextManager::getProjectConfigValue(const QString& Group, const QS
 void RunContextManager::setProjectConfigValue(const QString& Group, const QString& Key, const QVariant& Value)
 {
   if (!m_ProjectIsOpen)
+  {
     return;
+  }
 
   mp_ProjectFile->setValue(Group+"/"+Key,Value);
 }
@@ -445,8 +459,12 @@ void RunContextManager::processWareParams(openfluid::ware::WareParams_t& Params)
      {"${dir.temp}",m_TempDir}};
 
   for (auto& Param : Params)
+  {
     for (const auto& R : Replacements)
+    {
       Param.second.replaceAll(R.first,R.second);
+    }
+  }
 }
 
 

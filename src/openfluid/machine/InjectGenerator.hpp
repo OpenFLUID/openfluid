@@ -85,7 +85,8 @@ class OPENFLUID_API InjectGenerator : public Generator
 
     openfluid::base::SchedulingRequest runStep();
 
-    void finalizeRun() {};
+    void finalizeRun()
+    { }
 
 };
 

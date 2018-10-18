@@ -64,13 +64,15 @@ class OPENFLUID_API FixedGenerator : public Generator
 
     void initParams(const openfluid::ware::WareParams_t& Params);
 
-    void checkConsistency() {};
+    void checkConsistency()
+    { }
 
     openfluid::base::SchedulingRequest initializeRun();
 
     openfluid::base::SchedulingRequest runStep();
 
-    void finalizeRun() {};
+    void finalizeRun()
+    { }
 
 };
 

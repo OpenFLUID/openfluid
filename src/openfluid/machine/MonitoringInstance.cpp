@@ -61,7 +61,9 @@ MonitoringInstance::MonitoringInstance(openfluid::machine::SimulationBlob& Simul
 MonitoringInstance::~MonitoringInstance()
 {
   if (m_Initialized)
+  {
     finalize();
+  }
 }
 
 
@@ -72,8 +74,10 @@ MonitoringInstance::~MonitoringInstance()
 void MonitoringInstance::appendObserver(ObserverInstance* ObsInstance)
 {
   if (m_Initialized)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Trying to append observer after observers list initialization");
+  }
 
   m_Observers.push_back(ObsInstance);
 }
@@ -117,8 +121,10 @@ void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger
 void MonitoringInstance::finalize()
 {
   if (!m_Initialized)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Trying to finalize an uninitialized observers list");
+  }
 
   std::list<ObserverInstance*>::const_iterator ObsIter;
 

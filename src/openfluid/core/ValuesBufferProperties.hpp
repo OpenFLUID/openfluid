@@ -50,13 +50,16 @@ namespace openfluid { namespace core {
 class OPENFLUID_API ValuesBufferProperties
 {
   protected:
+
     static unsigned int BufferSize;
 
 
   public:
 
     static unsigned int getBufferSize()
-    { return BufferSize; };
+    {
+      return BufferSize;
+    };
 
     static void setBufferSize(const unsigned int aBufferSize)
     {

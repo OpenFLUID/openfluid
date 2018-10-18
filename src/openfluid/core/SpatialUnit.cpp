@@ -160,9 +160,13 @@ UnitsPtrList_t* SpatialUnit::toSpatialUnits(const UnitsClass_t& aClass)
   LinkedUnitsListByClassMap_t::iterator it = m_ToUnits.find(aClass);
 
   if (it != m_ToUnits.end())
+  {
     return &(it->second);
+  }
   else
+  {
     return nullptr;
+  }
 }
 
 
@@ -175,9 +179,13 @@ UnitsPtrList_t* SpatialUnit::fromSpatialUnits(const UnitsClass_t& aClass)
   LinkedUnitsListByClassMap_t::iterator it = m_FromUnits.find(aClass);
 
   if (it != m_FromUnits.end())
+  {
     return &(it->second);
+  }
   else
+  {
     return nullptr;
+  }
 }
 
 
@@ -190,9 +198,13 @@ UnitsPtrList_t* SpatialUnit::parentSpatialUnits(const UnitsClass_t& aClass)
   LinkedUnitsListByClassMap_t::iterator it = m_ParentUnits.find(aClass);
 
   if (it != m_ParentUnits.end())
+  {
     return &(it->second);
+  }
   else
+  {
     return nullptr;
+  }
 }
 
 
@@ -205,9 +217,13 @@ UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitsClass_t& aClass)
   LinkedUnitsListByClassMap_t::iterator it = m_ChildrenUnits.find(aClass);
 
   if (it != m_ChildrenUnits.end())
+  {
     return &(it->second);
+  }
   else
+  {
     return nullptr;
+  }
 }
 
 
@@ -270,7 +286,9 @@ void SpatialUnit::streamContents(std::ostream& OStream)
 bool SpatialUnit::importGeometryFromWkt(const std::string& WKT)
 {
   if (m_Geometry)
+  {
     deleteGeometry();
+  }
 
   char* WktBuffer = (char*)(WKT.c_str());
 
@@ -294,7 +312,9 @@ bool SpatialUnit::importGeometryFromWkt(const std::string& WKT)
 std::string SpatialUnit::exportGeometryToWkt() const
 {
   if (!m_Geometry)
+  {
     return "";
+  }
 
   char* WktBuffer = nullptr;
 

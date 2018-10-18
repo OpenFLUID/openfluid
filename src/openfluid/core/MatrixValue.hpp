@@ -134,30 +134,42 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
       Constructor, creates a Matrix containing ColsNbr x RowsNbr elements
     */
     MatrixValue(unsigned long ColsNbr,unsigned long RowsNbr) : CompoundValue(), Matrix<double>(ColsNbr,RowsNbr)
-    { }
+    {
+
+    }
 
     /**
       Constructor, creates a Matrix containing ColsNbr x RowsNbr elements, initialized with value InitValue
     */
     MatrixValue(unsigned long ColsNbr, unsigned long RowsNbr, double InitValue) :
       CompoundValue(), Matrix<double>(ColsNbr,RowsNbr,InitValue)
-    { }
+    {
+
+    }
 
     virtual ~MatrixValue()
-    { }
+    {
+
+    }
 
     Value& operator =(const Value& Other);
 
     inline Type getType() const
-    { return Value::MATRIX; };
+    {
+      return Value::MATRIX;
+    };
 
     Value* clone() const
-    { return new MatrixValue(*this); }
+    {
+      return new MatrixValue(*this);
+    }
 
     void writeToStream(std::ostream& OutStm) const;
 
     void writeQuotedToStream(std::ostream& OutStm) const
-    { writeToStream(OutStm); }
+    {
+      writeToStream(OutStm);
+    }
 
 };
 

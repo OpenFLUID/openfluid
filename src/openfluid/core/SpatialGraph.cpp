@@ -123,7 +123,9 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
   openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
 
   for (itUnitsClass=m_PcsOrderedUnitsByClass.begin();itUnitsClass!=m_PcsOrderedUnitsByClass.end();++itUnitsClass)
+  {
     ClassVector.push_back((*itUnitsClass).first);
+  }
 
 
   // remove all connections
@@ -135,23 +137,30 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
     // from
     UnitsList = aUnit->fromSpatialUnits(ClassVector[i]);
     while (UnitsList !=nullptr && !UnitsList->empty())
+    {
       removeFromToConnection(UnitsList->front(),aUnit);
+    }
 
     // to
     UnitsList = aUnit->toSpatialUnits(ClassVector[i]);
     while (UnitsList !=nullptr && !UnitsList->empty())
+    {
       removeFromToConnection(aUnit, UnitsList->front());
+    }
 
     // children
     UnitsList = aUnit->childSpatialUnits(ClassVector[i]);
     while (UnitsList !=nullptr && !UnitsList->empty())
+    {
       removeChildParentConnection(UnitsList->front(),aUnit);
+    }
 
     // parent
     UnitsList = aUnit->parentSpatialUnits(ClassVector[i]);
     while (UnitsList !=nullptr && !UnitsList->empty())
+    {
       removeChildParentConnection(aUnit, UnitsList->front());
-
+    }
   }
 
 
@@ -166,9 +175,13 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
     Found = ((*UnitsIt)->getID() == aUnit->getID() && (*UnitsIt)->getClass() == aUnit->getClass());
 
     if (Found)
+    {
       m_PcsOrderedUnitsGlobal.erase(UnitsIt);
+    }
     else
+    {
       ++UnitsIt;
+    }
   }
 
 
@@ -190,9 +203,13 @@ bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
       Found = ((*UnitsBaseIt).getID() == aUnit->getID() && (*UnitsBaseIt).getClass() == aUnit->getClass());
 
       if (Found)
+      {
         UnitsBase->erase(UnitsBaseIt);
+      }
       else
+      {
         ++UnitsBaseIt;
+      }
     }
   }
 
@@ -214,7 +231,9 @@ bool SpatialGraph::removeFromToConnection(SpatialUnit* FromUnit,
             removeUnitFromList(ToUnit->fromSpatialUnits(FromUnit->getClass()),FromUnit->getID()));
   }
   else
+  {
     return false;
+  }
 }
 
 
@@ -231,7 +250,9 @@ bool SpatialGraph::removeChildParentConnection(SpatialUnit* ChildUnit,
             removeUnitFromList(ParentUnit->childSpatialUnits(ChildUnit->getClass()),ChildUnit->getID()));
   }
   else
+  {
     return false;
+  }
 }
 
 
@@ -294,7 +315,9 @@ UnitsCollection* SpatialGraph::spatialUnits(const UnitsClass_t& UnitsClass)
   it = m_PcsOrderedUnitsByClass.find(UnitsClass);
 
   if (it == m_PcsOrderedUnitsByClass.end())
+  {
     return nullptr;
+  }
 
   return &(it->second);
 
@@ -312,7 +335,9 @@ const UnitsCollection* SpatialGraph::spatialUnits(const UnitsClass_t& UnitsClass
   it = m_PcsOrderedUnitsByClass.find(UnitsClass);
 
   if (it == m_PcsOrderedUnitsByClass.end())
+  {
     return nullptr;
+  }
 
   return  &(it->second);
 
@@ -385,7 +410,9 @@ void SpatialGraph::streamContents(std::ostream& OStream)
 void SpatialGraph::clearAllVariables()
 {
   for (openfluid::core::SpatialUnit* CurrentUnit : m_PcsOrderedUnitsGlobal)
+  {
     CurrentUnit->variables()->clear();
+  }
 }
 
 
@@ -396,7 +423,9 @@ void SpatialGraph::clearAllVariables()
 void SpatialGraph::clearAllAttributes()
 {
   for (openfluid::core::SpatialUnit* CurrentUnit : m_PcsOrderedUnitsGlobal)
+  {
     CurrentUnit->attributes()->clear();
+  }
 }
 
 

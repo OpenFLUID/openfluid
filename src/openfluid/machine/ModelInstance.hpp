@@ -118,18 +118,26 @@ class OPENFLUID_API ModelInstance
     void clear();
 
     unsigned int getItemsCount() const
-    { return m_ModelItems.size(); };
+    {
+      return m_ModelItems.size();
+    }
 
     openfluid::ware::WareParams_t& globalParameters()
-    { return m_GlobalParams; };
+    {
+      return m_GlobalParams;
+    }
 
     void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamValue_t& Value);
 
     void setGlobalParameters(const openfluid::ware::WareParams_t& Params)
-    { m_GlobalParams = Params; };
+    {
+      m_GlobalParams = Params;
+    }
 
     const std::list<ModelItemInstance*>& items() const
-    { return m_ModelItems; };
+    {
+      return m_ModelItems;
+    }
 
     void initialize(openfluid::base::SimulationLogger* SimLogger);
 
@@ -144,21 +152,27 @@ class OPENFLUID_API ModelInstance
     void call_initializeRun();
 
     inline bool hasTimePointToProcess() const
-    { return !m_TimePointList.empty(); };
+    {
+      return !m_TimePointList.empty();
+    }
 
     void processNextTimePoint();
 
     inline openfluid::core::Duration_t getNextTimePointIndex() const
     {
       if (m_TimePointList.empty())
+      {
         return -2;
+      }
       return m_TimePointList.front().getTimeIndex();
     }
 
     void call_finalizeRun() const;
 
     void resetInitialized()
-    { m_Initialized = false; }
+    {
+      m_Initialized = false;
+    }
 
 };
 

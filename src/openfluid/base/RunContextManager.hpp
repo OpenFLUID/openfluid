@@ -125,7 +125,9 @@ class OPENFLUID_API RunContextManager : public Environment
       @return the full path of the directory
     */
     std::string getInputDir() const
-    { return m_InputDir; }
+    {
+      return m_InputDir;
+    }
 
     /**
       Returns the full path of a file or directory relative to the simulation input directory
@@ -133,7 +135,9 @@ class OPENFLUID_API RunContextManager : public Environment
       @return the full path to the file or directory
     */
     std::string getInputFullPath(const std::string& Filename) const
-    { return m_InputDir + "/" + Filename; }
+    {
+      return m_InputDir + "/" + Filename;
+    }
 
     /**
       Sets the full path of the simulation input directory
@@ -146,7 +150,9 @@ class OPENFLUID_API RunContextManager : public Environment
       @return the full path of the directory
     */
     std::string getOutputDir() const
-    { return m_OutputDir; }
+    {
+      return m_OutputDir;
+    }
 
     /**
       Returns the full path of a file or directory relative to the simulation output directory
@@ -154,7 +160,9 @@ class OPENFLUID_API RunContextManager : public Environment
       @return the full path to the file or directory
     */
     std::string getOutputFullPath(const std::string& Filename) const
-    { return m_OutputDir + "/" + Filename; }
+    {
+      return m_OutputDir + "/" + Filename;
+    }
 
     /**
       Sets the full path of the simulation output directory
@@ -169,42 +177,54 @@ class OPENFLUID_API RunContextManager : public Environment
       @return true if enabled, false if disabled
     */
     bool isClearOutputDir() const
-    { return m_IsClearOutputDir; }
+    {
+      return m_IsClearOutputDir;
+    }
 
     /**
       Sets the status of automatic cleaning of output directory before simulation run
       @param Enabled set to true to enable
     */
     void setClearOutputDir(bool Enabled)
-    { m_IsClearOutputDir = Enabled; }
+    {
+      m_IsClearOutputDir = Enabled;
+    }
 
     /**
       Returns the status of simulation profiling
       @return true if enabled, false if disabled
     */
     bool isProfiling() const
-    { return m_IsProfiling; }
+    {
+      return m_IsProfiling;
+    }
 
     /**
       Sets the status of simulation profiling
       @param Enabled set to true to enable
     */
     void setProfiling(bool Enabled)
-    { m_IsProfiling = Enabled; }
+    {
+      m_IsProfiling = Enabled;
+    }
 
     /**
       Returns the size of the buffer set by the user for simulation variables values
       @return the size of the buffer
     */
     unsigned int getValuesBufferUserSize() const
-    { return m_ValuesBufferSize; }
+    {
+      return m_ValuesBufferSize;
+    }
 
     /**
       Sets the size of the buffer set by the user for simulation variables values
       @param[in] Size the size of the buffer
     */
     void setValuesBufferUserSize(unsigned int Size)
-    { m_ValuesBufferSize = Size; }
+    {
+      m_ValuesBufferSize = Size;
+    }
 
     /**
       Unsets the size of the buffer set by the user for simulation variables values
@@ -218,21 +238,27 @@ class OPENFLUID_API RunContextManager : public Environment
       @return true if set by user (size > 0), false otherwise
     */
     bool isValuesBufferUserSize() const
-    { return (m_ValuesBufferSize > 0); }
+    {
+      return (m_ValuesBufferSize > 0);
+    }
 
     /**
       Returns the value for maximum threads count to be used in OpenFLUID wares (simulators, observers, ...)
       @return the maximum threads count
     */
     unsigned int getWaresMaxNumThreads() const
-    { return m_WaresMaxNumThreads; }
+    {
+      return m_WaresMaxNumThreads;
+    }
 
     /**
       Sets the value for maximum threads count to be used in OpenFLUID wares (simulators, observers, ...)
       @param[in] Num the maximum threads count
     */
     void setWaresMaxNumThreads(unsigned int Num)
-    { m_WaresMaxNumThreads = Num; }
+    {
+      m_WaresMaxNumThreads = Num;
+    }
 
     /**
       Resets the value for maximum threads count to be used in OpenFLUID wares (simulators, observers, ...).
@@ -241,54 +267,86 @@ class OPENFLUID_API RunContextManager : public Environment
     void resetWaresMaxNumThreads();
 
     openfluid::core::MapValue& extraProperties()
-    { return m_ExtraProperties; }
+    {
+      return m_ExtraProperties;
+    }
 
     const openfluid::core::MapValue& getWaresEnvironment() const
-    { return m_WaresSharedEnvironment; }
+    {
+      return m_WaresSharedEnvironment;
+    }
 
     void processWareParams(openfluid::ware::WareParams_t& Params) const;
 
     std::string getProjectPath() const
-    { return m_ProjectPath; }
+    {
+      return m_ProjectPath;
+    }
 
     std::string getProjectName() const
-    { return m_ProjectName; }
+    {
+      return m_ProjectName;
+    }
 
     void setProjectName(const std::string& Name)
-    { m_ProjectName = Name; }
+    {
+      m_ProjectName = Name;
+    }
 
     std::string getProjectDescription() const
-    { return m_ProjectDescription; }
+    {
+      return m_ProjectDescription;
+    }
 
     void setProjectDescription(const std::string& Description)
-    { m_ProjectDescription = Description; }
+    {
+      m_ProjectDescription = Description;
+    }
 
     std::string getProjectAuthors() const
-    { return m_ProjectAuthors; }
+    {
+      return m_ProjectAuthors;
+    }
 
     void setProjectAuthors(const std::string& Authors)
-    { m_ProjectAuthors = Authors; }
+    {
+      m_ProjectAuthors = Authors;
+    }
 
     std::string getProjectCreationDate() const
-    { return m_ProjectCreationDate; }
+    {
+      return m_ProjectCreationDate;
+    }
 
     void setProjectCreationDate(const std::string& CreationDate)
-    { m_ProjectCreationDate = CreationDate; }
+    {
+      m_ProjectCreationDate = CreationDate;
+    }
 
     void setProjectCreationDateAsNow()
-    { m_ProjectCreationDate = getNow(); }
+    {
+      m_ProjectCreationDate = getNow();
+    }
 
     std::string getProjectLastModDate() const
-    { return m_ProjectLastModDate; }
+    {
+      return m_ProjectLastModDate;
+    }
 
     void setProjectLastModDate(const std::string& LastModDate)
-    { m_ProjectLastModDate = LastModDate; }
+    {
+      m_ProjectLastModDate = LastModDate;
+    }
 
     bool isProjectIncrementalOutputDir() const
-    { return m_ProjectIncOutputDir; }
+    {
+      return m_ProjectIncOutputDir;
+    }
 
     void setProjectIncrementalOutputDir(const bool Inc)
-    { m_ProjectIncOutputDir = Inc; }
+    {
+      m_ProjectIncOutputDir = Inc;
+    }
 
     bool openProject(const std::string& Path);
 
@@ -297,7 +355,9 @@ class OPENFLUID_API RunContextManager : public Environment
                 const bool Inc);
 
     bool isProjectOpen() const
-    { return m_ProjectIsOpen; }
+    {
+      return m_ProjectIsOpen;
+    }
 
     bool saveProject();
 

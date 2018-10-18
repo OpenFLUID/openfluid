@@ -112,19 +112,26 @@ class OPENFLUID_API Vector
       @return size of the vector
     */
     unsigned long getSize() const
-    { return m_Size; };
+    {
+      return m_Size;
+    }
 
     /**
       Returns the size of the vector
       @return size of the vector
     */
     unsigned long size() const
-    { return getSize(); };
+    {
+      return getSize();
+    }
 
     /**
       Returns a pointer to the content of the vector (like C arrays)
     */
-    T* data() const { return m_Data; };
+    T* data() const
+    {
+      return m_Data;
+    }
 
     /**
       Sets data for the vector from Data and with size Size
@@ -139,12 +146,18 @@ class OPENFLUID_API Vector
     /**
       Returns the element of the vector for index Index
     */
-    inline T at(unsigned long Index) const { return getElement(Index); };
+    inline T at(unsigned long Index) const
+    {
+      return getElement(Index);
+    }
 
     /**
       Returns the element of the vector for index Index
     */
-    inline T get(unsigned long Index) const { return getElement(Index); };
+    inline T get(unsigned long Index) const
+    {
+      return getElement(Index);
+    }
 
 
     /**
@@ -155,7 +168,10 @@ class OPENFLUID_API Vector
     /**
       Sets a new value for element at the given index
     */
-    inline void set(unsigned long Index, T Element) { setElement(Index,Element); };
+    inline void set(unsigned long Index, T Element)
+    {
+      setElement(Index,Element);
+    }
 
 
     /**
@@ -184,28 +200,36 @@ class OPENFLUID_API Vector
       @return an iterator to the first element in the vector
     */
     inline iterator begin()
-    { return &m_Data[0]; }
+    {
+      return &m_Data[0];
+    }
 
     /**
       Returns a constant iterator referring to the first element in the vector
       @return a constant iterator to the first element in the vector
     */
     inline const_iterator begin() const
-    { return &m_Data[0]; }
+    {
+      return &m_Data[0];
+    }
 
     /**
       Returns an iterator referring to the past-the-end element in the vector
       @return an iterator to the past-the-end element in the vector
     */
     inline iterator end()
-    { return &m_Data[m_Size]; }
+    {
+      return &m_Data[m_Size];
+    }
 
     /**
       Returns a constant iterator referring to the past-the-end element in the vector
       @return a constant iterator to the past-the-end element in the vector
     */
     inline const_iterator end() const
-    { return &m_Data[m_Size]; }
+    {
+      return &m_Data[m_Size];
+    }
 
 };
 
@@ -231,7 +255,9 @@ Vector<T>::Vector(const Vector &A)
   init();
 
   if (!allocate(A.m_Size))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
+  }
 
   std::copy(A.m_Data, A.m_Data + A.m_Size, m_Data);
 }
@@ -247,7 +273,10 @@ Vector<T>::Vector(unsigned long Size)
   init();
 
   if (!allocate(Size))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
+  }
+
 }
 
 
@@ -261,8 +290,9 @@ Vector<T>::Vector(unsigned long Size, T InitValue)
   init();
 
   if (!allocate(Size))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
-
+  }
 
   if (m_Data != nullptr)
   {
@@ -282,7 +312,9 @@ Vector<T>::Vector(T* Data, unsigned long Size)
   init();
 
   if (!allocate(Size))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
+  }
 
   std::copy(Data, Data + Size, m_Data);
 
@@ -312,9 +344,13 @@ bool Vector<T>::allocate(unsigned long Size)
   {
     m_Data = new T[Size];
     if (m_Data != nullptr)
+    {
       m_Size = Size;
+    }
     else
+    {
       return false;
+    }
   }
 
   return true;
@@ -331,7 +367,9 @@ void Vector<T>::setData(T* Data, unsigned long Size)
   clear();
 
   if (!allocate(Size))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
+  }
 
   std::copy(Data, Data + Size, m_Data);
 }
@@ -345,7 +383,9 @@ template <class T>
 T Vector<T>::getElement(unsigned long Index) const
 {
   if (Index >= m_Size)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"element access range error");
+  }
 
   return m_Data[Index];
 }
@@ -359,7 +399,10 @@ template <class T>
 void Vector<T>::setElement(unsigned long Index, T Element)
 {
   if (Index >= m_Size)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"element access range error");
+  }
+
   m_Data[Index] = Element;
 }
 
@@ -372,7 +415,9 @@ template <class T>
 T& Vector<T>::operator[](unsigned long Index)
 {
   if (Index >= m_Size)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"element access range error");
+  }
 
   return m_Data[Index];
 }
@@ -386,7 +431,9 @@ template <class T>
 Vector<T>& Vector<T>::operator=(const Vector &A)
 {
   if (this == &A) // in case somebody tries assign array to itself
+  {
     return *this;
+  }
 
   clear();
 

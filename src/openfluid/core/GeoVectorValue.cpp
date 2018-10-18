@@ -93,7 +93,9 @@ openfluid::core::UnstructuredValue::UnstructuredType GeoVectorValue::getType() c
 GDALDataset_COMPAT* GeoVectorValue::data()
 {
   if (!mp_Data)
+  {
     tryToOpenSource();
+  }
 
   return mp_Data;
 }
@@ -108,8 +110,10 @@ void GeoVectorValue::tryToOpenSource()
   mp_Data = GDALOpenRO_COMPAT(m_AbsolutePath.c_str());
 
   if (!mp_Data)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while trying to open file " + m_AbsolutePath);
+  }
 }
 
 
@@ -182,11 +186,12 @@ bool GeoVectorValue::isFieldOfType(const std::string& FieldName, OGRFieldType Fi
                                   unsigned int LayerIndex)
 {
   if (!containsField(FieldName))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Field \"" + FieldName + "\" is not set.");
+  }
 
-  return layerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()
-      == FieldType;
+  return layerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType() == FieldType;
 }
 
 

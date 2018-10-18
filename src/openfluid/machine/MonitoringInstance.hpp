@@ -65,6 +65,7 @@ class OPENFLUID_API MonitoringInstance
 
     bool m_Initialized;
 
+
   public:
 
     MonitoringInstance(openfluid::machine::SimulationBlob& SimulationBlob);

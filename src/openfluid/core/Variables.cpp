@@ -106,7 +106,9 @@ bool Variables::modifyValue(const VariableName_t& aName, const TimeIndex_t& anIn
       && (m_Data[aName].second == openfluid::core::Value::NONE
           || aValue.getType() == openfluid::core::Value::NULLL
           || m_Data[aName].second == aValue.getType()))
+  {
     return m_Data[aName].first.modifyValue(anIndex, aValue);
+  }
 
   return false;
 }
@@ -126,7 +128,9 @@ bool Variables::modifyCurrentValue(const VariableName_t& aName, const Value& aVa
       && (m_Data[aName].second == openfluid::core::Value::NONE
           || aValue.getType() == openfluid::core::Value::NULLL
           || m_Data[aName].second == aValue.getType()))
+  {
     return m_Data[aName].first.modifyCurrentValue(aValue);
+  }
 
   return false;
 }
@@ -146,7 +150,9 @@ bool Variables::appendValue(const VariableName_t& aName, const TimeIndex_t& anIn
       && (m_Data[aName].second == openfluid::core::Value::NONE
           || aValue.getType() == openfluid::core::Value::NULLL
           || m_Data[aName].second == aValue.getType()))
+  {
     return m_Data[aName].first.appendValue(anIndex,aValue);
+  }
 
   return false;
 }
@@ -174,7 +180,9 @@ const Value* Variables::value(const VariableName_t& aName, const TimeIndex_t& an
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
+  {
     return it->second.first.value(anIndex);
+  }
 
   return nullptr;
 }
@@ -189,7 +197,9 @@ const Value* Variables::currentValue(const VariableName_t& aName) const
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
+  {
     return it->second.first.currentValue();
+  }
 
   return nullptr;
 }
@@ -256,7 +266,9 @@ Value* Variables::currentValueIfIndex(const VariableName_t& aName, const TimeInd
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end() && it->second.first.getCurrentIndex() == Index)
+  {
     return it->second.first.currentValue();
+  }
 
   return nullptr;
 }
@@ -346,7 +358,9 @@ std::vector<VariableName_t> Variables::getVariablesNames() const
   std::vector<VariableName_t> TheNames;
 
   for (VariablesMap_t::const_iterator it = m_Data.begin(); it != m_Data.end(); ++it)
+  {
     TheNames.push_back(it->first);
+  }
 
   return TheNames;
 }
@@ -362,7 +376,9 @@ int Variables::getVariableValuesCount(const VariableName_t& aName) const
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it == m_Data.end())
+  {
     return -1;
+  }
 
   return it->second.first.getValuesCount();
 }

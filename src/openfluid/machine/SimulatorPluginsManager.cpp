@@ -63,9 +63,10 @@ SimulatorPluginsManager::getAvailableGhostsSignatures(const std::string& /*Patte
                                                                openfluid::config::SIMULATORS_GHOSTS_SUFFIX,
                                                                openfluid::config::GHOSTS_EXT,true,true);
     for (j=0;j<TmpFiles.size();j++)
+    {
       GhostsFiles.push_back(TmpFiles[j]);
+    }
   }
-
 
   for (i=0;i<GhostsFiles.size();i++)
   {

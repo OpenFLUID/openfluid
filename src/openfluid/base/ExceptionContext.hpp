@@ -69,7 +69,9 @@ class ExceptionContext : public std::map<std::string, std::string>
     ExceptionContext& addInfos(const std::map<std::string, std::string>& Infos)
     {
       for (auto& it : Infos)
+      {
         insert(std::pair<std::string,std::string>(it.first,it.second));
+      }
 
       return (*this);
     }
@@ -120,7 +122,9 @@ class ExceptionContext : public std::map<std::string, std::string>
     ExceptionContext& addStage(const std::string& StageStr)
     {
       if (!StageStr.empty())
+      {
         insert(std::pair<std::string,std::string>("stage",StageStr));
+      }
 
       return (*this);
     }
@@ -140,7 +144,9 @@ class ExceptionContext : public std::map<std::string, std::string>
       for (auto it = itb; it!= ite; ++it)
       {
         if (it!=itb)
+        {
           Str += ",";
+        }
 
         Str += (*it).first + "=" + (*it).second;
       }

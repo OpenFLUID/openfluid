@@ -120,13 +120,17 @@ class OPENFLUID_API StringValue : public SimpleValue
       Constructor from char*
     */
     StringValue(const char* Val) : SimpleValue(), m_Value(std::string(Val))
-    { }
+    {
+
+    }
 
     /**
       Constructor from std::string
     */
     StringValue(const std::string& Val) : SimpleValue(), m_Value(Val)
-    { }
+    {
+
+    }
 
     /**
       Constructor from bool
@@ -144,7 +148,9 @@ class OPENFLUID_API StringValue : public SimpleValue
     StringValue(double Val);
 
     virtual ~StringValue()
-    { }
+    {
+
+    }
 
     /**
       Assignment operator
@@ -155,13 +161,19 @@ class OPENFLUID_API StringValue : public SimpleValue
       Cast operator
     */
     operator std::string() const
-    { return m_Value; }
+    {
+      return m_Value;
+    }
 
     inline Type getType() const
-    { return Value::STRING; };
+    {
+      return Value::STRING;
+    }
 
     Value* clone() const
-    { return new StringValue(*this); }
+    {
+      return new StringValue(*this);
+    }
 
     bool convert(Value& Val) const;
 
@@ -170,52 +182,64 @@ class OPENFLUID_API StringValue : public SimpleValue
       @return the string value
     */
     inline std::string get() const
-    { return m_Value; }
+    {
+      return m_Value;
+    }
 
     /**
       Returns a reference to the string value as std::string type
       @return the string value
     */
     inline std::string& data()
-    { return m_Value; }
+    {
+      return m_Value;
+    }
 
     /**
       Returns a reference to the string value as std::string type
       @return the string value
     */
     inline const std::string& data() const
-    { return m_Value; }
+    {
+      return m_Value;
+    }
 
     /**
       Sets the string value
       @param[in] Val the string value
     */
     inline void set(const std::string& Val)
-    { m_Value = Val; }
-
+    {
+      m_Value = Val;
+    }
 
     inline void clear()
     { m_Value.clear(); }
 
-
     void writeToStream(std::ostream& OutStm) const;
 
     void writeQuotedToStream(std::ostream& OutStm) const
-    { OutStm << "\"" ; writeToStream(OutStm); OutStm << "\"" ; }
+    {
+      OutStm << "\"" ; writeToStream(OutStm); OutStm << "\"" ;
+    }
 
     /**
       Returns the size of the string
       @return size of the string
     */
     inline unsigned long getSize() const
-    { return m_Value.size(); }
+    {
+      return m_Value.size();
+    }
 
     /**
       Returns the size of the string
       @return size of the string
     */
     unsigned long size() const
-    { return m_Value.size(); }
+    {
+      return m_Value.size();
+    }
 
 
     /**

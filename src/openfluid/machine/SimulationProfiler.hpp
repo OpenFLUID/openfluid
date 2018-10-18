@@ -61,6 +61,7 @@ class OPENFLUID_API SimulationProfiler
 
     typedef std::chrono::nanoseconds TimeResolution_t;
 
+
   private:
 
     typedef std::map<openfluid::base::SimulationStatus::SimulationStage,TimeResolution_t>
@@ -77,7 +78,6 @@ class OPENFLUID_API SimulationProfiler
     CurrentTimeIndexModelProfile_t m_CurrentTimeIndexModelProfile;
     CurrentTimeIndexModelSequence_t m_CurrentTimeIndexModelSequence;
 
-
     const openfluid::base::SimulationStatus* mp_SimStatus;
 
     const WareIDSequence_t m_OriginalModelSequence;
@@ -91,6 +91,7 @@ class OPENFLUID_API SimulationProfiler
     static double getDurationInDecimalSeconds(const TimeResolution_t& Duration);
 
     void flushCurrentProfileToFiles();
+
 
   public:
 

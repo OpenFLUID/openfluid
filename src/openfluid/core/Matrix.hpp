@@ -99,33 +99,44 @@ class OPENFLUID_API Matrix
       @return number of columns
     */
     inline unsigned long getColsNbr() const
-    { return m_ColsNbr; };
+    {
+      return m_ColsNbr;
+    };
 
     /**
       Returns the number of rows of the Matrix
       @return number of rows
     */
-    inline unsigned long getRowsNbr() const { return m_RowsNbr; };
+    inline unsigned long getRowsNbr() const
+    {
+      return m_RowsNbr;
+    };
 
     /**
       Returns the full size of the Matrix (number of columns x number of rows)
       @return size of the Matrix
     */
     inline unsigned long getSize() const
-    { return (m_ColsNbr * m_RowsNbr); };
+    {
+      return (m_ColsNbr * m_RowsNbr);
+    };
 
     /**
       Returns the full size of the Matrix
     */
     inline unsigned long size() const
-    { return (m_ColsNbr * m_RowsNbr); };
+    {
+      return (m_ColsNbr * m_RowsNbr);
+    };
 
 
     /**
       Returns a pointer to the content of the Matrix (like C arrays)
     */
     T* data() const
-    { return static_cast<T*>(m_Data); };
+    {
+      return static_cast<T*>(m_Data);
+    };
 
     /**
       Sets data from a pointer to a content (like C arrays)
@@ -141,7 +152,9 @@ class OPENFLUID_API Matrix
       Returns the element of the Matrix for index Index
     */
     inline T at(unsigned long ColIndex, unsigned long RowIndex) const
-    { return getElement(ColIndex,RowIndex); };
+    {
+      return getElement(ColIndex,RowIndex);
+    };
 
     /**
       Returns the element of the Matrix for index Index
@@ -159,7 +172,9 @@ class OPENFLUID_API Matrix
       Sets a new value for element at the given index
     */
     inline void set(unsigned long ColIndex, unsigned long RowIndex, T Element)
-    { setElement(ColIndex,RowIndex,Element); };
+    {
+      setElement(ColIndex,RowIndex,Element);
+    };
 
     /**
       Allocation operator
@@ -201,7 +216,9 @@ Matrix<T>::Matrix(const Matrix &A)
   init();
 
   if (!allocate(A.m_ColsNbr,A.m_RowsNbr))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
+  }
 
   std::copy(A.m_Data, A.m_Data + (A.m_ColsNbr*A.m_RowsNbr), m_Data);
 }
@@ -217,7 +234,9 @@ Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr)
   init();
 
   if (!allocate(ColsNbr,RowsNbr))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
+  }
 
   fill(0);
 }
@@ -233,7 +252,9 @@ Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr, T InitValue)
   init();
 
   if (!allocate(ColsNbr,RowsNbr))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
+  }
 
   fill(InitValue);
 }
@@ -279,7 +300,9 @@ bool Matrix<T>::allocate(unsigned long ColsNbr, unsigned long RowsNbr)
       m_ColsNbr = ColsNbr;
     }
     else
+    {
       return false;
+    }
   }
 
   return true;
@@ -296,7 +319,9 @@ void Matrix<T>::setData(T* Data, unsigned long ColsNbr, unsigned long RowsNbr)
   clear();
 
   if (!allocate(ColsNbr,RowsNbr))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
+  }
 
   std::copy(Data, Data + (ColsNbr*RowsNbr), m_Data);
 }
@@ -310,7 +335,9 @@ template <class T>
 T Matrix<T>::getElement(unsigned long ColIndex, unsigned long RowIndex) const
 {
   if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"element access range error");
+  }
 
   return m_Data[ColIndex*m_RowsNbr+RowIndex];
 }
@@ -324,7 +351,9 @@ template <class T>
 void Matrix<T>::setElement(unsigned long ColIndex, unsigned long RowIndex, T Element)
 {
   if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"element access range error");
+  }
 
   m_Data[ColIndex*m_RowsNbr+RowIndex] = Element;
 }
@@ -338,13 +367,17 @@ template <class T>
 Matrix<T>& Matrix<T>::operator=(const Matrix &A)
 {
 
-  if (this == &A) // in case somebody tries assign array to itself
+  if (this == &A) // in case of trying to assign array to itself
+  {
     return *this;
+  }
 
   clear();
 
   if (!allocate(A.m_ColsNbr,A.m_RowsNbr))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
+  }
 
   std::copy(A.m_Data, A.m_Data + (A.m_ColsNbr*A.m_RowsNbr), m_Data);
 
@@ -360,8 +393,12 @@ template <class T>
 void Matrix<T>::fill(const T& Val)
 {
   for (unsigned long i=0;i<m_RowsNbr;i++)
+  {
     for (unsigned long j=0;j<m_ColsNbr;j++)
+    {
       m_Data[i*m_ColsNbr+j] = Val;
+    }
+  }
 }
 
 

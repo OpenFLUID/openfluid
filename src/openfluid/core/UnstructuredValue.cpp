@@ -56,6 +56,7 @@ bool UnstructuredValue::getValueTypeFromString(const std::string& ValueTypeStrin
     ValueType = openfluid::core::UnstructuredValue::GeoVectorValue;
     return true;
   }
+
   if (ValueTypeString == "georaster")
   {
     ValueType = openfluid::core::UnstructuredValue::GeoRasterValue;

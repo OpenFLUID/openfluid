@@ -81,7 +81,8 @@ class OPENFLUID_API InterpGenerator : public Generator
 
     openfluid::base::SchedulingRequest runStep();
 
-    void finalizeRun() {};
+    void finalizeRun() 
+    { }
 
 };
 

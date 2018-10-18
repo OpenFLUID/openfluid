@@ -78,7 +78,7 @@ class OPENFLUID_API RandomGenerator : public Generator
     openfluid::base::SchedulingRequest runStep();
 
     void finalizeRun()
-    { };
+    { }
 
 };
 

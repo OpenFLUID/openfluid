@@ -77,9 +77,13 @@ class OPENFLUID_API Tree
       std::ostringstream oss;
 
       if (!(oss << Key).fail())
+      {
         return oss.str();
+      }
       else
+      {
         return "<unknown>";
+      }
     }
 
 
@@ -89,9 +93,7 @@ class OPENFLUID_API Tree
       Default constructor
     */
     Tree<K,V>() : m_HasValue(false)
-    {
-
-    }
+    { }
 
 
     // =====================================================================
@@ -106,10 +108,13 @@ class OPENFLUID_API Tree
     V getValue() const
     {
       if (m_HasValue)
+      {
         return m_Value;
+      }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Node has no value");
-
+      }
     }
 
 
@@ -125,9 +130,13 @@ class OPENFLUID_API Tree
     V getValue(const V& DefaultVal) const
     {
       if (m_HasValue)
+      {
         return m_Value;
+      }
       else
+      {
         return DefaultVal;
+      }
     }
 
 
@@ -203,7 +212,9 @@ class OPENFLUID_API Tree
       auto it = m_Children.find(Key);
 
       if (it == m_Children.end())
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Key " + keyToStr(Key) + " does not exist");
+      }
 
       return (*it).second;
     }
@@ -224,7 +235,9 @@ class OPENFLUID_API Tree
       auto it = m_Children.find(Key);
 
       if (it == m_Children.end())
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Key " + keyToStr(Key) + " does not exist");
+      }
 
       return (*it).second;
     }
@@ -246,7 +259,9 @@ class OPENFLUID_API Tree
       auto it = m_Children.find(Key);
 
       if (it == m_Children.end())
+      {
         return DefaultVal;
+      }
 
       return (*it).second.getValue(DefaultVal);
     }
@@ -280,7 +295,9 @@ class OPENFLUID_API Tree
     Tree<K,V>& addChild(const K& Key, const V& Val)
     {
       if (hasChild(Key))
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Key " + keyToStr(Key) + " already exists");
+      }
 
       m_Children[Key] = Tree<K,V>();
       m_Children[Key].setValue(Val);
@@ -302,7 +319,9 @@ class OPENFLUID_API Tree
     Tree<K,V>& addChild(const K& Key)
     {
       if (hasChild(Key))
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Key " + keyToStr(Key) + " already exists");
+      }
 
       m_Children[Key] = Tree<K,V>();
 
@@ -323,7 +342,9 @@ class OPENFLUID_API Tree
       auto it = m_Children.find(Key);
 
       if (it != m_Children.end())
+      {
         m_Children.erase(it);
+      }
     }
 
 
@@ -395,7 +416,9 @@ class OPENFLUID_API Tree
       m_Value = V();
 
       for (auto& ChildNode : m_Children)
+      {
         ChildNode.second.clear();
+      }
 
       m_Children.clear();
     }
@@ -414,7 +437,9 @@ class OPENFLUID_API Tree
       int Size = 1;
 
       for (auto& ChildNode : m_Children)
+      {
         Size += ChildNode.second.size();
+      }
 
       return Size;
     }
@@ -434,11 +459,15 @@ class OPENFLUID_API Tree
       for (auto& ChildNode : m_Children)
       {
         if (Indent)
+        {
           OutStm  << std::setw(Indent);
+        }
 
         OutStm << "[" << ChildNode.first;
         if (ChildNode.second.hasValue())
+        {
           OutStm << " -> " << ChildNode.second.getValue();
+        }
         OutStm << "]\n";
 
         ChildNode.second.writeToStreamHierarchically(OutStm,Indent+4);
@@ -456,7 +485,9 @@ class OPENFLUID_API Tree
       {
         OutStm << "{" << ChildNode.first;
         if (ChildNode.second.hasValue())
+        {
           OutStm << "(" << ChildNode.second.getValue() << ")";
+        }
         ChildNode.second.writeToStreamFlat(OutStm);
         OutStm << "}";
       }

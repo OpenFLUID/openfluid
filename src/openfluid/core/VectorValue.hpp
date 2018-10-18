@@ -132,41 +132,55 @@ class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
     VectorValue(const VectorValue& Val) :
       CompoundValue(),
       Vector<double>(static_cast<const Vector<double>& >(Val))
-    {  }
+    { }
 
     /**
       Constructor, creates a vector containing Size elements
     */
     VectorValue(unsigned long Size) : CompoundValue(), Vector<double>(Size)
-    {  }
+    {
+
+    }
 
     /**
       Constructor, creates a vector containing Size elements, initialized with value InitValue
     */
     VectorValue(unsigned long Size, double InitValue) : CompoundValue(), Vector<double>(Size,InitValue)
-    {  }
+    {
+
+    }
 
     /**
       Constructor, creates a vector of size Size, containing Data
     */
     VectorValue(double* Data, unsigned long Size) : CompoundValue(), Vector<double>(Data,Size)
-    {  }
+    {
+
+    }
 
     virtual ~VectorValue()
-    {  }
+    {
+
+    }
 
     Value& operator =(const Value& Other);
 
     inline Type getType() const
-    { return Value::VECTOR; }
+    {
+      return Value::VECTOR;
+    }
 
     Value* clone() const
-    { return new VectorValue(*this); };
+    {
+      return new VectorValue(*this);
+    }
 
     void writeToStream(std::ostream& OutStm) const;
 
     void writeQuotedToStream(std::ostream& OutStm) const
-    { writeToStream(OutStm); }
+    {
+      writeToStream(OutStm);
+    }
 
 };
 
