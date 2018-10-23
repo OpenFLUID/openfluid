@@ -44,25 +44,6 @@
 namespace openfluid { namespace fluidx {
 
 
-DatastoreDescriptor::DatastoreDescriptor()
-{
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-DatastoreDescriptor::~DatastoreDescriptor()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::items()
 {
   return m_DatastoreDescription;

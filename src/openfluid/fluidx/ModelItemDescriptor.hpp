@@ -53,14 +53,10 @@ class OPENFLUID_API ModelItemDescriptor : public WareDescriptor
   public:
 
     ModelItemDescriptor() : WareDescriptor()
-    {
-
-    };
+    { }
 
     virtual ~ModelItemDescriptor()
-    {
-
-    };
+    { }
 
 };
 

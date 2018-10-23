@@ -84,8 +84,7 @@ class KillableSingleton
 
     static T* mp_Instance;
 
-    KillableSingleton<T>()
-    { }
+    KillableSingleton<T>() = default;
 
     ~KillableSingleton<T>()
     { }

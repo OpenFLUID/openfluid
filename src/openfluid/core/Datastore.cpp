@@ -43,16 +43,6 @@
 namespace openfluid { namespace core {
 
 
-Datastore::Datastore()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 Datastore::~Datastore()
 {
   for (DataItemsById_t::iterator it = m_ItemsById.begin(); it != m_ItemsById.end(); ++it)

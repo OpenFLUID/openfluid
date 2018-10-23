@@ -67,9 +67,10 @@ class OPENFLUID_API EventsCollection
     /**
       Default constructor
     */
-    EventsCollection();
+    EventsCollection() = default;
 
-    virtual ~EventsCollection();
+    virtual ~EventsCollection()
+    { }
 
 
     /**

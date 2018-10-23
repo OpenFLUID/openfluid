@@ -46,25 +46,10 @@
 #include <string>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/TypeDefs.hpp>
 
 
 namespace openfluid { namespace core {
-
-/**
-  Type for raw time (seconds since 4713BC)
-*/
-typedef unsigned long long RawTime_t;
-
-/**
-  Type for time indexes (in seconds)
-*/
-typedef unsigned long long TimeIndex_t;
-
-
-/**
-  Type for durations (in seconds)
-*/
-typedef unsigned long long Duration_t;
 
 
 /**
@@ -133,7 +118,7 @@ class OPENFLUID_API DateTime
   private:
 
     /**
-          The tm struct contains:
+      The tm struct contains:
         int tm_sec;
         int tm_min;
         int tm_hour;
@@ -143,7 +128,7 @@ class OPENFLUID_API DateTime
         int tm_wday;
         int tm_yday;
         int tm_isdst
-          */
+    */
 
     /**
       The date and time stored as broken down structure

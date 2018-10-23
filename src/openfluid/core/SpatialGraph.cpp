@@ -61,16 +61,6 @@ struct SortUnitsPtrByProcessOrder
 // =====================================================================
 
 
-SpatialGraph::SpatialGraph()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
                                         const UnitID_t& UnitID)
 {

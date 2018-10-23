@@ -64,11 +64,10 @@ class OPENFLUID_API DistributionTables
     UnitIDSourceID_t UnitsTable;
 
 
-    DistributionTables()
-    { };
+    DistributionTables() = default;
 
     ~DistributionTables()
-    { };
+    { }
 
 
     void build(const std::string& BasePath, const std::string& SourcesFileName,

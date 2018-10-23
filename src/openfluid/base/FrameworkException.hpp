@@ -75,6 +75,7 @@ class FrameworkException : public Exception
 
   public:
 
+    FrameworkException() = delete;
 
     FrameworkException(const ExceptionContext& Context, const std::string& Msg) :
       Exception(Context,Msg)

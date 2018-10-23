@@ -61,9 +61,11 @@ class OPENFLUID_API ColumnTextParser
   private:
 
     std::string m_Delimiter;
+
     std::string m_CommentSymbol;
 
     unsigned int m_LinesCount;
+    
     unsigned int m_ColsCount;
 
     std::vector<std::vector<std::string> > m_Contents;

@@ -61,6 +61,8 @@ class ApplicationException : public Exception
 
   public:
 
+    ApplicationException() = delete;
+
     ApplicationException(const ExceptionContext& Context, const std::string& Msg) :
       Exception(Context,Msg)
     {

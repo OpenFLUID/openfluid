@@ -67,6 +67,8 @@ class OPENFLUID_API GeoValue: public openfluid::core::UnstructuredValue
 
   public:
 
+    GeoValue() = delete;
+
     GeoValue(const std::string& FilePath, const std::string& FileName);
 
     virtual ~GeoValue() = 0;

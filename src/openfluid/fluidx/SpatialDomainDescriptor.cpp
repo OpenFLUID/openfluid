@@ -50,26 +50,6 @@
 namespace openfluid { namespace fluidx {
 
 
-SpatialDomainDescriptor::SpatialDomainDescriptor()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-SpatialDomainDescriptor::~SpatialDomainDescriptor()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void SpatialDomainDescriptor::checkUnitsRelations() const
 {
 

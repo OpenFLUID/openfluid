@@ -198,7 +198,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
                   unsigned int Jobs,
                   QWidget* Parent = nullptr);
 
-    ~WareSrcWidget();
+    virtual ~WareSrcWidget();
 
     void openFileTab(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index = -1);
 

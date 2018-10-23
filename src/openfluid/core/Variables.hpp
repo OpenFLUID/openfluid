@@ -60,9 +60,10 @@ class OPENFLUID_API Variables
 
   public:
 
-    Variables();
+    Variables() = default;
 
-    ~Variables();
+    ~Variables()
+    { }
 
     bool createVariable(const VariableName_t& aName);
 

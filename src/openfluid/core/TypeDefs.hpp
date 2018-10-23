@@ -44,6 +44,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <cstdint>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/deprecation.hpp>
@@ -94,6 +95,10 @@ typedef std::pair<UnitsClass_t,UnitID_t> UnitClassID_t;
   Type definition for a link between two units defined by their class and ID
 */
 typedef std::pair<UnitClassID_t,UnitClassID_t> UnitsLink_t;
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -160,6 +165,26 @@ typedef IDMap<VectorValue*>::Type IDVectorValuePtrMap;
 typedef IDMap<SerieOfDoubleValue>::Type IDSerieOfDoubleValueMap;
 
 typedef IDMap<SerieOfDoubleValue*>::Type IDSerieOfDoubleValuePtrMap;
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Type for raw time (seconds since 4713BC)
+*/
+typedef std::uint64_t RawTime_t;
+
+/**
+  Type for time indexes (in seconds)
+*/
+typedef std::uint64_t TimeIndex_t;
+
+/**
+  Type for durations (in seconds)
+*/
+typedef std::uint64_t Duration_t;
 
 
 } } // namespaces

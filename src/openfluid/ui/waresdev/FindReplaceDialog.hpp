@@ -103,9 +103,9 @@ class OPENFLUID_API FindReplaceDialog: public QDialog
 
   public:
 
-    FindReplaceDialog(QWidget* Parent);
+    explicit FindReplaceDialog(QWidget* Parent);
 
-    ~FindReplaceDialog();
+    virtual ~FindReplaceDialog();
 
     void setMessage(const QString& Message, bool TextFound);
 

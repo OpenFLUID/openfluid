@@ -206,7 +206,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
 
     WareSrcFileEditor(const QString& FilePath, QWidget* Parent = nullptr);
 
-    ~WareSrcFileEditor();
+    virtual ~WareSrcFileEditor();
 
     void lineNumberAreaPaintEvent(QPaintEvent* Event);
 

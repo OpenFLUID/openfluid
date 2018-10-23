@@ -62,9 +62,9 @@ class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignatu
 
   public:
 
-    GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
-
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
+
+    GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
 
 };
 

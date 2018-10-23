@@ -71,7 +71,10 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
     */
     void tryToOpenSource();
 
+
   public:
+
+    GeoRasterValue() = delete;
 
     /**
       Creates a new value.
@@ -85,7 +88,7 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
     /**
       Closes the opened GDAL dataset.
     */
-    ~GeoRasterValue();
+    virtual ~GeoRasterValue();
 
     /**
       Returns the type of this GeoRasterValue.

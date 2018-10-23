@@ -94,7 +94,7 @@ class OPENFLUID_API WareBuildOptionsWidget : public QWidget
 
   public:
 
-    WareBuildOptionsWidget(QWidget* Parent = nullptr);
+    explicit WareBuildOptionsWidget(QWidget* Parent = nullptr);
 
     virtual ~WareBuildOptionsWidget();
 

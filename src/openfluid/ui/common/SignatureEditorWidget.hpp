@@ -111,7 +111,7 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
   public:
 
-    SignatureEditorWidget(QWidget* Parent = nullptr);
+    explicit SignatureEditorWidget(QWidget* Parent = nullptr);
 
     virtual ~SignatureEditorWidget();
 

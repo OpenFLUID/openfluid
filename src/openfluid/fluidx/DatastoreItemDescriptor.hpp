@@ -69,6 +69,8 @@ class OPENFLUID_API DatastoreItemDescriptor
 
   public:
 
+    DatastoreItemDescriptor() = delete;
+
     DatastoreItemDescriptor(const std::string& ID,
                             const std::string& PrefixPath, const std::string& RelativePath,
                             openfluid::core::UnstructuredValue::UnstructuredType Type);

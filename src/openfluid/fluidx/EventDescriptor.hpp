@@ -75,7 +75,8 @@ class OPENFLUID_API EventDescriptor
 
     EventDescriptor(const EventDescriptor& EvDesc);
 
-    ~EventDescriptor();
+    ~EventDescriptor()
+    { }
 
     inline openfluid::core::UnitID_t getUnitID() const
     {

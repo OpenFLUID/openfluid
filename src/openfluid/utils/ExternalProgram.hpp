@@ -74,6 +74,8 @@ class OPENFLUID_API ExternalProgram
                               PdfLatexProgram, BibTexProgram, Latex2HTMLProgram,
                               GitProgram, GrassGisProgram };
 
+    ExternalProgram() = delete;
+
     /**
       Constructor for a given external programs. Automatically searches for the program at construction
       @param[in] ProgramNames The possible names of the program to find

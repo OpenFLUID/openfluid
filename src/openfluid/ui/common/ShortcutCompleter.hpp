@@ -40,6 +40,8 @@
 #define __OPENFLUID_UICOMMON_SHORTCUTCOMPLETER_HPP__
 
 
+#include <memory>
+
 #include <QCompleter>
 #include <QAction>
 #include <QKeySequence>
@@ -59,15 +61,19 @@ class OPENFLUID_API ShortcutCompleter : public QCompleter
 
   private:
 
-    QAction* mp_ShortcutAction = nullptr;
+    std::unique_ptr<QAction> mp_ShortcutAction;
+
 
   public:
 
-    ShortcutCompleter(QObject* Parent = nullptr);
+    explicit ShortcutCompleter(QObject* Parent = nullptr);
 
     ShortcutCompleter(QAbstractItemModel* Model,QObject* Parent = nullptr);
 
     ShortcutCompleter(const QStringList& List,QObject* Parent = nullptr);
+
+    virtual ~ShortcutCompleter()
+    { }
 
     /**
       Sets the shortcut sequence to open the completer popup
@@ -81,12 +87,6 @@ class OPENFLUID_API ShortcutCompleter : public QCompleter
     */
     void linkToLineEdit(QLineEdit* Widget = nullptr);
 
-    /**
-      Returns the QAction for the popup shortcut
-      @return the QAction for the popup shortcut
-    */
-    QAction* shortcutAction() const
-    { return mp_ShortcutAction; }
 };
 
 

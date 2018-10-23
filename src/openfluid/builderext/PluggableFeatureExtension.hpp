@@ -122,15 +122,11 @@ class OPENFLUID_API PluggableFeatureExtension : public PluggableBuilderExtension
   public:
 
     PluggableFeatureExtension() : PluggableBuilderExtension(), mp_Desc(nullptr)
-    {
-
-    }
+    { }
 
 
     virtual ~PluggableFeatureExtension()
-    {
-
-    }
+    { }
 
 
     virtual void setConfiguration(const openfluid::ware::WareParams_t& Config)

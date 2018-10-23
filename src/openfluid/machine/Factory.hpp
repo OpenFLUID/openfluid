@@ -78,6 +78,8 @@ class OPENFLUID_API Factory
 
   public:
 
+    Factory() = delete;
+
     static void buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
                                           openfluid::core::SpatialGraph& SGraph);
 

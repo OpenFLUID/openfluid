@@ -67,8 +67,7 @@ class OPENFLUID_API Value
 
     enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, MAP, TREE, NULLL };
 
-    Value()
-    { }
+    Value() = default;
 
     virtual ~Value()
     { }

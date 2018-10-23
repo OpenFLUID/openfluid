@@ -62,31 +62,53 @@ class OPENFLUID_API WareSrcFactory
       private:
 
         QList<openfluid::builderext::ExtensionMode> BextMode_Data;
+
         QStringList BextCategory_Data;
+        
         QStringList Sim2docMode_Data;
 
       public:
 
         QString ClassName;
+        
         QString RootCppFilename;
+        
         QString RootHppFilename;
+        
         QString HppHeaderGuard;
+        
         QString LinkUID;
+        
         bool ParamsUiEnabled;
+        
         QString ParamsUiClassname;
+        
         QString ParamsUiRootCppFilename;
+        
         QString ParamsUiRootHppFilename;
+        
         QString ParamsUiHeaderGuard;
+        
         QString ParamsUiComment;
+        
         QString SignatureInfos;
+        
         int Sim2docModeIndex;
+        
         bool Sim2docInstall;
+        
         QString SimulatorSignatureData;
+        
         QString SimulatorInitCode;
+        
         QString SimulatorRunCode;
+        
         QString SimulatorSchedulingReturn;
+        
         int BuilderExtModeIndex;
+        
         int BuilderExtCategoryIndex;
+        
         QString BuilderExtMenuText;
 
 

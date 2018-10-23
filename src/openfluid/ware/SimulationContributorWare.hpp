@@ -416,14 +416,13 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
                                     const unsigned int& RowsNbr);
 
     SimulationContributorWare(WareType WType) : SimulationInspectorWare(WType)
-    {};
+    { }
 
 
   public:
 
-
-    virtual ~SimulationContributorWare() {};
-
+    virtual ~SimulationContributorWare() 
+    { }
 
 };
 

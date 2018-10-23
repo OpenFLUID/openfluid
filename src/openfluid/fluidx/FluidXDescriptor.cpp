@@ -70,15 +70,6 @@ FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
 // =====================================================================
 
 
-FluidXDescriptor::~FluidXDescriptor()
-{
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool FluidXDescriptor::extractWareEnabledFromNode(QDomElement& Node)
 {
 

@@ -89,9 +89,10 @@ class OPENFLUID_API SpatialDomainDescriptor
 
   public:
 
-    SpatialDomainDescriptor();
+    SpatialDomainDescriptor() = default;
 
-    ~SpatialDomainDescriptor();
+    ~SpatialDomainDescriptor()
+    { }
 
     /**
       Returns a reference to the structure of spatial units descriptors

@@ -53,9 +53,10 @@ class OPENFLUID_API WareSrcMsgStream
 {
   public:
 
+    WareSrcMsgStream() = default;
+
     virtual ~WareSrcMsgStream()
-    {
-    }
+    { }
 
     virtual void clear() = 0;
 

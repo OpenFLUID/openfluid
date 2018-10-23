@@ -56,6 +56,11 @@ class OPENFLUID_API ValuesBufferProperties
 
   public:
 
+    ValuesBufferProperties() = default;
+
+    virtual ~ValuesBufferProperties()
+    { }
+
     static unsigned int getBufferSize()
     {
       return BufferSize;
@@ -64,7 +69,10 @@ class OPENFLUID_API ValuesBufferProperties
     static void setBufferSize(const unsigned int aBufferSize)
     {
       BufferSize = aBufferSize;
-      if (BufferSize < 2) BufferSize = 2;
+      if (BufferSize < 2)
+      {
+        BufferSize = 2;
+      }
     };
 
 };

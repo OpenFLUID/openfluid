@@ -54,7 +54,7 @@ class OPENFLUID_API OpenFLUIDSplashScreen : public QSplashScreen
 {
   public:
 
-    OpenFLUIDSplashScreen(const QPixmap& Pixmap = QPixmap());
+    explicit OpenFLUIDSplashScreen(const QPixmap& Pixmap = QPixmap());
 
     ~OpenFLUIDSplashScreen();
 

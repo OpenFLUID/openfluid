@@ -73,9 +73,9 @@ class OPENFLUID_API WareSrcMsgViewer: public QPlainTextEdit
 
   public:
 
-    WareSrcMsgViewer(QWidget* Parent = nullptr);
+    explicit WareSrcMsgViewer(QWidget* Parent = nullptr);
 
-    ~WareSrcMsgViewer();
+    virtual ~WareSrcMsgViewer();
 
     void clearMessages();
 

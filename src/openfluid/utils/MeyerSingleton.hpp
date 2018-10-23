@@ -83,8 +83,7 @@ class MeyerSingleton
 
   protected:
 
-    MeyerSingleton<T>()
-    { }
+    MeyerSingleton<T>() = default;
 
 
   public:

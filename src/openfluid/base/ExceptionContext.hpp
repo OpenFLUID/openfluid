@@ -44,6 +44,7 @@
 #include <string>
 #include <map>
 #include <sstream>
+#include <cstdint>
 
 
 namespace openfluid { namespace base {
@@ -81,7 +82,7 @@ class ExceptionContext : public std::map<std::string, std::string>
     // =====================================================================
 
 
-    ExceptionContext& addTimeIndex(const unsigned long long& TimeIndex)
+    ExceptionContext& addTimeIndex(const std::uint64_t& TimeIndex)
     {
       std::ostringstream iss;
       iss << TimeIndex;

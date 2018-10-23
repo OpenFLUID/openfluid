@@ -60,7 +60,8 @@ class OPENFLUID_API FixedGenerator : public Generator
 
     FixedGenerator();
 
-    ~FixedGenerator();
+    ~FixedGenerator()
+    { }
 
     void initParams(const openfluid::ware::WareParams_t& Params);
 

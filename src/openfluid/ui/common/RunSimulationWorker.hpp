@@ -113,7 +113,7 @@ class OPENFLUID_API RunSimulationListener : public QObject, public openfluid::ma
 
     RunSimulationListener();
 
-    ~RunSimulationListener();
+    virtual ~RunSimulationListener();
 
 
     void setInfos(const unsigned int& TotalSimulators, const unsigned int& TotalTime);
@@ -187,7 +187,7 @@ class RunSimulationWorker : public QObject
 
     RunSimulationWorker(const openfluid::fluidx::FluidXDescriptor* FXDesc, RunSimulationListener* Listener);
 
-    ~RunSimulationWorker();
+    virtual ~RunSimulationWorker();
 
 };
 

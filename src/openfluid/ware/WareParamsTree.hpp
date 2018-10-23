@@ -61,8 +61,7 @@ class OPENFLUID_API WareParamsTree
 
   public:
 
-    WareParamsTree()
-    { };
+    WareParamsTree() = default;
 
     WareParamsTree(const WareParams_t& Params);
 

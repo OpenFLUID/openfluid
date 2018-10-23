@@ -99,7 +99,7 @@ class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::MessageDi
 
   public:
 
-    ~WareExplorerDialog();
+    virtual ~WareExplorerDialog();
 
     static QString getOpenWarePath(QWidget* Parent, const QString& TopDirectoryPath, const QString& Title,
                                    const QString& CurrentPath = "");

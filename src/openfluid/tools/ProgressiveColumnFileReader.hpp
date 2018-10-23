@@ -78,7 +78,7 @@ class OPENFLUID_API ProgressiveColumnFileReader
     		                        const std::string& ColSeparators = " \t\r\n");
 
     virtual ~ProgressiveColumnFileReader()
-    { };
+    { }
 
     /**
       Gets the next line of data in the file, as a single string

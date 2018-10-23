@@ -60,7 +60,7 @@ class OPENFLUID_API WareFileEditor
 
   public:
 
-    WareFileEditor(const QString& FilePath);
+    explicit WareFileEditor(const QString& FilePath);
 
     virtual ~WareFileEditor();
 

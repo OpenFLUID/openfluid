@@ -81,7 +81,9 @@ class OPENFLUID_API PluggableModelessExtension : public QDialog, public Pluggabl
 
 
     virtual bool initialize()
-    { return true; };
+    { 
+      return true; 
+    }
 
 
     virtual void closeEvent(QCloseEvent *E)

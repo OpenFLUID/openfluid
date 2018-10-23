@@ -93,7 +93,7 @@ class OPENFLUID_API WorkspaceDevWaresWidget: public QWidget
 
     static const WorkspaceDevDashboardTypes::ActionsByRows Actions;
 
-    WorkspaceDevWaresWidget(QWidget* Parent = nullptr);
+    explicit WorkspaceDevWaresWidget(QWidget* Parent = nullptr);
 
     virtual ~WorkspaceDevWaresWidget();
 

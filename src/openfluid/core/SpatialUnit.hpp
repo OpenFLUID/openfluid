@@ -132,6 +132,8 @@ class OPENFLUID_API SpatialUnit
 
   public:
 
+    SpatialUnit() = delete;
+
     /*
       Constructor
       @param[in] aClass the class of the unit

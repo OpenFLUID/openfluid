@@ -70,7 +70,7 @@ class OPENFLUID_API WareSrcSyntaxHighlighter: public QSyntaxHighlighter
 
     WareSrcSyntaxHighlighter(QTextDocument* Document, WareSrcFiletypeManager::HighlightingRules_t HighlightingRules);
 
-    ~WareSrcSyntaxHighlighter();
+    virtual ~WareSrcSyntaxHighlighter();
 
 };
 

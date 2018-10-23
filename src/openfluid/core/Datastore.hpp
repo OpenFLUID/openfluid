@@ -74,7 +74,7 @@ class OPENFLUID_API Datastore
     /**
       Creates an empty datastore.
     */
-    Datastore();
+    Datastore() = default;
 
     /**
       Destroys all items of the datastore.

@@ -58,6 +58,8 @@ class OPENFLUID_API SimulatorDescriptor : public ModelItemDescriptor
 
   public:
 
+    SimulatorDescriptor() = delete;
+
     SimulatorDescriptor(const std::string& ID);
 
     std::string getID() const;

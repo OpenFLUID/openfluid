@@ -52,6 +52,8 @@ class OPENFLUID_API GhostSimulatorFileIO
 {
   public:
 
+    GhostSimulatorFileIO() = delete;
+
     static bool saveToFile(const openfluid::ware::SimulatorSignature& Signature, const std::string& DirPath);
 
     static bool loadFromFile(const std::string& FilePath, openfluid::ware::SimulatorSignature& Signature);

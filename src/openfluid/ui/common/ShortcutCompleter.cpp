@@ -47,15 +47,14 @@ namespace openfluid { namespace ui { namespace common {
 
 
 ShortcutCompleter::ShortcutCompleter(QObject* Parent):
-  QCompleter(Parent)
+  QCompleter(Parent), mp_ShortcutAction(new QAction(this))
 {
   setCaseSensitivity(Qt::CaseInsensitive);
   setCompletionMode(QCompleter::UnfilteredPopupCompletion);
 
-  mp_ShortcutAction = new QAction(this);
   mp_ShortcutAction->setShortcutContext(Qt::WidgetShortcut);
   mp_ShortcutAction->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_Space));
-  connect(mp_ShortcutAction,SIGNAL(triggered()),this,SLOT(complete()));
+  connect(mp_ShortcutAction.get(),SIGNAL(triggered()),this,SLOT(complete()));
 }
 
 
@@ -92,7 +91,7 @@ ShortcutCompleter::ShortcutCompleter(const QStringList& List,
 
 void ShortcutCompleter::setShortcut(const QKeySequence& Shortcut)
 {
-  mp_ShortcutAction->setShortcut(Shortcut);
+  mp_ShortcutAction.get()->setShortcut(Shortcut);
 }
 
 
@@ -105,7 +104,7 @@ void ShortcutCompleter::linkToLineEdit(QLineEdit* Widget)
   if (Widget)
   {
     Widget->setCompleter(this);
-    Widget->addAction(mp_ShortcutAction);
+    Widget->addAction(mp_ShortcutAction.get());
   }
 }
 

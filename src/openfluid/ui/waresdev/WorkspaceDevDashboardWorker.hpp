@@ -73,7 +73,7 @@ class OPENFLUID_API WorkspaceDevDashboardWorker : public QObject
 
     WorkspaceDevDashboardWorker();
 
-    ~WorkspaceDevDashboardWorker();
+    virtual ~WorkspaceDevDashboardWorker();
 
 };
 

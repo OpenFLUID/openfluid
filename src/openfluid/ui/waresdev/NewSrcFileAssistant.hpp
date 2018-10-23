@@ -88,7 +88,7 @@ class OPENFLUID_API EmptyPage : public QWizardPage
 
     EmptyPage(const QString& WarePath, QWidget* Parent = nullptr);
 
-    ~EmptyPage();
+    virtual ~EmptyPage();
 
     void initialize();
 
@@ -127,7 +127,7 @@ class OPENFLUID_API CppPage: public QWizardPage
 
     CppPage(const QDir& WareDir, QWidget* Parent = nullptr);
 
-    ~CppPage();
+    virtual ~CppPage();
 
     void initialize(bool IsHpp, bool IsUi, openfluid::ware::WareType Type);
 
@@ -162,7 +162,7 @@ class OPENFLUID_API CMakeConfigPage: public QWizardPage
 
     CMakeConfigPage(openfluid::ware::WareType Type, QWidget* Parent = nullptr);
 
-    ~CMakeConfigPage();
+    virtual ~CMakeConfigPage();
 
   private slots:
 
@@ -211,7 +211,7 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
     NewSrcFileAssistant(const openfluid::waresdev::WareSrcContainer& Container, QWidget* Parent = nullptr);
 
-    ~NewSrcFileAssistant();
+    virtual ~NewSrcFileAssistant();
 
     /**
      * Reimplemented function

@@ -123,6 +123,9 @@ class OPENFLUID_API Engine
 
 
   public:
+    
+    Engine() = delete;
+
     /**
       Constructor
     */

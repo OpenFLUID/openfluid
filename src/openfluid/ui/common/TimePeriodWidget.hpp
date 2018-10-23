@@ -93,7 +93,7 @@ class OPENFLUID_API TimePeriodWidget : public QWidget
 
   public:
 
-    TimePeriodWidget(QWidget* Parent = nullptr);
+    explicit TimePeriodWidget(QWidget* Parent = nullptr);
 
     virtual ~TimePeriodWidget();
 

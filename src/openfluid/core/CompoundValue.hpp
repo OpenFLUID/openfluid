@@ -55,6 +55,9 @@ class OPENFLUID_API CompoundValue : public Value
     CompoundValue() : Value()
     { }
 
+    virtual ~CompoundValue()
+    { }
+
     inline bool isSimple() const
     {
       return false;

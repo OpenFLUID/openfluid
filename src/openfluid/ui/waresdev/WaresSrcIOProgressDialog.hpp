@@ -83,6 +83,8 @@ class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
 
     WaresSrcIOProgressDialog(const QString& Description, bool IsMaxUndefined, QWidget* Parent);
 
+    virtual ~WaresSrcIOProgressDialog();
+
 };
 
 

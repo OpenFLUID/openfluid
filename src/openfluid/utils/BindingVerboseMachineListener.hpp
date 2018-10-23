@@ -73,10 +73,10 @@ class BindingVerboseMachineListener : public openfluid::machine::MachineListener
 
     BindingVerboseMachineListener(const openfluid::utils::BindingAbstractOutErr* OutErr):
       openfluid::machine::MachineListener(), mp_OutErr(OutErr)
-    { };
+    { }
 
     ~BindingVerboseMachineListener()
-    { };
+    { }
 
 
     void displayStatus(const openfluid::base::Listener::Status& Status)
@@ -93,83 +93,83 @@ class BindingVerboseMachineListener : public openfluid::machine::MachineListener
           mp_OutErr->printfOut(" [Warning]\n");
           break;
       }
-    };
+    }
 
 
     void onInitParams()
     {
       mp_OutErr->printfOut("%s","Initializing parameters...");
-    };
+    }
 
     void onInitParamsDone(const openfluid::base::Listener::Status& Status)
     {
       displayStatus(Status);
-    };
+    }
 
 
     void onPrepareData()
     {
       mp_OutErr->printfOut("%s","Preparing data...");
-    };
+    }
 
     void onPrepareDataDone(const openfluid::base::Listener::Status& Status)
     {
       displayStatus(Status);
-    };
+    }
 
 
     void onCheckConsistency()
     {
       mp_OutErr->printfOut("%s","Checking consistency...");
-    };
+    }
 
     void onCheckConsistencyDone(const openfluid::base::Listener::Status& Status)
     {
       displayStatus(Status);
-    };
+    }
 
 
     void onInitializeRun()
     {
       mp_OutErr->printfOut("%s","\nInitializing simulation...");
-    };
+    }
 
     void onInitializeRunDone(const openfluid::base::Listener::Status& Status)
     {
       displayStatus(Status);
-    };
+    }
 
 
     void onBeforeRunSteps()
     {
       mp_OutErr->printfOut("   Progress            Real time              Status\n");
       mp_OutErr->printfOut("   --------            ---------              ------\n");
-    };
+    }
 
     void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
     {
       double Percent = (double(SimStatus->getCurrentTimeIndex())/double(SimStatus->getSimulationDuration()))*100;
       mp_OutErr->printfOut("  %7.2f%%%27s",Percent,SimStatus->getCurrentDate().getAsISOString().c_str());
-    };
+    }
 
     void onRunStepDone(const openfluid::base::Listener::Status& Status)
     {
       displayStatusWithLeftMargin(Status);
-    };
+    }
 
 
     void onAfterRunSteps()
-    { };
+    { }
 
     void onFinalizeRun()
     {
       mp_OutErr->printfOut("%s","Finalizing simulation...");
-    };
+    }
 
     void onFinalizeRunDone(const openfluid::base::Listener::Status& Status)
     {
       displayStatus(Status);
-    };
+    }
 
 };
 

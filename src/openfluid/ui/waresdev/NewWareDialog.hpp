@@ -89,11 +89,11 @@ class OPENFLUID_API NewWareDialog : public openfluid::ui::common::MessageDialog
 
   public:
 
-    NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent = nullptr);
+    explicit NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent = nullptr);
 
     NewWareDialog(const openfluid::ware::SimulatorSignature& Signature, QWidget* Parent = nullptr);
 
-    ~NewWareDialog();
+    virtual ~NewWareDialog();
 
     QString getNewWarePath();
 

@@ -55,6 +55,8 @@ class OPENFLUID_API Filesystem
 
   public:
 
+    Filesystem() = delete;
+
     /**
       Returns a joined path string from a vector of path parts
       @code{.cpp}

@@ -54,8 +54,7 @@ class IOListener : public openfluid::base::Listener
 {
   public:
 
-    IOListener()
-    { }
+    IOListener() = default;
 
     virtual ~IOListener()
     { }

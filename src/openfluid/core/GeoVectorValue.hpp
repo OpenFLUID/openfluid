@@ -77,6 +77,8 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
 
   public:
 
+    GeoVectorValue() = delete;
+
     /**
       Creates a new value.
       For ESRI Shapefile, the <tt>FileName</tt> may be the name of a .shp, .shx or .dbf file,
@@ -90,7 +92,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
     /**
       Destructor. Closes the open OGR datasource.
     */
-    ~GeoVectorValue();
+    virtual ~GeoVectorValue();
 
     /**
       Returns the type of this GeoVectorValue.

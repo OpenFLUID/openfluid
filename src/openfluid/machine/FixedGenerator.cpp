@@ -54,17 +54,6 @@ FixedGenerator::FixedGenerator() : Generator(), m_VarValue(0), m_DeltaT(0)
 // =====================================================================
 
 
-FixedGenerator::~FixedGenerator()
-{
-
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void FixedGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetSimulatorParameter(Params,"fixedvalue",m_VarValue))

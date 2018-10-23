@@ -87,13 +87,19 @@ class OPENFLUID_API DetectQtDevToolsDialog : public OpenFLUIDDialog
     virtual ~DetectQtDevToolsDialog();
 
     bool isDetectionSuccessful()
-    { return (!m_FrameworkPath.isEmpty() && !m_DevToolsPath.isEmpty()); }
+    { 
+      return (!m_FrameworkPath.isEmpty() && !m_DevToolsPath.isEmpty()); 
+    }
 
     QString getFrameworkPath() const
-    { return m_FrameworkPath; }
+    { 
+      return m_FrameworkPath; 
+    }
 
     QString getDevToolsPath() const
-    { return m_DevToolsPath; }
+    { 
+      return m_DevToolsPath; 
+    }
 
 };
 

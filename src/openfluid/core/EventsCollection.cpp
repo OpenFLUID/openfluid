@@ -45,26 +45,6 @@
 namespace openfluid { namespace core {
 
 
-EventsCollection::EventsCollection()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-EventsCollection::~EventsCollection()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool EventsCollection::addEvent(const Event* Ev)
 {
   return addEvent(*Ev);

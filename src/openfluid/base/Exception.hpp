@@ -74,6 +74,8 @@ class Exception : public std::exception
 
   public:
 
+    Exception() = delete;
+
     virtual ~Exception() throw()
     { }
 

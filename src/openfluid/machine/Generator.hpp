@@ -66,7 +66,8 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 
     Generator();
 
-    virtual ~Generator();
+    virtual ~Generator()
+    { }
 
 
     void setInfos(openfluid::core::VariableName_t VarName, openfluid::core::UnitsClass_t UnitsClass,

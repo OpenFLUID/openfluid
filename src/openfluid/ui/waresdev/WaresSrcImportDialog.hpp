@@ -119,7 +119,7 @@ class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageD
 
   public:
 
-    WaresSrcImportDialog(QWidget* Parent);
+    explicit WaresSrcImportDialog(QWidget* Parent);
 
     ~WaresSrcImportDialog();
 

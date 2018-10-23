@@ -160,7 +160,7 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
 
     WareshubJsonEditor(const QString& FilePath, QWidget* Parent = nullptr);
 
-    ~WareshubJsonEditor();
+    virtual ~WareshubJsonEditor();
 
     void saveContent();
 

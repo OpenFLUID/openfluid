@@ -72,16 +72,6 @@ EventDescriptor::EventDescriptor(const EventDescriptor& EvDesc) :
 // =====================================================================
 
 
-EventDescriptor::~EventDescriptor()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 EventID_t EventDescriptor::assignID()
 {
   m_NextID++;

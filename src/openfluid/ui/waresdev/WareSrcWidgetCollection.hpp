@@ -223,7 +223,7 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone);
 
-    ~WareSrcWidgetCollection();
+    virtual ~WareSrcWidgetCollection();
 
     /**
       Returns false is there is unchanged modifications and user chooses to cancel closing, true otherwise

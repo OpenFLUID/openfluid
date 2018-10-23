@@ -75,8 +75,7 @@ class OPENFLUID_API RESTClient
 
       public:
 
-        Reply()
-        { }
+        Reply() = default;
 
         Reply(int StatusCode, unsigned int NetworkErrorCode, const QString& NetworkErrorString, const QString& Content):
           m_StatusCode(StatusCode),

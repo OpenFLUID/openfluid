@@ -62,7 +62,7 @@ class OPENFLUID_API SpatialGraph
 
   public:
 
-    SpatialGraph();
+    SpatialGraph() = default;
 
     SpatialUnit* addUnit(const SpatialUnit& aUnit);
 

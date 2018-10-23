@@ -104,7 +104,7 @@ class OPENFLUID_API WareshubIssueDialog: public openfluid::ui::common::MessageDi
 
     WareshubIssueDialog(const QStringList& IDs, QWidget* Parent = nullptr, const Issue& I = Issue());
 
-    ~WareshubIssueDialog();
+    virtual ~WareshubIssueDialog();
 
     Issue getIssue();
 

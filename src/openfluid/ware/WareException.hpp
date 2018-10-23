@@ -67,6 +67,8 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
 
   public:
 
+    WareException() = delete;
+
     WareException(const openfluid::base::ExceptionContext& Context,
                   const std::string& Msg) :
       openfluid::base::Exception(Context,Msg)

@@ -76,7 +76,7 @@ class OPENFLUID_API WorkspaceDevProcessWorker : public QObject
 
   public:
 
-    WorkspaceDevProcessWorker(const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection);
+    explicit WorkspaceDevProcessWorker(const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection);
 
     virtual ~WorkspaceDevProcessWorker();
 

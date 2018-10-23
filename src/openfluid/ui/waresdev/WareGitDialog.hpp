@@ -66,7 +66,7 @@ class OPENFLUID_API WareGitDialog: public QDialog
 
   public:
 
-    WareGitDialog(QWidget* Parent = nullptr);
+    explicit WareGitDialog(QWidget* Parent = nullptr);
 
     void setContent(const QString& Content);
 

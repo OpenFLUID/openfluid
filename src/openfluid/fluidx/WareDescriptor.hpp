@@ -63,7 +63,8 @@ class OPENFLUID_API WareDescriptor
 
     WareDescriptor();
 
-    virtual ~WareDescriptor();
+    virtual ~WareDescriptor()
+    { }
 
     void setParameter(const openfluid::ware::WareParamKey_t& Key,
                       const openfluid::ware::WareParamValue_t& Value);

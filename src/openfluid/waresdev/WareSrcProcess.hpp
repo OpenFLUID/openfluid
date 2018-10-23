@@ -56,10 +56,14 @@ class OPENFLUID_API WareSrcProcess : public QProcess
     enum class Type { NONE, CONFIGURE, BUILD};
 
     void setType(Type PT)
-    { m_Type = PT; };
+    { 
+      m_Type = PT; 
+    }
 
     Type getType() const
-    { return m_Type; };
+    { 
+      return m_Type; 
+    }
 
 
   private:

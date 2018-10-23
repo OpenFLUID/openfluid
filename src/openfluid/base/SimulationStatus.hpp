@@ -79,7 +79,10 @@ class OPENFLUID_API SimulationStatus
 
     SimulationStage m_CurrentStage;
 
+
   public:
+
+    SimulationStatus() = delete;
 
     SimulationStatus(const openfluid::core::DateTime& Begin,
                      const openfluid::core::DateTime& End,

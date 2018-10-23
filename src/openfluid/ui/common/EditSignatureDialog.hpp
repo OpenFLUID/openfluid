@@ -78,7 +78,7 @@ class OPENFLUID_API EditSignatureDialog : public MessageDialog
 
   public:
 
-    EditSignatureDialog(QWidget* Parent = nullptr);
+    explicit EditSignatureDialog(QWidget* Parent = nullptr);
 
     virtual ~EditSignatureDialog();
 

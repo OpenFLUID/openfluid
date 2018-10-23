@@ -58,8 +58,9 @@ namespace openfluid { namespace utils {
 class OPENFLUID_API FileDownloader
 {
 
-
   public:
+
+    FileDownloader() = delete;
 
     /**
      Downloads URL contents to string

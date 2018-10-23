@@ -67,6 +67,7 @@ struct SortModelItemsByOriginalPosition
 class OPENFLUID_API ExecutionTimePoint
 {
   private:
+  
     std::list<ModelItemInstance*> m_ItemsPtrList;
 
     openfluid::core::TimeIndex_t m_TimeIndex;

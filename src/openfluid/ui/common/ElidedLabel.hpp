@@ -83,6 +83,9 @@ class OPENFLUID_API ElidedLabel : public QLabel
     ElidedLabel(const QString& Text, Qt::TextElideMode ElideMode = Qt::ElideRight,
                 QWidget* Parent = nullptr, Qt::WindowFlags Flags = 0);
 
+    virtual ~ElidedLabel()
+    { }
+
     void setElideMode(Qt::TextElideMode ElideMode);
 
     Qt::TextElideMode getElideMode() const

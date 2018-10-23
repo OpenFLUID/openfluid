@@ -659,7 +659,7 @@ QStringList PreferencesManager::getBuilderExtraObserversPaths()
 void PreferencesManager::setBuilderDeltaT(openfluid::core::Duration_t DeltaT)
 {
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
-  mp_ConfFile->setValue("deltat",DeltaT);
+  mp_ConfFile->setValue("deltat",QVariant(qlonglong(DeltaT)));
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
 }

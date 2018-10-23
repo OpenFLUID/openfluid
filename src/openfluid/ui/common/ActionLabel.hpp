@@ -52,9 +52,12 @@ class OPENFLUID_API ActionLabel : public ClickableLabel
 {
   public:
 
-    ActionLabel(QWidget* Parent = nullptr);
+    explicit ActionLabel(QWidget* Parent = nullptr);
 
     ActionLabel(const QString& Text, QWidget* Parent = nullptr);
+
+    virtual ~ActionLabel()
+    { }
 
 };
 

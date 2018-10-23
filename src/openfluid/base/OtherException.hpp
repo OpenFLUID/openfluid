@@ -60,6 +60,8 @@ class OPENFLUID_API OtherException : public Exception
 
   public:
 
+    OtherException() = default;
+
     OtherException(const std::string& Msg) :
       Exception(Msg)
     {

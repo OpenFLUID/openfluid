@@ -75,7 +75,7 @@ class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSign
 
     BuilderExtensionSignature():
       Category(CAT_OTHER), Mode(MODE_UNKNOWN), Type(TYPE_UNKNOWN)
-    {  };
+    {  }
 
 };
 

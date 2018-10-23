@@ -77,7 +77,7 @@ class OPENFLUID_API WaresSearchPathsWidget : public QWidget
 
   public:
 
-    WaresSearchPathsWidget(QWidget* Parent = nullptr);
+    explicit WaresSearchPathsWidget(QWidget* Parent = nullptr);
 
     virtual ~WaresSearchPathsWidget();
 

@@ -103,8 +103,9 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
 
   public:
 
-    WaresHubImportWorker(const QString& WareshubUrl, const QString& Username = "", const QString& Password = "",
-      bool SslNoVerify = false);
+    WaresHubImportWorker(const QString& WareshubUrl, 
+                         const QString& Username = "", const QString& Password = "",
+                         bool SslNoVerify = false);
 
     ~WaresHubImportWorker();
 

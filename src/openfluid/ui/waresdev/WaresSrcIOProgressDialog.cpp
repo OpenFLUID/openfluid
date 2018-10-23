@@ -63,6 +63,16 @@ WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, b
 // =====================================================================
 
 
+WaresSrcIOProgressDialog::~WaresSrcIOProgressDialog()
+{
+  delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WaresSrcIOProgressDialog::writeInfo(const QString& Message)
 {
   write(Message);

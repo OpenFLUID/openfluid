@@ -92,11 +92,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::scientific::isVeryClose(ValX0,Val),true);
 
 
-  // linear interpolation with long double
+  // linear interpolation with double
 
-  long double LVal;
+  double LVal;
 
-  std::cout << "linear interpolation (long double)" << std::endl;
+  std::cout << "linear interpolation (double)" << std::endl;
 
   LVal = openfluid::scientific::linearInterpolation(1.0,1.0,2.0,2.0,1.5);
   std::cout << LVal << std::endl;

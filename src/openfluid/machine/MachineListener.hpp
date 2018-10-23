@@ -58,8 +58,7 @@ class OPENFLUID_API MachineListener : public openfluid::base::Listener
 
   public:
 
-    MachineListener()
-    { }
+    MachineListener() = default;
 
     virtual ~MachineListener()
     { }

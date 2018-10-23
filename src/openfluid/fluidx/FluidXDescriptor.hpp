@@ -166,7 +166,8 @@ class OPENFLUID_API FluidXDescriptor
 
     FluidXDescriptor(openfluid::base::IOListener* Listener);
 
-    ~FluidXDescriptor();
+    ~FluidXDescriptor()
+    { }
 
     void loadFromDirectory(const std::string& DirPath);
 

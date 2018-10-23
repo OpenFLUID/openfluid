@@ -60,7 +60,7 @@ class OPENFLUID_API TextEditMsgStream: public openfluid::waresdev::WareSrcMsgStr
 
   public:
 
-    TextEditMsgStream(WareSrcMsgViewer* Edit);
+    explicit TextEditMsgStream(WareSrcMsgViewer* Edit);
 
     void clear();
 

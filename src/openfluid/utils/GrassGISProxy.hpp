@@ -83,6 +83,8 @@ class OPENFLUID_API GrassGISProxy : public ProgramProxy<GrassGISProxy>
 
   public:
 
+    GrassGISProxy() = delete;
+
     GrassGISProxy(const QString& GISBase, const QString& Location, const QString& Mapset = "PERMANENT");
 
     virtual ~GrassGISProxy();

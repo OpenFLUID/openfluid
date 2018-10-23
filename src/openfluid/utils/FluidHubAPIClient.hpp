@@ -101,8 +101,7 @@ class OPENFLUID_API FluidHubAPIClient
 
   public:
 
-    FluidHubAPIClient()
-    { }
+    FluidHubAPIClient() = default;
 
     ~FluidHubAPIClient()
     { }

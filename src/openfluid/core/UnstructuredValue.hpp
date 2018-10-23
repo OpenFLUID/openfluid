@@ -59,9 +59,7 @@ class OPENFLUID_API UnstructuredValue
       GeoVectorValue, GeoRasterValue
     };
 
-    UnstructuredValue()
-    { }
-
+    UnstructuredValue() = default;
 
     virtual ~UnstructuredValue()
     { }

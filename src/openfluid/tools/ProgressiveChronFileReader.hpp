@@ -53,8 +53,8 @@ class OPENFLUID_API ProgressiveChronFileReader : public ProgressiveColumnFileRea
 {
   private:
 
-
     std::string m_DateFormat;
+
 
   public:
 
@@ -63,7 +63,7 @@ class OPENFLUID_API ProgressiveChronFileReader : public ProgressiveColumnFileRea
                                const std::string& ColSeparators = " \t\r\n");
 
     virtual ~ProgressiveChronFileReader()
-    { };
+    { }
 
 
     bool getNextValue(ChronItem_t& Value);

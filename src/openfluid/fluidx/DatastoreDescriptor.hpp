@@ -65,9 +65,10 @@ class OPENFLUID_API DatastoreDescriptor
 
   public:
 
-    DatastoreDescriptor();
+    DatastoreDescriptor() = default;
 
-    ~DatastoreDescriptor();
+    ~DatastoreDescriptor()
+    { }
 
     DatastoreDescription_t& items();
 

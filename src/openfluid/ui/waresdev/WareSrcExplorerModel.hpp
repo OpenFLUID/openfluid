@@ -108,7 +108,7 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
 
   public:
 
-    WareSrcExplorerModel(const QString& Path);
+    explicit WareSrcExplorerModel(const QString& Path);
 
     QVariant data(const QModelIndex& Index, int Role) const;
 

@@ -58,6 +58,9 @@ class OPENFLUID_API OpenFLUIDDialog : public QDialog
 
     OpenFLUIDDialog(QWidget* Parent = nullptr, const QString& Title = "OpenFLUID");
 
+    virtual ~OpenFLUIDDialog()
+    { }
+
     QString getPlaceholderRequired() const;
 
     static bool confirmRestartAfterPreferences(QWidget* Parent = nullptr);

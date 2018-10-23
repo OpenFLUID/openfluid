@@ -89,9 +89,7 @@ class OPENFLUID_API PluggableBuilderExtension : public openfluid::ware::Pluggabl
   public:
 
     PluggableBuilderExtension() : PluggableWare(openfluid::ware::WareType::BUILDEREXT)
-    {
-
-    }
+    { }
 
 
     virtual ~PluggableBuilderExtension()
@@ -106,14 +104,18 @@ class OPENFLUID_API PluggableBuilderExtension : public openfluid::ware::Pluggabl
     void initializeWare(const openfluid::ware::WareID_t& ID)
     {
       if (m_Initialized)
+      {
         return;
+      }
 
       PluggableWare::initializeWare(ID);
     }
 
 
     openfluid::ware::WareID_t getID() const
-    { return OPENFLUID_GetWareID(); }
+    { 
+      return OPENFLUID_GetWareID(); 
+    }
 
 
 };

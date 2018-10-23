@@ -71,6 +71,9 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
     GeneratorDescriptor();
 
+    virtual ~GeneratorDescriptor()
+    { }
+
     GeneratorDescriptor(openfluid::core::VariableName_t VarName, openfluid::core::UnitsClass_t UnitsClass,
                         GeneratorMethod GenMethod, unsigned int VarSize=1);
 

@@ -67,13 +67,16 @@ class OPENFLUID_API TagLabel : public QLabel
 
   public:
 
-    TagLabel(QWidget* Parent = nullptr);
+    explicit TagLabel(QWidget* Parent = nullptr);
 
     TagLabel(const QString& Text, QWidget* Parent = nullptr);
 
     TagLabel(const QString& Text,
              const QString& CSSTextColor, const QString& CSSBackgroundColor,
              QWidget* Parent = nullptr);
+
+    virtual ~TagLabel()
+    { }
 
     void setTextColor(const QString& CSSColor);
 

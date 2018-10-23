@@ -575,22 +575,23 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
 
     SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType),
       mp_Datastore(nullptr), mp_SpatialData(nullptr)
-    { };
+    { }
 
 
   public:
 
-    virtual ~SimulationInspectorWare() {};
+    virtual ~SimulationInspectorWare() 
+    { }
 
     void linkToSpatialGraph(openfluid::core::SpatialGraph* SGraph)
     {
       mp_SpatialData = SGraph;
-    };
+    }
 
     void linkToDatastore(openfluid::core::Datastore* DStore)
     {
       mp_Datastore = DStore;
-    };
+    }
 
 };
 

@@ -85,7 +85,7 @@ class OPENFLUID_API WaresSrcExportDialog: public openfluid::ui::common::MessageD
 
   public:
 
-    WaresSrcExportDialog(QWidget* Parent);
+    explicit WaresSrcExportDialog(QWidget* Parent);
 
     QString getPackageFilePath();
 

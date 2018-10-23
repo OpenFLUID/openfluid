@@ -89,7 +89,7 @@ class OPENFLUID_API SignatureDataEditorWidget : public QWidget
 
   public:
 
-    SignatureDataEditorWidget(QWidget* Parent = nullptr);
+    explicit SignatureDataEditorWidget(QWidget* Parent = nullptr);
 
     virtual ~SignatureDataEditorWidget();
 

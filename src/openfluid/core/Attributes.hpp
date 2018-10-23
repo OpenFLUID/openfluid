@@ -65,9 +65,10 @@ class OPENFLUID_API Attributes
 
   public:
 
-    Attributes();
+    Attributes() = default;
 
-    ~Attributes();
+    ~Attributes()
+    { }
 
     bool setValue(const AttributeName_t& aName, const Value& aValue);
 

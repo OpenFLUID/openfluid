@@ -1,9 +1,6 @@
 
 
-FILE(GLOB OPENFLUID_BUILDEREXT_CPP PluggableBuilderExtension.cpp
-                                   PluggableParameterizationExtension.cpp
-                                   PluggableFeatureExtension.cpp
-                                   PluggableModalExtension.cpp
+FILE(GLOB OPENFLUID_BUILDEREXT_CPP PluggableModalExtension.cpp
                                    PluggableModelessExtension.cpp
                                    PluggableWorkspaceExtension.cpp                                                                                                
                                   )

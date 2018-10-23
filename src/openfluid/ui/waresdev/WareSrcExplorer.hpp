@@ -116,9 +116,9 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
   public:
 
-    WareSrcExplorer(QWidget* Parent = nullptr);
+    explicit WareSrcExplorer(QWidget* Parent = nullptr);
 
-    ~WareSrcExplorer();
+    virtual ~WareSrcExplorer();
 
     void configure(const QString& TopDirectoryPath, bool WithContextMenu);
 

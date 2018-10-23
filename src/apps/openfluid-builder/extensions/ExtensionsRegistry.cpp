@@ -94,9 +94,13 @@ void ExtensionsRegistry::registerExtensions()
   for (unsigned int i=0; i<ExtVector.size(); i++)
   {
     if (ExtVector[i]->Signature->Type == openfluid::builderext::TYPE_FEATURE)
+    {
       m_FeatureExtensions[ExtVector[i]->Signature->ID] = ExtVector[i];
+    }
     else if (ExtVector[i]->Signature->Type == openfluid::builderext::TYPE_PARAMETERIZATION)
+    {
       m_ParameterizationExtensions[ExtVector[i]->LinkUID] = ExtVector[i];
+    }
   }
 
   m_IsRegistered = true;
@@ -162,7 +166,8 @@ void ExtensionsRegistry::releaseAllFeatureExtensions()
     if ((*it).second->Active)
       (*it).second->Active = false;
 
-    if ((*it).second->Body != nullptr && (*it).second->Signature != nullptr &&
+    if ((*it).second->Body != nullptr && 
+        (*it).second->Signature != nullptr &&
         (*it).second->Signature->Mode == openfluid::builderext::MODE_MODELESS)
     {
       dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body.get())->close();

@@ -70,7 +70,7 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
 
     WareSrcToolbar(bool IsIncluded, QWidget* Parent = nullptr);
 
-    ~WareSrcToolbar();
+    virtual ~WareSrcToolbar();
 
     QAction* action(const QString& ActionName);
 
