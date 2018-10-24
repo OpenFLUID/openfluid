@@ -42,7 +42,6 @@
 
 
 #include <openfluid/base/Exception.hpp>
-#include <openfluid/deprecation.hpp>
 
 
 namespace openfluid { namespace base {

@@ -295,7 +295,7 @@ SET(SIM_PARAMSUI_RC )
 \subsection dev_createsim_exmpl_cmakelists File CMakeLists.txt defining the build process
  
 \verbatim
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 INCLUDE(CMake.in.config)
 

@@ -96,7 +96,7 @@ class OPENFLUID_API EventDescriptor
     /**
       @deprecated Since version 2.1.0. Use openfluid::fluidx::EventDescriptor::getUnitsClass() const instead
     */
-    inline const openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
+    [[deprecated]] inline const openfluid::core::UnitsClass_t getUnitClass() const
     {
       return m_UnitsClass;
     };
@@ -110,7 +110,7 @@ class OPENFLUID_API EventDescriptor
       @deprecated Since version 2.1.0.
       Use openfluid::fluidx::EventDescriptor::setUnitsClass(const openfluid::core::UnitsClass_t&) instead
     */
-    inline void setUnitClass(const openfluid::core::UnitsClass_t& UClass) OPENFLUID_DEPRECATED
+    [[deprecated]] inline void setUnitClass(const openfluid::core::UnitsClass_t& UClass)
     {
       m_UnitsClass = UClass;
     };

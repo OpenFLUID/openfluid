@@ -92,7 +92,7 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
     /**
       @deprecated Since version 2.1.0. Use openfluid::machine::Generator::getUnitsClass() const instead
     */
-    openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
+    [[deprecated]] openfluid::core::UnitsClass_t getUnitClass() const
     {
       return m_UnitsClass;
     }

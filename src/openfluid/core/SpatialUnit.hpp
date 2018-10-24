@@ -44,7 +44,6 @@
 #include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 #include <openfluid/core/Attributes.hpp>
 #include <openfluid/core/EventsCollection.hpp>
 #include <openfluid/core/Variables.hpp>
@@ -191,7 +190,7 @@ class OPENFLUID_API SpatialUnit
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::toSpatialUnits(const UnitsClass_t&) instead
     */
-    UnitsPtrList_t* getToUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
+    [[deprecated]] UnitsPtrList_t* getToUnits(const UnitsClass_t& aClass)
     {
       return toSpatialUnits(aClass);
     }
@@ -200,7 +199,7 @@ class OPENFLUID_API SpatialUnit
       @deprecated Since version 2.1.0.
       Use openfluid::core::SpatialUnit::toSpatialUnits(const UnitsClass_t&) const instead
     */
-    const UnitsPtrList_t* getToUnits(const UnitsClass_t& aClass) const OPENFLUID_DEPRECATED
+    [[deprecated]] const UnitsPtrList_t* getToUnits(const UnitsClass_t& aClass) const
     {
       return toSpatialUnits(aClass);
     }
@@ -217,7 +216,7 @@ class OPENFLUID_API SpatialUnit
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::fromSpatialUnits(const UnitsClass_t&) instead
     */
-    UnitsPtrList_t* getFromUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
+    [[deprecated]] UnitsPtrList_t* getFromUnits(const UnitsClass_t& aClass)
     {
       return fromSpatialUnits(aClass);
     }
@@ -243,7 +242,7 @@ class OPENFLUID_API SpatialUnit
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::parentSpatialUnits(const UnitsClass_t&) instead
     */
-    UnitsPtrList_t* getParentUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
+    [[deprecated]] UnitsPtrList_t* getParentUnits(const UnitsClass_t& aClass)
     {
       return parentSpatialUnits(aClass);
     }
@@ -252,7 +251,7 @@ class OPENFLUID_API SpatialUnit
       @deprecated Since version 2.1.0.
       Use openfluid::core::SpatialUnit::parentSpatialUnits(const UnitsClass_t&) const instead
     */
-    const UnitsPtrList_t* getParentUnits(const UnitsClass_t& aClass) const OPENFLUID_DEPRECATED
+    [[deprecated]] const UnitsPtrList_t* getParentUnits(const UnitsClass_t& aClass) const
     {
       return parentSpatialUnits(aClass);
     }
@@ -269,14 +268,14 @@ class OPENFLUID_API SpatialUnit
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::childSpatialUnits(const UnitsClass_t&) instead
     */
-    UnitsPtrList_t* getChildrenUnits(const UnitsClass_t& aClass) OPENFLUID_DEPRECATED
+    [[deprecated]] UnitsPtrList_t* getChildrenUnits(const UnitsClass_t& aClass)
     { return childSpatialUnits(aClass); }
 
     /**
       @deprecated Since version 2.1.0.
       Use openfluid::core::SpatialUnit::childSpatialUnits(const UnitsClass_t&) const instead
     */
-    const UnitsPtrList_t* getChildrenUnits(const UnitsClass_t& aClass) const OPENFLUID_DEPRECATED
+    [[deprecated]] const UnitsPtrList_t* getChildrenUnits(const UnitsClass_t& aClass) const
     {
       return childSpatialUnits(aClass);
     }
@@ -337,7 +336,7 @@ class OPENFLUID_API SpatialUnit
 };
 
 
-typedef SpatialUnit Unit OPENFLUID_DEPRECATED;
+[[deprecated]] typedef SpatialUnit Unit;
 
 
 } } // namespace openfluid::core

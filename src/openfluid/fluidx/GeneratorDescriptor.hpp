@@ -84,8 +84,8 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
     /**
       @deprecated Since version 2.1.0. Use openfluid::fluidx::GeneratorDescriptor::getUnitsClass() const instead
     */
-    openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
-    { return getUnitsClass(); };
+    [[deprecated]] openfluid::core::UnitsClass_t getUnitClass() const 
+    { return getUnitsClass(); }
 
     GeneratorMethod getGeneratorMethod() const;
 

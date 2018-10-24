@@ -465,7 +465,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @deprecated Since version 2.1.0.
       Use openfluid::ware::SimulationInspectorWare::OPENFLUID_IsUnitsClassExist instead
     */
-    bool OPENFLUID_IsUnitClassExist(const openfluid::core::UnitsClass_t& ClassName) const OPENFLUID_DEPRECATED
+    [[deprecated]] bool OPENFLUID_IsUnitClassExist(const openfluid::core::UnitsClass_t& ClassName) const
     { return OPENFLUID_IsUnitsClassExist(ClassName); }
 
     /**

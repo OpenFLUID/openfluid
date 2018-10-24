@@ -43,7 +43,6 @@
 #include <list>
 #include <memory>
 
-#include <openfluid/deprecation.hpp>
 #include <openfluid/core/Value.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/DateTime.hpp>
@@ -117,7 +116,7 @@ class IndexedValue
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::IndexedValue::value() const instead
     */
-    inline Value* getValue() const OPENFLUID_DEPRECATED
+    [[deprecated]] inline Value* getValue() const
     {
       return m_Value.get();
     }
@@ -125,7 +124,7 @@ class IndexedValue
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::IndexedValue::value() instead
     */
-    inline Value* getValue() OPENFLUID_DEPRECATED
+    [[deprecated]] inline Value* getValue()
     {
       return m_Value.get();
     }

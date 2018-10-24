@@ -44,7 +44,6 @@
 #include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
 
 
@@ -109,7 +108,7 @@ class OPENFLUID_API DatastoreItem
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::DatastoreItem::getUnitsClass() instead
     */
-    std::string getUnitClass() const OPENFLUID_DEPRECATED
+    [[deprecated]] std::string getUnitClass() const
     {
       return getUnitsClass();
     }

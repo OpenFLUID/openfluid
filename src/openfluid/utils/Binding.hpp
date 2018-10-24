@@ -663,11 +663,11 @@ class Binding
 
         if (IsVerbose)
         {
-          Listener.reset(new BindingVerboseMachineListener(mp_OutErr));
+          Listener = std::make_unique<BindingVerboseMachineListener>(mp_OutErr);
         }
         else
         {
-          Listener.reset(new openfluid::machine::MachineListener());
+          Listener = std::make_unique<openfluid::machine::MachineListener>();
         }
 
 

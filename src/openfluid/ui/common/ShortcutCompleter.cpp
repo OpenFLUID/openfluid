@@ -47,7 +47,7 @@ namespace openfluid { namespace ui { namespace common {
 
 
 ShortcutCompleter::ShortcutCompleter(QObject* Parent):
-  QCompleter(Parent), mp_ShortcutAction(new QAction(this))
+  QCompleter(Parent), mp_ShortcutAction(std::make_unique<QAction>(this))
 {
   setCaseSensitivity(Qt::CaseInsensitive);
   setCompletionMode(QCompleter::UnfilteredPopupCompletion);

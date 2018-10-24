@@ -43,8 +43,6 @@
 
 #include <cmath>
 
-#include <openfluid/deprecation.hpp>
-
 
 namespace openfluid { namespace scientific {
 
@@ -86,7 +84,7 @@ inline bool isVeryClose(const T1& A, const T2& B, const double& Epsilon = 0.0000
 /**
   @deprecated Since version 2.1.0. Use openfluid::scientific::isCloseEnough instead
 */
-inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001) OPENFLUID_DEPRECATED;
+[[deprecated]] inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001);
 inline bool IsCloseEnough(double A, double B, double Epsilon)
 {
   return isCloseEnough(A,B,Epsilon);
@@ -96,7 +94,7 @@ inline bool IsCloseEnough(double A, double B, double Epsilon)
 /**
   @deprecated Since version 2.1.0.Use openfluid::scientific::isVeryClose instead
 */
-inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001) OPENFLUID_DEPRECATED;
+[[deprecated]] inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001);
 inline bool IsVeryClose(double A, double B, double Epsilon)
 {
   return isVeryClose(A,B,Epsilon);

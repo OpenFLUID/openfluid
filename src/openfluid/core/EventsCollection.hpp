@@ -77,7 +77,7 @@ class OPENFLUID_API EventsCollection
       Inserts an event in the event collection, ordered by date
       @deprecated Since version 1.7.1. Use openfluid::core::EventsCollection::addEvent(const Event&) instead
     */
-    bool addEvent(const Event* Ev) OPENFLUID_DEPRECATED;
+    [[deprecated]] bool addEvent(const Event* Ev);
 
     /**
       Inserts an event in the event collection, ordered by date
@@ -92,8 +92,8 @@ class OPENFLUID_API EventsCollection
       Use openfluid::core::EventsCollection::getEventsBetween(const DateTime&,const DateTime&,EventsCollection&) const
       instead
     */
-    bool getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate,
-                          EventsCollection *Events) const OPENFLUID_DEPRECATED;
+    [[deprecated]] bool getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate,
+                                         EventsCollection *Events) const ;
 
     /**
       Returns an event collection extracted from the current event collection, taking into account a time period
@@ -113,7 +113,7 @@ class OPENFLUID_API EventsCollection
     /**
       @deprecated Since version 2.1.0. Use openfluid::core::EventsCollection::eventsList() instead
     */
-    inline EventsList_t* getEventsList() OPENFLUID_DEPRECATED
+    [[deprecated]] inline EventsList_t* getEventsList()
     {
       return &m_Events;
     };

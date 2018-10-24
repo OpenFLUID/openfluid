@@ -48,7 +48,6 @@
 #include <set>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
@@ -101,7 +100,7 @@ inline T convertString(const std::string& StrToConvert)
   @deprecated Since version 2.1.0. Use openfluid::tools::convertString instead
 */
 template<typename T>
-inline bool ConvertString(const std::string& StrToConvert, T* Converted) OPENFLUID_DEPRECATED;
+[[deprecated]] inline bool ConvertString(const std::string& StrToConvert, T* Converted);
 template<typename T>
 inline bool ConvertString(const std::string& StrToConvert, T* Converted)
 {
@@ -161,7 +160,7 @@ inline std::string convertValue(const T& ValueToConvert)
   @deprecated Since version 2.1.0. Use openfluid::tools::convertValue instead
 */
 template<typename T>
-inline bool ConvertValue(const T& ValueToConvert, std::string* StrConverted) OPENFLUID_DEPRECATED;
+[[deprecated]] inline bool ConvertValue(const T& ValueToConvert, std::string* StrConverted);
 template<typename T>
 inline bool ConvertValue(const T& ValueToConvert, std::string* StrConverted)
 {
@@ -187,9 +186,9 @@ void OPENFLUID_API tokenizeString(const std::string& StrToTokenize,
 /**
   @deprecated Since version 2.1.0. Use openfluid::tools::tokenizeString instead
 */
-inline void TokenizeString(const std::string& StrToTokenize,
-                           std::vector<std::string>& Tokens,
-                           const std::string& Delimiters) OPENFLUID_DEPRECATED;
+[[deprecated]] inline void TokenizeString(const std::string& StrToTokenize,
+                                          std::vector<std::string>& Tokens,
+                                          const std::string& Delimiters);
 inline void TokenizeString(const std::string& StrToTokenize,
                            std::vector<std::string>& Tokens,
                            const std::string& Delimiters)
@@ -212,9 +211,9 @@ std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit
 /**
   @deprecated Since version 2.1.0. Use openfluid::tools::splitString instead
 */
-inline std::vector<std::string> SplitString(const std::string& StrToSplit,
-                                            const std::string& Separators,
-                                            bool ReturnsEmpty = false) OPENFLUID_DEPRECATED;
+[[deprecated]] inline std::vector<std::string> SplitString(const std::string& StrToSplit,
+                                                           const std::string& Separators,
+                                                           bool ReturnsEmpty = false) ;
 inline std::vector<std::string> SplitString(const std::string& StrToSplit,
                                             const std::string& Separators,
                                             bool ReturnsEmpty)

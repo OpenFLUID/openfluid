@@ -11,19 +11,12 @@
 #
 
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 PROJECT(OpenFLUID CXX)
 
 
-# Check for C++11 compiler
-INCLUDE(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-IF(COMPILER_SUPPORTS_CXX11)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ELSE()
-  MESSAGE(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} does not support C++11.")
-ENDIF()
+SET(OFBUILD_CXX_STANDARD 14)
 
 
 # Set policy for Qt on Windows
@@ -57,6 +50,9 @@ SET(OpenFLUID_DIR ${OFBUILD_DIST_CMAKE_MODULES_DIR})
 SET(OpenFLUIDHelpers_DIR ${OFBUILD_DIST_CMAKE_MODULES_DIR})
 INCLUDE(OpenFLUIDInternalHelpers)
 FIND_PACKAGE(OpenFLUIDHelpers)
+
+OPENFLUID_DETECT_CXX14()
+
 
 
 # Set default build type (if not already set)
@@ -104,7 +100,7 @@ OFBUILD_CHECK_CXX_STDHEADERS(algorithm algorithm chrono cmath complex cstdlib ct
                              system_error thread typeinfo utility vector)
 
 # Detection of main dependencies
-FIND_PACKAGE(Boost 1.54 REQUIRED COMPONENTS ${OFBUILD_BOOST_TEST_FRAMEWORK})
+FIND_PACKAGE(Boost 1.53 REQUIRED COMPONENTS ${OFBUILD_BOOST_TEST_FRAMEWORK})
 FIND_PACKAGE(Qt5 COMPONENTS Core Widgets Network Xml Svg REQUIRED)
 MESSAGE(STATUS "Found Qt5 (version ${Qt5_VERSION})")
 FIND_PACKAGE(GDAL REQUIRED)

@@ -5,12 +5,13 @@ skip_tags: true
 
 
 install:
-  - ps: Start-FileDownload 'http://www.openfluid-project.org/resources/tools/OpenFLUID-buildsupport-win32.zip' 
-  - cmd: 7z x "OpenFLUID-buildsupport-win32.zip" -o"C:\OpenFLUID-buildsupport\"
+  # download and installed already compiled support libraries
+  - ps: Start-FileDownload 'http://www.openfluid-project.org/resources/tools/OpenFLUID-buildsupport-mingw530_32.zip' 
+  - cmd: 7z x "OpenFLUID-buildsupport-mingw530_32.zip" -o"C:\OpenFLUID-buildsupport-mingw530_32\"
 
 
 environment:
-  SUPPORT_DIR : C:\OpenFLUID-buildsupport
+  SUPPORT_DIR : C:\OpenFLUID-buildsupport-mingw530_32
 
 
 before_build:
@@ -21,8 +22,8 @@ before_build:
   - cmd: set PATH=%PATH:C:\Program Files\Git\usr\bin;=%  
   # Use MinGW from Qt tools instead of default installation
   - cmd: set PATH=%PATH:C:\MinGW\bin;=% 
-  - cmd: set PATH=C:\Qt\Tools\mingw492_32\bin;C:\Qt\5.6.3\mingw49_32\bin;%PATH%
-  - cmd: cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=C:\OpenFLUID-buildsupport -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.
+  - cmd: set PATH=C:\Qt\Tools\mingw530_32\bin;C:\Qt\5.9.5\mingw53_32\bin;%PATH%
+  - cmd: cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=C:\OpenFLUID-buildsupport-mingw530_32 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.
 
   
 build_script:

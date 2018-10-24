@@ -47,7 +47,6 @@
 #include <cstdint>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/StringValue.hpp>
@@ -74,7 +73,7 @@ typedef std::string UnitsClass_t;
 /**
   @deprecated Since version 2.1.0. Use openfluid::core::UnitsClass_t instead
 */
-typedef UnitsClass_t UnitClass_t OPENFLUID_DEPRECATED;
+[[deprecated]] typedef UnitsClass_t UnitClass_t;
 
 /**
   Type definition for name of an attribute

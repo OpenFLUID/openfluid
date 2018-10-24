@@ -41,13 +41,12 @@
 #define __OPENFLUID_WARE_SIMULATIONDRIVENWARE_HPP__
 
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/base/SimulationLogger.hpp>
 #include <openfluid/ware/WareException.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 
 
 /**
@@ -329,7 +328,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
        Use openfluid::ware::SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string&)
        or #OPENFLUID_LogWarning instead
      */
-    virtual void OPENFLUID_RaiseWarning(const std::string& Source, const std::string& Msg) OPENFLUID_DEPRECATED;
+    [[deprecated]] virtual void OPENFLUID_RaiseWarning(const std::string& Source, const std::string& Msg);
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
@@ -344,7 +343,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @deprecated Since version 2.1.0.
       Use openfluid::ware::SimulationDrivenWare::OPENFLUID_RaiseError(const std::string&) instead
     */
-    virtual void OPENFLUID_RaiseError(const std::string& Source, const std::string& Msg) OPENFLUID_DEPRECATED;
+    [[deprecated]] virtual void OPENFLUID_RaiseError(const std::string& Source, const std::string& Msg);
 
     SimulationDrivenWare(WareType WType) : PluggableWare(WType),
         mp_SimStatus(nullptr), mp_SimLogger(nullptr), m_PreviousTimeIndex(0) 

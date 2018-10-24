@@ -141,14 +141,14 @@
 #if defined(__GNUC__)
   #if defined(__clang__)
     #define OPENFLUID_CC_IS_SUPPORTED
-  #elif __GNUC__ > 4 || (__GNUC__ == 4 && (__GNUC_MINOR__ > 8 || (__GNUC_MINOR__ == 8 )))
+  #elif __GNUC__ > 5 || (__GNUC__ == 5 && (__GNUC_MINOR__ > 3 || (__GNUC_MINOR__ == 3 )))
     #define OPENFLUID_CC_IS_SUPPORTED
   #endif
 #endif
 
 
 #if !defined(OPENFLUID_CC_IS_SUPPORTED)
-  #error "OpenFLUID requires a supported C++ compiler (GNU C++ 4.8 or greater)"
+  #error "OpenFLUID requires a supported C++ compiler (GNU C++ 5.3 or greater)"
 #endif
 
 

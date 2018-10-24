@@ -72,19 +72,19 @@ class OPENFLUID_API Attributes
 
     bool setValue(const AttributeName_t& aName, const Value& aValue);
 
-    bool setValue(const AttributeName_t& aName, const std::string& aValue) OPENFLUID_DEPRECATED;
+    [[deprecated]] bool setValue(const AttributeName_t& aName, const std::string& aValue);
 
     bool setValueFromRawString(const AttributeName_t& aName, const std::string& aValue);
 
-    bool getValue(const AttributeName_t& aName, openfluid::core::StringValue& aValue) const OPENFLUID_DEPRECATED;
+    [[deprecated]] bool getValue(const AttributeName_t& aName, openfluid::core::StringValue& aValue) const;
 
-    bool getValue(const AttributeName_t& aName, std::string& aValue) const OPENFLUID_DEPRECATED;
+    [[deprecated]] bool getValue(const AttributeName_t& aName, std::string& aValue) const;
 
     const openfluid::core::Value* value(const AttributeName_t& aName) const;
 
-    bool getValueAsDouble(const AttributeName_t& aName, double& aValue) const OPENFLUID_DEPRECATED;
+    [[deprecated]] bool getValueAsDouble(const AttributeName_t& aName, double& aValue) const;
 
-    bool getValueAsLong(const AttributeName_t& aName, long& aValue) const OPENFLUID_DEPRECATED;
+    [[deprecated]] bool getValueAsLong(const AttributeName_t& aName, long& aValue) const;
 
     bool isAttributeExist(const AttributeName_t& aName) const;
 

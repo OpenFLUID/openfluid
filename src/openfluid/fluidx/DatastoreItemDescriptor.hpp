@@ -45,7 +45,6 @@
 #include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 
@@ -81,7 +80,7 @@ class OPENFLUID_API DatastoreItemDescriptor
       @deprecated Since version 2.1.0.
       Use openfluid::fluidx::DatastoreItemDescriptor::setUnitsClass(const std::string&) instead
     */
-    void setUnitClass(const std::string& UnitsClass) OPENFLUID_DEPRECATED
+    [[deprecated]] void setUnitClass(const std::string& UnitsClass)
     {
       setUnitsClass(UnitsClass);
     };
@@ -91,7 +90,7 @@ class OPENFLUID_API DatastoreItemDescriptor
     /**
       @deprecated Since version 2.1.0. Use openfluid::fluidx::DatastoreItemDescriptor::getUnitsClass() const instead
     */
-    openfluid::core::UnitsClass_t getUnitClass() const OPENFLUID_DEPRECATED
+    [[deprecated]] openfluid::core::UnitsClass_t getUnitClass() const
     {
       return getUnitsClass();
     };
