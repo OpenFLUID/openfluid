@@ -60,7 +60,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_unconsistent)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   // "Attribute indataB1 doesn't exist for Unit 3 of class unitsB"
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(check_unconsistent)
 
 BOOST_AUTO_TEST_CASE(check_addUnit)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
 
 BOOST_AUTO_TEST_CASE(check_deleteUnit)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 
@@ -297,7 +297,7 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
 
 BOOST_AUTO_TEST_CASE(check_deleteUnit_manyAttrsDesc)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/manyattrdescs");
@@ -336,7 +336,7 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit_manyAttrsDesc)
 
 BOOST_AUTO_TEST_CASE(check_deleteAttrs_manyAttrsDesc)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/manyattrdescs");
@@ -375,7 +375,7 @@ BOOST_AUTO_TEST_CASE(check_deleteAttrs_manyAttrsDesc)
 
 BOOST_AUTO_TEST_CASE(check_add_replace_getAttr)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
@@ -409,7 +409,7 @@ BOOST_AUTO_TEST_CASE(check_add_replace_getAttr)
 
 BOOST_AUTO_TEST_CASE(check_deleteAttrs)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
@@ -437,7 +437,7 @@ BOOST_AUTO_TEST_CASE(check_deleteAttrs)
 
 BOOST_AUTO_TEST_CASE(check_renameAttrs)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
@@ -465,7 +465,7 @@ BOOST_AUTO_TEST_CASE(check_renameAttrs)
 
 BOOST_AUTO_TEST_CASE(check_operations_on_events)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   openfluid::fluidx::SpatialDomainDescriptor Domain = FXDesc.spatialDomain();
@@ -503,7 +503,7 @@ BOOST_AUTO_TEST_CASE(check_operations_on_events)
 
 BOOST_AUTO_TEST_CASE(check_operations_on_relations)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
@@ -592,7 +592,7 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
 
 BOOST_AUTO_TEST_CASE(check_operations_on_relations_afterAdd)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   openfluid::fluidx::SpatialDomainDescriptor Domain(FXDesc.spatialDomain());
@@ -640,7 +640,7 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations_afterAdd)
 
 BOOST_AUTO_TEST_CASE(check_clearDomain)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
 

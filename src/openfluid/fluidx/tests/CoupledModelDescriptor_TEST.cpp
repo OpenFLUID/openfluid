@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 BOOST_AUTO_TEST_CASE(check_construction_from_dataset)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
@@ -227,7 +227,7 @@ BOOST_AUTO_TEST_CASE(check_construction_from_dataset)
 
 BOOST_AUTO_TEST_CASE(check_advanced_operations)
 {
-  std::unique_ptr<openfluid::base::IOListener> Listener(new openfluid::base::IOListener());
+  std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
   openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
 
   FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");

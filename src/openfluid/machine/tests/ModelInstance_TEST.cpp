@@ -166,7 +166,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
                                                             openfluid::core::DateTime(2012,1,1,14,46,39),60);
 
-  std::unique_ptr<openfluid::machine::MachineListener> Listener(new openfluid::machine::MachineListener());
+  std::unique_ptr<openfluid::machine::MachineListener> Listener = 
+    std::make_unique<openfluid::machine::MachineListener>();
 
   openfluid::machine::ModelInstance MI(SB,Listener.get());
 
@@ -188,7 +189,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
                                                             openfluid::core::DateTime(2012,1,1,0,3,19),60);
 
-  std::unique_ptr<openfluid::machine::MachineListener> Listener(new openfluid::machine::MachineListener());
+  std::unique_ptr<openfluid::machine::MachineListener> Listener = 
+    std::make_unique<openfluid::machine::MachineListener>();
 
   openfluid::machine::ModelInstance MI(SB,Listener.get());
 
@@ -285,7 +287,8 @@ BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
 
   openfluid::machine::SimulationBlob SB;
 
-  std::unique_ptr<openfluid::machine::MachineListener> Listener(new openfluid::machine::MachineListener());
+  std::unique_ptr<openfluid::machine::MachineListener> Listener =
+    std::make_unique<openfluid::machine::MachineListener>();
   ModelInstanceSub MI(SB,Listener.get());
 
   openfluid::machine::ModelItemInstance* MII = new openfluid::machine::ModelItemInstance();

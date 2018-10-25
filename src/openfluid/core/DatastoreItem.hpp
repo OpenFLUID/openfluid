@@ -67,6 +67,7 @@ class OPENFLUID_API DatastoreItem
 
     UnstructuredValue* m_Value;
 
+
   public:
 
     /**

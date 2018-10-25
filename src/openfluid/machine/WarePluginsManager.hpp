@@ -87,7 +87,7 @@ class OPENFLUID_API WarePluginsManager
 
       if (m_LoadedPluginsLibraries.find(PluginFileName) == m_LoadedPluginsLibraries.end())
       {
-        m_LoadedPluginsLibraries[PluginFileName].reset(new QLibrary(QString::fromStdString(FullFilePath)));
+        m_LoadedPluginsLibraries[PluginFileName] = std::make_unique<QLibrary>(QString::fromStdString(FullFilePath));
       }
 
       return m_LoadedPluginsLibraries[PluginFileName].get();

@@ -599,20 +599,23 @@ void OpenFLUIDApp::runSimulation()
 
 
   std::unique_ptr<openfluid::machine::MachineListener> MListener;
-  std::unique_ptr<openfluid::base::IOListener> IOListener(new DefaultIOListener());
+  std::unique_ptr<openfluid::base::IOListener> IOListener = std::make_unique<DefaultIOListener>();
 
 
   if (IsQuiet)
   {
-    MListener.reset(new openfluid::machine::MachineListener());
+    MListener = std::make_unique<openfluid::machine::MachineListener>();
   }
   else
   {
     if (IsVerbose)
     {
-      MListener.reset(new VerboseMachineListener());
+      MListener = std::make_unique<VerboseMachineListener>();
     }
-    else MListener.reset(new DefaultMachineListener());
+    else 
+    {
+      MListener = std::make_unique<DefaultMachineListener>();
+    }
   }
 
   openfluid::machine::ModelInstance Model(m_SimBlob,MListener.get());
@@ -655,7 +658,7 @@ void OpenFLUIDApp::runSimulation()
   openfluid::tools::Console::resetAttributes();
   std::cout << std::endl;
 
-  mp_Engine.reset(new openfluid::machine::Engine(m_SimBlob, Model, Monitoring, MListener.get()));
+  mp_Engine = std::make_unique<openfluid::machine::Engine>(m_SimBlob, Model, Monitoring, MListener.get());
 
   mp_Engine->initialize();
 
@@ -1068,20 +1071,26 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 void OpenFLUIDApp::runBuddy()
 {
   std::unique_ptr<openfluid::buddies::OpenFLUIDBuddy> Buddy;
-  std::unique_ptr<openfluid::buddies::BuddiesListener> BuddyObs(new DefaultBuddiesListener());
+  std::unique_ptr<openfluid::buddies::BuddiesListener> BuddyObs = std::make_unique<DefaultBuddiesListener>();
 
   if (m_BuddyToRun.first == "newsim" )
-    Buddy.reset(new openfluid::buddies::NewSimulatorBuddy(BuddyObs.get()));
+    Buddy = std::make_unique<openfluid::buddies::NewSimulatorBuddy>(BuddyObs.get());
 #if OPENFLUID_SIM2DOC_ENABLED
     // Disabled for compilation errors due to boost.spirit usage under MacOSX
     // TODO Should be re-enabled later
   else if (m_BuddyToRun.first == "sim2doc" )
-    Buddy.reset(new openfluid::buddies::Sim2DocBuddy(BuddyObs.get()));
+  {
+    Buddy = std::make_unique<openfluid::buddies::Sim2DocBuddy>(BuddyObs.get());
+  }
 #endif
   else if (m_BuddyToRun.first == "newdata" )
-    Buddy.reset(new openfluid::buddies::NewDataBuddy(BuddyObs.get()));
+  {
+    Buddy = std::make_unique<openfluid::buddies::NewDataBuddy>(BuddyObs.get());
+  }
   else if (m_BuddyToRun.first == "examples" )
-    Buddy.reset(new openfluid::buddies::ExamplesBuddy(BuddyObs.get()));
+  {
+    Buddy = std::make_unique<openfluid::buddies::ExamplesBuddy>(BuddyObs.get());
+  }
 
   if (Buddy)
   {

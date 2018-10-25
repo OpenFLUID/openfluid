@@ -81,8 +81,10 @@ int main(int argc, char **argv)
 
     std::unique_ptr<openfluid::machine::Engine> Engine;
     openfluid::machine::SimulationBlob SBlob;
-    std::unique_ptr<openfluid::base::IOListener> IOListen(new openfluid::base::IOListener());
-    std::unique_ptr<openfluid::machine::MachineListener> MachineListen(new openfluid::machine::MachineListener());
+    std::unique_ptr<openfluid::base::IOListener> IOListen = std::make_unique<openfluid::base::IOListener>();
+    std::unique_ptr<openfluid::machine::MachineListener> MachineListen = 
+      std::make_unique<openfluid::machine::MachineListener>();
+
     openfluid::machine::ModelInstance Model(SBlob,MachineListen.get());
     openfluid::machine::MonitoringInstance Monitoring(SBlob);
     openfluid::fluidx::FluidXDescriptor FXDesc(IOListen.get());
