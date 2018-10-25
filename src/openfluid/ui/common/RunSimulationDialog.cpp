@@ -179,6 +179,16 @@ RunSimulationDialog::~RunSimulationDialog()
 // =====================================================================
 
 
+void RunSimulationDialog::closeEvent(QCloseEvent *event)
+{
+  event->ignore();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 QString RunSimulationDialog::getDurationAsDaysHoursMinsSecsString(openfluid::core::Duration_t Duration)
 {
   QString res;

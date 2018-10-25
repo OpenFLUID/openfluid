@@ -43,6 +43,7 @@
 
 #include <QObject>
 #include <QElapsedTimer>
+#include <QCloseEvent>
 
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
@@ -116,6 +117,11 @@ class OPENFLUID_API RunSimulationDialog : public MessageDialog
     void handleUserAbort();
 
     void showErrorDetails();
+
+
+  protected:
+
+    void closeEvent(QCloseEvent *event);
 
 
   public:
