@@ -75,7 +75,14 @@ class CommandLineOption
     // =====================================================================
     // =====================================================================
 
-
+    
+    /**
+      Instanciates an option with the given parameters
+      @param[in] LongName The long name of the option
+      @param[in] ShortName The short name of the option
+      @param[in] HelpText The help text associated to the option
+      @param[in] ValueRequired Set to true to require a value with this option (default is false)
+    */
     CommandLineOption(const std::string& LongName, const std::string& ShortName,
                       const std::string& HelpText, bool ValueRequired = false):
       m_LongName(LongName),m_ShortName(ShortName), m_ValueRequired(ValueRequired), m_HelpText(HelpText),
@@ -87,54 +94,94 @@ class CommandLineOption
     // =====================================================================
 
 
+    /**
+      Returns the help text of the option
+      @return The help text
+    */
     std::string getHelpText() const
-    { return m_HelpText; }
+    { 
+      return m_HelpText; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Returns the long name of the option (e.g. 'output-dir')
+      @return The long name
+    */
     std::string getLongName() const
-    { return m_LongName; }
+    { 
+      return m_LongName; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Returns the short name of the option (e.g. 'o')
+      @return The short name
+    */
     std::string getShortName() const
-    { return m_ShortName; }
+    { 
+      return m_ShortName; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Returns the value of the option
+      @return The value
+    */
     std::string getValue() const
-    { return m_Value; }
+    { 
+      return m_Value; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Tests if the option is active
+      @return true if the option is active
+    */
     bool isActive() const
-    { return m_Active; }
+    { 
+      return m_Active; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Tests if the option requires a value
+      @return true if the option requires a value
+    */
     bool isValueRequired() const
-    { return m_ValueRequired; }
+    { 
+      return m_ValueRequired; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Activates the option with the given value
+      @param[in] Value The value for activation (default is empty)
+    */
     void activate(const std::string& Value = "")
     {
       m_Value = Value;
@@ -150,6 +197,9 @@ class CommandLineOption
     // =====================================================================
 
 
+    /**
+      Resets the option to default (inactive with empty value)
+    */
     void reset()
     {
       m_Active = false;
@@ -186,6 +236,11 @@ class CommandLineCommand
     // =====================================================================
 
 
+    /**
+      Instanciates a command with the given parameters
+      @param[in] Name The long name of the command
+      @param[in] HelpText The help text associated to the command
+    */
     CommandLineCommand(const std::string& Name, const std::string& HelpText):
       m_Name(Name), m_HelpText(HelpText)
     { }
@@ -195,36 +250,13 @@ class CommandLineCommand
     // =====================================================================
 
 
+    /**
+      Returns the help text of the command
+      @return The help text
+    */
     std::string getHelpText() const
-    { return m_HelpText; }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    std::string getName() const
-    { return m_Name; }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    const std::map<std::string,CommandLineOption>& options()
-    { return m_Options; }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    void addOption(const CommandLineOption& Option)
-    {
-      m_Options[Option.getLongName()] = Option;
-
-      if (!Option.getShortName().empty())
-        m_ShortOptions[Option.getShortName()] = &m_Options[Option.getLongName()];
+    { 
+      return m_HelpText; 
     }
 
 
@@ -232,12 +264,66 @@ class CommandLineCommand
     // =====================================================================
 
 
+    /**
+      Returns the name of the command
+      @return The name (e.g. "search")
+    */
+    std::string getName() const
+    { 
+      return m_Name; 
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Returns the options registered for the command
+      @return The options
+    */
+    const std::map<std::string,CommandLineOption>& options()
+    { 
+      return m_Options; 
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Adds an option to the command
+      @param[in] Option The option to add
+    */
+    void addOption(const CommandLineOption& Option)
+    {
+      m_Options[Option.getLongName()] = Option;
+
+      if (!Option.getShortName().empty())
+      {
+        m_ShortOptions[Option.getShortName()] = &m_Options[Option.getLongName()];
+      }
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Activates the given option with the given value
+      @param[in] LongName The long name of the option
+      @param[in] Value The value for activation (default is empty)
+    */
     bool activateOption(const std::string& LongName, const std::string& Value = "")
     {
       auto it = m_Options.find(LongName);
 
       if (it == m_Options.end())
+      {
         return false;
+      }
 
       (*it).second.activate(Value);
       return (*it).second.isActive();
@@ -248,12 +334,19 @@ class CommandLineCommand
     // =====================================================================
 
 
+    /**
+      Returns the long name of an option from its short name
+      @param[in] ShortName The requested short name for the option
+      @return The long name
+    */
     std::string getOptionNameFromShortName(const std::string& ShortName) const
     {
       auto it = m_ShortOptions.find(ShortName);
 
       if (it == m_ShortOptions.end())
+      {
         return "";
+      }
 
       return (*it).second->getLongName();
     }
@@ -263,6 +356,11 @@ class CommandLineCommand
     // =====================================================================
 
 
+    /**
+      Tests if an option exists for the command
+      @param[in] LongName The long name for the searched option
+      @return true if the option exists
+    */
     bool isOptionExists(const std::string& LongName) const
     {
       return (m_Options.find(LongName) != m_Options.end());
@@ -273,15 +371,21 @@ class CommandLineCommand
     // =====================================================================
 
 
+    /**
+      Tests if an option requires a value
+      @param[in] LongName The long name for the searched option
+      @return true if the option requires a value
+    */
     bool isOptionRequiresValue(const std::string& LongName) const
     {
       auto it = m_Options.find(LongName);
 
       if (it == m_Options.end())
+      {
         return false;
+      }
 
       return (*it).second.isValueRequired();
-
     }
 
 
@@ -289,6 +393,11 @@ class CommandLineCommand
     // =====================================================================
 
 
+    /**
+      Tests if an option is active
+      @param[in] LongName The long name for the searched option
+      @return true if the option is active
+    */
     bool isOptionActive(const std::string& LongName) const
     {
       auto it = m_Options.find(LongName);
@@ -301,12 +410,19 @@ class CommandLineCommand
     // =====================================================================
 
 
+    /**
+      Returns the value given for an option
+      @param[in] LongName The long name for the option
+      @return the value for the option
+    */
     std::string getOptionValue(const std::string& LongName) const
     {
       auto it = m_Options.find(LongName);
 
       if (it == m_Options.end())
+      {
         return "";
+      }
 
       return ((*it).second.getValue());
     }
@@ -316,10 +432,15 @@ class CommandLineCommand
     // =====================================================================
 
 
+    /**
+      Resets all options to default (inactive with empty value)
+    */
     void reset()
     {
       for (auto& Opt : m_Options)
+      {
         Opt.second.reset();
+      }
     }
 
 };
@@ -329,6 +450,72 @@ class CommandLineCommand
 // =====================================================================
 
 
+// OpenFLUID:stylecheck:!incs
+
+/**
+  @brief Class for management of command line arguments.
+
+  This class allows to manage the command line arguments as commands, options and extra arguments.
+
+  The example below is for a command line program with two commands ('run' and 'search') and associated options
+  @code
+  #include <openfluid/utils/CommandLineParser.hpp>
+
+  int main(int argc, char** argv)
+  {
+    // ------- Definition of the parser for "myprogram"
+
+    openfluid::utils::CommandLineParser Parser("myprogram","this is my program"); 
+
+    // add of the "run" command with associated options
+    openfluid::utils::CommandLineCommand RunCmd("run","run the process");
+    RunCmd.addOption(openfluid::utils::CommandLineOption("input-path","i","input path",true));
+    RunCmd.addOption(openfluid::utils::CommandLineOption("output-path","o","output path",true));
+    RunCmd.addOption(openfluid::utils::CommandLineOption("verbose","","verbose mode"));
+    Parser.addCommand(RunCmd);
+
+    // add of the "search" command with associated options
+    openfluid::utils::CommandLineCommand SearchCmd("search","search for data");
+    SearchCmd.addOption(openfluid::utils::CommandLineOption("path","p","path to search",true));
+    SearchCmd.addOption(openfluid::utils::CommandLineOption("extended","e","enable extended search"));
+    Parser.addCommand(SearchCmd);
+
+
+    // ------- Parsing of the given arguments
+
+    Parser.parse(argc,argv);
+    
+
+    // ------- Processing of commands and options
+
+    std::string ActiveCommand = Parser.getActiveCommand();
+    
+    if (ActiveCommand.empty())
+    {
+      // .. code here when no command
+    }
+    else if (ActiveCommand == "run")
+    {
+      // .. code here for "run" command
+
+      if (Parser.command(ActiveCommand).isOptionActive("input-path"))
+      {
+        // .. code here for "input-path" option
+      }
+      if (Parser.command(ActiveCommand).isOptionActive("output-path"))
+      {
+        // .. code here for "output-path" option
+      }
+     
+      // ...
+    }
+    else if (ActiveCommand == "search")
+    {
+      // .. code here for "search" command
+    }
+  }
+  @endcode
+*/
 class CommandLineParser
 {
   private:
@@ -361,6 +548,11 @@ class CommandLineParser
     // =====================================================================
 
 
+    /**
+      Instanciates a command line parser with the given parameters
+      @param[in] ProgramName The name of the programn
+      @param[in] HelpText The help text associated to the option
+    */
     CommandLineParser(const std::string& ProgramName, const std::string& HelpText) :
       m_ProgramName(ProgramName), m_HelpText(HelpText), m_HelpAsked(false)
     {
@@ -372,46 +564,81 @@ class CommandLineParser
     // =====================================================================
 
 
+    /**
+      Returns the extra arguments given to the command
+      @return a vector of arguments
+    */
     const std::vector<std::string>& extraArgs() const
-    { return m_ExtraArgs; }
+    { 
+      return m_ExtraArgs; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Returns the help text of the parser
+      @return The help text
+    */
     std::string getHelpText() const
-    { return m_HelpText; }
+    { 
+      return m_HelpText; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Returns the program name
+      @return The program name
+    */
     std::string getProgramName() const
-    { return m_ProgramName; }
+    { 
+      return m_ProgramName; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Returns the message given by the parsing process in case of error(s)
+      @return The message
+    */
     std::string getParsingMessage() const
-    { return m_ParsingMessage; }
+    { 
+      return m_ParsingMessage; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Returns the active command name
+      @return The active command name
+    */
     std::string getActiveCommand() const
-    { return m_ActiveCommand; }
+    { 
+      return m_ActiveCommand; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Returns the command corresponding to the given name
+      @param[in] Name the name of the command  
+      @return The command object
+    */
     const CommandLineCommand& command(const std::string& Name) const
     {
       return m_Commands.at(Name);
@@ -422,6 +649,10 @@ class CommandLineParser
     // =====================================================================
 
 
+    /**
+      Adds a command to the parser
+      @param[in] Command The command to add
+    */
     void addCommand(const CommandLineCommand& Command)
     {
       m_Commands[Command.getName()] = Command;
@@ -432,6 +663,10 @@ class CommandLineParser
     // =====================================================================
 
 
+    /**
+      Adds a global option to the parser
+      @param[in] Option The option to add
+    */
     void addOption(const CommandLineOption& Option)
     {
       m_Commands[""].addOption(Option);
@@ -442,6 +677,11 @@ class CommandLineParser
     // =====================================================================
 
 
+    /**
+      Parses a list of string arguments
+      @param[in] ArgValues The lists of arguments to parse
+      @return true if the parsing is succesful, false otherwise
+    */
     bool parse(std::list<std::string> ArgValues)
     {
       reset();
@@ -472,7 +712,9 @@ class CommandLineParser
           }
 
           if (Arg == "-h" || Arg == "--help")
+          {
             m_HelpAsked = true;
+          }
           else if (Arg.size() < 2)
           {
             m_ParsingMessage = "wrong format for option \"" + Arg + "\"";
@@ -509,7 +751,9 @@ class CommandLineParser
                 OptValue = TmpName.substr(EqualPos+1,TmpName.size()-EqualPos-1);
               }
               else
+              {
                 LongOptName = TmpName;
+              }
             }
 
             if (!m_Commands[m_ActiveCommand].isOptionExists(LongOptName))
@@ -517,7 +761,9 @@ class CommandLineParser
               // unknown option
               m_ParsingMessage = "unknown option \"" + Arg + "\"";
               if (!m_ActiveCommand.empty())
+              {
                 m_ParsingMessage += " for command \"" + m_ActiveCommand + "\"";
+              }
               return false;
             }
 
@@ -553,12 +799,20 @@ class CommandLineParser
     // =====================================================================
 
 
+    /**
+      Parses arguments from the standard parameters `(int argc,char** argv)` given through the main function
+      @param[in] ArgC The number of arguments
+      @param[in] ArgV The array of arguments
+      @return true if the parsing is succesful, false otherwise
+    */
     bool parse(int ArgC, char **ArgV)
     {
       std::list<std::string> ArgValues;
 
       for (int i=1; i< ArgC; i++)
+      {
         ArgValues.push_back(std::string(ArgV[i]));
+      }
 
       return parse(ArgValues);
     }
@@ -568,6 +822,9 @@ class CommandLineParser
     // =====================================================================
 
 
+    /**
+      Resets the parser to default (no active command, no extra arguments, no option activated)
+    */
     void reset()
     {
       m_ActiveCommand.clear();
@@ -575,7 +832,9 @@ class CommandLineParser
       m_ExtraArgs.clear();
 
       for (auto& Cmd : m_Commands)
+      {
         Cmd.second.reset();
+      }
     }
 
 
@@ -583,19 +842,32 @@ class CommandLineParser
     // =====================================================================
 
 
+    /**
+      Tests if the help is asked
+      @return true if the help is asked
+    */
     bool isHelpAsked()
-    { return m_HelpAsked; }
+    { 
+      return m_HelpAsked; 
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
+    /**
+      Prints the help text
+      @param[in] OutStm The stream where the help text is printed (e.g. std::cout)
+    */
     void printHelp(std::ostream& OutStm)
     {
       std::string m_CmdName = m_ActiveCommand;
+      
       if (m_CmdName.empty())
+      {
         m_CmdName = "[<command>]";
+      }
 
       OutStm << "Usage : " << m_ProgramName << " " << m_CmdName << " [<options>] [<args>]\n";
 
@@ -604,12 +876,18 @@ class CommandLineParser
         OutStm << "\nAvailable commands:\n";
 
         for (auto& Cmd : m_Commands)
+        {
           if (!Cmd.first.empty())
+          {
             OutStm << "  " << Cmd.first << " : " << Cmd.second.getHelpText() << "\n";
+          }
+        }
       }
 
       if (!m_Commands[m_ActiveCommand].getHelpText().empty())
+      {
         OutStm << "\n" << m_Commands[m_ActiveCommand].getHelpText() << "\n";
+      }
 
       OutStm << "\nAvailable options:\n";
       OutStm << "  --help,-h : display this help message\n";
@@ -618,13 +896,17 @@ class CommandLineParser
       {
         OutStm << "  --" << Opt.second.getLongName();
         if (Opt.second.isValueRequired())
+        {
           OutStm << "=<arg>";
+        }
 
         if (!Opt.second.getShortName().empty())
         {
           OutStm << ", -" << Opt.second.getShortName();
           if (Opt.second.isValueRequired())
+          {
             OutStm << " <arg>";
+          }
         }
 
         OutStm << " : " << Opt.second.getHelpText() << "\n";
@@ -636,6 +918,10 @@ class CommandLineParser
     // =====================================================================
 
 
+    /**
+      Prints the state of the parser 
+      @param[in] OutStm The stream where the help text is printed (e.g. std::cout)
+    */
     void printState(std::ostream& OutStm)
     {
       for (auto& Cmd : m_Commands)
@@ -643,8 +929,13 @@ class CommandLineParser
         if (!Cmd.first.empty())
         {
           if (Cmd.first == m_ActiveCommand)
+          {
             OutStm << "+";
-          else OutStm << "-";
+          }
+          else 
+          {
+            OutStm << "-";
+          }
 
           OutStm << " " << Cmd.first << " : " << Cmd.second.getHelpText() << "\n";
 
@@ -653,16 +944,24 @@ class CommandLineParser
             OutStm << "  ";
 
             if (Opt.second.isActive())
+            {
               OutStm << "+";
+            }
             else
+            {
               OutStm << "-";
+            }
             OutStm << " " << Opt.first;
 
             if (!Opt.second.getShortName().empty())
+            {
               OutStm << "," << Opt.second.getShortName();
+            }
 
             if (Opt.second.isValueRequired())
+            {
               OutStm << "[" << Opt.second.getValue() << "]";
+            }
 
             OutStm << " : " << Opt.second.getHelpText() << "\n";
           }
@@ -673,8 +972,12 @@ class CommandLineParser
       if (!m_ExtraArgs.empty())
       {
         OutStm << "Extra arguments :";
+        
         for (auto& Arg : m_ExtraArgs)
+        {
           OutStm << " " << Arg;
+        }
+
         OutStm << "\n";
       }
 

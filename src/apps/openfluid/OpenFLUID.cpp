@@ -792,12 +792,17 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   Parser.addOption(openfluid::utils::CommandLineOption("version","","display version"));
 
+  
   // run dataset
   openfluid::utils::CommandLineCommand RunDatasetCmd("run","Run a simulation from a project or an input dataset");
   for (auto& Opt : RunOptions)
+  {
     RunDatasetCmd.addOption(Opt);
+  }
   for (auto& Opt : SearchOptions)
+  {
     RunDatasetCmd.addOption(Opt);
+  }
   Parser.addCommand(RunDatasetCmd);
 
 
@@ -814,22 +819,27 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   ReportCmd.addOption(openfluid::utils::CommandLineOption("list","l","display simple list instead of report"));
   ReportCmd.addOption(openfluid::utils::CommandLineOption("with-errors","e","show errored wares during search"));
   for (auto& Opt : SearchOptions)
+  {
     ReportCmd.addOption(Opt);
+  }  
   Parser.addCommand(ReportCmd);
 
 
   // show paths
   openfluid::utils::CommandLineCommand ShowPathsCmd("show-paths","Show search paths for wares");
   for (auto& Opt : SearchOptions)
+  {
     ShowPathsCmd.addOption(Opt);
+  }
   Parser.addCommand(ShowPathsCmd);
 
 
   if (!Parser.parse(ArgC,ArgV))
+  {
     throw openfluid::base::ApplicationException(
         openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
             Parser.getParsingMessage());
-
+  }
 
   if (Parser.isHelpAsked())
   {
@@ -874,7 +884,9 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
         openfluid::base::RunContextManager::instance()->setInputDir(Parser.extraArgs().at(0));
 
         if (Parser.extraArgs().size() >= 2)
+        {
           openfluid::base::RunContextManager::instance()->setOutputDir(Parser.extraArgs().at(1));
+        }
 
         if (Parser.command(ActiveCommandStr).isOptionActive("automatic-output-dir"))
         {
@@ -890,11 +902,15 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       std::cout << Parser.command(ActiveCommandStr).getOptionValue("max-threads") << std::endl;
 
       if (openfluid::tools::convertString(Parser.command(ActiveCommandStr).getOptionValue("max-threads"),&MaxThreads))
+      {
         openfluid::base::RunContextManager::instance()->setWaresMaxNumThreads(MaxThreads);
+      }
       else
+      {
         throw openfluid::base::ApplicationException(
             openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
                 "wrong value for threads number");
+      }
     }
 
     if (Parser.command(ActiveCommandStr).isOptionActive("clean-output-dir"))
@@ -928,19 +944,27 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
     if (Parser.extraArgs().empty() ||
         (Parser.extraArgs().at(0) != "simulators" && Parser.extraArgs().at(0) != "observers"))
+    {
       throw openfluid::base::ApplicationException(
           openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
               "Type of wares is missing for reporting");
+    }
     else
+    {
       Waretype = Parser.extraArgs().at(0);
+    }
 
     std::string MatchStr;
     if (Parser.extraArgs().size() > 1)
+    {
       MatchStr = Parser.extraArgs().at(1);
+    }
 
     bool ReportErrors = false;
     if (Parser.command(ActiveCommandStr).isOptionActive("with-errors"))
+    {
       ReportErrors = true;
+    }
 
     if (Waretype == "simulators")
     {
@@ -989,9 +1013,11 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   else if (ActiveCommandStr == "buddy")
   {
     if (Parser.extraArgs().empty())
+    {
       throw openfluid::base::ApplicationException(
                openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
                    "Buddy name is missing");
+    }
 
     openfluid::buddies::OpenFLUIDBuddy* BuddyBody = nullptr;
     openfluid::buddies::BuddiesListener* BuddyListener = new DefaultBuddiesListener();
@@ -999,11 +1025,17 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     std::string BuddyName = Parser.extraArgs().at(0);
 
     if (BuddyName == "newsim")
+    {
       BuddyBody = new openfluid::buddies::NewSimulatorBuddy(BuddyListener);
+    }
     else if (BuddyName == "newdata")
+    {
       BuddyBody = new openfluid::buddies::NewDataBuddy(BuddyListener);
+    }
     else if (BuddyName == "examples")
+    {
       BuddyBody = new openfluid::buddies::ExamplesBuddy(BuddyListener);
+    }
 #if OPENFLUID_SIM2DOC_ENABLED
     else if (BuddyName == "sim2doc")
       BuddyBody = new openfluid::buddies::Sim2DocBuddy(BuddyListener);
@@ -1056,10 +1088,11 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     return;
   }
   else
+  {
     throw openfluid::base::ApplicationException(
                    openfluid::base::ApplicationException::computeContext("openfluid","command line parsing"),
                        "unknown command \"" + ActiveCommandStr + "\"");
-
+  }
 
 }
 
