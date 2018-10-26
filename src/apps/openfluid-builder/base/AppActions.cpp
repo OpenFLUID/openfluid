@@ -494,14 +494,25 @@ void AppActions::createToolbar(MainWindow& MainWin)
     mp_MainToolbar->addAction(action("SimulationRun"));
 
     mp_MainToolbar->setObjectName("MainToolbar");
-    mp_MainToolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
-    mp_MainToolbar->setStyleSheet(QString("QWidget {color: #f0f0f0; padding-left : 10px; padding-right : 10px;} "
-                                          "#MainToolbar {background-color: %1; border: 1px solid %1;}"
-                                          "QToolButton::hover "
-                                            "{ background-color: %2; border : 1px solid %3; border-radius: 4px; }")
-                                         .arg(openfluid::ui::config::TOOLBAR_BGCOLOR,
-                                              openfluid::ui::config::TOOLBARBUTTON_BGCOLOR,
-                                              openfluid::ui::config::TOOLBARBUTTON_BORDERCOLOR));
+    mp_MainToolbar->setStyleSheet(QString(R"(
+QWidget {
+  color: #f0f0f0; 
+  padding-left : 10px; 
+  padding-right : 10px;
+} 
+
+#MainToolbar {
+  background-color: %1; 
+  border: 1px solid %1;
+}
+
+QToolButton::hover { 
+  background-color: %2; 
+  border : 1px solid %3; 
+  border-radius: 4px; }
+                          )").arg(openfluid::ui::config::TOOLBAR_BGCOLOR,
+                                  openfluid::ui::config::TOOLBARBUTTON_BGCOLOR,
+                                  openfluid::ui::config::TOOLBARBUTTON_BORDERCOLOR));
   }
 
   MainWin.addToolBar(openfluid::base::PreferencesManager::instance()->getBuilderToolBarPosition(),

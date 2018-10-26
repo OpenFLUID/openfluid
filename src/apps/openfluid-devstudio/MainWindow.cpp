@@ -86,10 +86,13 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
   mp_Toolbar = new openfluid::ui::waresdev::WareSrcToolbar(false, this);
 
   mp_Toolbar->setObjectName("SrcToolbar");
+  mp_Toolbar->setIconSize(QSize(32,32));
   mp_Toolbar->setStyleSheet(
       QString(R"(
-QWidget {  
-
+QToolButton {  
+  color: #f0f0f0; 
+  padding-left : 10px; 
+  padding-right : 10px;  
 } 
 
 #SrcToolbar {  
@@ -100,11 +103,6 @@ QWidget {
 QToolButton, QLabel {
   background-color: %1;
   color: white;
-}
-
-QToolButton {
-  margin-left : 10px; 
-  margin-right : 10px;
 }
 
 QToolButton[popupMode=1] {
