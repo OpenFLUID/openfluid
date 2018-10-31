@@ -19,17 +19,6 @@ PROJECT(OpenFLUID CXX)
 SET(OFBUILD_CXX_STANDARD 14)
 
 
-# Set policy for Qt on Windows
-if(POLICY CMP0020)
- CMAKE_POLICY(SET CMP0020 OLD)
-ENDIF()
-
-# Set policy for LOCATION target property
-if(POLICY CMP0026)
- CMAKE_POLICY(SET CMP0026 OLD)
-ENDIF()
-
-
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/internal;${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
 # Include internal CMake modules for os and hardware management

@@ -49,17 +49,20 @@ IF(OFBUILD_ENABLE_GUI)
 ENDIF()
 
 FOREACH(CURRENT_TARGET ${WINDEPLOYQT_TARGETS})
-  GET_TARGET_PROPERTY(CURRENT_TARGET_PATH ${CURRENT_TARGET} LOCATION)
-  INSTALL(CODE "EXECUTE_PROCESS(COMMAND ${WINDEPLOYQT_COMMAND} 
-                                        ${CURRENT_TARGET_PATH}
+  INSTALL(CODE 
+          "
+          FILE(READ \"${CMAKE_BINARY_DIR}/${CURRENT_TARGET}_path.txt\" CURRENT_TARGET_PATH)
+          EXECUTE_PROCESS(COMMAND ${WINDEPLOYQT_COMMAND}
+                                        \"\${CURRENT_TARGET_PATH}\"
                                         --dir \"\${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}\" 
                                         --libdir \"\${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}\"
                                         --release --compiler-runtime
                                         -xml -network -concurrent
                                         --verbose 1
-                                WORKING_DIRECTORY \"\${CMAKE_BINARY_DIR}\"
+                                WORKING_DIRECTORY \"${CMAKE_BINARY_DIR}\"
                                 OUTPUT_FILE windeployqt_exec_${CURRENT_TARGET}.log 
-                                ERROR_FILE windeployqt_exec_${CURRENT_TARGET}.err)")
+                                ERROR_FILE windeployqt_exec_${CURRENT_TARGET}.err)
+          ")
 ENDFOREACH()                     
 
 
@@ -69,10 +72,6 @@ INSTALL(DIRECTORY "${SUPPORT_LIBDIR_MOD}/" DESTINATION ${OFBUILD_BIN_INSTALL_PAT
 
 
 # GEOS
-IF(OFBUILD_ENABLE_LANDR)
-  INSTALL(DIRECTORY "${SUPPORT_BINDIR_MOD}/" DESTINATION ${OFBUILD_BIN_INSTALL_PATH} FILES_MATCHING PATTERN "libgeos*.dll") 
-  INSTALL(DIRECTORY "${SUPPORT_LIBDIR_MOD}/" DESTINATION ${OFBUILD_BIN_INSTALL_PATH} FILES_MATCHING PATTERN "libgeos*.dll") 
-ENDIF()
-
-  
+INSTALL(DIRECTORY "${SUPPORT_BINDIR_MOD}/" DESTINATION ${OFBUILD_BIN_INSTALL_PATH} FILES_MATCHING PATTERN "libgeos*.dll") 
+INSTALL(DIRECTORY "${SUPPORT_LIBDIR_MOD}/" DESTINATION ${OFBUILD_BIN_INSTALL_PATH} FILES_MATCHING PATTERN "libgeos*.dll") 
   

@@ -343,6 +343,10 @@ IF(OFBUILD_ENABLE_MARKET)
                         openfluid-ui-market)
 ENDIF()
 
+
+FILE(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/openfluid-builder_path.txt" CONTENT $<TARGET_FILE:openfluid-builder>)
+
+
 INSTALL(TARGETS openfluid-builder-main
         RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH}
         LIBRARY DESTINATION ${OFBUILD_LIB_INSTALL_PATH}

@@ -91,6 +91,8 @@ TARGET_LINK_LIBRARIES(openfluid-devstudio
                       openfluid-ui-waresdev
                      )
 
+FILE(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/openfluid-devstudio_path.txt" CONTENT $<TARGET_FILE:openfluid-devstudio>)
+
 INSTALL(TARGETS openfluid-devstudio-main
         RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH}
         LIBRARY DESTINATION ${OFBUILD_LIB_INSTALL_PATH}
