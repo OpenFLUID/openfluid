@@ -40,6 +40,8 @@
 #define __OPENFLUID_UTILS_BINDING_HPP__
 
 
+#include <clocale>
+
 #include <QCoreApplication>
 
 #include <openfluid/config.hpp>
