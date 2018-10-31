@@ -63,6 +63,11 @@ ENDIF()
 STRING(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE_STR)
 
 
+FOREACH(_OPT ${OFBUILD_${BUILD_TYPE_STR}_COMPILE_OPTIONS})
+  ADD_COMPILE_OPTIONS(${_OPT})
+ENDFOREACH()
+
+
 IF(OFBUILD_ENABLE_SANITIZER)
   OFBUILD_CONFIGURE_SANITIZER()
 ENDIF()
@@ -92,12 +97,6 @@ SET(CMAKE_AUTOMOC_MOC_OPTIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-
-# Detection of C++ headers, use shell script resources/tools/extract-stdheaders.sh to extract the list
-OFBUILD_CHECK_CXX_STDHEADERS(algorithm algorithm chrono cmath complex cstdlib ctime deque 
-                             exception fstream functional iomanip iosfwd iostream list map 
-                             memory ostream queue random regex set sstream stdexcept string 
-                             system_error thread typeinfo utility vector)
 
 # Detection of main dependencies
 FIND_PACKAGE(Boost 1.53 REQUIRED COMPONENTS ${OFBUILD_BOOST_TEST_FRAMEWORK})
@@ -174,7 +173,7 @@ ELSE()
 MESSAGE(STATUS "Sanitizer: disabled")
 ENDIF()
 MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
-MESSAGE(STATUS "Compiler flags: ${CMAKE_CXX_FLAGS}")
+MESSAGE(STATUS "Default compiler flags: ${CMAKE_CXX_FLAGS}")
 MESSAGE(STATUS "Extra compiler flags for ${CMAKE_BUILD_TYPE}: ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
 MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "****************************************")

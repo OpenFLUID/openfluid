@@ -381,25 +381,10 @@ ENDMACRO()
 
 MACRO(OFBUILD_CONFIGURE_SANITIZER)  
   IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.8")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+    ADD_COMPILE_OPTIONS("-fsanitize=address")
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
   ELSE()
     SET(OFBUILD_ENABLE_SANITIZER 0)    
   ENDIF()
 ENDMACRO()
 
-
-###########################################################################
-
-
-MACRO(OFBUILD_CHECK_CXX_STDHEADERS)
-  IF(UNIX)
-    INCLUDE(CheckIncludeFileCXX)
-    FOREACH(_ELEM ${ARGN})
-      CHECK_INCLUDE_FILE_CXX(${_ELEM} _HAVE_CXX_HEADER_${_ELEM})
-      IF(NOT _HAVE_CXX_HEADER_${_ELEM})
-        MESSAGE(FATAL_ERROR "Required C++ header <${_ELEM}> not found!")
-      ENDIF()
-    ENDFOREACH()  
-  ENDIF()
-ENDMACRO()
