@@ -42,8 +42,6 @@
 #define BOOST_TEST_MODULE unittest_filedownloader
 
 
-#include <iostream>
-
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
@@ -82,37 +80,28 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   std::string LoremIpsumDLoaded;
 
-  BOOST_REQUIRE_EQUAL(
-      openfluid::utils::FileDownloader::downloadToString("file://"+
-                                                         CONFIGTESTS_INPUT_MISCDATA_DIR+
-                                                         "/FileDownloader/lorem_ipsum.txt",
-                                                         LoremIpsumDLoaded),true);
 
-  BOOST_REQUIRE_EQUAL(LoremIpsum,LoremIpsumDLoaded);
+  BOOST_CHECK(openfluid::utils::FileDownloader::downloadToString(CONFIGTESTS_FILEDOWNLOAD_URL,LoremIpsumDLoaded));
+
+  BOOST_CHECK_EQUAL(LoremIpsum,LoremIpsumDLoaded);
 
   openfluid::tools::Filesystem::removeFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader/lorem_ipsum_dload.txt");
   openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader");
 
 
-  BOOST_REQUIRE_EQUAL(
-      openfluid::utils::FileDownloader::downloadToFile("file://"+
-                                                       CONFIGTESTS_INPUT_MISCDATA_DIR+
-                                                       "/FileDownloader/lorem_ipsum.txt",
+  BOOST_CHECK(
+      openfluid::utils::FileDownloader::downloadToFile(CONFIGTESTS_FILEDOWNLOAD_URL,
                                                        CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                       "/FileDownloader/lorem_ipsum_dload.txt"),true);
+                                                       "/FileDownloader/lorem_ipsum_dload.txt"));
 
   std::string LI1, LI2;
 
-  openfluid::utils::FileDownloader::downloadToString("file://"+
-                                                     CONFIGTESTS_INPUT_MISCDATA_DIR+
-                                                     "/FileDownloader/lorem_ipsum.txt",
+  openfluid::utils::FileDownloader::downloadToString(CONFIGTESTS_FILEDOWNLOAD_URL,
                                                      LI1);
-  openfluid::utils::FileDownloader::downloadToString("file://"+
-                                                     CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                     "/FileDownloader/lorem_ipsum_dload.txt",
+  openfluid::utils::FileDownloader::downloadToString(CONFIGTESTS_FILEDOWNLOAD_URL,
                                                      LI2);
 
-  BOOST_REQUIRE_EQUAL(LI1,LI2);
+  BOOST_CHECK_EQUAL(LI1,LI2);
 }
 
 

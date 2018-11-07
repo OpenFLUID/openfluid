@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(check_warespaths)
 #if defined(OPENFLUID_OS_UNIX)
   std::string PathSep(":");
 #elif defined(OPENFLUID_OS_WINDOWS)
-  std::string PathSep(":");
+  std::string PathSep(";");
 #endif
 
 

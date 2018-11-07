@@ -57,7 +57,9 @@ class FileDownloaderImpl : public QObject
   private:
 
     QNetworkAccessManager m_Manager;
+    
     QByteArray m_FileContent;
+    
     bool m_ContentDownloaded;
 
 
@@ -72,7 +74,7 @@ class FileDownloaderImpl : public QObject
       if (!Reply->error())
       {
         m_FileContent = Reply->readAll();
-        m_ContentDownloaded = true;
+        m_ContentDownloaded = true;        
       }
 
       emit processFinished();
@@ -96,6 +98,7 @@ class FileDownloaderImpl : public QObject
       connect(&m_Manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
     }
 
+
     ~FileDownloaderImpl()
     { }
 
@@ -104,10 +107,9 @@ class FileDownloaderImpl : public QObject
     */
     void downloadContent(const std::string& URL)
     {
-      QNetworkRequest Request(QString(URL.c_str()));
+      QNetworkRequest Request(QString::fromStdString(URL));
       m_Manager.get(Request);
     }
-
 
     /**
       @return content stored in attribute
@@ -134,9 +136,12 @@ class FileDownloaderImpl : public QObject
     void writeToFile(const std::string& FilePath) const
     {
       QFile File(QString(FilePath.c_str()));
+      
       if (!File.open(QIODevice::WriteOnly))
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
              "Could not open "+FilePath+" : "+qPrintable(File.errorString()));
+      }
 
       File.write(m_FileContent);
       File.close();
@@ -186,7 +191,9 @@ bool FileDownloader::downloadToFile(const std::string& URL, const std::string& F
   Loop.exec();
 
   if (Downloader.contentIsDownloaded())
+  {
     Downloader.writeToFile(FilePath);
+  }
 
   return Downloader.contentIsDownloaded();
 }

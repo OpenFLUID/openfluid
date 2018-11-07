@@ -4,28 +4,47 @@ clone_folder: C:\projects\openfluid
 skip_tags: true
 
 
+environment:  
+  SUPPORT_ARCHIVE : OpenFLUID-buildsupport-mingw530_32.7z
+  SUPPORT_DIR : C:\OpenFLUID-buildsupport-mingw530_32
+  PRJ_DIR : C:\projects\openfluid
+  BUILD_DIR : C:\projects\openfluid\_build-devel
+  TOOLS_ARCHIVE : OpenFLUID-support-20181107.7z
+  TOOLS_DIR : C:\OpenFLUID-support
+
+
 install:
   # download and installed already compiled support libraries
-  - ps: Start-FileDownload 'http://www.openfluid-project.org/resources/tools/OpenFLUID-buildsupport-mingw530_32.zip' 
-  - cmd: 7z x "OpenFLUID-buildsupport-mingw530_32.zip" -o"C:\OpenFLUID-buildsupport-mingw530_32\"
-
-
-environment:
-  SUPPORT_DIR : C:\OpenFLUID-buildsupport-mingw530_32
+  - ps: Start-FileDownload 'http://www.openfluid-project.org/resources/tools/OpenFLUID-buildsupport-mingw530_32.7z' 
+  - cmd: 7z x "%SUPPORT_ARCHIVE%" -o"%SUPPORT_DIR%\"
+  - ps: Start-FileDownload 'http://www.openfluid-project.org/resources/tools/OpenFLUID-support-20181107.7z' 
+  - cmd: 7z x "%TOOLS_ARCHIVE%" -o"%TOOLS_DIR%\"
 
 
 before_build:
-  - cmd: cd C:\projects\openfluid
-  - cmd: mkdir _build-release
-  - cmd: cd _build-release
+  - cmd: cd %PRJ_DIR%
+  - cmd: mkdir %BUILD_DIR%
+  - cmd: cd %BUILD_DIR%
   # Remove entry with sh.exe from PATH to fix error with MinGW Generator for CMake
   - cmd: set PATH=%PATH:C:\Program Files\Git\usr\bin;=%  
   # Use MinGW from Qt tools instead of default installation
   - cmd: set PATH=%PATH:C:\MinGW\bin;=% 
   - cmd: set PATH=C:\Qt\Tools\mingw530_32\bin;C:\Qt\5.9.5\mingw53_32\bin;%PATH%
-  - cmd: cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=C:\OpenFLUID-buildsupport-mingw530_32 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.
+  - cmd: echo SET(OFBUILD_ENABLE_LANDR 0) > %PRJ_DIR%\CMake.in.local.cmake
+  - cmd: cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=%SUPPORT_DIR%
 
   
 build_script:
-  - cmd: cd C:\projects\openfluid\_build-release
+  - cmd: cd %BUILD_DIR%
   - cmd: mingw32-make -j 2
+
+
+before_test:
+  - cmd: set OPENFLUID_INSTALL_PREFIX=%BUILD_DIR%\dist
+  - cmd: set PATH=%PATH%;%SUPPORT_DIR%\bin;%SUPPORT_DIR%\lib
+  - cmd: set PATH=%PATH%;%BUILD_DIR%\dist\bin;%BUILD_DIR%\dist\lib
+  - cmd: set PATH=%PATH%;%TOOLS_DIR%\gnuplot-4.6.3\bin;%TOOLS_DIR%\7zip-9.22;%TOOLS_DIR%\graphviz-2.36\bin;%TOOLS_DIR%\ssl-1.0.2a
+
+
+test_script:
+  - cmd: ctest --output-on-failure

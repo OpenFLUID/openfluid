@@ -13,6 +13,9 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
+# increase max length for paths (default value may be too short on Windows systems)
+set(CMAKE_OBJECT_PATH_MAX 300)
+
 PROJECT(OpenFLUID CXX)
 
 

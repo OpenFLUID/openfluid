@@ -37,17 +37,19 @@
  */
 
 
-#define BOOST_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_geovectorvalue
 
+#include <iostream>
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/utils/GDALCompatibility.hpp>
 
 #include "tests-config.hpp"
 
@@ -58,13 +60,7 @@ class GeoVectorValueSub: public openfluid::core::GeoVectorValue
 
     GeoVectorValueSub(std::string PrefixPath, std::string RelativePath) :
         openfluid::core::GeoVectorValue(PrefixPath, RelativePath)
-    {
-#if (GDAL_VERSION_MAJOR >= 2)
-  GDALAllRegister();
-#else
-  OGRRegisterAll();
-#endif
-    }
+    { }
 
     GDALDataset_COMPAT* dataWithoutCheck()
     {
@@ -153,6 +149,12 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile_NoExtension)
 {
+  if (!GDALGetDriverByName_COMPAT("ESRI Shapefile"))
+  {
+    std::cout << "GDAL driver not found : ESRI Shapefile -> test not run" << std::endl;
+    return;
+  }
+
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,"GeoVectorValue/SU");
 
   BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
@@ -185,6 +187,12 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFileExtension)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shp)
 {
+  if (!GDALGetDriverByName_COMPAT("ESRI Shapefile"))
+  {
+    std::cout << "GDAL driver not found : ESRI Shapefile -> test not run" << std::endl;
+    return;
+  }
+
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,"GeoVectorValue/SU.shp");
 
   Val->tryToOpenSource();
@@ -201,6 +209,12 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shp)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Dbf)
 {
+  if (!GDALGetDriverByName_COMPAT("ESRI Shapefile"))
+  {
+    std::cout << "GDAL driver not found : ESRI Shapefile -> test not run" << std::endl;
+    return;
+  }
+
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,"GeoVectorValue/SU.dbf");
 
   Val->tryToOpenSource();
@@ -217,6 +231,12 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Dbf)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shx)
 {
+  if (!GDALGetDriverByName_COMPAT("ESRI Shapefile"))
+  {
+    std::cout << "GDAL driver not found : ESRI Shapefile -> test not run" << std::endl;
+    return;
+  }
+
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,"GeoVectorValue/SU.shx");
 
   Val->tryToOpenSource();
@@ -263,6 +283,12 @@ BOOST_AUTO_TEST_CASE(check_get_WrongDir)
 
 BOOST_AUTO_TEST_CASE(check_Properties)
 {
+  if (!GDALGetDriverByName_COMPAT("ESRI Shapefile"))
+  {
+    std::cout << "GDAL driver not found : ESRI Shapefile -> test not run" << std::endl;
+    return;
+  }
+
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/SU.shp");
 
   BOOST_CHECK(!Val->isLineType());
@@ -283,6 +309,12 @@ BOOST_AUTO_TEST_CASE(check_Properties)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GeoJSON)
 {
+  if (!GDALGetDriverByName_COMPAT("GeoJSON"))
+  {
+    std::cout << "GDAL driver not found : GeoJSON -> test not run" << std::endl;
+    return;
+  }
+
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,"GeoVectorValue/SU.geojson");
   Val->tryToOpenSource();
 
@@ -319,6 +351,12 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GeoJSON)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GML)
 {
+  if (!GDALGetDriverByName_COMPAT("Geography Markup Language (GML)"))
+  {
+    std::cout << "GDAL driver not found : GML -> test not run" << std::endl;
+    return;
+  }
+
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,"GeoVectorValue/SU.gml");
   Val->tryToOpenSource();
 
@@ -354,8 +392,13 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GML)
 
 BOOST_AUTO_TEST_CASE(check_Polygon_Geometry)
 {
-	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/SU.shp");
+  if (!GDALGetDriverByName_COMPAT("ESRI Shapefile"))
+  {
+    std::cout << "GDAL driver not found : ESRI Shapefile -> test not run" << std::endl;
+    return;
+  }
+	
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/SU.shp");
 
 	BOOST_CHECK(Val->isPolygonType());
 
@@ -375,8 +418,13 @@ BOOST_AUTO_TEST_CASE(check_Polygon_Geometry)
 
 BOOST_AUTO_TEST_CASE(check_MultiPolygon_Geometry)
 {
-	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiSU.geojson");
+  if (!GDALGetDriverByName_COMPAT("GeoJSON"))
+  {
+    std::cout << "GDAL driver not found : GeoJSON -> test not run" << std::endl;
+    return;
+  }
+
+	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiSU.geojson");
 
 	BOOST_CHECK(Val->isMultiPolygonType());
 
@@ -396,6 +444,12 @@ BOOST_AUTO_TEST_CASE(check_MultiPolygon_Geometry)
 
 BOOST_AUTO_TEST_CASE(check_Line_Geometry)
 {
+  if (!GDALGetDriverByName_COMPAT("ESRI Shapefile"))
+  {
+    std::cout << "GDAL driver not found : ESRI Shapefile -> test not run" << std::endl;
+    return;
+  }
+
 	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/RS.shp");
 
 	BOOST_CHECK(Val->isLineType());
@@ -416,6 +470,12 @@ BOOST_AUTO_TEST_CASE(check_Line_Geometry)
 
 BOOST_AUTO_TEST_CASE(check_MultiLine_Geometry)
 {
+  if (!GDALGetDriverByName_COMPAT("GeoJSON"))
+  {
+    std::cout << "GDAL driver not found : GeoJSON -> test not run" << std::endl;
+    return;
+  }
+
 	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiRS.geojson");
 
 	BOOST_CHECK(Val->isMultiLineType());
@@ -436,8 +496,13 @@ BOOST_AUTO_TEST_CASE(check_MultiLine_Geometry)
 
 BOOST_AUTO_TEST_CASE(check_Point_Geometry)
 {
-	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/PU.shp");
+  if (!GDALGetDriverByName_COMPAT("ESRI Shapefile"))
+  {
+    std::cout << "GDAL driver not found : ESRI Shapefile -> test not run" << std::endl;
+    return;
+  }
+
+	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/PU.shp");
 
 	BOOST_CHECK(Val->isPointType());
 
@@ -457,8 +522,13 @@ BOOST_AUTO_TEST_CASE(check_Point_Geometry)
 
 BOOST_AUTO_TEST_CASE(check_MultiPoint_Geometry)
 {
-	GeoVectorValueSub* Val = new GeoVectorValueSub(
-			CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiPU.geojson");
+  if (!GDALGetDriverByName_COMPAT("GeoJSON"))
+  {
+    std::cout << "GDAL driver not found : GeoJSON -> test not run" << std::endl;
+    return;
+  }
+
+	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiPU.geojson");
 
 	BOOST_CHECK(Val->isMultiPointType());
 
@@ -471,3 +541,14 @@ BOOST_AUTO_TEST_CASE(check_MultiPoint_Geometry)
 	delete Val;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+int main(int argc, char *argv[])
+{
+  GDALAllRegister_COMPAT();
+
+  return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
+}

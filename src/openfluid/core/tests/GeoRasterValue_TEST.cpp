@@ -36,17 +36,20 @@
   @author Aline LIBRES <aline.libres@gmail.com>
 */
 
-#define BOOST_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_georastervalue
 
+
+#include <iostream>
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
+#include <openfluid/utils/GDALCompatibility.hpp>
 
 #include "tests-config.hpp"
 
@@ -61,8 +64,7 @@ class GeoRasterValueSub: public openfluid::core::GeoRasterValue
 
     GeoRasterValueSub(std::string PrefixPath, std::string RelativePath) :
         openfluid::core::GeoRasterValue(PrefixPath, RelativePath)
-    {
-    }
+    { }
 
     GDALDataset* data()
     {
@@ -86,7 +88,13 @@ class GeoRasterValueSub: public openfluid::core::GeoRasterValue
 
 
 BOOST_AUTO_TEST_CASE(check_construction)
-{
+{  
+  if (!GetGDALDriverManager()->GetDriverByName("JPEG"))
+  {
+    std::cout << "GDAL driver not found : JPEG -> test not run" << std::endl;
+    return;
+  }
+
   GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoRasterValue/dem.jpeg");
 
@@ -95,7 +103,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   BOOST_CHECK_EQUAL(Val->getAbsolutePath(),CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue/dem.jpeg");
 
-  BOOST_CHECK(!Val->data());
+  BOOST_CHECK(!Val->data());  
 
   delete Val;
 }
@@ -107,8 +115,14 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 {
+  if (!GetGDALDriverManager()->GetDriverByName("JPEG"))
+  {
+    std::cout << "GDAL driver not found : JPEG -> test not run" << std::endl;
+    return;
+  }
+
   GeoRasterValueSub* Val = new GeoRasterValueSub(
-      CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoRasterValue/wrongfile.jpeg");
+        CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoRasterValue/wrongfile.jpeg");
 
   BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
@@ -124,8 +138,14 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Jpeg)
 {
+  if (!GetGDALDriverManager()->GetDriverByName("JPEG"))
+  {
+    std::cout << "GDAL driver not found : JPEG -> test not run" << std::endl;
+    return;
+  }
+  
   GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
-                                                 "GeoRasterValue/dem.jpeg");
+                                                   "GeoRasterValue/dem.jpeg");
 
   Val->tryToOpenSource();
 
@@ -141,8 +161,14 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Jpeg)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Gtiff)
 {
+  if (!GetGDALDriverManager()->GetDriverByName("GTiff"))
+  {
+    std::cout << "GDAL driver not found : GTiff -> test not run" << std::endl;
+    return;
+  }
+  
   GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
-                                                 "GeoRasterValue/dem.Gtiff");
+                                                   "GeoRasterValue/dem.Gtiff");
 
   Val->tryToOpenSource();
 
@@ -158,6 +184,12 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Gtiff)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Img)
 {
+  if (!GetGDALDriverManager()->GetDriverByName("HFA"))
+  {
+    std::cout << "GDAL driver not found : HFA -> test not run" << std::endl;
+    return;
+  }
+
   GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoRasterValue/dem.img");
 
@@ -175,8 +207,14 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Img)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Ascii)
 {
+  if (!GetGDALDriverManager()->GetDriverByName("AAIGrid"))
+  {
+    std::cout << "GDAL driver not found : AAIGrid -> test not run" << std::endl;
+    return;
+  }
+
   GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
-                                                 "GeoRasterValue/dem.asc");
+                                                   "GeoRasterValue/dem.asc");
 
   Val->tryToOpenSource();
 
@@ -185,3 +223,14 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Ascii)
   delete Val;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+int main(int argc, char *argv[])
+{
+  GDALAllRegister();
+  
+  return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
+}
