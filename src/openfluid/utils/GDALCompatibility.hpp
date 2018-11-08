@@ -109,6 +109,17 @@
 
 
 /**
+  Macro for compatibility of syncing/flushing a dataset to disk
+  @param _M_dataset The dataset
+*/
+#if (GDAL_VERSION_MAJOR >= 2)
+  #define GDALFlush_COMPAT(_M_dataset) _M_dataset->FlushCache()
+#else
+  #define GDALFlush_COMPAT(_M_dataset) _M_dataset->SyncToDisk()
+#endif
+
+
+/**
   Macro for compatibility of vector data copy
   @param _M_driver Driver to use for the copy
   @param _M_srcptr Data source to copy
@@ -171,6 +182,18 @@
   #define GDALGetDriverByName_COMPAT(_M_name) GetGDALDriverManager()->GetDriverByName(_M_name)
 #else
   #define GDALGetDriverByName_COMPAT(_M_name) OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(_M_name)
+#endif
+
+
+/**
+  Macro for compatibility of getting a the name of the driver from a driver object
+  @param _M_driver The driver object
+  @return the name of the driver
+*/
+#if (GDAL_VERSION_MAJOR >= 2)
+  #define GDALGetDriverName_COMPAT(_M_driver) _M_driver->GetDescription()
+#else
+  #define GDALGetDriverName_COMPAT(_M_driver) _M_driver->GetName()
 #endif
 
 
