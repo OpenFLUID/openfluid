@@ -31,7 +31,7 @@
 
 
 /**
-  @file DistributedEvent_TEST.cpp
+  @file Event_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
