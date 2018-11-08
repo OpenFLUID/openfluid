@@ -42,7 +42,7 @@
 # This module uses hints about search locations from variables
 # GEOS_ROOT_DIR
 # GEOS_CONFIG_EXTRA_SEARCH_PATHS
-# $ENV{SUPPORT_DIR}
+# $ENV{OFBUILD_SUPPORT_DIR}
 # $ENV{GEOS_HOME}
 #
 ##
@@ -55,14 +55,14 @@ ENDIF()
 
 IF(WIN32)
 
-  INCLUDE($ENV{SUPPORT_DIR}/share/geos-config.cmake)
+  INCLUDE($ENV{OFBUILD_SUPPORT_DIR}/share/geos-config.cmake)
 
   FIND_PATH(GEOS_INCLUDE_DIR
     NAMES
       geos.h
     HINTS
       $ENV{GEOS_ROOT_DIR}
-      $ENV{SUPPORT_DIR}
+      $ENV{OFBUILD_SUPPORT_DIR}
       c:/msys/local
     PATH_SUFFIXES
       include
@@ -73,7 +73,7 @@ IF(WIN32)
       geos
     PATHS
       $ENV{GEOS_ROOT_DIR}
-      $ENV{SUPPORT_DIR}
+      $ENV{OFBUILD_SUPPORT_DIR}
       c:/msys/local
     PATH_SUFFIXES
       bin lib

@@ -5,8 +5,8 @@ skip_tags: true
 
 
 environment:  
-  SUPPORT_ARCHIVE : OpenFLUID-buildsupport-mingw530_32.7z
-  SUPPORT_DIR : C:\OpenFLUID-buildsupport-mingw530_32
+  OFBUILD_SUPPORT_ARCHIVE : OpenFLUID-buildsupport-mingw530_32.7z
+  OFBUILD_SUPPORT_DIR : C:\OpenFLUID-buildsupport-mingw530_32
   PRJ_DIR : C:\projects\openfluid
   BUILD_DIR : C:\projects\openfluid\_build-devel
   TOOLS_ARCHIVE : OpenFLUID-support-20181107.7z
@@ -16,7 +16,7 @@ environment:
 install:
   # download and installed already compiled support libraries
   - ps: Start-FileDownload 'http://www.openfluid-project.org/resources/tools/OpenFLUID-buildsupport-mingw530_32.7z' 
-  - cmd: 7z x "%SUPPORT_ARCHIVE%" -o"%SUPPORT_DIR%\"
+  - cmd: 7z x "%OFBUILD_SUPPORT_ARCHIVE%" -o"%OFBUILD_SUPPORT_DIR%\"
   - ps: Start-FileDownload 'http://www.openfluid-project.org/resources/tools/OpenFLUID-support-20181107.7z' 
   - cmd: 7z x "%TOOLS_ARCHIVE%" -o"%TOOLS_DIR%\"
 
@@ -31,7 +31,7 @@ before_build:
   - cmd: set PATH=%PATH:C:\MinGW\bin;=% 
   - cmd: set PATH=C:\Qt\Tools\mingw530_32\bin;C:\Qt\5.9.5\mingw53_32\bin;%PATH%
   - cmd: echo SET(OFBUILD_ENABLE_LANDR 0) > %PRJ_DIR%\CMake.in.local.cmake
-  - cmd: cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=%SUPPORT_DIR%
+  - cmd: cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=%OFBUILD_SUPPORT_DIR%
 
   
 build_script:
@@ -41,7 +41,7 @@ build_script:
 
 before_test:
   - cmd: set OPENFLUID_INSTALL_PREFIX=%BUILD_DIR%\dist
-  - cmd: set PATH=%PATH%;%SUPPORT_DIR%\bin;%SUPPORT_DIR%\lib
+  - cmd: set PATH=%PATH%;%OFBUILD_SUPPORT_DIR%\bin;%OFBUILD_SUPPORT_DIR%\lib
   - cmd: set PATH=%PATH%;%BUILD_DIR%\dist\bin;%BUILD_DIR%\dist\lib
   - cmd: set PATH=%PATH%;%TOOLS_DIR%\gnuplot-4.6.3\bin;%TOOLS_DIR%\7zip-9.22;%TOOLS_DIR%\graphviz-2.36\bin;%TOOLS_DIR%\ssl-1.0.2a
 
