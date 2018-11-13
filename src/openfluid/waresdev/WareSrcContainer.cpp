@@ -502,8 +502,9 @@ unsigned int WareSrcContainer::getBuildJobs() const
 
 QString WareSrcContainer::getGenerateDocTarget() const
 {
-  // build target is "doc-pdf-install" if current build mode is BUILD_WITHINSTALL, "doc-pdf" in other cases
-  return (m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "doc-pdf-install" : "doc-pdf");
+  // build target is "$ID-doc-pdf-install" if current build mode is BUILD_WITHINSTALL, "$ID-doc-pdf" in other cases
+  // wher $ID is the ware ID
+  return QString("%1-%2").arg(m_ID).arg((m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "doc-pdf-install" : "doc-pdf"));
 }
 
 

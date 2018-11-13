@@ -410,15 +410,15 @@ MACRO(OPENFLUID_ADD_SIMULATOR _SIMNAME)
     ARGS "buddy" "sim2doc" "--options=inputcpp=${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC},outputdir=${_DOCS_OUTPUT_PATH},pdf=1${_TPL_OPTION}"     
   )
 
-  ADD_CUSTOM_TARGET(doc-pdf DEPENDS "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf")    
+  ADD_CUSTOM_TARGET(${${_SIMNAME}_ID}-doc-pdf DEPENDS "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf")    
 
   _OPENFLUID_WARE_TRANSLATIONS(${_SIMNAME})
 
   _OPENFLUID_WARE_TESTS(${_SIMNAME} "-p")
    
         
-  ADD_CUSTOM_TARGET(doc-pdf-install
-                    DEPENDS doc-pdf                      
+  ADD_CUSTOM_TARGET(${${_SIMNAME}_ID}-doc-pdf-install
+                    DEPENDS ${${_SIMNAME}_ID}-doc-pdf                      
                     COMMAND "${CMAKE_COMMAND}" "-E" "copy" 
                             "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf" "${_OPNFLD_INSTALL_PATH}/${${_SIMNAME}_ID}.pdf")
     
