@@ -11,6 +11,7 @@ environment:
   BUILD_DIR : C:\projects\openfluid\_build-devel
   TOOLS_ARCHIVE : OpenFLUID-support-20181107.7z
   TOOLS_DIR : C:\OpenFLUID-support
+  OFBUILD_QT_VERSION : 5.9
 
 
 install:
@@ -29,7 +30,7 @@ before_build:
   - cmd: set PATH=%PATH:C:\Program Files\Git\usr\bin;=%  
   # Use MinGW from Qt tools instead of default installation
   - cmd: set PATH=%PATH:C:\MinGW\bin;=% 
-  - cmd: set PATH=C:\Qt\Tools\mingw530_32\bin;C:\Qt\5.9.5\mingw53_32\bin;%PATH%
+  - cmd: set PATH=C:\Qt\Tools\mingw530_32\bin;C:\Qt\%OFBUILD_QT_VERSION%\mingw53_32\bin;%PATH%
   - cmd: echo SET(OFBUILD_ENABLE_LANDR 0) > %PRJ_DIR%\CMake.in.local.cmake
   - cmd: cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=%OFBUILD_SUPPORT_DIR%
 
