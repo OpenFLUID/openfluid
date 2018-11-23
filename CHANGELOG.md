@@ -1,3 +1,19 @@
+## 2.1.7
+
+  * Introduced C++14 as the minimal standard for OpenFLUID core and scientific development
+  * Introduced generic layout for dialogs with messages
+  * Improved GDAL compatibility macros
+  * Improved internal tool for checking coding style
+  * Refactored FluidX descriptors to unify advanced and classic descriptors
+  * Updated documentation of command line parser class
+  * Updated CMake configuration files to match new CMake policies 
+  * Fixed crash when closing dialog of a running simulation in Builder
+  * Fixed weird buttons labels in main toolbar in Builder and DevStudio
+  * Fixed possible target names collision in CMake configuration for sim2doc
+  * Cleaned code and tests
+
+
+
 ## 2.1.6
 
   * Added ability to display simulators and observers names instead of IDs 
