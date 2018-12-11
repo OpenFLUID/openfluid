@@ -1,6 +1,6 @@
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}/src/tests")
 
 
-SET(UNITTEST_LINK_LIBRARIES openfluid-core openfluid-base openfluid-scientific)
+SET(UNITTEST_LINK_LIBRARIES openfluid-core openfluid-base)
 
 OFBUILD_DISCOVER_UNITTESTS(scientific)
