@@ -43,6 +43,7 @@
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace utils {
@@ -185,6 +186,8 @@ bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
   QString Url = FromUrl;
   QString Options = "";
 
+  QProcessEnvironment PcsEnv = QProcessEnvironment::systemEnvironment();
+
   if (!Username.isEmpty() && !Url.contains("@"))
   {
     Url.replace("http://", QString("http://%1@").arg(Username));
@@ -193,50 +196,19 @@ bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
 
   if (!Password.isEmpty())
   {
-    QString AskPassFileName;
-    QString AskPassContent;
-
-#if defined(OPENFLUID_OS_WINDOWS)
-    AskPassFileName = "askpass.bat";
-    AskPassContent = QString("@ echo off\necho %1\n").arg(Password);
-#else
-    AskPassFileName = "askpass.sh";
-    AskPassContent = QString("#! /bin/sh\necho '%1'\n").arg(Password);
-#endif
-
-    QString AskPassFilePath = QDir(m_TmpPath).absoluteFilePath(AskPassFileName);
-
-    m_AskPassFile.setFileName(AskPassFilePath);
-
-    QDir TmpDir(m_TmpPath);
-    if (!TmpDir.exists() && !TmpDir.mkpath(m_TmpPath))
-    {
-      emit error(tr("Unable to create temporary askpass directory"));
-      return false;
-    }
-
-    if (!m_AskPassFile.open(QFile::ReadWrite))
-    {
-      emit error(tr("Unable to create temporary askpass file"));
-      return false;
-    }
-
-    QTextStream out(&m_AskPassFile);
-    out << AskPassContent;
-
-    m_AskPassFile.close();
-
-    m_AskPassFile.setPermissions(QFile::ReadOwner | QFile::ExeOwner);
-
-    Options = QString("-c core.askPass=\"%1\"").arg(AskPassFilePath);
+    PcsEnv.insert("GIT_ASKPASS",QString::fromStdString(openfluid::config::GITASKPASS_APP));
+    PcsEnv.insert(OFBUILD_GITASKPASS_ENVVAR,Password);
   }
 
   if (SslNoVerify)
+  {
     Options += " -c http.sslverify=false";
+  }
 
   QString Cmd = QString("\"%1\" clone --progress %2 %3 %4").arg(m_ExecutablePath).arg(Options).arg(Url).arg(ToPath);
 
   mp_Process = new QProcess();
+  mp_Process->setProcessEnvironment(PcsEnv);
 
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   // git clone outputs all messages in error channel
@@ -251,12 +223,6 @@ bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
 
   delete mp_Process;
   mp_Process = nullptr;
-
-  if (!m_AskPassFile.fileName().isEmpty())
-  {
-    m_AskPassFile.setPermissions(QFile::WriteUser);
-    m_AskPassFile.remove();
-  }
 
   return (ErrCode == 0);
 }

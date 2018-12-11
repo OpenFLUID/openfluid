@@ -53,8 +53,8 @@
 
 namespace openfluid { namespace config {
 
-// App Name
-const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
+// Main Name
+const std::string MAINNAME = "@OPENFLUID_MAIN_NAME@";
 
 
 // default config file
@@ -73,6 +73,14 @@ const std::string PROJECTS_PATH = "@OPENFLUID_PROJECTS_PATH@";
 const std::string WARESDEV_PATH = "@OPENFLUID_WARESDEV_PATH@";
 const std::string WARESBIN_PATH = "@OPENFLUID_WARESBIN_PATH@";
 const std::string WORKSPACE_PATH = "@OPENFLUID_WORKSPACE_PATH@";
+
+
+// Apps names
+const std::string CMD_APP = "@OPENFLUID_CMD_APP@";
+const std::string BUILDER_APP = "@OPENFLUID_BUILDER_APP@";
+const std::string DEVSTUDIO_APP = "@OPENFLUID_DEVSTUDIO_APP@";
+const std::string LOGEXPLORER_APP = "@OPENFLUID_LOGEXPLORER_APP@";
+const std::string GITASKPASS_APP = "@OPENFLUID_GITASKPASS_APP@";
 
 
 // Install prefix

@@ -138,6 +138,7 @@ SET(OPENFLUID_CMD_APP "openfluid")
 SET(OPENFLUID_BUILDER_APP "openfluid-builder")
 SET(OPENFLUID_DEVSTUDIO_APP "openfluid-devstudio")
 SET(OPENFLUID_LOGEXPLORER_APP "openfluid-logexplorer")
+SET(OPENFLUID_GITASKPASS_APP "openfluid-gitaskpass")
 
 IF(APPLE)
   SET(OPENFLUID_BUILDER_APP "OpenFLUID-Builder")
@@ -171,6 +172,8 @@ SET(OPENFLUID_BUILDEREXTS_SUFFIX "_ofware${OPENFLUID_VERSION_NUMERIC}-bext")
 SET(OPENFLUID_GHOSTSIMULATORS_SUFFIX "_ofghost-sim")
 
 SET(OPENFLUID_DEBUG_PREFIX "[OpenFLUID debug]")
+
+SET(OFBUILD_GITASKPASS_ENVVAR_PREFIX "OFLD_GITASKPASS_")
 
 
 ################### 3rd party headers and libraries ###################

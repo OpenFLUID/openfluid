@@ -44,8 +44,8 @@
 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/config.hpp>
 
-#include "builderconfig.hpp"
 #include "AppTools.hpp"
 
 
@@ -86,7 +86,7 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
 
 void launchDevStudio()
 {
-  QString ExeName = QString::fromStdString(DEVSTUDIO_APP);
+  QString ExeName = QString::fromStdString(openfluid::config::DEVSTUDIO_APP);
 
 #if defined OPENFLUID_OS_WINDOWS
   ExeName += ".exe";
