@@ -3,8 +3,21 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
-FILE(GLOB OPENFLUID_MARKET_CPP *.cpp)
-FILE(GLOB OPENFLUID_MARKET_HPP *.hpp)
+SET(OPENFLUID_MARKET_CPP MarketPackage.cpp
+                         MarketSrcPackage.cpp MarketSrcSimulatorPackage.cpp MarketSrcObserverPackage.cpp MarketSrcBuilderextPackage.cpp
+                         MarketBinPackage.cpp MarketBinSimulatorPackage.cpp MarketBinObserverPackage.cpp MarketBinBuilderextPackage.cpp
+                         MarketDatasetPackage.cpp
+                         MarketClient.cpp
+                   
+
+)
+
+SET(OPENFLUID_MARKET_HPP MarketPackage.hpp
+                         MarketSrcPackage.hpp MarketSrcSimulatorPackage.hpp MarketSrcObserverPackage.hpp MarketSrcBuilderextPackage.hpp
+                         MarketBinPackage.hpp MarketBinSimulatorPackage.hpp MarketBinObserverPackage.hpp MarketBinBuilderextPackage.hpp
+                         MarketDatasetPackage.hpp
+                         MarketInfos.hpp MarketClient.hpp
+                         )
 
 
 ADD_LIBRARY(openfluid-market SHARED ${OPENFLUID_MARKET_CPP} ${OPENFLUID_MARKET_HPP})

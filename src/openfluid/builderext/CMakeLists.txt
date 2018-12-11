@@ -1,18 +1,18 @@
 
 
-FILE(GLOB OPENFLUID_BUILDEREXT_CPP PluggableModalExtension.cpp
-                                   PluggableModelessExtension.cpp
-                                   PluggableWorkspaceExtension.cpp                                                                                                
-                                  )
+SET(OPENFLUID_BUILDEREXT_CPP PluggableModalExtension.cpp
+                             PluggableModelessExtension.cpp
+                             PluggableWorkspaceExtension.cpp                                                                                                
+                             )
 
-FILE(GLOB OPENFLUID_BUILDEREXT_HPP FluidXUpdateFlags.hpp
-                                   BuilderExtensionSignature.hpp                                    
-                                   PluggableBuilderExtension.hpp 
-                                   PluggableParameterizationExtension.hpp PluggableFeatureExtension.hpp
-                                   PluggableModalExtension.hpp
-                                   PluggableModelessExtension.hpp
-                                   PluggableWorkspaceExtension.hpp                                   
-                                  )
+SET(OPENFLUID_BUILDEREXT_HPP FluidXUpdateFlags.hpp
+                             BuilderExtensionSignature.hpp                                    
+                             PluggableBuilderExtension.hpp 
+                             PluggableParameterizationExtension.hpp PluggableFeatureExtension.hpp
+                             PluggableModalExtension.hpp
+                             PluggableModelessExtension.hpp
+                             PluggableWorkspaceExtension.hpp                                   
+                             )
 
 
 ADD_LIBRARY(openfluid-builderext SHARED ${OPENFLUID_BUILDEREXT_CPP} ${OPENFLUID_BUILDEREXT_HPP})

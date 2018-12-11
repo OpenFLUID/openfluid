@@ -3,8 +3,15 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
-FILE(GLOB OPENFLUID_BUDDIES_CPP *.cpp)
-FILE(GLOB OPENFLUID_BUDDIES_HPP *.hpp)
+SET(OPENFLUID_BUDDIES_CPP OpenFLUIDBuddy.cpp
+                          ExamplesBuddy.cpp NewSimBuddy.cpp Sim2DocBuddy.cpp NewDataBuddy.cpp
+                          BuddiesListener.cpp
+                          )
+    
+SET(OPENFLUID_BUDDIES_HPP OpenFLUIDBuddy.hpp 
+                          ExamplesBuddy.hpp NewSimBuddy.hpp Sim2DocBuddy.hpp NewDataBuddy.hpp
+                          BuddiesListener.hpp
+                          )
 
 
 ADD_LIBRARY(openfluid-buddies SHARED ${OPENFLUID_BUDDIES_CPP} ${OPENFLUID_BUDDIES_HPP})

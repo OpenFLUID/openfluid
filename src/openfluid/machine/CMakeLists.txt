@@ -2,8 +2,31 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
-FILE(GLOB OPENFLUID_MACHINE_CPP *.cpp)
-FILE(GLOB OPENFLUID_MACHINE_HPP *.hpp)
+SET(OPENFLUID_MACHINE_CPP ModelItemInstance.cpp GhostSimulatorFileIO.cpp
+                          Generator.cpp FixedGenerator.cpp RandomGenerator.cpp InjectGenerator.cpp InterpGenerator.cpp
+                          ObserverInstance.cpp 
+                          ModelInstance.cpp MonitoringInstance.cpp
+                          SimulatorPluginsManager.cpp ObserverPluginsManager.cpp
+                          SimulatorSignatureRegistry.cpp ObserverSignatureRegistry.cpp
+                          ExecutionTimePoint.cpp
+                          SimulationProfiler.cpp
+                          SimulationBlob.cpp
+                          Factory.cpp Engine.cpp MachineListener.cpp
+                          )
+
+SET(OPENFLUID_MACHINE_HPP ModelItemInstance.hpp GhostSimulatorFileIO.hpp
+                          Generator.hpp FixedGenerator.hpp RandomGenerator.hpp InjectGenerator.hpp InterpGenerator.hpp
+                          ObserverInstance.hpp
+                          ModelInstance.hpp MonitoringInstance.hpp
+                          ExecutionTimePoint.hpp
+                          SimulationProfiler.hpp
+                          SimulationBlob.hpp
+                          WareSignatureInstance.hpp
+                          WareContainer.hpp WarePluginsManager.hpp WareSignatureRegistry.hpp
+                          SimulatorPluginsManager.hpp SimulatorSignatureRegistry.hpp
+                          ObserverPluginsManager.hpp ObserverSignatureRegistry.hpp
+                          Factory.hpp Engine.hpp MachineListener.hpp
+                          )
 
 
 ADD_LIBRARY(openfluid-machine SHARED ${OPENFLUID_MACHINE_CPP} ${OPENFLUID_MACHINE_HPP})

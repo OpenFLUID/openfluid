@@ -1,7 +1,26 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-FILE(GLOB OPENFLUID_TOOLS_CPP *.cpp)
-FILE(GLOB OPENFLUID_TOOLS_HPP *.hpp)
+SET(OPENFLUID_TOOLS_CPP ColumnTextParser.cpp
+                        ChronologicalSerie.cpp
+                        ProgressiveColumnFileReader.cpp ProgressiveChronFileReader.cpp
+                        ChronFileInterpolator.cpp ChronFileLinearInterpolator.cpp 
+                        DistributionTables.cpp DistributionBindings.cpp
+                        Filesystem.cpp FileHelpers.cpp
+                        FileLogger.cpp
+                        DataHelpers.cpp IDHelpers.cpp QtHelpers.cpp MiscHelpers.cpp
+                        )
+
+SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp 
+                        ChronologicalSerie.hpp 
+                        ProgressiveColumnFileReader.hpp ProgressiveChronFileReader.hpp
+                        ChronFileInterpolator.hpp ChronFileLinearInterpolator.hpp
+                        DistributionTables.hpp DistributionBindings.hpp
+                        Console.hpp
+                        Filesystem.hpp FileHelpers.hpp
+                        FileLogger.hpp
+                        DataHelpers.hpp IDHelpers.hpp QtHelpers.hpp MiscHelpers.hpp
+                        FortranCPP.hpp
+                        )
 
 
 ADD_LIBRARY(openfluid-tools SHARED ${OPENFLUID_TOOLS_CPP} ${OPENFLUID_TOOLS_HPP})

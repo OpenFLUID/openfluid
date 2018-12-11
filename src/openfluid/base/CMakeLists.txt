@@ -1,8 +1,20 @@
 
 
+SET (OPENFLUID_BASE_CPP Environment.cpp RunContextManager.cpp 
+                        SimulationStatus.cpp
+                        SimulationLogger.cpp
+                        PreferencesManager.cpp  
+                        )
 
-FILE(GLOB OPENFLUID_BASE_CPP *.cpp)
-FILE(GLOB OPENFLUID_BASE_HPP *.hpp)
+SET (OPENFLUID_BASE_HPP Init.hpp
+                        Environment.hpp RunContextManager.hpp
+                        Exception.hpp OtherException.hpp FrameworkException.hpp ApplicationException.hpp ExceptionContext.hpp
+                        Listener.hpp IOListener.hpp
+                        SchedulingRequest.hpp
+                        SimulationStatus.hpp
+                        SimulationLogger.hpp                        
+                        PreferencesManager.hpp
+                        )
 
 
 ADD_LIBRARY(openfluid-base SHARED ${OPENFLUID_BASE_CPP} ${OPENFLUID_BASE_HPP})

@@ -1,7 +1,20 @@
 INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR} ${RapidJSON_INCLUDE_DIR})
 
-FILE(GLOB OPENFLUID_UTILS_CPP *.cpp)
-FILE(GLOB OPENFLUID_UTILS_HPP *.hpp)
+
+SET(OPENFLUID_UTILS_CPP ExternalProgram.cpp
+                        CMakeProxy.cpp GitProxy.cpp GrassGISProxy.cpp
+                        FileDownloader.cpp FluidHubAPIClient.cpp RESTClient.cpp
+                        GDALHelpers.cpp
+                        )
+
+SET(OPENFLUID_UTILS_HPP ExternalProgram.hpp 
+                        Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMachineListener.hpp
+                        ProgramProxy.hpp CMakeProxy.hpp GitProxy.hpp GrassGISProxy.hpp
+                        FileDownloader.hpp FluidHubAPIClient.hpp RESTClient.hpp
+                        KillableSingleton.hpp MeyerSingleton.hpp SingletonMacros.hpp
+                        CommandLineParser.hpp
+                        GDALHelpers.hpp GDALCompatibility.hpp
+                        )
 
 
 ADD_LIBRARY(openfluid-utils SHARED ${OPENFLUID_UTILS_CPP} ${OPENFLUID_UTILS_HPP})

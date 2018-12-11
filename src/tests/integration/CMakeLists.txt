@@ -735,6 +735,15 @@ SET_PROPERTY(TEST integration-BuddyNewDataCheck APPEND PROPERTY DEPENDS integrat
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME integration-GitAskPass
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_GITASKPASS_APP}")
+SET_TESTS_PROPERTIES(integration-GitAskPass PROPERTIES ENVIRONMENT "${OFBUILD_GITASKPASS_ENVVAR}=mysecrtpasswrd")                           
+SET_TESTS_PROPERTIES(integration-GitAskPass PROPERTIES PASS_REGULAR_EXPRESSION "mysecrtpasswrd")
+
+
+###########################################################################
+
+
 IF(OFBUILD_ENABLE_APP_MINIMAL)
   OPENFLUID_ADD_TEST(NAME integration-MinimalRun
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/openfluid-minimal"

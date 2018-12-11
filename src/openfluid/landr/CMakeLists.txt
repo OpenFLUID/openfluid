@@ -1,6 +1,19 @@
 
-FILE(GLOB OPENFLUID_LANDR_CPP *.cpp)
-FILE(GLOB OPENFLUID_LANDR_HPP *.hpp)
+SET(OPENFLUID_LANDR_CPP LandREntity.cpp LineStringEntity.cpp  PolygonEntity.cpp
+                        PolygonEdge.cpp
+                        LandRGraph.cpp PolygonGraph.cpp LineStringGraph.cpp
+                        VectorDataset.cpp RasterDataset.cpp
+                        LandRTools.cpp
+                        GEOSHelpers.cpp
+                        )
+
+SET(OPENFLUID_LANDR_HPP LandREntity.hpp LineStringEntity.hpp PolygonEntity.hpp
+                        PolygonEdge.hpp
+                        LandRGraph.hpp PolygonGraph.hpp LineStringGraph.hpp
+                        VectorDataset.hpp RasterDataset.hpp
+                        LandRTools.hpp
+                        GEOSHelpers.hpp
+                        )
 
 
 FIND_PACKAGE(GEOS REQUIRED)

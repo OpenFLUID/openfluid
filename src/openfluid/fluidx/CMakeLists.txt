@@ -1,7 +1,26 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-FILE(GLOB OPENFLUID_FLUIDX_CPP *.cpp)
-FILE(GLOB OPENFLUID_FLUIDX_HPP *.hpp)
+
+SET(OPENFLUID_FLUIDX_CPP WareDescriptor.cpp SimulatorDescriptor.cpp GeneratorDescriptor.cpp
+                         CoupledModelDescriptor.cpp MonitoringDescriptor.cpp
+                         SpatialUnitDescriptor.cpp SpatialDomainDescriptor.cpp
+                         AttributesTableDescriptor.cpp
+                         EventDescriptor.cpp
+                         DatastoreDescriptor.cpp DatastoreItemDescriptor.cpp
+                         RunConfigurationDescriptor.cpp
+                         FluidXDescriptor.cpp
+                         )
+
+SET(OPENFLUID_FLUIDX_HPP WareDescriptor.hpp ModelItemDescriptor.hpp 
+                         SimulatorDescriptor.hpp GeneratorDescriptor.hpp ObserverDescriptor.hpp
+                         WareSetDescriptor.hpp CoupledModelDescriptor.hpp MonitoringDescriptor.hpp
+                         SpatialUnitDescriptor.hpp SpatialDomainDescriptor.hpp
+                         AttributesTableDescriptor.hpp
+                         EventDescriptor.hpp
+                         DatastoreDescriptor.hpp DatastoreItemDescriptor.hpp
+                         RunConfigurationDescriptor.hpp
+                         FluidXDescriptor.hpp
+                         )
 
 
 ADD_LIBRARY(openfluid-fluidx SHARED ${OPENFLUID_FLUIDX_CPP} ${OPENFLUID_FLUIDX_HPP})

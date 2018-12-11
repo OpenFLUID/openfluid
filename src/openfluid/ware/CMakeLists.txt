@@ -2,8 +2,21 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
-FILE(GLOB OPENFLUID_WARE_CPP *.cpp)
-FILE(GLOB OPENFLUID_WARE_HPP *.hpp)
+SET(OPENFLUID_WARE_CPP SimulatorSignature.cpp GeneratorSignature.cpp
+                       PluggableWare.cpp SimulationDrivenWare.cpp SimulationInspectorWare.cpp SimulationContributorWare.cpp
+                       PluggableSimulator.cpp PluggableObserver.cpp
+                       WareParamsTree.cpp
+                       )
+
+SET(OPENFLUID_WARE_HPP WareSignature.hpp SimulatorSignature.hpp GeneratorSignature.hpp ObserverSignature.hpp
+                       PluggableWare.hpp SimulationDrivenWare.hpp SimulationInspectorWare.hpp SimulationContributorWare.hpp
+                       PluggableSimulator.hpp PluggableObserver.hpp                       
+                       TypeDefs.hpp
+                       WareSignatureMacros.hpp SimulatorSignatureMacros.hpp ObserverSignatureMacros.hpp
+                       LoopMacros.hpp ThreadedLoopMacros.hpp
+                       WareException.hpp
+                       WareParamsTree.hpp
+                       )
 
 
 ADD_LIBRARY(openfluid-ware SHARED ${OPENFLUID_WARE_CPP} ${OPENFLUID_WARE_HPP})
