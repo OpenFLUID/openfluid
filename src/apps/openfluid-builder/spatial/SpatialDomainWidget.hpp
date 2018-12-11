@@ -100,6 +100,10 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void updateSelectionFromMap();
 
+    void updateIDsSelectionFromAttributesTableRow(int Row);
+
+    void updateIDsSelectionFromAttributesTableCell(int Row, int Column);
+
     void updateFluidXAttributeFromCellValue(int Row, int Column);
 
     void updateFluidXProcessOrder(int PcsOrd);

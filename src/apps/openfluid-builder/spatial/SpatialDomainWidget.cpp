@@ -162,6 +162,11 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Flu
   connect(ui->PcsOrderSpinBox,SIGNAL(valueChanged(int)),this,
           SLOT(updateFluidXProcessOrder(int)));
 
+  connect(ui->AttributesTableWidget->verticalHeader(),SIGNAL(sectionClicked(int)),
+          this,SLOT(updateIDsSelectionFromAttributesTableRow(int)));
+  connect(ui->AttributesTableWidget,SIGNAL(cellClicked(int,int)),this,
+          SLOT(updateIDsSelectionFromAttributesTableCell(int,int)));
+
   refresh();
 
   // all map layers are set visible at startup only
@@ -420,7 +425,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 {
   if (Row >= 0)
   {
-    int ID = ui->IDsListWidget->item(Row)->data(Qt::UserRole).toInt();
+    openfluid::core::UnitID_t ID = ui->IDsListWidget->item(Row)->data(Qt::UserRole).toInt();
 
     ui->RemoveUnitButton->setText(tr("Remove unit %1 from %2 class").arg(ID).arg(m_ActiveClass));
 
@@ -540,9 +545,42 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
     ui->ConnectionsTableWidget->resizeRowsToContents();
 
 
-    // attributes
-    ui->AttributesTableWidget->clearSelection();
-    ui->AttributesTableWidget->selectRow(Row);
+    // ======== Tables and map sync
+
+    bool IsIDDiscrepency;
+
+    // sync attributes table
+    IsIDDiscrepency = true;
+    int AttributeCurrentRow = ui->AttributesTableWidget->currentRow();
+    if (AttributeCurrentRow >= 0)
+    {
+      IsIDDiscrepency = (openfluid::core::UnitID_t)ui->AttributesTableWidget->
+                           verticalHeaderItem(AttributeCurrentRow)->text().toInt() != ID;
+    }
+    if (IsIDDiscrepency)
+    {
+      ui->AttributesTableWidget->clearSelection();
+      ui->AttributesTableWidget->selectRow(Row);
+    }
+
+    // sync map
+    IsIDDiscrepency = true;
+    if (!mp_MapScene->selectedItems().isEmpty())
+    {
+      IsIDDiscrepency = dynamic_cast<MapItemGraphics*>(mp_MapScene->selectedItems().first())->getUnitID() != ID;
+    }
+    if (IsIDDiscrepency)
+    {
+      // clear previous selection (be careful if multi selection)
+      mp_MapScene->clearSelection();
+      for(QGraphicsItem * MapItem : mp_MapScene->items())
+      {
+        if (dynamic_cast<MapItemGraphics*>(MapItem)->getUnitID() == ID)
+        {
+          MapItem->setSelected(true);
+        }
+      }
+    }
   }
 }
 
@@ -1310,6 +1348,37 @@ void SpatialDomainWidget::updateSelectionFromMap()
       }
     }
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::updateIDsSelectionFromAttributesTableRow(int Row)
+{
+  if (Row >= 0)
+  {
+    int ID = ui->AttributesTableWidget->verticalHeaderItem(Row)->text().toInt();
+    for (int i=0; i<ui->IDsListWidget->count();i++)
+    {
+      if (ui->IDsListWidget->item(i)->data(Qt::UserRole).toInt() == ID)
+      {
+        ui->IDsListWidget->setCurrentRow(i);
+        return;
+      }
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::updateIDsSelectionFromAttributesTableCell(int Row, int /*Column*/)
+{
+  updateIDsSelectionFromAttributesTableRow(Row);
 }
 
 
