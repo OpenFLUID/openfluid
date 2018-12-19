@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -42,6 +42,7 @@
 
 
 #include <QWidget>
+#include <QTableWidgetItem>
 
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
@@ -100,14 +101,15 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void updateSelectionFromMap();
 
-    void updateIDsSelectionFromAttributesTableRow(int Row);
+    void updateAttSelectionFromIDsList(int Row);
 
-    void updateIDsSelectionFromAttributesTableCell(int Row, int Column);
+    void updateIDsListFromAttributesTableChange();
+
+    void updateMapFromAttributesTableChange();
 
     void updateFluidXAttributeFromCellValue(int Row, int Column);
 
     void updateFluidXProcessOrder(int PcsOrd);
-
 
   private:
 
@@ -136,6 +138,10 @@ class SpatialDomainWidget : public WorkspaceWidget
     int getClassIndex(const QString& ClassName);
 
     QStringList getClassesOrderedStringList();
+
+    openfluid::core::UnitID_t getUnitIDFromAttributesTableRow(int Row);
+
+    openfluid::core::UnitID_t getUnitIDFromIDsListRow(int Row);
 
     void setAllMapLayersVisible();
 

@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -142,6 +142,7 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Flu
   connect(ui->RemoveEventsButton,SIGNAL(clicked()),this,SLOT(removeEvents()));
 
   connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateUnitSelection(int)));
+  connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateAttSelectionFromIDsList(int)));
 
   // map view
   // TODO to reactivate when units IDs display on map will be fully functional
@@ -162,10 +163,10 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Flu
   connect(ui->PcsOrderSpinBox,SIGNAL(valueChanged(int)),this,
           SLOT(updateFluidXProcessOrder(int)));
 
-  connect(ui->AttributesTableWidget->verticalHeader(),SIGNAL(sectionClicked(int)),
-          this,SLOT(updateIDsSelectionFromAttributesTableRow(int)));
-  connect(ui->AttributesTableWidget,SIGNAL(cellClicked(int,int)),this,
-          SLOT(updateIDsSelectionFromAttributesTableCell(int,int)));
+  connect(ui->AttributesTableWidget,SIGNAL(itemSelectionChanged()),this,
+          SLOT(updateMapFromAttributesTableChange()));
+  connect(ui->AttributesTableWidget,SIGNAL(itemSelectionChanged()),this,
+          SLOT(updateIDsListFromAttributesTableChange()));
 
   refresh();
 
@@ -543,43 +544,54 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
     }
 
     ui->ConnectionsTableWidget->resizeRowsToContents();
+  }
+}
 
 
-    // ======== Tables and map sync
+// =====================================================================
+// =====================================================================
 
-    bool IsIDDiscrepency;
 
-    // sync attributes table
-    IsIDDiscrepency = true;
+openfluid::core::UnitID_t SpatialDomainWidget::getUnitIDFromAttributesTableRow(int Row)
+{
+  return (openfluid::core::UnitID_t)ui->AttributesTableWidget->
+                       verticalHeaderItem(Row)->text().toInt();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::UnitID_t SpatialDomainWidget::getUnitIDFromIDsListRow(int Row)
+{
+  return (openfluid::core::UnitID_t)ui->IDsListWidget->item(Row)->data(Qt::UserRole).toInt();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::updateAttSelectionFromIDsList(int Row)
+{
+  if (Row >= 0)
+  {
+    bool IsIDDiscrepancy = true;
     int AttributeCurrentRow = ui->AttributesTableWidget->currentRow();
     if (AttributeCurrentRow >= 0)
     {
-      IsIDDiscrepency = (openfluid::core::UnitID_t)ui->AttributesTableWidget->
-                           verticalHeaderItem(AttributeCurrentRow)->text().toInt() != ID;
+      IsIDDiscrepancy = getUnitIDFromAttributesTableRow(AttributeCurrentRow) != getUnitIDFromIDsListRow(Row);
     }
-    if (IsIDDiscrepency)
+    if (IsIDDiscrepancy)
     {
+      // disconnect necessary to avoid cell replacement by full row
+      disconnect(ui->AttributesTableWidget,SIGNAL(itemSelectionChanged()),this,
+                  SLOT(updateIDsListFromAttributesTableChange()));
       ui->AttributesTableWidget->clearSelection();
       ui->AttributesTableWidget->selectRow(Row);
-    }
-
-    // sync map
-    IsIDDiscrepency = true;
-    if (!mp_MapScene->selectedItems().isEmpty())
-    {
-      IsIDDiscrepency = dynamic_cast<MapItemGraphics*>(mp_MapScene->selectedItems().first())->getUnitID() != ID;
-    }
-    if (IsIDDiscrepency)
-    {
-      // clear previous selection (be careful if multi selection)
-      mp_MapScene->clearSelection();
-      for(QGraphicsItem * MapItem : mp_MapScene->items())
-      {
-        if (dynamic_cast<MapItemGraphics*>(MapItem)->getUnitID() == ID)
-        {
-          MapItem->setSelected(true);
-        }
-      }
+      connect(ui->AttributesTableWidget,SIGNAL(itemSelectionChanged()),this,
+                SLOT(updateIDsListFromAttributesTableChange()));
     }
   }
 }
@@ -1335,16 +1347,36 @@ QStringList SpatialDomainWidget::getClassesOrderedStringList()
 
 void SpatialDomainWidget::updateSelectionFromMap()
 {
-  if (!mp_MapScene->selectedItems().isEmpty())
+  QList<QGraphicsItem *> MapSelectedItems = mp_MapScene->selectedItems();
+  bool IsDiscrepancy = true;
+  std::set<openfluid::core::UnitID_t> MapSelectedIDs;
+  for (QGraphicsItem * item : MapSelectedItems)
   {
-    int ID = dynamic_cast<MapItemGraphics*>(mp_MapScene->selectedItems().first())->getUnitID();
+    MapSelectedIDs.insert(dynamic_cast<MapItemGraphics*>(item)->getUnitID());
+  }
 
-    for (int i=0; i<ui->IDsListWidget->count();i++)
+  std::set<openfluid::core::UnitID_t> AttSelectedIDs;
+  for (QTableWidgetItem * item : ui->AttributesTableWidget->selectedItems())
+  {
+    AttSelectedIDs.insert(getUnitIDFromAttributesTableRow(item->row()));
+  }
+
+  if (MapSelectedIDs == AttSelectedIDs) {
+      IsDiscrepancy = false;
+  }
+
+  if (!MapSelectedItems.isEmpty() && IsDiscrepancy)
+  {
+    ui->AttributesTableWidget->clearSelection();
+    for (QGraphicsItem * item : MapSelectedItems)
     {
-      if (ui->IDsListWidget->item(i)->data(Qt::UserRole).toInt() == ID)
+      openfluid::core::UnitID_t IDMap = dynamic_cast<MapItemGraphics*>(item)->getUnitID();
+      for (int i=0; i<ui->AttributesTableWidget->rowCount();i++)
       {
-        ui->IDsListWidget->setCurrentRow(i);
-        return;
+        if (getUnitIDFromAttributesTableRow(i) == IDMap)
+        {
+            ui->AttributesTableWidget->selectRow(i);
+        }
       }
     }
   }
@@ -1355,30 +1387,82 @@ void SpatialDomainWidget::updateSelectionFromMap()
 // =====================================================================
 
 
-void SpatialDomainWidget::updateIDsSelectionFromAttributesTableRow(int Row)
+void SpatialDomainWidget::updateIDsListFromAttributesTableChange()
 {
-  if (Row >= 0)
+  std::set<unsigned int> SelectedRows;
+  QList<QTableWidgetItem *> AttSelectedItems = ui->AttributesTableWidget->selectedItems();
+  bool IsCurrentID = false;
+  openfluid::core::UnitID_t CurrentID;
+  if (ui->AttributesTableWidget->currentRow() >= 0)
   {
-    int ID = ui->AttributesTableWidget->verticalHeaderItem(Row)->text().toInt();
-    for (int i=0; i<ui->IDsListWidget->count();i++)
+    IsCurrentID = true;
+    CurrentID = getUnitIDFromAttributesTableRow(ui->AttributesTableWidget->currentRow());
+  }
+
+  bool IsCurrentIDInSelection = false;
+  for (QTableWidgetItem * item : AttSelectedItems)
+  {
+    // Check if current is in selected for ID structure list
+    SelectedRows.insert(item->row());
+    if (IsCurrentID && getUnitIDFromAttributesTableRow(item->row()) == CurrentID)
     {
-      if (ui->IDsListWidget->item(i)->data(Qt::UserRole).toInt() == ID)
+      IsCurrentIDInSelection = true;
+    }
+  }
+
+  if (IsCurrentID)
+  {
+    // first selected id picked if current id not in selection
+    if (!IsCurrentIDInSelection && !AttSelectedItems.empty())
+    {
+      CurrentID = getUnitIDFromAttributesTableRow(ui->AttributesTableWidget->selectedItems().first()->row());
+    }
+    // Update ID structure list selected row if not already the one selected
+    bool IsIDDiscrepancy = true;
+    int IDsListCurrentRow = ui->IDsListWidget->currentRow();
+    if (IDsListCurrentRow >= 0)
+    {
+      IsIDDiscrepancy = CurrentID != getUnitIDFromIDsListRow(IDsListCurrentRow);
+    }
+    if (IsIDDiscrepancy)
+    {
+      for (int i=0; i<ui->IDsListWidget->count();i++)
       {
-        ui->IDsListWidget->setCurrentRow(i);
-        return;
+        if (getUnitIDFromIDsListRow(i) == CurrentID)
+        {
+          ui->IDsListWidget->setCurrentRow(i);
+        }
       }
+    }
+    if (SelectedRows.size() > 1)
+    {
+      ui->tab->setEnabled(false);
+    }
+    else
+    {
+      ui->tab->setEnabled(true);
     }
   }
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-void SpatialDomainWidget::updateIDsSelectionFromAttributesTableCell(int Row, int /*Column*/)
+void SpatialDomainWidget::updateMapFromAttributesTableChange()
 {
-  updateIDsSelectionFromAttributesTableRow(Row);
+  disconnect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
+  mp_MapScene->clearSelection();
+
+  for (QTableWidgetItem * item : ui->AttributesTableWidget->selectedItems())
+  {
+    // Update map based on selection change
+    for(QGraphicsItem * MapItem : mp_MapScene->items())
+    {
+      if (dynamic_cast<MapItemGraphics*>(MapItem)->getUnitID() ==
+          getUnitIDFromAttributesTableRow(item->row()))
+      {
+        MapItem->setSelected(true);
+      }
+    }
+  }
+  connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
 }
 
 
@@ -1573,4 +1657,3 @@ void SpatialDomainWidget::removeEvents()
     }
   }
 }
-
