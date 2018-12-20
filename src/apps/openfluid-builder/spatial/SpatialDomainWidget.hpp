@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
+  
 */
 
 
@@ -101,15 +101,17 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void updateSelectionFromMap();
 
-    void updateAttSelectionFromIDsList(int Row);
+    void updateSelectionFromIDsList();
 
-    void updateIDsListFromAttributesTableChange();
+    void updateIDsListSelectionFromAttributesTableChange();
 
     void updateMapFromAttributesTableChange();
 
     void updateFluidXAttributeFromCellValue(int Row, int Column);
 
     void updateFluidXProcessOrder(int PcsOrd);
+
+    void refreshUnitField();
 
   private:
 
@@ -124,6 +126,8 @@ class SpatialDomainWidget : public WorkspaceWidget
     MapScene* mp_MapScene;
 
     void setActiveClass(const QString& ClassName);
+
+    void updateRemoveUnitButtonText(int ID);
 
     void refreshClassStructure();
 
@@ -142,6 +146,10 @@ class SpatialDomainWidget : public WorkspaceWidget
     openfluid::core::UnitID_t getUnitIDFromAttributesTableRow(int Row);
 
     openfluid::core::UnitID_t getUnitIDFromIDsListRow(int Row);
+
+    std::set<openfluid::core::UnitID_t> getAttributeSelectedUnitSet();
+
+    bool isIDsListAndAttributeSelDiscrepancy();
 
     void setAllMapLayersVisible();
 
