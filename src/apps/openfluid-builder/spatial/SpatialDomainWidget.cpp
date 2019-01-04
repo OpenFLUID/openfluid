@@ -120,6 +120,8 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Flu
   ui->RemoveEventsButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
   ui->RemoveEventsButton->setIconSize(QSize(20,20));
 
+  ui->PcsOrderSpinBox->setMaximum(std::numeric_limits<int>::max());
+
   ui->ConnectionsTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
 

@@ -56,6 +56,8 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
+  ui->VectorSpinBox->setMaximum(std::numeric_limits<int>::max());
+
   setupMessageUi(tr("Add generator"));
 
   connect(ui->FixedRadioButton,SIGNAL(toggled(bool)),this,SLOT(switchGeneratorOptions()));

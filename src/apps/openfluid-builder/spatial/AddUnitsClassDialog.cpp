@@ -56,6 +56,8 @@ AddUnitsClassDialog::AddUnitsClassDialog(const QStringList& ExistingClasses, QWi
   ui->ClassEdit->setPlaceholderText(getPlaceholderRequired());
   ui->UnitIDEdit->setText("1");
 
+  ui->PcsOrderSpinBox->setMaximum(std::numeric_limits<int>::max());
+
   connect(ui->ClassEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->UnitIDEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
 

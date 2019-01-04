@@ -57,6 +57,8 @@ WareBuildOptionsWidget::WareBuildOptionsWidget(QWidget* Parent):
 
   ui->InstallCheckBox->setChecked(true);
 
+  ui->JobsSpinBox->setMaximum(std::numeric_limits<int>::max());
+
   ui->ResetJobsButton->setText("");
   ui->ResetJobsButton->setIcon(openfluid::ui::common::getIcon("refresh","/ui/common"));
   ui->ResetJobsButton->setIconSize(QSize(16,16));

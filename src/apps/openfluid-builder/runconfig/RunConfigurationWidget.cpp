@@ -58,6 +58,8 @@ RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluid
   ui->ResetThreadsButton->setIcon(openfluid::ui::common::getIcon("refresh","/ui/common"));
   ui->ResetThreadsButton->setIconSize(QSize(16,16));
 
+  ui->ThreadsSpinBox->setMaximum(std::numeric_limits<int>::max());
+  ui->MemoryStepsSpinBox->setMaximum(std::numeric_limits<int>::max());
 
   refresh();
 
