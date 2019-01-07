@@ -65,9 +65,9 @@ class OPENFLUID_API Event
 
   private:
 
-	  DateTime m_Date;
+    DateTime m_Date;
 
-	  EventInfosMap_t m_Infos;
+    EventInfosMap_t m_Infos;
 
 
   public:

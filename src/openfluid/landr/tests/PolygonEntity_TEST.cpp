@@ -876,41 +876,41 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
 BOOST_AUTO_TEST_CASE(check_computeNeighbourWithCommonEdge)
 {
 
-	openfluid::core::GeoVectorValue* ValSU =
+  openfluid::core::GeoVectorValue* ValSU =
     new openfluid::core::GeoVectorValue(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "POLY_TEST.shp");
 
-	openfluid::landr::PolygonGraph* SUGraph = openfluid::landr::PolygonGraph::create(*ValSU);
+  openfluid::landr::PolygonGraph* SUGraph = openfluid::landr::PolygonGraph::create(*ValSU);
 
 
-	openfluid::landr::PolygonEntity* SU1 = SUGraph->entity(1);
-	openfluid::landr::PolygonEntity* SU2 = SUGraph->entity(2);
-	openfluid::landr::PolygonEntity* SU3 = SUGraph->entity(3);
-	openfluid::landr::PolygonEntity* SU4 = SUGraph->entity(4);
+  openfluid::landr::PolygonEntity* SU1 = SUGraph->entity(1);
+  openfluid::landr::PolygonEntity* SU2 = SUGraph->entity(2);
+  openfluid::landr::PolygonEntity* SU3 = SUGraph->entity(3);
+  openfluid::landr::PolygonEntity* SU4 = SUGraph->entity(4);
 
 
-	std::vector<openfluid::landr::PolygonEdge*> vEdgeSU=SU1->getCommonEdgesWith(*SU2);
-	BOOST_CHECK_EQUAL(SU1->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),2);
-	vEdgeSU.clear();
-	vEdgeSU=SU2->getCommonEdgesWith(*SU1);
-	BOOST_CHECK_EQUAL(SU2->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),1);
-	vEdgeSU.clear();
-	vEdgeSU=SU1->getCommonEdgesWith(*SU3);
-	BOOST_CHECK_EQUAL(SU1->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),3);
-	vEdgeSU.clear();
-	vEdgeSU=SU3->getCommonEdgesWith(*SU1);
-	BOOST_CHECK_EQUAL(SU3->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),1);
-	vEdgeSU.clear();
-	vEdgeSU=SU3->getCommonEdgesWith(*SU4);
-	BOOST_CHECK_EQUAL(SU3->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),4);
-	vEdgeSU.clear();
-	vEdgeSU=SU4->getCommonEdgesWith(*SU3);
-	BOOST_CHECK_EQUAL(SU4->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),3);
+  std::vector<openfluid::landr::PolygonEdge*> vEdgeSU=SU1->getCommonEdgesWith(*SU2);
+  BOOST_CHECK_EQUAL(SU1->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),2);
+  vEdgeSU.clear();
+  vEdgeSU=SU2->getCommonEdgesWith(*SU1);
+  BOOST_CHECK_EQUAL(SU2->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),1);
+  vEdgeSU.clear();
+  vEdgeSU=SU1->getCommonEdgesWith(*SU3);
+  BOOST_CHECK_EQUAL(SU1->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),3);
+  vEdgeSU.clear();
+  vEdgeSU=SU3->getCommonEdgesWith(*SU1);
+  BOOST_CHECK_EQUAL(SU3->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),1);
+  vEdgeSU.clear();
+  vEdgeSU=SU3->getCommonEdgesWith(*SU4);
+  BOOST_CHECK_EQUAL(SU3->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),4);
+  vEdgeSU.clear();
+  vEdgeSU=SU4->getCommonEdgesWith(*SU3);
+  BOOST_CHECK_EQUAL(SU4->neighbourWithCommonEdge(vEdgeSU.at(0))->getOfldId(),3);
 
-	openfluid::landr::PolygonEntity* SUFalse=SU3->neighbourWithCommonEdge(SU1->m_PolyEdges.at(1));
-	BOOST_CHECK(!SUFalse);
+  openfluid::landr::PolygonEntity* SUFalse=SU3->neighbourWithCommonEdge(SU1->m_PolyEdges.at(1));
+  BOOST_CHECK(!SUFalse);
 
-	delete SUGraph;
-	delete ValSU;
+  delete SUGraph;
+  delete ValSU;
 
 }
 

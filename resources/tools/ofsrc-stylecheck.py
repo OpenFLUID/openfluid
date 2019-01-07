@@ -94,7 +94,8 @@ class SourceTreeChecker:
                          'FNAM': 0, 
                          'TMSP': 0,
                          'SEPS': 0,
-                         'PRTY': 0
+                         'PRTY': 0,
+                         'TABC': 0
                        }
     
     self.DirectiveBase = "OpenFLUID:stylecheck"
@@ -374,6 +375,18 @@ class SourceTreeChecker:
 ############################################################################
 
 
+  def checkTabs(self, Filename, Lines):
+     
+    i = 1
+    for Line in Lines :
+      if "\t" in Line.lower():
+        self.addProblem('TABC',Filename,i,'line contains at least one tab character')
+      i += 1
+
+
+############################################################################
+
+
   def checkFile(self, Filename): 
     self.printVerbose('== Checking',Filename)
     
@@ -389,6 +402,7 @@ class SourceTreeChecker:
     self.checkIncludesSpacing(Filename,FileLines)
     self.checkTooMuchSpacing(Filename,FileLines)
     self.checkSeparators(Filename,FileLines)
+    self.checkTabs(Filename,FileLines)
 
 
 ############################################################################

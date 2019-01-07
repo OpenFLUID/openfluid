@@ -77,24 +77,24 @@ class OPENFLUID_API Vector
 
   public :
 
-	/**
-	  Default constructor, creates an empty vector
-	*/
+  /**
+    Default constructor, creates an empty vector
+  */
     Vector();
 
-	/**
-	  Copy constructor
-	*/
+  /**
+    Copy constructor
+  */
     Vector(const Vector &Vector);
 
-	/**
-	  Constructor, creates a vector containing Size elements
-	*/
+  /**
+    Constructor, creates a vector containing Size elements
+  */
     Vector(unsigned long Size);
 
-	/**
-	  Constructor, creates a vector containing Size elements, initialized with value InitValue
-	*/
+  /**
+    Constructor, creates a vector containing Size elements, initialized with value InitValue
+  */
     Vector(unsigned long Size, T InitValue);
 
     /**

@@ -312,7 +312,7 @@ double LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entit
   if (!mp_Raster)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No raster associated to the LineStringGraph");
 
-  double	Val = (double)(mp_Raster->getValueOfCoordinate(Entity.startNode()->getCoordinate()));
+  double Val = (double)(mp_Raster->getValueOfCoordinate(Entity.startNode()->getCoordinate()));
 
   return Val;
 }
@@ -327,7 +327,7 @@ double LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
   if (!mp_Raster)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No raster associated to the LineStringGraph");
 
-  double	Val = (double)(mp_Raster->getValueOfCoordinate(Entity.endNode()->getCoordinate()));
+  double  Val = (double)(mp_Raster->getValueOfCoordinate(Entity.endNode()->getCoordinate()));
 
   return Val;
 }

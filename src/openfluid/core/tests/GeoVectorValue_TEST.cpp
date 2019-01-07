@@ -398,18 +398,18 @@ BOOST_AUTO_TEST_CASE(check_Polygon_Geometry)
     std::cout << "GDAL driver not found : ESRI Shapefile -> test not run" << std::endl;
     return;
   }
-	
+  
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/SU.shp");
 
-	BOOST_CHECK(Val->isPolygonType());
+  BOOST_CHECK(Val->isPolygonType());
 
-	BOOST_CHECK(!Val->isMultiPolygonType());
-	BOOST_CHECK(!Val->isLineType());
-	BOOST_CHECK(!Val->isMultiLineType());
-	BOOST_CHECK(!Val->isPointType());
-	BOOST_CHECK(!Val->isMultiPointType());
+  BOOST_CHECK(!Val->isMultiPolygonType());
+  BOOST_CHECK(!Val->isLineType());
+  BOOST_CHECK(!Val->isMultiLineType());
+  BOOST_CHECK(!Val->isPointType());
+  BOOST_CHECK(!Val->isMultiPointType());
 
-	delete Val;
+  delete Val;
 }
 
 
@@ -425,17 +425,17 @@ BOOST_AUTO_TEST_CASE(check_MultiPolygon_Geometry)
     return;
   }
 
-	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiSU.geojson");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiSU.geojson");
 
-	BOOST_CHECK(Val->isMultiPolygonType());
+  BOOST_CHECK(Val->isMultiPolygonType());
 
-	BOOST_CHECK(!Val->isPolygonType());
-	BOOST_CHECK(!Val->isLineType());
-	BOOST_CHECK(!Val->isMultiLineType());
-	BOOST_CHECK(!Val->isPointType());
-	BOOST_CHECK(!Val->isMultiPointType());
+  BOOST_CHECK(!Val->isPolygonType());
+  BOOST_CHECK(!Val->isLineType());
+  BOOST_CHECK(!Val->isMultiLineType());
+  BOOST_CHECK(!Val->isPointType());
+  BOOST_CHECK(!Val->isMultiPointType());
 
-	delete Val;
+  delete Val;
 }
 
 
@@ -451,17 +451,17 @@ BOOST_AUTO_TEST_CASE(check_Line_Geometry)
     return;
   }
 
-	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/RS.shp");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/RS.shp");
 
-	BOOST_CHECK(Val->isLineType());
+  BOOST_CHECK(Val->isLineType());
 
-	BOOST_CHECK(!Val->isMultiPolygonType());
-	BOOST_CHECK(!Val->isPolygonType());
-	BOOST_CHECK(!Val->isMultiLineType());
-	BOOST_CHECK(!Val->isPointType());
-	BOOST_CHECK(!Val->isMultiPointType());
+  BOOST_CHECK(!Val->isMultiPolygonType());
+  BOOST_CHECK(!Val->isPolygonType());
+  BOOST_CHECK(!Val->isMultiLineType());
+  BOOST_CHECK(!Val->isPointType());
+  BOOST_CHECK(!Val->isMultiPointType());
 
-	delete Val;
+  delete Val;
 }
 
 
@@ -477,17 +477,17 @@ BOOST_AUTO_TEST_CASE(check_MultiLine_Geometry)
     return;
   }
 
-	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiRS.geojson");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiRS.geojson");
 
-	BOOST_CHECK(Val->isMultiLineType());
+  BOOST_CHECK(Val->isMultiLineType());
 
-	BOOST_CHECK(!Val->isMultiPolygonType());
-	BOOST_CHECK(!Val->isPolygonType());
-	BOOST_CHECK(!Val->isLineType());
-	BOOST_CHECK(!Val->isPointType());
-	BOOST_CHECK(!Val->isMultiPointType());
+  BOOST_CHECK(!Val->isMultiPolygonType());
+  BOOST_CHECK(!Val->isPolygonType());
+  BOOST_CHECK(!Val->isLineType());
+  BOOST_CHECK(!Val->isPointType());
+  BOOST_CHECK(!Val->isMultiPointType());
 
-	delete Val;
+  delete Val;
 }
 
 
@@ -503,17 +503,17 @@ BOOST_AUTO_TEST_CASE(check_Point_Geometry)
     return;
   }
 
-	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/PU.shp");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/PU.shp");
 
-	BOOST_CHECK(Val->isPointType());
+  BOOST_CHECK(Val->isPointType());
 
-	BOOST_CHECK(!Val->isMultiPolygonType());
-	BOOST_CHECK(!Val->isPolygonType());
-	BOOST_CHECK(!Val->isLineType());
-	BOOST_CHECK(!Val->isMultiLineType());
-	BOOST_CHECK(!Val->isMultiPointType());
+  BOOST_CHECK(!Val->isMultiPolygonType());
+  BOOST_CHECK(!Val->isPolygonType());
+  BOOST_CHECK(!Val->isLineType());
+  BOOST_CHECK(!Val->isMultiLineType());
+  BOOST_CHECK(!Val->isMultiPointType());
 
-	delete Val;
+  delete Val;
 }
 
 
@@ -529,17 +529,17 @@ BOOST_AUTO_TEST_CASE(check_MultiPoint_Geometry)
     return;
   }
 
-	GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiPU.geojson");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiPU.geojson");
 
-	BOOST_CHECK(Val->isMultiPointType());
+  BOOST_CHECK(Val->isMultiPointType());
 
-	BOOST_CHECK(!Val->isMultiPolygonType());
-	BOOST_CHECK(!Val->isPolygonType());
-	BOOST_CHECK(!Val->isLineType());
-	BOOST_CHECK(!Val->isMultiLineType());
-	BOOST_CHECK(!Val->isPointType());
+  BOOST_CHECK(!Val->isMultiPolygonType());
+  BOOST_CHECK(!Val->isPolygonType());
+  BOOST_CHECK(!Val->isLineType());
+  BOOST_CHECK(!Val->isMultiLineType());
+  BOOST_CHECK(!Val->isPointType());
 
-	delete Val;
+  delete Val;
 }
 
 

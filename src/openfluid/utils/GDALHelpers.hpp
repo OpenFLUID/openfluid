@@ -58,7 +58,7 @@ namespace openfluid { namespace utils {
   Structure associating a driver label with a list of corresponding files extensions
 */
 struct GDALDriverInfos_t {
-	  /** Label of the driver */
+    /** Label of the driver */
     std::string Label;
 
     /** Vector of files extensions */

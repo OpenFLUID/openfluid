@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
     new openfluid::core::GeoVectorValue(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "reach2.shp");
 
   BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),
-  									openfluid::base::FrameworkException);
+                    openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "TYPE",5);
   std::vector<std::string> vAttributes = Graph->getAttributeNames();
@@ -483,7 +483,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
     new openfluid::core::GeoVectorValue(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "SU.shp");
 
   BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),
-  									openfluid::base::FrameworkException);
+                    openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "OFLD_ID",0.1);
   std::vector<std::string> vAttributes = Graph->getAttributeNames();
@@ -545,7 +545,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
     new openfluid::core::GeoVectorValue(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "fields_extract2.shp");
 
   BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),
-  									openfluid::base::FrameworkException);
+                    openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "OFLD_ID",0.5);
   std::vector<std::string> vAttributes = Graph->getAttributeNames();
@@ -607,7 +607,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
     new openfluid::core::GeoVectorValue(CONFIGTESTS_INPUT_MISCDATA_DIR + "/landr", "RS_complex.shp");
 
   BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),
-  									openfluid::base::FrameworkException);
+                    openfluid::base::FrameworkException);
 
   Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "OFLD_ID",10);
   std::vector<std::string> vAttributes = Graph->getAttributeNames();

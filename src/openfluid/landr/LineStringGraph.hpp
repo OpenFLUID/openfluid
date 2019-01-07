@@ -55,8 +55,8 @@
   @param[in] loopid ID of the loop
 */
 #define DECLARE_ENTITIES_GRAPH_LOOP(loopid) \
-		std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
-		std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
+    std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
+    std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
 
 
 /**
@@ -64,8 +64,8 @@
   @param[in] loopid ID of the loop
 */
 #define DECLARE_ENTITIES_ORDERED_LOOP(loopid) \
-		std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
-		std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
+    std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
+    std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
 
 /**
   Macro for the beginning of a loop processing all entities of a graph
@@ -74,13 +74,13 @@
   @param[out] entity pointer to a openfluid::landr::LineStringEntity object, pointing to the current processed entity
 */
 #define BEGIN_ENTITIES_GRAPH_LOOP(loopid,graph,entity) \
-		if (graph) \
-		{ \
-			_M_##loopid##_uvect = graph->getEntities();\
-			for (_M_##loopid##_it=_M_##loopid##_uvect.begin();\
-			     _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
-			{ \
-				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
+    if (graph) \
+    { \
+      _M_##loopid##_uvect = graph->getEntities();\
+      for (_M_##loopid##_it=_M_##loopid##_uvect.begin();\
+           _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+      { \
+        entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
 /**
   Macro for the beginning of a loop processing all entities of a graph, following their OFLD_ID
@@ -89,20 +89,20 @@
   @param[out] entity pointer to a openfluid::landr::LineStringEntity object, pointing to the current processed entity
 */
 #define BEGIN_ENTITIES_ORDERED_LOOP(loopid,graph,entity) \
-		if (graph) \
-		{ \
-			_M_##loopid##_uvect = graph->getOfldIdOrderedEntities();\
-			for (_M_##loopid##_it=_M_##loopid##_uvect.begin();\
-			     _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
-			{ \
-				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
+    if (graph) \
+    { \
+      _M_##loopid##_uvect = graph->getOfldIdOrderedEntities();\
+      for (_M_##loopid##_it=_M_##loopid##_uvect.begin();\
+           _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+      { \
+        entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
 /**
   Macro for the ending of a loop
 */
 #define END_LOOP \
-		} \
-		}
+    } \
+    }
 
 
 // =====================================================================
@@ -121,7 +121,7 @@ class OPENFLUID_API LineStringGraph : public LandRGraph
 {
   private:
 
-	  LineStringGraph(LineStringGraph& Other);
+    LineStringGraph(LineStringGraph& Other);
 
 
   protected:
