@@ -52,10 +52,21 @@ class WareSignatureRegistry
 
   public:
 
+    /**
+      Updates the registry from available plugins
+    */
     virtual void update() = 0;
 
+    /**
+      Unloads all signatures of the registry
+    */
     virtual void unloadAll() = 0;
 
+    /**
+      Returns the signature of the ware given by its ID
+      @param[in] ID The ID of the ware
+      @return The signature of the ware, nullptr if not found
+    */
     virtual  const S* signature(const openfluid::ware::WareID_t& ID) const = 0;
 
 };

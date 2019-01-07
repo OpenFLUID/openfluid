@@ -70,7 +70,7 @@ typedef std::string (*GetWareLinkUIDProc)();
 
 
 /**
-  Management class for pluggable ware
+  Management class for pluggable wares
   @tparam SignatureType class defining the container for ware signature only
   @tparam ItemType class defining the container for ware signature and body
   @tparam SignatureProc procedure definition for instantiation of the signature
@@ -81,6 +81,12 @@ class OPENFLUID_API WarePluginsManager
 {
   private:
 
+    /**
+      Loads the plugin of a ware from the given file path. 
+      The plugin is automatically cached to avoid multiple loadings.
+      @param[in] FullFilePath The path to the plugin file to load
+      @return a QLibrary pointer to the loaded or cached ware
+    */
     QLibrary* loadPluginLibrary(const std::string& FullFilePath)
     {
       std::string PluginFileName = QFileInfo(QString::fromStdString(FullFilePath)).fileName().toStdString();
@@ -265,7 +271,9 @@ class OPENFLUID_API WarePluginsManager
 
     std::map<std::string,std::unique_ptr<QLibrary>> m_LoadedPluginsLibraries;
 
-
+    /**
+      Default constructor
+    */
     WarePluginsManager()
     {
       openfluid::base::Environment::init();
@@ -298,6 +306,11 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
+    /**
+      Returns the full path of the plugin from its filename
+      @param[in] Filename The filename of the plugin
+      @return The full path of the plugin, empty if not found
+    */
     virtual std::string getPluginFullPath(const std::string& Filename) const = 0;
 
 
@@ -305,6 +318,10 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
+    /**
+      Returns ordered search paths for plugins
+      @return The search paths
+    */
     virtual std::vector<std::string> getPluginsSearchPaths() const = 0;
 
 
@@ -312,6 +329,10 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
+    /**
+      Returns the filename suffix for the plugins
+      @return The filename suffix
+    */
     virtual std::string getPluginFilenameSuffix() const = 0;
 
 
@@ -321,6 +342,9 @@ class OPENFLUID_API WarePluginsManager
 
     /**
       Lists available wares
+      @param[in] Pattern if not empty, the list of available wares is filtered using the given pattern 
+                         based on wildcard matching
+      @return The list of found wares
     */
     PluginsSearchResults getAvailableWaresSignatures(const std::string& Pattern = "")
     {
@@ -338,7 +362,9 @@ class OPENFLUID_API WarePluginsManager
                                                                    openfluid::config::PLUGINS_EXT,false,true);
 
         for (j=0;j<TmpFiles.size();j++)
+        {
           PluginFiles.push_back(TmpFiles[j]);
+        }
       }
 
 
@@ -376,6 +402,11 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
+    /**
+      Loads only the signature of a ware given by its ID
+      @param[in] ID The ID of the ware to load
+      @return The ware container including the signature
+    */
     ItemType* loadWareSignatureOnly(const std::string& ID)
     {
       ItemType* WareItem = buildWareContainerWithSignatureOnly(ID);
@@ -393,6 +424,10 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
+    /**
+      Loads only the body of a ware if the signature is already loaded
+      @param[inout] WareItem The ware container to complete which already includes the signature
+    */
     void completeSignatureWithWareBody(ItemType* WareItem)
     {
       std::string PluginFullPath = WareItem->FileFullPath;
@@ -435,6 +470,9 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
+    /**
+      Unloads all already loaded wares and clears the cache
+    */
     void unloadAllWares()
     {
       for (auto it=m_LoadedPluginsLibraries.begin();it != m_LoadedPluginsLibraries.end(); ++it)

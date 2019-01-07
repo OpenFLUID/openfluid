@@ -138,17 +138,34 @@ class OPENFLUID_API Engine
     */
     ~Engine();
 
-
+    /**
+      Initializes the simulation engine
+    */
     void initialize();
 
+    /**
+      Executes the initParams() method of each item of the model
+    */
     void initParams();
 
+    /**
+      Executes the prepareData() method of each item of the model
+    */
     void prepareData();
 
+    /**
+      Executes the checkConsistency() method of each item of the model
+    */
     void checkConsistency();
 
+    /**
+      Executes the initializeRun(), runStep() and finalizeRun() methods of each item of the model
+    */
     void run();
 
+    /**
+      Finalizes the simulation engine
+    */
     void finalize();
 
     const openfluid::base::SimulationStatus* simulationStatus()

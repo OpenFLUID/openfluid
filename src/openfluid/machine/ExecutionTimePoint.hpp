@@ -75,29 +75,56 @@ class OPENFLUID_API ExecutionTimePoint
 
   public:
 
+    /**
+      Constructor
+      @param[in] TimeIndex the time index of the execution time point
+    */
     ExecutionTimePoint(openfluid::core::TimeIndex_t TimeIndex);
 
     ~ExecutionTimePoint();
 
+    /**
+      Appends a model item instance to the stack of the execution time point
+      @param[in] Item a pointer to the model item instance to append
+    */
     void appendItem(openfluid::machine::ModelItemInstance* Item);
 
+    /**
+      Returns true if there is at least one model item to process in the execution time point
+      @return true if there is at least one model item
+    */
     inline bool hasItemsToProcess() const
     {
       return !m_ItemsPtrList.empty();
     }
 
+    /**
+      Executes the runStep() method of the next item and pops it out of the stack
+      @return the scheduling request returned by the runStep() once it is completed
+    */
     openfluid::base::SchedulingRequest processNextItem();
 
+    /**
+      Returns the next item to process
+      @return a pointer to the next item to process
+    */
     inline openfluid::machine::ModelItemInstance* nextItem() const
     {
       return m_ItemsPtrList.front();
     }
 
+    /**
+      Returns the time index of the execution time point
+      @return the time index
+    */
     inline openfluid::core::TimeIndex_t getTimeIndex() const
     {
       return m_TimeIndex;
     }
 
+    /**
+      Sorts model items of the execution time point using their original position in the coupled model
+    */
     inline void sortByOriginalPosition()
     {
       m_ItemsPtrList.sort(SortModelItemsByOriginalPosition());

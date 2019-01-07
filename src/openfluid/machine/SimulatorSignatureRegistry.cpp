@@ -228,10 +228,14 @@ const openfluid::machine::ModelItemSignatureInstance*
   SimulatorSignatureRegistry::signature(const openfluid::ware::WareID_t& ID) const
 {
   if (isSimulatorAvailable(ID))
+  {
     return m_SimSignatures.at(openfluid::ware::WareType::SIMULATOR).at(ID);
+  }
 
   if (m_SimSignatures.at(openfluid::ware::WareType::GENERATOR).count(ID))
+  {
     return m_SimSignatures.at(openfluid::ware::WareType::GENERATOR).at(ID);
+  }
 
   return nullptr;
 }
@@ -247,10 +251,14 @@ const ModelItemSignatureInstance*
   openfluid::ware::WareID_t ItemID = "";
 
   if (Item->isType(openfluid::ware::WareType::SIMULATOR))
+  {
     ItemID = (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getID();
+  }
   else if (Item->isType(openfluid::ware::WareType::GENERATOR))
+  {
     ItemID = openfluid::fluidx::GeneratorDescriptor::getGeneratorName(
                  (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratorMethod());
+  }
 
   return signature(ItemID);
 }
@@ -274,7 +282,10 @@ const ModelItemSignatureInstance*
 void SimulatorSignatureRegistry::unloadAll()
 {
   for (auto Sign : m_SimSignatures[openfluid::ware::WareType::SIMULATOR])
+  {
     delete Sign.second;
+  }
+  
   m_SimSignatures[openfluid::ware::WareType::SIMULATOR].clear();
 
   openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();

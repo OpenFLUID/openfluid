@@ -152,13 +152,13 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-	openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
-	                                            openfluid::core::DateTime(2012,1,15,14,46,39),60);
-	openfluid::machine::ExecutionTimePoint TP(17);
+  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
+                                              openfluid::core::DateTime(2012,1,15,14,46,39),60);
+  openfluid::machine::ExecutionTimePoint TP(17);
 
-	BOOST_REQUIRE_EQUAL(TP.getTimeIndex(),17);
+  BOOST_REQUIRE_EQUAL(TP.getTimeIndex(),17);
 
-	openfluid::machine::ModelItemInstance* MII;
+  openfluid::machine::ModelItemInstance* MII;
 
   MII = new openfluid::machine::ModelItemInstance();
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimA()));
@@ -185,13 +185,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   TP.appendItem(MII);
 
 
-	BOOST_REQUIRE(TP.hasItemsToProcess());
+  BOOST_REQUIRE(TP.hasItemsToProcess());
 
-	TP.sortByOriginalPosition();
+  TP.sortByOriginalPosition();
 
-	while (TP.hasItemsToProcess()) TP.processNextItem();
+  while (TP.hasItemsToProcess()) TP.processNextItem();
 
   BOOST_REQUIRE(!TP.hasItemsToProcess());
-
 }
 

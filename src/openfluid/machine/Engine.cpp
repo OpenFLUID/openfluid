@@ -715,7 +715,7 @@ void Engine::run()
 
   mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::RUNSTEP);
 
-
+  // run the simulation while there is at least one execution time point to process
   while (m_ModelInstance.hasTimePointToProcess())
   {
 
@@ -723,11 +723,11 @@ void Engine::run()
 
     try
     {
+      // process the execution time point
       m_ModelInstance.processNextTimePoint();
+      
+      // call the monitoring once the execution time point is processed
       m_MonitoringInstance.call_onStepCompleted(mp_SimStatus->getCurrentTimeIndex());
-
-      // TODO to remove? check simulation vars production at each time step
-      //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
     }
     catch (openfluid::base::FrameworkException& E)
     {
@@ -768,9 +768,6 @@ void Engine::run()
   }
 
   mp_SimLogger->resetCurrentWarningFlag();
-
-  // check simulation vars production after finalize
-  //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
 
   mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::POST);
 }

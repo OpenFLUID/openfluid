@@ -48,14 +48,30 @@
 namespace openfluid { namespace machine {
 
 
+/**
+  Manages I/O of ghost simulators signatures
+*/
 class OPENFLUID_API GhostSimulatorFileIO
 {
   public:
 
     GhostSimulatorFileIO() = delete;
 
+    /**
+      Saves given signature of a ghost simulator to file
+      @param[in] Signature The signature to save to file
+      @param[in] DirPath The directory path where the signature is saved as a file. 
+                         The name of the created file is automatically created using the simulator ID.
+      @return true if the signature was successfully saved, false otherwise
+    */
     static bool saveToFile(const openfluid::ware::SimulatorSignature& Signature, const std::string& DirPath);
 
+    /**
+      Loads a signature of a ghost simulator from a file
+      @param[in] FilePath The path to the file to load
+      @param[out] Signature The signature loaded from file
+      @return true if the signature was successfully loaded, false otherwise
+    */
     static bool loadFromFile(const std::string& FilePath, openfluid::ware::SimulatorSignature& Signature);
 };
 

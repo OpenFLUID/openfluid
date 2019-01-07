@@ -80,24 +80,59 @@ class OPENFLUID_API Factory
 
     Factory() = delete;
 
+    /**
+      Builds a spatial graph from a domain descriptor
+      @param[in] Descriptor the spatial domain descriptor
+      @param[out] SGraph the instanciated spatial graph
+    */
     static void buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
                                           openfluid::core::SpatialGraph& SGraph);
 
+    /**
+      Builds a datastore from a datastore descriptor
+      @param[in] Descriptor the datastore descriptor
+      @param[out] Store the instanciated datastore
+    */
     static void buildDatastoreFromDescriptor(const openfluid::fluidx::DatastoreDescriptor& Descriptor,
                                              openfluid::core::Datastore& Store);
 
-
+    /**
+      Builds a coupled model instance from a model descriptor
+      @param[in] ModelDesc the model descriptor
+      @param[out] MInstance the instanciated coupled model
+    */
     static void buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
                                                  ModelInstance& MInstance);
 
+    /**
+      Builds a monitoring instance from a monitoring descriptor
+      @param[in] MonDesc the monitoring descriptor
+      @param[out] MonInstance the instanciated monitoring
+    */
     static void buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::MonitoringDescriptor& MonDesc,
                                                       MonitoringInstance& MonInstance);
 
-    static void fillRunContextFromDescriptor(const openfluid::fluidx::RunConfigurationDescriptor& RunDescr);
+    /**
+      Fills the current run context from a run configuration descriptor
+      @param[in] RunDesc the run configuration descriptor
+    */
+    static void fillRunContextFromDescriptor(const openfluid::fluidx::RunConfigurationDescriptor& RunDesc);
 
+    /**
+      Builds a simulation blob from descriptors
+      @param[in] FluidXDesc the descriptors
+      @param[out] SimBlob the instanciated simulation blob
+    */
     static void buildSimulationBlobFromDescriptors(const openfluid::fluidx::FluidXDescriptor& FluidXDesc,
                                                    SimulationBlob& SimBlob);
 
+    /**
+      Builds a generator ID
+      @param[in] VarName The name of the variable produced by the generator
+      @param[in] IsVector true if the variable is a vector, false if it is a scalar
+      @param[in] ClassName The name of the spatial unit class associated where the variable is produced
+      @return the generated ID
+    */
     static std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
                                         bool IsVector,
                                         const openfluid::core::UnitsClass_t& ClassName)
