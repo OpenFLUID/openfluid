@@ -2,6 +2,7 @@
 
 * Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 * Aline Libres <aline.libres@gmail.com>
+* Armel Thoni <armel.thoni@inra.fr>
 
 
 ## Contributors

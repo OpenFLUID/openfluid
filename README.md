@@ -10,11 +10,9 @@ OpenFLUID
 **OpenFLUID is a software environnement for modelling and simulation
 of complex landscape systems**
 
-Further informations are available on the OpenFLUID web site and community site:  
-- http://www.openfluid-project.org/
-- http://www.openfluid-project.org/community/
+Further informations are available on the [OpenFLUID](https://www.openfluid-project.org/) site at [www.openfluid-project.org](https://www.openfluid-project.org/).
 
-See also LICENSE and AUTHORS files included in the sources
+See also the LICENSE and AUTHORS files included in the sources.
 
 
 ## OpenFLUID sources 
@@ -30,11 +28,11 @@ The OpenFLUID source tree is organized as follow
 
 ### Requirements
 
-OpenFLUID is written in C++11. It relies on open-source libraries required to build or use OpenFLUID.
+OpenFLUID is written in C++14. It relies on open-source libraries required to build or use OpenFLUID.
 
 For the OpenFLUID framework libraries:
   - C++ STL
-  - Boost (headers only)
+  - Boost (headers only, testing libs are required in debug mode)
   - Qt5 : Core, GUI (optional), Network, XML
   - RapidJSON (automatically downloaded if locally missing)
   - GDAL/OGR
@@ -59,36 +57,18 @@ For openfluid-devstudio GUI application:
 For unit testing, the Boost unit testing framework is also required 
 (unit_test_framework)
 
-For building Latex documents, required tools and packages are:
+For building Latex documents (optional), required tools and packages are:
   - pdflatex
   - latex2html
   - packages: a4wide, babel, ltxtable, pgf/tikz, tabularx, verbatim
   - fonts: cmbright
 
-OpenFLUID uses CMake version 2.8.12 or higher for build configuration, 
-and has been tested with the GCC 4.8+ compiling system
+OpenFLUID uses CMake version 3.1 or higher for build configuration and GCC 5.3 or higher for compilation.
 
 
 ### Building from source
 
-Commands to be executed from source tree for building and packaging on linux (Ubuntu, Debian, Fedora):
-
-    mkdir _build
-    cd _build
-    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
-    make
-    cpack
+Detailed instructions for building OpenFLUID from sources are available on the [OpenFLUID community site](https://community.openfluid-project.org/)
 
 
-The following options are available to control the configure and build process
-Option | Default Value | Description
--------| ------------- | -----------
--DOFBUILD_ENABLE_SANITIZER | OFF | Enable the compiler sanitizer to track memory address errors
--DOFBUILD_ENABLE_TESTING | ON (Debug), OFF (Release) | Enable the build of tests
--DOFBUILD_ENABLE_HEAVYTESTING | OFF | Enable the build of tests
-
-    
-Detailed informations about building OpenFLUID from sources for Linux, Windows and macOS systems 
-are available on the community site: 
-http://www.openfluid-project.org/community/index.php/How_to_build_OpenFLUID
 
