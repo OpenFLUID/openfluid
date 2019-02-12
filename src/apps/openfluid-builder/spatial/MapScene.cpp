@@ -66,7 +66,7 @@ MapScene::MapScene(const openfluid::fluidx::SpatialDomainDescriptor& Domain,
 
 void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
                         int ZLayer,
-                        int /*LineWidth*/,
+                        int LineWidth,
                         QColor LineColor,
                         QColor FillColor)
 {
@@ -91,14 +91,38 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
     if (VectorData->data() != nullptr && VectorData->containsField("OFLD_ID",0))
     {
       OGRLayer* Layer = VectorData->layer();
-
-      // TODO fix for correct line width
-      QPen FeaturePen(QBrush(LineColor),0);
+      float ScaledLineWidth = LineWidth;
+      if (LineWidth > 1)
+      {
+        try {
+          if (m_Scale <= 0)
+          {
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                    "Scene scale negative or null. Can't apply corresponding scaling.");
+          }
+          else
+          {
+            ScaledLineWidth /= m_Scale;
+          }
+        }
+        catch (std::exception & E)
+        {
+          std::cerr << "std ERROR: " << E.what() << std::endl;
+          ScaledLineWidth = 0;
+        }
+      }
+      else
+      {
+        ScaledLineWidth = 0;
+      }
+      
+      QPen FeaturePen(QBrush(LineColor),ScaledLineWidth);
+      
       QBrush FeatureBrush(FillColor);
 
       std::string StdClassName = DSItemDesc->getUnitsClass();
 
-      OGRFeature *Feature;
+      OGRFeature* Feature;
       Layer->ResetReading();
 
       while ((Feature = Layer->GetNextFeature()) != nullptr )
@@ -167,6 +191,16 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
       }
     }
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MapScene::setScale(const float Scale)
+{
+  m_Scale = Scale;
 }
 
 

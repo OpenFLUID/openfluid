@@ -120,6 +120,8 @@ class SpatialDomainWidget : public WorkspaceWidget
     openfluid::fluidx::SpatialDomainDescriptor& m_Domain;
 
     openfluid::fluidx::DatastoreDescriptor& m_Datastore;
+    
+    bool m_IsCustomLineWidth = false;
 
     QString m_ActiveClass;
 
@@ -155,6 +157,8 @@ class SpatialDomainWidget : public WorkspaceWidget
 
 
   public slots:
+  
+    void refreshMapScale();
 
     void refresh();
 

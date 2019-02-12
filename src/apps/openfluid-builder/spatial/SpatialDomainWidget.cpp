@@ -176,6 +176,8 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Flu
   // all map layers are set visible at startup only
   setAllMapLayersVisible();
 
+  connect(ui->GlobalMapView, SIGNAL(scaling()), this, SLOT(refreshMapScale()));
+
 }
 
 
@@ -798,10 +800,55 @@ void SpatialDomainWidget::refreshClassData()
 // =====================================================================
 
 
+void SpatialDomainWidget::refreshMapScale()
+{
+   //transform().m11() is the scaling value of the QGraphicsView to display the QGraphicsScene
+   float ViewScale = ui->GlobalMapView->transform().m11();
+   //here we check that there is a scaling (scale != 1) before redrawing the map
+  if (ViewScale != 1 && m_IsCustomLineWidth)
+  {
+    
+      mp_MapScene->setScale(ViewScale);
+      // signal disconnection since map clearing will reset the selection on map
+      disconnect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
+      mp_MapScene->clear();
+
+      QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
+
+      for (int i=Layout->count()-2; i>=0;i--)
+      {
+        UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
+
+        if (ClassW->layerSource() != nullptr && ClassW->isLayerVisible())
+        {
+          mp_MapScene->addLayer(ClassW->layerSource(),
+                                -i,
+                                ClassW->getLineWidth(),
+                                ClassW->getLineColor(),
+                                ClassW->getFillColor());
+        }
+      }
+      connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
+      mp_MapScene->setActiveLayer(m_ActiveClass);
+      
+      // refresh the selection on map
+      updateMapFromAttributesTableChange();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SpatialDomainWidget::refreshMap()
 {
+  m_IsCustomLineWidth = false;
+  
+  disconnect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
   mp_MapScene->clear();
 
+  // First map draw with basic border for scaling
   QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
 
   for (int i=Layout->count()-2; i>=0;i--)
@@ -815,13 +862,26 @@ void SpatialDomainWidget::refreshMap()
     {
       mp_MapScene->addLayer(ClassW->layerSource(),
                             -i,
-                            ClassW->getLineWidth(),
+                            0,
                             ClassW->getLineColor(),
                             ClassW->getFillColor());
     }
+    if (ClassW->getLineWidth() > 1)
+    {
+      m_IsCustomLineWidth = true;
+    }
   }
-
-  mp_MapScene->setActiveLayer(m_ActiveClass);
+  connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
+  if (m_IsCustomLineWidth)
+  {
+    // If custom line width, need map items redraw with custom width
+    refreshMapScale();
+  }
+  else
+  {
+    mp_MapScene->setActiveLayer(m_ActiveClass);
+    updateMapFromAttributesTableChange();
+  }
 }
 
 

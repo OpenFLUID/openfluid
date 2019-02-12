@@ -65,6 +65,8 @@ class MapScene : public QGraphicsScene
     QList<MapItemGraphics*>* m_ActiveLayer;
 
     void updateActiveLayer();
+    
+    float m_Scale = -1;
 
 
   public slots:
@@ -84,6 +86,8 @@ class MapScene : public QGraphicsScene
                      QColor FillColor);
 
     void setActiveLayer(const QString& UnitClass);
+    
+    void setScale(const float Scale);
 
     void clear();
 };

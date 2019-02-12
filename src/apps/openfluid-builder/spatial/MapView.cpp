@@ -62,6 +62,7 @@ void MapView::wheelEvent(QWheelEvent* Event)
     // TODO zoom center on mouse cursor
     if (Event->delta() < 0) scale(0.9,0.9);
     else scale(1.1,1.1);
+    emit scaling();
   }
   else
     QGraphicsView::wheelEvent(Event);
@@ -101,4 +102,5 @@ void MapView::enableAutomaticView(bool Enabled)
 void MapView::fitViewToItems()
 {
   fitInView(scene()->itemsBoundingRect(),Qt::KeepAspectRatio);
+  emit scaling();
 }

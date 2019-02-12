@@ -64,6 +64,8 @@ class MapView : public QGraphicsView
 
     void automaticViewEnabled(bool);
 
+    void scaling();
+
 
   public slots:
 

@@ -102,7 +102,7 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
   }
   else
   {
-    m_LineWidth = 1;
+    m_LineWidth = 0;
 
     openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
                                                                    m_ClassName+".linewidth",m_LineWidth);
@@ -146,10 +146,6 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
   ui->LineColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_LineColor.name()));
   ui->FillColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_FillColor.name()));
   ui->LineWidthSpinBox->setValue(m_LineWidth);
-
-  // TODO re-enable line width settings
-  ui->LineWidthLabel->setVisible(false);
-  ui->LineWidthSpinBox->setVisible(false);
 
   connect(ui->VisibleCheckBox,SIGNAL(toggled(bool)),this,SLOT(changeVisible()));
   connect(ui->LineColorButton,SIGNAL(clicked()),this,SLOT(changeLineColor()));
@@ -337,7 +333,7 @@ void UnitsClassWidget::changeLineWidth(int Width)
   openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
                                                                         m_ClassName+".linewidth",m_LineWidth);
 
-  //emit styleChanged(m_ClassName);
+  emit styleChanged(m_ClassName);
 }
 
 
