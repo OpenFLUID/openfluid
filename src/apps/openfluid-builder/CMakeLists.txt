@@ -319,8 +319,10 @@ SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${O
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES OUTPUT_NAME ${OPENFLUID_BUILDER_APP})
 
 IF(APPLE)
-  SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES MACOSX_BUNDLE_ICON_FILE
-                                                     openfluid_icon_builder.icns)
+  SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES MACOSX_BUNDLE_ICON_FILE openfluid_icon_builder.icns)
+
+  # Workaround to disable the macOS dark mode in OpenFLUID apps (currently not handled correctly by Qt)
+  SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/packaging/macosx/Info.plist.in")
 ENDIF()
 
 TARGET_LINK_LIBRARIES(openfluid-builder

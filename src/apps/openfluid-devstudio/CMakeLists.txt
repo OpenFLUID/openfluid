@@ -79,8 +79,10 @@ SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES RUNTIME_OUTPUT_DIRECTORY "$
 SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES OUTPUT_NAME ${OPENFLUID_DEVSTUDIO_APP})
 
 IF(APPLE)
-  SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES MACOSX_BUNDLE_ICON_FILE
-                                                       openfluid_icon_devstudio.icns)
+  SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES MACOSX_BUNDLE_ICON_FILE openfluid_icon_devstudio.icns)
+ 
+  # Workaround to disable the macOS dark mode in OpenFLUID apps (currently not handled correctly by Qt)
+  SET_TARGET_PROPERTIES(openfluid-devstudio PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/packaging/macosx/Info.plist.in")
 ENDIF()
 
 
