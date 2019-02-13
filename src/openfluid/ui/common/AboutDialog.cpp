@@ -45,6 +45,7 @@
 #include <openfluid/config.hpp>
 #include <openfluid/buildinfo.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
 
@@ -63,8 +64,8 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
 
   setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 
-  ui->IconLabel->setPixmap(QPixmap(":/ui/common/images/openfluid_icon_about.png"));
-  ui->TitleLabel->setPixmap(QPixmap(":/ui/common/images/openfluid_title.png"));
+  ui->IconLabel->setPixmap(openfluid::ui::common::getImage("openfluid_icon_about","ui/common"));
+  ui->TitleLabel->setPixmap(openfluid::ui::common::getImage("openfluid_title","ui/common"));
 
   ui->VersionLabel->setText(QString::fromStdString(openfluid::config::VERSION_FULL));
 

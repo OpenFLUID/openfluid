@@ -59,7 +59,7 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
   ui->setupUi(this);
 
   ui->ImageLabel->setText("");
-  ui->ImageLabel->setPixmap(QPixmap(":/builder/images/openfluid_official.png"));
+  ui->ImageLabel->setPixmap(openfluid::ui::common::getImage("openfluid_official","builder"));
 
   ui->VersionLabel->setText(std::string("OpenFLUID v"+openfluid::config::VERSION_FULL).c_str());
 
@@ -119,7 +119,7 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
   mp_RecentProjectsLabel->setStyleSheet("font : bold;");
   mp_RecentsLayout->addWidget(mp_RecentProjectsLabel);
 
-  QPixmap DotPix(":/builder/images/dot.png");
+  QPixmap DotPix(openfluid::ui::common::getImage("dot","builder"));
 
   std::vector<QAction*> RecentActions = mp_Actions->recentProjectActions();
 

@@ -54,8 +54,8 @@ TimePeriodWidget::TimePeriodWidget(QWidget* Parent):
 {
   ui->setupUi(this);
 
-  ui->UpCornerLabel->setPixmap(QPixmap(":/ui/common/images/corner_upleft.png"));
-  ui->DownCornerLabel->setPixmap(QPixmap(":/ui/common/images/corner_downleft.png"));
+  ui->UpCornerLabel->setPixmap(openfluid::ui::common::getImage("corner_upleft","ui/common"));
+  ui->DownCornerLabel->setPixmap(openfluid::ui::common::getImage("corner_downleft","ui/common"));
 
   ui->LinkButton->setIcon(m_UnlinkedIcon);
 

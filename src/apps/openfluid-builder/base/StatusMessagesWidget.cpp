@@ -37,6 +37,8 @@
 */
 
 
+#include <openfluid/ui/common/UIHelpers.hpp>
+
 #include "ui_StatusMessagesWidget.h"
 #include "StatusMessagesWidget.hpp"
 
@@ -99,9 +101,15 @@ void StatusMessagesWidget::addMessage(const QString& Msg)
 void StatusMessagesWidget::setStatusLevel(ProjectStatusLevel Level)
 {
   if (Level == PRJ_WARNING)
-    ui->StatusIconLabel->setPixmap(QPixmap(":/builder/images/check-warn.png"));
+  {
+    ui->StatusIconLabel->setPixmap(openfluid::ui::common::getImage("check-warn","builder"));
+  }
   else if (Level == PRJ_ERROR)
-    ui->StatusIconLabel->setPixmap(QPixmap(":/builder/images/check-error.png"));
+  {
+    ui->StatusIconLabel->setPixmap(openfluid::ui::common::getImage("check-error","builder"));
+  }
   else if (Level == PRJ_DISABLED)
-      ui->StatusIconLabel->setPixmap(QPixmap(":/builder/images/check-disabled.png"));
+  {
+      ui->StatusIconLabel->setPixmap(openfluid::ui::common::getImage("check-disabled","builder"));
+  }
 }

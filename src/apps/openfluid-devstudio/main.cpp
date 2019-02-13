@@ -47,6 +47,7 @@
 
 #include <openfluid/base/Init.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/ui/config.hpp>
@@ -64,7 +65,9 @@ int main(int argc, char** argv)
 
     do
     {
-      openfluid::ui::common::OpenFLUIDSplashScreen Splash(QPixmap(":/devstudio/images/openfluid_splash_devstudio.png"));
+      openfluid::ui::common::OpenFLUIDSplashScreen Splash(
+        openfluid::ui::common::getImage("openfluid_splash_devstudio","devstudio")  
+      );
       Splash.show();
 
       Splash.setMessage("i18n");

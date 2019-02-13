@@ -3,7 +3,9 @@
   <qresource prefix="/builder">
 
     <file>images/openfluid_official.png</file>
+    <file>images/openfluid_official@2x.png</file>
     <file>images/openfluid_splash_builder.png</file>
+    <file>images/openfluid_splash_builder@2x.png</file>
     <file>images/dot.png</file>
     <file>images/check-ok.png</file>
     <file>images/check-warn.png</file>

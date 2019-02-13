@@ -3,6 +3,7 @@
   <qresource prefix="/devstudio">
   
     <file>images/openfluid_splash_devstudio.png</file>
+    <file>images/openfluid_splash_devstudio@2x.png</file>
   
     <file>icons/openfluid_icon_devstudio.png</file>
   

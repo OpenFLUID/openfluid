@@ -44,6 +44,8 @@
 #include <QRegExp>
 #include <QLineEdit>
 #include <QIcon>
+#include <QApplication>
+#include <QFile>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -74,15 +76,42 @@ inline void fixLineEdit(QLineEdit* LineEdit,QRegExp SearchRegExp = QRegExp("[^\\
 inline QIcon getIcon(const QString& IconName,const QString& ResourcePath,bool IsLight = false)
 {
   QString IconSuffix = "dark";
+
   if (IsLight)
+  {
     IconSuffix = "light";
+  }
 
   QIcon TmpIcon(QString(":%1/icons/%2_%3.png").arg(ResourcePath).arg(IconName).arg(IconSuffix));
 
   if (IsLight)
+  {
     TmpIcon.addPixmap(QPixmap(QString(":%1/icons/%2_grayed.png").arg(ResourcePath).arg(IconName)),QIcon::Disabled);
+  }
 
   return TmpIcon;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline QPixmap getImage(const QString& ImageName,const QString& ResourcePath,bool AutoHiDPI = true)
+{
+  QString TmpPath = QString(":%1/images/%2.png").arg(ResourcePath).arg(ImageName);
+
+  if (AutoHiDPI && qApp->devicePixelRatio() >= 2.0)
+  {
+    QString TmpHiDPIPath = QString(":%1/images/%2@2x.png").arg(ResourcePath).arg(ImageName);
+
+    if (QFile::exists(TmpHiDPIPath))
+    {
+      TmpPath = TmpHiDPIPath;
+    }
+  }
+
+  return QPixmap(TmpPath);
 }
 
 

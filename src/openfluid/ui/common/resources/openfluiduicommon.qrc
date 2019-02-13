@@ -9,7 +9,9 @@
 
     <!-- images -->
     <file>images/openfluid_title.png</file>
+    <file>images/openfluid_title@2x.png</file>
     <file>images/openfluid_icon_about.png</file>
+    <file>images/openfluid_icon_about@2x.png</file>
     <file>images/corner_upleft.png</file>
     <file>images/corner_downleft.png</file>
     
