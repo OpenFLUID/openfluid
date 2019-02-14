@@ -43,6 +43,8 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_UnitsClassWidget.h"
@@ -351,6 +353,31 @@ void UnitsClassWidget::changeVisible()
 // =====================================================================
 
 
+bool UnitsClassWidget::isLayer2D(openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc)
+{
+  if (DSItemDesc->getType() == openfluid::core::UnstructuredValue::GeoVectorValue)
+  {
+    openfluid::core::DatastoreItem* DSItem = new openfluid::core::DatastoreItem(DSItemDesc->getID(),
+                                                  DSItemDesc->getPrefixPath(),
+                                                  DSItemDesc->getRelativePath(),
+                                                  DSItemDesc->getType(),
+                                                  DSItemDesc->getUnitsClass());
+
+    openfluid::core::GeoVectorValue* VectorData = dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
+
+    if (VectorData->data() != nullptr && VectorData->containsField("OFLD_ID",0))
+    {
+      return OGR_GT_IsSurface(VectorData->layer()->GetGeomType());
+    }
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList)
 {
   mp_LayerSource = nullptr;
@@ -359,11 +386,19 @@ void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::Da
   // due to changeVisible slot
   disconnect(ui->VisibleCheckBox,SIGNAL(toggled(bool)),this,SLOT(changeVisible()));
 
+  ui->FillColorLabel->setVisible(false);
+  ui->FillColorButton->setVisible(false);
+
   if (!DSList.empty())
   {
     mp_LayerSource = DSList.front();
     ui->LayerSourceLabel->setText(QDir::toNativeSeparators(QString::fromStdString(mp_LayerSource->getRelativePath())));
     ui->StyleParamsWidget->setEnabled(true);
+    if (isLayer2D(mp_LayerSource))
+    {
+      ui->FillColorLabel->setVisible(true);
+      ui->FillColorButton->setVisible(true);
+    }
   }
   else
   {

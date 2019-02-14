@@ -94,6 +94,8 @@ class UnitsClassWidget : public QFrame
      QColor m_FillColor;
 
      openfluid::fluidx::DatastoreItemDescriptor* mp_LayerSource;
+     
+     bool isLayer2D(openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc);
 
      void mousePressEvent(QMouseEvent* Event);
 
