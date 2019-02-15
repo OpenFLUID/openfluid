@@ -73,7 +73,18 @@ inline void fixLineEdit(QLineEdit* LineEdit,QRegExp SearchRegExp = QRegExp("[^\\
 // =====================================================================
 
 
-inline QIcon getIcon(const QString& IconName,const QString& ResourcePath,bool IsLight = false)
+inline bool isHiDPIDevice()
+{
+  return (qApp->devicePixelRatio() >= 2.0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline QIcon getIcon(const QString& IconName,const QString& ResourcePath,
+                     bool IsLight = false,bool AutoHiDPI = true)
 {
   QString IconSuffix = "dark";
 
@@ -82,11 +93,34 @@ inline QIcon getIcon(const QString& IconName,const QString& ResourcePath,bool Is
     IconSuffix = "light";
   }
 
-  QIcon TmpIcon(QString(":%1/icons/%2_%3.png").arg(ResourcePath).arg(IconName).arg(IconSuffix));
+  QString TmpPath = QString(":%1/icons/%2_%3.png").arg(ResourcePath).arg(IconName).arg(IconSuffix);
+
+  if (AutoHiDPI && isHiDPIDevice())
+  {
+    QString TmpHiDPIPath = QString(":%1/icons/%2_%3@2x.png").arg(ResourcePath).arg(IconName).arg(IconSuffix);
+
+    if (QFile::exists(TmpHiDPIPath))
+    {
+      TmpPath = TmpHiDPIPath;
+    }
+  }
+
+  QIcon TmpIcon(TmpPath);
 
   if (IsLight)
   {
-    TmpIcon.addPixmap(QPixmap(QString(":%1/icons/%2_grayed.png").arg(ResourcePath).arg(IconName)),QIcon::Disabled);
+    QString TmpLightPath = QString(":%1/icons/%2_grayed.png").arg(ResourcePath).arg(IconName);
+
+    if (AutoHiDPI && isHiDPIDevice())
+    {
+      QString TmpLightHiDPIPath = QString(":%1/icons/%2_grayed@2x.png").arg(ResourcePath).arg(IconName);
+
+      if (QFile::exists(TmpLightHiDPIPath))
+      {
+        TmpLightPath = TmpLightHiDPIPath;
+      }
+    }
+    TmpIcon.addPixmap(QPixmap(TmpLightPath),QIcon::Disabled);
   }
 
   return TmpIcon;
@@ -101,7 +135,7 @@ inline QPixmap getImage(const QString& ImageName,const QString& ResourcePath,boo
 {
   QString TmpPath = QString(":%1/images/%2.png").arg(ResourcePath).arg(ImageName);
 
-  if (AutoHiDPI && qApp->devicePixelRatio() >= 2.0)
+  if (AutoHiDPI && isHiDPIDevice())
   {
     QString TmpHiDPIPath = QString(":%1/images/%2@2x.png").arg(ResourcePath).arg(ImageName);
 
