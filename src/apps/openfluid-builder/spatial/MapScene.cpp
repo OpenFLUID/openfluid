@@ -98,14 +98,15 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
           if (m_Scale <= 0)
           {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                    "Scene scale negative or null. Can't apply corresponding scaling.");
+                                                      "Scene scale negative or null. Can't apply corresponding scaling."
+                                                      );
           }
           else
           {
             ScaledLineWidth /= m_Scale;
           }
         }
-        catch (std::exception & E)
+        catch (const std::exception & E)
         {
           std::cerr << "std ERROR: " << E.what() << std::endl;
           ScaledLineWidth = 0;

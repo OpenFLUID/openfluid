@@ -60,8 +60,14 @@ void MapView::wheelEvent(QWheelEvent* Event)
     emit automaticViewEnabled(false);
 
     // TODO zoom center on mouse cursor
-    if (Event->delta() < 0) scale(0.9,0.9);
-    else scale(1.1,1.1);
+    if (Event->delta() < 0)
+    {
+      scale(0.9,0.9);
+    }
+    else
+    {
+      scale(1.1,1.1);
+    }
     emit scaling();
   }
   else

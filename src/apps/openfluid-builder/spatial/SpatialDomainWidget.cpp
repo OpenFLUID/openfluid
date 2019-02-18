@@ -802,37 +802,36 @@ void SpatialDomainWidget::refreshClassData()
 
 void SpatialDomainWidget::refreshMapScale()
 {
-   //transform().m11() is the scaling value of the QGraphicsView to display the QGraphicsScene
-   float ViewScale = ui->GlobalMapView->transform().m11();
-   //here we check that there is a scaling (scale != 1) before redrawing the map
+  //transform().m11() is the scaling value of the QGraphicsView to display the QGraphicsScene
+  float ViewScale = ui->GlobalMapView->transform().m11();
+  //here we check that there is a scaling (scale != 1) before redrawing the map
   if (ViewScale != 1 && m_IsCustomLineWidth)
   {
-    
-      mp_MapScene->setScale(ViewScale);
-      // signal disconnection since map clearing will reset the selection on map
-      disconnect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
-      mp_MapScene->clear();
+    mp_MapScene->setScale(ViewScale);
+    // signal disconnection since map clearing will reset the selection on map
+    disconnect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
+    mp_MapScene->clear();
 
-      QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
+    QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
 
-      for (int i=Layout->count()-2; i>=0;i--)
+    for (int i=Layout->count()-2; i>=0;i--)
+    {
+      UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
+
+      if (ClassW->layerSource() != nullptr && ClassW->isLayerVisible())
       {
-        UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
-
-        if (ClassW->layerSource() != nullptr && ClassW->isLayerVisible())
-        {
-          mp_MapScene->addLayer(ClassW->layerSource(),
-                                -i,
-                                ClassW->getLineWidth(),
-                                ClassW->getLineColor(),
-                                ClassW->getFillColor());
-        }
+        mp_MapScene->addLayer(ClassW->layerSource(),
+                              -i,
+                              ClassW->getLineWidth(),
+                              ClassW->getLineColor(),
+                              ClassW->getFillColor());
       }
-      connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
-      mp_MapScene->setActiveLayer(m_ActiveClass);
+    }
+    connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
+    mp_MapScene->setActiveLayer(m_ActiveClass);
       
-      // refresh the selection on map
-      updateMapFromAttributesTableChange();
+    // refresh the selection on map
+    updateMapFromAttributesTableChange();
   }
 }
 
@@ -856,7 +855,7 @@ void SpatialDomainWidget::refreshMap()
     UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
 
     ClassW->linkToDatastoreItem(m_Datastore.getItems(ClassW->getClassName().toStdString(),
-                                  openfluid::core::UnstructuredValue::GeoVectorValue));
+                                openfluid::core::UnstructuredValue::GeoVectorValue));
 
     if (ClassW->layerSource() != nullptr && ClassW->isLayerVisible())
     {

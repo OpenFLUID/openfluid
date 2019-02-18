@@ -98,16 +98,16 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
       openfluid::base::RunContextManager::instance()->getProjectConfigValue("builder.spatial.unitsclasses",
                                                                             m_ClassName+".linewidth");
 
-  if (TmpLineWidth.type() == QVariant::String)
+  if (TmpLineWidth.type() == QVariant::String || TmpLineWidth.type() == QVariant::Int)
   {
-    m_LineWidth = TmpLineWidth.toString().toInt();
+    m_LineWidth = TmpLineWidth.toInt();
   }
   else
   {
     m_LineWidth = 0;
-
     openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
-                                                                   m_ClassName+".linewidth",m_LineWidth);
+                                                                          m_ClassName+".linewidth",
+                                                                          QVariant(m_LineWidth));
   }
 
 
@@ -333,7 +333,7 @@ void UnitsClassWidget::changeLineWidth(int Width)
   m_LineWidth = Width;
 
   openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
-                                                                        m_ClassName+".linewidth",m_LineWidth);
+                                                                        m_ClassName+".linewidth",QVariant(m_LineWidth));
 
   emit styleChanged(m_ClassName);
 }
@@ -358,10 +358,10 @@ bool UnitsClassWidget::isLayer2D(openfluid::fluidx::DatastoreItemDescriptor* DSI
   if (DSItemDesc->getType() == openfluid::core::UnstructuredValue::GeoVectorValue)
   {
     openfluid::core::DatastoreItem* DSItem = new openfluid::core::DatastoreItem(DSItemDesc->getID(),
-                                                  DSItemDesc->getPrefixPath(),
-                                                  DSItemDesc->getRelativePath(),
-                                                  DSItemDesc->getType(),
-                                                  DSItemDesc->getUnitsClass());
+                                                                                DSItemDesc->getPrefixPath(),
+                                                                                DSItemDesc->getRelativePath(),
+                                                                                DSItemDesc->getType(),
+                                                                                DSItemDesc->getUnitsClass());
 
     openfluid::core::GeoVectorValue* VectorData = dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
 
