@@ -46,6 +46,7 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/utils/GDALCompatibility.hpp>
 
 #include "ui_UnitsClassWidget.h"
 #include "UnitsClassWidget.hpp"
@@ -367,7 +368,7 @@ bool UnitsClassWidget::isLayer2D(openfluid::fluidx::DatastoreItemDescriptor* DSI
 
     if (VectorData->data() != nullptr && VectorData->containsField("OFLD_ID",0))
     {
-      return OGR_GT_IsSurface(VectorData->layer()->GetGeomType());
+      return GDALIsSurface_COMPAT(VectorData);
     }
   }
   return false;

@@ -209,4 +209,16 @@
 #endif
 
 
+/**
+  Macro for compatibility of surface object detection
+  @param _M_VectorData the vector data object
+  @return a boolean about 2D state of objects of the layer
+*/
+#if (GDAL_VERSION_MAJOR >= 2)
+  #define GDALIsSurface_COMPAT(_M_VectorData) OGR_GT_IsSurface(_M_VectorData->layer()->GetGeomType())
+#else
+  #define GDALIsSurface_COMPAT(_M_VectorData) (_M_VectorData->isPolygonType() || _M_VectorData->isMultiPolygonType())
+#endif
+
+
 #endif /* __OPENFLUID_UTILS_GDALCOMPATIBILITY_HPP__ */
