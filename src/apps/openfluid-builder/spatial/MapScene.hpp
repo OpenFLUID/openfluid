@@ -87,6 +87,8 @@ class MapScene : public QGraphicsScene
 
     void setActiveLayer(const QString& UnitClass);
     
+    const QList<MapItemGraphics*>* activeLayer();
+    
     void setScale(const float Scale);
 
     void clear();

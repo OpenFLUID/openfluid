@@ -199,6 +199,16 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
 // =====================================================================
 
 
+const QList<MapItemGraphics*>* MapScene::activeLayer()
+{
+  return m_ActiveLayer;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MapScene::setScale(const float Scale)
 {
   m_Scale = Scale;

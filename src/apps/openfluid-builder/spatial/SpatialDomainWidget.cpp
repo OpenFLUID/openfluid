@@ -1500,19 +1500,21 @@ void SpatialDomainWidget::updateSelectionFromMap()
   QList<QGraphicsItem *> MapSelectedItems = mp_MapScene->selectedItems();
   bool IsDiscrepancy = true;
   std::set<openfluid::core::UnitID_t> MapSelectedIDs;
+  
   for (QGraphicsItem* Item : MapSelectedItems)
   {
     MapSelectedIDs.insert(dynamic_cast<MapItemGraphics*>(Item)->getUnitID());
   }
 
-  if (MapSelectedIDs == getAttributeSelectedUnitSet()) {
-      IsDiscrepancy = false;
+  if (MapSelectedIDs == getAttributeSelectedUnitSet())
+  {
+    IsDiscrepancy = false;
   }
 
   if (!MapSelectedItems.isEmpty() && IsDiscrepancy)
   {
     disconnect(ui->AttributesTableWidget,SIGNAL(itemSelectionChanged()),this,
-        SLOT(updateMapFromAttributesTableChange()));
+               SLOT(updateMapFromAttributesTableChange()));
     ui->AttributesTableWidget->clearSelection();
     for (QGraphicsItem* Item : MapSelectedItems)
     {
@@ -1521,12 +1523,20 @@ void SpatialDomainWidget::updateSelectionFromMap()
       {
         if (getUnitIDFromAttributesTableRow(i) == IDMap)
         {
-            ui->AttributesTableWidget->selectRow(i);
+          ui->AttributesTableWidget->selectRow(i);
         }
       }
     }
+    
+    if (MapSelectedIDs != getAttributeSelectedUnitSet())
+    {
+      // case when shift selection creates different selection between map and table
+      updateMapFromAttributesTableChange();
+    }
+    
     connect(ui->AttributesTableWidget,SIGNAL(itemSelectionChanged()),this,
-          SLOT(updateMapFromAttributesTableChange()));
+            SLOT(updateMapFromAttributesTableChange()));
+          
   }
 }
 
@@ -1570,22 +1580,28 @@ void SpatialDomainWidget::updateIDsListSelectionFromAttributesTableChange()
 
 void SpatialDomainWidget::updateMapFromAttributesTableChange()
 {
-  disconnect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
-  mp_MapScene->clearSelection();
-
-  for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
+  const QList<MapItemGraphics*>* ActiveLayer = mp_MapScene->activeLayer();
+  if (ActiveLayer != nullptr)
   {
-    // Update map based on selection change
-    for(QGraphicsItem* MapItem : mp_MapScene->items())
+    disconnect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
+  
+    mp_MapScene->clearSelection();
+
+    for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
     {
-      if (dynamic_cast<MapItemGraphics*>(MapItem)->getUnitID() ==
-          getUnitIDFromAttributesTableRow(Item->row()))
+      unsigned int AttID = getUnitIDFromAttributesTableRow(Item->row());
+      for (MapItemGraphics* MapItem : *ActiveLayer)
       {
-        MapItem->setSelected(true);
+        if (MapItem->getUnitID() == AttID)
+        {
+          MapItem->setSelected(true);
+          break;
+        }
       }
     }
+
+    connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
   }
-  connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
 }
 
 
