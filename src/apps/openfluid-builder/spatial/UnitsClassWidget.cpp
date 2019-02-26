@@ -54,7 +54,7 @@
 
 
 QString UnitsClassWidget::m_ColorButtonStyleSheet =
-    "QPushButton{ background-color : %1;}";
+    "QPushButton{ background-color : %1; border: 1px solid #8f8f91; border-radius: 3px;}";
 /*    "QPushButton{ background-color : %1; border-radius : 6px; border: 1px solid #777777;}"
     "QPushButton:pressed{ background-color : %1; border-radius : 6px; border: 1px solid #777777;}"
     "QPushButton:default{ background-color : %1; border-radius : 2px; border: 1px solid #777777;}";*/
