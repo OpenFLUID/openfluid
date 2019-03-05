@@ -1,0 +1,68 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <monitoring>
+  <observer ID="export.vars.files.csv" enabled="1">
+   <param name="format.f1.commentchar" value="#"/>
+   <param name="format.f1.date" value="%Y-%m-%dT%H:%M:%S"/>
+   <param name="format.f1.header" value="colnames-as-comment"/>
+   <param name="format.f1.precision" value="8"/>
+   <param name="set.RS.format" value="f1"/>
+   <param name="set.RS.unitsclass" value="RS"/>
+   <param name="set.RS.unitsIDs" value="372"/>
+   <param name="set.RS.vars" value="water.surf.Q.downstream-rs"/>
+   <param name="set.SU.format" value="f1"/>
+   <param name="set.SU.unitsclass" value="SU"/>
+   <param name="set.SU.unitsIDs" value="34;133"/>
+   <param name="set.SU.vars" value="water.surf.Q.downstream-su"/>
+  </observer>
+  <observer ID="export.vars.plot.gnuplot" enabled="0">
+   <param name="graph.g1.key" value="default"/>
+   <param name="graph.g1.series" value="s3;s6"/>
+   <param name="graph.g1.title" value="Downstream on SU34"/>
+   <param name="graph.g1.ylabel" value="Downstream"/>
+   <param name="graph.g2.key" value="default"/>
+   <param name="graph.g2.series" value="s2;s5"/>
+   <param name="graph.g2.title" value="Downstream on SU133"/>
+   <param name="graph.g2.ylabel" value="Downstream"/>
+   <param name="graph.g3.key" value="default"/>
+   <param name="graph.g3.series" value="s1;s4"/>
+   <param name="graph.g3.title" value="Downstream on RS372"/>
+   <param name="graph.g3.ylabel" value="Downstream"/>
+   <param name="graph.g4.key" value="default"/>
+   <param name="graph.g4.series" value="s1;s2;s3"/>
+   <param name="graph.g4.title" value="Simulated downstreams"/>
+   <param name="graph.g4.ylabel" value="Downstream"/>
+   <param name="output" value="simulation_results .pdf"/>
+   <param name="persistent" value="0"/>
+   <param name="serie.s1.label" value="water.surf.Q.downstream-rs372"/>
+   <param name="serie.s1.style" value="lines"/>
+   <param name="serie.s1.unitID" value="372"/>
+   <param name="serie.s1.unitclass" value="RS"/>
+   <param name="serie.s1.var" value="water.surf.Q.downstream-rs"/>
+   <param name="serie.s2.label" value="water.surf.Q.downstream-su133"/>
+   <param name="serie.s2.style" value="lines"/>
+   <param name="serie.s2.unitID" value="133"/>
+   <param name="serie.s2.unitsclass" value="SU"/>
+   <param name="serie.s2.var" value="water.surf.Q.downstream-su"/>
+   <param name="serie.s3.label" value="water.surf.Q.downstream-su34"/>
+   <param name="serie.s3.style" value="lines"/>
+   <param name="serie.s3.unitID" value="34"/>
+   <param name="serie.s3.unitsclass" value="SU"/>
+   <param name="serie.s3.var" value="water.surf.Q.downstream-su"/>
+   <param name="serie.s4.label" value="Measured downstream on RS372"/>
+   <param name="serie.s4.sourcefile" value="measured/downstream_372_1997_06_05.csv"/>
+   <param name="serie.s4.style" value="linespoints"/>
+   <param name="serie.s5.label" value="Measured downstream on SU133"/>
+   <param name="serie.s5.sourcefile" value="measured/downstream_133_1997_06_05.csv"/>
+   <param name="serie.s5.style" value="linespoints"/>
+   <param name="serie.s6.label" value="Measured downstream on SU34"/>
+   <param name="serie.s6.sourcefile" value="measured/downstream_34_1997_06_05.csv"/>
+   <param name="serie.s6.style" value="linespoints"/>
+   <param name="terminal" value="pdfcairo size 11.7,8.3"/>
+   <param name="tryopengnuplot" value="1"/>
+  </observer>
+ </monitoring>
+
+
+</openfluid>
+

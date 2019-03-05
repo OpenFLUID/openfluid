@@ -9,12 +9,20 @@ OFBUILD_ADD_SIMULATOR(examples.primitives.unitsA.up ${OFBUILD_DIST_SIMULATORS_DI
 OFBUILD_ADD_SIMULATOR(examples.primitives.unitsB.prod ${OFBUILD_DIST_SIMULATORS_DIR})
 
 
-OFBUILD_ADD_SIMULATOR(examples.trafficlight.state ${OFBUILD_DIST_SIMULATORS_DIR})
+OFBUILD_ADD_SIMULATOR(traffic.surf.trafficlights-state ${OFBUILD_DIST_SIMULATORS_DIR})
 
-OFBUILD_ADD_SIMULATOR(examples.road.traffic ${OFBUILD_DIST_SIMULATORS_DIR})
+OFBUILD_ADD_SIMULATOR(traffic.surf.car-transfer ${OFBUILD_DIST_SIMULATORS_DIR})
 
 
-OFBUILD_ADD_SIMULATOR(examples.surf.wind-fire.connections ${OFBUILD_DIST_SIMULATORS_DIR})
+OFBUILD_ADD_SIMULATOR(spatial.atm.grid.connexion-dynamics ${OFBUILD_DIST_SIMULATORS_DIR})
 
-OFBUILD_ADD_SIMULATOR(examples.surf.fire.prod-spread ${OFBUILD_DIST_SIMULATORS_DIR})
+OFBUILD_ADD_SIMULATOR(fire.surf.prod-spread ${OFBUILD_DIST_SIMULATORS_DIR})
 
+
+OFBUILD_ADD_SIMULATOR(water.atm-surf.rain-su.files ${OFBUILD_DIST_SIMULATORS_DIR})
+
+OFBUILD_ADD_SIMULATOR(water.surf.transfer-rs.hayami ${OFBUILD_DIST_SIMULATORS_DIR})
+
+OFBUILD_ADD_SIMULATOR(water.surf.transfer-su.hayami ${OFBUILD_DIST_SIMULATORS_DIR})
+
+OFBUILD_ADD_SIMULATOR(water.surf-uz.runoff-infiltration.mseytoux ${OFBUILD_DIST_SIMULATORS_DIR})
