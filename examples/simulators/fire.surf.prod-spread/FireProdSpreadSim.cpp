@@ -46,7 +46,7 @@
 // =====================================================================
 
 
-BEGIN_SIMULATOR_SIGNATURE("examples.surf.fire.prod-spread")
+BEGIN_SIMULATOR_SIGNATURE("fire.surf.prod-spread")
 
   DECLARE_NAME("Example simulator for production and spreading of fire over land units");
   DECLARE_DESCRIPTION("This simulator simulate the dynamics of fuel stock decreasing during fire, "

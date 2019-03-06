@@ -44,7 +44,7 @@
 // =====================================================================
 
 
-BEGIN_SIMULATOR_SIGNATURE("examples.road.traffic")
+BEGIN_SIMULATOR_SIGNATURE("traffic.surf.car-transfer")
 
 DECLARE_NAME("Road Unit (RU) function transfert and stockage for cars");
 DECLARE_DESCRIPTION("");

@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <model>
+  <simulator ID="water.atm-surf.rain-su.files" enabled="1">
+   <param name="threshold" value="0.000005"/>
+  </simulator>
+  <simulator ID="water.surf-uz.runoff-infiltration.mseytoux" enabled="1">
+   <param name="CoeffMultiKs" value="1"/>
+   <param name="CoeffMultiThetaIni" value="1"/>
+   <param name="resstep" value="0.00001"/>
+  </simulator>
+  <simulator ID="water.surf.transfer-su.hayami" enabled="1">
+   <param name="maxsteps" value="100"/>
+   <param name="meancel" value="0.045"/>
+   <param name="meansigma" value="500"/>
+  </simulator>
+  <simulator ID="water.surf.transfer-rs.hayami" enabled="1">
+   <param name="calibstep" value="0.01"/>
+   <param name="maxsteps" value="100"/>
+   <param name="meancel" value="0.5"/>
+   <param name="meansigma" value="500"/>
+   <param name="rsbuffer" value="1.2"/>
+  </simulator>
+ </model>
+
+
+</openfluid>
+
