@@ -47,7 +47,7 @@
 // =====================================================================
 
 
-BEGIN_SIMULATOR_SIGNATURE("examples.surf.wind-fire.connections")
+BEGIN_SIMULATOR_SIGNATURE("spatial.atm.grid.connexion-dynamics")
 
   DECLARE_NAME("Example simulator for computing dynamic connections between land units according to wind direction");
   DECLARE_DESCRIPTION("This simulator computes the landscape units connections "

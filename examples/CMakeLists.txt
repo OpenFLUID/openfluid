@@ -43,5 +43,15 @@ OPENFLUID_ADD_TEST(NAME examples-Firespread
                    )                   
                                                        
 
+OPENFLUID_ADD_TEST(NAME examples-MhydasRoujan
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                              "run"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/projects/MHYDAS_Roujan/IN"
+                              "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan"
+                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.MHYDAS_Roujan"
+                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan/openfluid-messages.log"                                                           
+                   )  
+
+
 INSTALL(DIRECTORY "projects/" 
         DESTINATION "${OPENFLUID_EXAMPLES_PROJECTS_INSTALL_PATH}" PATTERN ".svn" EXCLUDE)

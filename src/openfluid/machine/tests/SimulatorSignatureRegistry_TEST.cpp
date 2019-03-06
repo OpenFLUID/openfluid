@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 
   BOOST_CHECK_EQUAL(
       Signatures->getSimSignatures().at(openfluid::ware::WareType::SIMULATOR).size(),
-      7);
+      11);
   BOOST_CHECK_EQUAL(
       Signatures->getSimSignatures().at(openfluid::ware::WareType::GENERATOR).size(),
       4);
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(test_ghostsimulators)
       openfluid::machine::SimulatorSignatureRegistry::instance();
   Reg->update();
 
-  BOOST_CHECK_EQUAL(Reg->getSimSignatures().at(openfluid::ware::WareType::SIMULATOR).size(),12);
+  BOOST_CHECK_EQUAL(Reg->getSimSignatures().at(openfluid::ware::WareType::SIMULATOR).size(),16);
 
   BOOST_CHECK(Reg->signature("simA") != nullptr);
   BOOST_CHECK(Reg->signature("simFake") == nullptr);

@@ -45,7 +45,7 @@
 // =====================================================================
 
 
-BEGIN_SIMULATOR_SIGNATURE("examples.trafficlight.state")
+BEGIN_SIMULATOR_SIGNATURE("traffic.surf.trafficlights-state")
 
   DECLARE_NAME("Traffic Light Unit (TLU) function state");
   DECLARE_DESCRIPTION("");

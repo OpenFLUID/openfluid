@@ -12,12 +12,12 @@
       <param name="distribution" value="distri.dat" />
     </generator>    
     
-    <simulator ID="examples.surf.wind-fire.connections">
+    <simulator ID="spatial.atm.grid.connexion-dynamics">
     
     </simulator>
   
 
-    <simulator ID="examples.surf.fire.prod-spread">
+    <simulator ID="fire.surf.prod-spread">
       <param name="ignitionunits" value="1237;387" />    
     </simulator>
   
