@@ -3,6 +3,7 @@ SET(CPACK_SOURCE_GENERATOR "TGZ")
   
   
 IF(OFBUILD_DISTRO_IS_DEBIAN)  
+  SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")
   SET(CPACK_GENERATOR "DEB")      
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, qt5-default, qtbase5-dev-tools, qttools5-dev-tools, libqt5svg5-dev, libgdal-dev, gcc, g++, cmake (>= 2.8.9), gnuplot (>= 4.2), p7zip-full, graphviz, git")    
   IF(OFBUILD_ENABLE_LANDR)
@@ -17,6 +18,7 @@ ENDIF()
   
   
 IF(OFBUILD_DISTRO_IS_UBUNTU)  
+  SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")
   SET(CPACK_GENERATOR "DEB")      
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, qt5-default, qtbase5-dev-tools, qttools5-dev-tools, libqt5svg5-dev, libgdal-dev, gcc, g++, cmake (>= 2.8.9), gnuplot (>= 4.2), p7zip-full, graphviz, git")    
   IF(OFBUILD_ENABLE_LANDR)
@@ -35,6 +37,7 @@ ENDIF()
   
 
 IF(OFBUILD_DISTRO_IS_CENTOS)
+  SET(CPACK_RPM_PACKAGE_CONFLICTS "mhydas")
   SET(CPACK_GENERATOR "RPM") 
   SET(CPACK_RPM_PACKAGE_REQUIRES "gcc-c++, boost-devel >= 1.40, gdal-devel, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel, qt5-qtsvg-devel, git")
   IF(OFBUILD_ENABLE_LANDR)

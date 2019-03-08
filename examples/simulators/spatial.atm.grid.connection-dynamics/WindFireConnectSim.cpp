@@ -47,7 +47,7 @@
 // =====================================================================
 
 
-BEGIN_SIMULATOR_SIGNATURE("examples.surf.wind-fire.connections")
+BEGIN_SIMULATOR_SIGNATURE("spatial.atm.grid.connection-dynamics")
 
   DECLARE_NAME("Example simulator for computing dynamic connections between land units according to wind direction");
   DECLARE_DESCRIPTION("This simulator computes the landscape units connections "
@@ -300,4 +300,3 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
 
 DEFINE_SIMULATOR_CLASS(WindFireConnectSimulator)
-

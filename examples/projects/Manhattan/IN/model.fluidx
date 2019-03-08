@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
  <model>
-  <simulator ID="examples.trafficlight.state">
+  <simulator ID="traffic.surf.trafficlights-state">
   </simulator>
-  <simulator ID="examples.road.traffic">
+  <simulator ID="traffic.surf.car-transfer">
   </simulator>
  </model>
 
