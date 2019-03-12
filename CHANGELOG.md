@@ -1,6 +1,39 @@
+## 2.1.8
+
+  * Added syncing of selection between Builder map and attributes table 
+    in spatial tab
+  * Added multiselection of spatial units in Builder map view 
+    and attributes table
+  * Added customizable line width in Builder map view
+  * Added management of HiDPI icons
+  * Added Example of MHYDAS model for surface hydrology applied 
+    to Roujan basin (MHYDAS is now bundled with OpenFLUID as an example)
+  * Improved CMake configuration files to force explicit 
+    source code declaration
+  * Improved internal tool for checking coding style
+  * Updated OpenFLUID official logo, official icons and splash screens
+  * Updated resources images for better rendering on HiDPI displays
+  * Updated documentation of various API classes
+  * Updated IDs of simulators used in examples projects
+  * Updated scripts for retreival and conversion of icons 
+    with standard and HiDPI modes
+  * Fixed values ranges in various Builder spin boxes
+  * Fixed display of fill color button for Builder map objects 
+    according to the spatial dimension (2D)
+  * Fixed correctness of colors represented in line/fill buttons 
+    of Builder map view
+  * Fixed dark mode management on MacOS (Mojave) for Builder and Devstudio
+  * Fixed possible password leak in Git proxy
+  * Fixed unnecessary binary built for scientific namespace
+  * Fixed Git proxy tests on Windows systems
+  * Cleaned code and tests
+
+
+
 ## 2.1.7
 
-  * Introduced C++14 as the minimal standard for OpenFLUID core and scientific development
+  * Introduced C++14 as the minimal standard for OpenFLUID core 
+    and scientific development
   * Introduced generic layout for dialogs with messages
   * Improved GDAL compatibility macros
   * Improved internal tool for checking coding style
@@ -46,7 +79,7 @@
   * Added numeric version number in binary filenames of wares
   * Added handling of HTTP redirections for FluidHub connections (Qt>5.6 only)
   * Updated About dialog box with richer information about build, changes, ...
-  * Improved UI for time period configuration in Builder  
+  * Improved UI for time period configuration in Builder
   * Improved continuous integration process (Travis CI, AppVeyor)
   * Improved C++11 usage
   * Switched from Qt4 to Qt5 for Linux, as already done for MacOS and Windows
