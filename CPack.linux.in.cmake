@@ -3,8 +3,8 @@ SET(CPACK_SOURCE_GENERATOR "TGZ")
   
   
 IF(OFBUILD_DISTRO_IS_DEBIAN)  
-  SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")
   SET(CPACK_GENERATOR "DEB")      
+  SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, qt5-default, qtbase5-dev-tools, qttools5-dev-tools, libqt5svg5-dev, libgdal-dev, gcc, g++, cmake (>= 2.8.9), gnuplot (>= 4.2), p7zip-full, graphviz, git")    
   IF(OFBUILD_ENABLE_LANDR)
     SET(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}, libgeos++-dev (>= 3.3.0)")
@@ -18,8 +18,8 @@ ENDIF()
   
   
 IF(OFBUILD_DISTRO_IS_UBUNTU)  
-  SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")
-  SET(CPACK_GENERATOR "DEB")      
+  SET(CPACK_GENERATOR "DEB")  
+  SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")    
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, qt5-default, qtbase5-dev-tools, qttools5-dev-tools, libqt5svg5-dev, libgdal-dev, gcc, g++, cmake (>= 2.8.9), gnuplot (>= 4.2), p7zip-full, graphviz, git")    
   IF(OFBUILD_ENABLE_LANDR)
     IF(${OFBUILD_DISTRO_VERSION} VERSION_GREATER "12.04")
@@ -37,8 +37,8 @@ ENDIF()
   
 
 IF(OFBUILD_DISTRO_IS_CENTOS)
-  SET(CPACK_RPM_PACKAGE_CONFLICTS "mhydas")
   SET(CPACK_GENERATOR "RPM") 
+  SET(CPACK_RPM_PACKAGE_CONFLICTS "mhydas")
   SET(CPACK_RPM_PACKAGE_REQUIRES "gcc-c++, boost-devel >= 1.40, gdal-devel, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel, qt5-qtsvg-devel, git")
   IF(OFBUILD_ENABLE_LANDR)
     SET(CPACK_RPM_PACKAGE_REQUIRES "${CPACK_RPM_PACKAGE_REQUIRES}, libgeos-devel >= 3.3.0")
@@ -61,6 +61,7 @@ ENDIF()
 
 IF(OFBUILD_DISTRO_IS_FEDORA)
   SET(CPACK_GENERATOR "RPM") 
+  SET(CPACK_RPM_PACKAGE_CONFLICTS "mhydas")
   SET(CPACK_RPM_PACKAGE_REQUIRES "make, gcc-c++, gcc-gfortran, cmake, boost-devel >= 1.54, gdal-devel, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel, qt5-qtsvg-devel, p7zip, gnuplot, graphviz, doxygen, git")
   IF(OFBUILD_ENABLE_LANDR)
     SET(CPACK_RPM_PACKAGE_REQUIRES "${CPACK_RPM_PACKAGE_REQUIRES}, geos-devel >= 3.3.2")
