@@ -78,14 +78,14 @@
 % Scientific concepts
 \iflanguage{english}{\section{Scientific concepts}}{\section{Concepts scientifiques}}
 \iflanguage{english}{\input{./doc/english/HayamiSU_scientific_concept.tex}}
-{\input{./doc/french/HayamiSU_concept_scientifique.tex}}
+  {\input{./doc/french/HayamiSU_concept_scientifique.tex}}
 
 
 %******************************
 % Functional description
 \iflanguage{english}{\section{Functional description}}{\section{Notice d'utilisation}}
 \iflanguage{english}{\input{./doc/english/HayamiSU_functional_description.tex}}
-{\input{./doc/french/HayamiSU_notice_utilisation.tex}}
+  {\input{./doc/french/HayamiSU_notice_utilisation.tex}}
 
 %******************************
 % References
