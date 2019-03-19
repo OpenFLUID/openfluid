@@ -128,7 +128,7 @@ BEGIN_SIMULATOR_SIGNATURE("water.surf-uz.runoff-infiltration.mseytoux")
   DECLARE_DESCRIPTION("Production function computing infiltration and runoff at the top of surface unit "
                       "using the Morel-Seytoux method, based on the Green and Ampt assumptions.");
 
-  DECLARE_VERSION("13.05");
+  DECLARE_VERSION("19.03");
 
   DECLARE_STATUS(openfluid::ware::STABLE);
 

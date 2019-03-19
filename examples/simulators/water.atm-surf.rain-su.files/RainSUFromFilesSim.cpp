@@ -59,7 +59,7 @@ BEGIN_SIMULATOR_SIGNATURE("water.atm-surf.rain-su.files")
   DECLARE_DESCRIPTION("Linear interpolation of rainfall from rain gauge data source files and spatial distribution "
                       "on SU.");
   DECLARE_DOMAIN("meteo");
-  DECLARE_VERSION("13.05");
+  DECLARE_VERSION("19.03");
 
   DECLARE_STATUS(openfluid::ware::STABLE);
 

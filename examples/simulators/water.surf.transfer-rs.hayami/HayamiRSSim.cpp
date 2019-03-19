@@ -132,7 +132,7 @@ BEGIN_SIMULATOR_SIGNATURE("water.surf.transfer-rs.hayami")
   DECLARE_METHOD("Hayami");
 
   DECLARE_STATUS(openfluid::ware::STABLE);
-  DECLARE_VERSION("13.05");
+  DECLARE_VERSION("19.03");
 
 
   DECLARE_AUTHOR("Moussa R.","moussa@supagro.inra.fr");
