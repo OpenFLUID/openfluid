@@ -64,7 +64,7 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
     LastModDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
 
     InfosStr += "<table><tr><td valign='middle' width='74px' style='padding: 5px;'>"
-                "<IMG STYLE='vertical-align:middle;' SRC=':/builder/icons/openfluid_icon.png' /></td>"
+                "<img style='vertical-align:middle;' src=':/builder/icons/openfluid_icon.png' width='64'/></td>"
                 "<td valign='middle' style='padding: 5px;'><i>Project:</i><br>"
                 "<b><big>"+QString(Name.c_str())+"</big></b></td>"
                 "</tr></table><hr/>";
