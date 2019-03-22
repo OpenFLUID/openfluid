@@ -435,7 +435,7 @@ void SpatialDomainWidget::updateRemoveUnitButtonText(int ID)
     }
     else
     {
-      ui->RemoveUnitButton->setText(tr("Remove selected units from %2 class").arg(m_ActiveClass));
+      ui->RemoveUnitButton->setText(tr("Remove selected units from %1 class").arg(m_ActiveClass));
     }
 }
 
@@ -1084,7 +1084,7 @@ void SpatialDomainWidget::removeUnit()
     }
     else
     {
-      ToRemoveString = tr("You are removing several units of class %2.\n"
+      ToRemoveString = tr("You are removing several units of class %1.\n"
                           "All connections and attributes units related to these units will be lost.\n\n"
                          ).arg(m_ActiveClass);
     }

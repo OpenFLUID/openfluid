@@ -213,39 +213,39 @@
         <translation>Fichier de distribution:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="59"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="61"/>
         <source>Add generator</source>
         <translation>Ajouter un générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="144"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="146"/>
         <source>Variable name cannot be empty</source>
         <translation>Le nom de la variable ne peut être vide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="146"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="148"/>
         <source>Units class cannot be empty</source>
         <translation>La classe d&apos;unités ne peut être vide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="226"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="228"/>
         <source>Select sources file</source>
         <translation>Sélectionner le fichier des sources</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="228"/>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="253"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="230"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="255"/>
         <source>All files (*.*)</source>
         <translation>Tous les fichiers (*.*)</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="236"/>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="261"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="238"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="263"/>
         <source>Choosen file is not located in the input dataset of the project</source>
         <translation>Le fichier choisi n&apos;est pas dans le jeu de données d&apos;entrée du projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="251"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="253"/>
         <source>Select distribution file</source>
         <translation>Sélectionner le fichier de distribution</translation>
     </message>
@@ -358,17 +358,17 @@
 <context>
     <name>AddUnitsClassDialog</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/AddUnitsClassDialog.cpp" line="87"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/AddUnitsClassDialog.cpp" line="89"/>
         <source>Units class name cannot be empty</source>
         <translation>Le nom de la classe d&apos;unités ne peut être vide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/AddUnitsClassDialog.cpp" line="89"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/AddUnitsClassDialog.cpp" line="91"/>
         <source>Units class name already exists</source>
         <translation>Le nom de la classe d&apos;unités existe déjà</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/AddUnitsClassDialog.cpp" line="91"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/AddUnitsClassDialog.cpp" line="93"/>
         <source>Unit ID cannot be empty</source>
         <translation>L&apos;ID de l&apos;unité ne peut être vide</translation>
     </message>
@@ -977,8 +977,7 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.ui" line="22"/>
         <source>Qt path:</source>
-        <translation>Chemin de Qt:
-</translation>
+        <translation>Chemin de Qt:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.ui" line="29"/>
@@ -1070,8 +1069,12 @@ Continuer quand même?</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/EditAttributesValuesDialog.ui" line="105"/>
-        <source>Add </source>
+        <source>Add</source>
         <translation>Ajouter</translation>
+    </message>
+    <message>
+        <source>Add </source>
+        <translation type="vanished">Ajouter</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/EditAttributesValuesDialog.ui" line="115"/>
@@ -2170,9 +2173,13 @@ n&apos;est pas un projet OpenFLUID valide</translation>
 <context>
     <name>OutputsWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.ui" line="28"/>
         <source>Output directory: </source>
-        <translation>Répertoire de sortie:</translation>
+        <translation type="vanished">Répertoire de sortie:</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.ui" line="28"/>
+        <source>Output directory:</source>
+        <translation>Répertoire de sortie :</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.ui" line="54"/>
@@ -2518,12 +2525,12 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="544"/>
         <source>Required parameter %1 for simulator %2 is not set</source>
-        <translation>Le paramètre %1 requis pour le simulateur %2 n&apos;est pas renseigné </translation>
+        <translation>Le paramètre %1 requis pour le simulateur %2 n&apos;est pas renseigné</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="562"/>
         <source>Used parameter %1 for simulator %2 is not set</source>
-        <translation>Le paramètre %1 utilisé par le simulateur %2 n&apos;est pas renseigné </translation>
+        <translation>Le paramètre %1 utilisé par le simulateur %2 n&apos;est pas renseigné</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="610"/>
@@ -2918,6 +2925,15 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation>Contrainte:</translation>
     </message>
     <message>
+        <source>&amp;Memory management</source>
+        <translation type="obsolete">Gestion de la mémoire</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="234"/>
+        <source>Maximum number of threads in wares:</source>
+        <translation>Nombre maximum de threads pour les wares:</translation>
+    </message>
+    <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="167"/>
         <source>Memory management</source>
         <translation>Gestion de la mémoire</translation>
@@ -2943,9 +2959,8 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation>Activer le profilage de simulation</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="234"/>
         <source>Maximum number of threads in wares : </source>
-        <translation>Nombre maximum de threads pour les wares:</translation>
+        <translation type="vanished">Nombre maximum de threads pour les wares:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.cpp" line="53"/>
@@ -3418,140 +3433,185 @@ L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="168"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="380"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="391"/>
         <source>Add unit in %1 class</source>
         <translation>Ajouter une unité dans la classe %1</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="175"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="425"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="434"/>
         <source>Remove unit %1 from %2 class</source>
         <translation>Supprimer l&apos;unité %1 de la classe %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="213"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="234"/>
         <source>Process order:</source>
         <translation>Ordre de traitement:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="248"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="269"/>
         <source>Connections:</source>
         <translation>Connexions:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="273"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="294"/>
         <source>Connection type</source>
         <translation>Type de connexion</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="278"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="299"/>
         <source>Units class</source>
         <translation>Classe d&apos;unités</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="283"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="616"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="304"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="640"/>
         <source>Unit ID</source>
         <translation>ID de l&apos;unité</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="305"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="326"/>
         <source>Add connection</source>
         <translation>Ajouter une connexion</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="327"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="348"/>
         <source>Remove selected connection</source>
         <translation>Supprimer la connexion sélectionnée</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="359"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="383"/>
         <source>Map</source>
         <translation>Carte</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="370"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="394"/>
         <source>View</source>
         <translation>Affichage</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="376"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="400"/>
         <source>Automatic view</source>
         <translation>Vue automatique</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="389"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="413"/>
         <source>Fit view to full extent</source>
         <translation>Ajuster la vue</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="396"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="420"/>
         <source>Show units IDs</source>
         <translation>Afficher les IDs des unités</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="430"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="454"/>
         <source>Use Ctrl key + mouse wheel for zooming</source>
         <translation>Utiliser la touche Ctrl + roue de souris pour zoomer</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="464"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="488"/>
         <source>Attributes</source>
         <translation>Attributs</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="491"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="515"/>
         <source>Add attribute</source>
         <translation>Ajouter un attribut</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="513"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="537"/>
         <source>Edit selected values</source>
         <translation>Editer les valeurs sélectionnées</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="535"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="559"/>
         <source>Rename attribute</source>
         <translation>Renommer un attribut</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="557"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="581"/>
         <source>Remove attribute</source>
         <translation>Supprimer un attribut</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="583"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="607"/>
         <source>Events</source>
         <translation>Evénements</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="611"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="635"/>
         <source>Date Time</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="621"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="645"/>
         <source>Informations</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="895"/>
         <source>You are removing the unit %1 of class %2.
 All connections and attributes units related to this unit will be lost.
 
 Proceed anyway?</source>
-        <translation>Vous supprimez l&apos;unité %1 de la classe%2.
+        <translation type="vanished">Vous supprimez l&apos;unité %1 de la classe%2.
 Toutes les connexions et les attributs en relation avec cette unité seront perdus.
 
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="976"/>
+        <source>Remove selected units from %2 class</source>
+        <translation type="vanished">Supprimer les unités sélectionnées de la classe %2</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="438"/>
+        <source>Remove selected units from %1 class</source>
+        <translation>Supprimer les unités sélectionnées de la classe %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1081"/>
+        <source>You are removing the unit %1 of class %2.
+All connections and attributes units related to this unit will be lost.
+
+</source>
+        <translation>Vous supprimez l&apos;unité %1 de la classe %2.
+Toutes les connexions et les attributs en relation avec cette unité seront perdus.
+
+</translation>
+    </message>
+    <message>
+        <source>You are removing several units of class %2.
+All connections and attributes units related to these units will be lost.
+
+</source>
+        <translation type="vanished">Vous supprimez plusieurs unités de la classe%2.
+Toutes les connexions et les attributs en relation avec cette unité seront perdus.
+
+</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1087"/>
+        <source>You are removing several units of class %1.
+All connections and attributes units related to these units will be lost.
+
+</source>
+        <translation>Vous supprimez plusieurs unités de la classe %1.
+Toutes les connexions et les attributs en relation avec cette unité seront perdus.
+
+</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1094"/>
+        <source>Proceed anyway?</source>
+        <translation>Continuer quand même?</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1176"/>
         <source>No connection selected for removal</source>
         <translation>Aucune connexion sélectionnée pour suppression</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="997"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1197"/>
         <source>You are removing the &quot;%1&quot; connection
 between unit %2 of class %3 and unit %4 of class %5.
 
@@ -3562,27 +3622,27 @@ entre l&apos;unité %2 de la classe %3 et l&apos;unité %4 de la classe %5.
 Continuer?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1124"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1324"/>
         <source>At least one attribute value is not a numeric value.
 Edition of attributes cannot be performed.</source>
         <translation>Au moins une valeur d&apos;attribut n&apos;est pas une valeur numérique.
 L&apos;édition des attributs ne peut être réalisée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1136"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1336"/>
         <source>No attribute value selected</source>
         <translation>Aucune valeur d&apos;attribut n&apos;est sélectionnée</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1152"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1186"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1352"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1386"/>
         <source>There is no attribute in the %1 units class.
 Rename cannot be performed.</source>
         <translation>Il n&apos;y a pas d&apos;attribut dans la classe d&apos;unités %1.
 Le renommage ne peut pas être réalisé.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1199"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1399"/>
         <source>You are removing the attribute %1 of class %2.
 All %1 values associated to units of class %2 will be lost.
 
@@ -3593,12 +3653,12 @@ Toutes les valeurs %1 associées aux unités de la classe %2 seront perdues.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1330"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1622"/>
         <source>Spatial attribute cannot be empty</source>
         <translation>L&apos;attribut spatial ne peut être vide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1479"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1771"/>
         <source>You are removing one or many spatial event(s).
 All associated informations will be lost.
 
@@ -3640,23 +3700,23 @@ Continuer quand même?</translation>
         <translation>Couleur de ligne</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="251"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="254"/>
         <source>Fill color</source>
         <translation>Couleur de remplissage</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="88"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="181"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="91"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="180"/>
         <source>Show map style</source>
         <translation>Montrer le style</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="186"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="185"/>
         <source>Hide map style</source>
         <translation>Cacher le style</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="255"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="254"/>
         <source>You are removing the %1 units class.
 All units of class %1 and associated attributes and connections will be lost.
 
@@ -3667,7 +3727,7 @@ Toutes les unités de la classe %1 ainsi que les attributs et connexions associ�
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="374"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="406"/>
         <source>(no layer to display)</source>
         <translation>(pas de couche à afficher)</translation>
     </message>
@@ -4294,7 +4354,7 @@ Continuer quand même?</translation>
         <translation type="vanished">Voir les remerciements</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="133"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="134"/>
         <source>&lt;b&gt;Build environment&lt;/b&gt;&lt;br/&gt;* Build type : %1&lt;br/&gt;* CMake version : %2&lt;br/&gt;* Compiler ID : %3&lt;br/&gt;* Compiler version : %4&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Dependencies&lt;/b&gt;&lt;br/&gt;* Boost version : %5&lt;br/&gt;* Qt version : %6&lt;br/&gt;* RapidJSON version : %7&lt;br/&gt;* GDAL version : %8&lt;br/&gt;* GEOS version : %9&lt;br/&gt;</source>
         <translation>&lt;b&gt;Environnement de build&lt;/b&gt;&lt;br/&gt;* Type de build : %1&lt;br/&gt;* Version de CMake: %2&lt;br/&gt;* ID du compilateur: %3&lt;br/&gt;* Version du compilateur: %4&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Dépendances&lt;/b&gt;&lt;br/&gt;* Version de Boost : %5&lt;br/&gt;* Version de Qt : %6&lt;br/&gt;* Version de RapidJSON : %7&lt;br/&gt;* Version de GDAL : %8&lt;br/&gt;* Version de GEOS : %9&lt;br/&gt;</translation>
     </message>
@@ -4315,7 +4375,7 @@ Continuer quand même?</translation>
         <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="161"/>
         <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="231"/>
         <source>Searching in %1... </source>
-        <translation>Recherche dans %1...</translation>
+        <translation>Recherche dans %1... </translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/common/DetectQtDevToolsDialog.cpp" line="177"/>
@@ -4983,7 +5043,7 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
     <message>
         <location filename="../../src/openfluid/ui/market/MarketPackWidgetFormat.cpp" line="89"/>
         <source>Edit build options for </source>
-        <translation>Editer les options de construction pour</translation>
+        <translation>Editer les options de construction pour </translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/market/MarketPackWidgetFormat.cpp" line="159"/>
@@ -6230,7 +6290,7 @@ Le paquet peut contenir des erreurs.</translation>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="389"/>
         <source>Unable to copy &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation>Impossible de copier &quot;%1&quot; vers &quot;%2&quot; </translation>
+        <translation>Impossible de copier &quot;%1&quot; vers &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/waresdev/WaresDevPackage.cpp" line="395"/>

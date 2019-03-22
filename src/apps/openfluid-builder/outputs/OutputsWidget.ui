@@ -25,7 +25,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Output directory: </string>
+        <string>Output directory:</string>
        </property>
       </widget>
      </item>

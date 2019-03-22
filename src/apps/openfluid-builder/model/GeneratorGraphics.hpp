@@ -46,6 +46,8 @@
 
 class GeneratorGraphics : public ModelItemGraphics
 {
+  Q_OBJECT
+
   protected:
 
     static QPointF m_ProducedIOFromCenter;
