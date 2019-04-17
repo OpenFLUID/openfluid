@@ -178,7 +178,7 @@ class OPENFLUID_API PluggableWare
     /**
      * Return false if ParameterKey starts nor ends with a dot, true otherwise
      */
-    static bool isWellFormated(const openfluid::ware::WareParamKey_t& ParameterKey);
+    static bool isWellFormatted(const openfluid::ware::WareParamKey_t& ParameterKey);
 
 };
 

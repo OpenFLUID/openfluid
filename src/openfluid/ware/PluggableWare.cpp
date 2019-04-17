@@ -134,7 +134,7 @@ void PluggableWare::finalizeWare()
 // =====================================================================
 
 
-bool PluggableWare::isWellFormated(const openfluid::ware::WareParamKey_t& ParameterKey)
+bool PluggableWare::isWellFormatted(const openfluid::ware::WareParamKey_t& ParameterKey)
 {
   if (ParameterKey.find_last_of('.') == ParameterKey.size() - 1)
     return false;

@@ -52,8 +52,10 @@ SignatureTypedSpatialDataItem::SignatureTypedSpatialDataItem(std::string DName,
 {
 
   if (!openfluid::tools::extractVariableNameAndType(DName,DataName,DataType))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Variable " + DName + " is not well formated.");
+                                              "Variable " + DName + " is not well formatted.");
+  }
 }
 
 

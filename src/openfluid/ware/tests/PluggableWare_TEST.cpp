@@ -51,36 +51,36 @@
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_isWellFormated)
+BOOST_AUTO_TEST_CASE(check_isWellFormatted)
 {
-  BOOST_CHECK(openfluid::ware::PluggableWare::isWellFormated("param1"));
-  BOOST_CHECK(openfluid::ware::PluggableWare::isWellFormated("param1.level2"));
-  BOOST_CHECK(openfluid::ware::PluggableWare::isWellFormated("param1.level2.level3"));
+  BOOST_CHECK(openfluid::ware::PluggableWare::isWellFormatted("param1"));
+  BOOST_CHECK(openfluid::ware::PluggableWare::isWellFormatted("param1.level2"));
+  BOOST_CHECK(openfluid::ware::PluggableWare::isWellFormatted("param1.level2.level3"));
 
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("."));
 
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1."));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2."));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2.level3."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("param1."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("param1.level2."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("param1.level2.level3."));
 
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1"));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1.level2"));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1.level2.level3"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted(".param1"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted(".param1.level2"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted(".param1.level2.level3"));
 
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted(".."));
 
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1."));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1.level2."));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1.level2.level3."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted(".param1."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted(".param1.level2."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted(".param1.level2.level3."));
 
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("..."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("..."));
 
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("..param1"));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("..param1.level2"));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("..param1.level2.level3"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("..param1"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("..param1.level2"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("..param1.level2.level3"));
 
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.."));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2.."));
-  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2.level3.."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("param1.."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("param1.level2.."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormatted("param1.level2.level3.."));
 }
 
