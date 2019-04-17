@@ -139,15 +139,14 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 
   VersionInfo = Whites + VersionInfo;
 
-
   std::cout << std::endl;
   std::cout << "===========================================================" << std::endl;
   std::cout << VersionInfo << std::endl;
   std::cout << std::endl;
-  std::cout << "                          software environment             " << std::endl;
-  std::cout << "            for Modelling Fluxes in Landscapes             " << std::endl;
+  std::cout << "                          software environment" << std::endl;
+  std::cout << "           for Spatial Modelling in Landscapes" << std::endl;
   std::cout << std::endl;
-  std::cout << "                 www.openfluid-project.org                 " << std::endl;
+  std::cout << "                 www.openfluid-project.org" << std::endl;
   std::cout << "===========================================================" << std::endl;
   std::cout << std::endl;
   std::cout.flush();
@@ -761,6 +760,8 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       openfluid::tools::convertValue(openfluid::base::RunContextManager::instance()->getWaresMaxNumThreads());
 
 
+  // ---- definition of possible options
+
   std::vector<openfluid::utils::CommandLineOption> RunOptions =
   {
     openfluid::utils::CommandLineOption("quiet","q","quiet display during simulation"),
@@ -816,8 +817,9 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   // reporting
   openfluid::utils::CommandLineCommand ReportCmd("report","Display informations about available wares");
-  ReportCmd.addOption(openfluid::utils::CommandLineOption("list","l","display simple list instead of report"));
-  ReportCmd.addOption(openfluid::utils::CommandLineOption("with-errors","e","show errored wares during search"));
+  ReportCmd.addOption(openfluid::utils::CommandLineOption("list","l","display as list"));
+  ReportCmd.addOption(openfluid::utils::CommandLineOption("list-with-errors","e",
+                                                          "display as list, show errors if any"));
   for (auto& Opt : SearchOptions)
   {
     ReportCmd.addOption(Opt);
@@ -833,6 +835,8 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   }
   Parser.addCommand(ShowPathsCmd);
 
+
+  // ---- parsing of effective options
 
   if (!Parser.parse(ArgC,ArgV))
   {
@@ -961,7 +965,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     }
 
     bool ReportErrors = false;
-    if (Parser.command(ActiveCommandStr).isOptionActive("with-errors"))
+    if (Parser.command(ActiveCommandStr).isOptionActive("list-with-errors"))
     {
       ReportErrors = true;
     }
@@ -974,7 +978,8 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
             Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
       }
 
-      if (Parser.command(ActiveCommandStr).isOptionActive("list"))
+      if (Parser.command(ActiveCommandStr).isOptionActive("list") || 
+          Parser.command(ActiveCommandStr).isOptionActive("list-with-errors"))
       {
         m_RunType = InfoRequest;
         printSimulatorsList(ReportErrors);
@@ -996,7 +1001,8 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
             Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
       }
 
-      if (Parser.command(ActiveCommandStr).isOptionActive("list"))
+      if (Parser.command(ActiveCommandStr).isOptionActive("list") || 
+          Parser.command(ActiveCommandStr).isOptionActive("list-with-errors"))
       {
         m_RunType = InfoRequest;
         printObserversList(ReportErrors);
