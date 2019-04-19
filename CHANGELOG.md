@@ -11,8 +11,10 @@
   * Improved CMake configuration files to force explicit 
     source code declaration
   * Improved internal tool for checking coding style
+  * Updated command line options for wares reporting
   * Updated OpenFLUID official logo, official icons and splash screens
   * Updated resources images for better rendering on HiDPI displays
+  * Updated main documentation 
   * Updated documentation of various API classes
   * Updated IDs of simulators used in examples projects
   * Updated scripts for retreival and conversion of icons 
