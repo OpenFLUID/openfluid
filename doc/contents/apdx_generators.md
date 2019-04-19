@@ -1,63 +1,61 @@
-/**
+@page apdx_generators File formats for generators
 
-\page apdx_generators File formats for "interp" or "inject" generators
+[TOC]
 
-\tableofcontents
 
-\section apdx_generators_sources Sources file
+@note Currently, these files formats are used by _interp_ and _inject_ generators only.
+
+
+# Sources file {#apdx_generators_sources}
 
 The sources file format is an XML based format which defines a list of sources
 files associated to an unique ID.\n
 The sources must be defined in a section delimited by the
-<tt>\<datasources\></tt> tag, inside an <tt>\<openfluid\></tt> tag and must be
+`<datasources>` tag, inside an `<openfluid>` tag and must be
 structured following these rules:
-<ul>
-<li>Inside the <tt>\<datasources\></tt> tag, there must be a set of
-  <tt>\<filesource\></tt> tags
-<li>Each <tt>\<filesource\></tt> tag must bring an <tt>ID</tt>
-  attribute giving the identifier of source, and a <tt>file</tt>
+
+* Inside the `<datasources>` tag, there must be a set of `<filesource>` tags
+* Each `<filesource>` tag must bring an `ID`
+  attribute giving the identifier of source, and a `file`
   attribute giving the name of the file containing the source of data. The files
   must be placed in the input directory of the simulation.
-</ul>
 
-\code
+
+```xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
  
- <datasources>
+  <datasources>
     <filesource ID="1" file="source1.dat" />
     <filesource ID="2" file="source2.dat" />    
   </datasources>
   
 </openfluid>
-\endcode
+```
 
-\n
+
 An associated source data file is a two columns text file, containing a serie
 of values in time. The first column is the date using the ISO format
-<tt>YYYY-MM-DD'T'HH:MM:SS</tt>. The second column is the value itself.
+`YYYY-MM-DD'T'HH:MM:SS`. The second column is the value itself.
 
-\code
+```
 1999-12-31T12:00:00 -1.0
 1999-12-31T23:00:00 -5.0
 2000-01-01T00:30:00 -15.0
 2000-01-01T00:40:00 -5.0
 2000-01-01T01:30:00 -15.0
-\endcode
+```
 
 
-\section apdx_generators_distri Distribution file
+# Distribution file {#apdx_generators_distri}
 
 A distribution file is a two column file associating a unit ID
 (first column) to a source ID (second column).
-\code
+
+```
 1 1
 2 2
 3 1
 4 2
 5 1
-\endcode
-
-
-
-*/
+```

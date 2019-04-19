@@ -1,94 +1,59 @@
-/**
+@page dev_createsim Creation of a simulator
 
-\page dev_createsim Creation of an empty simulator
+[TOC]
 
-\tableofcontents
 
-As mentioned in the previous section (see \ref dev_oviewsim), a simulator must contain two parts :
-<ul>
-  <li>A signature giving information about the simulator, 
-  and used by the OpenFLUID framework to identify and couple simulators 
-  <li>A C++ class defining essential methods for computational code
-</ul>
+The minimal source code of an OpenFLUID simuilator is made of a C++ file and a build configuration for CMake tool. 
+Using the CMake build tool, the simulator source code is built into a binary plugin for OpenFLUID and automatically installed 
+in the dedicated location to be usable by the OpenFLUID platform.  
+<br/>
 
-\section dev_createsim_env Required tools for development environment
+See also the @ref apdx_workspace appendix for sources codes location in workspaces.
+
+
+# Required tools for development environment {#dev_createsim_env}
 
 In order to build and develop a simulator, the following tools are required:
-<ul>
- <li>GCC as the C++/C/Fortran compiler (version 4.8 or later for C++11 compatibility)</li>
- <li>CMake as the build configuration tool (version 2.8.12 or later).\n
- OpenFLUID provides a CMake module to ease the build of simulators. 
-</ul>
 
-These tools are also required when using the OpenFLUID-DevStudio application.
+* GCC as the C++/C/Fortran compiler (version 4.9 or later for C++14 compatibility, version 6.x or later is recommended)
+* CMake as the build configuration tool (version 3.1 or later). OpenFLUID provides a CMake module to ease the build of simulators. 
+
 Detailed instructions for installation of these tools are available on the OpenFLUID Community web site
-(http://www.openfluid-project.org/community). 
+(<http://community.openfluid-project.org>). 
 
-The OpenFLUID-DevStudio is the recommended environment for simulators development, and is the only one 
-which is officially supported for OpenFLUID wares development.
+Even if simulators can be developped using any text editor, the OpenFLUID-DevStudio is the recommended environment for simulators development.
 
 
-\section dev_createsim_sign Writing the signature
+# Creation of a simulator using OpenFLUID-DevStudio {#dev_createsim_ds}
 
-The simulator signature is a set of informations about the content and behaviour
-of the simulator source code.
-With these informations, the OpenFLUID framework can evaluate the simulator,
-have information on what it does, on what it expects and produces, and can load it dynamically.\n
-The informations included in the signature are :
-<ul>
-<li> Identification
-<li> Development information
-<li> Expected parameters
-<li> Expected variables and spatial attributes
-<li> Produced variables and spatial attributes
-<li> Spatial graph updates
-<li> Time step behaviour
-</ul>   
+The OpenFLUID-DevStudio application is made of a main toolbar located on top, 
+a file navigator on the left side and a file editor on the right side.
 
-Usually, the signature is declared and implemented at the beginning of the .cpp file. 
-It starts with the \if DocIsLaTeX \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
- macro and ends with the \if DocIsLaTeX \b END_SIMULATOR_SIGNATURE \else #END_SIMULATOR_SIGNATURE \endif
- macro.
-The minimal signature must include identification information. See part \ref dev_signature for details on how to write the signature. \n
-\n
-\n
+@image html screenshot_devstudio_overview_html.png "Screenshot of OpenFLUID-DevStudio workspace"
+@image latex screenshot_devstudio_overview.png "Screenshot of OpenFLUID-DevStudio workspace" width=11.5cm
 
-\section emptyclass_sec Writing the C++ class for the simulator 
+To create a new simulator, go to menu _File > New ware > Simulator..._ This opens the new simulator dialog dox. 
+In this dialog box, set the simulator ID and source files names then click _OK_. 
+The Source code of a new simulator is created.  
 
-The C++ class integrates the computational code of the simulator, corresponding to successive stages of simulations.
-You will find a \ref dev_createsim_exmpl below, giving an overview of the source code of an empty simulator. 
-The \ref dev_srccode part gives details about how to develop the computational code in the simulator. 
-\n
-\n
+@image html screenshot_devstudio_newware_html.png "Screenshot of new simulator dialog"
+@image latex screenshot_devstudio_newware.png "Screenshot of new simulator dialog" width=5.5cm
 
-\section dev_createsim_build Building the simulator
+Once created, click on the _Configure_ button of the main toolbar. Once the configure process is completed, 
+click on the _Build_ button to effectively build the simulator. Once the build process is completed, 
+the simulator is ready to use for simulations. The build process must be run each time 
+the simulator source code is modified to take into account these modifications.
 
-Any OpenFLUID simulator must be compiled using the GCC C++ compiler (g++)
-and must be linked to the OpenFLUID libraries and dependencies.\n 
-The recommended way to build your simulator is to use the CMake build system 
-with the OpenFLUID CMake module, and provide CMake configuration files (CMakeLists.txt, CMake.in.config).\n
-These operations can be performed automatically using the OpenFLUID-DevStudio application.\n
-\n
 
-These operations can also be performed manually, with the following steps: 
-<ol>
-<li> Create a build directory in your source directory (e.g. <tt>_build</tt>)
-<li> Go to this build directory
-<li> Run the <tt>cmake ..</tt> command, with the optional <tt>-DCMAKE_BUILD_TYPE=Debug</tt> directive for debugging mode
-<li> Run the build command (e.g. <tt>make</tt>) 
-</ol>
-These steps are for Linux systems, and must be slightly adapted for other systems.\n
-\n
-  
-\section dev_createsim_exmpl Complete example 
+# Complete source code example {#dev_createsim_exmpl}
 
 The example below show a complete example of an empty simulator, 
-including source code and build configuration using the OpenFLUID CMake module.\n
-\n
+including source code and build configuration using the OpenFLUID CMake module.  
 
-\subsection dev_createsim_exmpl_cpp File ExampleSimulator.cpp containing the simulator source code
 
-\code
+## File ExampleSimulator.cpp containing the simulator source code {#dev_createsim_exmpl_cpp}
+
+```cpp
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
@@ -185,7 +150,7 @@ class ExampleSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest runStep()
     {
-      // Here is source code for each step run
+      // Here is source code for each time step
 
       return DefaultDeltaT();
     }
@@ -203,14 +168,15 @@ class ExampleSimulator : public openfluid::ware::PluggableSimulator
 };
 
 
-DEFINE_SIMULATOR_CLASS(ExampleSimulator);
+DEFINE_SIMULATOR_CLASS(ExampleSimulator)
 
-\endcode 
+DEFINE_WARE_LINKUID(WARE_LINKUID)
+```
   
 
-\subsection dev_createsim_exmpl_config File CMake.in.config containing the build configuration 
+## File CMake.in.config containing the build configuration {#dev_createsim_exmpl_config}
  
-\verbatim
+```cmake
 # Simulator ID
 # ex: SET(SIM_ID "my.simulator.id")
 SET(SIM_ID "example.simulator")
@@ -288,13 +254,13 @@ SET(SIM_PARAMSUI_RC )
 # each dataset in the subdir must be names using the test name and suffixed by .IN
 # ex for tests/test01.IN and tests/test02.IN: SET(SIM_TESTS_DATASETS test01 test02)
 #SET(SIM_TESTS_DATASETS )
- \endverbatim
+```
 
 
 
-\subsection dev_createsim_exmpl_cmakelists File CMakeLists.txt defining the build process
+## File CMakeLists.txt defining the build process {#dev_createsim_exmpl_cmakelists}
  
-\verbatim
+```
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 INCLUDE(CMake.in.config)
@@ -302,7 +268,4 @@ INCLUDE(CMake.in.config)
 FIND_PACKAGE(OpenFLUIDHelpers REQUIRED)
 
 OPENFLUID_ADD_SIMULATOR(SIM)
-\endverbatim 
-
-
-*/
+```

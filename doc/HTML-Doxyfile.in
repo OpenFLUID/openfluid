@@ -2,7 +2,7 @@ DOXYFILE_ENCODING      = UTF-8
 
 PROJECT_NAME           = @DOXYGEN_PROJECT_NAME@
 PROJECT_NUMBER         = @OPENFLUID_VERSION_FULL@
-PROJECT_LOGO           = @OFBUILD_DOC_CONTENTS_DIR@/openfluid.png
+PROJECT_LOGO           = @OFBUILD_DOC_CONTENTS_DIR@/images/openfluid_logo_banner_html.png
 
 OUTPUT_DIRECTORY       = @OFBUILD_DIST_MAIN_DOC_DIR@
 
@@ -29,11 +29,11 @@ FILE_PATTERNS          = *.h \
                          *.hxx \
                          *.hpp \
                          *.h++ \
-                         *.dox
+                         *.md
 RECURSIVE              = YES
-EXCLUDE                = .svn
+EXCLUDE                = .svn .git
 EXCLUDE_SYMLINKS       = NO
-IMAGE_PATH             = @OFBUILD_DOC_CONTENTS_DIR@
+IMAGE_PATH             = @OFBUILD_DOC_CONTENTS_DIR@/images
 EXAMPLE_PATH           = @OFBUILD_DOC_CONTENTS_DIR@
 
 GENERATE_MAN     	     = NO
@@ -50,7 +50,7 @@ STRIP_CODE_COMMENTS    = NO
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = @OFBUILD_DOC_LAYOUT_DIR@/header.html
 HTML_FOOTER            = @OFBUILD_DOC_LAYOUT_DIR@/footer.html
-HTML_EXTRA_STYLESHEET  = @OFBUILD_DOC_LAYOUT_DIR@/custom.css
+HTML_EXTRA_STYLESHEET  = @OFBUILD_DOC_LAYOUT_DIR@/doxyopenfluid.css
 HTML_OUTPUT            = html
 
 SEARCHENGINE		       = YES

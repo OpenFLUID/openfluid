@@ -1,0 +1,52 @@
+@mainpage OpenFLUID documentation
+
+<br/>
+
+@if TodoIsDone
+### Introduction to OpenFLUID
+
+* @subpage intro_oview
+* @subpage intro_soft
+* @subpage intro_inst
+
+<br/>
+@endif
+
+
+### Running simulations with OpenFLUID
+
+* @subpage use_apps
+* @subpage use_fluidx
+@if TodoIsDone  
+* @subpage use_buddies
+* @subpage use_examples
+@endif  
+
+<br/>
+
+
+### Development of OpenFLUID simulators
+
+* @subpage dev_oviewsim
+* @subpage dev_createsim
+* @subpage dev_signature
+* @subpage dev_srccode
+* @subpage dev_sim2doc
+
+<br/>
+
+
+### Appendix
+
+* @subpage apdx_optenv
+* @subpage apdx_datetime
+* @subpage apdx_values
+* @subpage apdx_generators
+* @subpage apdx_prj
+* @subpage apdx_workspace
+@if TodoIsDone  
+* @subpage apdx_obsparams
+@endif  
+
+
+

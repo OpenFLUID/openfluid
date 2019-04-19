@@ -1,5 +1,6 @@
 body, table, div, p, dl {
   color : #272727;
+  font-size : 16px;
 }
 
 
@@ -244,4 +245,8 @@ div.fragment {
 	border : none;
 	background-color: #eee;
   padding : 10px;
+}
+
+code {
+  background-color: #eee;
 }

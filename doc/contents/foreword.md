@@ -1,0 +1,23 @@
+@page foreword Foreword
+
+OpenFLUID is a software environment for spatial modelling in landscapes, mainly focused on fluxes.
+It is developed by the LISAH (Laboratory of Interactions Soil-Agrosystem-Hydrosystem, Montpellier, France) 
+which is a joint research unit between INRA (French National Institute for Agricultural Research), 
+IRD (French Institute for Research and Development) and Montpellier SupAgro (International Centre for Higher Education in Agricultural Sciences).
+<br/>
+
+This documentation is made of several parts
+* a guide for running simulations using OpenFLUID, including the construction of input datasets
+* a guide for development of OpenFLUID simulators, either using existing source code or creating source code _de novo_ 
+* an appendix giving useful reference informations
+
+@if DocIsLaTeX
+<br/><br/><br/>
+Detailed informations on scientific concepts underlying the OpenFLUID software
+are available on the official OpenFLUID web site : <https://www.openfluid-project.org>
+
+<br/>
+Practical informations for OpenFLUID users, including usage and development, 
+are available on the OpenFLUID Community site : <https://community.openfluid-project.org>  
+  
+@endif

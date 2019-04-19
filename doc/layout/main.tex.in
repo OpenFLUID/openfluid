@@ -35,6 +35,8 @@
 \usepackage{sectsty}
 \usepackage[titles]{tocloft}
 \usepackage{tikz}
+\usepackage{nextpage}
+\usepackage{doxygen}
 \usepackage{doxyopenfluid}
 \lstset{language=C++,inputencoding=utf8,basicstyle=\footnotesize,breaklines=true,breakatwhitespace=true,tabsize=8,numbers=left }
 \makeindex
@@ -48,39 +50,27 @@
 \begin{document}
 \hypersetup{pageanchor=false,citecolor=blue}
 
-\definecolor{OFBlue}{HTML}{47617B}
 
-% \newcommand{\coverpage}{
-% \begin{titlepage}
-%   \begin{tikzpicture}[remember picture, overlay]
-%     \draw [fill=OFBlue] (-4,4) rectangle (-0.5,-29.7);     
-%     \draw (7.85,-2.0) node {\includegraphics[width=110mm]{openfluid.pdf}};
-%     \draw (16, -12) node [anchor=east] {\fontsize{60}{72}\selectfont{\textbf{OpenFLUID}}};
-%     \draw (16, -14) node [anchor=east] {\fontsize{50}{60}\selectfont{\textbf{in a nutshell}}};
-%     \draw (16, -15.5) node [anchor=east] {\Large{\textbf{Manual for OpenFLUID v$$@OFBUILD_LATEX_VERSION_FULL@$$}}};
-%     \draw (1,-24) node [anchor=west] {\includegraphics[width=40mm]{LISAH.png}};
-%     \draw (16,-24) node [anchor=east,text centered,text width=6cm]{\Large{\textit{Jean-Christophe Fabre, \the\year}}};
-%  \end{tikzpicture}
-% \end{titlepage}
-% }
+%---------- cover page
 
 \newcommand{\coverpage}{
 \begin{titlepage}
   \begin{tikzpicture}[remember picture, overlay]
     \fill[OFBlue] (-2,-9) rectangle (16.7,-15.8);
-    \draw (7,-3.0) node {\includegraphics[width=130mm]{openfluid.pdf}};
-    \draw (15.85, -11) node [anchor=east] {\color{white}\fontsize{60}{72}\selectfont{\textbf{OpenFLUID}}}; 
-    \draw (15.85, -13) node [anchor=east] {\color{white}\fontsize{50}{60}\selectfont{\textbf{in a nutshell}}};
+    \draw (7,-3.0) node {\includegraphics[width=130mm]{images/openfluid_official.pdf}};
+    \draw (15.85, -11) node [anchor=east] {\color{white}\fontsize{60}{72}\selectfont{\textbf{\OFtitlepartone}}}; 
+    \draw (15.85, -13) node [anchor=east] {\color{white}\fontsize{50}{60}\selectfont{\textbf{\OFtitleparttwo}}};
     \draw (15.85, -14.5) node [anchor=east] {\color{white}\Large{\textbf{Manual for OpenFLUID v$$@OFBUILD_LATEX_VERSION_FULL@$$}}};
-    \draw (-0.5,-23.5) node [anchor=west] {\includegraphics[width=40mm]{LISAH.png}};
-    \draw (16,-23.5) node [anchor=east,text centered,text width=6cm]{\Large{\textit{Jean-Christophe Fabre, \the\year}}};
+    \draw (16,-23.5) node [anchor=east,align=right,text width=6cm]{\Large{\textit{The OpenFLUID team }}};
+    \draw (16,-24.1) node [anchor=east,align=right,text width=6cm]{\Large{\textit{\OFmonthname \  \the\year}}};
  \end{tikzpicture}
 \end{titlepage}
 }
 
-
 \coverpage
 
+
+%---------- pages
 
 \clearemptydoublepage
 \pagenumbering{roman}
@@ -90,11 +80,8 @@
 \pagenumbering{arabic}
 \hypersetup{pageanchor=true,citecolor=blue}
 
-%% pages
-
 \frontmatter
 \chapter{\-Foreword}\label{foreword}\hypertarget{foreword}{}\input{foreword}
-
 
 \mainmatter
 
@@ -108,7 +95,7 @@
 %\chapter{\-Installation and resources}\label{intro_install}\hypertarget{intro_install}{}\input{intro_inst}
 
 \part{Running simulations with OpenFLUID}
-\chapter{\-Usage of OpenFLUID applications}\label{use_apps}\hypertarget{use_apps}{}\input{use_apps}
+\chapter{\-OpenFLUID software environment}\label{use_apps}\hypertarget{use_apps}{}\input{use_apps}
 \chapter{\-Format of input datasets}\label{use_fluidx}\hypertarget{use_fluidx}{}\input{use_fluidx}
 % TODO to be completed
 %\chapter{\-OpenFLUID buddies}\label{use_buddies}\hypertarget{use_buddies}{}\input{use_buddies}
@@ -117,25 +104,39 @@
 
 \part{Development of OpenFLUID simulators}
 \chapter{\-Overview of an OpenFLUID simulator}\label{dev_oviewsim}\hypertarget{dev_oviewsim}{}\input{dev_oviewsim}
-\chapter{\-Creation of an empty simulator}\label{dev_createsim}\hypertarget{dev_createsim}{}\input{dev_createsim}
+\chapter{\-Creation of a simulator}\label{dev_createsim}\hypertarget{dev_createsim}{}\input{dev_createsim}
 \chapter{\-Declaration of the simulator signature}\label{dev_signature}\hypertarget{dev_signature}{}\input{dev_signature}
 \chapter{\-Development of the simulator source code}\label{dev_srccode}\hypertarget{dev_srccode}{}\input{dev_srccode}
-\chapter{\-Documenting your simulators}\label{dev_sim2doc}\hypertarget{dev_sim2doc}{}\input{dev_sim2doc}
+\chapter{\-Documenting simulators}\label{dev_sim2doc}\hypertarget{dev_sim2doc}{}\input{dev_sim2doc}
 
 \appendix
 \part{Appendix}
 \chapter{\-Command line options and environment variables}\label{apdx_optenv}\hypertarget{apdx_optenv}{}\input{apdx_optenv}
-% TODO to be completed
-%\chapter{\-Structure of an openfluid project}\label{apdx_prj}\hypertarget{apdx_prj}{}\input{apdx_prj}
 \chapter{\-Datetime formats}\label{apdx_datetime}\hypertarget{apdx_datetime}{}\input{apdx_datetime}
 \chapter{\-String representations of values}\label{apdx_values}\hypertarget{apdx_values}{}\input{apdx_values}
 \chapter{\-File formats for generators}\label{apdx_generators}\hypertarget{apdx_generators}{}\input{apdx_generators}
+\chapter{\-Structure of an OpenFLUID project}\label{apdx_prj}\hypertarget{apdx_prj}{}\input{apdx_prj}
+\chapter{\-Organization of an OpenFLUID workspace}\label{apdx_workspace}\hypertarget{apdx_workspace}{}\input{apdx_workspace}
 % TODO to be completed
 %\chapter{\-Observers parameters}\label{apdx_obsparams}\hypertarget{apdx_obsparams}{}\input{apdx_obsparams}
 
-%% pages
-
 \printindex
+
+
+%---------- back page
+
+\newcommand{\backpage}{
+  \thispagestyle{empty}
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw (-0.5,-23.5) node [anchor=west] {\includegraphics[width=40mm]{images/LISAH.png}};
+    \draw (16,-23.5) node [anchor=east,align=right] {\includegraphics[width=40mm]{images/INRA.png}};
+ \end{tikzpicture}
+}
+
+\cleartoevenpage
+\backpage
+
+
 \end{document}
 
 

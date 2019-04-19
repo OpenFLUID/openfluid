@@ -10,13 +10,13 @@ FULL_PATH_NAMES        = NO
 
 INPUT                  = @OFBUILD_DOC_CONTENTS_DIR@
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.dox
+FILE_PATTERNS          = *.md
 RECURSIVE              = YES
-EXCLUDE                = .svn
+EXCLUDE                = .svn .git
 EXCLUDE_SYMLINKS       = NO
-IMAGE_PATH             = @OFBUILD_DOC_CONTENTS_DIR@
+IMAGE_PATH             = @OFBUILD_DOC_CONTENTS_DIR@/images
 
-GENERATE_MAN     	   = NO
+GENERATE_MAN     	     = NO
 GENERATE_LATEX    	   = YES
 GENERATE_HTML     	   = NO
 GENERATE_HTMLHELP      = NO
@@ -27,7 +27,7 @@ USE_PDFLATEX           = YES
 STRIP_CODE_COMMENTS    = NO
 
 LATEX_OUTPUT           = latex
-LATEX_SOURCE_CODE	   = NO
+LATEX_SOURCE_CODE	     = NO
 
 QUIET                  = YES
 WARNINGS               = YES

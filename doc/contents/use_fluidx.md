@@ -1,131 +1,125 @@
-/**
+@page use_fluidx Format of input datasets
 
-\page use_fluidx Formats of input datasets
+[TOC]
 
-\tableofcontents
-
-This part of the manual describes the FluidX file(s) format used to define a simulation dataset. Refer to the 
-\ref use_apps part of this manual to run the simulations.
-
-An OpenFLUID input dataset includes different informations, defined in one or
+The FluidX file format is used to define a simulation dataset. An OpenFLUID input dataset includes different informations, defined in one or
 many files:
-  \li the spatial domain definition
-  \li the flux model definition
-  \li the spatial domain attributes 
-  \li the monitoring configuration  
-  \li the discrete events
-  \li the run configuration
+* the **coupled model** definition
+* the **spatial domain** definition, including spatial connectivity, attributes and events
+* the **datastore** content
+* the **monitoring** configuration
+* the **run** configuration
 
-All files must be placed into a directory that can be reached by the
-OpenFLUID program used.\n
-As OpenFLUID-Builder uses the FluidX format natively, 
-the entire input dataset  can be created through the OpenFLUID-Builder software.\n
-Out of OpenFLUID-Builder, these FluidX files can be created by hand or using external tools.
-In this case, it is encouraged to write custom scripts in
-dedicated software, such as Geographic Information Systems
-(GIS) or scientific environments such as R.
+All files must be placed into a directory that can be reached by the OpenFLUID program used.
+As OpenFLUID-Builder uses the FluidX format natively, the entire input dataset can be created through the OpenFLUID-Builder software.
+Out of OpenFLUID-Builder, these FluidX files can be created by hand or using external tools : 
+R, Geographic Information Systems (GIS), Text editors, ...
 
 
-\section user_fluidx_overview Overview
+# Overview {#user_fluidx_overview}
 
-The FluidX file format is an XML based format for OpenFLUID input datasets.
-The OpenFLUID input information can be provided by a one or many files using
-this FluidX formatn with the <tt>.fluidx</tt> file extension.
+The FluidX file format is an XML based format defined for OpenFLUID input datasets.
+An OpenFLUID dataset can be provided by a one or many files using
+this FluidX format. The file (s) name(s) must use the `.fluidx` file extension.
 
 Whatever the input information is put into one or many files, the following
 sections must be defined in the input file(s) set:
-<ul>
-  <li> The <i>model</i> section defined by the \c \<model\> tag
-  <li> The <i>spatial domain</i> section defined by the \c \<domain\> tag
-  <li> The <i>run configuration</i> section defined by the \c \<run\> tag
-  <li> The <i>monitoring</i> section defined by the \c \<monitoring\> tag  
-</ul>
+* The [model](@ref user_fluidx_sections_model) section defined by the `<model>` tag
+* The [spatial domain](@ref user_fluidx_sections_spatialdomain) section defined by the `<domain>` tag
+* The [datastore](@ref user_fluidx_sections_datastore) section defined by the `<datastore>` tag
+* The [monitoring](@ref user_fluidx_sections_monitoring) section defined by the `<monitoring>` tag
+* The [run](@ref user_fluidx_sections_run) section defined by the `<run>` tag
+
+
 The order of these sections is not significant. All of these sections must be
-inclosed into an \a openfluid section defined by the \c \<openfluid\>
+inclosed into an _openfluid_ section defined by the `<openfluid>`
 tag.
 
-\n
+
 
 Summary view of the XML structure of FluidX files:
-\code{.xml}
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
 
   <model>
-    <!-- here is the model definition -->
+    // here is the model definition
   </model>
 
   <domain>
-    <!-- here is the spatial domain definition, associated data and events -->   
+    // here is the spatial domain definition
+    // with connectivity, attributes and events
   </domain>
 
+  <datastore>
+    // here is the datastore content
+  </datastore>
+
   <monitoring>
-    <!-- here is the monitoring definition -->
+    // here is the monitoring definition
   </monitoring>
 
   <run>
-    <!-- here is the run configuration -->
+    // here is the run configuration
   </run>
 
 </openfluid>
-\endcode
+```
+
+# Sections {#user_fluidx_sections}
 
 
-\section user_fluidx_sections Sections
-
-
-\subsection user_fluidx_sections_model Model section
+## Model section {#user_fluidx_sections_model}
 
 
 The coupled model is defined by an ordered set of simulators and/or data generators 
-that will be automatically plugged and run by the OpenFLUID environment.
+that will be automatically plugged in and run by the OpenFLUID environment.
 It can also include a section for global parameters which
 apply to all simulators and generators. The global parameters may
 be overridden by local parameters of simulators or generators.
 
 
 The coupled model must be defined in a section delimited by the
-\c \<model\> tag, and must be structured following these rules:
-<ul>
-  <li> Inside the \c \<model\> tag, there must be a set of
-  \c \<simulator\>, \c \<generator\> and \c \<gparams\> tags
-  <li> Each \c \<simulator\> tag must bring an \c ID attribute giving
-  the identifier of the simulator; the value of the \c ID
+`<model>` tag, and must be structured following these rules:
+* Inside the `<model>` tag, there must be a set made of at least one 
+  `<simulator>` or `<generator>` tags, and an optional `<gparams>` tag.
+* Each `<simulator>` tag must bring an `ID` attribute giving
+  the identifier of the simulator; the value of the `ID`
   attribute must match the ID of an available and
-  pluggable simulator.
-  <li> Each \c \<simulator\> tag may include zero to many \c \<param\> tags giving
-  parameters to the simulator. Each \c \<param\> tag must bring a \c name attribute giving
-  the name of the parameter and a \c value attribute giving the value of the parameter.
-  These parameters can be scalar or vector of integer values, floating point values, string values.
-  In case of vector, the values of the vector are separated by a \c ; (semicolon).
-  <li> Each \c \<generator\> tag must bring a \c varname attribute giving 
-  the name of the produced variable, a \c unitsclass attribute giving the 
-  unit class of the produced variable, a \c method attribute giving the 
-  method used to produce the variable (\c fixed for constant value,
-  \c random for random value in a range, \c interp for a time-interpolated
-  value from given data series, \c inject for an
-  injected value -no time interpolation- from given data series). An optional \c \<varsize\>
+  pluggable simulator. It also brings an `enabled` tag giving the active state 
+  of the simulator (if missing, default value is _1_ for active).
+* Each `<simulator>` tag may include zero to many `<param>` tags giving
+  parameters to the simulator. Each `<param>` tag must bring a `name` attribute giving
+  the name of the parameter and a `value` attribute giving the value of the parameter.
+* Each `<generator>` tag must bring a `varname` attribute giving 
+  the name of the produced variable, a `unitsclass` attribute giving the 
+  unit class of the produced variable, a `method` attribute giving the 
+  method used to produce the variable (`fixed` for constant value,
+  `random` for random value in a range, `interp` for a time-interpolated
+  value from given data series, `inject` for an
+  injected value -no time interpolation- from given data series). An optional `<varsize>`
   attribute can be set in order to produce a vector variable instead of a scalar variable.
-  <li> Each \c \<generator\> tag may include zero to many \c \<param\>
-  tags giving parameters to the generator. Each \c \<param\> tag must bring
-  a \c name attribute giving the name of the parameter and a \c value 
+  It also brings an `enabled` tag giving the active state 
+  of the simulator (if missing, default value is _1_ for active).
+* Each `<generator>` tag may include zero to many `<param>`
+  tags giving parameters to the generator. Each `<param>` tag must bring
+  a `name` attribute giving the name of the parameter and a `value` 
   attribute giving the value of the parameter.
-  <li> A generator using the \c fixed method must provide a
-  param named \c fixedvalue for the value to produce.
-  <li> A generator using the \c random method must provide a
-  param named \c min and a param named \c max delimiting the
+* A generator using the `fixed` method must provide a
+  parameter named _fixedvalue_ for the value to produce.
+* A generator using the `random` method must provide a
+  parameter named _min_ and a parameter named _max_ delimiting the
   random range for the value to produce.
-  <li> A generator using the \c inject or \c interp method must provide a
-  param named \c sources giving the data sources filename and a param
-  named \c distribution giving the distribution filename for the value to
-  produce (see also \ref apdx_generators).
-  <li> Each \c \<gparams\> tag may include zero to many \c \<param\>
-  tags giving the global parameters. Each \c \<param\> tag
-  must bring a \c name attribute giving the name of the parameter and a \c value 
+* A generator using the `inject` or `interp` method must provide a
+  parameter named _sources_ giving the data sources filename and a param
+  named _distribution_ giving the distribution filename for the value to
+  produce (see also @ref apdx_generators).
+* Each `<gparams>` tag may include zero to many `<param>`
+  tags giving the global parameters. Each `<param>` tag
+  must bring a `name` attribute giving the name of the parameter and a `value` 
   attribute giving the value of the parameter.
-</ul>
 
-\code{.xml}
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <model>
@@ -135,18 +129,19 @@ The coupled model must be defined in a section delimited by the
       <param name="gparam2" value="0.1" />
     </gparams>
 
-    <simulator ID="example.simulatorA" />
+    <simulator ID="example.simulatorA" enabled="1" />
 
-    <generator varname="example.generator.fixed" unitsclass="EU1" method="fixed" varsize="11">
+    <generator varname="example.generator.fixed" unitsclass="EU1" 
+               method="fixed" varsize="11" enabled="1">
       <param name="fixedvalue" value="20" />
     </generator>
 
-    <generator varname="example.generator.random" unitsclass="EU2" method="random">
+    <generator varname="example.generator.random" unitsclass="EU2" method="random" enabled="1">
       <param name="min" value="20.53" />
       <param name="max" value="50" />
     </generator>
 
-    <simulator ID="example.simulatorB">
+    <simulator ID="example.simulatorB" enabled="0">
       <param name="param1" value="strvalue" />
       <param name="param2" value="1.1" />
       <param name="gparam1" value="50" />
@@ -154,47 +149,44 @@ The coupled model must be defined in a section delimited by the
 
   </model>
 </openfluid>
-\endcode
+```
 
 
-\warning There must be only one model definition in the input dataset.
+@warning There must be only one model definition in the input dataset.
 
-\warning The order of the simulators and data generators in the \c \<model\> section is important : 
-this order will be the call order at initialization time, and the permanent call order in synchronized 
+@warning The order of the simulators and data generators in the `<model>` section is important : 
+this order will be the call order at initialization time and during simulations in synchronized 
 coupled model (not applicable for variable time coupled models)
 
 
 
-\subsection user_fluidx_sections_spatialdomain Spatial domain section
+## Spatial domain section {#user_fluidx_sections_spatialdomain}
 
-\subsubsection user_fluidx_sections_spatialdomain_def Definition and connectivity
+### Definition and connectivity {#user_fluidx_sections_spatialdomain_def}
 
 
 The spatial domain is defined by a set of spatial units that are connected each others.
 These spatial units are defined by a numerical identifier (ID) and a class.
-They also include information about the processing order of the unit in the class.
+They also include informations about the processing order of the unit in the class.
 Each unit can be connected to zero or many other units from the same or a different unit class.
 The spatial domain definition must be defined in a section delimited
-by the \c \<definition\> tag, which is a sub-section of the \c domain
+by the `<definition>` tag, which is a sub-section of the `<domain>`
 tag, and must be structured following these rules:
-<ul>
-  <li> Inside the \c \<definition\> tag, there must be a set of
-  \c \<unit\> tags
-  <li> Each \c \<unit\> tag must bring an \c ID attribute giving
-  the identifier of the unit, a \c class attribute giving the class of
-  the unit, a \c pcsorder attribute giving the process order in the
+* Inside the `<definition>` tag, there must be a set of `<unit>` tags
+* Each `<unit>` tag must bring an `ID` attribute giving
+  the identifier of the unit, a `class` attribute giving the class of
+  the unit, a `pcsorder` attribute giving the process order in the
   class of the unit
-  <li> Each \c \<unit\> tag may include zero or many \c \<to\> tags giving
-  the outgoing connections to other units. Each \c \<to\> tag must bring an
-  \c ID attribute giving the identifier of the connected unit and a
-  \c class attribute giving the class of the connected unit
-  <li> Each \c \<unit\> tag may include zero or many \c \<childof\>
-  tags giving the parent units. Each \c \<childof\> tag must bring an
-  \c ID attribute giving the identifier of the parent unit and a
-  \c class attribute giving the class of the parent unit   
-</ul>
+* Each `<unit>` tag may include zero or many `<to>` tags giving
+  the _to_ connections to other units. Each `<to>` tag must bring an
+  `ID` attribute giving the identifier of the connected unit and a
+  `class` attribute giving the class of the connected unit
+* Each `<unit>` tag may include zero or many `<childof>`
+  tags giving the _child-parent_ connections to other units. Each `<childof>` tag must bring an
+  `ID` attribute giving the identifier of the parent unit and a
+  `class` attribute giving the class of the parent unit
 
-\code{.xml}
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <domain>
@@ -216,30 +208,29 @@ tag, and must be structured following these rules:
     </definition>
   </domain>
 </openfluid>
-\endcode
+```
 
 
-\subsubsection user_fluidx_sections_spatialdomain_attrs Attributes
+### Attributes {#user_fluidx_sections_spatialdomain_attrs}
 
 The spatial attributes are static data associated to each spatial unit,
-usually properties and initial conditions.\n
+usually properties and initial conditions.  
 The spatial domain attributes must be defined in a section delimited
-by the \c \<attributes\> tag, which is a sub-section of the \c domain
+by the `<attributes>` tag, which is a sub-section of the `<domain>`
 tag, and must be structured following these rules:
-<ul>
-  <li> The \c \<attributes\> tag must bring an \c unitsclass
+* The `<attributes>` tag must bring an `unitsclass`
   attribute giving the unit class to which the attributes must be attached, and a
-  \c colorder attribute giving the order of the contained column-formatted
+  `colorder` attribute giving the order of the contained column-formatted
   data
-  <li> Inside the \c \<attributes\> tag, there must be the attributes as 
+* Inside the `<attributes>` tag, there must be the attributes as 
   row-column text. As a rule, the first column is the ID of the unit in the class
-  given through the \c unitsclass attribute of \c \<attributes\>
+  given through the `unitsclass` attribute of `<attributes>`
   tag, the following columns are values following the column order given
-  through the \c colorder attribute of the \c \<attributes\> tag.
-  Values for the data can be real, integer, string, vector or matrix.
-</ul>
+  through the `colorder` attribute of the `<attributes>` tag.
+  Values for the data can be double, integer, boolean, string, vector, 
+  matrix or map formatted as strings (see part @ref apdx_values).
 
-\code{.xml}
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <domain>
@@ -255,30 +246,30 @@ tag, and must be structured following these rules:
 
   </domain>
 </openfluid>
-\endcode
+```
 
 
 
-\subsubsection user_fluidx_sections_spatialdomain_events Discrete events
+### Discrete events {#user_fluidx_sections_spatialdomain_events}
 
 The discrete events are events occurring on units, and can be processed by simulators. 
 The spatial events must be defined in a section delimited
-by the \c \<calendar\> tag, which is a sub-section of the \c \<domain\>
+by the `<calendar>` tag, which is a sub-section of the `<domain>`
 tag, and must be structured following these rules:
 
-<ul>
-  <li> Inside the \c \<calendar\> tag, there must be a set of \c \<event\> tags 
-  <li> Each \c \<event\> tag must bring an \c unitID and an 
-  \c unitsclass attribute giving the unit on which occurs the event, a 
-  \c date attribute giving the date and time of the event. The date
+
+* Inside the `<calendar>` tag, there must be a set of `<event>` tags 
+* Each `<event>` tag must bring an `unitID` and an 
+  `unitsclass` attribute giving the unit on which occurs the event, a 
+  `date` attribute giving the date and time of the event. The date
   format must be "YYYY-MM-DD hh:mm:ss".
-  <li> Each \c \<event\> tag may include zero to many \c \<info\> tags.
-  <li> Each \c \<info\> tag give information about the event and must
-  bring a \c key attribute giving the name (the "key") of the info, and a
-  \c value attribute giving the value for this key.
-</ul>  
+* Each `<event>` tag may include zero to many `<info>` tags.
+* Each `<info>` tag give information about the event and must
+  bring a `key` attribute giving the name (the "key") of the info, and a
+  `value` attribute giving the value for this key.
   
-\code{.xml}
+  
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <domain>
@@ -302,26 +293,25 @@ tag, and must be structured following these rules:
     </calendar>
   </domain>
 </openfluid>
-\endcode
+```
 
 
 
-
-\subsection user_fluidx_sections_datastore Datastore section
+## Datastore section {#user_fluidx_sections_datastore}
 
 The datastore lists external data which is available during the simulation.
 The datastore content must be defined in a section delimited by the
-\c \<datastore\> tag, and must be structured following these rules:
-<ul>
-  <li> Inside the \c \<datastore\> tag, there must be a set of \c \<dataitem\> tags
-  <li> Each \c \<dataitem\> tag must bring an \c ID attribute giving
-  the unique identifier of the dataitem, a \c type attribute giving the type
-  of the dataitem (only the geovector and georaster types are currently available), and a \c source 
-  attribute giving the source of the dataitem. An optional \c unitsclass 
-  attribute is possible for giving the spatial unit class associated to the data. 
-</ul>
+`<datastore>` tag, and must be structured following these rules:
 
-\code{.xml}
+* Inside the `<datastore>` tag, there must be a set of `<dataitem>` tags
+* Each `<dataitem>` tag must bring an `ID` attribute giving
+  the unique identifier of the dataitem, a `type` attribute giving the type
+  of the dataitem (only the geovector and georaster types are currently available), and a `source` 
+  attribute giving the source of the dataitem. An optional `unitsclass` 
+  attribute is possible for giving the spatial unit class associated to the data. 
+
+
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <datastore>
@@ -333,46 +323,45 @@ The datastore content must be defined in a section delimited by the
 
   </datastore>
 </openfluid>
-\endcode
+```
 
 
 
-\subsection user_fluidx_sections_monitoring Monitoring section
+## Monitoring section {#user_fluidx_sections_monitoring}
 
 The monitoring is defined by a set of observers that will be automatically 
 plugged and executed by the OpenFLUID environment.
 Observers are usually used for exporting formatted data from the simulation or performs
-continuous control during the simulation.\n
+continuous control during the simulation.  
 
-\note OpenFLUID provides observers for exporting data to CSV formatted files,
+@note OpenFLUID provides observers for exporting data to CSV formatted files,
 KML formatted files (for use with Google Earth), and DOT formatted files (for graph representations). 
 
 
 The monitoring must be defined in a section delimited by the
-\c \<monitoring\> tag, and must be structured following these rules:
-<ul>
-  <li> Inside the \c \<monitoring\> tag, there may be a set of
-  \c \<observer\> tags
-  <li> Each \c \<observer\> tag must bring an \c ID attribute giving
-  the identifier of the observer; the value of the \c ID
+`<monitoring>` tag, and must be structured following these rules:
+
+* Inside the `<monitoring>` tag, there may be a set of
+  `<observer>` tags
+* Each `<observer>` tag must bring an `ID` attribute giving
+  the identifier of the observer; the value of the `ID`
   attribute must match the ID of an available and
-  pluggable observer.
-  <li> Each \c \<observer\> tag may include zero to many \c \<param\> tags giving
-  parameters to the observer. Each \c \<param\> tag must bring a \c name attribute giving
-  the name of the parameter and a \c value attribute giving the value of the parameter.
-  These parameters can be scalar or vector of integer values, floating point values, string values.
-</ul>
+  pluggable observer. It also brings an `enabled` tag giving the active state 
+  of the simulator (if missing, default value is _1_ for active).
+* Each `<observer>` tag may include zero to many `<param>` tags giving
+  parameters to the observer. Each `<param>` tag must bring a `name` attribute giving
+  the name of the parameter and a `value` attribute giving the value of the parameter.
 
 
-\note Refer to observers signatures for details about specific parameters for each observer. 
+@note Refer to observers signatures for details about specific parameters for each observer. 
 
 
-\code{.xml}
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <monitoring>
     
-    <observer ID="export.vars.files.csv">
+    <observer ID="export.vars.files.csv" enabled="1">
       <param name="format.f1.header" value="colnames-as-comment" />
       <param name="format.f1.date" value="%Y-%m-%d %H:%M:%S" />
       <param name="format.f1.precision" value="8" />
@@ -390,7 +379,7 @@ The monitoring must be defined in a section delimited by the
       <param name="set.s2.format" value="f2" />
     </observer>
     
-    <observer ID="export.vars.files.kml-anim" >
+    <observer ID="export.vars.files.kml-anim" enabled="1">
       <param name="layers.anim.unitsclass" value="TestUnits" />
       <param name="layers.anim.varname" value="tests.double" />
       <param name="layers.anim.sourcetype" value="file" />
@@ -408,40 +397,40 @@ The monitoring must be defined in a section delimited by the
     
   </monitoring>
 </openfluid>
-\endcode
+```
 
-\warning There must be only one monitoring definition in the input dataset.
+@warning There must be only one monitoring definition in the input dataset.
 
 
 
-\subsection user_fluidx_sections_run Run configuration section
+## Run configuration section {#user_fluidx_sections_run}
 
 The configuration of the simulation gives the simulation period, the default coupling time step
 and the optional coupling constraint.
 The run configuration must be defined in a section delimited by the
-\c \<run\> tag, and must be structured following these rules:
-<ul>
-  <li> Inside the \c \<run\> tag, there must be a \c \<scheduling\> tag
-  giving the scheduling informations of the model coupling.
-  <li> The \c \<scheduling\> tag must bring a \c deltat attribute 
-  giving the number of second for the default DeltaT time step, 
-  and a \c constraint attribute giving an optional constraint applied to the coupling.
-  The values for the \c constraint attribute can be \c none for no constraint,
-  \c dt-checked to check that coupling is synchronized with the default DeltaT time step,
-  \c dt-forced to force coupling at the default DeltaT time step 
-  ignoring the scheduling requests from simulators or generators.
-  <li> Inside the \c \<run\> tag, there must be a \c \<period\> tag
-  giving the simulation period.
-  <li> The \c \<period\> tag must bring a \c begin and an
-  \c end attributes, giving the dates of the beginning and the end of the
-  simulation period. The date format for these attributes must be
-  <tt>YYYY-MM-DD hh:mm:ss</tt>
-  <li> Inside the \c \<run\> tag, there may be a \c \<valuesbuffer\>
-  tag for the number of produced values kept in memory. The number of values is given
-  through a \c size attribute. If not present, all values are kept in memory.
-</ul>
+`<run>` tag, and must be structured following these rules:
 
-\code{.xml}
+* Inside the `<run>` tag, there must be a `<scheduling>` tag
+  giving the scheduling informations of the model coupling.
+* The `<scheduling>` tag must bring a `deltat` attribute 
+  giving the number of second for the default DeltaT time step, 
+  and a `constraint` attribute giving an optional constraint applied to the coupling.
+  The values for the `constraint` attribute can be `none` for no constraint,
+  `dt-checked` to check that coupling is synchronized with the default DeltaT time step,
+  `dt-forced` to force coupling at the default DeltaT time step 
+  ignoring the scheduling requests from simulators or generators.
+* Inside the `<run>` tag, there must be a `<period>` tag
+  giving the simulation period.
+* The `<period>` tag must bring a `begin` and an
+  `end` attributes, giving the dates of the beginning and the end of the
+  simulation period. The date format for these attributes must be
+  `YYYY-MM-DD hh:mm:ss`
+* Inside the `<run>` tag, there may be a `<valuesbuffer>`
+  tag for the number of produced values kept in memory. The number of values is given
+  through a `size` attribute. If not present, all values are kept in memory.
+
+
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <run>
@@ -453,20 +442,20 @@ The run configuration must be defined in a section delimited by the
     
   </run>
 </openfluid>
-\endcode
+```
 
 
-\section user_fluidx_params_replacements Runtime variables in parameters
+# Runtime variables in parameters {#user_fluidx_params_replacements}
 
 Parameters of simulators and observers can include variables that will be replaced by corresponding values at runtime.
 These variables are :
-<ul>
-<li><tt>${dir.input}</tt> is replaced by the complete path to the input dataset directory
-<li><tt>${dir.output}</tt> is replaced by the complete path to the output results directory
-<li><tt>${dir.temp}</tt> is replaced by the complete path to the directory dedicated to temporary files
-</ul> 
 
-\code{.xml}
+* `${dir.input}` is replaced by the complete path to the input dataset directory
+* `${dir.output}` is replaced by the complete path to the output results directory
+* `${dir.temp}` is replaced by the complete path to the directory dedicated to temporary files
+ 
+
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
   <model>
@@ -481,12 +470,12 @@ These variables are :
     
   </model>
 </openfluid>
-\endcode
+```
 
 
-\section use_fluidx_exmpl Example of an input dataset as a single FluidX file
+# Example of an input dataset as a single FluidX file {#use_fluidx_exmpl}
 
-\code{.xml}
+```.xml
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
 
@@ -495,17 +484,17 @@ These variables are :
       <param name="gparam1" value="100" />
       <param name="gparam2" value="0.1" />
     </gparams>
-    <simulator fileID="example.simulatorA" />
+    <simulator fileID="example.simulatorA" enabled="1"/>
     <generator varname="example.generator.fixed" unitsclass="EU1"
-               method="fixed" varsize="11">
+               method="fixed" varsize="11" enabled="1">
       <param name="fixedvalue" value="20" />
     </generator>
     <generator varname="example.generator.random" unitsclass="EU2" 
-               method="random">
+               method="random" enabled="1">
       <param name="min" value="20.53" />
       <param name="max" value="50" />
     </generator>
-    <simulator fileID="example.simulatorB">
+    <simulator fileID="example.simulatorB" enabled="0">
       <param name="param1" value="strvalue" />
       <param name="param2" value="1.1" />
       <param name="gparam1" value="50" />
@@ -564,7 +553,7 @@ These variables are :
 
 
   <monitoring>
-    <observer ID="export.vars.files.csv">
+    <observer ID="export.vars.files.csv" enabled="1">
       <param name="format.f1.header" value="colnames-as-comment" />
       <param name="format.f1.date" value="%Y-%m-%d %H:%M:%S" />
       <param name="format.f1.precision" value="8" />
@@ -578,7 +567,7 @@ These variables are :
       <param name="set.s2.vars" value="tests.double;tests.string" />
       <param name="set.s2.format" value="f2" />
     </observer>   
-    <observer ID="export.vars.files.kml-anim" >
+    <observer ID="export.vars.files.kml-anim" enabled="1">
       <param name="layers.anim.unitsclass" value="TestUnits" />
       <param name="layers.anim.varname" value="tests.double" />
       <param name="layers.anim.sourcetype" value="file" />
@@ -595,10 +584,5 @@ These variables are :
   </monitoring>
 
 </openfluid>
-\endcode
+```
 
-\n 
-
-
-
-*/
