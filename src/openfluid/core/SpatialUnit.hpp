@@ -335,7 +335,9 @@ class OPENFLUID_API SpatialUnit
 
 };
 
-
+/**
+  @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit instead
+*/
 [[deprecated]] typedef SpatialUnit Unit;
 
 
