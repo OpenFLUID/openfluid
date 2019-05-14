@@ -1,0 +1,34 @@
+\subsection{Interpolation dans le temps}
+La fonction réalise tout d'abord une interpolation linéaire des données pluviométriques au pas de temps de simulation du modèle. Pour cela, la fonction récupère les données de pluie présentent dans le (ou les) fichier(s) spécifié(s) par l'utilisateur. Ces fichiers doivent contenir les données pluviométriques sous forme de hauteurs d'eau. Il peut il y avoir autant de fichiers que de pluviomètres. Aucun nom ou syntaxe particulière ne sont nécessaires. Les données doivent être formatées de la façon suivante avec un espace comme séparateur :
+
+\begin{verbatim}
+%AA MM JJ hh mm ss Pluie(mm)
+2009 10 21 23 10 00 0.5
+\end{verbatim}
+
+Le calcul de la pluie pour chaque pas de temps étant réalisé par interpolation, un paramètre numérique a été ajouté. Il s'agit de la pluie seuil $P_{threshold}$ (en $m$) en dessous de laquelle la pluie calculée est considérée comme nulle. Ce paramètre est à moduler en fonction du pas de temps de simulation.
+
+
+\subsection{Distribution dans l'espace}
+Ensuite, la fonction distribue les hauteurs de pluie calculées pour chaque pas de temps dans l'espace. Pour cette opération, deux fichiers permettent de relier les données pluviométriques à chaque unité de surface SU.\\
+
+Le fichier ``\textbf{rainsources.xml}'' permet d'attribuer un identifiant unique pour chaque fichier pluviométrique. La structure du fichier .xml doit être la suivante :
+
+\begin{verbatim}
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid>
+  <datasources>
+    <filesource ID="1" file="raingauge_1" />
+    <filesource ID="2" file="raingauge_3" />
+  </datasources>
+</openfluid>
+\end{verbatim}
+
+Le fichier ``\textbf{SUraindistri.dat}'' affecte, pour chaque SU, un fichier de pluie grâce aux identifiants attribués précédemment. Le format du fichier est le suivant :
+
+\begin{verbatim}
+%SU ID   Pluvio ID
+1   2
+\end{verbatim}
+
+Les fichiers de pluies et le fichier ``\textbf{rainsources.xml}'' sont communs avec la fonction ``Distribution des données pluviométriques sur les RS''.

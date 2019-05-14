@@ -1,0 +1,32 @@
+\subsection{Time interpolation}
+First of all, the function linearly interpolates rain data at the given model time step. Rainfall data are loaded by the function from rain gauge source file. This file contains rain in the form of water height in millimeter. There can be as many rain source files as rain gauges. No specific name or syntax are necessary. Data must be formatted as following with space as separator :
+\begin{verbatim}
+%AA MM JJ hh mm ss Rain(mm)
+2009 10 21 23 10 00 0.5
+\end{verbatim}
+
+The calculation of rain height for each simulation time step requires a numerical parameter which corrects interpolation error. This parameter is the threshold rain $P_{threshold}$ (in $m$). If the calculated rain height on simulation time step is lower than $P_{threshold}$, the value is considered as null. This parameter could be modulated as a function of simulation time step.
+
+
+\subsection{Space distribution}
+Then, the function distributes rain height previously calculated in space. Two extrafiles are required to link rain data files to each surface unit.\\
+
+The ``\textbf{rainsources.xml}'' file gives a unique identification number for each rainfall data file. The structure of .xml file must be as following :
+\begin{verbatim}
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid>
+  <datasources>
+    <filesource ID="1" file="raingauge_1" />
+    <filesource ID="2" file="raingauge_3" />
+  </datasources>
+</openfluid>
+\end{verbatim}
+
+The ``\textbf{SUraindistri.dat}'' file allocates a rain data file to each SU using identification number. The format of this file is given hereafter :
+\vspace{-3.5mm}
+\begin{verbatim}
+%SU ID   Pluvio ID
+1   2
+\end{verbatim}
+
+Rain gauge data files and ``\textbf{rainsources.xml}'' file are the same ones as those used by the ``Distribution of rainfall on RS'' function.

@@ -1,0 +1,90 @@
+\subsection{Function name}
+The name (fileID) of the simulation function is \texttt{\FileID}.
+
+
+\subsection{Function parameters}
+The function ``\englishname'' must be used with the following parameter :
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|llcc|}
+ \hline
+\it Symbol & \it Name & \it Value range & \it Unit \\
+ \hline
+$Res Step$ & \texttt{\ParamA} & $>0$ & $m$ \\
+\hline
+\end{tabular} 
+\vspace{1em}
+
+Thus, the correct syntax to use in the \texttt{model.xml} file is illustrated hereafter :
+
+\begin{small}
+\begin{verbatim}
+<function fileID="water.surf-uz.runoff
+          -infiltration.mseytoux">
+    <param name="resstep"
+           value="0.000005" />
+</function>
+\end{verbatim}
+\end{small}
+
+
+
+\subsection{Unit properties required}
+Some of the soil properties are required. These are described in the following table :
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|llcc|}
+ \hline
+\it Symbol &\it Name & \it Value range & \it Unit \\
+ \hline
+$K_s$ & \texttt{\PropDisA} & $\geq 0$ & $m/s$ \\
+$\theta_r $ & \texttt{\PropDisB} & $0 \le \theta_r \le 1$ & $m\up{3}/m\up{3}$ \\
+$\theta_s$ & \texttt{\PropDisC} & $0 \le \theta_s \le 1$ & $m\up{3}/m\up{3}$ \\
+$\beta_{MS}$ & \texttt{\PropDisD} & $>0$ & $-$ \\
+$H_c$ & \texttt{\PropDisE} & $\geq 0$ & $m$ \\
+$A_{SU}$ & \texttt{\PropDisF} & $>0$ & $m\up2$ \\
+\hline
+\end{tabular}
+\vspace{1em}
+
+The condition $\theta_r \le \theta_s$ must be verified.\\
+
+
+
+\subsection{Initial conditions}
+The function ``\englishname`` requires an initial condition which is located in the \texttt{SUini.ddata.xml} file.
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|llcc|}
+ \hline
+\it Symbol & \it Name & \it Value range & \it Unit \\
+ \hline
+$\theta_i$ & \texttt{\InitA} & $0 \le \theta_i \le 1$ & $m\up{3}/m\up{3}$ \\
+\hline
+\end{tabular} 
+\vspace{1em}
+
+The condition $\theta_r \le \theta_i \le \theta_s$ must be verified.\\
+
+
+
+\subsection{Variables}
+Variables produced, required and updated by this function are listed hereafter :
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|lll|}
+ \hline
+\it Symbol & \it Name & \it Unit \\
+ \hline
+$R$ & \texttt{\VarProdA} & $m$ \\
+$I$ & \texttt{\VarProdB} & $m$ \\
+$Q_{SU}$ & \texttt{\VarUsedA} & $m\up{3}/s$ \\
+$K_s$ & \texttt{\VarUsedB} & $m/s$ \\
+$P$ & \texttt{\VarRequirA} & $m$ \\
+\hline
+\end{tabular} 
+\vspace{1em}

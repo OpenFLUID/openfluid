@@ -1,0 +1,57 @@
+\subsection{Function parameters}
+The function ``\englishname'' must be used with the following parameter :
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|llcc|}
+ \hline
+\it Symbol & \it Name & \it Value range & \it Unit \\
+ \hline
+$P_{threshold}$ & \texttt{\ParamA} & $\geq 0$ & $m$ \\
+\hline
+\end{tabular} 
+\vspace{1em}
+
+Thus, the correct syntax to use in the \texttt{model.xml} file is illustrated hereafter :
+
+\begin{verbatim}
+<function fileID="water.atm-surf.
+          rain-su.files">
+    <param name="threshold"
+           value="0.0001" />
+</function>
+\end{verbatim}
+
+
+
+\subsection{Variables}
+Variable produced by this function is indicated hereafter.
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|lll|}
+ \hline
+\it Symbol & \it Name & \it Unit \\
+ \hline
+$P$ & \texttt{\VarProdA} & $m$ \\
+\hline
+\end{tabular} 
+\vspace{1em}
+
+
+
+
+\subsection{Extra files}
+The ``\englishname'' function requires several extra files :\\
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|l|}
+ \hline
+\it File name \\
+ \hline
+rainsources.xml \\
+SUraindistri.dat \\
+\hline
+\end{tabular} 
+\vspace{1em}

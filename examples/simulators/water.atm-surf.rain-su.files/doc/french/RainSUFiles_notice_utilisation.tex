@@ -1,0 +1,57 @@
+\subsection{Nom de la fonction}
+Le nom (fileID) de la fonction de simulation est \texttt{\FileID}.
+
+\subsection{Paramètres de la fonction}
+La fonction ``\frenchname'' doit être utilisée et renseignée avec le paramètre suivant :\\
+
+
+\hspace{-0.5cm}
+\begin{tabular}{|llcc|}
+ \hline
+\it Symbole & \it Nom & \it Valeurs & \it Unité \\
+ \hline
+$P_{threshold}$ & \texttt{\ParamA} & $\geq 0$ & $m$ \\
+\hline
+\end{tabular} 
+\vspace{1em}
+
+La syntaxe correcte de déclaration d'utilisation de la fonction dans le fichier \texttt{model.xml} doit ressembler à l'exemple illustré ci-après :
+
+\begin{verbatim}
+<function fileID="water.atm-surf.
+          rain-su.files">
+    <param name="threshold"
+           value="0.0001" />
+</function>
+\end{verbatim}
+
+
+\subsection{Variables}
+La variable produite par cette fonction est indiquée dans le tableau ci-après :
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|lll|}
+ \hline
+\it Symbole & \it Nom & \it Unité \\
+ \hline
+$P$ & \texttt{\VarProdA} & $m$ \\
+\hline
+\end{tabular} 
+\vspace{1em}
+
+
+\subsection{Fichiers}
+La fonction ``\frenchname'' nécessite plusieurs fichiers :\\
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|l|}
+ \hline
+\it Nom du fichier \\
+ \hline
+rainsources.xml \\
+SUraindistri.dat \\
+\hline
+\end{tabular} 
+\vspace{1em}
