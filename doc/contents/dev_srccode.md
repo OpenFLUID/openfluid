@@ -475,9 +475,9 @@ _Example of code:_
 ```.cpp
 openfluid::base::SchedulingRequest runStep()
 {
-  long int Duration = OPENFLUID_GetSimulationDuration();
+  openfluid::core::Duration_t Duration = OPENFLUID_GetSimulationDuration();
 
-  long int CurrentIndex = OPENFLUID_GetCurrentTimeIndex();
+  openfluid::core::TimeIndex_t CurrentIndex = OPENFLUID_GetCurrentTimeIndex();
   openfluid::core::DateTime CurrentDT = OPENFLUID_GetCurrentDate();  
   
   return DefaultDeltaT();      
@@ -687,9 +687,8 @@ _Example of process of events occurring on the current time step:_
 openfluid::base::SchedulingRequest runStep()
 {
   openfluid::core::SpatialUnit* TU;
-  openfluid::core::EventCollection EvColl;
+  openfluid::core::EventsCollection EvColl;
   openfluid::core::Event* Ev;
-  std::list<openfluid::core::Event* > *EvList;
   openfluid::core::DateTime BTime, ETime;
 
   BTime = OPENFLUID_GetCurrentDate();
@@ -698,7 +697,6 @@ openfluid::base::SchedulingRequest runStep()
   OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
   {
     OPENFLUID_GetEvents(TU,BTime,ETime,EvColl);
-    EvList = EvColl.getEventsList();
 
     OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Ev)
     {
