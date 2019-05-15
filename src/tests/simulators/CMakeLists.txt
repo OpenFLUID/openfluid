@@ -19,7 +19,8 @@ OFBUILD_ADD_SIMULATOR(tests.dotobs ${OFBUILD_TESTS_BINARY_DIR})
 
 IF(OFBUILD_TESTS_ENABLE_FORTRAN)
   ENABLE_LANGUAGE(Fortran)
-  ADD_SUBDIRECTORY(tests.fortran)  
+
+  OFBUILD_ADD_SIMULATOR(tests.fortran ${OFBUILD_TESTS_BINARY_DIR})
   OPENFLUID_ADD_TEST(NAME simulators-Fortran
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                         "run"
@@ -28,7 +29,7 @@ IF(OFBUILD_TESTS_ENABLE_FORTRAN)
                         "-p" "${OFBUILD_TESTS_BINARY_DIR}"
                      PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Fortran")
                      
-  ADD_SUBDIRECTORY(tests.fortran90)  
+  OFBUILD_ADD_SIMULATOR(tests.fortran90 ${OFBUILD_TESTS_BINARY_DIR})
   OPENFLUID_ADD_TEST(NAME simulators-Fortran90
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
