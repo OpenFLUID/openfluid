@@ -107,13 +107,24 @@ FIND_PACKAGE(PythonInterp)
 
 IF(PYTHONINTERP_FOUND)
 
-  # checkstyle tool
+  # checkstyle tool without bracketing check (temporary)
   ADD_CUSTOM_TARGET(stylecheck
                     COMMENT "Checking source code style"
                     COMMAND "${PYTHON_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
                             "${CMAKE_SOURCE_DIR}"
+                            "--disable=BRAC"
                    )
+
+  # checkstyle tool (TODO rename as 'stylecheck' when brackets corrected)
+  ADD_CUSTOM_TARGET(stylecheck-full
+                    COMMENT "Checking source code style"
+                    COMMAND "${PYTHON_EXECUTABLE}"
+                            "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
+                            "${CMAKE_SOURCE_DIR}"
+                   )
+
+
   # cppcheck tool
   ADD_CUSTOM_TARGET(cppcheck
                     COMMENT "Static analysis of source code "

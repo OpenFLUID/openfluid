@@ -41,7 +41,7 @@ import sys
 class SourceTreeChecker:
 
 
-  def __init__(self,SrcRootPath,IsVerbose):
+  def __init__(self, SrcRootPath, IsVerbose, DisableChecks=""):
     
     self.SrcOpenFLUIDDir = 'src/openfluid'
     self.SrcAppsDir = 'src/apps'
@@ -84,19 +84,28 @@ class SourceTreeChecker:
     
     self.FileList = list()
     
-    self.ErrorsCount = {
-                         'LLEN': 0, 
-                         'LICH': 0, 
-                         'HGRD': 0, 
-                         'INCO': 0, 
-                         'INCS': 0, 
-                         'AUTH': 0, 
-                         'FNAM': 0, 
-                         'TMSP': 0,
-                         'SEPS': 0,
-                         'PRTY': 0,
-                         'TABC': 0
-                       }
+    self.CheckStyles = dict()
+    self.CheckStyles["LLEN"] = (self.checkLineLength, "lines")
+    self.CheckStyles["PRTY"] = (self.checkPrettyCode, "lines")
+    self.CheckStyles["LICH"] = (self.checkLicenseHeader, "content")
+    self.CheckStyles["AUTH"] = (self.checkFileAuthor, "content")
+    self.CheckStyles["FNAM"] = (self.checkFilename, "content")
+    self.CheckStyles["HGRD"] = (self.checkHeaderGuard, "content")
+    self.CheckStyles["INCO"] = (self.checkIncludesOrder, "lines")
+    self.CheckStyles["INCS"] = (self.checkIncludesSpacing, "lines")
+    self.CheckStyles["TMSP"] = (self.checkTooMuchSpacing, "lines")
+    self.CheckStyles["SEPS"] = (self.checkSeparators, "lines")
+    self.CheckStyles["TABC"] = (self.checkTabs, "lines")
+    self.CheckStyles["BRAC"] = (self.checkBrackets, "lines")
+    
+    self.ActiveStyles = list()
+    self.ErrorsCount = dict()
+    DisableChecksList = DisableChecks.split(",")
+    
+    for Style in list(self.CheckStyles.keys()):
+      if Style not in DisableChecksList:
+        self.ActiveStyles.append(Style)
+        self.ErrorsCount[Style] = 0
     
     self.DirectiveBase = "OpenFLUID:stylecheck"
     
@@ -195,7 +204,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
-  def checkFileInfo(self, Filename, Content):
+  def checkFilename(self, Filename, Content):
 
     ExpectedFilename = os.path.basename(Filename)
     if ExpectedFilename.endswith('.in'):
@@ -208,7 +217,13 @@ class SourceTreeChecker:
       if not Result:
         self.addProblem('FNAM',Filename,1,'missing or malformed @file information (expected @file',ExpectedFilename,
                         'or @file',ExpectedFilenameWithParentDir+')')
+
+
+############################################################################
       
+      
+  def checkFileAuthor(self, Filename, Content):
+    
     Result = re.search( r'\@author \w+', Content)
     if not Result:
       self.addProblem('AUTH',Filename,1,'missing or malformed @author information (expected @author <authorname>)')
@@ -387,22 +402,80 @@ class SourceTreeChecker:
 ############################################################################
 
 
+  def isInstructionBlock(self, Word):
+    
+    CPPInstructions = ["if", "else", "for", "while", "do"]
+    OFInstructions = ["OPENFLUID_UNITS_ORDERED_LOOP", "OPENFLUID_ALLUNITS_ORDERED_LOOP", 
+                      "OPENFLUID_UNITSLIST_LOOP", "OPENFLUID_EVENT_COLLECTION_LOOP"]
+    Instructions = CPPInstructions + OFInstructions
+    return (Word in Instructions)
+
+
+############################################################################
+
+
+  def checkBrackets(self, Filename, Lines):
+    
+    i = 1
+    IsNewBlock = False
+    IsPartialInstruction = False
+    IsDo = False
+    for Line in Lines:
+      if len(Line.split()) > 0:
+        FirstWord = Line.split()[0].split("(")[0]
+        NoCommentLine = Line.split("//")[0]
+        NoSpaceLine = NoCommentLine.replace(" ","")
+        
+        
+        if IsNewBlock and (NoSpaceLine[:2] in ["==", "&&", "||"] or NoSpaceLine.startswith(".")):
+          # case of previously undetected PartialInstruction
+          IsNewBlock = False
+          IsPartialInstruction = True
+        
+        if IsNewBlock:
+          if NoSpaceLine.startswith("{"):
+            IsNewBlock = False
+          else:
+            self.addProblem('BRAC',Filename,i,'block must be between brackets')
+            IsNewBlock = False
+        elif (self.isInstructionBlock(FirstWord) or IsPartialInstruction):
+          if FirstWord == "do":
+            IsDo = True
+          if NoSpaceLine.endswith(";") or NoSpaceLine.endswith("{") or NoSpaceLine.endswith("}"):
+            if IsDo and FirstWord == "while":
+              IsDo = False
+            else:
+              if NoSpaceLine.endswith(";") or NoSpaceLine.endswith("}"):
+                if FirstWord == "for" and NoSpaceLine.endswith(";"):  # unconclusive
+                  pass
+                else:
+                  self.addProblem('BRAC',Filename,i,'block must not be on one line')
+              else: # finish with "{" case
+                self.addProblem('BRAC',Filename,i,'bracket must be on a new line')
+            IsPartialInstruction = False
+          elif NoSpaceLine.endswith(")") or NoSpaceLine in ["else", "do"] or NoSpaceLine.endswith("\\"):
+            IsNewBlock = True
+            IsPartialInstruction = False
+          else:
+            IsPartialInstruction = True
+        
+      i += 1
+      
+        
+############################################################################
+
+
   def checkFile(self, Filename): 
     self.printVerbose('== Checking',Filename)
     
     FileContent = open(os.path.join(self.SrcRootPath,Filename), 'r').read()
     FileLines = FileContent.split('\n')
     
-    self.checkLineLength(Filename,FileLines)
-    self.checkPrettyCode(Filename,FileLines)
-    self.checkLicenseHeader(Filename,FileContent)
-    self.checkFileInfo(Filename,FileContent)
-    self.checkHeaderGuard(Filename,FileContent)
-    self.checkIncludesOrder(Filename,FileLines)
-    self.checkIncludesSpacing(Filename,FileLines)
-    self.checkTooMuchSpacing(Filename,FileLines)
-    self.checkSeparators(Filename,FileLines)
-    self.checkTabs(Filename,FileLines)
+    for Style in self.ActiveStyles:
+      if self.CheckStyles[Style][1] == "lines":
+        self.CheckStyles[Style][0](Filename,FileLines)
+      elif self.CheckStyles[Style][1] == "content":
+        self.CheckStyles[Style][0](Filename,FileContent)
 
 
 ############################################################################
@@ -450,12 +523,13 @@ try:
 
   Parser = ArgumentParser(prog='ofsrc-stylecheck')
   Parser.add_argument('-V','--verbose', action='store_true', default=False, help='verbose mode')
+  Parser.add_argument('--disable', default="", help='ignore warnings for given categories, splitted by commas. Example "Brackets,PrettyCode"')
   Parser.add_argument('path',default='')
     
   Args = Parser.parse_args()
   Args = vars(Args)
 
-  Checker = SourceTreeChecker(Args['path'],Args['verbose'])
+  Checker = SourceTreeChecker(Args['path'],Args['verbose'], Args['disable'])
   Checker.run()
   
 except Exception as e:
