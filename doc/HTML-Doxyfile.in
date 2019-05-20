@@ -33,6 +33,7 @@ FILE_PATTERNS          = *.h \
 RECURSIVE              = YES
 EXCLUDE                = .svn .git
 EXCLUDE_SYMLINKS       = NO
+LAYOUT_FILE            = @OFBUILD_DOC_LAYOUT_DIR@/layout.xml
 IMAGE_PATH             = @OFBUILD_DOC_CONTENTS_DIR@/images
 EXAMPLE_PATH           = @OFBUILD_DOC_CONTENTS_DIR@ \
                          @OFBUILD_DOC_SNIPPETS_DIR@
