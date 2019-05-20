@@ -47,57 +47,24 @@
 
 namespace openfluid { namespace core {
 /**
-DoubleValue is a container for a signed double precision floating point value.\n
+  DoubleValue is a container for a signed double precision floating point value.\n
 
-\see Value
+  @see Value
 
-\n
+  <I>Example : declaration</I>
+  @snippet misc/values.cpp double_decl
 
-<I>Example : declaration</I>
-@code
-  // declaration of a DoubleValue, initialized to 0.0 by default
-  openfluid::core::DoubleValue Val1;
+  <I>Example : getting the contained value</I>
+  @snippet misc/values.cpp double_get
 
-  // declaration of a DoubleValue, initialized to 1.357
-  openfluid::core::DoubleValue Val2(1.357);
-@endcode
+  <I>Example : setting the contained value</I>
+  @snippet misc/values.cpp double_set
 
+  <I>Example : conversion from string</I>
+  @snippet misc/values.cpp double_fromstr
 
-<I>Example : getting the contained value</I>
-@code
-  double Tmp1;
-
-  // using the get method
-  Tmp1 = Val1.get();
-
-  // or using the cast operator
-  Tmp1 = Val1;
-@endcode
-
-
-<I>Example : setting the contained value</I>
-@code
-  // using the set method
-  Val1.set(101.99);
-@endcode
-
-
-<I>Example : conversion from string</I>
-@code
-  openfluid::core::StringValue StringVal("57.33");
-
-  // to DoubleValue
-  Val1 = StringVal.toDoubleValue();
-
-  // to double
-  double DblVal = StringVal.toDouble();
-@endcode
-
-
-<I>Example : conversion to string</I>
-@code
-  std::string StdStrVal = Val1.toString();
-@endcode
+  <I>Example : conversion to string</I>
+  @snippet misc/values.cpp double_tostr
 */
 class OPENFLUID_API DoubleValue : public SimpleValue
 {

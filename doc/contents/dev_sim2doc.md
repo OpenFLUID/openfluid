@@ -28,39 +28,8 @@ LaTeX
 
 
 _Example of a part of source code including sim2doc informations:_
-```
-/*
-<sim2doc>
-This part of the documentation will be included in the 
-It can be formatted using \LaTeX and is fully compatible with all \LaTeX commands,
-including tables, scientific formulae, figures, and many more.
-</sim2doc>
-*/
+@snippet help.snippets.sim2doc/Sim2DocSim.cpp sim2doc
 
-BEGIN_SIMULATOR_SIGNATURE("example.simulator")
-
-  DECLARE_NAME("Example simulator");
-  DECLARE_DESCRIPTION("This simulator is an example");
-  DECLARE_VERSION("13.05");
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
-  DECLARE_AUTHOR("John","john@foobar.org");
-  DECLARE_AUTHOR("Dave","dave@foobar.org");
-  DECLARE_AUTHOR("Mike","mike@foobar.org");
-  
-  DECLARE_REQUIRED_PARAMETER("meanspeed","mean speed to use","m/s")
-  
-  DECLARE_REQUIRED_ATTRIBUTE("area","TU","area of the Test Units","m")
-  DECLARE_USED_ATTRIBUTE("landuse","OU","landuse of the Other Units","")
-  
-  DECLARE_REQUIRED_VARIABLE("varA[double]","TU","","m")
-  DECLARE_USED_VARIABLE("varB","OU","simple var on Other Units","kg")
-  DECLARE_PRODUCED_VARIABLE("VarB[vector]","TU","vectorized var on Test Units","kg")
-  DECLARE_UPDATED_VARIABLE("VarC","TU","","")
-  
-  DECLARE_USED_EVENTS("TU")
-  
-END_SIMULATOR_SIGNATURE
-```
 
 <br/>
 

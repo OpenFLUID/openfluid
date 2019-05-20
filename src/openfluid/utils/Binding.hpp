@@ -117,34 +117,7 @@ namespace openfluid { namespace utils {
       with the previous derived class as a parameter.
 
   <i>Example</i>
-  @code
-  #include <openfluid/utils/Binding.hpp>
-
-  class MyErrOut : public openfluid::utils::BindingAbstractOutErr
-  {
-    public:
-
-      void printfOut(const char* fmt, ... ) const
-      {
-        va_list args;
-        va_start(args,fmt);
-        vprintf(fmt,args);
-        va_end(args);
-      }
-
-      void printfErr(const char* fmt, ... ) const
-      {
-        va_list args;
-        va_start(args,fmt);
-        vfprintf(stderr,fmt,args);
-        va_end(args);
-      }
-  };
-
-  OPENFLUID_BINDING_DEFINE(MyErrOut);
-
-  // proceed here with the use of the binding class features
-  @endcode
+  @snippet misc/bindings.cpp bindings
 */
 class Binding
 {

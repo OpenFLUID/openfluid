@@ -49,9 +49,9 @@ namespace openfluid { namespace core {
 
 
 /**
-NullValue is a container for null value, containing no data.\n
+  NullValue is a container for null value, containing no data.\n
 
-\see Value
+  @see Value
 */
 class OPENFLUID_API NullValue : public Value
 {

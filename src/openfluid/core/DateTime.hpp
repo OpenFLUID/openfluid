@@ -62,56 +62,18 @@ namespace openfluid { namespace core {
       http://www.decimaltime.hynes.net/index.html
   @li http://en.wikipedia.org/wiki/Julian_day
 
-  <BR>
 
   <I>Example : creating a date</I>
-  @code
-  openfluid::core::DateTime aDate(2009,01,25,12,05,00);
-  @endcode
-
+  @snippet misc/datetime.cpp dt_decl
 
   <I>Example : adding time span to a date</I>
-  @code
-  // adding 45 seconds
-  aDate.addSeconds(45);
-
-  // adding 5 minutes
-  aDate.addSeconds(openfluid::core::DateTime::Minutes(5));
-
-  // adding an hour
-  aDate.addSeconds(openfluid::core::DateTime::Hour());
-
-  // adding 60 days
-  aDate.addSeconds(openfluid::core::DateTime::Days(60));
-  @endcode
-
+  @snippet misc/datetime.cpp dt_add
 
   <I>Example : subtracting time span to a date</I>
-  @code
-  // subtracting 10 seconds
-  aDate.subtractSeconds(10);
-
-  // subtracting 30 days
-  aDate.subtractSeconds(openfluid::core::DateTime::Days(30));
-  @endcode
-
+  @snippet misc/datetime.cpp dt_sub
 
   <I>Example : getting difference in seconds between two dates</I>
-  @code
-  openfluid::core::DateTime FirstDate(2009,01,25,12,05,00);
-  openfluid::core::DateTime SecondDate(2009,02,28,00,00,00);
-
-  openfluid::core::RawTime_t Diff;
-
-  Diff = SecondDate - FirstDate;
-
-  if (Diff > openfluid::core::DateTime::Days(60))
-    std::cout << "The difference between the two dates is greater than 60 days" << std::end;
-  else
-    std::cout << "The difference between the two dates is lesser than 60 days" << std::end;
-  @endcode
-
-
+  @snippet misc/datetime.cpp dt_diff
 */
 class OPENFLUID_API DateTime
 {
@@ -127,7 +89,7 @@ class OPENFLUID_API DateTime
         int tm_year;
         int tm_wday;
         int tm_yday;
-        int tm_isdst
+        int tm_isdst;
     */
 
     /**

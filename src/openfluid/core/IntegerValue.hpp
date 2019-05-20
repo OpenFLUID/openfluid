@@ -48,57 +48,24 @@
 namespace openfluid { namespace core {
 
 /**
-IntegerValue is a container for a signed long integer value.\n
+  IntegerValue is a container for a signed long integer value.\n
 
-\see Value
+  @see Value
 
-\n
+  <I>Example : declaration</I>
+  @snippet misc/values.cpp integer_decl
 
-<I>Example : declaration</I>
-@code
-  // declaration of an IntegerValue, initialized to 0 by default
-  openfluid::core::IntegerValue Val1;
+  <I>Example : getting the contained value</I>
+  @snippet misc/values.cpp integer_get
 
-  // declaration of an IntegerValue, initialized to 35
-  openfluid::core::IntegerValue Val2(35);
-@endcode
+  <I>Example : setting the contained value</I>
+  @snippet misc/values.cpp integer_set
 
+  <I>Example : conversion from string</I>
+  @snippet misc/values.cpp integer_fromstr
 
-<I>Example : getting the contained value</I>
-@code
-  long Tmp1;
-
-  // using the get method
-  Tmp1 = Val1.get();
-
-  // or using the cast operator
-  Tmp1 = Val1;
-@endcode
-
-
-<I>Example : setting the contained value</I>
-@code
-  // using the set method
-  Val1.set(-10199);
-@endcode
-
-
-<I>Example : conversion from string</I>
-@code
-  openfluid::core::StringValue StringVal("57");
-
-  // to IntegerValue
-  Val1 = StringVal.toIntegerValue();
-
-  // to long
-  long LongVal = StringVal.toInteger();
-@endcode
-
-
-<I>Example : conversion to string</I>
-@code
-  std::string StdStrVal = Val1.toString();
-@endcode
+  <I>Example : conversion to string</I>
+  @snippet misc/values.cpp integer_tostr
 */
 class OPENFLUID_API IntegerValue : public SimpleValue
 {

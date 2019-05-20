@@ -34,7 +34,8 @@ RECURSIVE              = YES
 EXCLUDE                = .svn .git
 EXCLUDE_SYMLINKS       = NO
 IMAGE_PATH             = @OFBUILD_DOC_CONTENTS_DIR@/images
-EXAMPLE_PATH           = @OFBUILD_DOC_CONTENTS_DIR@
+EXAMPLE_PATH           = @OFBUILD_DOC_CONTENTS_DIR@ \
+                         @OFBUILD_DOC_SNIPPETS_DIR@
 
 GENERATE_MAN     	     = NO
 GENERATE_LATEX    	   = NO

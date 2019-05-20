@@ -49,57 +49,24 @@ namespace openfluid { namespace core {
 
 
 /**
-BooleanValue is a container for a true/false value.\n
+  BooleanValue is a container for a true/false value.\n
 
-\see Value
+  @see Value
 
-\n
+  <I>Example : declaration</I>
+  @snippet misc/values.cpp boolean_decl
 
-<I>Example : declaration</I>
-@code
-  // declaration of a BooleanValue, initialized to false by default
-  openfluid::core::BooleanValue Val1;
+  <I>Example : getting the contained value</I>
+  @snippet misc/values.cpp boolean_get
 
-  // declaration of a BooleanValue, initialized to true
-  openfluid::core::BooleanValue Val2(true);
-@endcode
+  <I>Example : setting the contained value</I>
+  @snippet misc/values.cpp boolean_set
 
+  <I>Example : conversion from string</I>
+  @snippet misc/values.cpp boolean_fromstr
 
-<I>Example : getting the contained value</I>
-@code
-  bool Tmp1;
-
-  // using the get method
-  Tmp1 = Val1.get();
-
-  // or using the cast operator
-  Tmp1 = Val1;
-@endcode
-
-
-<I>Example : setting the contained value</I>
-@code
-  // using the set method
-  Val1.set(true);
-@endcode
-
-
-<I>Example : conversion from string</I>
-@code
-  openfluid::core::StringValue StringVal("true");
-
-  // to BooleanValue
-  Val1 = StringVal.toBooleanValue();
-
-  // to bool
-  bool BoolVal = StringVal.toBoolean();
-@endcode
-
-
-<I>Example : conversion to string</I>
-@code
-  std::string StdStrVal = Val1.toString();
-@endcode
+  <I>Example : conversion to string</I>
+  @snippet misc/values.cpp boolean_tostr
 */
 class OPENFLUID_API BooleanValue : public SimpleValue
 {

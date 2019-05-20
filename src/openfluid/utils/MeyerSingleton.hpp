@@ -51,24 +51,7 @@ namespace openfluid { namespace utils {
   Due to this restriction, it must not be used in the OpenFLUID framework.
 
   Example of use to design an Example class as a singleton
-  @code
-class Example : public openfluid::utils::MeyerSingleton<Example>
-{
-  friend class openfluid::utils::MeyerSingleton<Example>;
-
-
-  private:
-
-    Example();
-
-    ~Example();
-
-
-  public:
-
-    // some public members
-};
-  @endcode
+  @snippet misc/singleton.cpp meyersingleton
 */
 template<typename T>
 class MeyerSingleton

@@ -96,9 +96,7 @@
   Adds a warning message to simulation log file
 
   Exemple:
-  @code{.cpp}
-    OPENFLUID_LogWarning("This is a logged warning message for " << "TestUnits#" << TU->getID());
-  @endcode
+  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logwarning
 */
 #define OPENFLUID_LogWarning(_stream) \
   appendToLog(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
@@ -107,9 +105,7 @@
   Displays a warning message to stdout (on screen by default)
 
   Exemple:
-  @code{.cpp}
-    OPENFLUID_DisplayWarning("This is a displayed warning message for " << "TestUnits#" << TU->getID());
-  @endcode
+  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_displaywarning
 */
 #define OPENFLUID_DisplayWarning(_stream) \
   displayToConsole(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
@@ -118,10 +114,7 @@
   Adds a warning message to simulation log file and displays it to stdout (on screen by default)
 
   Exemple:
-  @code{.cpp}
-    OPENFLUID_LogAndDisplayWarning("This is a logged and displayed warning message for " <<
-                                   "TestUnits#" << TU->getID());
-  @endcode
+  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdisplaywarning
 */
 #define OPENFLUID_LogAndDisplayWarning(_stream) \
   OPENFLUID_LogWarning(_stream); \
@@ -134,9 +127,7 @@
   Adds an information message to simulation log file
 
   Exemple:
-  @code{.cpp}
-    OPENFLUID_LogInfo("This is a logged information message for " << "TestUnits#" << TU->getID());
-  @endcode
+  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_loginfo
 */
 #define OPENFLUID_LogInfo(_stream) \
   appendToLog(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
@@ -145,9 +136,7 @@
   Displays an information message to stdout (on screen by default)
 
   Exemple:
-  @code{.cpp}
-    OPENFLUID_DisplayInfo("This is a displayed information message for " << "TestUnits#" << TU->getID());
-  @endcode
+  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_displayinfo
 */
 #define OPENFLUID_DisplayInfo(_stream) \
   displayToConsole(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
@@ -156,10 +145,7 @@
   Adds an information message to simulation log file and displays it to stdout (on screen by default)
 
   Exemple:
-  @code{.cpp}
-    OPENFLUID_LogAndDisplayInfo("This is a logged and displayed information message for " <<
-                                "TestUnits#" << TU->getID());
-  @endcode
+  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdisplayinfo
 */
 #define OPENFLUID_LogAndDisplayInfo(_stream) \
   OPENFLUID_LogInfo(_stream); \
@@ -173,30 +159,22 @@
   Adds a debug message to simulation log file
 
   Exemple:
-  @code{.cpp}
-    OPENFLUID_LogDebug("This is a logged debug message for " << "TestUnits#" << TU->getID());
-  @endcode
+  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdebug
 */
-
 
 /**
   @def OPENFLUID_DisplayDebug
   Displays a debug message to stdout (on screen by default)
 
   Exemple:
-  @code{.cpp}
-    OPENFLUID_DisplayDebug("This is a displayed debug message for " << "TestUnits#" << TU->getID());
-  @endcode
+  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_displaydebug
 */
 
 /**
   @def OPENFLUID_LogAndDisplayDebug
   Adds a debug message to simulation log file and displays it to stdout (on screen by default)
 
-  Exemple:
-  @code{.cpp}
-    OPENFLUID_LogAndDisplayDebug("This is a logged and displayed debug message for " << "TestUnits#" << TU->getID());
-  @endcode
+  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdisplaydebug
 */
 
 #ifndef NDEBUG

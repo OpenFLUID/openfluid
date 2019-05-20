@@ -59,21 +59,15 @@ class OPENFLUID_API Filesystem
 
     /**
       Returns a joined path string from a vector of path parts
-      @code{.cpp}
-      path = openfluid::tools::Filesystem::joinPath({"/my/joined","path/myfile.txt"});
-      // path = /my/joined/path/myfile.txt
-      @endcode
       @param[in] PathParts a vector of path parts
       @return the joined path
+      @snippet misc/filesystem.cpp joinpath
     */
     static std::string joinPath(const std::vector<std::string>& PathParts);
 
     /**
       Returns the name of the file in the given path
-      @code{.cpp}
-      name = openfluid::tools::Filesystem::filename("/tmp/archive.tar.gz")
-      // name = archive.tar.gz
-      @endcode
+      @snippet misc/filesystem.cpp filename
       @param[in] Path the given path
       @return the filename
     */
@@ -81,10 +75,7 @@ class OPENFLUID_API Filesystem
 
     /**
       Returns the complete base name of the file in the given path
-      @code{.cpp}
-      name = openfluid::tools::Filesystem::basename("/tmp/archive.tar.gz")
-      // name = archive.tar
-      @endcode
+      @snippet misc/filesystem.cpp basename
       @param[in] Path the given path
       @return the base name of the file
     */
@@ -92,10 +83,7 @@ class OPENFLUID_API Filesystem
 
     /**
       Returns the directory name (parent path) of the given path
-      @code{.cpp}
-      name = openfluid::tools::Filesystem::dirname("/tmp/archive.tar.gz")
-      // name = /tmp
-      @endcode
+      @snippet misc/filesystem.cpp dirname
       @param[in] Path the given path
       @return the directory name
     */
@@ -103,10 +91,7 @@ class OPENFLUID_API Filesystem
 
     /**
       Returns the extension of the file of the given path
-      @code{.cpp}
-      name = openfluid::tools::Filesystem::extension("/tmp/archive.tar.gz")
-      // name = gz
-      @endcode
+      @snippet misc/filesystem.cpp extension
       @param[in] Path the given path
       @return the extension
     */

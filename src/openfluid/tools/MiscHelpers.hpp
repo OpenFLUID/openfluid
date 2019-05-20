@@ -137,13 +137,7 @@ void OPENFLUID_API splitDuration(long int MSecsDuration, int& Days, int& Hours, 
 
 /**
   returns the given duration as a pretty string representing days, hours, minutes and decimal seconds.
-  @code
-  openfluid::tools::getDurationAsPrettyString(123456789); // returns "1d 10h 17m 36.789s"
-  openfluid::tools::getDurationAsPrettyString(12345678);  // returns "3h 25m 45.678s"
-  openfluid::tools::getDurationAsPrettyString(123456);    // returns "2m 3.456s"
-  openfluid::tools::getDurationAsPrettyString(1234);      // returns "1.234s"
-  openfluid::tools::getDurationAsPrettyString(12);        // returns "0.012s"
-  @endcode
+  @snippet misc/mischelpers.cpp durationstr
   @param[in] MSecsDuration the duration in milliseconds
   @return the converted duration as a string
 */

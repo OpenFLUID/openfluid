@@ -51,69 +51,26 @@ namespace openfluid { namespace core {
 /**
   VectorValue is a container for a 1D vector of signed double precision floating point values.\n
 
-\see Value
-\see Vector
+  @see Value
+  @see Vector
+  
+  <I>Example : declaration</I>
+  @snippet misc/values.cpp vector_decl
 
-\n
+  <I>Example : getting the contained values</I>
+  @snippet misc/values.cpp vector_get
 
-<I>Example : declaration</I>
-@code
-  // declaration of a VectorValue, empty by default
-  openfluid::core::VectorValue Val1;
+  <I>Example : getting all values as a c-style array of double</I>
+  @snippet misc/values.cpp vector_get_carray
 
-  // declaration of a VectorValue of 7 elements, with values initialized to 0.0
-  openfluid::core::VectorValue Val2(7);
+  <I>Example : setting the contained values</I>
+  @snippet misc/values.cpp vector_set
 
-  // declaration of a VectorValue of 7 elements, with values initialized to 1.99
-  openfluid::core::VectorValue Val3(7,1.99);
-@endcode
+  <I>Example : conversion from string</I>
+  @snippet misc/values.cpp vector_fromstr
 
-
-<I>Example : getting the contained values</I>
-@code
-  double Tmp1;
-
-  // using the get method
-  Tmp1 = Val1.get(2);
-
-  // or using the [] operator
-  Tmp1 = Val1[2];
-@endcode
-
-
-<I>Example : getting all values as a c-style array of double</I>
-@code
-  double DblArrayVal[];
-
-  DblArrayVal = Val1.getData();
-@endcode
-
-
-<I>Example : setting the contained values</I>
-@code
-  // using the set method
-  Val1.set(0,101.99);
-
-  // or using the [] operator
-  Val1[0] = 101.99;
-@endcode
-
-
-<I>Example : conversion from string</I>
-@code
-  openfluid::core::StringValue StringVal;
-  openfluid::core::VectorValue Val2;
-
-  // to VectorValue, using a string values separator
-  StringVal.set("[3,5,2.8,6,17.999923,1,1,1,1,1,2.11,2.12,2.13,2.14,2.15]");
-  StringVal.toVectorValue(Val2);
-@endcode
-
-
-<I>Example : conversion to string</I>
-@code
-  std::string StdStrVal = Val1.toString();
-@endcode
+  <I>Example : conversion to string</I>
+  @snippet misc/values.cpp vector_tostr
 */
 class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
 {

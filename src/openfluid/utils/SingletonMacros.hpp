@@ -47,31 +47,8 @@
   This implementation is not thread safe.
 
   Example of use to design an Example class as a dynamic singleton
-  @code
-// .hpp file
-
-class Example
-{
-  OPENFLUID_SINGLETON_DEFINITION(Example)
-
-  private:
-
-    Example();
-
-    ~Example();
-
-
-  public:
-
-    // some public members
-};
-  @endcode
-  @code
-// .cpp file
-
-OPENFLUID_SINGLETON_INITIALIZATION(Example)
-};
-  @endcode
+  @snippet misc/singleton.cpp singletonmacros_def
+  @snippet misc/singleton.cpp singletonmacros_init
 
   @see OPENFLUID_SINGLETON_INITIALIZATION
 */

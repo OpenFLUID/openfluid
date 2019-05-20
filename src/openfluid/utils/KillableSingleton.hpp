@@ -50,24 +50,7 @@ namespace openfluid { namespace utils {
   Due to this restriction, it must not be used in the OpenFLUID framework.
 
   Example of use to design an Example class as a killable singleton
-  @code
-class Example : public openfluid::utils::KillableSingleton<Example>
-{
-  friend class openfluid::utils::KillableSingleton<Example>;
-
-
-  private:
-
-    Example();
-
-    ~Example();
-
-
-  public:
-
-    // some public members
-};
-  @endcode
+  @snippet misc/singleton.cpp killablesingleton
 */
 template<typename T>
 class KillableSingleton

@@ -86,10 +86,8 @@ These instructions takes 3 arguments
 * the SI unit of the parameter (may be empty)
 
 
-_Example of a simulator parameter declaration:_
-```
-  DECLARE_REQUIRED_PARAMETER("meanspeed","mean speed to use","m/s")
-```
+_Example of a declaration of a required simulator parameter:_
+@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_params
 
 
 ## Spatial attributes {#dev_signature_data_attrs}
@@ -109,10 +107,7 @@ These instructions take 4 arguments:
 
 
 _Example of attributes declaration:_
-```
-  DECLARE_REQUIRED_ATTRIBUTE("area","TU","area of the Test Units","m")
-  DECLARE_USED_ATTRIBUTE("landuse","OU","landuse of the Other Units","")
-```
+@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_attributes
 
 
 ## Simulation variables {#dev_signature_data_vars}
@@ -175,12 +170,7 @@ simulator B requires/uses/updates a _typed_ variable _var1_ of type `matrix`
 
 
 _Example of variable declarations:_
-```  
-  DECLARE_REQUIRED_VARIABLE("varA[double]","TU","","m")
-  DECLARE_USED_VARIABLE("varB","OU","simple var on Other Units","kg")
-  DECLARE_PRODUCED_VARIABLE("VarB[vector]","TU","vectorized var on Test Units","kg")
-  DECLARE_UPDATED_VARIABLE("VarC","TU","","")
-```
+@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_variables
 
 
 ## Discrete events {#dev_signature_data_events}
@@ -193,9 +183,7 @@ and are declared using the @if DocIsLaTeX **DECLARE_USED_EVENTS**
 The declaration instruction takes 1 argument: the units class.
 
 _Example of events declaration:_
-```
-  DECLARE_USED_EVENTS("TU")
-```
+@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_events
 
 
 ## Extra files {#dev_signature_data_extrafiles}
@@ -211,10 +199,7 @@ These files are declared using the @if DocIsLaTeX **DECLARE_USED_EXTRAFILE**
 The declaration instruction takes 1 argument: the file name with relative path to the dataset path.
 
 _Example of extra file declarations:_
-```
-  DECLARE_USED_EXTRAFILE("fileA.dat")
-  DECLARE_REQUIRED_EXTRAFILE("geo/zone.shp")
-```
+@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_extrafiles
 
 
 ## Spatial units graph {#dev_signature_data_spatial}
@@ -238,37 +223,11 @@ It takes two arguments:
    
 
 _Example of declarations for spatial units graph:_
-```
-  DECLARE_UPDATED_UNITSGRAPH("update of the spatial graph for ...")
-  DECLARE_UPDATED_UNITSCLASS("TU","")
-```
+@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_spatial
+
 
 # Complete signature example {#dev_signature_exmpl}
 
 The signature code below shows an example of a possible signature for a simulator.  
   
-```
-BEGIN_SIMULATOR_SIGNATURE("example.simulator")
-
-  DECLARE_NAME("Example simulator");
-  DECLARE_DESCRIPTION("This simulator is an example");
-  DECLARE_VERSION("13.05");
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
-  DECLARE_AUTHOR("John","john@foobar.org");
-  DECLARE_AUTHOR("Dave","dave@foobar.org");
-  DECLARE_AUTHOR("Mike","mike@foobar.org");
-  
-  DECLARE_USED_PARAMETER("meanspeed","mean speed to use","m/s")
-  
-  DECLARE_REQUIRED_ATTRIBUTE("area","TU","area of the Test Units","m")
-  DECLARE_USED_ATTRIBUTE("landuse","OU","landuse of the Other Units","")
-  
-  DECLARE_REQUIRED_VARIABLE("varA[double]","TU","","m")
-  DECLARE_USED_VARIABLE("varB","OU","simple var on Other Units","kg")
-  DECLARE_PRODUCED_VARIABLE("VarB[vector]","TU","vectorized var on Test Units","kg")
-  DECLARE_UPDATED_VARIABLE("VarC","TU","","")
-  
-  DECLARE_USED_EVENTS("TU")
-  
-END_SIMULATOR_SIGNATURE
-```
+@snippet help.snippets.signature/SignatureSim.cpp signature_full

@@ -50,40 +50,19 @@
 
 namespace openfluid { namespace core {
 /**
-StringValue is a container for a std::string value, with methods for conversion
-to other containers derived from Value.\n
+  StringValue is a container for a std::string value, with methods for conversion
+  to other containers derived from Value.\n
 
-\see Value
+@see Value
 
-\n
+  <I>Example : declaration</I>
+  @snippet misc/values.cpp string_decl
 
-<I>Example : declaration</I>
-@code
-  // declaration of a StringValue, initialized to an empty string by default
-  openfluid::core::StringValue Val1;
+  <I>Example : getting the contained value</I>
+  @snippet misc/values.cpp string_get
 
-  // declaration of a StringValue, initialized to "hello world"
-  openfluid::core::StringValue Val2("hello world");
-@endcode
-
-
-<I>Example : getting the contained value</I>
-@code
-  std::string Tmp1;
-
-  // using the get method
-  Tmp1 = Val1.get();
-
-  // or using the cast operator
-  Tmp1 = Val1;
-@endcode
-
-
-<I>Example : setting the contained value</I>
-@code
-  // using the set method
-  Val1.set("Have a nice day");
-@endcode
+  <I>Example : setting the contained value</I>
+  @snippet misc/values.cpp string_set
 */
 class OPENFLUID_API StringValue : public SimpleValue
 {

@@ -60,76 +60,25 @@ namespace openfluid { namespace core {
   MapValue is a container for a key => value map,
   where keys are strings and values can be any type derived from openfluid::core::Value.\n
 
-\see Value
+  @see Value
 
-\n
+  <I>Example : declaration</I>
+  @snippet misc/values.cpp map_decl
 
-<I>Example : declaration</I>
-@code
-  // declaration of a MapValue, empty by default
-  openfluid::core::MapValue Val1;
-@endcode
+  <I>Example : setting the contained values</I>
+  @snippet misc/values.cpp map_set
 
+  <I>Example : getting the contained values</I>
+  @snippet misc/values.cpp map_get
 
-<I>Example : setting the contained values</I>
-@code
-  // using the generic set method (notice the new operator)
-  Val1.set("myvalue1",new openfluid::core::DoubleValue(18.05));
+  <I>Example : testing the contained elements</I>
+  @snippet misc/values.cpp map_test
 
-  // using a specific set method
-  Val1.setDoubleValue("myvalue2",openfluid::core::DoubleValue(0.005));
+  <I>Example : conversion from string</I>
+  @snippet misc/values.cpp map_fromstr
 
-  // using a specific set method
-  Val1.setMatrixValue("myvalue3",openfluid::core::MatrixValue(3,3,1.99));
-@endcode
-
-
-<I>Example : getting the contained values</I>
-@code
-  openfluid::core::DoubleValue Tmp1;
-  double DblTmp1;
-
-  // using the generic get method
-  Tmp1 = Val1.get("myvalue1").asDoubleValue();
-
-  // using specific get methods
-  Tmp1 = Val1.getDoubleValue("myvalue1");
-  DblTmp1 = Val1.getDouble("myvalue1");
-
-  // or using the [] operator
-  Tmp1 = Val1["myvalue1"].asDoubleValue();
-@endcode
-
-
-<I>Example : testing the contained elements</I>
-@code
-  // testing if a key exist
-  Val1.isKeyExist("myvalue1"); // true in this case;
-
-  // testing if a key exist and the contained value type
-  Val1.isKeyExist("myvalue2") && Val1["myvalue2"].getType() == openfluid::core::Value::BOOLEAN; // false in this case
-@endcode
-
-
-<I>Example : conversion from string</I>
-@code
-  openfluid::core::StringValue StringVal;
-  openfluid::core::MapValue Val2;
-
-  // to MapValue, using a string values separator
-  StringVal.set("{\"myvalue1\":toto,\"myvalue2\"=12.56,\"myvalue3\"=17,\"myvalue3\"=false");
-  StringVal.toMapValue(Val2);
-
-  // all values are stored as strings, that can be converted to other types
-  openfluid::core::IntegerValue TmpInt;
-  Val2.get("myvalue3").asStringValue().toIntegerValue(TmpInt);
-@endcode
-
-
-<I>Example : conversion to string</I>
-@code
-  std::string StdStrVal = Val1.toString();
-@endcode
+  <I>Example : conversion to string</I>
+  @snippet misc/values.cpp map_tostr
 */
 class OPENFLUID_API MapValue : public CompoundValue
 {

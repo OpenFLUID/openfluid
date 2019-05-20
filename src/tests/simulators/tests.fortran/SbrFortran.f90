@@ -88,7 +88,7 @@ integer dim2
 real*8 matrix(dim1,dim2)
 real*8 mult
 real*8 result(dim1,dim2)
-integer i, j, k
+integer i, j
 
 do j=1,dim2
   do i=1,dim1

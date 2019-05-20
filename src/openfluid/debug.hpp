@@ -35,26 +35,8 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 
-Example of use:
-@code{.cpp}
-openfluid::base::SchedulingRequest runStep()
-{
-  openfluid::core::SpatialUnit* TU;
-  openfluid::core::DateTime BeginDate,EndDate;
-  openfluid::core::EventsCollection EvColl;
-  OFDBG_LOCATE;
-  BeginDate = OPENFLUID_GetCurrentDate();
-  EndDate = OPENFLUID_GetCurrentDate() + OPENFLUID_GetDefaultDeltaT() - 1;
-  OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
-  {
-     OFDBG_UNIT_EXTENDED(TU);
-     EvColl.clear();
-     OPENFLUID_GetEvents(TU,BeginDate,EndDate,EvColl);
-     OFDBG_EVENTCOLLECTION(EvColl);
-  }
-  return DefaultDeltaT();
-}
-@endcode
+  Example of use:
+  @snippet help.snippets.debug/DebugSim.cpp debug
 
 */
 

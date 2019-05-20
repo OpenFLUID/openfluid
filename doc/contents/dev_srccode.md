@@ -48,44 +48,11 @@ to never be executed again
 
 
 _Example for a fixed time step simulator, with a time step equal to the default DeltaT value given in the input dataset:_
-```.cpp
-openfluid::base::SchedulingRequest initializeRun()
-{
-  // do something here
-  
-  return DefaultDeltaT();
-}
-
-openfluid::base::SchedulingRequest runStep()
-{
-  // do something here
-  
-  return DefaultDeltaT();
-}
-```
-
+@snippet help.snippets.sched-fixed/SchedFixedSim.cpp scheduling_fixed
 
 _Example for a variable time step simulator, based on the internal computation of the simulator:_
-```.cpp
-openfluid::base::SchedulingRequest initializeRun()
-{
-  // do something here
-  
-  return DefaultDeltaT();
-}
+@snippet help.snippets.sched-variable/SchedVariableSim.cpp scheduling_variable
 
-openfluid::base::SchedulingRequest runStep()
-{
-  double TmpValue = 0.0;
-
-  // do something here with TmpValue
-
-  if (TmpValue < 1.0)
-    return DefaultDeltaT();
-  else
-    return Duration(10);
-}
-```
 
 
 For fully synchronized coupled simulators, all simulators must return the same duration for the next execution,
@@ -179,32 +146,7 @@ The source code below shows examples of spatial graph parsing.
 The first part of the source code shows how to browse all units of the SU units class, 
 and how to browse the "From" units for each SU unit.
 The second part of the source code shows how to browse all units of the spatial domain. 
-```.cpp
-openfluid::base::SchedulingRequest runStep()
-{
-  openfluid::core::SpatialUnit* SU;
-  openfluid::core::SpatialUnit* UU;
-  openfluid::core::SpatialUnit* UpSU;
-  openfluid::core::UnitsPtrList_t* UpSUsList;
-
-  OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
-  {
-    UpSUsList = SU->fromSpatialUnits("SU");
-
-    OPENFLUID_UNITSLIST_LOOP(UpSUsList,UpSU)
-    {
-      // do something here
-    }    
-  }  
-  
-  OPENFLUID_ALLUNITS_ORDERED_LOOP(UU)
-  {  
-    // do something here
-  }
-  
-  return DefaultDeltaT();
-}
-```
+@snippet help.snippets.spatial-parsing-seq/SpatialParsingSeqSim.cpp spatial_parsing_seq
 
 
 ### Parallel processing using multithreading {#dev_srccode_space_parse_par}
@@ -223,35 +165,12 @@ a pointer to an @if DocIsLaTeX **openfluid::core::SpatialUnit** @endif
  as it represents the currently processed spatial unit. 
 
 <br/>
+In order to enable the parallel processing in the spatial graph, 
+the following inclusion must be added at the top of the simulator source code:
+@snippet help.snippets.spatial-parsing-parallel/SpatialParsingParallelSim.cpp spatial_parsing_parallel_include
 
 The code below shows how to apply a method in parallel over the spatial graph:
-```.cpp
-void computeA(openfluid::core::SpatialUnit* U)
-{
- // compute something
- // can use/produce variables
-}
-
-
-void computeB(openfluid::core::SpatialUnit* U, 
-              const double Coeff)
-{
- // compute something else, with extra args
- // can use/produce variables
-}
-
-
-openfluid::base::SchedulingRequest runStep()
-{
-
-  APPLY_UNITS_ORDERED_LOOP_THREADED("SU",MySimulator::computeA);
-  APPLY_UNITS_ORDERED_LOOP_THREADED("TU",MySimulator::computeB,2.5);
-  
-  APPLY_ALLUNITS_ORDERED_LOOP_THREADED(MySimulator::computeA);
-
-  return DefaultDeltaT();
-}
-```
+@snippet help.snippets.spatial-parsing-parallel/SpatialParsingParallelSim.cpp spatial_parsing_parallel
 
 
 Please note:
@@ -348,59 +267,8 @@ In order to add and remove connections, you can use the following methods, whene
 
 
 _Example:_
-```.cpp
-void prepareData()
-{
+@snippet help.snippets.spatial-connect/SpatialConnectSim.cpp spatial_connect
 
- /*
-      TU.1         TU.2
-        |            |
-        -->  TU.22 <--
-               |
-               --> TU.18
-                     |
-          TU.52 --> OU.5 <-- OU.13
-                     |
-                     --> OU.25
-
-       VU1 <-> VU2
-
-   with:
-   TU1, TU2, TU22, TU18 are children of VU1
-   TU52, OU5, OU13, OU25 are children of VU2
-*/
-
-  OPENFLUID_AddUnit("VU",1,1);
-  OPENFLUID_AddUnit("VU",2,2);
-  OPENFLUID_AddUnit("TU",1,1);
-  OPENFLUID_AddUnit("TU",2,1);
-  OPENFLUID_AddUnit("TU",22,2);
-  OPENFLUID_AddUnit("TU",18,3);
-  OPENFLUID_AddUnit("TU",52,1);
-  OPENFLUID_AddUnit("OU",5,4);
-  OPENFLUID_AddUnit("OU",13,1);
-  OPENFLUID_AddUnit("OU",25,5);
-
-  OPENFLUID_AddFromToConnection("VU",1,"VU",2);
-  OPENFLUID_AddFromToConnection("VU",2,"VU",1);
-  OPENFLUID_AddFromToConnection("TU",1,"TU",22);
-  OPENFLUID_AddFromToConnection("TU",2,"TU",22);
-  OPENFLUID_AddFromToConnection("TU",22,"TU",18);
-  OPENFLUID_AddFromToConnection("TU",18,"OU",5);
-  OPENFLUID_AddFromToConnection("TU",52,"OU",5);
-  OPENFLUID_AddFromToConnection("OU",13,"OU",5);
-  OPENFLUID_AddFromToConnection("OU",5,"OU",25);
-
-  OPENFLUID_AddChildParentConnection("TU",1,"VU",1);
-  OPENFLUID_AddChildParentConnection("TU",2,"VU",1);
-  OPENFLUID_AddChildParentConnection("TU",22,"VU",1);
-  OPENFLUID_AddChildParentConnection("TU",18,"VU",1);
-  OPENFLUID_AddChildParentConnection("TU",52,"VU",2);
-  OPENFLUID_AddChildParentConnection("OU",5,"VU",2);
-  OPENFLUID_AddChildParentConnection("OU",13,"VU",2);
-  OPENFLUID_AddChildParentConnection("OU",25,"VU",2);
-}
-```
 
 ### Generating spatial domain graphs automatically {#dev_srccode_space_mod_gen}
 
@@ -472,17 +340,7 @@ and is available from the runStep() and finalizeRun() methods of the simulator
 
 
 _Example of code:_
-```.cpp
-openfluid::base::SchedulingRequest runStep()
-{
-  openfluid::core::Duration_t Duration = OPENFLUID_GetSimulationDuration();
-
-  openfluid::core::TimeIndex_t CurrentIndex = OPENFLUID_GetCurrentTimeIndex();
-  openfluid::core::DateTime CurrentDT = OPENFLUID_GetCurrentDate();  
-  
-  return DefaultDeltaT();      
-}
-```
+@snippet help.snippets.params-env-time/ParamsEnvTimeSim.cpp time
 
 
 # Simulator parameters {#dev_srccode_simparams}
@@ -506,13 +364,8 @@ and used in the model.fluidx file (see @ref user_fluidx_sections_model of the si
 <br/>
 
 _Example of initParams method:_
-```.cpp
-void initParams(const openfluid::ware::WareParams_t& Params)
-{
-  m_MyParam = 0; //default value
-  OPENFLUID_GetSimulatorParameter(Params,"myparam",m_MyParam);
-}
-```
+@snippet help.snippets.params-env-time/ParamsEnvTimeSim.cpp params
+
 
 To be used in other part of the simulator, 
 the C++ variable storing a simulator parameter should be declared as class member.
@@ -553,20 +406,7 @@ The names of the attributes must match the names in the input dataset (see @ref 
 or the name of an attribute created by a simulator.
 
 _Example of use:_
-```.cpp
-openfluid::base::SchedulingRequest runStep()
-{
-  openfluid::core::SpatialUnit* SU;
-  openfluid::core::DoubleValue AreaValue;
-
-  OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
-  {
-    OPENFLUID_GetAttribute(SU,"area",AreaValue);
-    
-    // continue with source code using the value of the area attribute
-  }
-}
-```
+@snippet help.snippets.attributes/AttributesSim.cpp attributes
 
 
 # Simulation variables {#dev_srccode_vars}
@@ -626,22 +466,7 @@ and finalizeRun() parts of the simulator.
 
 
 _Example:_
-```.cpp
-openfluid::base::SchedulingRequest runStep()
-{
-  openfluid::core::DoubleValue TmpValue;
-  openfluid::core::SpatialUnit* SU;
-
-  OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
-  {
-    OPENFLUID_GetVariable(SU,"MyVar",TmpValue);
-    TmpValue = TmpValue * 2;
-    OPENFLUID_AppendVariable(SU,"MyVarX2",TmpValue);
-  }
-  
-  return DefaultDeltaT();
-}
-```
+@snippet help.snippets.variables/VariablesSim.cpp variables
 
 
 # Events {#dev_srccode_events}
@@ -683,34 +508,7 @@ An event can be added on a specific spatial unit at a given date using:
 <br/>
 
 _Example of process of events occurring on the current time step:_
-```.cpp
-openfluid::base::SchedulingRequest runStep()
-{
-  openfluid::core::SpatialUnit* TU;
-  openfluid::core::EventsCollection EvColl;
-  openfluid::core::Event* Ev;
-  openfluid::core::DateTime BTime, ETime;
-
-  BTime = OPENFLUID_GetCurrentDate();
-  ETime = OPENFLUID_GetCurrentDate() - 86400;
-
-  OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
-  {
-    OPENFLUID_GetEvents(TU,BTime,ETime,EvColl);
-
-    OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Ev)
-    {
-      if (Ev->isInfoEquals("molecule","glyphosate"))
-      {
-        // process the event
-      }
-    }
-
-  }
-
-  return DefaultDeltaT();
-}
-```
+@snippet help.snippets.events/EventsSim.cpp events
 
 
 
@@ -771,42 +569,11 @@ openfluid::core::IDSerieOfDoubleValuePtrMap
 
 
 _Example of declaration of ID-map structures in private members of the simulator class:_
-```
-class MySimulator : public openfluid::ware::PluggableSimulator
-{
-  private:
-
-    openfluid::core::IDDoubleMap m_LastValue;
-
-  public:
-  
-    // rest of the simulator class
-
-}
-```
+@snippet help.snippets.internal-state/InternalStateSim.cpp internal_state_decl
 
 
 _Example of usage of the ID-map structures:_
-```.cpp
-openfluid::base::SchedulingRequest runStep()@tableofcontents
-{
-  int ID;
-  double TmpValue;
-  openfluid::core::SpatialUnit* SU;
-
-  OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
-  {
-    ID = SU->getID();
-
-    TmpValue = TmpValue + m_LastValue[ID]
-    OPENFLUID_AppendVariable(SU,"MyVarPlus",TmpValue);
-
-    m_LastValue[ID] = TmpValue;
-  }
-
-  return DefaultDeltaT();
-}
-```
+@snippet help.snippets.internal-state/InternalStateSim.cpp internal_state_impl
 
 
 # Runtime environment {#dev_srccode_runenv}
@@ -824,18 +591,7 @@ They are accessible from simulators using:
 
 
 _Example:_
-```.cpp
-openfluid::base::SchedulingRequest initializeRun()
-{
-  std::string InputDir;
-
-  OPENFLUID_GetRunEnvironment("dir.input",InputDir);
-
-  // the current input directory is now available through the InputDir local variable 
-
-  return DefaultDeltaT();
-}
-```
+@snippet help.snippets.params-env-time/ParamsEnvTimeSim.cpp env
 
 
 The keys for requesting runtime environment information are:
@@ -900,22 +656,7 @@ Using these methods is the recommended way to log and display messages. Please a
 or similar C++ facilities in production or released simulators.
 
 _Example:_
-```.cpp
-openfluid::base::SchedulingRequest runStep()
-{
-  openfluid::core::SpatialUnit* TU;
-
-  OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
-  {
-    OPENFLUID_LogInfo("TestUnits #" << TU->getID());
-    OPENFLUID_DisplayInfo("TestUnits #" << TU->getID());
-
-    OPENFLUID_LogWarning("This is a warning message for " << "TestUnits #" << TU->getID());
-  }
-
-  return DefaultDeltaT;
-}
-```
+@snippet help.snippets.infos-debug/InfosDebugSim.cpp infowarning
 
 The messages logged to file are put in the `openfluid-messages.log` file
 placed in the simulation output directory. 
@@ -935,25 +676,7 @@ Errors can be raised using
 @endif
 
 _Example:_
-
-```.cpp
-void checkConsistency()
-{
-  double TmpValue;
-  openfluid::core::SpatialUnit* SU;
-    
-  OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
-  {
-    OPENFLUID_GetAttribute(SU,"MyAttr",TmpValue);
-    
-    if (TmpValue <= 0)
-    {
-      OPENFLUID_RaiseError("Wrong value for the MyProp attribute on SU");
-      return false;
-    }    
-  }
-}
-``` 
+@snippet help.snippets.infos-debug/InfosDebugSim.cpp error 
 
 
 # Debugging {#dev_srccode_debug}
@@ -998,14 +721,7 @@ to log and display debug messages simultaneously
 
 
 _Example:_
-```.cpp
-openfluid::base::SchedulingRequest runStep()
-{
-  OPENFLUID_LogDebug("Entering runStep at time index " << OPENFLUID_GetCurrentTimeIndex());
-
-  return DefaultDeltaT;
-}
-```
+@snippet help.snippets.infos-debug/InfosDebugSim.cpp debug
 
 
 Additional instructions are available for debugging, see file debug.hpp:
@@ -1025,46 +741,23 @@ You are invited to read the FortranCPP.hpp file to get more information about th
 <br/>
 
 
-_Example of Fortran source code (FSubr.f90):_
-```.f90
-subroutine displayvector(Fsize,vect)
-
-implicit none
-
-integer Fsize,ifrom
-real*8 vect(Fsize)
-
-write(*,*) 'size',Fsize
-write(*,*) (vect(i),i=1,Fsize)
-
-return
-end
-```
-
-_Example of declaration block int the .cpp file (MySim.cpp):_
-```.f90
-BEGIN_EXTERN_FORTRAN
-  EXTERN_FSUBROUTINE(displayvector)(FINT *Size, FREAL8 *Vect);
-END_EXTERN_FORTRAN
-```
+In order to enable the call of Fortran code, the following inclusion must be added at the top of the simulator source code: 
+@snippet help.snippets.fortran/FortranSim.cpp fortran_include
 
 
-_Example of call of the fortran subroutine from the initializeRun method (MySim.cpp):_
-```.cpp
-#include <openfluid/tools/FortranCPP.hpp>
 
-openfluid::base::SchedulingRequest initializeRun()
-{
-  openfluid::core::VectorValue MyVect;
-  
-  MyVect = openfluid::core::VectorValue(15,9);
-  int Size = MyVect.getSize();
+_Example of Fortran source code (e.g. FortranSubr.f90):_
+@include help.snippets.fortran/FortranSubr.f90
 
-  CALL_FSUBROUTINE(displayvector)(&Size,(MyVect.getData()));
 
-  return DefaultDeltaT();
-}
-```
+_Example of declaration block int the .cpp file (e.g. FortranSim.cpp):_
+@snippet help.snippets.fortran/FortranSim.cpp fortran_decl
+
+
+
+_Example of call of the fortran subroutine from the initializeRun method (e.g. FortranSim.cpp):_
+@snippet help.snippets.fortran/FortranSim.cpp fortran_use
+
 
 
 The compilation and linking of Fortran source code is automatically done 

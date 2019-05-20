@@ -78,29 +78,7 @@ typedef std::map<UnitsClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   Class defining a spatial unit
 
   example of use:
-  @code
-  openfluid::core::SpatialUnit aUnit;
-  openfluid::core::SpatialUnit* aUnitPtr;
-  openfluid::core::UnitsClass_t aUnitClass;
-  openfluid::core::UnitID_t aUnitID;
-  openfluid::core::UnitsPtrList_t* aUnitListPtr;
-
-
-  // get unit ID
-  aUnitID = aUnit.getID();
-  // or (pointed unit)
-  aUnitID = aUnitPtr->getID();
-
-  // get unit class
-  aUnitClass = aUnit.getClass();
-  // or (pointed unit)
-  aUnitClass = aUnitPtr->getClass();
-
-  // get connected units (to and from)
-  aUnitListPtr = aUnit.toSpatialUnits("foo");
-  // or
-  aUnitListPtr = aUnit.fromSpatialUnits("bar");
-  @endcode
+  @snippet misc/spatial.cpp spatialunit
 */
 class OPENFLUID_API SpatialUnit
 {

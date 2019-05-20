@@ -41,6 +41,8 @@
 
 
 #include <map>
+#include <vector>
+#include <list>
 #include <string>
 #include <ostream>
 
@@ -458,63 +460,7 @@ class CommandLineCommand
   This class allows to manage the command line arguments as commands, options and extra arguments.
 
   The example below is for a command line program with two commands ('run' and 'search') and associated options
-  @code
-  #include <openfluid/utils/CommandLineParser.hpp>
-
-  int main(int argc, char** argv)
-  {
-    // ------- Definition of the parser for "myprogram"
-
-    openfluid::utils::CommandLineParser Parser("myprogram","this is my program"); 
-
-    // add of the "run" command with associated options
-    openfluid::utils::CommandLineCommand RunCmd("run","run the process");
-    RunCmd.addOption(openfluid::utils::CommandLineOption("input-path","i","input path",true));
-    RunCmd.addOption(openfluid::utils::CommandLineOption("output-path","o","output path",true));
-    RunCmd.addOption(openfluid::utils::CommandLineOption("verbose","","verbose mode"));
-    Parser.addCommand(RunCmd);
-
-    // add of the "search" command with associated options
-    openfluid::utils::CommandLineCommand SearchCmd("search","search for data");
-    SearchCmd.addOption(openfluid::utils::CommandLineOption("path","p","path to search",true));
-    SearchCmd.addOption(openfluid::utils::CommandLineOption("extended","e","enable extended search"));
-    Parser.addCommand(SearchCmd);
-
-
-    // ------- Parsing of the given arguments
-
-    Parser.parse(argc,argv);
-    
-
-    // ------- Processing of commands and options
-
-    std::string ActiveCommand = Parser.getActiveCommand();
-    
-    if (ActiveCommand.empty())
-    {
-      // .. code here when no command
-    }
-    else if (ActiveCommand == "run")
-    {
-      // .. code here for "run" command
-
-      if (Parser.command(ActiveCommand).isOptionActive("input-path"))
-      {
-        // .. code here for "input-path" option
-      }
-      if (Parser.command(ActiveCommand).isOptionActive("output-path"))
-      {
-        // .. code here for "output-path" option
-      }
-     
-      // ...
-    }
-    else if (ActiveCommand == "search")
-    {
-      // .. code here for "search" command
-    }
-  }
-  @endcode
+@snippet misc/main.cpp cmdlineparser
 */
 class CommandLineParser
 {
