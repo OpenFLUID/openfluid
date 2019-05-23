@@ -303,7 +303,12 @@ int WareSrcWidget::closeFileTab(WareFileEditor* Editor)
 void WareSrcWidget::saveAllFileTabs()
 {
   for(WareFileEditor* Editor : m_WareFilesByPath.values())
-    Editor->saveContent();
+  {
+    if (Editor->isModified())
+    {
+      Editor->saveContent();
+    }
+  }
 }
 
 
