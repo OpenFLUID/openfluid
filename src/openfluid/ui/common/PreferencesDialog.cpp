@@ -130,7 +130,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   connect(ui->LangComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateLanguage(int)));
   connect(ui->RecentMaxSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateRecentsMax(int)));
   connect(ui->ClearRecentsButton,SIGNAL(clicked()),this,SLOT(clearRecentsList()));
-  connect(ui->AutoSaveCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableAutoSaveBeforeRun(bool)));
+  connect(ui->RunAutoSaveCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableAutoSaveBeforeRun(bool)));
   connect(ui->ItemRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmItemRemoval(bool)));
   connect(ui->ParamRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmParamRemoval(bool)));
   connect(ui->WatchCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableWatchers(bool)));
@@ -164,7 +164,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   connect(ui->EditMarketPlaceButton,SIGNAL(clicked()),this,SLOT(editMarketPlace()));
   connect(ui->RemoveMarketPlaceButton,SIGNAL(clicked()),this,SLOT(removeMarketPlace()));
 
-
+  connect(ui->BuildAutoSaveCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableAutosaveBeforeBuild(bool)));
   connect(ui->ConfigPathEnvEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateDevConfigPATH()));
   connect(ui->ConfigGeneratorEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateDevConfigGenerator()));
   connect(ui->ConfigOptionsEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateDevConfigOptions()));
@@ -270,7 +270,7 @@ void PreferencesDialog::initialize()
     // interface
     ui->RecentMaxSpinBox->setValue(PrefsMan->getBuilderRecentMax());
 
-    ui->AutoSaveCheckBox->setChecked(PrefsMan->isBuilderAutomaticSaveBeforeRun());
+    ui->RunAutoSaveCheckBox->setChecked(PrefsMan->isBuilderAutomaticSaveBeforeRun());
 
     ui->ItemRemovalCheckBox->setChecked(PrefsMan->isBuilderItemRemovalConfirm());
     ui->ParamRemovalCheckBox->setChecked(PrefsMan->isBuilderParamRemovalConfirm());
@@ -290,6 +290,7 @@ void PreferencesDialog::initialize()
   }
 
   // Development tools
+  ui->BuildAutoSaveCheckBox->setChecked(PrefsMan->isWaresdevAutomaticSaveBeforeBuild());
   ui->ConfigPathEnvEdit->setText(PrefsMan->getWaresdevConfigEnv("PATH"));
   ui->ConfigGeneratorEdit->setText(PrefsMan->getWaresdevConfigGenerator());
   ui->ConfigOptionsEdit->setText(PrefsMan->getWaresdevConfigOptions());
@@ -882,6 +883,16 @@ void PreferencesDialog::processWorkspacesPathsUpdate()
 void PreferencesDialog::updateDevConfigPATH()
 {
   openfluid::base::PreferencesManager::instance()->setWaresdevConfigEnv("PATH",ui->ConfigPathEnvEdit->text());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::enableAutosaveBeforeBuild(bool Enabled)
+{
+  openfluid::base::PreferencesManager::instance()->setWaresdevAutomaticSaveBeforeBuild(Enabled);
 }
 
 

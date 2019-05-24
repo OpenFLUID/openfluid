@@ -142,6 +142,8 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
     void processBextUserPathsUpdate();
 
     void processWorkspacesPathsUpdate();
+    
+    void enableAutosaveBeforeBuild(bool Enabled);
 
     void updateDevConfigPATH();
 
