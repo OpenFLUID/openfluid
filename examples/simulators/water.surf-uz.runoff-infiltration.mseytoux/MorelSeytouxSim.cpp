@@ -128,7 +128,7 @@ BEGIN_SIMULATOR_SIGNATURE("water.surf-uz.runoff-infiltration.mseytoux")
   DECLARE_DESCRIPTION("Production function computing infiltration and runoff at the top of surface unit "
                       "using the Morel-Seytoux method, based on the Green and Ampt assumptions.");
 
-  DECLARE_VERSION("19.03");
+  DECLARE_VERSION("19.06");
 
   DECLARE_STATUS(openfluid::ware::STABLE);
 
@@ -377,7 +377,6 @@ class MorelSeytouxSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest initializeRun()
     {
 
-      bool IsOK =  true;
       openfluid::core::UnitID_t ID;
 
       openfluid::core::DoubleValue ThetaR, ThetaS, ThetaI, Hc, ThetaStar, Ksat;
@@ -489,7 +488,6 @@ class MorelSeytouxSimulator : public openfluid::ware::PluggableSimulator
       float OutputsSum;
       float RainIntensity;
       float EfficientRainIntensity;
-      float CurrentPondingTime;
       float CurrentPondingSum;
       float EfficientPondingRainIntensity;
       float CurrentRunoff;
@@ -620,7 +618,6 @@ class MorelSeytouxSimulator : public openfluid::ware::PluggableSimulator
 
             // Computing values for optimization
             CurrentPondingSum = m_PondingSum[ID];
-            CurrentPondingTime = m_PondingTime[ID];
 
             float PSBEKs = CurrentPondingSum * (Beta * EfficientPondingRainIntensity -1) / Ks;
             float BetaOnKs = Beta / Ks;

@@ -124,7 +124,7 @@ BEGIN_SIMULATOR_SIGNATURE("water.surf.transfer-su.hayami")
   DECLARE_METHOD("Hayami");
 
   DECLARE_STATUS(openfluid::ware::STABLE);
-  DECLARE_VERSION("19.03");
+  DECLARE_VERSION("19.06");
 
   DECLARE_AUTHOR("Roger Moussa","moussa@supagro.inra.fr");
   DECLARE_AUTHOR("Jean-Christophe Fabre","fabrejc@supagro.inra.fr");
@@ -331,7 +331,6 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
       openfluid::core::DoubleValue TmpValue;
       openfluid::core::DoubleValue Area;
       unsigned int SUCount = 0;
-      unsigned int GUCount = 0;
 
       m_MeanSlope = 0;
       m_MeanManning = 0;

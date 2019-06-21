@@ -132,7 +132,7 @@ BEGIN_SIMULATOR_SIGNATURE("water.surf.transfer-rs.hayami")
   DECLARE_METHOD("Hayami");
 
   DECLARE_STATUS(openfluid::ware::STABLE);
-  DECLARE_VERSION("19.03");
+  DECLARE_VERSION("19.06");
 
 
   DECLARE_AUTHOR("Moussa R.","moussa@supagro.inra.fr");
@@ -193,7 +193,6 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
 
     float m_MeanManning;
 
-    float m_RSBuffer;
 
     bool m_UseInterflowVar;
     bool m_UseBaseflowVar;
@@ -203,6 +202,8 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
           Calibration step for height-discharge relation (meters)
      */
     float m_CalibrationStep;
+    
+    float m_RSBuffer;
 
     IDKernelMap m_RSKernel;
 
@@ -361,8 +362,6 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
     {
       int ID;
       openfluid::core::SpatialUnit* RS;
-      openfluid::core::SpatialUnit* SU;
-      openfluid::core::SpatialUnit* GU;
       openfluid::core::DoubleValue RSmanning, RSslope, RSlength, RSheight, RSwidth;
 
       m_UseInterflowVar = true;
