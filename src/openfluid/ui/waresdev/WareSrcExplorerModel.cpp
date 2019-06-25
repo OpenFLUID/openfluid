@@ -293,11 +293,12 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
     if (!isDir(Index))
     {
       QString FilePath = filePath(Index);
+      QString FileName = QFileInfo(FilePath).fileName();
       QString BaseIconPath = ":/ui/common/filetypes/notype.png";
 
       for (QMap<QString, QString>::const_iterator it = m_UserIcons.begin(); it != m_UserIcons.end(); ++it)
       {
-        if (QDir::match(it.key(), FilePath))
+        if (QDir::match(it.key(), FileName))
         {
           BaseIconPath = it.value();
           break;
