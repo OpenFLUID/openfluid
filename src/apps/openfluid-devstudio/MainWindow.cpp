@@ -48,6 +48,7 @@
 #include <QCloseEvent>
 
 #include <openfluid/config.hpp>
+#include <openfluid/global.hpp>
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
@@ -75,10 +76,6 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
 
   ui->setupUi(this);
 
-  QRect ScreenRect = QApplication::desktop()->screenGeometry();
-  resize(ScreenRect.width() * 0.9, ScreenRect.height() * 0.9);
-  move((ScreenRect.width() - width()) / 2, (ScreenRect.height() - height()) / 2);
-
   QList<int> Sizes;
   Sizes << 220 << 1000;
   ui->splitter->setSizes(Sizes);
@@ -89,14 +86,14 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
   mp_Toolbar->setIconSize(QSize(32,32));
   mp_Toolbar->setStyleSheet(
       QString(R"(
-QToolButton {  
-  color: #f0f0f0; 
-  padding-left : 10px; 
-  padding-right : 10px;  
-} 
+QToolButton {
+  color: #f0f0f0;
+  padding-left : 10px;
+  padding-right : 10px;
+}
 
-#SrcToolbar {  
-  background-color: %1; 
+#SrcToolbar {
+  background-color: %1;
   border: 1px solid %1;
 }
 
@@ -106,28 +103,28 @@ QToolButton, QLabel {
 }
 
 QToolButton[popupMode=1] {
-  background-color: %1; 
+  background-color: %1;
   border: 1px solid %1;
   padding-left : 10px;
   padding-right : 20px;
 }
 
-QToolButton::hover { 
+QToolButton::hover {
   background-color: %2;
   border : 1px solid %3;
-  border-radius: 4px; 
-}
-
-QToolButton::menu-button {
-  background-color: %1; 
-  border: 1px solid %1; 
   border-radius: 4px;
 }
 
-QToolButton::menu-button:pressed, QToolButton::menu-button:hover { 
-  background-color: %2; 
+QToolButton::menu-button {
+  background-color: %1;
+  border: 1px solid %1;
+  border-radius: 4px;
+}
+
+QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
+  background-color: %2;
   border : 1px solid %3;
-  border-radius: 4px; 
+  border-radius: 4px;
 }
              )").arg(
           openfluid::ui::config::TOOLBAR_BGCOLOR, openfluid::ui::config::TOOLBARBUTTON_BGCOLOR,
@@ -256,6 +253,12 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
                      .arg(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
                                                      ->getBuilderWorkspacePath()));
   statusBar()->addPermanentWidget(new QLabel(TmpLabel),1);
+
+  // Main windows size and placement at startup
+  QRect ScreenRect = QApplication::desktop()->screenGeometry();
+  resize(ScreenRect.width()*0.9,ScreenRect.height()*0.9);
+  move((ScreenRect.width()-width())/2,
+       (ScreenRect.height()-height())/2);
 }
 
 
