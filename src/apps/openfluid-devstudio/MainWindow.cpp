@@ -375,6 +375,9 @@ void MainWindow::createMenus()
 #endif
 
   SubMenu = Menu->addMenu(tr("Options"));
+#if defined (OPENFLUID_OS_MAC)
+  SubMenu->menuAction()->setMenuRole(QAction::NoRole);
+#endif
   SubMenu->addAction(mp_Toolbar->action("WareOptionsRelease"));
   SubMenu->addAction(mp_Toolbar->action("WareOptionsDebug"));
   SubMenu->addSeparator();
