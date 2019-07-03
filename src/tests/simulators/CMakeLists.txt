@@ -43,6 +43,20 @@ ENDIF()
 ###########################################################################
 
 
+IF(OFBUILD_TESTS_ENABLE_EMBEDDING_R)
+  OFBUILD_ADD_SIMULATOR(tests.embedding.R ${OFBUILD_TESTS_BINARY_DIR})
+  OPENFLUID_ADD_TEST(NAME simulators-Embedding-R
+                     COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                             "run"
+                             "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.R"
+                             "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.R" 
+                             "-p" "${OFBUILD_TESTS_BINARY_DIR}")
+ENDIF()
+
+
+###########################################################################
+
+
 OFBUILD_ADD_SIMULATOR(tests.exceptions ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Exceptions 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
@@ -422,7 +436,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Generators
                         "run"
                         "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.Generators"
                         "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Generators" 
-                        "-p" "${OFBUILD_TESTS_BINARY_DIR}" "-v")                              
+                        "-p" "${OFBUILD_TESTS_BINARY_DIR}" "-v")
 
 
 ###########################################################################
@@ -476,4 +490,3 @@ OPENFLUID_ADD_TEST(NAME simulators-WrongVersion
                                   "-p" "${OFBUILD_TESTS_BINARY_DIR}")
 SET_TESTS_PROPERTIES(simulators-WrongVersion PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongversion")
 
-                            

@@ -113,7 +113,8 @@ FUNCTION(OFBUILD_ADD_SIMULATOR SIM_SRCDIR SIM_BINDIR)
     SET(_FORTRAN_LINK_LIBS "gfortran")
   ENDIF()
 
-  INCLUDE_DIRECTORIES(${SIM_SRCDIR})
+  INCLUDE_DIRECTORIES(${SIM_SRCDIR} ${SIM_INCLUDE_DIRS})
+  LINK_DIRECTORIES(${SIM_LIBRARY_DIRS})
 
   ADD_LIBRARY("${SIM_ID}${OPENFLUID_SIMULATORS_SUFFIX}" MODULE ${SIM_CPP} ${SIM_FORTRAN})
 
@@ -133,6 +134,7 @@ FUNCTION(OFBUILD_ADD_SIMULATOR SIM_SRCDIR SIM_BINDIR)
                         openfluid-ware
                         openfluid-tools
                         Qt5::Core
+                        ${SIM_LINK_LIBS}
                         ${SIM_EXTRA_LINKS}
                         ${_FORTRAN_LINK_LIBS})
 

@@ -173,14 +173,14 @@ The code below shows how to apply a method in parallel over the spatial graph:
 @snippet help.snippets.spatial-parsing-parallel/SpatialParsingParallelSim.cpp spatial_parsing_parallel
 
 
-Please note:
-
-* If a spatial loop is used inside other spatial loop, it is recommended to use multithreading in only one loop.
-* In case of concurrent data access, it is strongly recommended to use mutex locks for thread safe data handling.
+@note 
+* If a spatial loop is used inside another spatial loop, it is recommended to use multithreading in only one loop.
+@note 
+* In case of concurrent data access, it is strongly recommended to use mutex locks for thread-safe data handling.
+@note 
 * Concurrent parsing using multithreading should improve computing performance, reducing simulations durations.
 But in case of very short computing durations, the cost of multithreading management
 may counterbalance the performance improvements of concurrent computing. 
-
 
 
 
@@ -728,15 +728,15 @@ Additional instructions are available for debugging, see file debug.hpp:
 
 
 
-# Fortran 77/90 source code integration {#dev_srccode_fortran}
+# Integrating Fortran code {#dev_srccode_fortran}
 
-The C++ - Fortran interface is defined in the openfluid/tools/FortranCPP.hpp file.
+The C++/Fortran interface is defined in the openfluid/tools/FortranCPP.hpp file. 
+It allows to integrate Fortran 77/90 code into simulators.<br/>
 In order to execute Fortran code from a simulator,
-this Fortran source code have to be wrapped into subroutines 
-that will be called from the C++ code of the simulator.  
+the Fortran source code have to be wrapped into subroutines 
+that are called from the C++ code of the simulator.  
 To help developers of simulators to achieve this wrapping operation, 
 the FortranCPP.hpp file defines dedicated instructions. 
-These instructions allows calls of Fortran77 and Fortran90 source code. 
 You are invited to read the FortranCPP.hpp file to get more information about these instructions.  
 <br/>
 
@@ -763,6 +763,49 @@ _Example of call of the fortran subroutine from the initializeRun method (e.g. F
 The compilation and linking of Fortran source code is automatically done 
 when adding fortran source files to the SIM_FORTRAN variable in the CMake.in.config file 
 (See @ref dev_createsim_exmpl_config).
+
+
+# Embedding R code {#dev_srccode_R}
+
+@note The embedding of R code in simulators is currently an experimental feature.
+
+
+Thanks to the [RInside package](http://dirk.eddelbuettel.com/code/rinside.html), 
+It is possible to embed R code in simulators written in C++. 
+It also relies on the [Rcpp package](http://dirk.eddelbuettel.com/code/rcpp.html) 
+for handling data from and to the [R environment](https://www.r-project.org/).
+
+In order to embed R code using RInside, the following inclusion must be added at the top of the simulator source code:
+@snippet help.snippets.R/RSim.cpp R_include
+
+A unique RInside variable is used to run R code, it should be declared as a member of the simulator class (named `m_R` in this example).
+@snippet help.snippets.R/RSim.cpp R_decl
+
+The R environment can be acessed through the RInside variable
+and R commands can be run using its `parseEvalQ()` method.
+@snippet help.snippets.R/RSim.cpp R_use
+
+In this short example, simple variables and commands are used. 
+It is possible to perform complex operations involving external R packages, 
+or call R scripts by executing a `source()` R command through RInside.
+See the [RInside package](http://dirk.eddelbuettel.com/code/rinside.html) documentation to get more details and examples.
+
+
+To help configuring the simulator which is using the RInside package, a CMake module is provided with OpenFLUID 
+to setup the configuration variables when building the simulator.
+It should be used in the `CMake.in.cmake` file of the simulator.
+@include help.snippets.R/CMake.in.cmake
+
+An adjustment of the CMake module path prefix may be required to find the provided R module for CMake
+```
+SET(CMAKE_MODULE_PATH "/prefix/lib/openfluidhelpers/cmake;${CMAKE_MODULE_PATH}")
+```
+where `prefix` depends on the OpenFLUID installation path and operating system (e.g. `/usr`,`/usr/local`, `C:\OpenFLUID-x.x.x`)
+
+
+@warning Due to limitations of the RInside package, embedding R code in simulators does not support threading. 
+Simulators using RInside cannot be run in threaded executions such as in OpenFLUID-Builder 
+and must be run using the `openfluid` command line.
 
 
 # Miscellaneous helpers {#dev_srccode_misctools}

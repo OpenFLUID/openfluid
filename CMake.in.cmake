@@ -274,8 +274,12 @@ SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR)
 
 ################### tests configuration ###################
 
-# uncomment this to build simulators mixing C++ and fortran source codes (in this source tree)
-#SET(OFBUILD_TESTS_ENABLE_FORTRAN 1)
+# set to 1 to build simulators mixing C++ and Rortran source code
+SET(OFBUILD_TESTS_ENABLE_FORTRAN 0)
+
+# set to 1 to build simulators embedding R in C++ source code
+SET(OFBUILD_TESTS_ENABLE_EMBEDDING_R 0)
+
 
 # set options passed to unit tests programs. ex: "--log_level=all"
 SET(OFBUILD_UNITTESTS_RUN_OPTIONS "")
