@@ -46,61 +46,11 @@
 #include "CSVObsTools.hpp"
 
 
-CSVFormat::CSVFormat():
-  Header(Info), ColSeparator(";"), DateFormat("%Y%m%dT%H%M%S"),
-  CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false)
-{
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
 CSVSet::CSVSet() :
   UnitsClass(""), UnitsIDsStr(""), isAllUnits(false), VariablesStr(""), isAllVars(false), FormatName("")
 {
 
 };
-
-
-// =====================================================================
-// =====================================================================
-
-
-CSVFormat::HeaderType StrToHeaderType(const std::string& HeaderStr)
-{
-  if (HeaderStr == "none")
-    return CSVFormat::None;
-  else if (HeaderStr == "colnames-as-data")
-    return CSVFormat::ColnamesAsData;
-  else if (HeaderStr == "colnames-as-comment")
-          return CSVFormat::ColnamesAsComment;
-  else if (HeaderStr == "full")
-    return CSVFormat::Full;
-  else
-    return CSVFormat::Info;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string HeaderTypeToStr(CSVFormat::HeaderType HType)
-{
-  if (HType == CSVFormat::ColnamesAsComment)
-    return "colnames-as-comment";
-  else if (HType == CSVFormat::ColnamesAsData)
-    return "colnames-as-data";
-  else if (HType == CSVFormat::Full)
-    return "full";
-  else if (HType == CSVFormat::None)
-    return "none";
-  else
-    return "";
-}
 
 
 // =====================================================================
@@ -127,27 +77,7 @@ std::string buildHeader(const CSVFormat& Format, const std::string& FilePath,
 
   }
 
-  if(Format.Header == CSVFormat::ColnamesAsComment || Format.Header == CSVFormat::Full)
-  {
-    if (Format.IsTimeIndexDateFormat)
-      HeaderSStr << Format.CommentChar << "timeindex";
-    else
-      HeaderSStr << Format.CommentChar << "datetime";
-
-    HeaderSStr << Format.ColSeparator << VarName << "\n";
-
-  }
-
-  if(Format.Header == CSVFormat::ColnamesAsData)
-  {
-    if (Format.IsTimeIndexDateFormat)
-      HeaderSStr << "timeindex";
-    else
-      HeaderSStr << "datetime";
-
-    HeaderSStr << Format.ColSeparator << VarName << "\n";
-  }
-
+  HeaderSStr << buildTimeHeader(Format, VarName);
 
   return HeaderSStr.str();
 }
@@ -168,21 +98,6 @@ std::string buildFilename(const std::string& OutputDir, const std::string& OutFi
   oss << OutputDir << "/" << SetName << "_" << UnitsClass << UnitID << "_" << Varname << "." << OutFileExt;
 
   return oss.str();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string StrToDateFormat(const std::string& FormatStr)
-{
-  if (FormatStr == "ISO")
-    return "%Y%m%dT%H%M%S";
-  else if (FormatStr == "6cols")
-    return "%Y\t%m\t%d\t%H\t%M\t%S";
-  else
-    return FormatStr;
 }
 
 

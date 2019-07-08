@@ -9,6 +9,9 @@ SET(OBS_PARAMSUI_ENABLED ${OFBUILD_ENABLE_GUI})
 OFBUILD_ADD_OBSERVER(export.vars.files.csv ${OFBUILD_DIST_OBSERVERS_DIR})
 
 
+OFBUILD_ADD_OBSERVER(export.vars.files.csv-multicols ${OFBUILD_DIST_OBSERVERS_DIR})
+
+
 OFBUILD_ADD_OBSERVER(export.vars.files.kml-anim ${OFBUILD_DIST_OBSERVERS_DIR})
 
                       

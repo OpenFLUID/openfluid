@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+
+      <simulator ID="tests.na.deltat" />
+      <simulator ID="tests.na.end" />
+      <simulator ID="tests.na.alternate" />
+      <simulator ID="tests.na.randomtime" />
+      <simulator ID="tests.na.noupdate" />
+
+  </model>
+
+</openfluid>

@@ -59,7 +59,37 @@ OPENFLUID_ADD_TEST(NAME observers-CSVFiles
 
 ###########################################################################
 
-                        
+
+OPENFLUID_ADD_TEST(NAME observers-MulticolsCSVFiles 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                        "run"
+                        "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.MulticolsCSVObserver"
+                        "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.MulticolsCSVObserver" 
+                        "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+                        "-n" "${OFBUILD_TESTS_BINARY_DIR}"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.MulticolsCSVObserver"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.MulticolsCSVObserver/autoAll.csv"
+                   )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME observers-MulticolsCSVFiles-KeepEmpty 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                        "run"
+                        "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.MulticolsCSVObserverKeepEmpty"
+                        "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.MulticolsCSVObserverKeepEmpty" 
+                        "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+                        "-n" "${OFBUILD_TESTS_BINARY_DIR}"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.MulticolsCSVObserverKeepEmpty"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.MulticolsCSVObserverKeepEmpty/autoAll.csv"
+                   )
+
+
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME observers-DotFiles 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"

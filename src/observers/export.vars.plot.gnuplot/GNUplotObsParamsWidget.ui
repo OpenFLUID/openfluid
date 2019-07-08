@@ -291,7 +291,7 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="UnitClassComboBox">
+                   <widget class="QComboBox" name="UnitsClassComboBox">
                     <property name="sizeAdjustPolicy">
                      <enum>QComboBox::AdjustToContents</enum>
                     </property>

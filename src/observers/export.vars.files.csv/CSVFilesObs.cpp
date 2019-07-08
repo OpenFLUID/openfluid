@@ -38,11 +38,9 @@
 
 
 #include <chrono>
-#include <fstream>
 #include <sstream>
 #include <iomanip>
 
-#include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
@@ -53,28 +51,16 @@
 // =====================================================================
 
 
-class CSVFile
+class CSVFile : public BaseCSVFile
 {
   public:
     openfluid::core::SpatialUnit* Unit;
 
-    char* FileBuffer;
-
-    std::ofstream FileHandle;
-
-    std::string FileName;
-
     openfluid::core::VariableName_t VarName;
 
-    CSVFile() :
-      Unit(nullptr), FileBuffer(nullptr), FileHandle(nullptr)
+    CSVFile() : BaseCSVFile(), Unit(nullptr)
     { }
 
-    ~CSVFile()
-    {
-      if (FileHandle.is_open()) FileHandle.close();
-        delete [] FileBuffer;
-    }
 };
 
 
@@ -127,7 +113,7 @@ END_OBSERVER_SIGNATURE
 // =====================================================================
 
 
-class CSVFilesObserver : public openfluid::ware::PluggableObserver
+class CSVFilesObserver : public CSVFilesObserverBase
 {
   private:
 
@@ -137,32 +123,15 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
     SetFilesMap_t m_SetsFiles;
 
-    std::string m_OutputDir;
-
-    unsigned int m_BufferSize;
-
-    std::string m_OutFileExt;
-
 
   public:
-
-    CSVFilesObserver() : PluggableObserver(),
-    m_OutputDir(""),m_BufferSize(2*1024),m_OutFileExt(CSV_FILES_EXT)
-    {
-
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
+    
     ~CSVFilesObserver()
     {
       onFinalizedRun();
     }
-
-
+    
+    
     // =====================================================================
     // =====================================================================
 
@@ -388,27 +357,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
     // =====================================================================
     // =====================================================================
 
-
-    void onInitializedRun()
-    {
-      saveToFiles();
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    void onStepCompleted()
-    {
-      saveToFiles();
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
+    
     void onFinalizedRun()
     {
       SetFilesMap_t::iterator SetItE = m_SetsFiles.end();

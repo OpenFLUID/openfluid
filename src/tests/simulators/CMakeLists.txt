@@ -172,6 +172,16 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesVariables
 ###########################################################################
 
 
+OFBUILD_ADD_SIMULATOR(tests.na.deltat ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_SIMULATOR(tests.na.alternate ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_SIMULATOR(tests.na.end ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_SIMULATOR(tests.na.randomtime ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_SIMULATOR(tests.na.noupdate ${OFBUILD_TESTS_BINARY_DIR})
+
+
+###########################################################################
+
+
 OFBUILD_ADD_SIMULATOR(tests.primitives.land ${OFBUILD_TESTS_BINARY_DIR})
 OFBUILD_ADD_SIMULATOR(tests.primitives.land.prod ${OFBUILD_TESTS_BINARY_DIR})
 OFBUILD_ADD_SIMULATOR(tests.primitives.land.use ${OFBUILD_TESTS_BINARY_DIR})

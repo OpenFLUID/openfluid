@@ -130,7 +130,7 @@ GNUplotObsParamsWidget::GNUplotObsParamsWidget(): openfluid::builderext::Pluggab
   connect(ui->SerieDataFileRadio, &QRadioButton::clicked, this, &GNUplotObsParamsWidget::changeSerieType);
 
   connect(ui->VariableNameEdit, &QLineEdit::editingFinished, this, &GNUplotObsParamsWidget::setVariableName);
-  connect(ui->UnitClassComboBox, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated),
+  connect(ui->UnitsClassComboBox, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated),
             this, &GNUplotObsParamsWidget::setUnitsClass);
   connect(ui->UnitIDComboBox, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated),
             this, &GNUplotObsParamsWidget::setUnitID);
@@ -557,16 +557,16 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
       ui->DataFileSourceWidget->hide();
 
       ui->VariableNameEdit->setText(QString::fromStdString(Serie.VarName));
-      ui->UnitClassComboBox->clear();
+      ui->UnitsClassComboBox->clear();
 
       QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
       for (auto& ClassName : ClassNames)
-        ui->UnitClassComboBox->addItem(ClassName);
+        ui->UnitsClassComboBox->addItem(ClassName);
 
       QString UnitsClass = QString::fromStdString(Serie.UnitsClass);
-      if (ui->UnitClassComboBox->findText(UnitsClass) != -1)
+      if (ui->UnitsClassComboBox->findText(UnitsClass) != -1)
       {
-        ui->UnitClassComboBox->setCurrentText(UnitsClass);
+        ui->UnitsClassComboBox->setCurrentText(UnitsClass);
         updateClassIDs(UnitsClass);
 
         QString UnitID = QString::number(Serie.UnitID);
@@ -580,8 +580,8 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
       }
       else
       {
-        ui->UnitClassComboBox->setCurrentIndex(0);
-        setUnitsClass(ui->UnitClassComboBox->currentText());
+        ui->UnitsClassComboBox->setCurrentIndex(0);
+        setUnitsClass(ui->UnitsClassComboBox->currentText());
       }
     }
     else if (Serie.Type == SerieInfo::SERIE_FILE)
@@ -628,7 +628,7 @@ void GNUplotObsParamsWidget::changeSerieType()
       mp_Params->erase(SeriePrefix + "sourcefile");
 
       mp_Params->insert({SeriePrefix + "var", ui->VariableNameEdit->text().toStdString()});
-      mp_Params->insert({SeriePrefix + "unitsclass", ui->UnitClassComboBox->currentText().toStdString()});
+      mp_Params->insert({SeriePrefix + "unitsclass", ui->UnitsClassComboBox->currentText().toStdString()});
       mp_Params->insert({SeriePrefix + "unitID", ui->UnitIDComboBox->currentText().toStdString()});
     }
     else if (ui->SerieDataFileRadio->isChecked())

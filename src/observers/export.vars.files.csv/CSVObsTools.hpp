@@ -46,35 +46,7 @@
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
-
-constexpr const char* CSV_FILES_EXT = "csv";
-
-
-// =====================================================================
-// =====================================================================
-
-
-class CSVFormat
-{
-  public:
-
-    enum HeaderType { None, Info, ColnamesAsData, ColnamesAsComment, Full };
-
-    HeaderType Header;
-
-    std::string ColSeparator;
-
-    std::string DateFormat;
-
-    std::string CommentChar;
-
-    unsigned int Precision;
-
-    bool IsTimeIndexDateFormat;
-
-    CSVFormat();
-
-};
+#include "CsvObserverBase.hpp"
 
 
 // =====================================================================
@@ -119,9 +91,6 @@ typedef std::map<std::string, CSVSet> SetMap_t;
 // =====================================================================
 
 
-CSVFormat::HeaderType StrToHeaderType(const std::string& HeaderStr);
-
-
 std::string HeaderTypeToStr(CSVFormat::HeaderType HType);
 
 
@@ -135,9 +104,6 @@ std::string buildFilename(const std::string& OutputDir, const std::string& OutFi
                           const openfluid::core::UnitsClass_t& UnitsClass,
                           const openfluid::core::UnitID_t& UnitID,
                           const openfluid::core::VariableName_t& Varname);
-
-
-std::string StrToDateFormat(const std::string& FormatStr);
 
 
 std::vector<std::string> parseFormatsFromParamsTree(const openfluid::ware::WareParamsTree& ParamsTree,

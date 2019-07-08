@@ -1,3 +1,5 @@
+INCLUDE_DIRECTORIES(.)
+
 SET(OBS_CPP export.vars.files.csv/CSVFilesObs.cpp export.vars.files.csv/CSVObsTools.cpp)
 SET(OBS_INSTALL_ENABLED ON)
 SET(OBS_TRANSLATIONS_ENABLED ON)
