@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -611,7 +611,7 @@ void OpenFLUIDApp::runSimulation()
     {
       MListener = std::make_unique<VerboseMachineListener>();
     }
-    else 
+    else
     {
       MListener = std::make_unique<DefaultMachineListener>();
     }
@@ -716,9 +716,13 @@ void OpenFLUIDApp::runSimulation()
             << openfluid::core::ValuesBufferProperties::getBufferSize();
 
   if (openfluid::base::RunContextManager::instance()->isValuesBufferUserSize())
-    std::cout << " (using dataset run configuration)";
+  {
+    std::cout << " (using run configuration)";
+  }
   else
+  {
     std::cout << " (automatically computed)";
+  }
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout.flush();
@@ -793,7 +797,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   Parser.addOption(openfluid::utils::CommandLineOption("version","","display version"));
 
-  
+
   // run dataset
   openfluid::utils::CommandLineCommand RunDatasetCmd("run","Run a simulation from a project or an input dataset");
   for (auto& Opt : RunOptions)
@@ -823,7 +827,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   for (auto& Opt : SearchOptions)
   {
     ReportCmd.addOption(Opt);
-  }  
+  }
   Parser.addCommand(ReportCmd);
 
 
@@ -903,8 +907,6 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     {
       unsigned int MaxThreads = 0;
 
-      std::cout << Parser.command(ActiveCommandStr).getOptionValue("max-threads") << std::endl;
-
       if (openfluid::tools::convertString(Parser.command(ActiveCommandStr).getOptionValue("max-threads"),&MaxThreads))
       {
         openfluid::base::RunContextManager::instance()->setWaresMaxNumThreads(MaxThreads);
@@ -978,7 +980,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
             Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
       }
 
-      if (Parser.command(ActiveCommandStr).isOptionActive("list") || 
+      if (Parser.command(ActiveCommandStr).isOptionActive("list") ||
           Parser.command(ActiveCommandStr).isOptionActive("list-with-errors"))
       {
         m_RunType = InfoRequest;
@@ -1001,7 +1003,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
             Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
       }
 
-      if (Parser.command(ActiveCommandStr).isOptionActive("list") || 
+      if (Parser.command(ActiveCommandStr).isOptionActive("list") ||
           Parser.command(ActiveCommandStr).isOptionActive("list-with-errors"))
       {
         m_RunType = InfoRequest;
@@ -1113,7 +1115,9 @@ void OpenFLUIDApp::runBuddy()
   std::unique_ptr<openfluid::buddies::BuddiesListener> BuddyObs = std::make_unique<DefaultBuddiesListener>();
 
   if (m_BuddyToRun.first == "newsim" )
+  {
     Buddy = std::make_unique<openfluid::buddies::NewSimulatorBuddy>(BuddyObs.get());
+  }
 #if OPENFLUID_SIM2DOC_ENABLED
     // Disabled for compilation errors due to boost.spirit usage under MacOSX
     // TODO Should be re-enabled later
@@ -1136,8 +1140,11 @@ void OpenFLUIDApp::runBuddy()
     Buddy->parseOptions(m_BuddyToRun.second);
     Buddy->run();
   }
-  else throw openfluid::base::ApplicationException(openfluid::base::ApplicationException::computeContext("openfluid"),
-                                                   "Buddy " + m_BuddyToRun.first + " does not exists");
+  else
+  {
+    throw openfluid::base::ApplicationException(openfluid::base::ApplicationException::computeContext("openfluid"),
+                                                "Buddy " + m_BuddyToRun.first + " does not exists");
+  }
 }
 
 
