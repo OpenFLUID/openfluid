@@ -43,6 +43,7 @@
 
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
@@ -176,6 +177,18 @@ void AppActions::createActions()
   m_Actions["SimulationRun"]->setIcon(openfluid::ui::common::getIcon("run","/ui/common",true));
   m_Actions["SimulationRun"]->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
 
+  m_Actions["SimulationMode"] = new QAction(tr("Mode"), this);
+  QActionGroup* ConfigureGroup = new QActionGroup(this);
+  QMenu* SimModeMenu = new QMenu();
+  m_Actions["SimulationModeDefault"] = new QAction("Integrated", ConfigureGroup);
+  m_Actions["SimulationModeDefault"]->setCheckable(true);
+  m_Actions["SimulationModeDefault"]->setChecked(true);
+  SimModeMenu->addAction(m_Actions["SimulationModeDefault"]);
+  m_Actions["SimulationModeCLI"] = new QAction("Command line", ConfigureGroup);
+  m_Actions["SimulationModeCLI"]->setCheckable(true);
+  SimModeMenu->addAction(m_Actions["SimulationModeCLI"]);
+  m_Actions["SimulationMode"]->setMenu(SimModeMenu);
+
 
   //View Menu
   m_Actions["ViewDashboard"] = new QAction(tr("Show/Hide project dashboard"), this);
@@ -221,7 +234,9 @@ QAction* AppActions::action(const std::string& ID) const
   std::map<std::string,QAction*>::const_iterator It = m_Actions.find(ID);
 
   if (It != m_Actions.end())
+  {
     return (*It).second;
+  }
   else
   {
     openfluid::base::ExceptionContext Context =
@@ -245,7 +260,9 @@ void AppActions::setProjectMode()
   std::map<std::string,QAction*>::const_iterator It;
 
   for (It=Itb;It!=Ite;++It)
+  {
     ((*It).second)->setVisible(true);
+  }
 
   m_Actions["HelpExamplesRestore"]->setVisible(false);
 
@@ -258,7 +275,27 @@ void AppActions::setProjectMode()
   mp_SimulationMenu->menuAction()->setVisible(true);
   mp_ViewMenu->menuAction()->setVisible(true);
   mp_ExtensionsMenu->menuAction()->setVisible(true);
-  if (mp_MainToolbar != nullptr) mp_MainToolbar->show();
+  
+  if (mp_MainToolbar != nullptr) 
+  {
+    mp_MainToolbar->show();
+  }
+
+  auto RunCtxt = openfluid::base::RunContextManager::instance();
+
+  if (RunCtxt->isProjectOpen())
+  {
+    QString ModeStr = RunCtxt->getProjectConfigValue("builder.simulation.options","mode").toString();
+
+    if (ProjectCentral::getRunModeValue(ModeStr) == ProjectCentral::RunMode::CLI)
+    {
+      m_Actions["SimulationModeCLI"]->setChecked(true);
+    }
+    else
+    {
+      m_Actions["SimulationModeDefault"]->setChecked(true);
+    }
+  }
 }
 
 
@@ -433,7 +470,7 @@ void AppActions::createMenus(MainWindow& MainWin)
   mp_SimulationMenu->addAction(action("WaresRefresh"));
   mp_SimulationMenu->addSeparator();
   mp_SimulationMenu->addAction(action("SimulationRun"));
-
+  mp_SimulationMenu->addAction(action("SimulationMode"));
 
   mp_ExtensionsMenu = MainWin.menuBar()->addMenu(tr("&Extensions"));
 

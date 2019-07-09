@@ -44,6 +44,8 @@
 
 #include <openfluid/ware/PluggableWare.hpp>
 
+#include "ProjectCentral.hpp"
+
 
 class AbstractModuleWidget : public QWidget
 {
@@ -91,6 +93,8 @@ class AbstractModuleWidget : public QWidget
     virtual void whenRecentProjectsActionsChanged() = 0;
 
     virtual void whenRunAsked() = 0;
+
+    virtual void whenRunModeAsked(ProjectCentral::RunMode Mode) = 0;
 
     virtual void whenExtensionAsked(const QString& ID) = 0;
 

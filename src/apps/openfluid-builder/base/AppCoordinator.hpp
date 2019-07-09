@@ -109,6 +109,10 @@ class AppCoordinator : public QObject
 
     void whenRunAsked();
 
+    void whenRunDefaultModeAsked();
+
+    void whenRunCLIModeAsked();
+
     void whenExtensionAsked();
 
     void whenViewDashboardAsked();

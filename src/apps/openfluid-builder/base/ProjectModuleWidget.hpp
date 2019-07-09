@@ -231,6 +231,8 @@ class ProjectModuleWidget : public AbstractModuleWidget
 
     void whenRunAsked();
 
+    void whenRunModeAsked(ProjectCentral::RunMode Mode);
+
     void whenExtensionAsked(const QString& ID);
 
     void whenMarketAsked();

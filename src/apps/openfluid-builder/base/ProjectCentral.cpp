@@ -37,8 +37,10 @@
 
 
 #include <QDir>
+#include <QMessageBox>
 
 #include <openfluid/ui/common/RunSimulationDialog.hpp>
+#include <openfluid/ui/common/RunCLISimulationDialog.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
@@ -57,7 +59,7 @@ ProjectCentral* ProjectCentral::mp_Instance = nullptr;
 
 
 ProjectCentral::ProjectCentral(const QString& PrjPath):
-  mp_FXDesc(nullptr)
+  mp_FXDesc(nullptr), m_PrjPath(PrjPath)
 {
   mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(&m_IOListener);
 
@@ -149,8 +151,11 @@ QStringList ProjectCentral::convertUpdatedUnitsClassesToQStringList(
     const std::vector<openfluid::ware::SignatureUnitsClassItem>& UnitsClassesVector)
 {
   QStringList QSL;
+  
   for (unsigned int i=0; i<UnitsClassesVector.size();++i)
+  {
     QSL.append(QString::fromStdString(UnitsClassesVector[i].UnitsClass));
+  }
 
   return QSL;
 }
@@ -184,7 +189,7 @@ void ProjectCentral::setDefaultDescriptors()
 // =====================================================================
 
 
-void ProjectCentral::run()
+void ProjectCentral::run(RunMode Mode)
 {
   openfluid::base::RunContextManager* CtxtMan = openfluid::base::RunContextManager::instance();
 
@@ -192,10 +197,23 @@ void ProjectCentral::run()
   CtxtMan->setProfiling(CtxtMan->getProjectConfigValue("builder.runconfig.options","profiling").toBool());
   CtxtMan->setWaresMaxNumThreads(CtxtMan->getProjectConfigValue("builder.runconfig.options","maxthreads").toInt());
 
-
-  openfluid::ui::common::RunSimulationDialog RunDlg(QApplication::activeWindow(),mp_FXDesc);
-
-  RunDlg.execute();
+  if (Mode == RunMode::DEFAULT)
+  {
+    openfluid::ui::common::RunSimulationDialog RunDlg(QApplication::activeWindow(),mp_FXDesc);
+    RunDlg.execute();
+  }
+  else if (Mode == RunMode::CLI)
+  {
+    openfluid::ui::common::RunCLISimulationDialog RunDlg(QApplication::activeWindow(),m_PrjPath);
+    RunDlg.execute();
+  }
+  else
+  {
+    QMessageBox::critical(QApplication::activeWindow(),
+                          tr("Run error"),
+                          tr("Uncorrect simulation mode."),
+                          QMessageBox::Close);
+  }
 
   // Removed to prevent crashes when a parameterization widget is active
   // openfluid::machine::SimulatorSignatureRegistry::instance()->unloadAll();
@@ -220,7 +238,9 @@ bool ProjectCentral::save()
   FluidXFileToRemove = InputPath.entryList(QStringList("*.fluidx"),QDir::Files | QDir::NoDotAndDotDot);
 
   for (int i=0;i<FluidXFileToRemove.size();++i)
+  {
      InputPath.remove(FluidXFileToRemove[i]);
+  }
 
   // save all fluidx files
   mp_FXDesc->writeToManyFiles(InputDir.toStdString());
@@ -327,7 +347,9 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
   }
 
   if (!isParamSet(Item, MaxParamName))
+  {
     TestCompare = false;
+  }
   else if (!isParamIsDouble(Item, MaxParamName))
   {
     TestCompare = false;
@@ -338,8 +360,7 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
                             .arg(QString::fromStdString(ID)));
   }
 
-  if (TestCompare && !(getParamAsDouble(Item, MaxParamName)
-      > getParamAsDouble(Item, MinParamName)))
+  if (TestCompare && !(getParamAsDouble(Item, MaxParamName) > getParamAsDouble(Item, MinParamName)))
   {
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
     m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
@@ -371,12 +392,14 @@ bool ProjectCentral::isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Ite
                                      const std::string& ParamName)
 {
   if (!isParamSet(Item, ParamName))
+  {
     return false;
+  }
 
   double d;
 
   return (Item->getParameters()[ParamName].toDouble(d) ||
-          mp_FXDesc->model().getGlobalParameters()[ParamName].toDouble(d));
+    mp_FXDesc->model().getGlobalParameters()[ParamName].toDouble(d));
 }
 
 
@@ -400,7 +423,9 @@ double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* 
   double d;
 
   if (Item->getParameters()[ParamName].toDouble(d))
+  {
     return d;
+  }
 
   mp_FXDesc->model().getGlobalParameters()[ParamName].toDouble(d);
 
@@ -1066,4 +1091,42 @@ QStringList ProjectCentral::getAllNamesList() const
   Names.sort();
 
   return Names;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString ProjectCentral::getRunModeStr(ProjectCentral::RunMode Mode)
+{
+  if (Mode == RunMode::DEFAULT)
+  {
+    return "default";
+  }
+  else if (Mode == RunMode::CLI)
+  {
+    return "cli";
+  }
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ProjectCentral::RunMode ProjectCentral::getRunModeValue(const QString& Str)
+{
+  if (Str == "default" || Str == "")
+  {
+    return RunMode::DEFAULT;
+  }
+  else if (Str == "cli")
+  {
+    return RunMode::CLI;
+  }
+
+  return RunMode::UNDEFINED;
 }

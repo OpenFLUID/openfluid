@@ -510,9 +510,18 @@ void ProjectModuleWidget::whenRecentProjectsActionsChanged()
 
 void ProjectModuleWidget::whenRunAsked()
 {
-  if (openfluid::base::PreferencesManager::instance()->isBuilderAutomaticSaveBeforeRun())
-    whenSaveAsked();
+  // Get run mode
+  QString ModeStr =
+    openfluid::base::RunContextManager::instance()
+      ->getProjectConfigValue("builder.simulation.options","mode").toString();
+  ProjectCentral::RunMode Mode = ProjectCentral::getRunModeValue(ModeStr);
 
+  // Save if automatic or specific run mode
+  if (openfluid::base::PreferencesManager::instance()->isBuilderAutomaticSaveBeforeRun() || 
+      Mode != ProjectCentral::RunMode::DEFAULT)
+  {
+    whenSaveAsked();
+  }
 
   emit simulationStarted();
 
@@ -526,7 +535,7 @@ void ProjectModuleWidget::whenRunAsked()
   mp_ObserversPlugsWatcher->removePaths(ObsPlugsPaths);
 
 
-  mp_ProjectCentral->run();
+  mp_ProjectCentral->run(Mode);
 
 
   // resuming plugs watchers
@@ -539,6 +548,17 @@ void ProjectModuleWidget::whenRunAsked()
   updateObserversWares();
 
   emit simulationFinished();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModuleWidget::whenRunModeAsked(ProjectCentral::RunMode Mode)
+{
+  openfluid::base::RunContextManager::instance()
+    ->setProjectConfigValue("builder.simulation.options","mode",ProjectCentral::getRunModeStr(Mode));
 }
 
 

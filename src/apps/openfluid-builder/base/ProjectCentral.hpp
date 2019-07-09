@@ -60,6 +60,8 @@ class ProjectCentral : QObject
 
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
+    QString m_PrjPath;
+
     ProjectCheckInfos m_CheckInfos;
 
     openfluid::base::IOListener m_IOListener;
@@ -135,13 +137,20 @@ class ProjectCentral : QObject
 
   public:
 
+    enum class RunMode
+    {
+      UNDEFINED,
+      DEFAULT,
+      CLI
+    };
+
     static ProjectCentral* initInstance(const QString& PrjPath = "");
 
     static void kill();
 
     static ProjectCentral* instance();
 
-    void run();
+    void run(RunMode Mode = RunMode::DEFAULT);
 
     void check();
 
@@ -218,6 +227,10 @@ class ProjectCentral : QObject
     {
       return mp_AllNamesListModel;
     }
+
+    static QString getRunModeStr(RunMode Mode); 
+
+    static RunMode getRunModeValue(const QString& Str); 
 
 };
 

@@ -305,6 +305,16 @@ void HomeModuleWidget::whenRunAsked()
 // =====================================================================
 
 
+void HomeModuleWidget::whenRunModeAsked(ProjectCentral::RunMode /*Mode*/)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeModuleWidget::whenExtensionAsked(const QString& /*ID*/)
 {
 

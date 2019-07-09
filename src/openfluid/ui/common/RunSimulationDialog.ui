@@ -128,7 +128,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="StatusLabel">
+        <widget class="openfluid::ui::common::ExecutionStatusLabel" name="StatusLabel">
          <property name="text">
           <string notr="true">SimulationStatus</string>
          </property>
@@ -403,6 +403,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>openfluid::ui::common::ExecutionStatusLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">openfluid/ui/common/ExecutionStatusLabel.hpp</header>
+  </customwidget>
   <customwidget>
    <class>openfluid::ui::common::ActionLabel</class>
    <extends>QLabel</extends>

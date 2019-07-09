@@ -66,18 +66,6 @@
 
 
 constexpr const char* WARNINGS_STYLE_ANY = "QLabel {font-weight: bold;}";
-constexpr const char* STATUS_STYLE_NONE = "";
-constexpr const char* STATUS_STYLE_PAUSEREQUEST = "QLabel {color: #336DA5;}";
-constexpr const char* STATUS_STYLE_PAUSED = "QLabel {color: #336DA5; font-weight: bold;}";
-constexpr const char* STATUS_STYLE_ABORTREQUEST = "QLabel {color: #D11919;}";
-constexpr const char* STATUS_STYLE_ABORTED = "QLabel {color: #D11919; font-weight: bold;}";
-constexpr const char* STATUS_STYLE_FAILED = "QLabel {color: #D11919; font-weight: bold;} "
-                                            "QToolTip {color: #D11919; background-color: #F7F7F7;} ";
-constexpr const char* STATUS_STYLE_SUCCEEDED = "QLabel {color: #4E983E; font-weight: bold;}";
-
-
-// =====================================================================
-// =====================================================================
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -85,7 +73,7 @@ namespace openfluid { namespace ui { namespace common {
 
 RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluidx::FluidXDescriptor* FXDesc):
   MessageDialog(Parent), ui(new Ui::RunSimulationDialog), mp_FXDesc(FXDesc),
-  m_Launched(false), m_Success(false)
+  m_Launched(false), m_Success(true)
 {
   setWindowModality(Qt::ApplicationModal);
 
@@ -215,8 +203,7 @@ void RunSimulationDialog::requestAbort()
                                      "Simulation data not written on disk will be lost.\n\nProceed anyway?"),
                                   QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
   {
-    ui->StatusLabel->setText(tr("abort requested"));
-    ui->StatusLabel->setStyleSheet(STATUS_STYLE_ABORTREQUEST);
+    ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::REQUESTING_ABORT);
     mp_Listener->requestAbort();
   }
 }
@@ -230,16 +217,14 @@ void RunSimulationDialog::requestSuspendResume()
 {
   if (!mp_Listener->isPausedByUser())
   {
-    ui->StatusLabel->setText(tr("pause requested"));
-    ui->StatusLabel->setStyleSheet(STATUS_STYLE_PAUSEREQUEST);
+    ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::REQUESTING_PAUSE);
     ui->PauseButton->setEnabled(false);
   }
   else
   {
     ui->StopButton->setEnabled(false);
     ui->PauseButton->setIcon(openfluid::ui::common::getIcon("pause","/ui/common"));
-    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
-    ui->StatusLabel->setText(tr("running"));
+    ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
   }
 
   mp_Listener->requestSuspendResume();
@@ -255,8 +240,7 @@ void RunSimulationDialog::validateSuspend()
   ui->PauseButton->setIcon(openfluid::ui::common::getIcon("start","/ui/common"));
   ui->PauseButton->setEnabled(true);
   ui->StopButton->setEnabled(true);
-  ui->StatusLabel->setText(tr("paused"));
-  ui->StatusLabel->setStyleSheet(STATUS_STYLE_PAUSED);
+  ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::PAUSED);
 }
 
 
@@ -298,7 +282,9 @@ void RunSimulationDialog::setProgressMax(int Duration)
 void RunSimulationDialog::setWarningsCount(unsigned int Count)
 {
   if (Count)
+  {
     ui->WarningsLabel->setStyleSheet(WARNINGS_STYLE_ANY);
+  }
   ui->WarningsLabel->setText(QString("%1").arg(Count));
 }
 
@@ -321,39 +307,33 @@ void RunSimulationDialog::setStage(openfluid::ui::common::RunSimulationListener:
 {
   if (S == openfluid::ui::common::RunSimulationListener::RUNW_BEFORE)
   {
-    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
-    ui->StatusLabel->setText(tr("not started"));
+    ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::NOTSTARTED);
     ui->StageLabel->setText("-");
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_PRESIM)
   {
     ui->StageLabel->setText(tr("pre-simulation"));
-    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
-    ui->StatusLabel->setText(tr("running"));
+    ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_INIT)
   {
     ui->StageLabel->setText(tr("initialization"));
-    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
-    ui->StatusLabel->setText(tr("running"));
+    ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_RUN)
   {
     ui->StageLabel->setText(tr("simulation"));
-    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
-    ui->StatusLabel->setText(tr("running"));
+    ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_FINAL)
   {
     ui->StageLabel->setText(tr("finalization"));
-    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
-    ui->StatusLabel->setText(tr("running"));
+    ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_AFTER)
   {
     ui->StageLabel->setText("-");
-    ui->StatusLabel->setStyleSheet(STATUS_STYLE_SUCCEEDED);
-    ui->StatusLabel->setText(tr("completed"));
+    ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::SUCCEEDED);
   }
 }
 
@@ -380,21 +360,21 @@ void RunSimulationDialog::handleError(QString Msg,openfluid::base::ExceptionCont
 {
   setCompleted();
 
-  ui->StatusLabel->setStyleSheet(STATUS_STYLE_FAILED);
-  ui->StatusLabel->setText(tr("failed due to simulation error"));
+  ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::FAILED);
   ui->StatusLabel->setToolTip(Msg);
 
   ui->ErrorMessageEdit->setText(Msg);
 
   QString ContextStr;
   for (auto& it : Context)
+  {
     ContextStr += QString::fromStdString("<u>" + it.first + " :</u> " + it.second + "<br/>");
+  }
+
   ui->ErrorContextEdit->setText(ContextStr);
-
-  ui->ErrorMessageLabel->setStyleSheet(STATUS_STYLE_FAILED);
-  ui->ErrorContextLabel->setStyleSheet(STATUS_STYLE_FAILED);
-
   ui->ShowErrorLabel->setVisible(true);
+  
+  m_Success = false;
 }
 
 
@@ -406,8 +386,9 @@ void RunSimulationDialog::handleUserAbort()
 {
   setCompleted();
 
-  ui->StatusLabel->setText(tr("aborted by user"));
-  ui->StatusLabel->setStyleSheet(STATUS_STYLE_ABORTED);
+  ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::ABORTED);
+
+  m_Success = false;
 }
 
 
@@ -420,8 +401,6 @@ void RunSimulationDialog::handleFinish()
   setCompleted();
 
   ui->ButtonBox->button(QDialogButtonBox::Close)->setEnabled(true);
-
-  m_Success = true;
 }
 
 

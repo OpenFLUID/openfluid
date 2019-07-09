@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -62,6 +62,7 @@
 #include "HomeModuleWidget.hpp"
 #include "ProjectModuleWidget.hpp"
 #include "DashboardFrame.hpp"
+#include "ProjectCentral.hpp"
 #include "builderconfig.hpp"
 
 
@@ -111,10 +112,14 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
           this, SLOT(whenLaunchDevStudioAsked()));
 
   // Simulation
-  connect(m_Actions.action("SimulationRun"), SIGNAL(triggered()),
-          this, SLOT(whenRunAsked()));
   connect(m_Actions.action("WaresRefresh"), SIGNAL(triggered()),
           this, SLOT(whenWaresRefreshAsked()));
+  connect(m_Actions.action("SimulationRun"), SIGNAL(triggered()),
+          this, SLOT(whenRunAsked()));
+  connect(m_Actions.action("SimulationModeDefault"), SIGNAL(triggered()),
+          this, SLOT(whenRunDefaultModeAsked()));
+  connect(m_Actions.action("SimulationModeCLI"), SIGNAL(triggered()),
+          this, SLOT(whenRunCLIModeAsked()));
 
   // View
   connect(m_Actions.action("ViewDashboard"), SIGNAL(triggered()),
@@ -708,6 +713,26 @@ void AppCoordinator::whenWaresRefreshAsked()
 void AppCoordinator::whenRunAsked()
 {
   mp_CurrentModule->whenRunAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenRunDefaultModeAsked()
+{
+  mp_CurrentModule->whenRunModeAsked(ProjectCentral::RunMode::DEFAULT);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenRunCLIModeAsked()
+{
+  mp_CurrentModule->whenRunModeAsked(ProjectCentral::RunMode::CLI);
 }
 
 
