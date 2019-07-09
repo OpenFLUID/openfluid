@@ -78,9 +78,33 @@ std::vector<std::string> splitString(const std::string& StrToSplit,
 
   boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
   if (ReturnsEmpty)
+  {
     TokCompress = boost::token_compress_off;
+  }
 
   boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators),TokCompress);
+
+  return SplitParts;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit,
+                                                   char Separator,
+                                                   bool ReturnsEmpty)
+{
+  std::vector<std::string> SplitParts;
+
+  boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
+  if (ReturnsEmpty)
+  {
+    TokCompress = boost::token_compress_off;
+  }
+  
+  boost::split(SplitParts, StrToSplit, boost::is_any_of(std::string(1,Separator)),TokCompress);
 
   return SplitParts;
 }

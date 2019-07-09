@@ -61,6 +61,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   double DoubleValue;
   std::vector<std::string> StrArray;
 
+  // --- string conversion
   Str = "0.01";
   BOOST_REQUIRE_EQUAL(openfluid::tools::convertString(Str,&DoubleValue),true);
   BOOST_REQUIRE_CLOSE(openfluid::tools::convertString<double>(Str),0.01,0.0001);
@@ -79,10 +80,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   Str = "1a2";
   BOOST_REQUIRE_EQUAL(openfluid::tools::convertString(Str,&UIntValue),false);
 
-
   Str = "a11";
   BOOST_REQUIRE_EQUAL(openfluid::tools::convertString(Str,&UIntValue),false);
 
+
+  // --- value conversion
 
   BOOST_REQUIRE_EQUAL(1,true);
   BOOST_REQUIRE_EQUAL(0,false);
@@ -94,6 +96,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_NO_THROW(Str = openfluid::tools::convertValue(DoubleValue));
   BOOST_REQUIRE_EQUAL(Str,"0.25");
 
+
+  // --- tokenize string
+
   Str = "aaa;bbbb;ccccc";
   openfluid::tools::tokenizeString(Str,StrArray,";");
   BOOST_REQUIRE_EQUAL(StrArray.size(),3);
@@ -102,6 +107,47 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(StrArray[2],"ccccc");
   openfluid::tools::tokenizeString(Str,StrArray,"-");
   BOOST_REQUIRE_EQUAL(StrArray.size(),1);
+
+
+  // --- split string (by string, by char)
+
+  StrArray = openfluid::tools::splitString(Str,";");
+  BOOST_REQUIRE_EQUAL(StrArray.size(),3);
+  BOOST_REQUIRE_EQUAL(StrArray[0],"aaa");
+  BOOST_REQUIRE_EQUAL(StrArray[1],"bbbb");
+  BOOST_REQUIRE_EQUAL(StrArray[2],"ccccc");
+  StrArray = openfluid::tools::splitString(Str,"-");
+  BOOST_REQUIRE_EQUAL(StrArray.size(),1);
+
+  StrArray = openfluid::tools::splitString(Str,';');
+  BOOST_REQUIRE_EQUAL(StrArray.size(),3);
+  BOOST_REQUIRE_EQUAL(StrArray[0],"aaa");
+  BOOST_REQUIRE_EQUAL(StrArray[1],"bbbb");
+  BOOST_REQUIRE_EQUAL(StrArray[2],"ccccc");
+  StrArray = openfluid::tools::splitString(Str,'-');
+  BOOST_REQUIRE_EQUAL(StrArray.size(),1);
+
+  Str = "aaa;;ccccc";
+  StrArray = openfluid::tools::splitString(Str,";");
+  BOOST_REQUIRE_EQUAL(StrArray.size(),2);
+  BOOST_REQUIRE_EQUAL(StrArray[0],"aaa");
+  BOOST_REQUIRE_EQUAL(StrArray[1],"ccccc");
+  StrArray = openfluid::tools::splitString(Str,";",true);
+  BOOST_REQUIRE_EQUAL(StrArray.size(),3);
+  BOOST_REQUIRE_EQUAL(StrArray[0],"aaa");
+  BOOST_REQUIRE_EQUAL(StrArray[1],"");
+  BOOST_REQUIRE_EQUAL(StrArray[2],"ccccc");
+
+
+  StrArray = openfluid::tools::splitString(Str,';');
+  BOOST_REQUIRE_EQUAL(StrArray.size(),2);
+  BOOST_REQUIRE_EQUAL(StrArray[0],"aaa");
+  BOOST_REQUIRE_EQUAL(StrArray[1],"ccccc");
+  StrArray = openfluid::tools::splitString(Str,';',true);
+  BOOST_REQUIRE_EQUAL(StrArray.size(),3);
+  BOOST_REQUIRE_EQUAL(StrArray[0],"aaa");
+  BOOST_REQUIRE_EQUAL(StrArray[1],"");
+  BOOST_REQUIRE_EQUAL(StrArray[2],"ccccc");
 
 }
 

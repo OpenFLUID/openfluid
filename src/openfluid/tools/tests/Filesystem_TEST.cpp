@@ -44,6 +44,7 @@
 
 
 #include <set>
+#include <iostream>
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
@@ -59,6 +60,9 @@
 
 BOOST_AUTO_TEST_CASE(check_path_operations)
 {
+  std::cout << "Path separator is " << openfluid::tools::Filesystem::pathSeparator() << std::endl;
+  std::cout << "Paths list separator is " << openfluid::tools::Filesystem::pathsListSeparator() << std::endl;
+
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::joinPath({"/my/joined","path/myfile.txt"}),
                       "/my/joined/path/myfile.txt");
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::joinPath({"/my/joined",""}),

@@ -404,11 +404,7 @@ void Environment::addExtraSimulatorsDirs(const std::string& Dirs)
 {
   std::vector<std::string> ExtraDirs;
 
-#if defined(OPENFLUID_OS_UNIX)
-  ExtraDirs = openfluid::tools::splitString(Dirs, ":");
-#elif defined(OPENFLUID_OS_WINDOWS)
-  ExtraDirs = openfluid::tools::splitString(Dirs,";");
-#endif
+  ExtraDirs = openfluid::tools::splitString(Dirs, openfluid::tools::Filesystem::pathsListSeparator());
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {
@@ -458,17 +454,13 @@ void Environment::addExtraObserversDirs(const std::string& Dirs)
 {
   std::vector<std::string> ExtraDirs;
 
-  #if defined(OPENFLUID_OS_UNIX)
-    ExtraDirs = openfluid::tools::splitString(Dirs, ":");
-  #elif defined(OPENFLUID_OS_WINDOWS)
-    ExtraDirs = openfluid::tools::splitString(Dirs,";");
-  #endif
+  ExtraDirs = openfluid::tools::splitString(Dirs,openfluid::tools::Filesystem::pathsListSeparator());
 
-    for (int i = ExtraDirs.size() - 1; i >= 0; i--)
-    {
-      m_ExtraObserversDirs.insert(m_ExtraObserversDirs.begin(), 1,
-                                   openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
-    }
+  for (int i = ExtraDirs.size() - 1; i >= 0; i--)
+  {
+    m_ExtraObserversDirs.insert(m_ExtraObserversDirs.begin(), 1,
+                                openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
+  }
 }
 
 
@@ -514,17 +506,13 @@ void Environment::addExtraBuilderextsDirs(const std::string& Dirs)
 {
   std::vector<std::string> ExtraDirs;
 
-  #if defined(OPENFLUID_OS_UNIX)
-    ExtraDirs = openfluid::tools::splitString(Dirs, ":");
-  #elif defined(OPENFLUID_OS_WINDOWS)
-    ExtraDirs = openfluid::tools::splitString(Dirs,";");
-  #endif
+  ExtraDirs = openfluid::tools::splitString(Dirs,openfluid::tools::Filesystem::pathsListSeparator());
 
-    for (int i = ExtraDirs.size() - 1; i >= 0; i--)
-    {
-      m_ExtraBuilderextsDirs.insert(m_ExtraBuilderextsDirs.begin(), 1,
-                                   openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
-    }
+  for (int i = ExtraDirs.size() - 1; i >= 0; i--)
+  {
+    m_ExtraBuilderextsDirs.insert(m_ExtraBuilderextsDirs.begin(), 1,
+                                  openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
+  }
 }
 
 

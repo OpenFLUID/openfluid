@@ -57,6 +57,24 @@ class OPENFLUID_API Filesystem
 
     Filesystem() = delete;
 
+    constexpr static inline char pathsListSeparator() noexcept
+    {
+#if defined(OPENFLUID_OS_UNIX)
+      return ':';
+#elif defined(OPENFLUID_OS_WINDOWS)
+      return ';';
+#endif
+    } 
+
+    constexpr static inline char pathSeparator() noexcept
+    {
+#if defined(OPENFLUID_OS_UNIX)
+      return '/';
+#elif defined(OPENFLUID_OS_WINDOWS)
+      return '\\';
+#endif
+    }
+
     /**
       Returns a joined path string from a vector of path parts
       @param[in] PathParts a vector of path parts

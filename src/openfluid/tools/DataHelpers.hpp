@@ -198,7 +198,7 @@ inline void TokenizeString(const std::string& StrToTokenize,
 
 
 /**
-  Splits the passed string into a std::string array, split using the given SepString
+  Splits the given string into a std::string array, split using the given SepString
   @param[in] StrToSplit the string to split
   @param[in] Separators the string of separators used to split the string
   @param[in] ReturnsEmpty if true, the empty strings are returned
@@ -221,6 +221,17 @@ inline std::vector<std::string> SplitString(const std::string& StrToSplit,
   return splitString(StrToSplit,Separators,ReturnsEmpty);
 }
 
+
+/**
+  Splits the given string into a std::string array, split using the given SepString
+  @param[in] StrToSplit the string to split
+  @param[in] Separator the separator character used to split the string
+  @param[in] ReturnsEmpty if true, the empty strings are returned
+  @return a vector of strings
+*/
+std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit,
+                                                   char Separator,
+                                                   bool ReturnsEmpty = false);
 
 } } // namespaces
 
