@@ -807,6 +807,9 @@ where `prefix` depends on the OpenFLUID installation path and operating system (
 Simulators using RInside cannot be run in threaded executions such as in OpenFLUID-Builder 
 and must be run using the `openfluid` command line.
 
+@warning Due to limitations of the RInside package, only one simulator embedding R code 
+can be used in a coupled model.
+
 
 # Miscellaneous helpers {#dev_srccode_misctools}
 
