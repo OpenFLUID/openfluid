@@ -26,13 +26,13 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
 /**
   @file config.hpp
- 
+
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
@@ -53,11 +53,12 @@
 
 namespace openfluid { namespace config {
 
+
 // Main Name
 const std::string MAINNAME = "@OPENFLUID_MAIN_NAME@";
 
 
-// default config file
+// Default config file
 const std::string DEFAULT_CONFIGFILE = "@OPENFLUID_DEFAULT_CONFIGFILE@";
 
 
@@ -106,21 +107,21 @@ const std::string GHOSTS_EXT = "@OPENFLUID_PLUGINS_GHOST_EXTENSION@";
 // Simulators plugins dirs
 const std::string SIMULATORS_PATH = "@OPENFLUID_SIMULATORS_PATH@";
 const std::string SIMULATORS_WARESBIN_USR_PATH = "@OPENFLUID_WARESBIN_PATH@/@OPENFLUID_SIMULATORS_PATH@";
-const std::string SIMULATORS_WARESBIN_STD_PATH = 
+const std::string SIMULATORS_WARESBIN_STD_PATH =
     "@OFBUILD_LIB_INSTALL_PATH@/@OPENFLUID_MAIN_NAME@/@OPENFLUID_SIMULATORS_PATH@";
 
 
 // Observers plugins dirs
 const std::string OBSERVERS_PATH = "@OPENFLUID_OBSERVERS_PATH@";
 const std::string OBSERVERS_WARESBIN_USR_PATH = "@OPENFLUID_WARESBIN_PATH@/@OPENFLUID_OBSERVERS_PATH@";
-const std::string OBSERVERS_WARESBIN_STD_PATH = 
+const std::string OBSERVERS_WARESBIN_STD_PATH =
     "@OFBUILD_LIB_INSTALL_PATH@/@OPENFLUID_MAIN_NAME@/@OPENFLUID_OBSERVERS_PATH@";
 
 
 // Builder-extensions plugins dirs
 const std::string BUILDEREXTS_PATH = "@OPENFLUID_BUILDEREXTS_PATH@";
 const std::string BUILDEREXTS_WARESBIN_USR_PATH = "@OPENFLUID_WARESBIN_PATH@/@OPENFLUID_BUILDEREXTS_PATH@";
-const std::string BUILDEREXTS_WARESBIN_STD_PATH = 
+const std::string BUILDEREXTS_WARESBIN_STD_PATH =
     "@OFBUILD_LIB_INSTALL_PATH@/@OPENFLUID_MAIN_NAME@/@OPENFLUID_BUILDEREXTS_PATH@";
 
 
@@ -129,16 +130,20 @@ const std::string EXAMPLES_PATH = "@OPENFLUID_EXAMPLES_PATH@";
 const std::string EXAMPLES_STD_PATH = "@OPENFLUID_EXAMPLES_INSTALL_PATH@";
 
 
+// Hubs dirs
+const std::string HUBS_CACHE_PATH = "@OPENFLUID_HUBS_CACHE_PATH@";
+
+
 // Translations dirs
 const std::string SHARE_TRANSLATIONS_INSTALL_PATH = "@OPENFLUID_SHARE_TRANSLATIONS_INSTALL_PATH@";
 const std::string TRANSLATIONS_FILEROOT = "@OPENFLUID_TRANSLATIONS_FILEROOT@";
 
 
-// log files
+// Log files
 const std::string MESSAGES_LOG_FILE = "@OPENFLUID_MESSAGES_LOG_FILE@";
 
 
-// profiling files
+// Profiling files
 const std::string CUMULATIVE_PROFILE_FILE = "@OPENFLUID_CUMULATIVE_PROFILE_FILE@";
 const std::string SCHEDULE_PROFILE_FILE = "@OPENFLUID_SCHEDULE_PROFILE_FILE@";
 const std::string TIMEINDEX_PROFILE_FILE = "@OPENFLUID_TIMEINDEX_PROFILE_FILE@";
@@ -172,7 +177,7 @@ const std::string SHARE_APPS_INSTALL_PATH = "@OPENFLUID_SHARE_APPS_INSTALL_PATH@
 const std::string SHARE_WARESDEV_INSTALL_PATH = "@OPENFLUID_SHARE_WARESDEV_INSTALL_PATH@";
 
 
-// sim2doc default template file path  
+// sim2doc default template file path
 const std::string SIM2DOC_TPLFILE_NAME = "sim2doc_tpl.tex";
 
 
@@ -185,21 +190,29 @@ const std::string VERSION_FULL = "@OPENFLUID_VERSION_FULL@";
 const std::string VERSION = "@OPENFLUID_VERSION_MAJOR@.@OPENFLUID_VERSION_MINOR@.@OPENFLUID_VERSION_PATCH@";
 
 
-// debug information
-const std::string DEBUG_PREFIX = "@OPENFLUID_DEBUG_PREFIX@";
+// Network domain
+const std::string NETWORK_DOMAIN = "@OPENFLUID_NETWORK_DOMAIN@";
+const std::string NETWORK_DOMAIN_WWW = "@OPENFLUID_NETWORK_DOMAIN_WWW@";
+const std::string NETWORK_DOMAIN_COMMUNITY = "@OPENFLUID_NETWORK_DOMAIN_COMMUNITY@";
+
+
+// Emails
+const std::string EMAIL_CONTACT = "@OPENFLUID_EMAIL_CONTACT@";
 
 
 // URLs
-const std::string WEBSITE_DOMAIN = "www.openfluid-project.org";
-const std::string WEBSITE_URL = "http://"+WEBSITE_DOMAIN;
-const std::string COMMUNITY_URL = "http://www.openfluid-project.org/community";
-const std::string DEVSITE_URL = "https://github.com/OpenFLUID/";
-const std::string BUG_URL = "https://github.com/OpenFLUID/openfluid/issues";
-const std::string CONTACTEMAIL_ADDRESS = "contact@openfluid-project.org";
-const std::string CONTACTEMAIL_URL = "mailto:"+CONTACTEMAIL_ADDRESS;
-const std::string APIDOC_URL = 
-    "http://www.openfluid-project.org/resources/docs/manuals/en/openfluid/"
-    "@OPENFLUID_VERSION_MAJOR@.@OPENFLUID_VERSION_MINOR@.@OPENFLUID_VERSION_PATCH@/main/html/";
+const std::string URL_OFFICIAL = "@OPENFLUID_URL_OFFICIAL@";
+const std::string URL_OFFICIAL_API = "@OPENFLUID_URL_OFFICIAL_API@";
+const std::string URL_COMMUNITY = "@OPENFLUID_URL_COMMUNITY@";
+const std::string URL_DOC = "@OPENFLUID_URL_DOC@";
+const std::string URL_EMAIL_CONTACT = "@OPENFLUID_URL_EMAIL_CONTACT@";
+const std::string URL_GITHUB = "@OPENFLUID_URL_GITHUB@";
+const std::string URL_ISSUES = "@OPENFLUID_URL_ISSUES@";
+
+
+// Debug information
+const std::string DEBUG_PREFIX = "@OPENFLUID_DEBUG_PREFIX@";
+
 
 } } //namespaces
 

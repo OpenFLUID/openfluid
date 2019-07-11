@@ -36,7 +36,7 @@
 </head>
 
 <body>
-  <center><a href="http://www.openfluid-project.org" target="_blank">www.openfluid-project.org</a></center>
+  <center><a href="@OPENFLUID_URL_OFFICIAL@" target="_blank">@OPENFLUID_NETWORK_DOMAIN_WWW@</a></center>
   <h1>OpenFLUID installation instructions for OSX</h1>
   <center>version @README_VERSION_FULL@</center>
   <br/>

@@ -180,7 +180,9 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
     ui->WaresGroupBox->setTitle(tr("Available wares in package"));
 
     for (auto& Widget : m_WaresHubConnectionInfoWidgets)
+    {
       Widget->setEnabled(false);
+    }
     ui->WareshubConnectButton->setEnabled(false);
 
     updatePackageWaresList();
@@ -213,7 +215,9 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
                                                          tr("OpenFLUID wares packages (*.ofwdp)"));
 
   if (PackageFilePath.isEmpty())
+  {
     return;
+  }
 
 
   ui->PackagePathLabel->setText(PackageFilePath);
@@ -265,16 +269,21 @@ void WaresSrcImportDialog::onWareshubConnectButtonClicked()
     m_AlreadySelectedWaresHubWares = QMap<openfluid::ware::WareType, QStringList>(getSelectedWaresByType());
 
     if (mp_WaresHubImportWorker)
+    {
       mp_WaresHubImportWorker->disconnect();
+    }
 
     for (const auto& WidgetPair : m_ListWidgetsByWareType)
+    {
       WidgetPair.second->clear();
+    }
 
     ui->WareshubConnectButton->setText(tr("Connect"));
 
     for (auto& Widget : m_WaresHubConnectionInfoWidgets)
+    {
       Widget->setEnabled(true);
-
+    }
 
     return;
   }
@@ -282,10 +291,9 @@ void WaresSrcImportDialog::onWareshubConnectButtonClicked()
   QString WaresHubUrl = ui->WareshubUrlLineEdit->text();
 
   if (WaresHubUrl.isEmpty())
+  {
     return;
-
-  if (!WaresHubUrl.contains("www.openfluid-project.org/resources/fluidhub-api/testing"))
-    WaresHubUrl.append("/api");
+  }
 
   if (mp_WaresHubImportWorker)
   {
@@ -330,7 +338,9 @@ void WaresSrcImportDialog::onWareshubConnectButtonClicked()
     ui->WareshubConnectButton->setText(m_WaresHubButtonDisconnectLabel);
 
     for (auto& Widget : m_WaresHubConnectionInfoWidgets)
+    {
       Widget->setEnabled(false);
+    }
   }
 
   updatePackageInfo();
@@ -369,10 +379,14 @@ void WaresSrcImportDialog::updatePackageInfo()
 void WaresSrcImportDialog::updatePackageWaresList()
 {
   for (const auto& Pair : m_ListWidgetsByWareType)
+  {
     Pair.second->clear();
+  }
 
   if (!mp_ImportFilePkg)
+  {
     return;
+  }
 
   QDir WaresDevDir(openfluid::waresdev::WareSrcManager::instance()->getWaresdevPath());
   QDir PackageTempDir = mp_ImportFilePkg->getPackageTempDir();
@@ -400,7 +414,9 @@ void WaresSrcImportDialog::updatePackageWaresList()
     }
 
     if (m_WareTypeConverter.count(WareTypeName))
+    {
       m_ListWidgetsByWareType[m_WareTypeConverter[WareTypeName]]->addItem(Item);
+    }
   }
 
   check();
@@ -414,10 +430,14 @@ void WaresSrcImportDialog::updatePackageWaresList()
 void WaresSrcImportDialog::updateWaresHubWaresList()
 {
   for (const auto& Pair : m_ListWidgetsByWareType)
+  {
     Pair.second->clear();
+  }
 
   if (!mp_WaresHubImportWorker)
+  {
     return;
+  }
 
   openfluid::waresdev::WareSrcManager* Mgr = openfluid::waresdev::WareSrcManager::instance();
   QString UserName = ui->UsernameLineEdit->text();
@@ -475,7 +495,9 @@ QStringList WaresSrcImportDialog::getSelectedWares()
     for (const QListWidgetItem* Item : Pair.second->findItems("*", Qt::MatchWildcard))
     {
       if (Item->checkState() == Qt::Checked)
+      {
         Wares << Item->data(Qt::UserRole).toString();
+      }
     }
   }
 
@@ -496,7 +518,9 @@ std::map<openfluid::ware::WareType, QStringList> WaresSrcImportDialog::getSelect
     for (const QListWidgetItem* Item : Pair.second->findItems("*", Qt::MatchWildcard))
     {
       if (Item->checkState() == Qt::Checked)
+      {
         Wares[Pair.first] << Item->data(Qt::UserRole).toString();
+      }
     }
   }
 
@@ -511,7 +535,9 @@ std::map<openfluid::ware::WareType, QStringList> WaresSrcImportDialog::getSelect
 void WaresSrcImportDialog::import()
 {
   if (!check())
+  {
     return;
+  }
 
   openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Importing wares sources:"), false, this);
 
@@ -521,7 +547,9 @@ void WaresSrcImportDialog::import()
   if (ui->PackageRadioButton->isChecked())
   {
     if (!mp_ImportFilePkg)
+    {
       return;
+    }
 
     mp_ImportFilePkg->setSelectedWares(getSelectedWares());
 
@@ -540,7 +568,9 @@ void WaresSrcImportDialog::import()
   else
   {
     if (!mp_WaresHubImportWorker)
+    {
       return;
+    }
 
     mp_WaresHubImportWorker->setSelectedWaresUrl(getSelectedWaresByType());
 
@@ -568,7 +598,9 @@ void WaresSrcImportDialog::import()
   }
 
   if (ProgressDialog.exec())
+  {
     accept();
+  }
 }
 
 

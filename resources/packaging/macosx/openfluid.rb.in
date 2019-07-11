@@ -5,7 +5,7 @@ cask 'openfluid@TOKEN_VERSION@' do
 
   url '@CASKFILE_URL@'
   name 'OpenFLUID'
-  homepage 'https://wwww.openfluid-project.org'
+  homepage '@OPENFLUID_URL_OFFICIAL@'
 
 
   # external dependencies

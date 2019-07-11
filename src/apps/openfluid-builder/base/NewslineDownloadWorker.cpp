@@ -44,6 +44,7 @@
 
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/config.hpp>
 
 #include "NewslineDownloadWorker.hpp"
 #include "builderconfig.hpp"
@@ -76,7 +77,7 @@ bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const
   SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
   openfluid::utils::FluidHubAPIClient FHClient;
 
-  if (FHClient.connect(BUILDER_NEWSLINE_SOURCEURL,SSLConfig))
+  if (FHClient.connect(QString::fromStdString(openfluid::config::URL_OFFICIAL_API),SSLConfig))
   {
     QString Content = FHClient.getNews(ShortLocale);
 

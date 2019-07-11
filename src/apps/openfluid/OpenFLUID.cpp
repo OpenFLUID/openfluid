@@ -127,27 +127,37 @@ void OpenFLUIDApp::printlnExecMessagesStats()
 
 void OpenFLUIDApp::printOpenFLUIDInfos()
 {
+  const unsigned int HeaderWidth = 60;
 
-  int Width = 60;
-  std::string VersionInfo = "OpenFLUID v";
-  std::string Whites = "";
 
-  VersionInfo = VersionInfo + openfluid::config::VERSION_FULL;
+  auto displayHeaderSeparator = [&HeaderWidth]()
+  {
+    std::cout << std::string(HeaderWidth,'=') << std::endl;
+  };
 
-  // centering the version number, using white spaces
-  for (unsigned int i=0;i<((Width-VersionInfo.length())/2);i++) Whites = Whites + " ";
+  auto displayRightAlign = [&HeaderWidth](const std::string& Msg)
+  { 
+    std::cout << std::right << std::setw(HeaderWidth-(HeaderWidth/8)) << Msg << std::endl; 
+  };
 
-  VersionInfo = Whites + VersionInfo;
+  auto displayCenterAlign = [&HeaderWidth](const std::string& Msg)
+  { 
+    std::cout << std::right << std::setw((HeaderWidth/2)+(Msg.length()/2)) << Msg << std::endl; 
+  };
+
+
+  std::string VersionInfo = "OpenFLUID v" + openfluid::config::VERSION_FULL;
+
 
   std::cout << std::endl;
-  std::cout << "===========================================================" << std::endl;
-  std::cout << VersionInfo << std::endl;
+  displayHeaderSeparator();
+  displayCenterAlign(VersionInfo);
   std::cout << std::endl;
-  std::cout << "                          software environment" << std::endl;
-  std::cout << "           for Spatial Modelling in Landscapes" << std::endl;
+  displayRightAlign("software environment");
+  displayRightAlign("for Spatial Modelling in Landscapes");
   std::cout << std::endl;
-  std::cout << "                 www.openfluid-project.org" << std::endl;
-  std::cout << "===========================================================" << std::endl;
+  displayCenterAlign(openfluid::config::NETWORK_DOMAIN_WWW);
+  displayHeaderSeparator();
   std::cout << std::endl;
   std::cout.flush();
 }

@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -63,7 +63,8 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
 
   ui->VersionLabel->setText(std::string("OpenFLUID v"+openfluid::config::VERSION_FULL).c_str());
 
-  ui->URLLabel->setText("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>");
+  QString wwwURL = QString::fromStdString(openfluid::config::URL_OFFICIAL);
+  ui->URLLabel->setText(QString("<a href=\"%1\">%1</a>").arg(wwwURL));
   connect(ui->URLLabel,SIGNAL(clicked()),Actions->action("HelpOnlineWeb"),SLOT(trigger()));
 
   // left buttons

@@ -915,7 +915,7 @@ void WareSrcWidgetCollection::checkModifiedStatus()
 
 void WareSrcWidgetCollection::openAPIDoc()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::APIDOC_URL), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_DOC), QUrl::TolerantMode));
 }
 
 

@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
@@ -69,12 +69,12 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
 
   ui->VersionLabel->setText(QString::fromStdString(openfluid::config::VERSION_FULL));
 
-  ui->WebLabel->setText("<A HREF='"+QString::fromStdString(openfluid::config::WEBSITE_URL)+"'>"+
-                        QString::fromStdString(openfluid::config::WEBSITE_DOMAIN)+"</A>");
+  ui->WebLabel->setText("<A HREF='"+QString::fromStdString(openfluid::config::URL_OFFICIAL)+"'>"+
+                        QString::fromStdString(openfluid::config::URL_OFFICIAL)+"</A>");
   ui->WebLabel->setCursor(Qt::PointingHandCursor);
 
-  ui->ContactLabel->setText("<A HREF='"+QString::fromStdString(openfluid::config::CONTACTEMAIL_URL)+"'>"+
-                            QString::fromStdString(openfluid::config::CONTACTEMAIL_ADDRESS)+"</A>");
+  ui->ContactLabel->setText("<A HREF='"+QString::fromStdString(openfluid::config::URL_EMAIL_CONTACT)+"'>"+
+                            QString::fromStdString(openfluid::config::EMAIL_CONTACT)+"</A>");
   ui->ContactLabel->setCursor(Qt::PointingHandCursor);
 
   ui->IconLabel->setFocus();
@@ -119,7 +119,9 @@ QString AboutDialog::resourceToString(const QString& ResName)
   QFile Res(ResName);
 
   if (!Res.open(QIODevice::ReadOnly | QIODevice::Text))
+  {
     return "";
+  }
 
   return QString::fromUtf8(Res.readAll());
 }
@@ -191,7 +193,9 @@ QString AboutDialog::quickndirtyMardown2HTML(const QString& Content)
       ProcessedLines.append(Line+"<br/>");
     }
     else
+    {
       ProcessedLines.append(Line+"<br/>");
+    }
   }
 
   return ProcessedLines.join("");

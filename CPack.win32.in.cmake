@@ -7,13 +7,13 @@ SET(CPACK_PACKAGE_INSTALL_DIRECTORY "OpenFLUID-${OPENFLUID_VERSION_MAJOR}.${OPEN
 SET(CPACK_PACKAGE_NAME "OpenFLUID")
   
 SET(CPACK_NSIS_DISPLAY_NAME "OpenFLUID")
-SET(CPACK_NSIS_HELP_LINK "http://www.openfluid-project.org/")
-SET(CPACK_NSIS_URL_INFO_ABOUT "http://www.openfluid-project.org/")
-SET(CPACK_NSIS_CONTACT "OpenFLUID contact <contact@openfluid-project.org>")  
+SET(CPACK_NSIS_HELP_LINK "${OPENFLUID_URL_OFFICIAL}")
+SET(CPACK_NSIS_URL_INFO_ABOUT "${OPENFLUID_URL_OFFICIAL}")
+SET(CPACK_NSIS_CONTACT "OpenFLUID contact <${OPENFLUID_EMAIL_CONTACT}>")  
 SET(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/resources/packaging/windows\\\\openfluid_logo_NSIS.bmp")  
 SET(CPACK_NSIS_MENU_LINKS 
-    "http://www.openfluid-project.org/" "OpenFLUID web site"
-    "http://www.openfluid-project.org/community/" "OpenFLUID community site")
+    "${OPENFLUID_URL_OFFICIAL}" "OpenFLUID web site"
+    "${OPENFLUID_URL_COMMUNITY}" "OpenFLUID community site")
 SET(CPACK_PACKAGE_EXECUTABLES openfluid-builder;OpenFLUID-Builder
                               openfluid-devstudio;OpenFLUID-DevStudio)   
    
