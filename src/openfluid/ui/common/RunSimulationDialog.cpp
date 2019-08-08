@@ -169,7 +169,11 @@ RunSimulationDialog::~RunSimulationDialog()
 
 void RunSimulationDialog::closeEvent(QCloseEvent *event)
 {
-  event->ignore();
+  // uses the bottom "close" button as reference to know if closing is authorized
+  if (!ui->ButtonBox->button(QDialogButtonBox::Close)->isEnabled())
+  {
+    event->ignore();
+  }
 }
 
 
