@@ -124,6 +124,15 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @return true if the parameter exists, false otherwise
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Parameters"],
+        "title" : "Test if a simulator parameter exists",
+        "text" : "OPENFLUID_IsSimulatorParameterExist(Params,%%SEL_START%%ParamName%%SEL_END%%)"
+      }
+      @endcond
     */
     bool OPENFLUID_IsSimulatorParameterExist(const openfluid::ware::WareParams_t& Params,
                                              const openfluid::ware::WareParamKey_t& ParamName) const;
@@ -133,6 +142,15 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @return the value of the requested parameter
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Parameters"],
+        "title" : "Get simulator parameter (by return)",
+        "text" : "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%)"
+      }
+      @endcond
     */
     openfluid::core::StringValue OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                                  const openfluid::ware::WareParamKey_t& ParamName)
@@ -144,6 +162,15 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Parameters"],
+        "title" : "Get simulator parameter",
+        "text" : "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)"
+      }
+      @endcond
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
@@ -273,52 +300,127 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
     /**
       Returns the maximum number of threads that can be concurrently run in threaded spatial loops
       @return the number of threads
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Threading"],
+        "title" : "Get maximum number of threads",
+        "text" : "OPENFLUID_GetSimulatorMaxThreads()"
+      }
+      @endcond
     */
     inline int OPENFLUID_GetSimulatorMaxThreads() const
-    { return m_MaxThreads; };
+    { 
+      return m_MaxThreads;
+    }
 
     /**
       Sets the maximum number of threads that can be concurrently run in threaded spatial loops
       @param[in] MaxNumThreads the number of threads
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Threading"],
+        "title" : "Set maximum number of threads",
+        "text" : "OPENFLUID_SetSimulatorMaxThreads(%%SEL_START%%Number%%SEL_END%%)"
+      }
+      @endcond
     */
     void OPENFLUID_SetSimulatorMaxThreads(const int& MaxNumThreads);
 
     /**
       Returns a scheduling request to a single scheduling at the end
       Return the corresponding scheduling request
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Sheduling"],
+        "title" : "Run once at the end",
+        "text" : "AtTheEnd()"
+      }
+      @endcond
     */
     inline openfluid::base::SchedulingRequest AtTheEnd() const
-    { return openfluid::base::SchedulingRequest(openfluid::base::SchedulingRequest::ATTHEEND); };
+    { 
+      return openfluid::base::SchedulingRequest(openfluid::base::SchedulingRequest::ATTHEEND);
+    }
 
     /**
       Returns a scheduling request to never be scheduled again
       Return the corresponding scheduling request
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Sheduling"],
+        "title" : "Never run again",
+        "text" : "Never()"
+      }
+      @endcond
     */
     inline openfluid::base::SchedulingRequest Never() const
-    { return openfluid::base::SchedulingRequest(openfluid::base::SchedulingRequest::NEVER); };
+    { 
+      return openfluid::base::SchedulingRequest(openfluid::base::SchedulingRequest::NEVER);
+    }
 
     /**
       Returns a scheduling request for the default DeltaT value
       Return the corresponding scheduling request
+    
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Sheduling"],
+        "title" : "Run in default deltaT",
+        "text" : "DefaultDeltaT()"
+      }
+      @endcond
     */
     inline openfluid::base::SchedulingRequest DefaultDeltaT() const
-    { return openfluid::base::SchedulingRequest(OPENFLUID_GetDefaultDeltaT()); };
+    { 
+      return openfluid::base::SchedulingRequest(OPENFLUID_GetDefaultDeltaT());
+    }
 
     /**
       Returns a scheduling request for the default DeltaT value multiplied by a factor
       @param[in] Mult the multiplication factor
       Return the corresponding scheduling request
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Sheduling"],
+        "title" : "Run in X default deltaT",
+        "text" : "MultipliedDefaultDeltaT(%%SEL_START%%X%%SEL_END%%)"
+      }
+      @endcond
     */
     inline openfluid::base::SchedulingRequest MultipliedDefaultDeltaT(const double& Mult) const
-    { return openfluid::base::SchedulingRequest(Mult * OPENFLUID_GetDefaultDeltaT()); };
+    { 
+      return openfluid::base::SchedulingRequest(Mult * OPENFLUID_GetDefaultDeltaT());
+    }
 
     /**
       Returns a scheduling request for a given duration
       @param[in] D a duration in seconds
       Return the corresponding scheduling request
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Sheduling"],
+        "title" : "Run in a duration in seconds",
+        "text" : "Duration(%%SEL_START%%Seconds%%SEL_END%%)"
+      }
+      @endcond
     */
     inline openfluid::base::SchedulingRequest Duration(const openfluid::core::Duration_t& D) const
-    { return openfluid::base::SchedulingRequest(D); };
+    { 
+      return openfluid::base::SchedulingRequest(D);
+    }
 
 
   public:

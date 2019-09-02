@@ -77,7 +77,7 @@ class OPENFLUID_API SignatureDataItem
     {  }
 
     SignatureDataItem(std::string DName, std::string DDescription, std::string DUnit) :
-          DataName(DName),Description(DDescription),DataUnit(DUnit)
+      DataName(DName),Description(DDescription),DataUnit(DUnit)
     {  }
 };
 
@@ -100,8 +100,8 @@ class OPENFLUID_API SignatureSpatialDataItem : public SignatureDataItem
     {  }
 
     SignatureSpatialDataItem(std::string DName, openfluid::core::UnitsClass_t UClass,
-        std::string DDescription, std::string DUnit) :
-          SignatureDataItem(DName,DDescription,DUnit),UnitsClass(UClass)
+                             std::string DDescription, std::string DUnit) :
+      SignatureDataItem(DName,DDescription,DUnit),UnitsClass(UClass)
     {  }
 };
 
@@ -121,10 +121,11 @@ class OPENFLUID_API SignatureTypedSpatialDataItem : public SignatureSpatialDataI
     openfluid::core::Value::Type DataType;
 
     SignatureTypedSpatialDataItem() :
-      SignatureSpatialDataItem(), DataType(openfluid::core::Value::NONE) {}
+      SignatureSpatialDataItem(), DataType(openfluid::core::Value::NONE) 
+    {  }
 
     SignatureTypedSpatialDataItem(std::string DName, openfluid::core::UnitsClass_t UClass,
-        std::string DDescription, std::string DUnit);
+                                  std::string DDescription, std::string DUnit);
 };
 
 
@@ -203,14 +204,14 @@ class OPENFLUID_API SignatureUnitsClassItem
   public:
 
     openfluid::core::UnitsClass_t UnitsClass;
+
     std::string Description;
 
     SignatureUnitsClassItem() :
       UnitsClass(""),Description("") {}
 
-    SignatureUnitsClassItem(openfluid::core::UnitsClass_t UClass,
-        std::string DDescription) :
-          UnitsClass(UClass),Description(DDescription) {}
+    SignatureUnitsClassItem(openfluid::core::UnitsClass_t UClass,std::string DDescription) :
+    UnitsClass(UClass),Description(DDescription) {}
 };
 
 
@@ -307,29 +308,28 @@ class OPENFLUID_API SimulatorSignature : public WareSignature
 
   public:
 
-
     /**
-    Plugin domain (i.e. hydrology, pop, erosion, ...)
+      Plugin domain (i.e. hydrology, pop, erosion, ...)
     */
     SimDomain_t Domain;
 
     /**
-    Plugin simulated process (i.e. surface rainfall-runoff production, ditch infiltration, ...)
+      Plugin simulated process (i.e. surface rainfall-runoff production, ditch infiltration, ...)
     */
     SimProcess_t Process;
 
     /**
-    Plugin involved method (i.e. morel-seytoux, hayami, ...)
+      Plugin involved method (i.e. morel-seytoux, hayami, ...)
     */
     SimMethod_t Method;
 
     /**
-    Handled data
+      Handled data
     */
     SignatureHandledData HandledData;
 
     /**
-    Handled units graph
+      Handled units graph
     */
     SignatureUnitsGraph HandledUnitsGraph;
 

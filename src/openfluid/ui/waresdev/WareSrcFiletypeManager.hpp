@@ -92,37 +92,14 @@ class OPENFLUID_API WareSrcFiletypeManager
 
     typedef QVector<HighlightingRule> HighlightingRules_t;
 
-    struct CompletionRule
-    {
-      QString MenuPath;
-
-      QString Title;
-
-      QString Content;
-
-      bool IsForCompletion;
-
-      QString IconPath;
-
-      CompletionRule() :
-        IsForCompletion(false)
-      { }
-
-      CompletionRule(const QString& AMenuPath, const QString& ATitle, const QString& AContent, bool AIsForCompletion,
-                     const QString& AIconPath) :
-        MenuPath(AMenuPath), Title(ATitle), Content(AContent), IsForCompletion(AIsForCompletion), IconPath(AIconPath)
-      { }
-    };
-
-    typedef QVector<CompletionRule> CompletionRules_t;
-    typedef QMap<openfluid::ware::WareType, CompletionRules_t> CompletionRulesByWareType_t;
-
 
   private:
 
     struct WareSrcFiletype
     {
       QString m_Extensions;
+
+      QString m_LangCode;
 
       QString m_IconPath;
 
@@ -131,8 +108,6 @@ class OPENFLUID_API WareSrcFiletypeManager
       QString m_CompFilename;
 
       WareSrcFiletypeManager::HighlightingRules_t m_HlRules;
-
-      WareSrcFiletypeManager::CompletionRulesByWareType_t m_CompRules;
     };
 
     QMap<QString, QTextCharFormat> m_Formats;
@@ -150,22 +125,12 @@ class OPENFLUID_API WareSrcFiletypeManager
     */
     QDomElement openWaresdevFile(const QString& FilePath);
 
-    /**
-      @throw openfluid::base::FrameworkException
-    */
-    void parseFiletypeFile(const QString& FilePath);
+    void initializeFileTypes();
 
     /**
       @throw openfluid::base::FrameworkException
     */
     HighlightingRules_t parseSyntaxFile(const QString& FilePath);
-
-    /**
-      @throw openfluid::base::FrameworkException
-    */
-    CompletionRulesByWareType_t parseCompletionFile(const QString& FilePath);
-
-    QString getFileType(const QString& FileName) const;
 
 
   public:
@@ -176,7 +141,9 @@ class OPENFLUID_API WareSrcFiletypeManager
 
     HighlightingRules_t getHighlightingRules(const QString& FilePath) const;
 
-    CompletionRules_t getCompletionRules(const QString& FilePath) const;
+    QString getFileType(const QString& FilePath) const;
+
+    QString getFileLanguage(const QString& FilePath) const;
 
 };
 

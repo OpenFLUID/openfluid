@@ -46,6 +46,8 @@
 
 
 namespace openfluid { namespace core {
+
+
 /**
   DoubleValue is a container for a signed double precision floating point value.\n
 
@@ -65,6 +67,15 @@ namespace openfluid { namespace core {
 
   <I>Example : conversion to string</I>
   @snippet misc/values.cpp double_tostr
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "Double precision value",
+    "text" : "openfluid::core::DoubleValue %%SEL_START%%Val%%SEL_END%%"
+  }
+  @endcond
 */
 class OPENFLUID_API DoubleValue : public SimpleValue
 {

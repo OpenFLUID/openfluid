@@ -57,6 +57,15 @@ namespace openfluid { namespace core {
 
 /**
   Type definition for the ID of units
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "title" : "Unit ID",
+    "text" : "openfluid::core::UnitID_t %%SEL_START%%ID%%SEL_END%%"
+  }
+  @endcond
 */
 typedef unsigned int UnitID_t;
 
@@ -67,6 +76,15 @@ typedef int PcsOrd_t;
 
 /**
   Type definition for the class of units
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "title" : "Units class name",
+    "text" : "openfluid::core::UnitsClass_t %%SEL_START%%ClassName%%SEL_END%%"
+  }
+  @endcond
 */
 typedef std::string UnitsClass_t;
 
@@ -77,11 +95,29 @@ typedef std::string UnitsClass_t;
 
 /**
   Type definition for name of an attribute
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "title" : "Attribute name",
+    "text" : "openfluid::core::AttributeName_t %%SEL_START%%AttrName%%SEL_END%%"
+  }
+  @endcond
 */
 typedef std::string AttributeName_t;
 
 /**
   Type definition for name of a variable
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "title" : "Variable name",
+    "text" : "openfluid::core::VariableName_t %%SEL_START%%VarName%%SEL_END%%"
+  }
+  @endcond
 */
 typedef std::string VariableName_t;
 
@@ -128,36 +164,99 @@ struct IDMap
 
 /**
   Map associating a float value to a unit ID
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "title" : "ID to single precision (signed)",
+    "text" : "openfluid::core::IDFloatMap %%SEL_START%%ValMap%%SEL_END%%"
+  }
+  @endcond
 */
 typedef IDMap<float>::Type IDFloatMap;
 
 /**
   Map associating a double precision value to a unit ID
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "title" : "ID to double precision (signed)",
+    "text" : "openfluid::core::IDDoubleMap %%SEL_START%%ValMap%%SEL_END%%"
+  }
+  @endcond
 */
 typedef IDMap<double>::Type IDDoubleMap;
 
 /**
   Map associating a DoubleValue value to a unit ID
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "title" : "ID to DoubleValue",
+    "text" : "openfluid::core::IDDoubleValueMap %%SEL_START%%ValMap%%SEL_END%%"
+  }
+  @endcond
 */
 typedef IDMap<DoubleValue>::Type IDDoubleValueMap;
 
 /**
   Map associating an integer value to a unit ID
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "title" : "ID to integer (signed)",
+    "text" : "openfluid::core::IDIntMap %%SEL_START%%ValMap%%SEL_END%%"
+  }
+  @endcond
 */
 typedef IDMap<int>::Type IDIntMap;
 
 /**
   Map associating a boolean value to a unit ID
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "title" : "ID to boolean",
+    "text" : "openfluid::core::IDBoolMap %%SEL_START%%ValMap%%SEL_END%%"
+  }
+  @endcond
 */
 typedef IDMap<bool>::Type IDBoolMap;
 
 /**
   Map associating an openfluid::core::VectorValue value to a unit ID
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "title" : "ID to VectorValue",
+    "text" : "openfluid::core::IDVectorValueMap %%SEL_START%%ValMap%%SEL_END%%"
+  }
+  @endcond
 */
 typedef IDMap<VectorValue>::Type IDVectorValueMap;
 
 /**
   Map associating a pointer to an openfluid::core::VectorValue value to a unit ID
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "title" : "ID to pointer to VectorValue",
+    "text" : "openfluid::core::IDVectorValuePtrMap %%SEL_START%%ValMap%%SEL_END%%"
+  }
+  @endcond
 */
 typedef IDMap<VectorValue*>::Type IDVectorValuePtrMap;
 
@@ -177,11 +276,29 @@ typedef std::uint64_t RawTime_t;
 
 /**
   Type for time indexes (in seconds)
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Time"],
+    "title" : "Time index",
+    "text" : "openfluid::core::TimeIndex_t %%SEL_START%%Index%%SEL_END%%"
+  }
+  @endcond
 */
 typedef std::uint64_t TimeIndex_t;
 
 /**
   Type for durations (in seconds)
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Time"],
+    "title" : "Duration",
+    "text" : "openfluid::core::Duration_t %%SEL_START%%Duration%%SEL_END%%"
+  }
+  @endcond
 */
 typedef std::uint64_t Duration_t;
 

@@ -63,6 +63,15 @@ namespace openfluid { namespace core {
 
   <I>Example : setting the contained value</I>
   @snippet misc/values.cpp string_set
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "String value",
+    "text" : "openfluid::core::StringValue %%SEL_START%%Val%%SEL_END%%"
+  }
+  @endcond
 */
 class OPENFLUID_API StringValue : public SimpleValue
 {

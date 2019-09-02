@@ -62,11 +62,11 @@ WareSrcFiletypeManager::WareSrcFiletypeManager()
 
   updateStyles();
 
+  initializeFileTypes();
+
   QDir WaresdevDir(
       QString("%1/%2").arg(QString::fromStdString(openfluid::base::Environment::getInstallPrefix()))
           .arg(QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
-
-  parseFiletypeFile(WaresdevDir.filePath("filetypes.ofdev.xml"));
 
   /*
    * TODO Avoid the multiple parsing of the same file,
@@ -75,11 +75,10 @@ WareSrcFiletypeManager::WareSrcFiletypeManager()
   for (QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin(); it != m_WareSrcFiletypes.end(); ++it)
   {
     if (!it.value().m_HlFilename.isEmpty())
+    {
       it.value().m_HlRules = parseSyntaxFile(WaresdevDir.filePath(it.value().m_HlFilename));
-    if (!it.value().m_CompFilename.isEmpty())
-      it.value().m_CompRules = parseCompletionFile(WaresdevDir.filePath(it.value().m_CompFilename));
+    }
   }
-
 }
 
 
@@ -116,13 +115,21 @@ void WareSrcFiletypeManager::updateStyles()
     for(const QString& Decoration : it.value().m_Decoration)
     {
       if(Decoration == "bold")
-      m_Formats[StyleName].setFontWeight(QFont::Bold);
+      {
+        m_Formats[StyleName].setFontWeight(QFont::Bold);
+      }
       else if(Decoration == "italic")
-      m_Formats[StyleName].setFontItalic(true);
+      {
+        m_Formats[StyleName].setFontItalic(true);
+      }
       else if(Decoration == "underline")
-      m_Formats[StyleName].setFontUnderline(true);
+      {
+        m_Formats[StyleName].setFontUnderline(true);
+      }
       else if(Decoration == "strike-through")
-      m_Formats[StyleName].setFontStrikeOut(true);
+      {
+        m_Formats[StyleName].setFontStrikeOut(true);
+      }
     }
   }
 
@@ -133,6 +140,89 @@ void WareSrcFiletypeManager::updateStyles()
       itt->Format = m_Formats.value(itt->StyleName, QTextCharFormat());
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFiletypeManager::initializeFileTypes()
+{
+  WareSrcFiletype FileType;
+
+  FileType = WareSrcFiletype();  
+  FileType.m_Extensions = "*.c++;*.cxx;*.cpp;*.cc;*.C;*.moc;*.c";
+  FileType.m_LangCode = "cpp";
+  FileType.m_IconPath = ":/ui/common/filetypes/cpp.png";
+  FileType.m_HlFilename = "cpp.syntaxhl.ofdev.xml";
+  m_WareSrcFiletypes["cpp"] = FileType;
+
+  FileType = WareSrcFiletype();  
+  FileType.m_Extensions = "*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc";
+  FileType.m_LangCode = "cpp";
+  FileType.m_IconPath = ":/ui/common/filetypes/hpp.png";
+  FileType.m_HlFilename = "cpp.syntaxhl.ofdev.xml";
+  m_WareSrcFiletypes["hpp"] = FileType;
+
+  FileType = WareSrcFiletype();  
+  FileType.m_Extensions = "CMakeLists.txt";
+  FileType.m_LangCode = "cmake";
+  FileType.m_IconPath = ":/ui/common/filetypes/cmakelists.png";
+  FileType.m_HlFilename = "cmake.syntaxhl.ofdev.xml";
+  m_WareSrcFiletypes["cmakelists"] = FileType;
+
+  FileType = WareSrcFiletype();  
+  FileType.m_Extensions = "CMake.in.config;*.cmake";
+  FileType.m_LangCode = "cmake";
+  FileType.m_IconPath = ":/ui/common/filetypes/cmake.png";
+  FileType.m_HlFilename = "cmake.syntaxhl.ofdev.xml";
+  m_WareSrcFiletypes["cmake"] = FileType;
+
+  FileType = WareSrcFiletype();  
+  FileType.m_Extensions = "*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95";
+  FileType.m_LangCode = "fortran";
+  FileType.m_IconPath = ":/ui/common/filetypes/fortran.png";
+  FileType.m_HlFilename = "";
+  m_WareSrcFiletypes["fortran"] = FileType;
+
+  FileType = WareSrcFiletype();  
+  FileType.m_Extensions = "*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.bib";
+  FileType.m_LangCode = "latex";
+  FileType.m_IconPath = "";
+  FileType.m_HlFilename = "";
+  m_WareSrcFiletypes["latex"] = FileType;
+
+  FileType = WareSrcFiletype();  
+  FileType.m_Extensions = "*.png;*.jpg;*.tif";
+  FileType.m_LangCode = "";
+  FileType.m_IconPath = "";
+  FileType.m_HlFilename = "";
+  m_WareSrcFiletypes["image"] = FileType;
+
+  FileType = WareSrcFiletype();  
+  FileType.m_Extensions = "*.ui;*.ts";
+  FileType.m_LangCode = "";
+  FileType.m_IconPath = ":/ui/common/filetypes/qt-ui.png";
+  FileType.m_HlFilename = "";
+  m_WareSrcFiletypes["qt-ui"] = FileType;
+
+  FileType = WareSrcFiletype();  
+  FileType.m_Extensions = "wareshub.json";
+  FileType.m_LangCode = "json";
+  FileType.m_IconPath = ":/ui/common/filetypes/wareshub.png";
+  FileType.m_HlFilename = "";
+  m_WareSrcFiletypes["wareshub"] = FileType;
+
+
+  // registration of icons by file extensions
+  for (auto it = m_WareSrcFiletypes.constBegin(); it != m_WareSrcFiletypes.constEnd(); ++it)
+  {
+    if (!it.value().m_IconPath.isEmpty())
+    {
+      m_IconsByFileExtensionList[it.value().m_Extensions] = it.value().m_IconPath;
+    }
+  }
 }
 
 
@@ -171,66 +261,6 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "file not well formed (missing 'waresdev' tag)");
 
   return Elem;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcFiletypeManager::parseFiletypeFile(const QString& FilePath)
-{
-  QDomElement Elem = openWaresdevFile(FilePath);
-
-  Elem = Elem.firstChildElement();
-  if (Elem.tagName() != "filetypes")
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "language file not well formed (missing 'filetypes' tag)");
-
-  for (QDomElement TypeElem = Elem.firstChildElement(); !TypeElem.isNull() && TypeElem.tagName() == "filetype";
-      TypeElem = TypeElem.nextSiblingElement())
-  {
-    QString TypeName = TypeElem.attribute("name");
-    if (TypeName.isEmpty())
-      throw openfluid::base::FrameworkException(
-          OPENFLUID_CODE_LOCATION, "language file not well formed ('filetype' tag has no 'name' attribute)");
-
-    WareSrcFiletype Type;
-
-    QDomNode ExtNode = TypeElem.namedItem("extensions");
-    if (ExtNode.isNull() || !ExtNode.isElement())
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                "language file not well formed (missing 'extensions' tag)");
-
-    Type.m_Extensions = ExtNode.toElement().text();
-
-    QString IconPath = TypeElem.attribute("icon");
-    if (!IconPath.isEmpty())
-    {
-      Type.m_IconPath = IconPath;
-      m_IconsByFileExtensionList[Type.m_Extensions] = IconPath;
-    }
-
-    for (QDomElement TypeInfoElem = TypeElem.firstChildElement(); !TypeInfoElem.isNull();
-        TypeInfoElem = TypeInfoElem.nextSiblingElement())
-    {
-      if (TypeInfoElem.tagName() == "edition" && TypeInfoElem.attribute("internal") == "yes")
-      {
-        for (QDomElement EditionElem = TypeInfoElem.firstChildElement(); !EditionElem.isNull(); EditionElem =
-            EditionElem.nextSiblingElement())
-        {
-          if (EditionElem.tagName() == "highlighting")
-            Type.m_HlFilename = EditionElem.attribute("specsfile");
-          else if (EditionElem.tagName() == "completion")
-            Type.m_CompFilename = EditionElem.attribute("specsfile");
-        }
-
-      }
-    }
-
-    m_WareSrcFiletypes[TypeName] = Type;
-  }
-
 }
 
 
@@ -311,76 +341,18 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
 // =====================================================================
 
 
-WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::parseCompletionFile(const QString& FilePath)
+QString WareSrcFiletypeManager::getFileType(const QString& FilePath) const
 {
-
-  QDomElement Elem = openWaresdevFile(FilePath);
-
-  // TODO remove useless 'language' tag
-  Elem = Elem.firstChildElement();
-  //  if (Elem.tagName() != "language" || Elem.attribute("name") != FileTypeName)
-  //    throw openfluid::base::FrameworkException(
-  //        OPENFLUID_CODE_LOCATION,
-  //        QString(
-  //            "syntax file not well formed (missing 'language' tag or language name is not '%1')")
-  //            .arg(FileTypeName).toStdString());
-
-
-  CompletionRulesByWareType_t Rules;
-
-  QDomNodeList Snippets = Elem.elementsByTagName("snippets");
-
-  for (int i = 0; i < Snippets.size(); i++)
+  for (QMap<QString, WareSrcFiletype>::const_iterator it = m_WareSrcFiletypes.begin();
+       it != m_WareSrcFiletypes.end(); ++it)
   {
-
-    QDomElement SnippetElem = Snippets.at(i).toElement();
-
-    QString Category = SnippetElem.attribute("category");
-    QString Icon = SnippetElem.attribute("icon");
-
-    if (Category.isEmpty())
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                "missing category attribute in  <snippets> tag");
-
-    QDomNodeList Items = SnippetElem.elementsByTagName("item");
-
-    for (int j = 0; j < Items.size(); j++)
+    if (QDir::match(it.value().m_Extensions,QFileInfo(FilePath).fileName()))
     {
-      QDomElement ItemElem = Items.at(j).toElement();
-
-      QString MenuPath = ItemElem.attribute("menupath");
-      int LastSepPosition = MenuPath.lastIndexOf('/');
-
-      QString MenuTree = Category + "/" + MenuPath.left(LastSepPosition);
-      QString MenuTitle = MenuPath.section('/', -1);
-
-      bool ForCompletion = ItemElem.attribute("completion") == "true";
-
-      QString Content = ItemElem.text().trimmed().replace("\\n", "\n");
-
-
-      CompletionRule Rule(MenuTree, MenuTitle, Content, ForCompletion, Icon);
-
-      QString Context = ItemElem.attribute("context");
-      if (Context.contains("anyware") || Context.isEmpty())
-      {
-        Rules[openfluid::ware::WareType::SIMULATOR].append(Rule);
-        Rules[openfluid::ware::WareType::OBSERVER].append(Rule);
-        Rules[openfluid::ware::WareType::BUILDEREXT].append(Rule);
-      }
-      else
-      {
-        if (Context.contains("simulator"))
-          Rules[openfluid::ware::WareType::SIMULATOR].append(Rule);
-        if (Context.contains("observer"))
-          Rules[openfluid::ware::WareType::OBSERVER].append(Rule);
-        if (Context.contains("builderext"))
-          Rules[openfluid::ware::WareType::BUILDEREXT].append(Rule);
-      }
+      return it.key();
     }
   }
 
-  return Rules;
+  return "";
 }
 
 
@@ -388,13 +360,15 @@ WareSrcFiletypeManager::CompletionRulesByWareType_t WareSrcFiletypeManager::pars
 // =====================================================================
 
 
-QString WareSrcFiletypeManager::getFileType(const QString& FileName) const
-{
+QString WareSrcFiletypeManager::getFileLanguage(const QString& FilePath) const
+{ 
   for (QMap<QString, WareSrcFiletype>::const_iterator it = m_WareSrcFiletypes.begin();
        it != m_WareSrcFiletypes.end(); ++it)
   {
-    if (QDir::match(it.value().m_Extensions, FileName))
-      return it.key();
+    if (QDir::match(it.value().m_Extensions, QFileInfo(FilePath).fileName()))
+    {
+      return it.value().m_LangCode;
+    }
   }
 
   return "";
@@ -417,25 +391,9 @@ QMap<QString, QString> WareSrcFiletypeManager::getIconsByFileExtensionList() con
 
 WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::getHighlightingRules(const QString& FilePath) const
 {
-  QString FileType = getFileType(QFileInfo(FilePath).fileName());
+  QString FileType = getFileType(FilePath);
 
   return m_WareSrcFiletypes.value(FileType, WareSrcFiletype()).m_HlRules;
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-WareSrcFiletypeManager::CompletionRules_t WareSrcFiletypeManager::getCompletionRules(const QString& FilePath) const
-{
-  QString FileType = getFileType(QFileInfo(FilePath).fileName());
-
-  openfluid::ware::WareType WareType =
-      openfluid::waresdev::WareSrcManager::instance()->getPathInfo(FilePath).m_WareType;
-
-  return m_WareSrcFiletypes.value(FileType, WareSrcFiletype()).m_CompRules.value(WareType, QVector<CompletionRule>());
-}
-
 
 } } }  // namespaces

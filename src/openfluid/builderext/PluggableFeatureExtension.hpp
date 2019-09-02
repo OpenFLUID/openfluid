@@ -47,6 +47,15 @@
 
 /**
   Macro for the beginning of definition of signature for feature extension
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["BUILDEREXT"],
+    "menupath" : ["Signature"],
+    "title" : "Insert signature block",
+    "text" : "BEGIN_BUILDEREXT_SIGNATURE(\"%%SEL_START%%bext.id%%SEL_END%%\",exttype)\n\nEND_BUILDEREXT_SIGNATURE"
+  }
+  @endcond
 */
 #ifndef BEGIN_BUILDEREXT_SIGNATURE
 #define BEGIN_BUILDEREXT_SIGNATURE(id,extmode) \
@@ -92,14 +101,34 @@
 
 /**
   Macro for declaration of the Builder extension category
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["BUILDEREXT"],
+    "menupath" : ["Signature", "Menu context"],
+    "title" : "Declare menu category",
+    "text" : "DECLARE_CATEGORY(%%SEL_START%%category%%SEL_END%%)"
+  }
+  @endcond
 */
-#define DECLARE_CATEGORY(category) Signature->Category = (category);
+#define DECLARE_CATEGORY(category) \
+  Signature->Category = (category);
 
 
 /**
   Macro for declaration of the Builder extension menu text
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["BUILDEREXT"],
+    "menupath" : ["Signature", "Menu context"],
+    "title" : "Declare menu text",
+    "text" : "DECLARE_MENUTEXT(\"%%SEL_START%%menu text%%SEL_END%%\")"
+  }
+  @endcond
 */
-#define DECLARE_MENUTEXT(menutext) Signature->MenuText = (menutext);
+#define DECLARE_MENUTEXT(menutext) \
+  Signature->MenuText = (menutext);
 
 
 // =====================================================================

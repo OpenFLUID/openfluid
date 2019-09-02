@@ -46,6 +46,7 @@
 #include <QMenu>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/waresdev/CompletionProvider.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
 #include <openfluid/ui/config.hpp>
@@ -55,6 +56,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 class WareSrcSyntaxHighlighter;
+
 
 class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEditor
 {
@@ -160,7 +162,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
 
     int m_SpaceCharWidth;
 
-    WareSrcFiletypeManager::CompletionRules_t m_CompletionRules;
+    openfluid::waresdev::CompletionProvider::Rules m_CompletionRules;
 
     QSignalMapper* mp_SignalMapper;
 
@@ -266,7 +268,7 @@ class LineNumberArea: public QWidget
 
     WareSrcFileEditor* mp_Editor;
 
-    QAction* mp_ShowMarkersAction = 0;
+    QAction* mp_ShowMarkersAction = nullptr;
 
 
   protected:

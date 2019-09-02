@@ -52,6 +52,15 @@ namespace openfluid { namespace core {
   NullValue is a container for null value, containing no data.\n
 
   @see Value
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "Null value",
+    "text" : "openfluid::core::NullValue %%SEL_START%%Val%%SEL_END%%"
+  }
+  @endcond
 */
 class OPENFLUID_API NullValue : public Value
 {

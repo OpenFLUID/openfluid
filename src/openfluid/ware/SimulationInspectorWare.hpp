@@ -73,70 +73,47 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
 
 
     virtual bool isLinked() const
-    { return (SimulationDrivenWare::isLinked() && mp_SpatialData != nullptr && mp_Datastore != nullptr); };
+    { 
+      return (SimulationDrivenWare::isLinked() && mp_SpatialData != nullptr && mp_Datastore != nullptr); 
+    }
 
 
     /**
       Returns true if a distributed attribute exists, false otherwise
       @param[in] UnitPtr a Unit
       @param[in] AttrName the name of the queried attribute
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Attributes"],
+        "title" : "Test if an attribute exists",
+        "text" : "OPENFLUID_IsAttributeExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"attrname\")"
+      }
+      @endcond
     */
     bool OPENFLUID_IsAttributeExist(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::AttributeName_t& AttrName) const;
-
 
     /**
       Gets attribute for a unit
       @param[in] UnitPtr a Unit
       @param[in] AttrName the name of the requested attribute
       @param[out] Val the value of the requested attribute
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Attributes"],
+        "title" : "Get attribute value",
+        "text" : "OPENFLUID_GetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,\"attrname\",Val)"
+      }
+      @endcond
     */
     void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                 const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::Value& Val) const;
-
-    // TODO
-#if 0
-    /**
-      Gets attribute for a unit, as a StringValue
-      @param[in] UnitPtr a Unit
-      @param[in] AttrName the name of the requested attribute
-      @param[out] Val the value of the requested attribute
-    */
-    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
-                                const openfluid::core::AttributeName_t& AttrName,
-                                openfluid::core::StringValue& Val) const;
-
-    /**
-      Gets attribute for a unit, as a DoubleValue
-      @param[in] UnitPtr a Unit
-      @param[in] AttrName the name of the requested attribute
-      @param[out] Val the value of the requested attribute
-    */
-    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
-                                const openfluid::core::AttributeName_t& AttrName,
-                                openfluid::core::DoubleValue& Val) const;
-
-    /**
-      Gets attribute for a unit, as a VectorValue
-      @param[in] UnitPtr a Unit
-      @param[in] AttrName the name of the requested attribute
-      @param[out] Val the value of the requested attribute
-    */
-    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
-                                const openfluid::core::AttributeName_t& AttrName,
-                                openfluid::core::VectorValue& Val) const;
-
-    /**
-      Gets attribute for a unit, as a MatrixValue
-      @param[in] UnitPtr a Unit
-      @param[in] AttrName the name of the requested attribute
-      @param[out] Val the value of the requested attribute
-    */
-    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
-                                const openfluid::core::AttributeName_t& AttrName,
-                                openfluid::core::MatrixValue& Val) const;
-#endif
+    
     /**
       Gets attribute for a unit, as a double
       @param[in] UnitPtr a Unit
@@ -172,6 +149,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] AttrName the name of the requested attribute
       @return constant pointer to the value of the requested attribute
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Attributes"],
+        "title" : "Get attribute value (by return)",
+        "text" : "OPENFLUID_GetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,\"attrname\")"
+      }
+      @endcond
     */
     const openfluid::core::Value* OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                                          const openfluid::core::AttributeName_t& AttrName) const;
@@ -180,133 +166,205 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
        Returns true if a distributed variable exists, false otherwise
        @param[in] UnitPtr a Unit
        @param[in] VarName the name of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Test if a variable exists",
+        "text" : "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\")"
+      }
+      @endcond
      */
-     bool OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
-                                    const openfluid::core::VariableName_t& VarName) const;
+    bool OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
+                                   const openfluid::core::VariableName_t& VarName) const;
 
     /**
        Returns true if a distributed variable exists and if a value has been set for the given index, false otherwise
        @param[in] UnitPtr a Unit
        @param[in] VarName the name of the requested variable
        @param[in] Index the time index for the value of the variable
-     */
-     bool OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Test if a variable exists and has a value on given time index",
+        "text" : "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex)"
+      }
+      @endcond
+    */
+    bool OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::VariableName_t& VarName,
                                     const openfluid::core::TimeIndex_t Index) const;
 
-     /**
-        Returns true if a distributed variable exists and if a value has been set for the given index
-        and if the value type is the given type, false otherwise
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the variable
-        @param[in] ValueType the type of the value
-      */
-      bool OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
-                                     const openfluid::core::VariableName_t& VarName,
-                                     const openfluid::core::TimeIndex_t Index,
-                                     const openfluid::core::Value::Type ValueType) const;
+    /**
+      Returns true if a distributed variable exists and if a value has been set for the given index
+      and if the value type is the given type, false otherwise
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Index the time index for the value of the variable
+      @param[in] ValueType the type of the value
 
-     /**
-        Returns true if a distributed variable exists
-        and if the type set for this variable is the given type, false otherwise
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] VarType the type of the variable
-      */
-     bool OPENFLUID_IsTypedVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
-                                    const openfluid::core::VariableName_t& VarName,
-                                    const openfluid::core::Value::Type VarType) const;
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Test if a variable exists and has a value of given type on given time index",
+        "text" : "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,Type)"
+      }
+      @endcond
+    */
+    bool OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
+                                   const openfluid::core::VariableName_t& VarName,
+                                   const openfluid::core::TimeIndex_t Index,
+                                   const openfluid::core::Value::Type ValueType) const;
 
-     /**
-        Returns true if a distributed variable exists and if a value has been set for the given index
-        and if the type set for this variable is the given type, false otherwise
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the variable
-        @param[in] VarType the type of the variable
-      */
-      bool OPENFLUID_IsTypedVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
-                                     const openfluid::core::VariableName_t& VarName,
-                                     const openfluid::core::TimeIndex_t Index,
-                                     const openfluid::core::Value::Type VarType) const;
+    /**
+      Returns true if a distributed variable exists
+      and if the type set for this variable is the given type, false otherwise
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] VarType the type of the variable
 
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 openfluid::core::Value& Val) const;
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Test if a variable exists with given type",
+        "text" : "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Type)"
+      }
+      @endcond
+    */
+    bool OPENFLUID_IsTypedVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
+                                        const openfluid::core::VariableName_t& VarName,
+                                        const openfluid::core::Value::Type VarType) const;
 
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 double& Val) const;
+    /**
+      Returns true if a distributed variable exists and if a value has been set for the given index
+      and if the type set for this variable is the given type, false otherwise
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Index the time index for the value of the variable
+      @param[in] VarType the type of the variable
 
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 long& Val) const;
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Test if a variable exists with given type and has a value on given time index",
+        "text" : "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,Type)"
+      }
+      @endcond
+    */
+    bool OPENFLUID_IsTypedVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
+                                        const openfluid::core::VariableName_t& VarName,
+                                        const openfluid::core::TimeIndex_t Index,
+                                        const openfluid::core::Value::Type VarType) const;
 
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 bool& Val) const;
+    /**
+      Gets the distributed variable value for a unit at a time index
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Index the time index for the value of the requested variable
+      @param[out] Val the value of the requested variable
 
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 std::string& Val) const;
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get variable value on given time index",
+        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,Val)"
+      }
+      @endcond
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
+                               const openfluid::core::VariableName_t& VarName,
+                               const openfluid::core::TimeIndex_t Index,
+                               openfluid::core::Value& Val) const;
 
-      /**
-        Returns the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @return a constant pointer the value of the requested variable
-      */
-      const openfluid::core::Value* OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
-                                                          const openfluid::core::VariableName_t& VarName,
-                                                          const openfluid::core::TimeIndex_t Index) const;
+    /**
+      Gets the distributed variable value for a unit at a time index
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Index the time index for the value of the requested variable
+      @param[out] Val the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
+                                const openfluid::core::VariableName_t& VarName,
+                                const openfluid::core::TimeIndex_t Index,
+                                double& Val) const;
+
+    /**
+      Gets the distributed variable value for a unit at a time index
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Index the time index for the value of the requested variable
+      @param[out] Val the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
+                                const openfluid::core::VariableName_t& VarName,
+                                const openfluid::core::TimeIndex_t Index,
+                                long& Val) const;
+
+    /**
+      Gets the distributed variable value for a unit at a time index
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Index the time index for the value of the requested variable
+      @param[out] Val the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
+                                const openfluid::core::VariableName_t& VarName,
+                                const openfluid::core::TimeIndex_t Index,
+                                bool& Val) const;
+
+    /**
+      Gets the distributed variable value for a unit at a time index
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Index the time index for the value of the requested variable
+      @param[out] Val the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
+                                const openfluid::core::VariableName_t& VarName,
+                                const openfluid::core::TimeIndex_t Index,
+                                std::string& Val) const;
+
+    /**
+      Returns the distributed variable value for a unit at a time index
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Index the time index for the value of the requested variable
+      @return a constant pointer the value of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get variable value on given time index (by return)",
+        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex)"
+      }
+      @endcond
+    */
+    const openfluid::core::Value* OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
+                                                        const openfluid::core::VariableName_t& VarName,
+                                                        const openfluid::core::TimeIndex_t Index) const;
 
     /**
       Gets the distributed variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @param[out] Val the value of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get variable value on current time index",
+        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Val)"
+      }
+      @endcond
     */
     void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
@@ -357,6 +415,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @return a constant pointer the value of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get variable value on current time index (by return)",
+        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\")"
+      }
+      @endcond
     */
     const openfluid::core::Value* OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                                         const openfluid::core::VariableName_t& VarName) const;
@@ -367,6 +434,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @param[out] IndVal the value and timeindex of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get latest available variable value",
+        "text" : "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",IndexedVal)"
+      }
+      @endcond
     */
     void OPENFLUID_GetLatestVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                      const openfluid::core::VariableName_t& VarName,
@@ -377,6 +453,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @return the value and timeindex of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get latest available variable value (by return)",
+        "text" : "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\")"
+      }
+      @endcond
     */
     openfluid::core::IndexedValue OPENFLUID_GetLatestVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                                               const openfluid::core::VariableName_t& VarName) const;
@@ -388,6 +473,16 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] VarName the name of the requested variable
       @param[in] BeginIndex The beginning time index of the search period
       @param[out] IndValList the list of time-indexed values of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get latest available variable values since a time index",
+        "text" : ["OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,",
+                  "\"variable.id\",TimeIndex,IndexedValuesList)"]
+      }
+      @endcond
     */
     void OPENFLUID_GetLatestVariables(const openfluid::core::SpatialUnit* UnitPtr,
                                      const openfluid::core::VariableName_t& VarName,
@@ -400,6 +495,16 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] VarName the name of the requested variable
       @param[in] BeginIndex The beginning time index of the search period
       @return the list of time-indexed values of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get latest available variable values since a time index (by return)",
+        "text" : "OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex)"
+      }
+      @endcond
+
     */
     openfluid::core::IndexedValueList OPENFLUID_GetLatestVariables(const openfluid::core::SpatialUnit* UnitPtr,
                                                                    const openfluid::core::VariableName_t& VarName,
@@ -412,6 +517,16 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] BeginIndex the time index for the beginning of the period
       @param[in] EndIndex the time index for the end of the period
       @param[out] IndValList the list of time-indexed values of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get variable values on given period",
+        "text" : ["OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,",
+                  "\"variable.id\",BeginIndex,EndIndex,ValuesList)"]
+      }
+      @endcond
     */
     void OPENFLUID_GetVariables(const openfluid::core::SpatialUnit* UnitPtr,
                                 const openfluid::core::VariableName_t& VarName,
@@ -426,6 +541,16 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] BeginIndex the time index for the beginning of the period
       @param[in] EndIndex the time index for the end of the period
       @return the list of time-indexed values of the requested variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Get variable values on given period (by return)",
+        "text" : "OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",BeginIndex,EndIndex)"
+      }
+      @endcond
+
     */
     openfluid::core::IndexedValueList OPENFLUID_GetVariables(const openfluid::core::SpatialUnit* UnitPtr,
                                                              const openfluid::core::VariableName_t& VarName,
@@ -438,6 +563,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] BeginDate the beginning of the time period
       @param[in] EndDate the ending of the time period
       @param[out] Events the collection of event corresponding to the request
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Events"],
+        "title" : "Get events on a given period",
+        "text" : "OPENFLUID_GetEvents(%%SEL_START%%UnitPtr%%SEL_END%%,BeginDate,EndDate,EventsColl)"
+      }
+      @endcond
     */
     void OPENFLUID_GetEvents(const openfluid::core::SpatialUnit *UnitPtr,
                              const openfluid::core::DateTime BeginDate,
@@ -450,6 +584,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] BeginDate the beginning of the time period
       @param[in] EndDate the ending of the time period
       @return the collection of event corresponding to the request
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Events"],
+        "title" : "Get events on a given period (by return)",
+        "text" : "OPENFLUID_GetEvents(%%SEL_START%%UnitPtr%%SEL_END%%,BeginDate,EndDate)"
+      }
+      @endcond
     */
     openfluid::core::EventsCollection OPENFLUID_GetEvents(const openfluid::core::SpatialUnit *UnitPtr,
                                                           const openfluid::core::DateTime BeginDate,
@@ -458,6 +601,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
     /**
       Returns true if the queried unit class exists
       @param[in] ClassName the queried class name
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Test if a spatial units class exists",
+        "text" : "OPENFLUID_IsUnitsClassExist(%%SEL_START%%ClassName%%SEL_END%%)"
+      }
+      @endcond
     */
     bool OPENFLUID_IsUnitsClassExist(const openfluid::core::UnitsClass_t& ClassName) const;
 
@@ -466,12 +618,23 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       Use openfluid::ware::SimulationInspectorWare::OPENFLUID_IsUnitsClassExist instead
     */
     [[deprecated]] bool OPENFLUID_IsUnitClassExist(const openfluid::core::UnitsClass_t& ClassName) const
-    { return OPENFLUID_IsUnitsClassExist(ClassName); }
+    { 
+      return OPENFLUID_IsUnitsClassExist(ClassName);
+    }
 
     /**
       Returns true if the queried unit exists
       @param[in] ClassName the class of the queried unit
       @param[in] ID the ID of the queried unit
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Test if a spatial unit exists in a given units class",
+        "text" : "OPENFLUID_IsUnitExist(%%SEL_START%%ClassName%%SEL_END%%,UnitID)"
+      }
+      @endcond
     */
     bool OPENFLUID_IsUnitExist(const openfluid::core::UnitsClass_t& ClassName,
                                openfluid::core::UnitID_t ID) const;
@@ -479,12 +642,30 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
     /**
       Returns the total number of units
       @param[out] UnitsCount the total units count
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Get the number of spatial units in the spatial graph",
+        "text" : "OPENFLUID_GetUnitsCount(%%SEL_START%%UnitsCount%%SEL_END%%)"
+      }
+      @endcond
     */
     void OPENFLUID_GetUnitsCount(unsigned int& UnitsCount) const;
 
     /**
       Returns the total number of units
       @return the total units count
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Get the number of spatial units in the spatial graph (by return)",
+        "text" : "OPENFLUID_GetUnitsCount()"
+      }
+      @endcond
     */
     unsigned int OPENFLUID_GetUnitsCount() const;
 
@@ -493,6 +674,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] ClassName the queried class name
       @param[out] UnitsCount the number of units in the queried class
       @return false if the unit class does not exist
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Get the number of spatial units of a given class",
+        "text" : "OPENFLUID_GetUnitsCount(%%SEL_START%%ClassName%%SEL_END%%,UnitsCount)"
+      }
+      @endcond
     */
     bool OPENFLUID_GetUnitsCount(const openfluid::core::UnitsClass_t& ClassName,
                                  unsigned int& UnitsCount) const;
@@ -501,6 +691,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       Returns the number of units of the class if the queried unit class exists
       @param[in] ClassName the queried class name
       @return the number of units in the queried class, or 0 if the units class does not exist
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Get the number of spatial units of a given class (by return)",
+        "text" : "OPENFLUID_GetUnitsCount(%%SEL_START%%ClassName%%SEL_END%%)"
+      }
+      @endcond
     */
     unsigned int OPENFLUID_GetUnitsCount(const openfluid::core::UnitsClass_t& ClassName) const;
 
@@ -510,6 +709,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] ID the queried unit ID
       @param[out] aUnit a pointer to the requested Unit, nullptr if the unit does not exist
       @return false if the unit does not exist
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Get a pointer to a spatial unit of a given units class",
+        "text" : "OPENFLUID_GetUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,unitPtr)"
+      }
+      @endcond
     */
     bool OPENFLUID_GetUnit(const openfluid::core::UnitsClass_t& ClassName,
                            const openfluid::core::UnitID_t& ID,
@@ -522,6 +730,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       Returns a list of units of the requested class
       Returns an empty list if the units class does not exist.
       @param[in] ClassName the requested class
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Get a list of pointers to spatial units of a given units class",
+        "text" : "OPENFLUID_GetUnits(%%SEL_START%%ClassName%%SEL_END%%)"
+      }
+      @endcond
     */
     openfluid::core::UnitsPtrList_t OPENFLUID_GetUnits(const openfluid::core::UnitsClass_t& ClassName);
 
@@ -531,6 +748,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] ClassNameTo the class name of the other unit to test
       @param[in] IDTo the ID of the other unit to test
       @return true if the given unit is connected "to" the other unit
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Test if a spatial unit is connected to another spatial unit",
+        "text" : "OPENFLUID_IsUnitConnectedTo(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameTo,IDTo)"
+      }
+      @endcond
     */
     bool OPENFLUID_IsUnitConnectedTo(openfluid::core::SpatialUnit* aUnit,
                                      const openfluid::core::UnitsClass_t& ClassNameTo,
@@ -543,6 +769,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] ClassNameFrom the class name of the other unit to test
       @param[in] IDFrom the ID of the other unit to test
       @return true if the given unit is connected "from" the other unit
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Test if a spatial unit is connected from another spatial unit",
+        "text" : "OPENFLUID_IsUnitConnectedFrom(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameFrom,IDFrom)"
+      }
+      @endcond
     */
     bool OPENFLUID_IsUnitConnectedFrom(openfluid::core::SpatialUnit* aUnit,
                                        const openfluid::core::UnitsClass_t& ClassNameFrom,
@@ -555,6 +790,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] ClassNameParent the class name of the other unit to test
       @param[in] IDParent the ID of the other unit to test
       @return true if the given unit is "a child of" the other unit
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Test if a spatial unit is a child of another spatial unit",
+        "text" : "OPENFLUID_IsUnitChildOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameParent,IDParent)"
+      }
+      @endcond
     */
     bool OPENFLUID_IsUnitChildOf(openfluid::core::SpatialUnit* aUnit,
                                  const openfluid::core::UnitsClass_t& ClassNameParent,
@@ -567,6 +811,15 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] ClassNameChild the class name of the other unit to test
       @param[in] IDChild the ID of the other unit to test
       @return true if the given unit is "parent of" the other unit
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Test if a spatial unit is a parent of another spatial unit",
+        "text" : "OPENFLUID_IsUnitParentOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameChild,IDChild)"
+      }
+      @endcond
     */
     bool OPENFLUID_IsUnitParentOf(openfluid::core::SpatialUnit* aUnit,
                                   const openfluid::core::UnitsClass_t& ClassNameChild,

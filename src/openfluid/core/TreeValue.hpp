@@ -50,7 +50,18 @@
 
 namespace openfluid { namespace core {
 
-
+/**
+  TreeValue is a container for a hierarchical tree of signed double precision floating point values.\n
+ 
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "Tree value",
+    "text" : "openfluid::core::TreeValue %%SEL_START%%Val%%SEL_END%%"
+  }
+  @endcond
+*/
 class OPENFLUID_API TreeValue : public CompoundValue, public Tree<std::string,double>
 {
 

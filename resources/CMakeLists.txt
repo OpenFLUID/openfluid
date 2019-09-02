@@ -105,6 +105,8 @@ ENDFOREACH()
 
 FIND_PACKAGE(PythonInterp)
 
+FIND_PROGRAM(PYTHON3_EXECUTABLE NAMES python3)
+
 IF(PYTHONINTERP_FOUND)
 
   # checkstyle tool
@@ -114,6 +116,7 @@ IF(PYTHONINTERP_FOUND)
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
                             "${CMAKE_SOURCE_DIR}"
                    )
+
   # cppcheck tool
   ADD_CUSTOM_TARGET(cppcheck
                     COMMENT "Static analysis of source code "
@@ -123,6 +126,20 @@ IF(PYTHONINTERP_FOUND)
                             ${OFBUILD_CPPCHECK_EXTRA_OPTIONS}
                             "${CMAKE_SOURCE_DIR}"
                    )
+
+ENDIF()
+
+
+IF(PYTHON3_EXECUTABLE)
+
+# rebuild completion tool
+  ADD_CUSTOM_TARGET(rebuild-completion
+  COMMENT "Rebuilding completion rules from API source code"
+  COMMAND "${PYTHON3_EXECUTABLE}"
+          "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-completion-rebuild.py"
+          "${CMAKE_SOURCE_DIR}"
+  )
+
 ENDIF()
 
 

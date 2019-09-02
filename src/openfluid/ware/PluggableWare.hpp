@@ -121,11 +121,22 @@ class OPENFLUID_API PluggableWare
     bool m_Initialized;
 
     virtual bool isLinked() const
-    { return mp_WareEnv != nullptr; };
+    { 
+      return mp_WareEnv != nullptr;
+    }
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
       @param[in] Msg the content of the message
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR","OBSERVER"],
+        "menupath" : ["Compute code","Messages"],
+        "title" : "Raise fatal error",
+        "text" : "OPENFLUID_RaiseError(%%SEL_START%%\"message\"%%SEL_END%%)"
+      }
+      @endcond
     */
     virtual void OPENFLUID_RaiseError(const std::string& Msg);
 
@@ -140,15 +151,62 @@ class OPENFLUID_API PluggableWare
       Gets an environment boolean value associated to a Key
       @param[in] Key the requested environment key
       @param[out] Val the value associated with the environment key
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["ANYWARE"],
+        "menupath" : ["Compute code", "Run environment"],
+        "title" : "Get information about run environment",
+        "text" : "OPENFLUID_GetRunEnvironment(%%SEL_START%%\"key\"%%SEL_END%%,Value)"
+      }
+      @endcond
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["ANYWARE"],
+        "menupath" : ["Compute code", "Run environment"],
+        "title" : "Get current input dataset directory",
+        "text" : "OPENFLUID_GetRunEnvironment(\"dir.input\",%%SEL_START%%Value%%SEL_END%%)"
+      }
+      @endcond
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["ANYWARE"],
+        "menupath" : ["Compute code", "Run environment"],
+        "title" : "Get current output results directory",
+        "text" : "OPENFLUID_GetRunEnvironment(\"dir.output\",%%SEL_START%%Value%%SEL_END%%)"
+      }
+      @endcond
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["ANYWARE"],
+        "menupath" : ["Compute code", "Run environment"],
+        "title" : "Get current directory for temporary data",
+        "text" : "OPENFLUID_GetRunEnvironment(\"dir.temp\",%%SEL_START%%Value%%SEL_END%%)"
+      }
+      @endcond
     */
     bool OPENFLUID_GetRunEnvironment(const std::string& Key, bool& Val);
 
     /**
       Returns the ID of the ware (itself)
       @return the ID
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["ANYWARE"],
+        "menupath" : ["Compute code", "Run environment"],
+        "title" : "Get current ware ID",
+        "text" : "OPENFLUID_GetWareID()"
+      }
+      @endcond
     */
     WareID_t OPENFLUID_GetWareID() const
-    { return m_WareID; };
+    { 
+      return m_WareID;
+    }
 
 
     /**
@@ -156,7 +214,9 @@ class OPENFLUID_API PluggableWare
       @return the type
     */
     WareType OPENFLUID_GetWareType() const
-    { return m_WareType; };
+    { 
+      return m_WareType;
+    }
 
 
     PluggableWare(WareType WType);
@@ -169,7 +229,7 @@ class OPENFLUID_API PluggableWare
     void linkToRunEnvironment(const openfluid::core::MapValue* Env)
     {
       mp_WareEnv = Env;
-    };
+    }
 
     virtual void initializeWare(const WareID_t& ID);
 

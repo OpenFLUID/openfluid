@@ -45,6 +45,15 @@
 
 /**
   Macro for the beginning of definition of observer hook
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["OBSERVER"],
+    "menupath" : ["Signature"],
+    "title" : "Insert signature block",
+    "text" : "BEGIN_OBSERVER_SIGNATURE(\"%%SEL_START%%sim.id%%SEL_END%%\")\n\nEND_OBSERVER_SIGNATURE"
+  }
+  @endcond
 */
 #define BEGIN_OBSERVER_SIGNATURE(id) \
   extern "C" { \

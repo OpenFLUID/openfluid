@@ -50,7 +50,16 @@
 
 namespace openfluid { namespace core {
 
-
+/**
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "Time indexed value",
+    "text" : "openfluid::core::IndexedValue %%SEL_START%%IndexedVal%%SEL_END%%"
+  }
+  @endcond
+*/
 class IndexedValue
 {
   friend class ValuesBuffer;
@@ -145,6 +154,15 @@ class IndexedValue
 
 /**
   Indexed value list, ordered from oldest (front) to more recent (back)
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "List of time indexed value",
+    "text" : "openfluid::core::IndexedValueList %%SEL_START%%List%%SEL_END%%"
+  }
+  @endcond
 */
 typedef std::list<IndexedValue> IndexedValueList;
 

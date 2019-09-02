@@ -53,6 +53,7 @@
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
 #include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/global.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -63,7 +64,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 {
   m_SelectionTagsRegExp.setPattern("%%SEL_(START|END)%%");
   m_AllTagsRegExp.setPattern("%%(SEL_(START|END)|CURSOR|INDENT)%%");
-  //TODO get "word part" characters from scanning xml completion strings ?
+  // TODO get "word part" characters from scanning xml completion strings ?
   m_WordPartRegExp.setPattern("\\w|:|#");
 
   // Line number management
@@ -78,63 +79,66 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
   // Code insertion and code completion management
 
-  m_CompletionRules = WareSrcFiletypeManager::instance()->getCompletionRules(m_FilePath);
+  QString ProgLang = openfluid::ui::waresdev::WareSrcFiletypeManager::instance()->getFileLanguage(FilePath);
+  openfluid::ware::WareType WType =
+      openfluid::waresdev::WareSrcManager::instance()->getPathInfo(FilePath).m_WareType;
+
+  m_CompletionRules = openfluid::waresdev::CompletionProvider::instance()->getRules(ProgLang,WType);
 
   mp_SignalMapper = new QSignalMapper(this);
 
   QStandardItemModel* CompletionModel = new QStandardItemModel();
 
-  int row = 0;
-  for (WareSrcFiletypeManager::CompletionRules_t::iterator it = m_CompletionRules.begin();
-      it != m_CompletionRules.end(); ++it)
+  int CompRow = 0;
+  for (auto& RuleItem : m_CompletionRules)
   {
-    QString Title = it->Title;
-    QString Content = it->Content;
-
     // initialize actions for code insertion
 
-    if (!Title.isEmpty())
+    QString IconPath;
+
+    if (!RuleItem.Title.isEmpty())
     {
-      QString MenuPath = it->MenuPath;
-      QStringList MenuPathList = MenuPath.split("/");
+      QString MenuEntry = tr("Other");
 
-      if (MenuPathList.isEmpty())
-        MenuPathList << "Other";
-      else
-        for (int i = 0; i < MenuPathList.size(); i++)
-          MenuPathList[i] = openfluid::tools::decodeXMLEntities(MenuPathList[i]);
-
-
-      QString MainMenuTitle = MenuPathList.first();
-      if (!m_InsertionMenus.contains(MainMenuTitle))
+      if (RuleItem.Orig == openfluid::waresdev::CompletionProvider::Origin::OPENFLUID)
       {
-        m_InsertionMenus[MainMenuTitle] = new QMenu(MainMenuTitle);
-        m_InsertionMenus[MainMenuTitle]->setObjectName(MainMenuTitle);
+        MenuEntry = "OpenFLUID";
+        IconPath =  ":/ui/common/icons/OFcode.png";
+      }
+      else if (RuleItem.Orig == openfluid::waresdev::CompletionProvider::Origin::CPP)
+      {
+        MenuEntry = "C++";
+        IconPath =  ":/ui/common/icons/cppcode.png";
       }
 
-      QMenu* Menu = m_InsertionMenus[MainMenuTitle];
-
-      for (int i = 1; i < MenuPathList.size(); i++)
+      if (!m_InsertionMenus.contains(MenuEntry))
       {
-        QString SubPathName = MenuPath.section("/", 0, i);
-        QMenu* SubMenu = Menu->findChild<QMenu*>(SubPathName);
+        m_InsertionMenus[MenuEntry] = new QMenu(MenuEntry);
+        m_InsertionMenus[MenuEntry]->setObjectName(MenuEntry);
+      }
+
+      QMenu* Menu = m_InsertionMenus[MenuEntry];
+
+      for (int i = 0; i < RuleItem.MenuPath.size(); i++)
+      {
+        QMenu* SubMenu = Menu->findChild<QMenu*>(RuleItem.MenuPath[i]);
         if (!SubMenu)
         {
-          SubMenu = Menu->addMenu(MenuPathList[i]);
-          SubMenu->setObjectName(SubPathName);
+          SubMenu = Menu->addMenu(RuleItem.MenuPath[i]);
+          SubMenu->setObjectName(RuleItem.MenuPath[i]);
         }
         Menu = SubMenu;
       }
 
-      QAction* a = new QAction(Title, this);
-      mp_SignalMapper->setMapping(a, Content);
-      connect(a, SIGNAL(triggered()), mp_SignalMapper, SLOT(map()));
-      Menu->addAction(a);
+      QAction* MenuAction = new QAction(RuleItem.Title, this);
+      mp_SignalMapper->setMapping(MenuAction, RuleItem.Content);
+      connect(MenuAction, SIGNAL(triggered()), mp_SignalMapper, SLOT(map()));
+      Menu->addAction(MenuAction);
     }
 
     // initialize model for code completion
 
-    QString ContentWoTags = Content;
+    QString ContentWoTags = RuleItem.Content;
     ContentWoTags.remove(m_AllTagsRegExp);
     QStringList L = ContentWoTags.split("\n");
     QString ContentForList, ContentForDetail;
@@ -150,15 +154,19 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
       ContentForDetail = "";
     }
 
-    CompletionModel->setItem(row, 0, new QStandardItem(ContentForList));
-    // setItem(...QIcon()...) doesn't allow to resize icon
-    QPixmap PM = QPixmap::fromImage(QImage(it->IconPath));
-    CompletionModel->setData(CompletionModel->index(row, 0), PM.scaled(QSize(15, 15), Qt::KeepAspectRatio),
-                             Qt::DecorationRole);
-    CompletionModel->setItem(row, 1, new QStandardItem(ContentForDetail));
-    CompletionModel->setItem(row, 2, new QStandardItem(Content));
 
-    row++;
+    CompletionModel->setItem(CompRow, 0, new QStandardItem(ContentForList));
+    // setItem(...QIcon()...) doesn't allow to resize icon
+    if (!IconPath.isEmpty())
+    {
+      QPixmap PM = QPixmap::fromImage(QImage(IconPath));
+      CompletionModel->setData(CompletionModel->index(CompRow, 0), PM.scaled(QSize(16, 16), Qt::KeepAspectRatio),
+                               Qt::DecorationRole);
+    }
+    CompletionModel->setItem(CompRow, 1, new QStandardItem(ContentForDetail));
+    CompletionModel->setItem(CompRow, 2, new QStandardItem(RuleItem.Content));
+
+    CompRow++;
   }
 
   QSortFilterProxyModel* SortedCompletionModel = new QSortFilterProxyModel();
@@ -172,6 +180,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   mp_Completer->setCompletionMode(QCompleter::PopupCompletion);
   mp_Completer->setCompletionColumn(0);
   mp_Completer->setWidget(this);
+
 
   connect(mp_Completer->popup()->selectionModel(), SIGNAL(currentRowChanged (const QModelIndex&, const QModelIndex&)),
           this, SLOT(onCompletionPopupCurrentRowChanged(const QModelIndex&, const QModelIndex&)));
@@ -271,10 +280,10 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
     switch (Key)
     {
       case Qt::Key_Enter:
-        case Qt::Key_Return:
-        case Qt::Key_Escape:
-        case Qt::Key_Tab:
-        case Qt::Key_Backtab:
+      case Qt::Key_Return:
+      case Qt::Key_Escape:
+      case Qt::Key_Tab:
+      case Qt::Key_Backtab:
         Event->ignore();
         return;
       default:
@@ -282,25 +291,43 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
     }
   }
 
+
+  // Adaptation of the completion shortcut according to the OS
+#if defined(OPENFLUID_OS_MAC)
+  // On mac OS Cmd+Space is usually dedicated to Spotlight, so we use Ctrl modifier (Meta in Qt) instead
+  // ! 8239 == 0x202F == "narrow no-break space", may happen as a key with Ctrl modifier
+  bool IsShortcut = ((Event->modifiers() & Qt::MetaModifier) && (Key == Qt::Key_Space || Key == 8239));
+#else
   // ! 8239 == 0x202F == "narrow no-break space", may happen as a key with Ctrl modifier
   bool IsShortcut = ((Event->modifiers() & Qt::ControlModifier) && (Key == Qt::Key_Space || Key == 8239));
+#endif
 
   if (!IsShortcut)
   {
     if (Key == Qt::Key_Return || Key == Qt::Key_Enter)
+    {
       insertNewLine();
+    }
     else if (Key == Qt::Key_Tab)
+    {
       insertPlainText(m_IndentString);
+    }
     else if ((Event->modifiers() & Qt::ControlModifier) && Key == Qt::Key_I)
+    {
       return;
+    }
     else
+    {
       QPlainTextEdit::keyPressEvent(Event);
+    }
   }
 
   // to skip if only Ctrl or Shift alone
   const bool CtrlOrShift = Event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
   if (CtrlOrShift && Event->text().isEmpty())
+  {
     return;
+  }
 
   QTextCursor TestCursor = textCursor();
   int TestPosition = TestCursor.position();
@@ -322,7 +349,9 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
   while (m_WordPartRegExp.exactMatch(TestSelection.left(1)));
 
   if (RemoveFirstChar)
+  {
     TestSelection.remove(0, 1);
+  }
 
   QString CompletionPrefix = TestSelection;
 
@@ -403,12 +432,18 @@ void WareSrcFileEditor::updateLineNumberAreaWidth()
 void WareSrcFileEditor::updateLineNumberArea(const QRect& Rect, int Dy)
 {
   if (Dy)
+  {
     mp_LineNumberArea->scroll(0, Dy);
+  }
   else
+  {
     mp_LineNumberArea->update(0, Rect.y(), mp_LineNumberArea->width(), Rect.height());
+  }
 
   if (Rect.contains(viewport()->rect()))
+  {
     updateLineNumberAreaWidth();
+  }
 }
 
 
@@ -432,6 +467,7 @@ void WareSrcFileEditor::resizeEvent(QResizeEvent* Event)
 void WareSrcFileEditor::contextMenuEvent(QContextMenuEvent* Event)
 {
   QMenu* Menu = createStandardContextMenu();
+  
   Menu->addSeparator();
 
   for (QMenu* SubMenu : m_InsertionMenus)
@@ -609,17 +645,23 @@ void WareSrcFileEditor::saveContent()
 void WareSrcFileEditor::saveContentToPath(const QString& Path)
 {
   if (Path.isEmpty())
+  {
     return;
+  }
 
   if (!QDir().mkpath(QFileInfo(Path).absolutePath()))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("Unable to create the path \"%1\"").arg(Path).toStdString());
+  }
 
   QFile File(Path);
 
   if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
+  {
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION, QString("Unable to open the file \"%1\" in write mode").arg(Path).toStdString());
+  }
 
   QTextStream Str(&File);
   Str << toPlainText();
@@ -635,8 +677,10 @@ void WareSrcFileEditor::updateContent()
   QFile File(m_FilePath);
 
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("Cannot open file %1").arg(m_FilePath).toStdString());
+  }
 
   setPlainText(QTextStream(&File).readAll());
 
@@ -680,7 +724,9 @@ void WareSrcFileEditor::insertNewLine()
     StrToInsert.append(InitialIndent);
 
     if (AfterOpeningCurlyBrace)
+    {
       StrToInsert.append(m_IndentString);
+    }
   }
 
   insertPlainText(StrToInsert);
@@ -744,7 +790,9 @@ bool WareSrcFileEditor::findReplace(FindReplaceDialog::FindReplaceAction Action,
       }
 
       if (ReplaceCount > 0)
+      {
         Message = tr("%1 matches replaced").arg(ReplaceCount);
+      }
 
       return true;
     }
@@ -833,9 +881,13 @@ void WareSrcFileEditor::addLineMessage(openfluid::waresdev::WareSrcMsgParser::Wa
     QMap<QTextBlock, LineMarker>::iterator it = m_LineMarkersByBlock.find(Block);
 
     if (it != m_LineMarkersByBlock.end())
+    {
       it->update(Message.m_Type, Message.m_Content);
+    }
     else
+    {
       m_LineMarkersByBlock.insert(Block, LineMarker(Message.m_Type, Message.m_Content));
+    }
   }
 }
 
@@ -868,7 +920,9 @@ void WareSrcFileEditor::tooltipEvent(const QPoint& Position)
     {
       QString MarkerContent = Marker.getContent();
       if (!MarkerContent.isEmpty())
+      {
         mp_LineNumberArea->setToolTip(MarkerContent);
+      }
       return;
     }
   }
@@ -926,10 +980,14 @@ void WareSrcFileEditor::goToLine()
   int Nb = QInputDialog::getInt(this, tr("Go to line"), tr("Enter the line number:"),
                                         1,1,2147483647,1, &Ok);
   if (!Ok)
+  {
     return;
+  }
 
   if (Nb < document()->lineCount())
+  {
     selectLine(Nb);
+  }
 }
 
 

@@ -71,6 +71,15 @@ namespace openfluid { namespace core {
 
   <I>Example : conversion to string</I>
   @snippet misc/values.cpp matrix_tostr
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "Matrix of double values",
+    "text" : "openfluid::core::MatrixValue %%SEL_START%%Val%%SEL_END%%"
+  }
+  @endcond
 */
 class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
 {

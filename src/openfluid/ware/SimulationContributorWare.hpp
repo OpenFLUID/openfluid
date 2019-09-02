@@ -59,6 +59,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] UnitPtr a Unit
        @param[in] AttrName the name of the set attribute
        @param[in] Val the value of the set attribute
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Attributes"],
+        "title" : "Set attribute value",
+        "text" : "OPENFLUID_SetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,\"attrname\",Val)"
+      }
+      @endcond
      */
      void OPENFLUID_SetAttribute(openfluid::core::SpatialUnit *UnitPtr,
                                  const openfluid::core::AttributeName_t& AttrName,
@@ -120,6 +129,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] aUnit a Unit
        @param[in] VarName the name of the variable
        @param[in] Val the added value of the variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Initialize variable with value",
+        "text" : "OPENFLUID_InitializeVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",InitVal)"
+      }
+      @endcond
      */
      void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit& aUnit,
                                        const openfluid::core::VariableName_t& VarName,
@@ -132,8 +150,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the added value of the variable (double)
      */
      void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                   const openfluid::core::VariableName_t& VarName,
-                                   const double& Val);
+                                       const openfluid::core::VariableName_t& VarName,
+                                       const double& Val);
 
      /**
        Initializes a distributed long variable value for a unit
@@ -142,8 +160,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the added value of the variable (long)
      */
      void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                   const openfluid::core::VariableName_t& VarName,
-                                   const long& Val);
+                                       const openfluid::core::VariableName_t& VarName,
+                                       const long& Val);
 
      /**
        Initializes a distributed boolean variable value for a unit
@@ -152,8 +170,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the added value of the variable (bool)
      */
      void OPENFLUID_InitializeVariable(openfluid::core::SpatialUnit *UnitPtr,
-                                   const openfluid::core::VariableName_t& VarName,
-                                   const bool& Val);
+                                       const openfluid::core::VariableName_t& VarName,
+                                       const bool& Val);
 
      /**
        Initializes a distributed string variable value for a unit
@@ -173,6 +191,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Append value to a variable",
+        "text" : "OPENFLUID_AppendVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Val)"
+      }
+      @endcond
     */
     void OPENFLUID_AppendVariable(openfluid::core::SpatialUnit *UnitPtr,
                                   const openfluid::core::VariableName_t& VarName,
@@ -241,6 +268,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Variables"],
+        "title" : "Update current value of a variable",
+        "text" : "OPENFLUID_SetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Val)"
+      }
+      @endcond
     */
     void OPENFLUID_SetVariable(openfluid::core::SpatialUnit *UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
@@ -290,6 +326,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       Appends an event on a unit
       @param[in] UnitPtr a Unit
       @param[in] Ev the event to append
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Events"],
+        "title" : "Append an event",
+        "text" : "OPENFLUID_AppendEvent(%%SEL_START%%UnitPtr%%SEL_END%%,Event)"
+      }
+      @endcond
     */
     void OPENFLUID_AppendEvent(openfluid::core::SpatialUnit *UnitPtr,
                                openfluid::core::Event& Ev);
@@ -300,6 +345,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ClassName class name of the added unit
       @param[in] ID ID of the added unit
       @param[in] PcsOrder Process order of the added unit
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Add a spatial unit to the spatial graph",
+        "text" : "OPENFLUID_AddUnit(%%SEL_START%%ClassName%%SEL_END%%,ID,PcsOrder)"
+      }
+      @endcond
     */
     void OPENFLUID_AddUnit(const openfluid::core::UnitsClass_t& ClassName,
                            openfluid::core::UnitID_t ID,
@@ -310,6 +364,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ClassName class name of the removed unit
       @param[in] ID ID of the added unit
       @return true if the unit has been correctly deleted
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Delete a spatial unit of the spatial graph",
+        "text" : "OPENFLUID_DeleteUnit(%%SEL_START%%ClassName%%SEL_END%%,ID)"
+      }
+      @endcond
     */
     void OPENFLUID_DeleteUnit(const openfluid::core::UnitsClass_t& ClassName,
                               openfluid::core::UnitID_t ID);
@@ -322,6 +385,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ClassNameTo class name of the "to" unit
       @param[in] IDTo ID of the "to" unit
       @return false if the unit connection already exists
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Add a From-To connection using classes names and IDs",
+        "text" : "OPENFLUID_AddFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo)"
+      }
+      @endcond
     */
     bool OPENFLUID_AddFromToConnection(const openfluid::core::UnitsClass_t& ClassNameFrom,
                                        openfluid::core::UnitID_t IDFrom,
@@ -333,6 +405,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] FromUnit pointer to the "from" unit
       @param[in] ToUnit pointer to the "to" unit
       @return false if the connection already exists
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Add a From-To connection using pointers to spatial units",
+        "text" : "OPENFLUID_AddFromToConnection(%%SEL_START%%FromUnitPtr%%SEL_END%%,ToUnitPtr)"
+      }
+      @endcond
     */
     bool OPENFLUID_AddFromToConnection(openfluid::core::SpatialUnit* FromUnit,
                                        openfluid::core::SpatialUnit* ToUnit);
@@ -344,6 +425,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ClassNameTo class name of the "to" unit
       @param[in] IDTo ID of the "to" unit
       @return false if the unit connection does not exist
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Remove a From-To connection using classes names and IDs",
+        "text" : "OPENFLUID_RemoveFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo)"
+      }
+      @endcond
     */
     bool OPENFLUID_RemoveFromToConnection(const openfluid::core::UnitsClass_t& ClassNameFrom,
                                           openfluid::core::UnitID_t IDFrom,
@@ -355,6 +445,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] FromUnit pointer to the "from" unit
       @param[in] ToUnit pointer to the "to" unit
       @return false if the connection does not exist
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Remove a From-To connection using spatial units pointers",
+        "text" : "OPENFLUID_RemoveFromToConnection(%%SEL_START%%FromUnitPtr%%SEL_END%%,ToUnitPtr)"
+      }
+      @endcond
     */
     bool OPENFLUID_RemoveFromToConnection(openfluid::core::SpatialUnit* FromUnit,
                                           openfluid::core::SpatialUnit* ToUnit);
@@ -367,6 +466,16 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ClassNameParent class name of the "parent" unit
       @param[in] IDParent ID of the "parent" unit
       @return false if the connection already exists
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Add a Child-parent connection using classes names and IDs",
+        "text" : ["OPENFLUID_AddChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,",
+                  "IDFChild,ClassNameParent,IDParent)"]
+      }
+      @endcond
     */
     bool OPENFLUID_AddChildParentConnection(const openfluid::core::UnitsClass_t& ClassNameChild,
                                             openfluid::core::UnitID_t IDChild,
@@ -378,6 +487,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ChildUnit pointer to the "child" unit
       @param[in] ParentUnit pointer to the "parent" unit
       @return false if the connection already exists
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Add a Child-parent connection using pointers to spatial units",
+        "text" : "OPENFLUID_AddChildParentConnection(%%SEL_START%%ChildUnitPtr%%SEL_END%%,ParentUnitPtr)"
+      }
+      @endcond
     */
     bool OPENFLUID_AddChildParentConnection(openfluid::core::SpatialUnit* ChildUnit,
                                             openfluid::core::SpatialUnit* ParentUnit);
@@ -390,6 +508,16 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ClassNameParent class name of the "parent" unit
       @param[in] IDParent ID of the "parent" unit
       @return false if the connection does not exist
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Remove a Child-parent connection using classes names and IDs",
+        "text" : ["OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,",
+                  "IDFChild,ClassNameParent,IDParent)"]
+      }
+      @endcond
     */
     bool OPENFLUID_RemoveChildParentConnection(const openfluid::core::UnitsClass_t& ClassNameChild,
                                                openfluid::core::UnitID_t IDChild,
@@ -401,6 +529,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] ChildUnit pointer to the "child" unit
       @param[in] ParentUnit pointer to the "parent" unit
       @return false if the connection does not exist
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Remove a Child-parent connection using pointers to spatial units",
+        "text" : "OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ChildUnitPtr%%SEL_END%%,ParentUnitPtr)"
+      }
+      @endcond
     */
     bool OPENFLUID_RemoveChildParentConnection(openfluid::core::SpatialUnit* ChildUnit,
                                                openfluid::core::SpatialUnit* ParentUnit);
@@ -410,6 +547,15 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @param[in] UnitsClass the name of units class
       @param[in] ColsNbr the number of units on the X axis
       @param[in] RowsNbr the number of units on the Y axis
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR"],
+        "menupath" : ["Compute code", "Spatial structure"],
+        "title" : "Build a matrix of spatial units",
+        "text" : "OPENFLUID_BuildUnitsMatrix(%%SEL_START%%ClassName%%SEL_END%%,ColsNbr,RowsNbr)"
+      }
+      @endcond
     */
     void OPENFLUID_BuildUnitsMatrix(const openfluid::core::UnitsClass_t& UnitsClass,
                                     const unsigned int& ColsNbr,

@@ -79,6 +79,15 @@ namespace openfluid { namespace core {
 
   <I>Example : conversion to string</I>
   @snippet misc/values.cpp map_tostr
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "Map of any value",
+    "text" : "openfluid::core::MapValue %%SEL_START%%Val%%SEL_END%%"
+  }
+  @endcond
 */
 class OPENFLUID_API MapValue : public CompoundValue
 {

@@ -66,6 +66,15 @@ namespace openfluid { namespace core {
 
   <I>Example : conversion to string</I>
   @snippet misc/values.cpp integer_tostr
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "Long integer value",
+    "text" : "openfluid::core::IntegerValue %%SEL_START%%Val%%SEL_END%%"
+  }
+  @endcond
 */
 class OPENFLUID_API IntegerValue : public SimpleValue
 {

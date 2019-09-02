@@ -97,6 +97,15 @@
 
   Exemple:
   @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logwarning
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Messages"],
+    "title" : "Log warning message",
+    "text" : "OPENFLUID_LogWarning(%%SEL_START%%\"message\"%%SEL_END%%)"
+  }
+  @endcond
 */
 #define OPENFLUID_LogWarning(_stream) \
   appendToLog(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
@@ -106,6 +115,15 @@
 
   Exemple:
   @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_displaywarning
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Messages"],
+    "title" : "Display warning message",
+    "text" : "OPENFLUID_DisplayWarning(%%SEL_START%%\"message\"%%SEL_END%%)"
+  }
+  @endcond
 */
 #define OPENFLUID_DisplayWarning(_stream) \
   displayToConsole(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
@@ -115,6 +133,15 @@
 
   Exemple:
   @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdisplaywarning
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Messages"],
+    "title" : "Log and warning debug message",
+    "text" : "OPENFLUID_LogAndDisplayWarning(%%SEL_START%%\"message\"%%SEL_END%%)"
+  }
+  @endcond
 */
 #define OPENFLUID_LogAndDisplayWarning(_stream) \
   OPENFLUID_LogWarning(_stream); \
@@ -128,6 +155,15 @@
 
   Exemple:
   @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_loginfo
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Messages"],
+    "title" : "Log information message",
+    "text" : "OPENFLUID_LogInfo(%%SEL_START%%\"message\"%%SEL_END%%)"
+  }
+  @endcond
 */
 #define OPENFLUID_LogInfo(_stream) \
   appendToLog(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
@@ -137,6 +173,15 @@
 
   Exemple:
   @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_displayinfo
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Messages"],
+    "title" : "Display information message",
+    "text" : "OPENFLUID_DisplayInfo(%%SEL_START%%\"message\"%%SEL_END%%)"
+  }
+  @endcond
 */
 #define OPENFLUID_DisplayInfo(_stream) \
   displayToConsole(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
@@ -146,6 +191,15 @@
 
   Exemple:
   @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdisplayinfo
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Messages"],
+    "title" : "Log and display information message",
+    "text" : "OPENFLUID_LogAndDisplayInfo(%%SEL_START%%\"message\"%%SEL_END%%)"
+  }
+  @endcond
 */
 #define OPENFLUID_LogAndDisplayInfo(_stream) \
   OPENFLUID_LogInfo(_stream); \
@@ -160,6 +214,15 @@
 
   Exemple:
   @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdebug
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Messages"],
+    "title" : "Log debug message",
+    "text" : "OPENFLUID_LogDebug(%%SEL_START%%\"message\"%%SEL_END%%)"
+  }
+  @endcond
 */
 
 /**
@@ -168,6 +231,15 @@
 
   Exemple:
   @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_displaydebug
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Messages"],
+    "title" : "Display debug message",
+    "text" : "OPENFLUID_DisplayDebug(%%SEL_START%%\"message\"%%SEL_END%%)"
+  }
+  @endcond
 */
 
 /**
@@ -175,6 +247,15 @@
   Adds a debug message to simulation log file and displays it to stdout (on screen by default)
 
   @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdisplaydebug
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Messages"],
+    "title" : "Log and display debug message",
+    "text" : "OPENFLUID_LogAndDisplayDebug(%%SEL_START%%\"message\"%%SEL_END%%)"
+  }
+  @endcond
 */
 
 #ifndef NDEBUG
@@ -222,7 +303,9 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
 
 
     virtual bool isLinked() const
-    { return (PluggableWare::isLinked() &&  mp_SimLogger != nullptr && mp_SimStatus != nullptr); }
+    { 
+      return (PluggableWare::isLinked() &&  mp_SimLogger != nullptr && mp_SimStatus != nullptr); 
+    }
 
     void appendToLog(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const;
 
@@ -237,30 +320,75 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     /**
       Returns the real beginning date of the simulated period
       @return the date
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get begin date of simulation",
+        "text" : "OPENFLUID_GetBeginDate()"
+      }
+      @endcond
     */
     openfluid::core::DateTime OPENFLUID_GetBeginDate() const;
 
     /**
       Returns the real ending date of the simulated period
       @return the date
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get end date of simulation",
+        "text" : "OPENFLUID_GetEndDate()"
+      }
+      @endcond
     */
     openfluid::core::DateTime OPENFLUID_GetEndDate() const;
 
     /**
       Returns the current real date corresponding to the current time index
       @return the date
+    
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get begin current date of simulation",
+        "text" : "OPENFLUID_GetCurrentDate()"
+      }
+      @endcond
     */
     openfluid::core::DateTime OPENFLUID_GetCurrentDate() const;
 
     /**
       Returns the simulation duration in seconds
       @return the duration in seconds
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get total simulation duration",
+        "text" : "OPENFLUID_GetSimulationDuration()"
+      }
+      @endcond
     */
     openfluid::core::Duration_t OPENFLUID_GetSimulationDuration() const;
 
     /**
       Returns the default DeltaT used by the scheduler
       @return the deltaT in seconds
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get default deltaT",
+        "text" : "OPENFLUID_GetDefaultDeltaT()"
+      }
+      @endcond
     */
     openfluid::core::Duration_t OPENFLUID_GetDefaultDeltaT() const;
 
@@ -268,26 +396,75 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       Returns the current time index of the simulation, in seconds since the simulation started.
       When the simulation starts, the time index is equal to zero.
       @return the current time index in seconds
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get current time index",
+        "text" : "OPENFLUID_GetCurrentTimeIndex()"
+      }
+      @endcond
     */
     openfluid::core::TimeIndex_t OPENFLUID_GetCurrentTimeIndex() const;
 
     /**
       Returns the time index of the simulation when the plugged ware was previously run
       @return the time index in seconds
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get time index of the previous ware run",
+        "text" : "OPENFLUID_GetPreviousRunTimeIndex()"
+      }
+      @endcond
     */
     openfluid::core::TimeIndex_t OPENFLUID_GetPreviousRunTimeIndex() const;
 
     /**
       Returns the current stage of the simulation
       @return the stage
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get current simulation stage",
+        "text" : "OPENFLUID_GetCurrentStage()"
+      }
+      @endcond
     */
     openfluid::base::SimulationStatus::SimulationStage OPENFLUID_GetCurrentStage() const;
 
+    /**
+      Returns the current stage of the simulation as a string
+      @return the stage name
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get current simulation stage as a string",
+        "text" : "OPENFLUID_GetCurrentStageAsString()"
+      }
+      @endcond
+    */
     std::string OPENFLUID_GetCurrentStageAsString() const;
 
     /**
       Returns the scheduling constraint applied to the simulation (may be NONE)
       @return the constraint type
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Time"],
+        "title" : "Get scheduling constraint mode",
+        "text" : "OPENFLUID_GetSchedulingConstraint()"
+      }
+      @endcond
     */
     openfluid::base::SimulationStatus::SchedulingConstraint OPENFLUID_GetSchedulingConstraint() const;
 
@@ -311,6 +488,15 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
       @param[in] Msg the content of the message
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Compute code", "Messages"],
+        "title" : "Raise fatal error",
+        "text" : "OPENFLUID_RaiseError(%%SEL_START%%\"message\"%%SEL_END%%)"
+      }
+      @endcond
     */
     virtual void OPENFLUID_RaiseError(const std::string& Msg);
 
@@ -336,14 +522,18 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     void linkToSimulation(const openfluid::base::SimulationStatus* SimStatus);
 
     void linkToSimulationLogger(openfluid::base::SimulationLogger* SimLogger)
-    { mp_SimLogger = SimLogger; };
+    { 
+      mp_SimLogger = SimLogger; 
+    }
 
     void initializeWare(const WareID_t& ID);
 
     void finalizeWare();
 
     void setPreviousTimeIndex(const openfluid::core::TimeIndex_t& TimeIndex)
-    { m_PreviousTimeIndex = TimeIndex; };
+    { 
+      m_PreviousTimeIndex = TimeIndex;
+    }
 
 };
 

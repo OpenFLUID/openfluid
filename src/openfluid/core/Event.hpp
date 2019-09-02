@@ -55,6 +55,15 @@ namespace openfluid { namespace core {
   Each event attached information is represented by a Key-Value couple :
   @li Key is the name given to the information
   @li Value is the value of the information and can be numeric or text information
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "title" : "Event",
+    "text" : "openfluid::core::Event %%SEL_START%%Event%%SEL_END%%"
+  }
+  @endcond
 */
 class OPENFLUID_API Event
 {

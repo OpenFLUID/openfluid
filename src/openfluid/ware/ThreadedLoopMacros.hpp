@@ -107,6 +107,15 @@
   @param[in] unitsclass name of the units class
   @param[in] funcptr member simulator name
   @param[in] ... extra parameters to pass to the member simulator
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Loops"],
+    "title" : "Threaded ordered loop on spatial units of a class",
+    "text" : "APPLY_UNITS_ORDERED_LOOP_THREADED(\"%%SEL_START%%UnitsClass%%SEL_END%%\",FuncPtr)"
+  }
+  @endcond
 */
 #define APPLY_UNITS_ORDERED_LOOP_THREADED(unitsclass,funcptr,...) \
     _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitsclass,funcptr,## __VA_ARGS__)
@@ -161,6 +170,15 @@
   Macro for applying a threaded simulator to each unit of the domain, following their process order
   @param[in] funcptr member simulator name
   @param[in] ... extra parameters to pass to the member simulator
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Loops"],
+    "title" : "Threaded ordered loop on all spatial units",
+    "text" : "APPLY_ALLUNITS_ORDERED_LOOP_THREADED(%%SEL_START%%FuncPtr%%SEL_END%%)"
+  }
+  @endcond
 */
 #define APPLY_ALLUNITS_ORDERED_LOOP_THREADED(funcptr,...) \
     _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,funcptr,## __VA_ARGS__)

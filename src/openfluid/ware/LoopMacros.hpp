@@ -72,6 +72,16 @@
   @param[in] unitsclass name of the units class
   @param[out] unitptr pointer to a openfluid::core::SpatialUnit object,
   automatically pointing to the current processed unit
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Loops"],
+    "title" : "Ordered loop on spatial units of a class",
+    "text" : ["OPENFLUID_UNITS_ORDERED_LOOP(\"%%SEL_START%%unitsclass%%SEL_END%%\",UnitPtr)\n",
+              "%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]
+  }
+  @endcond
 */
 #define OPENFLUID_UNITS_ORDERED_LOOP(unitsclass,unitptr) \
     _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitsclass,unitptr,__LINE__)
@@ -87,6 +97,15 @@
   Macro for a loop processing all units, following their process order
   @param[out] unitptr pointer to a openfluid::core::SpatialUnit object,
   automatically pointing to the current processed unit
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Loops"],
+    "title" : "Ordered loop on all spatial units",
+    "text" : "OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtr%%SEL_END%%)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"
+  }
+  @endcond
 */
 #define OPENFLUID_ALLUNITS_ORDERED_LOOP(unitptr) \
     _OPENFLUID_ALLUNITS_ORDERED_LOOP_WITHID(unitptr,__LINE__)
@@ -103,7 +122,18 @@
   @param[in] unitslist pointer to a list of openfluid::core::Unit
   @param[out] unitptr unitptr pointer to a openfluid::core::SpatialUnit object,
   pointing to the current processed unit
-*/#define OPENFLUID_UNITSLIST_LOOP(unitslist,unitptr) \
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Loops"],
+    "title" : "Loop on a spatial units list",
+    "text" : ["OPENFLUID_UNITSLIST_LOOP(%%SEL_START%%UnitsList%%SEL_END%%,UnitPtr)\n",
+              "%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]
+  }
+  @endcond
+*/
+#define OPENFLUID_UNITSLIST_LOOP(unitslist,unitptr) \
     _OPENFLUID_UNITSLIST_LOOP_WITHID(unitslist,unitptr,__LINE__)
 
 
@@ -116,13 +146,19 @@
   Macro for a loop processing an events list from an event collection
   @param[in] evlist pointer to a list of events
   @param[out] evobj the current processed event
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Loops"],
+    "title" : "Loop on an events collection",
+    "text" : ["OPENFLUID_EVENT_COLLECTION_LOOP(%%SEL_START%%EvList%%SEL_END%%,Event)",
+              "\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]
+  }
+  @endcond
 */
 #define OPENFLUID_EVENT_COLLECTION_LOOP(evlist,evobj) \
     _OPENFLUID_EVENT_COLLECTION_LOOP_WITHID(__LINE__,evlist,evobj)
-
-
-// =====================================================================
-// =====================================================================
 
 
 #endif /* __OPENFLUID_WARE_LOOPMACROS_HPP__ */

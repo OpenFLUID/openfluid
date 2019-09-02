@@ -71,6 +71,15 @@ namespace openfluid { namespace core {
 
   <I>Example : conversion to string</I>
   @snippet misc/values.cpp vector_tostr
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "Vector of double values",
+    "text" : "openfluid::core::VectorValue %%SEL_START%%Val%%SEL_END%%"
+  }
+  @endcond
 */
 class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
 {
