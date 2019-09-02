@@ -166,6 +166,8 @@ class SourceTreeChecker:
      
     i = 1
     for Line in Lines :
+      if self.isDirective(Line, "!llen"):
+        return
       if len(Line) > self.MaxLineLength:
         self.addProblem('LLEN',Filename,i,'line is too long (exceeds',self.MaxLineLength,'characters)')
       i += 1
