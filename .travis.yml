@@ -4,12 +4,10 @@ language: cpp
 matrix:
   include:
     - os: linux
-      dist: trusty
-      sudo: false
+      dist: bionic
       env: OFBUILD_TRAVIS_BUILDTYPE=debug
     - os: linux
-      dist: trusty
-      sudo: false
+      dist: bionic
       env: OFBUILD_TRAVIS_BUILDTYPE=release
     - os: osx
       osx_image: xcode9.2
@@ -24,14 +22,12 @@ notifications:
 
 addons:
   apt:
-    sources:
-    - ubuntu-toolchain-r-test
     packages:
     - cmake
     - git
-    - gcc-7
-    - g++-7
-    - gfortran-7
+    - gcc
+    - g++
+    - gfortran
     - libboost-dev
     - libboost-test-dev
     - qt5-default
@@ -40,9 +36,9 @@ addons:
     - qttools5-dev
     - qttools5-dev-tools
     - libqt5svg5-dev
-    - libgdal1h 
-    - libgdal1-dev 
-    - libgeos++-dev 
+    - libgdal-dev
+    - libgeos++-dev
+    - rapidjson-dev
     - p7zip-full 
     - gnuplot 
     - graphviz
@@ -61,11 +57,6 @@ install:
 
 
 before_script:
-  - |
-    if [ "${TRAVIS_OS_NAME}" == "linux" ]
-    then 
-      export CC=gcc-7 && export CXX=g++-7 && export FC=gfortran-7
-    fi
   - echo "SET(OPENFLUID_ENABLE_MARKET 1)" > CMake.in.local.cmake
   - echo "SET(OFBUILD_TESTS_ENABLE_FORTRAN 1)" >> CMake.in.local.cmake  
   - echo "SET(OFBUILD_UNITTESTS_RUN_OPTIONS \"--log_level=all\")" >> CMake.in.local.cmake
