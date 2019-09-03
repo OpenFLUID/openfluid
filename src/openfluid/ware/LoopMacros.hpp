@@ -103,7 +103,8 @@
     "contexts" : ["SIMULATOR", "OBSERVER"],
     "menupath" : ["Compute code", "Loops"],
     "title" : "Ordered loop on all spatial units",
-    "text" : "OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtr%%SEL_END%%)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"
+    "text" : ["OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtrList%%SEL_END%%)\n",
+              "%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]
   }
   @endcond
 */
@@ -152,7 +153,7 @@
     "contexts" : ["ANYWARE"],
     "menupath" : ["Compute code", "Loops"],
     "title" : "Loop on an events collection",
-    "text" : ["OPENFLUID_EVENT_COLLECTION_LOOP(%%SEL_START%%EvList%%SEL_END%%,Event)",
+    "text" : ["OPENFLUID_EVENT_COLLECTION_LOOP(%%SEL_START%%EvList%%SEL_END%%,Ev)",
               "\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]
   }
   @endcond

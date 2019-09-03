@@ -172,7 +172,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Test if a variable exists",
-        "text" : "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\")"
+        "text" : "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\")"
       }
       @endcond
      */
@@ -190,7 +190,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Test if a variable exists and has a value on given time index",
-        "text" : "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex)"
+        "text" : "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex)"
       }
       @endcond
     */
@@ -211,7 +211,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Test if a variable exists and has a value of given type on given time index",
-        "text" : "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,Type)"
+        "text" : "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex,Type)"
       }
       @endcond
     */
@@ -232,7 +232,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Test if a variable exists with given type",
-        "text" : "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Type)"
+        "text" : "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Type)"
       }
       @endcond
     */
@@ -253,7 +253,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Test if a variable exists with given type and has a value on given time index",
-        "text" : "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,Type)"
+        "text" : "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex,Type)"
       }
       @endcond
     */
@@ -274,7 +274,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get variable value on given time index",
-        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,Val)"
+        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex,Val)"
       }
       @endcond
     */
@@ -343,7 +343,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get variable value on given time index (by return)",
-        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex)"
+        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex)"
       }
       @endcond
     */
@@ -362,7 +362,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get variable value on current time index",
-        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Val)"
+        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
       }
       @endcond
     */
@@ -421,7 +421,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get variable value on current time index (by return)",
-        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\")"
+        "text" : "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\")"
       }
       @endcond
     */
@@ -440,7 +440,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get latest available variable value",
-        "text" : "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",IndexedVal)"
+        "text" : "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",IndexedVal)"
       }
       @endcond
     */
@@ -459,7 +459,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get latest available variable value (by return)",
-        "text" : "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\")"
+        "text" : "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\")"
       }
       @endcond
     */
@@ -480,7 +480,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get latest available variable values since a time index",
         "text" : ["OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,",
-                  "\"variable.id\",TimeIndex,IndexedValuesList)"]
+                  "\"varname\",TimeIndex,IndexedValList)"]
       }
       @endcond
     */
@@ -501,7 +501,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get latest available variable values since a time index (by return)",
-        "text" : "OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex)"
+        "text" : "OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex)"
       }
       @endcond
 
@@ -524,7 +524,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get variable values on given period",
         "text" : ["OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,",
-                  "\"variable.id\",BeginIndex,EndIndex,ValuesList)"]
+                  "\"varname\",BeginIndex,EndIndex,IndexedValList)"]
       }
       @endcond
     */
@@ -547,7 +547,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Get variable values on given period (by return)",
-        "text" : "OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",BeginIndex,EndIndex)"
+        "text" : "OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",BeginIndex,EndIndex)"
       }
       @endcond
 
@@ -569,7 +569,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Events"],
         "title" : "Get events on a given period",
-        "text" : "OPENFLUID_GetEvents(%%SEL_START%%UnitPtr%%SEL_END%%,BeginDate,EndDate,EventsColl)"
+        "text" : "OPENFLUID_GetEvents(%%SEL_START%%UnitPtr%%SEL_END%%,BeginDate,EndDate,EvColl)"
       }
       @endcond
     */
@@ -715,7 +715,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Get a pointer to a spatial unit of a given units class",
-        "text" : "OPENFLUID_GetUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,unitPtr)"
+        "text" : "OPENFLUID_GetUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,UnitPtr)"
       }
       @endcond
     */
@@ -754,7 +754,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Test if a spatial unit is connected to another spatial unit",
-        "text" : "OPENFLUID_IsUnitConnectedTo(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameTo,IDTo)"
+        "text" : "OPENFLUID_IsUnitConnectedTo(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameTo,UnitIDTo)"
       }
       @endcond
     */
@@ -775,7 +775,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Test if a spatial unit is connected from another spatial unit",
-        "text" : "OPENFLUID_IsUnitConnectedFrom(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameFrom,IDFrom)"
+        "text" : "OPENFLUID_IsUnitConnectedFrom(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameFrom,UnitIDFrom)"
       }
       @endcond
     */
@@ -796,7 +796,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Test if a spatial unit is a child of another spatial unit",
-        "text" : "OPENFLUID_IsUnitChildOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameParent,IDParent)"
+        "text" : "OPENFLUID_IsUnitChildOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameParent,UnitIDParent)"
       }
       @endcond
     */
@@ -817,7 +817,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         "contexts" : ["SIMULATOR", "OBSERVER"],
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Test if a spatial unit is a parent of another spatial unit",
-        "text" : "OPENFLUID_IsUnitParentOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameChild,IDChild)"
+        "text" : "OPENFLUID_IsUnitParentOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameChild,UnitIDChild)"
       }
       @endcond
     */

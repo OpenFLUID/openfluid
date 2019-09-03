@@ -59,9 +59,9 @@ namespace openfluid { namespace core {
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "menupath" : ["Compute code", "Types", "Events"],
     "title" : "Event",
-    "text" : "openfluid::core::Event %%SEL_START%%Event%%SEL_END%%"
+    "text" : "openfluid::core::Event %%SEL_START%%Ev%%SEL_END%%"
   }
   @endcond
 */

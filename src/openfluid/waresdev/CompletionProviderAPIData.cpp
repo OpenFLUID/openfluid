@@ -86,10 +86,24 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Boolean value"),
     "openfluid::core::BooleanValue %%SEL_START%%Val%%SEL_END%%"
+  )
+);
+
+// extracted from core/DateTime.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,ANYWARE,
+    {
+      CompletionProvider::tr("Compute code"),
+      CompletionProvider::tr("Types"),
+      CompletionProvider::tr("Time")
+    },
+    CompletionProvider::tr("Date and time"),
+    "openfluid::core::DateTime %%SEL_START%%DT%%SEL_END%%"
   )
 );
 
@@ -100,7 +114,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Double precision value"),
     "openfluid::core::DoubleValue %%SEL_START%%Val%%SEL_END%%"
@@ -114,10 +128,24 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Spatial domain")
+      CompletionProvider::tr("Events")
     },
     CompletionProvider::tr("Event"),
-    "openfluid::core::Event %%SEL_START%%Event%%SEL_END%%"
+    "openfluid::core::Event %%SEL_START%%Ev%%SEL_END%%"
+  )
+);
+
+// extracted from core/EventsCollection.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,ANYWARE,
+    {
+      CompletionProvider::tr("Compute code"),
+      CompletionProvider::tr("Types"),
+      CompletionProvider::tr("Events")
+    },
+    CompletionProvider::tr("Events collection"),
+    "openfluid::core::EventsCollection %%SEL_START%%EvColl%%SEL_END%%"
   )
 );
 
@@ -128,7 +156,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Time indexed value"),
     "openfluid::core::IndexedValue %%SEL_START%%IndexedVal%%SEL_END%%"
@@ -142,10 +170,10 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("List of time indexed value"),
-    "openfluid::core::IndexedValueList %%SEL_START%%List%%SEL_END%%"
+    "openfluid::core::IndexedValueList %%SEL_START%%IndexedValList%%SEL_END%%"
   )
 );
 
@@ -156,7 +184,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Long integer value"),
     "openfluid::core::IntegerValue %%SEL_START%%Val%%SEL_END%%"
@@ -170,7 +198,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Map of any value"),
     "openfluid::core::MapValue %%SEL_START%%Val%%SEL_END%%"
@@ -184,7 +212,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Matrix of double values"),
     "openfluid::core::MatrixValue %%SEL_START%%Val%%SEL_END%%"
@@ -198,7 +226,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Null value"),
     "openfluid::core::NullValue %%SEL_START%%Val%%SEL_END%%"
@@ -214,8 +242,8 @@ addRule(
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Spatial domain")
     },
-    CompletionProvider::tr("List of pointer to spatial unit"),
-    "openfluid::core::UnitsPtrList_t %%SEL_START%%List%%SEL_END%%"
+    CompletionProvider::tr("List of pointers to spatial units"),
+    "openfluid::core::UnitsPtrList_t %%SEL_START%%UnitsPtrList%%SEL_END%%"
   )
 );
 
@@ -229,7 +257,7 @@ addRule(
       CompletionProvider::tr("Spatial domain")
     },
     CompletionProvider::tr("Spatial unit"),
-    "openfluid::core::SpatialUnit %%SEL_START%%U%%SEL_END%%"
+    "openfluid::core::SpatialUnit %%SEL_START%%Unit%%SEL_END%%"
   )
 );
 
@@ -243,7 +271,7 @@ addRule(
       CompletionProvider::tr("Spatial domain")
     },
     CompletionProvider::tr("Pointer to spatial unit"),
-    "openfluid::core::SpatialUnit* %%SEL_START%%U%%SEL_END%%"
+    "openfluid::core::SpatialUnit* %%SEL_START%%UnitPtr%%SEL_END%%"
   )
 );
 
@@ -254,7 +282,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("String value"),
     "openfluid::core::StringValue %%SEL_START%%Val%%SEL_END%%"
@@ -268,7 +296,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Tree value"),
     "openfluid::core::TreeValue %%SEL_START%%Val%%SEL_END%%"
@@ -285,7 +313,21 @@ addRule(
       CompletionProvider::tr("Spatial domain")
     },
     CompletionProvider::tr("Unit ID"),
-    "openfluid::core::UnitID_t %%SEL_START%%ID%%SEL_END%%"
+    "openfluid::core::UnitID_t %%SEL_START%%UnitID%%SEL_END%%"
+  )
+);
+
+// extracted from core/TypeDefs.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,ANYWARE,
+    {
+      CompletionProvider::tr("Compute code"),
+      CompletionProvider::tr("Types"),
+      CompletionProvider::tr("Spatial domain")
+    },
+    CompletionProvider::tr("Process order"),
+    "openfluid::core::PcsOrd_t %%SEL_START%%PcsOrd%%SEL_END%%"
   )
 );
 
@@ -310,7 +352,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Spatial domain")
+      CompletionProvider::tr("Attributes")
     },
     CompletionProvider::tr("Attribute name"),
     "openfluid::core::AttributeName_t %%SEL_START%%AttrName%%SEL_END%%"
@@ -324,7 +366,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Spatial domain")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Variable name"),
     "openfluid::core::VariableName_t %%SEL_START%%VarName%%SEL_END%%"
@@ -439,7 +481,7 @@ addRule(
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Time index"),
-    "openfluid::core::TimeIndex_t %%SEL_START%%Index%%SEL_END%%"
+    "openfluid::core::TimeIndex_t %%SEL_START%%TimeIndex%%SEL_END%%"
   )
 );
 
@@ -464,7 +506,7 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Values")
+      CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Vector of double values"),
     "openfluid::core::VectorValue %%SEL_START%%Val%%SEL_END%%"
@@ -864,7 +906,7 @@ addRule(
       CompletionProvider::tr("Loops")
     },
     CompletionProvider::tr("Ordered loop on all spatial units"),
-    "OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtr%%SEL_END%%)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"
+    "OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtrList%%SEL_END%%)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"
   )
 );
 
@@ -890,7 +932,7 @@ addRule(
       CompletionProvider::tr("Loops")
     },
     CompletionProvider::tr("Loop on an events collection"),
-    "OPENFLUID_EVENT_COLLECTION_LOOP(%%SEL_START%%EvList%%SEL_END%%,Event)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"
+    "OPENFLUID_EVENT_COLLECTION_LOOP(%%SEL_START%%EvList%%SEL_END%%,Ev)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"
   )
 );
 
@@ -1136,7 +1178,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Initialize variable with value"),
-    "OPENFLUID_InitializeVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",InitVal)"
+    "OPENFLUID_InitializeVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
   )
 );
 
@@ -1149,7 +1191,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Append value to a variable"),
-    "OPENFLUID_AppendVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Val)"
+    "OPENFLUID_AppendVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
   )
 );
 
@@ -1162,7 +1204,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Update current value of a variable"),
-    "OPENFLUID_SetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Val)"
+    "OPENFLUID_SetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
   )
 );
 
@@ -1188,7 +1230,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Add a spatial unit to the spatial graph"),
-    "OPENFLUID_AddUnit(%%SEL_START%%ClassName%%SEL_END%%,ID,PcsOrder)"
+    "OPENFLUID_AddUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,PcsOrder)"
   )
 );
 
@@ -1214,7 +1256,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Add a From-To connection using classes names and IDs"),
-    "OPENFLUID_AddFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo)"
+    "OPENFLUID_AddFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,UnitIDFrom,ClassNameTo,UnitIDTo)"
   )
 );
 
@@ -1240,7 +1282,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Remove a From-To connection using classes names and IDs"),
-    "OPENFLUID_RemoveFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo)"
+    "OPENFLUID_RemoveFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,UnitIDFrom,ClassNameTo,UnitIDTo)"
   )
 );
 
@@ -1266,7 +1308,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Add a Child-parent connection using classes names and IDs"),
-    "OPENFLUID_AddChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,IDFChild,ClassNameParent,IDParent)"
+    "OPENFLUID_AddChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,UnitIDChild,ClassNameParent,UnitIDParent)"
   )
 );
 
@@ -1292,7 +1334,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Remove a Child-parent connection using classes names and IDs"),
-    "OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,IDFChild,ClassNameParent,IDParent)"
+    "OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,UnitIDChild,ClassNameParent,UnitIDParent)"
   )
 );
 
@@ -1630,7 +1672,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists"),
-    "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\")"
+    "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\")"
   )
 );
 
@@ -1643,7 +1685,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists and has a value on given time index"),
-    "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex)"
+    "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex)"
   )
 );
 
@@ -1656,7 +1698,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists and has a value of given type on given time index"),
-    "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,Type)"
+    "OPENFLUID_IsVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex,Type)"
   )
 );
 
@@ -1669,7 +1711,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists with given type"),
-    "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Type)"
+    "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Type)"
   )
 );
 
@@ -1682,7 +1724,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists with given type and has a value on given time index"),
-    "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,Type)"
+    "OPENFLUID_IsTypedVariableExist(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex,Type)"
   )
 );
 
@@ -1695,7 +1737,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable value on given time index"),
-    "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,Val)"
+    "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex,Val)"
   )
 );
 
@@ -1708,7 +1750,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable value on given time index (by return)"),
-    "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex)"
+    "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex)"
   )
 );
 
@@ -1721,7 +1763,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable value on current time index"),
-    "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Val)"
+    "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
   )
 );
 
@@ -1734,7 +1776,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable value on current time index (by return)"),
-    "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\")"
+    "OPENFLUID_GetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\")"
   )
 );
 
@@ -1747,7 +1789,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get latest available variable value"),
-    "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",IndexedVal)"
+    "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",IndexedVal)"
   )
 );
 
@@ -1760,7 +1802,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get latest available variable value (by return)"),
-    "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\")"
+    "OPENFLUID_GetLatestVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\")"
   )
 );
 
@@ -1773,7 +1815,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get latest available variable values since a time index"),
-    "OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex,IndexedValuesList)"
+    "OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex,IndexedValList)"
   )
 );
 
@@ -1786,7 +1828,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get latest available variable values since a time index (by return)"),
-    "OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",TimeIndex)"
+    "OPENFLUID_GetLatestVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",TimeIndex)"
   )
 );
 
@@ -1799,7 +1841,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable values on given period"),
-    "OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",BeginIndex,EndIndex,ValuesList)"
+    "OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",BeginIndex,EndIndex,IndexedValList)"
   )
 );
 
@@ -1812,7 +1854,7 @@ addRule(
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable values on given period (by return)"),
-    "OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",BeginIndex,EndIndex)"
+    "OPENFLUID_GetVariables(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",BeginIndex,EndIndex)"
   )
 );
 
@@ -1825,7 +1867,7 @@ addRule(
       CompletionProvider::tr("Events")
     },
     CompletionProvider::tr("Get events on a given period"),
-    "OPENFLUID_GetEvents(%%SEL_START%%UnitPtr%%SEL_END%%,BeginDate,EndDate,EventsColl)"
+    "OPENFLUID_GetEvents(%%SEL_START%%UnitPtr%%SEL_END%%,BeginDate,EndDate,EvColl)"
   )
 );
 
@@ -1929,7 +1971,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Get a pointer to a spatial unit of a given units class"),
-    "OPENFLUID_GetUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,unitPtr)"
+    "OPENFLUID_GetUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,UnitPtr)"
   )
 );
 
@@ -1955,7 +1997,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial unit is connected to another spatial unit"),
-    "OPENFLUID_IsUnitConnectedTo(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameTo,IDTo)"
+    "OPENFLUID_IsUnitConnectedTo(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameTo,UnitIDTo)"
   )
 );
 
@@ -1968,7 +2010,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial unit is connected from another spatial unit"),
-    "OPENFLUID_IsUnitConnectedFrom(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameFrom,IDFrom)"
+    "OPENFLUID_IsUnitConnectedFrom(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameFrom,UnitIDFrom)"
   )
 );
 
@@ -1981,7 +2023,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial unit is a child of another spatial unit"),
-    "OPENFLUID_IsUnitChildOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameParent,IDParent)"
+    "OPENFLUID_IsUnitChildOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameParent,UnitIDParent)"
   )
 );
 
@@ -1994,7 +2036,7 @@ addRule(
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial unit is a parent of another spatial unit"),
-    "OPENFLUID_IsUnitParentOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameChild,IDChild)"
+    "OPENFLUID_IsUnitParentOf(%%SEL_START%%UnitPtr%%SEL_END%%,ClassNameChild,UnitIDChild)"
   )
 );
 

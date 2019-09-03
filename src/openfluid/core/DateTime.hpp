@@ -74,6 +74,15 @@ namespace openfluid { namespace core {
 
   <I>Example : getting difference in seconds between two dates</I>
   @snippet misc/datetime.cpp dt_diff
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Time"],
+    "title" : "Date and time",
+    "text" : "openfluid::core::DateTime %%SEL_START%%DT%%SEL_END%%"
+  }
+  @endcond
 */
 class OPENFLUID_API DateTime
 {

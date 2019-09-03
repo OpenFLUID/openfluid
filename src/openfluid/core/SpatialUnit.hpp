@@ -69,8 +69,8 @@ typedef std::map<UnitsClass_t,UnitsCollection> UnitsListByClassMap_t;
   {
     "contexts" : ["ANYWARE"],
     "menupath" : ["Compute code", "Types", "Spatial domain"],
-    "title" : "List of pointer to spatial unit",
-    "text" : "openfluid::core::UnitsPtrList_t %%SEL_START%%List%%SEL_END%%"
+    "title" : "List of pointers to spatial units",
+    "text" : "openfluid::core::UnitsPtrList_t %%SEL_START%%UnitsPtrList%%SEL_END%%"
   }
   @endcond
 */
@@ -94,7 +94,7 @@ typedef std::map<UnitsClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
     "contexts" : ["ANYWARE"],
     "menupath" : ["Compute code", "Types", "Spatial domain"],
     "title" : "Spatial unit",
-    "text" : "openfluid::core::SpatialUnit %%SEL_START%%U%%SEL_END%%"
+    "text" : "openfluid::core::SpatialUnit %%SEL_START%%Unit%%SEL_END%%"
   }
   @endcond
 
@@ -103,7 +103,7 @@ typedef std::map<UnitsClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
     "contexts" : ["ANYWARE"],
     "menupath" : ["Compute code", "Types", "Spatial domain"],
     "title" : "Pointer to spatial unit",
-    "text" : "openfluid::core::SpatialUnit* %%SEL_START%%U%%SEL_END%%"
+    "text" : "openfluid::core::SpatialUnit* %%SEL_START%%UnitPtr%%SEL_END%%"
   }
   @endcond
 */
@@ -274,7 +274,9 @@ class OPENFLUID_API SpatialUnit
       @deprecated Since version 2.1.0. Use openfluid::core::SpatialUnit::childSpatialUnits(const UnitsClass_t&) instead
     */
     [[deprecated]] UnitsPtrList_t* getChildrenUnits(const UnitsClass_t& aClass)
-    { return childSpatialUnits(aClass); }
+    { 
+      return childSpatialUnits(aClass);
+    }
 
     /**
       @deprecated Since version 2.1.0.
@@ -288,49 +290,49 @@ class OPENFLUID_API SpatialUnit
     inline Attributes* attributes()
     {
       return &m_Attributes;
-    };
+    }
 
     inline const Attributes* attributes() const
     {
       return &m_Attributes;
-    };
+    }
 
     Variables* variables()
     {
       return &m_Variables;
-    };
+    }
 
     const Variables* variables() const
     {
       return &m_Variables;
-    };
+    }
 
     inline EventsCollection* events()
     {
       return &m_Events;
-    };
+    }
 
     inline const EventsCollection* events() const
     {
       return &m_Events;
-    };
+    }
 
     void streamContents(std::ostream& OStream);
 
     void setProcessOrder(unsigned int PcsOrder)
     {
       m_PcsOrder = PcsOrder;
-    };
+    }
 
     OGRGeometry* geometry()
     {
       return m_Geometry;
-    };
+    }
 
     const OGRGeometry* geometry() const
     {
       return m_Geometry;
-    };
+    }
 
     bool importGeometryFromWkt(const std::string& WKT);
 

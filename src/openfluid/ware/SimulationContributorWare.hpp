@@ -135,7 +135,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
         "contexts" : ["SIMULATOR"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Initialize variable with value",
-        "text" : "OPENFLUID_InitializeVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",InitVal)"
+        "text" : "OPENFLUID_InitializeVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
       }
       @endcond
      */
@@ -197,7 +197,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
         "contexts" : ["SIMULATOR"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Append value to a variable",
-        "text" : "OPENFLUID_AppendVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Val)"
+        "text" : "OPENFLUID_AppendVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
       }
       @endcond
     */
@@ -274,7 +274,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
         "contexts" : ["SIMULATOR"],
         "menupath" : ["Compute code", "Variables"],
         "title" : "Update current value of a variable",
-        "text" : "OPENFLUID_SetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"variable.id\",Val)"
+        "text" : "OPENFLUID_SetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
       }
       @endcond
     */
@@ -351,7 +351,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
         "contexts" : ["SIMULATOR"],
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Add a spatial unit to the spatial graph",
-        "text" : "OPENFLUID_AddUnit(%%SEL_START%%ClassName%%SEL_END%%,ID,PcsOrder)"
+        "text" : "OPENFLUID_AddUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,PcsOrder)"
       }
       @endcond
     */
@@ -391,7 +391,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
         "contexts" : ["SIMULATOR"],
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Add a From-To connection using classes names and IDs",
-        "text" : "OPENFLUID_AddFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo)"
+        "text" : "OPENFLUID_AddFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,UnitIDFrom,ClassNameTo,UnitIDTo)"
       }
       @endcond
     */
@@ -431,7 +431,8 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
         "contexts" : ["SIMULATOR"],
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Remove a From-To connection using classes names and IDs",
-        "text" : "OPENFLUID_RemoveFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,IDFrom,ClassNameTo,IDTo)"
+        "text" : ["OPENFLUID_RemoveFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,",
+                  "UnitIDFrom,ClassNameTo,UnitIDTo)"]
       }
       @endcond
     */
@@ -473,7 +474,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Add a Child-parent connection using classes names and IDs",
         "text" : ["OPENFLUID_AddChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,",
-                  "IDFChild,ClassNameParent,IDParent)"]
+                  "UnitIDChild,ClassNameParent,UnitIDParent)"]
       }
       @endcond
     */
@@ -515,7 +516,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
         "menupath" : ["Compute code", "Spatial structure"],
         "title" : "Remove a Child-parent connection using classes names and IDs",
         "text" : ["OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,",
-                  "IDFChild,ClassNameParent,IDParent)"]
+                  "UnitIDChild,ClassNameParent,UnitIDParent)"]
       }
       @endcond
     */

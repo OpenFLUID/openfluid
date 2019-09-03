@@ -49,12 +49,23 @@
 
 namespace openfluid { namespace core {
 
+
 class Event;
 
 typedef std::list<Event> EventsList_t;
 
+
 /**
-  @brief Class defining a collection of discrete events
+  Class defining a collection of discrete events
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Events"],
+    "title" : "Events collection",
+    "text" : "openfluid::core::EventsCollection %%SEL_START%%EvColl%%SEL_END%%"
+  }
+  @endcond  
 */
 class OPENFLUID_API EventsCollection
 {

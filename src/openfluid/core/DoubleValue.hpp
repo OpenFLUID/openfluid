@@ -71,7 +71,7 @@ namespace openfluid { namespace core {
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Values"],
+    "menupath" : ["Compute code", "Types", "Variables"],
     "title" : "Double precision value",
     "text" : "openfluid::core::DoubleValue %%SEL_START%%Val%%SEL_END%%"
   }

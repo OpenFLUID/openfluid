@@ -63,7 +63,7 @@ namespace openfluid { namespace core {
     "contexts" : ["ANYWARE"],
     "menupath" : ["Compute code", "Types", "Spatial domain"],
     "title" : "Unit ID",
-    "text" : "openfluid::core::UnitID_t %%SEL_START%%ID%%SEL_END%%"
+    "text" : "openfluid::core::UnitID_t %%SEL_START%%UnitID%%SEL_END%%"
   }
   @endcond
 */
@@ -71,6 +71,15 @@ typedef unsigned int UnitID_t;
 
 /**
   Type definition for the process order of units
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["ANYWARE"],
+    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "title" : "Process order",
+    "text" : "openfluid::core::PcsOrd_t %%SEL_START%%PcsOrd%%SEL_END%%"
+  }
+  @endcond
 */
 typedef int PcsOrd_t;
 
@@ -99,7 +108,7 @@ typedef std::string UnitsClass_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "menupath" : ["Compute code", "Types", "Attributes"],
     "title" : "Attribute name",
     "text" : "openfluid::core::AttributeName_t %%SEL_START%%AttrName%%SEL_END%%"
   }
@@ -113,7 +122,7 @@ typedef std::string AttributeName_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "menupath" : ["Compute code", "Types", "Variables"],
     "title" : "Variable name",
     "text" : "openfluid::core::VariableName_t %%SEL_START%%VarName%%SEL_END%%"
   }
@@ -282,7 +291,7 @@ typedef std::uint64_t RawTime_t;
     "contexts" : ["ANYWARE"],
     "menupath" : ["Compute code", "Types", "Time"],
     "title" : "Time index",
-    "text" : "openfluid::core::TimeIndex_t %%SEL_START%%Index%%SEL_END%%"
+    "text" : "openfluid::core::TimeIndex_t %%SEL_START%%TimeIndex%%SEL_END%%"
   }
   @endcond
 */
