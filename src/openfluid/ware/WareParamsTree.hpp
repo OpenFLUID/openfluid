@@ -68,10 +68,14 @@ class OPENFLUID_API WareParamsTree
     void setParams(const WareParams_t& Params);
 
     WareParamsTreeNode& root()
-    { return m_Root; }
+    { 
+      return m_Root;
+    }
 
     const WareParamsTreeNode& root() const
-    { return m_Root; }
+    { 
+      return m_Root;
+    }
 
     openfluid::core::StringValue getValueUsingFullKey(const std::string& FullName) const;
 
