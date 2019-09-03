@@ -121,11 +121,11 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
       for (int i = 0; i < RuleItem.MenuPath.size(); i++)
       {
-        QMenu* SubMenu = Menu->findChild<QMenu*>(RuleItem.MenuPath[i]);
+        QMenu* SubMenu = Menu->findChild<QMenu*>(Menu->objectName()+"/"+RuleItem.MenuPath[i]);
         if (!SubMenu)
         {
           SubMenu = Menu->addMenu(RuleItem.MenuPath[i]);
-          SubMenu->setObjectName(RuleItem.MenuPath[i]);
+          SubMenu->setObjectName(Menu->objectName()+"/"+RuleItem.MenuPath[i]);
         }
         Menu = SubMenu;
       }
