@@ -71,8 +71,8 @@ namespace openfluid { namespace core {
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Variables"],
-    "title" : "Boolean value",
+    "menupath" : ["Compute code", "Types", "Values"],
+    "title" : "BooleanValue",
     "text" : "openfluid::core::BooleanValue %%SEL_START%%Val%%SEL_END%%"
   }
   @endcond

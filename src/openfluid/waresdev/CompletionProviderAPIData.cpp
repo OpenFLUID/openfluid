@@ -86,9 +86,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("Boolean value"),
+    CompletionProvider::tr("BooleanValue"),
     "openfluid::core::BooleanValue %%SEL_START%%Val%%SEL_END%%"
   )
 );
@@ -114,9 +114,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("Double precision value"),
+    CompletionProvider::tr("DoubleValue"),
     "openfluid::core::DoubleValue %%SEL_START%%Val%%SEL_END%%"
   )
 );
@@ -156,9 +156,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("Time indexed value"),
+    CompletionProvider::tr("IndexedValue"),
     "openfluid::core::IndexedValue %%SEL_START%%IndexedVal%%SEL_END%%"
   )
 );
@@ -170,9 +170,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("List of time indexed value"),
+    CompletionProvider::tr("List of IndexedValue"),
     "openfluid::core::IndexedValueList %%SEL_START%%IndexedValList%%SEL_END%%"
   )
 );
@@ -184,9 +184,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("Long integer value"),
+    CompletionProvider::tr("IntegerValue"),
     "openfluid::core::IntegerValue %%SEL_START%%Val%%SEL_END%%"
   )
 );
@@ -198,9 +198,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("Map of any value"),
+    CompletionProvider::tr("MapValue"),
     "openfluid::core::MapValue %%SEL_START%%Val%%SEL_END%%"
   )
 );
@@ -212,9 +212,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("Matrix of double values"),
+    CompletionProvider::tr("MatrixValue"),
     "openfluid::core::MatrixValue %%SEL_START%%Val%%SEL_END%%"
   )
 );
@@ -226,9 +226,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("Null value"),
+    CompletionProvider::tr("NullValue"),
     "openfluid::core::NullValue %%SEL_START%%Val%%SEL_END%%"
   )
 );
@@ -282,9 +282,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("String value"),
+    CompletionProvider::tr("StringValue"),
     "openfluid::core::StringValue %%SEL_START%%Val%%SEL_END%%"
   )
 );
@@ -296,9 +296,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("Tree value"),
+    CompletionProvider::tr("TreeValue"),
     "openfluid::core::TreeValue %%SEL_START%%Val%%SEL_END%%"
   )
 );
@@ -506,9 +506,9 @@ addRule(
     {
       CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
-      CompletionProvider::tr("Variables")
+      CompletionProvider::tr("Values")
     },
-    CompletionProvider::tr("Vector of double values"),
+    CompletionProvider::tr("VectorValue"),
     "openfluid::core::VectorValue %%SEL_START%%Val%%SEL_END%%"
   )
 );
@@ -2322,6 +2322,19 @@ addRule(
     },
     CompletionProvider::tr("Declare scheduling in range"),
     "DECLARE_SCHEDULING_RANGE(%%SEL_START%%min%%SEL_END%%,max)"
+  )
+);
+
+// extracted from ware/ThreadedLoopMacros.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,SIMULATOR | OBSERVER,
+    {
+      CompletionProvider::tr("Compute code"),
+      CompletionProvider::tr("Fortran integration")
+    },
+    CompletionProvider::tr("Include ThreadedLoopMacros header"),
+    "#include <openfluid/ware/ThreadedLoopMacros.hpp>"
   )
 );
 

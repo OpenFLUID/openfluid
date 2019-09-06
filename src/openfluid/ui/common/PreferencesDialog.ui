@@ -427,7 +427,7 @@
            <item row="0" column="0">
             <widget class="QCheckBox" name="BuildAutoSaveCheckBox">
              <property name="text">
-              <string>Enable autosaving of unsaved sources</string>
+              <string>Enable autosaving before configure/build/doc actions</string>
              </property>
             </widget>
            </item>
@@ -651,8 +651,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>324</width>
-               <height>83</height>
+               <width>309</width>
+               <height>92</height>
               </rect>
              </property>
              <property name="sizePolicy">

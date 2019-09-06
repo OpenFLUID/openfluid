@@ -34,7 +34,16 @@
   @file ThreadedLoopMacros.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Compute code", "Fortran integration"],
+    "title" : "Include ThreadedLoopMacros header",
+    "text" : "#include <openfluid/ware/ThreadedLoopMacros.hpp>"
+  }
+  @endcond
+*/
 
 
 #ifndef __OPENFLUID_WARE_THREADEDLOOPMACROS_HPP__

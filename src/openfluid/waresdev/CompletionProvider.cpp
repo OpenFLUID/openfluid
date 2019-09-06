@@ -112,7 +112,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Boolean"),
             "bool %%SEL_START%%Val%%SEL_END%%")
@@ -121,7 +121,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Boolean"),
             "bool %%SEL_START%%Val%%SEL_END%%")
@@ -131,7 +131,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Integer (signed)"),
             "int %%SEL_START%%Val%%SEL_END%%")
@@ -141,7 +141,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Integer (unsigned)"),
             "unsigned int %%SEL_START%%Val%%SEL_END%%")
@@ -151,7 +151,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Long integer (signed)"),
             "long int %%SEL_START%%Val%%SEL_END%%")
@@ -161,7 +161,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Long integer (unsigned)"),
             "unsigned long int %%SEL_START%%Val%%SEL_END%%")
@@ -171,7 +171,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Single precision float (signed)"),
             "float %%SEL_START%%Val%%SEL_END%%")
@@ -181,7 +181,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Single precision float (unsigned)"),
             "unsigned float %%SEL_START%%Val%%SEL_END%%")
@@ -191,7 +191,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Double precision float (signed)"),
             "double %%SEL_START%%Val%%SEL_END%%")
@@ -201,7 +201,7 @@ void CompletionProvider::initializeCppRules()
             "cpp",Origin::CPP,ANYWARE,
             {
               CompletionProvider::tr("Types"),
-              CompletionProvider::tr("Simple")
+              CompletionProvider::tr("Simples")
             },
             CompletionProvider::tr("Double precision float (unsigned)"),
             "unsigned double %%SEL_START%%Val%%SEL_END%%")
@@ -261,7 +261,7 @@ void CompletionProvider::initializeCppRules()
             {
               CompletionProvider::tr("Math")
             },
-            CompletionProvider::tr("Include <cmath> header"),
+            CompletionProvider::tr("Include cmath header"),
             "#include <cmath>")
           );
 
@@ -297,7 +297,7 @@ void CompletionProvider::initializeCppRules()
             {
               CompletionProvider::tr("Math")
             },
-            CompletionProvider::tr("Square root of value "),
+            CompletionProvider::tr("Square root of value"),
             "std::sqrt(%%SEL_START%%Val%%SEL_END%%)")
           );
 
@@ -306,7 +306,7 @@ void CompletionProvider::initializeCppRules()
             {
               CompletionProvider::tr("Math")
             },
-            CompletionProvider::tr("Power of value "),
+            CompletionProvider::tr("Power of value"),
             "std::pow(%%SEL_START%%Val%%SEL_END%%,exponent)")
           );
 }

@@ -60,7 +60,8 @@ FOREACH(_LANG ${OPENFLUID_TRANSLATIONS_LANGS})
                     COMMAND ${LUPDATE_EXECUTABLE}
                             ${OFBUILD_TRANSLATIONS_DIRSTOSCAN}
                             "-I" "${CMAKE_SOURCE_DIR}/src"
-                            "-ts" "${OFBUILD_TRANSLATIONS_TSDIR}/${OPENFLUID_TRANSLATIONS_FILEROOT}-${_LANG}.ts")
+                            "-ts" "${OFBUILD_TRANSLATIONS_TSDIR}/${OPENFLUID_TRANSLATIONS_FILEROOT}-${_LANG}.ts" 
+                            "-noobsolete")
 
   ADD_DEPENDENCIES(update-translations-strings update-translation-strings-${_LANG})
 ENDFOREACH()

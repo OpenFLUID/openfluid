@@ -389,230 +389,235 @@
 <context>
     <name>AppActions</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="113"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="114"/>
         <source>&amp;New...</source>
         <translation>&amp;Nouveau...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="117"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="118"/>
         <source>&amp;Open...</source>
         <translation>&amp;Ouvrir...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="121"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="122"/>
         <source>Reload</source>
         <translation>Recharger</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="124"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="125"/>
         <source>&amp;Save</source>
         <translation>&amp;Enregistrer</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="128"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="129"/>
         <source>Save as...</source>
         <translation>Enregistrer sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="135"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="136"/>
         <source>Properties</source>
         <translation>Propriétés</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="131"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="132"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="137"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="138"/>
         <source>Open in file explorer</source>
         <translation>Ouvrir dans un explorateur de fichiers</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="140"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="141"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="146"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="147"/>
         <source>&amp;Cut</source>
         <translation>&amp;Couper</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="149"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="150"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copier</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="152"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="153"/>
         <source>&amp;Paste</source>
         <translation>&amp;Coller</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="155"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="156"/>
         <source>Preferences...</source>
         <translation>Préférences...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="160"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="161"/>
         <source>New simulator...</source>
         <translation>Nouveau simulateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="161"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="162"/>
         <source>New ghost simulator...</source>
         <translation>Nouveau simulateur fantôme...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="162"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="163"/>
         <source>New observer...</source>
         <translation>Nouvel observateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="164"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="165"/>
         <source>Open simulator...</source>
         <translation>Ouvrir un simulateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="165"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="166"/>
         <source>Open observer...</source>
         <translation>Ouvrir un observateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="172"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="173"/>
         <source>Reload simulators and observers</source>
         <translation>Recharger les simulateurs et observateurs</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="175"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="176"/>
         <source>Run simulation</source>
         <translation>Exécution</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="181"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="180"/>
+        <source>Mode</source>
+        <translation>Mode</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="194"/>
         <source>Show/Hide project dashboard</source>
         <translation>Afficher/Masquer le panneau d&apos;information</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="182"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="195"/>
         <source>Show/Hide main toolbar</source>
         <translation>Afficher/Masquer la barre d&apos;outils principale</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="183"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="196"/>
         <source>Restore default view</source>
         <translation>Revenir à la vue par défaut</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="187"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="200"/>
         <source>Web site</source>
         <translation>Site web</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="188"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="201"/>
         <source>Community site</source>
         <translation>Site Community</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="189"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="202"/>
         <source>Email</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="191"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="204"/>
         <source>Open an example project...</source>
         <translation>Ouvrir un projet exemple...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="194"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="207"/>
         <source>Reinstall examples projects</source>
         <translation>Réinstaller les projets exemples</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="196"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="209"/>
         <source>About</source>
         <translation>A propos</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="201"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="214"/>
         <source>Access to OpenFLUID-Market</source>
         <translation>Accéder à OpenFLUID-Market</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="355"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="362"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="369"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="376"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="392"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="399"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="406"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="413"/>
         <source>(none)</source>
         <translation>(aucun)</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="393"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="430"/>
         <source>&amp;Project</source>
         <translation>&amp;Projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="398"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="435"/>
         <source>Open recent</source>
         <translation>Ouvrir un projet récent</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="413"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="450"/>
         <source>&amp;Edit</source>
         <translation>&amp;Edition</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="421"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="458"/>
         <source>&amp;Development</source>
         <translation>&amp;Développement</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="432"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="469"/>
         <source>&amp;Simulation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="446"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="483"/>
         <source>&amp;View</source>
         <translation>Affichage</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="438"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="475"/>
         <source>&amp;Extensions</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="440"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="477"/>
         <source>Spatial domain</source>
         <translation>Domaine spatial</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="441"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="478"/>
         <source>Model</source>
         <translation>Modèle</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="442"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="479"/>
         <source>Results</source>
         <translation>Résultats</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="443"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="480"/>
         <source>Other</source>
         <translation>Autres</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="452"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="489"/>
         <source>&amp;Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="453"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="490"/>
         <source>OpenFLUID online</source>
         <translation>OpenFLUID en ligne</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="457"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="494"/>
         <source>Examples</source>
         <translation>Exemples</translation>
     </message>
@@ -620,58 +625,58 @@
 <context>
     <name>AppCoordinator</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="257"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="262"/>
         <source>Project dashboard</source>
         <translation>Tableau de projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="304"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="454"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="462"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="502"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="510"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="545"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="553"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="592"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="600"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="842"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="850"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="309"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="459"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="467"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="507"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="515"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="550"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="558"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="597"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="605"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="867"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="875"/>
         <source>Project error</source>
         <translation>Erreur dans le projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="388"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="393"/>
         <source>Close project</source>
         <translation>Fermer le projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="389"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="394"/>
         <source>Do you want to save the current project before closing?</source>
         <translation>Voulez vous sauvegarder le projet en cours avant de le fermer?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="419"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="424"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="420"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="425"/>
         <source>Are you sure you want to quit OpenFLUID-Builder?</source>
         <translation>Etes-vous sûr de vouloir quitter OpenFLUID-Builder?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="455"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="463"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="460"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="468"/>
         <source>Error creating project %1 in
 %2</source>
         <translation>Erreur à la création du projet %1 dans
 %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="511"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="554"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="601"/>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="851"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="516"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="559"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="606"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="876"/>
         <source>%1
 
 is not a valid OpenFLUID project</source>
@@ -680,37 +685,37 @@ is not a valid OpenFLUID project</source>
 n&apos;est pas un projet OpenFLUID valide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="484"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="489"/>
         <source>Open project</source>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="155"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="160"/>
         <source>Current workspace: %1</source>
         <translation>Espace de travail courant: %1</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="864"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="889"/>
         <source>Reinstall examples projects</source>
         <translation>Réinstaller les projets exemples</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="865"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="890"/>
         <source>Reinstalling will overwrite all modifications and delete simulations results associated to these examples.</source>
         <translation>La réinstallation écrasera toutes les modifications et supprimera les résultats de simulation associés aux exemples.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="868"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="893"/>
         <source>Proceed anyway?</source>
         <translation>Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="884"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="909"/>
         <source>Restore examples projects</source>
         <translation>Restaurer les projets exemples</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="885"/>
+        <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="910"/>
         <source>Error restoring example projects</source>
         <translation>Erreur à la restauration des projets exemples</translation>
     </message>
@@ -1073,10 +1078,6 @@ Continuer quand même?</translation>
         <translation>Ajouter</translation>
     </message>
     <message>
-        <source>Add </source>
-        <translation type="vanished">Ajouter</translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/spatial/EditAttributesValuesDialog.ui" line="115"/>
         <source>to existing values</source>
         <translation>aux valeurs</translation>
@@ -1349,83 +1350,41 @@ Continuer quand même?</translation>
     </message>
 </context>
 <context>
-    <name>GitDashboardItemWidget</name>
-    <message>
-        <source>files status:</source>
-        <translation type="vanished">statut des fichiers:</translation>
-    </message>
-    <message>
-        <source>active branch:</source>
-        <translation type="vanished">branche active:</translation>
-    </message>
-</context>
-<context>
     <name>HomeModuleWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="74"/>
+        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="75"/>
         <source>Create a project...</source>
         <translation>Créer un projet...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="78"/>
+        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="79"/>
         <source>Open a project...</source>
         <translation>Ouvrir un projet...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="87"/>
+        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="88"/>
         <source>Open an example project...</source>
         <translation>Ouvrir un projet exemple...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="100"/>
+        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="101"/>
         <source>Access to OpenFLUID-Market...</source>
         <translation>Accéder à OpenFLUID-Market...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="106"/>
+        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="107"/>
         <source>Launch OpenFLUID-DevStudio...</source>
         <translation>Lancer OpenFLUID-DevStudio...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="459"/>
+        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="470"/>
         <source>No recent project</source>
         <translation>Aucun projet récent</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="462"/>
+        <location filename="../../src/apps/openfluid-builder/base/HomeModuleWidget.cpp" line="473"/>
         <source>Recent projects:</source>
         <translation>Projets récents:</translation>
-    </message>
-</context>
-<context>
-    <name>HomeWidget</name>
-    <message>
-        <source>Create a project...</source>
-        <translation type="obsolete">Créer un projet...</translation>
-    </message>
-    <message>
-        <source>Open a project...</source>
-        <translation type="obsolete">Ouvrir un projet...</translation>
-    </message>
-    <message>
-        <source>Open an example project...</source>
-        <translation type="obsolete">Ouvrir un projet exemple...</translation>
-    </message>
-    <message>
-        <source>Access to OpenFLUID-Market...</source>
-        <translation type="obsolete">Accéder à OpenFLUID-Market...</translation>
-    </message>
-    <message>
-        <source>Launch OpenFLUID-DevStudio...</source>
-        <translation type="obsolete">Lancer OpenFLUID-DevStudio...</translation>
-    </message>
-    <message>
-        <source>Recent projects:</source>
-        <translation type="obsolete">Projets récents:</translation>
-    </message>
-    <message>
-        <source>No recent project</source>
-        <translation type="obsolete">Aucun projet récent</translation>
     </message>
 </context>
 <context>
@@ -1549,195 +1508,171 @@ Continuer quand même?</translation>
         <translation>Extensions Builder</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="281"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="285"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="284"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="288"/>
         <source>Simulator...</source>
         <translation>Simulateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="282"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="286"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="285"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="289"/>
         <source>Observer...</source>
         <translation>Observateur...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="283"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="287"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="286"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="290"/>
         <source>Builder extension...</source>
         <translation>Extension Builder...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="290"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="293"/>
         <source>Save as...</source>
         <translation>Enregistrer sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="291"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="294"/>
         <source>Save the current file as...</source>
         <translation>Enregistrer le fichier courant sous...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="295"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="298"/>
         <source>Delete ware</source>
         <translation>Supprimer le ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="74"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="75"/>
         <source>Preparing user interface</source>
         <translation>Préparation de l&apos;interface utilisateur</translation>
     </message>
     <message>
-        <source>Initializing sources codes management</source>
-        <translation type="vanished">Initialisation du management des codes sources</translation>
-    </message>
-    <message>
-        <source>Configuring UI</source>
-        <translation type="vanished">Configuration de l&apos;interface utilisateur</translation>
-    </message>
-    <message>
-        <source>Initializing workspace</source>
-        <translation type="vanished">Initialisation de l&apos;espace de travail</translation>
-    </message>
-    <message>
-        <source>Current workspace: %1</source>
-        <translation type="vanished">Espace de travail courant: %1</translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="293"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="296"/>
         <source>Close all wares</source>
         <translation>Fermer tous les wares</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="297"/>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="473"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="300"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="479"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="306"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="309"/>
         <source>Preferences...</source>
         <translation>Préférences...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="311"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="314"/>
         <source>Import wares sources...</source>
         <translation>Importer des codes sources de wares...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="312"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="315"/>
         <source>Export wares sources...</source>
         <translation>Exporter des codes sources de wares...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="313"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="316"/>
         <source>Dashboard...</source>
         <translation>Tableau de bord...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="314"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="317"/>
         <source>Development dashboard...</source>
         <translation>Panneau de développement...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="318"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="321"/>
         <source>Web site</source>
         <translation>Site web</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="319"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="322"/>
         <source>Community site</source>
         <translation>Site Community</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="320"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="323"/>
         <source>Email</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="322"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="325"/>
         <source>About</source>
         <translation>A propos</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="336"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="339"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="337"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="340"/>
         <source>New ware</source>
         <translation>Nouveau ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="341"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="344"/>
         <source>Open ware</source>
         <translation>Ouvrir un ware</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="358"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="361"/>
         <source>Edit</source>
         <translation>Edition</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="367"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="370"/>
         <source>Build</source>
         <translation>Construire</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="374"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="377"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <source>Active configuration</source>
-        <translation type="vanished">Configuration active</translation>
-    </message>
-    <message>
-        <source>Active build action</source>
-        <translation type="vanished">Action de construction active</translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="380"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="386"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="389"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="395"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="390"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="396"/>
         <source>OpenFLUID online</source>
         <translation>OpenFLUID en ligne</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="473"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="479"/>
         <source>Are you sure you want to quit OpenFLUID-DevStudio?</source>
         <translation>Etes-vous sûr de vouloir quitter OpenFLUID-DevStudio?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="529"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="535"/>
         <source>Import not available</source>
         <translation>Import non disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="529"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="535"/>
         <source>Neither CMake program nor Git program can be found.</source>
         <translation>Ni le programme CMake ni le programme Git n&apos;ont été trouvés.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="545"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="551"/>
         <source>CMake program can not be found.</source>
         <translation>Le programme CMake n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="545"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="551"/>
         <source>Export not available</source>
         <translation>Export non disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="557"/>
+        <location filename="../../src/apps/openfluid-devstudio/MainWindow.cpp" line="563"/>
         <source>Development dashboard</source>
         <translation>Panneau de développement</translation>
     </message>
@@ -2086,14 +2021,6 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation>Nom de la classe C++ d&apos;interface de paramétrage</translation>
     </message>
     <message>
-        <source>Run mode</source>
-        <translation type="vanished">Mode d&apos;exécution</translation>
-    </message>
-    <message>
-        <source>Enable installation</source>
-        <translation type="vanished">Activer l&apos;installation</translation>
-    </message>
-    <message>
         <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.ui" line="334"/>
         <source>Show mode</source>
         <translation>Mode d&apos;affichage</translation>
@@ -2173,10 +2100,6 @@ n&apos;est pas un projet OpenFLUID valide</translation>
 <context>
     <name>OutputsWidget</name>
     <message>
-        <source>Output directory: </source>
-        <translation type="vanished">Répertoire de sortie:</translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.ui" line="28"/>
         <source>Output directory:</source>
         <translation>Répertoire de sortie :</translation>
@@ -2192,17 +2115,9 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <source>Explore contents</source>
-        <translation type="obsolete">Explorer le contenu</translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.ui" line="78"/>
         <source>View logs</source>
         <translation>Voir les logs</translation>
-    </message>
-    <message>
-        <source>Delete contents</source>
-        <translation type="obsolete">Effacer le contenu</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.cpp" line="145"/>
@@ -2233,10 +2148,6 @@ Continuer quand même?</translation>
 </context>
 <context>
     <name>PreferencesDialog</name>
-    <message>
-        <source>Preferences</source>
-        <translation type="vanished">Préférences</translation>
-    </message>
     <message>
         <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="101"/>
         <source>Language</source>
@@ -2323,27 +2234,32 @@ Continuer quand même?</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="589"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="424"/>
+        <source>Editor</source>
+        <translation>Editeur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="605"/>
         <source>Disable SSL verification</source>
         <translation>Désactiver la vérification SSL</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="616"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="632"/>
         <source>Enable syntax highlighting</source>
         <translation>Activer la coloration syntaxique</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="759"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="775"/>
         <source>Current line highlighting</source>
         <translation>Coloration de la ligne courante</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="782"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="798"/>
         <source>Color:</source>
         <translation>Couleur:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="843"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="859"/>
         <source>Line wrapping</source>
         <translation>Renvoi à la ligne automatique</translation>
     </message>
@@ -2353,121 +2269,118 @@ Continuer quand même?</translation>
         <translation>Configuration du temps par défaut</translation>
     </message>
     <message>
-        <source>Period end:</source>
-        <translation type="vanished">Début de la période:</translation>
-    </message>
-    <message>
-        <source>Period begin:</source>
-        <translation type="vanished">Fin de la période:</translation>
-    </message>
-    <message>
         <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="304"/>
         <source>Default DeltaT:</source>
         <translation>DeltaT par défaut:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="424"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="481"/>
         <source>Configuration</source>
         <translation>Configuration</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="433"/>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="472"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="490"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="529"/>
         <source>PATH env. var.:</source>
         <translation>Var. d&apos;env. PATH:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="443"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="500"/>
         <source>CMake options:</source>
         <translation>Options CMake:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="453"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="510"/>
         <source>CMake generator:</source>
         <translation>Générateur CMake:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="466"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="523"/>
         <source>Build</source>
         <translation>Construction</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="516"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="573"/>
         <source>Detect Qt development tools (MinGW)</source>
         <translation>Détecter les outils de développement Qt (MinGW)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="542"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="437"/>
         <source>Show PATH environment variable when running development tools</source>
         <translation>Afficher la variable d&apos;environnement PATH à l&apos;exécution des outils de développement</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="573"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="430"/>
+        <source>Enable autosaving before configure/build/doc actions</source>
+        <translation>Sauvegarder automatiquement avant configuration/construction/doc</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="452"/>
         <source>In PATH env. vars., the %%PATH%% string is replaced by actual system PATH</source>
         <translation>Dans la var. d&apos;env. PATH, la chaîne %%PATH%% est remplacée par la valeur PATH du système</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="664"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="680"/>
         <source>bold</source>
         <translation>gras</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="677"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="693"/>
         <source>underline</source>
         <translation>souligné</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="690"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="706"/>
         <source>italic</source>
         <translation>italique</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="703"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="719"/>
         <source>strike-through</source>
         <translation>barré</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="713"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="729"/>
         <source>color</source>
         <translation>couleur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="814"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="830"/>
         <source>Font family:</source>
         <translation>Police de caractères:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="852"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="868"/>
         <source>Default indent space number:</source>
         <translation>Nombre d&apos;espaces par défaut pour l&apos;indentation:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="899"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="915"/>
         <source>Restore defaults</source>
         <translation>Restaurer les valeurs par défaut</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="906"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="922"/>
         <source>Apply now</source>
         <translation>Appliquer maintenant</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="925"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="941"/>
         <source>Marketplaces</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="956"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="972"/>
         <source>Edit selected marketplace</source>
         <translation>Editer la marketplace sélectionnée</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="984"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="1000"/>
         <source>Add marketplace</source>
         <translation>Ajouter une marketplace</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="1012"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.ui" line="1028"/>
         <source>Remove marketplace</source>
         <translation>Supprimer une marketplace</translation>
     </message>
@@ -2490,190 +2403,129 @@ Continuer quand même?</translation>
 <context>
     <name>ProjectCentral</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="281"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="213"/>
+        <source>Run error</source>
+        <translation>Erreur d&apos;exécution</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="214"/>
+        <source>Uncorrect simulation mode.</source>
+        <translation>Mode de simulation incorrect.</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="301"/>
         <source>Model is empty</source>
         <translation>Le modèle est vide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="295"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="315"/>
         <source>Monitoring is empty</source>
         <translation>Le monitoring est vide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="324"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="336"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="344"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="358"/>
         <source>Parameter %1 for %2 has to be a double precision value</source>
         <translation>Le paramètre %1 pour %2 doit être en double précision</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="346"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="367"/>
         <source>Parameter %1 is greater or equal to parameter %2 for %3</source>
         <translation>Le paramètre %1 est plus grand ou égal au paramètre %2 pour %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="461"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="486"/>
         <source>Simulator %1 is a ghost</source>
         <translation>Le simulateur %1 est fantôme</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="491"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="504"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="518"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="516"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="529"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="543"/>
         <source>File %1 required by generator %2 does not exist</source>
         <translation>Le fichier %1 requis par le générateur %2 n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="544"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="569"/>
         <source>Required parameter %1 for simulator %2 is not set</source>
         <translation>Le paramètre %1 requis pour le simulateur %2 n&apos;est pas renseigné</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="562"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="587"/>
         <source>Used parameter %1 for simulator %2 is not set</source>
         <translation>Le paramètre %1 utilisé par le simulateur %2 n&apos;est pas renseigné</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="610"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="635"/>
         <source>Unit class %1 does not exist for attribute %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;attribut %2 requis par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="620"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="645"/>
         <source>Attribute %1 required on %2 units by %3 does not exist</source>
         <translation>L&apos;attribut %1 requis sur la classe d&apos;unité %2 par %3 n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="639"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="664"/>
         <source>Unit class %1 does not exist for attribute %2 produced by %3</source>
         <translation>La classe d&apos;unité %1 n&apos;existe pas pour l&apos;attribut %2 produit par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="653"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="678"/>
         <source>Attribute %1 produced on %2 units by %3 is already produced by another simulator</source>
         <translation>L&apos;attribut %1 produit sur la classe d&apos;unité %2 par %3 est déjà produit par un autre simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="665"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="690"/>
         <source>Simulator %1 is not available</source>
         <translation>Le simulateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="712"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="746"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="783"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="737"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="771"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="808"/>
         <source>Unit class %1 does not exist for variable %2 produced by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 produite par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="728"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="753"/>
         <source>Variable %1 on %2 produced by %3 cannot be created because it is created by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 ne peut être créée car elle est déjà crée par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="763"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="788"/>
         <source>Variable %1 on %2 produced by %3 is already produced by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 est déjà produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="827"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="852"/>
         <source>Unit class %1 does not exist for variable %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 requise par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="841"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="866"/>
         <source>Variable %1 on %2 required by %3 is not produced by another simulator or generator</source>
         <translation>La variable %1 sur la classe d&apos;unités %2 requise par %3 n&apos;est pas produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="864"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="889"/>
         <source>No simulator or generator is enabled in model</source>
         <translation>Aucun simulateur ou générateur n&apos;est actif dans le modèle</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="922"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="947"/>
         <source>Unit class %1 does not exist for datastore item %2</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;élément du datastore %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="958"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="983"/>
         <source>Observer %1 is not available</source>
         <translation>L&apos;observateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="969"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="994"/>
         <source>No observer is enabled in monitoring</source>
         <translation>Aucun observateur n&apos;est actif dans le monitoring</translation>
-    </message>
-</context>
-<context>
-    <name>ProjectModule</name>
-    <message>
-        <source>Model</source>
-        <translation type="obsolete">Modèle</translation>
-    </message>
-    <message>
-        <source>Spatial domain</source>
-        <translation type="obsolete">Domaine spatial</translation>
-    </message>
-    <message>
-        <source>Simulation configuration</source>
-        <translation type="obsolete">Configuration de simulation</translation>
-    </message>
-    <message>
-        <source>Outputs browser</source>
-        <translation type="obsolete">Explorateur des sorties</translation>
-    </message>
-    <message>
-        <source>Reload project</source>
-        <translation type="obsolete">Recharger le projet</translation>
-    </message>
-    <message>
-        <source>Reloading project from disk will overwrite all unsaved modifications if any.</source>
-        <translation type="obsolete">Recharger le projet depuis le disque écrasera toutes les modifications non sauvegardées s&apos;il y en a.</translation>
-    </message>
-    <message>
-        <source>Proceed anyway?</source>
-        <translation type="obsolete">Continuer quand même?</translation>
-    </message>
-    <message>
-        <source>Extension error</source>
-        <translation type="obsolete">Erreur d&apos;extension</translation>
-    </message>
-    <message>
-        <source>Unknown extension type.
-Extension cannot be instantiated.</source>
-        <translation type="obsolete">Type d&apos;extension inconnu.
-L&apos;extension ne peut être instanciée.</translation>
-    </message>
-    <message>
-        <source>Extension warning</source>
-        <translation type="obsolete">Avertissement d&apos;extension</translation>
-    </message>
-    <message>
-        <source>Extension is already active.</source>
-        <translation type="obsolete">L&apos;extension est déjà active.</translation>
-    </message>
-    <message>
-        <source>Extension is not registered.
-Extension cannot be instantiated.</source>
-        <translation type="obsolete">Extension inconnue.
-L&apos;extension ne peut être instanciée.</translation>
-    </message>
-    <message>
-        <source>Ghost simulator edition error</source>
-        <translation type="obsolete">Erreur d&apos;édition de simulateur fantôme</translation>
-    </message>
-    <message>
-        <source>Unable to find ghost simulator</source>
-        <translation type="obsolete">Impossible de trouver le simulateur fantôme</translation>
-    </message>
-    <message>
-        <source>Source code edition error</source>
-        <translation type="obsolete">Erreur d&apos;édition du code source</translation>
-    </message>
-    <message>
-        <source>Source code generation error</source>
-        <translation type="obsolete">Erreur de génération du code source</translation>
     </message>
 </context>
 <context>
@@ -2724,53 +2576,53 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation>Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="659"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="676"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="679"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="696"/>
         <source>Extension error</source>
         <translation>Erreur d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="660"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="680"/>
         <source>Unknown extension type.
 Extension cannot be instantiated.</source>
         <translation>Type d&apos;extension inconnu.
 L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="667"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="687"/>
         <source>Extension warning</source>
         <translation>Avertissement d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="668"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="688"/>
         <source>Extension is already active.</source>
         <translation>L&apos;extension est déjà active.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="677"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="697"/>
         <source>Extension is not registered.
 Extension cannot be instantiated.</source>
         <translation>Extension inconnue.
 L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="769"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="789"/>
         <source>Ghost simulator edition error</source>
         <translation>Erreur d&apos;édition de simulateur fantôme</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="770"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="805"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="790"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="825"/>
         <source>Unable to find ghost simulator</source>
         <translation>Impossible de trouver le simulateur fantôme</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="784"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="804"/>
         <source>Source code edition error</source>
         <translation>Erreur d&apos;édition du code source</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="804"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModuleWidget.cpp" line="824"/>
         <source>Source code generation error</source>
         <translation>Erreur de génération du code source</translation>
     </message>
@@ -2890,19 +2742,29 @@ L&apos;extension ne peut être instanciée.</translation>
     </message>
 </context>
 <context>
+    <name>RunCLISimulationDialog</name>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunCLISimulationDialog.ui" line="40"/>
+        <source>Project path : </source>
+        <translation>Chemin du projet : </translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunCLISimulationDialog.ui" line="73"/>
+        <source>Command line:</source>
+        <translation>Ligne de commande :</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunCLISimulationDialog.ui" line="119"/>
+        <source>Execution:</source>
+        <translation>Exécution :</translation>
+    </message>
+</context>
+<context>
     <name>RunConfigurationWidget</name>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="35"/>
         <source>Simulation period</source>
         <translation>Période de simulation</translation>
-    </message>
-    <message>
-        <source>End date:</source>
-        <translation type="vanished">Date de fin:</translation>
-    </message>
-    <message>
-        <source>Begin date:</source>
-        <translation type="vanished">Date de début:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="72"/>
@@ -2923,10 +2785,6 @@ L&apos;extension ne peut être instanciée.</translation>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="139"/>
         <source>Constraint:</source>
         <translation>Contrainte:</translation>
-    </message>
-    <message>
-        <source>&amp;Memory management</source>
-        <translation type="obsolete">Gestion de la mémoire</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="234"/>
@@ -2959,10 +2817,6 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation>Activer le profilage de simulation</translation>
     </message>
     <message>
-        <source>Maximum number of threads in wares : </source>
-        <translation type="vanished">Nombre maximum de threads pour les wares:</translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.cpp" line="53"/>
         <source>None</source>
         <translation>Aucune</translation>
@@ -2980,10 +2834,6 @@ L&apos;extension ne peut être instanciée.</translation>
 </context>
 <context>
     <name>RunSimulationDialog</name>
-    <message>
-        <source>Run simulation</source>
-        <translation type="vanished">Exécution de la simulation</translation>
-    </message>
     <message>
         <location filename="../../src/openfluid/ui/common/RunSimulationDialog.ui" line="70"/>
         <source>Simulated duration:</source>
@@ -3550,20 +3400,6 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation></translation>
     </message>
     <message>
-        <source>You are removing the unit %1 of class %2.
-All connections and attributes units related to this unit will be lost.
-
-Proceed anyway?</source>
-        <translation type="vanished">Vous supprimez l&apos;unité %1 de la classe%2.
-Toutes les connexions et les attributs en relation avec cette unité seront perdus.
-
-Continuer quand même?</translation>
-    </message>
-    <message>
-        <source>Remove selected units from %2 class</source>
-        <translation type="vanished">Supprimer les unités sélectionnées de la classe %2</translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="438"/>
         <source>Remove selected units from %1 class</source>
         <translation>Supprimer les unités sélectionnées de la classe %1</translation>
@@ -3575,16 +3411,6 @@ All connections and attributes units related to this unit will be lost.
 
 </source>
         <translation>Vous supprimez l&apos;unité %1 de la classe %2.
-Toutes les connexions et les attributs en relation avec cette unité seront perdus.
-
-</translation>
-    </message>
-    <message>
-        <source>You are removing several units of class %2.
-All connections and attributes units related to these units will be lost.
-
-</source>
-        <translation type="vanished">Vous supprimez plusieurs unités de la classe%2.
 Toutes les connexions et les attributs en relation avec cette unité seront perdus.
 
 </translation>
@@ -3690,17 +3516,17 @@ Continuer quand même?</translation>
         <translation>Visible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="196"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="199"/>
         <source>Line width</source>
         <translation>Largeur de ligne</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="225"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="234"/>
         <source>Line color</source>
         <translation>Couleur de ligne</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="254"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="263"/>
         <source>Fill color</source>
         <translation>Couleur de remplissage</translation>
     </message>
@@ -3986,10 +3812,6 @@ Continuer quand même?</translation>
         <translation>Désactiver la vérification SSL</translation>
     </message>
     <message>
-        <source>Informations</source>
-        <translation type="obsolete">Informations</translation>
-    </message>
-    <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.ui" line="210"/>
         <source>Description:</source>
         <translation>Description:</translation>
@@ -4081,14 +3903,6 @@ Continuer quand même?</translation>
         <translation>Contacts:</translation>
     </message>
     <message>
-        <source>General informations</source>
-        <translation type="obsolete">Information générales</translation>
-    </message>
-    <message>
-        <source>Development informations</source>
-        <translation type="obsolete">Informations de développement</translation>
-    </message>
-    <message>
         <location filename="../../src/openfluid/ui/waresdev/WareshubJsonEditor.ui" line="110"/>
         <source>Development information</source>
         <translation>Informations de développement</translation>
@@ -4165,18 +3979,6 @@ Continuer quand même?</translation>
         <location filename="../../src/openfluid/ui/waresdev/WorkspaceDevDashboardDialog.ui" line="44"/>
         <source>Builder-extensions</source>
         <translation>Extensions Builder</translation>
-    </message>
-    <message>
-        <source>Configure and Build</source>
-        <translation type="vanished">Configurer et construire</translation>
-    </message>
-    <message>
-        <source>Build action:</source>
-        <translation type="vanished">Action de construction:</translation>
-    </message>
-    <message>
-        <source>Configuration: </source>
-        <translation type="vanished">Configuration:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WorkspaceDevDashboardDialog.ui" line="67"/>
@@ -4312,21 +4114,6 @@ Continuer quand même?</translation>
     </message>
 </context>
 <context>
-    <name>WorkspaceGitDashboardDialog</name>
-    <message>
-        <source>Simulators</source>
-        <translation type="vanished">Simulateurs</translation>
-    </message>
-    <message>
-        <source>Observers</source>
-        <translation type="vanished">Observateurs</translation>
-    </message>
-    <message>
-        <source>Builder-extensions</source>
-        <translation type="vanished">Extensions Builder</translation>
-    </message>
-</context>
-<context>
     <name>openfluid::ui::common</name>
     <message>
         <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="88"/>
@@ -4338,23 +4125,7 @@ Continuer quand même?</translation>
 <context>
     <name>openfluid::ui::common::AboutDialog</name>
     <message>
-        <source>Credits</source>
-        <translation type="vanished">Remerciements</translation>
-    </message>
-    <message>
-        <source>View license</source>
-        <translation type="vanished">Voir la licence</translation>
-    </message>
-    <message>
-        <source>License</source>
-        <translation type="vanished">Licence</translation>
-    </message>
-    <message>
-        <source>View credits</source>
-        <translation type="vanished">Voir les remerciements</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="134"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="136"/>
         <source>&lt;b&gt;Build environment&lt;/b&gt;&lt;br/&gt;* Build type : %1&lt;br/&gt;* CMake version : %2&lt;br/&gt;* Compiler ID : %3&lt;br/&gt;* Compiler version : %4&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Dependencies&lt;/b&gt;&lt;br/&gt;* Boost version : %5&lt;br/&gt;* Qt version : %6&lt;br/&gt;* RapidJSON version : %7&lt;br/&gt;* GDAL version : %8&lt;br/&gt;* GEOS version : %9&lt;br/&gt;</source>
         <translation>&lt;b&gt;Environnement de build&lt;/b&gt;&lt;br/&gt;* Type de build : %1&lt;br/&gt;* Version de CMake: %2&lt;br/&gt;* ID du compilateur: %3&lt;br/&gt;* Version du compilateur: %4&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Dépendances&lt;/b&gt;&lt;br/&gt;* Version de Boost : %5&lt;br/&gt;* Version de Qt : %6&lt;br/&gt;* Version de RapidJSON : %7&lt;br/&gt;* Version de GDAL : %8&lt;br/&gt;* Version de GEOS : %9&lt;br/&gt;</translation>
     </message>
@@ -4472,6 +4243,54 @@ Continuer quand même?</translation>
     </message>
 </context>
 <context>
+    <name>openfluid::ui::common::ExecutionStatusLabel</name>
+    <message>
+        <location filename="../../src/openfluid/ui/common/ExecutionStatusLabel.cpp" line="83"/>
+        <source>not started</source>
+        <translation>non démarré</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/ExecutionStatusLabel.cpp" line="87"/>
+        <source>running</source>
+        <translation>en cours</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/ExecutionStatusLabel.cpp" line="91"/>
+        <source>pause requested</source>
+        <translation>pause demandée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/ExecutionStatusLabel.cpp" line="95"/>
+        <source>paused</source>
+        <translation>en pause</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/ExecutionStatusLabel.cpp" line="99"/>
+        <source>abort requested</source>
+        <translation>arrêt demandé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/ExecutionStatusLabel.cpp" line="103"/>
+        <source>aborted by user</source>
+        <translation>arrêté par l&apos;utilisateur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/ExecutionStatusLabel.cpp" line="107"/>
+        <source>failed</source>
+        <translation>échec</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/ExecutionStatusLabel.cpp" line="111"/>
+        <source>succeeded</source>
+        <translation>succès</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/ExecutionStatusLabel.cpp" line="115"/>
+        <source>aborted by user (KILL signal)</source>
+        <translation>arrêté par l&apos;utilisateur (signal KILL)</translation>
+    </message>
+</context>
+<context>
     <name>openfluid::ui::common::LogExplorerDialog</name>
     <message>
         <location filename="../../src/openfluid/ui/common/LogExplorerDialog.cpp" line="94"/>
@@ -4558,9 +4377,17 @@ Continuer quand même?</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="995"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="1006"/>
         <source>Restart required</source>
         <translation>Redémarrage requis</translation>
+    </message>
+</context>
+<context>
+    <name>openfluid::ui::common::RunCLISimulationDialog</name>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunCLISimulationDialog.cpp" line="67"/>
+        <source>Run Simulation</source>
+        <translation>Exécution de la simulation</translation>
     </message>
 </context>
 <context>
@@ -4572,32 +4399,32 @@ Continuer quand même?</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="94"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="82"/>
         <source>Run Simulation</source>
         <translation>Exécution de la simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="201"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="189"/>
         <source> day(s), </source>
         <translation> jour(s), </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="201"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="189"/>
         <source> hour(s), </source>
         <translation> heure(s), </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="202"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="190"/>
         <source> min(s), </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="202"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="190"/>
         <source> sec(s)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="214"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="202"/>
         <source>You are requesting the simulation to abort.
 Simulation data not written on disk will be lost.
 
@@ -4608,68 +4435,24 @@ Les données de simulation non écrites sur disque seront perdues.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="218"/>
-        <source>abort requested</source>
-        <translation>arrêt demandé</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="233"/>
-        <source>pause requested</source>
-        <translation>pause demandée</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="242"/>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="332"/>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="338"/>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="344"/>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="350"/>
-        <source>running</source>
-        <translation>en cours</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="258"/>
-        <source>paused</source>
-        <translation>exécution en pause</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="325"/>
-        <source>not started</source>
-        <translation>exécution non démarrée</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="330"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="315"/>
         <source>pre-simulation</source>
         <translation>pré-simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="336"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="320"/>
         <source>initialization</source>
         <translation>initialisation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="342"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="325"/>
         <source>simulation</source>
         <translation>simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="348"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="330"/>
         <source>finalization</source>
         <translation>finalisation</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="356"/>
-        <source>completed</source>
-        <translation>exécution terminée</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="384"/>
-        <source>failed due to simulation error</source>
-        <translation>exécution interrompue sur erreur de simulation</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="409"/>
-        <source>aborted by user</source>
-        <translation>exécution arrêtée par l&apos;utilisateur</translation>
     </message>
 </context>
 <context>
@@ -5160,37 +4943,6 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
     </message>
 </context>
 <context>
-    <name>openfluid::ui::waresdev::GitDashboardItemWidget</name>
-    <message>
-        <source>dirty</source>
-        <translation type="vanished">non indexé(s)</translation>
-    </message>
-    <message>
-        <source>untracked</source>
-        <translation type="vanished">non suivi(s)</translation>
-    </message>
-    <message>
-        <source>modified</source>
-        <translation type="vanished">modifié(s)</translation>
-    </message>
-    <message>
-        <source>added</source>
-        <translation type="vanished">ajouté(s)</translation>
-    </message>
-    <message>
-        <source>deleted</source>
-        <translation type="vanished">supprimé(s)</translation>
-    </message>
-    <message>
-        <source>conflict</source>
-        <translation type="vanished">conflit(s)</translation>
-    </message>
-    <message>
-        <source>clean</source>
-        <translation type="vanished">propre</translation>
-    </message>
-</context>
-<context>
     <name>openfluid::ui::waresdev::NewSrcFileAssistant</name>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/NewSrcFileAssistant.cpp" line="401"/>
@@ -5458,22 +5210,27 @@ Do you want to replace it?</source>
 <context>
     <name>openfluid::ui::waresdev::WareSrcFileEditor</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcFileEditor.cpp" line="747"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcFileEditor.cpp" line="101"/>
+        <source>Other</source>
+        <translation>Autre</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcFileEditor.cpp" line="794"/>
         <source>%1 matches replaced</source>
         <translation>%1 correspondances remplacées</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcFileEditor.cpp" line="756"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcFileEditor.cpp" line="804"/>
         <source>String not found</source>
         <translation>Chaîne de caractère non trouvée</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcFileEditor.cpp" line="926"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcFileEditor.cpp" line="980"/>
         <source>Go to line</source>
         <translation>Aller à la ligne</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcFileEditor.cpp" line="926"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcFileEditor.cpp" line="980"/>
         <source>Enter the line number:</source>
         <translation>Entrer le numéro de ligne:</translation>
     </message>
@@ -5495,14 +5252,6 @@ Do you want to replace it?</source>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="225"/>
         <source>Build</source>
         <translation>Construire</translation>
-    </message>
-    <message>
-        <source>Active configuration</source>
-        <translation type="vanished">Configuration active</translation>
-    </message>
-    <message>
-        <source>Active build action</source>
-        <translation type="vanished">Action de construction active</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="112"/>
@@ -5621,10 +5370,6 @@ Do you want to replace it?</source>
         <translation>Aller à la ligne...</translation>
     </message>
     <message>
-        <source>Configure ware</source>
-        <translation type="vanished">Configurer le ware</translation>
-    </message>
-    <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="233"/>
         <source>Generate doc</source>
         <translation>Générer la doc</translation>
@@ -5638,18 +5383,6 @@ Do you want to replace it?</source>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="218"/>
         <source>Configure</source>
         <translation>Configurer</translation>
-    </message>
-    <message>
-        <source>Build ware</source>
-        <translation type="vanished">Construire le ware</translation>
-    </message>
-    <message>
-        <source>Build and install</source>
-        <translation type="vanished">Construire et installer</translation>
-    </message>
-    <message>
-        <source>Build only</source>
-        <translation type="vanished">Construire uniquement</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="261"/>
@@ -5675,14 +5408,14 @@ Do you want to replace it?</source>
         <translation>Le document a été modifié.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="522"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="527"/>
         <source>Generate doc error</source>
         <translation>Erreur de génération de doc</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="599"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="683"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="828"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="604"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="688"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="833"/>
         <source>No open file</source>
         <translation>Aucun fichier ouvert</translation>
     </message>
@@ -5697,56 +5430,52 @@ Do you want to replace it?</source>
         <translation>Erreur fichier</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="479"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="484"/>
         <source>Configure error</source>
         <translation>Erreur à la configuration</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="499"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="504"/>
         <source>Build error</source>
         <translation>Erreur à la construction</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="517"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="522"/>
         <source>Generate documentation</source>
         <translation>Genérer la documentation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="518"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="523"/>
         <source>Documentation generator only works with simulators</source>
         <translation>Le générateur de documentation n&apos;est disponible que pour les simulateurs</translation>
     </message>
     <message>
-        <source>generate doc error</source>
-        <translation type="vanished">erreur de génération de doc</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="599"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="604"/>
         <source>No file to save</source>
         <translation>Aucun fichier à enregistrer</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="669"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="674"/>
         <source>Delete file</source>
         <translation>Supprimer le fichier</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="669"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="674"/>
         <source>Are you sure you want to delete &quot;%1&quot;?</source>
         <translation>Etes-vous sûr de vouloir supprimer &quot;%1&quot;?</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="680"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="685"/>
         <source>Unable to remove the file &quot;%1&quot;</source>
         <translation>Impossible de supprimer le fichier &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="683"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="688"/>
         <source>No file to delete</source>
         <translation>Aucun fichier à supprimer</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="828"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="833"/>
         <source>No open editor</source>
         <translation>Aucun éditeur ouvert</translation>
     </message>
@@ -5776,10 +5505,6 @@ Do you want to replace it?</source>
         <translation>Fermer un onglet n&apos;est pas possible pendant qu&apos;un processus de configuration ou de construction est en cours.</translation>
     </message>
     <message>
-        <source>Modified documents.</source>
-        <translation type="obsolete">Documents modifiés</translation>
-    </message>
-    <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="173"/>
         <source>Documents have been modified.
 
@@ -5797,10 +5522,6 @@ Voulez-vous sauvegarder les modifications?</translation>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="311"/>
         <source>No terminal found</source>
         <translation>Aucun terminal trouvé</translation>
-    </message>
-    <message>
-        <source>No open ware</source>
-        <translation type="obsolete">Aucun ware ouvert</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcWidgetCollection.cpp" line="172"/>
@@ -5962,10 +5683,6 @@ Voulez-vous sauvegarder les modifications?</translation>
         <translation>Wares disponibles dans le paquet</translation>
     </message>
     <message>
-        <source>Available wares on waresHub site</source>
-        <translation type="obsolete">Wares disponibles sur le site Wareshub</translation>
-    </message>
-    <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="103"/>
         <source>Git program not found</source>
         <translation>Programme Git non trouvé</translation>
@@ -5976,52 +5693,48 @@ Voulez-vous sauvegarder les modifications?</translation>
         <translation>Non connecté a un WaresHub</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="190"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="192"/>
         <source>Available wares on WaresHub site</source>
         <translation>Wares disponibles sur le site Wareshub</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="211"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="213"/>
         <source>Select package file</source>
         <translation>Sélectionner le paquet</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="224"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="228"/>
         <source>Fetching information from ware sources:</source>
         <translation>Recherche de l&apos;information depuis les sources des wares:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="273"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="281"/>
         <source>Connect</source>
         <translation>Connecter</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="298"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="306"/>
         <source>Connecting to WaresHub:</source>
         <translation>Connexion au WaresHub:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="394"/>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="444"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="408"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="464"/>
         <source>&quot;%1&quot; already exists in the workspace</source>
         <translation>&quot;%1&quot; existe déjà dans le workspace</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="449"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="469"/>
         <source>User &quot;%2&quot; is not authorized to access to &quot;%1&quot;</source>
         <translation>L&apos;utilisateur &quot;%2&quot; n&apos;est pas autorisé à accéder à &quot;%1&quot;</translation>
     </message>
     <message>
-        <source>%1 already exists in the workspace</source>
-        <translation type="obsolete">%1 existe déjà dans le workspace</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="516"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="542"/>
         <source>Importing wares sources:</source>
         <translation>Importation des sources de wares:</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="213"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="215"/>
         <source>OpenFLUID wares packages (*.ofwdp)</source>
         <translation>Paquets OpenFLUID wares (*.ofwdp)</translation>
     </message>
@@ -6129,17 +5842,6 @@ Voulez-vous sauvegarder les modifications?</translation>
     </message>
 </context>
 <context>
-    <name>openfluid::ui::waresdev::WorkspaceDevConfigureBuildWorker</name>
-    <message>
-        <source>Configuring %1</source>
-        <translation type="vanished">Configuration %1</translation>
-    </message>
-    <message>
-        <source>Building %1</source>
-        <translation type="vanished">Construction %1</translation>
-    </message>
-</context>
-<context>
     <name>openfluid::ui::waresdev::WorkspaceDevDashboardDialog</name>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WorkspaceDevDashboardDialog.cpp" line="99"/>
@@ -6170,10 +5872,6 @@ Voulez-vous sauvegarder les modifications?</translation>
         <location filename="../../src/openfluid/ui/waresdev/WorkspaceDevDashboardDialog.cpp" line="308"/>
         <source>Build</source>
         <translation>Construire</translation>
-    </message>
-    <message>
-        <source>Configure and Build</source>
-        <translation type="vanished">Configurer et construire</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WorkspaceDevDashboardDialog.cpp" line="325"/>
@@ -6243,6 +5941,1593 @@ Voulez-vous sauvegarder les modifications?</translation>
         <location filename="../../src/openfluid/ui/waresdev/WorkspaceDevPurgeWorker.cpp" line="120"/>
         <source>Deleted</source>
         <translation>Supprimé</translation>
+    </message>
+</context>
+<context>
+    <name>openfluid::waresdev::CompletionProvider</name>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="49"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="61"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="74"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="944"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2048"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2060"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2073"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2086"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2099"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2112"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2125"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2138"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2151"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2164"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2177"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2190"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2203"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2216"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2229"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2242"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2255"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2268"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2281"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2294"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2307"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2320"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2372"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2385"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2398"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2411"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2424"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2437"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2450"/>
+        <source>Signature</source>
+        <translation>Signature</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="51"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="946"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2050"/>
+        <source>Insert signature block</source>
+        <translation>Insérer le bloc de signature</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="62"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="75"/>
+        <source>Menu context</source>
+        <translation>Contexte de menu</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="64"/>
+        <source>Declare menu category</source>
+        <translation>Déclarer la catégorie de menu</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="77"/>
+        <source>Declare menu text</source>
+        <translation>Déclarer le texte du menu</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="87"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="101"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="115"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="129"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="143"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="157"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="171"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="185"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="199"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="213"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="227"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="241"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="255"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="269"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="283"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="297"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="311"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="325"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="339"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="353"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="367"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="381"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="395"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="409"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="423"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="437"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="451"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="465"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="479"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="493"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="507"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="521"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="534"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="548"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="562"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="576"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="591"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="606"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="621"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="636"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="651"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="666"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="681"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="696"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="710"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="724"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="738"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="752"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="766"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="780"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="794"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="808"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="822"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="836"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="850"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="864"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="878"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="892"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="905"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="918"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="931"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="956"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="969"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="982"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="995"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1008"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1021"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1034"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1047"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1060"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1073"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1086"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1099"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1112"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1125"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1138"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1151"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1164"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1177"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1190"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1203"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1216"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1229"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1242"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1255"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1268"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1281"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1294"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1307"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1320"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1333"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1346"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1359"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1372"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1385"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1398"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1411"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1424"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1437"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1450"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1463"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1476"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1489"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1502"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1515"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1528"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1541"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1554"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1567"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1580"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1593"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1606"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1619"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1632"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1645"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1658"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1671"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1684"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1697"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1710"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1723"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1736"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1749"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1762"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1775"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1788"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1801"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1814"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1827"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1840"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1853"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1866"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1879"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1892"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1905"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1918"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1931"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1944"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1957"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1970"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1983"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1996"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2009"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2022"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2035"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2333"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2346"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2359"/>
+        <source>Compute code</source>
+        <translation>Code de calcul</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="88"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="102"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="116"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="130"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="144"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="158"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="172"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="186"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="200"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="214"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="228"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="242"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="256"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="270"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="284"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="298"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="312"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="326"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="340"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="354"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="368"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="382"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="396"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="410"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="424"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="438"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="452"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="466"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="480"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="494"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="508"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="698"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="712"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="726"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="740"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="754"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="768"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="782"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="796"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="810"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="824"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="838"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="114"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="123"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="133"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="143"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="153"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="163"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="173"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="183"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="193"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="203"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="213"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="223"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="233"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="243"/>
+        <source>Types</source>
+        <translation>Types</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="91"/>
+        <source>BooleanValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="119"/>
+        <source>DoubleValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="161"/>
+        <source>IndexedValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="175"/>
+        <source>List of IndexedValue</source>
+        <translation>Liste d&apos;IndexedValue</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="189"/>
+        <source>IntegerValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="203"/>
+        <source>MapValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="217"/>
+        <source>MatrixValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="231"/>
+        <source>NullValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="287"/>
+        <source>StringValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="301"/>
+        <source>TreeValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="369"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1178"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1191"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1204"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1672"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1685"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1698"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1711"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1724"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1737"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1750"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1763"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1776"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1789"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1802"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1815"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1828"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1841"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1854"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2126"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2139"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2152"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2165"/>
+        <source>Variables</source>
+        <translation>Variables</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="89"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="117"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="159"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="173"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="187"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="201"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="215"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="229"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="285"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="299"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="509"/>
+        <source>Values</source>
+        <translation>Values</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="103"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="481"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="495"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1490"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1503"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1516"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1529"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1542"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1555"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1568"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1581"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1594"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1607"/>
+        <source>Time</source>
+        <translation>Temps</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="105"/>
+        <source>Date and time</source>
+        <translation>Date et heure</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="131"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="145"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1217"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1867"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1880"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2217"/>
+        <source>Events</source>
+        <translation>Evènements</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="133"/>
+        <source>Event</source>
+        <translation>Evènement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="147"/>
+        <source>Events collection</source>
+        <translation>Collection d&apos;évènements</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="243"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="257"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="271"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="313"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="327"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="341"/>
+        <source>Spatial domain</source>
+        <translation>Domaine spatialDomaine spatial</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="245"/>
+        <source>List of pointers to spatial units</source>
+        <translation>Liste de pointeurs vers des unités spatiales</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="259"/>
+        <source>Spatial unit</source>
+        <translation>Unité spatiale</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="273"/>
+        <source>Pointer to spatial unit</source>
+        <translation>Pointeur vers une unité spatiale</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="315"/>
+        <source>Unit ID</source>
+        <translation>ID d&apos;unitéID de l&apos;unité</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="329"/>
+        <source>Process order</source>
+        <translation>Ordre de traitement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="343"/>
+        <source>Units class name</source>
+        <translation>Nom de classe d&apos;unités</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="355"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1165"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1633"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1646"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1659"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2178"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2191"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2204"/>
+        <source>Attributes</source>
+        <translation>Attributs</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="357"/>
+        <source>Attribute name</source>
+        <translation>Nom d&apos;attribut</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="371"/>
+        <source>Variable name</source>
+        <translation>Nom de variable</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="383"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="397"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="411"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="425"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="439"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="453"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="467"/>
+        <source>ID..Map</source>
+        <translation>ID..Map</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="385"/>
+        <source>ID to single precision (signed)</source>
+        <translation>ID vers simple précision (signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="399"/>
+        <source>ID to double precision (signed)</source>
+        <translation>ID vers double précision</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="413"/>
+        <source>ID to DoubleValue</source>
+        <translation>ID vers DoubleValue</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="427"/>
+        <source>ID to integer (signed)</source>
+        <translation>ID vers entier (signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="441"/>
+        <source>ID to boolean</source>
+        <translation>ID vers booléen</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="455"/>
+        <source>ID to VectorValue</source>
+        <translation>ID vers VectorValue</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="469"/>
+        <source>ID to pointer to VectorValue</source>
+        <translation>ID vers un pointeur vers VectorValue</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="483"/>
+        <source>Time index</source>
+        <translation>Index de temps</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="497"/>
+        <source>Duration</source>
+        <translation>Durée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="511"/>
+        <source>VectorValue</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="522"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="535"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="549"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="563"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="577"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="592"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="607"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="622"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="637"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="652"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="667"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="682"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="697"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="711"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="725"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="739"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="753"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="767"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="781"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="795"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="809"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="823"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="837"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="851"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="865"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="879"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2334"/>
+        <source>Fortran integration</source>
+        <translation>Intégration Fortran</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="524"/>
+        <source>Include FortranCPP header</source>
+        <translation>Inclure l&apos;en-tête FortranCPP</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="536"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="550"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="564"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="578"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="608"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="638"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="668"/>
+        <source>Declaration of external code</source>
+        <translation>Déclaration de code externe</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="538"/>
+        <source>Declaration block</source>
+        <translation>Bloc de déclaration</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="552"/>
+        <source>Beginning of declaration block</source>
+        <translation>Début de bloc de déclaration</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="566"/>
+        <source>End of declaration block</source>
+        <translation>Fin de bloc de déclaration</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="579"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="594"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="609"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="624"/>
+        <source>Fortran</source>
+        <translation>Fortran</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="581"/>
+        <source>Declare function</source>
+        <translation>Déclarer une fonction</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="593"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="623"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="653"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="683"/>
+        <source>Call of external code</source>
+        <translation>Appel de code externe</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="596"/>
+        <source>Call function</source>
+        <translation>Appeler une fonction</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="611"/>
+        <source>Declare subroutine</source>
+        <translation>Déclarer une subroutine</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="626"/>
+        <source>Call subroutine</source>
+        <translation>Appeler une subroutine</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="639"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="654"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="669"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="684"/>
+        <source>Fortran90</source>
+        <translation>Fortran90</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="641"/>
+        <source>Declare function in module</source>
+        <translation>Déclarer une fonction dans un module</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="656"/>
+        <source>Call function in module</source>
+        <translation>Appeler une fonction dans un module</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="671"/>
+        <source>Declare subroutine in module</source>
+        <translation>Déclarer une subroutine dans un module</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="686"/>
+        <source>Call subroutine in module</source>
+        <translation>Appeler une subroutine dans un module</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="700"/>
+        <source>Single precision float</source>
+        <translation>Réel en simple précision</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="714"/>
+        <source>Double precision float</source>
+        <translation>Réel en double précision</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="728"/>
+        <source>Double double precision float</source>
+        <translation>Réel en double double précision</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="742"/>
+        <source>Integer</source>
+        <translation>Entier</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="756"/>
+        <source>Short integer</source>
+        <translation>Entier court</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="770"/>
+        <source>Long integer</source>
+        <translation>Entier long</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="784"/>
+        <source>Logical</source>
+        <translation>Logique</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="798"/>
+        <source>Logical (boolean)</source>
+        <translation>Logique (booléen)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="812"/>
+        <source>Character</source>
+        <translation>Caractère</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="826"/>
+        <source>String</source>
+        <translation>Chaîne de caractères</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="840"/>
+        <source>String length</source>
+        <translation>Longueur de chaîne de caractères</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="852"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="866"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="880"/>
+        <source>Functions</source>
+        <translation>Fonctions</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="854"/>
+        <source>Convert std::string to Fortran string content</source>
+        <translation>Convertir un std::string en contenu de chaîne de caractère Fortran</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="868"/>
+        <source>Convert std::string to Fortran string length</source>
+        <translation>Convertir un std::string en longueur de chaîne de caractère Fortran</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="882"/>
+        <source>Convert std::string to Fortran string content and length</source>
+        <translation>Convertir un std::string en contenu et longueur de chaîne de caractère Fortran</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="893"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="906"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="919"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="932"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2347"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2360"/>
+        <source>Loops</source>
+        <translation>Boucles</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="895"/>
+        <source>Ordered loop on spatial units of a class</source>
+        <translation>Boucle ordonnée sur les unités spatiales d&apos;une classe</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="908"/>
+        <source>Ordered loop on all spatial units</source>
+        <translation>Boucle ordonnée sur toutes les unités spatiales</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="921"/>
+        <source>Loop on a spatial units list</source>
+        <translation>Boucle sur une liste d&apos;unités spatiales</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="934"/>
+        <source>Loop on an events collection</source>
+        <translation>Boucle sur une collection d&apos;évènements</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="957"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="970"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="983"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2100"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2113"/>
+        <source>Parameters</source>
+        <translation>Paramètres</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="959"/>
+        <source>Test if a simulator parameter exists</source>
+        <translation>Tester si un paramètre de simulateur existe</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="972"/>
+        <source>Get simulator parameter (by return)</source>
+        <translation>Obtenir un paramètre de simulateur (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="985"/>
+        <source>Get simulator parameter</source>
+        <translation>Obtenir un paramètre de simulateur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="996"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1009"/>
+        <source>Threading</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="998"/>
+        <source>Get maximum number of threads</source>
+        <translation>Obtenir le nombre maximum de threads</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1011"/>
+        <source>Set maximum number of threads</source>
+        <translation>Mettre à jour le nombre maximum de threads</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1022"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1035"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1048"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1061"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1074"/>
+        <source>Sheduling</source>
+        <translation>Planification</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1024"/>
+        <source>Run once at the end</source>
+        <translation>Exécuter une fois à la fin</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1037"/>
+        <source>Never run again</source>
+        <translation>Ne jamais exécuter à nouveau</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1050"/>
+        <source>Run in default deltaT</source>
+        <translation>Exécuter dans deltaT par défaut</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1063"/>
+        <source>Run in X default deltaT</source>
+        <translation>Exécuter dans X fois deltaT par défaut</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1076"/>
+        <source>Run in a duration in seconds</source>
+        <translation>Exécuter dans une durée en secondes</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1087"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1373"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1386"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1399"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1412"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1425"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1438"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1451"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1464"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1477"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1620"/>
+        <source>Messages</source>
+        <translation>Messages</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1089"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1622"/>
+        <source>Raise fatal error</source>
+        <translation>Déclencher une erreur fatale</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1100"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1113"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1126"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1139"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1152"/>
+        <source>Run environment</source>
+        <translation>Environnement d&apos;exécution</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1102"/>
+        <source>Get information about run environment</source>
+        <translation>Obtenir des informations sur l&apos;environnement d&apos;exécution</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1115"/>
+        <source>Get current input dataset directory</source>
+        <translation>Obtenir le répertoire courant pour les données d&apos;entrée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1128"/>
+        <source>Get current output results directory</source>
+        <translation>Obtenir le répertoire courant pour les données résultats</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1141"/>
+        <source>Get current directory for temporary data</source>
+        <translation>Obtenir le répertoire courant pour les données temporaires</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1154"/>
+        <source>Get current ware ID</source>
+        <translation>Obtenir l&apos;ID du ware</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1167"/>
+        <source>Set attribute value</source>
+        <translation>Mettre à jour une valeur d&apos;attribut</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1180"/>
+        <source>Initialize variable with value</source>
+        <translation>Initialiser une variable avec une valeur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1193"/>
+        <source>Append value to a variable</source>
+        <translation>Ajouter une valeur à une variable</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1206"/>
+        <source>Update current value of a variable</source>
+        <translation>Mettre à jour la valeur d&apos;une variable</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1219"/>
+        <source>Append an event</source>
+        <translation>Ajouter un évènement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1230"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1243"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1256"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1269"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1282"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1295"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1308"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1321"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1334"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1347"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1360"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1893"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1906"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1919"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1932"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1945"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1958"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1971"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1984"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1997"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2010"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2023"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2036"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2230"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2243"/>
+        <source>Spatial structure</source>
+        <translation>Structure spatiale</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1232"/>
+        <source>Add a spatial unit to the spatial graph</source>
+        <translation>Ajouter une unité spatiale au graphe d&apos;espace</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1245"/>
+        <source>Delete a spatial unit of the spatial graph</source>
+        <translation>Supprimer une unité spatiale du graphe d&apos;espace</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1258"/>
+        <source>Add a From-To connection using classes names and IDs</source>
+        <translation>Ajouter une connection From-To en utilisant les noms de classe et les IDs</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1271"/>
+        <source>Add a From-To connection using pointers to spatial units</source>
+        <translation>Ajouter une connection From-To en utilisant les pointeurs sur les unités spatiales</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1284"/>
+        <source>Remove a From-To connection using classes names and IDs</source>
+        <translation>Supprimer une connection From-To en utilisant les noms de classe et les IDs</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1297"/>
+        <source>Remove a From-To connection using spatial units pointers</source>
+        <translation>Supprimer une connection From-To en utilisant les pointeurs sur les unités spatiales</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1310"/>
+        <source>Add a Child-parent connection using classes names and IDs</source>
+        <translation>Ajouter une connection Child-Parent en utilisant les noms de classe et les IDs</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1323"/>
+        <source>Add a Child-parent connection using pointers to spatial units</source>
+        <translation>Ajouter une connection Child-Parent en utilisant les pointeurs sur les unités spatiales</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1336"/>
+        <source>Remove a Child-parent connection using classes names and IDs</source>
+        <translation>Supprimer une connection Child-Parent en utilisant les noms de classe et les IDs</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1349"/>
+        <source>Remove a Child-parent connection using pointers to spatial units</source>
+        <translation>Supprimer une connection Child-Parent en utilisant les pointeurs sur les unités spatiales</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1362"/>
+        <source>Build a matrix of spatial units</source>
+        <translation>Construire une matrice d&apos;unités spatiales</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1375"/>
+        <source>Log warning message</source>
+        <translation>Loguer un message d&apos;avertissement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1388"/>
+        <source>Display warning message</source>
+        <translation>Afficher un message d&apos;avertissement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1401"/>
+        <source>Log and warning debug message</source>
+        <translation>Loguer et afficher un message d&apos;avertissement</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1414"/>
+        <source>Log information message</source>
+        <translation>Loguer un message d&apos;information</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1427"/>
+        <source>Display information message</source>
+        <translation>Afficher un message d&apos;information</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1440"/>
+        <source>Log and display information message</source>
+        <translation>Loguer et afficher un message d&apos;information</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1453"/>
+        <source>Log debug message</source>
+        <translation>Loguer un message de débuggage</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1466"/>
+        <source>Display debug message</source>
+        <translation>Afficher un message de débuggage</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1479"/>
+        <source>Log and display debug message</source>
+        <translation>Loguer et afficher un message de débuggage</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1492"/>
+        <source>Get begin date of simulation</source>
+        <translation>Obtenir la date de début de simulation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1505"/>
+        <source>Get end date of simulation</source>
+        <translation>Obtenir la date de fin de simulation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1518"/>
+        <source>Get begin current date of simulation</source>
+        <translation>Obtenir la date courante pendant la simulation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1531"/>
+        <source>Get total simulation duration</source>
+        <translation>Obtenir la durée totale de simulation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1544"/>
+        <source>Get default deltaT</source>
+        <translation>Obtenir le deltaT par défaut</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1557"/>
+        <source>Get current time index</source>
+        <translation>Obtenir l&apos;index de temps courant</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1570"/>
+        <source>Get time index of the previous ware run</source>
+        <translation>Obtenir l&apos;index de temps de la précédente exécution du ware</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1583"/>
+        <source>Get current simulation stage</source>
+        <translation>Obtenir l&apos;étape courante pendant la simulation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1596"/>
+        <source>Get current simulation stage as a string</source>
+        <translation>Obtenir l&apos;étape courante pendant la simulation sous forme de chaîne de caractère</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1609"/>
+        <source>Get scheduling constraint mode</source>
+        <translation>Obtenir le mode de contrainte de planification</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1635"/>
+        <source>Test if an attribute exists</source>
+        <translation>Tester si un attribut existe</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1648"/>
+        <source>Get attribute value</source>
+        <translation>Obtenir la valeur d&apos;un attribut</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1661"/>
+        <source>Get attribute value (by return)</source>
+        <translation>Obtenir la valeur d&apos;un attribut (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1674"/>
+        <source>Test if a variable exists</source>
+        <translation>Tester si une variable existe</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1687"/>
+        <source>Test if a variable exists and has a value on given time index</source>
+        <translation>Tester si une variable existe et a une valeur sur l&apos;index de temps donné</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1700"/>
+        <source>Test if a variable exists and has a value of given type on given time index</source>
+        <translation>Tester si une variable existe et a une valeur du type donné sur l&apos;index de temps donné</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1713"/>
+        <source>Test if a variable exists with given type</source>
+        <translation>Tester si une variable existe et est du type donné</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1726"/>
+        <source>Test if a variable exists with given type and has a value on given time index</source>
+        <translation>Tester si une variable existe du type donné et a une valeur sur l&apos;index de temps donné</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1739"/>
+        <source>Get variable value on given time index</source>
+        <translation>Obtenir la valeur de variable à un index de temps donné</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1752"/>
+        <source>Get variable value on given time index (by return)</source>
+        <translation>Obtenir la valeur de variable à un index de temps donné (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1765"/>
+        <source>Get variable value on current time index</source>
+        <translation>Obtenir la valeur de variable à l&apos;index de temps courant</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1778"/>
+        <source>Get variable value on current time index (by return)</source>
+        <translation>Obtenir la valeur de variable à l&apos;index de temps courant (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1791"/>
+        <source>Get latest available variable value</source>
+        <translation>Obtenir la dernière valeur de variable disponible</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1804"/>
+        <source>Get latest available variable value (by return)</source>
+        <translation>Obtenir la dernière valeur de variable disponible (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1817"/>
+        <source>Get latest available variable values since a time index</source>
+        <translation>Obtenir les dernières valeurs de variable disponibles depuis un index de temps</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1830"/>
+        <source>Get latest available variable values since a time index (by return)</source>
+        <translation>Obtenir les dernières valeurs de variable disponibles depuis un index de temps (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1843"/>
+        <source>Get variable values on given period</source>
+        <translation>Obtenir les valeurs de variable sur une période donnée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1856"/>
+        <source>Get variable values on given period (by return)</source>
+        <translation>Obtenir les valeurs de variable sur une période donnée (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1869"/>
+        <source>Get events on a given period</source>
+        <translation>Obtenir les évènements sur une période donnée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1882"/>
+        <source>Get events on a given period (by return)</source>
+        <translation>Obtenir les évènements sur une période donnée (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1895"/>
+        <source>Test if a spatial units class exists</source>
+        <translation>Tester si une classe d&apos;unités existe</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1908"/>
+        <source>Test if a spatial unit exists in a given units class</source>
+        <translation>Tester si une unité spatiale existe dans une classe d&apos;unités donnée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1921"/>
+        <source>Get the number of spatial units in the spatial graph</source>
+        <translation>Obtenir le nombre d&apos;unités spatiales dans le graphe d&apos;espace</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1934"/>
+        <source>Get the number of spatial units in the spatial graph (by return)</source>
+        <translation>Obtenir le nombre d&apos;unités spatiales dans le graphe d&apos;espace (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1947"/>
+        <source>Get the number of spatial units of a given class</source>
+        <translation>Obtenir le nombre d&apos;unités spatiales dans une classe d&apos;unités</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1960"/>
+        <source>Get the number of spatial units of a given class (by return)</source>
+        <translation>Obtenir le nombre d&apos;unités spatiales dans une classe d&apos;unités (par return)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1973"/>
+        <source>Get a pointer to a spatial unit of a given units class</source>
+        <translation>Obtenir un pointeur vers une unité spatiale d&apos;une classe d&apos;unité</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1986"/>
+        <source>Get a list of pointers to spatial units of a given units class</source>
+        <translation>Obtenir une liste de pointeurs vers les unités spatiales d&apos;une classe d&apos;unités</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="1999"/>
+        <source>Test if a spatial unit is connected to another spatial unit</source>
+        <translation>Tester si une unité spatiale est conectée To a une autre unité spatiale</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2012"/>
+        <source>Test if a spatial unit is connected from another spatial unit</source>
+        <translation>Tester si une unité spatiale est conectée From a une autre unité spatiale</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2025"/>
+        <source>Test if a spatial unit is a child of another spatial unit</source>
+        <translation>Tester si une unité spatiale est enfant d&apos;une autre unité spatiale</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2038"/>
+        <source>Test if a spatial unit is a parent of another spatial unit</source>
+        <translation>Tester si une unité spatiale est parent d&apos;une autre unité spatiale</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2061"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2074"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2087"/>
+        <source>Scientific context</source>
+        <translation>Contexte scientifique</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2063"/>
+        <source>Declare application domain</source>
+        <translation>Déclarer un domaine d&apos;application</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2076"/>
+        <source>Declare modeled process(es)</source>
+        <translation>Déclarer le(s) processus modélisé(s)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2089"/>
+        <source>Declare modeling method</source>
+        <translation>Déclarer la méthode de modélisation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2102"/>
+        <source>Declare used parameter</source>
+        <translation>Déclarer un paramètre utilisé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2115"/>
+        <source>Declare required parameter</source>
+        <translation>Déclarer un paramètre requis</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2128"/>
+        <source>Declare produced variable</source>
+        <translation>Déclarer une variable produite</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2141"/>
+        <source>Declare updated variable</source>
+        <translation>Déclarer une variable mise à jour</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2154"/>
+        <source>Declare required variable</source>
+        <translation>Déclarer une variable requise</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2167"/>
+        <source>Declare used variable</source>
+        <translation>Déclarer une variable utilisée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2180"/>
+        <source>Declare produced attribute</source>
+        <translation>Déclarer un attribut produit</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2193"/>
+        <source>Declare required attribute</source>
+        <translation>Déclarer un attribut requis</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2206"/>
+        <source>Declare used attribute</source>
+        <translation>Déclarer un attribut utilisé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2219"/>
+        <source>Declare used events</source>
+        <translation>Déclarer l&apos;utilisation d&apos;évènements</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2232"/>
+        <source>Declare updated units graph</source>
+        <translation>Déclarer une mise à jour du graphe d&apos;unités</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2245"/>
+        <source>Declare updated units class</source>
+        <translation>Déclarer une classe d&apos;unités spatiales mises à jour</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2256"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2269"/>
+        <source>Extra files</source>
+        <translation>Fichiers extras</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2258"/>
+        <source>Declare required extra file</source>
+        <translation>Déclarer un fichier extra requis</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2271"/>
+        <source>Declare used extra file</source>
+        <translation>Déclarer un fichier extra utilisé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2282"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2295"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2308"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2321"/>
+        <source>Scheduling</source>
+        <translation>Planification</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2284"/>
+        <source>Declare undefined scheduling</source>
+        <translation>Déclarer une planification indéfinie</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2297"/>
+        <source>Declare default deltaT scheduling</source>
+        <translation>Déclarer une planification deltaT par défaut</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2310"/>
+        <source>Declare fixed scheduling</source>
+        <translation>Déclarer une planification fixée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2323"/>
+        <source>Declare scheduling in range</source>
+        <translation>Déclarer une planification sur une plage</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2336"/>
+        <source>Include ThreadedLoopMacros header</source>
+        <translation>Inclure l&apos;en-tête ThreadedLoopMacros</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2349"/>
+        <source>Threaded ordered loop on spatial units of a class</source>
+        <translation>Boucle ordonnée et threadée sur les unités spatiales d&apos;une classe</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2362"/>
+        <source>Threaded ordered loop on all spatial units</source>
+        <translation>Boucle ordonnée et threadée sur toutes les unités spatiales</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2373"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2386"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2399"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2412"/>
+        <source>General</source>
+        <translation>Général</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2375"/>
+        <source>Declare name</source>
+        <translation>Déclarer le nom</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2388"/>
+        <source>Declare description</source>
+        <translation>Déclarer une description</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2401"/>
+        <source>Declare author</source>
+        <translation>Déclarer un auteur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2414"/>
+        <source>Declare version</source>
+        <translation>Déclarer la version</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2425"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2438"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2451"/>
+        <source>Status</source>
+        <translation>Etat</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2427"/>
+        <source>Declare status as experimental</source>
+        <translation>Déclarer le statut comme expérimental</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2440"/>
+        <source>Declare status as beta</source>
+        <translation>Déclarer le status comme bêta</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProviderAPIData.cpp" line="2453"/>
+        <source>Declare status as stable</source>
+        <translation>Déclarer le status comme stable</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="117"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="126"/>
+        <source>Boolean</source>
+        <translation>Booléen</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="115"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="124"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="134"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="144"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="154"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="164"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="174"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="184"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="194"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="204"/>
+        <source>Simples</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="136"/>
+        <source>Integer (signed)</source>
+        <translation>Entier (signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="146"/>
+        <source>Integer (unsigned)</source>
+        <translation>Entier (non signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="156"/>
+        <source>Long integer (signed)</source>
+        <translation>Entier long (signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="166"/>
+        <source>Long integer (unsigned)</source>
+        <translation>Entier long (non signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="176"/>
+        <source>Single precision float (signed)</source>
+        <translation>Réel en simple précision (signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="186"/>
+        <source>Single precision float (unsigned)</source>
+        <translation>Réel en simple précision (non signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="196"/>
+        <source>Double precision float (signed)</source>
+        <translation>Réel en double précision (signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="206"/>
+        <source>Double precision float (unsigned)</source>
+        <translation>Réel en double précision (non signé)</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="214"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="224"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="234"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="244"/>
+        <source>Containers</source>
+        <translation>Conteneurs</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="216"/>
+        <source>Vector</source>
+        <translation>Vecteur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="226"/>
+        <source>List</source>
+        <translation>Liste</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="236"/>
+        <source>Set</source>
+        <translation>Ensemble</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="246"/>
+        <source>Map</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="253"/>
+        <source>Streams</source>
+        <translation>Flux</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="255"/>
+        <source>Output to console</source>
+        <translation>Afficher sur la console</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="262"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="271"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="280"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="289"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="298"/>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="307"/>
+        <source>Math</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="264"/>
+        <source>Include cmath header</source>
+        <translation>Inclure l&apos;en-tête cmath</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="273"/>
+        <source>Absolute value</source>
+        <translation>Valeur absolue</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="282"/>
+        <source>Round value downward</source>
+        <translation>Arrondi par défaut d&apos;une valeur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="291"/>
+        <source>Round value upward</source>
+        <translation>Arrondi par excès une valeur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="300"/>
+        <source>Square root of value</source>
+        <translation>Racine carrée d&apos;une valeur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/waresdev/CompletionProvider.cpp" line="309"/>
+        <source>Power of value</source>
+        <translation>Puissance d&apos;une valeur</translation>
     </message>
 </context>
 <context>

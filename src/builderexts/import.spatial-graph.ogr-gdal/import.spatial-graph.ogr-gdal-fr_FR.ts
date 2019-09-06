@@ -509,6 +509,11 @@ Quitter l&apos;import quand même?</translation>
         <translation>Erreur de source</translation>
     </message>
     <message>
+        <location filename="SourceAddDialog.cpp" line="185"/>
+        <source>Error opening source</source>
+        <translation>Erreur d&apos;ouverture de la source</translation>
+    </message>
+    <message>
         <location filename="SourceAddDialog.cpp" line="187"/>
         <location filename="SourceAddDialog.cpp" line="281"/>
         <location filename="SourceAddDialog.cpp" line="290"/>
