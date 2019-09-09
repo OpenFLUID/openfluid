@@ -61,7 +61,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.na.randomtime")
   DECLARE_METHOD("");
   DECLARE_AUTHOR("","");
 
-  DECLARE_PRODUCED_VARIABLE("na.randomt","SU","Variable defined at rantom times","");
+  DECLARE_PRODUCED_VARIABLE("na.randomt","TU","Variable defined at rantom times","");
 
   DECLARE_SCHEDULING_DEFAULT;
 
@@ -132,11 +132,11 @@ class RandomTimeSimulator : public openfluid::ware::PluggableSimulator
   openfluid::base::SchedulingRequest initializeRun()
   {
 
-    openfluid::core::SpatialUnit* SU;
+    openfluid::core::SpatialUnit* TU;
 
-    OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
     {
-      OPENFLUID_InitializeVariable(SU,"na.randomt",44.44);
+      OPENFLUID_InitializeVariable(TU,"na.randomt",44.44);
     }
     double frac = (std::rand()%300+1)/100.0;
     return Duration(frac*OPENFLUID_GetDefaultDeltaT());
@@ -149,12 +149,12 @@ class RandomTimeSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest runStep()
   {
-    openfluid::core::SpatialUnit* SU;
+    openfluid::core::SpatialUnit* TU;
 
-    OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
     {
-      double NewValue = OPENFLUID_GetLatestVariable(SU, "na.randomt").value()->asDoubleValue()+1;
-      OPENFLUID_AppendVariable(SU,"na.randomt", NewValue);
+      double NewValue = OPENFLUID_GetLatestVariable(TU, "na.randomt").value()->asDoubleValue()+1;
+      OPENFLUID_AppendVariable(TU,"na.randomt", NewValue);
     }
     double frac = (std::rand()%300+1)/100.0;
     return Duration(frac*OPENFLUID_GetDefaultDeltaT());

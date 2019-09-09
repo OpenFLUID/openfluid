@@ -83,13 +83,13 @@ class MultiEditSetDialog : public openfluid::ui::common::OpenFLUIDDialog
     
     QStringList m_ClassNames;
     
-    std::vector<CSVTriplet> m_TripletList;
+    std::vector<ClassIDVar> m_TripletList;
 
 
   public:
 
     MultiEditSetDialog(const QStringList& SetNames, const QStringList& FormatNames, const QStringList& SelectionStr,
-                 QWidget* Parent = nullptr);
+                       QWidget* Parent = nullptr);
 
     ~MultiEditSetDialog();
 

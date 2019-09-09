@@ -51,16 +51,10 @@ BEGIN_SIMULATOR_SIGNATURE("tests.na.deltat")
   DECLARE_DESCRIPTION("");
 
   DECLARE_VERSION("1.0");
-  DECLARE_SDKVERSION;
   DECLARE_STATUS(openfluid::ware::STABLE);
 
-  DECLARE_DOMAIN("");
-  DECLARE_PROCESS("");
-  DECLARE_METHOD("");
-  DECLARE_AUTHOR("","");
 
-
-  DECLARE_PRODUCED_VARIABLE("na.deltat","SU","Basic variable","");
+  DECLARE_PRODUCED_VARIABLE("na.deltat","TU","Basic variable","");
 
   DECLARE_SCHEDULING_DEFAULT;
 
@@ -131,11 +125,11 @@ class DeltatSimulator : public openfluid::ware::PluggableSimulator
   openfluid::base::SchedulingRequest initializeRun()
   {
 
-    openfluid::core::SpatialUnit* SU;
+    openfluid::core::SpatialUnit* TU;
 
-    OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
     {
-      OPENFLUID_InitializeVariable(SU,"na.deltat",11.11);
+      OPENFLUID_InitializeVariable(TU,"na.deltat",11.11);
     }
     return DefaultDeltaT();
   }
@@ -147,11 +141,11 @@ class DeltatSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest runStep()
   {
-    openfluid::core::SpatialUnit* SU;
+    openfluid::core::SpatialUnit* TU;
 
-    OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
     {
-      OPENFLUID_AppendVariable(SU,"na.deltat",12.22);
+      OPENFLUID_AppendVariable(TU,"na.deltat",12.22);
     }
     return DefaultDeltaT();
   }

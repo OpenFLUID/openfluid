@@ -68,7 +68,7 @@ class MultiCSVFormat: public CSVFormat
  // =====================================================================
 
 
-class CSVTriplet
+class ClassIDVar
 {
   public:
     
@@ -81,16 +81,16 @@ class CSVTriplet
     bool HasPrecision;
     unsigned int Precision;
     
-    CSVTriplet();
+    ClassIDVar();
     
-    CSVTriplet(openfluid::core::UnitsClass_t Classes, std::string IDs, openfluid::core::VariableName_t Vars, 
+    ClassIDVar(openfluid::core::UnitsClass_t Classes, std::string IDs, openfluid::core::VariableName_t Vars, 
               unsigned int Precision) : 
         UnitsClassesStr(Classes), UnitsIDsStr(IDs), VariablesStr(Vars), Precision(Precision)
     {
       
     }
     
-    std::string GetTripletString(bool WithPrecision);
+    std::string GetClassIDVarString(bool WithPrecision);
 };
 
 
@@ -104,9 +104,9 @@ class CSVMultiSet
       
     std::string Selection;
     
-    std::vector<CSVTriplet> SelectionList;
+    std::vector<ClassIDVar> SelectionList;
     
-    std::vector<CSVTriplet> ExpandedSelection;
+    std::vector<ClassIDVar> ExpandedSelection;
 
     std::string FormatName;
 
@@ -127,7 +127,7 @@ typedef std::map<std::string, MultiCSVFormat> MultiFormatMap_t;
 // =====================================================================
 
 
-std::vector<CSVTriplet> stringSelectionToTripletList(std::string SelectionStr, unsigned int DefaultPrecision);
+std::vector<ClassIDVar> stringSelectionToClassIDVarList(std::string SelectionStr, unsigned int DefaultPrecision);
 
 std::vector<std::string> parseMultiColsSetsFromParamsTree(const openfluid::ware::WareParamsTree& ParamsTree,
                                                  MultiSetMap_t& Sets);

@@ -51,15 +51,9 @@ BEGIN_SIMULATOR_SIGNATURE("tests.na.alternate")
   DECLARE_DESCRIPTION("");
 
   DECLARE_VERSION("1.0");
-  DECLARE_SDKVERSION;
   DECLARE_STATUS(openfluid::ware::STABLE);
 
-  DECLARE_DOMAIN("");
-  DECLARE_PROCESS("");
-  DECLARE_METHOD("");
-  DECLARE_AUTHOR("","");
-
-  DECLARE_PRODUCED_VARIABLE("na.alternate","SU","Saved variable one step out of two","");
+  DECLARE_PRODUCED_VARIABLE("na.alternate","TU","Saved variable one step out of two","");
 
   DECLARE_SCHEDULING_DEFAULT;
 
@@ -129,11 +123,11 @@ class AlternateSimulator : public openfluid::ware::PluggableSimulator
   openfluid::base::SchedulingRequest initializeRun()
   {
 
-    openfluid::core::SpatialUnit* SU;
+    openfluid::core::SpatialUnit* TU;
 
-    OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
     {
-      OPENFLUID_InitializeVariable(SU,"na.alternate",20.20);
+      OPENFLUID_InitializeVariable(TU,"na.alternate",20.20);
     }
     return DefaultDeltaT();
   }
@@ -150,11 +144,11 @@ class AlternateSimulator : public openfluid::ware::PluggableSimulator
     
     if (Register)
     {
-      openfluid::core::SpatialUnit* SU;
+      openfluid::core::SpatialUnit* TU;
 
-      OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+      OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
       {
-        OPENFLUID_AppendVariable(SU,"na.alternate",22.22);
+        OPENFLUID_AppendVariable(TU,"na.alternate",22.22);
       }
     }
     Register = !Register;

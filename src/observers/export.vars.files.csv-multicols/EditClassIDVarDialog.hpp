@@ -31,7 +31,7 @@
 
 
 /**
-  @file EditTripletDialog.hpp
+  @file EditClassIDVarDialog.hpp
 
   @author Armel THONI <armel.thoni@inra.fr>
 */
@@ -48,11 +48,11 @@
 
 namespace Ui
 {
-  class EditTripletDialog;
+  class EditClassIDVarDialog;
 }
 
 
-class EditTripletDialog : public openfluid::ui::common::MessageDialog
+class EditClassIDVarDialog : public openfluid::ui::common::MessageDialog
 {
     Q_OBJECT;
 
@@ -63,20 +63,20 @@ class EditTripletDialog : public openfluid::ui::common::MessageDialog
 
   private:
 
-    Ui::EditTripletDialog *ui;
+    Ui::EditClassIDVarDialog *ui;
   
   public:
       
-    EditTripletDialog(const QStringList& ClassNames, QWidget* Parent = nullptr);
+    EditClassIDVarDialog(const QStringList& ClassNames, QWidget* Parent = nullptr);
     
-    ~EditTripletDialog();
+    ~EditClassIDVarDialog();
     
     void initialize(const QString& UnitsClasses, const QString& UnitsIDs, const QString& Variables, 
                     const bool HasPrecision, const std::size_t Precision);
       
     void update();
 
-    std::vector<CSVTriplet> getTripletSettings();
+    std::vector<ClassIDVar> getClassIDVarSettings();
   
 };
 

@@ -6,9 +6,9 @@ SET(OBS_TRANSLATIONS_ENABLED ON)
 
 SET(EXT_CPP export.vars.files.csv-multicols/MultiEditFormatDialog.cpp export.vars.files.csv-multicols/MultiEditSetDialog.cpp
             export.vars.files.csv-multicols/MultiCSVObsParamsWidget.cpp export.vars.files.csv-multicols/MultiCSVObsTools.cpp
-            export.vars.files.csv-multicols/EditTripletDialog.cpp)
+            export.vars.files.csv-multicols/EditClassIDVarDialog.cpp)
 SET(EXT_UIFILES export.vars.files.csv-multicols/MultiEditFormatDialog.ui export.vars.files.csv-multicols/MultiEditSetDialog.ui
-                export.vars.files.csv-multicols/MultiCSVObsParamsWidget.ui export.vars.files.csv-multicols/EditTripletDialog.ui)
+                export.vars.files.csv-multicols/MultiCSVObsParamsWidget.ui export.vars.files.csv-multicols/EditClassIDVarDialog.ui)
 SET(EXT_INSTALL_ENABLED ON)
 SET(EXT_TRANSLATIONS_ENABLED OFF)
 SET(EXT_BINDIR ${OFBUILD_DIST_BUILDEREXTS_DIR})

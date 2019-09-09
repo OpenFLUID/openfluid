@@ -51,15 +51,9 @@ BEGIN_SIMULATOR_SIGNATURE("tests.na.noupdate")
   DECLARE_DESCRIPTION("");
 
   DECLARE_VERSION("1.0");
-  DECLARE_SDKVERSION;
   DECLARE_STATUS(openfluid::ware::STABLE);
 
-  DECLARE_DOMAIN("");
-  DECLARE_PROCESS("");
-  DECLARE_METHOD("");
-  DECLARE_AUTHOR("","");
-
-  DECLARE_PRODUCED_VARIABLE("na.noupdate","SU","Saved variable only at begin and never really updated","");
+  DECLARE_PRODUCED_VARIABLE("na.noupdate","OTU","Saved variable only at begin and never really updated","");
 
   DECLARE_SCHEDULING_DEFAULT;
 
@@ -130,11 +124,11 @@ class NoUpdateSim : public openfluid::ware::PluggableSimulator
   openfluid::base::SchedulingRequest initializeRun()
   {
 
-    openfluid::core::SpatialUnit* SU;
+    openfluid::core::SpatialUnit* OTU;
 
-    OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+    OPENFLUID_UNITS_ORDERED_LOOP("OTU",OTU)
     {
-      OPENFLUID_InitializeVariable(SU,"na.noupdate",33.33);
+      OPENFLUID_InitializeVariable(OTU,"na.noupdate",33.33);
     }
     return Duration(OPENFLUID_GetDefaultDeltaT()/2);
   }

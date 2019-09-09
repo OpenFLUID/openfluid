@@ -48,29 +48,29 @@
 #include "MultiCSVObsTools.hpp"
 
 
-MultiCSVFormat::MultiCSVFormat(): CSVFormat(),
-  MissingValueString("NA")
+MultiCSVFormat::MultiCSVFormat(): CSVFormat(), 
+                                  MissingValueString("NA")
 {
 
-};
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-CSVTriplet::CSVTriplet():
+ClassIDVar::ClassIDVar():
   UnitsClassesStr(""), UnitsIDsStr(""), VariablesStr("")
 {
 
-};
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-std::string CSVTriplet::GetTripletString(bool WithPrecision)
+std::string ClassIDVar::GetClassIDVarString(bool WithPrecision)
 {
   std::string TripletString = UnitsClassesStr + "#" + UnitsIDsStr + ":" + VariablesStr;
   if (HasPrecision && WithPrecision)
@@ -86,22 +86,22 @@ std::string CSVTriplet::GetTripletString(bool WithPrecision)
 
 
 CSVMultiSet::CSVMultiSet() :
- Selection(""), SelectionList(), FormatName("")
+  Selection(""), SelectionList(), FormatName("")
 {
 
-};
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-std::vector<CSVTriplet> stringSelectionToTripletList(std::string SelectionStr, unsigned int DefaultPrecision)
+std::vector<ClassIDVar> stringSelectionToClassIDVarList(std::string SelectionStr, unsigned int DefaultPrecision)
 {
   std::vector<std::string> Columns = openfluid::tools::splitString(SelectionStr, ";");
   
   
-  std::vector<CSVTriplet> CSVTriplets;
+  std::vector<ClassIDVar> CSVTriplets;
   for (std::string Column : Columns)
   {
     // parse and create CSVTriplet
@@ -109,7 +109,7 @@ std::vector<CSVTriplet> stringSelectionToTripletList(std::string SelectionStr, u
     std::size_t ColonPosition = Column.find(":");
     std::size_t PercentPosition = Column.find("%");
     
-    CSVTriplet CurrentCSVTriplet;
+    ClassIDVar CurrentCSVTriplet;
     
     CurrentCSVTriplet.UnitsClassesStr = Column.substr(0,HashPosition);
     CurrentCSVTriplet.UnitsIDsStr = Column.substr(HashPosition+1, ColonPosition-HashPosition-1);

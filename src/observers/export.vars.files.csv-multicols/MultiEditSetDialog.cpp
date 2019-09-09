@@ -45,12 +45,12 @@
 
 #include "ui_MultiEditSetDialog.h"
 #include "MultiEditSetDialog.hpp"
-#include "EditTripletDialog.hpp"
+#include "EditClassIDVarDialog.hpp"
 
 
 MultiEditSetDialog::MultiEditSetDialog(const QStringList& SetNames,
-                             const QStringList& FormatNames, const QStringList& ClassNames,
-                             QWidget* Parent):
+                                       const QStringList& FormatNames, const QStringList& ClassNames,
+                                       QWidget* Parent):
   openfluid::ui::common::OpenFLUIDDialog(Parent),
   ui(new Ui::MultiEditSetDialog), m_ExistingSetsNames(SetNames), m_ClassNames(ClassNames)
 {
@@ -207,7 +207,7 @@ void MultiEditSetDialog::initialize(const QString& Name, const QString& Format,
   ui->SetNameEdit->setText(Name);
   ui->FormatComboBox->setCurrentIndex(ui->FormatComboBox->findText(Format));
   
-  m_TripletList = stringSelectionToTripletList(Selection.toStdString(), 
+  m_TripletList = stringSelectionToClassIDVarList(Selection.toStdString(), 
                                                                      std::numeric_limits<unsigned int>::quiet_NaN());
   
   refreshTable();
@@ -223,11 +223,11 @@ void MultiEditSetDialog::initialize(const QString& Name, const QString& Format,
 void MultiEditSetDialog::addTriplet()
 {
 
-  EditTripletDialog AddDlg(m_ClassNames, this);
+  EditClassIDVarDialog AddDlg(m_ClassNames, this);
 
   if (AddDlg.exec() == QDialog::Accepted)
   {
-    std::vector<CSVTriplet> Triplets = AddDlg.getTripletSettings();
+    std::vector<ClassIDVar> Triplets = AddDlg.getClassIDVarSettings();
     m_TripletList.insert(m_TripletList.end(), Triplets.begin(), Triplets.end());
     
     refreshTable();
@@ -263,7 +263,7 @@ void MultiEditSetDialog::editTriplet()
   }
     
 
-  EditTripletDialog EditDlg(m_ClassNames, this);
+  EditClassIDVarDialog EditDlg(m_ClassNames, this);
 
   EditDlg.initialize(UnitsClasses, UnitsIDs, Variables, HasPrecision, Precision);
 
@@ -273,7 +273,7 @@ void MultiEditSetDialog::editTriplet()
     if (CurrentRow < m_TripletList.size())
     {
       m_TripletList.erase(m_TripletList.begin()+CurrentRow);
-      std::vector<CSVTriplet> Triplets = EditDlg.getTripletSettings();
+      std::vector<ClassIDVar> Triplets = EditDlg.getClassIDVarSettings();
       m_TripletList.insert(m_TripletList.begin()+CurrentRow, Triplets.begin(), Triplets.end());
       
     }
@@ -330,9 +330,9 @@ openfluid::ware::WareParams_t MultiEditSetDialog::getMultiSetParams()
 
   std::string SelectionStr = "";
   std::size_t TripletNumber = 0;
-  for (auto Triplet : m_TripletList)
+  for (auto& Triplet : m_TripletList)
   {
-    SelectionStr += Triplet.GetTripletString(true);
+    SelectionStr += Triplet.GetClassIDVarString(true);
     if (TripletNumber < m_TripletList.size()-1)
     {
       SelectionStr += ";";

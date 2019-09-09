@@ -30,7 +30,7 @@
 */
 
 /**
-  @file EditTripletDialog.cpp
+  @file EditClassIDVarDialog.cpp
 
   @author Armel THONI <armel.thoni@inra.fr>
 */
@@ -42,13 +42,13 @@
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
-#include "EditTripletDialog.hpp"
-#include "ui_EditTripletDialog.h"
+#include "EditClassIDVarDialog.hpp"
+#include "ui_EditClassIDVarDialog.h"
 
 
-EditTripletDialog::EditTripletDialog(const QStringList& ClassNames, QWidget* Parent) :
+EditClassIDVarDialog::EditClassIDVarDialog(const QStringList& ClassNames, QWidget* Parent) :
   openfluid::ui::common::MessageDialog(Parent),
-  ui(new Ui::EditTripletDialog)
+  ui(new Ui::EditClassIDVarDialog)
 {
   ui->setupUi(this);
   setupMessageUi("Edit set element");
@@ -74,7 +74,7 @@ EditTripletDialog::EditTripletDialog(const QStringList& ClassNames, QWidget* Par
 // =====================================================================
 
 
-EditTripletDialog::~EditTripletDialog()
+EditClassIDVarDialog::~EditClassIDVarDialog()
 {
   delete ui;
 }
@@ -84,7 +84,7 @@ EditTripletDialog::~EditTripletDialog()
 // =====================================================================
 
 
-void EditTripletDialog::checkGlobal()
+void EditClassIDVarDialog::checkGlobal()
 {
   setMessage("");
   bool ValidLists = true;
@@ -163,7 +163,7 @@ void EditTripletDialog::checkGlobal()
 // =====================================================================
 
 
-void EditTripletDialog::initialize(const QString& UnitsClasses, const QString& UnitsIDs, const QString& Variables, 
+void EditClassIDVarDialog::initialize(const QString& UnitsClasses, const QString& UnitsIDs, const QString& Variables, 
                                    const bool HasPrecision, const std::size_t Precision)
 {
   if (UnitsClasses == "*")
@@ -216,9 +216,9 @@ void EditTripletDialog::initialize(const QString& UnitsClasses, const QString& U
 // =====================================================================
 
 
-std::vector<CSVTriplet> EditTripletDialog::getTripletSettings()
+std::vector<ClassIDVar> EditClassIDVarDialog::getClassIDVarSettings()
 {
-  std::vector<CSVTriplet> Triplets;
+  std::vector<ClassIDVar> Triplets;
   std::vector<std::string> UnitsClasses;
   if (ui->AllClassesRadioButton->isChecked())
   {
@@ -278,13 +278,13 @@ std::vector<CSVTriplet> EditTripletDialog::getTripletSettings()
   }
   
   // Generate all triplets
-  for (auto Class : UnitsClasses)
+  for (const auto& Class : UnitsClasses)
   {
-    for (auto Unit : UnitsIDs)
+    for (const auto& Unit : UnitsIDs)
     {
-      for (auto Var : Vars)
+      for (const auto& Var : Vars)
       {
-        CSVTriplet CurrentTriplet;
+        ClassIDVar CurrentTriplet;
         CurrentTriplet.UnitsClassesStr = Class;
         CurrentTriplet.UnitsIDsStr = Unit;
         CurrentTriplet.VariablesStr = Var;

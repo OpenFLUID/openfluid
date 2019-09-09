@@ -59,15 +59,19 @@ class CSVFormat
     enum HeaderType { None, Info, ColnamesAsData, ColnamesAsComment, Full };
 
     HeaderType Header;
+    
     std::string ColSeparator;
+    
     std::string DateFormat;
+    
     std::string CommentChar;
+    
     unsigned int Precision;
 
     bool IsTimeIndexDateFormat;
 
     CSVFormat() : Header(Info), ColSeparator(";"), DateFormat("%Y%m%dT%H%M%S"),
-                   CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false)
+                  CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false)
     {
 
     }
@@ -95,8 +99,11 @@ class BaseCSVFile
 
     ~BaseCSVFile()
     {
-      if (FileHandle.is_open()) FileHandle.close();
-        delete [] FileBuffer;
+      if (FileHandle.is_open())
+      {
+        FileHandle.close();
+      }
+      delete [] FileBuffer;
     }
 };
  
@@ -119,7 +126,7 @@ class CSVFilesObserverBase : public openfluid::ware::PluggableObserver
   public:
 
     CSVFilesObserverBase() : PluggableObserver(),
-    m_OutputDir(""),m_BufferSize(2*1024),m_OutFileExt(CSV_FILES_EXT)
+                             m_OutputDir(""), m_BufferSize(2*1024), m_OutFileExt(CSV_FILES_EXT)
     {
 
     }

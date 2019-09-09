@@ -7,8 +7,24 @@
       <param name="format.auto.colsep" value="	"/>
       <param name="format.auto.date" value="ISO"/>
       <param name="format.auto.header" value="colnames-as-comment"/>
+      <param name="set.autoTU.format" value="auto"/>
+      <param name="set.autoTU.selection" value="TU#*:*%2"/>
+    </observer>
+    
+    <observer ID="export.vars.files.csv-multicols" enabled="1">
+      <param name="format.auto.colsep" value="	"/>
+      <param name="format.auto.date" value="ISO"/>
+      <param name="format.auto.header" value="colnames-as-comment"/>
+      <param name="set.autoOTU.format" value="auto"/>
+      <param name="set.autoOTU.selection" value="OTU#1:*%2"/>
+    </observer>
+    
+    <observer ID="export.vars.files.csv-multicols" enabled="1">
+      <param name="format.auto.colsep" value="	"/>
+      <param name="format.auto.date" value="ISO"/>
+      <param name="format.auto.header" value="colnames-as-comment"/>
       <param name="set.autoAll.format" value="auto"/>
-      <param name="set.autoAll.selection" value="*#1:*%2"/>
+      <param name="set.autoAll.selection" value="*#*:*%2"/>
     </observer>
     
   </monitoring>

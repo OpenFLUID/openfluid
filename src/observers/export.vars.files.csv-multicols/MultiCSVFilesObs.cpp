@@ -64,7 +64,7 @@ class CSVMulticolsSetFile
     std::string ColumnsHeaders;
 
     CSVMulticolsSetFile() : Format(nullptr)
-    { };
+    { }
 };
 
 
@@ -175,7 +175,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
           m_SetsFiles[Set.first].Format = &(m_Formats[FormatName]);
         }
         
-        m_SetsFiles[Set.first].SetDefinition.SelectionList = stringSelectionToTripletList(Set.second.Selection,
+        m_SetsFiles[Set.first].SetDefinition.SelectionList = stringSelectionToClassIDVarList(Set.second.Selection,
                                                                              m_SetsFiles[Set.first].Format->Precision);
 
       }
@@ -202,7 +202,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
         std::string ColumnsHeaders;
         bool FirstColumn = true;
         
-        for (auto& Triplet : SetFiles.second.SetDefinition.SelectionList)
+        for (const auto& Triplet : SetFiles.second.SetDefinition.SelectionList)
         {
           // UNIT CLASS
           std::vector<openfluid::core::UnitsClass_t> UnitsClassArray;
@@ -285,7 +285,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
             {
               for (openfluid::core::VariableName_t CurrentVar : VarArray)
               {
-                CSVTriplet CurrentTriplet(UnitsClass, std::to_string(CurrentID), CurrentVar, Triplet.Precision);
+                ClassIDVar CurrentTriplet(UnitsClass, std::to_string(CurrentID), CurrentVar, Triplet.Precision);
                 SetFiles.second.SetDefinition.ExpandedSelection.push_back(CurrentTriplet);
                 
                 if (FirstColumn)
@@ -296,7 +296,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
                 {
                   ColumnsHeaders += SetFiles.second.Format->ColSeparator;
                 }
-                ColumnsHeaders += CurrentTriplet.GetTripletString(false);
+                ColumnsHeaders += CurrentTriplet.GetClassIDVarString(false);
               }
             }
           }
@@ -349,7 +349,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
         }
         
         bool IsValue = false;
-        for (CSVTriplet Column : SetFiles.second.SetDefinition.ExpandedSelection)
+        for (ClassIDVar Column : SetFiles.second.SetDefinition.ExpandedSelection)
         {
           LineHandle << SetFiles.second.Format->ColSeparator;
           
