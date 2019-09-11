@@ -73,9 +73,10 @@ namespace openfluid { namespace ui { namespace common {
 
 RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluidx::FluidXDescriptor* FXDesc):
   MessageDialog(Parent), ui(new Ui::RunSimulationDialog), mp_FXDesc(FXDesc),
-  m_Launched(false), m_Success(true)
+  m_Launched(false), m_Success(true), m_CanClose(true)
 {
   setWindowModality(Qt::ApplicationModal);
+  setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
 
   ui->setupUi(this);
 
@@ -148,6 +149,8 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluid
 
   adjustSize();
 
+  // thread launch: forbid window closing
+  m_CanClose = false;
   WThread->start();
   m_ElapsedTimer.start();
 }
@@ -160,6 +163,22 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluid
 RunSimulationDialog::~RunSimulationDialog()
 {
   delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool RunSimulationDialog::event(QEvent* event)
+{
+  QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+  if(keyEvent && keyEvent->key() == Qt::Key_Escape && !m_CanClose) // disable escape key when closing is forbidden
+  {
+    keyEvent->accept();
+    return true;
+  }
+  return MessageDialog::event(event);
 }
 
 
@@ -344,6 +363,8 @@ void RunSimulationDialog::setStage(openfluid::ui::common::RunSimulationListener:
 
 void RunSimulationDialog::setCompleted()
 {
+  m_CanClose = true;  
+  
   ui->PauseButton->setEnabled(false);
   ui->StopButton->setEnabled(false);
 

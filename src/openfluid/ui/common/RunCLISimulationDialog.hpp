@@ -74,6 +74,8 @@ class OPENFLUID_API RunCLISimulationDialog : public MessageDialog
     std::unique_ptr<QRegularExpression> mp_ANSIRegex;
 
     bool m_IsKilled;
+    
+    bool m_CanClose;
 
 
   private slots:
@@ -88,6 +90,8 @@ class OPENFLUID_API RunCLISimulationDialog : public MessageDialog
   protected:
 
     void showEvent(QShowEvent* event);
+
+    bool event(QEvent* event);
 
 
   public:
