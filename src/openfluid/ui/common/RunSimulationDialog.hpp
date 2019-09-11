@@ -86,6 +86,8 @@ class OPENFLUID_API RunSimulationDialog : public MessageDialog
     bool m_Launched;
 
     bool m_Success;
+    
+    bool m_CanClose;
 
     static QString getDurationAsDaysHoursMinsSecsString(openfluid::core::Duration_t Duration);
 
@@ -122,6 +124,8 @@ class OPENFLUID_API RunSimulationDialog : public MessageDialog
   protected:
 
     void closeEvent(QCloseEvent *event);
+    
+    bool event(QEvent* event);
 
 
   public:

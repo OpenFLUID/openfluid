@@ -58,9 +58,10 @@ namespace openfluid { namespace ui { namespace common {
 RunCLISimulationDialog::RunCLISimulationDialog(QWidget* Parent, const QString& PrjPath):
   MessageDialog(Parent), ui(new Ui::RunCLISimulationDialog), m_PrjPath(PrjPath), 
   mp_Process(new QProcess()), mp_ANSIRegex(new QRegularExpression("\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]")),
-  m_IsKilled(false)
+  m_IsKilled(false), m_CanClose(true)
 {
   setWindowModality(Qt::ApplicationModal);
+  setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
 
   ui->setupUi(this);
 
@@ -97,8 +98,25 @@ RunCLISimulationDialog::~RunCLISimulationDialog()
 // =====================================================================
 
 
+bool RunCLISimulationDialog::event(QEvent* event)
+{
+  QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+  if(keyEvent && keyEvent->key() == Qt::Key_Escape && !m_CanClose) // disable escape key when closing is forbidden
+  {
+    keyEvent->accept();
+    return true;
+  }
+  return MessageDialog::event(event);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void RunCLISimulationDialog::showEvent(QShowEvent* event) 
 {
+    
   QWidget::showEvent( event );
 
   // build path to OpenFLUID command line
@@ -156,6 +174,7 @@ void RunCLISimulationDialog::showEvent(QShowEvent* event)
   connect(ui->KillButton,SIGNAL(clicked()),this,SLOT(killProcess()));
 
   // launch command line
+  m_CanClose = false;
   mp_Process->setProcessChannelMode(QProcess::MergedChannels);
   mp_Process->start(Command,Args);
   ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
@@ -169,6 +188,7 @@ void RunCLISimulationDialog::showEvent(QShowEvent* event)
 
 void RunCLISimulationDialog::finishProcess()
 {
+  m_CanClose = true;
   ui->KillButton->setEnabled(false);
   ui->ExecutionOutputEdit->moveCursor (QTextCursor::End);
   ui->ButtonBox->button(QDialogButtonBox::Close)->setEnabled(true);
