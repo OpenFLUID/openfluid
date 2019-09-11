@@ -69,6 +69,8 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
   QString SrcFilename;
   QString SrcClassname;
 
+  ui->Sim2docWidget->setVisible(false); // remove sim2doc widget in all cases
+
   switch (m_WareType)
   {
     case openfluid::ware::WareType::SIMULATOR:
@@ -83,7 +85,6 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
       WareId = "obs.id";
       SrcFilename = "MyObs.cpp";
       SrcClassname = "MyObserver";
-      ui->Sim2docWidget->setVisible(false);
       ui->BuilderExtWidget->setVisible(false);
       break;
     case openfluid::ware::WareType::BUILDEREXT:
@@ -92,7 +93,6 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
       SrcFilename = "MyExt.cpp";
       SrcClassname = "MyExtension";
       ui->UiWidget->setVisible(false);
-      ui->Sim2docWidget->setVisible(false);
       break;
     default:
       break;
