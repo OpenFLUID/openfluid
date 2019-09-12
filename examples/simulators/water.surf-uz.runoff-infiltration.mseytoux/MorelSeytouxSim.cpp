@@ -72,22 +72,19 @@
 %\selectlanguage{english}
 
 \begin{abstract}
-\iflanguage{english}{\input{./doc/english/InfiltrationMSeytoux_abstract.tex}}
-{\input{./doc/french/InfiltrationMSeytoux_resume.tex}}
+\input{./doc/english/InfiltrationMSeytoux_abstract.tex}
 \end{abstract}
 
 %******************************
 % Scientific concepts
-\iflanguage{english}{\section{Scientific concepts}}{\section{Concepts scientifiques}}
-\iflanguage{english}{\input{./doc/english/InfiltrationMSeytoux_scientific_concept.tex}}
-  {\input{./doc/french/InfiltrationMSeytoux_concept_scientifique.tex}}
+\section{Scientific concepts}
+\input{./doc/english/InfiltrationMSeytoux_scientific_concept.tex}
 
 
 %******************************
 % Functional description
-\iflanguage{english}{\section{Functional description}}{\section{Notice d'utilisation}}
-\iflanguage{english}{\input{./doc/english/InfiltrationMSeytoux_functional_description.tex}}
-  {\input{./doc/french/InfiltrationMSeytoux_notice_utilisation.tex}}
+\section{Functional description}
+\input{./doc/english/InfiltrationMSeytoux_functional_description.tex}
 
 %******************************
 % References

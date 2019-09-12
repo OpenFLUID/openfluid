@@ -71,21 +71,19 @@
 \selectlanguage{english}
 
 \begin{abstract}
-\iflanguage{english}{\input{./doc/english/HayamiSU_abstract.tex}}{\input{./doc/french/HayamiSU_resume.tex}}
+\input{./doc/english/HayamiSU_abstract.tex}
 \end{abstract}
 
 %******************************
 % Scientific concepts
-\iflanguage{english}{\section{Scientific concepts}}{\section{Concepts scientifiques}}
-\iflanguage{english}{\input{./doc/english/HayamiSU_scientific_concept.tex}}
-  {\input{./doc/french/HayamiSU_concept_scientifique.tex}}
+\section{Scientific concepts}
+\input{./doc/english/HayamiSU_scientific_concept.tex}
 
 
 %******************************
 % Functional description
-\iflanguage{english}{\section{Functional description}}{\section{Notice d'utilisation}}
-\iflanguage{english}{\input{./doc/english/HayamiSU_functional_description.tex}}
-  {\input{./doc/french/HayamiSU_notice_utilisation.tex}}
+\section{Functional description}
+\input{./doc/english/HayamiSU_functional_description.tex}
 
 %******************************
 % References
