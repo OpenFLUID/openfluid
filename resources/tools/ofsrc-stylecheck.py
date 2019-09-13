@@ -442,6 +442,7 @@ class SourceTreeChecker:
     else:
       print "No potential style problem detected"
 
+    return TotalErrorsCount
 
 
 ############################################################################
@@ -458,8 +459,10 @@ try:
   Args = vars(Args)
 
   Checker = SourceTreeChecker(Args['path'],Args['verbose'])
-  Checker.run()
+  Ret = Checker.run()
   
+  sys.exit(int(Ret > 0))
+
 except Exception as e:
   print "Error:",
   print e
