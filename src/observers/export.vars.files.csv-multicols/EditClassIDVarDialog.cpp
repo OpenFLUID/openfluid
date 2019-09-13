@@ -129,7 +129,7 @@ void EditClassIDVarDialog::checkGlobal()
         std::vector<std::string> IDLimits = openfluid::tools::splitString(ContiguousID, "-");
         if (IDLimits.size() > 2)
         {
-          setMessage(tr("Too many dashes in units list"));
+          setMessage(tr("Contiguous dashes in units list"));
         }
       }
         
@@ -139,7 +139,7 @@ void EditClassIDVarDialog::checkGlobal()
       }
       else if (!Exp.exactMatch(ui->SelectedUnitsTextEdit->toPlainText()))
       {
-        setMessage(tr("Invalid characters or syntax in units list"));
+        setMessage(tr("Invalid character or wrong syntax in units list"));
       }
     }
 

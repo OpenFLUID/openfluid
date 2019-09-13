@@ -3646,38 +3646,38 @@ Continuer quand même?</translation>
         <translation>cacher les paramètres et les informations</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="274"/>
-        <source>the generator</source>
-        <translation>le générateur</translation>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="276"/>
+        <source>the %1 generator</source>
+        <translation>le générateur %1</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="277"/>
-        <source>the simulator</source>
-        <translation>le simulateur</translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="279"/>
-        <source>the observer</source>
-        <translation>l&apos;observateur</translation>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="280"/>
+        <source>the %1 simulator</source>
+        <translation>le simulateur %1</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="284"/>
-        <source>You are removing %1 %2.
+        <source>the %1 observer</source>
+        <translation>l&apos;observateur %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="289"/>
+        <source>You are removing %1.
 All parameters will be lost.
 
 Proceed anyway?</source>
-        <translation>Vous enlevez %1 %2.
+        <translation>Vous enlevez %1.
 Tous les paramètres seront perdus.
 
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="419"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="426"/>
         <source>switch to assistant</source>
         <translation>passer en mode assistant</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="421"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="428"/>
         <source>switch to list</source>
         <translation>passer en mode liste</translation>
     </message>
@@ -4385,7 +4385,7 @@ Continuer quand même?</translation>
 <context>
     <name>openfluid::ui::common::RunCLISimulationDialog</name>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunCLISimulationDialog.cpp" line="67"/>
+        <location filename="../../src/openfluid/ui/common/RunCLISimulationDialog.cpp" line="68"/>
         <source>Run Simulation</source>
         <translation>Exécution de la simulation</translation>
     </message>
@@ -4399,32 +4399,32 @@ Continuer quand même?</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="82"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="83"/>
         <source>Run Simulation</source>
         <translation>Exécution de la simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="189"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="208"/>
         <source> day(s), </source>
         <translation> jour(s), </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="189"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="208"/>
         <source> hour(s), </source>
         <translation> heure(s), </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="190"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="209"/>
         <source> min(s), </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="190"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="209"/>
         <source> sec(s)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="202"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="221"/>
         <source>You are requesting the simulation to abort.
 Simulation data not written on disk will be lost.
 
@@ -4435,22 +4435,22 @@ Les données de simulation non écrites sur disque seront perdues.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="315"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="334"/>
         <source>pre-simulation</source>
         <translation>pré-simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="320"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="339"/>
         <source>initialization</source>
         <translation>initialisation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="325"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="344"/>
         <source>simulation</source>
         <translation>simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="330"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="349"/>
         <source>finalization</source>
         <translation>finalisation</translation>
     </message>
@@ -4969,17 +4969,17 @@ Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les
 <context>
     <name>openfluid::ui::waresdev::NewWareDialog</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="75"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="77"/>
         <source>Create a new simulator</source>
         <translation>Créer un nouveau simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="82"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="84"/>
         <source>Create a new observer</source>
         <translation>Créer un nouvel observateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="90"/>
+        <location filename="../../src/openfluid/ui/waresdev/NewWareDialog.cpp" line="91"/>
         <source>Create a new Builder extension</source>
         <translation>Créer une nouvelle extension Builder</translation>
     </message>

@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>424</width>
-    <height>519</height>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -43,7 +43,7 @@
              <item>
               <widget class="QRadioButton" name="SelectedUnitsClassesRadioButton">
                <property name="text">
-                <string>Specific units classes:</string>
+                <string>Selected units classes:</string>
                </property>
               </widget>
              </item>

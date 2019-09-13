@@ -271,24 +271,31 @@ void WareWidget::notifyRemoveClicked()
 
   if (openfluid::base::PreferencesManager::instance()->isBuilderItemRemovalConfirm())
   {
-    QString TypeStr = tr("the generator");
+    QString IDStr = QString::fromStdString(getID());
+
+    QString TypeIDStr = tr("the %1 generator").arg(IDStr);
 
     if (getType() == openfluid::ware::WareType::SIMULATOR)
-      TypeStr = tr("the simulator");
+    {
+      TypeIDStr = tr("the %1 simulator").arg(IDStr);
+    }
     else if (getType() == openfluid::ware::WareType::OBSERVER)
-      TypeStr = tr("the observer");
-
+    {
+      TypeIDStr = tr("the %1 observer").arg(IDStr);
+    }
 
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",
-                                tr("You are removing %1 %2.\n"
+                                tr("You are removing %1.\n"
                                    "All parameters will be lost.\n\nProceed anyway?")
-                                .arg(QString::fromStdString(getID())).arg(TypeStr),
+                                .arg(TypeIDStr),
                                 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
   }
 
   if (OK)
+  {
     emit removeClicked(QString::fromStdString(m_ID),m_CurrentIndex);
+  }
 }
 
 

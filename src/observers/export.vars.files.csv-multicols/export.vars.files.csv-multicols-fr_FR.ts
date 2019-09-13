@@ -4,74 +4,72 @@
 <context>
     <name>EditClassIDVarDialog</name>
     <message>
-        <location filename="EditClassIDVarDialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="EditClassIDVarDialog.ui" line="29"/>
         <source>Spatial units</source>
-        <translation type="unfinished"></translation>
+        <translation>Unités spatiales</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.ui" line="35"/>
         <source>All units classes</source>
-        <translation type="unfinished"></translation>
+        <translation>Toutes les classes d&apos;unités</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.ui" line="46"/>
-        <source>Specific units classes:</source>
-        <translation type="unfinished"></translation>
+        <source>Selected units classes:</source>
+        <oldsource>Specific units classes:</oldsource>
+        <translation>Classes d&apos;unités sélectionnées:</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.ui" line="83"/>
         <source>All spatial units</source>
-        <translation type="unfinished"></translation>
+        <translation>Toutes les unités spatiales</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.ui" line="94"/>
         <source>Listed spatial units:</source>
-        <translation type="unfinished"></translation>
+        <translation>Unités spatiales listées:</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.ui" line="127"/>
         <source>Variables</source>
-        <translation type="unfinished"></translation>
+        <translation>Variables</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.ui" line="133"/>
         <source>All variables</source>
-        <translation type="unfinished"></translation>
+        <translation>Toutes les variables</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.ui" line="144"/>
         <source>Listed variables:</source>
-        <translation type="unfinished"></translation>
+        <translation>Variables listées:</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.ui" line="182"/>
         <source>Custom precision:</source>
-        <translation type="unfinished"></translation>
+        <translation>Précision personnalisée:</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.cpp" line="132"/>
-        <source>Too many dashes in units list</source>
-        <translation type="unfinished"></translation>
+        <source>Contiguous dashes in units list</source>
+        <oldsource>Too many dashes in units list</oldsource>
+        <translation>Tirets contigus dans la liste d&apos;unités</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.cpp" line="138"/>
         <source>Empty units list</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste d&apos;unités vide</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.cpp" line="142"/>
-        <source>Invalid characters or syntax in units list</source>
-        <translation type="unfinished"></translation>
+        <source>Invalid character or wrong syntax in units list</source>
+        <oldsource>Invalid characters or syntax in units list</oldsource>
+        <translation>Caractère invalide ou erreur de syntaxe dans la liste d&apos;unités</translation>
     </message>
     <message>
         <location filename="EditClassIDVarDialog.cpp" line="154"/>
         <source>Invalid variable name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de variable invalide</translation>
     </message>
 </context>
 <context>
@@ -79,71 +77,74 @@
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="23"/>
         <source>Formats:</source>
-        <translation type="unfinished"></translation>
+        <translation>Formats:</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="51"/>
         <location filename="MultiCSVObsParamsWidget.ui" line="206"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="56"/>
         <source>Col. Sep.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sép. de Col.</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="61"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="66"/>
         <source>Precision</source>
-        <translation type="unfinished"></translation>
+        <translation>Précision</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="71"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation>En-tête</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="76"/>
         <source>Comment ch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Car. de comment.</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="81"/>
         <source>Missing val.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur manq.</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="181"/>
         <source>Sets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeux de sorties:</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="211"/>
         <source>Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="216"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection</translation>
+    </message>
+    <message>
+        <location filename="MultiCSVObsParamsWidget.cpp" line="496"/>
+        <source>Automatic generation</source>
+        <translation>Génération automatique</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.cpp" line="497"/>
-        <source>Automatic generation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiCSVObsParamsWidget.cpp" line="498"/>
         <source>A format and one or more sets configurations will be automatically generated.
 This will remove existing formats and sets.
 
 Proceed anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Un configuration de format et une ou pluseurs configurations de jeux de sorties vont être générées automatiquement.
+Ceci supprimera toutes les configurations existantes.
+
+Continuer quand même?</translation>
     </message>
 </context>
 <context>
@@ -151,181 +152,120 @@ Proceed anyway?</source>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="19"/>
         <source>Format name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de format:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="43"/>
         <source>Header:</source>
-        <translation type="unfinished"></translation>
+        <translation>En-tête:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="57"/>
         <source>Columns separator:</source>
-        <translation type="unfinished"></translation>
+        <translation>Séparateur de colonnes:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="69"/>
         <source>Date format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format de date</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="80"/>
         <source>Predefined:</source>
-        <translation type="unfinished"></translation>
+        <translation>Prédéfini:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="97"/>
         <source>Custom:</source>
-        <translation type="unfinished"></translation>
+        <translation>Personnalisé:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="114"/>
         <source>Precision:</source>
-        <translation type="unfinished"></translation>
+        <translation>Précision:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="145"/>
         <source>Comment character:</source>
-        <translation type="unfinished"></translation>
+        <translation>Car. de commentaire:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="159"/>
         <source>Missing value string:</source>
-        <translation type="unfinished"></translation>
+        <translation>Chaîne pour valeur manquante:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="185"/>
         <source>Preview:</source>
-        <translation type="unfinished"></translation>
+        <translation>Prévisualisation:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.cpp" line="67"/>
         <source>Columns names as comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Noms des colonnes en commentaire</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.cpp" line="67"/>
         <source>Columns names as data</source>
-        <translation type="unfinished"></translation>
+        <translation>Noms des colonnes comme donnée</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.cpp" line="67"/>
         <source>Full</source>
-        <translation type="unfinished"></translation>
+        <translation>Complet</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.cpp" line="67"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.cpp" line="71"/>
         <source>6 columns</source>
-        <translation type="unfinished"></translation>
+        <translation>6 colonnes</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.cpp" line="71"/>
         <source>Time index</source>
-        <translation type="unfinished"></translation>
+        <translation>Index de temps</translation>
     </message>
 </context>
 <context>
     <name>MultiEditSetDialog</name>
     <message>
         <location filename="MultiEditSetDialog.ui" line="19"/>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="19"/>
         <source>Set name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du jeu de sorties:</translation>
     </message>
     <message>
         <location filename="MultiEditSetDialog.ui" line="45"/>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="45"/>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Format:</translation>
     </message>
     <message>
         <location filename="MultiEditSetDialog.ui" line="57"/>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="61"/>
         <source>Selection:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection:</translation>
     </message>
     <message>
         <location filename="MultiEditSetDialog.ui" line="91"/>
         <source>Units Class</source>
-        <translation type="unfinished"></translation>
+        <translation>Classe d&apos;unités</translation>
     </message>
     <message>
         <location filename="MultiEditSetDialog.ui" line="96"/>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="94"/>
         <source>Unit ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID de l&apos;unité</translation>
     </message>
     <message>
         <location filename="MultiEditSetDialog.ui" line="101"/>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="99"/>
         <source>Variable</source>
-        <translation type="unfinished"></translation>
+        <translation>Variable</translation>
     </message>
     <message>
         <location filename="MultiEditSetDialog.ui" line="106"/>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="104"/>
         <source>Precision</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="89"/>
-        <source>Unit Class</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="190"/>
-        <source>Current line:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="204"/>
-        <source>Custom precision:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="236"/>
-        <source>Spatial units</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="242"/>
-        <source>All unit classes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="253"/>
-        <source>Specific unit classes:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="290"/>
-        <source>All spatial units</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="301"/>
-        <source>Listed spatial units:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="334"/>
-        <source>Variables</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="340"/>
-        <source>All variables</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MultiEditSetDialog_allInOne.ui" line="351"/>
-        <source>Listed variables:</source>
-        <translation type="unfinished"></translation>
+        <translation>Précision</translation>
     </message>
 </context>
 </TS>
