@@ -1,3 +1,35 @@
+## 2.1.9
+
+  * Added command line mode for execution of simulations in Builder 
+    as a separate process
+  * Added observer to produce multi-columns CSV files
+  * Added configurable auto-save mode in Devstudio
+  * Added management of path and paths list separators in the Filesystem API,
+    depending on operating system
+  * Added experimental support of embedded R code in sumlators
+  * Added automatic build of documentation examples
+  * Added french translation for completion menu
+  * Updated management of completion in Devstudio
+  * Updated completion items in Devstudio for better consistency
+  * Updated configuration of external CI services
+  * Updated documentation
+  * Updated tests
+  * Fixed double increment of line width in map view in Builder,
+    occurring on large maps
+  * Fixed files types detection in Devstudio
+  * Fixed UI of new ware dialog in Devstudio
+  * Fixed Preferences menu placement on MacOS system
+  * Fixed Devstudio window size and placement at startup
+  * Fixed behaviour of simulation dialogs in Builder
+  * Fixed keyboard shortcut for completion popup on MacOS system
+  * Fixed management of internal reference URLs
+  * Fixed warnings at build type in MHYDAS model
+  * Fixed possible build error of users builder-extensions,
+    due to missing header file
+  * Cleaned code
+
+
+
 ## 2.1.8
 
   * Added syncing of selection between Builder map and attributes table 
