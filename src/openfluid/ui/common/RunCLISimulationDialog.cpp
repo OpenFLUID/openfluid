@@ -126,7 +126,7 @@ void RunCLISimulationDialog::showEvent(QShowEvent* event)
 
   // build path to OpenFLUID command line
   std::string CmdPath = openfluid::tools::Filesystem::joinPath({openfluid::base::Environment::getInstallPrefix(),
-                                                                "bin",
+                                                                openfluid::config::INSTALL_BIN_PATH,
                                                                 openfluid::config::CMD_APP
                                                                });
 

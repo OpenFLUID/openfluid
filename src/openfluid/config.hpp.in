@@ -86,6 +86,10 @@ const std::string GITASKPASS_APP = "@OPENFLUID_GITASKPASS_APP@";
 
 // Install prefix
 const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
+const std::string INSTALL_BIN_PATH = "@OFBUILD_BIN_INSTALL_PATH@";
+const std::string INSTALL_LIB_PATH = "@OFBUILD_LIB_INSTALL_PATH@";
+const std::string INSTALL_INCLUDE_PATH = "@OFBUILD_INCLUDE_INSTALL_PATH@";
+const std::string INSTALL_SHARE_PATH = "@OFBUILD_SHARE_INSTALL_PATH@";
 
 
 // Plugins extension
