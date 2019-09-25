@@ -180,11 +180,11 @@ void AppActions::createActions()
   m_Actions["SimulationMode"] = new QAction(tr("Mode"), this);
   QActionGroup* ConfigureGroup = new QActionGroup(this);
   QMenu* SimModeMenu = new QMenu();
-  m_Actions["SimulationModeDefault"] = new QAction("Integrated", ConfigureGroup);
+  m_Actions["SimulationModeDefault"] = new QAction(tr("Integrated"), ConfigureGroup);
   m_Actions["SimulationModeDefault"]->setCheckable(true);
   m_Actions["SimulationModeDefault"]->setChecked(true);
   SimModeMenu->addAction(m_Actions["SimulationModeDefault"]);
-  m_Actions["SimulationModeCLI"] = new QAction("Command line", ConfigureGroup);
+  m_Actions["SimulationModeCLI"] = new QAction(tr("Command line"), ConfigureGroup);
   m_Actions["SimulationModeCLI"]->setCheckable(true);
   SimModeMenu->addAction(m_Actions["SimulationModeCLI"]);
   m_Actions["SimulationMode"]->setMenu(SimModeMenu);

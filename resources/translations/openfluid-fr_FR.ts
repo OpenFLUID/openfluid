@@ -494,6 +494,16 @@
         <translation>Mode</translation>
     </message>
     <message>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="183"/>
+        <source>Integrated</source>
+        <translation>Intégré</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="187"/>
+        <source>Command line</source>
+        <translation>Ligne de commande</translation>
+    </message>
+    <message>
         <location filename="../../src/apps/openfluid-builder/base/AppActions.cpp" line="194"/>
         <source>Show/Hide project dashboard</source>
         <translation>Afficher/Masquer le panneau d&apos;information</translation>
