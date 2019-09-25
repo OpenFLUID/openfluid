@@ -804,8 +804,8 @@ where `prefix` depends on the OpenFLUID installation path and operating system (
 
 
 @warning Due to limitations of the RInside package, embedding R code in simulators does not support threading. 
-Simulators using RInside cannot be run in threaded executions such as in OpenFLUID-Builder 
-and must be run using the `openfluid` command line.
+
+@warning Simulations including simulators with RInside must be run using Command line mode in OpenFLUID-Builder or using the `openfluid` command line.
 
 @warning Due to limitations of the RInside package, only one simulator embedding R code 
 can be used in a coupled model.
