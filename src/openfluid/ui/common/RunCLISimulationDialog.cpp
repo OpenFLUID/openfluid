@@ -66,7 +66,9 @@ RunCLISimulationDialog::RunCLISimulationDialog(QWidget* Parent, const QString& P
   ui->setupUi(this);
 
   setupMessageUi(tr("Run Simulation"),QDialogButtonBox::NoButton);
+  
   ui->ButtonBox->button(QDialogButtonBox::Close)->setEnabled(false);
+  
   ui->KillButton->setIcon(openfluid::ui::common::getIcon("stop","/ui/common"));
   ui->KillButton->setIconSize(QSize(20,20));
   ui->KillButton->setEnabled(false);
@@ -81,6 +83,9 @@ RunCLISimulationDialog::RunCLISimulationDialog(QWidget* Parent, const QString& P
   ui->ExecutionOutputEdit->setFocus();
 
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
+
+  // tweak to center dialog on parent window
+  move(Parent->window()->frameGeometry().topLeft() + Parent->window()->rect().center() - rect().center());
 }
 
 
@@ -117,7 +122,7 @@ bool RunCLISimulationDialog::event(QEvent* event)
 void RunCLISimulationDialog::showEvent(QShowEvent* event) 
 {
     
-  QWidget::showEvent( event );
+  QWidget::showEvent(event);
 
   // build path to OpenFLUID command line
   std::string CmdPath = openfluid::tools::Filesystem::joinPath({openfluid::base::Environment::getInstallPrefix(),

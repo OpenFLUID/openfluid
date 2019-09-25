@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>RunCLISimulationDialog</class>
  <widget class="QDialog" name="RunCLISimulationDialog">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +15,9 @@
   </property>
   <property name="windowTitle">
    <string notr="true"/>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
   </property>
   <property name="modal">
    <bool>true</bool>
