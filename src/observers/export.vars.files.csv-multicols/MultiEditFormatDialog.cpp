@@ -61,7 +61,7 @@ MultiEditFormatDialog::MultiEditFormatDialog(const QStringList& ExistingFormats,
 
   ui->ColSepEdit->setText(QString::fromStdString(m_Format.ColSeparator).replace("\t","\\t"));
   ui->CommentCharEdit->setText(QString::fromStdString(m_Format.CommentChar));
-  ui->CommentCharEdit->setText(QString::fromStdString(m_Format.MissingValueString));
+  ui->MissingValueEdit->setText(QString::fromStdString(m_Format.MissingValueString));
 
   // Columns names as data
   m_HeaderLabels << tr("Columns names as comments") << tr("Columns names as data") << tr("Full") << tr("None");
@@ -263,5 +263,5 @@ openfluid::ware::WareParams_t MultiEditFormatDialog::getFormatParams()
                                         {ParamsRoot+"colsep",ColSepStr},
                                         {ParamsRoot+"commentchar",CommentStr},
                                         {ParamsRoot+"header",HeaderStr},
-                                        {ParamsRoot+"missing",MissingValueStr}});
+                                        {ParamsRoot+"missingvalue",MissingValueStr}});
 }
