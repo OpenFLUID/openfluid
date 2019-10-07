@@ -116,16 +116,8 @@ IF(PYTHONINTERP_FOUND)
                     COMMAND "${PYTHON_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
                             "${CMAKE_SOURCE_DIR}"
-                            "--disable=BRAC"
                    )
 
-  # checkstyle tool (TODO rename as 'stylecheck' when brackets corrected)
-  ADD_CUSTOM_TARGET(stylecheck-full
-                    COMMENT "Checking source code style"
-                    COMMAND "${PYTHON_EXECUTABLE}"
-                            "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
-                            "${CMAKE_SOURCE_DIR}"
-                   )
 
 
   # cppcheck tool
