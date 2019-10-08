@@ -77,7 +77,9 @@ OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
     QString CurrentFullDir(m_ProjectsRootPath+"/"+ExamplesDirs[i]);
 
     if (openfluid::base::RunContextManager::isProject(CurrentFullDir.toStdString()))
+    {
       ui->ProjectsListWidget->addItem(ExamplesDirs[i]);
+    }
   }
 
 
@@ -138,8 +140,12 @@ void OpenExampleProjectDialog::updateProjectInfo()
 QString OpenExampleProjectDialog::getSelectedProjectPath() const
 {
   if (ui->ProjectsListWidget->currentRow()<0)
+  {
     return "";
+  }
   else
+  {
     return QString(m_ProjectsRootPath+"/"+ui->ProjectsListWidget->currentItem()->text());
+  }
 
 }

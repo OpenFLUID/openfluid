@@ -194,7 +194,9 @@ void UnitsClassWidget::toggleShowHideStyle()
 void UnitsClassWidget::mousePressEvent(QMouseEvent* Event)
 {
   if (!m_Selected)
+  {
     emit selectionRequested(m_ClassName);
+  }
 
   QWidget::mousePressEvent(Event);
 }
@@ -419,7 +421,9 @@ void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::Da
 void UnitsClassWidget::setLayerVisible()
 {
   if (mp_LayerSource != nullptr)
+  {
     ui->VisibleCheckBox->setChecked(true);
+  }
 }
 
 

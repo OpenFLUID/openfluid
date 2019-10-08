@@ -94,7 +94,9 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
 
   // TODO manage other workspaces later
   if (!Info.m_IsInCurrentWorkspace)
+  {
     return;
+  }
 
   if (Info.m_isAWare || Info.m_isAWareFile)
   {
@@ -113,7 +115,9 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
       connect(Widget, SIGNAL(currentTabChanged(const QString&)), this, SIGNAL(currentTabChanged(const QString&)));
 
       if (Info.m_isAWare)
+      {
         Widget->openDefaultFiles();
+      }
 
       connect(Widget, SIGNAL(wareTextModified(WareSrcWidget*,bool)), this,
               SLOT(onWareTxtModified(WareSrcWidget*,bool)));
@@ -139,7 +143,9 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
     }
 
     if (Info.m_isAWareFile)
+    {
       Widget->openFileTab(Info);
+    }
 
     mp_TabWidget->setCurrentWidget(Widget);
   }
@@ -235,7 +241,9 @@ void WareSrcWidgetCollection::setCurrent(const QString& Path)
 
 // TODO manage other workspaces later
   if (!Info.m_IsInCurrentWorkspace)
+  {
     return;
+  }
 
   if (Info.m_isAWare || Info.m_isAWareFile)
   {
@@ -244,7 +252,9 @@ void WareSrcWidgetCollection::setCurrent(const QString& Path)
     if (Widget)
     {
       if (Info.m_isAWare || Widget->setCurrent(Info))
+      {
         mp_TabWidget->setCurrentWidget(Widget);
+      }
     }
   }
 
@@ -260,15 +270,21 @@ void WareSrcWidgetCollection::openExplorer(const QString& Path)
   QString FileToOpen;
 
   if (!Path.isEmpty())
+  {
     FileToOpen = Path;
+  }
   else
   {
     QString Current = getCurrentWarePath();
 
     if (!Current.isEmpty())
+    {
       FileToOpen = Current;
+    }
     else
+    {
       FileToOpen = mp_Manager->getWaresdevPath();
+    }
   }
 
   QDesktopServices::openUrl(QUrl::fromLocalFile(FileToOpen));
@@ -284,15 +300,21 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
   QString FileToOpen;
 
   if (!Path.isEmpty())
+  {
     FileToOpen = Path;
+  }
   else
   {
     QString Current = getCurrentWarePath();
 
     if (!Current.isEmpty())
+    {
       FileToOpen = Current;
+    }
     else
+    {
       FileToOpen = mp_Manager->getWaresdevPath();
+    }
   }
 
   bool TermFound = true;
@@ -300,7 +322,9 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 // TODO test on Mac and not Debian-based distros
 #if defined(OPENFLUID_OS_UNIX)
   if (!QProcess::startDetached("x-terminal-emulator", QStringList(), FileToOpen))
+  {
     TermFound = QProcess::startDetached("xterm", QStringList(), FileToOpen);
+  }
 #elif defined(OPENFLUID_OS_WINDOWS)
   TermFound = QProcess::startDetached("cmd.exe",QStringList(),FileToOpen);
 #else
@@ -308,7 +332,9 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 #endif
 
   if (!TermFound)
+  {
     QMessageBox::warning(0, tr("Error"), tr("No terminal found"));
+  }
 }
 
 
@@ -319,7 +345,9 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 QString WareSrcWidgetCollection::getCurrentWarePath()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
     return CurrentWare->wareSrcContainer().getAbsolutePath();
+  }
 
   return "";
 }
@@ -332,7 +360,9 @@ QString WareSrcWidgetCollection::getCurrentWarePath()
 WareSrcWidget* WareSrcWidgetCollection::currentWareWidget()
 {
   if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(mp_TabWidget->currentWidget()))
+  {
     return Widget;
+  }
 
   return 0;
 }
@@ -347,7 +377,9 @@ void WareSrcWidgetCollection::setConfigureMode(openfluid::waresdev::WareSrcConta
   m_DefaultConfigMode = Mode;
 
   for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
-      Ware->setConfigureMode(Mode);
+  {
+    Ware->setConfigureMode(Mode);
+  }
 }
 
 
@@ -360,7 +392,9 @@ void WareSrcWidgetCollection::setBuildMode(openfluid::waresdev::WareSrcContainer
   m_DefaultBuildMode = Mode;
 
   for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+  {
     Ware->setBuildMode(Mode);
+  }
 }
 
 
@@ -386,12 +420,16 @@ void WareSrcWidgetCollection::configure()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
     if (openfluid::base::PreferencesManager::instance()->isWaresdevAutomaticSaveBeforeBuild())
+    {
       CurrentWare->saveAllFileTabs();
+    }
 
     CurrentWare->configure();
   }
   else
+  {
     QMessageBox::warning(nullptr,tr("Configure"),tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -404,12 +442,16 @@ void WareSrcWidgetCollection::build()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
     if (openfluid::base::PreferencesManager::instance()->isWaresdevAutomaticSaveBeforeBuild())
+    {
       CurrentWare->saveAllFileTabs();
+    }
 
     CurrentWare->build();
   }
   else
+  {
     QMessageBox::warning(nullptr, tr("Build"), tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -422,13 +464,17 @@ void WareSrcWidgetCollection::generateDoc()
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
     if (openfluid::base::PreferencesManager::instance()->isWaresdevAutomaticSaveBeforeBuild())
+    {
       CurrentWare->saveAllFileTabs();
+    }
 
     CurrentWare->generateDoc();
   }
   else
+  {
     QMessageBox::warning(nullptr,tr("Generate documentation"),
                          tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -445,9 +491,13 @@ void WareSrcWidgetCollection::onWareTxtModified(WareSrcWidget* Widget, bool Modi
     bool ModifiedState = Label.startsWith("*");
 
     if (Modified && !ModifiedState)
+    {
       mp_TabWidget->setTabText(Pos, Label.prepend("*"));
+    }
     else if (!Modified && ModifiedState)
+    {
       mp_TabWidget->setTabText(Pos, Label.remove(0, 1));
+    }
   }
 }
 
@@ -461,7 +511,9 @@ bool WareSrcWidgetCollection::isModified() const
   for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
   {
     if(Ware->isWareModified())
+    {
       return true;
+    }
   }
 
   return false;
@@ -477,7 +529,9 @@ bool WareSrcWidgetCollection::isProcessRunning() const
   for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
   {
     if(Ware->isWareProcessRunning())
+    {
       return true;
+    }
   }
 
   return false;
@@ -491,9 +545,13 @@ bool WareSrcWidgetCollection::isProcessRunning() const
 void WareSrcWidgetCollection::saveCurrentEditor()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
     CurrentWare->saveCurrentEditor();
+  }
   else
+  {
     QMessageBox::warning(0, tr("Save"), tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -507,7 +565,9 @@ void WareSrcWidgetCollection::saveAsMayBeAboveWare()
 
   // the new file is not above the current ware
   if (NewFilePath.isEmpty())
+  {
     return;
+  }
 
   openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = openfluid::waresdev::WareSrcManager::instance()
       ->getPathInfo(NewFilePath);
@@ -530,7 +590,9 @@ void WareSrcWidgetCollection::saveAsMayBeAboveWare()
 QString WareSrcWidgetCollection::saveAs(const QString& TopDirectory)
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
     return CurrentWare->saveAs(TopDirectory);
+  }
 
   QMessageBox::warning(0, tr("Save"), tr("At least one ware must be open to perform this action"));
   return "";
@@ -544,9 +606,13 @@ QString WareSrcWidgetCollection::saveAs(const QString& TopDirectory)
 void WareSrcWidgetCollection::saveAllCurrent()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
     CurrentWare->saveAllFileTabs();
+  }
   else
+  {
     QMessageBox::warning(0, tr("Save"), tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -557,9 +623,13 @@ void WareSrcWidgetCollection::saveAllCurrent()
 void WareSrcWidgetCollection::closeCurrentEditor()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
     CurrentWare->closeCurrentEditor();
+  }
   else
+  {
     QMessageBox::warning(0, tr("Close"), tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -594,7 +664,9 @@ bool WareSrcWidgetCollection::closeAllWidgets()
   {
     case QMessageBox::SaveAll:
       for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+      {
         Ware->saveAllFileTabs();
+      }
       /* fall through */
     case QMessageBox::Discard:
       for(WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
@@ -679,9 +751,13 @@ void WareSrcWidgetCollection::openBuilderExtension()
 void WareSrcWidgetCollection::openFile()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
     CurrentWare->openFile();
+  }
   else
+  {
     QMessageBox::warning(0, tr("Open file"), tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -692,9 +768,13 @@ void WareSrcWidgetCollection::openFile()
 void WareSrcWidgetCollection::deleteCurrentFile()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
     CurrentWare->deleteCurrentFile();
+  }
   else
+  {
     QMessageBox::warning(0, tr("Delete file"), tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -709,7 +789,9 @@ void WareSrcWidgetCollection::openWare(openfluid::ware::WareType Type, const QSt
                                                                                     Title);
 
   if (PathToOpen.isEmpty())
+  {
     return;
+  }
 
   openPath(PathToOpen);
 }
@@ -725,14 +807,20 @@ void WareSrcWidgetCollection::deleteWare(const QString& WarePath)
                            tr("Are you sure you want to delete \"%1\" and all its content?").arg(WarePath),
                            QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
       == QMessageBox::Cancel)
+  {
     return;
+  }
 
   QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
   if (it != m_WareSrcWidgetByPath.end())
+  {
     closeWareTab(it.value());
+  }
 
   if (!openfluid::tools::Filesystem::removeDirectory(WarePath.toStdString()))
+  {
     QMessageBox::critical(0, tr("Delete ware"), tr("Unable to remove the directory \"%1\"").arg(WarePath));
+  }
 }
 
 
@@ -743,9 +831,13 @@ void WareSrcWidgetCollection::deleteWare(const QString& WarePath)
 void WareSrcWidgetCollection::newFile()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
     CurrentWare->newFile();
+  }
   else
+  {
     QMessageBox::warning(0, tr("New file"), tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -771,7 +863,9 @@ void WareSrcWidgetCollection::newSimulatorFromGhost(const openfluid::ware::Simul
     QString NewPath = Dialog.getNewWarePath();
 
     if (!NewPath.isEmpty())
+    {
       openPath(NewPath);
+    }
   }
 }
 
@@ -808,7 +902,9 @@ void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
     QString NewPath = Dialog.getNewWarePath();
 
     if (!NewPath.isEmpty())
+    {
       openPath(NewPath);
+    }
   }
 }
 
@@ -835,7 +931,9 @@ void WareSrcWidgetCollection::showFindReplaceDialog()
   if (WareSrcWidget* Ware = currentWareWidget())
   {
     if (WareFileEditor* Editor = Ware->currentEditor())
+    {
       SelectedText = Editor->getSelectedText();
+    }
   }
 
   mp_FindReplaceDialog->show(SelectedText);
@@ -870,7 +968,9 @@ void WareSrcWidgetCollection::onFindReplaceRequested(FindReplaceDialog::FindRepl
 void WareSrcWidgetCollection::copyText()
 {
   if (WareSrcWidget* Ware = currentWareWidget())
+  {
     Ware->copyText();
+  }
 }
 
 
@@ -881,7 +981,9 @@ void WareSrcWidgetCollection::copyText()
 void WareSrcWidgetCollection::cutText()
 {
   if (WareSrcWidget* Ware = currentWareWidget())
+  {
     Ware->cutText();
+  }
 }
 
 
@@ -892,7 +994,9 @@ void WareSrcWidgetCollection::cutText()
 void WareSrcWidgetCollection::pasteText()
 {
   if (WareSrcWidget* Ware = currentWareWidget())
+  {
     Ware->pasteText();
+  }
 }
 
 
@@ -903,9 +1007,13 @@ void WareSrcWidgetCollection::pasteText()
 void WareSrcWidgetCollection::checkModifiedStatus()
 {
   if (WareSrcWidget* Ware = currentWareWidget())
+  {
     Ware->checkModifiedStatus();
+  }
   else
+  {
     emit modifiedStatusChanged(false, false);
+  }
 }
 
 
@@ -926,9 +1034,13 @@ void WareSrcWidgetCollection::openAPIDoc()
 void WareSrcWidgetCollection::goToLine()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
     CurrentWare->goToLine();
+  }
   else
+  {
     QMessageBox::warning(0, tr("Go to line"), tr("At least one ware must be open to perform this action"));
+  }
 }
 
 
@@ -942,7 +1054,9 @@ void WareSrcWidgetCollection::closeEditor(const QString& FilePath)
 
   QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
   if (it != m_WareSrcWidgetByPath.end())
+  {
     it.value()->closeFileTab(FilePath);
+  }
 }
 
 
@@ -954,7 +1068,9 @@ void WareSrcWidgetCollection::updateEditorsSettings()
 {
   openfluid::ui::waresdev::WareSrcFiletypeManager::instance()->updateStyles();
   for (WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+  {
     Ware->updateEditorsSettings();
+  }
 }
 
 

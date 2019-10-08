@@ -165,7 +165,9 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
         {
     //      std::cout << EvColl.getCount() << std::endl;
           if (EvColl.getCount() != 2)
+          {
             OPENFLUID_RaiseError("wrong event number on TestUnit 1");
+          }
 
           OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
           {
@@ -174,7 +176,9 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
                   Event->isInfoEqual("numeric",1.13) &&
                   Event->getInfoAsString("string",Info) &&
                   Info.substr(0,4) == "EADG"))
+            {
               OPENFLUID_RaiseError("wrong event info on TestUnit 1");
+            }
           }
 
         }
@@ -183,19 +187,25 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           if (aUnit->getID() == 7)
           {
             if (EvColl.getCount() != 1)
+            {
               OPENFLUID_RaiseError("wrong event number on TestUnit 7");
+            }
           }
           else
           {
             if (aUnit->getID() == 12)
             {
               if (EvColl.getCount() > 0)
+              {
                 OPENFLUID_RaiseError("found older event(s) on TestUnits 12");
+              }
             }
             else
             {
               if (EvColl.getCount() > 0)
+              {
                 OPENFLUID_RaiseError("found unknown events on some TestUnits");
+              }
             }
           }
         }
@@ -215,7 +225,10 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
         OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
         {
-          if (Event->isInfoExist("addingstep")) OPENFLUID_RaiseError("unexpected event found");
+          if (Event->isInfoExist("addingstep"))
+          {
+            OPENFLUID_RaiseError("unexpected event found");
+          }
         }
 
       }
@@ -257,7 +270,9 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
                 Event->isInfoEqual("numeric",1.15) &&
                 Event->getInfoAsString("string",Info) &&
                 Info.substr(0,4) == "EADG") || (Event->isInfoExist("addingstep"))))
+          {
             OPENFLUID_RaiseError("wrong event info on some TestUnit");
+          }
         }
 
 
@@ -273,7 +288,9 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
                 Event->isInfoEqual("numeric",1.15) &&
                 Event->getInfoAsString("string",Info) &&
                 Info.substr(0,4) == "EADG") || (Event->isInfoExist("addingstep"))))
+          {
             OPENFLUID_RaiseError("wrong event info on some TestUnit");
+          }
         }
 
 
@@ -292,9 +309,17 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
                                                             (OPENFLUID_GetDefaultDeltaT()*2)),EvColl);
 
         OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
-          if (Event->isInfoEqual("addingstep",TmpStr)) FoundEvent = true;
+        {
+          if (Event->isInfoEqual("addingstep",TmpStr))
+          {
+            FoundEvent = true;
+          }
+        }
 
-        if (!FoundEvent) OPENFLUID_RaiseError("added event not found");
+        if (!FoundEvent)
+        {
+          OPENFLUID_RaiseError("added event not found");
+        }
 
       }
 

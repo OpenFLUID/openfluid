@@ -143,15 +143,25 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
         // CULTIVATED 0.6
         // URBAN 0.2
         if (CoverCode.get() == "WATER")
+        {
           m_UnitsCombustionFactor[LU->getID()] = 0.0;
+        }
         else if (CoverCode.get() == "URBAN")
+        {
           m_UnitsCombustionFactor[LU->getID()] = 15.0/3600.0;
+        }
         else if (CoverCode.get() == "CULTIVATED")
+        {
           m_UnitsCombustionFactor[LU->getID()] = 45.0/3600.0;
+        }
         else if (CoverCode.get() == "FOREST")
+        {
           m_UnitsCombustionFactor[LU->getID()] = 75.0/3600.0;
+        }
         else
+        {
           OPENFLUID_RaiseError("unknown cover code");
+        }
       }
 
       // set fire ignition on the land units
@@ -173,7 +183,9 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     void checkConsistency()
     {
       if (m_IgnitionUnits.empty())
+      {
         OPENFLUID_RaiseError("List of land unit to ignite is empty, or wrong land unit ID");
+      }
     }
 
 
@@ -222,14 +234,25 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
         // > 75 km/h : 2
 
         int WindCoeff = 1.0;
-        if (WindSpeed.value()->asDoubleValue().get() > 25) WindCoeff = 1.4;
-        if (WindSpeed.value()->asDoubleValue().get() > 50) WindCoeff = 1.7;
-        if (WindSpeed.value()->asDoubleValue().get() > 75) WindCoeff = 2;
+        if (WindSpeed.value()->asDoubleValue().get() > 25)
+        {
+          WindCoeff = 1.4;
+        }
+        if (WindSpeed.value()->asDoubleValue().get() > 50)
+        {
+          WindCoeff = 1.7;
+        }
+        if (WindSpeed.value()->asDoubleValue().get() > 75)
+        {
+          WindCoeff = 2;
+        }
 
         return WindCoeff;
       }
       else
+      {
         return 1.0;
+      }
     }
 
 
@@ -249,8 +272,10 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
       // compute the new stock based on time, wind coefficient and comustion factor
       if (m_UnitsStatus[U->getID()])
+      {
         Stock.set(Stock.get() - (int)(getWindCoefficient(U) * m_UnitsCombustionFactor[U->getID()] *
                   (double(OPENFLUID_GetDefaultDeltaT()))));
+      }
 
 
       if (Stock <= 0)
@@ -267,13 +292,23 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
       {
         StockRatio = ((double)(Stock.get()))/((double)(m_UnitsStockIni[U->getID()]));
         if (std::isnan(StockRatio) || std::isinf(StockRatio))
+        {
           StockRatio = 0.0;
+        }
       }
       else
+      {
         StockRatio = 1.0;
+      }
 
-      if (StockRatio > 1.0) StockRatio = 1.0;
-      if (StockRatio < 0.0) StockRatio = 0.0;
+      if (StockRatio > 1.0)
+      {
+        StockRatio = 1.0;
+      }
+      if (StockRatio < 0.0)
+      {
+        StockRatio = 0.0;
+      }
 
       OPENFLUID_AppendVariable(U,"fire.surf.Q.stocklevel",Stock);
       OPENFLUID_AppendVariable(U,"fire.surf.Q.stockratio",StockRatio);
@@ -307,7 +342,9 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
           double FromBurntRatio = double(FromStock.get())/m_UnitsStockIni[FromLU->front()->getID()];
 
           if (FromBurntRatio <= 0.75)
+          {
             m_UnitsStatus[U->getID()] = true;
+          }
         }
       }
     }
@@ -352,4 +389,3 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
 
 DEFINE_SIMULATOR_CLASS(FireProductionSpreadingSimulator)
-

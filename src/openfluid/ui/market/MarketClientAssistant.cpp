@@ -296,7 +296,9 @@ void MarketClientAssistant::onPrepare(int Id)
 
   // page : Licenses
   if (Id == 1)
+  {
     initializeLicencesTreeView();
+  }
 
 
   // page : Installation
@@ -329,9 +331,13 @@ void MarketClientAssistant::onURLComboChanged(int RowNumber)
 
     // if repository contains packages
     if (m_MarketClient.catalogsContainPackages())
+    {
       updateAvailPacksTreeview();
+    }
     else
+    {
       displayMarketplaceError();
+    }
   }
   else
   {
@@ -369,9 +375,13 @@ void MarketClientAssistant::onLicensesTreeviewChanged(QTreeWidgetItem *CurrentIt
 
       // Displaying license
       if (LIter != m_MarketClient.licensesTexts().end())
+      {
         mp_LicensesTextView->setText(QString::fromStdString(LIter->second));
+      }
       else
+      {
         mp_LicensesTextView->setText(tr("(License content not available)"));
+      }
     }
   }
 }
@@ -403,7 +413,9 @@ MarketPackWidget* MarketClientAssistant::availablePackWidget(const openfluid::wa
     {
       // package found
       if ((*APLiter)->getID() == QString::fromStdString(ID))
+      {
         return *APLiter;
+      }
     }
   }
 
@@ -431,10 +443,14 @@ bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& I
 
     // searching if ID package is a dependence of this dataset
     while (Dit != Dependencies.end() && !(*Dit == ID && availablePackWidget(PCit->second.ID)->isInstall()))
+    {
       ++Dit;
+    }  
 
     if (Dit != Dependencies.end())
+    {
       return true;
+    }
   }
 
   return false;
@@ -475,7 +491,9 @@ bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, c
   }
 
   if (Select)
+  {
     Message += "<br/><br/><i>"+tr("Warning, the selected package cannot be used without them.")+"</i><br/>";
+  }
 
   int Answer = QMessageBox::question(this, tr("Dependencies"), Message, QMessageBox::Yes | QMessageBox::No);
 
@@ -584,9 +602,11 @@ void MarketClientAssistant::onPackageInstallModified()
       }
 
       if (APMiter->first != openfluid::market::PackageInfo::DATA)
+      {
         m_MarketClient.setSRCBuildOptions(MPW->getID().toStdString(),
                                           static_cast<MarketPackWidgetFormat*>(MPW)
                                             ->getEditedBuildOptions().toStdString());
+      }
     }
   }
 
@@ -606,7 +626,9 @@ openfluid::market::PackageInfo::PackageType MarketClientAssistant::getCurrentTyp
   std::map<openfluid::market::PackageInfo::PackageType,QWidget*>::const_iterator TabIt = mp_TabPage.begin();
 
   while (TabIt != mp_TabPage.end() && getGraphicTypeName(TabIt->first,true,true) != CurrentTabName)
+  {
     ++TabIt;
+  }  
 
   return TabIt->first;
 }
@@ -834,9 +856,13 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       {
         // Creating MarketPackWidget
         if (TCIter->first == openfluid::market::PackageInfo::DATA)
+        {
           mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidget(TCIter->first,CIter->second));
+        }
         else
+        {
           mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidgetFormat(TCIter->first,CIter->second));
+        }
 
 
         connect(mp_AvailPacksWidgets[TCIter->first].back(), SIGNAL(installModified(openfluid::ware::WareID_t)),
@@ -865,7 +891,9 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
       // Disable build options button for datasets
       if (TCIter->first == openfluid::market::PackageInfo::DATA)
+      {
         mp_CommonBuildConfigButton[TCIter->first]->setEnabled(false);
+      }
 
 
       connect(mp_SelectAllButton[TCIter->first], SIGNAL(clicked()), this, SLOT(onSelectAllClicked()));
@@ -998,11 +1026,17 @@ void MarketClientAssistant::updateInstallTreeview()
     m_InstallColumns.mp_Format = new QTableWidgetItem();
 
     if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::BIN)
+    {
       m_InstallColumns.mp_Format = new QTableWidgetItem(tr("binary"));
+    }
     else if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::SRC)
+    {
       m_InstallColumns.mp_Format = new QTableWidgetItem(tr("source"));
+    }  
     else
+    {
       m_InstallColumns.mp_Format = new QTableWidgetItem(tr("dataset"));
+    }
 
     m_InstallColumns.mp_Status = new QTableWidgetItem(tr("Pending"));
 
@@ -1044,12 +1078,18 @@ QString MarketClientAssistant::getGraphicTypeName(const openfluid::market::Packa
   QString Name;
 
   if (Plural)
+  {
     Name = PluralTypeNames[Type];
+  }
   else
+  {
     Name = TypeNames[Type];
+  }
 
   if (Maj)
+  {
     Name.replace(0, 1, Name[0].toUpper());
+  }
 
   return Name;
 }

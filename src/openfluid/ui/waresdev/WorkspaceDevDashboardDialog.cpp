@@ -211,11 +211,17 @@ void WorkspaceDevDashboardDialog::setWareActionStatus(openfluid::ware::WareType 
                                                       bool Status)
 {
   if (Type == openfluid::ware::WareType::SIMULATOR)
+  {
     ui->SimulatorsWidget->setState(ID,ActionName,Status);
+  }
   else if (Type == openfluid::ware::WareType::OBSERVER)
+  {
     ui->ObserversWidget->setState(ID,ActionName,Status);
+  }
   else if (Type == openfluid::ware::WareType::BUILDEREXT)
+  {
     ui->BuilderextsWidget->setState(ID,ActionName,Status);
+  }
 }
 
 

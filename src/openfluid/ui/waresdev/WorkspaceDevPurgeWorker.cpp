@@ -61,14 +61,22 @@ WorkspaceDevPurgeWorker::WorkspaceDevPurgeWorker(const WorkspaceDevDashboardType
                                  .replace(".","\\.");
 
   if (CurrentVersion && !OtherVersions)  // Current version only
+  {
     VersionArg = CurrentVersionRegex;
+  }
   else if (!CurrentVersion && OtherVersions)  // Other versions only
+  {
     VersionArg = "(?!"+CurrentVersionRegex+")[0-9]+\\.[0-9]+";
+  }
 
   if (ReleaseMode && !DebugMode)  // Release mode only
+  {
     ModeArg = "release";
+  }
   else if (!ReleaseMode && DebugMode) // Debug mode only
+  {
     ModeArg = "debug";
+  }
 
   m_BuildDirRegexStr = m_BuildDirRegexStr.arg(ModeArg).arg(VersionArg);
 }

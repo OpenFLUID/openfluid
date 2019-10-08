@@ -100,7 +100,9 @@ int Environment::m_IdealThreadCount = -1;
 void Environment::init()
 {
   if (m_Initialized)
+  {
     return;
+  }
 
 
   // ====== System informations ======

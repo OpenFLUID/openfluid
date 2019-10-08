@@ -103,17 +103,21 @@ VectorDataset::VectorDataset(const std::string& FileName)
 #endif
 
   if (!Driver)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "\"" + DefaultDriverName + "\" driver not available.");
+  }
 
   std::string Path = getTimestampedPath(FileName);
 
   mp_DataSource = GDALCreate_COMPAT(Driver,Path.c_str());
 
   if (!mp_DataSource)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while creating " + Path + " : " +
                                               "Creation of data source failed.");
+  }
 
 #if (GDAL_VERSION_MAJOR >= 2)
 
@@ -146,8 +150,10 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
 #endif
 
   if (DriverName!="ESRI Shapefile")
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "\"" + DriverName + "\" driver not supported.");
+  }
 
 #if (GDAL_VERSION_MAJOR >= 2)
   std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetDescription()));
@@ -158,9 +164,11 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
   mp_DataSource = GDALCopy_COMPAT(Driver,DS,Path.c_str());
 
   if (!mp_DataSource)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while creating " + Path + " : " +
                                               "Creation of data source failed.");
+  }
 
 #if (GDAL_VERSION_MAJOR >= 2)
 
@@ -174,9 +182,11 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
   mp_DataSource = GDALOpenRW_COMPAT(Path.c_str());
 
   if (!mp_DataSource)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while opening " + Path + " : " +
                                               "Loading of data source failed.");
+  }
 }
 
 
@@ -202,8 +212,10 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
 #endif
 
   if (DriverName!="ESRI Shapefile")
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "\"" + DriverName + "\" driver not supported.");
+  }
 
 #if (GDAL_VERSION_MAJOR >= 2)
   std::string Path = getTimestampedPath(openfluid::tools::Filesystem::basename(DS->GetDescription()));
@@ -214,9 +226,11 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
   mp_DataSource = GDALCopy_COMPAT(Driver,DS,Path.c_str());
 
   if (!mp_DataSource)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while creating " + Path + " : " +
                                               "Creation of data source failed.");
+  }
 
 #if (GDAL_VERSION_MAJOR >= 2)
 
@@ -230,9 +244,11 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
   mp_DataSource = GDALOpenRW_COMPAT(Path.c_str());
 
   if (!mp_DataSource)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while opening " + Path + " : " +
                                               "Loading of data source failed.");
+  }
 }
 
 
@@ -268,7 +284,9 @@ std::string VectorDataset::getInitializedTmpPath()
   std::string TmpPath = openfluid::base::Environment::getTempDir();
 
   if (!openfluid::tools::Filesystem::isDirectory(TmpPath))
+  {
     openfluid::tools::Filesystem::makeDirectory(TmpPath);
+  }
 
   return TmpPath;
 }
@@ -347,7 +365,9 @@ void VectorDataset::copyToDisk(const std::string& FilePath,
   GDALDriver_COMPAT* Driver = mp_DataSource->GetDriver();
 
   if (!openfluid::tools::Filesystem::isDirectory(FilePath))
+  {
     openfluid::tools::Filesystem::makeDirectory(FilePath);
+  }
 
   std::string Path = openfluid::core::GeoValue::computeAbsolutePath(FilePath,
                                                                     FileName);
@@ -376,8 +396,10 @@ void VectorDataset::copyToDisk(const std::string& FilePath,
   NewDS = GDALCopy_COMPAT(Driver,mp_DataSource,Path.c_str());
 
   if (!NewDS)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while creating " + Path + " : Copying of OGRDataSource failed.");
+  }
 
   // necessary to ensure headers are written out in an orderly way and all resources are recovered
   GDALClose_COMPAT(NewDS);
@@ -400,17 +422,21 @@ void VectorDataset::addALayer(std::string LayerName,
 
 
   if (mp_DataSource->GetLayerByName(LayerName.c_str()) != nullptr)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while adding a layer to " + Path +
                                               ": a layer named " + LayerName + " already exists.");
+  }
 
   OGRLayer* Layer = mp_DataSource->CreateLayer(LayerName.c_str(), SpatialRef,
                                                LayerType, nullptr);
 
   if (!Layer)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while adding a layer to " + Path +
                                               ": creation of layer " + LayerName + " failed.");
+  }
 
   // necessary to ensure headers are written out in an orderly way and all resources are recovered
   GDALClose_COMPAT(mp_DataSource);
@@ -418,8 +444,10 @@ void VectorDataset::addALayer(std::string LayerName,
   mp_DataSource = GDALOpenRW_COMPAT(Path.c_str());
 
   if (!mp_DataSource)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error while opening " + Path + " : Opening of OGRDataSource failed.");
+  }
 }
 
 
@@ -454,8 +482,10 @@ void VectorDataset::addAField(const std::string& FieldName,
   OGRFieldDefn Field(FieldName.c_str(), FieldType);
 
   if (layer(LayerIndex)->CreateField(&Field) != OGRERR_NONE)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Creating field \"" + FieldName + "\" failed.");
+  }
 }
 
 
@@ -510,8 +540,10 @@ bool VectorDataset::isFieldOfType(const std::string& FieldName,
                                   unsigned int LayerIndex)
 {
   if (!containsField(FieldName))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Field \"" + FieldName + "\" is not set.");
+  }
 
   return layerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType() == FieldType;
 }
@@ -527,8 +559,10 @@ bool VectorDataset::isIntValueSet(const std::string& FieldName,
 {
   if (!isFieldOfType(FieldName, OFTInteger, LayerIndex) &&
       !isFieldOfType(FieldName, GDALOFTInteger64_COMPAT, LayerIndex))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Field \"" + FieldName + "\" is not set or is not of type Int.");
+  }
 
   int CatIndex = layerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
 
@@ -558,7 +592,9 @@ bool VectorDataset::isIntValueSet(const std::string& FieldName,
 VectorDataset::FeaturesList_t VectorDataset::features(unsigned int LayerIndex)
 {
   if (!m_Features.count(LayerIndex))
+  {
     parse(LayerIndex);
+  }
 
   return m_Features.at(LayerIndex);
 }
@@ -571,7 +607,9 @@ VectorDataset::FeaturesList_t VectorDataset::features(unsigned int LayerIndex)
 geos::geom::Geometry* VectorDataset::geometries(unsigned int LayerIndex)
 {
   if (!m_Geometries.count(LayerIndex))
+  {
     parse(LayerIndex);
+  }
 
   return m_Geometries.at(LayerIndex);
 }
@@ -608,9 +646,11 @@ void VectorDataset::parse(unsigned int LayerIndex)
       OGRPolygon *Polygon = (OGRPolygon *) OGRGeom;
 
       if (Polygon->getExteriorRing()->getNumPoints() < 4)
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Unable to build the polygon with FID " +
                                                   openfluid::tools::convertValue(Feat->GetFID()));
+      }
 
     }
 
@@ -620,9 +660,11 @@ void VectorDataset::parse(unsigned int LayerIndex)
     geos::operation::valid::IsValidOp ValidOp(GeosGeom);
 
     if (!ValidOp.isValid())
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 ValidOp.getValidationError()->toString() + " \nwhile parsing " +
                                                 GeosGeom->toString());
+    }
 
     geos::geom::Geometry* GeomClone = GeosGeom->clone();
     OGRFeature* FeatClone = Feat->Clone();
@@ -646,9 +688,11 @@ void VectorDataset::parse(unsigned int LayerIndex)
   geos::operation::valid::IsValidOp ValidOpColl(m_Geometries.at(LayerIndex));
 
   if (!ValidOpColl.isValid())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               ValidOpColl.getValidationError()->toString() + " \nwhile creating " +
                                               m_Geometries.at(LayerIndex)->toString());
+  }
 }
 
 
@@ -673,25 +717,29 @@ void VectorDataset::setIndexIntField(const std::string& FieldName,
 {
   if (!isFieldOfType(FieldName, OFTInteger, LayerIndex)  &&
       !isFieldOfType(FieldName, GDALOFTInteger64_COMPAT, LayerIndex))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Field \"" + FieldName + "\" is not set or is not of type Int.");
+  }
 
-    OGRLayer* Layer = layer(LayerIndex);
+  OGRLayer* Layer = layer(LayerIndex);
 
-    if (! Layer->TestCapability( "RandomWrite"))
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+  if (! Layer->TestCapability( "RandomWrite"))
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Unable to update the Field \"" + FieldName +"\"");
+  }
 
-    Layer->ResetReading();
+  Layer->ResetReading();
 
-    OGRFeature* Feat;
-    while ((Feat = Layer->GetNextFeature()) != nullptr)
-    {
-      Feat->SetField(FieldName.c_str(),BeginValue);
-      Layer->SetFeature(Feat);
-      OGRFeature::DestroyFeature(Feat);
-      BeginValue++;
-    }
+  OGRFeature* Feat;
+  while ((Feat = Layer->GetNextFeature()) != nullptr)
+  {
+    Feat->SetField(FieldName.c_str(),BeginValue);
+    Layer->SetFeature(Feat);
+    OGRFeature::DestroyFeature(Feat);
+    BeginValue++;
+  }
 
 }
 
@@ -717,12 +765,18 @@ OGREnvelope VectorDataset::envelope()
 void VectorDataset::snapVertices(double Threshold,unsigned int LayerIndex)
 {
   if (isLineType())
+  {
     snapLineNodes(Threshold,LayerIndex);
+  }
   else if (isPolygonType())
+  {
     snapPolygonVertices(Threshold,LayerIndex);
+  }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "this VectorDataset is nor Line nor Polygon Type");
+  }
 }
 
 
@@ -764,20 +818,30 @@ void VectorDataset::snapLineNodes(double Threshold,unsigned int LayerIndex)
     for (unsigned int j = 0; j < vPoints.size(); j++)
     {
       if (!PStart->equals(vPoints.at(j)) && PStart->equalsExact(vPoints.at(j),Threshold))
+      {
         NewPStart = vPoints.at(j);
+      }
       if (!PEnd->equals(vPoints.at(j)) && PEnd->equalsExact(vPoints.at(j),Threshold))
+      {
         NewPEnd = vPoints.at(j);
+      }
     }
 
     if (!NewPStart && !NewPEnd)
+    {
       continue;  // TODO to be replaced!
+    }
 
     geos::geom::CoordinateSequence* CoordSeq=CurrentLine->getCoordinates();
     if (NewPStart)
+    {
       CoordSeq->setAt(*NewPStart->getCoordinate(),0);
+    }
 
     if (NewPEnd)
+    {
       CoordSeq->setAt(*NewPEnd->getCoordinate(),CoordSeq->getSize()-1);
+    }
 
     geos::geom::LineString* NewLine = geos::geom::GeometryFactory::getDefaultInstance()->createLineString(CoordSeq);
     OGRGeometry* OGRGeom =
@@ -858,7 +922,9 @@ void VectorDataset::snapPolygonVertices(double Threshold,unsigned int LayerIndex
         if (!vCoorCurrentGeom->at(j).equals(vCoor.at(h)) &&
             vCoorCurrentGeom->at(j).distance(vCoor.at(h)) > 0 &&
             vCoorCurrentGeom->at(j).distance(vCoor.at(h)) < Threshold)
+        {
           CoordSeq->setAt(vCoor.at(h),j);
+        }
       }
     }
 
@@ -905,7 +971,9 @@ void VectorDataset::snapPolygonVertices(double Threshold,unsigned int LayerIndex
 std::string VectorDataset::checkTopology(double Threshold, unsigned int LayerIndex)
 {
   if ( ! isPolygonType(LayerIndex))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"the VectorDataset is not Polygon type");
+  }
 
   std::string ErrorMsg;
   // TODO move to... ?
@@ -974,7 +1042,9 @@ std::string VectorDataset::checkTopology(double Threshold, unsigned int LayerInd
 std::list<std::pair<OGRFeature*, OGRFeature*> > VectorDataset::findOverlap(unsigned int LayerIndex)
 {
   if (!isPolygonType(LayerIndex))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"the VectorDataset is not Polygon type.");
+  }
 
   m_Features.clear();
   m_Geometries.clear();
@@ -998,7 +1068,9 @@ std::list<std::pair<OGRFeature*, OGRFeature*> > VectorDataset::findOverlap(unsig
         lt = std::find(lOverlaps.begin(), lOverlaps.end(), pair1);
         lt2 = std::find (lOverlaps.begin(), lOverlaps.end(), pair2);
         if (lt == lOverlaps.end() && lt2 == lOverlaps.end())
+        {
           lOverlaps.push_back(pair1);
+        }
 
       }
     }
@@ -1015,7 +1087,9 @@ std::list<std::pair<OGRFeature*, OGRFeature*> > VectorDataset::findOverlap(unsig
 std::list<std::pair<OGRFeature*,OGRFeature*> > VectorDataset::findGap(double Threshold, unsigned int LayerIndex)
 {
   if ( ! isPolygonType(LayerIndex))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"the VectorDataset is not Polygon type.");
+  }
 
   m_Features.clear();
   m_Geometries.clear();
@@ -1041,7 +1115,9 @@ std::list<std::pair<OGRFeature*,OGRFeature*> > VectorDataset::findGap(double Thr
         lt = std::find(lGaps.begin(), lGaps.end(), pair1);
         lt2 = std::find (lGaps.begin(), lGaps.end(), pair2);
         if (lt == lGaps.end() && lt2 == lGaps.end())
+        {
           lGaps.push_back(pair1);
+        }
       }
     }
   }
@@ -1057,7 +1133,9 @@ std::list<std::pair<OGRFeature*,OGRFeature*> > VectorDataset::findGap(double Thr
 void VectorDataset::cleanOverlap(double Threshold, unsigned int LayerIndex)
 {
   if ( ! isPolygonType(LayerIndex))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"the VectorDataset is not Polygon type.");
+  }
 
   m_Features.clear();
   m_Geometries.clear();
@@ -1152,11 +1230,15 @@ std::list<OGRFeature*> VectorDataset::hasDuplicateGeometry(unsigned int LayerInd
     for (unsigned int i = 0; i < iEnd; i++)
     {
       if ((const_cast<geos::geom::Geometry*>(Geom->getGeometryN(i)))->equals((*it).second))
+      {
         DuplicateGeom++;
+      }
     }
 
     if (DuplicateGeom > 1)
+    {
       lDuplicate.push_back((*it).first);
+    }
   }
 
   return lDuplicate;

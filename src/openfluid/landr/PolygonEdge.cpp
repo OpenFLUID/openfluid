@@ -74,7 +74,9 @@ PolygonEdge::~PolygonEdge()
   unsigned int iEnd=dirEdge.size();
 
   for (unsigned int i = 0; i < iEnd; i++)
+  {
     delete dirEdge[i];
+  }
 }
 
 
@@ -148,7 +150,9 @@ void PolygonEdge::removeFace(PolygonEntity* Face)
                                                        m_Faces.end(), Face);
 
   if (it != m_Faces.end())
+  {
     m_Faces.erase(it);
+  }
 }
 
 
@@ -183,7 +187,9 @@ bool PolygonEdge::setAttributeValue(const std::string& AttributeName,
   if (it != m_EdgeAttributes.end())
   {
     if (it->second)
+    {
       delete it->second;
+    }
 
     m_EdgeAttributes[AttributeName] = const_cast<core::Value*>(Value->clone());
 
@@ -206,7 +212,9 @@ void PolygonEdge::removeAttribute(const std::string& AttributeName)
   if (it != m_EdgeAttributes.end())
   {
     if ((*it).second)
+    {
       delete (*it).second;
+    }
 
     m_EdgeAttributes.erase(it);
   }

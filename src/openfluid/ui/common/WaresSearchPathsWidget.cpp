@@ -83,7 +83,9 @@ void WaresSearchPathsWidget::initialize(const QStringList& UserPaths, const QStr
   ui->UserPathsWidget->setPathsList(UserPaths);
 
   for (int i=0;i<PredefPaths.size();++i)
+  {
     new QListWidgetItem(QDir::toNativeSeparators(PredefPaths[i]),ui->PredefListWidget);
+  }  
 }
 
 

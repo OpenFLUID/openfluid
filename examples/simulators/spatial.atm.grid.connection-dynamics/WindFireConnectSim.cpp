@@ -148,28 +148,52 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
         long int TargetID;
 
         OPENFLUID_GetAttribute(LU,"N",TargetID);
-        if (TargetID != -1 ) m_PotentialConnections[LU->getID()][0] = OPENFLUID_GetUnit("LU",TargetID);
+        if (TargetID != -1 )
+        {
+          m_PotentialConnections[LU->getID()][0] = OPENFLUID_GetUnit("LU",TargetID);
+        }
 
         OPENFLUID_GetAttribute(LU,"NE",TargetID);
-        if (TargetID != -1 ) m_PotentialConnections[LU->getID()][1] = OPENFLUID_GetUnit("LU",TargetID);
+        if (TargetID != -1 )
+        {
+          m_PotentialConnections[LU->getID()][1] = OPENFLUID_GetUnit("LU",TargetID);
+        }
 
         OPENFLUID_GetAttribute(LU,"E",TargetID);
-        if (TargetID != -1 ) m_PotentialConnections[LU->getID()][2] = OPENFLUID_GetUnit("LU",TargetID);
+        if (TargetID != -1 )
+        {
+          m_PotentialConnections[LU->getID()][2] = OPENFLUID_GetUnit("LU",TargetID);
+        }
 
         OPENFLUID_GetAttribute(LU,"SE",TargetID);
-        if (TargetID != -1 ) m_PotentialConnections[LU->getID()][3] = OPENFLUID_GetUnit("LU",TargetID);
+        if (TargetID != -1 )
+        {
+          m_PotentialConnections[LU->getID()][3] = OPENFLUID_GetUnit("LU",TargetID);
+        }
 
         OPENFLUID_GetAttribute(LU,"S",TargetID);
-        if (TargetID != -1 ) m_PotentialConnections[LU->getID()][4] = OPENFLUID_GetUnit("LU",TargetID);
+        if (TargetID != -1 )
+        {
+          m_PotentialConnections[LU->getID()][4] = OPENFLUID_GetUnit("LU",TargetID);
+        }
 
         OPENFLUID_GetAttribute(LU,"SW",TargetID);
-        if (TargetID != -1 ) m_PotentialConnections[LU->getID()][5] = OPENFLUID_GetUnit("LU",TargetID);
+        if (TargetID != -1 )
+        {
+          m_PotentialConnections[LU->getID()][5] = OPENFLUID_GetUnit("LU",TargetID);
+        }
 
         OPENFLUID_GetAttribute(LU,"W",TargetID);
-        if (TargetID != -1 ) m_PotentialConnections[LU->getID()][6] = OPENFLUID_GetUnit("LU",TargetID);
+        if (TargetID != -1 )
+        {
+          m_PotentialConnections[LU->getID()][6] = OPENFLUID_GetUnit("LU",TargetID);
+        }
 
         OPENFLUID_GetAttribute(LU,"NW",TargetID);
-        if (TargetID != -1 ) m_PotentialConnections[LU->getID()][7] = OPENFLUID_GetUnit("LU",TargetID);
+        if (TargetID != -1 )
+        {
+          m_PotentialConnections[LU->getID()][7] = OPENFLUID_GetUnit("LU",TargetID);
+        }
       }
     }
 
@@ -195,8 +219,14 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
       // add a random variation to main wind direction
       openfluid::core::IntegerValue CorrectedDir(MainWindDir.get()+Distribution(m_RandomEngine));
 
-      if (CorrectedDir.get()>=360) CorrectedDir.set(CorrectedDir.get()-360);
-      if (CorrectedDir.get()<0) CorrectedDir.set(CorrectedDir.get()+360);
+      if (CorrectedDir.get()>=360)
+      {
+        CorrectedDir.set(CorrectedDir.get()-360);
+      }
+      if (CorrectedDir.get()<0)
+      {
+        CorrectedDir.set(CorrectedDir.get()+360);
+      }
 
       return CorrectedDir;
     }
@@ -211,7 +241,10 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
       // computation of the target land unit for fire, according to wind direction
       int FireTarget = WindDir.get() + 180;
-      if (FireTarget >= 360) FireTarget = FireTarget-360;
+      if (FireTarget >= 360)
+      {
+        FireTarget = FireTarget-360;
+      }
       int FireTargetIndex = FireTarget / 45;
 
 
@@ -232,7 +265,9 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
         // set new connection
         if (m_PotentialConnections[LU->getID()][FireTargetIndex] != nullptr)
+        {
           OPENFLUID_AddFromToConnection(LU,m_PotentialConnections[LU->getID()][FireTargetIndex]);
+        }
       }
     }
 

@@ -194,21 +194,29 @@ class VariableTimeProdSimulator : public openfluid::ware::PluggableSimulator
                                openfluid::core::IntegerValue(OPENFLUID_GetCurrentTimeIndex()).toString());
 
       if (OPENFLUID_GetCurrentTimeIndex() % 3 == 0)
+      {
         OPENFLUID_AppendVariable(TU,"tests.null",TheNull);
+      }
 
       OPENFLUID_AppendVariable(TU,"tests.vector",
                                openfluid::core::VectorValue(VectorSize,double(OPENFLUID_GetCurrentTimeIndex())));
 
       if (OPENFLUID_GetCurrentTimeIndex() % 7 == 0)
+      {
         OPENFLUID_AppendVariable(TU,"tests.matrix",
                                  openfluid::core::MatrixValue(MatrixColsNb,MatrixRowsNb,
                                                               double(OPENFLUID_GetCurrentTimeIndex())));
+      }
     }
 
     if (m_DefaultDT)
+    {
       return DefaultDeltaT();
+    }
     else
+    {
       return computeDeltaT();
+    }
   }
 
 

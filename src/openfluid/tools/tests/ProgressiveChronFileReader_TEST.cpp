@@ -76,7 +76,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::string TmpStr;
   std::vector<std::string> TmpVectStr;
 
-  while (PColumnFR.getNextLine(TmpStr)) std::cout << TmpStr << std::endl;
+  while (PColumnFR.getNextLine(TmpStr))
+  {
+    std::cout << TmpStr << std::endl;
+  }
 
   PColumnFR.reset();
 
@@ -84,7 +87,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   {
     std::cout << "[";
     for (unsigned int i =0; i< TmpVectStr.size();i++)
+    {
       std::cout << TmpVectStr[i] << "|";
+    }
     std::cout << std::endl;
   }
 
@@ -96,6 +101,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::tools::ProgressiveChronFileReader PChronFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
 
-  while (PChronFR.getNextValue(CI)) std::cout << CI.second << " at " << CI.first.getAsISOString() << std::endl;
+  while (PChronFR.getNextValue(CI))
+  {
+    std::cout << CI.second << " at " << CI.first.getAsISOString() << std::endl;
+  }
 }
 

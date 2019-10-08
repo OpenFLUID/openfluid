@@ -102,7 +102,9 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
       OPENFLUID_GetSimulatorParameter(Params,"part",m_PartStr);
 
       if (m_PartStr == "initparams")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
     }
 
 
@@ -113,7 +115,9 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
     void prepareData()
     {
       if (m_PartStr == "preparedata")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
     }
 
 
@@ -124,7 +128,9 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
     void checkConsistency()
     {
       if (m_PartStr == "checkconsistency")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
     }
 
 
@@ -135,7 +141,9 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest initializeRun()
     {
       if (m_PartStr == "initializerun")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
 
       return DefaultDeltaT();
     }
@@ -148,7 +156,9 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
       if (m_PartStr == "runstep")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
 
       return DefaultDeltaT();
     }
@@ -161,7 +171,9 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
     void finalizeRun()
     {
       if (m_PartStr  == "finalizerun")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
     }
 
 };

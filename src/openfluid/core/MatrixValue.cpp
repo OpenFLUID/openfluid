@@ -86,7 +86,9 @@ void MatrixValue::writeToStream(std::ostream& OutStm) const
       {
         OutStm << get(j,i);
         if (j != ColsNbr-1)
+        {
           OutStm << ",";
+        }
       }
       OutStm << "]";
 

@@ -109,21 +109,31 @@ bool WaresHubImportWorker::connect()
 
   openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
   if (m_SslNoVerify)
+  {
     SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
+  }
 
   bool Ok = mp_WareshubClient->connect(m_WaresHubUrl, SSLConfig);
 
   for (const auto& ByType : mp_WareshubClient->getAllAvailableWares())
+  {
     m_AvailableWaresDetailsByIDByType[ByType.first] = mp_WareshubClient->getAvailableWaresWithDetails(ByType.first,
                                                                                                       m_Username);
+  }
 
   if (!Ok)
+  {
     emit finished(false, tr("Fetching information failed"));
+  }
   else
+  {
     emit finished(true, tr("Fetching information completed"));
+  }
 
   if (qApp && qApp->thread() != thread())
+  {
     moveToThread(qApp->thread());
+  }
 
   return Ok;
 }
@@ -146,16 +156,22 @@ void WaresHubImportWorker::disconnect()
 bool WaresHubImportWorker::clone()
 {
   if (!isConnected())
+  {
     return false;
+  }
 
   openfluid::waresdev::WareSrcManager* Mgr = openfluid::waresdev::WareSrcManager::instance();
 
   double ProgressRatio = 100;
   int SelectedWarePathsNb = 0;
   for (const auto& Pair : m_SelectedWaresUrlByType)
+  {
     SelectedWarePathsNb += Pair.second.size();
+  }
   if (SelectedWarePathsNb)
+  {
     ProgressRatio /= SelectedWarePathsNb;
+  }
 
   int Progress = 0;
   bool Ok = true;
@@ -184,12 +200,18 @@ bool WaresHubImportWorker::clone()
   }
 
   if (Ok)
+  {
     emit finished(true,tr("Import completed"));
+  }
   else
+  {
     emit finished(false, tr("Import failed"));
+  }
 
   if (qApp && qApp->thread() != thread())
+  {
     moveToThread(qApp->thread());
+  }
 
   return Ok;
 }

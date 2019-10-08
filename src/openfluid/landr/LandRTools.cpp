@@ -76,10 +76,14 @@ geos::geom::LineString* LandRTools::computeMergedLineStringFromGeometry(geos::ge
   {
     unsigned int iEnd=Lines->size();
     for (unsigned int i = 0; i < iEnd; i++)
+    {
       delete Lines->at(i);
+    }
   }
   else
+  {
     LS = *Lines->begin();
+  }
 
   delete Lines;
 
@@ -124,7 +128,9 @@ std::vector<geos::geom::LineString*>* LandRTools::computeMergedLineStringsFromGe
 std::vector<geos::geom::LineString*> LandRTools::computeVectorOfExteriorRings(openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isPolygonType())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "The GeoVectorValue is not polygon-typed");
+  }
 
   std::vector<geos::geom::LineString*> Lines;
 
@@ -148,7 +154,9 @@ std::vector<geos::geom::LineString*> LandRTools::computeVectorOfExteriorRings(op
 std::vector<geos::geom::LineString*> LandRTools::computeVectorOfLines(openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isLineType())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"The GeoVectorValue is not linestring-typed");
+  }
 
   std::vector<geos::geom::LineString*> Lines;
 
@@ -156,9 +164,11 @@ std::vector<geos::geom::LineString*> LandRTools::computeVectorOfLines(openfluid:
 
   unsigned int iEnd=Geom->getNumGeometries();
   for (unsigned int i = 0; i < iEnd; i++)
+  {
     Lines.push_back(
         dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(
             i))));
+  }
 
   return Lines;
 }
@@ -260,7 +270,9 @@ bool LandRTools::exists(geos::geom::LineString* Line,
   for (; it != ite; ++it)
   {
     if ((*it)->equalsExact(Line, Tolerance))
+    {
       return true;
+    }
   }
 
   return false;
@@ -284,7 +296,9 @@ void LandRTools::polygonizeGeometry(std::vector<geos::geom::Geometry*>& Lines,
 
   std::vector<geos::geom::Polygon*>* ThePolygons = P->getPolygons();
   if (ThePolygons)
+  {
     Polygons = *ThePolygons;
+  }
 
   delete ThePolygons;
   delete P;
@@ -312,13 +326,17 @@ void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
           static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->startNode();
 
       if (Node->getCoordinate().equals(theNextNode->getCoordinate()))
+      {
         theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->endNode();
+      }
 
       // set Edge visited as true
       (*it)->getEdge()->setVisited(true);
 
       if (!theNextNode->isVisited())
+      {
         markVisitedNodesUsingDFS(theNextNode);
+      }
     }
   }
 
@@ -340,14 +358,18 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(geos::geo
     for (unsigned int i = 0; i < iEnd; i++)
     {
       if (Geom1->getGeometryN(i)->getGeometryTypeId()!=geos::geom::GEOS_POLYGON)
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"The Geometry is not Polygon-typed");
+      }
 
       unsigned int jEnd=Geom2->getNumGeometries();
 
       for (unsigned int j = 0; j < jEnd; j++)
       {
         if (Geom2->getGeometryN(j)->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"The Geometry is not Polygon-typed.");
+        }
 
         if ((Geom1->getGeometryN(i))->intersects(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j))))
         {
@@ -355,7 +377,9 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(geos::geo
               (Geom1->getGeometryN(i))->intersection(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j)));
 
           if (Intersect->getGeometryTypeId() == geos::geom::GEOS_POLYGON)
+          {
             Polygons.push_back(dynamic_cast<geos::geom::Polygon*>(Intersect));
+          }
 
           else if (Intersect->getGeometryTypeId() == geos::geom::GEOS_MULTIPOLYGON)
           {
@@ -390,7 +414,9 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
 
 {
   if (SnapTolerance<=0.0)
+  {
     throw  openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"SnapTolerance must be superior to 0.0");
+  }
 
   std::vector<geos::geom::LineString*> vEntities;
   geos::geom::Point * StartPoint=Entity.getStartPoint();
@@ -402,7 +428,9 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
   delete StartPoint;
 
   if (endDistance<=SnapTolerance||startDistance<=SnapTolerance)
+  {
     return vEntities;
+  }
 
   geos::geom::Geometry *Geom=openfluid::landr::LandRTools::computeSnapOverlayUnion(Point, Entity,SnapTolerance);
 
@@ -444,18 +472,24 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
       LineSegment.project(*(Point.getCoordinate()),newCoorPoint);
     }
     else
+    {
       i++;
+    }
 
     delete Geom;
   }
 
   if (!split)
+  {
     throw  openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Splitting operation can not be performed");
+  }
 
   unsigned int j=0;
   std::vector<geos::geom::Coordinate>* vFirstCoorLine = new std::vector<geos::geom::Coordinate>;
   for (;j<=i;j++)
+  {
     vFirstCoorLine->push_back(Entity.getCoordinateN(j));
+  }
 
   vFirstCoorLine->push_back(newCoorPoint);
 
@@ -471,7 +505,9 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
   numVertices = Entity.getNumPoints();
 
   for (;j<numVertices;j++)
+  {
     vSecondCoorLine->push_back(Entity.getCoordinateN(j));
+  }
 
   geos::geom::CoordinateSequence* SecondCoordSeq = CoordSeqFactory->create(vSecondCoorLine);
 
@@ -498,11 +534,15 @@ void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,
 {
 
   if (SnapTolerance<=0.0)
+  {
     throw  openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"SnapTolerance must be greater or equal to 0.0");
+  }
 
 
   if (step>=Points.size())
+  {
     vLines.push_back(&Entity);
+  }
   else
   {
     std::vector<geos::geom::LineString*> vLinesSplitted =
@@ -511,7 +551,9 @@ void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,
     step++;
 
     if (vLinesSplitted.empty())
+    {
       splitLineStringByPoints(Entity,Points,SnapTolerance,vLines,step);
+    }
     else
     {
       splitLineStringByPoints(*vLinesSplitted[0],Points,SnapTolerance,vLines,step);
@@ -602,15 +644,23 @@ std::vector<geos::geom::Point*> LandRTools::computeNodesFromVectorOfLines(
     while (jt<jte&&!equalGeom)
     {
       if ((*jt)->equals(StartPoint))
+      {
         equalGeom=true;
+      }
       else
+      {
         ++jt;
+      }
     }
 
     if (!equalGeom)
+    {
       vPoints.push_back(StartPoint);
+    }
     else
+    {
       delete StartPoint;
+    }
 
 
     jt = vPoints.begin();
@@ -620,15 +670,23 @@ std::vector<geos::geom::Point*> LandRTools::computeNodesFromVectorOfLines(
     while (jt<jte&&!equalGeom)
     {
       if ((*jt)->equals(EndPoint))
+      {
         equalGeom=true;
+      }
       else
+      {
         ++jt;
+      }
     }
 
     if (!equalGeom)
+    {
       vPoints.push_back(EndPoint);
+    }
     else
+    {
       delete EndPoint;
+    }
   }
 
   return vPoints;
@@ -665,7 +723,9 @@ void LandRTools::markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* N
       (*it)->getEdge()->setVisited(true);
 
       if (!theNextNode->isVisited())
+      {
         markInvertedLineStringEntityUsingDFS(theNextNode,vectIdent);
+      }
     }
   }
 }
@@ -684,7 +744,9 @@ bool LandRTools::isExtentsIntersect(std::vector<OGREnvelope> vEnvelope)
       for (unsigned int j = i + 1; j < vEnvelope.size(); j++)
       {
         if (vEnvelope[i].Intersects(vEnvelope[j]) != 1)
-        return false;
+        {
+          return false;
+        }
       }
     }
   }

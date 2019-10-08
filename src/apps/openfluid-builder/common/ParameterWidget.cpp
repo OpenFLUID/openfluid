@@ -64,8 +64,10 @@ ParameterWidget::ParameterWidget(QWidget* Parent,
   ui->GlobalValueLabel->setText("");
 
   if (Required)
+  {
     ui->ValueEdit->setPlaceholderText(QApplication::translate("openfluid::ui::config",
                                                               openfluid::ui::config::PLACEHOLDER_REQUIRED));
+  }
 
 
   // Completer
@@ -130,7 +132,9 @@ void ParameterWidget::notifyRemoveClicked()
   }
 
   if (OK)
+  {
     emit removeClicked(ui->NameLabel->text());
+  }
 }
 
 

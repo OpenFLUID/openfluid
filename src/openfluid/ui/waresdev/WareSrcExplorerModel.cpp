@@ -111,20 +111,26 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
           // the ware directory is created with a temporary branch name, so display will have to be updated
           QString DirToWatch = QString("%1/.git/objects").arg(WarePath);
           if (QFile(DirToWatch).exists() && !m_Watcher.directories().contains(DirToWatch))
+          {
             m_Watcher.addPath(DirToWatch);
+          }
         }
       }
     }
   }
   else if (Info.m_isAWare)
+  {
     updateGitStatusInfo(Path);
+  }
   else
   {
     for (const auto& WarePathsTracked : m_GitBranchByWarePath.keys())
     {
       // if Path is a sub dir of a tracked ware, we reload git status on this ware
       if (Path.startsWith(WarePathsTracked) && Path != WarePathsTracked)
+      {
         updateGitStatusInfo(Info.m_AbsolutePathOfWare);
+      }
     }
   }
 
@@ -138,7 +144,9 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
 void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
 {
   if (!openfluid::utils::GitProxy::isAvailable())
+  {
     return;
+  }
 
   openfluid::utils::GitProxy Git;
   openfluid::utils::GitProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
@@ -151,27 +159,39 @@ void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
     while (it != m_GitIconByWareFilePath.end())
     {
       if (it.key().startsWith(WarePath))
+      {
         it = m_GitIconByWareFilePath.erase(it);
+      }
       else
+      {
         ++it;
+      }
     }
 
     QStringList::iterator it2 = m_GitDirties.begin();
     while (it2 != m_GitDirties.end())
     {
       if (it2->startsWith(WarePath))
+      {
         it2 = m_GitDirties.erase(it2);
+      }
       else
+      {
         ++it2;
+      }
     }
 
     it = m_GitBranchByWarePath.begin();
     while (it != m_GitBranchByWarePath.end())
     {
       if (it.key().startsWith(WarePath))
+      {
         it = m_GitBranchByWarePath.erase(it);
+      }
       else
+      {
         ++it;
+      }
     }
 
 
@@ -179,11 +199,15 @@ void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
 
     QString FileToWatch = QString("%1/.git/index").arg(WarePath);
     if (QFile(FileToWatch).exists() && !m_Watcher.files().contains(FileToWatch))
+    {
       m_Watcher.addPath(FileToWatch);
+    }
 
     QString DirToWatch = QString("%1/.git/objects").arg(WarePath);
     if (QFile(DirToWatch).exists() && !m_Watcher.directories().contains(DirToWatch))
+    {
       m_Watcher.addPath(DirToWatch);
+    }
 
 
     m_GitBranchByWarePath[WarePath] = TreeStatus.m_BranchName;
@@ -203,7 +227,9 @@ void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
       QString AbsolutePath = QString("%1/%2").arg(WarePath).arg(it.key());
 
       if (it.value().m_IsDirty)
+      {
         m_GitDirties << AbsolutePath;
+      }
 
       m_GitIconByWareFilePath[AbsolutePath] = m_IconByGitStatus[it.value().m_IndexStatus];
 
@@ -229,13 +255,19 @@ void WareSrcExplorerModel::applyIconRecursively(const QString& CurrDir, const QS
   QDir Dir(CurrDir);
 
   if (Dir.dirName().startsWith("_build") || Dir.dirName() == ".git")
+  {
     return;
+  }
 
   for (const auto& SubFile : Dir.entryList(QDir::Files))
+  {
     m_GitIconByWareFilePath[QString("%1/%2").arg(CurrDir).arg(SubFile)] = IconPath;
+  }  
 
   for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+  {
     applyIconRecursively(QString("%1/%2").arg(CurrDir).arg(SubDir), IconPath);
+  }  
 }
 
 
@@ -246,10 +278,14 @@ void WareSrcExplorerModel::applyIconRecursively(const QString& CurrDir, const QS
 QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
   {
   if (!Index.isValid())
+  {
     return QFileSystemModel::data(Index, Role);
+  }
 
   if (Role == Qt::ForegroundRole && fileName(Index).startsWith("_build"))
+  {
     return QVariant(QColor("#A3A3A3"));
+  }
 
   if (Role == Qt::FontRole && !isDir(Index) && fileInfo(Index).suffix() == "cpp")
   {
@@ -267,11 +303,15 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
   }
 
   if (Role == Qt::DisplayRole && m_GitDirties.contains(filePath(Index)))
+  {
     return QVariant(QString("> %1").arg(QFileSystemModel::data(Index, Role).toString()));
+  }
 
   if (Role == Qt::DisplayRole && m_GitBranchByWarePath.contains(filePath(Index)))
+  {
     return QVariant(QString("%1  [%2]").arg(QFileSystemModel::data(Index, Role).toString())
                                        .arg(m_GitBranchByWarePath[filePath(Index)]));
+  }
 
   if (Role == QFileSystemModel::FileIconRole)
   {

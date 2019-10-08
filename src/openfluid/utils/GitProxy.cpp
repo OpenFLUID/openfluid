@@ -67,7 +67,9 @@ GitProxy::~GitProxy()
   delete mp_Process;
 
   if (!m_AskPassFile.fileName().isEmpty())
+  {
     m_AskPassFile.remove();
+  }
 }
 
 
@@ -133,7 +135,9 @@ void GitProxy::processStandardOutput()
   mp_Process->setReadChannel(QProcess::StandardOutput);
 
   while (mp_Process->canReadLine())
+  {
     emit info(QString::fromUtf8(mp_Process->readLine()));
+  }
 }
 
 
@@ -238,7 +242,9 @@ GitProxy::TreeStatusInfo GitProxy::status(const QString& Path)
   QDir PathDir(Path);
 
   if (!PathDir.exists(".git"))
+  {
     return TreeStatus;
+  }
 
   TreeStatus.m_IsGitTracked = true;
 
@@ -270,23 +276,37 @@ GitProxy::TreeStatusInfo GitProxy::status(const QString& Path)
     if ((IndexLetter == 'D' && WorkTreeLetter == 'D') || (IndexLetter == 'A' && WorkTreeLetter == 'A')
         || IndexLetter == 'U'
         || WorkTreeLetter == 'U')
+    {
       FilePathStatus.m_IndexStatus = FileStatus::CONFLICT;
+    }
     else if (IndexLetter == '?')
+    {
       FilePathStatus.m_IndexStatus = FileStatus::UNTRACKED;
+    }
     else if (IndexLetter == '!')
+    {
       FilePathStatus.m_IndexStatus = FileStatus::IGNORED;
+    }
     else
     {
       if (WorkTreeLetter == 'M')
+      {
         FilePathStatus.m_IsDirty = true;
+      }
 
       if (IndexLetter == 'M')
+      {
         FilePathStatus.m_IndexStatus = FileStatus::MODIFIED;
+      }
       if (IndexLetter == 'A')
+      {
         FilePathStatus.m_IndexStatus = FileStatus::ADDED;
+      }
       // Deleted takes precedence over Added
       if (IndexLetter == 'D' || WorkTreeLetter == 'D')
+      {
         FilePathStatus.m_IndexStatus = FileStatus::DELETED;
+      }
     }
 
     TreeStatus.m_FileStatusByTreePath[FilePath] = FilePathStatus;
@@ -308,7 +328,9 @@ QString GitProxy::statusHtml(const QString& Path, bool WithColorCodes)
   QDir PathDir(Path);
 
   if (!PathDir.exists(".git"))
+  {
     return "";
+  }
 
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
@@ -338,7 +360,9 @@ QString GitProxy::logHtml(const QString& Path, bool WithColorCodes)
   QDir PathDir(Path);
 
   if (!PathDir.exists(".git"))
+  {
     return "";
+  }
 
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);

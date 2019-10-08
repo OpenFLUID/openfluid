@@ -74,7 +74,9 @@ PluggableSimulator::~PluggableSimulator()
 void PluggableSimulator::initializeWare(const WareID_t& ID,const unsigned int& MaxThreads)
 {
   if (m_Initialized)
+  {
     return;
+  }
 
   SimulationContributorWare::initializeWare(ID);
 
@@ -104,10 +106,14 @@ openfluid::core::StringValue PluggableSimulator::OPENFLUID_GetSimulatorParameter
   openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
+  {
     return it->second;
+  }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Parameter "+ParamName+ " does not exist");
+  }
 }
 
 
@@ -142,7 +148,9 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
+  {
     return it->second.toDoubleValue(Val);
+  }
 
   return false;
 }
@@ -159,7 +167,9 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
+  {
     return it->second.toVectorValue(Val);
+  }
 
   return false;
 }
@@ -176,7 +186,9 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
+  {
     return it->second.toMatrixValue(Val);
+  }
 
   return false;
 }
@@ -193,7 +205,9 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
+  {
     return it->second.toDouble(Val);
+  }
 
   return false;
 }
@@ -210,7 +224,9 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
   openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
+  {
     return it->second.toInteger(Val);
+  }
 
   return false;
 }
@@ -306,7 +322,9 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
     Vals.clear();
 
     for (unsigned int i=0;i<Tokens.size();i++)
+    {
       Vals.push_back(Tokens[i]);
+    }
 
     return true;
   }
@@ -338,7 +356,9 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
       Vals.clear();
 
       for (unsigned long i=0;i<Vect.size();i++)
+      {
         Vals.push_back(Vect[i]);
+      }
     }
   }
 
@@ -369,7 +389,9 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
       Vals.clear();
 
       for (unsigned long i=0;i<Vect.size();i++)
+      {
         Vals.push_back(static_cast<int>(Vect[i]));
+      }
     }
   }
 
@@ -384,7 +406,9 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
 void PluggableSimulator::OPENFLUID_SetSimulatorMaxThreads(const int& MaxNumThreads)
 {
   if (MaxNumThreads > 0)
+  {
     m_MaxThreads = MaxNumThreads;
+  }
 }
 
 

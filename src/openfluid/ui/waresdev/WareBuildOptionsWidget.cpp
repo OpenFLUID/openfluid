@@ -91,9 +91,13 @@ WareBuildOptionsWidget::~WareBuildOptionsWidget()
 void WareBuildOptionsWidget::handleInstallChanged()
 {
   if (ui->InstallCheckBox->isChecked())
+  {
     emit buildModeChanged(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL);
+  }
   else
+  {
     emit buildModeChanged(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL);
+  }
 }
 
 
@@ -104,9 +108,13 @@ void WareBuildOptionsWidget::handleInstallChanged()
 void WareBuildOptionsWidget::handleConfigureModeChanged()
 {
   if (ui->ConfigureModeComboBox->currentIndex() == 0)
+  {
     emit configureModeChanged(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE);
+  }
   else
+  {
     emit configureModeChanged(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG);
+  }
 }
 
 
@@ -146,9 +154,13 @@ void WareBuildOptionsWidget::setBuildMode(openfluid::waresdev::WareSrcContainer:
 void WareBuildOptionsWidget::setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode)
 {
   if (Mode == openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE)
+  {
     ui->ConfigureModeComboBox->setCurrentIndex(0);
+  }
   else if (Mode == openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG)
+  {
     ui->ConfigureModeComboBox->setCurrentIndex(1);
+  }
 }
 
 
@@ -159,7 +171,9 @@ void WareBuildOptionsWidget::setConfigureMode(openfluid::waresdev::WareSrcContai
 openfluid::waresdev::WareSrcContainer::BuildMode WareBuildOptionsWidget::getBuildMode() const
 {
   if (ui->InstallCheckBox->isChecked())
+  {
     return openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL;
+  }
 
   return openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL;
 }
@@ -172,7 +186,9 @@ openfluid::waresdev::WareSrcContainer::BuildMode WareBuildOptionsWidget::getBuil
 openfluid::waresdev::WareSrcContainer::ConfigMode WareBuildOptionsWidget::getConfigureMode() const
 {
   if (ui->ConfigureModeComboBox->currentIndex() == 0)
+  {
     return openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE;
+  }
 
   return openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG;
 }

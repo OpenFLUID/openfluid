@@ -91,7 +91,9 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
   ui->DefaultValueWidget->setVisible(m_Mode == EDIT_ADD);
 
   if (m_Mode == EDIT_ADD || m_Mode == EDIT_RENAME)
+  {
     ui->NewNameEdit->setFocus();
+  }
 
   adjustSize();
 
@@ -118,25 +120,41 @@ void EditAttributeNameDialog::checkGlobal()
   if (m_Mode == EDIT_ADD)
   {
     if (m_AttrsNames.contains(ui->NewNameEdit->text()))
+    {
       setMessage(tr("New attribute name already exists"));
+    }
     else if (ui->NewNameEdit->text().isEmpty())
+    {
       setMessage(tr("New attribute name is empty"));
+    }
     else if (ui->DefaultValueEdit->text().isEmpty())
+    {
       setMessage(tr("Default attribute value is empty"));
+    }
     else
+    {
       setMessage();
+    }
   }
   else if (m_Mode == EDIT_RENAME)
   {
     if (m_AttrsNames.contains(ui->NewNameEdit->text()))
+    {
       setMessage(tr("New attribute name already exists"));
+    }
     else if (ui->NewNameEdit->text().isEmpty())
+    {
       setMessage(tr("New attribute name is empty"));
+    }
     else
+    {
       setMessage();
+    }
   }
   else if (m_Mode == EDIT_REMOVE)
+  {
     setMessage();
+  }
 }
 
 

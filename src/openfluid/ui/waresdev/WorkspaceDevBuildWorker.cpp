@@ -182,7 +182,9 @@ void WorkspaceDevBuildWorker::run()
 
 
   if (mp_Process->state() != QProcess::NotRunning)
+  {
     mp_Process->close();
+  }
 
   emit finished();
 
@@ -197,7 +199,9 @@ void WorkspaceDevBuildWorker::run()
 void WorkspaceDevBuildWorker::processStdOut()
 {
   if (!mp_Process)
+  {
     return;
+  }
 
   mp_Process->setReadChannel(QProcess::StandardOutput);
 
@@ -217,7 +221,9 @@ void WorkspaceDevBuildWorker::processStdOut()
 void WorkspaceDevBuildWorker::processStdErr()
 {
   if (!mp_Process)
+  {
     return;
+  }
 
   mp_Process->setReadChannel(QProcess::StandardError);
 

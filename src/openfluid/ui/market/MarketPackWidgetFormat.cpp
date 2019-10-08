@@ -120,7 +120,9 @@ void MarketPackWidgetFormat::onConfigClicked()
 
 
   if (OptDialog.exec() == QDialog::Accepted)
+  {
     m_EditedBuildOptions = OptDialog.getEditedOptions();
+  }
 
   onInstallModified();
 }
@@ -171,7 +173,9 @@ void MarketPackWidgetFormat::updateDisplayedInfos()
 
   // description
   if (!m_MetaPackInfo.Description.empty())
+  {
     MarkupTooltip += "<br/><br/>"+QString::fromStdString(m_MetaPackInfo.Description);
+  }
 
   m_ConfigButton.setEnabled(getPackageFormat() == openfluid::market::MetaPackageInfo::SRC);
 

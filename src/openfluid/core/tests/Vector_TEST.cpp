@@ -87,7 +87,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(V1.getSize(),10);
 
   for (openfluid::core::Vector<double>::iterator it = V1.begin(); it!=V1.end(); ++it)
-      std::cout << "using iterator, " << (*it) << std::endl;
+  {
+    std::cout << "using iterator, " << (*it) << std::endl;
+  }
 
   V1[1] = -5.18;
   V1.setElement(3,12345.6789);
@@ -105,7 +107,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_CLOSE(V3.getElement(3),12345.6789,0.0001);
 
   for (openfluid::core::Vector<double>::const_iterator it = V3.begin(); it!=V3.end(); ++it)
-      std::cout << "using const iterator, " << (*it) << std::endl;
+  {
+    std::cout << "using const iterator, " << (*it) << std::endl;
+  }
 
   V3.clear();
   BOOST_REQUIRE_EQUAL(V3.getSize(),0);

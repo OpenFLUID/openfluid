@@ -102,20 +102,30 @@ void SignatureDataEditorWidget::initialize(const QList<DataColumns>& Columns)
   for (auto& Col : m_Columns)
   {
     if (Col == DATACOL_DATAID)
+    {
       ColHeaders << tr("Name");
+    }
     else if (Col == DATACOL_UNITSCLASS)
+    {
       ColHeaders << tr("Units class");
+    }
     else if (Col == DATACOL_ROCONDITION || Col == DATACOL_RWCONDITION || Col == DATACOL_RWUCONDITION)
+    {
       ColHeaders << tr("I/O condition");
+    }
     else if (Col == DATACOL_DATATYPE)
+    {
       ColHeaders << tr("Type");
+    }
     else if (Col == DATACOL_DESCRIPTION)
     {
       ColHeaders << tr("Description");
       StretchedCol = i;
     }
     else if (Col == DATACOL_SIUNIT)
+    {
       ColHeaders << tr("SI unit");
+    }
 
     i++;
   }
@@ -144,28 +154,36 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
     {
       QString TmpStr = "name";
       if (DataLine.contains(DATACOL_DATAID))
+      {
         TmpStr = DataLine.value(DATACOL_DATAID).toString();
+      }
       ui->DataTableWidget->setItem(RowCount,i,new QTableWidgetItem(TmpStr));
     }
     else if (Col == DATACOL_UNITSCLASS)
     {
       QString TmpStr = "CLASS";
       if (DataLine.contains(DATACOL_UNITSCLASS))
+      {
         TmpStr = DataLine.value(DATACOL_UNITSCLASS).toString();
+      }
       ui->DataTableWidget->setItem(RowCount,i,new QTableWidgetItem(TmpStr));
     }
     else if (Col == DATACOL_DESCRIPTION)
     {
       QString TmpStr = "";
       if (DataLine.contains(DATACOL_DESCRIPTION))
+      {
         TmpStr = DataLine.value(DATACOL_DESCRIPTION).toString();
+      }
       ui->DataTableWidget->setItem(RowCount,i,new QTableWidgetItem(TmpStr));
     }
     else if (Col == DATACOL_SIUNIT)
     {
       QString TmpStr = "";
       if (DataLine.contains(DATACOL_SIUNIT))
+      {
         TmpStr = DataLine.value(DATACOL_SIUNIT).toString();
+      }
       ui->DataTableWidget->setItem(RowCount,i,new QTableWidgetItem(TmpStr));
     }
     else if (Col == DATACOL_ROCONDITION)
@@ -174,7 +192,9 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
       Combo->addItem(tr("Used"),DATACOND_USED);
       Combo->addItem(tr("Required"),DATACOND_REQUIRED);
       if (DataLine.contains(DATACOL_ROCONDITION))
+      {
         Combo->setCurrentIndex(DataLine.value(DATACOL_ROCONDITION).toInt());
+      }
       ui->DataTableWidget->setCellWidget(RowCount,i,Combo);
     }
     else if (Col == DATACOL_RWCONDITION)
@@ -184,7 +204,9 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
       Combo->addItem(tr("Required"),DATACOND_REQUIRED);
       Combo->addItem(tr("Produced"),DATACOND_PRODUCED);
       if (DataLine.contains(DATACOL_RWCONDITION))
+      {
         Combo->setCurrentIndex(DataLine.value(DATACOL_RWCONDITION).toInt());
+      }
       ui->DataTableWidget->setCellWidget(RowCount,i,Combo);
     }
     else if (Col == DATACOL_RWUCONDITION)
@@ -195,17 +217,23 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
       Combo->addItem(tr("Produced"),DATACOND_PRODUCED);
       Combo->addItem(tr("Updated"),DATACOND_UPDATED);
       if (DataLine.contains(DATACOL_RWUCONDITION))
+      {
         Combo->setCurrentIndex(DataLine.value(DATACOL_RWUCONDITION).toInt());
+      }
       ui->DataTableWidget->setCellWidget(RowCount,i,Combo);
     }
     else if (Col == DATACOL_DATATYPE)
     {
       QComboBox* Combo = new QComboBox();
       for (int TypeInt = openfluid::core::Value::NONE; TypeInt <= openfluid::core::Value::NULLL; TypeInt++)
+      {
         Combo->addItem(QString::fromStdString(
           openfluid::core::Value::getStringFromValueType(static_cast<openfluid::core::Value::Type>(TypeInt))),TypeInt);
+      }
       if (DataLine.contains(DATACOL_DATATYPE))
+      {
         Combo->setCurrentIndex(DataLine.value(DATACOL_DATATYPE).toInt());
+      }
       ui->DataTableWidget->setCellWidget(RowCount,i,Combo);
     }
     i++;
@@ -235,7 +263,9 @@ void SignatureDataEditorWidget::removeDataLine()
   int Row = ui->DataTableWidget->currentRow();
 
   if (Row >= 0)
+  {
     ui->DataTableWidget->removeRow(Row);
+  }
 }
 
 

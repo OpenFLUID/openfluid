@@ -86,13 +86,21 @@ AddUnitsClassDialog::~AddUnitsClassDialog()
 void AddUnitsClassDialog::checkGlobal()
 {
   if (ui->ClassEdit->text().isEmpty())
+  {
     setMessage(tr("Units class name cannot be empty"));
+  }
   else if (m_ExistingClasses.contains(ui->ClassEdit->text()))
+  {
     setMessage(tr("Units class name already exists"));
+  }
   else if (ui->UnitIDEdit->text().isEmpty())
+  {
     setMessage(tr("Unit ID cannot be empty"));
+  }
   else
+  {
     setMessage();
+  }
 }
 
 

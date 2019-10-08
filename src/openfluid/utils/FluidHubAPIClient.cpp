@@ -55,7 +55,9 @@ void JSONArrayToStringSet(const rapidjson::Value& Obj, std::set<T>& Set)
     for (unsigned int i=0;i<Obj.Capacity();i++)
     {
       if (Obj[i].IsString())
+      {
         Set.insert(T(Obj[i].GetString()));
+      }
     }
   }
 }
@@ -74,7 +76,9 @@ void JSONArrayToStringVector(const rapidjson::Value& Obj, std::vector<std::strin
     for (unsigned int i=0;i<Obj.Capacity();i++)
     {
       if (Obj[i].IsString())
+      {
         Vector.push_back(std::string(Obj[i].GetString()));
+      }
     }
   }
 }
@@ -125,7 +129,9 @@ void JSONObjectToDetailedWares(const rapidjson::Value& Obj,
                ++itCounters)
           {
             if (itCounters->value.IsInt())
+            {
               WMap[WareID].IssuesCounters[itCounters->name.GetString()] = itCounters->value.GetInt();
+            }
           }
         }
 
@@ -178,11 +184,17 @@ bool FluidHubAPIClient::isCapable(const QString& Capacity) const
 QString FluidHubAPIClient::wareTypeToString(openfluid::ware::WareType Type)
 {
   if (Type == openfluid::ware::WareType::SIMULATOR)
+  {
     return "simulators";
+  }
   else if (Type == openfluid::ware::WareType::OBSERVER)
+  {
     return "observers";
+  }
   else if (Type == openfluid::ware::WareType::BUILDEREXT)
+  {
     return "builderexts";
+  }
 
   return "";
 }
@@ -208,7 +220,9 @@ bool FluidHubAPIClient::connect(const QString& URL,const RESTClient::SSLConfigur
     rapidjson::Document JSONDoc;
 
     if (JSONDoc.Parse<0>(Reply.getContent().toStdString().c_str()).HasParseError())
+    {
       return false;
+    }
 
     if (JSONDoc.IsObject())
     {
@@ -217,21 +231,33 @@ bool FluidHubAPIClient::connect(const QString& URL,const RESTClient::SSLConfigur
         QString Key = QString(it->name.GetString());
 
         if (Key == "nature" && it->value.IsString() && QString(it->value.GetString()) == "OpenFLUID FluidHub")
+        {
           ValidNature = true; // URL is really a FluidHub
+        }
         else if (Key == "api-version" && it->value.IsString())
+        {
           m_HubAPIVersion = it->value.GetString();
+        }
         else if (Key == "name" && it->value.IsString())
+        {
           m_HubName = it->value.GetString();
+        }
         else if (Key == "status" && it->value.IsString())
+        {
           m_HubStatus = it->value.GetString();
+        }
         else if (Key == "capabilities" && it->value.IsArray())
+        {
           JSONArrayToStringSet(it->value,m_HubCapabilities);
+        }
       }
     }
   }
 
   if (!ValidNature)
+  {
     disconnect();
+  }
 
   return isConnected();
 }
@@ -268,7 +294,9 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
       rapidjson::Document JSONDoc;
 
       if (JSONDoc.Parse<0>(Reply.getContent().toStdString().c_str()).HasParseError())
+      {
         return WaresDesc;
+      }
 
       if (JSONDoc.IsObject())
       {
@@ -277,11 +305,17 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
           QString Key = QString(it->name.GetString());
 
           if (Key == "simulators")
+          {
             JSONArrayToStringSet(it->value,WaresDesc[openfluid::ware::WareType::SIMULATOR]);
+          }
           else if (Key == "observers")
+          {
             JSONArrayToStringSet(it->value,WaresDesc[openfluid::ware::WareType::OBSERVER]);
+          }
           else if (Key == "builderexts")
+          {
             JSONArrayToStringSet(it->value,WaresDesc[openfluid::ware::WareType::BUILDEREXT]);
+          }
         }
       }
     }
@@ -307,7 +341,9 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDe
     Path = "/wares/"+Path;
 
     if (!Username.isEmpty())
+    {
       Path += "?username="+Username;
+    }
 
     RESTClient::Reply Reply = m_RESTClient.getResource(Path);
 
@@ -316,10 +352,14 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDe
       rapidjson::Document JSONDoc;
 
       if (JSONDoc.Parse<0>(Reply.getContent().toStdString().c_str()).HasParseError())
+      {
         return WaresDesc;
+      }
 
       if (JSONDoc.IsObject())
+      {
         JSONObjectToDetailedWares(JSONDoc,WaresDesc);
+      }
     }
   }
 
@@ -340,12 +380,16 @@ QString FluidHubAPIClient::getNews(const QString& Lang) const
     QString Path = "/news";
 
     if (!Lang.isEmpty())
+    {
       Path += "?lang="+Lang;
+    }
 
     RESTClient::Reply Reply = m_RESTClient.getResource(Path);
 
     if (Reply.isOK())
+    {
       return Reply.getContent();
+    }
   }
 
   return "";

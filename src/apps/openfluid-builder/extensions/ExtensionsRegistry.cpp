@@ -86,7 +86,9 @@ ExtensionsRegistry::~ExtensionsRegistry()
 void ExtensionsRegistry::registerExtensions()
 {
   if (m_IsRegistered)
+  {
     return;
+  }
 
   std::vector<ExtensionContainer*> ExtVector =
       ExtensionPluginsManager::instance()->getAvailableWaresSignatures().AvailablePlugins;
@@ -164,7 +166,9 @@ void ExtensionsRegistry::releaseAllFeatureExtensions()
   for (it=itb;it!=ite;++it)
   {
     if ((*it).second->Active)
+    {
       (*it).second->Active = false;
+    }
 
     if ((*it).second->Body != nullptr && 
         (*it).second->Signature != nullptr &&
@@ -227,7 +231,9 @@ bool ExtensionsRegistry::isParameterizationExtensionRegistered(const openfluid::
 openfluid::builderext::ExtensionMode ExtensionsRegistry::getExtensionMode(const openfluid::ware::WareID_t& ID) const
 {
   if (isFeatureExtensionRegistered(ID))
+  {
     return m_FeatureExtensions.at(ID)->Signature->Mode;
+  }
 
   return openfluid::builderext::MODE_UNKNOWN;
 }

@@ -95,7 +95,9 @@ void WareSrcMsgViewer::writeMessage(const openfluid::waresdev::WareSrcMsgParser:
   Cursor.setCharFormat(m_FormatByMsgType.value(Msg.m_Type, QTextCharFormat()));
 
   if (Msg.m_LineNb > 0)
+  {
     m_MessagesByBlockNumber.insert(Cursor.blockNumber(), Msg);
+  }
 
   Cursor.insertText(QString::fromUtf8(Msg.m_OriginalMsgLine));
 
@@ -113,7 +115,9 @@ void WareSrcMsgViewer::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
       textCursor().blockNumber());
 
   if (it != m_MessagesByBlockNumber.end())
+  {
     emit messageClicked(it.value());
+  }
 }
 
 

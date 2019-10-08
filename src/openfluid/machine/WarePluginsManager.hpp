@@ -142,9 +142,11 @@ class OPENFLUID_API WarePluginsManager
             WareItem->Signature = SProc();
 
             if (WareItem->Signature == nullptr)
+            {
               throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                         "Signature from plugin file " + PluginFilename +
                                                         " cannot be instanciated");
+            }
 
             WareItem->Verified = (WareItem->Signature->ID == ID);
 
@@ -153,7 +155,9 @@ class OPENFLUID_API WarePluginsManager
             GetWareLinkUIDProc LinkUIDProc = (GetWareLinkUIDProc)PlugLib->resolve(WARELINKUID_PROC_NAME);
 
             if (LinkUIDProc)
+            {
               WareItem->LinkUID = LinkUIDProc();
+            }
           }
           else
           {
@@ -241,7 +245,9 @@ class OPENFLUID_API WarePluginsManager
               GetWareLinkUIDProc LinkUIDProc = (GetWareLinkUIDProc)PlugLib->resolve(WARELINKUID_PROC_NAME);
 
               if (LinkUIDProc)
+              {
                 Sign->LinkUID = LinkUIDProc();
+              }
             }
             else
             {

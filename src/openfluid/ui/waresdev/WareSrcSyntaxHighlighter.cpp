@@ -91,7 +91,9 @@ void WareSrcSyntaxHighlighter::highlightBlock(const QString& Text)
 
       int StartIndex = 0;
       if (previousBlockState() != 1)
+      {
         StartIndex = Expression.indexIn(Text);
+      }
 
       while (StartIndex >= 0)
       {

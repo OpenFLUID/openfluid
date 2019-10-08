@@ -111,7 +111,9 @@ void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine
     QString ParamValue = "";
 
     if (DescParams.find(ParamName) != DescParams.end())
+    {
       ParamValue = QString::fromStdString(DescParams[ParamName]);
+    }
 
     ParameterWidget* ParamWidget = new ParameterWidget(this,
                                                        QString::fromStdString(ParamName),ParamValue,
@@ -135,7 +137,9 @@ void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine
     QString ParamValue = "";
 
     if (DescParams.find(ParamName) != DescParams.end())
+    {
       ParamValue = QString::fromStdString(DescParams[ParamName]);
+    }
 
     ParameterWidget* ParamWidget = new ParameterWidget(this,
                                                        QString::fromStdString(ParamName),ParamValue,
@@ -297,7 +301,9 @@ void SimulatorWidget::addParameterToList()
   openfluid::ware::WareParams_t Params = mp_Desc->getParameters();
 
   for (openfluid::ware::WareParams_t::iterator it = Params.begin();it != Params.end(); ++it)
+  {
     ExistPList.append(QString::fromStdString((*it).first));
+  }
 
 
   AddParamDialog AddPDlg(ExistPList,QStringList(),this);
@@ -370,7 +376,9 @@ void SimulatorWidget::updateWare()
 void SimulatorWidget::notifySrcGenerateAsked()
 {
   if (m_Ghost)
+  {
     emit srcGenerateAsked(QString::fromStdString(m_ID));
+  }
 }
 
 

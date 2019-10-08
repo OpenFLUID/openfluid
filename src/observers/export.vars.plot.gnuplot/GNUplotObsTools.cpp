@@ -148,7 +148,9 @@ std::vector<std::string> parsePlotFromParamsTree(const openfluid::ware::WarePara
       for (std::vector<std::string>::const_iterator it = SeriesStr.begin(); it != SeriesStr.end(); ++it)
       {
         if (Plot.Series.find(*it) != Plot.Series.end())
+        {
           GInfo.Series.push_back(&(Plot.Series[*it]));
+        }
       }
 
       Plot.Graphs[GraphID] = GInfo;

@@ -228,8 +228,14 @@ openfluid::base::SchedulingRequest InterpGenerator::runStep()
     if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {
 
-      if (m_IsMax && Value > m_Max) Value = m_Max;
-      if (m_IsMin && Value < m_Min) Value = m_Min;
+      if (m_IsMax && Value > m_Max)
+      {
+        Value = m_Max;
+      }
+      if (m_IsMin && Value < m_Min)
+      {
+        Value = m_Min;
+      }
 
       if (isVectorVariable())
       {
@@ -237,7 +243,9 @@ openfluid::base::SchedulingRequest InterpGenerator::runStep()
         OPENFLUID_AppendVariable(LU,m_VarName,VV);
       }
       else
+      {
         OPENFLUID_AppendVariable(LU,m_VarName,Value);
+      }
 
     }
   }
@@ -249,7 +257,9 @@ openfluid::base::SchedulingRequest InterpGenerator::runStep()
     return Duration(NextDT.diffInSeconds(CurrentDT));
   }
   else
+  {
     return Never();
+  }
 }
 
 

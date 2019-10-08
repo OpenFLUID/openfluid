@@ -92,11 +92,17 @@ AddParamDialog::~AddParamDialog()
 void AddParamDialog::checkGlobal()
 {
   if (ui->NameEdit->text().isEmpty())
+  {
     setMessage(tr("Parameter name cannot be empty"));
+  }
   else if (m_ExistingParams.contains(ui->NameEdit->text()))
+  {
     setMessage(tr("Parameter already exists"));
+  }
   else
+  {
     setMessage();
+  }
 }
 
 

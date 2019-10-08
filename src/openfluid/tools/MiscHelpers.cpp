@@ -116,7 +116,10 @@ bool matchWithWildcard(const std::string& Pattern, const std::string& Str)
 std::string replaceEmptyString(std::string SourceStr,
                                const std::string& ReplaceStr)
 {
-  if (SourceStr.empty()) SourceStr = ReplaceStr;
+  if (SourceStr.empty())
+  {
+    SourceStr = ReplaceStr;
+  }
   return SourceStr;
 }
 
@@ -131,7 +134,9 @@ std::string removeTrailingSlashes(const std::string& Str)
   QString QStr = QString::fromStdString(Str);
 
   while (QStr.endsWith(QDir::separator()))
+  {
     QStr.remove(QStr.size()-1,1);
+  }
 
   return QStr.toStdString();
 
@@ -148,7 +153,9 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
   std::string LowCaseB = QString::fromStdString(VersionB).toLower().toStdString();
 
   if (LowCaseA == LowCaseB)
+  {
     return 0;
+  }
 
   std::vector<std::string> SplittedA, SplittedB;
 
@@ -157,14 +164,22 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
   SplittedB = splitString(LowCaseB,".~",false);
 
   if ( !(SplittedA.size()==3 || SplittedA.size()==4) || !(SplittedB.size()==3 || SplittedB.size()==4))
+  {
     return -2;
+  }
 
 
   unsigned int MajorA, MinorA, PatchA, MajorB, MinorB, PatchB;
   std::string StatusA(""), StatusB("");
 
-  if (SplittedA.size()==4) StatusA = SplittedA[3];
-  if (SplittedB.size()==4) StatusB = SplittedB[3];
+  if (SplittedA.size()==4)
+  {
+    StatusA = SplittedA[3];
+  }
+  if (SplittedB.size()==4)
+  {
+    StatusB = SplittedB[3];
+  }
 
   if (convertString(SplittedA[0],&MajorA) && convertString(SplittedA[1],&MinorA) &&
       convertString(SplittedA[2],&PatchA) &&
@@ -172,44 +187,70 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
       convertString(SplittedB[2],&PatchB))
   {
     if (MajorA > MajorB)
+    {
       return 1;
+    }
     if (MajorA < MajorB)
+    {
       return -1;
+    }
     if (MajorA == MajorB)
     {
       if (MinorA > MinorB)
+      {
         return 1;
+      }
       if (MinorA < MinorB)
+      {
         return -1;
+      }
       if (MinorA == MinorB)
       {
         if (PatchA > PatchB)
+        {
           return 1;
+        }
         if (PatchA < PatchB)
+        {
           return -1;
+        }
         if (PatchA == PatchB)
         {
           if (!Strict)
+          {
             return 0;
+          }
           else
           {
 
             if (StatusA.empty() && StatusB.empty())
+            {
               return 0;
+            }
 
             if (StatusA == StatusB)
+            {
               return 0;
+            }
 
             if (StatusA.empty() && !StatusB.empty())
+            {
               return 1;
+            }
             if (!StatusA.empty() && StatusB.empty())
+            {
               return -1;
+            }
 
 
             if (StatusA > StatusB)
+            {
               return 1;
+            }
             if (StatusA < StatusB)
+            {
               return -1;
+            }
           }
         }
       }
@@ -257,7 +298,9 @@ std::string generatePseudoUniqueIdentifier(const unsigned int Length)
   std::string PUI(Length,' ');
 
   for (unsigned int i = 0; i < Length; i++)
+  {
     PUI[i] = PUICharSet[PUIUniformDist(PUIRandomEngine)];
+  }
 
   return PUI;
 }

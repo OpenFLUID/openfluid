@@ -66,7 +66,9 @@ AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString&
   QStringList Classes = openfluid::tools::toQStringList(mp_Domain->getClassNames());
 
   for (QString ClassName : Classes)
+  {
     m_ClassID[ClassName] = QStringList();
+  }
 
   ui->DestClassComboBox->addItems(Classes);
 
@@ -97,11 +99,17 @@ AddConnectionDialog::~AddConnectionDialog()
 void AddConnectionDialog::checkGlobal()
 {
   if (ui->DestClassComboBox->currentText().isEmpty())
+  {
     setMessage(tr("Destination unit class cannot be empty"));
+  }
   else if (ui->DestIDComboBox->currentText().isEmpty())
+  {
     setMessage(tr("Destination unit ID cannot be empty"));
+  }
   else
+  {
     setMessage();
+  }
 }
 
 
@@ -115,7 +123,9 @@ void AddConnectionDialog::updateDestIDs()
 
   QString ClassName = ui->DestClassComboBox->currentText();
   if (m_ClassID[ClassName].isEmpty())
+  {
     m_ClassID[ClassName] = openfluid::tools::toQStringList(mp_Domain->getIDsOfClass(ClassName.toStdString()));
+  }
 
   ui->DestIDComboBox->clear();
   ui->DestIDComboBox->addItems(m_ClassID[ClassName]);

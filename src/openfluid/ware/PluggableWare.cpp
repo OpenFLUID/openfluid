@@ -111,10 +111,12 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(const std::string& Key, bool &Va
 void PluggableWare::initializeWare(const WareID_t& ID)
 {
   if (!isLinked())
+  {
     throw openfluid::base::FrameworkException(
         openfluid::base::FrameworkException::computeContext(OPENFLUID_CODE_LOCATION)
         .addInfos({{"wareid",ID}}),
         "initialized ware that is not fully linked");
+  }
 
   m_WareID = ID;
 };
@@ -137,10 +139,14 @@ void PluggableWare::finalizeWare()
 bool PluggableWare::isWellFormatted(const openfluid::ware::WareParamKey_t& ParameterKey)
 {
   if (ParameterKey.find_last_of('.') == ParameterKey.size() - 1)
+  {
     return false;
+  }
 
   if (ParameterKey.find_first_of('.') == 0)
+  {
     return false;
+  }
 
   return true;
 }

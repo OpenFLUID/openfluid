@@ -114,20 +114,28 @@ QString CMakeProxy::getConfigureCommand(const QString& BuildDir, const QString& 
                                         const QString& Generator, const std::vector<QString>& Options)
 {
   if (!isAvailable())
+  {
     return "";
+  }
 
 
   QString ArgsOptsStr;
 
   if (!Generator.isEmpty())
+  {
     ArgsOptsStr += QString(" -G \"%1\"").arg(Generator);
+  }
 
 
   for (const auto& Var : Variables)
+  {
     ArgsOptsStr += QString(" -D%1=%2").arg(Var.first).arg(Var.second);
+  }
 
   for (const auto& Opt : Options)
+  {
     ArgsOptsStr += QString(" %1").arg(Opt);
+  }
 
   QString Cmd = QString("\"%1\" -E chdir \"%2\" \"%1\" \"%3\"%4")
                 .arg(m_ExecutablePath)
@@ -149,7 +157,9 @@ QString CMakeProxy::getBuildCommand(const QString& BuildDir,
                                     const QString& CMakeOptions, const QString& OtherOptions)
 {
   if (!isAvailable())
+  {
     return "";
+  }
 
 
   QString TargetOpt;
@@ -157,10 +167,14 @@ QString CMakeProxy::getBuildCommand(const QString& BuildDir,
   QString OtherOpts;
 
   if (!Target.isEmpty())
+  {
     TargetOpt = QString(" --target %1").arg(Target);
+  }
 
   if (!CMakeOptions.isEmpty())
+  {
     CMakeOpts = " " + CMakeOptions;
+  }
 
   // Add Jobs option
   if (Jobs)
@@ -201,7 +215,9 @@ QString CMakeProxy::getTarCompressCommand(const QString& WorkDir,
                                           const QString& Options)
 {
   if (!isAvailable())
+  {
     return "";
+  }
 
   return QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar cf%3 \"%4\" \"%5\"")
          .arg(m_ExecutablePath)
@@ -220,7 +236,9 @@ QString CMakeProxy::getTarUncompressCommand(const QString& WorkDir, const QStrin
                                             const QString& Options)
 {
   if (!isAvailable())
+  {
     return "";
+  }
 
   return QString ("\"%1\" -E chdir \"%2\" \"%1\" -E tar xf%3 \"%4\"")
          .arg(m_ExecutablePath)

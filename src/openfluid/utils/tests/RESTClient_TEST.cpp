@@ -146,10 +146,14 @@ BOOST_AUTO_TEST_CASE(check_http)
       checkDelete(Client);
     }
     else
+    {
       std::cout << "not reachable" << std::endl;
+    }
   }
   else
+  {
     std::cout << "http URL is empty" << std::endl;
+  }
 }
 
 
@@ -179,10 +183,14 @@ BOOST_AUTO_TEST_CASE(check_https)
       checkDelete(Client);
     }
     else
+    {
       std::cout << "not reachable" << std::endl;
+    }
   }
   else
+  {
     std::cout << "https URL is empty" << std::endl;
+  }
 }
 
 

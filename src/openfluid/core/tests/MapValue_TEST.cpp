@@ -93,10 +93,14 @@ BOOST_AUTO_TEST_CASE(check_map)
   BOOST_REQUIRE_EQUAL(Val1.getKeys().at(3),"foofoobar");
 
   for (openfluid::core::MapValue::iterator it = Val1.begin(); it!=Val1.end(); ++it)
+  {
     std::cout << "using iterator, " << (*it).first << " = " << (*(*it).second) << std::endl;
+  }
 
   for (openfluid::core::MapValue::const_iterator it = Val1.begin(); it!=Val1.end(); ++it)
+  {
     std::cout << "using const iterator, " << (*it).first << " = " << (*(*it).second) << std::endl;
+  }
 
 
   Val1.remove("foobar");
@@ -107,10 +111,14 @@ BOOST_AUTO_TEST_CASE(check_map)
   BOOST_REQUIRE_EQUAL(Val1.getKeys().at(2),"foofoobar");
 
   for (openfluid::core::MapValue::iterator it = Val1.begin(); it!=Val1.end(); ++it)
+  {
     std::cout << "using iterator, " << (*it).first << " = " << (*(*it).second) << std::endl;
+  }
 
   for (openfluid::core::MapValue::const_iterator it = Val1.begin(); it!=Val1.end(); ++it)
+  {
     std::cout << "using const iterator, " << (*it).first << " = " << (*(*it).second) << std::endl;
+  }
 
   BOOST_REQUIRE_EQUAL(Val1.getSize(),3);
   Val1.setInteger("bar",17);

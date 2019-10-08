@@ -178,7 +178,9 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
               Value5 = Value5 + AuxValue;
             }
             else
+            {
               OPENFLUID_LogWarning("var2 is not present, ignored");
+            }
 
             if (OPENFLUID_IsVariableExist(FromA,"var3",CurrentTimeIndex))
             {
@@ -186,7 +188,9 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
               Value5 = Value5 + AuxValue;
             }
             else
+            {
               OPENFLUID_LogWarning("var3 is not present, ignored");
+            }
 
           }
         }

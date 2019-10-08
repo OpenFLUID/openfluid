@@ -78,7 +78,9 @@ WaresTranslationsRegistry::~WaresTranslationsRegistry()
 QTranslator* WaresTranslationsRegistry::tryLoadWareTranslation(const QString& WareFullPath)
 {
   if (m_LangCode.isEmpty() || m_LangCode == "default")
+  {
     return nullptr;
+  }
 
 
   QString LangFile;
@@ -119,7 +121,9 @@ QString WaresTranslationsRegistry::tryTranslate(const QString& WareFullPath,
   {
     QString TSText = ExtTranslator->translate(Context.toStdString().c_str(),Text.toStdString().c_str());
     if (!TSText.isEmpty())
+    {
       return TSText;
+    }
   }
   return Text;
 }

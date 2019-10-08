@@ -110,14 +110,20 @@ void MapValue::writeToStream(std::ostream& OutStm) const
     for (it=m_Value.begin(); it!=m_Value.end(); ++it)
     {
       if (it != m_Value.begin())
+      {
         OutStm << ",";
+      }
 
       OutStm << "\"" << (*it).first << "\":";
 
       if ((*it).second->isStringValue())
+      {
         OutStm << "\"" << (*(*it).second) << "\"";
+      }
       else
+      {
         OutStm << (*(*it).second);
+      }
     }
     OutStm << "}";
   }

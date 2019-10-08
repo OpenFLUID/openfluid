@@ -112,7 +112,9 @@ void PathsManagementWidget::addPath()
 void PathsManagementWidget::removePath()
 {
   if (!m_AllowEmpty && ui->PathsListWidget->count() < 2)
+  {
     return;
+  }
 
   if (ui->PathsListWidget->currentRow() >= 0)
   {
@@ -167,7 +169,9 @@ QStringList PathsManagementWidget::getPathsList() const
   QStringList Paths;
 
   for (int i=0; i<ui->PathsListWidget->count(); i++)
+  {
     Paths.append(QDir::fromNativeSeparators(ui->PathsListWidget->item(i)->text()));
+  }  
 
   return Paths;
 }
@@ -193,7 +197,9 @@ void PathsManagementWidget::setPathsList(const QStringList& Paths)
   while (ItemToErase);
 
   for (int i=0;i<Paths.count();i++)
+  {
     new QListWidgetItem(QDir::toNativeSeparators(Paths[i]),ui->PathsListWidget);
+  }  
 }
 
 

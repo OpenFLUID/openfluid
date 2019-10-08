@@ -72,11 +72,17 @@ BOOST_AUTO_TEST_CASE(check_init)
   std::cout << "User examples dir: " << openfluid::base::Environment::getUserExamplesDir() << std::endl;
   std::cout << "Provided examples dir: " << openfluid::base::Environment::getProvidedExamplesDir() << std::endl;
   for (auto  TmpDir : openfluid::base::Environment::getSimulatorsDirs())
+  {
     std::cout << "Simulators search dir: " << TmpDir << std::endl;
+  }
   for (auto  TmpDir : openfluid::base::Environment::getObserversDirs())
+  {
     std::cout << "Observers search dir: " << TmpDir << std::endl;
+  }
   for (auto  TmpDir : openfluid::base::Environment::getBuilderextsDirs())
+  {
     std::cout << "Builderexts search dir: " << TmpDir << std::endl;
+  }
   std::cout << "Translations dir: " << openfluid::base::Environment::getTranslationsDir() << std::endl;
   std::cout << "Common resources dir: " << openfluid::base::Environment::getCommonResourcesDir() << std::endl;
   std::cout << "App resources dir (appname = foo): " <<

@@ -92,7 +92,9 @@ bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
     return true;
   }
   else
+  {
     mp_Listener->onSubstageCompleted("Skipped");
+  }
 
   return false;
 }
@@ -111,11 +113,15 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
     std::vector<std::string> FoundProjects = openfluid::tools::findDirectories(ProjectsSourcePath);
 
     for (unsigned int i=0;i<FoundProjects.size();i++)
+    {
       installExampleProject(ProjectsSourcePath,ProjectsInstallPath,FoundProjects[i],Force);
+    }
   }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Projects source path is not a directory");
+  }
 
   return true;
 }
@@ -135,14 +141,17 @@ bool ExamplesBuddy::run()
   setOptionIfNotSet("force","0");
 
   if (m_Options["selection"] == "*")
+  {
     installAllExamplesProjects(m_Options["sourcedir"],m_Options["installdir"],m_Options["force"]=="1");
+  }
   else
+  {
     installExampleProject(m_Options["sourcedir"],m_Options["installdir"],
                           m_Options["selection"],m_Options["force"]=="1");
+  }
 
   return true;
 }
 
 
 } } // namespaces
-

@@ -77,8 +77,10 @@ PreferencesManager::PreferencesManager():
   QDir FileDir = QFileInfo(m_FileName).path();
 
   if (!FileDir.exists() && !QDir::root().mkpath(FileDir.absolutePath()))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Cannot create " + FileDir.path().toStdString() + " directory");
+  }
 
   mp_ConfFile = new QSettings(QString(m_FileName),QSettings::IniFormat);
 
@@ -298,7 +300,10 @@ bool PreferencesManager::addBuilderRecentProject(const QString& ProjectName,
 
   Recents.removeAll(NewRecentPair); // remove similar existing projects/paths
   Recents.prepend(NewRecentPair); // add the new project/path at the beginning
-  while (Recents.size() > RecentMax) Recents.removeLast();
+  while (Recents.size() > RecentMax)
+  {
+    Recents.removeLast();
+  }
 
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   mp_ConfFile->setValue("list",Recents);
@@ -339,7 +344,10 @@ void PreferencesManager::adaptBuilderRecentProjects()
 
   int RecentMax = getBuilderRecentMax();
 
-  while (Recents.size() > RecentMax) Recents.removeLast();
+  while (Recents.size() > RecentMax)
+  {
+    Recents.removeLast();
+  }
 
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   mp_ConfFile->setValue("list",Recents);
@@ -1210,7 +1218,9 @@ void PreferencesManager::setWaresdevTextEditorDefaults(bool ForceReset)
   mp_ConfFile->beginGroup("syntax_highlighting");
 
   if(! mp_ConfFile->contains("enabled") || ForceReset)
-  mp_ConfFile->setValue("enabled",true);
+  {
+    mp_ConfFile->setValue("enabled",true);
+  }
 
   QMap<QString,QString> DefaultHLRules;
 
@@ -1656,4 +1666,3 @@ void PreferencesManager::setWaresdevImportWaresHubLastUsername(const QString& Us
 
 
 } } //namespaces
-

@@ -149,13 +149,21 @@ void GraphvizViewExtension::launchSVGFileGeneration()
   Worker->moveToThread(WThread);
 
   if (ui->RankDirComboBox->currentIndex() == 0)
+  {
     Worker->setOption("rankdir","TB");
+  }
   else if (ui->RankDirComboBox->currentIndex() == 1)
+  {
     Worker->setOption("rankdir","BT");
+  }
   else if (ui->RankDirComboBox->currentIndex() == 2)
+  {
     Worker->setOption("rankdir","LR");
+  }
   else if (ui->RankDirComboBox->currentIndex() == 3)
+  {
     Worker->setOption("rankdir","RL");
+  }
 
   connect(Worker, SIGNAL(finished()), this, SLOT(handleFileGenerationFinished()));
   connect(WThread, SIGNAL(started()), Worker, SLOT(run()));
@@ -179,7 +187,9 @@ void GraphvizViewExtension::update(openfluid::builderext::FluidXUpdateFlags::Fla
   {
 
     if (ui->ToolsWidget->isEnabled())  // check if no other worker is running
+    {
       launchSVGFileGeneration();
+    }
   }
 }
 

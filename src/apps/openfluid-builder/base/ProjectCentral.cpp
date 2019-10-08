@@ -120,7 +120,9 @@ ProjectCentral* ProjectCentral::initInstance(const QString& PrjPath)
 void ProjectCentral::kill()
 {
   if (mp_Instance)
+  {
     delete mp_Instance;
+  }
 
   mp_Instance = nullptr;
 }
@@ -334,7 +336,9 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
   bool TestCompare = true;
 
   if (!isParamSet(Item, MinParamName))
+  {
     TestCompare = false;
+  }
   else if (!isParamIsDouble(Item, MinParamName))
   {
     TestCompare = false;
@@ -687,8 +691,10 @@ void ProjectCentral::checkModel()
       {
         m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
         if ((*itModelItem)->getType() == openfluid::ware::WareType::SIMULATOR)
+        {
           m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("Simulator %1 is not available")
                                                                          .arg(QString::fromStdString(ID)));
+        }
       }
     }
   }
@@ -895,7 +901,9 @@ void ProjectCentral::checkModel()
   m_SimulatorsIDsList.sort();
 
   for (auto& PList : m_SimulatorsParamsLists)
+  {
     PList.sort();
+  }
 
   for (auto& PList : m_VariablesNamesLists)
   {

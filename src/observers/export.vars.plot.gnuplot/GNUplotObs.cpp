@@ -137,16 +137,22 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
 
       if (m_Plot.Series.empty())
+      {
         OPENFLUID_RaiseError("No serie defined");
+      }
 
       if (m_Plot.Graphs.empty())
+      {
         OPENFLUID_RaiseError("No graph defined");
+      }
 
 
       // Remove of indicative format in terminal
       auto Pos = m_Plot.Terminal.find("(");
       if (Pos != std::string::npos)
+      {
         m_Plot.Terminal.erase(Pos - 1);
+      }
 
 
       // Add of Spatial Unit pointers
@@ -171,10 +177,14 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
           }
 
           if (Sit->second.Unit == nullptr)
+          {
             Sit->second.Type = SerieInfo::SERIE_UNKNOWN;
+          }
         }
         else if (Sit->second.Type == SerieInfo::SERIE_FILE && Sit->second.SourceFile.empty())
+        {
           Sit->second.Type = SerieInfo::SERIE_UNKNOWN;
+        }
 
 
         if (Sit->second.Type == SerieInfo::SERIE_UNKNOWN)
@@ -183,7 +193,9 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
           OPENFLUID_LogWarning("Serie " + SerieID + " ignored");
         }
         else
+        {
           ++Sit;
+        }
       }
 
 
@@ -200,7 +212,9 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
           OPENFLUID_LogWarning("Graph " + GraphID + " ignored");
         }
         else
+        {
           ++Git;
+        }
       }
     }
 
@@ -228,9 +242,13 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
             *((*Sit).second.FileHandle) << OPENFLUID_GetCurrentDate().getAsString("%Y-%m-%dT%H:%M:%S");
             *((*Sit).second.FileHandle) << " ";
             if (Val->isSimple() && !Val->isStringValue())
+            {
               Val->writeToStream(*((*Sit).second.FileHandle));
+            }
             else
+            {
               *((*Sit).second.FileHandle) << "NaN";
+            }
             *((*Sit).second.FileHandle) << "\n";
           }
         }
@@ -323,7 +341,10 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         if (GNUPlotProgram.isFound())
         {
           QString PersistOption = " ";
-          if (m_Plot.Persistent) PersistOption = " -persist ";
+          if (m_Plot.Persistent)
+          {
+            PersistOption = " -persist ";
+          }
 
           QString GNUPlotCommand = QString("\"%1\"%2\"%3\"").arg(GNUPlotProgram.getFullProgramPath())
                                                     .arg(PersistOption)
@@ -354,7 +375,9 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       {
         ScriptFile << "set terminal " << m_Plot.Terminal << "\n";
         if (!m_Plot.Output.empty())
+        {
           ScriptFile << "set output \"" << m_OutputDir << "/" << m_Plot.Output << "\"\n";
+        }
       }
 
       ScriptFile << "set xtics rotate font \",5\"\n";
@@ -375,7 +398,10 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         Columns = (unsigned int)(std::ceil(std::sqrt(m_Plot.Graphs.size())));
         Rows = (unsigned int)(std::ceil(m_Plot.Graphs.size() / Columns));
 
-        if (Columns*Rows < m_Plot.Graphs.size()) Rows++;
+        if (Columns*Rows < m_Plot.Graphs.size())
+        {
+          Rows++;
+        }
       }
 
       ScriptFile << "set multiplot layout " << Rows << "," << Columns << " rowsfirst scale 1,1\n";
@@ -391,9 +417,13 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         ScriptFile << "set key " << (*Git).second.Key << "\n";
 
         if ((*Git).second.YLabel.empty())
+        {
           ScriptFile << "unset ylabel\n";
+        }
         else
+        {
           ScriptFile << "set ylabel \"" << (*Git).second.YLabel << "\"\n";
+        }
 
         ScriptFile << "plot ";
 
@@ -404,12 +434,18 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         for (Sit = Sitb; Sit != Site; ++Sit)
         {
           std::string SourceDir = m_OutputDir;
-          if ((*Sit)->Type == SerieInfo::SERIE_FILE) SourceDir = m_InputDir;
+          if ((*Sit)->Type == SerieInfo::SERIE_FILE)
+          {
+            SourceDir = m_InputDir;
+          }
 
           std::string Label = (*Sit)->Label;
           if (Label.empty())
           {
-            if ((*Sit)->Type == SerieInfo::SERIE_FILE) Label = (*Sit)->SourceFile;
+            if ((*Sit)->Type == SerieInfo::SERIE_FILE)
+            {
+              Label = (*Sit)->SourceFile;
+            }
             else
             {
               std::string UnitIDStr;
@@ -419,7 +455,10 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
           }
 
 
-          if (Sit != Sitb) ScriptFile << ", ";
+          if (Sit != Sitb)
+          {
+            ScriptFile << ", ";
+          }
 
           ScriptFile << "\"" << SourceDir << "/" << (*Sit)->SourceFile
                      << "\" using 1:2 with " << (*Sit)->Style << " title \"" << Label << "\"";

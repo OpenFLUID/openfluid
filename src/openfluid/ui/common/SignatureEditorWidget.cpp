@@ -374,7 +374,9 @@ void SignatureEditorWidget::initializeDynamicsUIFromSignature(const openfluid::w
 
 
   if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::DEFAULT)
+  {
     ui->DefaultSchedRadioButton->setChecked(true);
+  }
   else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED)
   {
     ui->FixedSchedRadioButton->setChecked(true);
@@ -438,7 +440,9 @@ std::string extractTableFieldToString(const QTableWidget* TableW, int Row, int C
 
   TableWItem = TableW->item(Row,Column);
   if (TableWItem)
+  {
     return TableWItem->text().toStdString();
+  }
 
   return "";
 }
@@ -454,8 +458,10 @@ SignatureDataEditorWidget::DataConditionsIndices extractTableComboToCondition(co
   QComboBox* CondCombo = static_cast<QComboBox*>(TableW->cellWidget(Row,Column));
 
   if (CondCombo)
+  {
     return static_cast<SignatureDataEditorWidget::DataConditionsIndices>
       (CondCombo->itemData(CondCombo->currentIndex()).toInt());
+  }
 
   return SignatureDataEditorWidget::DATACOND_UNKNOWN;
 }
@@ -471,8 +477,10 @@ openfluid::core::Value::Type extractTableComboToDataType(const QTableWidget* Tab
   QComboBox* TypeCombo = static_cast<QComboBox*>(TableW->cellWidget(Row,Column));
 
   if (TypeCombo)
+  {
     return static_cast<openfluid::core::Value::Type>
       (TypeCombo->itemData(TypeCombo->currentIndex()).toInt());
+  }
 
   return openfluid::core::Value::NONE;
 }
@@ -499,9 +507,13 @@ void SignatureEditorWidget::updateSignatureFromParametersUI(openfluid::ware::Sim
     if (CondIndex >= 0)
     {
       if (CondIndex == SignatureDataEditorWidget::DATACOND_USED)
+      {
         Signature.HandledData.UsedParams.push_back(Item);
+      }
       else
+      {
         Signature.HandledData.RequiredParams.push_back(Item);
+      }
     }
   }
 }
@@ -526,9 +538,13 @@ void SignatureEditorWidget::updateSignatureFromExtrafilesUI(openfluid::ware::Sim
     if (CondIndex >= 0)
     {
       if (CondIndex == SignatureDataEditorWidget::DATACOND_USED)
+      {
         Signature.HandledData.UsedExtraFiles.push_back(Filename);
+      }
       else
+      {
         Signature.HandledData.RequiredExtraFiles.push_back(Filename);
+      }
     }
   }
 }
@@ -557,11 +573,17 @@ void SignatureEditorWidget::updateSignatureFromAttributesUI(openfluid::ware::Sim
     if (CondIndex >= 0)
     {
       if (CondIndex == SignatureDataEditorWidget::DATACOND_USED)
+      {
         Signature.HandledData.UsedAttribute.push_back(Item);
+      }
       else if (CondIndex == SignatureDataEditorWidget::DATACOND_REQUIRED)
+      {
         Signature.HandledData.RequiredAttribute.push_back(Item);
+      }
       else
+      {
         Signature.HandledData.ProducedAttribute.push_back(Item);
+      }
     }
   }
 }
@@ -607,13 +629,21 @@ void SignatureEditorWidget::updateSignatureFromVariablesUI(openfluid::ware::Simu
     if (CondIndex >= 0)
     {
       if (CondIndex == SignatureDataEditorWidget::DATACOND_USED)
+      {
         Signature.HandledData.UsedVars.push_back(Item);
+      }
       else if (CondIndex == SignatureDataEditorWidget::DATACOND_REQUIRED)
+      {
         Signature.HandledData.RequiredVars.push_back(Item);
+      }
       else if (CondIndex == SignatureDataEditorWidget::DATACOND_PRODUCED)
+      {
         Signature.HandledData.ProducedVars.push_back(Item);
+      }
       else
+      {
         Signature.HandledData.UpdatedVars.push_back(Item);
+      }
     }
   }
 }
@@ -628,7 +658,9 @@ void SignatureEditorWidget::updateSignatureFromDynamicsUI(openfluid::ware::Simul
   Signature.TimeScheduling.Type = openfluid::ware::SignatureTimeScheduling::UNDEFINED;
 
   if (ui->DefaultSchedRadioButton->isChecked())
+  {
     Signature.TimeScheduling.Type = openfluid::ware::SignatureTimeScheduling::DEFAULT;
+  }
   else if (ui->FixedSchedRadioButton->isChecked())
   {
     Signature.TimeScheduling.Type = openfluid::ware::SignatureTimeScheduling::FIXED;
@@ -669,23 +701,33 @@ openfluid::ware::SimulatorSignature SignatureEditorWidget::getSignature() const
   openfluid::ware::SimulatorSignature Signature;
 
   if (m_StaticID)
+  {
     Signature.ID = ui->IDLabel->text().toStdString();
+  }
   else
+  {
     Signature.ID = ui->IDEdit->text().toStdString();
+  }
 
   Signature.Name = ui->NameEdit->text().toStdString();
   Signature.Description = ui->DescriptionEdit->toPlainText().toStdString();
 
   for (int i=0; i < ui->AuthorsTableWidget->rowCount() ; i++)
+  {
     Signature.Authors.push_back(std::make_pair(ui->AuthorsTableWidget->item(i,0)->text().toStdString(),
                                                ui->AuthorsTableWidget->item(i,1)->text().toStdString()));
+  }
 
   Signature.Version = ui->VersionEdit->text().toStdString();
   Signature.Status = openfluid::ware::EXPERIMENTAL;  // TODO change Status to enum class
   if (ui->StatusComboBox->currentIndex() == 1)
+  {
     Signature.Status = openfluid::ware::BETA;
+  }
   else if (ui->StatusComboBox->currentIndex() == 2)
+  {
     Signature.Status = openfluid::ware::STABLE;
+  }  
 
 
   Signature.Domain = ui->DomainEdit->text().toStdString();
@@ -734,7 +776,9 @@ void SignatureEditorWidget::removeAuthorLine()
   int Row = ui->AuthorsTableWidget->currentRow();
 
   if (Row >= 0)
+  {
     ui->AuthorsTableWidget->removeRow(Row);
+  }
 }
 
 
@@ -745,7 +789,9 @@ void SignatureEditorWidget::removeAuthorLine()
 bool SignatureEditorWidget::isValidID() const
 {
   if (m_StaticID)
+  {
     return true;
+  }
 
   return openfluid::tools::isValidWareID(ui->IDEdit->text().toStdString());
 }

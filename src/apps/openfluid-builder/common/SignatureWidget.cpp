@@ -74,7 +74,10 @@ QString SignatureWidget::convertStdString(const std::string& Str, const QString&
 
   FinalStr.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;").replace("\"","&quot;").replace("\n","<br/>");
 
-  if (FinalStr.isNull() || FinalStr.isEmpty()) FinalStr = ReplaceStr;
+  if (FinalStr.isNull() || FinalStr.isEmpty())
+  {
+    FinalStr = ReplaceStr;
+  }
 
   return FinalStr;
 }
@@ -87,27 +90,41 @@ QString SignatureWidget::convertStdString(const std::string& Str, const QString&
 void SignatureWidget::clearAllInfos()
 {
   while (ui->InfosTabWidget->count() > 1)
+  {
     ui->InfosTabWidget->removeTab(1);
+  }
 
   ui->GeneralLabel->setText("");
 
   while (ui->ParametersTableWidget->rowCount() > 0)
+  {
     ui->ParametersTableWidget->removeRow(0);
+  }
 
   while (ui->ExtrafilesTableWidget->rowCount() > 0)
+  {
     ui->ExtrafilesTableWidget->removeRow(0);
+  }
 
   while (ui->VariablesTableWidget->rowCount() > 0)
+  {
     ui->VariablesTableWidget->removeRow(0);
+  }
 
   while (ui->AttributesTableWidget->rowCount() > 0)
+  {
     ui->AttributesTableWidget->removeRow(0);
+  }
 
   while (ui->EventsTableWidget->rowCount() > 0)
+  {
     ui->EventsTableWidget->removeRow(0);
+  }
 
   while (ui->GraphTableWidget->rowCount() > 0)
+  {
     ui->GraphTableWidget->removeRow(0);
+  }
 }
 
 
@@ -129,7 +146,10 @@ QString SignatureWidget::formatAuthors(const openfluid::ware::WareSignature::Aut
     QString Name = convertStdString((*it).first,"unknown");
     QString Email = convertStdString((*it).second,"no email");
     Str += Name + " &lt;" + Email + "&gt;";
-    if (it!=itl) Str+=", ";
+    if (it!=itl)
+    {
+      Str+=", ";
+    }
   }
 
   return Str;
@@ -147,7 +167,9 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
   QString PathLabelStr = tr("Plugin path");
 
   if (Signature->Ghost)
+  {
     PathLabelStr = tr("Ghost path");
+  }
 
   Contents += "<b>" + tr("ID") + ":</b> " + convertStdString(Signature->Signature->ID) + "<br/>";
   Contents += "<b>" + tr("Name") + ":</b> " + convertStdString(Signature->Signature->Name) + "<br/>";
@@ -159,9 +181,13 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
     Contents += "<b>" + tr("Author(s)") + ":</b> ";
 
     if (!Signature->Signature->Authors.empty())
+    {
       Contents += formatAuthors(Signature->Signature->Authors);
+    }
     else
+    {
       Contents += convertStdString("");
+    }
 
     Contents += "<hr>";
     Contents += "<b>" + PathLabelStr + ":</b> " +
@@ -170,8 +196,14 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
     Contents += "<b>" + tr("Version") + ":</b> " + convertStdString(Signature->Signature->Version) + "<br/>";
 
     QString StatusStr = tr("experimental");
-    if (Signature->Signature->Status == openfluid::ware::BETA) StatusStr = tr("beta");
-    if (Signature->Signature->Status == openfluid::ware::STABLE) StatusStr = tr("stable");
+    if (Signature->Signature->Status == openfluid::ware::BETA)
+    {
+      StatusStr = tr("beta");
+    }
+    if (Signature->Signature->Status == openfluid::ware::STABLE)
+    {
+      StatusStr = tr("stable");
+    }
     Contents += "<b>" + tr("Status") + ":</b> " + StatusStr + "<br/>";
     Contents += "<hr>";
     Contents += "<b>" + tr("Domain(s)") + ":</b> " + convertStdString(Signature->Signature->Domain) + "<br/>";
@@ -227,7 +259,9 @@ void SignatureWidget::updateParameters(const openfluid::machine::ModelItemSignat
   updateParametersCategory(UsParams,tr("Used"),ReqParams->size());
 
   if (ui->ParametersTableWidget->rowCount() > 0)
+  {
     ui->InfosTabWidget->addTab(ui->ParametersTab,tr("Parameters"));
+  }
 }
 
 
@@ -266,7 +300,9 @@ void SignatureWidget::updateExtrafiles(const openfluid::machine::ModelItemSignat
   updateExtrafilesCategory(UsFiles,tr("Used"),ReqFiles->size());
 
   if (ui->ExtrafilesTableWidget->rowCount() > 0)
+  {
     ui->InfosTabWidget->addTab(ui->ExtrafilesTab,tr("Extra files"));
+  }
 }
 
 
@@ -329,7 +365,9 @@ void SignatureWidget::updateVariables(const openfluid::machine::ModelItemSignatu
   updateVariablesCategory(UpdVars,tr("Updated"),ProdVars->size()+ReqVars->size()+UsVars->size());
 
   if (ui->VariablesTableWidget->rowCount() > 0)
+  {
     ui->InfosTabWidget->addTab(ui->VariablesTab,tr("Variables"));
+  }
 }
 
 
@@ -385,7 +423,9 @@ void SignatureWidget::updateAttributes(const openfluid::machine::ModelItemSignat
   updateAttributesCategory(UsAttrs,tr("Used"),ProdAttrs->size()+ReqAttrs->size());
 
   if (ui->AttributesTableWidget->rowCount() > 0)
+  {
     ui->InfosTabWidget->addTab(ui->AttributesTab,tr("Attributes"));
+  }
 }
 
 
@@ -408,7 +448,9 @@ void SignatureWidget::updateEvents(const openfluid::machine::ModelItemSignatureI
   }
 
   if (ui->EventsTableWidget->rowCount() > 0)
+  {
     ui->InfosTabWidget->addTab(ui->EventsTab,tr("Events"));
+  }
 }
 
 
@@ -423,7 +465,9 @@ void SignatureWidget::updateSpatialGraph(const openfluid::machine::ModelItemSign
       &(Signature->Signature->HandledUnitsGraph.UpdatedUnitsClass);
 
   if (!Desc.empty())
+  {
     ui->GraphDescriptionLabel->setText(tr("<b>Overall description</b>")+": "+convertStdString(Desc));
+  }
 
   ui->GraphTableWidget->setRowCount(UnitsClasses->size());
 
@@ -439,7 +483,9 @@ void SignatureWidget::updateSpatialGraph(const openfluid::machine::ModelItemSign
   }
 
   if (ui->GraphTableWidget->rowCount() > 0 || !Desc.empty())
+  {
     ui->InfosTabWidget->addTab(ui->SpatialGraphTab,tr("Spatial graph"));
+  }
 
 }
 
@@ -460,9 +506,13 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ObserverSignatureI
   Contents += "<b>" + tr("Author(s)") + ":</b> ";
 
   if (!Signature->Signature->Authors.empty())
+  {
     Contents += formatAuthors(Signature->Signature->Authors);
+  }
   else
+  {
     Contents += convertStdString("");
+  }
 
   Contents += "<hr>";
   Contents += "<b>" + tr("Plugin path") + ":</b> " + convertStdString(Signature->FileFullPath);
@@ -470,8 +520,14 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ObserverSignatureI
   Contents += "<b>" + tr("Version") + ":</b> " + convertStdString(Signature->Signature->Version) + "<br/>";
 
   QString StatusStr = tr("experimental");
-  if (Signature->Signature->Status == openfluid::ware::BETA) StatusStr = tr("beta");
-  if (Signature->Signature->Status == openfluid::ware::STABLE) StatusStr = tr("stable");
+  if (Signature->Signature->Status == openfluid::ware::BETA)
+  {
+    StatusStr = tr("beta");
+  }
+  if (Signature->Signature->Status == openfluid::ware::STABLE)
+  {
+    StatusStr = tr("stable");
+  }
   Contents += "<b>" + tr("Status") + ":</b> " + StatusStr + "<br/>";
 
 

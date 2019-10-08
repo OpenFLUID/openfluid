@@ -418,7 +418,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
           KSI.SourceIsDatastore = (Layer.second.getChildValue("source","file").get() == "datastore");
           if (KSI.SourceIsDatastore)
+          {
             return;
+          }
           else
           {
             KSI.SourceFilename = Layer.second.getChildValue("sourcefile","");
@@ -459,7 +461,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
     void onPrepared()
     {
       if (!m_OKToGo)
+      {
         return;
+      }
 
       if (!m_PlotProgram.isFound())
       {
@@ -479,7 +483,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
       prepareTempDirectory();
 
       if (!m_OKToGo)
+      {
         return;
+      }
 
 
       openfluid::tools::Filesystem::removeDirectory(m_TmpDir+"/"+m_GNUPlotSubDir);
@@ -543,7 +549,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
     {
 
       if (!m_OKToGo)
+      {
         return;
+      }
 
       openfluid::core::SpatialUnit* UU;
 
@@ -618,7 +626,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
     void onFinalizedRun()
     {
       if (!m_OKToGo)
+      {
         return;
+      }
 
       // close data files
 
@@ -631,7 +641,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
           if ((*it2).second.IsPlotted)
           {
             if ((*it2).second.DataFile!=nullptr && (*it2).second.DataFile->is_open())
+            {
               (*it2).second.DataFile->close();
+            }
             delete (*it2).second.DataFile;
           }
         }

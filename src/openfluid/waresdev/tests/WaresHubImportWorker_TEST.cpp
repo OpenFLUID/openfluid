@@ -112,7 +112,9 @@ class F
       }
 
       for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::System | QDir::Hidden))
+      {
         forceRemove(QString("%1/%2").arg(Path).arg(SubDir));
+      }
 
       Dir.rmdir(Path);
     }
@@ -123,7 +125,9 @@ class F
           openfluid::ware::WareType::SIMULATOR);
 
       if (Wares.empty())
+      {
         return "";
+      }
 
       for (const auto& Ware : Wares)
       {
@@ -145,7 +149,9 @@ class F
     static bool checkHttps(const std::string& TestName)
     {
       if (!UrlHttps.isEmpty())
+      {
         return true;
+      }
 
       std::cout << "** Test not run due to empty wareshub https url ** (\"" << TestName << "\")" << std::endl;
 
@@ -197,7 +203,9 @@ BOOST_AUTO_TEST_CASE(connect_https_ssl_ok)
   std::cout << " ======== " << F::UrlHttps.toStdString() << " (ok) ========" << std::endl;
 
   if (!F::checkHttps("connect_https_ssl_ok"))
+  {
     return;
+  }
 
   openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps);
   BOOST_CHECK(W.connect());
@@ -213,7 +221,9 @@ BOOST_AUTO_TEST_CASE(connect_https_ssl_ok)
 BOOST_AUTO_TEST_CASE(connect_https_ssl_ok_redirect)
 {
   if (!F::checkHttps("connect_https_ssl_ok_redirect"))
+  {
     return;
+  }
 
   std::cout << " ======== " << F::UrlHttpsRedirect.toStdString() << " (ok) ========" << std::endl;
 
@@ -231,7 +241,9 @@ BOOST_AUTO_TEST_CASE(connect_https_ssl_ok_redirect)
 BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_ok)
 {
   if (!F::checkHttps("connect_https_sslNoverify_ok"))
+  {
     return;
+  }
 
   std::cout << " ======== " << F::UrlHttps.toStdString() << " (noverify) ========" << std::endl;
 
@@ -275,7 +287,9 @@ BOOST_AUTO_TEST_CASE(ware_list_http_ok)
 BOOST_AUTO_TEST_CASE(ware_list_https_ok)
 {
   if (!F::checkHttps("ware_list_https_ok"))
-      return;
+  {
+    return;
+  }
 
   openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps);
   W.connect();
@@ -293,7 +307,9 @@ BOOST_AUTO_TEST_CASE(ware_list_https_ok)
 BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 {
   if (!checkHttps("clone_https_wrongauth_fails"))
+  {
     return;
+  }
 
   openfluid::waresdev::WaresHubImportWorker W(UrlHttps, "wrongname", "wrongpass", true);
   W.connect();
@@ -316,7 +332,9 @@ BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
   // TODO to enable once cloning will be possible from the testing FluidHub service
 /*
   if (!checkHttps("clone_https_ok"))
+  {
     return;
+  }
 
   openfluid::waresdev::WaresHubImportWorker W(UrlHttps, Username, Password, true);
   BOOST_CHECK(W.connect());

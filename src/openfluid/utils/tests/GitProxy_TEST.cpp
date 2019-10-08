@@ -113,7 +113,9 @@ class F
       }
 
       for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::System | QDir::Hidden))
+      {
         forceRemove(QString("%1/%2").arg(Path).arg(SubDir));
+      }
 
       Dir.rmdir(Path);
     }
@@ -313,7 +315,9 @@ BOOST_FIXTURE_TEST_CASE(clone_auth_ok,F)
 BOOST_FIXTURE_TEST_CASE(clone_no_valid_cert_ok,F)
 {
   if (!checkWareshub("clone_no_valid_cert_ok"))
+  {
     return;
+  }
 
 
   if (!FirstAvailSimUrl.isEmpty())
@@ -610,7 +614,9 @@ int main(int argc, char *argv[])
     return 0;
   }
   else
+  {
     std::cout << "Found git version " << openfluid::utils::GitProxy::getVersion().toStdString() << std::endl;
+  }
 
 
   return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);

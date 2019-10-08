@@ -88,7 +88,9 @@ void GeneratorWidget::updateParams()
     QString ParamValue = "";
 
     if (DescParams.find(ParamName) != DescParams.end())
+    {
       ParamValue = QString::fromStdString(DescParams[ParamName]);
+    }
 
     ParameterWidget* ParamWidget = new ParameterWidget(this,
                                                        QString::fromStdString(ParamName),ParamValue,
@@ -112,7 +114,9 @@ void GeneratorWidget::updateParams()
     QString ParamValue = "";
 
     if (DescParams.find(ParamName) != DescParams.end())
+    {
       ParamValue = QString::fromStdString(DescParams[ParamName]);
+    }
 
     ParameterWidget* ParamWidget = new ParameterWidget(this,
                                                        QString::fromStdString(ParamName),ParamValue,
@@ -140,7 +144,9 @@ void GeneratorWidget::refresh()
 
     QString DimStr = tr("scalar");
     if (static_cast<const openfluid::fluidx::GeneratorDescriptor*>(mp_Desc)->getVariableSize() > 1)
+    {
       DimStr = tr("vector");
+    }
 
     ui->NameLabel->setText(
         tr("Produces %1 variable %2 on %3 (%4)")

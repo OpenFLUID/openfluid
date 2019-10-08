@@ -189,9 +189,13 @@ class CommandLineOption
       m_Value = Value;
 
       if ((!m_ValueRequired) || (m_ValueRequired && !m_Value.empty()))
+      {
         m_Active = true;
+      }
       else
+      {
         m_Active = false;
+      }
     }
 
 
@@ -641,9 +645,13 @@ class CommandLineParser
         {
           // arg not an option
           if (m_ActiveCommand.empty())
+          {
             m_ActiveCommand = Arg;
+          }
           else
+          {
             m_ExtraArgs.push_back(Arg);
+          }
         }
         else
         {

@@ -103,17 +103,25 @@ void AddEventDialog::checkGlobal()
     QString CurrentKey = ui->InfosTableWidget->item(i,0)->text();
 
     if (KeysList.contains(CurrentKey))
+    {
       KeysAreUnique = false;
+    }
     else
+    {
       KeysList.append(CurrentKey);
+    }
 
     i++;
   }
 
   if (!KeysAreUnique)
+  {
     setMessage(tr("Informations keys are not unique"));
+  }
   else
+  {
     setMessage();
+  }
 }
 
 

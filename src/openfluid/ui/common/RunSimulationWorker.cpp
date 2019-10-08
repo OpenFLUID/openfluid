@@ -325,7 +325,9 @@ RunSimulationWorker::RunSimulationWorker(const openfluid::fluidx::FluidXDescript
   : mp_FXDesc(FXDesc), mp_Listener(Listener)
 {
   if (!Listener)
+  {
     emit error(QString("Listener can not be NULL"),openfluid::base::ExceptionContext());
+  }
 }
 
 

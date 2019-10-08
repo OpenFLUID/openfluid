@@ -52,8 +52,10 @@ ProgressiveColumnFileReader::ProgressiveColumnFileReader(const std::string& File
     m_File(FileName.c_str()), m_ColSeparators(ColSeparators), m_FileName(FileName)
 {
   if (!m_File.is_open())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Can not open file " + FileName);
+  }
 }
 
 

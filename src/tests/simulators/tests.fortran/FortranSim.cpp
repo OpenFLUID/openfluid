@@ -168,7 +168,9 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
       CALL_FSUBROUTINE(multrealvalue)(&DValue,&DMult,&DResult);
 
       if (std::abs(DResult - (DValue*DMult)) > m_Precision)
+      {
         OPENFLUID_RaiseError("incorrect fortran call (multrealvalue)");
+      }
 
 
       // ====== int ======
@@ -181,7 +183,9 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
       CALL_FSUBROUTINE(multintvalue)(&IValue,&IMult,&IResult);
 
       if (IResult != (IValue*IMult))
+      {
         OPENFLUID_RaiseError("incorrect fortran call (multintvalue)");
+      }
 
 
       // ====== string ======
@@ -197,7 +201,9 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
   SResult = std::string(CResult);
 
   if (SResult != (SStr1 + " " + SStr2))
+  {
     OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (catstrings)");
+  }
        */
 
 
@@ -219,8 +225,12 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
       MTmpResult = new double[MDim1*MDim2];
 
       for (j=0; j < MDim2;j++)
+      {
         for (i=0; i < MDim1;i++)
+        {
           MValue.setElement(i,j,(j*MDim1)+i+1);
+        }
+      }
 
       std::cout << std::endl;
 
@@ -273,7 +283,9 @@ class FortranSimulator : public openfluid::ware::PluggableSimulator
         {
           //      std::cout << MResult.get(i,j) << "  " << (MValue.get(i,j) * MMult) << std::endl;
           if (std::abs(MResult.get(i,j) - (MValue.get(i,j) * MMult)) > m_Precision)
+          {
             OPENFLUID_RaiseError("incorrect fortran call (multrealmatrix)");
+          }
         }
       }
 

@@ -84,7 +84,9 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
       m_LocalDatastore.addItem(DSItem);
     }
     else
+    {
       DSItem = m_LocalDatastore.item(DSItemDesc->getID());
+    }
 
     openfluid::core::GeoVectorValue* VectorData = dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
 
@@ -257,9 +259,13 @@ void MapScene::updateActiveLayer()
 void MapScene::setActiveLayer(const QString& UnitClass)
 {
   if (UnitClass.isEmpty() || !m_MapItems.contains(UnitClass.toStdString()))
+  {
     m_ActiveLayer = nullptr;
+  }
   else
+  {
     m_ActiveLayer = &m_MapItems[UnitClass.toStdString()];
+  }
 
   updateActiveLayer();
 }

@@ -94,8 +94,10 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
   for(const QString& Path : m_WareTypePathByWareType)
   {
     if (!QDir(Path).mkpath(Path))
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
         QString("unable to open or create %1 directory").arg(Path).toStdString());
+    }
   }
 }
 
@@ -107,7 +109,9 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
 QString WareSrcManager::getWareTypePath(openfluid::ware::WareType WareSrcType)
 {
   if (m_WareTypePathByWareType.contains(WareSrcType))
+  {
     return m_WareTypePathByWareType.value(WareSrcType);
+  }
 
   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unknown source type");
 }
@@ -139,7 +143,9 @@ QString WareSrcManager::getWarePath(const QString& WareID, openfluid::ware::Ware
 
   // TODO later, add check of other workspaces than current
   if (Dir.exists(WareID))
+  {
     return Dir.filePath(WareID);
+  }
 
   ErrMsg = QObject::tr("Unable to find \"%1\" in the current workspace.").arg(WareID);
   return "";
@@ -159,11 +165,15 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 
   // we *are* current workspace
   if (Info.m_AbsolutePath == m_WorkspacePath)
+  {
     return Info;
+  }
 
   // we are not under current workspace
   if (Info.m_AbsolutePath.indexOf(m_WorkspacePath) != 0)
+  {
     return Info;
+  }
 
   Info.m_IsInCurrentWorkspace = true;
 
@@ -172,11 +182,15 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
   {
     // we *are* this waretype directory
     if (Info.m_AbsolutePath == it.value())
+    {
       return Info;
+    }
 
     // we are not under this waretype directory
     if (Info.m_AbsolutePath.indexOf(it.value()) != 0)
+    {
       continue;
+    }
 
     QDir WareTypeDir(it.value());
     QString RelToWareType = WareTypeDir.relativeFilePath(Info.m_AbsolutePath);
@@ -185,7 +199,9 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 
     // we are just under this waretype directory, but just a file out of any ware
     if (QFileInfo(PotentialWarePath).isFile())
+    {
       return Info;
+    }
 
     Info.m_WareName = PotentialWareName;
     Info.m_AbsolutePathOfWare = PotentialWarePath;
@@ -202,7 +218,9 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 
     Info.m_isAWareFile = FileInfo.isFile();
     if (Info.m_isAWareFile)
+    {
       Info.m_FileName = FileInfo.fileName();
+    }
 
     return Info;
   }

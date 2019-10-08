@@ -129,50 +129,82 @@ void AddDatastoreItemDialog::checkGlobal()
 
   ui->UnitsClassEdit->setEnabled(ui->UnitsClassCheckBox->isChecked());
   if (ui->UnitsClassEdit->isEnabled())
+  {
     ui->UnitsClassEdit->setPlaceholderText(PlaceholderStr);
+  }
   else
+  {
     ui->UnitsClassEdit->setPlaceholderText("");
+  }
 
   ui->GeovectorEdit->setEnabled(ui->GeovectorRadioButton->isChecked());
   ui->GeovectorBrowseButton->setEnabled(ui->GeovectorRadioButton->isChecked());
   if (ui->GeovectorEdit->isEnabled())
+  {
     ui->GeovectorEdit->setPlaceholderText(PlaceholderStr);
+  }
   else
+  {
     ui->GeovectorEdit->setPlaceholderText("");
+  }
 
   ui->GeorasterEdit->setEnabled(ui->GeorasterRadioButton->isChecked());
   ui->GeorasterBrowseButton->setEnabled(ui->GeorasterRadioButton->isChecked());
   if (ui->GeorasterEdit->isEnabled())
+  {
     ui->GeorasterEdit->setPlaceholderText(PlaceholderStr);
+  }
   else
+  {
     ui->GeorasterEdit->setPlaceholderText("");
+  }
 
   ui->CopySubdirEdit->setEnabled(ui->CopySubdirRadioButton->isChecked());
   if (ui->CopySubdirEdit->isEnabled())
+  {
     ui->CopySubdirEdit->setPlaceholderText(PlaceholderStr);
+  }
   else
+  {
     ui->CopySubdirEdit->setPlaceholderText("");
+  }
 
   ui->DataDestGroupBox->setEnabled(!isSourceFileInInputDataset());
 
 
   if (ui->IDEdit->text().isEmpty())
+  {
     setMessage(tr("Item ID cannot be empty"));
+  }
   else if (m_ExistingIDs.contains(ui->IDEdit->text()))
+  {
     setMessage(tr("Item ID already exists"));
+  }
   else if (ui->UnitsClassCheckBox->isChecked() && ui->UnitsClassEdit->text().isEmpty())
+  {
     setMessage(tr("Units class cannot be empty"));
+  }
   else if (ui->GeovectorRadioButton->isChecked() && ui->GeovectorEdit->text().isEmpty())
+  {
     setMessage(tr("No geovector source file selected"));
+  }
   else if (ui->GeorasterRadioButton->isChecked() && ui->GeorasterEdit->text().isEmpty())
+  {
     setMessage(tr("No georaster source file selected"));
+  }
   else if (ui->CopySubdirRadioButton->isChecked() && ui->CopySubdirEdit->text().isEmpty())
+  {
     setMessage(tr("Subdirectory for data destination is empty"));
+  }
   else if (ui->CopySubdirRadioButton->isChecked() &&
            (ui->CopySubdirEdit->text().startsWith("/") || ui->CopySubdirEdit->text().startsWith("\\")))
+  {
     setMessage(tr("Wrong subdirectory name for data destination"));
+  }
   else
+  {
     setMessage();
+  }
 }
 
 
@@ -189,7 +221,9 @@ void AddDatastoreItemDialog::selectVectorFile()
                                    m_OGRFormatsStr);
 
   if (!SelectedFile.isEmpty())
+  {
     ui->GeovectorEdit->setText(SelectedFile);
+  }
 
   checkGlobal();
 }
@@ -209,7 +243,9 @@ void AddDatastoreItemDialog::selectRasterFile()
                                    m_GDALFormatsStr);
 
   if (!SelectedFile.isEmpty())
+  {
     ui->GeorasterEdit->setText(SelectedFile);
+  }
 
   checkGlobal();
 }
@@ -252,9 +288,13 @@ QString AddDatastoreItemDialog::getUnitsClass() const
 openfluid::core::UnstructuredValue::UnstructuredType AddDatastoreItemDialog::getItemType() const
 {
   if (ui->GeovectorRadioButton->isChecked())
+  {
     return openfluid::core::UnstructuredValue::GeoVectorValue;
+  }
   else
+  {
     return openfluid::core::UnstructuredValue::GeoRasterValue;
+  }
 }
 
 
@@ -265,9 +305,13 @@ openfluid::core::UnstructuredValue::UnstructuredType AddDatastoreItemDialog::get
 QString AddDatastoreItemDialog::getSourceFilePath() const
 {
   if (ui->GeovectorRadioButton->isChecked())
+  {
     return ui->GeovectorEdit->text();
+  }
   else
+  {
     return ui->GeorasterEdit->text();
+  }
 }
 
 
@@ -280,12 +324,16 @@ bool AddDatastoreItemDialog::isSourceFileInInputDataset() const
   QString SourceFile(getSourceFilePath());
 
   if (SourceFile.isEmpty())
+  {
     return false;
+  }
 
   QString InputPath = QString::fromStdString(openfluid::base::RunContextManager::instance()->getInputDir());
 
   if (QDir::fromNativeSeparators(SourceFile).startsWith(QDir::fromNativeSeparators(InputPath)))
+  {
     return true;
+  }
 
   return false;
 }
@@ -298,8 +346,12 @@ bool AddDatastoreItemDialog::isSourceFileInInputDataset() const
 QString AddDatastoreItemDialog::getCopySubdir() const
 {
   if (ui->CopyRadioButton->isChecked())
+  {
     return "";
+  }
   else
+  {
     return ui->CopySubdirEdit->text();
+  }
 }
 

@@ -111,7 +111,9 @@ void EditSetDialog::checkGlobal()
     QStringList VarNames = ui->SelectedVariablesTextEdit->toPlainText().split(";");
 
     for (auto& Name : VarNames)
+    {
       ValidLists = ValidLists && openfluid::tools::isValidVariableName(Name.toStdString());
+    }
   }
 
   bool InvalidName = ui->SetNameEdit->text().isEmpty() ||
@@ -121,9 +123,13 @@ void EditSetDialog::checkGlobal()
 
   if (InvalidName || ExistingSet ||
       ui->UnitsClassComboBox->currentText().isEmpty() || !ValidLists)
+  {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+  }
   else
+  {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  }
 }
 
 
@@ -140,7 +146,9 @@ void EditSetDialog::initialize(const QString& Name, const QString& Format,
   ui->UnitsClassComboBox->lineEdit()->setText(UnitsClass);
 
   if (UnitsIDs == "*")
+  {
     ui->AllUnitsRadioButton->setChecked(true);
+  }
   else
   {
     ui->SelectedUnitsRadioButton->setChecked(true);
@@ -148,7 +156,9 @@ void EditSetDialog::initialize(const QString& Name, const QString& Format,
   }
 
   if (Vars == "*")
+  {
     ui->AllVariablesRadioButton->setChecked(true);
+  }
   else
   {
     ui->SelectedVariablesRadioButton->setChecked(true);
@@ -172,11 +182,15 @@ openfluid::ware::WareParams_t EditSetDialog::getSetParams()
 
   std::string UnitsIDsStr = "*";
   if (ui->SelectedUnitsRadioButton->isChecked())
+  {
     UnitsIDsStr = ui->SelectedUnitsTextEdit->toPlainText().trimmed().toStdString();
+  }
 
   std::string VarsStr = "*";
   if (ui->SelectedVariablesRadioButton->isChecked())
+  {
     VarsStr = ui->SelectedVariablesTextEdit->toPlainText().trimmed().toStdString();
+  }
 
   return openfluid::ware::WareParams_t({{ParamsRoot+"format",FormatStr},
                                         {ParamsRoot+"unitsclass",UnitsClassStr},

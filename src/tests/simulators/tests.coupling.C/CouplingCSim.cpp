@@ -170,13 +170,17 @@ class CouplingCSimulator : public openfluid::ware::PluggableSimulator
 
 
     if (m_DeltaTList.empty())
+    {
       return Never();
+    }
 
     openfluid::base::SchedulingRequest DT = m_DeltaTList.front();
        m_DeltaTList.pop_front();
 
     if (DT.RequestType == openfluid::base::SchedulingRequest::DURATION)
+    {
       openfluid::tools::microsleep(10000/DT.Duration);
+    }
 
     return DT;
   }

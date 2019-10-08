@@ -137,7 +137,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
           NodeLabel += "<br/><br/><u>Attributes</u>";
 
           for (auto& Name : AttrsNames)
+          {
             NodeLabel += "<br/>"+Name+"="+Unit->attributes()->value(Name)->toString();
+          }
         }
       }
 
@@ -154,7 +156,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
             const openfluid::core::Value* Val = Unit->variables()->currentValue(Name);
 
             if (Val)
+            {
               NodeLabel += "<br/>"+Name+"="+Val->toString();
+            }
           }
         }
       }
@@ -162,7 +166,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
       std::string OptsStr = Options;
       if (!OptsStr.empty())
+      {
         OptsStr = ","+OptsStr;
+      }
 
       return "\""+IDClassStr+"\" [label=<"+NodeLabel+">"+OptsStr+"];";
     }
@@ -214,7 +220,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
           for (;ItAttr!=(*ItStyle).second.end();++ItAttr)
           {
             if (ItAttr != (*ItStyle).second.begin())
+            {
               Options += ",";
+            }
 
             Options += (*ItAttr).first+"="+(*ItAttr).second;
           }
@@ -364,7 +372,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       }
 
       if (!(m_Init || m_EveryTime || m_Final))
+      {
         m_Final = true;
+      }
     }
 
 
@@ -375,7 +385,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
     void onPrepared()
     {
       if (m_Init)
+      {
         ExportUnitsGraphAsDotFile(m_BaseFileName+"_init.dot","at initialization");
+      }
     }
 
 
@@ -416,7 +428,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
     void onFinalizedRun()
     {
       if (m_Final)
+      {
         ExportUnitsGraphAsDotFile(m_BaseFileName+"_final.dot","at finalization");
+      }
     }
 
 

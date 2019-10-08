@@ -69,7 +69,9 @@ GeneratorDescriptor::GeneratorDescriptor(
   m_VarSize = VarSize;
 
   if (m_VarSize < 1)
+  {
     m_VarSize = 1;
+  }
 
   m_GeneratedID = openfluid::machine::Factory::buildGeneratorID(VarName,
                                                                 (m_VarSize > 1),

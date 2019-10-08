@@ -193,7 +193,9 @@ bool ImportWorker::processFilesAndDatastore(int Step)
 
       QString FullSrcFilePath = m_SourcesInfos[i].SourceURI;
       if (!m_SourcesInfos[i].CachedSourceURI.isEmpty())
+      {
         FullSrcFilePath = m_SourcesInfos[i].CachedSourceURI;
+      }
 
       QString FullDestFilePath = m_InputDir + "/" + m_SourcesInfos[i].RelativeDatasetPath;
       QString FullDestPath = QFileInfo(FullDestFilePath).absolutePath();
@@ -231,7 +233,9 @@ bool ImportWorker::processFilesAndDatastore(int Step)
       QString RelativePath = m_SourcesInfos[i].RelativeDatasetPath;
 
       if (m_SourcesInfos[i].IsAlreadyInDataset)
+      {
         RelativePath = QDir(m_InputDir).relativeFilePath(m_SourcesInfos[i].SourceURI);
+      }
 
 
       // populate datastore
@@ -272,10 +276,14 @@ bool ImportWorker::runImport(int StartStep)
   }
 
   if (OKToContinue)
+  {
     OKToContinue = buildConnections(StartStep+m_SourcesInfos.size()+1);
+  }
 
   if (OKToContinue)
+  {
     OKToContinue = processFilesAndDatastore(StartStep+m_SourcesInfos.size()+2);
+  }
 
   return OKToContinue;
 }
@@ -288,9 +296,11 @@ bool ImportWorker::runImport(int StartStep)
 void ImportWorker::run()
 {
   if (!runCheck(1))
+  {
     emit completed(getStyledText(tr("Consistency error, "
                                     "import could not be performed with current import configuration"),
                                  "red",true));
+  }
   else
   {
     if (runImport(OGRGDALEXT_PRECHECK_STEPS+1))

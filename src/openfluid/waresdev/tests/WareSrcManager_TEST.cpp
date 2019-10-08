@@ -110,10 +110,14 @@ struct F
       QDir Dir(m_WorkspacePath);
 
       for(const QString& D : m_RealDirs)
+      {
         Dir.mkpath(D);
+      }
 
       for(const QString& F : m_RealFiles)
+      {
         QFile(F).open(QIODevice::ReadWrite);
+      }
     }
 
   };

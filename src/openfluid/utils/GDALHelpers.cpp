@@ -174,7 +174,10 @@ QString getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
 
     for (unsigned int i =0; i< (*it).second.FilesExts.size(); i++)
     {
-      if (i!=0) CurrentFormatsStr += " ";
+      if (i!=0)
+      {
+        CurrentFormatsStr += " ";
+      }
       CurrentFormatsStr += "*." + QString::fromStdString((*it).second.FilesExts.at(i));
     }
 

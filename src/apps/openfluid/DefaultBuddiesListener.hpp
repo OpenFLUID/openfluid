@@ -54,7 +54,9 @@ class DefaultBuddiesListener : public openfluid::buddies::BuddiesListener
     {
       std::map<std::string,std::string>::const_iterator it;
       if (Options.empty())
+      {
         std::cout << "    (none)" << std::endl;
+      }
       else
       {
         for (it = Options.begin();it != Options.end();++it)

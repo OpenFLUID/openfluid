@@ -79,7 +79,9 @@ unsigned int WorkspaceDevProcessWorker::getWaresCount() const
   unsigned int Count = 0;
 
   for (auto& WType : m_Selection)
+  {
     Count += WType.second.size();
+  }
 
   return Count;
 }

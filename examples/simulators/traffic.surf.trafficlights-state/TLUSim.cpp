@@ -146,9 +146,13 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(TLU,"duration",Period);
 
         if (Period>DeltaT)
+        {
           Modulo = Period % DeltaT;
+        }
         else
+        {
           Modulo = DeltaT % Period;
+        }
 
         if (Modulo!=0)
         {

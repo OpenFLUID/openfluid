@@ -65,7 +65,9 @@ SpatialUnit* UnitsCollection::spatialUnit(UnitID_t aUnitID)
   for (it=m_Data.begin();it!=m_Data.end();++it)
   {
     if (it->getID() == aUnitID)
+    {
       return &(*it);
+    }
   }
 
   return nullptr;

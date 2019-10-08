@@ -167,42 +167,62 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_GetUnitsCount("VU",UnitsCount);
       if (UnitsCount != 2)
+      {
         OPENFLUID_RaiseError("incorrect number of VU units");
+      }
 
       UnitsCount = OPENFLUID_GetUnitsCount("VU");
       if (UnitsCount != 2)
+      {
         OPENFLUID_RaiseError("incorrect number of VU units (by return)");
+      }
 
       OPENFLUID_GetUnitsCount("TU",UnitsCount);
       if (UnitsCount != 5)
+      {
         OPENFLUID_RaiseError("incorrect number of TU units");
+      }
 
       OPENFLUID_GetUnitsCount("OU",UnitsCount);
       if (UnitsCount != 3)
+      {
         OPENFLUID_RaiseError("incorrect number of OU units");
+      }
 
       OPENFLUID_GetUnitsCount("MU",UnitsCount);
       if (UnitsCount != (Cols*Rows))
+      {
         OPENFLUID_RaiseError("incorrect number of MU units");
+      }
 
 
       OPENFLUID_GetUnitsCount(UnitsCount);
       if (UnitsCount != (10+Cols*Rows))
+      {
         OPENFLUID_RaiseError("incorrect total number of units");
+      }
 
       UnitsCount = OPENFLUID_GetUnitsCount();
       if (UnitsCount != (10+Cols*Rows))
+      {
         OPENFLUID_RaiseError("incorrect total number of units (by return)");
+      }
 
 
       if (OPENFLUID_GetUnits("VU").size() != 2)
+      {
         OPENFLUID_RaiseError("incorrect number of units in VU units list");
+      }
 
       if (OPENFLUID_GetUnits("MU").size() != (Cols*Rows))
+      {
         OPENFLUID_RaiseError("incorrect number of units in MU units list");
+      }
 
       if (!OPENFLUID_GetUnits("FU").empty())
+      {
         OPENFLUID_RaiseError("incorrect number of units in FU units list");
+      }
 
 
       auto CheckUnitsList = [this,Cols,Rows](const openfluid::core::UnitsClass_t& ClassName)
@@ -213,7 +233,9 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         for (auto& Unit : UList)
         {
           if (Unit->getProcessOrder() < PrevPcsOrd)
+          {
             OPENFLUID_RaiseError("incorrect units sequence in "+ ClassName +" units list");
+          }
 
           PrevPcsOrd = Unit->getProcessOrder();
         }
@@ -229,45 +251,65 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       CurrentUnit = OPENFLUID_GetUnit("TU",1);
       if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"TU",22))
+      {
         OPENFLUID_RaiseError("incorrect from-to connection for unit TU#1");
+      }
 
       CurrentUnit = OPENFLUID_GetUnit("TU",2);
       if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"TU",22))
+      {
         OPENFLUID_RaiseError("incorrect from-to connection for unit TU#2");
+      }
 
       CurrentUnit = OPENFLUID_GetUnit("TU",2);
       if (OPENFLUID_IsUnitConnectedTo(CurrentUnit,"TU",522))
+      {
         OPENFLUID_RaiseError("incorrect from-to connection for unit TU#2 (522)");
+      }
 
 
       CurrentUnit = OPENFLUID_GetUnit("TU",22);
       if (!OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",1) || !OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",2))
+      {
         OPENFLUID_RaiseError("incorrect from-to connection for unit TU#22");
+      }
 
       CurrentUnit = OPENFLUID_GetUnit("TU",18);
       if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"OU",5))
+      {
         OPENFLUID_RaiseError("incorrect from-to connection for unit TU#18");
+      }
 
       CurrentUnit = OPENFLUID_GetUnit("OU",5);
       if (!OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",18))
+      {
         OPENFLUID_RaiseError("incorrect from-to connection for unit OU#5");
+      }
 
 
       CurrentUnit = OPENFLUID_GetUnit("TU",1);
       if (!OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
+      {
         OPENFLUID_RaiseError("incorrect parent-child connection for unit TU#1");
+      }
 
       CurrentUnit = OPENFLUID_GetUnit("TU",22);
       if (!OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
+      {
         OPENFLUID_RaiseError("incorrect parent-child connection for unit TU#22");
+      }
 
       CurrentUnit = OPENFLUID_GetUnit("TU",18);
       if (OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",2))
+      {
         OPENFLUID_RaiseError("incorrect parent-child connection for unit TU#18");
+      }
 
       CurrentUnit = OPENFLUID_GetUnit("OU",5);
       if (!OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",2))
+      {
         OPENFLUID_RaiseError("incorrect parent-child connection for unit OU#5");
+      }
 
 
       openfluid::core::SpatialUnit* TU;
@@ -283,58 +325,78 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       CurrentUnit = OPENFLUID_GetUnit("TU",2);
 
       if (CurrentUnit == nullptr)
+      {
         OPENFLUID_RaiseError("incorrect unit TU#2 before deletion");
+      }
 
       CurrentUnit = OPENFLUID_GetUnit("TU",22);
       if (!OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",2))
+      {
         OPENFLUID_RaiseError("incorrect from-to connection before deletion of unit TU#2");
+      }
 
 
       CurrentUnit = OPENFLUID_GetUnit("VU",1);
       if (!OPENFLUID_IsUnitParentOf(CurrentUnit,"TU",2))
+      {
         OPENFLUID_RaiseError("incorrect parent-child connection before deletion of unit TU#2");
+      }
 
 
       OPENFLUID_DeleteUnit("TU",2);
 
       CurrentUnit = OPENFLUID_GetUnit("TU",2);
       if (CurrentUnit != nullptr)
+      {
         OPENFLUID_RaiseError("incorrect deletion for unit TU#2");
+      }
 
 
       CurrentUnit = OPENFLUID_GetUnit("TU",22);
       if (OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",2))
+      {
         OPENFLUID_RaiseError("incorrect from-to connection after deletion of unit TU#2");
+      }
 
       CurrentUnit = OPENFLUID_GetUnit("VU",1);
       if (OPENFLUID_IsUnitParentOf(CurrentUnit,"TU",2))
+      {
         OPENFLUID_RaiseError("incorrect parent-child connection after deletion of unit TU#2");
+      }
 
 
       CurrentUnit = OPENFLUID_GetUnit("OU",13);
 
       if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"OU",5))
+      {
         OPENFLUID_RaiseError(
                              "incorrect from-to connection between units OU#13 and OU#5 before removing");
+      }
 
       OPENFLUID_RemoveFromToConnection("OU",13,"OU",5);
 
       if (OPENFLUID_IsUnitConnectedTo(CurrentUnit,"OU",5))
+      {
         OPENFLUID_RaiseError(
                              "incorrect removing of from-to connection between units OU#13 and OU#5");
+      }
 
 
       CurrentUnit = OPENFLUID_GetUnit("TU",18);
 
       if (!OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
+      {
         OPENFLUID_RaiseError(
                              "incorrect child-parent connection between units TU#18 and VU#1 before removing");
+      }
 
       OPENFLUID_RemoveChildParentConnection("TU",18,"VU",1);
 
       if (OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
+      {
         OPENFLUID_RaiseError(
                              "incorrect removing of child-parent connection between units TU#18 and VU#1");
+      }
 
 
     }
@@ -364,11 +426,15 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       {
         OPENFLUID_GetAttribute(TU,"indatadbl",DblValue);
         if (!openfluid::scientific::isVeryClose(double(TU->getID())*0.1,DblValue))
+        {
           OPENFLUID_RaiseError("attributes error for indatadbl");
+        }
 
         OPENFLUID_GetAttribute(TU,"indatastr",StrValue);
         if (StrValue != "C0DE1")
+        {
           OPENFLUID_RaiseError("attributes error for indatastr");
+        }
 
       }
 

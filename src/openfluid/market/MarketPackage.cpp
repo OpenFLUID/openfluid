@@ -96,7 +96,9 @@ MarketPackage::~MarketPackage()
 void MarketPackage::initialize(bool EnableLog = false)
 {
   if (!openfluid::utils::CMakeProxy::isAvailable())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Required CMake program not found");
+  }
 
   m_IsLogEnabled = EnableLog;
 
@@ -186,9 +188,15 @@ std::string MarketPackage::composeFullBuildOptions(const PackageInfo::PackageTyp
 {
   std::string FullOptions = "";
 
-  if (!BuildOptions.empty()) FullOptions = " " + BuildOptions;
+  if (!BuildOptions.empty())
+  {
+    FullOptions = " " + BuildOptions;
+  }
 
-  if (!getCommonBuildOptions(Type).empty()) FullOptions = " " + getCommonBuildOptions(Type) + FullOptions;
+  if (!getCommonBuildOptions(Type).empty())
+  {
+    FullOptions = " " + getCommonBuildOptions(Type) + FullOptions;
+  }
 
   return FullOptions;
 }
@@ -206,10 +214,22 @@ void MarketPackage::appendToLogFile(const std::string& PackageName,
   if (m_IsLogEnabled)
   {
     std::string StrType;
-    if (Type == PackageInfo::SIM) StrType = "SIM";
-    else if (Type == PackageInfo::OBS) StrType = "OBS";
-    else if (Type == PackageInfo::BUILD) StrType = "BEXT";
-    else StrType = "DATA";
+    if (Type == PackageInfo::SIM)
+    {
+      StrType = "SIM";
+    }
+    else if (Type == PackageInfo::OBS)
+    {
+      StrType = "OBS";
+    }
+    else if (Type == PackageInfo::BUILD)
+    {
+      StrType = "BEXT";
+    }
+    else
+    {
+      StrType = "DATA";
+    }
 
     std::ofstream LogFileStream;
     LogFileStream.open(m_LogFile.c_str(),std::ios_base::app);
@@ -262,8 +282,10 @@ void MarketPackage::download()
 {
 
   if (!m_Initialized)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" not initialized");
+  }
 
   m_PackageDest = m_TempDownloadsDir+"/"+m_PackageFilename;
 
@@ -284,4 +306,3 @@ void MarketPackage::download()
 
 
 } } // namespaces
-

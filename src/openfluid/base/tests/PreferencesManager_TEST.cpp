@@ -91,7 +91,10 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
 {
   QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
                   QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile)) QFile::remove(CFile);
+  if (QFile::exists(CFile))
+  {
+    QFile::remove(CFile);
+  }
 
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
@@ -132,7 +135,10 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
 {
   QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
                   QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile)) QFile::remove(CFile);
+  if (QFile::exists(CFile))
+  {
+    QFile::remove(CFile);
+  }
 
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
@@ -193,7 +199,10 @@ BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
 {
   QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
                   QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile)) QFile::remove(CFile);
+  if (QFile::exists(CFile))
+  {
+    QFile::remove(CFile);
+  }
 
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
@@ -281,7 +290,10 @@ BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
 {
   QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
                   QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile)) QFile::remove(CFile);
+  if (QFile::exists(CFile))
+  {
+    QFile::remove(CFile);
+  }
 
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
@@ -369,7 +381,10 @@ BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
 {
   QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
                   QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile)) QFile::remove(CFile);
+  if (QFile::exists(CFile))
+  {
+    QFile::remove(CFile);
+  }
 
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
@@ -457,7 +472,10 @@ BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
 {
   QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
                   QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile)) QFile::remove(CFile);
+  if (QFile::exists(CFile))
+  {
+    QFile::remove(CFile);
+  }
 
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
@@ -518,7 +536,10 @@ BOOST_AUTO_TEST_CASE(test_DockToolbarPositionsManagement)
 {
   QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
                   QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile)) QFile::remove(CFile);
+  if (QFile::exists(CFile))
+  {
+    QFile::remove(CFile);
+  }
 
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
@@ -545,7 +566,10 @@ BOOST_AUTO_TEST_CASE(test_textEditorProperties)
 {
   QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
                   QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile)) QFile::remove(CFile);
+  if (QFile::exists(CFile))
+  {
+    QFile::remove(CFile);
+  }
 
   openfluid::base::PreferencesManager::setFileName(CFile);
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();

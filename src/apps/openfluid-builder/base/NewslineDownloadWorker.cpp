@@ -82,7 +82,9 @@ bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const
     QString Content = FHClient.getNews(ShortLocale);
 
     if (Content.isEmpty())
+    {
       Content = FHClient.getNews();
+    }
 
     FHClient.disconnect();
 
@@ -91,7 +93,9 @@ bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const
       QFile RSSFile(RSSFilename);
 
       if (!RSSFile.open(QIODevice::WriteOnly | QIODevice::Text))
+      {
         return false;
+      }
 
       QTextStream OutFile(&RSSFile);
 
@@ -149,7 +153,9 @@ bool NewslineDownloadWorker::isTimeForDownload(const QString& ShortLocale)
           openfluid::base::Environment::getUserDataFullPath(BUILDER_NEWSLINE_CACHERELDIR.toStdString()));
 
   if (!CacheDir.exists("lastupdate.info"))
-   return true;
+  {
+    return true;
+  }
   else
   {
     // check date
@@ -160,7 +166,9 @@ bool NewslineDownloadWorker::isTimeForDownload(const QString& ShortLocale)
 
     QFile LastUpdF(LastUpdFile);
     if (!LastUpdF.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
       return true;
+    }
 
     while (!LastUpdF.atEnd())
     {
@@ -172,11 +180,15 @@ bool NewslineDownloadWorker::isTimeForDownload(const QString& ShortLocale)
     QDateTime DT = QDateTime::fromString(QString(Line),"yyyy-MM-dd'T'HH:mm:ss");
 
     if (DT.addSecs(7200) < QDateTime::currentDateTime())
+    {
       return true;
+    }
 
     // check locale rss file exist
     if (!CacheDir.exists(ShortLocale+".rss"))
-       return true;
+    {
+      return true;
+    }
 
   }
 

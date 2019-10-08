@@ -214,7 +214,9 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
       QString xmlVarName = CurrNode.attributeNode(QString("varname")).value();
       QString xmlUnitClass = CurrNode.attributeNode(QString("unitsclass")).value();
       if (xmlUnitClass.isEmpty())
+      {
         xmlUnitClass = CurrNode.attributeNode(QString("unitclass")).value();
+      }
       QString xmlMethod = CurrNode.attributeNode(QString("method")).value();
       QString xmlVarSize = CurrNode.attributeNode(QString("varsize")).value();
       unsigned int VarSize = 1;
@@ -224,24 +226,36 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
         openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod =
             openfluid::fluidx::GeneratorDescriptor::NoGenMethod;
         if (xmlMethod == QString("fixed"))
+        {
           GenMethod = openfluid::fluidx::GeneratorDescriptor::Fixed;
+        }
         if (xmlMethod == QString("random"))
+        {
           GenMethod = openfluid::fluidx::GeneratorDescriptor::Random;
+        }
         if (xmlMethod == QString("interp"))
+        {
           GenMethod = openfluid::fluidx::GeneratorDescriptor::Interp;
+        }
         if (xmlMethod == QString("inject"))
+        {
           GenMethod = openfluid::fluidx::GeneratorDescriptor::Inject;
+        }
 
         if (GenMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "unknown or missing generator method (" + m_CurrentFile + ")");
+        }
 
         if (!xmlVarSize.isNull())
         {
           if (!openfluid::tools::convertString(xmlVarSize.toStdString(),
                                                &VarSize))
+          {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "wrong variable size format in generator (" +m_CurrentFile+ ")");
+          }
         }
 
         GD = new openfluid::fluidx::GeneratorDescriptor(
@@ -252,8 +266,10 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
         m_ModelDescriptor.appendItem(GD);
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "missing attribute(s) in generator description ("+m_CurrentFile+")");
+      }
     }
   }
 
@@ -387,14 +403,18 @@ void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
 
         if (!openfluid::tools::convertString(xmlSteps.toStdString(),
                                              &ReadSteps))
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
               "wrong format for size attribute for valuesbuffer tag (" + m_CurrentFile + ")");
+        }
 
         m_RunDescriptor.setValuesBufferSize(ReadSteps);
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
             "missing size attribute for valuesbuffer tag (" + m_CurrentFile + ")");
+      }
     }
   }
 
@@ -627,8 +647,10 @@ FluidXDescriptor::EventsList_t FluidXDescriptor::extractDomainCalendarFromNode(Q
               EvDesc.event().addInfo(xmlKey.toStdString(),xmlValue.toStdString());
             }
             else
+            {
               throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                   "wrong or missing attribute(s) in domain calendar event info (" + m_CurrentFile + ")");
+            }
           }
 
         }
@@ -1194,9 +1216,13 @@ void FluidXDescriptor::writeRunConfigurationToStream(std::ostream& Contents)
    // scheduling
     std::string ConstraintStr = "none";
     if (m_RunDescriptor.getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+    {
       ConstraintStr = "dt-forced";
+    }
     else if (m_RunDescriptor.getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+    {
       ConstraintStr = "dt-checked";
+    }
 
     Contents << m_IndentStr << m_IndentStr << "<scheduling deltat=\""
              << m_RunDescriptor.getDeltaT() << "\" constraint=\""
@@ -1209,8 +1235,10 @@ void FluidXDescriptor::writeRunConfigurationToStream(std::ostream& Contents)
 
     // values buffer
     if (m_RunDescriptor.isUserValuesBufferSize())
+    {
       Contents << m_IndentStr << m_IndentStr << "<valuesbuffer size=\""
                << m_RunDescriptor.getValuesBufferSize() << "\" />\n";
+    }
 
   }
 
@@ -1243,7 +1271,9 @@ void FluidXDescriptor::writeDatastoreToStream(std::ostream& Contents)
         << "\" " << "source=\"" << (*it)->getRelativePath() << "\" ";
 
     if (!(*it)->getUnitsClass().empty())
+    {
       Contents << "unitsclass=\"" << (*it)->getUnitsClass() << "\" ";
+    }
 
     Contents << "/>\n";
   }

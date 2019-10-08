@@ -93,7 +93,9 @@ void ChronFileLinearInterpolator::runInterpolation()
   {
 
     if (BeforeCurrentTime.first == AfterCurrentTime.first)
+    {
       y = BeforeCurrentTime.second;
+    }
     else
     {
       x = CurrentDateTime.diffInSeconds(BeforeCurrentTime.first);

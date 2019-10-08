@@ -99,7 +99,9 @@ WorkspaceDevWaresWidget::~WorkspaceDevWaresWidget()
 void WorkspaceDevWaresWidget::selectAll()
 {
   for (unsigned int i = 0; i < m_WaresCount; i++)
+  {
     ui->WaresTableWidget->item(i,0)->setCheckState(Qt::Checked);
+  }
 }
 
 
@@ -110,7 +112,9 @@ void WorkspaceDevWaresWidget::selectAll()
 void WorkspaceDevWaresWidget::selectNone()
 {
   for (unsigned int i =0; i < m_WaresCount; i++)
+  {
     ui->WaresTableWidget->item(i,0)->setCheckState(Qt::Unchecked);
+  }
 }
 
 
@@ -126,14 +130,18 @@ void WorkspaceDevWaresWidget::selectFiltered()
   {
     QRegExp RE(REStr);
     if (!ui->RegExpCheckBox->isChecked())
+    {
       RE.setPatternSyntax(QRegExp::Wildcard);
+    }
 
     for (unsigned int i =0; i < m_WaresCount; i++)
     {
       QTableWidgetItem* Item = ui->WaresTableWidget->item(i,0);
 
       if (RE.exactMatch(Item->text()))
+      {
         Item->setCheckState(Qt::Checked);
+      }
     }
   }
 }
@@ -150,9 +158,13 @@ void WorkspaceDevWaresWidget::invertSelection()
     QTableWidgetItem* Item = ui->WaresTableWidget->item(i,0);
 
     if (Item->checkState() == Qt::Unchecked)
+    {
       Item->setCheckState(Qt::Checked);
+    }
     else
+    {
       Item->setCheckState(Qt::Unchecked);
+    }
   }
 }
 
@@ -230,7 +242,9 @@ void WorkspaceDevWaresWidget::setState(const QString& ID, const QString& ActionN
   auto it = m_ActionsWidgetsMap.find(ID);
 
   if (it != m_ActionsWidgetsMap.end())
+  {
     (*it).second->setState(ActionName,IsOK);
+  }
 }
 
 

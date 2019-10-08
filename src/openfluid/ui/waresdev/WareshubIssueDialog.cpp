@@ -73,10 +73,14 @@ WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent
     {
       int IntID = ID.toInt(&Ok);
       if (Ok)
+      {
         SortedIntIDs << IntID;
+      }
     }
     if (SortedIntIDs.isEmpty())
+    {
       ui->IDLineEdit->setText("1");
+    }
     else
     {
       int Max = *std::max_element(SortedIntIDs.begin(), SortedIntIDs.end());
@@ -97,17 +101,23 @@ WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent
 
   int Index = ui->TypeComboBox->findText(I.m_Type, Qt::MatchFixedString);
   if (Index > -1)
+  {
     ui->TypeComboBox->setCurrentIndex(Index);
+  }
 
   Index = ui->StateComboBox->findText(I.m_State, Qt::MatchFixedString);
   if (Index > -1)
+  {
     ui->StateComboBox->setCurrentIndex(Index);
+  }
 
   ui->DescriptionTextEdit->setPlainText(I.m_Description);
 
   Index = ui->UrgencyComboBox->findText(I.m_Urgency, Qt::MatchFixedString);
   if (Index > -1)
+  {
     ui->UrgencyComboBox->setCurrentIndex(Index);
+  }
 
   connect(ui->IDLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(onChanged()));
   connect(ui->TitleLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(onChanged()));
@@ -156,15 +166,25 @@ void WareshubIssueDialog::onChanged()
 {
   QString ID = ui->IDLineEdit->text();
   if (ID.isEmpty())
+  {
     setMessage(tr("ID cannot be empty"));
+  }
   else if (m_IDs.contains(ID))
+  {
     setMessage(tr("This ID already exists"));
+  }  
   if (ui->TitleLineEdit->text().isEmpty())
+  {
     setMessage(tr("Title cannot be empty"));
+  }
   else if (ui->TypeComboBox->currentText().isEmpty())
+  {
     setMessage(tr("Type cannot be empty"));
+  }  
   else
+  {
     setMessage();
+  }
 }
 
 

@@ -67,7 +67,9 @@ const DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::items() 
 bool DatastoreDescriptor::appendItem(DatastoreItemDescriptor* Item)
 {
   if (isItemExist(Item->getID()))
+  {
     return false;
+  }
 
   m_DatastoreDescription.push_back(Item);
   return true;
@@ -84,7 +86,9 @@ bool DatastoreDescriptor::isItemExist(const std::string& ItemID) const
        it != m_DatastoreDescription.end(); ++it)
   {
     if ((*it)->getID() == ItemID)
+    {
       return true;
+    }
   }
 
   return false;

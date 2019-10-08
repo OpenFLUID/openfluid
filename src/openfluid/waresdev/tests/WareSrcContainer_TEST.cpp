@@ -117,10 +117,14 @@ struct F
       QDir Dir(m_WorkspacePath);
 
       for(const QString& D : m_RealDirs)
+      {
         Dir.mkpath(D);
+      }
 
       for(const QString& F : m_RealFiles)
+      {
         QFile(F).open(QIODevice::ReadWrite);
+      }
 
       QStringList RightCmake;
       RightCmake << m_RealFiles.at(0) << m_RealFiles.at(6) << m_RealFiles.at(10);
@@ -129,16 +133,20 @@ struct F
       {
         QFile File(F);
         if(File.open(QIODevice::ReadWrite))
+        {
           File.write("# list of CPP files, the sim2doc tag must be contained in the first one\n"
               "# ex: SET(SIM_CPP MySim.cpp)\n"
               "SET(SIM_CPP main.cpp)\n");
+        }
       }
 
       QFile File(m_RealFiles.at(3));
       if (File.open(QIODevice::ReadWrite))
+      {
         File.write("# list of CPP files, the sim2doc tag must be contained in the first one\n"
                    "# ex: SET(SIM_CPP MySim.cpp)\n"
                    "SET(SIM_CPP wrongmain.cpp)\n");
+      }
     }
 
 };

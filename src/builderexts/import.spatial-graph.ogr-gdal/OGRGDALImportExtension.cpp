@@ -187,7 +187,9 @@ bool OGRGDALImportExtension::initialize()
   GDALAllRegister_COMPAT();
 
   if (OGRGetDriverByName("WFS") == nullptr)
+  {
     ui->AddWFSButton->setEnabled(false);
+  }
 
   return true;
 }
@@ -290,9 +292,13 @@ void OGRGDALImportExtension::processButtonBoxClicked(QAbstractButton* Button)
   QDialogButtonBox::StandardButton StdButton = ui->ButtonBox->standardButton(Button);
 
   if (StdButton == QDialogButtonBox::Cancel)
+  {
     cancelImport();
+  }
   else if(StdButton == QDialogButtonBox::Apply)
+  {
     proceedToImport();
+  }
 }
 
 
@@ -304,7 +310,9 @@ void OGRGDALImportExtension::proceedToImport()
 {
 
   if (mp_PrecheckImportDlg != nullptr)
+  {
     delete mp_PrecheckImportDlg;
+  }
 
   mp_PrecheckImportDlg = new PrecheckImportDialog(OGRGDALEXT_PRECHECK_STEPS+m_SourcesInfos.size()+2,this);
 
@@ -340,7 +348,9 @@ void OGRGDALImportExtension::proceedToImport()
 void OGRGDALImportExtension::cancelImport()
 {
   if (m_SourcesInfos.size() == 0)
+  {
     reject();
+  }
   else
   {
     if (QMessageBox::question(QApplication::activeWindow(),
@@ -433,9 +443,13 @@ void OGRGDALImportExtension::updateUI()
       QListWidgetItem* Item = new QListWidgetItem(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields[i]);
       if (m_SourcesInfos[m_CurrentSrcIndex].ImportedFields
           .contains(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields[i]))
+      {
         Item->setCheckState(Qt::Checked);
+      }
       else
+      {
         Item->setCheckState(Qt::Unchecked);
+      }
       ui->AttributesListWidget->addItem(Item);
     }
 
@@ -526,7 +540,9 @@ void OGRGDALImportExtension::updateUI()
 void OGRGDALImportExtension::runPrecheck()
 {
   if (mp_PrecheckImportDlg != nullptr)
+  {
     delete mp_PrecheckImportDlg;
+  }
 
   mp_PrecheckImportDlg = new PrecheckImportDialog(OGRGDALEXT_PRECHECK_STEPS,this);
 
@@ -601,10 +617,14 @@ void OGRGDALImportExtension::updateUnitsChildofConnInfos()
 void OGRGDALImportExtension::updateImportedFieldsInfos(QListWidgetItem* Item)
 {
   if (Item->checkState() == Qt::Unchecked)
+  {
     m_SourcesInfos[m_CurrentSrcIndex].ImportedFields.removeAll(Item->text());
+  }
 
   if (Item->checkState() == Qt::Checked)
+  {
     m_SourcesInfos[m_CurrentSrcIndex].ImportedFields.append(Item->text());
+  }
 }
 
 
@@ -753,10 +773,14 @@ void OGRGDALImportExtension::handleCloseRequired()
   bool DatastoreChanged = false;
 
   for (int i=0;i<m_SourcesInfos.size();i++)
+  {
     DatastoreChanged = DatastoreChanged || m_SourcesInfos[i].IsDatastore;
+  }
 
   if (DatastoreChanged)
+  {
     ChangesFlags = ChangesFlags | openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE;
+  }
 
   emit fluidxChanged(ChangesFlags);
 

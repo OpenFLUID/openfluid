@@ -156,7 +156,9 @@ WareSrcWidget::~WareSrcWidget()
 void WareSrcWidget::openFileTab(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index)
 {
   if (!setCurrent(Info))
+  {
     addNewFileTab(Index, Info.m_AbsolutePath, Info.m_FileName, QDir::toNativeSeparators(Info.m_RelativePathToWareDir));
+  }
 }
 
 
@@ -195,7 +197,9 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const 
     for (openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
     {
       if (Msg.m_Path == AbsolutePath)
+      {
         SrcEditor->addLineMessage(Msg);
+      }
     }
 
     connect(SrcEditor, SIGNAL(editorTxtChanged(WareFileEditor*,bool)), this,
@@ -216,7 +220,9 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const 
   ui->WareSrcFileCollection->setCurrentWidget(Widget);
 
   if (m_IsStandalone)
+  {
     Widget->installEventFilter(this);
+  }
 }
 
 
@@ -278,7 +284,9 @@ int WareSrcWidget::onCloseFileTabRequested(int Index, bool WithConfirm)
 int WareSrcWidget::closeFileTab(WareFileEditor* Editor)
 {
   if (!Editor)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Null Editor");
+  }
 
   int Index = ui->WareSrcFileCollection->indexOf(Editor->getWidget());
 
@@ -319,7 +327,9 @@ void WareSrcWidget::saveAllFileTabs()
 void WareSrcWidget::closeAllFileTabs()
 {
   for(WareFileEditor* Editor : m_WareFilesByPath.values())
+  {
     closeFileTab(Editor);
+  }
 }
 
 
@@ -330,7 +340,9 @@ void WareSrcWidget::closeAllFileTabs()
 QString WareSrcWidget::getCurrentFilePath()
 {
   if (WareFileEditor* Editor = currentEditor())
+  {
     return Editor->getFilePath();
+  }
 
   return "";
 }
@@ -353,7 +365,9 @@ WareFileEditor* WareSrcWidget::currentEditor()
 int WareSrcWidget::closeFileTab(const QString& Path)
 {
   if (m_WareFilesByPath.contains(Path))
+  {
     return closeFileTab(m_WareFilesByPath.value(Path));
+  }
 
   return -1;
 }
@@ -399,7 +413,9 @@ bool WareSrcWidget::setCurrent(const openfluid::waresdev::WareSrcManager::PathIn
   WareFileEditor* Widget = m_WareFilesByPath.value(Info.m_AbsolutePath, 0);
 
   if (Widget)
+  {
     ui->WareSrcFileCollection->setCurrentWidget(Widget->getWidget());
+  }
 
   return Widget;
 }
@@ -424,14 +440,22 @@ void WareSrcWidget::updateWareOptions()
   if (m_IsStandalone)
   {
     if (mp_StandaloneToolBar->action("WareOptionsInstall")->isChecked())
+    {
       setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL);
+    }
     else
+    {
       setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL);
+    }
 
     if (mp_StandaloneToolBar->action("WareOptionsRelease")->isChecked())
+    {
       setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE);
+    }
     else if (mp_StandaloneToolBar->action("WareOptionsDebug")->isChecked())
+    {
       setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG);
+    }  
   }
 }
 
@@ -517,10 +541,14 @@ void WareSrcWidget::generateDoc()
   try
   {
     if (m_Container.getType() == openfluid::ware::WareType::SIMULATOR)
+    {
       m_Container.generateDoc();
+    }
     else
+    {
       QMessageBox::warning(nullptr,tr("Generate documentation"),
                            tr("Documentation generator only works with simulators"));
+    }
   }
   catch (openfluid::base::FrameworkException& E )
   {
@@ -543,9 +571,13 @@ void WareSrcWidget::onEditorTxtModified(WareFileEditor* Editor, bool Modified)
     bool ModifiedState = Label.startsWith("*");
 
     if (Modified && !ModifiedState)
+    {
       ui->WareSrcFileCollection->setTabText(Pos, Label.prepend("*"));
+    }
     else if (!Modified && ModifiedState)
+    {
       ui->WareSrcFileCollection->setTabText(Pos, Label.remove(0, 1));
+    }
 
     emit wareTextModified(this, isWareModified());
 
@@ -564,7 +596,9 @@ bool WareSrcWidget::isWareModified()
   for(WareFileEditor* Editor : m_WareFilesByPath.values())
   {
     if(Editor->isModified())
+    {
       return true;
+    }
   }
 
   return false;
@@ -588,7 +622,9 @@ bool WareSrcWidget::isWareProcessRunning() const
 void WareSrcWidget::saveCurrentEditor()
 {
   if (WareFileEditor* Editor = currentEditor())
+  {
     Editor->saveContent();
+  }
 }
 
 
@@ -613,7 +649,9 @@ QString WareSrcWidget::saveAs(const QString& TopDirectory)
                                                             CurrentFilePath);
 
   if (NewFilePath.isEmpty())
+  {
     return "";
+  }
 
   if (NewFilePath == CurrentFilePath)
   {
@@ -674,18 +712,26 @@ void WareSrcWidget::deleteCurrentFile()
     if (QMessageBox::warning(this, tr("Delete file"), tr("Are you sure you want to delete \"%1\"?").arg(Path),
                              QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
         == QMessageBox::Cancel)
+    {
       return;
+    }
 
     // Careful as it deletes Editor
     closeFileTab(Editor);
 
     if (QDir().remove(Path))
+    {
       m_Container.update();
+    }
     else
+    {
       QMessageBox::critical(0, "Error", tr("Unable to remove the file \"%1\"").arg(Path));
+    }
   }
   else
+  {
     QMessageBox::warning(0, tr("No open file"), tr("No file to delete"));
+  }
 }
 
 
@@ -699,7 +745,9 @@ void WareSrcWidget::openFile()
                                                                                     getCurrentFilePath());
 
   if (PathToOpen.isEmpty())
+  {
     return;
+  }
 
   openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(PathToOpen));
 }
@@ -712,7 +760,9 @@ void WareSrcWidget::openFile()
 void WareSrcWidget::onCurrentTabChanged(int Index)
 {
   if (WareFileEditor* Editor = dynamic_cast<WareFileEditor*>(ui->WareSrcFileCollection->widget(Index)))
+  {
     emit currentTabChanged(Editor->getFilePath());
+  }
 
   checkModifiedStatus();
 }
@@ -725,7 +775,9 @@ void WareSrcWidget::onCurrentTabChanged(int Index)
 void WareSrcWidget::copyText()
 {
   if (WareFileEditor* Editor = currentEditor())
+  {
     Editor->copy();
+  }
 }
 
 
@@ -736,7 +788,9 @@ void WareSrcWidget::copyText()
 void WareSrcWidget::cutText()
 {
   if (WareFileEditor* Editor = currentEditor())
+  {
     Editor->cut();
+  }
 }
 
 
@@ -747,7 +801,9 @@ void WareSrcWidget::cutText()
 void WareSrcWidget::pasteText()
 {
   if (WareFileEditor* Editor = currentEditor())
+  {
     Editor->paste();
+  }
 }
 
 
@@ -758,7 +814,9 @@ void WareSrcWidget::pasteText()
 void WareSrcWidget::clearEditorsMessages()
 {
   for (WareFileEditor* Editor : m_WareFilesByPath)
+  {
     Editor->clearLineMessages();
+  }
 }
 
 
@@ -771,11 +829,15 @@ void WareSrcWidget::onProcessFinished()
   for (openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
   {
     if (WareFileEditor* Editor = m_WareFilesByPath.value(Msg.m_Path, 0))
+    {
       Editor->addLineMessage(Msg);
+    }
   }
 
   for (WareFileEditor* Editor : m_WareFilesByPath)
+  {
     Editor->updateLineNumberArea();
+  }
 }
 
 
@@ -789,12 +851,16 @@ void WareSrcWidget::onMessageClicked(openfluid::waresdev::WareSrcMsgParser::Ware
       Msg.m_Path);
 
   if (Info.m_AbsolutePathOfWare != m_Container.getAbsolutePath())
+  {
     return;
+  }
 
   openFileTab(Info);
 
   if (WareFileEditor* Editor = m_WareFilesByPath.value(Msg.m_Path, 0))
+  {
     Editor->selectLine(Msg.m_LineNb);
+  }
 }
 
 
@@ -806,7 +872,9 @@ void WareSrcWidget::checkModifiedStatus()
 {
   bool IsCurrentEditorModified = false;
   if (WareFileEditor* Editor = currentEditor())
+  {
     IsCurrentEditorModified = Editor->isModified();
+  }
 
   bool IsWareModified = isWareModified();
 
@@ -828,9 +896,13 @@ void WareSrcWidget::checkModifiedStatus()
 void WareSrcWidget::goToLine()
 {
   if (WareFileEditor* Editor = currentEditor())
+  {
     Editor->goToLine();
+  }
   else
+  {
     QMessageBox::warning(0, tr("No open file"), tr("No open editor"));
+  }
 }
 
 
@@ -841,7 +913,9 @@ void WareSrcWidget::goToLine()
 void WareSrcWidget::updateEditorsSettings()
 {
   for (WareFileEditor* Editor : m_WareFilesByPath.values())
+  {
     Editor->updateSettings();
+  }
 }
 
 

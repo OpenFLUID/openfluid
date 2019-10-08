@@ -146,7 +146,9 @@ bool extractVariableNameAndType(const openfluid::core::VariableName_t& Name,
                                openfluid::core::Value::Type& VarType)
 {
   if (!isValidTypedVariableName(Name))
+  {
     return false;
+  }
 
   std::size_t InPos = Name.find("[");
 

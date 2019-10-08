@@ -71,9 +71,13 @@ void WareParamsTree::setParams(const WareParams_t& Params)
     for (std::string& Key : SplittedKeys)
     {
       if (!CurrentNode->hasChild(Key))
+      {
         CurrentNode = &(CurrentNode->addChild(Key));
+      }
       else
+      {
         CurrentNode = &(CurrentNode->child(Key));
+      }
     }
     CurrentNode->setValue(ParamItem.second);
   }
@@ -93,9 +97,13 @@ openfluid::core::StringValue WareParamsTree::getValueUsingFullKey(const std::str
   for (std::string& Key : SplittedKeys)
   {
     if (CurrentNode->hasChild(Key))
+    {
       CurrentNode = &(CurrentNode->child(Key));
+    }
     else
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Parameter " + FullName + " does not exist");
+    }
   }
 
   return CurrentNode->getValue();

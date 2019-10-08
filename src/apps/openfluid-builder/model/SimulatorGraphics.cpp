@@ -66,9 +66,13 @@ SimulatorGraphics::SimulatorGraphics(const QPointF& Coords,
   drawIOSlot(getUpOutIOPosition(),SlotType::SLOT_UPOUT,m_UpdatedVars);
 
   if (!m_Ghost)
+  {
     setBrush(QBrush(QColor(BUILDER_SIMULATOR_BGCOLOR)));
+  }
   else
+  {
     setBrush(QBrush(QColor(BUILDER_GHOST_BGCOLOR)));
+  }
 
 }
 
@@ -100,10 +104,14 @@ QPointF SimulatorGraphics::getProducedIOPosition()
 void SimulatorGraphics::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* /*Event*/)
 {
   if (m_Ghost)
+  {
     emit srcEditAsked(m_ID,m_Ghost);
+  }
 #ifdef ENABLE_WARESDEV_INTEGRATION
   else
+  {
     emit srcEditAsked(m_ID,m_Ghost);
+  }
 #endif
 
   // FIXME The line below causes the application to crash

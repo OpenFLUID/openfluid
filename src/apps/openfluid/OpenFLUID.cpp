@@ -111,12 +111,16 @@ void OpenFLUIDApp::printlnExecMessagesStats()
   if (mp_Engine != nullptr)
   {
     if (mp_Engine->getWarningsCount())
+    {
       openfluid::tools::Console::setWarningColor();
+    }
 
     std::cout << mp_Engine->getWarningsCount() << " warning(s)" << std::endl;
 
     if (mp_Engine->getWarningsCount())
+    {
       openfluid::tools::Console::resetAttributes();
+    }
   }
 }
 
@@ -136,13 +140,13 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   };
 
   auto displayRightAlign = [&HeaderWidth](const std::string& Msg)
-  { 
-    std::cout << std::right << std::setw(HeaderWidth-(HeaderWidth/8)) << Msg << std::endl; 
+  {
+    std::cout << std::right << std::setw(HeaderWidth-(HeaderWidth/8)) << Msg << std::endl;
   };
 
   auto displayCenterAlign = [&HeaderWidth](const std::string& Msg)
-  { 
-    std::cout << std::right << std::setw((HeaderWidth/2)+(Msg.length()/2)) << Msg << std::endl; 
+  {
+    std::cout << std::right << std::setw((HeaderWidth/2)+(Msg.length()/2)) << Msg << std::endl;
   };
 
 
@@ -175,13 +179,17 @@ void OpenFLUIDApp::printSimulatorsList(bool PrintErrors)
   for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
   {
     if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature)
+    {
       std::cout << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
+    }
   }
 
   if (PrintErrors && !SearchResults.ErroredFiles.empty())
   {
     for (auto& it : SearchResults.ErroredFiles)
+    {
       std::cerr << "Error on file " << it.first <<  ": " << it.second << std::endl;
+    }
   }
 
   std::cout.flush();
@@ -201,13 +209,17 @@ void OpenFLUIDApp::printObserversList(bool PrintErrors)
   for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
   {
     if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature)
+    {
       std::cout << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
+    }
   }
 
   if (PrintErrors && !SearchResults.ErroredFiles.empty())
   {
     for (auto& it : SearchResults.ErroredFiles)
+    {
       std::cerr << "Error on file " << it.first <<  ": " << it.second << std::endl;
+    }
   }
 
   std::cout.flush();
@@ -221,8 +233,14 @@ void OpenFLUIDApp::printObserversList(bool PrintErrors)
 void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Signature, const std::string& Filename)
 {
   std::string StatusStr = "experimental";
-  if (Signature->Status == openfluid::ware::BETA) StatusStr = "beta";
-  if (Signature->Status == openfluid::ware::STABLE) StatusStr = "stable";
+  if (Signature->Status == openfluid::ware::BETA)
+  {
+    StatusStr = "beta";
+  }
+  if (Signature->Status == openfluid::ware::STABLE)
+  {
+    StatusStr = "stable";
+  }
 
   std::cout << "   - Name: " << openfluid::tools::replaceEmptyString(Signature->Name,("(unknown)"))
             << std::endl;
@@ -254,13 +272,22 @@ void OpenFLUIDApp::printSimulatorsDataItemReport(openfluid::ware::SignatureDataI
 
   std::string UnitStr = ("");
 
-  if (HandledItem.DataUnit != ("")) UnitStr = (" (")+HandledItem.DataUnit+(")");
+  if (HandledItem.DataUnit != (""))
+  {
+    UnitStr = (" (")+HandledItem.DataUnit+(")");
+  }
 
-  if (Type == ("fpar")) TypeStr = ("simulator parameter");
+  if (Type == ("fpar"))
+  {
+    TypeStr = ("simulator parameter");
+  }
 
 
   std::cout << HandledItem.DataName << UnitStr << " : " << TypeStr << ".";
-  if (HandledItem.Description.length()!=0) std::cout << " " << HandledItem.Description;
+  if (HandledItem.Description.length()!=0)
+  {
+    std::cout << " " << HandledItem.Description;
+  }
   std::cout << std::endl;
 }
 
@@ -280,24 +307,57 @@ void OpenFLUIDApp::printSimulatorsSpatialDataItemReport(openfluid::ware::Signatu
   std::string DistribStr = ("");
 
 
-  if (HandledItem.DataUnit != ("")) UnitStr = (" (")+HandledItem.DataUnit+(")");
-  if (HandledItem.UnitsClass != ("")) DistribStr = " {"+HandledItem.UnitsClass+"}";
+  if (HandledItem.DataUnit != (""))
+  {
+    UnitStr = (" (")+HandledItem.DataUnit+(")");
+  }
+  if (HandledItem.UnitsClass != (""))
+  {
+    DistribStr = " {"+HandledItem.UnitsClass+"}";
+  }
 
 
-  if (Type == ("pvar")) TypeStr = ("produced variable");
-  if (Type == ("uvar")) TypeStr = ("updated variable");
+  if (Type == ("pvar"))
+  {
+    TypeStr = ("produced variable");
+  }
+  if (Type == ("uvar"))
+  {
+    TypeStr = ("updated variable");
+  }
 
-  if (Type == ("rvar")) TypeStr = ("required variable");
-  if (Type == ("svar")) TypeStr = ("used variable (only if available)");
+  if (Type == ("rvar"))
+  {
+    TypeStr = ("required variable");
+  }
+  if (Type == ("svar"))
+  {
+    TypeStr = ("used variable (only if available)");
+  }
 
-  if (Type == ("fpar")) TypeStr = ("simulator parameter");
+  if (Type == ("fpar"))
+  {
+    TypeStr = ("simulator parameter");
+  }
 
-  if (Type == ("pinput")) TypeStr = ("produced attribute");
-  if (Type == ("rinput")) TypeStr = ("required attribute");
-  if (Type == ("sinput")) TypeStr = ("used attribute");
+  if (Type == ("pinput"))
+  {
+    TypeStr = ("produced attribute");
+  }
+  if (Type == ("rinput"))
+  {
+    TypeStr = ("required attribute");
+  }
+  if (Type == ("sinput"))
+  {
+    TypeStr = ("used attribute");
+  }
 
   std::cout << HandledItem.DataName << DistribStr << " : " << TypeStr << ".";
-  if (HandledItem.Description.length()!=0) std::cout << " " << HandledItem.Description << UnitStr;
+  if (HandledItem.Description.length()!=0)
+  {
+    std::cout << " " << HandledItem.Description << UnitStr;
+  }
   std::cout << std::endl;
 }
 
@@ -311,7 +371,9 @@ void OpenFLUIDApp::printSimulatorsHandledUnitsGraphReport(openfluid::ware::Signa
 {
   unsigned int i;
   if (!HandledUnitsGraph.UpdatedUnitsGraph.empty())
+  {
     std::cout << Suffix << "Global units graph updates: " << HandledUnitsGraph.UpdatedUnitsGraph << std::endl;
+  }
 
   for (i=0;i<HandledUnitsGraph.UpdatedUnitsClass.size();i++)
   {
@@ -358,28 +420,44 @@ void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHa
   unsigned int i;
 
   for (i=0;i<HandledData.UsedParams.size();i++)
+  {
     printSimulatorsDataItemReport(HandledData.UsedParams[i],Suffix,("fpar"));
+  }
 
   for (i=0;i<HandledData.ProducedVars.size();i++)
+  {
     printSimulatorsSpatialDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
+  }
 
   for (i=0;i<HandledData.RequiredVars.size();i++)
+  {
     printSimulatorsSpatialDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
+  }
 
   for (i=0;i<HandledData.UpdatedVars.size();i++)
+  {
     printSimulatorsSpatialDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
+  }
 
   for (i=0;i<HandledData.UsedVars.size();i++)
+  {
     printSimulatorsSpatialDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
+  }
 
   for (i=0;i<HandledData.ProducedAttribute.size();i++)
+  {
     printSimulatorsSpatialDataItemReport(HandledData.ProducedAttribute[i],Suffix,("pinput"));
+  }
 
   for (i=0;i<HandledData.RequiredAttribute.size();i++)
+  {
     printSimulatorsSpatialDataItemReport(HandledData.RequiredAttribute[i],Suffix,("rinput"));
+  }
 
   for (i=0;i<HandledData.UsedAttribute.size();i++)
+  {
     printSimulatorsSpatialDataItemReport(HandledData.UsedAttribute[i],Suffix,("sinput"));
+  }
 
   if (HandledData.UsedEventsOnUnits.size() > 0)
   {
@@ -387,16 +465,26 @@ void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHa
     for (i=0;i<HandledData.UsedEventsOnUnits.size();i++)
     {
       std::cout << HandledData.UsedEventsOnUnits[i];
-      if (i == HandledData.UsedEventsOnUnits.size()-1 ) std::cout << std::endl;
-      else std::cout << ", ";
+      if (i == HandledData.UsedEventsOnUnits.size()-1 )
+      {
+        std::cout << std::endl;
+      }
+      else
+      {
+        std::cout << ", ";
+      }
     }
   }
 
   for (i=0;i<HandledData.RequiredExtraFiles.size();i++)
+  {
     std::cout << Suffix << "Required extra file : " << HandledData.RequiredExtraFiles[i] << std::endl;
+  }
 
   for (i=0;i<HandledData.UsedExtraFiles.size();i++)
+  {
     std::cout << Suffix << "Used extra file : " << HandledData.UsedExtraFiles[i] << std::endl;
+  }
 
 }
 
@@ -418,8 +506,14 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string& Pattern)
 
       // Status string
       StatusStr = "experimental";
-      if (PlugContainers[i]->Signature->Status == openfluid::ware::BETA) StatusStr = "beta";
-      if (PlugContainers[i]->Signature->Status == openfluid::ware::STABLE) StatusStr = "stable";
+      if (PlugContainers[i]->Signature->Status == openfluid::ware::BETA)
+      {
+        StatusStr = "beta";
+      }
+      if (PlugContainers[i]->Signature->Status == openfluid::ware::STABLE)
+      {
+        StatusStr = "stable";
+      }
 
 
       std::cout << "* " << PlugContainers[i]->Signature->ID
@@ -474,7 +568,9 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string& Pattern)
 
 
       if (i != PlugContainers.size()-1)
+      {
         std::cout << "================================================================================" << std::endl;
+      }
     }
   }
 
@@ -501,7 +597,9 @@ void OpenFLUIDApp::printObserversReport(const std::string& Pattern)
                            PlugContainers[i]->FileFullPath);
 
       if (i != PlugContainers.size()-1)
+      {
         std::cout << "================================================================================" << std::endl;
+      }
     }
   }
 
@@ -530,7 +628,9 @@ int OpenFLUIDApp::stopAppReturn(const std::string& ErrorType, const std::string&
   std::cout.flush();
 
   if (mp_Engine)
+  {
     mp_Engine.reset();
+  }
 
   return 127;
 
@@ -556,14 +656,20 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
 
   std::cout << "Simulators search path(s):" << std::endl;
   for (i=0;i<SimulatorsPaths.size();i++)
+  {
     std::cout << " #" << (i+1) << " " << SimulatorsPaths[i] << std::endl;
+  }
 
   std::cout << "Observers search path(s):" << std::endl;
   for (i=0;i<ObserversPaths.size();i++)
+  {
     std::cout << " #" << (i+1) << " " << ObserversPaths[i] << std::endl;
+  }
 
   if (ShowTemp)
+  {
     std::cout << "Temp dir: " << openfluid::base::Environment::getTempDir() << std::endl;
+  }
 }
 
 
@@ -579,13 +685,19 @@ void OpenFLUIDApp::printEnvInfos()
   printPaths(false);
 
   if (openfluid::base::RunContextManager::instance()->isClearOutputDir())
+  {
     std::cout << "Output directory cleared before simulation" << std::endl;
+  }
 
   if (IsQuiet)
+  {
     std::cout << "Quiet mode enabled" << std::endl;
+  }
 
   if (IsVerbose)
+  {
     std::cout << "Verbose mode enabled" << std::endl;
+  }
 
   std::cout << std::endl;
 }
@@ -1056,7 +1168,9 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     }
 #if OPENFLUID_SIM2DOC_ENABLED
     else if (BuddyName == "sim2doc")
+    {
       BuddyBody = new openfluid::buddies::Sim2DocBuddy(BuddyListener);
+    }
 #endif
     else
     {
@@ -1175,4 +1289,3 @@ void OpenFLUIDApp::run()
     runBuddy();
   }
 }
-

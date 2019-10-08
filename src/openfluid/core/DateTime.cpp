@@ -395,7 +395,10 @@ RawTime_t DateTime::diffInSeconds(const DateTime& DT) const
 
 DateTime& DateTime::operator =(const DateTime &Right)
 {
-  if (&Right != this) set(Right.m_RawTime);
+  if (&Right != this)
+  {
+    set(Right.m_RawTime);
+  }
 
   return *this;
 }

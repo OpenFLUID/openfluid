@@ -437,9 +437,13 @@ QPushButton* HomeModuleWidget::createButton(const QAction* Action, const QString
   Button->setIconSize(QSize(48,48));
   Button->setStyleSheet("text-align:left; padding-left : 20px");
   if (AltIcon.isNull())
+  {
     Button->setIcon(Action->icon());
+  }
   else
+  {
     Button->setIcon(AltIcon);
+  }
 
   connect(Button,SIGNAL(clicked()),Action,SLOT(trigger()));
 
@@ -467,7 +471,9 @@ void HomeModuleWidget::refreshRecentProjects()
   }
 
   if (!RecentActions[0]->isVisible())
+  {
     mp_RecentProjectsLabel->setText(QString("<big>%1</big>").arg(tr("No recent project")));
+  }
   else
   {
     mp_RecentProjectsLabel->setText(QString("<big>%1</big>").arg(tr("Recent projects:")));
@@ -483,7 +489,10 @@ void HomeModuleWidget::refreshRecentProjects()
             ->setText(QDir(RecentActions[i]->data().toString()).dirName());
 
         QString InfosStr = getProjectInfosAsHTML(RecentActions[i]->data().toString(),true);
-        if (!InfosStr.isEmpty()) ItemLayout->itemAt(1)->widget()->setToolTip(InfosStr);
+        if (!InfosStr.isEmpty())
+        {
+          ItemLayout->itemAt(1)->widget()->setToolTip(InfosStr);
+        }
 
         ItemLayout->itemAt(0)->widget()->setVisible(true);
         ItemLayout->itemAt(1)->widget()->setVisible(true);

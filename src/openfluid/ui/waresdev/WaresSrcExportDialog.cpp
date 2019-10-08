@@ -138,10 +138,14 @@ void WaresSrcExportDialog::onPackagePathButtonClicked()
                                                          QDir::homePath());
 
   if (PackageFilePath.isEmpty())
+  {
     return;
+  }
 
   if (!PackageFilePath.endsWith(".ofwdp"))
+  {
     PackageFilePath.append(".ofwdp");
+  }
 
   ui->PackagePathLineEdit->setText(PackageFilePath);
 }
@@ -154,7 +158,9 @@ void WaresSrcExportDialog::onPackagePathButtonClicked()
 void WaresSrcExportDialog::exportToPackage()
 {
   if (!check())
+  {
     return;
+  }
 
   QThread* Thread = new QThread();
 
@@ -187,7 +193,9 @@ void WaresSrcExportDialog::exportToPackage()
   }
 
   if (ProgressDialog.exec())
+  {
     accept();
+  }
 }
 
 
@@ -205,7 +213,9 @@ QStringList WaresSrcExportDialog::getSelectedWares()
     for (const QListWidgetItem* Item : it.value()->findItems("*", Qt::MatchWildcard))
     {
       if (Item->checkState() == Qt::Checked)
+      {
         Wares << Item->data(Qt::UserRole).toString();
+      }
     }
   }
 

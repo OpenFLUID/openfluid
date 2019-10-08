@@ -266,12 +266,17 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
     if (Position < m_ModelItems.size())
     {
       std::list<ModelItemInstance*>::iterator it = m_ModelItems.begin();
-      for (unsigned int i = 0; i< Position; i++) ++it;
+      for (unsigned int i = 0; i< Position; i++)
+      {
+        ++it;
+      }
       m_ModelItems.insert(it,ItemInstance);
     }
     else
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Bad index of item to insert");
+    }
   }
 }
 
@@ -283,13 +288,18 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
 void ModelInstance::deleteItem(unsigned int Position)
 {
   if (m_Initialized)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Trying to delete model item after model initialization");
+  }
 
   if (Position < m_ModelItems.size())
   {
     std::list<ModelItemInstance*>::iterator it = m_ModelItems.begin();
-    for (unsigned int i = 0; i< Position; i++) ++it;
+    for (unsigned int i = 0; i< Position; i++)
+    {
+      ++it;
+    }
     m_ModelItems.erase(it);
   }
   else

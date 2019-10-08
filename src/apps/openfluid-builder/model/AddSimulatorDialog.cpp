@@ -74,12 +74,18 @@ AddSimulatorDialog::AddSimulatorDialog(const QStringList& SimIDList, QWidget* Pa
     Item->setData(Qt::UserRole,WareInfos);
 
     if (SimIDList.contains(ID))
+    {
       Item->setFlags(Qt::ItemIsSelectable);
+    }
 
     if (it->second->Ghost)
+    {
       Item->setIcon(QIcon(":/builder/images/ware-sim-ghost.png"));
+    }
     else
+    {
       Item->setIcon(QIcon(":/builder/images/ware-sim-plugged.png"));
+    }
 
     ui->WaresListWidget->addItem(Item);
   }

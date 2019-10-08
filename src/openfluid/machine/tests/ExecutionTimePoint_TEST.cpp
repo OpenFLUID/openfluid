@@ -189,7 +189,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   TP.sortByOriginalPosition();
 
-  while (TP.hasItemsToProcess()) TP.processNextItem();
+  while (TP.hasItemsToProcess())
+  {
+    TP.processNextItem();
+  }
 
   BOOST_REQUIRE(!TP.hasItemsToProcess());
 }

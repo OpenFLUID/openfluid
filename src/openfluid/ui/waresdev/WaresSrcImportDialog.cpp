@@ -91,7 +91,9 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   connect(ui->WareshubUrlLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(check()));
 
   for (const auto& Pair : m_ListWidgetsByWareType)
+  {
     connect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
+  }
 
   connect(buttonBox(), SIGNAL(accepted()), this, SLOT(import()));
 
@@ -193,7 +195,9 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
 
     bool DisableConnInfos = (ui->WareshubConnectButton->text() == m_WaresHubButtonDisconnectLabel);
     for (auto& Widget : m_WaresHubConnectionInfoWidgets)
+    {
       Widget->setEnabled(!DisableConnInfos);
+    }
     ui->WareshubConnectButton->setEnabled(true);
 
     updateWaresHubWaresList();

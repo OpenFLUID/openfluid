@@ -122,7 +122,9 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   ui->WaresPathsTabWidget->setCurrentIndex(0);
 
   if (!(m_Mode == MODE_BUILDER || m_Mode == MODE_FULL))
+  {
     ui->WaresPathsTabWidget->removeTab(2);
+  }
 
 
   initialize();
@@ -178,9 +180,13 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
 #endif
 
   if(Mode == MODE_DEVSTUDIO || Mode == MODE_FULL)
+  {
     connect(ui->SslNoVerifyCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateDevSslNoVerify(bool)));
+  }
   else
+  {
     ui->GitGroupBox->setVisible(false);
+  }
 
   connect(ui->PrefsTreeWidget,
           SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
@@ -214,9 +220,13 @@ QString PreferencesDialog::getLanguageAsPrettyString(const QString& LangCode)
   QString LangName;
 
   if (Loc.language() == QLocale::English)
+  {
     LangName = QLocale::languageToString(Loc.language());
+  }
   else
+  {
     LangName = Loc.nativeLanguageName();
+  }
 
   LangName[0] = LangName[0].toUpper();
   QString CountryName = Loc.nativeCountryName();
@@ -315,7 +325,10 @@ void PreferencesDialog::initialize()
 
 void PreferencesDialog::changePage(QTreeWidgetItem* Current, QTreeWidgetItem* Previous)
 {
-  if (!Current) Current = Previous;
+  if (!Current)
+  {
+    Current = Previous;
+  }
   ui->PrefsStackedWidget->setCurrentIndex(Current->data(0,Qt::UserRole).toInt());
 }
 
@@ -660,7 +673,9 @@ void PreferencesDialog::intializeTextEditorSettings()
   for(int row = ui->SyntaxGridLayout->rowCount() - 1 ; row > 0 ; row--)
   {
     for(int col = ui->SyntaxGridLayout->columnCount() - 1; col >= 0 ; col--)
+    {
       delete ui->SyntaxGridLayout->itemAtPosition(row,col)->widget();
+    }  
   }
 
   int row = 1;
@@ -712,8 +727,10 @@ void PreferencesDialog::intializeTextEditorSettings()
 
   QString Color = PrefsMan->getWaresdevCurrentlineColor();
   if(QColor::isValidColor(Color))
+  {
     ui->CurrentLineColorButton->setStyleSheet(
         QString("border: 1px solid grey; border-radius: 4px; background-color: %1").arg(Color));
+  }
 
 
   // Font
@@ -776,7 +793,9 @@ void PreferencesDialog::changeSyntaxElementDecoration(int ElementRow)
   for(const QString& Format : m_Formats)
   {
     if(qobject_cast<QCheckBox*>(ui->SyntaxGridLayout->itemAtPosition(ElementRow,col)->widget())->isChecked())
+    {
       Decorations << Format;
+    }
 
     col ++;
   }
@@ -791,7 +810,9 @@ void PreferencesDialog::changeSyntaxElementDecoration(int ElementRow)
     it->m_Color = ColorName;
   }
   else
+  {
     Rules.insert(StyleName, openfluid::base::PreferencesManager::SyntaxHighlightingRule_t(ColorName,Decorations));
+  }
   openfluid::base::PreferencesManager::instance()->setWaresdevSyntaxHighlightingRules(Rules);
 
   updateSyntaxElementLabel(StyleNameLabel, Decorations,ColorName);
@@ -975,7 +996,9 @@ void PreferencesDialog::detectQtDevToolsMinGW()
 void PreferencesDialog::applyTextEditorSettings()
 {
   if(m_TextEditorSettingsChanged)
+  {
     emit applyTextEditorSettingsAsked();
+  }
 }
 
 

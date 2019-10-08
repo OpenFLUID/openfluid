@@ -420,7 +420,9 @@ BOOST_AUTO_TEST_CASE(check_write_operations)
   DatasetPaths.push_back(OutputDirMany);
 
   for (const auto& Path : DatasetPaths)
+  {
     TestDataset(Path,true);
+  }
 
   delete L;
 }

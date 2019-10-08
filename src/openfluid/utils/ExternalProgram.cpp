@@ -248,7 +248,9 @@ QString ExternalProgram::findUsingPathsList(const QStringList& ProgramNames, con
     {
       QFileInfo FileToTest(QDir(CurrentPath),CurentName);
       if (FileToTest.isFile())
+      {
         return FileToTest.absoluteFilePath();
+      }
     }
   }
 
@@ -265,10 +267,14 @@ void ExternalProgram::searchForProgram()
   m_FullProgramPath = "";
 
   if (!m_SearchPaths.isEmpty())
+  {
     m_FullProgramPath = findUsingPathsList(m_ProgramNames,m_SearchPaths);
+  }
 
   if (m_FullProgramPath.isEmpty() && m_UsePathEnv)
+  {
     m_FullProgramPath = findUsingPATHEnvVar(m_ProgramNames);
+  }
 }
 
 } } // namespaces

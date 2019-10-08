@@ -78,7 +78,10 @@ PrecheckImportDialog::~PrecheckImportDialog()
 
 void PrecheckImportDialog::closeEvent(QCloseEvent* Event)
 {
-  if (!m_IsFinished) Event->ignore();
+  if (!m_IsFinished)
+  {
+    Event->ignore();
+  }
 }
 
 
@@ -147,5 +150,7 @@ void PrecheckImportDialog::close()
   reject();
 
   if (m_IsCloseRequired)
+  {
     emit closeRequired();
+  }
 }

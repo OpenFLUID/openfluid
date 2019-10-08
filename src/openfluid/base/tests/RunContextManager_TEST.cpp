@@ -120,7 +120,9 @@ BOOST_AUTO_TEST_CASE(check_project_operations)
   std::string Prj1Dir = CONFIGTESTS_OUTPUT_DATA_DIR+"/prjmanager/prj1";
 
   if (openfluid::tools::Filesystem::isDirectory(Prj1Dir))
+  {
     openfluid::tools::Filesystem::removeDirectory(Prj1Dir);
+  }
 
 
   BOOST_CHECK_EQUAL(openfluid::base::RunContextManager::isProject(Prj1Dir),false);

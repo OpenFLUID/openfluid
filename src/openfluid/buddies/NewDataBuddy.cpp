@@ -316,7 +316,9 @@ bool NewDataBuddy::run()
   m_OutputDirPath = m_Options["outputdir"];
 
   if (!openfluid::tools::Filesystem::isDirectory(m_OutputDirPath))
+  {
     openfluid::tools::Filesystem::makeDirectory(m_OutputDirPath);
+  }
 
   generateModelXML();
   generateRunXML();

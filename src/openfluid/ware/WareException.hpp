@@ -91,9 +91,13 @@ class OPENFLUID_API WareException : public openfluid::base::Exception
       Context["waretype"] = "unknown";
 
       if (WType == WareType::OBSERVER)
+      {
         Context["waretype"] = "observer";
+      }
       else if (WType == WareType::SIMULATOR)
+      {
         Context["waretype"] = "simulator";
+      }
 
       Context["wareid"] = ID;
 

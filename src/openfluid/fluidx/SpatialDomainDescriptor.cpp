@@ -626,7 +626,9 @@ void SpatialDomainDescriptor::deleteEvent(const openfluid::core::UnitsClass_t& U
         Found = true;
       }
       else
+      {
         ++itu;
+      }
     }
   }
   catch (std::out_of_range& e)

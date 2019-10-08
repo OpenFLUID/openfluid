@@ -49,7 +49,9 @@ int main(int argc, char **argv)
   std::string Arch = OPENFLUID_OS_STRLABEL;
 
   if (Arch.empty())
+  {
     return 127;
+  }
 
   std::cout << Arch;
 

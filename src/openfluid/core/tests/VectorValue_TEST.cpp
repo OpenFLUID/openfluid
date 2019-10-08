@@ -95,7 +95,9 @@ BOOST_AUTO_TEST_CASE(check_vector)
 
 
   for (openfluid::core::VectorValue::iterator it = Val1.begin(); it!=Val1.end(); ++it)
-      std::cout << "using iterator, " << (*it) << std::endl;
+  {
+    std::cout << "using iterator, " << (*it) << std::endl;
+  }
 
 
   openfluid::core::VectorValue Val2 = Val1;
@@ -114,14 +116,18 @@ BOOST_AUTO_TEST_CASE(check_vector)
   std::cout << Val2.toString() << std::endl;
 
   for (openfluid::core::VectorValue::const_iterator it = Val2.begin(); it!=Val2.end(); ++it)
-      std::cout << "using const iterator, " << (*it) << std::endl;
+  {
+    std::cout << "using const iterator, " << (*it) << std::endl;
+  }
 
   Val2.clear();
   BOOST_REQUIRE_EQUAL(Val2.getSize(),0);
   BOOST_REQUIRE_EQUAL(Val1.getSize(),30);
 
   for (openfluid::core::VectorValue::const_iterator it = Val2.begin(); it!=Val2.end(); ++it)
+  {
     BOOST_FAIL("Should be empty!");
+  }
 
   openfluid::core::VectorValue Val3;
   Val3 = Val2;

@@ -62,17 +62,23 @@ MarketBinPackage::MarketBinPackage(const openfluid::ware::WareID_t& ID, const st
 void MarketBinPackage::process()
 {
   if (!m_Initialized)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" not initialized");
+  }
 
 
   if (!m_Downloaded)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" cannot be processed before download");
+  }
 
 
   if (!openfluid::utils::CMakeProxy::isAvailable())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"CMake command not defined");
+  }
 
 
   QString ProcessCommand =

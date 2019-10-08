@@ -115,14 +115,18 @@ void CSVObsParamsWidget::clearInternalDataAndWidgets()
   m_Formats.clear();
 
   while (ui->FormatsTableWidget->rowCount() > 0)
+  {
     ui->FormatsTableWidget->removeRow(0);
+  }
 
   ui->FormatsTableWidget->setRowCount(0);
 
   m_Sets.clear();
 
   while (ui->SetsTableWidget->rowCount() > 0)
-        ui->SetsTableWidget->removeRow(0);
+  {
+    ui->SetsTableWidget->removeRow(0);
+  }
 
   ui->SetsTableWidget->setRowCount(0);
 }
@@ -139,9 +143,13 @@ void CSVObsParamsWidget::removeParamsStartingWith(const QString& Str)
     QString ParamName = QString::fromStdString((*it).first);
 
     if (ParamName.startsWith(Str))
+    {
       mp_Params->erase(it++);
+    }
     else
+    {
       ++it;
+    }
   }
 }
 
@@ -156,7 +164,9 @@ QString CSVObsParamsWidget::getParamValue(const QString& Str, const QString Defa
 
   auto it = mp_Params->find(Str.toStdString());
   if (it != mp_Params->end())
+  {
     Value = QString::fromStdString((*it).second.toString());
+  }
 
   return Value;
 }
@@ -225,22 +235,30 @@ void CSVObsParamsWidget::update()
       TableItem = new QTableWidgetItem(QString::fromStdString(Set.second.UnitsClass));
       ui->SetsTableWidget->setItem(RowCount-1, 1, TableItem);
       if (Set.second.UnitsClass.empty())
+      {
         TableItem->setBackground(WarnBrush);
+      }
 
       TableItem = new QTableWidgetItem(QString::fromStdString(Set.second.UnitsIDsStr));
       ui->SetsTableWidget->setItem(RowCount-1, 2, TableItem);
       if (Set.second.UnitsIDsStr.empty())
+      {
         TableItem->setBackground(WarnBrush);
+      }
 
       TableItem = new QTableWidgetItem(QString::fromStdString(Set.second.VariablesStr));
       ui->SetsTableWidget->setItem(RowCount-1, 3, TableItem);
       if (Set.second.VariablesStr.empty())
+      {
         TableItem->setBackground(WarnBrush);
+      }
 
       TableItem = new QTableWidgetItem(QString::fromStdString(Set.second.FormatName));
       ui->SetsTableWidget->setItem(RowCount-1, 4, TableItem);
       if (Set.second.FormatName.empty() || m_Formats.find(Set.second.FormatName) == m_Formats.end())
+      {
         TableItem->setBackground(WarnBrush);
+      }
     }
 
   }
@@ -265,7 +283,9 @@ void CSVObsParamsWidget::addFormat()
   QStringList FormatNames;
 
   for (auto& Format : m_Formats)
+  {
     FormatNames << QString::fromStdString(Format.first);
+  }
 
   EditFormatDialog AddDlg(FormatNames,this);
 
@@ -300,7 +320,9 @@ void CSVObsParamsWidget::editFormat()
     {
       QString CurrentFormat = QString::fromStdString(Format.first);
       if (CurrentFormat != EditedFormat)
+      {
         FormatNames << CurrentFormat;
+      }
     }
 
     EditFormatDialog EditDlg(FormatNames,this);
@@ -359,11 +381,15 @@ void CSVObsParamsWidget::addSet()
 {
   QStringList SetNames;
   for (auto& Set : m_Sets)
+  {
     SetNames << QString::fromStdString(Set.first);
+  }
 
   QStringList FormatNames;
   for (auto& Format : m_Formats)
+  {
     FormatNames << QString::fromStdString(Format.first);
+  }
 
   QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
 
@@ -398,12 +424,16 @@ void CSVObsParamsWidget::editSet()
     {
       QString CurrentSet = QString::fromStdString(Set.first);
       if (CurrentSet != EditedSet)
+      {
         SetNames << CurrentSet;
+      }
     }
 
     QStringList FormatNames;
     for (auto& Format : m_Formats)
+    {
       FormatNames << QString::fromStdString(Format.first);
+    }
 
     QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
 

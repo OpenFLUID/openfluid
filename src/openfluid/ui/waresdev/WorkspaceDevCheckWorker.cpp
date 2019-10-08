@@ -71,9 +71,13 @@ WorkspaceDevCheckWorker::~WorkspaceDevCheckWorker()
 void WorkspaceDevCheckWorker::writeFileMessage(const QString& Filename,bool Status)
 {
   if (Status)
+  {
     writeMessage("-- "+Filename+" : "+tr("found"));
+  }
   else
+  {
     writeMessage("-- "+Filename+" : <font style='color: red;'>"+tr("not found!")+"</font>");
+  }
 }
 
 

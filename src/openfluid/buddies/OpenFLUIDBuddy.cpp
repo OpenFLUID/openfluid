@@ -50,7 +50,9 @@ OpenFLUIDBuddy::OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener):
   mp_Listener(Listener)
 {
   if (!mp_Listener)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Listener can not be NULL");
+  }
 }
 
 
@@ -84,9 +86,13 @@ void OpenFLUIDBuddy::setOptionIfNotSet(std::string OptionName, std::string Optio
 std::string OpenFLUIDBuddy::getYesNoFromOneZero(std::string VStr)
 {
   if (VStr == "1")
+  {
     return "yes";
+  }
   else
+  {
     return "no";
+  }
 }
 
 

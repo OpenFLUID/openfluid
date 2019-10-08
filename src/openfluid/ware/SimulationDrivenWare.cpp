@@ -65,7 +65,9 @@ openfluid::base::ExceptionContext SimulationDrivenWare::computeWareContext(const
   }
 
   if (!CodeLoc.empty())
+  {
     Context.addCodeLocation(CodeLoc);
+  }
 
   return Context;
 }
@@ -91,8 +93,10 @@ openfluid::base::ExceptionContext SimulationDrivenWare::computeFrameworkContext(
 void SimulationDrivenWare::appendToLog(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const
 {
   if (mp_SimStatus == nullptr || mp_SimLogger == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status or execution messages not set");
+  }
 
   mp_SimLogger->add(LType,computeWareContext().toString(),Msg);
 }
@@ -105,8 +109,10 @@ void SimulationDrivenWare::appendToLog(openfluid::tools::FileLogger::LogType LTy
 void SimulationDrivenWare::displayToConsole(openfluid::tools::FileLogger::LogType LType, const std::string& Msg) const
 {
   if (mp_SimStatus == nullptr || mp_SimLogger == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status or execution messages not set");
+  }
 
   std::cout << "[" << openfluid::tools::FileLogger::logTypeToString(LType) << "] " << Msg << std::endl;
 }
@@ -118,7 +124,10 @@ void SimulationDrivenWare::displayToConsole(openfluid::tools::FileLogger::LogTyp
 
 void SimulationDrivenWare::linkToSimulation(const openfluid::base::SimulationStatus* SimStatus)
 {
-  if (!isLinked()) mp_SimStatus = SimStatus;
+  if (!isLinked())
+  {
+    mp_SimStatus = SimStatus;
+  }
 }
 
 
@@ -129,8 +138,10 @@ void SimulationDrivenWare::linkToSimulation(const openfluid::base::SimulationSta
 openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetBeginDate() const
 {
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return mp_SimStatus->getBeginDate();
 }
@@ -143,8 +154,10 @@ openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetBeginDate() const
 openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetEndDate() const
 {
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return mp_SimStatus->getEndDate();
 }
@@ -157,8 +170,10 @@ openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetEndDate() const
 openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetCurrentDate() const
 {
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return mp_SimStatus->getCurrentDate();
 }
@@ -171,8 +186,10 @@ openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetCurrentDate() const
 openfluid::core::Duration_t SimulationDrivenWare::OPENFLUID_GetSimulationDuration() const
 {
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return mp_SimStatus->getSimulationDuration();
 }
@@ -185,8 +202,10 @@ openfluid::core::Duration_t SimulationDrivenWare::OPENFLUID_GetSimulationDuratio
 openfluid::core::Duration_t SimulationDrivenWare::OPENFLUID_GetDefaultDeltaT() const
 {
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return mp_SimStatus->getDefaultDeltaT();
 }
@@ -202,8 +221,10 @@ openfluid::core::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex
                               "Current run time index cannot be accessed before INITIALIZERUN");
 
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return mp_SimStatus->getCurrentTimeIndex();
 }
@@ -219,8 +240,10 @@ openfluid::core::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetPreviousRunTimeI
                               "Previous run time index cannot be accessed outside RUNSTEP or FINALIZERUN stages");
 
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return m_PreviousTimeIndex;
 }
@@ -233,8 +256,10 @@ openfluid::core::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetPreviousRunTimeI
 openfluid::base::SimulationStatus::SimulationStage SimulationDrivenWare::OPENFLUID_GetCurrentStage() const
 {
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return mp_SimStatus->getCurrentStage();
 }
@@ -247,8 +272,10 @@ openfluid::base::SimulationStatus::SimulationStage SimulationDrivenWare::OPENFLU
 std::string SimulationDrivenWare::OPENFLUID_GetCurrentStageAsString() const
 {
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return mp_SimStatus->getCurrentStageAsString();
 }
@@ -261,8 +288,10 @@ std::string SimulationDrivenWare::OPENFLUID_GetCurrentStageAsString() const
 openfluid::base::SimulationStatus::SchedulingConstraint SimulationDrivenWare::OPENFLUID_GetSchedulingConstraint() const
 {
   if (mp_SimStatus == nullptr)
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
                                               "Simulation status is not set");
+  }
 
   return mp_SimStatus->getSchedulingConstraint();
 }
@@ -315,7 +344,9 @@ void SimulationDrivenWare::OPENFLUID_RaiseError(const std::string& /*Source*/, c
 void SimulationDrivenWare::initializeWare(const WareID_t& ID)
 {
   if (m_Initialized)
+  {
     return;
+  }
 
   PluggableWare::initializeWare(ID);
 

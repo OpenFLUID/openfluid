@@ -160,7 +160,9 @@ std::pair<int, int> RasterDataset::getPixelFromCoordinate(geos::geom::Coordinate
 geos::geom::Coordinate* RasterDataset::computeOrigin()
 {
   if (!mp_GeoTransform)
+  {
     computeGeoTransform();
+  }
 
   return new geos::geom::Coordinate(mp_GeoTransform[0], mp_GeoTransform[3]);
 }
@@ -175,7 +177,9 @@ void RasterDataset::computeGeoTransform()
   mp_GeoTransform = new double[6];
 
   if (GDALGetGeoTransform(mp_Dataset, mp_GeoTransform) != CE_None)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Error while getting GeoTransform information");
+  }
 }
 
 
@@ -186,7 +190,9 @@ void RasterDataset::computeGeoTransform()
 double RasterDataset::getPixelWidth()
 {
   if (!mp_GeoTransform)
+  {
     computeGeoTransform();
+  }
 
   return mp_GeoTransform[1];
 }
@@ -199,7 +205,9 @@ double RasterDataset::getPixelWidth()
 double RasterDataset::getPixelHeight()
 {
   if (!mp_GeoTransform)
+  {
     computeGeoTransform();
+  }
 
   return mp_GeoTransform[5];
 }
@@ -222,7 +230,9 @@ std::vector<float> RasterDataset::getValuesOfLine(int LineIndex, unsigned int Ra
                                            GDT_Float32, 0, 0);
 
   for (int i = 0; i < ColumnCount; i++)
+  {
     Val.push_back(ScanLine[i]);
+  }
 
   CPLFree(ScanLine);
 
@@ -247,7 +257,9 @@ std::vector<float> RasterDataset::getValuesOfColumn(int ColIndex, unsigned int R
                                            0, 0);
 
   for (int i = 0; i < LineCount; i++)
+  {
     Val.push_back(ScanLine[i]);
+  }
 
   CPLFree(ScanLine);
 

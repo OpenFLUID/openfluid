@@ -102,7 +102,11 @@ QString AddWareDialog::getSelectedID() const
   QListWidgetItem* Item = ui->WaresListWidget->currentItem();
 
   if (Item != 0)
+  {
     return Item->data(Qt::UserRole).toStringList().at(0);
+  }
   else
+  {
     return "";
+  }
 }

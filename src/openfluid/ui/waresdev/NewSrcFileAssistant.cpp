@@ -89,7 +89,9 @@ void EmptyPage::initialize()
   QString FilePathLabel = ui->EmptyFileLabel->text();
 
   if (FilePathLabel != m_FilePathPlaceholder)
+  {
     ui->EmptyFileLineEdit->setText(QDir(m_WarePath).absoluteFilePath(FilePathLabel));
+  }
 }
 
 
@@ -254,11 +256,17 @@ void CppPage::onInformationChanged()
   QString WarningMsg = "";
 
   if (!ui->SourceFilenameEdit->hasAcceptableInput())
+  {
     WarningMsg = QString(tr("File name must be of the form \"filexxx.%1\"")).arg(m_IsHpp ? "hpp" : "cpp");
+  }
   else if (m_WareDir.exists(ui->SourceFilenameEdit->text()))
+  {
     WarningMsg = tr("File already exists");
+  }  
   else if (!ui->ClassNameEdit->hasAcceptableInput())
+  {
     WarningMsg = tr("Class name is empty");
+  }
 
   NewSrcFileAssistant::setStatus(m_DefaultMsg, WarningMsg, ui->MessageLabel, ui->MessageFrame);
 
@@ -398,7 +406,9 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   for (QRadioButton* Bt : findChildren<QRadioButton*>())
   {
     if (!Bt->isEnabled())
+    {
       Bt->setToolTip(tr("This file already exists"));
+    }
   }
 
   openfluid::ware::WareType Type = mref_Container.getType();
@@ -446,10 +456,14 @@ int NewSrcFileAssistant::nextId() const
   int CheckedID = ui->buttonGroup->checkedId();
 
   if (currentId() != static_cast<int>(PageType::INTRO_PAGE) || CheckedID < 0)
+  {
     return -1;
+  }
 
   if (CheckedID >= static_cast<int>(PageType::CPP_PAGE))
+  {
     return static_cast<int>(PageType::CPP_PAGE);
+  }
 
   return CheckedID;
 }
@@ -474,7 +488,9 @@ void NewSrcFileAssistant::initializePage(int Id)
                                                                                    mref_Container.getType());
   }
   else if (Id == static_cast<int>(PageType::EMPTY_PAGE))
+  {
     qobject_cast<EmptyPage*>(page(static_cast<int>(PageType::EMPTY_PAGE)))->initialize();
+  }
 }
 
 
@@ -501,9 +517,13 @@ void NewSrcFileAssistant::accept()
   {
     case static_cast<int>(PageType::INTRO_PAGE):
       if (ui->WareshubRadioButton->isChecked())
+      {
         Ok = mp_Factory->createJsonFile(NewFilePath, ErrMsg);
+      }
       else if (ui->CMakeListsRadioButton->isChecked())
+      {
         Ok = mp_Factory->createCMakeListsFile(NewFilePath, ErrMsg);
+      }  
       break;
     case static_cast<int>(PageType::EMPTY_PAGE):
       {
@@ -511,12 +531,16 @@ void NewSrcFileAssistant::accept()
 
       Ok = QDir().mkpath(QFileInfo(NewFilePath).absolutePath());
       if (!Ok)
+      {
         ErrMsg = tr("Unable to create the path \"%1\"").arg(NewFilePath);
+      }
       else
       {
         Ok = QFile(NewFilePath).open(QIODevice::ReadWrite | QIODevice::Text);
         if (!Ok)
+        {
           ErrMsg = tr("Unable to create the file \"%1\"").arg(NewFilePath);
+        }
       }
       break;
     }
@@ -597,7 +621,9 @@ void NewSrcFileAssistant::accept()
     QDialog::accept();
   }
   else
+  {
     QMessageBox::warning(this, tr("Error"), tr("Unable to create the file \"%1\"").arg(ErrMsg));
+  }
 }
 
 

@@ -325,7 +325,9 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       }
 
       if (CountInside != 25)
+      {
         OPENFLUID_RaiseError("wrong units for while loop inside loop");
+      }
 
 
       // ===== unit class =====
@@ -335,10 +337,14 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       {
         LoopIsOK = true;
         if (TU->getClass() != "TestUnits")
+        {
           OPENFLUID_RaiseError("wrong units class");
+        }
       }
       if (!LoopIsOK)
+      {
         OPENFLUID_RaiseError("Loop is not OK #1");
+      }
 
 
       OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -347,10 +353,14 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
         if (TU->getID() == 22)
         {
           if (TU->fromSpatialUnits("TestUnits") == nullptr || TU->fromSpatialUnits("TestUnits")->size() != 2)
+          {
             OPENFLUID_RaiseError("wrong from-units(TestUnits) count for TestUnit 22");
+          }
 
           if (TU->toSpatialUnits("TestUnits") == nullptr || TU->toSpatialUnits("TestUnits")->size() != 1)
+          {
             OPENFLUID_RaiseError("wrong to-units(TestUnits) count for TestUnit 22");
+          }
 
         }
 
@@ -364,20 +374,28 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
         {
 
           if (OU->fromSpatialUnits("TestUnits") == nullptr || OU->fromSpatialUnits("TestUnits")->size() != 2)
+          {
             OPENFLUID_RaiseError("wrong from-units(TestUnits) count for OtherUnit 5");
+          }
 
           if (OU->fromSpatialUnits("OtherUnits") == nullptr || OU->fromSpatialUnits("OtherUnits")->size() != 1)
+          {
             OPENFLUID_RaiseError("wrong from-units(OtherUnits) count for OtherUnit 5");
+          }
 
           if (OU->toSpatialUnits("OtherUnits") == nullptr || OU->toSpatialUnits("OtherUnits")->size() != 1)
+          {
             OPENFLUID_RaiseError("wrong To-units(OtherUnits) count for OtherUnit 5");
+          }
 
           FromList = OU->fromSpatialUnits("TestUnits");
           OPENFLUID_UNITSLIST_LOOP(FromList,FromUnit)
           {
 
             if (FromUnit->getID() != 18 && FromUnit->getID() != 52)
+            {
               OPENFLUID_RaiseError("wrong from-units(TestUnits) content for OtherUnit 5");
+            }
 
           }
 
@@ -386,7 +404,9 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           {
 
             if (FromUnit->getID() != 13)
+            {
               OPENFLUID_RaiseError("wrong from-units(OtherUnits) content for OtherUnit 5");
+            }
 
           }
 
@@ -396,7 +416,9 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           {
 
             if (ToUnit->getID() != 25)
+            {
               OPENFLUID_RaiseError("wrong to-units(OtherUnits) content for OtherUnit 5");
+            }
 
           }
 
@@ -463,7 +485,9 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       }
 
       OPENFLUID_UNITSLIST_LOOP(FakeList,FU)
+      {
         OPENFLUID_RaiseError("error in list loop on fake units");
+      }
 
 
       // ===== performance =====

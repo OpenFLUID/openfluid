@@ -74,9 +74,13 @@ bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
     Found = ((*UnitsIt)->getID() == UnitID);
 
     if (Found)
+    {
       UnitsList->erase(UnitsIt);
+    }
     else
+    {
       ++UnitsIt;
+    }
   }
 
   return Found;
@@ -426,7 +430,9 @@ void SpatialGraph::clearAllAttributes()
 void SpatialGraph::clearAllEvents()
 {
   for (openfluid::core::SpatialUnit* CurrentUnit : m_PcsOrderedUnitsGlobal)
+  {
     CurrentUnit->events()->clear();
+  }
 }
 
 

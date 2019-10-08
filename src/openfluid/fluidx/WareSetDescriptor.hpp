@@ -287,7 +287,9 @@ class OPENFLUID_API WareSetDescriptor
       unsigned int Last = m_SetDescription.size() - 1;
 
       if (indexFrom > Last || indexTo > Last)
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Index out of bounds");
+      }
 
       typename SetDescription_t::const_iterator itFrom = m_SetDescription.begin();
       std::advance(itFrom, indexFrom);

@@ -211,7 +211,9 @@ void ProjectModuleWidget::updateWaresWatchersPaths()
   // simulators
 
   if (!mp_SimulatorsPlugsWatcher->directories().isEmpty())
+  {
     mp_SimulatorsPlugsWatcher->removePaths(mp_SimulatorsPlugsWatcher->directories());
+  }
 
   if (openfluid::base::PreferencesManager::instance()->isBuilderWaresWatchersActive())
   {
@@ -223,7 +225,9 @@ void ProjectModuleWidget::updateWaresWatchersPaths()
     for (QString P : Paths)
     {
       if (QDir(P).exists())
+      {
         mp_SimulatorsPlugsWatcher->addPath(P);
+      }
     }
   }
 
@@ -233,7 +237,9 @@ void ProjectModuleWidget::updateWaresWatchersPaths()
   Paths.clear();
 
   if (!mp_ObserversPlugsWatcher->directories().isEmpty())
+  {
     mp_ObserversPlugsWatcher->removePaths(mp_ObserversPlugsWatcher->directories());
+  }
 
   if (openfluid::base::PreferencesManager::instance()->isBuilderWaresWatchersActive())
   {
@@ -246,7 +252,9 @@ void ProjectModuleWidget::updateWaresWatchersPaths()
     for (QString P : Paths)
     {
       if (QDir(P).exists())
+      {
         mp_ObserversPlugsWatcher->addPath(P);
+      }
     }
   }
 }
@@ -451,7 +459,9 @@ bool ProjectModuleWidget::whenPreferencesAsked()
 
     openfluid::base::Environment::resetExtraSimulatorsDirs();
     for (int i=0;i<ExtraPaths.size(); i++)
+    {
       openfluid::base::Environment::addExtraSimulatorsDirs(ExtraPaths[i].toStdString());
+    }
 
     updateWaresWatchersPaths();
     WaresWatchingUpdated = true;
@@ -465,7 +475,9 @@ bool ProjectModuleWidget::whenPreferencesAsked()
 
     openfluid::base::Environment::resetExtraObserversDirs();
     for (int i=0;i<ExtraPaths.size(); i++)
+    {
       openfluid::base::Environment::addExtraObserversDirs(ExtraPaths[i].toStdString());
+    }
 
     updateWaresWatchersPaths();
     WaresWatchingUpdated = true;
@@ -488,7 +500,9 @@ bool ProjectModuleWidget::whenPreferencesAsked()
   emit refreshWaresEnabled(!PrefsMgr->isBuilderWaresWatchersActive());
 
   if(PrefsDlg.isTextEditorSettingsChanged())
+  {
     updateWareSrcEditorsSettings();
+  }
 
   return PrefsDlg.isRestartRequired();
 }
@@ -632,7 +646,9 @@ void ProjectModuleWidget::whenExtensionAsked(const QString& ID)
           ExtModeless->show();
         }
         else
+        {
           releaseModelessExtension(ExtModeless);
+        }
       }
       else if (ExtReg->getExtensionMode(WareID) == openfluid::builderext::MODE_WORKSPACE)
       {
@@ -753,7 +769,9 @@ bool ProjectModuleWidget::findGhostSignature(const QString& ID,
       FileFullPath = GhostSignatureInstance->FileFullPath;
     }
     else
+    {
       i++;
+    }
   }
 
   return (GhostSignatureInstance != nullptr);
@@ -785,11 +803,12 @@ void ProjectModuleWidget::whenSrcEditAsked(const QString& ID,openfluid::ware::Wa
       }
     }
     else
+    {
       QMessageBox::critical(QApplication::activeWindow(),
                             tr("Ghost simulator edition error"),
                             tr("Unable to find ghost simulator"),
                             QMessageBox::Close);
-
+    }
   }
   else
   {
@@ -798,12 +817,16 @@ void ProjectModuleWidget::whenSrcEditAsked(const QString& ID,openfluid::ware::Wa
     QString Path = openfluid::waresdev::WareSrcManager::instance()->getWarePath(ID,WType,ErrMsg);
 
     if(!Path.isEmpty())
+    {
       addWorkspaceWareSrcTab(Path);
+    }
     else
+    {
       QMessageBox::critical(QApplication::activeWindow(),
                             tr("Source code edition error"),
                             ErrMsg,
                             QMessageBox::Close);
+    }
   }
 }
 
@@ -818,13 +841,16 @@ void ProjectModuleWidget::whenSrcGenerateAsked(const QString& ID)
   std::string FileFullPath;
 
   if (findGhostSignature(ID,Signature,FileFullPath))
+  {
     mp_WareSrcCollection->newSimulatorFromGhost(Signature);
+  }
   else
+  {
     QMessageBox::critical(QApplication::activeWindow(),
                           tr("Source code generation error"),
                           tr("Unable to find ghost simulator"),
                           QMessageBox::Close);
-
+  }
 }
 
 
@@ -847,7 +873,9 @@ void ProjectModuleWidget::whenNewGhostSimulatorAsked()
   QStringList ExistingIDs;
 
   for (auto Sign : openfluid::machine::SimulatorPluginsManager::instance()->getAvailableGhostsSignatures())
+  {
     ExistingIDs.append(QString::fromStdString(Sign->Signature->ID));
+  }
 
   openfluid::ui::common::EditSignatureDialog Dlg(this);
   Dlg.initialize(openfluid::ware::SimulatorSignature(),ExistingIDs);
@@ -959,7 +987,9 @@ void ProjectModuleWidget::dispatchChangesFromExtension(openfluid::builderext::Fl
 void ProjectModuleWidget::releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender)
 {
   if (Sender == nullptr)
+  {
     Sender = (openfluid::builderext::PluggableModelessExtension*)(QObject::sender());
+  }
 
   if (Sender)
   {

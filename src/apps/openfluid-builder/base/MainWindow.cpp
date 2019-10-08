@@ -100,7 +100,11 @@ void MainWindow::closeEvent(QCloseEvent* Event)
 void MainWindow::setProjectName(const QString& PrjName)
 {
   if (PrjName.isEmpty())
+  {
     setWindowTitle("OpenFLUID-Builder");
+  }
   else
+  {
     setWindowTitle(QString("OpenFLUID-Builder [ %1 ]").arg(PrjName));
+  }
 }

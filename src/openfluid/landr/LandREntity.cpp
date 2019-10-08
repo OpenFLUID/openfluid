@@ -71,7 +71,9 @@ LandREntity::~LandREntity()
   std::map<std::string, core::Value*>::iterator it = m_Attributes.begin();
   std::map<std::string, core::Value*>::iterator ite = m_Attributes.end();
   for (; it != ite; ++it)
+  {
     delete it->second;
+  }
 }
 
 
@@ -132,7 +134,9 @@ double LandREntity::getLength() const
 std::set<LandREntity*>* LandREntity::neighbours()
 {
   if (!mp_Neighbours)
+  {
     computeNeighbours();
+  }
 
   return mp_Neighbours;
 }
@@ -169,7 +173,9 @@ bool LandREntity::setAttributeValue(const std::string& AttributeName,
   if (it != m_Attributes.end())
   {
     if (it->second)
+    {
       delete it->second;
+    }
 
     m_Attributes[AttributeName] = const_cast<core::Value*>(Value);
 

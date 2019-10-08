@@ -327,7 +327,9 @@ BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
   BOOST_CHECK_EQUAL(Dangles.size(), 2);
 
   for (unsigned int i = 0; i < NewPolys.size(); i++)
+  {
     delete NewPolys.at(i);
+  }
   // do not delete Dangles
   delete VectSU;
   delete VectRS;
@@ -394,7 +396,9 @@ BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
   BOOST_CHECK_EQUAL(Dangles.size(), 3);
 
   for (unsigned int i = 0; i < NewPolys.size(); i++)
+  {
     delete NewPolys.at(i);
+  }
   // do not delete Dangles
   delete VectSU;
   delete VectSU2;
@@ -455,7 +459,9 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
 //    std::cout << TheDangles.at(i)->toString() << std::endl;
 
   for (unsigned int i = 0; i < ThePolygons.size(); i++)
+  {
     delete ThePolygons.at(i);
+  }
 
   delete VectSU;
   delete VectSU2;
@@ -535,7 +541,9 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
 //    std::cout << TheDangles.at(i)->toString() << std::endl;
 
   for (unsigned int i = 0; i < ThePolygons.size(); i++)
+  {
     delete ThePolygons.at(i);
+  }
 
   delete Vect;
   delete Vect2;
@@ -613,7 +621,9 @@ BOOST_AUTO_TEST_CASE(check_computeNodedLines_virtual)
   //    std::cout << ThePolygons->at(i)->toString() << std::endl;
 
   for (unsigned int i = 0; i < ThePolygons.size(); i++)
+  {
     delete ThePolygons.at(i);
+  }
 
   delete Vect;
   delete Vect2;
@@ -684,7 +694,9 @@ BOOST_AUTO_TEST_CASE(check_computeNodedLines_virtual_snap)
   BOOST_CHECK_EQUAL(ThePolygons.size(), 22);
 
   for (unsigned int i = 0; i < ThePolygons.size(); i++)
+  {
     delete ThePolygons.at(i);
+  }
   delete Vect;
   delete Vect2;
 }
@@ -888,7 +900,9 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   double area=0.0;
 
   for (;it!=ite;++it)
-      area=area+(*it)->getArea();
+  {
+    area=area+(*it)->getArea();
+  }
 
   BOOST_CHECK( openfluid::scientific::isVeryClose(area,0.12999));
 
@@ -906,7 +920,9 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   ite=IntersectPolys.end();
 
   for (;it!=ite;++it)
+  {
     area=area+(*it)->getArea();
+  }
 
   BOOST_CHECK( openfluid::scientific::isVeryClose(area,0.69474));
 
@@ -926,7 +942,9 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   ite=IntersectPolys.end();
 
   for (;it!=ite;++it)
+  {
     area=area+(*it)->getArea();
+  }
 
   BOOST_CHECK(openfluid::scientific::isVeryClose(area,0.743386));
 
@@ -970,9 +988,11 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
   std::vector<geos::geom::LineString*> PolyRings;
   unsigned int i2End=GeomPolygons_coll->getNumGeometries();
   for (unsigned int i = 0; i < i2End; i++)
+  {
     PolyRings.push_back(const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>
                           (const_cast<geos::geom::Geometry*>(GeomPolygons_coll->getGeometryN(i)))->
                              getExteriorRing()));
+  }
 
 
   std::vector<geos::geom::LineString*>* cleanLines  =
@@ -987,14 +1007,18 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
   unsigned int iEnd=IntersectPolys.size();
 
   for (unsigned int i = 0; i < iEnd; i++)
+  {
     delete IntersectPolys.at(i);
+  }
 
   delete GeomPolygons_coll;
 
   iEnd=cleanLines->size();
 
   for (unsigned int i = 0; i < iEnd; i++)
+  {
     delete cleanLines->at(i);
+  }
   delete cleanLines;
 
 }

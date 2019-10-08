@@ -76,8 +76,10 @@ bool ProgressiveChronFileReader::getNextValue(ChronItem_t& Value)
         return true;
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "wrong data in " + m_FileName);
+      }
     }
   }
 

@@ -82,7 +82,9 @@ void DevStudioPreferencesManager::switchWorkspace(const QString& NewAbsoluteWork
   QString WSConfFilename = QDir(NewAbsoluteWorkspacePath).filePath(WORKSPACE_CONF_FILE);
 
   if (mp_Settings)
+  {
     delete mp_Settings;
+  }
 
   mp_Settings = new QSettings(WSConfFilename, QSettings::IniFormat);
 }
@@ -149,4 +151,3 @@ void DevStudioPreferencesManager::setConfigBuildMode(const QString& Mode)
 {
   mp_Settings->setValue("openfluid.workspace.waresdev/buildmode", Mode);
 }
-

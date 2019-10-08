@@ -121,7 +121,9 @@ void NewProjectDialog::onGlobalCheck()
     setMessage(tr("Imported data directory is not selected"));
   }
   else
+  {
     setMessage();
+  }
 
 }
 
@@ -164,9 +166,11 @@ void NewProjectDialog::onProjectButtonClicked()
       onGlobalCheck();
     }
     else
+    {
       QMessageBox::critical(this,
                             tr("Project error"),
                             tr("%1\n\nis not a valid OpenFLUID project").arg(NativePath));
+    }
   }
 }
 
@@ -253,12 +257,18 @@ NewProjectDialog::ImportType NewProjectDialog::getImportType() const
   if (ui->DataGroupBox->isChecked())
   {
     if (ui->ProjectRadioButton->isChecked())
+    {
       return IMPORT_PROJECT;
+    }
     else
+    {
       return IMPORT_DIRECTORY;
+    }
   }
   else
+  {
     return IMPORT_NONE;
+  }
 }
 
 
@@ -269,9 +279,13 @@ NewProjectDialog::ImportType NewProjectDialog::getImportType() const
 QString NewProjectDialog::getImportSource() const
 {
   if (getImportType() == IMPORT_PROJECT)
+  {
     return ui->ProjectLabel->text();
+  }
   if (getImportType() == IMPORT_DIRECTORY)
+  {
     return ui->DirectoryLabel->text();
+  }
 
   return "";
 }

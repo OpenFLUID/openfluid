@@ -102,7 +102,9 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::Package
   updateDisplayedInfos();
 
   if (m_PackageType == openfluid::market::PackageInfo::DATA)
+  {
     setLayout(&m_MainHBox);
+  }
 
 
   connect(&m_InstallToggle, SIGNAL(toggled(bool)), this, SLOT(onInstallModified()));
@@ -193,7 +195,9 @@ void MarketPackWidget::updateDisplayedInfos()
 
     // description
     if (!m_MetaPackInfo.Description.empty())
+    {
       MarkupTooltip += "<br/><br/>"+QString::fromStdString(m_MetaPackInfo.Description);
+    }
 
     // dependencies
     openfluid::market::PackageInfo::Dependencies_t Dependencies =
@@ -223,7 +227,9 @@ void MarketPackWidget::updateDisplayedInfos()
 QString MarketPackWidget::replaceByUnknownIfEmpty(const QString& Str)
 {
   if (Str.isEmpty())
+  {
     return tr("<i>unknown</i>");
+  }
 
   return Str;
 }
@@ -236,7 +242,9 @@ QString MarketPackWidget::replaceByUnknownIfEmpty(const QString& Str)
 QString MarketPackWidget::replaceByNoneIfEmpty(const QString& Str)
 {
   if (Str.isEmpty())
+  {
     return tr("<i>none</i>");
+  }
 
   return Str;
 }

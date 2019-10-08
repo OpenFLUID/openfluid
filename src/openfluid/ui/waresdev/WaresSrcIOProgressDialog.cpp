@@ -55,7 +55,9 @@ WaresSrcIOProgressDialog::WaresSrcIOProgressDialog(const QString& Description, b
   ui->buttonBox->setEnabled(false);
 
   if (IsMaxUndefined)
+  {
     ui->progressBar->setMaximum(0);
+  }
 }
 
 
@@ -108,7 +110,9 @@ void WaresSrcIOProgressDialog::write(const QString& Message, const QColor& Color
   ui->textEdit->append("\n");
 
   if (!Color.isValid())
+  {
     ui->textEdit->append(Message);
+  }
   else
   {
     QTextCursor Cursor = ui->textEdit->textCursor();
@@ -163,7 +167,9 @@ void WaresSrcIOProgressDialog::finishAndQuit(bool Ok, const QString& Message)
     accept();
   }
   else
+  {
     finish(Ok, Message);
+  }
 }
 
 

@@ -110,7 +110,9 @@ void WareSrcFiletypeManager::updateStyles()
 
     QColor Color(it.value().m_Color);
     if (Color.isValid())
+    {
       m_Formats[StyleName].setForeground(Color);
+    }
 
     for(const QString& Decoration : it.value().m_Decoration)
     {
@@ -236,8 +238,10 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
   QFile File(FilePath);
 
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("file not found: %1").arg(FilePath).toStdString());
+  }
 
   QString Msg;
   int Line, Col;
@@ -253,12 +257,16 @@ QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
   QDomElement Elem = Doc.documentElement();
 
   if (Elem.tagName() != "openfluid")
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "file not well formed (missing 'openfluid' tag)");
+  }
 
   Elem = Elem.firstChildElement();
   if (Elem.tagName() != "waresdev")
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "file not well formed (missing 'waresdev' tag)");
+  }
 
   return Elem;
 }
@@ -283,7 +291,9 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
 
   Elem = Elem.firstChildElement();
   if (Elem.tagName() != "highlighting")
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "no 'highlighting' tag in syntax file");
+  }
 
   HighlightingRules_t Rules;
 

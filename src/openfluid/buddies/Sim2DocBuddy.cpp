@@ -112,7 +112,9 @@ std::string Sim2DocBuddy::extractBetweenTags(std::string Content,
     Content.erase(0,Index+BeginTag.length());
     Index = Content.find(EndTag);
     if (Index != std::string::npos)
+    {
       Content.erase(Index,Content.length()-Index);
+    }
   }
 
   return Content;
@@ -196,7 +198,9 @@ void Sim2DocBuddy::extractLatexDocFromCPP()
 
   // check if file exists and if it is "openable"
   if (!CPPFile)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Could not open input file");
+  }
 
   std::string StrLine  = "";
   std::string CPPFileContent = "";
@@ -235,10 +239,14 @@ void Sim2DocBuddy::cpreprocessCPP()
                              " 2>/dev/null";
 
   if (system(CommandToRun.c_str()) == 0)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running c preprocessor");
+  }
 
   if (!openfluid::tools::Filesystem::isFile(m_CProcessedFilePath))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"C preprocessed file not generated");
+  }
 
 
   mp_Listener->onStageCompleted(" done");
@@ -257,8 +265,10 @@ std::string Sim2DocBuddy::extractSignatureLines()
 
   // check if file exists and if it is "openable"
   if (!CProcessedFile)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Could not open C preprocessed file");
+  }
 
   std::string StrLine  = "";
   std::string FileContent = "";
@@ -291,7 +301,9 @@ void Sim2DocBuddy::buildParsedParam(const char* First, const char* Last)
 
   // Removing of backslashs used as escape characters
   while ((Found = Str.find("\\\"")) != std::string::npos)
+  {
     Str.erase(Found, 1);
+  }
 
   m_CurrentBuiltParam += Str;
 }
@@ -316,7 +328,9 @@ void Sim2DocBuddy::storeDataIntoString(std::string *Str)
   if (!m_CurrentBuiltParam.empty())
   {
     if (Str)
+    {
       *Str = m_CurrentBuiltParam;
+    }
 
     clearParsedParam();
   }
@@ -332,7 +346,9 @@ void Sim2DocBuddy::storeDataIntoVector(std::vector<std::string> *List)
   if (!m_CurrentBuiltParam.empty())
   {
     if (List)
+    {
       List->push_back(m_CurrentBuiltParam);
+    }
 
     clearParsedParam();
   }
@@ -353,9 +369,13 @@ void Sim2DocBuddy::storeDataIntoKey(SignatureData_t *SignatureData, const std::s
     {
       m_CurrentKeyValue = toLatexFriendly(m_CurrentBuiltParam);
       if (!State.empty())
+      {
         (*SignatureData)[m_CurrentKeyValue].push_back(State);
+      }
       else
+      {
         (*SignatureData)[m_CurrentKeyValue].clear();
+      }
     }
 
     clearParsedParam();
@@ -372,7 +392,9 @@ void Sim2DocBuddy::storeDataIntoSignatureData(SignatureData_t *SignatureData)
   if (!m_CurrentKeyValue.empty())
   {
     if (SignatureData)
+    {
       (*SignatureData)[m_CurrentKeyValue].push_back(m_CurrentBuiltParam);
+    }
   }
 
   clearParsedParam();
@@ -390,14 +412,22 @@ void Sim2DocBuddy::storeDataIntoStatus()
 
   // Get ware status
   if (Found != std::string::npos)
+  {
     ParsedStatus = m_CurrentBuiltParam.substr(Found+1, m_CurrentBuiltParam.length()-Found);
+  }
 
   if (ParsedStatus == "EXPERIMENTAL")
+  {
     m_SimStatus = "Experimental";
+  }
   else if (ParsedStatus == "BETA")
+  {
     m_SimStatus = "Beta";
+  }
   else if (ParsedStatus == "STABLE")
+  {
     m_SimStatus = "Stable";
+  }
 
   clearParsedParam();
 }
@@ -476,7 +506,9 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
   else
   {
     for (AuthorIt = m_SimAuthorsNames.begin(); AuthorIt != m_SimAuthorsNames.end(); ++AuthorIt)
+    {
       *AuthorIt = toLatexFriendly(*AuthorIt);
+    }
   }
 
   if (m_SimAuthorsEmails.empty())
@@ -486,7 +518,9 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
   else
   {
     for (AuthorIt = m_SimAuthorsEmails.begin(); AuthorIt != m_SimAuthorsEmails.end(); ++AuthorIt)
+    {
       *AuthorIt = toLatexFriendly(*AuthorIt);
+    }
   }
 
 
@@ -498,7 +532,9 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
     ParamIt->second[1] = toLatexFriendly(ParamIt->second[1]);
 
     if (ParamIt->second[2].empty())
+    {
       ParamIt->second[2] = "-";
+    }
   }
 
   for (ParamIt = m_InVars.begin(); ParamIt != m_InVars.end(); ++ParamIt)
@@ -508,7 +544,9 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
     ParamIt->second[2] = toLatexFriendly(ParamIt->second[2]);
 
     if (ParamIt->second[3].empty())
+    {
       ParamIt->second[3] = "-";
+    }
   }
 
   for (ParamIt = m_OutVars.begin(); ParamIt != m_OutVars.end(); ++ParamIt)
@@ -518,7 +556,9 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
     ParamIt->second[2] = toLatexFriendly(ParamIt->second[2]);
 
     if (ParamIt->second[3].empty())
+    {
       ParamIt->second[3] = "-";
+    }
   }
 
   for (ParamIt = m_InAttrs.begin(); ParamIt != m_InAttrs.end(); ++ParamIt)
@@ -528,7 +568,9 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
     ParamIt->second[2] = toLatexFriendly(ParamIt->second[2]);
 
     if (ParamIt->second[3].empty())
+    {
       ParamIt->second[3] = "-";
+    }
   }
 
   for (ParamIt = m_OutAttrs.begin(); ParamIt != m_OutAttrs.end(); ++ParamIt)
@@ -538,7 +580,9 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
     ParamIt->second[2] = toLatexFriendly(ParamIt->second[2]);
 
     if (ParamIt->second[3].empty())
+    {
       ParamIt->second[3] = "-";
+    }
   }
 
 
@@ -606,7 +650,9 @@ void Sim2DocBuddy::generateLatex()
 
   // check if file exists and if it is "openable"
   if (!TPLFile)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Could not open template file");
+  }
 
   std::string StrLine  = "";
   m_LatexOutFile = "";
@@ -647,7 +693,9 @@ void Sim2DocBuddy::generateLatex()
     }
 
     if (!m_InAttrs.empty() && !m_OutAttrs.empty())
+    {
       m_SimData += "\\hline\n";
+    }
 
     for (it = m_OutAttrs.begin(); it != m_OutAttrs.end(); ++it)
     {
@@ -668,7 +716,9 @@ void Sim2DocBuddy::generateLatex()
     }
 
     if (!m_InVars.empty() && !m_OutVars.empty())
+    {
       m_SimData += "\\hline\n";
+    }
 
     for (it = m_OutVars.begin(); it != m_OutVars.end(); ++it)
     {
@@ -707,7 +757,9 @@ void Sim2DocBuddy::generateLatex()
   std::vector<std::string>::iterator AuthorIt;
 
   for (AuthorIt = m_SimAuthorsNames.begin(); AuthorIt != m_SimAuthorsNames.end(); ++AuthorIt)
+  {
     AuthorsList += *AuthorIt + ", ";
+  }
 
   AuthorsList.resize(AuthorsList.size() - 2);
 
@@ -749,7 +801,9 @@ bool Sim2DocBuddy::isErrorInPDFLatexLog()
 
   // check if file exists and if it is "openable"
   if (!LogFile)
+  {
     return true;
+  }
 
   std::string LogFileContent = "";
   std::string StrLine = "";
@@ -778,8 +832,10 @@ void Sim2DocBuddy::buildPDF()
   mp_Listener->onSubstageCompleted("** Building PDF...");
 
   if (chdir(m_OutputDirPath.c_str()) != 0)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error changing current directory to " + m_OutputDirPath);
+  }
 
   std::string PDFCommandToRun = m_PDFLatexProgram.getFullProgramPath().toStdString()
                                 + " -shell-escape -interaction=nonstopmode -output-directory="
@@ -793,35 +849,49 @@ void Sim2DocBuddy::buildPDF()
   mp_Listener->onSubstageCompleted(" first pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running pdflatex command");
+  }
 
   if (isErrorInPDFLatexLog())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error running pdflatex command (catched in log file)");
+  }
 
   mp_Listener->onSubstageCompleted(" bibliography and references...");
 
 
   if (system(BibCommandToRun.c_str()) == -1)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running bibtex command");
+  }
 
   mp_Listener->onSubstageCompleted(" second pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running pdflatex command");
+  }
 
   if (isErrorInPDFLatexLog())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error running pdflatex command (catched in log file)");
+  }
 
   mp_Listener->onSubstageCompleted(" third pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running pdflatex command");
+  }
 
   if (isErrorInPDFLatexLog())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error running pdflatex command (catched in log file)");
+  }
 
   mp_Listener->onStageCompleted(" done");
 
@@ -840,8 +910,10 @@ void Sim2DocBuddy::buildHTML()
   mp_Listener->onSubstageCompleted("** Building HTML...");
 
   if (chdir(m_OutputDirPath.c_str()) != 0)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error changing current directory to " + m_OutputDirPath);
+  }
 
   std::string CommandToRun = m_Latex2HTMLProgram.getFullProgramPath().toStdString() +
                              " -dir="+m_OutputDirPath +
@@ -849,7 +921,9 @@ void Sim2DocBuddy::buildHTML()
                              m_OutputLatexFilePath + " > /dev/null";
 
   if (system(CommandToRun.c_str()) != 0)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running latex2html command");
+  }
 
   mp_Listener->onStageCompleted(" done");
 
@@ -883,7 +957,9 @@ bool Sim2DocBuddy::run()
     mp_Listener->onInfo("Using C preprocessor: " + m_GCCProgram.getFullProgramPath().toStdString());
   }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"C preprocessor (gcc) not found");
+  }
 
 
   if (m_Options["pdf"] == "1")
@@ -905,7 +981,9 @@ bool Sim2DocBuddy::run()
     m_HTMLPackageLatexCommand = "\\usepackage{html}";
 
     if (m_Latex2HTMLProgram.isFound())
+    {
       mp_Listener->onInfo("Using Latex2HTML converter: " + m_Latex2HTMLProgram.getFullProgramPath().toStdString());
+    }
     else
     {
       m_Options["html"] = "0";
@@ -917,14 +995,20 @@ bool Sim2DocBuddy::run()
   m_OutputDirPath = m_Options["outputdir"];
 
   if (!openfluid::tools::Filesystem::isFile(m_InputFilePath))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Input file does not exist");
+  }
 
   m_TplFilePath = m_Options["tplfile"];
   if (!openfluid::tools::Filesystem::isFile(m_TplFilePath))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Template file does not exist");
+  }
 
   if (!openfluid::tools::Filesystem::isDirectory(m_OutputDirPath))
+  {
     openfluid::tools::Filesystem::makeDirectory(m_OutputDirPath);
+  }
 
 
   m_InputDirPath = openfluid::tools::Filesystem::dirname(m_InputFilePath);
@@ -940,9 +1024,15 @@ bool Sim2DocBuddy::run()
   generateLatex();
 
 
-  if (m_Options["pdf"] == "1") buildPDF();
+  if (m_Options["pdf"] == "1")
+  {
+    buildPDF();
+  }
 
-  if (m_Options["html"] == "1") buildHTML();
+  if (m_Options["html"] == "1")
+  {
+    buildHTML();
+  }
 
 #else
   mp_Listener->onInfo("sim2doc buddy only runs on Unix/Linux and MacOSX systems.");

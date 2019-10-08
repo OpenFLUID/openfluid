@@ -169,7 +169,9 @@ void SimulationProfiler::flushCurrentProfileToFiles()
   WareIDSequence_t::const_iterator ItSeqE = m_CurrentTimeIndexModelSequence.end();
 
   for (ItSeq=ItSeqB;ItSeq!=ItSeqE;++ItSeq)
+  {
     m_CurrentSequenceFile << ";" << *ItSeq;
+  }
 
   m_CurrentSequenceFile << "\n";
 

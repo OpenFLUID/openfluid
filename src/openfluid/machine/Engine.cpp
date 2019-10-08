@@ -626,7 +626,9 @@ void Engine::checkConsistency()
   {
     // check simulators count
     if (m_ModelInstance.getItemsCount() == 0)
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator in model");
+    }
 
     checkExtraFilesConsistency();
 

@@ -101,7 +101,9 @@ bool copyDirectoryRecursively(const QString& SrcPath,
   QString DestDirPath = DestPath+"/"+QFileInfo(SrcPath).fileName();
 
   if (QFileInfo(DestDirPath).isDir())
+  {
     removeDirectoryRecursively(DestDirPath);
+  }
 
   QDir().mkpath(DestDirPath);
 
@@ -118,7 +120,9 @@ bool copyDirectoryRecursively(const QString& SrcPath,
     {
 
       if (!DontCopyDotDirs || (DontCopyDotDirs && !Info.fileName().startsWith(".")))
+      {
         Res = copyDirectoryRecursively(Info.absoluteFilePath(), DestDirPath, DontCopyDotDirs);
+      }
     }
     else
     {
@@ -238,7 +242,9 @@ bool Filesystem::removeDirectory(const std::string& Path)
 std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const std::string& SubdirName)
 {
   if (SubdirName.empty())
+  {
     return std::string();
+  }
 
   static QString PID = QString("%1").arg(QCoreApplication::applicationPid());
 
@@ -264,9 +270,13 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
     }
 
     if (QDir().mkpath(CandidateFullPath))
+    {
       return CandidateFullPath.toStdString();
+    }
     else
+    {
       return std::string();
+    }
   }
 
   return std::string();
@@ -287,7 +297,9 @@ std::string Filesystem::makeUniqueFile(const std::string& Path, const std::strin
     QString FileExt = QFileInfo(QString::fromStdString(FileName)).completeSuffix();
 
     if (!FileExt.isEmpty())
+    {
       FileExt = "."+FileExt;
+    }
 
     // Process ID - Pseudo Unique Identifier of 16 chars length
     QString PIDPUI = PID + "-" +QString::fromStdString(openfluid::tools::generatePseudoUniqueIdentifier(16));

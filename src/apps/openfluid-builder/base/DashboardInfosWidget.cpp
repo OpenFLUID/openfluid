@@ -117,9 +117,13 @@ void DashboardInfosWidget::refresh()
   QString SchedConstStr = tr("no constraint");
 
   if (SchedConst == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+  {
     SchedConstStr = tr("checked default DeltaT");
+  }
   if (SchedConst == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+  {
     SchedConstStr = tr("forced default DeltaT");
+  }
 
 
   ui->ModelLabel->setText(tr("<u>Coupled model:</u> %1 simulator(s) and %2 generator(s)").arg(SimCount).arg(GenCount));

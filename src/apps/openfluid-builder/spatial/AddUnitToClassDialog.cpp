@@ -62,7 +62,9 @@ AddUnitToClassDialog::AddUnitToClassDialog(const QString& ClassName,
   ui->AttrsTableWidget->setRowCount(1);
 
   for (int i=0; i<AttrsNames.size();i++)
+  {
     ui->AttrsTableWidget->setItem(0,i,new QTableWidgetItem("0"));
+  }
 
   connect(ui->ClassEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->UnitIDEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
@@ -91,19 +93,29 @@ AddUnitToClassDialog::~AddUnitToClassDialog()
 void AddUnitToClassDialog::checkGlobal()
 {
   if (ui->UnitIDEdit->text().isEmpty())
+  {
     setMessage(tr("Unit ID cannot be empty"));
+  }
   else if (m_UnitsIDs.contains(ui->UnitIDEdit->text()))
+  {
     setMessage(tr("Unit ID already exists"));
+  }
   else
   {
     bool OK = true;
     for (int i=0; i<m_AttrsNames.size();i++)
+    {
       OK = OK && !(ui->AttrsTableWidget->item(0,i)->text().isEmpty());
+    }
 
     if (!OK)
+    {
       setMessage(tr("Wrong attribute(s) value(s)"));
+    }
     else
+    {
       setMessage();
+    }
   }
 
 }
@@ -158,7 +170,9 @@ QMap<QString,QString> AddUnitToClassDialog::getAttributes() const
   QMap<QString,QString> Attrs;
 
   for (int i=0; i<m_AttrsNames.size();i++)
+  {
     Attrs[ui->AttrsTableWidget->horizontalHeaderItem(i)->text()] = ui->AttrsTableWidget->item(0,i)->text();
+  }
 
   return Attrs;
 }

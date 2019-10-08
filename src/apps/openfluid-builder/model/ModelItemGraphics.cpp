@@ -92,7 +92,9 @@ ModelItemGraphics::ModelItemGraphics(const QPointF& Coords,
   QRectF TmpRect = TitleGraphics->boundingRect();
 
   if (rect().width() < TmpRect.width()+20)
-  setRect(Coords.x(),Coords.y(),TmpRect.width()+20,m_DefaultSize.height());
+  {
+    setRect(Coords.x(),Coords.y(),TmpRect.width()+20,m_DefaultSize.height());
+  }
 
   TitleGraphics->setPos((rect().width()/2)-(TmpRect.width()/2),(m_DefaultSize.height()/2)-(TmpRect.height()/2));
 
@@ -201,13 +203,21 @@ void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const SlotType& Type,
   QString SlotName;
 
   if (Type == SlotType::SLOT_REQ)
+  {
     SlotName = "Req";
+  }
   else if (Type == SlotType::SLOT_US)
+  {
     SlotName = "Us";
+  }
   else if (Type == SlotType::SLOT_PROD)
+  {
     SlotName = "Prod";
+  }
   else
+  {
     SlotName = "Upd";
+  }
 
   QGraphicsEllipseItem* SlotShape = new QGraphicsEllipseItem(Pos.x()-6,Pos.y()-6,12,12);
 
@@ -223,7 +233,9 @@ void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const SlotType& Type,
   qreal TextShapeY = Pos.y() + 15 - (TextRect.height()/2);
 
   if (Pos.y() > getCenterFromOrigin().y())
+  {
     TextShapeY = Pos.y() - 15 - (TextRect.height()/2);
+  }
 
   TextShape->setPos(TextShapeX,TextShapeY);
 
@@ -233,13 +245,21 @@ void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const SlotType& Type,
     QString ToolTipString = "<h3>";
 
     if (Type == SlotType::SLOT_REQ)
+    {
       ToolTipString += tr("Required variable(s)");
+    }
     else if (Type == SlotType::SLOT_US)
+    {
       ToolTipString += tr("Used variable(s)");
+    }
     else if (Type == SlotType::SLOT_PROD)
+    {
       ToolTipString += tr("Produced variable(s)");
+    }
     else
+    {
       ToolTipString += tr("Updated variable(s)");
+    }
 
     ToolTipString += "</h3><ul>";
 
@@ -251,14 +271,20 @@ void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const SlotType& Type,
                        " {"+QString::fromStdString(VarInfos.UnitsClass)+ "}";
 
       if (VarInfos.DataType != openfluid::core::Value::NONE)
+      {
         ToolTipString += "," +
                          QString::fromStdString(openfluid::core::Value::getStringFromValueType(VarInfos.DataType));
+      }
 
       if (!VarInfos.Description.empty())
+      {
         ToolTipString += ": " + QString::fromStdString(VarInfos.Description);
+      }
 
       if (!VarInfos.DataUnit.empty())
+      {
         ToolTipString += " (" + QString::fromStdString(VarInfos.DataUnit)+")";
+      }
 
       ToolTipString += "</p></li>";
     }
@@ -374,7 +400,9 @@ bool ModelItemGraphics::hasProducedVariable(const std::string& UnitsClass, const
   for (auto& Var : m_ProducedVars)
   {
     if (Var.UnitsClass == UnitsClass && Var.DataName == Name)
+    {
       return true;
+    }
   }
 
   return false;
@@ -390,7 +418,9 @@ bool ModelItemGraphics::hasUpdatedVariable(const std::string& UnitsClass, const 
   for (auto& Var : m_UpdatedVars)
   {
     if (Var.UnitsClass == UnitsClass && Var.DataName == Name)
+    {
       return true;
+    }
   }
 
   return false;

@@ -97,10 +97,14 @@ void AppActions::updateRecentProjectsActions()
   }
 
   for (int i=RFCount;i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
+  {
     m_RecentProjectsActions[i]->setVisible(false);
+  }
 
   if (mp_RecentProjectsMenu != nullptr)
+  {
     mp_RecentProjectsMenu->setEnabled(!RPList.empty());
+  }
 }
 
 
@@ -310,7 +314,9 @@ void AppActions::setHomeMode()
   std::map<std::string,QAction*>::const_iterator It;
 
   for (It=Itb;It!=Ite;++It)
+  {
     ((*It).second)->setVisible(true);
+  }
 
   m_Actions["ProjectSave"]->setVisible(false);
   m_Actions["ProjectSaveAs"]->setVisible(false);
@@ -325,7 +331,9 @@ void AppActions::setHomeMode()
   mp_ExtensionsMenu->menuAction()->setVisible(false);
 
   if (mp_MainToolbar != nullptr)
+  {
     mp_MainToolbar->hide();
+  }
 }
 
 
@@ -434,7 +442,9 @@ void AppActions::createMenus(MainWindow& MainWin)
   // recents
   mp_RecentProjectsMenu = Menu->addMenu(tr("Open recent"));
   for (int i=0;i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
+  {
     mp_RecentProjectsMenu->addAction(m_RecentProjectsActions[i]);
+  }
 
   Menu->addAction(action("ProjectReload"));
   Menu->addAction(action("ProjectSave"));

@@ -117,7 +117,9 @@ void EditMarketplaceDialog::checkGlobally()
     setMessage(tr("URL of the marketplace cannot be empty"));
   }
   else
+  {
     setMessage();
+  }
 }
 
 

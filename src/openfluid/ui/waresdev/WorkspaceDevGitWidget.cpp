@@ -57,14 +57,20 @@ WorkspaceDevGitWidget::WorkspaceDevGitWidget(const WorkspaceDevDashboardTypes::W
   {
     ui->InfosWidget->setCurrentIndex(0);
     if (Infos.BranchName != openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName())
+    {
       ui->BranchLabel->setText("<font style='color: orange;'>"+Infos.BranchName+"</font>");
+    }  
     else
+    {
       ui->BranchLabel->setText("<font style='color: green;'>"+Infos.BranchName+"</font>");
+    }
 
     ui->StatusLabel->setText(getStatusString(Infos));
   }
   else
+  {
     ui->InfosWidget->setCurrentIndex(1);
+  }
 
   adjustSize();
 }
@@ -89,7 +95,9 @@ void WorkspaceDevGitWidget::updateStatusString(QString& CurrentStr, const QStrin
   if (Counter)
   {
     if (!CurrentStr.isEmpty())
+    {
       CurrentStr += ", ";
+    }
 
     CurrentStr += QString("%1 "+State).arg(Counter);
   }
@@ -118,9 +126,13 @@ QString WorkspaceDevGitWidget::getStatusString(const WorkspaceDevDashboardTypes:
                      tr("conflict"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::CONFLICT));
 
   if (StatusStr.isEmpty())
+  {
     StatusStr = "<font style='color: green;'>"+tr("clean")+"</font>";
+  }  
   else
+  {
     StatusStr = "<font style='color: orange;'>"+StatusStr+"</font>";
+  }
 
   return StatusStr;
 }

@@ -89,7 +89,9 @@ class KmlAnimLayerInfo : public KmlLayerInfo<KmlUnitInfo>
       for (unsigned int i=0;i<ColorScale.size()-1;i++)
       {
         if (Val < ColorScale[i].second)
+        {
           return i;
+        }
       }
 
       return ColorScale.size()-1;
@@ -171,15 +173,21 @@ class KmlFilesAnimObserver : public KmlObserverBase
       for (unsigned int i=0; i<m_AnimLayerInfo.ColorScale.size();i++)
       {
         if ((*(m_AnimLayerInfo.UnitsInfos.begin())).second.GeometryType == wkbPolygon)
+        {
           CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><PolyStyle><color>#"
                          << m_AnimLayerInfo.ColorScale[i].first << "</color><outline>0</outline></PolyStyle></Style>\n";
+        }
         else if ((*(m_AnimLayerInfo.UnitsInfos.begin())).second.GeometryType == wkbLineString)
+        {
           CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><LineStyle><color>#"
                          << m_AnimLayerInfo.ColorScale[i].first << "</color><width>"
                          << m_AnimLayerInfo.LineWidth
                          << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
+        }
         else
+        {
           OPENFLUID_LogWarning("Unsupported geometry format in source geometry file");
+        }
       }
 
 
@@ -247,8 +255,10 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
 
         if (ValueFound)
+        {
           CurrentKmlFile << "      <styleUrl>#" << TmpStyleID << "_"
                          << m_AnimLayerInfo.getColorScaleIndexForValue(Val) << "</styleUrl>\n";
+        }
 
 
         if ((*it2).second.GeometryType == wkbPolygon)
@@ -262,7 +272,9 @@ class KmlFilesAnimObserver : public KmlObserverBase
                           << "</coordinates></LineString>\n";
         }
         else
+        {
           OPENFLUID_LogWarning("Unsupported geometry format in source geometry file");
+        }
 
 
         CurrentKmlFile << "    </Placemark>\n";
@@ -361,7 +373,9 @@ class KmlFilesAnimObserver : public KmlObserverBase
         m_AnimLayerInfo.SourceIsDatastore =
             (ParamsTree.root().child("layers").child("anim").getChildValue("source","file").get() == "datastore");
         if (m_AnimLayerInfo.SourceIsDatastore)
+        {
           return;
+        }
         else
         {
           m_AnimLayerInfo.SourceFilename =
@@ -472,7 +486,9 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
             KSLI.SourceIsDatastore = (SLayer.second.getChildValue("source","file").get() == "datastore");
             if (KSLI.SourceIsDatastore)
+            {
               return;
+            }
             else
             {
               KSLI.SourceFilename = SLayer.second.getChildValue("sourcefile","");
@@ -510,13 +526,17 @@ class KmlFilesAnimObserver : public KmlObserverBase
     void onPrepared()
     {
       if (!m_OKToGo)
+      {
         return;
+      }
 
 
       prepareTempDirectory();
 
       if (!m_OKToGo)
+      {
         return;
+      }
 
 
       // open and initialize doc.kml file
@@ -590,7 +610,9 @@ class KmlFilesAnimObserver : public KmlObserverBase
     void onInitializedRun()
     {
       if (!m_OKToGo)
+      {
         return;
+      }
 
       m_UpdateBeginDate = OPENFLUID_GetCurrentDate();
     }
@@ -603,7 +625,9 @@ class KmlFilesAnimObserver : public KmlObserverBase
     void onStepCompleted()
     {
       if (!m_OKToGo)
+      {
         return;
+      }
 
 
       if (m_LatestSamplingIndex + m_MinSamplingDelay <= OPENFLUID_GetCurrentTimeIndex())
@@ -621,7 +645,9 @@ class KmlFilesAnimObserver : public KmlObserverBase
     void onFinalizedRun()
     {
       if (!m_OKToGo)
+      {
         return;
+      }
 
       m_KmlFile << "</Document>\n";
       m_KmlFile << "</kml>\n";

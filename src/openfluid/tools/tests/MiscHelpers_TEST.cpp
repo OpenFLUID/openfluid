@@ -112,10 +112,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   for (int i =0; i<10; i++)
+  {
     std::cout << "10 chars: " << openfluid::tools::generatePseudoUniqueIdentifier(10) << std::endl;
+  }
 
   for (int i =0; i<8; i++)
+  {
     std::cout << (2*(i+1)) << " chars: " << openfluid::tools::generatePseudoUniqueIdentifier(2*(i+1)) << std::endl;
+  }
 
 
   // ---------------------------------------------------------------------
@@ -141,10 +145,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   for (auto D : {123456789,12345678,1234567,123456,12345,1234,123,12,1,0})
+  {
     std::cout << D << "ms = " << openfluid::tools::getDurationAsPrettyString(D) << std::endl;
+  }
 
   for (auto D : {86400000,3600000,60000,1000,86460001,3601000})
+  {
     std::cout << D << "ms = " << openfluid::tools::getDurationAsPrettyString(D) << std::endl;
+  }
 
 }
 

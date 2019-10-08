@@ -136,17 +136,23 @@ void WareshubJsonEditor::saveContent()
 void WareshubJsonEditor::saveContentToPath(const QString& Path)
 {
   if (Path.isEmpty())
+  {
     return;
+  }
 
   if (!QDir().mkpath(QFileInfo(Path).absolutePath()))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("Unable to create the path \"%1\"").arg(Path).toStdString());
+  }
 
   QFile File(Path);
 
   if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
+  {
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION, QString("Unable to open the file \"%1\" in write mode").arg(Path).toStdString());
+  }
 
   lineEditToJsonStringArray("tags", ui->TagsLineEdit);
   lineEditToJsonStringArray("contacts", ui->ContactsLineEdit);
@@ -216,9 +222,13 @@ void WareshubJsonEditor::comboBoxToJsonString(const QString& Key, QComboBox* Com
   rapidjson::Value::MemberIterator it = Doc.FindMember(Key.toStdString().c_str());
 
   if (it == Doc.MemberEnd())
+  {
     Doc.AddMember(rapidjson::Value(Key.toStdString().c_str(), Alloc), JsonValue, Alloc);
+  }
   else
+  {
     it->value = JsonValue;
+  }
 }
 
 
@@ -265,9 +275,13 @@ void WareshubJsonEditor::issuesMapToJsonIssues()
   rapidjson::Value::MemberIterator it = Doc.FindMember("issues");
 
   if (it == Doc.MemberEnd())
+  {
     Doc.AddMember(rapidjson::Value("issues", Alloc), JsonIssuesObject, Alloc);
+  }
   else
+  {
     it->value = JsonIssuesObject;
+  }
 }
 
 
@@ -280,19 +294,25 @@ void WareshubJsonEditor::updateContent()
   QFile File(m_FilePath);
 
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("Cannot open file %1").arg(m_FilePath).toStdString());
+  }
 
   Doc.Parse(QTextStream(&File).readAll().toStdString().c_str());
 
   if (Doc.HasParseError())
+  {
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION,
         QString("Error while parsing json file %1").arg(m_FilePath).toStdString());
+  }
 
   if (!Doc.IsObject())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("Error in json file %1").arg(m_FilePath).toStdString());
+  }
 
 
   jsonStringArrayToLineEdit("tags", ui->TagsLineEdit);
@@ -327,7 +347,9 @@ void WareshubJsonEditor::jsonStringArrayToLineEdit(const QString& Key, QLineEdit
       for (unsigned int i = 0; i < JsonValue.Size(); i++)
       {
         if (JsonValue[i].IsString())
+        {
           Values << JsonValue[i].GetString();
+        }
       }
     }
   }
@@ -352,9 +374,13 @@ void WareshubJsonEditor::jsonStringToComboBox(const QString& Key, QComboBox* Com
       QString Str = QString::fromUtf8(JsonValue.GetString());
       int Index = Combo->findText(Str, Qt::MatchFixedString);
       if (Index > -1)
+      {
         Combo->setCurrentIndex(Index);
+      }
       else if (Combo->isEditable())
+      {
         Combo->setEditText(Str);
+      }
     }
   }
 }
@@ -391,27 +417,39 @@ void WareshubJsonEditor::jsonIssuesToIssuesMap()
 
           itI = IssueContentValue.FindMember("title");
           if (itI != IssueContentValue.MemberEnd())
+          {
             I.m_Title = itI->value.GetString();
+          }
 
           itI = IssueContentValue.FindMember("creator");
           if (itI != IssueContentValue.MemberEnd())
+          {
             I.m_Creator = itI->value.GetString();
+          }
 
           itI = IssueContentValue.FindMember("date");
           if (itI != IssueContentValue.MemberEnd())
+          {
             I.m_Date = QDate::fromString(itI->value.GetString(), "yyyy-MM-dd");
+          }
 
           itI = IssueContentValue.FindMember("type");
           if (itI != IssueContentValue.MemberEnd())
+          {
             I.m_Type = itI->value.GetString();
+          }
 
           itI = IssueContentValue.FindMember("state");
           if (itI != IssueContentValue.MemberEnd())
+          {
             I.m_State = itI->value.GetString();
+          }
 
           itI = IssueContentValue.FindMember("description");
           if (itI != IssueContentValue.MemberEnd())
+          {
             I.m_Description = itI->value.GetString();
+          }
 
           itI = IssueContentValue.FindMember("urgency");
           if (itI != IssueContentValue.MemberEnd())
@@ -453,9 +491,13 @@ void WareshubJsonEditor::updateIssuesTable()
     QTableWidgetItem* IDItem = new QTableWidgetItem("");
     int IDInt = ID.toInt(&Ok);
     if (Ok)
+    {
       IDItem->setData(Qt::DisplayRole, IDInt);
+    }
     else
+    {
       IDItem->setData(Qt::DisplayRole, ID);
+    }
     ui->IssuesTable->setItem(row, 0, IDItem);
 
     ui->IssuesTable->setItem(row, 1, new QTableWidgetItem(m_IssuesByID[ID].m_Title));
@@ -567,9 +609,13 @@ void WareshubJsonEditor::onEditIssueClicked()
         bool Ok;
         int IDInt = I.m_ID.toInt(&Ok);
         if (Ok)
+        {
           IDItem->setData(Qt::DisplayRole, IDInt);
+        }
         else
+        {
           IDItem->setData(Qt::DisplayRole, I.m_ID);
+        }
 
         Row = IDItem->row();
 
@@ -611,9 +657,13 @@ void WareshubJsonEditor::onAddIssueClicked()
     bool Ok;
     int IDInt = I.m_ID.toInt(&Ok);
     if (Ok)
+    {
       IDItem->setData(Qt::DisplayRole, IDInt);
+    }
     else
+    {
       IDItem->setData(Qt::DisplayRole, I.m_ID);
+    }
     ui->IssuesTable->setItem(RowCountBefore, 0, IDItem);
 
     int NewRow = IDItem->row();

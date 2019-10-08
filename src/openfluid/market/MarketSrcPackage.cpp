@@ -63,15 +63,21 @@ MarketSrcPackage::MarketSrcPackage(const openfluid::ware::WareID_t& ID, const st
 void MarketSrcPackage::process()
 {
   if (!m_Initialized)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" not initialized");
+  }
 
   if (!m_Downloaded)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "package "+m_PackageFilename+" cannot be processed before download");
+  }
 
   if (!openfluid::utils::CMakeProxy::isAvailable())
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"CMake command not defined");
+  }
 
 
   std::string BuildConfigOptions = composeFullBuildOptions(getPackageType(), m_BuildConfigOptions);
@@ -81,19 +87,27 @@ void MarketSrcPackage::process()
 
   // creating installation dir
   if (openfluid::tools::Filesystem::isDirectory(SrcInstallDir))
+  {
     openfluid::tools::Filesystem::removeDirectory(SrcInstallDir);
+  }
 
   if (!openfluid::tools::Filesystem::makeDirectory(SrcInstallDir))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "unable to create source directory for "+m_ID+" package");
+  }
 
   // creating build dir
   if (openfluid::tools::Filesystem::isDirectory(BuildDir))
+  {
     openfluid::tools::Filesystem::removeDirectory(BuildDir);
+  }
 
   if (!openfluid::tools::Filesystem::makeDirectory(BuildDir))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "unable to create build directory for "+m_ID+" package");
+  }
 
 
   // == Building commands ==
@@ -175,28 +189,37 @@ void MarketSrcPackage::process()
   // TODO add management of plugins suffixes for builder-extensions
   std::string PackagesPluginsSuffixes= "";
   if (getPackageType() == PackageInfo::SIM)
+  {
     PackagesPluginsSuffixes = openfluid::config::SIMULATORS_PLUGINS_SUFFIX;
+  }
   else if (getPackageType() == PackageInfo::OBS)
+  {
     PackagesPluginsSuffixes = openfluid::config::OBSERVERS_PLUGINS_SUFFIX;
+  }
 
 
   if (!openfluid::tools::Filesystem::isFile(BuildDir+"/"+m_ID+PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error finding built package");
+  }
 
   std::string BinInstallDir = getInstallPath() + "/../" + m_MarketBagBinSubDir;
   if (openfluid::tools::Filesystem::isFile(BinInstallDir+"/"+m_ID+
                                            PackagesPluginsSuffixes +openfluid::config::PLUGINS_EXT))
+  {
     openfluid::tools::Filesystem::removeFile(BinInstallDir+"/"+m_ID+
                                              PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT);
+  }
 
   openfluid::tools::Filesystem::copyFile(BuildDir+"/"+m_ID+PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT,
                                          BinInstallDir+"/"+m_ID+PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT);
 
   if (!m_KeepSources)
+  {
     openfluid::tools::Filesystem::removeDirectory(SrcInstallDir);
+  }
 
 }
 
 
 } } // namespaces
-

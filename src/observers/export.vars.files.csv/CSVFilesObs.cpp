@@ -152,15 +152,21 @@ class CSVFilesObserver : public CSVFilesObserverBase
 
       std::vector<std::string> ParsingMsgs = parseFormatsFromParamsTree(ParamsTree,m_Formats);
       for (auto Msg: ParsingMsgs)
+      {
         OPENFLUID_LogWarning(Msg);
+      }
 
       SetMap_t TmpSetMap;
       ParsingMsgs = parseSetsFromParamsTree(ParamsTree,TmpSetMap);
       for (auto Msg: ParsingMsgs)
+      {
         OPENFLUID_LogWarning(Msg);
+      }
 
       for (auto& Format : m_Formats)
+      {
         Format.second.DateFormat = StrToDateFormat(Format.second.DateFormat);
+      }
 
 
       for (auto& Set : TmpSetMap)
@@ -169,14 +175,20 @@ class CSVFilesObserver : public CSVFilesObserverBase
 
         // check units class is defined
         if (m_SetsFiles[Set.first].SetDefinition.UnitsClass.empty())
+        {
           OPENFLUID_RaiseError("Units class for " + Set.first + " is undefined");
+        }
 
         // check format is defined
         std::string FormatName = m_SetsFiles[Set.first].SetDefinition.FormatName;
         if (m_Formats.find(FormatName) == m_Formats.end())
+        {
           OPENFLUID_RaiseError("Format "+FormatName+" used by "+ Set.first +" is undefined");
+        }
         else
+        {
           m_SetsFiles[Set.first].Format = &(m_Formats[FormatName]);
+        }
       }
 
       long BufferSize;
@@ -227,8 +239,10 @@ class CSVFilesObserver : public CSVFilesObserverBase
                  VarArray.push_back(TmpVarArray[i]);
               }
               else
+              {
                 OPENFLUID_LogWarning("Variable "+TmpVarArray[i]+" for units class "+
                                      SetFiles.second.SetDefinition.UnitsClass+" does not exist. Ignored.");
+              }
             }
 
           }
@@ -277,14 +291,18 @@ class CSVFilesObserver : public CSVFilesObserverBase
                   }
                 }
                 else
+                {
                   OPENFLUID_LogWarning("Unit #"+UIDArray[i]+" does not exist in class "+
                                        SetFiles.second.SetDefinition.UnitsClass+". Ignored.");
+                }
               }
             }
           }
         }
         else
+        {
           OPENFLUID_LogWarning("Unit class "+SetFiles.second.SetDefinition.UnitsClass+" does not exist. Ignored.");
+        }
 
       }
 
@@ -342,9 +360,13 @@ class CSVFilesObserver : public CSVFilesObserverBase
           if (Val!=nullptr)
           {
             if ((*SetIt).second.Format->IsTimeIndexDateFormat)
+            {
               (*FLIt)->FileHandle << OPENFLUID_GetCurrentTimeIndex();
+            }
             else
+            {
               (*FLIt)->FileHandle << OPENFLUID_GetCurrentDate().getAsString((*SetIt).second.Format->DateFormat);
+            }
             (*FLIt)->FileHandle << (*SetIt).second.Format->ColSeparator;
             Val->writeQuotedToStream((*FLIt)->FileHandle);
             (*FLIt)->FileHandle << "\n";
@@ -372,7 +394,9 @@ class CSVFilesObserver : public CSVFilesObserverBase
         CSVSetFiles::CSVFilePtrList_t::iterator FLIt;
 
         for (FLIt=FLItB;FLIt!=FLItE;++FLIt)
+        {
           delete (*FLIt);
+        }
 
         (*SetIt).second.Files.clear();
       }

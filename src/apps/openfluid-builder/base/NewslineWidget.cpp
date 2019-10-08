@@ -69,15 +69,21 @@ NewslineWidget::NewslineWidget(QWidget* Parent):
                                       .arg(BUILDER_NEWSLINE_BGCOLOR));
 
   if (openfluid::base::PreferencesManager::instance()->getLang() != "default")
+  {
     NewsItemWidget::setLocale(QLocale(openfluid::base::PreferencesManager::instance()->getLang()));
+  }
   else
+  {
     NewsItemWidget::setLocale(QLocale(QLocale::English));
+  }
 
   refreshFromCache();
 
   // check if update is needed
   if (NewslineDownloadWorker::isTimeForDownload(NewsItemWidget::getLocale().name().left(2)))
+  {
     launchDownload();
+  }
 
   connect(ui->UpdateButton,SIGNAL(clicked()),this,SLOT(launchDownload()));
 }
@@ -105,7 +111,9 @@ void NewslineWidget::setItems(const QList<NewsItemData>& Items)
   while ((LayoutItem = Layout->takeAt(0)) != nullptr)
   {
     if (LayoutItem->widget() != nullptr)
+    {
       LayoutItem->widget()->deleteLater();
+    }
 
     delete LayoutItem;
   }
@@ -115,7 +123,10 @@ void NewslineWidget::setItems(const QList<NewsItemData>& Items)
 
   for (NewsItemData IData : Items)
   {
-    if (isFirst) isFirst = false;
+    if (isFirst)
+    {
+      isFirst = false;
+    }
     else
     {
       QFrame* SepFrame = new QFrame(this);
@@ -180,7 +191,10 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const QString& FilePath)
                   Item.Tags.push_back(CurrTagNode.toElement().text());
                 }
 
-                if (Item.Tags.isEmpty()) Item.Tags.push_back(tr("misc"));
+                if (Item.Tags.isEmpty())
+                {
+                  Item.Tags.push_back(tr("misc"));
+                }
 
                 News.push_back(Item);
               }
@@ -211,7 +225,9 @@ void NewslineWidget::refreshFromCache()
   QList<NewsItemData> News = loadRSSFile(RSSFile);
 
   if (News.isEmpty())
+  {
     News = loadRSSFile(RSSDefaultFile);
+  }
 
   ui->NoNewsLabel->setVisible(News.isEmpty());
 

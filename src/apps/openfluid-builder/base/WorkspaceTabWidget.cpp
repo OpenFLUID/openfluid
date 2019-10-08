@@ -61,7 +61,9 @@ WorkspaceTabWidget::WorkspaceTabWidget(QWidget* Parent):
 void WorkspaceTabWidget::closeTab(int Index)
 {
   if(qobject_cast<openfluid::ui::waresdev::WareSrcWidget*>(widget(Index)))
+  {
     return;
+  }
 
   ExtensionsRegistry::instance()->releaseFeatureExtension(widget(Index)->property("ID").toString().toStdString());
 

@@ -180,11 +180,15 @@ void SourceAddDialog::handleSourceFinished()
 void SourceAddDialog::handleSourceError(QString Message)
 {
   if (!Message.isEmpty())
+  {
     QMessageBox::critical(this,tr("Source error"),Message);
+  }
   else
+  {
     QMessageBox::critical(this,tr("Source error"),tr("Error opening source")+"\n" +
                                                   m_CurrentSourceURI+"\n\n" +
                                                   tr("Aborting."));
+  }
 
   m_CurrentSourceURI.clear();
 
@@ -211,8 +215,14 @@ void SourceAddDialog::globalCheck()
 {
   int LayerCount = ui->LayersTableWidget->rowCount();
 
-  if (LayerCount == 0) ui->StatusLabel->setText(tr("No layer"));
-  else ui->StatusLabel->setText(tr("%1 layer(s) available").arg(LayerCount));
+  if (LayerCount == 0)
+  {
+    ui->StatusLabel->setText(tr("No layer"));
+  }
+  else
+  {
+    ui->StatusLabel->setText(tr("%1 layer(s) available").arg(LayerCount));
+  }
 
   bool OK = mp_DataSource != nullptr &&
             !m_CurrentSourceURI.isEmpty() &&
@@ -229,7 +239,9 @@ void SourceAddDialog::globalCheck()
 bool SourceAddDialog::checkRequiredFields()
 {
   if (mp_DataSource == nullptr)
+  {
     return false;
+  }
 
   OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
 
@@ -237,7 +249,9 @@ bool SourceAddDialog::checkRequiredFields()
   if (FIndex >=0 && (openfluid::utils::isOGRInteger(Defn->GetFieldDefn(FIndex)->GetType()) ||
                      Defn->GetFieldDefn(FIndex)->GetType() == OFTReal ||
                      Defn->GetFieldDefn(FIndex)->GetType() == OFTString))
+  {
     return true;
+  }
 
   return false;
 }
@@ -259,16 +273,24 @@ void SourceAddDialog::proceedToImport()
       OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
 
       for (int i=0; i< Defn->GetFieldCount();i++)
+      {
         m_SrcInfos.AvailableFields.append(Defn->GetFieldDefn(i)->GetNameRef());
+      }
 
       if (m_SrcInfos.AvailableFields.contains(OGRGDAL_PSORD_FIELD))
+      {
         m_SrcInfos.UnitsPcsOrdField = OGRGDAL_PSORD_FIELD;
+      }
 
       if (m_SrcInfos.AvailableFields.contains(OGRGDAL_TOCONN_FIELD))
+      {
         m_SrcInfos.ToConnectionsField = OGRGDAL_TOCONN_FIELD;
+      }
 
       if (m_SrcInfos.AvailableFields.contains(OGRGDAL_CHILDOF_FIELD))
+      {
         m_SrcInfos.ChildofConnectionsField = OGRGDAL_CHILDOF_FIELD;
+      }
 
       accept();
     }
@@ -291,4 +313,3 @@ void SourceAddDialog::proceedToImport()
     reject();
   }
 }
-

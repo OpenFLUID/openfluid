@@ -66,7 +66,16 @@ aUnitListPtr = aUnit.toSpatialUnits("foo");
 aUnitListPtr = aUnit.fromSpatialUnits("bar");
 //! [spatialunit]
 
-if (aUnitID){} // to avoid "unused var" message from compiler
-if (aUnitPtr){} // to avoid "unused var" message from compiler
-if (aUnitListPtr){} // to avoid "unused var" message from compiler
+if (aUnitID)
+{
+  
+} // to avoid "unused var" message from compiler
+if (aUnitPtr)
+{
+  
+} // to avoid "unused var" message from compiler
+if (aUnitListPtr)
+{
+  
+} // to avoid "unused var" message from compiler
 }

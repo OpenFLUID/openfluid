@@ -786,7 +786,9 @@ bool WareSrcFileEditor::findReplace(FindReplaceDialog::FindReplaceAction Action,
       {
         while (findReplace(FindReplaceDialog::FindReplaceAction::ReplaceFind, StringToFind, StringForReplace, Options,
                            Message))
+        {
           ReplaceCount++;
+        }
       }
 
       if (ReplaceCount > 0)

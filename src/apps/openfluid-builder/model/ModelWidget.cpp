@@ -146,7 +146,9 @@ void ModelWidget::addGlobalParam()
   openfluid::ware::WareParams_t GParams = m_Model.getGlobalParameters();
 
   for (openfluid::ware::WareParams_t::iterator it = GParams.begin();it != GParams.end(); ++it)
+  {
     ExistPList.append(QString::fromStdString((*it).first));
+  }
 
 
   // parameters list for completion, based on model items parameters
@@ -172,7 +174,9 @@ void ModelWidget::addGlobalParam()
           Items.begin(); it != Items.end(); ++it)
       {
         if (!CompPList.contains(QString::fromStdString((*it).DataName)))
+        {
           CompPList.append(QString::fromStdString((*it).DataName));
+        }
       }
     }
   }
@@ -353,7 +357,9 @@ void ModelWidget::addGenerator()
 void ModelWidget::moveModelItemUp(const QString& /*ID*/, int CurrentIndex)
 {
   if (CurrentIndex < 0)
-     return;
+  {
+    return;
+  }
 
   unsigned int From = CurrentIndex;
   unsigned int To = (From == 0) ? m_Model.getItemsCount() - 1 : From - 1;
@@ -378,7 +384,9 @@ void ModelWidget::moveModelItemUp(const QString& /*ID*/, int CurrentIndex)
 void ModelWidget::moveModelItemDown(const QString& /*ID*/, int CurrentIndex)
 {
   if (CurrentIndex < 0)
+  {
     return;
+  }
 
   unsigned int From = CurrentIndex;
   unsigned int To = (From == (unsigned int)m_Model.getItemsCount() - 1) ? 0 : From + 1;
@@ -405,7 +413,9 @@ void ModelWidget::moveModelItemDown(const QString& /*ID*/, int CurrentIndex)
 void ModelWidget::removeModelItem(const QString& /*ID*/, int CurrentIndex)
 {
   if (CurrentIndex < 0)
+  {
     return;
+  }
 
   WareWidget* W =
       (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(CurrentIndex)->widget());
@@ -454,8 +464,14 @@ void ModelWidget::updateCoupledModel()
     {
       SimulatorWidget* SimWidget = new SimulatorWidget(this,*it,m_Model.getID(*it),0);
       mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(SimWidget);
-      if (it == itb) SimWidget->setUpButtonEnabled(false);
-      if (it == itl) SimWidget->setDownButtonEnabled(false);
+      if (it == itb)
+      {
+        SimWidget->setUpButtonEnabled(false);
+      }
+      if (it == itl)
+      {
+        SimWidget->setDownButtonEnabled(false);
+      }
 
       connect(SimWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
       connect(SimWidget,SIGNAL(srcEditAsked(const QString&,bool)),this,SLOT(notifySrcEditAsked(const QString&,bool)));
@@ -476,8 +492,14 @@ void ModelWidget::updateCoupledModel()
                               openfluid::machine::SimulatorSignatureRegistry::instance()->signature(*it));
 
       mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(GenWidget);
-      if (it == itb) GenWidget->setUpButtonEnabled(false);
-      if (it == itl) GenWidget->setDownButtonEnabled(false);
+      if (it == itb)
+      {
+        GenWidget->setUpButtonEnabled(false);
+      }
+      if (it == itl)
+      {
+        GenWidget->setDownButtonEnabled(false);
+      }
 
       connect(GenWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
       connect(GenWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
@@ -534,7 +556,10 @@ void ModelWidget::prepareWaresUpdate()
   for (int i=0;i<=LastIndex;i++)
   {
     WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->itemAt(i)->widget());
-    if (W != nullptr) W->prepareWareUpdate();
+    if (W != nullptr)
+    {
+      W->prepareWareUpdate();
+    }
   }
 }
 
@@ -550,7 +575,10 @@ void ModelWidget::updateWares()
   for (int i=0;i<=LastIndex;i++)
   {
     WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->itemAt(i)->widget());
-    if (W != nullptr) W->updateWare();
+    if (W != nullptr)
+    {
+      W->updateWare();
+    }
   }
 
   mp_ModelScene->refresh();

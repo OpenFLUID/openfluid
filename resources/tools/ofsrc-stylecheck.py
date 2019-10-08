@@ -120,7 +120,7 @@ class SourceTreeChecker:
                 RelFilename = os.path.relpath(os.path.join(Dirname, Filename),self.SrcRootPath)
                 if not RelFilename.startswith('.') and not RelFilename.startswith('_'):
                     if (RelFilename.endswith('.cpp') or RelFilename.endswith('.hpp') or
-                            RelFilename.endswith('.hpp.in')) :
+                        RelFilename.endswith('.hpp.in')) :
                         self.FileList.append(RelFilename)
 
         self.FileList.sort()
@@ -131,9 +131,9 @@ class SourceTreeChecker:
 
     def runPreliminaryChecks(self):
         return (os.path.isdir(os.path.join(self.SrcRootPath,self.SrcOpenFLUIDDir)) and
-                        os.path.isdir(os.path.join(self.SrcRootPath,self.SrcAppsDir)) and
-                        os.path.isfile(os.path.join(self.SrcRootPath,self.MainCMakeFile)) and
-                        os.path.isfile(os.path.join(self.SrcRootPath,self.MainCMakeConfigFile)))
+                os.path.isdir(os.path.join(self.SrcRootPath,self.SrcAppsDir)) and
+                os.path.isfile(os.path.join(self.SrcRootPath,self.MainCMakeFile)) and
+                os.path.isfile(os.path.join(self.SrcRootPath,self.MainCMakeConfigFile)))
 
 
 ############################################################################
@@ -153,7 +153,7 @@ class SourceTreeChecker:
         self.ErrorsCount[Code] += 1
         ArgsStr = list()
         for Arg in Args :
-            ArgsStr.append(str(Arg))     
+            ArgsStr.append(str(Arg))
         Msg = '[{0}]{1}:{2}:{3}'.format(Code,Filename,Line," ".join(ArgsStr))
         print Msg
 
@@ -165,7 +165,7 @@ class SourceTreeChecker:
         FullDirective = self.DirectiveBase + ":" + Directive
         if FullDirective in StrData :
             return True
-        return False 
+        return False
 
 
 ############################################################################
@@ -214,7 +214,7 @@ class SourceTreeChecker:
 
         Result = re.search( r'\@file '+re.escape(ExpectedFilename), Content)
         if not Result:
-            ExpectedFilenameWithParentDir = os.path.basename(os.path.dirname(Filename))+'/'+ExpectedFilename;             
+            ExpectedFilenameWithParentDir = os.path.basename(os.path.dirname(Filename))+'/'+ExpectedFilename
             Result = re.search( r'\@file '+re.escape(ExpectedFilenameWithParentDir), Content)
             if not Result:
                 self.addProblem('FNAM',Filename,1,'missing or malformed @file information (expected @file',ExpectedFilename,
@@ -283,7 +283,7 @@ class SourceTreeChecker:
     def checkIncludesOrder(self, Filename, Lines):
 
         LocalIncStarted = False
-        OFIncStarted = False                
+        OFIncStarted = False
 
         i = 1
         for Line in Lines :
@@ -296,12 +296,12 @@ class SourceTreeChecker:
                 OFIncStarted = True
                 if LocalIncStarted :
                     self.addProblem('INCO',Filename,i,'wrong #include order')
-                    return            
+                    return
             elif NoSpaceLine.startswith("#include<") :
                 if OFIncStarted :
                     if not any(Except in NoSpaceLine for Except in self.OFDependentIncludes):
                         self.addProblem('INCO',Filename,i,'wrong #include order')
-                        return                        
+                        return
                 elif LocalIncStarted :
                     self.addProblem('INCO',Filename,i,'wrong #include order')
                     return
@@ -324,22 +324,22 @@ class SourceTreeChecker:
             if NoSpaceLine.startswith("#include") :
                 LastIncLine = i
                 if FirstIncLine < 1 :
-                    FirstIncLine = i 
+                    FirstIncLine = i
             i += 1
 
         if LastIncLine == 0 :
             return
 
-        if FirstIncLine < 2 : 
+        if FirstIncLine < 2 :
             self.addProblem('INCS',Filename,FirstIncLine,'not enough blank lines before first #include (2 blank lines expected)')
-        else : 
+        else :
             NoSpaceBeforeLines = (Lines[FirstIncLine-2]+Lines[FirstIncLine-3]).replace(" ","")
             if len(NoSpaceBeforeLines) > 0:
                 self.addProblem('INCS',Filename,FirstIncLine,'not enough blank lines before first #include (2 blank lines expected)')
 
         if len(Lines) - LastIncLine < 2 :
             self.addProblem('INCS',Filename,LastIncLine,'not enough blank lines after last #include (2 blank lines expected)')
-        else : 
+        else :
             NoSpaceAfterLines = (Lines[LastIncLine]+Lines[LastIncLine+1]).replace(" ","")
             if len(NoSpaceAfterLines) > 0:
                 self.addProblem('INCS',Filename,LastIncLine,'not enough blank lines after last #include (2 blank lines expected)')
@@ -359,7 +359,7 @@ class SourceTreeChecker:
             else :
                 RunningTMS = 0
             if RunningTMS == 3 :
-                self.addProblem('TMSP',Filename,i-2,'too many blank lines starting at line',(i-2))                 
+                self.addProblem('TMSP',Filename,i-2,'too many blank lines starting at line',(i-2))
             i += 1
 
 
@@ -368,7 +368,7 @@ class SourceTreeChecker:
 
     def checkSeparators(self, Filename, Lines):
 
-        FirstProcessed = False 
+        FirstProcessed = False
         i = 1
         for Line in Lines :
             if FirstProcessed :
@@ -385,7 +385,7 @@ class SourceTreeChecker:
                                 (not Lines[i].replace(" ","").startswith('//=================================')) or
                                 (len(Lines[i+1].replace(" ","")) != 0) or
                                 (len(Lines[i+2].replace(" ","")) != 0)) :
-                            self.addProblem('SEPS',Filename,i,'wrong separator')    
+                            self.addProblem('SEPS',Filename,i,'wrong separator')
             i += 1
 
 
@@ -407,7 +407,7 @@ class SourceTreeChecker:
     def isInstructionBlock(self, Word):
 
         CPPInstructions = ["if", "else", "for", "while", "do"]
-        OFInstructions = ["OPENFLUID_UNITS_ORDERED_LOOP", "OPENFLUID_ALLUNITS_ORDERED_LOOP", 
+        OFInstructions = ["OPENFLUID_UNITS_ORDERED_LOOP", "OPENFLUID_ALLUNITS_ORDERED_LOOP",
                           "OPENFLUID_UNITSLIST_LOOP", "OPENFLUID_EVENT_COLLECTION_LOOP"]
         Instructions = CPPInstructions + OFInstructions
         return (Word in Instructions)
@@ -432,20 +432,20 @@ class SourceTreeChecker:
 
                 # multi-line comments
                 if NoSpaceLine.startswith("/*") and not NoSpaceLine.endswith("*/"):
-                        IsMultilineComment = True
+                    IsMultilineComment = True
                 elif "*/" in NoSpaceLine:
-                        IsMultilineComment = False
+                    IsMultilineComment = False
 
                 # macro tolerance
                 if NoSpaceLine.startswith("#define") and NoSpaceLine.endswith("\\"):
-                        IsMultilineMacro = True
+                    IsMultilineMacro = True
                 elif IsMultilineMacro:
-                        if not NoSpaceLine.endswith("\\"):
-                                IsMultilineMacro = False
+                    if not NoSpaceLine.endswith("\\"):
+                        IsMultilineMacro = False
 
 
                 if not (IsMultilineComment or IsMultilineMacro):
-                    if IsNewBlock and (NoSpaceLine[:2] in ["==", "&&", "||", "->"] or NoSpaceLine.startswith(".") or 
+                    if IsNewBlock and (NoSpaceLine[:2] in ["==", "&&", "||", "->"] or NoSpaceLine.startswith(".") or
                                        NoSpaceLine.startswith("+")):
                         # case of previously undetected PartialInstruction
                         IsNewBlock = False
@@ -483,7 +483,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
-    def checkFile(self, Filename): 
+    def checkFile(self, Filename):
         self.printVerbose('== Checking',Filename)
 
         FileContent = open(os.path.join(self.SrcRootPath,Filename), 'r').read()

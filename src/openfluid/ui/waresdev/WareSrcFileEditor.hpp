@@ -101,7 +101,9 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
         {
           QString Cleared = Content.trimmed();
           if (!Cleared.isEmpty())
+          {
             m_ContentList.append(Cleared);
+          }
         }
 
 
@@ -112,7 +114,9 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
         QColor getColor() const
         {
           if (m_MajorMarkerType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR)
+          {
             return Red;
+          }
           return Orange;
         }
 
@@ -124,10 +128,14 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
         QString getContent() const
         {
           if (m_ContentList.isEmpty())
+          {
             return "";
+          }
 
           if (m_ContentList.size() == 1)
+          {
             return QString("<html>%1</html>").arg(m_ContentList[0]);
+          }
 
           return QString("&bull;&nbsp;%1").arg(m_ContentList.join("<br/>&bull;&nbsp;"));
         }
@@ -140,7 +148,9 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
         void update(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content)
         {
           if (MsgType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR)
+          {
             m_MajorMarkerType = MsgType;
+          }
 
           m_ContentList.append(Content.trimmed());
         }

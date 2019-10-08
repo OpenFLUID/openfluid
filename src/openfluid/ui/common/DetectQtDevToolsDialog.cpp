@@ -81,9 +81,13 @@ DetectQtDevToolsDialog::~DetectQtDevToolsDialog()
 void DetectQtDevToolsDialog::handleButtonBoxClick(QAbstractButton* Button)
 {
   if (ui->ButtonBox->standardButton(Button) == QDialogButtonBox::Apply)
+  {
     accept();
+  }
   else
+  {
     reject();
+  }
 }
 
 
@@ -136,12 +140,16 @@ void DetectQtDevToolsDialog::runDetection()
   QStringList PotentialQtRootPaths;
 
   if (!ui->QtRootPathEdit->text().isEmpty())
+  {
     PotentialQtRootPaths << ui->QtRootPathEdit->text();
+  }
   else
   {
     QFileInfoList Drives = QDir::drives();
     for (auto& CurrentDrive : Drives)
+    {
       PotentialQtRootPaths << CurrentDrive.canonicalPath()+"Qt";
+    }
   }
 
 
@@ -169,14 +177,20 @@ void DetectQtDevToolsDialog::runDetection()
       {
         QDir CurrentDir = QDir(DirIt.next());
         if (CurrentDir.exists("qtpaths.exe"))
+        {
           qtpathsPath = CurrentDir.absoluteFilePath("qtpaths.exe");
+        }
       }
     }
 
     if (qtpathsPath.isEmpty())
+    {
       ui->DetectionProcessTextEdit->insertHtml(tr("not found")+"<br>");
+    }
     else
+    {
       ui->DetectionProcessTextEdit->insertHtml(tr("found (%1)").arg(QDir::toNativeSeparators(qtpathsPath))+"<br>");
+    }
 
     QApplication::instance()->processEvents();
   }

@@ -65,11 +65,15 @@ PrecheckWorker::~PrecheckWorker()
 void PrecheckWorker::run()
 {
   if (runCheck(1))
+  {
     emit completed(getStyledText(tr("Ready for import"),"green",true));
+  }
   else
+  {
     emit completed(getStyledText(tr("Consistency error, "
                                     "import should not be performed with current import configuration"),
                                  "red",true));
+  }
 
   emit finished();
 }

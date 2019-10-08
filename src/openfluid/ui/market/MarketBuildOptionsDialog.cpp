@@ -70,7 +70,9 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOpt
     CommonOptsLabel->setText("<u>"+tr("Common source build options:")+"</u><br/>" + Options);
   }
   else
+  {
     CommonOptsLabel->setText("");
+  }
 
 
   QLabel *EditLabel = new QLabel();
@@ -84,8 +86,14 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOpt
   }
 
 
-  if (SimID.isEmpty()) m_OptionsEntry.setText(CommonBuildOptions);
-  else m_OptionsEntry.setText(BuildOptions);
+  if (SimID.isEmpty())
+  {
+    m_OptionsEntry.setText(CommonBuildOptions);
+  }
+  else
+  {
+    m_OptionsEntry.setText(BuildOptions);
+  }
 
 
   QDialogButtonBox *ButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok
@@ -107,9 +115,13 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOpt
 
 
   if(m_SimID.isEmpty())
+  {
     setWindowTitle(tr("Common build options for all source packages"));
+  }
   else
+  {
     setWindowTitle(tr("Build options for %1").arg(m_SimID));
+  }
 
   setLayout(MainLayout);
 }

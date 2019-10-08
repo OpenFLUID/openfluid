@@ -214,15 +214,21 @@ class F
         QString WarePath = WaresDevDir.absoluteFilePath(WareFolder);
 
         if (ToExportWareFolders.contains(WareFolder))
+        {
           ToExportWareFoldersPaths << WarePath;
+        }
 
         QDir WareDir(WarePath);
 
         for (const QString& ContentFolder : ContentFolders)
+        {
           WareDir.mkpath(WareDir.absoluteFilePath(ContentFolder));
+        }
 
         for (const QString& ContentFile : ContentFiles)
+        {
           QFile(WareDir.absoluteFilePath(ContentFile)).open(QIODevice::WriteOnly);
+        }
       }
     }
 };
@@ -253,10 +259,14 @@ BOOST_FIXTURE_TEST_CASE(PkgImport_fetchInformation,F)
     BOOST_CHECK(WareDir.exists());
 
     for (const QString& WareContent : (ToExportContentFolders + ToExportContentFiles))
+    {
       BOOST_CHECK(WareDir.exists(WareContent));
+    }
 
     for (const QString& WareContent : (NotToExportContentFolders + NotToExportContentFiles))
+    {
       BOOST_CHECK(!WareDir.exists(WareContent));
+    }
   }
 
   for (const QString& WareFile : NotToExportWareFolders)
@@ -272,7 +282,9 @@ BOOST_FIXTURE_TEST_CASE(PkgImport_fetchInformation,F)
   QStringList WarePathsToDisplay = PkgImport.getWaresPaths();
   BOOST_CHECK_EQUAL(WarePathsToDisplay.size(), 3);
   for (const QString& WareFolder : ToExportWareFolders)
+  {
     BOOST_CHECK(WarePathsToDisplay.contains(TempPackageImportFileDir.absoluteFilePath(WareFolder)));
+  }
 }
 
 
@@ -290,7 +302,9 @@ BOOST_FIXTURE_TEST_CASE(PkgImport_copyWares,F)
 
   QStringList SelectedWares;
   for (const QString& WareFile : ToExportWareFolders)
+  {
     SelectedWares << TempPackageImportFileDir.absoluteFilePath(WareFile);
+  }
 
   PkgImport.setSelectedWares(SelectedWares);
 
@@ -305,10 +319,14 @@ BOOST_FIXTURE_TEST_CASE(PkgImport_copyWares,F)
     BOOST_CHECK(WareDir.exists());
 
     for (const QString& WareContent : (ToExportContentFolders + ToExportContentFiles))
+    {
       BOOST_CHECK(WareDir.exists(WareContent));
+    }
 
     for (const QString& WareContent : (NotToExportContentFolders + NotToExportContentFiles))
+    {
       BOOST_CHECK(!WareDir.exists(WareContent));
+    }
   }
 
 }
@@ -358,10 +376,14 @@ BOOST_FIXTURE_TEST_CASE(PkgExport,F)
     BOOST_CHECK(WareDir.exists());
 
     for (const QString& WareContent : (ToExportContentFolders + ToExportContentFiles))
+    {
       BOOST_CHECK(WareDir.exists(WareContent));
+    }
 
     for (const QString& WareContent : (NotToExportContentFolders + NotToExportContentFiles))
+    {
       BOOST_CHECK(!WareDir.exists(WareContent));
+    }
   }
 
   for (const QString& WareFile : NotToExportWareFolders)
@@ -390,7 +412,9 @@ int main(int argc, char *argv[])
     return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
   }
   else
+  {
     std::cout << "** Test not run due to failing to find CMake program **" << std::endl;
+  }
 
   return 0;
 }

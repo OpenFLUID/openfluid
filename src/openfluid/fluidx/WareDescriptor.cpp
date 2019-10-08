@@ -70,7 +70,9 @@ void WareDescriptor::setParameters(const openfluid::ware::WareParams_t& Params)
   openfluid::ware::WareParams_t::const_iterator it;
 
   for (it=Params.begin();it!=Params.end();++it)
+  {
     m_Params[it->first] = it->second;
+  }
 }
 
 

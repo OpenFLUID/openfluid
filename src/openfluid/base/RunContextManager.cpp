@@ -145,7 +145,9 @@ bool RunContextManager::checkProject(const std::string& ProjectPath)
     // Rename the former .openfluidprj file into the new name, only if exists
     if (QFile::exists(FormerPrjFilePath))
 
+    {
       QFile(FormerPrjFilePath).rename(PrjFilePath);
+    }
   }
 
 

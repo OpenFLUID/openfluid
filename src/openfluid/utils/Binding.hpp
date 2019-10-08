@@ -1057,7 +1057,9 @@ class Binding
       {
         if (ModelInfos->isType(openfluid::ware::WareType::SIMULATOR) &&
             ((openfluid::fluidx::SimulatorDescriptor*)ModelInfos)->getID() == SimIDStr)
+        {
           ModelInfos->setParameter(ParamNameStr,ParamValStr);
+        }
       }
     }
 
@@ -1474,7 +1476,9 @@ class Binding
       {
         if (ObsInfos->isType(openfluid::ware::WareType::OBSERVER) &&
             ((openfluid::fluidx::ObserverDescriptor*)ObsInfos)->getID() == ObsIDStr)
+        {
           ObsInfos->eraseParameter(ParamNameStr);
+        }
       }
     }
 

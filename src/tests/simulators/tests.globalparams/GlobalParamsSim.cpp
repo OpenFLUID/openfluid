@@ -108,34 +108,52 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
     openfluid::ware::WareParams_t::const_iterator itParams;
 
     for (itParams=Params.begin();itParams!=Params.end();++itParams)
+    {
       std::cout << (*itParams).first << " -> " << (*itParams).second << std::endl;
+    }
 
     if (!OPENFLUID_GetSimulatorParameter(Params,"gparam1",LongParam))
+    {
       OPENFLUID_RaiseError("gparam1 not found");
+    }
 
     if (LongParam != 1)
+    {
       OPENFLUID_RaiseError("wrong value for gparam1");
+    }
 
 
     if (!OPENFLUID_GetSimulatorParameter(Params,"lparam1",LongParam))
+    {
       OPENFLUID_RaiseError("lparam1 not found");
+    }
 
     if (LongParam != 100)
+    {
       OPENFLUID_RaiseError("wrong value for lparam1");
+    }
 
 
     if (!OPENFLUID_GetSimulatorParameter(Params,"gparam2",StrParam))
+    {
       OPENFLUID_RaiseError("gparam2 not found");
+    }
 
     if (StrParam != "nineteen")
+    {
       OPENFLUID_RaiseError("wrong value for gparam2");
+    }
 
 
     if (!OPENFLUID_GetSimulatorParameter(Params,"gparam3",DoubleParam))
+    {
       OPENFLUID_RaiseError("gparam3 not found");
+    }
 
     if (!openfluid::scientific::isCloseEnough(DoubleParam,0.1,0.00001))
+    {
       OPENFLUID_RaiseError("wrong value for gparam3");
+    }
   }
 
 

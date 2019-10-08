@@ -87,7 +87,9 @@ std::vector<std::string> ColumnTextParser::tokenizeLine(const std::string& Line)
   for (auto it=Tokenizer.begin(); it!=Tokenizer.end(); ++it)
   {
     if (!(*it).empty())
+    {
       Splitted.push_back(*it);
+    }
   }
 
   return Splitted;
@@ -108,7 +110,9 @@ std::vector<std::string> ColumnTextParser::tokenizeString(const std::string& Str
   for (auto it=Tokenizer.begin(); it!=Tokenizer.end(); ++it)
   {
     if (!(*it).empty())
+    {
       Splitted.push_back(*it);
+    }
   }
 
   return Splitted;
@@ -125,7 +129,9 @@ bool ColumnTextParser::checkContents()
   unsigned int LineCount = m_Contents.size();
 
   if (LineCount == 0)
+  {
     return true;
+  }
 
   // checks that all lines have the same size
   // i.e. same columns number
@@ -134,7 +140,9 @@ bool ColumnTextParser::checkContents()
   for (unsigned int i=1;i<LineCount;i++)
   {
     if (m_Contents.at(i).size() != LineColCount)
+    {
       return false;
+    }
   }
 
   m_LinesCount = m_Contents.size();
@@ -181,26 +189,35 @@ bool ColumnTextParser::loadFromFile(const std::string& Filename)
 
   std::string StrLine;
 
-  if (m_Contents.size()> 0 ) m_Contents.clear();
+  if (m_Contents.size()> 0 )
+  {
+    m_Contents.clear();
+  }
 
   m_LinesCount = 0;
   m_ColsCount = 0;
 
   // check if file exists
   if (!openfluid::tools::Filesystem::isFile(Filename))
+  {
     return false;
+  }
 
   std::ifstream FileContent(Filename.c_str());
 
   // check if file is "openable"
   if (!FileContent)
+  {
     return false;
+  }
 
   // parse and loads file contents
   while(std::getline(FileContent,StrLine))
   {
     if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine))
+    {
       m_Contents.push_back(ColumnTextParser::tokenizeLine(StrLine));
+    }
   }
 
   return checkContents();
@@ -230,7 +247,10 @@ bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int C
   if (Tokens.size() % ColumnsNbr == 0)
   {
 
-    if (m_Contents.size() > 0) m_Contents.clear();
+    if (m_Contents.size() > 0)
+    {
+      m_Contents.clear();
+    }
 
     std::vector<std::string> LineStr;
 
@@ -258,7 +278,9 @@ bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int C
     }
   }
   else
+  {
     IsOK = false;
+  }
 
   return IsOK && checkContents();
 }
@@ -288,7 +310,9 @@ std::string ColumnTextParser::getValue(unsigned int Line, unsigned int Column) c
   std::vector<std::string> LineString = getValues(Line);
 
   if (!LineString.empty() && Column < LineString.size())
+  {
     return LineString.at(Column);
+  }
 
   return "";
 }
@@ -304,7 +328,9 @@ bool ColumnTextParser::getStringValue(unsigned int Line, unsigned int Column,
   std::string StrValue = getValue(Line,Column);
 
   if (StrValue.length() == 0)
+  {
     return false;
+  }
 
   *Value = StrValue;
 

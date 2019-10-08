@@ -86,8 +86,14 @@ WareWidget::WareWidget(QWidget* Parent,
 
 
   setEnabledWare(m_Enabled);
-  if (m_Enabled) ui->EnabledCheckBox->setCheckState(Qt::Checked);
-  else ui->EnabledCheckBox->setCheckState(Qt::Unchecked);
+  if (m_Enabled)
+  {
+    ui->EnabledCheckBox->setCheckState(Qt::Checked);
+  }
+  else
+  {
+    ui->EnabledCheckBox->setCheckState(Qt::Unchecked);
+  }
 
   ui->ShowHideParamsLabel->setText(tr("show parameters and informations"));
 
@@ -158,13 +164,19 @@ void WareWidget::updateWidgetBackground()
   QString BGPattern = "";
 
   if (m_Ghost)
+  {
     BGColor = BUILDER_GHOST_BGCOLOR;
+  }
 
   if (!m_Enabled)
+  {
     BGColor = BUILDER_DISABLEDWARE_BGCOLOR;
+  }
 
   if (!m_Available)
+  {
     BGPattern = " background-image:url(:/builder/images/warn-pattern-lightgray.png); ";
+  }
 
   setStyleSheet(QString("#WareFrame { background-color: %1; %2border: 1px solid %3}")
                 .arg(BGColor).arg(BGPattern).arg(BUILDER_WARE_BORDERCOLOR));
@@ -189,9 +201,13 @@ void WareWidget::updateShowHideParams()
 void WareWidget::setExpanded(bool Expand)
 {
   if (m_Available)
+  {
     m_ParamsExpanded = Expand;
+  }
   else
+  {
     m_ParamsExpanded = false;
+  }
 }
 
 
@@ -204,9 +220,13 @@ void WareWidget::displayParams()
   ui->ParamInfoWidget->setVisible(m_ParamsExpanded);
 
   if (m_ParamsExpanded)
+  {
     ui->ShowHideParamsLabel->setText(tr("hide parameters and informations"));
+  }
   else
+  {
     ui->ShowHideParamsLabel->setText(tr("show parameters and informations"));
+  }
 }
 
 
@@ -395,7 +415,9 @@ void WareWidget::clearParameterWidgets()
   while ((Item = Layout->takeAt(0)) != nullptr)
   {
     if (Item->widget() != nullptr)
+    {
       Item->widget()->deleteLater();
+    }
 
     delete Item;
   }
@@ -423,9 +445,13 @@ void WareWidget::updateParameterizationSwitch()
   if (mp_ParamsWidget)
   {
     if (ui->ParameterizationStackWidget->currentIndex() == 0)
+    {
       ui->ParameterizationSwitchLabel->setText(tr("switch to assistant"));
+    }
     else
+    {
       ui->ParameterizationSwitchLabel->setText(tr("switch to list"));
+    }
   }
 }
 

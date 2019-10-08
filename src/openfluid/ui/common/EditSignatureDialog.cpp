@@ -88,11 +88,17 @@ void EditSignatureDialog::initialize(const QStringList& ExistingIDs)
 void EditSignatureDialog::checkGlobally()
 {
   if (!ui->SignatureWidget->isValidID())
+  {
     setMessage(tr("ID is not valid"));
+  }
   else if (m_ExistingIDs.contains(ui->SignatureWidget->getEditedID()))
-    setMessage(tr("ID already exists"));
+  {
+   setMessage(tr("ID already exists"));
+  }  
   else
+  {
     setMessage();
+  }
 }
 
 

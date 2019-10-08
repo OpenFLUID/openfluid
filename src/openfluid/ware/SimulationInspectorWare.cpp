@@ -48,7 +48,9 @@ bool SimulationInspectorWare::IsUnitIDInPtrList(const openfluid::core::UnitsPtrL
                                                 const openfluid::core::UnitID_t& ID)
 {
   if (UnitsList == nullptr)
+  {
     return false;
+  }
 
   bool Found = false;
   openfluid::core::UnitsPtrList_t::const_iterator UnitsIt = UnitsList->begin();
@@ -56,7 +58,9 @@ bool SimulationInspectorWare::IsUnitIDInPtrList(const openfluid::core::UnitsPtrL
   while (!Found && UnitsIt != UnitsList->end())
   {
     if ((*UnitsIt)->getID() == ID)
+    {
       Found = true;
+    }
 
     ++UnitsIt;
   }
@@ -89,9 +93,13 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
     }
 
     if (ValPtr->getType() == Val.getType())
+    {
       Val = *ValPtr;
+    }
     else if (ValPtr->convert(Val)) // try to convert to compatible type
+    {
       return;
+    }
     else
     {
       openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
@@ -106,7 +114,9 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -176,7 +186,9 @@ const openfluid::core::Value* SimulationInspectorWare::OPENFLUID_GetAttribute(
     return ValPtr;
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 
   return nullptr;
 }
@@ -193,7 +205,9 @@ bool SimulationInspectorWare::OPENFLUID_IsAttributeExist(const openfluid::core::
                               "Attributes cannot be accessed during INITPARAMS stage");
 
   if (UnitPtr != nullptr)
+  {
     return UnitPtr->attributes()->isAttributeExist(AttrName);
+  }
 
   openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
                   .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
@@ -227,7 +241,9 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Spati
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -317,7 +333,9 @@ const openfluid::core::Value* SimulationInspectorWare::OPENFLUID_GetVariable(
     return PtrVal;
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 
   return nullptr;
 }
@@ -345,7 +363,9 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Spati
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -430,7 +450,9 @@ const openfluid::core::Value* SimulationInspectorWare::OPENFLUID_GetVariable(
     return PtrVal;
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 
   return nullptr;
 }
@@ -458,7 +480,9 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariable(const openfluid::core:
      }
    }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -486,7 +510,9 @@ openfluid::core::IndexedValue SimulationInspectorWare::OPENFLUID_GetLatestVariab
      return IndVal;
    }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -513,7 +539,9 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariables(const openfluid::core
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -542,7 +570,9 @@ openfluid::core::IndexedValueList SimulationInspectorWare::OPENFLUID_GetLatestVa
     return IndValList;
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -571,7 +601,9 @@ void SimulationInspectorWare::OPENFLUID_GetVariables(const openfluid::core::Spat
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -602,7 +634,9 @@ openfluid::core::IndexedValueList SimulationInspectorWare::OPENFLUID_GetVariable
     return IndValList;
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -699,9 +733,13 @@ void SimulationInspectorWare::OPENFLUID_GetEvents(const openfluid::core::Spatial
 
 
   if (UnitPtr != nullptr)
+  {
     UnitPtr->events()->getEventsBetween(BeginDate,EndDate,Events);
+  }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -724,7 +762,9 @@ openfluid::core::EventsCollection SimulationInspectorWare::OPENFLUID_GetEvents(
     UnitPtr->events()->getEventsBetween(BeginDate,EndDate,Events);
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 
   return Events;
 }
@@ -765,7 +805,9 @@ bool SimulationInspectorWare::OPENFLUID_GetUnitsCount(const openfluid::core::Uni
     return true;
   }
   else
+  {
     return false;
+  }
 }
 
 
@@ -776,9 +818,13 @@ bool SimulationInspectorWare::OPENFLUID_GetUnitsCount(const openfluid::core::Uni
 unsigned int SimulationInspectorWare::OPENFLUID_GetUnitsCount(const openfluid::core::UnitsClass_t& ClassName) const
 {
   if (mp_SpatialData->isUnitsClassExist(ClassName))
+  {
     return mp_SpatialData->spatialUnits(ClassName)->list()->size();
+  }
   else
+  {
     return 0;
+  }
 }
 
 
@@ -858,7 +904,9 @@ openfluid::core::UnitsPtrList_t SimulationInspectorWare::OPENFLUID_GetUnits(
     if (UnitsListPtr)
     {
       for (openfluid::core::UnitsList_t::iterator it = UnitsListPtr->begin(); it != UnitsListPtr->end(); ++it)
+      {
         UnitsPtrList.push_back(&(*it));
+      }
     }
   }
 
@@ -875,7 +923,9 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedTo(openfluid::core::Spati
                                                           const openfluid::core::UnitID_t& IDTo) const
 {
   if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameTo))
+  {
     return false;
+  }
 
   return IsUnitIDInPtrList(aUnit->toSpatialUnits(ClassNameTo),IDTo);
 }
@@ -890,7 +940,9 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedFrom(openfluid::core::Spa
                                                             const openfluid::core::UnitID_t& IDFrom) const
 {
   if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameFrom))
+  {
     return false;
+  }
 
   return IsUnitIDInPtrList(aUnit->fromSpatialUnits(ClassNameFrom),IDFrom);
 }
@@ -905,7 +957,9 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitChildOf(openfluid::core::SpatialUn
                                                       const openfluid::core::UnitID_t& IDParent) const
 {
   if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameParent))
+  {
     return false;
+  }
 
   return IsUnitIDInPtrList(aUnit->parentSpatialUnits(ClassNameParent),IDParent);
 }
@@ -920,7 +974,9 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitParentOf(openfluid::core::SpatialU
                                                        const openfluid::core::UnitID_t& IDChild) const
 {
   if (aUnit == nullptr || !mp_SpatialData->isUnitsClassExist(ClassNameChild))
+  {
     return false;
+  }
 
   return IsUnitIDInPtrList(aUnit->childSpatialUnits(ClassNameChild),IDChild);
 }

@@ -113,24 +113,32 @@ void OutputsWidget::refreshOutputDir() const
 bool OutputsWidget::removeDirectory(QDir Dir)
 {
   if (!Dir.exists())
+  {
     return false;
+  }
 
   for  (QFileInfo FI : Dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
   {
     if ( FI.isSymLink() || FI.isFile() )
     {
       if (!Dir.remove(FI.absoluteFilePath()))
+      {
         return false;
+      }
     }
     else if (FI.isDir())
     {
       if (!removeDirectory(FI.filePath()))
+      {
         return false;
+      }
     }
   }
 
   if (!Dir.rmdir(Dir.absolutePath()))
+  {
     return false;
+  }
 
   return true;
 }
@@ -174,7 +182,9 @@ void OutputsWidget::tryToOpenFile(const QModelIndex& Index)
   if (!SelectedFile.isEmpty())
   {
     if (SelectedFile.endsWith(QString::fromStdString(openfluid::config::MESSAGES_LOG_FILE)))
+    {
       openLogExplorer();
+    }
     else
     {
       QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));

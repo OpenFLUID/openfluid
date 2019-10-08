@@ -112,7 +112,9 @@ QString WareExplorerDialog::getOpenWarePath(QWidget* Parent, const QString& TopD
   Dialog.setOpenWareMode();
 
   if (Dialog.exec())
+  {
     return Dialog.getSelectedPath();
+  }
 
   return "";
 }
@@ -131,7 +133,9 @@ QString WareExplorerDialog::getOpenFilePath(QWidget* Parent, const QString& TopD
   Dialog.setOpenFileMode();
 
   if (Dialog.exec())
+  {
     return Dialog.getSelectedPath();
+  }
 
   return "";
 }
@@ -157,9 +161,11 @@ QString WareExplorerDialog::getSaveFilePath(QWidget* Parent, const QString& TopD
     int Res = QMessageBox::Ok;
 
     if (QFileInfo(NewPath).exists())
+    {
       Res = QMessageBox::warning(&Dialog, tr("Save as"), tr("This file already exists.\n"
                                                             "Do you want to replace it?"),
                                  QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+    }
 
     return Res == QMessageBox::Ok ? NewPath : "";
   }
@@ -181,7 +187,9 @@ QString WareExplorerDialog::getCreateFilePath(QWidget* Parent, const QString& To
   Dialog.setCreateFileMode(QDir(TopDirectoryPath).relativeFilePath(CurrentPath));
 
   if (Dialog.exec())
+  {
     return Dialog.getCompleteFilePath();
+  }
 
   return "";
 }
@@ -200,7 +208,9 @@ QString WareExplorerDialog::getCreateFolderPath(QWidget* Parent, const QString& 
   Dialog.setCreateFolderMode();
 
   if (Dialog.exec())
+  {
     return Dialog.getCompleteFilePath();
+  }
 
   return "";
 }
@@ -329,11 +339,17 @@ void WareExplorerDialog::onTextChangedSaveMode(const QString& Text)
 {
   QString Msg = "";
   if (Text.isEmpty())
+  {
     Msg = tr("No file path");
+  }
   else if (QFileInfo(getCompleteFilePath()).isDir())
+  {
     Msg = tr("Path is not a file");
+  }  
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
+  {
     Msg = tr("File path is not inside the parent directory");
+  }
 
   setMessage(Msg);
 }
@@ -347,11 +363,17 @@ void WareExplorerDialog::onTextChangedCreateFileMode(const QString& Text)
 {
   QString Msg = "";
   if (Text.isEmpty())
+  {
     Msg = tr("No file path");
+  }
   else if (QFile(getCompleteFilePath()).exists())
+  {
     Msg = tr("File already exists");
+  }  
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
+  {
     Msg = tr("File path is not inside the parent directory");
+  }
 
   setMessage(Msg);
 }
@@ -365,11 +387,17 @@ void WareExplorerDialog::onTextChangedCreateFolderMode(const QString& Text)
 {
   QString Msg = "";
   if (Text.isEmpty())
+  {
     Msg = tr("No folder path");
+  }
   else if (QFile(getCompleteFilePath()).exists())
+  {
     Msg = tr("Folder already exists");
+  }  
   else if (m_TopDir.relativeFilePath(QDir::fromNativeSeparators(Text)).startsWith(".."))
+  {
     Msg = tr("Folder path is not inside the parent directory");
+  }
 
   setMessage(Msg);
 }
@@ -382,7 +410,9 @@ void WareExplorerDialog::onTextChangedCreateFolderMode(const QString& Text)
 void WareExplorerDialog::onDoubleClickedFileMode()
 {
   if (mp_AcceptButton && mp_AcceptButton->isEnabled())
+  {
     accept();
+  }
 }
 
 

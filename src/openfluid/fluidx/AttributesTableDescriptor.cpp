@@ -93,21 +93,26 @@ void AttributesTableDescriptor::parseDataBlob(const std::string& Data)
             m_Data[ID][m_ColumnsOrder[j-1]] = Value;
           }
           else
+          {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Attributes format error");
+          }
         }
         i++;
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Attributes format error");
+      }
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error in attributes, cannot be parsed");
+  }
 }
 
 
 } } // namespaces
-

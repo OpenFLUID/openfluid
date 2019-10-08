@@ -86,9 +86,13 @@ DashboardFrame::~DashboardFrame()
 void DashboardFrame::updateOrientation(Qt::DockWidgetArea Area)
 {
   if (Area == Qt::LeftDockWidgetArea || Area == Qt::RightDockWidgetArea)
+  {
     mp_Layout->setDirection(QBoxLayout::TopToBottom);
+  }
   else if (Area == Qt::TopDockWidgetArea || Area == Qt::BottomDockWidgetArea)
+  {
     mp_Layout->setDirection(QBoxLayout::LeftToRight);
+  }
 }
 
 

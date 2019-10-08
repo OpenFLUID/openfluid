@@ -86,7 +86,9 @@ inline T convertString(const std::string& StrToConvert)
   T Converted;
 
   if (convertString(StrToConvert,&Converted))
+  {
     return Converted;
+  }
 
   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error in string conversion");
 }
@@ -124,7 +126,10 @@ inline bool convertValue(const T& ValueToConvert, std::string* StrConverted)
   std::ostringstream oss;
   bool IsOK = !(oss << ValueToConvert).fail();
 
-  if (IsOK) (*StrConverted) = oss.str();
+  if (IsOK)
+  {
+    (*StrConverted) = oss.str();
+  }
 
   return IsOK;
 }
@@ -146,7 +151,9 @@ inline std::string convertValue(const T& ValueToConvert)
   std::string Converted;
 
   if (convertValue(ValueToConvert,&Converted))
+  {
     return Converted;
+  }
 
   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error in value conversion");
 }

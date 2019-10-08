@@ -72,7 +72,9 @@ class RequestExecutionImpl : public QObject
         QByteArray TmpContent;
 
         if (!NetReply->error())
+        {
           TmpContent = NetReply->readAll();
+        }
 
         m_Reply = RESTClient::Reply(NetReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(),
                                     NetReply->error(), NetReply->errorString(),
@@ -171,7 +173,9 @@ void RESTClient::setBaseURL(const QString& URL)
   m_BaseURL = URL;
 
   while (m_BaseURL.endsWith('/' ))
+  {
     m_BaseURL.chop(1);
+  }
 }
 
 

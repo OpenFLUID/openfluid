@@ -98,7 +98,9 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)
     {
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::INITPARAMS)
+      {
         OPENFLUID_RaiseError("wrong stage");
+      }
     }
 
 
@@ -109,22 +111,34 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
     void prepareData()
     {
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::PREPAREDATA)
+      {
         OPENFLUID_RaiseError("prepare data");
+      }
 
       if (OPENFLUID_GetBeginDate() != openfluid::core::DateTime(2000,1,1,0,0,0))
+      {
         OPENFLUID_RaiseError("wrong begin date");
+      }
 
       if (OPENFLUID_GetEndDate() != openfluid::core::DateTime(2000,1,1,6,0,0))
+      {
         OPENFLUID_RaiseError("wrong end date");
+      }
 
       if (OPENFLUID_GetSimulationDuration() != 21600)
+      {
         OPENFLUID_RaiseError("wrong simulation duration");
+      }
 
       if (OPENFLUID_GetDefaultDeltaT() != 3600)
+      {
         OPENFLUID_RaiseError("wrong default deltaT");
+      }
 
       if (OPENFLUID_GetSchedulingConstraint() != openfluid::base::SimulationStatus::SCHED_NONE)
+      {
         OPENFLUID_RaiseError("scheduling constraint");
+      }
 
     }
 
@@ -136,7 +150,9 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
     void checkConsistency()
     {
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::CHECKCONSISTENCY)
+      {
         OPENFLUID_RaiseError("wrong stage");
+      }
     }
 
 
@@ -147,13 +163,19 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest initializeRun()
     {
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::INITIALIZERUN)
+      {
         OPENFLUID_RaiseError("wrong stage");
+      }
 
       if (OPENFLUID_GetCurrentDate() != OPENFLUID_GetBeginDate())
+      {
         OPENFLUID_RaiseError("wrong current date");
+      }
 
       if (OPENFLUID_GetSchedulingConstraint() != openfluid::base::SimulationStatus::SCHED_NONE)
+      {
         OPENFLUID_RaiseError("scheduling constraint");
+      }
 
       return DefaultDeltaT();
     }
@@ -166,7 +188,9 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::RUNSTEP)
+      {
         OPENFLUID_RaiseError("wrong stage");
+      }
 
 
       if (m_IsFirstRunStep)
@@ -174,26 +198,38 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
         m_IsFirstRunStep = false;
 
         if (OPENFLUID_GetCurrentTimeIndex() != OPENFLUID_GetDefaultDeltaT())
+        {
           OPENFLUID_RaiseError("wrong time index");
+        }
 
         if (OPENFLUID_GetPreviousRunTimeIndex() != 0)
+        {
           OPENFLUID_RaiseError("wrong previous run time index");
+        }
       }
       else
       {
         if (OPENFLUID_GetPreviousRunTimeIndex() != (OPENFLUID_GetCurrentTimeIndex()-47))
+        {
           OPENFLUID_RaiseError("wrong previous run time index");
+        }
 
         if ((OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) % 47 != 0 )
+        {
           OPENFLUID_RaiseError("wrong time index");
+        }
 
       }
 
       if (OPENFLUID_GetCurrentDate() != (OPENFLUID_GetBeginDate()+OPENFLUID_GetCurrentTimeIndex()))
+      {
         OPENFLUID_RaiseError("wrong current date");
+      }
 
       if (OPENFLUID_GetSchedulingConstraint() != openfluid::base::SimulationStatus::SCHED_NONE)
+      {
         OPENFLUID_RaiseError("scheduling constraint");
+      }
 
       return Duration(47);
     }
@@ -206,7 +242,9 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
     void finalizeRun()
     {
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::FINALIZERUN)
+      {
         OPENFLUID_RaiseError("wrong stage");
+      }
     }
 
 };

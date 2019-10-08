@@ -71,7 +71,9 @@ void MapView::wheelEvent(QWheelEvent* Event)
     emit scaling();
   }
   else
+  {
     QGraphicsView::wheelEvent(Event);
+  }
 }
 
 
@@ -82,7 +84,9 @@ void MapView::wheelEvent(QWheelEvent* Event)
 void MapView::resizeEvent(QResizeEvent *Event)
 {
   if (m_AutomaticViewEnabled)
+  {
     fitViewToItems();
+  }
 
   QGraphicsView::resizeEvent(Event);
 }
@@ -97,7 +101,9 @@ void MapView::enableAutomaticView(bool Enabled)
   m_AutomaticViewEnabled = Enabled;
 
   if (m_AutomaticViewEnabled)
+  {
     fitViewToItems();
+  }
 }
 
 

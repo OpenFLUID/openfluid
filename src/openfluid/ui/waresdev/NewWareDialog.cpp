@@ -173,17 +173,29 @@ void NewWareDialog::onInformationChanged()
   QString WarningMsg = "";
 
   if (!ui->IdEdit->hasAcceptableInput())
+  {
     WarningMsg = tr("Ware ID is empty");
+  }
   else if (m_WareTypeDir.exists(ui->IdEdit->text()))
+  {
     WarningMsg = tr("Ware ID already exists");
+  }  
   else if (!ui->SourceFilenameEdit->hasAcceptableInput())
+  {
     WarningMsg = tr("Source file name must be of the form \"filexxx.cpp\"");
+  }
   else if (!ui->ClassNameEdit->hasAcceptableInput())
+  {
     WarningMsg = tr("Main class name is empty");
+  }  
   else if (ui->UiParamGroupBox->isChecked() && !ui->UiParamSourceFilenameEdit->hasAcceptableInput())
+  {
     WarningMsg = tr("UI parameterization file name must be of the form \"filexxx.cpp\"");
+  }
   else if (ui->UiParamGroupBox->isChecked() && !ui->UiParamClassNameEdit->hasAcceptableInput())
+  {
     WarningMsg = tr("UI parameterization class name is empty");
+  }  
 
   setStatus(WarningMsg);
 }
@@ -286,27 +298,43 @@ void NewWareDialog::accept()
 
   Ok = m_WareTypeDir.mkdir(WareId);
   if (!Ok)
+  {
     ErrMsg = tr("Unable to create the ware directory");
+  }
   else
+  {
     Ok = Factory.createCMakeListsFile(NewFilePath, ErrMsg);
+  }
 
   if (Ok)
+  {
     Ok = Factory.createCmakeConfigFile(Repl, NewFilePath, ErrMsg);
+  }
 
   if (Ok)
+  {
     Ok = Factory.createCppFile(Repl, NewFilePath, ErrMsg);
+  }
 
   if (Ok && WithHpp)
+  {
     Ok = Factory.createHppFile(Repl, NewFilePath, ErrMsg);
+  }
 
   if (Ok && WithUiParam)
+  {
     Ok = Factory.createParamUiCppFile(Repl, NewFilePath, ErrMsg);
+  }
 
   if (Ok && WithUiParam)
+  {
     Ok = Factory.createParamUiHppFile(Repl, NewFilePath, ErrMsg);
+  }
 
   if (Ok && ui->JsonCheckBox->isChecked())
+  {
     Ok = Factory.createJsonFile(NewFilePath, ErrMsg);
+  }
 
   if (Ok)
   {
@@ -316,7 +344,9 @@ void NewWareDialog::accept()
   else
   {
     if (m_WareTypeDir.exists(WareId))
+    {
       openfluid::tools::emptyDirectoryRecursively(m_WareTypeDir.absoluteFilePath(WareId).toStdString());
+    }
     QMessageBox::warning(this, tr("Error"), tr("Unable to create the ware \"%1\"").arg(ErrMsg));
   }
 }

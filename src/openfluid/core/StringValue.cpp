@@ -557,7 +557,9 @@ bool StringValue::toMatrixValue(MatrixValue& Val) const
     {
       TmpColsNbr = SplittedCols.size();
       if (TmpColsNbr == 0)
+      {
         return false;
+      }
       TmpMatrix = MatrixValue(TmpColsNbr,TmpRowsNbr);
     }
 
@@ -720,7 +722,9 @@ bool JSONObjectToMapValue(const rapidjson::Value& Obj, MapValue& Val)
         TmpMap.setMatrixValue(Key,TmpMatVal);
       }
       else
+      {
         return false;
+      }
     }
     else if (it->value.IsObject())
     {

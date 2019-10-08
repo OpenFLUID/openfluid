@@ -87,7 +87,10 @@ void NewSimulatorBuddy::writeSimulatorCPP()
   int Month = TimeDetails.tm_mon+1;
 
   SimVersionStr << (Year % 100) << ".";
-  if (Month < 10) SimVersionStr << "0";
+  if (Month < 10)
+  {
+    SimVersionStr << "0";
+  }
   SimVersionStr << Month;
 
 
@@ -252,14 +255,20 @@ bool NewSimulatorBuddy::run()
   std::string OutputDirPath = m_Options["outputdir"];
 
   if (m_Options["simid"] == "")
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator ID");
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator ID");
+  }
 
   if (m_Options["cppclass"] == "")
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator C++ class");
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator C++ class");
+  }
 
 
   if (!openfluid::tools::Filesystem::isDirectory(OutputDirPath))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Output directory does not exist");
+  }
 
 
   writeSimulatorCPP();

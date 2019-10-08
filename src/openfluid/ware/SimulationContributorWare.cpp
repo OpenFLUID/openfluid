@@ -68,7 +68,9 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::SpatialU
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is nullptr");
+  }
 }
 
 
@@ -179,7 +181,9 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -205,7 +209,9 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -231,7 +237,9 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -257,7 +265,9 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Sp
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -320,7 +330,9 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -346,7 +358,9 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -372,7 +386,9 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is nullptr");
+  }
 }
 
 
@@ -398,7 +414,9 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Spatia
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -415,7 +433,8 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
 
   if (UnitPtr != nullptr)
   {
-    if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))    {
+    if (!UnitPtr->variables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
+    {
       openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
           .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
       throw openfluid::base::FrameworkException(Context,
@@ -423,7 +442,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -452,7 +473,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -478,7 +501,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -504,7 +529,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -530,7 +557,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::SpatialUn
     }
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -549,7 +578,9 @@ void SimulationContributorWare::OPENFLUID_AppendEvent(openfluid::core::SpatialUn
     UnitPtr->events()->addEvent(Ev);
   }
   else
+  {
     throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),"Unit is NULL");
+  }
 }
 
 
@@ -648,8 +679,10 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::S
     return (FromUnit->addToUnit(ToUnit) && ToUnit->addFromUnit(FromUnit));
   }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error adding from-to connection");
+  }
 }
 
 
@@ -692,10 +725,14 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (FromUnit == nullptr || ToUnit == nullptr)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error removing from-to connection");
+  }
   else
+  {
     return mp_SpatialData->removeFromToConnection(FromUnit,ToUnit);
+  }
 }
 
 
@@ -742,8 +779,10 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
     return (ChildUnit->addParentUnit(ParentUnit) && ParentUnit->addChildUnit(ChildUnit));
   }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error adding child-parent connection");
+  }
 }
 
 
@@ -787,10 +826,14 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid:
                               "Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (ChildUnit == nullptr || ParentUnit == nullptr)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Error removing child-parent connection");
+  }
   else
+  {
     return mp_SpatialData->removeChildParentConnection(ChildUnit,ParentUnit);
+  }
 }
 
 

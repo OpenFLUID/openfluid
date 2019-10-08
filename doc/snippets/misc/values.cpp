@@ -68,7 +68,10 @@ Tmp1 = Val1.get();
 Tmp1 = Val1;
 //! [boolean_get]
 
-if (Tmp1){} // to avoid "unused var" message from compiler
+if (Tmp1)
+{
+  
+} // to avoid "unused var" message from compiler
 
 
 //! [boolean_set]
@@ -118,7 +121,10 @@ Tmp1 = Val1.get();
 Tmp1 = Val1;
 //! [double_get]
 
-if (Tmp1){} // to avoid "unused var" message from compiler
+if (Tmp1)
+{
+  
+} // to avoid "unused var" message from compiler
 
 
 //! [double_set]
@@ -168,7 +174,10 @@ Tmp1 = Val1.get();
 Tmp1 = Val1;
 //! [integer_get]
 
-if (Tmp1){} // to avoid "unused var" message from compiler
+if (Tmp1)
+{
+  
+} // to avoid "unused var" message from compiler
 
 
 //! [integer_set]
@@ -232,7 +241,10 @@ DblTmp1 = Val1.getDouble("myvalue1");
 Tmp1 = Val1["myvalue1"].asDoubleValue();
 //! [map_get]
 
-if (DblTmp1){} // to avoid "unused var" message from compiler
+if (DblTmp1)
+{
+  
+} // to avoid "unused var" message from compiler
 
 
 //! [map_test]
@@ -286,7 +298,10 @@ double Tmp1;
 Tmp1 = Val1.get(2,3);
 //! [matrix_get]
 
-if (Tmp1){} // to avoid "unused var" message from compiler
+if (Tmp1)
+{
+  
+} // to avoid "unused var" message from compiler
 
 
 //! [matrix_get_carray]
@@ -295,7 +310,10 @@ double* DblArrayVal;
 DblArrayVal = Val1.data();
 //! [matrix_get_carray]
 
-if (DblArrayVal){} // to avoid "unused var" message from compiler
+if (DblArrayVal)
+{
+  
+} // to avoid "unused var" message from compiler
 
 
 //! [matrix_set]
@@ -346,7 +364,10 @@ Tmp1 = Val1.get();
 Tmp1 = Val1;
 //! [string_get]
 
-if (Tmp1.empty()){} // to avoid "unused var" message from compiler
+if (Tmp1.empty())
+{
+  
+} // to avoid "unused var" message from compiler
 
 
 //! [string_set]
@@ -382,7 +403,10 @@ Tmp1 = Val1.get(2);
 Tmp1 = Val1[2];
 //! [vector_get]
 
-if (Tmp1){} // to avoid "unused var" message from compiler
+if (Tmp1)
+{
+  
+} // to avoid "unused var" message from compiler
 
 
 //! [vector_get_carray]
@@ -391,7 +415,10 @@ double* DblArrayVal;
 DblArrayVal = Val1.data();
 //! [vector_get_carray]
 
-if (DblArrayVal){} // to avoid "unused var" message from compiler
+if (DblArrayVal)
+{
+  
+} // to avoid "unused var" message from compiler
 
 
 //! [vector_set]

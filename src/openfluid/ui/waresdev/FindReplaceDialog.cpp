@@ -91,7 +91,9 @@ void FindReplaceDialog::show(const QString& SelectedText)
   ui->ReplaceButton->setEnabled(!EmptySelection);
 
   if (!EmptySelection)
+  {
     ui->FindEdit->setText(SelectedText);
+  }
 
   QWidget::show();
 }
@@ -181,13 +183,19 @@ QTextDocument::FindFlags FindReplaceDialog::getFindOptions()
   QTextDocument::FindFlags Options;
 
   if (ui->BackwardRadioButton->isChecked())
+  {
     Options |= QTextDocument::FindBackward;
+  }  
 
   if (ui->CaseSensitiveCheckBox->isChecked())
+  {
     Options |= QTextDocument::FindCaseSensitively;
+  }  
 
   if (ui->WholeWordCheckBox->isChecked())
+  {
     Options |= QTextDocument::FindWholeWords;
+  }  
 
   return Options;
 }

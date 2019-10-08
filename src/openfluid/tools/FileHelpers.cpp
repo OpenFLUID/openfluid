@@ -57,9 +57,13 @@ std::vector<std::string> findFilesByExtension(const std::string& Path,
   QStringList NameFilters;
 
   if (ExtIncludeDot)
+  {
     NameFilters << QString::fromStdString('*'+Ext);
+  }
   else
+  {
     NameFilters << QString::fromStdString("*."+Ext);
+  }
 
 
   QFileInfoList FoundFiles =
@@ -70,9 +74,13 @@ std::vector<std::string> findFilesByExtension(const std::string& Path,
   for (int i=0;i<FoundFiles.size();i++)
   {
     if (WithPath)
+    {
       FileList.push_back(FoundFiles[i].absoluteFilePath().toStdString());
+    }
     else
+    {
       FileList.push_back(FoundFiles[i].fileName().toStdString());
+    }
   }
 
   return FileList;
@@ -94,9 +102,13 @@ std::vector<std::string> findFilesBySuffixAndExtension(const std::string& Path,
   QStringList NameFilters;
 
   if (ExtIncludeDot)
+  {
     NameFilters << QString::fromStdString('*'+Suffix+Ext);
+  }
   else
+  {
     NameFilters << QString::fromStdString('*'+Suffix+'.'+Ext);
+  }
 
 
   QFileInfoList FoundFiles =
@@ -107,9 +119,13 @@ std::vector<std::string> findFilesBySuffixAndExtension(const std::string& Path,
   for (int i=0;i<FoundFiles.size();i++)
   {
     if (WithPath)
+    {
       FileList.push_back(FoundFiles[i].absoluteFilePath().toStdString());
+    }
     else
+    {
       FileList.push_back(FoundFiles[i].fileName().toStdString());
+    }
   }
 
   return FileList;
@@ -132,9 +148,13 @@ std::vector<std::string> findDirectories(const std::string& Path,
   for (int i=0;i<FoundDirs.size();i++)
   {
     if (WithPath)
+    {
       DirList.push_back(FoundDirs[i].absoluteFilePath().toStdString());
+    }
     else
+    {
       DirList.push_back(FoundDirs[i].fileName().toStdString());
+    }
   }
 
   return DirList;
@@ -159,12 +179,16 @@ bool emptyDirectoryRecursively(const std::string& Path)
     if (Info.isDir())
     {
       if (!Filesystem::removeDirectory(Info.absoluteFilePath().toStdString()))
+      {
         return false;
+      }
     }
     else
     {
       if (!Filesystem::removeFile(Info.absoluteFilePath().toStdString()))
+      {
         return false;
+      }
     }
   }
 
@@ -181,7 +205,10 @@ void copyDirectoryContentsRecursively(const std::string& SrcPath,
                                       const bool DontCopyDotDirs)
 {
 
-  if (QFileInfo(QString::fromStdString(DestPath)).isDir()) Filesystem::removeDirectory(DestPath);
+  if (QFileInfo(QString::fromStdString(DestPath)).isDir())
+  {
+    Filesystem::removeDirectory(DestPath);
+  }
 
   Filesystem::makeDirectory(DestPath);
 

@@ -174,7 +174,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       for (itV = itVb; itV != itVe; ++itV)
       {
         if ((*itV).second == FName)
+        {
           return true;
+        }
       }
 
       return false;
@@ -208,7 +210,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
             QString NewFieldName = QString(BaseName+"%1").arg(Nbr);
 
             while (isFieldExist(NewFieldName.toStdString(),VarsSet) && Nbr < 100)
+            {
               Nbr++;
+            }
 
             (*itV).second = NewFieldName.toStdString();
           }
@@ -232,12 +236,18 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
         QStringList VarsNameAlias = VarsList[i].split("=>");
 
         if (VarsNameAlias.size() == 1)
+        {
           VarsSet[VarsNameAlias[0].toStdString()] = VarsNameAlias[0].toStdString();
+        }
         else if (VarsNameAlias.size() == 2)
+        {
           VarsSet[VarsNameAlias[0].toStdString()] = VarsNameAlias[1].toStdString();
+        }
         else
+        {
           // error in variables list format, so returning an empty variables set
           return GeoVectorSerie::VariablesSet_t();
+        }
       }
 
       return VarsSet;
@@ -437,7 +447,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
               bool IsValueCreated = false;
 
               if (FieldName.empty())
+              {
                 FieldName = VarName;
+              }
 
               openfluid::core::IndexedValue VarValue;
 
@@ -469,7 +481,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
               }
 
               if (IsValueCreated) // OpenFLUID value is written to GIS file only if it is double or converted to double
+              {
                 CreatedFeature->SetField(FieldName.c_str(),CreatedValue);
+              }
             }
 
             if (CreatedLayer->CreateFeature(CreatedFeature) != OGRERR_NONE)
@@ -523,7 +537,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       std::vector<GeoVectorSerie>::iterator it;
 
       for (it = m_Series.begin();it!=m_Series.end(); ++it)
+      {
         closeSerie(*it);
+      }
     }
 
 
@@ -582,7 +598,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       OPENFLUID_GetRunEnvironment("dir.output",m_OutputPath);
 
       if (!OutSeriesSubdir.empty())
+      {
         m_OutputPath += "/"+OutSeriesSubdir;
+      }
 
 
       for (auto& Serie : ParamsTree.root().child("geoserie"))
@@ -599,17 +617,25 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
 
         if (GeoSourceFilename.empty())
+        {
           OPENFLUID_LogWarning("Missing geographic source filename for serie "+SerieName);
+        }
         else if (UnitsClass.empty())
+        {
           OPENFLUID_LogWarning("Missing units class for serie "+SerieName);
+        }
         else if (VarsString.empty())
+        {
           OPENFLUID_LogWarning("Missing variables list for serie "+SerieName);
+        }
         else
         {
           GeoVectorSerie::VariablesSet_t VarsSet = convertParamToVariableSet(VarsString);
 
           if (VarsSet.empty())
+          {
             OPENFLUID_LogWarning("Format error in variables list for serie "+SerieName);
+          }
           else
           {
             if (setWhenModeFromParam(WhenModeString,Mode,ContinuousDelay))
@@ -622,7 +648,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
                                                 Mode,ContinuousDelay));
             }
             else
+            {
               OPENFLUID_LogWarning("Format error in whenmode for serie "+SerieName);
+            }
           }
         }
       }
@@ -636,7 +664,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
     void onPrepared()
     {
       if (m_Series.empty())
+      {
         return;
+      }
 
       std::vector<GeoVectorSerie>::iterator it;
 
@@ -647,7 +677,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
       // preparation of series
       for (it = m_Series.begin();it!=m_Series.end(); ++it)
+      {
         prepareSerie(*it);
+      }
 
 
       // removal of wrong formatted source geovector file
@@ -679,13 +711,17 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
           it = m_Series.erase(it);
         }
         else
+        {
           ++it;
+        }
       }
 
 
       // Update field names if necessary
       for (it=m_Series.begin();it!=m_Series.end(); ++it)
-         updateFieldNamesUsingFormat((*it).VariablesSet);
+      {
+        updateFieldNamesUsingFormat((*it).VariablesSet);
+      }
 
     }
 
@@ -697,12 +733,16 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
     void onInitializedRun()
     {
       if (m_Series.empty())
+      {
         return;
+      }
 
       std::vector<GeoVectorSerie>::iterator it;
 
       for (it = m_Series.begin();it!=m_Series.end(); ++it)
+      {
         processSerie(*it);
+      }
 
     }
 
@@ -714,12 +754,16 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
     void onStepCompleted()
     {
       if (m_Series.empty())
+      {
         return;
+      }
 
       std::vector<GeoVectorSerie>::iterator it;
 
       for (it = m_Series.begin();it!=m_Series.end(); ++it)
+      {
         processSerie(*it);
+      }
 
     }
 
@@ -731,15 +775,21 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
     void onFinalizedRun()
     {
       if (m_Series.empty())
+      {
         return;
+      }
 
       std::vector<GeoVectorSerie>::iterator it;
 
       for (it = m_Series.begin();it!=m_Series.end(); ++it)
+      {
         processSerie(*it);
+      }
 
       for (it = m_Series.begin();it!=m_Series.end(); ++it)
+      {
         closeSerie(*it);
+      }
     }
 
 };

@@ -137,7 +137,9 @@ class OPENFLUID_API WareSignature
       for (openfluid::ware::WareSignature::AuthorsList_t::const_iterator it = Authors.begin(); it != Authors.end();++it)
       {
         if (it != Authors.begin())
+        {
           Str+= ", ";
+        }
 
         Str += openfluid::tools::replaceEmptyString((*it).first,("(unknown author)"));
         Str += " <";

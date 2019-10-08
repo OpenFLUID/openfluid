@@ -156,7 +156,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   void processUnit(openfluid::core::SpatialUnit* aUnit)
   {
     if (m_LastOrd > aUnit->getProcessOrder())
+    {
       OPENFLUID_RaiseError("wrong process order");
+    }
 
     m_LastOrd = aUnit->getProcessOrder();
 
@@ -201,7 +203,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 #endif
 
     for (unsigned int i=0; i<Times;i++ )
+    {
       processUnit(aUnit);
+    }
   }
 
 
@@ -222,7 +226,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
     StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
+    {
       processUnit(TU);
+    }
 
     EndTime = std::chrono::high_resolution_clock::now();
     Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
@@ -238,7 +244,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
     StartTime = std::chrono::high_resolution_clock::now();
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
+    {
       produceDataOnTUSequenced(TU,double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
+    }
 
     EndTime = std::chrono::high_resolution_clock::now();
     Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
@@ -255,7 +263,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
     StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
+    {
       processUnitXTimes(TU,3);
+    }
     EndTime = std::chrono::high_resolution_clock::now();
     Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
     std::cout << "TU Classic 3 times: " << Duration.count() << "ms"  << std::endl;
@@ -274,7 +284,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
     StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     OPENFLUID_ALLUNITS_ORDERED_LOOP(TU)
+    {
       processUnit(TU);
+    }
     EndTime = std::chrono::high_resolution_clock::now();
     std::cout << std::endl;
     Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
@@ -291,7 +303,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
     StartTime = std::chrono::high_resolution_clock::now();
     m_LastOrd = 0;
     OPENFLUID_ALLUNITS_ORDERED_LOOP(TU)
+    {
       processUnitXTimes(TU,4);
+    }
     EndTime = std::chrono::high_resolution_clock::now();
     Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
     std::cout << "Full Classic 4 times: " << Duration.count() << "ms"  << std::endl;

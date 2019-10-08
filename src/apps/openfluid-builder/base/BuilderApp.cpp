@@ -101,15 +101,21 @@ void BuilderApp::initialize()
 
   QStringList ExtraPaths = PrefsMgr->getBuilderExtraSimulatorsPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
+  {
     openfluid::base::Environment::addExtraSimulatorsDirs(ExtraPaths[i].toStdString());
+  }
 
   ExtraPaths = PrefsMgr->getBuilderExtraObserversPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
+  {
     openfluid::base::Environment::addExtraObserversDirs(ExtraPaths[i].toStdString());
+  }
 
   ExtraPaths = PrefsMgr->getBuilderExtraExtensionsPaths();
   for (int i=0;i<ExtraPaths.size(); i++)
+  {
     openfluid::base::Environment::addExtraBuilderextsDirs(ExtraPaths[i].toStdString());
+  }
 
 
   // Extensions

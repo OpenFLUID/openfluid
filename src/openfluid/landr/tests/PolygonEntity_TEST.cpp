@@ -546,7 +546,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Contains)
   std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*>::iterator ite=lineMap->end();
   std::list<int> lNeighbours;
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   std::list<int>::iterator jt=lNeighbours.begin();
@@ -566,7 +568,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Contains)
   ite=lineMap->end();
 
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
 
   lNeighbours.sort();
@@ -645,7 +649,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Intersects)
 
   std::list<int> lNeighbours;
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   std::list<int>::iterator jt=lNeighbours.begin();
@@ -672,7 +678,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Intersects)
   ite=lineMap->end();
 
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();
@@ -702,7 +710,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Intersects)
   ite=lineMap->end();
 
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();
@@ -730,7 +740,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Intersects)
   ite=lineMap->end();
 
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();
@@ -793,7 +805,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
 
 
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   std::list<int>::iterator jt=lNeighbours.begin();
@@ -826,7 +840,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
   ite=lineMap->end();
 
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();
@@ -847,7 +863,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
   ite=lineMap->end();
 
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();

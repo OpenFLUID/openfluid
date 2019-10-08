@@ -110,15 +110,13 @@ FIND_PROGRAM(PYTHON3_EXECUTABLE NAMES python3)
 
 IF(PYTHONINTERP_FOUND)
 
-  # checkstyle tool without bracketing check (temporary)
+  # checkstyle tool
   ADD_CUSTOM_TARGET(stylecheck
                     COMMENT "Checking source code style"
                     COMMAND "${PYTHON_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
                             "${CMAKE_SOURCE_DIR}"
                    )
-
-
 
   # cppcheck tool
   ADD_CUSTOM_TARGET(cppcheck

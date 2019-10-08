@@ -659,7 +659,9 @@ BOOST_AUTO_TEST_CASE(check_DuplicateGeometry)
                     openfluid::base::FrameworkException);
 
   if (Graph != nullptr)
+  {
     delete Graph;
+  }
 }
 
 

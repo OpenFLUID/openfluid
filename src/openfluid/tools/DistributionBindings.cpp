@@ -60,7 +60,9 @@ DistributionBindings::DistributionBindings(const DistributionTables& DistriTable
     for (DistributionTables::UnitIDSourceID_t::const_iterator itu = itub; itu != itue; ++itu)
     {
       if ((*itu).second == (*it).first)
+      {
         m_UnitIDReaders[(*itu).first] = &m_ReadersNextValues.back();
+      }
     }
   }
 }
@@ -80,7 +82,10 @@ DistributionBindings::~DistributionBindings()
 
   for (it=bit;it!=eit;++it)
   {
-    if ((*it).Reader) delete (*it).Reader;
+    if ((*it).Reader)
+    {
+      delete (*it).Reader;
+    }
   }
 }
 
@@ -156,7 +161,9 @@ bool DistributionBindings::advanceToNextTimeAfter(const openfluid::core::DateTim
   for (ReadersNextValues_t::iterator it = itb; it != ite; ++it)
   {
     if ((*it).isAvailable && (*it).NextValue.first < NDT)
+    {
       NDT = (*it).NextValue.first;
+    }
   }
 
   NextDT = NDT;

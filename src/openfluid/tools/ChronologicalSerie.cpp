@@ -62,12 +62,16 @@ bool ChronologicalSerie::getSurroundingValues(const openfluid::core::DateTime& D
 {
 
   if (size() <2)
+  {
     return false;
+  }
 
   //std::list<ChronItem_t>::iterator CurrentPos = m_InternalIterator;
 
   if ((*m_PreviousInternalIterator).first > DT || m_InternalIterator == end())
+  {
     reset();
+  }
 
 
   while (m_InternalIterator != end() &&

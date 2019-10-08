@@ -95,31 +95,51 @@ void EditAttributesValuesDialog::checkGlobal()
 
   ui->ReplaceEdit->setEnabled(ui->ReplaceRadioButton->isChecked());
   if (ui->ReplaceEdit->isEnabled())
+  {
     ui->ReplaceEdit->setPlaceholderText(PlaceholderStr);
+  }
   else
+  {
     ui->ReplaceEdit->setPlaceholderText("");
+  }
 
   ui->MultEdit->setEnabled(ui->MultRadioButton->isChecked());
   if (ui->MultEdit->isEnabled())
+  {
     ui->MultEdit->setPlaceholderText(PlaceholderStr);
+  }
   else
+  {
     ui->MultEdit->setPlaceholderText("");
+  }
 
   ui->AddEdit->setEnabled(ui->AddRadioButton->isChecked());
   if (ui->AddEdit->isEnabled())
+  {
     ui->AddEdit->setPlaceholderText(PlaceholderStr);
+  }
   else
+  {
     ui->AddEdit->setPlaceholderText("");
+  }
 
 
   if (ui->ReplaceRadioButton->isChecked() && ui->ReplaceEdit->text().isEmpty())
+  {
     setMessage(tr("Replacement value cannot be empty"));
+  }
   else if (ui->MultRadioButton->isChecked() && ui->MultEdit->text().isEmpty())
+  {
     setMessage(tr("Multiply factor cannot be empty"));
+  }
   else if (ui->AddRadioButton->isChecked() && ui->AddEdit->text().isEmpty())
+  {
     setMessage(tr("Added value cannot be empty"));
+  }
   else
+  {
     setMessage();
+  }
 }
 
 
@@ -133,11 +153,17 @@ void EditAttributesValuesDialog::adaptSelection()
   if (Sender != nullptr)
   {
     if (Sender == ui->ReplaceEdit)
+    {
       ui->ReplaceRadioButton->setChecked(true);
+    }
     else     if (Sender == ui->MultEdit)
+    {
       ui->MultRadioButton->setChecked(true);
+    }
     else     if (Sender == ui->AddEdit)
+    {
       ui->AddRadioButton->setChecked(true);
+    }
   }
 }
 
@@ -149,13 +175,19 @@ void EditAttributesValuesDialog::adaptSelection()
 EditAttributesValuesDialog::EditMode EditAttributesValuesDialog::getEditMode() const
 {
   if (ui->ReplaceRadioButton->isChecked())
+  {
     return EDIT_REPLACE;
+  }
 
   if (ui->MultRadioButton->isChecked())
+  {
     return EDIT_MULTIPLY;
+  }
 
   if (ui->AddRadioButton->isChecked())
+  {
     return EDIT_ADD;
+  }
 
   return EDIT_UNKNOWN;
 }

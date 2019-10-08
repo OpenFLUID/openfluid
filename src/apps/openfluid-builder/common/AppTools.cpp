@@ -73,7 +73,9 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
     InfosStr += "<i>Creation:</i><br>"+QString(CreationDate.c_str())+"<hr/>";
     InfosStr += "<i>Last modification:</i><br>"+QString(LastModDate.c_str());
     if (IncludeFullPath)
+    {
       InfosStr += "<hr/><i>Project location:</i><br>"+QDir::toNativeSeparators(ProjectPath);
+    }
   }
 
   return InfosStr;
@@ -109,7 +111,9 @@ void launchDevStudio()
   QApplication::restoreOverrideCursor();
 
   if (!ExecOK)
+  {
     QMessageBox::critical(QApplication::activeWindow(),"OpenFLUID-Builder",
                           QObject::tr("OpenFLUID-DevStudio could not be launched"),
                           QMessageBox::Close);
+  }
 }

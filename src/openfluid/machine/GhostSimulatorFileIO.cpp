@@ -74,7 +74,9 @@ class DataNodeFields
       Description(Node.text().toStdString()),Type(Node.attribute("type").toStdString())
     {
       if (!ExpectedIOModes.contains(QString::fromStdString(IOMode)))
+      {
         IOMode.clear();
+      }
     }
 };
 
@@ -338,7 +340,9 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::w
   QFile File(FilePathQStr);
 
   if (!File.open(QIODevice::ReadOnly))
-  return false;
+  {
+    return false;
+  }
 
   bool Parsed = Doc.setContent(&File);
   File.close();

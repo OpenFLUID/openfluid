@@ -83,7 +83,9 @@ class KillableSingleton
     static T* instance()
     {
       if (!mp_Instance)
+      {
         mp_Instance = new T();
+      }
 
       return mp_Instance;
     }

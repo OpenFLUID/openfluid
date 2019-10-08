@@ -366,10 +366,14 @@ BOOST_AUTO_TEST_CASE(check_http)
       checkOperations(CONFIGTESTS_FLUIDHUB_URL_HTTP,openfluid::utils::RESTClient::SSLConfiguration());
     }
     else
+    {
       std::cout << "not reachable" << std::endl;
+    }
   }
   else
+  {
     std::cout << "http URL is empty" << std::endl;
+  }
 }
 
 
@@ -396,10 +400,14 @@ BOOST_AUTO_TEST_CASE(check_https)
       checkOperations(CONFIGTESTS_FLUIDHUB_URL_HTTPS,SSLConfig);
     }
     else
+    {
       std::cout << "not reachable" << std::endl;
+    }
   }
   else
+  {
     std::cout << "https URL is empty" << std::endl;
+  }
 }
 
 
@@ -427,10 +435,14 @@ BOOST_AUTO_TEST_CASE(check_https_redirect)
       checkOperations(CONFIGTESTS_FLUIDHUB_URL_REDIRECT_HTTPS,SSLConfig);
     }
     else
+    {
       std::cout << "not reachable" << std::endl;
+    }
   }
   else
+  {
     std::cout << "https URL is empty" << std::endl;
+  }
 }
 #endif
 
@@ -442,7 +454,9 @@ BOOST_AUTO_TEST_CASE(check_https_redirect)
 int main(int argc, char *argv[])
 {
   if (CONFIGTESTS_FLUIDHUB_URL_HTTP.empty())
+  {
     return 0;
+  }
 
   QCoreApplication app(argc, argv);
 

@@ -297,7 +297,10 @@ Vector<T>::Vector(unsigned long Size, T InitValue)
   if (m_Data != nullptr)
   {
     unsigned long i;
-    for (i=0;i<m_Size;i++) m_Data[i] = InitValue;
+    for (i=0;i<m_Size;i++)
+    {
+      m_Data[i] = InitValue;
+    }
   }
 }
 

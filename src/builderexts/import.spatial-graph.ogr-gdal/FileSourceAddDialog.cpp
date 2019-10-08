@@ -86,7 +86,9 @@ void FileSourceAddDialog::selectFile()
   m_CurrentSourceDisplay = m_CurrentSourceURI;
 
   if (!m_CurrentSourceURI.isEmpty())
+  {
     openDataSource();
+  }
 
 }
 

@@ -113,10 +113,14 @@ QString GrassGISProxy::getCommandLine(const QString& Command,
   QString Cmd = Command;
 
   for (auto& Arg : Arguments)
+  {
     Cmd += " " + Arg.first + "=" + Arg.second;
+  }
 
   for (auto& Opt : Options)
+  {
     Cmd += " " + Opt;
+  }
 
   return Cmd;
 }
@@ -174,7 +178,9 @@ bool GrassGISProxy::isAvailable()
 int GrassGISProxy::executeGrassJob(const QString& JobFilePath) const
 {
   if (!isLocationExist())
+  {
     return -99;
+  }
 
   QProcessEnvironment PcsEnv = QProcessEnvironment::systemEnvironment();
   PcsEnv.insert("GRASS_BATCH_JOB",JobFilePath);
@@ -183,14 +189,22 @@ int GrassGISProxy::executeGrassJob(const QString& JobFilePath) const
   Pcs.setProcessEnvironment(PcsEnv);
 
   if (m_OutputFile.isEmpty())
+  {
     Pcs.setStandardOutputFile(JobFilePath+".out");
+  }
   else
+  {
     Pcs.setStandardOutputFile(m_OutputFile);
+  }
 
   if (m_ErrorFile.isEmpty())
+  {
     Pcs.setStandardErrorFile(JobFilePath+".err");
+  }
   else
+  {
     Pcs.setStandardErrorFile(m_ErrorFile);
+  }
 
 
   QString Path = QString("%1/%2/%3").arg(m_GISBase).arg(m_Location).arg(m_Mapset);
@@ -212,7 +226,9 @@ int GrassGISProxy::executeGrassJob(const QString& JobFilePath) const
 int GrassGISProxy::executeGrassJobReturningData(const QString& JobFilePath, QStringList& Lines) const
 {
   if (!isLocationExist())
+  {
     return -99;
+  }
 
   QProcessEnvironment PcsEnv = QProcessEnvironment::systemEnvironment();
   PcsEnv.insert("GRASS_BATCH_JOB",JobFilePath);
@@ -418,7 +434,9 @@ std::vector<std::string> GrassGISProxy::mapsets() const
       for (QString& Ln : Lines)
       {
         if (!Ln.trimmed().isEmpty())
+        {
           Values.push_back(Ln.toStdString());
+        }
       }
     }
   }

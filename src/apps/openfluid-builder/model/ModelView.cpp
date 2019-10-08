@@ -61,8 +61,14 @@ void ModelView::wheelEvent(QWheelEvent* Event)
 {
   if (Event->modifiers().testFlag(Qt::ControlModifier)) // zoom only when Ctrl key is pressed
   {
-    if (Event->delta() < 0) scale(0.9,0.9);
-    else scale(1.1,1.1);
+    if (Event->delta() < 0)
+    {
+      scale(0.9,0.9);
+    }
+    else
+    {
+      scale(1.1,1.1);
+    }
   }
 //  Event->ignore();
   QGraphicsView::wheelEvent(Event);

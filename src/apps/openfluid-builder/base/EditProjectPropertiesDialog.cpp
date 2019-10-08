@@ -64,15 +64,23 @@ EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
 
   QDateTime DT = QDateTime::fromString(QString::fromStdString(PrjMan->getProjectCreationDate()),"yyyyMMdd'T'hhmmss");
   if (DT.isValid())
+  {
     ui->CreationDateLabel->setText(DT.toString("yyyy-MM-dd, hh:mm:ss"));
+  }
   else
+  {
     ui->CreationDateLabel->setText(tr("unknown"));
+  }
 
   DT = QDateTime::fromString(QString::fromStdString(PrjMan->getProjectLastModDate()),"yyyyMMdd'T'hhmmss");
   if (DT.isValid())
+  {
     ui->LastModDateLabel->setText(DT.toString("yyyy-MM-dd, hh:mm:ss"));
+  }
   else
+  {
     ui->LastModDateLabel->setText(tr("unknown"));
+  }
 }
 
 

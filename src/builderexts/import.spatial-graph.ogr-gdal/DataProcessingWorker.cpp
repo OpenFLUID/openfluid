@@ -99,7 +99,9 @@ bool DataProcessingWorker::isUnitExists(const QString& Class, int ID)
   while (i<m_SourcesInfos.size())
   {
     if (m_SourcesInfos[i].UnitsClass == Class && m_SourcesData[i].isUnitExists(ID))
+    {
       return true;
+    }
     i++;
   }
 
@@ -124,7 +126,9 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
     QString RealURI = m_SourcesInfos[i].SourceURI;
     if (!m_SourcesInfos[i].CachedSourceURI.isEmpty())
+    {
       RealURI = m_SourcesInfos[i].CachedSourceURI;
+    }
 
 
     GDALDataset_COMPAT* DS = GDALOpenRO_COMPAT(RealURI.toStdString().c_str());

@@ -143,11 +143,17 @@ void AddGeneratorDialog::switchGeneratorOptions()
 void AddGeneratorDialog::checkGlobal()
 {
   if (ui->VarNameEdit->text().isEmpty())
+  {
     setMessage(tr("Variable name cannot be empty"));
+  }
   else if (ui->UnitsClassEdit->text().isEmpty())
+  {
     setMessage(tr("Units class cannot be empty"));
+  }
   else
+  {
     setMessage();
+  }
 }
 
 
@@ -178,9 +184,13 @@ QString AddGeneratorDialog::getUnitClass() const
 unsigned int AddGeneratorDialog::getVariableSize() const
 {
   if (ui->DoubleRadioButton->isChecked())
+  {
     return 1;
+  }
   else
+  {
     return ui->VectorSpinBox->value();
+  }
 }
 
 
@@ -194,22 +204,43 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
 
   if (m_Method == openfluid::fluidx::GeneratorDescriptor::Fixed)
   {
-    if (!ui->ValueEdit->text().isEmpty()) Params["fixedvalue"] = ui->ValueEdit->text().toStdString();
+    if (!ui->ValueEdit->text().isEmpty())
+    {
+      Params["fixedvalue"] = ui->ValueEdit->text().toStdString();
+    }
   }
   else if (m_Method == openfluid::fluidx::GeneratorDescriptor::Random)
   {
-    if (!ui->MinValueEdit->text().isEmpty()) Params["min"] = ui->MinValueEdit->text().toStdString();
-    if (!ui->MaxValueEdit->text().isEmpty()) Params["max"] = ui->MaxValueEdit->text().toStdString();
+    if (!ui->MinValueEdit->text().isEmpty())
+    {
+      Params["min"] = ui->MinValueEdit->text().toStdString();
+    }
+    if (!ui->MaxValueEdit->text().isEmpty())
+    {
+      Params["max"] = ui->MaxValueEdit->text().toStdString();
+    }
   }
   else if (m_Method == openfluid::fluidx::GeneratorDescriptor::Interp)
   {
-    if (!ui->SourcesFileEdit->text().isEmpty()) Params["sources"] = ui->SourcesFileEdit->text().toStdString();
-    if (!ui->DistriFileEdit->text().isEmpty()) Params["distribution"] = ui->DistriFileEdit->text().toStdString();
+    if (!ui->SourcesFileEdit->text().isEmpty())
+    {
+      Params["sources"] = ui->SourcesFileEdit->text().toStdString();
+    }
+    if (!ui->DistriFileEdit->text().isEmpty())
+    {
+      Params["distribution"] = ui->DistriFileEdit->text().toStdString();
+    }
   }
   else if (m_Method == openfluid::fluidx::GeneratorDescriptor::Inject)
   {
-    if (!ui->SourcesFileEdit->text().isEmpty()) Params["sources"] = ui->SourcesFileEdit->text().toStdString();
-    if (!ui->DistriFileEdit->text().isEmpty()) Params["distribution"] = ui->DistriFileEdit->text().toStdString();
+    if (!ui->SourcesFileEdit->text().isEmpty())
+    {
+      Params["sources"] = ui->SourcesFileEdit->text().toStdString();
+    }
+    if (!ui->DistriFileEdit->text().isEmpty())
+    {
+      Params["distribution"] = ui->DistriFileEdit->text().toStdString();
+    }
   }
 
   return Params;

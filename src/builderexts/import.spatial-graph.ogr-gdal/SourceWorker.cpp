@@ -75,8 +75,10 @@ void SourceWorker::run()
     emit layerCounted(mp_DataSource->GetLayerCount());
 
     for (int i=0; i < mp_DataSource->GetLayerCount();i++)
+    {
       emit layerFetched(i,QString(mp_DataSource->GetLayer(i)->GetName()),
                         QString(OGRGeometryTypeToName(mp_DataSource->GetLayer(i)->GetGeomType())));
+    }
 
     emit finished();
   }

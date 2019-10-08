@@ -91,10 +91,14 @@ class ExceptionsObserver : public openfluid::ware::PluggableObserver
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
       if (Params.find("part") != Params.end())
+      {
         m_PartStr = Params.at("part").toString();
+      }
 
       if (m_PartStr == "initparams")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
     }
 
 
@@ -105,7 +109,9 @@ class ExceptionsObserver : public openfluid::ware::PluggableObserver
     void onPrepared()
     {
       if (m_PartStr == "onprepared")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
     }
 
 
@@ -116,7 +122,9 @@ class ExceptionsObserver : public openfluid::ware::PluggableObserver
     void onInitializedRun()
     {
       if (m_PartStr == "oninitializedrun")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
     }
 
 
@@ -127,7 +135,9 @@ class ExceptionsObserver : public openfluid::ware::PluggableObserver
     void onStepCompleted()
     {
       if (m_PartStr == "onstepcompleted")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
     }
 
 
@@ -138,7 +148,9 @@ class ExceptionsObserver : public openfluid::ware::PluggableObserver
     void onFinalizedRun()
     {
       if (m_PartStr == "onfinalizedrun")
+      {
         OPENFLUID_RaiseError(m_PartStr);
+      }
     }
 
 

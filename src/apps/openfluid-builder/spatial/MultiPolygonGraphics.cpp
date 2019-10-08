@@ -55,7 +55,9 @@ MultiPolygonGraphics::MultiPolygonGraphics(OGRMultiPolygon* OGRMultiPoly, const 
     QPolygonF Poly;
 
     for (int i=0; i < LinearRing->getNumPoints(); i++)
+    {
       Poly << QPointF(LinearRing->getX(i),LinearRing->getY(i));
+    }
 
     Path.addPolygon(Poly);
   }

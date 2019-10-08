@@ -167,8 +167,14 @@ class DebugSimulator : public openfluid::ware::PluggableSimulator
       OFDBG_EVENTCOLLECTION(EvColl);
 
 
-      if (OPENFLUID_GetCurrentTimeIndex() == 0) {OFDBG_UNIT_EXTENDED(TU)}
-      else {OFDBG_UNIT(TU)}
+      if (OPENFLUID_GetCurrentTimeIndex() == 0)
+      {
+        OFDBG_UNIT_EXTENDED(TU)
+      }
+      else
+      {
+        OFDBG_UNIT(TU)
+      }
     }
 
     return DefaultDeltaT();

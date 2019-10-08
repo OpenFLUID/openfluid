@@ -153,7 +153,9 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   std::vector<QAction*> RecentActions = m_Actions.recentProjectActions();
 
   for (unsigned int i=0;i<RecentActions.size();i++)
+  {
     connect(RecentActions[i], SIGNAL(triggered()), this, SLOT(whenOpenRecentAsked()));
+  }
 
   m_MainWindow.setQuitAction(m_Actions.action("ProjectQuit"));
 
@@ -185,7 +187,9 @@ void AppCoordinator::connectExtensions()
   std::map<openfluid::ware::WareID_t,QAction*>::const_iterator ite = m_Actions.extensionsActions().end();
 
   for (it = itb; it != ite; ++it)
+  {
     connect((*it).second,SIGNAL(triggered()),this, SLOT(whenExtensionAsked()));
+  }
 }
 
 
@@ -196,11 +200,15 @@ void AppCoordinator::connectExtensions()
 void AppCoordinator::unsetCurrentModule()
 {
   if (mp_CurrentModule != nullptr)
+  {
     delete mp_CurrentModule;
+  }
   mp_CurrentModule = nullptr;
 
   if (mp_DockWidget != nullptr)
+  {
     delete mp_DockWidget;
+  }
   mp_DockWidget = nullptr;
 }
 
@@ -259,7 +267,9 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
 
 
     if (mp_DockWidget == nullptr)
+    {
       mp_DockWidget = new QDockWidget(tr("Project dashboard"),&m_MainWindow);
+    }
 
     DashboardFrame* DockedWidget =
       static_cast<DashboardFrame*>(static_cast<ProjectModuleWidget*>(Module)->dockWidgetRebuilt(mp_DockWidget));
@@ -330,7 +340,9 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
   if (!PrjMan->createProject(Path.toStdString(), Name.toStdString(),
                              Description.toStdString(), Authors.toStdString(),
                              false))
+  {
     return false;
+  }
 
   if (IType == NewProjectDialog::IMPORT_NONE)
   {
@@ -397,7 +409,9 @@ bool AppCoordinator::closeProject()
     if (Ret != QMessageBox::Cancel)
     {
       if (Ret == QMessageBox::Save)
+      {
         whenSaveAsked();
+      }
 
       m_Actions.action("ProjectSave")->setEnabled(false);
       openfluid::base::RunContextManager::instance()->closeProject();
@@ -426,7 +440,9 @@ void AppCoordinator::whenQuitAsked()
                                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes);
 
     if ( ReallyQuit && closeProject())
+    {
       QCoreApplication::exit(0);
+    }
   }
 }
 
@@ -744,7 +760,9 @@ void AppCoordinator::whenExtensionAsked()
 {
   QAction* Sender = (QAction*)(QObject::sender());
   if ( Sender != nullptr)
+  {
     mp_CurrentModule->whenExtensionAsked(Sender->data().toString());
+  }
 }
 
 
@@ -755,12 +773,18 @@ void AppCoordinator::whenExtensionAsked()
 void AppCoordinator::whenViewDashboardAsked()
 {
   if (mp_DockWidget == nullptr)
+  {
     return;
+  }
 
   if (mp_DockWidget->isVisible())
+  {
     mp_DockWidget->setVisible(false);
+  }
   else
+  {
     mp_DockWidget->setVisible(true);
+  }
 }
 
 
@@ -771,12 +795,18 @@ void AppCoordinator::whenViewDashboardAsked()
 void AppCoordinator::whenViewToolbarAsked()
 {
   if (!m_Actions.mainToolbar())
+  {
     return;
+  }
 
   if (m_Actions.mainToolbar()->isVisible())
+  {
     m_Actions.mainToolbar()->setVisible(false);
+  }
   else
+  {
     m_Actions.mainToolbar()->setVisible(true);
+  }
 }
 
 
@@ -793,7 +823,9 @@ void AppCoordinator::whenViewRestoreAsked()
   mp_DockWidget->setVisible(true);
 
   if (m_Actions.mainToolbar())
+  {
     m_Actions.mainToolbar()->setVisible(true);
+  }
 }
 
 

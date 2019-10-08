@@ -181,9 +181,13 @@ void GNUplotObsParamsWidget::removeParamsStartingWith(const QString& Str)
     QString ParamName = QString::fromStdString((*it).first);
 
     if (ParamName.startsWith(Str))
+    {
       mp_Params->erase(it++);
+    }
     else
+    {
       ++it;
+    }
   }
 }
 
@@ -206,7 +210,9 @@ void GNUplotObsParamsWidget::renameParamsStartingWith(const QString& Before, con
       mp_Params->erase(it++);
     }
     else
+    {
       ++it;
+    }
   }
 }
 
@@ -223,7 +229,9 @@ QString GNUplotObsParamsWidget::generateListItemName(const QListWidget* ListWidg
   QStringList ExistingNames;
 
   for (auto i = 0; i < ListWidget->count();i++ )
+  {
     ExistingNames.append(ListWidget->item(i)->text());
+  }
 
   Name = QString("%1%2").arg(NameRoot).arg(Counter);
   while (ExistingNames.contains(Name))
@@ -244,7 +252,9 @@ int GNUplotObsParamsWidget::findItemRowInList(const QListWidget* ListWidget,cons
   for (int i=0; i<ListWidget->count(); i++)
   {
     if (ListWidget->item(i)->text() == ItemText)
+    {
       return i;
+    }
   }
 
   return -1;
@@ -280,7 +290,9 @@ void GNUplotObsParamsWidget::update()
 
   QString Terminal = QString::fromStdString(m_Plot.Terminal);
   if (!Terminal.isEmpty() && ui->TerminalComboBox->findText(Terminal) == -1)
+  {
     ui->TerminalComboBox->addItem(Terminal);
+  }
 
   ui->TerminalComboBox->setCurrentText(Terminal);
 
@@ -428,7 +440,9 @@ void GNUplotObsParamsWidget::removeSerie()
 
         auto Pos = mp_Params->find(GraphSeriesKey);
         if (Pos != mp_Params->end())
+        {
           GraphSeriesStr = Pos->second;
+        }
 
         std::vector<std::string> GraphSeries = openfluid::tools::splitString(GraphSeriesStr, ";");
         GraphSeriesStr.clear();
@@ -436,11 +450,15 @@ void GNUplotObsParamsWidget::removeSerie()
         for (auto GSit = GraphSeries.begin(); GSit != GraphSeries.end(); ++GSit)
         {
           if (*GSit != SerieName.toStdString())
+          {
             GraphSeriesStr += *GSit + ";";
+          }
         }
 
         if (!GraphSeriesStr.empty())
+        {
           GraphSeriesStr.erase(GraphSeriesStr.size() - 1);
+        }
 
         mp_Params->erase(GraphSeriesKey);
         mp_Params->insert({GraphSeriesKey, GraphSeriesStr});
@@ -452,7 +470,9 @@ void GNUplotObsParamsWidget::removeSerie()
   }
 
   if (!ui->SeriesListWidget->count())
+  {
     m_CurrentSerieName = "";
+  }
 }
 
 
@@ -486,7 +506,9 @@ void GNUplotObsParamsWidget::renameSerie(QListWidgetItem* Item)
 
         auto Pos = mp_Params->find(GraphSeriesKey);
         if (Pos != mp_Params->end())
+        {
           GraphSeriesStr = Pos->second;
+        }
 
         std::vector<std::string> GraphSeries = openfluid::tools::splitString(GraphSeriesStr, ";");
         GraphSeriesStr.clear();
@@ -494,13 +516,19 @@ void GNUplotObsParamsWidget::renameSerie(QListWidgetItem* Item)
         for (auto GSit = GraphSeries.begin(); GSit != GraphSeries.end(); ++GSit)
         {
           if (*GSit != m_CurrentSerieName.toStdString())
+          {
             GraphSeriesStr += *GSit + ";";
+          }
           else
+          {
             GraphSeriesStr += NewSerieName.toStdString() + ";";
+          }
         }
 
         if (!GraphSeriesStr.empty())
+        {
           GraphSeriesStr.erase(GraphSeriesStr.size() - 1);
+        }
 
         mp_Params->erase(GraphSeriesKey);
         mp_Params->insert({GraphSeriesKey, GraphSeriesStr});
@@ -528,7 +556,9 @@ void GNUplotObsParamsWidget::editSerieName()
 {
   QListWidgetItem* CurrentItem = ui->SeriesListWidget->currentItem();
   if (CurrentItem)
+  {
     ui->SeriesListWidget->editItem(CurrentItem);
+  }
 }
 
 
@@ -561,7 +591,9 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
 
       QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
       for (auto& ClassName : ClassNames)
+      {
         ui->UnitsClassComboBox->addItem(ClassName);
+      }
 
       QString UnitsClass = QString::fromStdString(Serie.UnitsClass);
       if (ui->UnitsClassComboBox->findText(UnitsClass) != -1)
@@ -571,7 +603,9 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
 
         QString UnitID = QString::number(Serie.UnitID);
         if (ui->UnitIDComboBox->findText(UnitID) != -1)
+        {
           ui->UnitIDComboBox->setCurrentText(UnitID);
+        }
         else
         {
           ui->UnitIDComboBox->setCurrentIndex(0);
@@ -597,7 +631,9 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
 
     QString Style = QString::fromStdString(Serie.Style);
     if (!Style.isEmpty() && ui->SerieStyleComboBox->findText(Style) == -1)
+    {
       ui->SerieStyleComboBox->addItem(Style);
+    }
 
     ui->SerieStyleComboBox->setCurrentText(Style);
 
@@ -698,7 +734,9 @@ void GNUplotObsParamsWidget::updateClassIDs(const QString& UnitsClass)
   std::set<int> IDs = mp_Desc->spatialDomain().getIDsOfClass(UnitsClass.toStdString());
 
   for (auto ID : IDs)
+  {
     ui->UnitIDComboBox->addItem(QString::number(ID));
+  }
 }
 
 
@@ -854,7 +892,9 @@ void GNUplotObsParamsWidget::removeGraph()
   }
 
   if (!ui->GraphsListWidget->count())
+  {
     m_CurrentGraphName = "";
+  }
 }
 
 
@@ -898,7 +938,9 @@ void GNUplotObsParamsWidget::editGraphName()
 {
   QListWidgetItem* CurrentItem = ui->GraphsListWidget->currentItem();
   if (CurrentItem)
+  {
     ui->GraphsListWidget->editItem(CurrentItem);
+  }
 }
 
 
@@ -927,7 +969,9 @@ void GNUplotObsParamsWidget::setCurrentGraph(int CurrentRow)
 
         QString Legend = QString::fromStdString(Graph.second.Key);
         if (!Legend.isEmpty() && ui->GraphLegendComboBox->findText(Legend) == -1)
+        {
           ui->GraphLegendComboBox->addItem(Legend);
+        }
 
         ui->GraphLegendComboBox->setCurrentText(Legend);
 
@@ -940,9 +984,13 @@ void GNUplotObsParamsWidget::setCurrentGraph(int CurrentRow)
                                       &m_Plot.Series[Item->text().toStdString()]);
 
           if (SeriePos != Graph.second.Series.end())
+          {
             State = Qt::Checked;
+          }
           else
+          {
             State = Qt::Unchecked;
+          }
 
           Item->setCheckState(State);
         }
@@ -1035,11 +1083,15 @@ void GNUplotObsParamsWidget::setGraphSeries()
     {
       QListWidgetItem *Item = ui->GraphSeriesListWidget->item(Row);
       if (Item->checkState() == Qt::Checked)
+      {
         SeriesStr += Item->text().toStdString() + ";";
+      }
     }
 
     if (!SeriesStr.empty())
+    {
       SeriesStr.erase(SeriesStr.size() - 1);
+    }
 
     mp_Params->erase(GraphPrefix + "series");
     mp_Params->insert({GraphPrefix + "series", SeriesStr});

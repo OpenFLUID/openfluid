@@ -156,8 +156,10 @@ std::vector<std::string> parseSetsFromParamsTree(const openfluid::ware::WarePara
         // search for deprecated "unitclass" parameter
         Sets[SetName].UnitsClass = Set.second.getChildValue("unitclass","");
         if (!Sets[SetName].UnitsClass.empty())
+        {
           Messages.push_back("Usage of set.<setname>.unitclass parameter is deprecated."
               "Use set.<setname>.unitsclass instead");
+        }
       }
 
       Sets[SetName].UnitsIDsStr = Set.second.getChildValue("unitsIDs","*");

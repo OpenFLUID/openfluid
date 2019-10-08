@@ -233,25 +233,33 @@ void SpatialDomainWidget::refresh()
     for (int i=0; i< ClassesList.size();i++)
     {
       if (!OriginalClassesList.contains(ClassesList[i]))
+      {
         ClassesToRemove.append(ClassesList[i]);
+      }
     }
 
     // remove them from classes to display
     for (int i=0; i< ClassesToRemove.size();i++)
+    {
       ClassesList.removeAll(ClassesToRemove[i]);
+    }
 
     // remove classes from original list if they exists in classes to display
     for (int i=0; i< ClassesList.size();i++)
     {
       if (OriginalClassesList.contains(ClassesList[i]))
+      {
         OriginalClassesList.removeAll(ClassesList[i]);
+      }
     }
 
     // add original dataset classes that are not already in the classes to display
     for (int i=0; i< OriginalClassesList.size();i++)
     {
       if (!ClassesList.contains(OriginalClassesList[i]))
+      {
         ClassesList.append(OriginalClassesList[i]);
+      }
     }
 
     openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses","order",
@@ -278,7 +286,9 @@ void SpatialDomainWidget::refresh()
       if (!ClassesList.contains(ClassW->getClassName()))
       {
         if (ClassW->getClassName() == m_ActiveClass)
+        {
           m_ActiveClass = "";
+        }
 
         ItemsToRemove.append(j);
       }
@@ -289,7 +299,9 @@ void SpatialDomainWidget::refresh()
   QListIterator<int> itTR(ItemsToRemove);
   itTR.toBack();
   while (itTR.hasPrevious())
+  {
     Layout->takeAt(itTR.previous())->widget()->deleteLater();
+  }
 
 
   // Add of new classes to layout
@@ -305,7 +317,9 @@ void SpatialDomainWidget::refresh()
         UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(j)->widget());
 
         if (ClassW->getClassName() == ClassesList[i])
+        {
           AlreadyExist = true;
+        }
       }
     }
 
@@ -332,9 +346,13 @@ void SpatialDomainWidget::refresh()
   {
     // active class is not defined, pick the first units class if any
     if (Layout->count()>1)
+    {
       setSelectedClass(dynamic_cast<UnitsClassWidget*>(Layout->itemAt(0)->widget())->getClassName());
+    }
     else
+    {
       setActiveClass("");
+    }
   }
   else
   {
@@ -360,9 +378,13 @@ void SpatialDomainWidget::setSelectedClass(QString ClassName)
       UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
 
       if (ClassW->getClassName() != ClassName)
+      {
         ClassW->setSelected(false);
+      }
       else
+      {
         ClassW->setSelected(true);
+      }
     }
   }
 
@@ -767,7 +789,10 @@ void SpatialDomainWidget::refreshClassEvents()
 
           for (Iit=Iitb; Iit!=Iite; ++Iit)
           {
-            if (Iit != Iitb) InfosStr += ", ";
+            if (Iit != Iitb)
+            {
+              InfosStr += ", ";
+            }
             InfosStr += QString::fromStdString((*Iit).first)+"="+QString::fromStdString((*Iit).second);
           }
 
@@ -936,7 +961,9 @@ void SpatialDomainWidget::moveUnitsClassUp(QString ClassName)
   int Position = getClassIndex(ClassName);
 
   if (Position < 1 )
+  {
     return;
+  }
 
   int From = Position;
   int To = Position-1;
@@ -963,12 +990,16 @@ void SpatialDomainWidget::moveUnitsClassDown(QString ClassName)
   int Position = getClassIndex(ClassName);
 
   if (Position < 0)
+  {
     return;
+  }
 
   QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
 
   if (Position > Layout->count()-2)
+  {
     return;
+  }
 
   int From = Position;
   int To = Position+1;
@@ -1001,7 +1032,9 @@ void SpatialDomainWidget::removeUnitsClass(QString ClassName)
   std::set<int>::iterator ite = IDs.end();
 
   for (it =itb; it!= ite; ++it)
+  {
     m_Domain.deleteUnit(ClassName.toStdString(),*it);
+  }
 
   refresh();
 
@@ -1102,7 +1135,10 @@ void SpatialDomainWidget::removeUnit()
     {
       m_Domain.deleteUnit(m_ActiveClass.toStdString(), Item->data(Qt::UserRole).toInt());
     }
-    if (!m_Domain.isClassNameExists(m_ActiveClass.toStdString())) m_ActiveClass = "";
+    if (!m_Domain.isClassNameExists(m_ActiveClass.toStdString()))
+    {
+      m_ActiveClass = "";
+    }
 
     refresh();
 
@@ -1464,7 +1500,9 @@ int SpatialDomainWidget::getClassIndex(const QString& ClassName)
     UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
 
     if (ClassW->getClassName() == ClassName)
+    {
       return i;
+    }
   }
 
   return -1;
@@ -1679,7 +1717,9 @@ void SpatialDomainWidget::addEvent()
     openfluid::core::Event::EventInfosMap_t::const_iterator ite = EvInfos.end();
 
     for (it=itb;it!=ite;++it)
+    {
       Ev.addInfo((*it).first,(*it).second);
+    }
 
     m_Domain.addEvent(m_ActiveClass.toStdString(),
                       AddEventDlg.getUnitID(),
@@ -1732,7 +1772,9 @@ void SpatialDomainWidget::editEvent()
         openfluid::core::Event::EventInfosMap_t::const_iterator ite = EvInfos.end();
 
         for (it=itb;it!=ite;++it)
+        {
           Ev.addInfo((*it).first,(*it).second);
+        }
 
 
         if (OriginUnitID == FinalUnitID)

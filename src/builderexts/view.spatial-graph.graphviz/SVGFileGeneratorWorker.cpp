@@ -98,7 +98,8 @@ void SVGFileGeneratorWorker::run()
   // options
 
   QMapIterator<QString, QString> itO(m_Options);
-  while (itO.hasNext()) {
+  while (itO.hasNext())
+  {
       itO.next();
       GVOut << itO.key() << " = \"" << itO.value() << "\"\n";
   }
@@ -119,7 +120,9 @@ void SVGFileGeneratorWorker::run()
     std::set<int>::const_iterator itIe = UnitsIDs.end();
 
     for (itI=itIb;itI!= itIe;++itI)
+    {
       GVOut << "\"" << QString::fromStdString(*itC) << "#" << (*itI) << "\"\n" ;
+    }
 
   }
 

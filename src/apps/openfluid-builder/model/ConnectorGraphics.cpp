@@ -98,16 +98,26 @@ void ConnectorGraphics::updatePosition()
   QPointF ToPos;
 
   if (m_FromOutNode == NODE_PROD)
+  {
     FromPos = mp_FromItem->getProducedIOPosition();
+  }
   else
+  {
     FromPos = mp_FromItem->getUpOutIOPosition();
+  }
 
   if (m_ToInNode == NODE_REQ)
+  {
     ToPos = mp_ToItem->getRequiredIOPosition();
+  }
   else if (m_ToInNode == NODE_US)
+  {
     ToPos = mp_ToItem->getUsedIOPosition();
+  }
   else
+  {
     ToPos = mp_ToItem->getUpInIOPosition();
+  }
 
 
   Path.moveTo(FromPos);
@@ -196,7 +206,9 @@ QString ConnectorGraphics::getVariablesString() const
   for (auto& VarInfo : m_VariablesInfos)
   {
     if (!Text.isEmpty())
+    {
       Text += "\n";
+    }
 
     Text += QString::fromStdString(VarInfo.DataName);
   }
@@ -226,7 +238,9 @@ QString ConnectorGraphics::getToolTipString() const
               " {" + QString::fromStdString(VarInfos.UnitsClass) + "}";
 
       if (VarInfos.DataType != openfluid::core::Value::NONE)
+      {
         Text += "," + QString::fromStdString(openfluid::core::Value::getStringFromValueType(VarInfos.DataType));
+      }
 
       Text += "</p>";
       Text += "</li>";

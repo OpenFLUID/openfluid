@@ -106,17 +106,23 @@ void DistributionTables::build(const std::string& BasePath,
         }
       }
       else
+      {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Cannot find <openfluid> tag in sources file " +
                                                   SourcesFilePath);
+      }
     }
     else
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Wrong formatted sources file " +
                                                 SourcesFilePath);
+    }
   }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot open sources file " +
                                               SourcesFilePath);
+  }
 
 
   // Units distribution file
@@ -139,26 +145,36 @@ void DistributionTables::build(const std::string& BasePath,
         if (DistriFileParser.getLongValue(i,0,&UnitID) && DistriFileParser.getStringValue(i,1,&DataSrcID))
         {
           if (SourcesTable.find(DataSrcID) != SourcesTable.end())
+          {
             UnitsTable[UnitID] = DataSrcID;
+          }
           else
+          {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                       "Error in distribution file " + DistributionFilePath +
                                                       ", data source ID not found");
+          }
         }
         else
+        {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "Error in distribution file " + DistributionFilePath +
                                                     ", format error");
+        }
       }
     }
     else
+    {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "Error in distribution file " + DistributionFilePath +
                                                 ", file not found or format error");
+    }
   }
   else
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Distribution file " + DistributionFilePath + " not found");
+  }
 
 }
 

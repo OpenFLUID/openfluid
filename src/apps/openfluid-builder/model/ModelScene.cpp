@@ -124,7 +124,9 @@ void ModelScene::refresh()
       QPoint Position(0,0);
 
       if (ConfigPos.type() == QVariant::Point)
+      {
         Position = ConfigPos.toPoint();
+      }
       else
       {
         QRectF CurrentRect = itemsBoundingRect();
@@ -273,7 +275,10 @@ void ModelScene::buildConnections()
           }
         }
         // input for updated vars cannot be after the current simulator/generator
-        if (FromMItemG == ToMItemG) break;
+        if (FromMItemG == ToMItemG)
+        {
+          break;
+        }
       }
 
       // use the latest provider item
@@ -307,7 +312,10 @@ void ModelScene::addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::O
       Conn->addVariable(VarInfos);
       Found = true;
     }
-    if (Found) break;
+    if (Found)
+    {
+      break;
+    }
   }
 
   if (!Found)

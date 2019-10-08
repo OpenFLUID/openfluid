@@ -50,7 +50,9 @@ PolygonGraphics::PolygonGraphics(OGRPolygon* OGRPoly, const QPen& Pen, const QBr
   QPolygonF Poly;
 
   for (int i=0; i < LinearRing->getNumPoints(); i++)
+  {
     Poly << QPointF(LinearRing->getX(i),LinearRing->getY(i));
+  }
 
   QPainterPath Path;
   Path.addPolygon(Poly);

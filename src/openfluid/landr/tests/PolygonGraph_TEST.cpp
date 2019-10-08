@@ -1455,7 +1455,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Contains_wi
   std::map<openfluid::landr::LineStringEntity*,openfluid::landr::PolygonEdge*>::iterator ite = lineMap->end();
   std::list<int> lNeighbours;
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   std::list<int>::iterator jt = lNeighbours.begin();
@@ -1470,7 +1472,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Contains_wi
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();
@@ -1485,7 +1489,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Contains_wi
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1617,7 +1623,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   std::map<openfluid::landr::LineStringEntity*,openfluid::landr::PolygonEdge*>::iterator ite = lineMap->end();
   std::list<int> lNeighbours;
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   std::list<int>::iterator jt=lNeighbours.begin();
@@ -1638,7 +1646,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();
@@ -1653,7 +1663,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1678,7 +1690,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1697,7 +1711,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();
@@ -1716,7 +1732,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1739,7 +1757,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1754,7 +1774,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();
@@ -1775,7 +1797,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1792,7 +1816,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1813,7 +1839,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt=lNeighbours.begin();
@@ -1838,7 +1866,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1865,7 +1895,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1886,7 +1918,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1911,7 +1945,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1936,7 +1972,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1959,7 +1997,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite=lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1974,7 +2014,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -1995,7 +2037,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2144,7 +2188,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   std::map<openfluid::landr::LineStringEntity*,openfluid::landr::PolygonEdge*>::iterator ite = lineMap->end();
   std::list<int> lNeighbours;
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   std::list<int>::iterator jt = lNeighbours.begin();
@@ -2159,7 +2205,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2174,7 +2222,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2189,7 +2239,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2204,7 +2256,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2220,7 +2274,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2235,7 +2291,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2250,7 +2308,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2265,7 +2325,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2280,7 +2342,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();
@@ -2296,7 +2360,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
   ite = lineMap->end();
   lNeighbours.clear();
   for (; it != ite; ++it)
+  {
     lNeighbours.push_back((*it).first->getOfldId());
+  }
 
   lNeighbours.sort();
   jt = lNeighbours.begin();

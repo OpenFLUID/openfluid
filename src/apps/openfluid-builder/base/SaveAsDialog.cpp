@@ -121,11 +121,17 @@ void SaveAsDialog::projectChanged()
 void SaveAsDialog::checkGlobal()
 {
   if (openfluid::base::RunContextManager::isProject(m_PrjDir.path().toStdString()))
+  {
     setMessage(tr("Project already exists"));
+  }
   else if (m_PrjDir.exists())
+  {
     setMessage(tr("Project directory already exist"));
+  }
   else
+  {
     setMessage();
+  }
 }
 
 

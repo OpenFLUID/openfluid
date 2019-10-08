@@ -85,9 +85,13 @@ int main(int argc, char** argv)
     QString LogDir;
 
     if (argc >= 2)
+    {
       LogDir = QString(argv[1]);
+    }
     else
+    {
       LogDir = QDir::currentPath();
+    }
 
     openfluid::ui::common::LogExplorerDialog LogDlg(LogDir);
 

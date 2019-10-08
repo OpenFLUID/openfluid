@@ -112,10 +112,14 @@ class TimePrimitivesObserver : public openfluid::ware::PluggableObserver
     void onInitializedRun()
     {
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::INITIALIZERUN)
+      {
         OPENFLUID_RaiseError("wrong stage");
+      }
 
       if (OPENFLUID_GetCurrentDate() != OPENFLUID_GetBeginDate())
+      {
         OPENFLUID_RaiseError("wrong current date");
+      }
 
     }
 
@@ -127,7 +131,9 @@ class TimePrimitivesObserver : public openfluid::ware::PluggableObserver
     void onStepCompleted()
     {
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::RUNSTEP)
+      {
         OPENFLUID_RaiseError("wrong stage");
+      }
 
 
       if (m_IsFirstRunStep)
@@ -135,23 +141,33 @@ class TimePrimitivesObserver : public openfluid::ware::PluggableObserver
         m_IsFirstRunStep = false;
 
         if (OPENFLUID_GetCurrentTimeIndex() != OPENFLUID_GetDefaultDeltaT())
+        {
           OPENFLUID_RaiseError("wrong time index");
+        }
 
         if (OPENFLUID_GetPreviousRunTimeIndex() != 0)
+        {
           OPENFLUID_RaiseError("wrong previous run time index");
+        }
       }
       else
       {
         if (OPENFLUID_GetPreviousRunTimeIndex() != (OPENFLUID_GetCurrentTimeIndex()-47))
+        {
           OPENFLUID_RaiseError("wrong previous run time index");
+        }
 
         if ((OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) % 47 != 0 )
+        {
           OPENFLUID_RaiseError("wrong time index");
+        }
 
       }
 
       if (OPENFLUID_GetCurrentDate() != (OPENFLUID_GetBeginDate()+OPENFLUID_GetCurrentTimeIndex()))
+      {
         OPENFLUID_RaiseError("wrong current date");
+      }
     }
 
 
@@ -162,7 +178,9 @@ class TimePrimitivesObserver : public openfluid::ware::PluggableObserver
     void onFinalizedRun()
     {
       if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::FINALIZERUN)
+      {
         OPENFLUID_RaiseError("wrong stage");
+      }
 
     }
 

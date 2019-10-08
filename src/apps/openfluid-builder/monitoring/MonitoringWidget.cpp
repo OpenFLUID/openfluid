@@ -117,7 +117,9 @@ void MonitoringWidget::addObserver()
 void MonitoringWidget::moveModelItemUp(const QString& /*ID*/, int CurrentIndex)
 {
   if (CurrentIndex < 0)
-     return;
+  {
+    return;
+  }
 
   unsigned int From = CurrentIndex;
   unsigned int To = (From == 0) ? m_Monitoring.getItemsCount() - 1 : From - 1;
@@ -140,7 +142,9 @@ void MonitoringWidget::moveModelItemUp(const QString& /*ID*/, int CurrentIndex)
 void MonitoringWidget::moveModelItemDown(const QString& /*ID*/, int CurrentIndex)
 {
   if (CurrentIndex < 0)
+  {
     return;
+  }
 
   unsigned int From = CurrentIndex;
   unsigned int To = (From == (unsigned int)m_Monitoring.getItemsCount() - 1) ? 0 : From + 1;
@@ -164,7 +168,9 @@ void MonitoringWidget::moveModelItemDown(const QString& /*ID*/, int CurrentIndex
 void MonitoringWidget::removeModelItem(const QString& /*ID*/, int CurrentIndex)
 {
   if (CurrentIndex < 0)
-     return;
+  {
+    return;
+  }
 
   WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(CurrentIndex)->widget());
   W->deleteLater();
@@ -195,8 +201,14 @@ void MonitoringWidget::refresh()
   {
     ObserverWidget* ObsWidget = new ObserverWidget(this,*it,(*it)->getID(),0);
     mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(ObsWidget);
-    if (it == itb) ObsWidget->setUpButtonEnabled(false);
-    if (it == itl) ObsWidget->setDownButtonEnabled(false);
+    if (it == itb)
+    {
+      ObsWidget->setUpButtonEnabled(false);
+    }
+    if (it == itl)
+    {
+      ObsWidget->setDownButtonEnabled(false);
+    }
 
     connect(ObsWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
     connect(ObsWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
@@ -242,7 +254,10 @@ void MonitoringWidget::prepareWaresUpdate()
   for (int i=0;i<=LastIndex;i++)
   {
     WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->itemAt(i)->widget());
-    if (W != nullptr) W->prepareWareUpdate();
+    if (W != nullptr)
+    {
+      W->prepareWareUpdate();
+    }
   }
 }
 
@@ -258,7 +273,10 @@ void MonitoringWidget::updateWares()
   for (int i=0;i<=LastIndex;i++)
   {
     WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->itemAt(i)->widget());
-    if (W != nullptr) W->updateWare();
+    if (W != nullptr)
+    {
+      W->updateWare();
+    }
   }
 
 }

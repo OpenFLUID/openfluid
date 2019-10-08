@@ -58,7 +58,9 @@ LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,unsigned 
   mp_LOUpNeighbours(0), mp_LODownNeighbours(0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_LINESTRING)
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Geometry is not a LineString");
+  }
 
   mp_Line = dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(mp_Geom));
 
@@ -80,7 +82,9 @@ LineStringEntity::~LineStringEntity()
   unsigned int iEnd=dirEdge.size();
 
   for (unsigned int i = 0; i < iEnd; i++)
+  {
     delete dirEdge[i];
+  }
 
   delete mp_LOUpNeighbours;
   delete mp_LODownNeighbours;
@@ -147,7 +151,9 @@ void LineStringEntity::computeNeighbours()
     LandREntity* Ent = dynamic_cast<LandREntity*>((*it)->getEdge());
 
     if (Ent != this)
+    {
       mp_Neighbours->insert(Ent);
+    }
   }
 
   it = DownStar->iterator();
@@ -158,7 +164,9 @@ void LineStringEntity::computeNeighbours()
     LandREntity* Ent = dynamic_cast<LandREntity*>((*it)->getEdge());
 
     if (Ent != this)
+    {
       mp_Neighbours->insert(Ent);
+    }
   }
 }
 
@@ -170,7 +178,9 @@ void LineStringEntity::computeNeighbours()
 std::vector<LineStringEntity*> LineStringEntity::getLineOrientUpNeighbours()
 {
   if (!mp_LOUpNeighbours)
+  {
     computeLineOrientUpNeighbours();
+  }
 
   return *mp_LOUpNeighbours;
 }
@@ -196,7 +206,9 @@ void LineStringEntity::computeLineOrientUpNeighbours()
     LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
 
     if (Unit->endNode()->getCoordinate().equals(UpNodeCoo))
+    {
       mp_LOUpNeighbours->push_back(Unit);
+    }
   }
 }
 
@@ -208,7 +220,9 @@ void LineStringEntity::computeLineOrientUpNeighbours()
 std::vector<LineStringEntity*> LineStringEntity::getLineOrientDownNeighbours()
 {
   if (!mp_LODownNeighbours)
+  {
     computeLineOrientDownNeighbours();
+  }
 
   return *mp_LODownNeighbours;
 }
@@ -234,7 +248,9 @@ void LineStringEntity::computeLineOrientDownNeighbours()
     LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
 
     if (Unit->startNode()->getCoordinate().equals(DownNodeCoo))
+    {
       mp_LODownNeighbours->push_back(Unit);
+    }
   }
 }
 

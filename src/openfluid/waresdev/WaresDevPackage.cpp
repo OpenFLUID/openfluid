@@ -65,9 +65,13 @@ WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& 
   m_PackageTempPath = m_PackageTempDir.absolutePath();
 
   if (m_PackageTempDir.exists())
+  {
     openfluid::tools::emptyDirectoryRecursively(m_PackageTempPath.toStdString());
+  }
   else
+  {
     (m_PackageTempDir.mkpath(m_PackageTempPath));
+  }
 
   m_ConfFilePath = m_PackageTempDir.absoluteFilePath(
       QString::fromStdString(openfluid::config::WARESDEV_PACKAGE_CONFFILE));
@@ -81,10 +85,14 @@ WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& 
 WaresDevPackage::~WaresDevPackage()
 {
   if (!mp_Process)
+  {
     return;
+  }
 
   if (mp_Process->state() != QProcess::NotRunning)
+  {
     mp_Process->close();
+  }
 
   delete mp_Process;
 }
@@ -133,7 +141,9 @@ void WaresDevPackage::processStandardOutput()
   mp_Process->setReadChannel(QProcess::StandardOutput);
 
   while (mp_Process->canReadLine())
+  {
     emit info(QString::fromUtf8(mp_Process->readLine()));
+  }
 }
 
 
@@ -146,7 +156,9 @@ void WaresDevPackage::processErrorOutput()
   mp_Process->setReadChannel(QProcess::StandardError);
 
   while (mp_Process->canReadLine())
+  {
     emit error(QString::fromUtf8(mp_Process->readLine()));
+  }
 }
 
 
@@ -204,16 +216,22 @@ void WaresDevExportPackage::exportToPackage()
 
   QFile PackageFile(m_PackageFilePath);
   if (PackageFile.exists())
+  {
     PackageFile.remove();
+  }
 
   compress();
 
   emit progressed(100);
 
   if (mp_Process->exitCode())
+  {
     emit finished(false, tr("Export failed"));
+  }
   else
+  {
     emit finished(true, tr("Export completed"));
+  }
 }
 
 
@@ -256,7 +274,9 @@ void WaresDevExportPackage::compress()
       QString Filename = ContentFileInfo.fileName();
 
       if (Filename.startsWith(".git") || !(Filename.startsWith(".") || Filename.startsWith("_build")))
+      {
         RelativePathsToExport << WaresdevDir.relativeFilePath(ContentFileInfo.absoluteFilePath());
+      }
     }
   }
 
@@ -266,9 +286,13 @@ void WaresDevExportPackage::compress()
   QString ConFileName = QString::fromStdString(openfluid::config::WARESDEV_PACKAGE_CONFFILE);
   QString ConfFileInWareDirAbsPath = WaresdevDir.filePath(ConFileName);
   if (QFile(m_ConfFilePath).copy(ConfFileInWareDirAbsPath))
+  {
     RelativePathsToExport << ConFileName;
+  }
   else
+  {
     emit error(tr("Unable to write configuration file in \"%1\".\nPackage may contain errors.").arg(WaresdevPath));
+  }
 
 
   QString Command = openfluid::utils::CMakeProxy::getTarCompressCommand(WaresdevPath,m_PackageFilePath,
@@ -279,7 +303,9 @@ void WaresDevExportPackage::compress()
   createAndLauchProcess(Command);
 
   if (!QFile(ConfFileInWareDirAbsPath).remove())
+  {
     emit error(tr("Unable to delete configuration file \"%1\".").arg(ConfFileInWareDirAbsPath));
+  }
 }
 
 
@@ -308,16 +334,24 @@ void WaresDevImportPackage::fetchInformation()
   {
     for (const QString& WareFolder : QDir(m_PackageTempDir.absoluteFilePath(WareTypeFolder)).entryList(
         QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name))
+    {
       m_WaresPaths << m_PackageTempDir.absoluteFilePath("%1/%2").arg(WareTypeFolder).arg(WareFolder);
+    }
   }
 
   if (mp_Process->exitCode())
+  {
     emit finished(false, tr("Fetching information failed"));
+  }
   else
+  {
     emit finished(true, tr("Fetching information completed"));
+  }
 
   if (qApp && qApp->thread() != thread())
+  {
     moveToThread(qApp->thread());
+  }
 }
 
 
@@ -370,7 +404,9 @@ void WaresDevImportPackage::copyWares()
 
   double ProgressRatio = 100;
   if (int SelectedWarePathsNb = m_SelectedWarePaths.size())
+  {
     ProgressRatio /= SelectedWarePathsNb;
+  }
 
   int Progress = 0;
 
@@ -402,12 +438,18 @@ void WaresDevImportPackage::copyWares()
   emit progressed(100);
 
   if (!Ok)
+  {
     emit finished(false, "Import completed with errors");
+  }
   else
+  {
     emit finished(true, "Import completed");
+  }
 
   if (qApp && qApp->thread() != thread())
+  {
     moveToThread(qApp->thread());
+  }
 }
 
 

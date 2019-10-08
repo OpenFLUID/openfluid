@@ -236,7 +236,9 @@ BOOST_AUTO_TEST_CASE(check_region)
   BOOST_REQUIRE(RegionValues.find("ewres") != RegionValues.end());
 
   for (auto& Val : RegionValues)
+  {
     std::cout << Val.first << " = " << Val.second << std::endl;
+  }
 
 }
 
@@ -265,7 +267,9 @@ BOOST_AUTO_TEST_CASE(check_gisenv)
   BOOST_REQUIRE_EQUAL(GisenvValues["MAPSET"],"PERMANENT");
 
   for (auto& Val : GisenvValues)
+  {
     std::cout << Val.first << " = " << Val.second << std::endl;
+  }
 
 }
 
@@ -301,7 +305,9 @@ BOOST_AUTO_TEST_CASE(check_mapsets)
   BOOST_REQUIRE(std::find(MapsetsValues.begin(),MapsetsValues.end(),"nonexistent") == MapsetsValues.end());
 
   for (auto& Val : MapsetsValues)
+  {
     std::cout << Val << std::endl;
+  }
 
 }
 
@@ -325,7 +331,9 @@ int main(int argc, char *argv[])
     return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
   }
   else
+  {
     std::cout << "** Test not run due to failing to find GRASS GIS program **" << std::endl;
+  }
 
   return 0;
 }

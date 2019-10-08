@@ -86,7 +86,9 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware:
 WareSrcContainer::~WareSrcContainer()
 {
   if (mp_Process->state() != WareSrcProcess::NotRunning)
+  {
     mp_Process->close();
+  }
 
   delete mp_Process;
   delete mp_CurrentParser;
@@ -106,11 +108,15 @@ void WareSrcContainer::update()
 
   QString CMakeListsFilePath = Dir.absoluteFilePath("CMakeLists.txt");
   if (QFile::exists(CMakeListsFilePath))
+  {
     m_AbsoluteCMakeListsPath = CMakeListsFilePath;
+  }
 
   QString JsonFilePath = Dir.absoluteFilePath("wareshub.json");
   if (QFile::exists(JsonFilePath))
+  {
     m_AbsoluteJsonPath = JsonFilePath;
+  }
 
   QString CMakeConfigFilePath = Dir.absoluteFilePath(
       QString::fromStdString(openfluid::config::WARESDEV_CMAKE_USERFILE));
@@ -121,8 +127,10 @@ void WareSrcContainer::update()
 
     QFile File(m_AbsoluteCMakeConfigPath);
     if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
       throw openfluid::base::FrameworkException(
           OPENFLUID_CODE_LOCATION, QString("Cannot open file %1").arg(m_AbsoluteCMakeConfigPath).toStdString());
+    }
 
     QByteArray CMakeFileContent = File.readAll();
 
@@ -132,7 +140,9 @@ void WareSrcContainer::update()
       QString MainCppFilePath = Dir.absoluteFilePath(MainCppFilename);
 
       if (QFile::exists(MainCppFilePath))
+      {
         m_AbsoluteMainCppPath = MainCppFilePath;
+      }
     }
 
     QString UiParamCppFilename = searchUiParamCppFileName(CMakeFileContent);
@@ -141,7 +151,9 @@ void WareSrcContainer::update()
       QString UiParamCppFilePath = Dir.absoluteFilePath(UiParamCppFilename);
 
       if (QFile::exists(UiParamCppFilePath))
+      {
         m_AbsoluteUiParamCppPath = UiParamCppFilePath;
+      }
     }
 
   }
@@ -165,7 +177,9 @@ QString WareSrcContainer::searchMainCppFileName(const QString& CMakeFileContent)
   for (const QString& L : Lines)
   {
     if (RE.indexIn(L) > -1)
+    {
       return RE.cap(1);
+    }
   }
 
   return "";
@@ -185,7 +199,9 @@ QString WareSrcContainer::searchUiParamCppFileName(const QString& CMakeFileConte
   for (const QString& L : Lines)
   {
     if (RE.indexIn(L) > -1)
+    {
       return RE.cap(1);
+    }
   }
 
   return "";
@@ -201,10 +217,14 @@ QStringList WareSrcContainer::getDefaultFilesPaths()
   QStringList L;
 
   if (!m_AbsoluteCMakeConfigPath.isEmpty())
+  {
     L << m_AbsoluteCMakeConfigPath;
+  }
 
   if (!m_AbsoluteMainCppPath.isEmpty())
+  {
     L << m_AbsoluteMainCppPath;
+  }
   else
   {
     QDir Dir(m_AbsolutePath);
@@ -215,7 +235,9 @@ QStringList WareSrcContainer::getDefaultFilesPaths()
     QString FirstCpp = Dir.entryList(NameFilters, QDir::Files, QDir::Name).value(0, "");
 
     if (!FirstCpp.isEmpty())
+    {
       L << Dir.absoluteFilePath(FirstCpp);
+    }
   }
 
   return L;
@@ -327,7 +349,9 @@ std::map<QString,QString> WareSrcContainer::getConfigureVariables() const
   QByteArray OpenFLUIDInstallPrefix = qgetenv("OPENFLUID_INSTALL_PREFIX");
 
   if (!OpenFLUIDInstallPrefix.isNull())
+  {
     Vars["CMAKE_PREFIX_PATH"] = OpenFLUIDInstallPrefix + "/lib/cmake";
+  }
 
   return Vars;
 }
@@ -411,9 +435,13 @@ void WareSrcContainer::prepareBuildDirectory() const
   QFile BuildDir(m_BuildDirPath);
 
   if (BuildDir.exists())
+  {
     openfluid::tools::emptyDirectoryRecursively(QString(m_BuildDirPath).toStdString());
+  }
   else if (!QDir().mkpath(m_BuildDirPath))
+  {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to create build directory");
+  }
 }
 
 
@@ -424,7 +452,9 @@ void WareSrcContainer::prepareBuildDirectory() const
 void WareSrcContainer::setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream)
 {
   if (mp_Stream)
+  {
     delete mp_Stream;
+  }
   mp_Stream = &Stream;
 }
 
@@ -515,7 +545,9 @@ QString WareSrcContainer::getGenerateDocTarget() const
 void WareSrcContainer::configure()
 {
   if (!openfluid::utils::CMakeProxy::isAvailable())
+  {
     return;
+  }
 
 
   mp_Stream->clear();
@@ -546,7 +578,9 @@ void WareSrcContainer::configure()
 void WareSrcContainer::build()
 {
   if (!openfluid::utils::CMakeProxy::isAvailable())
+  {
     return;
+  }
 
 
   mp_Stream->clear();
@@ -640,7 +674,9 @@ void WareSrcContainer::processStandardOutput()
     mp_Stream->write(Message);
 
     if (Message.m_Type != WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD)
+    {
       m_Messages.append(Message);
+    }
   }
 
 }
@@ -697,9 +733,13 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
   emit processFinished();
 
   if (mp_Process->getType() == WareSrcProcess::Type::CONFIGURE)
+  {
     emit configureProcessFinished(m_Type,m_ID);
+  }
   else if (mp_Process->getType() == WareSrcProcess::Type::BUILD)
+  {
     emit buildProcessFinished(m_Type,m_ID);
+  }
 
   mp_Process->setType(WareSrcProcess::Type::NONE);
 }
@@ -712,7 +752,9 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
 void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironment& Env, WareSrcProcess::Type CmdType)
 {
   if (mp_Process->state() != WareSrcProcess::NotRunning)
+  {
     mp_Process->close();
+  }
 
   m_ProcessTimer.start();
 
@@ -721,9 +763,13 @@ void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironm
   emit processLaunched();
 
   if (CmdType == WareSrcProcess::Type::CONFIGURE)
+  {
     emit configureProcessLaunched(m_Type,m_ID);
+  }
   else if (CmdType == WareSrcProcess::Type::BUILD)
+  {
     emit buildProcessLaunched(m_Type,m_ID);
+  }
 
   if (openfluid::base::PreferencesManager::instance()->isWaresdevShowCommandEnv("PATH"))
   {

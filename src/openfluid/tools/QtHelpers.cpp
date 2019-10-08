@@ -56,9 +56,13 @@ QString toIniCompatible(const std::string& Str)
 std::string fromIniCompatible(const QVariant& Var)
 {
   if (Var.type() == QVariant::StringList)
+  {
     return Var.toStringList().join(", ").toStdString();
+  }
   else
+  {
     return Var.toString().toStdString();
+  }
 }
 
 
@@ -71,7 +75,9 @@ std::list<std::string> toStdStringList(const QStringList& StrList)
   std::list<std::string> TmpList;
 
   for (int i=0; i<StrList.size(); i++)
+  {
     TmpList.push_back(StrList[i].toStdString());
+  }
 
   return TmpList;
 }
@@ -86,7 +92,9 @@ std::vector<std::string> toStdStringVector(const QStringList& StrList)
   std::vector<std::string> TmpVector;
 
   for (int i=0; i<StrList.size(); i++)
+  {
     TmpVector.push_back(StrList[i].toStdString());
+  }
 
   return TmpVector;
 }
@@ -113,7 +121,9 @@ QStringList toQStringList(const std::vector<std::string>& StrVect)
 {
   QStringList QSL;
   for (unsigned int i=0; i<StrVect.size();++i)
+  {
     QSL.append(QString(StrVect[i].c_str()));
+  }
 
   return QSL;
 }
@@ -132,7 +142,9 @@ QStringList toQStringList(const std::set<std::string>& StrSet)
   std::set<std::string>::const_iterator ite = StrSet.end();
 
   for (it=itb;it!= ite;++it)
+  {
     QSL.append(QString((*it).c_str()));
+  }
 
   return QSL;
 }
@@ -151,7 +163,9 @@ QStringList toQStringList(const std::list<std::string>& StrList)
   std::list<std::string>::const_iterator ite = StrList.end();
 
   for (it=itb;it!= ite;++it)
+  {
     QSL.append(QString((*it).c_str()));
+  }
 
   return QSL;
 }
@@ -170,7 +184,9 @@ QStringList toQStringList(const std::set<int>& IntSet)
   std::set<int>::const_iterator ite = IntSet.end();
 
   for (it=itb;it!= ite;++it)
+  {
     QSL.append(QString("%1").arg(*it));
+  }
 
   return QSL;
 }

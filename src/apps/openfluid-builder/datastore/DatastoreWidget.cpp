@@ -312,7 +312,9 @@ void DatastoreWidget::addItem()
                                                          AddItemDlg.getItemType());
 
       if (AddItemDlg.isUnitsClass())
+      {
         DSItemDesc->setUnitsClass(AddItemDlg.getUnitsClass().toStdString());
+      }
 
       m_Datastore.appendItem(DSItemDesc);
 
@@ -377,7 +379,9 @@ void DatastoreWidget::removeItem()
 void DatastoreWidget::moveItemUp()
 {
   if (ui->DatastoreTableWidget->rowCount() < 2)
+  {
     return;
+  }
 
   int DSItemIndex = ui->DatastoreTableWidget->currentRow();
 
@@ -406,7 +410,9 @@ void DatastoreWidget::moveItemDown()
   int RowCount = ui->DatastoreTableWidget->rowCount();
 
   if (RowCount < 2)
+  {
     return;
+  }
 
   int DSItemIndex = ui->DatastoreTableWidget->currentRow();
 

@@ -185,7 +185,9 @@ void ObserverWidget::addParameterToList()
   openfluid::ware::WareParams_t Params = mp_Desc->getParameters();
 
   for (openfluid::ware::WareParams_t::iterator it = Params.begin();it != Params.end(); ++it)
+  {
     ExistPList.append(QString::fromStdString((*it).first));
+  }
 
   // set existing parameters list as completion list
   // (for easy access to series of similar parameters)

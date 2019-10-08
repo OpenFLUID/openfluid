@@ -75,7 +75,9 @@ void VectorValue::writeToStream(std::ostream& OutStm) const
     {
       OutStm << m_Data[i];
       if (i != s-1)
+      {
         OutStm << ",";
+      }
     }
     OutStm << "]";
   }

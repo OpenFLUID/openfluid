@@ -178,7 +178,9 @@ LogExplorerDialog::LogItemInfos LogExplorerDialog::processLogLine(const QString&
     {
       QStringList SplittedKeyVal = KeyValStr.split('=');
       if (SplittedKeyVal.size() == 2)
+      {
         Item["context."+SplittedKeyVal[0]] = SplittedKeyVal[1];
+      }
     }
 
     SplittedLine.removeFirst();
@@ -209,7 +211,9 @@ void LogExplorerDialog::updateTable(bool WithFiltering)
 {
 
   while (ui->LogTableWidget->rowCount() > 0)
+  {
     ui->LogTableWidget->removeRow(0);
+  }  
 
   ui->LogTableWidget->setRowCount(0);
   updateDetails(-1);
@@ -222,16 +226,28 @@ void LogExplorerDialog::updateTable(bool WithFiltering)
   if (WithFiltering)
   {
     for (int i=0;i<ui->TypeFilterListWidget->count();i++)
+    {
       if (ui->TypeFilterListWidget->item(i)->checkState() == Qt::Checked)
+      {
         FilteredTypes.append(ui->TypeFilterListWidget->item(i)->text());
-
+      }
+    }
+  
     for (int i=0;i<ui->SimulatorFilterListWidget->count();i++)
+    {
       if (ui->SimulatorFilterListWidget->item(i)->checkState() == Qt::Checked)
+      {
         FilteredSimulators.append(ui->SimulatorFilterListWidget->item(i)->text());
+      }
+    }
 
     for (int i=0;i<ui->ObserverFilterListWidget->count();i++)
+    {
       if (ui->ObserverFilterListWidget->item(i)->checkState() == Qt::Checked)
+      {
         FilteredObservers.append(ui->ObserverFilterListWidget->item(i)->text());
+      }
+    }
   }
 
 
@@ -252,22 +268,32 @@ void LogExplorerDialog::updateTable(bool WithFiltering)
       if (WithFiltering)
       {
         if (!FilteredTypes.contains(TypeStr))
+        {
           OKToDisplay = false;
+        }
         else if (Item.contains("context.source"))
         {
           if (ContextSrcStr == "app" && ui->AppFilterCheckBox->checkState() == Qt::Unchecked)
+          {
             OKToDisplay = false;
+          }
           else if (ContextSrcStr == "framework" && ui->FrameworkFilterCheckBox->checkState() == Qt::Unchecked)
+          {
             OKToDisplay = false;
+          }  
           else if (ContextSrcStr == "ware")
           {
             QString WareTypeStr = Item["context.waretype"];
             QString WareIDStr = Item["context.wareid"];
 
             if (WareTypeStr == "simulator" && (FilteredSimulators.empty() || !FilteredSimulators.contains(WareIDStr)))
+            {
               OKToDisplay = false;
+            }
             else if (WareTypeStr == "observer" && (FilteredObservers.empty() || !FilteredObservers.contains(WareIDStr)))
+            {
               OKToDisplay = false;
+            }  
           }
         }
       }
@@ -283,13 +309,21 @@ void LogExplorerDialog::updateTable(bool WithFiltering)
         TableItem->setData(Qt::UserRole,i);
 
         if (TypeStr.toLower() == "warning")
+        {
           TableItem->setBackground(QBrush(QColor("#FFCF5A")));
+        }
         else if (TypeStr.toLower() == "info")
+        {
           TableItem->setBackground(QBrush(QColor("#6CC2FF")));
+        }  
         else if (TypeStr.toLower() == "debug")
+        {
           TableItem->setBackground(QBrush(QColor("#D0D0D0")));
+        }
         else if (TypeStr.toLower() == "error")
+        {
           TableItem->setBackground(QBrush(QColor("#FF625A")));
+        }  
 
         ui->LogTableWidget->setItem(RowCount-1, 0, TableItem);
 
@@ -341,9 +375,13 @@ void LogExplorerDialog::updateTable(bool WithFiltering)
   ui->LogTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
   if (ui->LogTableWidget->rowCount())
+  {
     ui->MessagesCountLabel->setText(tr("%1 message(s)").arg(ui->LogTableWidget->rowCount()));
+  }
   else
+  {
     ui->MessagesCountLabel->setText(tr("no message"));
+  }
 
 }
 
@@ -370,7 +408,9 @@ void LogExplorerDialog::rebuildFilters()
 
     QString TypeStr = m_LogInfos[i]["type"];
     if (!(TypeStr.isEmpty() || Types.contains(TypeStr)))
+    {
       Types.append(TypeStr);
+    }
 
     if (m_LogInfos[i].contains("context.source") && m_LogInfos[i]["context.source"] == "ware" &&
         m_LogInfos[i].contains("context.waretype") && m_LogInfos[i].contains("context.wareid"))
@@ -379,9 +419,13 @@ void LogExplorerDialog::rebuildFilters()
       QString WareIDStr = m_LogInfos[i]["context.wareid"];
 
       if (WareTypeStr.toLower() == "simulator" && !Simulators.contains(WareIDStr))
+      {
         Simulators.append(WareIDStr);
+      }
       else if (WareTypeStr.toLower() == "observer" && !Observers.contains(WareIDStr))
+      {
         Observers.append(WareIDStr);
+      }  
     }
   }
 
@@ -440,7 +484,9 @@ void LogExplorerDialog::updateDetails(int Row)
       it.next();
 
       if (it.key().startsWith("context."))
+      {
         Context.append(QString(it.key()).remove(0,8)+"="+it.value());
+      }
     }
 
     ui->ContextDetailLabel->setText(Context.join("\n"));

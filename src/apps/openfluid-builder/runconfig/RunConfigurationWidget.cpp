@@ -114,7 +114,9 @@ void RunConfigurationWidget::refresh()
   ui->MemoryGroupBox->setChecked(m_FluidxDesc.runConfiguration().isUserValuesBufferSize());
 
   if (ui->MemoryGroupBox->isEnabled())
+  {
     ui->MemoryStepsSpinBox->setValue(m_FluidxDesc.runConfiguration().getValuesBufferSize());
+  }
 
 
   ui->ClearOutputCheckBox->setChecked(openfluid::base::RunContextManager::instance()
@@ -127,7 +129,9 @@ void RunConfigurationWidget::refresh()
                     ->getProjectConfigValue("builder.runconfig.options","maxthreads").toInt();
 
   if (MaxThreads < 1)
+  {
     resetThreadsToIdeal();
+  }
 
   ui->ThreadsSpinBox->setValue(MaxThreads);
 
@@ -194,9 +198,13 @@ void RunConfigurationWidget::updateEndDateFXDesc(const QDateTime& QDT)
 void RunConfigurationWidget::updateMemoryFXDesc(bool On)
 {
   if (On)
+  {
     m_FluidxDesc.runConfiguration().setValuesBufferSize(ui->MemoryStepsSpinBox->value());
+  }
   else
+  {
     m_FluidxDesc.runConfiguration().unsetUserValuesBufferSize();
+  }
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
 }
 

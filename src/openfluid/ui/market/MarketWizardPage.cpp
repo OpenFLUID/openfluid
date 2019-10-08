@@ -61,11 +61,17 @@ MarketWizardPage::MarketWizardPage(QWidget *Parent) : QWizardPage(Parent),
 bool MarketWizardPage::isComplete() const
 {
   if (isSelectionPage())
+  {
     return m_PackagesSelected;
+  }
   else if (isLicensesnPage())
+  {
     return m_LicensesRadioAccepted;
+  }  
   else if (isInstallPage())
+  {
     return m_InstallationFinished;
+  }
 
   return QWizardPage::isComplete();
 }
@@ -78,11 +84,17 @@ bool MarketWizardPage::isComplete() const
 void MarketWizardPage::setPageComplete(bool Complete)
 {
   if (isSelectionPage())
+  {
     m_PackagesSelected = Complete;
+  }
   else if (isLicensesnPage())
+  {
     m_LicensesRadioAccepted = Complete;
+  }  
   else if (isInstallPage())
+  {
     m_InstallationFinished = Complete;
+  }
 
   emit completeChanged();
 }

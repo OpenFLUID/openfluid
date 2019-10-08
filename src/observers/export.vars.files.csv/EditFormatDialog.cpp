@@ -132,9 +132,13 @@ void EditFormatDialog::checkGlobal()
 
   ui->CustomDateEdit->setEnabled(ui->CustomDateRadioButton->isChecked());
   if (ui->CustomDateEdit->isEnabled())
+  {
     ui->CustomDateEdit->setPlaceholderText(getPlaceholderRequired());
+  }
   else
+  {
     ui->CustomDateEdit->setPlaceholderText("");
+  }
 
   bool InvalidName = ui->FormatNameEdit->text().isEmpty() ||
                     !openfluid::tools::isValidAlphaNumName(ui->FormatNameEdit->text().toStdString());
@@ -145,9 +149,13 @@ void EditFormatDialog::checkGlobal()
       (ui->CustomDateEdit->isEnabled() && ui->CustomDateEdit->text().isEmpty()) ||
       ui->ColSepEdit->text().isEmpty() ||
       ui->CommentCharEdit->text().isEmpty())
+  {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+  }
   else
+  {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  }
 }
 
 
@@ -165,7 +173,9 @@ void EditFormatDialog::initialize(const QString& Name, const QString& Header, co
 
   int HeaderIndex = m_HeaderCodes.indexOf(StrToHeaderType(Header.toStdString()));
   if (HeaderIndex >= 0)
+  {
     ui->HeaderComboBox->setCurrentIndex(HeaderIndex);
+  }
 
   int DateIndex = m_DateCodes.indexOf(Date.toStdString());
   if (DateIndex >= 0)
@@ -197,9 +207,13 @@ void EditFormatDialog::updatePreview()
   for (int i=0; i<m_PreviewDateTimes.count();i++)
   {
     if (m_Format.IsTimeIndexDateFormat)
+    {
       PreviewText << m_PreviewDateTimes[i].diffInSeconds(m_PreviewDateTimes[0]);
+    }
     else
+    {
       PreviewText << m_PreviewDateTimes[i].getAsString(StrToDateFormat(m_Format.DateFormat));
+    }
     PreviewText << m_Format.ColSeparator << m_PreviewValues[i] << "\n";
   }
 
@@ -217,9 +231,13 @@ openfluid::ware::WareParams_t EditFormatDialog::getFormatParams()
 
   std::string DateStr;
   if (ui->PredefDateRadioButton->isChecked())
+  {
     DateStr = m_DateCodes[ui->DateComboBox->currentIndex()];
+  }
   else
+  {
     DateStr = ui->CustomDateEdit->text().toStdString();
+  }
 
   std::string PrecisionStr = ui->PrecisionSpinBox->cleanText().toStdString();
   std::string ColSepStr = ui->ColSepEdit->text().replace("\\t","\t").toStdString();

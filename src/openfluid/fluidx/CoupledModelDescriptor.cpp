@@ -48,10 +48,14 @@ namespace openfluid { namespace fluidx {
 openfluid::ware::WareID_t CoupledModelDescriptor::getID(ModelItemDescriptor* Item) const
 {
   if (Item->isType(openfluid::ware::WareType::SIMULATOR))
+  {
     return (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getID();
+  }
 
   if (Item->isType(openfluid::ware::WareType::GENERATOR))
+  {
     return (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratedID();
+  }
 
   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                             "Unknown ware type");

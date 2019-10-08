@@ -114,7 +114,9 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_GetSimulatorParameter(Params,"MultiCapacity",m_MultiCapacity);
       if (m_MultiCapacity<0)
+      {
         OPENFLUID_RaiseError("The Multiplying factor for capacity (MultiCapacity) should be positive");
+      }
     }
 
 
@@ -215,8 +217,10 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
           UpRUsList = RU->fromSpatialUnits("RU");
 
           if (UpRUsList == nullptr)
+          {
             OPENFLUID_GetVariable(RU,"examples.RU.S.stock",
                                   OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
+          }
           else
           {
             OPENFLUID_GetAttribute(RU,"capacity",Capacity);
@@ -225,10 +229,14 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
 
             if (OPENFLUID_IsVariableExist(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()))
+            {
               OPENFLUID_GetVariable(RU,"examples.RU.S.stock",StockValue);
+            }
             else
+            {
               OPENFLUID_GetVariable(RU,"examples.RU.S.stock",
                                     OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
+            }
 
 
             for (UpRUiter=UpRUsList->begin(); UpRUiter != UpRUsList->end(); ++UpRUiter)
@@ -279,4 +287,3 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
 
 DEFINE_SIMULATOR_CLASS(RUSimulator);
-

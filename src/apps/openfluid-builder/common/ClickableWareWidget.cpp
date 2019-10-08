@@ -56,10 +56,14 @@ ClickableWareWidget::ClickableWareWidget(QWidget* Parent,
 void ClickableWareWidget::mouseDoubleClickEvent(QMouseEvent* Event)
 {
   if (m_Ghost)
+  {
     emit srcEditAsked(QString::fromStdString(m_ID),m_Ghost);
+  }
 #ifdef ENABLE_WARESDEV_INTEGRATION
   else
+  {
     emit srcEditAsked(QString::fromStdString(m_ID),m_Ghost);
+  }
 #endif
 
   QWidget::mousePressEvent(Event);
