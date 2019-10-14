@@ -11,6 +11,7 @@
   * Added french translation for completion menu
   * Updated management of completion in Devstudio
   * Updated completion items in Devstudio for better consistency
+  * Updated checkstyle tool according to the bracketing coding style
   * Updated configuration of external CI services
   * Updated documentation
   * Updated tests
