@@ -1,5 +1,4 @@
 \documentclass[a4paper,10pt,twoside]{book}
-\usepackage{a4wide}
 \usepackage{makeidx}
 \usepackage{natbib}
 \usepackage{graphicx}
@@ -29,6 +28,7 @@
 \usepackage{pspicture}
 \fi
 \usepackage[utf8]{inputenc}
+\usepackage{geometry}
 \usepackage{mathptmx}
 \usepackage[scaled=.90]{helvet}
 \usepackage{courier}
@@ -42,11 +42,17 @@
 \makeindex
 \setcounter{tocdepth}{3}
 \renewcommand{\footrulewidth}{0.4pt}
+
 \renewcommand{\familydefault}{\sfdefault}
 \hfuzz=15pt
 \setlength{\emergencystretch}{15pt}
 \hbadness=750
 \tolerance=750
+\fancyheadoffset{0cm}
+\geometry{
+   margin=3cm
+}
+
 \begin{document}
 \hypersetup{pageanchor=false,citecolor=blue}
 

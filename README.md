@@ -60,7 +60,7 @@ For unit testing, the Boost unit testing framework is also required
 For building Latex documents (optional), required tools and packages are:
   - pdflatex
   - latex2html
-  - packages: a4wide, babel, ltxtable, pgf/tikz, tabularx, verbatim
+  - packages: babel, geometry, ltxtable, pgf/tikz, tabularx, verbatim
   - fonts: cmbright
 
 OpenFLUID uses CMake version 3.1 or higher for build configuration and GCC 5.3 or higher for compilation.
