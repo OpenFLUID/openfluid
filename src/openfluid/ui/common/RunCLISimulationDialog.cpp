@@ -130,11 +130,11 @@ void RunCLISimulationDialog::showEvent(QShowEvent* event)
                                                                 openfluid::config::CMD_APP
                                                                });
 
-  QString Command = QString::fromStdString(CmdPath);
+  QString Command = QDir::toNativeSeparators(QString::fromStdString(CmdPath));
  
   // build command line arguments 
   QStringList Args;
-  Args << "run" << m_PrjPath;
+  Args << "run" << QDir::toNativeSeparators(m_PrjPath);
 
 
   auto RunCtxt = openfluid::base::RunContextManager::instance();
