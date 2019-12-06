@@ -10,7 +10,7 @@ matrix:
       dist: bionic
       env: OFBUILD_TRAVIS_BUILDTYPE=release
     - os: osx
-      osx_image: xcode9.2
+      osx_image: xcode11.1
       env: OFBUILD_TRAVIS_BUILDTYPE=release
 
 
@@ -42,7 +42,18 @@ addons:
     - p7zip-full 
     - gnuplot 
     - graphviz
-
+  homebrew:
+    packages:
+    - boost
+    - rapidjson
+    - gdal
+    - geos
+    - qt5
+    - doxygen
+    - p7zip
+    - gnuplot
+    - cmake
+    update: true
 
 #####################################################
 
@@ -50,8 +61,7 @@ addons:
 install:
   - |
     if [ "${TRAVIS_OS_NAME}" == "osx" ]
-    then 
-      brew install qt5 rapidjson doxygen
+    then
       export PATH=$PATH:$(brew --prefix qt5)/bin
     fi
 
