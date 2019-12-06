@@ -178,6 +178,8 @@ OFBUILD_ADD_SIMULATOR(tests.na.end ${OFBUILD_TESTS_BINARY_DIR})
 OFBUILD_ADD_SIMULATOR(tests.na.randomtime ${OFBUILD_TESTS_BINARY_DIR})
 OFBUILD_ADD_SIMULATOR(tests.na.noupdate ${OFBUILD_TESTS_BINARY_DIR})
 
+OFBUILD_ADD_SIMULATOR(tests.precision ${OFBUILD_TESTS_BINARY_DIR})
+
 
 ###########################################################################
 

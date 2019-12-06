@@ -90,6 +90,31 @@ OPENFLUID_ADD_TEST(NAME observers-MulticolsCSVFiles-KeepEmpty
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME observers-CSVObserverPrecision
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                        "run"
+                        "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.CSVObserverPrecision"
+                        "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision" 
+                        "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+                        "-n" "${OFBUILD_TESTS_BINARY_DIR}"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/MC_sciTU1.csv" 
+                             CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/MC_customTU1.csv"
+                             CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/default_TU1_prec.bigger.csv"
+                             CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/default_TU1_prec.smaller.csv"
+                             CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/fixed_TU1_prec.bigger.csv"
+                             CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/fixed_TU1_prec.smaller.csv"
+                             CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/sci_TU1_prec.bigger.csv"
+                             CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/sci_TU1_prec.smaller.csv"
+                             CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/autofloat_TU1_prec.bigger.csv"
+                             CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CSVObserverPrecision/autofloat_TU1_prec.smaller.csv"
+                             
+                   )
+
+
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME observers-DotFiles 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"

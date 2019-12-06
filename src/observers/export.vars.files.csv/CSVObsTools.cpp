@@ -118,14 +118,15 @@ std::vector<std::string> parseFormatsFromParamsTree(const openfluid::ware::WareP
     {
       std::string FormatName = Format.first;
 
-      Formats[FormatName].ColSeparator = Format.second.getChildValue("colsep","\t");
+      Formats[FormatName].ColSeparator = basicParseFormatsFromParamsTree(Format.second, "colsep");
       long Precision;
-      Format.second.getChildValue("precision",5).toInteger(Precision);
+      basicParseFormatsFromParamsTree(Format.second, "precision").toInteger(Precision);
       Formats[FormatName].Precision = Precision;
-      Formats[FormatName].DateFormat = Format.second.getChildValue("date","ISO").get();
+      Formats[FormatName].FloatFormat = basicParseFormatsFromParamsTree(Format.second, "float-format");
+      Formats[FormatName].DateFormat = basicParseFormatsFromParamsTree(Format.second, "date").get();
       Formats[FormatName].IsTimeIndexDateFormat = (Formats[FormatName].DateFormat == "timeindex");
-      Formats[FormatName].CommentChar = Format.second.getChildValue("commentchar","#");
-      Formats[FormatName].Header = StrToHeaderType(Format.second.getChildValue("header","").get());
+      Formats[FormatName].CommentChar = basicParseFormatsFromParamsTree(Format.second, "commentchar");
+      Formats[FormatName].Header = StrToHeaderType(basicParseFormatsFromParamsTree(Format.second, "header").get());
     }
   }
 

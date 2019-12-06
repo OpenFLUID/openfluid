@@ -82,6 +82,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv-multicols")
       "  format.<formatname>.header : the header type\n"
       "  format.<formatname>.missingvalue : the string used when data not available\n"
       "  format.<formatname>.precision : the precision for real values\n"
+      "  format.<formatname>.float-format : the floating point system used for real values (auto/fixed/scientific)\n"
       "  set.<setname>.selection : the wanted variables, following the pattern: \n"
       "    <UnitsClass1>#<UnitNumber1>:<VarName1>%<digitsPrecision1>;<UnitsClass2>#...\n"
       "  set.<setname>.format : the <formatname> used, must be defined by a format parameter");
@@ -176,7 +177,8 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
         }
         
         m_SetsFiles[Set.first].SetDefinition.SelectionList = stringSelectionToClassIDVarList(Set.second.Selection,
-                                                                             m_SetsFiles[Set.first].Format->Precision);
+                                                                          m_SetsFiles[Set.first].Format->Precision,
+                                                                          m_SetsFiles[Set.first].Format->FloatFormat);
 
       }
 
@@ -285,7 +287,8 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
             {
               for (openfluid::core::VariableName_t CurrentVar : VarArray)
               {
-                ClassIDVar CurrentTriplet(UnitsClass, std::to_string(CurrentID), CurrentVar, Triplet.Precision);
+                ClassIDVar CurrentTriplet(UnitsClass, std::to_string(CurrentID), CurrentVar, Triplet.Precision,
+                                          Triplet.FloatFormat);
                 SetFiles.second.SetDefinition.ExpandedSelection.push_back(CurrentTriplet);
                 
                 if (FirstColumn)
@@ -361,7 +364,8 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
           if (Val!=nullptr)
           {
             IsValue = true;
-            LineHandle << std::fixed << std::setprecision(Column.Precision);
+            setStreamFormat(LineHandle, Column.Precision, Column.FloatFormat);
+            
             Val->writeQuotedToStream(LineHandle);
           }
           else // if val not found, use missing value string

@@ -96,7 +96,9 @@ CSVMultiSet::CSVMultiSet() :
 // =====================================================================
 
 
-std::vector<ClassIDVar> stringSelectionToClassIDVarList(std::string SelectionStr, unsigned int DefaultPrecision)
+std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string SelectionStr, 
+                                                        const unsigned int DefaultPrecision, 
+                                                        const std::string DefaultFloatFormat)
 {
   std::vector<std::string> Columns = openfluid::tools::splitString(SelectionStr, ";");
   
@@ -113,12 +115,28 @@ std::vector<ClassIDVar> stringSelectionToClassIDVarList(std::string SelectionStr
     
     CurrentCSVTriplet.UnitsClassesStr = Column.substr(0,HashPosition);
     CurrentCSVTriplet.UnitsIDsStr = Column.substr(HashPosition+1, ColonPosition-HashPosition-1);
+    CurrentCSVTriplet.FloatFormat = DefaultFloatFormat;
     
     if (PercentPosition != std::string::npos) // if precision information
     {
       CurrentCSVTriplet.VariablesStr = Column.substr(ColonPosition+1, PercentPosition-ColonPosition-1);
       CurrentCSVTriplet.HasPrecision = true;
-      CurrentCSVTriplet.Precision = std::stoi(Column.substr(PercentPosition+1).c_str());
+      
+      std::size_t EndOfPrecisionPos = Column.size();
+      
+      if (Column.back() == 'e' || Column.back() == 'f')
+      {
+        EndOfPrecisionPos--;
+        if (Column.back() == 'e')
+        {
+          CurrentCSVTriplet.FloatFormat = "scientific";
+        }
+        else
+        {
+          CurrentCSVTriplet.FloatFormat = "fixed";
+        }
+      }
+      CurrentCSVTriplet.Precision = std::stoi(Column.substr(PercentPosition+1, EndOfPrecisionPos).c_str());
     }
     else
     {
@@ -218,14 +236,15 @@ std::vector<std::string> parseMultiColsFormatsFromParamsTree(const openfluid::wa
     {
       std::string FormatName = Format.first;
 
-      Formats[FormatName].ColSeparator = Format.second.getChildValue("colsep","\t");
+      Formats[FormatName].ColSeparator = basicParseFormatsFromParamsTree(Format.second, "colsep");
       long Precision;
-      Format.second.getChildValue("precision",5).toInteger(Precision);
+      basicParseFormatsFromParamsTree(Format.second, "precision").toInteger(Precision);
       Formats[FormatName].Precision = Precision;
-      Formats[FormatName].DateFormat = Format.second.getChildValue("date","ISO").get();
+      Formats[FormatName].FloatFormat = basicParseFormatsFromParamsTree(Format.second, "float-format");
+      Formats[FormatName].DateFormat = basicParseFormatsFromParamsTree(Format.second, "date").get();
       Formats[FormatName].IsTimeIndexDateFormat = (Formats[FormatName].DateFormat == "timeindex");
-      Formats[FormatName].CommentChar = Format.second.getChildValue("commentchar","#");
-      Formats[FormatName].Header = StrToHeaderType(Format.second.getChildValue("header","").get());
+      Formats[FormatName].CommentChar = basicParseFormatsFromParamsTree(Format.second, "commentchar");
+      Formats[FormatName].Header = StrToHeaderType(basicParseFormatsFromParamsTree(Format.second, "header").get());
       
       Formats[FormatName].MissingValueString = Format.second.getChildValue("missingvalue","NA").get();
     }

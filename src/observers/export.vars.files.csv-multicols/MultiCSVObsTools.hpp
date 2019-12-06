@@ -81,11 +81,13 @@ class ClassIDVar
     bool HasPrecision;
     unsigned int Precision;
     
+    std::string FloatFormat;
+    
     ClassIDVar();
     
     ClassIDVar(openfluid::core::UnitsClass_t Classes, std::string IDs, openfluid::core::VariableName_t Vars, 
-              unsigned int Precision) : 
-        UnitsClassesStr(Classes), UnitsIDsStr(IDs), VariablesStr(Vars), Precision(Precision)
+              unsigned int Precision, std::string FloatFormat) : 
+        UnitsClassesStr(Classes), UnitsIDsStr(IDs), VariablesStr(Vars), Precision(Precision), FloatFormat(FloatFormat)
     {
       
     }
@@ -127,7 +129,8 @@ typedef std::map<std::string, MultiCSVFormat> MultiFormatMap_t;
 // =====================================================================
 
 
-std::vector<ClassIDVar> stringSelectionToClassIDVarList(std::string SelectionStr, unsigned int DefaultPrecision);
+std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string SelectionStr, const unsigned int DefaultPrecision, 
+                                                        const std::string DefaultFloatFormat);
 
 std::vector<std::string> parseMultiColsSetsFromParamsTree(const openfluid::ware::WareParamsTree& ParamsTree,
                                                  MultiSetMap_t& Sets);

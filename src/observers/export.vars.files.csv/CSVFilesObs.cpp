@@ -322,12 +322,11 @@ class CSVFilesObserver : public CSVFilesObserverBase
                                    std::ios::out);
 
           // add header
-           File->FileHandle << buildHeader(*SetFiles.second.Format,File->FileName,
+          File->FileHandle << buildHeader(*SetFiles.second.Format,File->FileName,
                                           File->Unit->getClass(),File->Unit->getID(),
                                           File->VarName);
 
-          // set precision
-          File->FileHandle << std::fixed << std::setprecision(SetFiles.second.Format->Precision);
+          SetFiles.second.Format->adaptStreamFormat(File->FileHandle);
 
         }
 

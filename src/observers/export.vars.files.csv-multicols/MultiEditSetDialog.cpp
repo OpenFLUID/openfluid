@@ -208,7 +208,8 @@ void MultiEditSetDialog::initialize(const QString& Name, const QString& Format,
   ui->FormatComboBox->setCurrentIndex(ui->FormatComboBox->findText(Format));
   
   m_TripletList = stringSelectionToClassIDVarList(Selection.toStdString(), 
-                                                                     std::numeric_limits<unsigned int>::quiet_NaN());
+                                                  std::numeric_limits<unsigned int>::quiet_NaN(), 
+                                                  "auto");
   
   refreshTable();
   

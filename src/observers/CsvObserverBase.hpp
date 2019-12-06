@@ -52,6 +52,31 @@ constexpr const char* CSV_FILES_EXT = "csv";
 // =====================================================================
 
 
+inline void setStreamFormat(std::ostream& Stream, const unsigned int Precision, const std::string FloatFormat)
+{
+  // set precision
+  if (FloatFormat == "fixed")
+  {
+    Stream << std::fixed;
+  }
+  else if (FloatFormat == "scientific")
+  {
+    Stream << std::scientific;
+  }
+  else
+  {
+    Stream << std::defaultfloat;
+  }
+  //TODO ADD RESET TO DEFAULT WHEN AUTO
+  Stream << std::setprecision(Precision);
+}
+
+ 
+ 
+// =====================================================================
+// =====================================================================
+
+
 class CSVFormat
 {
   public:
@@ -68,12 +93,20 @@ class CSVFormat
     
     unsigned int Precision;
 
+    std::string FloatFormat;
+
     bool IsTimeIndexDateFormat;
 
     CSVFormat() : Header(Info), ColSeparator(";"), DateFormat("%Y%m%dT%H%M%S"),
-                  CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false)
+                  CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false), 
+                  FloatFormat("default")
     {
 
+    }
+    
+    void adaptStreamFormat(std::ofstream& Stream)
+    {
+      setStreamFormat(Stream, Precision, FloatFormat);
     }
 
 };
@@ -284,5 +317,38 @@ inline std::string buildTimeHeader(const CSVFormat& Format, const openfluid::cor
   return HeaderSStr.str();
 }
 
- 
- #endif /* __CSVOBSERVERBASE_HPP__ */
+
+// =====================================================================
+// =====================================================================
+
+
+inline openfluid::core::StringValue basicParseFormatsFromParamsTree(openfluid::core::Tree<std::string,openfluid::core::StringValue>& Format, std::string Key)
+{
+  if (Key == "colsep")
+  {
+    return Format.getChildValue(Key,"\t");
+  }
+  else if (Key == "precision")
+  {
+    return Format.getChildValue(Key,5);
+  }
+  else if (Key == "float-format")
+  {
+    return Format.getChildValue(Key,"auto");
+  }
+  else if (Key == "date")
+  {
+    return Format.getChildValue(Key,"ISO");
+  }
+  else if (Key == "commentchar")
+  {
+    return Format.getChildValue(Key, "#");
+  }
+  else if (Key == "header")
+  {
+    return Format.getChildValue(Key, "");
+  }
+  
+}
+
+#endif /* __CSVOBSERVERBASE_HPP__ */
