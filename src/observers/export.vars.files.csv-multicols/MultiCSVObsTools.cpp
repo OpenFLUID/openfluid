@@ -96,15 +96,15 @@ CSVMultiSet::CSVMultiSet() :
 // =====================================================================
 
 
-std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string SelectionStr, 
+std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string& SelectionStr, 
                                                         const unsigned int DefaultPrecision, 
-                                                        const std::string DefaultFloatFormat)
+                                                        const std::string& DefaultFloatFormat)
 {
   std::vector<std::string> Columns = openfluid::tools::splitString(SelectionStr, ";");
   
   
   std::vector<ClassIDVar> CSVTriplets;
-  for (std::string Column : Columns)
+  for (std::string& Column : Columns)
   {
     // parse and create CSVTriplet
     std::size_t HashPosition = Column.find("#");

@@ -70,18 +70,20 @@ MultiEditFormatDialog::MultiEditFormatDialog(const QStringList& ExistingFormats,
 
   m_DateLabels << "ISO" << tr("6 columns") << tr("Time index");
   m_DateCodes << "ISO" << "6cols" << "timeindex";
+  m_FloatFormatsLabels << tr("Auto") << tr("Fixed") << tr("Scientific");
+  m_FloatFormatsCodes  << "auto" << "fixed" << "scientific";
 
   ui->HeaderComboBox->addItems(m_HeaderLabels);
   ui->HeaderComboBox->setCurrentIndex(0);
   ui->DateComboBox->addItems(m_DateLabels);
   ui->DateComboBox->setCurrentIndex(0);
+  ui->FloatFormatComboBox->addItems(m_FloatFormatsLabels);
+  ui->FloatFormatComboBox->setCurrentIndex(0);
 
-  m_PreviewDateTimes << openfluid::core::DateTime(2010,7,30,16,30,0)
-                     << openfluid::core::DateTime(2010,7,30,16,45,18)
-                     << openfluid::core::DateTime(2010,7,30,17,52,22)
-                     << openfluid::core::DateTime(2010,7,30,18,0,00)
-                     << openfluid::core::DateTime(2010,7,30,19,0,0);
-  m_PreviewValues << 1.5 << 3.8965 << 0.0 << 17.3;
+  m_PreviewDateTimes = QList<openfluid::core::DateTime>::fromVector(
+                                QVector<openfluid::core::DateTime>::fromStdVector(getPreviewDateTimes()));
+  m_PreviewValues = QList<double>::fromVector(
+                                QVector<double>::fromStdVector(getPreviewValues(true)));
 
   connect(ui->FormatNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->PredefDateRadioButton,SIGNAL(toggled(bool)),this,SLOT(checkGlobal()));
@@ -89,9 +91,11 @@ MultiEditFormatDialog::MultiEditFormatDialog(const QStringList& ExistingFormats,
   connect(ui->CustomDateEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->HeaderComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(checkGlobal()));
   connect(ui->DateComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(checkGlobal()));
+  connect(ui->FloatFormatComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(checkGlobal()));
   connect(ui->CommentCharEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->MissingValueEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->ColSepEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
+  connect(ui->PrecisionSpinBox,SIGNAL(valueChanged(int)),this,SLOT(checkGlobal()));
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
@@ -121,6 +125,8 @@ void MultiEditFormatDialog::checkGlobal()
   m_Format.CommentChar = ui->CommentCharEdit->text().toStdString();
   m_Format.MissingValueString = ui->MissingValueEdit->text().toStdString();
   m_Format.Header = m_HeaderCodes[ui->HeaderComboBox->currentIndex()];
+  m_Format.Precision = ui->PrecisionSpinBox->value();
+  m_Format.FloatFormat = m_FloatFormatsCodes[ui->FloatFormatComboBox->currentIndex()];
   if (ui->CustomDateRadioButton->isChecked())
   {
     m_Format.DateFormat = ui->CustomDateEdit->text().toStdString();
@@ -207,6 +213,8 @@ void MultiEditFormatDialog::updatePreview()
 {
   std::string FilePath = buildMultiColsFilename("/tmp/",CSV_FILES_EXT,"exset");
   std::ostringstream PreviewText;
+  
+  m_Format.adaptStreamFormat(PreviewText);
 
   PreviewText << buildMultiColsdHeader(m_Format,FilePath,"EU#76:exemple.var");
 
@@ -253,6 +261,7 @@ openfluid::ware::WareParams_t MultiEditFormatDialog::getFormatParams()
   }
 
   std::string PrecisionStr = ui->PrecisionSpinBox->cleanText().toStdString();
+  std::string FloatFormatStr = m_FloatFormatsCodes[ui->FloatFormatComboBox->currentIndex()];
   std::string ColSepStr = ui->ColSepEdit->text().replace("\\t","\t").toStdString();
   std::string HeaderStr = HeaderTypeToStr(m_HeaderCodes[ui->HeaderComboBox->currentIndex()]);
   std::string CommentStr = ui->CommentCharEdit->text().toStdString();
@@ -260,6 +269,7 @@ openfluid::ware::WareParams_t MultiEditFormatDialog::getFormatParams()
 
   return openfluid::ware::WareParams_t({{ParamsRoot+"date",DateStr},
                                         {ParamsRoot+"precision",PrecisionStr},
+                                        {ParamsRoot+"float-format",FloatFormatStr},
                                         {ParamsRoot+"colsep",ColSepStr},
                                         {ParamsRoot+"commentchar",CommentStr},
                                         {ParamsRoot+"header",HeaderStr},

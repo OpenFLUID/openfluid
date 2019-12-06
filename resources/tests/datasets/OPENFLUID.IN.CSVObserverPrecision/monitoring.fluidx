@@ -1,0 +1,67 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+  <monitoring>
+    
+    <observer ID="export.vars.files.csv-multicols" enabled="1">
+      <param name="format.allSci.colsep" value="	"/>
+      <param name="format.allSci.date" value="ISO"/>
+      <param name="format.allSci.header" value="colnames-as-comment"/>
+      <param name="format.allSci.float-format" value="scientific"/>
+      
+      <param name="set.MC_sciTU1.format" value="allSci"/>
+      <param name="set.MC_sciTU1.selection" value="TU#*:*%3"/>
+      
+      <param name="format.base.colsep" value="	"/>
+      <param name="format.base.date" value="ISO"/>
+      <param name="format.base.header" value="colnames-as-comment"/>
+      
+      <param name="set.MC_customTU1.format" value="base"/>
+      <param name="set.MC_customTU1.selection" value="TU#1:*%3e;TU#1:*%3f;TU#1:*%3"/>
+    </observer>
+    
+  
+    <observer ID="export.vars.files.csv">
+      <param name="format.defaultFloat.header" value="colnames-as-comment" />
+      <param name="format.defaultFloat.date" value="%Y-%m-%d %H:%M:%S" />
+      <param name="format.defaultFloat.precision" value="4" />
+      
+      <param name="format.fixedFloat.header" value="colnames-as-comment" />
+      <param name="format.fixedFloat.date" value="%Y-%m-%d %H:%M:%S" />
+      <param name="format.fixedFloat.precision" value="4" />
+      <param name="format.fixedFloat.float-format" value="fixed" />
+
+      <param name="format.sciFloat.header" value="colnames-as-comment" />
+      <param name="format.sciFloat.date" value="%Y-%m-%d %H:%M:%S" />
+      <param name="format.sciFloat.precision" value="4" />
+      <param name="format.sciFloat.float-format" value="scientific" />
+      
+      
+      <param name="format.autoFloat.header" value="colnames-as-comment" />
+      <param name="format.autoFloat.date" value="%Y-%m-%d %H:%M:%S" />
+      <param name="format.autoFloat.precision" value="4" />
+      <param name="format.autoFloat.float-format" value="auto" />
+      
+      <param name="set.default.unitsclass" value="TU" />
+      <param name="set.default.unitsIDs" value="1" />
+      <param name="set.default.vars" value="*" />
+      <param name="set.default.format" value="defaultFloat" />
+
+      <param name="set.fixed.unitsclass" value="TU" />
+      <param name="set.fixed.unitsIDs" value="1" />
+      <param name="set.fixed.vars" value="*" />
+      <param name="set.fixed.format" value="fixedFloat" />
+      
+      <param name="set.sci.unitsclass" value="TU" />
+      <param name="set.sci.unitsIDs" value="1" />
+      <param name="set.sci.vars" value="*" />
+      <param name="set.sci.format" value="sciFloat" />
+
+      <param name="set.autofloat.unitsclass" value="TU" />
+      <param name="set.autofloat.unitsIDs" value="1" />
+      <param name="set.autofloat.vars" value="*" />
+      <param name="set.autofloat.format" value="autoFloat" />
+    </observer>
+  
+  </monitoring>
+</openfluid>

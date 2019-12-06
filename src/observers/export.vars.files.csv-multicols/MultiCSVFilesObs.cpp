@@ -83,9 +83,12 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv-multicols")
       "  format.<formatname>.missingvalue : the string used when data not available\n"
       "  format.<formatname>.precision : the precision for real values\n"
       "  format.<formatname>.float-format : the floating point system used for real values (auto/fixed/scientific)\n"
+      "  set.<setname>.format : the <formatname> used, must be defined by a format parameter.\n"
       "  set.<setname>.selection : the wanted variables, following the pattern: \n"
       "    <UnitsClass1>#<UnitNumber1>:<VarName1>%<digitsPrecision1>;<UnitsClass2>#...\n"
-      "  set.<setname>.format : the <formatname> used, must be defined by a format parameter");
+      "    Float format can be adjusted at column level by adding e (for scientific) "
+                                                              "or f (for fixed) after thre precision value.\n"
+      "      Example: U#1:myVar%3f;U#1:myOtherVar%4e");
 
   DECLARE_VERSION(openfluid::config::VERSION_FULL);
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);

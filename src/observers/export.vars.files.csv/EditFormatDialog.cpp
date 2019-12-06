@@ -34,6 +34,7 @@
   @file EditFormatDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THONI <armel.thoni@inra.fr>
 */
 
 
@@ -68,18 +69,21 @@ EditFormatDialog::EditFormatDialog(const QStringList& ExistingFormats,QWidget* P
 
   m_DateLabels << "ISO" << tr("6 columns") << tr("Time index");
   m_DateCodes << "ISO" << "6cols" << "timeindex";
+  m_FloatFormatsLabels << tr("Auto") << tr("Fixed") << tr("Scientific");
+  m_FloatFormatsCodes  << "auto" << "fixed" << "scientific";
 
   ui->HeaderComboBox->addItems(m_HeaderLabels);
   ui->HeaderComboBox->setCurrentIndex(0);
   ui->DateComboBox->addItems(m_DateLabels);
   ui->DateComboBox->setCurrentIndex(0);
+  ui->FloatFormatComboBox->addItems(m_FloatFormatsLabels);
+  ui->FloatFormatComboBox->setCurrentIndex(0);
+  
 
-  m_PreviewDateTimes << openfluid::core::DateTime(2010,7,30,16,30,0)
-                     << openfluid::core::DateTime(2010,7,30,16,45,18)
-                     << openfluid::core::DateTime(2010,7,30,17,52,22)
-                     << openfluid::core::DateTime(2010,7,30,18,0,00)
-                     << openfluid::core::DateTime(2010,7,30,19,0,0);
-  m_PreviewValues << 1.5 << 3.8965 << 19.2 << 0.0 << 17.3;
+  m_PreviewDateTimes = QList<openfluid::core::DateTime>::fromVector(
+                                QVector<openfluid::core::DateTime>::fromStdVector(getPreviewDateTimes()));
+  m_PreviewValues = QList<double>::fromVector(
+                                QVector<double>::fromStdVector(getPreviewValues()));
 
   connect(ui->FormatNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->PredefDateRadioButton,SIGNAL(toggled(bool)),this,SLOT(checkGlobal()));
@@ -87,8 +91,10 @@ EditFormatDialog::EditFormatDialog(const QStringList& ExistingFormats,QWidget* P
   connect(ui->CustomDateEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->HeaderComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(checkGlobal()));
   connect(ui->DateComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(checkGlobal()));
+  connect(ui->FloatFormatComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(checkGlobal()));
   connect(ui->CommentCharEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->ColSepEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
+  connect(ui->PrecisionSpinBox,SIGNAL(valueChanged(int)),this,SLOT(checkGlobal()));
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
@@ -117,6 +123,8 @@ void EditFormatDialog::checkGlobal()
   m_Format.ColSeparator = TmpColSep.toStdString();
   m_Format.CommentChar = ui->CommentCharEdit->text().toStdString();
   m_Format.Header = m_HeaderCodes[ui->HeaderComboBox->currentIndex()];
+  m_Format.Precision = ui->PrecisionSpinBox->value();
+  m_Format.FloatFormat = m_FloatFormatsCodes[ui->FloatFormatComboBox->currentIndex()];
   if (ui->CustomDateRadioButton->isChecked())
   {
     m_Format.DateFormat = ui->CustomDateEdit->text().toStdString();
@@ -164,7 +172,8 @@ void EditFormatDialog::checkGlobal()
 
 
 void EditFormatDialog::initialize(const QString& Name, const QString& Header, const QString& ColSep,
-                                 const QString& Date, const QString& Precision, const QString& CommentChar)
+                                 const QString& Date, const QString& Precision, const QString& FloatFormat, 
+                                 const QString& CommentChar)
 {
   ui->FormatNameEdit->setText(Name);
   ui->ColSepEdit->setText(ColSep);
@@ -188,6 +197,9 @@ void EditFormatDialog::initialize(const QString& Name, const QString& Header, co
     ui->CustomDateRadioButton->setChecked(true);
     ui->CustomDateEdit->setText(Date);
   }
+  
+  int FloatFormatIndex = m_FloatFormatsCodes.indexOf(FloatFormat.toStdString());
+  ui->FloatFormatComboBox->setCurrentIndex(FloatFormatIndex);
 
   checkGlobal();
 }
@@ -201,6 +213,8 @@ void EditFormatDialog::updatePreview()
 {
   std::string FilePath = buildFilename("/tmp/",CSV_FILES_EXT,"exset","EU",76,"exemple.var");
   std::ostringstream PreviewText;
+
+  m_Format.adaptStreamFormat(PreviewText);
 
   PreviewText << buildHeader(m_Format,FilePath,"EU",76,"exemple.var");
 
@@ -240,12 +254,14 @@ openfluid::ware::WareParams_t EditFormatDialog::getFormatParams()
   }
 
   std::string PrecisionStr = ui->PrecisionSpinBox->cleanText().toStdString();
+  std::string FloatFormatStr = m_FloatFormatsCodes[ui->FloatFormatComboBox->currentIndex()];
   std::string ColSepStr = ui->ColSepEdit->text().replace("\\t","\t").toStdString();
   std::string HeaderStr = HeaderTypeToStr(m_HeaderCodes[ui->HeaderComboBox->currentIndex()]);
   std::string CommentStr = ui->CommentCharEdit->text().toStdString();
 
   return openfluid::ware::WareParams_t({{ParamsRoot+"date",DateStr},
                                         {ParamsRoot+"precision",PrecisionStr},
+                                        {ParamsRoot+"float-format",FloatFormatStr},
                                         {ParamsRoot+"colsep",ColSepStr},
                                         {ParamsRoot+"commentchar",CommentStr},
                                         {ParamsRoot+"header",HeaderStr}});

@@ -124,7 +124,7 @@ void EditClassIDVarDialog::checkGlobal()
         
       std::string UnitsIDsStr = ui->SelectedUnitsTextEdit->toPlainText().trimmed().toStdString();
       std::vector<std::string> ContiguousIDs = openfluid::tools::splitString(UnitsIDsStr, ";"); 
-      for (std::string ContiguousID : ContiguousIDs)
+      for (std::string& ContiguousID : ContiguousIDs)
       {
         std::vector<std::string> IDLimits = openfluid::tools::splitString(ContiguousID, "-");
         if (IDLimits.size() > 2)
@@ -242,7 +242,7 @@ std::vector<ClassIDVar> EditClassIDVarDialog::getClassIDVarSettings()
   {
     std::string UnitsIDsStr = ui->SelectedUnitsTextEdit->toPlainText().trimmed().toStdString();
     std::vector<std::string> ContiguousIDs = openfluid::tools::splitString(UnitsIDsStr, ";"); 
-    for (std::string ContiguousID : ContiguousIDs)
+    for (std::string& ContiguousID : ContiguousIDs)
     {
       std::vector<std::string> IDLimits = openfluid::tools::splitString(ContiguousID, "-");
       if (IDLimits.size() == 1)

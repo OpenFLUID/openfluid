@@ -78,6 +78,9 @@ class EditFormatDialog: public openfluid::ui::common::OpenFLUIDDialog
 
     QStringList m_DateLabels;
     QList<std::string> m_DateCodes;
+    
+    QStringList m_FloatFormatsLabels;
+    QList<std::string> m_FloatFormatsCodes;
 
     QList<openfluid::core::DateTime> m_PreviewDateTimes;
     QList<double> m_PreviewValues;
@@ -90,7 +93,8 @@ class EditFormatDialog: public openfluid::ui::common::OpenFLUIDDialog
     ~EditFormatDialog();
 
     void initialize(const QString& Name, const QString& Header, const QString& ColSep,
-                    const QString& Date, const QString& Precision, const QString& CommentChar);
+                    const QString& Date, const QString& Precision, const QString& FloatFormat, 
+                    const QString& CommentChar);
 
     openfluid::ware::WareParams_t getFormatParams();
 };

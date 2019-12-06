@@ -158,7 +158,7 @@ void MultiCSVObsParamsWidget::removeParamsStartingWith(const QString& Str)
 // =====================================================================
 
 
-QString MultiCSVObsParamsWidget::getParamValue(const QString& Str, const QString Default)
+QString MultiCSVObsParamsWidget::getParamValue(const QString& Str, const QString& Default)
 {
   QString Value = Default;
 
@@ -196,27 +196,14 @@ void MultiCSVObsParamsWidget::update()
     {
       RowCount++;
       ui->FormatsTableWidget->setRowCount(RowCount);
-
-      QTableWidgetItem *TableItem = new QTableWidgetItem(QString::fromStdString(Format.first));
-      ui->FormatsTableWidget->setItem(RowCount-1, 0, TableItem);
-
-      TableItem = new QTableWidgetItem(QString::fromStdString(Format.second.ColSeparator).replace("\t","\\t"));
-      ui->FormatsTableWidget->setItem(RowCount-1, 1, TableItem);
-
-      TableItem = new QTableWidgetItem(QString::fromStdString(Format.second.DateFormat));
-      ui->FormatsTableWidget->setItem(RowCount-1, 2, TableItem);
-
-      TableItem = new QTableWidgetItem(QString("%1").arg(Format.second.Precision));
-      ui->FormatsTableWidget->setItem(RowCount-1, 3, TableItem);
-
-      TableItem = new QTableWidgetItem(QString::fromStdString(HeaderTypeToStr(Format.second.Header)));
-      ui->FormatsTableWidget->setItem(RowCount-1, 4, TableItem);
-
-      TableItem = new QTableWidgetItem(QString::fromStdString(Format.second.CommentChar));
-      ui->FormatsTableWidget->setItem(RowCount-1, 5, TableItem);
       
-      TableItem = new QTableWidgetItem(QString::fromStdString(Format.second.MissingValueString));
-      ui->FormatsTableWidget->setItem(RowCount-1, 6, TableItem);
+      int ColCount = 0;
+      for (std::string& Field : Format.second.generateFormatFields(Format.first))
+      {
+        QTableWidgetItem *TableItem = new QTableWidgetItem(QString::fromStdString(Field));
+        ui->FormatsTableWidget->setItem(RowCount-1, ColCount, TableItem);
+        ColCount++;
+      }
     }
     if (RowCount > 0)
     {

@@ -97,6 +97,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv")
       "  format.<formatname>.commentchar : the character for comment lines\n"
       "  format.<formatname>.header : the header type\n"
       "  format.<formatname>.precision : the precision for real values\n"
+      "  format.<formatname>.float-format : the formatting for decimal numbers\n"
       "  set.<setname>.unitsclass : the unit class of the set\n"
       "  set.<setname>.unitsIDs : the unit IDs included in the set. Use * to include all units of the class\n"
       "  set.<setname>.vars : the variable included in the set, separated by semicolons. "

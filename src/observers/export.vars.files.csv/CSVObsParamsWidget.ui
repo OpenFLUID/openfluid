@@ -68,6 +68,11 @@
        </column>
        <column>
         <property name="text">
+         <string>Float format</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
          <string>Header</string>
         </property>
        </column>

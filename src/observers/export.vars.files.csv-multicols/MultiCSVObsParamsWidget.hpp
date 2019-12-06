@@ -68,7 +68,7 @@ class MultiCSVObsParamsWidget: public openfluid::builderext::PluggableParameteri
 
     void removeParamsStartingWith(const QString& Str);
 
-    QString getParamValue(const QString& Str, const QString Default = "");
+    QString getParamValue(const QString& Str, const QString& Default = "");
 
     QStringList getFormatNames();
 

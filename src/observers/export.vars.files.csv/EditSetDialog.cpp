@@ -64,7 +64,7 @@ EditSetDialog::EditSetDialog(const QStringList& SetNames,
 
   connect(ui->SetNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->UnitsClassComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(checkGlobal()));
-  connect(ui->UnitsClassComboBox,SIGNAL(editTextChanged(const QString &)),this,SLOT(checkGlobal()));
+  connect(ui->UnitsClassComboBox,SIGNAL(editTextChanged(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->SelectedUnitsRadioButton,SIGNAL(toggled(bool)),this,SLOT(checkGlobal()));
   connect(ui->SelectedUnitsTextEdit,SIGNAL(textChanged()),this,SLOT(checkGlobal()));
   connect(ui->SelectedVariablesRadioButton,SIGNAL(toggled(bool)),this,SLOT(checkGlobal()));

@@ -68,7 +68,7 @@ class CSVObsParamsWidget: public openfluid::builderext::PluggableParameterizatio
 
     void removeParamsStartingWith(const QString& Str);
 
-    QString getParamValue(const QString& Str, const QString Default = "");
+    QString getParamValue(const QString& Str, const QString& Default = "");
 
 
   private slots:

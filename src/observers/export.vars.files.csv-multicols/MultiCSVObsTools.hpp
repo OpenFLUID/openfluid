@@ -60,6 +60,13 @@ class MultiCSVFormat: public CSVFormat
     std::string MissingValueString;
 
     MultiCSVFormat();
+    
+    std::vector<std::string> generateFormatFields(const std::string& FormatName)
+    {
+        std::vector<std::string> Fields = CSVFormat::generateFormatFields(FormatName);
+        Fields.push_back(MissingValueString);
+        return Fields;
+    }
 
 };
 
@@ -129,8 +136,9 @@ typedef std::map<std::string, MultiCSVFormat> MultiFormatMap_t;
 // =====================================================================
 
 
-std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string SelectionStr, const unsigned int DefaultPrecision, 
-                                                        const std::string DefaultFloatFormat);
+std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string& SelectionStr, 
+                                                        const unsigned int DefaultPrecision, 
+                                                        const std::string& DefaultFloatFormat);
 
 std::vector<std::string> parseMultiColsSetsFromParamsTree(const openfluid::ware::WareParamsTree& ParamsTree,
                                                  MultiSetMap_t& Sets);

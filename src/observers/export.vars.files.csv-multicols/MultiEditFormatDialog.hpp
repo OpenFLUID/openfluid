@@ -79,6 +79,9 @@ class MultiEditFormatDialog: public openfluid::ui::common::OpenFLUIDDialog
     QStringList m_DateLabels;
     QList<std::string> m_DateCodes;
 
+    QStringList m_FloatFormatsLabels;
+    QList<std::string> m_FloatFormatsCodes;
+
     QList<openfluid::core::DateTime> m_PreviewDateTimes;
     QList<double> m_PreviewValues;
 

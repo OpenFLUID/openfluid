@@ -41,7 +41,10 @@
  
  
 #include <fstream>
+#include <vector>
 
+#include <openfluid/core/DateTime.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 
 
@@ -52,7 +55,7 @@ constexpr const char* CSV_FILES_EXT = "csv";
 // =====================================================================
 
 
-inline void setStreamFormat(std::ostream& Stream, const unsigned int Precision, const std::string FloatFormat)
+inline void setStreamFormat(std::ostream& Stream, const unsigned int Precision, const std::string& FloatFormat)
 {
   // set precision
   if (FloatFormat == "fixed")
@@ -67,10 +70,9 @@ inline void setStreamFormat(std::ostream& Stream, const unsigned int Precision, 
   {
     Stream << std::defaultfloat;
   }
-  //TODO ADD RESET TO DEFAULT WHEN AUTO
+  
   Stream << std::setprecision(Precision);
 }
-
  
  
 // =====================================================================
@@ -98,16 +100,17 @@ class CSVFormat
     bool IsTimeIndexDateFormat;
 
     CSVFormat() : Header(Info), ColSeparator(";"), DateFormat("%Y%m%dT%H%M%S"),
-                  CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false), 
-                  FloatFormat("default")
+                  CommentChar("#"), Precision(5), FloatFormat("default"), IsTimeIndexDateFormat(false)
     {
 
     }
     
-    void adaptStreamFormat(std::ofstream& Stream)
+    void adaptStreamFormat(std::ostream& Stream)
     {
       setStreamFormat(Stream, Precision, FloatFormat);
     }
+        
+    std::vector<std::string> generateFormatFields(const std::string& FormatName);
 
 };
 
@@ -322,7 +325,9 @@ inline std::string buildTimeHeader(const CSVFormat& Format, const openfluid::cor
 // =====================================================================
 
 
-inline openfluid::core::StringValue basicParseFormatsFromParamsTree(openfluid::core::Tree<std::string,openfluid::core::StringValue>& Format, std::string Key)
+inline openfluid::core::StringValue basicParseFormatsFromParamsTree(
+                       const openfluid::core::Tree<std::string,openfluid::core::StringValue>& Format, 
+                       const std::string& Key)
 {
   if (Key == "colsep")
   {
@@ -348,7 +353,65 @@ inline openfluid::core::StringValue basicParseFormatsFromParamsTree(openfluid::c
   {
     return Format.getChildValue(Key, "");
   }
-  
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Key for basic parsing not found " + Key);
+  }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline std::vector<std::string> CSVFormat::generateFormatFields(const std::string& FormatName)
+{
+  std::string VisibleColSeparator = ColSeparator;
+  openfluid::tools::stringReplace(VisibleColSeparator, "\t", "\\t");
+  return {
+           FormatName, 
+           VisibleColSeparator,
+           DateFormat, 
+           std::to_string(Precision),
+           FloatFormat,
+           HeaderTypeToStr(Header),
+           CommentChar
+         };
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline std::vector<openfluid::core::DateTime> getPreviewDateTimes()
+{
+  return {
+          openfluid::core::DateTime(2010,7,30,16,30,0), 
+          openfluid::core::DateTime(2010,7,30,16,45,18), 
+          openfluid::core::DateTime(2010,7,30,17,52,22), 
+          openfluid::core::DateTime(2010,7,30,18,0,00), 
+          openfluid::core::DateTime(2010,7,30,19,0,0)
+        };
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline std::vector<double> getPreviewValues(bool missing=false)
+{
+  if (missing)
+  {
+    return {3.896554654, 19.2,  0.0, 0.000000523};
+  }
+  else
+  {
+    return {1.5, 3.896554654, 19.2,  0.0, 0.000000523};
+  }
+}
+
 
 #endif /* __CSVOBSERVERBASE_HPP__ */

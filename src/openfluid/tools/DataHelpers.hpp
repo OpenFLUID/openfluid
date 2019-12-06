@@ -240,6 +240,16 @@ std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit
                                                    char Separator,
                                                    bool ReturnsEmpty = false);
 
+
+/**
+  Replace every occurrence of a given substring (target) in a string by wanted replacement substring
+  @param[in] Data the string to work on
+  @param[in] ToSearch the target substring
+  @param[in] ReplaceStr the replacement substring
+*/
+void OPENFLUID_API stringReplace(std::string& Data, std::string ToSearch, std::string ReplaceStr);
+
+
 } } // namespaces
 
 

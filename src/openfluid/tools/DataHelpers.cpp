@@ -92,7 +92,7 @@ std::vector<std::string> splitString(const std::string& StrToSplit,
 // =====================================================================
 
 
-std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit,
+std::vector<std::string> splitString(const std::string& StrToSplit,
                                                    char Separator,
                                                    bool ReturnsEmpty)
 {
@@ -109,5 +109,14 @@ std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit
   return SplitParts;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void stringReplace(std::string& Data, std::string ToSearch, std::string ReplaceStr)
+{
+    boost::replace_all(Data, ToSearch, ReplaceStr);
+}
 
 } } // namespaces
