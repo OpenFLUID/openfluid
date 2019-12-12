@@ -30,15 +30,18 @@
  */
 
 /**
- @file WareSrcExplorer.cpp
+  @file WareSrcExplorer.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 */
 
 
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
+#include <QGuiApplication>
+#include <QClipboard>
 
 #include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
@@ -127,6 +130,11 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   Menu.addSeparator();
 
+  Menu.addAction(tr("Copy full path"), this, SLOT(onCopyFullPathAsked()));
+  Menu.addAction(tr("Copy relative path"), this, SLOT(onCopyRelativePathAsked()));
+
+  Menu.addSeparator();
+
   QMenu GitMenu;
   GitMenu.setTitle("Git");
   GitMenu.addAction("Status", this, SLOT(onGitStatusAsked()));
@@ -191,6 +199,28 @@ void WareSrcExplorer::onOpenExplorerAsked()
 void WareSrcExplorer::onOpenTerminalAsked()
 {
   emit openTerminalAsked(getCurrentDir());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onCopyFullPathAsked()
+{
+  QClipboard *Clip = QGuiApplication::clipboard();
+  Clip->setText(getCurrentPath());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onCopyRelativePathAsked()
+{  
+  QClipboard *Clip = QGuiApplication::clipboard();
+  Clip->setText(QDir(m_TopDirectoryPath).relativeFilePath(getCurrentPath()));
 }
 
 

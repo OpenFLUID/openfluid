@@ -71,6 +71,10 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void onOpenTerminalAsked();
 
+    void onCopyFullPathAsked();
+    
+    void onCopyRelativePathAsked();
+
     void scrollToCurrent();
 
     void onCustomContextMenuRequested(const QPoint& Point);
