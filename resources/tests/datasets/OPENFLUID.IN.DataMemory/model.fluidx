@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+   
+      
+      <generator varname="varA" unitsclass="TestUnits" method="random" enabled="1">
+         <param name="max" value="10"/>
+         <param name="min" value="0"/>
+         <param name="deltat" value="600"/>
+      </generator>   
+      <simulator ID="tests.variable.memorylimit.use" />
+    
+  </model>
+</openfluid>

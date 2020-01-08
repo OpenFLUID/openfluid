@@ -60,6 +60,8 @@ class RunConfigurationWidget : public WorkspaceWidget
 
 
   private slots:
+      
+      void runConfigChange();
 
       void updateConstraintFXDesc(int Index);
 

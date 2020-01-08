@@ -42,6 +42,7 @@
 
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/DateTime.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/base/SimulationLogger.hpp>
 
@@ -125,7 +126,13 @@ class OPENFLUID_API Engine
   public:
     
     Engine() = delete;
-
+    
+    static std::size_t computeValuesBuffersDefaultSize(const openfluid::core::Duration_t Duration, 
+                                                       const openfluid::core::Duration_t DeltaT)
+    {
+        return (Duration/DeltaT)+2;
+    }
+    
     /**
       Constructor
     */

@@ -256,6 +256,21 @@ OPENFLUID_ADD_TEST(NAME simulators-VariableTimeProd
 ###########################################################################
 
 
+OFBUILD_ADD_SIMULATOR(tests.variable.memorylimit.use ${OFBUILD_TESTS_BINARY_DIR})
+OPENFLUID_ADD_TEST(NAME simulators-MemoryRange
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "run"
+                           "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.DataMemory"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.DataMemory" 
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+                           )
+SET_TESTS_PROPERTIES(simulators-MemoryRange PROPERTIES PASS_REGULAR_EXPRESSION "VARIABLE EXISTS for deltaT x 2")
+SET_TESTS_PROPERTIES(simulators-MemoryRange PROPERTIES PASS_REGULAR_EXPRESSION "VARIABLE DOES NOT EXISTS for deltaT x 3")
+
+
+###########################################################################
+
+
 OFBUILD_ADD_SIMULATOR(tests.loops ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Loops
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 

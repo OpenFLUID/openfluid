@@ -39,6 +39,9 @@
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/core/DateTime.hpp>
+#include <openfluid/core/ValuesBufferProperties.hpp>
+#include <openfluid/machine/Engine.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_RunConfigurationWidget.h"
@@ -58,8 +61,11 @@ RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluid
   ui->ResetThreadsButton->setIcon(openfluid::ui::common::getIcon("refresh","/ui/common"));
   ui->ResetThreadsButton->setIconSize(QSize(16,16));
 
+  ui->defaultRadioButton->setChecked(true);
+
   ui->ThreadsSpinBox->setMaximum(std::numeric_limits<int>::max());
   ui->MemoryStepsSpinBox->setMaximum(std::numeric_limits<int>::max());
+  ui->MemoryStepsSpinBox->setValue(openfluid::core::ValuesBufferProperties::getBufferSize());
 
   refresh();
 
@@ -72,7 +78,7 @@ RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluid
   connect(ui->DeltaTSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateDeltaTFXDesc(int)));
   connect(ui->ConstraintComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateConstraintFXDesc(int)));
 
-  connect(ui->MemoryGroupBox,SIGNAL(toggled(bool)),this,SLOT(updateMemoryFXDesc(bool)));
+  connect(ui->CustomRadioButton,SIGNAL(toggled(bool)),this,SLOT(updateMemoryFXDesc(bool)));
   connect(ui->MemoryStepsSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateMemoryStepsFXDesc(int)));
 
   connect(ui->ClearOutputCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateClearOutput(bool)));
@@ -98,25 +104,31 @@ RunConfigurationWidget::~RunConfigurationWidget()
 
 void RunConfigurationWidget::refresh()
 {
+  openfluid::core::DateTime BeginDate = m_FluidxDesc.runConfiguration().getBeginDate();
+  openfluid::core::DateTime EndDate = m_FluidxDesc.runConfiguration().getEndDate();
+  int DeltaT = m_FluidxDesc.runConfiguration().getDeltaT();
+  
   ui->PeriodWidget->setBeginDateTime(
       QDateTime::fromString(
-          QString(m_FluidxDesc.runConfiguration().getBeginDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
+          QString(BeginDate.getAsString("%Y-%m-%d %H:%M:%S").c_str()),
           "yyyy-MM-dd HH:mm:ss"));
 
   ui->PeriodWidget->setEndDateTime(
       QDateTime::fromString(
-          QString(m_FluidxDesc.runConfiguration().getEndDate().getAsString("%Y-%m-%d %H:%M:%S").c_str()),
+          QString(EndDate.getAsString("%Y-%m-%d %H:%M:%S").c_str()),
           "yyyy-MM-dd HH:mm:ss"));
 
-  ui->DeltaTSpinBox->setValue(m_FluidxDesc.runConfiguration().getDeltaT());
+  ui->DeltaTSpinBox->setValue(DeltaT);
   ui->ConstraintComboBox->setCurrentIndex(m_FluidxDesc.runConfiguration().getSchedulingConstraint());
 
-  ui->MemoryGroupBox->setChecked(m_FluidxDesc.runConfiguration().isUserValuesBufferSize());
+  
+  std::uint64_t Duration = openfluid::core::Duration_t(EndDate.diffInSeconds(BeginDate));
+  std::size_t DefaultValuesBufferSize = openfluid::machine::Engine::computeValuesBuffersDefaultSize(Duration, DeltaT);
+  ui->defaultRadioButton->setText(tr("Default: %1 time steps").arg(DefaultValuesBufferSize));
 
-  if (ui->MemoryGroupBox->isEnabled())
-  {
-    ui->MemoryStepsSpinBox->setValue(m_FluidxDesc.runConfiguration().getValuesBufferSize());
-  }
+  ui->CustomRadioButton->setChecked(m_FluidxDesc.runConfiguration().isUserValuesBufferSize());
+  ui->MemoryStepsSpinBox->setValue(m_FluidxDesc.runConfiguration().getValuesBufferSize());
+  ui->MemoryStepsSpinBox->setEnabled(ui->CustomRadioButton->isChecked());
 
 
   ui->ClearOutputCheckBox->setChecked(openfluid::base::RunContextManager::instance()
@@ -154,10 +166,22 @@ void RunConfigurationWidget::updateConstraintFXDesc(int Index)
 // =====================================================================
 
 
+void RunConfigurationWidget::runConfigChange()
+{
+  refresh();
+
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void RunConfigurationWidget::updateDeltaTFXDesc(int Value)
 {
   m_FluidxDesc.runConfiguration().setDeltaT(Value);
-  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
+  runConfigChange();
 }
 
 
@@ -171,8 +195,7 @@ void RunConfigurationWidget::updateBeginDateFXDesc(const QDateTime& QDT)
   DT.setFromString(QDT.toString("yyyy-MM-dd HH:mm:ss").toStdString(),"%Y-%m-%d %H:%M:%S");
 
   m_FluidxDesc.runConfiguration().setBeginDate(DT);
-
-  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
+  runConfigChange();
 }
 
 
@@ -186,8 +209,7 @@ void RunConfigurationWidget::updateEndDateFXDesc(const QDateTime& QDT)
   DT.setFromString(QDT.toString("yyyy-MM-dd HH:mm:ss").toStdString(),"%Y-%m-%d %H:%M:%S");
 
   m_FluidxDesc.runConfiguration().setEndDate(DT);
-
-  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
+  runConfigChange();
 }
 
 
@@ -205,7 +227,7 @@ void RunConfigurationWidget::updateMemoryFXDesc(bool On)
   {
     m_FluidxDesc.runConfiguration().unsetUserValuesBufferSize();
   }
-  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
+  runConfigChange();
 }
 
 
@@ -216,7 +238,7 @@ void RunConfigurationWidget::updateMemoryFXDesc(bool On)
 void RunConfigurationWidget::updateMemoryStepsFXDesc(int Value)
 {
   m_FluidxDesc.runConfiguration().setValuesBufferSize(Value);
-  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
+  runConfigChange();
 }
 
 

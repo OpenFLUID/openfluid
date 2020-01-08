@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <domain>
+    <definition>
+      <unit class="ParentTestUnits" ID="1" pcsorder="1" />
+      <unit class="ParentTestUnits" ID="2" pcsorder="1" />
+
+      <unit class="TestUnits" ID="1" pcsorder="1">
+        <childof class="ParentTestUnits" ID="1" />
+      </unit>
+      <unit class="TestUnits" ID="2" pcsorder="2">
+        <childof class="ParentTestUnits" ID="2" />
+      </unit>
+    </definition>
+  </domain>
+</openfluid>
+
+

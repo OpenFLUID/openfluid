@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <monitoring>
+      
+      <observer ID="export.vars.files.csv">
+        <param name="format.f2.header" value="full" />  
+        <param name="set.fullfull.unitsclass" value="TestUnits" />
+        <param name="set.fullfull.unitsIDs" value="*" />
+        <param name="set.fullfull.vars" value="*" />
+        <param name="set.fullfull.format" value="f2" />
+        
+      </observer>
+    
+    
+  </monitoring>
+</openfluid>

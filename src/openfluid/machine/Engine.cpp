@@ -541,8 +541,8 @@ void Engine::initialize()
   }
   else
   {
-    openfluid::core::ValuesBufferProperties::setBufferSize(
-        (mp_SimStatus->getSimulationDuration()/mp_SimStatus->getDefaultDeltaT())+2);
+    openfluid::core::ValuesBufferProperties::setBufferSize(computeValuesBuffersDefaultSize(
+       mp_SimStatus->getSimulationDuration(), mp_SimStatus->getDefaultDeltaT()));
   }
 }
 
