@@ -1013,9 +1013,11 @@ std::string FluidXDescriptor::getParamsAsStr(const openfluid::ware::WareParams_t
   {
     std::string EscapedValueStr =
         openfluid::tools::escapeXMLEntities(QString::fromStdString(it->second.data())).toStdString();
-
-    ParamsStr += (m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
-                 + it->first + "\" value=\"" + EscapedValueStr + "\"/>\n");
+    if (!EscapedValueStr.empty())
+    {
+      ParamsStr += (m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
+                   + it->first + "\" value=\"" + EscapedValueStr + "\"/>\n");
+    }
   }
 
   return ParamsStr;
