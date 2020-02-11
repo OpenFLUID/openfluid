@@ -8,7 +8,8 @@ OUTPUT_DIRECTORY       = @OFBUILD_DOCBUILD_DIR@
 FULL_PATH_NAMES        = NO
 
 
-INPUT                  = @OFBUILD_DOC_CONTENTS_DIR@
+INPUT                  = @OFBUILD_DOC_CONTENTS_DIR@ \
+                         @CMAKE_CURRENT_BINARY_DIR@/contents \
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.md
 RECURSIVE              = YES

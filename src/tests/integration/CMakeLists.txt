@@ -787,7 +787,7 @@ OPENFLUID_ADD_TEST(NAME integration-Debug
                            "-p" "${OFBUILD_TESTS_BINARY_DIR}")
 IF(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   SET_TESTS_PROPERTIES(integration-Debug PROPERTIES PASS_REGULAR_EXPRESSION "OpenFLUID debugging mode is enabled")
-ELSE(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+ELSE()
   SET_TESTS_PROPERTIES(integration-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "OpenFLUID debugging mode is enabled")
 ENDIF() 
   

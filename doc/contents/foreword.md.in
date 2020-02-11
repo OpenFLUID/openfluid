@@ -14,10 +14,10 @@ This documentation is made of several parts
 @if DocIsLaTeX
 <br/><br/><br/>
 Detailed informations on scientific concepts underlying the OpenFLUID software
-are available on the official OpenFLUID web site : <https://www.openfluid-project.org>
+are available on the official OpenFLUID web site : <@OPENFLUID_URL_OFFICIAL@>
 
 <br/>
 Practical informations for OpenFLUID users, including usage and development, 
-are available on the OpenFLUID Community site : <https://community.openfluid-project.org>  
+are available on the OpenFLUID Community site : <@OPENFLUID_URL_COMMUNITY@>  
   
 @endif

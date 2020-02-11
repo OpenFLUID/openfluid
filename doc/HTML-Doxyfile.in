@@ -1,6 +1,6 @@
 DOXYFILE_ENCODING      = UTF-8
 
-PROJECT_NAME           = @DOXYGEN_PROJECT_NAME@
+PROJECT_NAME           = 
 PROJECT_NUMBER         = @OPENFLUID_VERSION_FULL@
 PROJECT_LOGO           = @OFBUILD_DOC_CONTENTS_DIR@/images/openfluid_logo_banner_html.png
 
@@ -22,7 +22,8 @@ HIDE_UNDOC_CLASSES     = NO
 
 
 INPUT                  = @OFBUILD_DOC_SRCTOPARSE_DIR@ \
-                         @OFBUILD_DOC_CONTENTS_DIR@
+                         @CMAKE_CURRENT_BINARY_DIR@/contents \
+                         @OFBUILD_DOC_CONTENTS_DIR@ 
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.h \
                          *.hh \
@@ -50,7 +51,7 @@ USE_PDFLATEX           = NO
 STRIP_CODE_COMMENTS    = NO
 
 HTML_FILE_EXTENSION    = .html
-HTML_HEADER            = @OFBUILD_DOC_LAYOUT_DIR@/header.html
+HTML_HEADER            = @CMAKE_CURRENT_BINARY_DIR@/layout/header.html
 HTML_FOOTER            = @OFBUILD_DOC_LAYOUT_DIR@/footer.html
 HTML_EXTRA_STYLESHEET  = @OFBUILD_DOC_LAYOUT_DIR@/doxyopenfluid.css
 HTML_OUTPUT            = html

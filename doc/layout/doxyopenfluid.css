@@ -1,8 +1,8 @@
+
 body, table, div, p, dl {
   color : #272727;
   font-size : 16px;
 }
-
 
 h1 {
 	margin-top : 35px;
@@ -16,9 +16,11 @@ h2 {
 
 #titlearea {
   border-bottom : 1px solid #777;
-  
 }
 
+#titlearea h2 {
+  color : #4F6074;
+}
 
 #projectlogo img
 {
@@ -249,4 +251,17 @@ div.fragment {
 
 code {
   background-color: #eee;
+}
+
+div.footer {
+  border-top : 1px solid grey;
+  padding : 5px;
+  margin-top:50px;
+  width: 100%;
+  text-align: right;
+}
+
+div.footer span {
+  font-size: small;
+  margin-right : 10px;
 }

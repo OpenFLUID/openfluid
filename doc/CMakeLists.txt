@@ -4,13 +4,18 @@ IF(DOXYGEN_FOUND)
 
   ADD_SUBDIRECTORY(snippets)
 
-  CONFIGURE_FILE(HTML-Doxyfile.in HTML-Doxyfile)
-
   FILE(MAKE_DIRECTORY "${OFBUILD_DIST_MAIN_DOC_DIR}")
 
-  CONFIGURE_FILE(${OFBUILD_DOC_CONTENTS_DIR}/images/openfluid_logo_banner_html.png ${OFBUILD_DIST_MAIN_DOC_DIR}/html/openfluid_logo_banner_html.png COPYONLY)
-  CONFIGURE_FILE(${OFBUILD_DOC_CONTENTS_DIR}/images/API_stack.png ${OFBUILD_DIST_MAIN_DOC_DIR}/html/API_stack.png COPYONLY)
- 
+  IF(OPENFLUID_GA_ID)    
+    CONFIGURE_FILE(layout/ga_snippet.js.in layout/ga_snippet.js @ONLY)
+    FILE(READ ${CMAKE_CURRENT_BINARY_DIR}/layout/ga_snippet.js OFBUILD_GA_SNIPPET)
+  ENDIF()
+
+  CONFIGURE_FILE(HTML-Doxyfile.in HTML-Doxyfile)
+  CONFIGURE_FILE(layout/header.html.in layout/header.html @ONLY)
+  CONFIGURE_FILE(contents/mainpage.md.in contents/mainpage.md @ONLY)
+  CONFIGURE_FILE(contents/foreword.md.in contents/foreword.md @ONLY)
+  
     
   ADD_CUSTOM_COMMAND(
     OUTPUT "${OFBUILD_DIST_MAIN_DOC_DIR}/html/index.html"

@@ -1,0 +1,54 @@
+<!-- HTML header for doxygen 1.8.6-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+    <meta name="generator" content="Doxygen $doxygenversion"/>
+    <meta property="og:type" content="website" />    
+    <meta property="og:title" content="Manual for OpenFLUID @OPENFLUID_VERSION_FULL@ : $title" />
+    <meta property="og:url" content="@OPENFLUID_URL_OFFICIAL@" />
+    <meta property="og:image" content="@OPENFLUID_URL_OFFICIAL@/images/meta/openfluid_og.png" />
+    <meta property="og:site_name" content="Manual for OpenFLUID @OPENFLUID_VERSION_FULL@" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="@OPENFLUID_URL_OFFICIAL@" />
+    <meta property="twitter:title" content="Manual for OpenFLUID @OPENFLUID_VERSION_FULL@ : $title" />
+    <meta property="twitter:image" content="@OPENFLUID_URL_OFFICIAL@/images/meta/openfluid_og.png" />
+    <meta property="twitter:site" content="Manual for OpenFLUID @OPENFLUID_VERSION_FULL@" />
+    <meta property="twitter:creator" content="@OpenFLUID" />
+    <title>Manual for OpenFLUID @OPENFLUID_VERSION_FULL@ : $title</title>
+    <link href="$relpath^tabs.css" rel="stylesheet" type="text/css"/>
+@OFBUILD_GA_SNIPPET@
+    <script type="text/javascript" src="$relpath^jquery.js"></script>
+    <script type="text/javascript" src="$relpath^dynsections.js"></script>
+    $treeview
+    $search
+    $mathjax
+    <link href="$relpath^$stylesheet" rel="stylesheet" type="text/css" />
+    $extrastylesheet
+  </head>
+<body>
+  <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+
+    <!--BEGIN TITLEAREA-->
+    <div id="titlearea">
+      <table cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr style="height: 56px;">
+            <!--BEGIN PROJECT_LOGO-->
+            <td id="projectlogo"><img alt="Logo" src="$relpath^$projectlogo"/></td>
+            <!--END PROJECT_LOGO-->
+            <td style="padding-left: 150px;">
+             <h2>Manual for OpenFLUID @OPENFLUID_VERSION_FULL@</h2>
+            </td>
+            <!--BEGIN DISABLE_INDEX-->
+            <!--BEGIN SEARCHENGINE-->
+            <td>$searchbox</td>
+            <!--END SEARCHENGINE-->
+            <!--END DISABLE_INDEX-->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!--END TITLEAREA-->
+  <!-- end header part -->
