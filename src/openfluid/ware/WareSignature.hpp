@@ -113,14 +113,16 @@ class OPENFLUID_API WareSignature
 
 
     virtual ~WareSignature()
-    {  }
+    {  
+      
+    }
 
 
     // =====================================================================
     // =====================================================================
 
 
-    void setABIVersion(WareVersion_t Version)
+    void setABIVersion(const WareVersion_t& Version)
     {
       ABIVersion = Version;
     }
@@ -130,25 +132,21 @@ class OPENFLUID_API WareSignature
     // =====================================================================
 
 
-    std::string getAuthorsAsString() const
+    static std::string getStatusAsString(const WareStatus_t& Status)
     {
-      std::string Str = "";
+      std::string Str = "experimental";
 
-      for (openfluid::ware::WareSignature::AuthorsList_t::const_iterator it = Authors.begin(); it != Authors.end();++it)
+      if (Status == WareStatus_t::BETA)
       {
-        if (it != Authors.begin())
-        {
-          Str+= ", ";
-        }
-
-        Str += openfluid::tools::replaceEmptyString((*it).first,("(unknown author)"));
-        Str += " <";
-        Str += openfluid::tools::replaceEmptyString((*it).second,("(unknown author email)"));
-        Str += ">";
+        Str = "beta";
       }
+      else if (Status == WareStatus_t::STABLE)
+      {
+        Str = "stable";
+      }
+
       return Str;
     }
-
 
 };
 

@@ -208,10 +208,12 @@ class OPENFLUID_API SignatureUnitsClassItem
     std::string Description;
 
     SignatureUnitsClassItem() :
-      UnitsClass(""),Description("") {}
+      UnitsClass(""),Description("") 
+    { }
 
     SignatureUnitsClassItem(openfluid::core::UnitsClass_t UClass,std::string DDescription) :
-    UnitsClass(UClass),Description(DDescription) {}
+      UnitsClass(UClass),Description(DDescription) 
+    { }
 };
 
 

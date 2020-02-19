@@ -50,6 +50,7 @@
 #include <QLibrary>
 #include <QFileInfo>
 
+#include <openfluid/machine/WarePluginsSearchResults.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
@@ -292,15 +293,7 @@ class OPENFLUID_API WarePluginsManager
 
   public:
 
-    class PluginsSearchResults
-    {
-      public:
-
-        std::vector<SignatureType*> AvailablePlugins;
-
-        std::map<std::string,std::string> ErroredFiles;
-    };
-
+    typedef WarePluginsSearchResults<SignatureType> PluginsSearchResults;
 
     virtual ~WarePluginsManager()
     {
@@ -386,17 +379,17 @@ class OPENFLUID_API WarePluginsManager
           {
             if (Pattern.empty())
             {
-              SearchResults.AvailablePlugins.push_back(CurrentPlug);
+              SearchResults.appendAvailable(CurrentPlug);
             }
             else if (openfluid::tools::matchWithWildcard(Pattern,CurrentPlug->Signature->ID))
             {
-              SearchResults.AvailablePlugins.push_back(CurrentPlug);
+              SearchResults.appendAvailable(CurrentPlug);
             }
           }
         }
         catch (openfluid::base::FrameworkException& E)
         {
-          SearchResults.ErroredFiles[E.getContext().at("pluginfullpath")] = E.getMessage();
+          SearchResults.appendErrored(E.getContext().at("pluginfullpath"),E.getMessage());
         }
       }
 

@@ -1,5 +1,5 @@
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${RapidJSON_INCLUDE_DIR})
 
 
 SET(OPENFLUID_MACHINE_CPP ModelItemInstance.cpp GhostSimulatorFileIO.cpp
@@ -22,7 +22,8 @@ SET(OPENFLUID_MACHINE_HPP ModelItemInstance.hpp GhostSimulatorFileIO.hpp
                           SimulationProfiler.hpp
                           SimulationBlob.hpp
                           WareSignatureInstance.hpp
-                          WareContainer.hpp WarePluginsManager.hpp WareSignatureRegistry.hpp
+                          WareContainer.hpp 
+                          WarePluginsManager.hpp WareSignatureRegistry.hpp WarePluginsSearchResults.hpp
                           SimulatorPluginsManager.hpp SimulatorSignatureRegistry.hpp
                           ObserverPluginsManager.hpp ObserverSignatureRegistry.hpp
                           Factory.hpp Engine.hpp MachineListener.hpp

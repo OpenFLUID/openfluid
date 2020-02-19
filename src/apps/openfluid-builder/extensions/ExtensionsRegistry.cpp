@@ -90,8 +90,8 @@ void ExtensionsRegistry::registerExtensions()
     return;
   }
 
-  std::vector<ExtensionContainer*> ExtVector =
-      ExtensionPluginsManager::instance()->getAvailableWaresSignatures().AvailablePlugins;
+  const std::vector<ExtensionContainer*> ExtVector =
+      ExtensionPluginsManager::instance()->getAvailableWaresSignatures().availablePlugins();
 
   for (unsigned int i=0; i<ExtVector.size(); i++)
   {

@@ -171,446 +171,6 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 // =====================================================================
 
 
-void OpenFLUIDApp::printSimulatorsList(bool PrintErrors)
-{
-  openfluid::machine::SimulatorPluginsManager::PluginsSearchResults SearchResults =
-    openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();
-
-  for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
-  {
-    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature)
-    {
-      std::cout << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
-    }
-  }
-
-  if (PrintErrors && !SearchResults.ErroredFiles.empty())
-  {
-    for (auto& it : SearchResults.ErroredFiles)
-    {
-      std::cerr << "Error on file " << it.first <<  ": " << it.second << std::endl;
-    }
-  }
-
-  std::cout.flush();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDApp::printObserversList(bool PrintErrors)
-{
-
-  openfluid::machine::ObserverPluginsManager::PluginsSearchResults SearchResults =
-    openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures();
-
-  for (unsigned int i=0;i<SearchResults.AvailablePlugins.size();i++)
-  {
-    if (SearchResults.AvailablePlugins[i]->Verified && SearchResults.AvailablePlugins[i]->Signature)
-    {
-      std::cout << SearchResults.AvailablePlugins[i]->Signature->ID << std::endl;
-    }
-  }
-
-  if (PrintErrors && !SearchResults.ErroredFiles.empty())
-  {
-    for (auto& it : SearchResults.ErroredFiles)
-    {
-      std::cerr << "Error on file " << it.first <<  ": " << it.second << std::endl;
-    }
-  }
-
-  std::cout.flush();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Signature, const std::string& Filename)
-{
-  std::string StatusStr = "experimental";
-  if (Signature->Status == openfluid::ware::BETA)
-  {
-    StatusStr = "beta";
-  }
-  if (Signature->Status == openfluid::ware::STABLE)
-  {
-    StatusStr = "stable";
-  }
-
-  std::cout << "   - Name: " << openfluid::tools::replaceEmptyString(Signature->Name,("(unknown)"))
-            << std::endl;
-  std::cout << "   - File: " << Filename
-            << std::endl;
-  std::cout << "   - Description: " << openfluid::tools::replaceEmptyString(Signature->Description,("(none)"))
-            << std::endl;
-  std::cout << "   - Version: " << openfluid::tools::replaceEmptyString(Signature->Version,("(unknown)"))
-            << std::endl;
-  std::cout << "   - SDK version used at build time: " << Signature->ABIVersion
-            <<  std::endl;
-  std::cout << "   - Development status: " << StatusStr
-            <<  std::endl;
-  std::cout << "   - Author(s): " << Signature->getAuthorsAsString()
-            << std::endl;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDApp::printSimulatorsDataItemReport(openfluid::ware::SignatureDataItem HandledItem,
-                                                 std::string Suffix, std::string Type)
-{
-  std::string TypeStr = ("");
-
-  std::cout << Suffix;
-
-  std::string UnitStr = ("");
-
-  if (HandledItem.DataUnit != (""))
-  {
-    UnitStr = (" (")+HandledItem.DataUnit+(")");
-  }
-
-  if (Type == ("fpar"))
-  {
-    TypeStr = ("simulator parameter");
-  }
-
-
-  std::cout << HandledItem.DataName << UnitStr << " : " << TypeStr << ".";
-  if (HandledItem.Description.length()!=0)
-  {
-    std::cout << " " << HandledItem.Description;
-  }
-  std::cout << std::endl;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDApp::printSimulatorsSpatialDataItemReport(openfluid::ware::SignatureSpatialDataItem HandledItem,
-                                                        std::string Suffix, std::string Type)
-{
-  std::string TypeStr = ("");
-
-  std::cout << Suffix;
-
-  std::string UnitStr = ("");
-  std::string DistribStr = ("");
-
-
-  if (HandledItem.DataUnit != (""))
-  {
-    UnitStr = (" (")+HandledItem.DataUnit+(")");
-  }
-  if (HandledItem.UnitsClass != (""))
-  {
-    DistribStr = " {"+HandledItem.UnitsClass+"}";
-  }
-
-
-  if (Type == ("pvar"))
-  {
-    TypeStr = ("produced variable");
-  }
-  if (Type == ("uvar"))
-  {
-    TypeStr = ("updated variable");
-  }
-
-  if (Type == ("rvar"))
-  {
-    TypeStr = ("required variable");
-  }
-  if (Type == ("svar"))
-  {
-    TypeStr = ("used variable (only if available)");
-  }
-
-  if (Type == ("fpar"))
-  {
-    TypeStr = ("simulator parameter");
-  }
-
-  if (Type == ("pinput"))
-  {
-    TypeStr = ("produced attribute");
-  }
-  if (Type == ("rinput"))
-  {
-    TypeStr = ("required attribute");
-  }
-  if (Type == ("sinput"))
-  {
-    TypeStr = ("used attribute");
-  }
-
-  std::cout << HandledItem.DataName << DistribStr << " : " << TypeStr << ".";
-  if (HandledItem.Description.length()!=0)
-  {
-    std::cout << " " << HandledItem.Description << UnitStr;
-  }
-  std::cout << std::endl;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDApp::printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureUnitsGraph HandledUnitsGraph,
-                                                          std::string Suffix)
-{
-  unsigned int i;
-  if (!HandledUnitsGraph.UpdatedUnitsGraph.empty())
-  {
-    std::cout << Suffix << "Global units graph updates: " << HandledUnitsGraph.UpdatedUnitsGraph << std::endl;
-  }
-
-  for (i=0;i<HandledUnitsGraph.UpdatedUnitsClass.size();i++)
-  {
-    std::cout << Suffix << "Units graph update on class "
-              << HandledUnitsGraph.UpdatedUnitsClass[i].UnitsClass << ": "
-              << HandledUnitsGraph.UpdatedUnitsClass[i].Description << std::endl;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDApp::printSimulatorsTimeSchedulingReport(openfluid::ware::SignatureTimeScheduling TScheduling)
-{
-  if (TScheduling.Type == openfluid::ware::SignatureTimeScheduling::DEFAULT)
-  {
-    std::cout << "fixed to default deltaT" << std::endl;
-  }
-  else if (TScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED)
-  {
-    std::cout << "fixed to " <<  TScheduling.Min << " seconds" << std::endl;
-  }
-  else if (TScheduling.Type == openfluid::ware::SignatureTimeScheduling::RANGE)
-  {
-    std::cout << "range between " <<  TScheduling.Min << " and " << TScheduling.Max << " seconds" << std::endl;
-  }
-  else
-  {
-    std::cout << "undefined" << std::endl;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHandledData HandledData,
-                                                    std::string Suffix)
-{
-
-  unsigned int i;
-
-  for (i=0;i<HandledData.UsedParams.size();i++)
-  {
-    printSimulatorsDataItemReport(HandledData.UsedParams[i],Suffix,("fpar"));
-  }
-
-  for (i=0;i<HandledData.ProducedVars.size();i++)
-  {
-    printSimulatorsSpatialDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
-  }
-
-  for (i=0;i<HandledData.RequiredVars.size();i++)
-  {
-    printSimulatorsSpatialDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
-  }
-
-  for (i=0;i<HandledData.UpdatedVars.size();i++)
-  {
-    printSimulatorsSpatialDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
-  }
-
-  for (i=0;i<HandledData.UsedVars.size();i++)
-  {
-    printSimulatorsSpatialDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
-  }
-
-  for (i=0;i<HandledData.ProducedAttribute.size();i++)
-  {
-    printSimulatorsSpatialDataItemReport(HandledData.ProducedAttribute[i],Suffix,("pinput"));
-  }
-
-  for (i=0;i<HandledData.RequiredAttribute.size();i++)
-  {
-    printSimulatorsSpatialDataItemReport(HandledData.RequiredAttribute[i],Suffix,("rinput"));
-  }
-
-  for (i=0;i<HandledData.UsedAttribute.size();i++)
-  {
-    printSimulatorsSpatialDataItemReport(HandledData.UsedAttribute[i],Suffix,("sinput"));
-  }
-
-  if (HandledData.UsedEventsOnUnits.size() > 0)
-  {
-    std::cout << Suffix << "Events used on: ";
-    for (i=0;i<HandledData.UsedEventsOnUnits.size();i++)
-    {
-      std::cout << HandledData.UsedEventsOnUnits[i];
-      if (i == HandledData.UsedEventsOnUnits.size()-1 )
-      {
-        std::cout << std::endl;
-      }
-      else
-      {
-        std::cout << ", ";
-      }
-    }
-  }
-
-  for (i=0;i<HandledData.RequiredExtraFiles.size();i++)
-  {
-    std::cout << Suffix << "Required extra file : " << HandledData.RequiredExtraFiles[i] << std::endl;
-  }
-
-  for (i=0;i<HandledData.UsedExtraFiles.size();i++)
-  {
-    std::cout << Suffix << "Used extra file : " << HandledData.UsedExtraFiles[i] << std::endl;
-  }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDApp::printSimulatorsReport(const std::string& Pattern)
-{
-  std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
-      openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures(Pattern).AvailablePlugins;
-  std::string StatusStr;
-
-  if (PlugContainers.size() > 0)
-  {
-    for (unsigned int i=0;i<PlugContainers.size();i++)
-    {
-
-      // Status string
-      StatusStr = "experimental";
-      if (PlugContainers[i]->Signature->Status == openfluid::ware::BETA)
-      {
-        StatusStr = "beta";
-      }
-      if (PlugContainers[i]->Signature->Status == openfluid::ware::STABLE)
-      {
-        StatusStr = "stable";
-      }
-
-
-      std::cout << "* " << PlugContainers[i]->Signature->ID
-                << std::endl;
-
-      std::cout << "   - Name: "
-                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)"))
-                << std::endl;
-
-      std::cout << "   - File: " << PlugContainers[i]->FileFullPath << std::endl;
-
-      std::cout << "   - Domain: "
-                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)"))
-                << std::endl;
-
-      std::cout << "   - Process: "
-                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)"))
-                << std::endl;
-
-      std::cout << "   - Method: "
-                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)"))
-                << std::endl;
-
-      std::cout << "   - Description: "
-                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Description,("(none)"))
-                << std::endl;
-
-      std::cout << "   - Version: "
-                << openfluid::tools::replaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)"))
-                << std::endl;
-
-      std::cout << "   - SDK version used at build time: "
-                << PlugContainers[i]->Signature->ABIVersion
-                <<  std::endl;
-
-      std::cout << "   - Development status: "
-                << StatusStr
-                <<  std::endl;
-
-      std::cout << "   - Author(s): "
-                << PlugContainers[i]->Signature->getAuthorsAsString()
-                << std::endl;
-
-      std::cout << "   - Time scheduling : ";
-      printSimulatorsTimeSchedulingReport(PlugContainers[i]->Signature->TimeScheduling);
-
-      std::cout << "   - Handled data" << std::endl;
-      printSimulatorsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "));
-
-      std::cout << "   - Handled units graph" << std::endl;
-      printSimulatorsHandledUnitsGraphReport(PlugContainers[i]->Signature->HandledUnitsGraph,("     . "));
-
-
-      if (i != PlugContainers.size()-1)
-      {
-        std::cout << "================================================================================" << std::endl;
-      }
-    }
-  }
-
-  std::cout.flush();
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDApp::printObserversReport(const std::string& Pattern)
-{
-  std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
-      openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures(Pattern).AvailablePlugins;
-
-  if (PlugContainers.size() > 0)
-  {
-    for (unsigned int i=0;i<PlugContainers.size();i++)
-    {
-      std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
-      printWareInfosReport((openfluid::ware::WareSignature*)(PlugContainers[i]->Signature),
-                           PlugContainers[i]->FileFullPath);
-
-      if (i != PlugContainers.size()-1)
-      {
-        std::cout << "================================================================================" << std::endl;
-      }
-    }
-  }
-
-  std::cout.flush();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 int OpenFLUIDApp::stopAppReturn(const std::string& ErrorType, const std::string& Msg)
 {
   std::cout << std::endl;
@@ -942,10 +502,12 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
 
   // reporting
-  openfluid::utils::CommandLineCommand ReportCmd("report","Display informations about available wares");
-  ReportCmd.addOption(openfluid::utils::CommandLineOption("list","l","display as list"));
-  ReportCmd.addOption(openfluid::utils::CommandLineOption("list-with-errors","e",
-                                                          "display as list, show errors if any"));
+  openfluid::utils::CommandLineCommand ReportCmd("report","Display report about available wares");
+  ReportCmd.addOption(openfluid::utils::CommandLineOption("format","",
+                                                          "output format, argument can be text (default) or json",
+                                                          true));
+  ReportCmd.addOption(openfluid::utils::CommandLineOption("list","l","display as simple list of wares IDs"));
+  ReportCmd.addOption(openfluid::utils::CommandLineOption("with-errors","e","report errors if any"));
   for (auto& Opt : SearchOptions)
   {
     ReportCmd.addOption(Opt);
@@ -1088,10 +650,13 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       MatchStr = Parser.extraArgs().at(1);
     }
 
-    bool ReportErrors = false;
-    if (Parser.command(ActiveCommandStr).isOptionActive("list-with-errors"))
+    bool Detailed = !Parser.command(ActiveCommandStr).isOptionActive("list");
+    bool WithErrors = Parser.command(ActiveCommandStr).isOptionActive("with-errors");
+    std::string Format = "text";
+
+    if (Parser.command(ActiveCommandStr).isOptionActive("format"))
     {
-      ReportErrors = true;
+      Format = Parser.command(ActiveCommandStr).getOptionValue("format");
     }
 
     if (Waretype == "simulators")
@@ -1102,20 +667,11 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
             Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
       }
 
-      if (Parser.command(ActiveCommandStr).isOptionActive("list") ||
-          Parser.command(ActiveCommandStr).isOptionActive("list-with-errors"))
-      {
-        m_RunType = InfoRequest;
-        printSimulatorsList(ReportErrors);
-        return;
-      }
-      else
-      {
-        m_RunType = InfoRequest;
-        printSimulatorsReport(MatchStr);
-        return;
-      }
+      const openfluid::machine::SimulatorPluginsManager::PluginsSearchResults SearchResults =
+        openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();      
 
+      SearchResults.writeToStream(std::cout,Format,Detailed,WithErrors);
+      std::cout.flush();
     }
     else if (Waretype == "observers")
     {
@@ -1125,19 +681,11 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
             Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
       }
 
-      if (Parser.command(ActiveCommandStr).isOptionActive("list") ||
-          Parser.command(ActiveCommandStr).isOptionActive("list-with-errors"))
-      {
-        m_RunType = InfoRequest;
-        printObserversList(ReportErrors);
-        return;
-      }
-      else
-      {
-        m_RunType = InfoRequest;
-        printObserversReport(MatchStr);
-        return;
-      }
+      const openfluid::machine::ObserverPluginsManager::PluginsSearchResults SearchResults =
+        openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures();      
+
+      SearchResults.writeToStream(std::cout,Format,Detailed,WithErrors);
+      std::cout.flush();
     }
   }
   else if (ActiveCommandStr == "buddy")

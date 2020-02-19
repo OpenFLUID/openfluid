@@ -73,13 +73,11 @@ Usage : `openfluid report [<options>] [<args>]`
 Available options:
 
 * `--help,-h` : display this help message
-* `--list, -l` : display as list
-* `--list-with-errors, -e` : display as list, show errors if any
+* `--format=<arg>` : output format, argument can be text (default) or json
+* `--list, -l` : display as simple list of wares IDs
 * `--observers-paths=<arg>, -n <arg>` : add extra observers search paths (colon separated)
 * `--simulators-paths=<arg>, -p <arg>` : add extra simulators search paths (colon separated)
-
---list, -l : display as list
-  --list-with-errors, -e : display as list, show errors if any
+* `--with-errors, -e` : report errors if any
 
 _Example of detailed reporting about available simulators:_
 ```

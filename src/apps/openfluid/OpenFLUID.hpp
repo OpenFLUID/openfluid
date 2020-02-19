@@ -84,29 +84,6 @@ class OpenFLUIDApp
 
     void printEnvInfos();
 
-    void printSimulatorsList(bool PrintErrors = false);
-
-    void printObserversList(bool PrintErrors = false);
-
-    void printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureUnitsGraph HandledUnitsGraph,
-                                                std::string Suffix);
-
-    void printSimulatorsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix);
-
-    void printSimulatorsDataItemReport(openfluid::ware::SignatureDataItem HandledItem,
-                                       std::string Suffix, std::string Type);
-
-    void printSimulatorsSpatialDataItemReport(openfluid::ware::SignatureSpatialDataItem HandledItem,
-                                              std::string Suffix, std::string Type);
-
-    void printSimulatorsTimeSchedulingReport(openfluid::ware::SignatureTimeScheduling TScheduling);
-
-    void printWareInfosReport(const openfluid::ware::WareSignature* Signature, const std::string& Filename);
-
-    void printSimulatorsReport(const std::string& Pattern);
-
-    void printObserversReport(const std::string& Pattern);
-
     /**
       Runs simulation
     */

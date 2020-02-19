@@ -102,15 +102,16 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Spat
     }
     else
     {
+      std::string ExpTypeStr = 
+        openfluid::tools::replaceEmptyString(openfluid::core::Value::getStringFromValueType(Val.getType()),"none");
+      std::string FoundTypeStr = 
+        openfluid::tools::replaceEmptyString(openfluid::core::Value::getStringFromValueType(ValPtr->getType()),"none");
+
       openfluid::base::ExceptionContext Context = computeFrameworkContext(OPENFLUID_CODE_LOCATION)
                 .addSpatialUnit(openfluid::tools::classIDToString(UnitPtr->getClass(),UnitPtr->getID()));
             throw openfluid::base::FrameworkException(Context,
                     "Value for attribute "+ AttrName +" is not the right type " +
-                    "(" +
-                    openfluid::core::Value::getStringFromValueType(Val.getType()) +
-                    " expected but " +
-                    openfluid::core::Value::getStringFromValueType(ValPtr->getType()) +
-                    " found)");
+                    "(" + ExpTypeStr + " expected but " + FoundTypeStr  + " found)");
     }
   }
   else

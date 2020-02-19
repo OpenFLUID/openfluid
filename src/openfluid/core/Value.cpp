@@ -397,7 +397,7 @@ std::string Value::getStringFromValueType(const Value::Type ValueType)
   switch (ValueType)
   {
     case openfluid::core::Value::NONE:
-      return "(none)";
+      return "";
     case openfluid::core::Value::DOUBLE:
       return "double";
     case openfluid::core::Value::INTEGER:

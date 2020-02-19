@@ -360,6 +360,8 @@ BOOST_AUTO_TEST_CASE(check_stringtotype)
 
 BOOST_AUTO_TEST_CASE(check_typetostring)
 {
+  BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::NONE),"");
+
   BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::DOUBLE),"double");
 
   BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::VECTOR),"vector");

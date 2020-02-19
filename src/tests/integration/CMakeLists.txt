@@ -64,7 +64,9 @@ OPENFLUID_ADD_TEST(NAME integration-SimulatorsList
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "report" "simulators" "--list"
                            "-p" "${OFBUILD_TESTS_BINARY_DIR}")
-  
+SET_TESTS_PROPERTIES(integration-SimulatorsList PROPERTIES PASS_REGULAR_EXPRESSION "tests.tools")  
+SET_TESTS_PROPERTIES(integration-SimulatorsList PROPERTIES FAIL_REGULAR_EXPRESSION "tests.empty")  
+
 
 ###########################################################################
 
@@ -73,7 +75,31 @@ OPENFLUID_ADD_TEST(NAME integration-SimulatorsReport
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "report" "simulators"
                            "-p" "${OFBUILD_TESTS_BINARY_DIR}")
-  
+SET_TESTS_PROPERTIES(integration-SimulatorsReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.tools")  
+SET_TESTS_PROPERTIES(integration-SimulatorsReport PROPERTIES FAIL_REGULAR_EXPRESSION "tests.empty")  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-SimulatorsListJSON 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "simulators" "--list" "--format=json"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(integration-SimulatorsListJSON PROPERTIES PASS_REGULAR_EXPRESSION "tests.tools")  
+SET_TESTS_PROPERTIES(integration-SimulatorsListJSON PROPERTIES FAIL_REGULAR_EXPRESSION "tests.empty")  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-SimulatorsReportJSON 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "report" "simulators" "--format=json"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(integration-SimulatorsReportJSON PROPERTIES PASS_REGULAR_EXPRESSION "tests.tools")  
+SET_TESTS_PROPERTIES(integration-SimulatorsReportJSON PROPERTIES FAIL_REGULAR_EXPRESSION "tests.empty")  
+
 
 ###########################################################################
 
@@ -82,18 +108,40 @@ OPENFLUID_ADD_TEST(NAME integration-ObserversList
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "report" "observers" "--list"
                            "-n" "${OFBUILD_TESTS_BINARY_DIR}")
-SET_TESTS_PROPERTIES(integration-ObserversList PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")  
-                         
- 
-###########################################################################
+SET_TESTS_PROPERTIES(integration-ObserversList PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(integration-ObserversList PROPERTIES FAIL_REGULAR_EXPRESSION "tests.tools")
 
+
+###########################################################################
 
 OPENFLUID_ADD_TEST(NAME integration-ObserversReport
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "report" "observers"
                            "-n" "${OFBUILD_TESTS_BINARY_DIR}")  
-SET_TESTS_PROPERTIES(integration-ObserversReport PROPERTIES PASS_REGULAR_EXPRESSION "empty observer for tests")
-  
+SET_TESTS_PROPERTIES(integration-ObserversReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(integration-ObserversReport PROPERTIES FAIL_REGULAR_EXPRESSION "tests.tools")
+
+ 
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-ObserversListJSON
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "observers" "--list" "--format=json"
+                           "-n" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(integration-ObserversListJSON PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(integration-ObserversListJSON PROPERTIES FAIL_REGULAR_EXPRESSION "tests.tools")
+
+ 
+###########################################################################
+
+OPENFLUID_ADD_TEST(NAME integration-ObserversReportJSON
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "observers" "--format=json"
+                           "-n" "${OFBUILD_TESTS_BINARY_DIR}")  
+SET_TESTS_PROPERTIES(integration-ObserversReportJSON PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(integration-ObserversReportJSON PROPERTIES FAIL_REGULAR_EXPRESSION "tests.tools")
+
 
 ###########################################################################
 
@@ -110,7 +158,6 @@ IF(OFBUILD_CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR OFBUILD_CUSTOM_CMAKE_VE
 ENDIF()
 
 
-
 ###########################################################################
 
 
@@ -125,26 +172,29 @@ SET_TESTS_PROPERTIES(integration-SimulatorsReportNoEnvVar PROPERTIES WILL_FAIL T
 
 ###########################################################################
 
+  
+IF(OFBUILD_CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR OFBUILD_CUSTOM_CMAKE_VERSION VERSION_GREATER "2.8.0") 
+  OPENFLUID_ADD_TEST(NAME integration-ObserversReportEnvVar 
+                     COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                              "report" 
+                              "observers")
+  SET_TESTS_PROPERTIES(integration-ObserversReportEnvVar 
+                       PROPERTIES ENVIRONMENT "OPENFLUID_OBSS_PATH=${OFBUILD_TESTS_BINARY_DIR};OPENFLUID_TEMP_PATH=${OFBUILD_TESTS_TEMP_DIR};OPENFLUID_USERDATA_PATH=${OFBUILD_TESTS_USERDATA_DIR}")                           
+  SET_TESTS_PROPERTIES(integration-ObserversReportEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")  
+ENDIF()
 
-OPENFLUID_ADD_TEST(NAME integration-SimulatorsMatchReport 
-                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                           "report" 
-                           "simulators" "tests.primitives.*"
-                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
-SET_TESTS_PROPERTIES(integration-SimulatorsMatchReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.use")  
-SET_TESTS_PROPERTIES(integration-SimulatorsMatchReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.prod")
-                           
 
 ###########################################################################
 
-OPENFLUID_ADD_TEST(NAME integration-SimulatorsXMLReport 
-                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                           "report"
-                           "-x"
-                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
-SET_TESTS_PROPERTIES(integration-SimulatorsXMLReport PROPERTIES WILL_FAIL TRUE)        
-                              
+
+OPENFLUID_ADD_TEST(NAME integration-ObserversReportNoEnvVar 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" 
+                           "observers")                           
+SET_TESTS_PROPERTIES(integration-ObserversReportNoEnvVar  PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(integration-ObserversReportNoEnvVar  PROPERTIES WILL_FAIL TRUE)
   
+
 ###########################################################################
 
 
