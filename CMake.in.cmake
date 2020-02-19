@@ -305,8 +305,8 @@ SET(OFBUILD_TESTS_ENABLE_EMBEDDING_R 0)
 # set options passed to unit tests programs. ex: "--log_level=all"
 SET(OFBUILD_UNITTESTS_RUN_OPTIONS "")
 
-SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTP "http://jsonplaceholder.typicode.com")
-SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTPS "https://jsonplaceholder.typicode.com")
+SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTP "http://dev.openfluid-project.org/testing/rest")
+SET(OFBUILD_TESTS_RESTSERVICE_URL_HTTPS "https://dev.openfluid-project.org/testing/rest")
 SET(OFBUILD_TESTS_FLUIDHUB_URL_HTTP "http://dev.openfluid-project.org/testing/fluidhub-api")
 SET(OFBUILD_TESTS_FLUIDHUB_URL_HTTPS "https://dev.openfluid-project.org/testing/fluidhub-api")
 SET(OFBUILD_TESTS_FLUIDHUB_URL_REDIRECT_HTTPS "https://dev.openfluid-project.org/redirect/testing/fluidhub-api")
