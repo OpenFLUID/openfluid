@@ -41,6 +41,7 @@
 #define __OPENFLUID_BUILDERAPP_WAREWIDGET_HPP__
 
 
+#include <QMouseEvent>
 #include <QWidget>
 
 #include <openfluid/ware/WareSignature.hpp>
@@ -118,6 +119,10 @@ class WareWidget : public QWidget
 
     virtual void updateParametersList();
 
+    virtual bool isClickable() = 0;
+    
+    virtual void mouseDoubleClickEvent(QMouseEvent* Event);
+    
 
   signals:
 
@@ -128,6 +133,10 @@ class WareWidget : public QWidget
     void removeClicked(const QString& ID, int Index);
 
     void changed();
+    
+    void styleChanged();
+    
+    void srcEditAsked(const QString&, bool Ghost = false);
 
 
   public slots:

@@ -46,6 +46,7 @@
 #include <QGraphicsSceneMouseEvent>
 
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "builderconfig.hpp"
 #include "ModelItemGraphics.hpp"
@@ -67,11 +68,19 @@ ModelItemGraphics::ModelItemGraphics(const QPointF& Coords,
                                      const QString& ID,
                                      const QString& DisplayedTitle,
                                      unsigned int Order,
+                                     const QColor& BorderColor,
                                      QGraphicsItem* Parent):
   QGraphicsRectItem(Coords.x(),Coords.y(),m_DefaultSize.width(),m_DefaultSize.height(),Parent),
   m_ID(ID), m_Ghost(false), m_Initialized(false)
 {
-  setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_BORDERCOLOR)),2));
+  if (BorderColor.isValid())
+  {
+    setPen(QPen(QBrush(BorderColor),2));
+  }
+  else
+  {
+    setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_BORDERCOLOR)),2));
+  }
 
   setFlag(QGraphicsItem::ItemIsMovable);
   setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
@@ -123,6 +132,38 @@ ModelItemGraphics::ModelItemGraphics(const QPointF& Coords,
 ModelItemGraphics::~ModelItemGraphics()
 {
 //  removeConnectors();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelItemGraphics::updateFontColor(const QColor& BGColor)
+{
+  // Adjust color to background: black or white depending on luminance of color
+  QColor FontColor;
+  double Luminance = openfluid::ui::common::computeLuminance(BGColor);
+  if (Luminance > 0.5)
+  {
+    FontColor = Qt::black;
+  }
+  else
+  {
+    FontColor = Qt::white;
+  }
+  
+  for (auto& Item : childItems())
+  {
+    if (Item->type() == 8) //8: QGraphicsTextItem
+    {
+      ((QGraphicsTextItem*)(Item))->setDefaultTextColor(FontColor);
+    }
+    if (Item->type() == 9) //9: QGraphicsSimpleTextItem
+    {
+      ((QGraphicsSimpleTextItem*)(Item))->setBrush(QBrush(FontColor));
+    }
+  }
 }
 
 

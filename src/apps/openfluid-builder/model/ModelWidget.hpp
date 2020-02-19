@@ -102,6 +102,8 @@ class ModelWidget : public WorkspaceWidget
     void notifySrcEditAsked(const QString& ID, bool Ghost);
 
     void notifySrcGenerateAsked(const QString& ID);
+    
+    void changeColouringMode(int Index);
 
 
   signals:

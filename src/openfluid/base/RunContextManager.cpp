@@ -453,6 +453,21 @@ void RunContextManager::setProjectConfigValue(const QString& Group, const QStrin
 // =====================================================================
 
 
+void RunContextManager::removeProjectConfigValue(const QString& Group, const QString& Key)
+{
+  if (!m_ProjectIsOpen)
+  {
+    return;
+  }
+
+  mp_ProjectFile->remove(Group+"/"+Key);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void RunContextManager::processWareParams(openfluid::ware::WareParams_t& Params) const
 {
   std::map<std::string,std::string> Replacements =

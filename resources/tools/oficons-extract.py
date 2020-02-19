@@ -103,6 +103,8 @@ ExtSet['linked'] = ['link-variant',False,True,False]
 ExtSet['unlinked'] = ['link-variant-off',False,True,False]
 ExtSet['generate-doc'] = ['book-open-page-variant',True,True,True]
 ExtSet['view-doc'] = ['book-open-variant',True,True,True]
+ExtSet['color-marker'] = ['format-color-highlight',False,True,False]
+ExtSet['color-marker-cancel'] = ['format-color-marker-cancel',False,True,False]
 
 BaseSetGitURL = 'https://github.com/OpenFLUID/material-design-icons.git'
 BaseSetDir = 'base'

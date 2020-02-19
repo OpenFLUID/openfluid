@@ -44,27 +44,21 @@
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
-#include "WareWidget.hpp"
+#include "ModelItemWidget.hpp"
 
 
-class GeneratorWidget : public WareWidget
+class GeneratorWidget : public ModelItemWidget
 {
   Q_OBJECT;
-
-  private slots:
-
-    void setEnabledWare(bool Enabled);
-
-    void updateParamValue(const QString& Name, const QString& Value);
 
 
   private:
 
-    openfluid::fluidx::ModelItemDescriptor* mp_Desc;
-
     const openfluid::machine::ModelItemSignatureInstance* mp_SignInstance;
-
-    void updateParams();
+    
+    void updateParametersList();
+    
+    bool isClickable() {return false;}
 
 
   public slots:

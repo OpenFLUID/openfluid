@@ -45,17 +45,29 @@
 
 GeneratorGraphics::GeneratorGraphics(const QPointF& Coords,
                                      const QString& ID, unsigned int Order,
-                                     const QString& VarName, const QString& UnitsClass,
+                                     const QString& VarName, const QString& UnitsClass, 
+                                     const QColor& BGColor, const QColor& BorderColor,
                                      QGraphicsItem* Parent):
-  ModelItemGraphics(Coords,ID,tr("Generator"),Order,Parent)
+  ModelItemGraphics(Coords,ID,tr("Generator"),Order,BorderColor,Parent)
 {
   m_ProducedVars.push_back(
     openfluid::ware::SignatureTypedSpatialDataItem(VarName.toStdString(),UnitsClass.toStdString(),"",""));
 
   // Out slot
   drawIOSlot(getProducedIOPosition(),SlotType::SLOT_PROD,m_ProducedVars);
-
-  setBrush(QBrush(QColor(BUILDER_GENERATOR_BGCOLOR)));
+  QColor EffectiveBGColor;
+  
+  if (BGColor.isValid())
+  {
+    EffectiveBGColor = BGColor;
+  }
+  else
+  {
+    EffectiveBGColor = QColor(BUILDER_GENERATOR_BGCOLOR);
+    
+  }
+  setBrush(QBrush(EffectiveBGColor));
+  updateFontColor(EffectiveBGColor);
 }
 
 

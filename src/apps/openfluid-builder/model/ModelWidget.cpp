@@ -39,6 +39,7 @@
 
 #include <QImage>
 
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
@@ -47,6 +48,7 @@
 
 #include "ui_WaresManagementWidget.h"
 #include "ui_ModelWidget.h"
+#include "builderconfig.hpp"
 #include "ModelWidget.hpp"
 #include "SimulatorWidget.hpp"
 #include "GeneratorWidget.hpp"
@@ -85,6 +87,25 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& F
 
   ui->SVGExportButton->setIcon(openfluid::ui::common::getIcon("export","/ui/common"));
   ui->SVGExportButton->setIconSize(QSize(20,20));
+  
+  const QStringList ColouringModeCodes(QStringList() << "NONE" << "BACKGROUND" << "BORDER");
+  const QStringList ColouringModeTexts(QStringList() << tr("none") << tr("background") << tr("border"));
+  
+  for (int i=0;i<ColouringModeCodes.size();i++)
+  {
+    ui->ColoringComboBox->addItem(ColouringModeTexts[i], ColouringModeCodes[i]);
+  }
+  
+  QString ColouringMode = openfluid::base::RunContextManager::instance()->getProjectConfigValue(
+    PROJECT_COLORMODE_CATEGORY.first, PROJECT_COLORMODE_CATEGORY.second).toString();
+  for (int i=0; i<ColouringModeCodes.size();i++)
+  {
+    if (ColouringModeCodes[i] == ColouringMode)
+    {
+      ui->ColoringComboBox->setCurrentIndex(i);
+    }
+  }
+  
 
   connect(mp_ShowHideGlobalParamsLabel,SIGNAL(clicked()),this,SLOT(updateShowHideGlobalParams()));
   connect(ui->AddGlobalParamButton,SIGNAL(clicked()),this,SLOT(addGlobalParam()));
@@ -96,6 +117,7 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& F
   connect(ui->ResetViewButton,SIGNAL(clicked()),ui->GraphicalView,SLOT(resetView()));
   connect(ui->PNGExportButton,SIGNAL(clicked()),ui->GraphicalView,SLOT(exportSceneAsPNG()));
   connect(ui->SVGExportButton,SIGNAL(clicked()),ui->GraphicalView,SLOT(exportSceneAsSVG()));
+  connect(ui->ColoringComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeColouringMode(int)));
 
   refresh();
 
@@ -112,6 +134,19 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& F
 ModelWidget::~ModelWidget()
 {
   delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::changeColouringMode(int /*index*/)
+{
+  openfluid::base::RunContextManager::instance()->setProjectConfigValue(PROJECT_COLORMODE_CATEGORY.first, 
+                                                                        PROJECT_COLORMODE_CATEGORY.second,
+                                                                        ui->ColoringComboBox->currentData());
+  mp_ModelScene->refresh();
 }
 
 
@@ -479,6 +514,7 @@ void ModelWidget::updateCoupledModel()
       connect(SimWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
       connect(SimWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
       connect(SimWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
+      connect(SimWidget,SIGNAL(styleChanged()),mp_ModelScene,SLOT(refresh()));
     }
     else if ((*it)->getType() == openfluid::ware::WareType::GENERATOR)
     {
@@ -505,6 +541,7 @@ void ModelWidget::updateCoupledModel()
       connect(GenWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
       connect(GenWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
       connect(GenWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
+      connect(GenWidget,SIGNAL(styleChanged()),mp_ModelScene,SLOT(refresh()));
     }
   }
   ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->addStretch();
@@ -583,4 +620,3 @@ void ModelWidget::updateWares()
 
   mp_ModelScene->refresh();
 }
-

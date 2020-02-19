@@ -56,7 +56,7 @@ QT5_WRAP_UI(BUILDER_BASE_UI base/HomeModuleWidget.ui base/ProjectModuleWidget.ui
 ### COMMON #
 
 SET(BUILDER_COMMON_CPP common/AppTools.cpp
-                       common/WaresManagementWidget.cpp common/WareWidget.cpp common/ClickableWareWidget.cpp
+                       common/WaresManagementWidget.cpp common/WareWidget.cpp
                        common/SignatureWidget.cpp common/ParameterWidget.cpp
                        common/AddWareDialog.cpp
                        common/AddParamDialog.cpp
@@ -65,7 +65,7 @@ SET(BUILDER_COMMON_CPP common/AppTools.cpp
 SET(BUILDER_COMMON_HPP common/AbstractModuleWidget.hpp
                        common/WorkspaceWidget.hpp
                        common/AppTools.hpp
-                       common/WaresManagementWidget.hpp common/WareWidget.hpp common/ClickableWareWidget.hpp
+                       common/WaresManagementWidget.hpp common/WareWidget.hpp 
                        common/SignatureWidget.hpp common/ParameterWidget.hpp
                        common/AddWareDialog.hpp
                        common/AddParamDialog.hpp
@@ -81,6 +81,7 @@ QT5_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.
 ### MODEL #
 
 SET(BUILDER_MODEL_CPP model/ModelWidget.cpp
+                      model/ModelItemWidget.cpp
                       model/SimulatorWidget.cpp
                       model/GeneratorWidget.cpp
                       model/ModelScene.cpp model/ModelView.cpp
@@ -91,6 +92,7 @@ SET(BUILDER_MODEL_CPP model/ModelWidget.cpp
                      )
 
 SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
+                      model/ModelItemWidget.hpp
                       model/SimulatorWidget.hpp
                       model/GeneratorWidget.hpp
                       model/ModelScene.hpp model/ModelView.hpp

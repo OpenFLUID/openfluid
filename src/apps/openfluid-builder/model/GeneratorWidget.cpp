@@ -50,13 +50,12 @@ GeneratorWidget::GeneratorWidget(QWidget* Parent,
                                  const openfluid::ware::WareID_t& ID,
                                  int Index,
                                  const openfluid::machine::ModelItemSignatureInstance* SignInstance):
-  WareWidget(Parent,ID,tr("Generator"),Desc->isEnabled(),BUILDER_GENERATOR_BGCOLOR, Index),
-  mp_Desc(Desc), mp_SignInstance(SignInstance)
-{
+  ModelItemWidget(Parent,Desc,ID,tr("Generator"),BUILDER_GENERATOR_BGCOLOR, Index),
+  mp_SignInstance(SignInstance)
+{  
+  refresh();
   ui->AddParamButton->setVisible(false);
   ui->ParameterizationSwitchLabel->setVisible(false);
-
-  refresh();
 }
 
 
@@ -74,60 +73,9 @@ GeneratorWidget::~GeneratorWidget()
 // =====================================================================
 
 
-void GeneratorWidget::updateParams()
+void GeneratorWidget::updateParametersList()
 {
-  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
-
-  // required parameters
-  std::vector<openfluid::ware::SignatureDataItem>* RequiredParams =
-      &(mp_SignInstance->Signature->HandledData.RequiredParams);
-
-  for (auto it = RequiredParams->begin(); it != RequiredParams->end(); ++it)
-  {
-    std::string ParamName = (*it).DataName;
-    QString ParamValue = "";
-
-    if (DescParams.find(ParamName) != DescParams.end())
-    {
-      ParamValue = QString::fromStdString(DescParams[ParamName]);
-    }
-
-    ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                       QString::fromStdString(ParamName),ParamValue,
-                                                       QString::fromStdString((*it).DataUnit),
-                                                       true,false);
-
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this,
-            SLOT(updateParamValue(const QString&,const QString&)));
-
-    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
-  }
-
-
-  // used parameters
-  std::vector<openfluid::ware::SignatureDataItem>* UsedParams =
-      &(mp_SignInstance->Signature->HandledData.UsedParams);
-
-  for (auto it = UsedParams->begin(); it != UsedParams->end(); ++it)
-  {
-    std::string ParamName = (*it).DataName;
-    QString ParamValue = "";
-
-    if (DescParams.find(ParamName) != DescParams.end())
-    {
-      ParamValue = QString::fromStdString(DescParams[ParamName]);
-    }
-
-    ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                       QString::fromStdString(ParamName),ParamValue,
-                                                       QString::fromStdString((*it).DataUnit),
-                                                       false,false);
-
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this,
-            SLOT(updateParamValue(const QString&,const QString&)));
-
-    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
-  }
+  createParamWidgetsFromSignature(mp_SignInstance);
 }
 
 
@@ -160,35 +108,11 @@ void GeneratorWidget::refresh()
     // TODO add produced variable in signature
     ui->InfosSideWidget->update(mp_SignInstance);
 
-    updateParams();
+    updateParametersList();
   }
   else
   {
     setAvailableWare(false);
     ui->NameLabel->setText("");
   }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void GeneratorWidget::setEnabledWare(bool Enabled)
-{
-  mp_Desc->setEnabled(Enabled);
-  WareWidget::setEnabledWare(Enabled);
-  emit changed();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void GeneratorWidget::updateParamValue(const QString& Name, const QString& Value)
-{
-  mp_Desc->setParameter(Name.toStdString(),Value.toStdString());
-  emit changed();
 }

@@ -113,6 +113,8 @@ WareWidget::WareWidget(QWidget* Parent,
 
   ui->ParamInfoWidget->setVisible(false);
   ui->GenerateSrcButton->setVisible(false);
+  ui->ColorButton->setVisible(false);
+  ui->CustomColor->setVisible(false);
 }
 
 
@@ -488,4 +490,28 @@ void WareWidget::switchParameterizationMode()
 void WareWidget::notifyChangedFromParameterizationWidget()
 {
   emit changed();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::mouseDoubleClickEvent(QMouseEvent* Event)
+{
+  if (isClickable())
+  {
+    if (m_Ghost)
+    {
+      emit srcEditAsked(QString::fromStdString(m_ID),m_Ghost);
+    }
+#ifdef ENABLE_WARESDEV_INTEGRATION
+    else
+    {
+      emit srcEditAsked(QString::fromStdString(m_ID),m_Ghost);
+    }
+#endif
+
+    QWidget::mousePressEvent(Event);
+  }
 }

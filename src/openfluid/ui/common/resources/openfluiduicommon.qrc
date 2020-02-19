@@ -72,6 +72,8 @@
     <file>icons/log-view_dark.png</file>
     <file>icons/linked_dark.png</file>
     <file>icons/unlinked_dark.png</file>
+    <file>icons/color-marker_dark.png</file>
+    <file>icons/color-marker-cancel_dark.png</file>
     
     <!-- icons for completion -->
     <file>icons/cppcode.png</file>

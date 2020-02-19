@@ -60,6 +60,8 @@ class ModelScene : public QGraphicsScene
   private:
 
     const openfluid::fluidx::CoupledModelDescriptor& m_Model;
+    
+    unsigned int m_ColouringModeIndex;
 
     QList<ModelItemGraphics*> m_GraphicsItems;
 
@@ -75,6 +77,8 @@ class ModelScene : public QGraphicsScene
   public slots:
 
     void showVariables(bool Show);
+    
+    void refresh();
 
 
   signals:
@@ -87,8 +91,6 @@ class ModelScene : public QGraphicsScene
     ModelScene(const openfluid::fluidx::CoupledModelDescriptor& ModelDesc, QObject* Parent = nullptr);
 
     ~ModelScene();
-
-    void refresh();
 
 };
 

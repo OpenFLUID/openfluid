@@ -373,8 +373,10 @@ class OPENFLUID_API RunContextManager : public Environment
 
     QVariant getProjectConfigValue(const QString& Group, const QString& Key) const;
 
-    void setProjectConfigValue(const QString& Group, const QString& Key, const QVariant& Value);
+    void removeProjectConfigValue(const QString& Group, const QString& Key);
 
+    void setProjectConfigValue(const QString& Group, const QString& Key, const QVariant& Value);
+    
 };
 
 

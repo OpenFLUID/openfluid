@@ -43,10 +43,10 @@
 
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
 
-#include "ClickableWareWidget.hpp"
+#include "WareWidget.hpp"
 
 
-class ObserverWidget : public ClickableWareWidget
+class ObserverWidget : public WareWidget
 {
   Q_OBJECT;
 
@@ -57,6 +57,8 @@ class ObserverWidget : public ClickableWareWidget
     bool m_IsTranslated;
 
     void updateParametersList();
+    
+    bool isClickable() {return true;}
 
 
   private slots:

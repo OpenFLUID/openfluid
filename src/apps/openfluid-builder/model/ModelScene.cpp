@@ -41,13 +41,14 @@
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 
+#include "builderconfig.hpp"
 #include "ModelScene.hpp"
 #include "SimulatorGraphics.hpp"
 #include "GeneratorGraphics.hpp"
 
 
 ModelScene::ModelScene(const openfluid::fluidx::CoupledModelDescriptor& ModelDesc, QObject* Parent):
-  QGraphicsScene(Parent), m_Model(ModelDesc)
+  QGraphicsScene(Parent), m_Model(ModelDesc), m_ColouringModeIndex(0)
 {
 
 }
@@ -111,6 +112,9 @@ void ModelScene::refresh()
 
 
   // add model items
+  QString ColouringMode = openfluid::base::RunContextManager::instance()->getProjectConfigValue(
+                                             PROJECT_COLORMODE_CATEGORY.first, 
+                                             PROJECT_COLORMODE_CATEGORY.second).toString();
 
   for (it = itb; it!= ite; ++it)
   {
@@ -133,6 +137,26 @@ void ModelScene::refresh()
         Position.setX(int(CurrentRect.x()+CurrentRect.width()/2));
         Position.setY(int(CurrentRect.y()+CurrentRect.height()/2));
       }
+      
+      // Fetch color
+      QColor CustomColor;
+      QVariant CustomColorVariant =
+          openfluid::base::RunContextManager::instance()->getProjectConfigValue(PROJECT_WARECOLOR_CATEGORY,ID);
+      if (CustomColorVariant.type() == QVariant::String)
+      {
+        CustomColor = CustomColorVariant.value<QColor>();
+      }
+
+      QColor BGColor, BorderColor;
+      
+      if (ColouringMode.toStdString() == "BORDER")
+      {
+        BorderColor = CustomColor;
+      }
+      else if (ColouringMode.toStdString() == "BACKGROUND")
+      {
+        BGColor = CustomColor;
+      }
 
       if ((*it)->getType() == openfluid::ware::WareType::SIMULATOR &&
           openfluid::machine::SimulatorSignatureRegistry::instance()->isSimulatorAvailable(ID.toStdString()))
@@ -143,7 +167,7 @@ void ModelScene::refresh()
             new SimulatorGraphics(QPoint(0,0),
                                   ID, SimCount+GenCount,
                                   openfluid::machine::SimulatorSignatureRegistry::instance()
-                                  ->signature(ID.toStdString()));
+                                  ->signature(ID.toStdString()), BGColor, BorderColor);
 
         addItem(SimG);
         SimG->moveBy(Position.x(),Position.y());
@@ -161,7 +185,8 @@ void ModelScene::refresh()
         GeneratorGraphics* GenG = new GeneratorGraphics(QPoint(0,0),
                                                         ID,SimCount+GenCount,
                                                         QString::fromStdString(GenDesc->getVariableName()),
-                                                        QString::fromStdString(GenDesc->getUnitsClass()));
+                                                        QString::fromStdString(GenDesc->getUnitsClass()), 
+                                                        BGColor, BorderColor);
         addItem(GenG);
         GenG->moveBy(Position.x(),Position.y());
         GenG->initialize();

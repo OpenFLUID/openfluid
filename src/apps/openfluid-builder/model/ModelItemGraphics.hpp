@@ -103,6 +103,8 @@ class ModelItemGraphics : public QObject, public QGraphicsRectItem
                     const IOSet_t& VarsInfos);
 
     QPointF getCenterFromOrigin();
+    
+    void updateFontColor(const QColor& BGColor);
 
   public:
 
@@ -110,6 +112,7 @@ class ModelItemGraphics : public QObject, public QGraphicsRectItem
                       const QString& ID,
                       const QString& DisplayedTitle,
                       unsigned int Order,
+                      const QColor& BorderColor,
                       QGraphicsItem* Parent = nullptr);
 
     ~ModelItemGraphics();

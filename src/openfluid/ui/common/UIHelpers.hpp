@@ -40,6 +40,8 @@
 #define __OPENFLUID_UICOMMON_UIHELPERS_HPP__
 
 
+#include <cmath>
+
 #include <QColor>
 #include <QRegExp>
 #include <QLineEdit>
@@ -54,6 +56,30 @@ namespace openfluid { namespace ui { namespace common {
 inline QColor getRandomColor()
 {
   return QColor(qrand() % 256,qrand() % 256,qrand() % 256);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline double computeLuminance(const QColor& Color)
+{
+  // Reference: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+  auto adjustColor = [](const double ChannelValue)
+  {
+    double RelValue = ChannelValue/255;
+    if (RelValue <= 0.03928)
+    {
+       return RelValue/12.92;
+    }
+    else
+    {
+      // low-gamma adjust coefficient
+      return std::pow((RelValue + 0.055) / 1.055, 2.4);
+    }
+  };
+  return adjustColor(Color.red())*0.2126 + adjustColor(Color.green())*0.7152 + adjustColor(Color.blue())*0.0722;
 }
 
 

@@ -41,6 +41,8 @@
 #define __OPENFLUID_BUILDERAPP_BUILDERCONFIG_HPP__
 
 
+#include <utility> 
+
 #include <QString>
 
 
@@ -61,6 +63,9 @@ const QString BUILDER_NEWSLINE_BGCOLOR = "#F9F9F4";
 const QString BUILDER_NEWSLINE_TEXTCOLOR = "#444444";
 const QString BUILDER_NEWSLINE_LINKSCOLOR = "#0000FF";
 const QString BUILDER_NEWSLINE_CACHERELDIR = "@OPENFLUID_HUBS_CACHE_PATH@/@OPENFLUID_NETWORK_DOMAIN@";
+
+const QString PROJECT_WARECOLOR_CATEGORY = "builder.model.warescolors";
+const std::pair<QString, QString> PROJECT_COLORMODE_CATEGORY("builder.model.render", "color.mode");
 
 #define BUILDER_MODELVIEW_ACTIVECOLOR "#617487" 
 #define BUILDER_MODELVIEW_INACTIVECOLOR "#B7B7B7"

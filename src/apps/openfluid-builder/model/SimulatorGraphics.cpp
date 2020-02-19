@@ -45,9 +45,10 @@
 
 SimulatorGraphics::SimulatorGraphics(const QPointF& Coords,
                                      const QString& ID, unsigned int Order,
-                                     const openfluid::machine::ModelItemSignatureInstance* Signature,
+                                     const openfluid::machine::ModelItemSignatureInstance* Signature, 
+                                     const QColor& BGColor, const QColor& BorderColor,
                                      QGraphicsItem* Parent):
-  ModelItemGraphics(Coords,ID,ID,Order,Parent)
+  ModelItemGraphics(Coords,ID,ID,Order,BorderColor,Parent)
 {
   openfluid::ware::SimulatorSignature* SimSign = Signature->Signature;
 
@@ -65,14 +66,25 @@ SimulatorGraphics::SimulatorGraphics(const QPointF& Coords,
   drawIOSlot(getProducedIOPosition(),SlotType::SLOT_PROD,m_ProducedVars);
   drawIOSlot(getUpOutIOPosition(),SlotType::SLOT_UPOUT,m_UpdatedVars);
 
-  if (!m_Ghost)
+  QColor EffectiveBGColor;
+  if (BGColor.isValid())
   {
-    setBrush(QBrush(QColor(BUILDER_SIMULATOR_BGCOLOR)));
+    EffectiveBGColor = BGColor;
   }
   else
   {
-    setBrush(QBrush(QColor(BUILDER_GHOST_BGCOLOR)));
+    if (!m_Ghost)
+    {
+      EffectiveBGColor = QColor(BUILDER_SIMULATOR_BGCOLOR);
+    }
+    else
+    {
+      EffectiveBGColor = QColor(BUILDER_GHOST_BGCOLOR);
+    }
   }
+  setBrush(QBrush(EffectiveBGColor));
+  updateFontColor(EffectiveBGColor);
+  
 
 }
 

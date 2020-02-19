@@ -58,11 +58,10 @@
 SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDescriptor* Desc,
                                  const openfluid::ware::WareID_t& ID,
                                  int Index):
-  ClickableWareWidget(Parent,ID,QString::fromStdString(ID),Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR,Index),
-  mp_Desc(Desc),m_IsTranslated(false),m_DocFilePath("")
+  ModelItemWidget(Parent,Desc,ID,QString::fromStdString(ID),BUILDER_SIMULATOR_BGCOLOR,Index),
+  m_IsTranslated(false),m_DocFilePath("")
 {
   refresh();
-
   ui->GenerateSrcButton->setText("");
   ui->GenerateSrcButton->setIcon(openfluid::ui::common::getIcon("ghost2sim","/builder"));
   ui->GenerateSrcButton->setIconSize(QSize(16,16));
@@ -96,84 +95,15 @@ void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine
 {
   clearParameterWidgets();
 
-  std::vector<openfluid::ware::SignatureDataItem>* UsedParams = &(Signature->Signature->HandledData.UsedParams);
-  std::vector<openfluid::ware::SignatureDataItem>* RequiredParams = &(Signature->Signature->HandledData.RequiredParams);
-
-  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
-
-  QStringList ParamsInSign;
-
-  // Required params
-
-  for (auto it = RequiredParams->begin(); it != RequiredParams->end(); ++it)
-  {
-    std::string ParamName = (*it).DataName;
-    QString ParamValue = "";
-
-    if (DescParams.find(ParamName) != DescParams.end())
-    {
-      ParamValue = QString::fromStdString(DescParams[ParamName]);
-    }
-
-    ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                       QString::fromStdString(ParamName),ParamValue,
-                                                       QString::fromStdString((*it).DataUnit),
-                                                       true,false);
-
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
-            this, SLOT(updateParameterValue(const QString&,const QString&)));
-
-    ParamsInSign << QString::fromStdString(ParamName);
-
-    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
-  }
-
-
-  // Used params
-
-  for (auto it = UsedParams->begin(); it != UsedParams->end(); ++it)
-  {
-    std::string ParamName = (*it).DataName;
-    QString ParamValue = "";
-
-    if (DescParams.find(ParamName) != DescParams.end())
-    {
-      ParamValue = QString::fromStdString(DescParams[ParamName]);
-    }
-
-    ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                       QString::fromStdString(ParamName),ParamValue,
-                                                       QString::fromStdString((*it).DataUnit),
-                                                       false,false);
-
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
-            this, SLOT(updateParameterValue(const QString&,const QString&)));
-
-    ParamsInSign << QString::fromStdString(ParamName);
-
-    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
-  }
-
+  QStringList ParamsInSign = createParamWidgetsFromSignature(Signature);
 
   // Other params not in signature
-
-  for (openfluid::ware::WareParams_t::iterator it = DescParams.begin();it != DescParams.end(); ++it)
+  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
+  for (const auto& DescParam : DescParams)
   {
-    if (!ParamsInSign.contains(QString::fromStdString((*it).first)))
-    {
-      ParameterWidget* ParamWidget =
-          new ParameterWidget(this,
-                              QString::fromStdString((*it).first),QString::fromStdString((*it).second),
-                              QString::fromStdString(""),
-                              false,true);
-
-      connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
-              this, SLOT(updateParameterValue(const QString&,const QString&)));
-      connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
-              this, SLOT(removeParameterFromList(const QString&)));
-
-
-      ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
+    if (!ParamsInSign.contains(QString::fromStdString(DescParam.first)))
+    { 
+      addParam(DescParam.first, DescParam.second, "", ParamsInSign, false, true);
     }
   }
 }
@@ -282,18 +212,6 @@ void SimulatorWidget::refresh()
 // =====================================================================
 
 
-void SimulatorWidget::setEnabledWare(bool Enabled)
-{
-  mp_Desc->setEnabled(Enabled);
-  WareWidget::setEnabledWare(Enabled);
-  emit changed();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void SimulatorWidget::addParameterToList()
 {
   QStringList ExistPList;
@@ -316,17 +234,6 @@ void SimulatorWidget::addParameterToList()
       emit changed();
     }
   }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulatorWidget::updateParameterValue(const QString& Name, const QString& Value)
-{
-  mp_Desc->setParameter(Name.toStdString(),Value.toStdString());
-  emit changed();
 }
 
 

@@ -43,35 +43,32 @@
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 
-#include "ClickableWareWidget.hpp"
+#include "ModelItemWidget.hpp"
 
 
-class SimulatorWidget : public ClickableWareWidget
+class SimulatorWidget : public ModelItemWidget
 {
   Q_OBJECT;
 
   private:
 
-    openfluid::fluidx::ModelItemDescriptor* mp_Desc;
 
     bool m_IsTranslated;
 
     std::string m_DocFilePath;
+    
+    void updateParametersList();
 
     void updateParametersListWithSignature(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    void updateParametersList();
-
     void findDocFile(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    
+    bool isClickable() {return true;}
 
 
   private slots:
 
-    void setEnabledWare(bool Enabled);
-
     void addParameterToList();
-
-    void updateParameterValue(const QString& Name, const QString& Value);
 
     void removeParameterFromList(const QString& Name);
 
