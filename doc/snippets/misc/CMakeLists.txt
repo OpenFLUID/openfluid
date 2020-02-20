@@ -1,3 +1,5 @@
+INCLUDE_DIRECTORIES(${RapidJSON_INCLUDE_DIR})
+
 SET(MISC_CPP main.cpp singleton.cpp bindings.cpp mischelpers.cpp spatial.cpp filesystem.cpp values.cpp datetime.cpp)
 
 ADD_EXECUTABLE(snippets_misc ${MISC_CPP})
