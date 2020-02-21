@@ -1,8 +1,4 @@
 
-
-INCLUDE_DIRECTORIES(${RapidJSON_INCLUDE_DIR})
-
-
 SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcFileEditor.cpp WareSrcWidgetCollection.cpp
                               WareSrcToolbar.cpp WareBuildOptionsWidget.cpp                               
                               WareSrcSyntaxHighlighter.cpp WareSrcFiletypeManager.cpp TextEditMsgStream.cpp
