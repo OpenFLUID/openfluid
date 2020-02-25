@@ -23,7 +23,8 @@ SET(OPENFLUID_MACHINE_HPP ModelItemInstance.hpp GhostSimulatorFileIO.hpp
                           SimulationBlob.hpp
                           WareSignatureInstance.hpp
                           WareContainer.hpp 
-                          WarePluginsManager.hpp WareSignatureRegistry.hpp WarePluginsSearchResults.hpp
+                          WarePluginsManager.hpp WareSignatureRegistry.hpp 
+                          WarePluginsSearchResults.hpp WarePluginsSearchResultsSerializer.hpp
                           SimulatorPluginsManager.hpp SimulatorSignatureRegistry.hpp
                           ObserverPluginsManager.hpp ObserverSignatureRegistry.hpp
                           Factory.hpp Engine.hpp MachineListener.hpp

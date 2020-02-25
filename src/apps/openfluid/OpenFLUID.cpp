@@ -52,6 +52,7 @@
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
+#include <openfluid/machine/WarePluginsSearchResultsSerializer.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
@@ -668,9 +669,12 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       }
 
       const openfluid::machine::SimulatorPluginsManager::PluginsSearchResults SearchResults =
-        openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();      
+        openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();
 
-      SearchResults.writeToStream(std::cout,Format,Detailed,WithErrors);
+      const openfluid::machine::WarePluginsSearchResultsSerializer<openfluid::machine::ModelItemSignatureInstance> 
+        SearchSerializer(SearchResults);
+
+      SearchSerializer.writeToStream(std::cout,Format,Detailed,WithErrors);
       std::cout.flush();
     }
     else if (Waretype == "observers")
@@ -684,7 +688,10 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       const openfluid::machine::ObserverPluginsManager::PluginsSearchResults SearchResults =
         openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures();      
 
-      SearchResults.writeToStream(std::cout,Format,Detailed,WithErrors);
+      const openfluid::machine::WarePluginsSearchResultsSerializer<openfluid::machine::ObserverSignatureInstance> 
+        SearchSerializer(SearchResults);
+
+      SearchSerializer.writeToStream(std::cout,Format,Detailed,WithErrors);
       std::cout.flush();
     }
   }

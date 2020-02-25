@@ -72,12 +72,12 @@ typedef std::string (*GetWareLinkUIDProc)();
 
 /**
   Management class for pluggable wares
-  @tparam SignatureType class defining the container for ware signature only
-  @tparam ItemType class defining the container for ware signature and body
+  @tparam SignatureInstanceType class defining the container for ware signature only
+  @tparam ItemInstanceType class defining the container for ware signature and body
   @tparam SignatureProc procedure definition for instantiation of the signature
   @tparam BodyProc procedure definition for instantiation of the body
 */
-template<class SignatureType, class ItemType, typename SignatureProc, typename BodyProc>
+template<class SignatureInstanceType, class ItemInstanceType, typename SignatureProc, typename BodyProc>
 class OPENFLUID_API WarePluginsManager
 {
   private:
@@ -105,18 +105,18 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    ItemType* buildWareContainerWithSignatureOnly(const std::string& ID)
+    ItemInstanceType* buildWareContainerWithSignatureOnly(const std::string& ID)
     {
       std::string PluginFilename = ID+getPluginFilenameSuffix()+openfluid::config::PLUGINS_EXT;
       std::string PluginFullPath = getPluginFullPath(PluginFilename);
-      ItemType* WareItem = nullptr;
+      ItemInstanceType* WareItem = nullptr;
 
       QLibrary* PlugLib = loadPluginLibrary(PluginFullPath);
 
       // library loading
       if (PlugLib && PlugLib->load())
       {
-        WareItem = new ItemType();
+        WareItem = new ItemInstanceType();
         WareItem->FileFullPath = PluginFullPath;
 
         GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
@@ -186,10 +186,10 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    SignatureType* getWareSignature(const std::string& PluginFilename)
+    SignatureInstanceType* getWareSignature(const std::string& PluginFilename)
     {
       std::string PluginFullPath = getPluginFullPath(PluginFilename);
-      SignatureType* Sign = nullptr;
+      SignatureInstanceType* Sign = nullptr;
 
       openfluid::base::ExceptionContext ECtxt =
           openfluid::base::FrameworkException::computeContext(OPENFLUID_CODE_LOCATION)
@@ -203,7 +203,7 @@ class OPENFLUID_API WarePluginsManager
       {
         if (PlugLib->load())
         {
-          Sign = new SignatureType();
+          Sign = new SignatureInstanceType();
           Sign->FileFullPath = PluginFullPath;
 
           GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
@@ -293,7 +293,7 @@ class OPENFLUID_API WarePluginsManager
 
   public:
 
-    typedef WarePluginsSearchResults<SignatureType> PluginsSearchResults;
+    typedef WarePluginsSearchResults<SignatureInstanceType> PluginsSearchResults;
 
     virtual ~WarePluginsManager()
     {
@@ -367,7 +367,7 @@ class OPENFLUID_API WarePluginsManager
       }
 
 
-      SignatureType* CurrentPlug = nullptr;
+      SignatureInstanceType* CurrentPlug = nullptr;
 
       for (i=0;i<PluginFiles.size();i++)
       {
@@ -406,9 +406,9 @@ class OPENFLUID_API WarePluginsManager
       @param[in] ID The ID of the ware to load
       @return The ware container including the signature
     */
-    ItemType* loadWareSignatureOnly(const std::string& ID)
+    ItemInstanceType* loadWareSignatureOnly(const std::string& ID)
     {
-      ItemType* WareItem = buildWareContainerWithSignatureOnly(ID);
+      ItemInstanceType* WareItem = buildWareContainerWithSignatureOnly(ID);
 
       if (WareItem != nullptr && WareItem->Verified)
       {
@@ -427,7 +427,7 @@ class OPENFLUID_API WarePluginsManager
       Loads only the body of a ware if the signature is already loaded
       @param[inout] WareItem The ware container to complete which already includes the signature
     */
-    void completeSignatureWithWareBody(ItemType* WareItem)
+    void completeSignatureWithWareBody(ItemInstanceType* WareItem)
     {
       std::string PluginFullPath = WareItem->FileFullPath;
 
