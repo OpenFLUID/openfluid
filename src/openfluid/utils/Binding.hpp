@@ -55,6 +55,7 @@
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
+#include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
@@ -164,6 +165,17 @@ class Binding
     ~Binding()
     {
 
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    static void unloadAllWares()
+    {
+      openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
+      openfluid::machine::ObserverPluginsManager::instance()->unloadAllWares();
     }
 
 
@@ -621,20 +633,19 @@ class Binding
     */
     unsigned short int runSimulation(int IsVerbose = false)
     {
+      unsigned short int RetValue = 0;
+
       try
       {
         init();
+        unloadAllWares();
+
 
         openfluid::machine::Engine* Engine;
-
-
         openfluid::base::IOListener IOListen;
         openfluid::machine::SimulationBlob SimBlob;
-
-        openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
-
-
         std::unique_ptr<openfluid::machine::MachineListener> Listener;
+
 
         if (IsVerbose)
         {
@@ -720,7 +731,7 @@ class Binding
 
         m_IsSimulationRun = true;
 
-        return 1;
+        RetValue = 1;
       }
       catch (openfluid::base::Exception& E)
       {
@@ -740,7 +751,9 @@ class Binding
         m_LastErrorMsg = "UNKNOWN ERROR\n";
       }
 
-      return 0;
+      unloadAllWares();
+
+      return RetValue;
     }
 
 
