@@ -58,11 +58,17 @@ class OPENFLUID_API ExamplesBuddy : public OpenFLUIDBuddy
 
     bool run();
 
+    bool installExampleFolder(const std::string& SourcePath, const std::string& InstallPath,
+                                              const std::string& FolderName, const bool Force = false);
+                                              
     bool installExampleProject(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath,
-                                 const std::string& ProjectDir, const bool Force = false);
+                                              const std::string& ProjectDir, const bool Force = false);
+                                 
+    bool installExampleSimulator(const std::string& SimulatorSourcePath, const std::string& SimulatorInstallPath,
+                                              const std::string& SimulatorDir, const bool Force = false);
 
-    bool installAllExamplesProjects(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath,
-                                    const bool Force = false);
+    bool installAllExamplesFolders(const std::string& ExamplesSourcePath,
+                                                   const std::string& ExamplesInstallPath, const bool Force = false);
 };
 
 

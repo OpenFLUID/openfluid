@@ -652,7 +652,7 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesHelp
 OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesInstallAll
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                               "buddy" "examples"
-                              "-o" "selection=*,sourcedir=${OFBUILD_SOURCE_EXAMPLES_PROJECTS_DIR},installdir=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy/projects,force=1"
+                              "-o" "selection=*,sourcedir=${OFBUILD_SOURCE_EXAMPLES_DIR},installdir=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy,force=1"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy"                              
                               )
   

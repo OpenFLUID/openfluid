@@ -147,7 +147,7 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
   public slots:
 
-    void openPath(const QString& Path);
+    bool openPath(const QString& Path);
 
     void setCurrent(const QString& Path);
 

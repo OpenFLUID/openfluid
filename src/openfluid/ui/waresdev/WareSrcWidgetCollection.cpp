@@ -88,14 +88,14 @@ WareSrcWidgetCollection::~WareSrcWidgetCollection()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::openPath(const QString& Path)
+bool WareSrcWidgetCollection::openPath(const QString& Path)
 {
   openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
 
   // TODO manage other workspaces later
-  if (!Info.m_IsInCurrentWorkspace)
+  if (!Info.m_IsInCurrentWorkspace && !Info.m_IsInExamples)
   {
-    return;
+    return false;
   }
 
   if (Info.m_isAWare || Info.m_isAWareFile)
@@ -149,6 +149,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path)
 
     mp_TabWidget->setCurrentWidget(Widget);
   }
+  return true;
 
 }
 
@@ -790,6 +791,8 @@ void WareSrcWidgetCollection::openWare(openfluid::ware::WareType Type, const QSt
 
   if (PathToOpen.isEmpty())
   {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Can't open ware, path empty");
     return;
   }
 
