@@ -79,6 +79,7 @@ std::vector<std::string> Environment::m_DefaultBuilderextsDirs;
 std::vector<std::string> Environment::m_ExtraBuilderextsDirs;
 std::string Environment::m_ProvidedExamplesDir;
 std::string Environment::m_UserExamplesDir;
+std::string Environment::m_UserExampleSimulatorsDir;
 std::string Environment::m_MarketBagDir;
 std::string Environment::m_MarketBagVersionDir;
 std::string Environment::m_MarketBagSimulatorsDir;
@@ -206,6 +207,8 @@ void Environment::init()
 
   m_UserExamplesDir = m_UserDataDir + "/" + openfluid::config::EXAMPLES_PATH;
 
+  m_UserExampleSimulatorsDir = m_UserExamplesDir + "/" + openfluid::config::WARESDEV_PATH + "/" + 
+                                 openfluid::config::SIMULATORS_PATH;
   m_ProvidedExamplesDir = m_InstallPrefix + "/" + openfluid::config::EXAMPLES_STD_PATH;
 
 

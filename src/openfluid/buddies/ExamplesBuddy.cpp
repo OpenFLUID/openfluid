@@ -51,7 +51,10 @@ namespace openfluid { namespace buddies {
 ExamplesBuddy::ExamplesBuddy(openfluid::buddies::BuddiesListener* Listener):
     OpenFLUIDBuddy(Listener)
 {
-  m_OtherOptionsHelp["selection"] = "* to install all examples (default), the name of the example to install instead";
+  m_OtherOptionsHelp["selection"] = "* to install all examples (default), mono to give custom install instead "
+                                    "(cf simulator or project parameter)";
+  m_OtherOptionsHelp["project"] = "give example project name to install this specific project";
+  m_OtherOptionsHelp["simulator"] = "give simulator name to install this specific simulator";
   m_OtherOptionsHelp["sourcedir"] = "source directory of examples to install (default is standard source directory)";
   m_OtherOptionsHelp["installdir"] = "destination directory of examples to install "
                                      "(default is standard install directory)";
@@ -73,20 +76,18 @@ ExamplesBuddy::~ExamplesBuddy()
 // =====================================================================
 
 
-bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
-                                          const std::string& ProjectsInstallPath,
-                                          const std::string& ProjectDir, const bool Force)
+bool ExamplesBuddy::installExampleFolder(const std::string& SourcePath,
+                                          const std::string& InstallPath,
+                                          const std::string& FolderName, const bool Force)
 {
-  mp_Listener->onSubstageCompleted("Installing example project \"" + ProjectDir + "\" ... ");
+  std::string ThisFolderInstallPath = InstallPath+"/"+FolderName;
 
-  std::string ThisProjectInstallPath = ProjectsInstallPath+"/"+ProjectDir;
-
-  if (!openfluid::tools::Filesystem::isDirectory(ThisProjectInstallPath) || Force)
+  if (!openfluid::tools::Filesystem::isDirectory(ThisFolderInstallPath) || Force)
   {
-    openfluid::tools::Filesystem::makeDirectory(ThisProjectInstallPath);
+    openfluid::tools::Filesystem::makeDirectory(ThisFolderInstallPath);
 
-    openfluid::tools::Filesystem::copyDirectory(ProjectsSourcePath+"/"+ProjectDir,
-                                                ProjectsInstallPath);
+    openfluid::tools::Filesystem::copyDirectory(SourcePath+"/"+FolderName,
+                                                InstallPath);
     mp_Listener->onSubstageCompleted("Done");
 
     return true;
@@ -99,28 +100,80 @@ bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
   return false;
 }
 
-
+    
 // =====================================================================
 // =====================================================================
 
 
-bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSourcePath,
-                                               const std::string& ProjectsInstallPath, const bool Force)
+bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
+                                          const std::string& ProjectsInstallPath,
+                                          const std::string& ProjectDir, const bool Force)
 {
+  mp_Listener->onSubstageCompleted("Installing example project \"" + ProjectDir + "\" ... ");
 
+  return installExampleFolder(ProjectsSourcePath, ProjectsInstallPath, ProjectDir, Force);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ExamplesBuddy::installExampleSimulator(const std::string& SimulatorsSourcePath,
+                                          const std::string& SimulatorsInstallPath,
+                                          const std::string& SimulatorDir, const bool Force)
+{
+  // check if simulator exists
+  if (openfluid::tools::Filesystem::isDirectory(SimulatorsSourcePath+"/"+SimulatorDir))
+  {
+    mp_Listener->onSubstageCompleted("Installing example simulator \"" + SimulatorDir + "\" ... ");
+    return installExampleFolder(SimulatorsSourcePath, SimulatorsInstallPath, SimulatorDir, Force);
+  }
+  else
+  {
+    mp_Listener->onSubstageCompleted("Can't install example simulator: not found");
+    return false;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ExamplesBuddy::installAllExamplesFolders(const std::string& ExamplesSourcePath,
+                                               const std::string& ExamplesInstallPath, const bool Force)
+{
+  // PROJECTS
+  std::string ProjectSuffix = "/"+openfluid::config::PROJECTS_PATH;
+  std::string ProjectsSourcePath = ExamplesSourcePath + ProjectSuffix;
   if (openfluid::tools::Filesystem::isDirectory(ProjectsSourcePath))
   {
     std::vector<std::string> FoundProjects = openfluid::tools::findDirectories(ProjectsSourcePath);
 
     for (unsigned int i=0;i<FoundProjects.size();i++)
     {
-      installExampleProject(ProjectsSourcePath,ProjectsInstallPath,FoundProjects[i],Force);
+      installExampleProject(ProjectsSourcePath,ExamplesInstallPath+ProjectSuffix,FoundProjects[i],Force);
     }
   }
   else
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Projects source path is not a directory");
+  }
+  
+  //SIMULATORS
+  std::string SimulatorSuffix = "/"+openfluid::config::WARESDEV_PATH+"/"+openfluid::config::SIMULATORS_PATH;
+  std::string SimulatorsSourcePath = ExamplesSourcePath + SimulatorSuffix;
+  
+  if (openfluid::tools::Filesystem::isDirectory(SimulatorsSourcePath))
+  {
+    std::vector<std::string> FoundSimulators = openfluid::tools::findDirectories(SimulatorsSourcePath);
+
+    for (unsigned int i=0;i<FoundSimulators.size();i++)
+    {
+      installExampleSimulator(SimulatorsSourcePath,ExamplesInstallPath+SimulatorSuffix,FoundSimulators[i],Force);
+    }
   }
 
   return true;
@@ -134,20 +187,33 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
 bool ExamplesBuddy::run()
 {
   setOptionIfNotSet("selection","*");
-  setOptionIfNotSet("sourcedir",openfluid::base::Environment::getProvidedExamplesDir()+
-                                "/"+openfluid::config::PROJECTS_PATH);
-  setOptionIfNotSet("installdir",openfluid::base::Environment::getUserExamplesDir()+"/"+
-                                 openfluid::config::PROJECTS_PATH);
+  setOptionIfNotSet("sourcedir",openfluid::base::Environment::getProvidedExamplesDir());
+  setOptionIfNotSet("installdir",openfluid::base::Environment::getUserExamplesDir());
   setOptionIfNotSet("force","0");
 
   if (m_Options["selection"] == "*")
   {
-    installAllExamplesProjects(m_Options["sourcedir"],m_Options["installdir"],m_Options["force"]=="1");
+    installAllExamplesFolders(m_Options["sourcedir"],m_Options["installdir"],m_Options["force"]=="1");
+  }
+  else if (m_Options["selection"] == "mono")
+  {
+    if (m_Options["project"] != "")
+    {
+      std::string ProjectSuffix = "/"+openfluid::config::PROJECTS_PATH;
+      installExampleProject(m_Options["sourcedir"]+ProjectSuffix,m_Options["installdir"]+ProjectSuffix,
+                            m_Options["project"],m_Options["force"]=="1");
+    }
+    if (m_Options["simulator"] != "")
+    {
+      std::string SimulatorSuffix = "/"+openfluid::config::WARESDEV_PATH+"/"+openfluid::config::SIMULATORS_PATH;
+      installExampleSimulator(m_Options["sourcedir"]+SimulatorSuffix,m_Options["installdir"]+SimulatorSuffix,
+                            m_Options["simulator"],m_Options["force"]=="1");
+    }
   }
   else
   {
-    installExampleProject(m_Options["sourcedir"],m_Options["installdir"],
-                          m_Options["selection"],m_Options["force"]=="1");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Selection mode not recognized, must be '*' or 'mono'");
   }
 
   return true;

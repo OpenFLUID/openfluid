@@ -146,6 +146,17 @@ QString WareSrcManager::getWarePath(const QString& WareID, openfluid::ware::Ware
   {
     return Dir.filePath(WareID);
   }
+  
+  else
+  {
+    // check in example dir
+    QDir ExampleDir = QDir(QString::fromStdString(openfluid::base::Environment::getUserExampleSimulatorsDir()));
+    
+    if (ExampleDir.exists(WareID))
+    {
+      return ExampleDir.filePath(WareID);
+    }
+  }
 
   ErrMsg = QObject::tr("Unable to find \"%1\" in the current workspace.").arg(WareID);
   return "";
@@ -172,6 +183,33 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
   // we are not under current workspace
   if (Info.m_AbsolutePath.indexOf(m_WorkspacePath) != 0)
   {
+    QString UserExampleSimulatorsDir = QString::fromStdString(
+      openfluid::base::Environment::getUserExampleSimulatorsDir());
+    QDir ExampleDir = QDir(UserExampleSimulatorsDir);
+    
+    // we are under example dir
+    if (Info.m_AbsolutePath.indexOf(UserExampleSimulatorsDir) == 0)
+    {
+      Info.m_IsInExamples = true;
+      // check if example simulator
+      QString RelToExample = ExampleDir.relativeFilePath(Info.m_AbsolutePath);
+      QString PotentialWareName = RelToExample.section('/', 0, 0, QString::SectionSkipEmpty);
+      
+      Info.m_isAWare = true;
+      Info.m_WareName = PotentialWareName;
+      Info.m_AbsolutePathOfWare = Info.m_AbsolutePath;
+      Info.m_WareType = openfluid::ware::WareType::SIMULATOR;
+      Info.m_RelativePathToWareDir = QDir(Info.m_AbsolutePathOfWare).relativeFilePath(Info.m_AbsolutePath);
+      
+      QFileInfo FileInfo(Info.m_AbsolutePath);
+
+      Info.m_isAWareFile = FileInfo.isFile();
+      if (Info.m_isAWareFile)
+      {
+        Info.m_isAWare = false;
+        Info.m_FileName = FileInfo.fileName();
+      }
+    }
     return Info;
   }
 

@@ -67,6 +67,8 @@ class OPENFLUID_API WareSrcManager
       QString m_AbsolutePath;
 
       bool m_IsInCurrentWorkspace;
+      
+      bool m_IsInExamples;
 
       openfluid::ware::WareType m_WareType;
 
@@ -83,8 +85,8 @@ class OPENFLUID_API WareSrcManager
       QString m_FileName;
 
       PathInfo() :
-        m_AbsolutePath(""), m_IsInCurrentWorkspace(false), m_WareType(openfluid::ware::WareType::UNDEFINED),
-        m_WareName(""),
+        m_AbsolutePath(""), m_IsInCurrentWorkspace(false), m_IsInExamples(false), 
+        m_WareType(openfluid::ware::WareType::UNDEFINED), m_WareName(""),
         m_isAWare(false), m_isAWareFile(false), m_RelativePathToWareDir(""), m_AbsolutePathOfWare(""),
         m_FileName("")
       { }
