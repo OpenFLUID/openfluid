@@ -99,6 +99,8 @@ class OPENFLUID_API Environment
     static std::string m_ProvidedExamplesDir;
 
     static std::string m_UserExamplesDir;
+    
+    static std::string m_UserExampleSimulatorsDir;
 
     static std::string m_MarketBagDir;
 
@@ -267,6 +269,15 @@ class OPENFLUID_API Environment
     static std::string getUserExamplesDir()
     {
       return m_UserExamplesDir;
+    }
+    
+    /**
+      Returns the full path of the example simulators directory
+      @return the full path to the directory
+    */
+    static std::string getUserExampleSimulatorsDir()
+    {
+      return m_UserExampleSimulatorsDir;
     }
 
     /**

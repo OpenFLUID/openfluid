@@ -1116,7 +1116,11 @@ void ProjectModuleWidget::addWorkspaceExtensionTab(QWidget* Tab, const QString& 
 
 void ProjectModuleWidget::addWorkspaceWareSrcTab(const QString& Path)
 {
-  mp_WareSrcCollection->openPath(Path);
+  if (!mp_WareSrcCollection->openPath(Path))
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Unable to add ware source tab, path not in known places");
+  }
 }
 
 

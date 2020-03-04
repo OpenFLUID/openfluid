@@ -649,12 +649,35 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesHelp
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesInstallSimulator
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                              "buddy" "examples"
+                              "-o" "selection=single,simulator=fire.surf.prod-spread,sourcedir=${OFBUILD_SOURCE_EXAMPLES_DIR},installdir=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy,force=1"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy"       
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy/wares-dev/simulators/fire.surf.prod-spread/FireProdSpreadSim.cpp"
+                  )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesInstallMissingSimulator
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                              "buddy" "examples"
+                              "-o" "selection=single,simulator=fake.name,sourcedir=${OFBUILD_SOURCE_EXAMPLES_DIR},installdir=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy,force=1"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy"
+                  )
+
+
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesInstallAll
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                               "buddy" "examples"
-                              "-o" "selection=*,sourcedir=${OFBUILD_SOURCE_EXAMPLES_PROJECTS_DIR},installdir=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy/projects,force=1"
+                              "-o" "selection=*,sourcedir=${OFBUILD_SOURCE_EXAMPLES_DIR},installdir=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy,force=1"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy"                              
-                              )
+                  )
   
 
 ###########################################################################
