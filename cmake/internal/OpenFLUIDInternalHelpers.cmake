@@ -170,7 +170,35 @@ ENDFUNCTION()
 ###########################################################################
 
 
-FUNCTION(OFBUILD_ADD_EXAMPLE_SIMULATOR SIMID ROOTCPPFILENAME)
+FUNCTION(OFBUILD_ADD_EXAMPLE_DOC_BUILD_TARGET WAREID ROOTCPPFILENAME OUTPUTDIR)
+
+  SET(WAREID ${WAREID})
+  SET(ROOTCPPFILENAME ${ROOTCPPFILENAME})
+  SET(OUTPUTDIR ${OUTPUTDIR})
+
+  ADD_CUSTOM_TARGET(update-example-doc-${WAREID}
+                    DEPENDS ${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}
+                    COMMENT "Updating example ${WAREID} doc"
+                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                            "buddy" 
+                            "sim2doc"
+                            "--options=inputcpp=${ROOTCPPFILENAME},outputdir=${OUTPUTDIR}/${WAREID}/tmpDoc,pdf=1${_TPL_OPTION}"
+                   )
+
+  ADD_CUSTOM_COMMAND(TARGET update-example-doc-${WAREID}
+                     POST_BUILD
+                     COMMAND ${CMAKE_COMMAND} -E rename ${OUTPUTDIR}/${WAREID}/tmpDoc/${WAREID}.pdf ${OUTPUTDIR}/${WAREID}.pdf
+                     COMMAND ${CMAKE_COMMAND} -E remove_directory ${OUTPUTDIR}/${WAREID}
+                    )
+  
+  ADD_DEPENDENCIES(update-example-docs update-example-doc-${WAREID})
+ENDFUNCTION()
+
+
+###########################################################################
+
+
+FUNCTION(OFBUILD_ADD_EXAMPLE_SIMULATOR SIMID ROOTCPPFILENAME DOCBUILD)
   
   SET(WAREID ${SIMID})
   SET(ROOTCPPFILENAME ${ROOTCPPFILENAME})
@@ -196,11 +224,10 @@ FUNCTION(OFBUILD_ADD_EXAMPLE_SIMULATOR SIMID ROOTCPPFILENAME)
   FILE(REMOVE ${CURR_WARE_DIR}/AROFILE)
   FILE(REMOVE "${CURR_WARE_DIR}/CMake.in.cmake")
   
-  SET(WAREID)
-  SET(ROOTCPPFILENAME)
-  SET(TEMPLATE_DIR)
-  SET(DIST_DEV_SIM)
-  SET(CURR_WARE_DIR)
+  IF (DOCBUILD)
+    # ADD TARGET FOR DOC UPDATE
+    OFBUILD_ADD_EXAMPLE_DOC_BUILD_TARGET(${WAREID} ${CURR_WARE_DIR}/${ROOTCPPFILENAME} ${OFBUILD_EXAMPLES_SIMULATORS_DOC_DIR})
+  ENDIF()
   
 ENDFUNCTION()
 
