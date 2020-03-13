@@ -70,7 +70,6 @@ before_script:
   - echo "SET(OPENFLUID_ENABLE_MARKET 1)" > CMake.in.local.cmake
   - echo "SET(OFBUILD_TESTS_ENABLE_FORTRAN 1)" >> CMake.in.local.cmake  
   - echo "SET(OFBUILD_UNITTESTS_RUN_OPTIONS \"--log_level=all\")" >> CMake.in.local.cmake
-  - echo "SET(OFBUILD_ENABLE_LANDR 0)" >> CMake.in.local.cmake
   - mkdir _build
   - cd _build
   - |
