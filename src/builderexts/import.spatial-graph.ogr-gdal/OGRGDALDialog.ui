@@ -159,7 +159,7 @@
           <item>
            <widget class="QTabWidget" name="ConfigTabWidget">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="StructureTab">
              <attribute name="title">
@@ -438,6 +438,34 @@
                      <enum>QAbstractItemView::SelectItems</enum>
                     </property>
                    </widget>
+                  </item>
+                  <item>
+                   <widget class="Line" name="line">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_15">
+                    <item>
+                     <widget class="QLabel" name="label_10">
+                      <property name="text">
+                       <string>Empty string replacement symbol</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="EmptyStringLineEdit">
+                      <property name="text">
+                       <string>-</string>
+                      </property>
+                      <property name="placeholderText">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </item>

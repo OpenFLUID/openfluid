@@ -50,8 +50,10 @@
 
 ImportWorker::ImportWorker(const SourcesInfosList_t& SourcesInfos,
                            openfluid::fluidx::FluidXDescriptor* Desc,
-                           const QString& InputDir):
-  DataProcessingWorker(SourcesInfos,Desc), m_InputDir(InputDir)
+                           const QString& InputDir,
+                           const std::string& EmptyStringReplacementSymbol):
+  DataProcessingWorker(SourcesInfos,Desc), m_InputDir(InputDir), 
+  m_EmptyStringReplacementSymbol(EmptyStringReplacementSymbol)
 {
 
 }
@@ -113,9 +115,13 @@ bool ImportWorker::importLayer(int Step,int Index)
     while (AttrsIt.hasNext())
     {
       AttrsIt.next();
-
-      mp_Desc->spatialDomain().setAttribute(UnitsClass.toStdString(),It.key(),
-                                            AttrsIt.key().toStdString(),AttrsIt.value().toStdString());
+      std::string AttrValue = AttrsIt.value().toStdString();
+      if (AttrValue == "")
+      {
+        AttrValue = m_EmptyStringReplacementSymbol;
+      }
+      mp_Desc->spatialDomain().setAttribute(UnitsClass.toStdString(),It.key(),AttrsIt.key().toStdString(),
+                                            AttrValue);
     }
 
   }

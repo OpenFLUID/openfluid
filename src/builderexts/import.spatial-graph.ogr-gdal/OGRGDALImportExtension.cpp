@@ -37,12 +37,14 @@
 */
 
 
+#include <QApplication>
 #include <QMessageBox>
 #include <QThread>
 
 #include <ogr_api.h>
 
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/config.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
 
 #include "ui_OGRGDALDialog.h"
@@ -108,6 +110,11 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
   ui->ConfigTabWidget->setCurrentIndex(0);
 
   ui->SourcesTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  
+  // "required" placeholder
+  QString PlaceholderString = QApplication::translate("openfluid::ui::config",
+                                                      openfluid::ui::config::PLACEHOLDER_REQUIRED);
+  ui->EmptyStringLineEdit->setPlaceholderText(PlaceholderString);
 
 
   connect(ui->AddFileButton,SIGNAL(clicked()),this,SLOT(addFileSource()));
@@ -151,6 +158,8 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
 
   ui->ButtonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
   connect(ui->ButtonBox,SIGNAL(clicked(QAbstractButton*)),this,SLOT(processButtonBoxClicked(QAbstractButton*)));
+  
+  connect(ui->EmptyStringLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateEmptyStringReplacement()));
 
   ui->SourcesTableWidget->setFocus();
 }
@@ -320,7 +329,8 @@ void OGRGDALImportExtension::proceedToImport()
 
 
   QThread* WThread = new QThread;
-  ImportWorker* Worker = new ImportWorker(m_SourcesInfos,mp_Desc,m_InputDir);
+  ImportWorker* Worker = new ImportWorker(m_SourcesInfos,mp_Desc,m_InputDir, 
+                                          m_EmptyStringReplacementSymbol.toStdString());
   Worker->moveToThread(WThread);
 
   connect(Worker, SIGNAL(stepEntered(QString)), mp_PrecheckImportDlg, SLOT(handleStepEntered(QString)));
@@ -381,10 +391,21 @@ void OGRGDALImportExtension::closeEvent(QCloseEvent* Event)
 // =====================================================================
 
 
+void OGRGDALImportExtension::updateApplyButton()
+{
+  bool IsApplyable = !m_SourcesInfos.isEmpty() && (ui->EmptyStringLineEdit->text() != "");
+  ui->ButtonBox->button(QDialogButtonBox::Apply)->setEnabled(IsApplyable);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void OGRGDALImportExtension::updateUI()
 {
   ui->PrecheckButton->setEnabled(!m_SourcesInfos.isEmpty());
-  ui->ButtonBox->button(QDialogButtonBox::Apply)->setEnabled(!m_SourcesInfos.isEmpty());
+  updateApplyButton();
 
   if (ui->SourcesTableWidget->currentRow() >= m_SourcesInfos.size())
   {
@@ -757,6 +778,17 @@ void OGRGDALImportExtension::updateIsDatasetImportInfos()
   ui->DatastoreIDCheckBox->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsAlreadyInDataset ||
                                       ui->DatasetImportCheckBox->isChecked());
   ui->DatastoreIDLineEdit->setEnabled(ui->DatastoreIDCheckBox->isChecked());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OGRGDALImportExtension::updateEmptyStringReplacement()
+{
+  m_EmptyStringReplacementSymbol = ui->EmptyStringLineEdit->text();
+  updateApplyButton();
 }
 
 

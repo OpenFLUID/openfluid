@@ -50,6 +50,8 @@ class ImportWorker : public DataProcessingWorker
   private:
 
     QString m_InputDir;
+    
+    std::string m_EmptyStringReplacementSymbol;
 
     bool runImport(int StartStep);
 
@@ -74,7 +76,8 @@ class ImportWorker : public DataProcessingWorker
 
     ImportWorker(const SourcesInfosList_t& SourcesInfos,
                  openfluid::fluidx::FluidXDescriptor* Desc,
-                 const QString& InputDir);
+                 const QString& InputDir,
+                 const std::string& EmptyStringReplacementSymbol);
 
     ~ImportWorker();
 

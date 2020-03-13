@@ -111,6 +111,8 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
     void updateIsDatasetImportInfos();
 
     void handleCloseRequired();
+    
+    void updateEmptyStringReplacement();
 
 
   private:
@@ -120,6 +122,8 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
     QString m_InputDir;
 
     QString m_TempDir;
+    
+    QString m_EmptyStringReplacementSymbol;
 
     int m_CurrentSrcIndex;
 
@@ -134,6 +138,8 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
     void cancelImport();
 
     void closeEvent(QCloseEvent *Event);
+    
+    void updateApplyButton();
 
 
   public slots:
