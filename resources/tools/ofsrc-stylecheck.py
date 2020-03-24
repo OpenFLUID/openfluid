@@ -154,7 +154,7 @@ class SourceTreeChecker:
         ArgsStr = list()
         for Arg in Args :
             ArgsStr.append(str(Arg))
-        Msg = '[{0}]{1}:{2}:{3}'.format(Code,Filename,Line," ".join(ArgsStr))
+        Msg = '[{0}] {1}:{2}: {3}'.format(Code,os.path.join(self.SrcRootPath,Filename),Line," ".join(ArgsStr))
         print Msg
 
 
