@@ -45,7 +45,7 @@
 
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
-#include <openfluid/utils/GDALCompatibility.hpp>
+#include <openfluid/utils/GDALHelpers.hpp>
 
 #include "ui_OGRGDALDialog.h"
 #include "OGRGDALImportExtension.hpp"
@@ -476,7 +476,7 @@ void OGRGDALImportExtension::updateUI()
 
 
     // Area attribute to compute, enabled for 2D+ geometries only
-    if (m_SourcesInfos[m_CurrentSrcIndex].getGeometryDimension() >= 2)
+    if (openfluid::utils::isOGRSurfacicType(m_SourcesInfos[m_CurrentSrcIndex].SourceGeomType))
     {
       ui->ComputeAreaCheckBox->setEnabled(true);
       ui->ComputeAreaCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsAreaCompute);
@@ -490,7 +490,7 @@ void OGRGDALImportExtension::updateUI()
     }
 
     // Length attribute to compute, enabled for 1D geometries only
-    if (m_SourcesInfos[m_CurrentSrcIndex].getGeometryDimension() == 1)
+    if (openfluid::utils::isOGRLinearType(m_SourcesInfos[m_CurrentSrcIndex].SourceGeomType))
     {
       ui->ComputeLengthCheckBox->setEnabled(true);
       ui->ComputeLengthCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsLengthCompute);

@@ -44,8 +44,6 @@
 #include <map>
 #include <set>
 
-#include <QString>
-
 #include <ogr_api.h>
 
 #include <openfluid/dllexport.hpp>
@@ -106,8 +104,8 @@ const std::set<std::string> OPENFLUID_API getOGRFilesExtensionsForOpenFLUID();
   @return the format string
   (e.g. "All vector files (*.shp *.mif *.tab);;ESRI Shapefiles (*.shp);;Mapinfo (*.mif *.tab)")
 */
-QString OPENFLUID_API getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
-                                                       const QString& AllFormatsLabel);
+std::string OPENFLUID_API getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
+                                                           const std::string& AllFormatsLabel);
 
 
 /**
@@ -119,6 +117,45 @@ QString OPENFLUID_API getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExt
 inline bool OPENFLUID_API isOGRInteger(OGRFieldType FieldType)
 {
   return (FieldType == OFTInteger) || (FieldType == GDALOFTInteger64_COMPAT);
+}
+
+
+/**
+  Returns true if the given geometry type is a punctual type (e.g. wkbPoint),
+  @param[in] Type the OGR geometry type
+  @return true if the geometry type is punctual
+*/
+inline bool OPENFLUID_API isOGRPunctualType(OGRwkbGeometryType Type)
+{
+  OGRwkbGeometryType FlatType = wkbFlatten(Type);
+
+  return (FlatType == wkbPoint || FlatType == wkbMultiPoint);
+}
+
+
+/**
+  Returns true if the given geometry type is a linear type (e.g. wkbLineString,
+  @param[in] Type the OGR geometry type
+  @return true if the geometry type is linear
+*/
+inline bool OPENFLUID_API isOGRLinearType(OGRwkbGeometryType Type)
+{
+  OGRwkbGeometryType FlatType = wkbFlatten(Type);
+
+  return (OGR_GT_IsSubClassOf(FlatType,wkbCurve) || OGR_GT_IsSubClassOf(FlatType,wkbMultiCurve));
+}
+
+
+/**
+  Returns true if the given geometry type is a surfacic type (e.g. wkbPolygon),
+  @param[in] Type the OGR geometry type
+  @return true if the geometry type is surfacic
+*/
+inline bool OPENFLUID_API isOGRSurfacicType(OGRwkbGeometryType Type)
+{
+  OGRwkbGeometryType FlatType = wkbFlatten(Type);
+
+  return (OGR_GT_IsSubClassOf(FlatType,wkbSurface) || OGR_GT_IsSubClassOf(FlatType,wkbMultiSurface));
 }
 
 

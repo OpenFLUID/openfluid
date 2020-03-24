@@ -401,6 +401,8 @@ BOOST_AUTO_TEST_CASE(check_Polygon_Geometry)
   
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/SU.shp");
 
+  BOOST_CHECK_EQUAL(Val->getGeometryType(),wkbPolygon);
+
   BOOST_CHECK(Val->isPolygonType());
 
   BOOST_CHECK(!Val->isMultiPolygonType());
@@ -426,6 +428,8 @@ BOOST_AUTO_TEST_CASE(check_MultiPolygon_Geometry)
   }
 
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiSU.geojson");
+
+  BOOST_CHECK_EQUAL(Val->getGeometryType(),wkbMultiPolygon);
 
   BOOST_CHECK(Val->isMultiPolygonType());
 
@@ -453,6 +457,8 @@ BOOST_AUTO_TEST_CASE(check_Line_Geometry)
 
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/RS.shp");
 
+  BOOST_CHECK_EQUAL(Val->getGeometryType(),wkbLineString);
+
   BOOST_CHECK(Val->isLineType());
 
   BOOST_CHECK(!Val->isMultiPolygonType());
@@ -478,6 +484,8 @@ BOOST_AUTO_TEST_CASE(check_MultiLine_Geometry)
   }
 
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiRS.geojson");
+
+  BOOST_CHECK_EQUAL(Val->getGeometryType(),wkbMultiLineString);
 
   BOOST_CHECK(Val->isMultiLineType());
 
@@ -505,6 +513,8 @@ BOOST_AUTO_TEST_CASE(check_Point_Geometry)
 
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/PU.shp");
 
+  BOOST_CHECK_EQUAL(Val->getGeometryType(),wkbPoint);
+
   BOOST_CHECK(Val->isPointType());
 
   BOOST_CHECK(!Val->isMultiPolygonType());
@@ -530,6 +540,8 @@ BOOST_AUTO_TEST_CASE(check_MultiPoint_Geometry)
   }
 
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR, "GeoVectorValue/MultiPU.geojson");
+
+  BOOST_CHECK_EQUAL(Val->getGeometryType(),wkbMultiPoint);
 
   BOOST_CHECK(Val->isMultiPointType());
 

@@ -95,8 +95,6 @@ class UnitsClassWidget : public QFrame
 
      openfluid::fluidx::DatastoreItemDescriptor* mp_LayerSource;
      
-     bool isLayer2D(openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc);
-
      void mousePressEvent(QMouseEvent* Event);
 
 
@@ -133,20 +131,28 @@ class UnitsClassWidget : public QFrame
     void linkToDatastoreItem(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList);
 
     int getLineWidth() const
-    { return m_LineWidth; }
+    { 
+      return m_LineWidth; 
+    }
 
     QColor getLineColor() const
-    { return m_LineColor; }
+    { 
+      return m_LineColor; 
+    }
 
     QColor getFillColor() const
-    { return m_FillColor; }
+    { 
+      return m_FillColor; 
+    }
 
     bool isLayerVisible() const;
 
     void setLayerVisible();
 
     const openfluid::fluidx::DatastoreItemDescriptor* layerSource() const
-    { return mp_LayerSource; }
+    { 
+      return mp_LayerSource; 
+    }
 
 };
 

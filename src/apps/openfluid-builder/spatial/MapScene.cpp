@@ -135,7 +135,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
 
         if (Geometry && m_Domain.isSpatialUnitExist(StdClassName,ID))
         {
-          OGRwkbGeometryType GeomType = Geometry->getGeometryType();
+          OGRwkbGeometryType GeomType = wkbFlatten(Geometry->getGeometryType());
 
           if (GeomType == wkbPoint)
           {

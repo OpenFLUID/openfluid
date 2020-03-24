@@ -141,6 +141,16 @@ OGRFeatureDefn* GeoVectorValue::layerDef(unsigned int LayerIndex)
 // =====================================================================
 
 
+OGRwkbGeometryType GeoVectorValue::getGeometryType(unsigned int LayerIndex)
+{
+  return layer(LayerIndex)->GetGeomType();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool GeoVectorValue::isLineType(unsigned int LayerIndex)
 {
   return layerDef(LayerIndex)->GetGeomType() == wkbLineString;

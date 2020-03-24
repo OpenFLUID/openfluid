@@ -37,10 +37,10 @@
  */
 
 
+#include <boost/algorithm/string/join.hpp>
+
 #include <ogrsf_frmts.h>
 #include <gdal.h>
-
-#include <QStringList>
 
 #include <openfluid/utils/GDALHelpers.hpp>
 
@@ -158,42 +158,38 @@ const std::set<std::string> getOGRFilesExtensionsForOpenFLUID()
 // =====================================================================
 
 
-QString getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
-                                         const QString& AllFormatsLabel)
+std::string getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
+                                             const std::string& AllFormatsLabel)
 {
-  QStringList AllFormats;
-  QStringList DetailedFormats;
+  std::vector<std::string> AllFormats;
+  std::vector<std::string> DetailedFormats;
 
-  GDALDriversFilesExts_t::const_iterator it;
-  GDALDriversFilesExts_t::const_iterator bit = Drivers.begin();
-  GDALDriversFilesExts_t::const_iterator eit = Drivers.end();
-
-  for (it=bit; it!= eit; ++it)
+  for (const auto& D : Drivers)
   {
-    QString CurrentFormatsStr;
+    std::string CurrentFormatsStr;
 
-    for (unsigned int i =0; i< (*it).second.FilesExts.size(); i++)
+    for (unsigned int i =0; i< D.second.FilesExts.size(); i++)
     {
       if (i!=0)
       {
         CurrentFormatsStr += " ";
       }
-      CurrentFormatsStr += "*." + QString::fromStdString((*it).second.FilesExts.at(i));
+      CurrentFormatsStr += "*." + D.second.FilesExts.at(i);
     }
 
-    DetailedFormats.append(QString::fromStdString((*it).second.Label) + "(" + CurrentFormatsStr + ")");
-    AllFormats.append(CurrentFormatsStr);
+    DetailedFormats.push_back(D.second.Label + "(" + CurrentFormatsStr + ")");
+    AllFormats.push_back(CurrentFormatsStr);
   }
 
-  if (!AllFormats.isEmpty())
+  if (!AllFormats.empty())
   {
-    QString AllFormatsStr;
+    std::string AllFormatsStr;
 
-    AllFormatsStr = AllFormatsLabel +" (" + AllFormats.join(" ")+")";
-    DetailedFormats.prepend(AllFormatsStr);
+    AllFormatsStr = AllFormatsLabel + " (" + boost::algorithm::join(AllFormats," ")+")";
+    DetailedFormats.insert(DetailedFormats.begin(),AllFormatsStr);
   }
 
-  return DetailedFormats.join(";;");
+  return boost::algorithm::join(DetailedFormats,";;");
 }
 
 

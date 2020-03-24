@@ -124,6 +124,14 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
     OGRFeatureDefn* layerDef(unsigned int LayerIndex = 0);
 
     /**
+      Returns the geometry type of the GeoVectorValue.
+      @param[in] LayerIndex The index of the layer to compare the type, default 0.
+      @return an OGRwkbGeometryType
+      @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
+     */
+     OGRwkbGeometryType getGeometryType(unsigned int LayerIndex = 0);
+
+    /**
       Returns true if the GeoVectorValue is line type, false otherwise.
       @param[in] LayerIndex The index of the layer to compare the type, default 0.
       @return True if the type of the layer LayerIndex is wkbLineString, false otherwise.

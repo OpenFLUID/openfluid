@@ -37,6 +37,8 @@
 */
 
 
+#include <memory>
+
 #include <QColorDialog>
 #include <QMessageBox>
 #include <QDir>
@@ -47,6 +49,7 @@
 #include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
+#include <openfluid/utils/GDALHelpers.hpp>
 
 #include "ui_UnitsClassWidget.h"
 #include "UnitsClassWidget.hpp"
@@ -356,33 +359,12 @@ void UnitsClassWidget::changeVisible()
 // =====================================================================
 
 
-bool UnitsClassWidget::isLayer2D(openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc)
-{
-  if (DSItemDesc->getType() == openfluid::core::UnstructuredValue::GeoVectorValue)
-  {
-    openfluid::core::DatastoreItem* DSItem = new openfluid::core::DatastoreItem(DSItemDesc->getID(),
-                                                                                DSItemDesc->getPrefixPath(),
-                                                                                DSItemDesc->getRelativePath(),
-                                                                                DSItemDesc->getType(),
-                                                                                DSItemDesc->getUnitsClass());
-
-    openfluid::core::GeoVectorValue* VectorData = dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
-
-    if (VectorData->data() != nullptr && VectorData->containsField("OFLD_ID",0))
-    {
-      return GDALIsSurface_COMPAT(VectorData->data());
-    }
-  }
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList)
 {
+  
+  bool LayerIsSurfacic = false;
+  OGRwkbGeometryType LayerType = wkbUnknown;
+
   mp_LayerSource = nullptr;
 
   // disconnect signal to avoid multiple refresh of map,
@@ -395,9 +377,43 @@ void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::Da
   if (!DSList.empty())
   {
     mp_LayerSource = DSList.front();
+
+    // retreive informations from layer
+    if (mp_LayerSource->getType() == openfluid::core::UnstructuredValue::GeoVectorValue)
+    {
+      std::unique_ptr<openfluid::core::DatastoreItem> DSItem = 
+        std::make_unique<openfluid::core::DatastoreItem>(mp_LayerSource->getID(),
+                                                         mp_LayerSource->getPrefixPath(),
+                                                         mp_LayerSource->getRelativePath(),
+                                                         mp_LayerSource->getType(),
+                                                         mp_LayerSource->getUnitsClass());
+
+      openfluid::core::GeoVectorValue* VectorData = dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
+
+      if (VectorData->data() != nullptr && VectorData->containsField("OFLD_ID",0))
+      {
+        // detect layer geometry type
+        LayerType = VectorData->data()->GetLayer(0)->GetGeomType();
+        // detect if layertype is a surface
+        LayerIsSurfacic =  openfluid::utils::isOGRSurfacicType(VectorData->layer(0)->GetGeomType());
+      }
+    }
+
     ui->LayerSourceLabel->setText(QDir::toNativeSeparators(QString::fromStdString(mp_LayerSource->getRelativePath())));
     ui->StyleParamsWidget->setEnabled(true);
-    if (isLayer2D(mp_LayerSource))
+
+    std::string LayerTypeStr = OGRGeometryTypeToName(LayerType);
+    if (LayerTypeStr.empty())
+    {
+      ui->LayerTypeLabel->setText(tr("Unknown geometry"));
+    }
+    else
+    {
+      ui->LayerTypeLabel->setText(QString::fromStdString(LayerTypeStr));
+    }
+     ui->LayerTypeLabel->setToolTip(QString("Geometry code: %1").arg(LayerType));
+
+    if (LayerIsSurfacic)
     {
       ui->FillColorLabel->setVisible(true);
       ui->FillColorButton->setVisible(true);
@@ -405,7 +421,9 @@ void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::Da
   }
   else
   {
-    ui->LayerSourceLabel->setText(tr("(no layer to display)"));
+    ui->LayerTypeLabel->setText(tr("No geometry available"));
+    ui->ShowHideStyleLabel->setVisible(false);
+    ui->LayerSourceLabel->setText("");
     ui->StyleParamsWidget->setEnabled(false);
     ui->VisibleCheckBox->setChecked(false);
   }

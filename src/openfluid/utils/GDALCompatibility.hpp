@@ -209,17 +209,4 @@
 #endif
 
 
-/**
-  Macro for compatibility of surface object detection
-  @param _M_data the GDALDataset_COMPAT object
-  @return a boolean about 2D state of objects of the dataset
-*/
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALIsSurface_COMPAT(_M_data) OGR_GT_IsSurface(_M_data->GetLayer(0)->GetGeomType())
-#else
-  #define GDALIsSurface_COMPAT(_M_data) (_M_data->GetLayer(0)->GetGeomType() == wkbPolygon || \
-                                         _M_data->GetLayer(0)->GetGeomType() == wkbMultiPolygon)
-#endif
-
-
 #endif /* __OPENFLUID_UTILS_GDALCOMPATIBILITY_HPP__ */
