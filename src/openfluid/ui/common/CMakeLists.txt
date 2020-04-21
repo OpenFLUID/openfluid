@@ -8,10 +8,12 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp MessageDialog.cpp MessageFrame.c
                             SignatureEditorWidget.cpp EditSignatureDialog.cpp
                             ClickableLabel.cpp ActionLabel.cpp ElidedLabel.cpp 
                             TagLabel.cpp ExecutionStatusLabel.cpp
+                            FocusableLineEdit.cpp
                             ShortcutCompleter.cpp
                             PathsManagementWidget.cpp WaresSearchPathsWidget.cpp
+                            ExternalToolsManagementWidget.cpp
                             LogExplorerDialog.cpp
-                            EditMarketplaceDialog.cpp
+                            EditMarketplaceDialog.cpp EditExtToolDialog.cpp
                             PreferencesDialog.cpp DetectQtDevToolsDialog.cpp
                             TimePeriodWidget.cpp
                             )
@@ -24,10 +26,12 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp MessageDialog.hpp MessageFrame.h
                             SignatureEditorWidget.hpp EditSignatureDialog.hpp
                             ClickableLabel.hpp ActionLabel.hpp ElidedLabel.hpp 
                             TagLabel.hpp ExecutionStatusLabel.hpp
+                            FocusableLineEdit.hpp
                             ShortcutCompleter.hpp
                             PathsManagementWidget.hpp WaresSearchPathsWidget.hpp
+                            ExternalToolsManagementWidget.hpp
                             LogExplorerDialog.hpp
-                            EditMarketplaceDialog.hpp
+                            EditMarketplaceDialog.hpp EditExtToolDialog.hpp
                             PreferencesDialog.hpp DetectQtDevToolsDialog.hpp
                             TimePeriodWidget.hpp
                             UIHelpers.hpp
@@ -39,10 +43,11 @@ QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI MessageFrame.ui
                                    AboutDialog.ui
                                    SignatureEditorWidget.ui SignatureDataEditorWidget.ui EditSignatureDialog.ui
                                    PathsManagementWidget.ui WaresSearchPathsWidget.ui
+                                   ExternalToolsManagementWidget.ui
                                    LogExplorerDialog.ui
                                    PreferencesDialog.ui DetectQtDevToolsDialog.ui
                                    TimePeriodWidget.ui
-                                   EditMarketplaceDialog.ui
+                                   EditMarketplaceDialog.ui EditExtToolDialog.ui
                                    )
 
 

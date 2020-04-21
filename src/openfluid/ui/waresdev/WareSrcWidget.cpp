@@ -106,6 +106,12 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
     connect(mp_StandaloneToolBar->action("OpenExplorer"), SIGNAL(triggered()), this, SIGNAL(openExplorerRequested()));
 
     connect(mp_StandaloneToolBar->action("APIDoc"), SIGNAL(triggered()), this, SIGNAL(openAPIDocRequested()));
+    
+    QMap<QString, QAction*> ExternalToolsActions = mp_StandaloneToolBar->externalToolsActions();
+    for (auto const& Alias : ExternalToolsActions.keys())
+    {
+      connect(ExternalToolsActions[Alias], SIGNAL(triggered()), this, SLOT(onOpenExternalToolRequested()));
+    }
   }
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
@@ -222,6 +228,20 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const 
   if (m_IsStandalone)
   {
     Widget->installEventFilter(this);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::onOpenExternalToolRequested()
+{
+  QAction* Sender = (QAction*)(QObject::sender());
+  if (Sender != nullptr)
+  {
+    emit openExternalToolRequested(Sender->data().toString(), "");
   }
 }
 

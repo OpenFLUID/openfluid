@@ -1210,6 +1210,124 @@ void PreferencesManager::setWaresdevAutomaticSaveBeforeBuild(bool AutoSave)
 // =====================================================================
 
 
+QList<QString> PreferencesManager::getWaresdevExternalToolsOrder()
+{
+  QList<QString> OrderedTools;
+  mp_ConfFile->beginGroup("openfluid.waresdev.externaltools.order");
+  if (mp_ConfFile->contains("list"))
+  {
+    OrderedTools = mp_ConfFile->value("list").toStringList();
+  }
+  mp_ConfFile->endGroup();
+
+  return OrderedTools;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+PreferencesManager::ExternalToolsCommands_t PreferencesManager::getWaresdevExternalToolsCommands()
+{
+  ExternalToolsCommands_t Commands;
+  QList<QString> ToolsOrder = getWaresdevExternalToolsOrder();
+  mp_ConfFile->beginGroup("openfluid.waresdev.externaltools.commands");
+  QStringList CommandNames = mp_ConfFile->allKeys();
+  for (const auto& CommandName : CommandNames)
+  {
+    if (ToolsOrder.contains(CommandName))
+    {
+      QStringList Command = mp_ConfFile->value(CommandName,"").toStringList();
+      if (Command.size() > 0)
+      {
+        Commands.insert(CommandName, Command);
+      }
+    }
+  }
+
+  mp_ConfFile->endGroup();
+  return Commands;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QMap<QString, QString> PreferencesManager::getWaresdevExternalToolsCommandsInContext(const QString& Context)
+{
+  QMap<QString, QString> Commands;
+
+  std::map<QString, int> ContextPos = {{"%%W%%", 0},
+                                       {"%%S%%", 1},
+                                       {"%%C%%", 2}};
+  QString GenericPath = "%%P%%";
+
+  mp_ConfFile->beginGroup("openfluid.waresdev.externaltools.commands");
+  QStringList CommandNames = mp_ConfFile->allKeys();
+  for(const QString& CommandName : CommandNames)
+  {
+    QStringList AllCommands = mp_ConfFile->value(CommandName,"").toStringList();
+    if (ContextPos.count(Context) > 0 && ContextPos[Context] < AllCommands.size())
+    {
+      QString Command = AllCommands[ContextPos[Context]];
+      if (Command.size() > 0)
+      {
+        QString AdjustedCommand = Command.replace(Context, GenericPath);
+        if (AdjustedCommand.length() > 0)
+        {
+          Commands.insert(CommandName, AdjustedCommand);
+        }
+      }
+    }
+  }
+
+   mp_ConfFile->endGroup();
+
+   return Commands;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevExternalToolsCommands(const ExternalToolsCommands_t& Commands)
+{
+  mp_ConfFile->beginGroup("openfluid.waresdev.externaltools.commands");
+  mp_ConfFile->remove(""); // reset group
+
+  for(const auto& Command : Commands.keys())
+  {
+    mp_ConfFile->setValue(Command,Commands[Command]);
+  }
+
+  mp_ConfFile->endGroup();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevExternalToolsOrder(QList<QString> ToolsOrder)
+{
+  mp_ConfFile->beginGroup("openfluid.waresdev.externaltools.order");
+  QStringList ConvertedToolsOrder;
+  for (const auto& Tool : ToolsOrder)
+  {
+    ConvertedToolsOrder << Tool;
+  }
+  mp_ConfFile->setValue("list", ConvertedToolsOrder);
+  mp_ConfFile->endGroup();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void PreferencesManager::setWaresdevTextEditorDefaults(bool ForceReset)
 {
   mp_ConfFile->beginGroup("openfluid.waresdev.texteditor");

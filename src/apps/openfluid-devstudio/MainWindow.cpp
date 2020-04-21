@@ -145,6 +145,19 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   mp_WidgetsCollection = new openfluid::ui::waresdev::WareSrcWidgetCollection(ui->WareSrcCollection, false);
 
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+  QMap<QString, QString> ExternalTools = 
+    PrefMgr->getWaresdevExternalToolsCommandsInContext("%%W%%");
+  m_ExternalToolsOrder = PrefMgr->getWaresdevExternalToolsOrder();
+
+  for (auto const& Command : ExternalTools.keys())
+  {
+    if (m_ExternalToolsOrder.contains(Command))
+    {
+      m_ExternalToolsActions[Command] = new QAction(Command, this);
+      m_ExternalToolsActions[Command]->setData(ExternalTools.value(Command));
+    }
+  }
 
   Splash->setMessage(tr("Configuring UI"));
 
@@ -209,6 +222,14 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   connect(mp_Toolbar->action("OpenExplorer"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openExplorer()));
   connect(mp_Toolbar->action("OpenTerminal"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openTerminal()));
 
+  for (auto const& Command : m_ExternalToolsActions.keys())
+  {
+    connect(m_ExternalToolsActions[Command], SIGNAL(triggered()), this, SLOT(onOpenExternalToolAsked()));
+  }
+
+  connect(this, SIGNAL(openExternalToolAsked(const QString&, const QString&)),
+          mp_WidgetsCollection, SLOT(openExternalTool(const QString&, const QString&)));
+
   connect(mp_Toolbar->action("APIDoc"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openAPIDoc()));
 
   QList<openfluid::ui::waresdev::WareSrcExplorer*> Explorers( { ui->SimExplorer, ui->ObsExplorer, ui->ExtExplorer });
@@ -223,6 +244,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
             mp_WidgetsCollection, SLOT(openExplorer(const QString&)));
     connect(Explorer, SIGNAL(openTerminalAsked(const QString&)),
             mp_WidgetsCollection, SLOT(openTerminal(const QString&)));
+    connect(Explorer, SIGNAL(openExternalToolAsked(const QString&, const QString&)),
+            mp_WidgetsCollection, SLOT(openExternalTool(const QString&, const QString&)));
     connect(Explorer, SIGNAL(openPathAsked(const QString&)),
             mp_WidgetsCollection, SLOT(openPath(const QString&)));
     connect(Explorer, SIGNAL(deleteWareAsked()),
@@ -335,6 +358,7 @@ void MainWindow::createMenus()
 {
   QMenu* Menu;
   QMenu* SubMenu;
+  QMenu* ToolSubMenu;
 
   Menu = menuBar()->addMenu(tr("File"));
   SubMenu = Menu->addMenu(tr("New ware"));
@@ -383,9 +407,18 @@ void MainWindow::createMenus()
   SubMenu->addSeparator();
   SubMenu->addAction(mp_Toolbar->action("WareOptionsInstall"));
 
-  Menu = menuBar()->addMenu(tr("Tools"));
+  Menu = menuBar()->addMenu(tr("Workspace"));
   Menu->addAction(mp_Toolbar->action("OpenTerminal"));
   Menu->addAction(mp_Toolbar->action("OpenExplorer"));
+  ToolSubMenu = Menu->addMenu(tr("Open in external tool"));
+  ToolSubMenu->setEnabled(false);
+
+  for (auto const& Command : m_ExternalToolsActions.keys())
+  {
+    ToolSubMenu->setEnabled(true);
+    ToolSubMenu->addAction(m_ExternalToolsActions[Command]);
+  }
+
   Menu->addSeparator();
   Menu->addAction(m_Actions["ImportWareSources"]);
   Menu->addAction(m_Actions["ExportWareSources"]);
@@ -427,6 +460,21 @@ void MainWindow::setWorkspaceDefaults()
     mp_WidgetsCollection->openPath(WarePath);
 
   mp_WidgetsCollection->setCurrent(Mgr->getLastActiveWare());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onOpenExternalToolAsked()
+{
+  QAction* Sender = (QAction*)(QObject::sender());
+  if (Sender != nullptr)
+  {
+    emit openExternalToolAsked(Sender->data().toString(), 
+                               openfluid::waresdev::WareSrcManager::instance()->getWaresdevPath());
+  }
 }
 
 

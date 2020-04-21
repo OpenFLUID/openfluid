@@ -35,6 +35,7 @@
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+ @author Armel Thoni <armel.thoni@inra.fr>
 */
 
 
@@ -47,16 +48,16 @@
 
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
+#include <openfluid/waresdev/WareSrcManager.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -125,6 +126,9 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
       connect(Widget, SIGNAL(findReplaceRequested()), this, SLOT(showFindReplaceDialog()));
       connect(Widget, SIGNAL(openTerminalRequested()), this, SLOT(openTerminal()));
       connect(Widget, SIGNAL(openExplorerRequested()), this, SLOT(openExplorer()));
+      connect(Widget, SIGNAL(openExternalToolRequested(const QString&, const QString&)), 
+              this, SLOT(openExternalTool(const QString&, const QString&)));
+      
       connect(Widget, SIGNAL(openAPIDocRequested()), this, SLOT(openAPIDoc()));
 
       connect(Widget, SIGNAL(modifiedStatusChanged(bool, bool)), this, SIGNAL(modifiedStatusChanged(bool, bool)));
@@ -335,6 +339,69 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
   if (!TermFound)
   {
     QMessageBox::warning(0, tr("Error"), tr("No terminal found"));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QString& Path)
+{
+  QString PathToOpen;
+
+  if (!Path.isEmpty())
+  {
+    PathToOpen = Path;
+  }
+  else
+  {
+    QString Current = getCurrentWarePath();
+
+    if (!Current.isEmpty())
+    {
+      PathToOpen = Current;
+    }
+    else
+    {
+      PathToOpen = mp_Manager->getWaresdevPath();
+    }
+  }
+
+  bool ChangeDirectory = false;
+  if (QFileInfo(PathToOpen).isDir())
+  {
+    ChangeDirectory = true;
+  }
+
+  QString Program;
+
+  QStringList Args = QStringList();
+  unsigned int Pos = 0;
+  for (const auto& Word : Command.split(" "))
+  {
+    if (Pos == 0) // first word is program name or path
+    {
+      Program = Word;
+      Pos++;
+    }
+    else if (Word == "%%P%%")
+    {
+      Args << PathToOpen;
+    }
+    else
+    {
+      Args << Word;
+    }
+  }
+  if (ChangeDirectory)
+  {
+    QProcess::startDetached(Program, Args, PathToOpen);
+  }
+  else
+  {
+    QProcess::startDetached(Program, Args);
   }
 }
 

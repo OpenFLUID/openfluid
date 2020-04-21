@@ -44,6 +44,7 @@
 #include <QToolBar>
 #include <QAction>
 
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WareBuildOptionsWidget.hpp>
 
@@ -56,10 +57,12 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
   Q_OBJECT
 
   private:
-
+    QMap<QString, QString> m_ExternalTools;
+    QList<QString> m_ExternalToolsOrder;
     QMap<QString, QAction*> m_Actions;
 
     WareBuildOptionsWidget* mp_OptionsWidget;
+    QMap<QString, QAction*> m_ExternalToolsActions;
 
     void createActions();
 
@@ -73,6 +76,7 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
     virtual ~WareSrcToolbar();
 
     QAction* action(const QString& ActionName);
+    const QMap<QString, QAction*> externalToolsActions();
 
     WareBuildOptionsWidget* optionsWidget()
     { return mp_OptionsWidget; }

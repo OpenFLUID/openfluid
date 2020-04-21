@@ -71,6 +71,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void onOpenTerminalAsked();
 
+    void onOpenExternalToolAsked();
+
     void onCopyFullPathAsked();
     
     void onCopyRelativePathAsked();
@@ -110,6 +112,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
     void openExplorerAsked(const QString& FilePath);
 
     void openTerminalAsked(const QString& FilePath);
+
+    void openExternalToolAsked(const QString& FilePath, const QString& Command);
 
     void openPathAsked(const QString& FilePath);
 

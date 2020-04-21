@@ -143,6 +143,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
 
 
   connect(ui->WorkspacesPathsWidget,SIGNAL(pathsUpdated()),this,SLOT(processWorkspacesPathsUpdate()));
+  connect(ui->ExtToolsWidget,SIGNAL(toolsUpdated()),this,SLOT(processExtToolsUpdate()));
 
   connect(ui->SimulatorsSearchPathsWidget,SIGNAL(userPathsUpdated()),this,SLOT(processSimUserPathsUpdate()));
   connect(ui->ObserversSearchPathsWidget,SIGNAL(userPathsUpdated()),this,SLOT(processObsUserPathsUpdate()));
@@ -901,6 +902,18 @@ void PreferencesDialog::processWorkspacesPathsUpdate()
 // =====================================================================
 
 
+void PreferencesDialog::processExtToolsUpdate()
+{
+  openfluid::base::PreferencesManager::instance()->setWaresdevExternalToolsCommands(ui->ExtToolsWidget->getToolsList());
+  openfluid::base::PreferencesManager::instance()->setWaresdevExternalToolsOrder(ui->ExtToolsWidget->getToolsOrder());
+  updateRestartStatus();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void PreferencesDialog::updateDevConfigPATH()
 {
   openfluid::base::PreferencesManager::instance()->setWaresdevConfigEnv("PATH",ui->ConfigPathEnvEdit->text());
@@ -1024,7 +1037,8 @@ void PreferencesDialog::updateRestartStatus()
 
 
   if (ui->LangComboBox->currentIndex() != m_OriginalLangIndex ||
-      CurrentWorkspace != m_OriginalActiveWorkspace)
+      CurrentWorkspace != m_OriginalActiveWorkspace ||
+      ui->ExtToolsWidget->getNeedRestart())
   {
     ui->RestartLabel->setText(tr("Restart required"));
     m_RestartRequired = true;

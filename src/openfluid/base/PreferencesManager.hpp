@@ -108,6 +108,8 @@ class OPENFLUID_API PreferencesManager
 
     typedef std::vector<RecentProject_t> RecentProjectsList_t;
 
+    typedef QMap<QString, QStringList> ExternalToolsCommands_t;
+
     typedef QMap<QString, SyntaxHighlightingRule_t> SyntaxHighlightingRules_t;
 
     typedef std::map<QString, QString> MarketPlaces_t;
@@ -250,6 +252,15 @@ class OPENFLUID_API PreferencesManager
 
     void setWaresdevAutomaticSaveBeforeBuild(bool AutoSave);
 
+    QList<QString> getWaresdevExternalToolsOrder();
+
+    ExternalToolsCommands_t getWaresdevExternalToolsCommands();
+
+    QMap<QString, QString> getWaresdevExternalToolsCommandsInContext(const QString& Context);
+
+    void setWaresdevExternalToolsCommands(const ExternalToolsCommands_t& Commands);
+
+    void setWaresdevExternalToolsOrder(QList<QString> ToolsOrder);
 
     void setWaresdevTextEditorDefaults(bool ForceReset);
 

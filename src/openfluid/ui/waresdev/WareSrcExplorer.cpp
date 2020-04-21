@@ -43,6 +43,7 @@
 #include <QGuiApplication>
 #include <QClipboard>
 
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
 #include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
@@ -128,6 +129,37 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   Menu.addAction(tr("Open a terminal"), this, SLOT(onOpenTerminalAsked()));
   Menu.addAction(tr("Open a file explorer"), this, SLOT(onOpenExplorerAsked()));
 
+  // Custom tools menu
+  QMenu ExtToolMenu;
+  ExtToolMenu.setTitle("Open an external tool");
+  ExtToolMenu.setEnabled(false);
+
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+  QMap<QString, QString> Commands;
+  
+  if (currentIndex().isValid() && mp_Model->isDir(currentIndex()))
+  {
+    Commands = PrefMgr->getWaresdevExternalToolsCommandsInContext("%%S%%");
+  }
+  else
+  {
+    Commands = PrefMgr->getWaresdevExternalToolsCommandsInContext("%%C%%");
+  }
+  QList<QString> ExternalToolsOrder = PrefMgr->getWaresdevExternalToolsOrder();
+  QMap<QString, QAction*> m_ExternalToolsActions;
+  for (auto const& Command : ExternalToolsOrder)
+  {
+    if (Commands.contains(Command))
+    {
+      ExtToolMenu.setEnabled(true);
+      m_ExternalToolsActions[Command] = new QAction(Command, this);
+      m_ExternalToolsActions[Command]->setData(Commands.value(Command));
+      ExtToolMenu.addAction(m_ExternalToolsActions[Command]);
+      connect(m_ExternalToolsActions[Command], SIGNAL(triggered()), this, SLOT(onOpenExternalToolAsked()));
+    }
+  }
+  Menu.addMenu(&ExtToolMenu);
+
   Menu.addSeparator();
 
   Menu.addAction(tr("Copy full path"), this, SLOT(onCopyFullPathAsked()));
@@ -199,6 +231,21 @@ void WareSrcExplorer::onOpenExplorerAsked()
 void WareSrcExplorer::onOpenTerminalAsked()
 {
   emit openTerminalAsked(getCurrentDir());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onOpenExternalToolAsked()
+{
+  QAction* Sender = (QAction*)(QObject::sender());
+  if (Sender != nullptr)
+  {
+    emit openExternalToolAsked(Sender->data().toString(), getCurrentPath());
+  }
+  
 }
 
 

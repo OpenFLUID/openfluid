@@ -155,6 +155,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void openTerminal(const QString& Path = "");
 
+    void openExternalTool(const QString& Command, const QString& Path = "");
+
     void setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode);
 
     void setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode);

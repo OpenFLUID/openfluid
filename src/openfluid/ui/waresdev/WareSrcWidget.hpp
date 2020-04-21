@@ -92,6 +92,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     openfluid::waresdev::WareSrcContainer m_Container;
 
+    QMap<QString, QAction*> m_ExternalToolsActions;
+
     /**
      * List of opened source file editors by their absolute path
      */
@@ -133,6 +135,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void openExplorerRequested();
 
+    void openExternalToolRequested(const QString& Context, const QString& Path);
+
     void modifiedStatusChanged(bool CurrentEditorModified, bool WareModified);
 
     void openAPIDocRequested();
@@ -167,6 +171,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     int closeCurrentEditor(bool WithConfirm = true);
 
     int onCloseFileTabRequested(int Index, bool WithConfirm = true);
+
+    void onOpenExternalToolRequested();
 
     void newFile();
 

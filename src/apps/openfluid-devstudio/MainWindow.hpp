@@ -76,6 +76,10 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     QMap<QString, QAction*> m_Actions;
 
+    QMap<QString, QAction*> m_ExternalToolsActions;
+
+    QList<QString> m_ExternalToolsOrder;
+
     void createLocalActions();
 
     void createMenus();
@@ -83,7 +87,13 @@ class OPENFLUID_API MainWindow: public QMainWindow
     void setWorkspaceDefaults();
 
 
+  signals:
+    void openExternalToolAsked(const QString& Command, const QString& FilePath);
+
+
   private slots:
+
+    void onOpenExternalToolAsked();
 
     void onBuildOptionsMenuChanged();
 

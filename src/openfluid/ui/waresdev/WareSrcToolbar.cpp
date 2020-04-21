@@ -66,6 +66,9 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
   }
 
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+  m_ExternalTools = PrefMgr->getWaresdevExternalToolsCommandsInContext("%%S%%");
+
   createActions();
 
   addAction(m_Actions["NewFile"]);
@@ -117,10 +120,23 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
 
     // TODO add doc generation?
 
-    SubMenu = Menu->addMenu(tr("Tools"));
+    SubMenu = Menu->addMenu(tr("Ware"));
     SubMenu->addAction(m_Actions["OpenTerminal"]);
     SubMenu->addAction(m_Actions["OpenExplorer"]);
 
+    QMenu* ExtToolSubSubMenu = SubMenu->addMenu(tr("Open in external tool"));
+    ExtToolSubSubMenu->setEnabled(false);
+
+    QList<QString> ExternalToolsOrder = PrefMgr->getWaresdevExternalToolsOrder();
+    for (auto const& Alias : ExternalToolsOrder)
+    {
+      if (m_ExternalToolsActions.contains(Alias))
+      {
+        ExtToolSubSubMenu->setEnabled(true);
+        ExtToolSubSubMenu->addAction(m_ExternalToolsActions[Alias]);
+      }
+    }
+    
     SubMenu = Menu->addMenu(tr("Help"));
     SubMenu->addAction(m_Actions["APIDoc"]);
 
@@ -258,15 +274,30 @@ void WareSrcToolbar::createActions()
 
   // ====== Tools ======
 
-  m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
-  m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
+  m_Actions["OpenTerminal"] = new QAction(tr("Open in terminal"), this);
+  m_Actions["OpenExplorer"] = new QAction(tr("Open in file explorer"), this);
 
+  for (auto const& Command : m_ExternalTools.keys())
+  {
+    m_ExternalToolsActions[Command] = new QAction(Command, this);
+    m_ExternalToolsActions[Command]->setData(m_ExternalTools.value(Command));
+  }
 
   // ====== Help ======
 
   m_Actions["APIDoc"] = new QAction(tr("API documentation"), this);
   m_Actions["APIDoc"]->setShortcuts(QKeySequence::HelpContents);
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+const QMap<QString, QAction*> WareSrcToolbar::externalToolsActions()
+{
+  return m_ExternalToolsActions;
 }
 
 

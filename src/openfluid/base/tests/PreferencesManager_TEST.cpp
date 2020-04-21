@@ -602,3 +602,39 @@ BOOST_AUTO_TEST_CASE(test_textEditorProperties)
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(test_externalToolsProperties)
+{
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
+                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  if (QFile::exists(CFile))
+  {
+    QFile::remove(CFile);
+  }
+
+  openfluid::base::PreferencesManager::setFileName(CFile);
+  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+
+  openfluid::base::PreferencesManager::ExternalToolsCommands_t Tools;
+  QStringList ToolA, ToolB, ToolC, ToolD;
+  ToolA << "A %%W%%" << "AB %%S%%" << "AC %%C%%";
+  Tools.insert("A", ToolA);
+  ToolB << "" << "B %%S%%" << "";
+  Tools.insert("B", ToolB);
+  ToolC << "C %%W%% -i" << "C -i %%S%% -j" << "";
+  Tools.insert("C", ToolC);
+
+  PrefMgr->setWaresdevExternalToolsCommands(Tools);
+  BOOST_CHECK_EQUAL(
+    PrefMgr->getWaresdevExternalToolsCommandsInContext("%%W%%")["A"].toStdString(),"A %%P%%");
+  BOOST_CHECK_EQUAL(
+    PrefMgr->getWaresdevExternalToolsCommandsInContext("%%S%%")["A"].toStdString(),"AB %%P%%");
+  BOOST_CHECK_EQUAL(
+    PrefMgr->getWaresdevExternalToolsCommandsInContext("%%C%%")["A"].toStdString(),"AC %%P%%");
+  BOOST_CHECK(
+    !PrefMgr->getWaresdevExternalToolsCommandsInContext("%%W%%").contains("B"));
+  BOOST_CHECK_EQUAL(
+    PrefMgr->getWaresdevExternalToolsCommandsInContext("%%S%%")["C"].toStdString(),"C -i %%P%% -j");
+
+  openfluid::base::PreferencesManager::kill();
+}
