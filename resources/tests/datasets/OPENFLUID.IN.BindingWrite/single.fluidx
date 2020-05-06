@@ -1,0 +1,123 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+  <model>
+
+    <generator varname="tests.fixed" unitsclass="TestUnits" method="fixed">
+      <param name="fixedvalue" value="12.7" />
+    </generator>
+
+    <generator varname="tests.fixed-vector" unitsclass="TestUnits" varsize="7" method="fixed">
+      <param name="fixedvalue" value="12.7" />
+    </generator>
+
+    <generator varname="tests.fixeddt" unitsclass="TestUnits" method="fixed">
+      <param name="fixedvalue" value="1.27" />
+      <param name="deltat" value="300" />
+    </generator>
+
+    <generator varname="tests.random" unitsclass="TestUnits" method="random">
+      <param name="min" value="20.53" />
+      <param name="max" value="50" />
+    </generator>
+
+    <generator varname="tests.random-vector" unitsclass="TestUnits" varsize="9" method="random">
+      <param name="min" value="20.53" />
+      <param name="max" value="50" />
+    </generator>
+    
+    <generator varname="tests.randomdt" unitsclass="TestUnits" method="random">
+      <param name="min" value="2.53" />
+      <param name="max" value="5" />
+      <param name="deltat" value="117" />      
+    </generator>    
+
+    <generator varname="tests.interp" unitsclass="TestUnits" method="interp">
+      <param name="sources" value="sourcesinterp.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.interp-vector" unitsclass="TestUnits" varsize="11" method="interp">
+      <param name="sources" value="sourcesinterp.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.interpmin" unitsclass="TestUnits" method="interp">
+      <param name="sources" value="sourcesinterp.xml" />
+      <param name="distribution" value="distri.dat" />
+      <param name="thresholdmin" value="0" />      
+    </generator>
+
+    <generator varname="tests.interpminmax" unitsclass="TestUnits" method="interp">
+      <param name="sources" value="sourcesinterp.xml" />
+      <param name="distribution" value="distri.dat" />
+      <param name="thresholdmin" value="0" />      
+      <param name="thresholdmax" value="20" />
+    </generator>
+
+    <generator varname="tests.inject" unitsclass="TestUnits" method="inject">
+      <param name="sources" value="sourcesinject.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.injectasync" unitsclass="TestUnits" method="inject">
+      <param name="sources" value="sourcesinjectasync.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.injectasync-vector" unitsclass="TestUnits" varsize="13" method="inject">
+      <param name="sources" value="sourcesinjectasync.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.fixedprev-vector" unitsclass="TestUnits" varsize="11" method="fixed">
+      <param name="fixedvalue" value="5.3" />
+    </generator>
+
+  </model>
+
+
+
+
+  <monitoring>
+
+    <observer ID="export.vars.files.csv">
+    
+      <param name="format.f1.header" value="colnames-as-comment" />
+      <param name="format.f1.date" value="%Y-%m-%d %H:%M:%S" />
+      <param name="format.f1.precision" value="8" />
+                  
+      <param name="set.fullfull.unitsclass" value="TestUnits" />
+      <param name="set.fullfull.unitsIDs" value="*" />
+      <param name="set.fullfull.vars" value="*" />
+      <param name="set.fullfull.format" value="f1" />
+            
+    </observer>
+
+  </monitoring>
+
+
+  <run>
+    <scheduling deltat="600" constraint="none" />
+    <period begin="2000-01-01 00:00:00" end="2000-01-01 01:00:00" />
+  </run>
+
+
+  <domain>
+    <definition>
+      <unit class="TestUnits" ID="1" pcsorder="1">
+      </unit>
+      <unit class="TestUnits" ID="2" pcsorder="2">
+      </unit>
+      <unit class="TestUnits" ID="3" pcsorder="1">
+      </unit>
+      <unit class="TestUnits" ID="4" pcsorder="3">
+      </unit>
+      <unit class="TestUnits" ID="5" pcsorder="1">
+      </unit>
+    </definition>
+  </domain>
+</openfluid>
+
+
+

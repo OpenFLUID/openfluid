@@ -172,6 +172,41 @@ BOOST_AUTO_TEST_CASE(check_datasetsprojects)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_writedataset)
+{
+  std::string DSPathSource = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.BindingWrite";
+
+  std::string DSPathCopyFluidX = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.IN.BindingWriteFluidX";
+  std::string OutPathCopyFluidX = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.BindingWriteFluidX";
+  
+  std::string DSPathCopyFull = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.IN.BindingWriteFull";
+  std::string OutPathCopyFull = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.BindingWriteFull";
+
+  openfluid::utils::Binding* TB;
+
+  TB = openfluid::utils::Binding::openDataset(DSPathSource.c_str());
+  TB->writeDataset(DSPathCopyFluidX.c_str());
+  TB->writeDataset(DSPathCopyFull.c_str(),true);
+  openfluid::utils::Binding::destroy(TB);
+
+  // FluidX only
+  TB = openfluid::utils::Binding::openDataset(DSPathCopyFluidX.c_str());
+  openfluid::utils::Binding::setCurrentOutputDir(OutPathCopyFluidX.c_str());
+  BOOST_CHECK_EQUAL(TB->runSimulation(),0); // should fail because external files are missing
+  openfluid::utils::Binding::destroy(TB);
+
+  // full copy
+  TB = openfluid::utils::Binding::openDataset(DSPathCopyFull.c_str());
+  openfluid::utils::Binding::setCurrentOutputDir(OutPathCopyFull.c_str());
+  BOOST_CHECK_EQUAL(TB->runSimulation(),1); // should succeed
+  openfluid::utils::Binding::destroy(TB);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(check_warespaths)
 {
 #if defined(OPENFLUID_OS_UNIX)

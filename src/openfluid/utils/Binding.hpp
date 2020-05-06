@@ -49,6 +49,8 @@
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/ApplicationException.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/utils/BindingVerboseMachineListener.hpp>
 #include <openfluid/utils/BindingAbstractOutErr.hpp>
 #include <openfluid/machine/Factory.hpp>
@@ -620,6 +622,60 @@ class Binding
       }
 
       return nullptr;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Writes an OpenFLUID dataset to disk, optionaly with copy of external data from the original dataset
+      @param[in] Path The path to the dataset to write
+      @param[in] WithOriginData optional parameter to enable the copy of external data from the original dataset. 
+      Default is false 
+      @returns 1 if succeded, 0 if failed
+    */
+    int writeDataset(const char* Path, bool WithOriginData = false)
+    {
+      try
+      {
+        if (WithOriginData && !m_SourcePath.empty())
+        {
+          openfluid::tools::emptyDirectoryRecursively(std::string(Path));
+          openfluid::tools::copyDirectoryContentsRecursively(m_SourcePath, std::string(Path));
+
+          auto FluidXToRemove = openfluid::tools::findFilesByExtension(std::string(Path),"fluidx",true);
+
+          for (const auto& F : FluidXToRemove)
+          {
+            openfluid::tools::Filesystem::removeFile(F);
+          }
+        }
+
+        m_FluidXDesc.writeToManyFiles(std::string(Path));
+
+        return 1;
+      }
+      catch (openfluid::base::Exception& E)
+      {
+        m_LastErrorMsg = "OpenFLUID ERROR: " + std::string(E.what()) +"\n";
+      }
+      catch (std::bad_alloc& E)
+      {
+        m_LastErrorMsg = "MEMORY ALLOCATION ERROR: " + std::string(E.what()) +
+                         ". Possibly not enough memory available\n";
+      }
+      catch (std::exception& E)
+      {
+        m_LastErrorMsg = "SYSTEM ERROR: " + std::string(E.what()) +"\n";
+      }
+      catch (...)
+      {
+        m_LastErrorMsg = "UNKNOWN ERROR\n";
+      }
+
+      return 0;
     }
 
 
