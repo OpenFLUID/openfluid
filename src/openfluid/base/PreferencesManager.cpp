@@ -1255,13 +1255,13 @@ PreferencesManager::ExternalToolsCommands_t PreferencesManager::getWaresdevExter
 // =====================================================================
 
 
-QMap<QString, QString> PreferencesManager::getWaresdevExternalToolsCommandsInContext(const QString& Context)
+QMap<QString, QString> PreferencesManager::getWaresdevExternalToolsCommandsInContext(const Contexts Context)
 {
   QMap<QString, QString> Commands;
 
-  std::map<QString, int> ContextPos = {{"%%W%%", 0},
-                                       {"%%S%%", 1},
-                                       {"%%C%%", 2}};
+  std::map<Contexts, QString> ContextMap = {{Contexts::WORKSPACE, "%%W%%"},
+                                            {Contexts::WARE, "%%S%%"},
+                                            {Contexts::FILE, "%%C%%"}};
   QString GenericPath = "%%P%%";
 
   mp_ConfFile->beginGroup("openfluid.waresdev.externaltools.commands");
@@ -1269,12 +1269,12 @@ QMap<QString, QString> PreferencesManager::getWaresdevExternalToolsCommandsInCon
   for(const QString& CommandName : CommandNames)
   {
     QStringList AllCommands = mp_ConfFile->value(CommandName,"").toStringList();
-    if (ContextPos.count(Context) > 0 && ContextPos[Context] < AllCommands.size())
+    if (ContextMap.count(Context) > 0 && static_cast<int>(Context) < AllCommands.size())
     {
-      QString Command = AllCommands[ContextPos[Context]];
+      QString Command = AllCommands[static_cast<int>(Context)];
       if (Command.size() > 0)
       {
-        QString AdjustedCommand = Command.replace(Context, GenericPath);
+        QString AdjustedCommand = Command.replace(ContextMap[Context], GenericPath);
         if (AdjustedCommand.length() > 0)
         {
           Commands.insert(CommandName, AdjustedCommand);

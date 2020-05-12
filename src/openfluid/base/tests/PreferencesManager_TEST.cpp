@@ -626,15 +626,15 @@ BOOST_AUTO_TEST_CASE(test_externalToolsProperties)
 
   PrefMgr->setWaresdevExternalToolsCommands(Tools);
   BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevExternalToolsCommandsInContext("%%W%%")["A"].toStdString(),"A %%P%%");
+    PrefMgr->getWaresdevExternalToolsCommandsInContext(PrefMgr->Contexts::WORKSPACE)["A"].toStdString(),"A %%P%%");
   BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevExternalToolsCommandsInContext("%%S%%")["A"].toStdString(),"AB %%P%%");
+    PrefMgr->getWaresdevExternalToolsCommandsInContext(PrefMgr->Contexts::WARE)["A"].toStdString(),"AB %%P%%");
   BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevExternalToolsCommandsInContext("%%C%%")["A"].toStdString(),"AC %%P%%");
+    PrefMgr->getWaresdevExternalToolsCommandsInContext(PrefMgr->Contexts::FILE)["A"].toStdString(),"AC %%P%%");
   BOOST_CHECK(
-    !PrefMgr->getWaresdevExternalToolsCommandsInContext("%%W%%").contains("B"));
+    !PrefMgr->getWaresdevExternalToolsCommandsInContext(PrefMgr->Contexts::WORKSPACE).contains("B"));
   BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevExternalToolsCommandsInContext("%%S%%")["C"].toStdString(),"C -i %%P%% -j");
+    PrefMgr->getWaresdevExternalToolsCommandsInContext(PrefMgr->Contexts::WARE)["C"].toStdString(),"C -i %%P%% -j");
 
   openfluid::base::PreferencesManager::kill();
 }

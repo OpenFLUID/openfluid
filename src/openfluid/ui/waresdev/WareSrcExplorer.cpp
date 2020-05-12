@@ -139,11 +139,11 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   
   if (currentIndex().isValid() && mp_Model->isDir(currentIndex()))
   {
-    Commands = PrefMgr->getWaresdevExternalToolsCommandsInContext("%%S%%");
+    Commands = PrefMgr->getWaresdevExternalToolsCommandsInContext(PrefMgr->Contexts::WARE);
   }
   else
   {
-    Commands = PrefMgr->getWaresdevExternalToolsCommandsInContext("%%C%%");
+    Commands = PrefMgr->getWaresdevExternalToolsCommandsInContext(PrefMgr->Contexts::FILE);
   }
   QList<QString> ExternalToolsOrder = PrefMgr->getWaresdevExternalToolsOrder();
   QMap<QString, QAction*> m_ExternalToolsActions;

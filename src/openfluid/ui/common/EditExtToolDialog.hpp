@@ -67,11 +67,6 @@ class OPENFLUID_API EditExtToolDialog : public MessageDialog
 
     void checkGlobally();
 
-    void changeCommandEditSelection(const FocusableLineEdit* CommandEdit, std::pair<size_t, size_t>& TextSelection);
-    void changeWorkspaceCommandEditSelection();
-    void changeWareCommandEditSelection();
-    void changeFileCommandEditSelection();
-
     void addAppToWorkspaceLine();
     void addAppToWareLine();
     void addAppToFileLine();
@@ -88,10 +83,6 @@ class OPENFLUID_API EditExtToolDialog : public MessageDialog
     bool m_IsEditMode;
 
     QString m_OriginalName;
-
-    std::pair<size_t, size_t> m_WorkspaceTextSelection;
-    std::pair<size_t, size_t> m_WareTextSelection;
-    std::pair<size_t, size_t> m_FileTextSelection;
 
     const openfluid::base::PreferencesManager::ExternalToolsCommands_t& m_AllCommands;
 

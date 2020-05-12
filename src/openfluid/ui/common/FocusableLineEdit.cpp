@@ -46,7 +46,9 @@ namespace openfluid { namespace ui { namespace common {
 FocusableLineEdit::FocusableLineEdit(QWidget* Parent) :
   QLineEdit(Parent)
 {
-
+  connect(this, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(changeEditSelection()));
+  connect(this, SIGNAL(selectionChanged()), this, SLOT(changeEditSelection()));
+  connect(this, SIGNAL(focusChanged()), this, SLOT(changeEditSelection()));
 }
 
 
@@ -65,10 +67,42 @@ void FocusableLineEdit::focusInEvent(QFocusEvent *e)
 // =====================================================================
 
 
-void FocusableLineEdit::focusOutEvent(QFocusEvent *e)
+void FocusableLineEdit::changeEditSelection()
 {
-  QLineEdit::focusOutEvent(e);
-  emit(focusChanged());
+  if (hasFocus())
+  {
+    // values of selection are updated only when widget has focus
+    if (hasSelectedText())
+    {
+      m_TextSelection.first = selectionStart();
+      m_TextSelection.second = selectedText().length();
+    }
+    else
+    {
+      m_TextSelection.first = cursorPosition();
+      m_TextSelection.second = 0;
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void FocusableLineEdit::modifyText(QString NewText)
+{
+ if (m_TextSelection.second > 0)
+  {
+    setSelection(m_TextSelection.first, m_TextSelection.second);
+  }
+  if (hasSelectedText())
+  {
+    backspace();
+  }
+  QString PreviousText = text();
+  int CursorPosition = cursorPosition();
+  setText(PreviousText.insert(CursorPosition, NewText));
 }
 
 

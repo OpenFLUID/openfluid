@@ -88,15 +88,15 @@ EditExtToolDialog::EditExtToolDialog(QWidget* Parent,
   for (int ContextNumber=0 ; ContextNumber<ToolCommands.size() ; ContextNumber++)
   {
     QString Command = ToolCommands[ContextNumber];
-    if (ContextNumber == 0)
+    if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::instance()->Contexts::WORKSPACE))
     {
       ui->WorkspaceCommandEdit->setText(Command);
     }
-    else if (ContextNumber == 1)
+    else if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::instance()->Contexts::WARE))
     {
       ui->WareCommandEdit->setText(Command);
     }
-    else if (ContextNumber == 2)
+    else if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::instance()->Contexts::FILE))
     {
       ui->FileCommandEdit->setText(Command);
     }
@@ -116,22 +116,6 @@ EditExtToolDialog::EditExtToolDialog(QWidget* Parent,
   connect(ui->FolderWareButton,SIGNAL(released()),this,SLOT(addTargetToWareLine()));
   connect(ui->FolderFileButton,SIGNAL(released()),this,SLOT(addTargetToFileLine()));
 
-  connect(ui->WorkspaceCommandEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
-  connect(ui->WareCommandEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
-  connect(ui->FileCommandEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
-
-  connect(ui->WorkspaceCommandEdit,SIGNAL(cursorPositionChanged(int, int)), this, 
-          SLOT(changeWorkspaceCommandEditSelection()));
-  connect(ui->WareCommandEdit,SIGNAL(cursorPositionChanged(int, int)), this, SLOT(changeWareCommandEditSelection()));
-  connect(ui->FileCommandEdit,SIGNAL(cursorPositionChanged(int, int)), this, SLOT(changeFileCommandEditSelection()));
-
-  connect(ui->WorkspaceCommandEdit,SIGNAL(selectionChanged()), this, SLOT(changeWorkspaceCommandEditSelection()));
-  connect(ui->WareCommandEdit,SIGNAL(selectionChanged()), this, SLOT(changeWareCommandEditSelection()));
-  connect(ui->FileCommandEdit,SIGNAL(selectionChanged()), this, SLOT(changeFileCommandEditSelection()));
-  connect(ui->WorkspaceCommandEdit,SIGNAL(focusChanged()), this, SLOT(changeWorkspaceCommandEditSelection()));
-  connect(ui->WareCommandEdit,SIGNAL(focusChanged()), this, SLOT(changeWareCommandEditSelection()));
-  connect(ui->FileCommandEdit,SIGNAL(focusChanged()), this, SLOT(changeFileCommandEditSelection()));
-
   checkGlobally();
 }
 
@@ -143,80 +127,6 @@ EditExtToolDialog::EditExtToolDialog(QWidget* Parent,
 EditExtToolDialog::~EditExtToolDialog()
 {
   delete ui;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditExtToolDialog::changeCommandEditSelection(const FocusableLineEdit* CommandEdit, 
-                                                   std::pair<size_t, size_t>& TextSelection)
-{
-  if (CommandEdit->hasFocus())
-  {
-    // values of selection are updated only when widget has focus
-    if (CommandEdit->hasSelectedText())
-    {
-      TextSelection.first = CommandEdit->selectionStart();
-      TextSelection.second = CommandEdit->selectedText().length();
-    }
-    else
-    {
-      TextSelection.first = CommandEdit->cursorPosition();
-      TextSelection.second = 0;
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditExtToolDialog::changeWorkspaceCommandEditSelection()
-{
-  changeCommandEditSelection(ui->WorkspaceCommandEdit, m_WorkspaceTextSelection);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditExtToolDialog::changeWareCommandEditSelection()
-{
-  changeCommandEditSelection(ui->WareCommandEdit, m_WareTextSelection);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditExtToolDialog::changeFileCommandEditSelection()
-{
-  changeCommandEditSelection(ui->FileCommandEdit, m_FileTextSelection);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EditExtToolDialog::modifyCommandEditText(QLineEdit* LineEdit, QString NewText, std::pair<size_t, size_t> Selection)
-{
- if (Selection.second > 0)
-  {
-    LineEdit->setSelection(Selection.first, Selection.second);
-  }
-  if (LineEdit->hasSelectedText())
-  {
-    LineEdit->backspace();
-  }
-  QString PreviousText = LineEdit->text();
-  int CursorPosition = LineEdit->cursorPosition();
-  LineEdit->setText(PreviousText.insert(CursorPosition, NewText));
 }
 
 
@@ -253,7 +163,11 @@ void EditExtToolDialog::addAppToWorkspaceLine()
 
   if (SelectedCommand != "")
   {
-    modifyCommandEditText(ui->WorkspaceCommandEdit, SelectedCommand, m_WorkspaceTextSelection);
+    if (SelectedCommand.contains(" "))
+    {
+      SelectedCommand = "\""+SelectedCommand+"\"";
+    }
+    ui->WorkspaceCommandEdit->modifyText(SelectedCommand);
   }
 }
 
@@ -267,7 +181,11 @@ void EditExtToolDialog::addAppToWareLine()
   QString SelectedCommand = QFileDialog::getOpenFileName(this, tr("Select program path"));
   if (SelectedCommand != "")
   {
-    modifyCommandEditText(ui->WareCommandEdit, SelectedCommand, m_WareTextSelection);
+    if (SelectedCommand.contains(" "))
+    {
+      SelectedCommand = "\""+SelectedCommand+"\"";
+    }
+    ui->WareCommandEdit->modifyText(SelectedCommand);
   }
 }
 
@@ -281,7 +199,11 @@ void EditExtToolDialog::addAppToFileLine()
   QString SelectedCommand = QFileDialog::getOpenFileName(this, tr("Select program path"));
   if (SelectedCommand != "")
   {
-    modifyCommandEditText(ui->FileCommandEdit, SelectedCommand, m_FileTextSelection);
+    if (SelectedCommand.contains(" "))
+    {
+      SelectedCommand = "\""+SelectedCommand+"\"";
+    }
+    ui->FileCommandEdit->modifyText(SelectedCommand);
   }
 }
 
@@ -292,7 +214,7 @@ void EditExtToolDialog::addAppToFileLine()
 
 void EditExtToolDialog::addTargetToWorkspaceLine()
 {
-    modifyCommandEditText(ui->WorkspaceCommandEdit, "%%W%%", m_WorkspaceTextSelection);
+    ui->WorkspaceCommandEdit->modifyText("%%W%%");
 }
 
 
@@ -302,7 +224,7 @@ void EditExtToolDialog::addTargetToWorkspaceLine()
 
 void EditExtToolDialog::addTargetToWareLine()
 {
-  modifyCommandEditText(ui->WareCommandEdit, "%%S%%", m_WareTextSelection);
+  ui->WareCommandEdit->modifyText("%%S%%");
 }
 
 
@@ -312,7 +234,7 @@ void EditExtToolDialog::addTargetToWareLine()
 
 void EditExtToolDialog::addTargetToFileLine()
 {
-  modifyCommandEditText(ui->FileCommandEdit, "%%C%%", m_FileTextSelection);
+  ui->FileCommandEdit->modifyText("%%C%%");
 }
 
 

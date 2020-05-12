@@ -56,13 +56,18 @@ class OPENFLUID_API FocusableLineEdit : public QLineEdit
   signals:
   
     void focusChanged();
+    
 
+  private:
+    std::pair<size_t, size_t> m_TextSelection;
+  
+
+  private slots:
+    void changeEditSelection();
 
   protected:
 
     void focusInEvent(QFocusEvent *e);
-
-    void focusOutEvent(QFocusEvent *e);
 
 
   public:
@@ -71,6 +76,8 @@ class OPENFLUID_API FocusableLineEdit : public QLineEdit
 
     virtual ~FocusableLineEdit()
     { }
+
+    void modifyText(QString NewText);
 
 };
 

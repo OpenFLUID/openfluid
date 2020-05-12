@@ -376,25 +376,46 @@ void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QSt
   }
 
   QString Program;
+  QStringList SplittedCommand;
+  //QStringList CommandTail;
 
   QStringList Args = QStringList();
-  unsigned int Pos = 0;
-  for (const auto& Word : Command.split(" "))
+
+  if (Command.count("\"") >= 2)
   {
-    if (Pos == 0) // first word is program name or path
+    QRegExp Rx("^\"(.*)\"(.*)");
+    if (Rx.indexIn(Command) != -1)
     {
-      Program = Word;
-      Pos++;
-    }
-    else if (Word == "%%P%%")
-    {
-      Args << PathToOpen;
-    }
-    else
-    {
-      Args << Word;
+      QStringList CommandParts = Rx.capturedTexts();
+      Program = CommandParts[1];
+      SplittedCommand = CommandParts[2].split(" ");
     }
   }
+  else
+  {
+    SplittedCommand = Command.split(" ");
+  }
+
+  for (int Pos=0 ; Pos<SplittedCommand.size() ; Pos++)
+  {
+    QString Word = SplittedCommand[Pos];
+    if (Pos == 0 && Program.isEmpty())
+    {
+      Program = Word;
+    }
+    else if (Word.size() > 0)
+    {
+      if (Word == "%%P%%")
+      {
+        Args << PathToOpen;
+      }
+      else
+      {
+        Args << Word;
+      }
+    }
+  }
+
   if (ChangeDirectory)
   {
     QProcess::startDetached(Program, Args, PathToOpen);
