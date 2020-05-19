@@ -31,7 +31,7 @@
 
 
 /**
-  @file EditExtToolDialog.cpp
+  @file EditExternalToolDialog.cpp
 
   @author Armel THONI <armel.thoni@inrae.fr>
 */
@@ -40,21 +40,21 @@
 #include <QFileDialog>
 #include <QPushButton>
 
-#include <openfluid/ui/common/EditExtToolDialog.hpp>
+#include <openfluid/ui/common/EditExternalToolDialog.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 
-#include "ui_EditExtToolDialog.h"
+#include "ui_EditExternalToolDialog.h"
 
 
 namespace openfluid { namespace ui { namespace common {
 
 
-EditExtToolDialog::EditExtToolDialog(QWidget* Parent,
+EditExternalToolDialog::EditExternalToolDialog(QWidget* Parent,
                                      const QString& Name, 
                                      const QStringList& ToolCommands,
                                      const openfluid::base::PreferencesManager::ExternalToolsCommands_t& AllCommands):
-  MessageDialog(Parent), ui(new Ui::EditExtToolDialog),
+  MessageDialog(Parent), ui(new Ui::EditExternalToolDialog),
   m_IsEditMode(!Name.isEmpty()), m_OriginalName(Name), m_AllCommands(AllCommands)
 {
   ui->setupUi(this);
@@ -124,7 +124,7 @@ EditExtToolDialog::EditExtToolDialog(QWidget* Parent,
 // =====================================================================
 
 
-EditExtToolDialog::~EditExtToolDialog()
+EditExternalToolDialog::~EditExternalToolDialog()
 {
   delete ui;
 }
@@ -134,7 +134,7 @@ EditExtToolDialog::~EditExtToolDialog()
 // =====================================================================
 
 
-void EditExtToolDialog::checkGlobally()
+void EditExternalToolDialog::checkGlobally()
 {
   if (ui->NameEdit->text().isEmpty())
   {
@@ -157,7 +157,7 @@ void EditExtToolDialog::checkGlobally()
 // =====================================================================
 
 
-void EditExtToolDialog::addAppToWorkspaceLine()
+void EditExternalToolDialog::addAppToWorkspaceLine()
 {
   QString SelectedCommand = QFileDialog::getOpenFileName(this, tr("Select program path"));
 
@@ -176,7 +176,7 @@ void EditExtToolDialog::addAppToWorkspaceLine()
 // =====================================================================
 
 
-void EditExtToolDialog::addAppToWareLine()
+void EditExternalToolDialog::addAppToWareLine()
 {
   QString SelectedCommand = QFileDialog::getOpenFileName(this, tr("Select program path"));
   if (SelectedCommand != "")
@@ -194,7 +194,7 @@ void EditExtToolDialog::addAppToWareLine()
 // =====================================================================
 
 
-void EditExtToolDialog::addAppToFileLine()
+void EditExternalToolDialog::addAppToFileLine()
 {
   QString SelectedCommand = QFileDialog::getOpenFileName(this, tr("Select program path"));
   if (SelectedCommand != "")
@@ -212,7 +212,7 @@ void EditExtToolDialog::addAppToFileLine()
 // =====================================================================
 
 
-void EditExtToolDialog::addTargetToWorkspaceLine()
+void EditExternalToolDialog::addTargetToWorkspaceLine()
 {
     ui->WorkspaceCommandEdit->modifyText("%%W%%");
 }
@@ -222,7 +222,7 @@ void EditExtToolDialog::addTargetToWorkspaceLine()
 // =====================================================================
 
 
-void EditExtToolDialog::addTargetToWareLine()
+void EditExternalToolDialog::addTargetToWareLine()
 {
   ui->WareCommandEdit->modifyText("%%S%%");
 }
@@ -232,7 +232,7 @@ void EditExtToolDialog::addTargetToWareLine()
 // =====================================================================
 
 
-void EditExtToolDialog::addTargetToFileLine()
+void EditExternalToolDialog::addTargetToFileLine()
 {
   ui->FileCommandEdit->modifyText("%%C%%");
 }
@@ -242,7 +242,7 @@ void EditExtToolDialog::addTargetToFileLine()
 // =====================================================================
 
 
-QStringList EditExtToolDialog::getFullCommands() const
+QStringList EditExternalToolDialog::getFullCommands() const
 {
   QStringList Commands;
   Commands << ui->WorkspaceCommandEdit->text()
@@ -256,7 +256,7 @@ QStringList EditExtToolDialog::getFullCommands() const
 // =====================================================================
 
 
-QString EditExtToolDialog::getName() const
+QString EditExternalToolDialog::getName() const
 {
   return ui->NameEdit->text();
 }

@@ -13,7 +13,7 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp MessageDialog.cpp MessageFrame.c
                             PathsManagementWidget.cpp WaresSearchPathsWidget.cpp
                             ExternalToolsManagementWidget.cpp
                             LogExplorerDialog.cpp
-                            EditMarketplaceDialog.cpp EditExtToolDialog.cpp
+                            EditMarketplaceDialog.cpp EditExternalToolDialog.cpp
                             PreferencesDialog.cpp DetectQtDevToolsDialog.cpp
                             TimePeriodWidget.cpp
                             )
@@ -31,7 +31,7 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp MessageDialog.hpp MessageFrame.h
                             PathsManagementWidget.hpp WaresSearchPathsWidget.hpp
                             ExternalToolsManagementWidget.hpp
                             LogExplorerDialog.hpp
-                            EditMarketplaceDialog.hpp EditExtToolDialog.hpp
+                            EditMarketplaceDialog.hpp EditExternalToolDialog.hpp
                             PreferencesDialog.hpp DetectQtDevToolsDialog.hpp
                             TimePeriodWidget.hpp
                             UIHelpers.hpp
@@ -47,7 +47,7 @@ QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI MessageFrame.ui
                                    LogExplorerDialog.ui
                                    PreferencesDialog.ui DetectQtDevToolsDialog.ui
                                    TimePeriodWidget.ui
-                                   EditMarketplaceDialog.ui EditExtToolDialog.ui
+                                   EditMarketplaceDialog.ui EditExternalToolDialog.ui
                                    )
 
 

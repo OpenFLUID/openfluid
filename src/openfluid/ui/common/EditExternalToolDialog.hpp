@@ -31,14 +31,14 @@
 
 
 /**
-  @file EditExtToolDialog.hpp
+  @file EditExternalToolDialog.hpp
 
   @author Armel THONI <armel.thoni@inrae.fr>
  */
 
 
-#ifndef __OPENFLUID_UICOMMON_EDITEXTTOOLDIALOG_HPP__
-#define __OPENFLUID_UICOMMON_EDITEXTTOOLDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_EDITEXTERNALTOOLDIALOG_HPP__
+#define __OPENFLUID_UICOMMON_EDITEXTERNALTOOLDIALOG_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -52,14 +52,14 @@ class QLineEdit;
 
 namespace Ui
 {
-  class EditExtToolDialog;
+  class EditExternalToolDialog;
 }
 
 
 namespace openfluid { namespace ui { namespace common {
 
 
-class OPENFLUID_API EditExtToolDialog : public MessageDialog
+class OPENFLUID_API EditExternalToolDialog : public MessageDialog
 {
   Q_OBJECT;
 
@@ -78,7 +78,7 @@ class OPENFLUID_API EditExtToolDialog : public MessageDialog
 
   private:
 
-    Ui::EditExtToolDialog* ui;
+    Ui::EditExternalToolDialog* ui;
 
     bool m_IsEditMode;
 
@@ -91,10 +91,10 @@ class OPENFLUID_API EditExtToolDialog : public MessageDialog
 
   public:
 
-    EditExtToolDialog(QWidget* Parent, const QString& Name, const QStringList& ToolCommands, 
-                      const openfluid::base::PreferencesManager::ExternalToolsCommands_t& AllCommands);
+    EditExternalToolDialog(QWidget* Parent, const QString& Name, const QStringList& ToolCommands, 
+                           const openfluid::base::PreferencesManager::ExternalToolsCommands_t& AllCommands);
 
-    virtual ~EditExtToolDialog();
+    virtual ~EditExternalToolDialog();
 
     QStringList getFullCommands() const;
 
@@ -111,4 +111,4 @@ class OPENFLUID_API EditExtToolDialog : public MessageDialog
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UICOMMON_EDITEXTTOOLDIALOG_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_EDITEXTERNALTOOLDIALOG_HPP__ */

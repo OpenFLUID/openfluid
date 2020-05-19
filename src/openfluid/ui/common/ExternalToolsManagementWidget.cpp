@@ -42,7 +42,7 @@
 #include <QMessageBox>
 
 #include <openfluid/ui/common/UIHelpers.hpp>
-#include <openfluid/ui/common/EditExtToolDialog.hpp>
+#include <openfluid/ui/common/EditExternalToolDialog.hpp>
 #include <openfluid/ui/common/ExternalToolsManagementWidget.hpp>
 
 #include "ui_ExternalToolsManagementWidget.h"
@@ -132,7 +132,7 @@ void ExternalToolsManagementWidget::update()
 
 void ExternalToolsManagementWidget::addTool()
 {
-  EditExtToolDialog ExtToolDlg(this, "", QStringList(), m_ToolCommands);
+  EditExternalToolDialog ExtToolDlg(this, "", QStringList(), m_ToolCommands);
 
   if (ExtToolDlg.exec() == QDialog::Accepted)
   {
@@ -159,8 +159,8 @@ void ExternalToolsManagementWidget::editTool()
   {
     QListWidgetItem* CurrentItem = ui->ToolsListWidget->item(CurrentRow);
     QString SelectedToolName = CurrentItem->text();
-    EditExtToolDialog ExtToolDlg(this, SelectedToolName, 
-                                 m_ToolCommands[SelectedToolName], m_ToolCommands);
+    EditExternalToolDialog ExtToolDlg(this, SelectedToolName, 
+                                      m_ToolCommands[SelectedToolName], m_ToolCommands);
 
     if (ExtToolDlg.exec() == QDialog::Accepted)
     {
