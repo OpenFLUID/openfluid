@@ -147,7 +147,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
   QMap<QString, QString> ExternalTools = 
-    PrefMgr->getWaresdevExternalToolsCommandsInContext(PrefMgr->Contexts::WORKSPACE);
+    PrefMgr->getWaresdevExternalToolsCommandsInContext(
+      openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE);
   m_ExternalToolsOrder = PrefMgr->getWaresdevExternalToolsOrder();
 
   for (auto const& Command : ExternalTools.keys())

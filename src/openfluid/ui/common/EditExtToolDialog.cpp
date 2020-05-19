@@ -88,15 +88,15 @@ EditExtToolDialog::EditExtToolDialog(QWidget* Parent,
   for (int ContextNumber=0 ; ContextNumber<ToolCommands.size() ; ContextNumber++)
   {
     QString Command = ToolCommands[ContextNumber];
-    if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::instance()->Contexts::WORKSPACE))
+    if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE))
     {
       ui->WorkspaceCommandEdit->setText(Command);
     }
-    else if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::instance()->Contexts::WARE))
+    else if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::ExternalToolContext::WARE))
     {
       ui->WareCommandEdit->setText(Command);
     }
-    else if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::instance()->Contexts::FILE))
+    else if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::ExternalToolContext::FILE))
     {
       ui->FileCommandEdit->setText(Command);
     }

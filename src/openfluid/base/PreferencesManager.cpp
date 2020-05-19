@@ -1255,13 +1255,13 @@ PreferencesManager::ExternalToolsCommands_t PreferencesManager::getWaresdevExter
 // =====================================================================
 
 
-QMap<QString, QString> PreferencesManager::getWaresdevExternalToolsCommandsInContext(const Contexts Context)
+QMap<QString, QString> PreferencesManager::getWaresdevExternalToolsCommandsInContext(const ExternalToolContext Context)
 {
   QMap<QString, QString> Commands;
 
-  std::map<Contexts, QString> ContextMap = {{Contexts::WORKSPACE, "%%W%%"},
-                                            {Contexts::WARE, "%%S%%"},
-                                            {Contexts::FILE, "%%C%%"}};
+  std::map<ExternalToolContext, QString> ContextMap = {{ExternalToolContext::WORKSPACE, "%%W%%"},
+                                                       {ExternalToolContext::WARE, "%%S%%"},
+                                                       {ExternalToolContext::FILE, "%%C%%"}};
   QString GenericPath = "%%P%%";
 
   mp_ConfFile->beginGroup("openfluid.waresdev.externaltools.commands");

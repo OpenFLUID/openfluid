@@ -67,7 +67,8 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
   }
 
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-  m_ExternalTools = PrefMgr->getWaresdevExternalToolsCommandsInContext(PrefMgr->Contexts::WARE);
+  m_ExternalTools = PrefMgr->getWaresdevExternalToolsCommandsInContext(
+    openfluid::base::PreferencesManager::ExternalToolContext::WARE);
 
   createActions();
 
