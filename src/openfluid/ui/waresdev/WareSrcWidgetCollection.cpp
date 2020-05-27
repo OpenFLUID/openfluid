@@ -331,7 +331,7 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
     TermFound = QProcess::startDetached("xterm", QStringList(), FileToOpen);
   }
 #elif defined(OPENFLUID_OS_WINDOWS)
-  TermFound = QProcess::startDetached("cmd.exe",QStringList(),FileToOpen);
+  TermFound = QProcess::startDetached("cmd.exe", QStringList() << "/c" << "start" << "cmd.exe", FileToOpen);
 #else
   TermFound = false;
 #endif
