@@ -203,8 +203,7 @@ bool FileDownloader::downloadToFile(const std::string& URL, const std::string& F
 // =====================================================================
 
 
-#include "FileDownloader.moc"
-
-
 } } // namespaces
 
+
+#include "FileDownloader.moc"

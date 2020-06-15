@@ -245,7 +245,7 @@ RESTClient::Reply RESTClient::deleteResource(const QString& /*Path*/, const QStr
 // =====================================================================
 
 
-#include "RESTClient.moc"
-
-
 } }  // namespaces
+
+
+#include "RESTClient.moc"
