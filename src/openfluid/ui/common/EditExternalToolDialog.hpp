@@ -82,7 +82,7 @@ class OPENFLUID_API EditExternalToolDialog : public MessageDialog
 
     bool m_IsEditMode;
 
-    QString m_OriginalName;
+    QString m_OriginalLabel;
 
     const openfluid::base::PreferencesManager::ExternalToolsCommands_t& m_AllCommands;
 
@@ -91,18 +91,18 @@ class OPENFLUID_API EditExternalToolDialog : public MessageDialog
 
   public:
 
-    EditExternalToolDialog(QWidget* Parent, const QString& Name, const QStringList& ToolCommands, 
+    EditExternalToolDialog(QWidget* Parent, const QString& Label, const QStringList& ToolCommands, 
                            const openfluid::base::PreferencesManager::ExternalToolsCommands_t& AllCommands);
 
     virtual ~EditExternalToolDialog();
 
     QStringList getFullCommands() const;
 
-    QString getName() const;
+    QString getLabel() const;
 
-    QString getOriginalName() const 
+    QString getOriginalLabel() const 
     {
-      return m_OriginalName; 
+      return m_OriginalLabel; 
     }
 
 };

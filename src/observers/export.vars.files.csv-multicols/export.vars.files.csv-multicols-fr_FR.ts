@@ -9,43 +9,43 @@
         <translation>Unités spatiales</translation>
     </message>
     <message>
-        <location filename="EditClassIDVarDialog.ui" line="35"/>
+        <location filename="EditClassIDVarDialog.ui" line="53"/>
         <source>All units classes</source>
         <translation>Toutes les classes d&apos;unités</translation>
     </message>
     <message>
-        <location filename="EditClassIDVarDialog.ui" line="46"/>
+        <location filename="EditClassIDVarDialog.ui" line="64"/>
         <source>Selected units classes:</source>
         <oldsource>Specific units classes:</oldsource>
         <translation>Classes d&apos;unités sélectionnées:</translation>
     </message>
     <message>
-        <location filename="EditClassIDVarDialog.ui" line="83"/>
+        <location filename="EditClassIDVarDialog.ui" line="104"/>
         <source>All spatial units</source>
         <translation>Toutes les unités spatiales</translation>
     </message>
     <message>
-        <location filename="EditClassIDVarDialog.ui" line="94"/>
+        <location filename="EditClassIDVarDialog.ui" line="115"/>
         <source>Listed spatial units:</source>
         <translation>Unités spatiales listées:</translation>
     </message>
     <message>
-        <location filename="EditClassIDVarDialog.ui" line="127"/>
+        <location filename="EditClassIDVarDialog.ui" line="148"/>
         <source>Variables</source>
         <translation>Variables</translation>
     </message>
     <message>
-        <location filename="EditClassIDVarDialog.ui" line="133"/>
+        <location filename="EditClassIDVarDialog.ui" line="154"/>
         <source>All variables</source>
         <translation>Toutes les variables</translation>
     </message>
     <message>
-        <location filename="EditClassIDVarDialog.ui" line="144"/>
+        <location filename="EditClassIDVarDialog.ui" line="165"/>
         <source>Listed variables:</source>
         <translation>Variables listées:</translation>
     </message>
     <message>
-        <location filename="EditClassIDVarDialog.ui" line="182"/>
+        <location filename="EditClassIDVarDialog.ui" line="203"/>
         <source>Custom precision:</source>
         <translation>Précision personnalisée:</translation>
     </message>
@@ -81,7 +81,7 @@
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="51"/>
-        <location filename="MultiCSVObsParamsWidget.ui" line="206"/>
+        <location filename="MultiCSVObsParamsWidget.ui" line="211"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
@@ -102,41 +102,46 @@
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="71"/>
+        <source>Float format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MultiCSVObsParamsWidget.ui" line="76"/>
         <source>Header</source>
         <translation>En-tête</translation>
     </message>
     <message>
-        <location filename="MultiCSVObsParamsWidget.ui" line="76"/>
+        <location filename="MultiCSVObsParamsWidget.ui" line="81"/>
         <source>Comment ch.</source>
         <translation>Car. de comment.</translation>
     </message>
     <message>
-        <location filename="MultiCSVObsParamsWidget.ui" line="81"/>
+        <location filename="MultiCSVObsParamsWidget.ui" line="86"/>
         <source>Missing val.</source>
         <translation>Valeur manq.</translation>
     </message>
     <message>
-        <location filename="MultiCSVObsParamsWidget.ui" line="181"/>
+        <location filename="MultiCSVObsParamsWidget.ui" line="186"/>
         <source>Sets:</source>
         <translation>Jeux de sorties:</translation>
     </message>
     <message>
-        <location filename="MultiCSVObsParamsWidget.ui" line="211"/>
+        <location filename="MultiCSVObsParamsWidget.ui" line="216"/>
         <source>Format</source>
         <translation>Format</translation>
     </message>
     <message>
-        <location filename="MultiCSVObsParamsWidget.ui" line="216"/>
+        <location filename="MultiCSVObsParamsWidget.ui" line="221"/>
         <source>Selection</source>
         <translation>Sélection</translation>
     </message>
     <message>
-        <location filename="MultiCSVObsParamsWidget.cpp" line="496"/>
+        <location filename="MultiCSVObsParamsWidget.cpp" line="483"/>
         <source>Automatic generation</source>
         <translation>Génération automatique</translation>
     </message>
     <message>
-        <location filename="MultiCSVObsParamsWidget.cpp" line="497"/>
+        <location filename="MultiCSVObsParamsWidget.cpp" line="484"/>
         <source>A format and one or more sets configurations will be automatically generated.
 This will remove existing formats and sets.
 
@@ -185,17 +190,22 @@ Continuer quand même?</translation>
         <translation>Précision:</translation>
     </message>
     <message>
-        <location filename="MultiEditFormatDialog.ui" line="145"/>
+        <location filename="MultiEditFormatDialog.ui" line="141"/>
+        <source>Float format:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MultiEditFormatDialog.ui" line="155"/>
         <source>Comment character:</source>
         <translation>Car. de commentaire:</translation>
     </message>
     <message>
-        <location filename="MultiEditFormatDialog.ui" line="159"/>
+        <location filename="MultiEditFormatDialog.ui" line="169"/>
         <source>Missing value string:</source>
         <translation>Chaîne pour valeur manquante:</translation>
     </message>
     <message>
-        <location filename="MultiEditFormatDialog.ui" line="185"/>
+        <location filename="MultiEditFormatDialog.ui" line="195"/>
         <source>Preview:</source>
         <translation>Prévisualisation:</translation>
     </message>
@@ -228,6 +238,21 @@ Continuer quand même?</translation>
         <location filename="MultiEditFormatDialog.cpp" line="71"/>
         <source>Time index</source>
         <translation>Index de temps</translation>
+    </message>
+    <message>
+        <location filename="MultiEditFormatDialog.cpp" line="73"/>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MultiEditFormatDialog.cpp" line="73"/>
+        <source>Fixed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MultiEditFormatDialog.cpp" line="73"/>
+        <source>Scientific</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

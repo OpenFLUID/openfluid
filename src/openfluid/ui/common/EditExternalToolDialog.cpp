@@ -51,11 +51,11 @@ namespace openfluid { namespace ui { namespace common {
 
 
 EditExternalToolDialog::EditExternalToolDialog(QWidget* Parent,
-                                     const QString& Name, 
+                                     const QString& Label, 
                                      const QStringList& ToolCommands,
                                      const openfluid::base::PreferencesManager::ExternalToolsCommands_t& AllCommands):
   MessageDialog(Parent), ui(new Ui::EditExternalToolDialog),
-  m_IsEditMode(!Name.isEmpty()), m_OriginalName(Name), m_AllCommands(AllCommands)
+  m_IsEditMode(!Label.isEmpty()), m_OriginalLabel(Label), m_AllCommands(AllCommands)
 {
   ui->setupUi(this);
 
@@ -75,15 +75,15 @@ EditExternalToolDialog::EditExternalToolDialog(QWidget* Parent,
 
   if (m_IsEditMode)
   {
-    setupMessageUi(tr("Edit an external command"));
+    setupMessageUi(tr("Edit an external tool"));
   }
   else
   {
-    setupMessageUi(tr("Add an external command"));
+    setupMessageUi(tr("Add an external tool"));
   }
 
 
-  ui->NameEdit->setText(Name);
+  ui->LabelEdit->setText(Label);
 
   for (int ContextNumber=0 ; ContextNumber<ToolCommands.size() ; ContextNumber++)
   {
@@ -104,9 +104,9 @@ EditExternalToolDialog::EditExternalToolDialog(QWidget* Parent,
 
   // "required" placeholder
   QString PlaceholderStr = getPlaceholderRequired();
-  ui->NameEdit->setPlaceholderText(PlaceholderStr);
+  ui->LabelEdit->setPlaceholderText(PlaceholderStr);
 
-  connect(ui->NameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
+  connect(ui->LabelEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
 
   connect(ui->AppWorkspaceButton,SIGNAL(released()),this,SLOT(addAppToWorkspaceLine()));
   connect(ui->AppWareButton,SIGNAL(released()),this,SLOT(addAppToWareLine()));
@@ -136,15 +136,15 @@ EditExternalToolDialog::~EditExternalToolDialog()
 
 void EditExternalToolDialog::checkGlobally()
 {
-  if (ui->NameEdit->text().isEmpty())
+  if (ui->LabelEdit->text().isEmpty())
   {
-    setMessage(tr("Alias cannot be empty"));
+    setMessage(tr("The label cannot be empty"));
   }
-  else if (m_AllCommands.contains(ui->NameEdit->text()) && 
+  else if (m_AllCommands.contains(ui->LabelEdit->text()) && 
             (!m_IsEditMode || 
-            (m_IsEditMode && m_OriginalName != ui->NameEdit->text())))
+            (m_IsEditMode && m_OriginalLabel != ui->LabelEdit->text())))
   {
-    setMessage(tr("Alias already exists"));
+    setMessage(tr("This label already exists"));
   }
   else
   {
@@ -256,9 +256,9 @@ QStringList EditExternalToolDialog::getFullCommands() const
 // =====================================================================
 
 
-QString EditExternalToolDialog::getName() const
+QString EditExternalToolDialog::getLabel() const
 {
-  return ui->NameEdit->text();
+  return ui->LabelEdit->text();
 }
 
 

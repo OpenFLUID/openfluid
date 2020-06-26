@@ -124,7 +124,7 @@ void RunConfigurationWidget::refresh()
   
   std::uint64_t Duration = openfluid::core::Duration_t(EndDate.diffInSeconds(BeginDate));
   std::size_t DefaultValuesBufferSize = openfluid::machine::Engine::computeValuesBuffersDefaultSize(Duration, DeltaT);
-  ui->defaultRadioButton->setText(tr("Default: %1 time steps").arg(DefaultValuesBufferSize));
+  ui->defaultRadioButton->setText(tr("Default: last %1 values").arg(DefaultValuesBufferSize));
 
   ui->CustomRadioButton->setChecked(m_FluidxDesc.runConfiguration().isUserValuesBufferSize());
   ui->MemoryStepsSpinBox->setValue(m_FluidxDesc.runConfiguration().getValuesBufferSize());

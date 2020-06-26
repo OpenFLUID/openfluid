@@ -84,7 +84,7 @@
         </size>
        </property>
        <property name="text">
-        <string>E</string>
+        <string notr="true">E</string>
        </property>
       </widget>
      </item>

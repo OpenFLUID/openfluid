@@ -131,7 +131,7 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   // Custom tools menu
   QMenu ExtToolMenu;
-  ExtToolMenu.setTitle("Open an external tool");
+  ExtToolMenu.setTitle("Open in external tool");
   ExtToolMenu.setEnabled(false);
 
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();

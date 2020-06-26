@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="CSVObsParamsWidget.ui" line="51"/>
-        <location filename="CSVObsParamsWidget.ui" line="201"/>
+        <location filename="CSVObsParamsWidget.ui" line="206"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
@@ -31,46 +31,51 @@
     </message>
     <message>
         <location filename="CSVObsParamsWidget.ui" line="71"/>
+        <source>Float format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="CSVObsParamsWidget.ui" line="76"/>
         <source>Header</source>
         <translation>En-tête</translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.ui" line="76"/>
+        <location filename="CSVObsParamsWidget.ui" line="81"/>
         <source>Comment ch.</source>
         <translation>Car. de comment.</translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.ui" line="176"/>
+        <location filename="CSVObsParamsWidget.ui" line="181"/>
         <source>Sets:</source>
         <translation>Jeux de sorties:</translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.ui" line="206"/>
+        <location filename="CSVObsParamsWidget.ui" line="211"/>
         <source>Units class</source>
         <translation>Classe d&apos;unités</translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.ui" line="211"/>
+        <location filename="CSVObsParamsWidget.ui" line="216"/>
         <source>Units IDs</source>
         <translation>IDs d&apos;unités</translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.ui" line="216"/>
+        <location filename="CSVObsParamsWidget.ui" line="221"/>
         <source>Variables</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.ui" line="221"/>
+        <location filename="CSVObsParamsWidget.ui" line="226"/>
         <source>Format</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.cpp" line="463"/>
+        <location filename="CSVObsParamsWidget.cpp" line="484"/>
         <source>Automatic generation</source>
         <translation>Génération automatique</translation>
     </message>
     <message>
-        <location filename="CSVObsParamsWidget.cpp" line="464"/>
+        <location filename="CSVObsParamsWidget.cpp" line="485"/>
         <source>A format and one or more sets configurations will be automatically generated.
 This will remove existing formats and sets.
 
@@ -119,44 +124,64 @@ Continuer quand même?</translation>
         <translation>Précision:</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.ui" line="145"/>
+        <location filename="EditFormatDialog.ui" line="141"/>
+        <source>Float format:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditFormatDialog.ui" line="155"/>
         <source>Comment character:</source>
         <translation>Car. de commentaire:</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.ui" line="171"/>
+        <location filename="EditFormatDialog.ui" line="181"/>
         <source>Preview:</source>
         <translation>Prévisualisation:</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="66"/>
+        <location filename="EditFormatDialog.cpp" line="67"/>
         <source>Columns names as comments</source>
         <translation>Noms des colonnes en commentaire</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="66"/>
+        <location filename="EditFormatDialog.cpp" line="67"/>
         <source>Columns names as data</source>
         <translation>Noms des colonnes comme donnée</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="66"/>
+        <location filename="EditFormatDialog.cpp" line="67"/>
         <source>Full</source>
         <translation>Complet</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="66"/>
+        <location filename="EditFormatDialog.cpp" line="67"/>
         <source>None</source>
         <translation>Aucun</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="69"/>
+        <location filename="EditFormatDialog.cpp" line="70"/>
         <source>6 columns</source>
         <translation>6 colonnes</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="69"/>
+        <location filename="EditFormatDialog.cpp" line="70"/>
         <source>Time index</source>
         <translation>Index de temps</translation>
+    </message>
+    <message>
+        <location filename="EditFormatDialog.cpp" line="72"/>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditFormatDialog.cpp" line="72"/>
+        <source>Fixed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditFormatDialog.cpp" line="72"/>
+        <source>Scientific</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

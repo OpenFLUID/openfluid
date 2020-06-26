@@ -119,13 +119,13 @@
         <translation>Séries :</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="408"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="420"/>
         <source>Removing serie</source>
         <oldsource>Remove serie</oldsource>
         <translation>Suppression de série</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="409"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="421"/>
         <source>You are removing serie %1.
 The parameters of this serie will also be deleted.
 
@@ -136,44 +136,44 @@ Les paramètres de cette série vont également être supprimés.
 Vouslez-vous continuer?</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="513"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="541"/>
         <source>Serie renaming</source>
         <translation>Renommage de série</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="513"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="541"/>
         <source>The serie name %1 already exists.</source>
         <translation>Le nom de série %1 existe déjà.</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="735"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="773"/>
         <source>Select source file</source>
         <translation>Sélectionner le fichier source</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="736"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="774"/>
         <source>Data files (*.dat)</source>
         <translation>Fichiers de données (*.dat)</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="744"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="782"/>
         <source>Source file</source>
         <translation>Fichier source</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="745"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="783"/>
         <source>Chosen file is not located in the IN folder of the project.</source>
         <oldsource>Chosen file is not located in the IN project folder</oldsource>
         <translation>Le fichier choisi n&apos;est pas présent dans le dossier IN du projet.</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="837"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="875"/>
         <source>Removing graph</source>
         <oldsource>Remove graph</oldsource>
         <translation>Suppression de graphique</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="838"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="876"/>
         <source>You are removing graph %1.
 The parameters of this graph will also be deleted.
 The series associated with this graph will not be deleted.
@@ -186,12 +186,12 @@ Les séries associées à ce graphique ne seront pas supprimées.
 Vouslez-vous continuer?</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="883"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="923"/>
         <source>Graph renaming</source>
         <translation>Renommage de graphique</translation>
     </message>
     <message>
-        <location filename="GNUplotObsParamsWidget.cpp" line="883"/>
+        <location filename="GNUplotObsParamsWidget.cpp" line="923"/>
         <source>The graph name %1 already exists.</source>
         <translation>Le nom de graphique %1 existe déjà.</translation>
     </message>
