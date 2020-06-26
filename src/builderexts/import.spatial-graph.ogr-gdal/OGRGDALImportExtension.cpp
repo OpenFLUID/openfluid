@@ -111,6 +111,7 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
 
   ui->SourcesTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
   
+  ui->EmptyStringLineEdit->setText("-");
   // "required" placeholder
   QString PlaceholderString = QApplication::translate("openfluid::ui::config",
                                                       openfluid::ui::config::PLACEHOLDER_REQUIRED);

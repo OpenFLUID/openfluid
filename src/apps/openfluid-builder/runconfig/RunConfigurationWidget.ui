@@ -164,7 +164,7 @@
    <item>
     <widget class="QGroupBox" name="MemoryGroupBox">
      <property name="title">
-      <string>Steps in memory during simulation</string>
+      <string>Variables history kept in memory during simulation</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
@@ -173,7 +173,7 @@
       <item row="1" column="0">
        <widget class="QRadioButton" name="CustomRadioButton">
         <property name="text">
-         <string>Adjusted:</string>
+         <string>Adjusted to last</string>
         </property>
        </widget>
       </item>
@@ -208,7 +208,7 @@
          <item>
           <widget class="QLabel" name="label_6">
            <property name="text">
-            <string>last time steps</string>
+            <string>value(s)</string>
            </property>
           </widget>
          </item>
@@ -231,10 +231,10 @@
       <item row="0" column="0" colspan="2">
        <widget class="QRadioButton" name="defaultRadioButton">
         <property name="toolTip">
-         <string>automatically computed based on duration / DeltaT ratio</string>
+         <string>automatically computed using duration / default DeltaT ratio</string>
         </property>
         <property name="text">
-         <string>Default: </string>
+         <string notr="true">Default</string>
         </property>
        </widget>
       </item>

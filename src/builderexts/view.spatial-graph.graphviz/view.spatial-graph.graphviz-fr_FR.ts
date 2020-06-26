@@ -4,22 +4,22 @@
 <context>
     <name>GraphvizView</name>
     <message>
-        <location filename="GraphvizView.cpp" line="85"/>
+        <location filename="GraphvizView.cpp" line="91"/>
         <source>Export as PNG image file</source>
         <translation>Exporter en fichier image PNG</translation>
     </message>
     <message>
-        <location filename="GraphvizView.cpp" line="87"/>
+        <location filename="GraphvizView.cpp" line="93"/>
         <source>PNG Files (*.png)</source>
         <translation>Fichiers PNG (*.png)</translation>
     </message>
     <message>
-        <location filename="GraphvizView.cpp" line="109"/>
+        <location filename="GraphvizView.cpp" line="115"/>
         <source>Export as SVG vector file</source>
         <translation>Exporter en fichier vectoriel SVG</translation>
     </message>
     <message>
-        <location filename="GraphvizView.cpp" line="111"/>
+        <location filename="GraphvizView.cpp" line="117"/>
         <source>SVG Files (*.svg)</source>
         <translation>Fichiers SVG (*.svg)</translation>
     </message>

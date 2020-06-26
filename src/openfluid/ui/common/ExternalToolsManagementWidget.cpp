@@ -136,10 +136,10 @@ void ExternalToolsManagementWidget::addTool()
 
   if (ExtToolDlg.exec() == QDialog::Accepted)
   {
-    QString ToolName = ExtToolDlg.getName();
+    QString ToolLabel = ExtToolDlg.getLabel();
     QStringList FullCommands = ExtToolDlg.getFullCommands();
-    m_ToolCommands[ToolName] = FullCommands;
-    m_ToolsOrder << ToolName;
+    m_ToolCommands[ToolLabel] = FullCommands;
+    m_ToolsOrder << ToolLabel;
     m_NeedRestart = true;
     update();
     emit toolsUpdated();
@@ -158,24 +158,24 @@ void ExternalToolsManagementWidget::editTool()
   if (CurrentRow >= 0)
   {
     QListWidgetItem* CurrentItem = ui->ToolsListWidget->item(CurrentRow);
-    QString SelectedToolName = CurrentItem->text();
-    EditExternalToolDialog ExtToolDlg(this, SelectedToolName, 
-                                      m_ToolCommands[SelectedToolName], m_ToolCommands);
+    QString SelectedToolLabel = CurrentItem->text();
+    EditExternalToolDialog ExtToolDlg(this, SelectedToolLabel, 
+                                      m_ToolCommands[SelectedToolLabel], m_ToolCommands);
 
     if (ExtToolDlg.exec() == QDialog::Accepted)
     {
-      QString FromDlgToolName = ExtToolDlg.getName();
+      QString FromDlgToolLabel = ExtToolDlg.getLabel();
       QStringList FullCommands = ExtToolDlg.getFullCommands();
-      if (SelectedToolName != FromDlgToolName)
+      if (SelectedToolLabel != FromDlgToolLabel)
       {
-        m_ToolCommands.insert(FromDlgToolName, FullCommands);
-        m_ToolCommands.remove(SelectedToolName);
+        m_ToolCommands.insert(FromDlgToolLabel, FullCommands);
+        m_ToolCommands.remove(SelectedToolLabel);
         m_ToolsOrder.removeAt(CurrentRow);
-        m_ToolsOrder << FromDlgToolName;
+        m_ToolsOrder << FromDlgToolLabel;
       }
       else
       {
-        m_ToolCommands[FromDlgToolName] = FullCommands;
+        m_ToolCommands[FromDlgToolLabel] = FullCommands;
       }
       m_NeedRestart = true;
       update();

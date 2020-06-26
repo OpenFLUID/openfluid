@@ -451,14 +451,14 @@
                     <item>
                      <widget class="QLabel" name="label_10">
                       <property name="text">
-                       <string>Empty string replacement symbol</string>
+                       <string>Empty value replacement symbol:</string>
                       </property>
                      </widget>
                     </item>
                     <item>
                      <widget class="QLineEdit" name="EmptyStringLineEdit">
                       <property name="text">
-                       <string>-</string>
+                       <string notr="true"/>
                       </property>
                       <property name="placeholderText">
                        <string/>
