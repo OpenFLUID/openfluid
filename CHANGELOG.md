@@ -1,3 +1,43 @@
+## 2.1.10
+
+  * Added colouring of simulators and generators in OpenFLUID-Builder
+    that can be applied to background or border
+  * Added support of 3D coordinates in map view in Builder
+  * Added support of 3D coordinates in Builder extension 
+    for importing GIS data
+  * Added display of geometry type in map view in Builder
+  * Added build and install of documentations for provided examples
+  * Added ability to open source code of provided examples in Builder
+  * Added ability to open external tools from Devstudio
+    at workspace, ware and file levels
+  * Added ability to copy full and relative path of files in Devstudio
+    using the contextual menu
+  * Added optional JSON format for wares reporting using the command line
+  * Added ability to set the floating point format in CSV observers
+  * Added saving of datasets in bindings for programming languages
+  * Improved UI for memory management in Builder
+  * Improved detection of geometry types for GIS data
+  * Improved compatibility with recent OS
+  * Improved internal compatibility with recent compilers
+  * Improved internal detection of macOS version
+  * Improved macOS packaging, in particular for recent versions
+  * Updated build policy of openfluid-landr library, 
+    set to not built by default
+  * Updated tool for checking coding style
+  * Updated tests
+  * Updated docs with extended informations in HTML metadata
+    for better sharing across social media
+  * Fixed problem with empty values in Builder extension 
+    for importing GIS data
+  * Fixed inconsistent behaviour when saving empty values in parameters
+  * Fixed "Open in Terminal" action in DevStudio on Windows systems
+  * Fixed potential problem in path separators
+    when running simulations as external processes in Builder
+  * Fixed minor build problems
+  * Cleaned code
+
+
+
 ## 2.1.9
 
   * Added command line mode for execution of simulations in Builder 
