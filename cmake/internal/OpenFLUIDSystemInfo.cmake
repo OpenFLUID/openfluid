@@ -39,11 +39,11 @@ TRY_RUN(OFBUILD_ARCH_RUN OFBUILD_ARCH_COMPILE
       COMPILE_OUTPUT_VARIABLE OFBUILD_ARCH_COMPILE_OUTPUT)
 
 IF(NOT OFBUILD_ARCH_COMPILE)
-  MESSAGE(FATAL_ERROR "Cannot build internal architecture detection program\n\n ${COMPILE_OUTPUT_VARIABLE}")  
+  MESSAGE(FATAL_ERROR "Cannot build internal architecture detection program\n\n ${OFBUILD_ARCH_COMPILE_OUTPUT}")  
 ENDIF()
 
 IF(OFBUILD_ARCH_RUN)
-  MESSAGE(FATAL_ERROR "Cannot run internal architecture detection program\n\n ${COMPILE_OUTPUT_VARIABLE}")  
+  MESSAGE(FATAL_ERROR "Cannot run internal architecture detection program\n\n ${OFBUILD_ARCH_RUN_OUTPUT}")  
 ENDIF()
 
 MESSAGE(STATUS "Performing internal architecture detection -- completed")
