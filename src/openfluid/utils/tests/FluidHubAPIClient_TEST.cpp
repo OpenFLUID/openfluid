@@ -466,7 +466,7 @@ int main(int argc, char *argv[])
   if (!Client.getResource("/").isOK())
   {
     std::cout << "** Test not run due to failing connection to remote service **" << std::endl;
-    return 0;
+    return CONFIGTESTS_SKIP_CODE;
   }
 
 

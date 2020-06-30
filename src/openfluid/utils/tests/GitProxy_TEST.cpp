@@ -611,7 +611,7 @@ int main(int argc, char *argv[])
   if (!openfluid::utils::GitProxy::isAvailable())
   {
     std::cout << "** Test not run due to failing to find git program **" << std::endl;
-    return 0;
+    return CONFIGTESTS_SKIP_CODE;
   }
   else
   {

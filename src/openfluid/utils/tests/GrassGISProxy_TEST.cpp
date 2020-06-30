@@ -333,6 +333,7 @@ int main(int argc, char *argv[])
   else
   {
     std::cout << "** Test not run due to failing to find GRASS GIS program **" << std::endl;
+    return CONFIGTESTS_SKIP_CODE;
   }
 
   return 0;

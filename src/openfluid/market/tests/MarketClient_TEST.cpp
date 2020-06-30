@@ -234,6 +234,7 @@ int main(int argc, char *argv[])
   else
   {
     std::cout << "** Test not run due to failing to find CMake program **" << std::endl;
+    return CONFIGTESTS_SKIP_CODE; 
   }
 
   return 0;
