@@ -50,6 +50,9 @@ import shutil
 import subprocess
 
 
+assert sys.version_info >= (3, 5)
+
+
 ############################################################################
 ############################################################################
 
@@ -382,13 +385,11 @@ try:
   Parser.add_argument('WORKPATH', type=str, nargs=1,
                        help='Path where icons will be retreived and processed')
   Parser.add_argument('--with-update',required=False,action='store_true',
-                      help='Path where icons will be retreived and processed')
+                      help='Update icons sources from repositories')
   
-
   Args = Parser.parse_args()
   Args = vars(Args)
 
-  #print(Args) 
 
   WorkPath = os.path.abspath(Args['WORKPATH'][0])
   print("Working path: ",WorkPath)

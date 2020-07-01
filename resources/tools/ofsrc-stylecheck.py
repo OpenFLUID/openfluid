@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # 
 #   This file is part of OpenFLUID software
 #   Copyright(c) 2007, INRA - Montpellier SupAgro
@@ -32,6 +33,9 @@ from argparse import ArgumentParser
 import os
 import re
 import sys
+
+
+assert sys.version_info >= (3, 5)
 
 
 ############################################################################
@@ -142,8 +146,8 @@ class SourceTreeChecker:
     def printVerbose(self,*Args):
         if self.IsVerbose:
             for Arg in Args:
-                print Arg,
-            print
+                print(Arg,end='')
+            print()
 
 
 ############################################################################
@@ -155,7 +159,7 @@ class SourceTreeChecker:
         for Arg in Args :
             ArgsStr.append(str(Arg))
         Msg = '[{0}] {1}:{2}: {3}'.format(Code,os.path.join(self.SrcRootPath,Filename),Line," ".join(ArgsStr))
-        print Msg
+        print(Msg)
 
 
 ############################################################################
@@ -520,16 +524,16 @@ class SourceTreeChecker:
 
         FileCount = len(self.FileList)
 
-        print FileCount,"file"+self.stringIfMoreThanOne('s',FileCount)+" checked"
+        print("{} file{} checked".format(FileCount,self.stringIfMoreThanOne('s',FileCount)))
 
         TotalErrorsCount = sum(self.ErrorsCount.values())
 
         if TotalErrorsCount:
-            print TotalErrorsCount,"potential problem"+self.stringIfMoreThanOne('s',TotalErrorsCount)+" detected"
+            print("{} potential problem{} detected".format(TotalErrorsCount,self.stringIfMoreThanOne('s',TotalErrorsCount)))
             for Code in self.ErrorsCount:
-                print '        - ['+Code+']:',self.ErrorsCount[Code],'problem'+self.stringIfMoreThanOne('s',self.ErrorsCount[Code])
+                print("        - [{}]: {} problem{}".format(Code,self.ErrorsCount[Code],self.stringIfMoreThanOne('s',self.ErrorsCount[Code])))
         else:
-            print "No potential style problem detected"
+            print("No potential style problem detected")
 
         return TotalErrorsCount
 
@@ -554,6 +558,5 @@ if __name__ == "__main__":
         sys.exit(int(Ret > 0))
 
     except Exception as e:
-        print "Error:",
-        print e
+        print("Error: {}".format(e))
         sys.exit(127)

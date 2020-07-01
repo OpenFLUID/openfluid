@@ -35,13 +35,16 @@ import platform
 import subprocess
 
 
+assert sys.version_info >= (3, 5)
+
+
 ############################################################################
 ############################################################################
 
 
 MainCommand = 'cppcheck'
 if platform.system()  == "Windows":
-  MainCommand = 'cppcheck.exe'
+    MainCommand = 'cppcheck.exe'
 
 DefaultOptions = ["-I","src"]
 
@@ -56,8 +59,8 @@ RootPath = os.path.realpath(os.path.dirname(os.path.realpath(__file__))+'/../..'
 # List of builds directories to automatically exclude
 BuildDirsExclude = []
 for Dir in os.listdir(RootPath):
-  if Dir.startswith("_build"):
-    BuildDirsExclude.append("-i"+Dir)
+    if Dir.startswith("_build"):
+        BuildDirsExclude.append("-i"+Dir)
 
 # Build the full command to execute
 FullCommand = [MainCommand] + DefaultOptions + BuildDirsExclude + sys.argv[1:len(sys.argv)]

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #
 #   This file is part of OpenFLUID software
 #   Copyright(c) 2007, INRA - Montpellier SupAgro
@@ -74,6 +75,9 @@ import os
 import re
 import sys
 import json
+
+
+assert sys.version_info >= (3, 5)
 
 
 ############################################################################

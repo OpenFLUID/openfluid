@@ -104,16 +104,14 @@ ENDFOREACH()
 
 
 
-FIND_PACKAGE(PythonInterp)
-
 FIND_PROGRAM(PYTHON3_EXECUTABLE NAMES python3)
 
-IF(PYTHONINTERP_FOUND)
+IF(PYTHON3_EXECUTABLE)
 
   # checkstyle tool
   ADD_CUSTOM_TARGET(stylecheck
                     COMMENT "Checking source code style"
-                    COMMAND "${PYTHON_EXECUTABLE}"
+                    COMMAND "${PYTHON3_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
                             "${CMAKE_SOURCE_DIR}"
                    )
@@ -122,16 +120,11 @@ IF(PYTHONINTERP_FOUND)
   ADD_CUSTOM_TARGET(cppcheck
                     COMMENT "Static analysis of source code "
                     COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${CMAKE_SOURCE_DIR}"
-                            "${PYTHON_EXECUTABLE}"
+                            "${PYTHON3_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-cppcheck.py"
                             ${OFBUILD_CPPCHECK_EXTRA_OPTIONS}
                             "${CMAKE_SOURCE_DIR}"
                    )
-
-ENDIF()
-
-
-IF(PYTHON3_EXECUTABLE)
 
 # rebuild completion tool
   ADD_CUSTOM_TARGET(rebuild-completion
