@@ -94,10 +94,10 @@ script:
     then
       if [ "${OFBUILD_TRAVIS_BUILDTYPE}" == "debug" ]
       then 
-        make && ctest --output-on-failure -E GitProxy_TEST # excluding git proxy from testing due to too old git version in trusty 
+        make && ctest --output-on-failure
       elif [ "${OFBUILD_TRAVIS_BUILDTYPE}" == "release" ]
       then 
-        make && cpack
+        make stylecheck && make && cpack
       fi
     elif [ "${TRAVIS_OS_NAME}" == "osx" ]
     then 
