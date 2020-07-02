@@ -530,18 +530,12 @@ class Binding
       {
         init();
 
-        openfluid::base::IOListener IOListen;
-
         openfluid::base::RunContextManager::instance()->setInputDir(std::string(Path));
         Data->m_FluidXDesc.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
 
         Data->m_IsSimulationRun = false;
-
-        if (!Data->m_IsProject)
-        {
-          Data->m_IsDataset = true;
-          Data->m_SourcePath = openfluid::base::RunContextManager::instance()->getInputDir();
-        }
+        Data->m_IsDataset = true;
+        Data->m_SourcePath = openfluid::base::RunContextManager::instance()->getInputDir();
 
 
         return Data;
@@ -585,12 +579,12 @@ class Binding
     */
     static Binding* openProject(const char* Path)
     {
+      Binding* Data = new Binding();
+
       try
       {
         init();
-
-        Binding* Data = new Binding();
-
+        
         if (!openfluid::base::RunContextManager::instance()->openProject(std::string(Path)))
         {
           throw openfluid::base::ApplicationException(
@@ -598,10 +592,14 @@ class Binding
               std::string(Path) + " is not a correct project path");
         }
 
+        Data->m_FluidXDesc.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
+
+        Data->m_IsSimulationRun = false;
         Data->m_IsProject = true;
         Data->m_SourcePath = openfluid::base::RunContextManager::instance()->getProjectPath();
 
-        return Binding::openDataset(openfluid::base::RunContextManager::instance()->getInputDir().c_str());
+        return Data;
+        
       }
       catch (openfluid::base::Exception& E)
       {
@@ -620,6 +618,8 @@ class Binding
       {
         m_LastErrorMsg = "UNKNOWN ERROR\n";
       }
+
+      delete Data;
 
       return nullptr;
     }
@@ -698,7 +698,6 @@ class Binding
 
 
         openfluid::machine::Engine* Engine;
-        openfluid::base::IOListener IOListen;
         openfluid::machine::SimulationBlob SimBlob;
         std::unique_ptr<openfluid::machine::MachineListener> Listener;
 
