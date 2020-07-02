@@ -124,8 +124,8 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
               SLOT(onWareTxtModified(WareSrcWidget*,bool)));
       connect(Widget, SIGNAL(editorSaved()), this, SIGNAL(editorSaved()));
       connect(Widget, SIGNAL(findReplaceRequested()), this, SLOT(showFindReplaceDialog()));
-      connect(Widget, SIGNAL(openTerminalRequested()), this, SLOT(openTerminal()));
-      connect(Widget, SIGNAL(openExplorerRequested()), this, SLOT(openExplorer()));
+      connect(Widget, SIGNAL(openTerminalRequested()), this, SLOT(openTerminalAtWarePath()));
+      connect(Widget, SIGNAL(openExplorerRequested()), this, SLOT(openExplorerAtWarePath()));
       connect(Widget, SIGNAL(openExternalToolRequested(const QString&, const QString&)), 
               this, SLOT(openExternalTool(const QString&, const QString&)));
       
@@ -270,7 +270,7 @@ void WareSrcWidgetCollection::setCurrent(const QString& Path)
 // =====================================================================
 
 
-void WareSrcWidgetCollection::openExplorer(const QString& Path)
+QString WareSrcWidgetCollection::getContextualPath(const QString& Path)
 {
   QString FileToOpen;
 
@@ -280,17 +280,29 @@ void WareSrcWidgetCollection::openExplorer(const QString& Path)
   }
   else
   {
-    QString Current = getCurrentWarePath();
-
-    if (!Current.isEmpty())
-    {
-      FileToOpen = Current;
-    }
-    else
-    {
-      FileToOpen = mp_Manager->getWaresdevPath();
-    }
+    FileToOpen = mp_Manager->getWaresdevPath();
   }
+  return FileToOpen;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::openExplorerAtWarePath()
+{
+  openExplorer(getCurrentWarePath());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::openExplorer(const QString& Path)
+{
+  QString FileToOpen = getContextualPath(Path);
 
   QDesktopServices::openUrl(QUrl::fromLocalFile(FileToOpen));
 }
@@ -300,27 +312,19 @@ void WareSrcWidgetCollection::openExplorer(const QString& Path)
 // =====================================================================
 
 
+void WareSrcWidgetCollection::openTerminalAtWarePath()
+{
+  openTerminal(getCurrentWarePath());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcWidgetCollection::openTerminal(const QString& Path)
 {
-  QString FileToOpen;
-
-  if (!Path.isEmpty())
-  {
-    FileToOpen = Path;
-  }
-  else
-  {
-    QString Current = getCurrentWarePath();
-
-    if (!Current.isEmpty())
-    {
-      FileToOpen = Current;
-    }
-    else
-    {
-      FileToOpen = mp_Manager->getWaresdevPath();
-    }
-  }
+  QString FileToOpen = getContextualPath(Path);
 
   bool TermFound = true;
 

@@ -151,7 +151,13 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void setCurrent(const QString& Path);
 
+    QString getContextualPath(const QString& Path);
+
+    void openExplorerAtWarePath();
+
     void openExplorer(const QString& Path = "");
+
+    void openTerminalAtWarePath();
 
     void openTerminal(const QString& Path = "");
 
