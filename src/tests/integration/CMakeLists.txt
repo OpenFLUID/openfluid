@@ -572,9 +572,8 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleRun
                            "run"
                            "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.CMakeModule"
                            "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CMakeModule" 
-#                           "-p" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.sim.cmake"
-#                           "-n" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obs.cmake"
                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CMakeModule")
+SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${OFBUILD_DIST_LIB_DIR}")
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorBuild)
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverBuild)
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverParamsUIBuild)
