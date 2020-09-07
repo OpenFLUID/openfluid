@@ -131,7 +131,7 @@ bool ExamplesBuddy::installExampleSimulator(const std::string& SimulatorsSourceP
   }
   else
   {
-    mp_Listener->onSubstageCompleted("Can't install example simulator: not found");
+    mp_Listener->onSubstageCompleted("Can't install example simulator \"" + SimulatorDir + "\": not found");
     return false;
   }
 }
@@ -159,7 +159,7 @@ bool ExamplesBuddy::installAllExamplesFolders(const std::string& ExamplesSourceP
   else
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Projects source path is not a directory");
+                                              "Projects source path " + ProjectsSourcePath + " is not a directory");
   }
   
   //SIMULATORS
