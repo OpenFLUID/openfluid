@@ -527,6 +527,15 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   // ---- parsing of effective options
 
+  if (ArgC == 1) // no command nor argument
+  {
+    std::vector<char*> NewArgV(ArgV, ArgV + ArgC);
+    NewArgV.push_back((char*)"--help");
+    NewArgV.push_back(nullptr);
+    ArgV = NewArgV.data();
+    ArgC = ArgC + 1;
+  }
+
   if (!Parser.parse(ArgC,ArgV))
   {
     throw openfluid::base::ApplicationException(
