@@ -17,6 +17,15 @@ SET_TESTS_PROPERTIES(integration-DisplayHelp
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME integration-DisplayHelpWhenNothing
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}")
+SET_TESTS_PROPERTIES(integration-DisplayHelpWhenNothing 
+                     PROPERTIES PASS_REGULAR_EXPRESSION "openfluid \\[<command>\\] \\[<options>\\] \\[<args>\\]")  
+
+
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME integration-DisplayVersion 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "--version")

@@ -534,7 +534,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
             Parser.getParsingMessage());
   }
 
-  if (Parser.isHelpAsked())
+  if (Parser.isHelpAsked() || ArgC == 1)
   {
     m_RunType = None;
     Parser.printHelp(std::cout);
