@@ -9,7 +9,7 @@ FULL_PATH_NAMES        = NO
 
 
 INPUT                  = @OFBUILD_DOC_CONTENTS_DIR@ \
-                         @CMAKE_CURRENT_BINARY_DIR@/contents \
+                         @CMAKE_CURRENT_BINARY_DIR@/contents
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.md
 RECURSIVE              = YES
