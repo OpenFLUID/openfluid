@@ -10,7 +10,7 @@ cask 'openfluid@TOKEN_VERSION@' do
   # if MacOS.version == :@CASKFILE_OS_CODE@
   url '@CASKFILE_URL@'
   sha256 '@CASKFILE_PACKHASH@'
-  # endif
+  # end
 
 
   # external dependencies
@@ -35,9 +35,8 @@ cask 'openfluid@TOKEN_VERSION@' do
 
   # preinstall operations
   preflight do
-  	
-  	# creation of a wrapper for the command line program 
-  	# to introduce the OPENFLUID_INSTALL_PREFIX env. var.
+    # creation of a wrapper for the command line program 
+    # to introduce the OPENFLUID_INSTALL_PREFIX env. var.
     IO.write cliwrapper, <<~EOS
       #!/bin/sh
       OPENFLUID_INSTALL_PREFIX="#{staged_path}" "#{staged_path}/bin/openfluid" "$@"
@@ -57,10 +56,9 @@ cask 'openfluid@TOKEN_VERSION@' do
 
   # postinstall operations
   postflight do
-  	
-  	# on .app bundles
+    # on .app bundles
     for OFapp in OFapps
-    	  # set of the lib path as an rpath
+      # set of the lib path as an rpath
       system "install_name_tool","-add_rpath","#{staged_path}/lib/","#{appdir}/#{OFapp}.app/Contents/MacOS/#{OFapp}"
       # add of the OPENFLUID_INSTALL_PREFIX env. var.
       system "defaults","write","#{appdir}/#{OFapp}.app/Contents/Info","LSEnvironment","<dict><key>OPENFLUID_INSTALL_PREFIX</key><string>#{staged_path}</string></dict>"
@@ -68,7 +66,6 @@ cask 'openfluid@TOKEN_VERSION@' do
 
     # add of the OPENFLUID_INSTALL_PREFIX env. var. on the command line program
     system "install_name_tool","-add_rpath","#{staged_path}/lib/","#{staged_path}/bin/openfluid"
-
   end
 
 end
