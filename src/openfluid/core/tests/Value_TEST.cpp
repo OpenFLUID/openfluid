@@ -48,7 +48,6 @@
 #include <memory>
 
 #include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
 #include <boost/circular_buffer.hpp>
 
 #include <openfluid/core/NullValue.hpp>

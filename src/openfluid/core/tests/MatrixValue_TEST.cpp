@@ -43,8 +43,9 @@
 #define BOOST_TEST_MODULE unittest_matrixvalue
 
 
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
 
 #include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/core/StringValue.hpp>

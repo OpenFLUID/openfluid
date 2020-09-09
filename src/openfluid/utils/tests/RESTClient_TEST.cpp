@@ -45,7 +45,6 @@
 #include <iostream>
 
 #include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
 #include <boost/cstdlib.hpp>
 
 #include <QCoreApplication>

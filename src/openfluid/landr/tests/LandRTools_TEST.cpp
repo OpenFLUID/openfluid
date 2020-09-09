@@ -43,7 +43,6 @@
 
 
 #include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
 
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>

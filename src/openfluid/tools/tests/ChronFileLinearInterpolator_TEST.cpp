@@ -46,10 +46,9 @@
 #include <iostream>
 #include <fstream>
 #include <iterator>
+#include <chrono>
 
 #include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
-#include <boost/progress.hpp>
 
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -62,8 +61,35 @@
 // =====================================================================
 
 
+class Timer
+{
+  private:
+    
+    std::chrono::time_point<std::chrono::steady_clock> m_Start;
+
+  public:
+    
+    Timer() : m_Start(std::chrono::steady_clock::now())
+    { }
+
+    ~Timer()
+    {
+      auto End = std::chrono::steady_clock::now();
+      std::chrono::duration<double> Diff = End-m_Start;
+
+      std::cout << "duration: " << Diff.count() << "s" << std::endl;
+    }
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool validateException(const openfluid::base::FrameworkException& /*E*/)
-{ return true; }
+{ 
+  return true; 
+}
 
 
 // =====================================================================
@@ -90,7 +116,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators");
 
   {
-    boost::progress_timer t;
+    Timer t;
     std::cout << "measured_ticks_interp60.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
@@ -102,7 +128,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   }
 
   {
-    boost::progress_timer t;
+    Timer t;
     std::cout << "measured_ticks_interp227.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
@@ -150,7 +176,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // real temperature file at 60sec
   {
-    boost::progress_timer t;
+    Timer t;
     std::cout << "temp_interp60.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
@@ -164,7 +190,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // real temperature file at 1day
   {
-    boost::progress_timer t;
+    Timer t;
     std::cout << "temp_interp86400.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
@@ -178,7 +204,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // real rain file at 1hour
   {
-    boost::progress_timer t;
+    Timer t;
     std::cout << "rain_interp3600.dat: " << std::endl;
 
 
@@ -193,7 +219,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // real rain file at 1hour (short period)
   {
-    boost::progress_timer t;
+    Timer t;
     std::cout << "rain_interp3600short.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
@@ -207,7 +233,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // reinterp real rain file at 1hour (short period)
   {
-    boost::progress_timer t;
+    Timer t;
     std::cout << "rain_reinterp3600short.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
@@ -221,7 +247,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // compare inter and reinterp
   {
-    boost::progress_timer t;
+    Timer t;
     std::cout << "rain_interp3600short.dat vs rain_reinterp3600short.dat: " << std::endl;
 
     std::ifstream ifs1(std::string(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/rain_interp3600short.dat").c_str());
@@ -235,7 +261,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // real rain file at 60sec (short period)
   {
-    boost::progress_timer t;
+    Timer t;
     std::cout << "rain_interp60veryshort.dat: " << std::endl;
 
     openfluid::tools::ChronFileLinearInterpolator
