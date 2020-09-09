@@ -1,21 +1,18 @@
-OpenFLUID
-=========
+![](resources/graphics/openfluid_official_400.png)  
+  
 
-[![Build Status](https://travis-ci.org/OpenFLUID/openfluid.svg?branch=develop)](https://travis-ci.org/OpenFLUID/openfluid)
-[![Build status](https://ci.appveyor.com/api/projects/status/6icywvsumu608uft/branch/develop?svg=true)](https://ci.appveyor.com/project/fabrejc/openfluid-hm6ac/branch/develop)
-
-
-## General informations
-
-**OpenFLUID is a software environnement for modelling and simulation
-of complex landscape systems**
+**OpenFLUID is a software environnement for modelling and simulation of complex landscape systems**
 
 Further informations are available on the [OpenFLUID](https://www.openfluid-project.org/) site at [www.openfluid-project.org](https://www.openfluid-project.org/).
 
-See also the LICENSE and AUTHORS files included in the sources.
+See also the LICENSE and AUTHORS files included in the sources.  
 
 
 ## OpenFLUID sources 
+  
+[![Build Status](https://travis-ci.org/OpenFLUID/openfluid.svg?branch=develop)](https://travis-ci.org/OpenFLUID/openfluid)
+[![Build status](https://ci.appveyor.com/api/projects/status/6icywvsumu608uft/branch/develop?svg=true)](https://ci.appveyor.com/project/fabrejc/openfluid-hm6ac/branch/develop)
+
 
 The OpenFLUID source tree is organized as follow
 - cmake : CMake files included in main build system 
