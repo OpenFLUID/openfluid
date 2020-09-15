@@ -881,14 +881,10 @@ void WareSrcWidgetCollection::openWare(openfluid::ware::WareType Type, const QSt
                                                                                     mp_Manager->getWareTypePath(Type),
                                                                                     Title);
 
-  if (PathToOpen.isEmpty())
+  if (!PathToOpen.isEmpty())
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Can't open ware, path empty");
-    return;
+    openPath(PathToOpen);
   }
-
-  openPath(PathToOpen);
 }
 
 
