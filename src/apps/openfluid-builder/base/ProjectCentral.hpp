@@ -60,8 +60,6 @@ class ProjectCentral : QObject
 
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
-    QString m_PrjPath;
-
     ProjectCheckInfos m_CheckInfos;
 
     openfluid::base::IOListener m_IOListener;

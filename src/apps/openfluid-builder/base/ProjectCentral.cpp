@@ -59,7 +59,7 @@ ProjectCentral* ProjectCentral::mp_Instance = nullptr;
 
 
 ProjectCentral::ProjectCentral(const QString& PrjPath):
-  mp_FXDesc(nullptr), m_PrjPath(PrjPath)
+  mp_FXDesc(nullptr)
 {
   mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(&m_IOListener);
 
@@ -206,7 +206,8 @@ void ProjectCentral::run(RunMode Mode)
   }
   else if (Mode == RunMode::CLI)
   {
-    openfluid::ui::common::RunCLISimulationDialog RunDlg(QApplication::activeWindow(),m_PrjPath);
+    openfluid::ui::common::RunCLISimulationDialog RunDlg(QApplication::activeWindow(),
+                                                         QString::fromStdString(CtxtMan->getProjectPath()));
     RunDlg.execute();
   }
   else
