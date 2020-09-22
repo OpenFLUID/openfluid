@@ -67,8 +67,9 @@ install:
 
 
 before_script:
-  - echo "SET(OPENFLUID_ENABLE_MARKET 1)" > CMake.in.local.cmake
-  - echo "SET(OFBUILD_TESTS_ENABLE_FORTRAN 1)" >> CMake.in.local.cmake  
+  - echo "SET(OFBUILD_ENABLE_MARKET ON)" > CMake.in.local.cmake
+  - echo "SET(OFBUILD_TESTS_ENABLE_FORTRAN ON)" >> CMake.in.local.cmake
+  - echo "SET(OFBUILD_TESTS_ENABLE_HEAVY OFF)" >> CMake.in.local.cmake
   - echo "SET(OFBUILD_UNITTESTS_RUN_OPTIONS \"--log_level=all\")" >> CMake.in.local.cmake
   - mkdir _build
   - cd _build
@@ -77,7 +78,7 @@ before_script:
     then
       if [ "${OFBUILD_TRAVIS_BUILDTYPE}" == "debug" ]
       then 
-        cmake .. -DOPENFLUID_ENABLE_HEAVYTESTING=1
+        cmake ..
       elif [ "${OFBUILD_TRAVIS_BUILDTYPE}" == "release" ]
       then
         cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr

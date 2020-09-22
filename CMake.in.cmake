@@ -23,7 +23,7 @@ SET(OFBUILD_CUSTOM_CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.
 SET(OPENFLUID_VERSION_MAJOR 2)
 SET(OPENFLUID_VERSION_MINOR 1)
 SET(OPENFLUID_VERSION_PATCH 11)
-SET(OPENFLUID_VERSION_STATUS "alpha6") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
+SET(OPENFLUID_VERSION_STATUS "alpha7") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
 
 SET(OPENFLUID_VERSION_FULL "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}")
 
@@ -204,54 +204,6 @@ SET(OFBUILD_GITASKPASS_ENVVAR_PREFIX "OFLD_GITASKPASS_")
 SET(RapidJSON_GIT_URL "https://github.com/miloyip/rapidjson.git")
 
 
-################### parts and libraries build ###################
-
-SET(OFBUILD_ENABLE_GUI 1)
-
-SET(OFBUILD_ENABLE_LANDR 0)
-
-SET(OFBUILD_ENABLE_MARKET 0)
-
-SET(OFBUILD_ENABLE_SIM2DOC 0)
-IF(UNIX AND NOT APPLE)
-  SET(OFBUILD_ENABLE_SIM2DOC 1)
-ENDIF()
-  
-
-
-################### applications build ###################
-
-# set this to 1 to build openfluid command line program
-SET(OFBUILD_ENABLE_APP_CMD 1)
-
-# set this to 1 to build openfluid-minimal
-SET(OFBUILD_ENABLE_APP_MINIMAL 1)
-
-# set this to 1 to build openfluid-builder
-SET(OFBUILD_ENABLE_APP_BUILDER 1)
-
-# set this to 1 to build openfluid-devstudio
-SET(OFBUILD_ENABLE_APP_DEVSTUDIO 1)
-
-# set this to 1 enable waresdev integration in openfluid-builder
-SET(ENABLE_WARESDEV_BUILDER_INTEGRATION 1)
-
-# set this to 1 to build openfluid-market-client
-SET(OFBUILD_ENABLE_APP_MARKETCLIENT 0)
-
-# set this to 1 enable market integration in openfluid-builder
-SET(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION 0)
-
-# set this to 1 to build openfluid-logexplorer
-SET(OFBUILD_ENABLE_APP_LOGEXPLORER 1)
-
-
-################### doc build ###################
-
-# uncomment this to build docs
-SET(OFBUILD_ENABLE_DOCS 1)
-
-
 ################### logfiles ###################
 
 SET(OPENFLUID_MESSAGES_LOG_FILE "openfluid-messages.log")
@@ -295,12 +247,6 @@ SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR)
 
 
 ################### tests configuration ###################
-
-# set to 1 to build simulators mixing C++ and Rortran source code
-SET(OFBUILD_TESTS_ENABLE_FORTRAN 0)
-
-# set to 1 to build simulators embedding R in C++ source code
-SET(OFBUILD_TESTS_ENABLE_EMBEDDING_R 0)
 
 # return code for skipped tests
 SET(OFBUILD_UNITTESTS_SKIP_CODE 42)

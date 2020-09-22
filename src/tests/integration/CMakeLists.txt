@@ -540,36 +540,31 @@ SET_PROPERTY(TEST integration-CMakeModuleObserverParamsUIBuild APPEND PROPERTY D
 ###########################################################################
 
 
-IF(OFBUILD_ENABLE_APP_BUILDER AND OFBUILD_ENABLE_GUI)
-
-FILE(MAKE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake")
-
-OPENFLUID_ADD_TEST(NAME integration-CMakeModuleBuilderextConfigure
-                   COMMAND "${CMAKE_COMMAND}"
-                              "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake" 
-                              "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
-                              "${CMAKE_CURRENT_SOURCE_DIR}/tests.bext.cmake"
-                              "-DOpenFLUIDHelpers_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
-                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
-                              "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
-                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
-                              "-DBEXT_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
-                    PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake")         
-                                         
+IF(OFBUILD_ENABLE_APP_BUILDER)
+  FILE(MAKE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake")
+  OPENFLUID_ADD_TEST(NAME integration-CMakeModuleBuilderextConfigure
+                     COMMAND "${CMAKE_COMMAND}"
+                        "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake" 
+                        "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
+                        "${CMAKE_CURRENT_SOURCE_DIR}/tests.bext.cmake"
+                        "-DOpenFLUIDHelpers_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
+                        "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
+                        "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
+                        "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
+                        "-DBEXT_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                      PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake")         
 ENDIF()
 
 
 ###########################################################################
 
 
-IF(OFBUILD_ENABLE_APP_BUILDER AND OFBUILD_ENABLE_GUI)
-
-OPENFLUID_ADD_TEST(NAME integration-CMakeModuleBuilderextBuild
-                   COMMAND "${CMAKE_COMMAND}"
-                              "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake" 
-                              "${CMAKE_COMMAND}" "--build" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake")
-SET_PROPERTY(TEST integration-CMakeModuleBuilderextBuild APPEND PROPERTY DEPENDS integration-CMakeModuleBuilderextConfigure)                                                            
-
+IF(OFBUILD_ENABLE_APP_BUILDER)
+  OPENFLUID_ADD_TEST(NAME integration-CMakeModuleBuilderextBuild
+                     COMMAND "${CMAKE_COMMAND}"
+                             "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake" 
+                             "${CMAKE_COMMAND}" "--build" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake")
+  SET_PROPERTY(TEST integration-CMakeModuleBuilderextBuild APPEND PROPERTY DEPENDS integration-CMakeModuleBuilderextConfigure)                                                            
 ENDIF()
 
 

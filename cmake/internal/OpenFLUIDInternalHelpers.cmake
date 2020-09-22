@@ -469,7 +469,17 @@ MACRO(OFBUILD_CONFIGURE_SANITIZER)
     ADD_COMPILE_OPTIONS("-fsanitize=address")
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
   ELSE()
-    SET(OFBUILD_ENABLE_SANITIZER 0)    
+    SET(OFBUILD_ENABLE_SANITIZER OFF)    
   ENDIF()
 ENDMACRO()
 
+
+###########################################################################
+
+FUNCTION(OFBUILD_CREATE_01_VAR ARGVAR)
+  IF(${ARGVAR})
+    SET(${ARGVAR}_01 1 PARENT_SCOPE)
+  ELSE()
+    SET(${ARGVAR}_01 0 PARENT_SCOPE)
+  ENDIF()
+ENDFUNCTION()

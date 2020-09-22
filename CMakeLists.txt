@@ -13,30 +13,56 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
-# increase max length for paths (default value may be too short on Windows systems)
-set(CMAKE_OBJECT_PATH_MAX 300)
-
 PROJECT(OpenFLUID CXX)
 
 
-SET(OFBUILD_CXX_STANDARD 14)
+################## build options ##################
 
+OPTION(OFBUILD_ENABLE_SANITIZER "" OFF)
+
+OPTION(OFBUILD_ENABLE_GUI "enable build of UI libs and apps" ON)
+OPTION(OFBUILD_ENABLE_LANDR "enable build of landr lib" OFF)
+OPTION(OFBUILD_ENABLE_MARKET "enable build of market" OFF)
+
+OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" OFF)
+IF(UNIX AND NOT APPLE)
+  OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" ON)
+ENDIF()
+
+OPTION(OFBUILD_ENABLE_APP_CMD "enable build of command line program" ON)
+OPTION(OFBUILD_ENABLE_APP_MINIMAL "enable build of openfluid-minimal program" ON)
+OPTION(OFBUILD_ENABLE_APP_BUILDER "enable build of openfluid-builder application" ON)
+OPTION(OFBUILD_ENABLE_APP_DEVSTUDIO "enable build of openfluid-devstudio application" ON)
+OPTION(OFBUILD_ENABLE_APP_LOGEXPLORER "enable build of openfluid-logexplorer application" ON)
+OPTION(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION "enable integration of wares development in builder application" ON)
+OPTION(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION "enable integration market in builder application" OFF)
+
+OPTION(OFBUILD_ENABLE_DOCS "enable build of documentation" ON)
+
+OPTION(OFBUILD_TESTS_ENABLE_HEAVY "enable build of heavy tests" OFF)
+OPTION(OFBUILD_TESTS_ENABLE_FORTRAN "enable build of test simulators inetegrating Fortran code" OFF)
+OPTION(OFBUILD_TESTS_ENABLE_EMBEDDING_R "enable build of test simulators embedding R code" OFF)
+
+
+################## project configuration ##################
+
+# increase max length for paths (default value may be too short on Windows systems)
+SET(CMAKE_OBJECT_PATH_MAX 300)
+
+SET(OFBUILD_CXX_STANDARD 14)
 
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/internal;${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
 # Include internal CMake modules for os and hardware management
 INCLUDE(OpenFLUIDSystemInfo)
 
-
 # Include build configuration
 INCLUDE(CMake.in.cmake)
 INCLUDE(CMake.in.local.cmake OPTIONAL)
 
-
+# Include internal CMake modules
 ADD_SUBDIRECTORY(cmake)
 
-
-# Include internal CMake modules
 SET(CMAKE_MODULE_PATH "${OFBUILD_DIST_CMAKE_MODULES_DIR};${CMAKE_MODULE_PATH}")
 SET(OpenFLUID_DIR ${OFBUILD_DIST_CMAKE_MODULES_DIR})
 SET(OpenFLUIDHelpers_DIR ${OFBUILD_DIST_CMAKE_MODULES_DIR})
@@ -44,7 +70,6 @@ INCLUDE(OpenFLUIDInternalHelpers)
 FIND_PACKAGE(OpenFLUIDHelpers)
 
 OPENFLUID_DETECT_CXX14()
-
 
 
 # Set default build type (if not already set)
@@ -65,10 +90,22 @@ IF(OFBUILD_ENABLE_SANITIZER)
 ENDIF()
 
 
+IF(NOT OFBUILD_ENABLE_GUI)
+  SET(OFBUILD_ENABLE_APP_BUILDER OFF)
+  SET(OFBUILD_ENABLE_APP_DEVSTUDIO OFF)
+  SET(OFBUILD_ENABLE_APP_LOGEXPLORER OFF)
+  SET(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION OFF)
+ENDIF()
+
+IF(NOT OFBUILD_ENABLE_APP_BUILDER OR NOT OFBUILD_ENABLE_MARKET)
+  SET(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION OFF)
+ENDIF()
+
+
 # Force basic testing in debug mode
 IF(CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
   IF(NOT DEFINED OFBUILD_ENABLE_TESTING)
-    SET(OFBUILD_ENABLE_TESTING 1)
+    SET(OFBUILD_ENABLE_TESTING ON)
   ENDIF()
 ENDIF()
 
@@ -76,18 +113,16 @@ IF(OFBUILD_ENABLE_TESTING)
   SET(CMAKE_INSTALL_PREFIX "${OFBUILD_DIST_DIR}")
   SET(OFBUILD_BOOST_TEST_FRAMEWORK unit_test_framework)
 ELSE()
-  SET(OFBUILD_TESTS_ENABLE_FORTRAN 0)
-  SET(OFBUILD_TESTS_ENABLE_HEAVY 0)
-  SET(OFBUILD_TESTS_ENABLE_EMBEDDING_R 0)
+  SET(OFBUILD_TESTS_ENABLE_FORTRAN OFF)
+  SET(OFBUILD_TESTS_ENABLE_HEAVY OFF)
+  SET(OFBUILD_TESTS_ENABLE_EMBEDDING_R OFF)
 ENDIF()
 
 
 # Hack for avoiding conflicts between Boost libraries and Qt moc system
 SET(CMAKE_AUTOMOC_MOC_OPTIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
 
-
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 
 # Detection of main dependencies
 FIND_PACKAGE(Boost 1.53 REQUIRED COMPONENTS ${OFBUILD_BOOST_TEST_FRAMEWORK})
@@ -111,6 +146,8 @@ FILE(MAKE_DIRECTORY "${OFBUILD_DIST_LIB_DIR}")
 FILE(MAKE_DIRECTORY "${OFBUILD_DIST_BIN_DIR}")
 
 
+################## testing ##################
+
 IF(OFBUILD_ENABLE_TESTING)
   INCLUDE(CTest)
   ENABLE_TESTING()
@@ -122,6 +159,9 @@ IF(APPLE)
   SET(CMAKE_MACOSX_RPATH 1)
   SET(CMAKE_INSTALL_RPATH "@rpath/lib")
 ENDIF(APPLE)
+
+
+################## contents ##################
 
 ADD_SUBDIRECTORY(resources)
 
@@ -135,6 +175,7 @@ IF(OFBUILD_ENABLE_DOCS)
 ENDIF()
 
 
+################## packaging ##################
 
 INCLUDE(CPack.in.cmake)
 
@@ -152,7 +193,7 @@ INSTALL(DIRECTORY "share"
         DESTINATION "." PATTERN ".svn" EXCLUDE)
 
 
-# Display of main informations about build configuration
+################## display of main informations ##################
 
 MESSAGE(STATUS "****************************************")
 MESSAGE(STATUS "OpenFLUID version: ${OPENFLUID_VERSION_FULL} (numeric: ${OPENFLUID_VERSION_NUMERIC})")
@@ -168,7 +209,6 @@ MESSAGE(STATUS "Default compiler flags: ${CMAKE_CXX_FLAGS}")
 MESSAGE(STATUS "Extra compiler flags for ${CMAKE_BUILD_TYPE}: ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
 MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "****************************************")
-
 
 MESSAGE(STATUS "Build optional libraries")
 IF(OFBUILD_ENABLE_LANDR)
@@ -189,7 +229,6 @@ ELSE()
   MESSAGE(STATUS "  openfluid-market: no")
 ENDIF()
 
-
 MESSAGE(STATUS "Build applications")
 IF(OFBUILD_ENABLE_APP_CMD)
   MESSAGE(STATUS "  openfluid (cmd. line): yes")
@@ -203,24 +242,36 @@ ELSE()
   MESSAGE(STATUS "  openfluid-minimal: no")
 ENDIF()
 
-IF(OFBUILD_ENABLE_APP_BUILDER AND OFBUILD_ENABLE_GUI)
+IF(OFBUILD_ENABLE_APP_BUILDER)
   MESSAGE(STATUS "  openfluid-builder: yes")
 ELSE()
   MESSAGE(STATUS "  openfluid-builder: no")
 ENDIF()
 
-IF(OFBUILD_ENABLE_APP_DEVSTUDIO AND OFBUILD_ENABLE_GUI)
+IF(OFBUILD_ENABLE_APP_DEVSTUDIO)
   MESSAGE(STATUS "  openfluid-devstudio: yes")
 ELSE()
   MESSAGE(STATUS "  openfluid-devstudio: no")
 ENDIF()
 
-IF(OFBUILD_ENABLE_APP_LOGEXPLORER AND OFBUILD_ENABLE_GUI)
+IF(OFBUILD_ENABLE_APP_LOGEXPLORER)
   MESSAGE(STATUS "  openfluid-logexplorer: yes")
 ELSE()
   MESSAGE(STATUS "  openfluid-logexplorer: no")
 ENDIF()
 
+MESSAGE(STATUS "Build with integrations")
+IF(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION)
+  MESSAGE(STATUS "  market->openfluid-builder: yes")
+ELSE()
+  MESSAGE(STATUS "  market->openfluid-builder: no")
+ENDIF()
+
+IF(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION)
+  MESSAGE(STATUS "  waresdev->openfluid-builder: yes")
+ELSE()
+  MESSAGE(STATUS "  waresdev->openfluid-builder: no")
+ENDIF()
 
 MESSAGE(STATUS "Build and run tests")
 IF(OFBUILD_ENABLE_TESTING)
@@ -257,6 +308,5 @@ ELSE()
   MESSAGE(STATUS "  html : no")
   MESSAGE(STATUS "  pdf : no")
 ENDIF()
-
 
 MESSAGE(STATUS "****************************************")
