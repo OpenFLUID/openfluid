@@ -300,8 +300,8 @@ void ProjectCentral::check()
   }
   else
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("Model is empty"));
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).addMessage(tr("Model is empty"));
   }
 
   checkSpatialDomain();
@@ -314,8 +314,8 @@ void ProjectCentral::check()
   }
   else
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).updateStatus(PRJ_WARNING);
-    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("Monitoring is empty"));
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(ProjectStatusLevel::PRJ_WARNING);
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).addMessage(tr("Monitoring is empty"));
   }
 
   checkRunConfig();
@@ -344,8 +344,8 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
   {
     TestCompare = false;
 
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(ProjectStatusLevel::PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                 .addMessage(tr("Parameter %1 for %2 has to be a double precision value")
                             .arg(QString::fromStdString(MinParamName))
                             .arg(QString::fromStdString(ID)));
@@ -358,8 +358,8 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
   else if (!isParamIsDouble(Item, MaxParamName))
   {
     TestCompare = false;
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(ProjectStatusLevel::PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                 .addMessage(tr("Parameter %1 for %2 has to be a double precision value")
                             .arg(QString::fromStdString(MaxParamName))
                             .arg(QString::fromStdString(ID)));
@@ -367,8 +367,8 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
 
   if (TestCompare && !(getParamAsDouble(Item, MaxParamName) > getParamAsDouble(Item, MinParamName)))
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(ProjectStatusLevel::PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                 .addMessage(tr("Parameter %1 is greater or equal to parameter %2 for %3")
                             .arg(QString::fromStdString(MinParamName))
                             .arg(QString::fromStdString(MaxParamName))
@@ -486,8 +486,8 @@ void ProjectCentral::checkModel()
 
         if (SignII->Ghost)
         {
-          m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_DISABLED);
-          m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_DISABLED);
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF)
                           .addMessage(tr("Simulator %1 is a ghost")
                                       .arg(QString::fromStdString(ID)));
         }
@@ -516,8 +516,9 @@ void ProjectCentral::checkModel()
             if (!FileNameFromParam.empty() &&
                 !QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(FileNameFromParam))).exists())
             {
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
+                ProjectStatusLevel::PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                               .addMessage(tr("File %1 required by generator %2 does not exist")
                                           .arg(QString::fromStdString(FileNameFromParam))
                                           .arg(QString::fromStdString(ID)));
@@ -529,8 +530,9 @@ void ProjectCentral::checkModel()
             if (!FileNameFromParam.empty() &&
                 !QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(FileNameFromParam))).exists())
             {
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
+                ProjectStatusLevel::PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                               .addMessage(tr("File %1 required by generator %2 does not exist")
                                           .arg(QString::fromStdString(FileNameFromParam))
                                           .arg(QString::fromStdString(ID)));
@@ -543,8 +545,9 @@ void ProjectCentral::checkModel()
           {
             if (!QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(*itFile))).exists())
             {
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
-              m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
+                ProjectStatusLevel::PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                               .addMessage(tr("File %1 required by generator %2 does not exist")
                                           .arg(QString::fromStdString((*itFile)))
                                           .arg(QString::fromStdString(ID)));
@@ -569,8 +572,9 @@ void ProjectCentral::checkModel()
 
           if (!isParamSet(*itModelItem, itParam->DataName))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                                         .addMessage(tr("Required parameter %1 for simulator %2 is not set")
                                                     .arg(QString::fromStdString(itParam->DataName))
                                                     .arg(QString::fromStdString(ID)));
@@ -587,8 +591,9 @@ void ProjectCentral::checkModel()
 
           if (!isParamSet(*itModelItem, itParam->DataName))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).updateStatus(PRJ_WARNING);
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
+              ProjectStatusLevel::PRJ_WARNING);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                                         .addMessage(tr("Used parameter %1 for simulator %2 is not set")
                                                     .arg(QString::fromStdString(itParam->DataName))
                                                     .arg(QString::fromStdString(ID)));
@@ -635,8 +640,9 @@ void ProjectCentral::checkModel()
           if (!Domain.isClassNameExists(itReqData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itReqData->UnitsClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
                                 .addMessage(tr("Unit class %1 does not exist for attribute %2 required by %3")
                                             .arg(QString::fromStdString(itReqData->UnitsClass))
                                             .arg(QString::fromStdString(itReqData->DataName))
@@ -645,8 +651,9 @@ void ProjectCentral::checkModel()
           else if (!(Domain.getAttributesNames(itReqData->UnitsClass).count(itReqData->DataName)
               || AttrsUnits.count(std::make_pair(itReqData->UnitsClass, itReqData->DataName))))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
                                 .addMessage(tr("Attribute %1 required on %2 units by %3 does not exist")
                                             .arg(QString::fromStdString(itReqData->DataName))
                                             .arg(QString::fromStdString(itReqData->UnitsClass))
@@ -664,8 +671,9 @@ void ProjectCentral::checkModel()
           if (!Domain.isClassNameExists(itProdData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itProdData->UnitsClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
                                 .addMessage(tr("Unit class %1 does not exist for attribute %2 produced by %3")
                                             .arg(QString::fromStdString(itProdData->UnitsClass))
                                             .arg(QString::fromStdString(itProdData->DataName))
@@ -678,8 +686,9 @@ void ProjectCentral::checkModel()
           }
           else
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
                                 .addMessage(tr("Attribute %1 produced on %2 units by %3 "
                                     "is already produced by another simulator")
                                             .arg(QString::fromStdString(itProdData->UnitsClass))
@@ -690,10 +699,11 @@ void ProjectCentral::checkModel()
       }
       else
       {
-        m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
+        m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(
+          ProjectStatusLevel::PRJ_ERROR);
         if ((*itModelItem)->getType() == openfluid::ware::WareType::SIMULATOR)
         {
-          m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("Simulator %1 is not available")
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).addMessage(tr("Simulator %1 is not available")
                                                                          .arg(QString::fromStdString(ID)));
         }
       }
@@ -739,8 +749,9 @@ void ProjectCentral::checkModel()
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
                                         .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(itData->DataName))
@@ -755,8 +766,8 @@ void ProjectCentral::checkModel()
           }
           else
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF)
                             .addMessage(tr("Variable %1 on %2 produced by %3 cannot be created "
                                 "because it is created by another simulator or generator")
                                         .arg(QString::fromStdString(itData->DataName))
@@ -773,8 +784,9 @@ void ProjectCentral::checkModel()
           if (!Domain.isClassNameExists(GenDesc->getUnitsClass()) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(GenDesc->getUnitsClass())))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
                                         .arg(QString::fromStdString(GenDesc->getUnitsClass()))
                                         .arg(QString::fromStdString(GenDesc->getVariableName()))
@@ -790,8 +802,8 @@ void ProjectCentral::checkModel()
           }
           else
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF)
                             .addMessage(tr("Variable %1 on %2 produced by %3 is already produced "
                                 "by another simulator or generator")
                                         .arg(QString::fromStdString(GenDesc->getVariableName()))
@@ -810,8 +822,9 @@ void ProjectCentral::checkModel()
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
                                         .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(itData->DataName))
@@ -854,8 +867,9 @@ void ProjectCentral::checkModel()
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 required by %3")
                                         .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(itData->DataName))
@@ -868,8 +882,9 @@ void ProjectCentral::checkModel()
                   std::make_pair(itData->UnitsClass,
                                  std::make_pair(itData->DataName, itData->DataType)))))
           {
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF)
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF)
                             .addMessage(tr("Variable %1 on %2 required by %3 is not produced "
                                            "by another simulator or generator")
                                         .arg(QString::fromStdString(itData->DataName))
@@ -892,8 +907,9 @@ void ProjectCentral::checkModel()
 
   if (!AtLeastOneEnabled)
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).updateStatus(PRJ_DISABLED);
-    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("No simulator or generator is enabled in model"));
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_DISABLED);
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).addMessage(tr("No simulator or generator "
+                                                                                "is enabled in model"));
   }
 
 
@@ -952,8 +968,8 @@ void ProjectCentral::checkDatastore()
 
     if (!Class.empty() && !Classes.count(Class))
     {
-      m_CheckInfos.part(ProjectCheckInfos::PART_DATASTORE).updateStatus(PRJ_WARNING);
-      m_CheckInfos.part(ProjectCheckInfos::PART_DATASTORE).addMessage(tr("Unit class %1 does not exist "
+      m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_DATASTORE).updateStatus(ProjectStatusLevel::PRJ_WARNING);
+      m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_DATASTORE).addMessage(tr("Unit class %1 does not exist "
                                                                          "for datastore item %2")
                                                                       .arg(QString::fromStdString(Class))
                                                                       .arg(QString::fromStdString((*itDatastore)
@@ -988,8 +1004,8 @@ void ProjectCentral::checkMonitoring()
 
       if (SignII == nullptr)
       {
-        m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).updateStatus(PRJ_ERROR);
-        m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("Observer %1 is not available")
+        m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(ProjectStatusLevel::PRJ_ERROR);
+        m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).addMessage(tr("Observer %1 is not available")
                                                                          .arg(QString::fromStdString((*itMonitoring)
                                                                                                          ->getID())));
       }
@@ -999,8 +1015,9 @@ void ProjectCentral::checkMonitoring()
 
   if (!AtLeastOneEnabled)
   {
-    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).updateStatus(PRJ_WARNING);
-    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("No observer is enabled in monitoring"));
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(ProjectStatusLevel::PRJ_WARNING);
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).addMessage(tr("No observer is enabled "
+                                                                                  "in monitoring"));
   }
 }
 

@@ -97,7 +97,7 @@ void ConnectorGraphics::updatePosition()
   QPointF FromPos;
   QPointF ToPos;
 
-  if (m_FromOutNode == NODE_PROD)
+  if (m_FromOutNode == OutNodeType::NODE_PROD)
   {
     FromPos = mp_FromItem->getProducedIOPosition();
   }
@@ -106,11 +106,11 @@ void ConnectorGraphics::updatePosition()
     FromPos = mp_FromItem->getUpOutIOPosition();
   }
 
-  if (m_ToInNode == NODE_REQ)
+  if (m_ToInNode == InNodeType::NODE_REQ)
   {
     ToPos = mp_ToItem->getRequiredIOPosition();
   }
-  else if (m_ToInNode == NODE_US)
+  else if (m_ToInNode == InNodeType::NODE_US)
   {
     ToPos = mp_ToItem->getUsedIOPosition();
   }

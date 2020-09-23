@@ -225,13 +225,13 @@ void ModelScene::buildConnections()
           if (FromMItemG->hasProducedVariable(ReqVarInfos.UnitsClass,ReqVarInfos.DataName))
           {
             ProviderItem = FromMItemG;
-            ProviderOutNode = ConnectorGraphics::NODE_PROD;
+            ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_PROD;
           }
 
           if (FromMItemG->hasUpdatedVariable(ReqVarInfos.UnitsClass,ReqVarInfos.DataName))
           {
             ProviderItem = FromMItemG;
-            ProviderOutNode = ConnectorGraphics::NODE_OUTUP;
+            ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_OUTUP;
           }
         }
       }
@@ -239,7 +239,7 @@ void ModelScene::buildConnections()
       if (ProviderItem != nullptr)
       {
         addConnection(ProviderItem,ProviderOutNode,
-                      ToMItemG,ConnectorGraphics::NODE_REQ,
+                      ToMItemG,ConnectorGraphics::InNodeType::NODE_REQ,
                       ReqVarInfos);
       }
     }
@@ -258,13 +258,13 @@ void ModelScene::buildConnections()
           if (FromMItemG->hasProducedVariable(UsedVarInfos.UnitsClass,UsedVarInfos.DataName))
           {
             ProviderItem = FromMItemG;
-            ProviderOutNode = ConnectorGraphics::NODE_PROD;
+            ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_PROD;
           }
 
           if (FromMItemG->hasUpdatedVariable(UsedVarInfos.UnitsClass,UsedVarInfos.DataName))
           {
             ProviderItem = FromMItemG;
-            ProviderOutNode = ConnectorGraphics::NODE_OUTUP;
+            ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_OUTUP;
           }
         }
       }
@@ -273,7 +273,7 @@ void ModelScene::buildConnections()
       if (ProviderItem != nullptr)
       {
         addConnection(ProviderItem,ProviderOutNode,
-                      ToMItemG,ConnectorGraphics::NODE_US,
+                      ToMItemG,ConnectorGraphics::InNodeType::NODE_US,
                       UsedVarInfos);
       }
     }
@@ -290,13 +290,13 @@ void ModelScene::buildConnections()
           if (FromMItemG->hasProducedVariable(UpdatedVarInfos.UnitsClass,UpdatedVarInfos.DataName))
           {
             ProviderItem = FromMItemG;
-            ProviderOutNode = ConnectorGraphics::NODE_PROD;
+            ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_PROD;
           }
 
           if (FromMItemG->hasUpdatedVariable(UpdatedVarInfos.UnitsClass,UpdatedVarInfos.DataName))
           {
             ProviderItem = FromMItemG;
-            ProviderOutNode = ConnectorGraphics::NODE_OUTUP;
+            ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_OUTUP;
           }
         }
         // input for updated vars cannot be after the current simulator/generator
@@ -310,7 +310,7 @@ void ModelScene::buildConnections()
       if (ProviderItem != nullptr)
       {
         addConnection(ProviderItem,ProviderOutNode,
-                      ToMItemG,ConnectorGraphics::NODE_INUP,
+                      ToMItemG,ConnectorGraphics::InNodeType::NODE_INUP,
                       UpdatedVarInfos);
       }
     }

@@ -56,7 +56,7 @@ class EditAttributeNameDialog : public openfluid::ui::common::MessageDialog
 
   public:
 
-    enum EditMode {EDIT_ADD, EDIT_RENAME, EDIT_REMOVE};
+    enum class EditMode {EDIT_ADD, EDIT_RENAME, EDIT_REMOVE};
 
 
   private slots:

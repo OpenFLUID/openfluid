@@ -68,7 +68,7 @@ class EditAttributesValuesDialog : public openfluid::ui::common::MessageDialog
 
   public:
 
-    enum EditMode { EDIT_REPLACE, EDIT_MULTIPLY, EDIT_ADD, EDIT_UNKNOWN };
+    enum class EditMode { EDIT_REPLACE, EDIT_MULTIPLY, EDIT_ADD, EDIT_UNKNOWN };
 
     EditAttributesValuesDialog(QWidget* Parent = nullptr);
 

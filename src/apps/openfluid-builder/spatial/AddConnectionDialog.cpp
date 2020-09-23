@@ -58,10 +58,10 @@ AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString&
   ui->SrcClassLabel->setText(SrcClass);
   ui->SrcIDLabel->setText(SrcID);
 
-  ui->ConnectionComboBox->addItem(tr("to"),BUILDER_CONNCODE_TO);
-  ui->ConnectionComboBox->addItem(tr("from"),BUILDER_CONNCODE_FROM);
-  ui->ConnectionComboBox->addItem(tr("as parent of"),BUILDER_CONNCODE_PARENTOF);
-  ui->ConnectionComboBox->addItem(tr("as child of"),BUILDER_CONNCODE_CHILDOF);
+  ui->ConnectionComboBox->addItem(tr("to"),static_cast<int>(ConnectionCode::BUILDER_CONNCODE_TO));
+  ui->ConnectionComboBox->addItem(tr("from"),static_cast<int>(ConnectionCode::BUILDER_CONNCODE_FROM));
+  ui->ConnectionComboBox->addItem(tr("as parent of"),static_cast<int>(ConnectionCode::BUILDER_CONNCODE_PARENTOF));
+  ui->ConnectionComboBox->addItem(tr("as child of"),static_cast<int>(ConnectionCode::BUILDER_CONNCODE_CHILDOF));
 
   QStringList Classes = openfluid::tools::toQStringList(mp_Domain->getClassNames());
 

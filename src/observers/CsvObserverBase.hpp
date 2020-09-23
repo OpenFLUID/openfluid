@@ -83,7 +83,7 @@ class CSVFormat
 {
   public:
 
-    enum HeaderType { None, Info, ColnamesAsData, ColnamesAsComment, Full };
+    enum class HeaderType { None, Info, ColnamesAsData, ColnamesAsComment, Full };
 
     HeaderType Header;
     
@@ -99,7 +99,7 @@ class CSVFormat
 
     bool IsTimeIndexDateFormat;
 
-    CSVFormat() : Header(Info), ColSeparator(";"), DateFormat("%Y%m%dT%H%M%S"),
+    CSVFormat() : Header(HeaderType::Info), ColSeparator(";"), DateFormat("%Y%m%dT%H%M%S"),
                   CommentChar("#"), Precision(5), FloatFormat("default"), IsTimeIndexDateFormat(false)
     {
 
@@ -204,23 +204,23 @@ inline CSVFormat::HeaderType StrToHeaderType(const std::string& HeaderStr)
 {
   if (HeaderStr == "none")
   {
-    return CSVFormat::None;
+    return CSVFormat::HeaderType::None;
   }
   else if (HeaderStr == "colnames-as-data")
   {
-    return CSVFormat::ColnamesAsData;
+    return CSVFormat::HeaderType::ColnamesAsData;
   }
   else if (HeaderStr == "colnames-as-comment")
   {
-    return CSVFormat::ColnamesAsComment;
+    return CSVFormat::HeaderType::ColnamesAsComment;
   }
   else if (HeaderStr == "full")
   {
-    return CSVFormat::Full;
+    return CSVFormat::HeaderType::Full;
   }
   else
   {
-    return CSVFormat::Info;
+    return CSVFormat::HeaderType::Info;
   }
 }
 
@@ -231,19 +231,19 @@ inline CSVFormat::HeaderType StrToHeaderType(const std::string& HeaderStr)
 
 inline std::string HeaderTypeToStr(CSVFormat::HeaderType HType)
 {
-  if (HType == CSVFormat::ColnamesAsComment)
+  if (HType == CSVFormat::HeaderType::ColnamesAsComment)
   {
     return "colnames-as-comment";
   }
-  else if (HType == CSVFormat::ColnamesAsData)
+  else if (HType == CSVFormat::HeaderType::ColnamesAsData)
   {
     return "colnames-as-data";
   }
-  else if (HType == CSVFormat::Full)
+  else if (HType == CSVFormat::HeaderType::Full)
   {
     return "full";
   }
-  else if (HType == CSVFormat::None)
+  else if (HType == CSVFormat::HeaderType::None)
   {
     return "none";
   }
@@ -289,7 +289,7 @@ typedef std::map<std::string, CSVFormat> FormatMap_t;
 inline std::string buildTimeHeader(const CSVFormat& Format, const openfluid::core::VariableName_t& VarName)
 { 
   std::ostringstream HeaderSStr;
-  if(Format.Header == CSVFormat::ColnamesAsComment || Format.Header == CSVFormat::Full)
+  if(Format.Header == CSVFormat::HeaderType::ColnamesAsComment || Format.Header == CSVFormat::HeaderType::Full)
   {
     if (Format.IsTimeIndexDateFormat)
     {
@@ -303,7 +303,7 @@ inline std::string buildTimeHeader(const CSVFormat& Format, const openfluid::cor
     HeaderSStr << Format.ColSeparator << VarName << "\n";
   }
 
-  if(Format.Header == CSVFormat::ColnamesAsData)
+  if(Format.Header == CSVFormat::HeaderType::ColnamesAsData)
   {
     if (Format.IsTimeIndexDateFormat)
     {

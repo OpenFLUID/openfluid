@@ -52,9 +52,9 @@ class ConnectorGraphics : public QGraphicsPathItem
 {
   public:
 
-    enum InNodeType { NODE_REQ, NODE_US, NODE_INUP };
+    enum class InNodeType { NODE_REQ, NODE_US, NODE_INUP };
 
-    enum OutNodeType { NODE_PROD, NODE_OUTUP };
+    enum class OutNodeType { NODE_PROD, NODE_OUTUP };
 
 
   private:

@@ -51,7 +51,7 @@ class SerieInfo
 {
   public:
 
-    enum SerieType {SERIE_UNKNOWN, SERIE_VAR, SERIE_FILE};
+    enum class SerieType {SERIE_UNKNOWN, SERIE_VAR, SERIE_FILE};
 
     SerieType Type;
 

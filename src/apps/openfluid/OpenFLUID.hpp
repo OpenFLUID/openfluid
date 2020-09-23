@@ -63,7 +63,7 @@ class OpenFLUIDApp
 {
   private:
 
-    enum RunType { None, Simulation, InfoRequest, Buddy };
+    enum class RunType { None, Simulation, InfoRequest, Buddy };
 
     RunType m_RunType;
 

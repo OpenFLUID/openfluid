@@ -160,7 +160,7 @@ std::string buildMultiColsdHeader(const MultiCSVFormat& Format, const std::strin
 {
   std::ostringstream HeaderSStr;
 
-  if(Format.Header == MultiCSVFormat::Info || Format.Header == MultiCSVFormat::Full)
+  if(Format.Header == MultiCSVFormat::HeaderType::Info || Format.Header == MultiCSVFormat::HeaderType::Full)
   {
     std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
     std::time_t t = std::chrono::system_clock::to_time_t(p);

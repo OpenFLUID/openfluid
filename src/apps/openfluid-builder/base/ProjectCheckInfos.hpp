@@ -46,7 +46,7 @@
 #include <QStringList>
 
 
-enum ProjectStatusLevel { PRJ_OK, PRJ_WARNING, PRJ_DISABLED, PRJ_ERROR };
+enum class ProjectStatusLevel { PRJ_OK, PRJ_WARNING, PRJ_DISABLED, PRJ_ERROR };
 
 
 class ProjectPartCheckInfos
@@ -82,7 +82,7 @@ class ProjectCheckInfos
 {
   public:
 
-    enum PartInfo { PART_MODELDEF, PART_MODELPARAMS,
+    enum class PartInfo { PART_MODELDEF, PART_MODELPARAMS,
                     PART_SPATIALSTRUCT, PART_SPATIALATTRS,
                     PART_DATASTORE,
                     PART_MONITORING,

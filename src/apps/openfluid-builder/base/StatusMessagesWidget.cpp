@@ -100,15 +100,15 @@ void StatusMessagesWidget::addMessage(const QString& Msg)
 
 void StatusMessagesWidget::setStatusLevel(ProjectStatusLevel Level)
 {
-  if (Level == PRJ_WARNING)
+  if (Level == ProjectStatusLevel::PRJ_WARNING)
   {
     ui->StatusIconLabel->setPixmap(openfluid::ui::common::getImage("check-warn","builder"));
   }
-  else if (Level == PRJ_ERROR)
+  else if (Level == ProjectStatusLevel::PRJ_ERROR)
   {
     ui->StatusIconLabel->setPixmap(openfluid::ui::common::getImage("check-error","builder"));
   }
-  else if (Level == PRJ_DISABLED)
+  else if (Level == ProjectStatusLevel::PRJ_DISABLED)
   {
       ui->StatusIconLabel->setPixmap(openfluid::ui::common::getImage("check-disabled","builder"));
   }

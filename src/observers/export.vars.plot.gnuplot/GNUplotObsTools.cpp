@@ -43,7 +43,7 @@
 
 
 SerieInfo::SerieInfo() :
-  Type(SERIE_UNKNOWN), SourceFile(""), FileHandle(nullptr),
+  Type(SerieType::SERIE_UNKNOWN), SourceFile(""), FileHandle(nullptr),
   VarName(""), UnitsClass(""), UnitID(1), Unit(nullptr),
   Label(""), Style("line"), Color("")
 {
@@ -118,12 +118,12 @@ std::vector<std::string> parsePlotFromParamsTree(const openfluid::ware::WarePara
         std::string UnitIDStr = Serie.second.getChildValue("unitID","");
         openfluid::tools::convertString(UnitIDStr, &SInfo.UnitID);
 
-        SInfo.Type = SerieInfo::SERIE_VAR;
+        SInfo.Type = SerieInfo::SerieType::SERIE_VAR;
       }
       else if (Serie.second.hasChild("sourcefile"))
       {
         SInfo.SourceFile = Serie.second.getChildValue("sourcefile","");
-        SInfo.Type = SerieInfo::SERIE_FILE;
+        SInfo.Type = SerieInfo::SerieType::SERIE_FILE;
       }
 
       Plot.Series[SerieID] = SInfo;

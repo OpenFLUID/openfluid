@@ -77,7 +77,7 @@ class NewProjectDialog : public openfluid::ui::common::MessageDialog
 
   public:
 
-    enum ImportType { IMPORT_NONE, IMPORT_PROJECT, IMPORT_DIRECTORY};
+    enum class ImportType { IMPORT_NONE, IMPORT_PROJECT, IMPORT_DIRECTORY};
 
     NewProjectDialog(QWidget *Parent);
 

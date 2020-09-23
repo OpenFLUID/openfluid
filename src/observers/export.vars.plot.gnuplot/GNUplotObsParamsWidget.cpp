@@ -579,8 +579,8 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
     std::string CurrentSerieStr = m_CurrentSerieName.toStdString();
     const SerieInfo& Serie = m_Plot.Series[CurrentSerieStr];
 
-    if (Serie.Type == SerieInfo::SERIE_UNKNOWN
-        || Serie.Type == SerieInfo::SERIE_VAR)
+    if (Serie.Type == SerieInfo::SerieType::SERIE_UNKNOWN
+        || Serie.Type == SerieInfo::SerieType::SERIE_VAR)
     {
       ui->SerieVariableRadio->setChecked(true);
       ui->VariableSourceWidget->show();
@@ -618,7 +618,7 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
         setUnitsClass(ui->UnitsClassComboBox->currentText());
       }
     }
-    else if (Serie.Type == SerieInfo::SERIE_FILE)
+    else if (Serie.Type == SerieInfo::SerieType::SERIE_FILE)
     {
       ui->SerieDataFileRadio->setChecked(true);
       ui->DataFileSourceWidget->show();

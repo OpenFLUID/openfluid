@@ -176,20 +176,20 @@ EditAttributesValuesDialog::EditMode EditAttributesValuesDialog::getEditMode() c
 {
   if (ui->ReplaceRadioButton->isChecked())
   {
-    return EDIT_REPLACE;
+    return EditMode::EDIT_REPLACE;
   }
 
   if (ui->MultRadioButton->isChecked())
   {
-    return EDIT_MULTIPLY;
+    return EditMode::EDIT_MULTIPLY;
   }
 
   if (ui->AddRadioButton->isChecked())
   {
-    return EDIT_ADD;
+    return EditMode::EDIT_ADD;
   }
 
-  return EDIT_UNKNOWN;
+  return EditMode::EDIT_UNKNOWN;
 }
 
 

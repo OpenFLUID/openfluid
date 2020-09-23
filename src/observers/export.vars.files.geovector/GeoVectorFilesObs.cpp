@@ -84,7 +84,7 @@ class GeoVectorSerie
 {
   public:
 
-    enum WhenModeCases {WHENINIT, WHENCONTINUOUS, WHENFINAL};
+    enum class WhenModeCases {WHENINIT, WHENCONTINUOUS, WHENFINAL};
 
     typedef std::map<openfluid::core::VariableName_t,std::string> VariablesSet_t;
 
@@ -117,7 +117,7 @@ class GeoVectorSerie
                    const openfluid::core::UnitsClass_t& UClass,
                    const VariablesSet_t& VarsSet,
                    const std::string& OutfileExt,
-                   const WhenModeCases& Mode = WHENCONTINUOUS,
+                   const WhenModeCases& Mode = WhenModeCases::WHENCONTINUOUS,
                    const openfluid::core::Duration_t& ContModeDelay = 1):
       SerieName(SName),
       GeoSourceFilePath(SrcFilePath),
@@ -263,21 +263,21 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
     {
       if (WhenStr == "init")
       {
-        Mode = GeoVectorSerie::WHENINIT;
+        Mode = GeoVectorSerie::WhenModeCases::WHENINIT;
         ContinuousDelay = 1;
         return true;
       }
 
       if (WhenStr == "final")
       {
-        Mode = GeoVectorSerie::WHENFINAL;
+        Mode = GeoVectorSerie::WhenModeCases::WHENFINAL;
         ContinuousDelay = 1;
         return true;
       }
 
       if (WhenStr.empty() || WhenStr == "continuous")
       {
-        Mode = GeoVectorSerie::WHENCONTINUOUS;
+        Mode = GeoVectorSerie::WhenModeCases::WHENCONTINUOUS;
         ContinuousDelay = 1;
         return true;
       }
@@ -296,7 +296,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
           if (IsConverted)
           {
-            Mode = GeoVectorSerie::WHENCONTINUOUS;
+            Mode = GeoVectorSerie::WhenModeCases::WHENCONTINUOUS;
             return true;
           }
           return false;
@@ -346,13 +346,13 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
       if (CurrentStage == openfluid::base::SimulationStatus::INITIALIZERUN)
       {
-        OKToWrite = Serie.WhenMode == GeoVectorSerie::WHENINIT ||
-                    Serie.WhenMode == GeoVectorSerie::WHENCONTINUOUS;
+        OKToWrite = Serie.WhenMode == GeoVectorSerie::WhenModeCases::WHENINIT ||
+                    Serie.WhenMode == GeoVectorSerie::WhenModeCases::WHENCONTINUOUS;
 
       }
       else if (CurrentStage == openfluid::base::SimulationStatus::RUNSTEP)
       {
-        if (Serie.WhenMode == GeoVectorSerie::WHENCONTINUOUS)
+        if (Serie.WhenMode == GeoVectorSerie::WhenModeCases::WHENCONTINUOUS)
         {
           openfluid::core::TimeIndex_t CurrentIndex = OPENFLUID_GetCurrentTimeIndex();
           IndexStr = QString("%1").arg(CurrentIndex);
@@ -367,8 +367,8 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       else if (CurrentStage == openfluid::base::SimulationStatus::FINALIZERUN)
       {
         IndexStr = "final";
-        OKToWrite = Serie.WhenMode == GeoVectorSerie::WHENCONTINUOUS ||
-                    Serie.WhenMode == GeoVectorSerie::WHENFINAL;
+        OKToWrite = Serie.WhenMode == GeoVectorSerie::WhenModeCases::WHENCONTINUOUS ||
+                    Serie.WhenMode == GeoVectorSerie::WhenModeCases::WHENFINAL;
       }
       else
       {
@@ -605,7 +605,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
       for (auto& Serie : ParamsTree.root().child("geoserie"))
       {
-        GeoVectorSerie::WhenModeCases Mode = GeoVectorSerie::WHENCONTINUOUS;
+        GeoVectorSerie::WhenModeCases Mode = GeoVectorSerie::WhenModeCases::WHENCONTINUOUS;
         openfluid::core::Duration_t ContinuousDelay = 1;
 
         std::string SerieName = Serie.first;

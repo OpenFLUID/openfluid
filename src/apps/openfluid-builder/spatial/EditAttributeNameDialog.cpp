@@ -53,7 +53,7 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
 {
   ui->setupUi(this);
 
-  if (m_Mode == EDIT_ADD)
+  if (m_Mode == EditMode::EDIT_ADD)
   {
     ui->NewNameLabel->setText(tr("Attribute name:"));
     ui->DefaultValueLabel->setText(tr("Default value:"));
@@ -61,7 +61,7 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
     connect(ui->NewNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
     connect(ui->DefaultValueEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   }
-  else if (m_Mode == EDIT_RENAME)
+  else if (m_Mode == EditMode::EDIT_RENAME)
   {
     ui->OriginalNameLabel->setText(tr("Attribute to rename:"));
     ui->OriginalNameComboBox->addItems(AttrsList);
@@ -70,7 +70,7 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
     connect(ui->OriginalNameComboBox,SIGNAL(currentIndexChanged(const QString&)),this,SLOT(checkGlobal()));
     connect(ui->NewNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   }
-  else if (m_Mode == EDIT_REMOVE)
+  else if (m_Mode == EditMode::EDIT_REMOVE)
   {
     ui->OriginalNameLabel->setText(tr("Attribute to remove:"));
     ui->OriginalNameComboBox->addItems(AttrsList);
@@ -82,15 +82,15 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
   ui->NewNameEdit->setPlaceholderText(PlaceholderStr);
   ui->DefaultValueEdit->setPlaceholderText(PlaceholderStr);
 
-  ui->OriginalNameWidget->setVisible(m_Mode == EDIT_REMOVE ||
-                                     m_Mode == EDIT_RENAME);
+  ui->OriginalNameWidget->setVisible(m_Mode == EditMode::EDIT_REMOVE ||
+                                     m_Mode == EditMode::EDIT_RENAME);
 
-  ui->NewNameWidget->setVisible(m_Mode == EDIT_RENAME ||
-                                m_Mode == EDIT_ADD);
+  ui->NewNameWidget->setVisible(m_Mode == EditMode::EDIT_RENAME ||
+                                m_Mode == EditMode::EDIT_ADD);
 
-  ui->DefaultValueWidget->setVisible(m_Mode == EDIT_ADD);
+  ui->DefaultValueWidget->setVisible(m_Mode == EditMode::EDIT_ADD);
 
-  if (m_Mode == EDIT_ADD || m_Mode == EDIT_RENAME)
+  if (m_Mode == EditMode::EDIT_ADD || m_Mode == EditMode::EDIT_RENAME)
   {
     ui->NewNameEdit->setFocus();
   }
@@ -117,7 +117,7 @@ EditAttributeNameDialog::~EditAttributeNameDialog()
 
 void EditAttributeNameDialog::checkGlobal()
 {
-  if (m_Mode == EDIT_ADD)
+  if (m_Mode == EditMode::EDIT_ADD)
   {
     if (m_AttrsNames.contains(ui->NewNameEdit->text()))
     {
@@ -136,7 +136,7 @@ void EditAttributeNameDialog::checkGlobal()
       setMessage();
     }
   }
-  else if (m_Mode == EDIT_RENAME)
+  else if (m_Mode == EditMode::EDIT_RENAME)
   {
     if (m_AttrsNames.contains(ui->NewNameEdit->text()))
     {
@@ -151,7 +151,7 @@ void EditAttributeNameDialog::checkGlobal()
       setMessage();
     }
   }
-  else if (m_Mode == EDIT_REMOVE)
+  else if (m_Mode == EditMode::EDIT_REMOVE)
   {
     setMessage();
   }

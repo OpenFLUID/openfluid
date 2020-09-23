@@ -62,7 +62,7 @@
 // for storing Event IDs in QTableWidget
 Q_DECLARE_METATYPE(openfluid::fluidx::EventID_t);
 
-enum CustomRoles {
+enum class CustomRoles {
     EventIDRole = Qt::UserRole + 1
 };
 
@@ -506,7 +506,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
       Item = new QTableWidgetItem("To");
       // set connection code to 0 for "To"
-      Item->setData(Qt::UserRole,BUILDER_CONNCODE_TO);
+      Item->setData(Qt::UserRole,static_cast<int>(ConnectionCode::BUILDER_CONNCODE_TO));
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -529,7 +529,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
       Item = new QTableWidgetItem("From");
       // set connection code to 1 for "From"
-      Item->setData(Qt::UserRole,BUILDER_CONNCODE_FROM);
+      Item->setData(Qt::UserRole,static_cast<int>(ConnectionCode::BUILDER_CONNCODE_FROM));
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -552,7 +552,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
       Item = new QTableWidgetItem("Child of");
       // set connection code to 2 for "Child of"
-      Item->setData(Qt::UserRole,BUILDER_CONNCODE_CHILDOF);
+      Item->setData(Qt::UserRole,static_cast<int>(ConnectionCode::BUILDER_CONNCODE_CHILDOF));
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -575,7 +575,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
       Item = new QTableWidgetItem("Parent of");
       // set connection code to 3 for "Parent of"
-      Item->setData(Qt::UserRole,BUILDER_CONNCODE_PARENTOF);
+      Item->setData(Qt::UserRole,static_cast<int>(ConnectionCode::BUILDER_CONNCODE_PARENTOF));
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -771,7 +771,8 @@ void SpatialDomainWidget::refreshClassEvents()
           // storage of the event ID for edition and removal
           QTableWidgetItem *Item =
               new QTableWidgetItem(QString::fromStdString(Event.event().getDateTime().getAsISOString()));
-          Item->setData(EventIDRole,QVariant::fromValue<openfluid::fluidx::EventID_t>(Event.getID()));
+          Item->setData(static_cast<int>(CustomRoles::EventIDRole),
+                        QVariant::fromValue<openfluid::fluidx::EventID_t>(Event.getID()));
 
           ui->EventsTableWidget->setItem(RowIndex,0,Item);
 
@@ -1170,22 +1171,22 @@ void SpatialDomainWidget::addConnection()
     std::string DestClass = AddDlg.getDestinationClass().toStdString();
     openfluid::core::UnitID_t DestID = AddDlg.getDestinationID().toInt();
 
-    if (ConnCode == BUILDER_CONNCODE_TO)
+    if (ConnCode == ConnectionCode::BUILDER_CONNCODE_TO)
     {
       m_Domain.addFromToRelation(make_pair(SrcClass,SrcID),
                                  make_pair(DestClass,DestID));
     }
-    else if (ConnCode == BUILDER_CONNCODE_FROM)
+    else if (ConnCode == ConnectionCode::BUILDER_CONNCODE_FROM)
     {
       m_Domain.addFromToRelation(make_pair(DestClass,DestID),
                                  make_pair(SrcClass,SrcID));
     }
-    else if (ConnCode == BUILDER_CONNCODE_PARENTOF)
+    else if (ConnCode == ConnectionCode::BUILDER_CONNCODE_PARENTOF)
     {
       m_Domain.addParentChildRelation(make_pair(SrcClass,SrcID),
                                       make_pair(DestClass,DestID));
     }
-    else if (ConnCode == BUILDER_CONNCODE_CHILDOF)
+    else if (ConnCode == ConnectionCode::BUILDER_CONNCODE_CHILDOF)
     {
       m_Domain.addParentChildRelation(make_pair(DestClass,DestID),
                                       make_pair(SrcClass,SrcID));
@@ -1240,22 +1241,22 @@ void SpatialDomainWidget::removeConnection()
     {
        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-       if (ConnCode == BUILDER_CONNCODE_TO)
+       if (ConnCode == static_cast<int>(ConnectionCode::BUILDER_CONNCODE_TO))
        {
          m_Domain.removeFromToRelation(make_pair(SrcClass.toStdString(),SrcID),
                                        make_pair(DestClass.toStdString(),DestID));
        }
-       else if (ConnCode == BUILDER_CONNCODE_FROM)
+       else if (ConnCode == static_cast<int>(ConnectionCode::BUILDER_CONNCODE_FROM))
        {
          m_Domain.removeFromToRelation(make_pair(DestClass.toStdString(),DestID),
                                        make_pair(SrcClass.toStdString(),SrcID));
        }
-       else if (ConnCode == BUILDER_CONNCODE_PARENTOF)
+       else if (ConnCode == static_cast<int>(ConnectionCode::BUILDER_CONNCODE_PARENTOF))
        {
          m_Domain.removeParentChildRelation(make_pair(SrcClass.toStdString(),SrcID),
                                             make_pair(DestClass.toStdString(),DestID));
        }
-       else if (ConnCode == BUILDER_CONNCODE_CHILDOF)
+       else if (ConnCode == static_cast<int>(ConnectionCode::BUILDER_CONNCODE_CHILDOF))
        {
          m_Domain.removeParentChildRelation(make_pair(DestClass.toStdString(),DestID),
                                             make_pair(SrcClass.toStdString(),SrcID));
@@ -1277,7 +1278,7 @@ void SpatialDomainWidget::removeConnection()
 
 void SpatialDomainWidget::addAttribute()
 {
-  EditAttributeNameDialog AddDlg(EditAttributeNameDialog::EDIT_ADD,
+  EditAttributeNameDialog AddDlg(EditAttributeNameDialog::EditMode::EDIT_ADD,
                                  ProjectCentral::instance()->attributesLists().value(m_ActiveClass),this);
 
   if (AddDlg.exec() == QDialog::Accepted)
@@ -1304,7 +1305,7 @@ void SpatialDomainWidget::editAttributesValues()
 
     if (EditDlg.exec() == QDialog::Accepted)
     {
-      if (EditDlg.getEditMode() == EditAttributesValuesDialog::EDIT_REPLACE)
+      if (EditDlg.getEditMode() == EditAttributesValuesDialog::EditMode::EDIT_REPLACE)
       {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
@@ -1329,7 +1330,7 @@ void SpatialDomainWidget::editAttributesValues()
 
         if (GlobalOK)
         {
-          if (EditDlg.getEditMode() == EditAttributesValuesDialog::EDIT_MULTIPLY)
+          if (EditDlg.getEditMode() == EditAttributesValuesDialog::EditMode::EDIT_MULTIPLY)
           {
             double MultValue = EditDlg.getMultiplyValue();
             for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
@@ -1391,7 +1392,7 @@ void SpatialDomainWidget::renameAttribute()
   }
   else
   {
-    EditAttributeNameDialog RenameDlg(EditAttributeNameDialog::EDIT_RENAME,AttrsNames,this);
+    EditAttributeNameDialog RenameDlg(EditAttributeNameDialog::EditMode::EDIT_RENAME,AttrsNames,this);
     if (RenameDlg.exec() == QDialog::Accepted)
     {
       m_Domain.renameAttribute(m_ActiveClass.toStdString(),
@@ -1425,7 +1426,7 @@ void SpatialDomainWidget::removeAttribute()
   }
   else
   {
-    EditAttributeNameDialog RemoveDlg(EditAttributeNameDialog::EDIT_REMOVE,AttrsNames,this);
+    EditAttributeNameDialog RemoveDlg(EditAttributeNameDialog::EditMode::EDIT_REMOVE,AttrsNames,this);
     if (RemoveDlg.exec() == QDialog::Accepted)
     {
       if (openfluid::base::PreferencesManager::instance()->isBuilderSpatialAttrsRemovalConfirm())
@@ -1743,7 +1744,8 @@ void SpatialDomainWidget::editEvent()
   if (Row >= 0)
   {
     openfluid::fluidx::EventID_t OriginEventID =
-        ui->EventsTableWidget->item(Row,0)->data(EventIDRole).value<openfluid::fluidx::EventID_t>();
+        ui->EventsTableWidget->item(Row,0)->data(
+          static_cast<int>(CustomRoles::EventIDRole)).value<openfluid::fluidx::EventID_t>();
 
     openfluid::fluidx::EventDescriptor* EvDesc = &(m_Domain.event(OriginEventID));
 
@@ -1824,7 +1826,8 @@ void SpatialDomainWidget::removeEvents()
         openfluid::core::UnitID_t UnitID = ui->EventsTableWidget->item(SelItems[0]->row(),1)->text().toInt();
 
         openfluid::fluidx::EventID_t EventID =
-            ui->EventsTableWidget->item(SelItems[0]->row(),0)->data(EventIDRole).value<openfluid::fluidx::EventID_t>();
+            ui->EventsTableWidget->item(SelItems[0]->row(),0)->data(
+              static_cast<int>(CustomRoles::EventIDRole)).value<openfluid::fluidx::EventID_t>();
 
         m_Domain.deleteEvent(m_ActiveClass.toStdString(),UnitID,EventID);
 

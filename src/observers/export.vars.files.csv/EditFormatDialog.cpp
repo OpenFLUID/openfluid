@@ -65,7 +65,8 @@ EditFormatDialog::EditFormatDialog(const QStringList& ExistingFormats,QWidget* P
 
   // Columns names as data
   m_HeaderLabels << tr("Columns names as comments") << tr("Columns names as data") << tr("Full") << tr("None");
-  m_HeaderCodes << CSVFormat::ColnamesAsComment << CSVFormat::ColnamesAsData << CSVFormat::Full << CSVFormat::None;
+  m_HeaderCodes << CSVFormat::HeaderType::ColnamesAsComment << CSVFormat::HeaderType::ColnamesAsData << 
+                   CSVFormat::HeaderType::Full << CSVFormat::HeaderType::None;
 
   m_DateLabels << "ISO" << tr("6 columns") << tr("Time index");
   m_DateCodes << "ISO" << "6cols" << "timeindex";

@@ -65,8 +65,8 @@ MultiEditFormatDialog::MultiEditFormatDialog(const QStringList& ExistingFormats,
 
   // Columns names as data
   m_HeaderLabels << tr("Columns names as comments") << tr("Columns names as data") << tr("Full") << tr("None");
-  m_HeaderCodes << MultiCSVFormat::ColnamesAsComment << MultiCSVFormat::ColnamesAsData \
-                << MultiCSVFormat::Full << MultiCSVFormat::None;
+  m_HeaderCodes << MultiCSVFormat::HeaderType::ColnamesAsComment << MultiCSVFormat::HeaderType::ColnamesAsData \
+                << MultiCSVFormat::HeaderType::Full << MultiCSVFormat::HeaderType::None;
 
   m_DateLabels << "ISO" << tr("6 columns") << tr("Time index");
   m_DateCodes << "ISO" << "6cols" << "timeindex";

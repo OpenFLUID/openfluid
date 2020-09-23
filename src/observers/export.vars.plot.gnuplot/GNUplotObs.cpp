@@ -163,7 +163,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         std::string SerieID = Sit->first;
 
         // Check of attributes
-        if (Sit->second.Type == SerieInfo::SERIE_VAR)
+        if (Sit->second.Type == SerieInfo::SerieType::SERIE_VAR)
         {
           if (!Sit->second.VarName.empty() && !Sit->second.UnitsClass.empty())
           {
@@ -178,16 +178,16 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
           if (Sit->second.Unit == nullptr)
           {
-            Sit->second.Type = SerieInfo::SERIE_UNKNOWN;
+            Sit->second.Type = SerieInfo::SerieType::SERIE_UNKNOWN;
           }
         }
-        else if (Sit->second.Type == SerieInfo::SERIE_FILE && Sit->second.SourceFile.empty())
+        else if (Sit->second.Type == SerieInfo::SerieType::SERIE_FILE && Sit->second.SourceFile.empty())
         {
-          Sit->second.Type = SerieInfo::SERIE_UNKNOWN;
+          Sit->second.Type = SerieInfo::SerieType::SERIE_UNKNOWN;
         }
 
 
-        if (Sit->second.Type == SerieInfo::SERIE_UNKNOWN)
+        if (Sit->second.Type == SerieInfo::SerieType::SERIE_UNKNOWN)
         {
           Sit = m_Plot.Series.erase(Sit);
           OPENFLUID_LogWarning("Serie " + SerieID + " ignored");
@@ -231,7 +231,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
       for (Sit = Sitb; Sit != Site; ++Sit)
       {
-        if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
+        if ((*Sit).second.Type == SerieInfo::SerieType::SERIE_VAR)
         {
           openfluid::core::Value* Val =
               (*Sit).second.Unit->variables()->currentValueIfIndex((*Sit).second.VarName,
@@ -268,7 +268,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
       for (Sit = Sitb; Sit != Site; ++Sit)
       {
-        if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
+        if ((*Sit).second.Type == SerieInfo::SerieType::SERIE_VAR)
         {
           if ((*Sit).second.FileHandle != nullptr && (*Sit).second.FileHandle->is_open())
           {
@@ -298,7 +298,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
       for (Sit = Sitb; Sit != Site; ++Sit)
       {
-        if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
+        if ((*Sit).second.Type == SerieInfo::SerieType::SERIE_VAR)
         {
           (*Sit).second.FileHandle = new std::ofstream(std::string(m_OutputDir+"/"+(*Sit).second.SourceFile).c_str());
         }
@@ -434,7 +434,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         for (Sit = Sitb; Sit != Site; ++Sit)
         {
           std::string SourceDir = m_OutputDir;
-          if ((*Sit)->Type == SerieInfo::SERIE_FILE)
+          if ((*Sit)->Type == SerieInfo::SerieType::SERIE_FILE)
           {
             SourceDir = m_InputDir;
           }
@@ -442,7 +442,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
           std::string Label = (*Sit)->Label;
           if (Label.empty())
           {
-            if ((*Sit)->Type == SerieInfo::SERIE_FILE)
+            if ((*Sit)->Type == SerieInfo::SerieType::SERIE_FILE)
             {
               Label = (*Sit)->SourceFile;
             }

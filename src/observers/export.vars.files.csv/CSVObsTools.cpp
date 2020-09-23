@@ -63,7 +63,7 @@ std::string buildHeader(const CSVFormat& Format, const std::string& FilePath,
 {
   std::ostringstream HeaderSStr;
 
-  if(Format.Header == CSVFormat::Info || Format.Header == CSVFormat::Full)
+  if(Format.Header == CSVFormat::HeaderType::Info || Format.Header == CSVFormat::HeaderType::Full)
   {
     std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
     std::time_t t = std::chrono::system_clock::to_time_t(p);

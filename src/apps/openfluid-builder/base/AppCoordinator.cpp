@@ -344,7 +344,7 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
     return false;
   }
 
-  if (IType == NewProjectDialog::IMPORT_NONE)
+  if (IType == NewProjectDialog::ImportType::IMPORT_NONE)
   {
     openfluid::base::IOListener Listener;
     openfluid::fluidx::FluidXDescriptor FXD(&Listener);
@@ -360,7 +360,7 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
 
     return true;
   }
-  else if (IType == NewProjectDialog::IMPORT_PROJECT)
+  else if (IType == NewProjectDialog::ImportType::IMPORT_PROJECT)
   {
     openfluid::tools::copyDirectoryContentsRecursively(ISource.toStdString()+"/IN",PrjMan->getInputDir());
     return true;

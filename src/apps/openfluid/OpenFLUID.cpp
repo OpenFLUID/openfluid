@@ -81,7 +81,7 @@
 OpenFLUIDApp::OpenFLUIDApp() :
   mp_RunEnv(nullptr)
 {
-  m_RunType = None;
+  m_RunType = RunType::None;
   mp_Engine = nullptr;
   m_BuddyToRun.first = "";
   m_BuddyToRun.second = "";
@@ -536,7 +536,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (Parser.isHelpAsked() || ArgC == 1)
   {
-    m_RunType = None;
+    m_RunType = RunType::None;
     Parser.printHelp(std::cout);
     return;
   }
@@ -548,7 +548,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     if (Parser.command(ActiveCommandStr).isOptionActive("version"))
     {
       std::cout << openfluid::config::VERSION_FULL << std::endl;
-      m_RunType = InfoRequest;
+      m_RunType = RunType::InfoRequest;
       return;
     }
   }
@@ -626,7 +626,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       openfluid::base::RunContextManager::instance()->setProfiling(true);
     }
 
-    m_RunType = Simulation;
+    m_RunType = RunType::Simulation;
     return;
   }
   else if (ActiveCommandStr == "report")
@@ -749,11 +749,11 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       {
         m_BuddyToRun.second = Parser.command(ActiveCommandStr).getOptionValue("options");
       }
-      m_RunType = Buddy;
+      m_RunType = RunType::Buddy;
       return;
     }
 
-    m_RunType = None;
+    m_RunType = RunType::None;
     return;
   }
   else if (ActiveCommandStr == "show-paths")
@@ -770,7 +770,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
           Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
     }
 
-    m_RunType = InfoRequest;
+    m_RunType = RunType::InfoRequest;
     printPaths();
     return;
   }
@@ -835,11 +835,11 @@ void OpenFLUIDApp::run()
 {
   openfluid::tools::Console::saveAttributes();
 
-  if (m_RunType == Simulation)
+  if (m_RunType == RunType::Simulation)
   {
     runSimulation();
   }
-  else if (m_RunType == Buddy)
+  else if (m_RunType == RunType::Buddy)
   {
     runBuddy();
   }

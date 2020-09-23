@@ -258,16 +258,16 @@ NewProjectDialog::ImportType NewProjectDialog::getImportType() const
   {
     if (ui->ProjectRadioButton->isChecked())
     {
-      return IMPORT_PROJECT;
+      return ImportType::IMPORT_PROJECT;
     }
     else
     {
-      return IMPORT_DIRECTORY;
+      return ImportType::IMPORT_DIRECTORY;
     }
   }
   else
   {
-    return IMPORT_NONE;
+    return ImportType::IMPORT_NONE;
   }
 }
 
@@ -278,11 +278,11 @@ NewProjectDialog::ImportType NewProjectDialog::getImportType() const
 
 QString NewProjectDialog::getImportSource() const
 {
-  if (getImportType() == IMPORT_PROJECT)
+  if (getImportType() == ImportType::IMPORT_PROJECT)
   {
     return ui->ProjectLabel->text();
   }
-  if (getImportType() == IMPORT_DIRECTORY)
+  if (getImportType() == ImportType::IMPORT_DIRECTORY)
   {
     return ui->DirectoryLabel->text();
   }

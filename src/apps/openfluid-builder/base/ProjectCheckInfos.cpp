@@ -42,7 +42,7 @@
 
 ProjectPartCheckInfos::ProjectPartCheckInfos()
 {
-  m_Status = PRJ_OK;
+  m_Status = ProjectStatusLevel::PRJ_OK;
 }
 
 
@@ -96,7 +96,7 @@ void ProjectPartCheckInfos::addMessage(const QString& Msg)
 void ProjectPartCheckInfos::clear()
 {
   m_Messages.clear();
-  m_Status = PRJ_OK;
+  m_Status = ProjectStatusLevel::PRJ_OK;
 }
 
 
@@ -106,13 +106,13 @@ void ProjectPartCheckInfos::clear()
 
 ProjectCheckInfos::ProjectCheckInfos()
 {
-  m_Infos[PART_MODELDEF] = ProjectPartCheckInfos();
-  m_Infos[PART_MODELPARAMS] = ProjectPartCheckInfos();
-  m_Infos[PART_SPATIALSTRUCT] = ProjectPartCheckInfos();
-  m_Infos[PART_SPATIALATTRS] = ProjectPartCheckInfos();
-  m_Infos[PART_DATASTORE] = ProjectPartCheckInfos();
-  m_Infos[PART_MONITORING] = ProjectPartCheckInfos();
-  m_Infos[PART_RUNCONFIG] = ProjectPartCheckInfos();
+  m_Infos[PartInfo::PART_MODELDEF] = ProjectPartCheckInfos();
+  m_Infos[PartInfo::PART_MODELPARAMS] = ProjectPartCheckInfos();
+  m_Infos[PartInfo::PART_SPATIALSTRUCT] = ProjectPartCheckInfos();
+  m_Infos[PartInfo::PART_SPATIALATTRS] = ProjectPartCheckInfos();
+  m_Infos[PartInfo::PART_DATASTORE] = ProjectPartCheckInfos();
+  m_Infos[PartInfo::PART_MONITORING] = ProjectPartCheckInfos();
+  m_Infos[PartInfo::PART_RUNCONFIG] = ProjectPartCheckInfos();
 }
 
 
@@ -122,13 +122,13 @@ ProjectCheckInfos::ProjectCheckInfos()
 
 bool ProjectCheckInfos::isOKForSimulation() const
 {
-  return (m_Infos.at(PART_MODELDEF).getStatus() < PRJ_DISABLED &&
-          m_Infos.at(PART_MODELPARAMS).getStatus() < PRJ_DISABLED &&
-          m_Infos.at(PART_SPATIALSTRUCT).getStatus() < PRJ_DISABLED &&
-          m_Infos.at(PART_SPATIALATTRS).getStatus() < PRJ_DISABLED &&
-          m_Infos.at(PART_DATASTORE).getStatus() < PRJ_DISABLED &&
-          m_Infos.at(PART_MONITORING).getStatus() < PRJ_DISABLED &&
-          m_Infos.at(PART_RUNCONFIG).getStatus() < PRJ_DISABLED);
+  return (m_Infos.at(PartInfo::PART_MODELDEF).getStatus() < ProjectStatusLevel::PRJ_DISABLED &&
+          m_Infos.at(PartInfo::PART_MODELPARAMS).getStatus() < ProjectStatusLevel::PRJ_DISABLED &&
+          m_Infos.at(PartInfo::PART_SPATIALSTRUCT).getStatus() < ProjectStatusLevel::PRJ_DISABLED &&
+          m_Infos.at(PartInfo::PART_SPATIALATTRS).getStatus() < ProjectStatusLevel::PRJ_DISABLED &&
+          m_Infos.at(PartInfo::PART_DATASTORE).getStatus() < ProjectStatusLevel::PRJ_DISABLED &&
+          m_Infos.at(PartInfo::PART_MONITORING).getStatus() < ProjectStatusLevel::PRJ_DISABLED &&
+          m_Infos.at(PartInfo::PART_RUNCONFIG).getStatus() < ProjectStatusLevel::PRJ_DISABLED);
 }
 
 
@@ -138,13 +138,13 @@ bool ProjectCheckInfos::isOKForSimulation() const
 
 ProjectStatusLevel ProjectCheckInfos::getOverallStatus() const
 {
-  return (qMax(m_Infos.at(PART_MODELDEF).getStatus(),
-               qMax(m_Infos.at(PART_MODELPARAMS).getStatus(),
-                    qMax(m_Infos.at(PART_SPATIALSTRUCT).getStatus(),
-                         qMax(m_Infos.at(PART_SPATIALATTRS).getStatus(),
-                              qMax(m_Infos.at(PART_DATASTORE).getStatus(),
-                                   qMax(m_Infos.at(PART_MONITORING).getStatus(),
-                                        m_Infos.at(PART_RUNCONFIG).getStatus())))))));
+  return (qMax(m_Infos.at(PartInfo::PART_MODELDEF).getStatus(),
+               qMax(m_Infos.at(PartInfo::PART_MODELPARAMS).getStatus(),
+                    qMax(m_Infos.at(PartInfo::PART_SPATIALSTRUCT).getStatus(),
+                         qMax(m_Infos.at(PartInfo::PART_SPATIALATTRS).getStatus(),
+                              qMax(m_Infos.at(PartInfo::PART_DATASTORE).getStatus(),
+                                   qMax(m_Infos.at(PartInfo::PART_MONITORING).getStatus(),
+                                        m_Infos.at(PartInfo::PART_RUNCONFIG).getStatus())))))));
 }
 
 
@@ -154,11 +154,11 @@ ProjectStatusLevel ProjectCheckInfos::getOverallStatus() const
 
 void ProjectCheckInfos::clear()
 {
-  m_Infos[PART_MODELDEF].clear();
-  m_Infos[PART_MODELPARAMS].clear();
-  m_Infos[PART_SPATIALSTRUCT].clear();
-  m_Infos[PART_SPATIALATTRS].clear();
-  m_Infos[PART_DATASTORE].clear();
-  m_Infos[PART_MONITORING].clear();
-  m_Infos[PART_RUNCONFIG].clear();
+  m_Infos[PartInfo::PART_MODELDEF].clear();
+  m_Infos[PartInfo::PART_MODELPARAMS].clear();
+  m_Infos[PartInfo::PART_SPATIALSTRUCT].clear();
+  m_Infos[PartInfo::PART_SPATIALATTRS].clear();
+  m_Infos[PartInfo::PART_DATASTORE].clear();
+  m_Infos[PartInfo::PART_MONITORING].clear();
+  m_Infos[PartInfo::PART_RUNCONFIG].clear();
 }

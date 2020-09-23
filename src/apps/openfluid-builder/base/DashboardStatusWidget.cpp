@@ -78,33 +78,40 @@ DashboardStatusWidget::DashboardStatusWidget(const ProjectCentral* PrjCentral,QW
   ui->ContentsWidget->setLayout(Layout);
 
 
-  mp_MessagesWidgets[ProjectCheckInfos::PART_MODELDEF] = new StatusMessagesWidget(tr("Model definition"),this);
-  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(mp_MessagesWidgets[ProjectCheckInfos::PART_MODELDEF],
+  mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_MODELDEF] = 
+    new StatusMessagesWidget(tr("Model definition"),this);
+  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_MODELDEF],
                                                          0,Qt::AlignTop);
 
-  mp_MessagesWidgets[ProjectCheckInfos::PART_MODELPARAMS] = new StatusMessagesWidget(tr("Model parameters"),this);
-  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(mp_MessagesWidgets[ProjectCheckInfos::PART_MODELPARAMS],
-                                                         0,Qt::AlignTop);
+  mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_MODELPARAMS] = 
+    new StatusMessagesWidget(tr("Model parameters"),this);
+  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(
+    mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_MODELPARAMS],0,Qt::AlignTop);
 
-  mp_MessagesWidgets[ProjectCheckInfos::PART_SPATIALSTRUCT] = new StatusMessagesWidget(tr("Spatial structure"),this);
-  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(mp_MessagesWidgets[ProjectCheckInfos::PART_SPATIALSTRUCT],
-                                                         0,Qt::AlignTop);
+  mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT] = 
+    new StatusMessagesWidget(tr("Spatial structure"),this);
+  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(
+    mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT],0,Qt::AlignTop);
 
-  mp_MessagesWidgets[ProjectCheckInfos::PART_SPATIALATTRS] = new StatusMessagesWidget(tr("Spatial attributes"),this);
-  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(mp_MessagesWidgets[ProjectCheckInfos::PART_SPATIALATTRS],
-                                                         0,Qt::AlignTop);
+  mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_SPATIALATTRS] = 
+    new StatusMessagesWidget(tr("Spatial attributes"),this);
+  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(
+    mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_SPATIALATTRS],0,Qt::AlignTop);
 
-  mp_MessagesWidgets[ProjectCheckInfos::PART_DATASTORE] = new StatusMessagesWidget(tr("Datastore"),this);
-  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(mp_MessagesWidgets[ProjectCheckInfos::PART_DATASTORE],
-                                                         0,Qt::AlignTop);
+  mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_DATASTORE] = 
+    new StatusMessagesWidget(tr("Datastore"),this);
+  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(
+    mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_DATASTORE],0,Qt::AlignTop);
 
-  mp_MessagesWidgets[ProjectCheckInfos::PART_MONITORING] = new StatusMessagesWidget(tr("Monitoring"),this);
-  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(mp_MessagesWidgets[ProjectCheckInfos::PART_MONITORING],
-                                                         0,Qt::AlignTop);
+  mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_MONITORING] = 
+    new StatusMessagesWidget(tr("Monitoring"),this);
+  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(
+    mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_MONITORING],0,Qt::AlignTop);
 
-  mp_MessagesWidgets[ProjectCheckInfos::PART_RUNCONFIG] = new StatusMessagesWidget(tr("Monitoring"),this);
-  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(mp_MessagesWidgets[ProjectCheckInfos::PART_RUNCONFIG],
-                                                         0,Qt::AlignTop);
+  mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_RUNCONFIG] = 
+    new StatusMessagesWidget(tr("Monitoring"),this);
+  ((QBoxLayout*)ui->ContentsWidget->layout())->addWidget(
+    mp_MessagesWidgets[ProjectCheckInfos::PartInfo::PART_RUNCONFIG],0,Qt::AlignTop);
 
   ((QBoxLayout*)ui->ContentsWidget->layout())->addStretch();
 
@@ -156,19 +163,19 @@ void DashboardStatusWidget::refresh()
 
 void DashboardStatusWidget::setLevel(const ProjectStatusLevel Level)
 {
-  if (Level == PRJ_OK)
+  if (Level == ProjectStatusLevel::PRJ_OK)
   {
     ui->TitleLabel->setText(tr("Ready for simulation"));
     ui->NoMessageLabel->setVisible(true);
     m_BorderColor = "#55B332";
   }
-  else if (Level == PRJ_WARNING)
+  else if (Level == ProjectStatusLevel::PRJ_WARNING)
   {
     ui->TitleLabel->setText(tr("Ready for simulation, with warnings"));
     ui->NoMessageLabel->setVisible(false);
     m_BorderColor = "#E3A740";
   }
-  else if (Level == PRJ_ERROR)
+  else if (Level == ProjectStatusLevel::PRJ_ERROR)
   {
     ui->TitleLabel->setText(tr("Simulation cannot be run"));
     ui->NoMessageLabel->setVisible(false);
