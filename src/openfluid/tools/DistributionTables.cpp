@@ -61,14 +61,13 @@ void DistributionTables::build(const std::string& BasePath,
   QDomDocument Doc;
   QDomElement Root;
 
-  std::string SourcesFilePath = BasePath+"/"+SourcesFileName;
+  std::string SourcesFilePath = openfluid::tools::Filesystem::joinPath({BasePath,SourcesFileName});
 
 
   QFile File(QString(SourcesFilePath.c_str()));
   if (!File.open(QIODevice::ReadOnly))
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-        "Error opening " + SourcesFilePath);
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error opening "+SourcesFilePath);
   }
 
   bool Parsed = Doc.setContent(&File);
@@ -98,7 +97,8 @@ void DistributionTables::build(const std::string& BasePath,
 
                 if (!xmlID.isNull() && !xmlFile.isNull())
                 {
-                  SourcesTable[xmlID.toStdString()] = BasePath + "/" + xmlFile.toStdString();
+                  SourcesTable[xmlID.toStdString()] = 
+                    openfluid::tools::Filesystem::joinPath({BasePath,xmlFile.toStdString()});
                 }
               }
             }
@@ -132,7 +132,7 @@ void DistributionTables::build(const std::string& BasePath,
 
   ColumnTextParser DistriFileParser("%");
 
-  std::string DistributionFilePath = BasePath+"/"+DistributionFileName;
+  std::string DistributionFilePath = openfluid::tools::Filesystem::joinPath({BasePath,DistributionFileName});
 
   if (openfluid::tools::Filesystem::isFile(DistributionFilePath))
   {

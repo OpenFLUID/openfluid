@@ -227,7 +227,8 @@ void NewSimulatorBuddy::writeSimulatorCPP()
   CPPContent << std::endl;
 
   std::ofstream OutFile;
-  std::string OutFilePath = m_Options["outputdir"]+"/"+m_Options["cppclass"]+".cpp";
+  std::string OutFilePath = openfluid::tools::Filesystem::joinPath({m_Options["outputdir"],
+                                                                    m_Options["cppclass"]+".cpp"});
 
   OutFile.open(OutFilePath.c_str(),std::ios::out);
   OutFile << CPPContent.str();

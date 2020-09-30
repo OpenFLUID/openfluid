@@ -47,6 +47,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/waresdev/WareSrcMsgParser.hpp>
@@ -350,7 +351,9 @@ std::map<QString,QString> WareSrcContainer::getConfigureVariables() const
 
   if (!OpenFLUIDInstallPrefix.isNull())
   {
-    Vars["CMAKE_PREFIX_PATH"] = OpenFLUIDInstallPrefix + "/lib/cmake";
+    Vars["CMAKE_PREFIX_PATH"] = 
+      QString::fromStdString(openfluid::tools::Filesystem::joinPath({OpenFLUIDInstallPrefix.toStdString(),
+                                                                     "lib","cmake"}));
   }
 
   return Vars;

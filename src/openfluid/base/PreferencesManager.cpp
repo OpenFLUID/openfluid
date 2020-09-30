@@ -46,6 +46,7 @@
 #include <openfluid/config.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include "PreferencesManager.hpp"
 
@@ -447,7 +448,9 @@ QString PreferencesManager::getBuilderWorkspacePath()
 
 QString PreferencesManager::getBuilderProjectsPath()
 {
-  return getBuilderWorkspacePath()+"/"+QString::fromStdString(openfluid::config::PROJECTS_PATH);
+  return 
+    QString::fromStdString(openfluid::tools::Filesystem::joinPath({getBuilderWorkspacePath().toStdString(),
+                                                                   openfluid::config::PROJECTS_PATH}));
 }
 
 

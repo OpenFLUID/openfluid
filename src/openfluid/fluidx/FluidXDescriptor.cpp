@@ -1327,7 +1327,7 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
 
 
   // model
-  OutFilename = DirPath + "/model.fluidx";
+  OutFilename = openfluid::tools::Filesystem::joinPath({DirPath,"model.fluidx"});
 
   mp_Listener->onFileWrite(OutFilename);
 
@@ -1346,7 +1346,7 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
 
 
   // domain
-  OutFilename = DirPath + "/domain.fluidx";
+  OutFilename = openfluid::tools::Filesystem::joinPath({DirPath,"domain.fluidx"});
 
   mp_Listener->onFileWrite(OutFilename);
 
@@ -1365,7 +1365,7 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
 
 
   // datastore
-  OutFilename = DirPath + "/datastore.fluidx";
+  OutFilename = openfluid::tools::Filesystem::joinPath({DirPath,"datastore.fluidx"});
 
   mp_Listener->onFileWrite(OutFilename);
 
@@ -1384,7 +1384,7 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
 
 
   // monitoring
-  OutFilename = DirPath + "/monitoring.fluidx";
+  OutFilename = openfluid::tools::Filesystem::joinPath({DirPath,"monitoring.fluidx"});
 
   mp_Listener->onFileWrite(OutFilename);
 
@@ -1403,7 +1403,7 @@ void FluidXDescriptor::writeToManyFiles(const std::string& DirPath)
 
 
   // run
-  OutFilename = DirPath + "/run.fluidx";
+  OutFilename = openfluid::tools::Filesystem::joinPath({DirPath,"run.fluidx"});
 
   mp_Listener->onFileWrite(OutFilename);
 

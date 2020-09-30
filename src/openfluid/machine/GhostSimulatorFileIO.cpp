@@ -46,6 +46,7 @@
 
 #include <openfluid/machine/GhostSimulatorFileIO.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -156,8 +157,9 @@ bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature&
 
   std::ofstream OutFile;
 
-  std::string OutFilename = DirPath + "/" + Signature.ID +
-                            openfluid::config::SIMULATORS_GHOSTS_SUFFIX + openfluid::config::GHOSTS_EXT;
+  std::string OutFilename = openfluid::tools::Filesystem::joinPath({DirPath,Signature.ID+
+                                                                            openfluid::config::SIMULATORS_GHOSTS_SUFFIX+
+                                                                            openfluid::config::GHOSTS_EXT});
 
   OutFile.open(OutFilename.c_str(), std::ios::out);
 

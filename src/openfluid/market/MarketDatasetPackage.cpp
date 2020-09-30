@@ -100,7 +100,7 @@ void MarketDatasetPackage::process()
   }
 
 
-  std::string DatasetInstallDir = getInstallPath() + "/" + m_ID;
+  std::string DatasetInstallDir = openfluid::tools::Filesystem::joinPath({getInstallPath(),m_ID});
 
   if (openfluid::tools::Filesystem::isDirectory(DatasetInstallDir))
   {

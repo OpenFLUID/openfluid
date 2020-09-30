@@ -107,7 +107,7 @@ void NewDataBuddy::generateRunXML()
   Content << "  </run>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  std::string FilePath = m_OutputDirPath+"/run.fluidx";
+  std::string FilePath = openfluid::tools::Filesystem::joinPath({m_OutputDirPath,"run.fluidx"});
 
   std::ofstream OutFile;
 
@@ -134,7 +134,7 @@ void NewDataBuddy::generateModelXML()
   Content << "  </model>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  std::string FilePath = m_OutputDirPath + "/model.fluidx";
+  std::string FilePath = openfluid::tools::Filesystem::joinPath({m_OutputDirPath,"model.fluidx"});
 
   std::ofstream OutFile;
 
@@ -166,7 +166,7 @@ void NewDataBuddy::generateOutputXML()
   Content << "  </output>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  std::string FilePath = m_OutputDirPath + "/output.fluidx";
+  std::string FilePath = openfluid::tools::Filesystem::joinPath({m_OutputDirPath,"output.fluidx"});
 
   std::ofstream OutFile;
 
@@ -208,7 +208,7 @@ void NewDataBuddy::generateEventsXML()
   Content << "  </domain>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  std::string FilePath = m_OutputDirPath + "/eventsAandB.events.fluidx";
+  std::string FilePath = openfluid::tools::Filesystem::joinPath({m_OutputDirPath,"eventsAandB.events.fluidx"});
 
   std::ofstream OutFile;
 
@@ -245,7 +245,7 @@ void NewDataBuddy::generateDDefXML()
   Content << "  </domain>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  std::string FilePath = m_OutputDirPath + "/unitsAandB.ddef.fluidx";
+  std::string FilePath = openfluid::tools::Filesystem::joinPath({m_OutputDirPath,"unitsAandB.ddef.fluidx"});
 
   std::ofstream OutFile;
 
@@ -278,7 +278,7 @@ void NewDataBuddy::generateDDataXML()
   ContentA << "  </domain>" << std::endl;
   ContentA << getXMLFooter() << std::endl;
 
-  FilePath = m_OutputDirPath + "/unitsA.ddata.fluidx";
+  FilePath = openfluid::tools::Filesystem::joinPath({m_OutputDirPath,"unitsA.ddata.fluidx"});
 
   OutFileA.open(FilePath.c_str(),std::ios::out);
   OutFileA << ContentA.str();
@@ -296,7 +296,7 @@ void NewDataBuddy::generateDDataXML()
   ContentB << "  </domain>" << std::endl;
   ContentB << getXMLFooter() << std::endl;
 
-  FilePath = m_OutputDirPath + "/unitsB.ddata.fluidx";
+  FilePath = openfluid::tools::Filesystem::joinPath({m_OutputDirPath,"unitsB.ddata.fluidx"});
 
   OutFileB.open(FilePath.c_str(),std::ios::out);
   OutFileB << ContentB.str();

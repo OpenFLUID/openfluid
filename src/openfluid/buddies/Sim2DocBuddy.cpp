@@ -174,7 +174,7 @@ void Sim2DocBuddy::copyDocDirectory()
 {
   if (m_InputDirPath != m_OutputDirPath)
   {
-    std::string InputDocDirPath = m_InputDirPath + "/doc";
+    std::string InputDocDirPath = openfluid::tools::Filesystem::joinPath({m_InputDirPath,"doc"});
 
     if (openfluid::tools::Filesystem::isDirectory(InputDocDirPath))
     {
@@ -229,7 +229,10 @@ void Sim2DocBuddy::cpreprocessCPP()
 
   mp_Listener->onSubstageCompleted("** Preprocessing C++ file (using gcc)...");
 
-  m_CProcessedFilePath = m_OutputDirPath + "/" + openfluid::tools::Filesystem::filename(m_InputFilePath) + ".sim2doc";
+  m_CProcessedFilePath = 
+    openfluid::tools::Filesystem::joinPath(
+      {m_OutputDirPath,openfluid::tools::Filesystem::filename(m_InputFilePath)+".sim2doc"}
+    );
 
   openfluid::tools::Filesystem::removeFile(m_CProcessedFilePath);
 
@@ -778,7 +781,7 @@ void Sim2DocBuddy::generateLatex()
 
   // save of latex file content
 
-  m_OutputLatexFilePath = m_OutputDirPath+"/"+m_SimID+".tex";
+  m_OutputLatexFilePath = openfluid::tools::Filesystem::joinPath({m_OutputDirPath,m_SimID+".tex"});
 
   std::ofstream OutputFile(m_OutputLatexFilePath.c_str(),std::ios::out);
   OutputFile << m_LatexOutFile;
@@ -794,8 +797,10 @@ void Sim2DocBuddy::generateLatex()
 
 bool Sim2DocBuddy::isErrorInPDFLatexLog()
 {
-  std::string LogFilePath = m_OutputDirPath + "/" +
-                            openfluid::tools::Filesystem::basename(m_OutputLatexFilePath) + ".log";
+  std::string LogFilePath = 
+    openfluid::tools::Filesystem::joinPath({m_OutputDirPath,
+                                            openfluid::tools::Filesystem::basename(m_OutputLatexFilePath)+".log"
+                                           });
 
   std::ifstream LogFile(LogFilePath.c_str());
 
@@ -843,7 +848,7 @@ void Sim2DocBuddy::buildPDF()
                                 + m_OutputLatexFilePath + " > /dev/null";
 
   std::string BibCommandToRun = m_BibtexProgram.getFullProgramPath().toStdString()
-                                + " " + m_OutputDirPath+"/"+m_SimID
+                                + " " + openfluid::tools::Filesystem::joinPath({m_OutputDirPath,m_SimID})
                                 + " > /dev/null";
 
   mp_Listener->onSubstageCompleted(" first pass...");

@@ -228,7 +228,7 @@ void copyDirectoryContentsRecursively(const std::string& SrcPath,
     else
     {
       Filesystem::copyFile(FoundFiles[i].absoluteFilePath().toStdString(),
-                           DestPath+"/"+FoundFiles[i].fileName().toStdString());
+                           openfluid::tools::Filesystem::joinPath({DestPath,FoundFiles[i].fileName().toStdString()}));
     }
   }
 }

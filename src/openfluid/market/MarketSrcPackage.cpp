@@ -82,8 +82,8 @@ void MarketSrcPackage::process()
 
   std::string BuildConfigOptions = composeFullBuildOptions(getPackageType(), m_BuildConfigOptions);
 
-  std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
-  std::string SrcInstallDir = getInstallPath() + "/" + m_ID;
+  std::string BuildDir = openfluid::tools::Filesystem::joinPath({m_TempBuildsDir,m_ID});
+  std::string SrcInstallDir = openfluid::tools::Filesystem::joinPath({getInstallPath(),m_ID});
 
   // creating installation dir
   if (openfluid::tools::Filesystem::isDirectory(SrcInstallDir))
@@ -198,21 +198,23 @@ void MarketSrcPackage::process()
   }
 
 
-  if (!openfluid::tools::Filesystem::isFile(BuildDir+"/"+m_ID+PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT))
+  std::string BuildFile = 
+    openfluid::tools::Filesystem::joinPath({BuildDir,m_ID+PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT});
+  std::string DestFile = 
+    openfluid::tools::Filesystem::joinPath({getInstallPath(),"..",m_MarketBagBinSubDir,
+                                            m_ID+PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT});
+
+  if (!openfluid::tools::Filesystem::isFile(BuildFile))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error finding built package");
   }
 
-  std::string BinInstallDir = getInstallPath() + "/../" + m_MarketBagBinSubDir;
-  if (openfluid::tools::Filesystem::isFile(BinInstallDir+"/"+m_ID+
-                                           PackagesPluginsSuffixes +openfluid::config::PLUGINS_EXT))
+  if (openfluid::tools::Filesystem::isFile(DestFile))
   {
-    openfluid::tools::Filesystem::removeFile(BinInstallDir+"/"+m_ID+
-                                             PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT);
+    openfluid::tools::Filesystem::removeFile(DestFile);
   }
 
-  openfluid::tools::Filesystem::copyFile(BuildDir+"/"+m_ID+PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT,
-                                         BinInstallDir+"/"+m_ID+PackagesPluginsSuffixes+openfluid::config::PLUGINS_EXT);
+  openfluid::tools::Filesystem::copyFile(BuildFile,DestFile);
 
   if (!m_KeepSources)
   {

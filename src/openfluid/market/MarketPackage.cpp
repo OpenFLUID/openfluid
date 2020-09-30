@@ -119,8 +119,8 @@ void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& 
 {
   // Temporary directories
   m_TempDir = TempDir;
-  m_TempBuildsDir = TempDir+"/"+BUILDS_SUBDIR;
-  m_TempDownloadsDir = TempDir+"/"+DLOADS_SUBDIR;
+  m_TempBuildsDir = openfluid::tools::Filesystem::joinPath({TempDir,BUILDS_SUBDIR});
+  m_TempDownloadsDir = openfluid::tools::Filesystem::joinPath({TempDir,DLOADS_SUBDIR});
 
   // Installation directories
   m_MarketBagSimulatorDir = MarketBagSimulatorDir;
@@ -130,7 +130,7 @@ void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& 
   m_MarketBagBinSubDir = MarketBagBinSubDir;
   m_MarketBagSrcSubDir = MarketBagSrcSubDir;
 
-  m_LogFile = TempDir+"/"+LOG_FILENAME;
+  m_LogFile = openfluid::tools::Filesystem::joinPath({TempDir,LOG_FILENAME});
 
   m_Initialized = false;
 }
@@ -287,7 +287,7 @@ void MarketPackage::download()
                                               "package "+m_PackageFilename+" not initialized");
   }
 
-  m_PackageDest = m_TempDownloadsDir+"/"+m_PackageFilename;
+  m_PackageDest = openfluid::tools::Filesystem::joinPath({m_TempDownloadsDir,m_PackageFilename});
 
   appendToLogFile(m_PackageFilename,getPackageType(),"downloading","");
 

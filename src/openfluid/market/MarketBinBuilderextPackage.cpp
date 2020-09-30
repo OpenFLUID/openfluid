@@ -38,6 +38,7 @@
 
 
 #include <openfluid/market/MarketBinBuilderextPackage.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 
 namespace openfluid { namespace market {
@@ -57,7 +58,7 @@ MarketBinBuilderextPackage::MarketBinBuilderextPackage(const openfluid::ware::Wa
 
 std::string MarketBinBuilderextPackage::getInstallPath() const
 {
-  return m_MarketBagBuilderextDir + "/" + m_MarketBagBinSubDir;
+  return openfluid::tools::Filesystem::joinPath({m_MarketBagBuilderextDir,m_MarketBagBinSubDir});
 }
 
 

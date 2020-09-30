@@ -134,10 +134,7 @@ class OPENFLUID_API RunContextManager : public Environment
       @param[in] Filename the path relative to the simulation input directory
       @return the full path to the file or directory
     */
-    std::string getInputFullPath(const std::string& Filename) const
-    {
-      return m_InputDir + "/" + Filename;
-    }
+    std::string getInputFullPath(const std::string& Filename) const;
 
     /**
       Sets the full path of the simulation input directory
@@ -159,10 +156,7 @@ class OPENFLUID_API RunContextManager : public Environment
       @param[in] Filename the path relative to the simulation output directory
       @return the full path to the file or directory
     */
-    std::string getOutputFullPath(const std::string& Filename) const
-    {
-      return m_OutputDir + "/" + Filename;
-    }
+    std::string getOutputFullPath(const std::string& Filename) const;
 
     /**
       Sets the full path of the simulation output directory
@@ -351,8 +345,8 @@ class OPENFLUID_API RunContextManager : public Environment
     bool openProject(const std::string& Path);
 
     bool createProject(const std::string& Path, const std::string& Name,
-                const std::string& Description, const std::string& Authors,
-                const bool Inc);
+                       const std::string& Description, const std::string& Authors,
+                       const bool Inc);
 
     bool isProjectOpen() const
     {

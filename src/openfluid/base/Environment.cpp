@@ -184,9 +184,9 @@ void Environment::init()
   // UNIX: user directory for OpenFLUID : <m_HomeDir>/.openfluid
   // WINDOWS:user directory for OpenFLUID : <m_HomeDir>/openfluid
 #if defined(OPENFLUID_OS_UNIX)
-  m_UserDataDir = m_UserHomeDir + "/." + openfluid::config::RELATIVE_PATH;
+  m_UserDataDir = openfluid::tools::Filesystem::joinPath({m_UserHomeDir,"." + openfluid::config::RELATIVE_PATH});
 #elif defined(OPENFLUID_OS_WINDOWS)
-  m_UserDataDir = m_UserHomeDir+"/"+openfluid::config::RELATIVE_PATH;
+  m_UserDataDir = openfluid::tools::Filesystem::joinPath({m_UserHomeDir,openfluid::config::RELATIVE_PATH});
 #endif
 
 
@@ -200,27 +200,32 @@ void Environment::init()
 
   // ====== Config file ======
 
-  m_ConfigFile = m_UserDataDir + "/" + openfluid::config::DEFAULT_CONFIGFILE;
+  m_ConfigFile = openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::DEFAULT_CONFIGFILE});
 
 
   // ====== Examples directories ======
 
-  m_UserExamplesDir = m_UserDataDir + "/" + openfluid::config::EXAMPLES_PATH;
+  m_UserExamplesDir = openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::EXAMPLES_PATH});
 
-  m_UserExampleSimulatorsDir = m_UserExamplesDir + "/" + openfluid::config::WARESDEV_PATH + "/" + 
-                                 openfluid::config::SIMULATORS_PATH;
-  m_ProvidedExamplesDir = m_InstallPrefix + "/" + openfluid::config::EXAMPLES_STD_PATH;
+  m_UserExampleSimulatorsDir = openfluid::tools::Filesystem::joinPath({m_UserExamplesDir,
+                                                                       openfluid::config::WARESDEV_PATH,
+                                                                       openfluid::config::SIMULATORS_PATH});
+  m_ProvidedExamplesDir = openfluid::tools::Filesystem::joinPath({m_InstallPrefix,
+                                                                  openfluid::config::EXAMPLES_STD_PATH});
 
 
   // ====== Market directories ======
 
-  m_MarketBagDir = m_UserDataDir + "/" + openfluid::config::MARKETBAG_PATH;
-  m_MarketBagVersionDir = m_MarketBagDir + "/" + m_Version;
+  m_MarketBagDir = openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::MARKETBAG_PATH});
+  m_MarketBagVersionDir = openfluid::tools::Filesystem::joinPath({m_MarketBagDir,m_Version});
 
-  m_MarketBagSimulatorsDir = m_MarketBagVersionDir + "/" + openfluid::config::SIMULATORS_PATH;
-  m_MarketBagObserversDir = m_MarketBagVersionDir + "/" + openfluid::config::OBSERVERS_PATH;
-  m_MarketBagBuilderextsDir = m_MarketBagVersionDir + "/" + openfluid::config::BUILDEREXTS_PATH;
-  m_MarketBagDataDir = m_MarketBagVersionDir + "/" + "datasets";
+  m_MarketBagSimulatorsDir = openfluid::tools::Filesystem::joinPath({m_MarketBagVersionDir,
+                                                                     openfluid::config::SIMULATORS_PATH});
+  m_MarketBagObserversDir = openfluid::tools::Filesystem::joinPath({m_MarketBagVersionDir,
+                                                                    openfluid::config::OBSERVERS_PATH});
+  m_MarketBagBuilderextsDir = openfluid::tools::Filesystem::joinPath({m_MarketBagVersionDir,
+                                                                     openfluid::config::BUILDEREXTS_PATH});
+  m_MarketBagDataDir = openfluid::tools::Filesystem::joinPath({m_MarketBagVersionDir ,"datasets"});
   m_MarketBagBinSubDir = m_SystemArch;
   m_MarketBagSrcSubDir = "src";
 
@@ -243,15 +248,20 @@ void Environment::init()
   }
 
   // user dir
-  m_DefaultSimulatorsDirs.push_back(m_UserDataDir + "/" + openfluid::config::SIMULATORS_WARESBIN_USR_PATH);
+  m_DefaultSimulatorsDirs.push_back(
+    openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::SIMULATORS_WARESBIN_USR_PATH})
+  );
 
 #if OPENFLUID_MARKET_ENABLED
   // market-bag dir (for current version)
-  m_DefaultSimulatorsDirs.push_back(m_MarketBagSimulatorsDir + "/" + m_MarketBagBinSubDir);
+  m_DefaultSimulatorsDirs.push_back(
+    openfluid::tools::Filesystem::joinPath({m_MarketBagSimulatorsDir,m_MarketBagBinSubDir})
+  );
 #endif
 
   // install directory
-  std::string SimulatorsInstallPath =  m_InstallPrefix + "/" + openfluid::config::SIMULATORS_WARESBIN_STD_PATH;
+  std::string SimulatorsInstallPath =  
+    openfluid::tools::Filesystem::joinPath({m_InstallPrefix,openfluid::config::SIMULATORS_WARESBIN_STD_PATH});
   m_DefaultSimulatorsDirs.push_back(SimulatorsInstallPath);
 
 
@@ -273,15 +283,20 @@ void Environment::init()
   }
 
   // user dir
-  m_DefaultObserversDirs.push_back(m_UserDataDir + "/" + openfluid::config::OBSERVERS_WARESBIN_USR_PATH);
+  m_DefaultObserversDirs.push_back(
+    openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::OBSERVERS_WARESBIN_USR_PATH})
+  );
 
 #if OPENFLUID_MARKET_ENABLED
   // market-bag dir (for current version)
-   m_DefaultObserversDirs.push_back(m_MarketBagObserversDir + "/" + m_MarketBagBinSubDir);
+  m_DefaultObserversDirs.push_back(
+    openfluid::tools::Filesystem::joinPath({m_MarketBagObserversDir,m_MarketBagBinSubDir})
+  );
 #endif
 
   // install directory
-  std::string ObserversInstallPath = m_InstallPrefix + "/" + openfluid::config::OBSERVERS_WARESBIN_STD_PATH;
+  std::string ObserversInstallPath = 
+    openfluid::tools::Filesystem::joinPath({m_InstallPrefix,openfluid::config::OBSERVERS_WARESBIN_STD_PATH});
   m_DefaultObserversDirs.push_back(ObserversInstallPath);
 
 
@@ -303,24 +318,32 @@ void Environment::init()
   }
 
   // user dir
-  m_DefaultBuilderextsDirs.push_back(m_UserDataDir + "/" + openfluid::config::BUILDEREXTS_WARESBIN_USR_PATH);
+  m_DefaultBuilderextsDirs.push_back(
+    openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::BUILDEREXTS_WARESBIN_USR_PATH})
+  );
 
 #if OPENFLUID_MARKET_ENABLED
   // market-bag dir (for current version)
-   m_DefaultBuilderextsDirs.push_back(m_MarketBagBuilderextsDir + "/" + m_MarketBagBinSubDir);
+  m_DefaultBuilderextsDirs.push_back(
+    openfluid::tools::Filesystem::joinPath({m_MarketBagBuilderextsDir,m_MarketBagBinSubDir})
+  );
 #endif
 
   // install directory
-  std::string BuilderextsInstallPath = m_InstallPrefix + "/" + openfluid::config::BUILDEREXTS_WARESBIN_STD_PATH;
+  std::string BuilderextsInstallPath = 
+    openfluid::tools::Filesystem::joinPath({m_InstallPrefix,openfluid::config::BUILDEREXTS_WARESBIN_STD_PATH});
   m_DefaultBuilderextsDirs.push_back(BuilderextsInstallPath);
 
 
   // ====== Resources and translations directories ======
 
-  m_CommonResourcesDir = m_InstallPrefix + "/" + openfluid::config::SHARE_COMMON_INSTALL_PATH;
-  m_AppsResourcesDir = m_InstallPrefix + "/" + openfluid::config::SHARE_APPS_INSTALL_PATH;
+  m_CommonResourcesDir = openfluid::tools::Filesystem::joinPath({m_InstallPrefix,
+                                                                 openfluid::config::SHARE_COMMON_INSTALL_PATH});
+  m_AppsResourcesDir = openfluid::tools::Filesystem::joinPath({m_InstallPrefix,
+                                                               openfluid::config::SHARE_APPS_INSTALL_PATH});
 
-  m_TranslationsDir = m_InstallPrefix + "/" + openfluid::config::SHARE_TRANSLATIONS_INSTALL_PATH;
+  m_TranslationsDir = openfluid::tools::Filesystem::joinPath({m_InstallPrefix,
+                                                              openfluid::config::SHARE_TRANSLATIONS_INSTALL_PATH});
 
 
   // ====== Threads ======
@@ -346,7 +369,7 @@ std::string Environment::getWareFullPath(const std::vector<std::string>& Dirs, c
 {
   for (auto CurrentDir : Dirs)
   {
-    std::string TmpPath = CurrentDir + "/" + Filename;
+    std::string TmpPath = openfluid::tools::Filesystem::joinPath({CurrentDir,Filename});
 
     if (openfluid::tools::Filesystem::isFile(TmpPath))
     {
@@ -362,28 +385,81 @@ std::string Environment::getWareFullPath(const std::vector<std::string>& Dirs, c
 // =====================================================================
 
 
+std::string Environment::getUserDataFullPath(const std::string& Path)
+{
+  return openfluid::tools::Filesystem::joinPath({m_UserDataDir,Path});
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void Environment::prepareUserDataDirectory()
 {
-  openfluid::tools::Filesystem::makeDirectory(m_UserDataDir);
+  std::vector<std::string> DirsToMake = 
+  {
+    // user data dir
+    m_UserDataDir,
 
-  openfluid::tools::Filesystem::makeDirectory(getUserDataFullPath(openfluid::config::SIMULATORS_WARESBIN_USR_PATH));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataFullPath(openfluid::config::OBSERVERS_WARESBIN_USR_PATH));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataFullPath(openfluid::config::BUILDEREXTS_WARESBIN_USR_PATH));
+    // user binary wares dirs
+    getUserDataFullPath(openfluid::config::SIMULATORS_WARESBIN_USR_PATH),
+    getUserDataFullPath(openfluid::config::OBSERVERS_WARESBIN_USR_PATH),
+    getUserDataFullPath(openfluid::config::BUILDEREXTS_WARESBIN_USR_PATH),
 
-  openfluid::tools::Filesystem::makeDirectory(getUserDataFullPath(openfluid::config::WORKSPACE_PATH));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataFullPath(openfluid::config::WORKSPACE_PATH+"/"+
-                                                                  openfluid::config::PROJECTS_PATH));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataFullPath(openfluid::config::WORKSPACE_PATH+"/"+
-                                                                  openfluid::config::WARESDEV_PATH));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataFullPath(openfluid::config::WORKSPACE_PATH+"/"+
-                                                                  openfluid::config::WARESDEV_PATH+"/"+
-                                                                  openfluid::config::SIMULATORS_PATH));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataFullPath(openfluid::config::WORKSPACE_PATH+"/"+
-                                                                  openfluid::config::WARESDEV_PATH+"/"+
-                                                                  openfluid::config::OBSERVERS_PATH));
-  openfluid::tools::Filesystem::makeDirectory(getUserDataFullPath(openfluid::config::WORKSPACE_PATH+"/"+
-                                                                  openfluid::config::WARESDEV_PATH+"/"+
-                                                                  openfluid::config::BUILDEREXTS_PATH));
+    // user workspace dir
+    getUserDataFullPath(openfluid::config::WORKSPACE_PATH),
+
+    // user projects dir
+    getUserDataFullPath(openfluid::tools::Filesystem::joinPath({openfluid::config::WORKSPACE_PATH,
+                                                                openfluid::config::PROJECTS_PATH})),
+
+    // user wares sources dirs
+    getUserDataFullPath(openfluid::tools::Filesystem::joinPath({openfluid::config::WORKSPACE_PATH,
+                                                                openfluid::config::WARESDEV_PATH,
+                                                                openfluid::config::SIMULATORS_PATH})),
+    getUserDataFullPath(openfluid::tools::Filesystem::joinPath({openfluid::config::WORKSPACE_PATH,
+                                                                openfluid::config::WARESDEV_PATH,
+                                                                openfluid::config::OBSERVERS_PATH})),
+    getUserDataFullPath(openfluid::tools::Filesystem::joinPath({openfluid::config::WORKSPACE_PATH,
+                                                                openfluid::config::WARESDEV_PATH,
+                                                                openfluid::config::BUILDEREXTS_PATH})),
+  };
+
+  for (const auto& Dir : DirsToMake)
+  {
+    openfluid::tools::Filesystem::makeDirectory(Dir);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Environment::getCommonResourcesFullPath(const std::string& Path)
+{
+  return openfluid::tools::Filesystem::joinPath({m_CommonResourcesDir,Path});
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Environment::getAppResourcesDir(const std::string& AppName)
+{
+  return openfluid::tools::Filesystem::joinPath({m_AppsResourcesDir,AppName});
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Environment::getAppResourcesFullPath(const std::string& AppName, const std::string& Path)
+{
+  return openfluid::tools::Filesystem::joinPath({getAppResourcesDir(AppName),Path});
 }
 
 
@@ -497,8 +573,8 @@ std::vector<std::string> Environment::getBuilderextsDirs()
 {
   std::vector<std::string> ComposedDirs(m_ExtraBuilderextsDirs);
   ComposedDirs.insert(ComposedDirs.end(),
-                       m_DefaultBuilderextsDirs.begin(),
-                       m_DefaultBuilderextsDirs.end());
+                      m_DefaultBuilderextsDirs.begin(),
+                      m_DefaultBuilderextsDirs.end());
   return ComposedDirs;
 }
 

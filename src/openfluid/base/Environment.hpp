@@ -257,10 +257,7 @@ class OPENFLUID_API Environment
       @param[in] Path the path relative to the OpenFLUID user data directory
       @return the full path to the file or directory
     */
-    static std::string getUserDataFullPath(const std::string& Path)
-    {
-      return m_UserDataDir + "/" + Path;
-    }
+    static std::string getUserDataFullPath(const std::string& Path);
 
     /**
       Returns the full path of the examples directory for the current user
@@ -326,20 +323,14 @@ class OPENFLUID_API Environment
       @param[in] Path the path relative to the OpenFLUID common resources directory
       @return the full path to the file or directory
     */
-    static std::string getCommonResourcesFullPath(const std::string& Path)
-    {
-      return m_CommonResourcesDir + "/" + Path;
-    }
+    static std::string getCommonResourcesFullPath(const std::string& Path);
 
     /**
       Returns the resources directory for a given OpenFLUID software application
       @param[in] AppName the name of the OpenFLUID application
       @return the full path to the directory
     */
-    static std::string getAppResourcesDir(const std::string& AppName)
-    {
-      return m_AppsResourcesDir + "/" + AppName;
-    }
+    static std::string getAppResourcesDir(const std::string& AppName);
 
     /**
       Returns the full path of a file or directory relative to the resources directory
@@ -348,10 +339,7 @@ class OPENFLUID_API Environment
       @param[in] Path the path relative to the OpenFLUID application resources directory
       @return the full path to the file or directory
     */
-    static std::string getAppResourcesFullPath(const std::string& AppName, const std::string& Path)
-    {
-      return getAppResourcesDir(AppName) + "/" + Path;
-    }
+    static std::string getAppResourcesFullPath(const std::string& AppName, const std::string& Path);
 
     /**
       Returns the list of directories full paths where OpenFLUID searches for simulators.

@@ -42,6 +42,7 @@
 
 #include <openfluid/ui/common/LogExplorerDialog.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
 #include "ui_LogExplorerDialog.h"
@@ -124,8 +125,9 @@ void LogExplorerDialog::reloadFromFiles()
 
   ui->DirectoryLabel->setText(QDir::toNativeSeparators(m_CurrentDir));
 
-
-  QFile MsgFile(m_CurrentDir+"/"+QString::fromStdString(openfluid::config::MESSAGES_LOG_FILE));
+  std::string MsgFilePath = 
+    openfluid::tools::Filesystem::joinPath({m_CurrentDir.toStdString(),openfluid::config::MESSAGES_LOG_FILE});
+  QFile MsgFile(QString::fromStdString(MsgFilePath));
   if (MsgFile.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     while (!MsgFile.atEnd())

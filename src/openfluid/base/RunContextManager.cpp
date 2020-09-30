@@ -42,6 +42,7 @@
 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -66,8 +67,8 @@ RunContextManager::RunContextManager() :
 {
   openfluid::base::Environment::init();
 
-  m_InputDir = m_UserDataDir+"/"+openfluid::config::DEFAULT_INPUT_PATH;
-  m_OutputDir = m_UserDataDir+"/"+openfluid::config::DEFAULT_OUTPUT_PATH;
+  m_InputDir = openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::DEFAULT_INPUT_PATH});
+  m_OutputDir = openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::DEFAULT_OUTPUT_PATH});
 
   m_WaresMaxNumThreads = m_IdealThreadCount;
 
@@ -104,7 +105,7 @@ std::string RunContextManager::getNow()
 
 std::string RunContextManager::getFilePathFromProjectPath(const std::string& ProjectPath)
 {
-  return ProjectPath + "/" + openfluid::config::PROJECT_FILE;
+  return openfluid::tools::Filesystem::joinPath({ProjectPath,openfluid::config::PROJECT_FILE});
 }
 
 
@@ -114,7 +115,7 @@ std::string RunContextManager::getFilePathFromProjectPath(const std::string& Pro
 
 std::string RunContextManager::getInputDirFromProjectPath(const std::string& ProjectPath)
 {
-  return ProjectPath + "/" + openfluid::config::PROJECT_INPUTDIR;
+  return openfluid::tools::Filesystem::joinPath({ProjectPath,openfluid::config::PROJECT_INPUTDIR});
 }
 
 
@@ -124,7 +125,7 @@ std::string RunContextManager::getInputDirFromProjectPath(const std::string& Pro
 
 std::string RunContextManager::getOuputDirFromProjectPath(const std::string& ProjectPath)
 {
-  return ProjectPath + "/" + openfluid::config::PROJECT_OUTPUTDIRPREFIX;
+  return openfluid::tools::Filesystem::joinPath({ProjectPath,openfluid::config::PROJECT_OUTPUTDIRPREFIX});
 }
 
 
@@ -134,34 +135,35 @@ std::string RunContextManager::getOuputDirFromProjectPath(const std::string& Pro
 
 bool RunContextManager::checkProject(const std::string& ProjectPath)
 {
-  QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(ProjectPath));
+  std::string AbsPath = openfluid::tools::Filesystem::absolutePath(ProjectPath);
+
+  std::string PrjFilePath = getFilePathFromProjectPath(AbsPath);
 
   // TODO to be removed in a later version (after mid-2016)
   // try to convert a former .openfluidprj project
-  if (!QFile::exists(PrjFilePath))
+  if (!openfluid::tools::Filesystem::isFile(PrjFilePath))
   {
-    QString FormerPrjFilePath = QString::fromStdString(ProjectPath)+"/.openfluidprj";
+    std::string FormerPrjFilePath = openfluid::tools::Filesystem::joinPath({AbsPath,".openfluidprj"});
 
     // Rename the former .openfluidprj file into the new name, only if exists
-    if (QFile::exists(FormerPrjFilePath))
-
+    if (openfluid::tools::Filesystem::isFile(FormerPrjFilePath))
     {
-      QFile(FormerPrjFilePath).rename(PrjFilePath);
+      openfluid::tools::Filesystem::renameFile(FormerPrjFilePath,PrjFilePath);
     }
   }
 
 
-  if (!QFile::exists(PrjFilePath))
+  if (!openfluid::tools::Filesystem::isFile(PrjFilePath))
   {
     return false;
   }
 
-  if (!QDir().exists(QString::fromStdString(getInputDirFromProjectPath(ProjectPath))))
+  if (!openfluid::tools::Filesystem::isDirectory(getInputDirFromProjectPath(AbsPath)))
   {
     return false;
   }
 
-  QSettings PrjFile(PrjFilePath,QSettings::IniFormat);
+  QSettings PrjFile(QString::fromStdString(PrjFilePath),QSettings::IniFormat);
 
   PrjFile.beginGroup(m_ProjectFileGroupName);
   bool OK = PrjFile.contains("Name") &&
@@ -191,6 +193,26 @@ void RunContextManager::updateWaresEnvironment()
 // =====================================================================
 
 
+std::string RunContextManager::getInputFullPath(const std::string& Filename) const
+{
+  return openfluid::tools::Filesystem::joinPath({m_InputDir,Filename});
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string RunContextManager::getOutputFullPath(const std::string& Filename) const
+{
+  return openfluid::tools::Filesystem::joinPath({m_OutputDir,Filename});
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void RunContextManager::resetWaresMaxNumThreads()
 {
   m_WaresMaxNumThreads = m_IdealThreadCount;
@@ -205,11 +227,11 @@ bool RunContextManager::openProject(const std::string& Path)
 {
   if (!m_ProjectIsOpen && checkProject(Path))
   {
-    m_ProjectPath = Path;
-    m_InputDir = getInputDirFromProjectPath(Path);
-    m_OutputDir = getOuputDirFromProjectPath(Path);
+    m_ProjectPath = openfluid::tools::Filesystem::absolutePath(Path);
+    m_InputDir = getInputDirFromProjectPath(m_ProjectPath);
+    m_OutputDir = getOuputDirFromProjectPath(m_ProjectPath);
 
-    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(Path));
+    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(m_ProjectPath));
     mp_ProjectFile = new QSettings(PrjFilePath,QSettings::IniFormat);
 
     mp_ProjectFile->beginGroup(m_ProjectFileGroupName);
@@ -236,21 +258,23 @@ bool RunContextManager::openProject(const std::string& Path)
 
 
 bool RunContextManager::createProject(const std::string& Path,
-    const std::string& Name, const std::string& Description,
-    const std::string& Authors, const bool Inc)
+                                      const std::string& Name, const std::string& Description,
+                                      const std::string& Authors, const bool Inc)
 {
   if (m_ProjectIsOpen)
   {
     return false;
   }
 
-  if (QDir().mkpath(QString::fromStdString(getInputDirFromProjectPath(Path))))
-  {
-    m_ProjectPath = Path;
-    m_InputDir = getInputDirFromProjectPath(Path);
-    m_OutputDir = getOuputDirFromProjectPath(Path);
+  std::string AbsPath = openfluid::tools::Filesystem::absolutePath(Path);
 
-    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(Path));
+  if (QDir().mkpath(QString::fromStdString(getInputDirFromProjectPath(AbsPath))))
+  {
+    m_ProjectPath = AbsPath;
+    m_InputDir = getInputDirFromProjectPath(AbsPath);
+    m_OutputDir = getOuputDirFromProjectPath(AbsPath);
+
+    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(AbsPath));
     mp_ProjectFile = new QSettings(PrjFilePath,QSettings::IniFormat);
 
     m_ProjectName = Name;
@@ -326,7 +350,7 @@ void RunContextManager::closeProject()
 void RunContextManager::setInputDir(const std::string& InputDir)
 {
   closeProject();
-  m_InputDir = InputDir;
+  m_InputDir = openfluid::tools::Filesystem::absolutePath(InputDir);
   updateWaresEnvironment();
 }
 
@@ -338,7 +362,7 @@ void RunContextManager::setInputDir(const std::string& InputDir)
 void RunContextManager::setOutputDir(const std::string& OutputDir)
 {
   closeProject();
-  m_OutputDir = OutputDir;
+  m_OutputDir = openfluid::tools::Filesystem::absolutePath(OutputDir);
   updateWaresEnvironment();
 }
 
@@ -350,8 +374,10 @@ void RunContextManager::setOutputDir(const std::string& OutputDir)
 void RunContextManager::setDateTimeOutputDir()
 {
   closeProject();
-  m_OutputDir = m_UserDataDir + "/" + "OPENFLUID." +
-                QDateTime::currentDateTime().toString("yyyyMMdd'T'hhmmss").toStdString() + ".OUT";
+
+  std::string DateDir = "OPENFLUID."+QDateTime::currentDateTime().toString("yyyyMMdd'T'hhmmss").toStdString()+".OUT";
+  m_OutputDir = openfluid::tools::Filesystem::joinPath({m_UserDataDir,DateDir});
+
   updateWaresEnvironment();
 }
 
@@ -382,7 +408,7 @@ void RunContextManager::updateProjectOutputDir()
 
 bool RunContextManager::isProject(const std::string& Path)
 {
-  return checkProject(Path);
+  return checkProject(openfluid::tools::Filesystem::absolutePath(Path));
 }
 
 
@@ -391,8 +417,8 @@ bool RunContextManager::isProject(const std::string& Path)
 
 
 bool RunContextManager::getProjectInfos(const std::string& Path,
-                                     std::string& Name, std::string& Description, std::string& Authors,
-                                     std::string& CreationDate, std::string& LastModDate)
+                                        std::string& Name, std::string& Description, std::string& Authors,
+                                        std::string& CreationDate, std::string& LastModDate)
 {
   Name.clear();
   Description.clear();

@@ -125,7 +125,7 @@ void InterpGenerator::prepareData()
   {
 
     std::string InFileName = openfluid::tools::Filesystem::filename((*it).second);
-    std::string OutFilePath = TmpDir+"/interp_"+InFileName;
+    std::string OutFilePath = openfluid::tools::Filesystem::joinPath({TmpDir,"interp_"+InFileName});
     openfluid::tools::ChronFileLinearInterpolator CFLI((*it).second,OutFilePath,
                                                        OPENFLUID_GetBeginDate(),OPENFLUID_GetEndDate(),
                                                        OPENFLUID_GetDefaultDeltaT());
