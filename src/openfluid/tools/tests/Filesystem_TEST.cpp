@@ -102,6 +102,33 @@ BOOST_AUTO_TEST_CASE(check_names_operations)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_path_clean_absolute_relative)
+{
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::cleanPath("/my/path/to/directory/"),"/my/path/to/directory");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::cleanPath("/my/path//.//to/directory/"),"/my/path/to/directory");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::cleanPath("my/path//.//to/directory/"),"my/path/to/directory");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::cleanPath("my/path//.//to/../../directory/"),"my/directory");
+  
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath("/my/path/to/directory/"),"/my/path/to/directory");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath("/my/path/to/directory"),"/my/path/to/directory");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath("/my/path/to/file.txt"),"/my/path/to/file.txt");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath("/my/long/../path/to/file.txt"),
+                                                                 "/my/path/to/file.txt");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath("/"),"/");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath(""),"");
+
+  std::cout << openfluid::tools::Filesystem::absolutePath("path/to/directory") << std::endl;
+  BOOST_REQUIRE(
+    openfluid::tools::Filesystem::absolutePath("path/to/directory")
+      .rfind(openfluid::tools::Filesystem::currentPath(),0) == 0
+  );
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(check_test_operations)
 {
   BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(CONFIGTESTS_BINARY_DIR));
@@ -149,11 +176,30 @@ BOOST_AUTO_TEST_CASE(check_readwrite_operations)
 
   // Files
 
-  BOOST_REQUIRE(openfluid::tools::Filesystem::copyFile(CONFIGTESTS_SRC_DIR+"/CMakeLists.txt",
-                                                       CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists.txt"));
-  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists.txt"));
-  BOOST_REQUIRE(openfluid::tools::Filesystem::removeFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists.txt"));
-  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists.txt"));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::copyFile(
+    CONFIGTESTS_SRC_DIR+"/CMakeLists.txt",
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists_copied.txt"));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists_copied.txt"));
+  
+  BOOST_REQUIRE(openfluid::tools::Filesystem::renameFile(
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists_copied.txt",
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists_renamed.txt"));  
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists_copied.txt"));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists_renamed.txt"));
+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/ForRenamed"));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::renameFile(
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists_renamed.txt",
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/ForRenamed/CMakeLists_renamed.txt"));
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/CMakeLists_Renamed.txt"));
+  BOOST_REQUIRE(openfluid::tools::Filesystem::isFile(
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/ForRenamed/CMakeLists_renamed.txt"));
+
+  BOOST_REQUIRE(openfluid::tools::Filesystem::removeFile(
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/ForRenamed/CMakeLists_renamed.txt"));
+  BOOST_REQUIRE(!openfluid::tools::Filesystem::isFile(
+    CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/ForRenamed/CMakeLists_renamed.txt"));
 
   BOOST_REQUIRE(openfluid::tools::Filesystem::copyDirectory(CONFIGTESTS_INPUT_MISCDATA_DIR+"/Filesystem",
                                                             CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem/dircopy"));

@@ -199,6 +199,31 @@ std::string Filesystem::currentPath()
 // =====================================================================
 
 
+std::string Filesystem::absolutePath(const std::string& Path)
+{
+  if (Path.empty())
+  {
+    return "";
+  }
+
+  return QDir::cleanPath(QDir::current().absoluteFilePath(QString::fromStdString(Path))).toStdString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::cleanPath(const std::string& Path)
+{
+  return QDir::cleanPath(QString::fromStdString(Path)).toStdString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool Filesystem::isDirectory(const std::string& Path)
 {
   return QFileInfo(QString::fromStdString(Path)).isDir();
@@ -252,10 +277,11 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
   {
 
     // Process ID - Pseudo Unique Identifier of 16 chars length
-    QString PIDPUI = PID + "-" +QString::fromStdString(openfluid::tools::generatePseudoUniqueIdentifier(16));
+    std::string PIDPUI = PID.toStdString()+"-"+openfluid::tools::generatePseudoUniqueIdentifier(16);
 
     // pattern for subdir : {SubdirName}-{PID}-{PUI}-%1
-    QString FullSubdirPath = QString::fromStdString(Path)+"/"+QString::fromStdString(SubdirName)+"-"+PIDPUI+"-%1";
+    QString FullSubdirPath = 
+      QString::fromStdString(openfluid::tools::Filesystem::joinPath({Path,SubdirName+"-"+PIDPUI+"-%1"}));
 
     // Suffix replacing the "%1" string for potential duplicates
     // (duplicates should never happen, so suffix should be 0)
@@ -302,13 +328,12 @@ std::string Filesystem::makeUniqueFile(const std::string& Path, const std::strin
     }
 
     // Process ID - Pseudo Unique Identifier of 16 chars length
-    QString PIDPUI = PID + "-" +QString::fromStdString(openfluid::tools::generatePseudoUniqueIdentifier(16));
+    std::string PIDPUI = PID.toStdString()+"-"+openfluid::tools::generatePseudoUniqueIdentifier(16);
 
     // pattern for file : {Path}/{Filename root}-{PID}-{PUI}-%1.{Filename ext}
-    QString FullFilePath = QString::fromStdString(Path) + "/" +
-                           FileRoot + "-" +
-                           PIDPUI + "-%1" +
-                           FileExt;
+    QString FullFilePath = QString::fromStdString(
+      openfluid::tools::Filesystem::joinPath({Path,FileRoot.toStdString()+"-"+PIDPUI+"-%1"+FileExt.toStdString()})
+    );
 
     // Suffix replacing the "%1" string for potential duplicates
     // (duplicates should never happen, so suffix should be 0)
@@ -351,6 +376,16 @@ bool Filesystem::removeFile(const std::string& Path)
 bool Filesystem::copyFile(const std::string& SrcPath, const std::string& DestPath)
 {
   return QFile::copy(QString::fromStdString(SrcPath),QString::fromStdString(DestPath));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Filesystem::renameFile(const std::string& OriginalPath, const std::string& NewPath)
+{
+  return QFile::rename(QString::fromStdString(OriginalPath),QString::fromStdString(NewPath));
 }
 
 

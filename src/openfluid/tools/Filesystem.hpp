@@ -76,7 +76,7 @@ class OPENFLUID_API Filesystem
     }
 
     /**
-      Returns a joined path string from a vector of path parts
+      Returns a joined path string from a vector of path parts, using the '/' separator
       @param[in] PathParts a vector of path parts
       @return the joined path
       @snippet misc/filesystem.cpp joinpath
@@ -116,10 +116,25 @@ class OPENFLUID_API Filesystem
     static std::string extension(const std::string& Path);
 
     /**
-      Returns the current application path
+      Returns the current path
       @return the current path
     */
     static std::string currentPath();
+
+    /**
+      Returns the absolute path of the given path.
+      If the given path is already an absolute path, it is returned as-is.
+      @param[in] Path the path to make absolute  
+      @return the absolute path
+    */
+    static std::string absolutePath(const std::string& Path);
+
+    /**
+      Cleans the given path : removes trailing and redundant slashes, resolves '.' and '..' as far as possible.
+      @param[in] Path the path to clean  
+      @return the cleaned path
+    */
+    static std::string cleanPath(const std::string& Path);
 
     /**
       Returns true if the given path is a directory
@@ -139,14 +154,14 @@ class OPENFLUID_API Filesystem
       Creates the directory of the given path. It creates all parent directories necessary to create the directory.
       If the directory already exists, it does nothing.
       @param[in] Path the given path
-      @return true if the directory was successfully created, false otherwise
+      @return true if the directory has been successfully created or if it already exists, false otherwise
     */
     static bool makeDirectory(const std::string& Path);
 
     /**
       Removes the directory of the given path. It recursively deletes all contents of the directory.
       @param[in] Path the given path
-      @return true if the directory was successfully deleted, false otherwise
+      @return true if the directory has been successfully deleted, false otherwise
     */
     static bool removeDirectory(const std::string& Path);
 
@@ -185,6 +200,14 @@ class OPENFLUID_API Filesystem
       @return true if the file was successfully copied, false otherwise
     */
     static bool copyFile(const std::string& SrcPath, const std::string& DestPath);
+
+    /**
+      Rename a file.
+      @param[in] OriginalPath the original file path
+      @param[in] NewPath the new file path
+      @return true if the file was successfully renamed, false otherwise
+    */
+    static bool renameFile(const std::string& OriginalPath, const std::string& NewPath);
 
     /**
       Recursively copies a directory from source to destination.
