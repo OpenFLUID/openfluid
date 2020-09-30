@@ -42,6 +42,7 @@ OPTION(OFBUILD_ENABLE_DOCS "enable build of documentation" ON)
 OPTION(OFBUILD_TESTS_ENABLE_HEAVY "enable build of heavy tests" OFF)
 OPTION(OFBUILD_TESTS_ENABLE_FORTRAN "enable build of test simulators inetegrating Fortran code" OFF)
 OPTION(OFBUILD_TESTS_ENABLE_EMBEDDING_R "enable build of test simulators embedding R code" OFF)
+OPTION(OFBUILD_TESTS_ALLOW_NETWORK_REQUESTS "allow network requests in tests" ON)
 
 
 ################## project configuration ##################
@@ -153,6 +154,20 @@ IF(OFBUILD_ENABLE_TESTING)
   ENABLE_TESTING()
   FILE(MAKE_DIRECTORY ${OFBUILD_TESTS_USERDATA_DIR})
   FILE(MAKE_DIRECTORY ${OFBUILD_TESTS_TEMP_DIR})
+
+  # Check of server availability for tests
+  IF(OFBUILD_TESTS_ALLOW_NETWORK_REQUESTS)
+    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E echo_append "-- Contacting ${OFBUILD_TESTS_DEV_HOST} for tests...")
+    FILE(DOWNLOAD "http://${OFBUILD_TESTS_DEV_HOST}/" "${CMAKE_BINARY_DIR}/${OFBUILD_TESTS_DEV_HOST}.html"
+                  TIMEOUT 10 STATUS OFBUILD_DEV_HOST_STATUS)
+    LIST(GET OFBUILD_DEV_HOST_STATUS 0 OFBUILD_DEV_HOST_STATUS_0)
+    IF(${OFBUILD_DEV_HOST_STATUS_0})
+      EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E echo "failed")
+      SET(OFBUILD_TESTS_ALLOW_NETWORK_REQUESTS OFF)
+    ELSE()
+      EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E echo "OK")
+    ENDIF()
+  ENDIF()
 ENDIF()
 
 IF(APPLE)
@@ -293,6 +308,11 @@ IF(OFBUILD_TESTS_ENABLE_EMBEDDING_R)
   MESSAGE(STATUS "  R (embedded): yes")
 ELSE()
   MESSAGE(STATUS "  R (embedded): no")
+ENDIF()
+IF(OFBUILD_TESTS_ALLOW_NETWORK_REQUESTS)
+  MESSAGE(STATUS "  Network requests allowed: yes")
+ELSE()
+  MESSAGE(STATUS "  Network requests allowed: no")
 ENDIF()
 
 MESSAGE(STATUS "Build documentation")

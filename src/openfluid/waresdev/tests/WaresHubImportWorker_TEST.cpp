@@ -42,6 +42,8 @@
 #define BOOST_TEST_MODULE unittest_WaresHubImportWorker
 
 
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 
 #include <QCoreApplication>
@@ -358,7 +360,12 @@ int main(int argc, char *argv[])
 {
   QCoreApplication app(argc, argv);
 
-  if (!openfluid::utils::GitProxy::isAvailable())
+  if (!CONFIGTESTS_ALLOW_NETWORK_REQUESTS)
+  {
+    std::cout << "** Test not run due to disabled network requests **" << std::endl;
+    return CONFIGTESTS_SKIP_CODE;
+  }
+  else if (!openfluid::utils::GitProxy::isAvailable())
   {
     std::cout << "** Test not run due to failing to find git program **" << std::endl;
     return CONFIGTESTS_SKIP_CODE;

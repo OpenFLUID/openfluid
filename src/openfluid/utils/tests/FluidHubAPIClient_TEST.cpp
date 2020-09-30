@@ -42,6 +42,8 @@
 #define BOOST_TEST_MODULE unittest_fluidhubapiclient
 
 
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 
 #include <QCoreApplication>
@@ -452,9 +454,16 @@ BOOST_AUTO_TEST_CASE(check_https_redirect)
 
 int main(int argc, char *argv[])
 {
+  if (!CONFIGTESTS_ALLOW_NETWORK_REQUESTS)
+  {
+    std::cout << "** Test not run due to disabled network requests **" << std::endl;
+    return CONFIGTESTS_SKIP_CODE;
+  }
+
   if (CONFIGTESTS_FLUIDHUB_URL_HTTP.empty())
   {
-    return 0;
+    std::cout << "** Test not run due to empty URL **" << std::endl;
+    return CONFIGTESTS_SKIP_CODE;
   }
 
   QCoreApplication app(argc, argv);
