@@ -509,4 +509,4 @@ void Vector<T>::copy(const Vector& Source, Vector& Dest)
 } }  // namespaces
 
 
-#endif
+#endif /* __OPENFLUID_CORE_VECTOR_HPP__ */

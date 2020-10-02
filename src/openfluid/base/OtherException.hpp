@@ -72,4 +72,4 @@ class OPENFLUID_API OtherException : public Exception
 
 } } // namespaces
 
-#endif /* __OPENFLUID_BASE_FRAMEWORKEXCEPTION_HPP__ */
+#endif /* __OPENFLUID_BASE_OTHEREXCEPTION_HPP__ */

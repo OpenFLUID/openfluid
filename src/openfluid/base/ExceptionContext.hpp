@@ -161,4 +161,4 @@ class ExceptionContext : public std::map<std::string, std::string>
 } } // namespace
 
 
-#endif  /* __OPENFLUID_BASE_EXCEPTIONCONTEXT_HPP__ */
+#endif /* __OPENFLUID_BASE_EXCEPTIONCONTEXT_HPP__ */

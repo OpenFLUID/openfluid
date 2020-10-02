@@ -82,4 +82,4 @@ class OPENFLUID_API MessageFrame : public QFrame
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UICOMMON_MESSAGEWIDGET_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_MESSAGEFRAME_HPP__ */

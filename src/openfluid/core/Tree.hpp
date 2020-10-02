@@ -498,4 +498,4 @@ class OPENFLUID_API Tree
 
 } }  // namespaces
 
-#endif /* __OPENFLUID_TREE_HPP__ */
+#endif /* __OPENFLUID_CORE_TREE_HPP__ */

@@ -408,5 +408,5 @@ class OPENFLUID_API DateTime
 } } // namespaces
 
 
-#endif
+#endif /* __OPENFLUID_CORE_DATETIME_HPP__ */
 

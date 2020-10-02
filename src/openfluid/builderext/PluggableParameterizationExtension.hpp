@@ -129,4 +129,4 @@ class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public 
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__ */
+#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__ */

@@ -147,5 +147,5 @@ std::string OPENFLUID_API getDurationAsPrettyString(long int MSecsDuration);
 } } //namespaces
 
 
-#endif // __OPENFLUID_TOOLS_MISCHELPERS_HPP__
+#endif /* __OPENFLUID_TOOLS_MISCHELPERS_HPP__ */
 

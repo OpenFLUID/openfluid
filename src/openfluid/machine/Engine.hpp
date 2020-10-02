@@ -205,5 +205,5 @@ class OPENFLUID_API Engine
 } } //namespaces
 
 
-#endif
+#endif /* __OPENFLUID_MACHINE_ENGINE_HPP__ */
 

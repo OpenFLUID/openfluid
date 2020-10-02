@@ -119,4 +119,4 @@ class OPENFLUID_API Variables
 } } // namespaces
 
 
-#endif /* __VARIABLES_H_ */
+#endif /* __OPENFLUID_CORE_VARIABLES_HPP__ */

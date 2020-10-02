@@ -364,4 +364,4 @@ class OPENFLUID_API SimulatorSignature : public WareSignature
 } } // namespaces
 
 
-#endif
+#endif /* __OPENFLUID_WARE_SIMULATORSIGNATURE_HPP__ */

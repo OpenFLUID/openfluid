@@ -446,5 +446,5 @@
 #define STD2FSTRINGFULL(str) (strdup((str).c_str()),strlen((str).c_str()))
 
 
-#endif  /* __OPENFLUID_TOOLS_FORTRANCPP_HPP__ */
+#endif /* __OPENFLUID_TOOLS_FORTRANCPP_HPP__ */
 

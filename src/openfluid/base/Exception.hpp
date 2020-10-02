@@ -128,4 +128,4 @@ class Exception : public std::exception
 
 } } // namespace
 
-#endif  /* __OPENFLUID_BASE_EXCEPTION_HPP__ */
+#endif /* __OPENFLUID_BASE_EXCEPTION_HPP__ */

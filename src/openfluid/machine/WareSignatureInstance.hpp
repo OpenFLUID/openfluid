@@ -64,4 +64,4 @@ class OPENFLUID_API WareSignatureInstance : public WareContainer
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_MACHINE_WAREINSTANCE_HPP__ */
+#endif /* __OPENFLUID_MACHINE_WARESIGNATUREINSTANCE_HPP__ */

@@ -144,4 +144,4 @@ class OPENFLUID_API EventsCollection
 } } // namespace openfluid::core
 
 
-#endif /* __OPENFLUID_CORE_EVENTSCOLLECTION_HPP__*/
+#endif /* __OPENFLUID_CORE_EVENTSCOLLECTION_HPP__ */

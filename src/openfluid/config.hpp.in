@@ -220,5 +220,5 @@ const std::string DEBUG_PREFIX = "@OPENFLUID_DEBUG_PREFIX@";
 
 } } //namespaces
 
-#endif  /* __OPENFLUID_CONFIG_HPP__ */
+#endif /* __OPENFLUID_CONFIG_HPP__ */
 

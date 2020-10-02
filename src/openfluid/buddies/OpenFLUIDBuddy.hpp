@@ -85,4 +85,4 @@ class OPENFLUID_API OpenFLUIDBuddy
 
 } } //namespaces
 
-#endif  /* __OPENFLUID_BUDDIES_OPENFLUIDBUDDY_HPP__ */
+#endif /* __OPENFLUID_BUDDIES_OPENFLUIDBUDDY_HPP__ */

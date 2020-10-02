@@ -94,4 +94,4 @@ class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<Obs
 } } // namespaces
 
 
-#endif /* OBSERVERSIGNATUREREGISTRY_HPP_ */
+#endif /* __OPENFLUID_MACHINE_OBSERVERSIGNATUREREGISTRY_HPP__ */

@@ -278,7 +278,12 @@ class SourceTreeChecker:
         if ExpectedGuardName:
             Result = re.search( r'#ifndef '+re.escape(ExpectedGuardName)+'\s*\n#define '+re.escape(ExpectedGuardName), Content)
             if not Result:
-                self.addProblem('HGRD',Filename,1,'missing or malformed header guard (expected',ExpectedGuardName+')')
+                self.addProblem('HGRD',Filename,1,'missing or malformed header guard definition (expected',ExpectedGuardName+')')
+
+            Result = re.search( r'#endif /\* '+re.escape(ExpectedGuardName)+ r' \*/\s*\n', Content)
+            if not Result:
+                self.addProblem('HGRD',Filename,1,'missing or malformed header guard closing')
+
 
 
 ############################################################################

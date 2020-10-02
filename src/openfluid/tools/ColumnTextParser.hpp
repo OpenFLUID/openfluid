@@ -173,5 +173,5 @@ class OPENFLUID_API ColumnTextParser
 } }
 
 
-#endif
+#endif /* __OPENFLUID_TOOLS_COLUMNTEXTPARSER_HPP__ */
 

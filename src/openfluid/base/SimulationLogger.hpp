@@ -107,5 +107,5 @@ class OPENFLUID_API SimulationLogger : public openfluid::tools::FileLogger
 } } // namespaces
 
 
-#endif /*__OPENFLUID_BASE_SIMULATIONLOGGER_HPP__*/
+#endif /* __OPENFLUID_BASE_SIMULATIONLOGGER_HPP__ */
 

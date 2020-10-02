@@ -63,4 +63,4 @@ class OPENFLUID_API CoupledModelDescriptor : public WareSetDescriptor<ModelItemD
 } } // namespaces
 
 
-#endif /* __OPENFLUID_FLUIDX_MODELDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_COUPLEDMODELDESCRIPTOR_HPP__ */

@@ -315,4 +315,4 @@ typedef std::uint64_t Duration_t;
 } } // namespaces
 
 
-#endif  /* __OPENFLUID_CORE_TYPEDEFS_HPP__ */
+#endif /* __OPENFLUID_CORE_TYPEDEFS_HPP__ */

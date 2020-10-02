@@ -117,4 +117,4 @@ class OPENFLUID_API PathsManagementWidget : public QWidget
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UICOMMON_NEWSLINEWIDGET_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_PATHSMANAGEMENTWIDGET_HPP__ */

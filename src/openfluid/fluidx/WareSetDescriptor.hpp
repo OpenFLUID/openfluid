@@ -394,4 +394,4 @@ class OPENFLUID_API WareSetDescriptor
 } } // namespaces
 
 
-#endif /* __OPENFLUID_FLUIDX_MODELDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_WARESETDESCRIPTOR_HPP__ */
