@@ -73,16 +73,8 @@ class OPENFLUID_API EventsCollection
 
     EventsList_t m_Events;
 
+
   public:
-
-    /**
-      Default constructor
-    */
-    EventsCollection() = default;
-
-    virtual ~EventsCollection()
-    { }
-
 
     /**
       Inserts an event in the event collection, ordered by date

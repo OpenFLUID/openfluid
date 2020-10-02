@@ -97,46 +97,51 @@ class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
     */
     VectorValue(const VectorValue& Val) :
       CompoundValue(),
-      Vector<double>(static_cast<const Vector<double>& >(Val))
+      Vector<double>(static_cast<const Vector<double>&>(Val))
+    { }
+
+    /**
+      Move constructor
+    */
+    VectorValue(VectorValue&& Val) :
+      CompoundValue(),
+      Vector<double>(std::move(static_cast<const Vector<double>&>(Val)))
     { }
 
     /**
       Constructor, creates a vector containing Size elements
     */
     VectorValue(unsigned long Size) : CompoundValue(), Vector<double>(Size)
-    {
-
-    }
+    { }
 
     /**
       Constructor, creates a vector containing Size elements, initialized with value InitValue
     */
     VectorValue(unsigned long Size, double InitValue) : CompoundValue(), Vector<double>(Size,InitValue)
-    {
-
-    }
+    { }
 
     /**
       Constructor, creates a vector of size Size, containing Data
     */
     VectorValue(double* Data, unsigned long Size) : CompoundValue(), Vector<double>(Data,Size)
-    {
+    { }
 
-    }
+    VectorValue& operator=(const Value& Other);
 
-    virtual ~VectorValue()
-    {
+    VectorValue& operator=(Value&& Other);
 
-    }
+    VectorValue& operator=(const VectorValue& Other);
 
-    Value& operator =(const Value& Other);
+    VectorValue& operator=(VectorValue&& Other);
+
+    virtual ~VectorValue() = default;
 
     inline Type getType() const
     {
       return Value::VECTOR;
     }
 
-    Value* clone() const
+    Value* clone() const override
     {
       return new VectorValue(*this);
     }

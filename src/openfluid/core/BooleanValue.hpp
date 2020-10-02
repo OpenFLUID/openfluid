@@ -81,32 +81,43 @@ class OPENFLUID_API BooleanValue : public SimpleValue
 {
   private:
 
-    bool m_Value;
+    bool m_Value = false;
 
   public:
 
     /**
       Default constructor
     */
-    BooleanValue() : SimpleValue(), m_Value(false)
+    BooleanValue() noexcept : SimpleValue(), m_Value(false)
     { }
 
     /**
       Copy constructor
     */
-    BooleanValue(const BooleanValue& Val) : SimpleValue(), m_Value(Val.m_Value)
+    BooleanValue(const BooleanValue& Val) noexcept : SimpleValue(), m_Value(Val.m_Value)
+    { }
+
+    /**
+      Move constructor
+    */
+    BooleanValue(BooleanValue&& Val) noexcept : SimpleValue(), m_Value(std::move(Val.m_Value))
     { }
 
     /**
       Constructor from plain old type
     */
-    BooleanValue(const bool& POD) : SimpleValue(), m_Value(POD)
+    BooleanValue(const bool& POD) noexcept : SimpleValue(), m_Value(POD)
     { }
 
-    virtual ~BooleanValue()
-    { }
+    BooleanValue& operator=(const Value& Other);
 
-    Value& operator =(const Value& Other);
+    BooleanValue& operator=(Value&& Other);
+
+    BooleanValue& operator=(const BooleanValue&) = default;
+
+    BooleanValue& operator=(BooleanValue&&) = default;
+
+    virtual ~BooleanValue() = default;
 
     /**
     * Cast operator
@@ -121,10 +132,12 @@ class OPENFLUID_API BooleanValue : public SimpleValue
       return Value::BOOLEAN;
     }
 
-    Value* clone() const
-    { return new BooleanValue(*this); }
+    Value* clone() const override
+    { 
+      return new BooleanValue(*this); 
+    }
 
-    bool convert(Value& Val) const;
+    bool convert(Value& Val) const override;
 
     /**
       Returns the boolean value as plain old type

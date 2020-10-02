@@ -44,12 +44,7 @@
 namespace openfluid { namespace core {
 
 
-// =====================================================================
-// =====================================================================
-
-
-MapValue::MapValue(const MapValue& Val)
-: CompoundValue()
+MapValue::MapValue(const MapValue& Val): CompoundValue()
 {
   m_Value.clear();
 
@@ -57,25 +52,55 @@ MapValue::MapValue(const MapValue& Val)
   {
     m_Value[(*it).first].reset((*(*it).second).clone());
   }
-};
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-Value& MapValue::operator=(const Value& Other)
+MapValue::MapValue(MapValue&& Val): CompoundValue()
 {
-  if (this == &Other)
+  m_Value = std::move(Val.m_Value);
+  Val.clear();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+MapValue& MapValue::operator=(const Value& Other)
+{
+  if (this != &Other)
   {
-    return *this;
+    const MapValue* CastedValue = dynamic_cast<const MapValue*>(&Other);
+
+    if (CastedValue)
+    {
+      m_Value = CastedValue->m_Value;
+    }
   }
 
-  const MapValue* CastedValue = dynamic_cast<const MapValue*> (&Other);
+  return *this;
+}
 
-  if (CastedValue)
+
+// =====================================================================
+// =====================================================================
+
+
+MapValue& MapValue::operator=(Value&& Other)
+{
+  if (this != &Other)
   {
-    m_Value = CastedValue->m_Value;
+    MapValue* CastedValue = dynamic_cast<MapValue*>(&Other);
+
+    if (CastedValue)
+    {
+      m_Value = std::move(CastedValue->m_Value);
+      CastedValue->m_Value.clear();
+    }
   }
 
   return *this;

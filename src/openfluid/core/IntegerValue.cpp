@@ -46,13 +46,27 @@
 namespace openfluid { namespace core {
 
 
-Value& IntegerValue::operator =(const Value& Other)
+IntegerValue& IntegerValue::operator=(const Value& Other)
 {
-  const IntegerValue* CastedValue = dynamic_cast<const IntegerValue*> (&Other);
+  if (this != &Other)
+  {  
+    m_Value = Other.asIntegerValue().m_Value;
+  }
 
-  if (CastedValue)
-  {
-    m_Value = CastedValue->m_Value;
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+IntegerValue& IntegerValue::operator=(Value&& Other)
+{
+  if (this != &Other)
+  {  
+    m_Value = Other.asIntegerValue().m_Value;
+    Other.asIntegerValue().m_Value = 0;
   }
 
   return *this;

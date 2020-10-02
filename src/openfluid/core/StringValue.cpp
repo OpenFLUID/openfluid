@@ -91,13 +91,37 @@ StringValue::StringValue(double Val) :
 // =====================================================================
 
 
-Value& StringValue::operator=(const Value& Other)
+StringValue& StringValue::operator=(const Value& Other)
 {
-  const StringValue* CastedValue = dynamic_cast<const StringValue*> (&Other);
-
-  if (CastedValue)
+  if (this != &Other)
   {
-    m_Value = CastedValue->m_Value;
+    const StringValue* CastedValue = dynamic_cast<const StringValue*>(&Other);
+
+    if (CastedValue)
+    {
+      m_Value = CastedValue->m_Value;
+    }
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+StringValue& StringValue::operator=(Value&& Other)
+{
+  if (this != &Other)
+  {
+    StringValue* CastedValue = dynamic_cast<StringValue*>(&Other);
+
+    if (CastedValue)
+    {
+      m_Value = std::move(CastedValue->m_Value);
+      CastedValue->m_Value.clear();
+    }
   }
 
   return *this;

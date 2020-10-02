@@ -138,7 +138,7 @@ QString SignatureWidget::formatAuthors(const openfluid::ware::WareSignature::Aut
 
   openfluid::ware::WareSignature::AuthorsList_t::const_iterator itb = AuthList.begin();
   openfluid::ware::WareSignature::AuthorsList_t::const_iterator ite = AuthList.end();
-  openfluid::ware::WareSignature::AuthorsList_t::const_iterator itl = AuthList.end().operator --();
+  openfluid::ware::WareSignature::AuthorsList_t::const_iterator itl = AuthList.end().operator--();
   openfluid::ware::WareSignature::AuthorsList_t::const_iterator it;
 
   for (it=itb; it!= ite; ++it)

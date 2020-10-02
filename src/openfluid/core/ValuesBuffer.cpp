@@ -40,7 +40,6 @@
 
 #include <boost/circular_buffer.hpp>
 
-
 #include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>

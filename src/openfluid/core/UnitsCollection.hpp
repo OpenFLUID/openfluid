@@ -65,11 +65,6 @@ class OPENFLUID_API UnitsCollection
 
   public :
 
-    UnitsCollection() = default;
-
-    ~UnitsCollection()
-    { }
-
     SpatialUnit* spatialUnit(UnitID_t aUnitID);
 
     const SpatialUnit* spatialUnit(UnitID_t aUnitID) const;

@@ -79,16 +79,6 @@ DateTime::DateTime(RawTime_t SecondsSince0000)
 // =====================================================================
 
 
-DateTime::~DateTime()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool DateTime::set(int Year, int Month, int Day, int Hour, int Minute, int Second)
 {
   if (isValidDateTime(Year,Month,Day,Hour,Minute,Second))
@@ -294,7 +284,7 @@ std::string DateTime::getAsISOString() const
 // =====================================================================
 
 
-std::string  DateTime::getAsString(std::string Format) const
+std::string  DateTime::getAsString(const std::string& Format) const
 {
   char pCh[80];
   std::string Str;
@@ -393,22 +383,7 @@ RawTime_t DateTime::diffInSeconds(const DateTime& DT) const
 // =====================================================================
 
 
-DateTime& DateTime::operator =(const DateTime &Right)
-{
-  if (&Right != this)
-  {
-    set(Right.m_RawTime);
-  }
-
-  return *this;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool DateTime::operator ==(const DateTime &Right) const
+bool DateTime::operator==(const DateTime &Right) const
 {
   return (m_RawTime == Right.m_RawTime);
 }
@@ -418,7 +393,7 @@ bool DateTime::operator ==(const DateTime &Right) const
 // =====================================================================
 
 
-bool DateTime::operator !=(const DateTime &Right) const
+bool DateTime::operator!=(const DateTime &Right) const
 {
   return (m_RawTime != Right.m_RawTime);
 }
@@ -428,7 +403,7 @@ bool DateTime::operator !=(const DateTime &Right) const
 // =====================================================================
 
 
-bool DateTime::operator >(const DateTime &Right) const
+bool DateTime::operator>(const DateTime &Right) const
 {
   return (m_RawTime > Right.m_RawTime);
 }
@@ -438,7 +413,7 @@ bool DateTime::operator >(const DateTime &Right) const
 // =====================================================================
 
 
-bool DateTime::operator >=(const DateTime &Right) const
+bool DateTime::operator>=(const DateTime &Right) const
 {
   return (m_RawTime >= Right.m_RawTime);
 }
@@ -448,7 +423,7 @@ bool DateTime::operator >=(const DateTime &Right) const
 // =====================================================================
 
 
-bool DateTime::operator <(const DateTime &Right) const
+bool DateTime::operator<(const DateTime &Right) const
 {
   return (m_RawTime < Right.m_RawTime);
 }
@@ -458,7 +433,7 @@ bool DateTime::operator <(const DateTime &Right) const
 // =====================================================================
 
 
-bool DateTime::operator <=(const DateTime &Right) const
+bool DateTime::operator<=(const DateTime &Right) const
 {
   return (m_RawTime <= Right.m_RawTime);
 }
@@ -468,7 +443,7 @@ bool DateTime::operator <=(const DateTime &Right) const
 // =====================================================================
 
 
-DateTime DateTime::operator +(const RawTime_t& Seconds) const
+DateTime DateTime::operator+(const RawTime_t& Seconds) const
 {
   DateTime DT(m_RawTime+Seconds);
 
@@ -480,7 +455,7 @@ DateTime DateTime::operator +(const RawTime_t& Seconds) const
 // =====================================================================
 
 
-DateTime DateTime::operator -(const RawTime_t& Seconds) const
+DateTime DateTime::operator-(const RawTime_t& Seconds) const
 {
   DateTime DT(m_RawTime-Seconds);
 

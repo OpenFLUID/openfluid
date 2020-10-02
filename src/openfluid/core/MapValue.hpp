@@ -93,7 +93,7 @@ class OPENFLUID_API MapValue : public CompoundValue
 {
   public:
 
-    typedef std::map<std::string,std::shared_ptr<Value> > Map_t;
+    typedef std::map<std::string,std::shared_ptr<Value>> Map_t;
 
     typedef Map_t::iterator iterator;
 
@@ -118,20 +118,30 @@ class OPENFLUID_API MapValue : public CompoundValue
     */
     MapValue(const MapValue& Val);
 
+    /**
+      Move constructor
+    */
+    MapValue(MapValue&& Val);
+
     MapValue(const Map_t& Val) : CompoundValue(), m_Value(Val)
     { }
 
+    MapValue& operator=(const Value& Other);
+
+    MapValue& operator=(Value&& Other);
+
+    MapValue& operator=(const MapValue& Other) = default;
+
+    MapValue& operator=(MapValue&& Other) = default;
+
     ~MapValue();
-
-    Value& operator =(const Value& Other);
-
 
     inline Type getType() const
     {
       return Value::MAP;
     }
 
-    Value* clone() const
+    Value* clone() const override
     {
       return new MapValue(*this);
     }

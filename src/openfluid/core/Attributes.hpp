@@ -65,11 +65,6 @@ class OPENFLUID_API Attributes
 
   public:
 
-    Attributes() = default;
-
-    ~Attributes()
-    { }
-
     bool setValue(const AttributeName_t& aName, const Value& aValue);
 
     [[deprecated]] bool setValue(const AttributeName_t& aName, const std::string& aValue);

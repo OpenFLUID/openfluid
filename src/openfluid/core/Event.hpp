@@ -87,15 +87,29 @@ class OPENFLUID_API Event
     Event();
 
     /**
-      Constructor
+      Constructor with date
       @param[in] Date the date and time of the event
     */
     Event(const DateTime& Date);
 
     /**
+      Copy constructor
+    */
+    Event(const Event&) = default;
+
+    /**
+      Move constructor
+    */
+    Event(Event&&) = default;
+
+    Event& operator=(const Event&) = default;
+
+    Event& operator=(Event&&) = default;
+
+    /**
       Destructor
     */
-    ~Event();
+    ~Event() = default;
 
     /**
       Returns true if the information exists

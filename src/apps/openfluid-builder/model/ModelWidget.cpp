@@ -500,7 +500,7 @@ void ModelWidget::updateCoupledModel()
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itb = Items.begin();
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator ite = Items.end();
-  std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itl = Items.end().operator --();
+  std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itl = Items.end().operator--();
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it;
 
   for (it = itb; it!= ite; ++it)

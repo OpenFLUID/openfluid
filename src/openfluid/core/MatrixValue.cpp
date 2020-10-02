@@ -43,18 +43,66 @@
 namespace openfluid { namespace core {
 
 
-Value& MatrixValue::operator=(const Value& Other)
+MatrixValue& MatrixValue::operator=(const Value& Other)
 {
-  if (this == &Other)
+  if (this != &Other)
   {
-    return *this;
+    const MatrixValue* CastedValue = dynamic_cast<const MatrixValue*>(&Other);
+
+    if (CastedValue)
+    {
+      Matrix<double>::operator=(static_cast<const Matrix<double>&>(Other.asMatrixValue()));
+    }
   }
 
-  const MatrixValue* CastedValue = dynamic_cast<const MatrixValue*> (&Other);
+  return *this;
+}
 
-  if (CastedValue)
+
+// =====================================================================
+// =====================================================================
+
+
+MatrixValue& MatrixValue::operator=(Value&& Other)
+{
+  if (this != &Other)
   {
-    Matrix<double>::operator=(static_cast<const Matrix<double>& >(Other.asMatrixValue()));
+    MatrixValue* CastedValue = dynamic_cast<MatrixValue*>(&Other);
+
+    if (CastedValue)
+    {
+      Matrix<double>::operator=(static_cast<Matrix<double>&&>(Other.asMatrixValue()));
+    }
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+MatrixValue& MatrixValue::operator=(const MatrixValue& Other)
+{
+  if (this != &Other)
+  {
+    Matrix<double>::operator=(static_cast<const Matrix<double>&>(Other));
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+MatrixValue& MatrixValue::operator=(MatrixValue&& Other)
+{
+  if (this != &Other)
+  {
+    Matrix<double>::operator=(static_cast<Matrix<double>&&>(Other));
   }
 
   return *this;

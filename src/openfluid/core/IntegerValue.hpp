@@ -97,15 +97,26 @@ class OPENFLUID_API IntegerValue : public SimpleValue
     { }
 
     /**
+      Copy constructor
+    */
+    IntegerValue(IntegerValue&& Val) : SimpleValue(), m_Value(std::move(Val.m_Value))
+    { }
+
+    /**
       Constructor from plain old type
     */
     IntegerValue(const long& POD) : SimpleValue(), m_Value(POD)
     { }
 
-    virtual ~IntegerValue()
-    { }
+    IntegerValue& operator=(const Value& Other);
 
-    Value& operator =(const Value& Other);
+    IntegerValue& operator=(Value&& Other);
+
+    IntegerValue& operator=(const IntegerValue& Other) = default;
+
+    IntegerValue& operator=(IntegerValue&& Other) = default;
+
+    virtual ~IntegerValue() = default;
 
     /**
     * Cast operator
@@ -120,12 +131,12 @@ class OPENFLUID_API IntegerValue : public SimpleValue
       return Value::INTEGER;
     }
 
-    Value* clone() const
+    Value* clone() const override
     {
       return new IntegerValue(*this);
     };
 
-    bool convert(Value& Val) const;
+    bool convert(Value& Val) const override;
 
     /**
       Returns the integer value as a plain old type

@@ -52,12 +52,6 @@ class OPENFLUID_API SimpleValue : public Value
 {
   public:
 
-    SimpleValue() : Value()
-    { }
-
-    virtual ~SimpleValue()
-    { }
-
     inline bool isSimple() const
     {
       return true;

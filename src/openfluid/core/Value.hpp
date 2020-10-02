@@ -41,8 +41,6 @@
 #define __OPENFLUID_CORE_VALUE_HPP__
 
 
-#include <iostream>
-
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
@@ -67,18 +65,29 @@ class OPENFLUID_API Value
 
     enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, MAP, TREE, NULLL };
 
-    Value() = default;
+    Value() = default; 
 
-    virtual ~Value()
-    { }
+    Value(const Value&) = default; 
+
+    Value(Value&&) = default; 
 
     /**
       Assignment operator
     */
-    virtual Value& operator =(const Value& /*Other*/)
+    virtual Value& operator=(const Value&)
     {
       return *this;
     }
+
+    /**
+      Move operator
+    */
+    virtual Value& operator=(Value&&)
+    {
+      return *this;
+    }
+
+    virtual ~Value() = default; 
 
     virtual Type getType() const = 0;
 
@@ -87,7 +96,7 @@ class OPENFLUID_API Value
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Value is not cloneable");
     }
 
-    virtual bool convert(Value& /*Val*/) const
+    virtual bool convert(Value&) const
     {
       return false;
     }
@@ -102,7 +111,8 @@ class OPENFLUID_API Value
 
     friend std::ostream& operator<<(std::ostream& OutStm, const Value& Val)
     {
-      Val.writeToStream(OutStm); return OutStm;
+      Val.writeToStream(OutStm); 
+      return OutStm;
     }
 
     /**

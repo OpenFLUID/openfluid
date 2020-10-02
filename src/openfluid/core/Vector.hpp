@@ -42,6 +42,8 @@
 
 
 #include <iostream>
+#include <memory>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
@@ -64,7 +66,7 @@ class OPENFLUID_API Vector
 
   protected :
 
-    T* m_Data;
+    std::unique_ptr<T[]> m_Data;
 
     unsigned long m_Size;
 
@@ -77,25 +79,25 @@ class OPENFLUID_API Vector
 
   public :
 
-  /**
-    Default constructor, creates an empty vector
-  */
+    /**
+      Default constructor, creates an empty vector
+    */
     Vector();
 
-  /**
-    Copy constructor
-  */
-    Vector(const Vector &Vector);
+    /**
+      Copy constructor
+    */
+    Vector(const Vector& Other);
 
-  /**
-    Constructor, creates a vector containing Size elements
-  */
+    /**
+      Constructor, creates a vector containing Size elements
+    */
     Vector(unsigned long Size);
 
-  /**
-    Constructor, creates a vector containing Size elements, initialized with value InitValue
-  */
-    Vector(unsigned long Size, T InitValue);
+    /**
+      Constructor, creates a vector containing Size elements, initialized with value InitValue
+    */
+    Vector(unsigned long Size, const T& InitValue);
 
     /**
       Constructor, creates a vector of size Size, containing Data
@@ -103,9 +105,19 @@ class OPENFLUID_API Vector
     Vector(T* Data, unsigned long Size);
 
     /**
+      Assignment operator
+    */
+    Vector<T>& operator=(const Vector& Other);
+
+    /**
+      Move assignment operator
+    */
+    Vector<T>& operator=(Vector&& Other);
+
+    /**
       Destructor
     */
-    virtual ~Vector();
+    virtual ~Vector() = default;
 
     /**
       Returns the size of the vector
@@ -130,7 +142,7 @@ class OPENFLUID_API Vector
     */
     T* data() const
     {
-      return m_Data;
+      return m_Data.get();
     }
 
     /**
@@ -163,14 +175,14 @@ class OPENFLUID_API Vector
     /**
       Sets a new value for element at the given index
     */
-    void setElement(unsigned long Index, T Element);
+    void setElement(unsigned long Index, const T& Val);
 
     /**
       Sets a new value for element at the given index
     */
-    inline void set(unsigned long Index, T Element)
+    inline void set(unsigned long Index, const T& Val)
     {
-      setElement(Index,Element);
+      setElement(Index,Val);
     }
 
 
@@ -179,10 +191,6 @@ class OPENFLUID_API Vector
     */
     T& operator[](unsigned long Index);
 
-    /**
-      Allocation operator
-    */
-    Vector<T>& operator=(const Vector &A);
 
     /**
       Fills the vector with given value
@@ -228,7 +236,7 @@ class OPENFLUID_API Vector
     */
     inline const_iterator end() const
     {
-      return &m_Data[m_Size];
+      return &m_Data[m_Size]; 
     }
 
 };
@@ -250,16 +258,16 @@ Vector<T>::Vector()
 
 
 template <class T>
-Vector<T>::Vector(const Vector &A)
+Vector<T>::Vector(const Vector& Other)
 {
   init();
 
-  if (!allocate(A.m_Size))
+  if (!allocate(Other.m_Size))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
   }
 
-  std::copy(A.m_Data, A.m_Data + A.m_Size, m_Data);
+  std::copy(Other.m_Data.get(), Other.m_Data.get() + Other.m_Size, m_Data.get());
 }
 
 
@@ -285,7 +293,7 @@ Vector<T>::Vector(unsigned long Size)
 
 
 template <class T>
-Vector<T>::Vector(unsigned long Size, T InitValue)
+Vector<T>::Vector(unsigned long Size, const T& InitValue)
 {
   init();
 
@@ -294,13 +302,9 @@ Vector<T>::Vector(unsigned long Size, T InitValue)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
   }
 
-  if (m_Data != nullptr)
+  if (m_Data)
   {
-    unsigned long i;
-    for (i=0;i<m_Size;i++)
-    {
-      m_Data[i] = InitValue;
-    }
+    std::fill(m_Data.get(), m_Data.get() + Size, InitValue);
   }
 }
 
@@ -319,8 +323,7 @@ Vector<T>::Vector(T* Data, unsigned long Size)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
   }
 
-  std::copy(Data, Data + Size, m_Data);
-
+  std::copy(Data, Data + Size, m_Data.get());
 }
 
 
@@ -329,9 +332,37 @@ Vector<T>::Vector(T* Data, unsigned long Size)
 
 
 template <class T>
-Vector<T>::~Vector()
+Vector<T>& Vector<T>::operator=(const Vector& Other)
 {
-  clear();
+  if (this != &Other) // in case somebody tries assign array to itself
+  {
+    clear();
+    allocate(Other.m_Size);
+    std::copy(Other.m_Data.get(), Other.m_Data.get() + Other.m_Size, m_Data.get());
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template <class T>
+Vector<T>& Vector<T>::operator=(Vector&& Other)
+{
+  if (this != &Other) // in case somebody tries assign array to itself
+  {
+    clear();
+
+    m_Size = Other.m_Size;
+    m_Data = std::move(Other.m_Data);
+
+    Other.clear();
+  }
+ 
+  return *this;
 }
 
 
@@ -342,11 +373,12 @@ Vector<T>::~Vector()
 template <class T>
 bool Vector<T>::allocate(unsigned long Size)
 {
-
   if (Size > 0)
   {
-    m_Data = new T[Size];
-    if (m_Data != nullptr)
+    m_Data.reset();
+    m_Data = std::move(std::make_unique<T[]>(Size));
+
+    if (m_Data)
     {
       m_Size = Size;
     }
@@ -374,7 +406,7 @@ void Vector<T>::setData(T* Data, unsigned long Size)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot allocate memory");
   }
 
-  std::copy(Data, Data + Size, m_Data);
+  std::copy(Data, Data + Size, m_Data.get());
 }
 
 
@@ -399,14 +431,14 @@ T Vector<T>::getElement(unsigned long Index) const
 
 
 template <class T>
-void Vector<T>::setElement(unsigned long Index, T Element)
+void Vector<T>::setElement(unsigned long Index, const T& Val)
 {
   if (Index >= m_Size)
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"element access range error");
   }
 
-  m_Data[Index] = Element;
+  m_Data[Index] = Val;
 }
 
 
@@ -431,30 +463,9 @@ T& Vector<T>::operator[](unsigned long Index)
 
 
 template <class T>
-Vector<T>& Vector<T>::operator=(const Vector &A)
-{
-  if (this == &A) // in case somebody tries assign array to itself
-  {
-    return *this;
-  }
-
-  clear();
-
-  allocate(A.m_Size);
-  std::copy(A.m_Data, A.m_Data + A.m_Size, m_Data);
-
-  return *this;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-template <class T>
 void Vector<T>::init()
 {
-  m_Data = nullptr;
+  m_Data.reset();
   m_Size = 0;
 }
 
@@ -466,7 +477,7 @@ void Vector<T>::init()
 template <class T>
 void Vector<T>::fill(const T& Val)
 {
-  std::fill(m_Data, m_Data + m_Size,Val);
+  std::fill(m_Data.get(), m_Data.get() + m_Size,Val);
 }
 
 
@@ -477,7 +488,6 @@ void Vector<T>::fill(const T& Val)
 template <class T>
 void Vector<T>::clear()
 {
-  delete [] m_Data;
   init();
 }
 
@@ -491,10 +501,8 @@ void Vector<T>::copy(const Vector& Source, Vector& Dest)
 {
   Dest.clear();
   Dest.allocate(Source.m_Size);
-  for (unsigned long i = 0; i < Source.m_Size;i++)
-  {
-    Dest.m_Data[i] = Source.m_Data[i];
-  }
+
+  std::copy(Dest.m_Data.get(), Dest.m_Data.get() + Source.m_Size, Source.m_Data.get());
 }
 
 

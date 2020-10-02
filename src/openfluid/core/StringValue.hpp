@@ -135,15 +135,16 @@ class OPENFLUID_API StringValue : public SimpleValue
     */
     StringValue(double Val);
 
-    virtual ~StringValue()
-    {
+    StringValue& operator=(const Value& Other);
 
-    }
+    StringValue& operator=(Value&& Other);
 
-    /**
-      Assignment operator
-    */
-    Value& operator=(const Value& Other);
+    StringValue& operator=(const StringValue& Other) = default;
+
+    StringValue& operator=(StringValue&& Other) = default;
+
+    virtual ~StringValue() = default;
+
 
     /**
       Cast operator
@@ -158,12 +159,12 @@ class OPENFLUID_API StringValue : public SimpleValue
       return Value::STRING;
     }
 
-    Value* clone() const
+    Value* clone() const override
     {
       return new StringValue(*this);
     }
 
-    bool convert(Value& Val) const;
+    bool convert(Value& Val) const override;
 
     /**
       Returns the string value as std::string type

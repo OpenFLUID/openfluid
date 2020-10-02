@@ -43,6 +43,26 @@
 namespace openfluid { namespace core {
 
 
+NullValue& NullValue::operator=(const Value&)
+{
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+NullValue& NullValue::operator=(Value&&)
+{
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void NullValue::writeToStream(std::ostream& OutStm) const
 {
   OutStm << "null";

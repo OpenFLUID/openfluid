@@ -43,13 +43,31 @@
 namespace openfluid { namespace core {
 
 
-Value& TreeValue::operator =(const Value& Other)
+TreeValue& TreeValue::operator=(const Value& Other)
 {
-  const TreeValue* CastedValue = dynamic_cast<const TreeValue*> (&Other);
-
-  if (CastedValue)
+  if (this != &Other)
   {
-    Tree<std::string,double>::operator=(static_cast<const Tree<std::string,double>& >(Other.asTreeValue()));
+    const TreeValue* CastedValue = dynamic_cast<const TreeValue*> (&Other);
+
+    if (CastedValue)
+    {
+      Tree<std::string,double>::operator=(static_cast<const Tree<std::string,double>& >(Other.asTreeValue()));
+    }
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+TreeValue& TreeValue::operator=(const TreeValue& Other)
+{
+  if (this != &Other)
+  {
+    Tree<std::string,double>::operator=(static_cast<const Tree<std::string,double>& >(Other));
   }
 
   return *this;

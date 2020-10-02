@@ -47,15 +47,29 @@
 namespace openfluid { namespace core {
 
 
-Value& BooleanValue::operator =(const Value& Other)
+BooleanValue& BooleanValue::operator=(const Value& Other)
 {
-  const BooleanValue* CastedValue = dynamic_cast<const BooleanValue*> (&Other);
-
-  if (CastedValue)
+  if (this != &Other)
   {
-    m_Value = CastedValue->m_Value;
+    m_Value = Other.asBooleanValue().m_Value;
   }
 
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BooleanValue& BooleanValue::operator=(Value&& Other)
+{
+  if (this != &Other)
+  {
+    m_Value = Other.asBooleanValue().m_Value;
+    Other.asBooleanValue().m_Value = false;
+  }
+  
   return *this;
 }
 

@@ -44,13 +44,27 @@
 namespace openfluid { namespace core {
 
 
-Value& DoubleValue::operator =(const Value& Other)
+DoubleValue& DoubleValue::operator=(const Value& Other)
 {
-  const DoubleValue* CastedValue = dynamic_cast<const DoubleValue*> (&Other);
-
-  if (CastedValue)
+  if (this != &Other)
   {
-    m_Value = CastedValue->m_Value;
+    m_Value = Other.asDoubleValue().m_Value;
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+DoubleValue& DoubleValue::operator=(Value&& Other)
+{
+  if (this != &Other)
+  {
+    m_Value = std::move(Other.asDoubleValue().m_Value);
+    Other.asDoubleValue().m_Value = 0.0;
   }
 
   return *this;

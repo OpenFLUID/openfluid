@@ -43,13 +43,66 @@
 namespace openfluid { namespace core {
 
 
-Value& VectorValue::operator =(const Value& Other)
+VectorValue& VectorValue::operator=(const Value& Other)
 {
-  const VectorValue* CastedValue = dynamic_cast<const VectorValue*> (&Other);
-
-  if (CastedValue)
+  if (this != &Other)
   {
-    Vector<double>::operator=(static_cast<const Vector<double>& >(Other.asVectorValue()));
+    const VectorValue* CastedValue = dynamic_cast<const VectorValue*>(&Other);
+
+    if (CastedValue)
+    {
+      Vector<double>::operator=(static_cast<const Vector<double>&>(Other.asVectorValue()));
+    }
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+VectorValue& VectorValue::operator=(Value&& Other)
+{
+  if (this != &Other)
+  {
+    VectorValue* CastedValue = dynamic_cast<VectorValue*>(&Other);
+
+    if (CastedValue)
+    {
+      Vector<double>::operator=(static_cast<Vector<double>&&>(Other.asVectorValue()));
+    }
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+VectorValue& VectorValue::operator=(const VectorValue& Other)
+{
+  if (this != &Other)
+  {
+    Vector<double>::operator=(static_cast<const Vector<double>&>(Other));
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+VectorValue& VectorValue::operator=(VectorValue&& Other)
+{
+  if (this != &Other)
+  {
+    Vector<double>::operator=(static_cast<Vector<double>&&>(Other));
   }
 
   return *this;

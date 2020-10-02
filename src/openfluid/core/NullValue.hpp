@@ -69,24 +69,29 @@ class OPENFLUID_API NullValue : public Value
     /**
       Default constructor
     */
-    NullValue() : Value()
-    { }
+    NullValue() = default;
 
     /**
       Copy constructor
     */
-    NullValue(const NullValue& /*Val*/): Value()
-    { }
+    NullValue(const NullValue&) = default;
 
-    virtual ~NullValue()
-    { }
+    NullValue& operator=(const Value&);
+
+    NullValue& operator=(Value&&);
+
+    NullValue& operator=(const NullValue&) = default;
+
+    NullValue& operator=(NullValue&&) = default;
+
+    virtual ~NullValue() = default;
 
     inline Type getType() const
     {
       return Value::NULLL;
     }
 
-    Value* clone() const
+    Value* clone() const override
     {
       return new NullValue(*this);
     }

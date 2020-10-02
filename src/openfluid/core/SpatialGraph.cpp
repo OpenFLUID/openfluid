@@ -49,7 +49,7 @@ namespace openfluid { namespace core {
 
 struct SortUnitsPtrByProcessOrder
 {
-  bool operator ()(SpatialUnit*& U1,SpatialUnit*& U2) const
+  bool operator()(SpatialUnit*& U1,SpatialUnit*& U2) const
   {
     return (U1->getProcessOrder() <= U2->getProcessOrder());
   }

@@ -96,7 +96,14 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
       Copy constructor
     */
     MatrixValue(const MatrixValue& Val) : CompoundValue(),
-                                          Matrix<double>(static_cast<const Matrix<double>& >(Val))
+                                          Matrix<double>(static_cast<const Matrix<double>&>(Val))
+    { }
+
+    /**
+      Move constructor
+    */
+    MatrixValue(MatrixValue&& Val) : CompoundValue(),
+                                     Matrix<double>(std::move(static_cast<Matrix<double>&&>(Val)))
     { }
 
     /**
@@ -116,19 +123,25 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
 
     }
 
+    MatrixValue& operator=(const Value& Other);
+
+    MatrixValue& operator=(Value&& Other);
+
+    MatrixValue& operator=(const MatrixValue& Other);
+
+    MatrixValue& operator=(MatrixValue&& Other);
+
     virtual ~MatrixValue()
     {
 
     }
-
-    Value& operator =(const Value& Other);
 
     inline Type getType() const
     {
       return Value::MATRIX;
     };
 
-    Value* clone() const
+    Value* clone() const override
     {
       return new MatrixValue(*this);
     }

@@ -290,6 +290,7 @@ bool SpatialUnit::importGeometryFromWkt(const std::string& WKT)
     deleteGeometry();
   }
 
+  // const char* WktBuffer = (const char*)(WKT.c_str());
   char* WktBuffer = (char*)(WKT.c_str());
 
   // TODO set spatial reference (from name given as method argument?)

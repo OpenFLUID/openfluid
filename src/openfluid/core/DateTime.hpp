@@ -124,7 +124,17 @@ class OPENFLUID_API DateTime
     DateTime();
 
     /**
-      Constructor
+      Copy constructor
+    */
+    DateTime(const DateTime&) = default;
+
+    /**
+      Move constructor
+    */
+    DateTime(DateTime&&) = default;
+
+    /**
+      Constructor from date details
     */
     DateTime(int Year, int Month, int Day, int Hour, int Minute, int Second);
 
@@ -133,10 +143,14 @@ class OPENFLUID_API DateTime
     */
     DateTime(RawTime_t SecondsSince0000);
 
+    DateTime& operator=(const DateTime& Other) = default;
+
+    DateTime& operator=(DateTime&& Other) = default;
+
     /**
       Destructor
     */
-    ~DateTime();
+    ~DateTime() = default;
 
     /**
       Sets the date and time from the parameters
@@ -234,7 +248,7 @@ class OPENFLUID_API DateTime
       @param[in] Format strftime()-like format string
       @return a string
     */
-    std::string getAsString(std::string Format) const;
+    std::string getAsString(const std::string& Format) const;
 
 
     /**
@@ -276,89 +290,92 @@ class OPENFLUID_API DateTime
     bool isStrictlyBetween(const DateTime& FirstDT, const DateTime& SecondDT);
 
     /**
-      Assignment operator
-    */
-    DateTime& operator =(const DateTime &Right);
-
-    /**
       Equal operator
     */
-    bool operator ==(const DateTime &Right) const;
+    bool operator==(const DateTime& Right) const;
 
     /**
       Difference operator
     */
-    bool operator !=(const DateTime &Right) const;
+    bool operator!=(const DateTime& Right) const;
 
     /**
       Greater than operator
     */
-    bool operator >(const DateTime &Right) const;
+    bool operator>(const DateTime& Right) const;
 
     /**
       Greater than or equal operator
     */
-    bool operator >=(const DateTime &Right) const;
+    bool operator>=(const DateTime& Right) const;
 
     /**
       Lower than operator
     */
-    bool operator <(const DateTime &Right) const;
+    bool operator<(const DateTime& Right) const;
 
     /**
       Lower than or equal operator
     */
-    bool operator <=(const DateTime &Right) const;
+    bool operator<=(const DateTime& Right) const;
 
     /**
       Add operator
     */
-    DateTime operator +(const RawTime_t& Seconds) const;
+    DateTime operator+(const RawTime_t& Seconds) const;
 
     /**
       Subtract operator
     */
-    DateTime operator -(const RawTime_t& Seconds) const;
+    DateTime operator-(const RawTime_t& Seconds) const;
 
     /**
       Returns the number of seconds for one minute
     */
-    static inline RawTime_t Minute() { return 60; };
+    static inline RawTime_t Minute() 
+    { return 60; };
 
     /**
       Returns the number of seconds for N minutes
     */
-    static inline RawTime_t Minutes(int N) { return (60*N); };
+    static inline RawTime_t Minutes(int N) 
+    { return (60*N); };
 
     /**
       Returns the number of seconds for one hour
     */
-    static inline RawTime_t Hour() { return 3600; };
+    static inline RawTime_t Hour()
+    { return 3600; };
 
     /**
       Returns the number of seconds for N hours
     */
-    static inline RawTime_t Hours(int N) { return (3600*N); };
+    static inline RawTime_t Hours(int N) 
+    { return (3600*N); };
 
     /**
       Returns the number of seconds for one day
     */
-    static inline RawTime_t Day() { return 86400; };
+    static inline RawTime_t Day()
+    { return 86400; };
 
     /**
       Returns the number of seconds for N days
     */
-    static inline RawTime_t Days(int N) { return (86400*N); };
+    static inline RawTime_t Days(int N)
+    { return (86400*N); };
 
     /**
       Returns the number of seconds for one week
     */
-    static inline RawTime_t Week() { return 604800; };
+    static inline RawTime_t Week()
+    { return 604800; };
 
     /**
       Returns the number of seconds for N weeks
     */
-    static inline RawTime_t Weeks(int N) { return (604800*N); };
+    static inline RawTime_t Weeks(int N)
+    { return (604800*N); };
 
     /**
       Returns true if the given year is a leap year

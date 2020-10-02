@@ -61,8 +61,15 @@ class OPENFLUID_API UnstructuredValue
 
     UnstructuredValue() = default;
 
-    virtual ~UnstructuredValue()
-    { }
+    UnstructuredValue(const UnstructuredValue&) = default;
+    
+    UnstructuredValue(UnstructuredValue&&) = default;
+
+    UnstructuredValue& operator=(const UnstructuredValue&) = default;
+
+    UnstructuredValue& operator=(UnstructuredValue&&) = default;
+
+    virtual ~UnstructuredValue() = default;
 
     virtual UnstructuredType getType() const = 0;
 

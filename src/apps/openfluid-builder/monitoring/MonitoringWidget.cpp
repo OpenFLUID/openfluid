@@ -194,7 +194,7 @@ void MonitoringWidget::refresh()
   std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itb = Items.begin();
   std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator ite = Items.end();
   std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it;
-  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itl = Items.end().operator --();
+  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itl = Items.end().operator--();
 
 
   for (it = itb; it!= ite; ++it)
