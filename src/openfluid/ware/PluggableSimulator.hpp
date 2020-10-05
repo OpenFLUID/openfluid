@@ -74,9 +74,9 @@
 #define DEFINE_SIMULATOR_CLASS(pluginclassname) \
   extern "C" \
   { \
-    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL() \
+    OPENFLUID_PLUGIN const std::string* WAREABIVERSION_PROC_DECL() \
     { \
-      return std::string(openfluid::config::VERSION_FULL); \
+      return new std::string(openfluid::config::VERSION_FULL); \
     } \
     \
     OPENFLUID_PLUGIN openfluid::ware::PluggableSimulator* WAREBODY_PROC_DECL() \

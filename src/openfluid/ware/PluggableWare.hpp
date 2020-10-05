@@ -83,9 +83,9 @@ namespace openfluid { namespace ware {
 #define DEFINE_WARE_LINKUID(linkuid) \
   extern "C" \
   { \
-    OPENFLUID_PLUGIN std::string WARELINKUID_PROC_DECL() \
+    OPENFLUID_PLUGIN const std::string* WARELINKUID_PROC_DECL() \
     { \
-      return std::string(linkuid); \
+      return new std::string(linkuid); \
     } \
   }
 

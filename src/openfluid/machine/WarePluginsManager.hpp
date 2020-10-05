@@ -61,9 +61,9 @@
 namespace openfluid { namespace machine {
 
 
-typedef std::string (*GetWareABIVersionProc)();
+typedef std::string* (*GetWareABIVersionProc)();
 
-typedef std::string (*GetWareLinkUIDProc)();
+typedef std::string* (*GetWareLinkUIDProc)();
 
 
 // =====================================================================
@@ -123,8 +123,8 @@ class OPENFLUID_API WarePluginsManager
 
         if (ABIVersionProc)
         {
-          WareItem->Verified =
-              (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,ABIVersionProc(),false) == 0);
+          std::unique_ptr<std::string> StrPtr(ABIVersionProc());
+          WareItem->Verified = (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*StrPtr,false) == 0);
         }
         else
         {
@@ -157,7 +157,8 @@ class OPENFLUID_API WarePluginsManager
 
             if (LinkUIDProc)
             {
-              WareItem->LinkUID = LinkUIDProc();
+              std::unique_ptr<std::string> StrPtr(LinkUIDProc());
+              WareItem->LinkUID = *StrPtr;
             }
           }
           else
@@ -210,8 +211,8 @@ class OPENFLUID_API WarePluginsManager
 
           if (ABIVersionProc)
           {
-            Sign->Verified =
-              (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,ABIVersionProc(),false) == 0);
+            std::unique_ptr<std::string> StrPtr(ABIVersionProc());
+            Sign->Verified = (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*StrPtr,false) == 0); 
           }
           else
           {
@@ -247,7 +248,8 @@ class OPENFLUID_API WarePluginsManager
 
               if (LinkUIDProc)
               {
-                Sign->LinkUID = LinkUIDProc();
+                std::unique_ptr<std::string> StrPtr(LinkUIDProc());
+                Sign->LinkUID = *StrPtr;
               }
             }
             else
