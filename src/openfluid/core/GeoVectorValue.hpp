@@ -67,7 +67,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
       Open the data source of this GeoVectorValue.
       @throw openfluid::base::FrameworkException if OGR doesn't succeed to open the datasource.
     */
-    void tryToOpenSource();
+    void tryToOpenSource() override;
 
     /**
       Destroy the OGRDataSource.
@@ -97,7 +97,7 @@ class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
     /**
       Returns the type of this GeoVectorValue.
     */
-    openfluid::core::UnstructuredValue::UnstructuredType getType() const;
+    openfluid::core::UnstructuredValue::UnstructuredType getType() const override;
 
     /**
       Gets the associated opened OGR datasource in read-only access.

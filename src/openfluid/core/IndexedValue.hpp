@@ -97,8 +97,6 @@ class IndexedValue
     IndexedValue(const TimeIndex_t& Ind, const Value& Val) : m_Index(Ind),m_Value(Val.clone())
     { }
 
-    IndexedValue& operator=(const IndexedValue&) = default;
-
     IndexedValue& operator=(IndexedValue&& Other)
     {
       if (this != &Other)

@@ -126,9 +126,9 @@ class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
     VectorValue(double* Data, unsigned long Size) : CompoundValue(), Vector<double>(Data,Size)
     { }
 
-    VectorValue& operator=(const Value& Other);
+    VectorValue& operator=(const Value& Other) override;
 
-    VectorValue& operator=(Value&& Other);
+    VectorValue& operator=(Value&& Other) override;
 
     VectorValue& operator=(const VectorValue& Other);
 
@@ -136,7 +136,7 @@ class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
 
     virtual ~VectorValue() = default;
 
-    inline Type getType() const
+    inline Type getType() const override
     {
       return Value::VECTOR;
     }
@@ -146,9 +146,9 @@ class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
       return new VectorValue(*this);
     }
 
-    void writeToStream(std::ostream& OutStm) const;
+    void writeToStream(std::ostream& OutStm) const override;
 
-    void writeQuotedToStream(std::ostream& OutStm) const
+    void writeQuotedToStream(std::ostream& OutStm) const override
     {
       writeToStream(OutStm);
     }

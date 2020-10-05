@@ -126,9 +126,9 @@ class OPENFLUID_API MapValue : public CompoundValue
     MapValue(const Map_t& Val) : CompoundValue(), m_Value(Val)
     { }
 
-    MapValue& operator=(const Value& Other);
+    MapValue& operator=(const Value& Other) override;
 
-    MapValue& operator=(Value&& Other);
+    MapValue& operator=(Value&& Other) override;
 
     MapValue& operator=(const MapValue& Other) = default;
 
@@ -136,7 +136,7 @@ class OPENFLUID_API MapValue : public CompoundValue
 
     ~MapValue();
 
-    inline Type getType() const
+    inline Type getType() const override
     {
       return Value::MAP;
     }
@@ -146,9 +146,9 @@ class OPENFLUID_API MapValue : public CompoundValue
       return new MapValue(*this);
     }
 
-    void writeToStream(std::ostream& OutStm) const;
+    void writeToStream(std::ostream& OutStm) const override;
 
-    void writeQuotedToStream(std::ostream& OutStm) const
+    void writeQuotedToStream(std::ostream& OutStm) const override
     {
       writeToStream(OutStm);
     }

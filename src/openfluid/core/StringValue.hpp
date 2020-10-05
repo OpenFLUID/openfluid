@@ -135,9 +135,9 @@ class OPENFLUID_API StringValue : public SimpleValue
     */
     StringValue(double Val);
 
-    StringValue& operator=(const Value& Other);
+    StringValue& operator=(const Value& Other) override;
 
-    StringValue& operator=(Value&& Other);
+    StringValue& operator=(Value&& Other) override;
 
     StringValue& operator=(const StringValue& Other) = default;
 
@@ -154,7 +154,7 @@ class OPENFLUID_API StringValue : public SimpleValue
       return m_Value;
     }
 
-    inline Type getType() const
+    inline Type getType() const override
     {
       return Value::STRING;
     }
@@ -203,11 +203,13 @@ class OPENFLUID_API StringValue : public SimpleValue
     }
 
     inline void clear()
-    { m_Value.clear(); }
+    { 
+      m_Value.clear();
+    }
 
-    void writeToStream(std::ostream& OutStm) const;
+    void writeToStream(std::ostream& OutStm) const override;
 
-    void writeQuotedToStream(std::ostream& OutStm) const
+    void writeQuotedToStream(std::ostream& OutStm) const override
     {
       OutStm << "\"" ; writeToStream(OutStm); OutStm << "\"" ;
     }

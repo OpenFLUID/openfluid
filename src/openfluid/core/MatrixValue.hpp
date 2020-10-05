@@ -123,9 +123,9 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
 
     }
 
-    MatrixValue& operator=(const Value& Other);
+    MatrixValue& operator=(const Value& Other) override;
 
-    MatrixValue& operator=(Value&& Other);
+    MatrixValue& operator=(Value&& Other) override;
 
     MatrixValue& operator=(const MatrixValue& Other);
 
@@ -136,7 +136,7 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
 
     }
 
-    inline Type getType() const
+    inline Type getType() const override
     {
       return Value::MATRIX;
     };
@@ -146,9 +146,9 @@ class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
       return new MatrixValue(*this);
     }
 
-    void writeToStream(std::ostream& OutStm) const;
+    void writeToStream(std::ostream& OutStm) const override;
 
-    void writeQuotedToStream(std::ostream& OutStm) const
+    void writeQuotedToStream(std::ostream& OutStm) const override
     {
       writeToStream(OutStm);
     }

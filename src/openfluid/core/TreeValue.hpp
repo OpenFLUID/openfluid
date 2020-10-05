@@ -81,14 +81,14 @@ class OPENFLUID_API TreeValue : public CompoundValue, public Tree<std::string,do
       Tree<std::string,double>(static_cast<const Tree<std::string,double>& >(Val))
     { }
 
-    TreeValue& operator=(const Value& Other);
+    TreeValue& operator=(const Value& Other) override;
 
     TreeValue& operator=(const TreeValue& Other);
 
     virtual ~TreeValue()
     { }
 
-    inline Type getType() const
+    inline Type getType() const override
     {
       return Value::TREE;
     }
@@ -98,9 +98,9 @@ class OPENFLUID_API TreeValue : public CompoundValue, public Tree<std::string,do
       return new TreeValue(*this);
     };
 
-    void writeToStream(std::ostream& OutStm) const;
+    void writeToStream(std::ostream& OutStm) const override;
 
-    void writeQuotedToStream(std::ostream& OutStm) const
+    void writeQuotedToStream(std::ostream& OutStm) const override
     {
       writeToStream(OutStm);
     }

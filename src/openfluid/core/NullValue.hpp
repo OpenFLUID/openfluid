@@ -76,9 +76,9 @@ class OPENFLUID_API NullValue : public Value
     */
     NullValue(const NullValue&) = default;
 
-    NullValue& operator=(const Value&);
+    NullValue& operator=(const Value&) override;
 
-    NullValue& operator=(Value&&);
+    NullValue& operator=(Value&&) override;
 
     NullValue& operator=(const NullValue&) = default;
 
@@ -86,7 +86,7 @@ class OPENFLUID_API NullValue : public Value
 
     virtual ~NullValue() = default;
 
-    inline Type getType() const
+    inline Type getType() const override
     {
       return Value::NULLL;
     }
@@ -96,19 +96,19 @@ class OPENFLUID_API NullValue : public Value
       return new NullValue(*this);
     }
 
-    inline bool isSimple() const
+    inline bool isSimple() const override
     {
       return false;
     }
 
-    inline bool isCompound() const
+    inline bool isCompound() const override
     {
       return false;
     }
 
-    void writeToStream(std::ostream& OutStm) const;
+    void writeToStream(std::ostream& OutStm) const override;
 
-    void writeQuotedToStream(std::ostream& OutStm) const
+    void writeQuotedToStream(std::ostream& OutStm) const override
     {
       writeToStream(OutStm);
     }

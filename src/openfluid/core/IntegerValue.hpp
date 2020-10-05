@@ -108,9 +108,9 @@ class OPENFLUID_API IntegerValue : public SimpleValue
     IntegerValue(const long& POD) : SimpleValue(), m_Value(POD)
     { }
 
-    IntegerValue& operator=(const Value& Other);
+    IntegerValue& operator=(const Value& Other) override;
 
-    IntegerValue& operator=(Value&& Other);
+    IntegerValue& operator=(Value&& Other) override;
 
     IntegerValue& operator=(const IntegerValue& Other) = default;
 
@@ -126,7 +126,7 @@ class OPENFLUID_API IntegerValue : public SimpleValue
       return m_Value;
     }
 
-    inline Type getType() const
+    inline Type getType() const override
     {
       return Value::INTEGER;
     }
@@ -156,9 +156,9 @@ class OPENFLUID_API IntegerValue : public SimpleValue
       m_Value = Val;
     }
 
-    void writeToStream(std::ostream& OutStm) const;
+    void writeToStream(std::ostream& OutStm) const override;
 
-    void writeQuotedToStream(std::ostream& OutStm) const
+    void writeQuotedToStream(std::ostream& OutStm) const override
     {
       writeToStream(OutStm);
     }

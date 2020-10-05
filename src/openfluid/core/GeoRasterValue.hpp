@@ -69,7 +69,7 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
       Open the GDALDataset of this GeoRasterValue.
       @throw openfluid::base::FrameworkException if GDAL doesn't succeed to open the datasource.
     */
-    void tryToOpenSource();
+    void tryToOpenSource() override;
 
 
   public:
@@ -94,7 +94,7 @@ class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
       Returns the type of this GeoRasterValue.
       @return An openfluid::core::UnstructuredValue::UnstructuredType.
     */
-    openfluid::core::UnstructuredValue::UnstructuredType getType() const;
+    openfluid::core::UnstructuredValue::UnstructuredType getType() const override;
 
     /**
       Gets the associated opened GDAL dataset in read-only access.

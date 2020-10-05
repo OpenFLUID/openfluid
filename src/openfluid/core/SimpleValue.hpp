@@ -52,12 +52,12 @@ class OPENFLUID_API SimpleValue : public Value
 {
   public:
 
-    inline bool isSimple() const
+    inline bool isSimple() const override
     {
       return true;
     }
 
-    inline bool isCompound() const
+    inline bool isCompound() const override
     {
       return false;
     }

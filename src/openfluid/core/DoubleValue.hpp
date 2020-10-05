@@ -110,9 +110,9 @@ class OPENFLUID_API DoubleValue : public SimpleValue
     DoubleValue(const double& POD) noexcept : SimpleValue(), m_Value(POD)
     { }
 
-    DoubleValue& operator=(const Value& Other);
+    DoubleValue& operator=(const Value& Other) override;
 
-    DoubleValue& operator=(Value&& Other);
+    DoubleValue& operator=(Value&& Other) override;
 
     DoubleValue& operator=(const DoubleValue&) = default;
 
@@ -128,7 +128,7 @@ class OPENFLUID_API DoubleValue : public SimpleValue
       return m_Value;
     }
 
-    inline Type getType() const
+    inline Type getType() const override
     {
       return Value::DOUBLE;
     }
@@ -158,9 +158,9 @@ class OPENFLUID_API DoubleValue : public SimpleValue
       m_Value = Val;
     }
 
-    void writeToStream(std::ostream& OutStm) const;
+    void writeToStream(std::ostream& OutStm) const override;
 
-    void writeQuotedToStream(std::ostream& OutStm) const
+    void writeQuotedToStream(std::ostream& OutStm) const override
     {
       writeToStream(OutStm);
     }

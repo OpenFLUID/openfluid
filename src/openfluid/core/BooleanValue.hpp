@@ -83,6 +83,7 @@ class OPENFLUID_API BooleanValue : public SimpleValue
 
     bool m_Value = false;
 
+
   public:
 
     /**
@@ -109,9 +110,9 @@ class OPENFLUID_API BooleanValue : public SimpleValue
     BooleanValue(const bool& POD) noexcept : SimpleValue(), m_Value(POD)
     { }
 
-    BooleanValue& operator=(const Value& Other);
+    BooleanValue& operator=(const Value& Other) override;
 
-    BooleanValue& operator=(Value&& Other);
+    BooleanValue& operator=(Value&& Other) override;
 
     BooleanValue& operator=(const BooleanValue&) = default;
 
@@ -127,7 +128,7 @@ class OPENFLUID_API BooleanValue : public SimpleValue
       return m_Value;
     }
 
-    inline Type getType() const
+    inline Type getType() const override
     {
       return Value::BOOLEAN;
     }
@@ -157,9 +158,9 @@ class OPENFLUID_API BooleanValue : public SimpleValue
       m_Value = Val;
     }
 
-    void writeToStream(std::ostream& OutStm) const;
+    void writeToStream(std::ostream& OutStm) const override;
 
-    void writeQuotedToStream(std::ostream& OutStm) const
+    void writeQuotedToStream(std::ostream& OutStm) const override
     {
       writeToStream(OutStm);
     }
