@@ -196,6 +196,29 @@ QStringList toQStringList(const std::set<int>& IntSet)
 // =====================================================================
 
 
+QStringList convertArgsStringToList(const QString& ArgsStr)
+{
+  // converting string args as a list, without splitting spaces in quotes
+  QStringList ArgsList = ArgsStr.split(QRegExp("\\s(?=(?:\"[^\"]*\"|[^\"])*$)"),QString::SkipEmptyParts);
+  
+  // removing of quotes
+  for (auto& Arg : ArgsList)
+  {
+    if (Arg.startsWith("\"") && Arg.endsWith("\""))
+    {
+      Arg.remove(0,1);
+      Arg.remove(Arg.size()-1,1);
+    }
+  }
+
+  return ArgsList;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 QString escapeXMLEntities(const QString& Str)
 {
   QString EscapedStr = Str;

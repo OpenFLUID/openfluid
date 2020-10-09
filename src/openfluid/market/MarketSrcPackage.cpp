@@ -41,6 +41,7 @@
 
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/config.hpp>
 
@@ -112,25 +113,32 @@ void MarketSrcPackage::process()
 
   // == Building commands ==
 
-  QString UntarCommand = openfluid::utils::CMakeProxy::getTarUncompressCommand(QString::fromStdString(SrcInstallDir),
-                                                                               QString::fromStdString(m_PackageDest),
-                                                                               "z");
+  openfluid::utils::CMakeProxy::CommandInfos UntarCommand = 
+    openfluid::utils::CMakeProxy::getTarUncompressCommand(QString::fromStdString(SrcInstallDir),
+                                                          QString::fromStdString(m_PackageDest),
+                                                          "z");
 
-  QString BuildConfigCommand =
+
+  // converting string args as a list, without splitting spaces in quotes
+  QStringList BuildConfigOptionsList = 
+  openfluid::tools::convertArgsStringToList(QString::fromStdString(BuildConfigOptions));
+
+  openfluid::utils::CMakeProxy::CommandInfos BuildConfigCommand =
       openfluid::utils::CMakeProxy::getConfigureCommand(QString::fromStdString(BuildDir),
                                                         QString::fromStdString(SrcInstallDir),
                                                         {},"",
-                                                        {QString::fromStdString(BuildConfigOptions)});
+                                                        BuildConfigOptionsList);
 
 
-  QString BuildCommand = openfluid::utils::CMakeProxy::getBuildCommand(QString::fromStdString(BuildDir));
+  openfluid::utils::CMakeProxy::CommandInfos BuildCommand = 
+    openfluid::utils::CMakeProxy::getBuildCommand(QString::fromStdString(BuildDir));
 
 
   // uncompressing package
   {
     QProcess Untar;
 
-    Untar.start(UntarCommand);
+    Untar.start(UntarCommand.Program,UntarCommand.Args);
     Untar.waitForFinished(-1);
     Untar.waitForReadyRead(-1);
 
@@ -150,7 +158,7 @@ void MarketSrcPackage::process()
   {
     QProcess Config;
 
-    Config.start(BuildConfigCommand);
+    Config.start(BuildConfigCommand.Program,BuildConfigCommand.Args);
     Config.waitForFinished(-1);
     Config.waitForReadyRead(-1);
 
@@ -170,7 +178,7 @@ void MarketSrcPackage::process()
   {
     QProcess Build;
 
-    Build.start(BuildCommand);
+    Build.start(BuildCommand.Program,BuildCommand.Args);
     Build.waitForFinished(-1);
     Build.waitForReadyRead(-1);
 

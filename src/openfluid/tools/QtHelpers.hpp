@@ -129,6 +129,14 @@ QStringList OPENFLUID_API toQStringList(const std::list<std::string>& StrList);
 */
 QStringList OPENFLUID_API toQStringList(const std::set<int>& IntSet);
 
+/**
+  Converts arguments string to list. It first splits the string using spaces that are not inclosed in quotes,
+  then remove enclosing quotes for each argument if any.
+  @param[in] ArgsStr the argument string to convert
+  @return The list of arguments
+*/
+QStringList OPENFLUID_API convertArgsStringToList(const QString& ArgsStr);
+
 
 /**
   Escapes characters in the given string to be compatible with the XML format.

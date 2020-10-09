@@ -91,7 +91,7 @@ class F
 
       Mgr->switchWorkspace(TestWorkspacePath);
 
-      TestWaresDevSimulatorsDir = Mgr->getWareTypePath(openfluid::ware::WareType::SIMULATOR);
+      TestWaresDevSimulatorsDir.setPath(Mgr->getWareTypePath(openfluid::ware::WareType::SIMULATOR));
 
       CurrentOFBranchName = openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName().toStdString();
     }

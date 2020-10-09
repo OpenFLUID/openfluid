@@ -189,10 +189,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
             if (m_PlotProgram.isFound())
             {
-
-              QString GNUPlotCommand = QString("\"%1\" \"%2\"").arg(m_PlotProgram.getFullProgramPath())
-                                                               .arg(QString::fromStdString(ScriptFilename));
-              QProcess::execute(GNUPlotCommand);
+              QProcess::execute(m_PlotProgram.getFullProgramPath(),{ QString::fromStdString(ScriptFilename)});
             }
 
           }

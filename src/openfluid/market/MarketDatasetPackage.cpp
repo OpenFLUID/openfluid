@@ -113,16 +113,16 @@ void MarketDatasetPackage::process()
                                               "unable to create dataset directory for "+m_ID+" package");
   }
 
-  QString ProcessCommand =
-      openfluid::utils::CMakeProxy::getTarUncompressCommand(QString::fromStdString(DatasetInstallDir),
-                                                            QString::fromStdString(m_PackageDest),"z");
+  openfluid::utils::CMakeProxy::CommandInfos ProcessCommand =
+    openfluid::utils::CMakeProxy::getTarUncompressCommand(QString::fromStdString(DatasetInstallDir),
+                                                          QString::fromStdString(m_PackageDest),"z");
 
   // uncompressing package
-  appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing datasets",ProcessCommand.toStdString());
+  appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing datasets",ProcessCommand.joined().toStdString());
 
   QProcess Uncompress;
 
-  Uncompress.start(ProcessCommand);
+  Uncompress.start(ProcessCommand.Program,ProcessCommand.Args);
   Uncompress.waitForFinished(-1);
   Uncompress.waitForReadyRead(-1);
 

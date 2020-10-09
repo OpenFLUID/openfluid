@@ -87,7 +87,7 @@ void GitProxy::findGitProgram()
     {
       QProcess Pcs;
 
-      Pcs.start(QString("\"%1\" --version").arg(m_ExecutablePath));
+      Pcs.start(m_ExecutablePath,{"--version"});
 
       Pcs.waitForReadyRead(-1);
       Pcs.waitForFinished(-1);
@@ -188,7 +188,7 @@ bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
   }
 
   QString Url = FromUrl;
-  QString Options = "";
+  QStringList Options;
 
   QProcessEnvironment PcsEnv = QProcessEnvironment::systemEnvironment();
 
@@ -206,10 +206,15 @@ bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
 
   if (SslNoVerify)
   {
-    Options += " -c http.sslverify=false";
+    Options.append("-c");
+    Options.append("http.sslverify=false");
   }
 
-  QString Cmd = QString("\"%1\" clone --progress %2 %3 %4").arg(m_ExecutablePath).arg(Options).arg(Url).arg(ToPath);
+
+  QStringList Args = {"clone","--progress"};
+  Args.append(Options);
+  Args.append(Url);
+  Args.append(ToPath);
 
   mp_Process = new QProcess();
   mp_Process->setProcessEnvironment(PcsEnv);
@@ -218,7 +223,7 @@ bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
   // git clone outputs all messages in error channel
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutputAsInfo()));
 
-  mp_Process->start(Cmd);
+  mp_Process->start(m_ExecutablePath,Args);
 
   mp_Process->waitForFinished(-1);
   mp_Process->waitForReadyRead(-1);
@@ -251,9 +256,9 @@ GitProxy::TreeStatusInfo GitProxy::status(const QString& Path)
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  QString Cmd = QString("\"%1\" status --porcelain --ignored -b").arg(m_ExecutablePath);
+  QStringList Args = {"status","--porcelain","--ignored","-b"};
 
-  mp_Process->start(Cmd);
+  mp_Process->start(m_ExecutablePath,Args);
 
   mp_Process->waitForReadyRead(-1);
   mp_Process->waitForFinished(-1);
@@ -335,9 +340,16 @@ QString GitProxy::statusHtml(const QString& Path, bool WithColorCodes)
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  QString Cmd = QString("\"%1\" %2 status").arg(m_ExecutablePath).arg(WithColorCodes ? "-c color.status=always" : "");
+  QStringList Args;
 
-  mp_Process->start(Cmd);
+  if (WithColorCodes)
+  {
+    Args << "-c" << "color.status=always";
+  }
+
+  Args << "status";
+
+  mp_Process->start(m_ExecutablePath,Args);
 
   mp_Process->waitForReadyRead(-1);
   mp_Process->waitForFinished(-1);
@@ -367,9 +379,15 @@ QString GitProxy::logHtml(const QString& Path, bool WithColorCodes)
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  QString Cmd = QString("\"%1\" log %2").arg(m_ExecutablePath).arg(WithColorCodes ? "--color" : "");
+  QStringList Args;
+  Args << "log";
 
-  mp_Process->start(Cmd);
+  if (WithColorCodes)
+  {
+    Args << "--color";
+  }
+
+  mp_Process->start(m_ExecutablePath,Args);
 
   mp_Process->waitForReadyRead(-1);
   mp_Process->waitForFinished(-1);

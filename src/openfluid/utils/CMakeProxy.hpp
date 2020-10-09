@@ -67,9 +67,9 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
 
     static bool isAvailable();
 
-    static QString getConfigureCommand(const QString& BuildDir, const QString& SrcDir,
-                                       const std::map<QString,QString>& Variables = {},
-                                       const QString& Generator = "", const std::vector<QString>& Options = {});
+    static CommandInfos getConfigureCommand(const QString& BuildDir, const QString& SrcDir,
+                                            const std::map<QString,QString>& Variables = {},
+                                            const QString& Generator = "", const QStringList& Options = {});
 
     /**
       Returns a build command prepared using the given arguments
@@ -79,18 +79,17 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
       @param[in] CMakeOptions a string of options passed to CMake (empty by default)
       @param[in] OtherOptions a string of options passed to the build tool (empty by default)
     */
-    static QString getBuildCommand(const QString& BuildDir,
-                                   const QString& Target = "",
-                                   const unsigned int Jobs = 0,
-                                   const QString& CMakeOptions = "", const QString& OtherOptions = "");
+    static CommandInfos getBuildCommand(const QString& BuildDir,
+                                        const QString& Target = "",
+                                        const unsigned int Jobs = 0,
+                                        const QStringList& CMakeOptions = {}, const QStringList& OtherOptions = {});
 
-    static QString getTarCompressCommand(const QString& WorkDir,
-                                         const QString& TarFilePath, const QStringList& RelativePathsToCompress,
-                                         const QString& Options = "");
+    static CommandInfos getTarCompressCommand(const QString& WorkDir,
+                                              const QString& TarFilePath, const QStringList& RelativePathsToCompress,
+                                              const QString& Options = "");
 
-    static QString getTarUncompressCommand(const QString& WorkDir, const QString& TarFilePath,
-                                           const QString& Options = "");
-
+    static CommandInfos getTarUncompressCommand(const QString& WorkDir, const QString& TarFilePath,
+                                                const QString& Options = "");
 
 };
 

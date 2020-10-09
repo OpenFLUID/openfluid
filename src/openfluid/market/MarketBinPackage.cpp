@@ -81,16 +81,16 @@ void MarketBinPackage::process()
   }
 
 
-  QString ProcessCommand =
-      openfluid::utils::CMakeProxy::getTarUncompressCommand(QString::fromStdString(getInstallPath()),
-                                                            QString::fromStdString(m_PackageDest),"z");
+  openfluid::utils::CMakeProxy::CommandInfos ProcessCommand =
+    openfluid::utils::CMakeProxy::getTarUncompressCommand(QString::fromStdString(getInstallPath()),
+                                                          QString::fromStdString(m_PackageDest),"z");
 
-  appendToLogFile(m_PackageFilename,getPackageType(),"processing binaries",ProcessCommand.toStdString());
+  appendToLogFile(m_PackageFilename,getPackageType(),"processing binaries",ProcessCommand.joined().toStdString());
 
 
   QProcess Uncompress;
 
-  Uncompress.start(ProcessCommand);
+  Uncompress.start(ProcessCommand.Program,ProcessCommand.Args);
   Uncompress.waitForFinished(-1);
   Uncompress.waitForReadyRead(-1);
 

@@ -41,6 +41,7 @@
 
 
 #include <cmath>
+#include <random>
 
 #include <QColor>
 #include <QRegExp>
@@ -55,7 +56,11 @@ namespace openfluid { namespace ui { namespace common {
 
 inline QColor getRandomColor()
 {
-  return QColor(qrand() % 256,qrand() % 256,qrand() % 256);
+  static std::random_device RD;
+  static std::mt19937 G(RD());
+  static std::uniform_int_distribution<> Distri255(0, 255);
+  
+  return QColor(Distri255(G),Distri255(G),Distri255(G));
 }
 
 

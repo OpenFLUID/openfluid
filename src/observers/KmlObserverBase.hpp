@@ -281,11 +281,13 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (SevenZProgram.isFound())
       {
-        QString SevenZCommand = QString("\"%1\" a -tzip \"%2\" \"%3\"*").arg(SevenZProgram.getFullProgramPath())
-                                                                        .arg(QString::fromStdString(KmzFilePath))
-                                                                        .arg(QString::fromStdString(InputDir));
+        QStringList Args;
+        Args << "a";
+        Args << "-tzip";
+        Args << QString::fromStdString(KmzFilePath);
+        Args << QString::fromStdString(InputDir);
 
-        QProcess::execute(SevenZCommand);
+        QProcess::execute(SevenZProgram.getFullProgramPath(),Args);
       }
     }
 
@@ -304,10 +306,10 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
         if (GEarthProgram.isFound())
         {
-          QString GEarthCommand = QString("%1 %2").arg(GEarthProgram.getFullProgramPath())
-                                                  .arg(QDir(QString::fromStdString(m_OutputDir))
-                                                       .absoluteFilePath(QString::fromStdString(m_OutputFileName)));
-          QProcess::execute(GEarthCommand);
+          QProcess::execute(GEarthProgram.getFullProgramPath(),
+                            {  QDir(QString::fromStdString(m_OutputDir))
+                               .absoluteFilePath(QString::fromStdString(m_OutputFileName))
+                            });
         }
         else
         {

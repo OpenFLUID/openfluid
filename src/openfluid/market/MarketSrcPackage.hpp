@@ -50,22 +50,33 @@ namespace openfluid { namespace market {
 
 class OPENFLUID_API MarketSrcPackage : public MarketPackage
 {
-
   private:
+
     std::string m_BuildConfigOptions;
+  
     bool m_KeepSources;
+
 
   public:
 
-    void setBuildConfigOptions(const std::string& Options) { m_BuildConfigOptions = Options; };
+    void setBuildConfigOptions(const std::string& Options) 
+    { 
+      m_BuildConfigOptions = Options; 
+    }
 
-    std::string getBuildConfigOptions() const { return m_BuildConfigOptions; };
+    std::string getBuildConfigOptions() const 
+    { 
+      return m_BuildConfigOptions;
+    }
 
     MarketSrcPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL);
 
     void process();
 
-    MetaPackageInfo::SelectionType getFormat() const { return MetaPackageInfo::SRC; };
+    MetaPackageInfo::SelectionType getFormat() const 
+    { 
+      return MetaPackageInfo::SRC; 
+    }
 
 };
 

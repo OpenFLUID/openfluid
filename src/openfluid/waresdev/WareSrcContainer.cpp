@@ -45,13 +45,13 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/config.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/waresdev/WareSrcMsgParser.hpp>
 #include <openfluid/waresdev/OStreamMsgStream.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace waresdev {
@@ -565,12 +565,14 @@ void WareSrcContainer::configure()
 
   // === build and run command
 
-  QString Command = openfluid::utils::CMakeProxy::getConfigureCommand(m_BuildDirPath,m_AbsolutePath,
-                                                                      getConfigureVariables(),
-                                                                      getConfigureGenerator(),
-                                                                      {getConfigureExtraOptions()});
+  QStringList ExtraOptionsList = openfluid::tools::convertArgsStringToList(getConfigureExtraOptions());
 
-  runCommand(Command, getConfigureEnvironment(), WareSrcProcess::Type::CONFIGURE);
+  openfluid::utils::CMakeProxy::CommandInfos CmdInfos = 
+    openfluid::utils::CMakeProxy::getConfigureCommand(m_BuildDirPath,m_AbsolutePath,
+                                                      getConfigureVariables(), getConfigureGenerator(),
+                                                      ExtraOptionsList);
+
+  runCommand(CmdInfos, getConfigureEnvironment(), WareSrcProcess::Type::CONFIGURE);
 }
 
 
@@ -615,9 +617,10 @@ void WareSrcContainer::build()
 
   // === build and run command
 
-  QString Command = openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target,m_BuildJobs);
+  openfluid::utils::CMakeProxy::CommandInfos CmdInfos =
+    openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target,m_BuildJobs);
 
-  runCommand(Command, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
+  runCommand(CmdInfos, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
 }
 
 
@@ -652,9 +655,10 @@ void WareSrcContainer::generateDoc()
 
   // === build and run command
 
-  QString Command = openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target);
+  openfluid::utils::CMakeProxy::CommandInfos CmdInfos = 
+    openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target);
 
-  runCommand(Command, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
+  runCommand(CmdInfos, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
 
 }
 
@@ -752,7 +756,8 @@ void WareSrcContainer::processFinishedOutput(int ExitCode)
 // =====================================================================
 
 
-void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironment& Env, WareSrcProcess::Type CmdType)
+void WareSrcContainer::runCommand(const openfluid::utils::CMakeProxy::CommandInfos& CmdInfos, 
+                                  const QProcessEnvironment& Env, WareSrcProcess::Type CmdType)
 {
   if (mp_Process->state() != WareSrcProcess::NotRunning)
   {
@@ -783,12 +788,12 @@ void WareSrcContainer::runCommand(const QString& Command, const QProcessEnvironm
   }
 
   WareSrcMsgParser::WareSrcMsg CommandMessage =
-      WareSrcMsgParser::WareSrcMsg(QString("%1\n").arg(Command),
+      WareSrcMsgParser::WareSrcMsg(QString("%1\n").arg(CmdInfos.joined()),
                                    WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
   mp_Stream->write(CommandMessage);
 
   mp_Process->setProcessEnvironment(Env);
-  mp_Process->start(Command);
+  mp_Process->start(CmdInfos.Program,CmdInfos.Args);
 }
 
 

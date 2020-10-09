@@ -60,7 +60,10 @@ class OPENFLUID_API MarketDatasetPackage : public MarketPackage
 
     void process();
 
-    MetaPackageInfo::SelectionType getFormat() const { return MetaPackageInfo::FLUIDX; };
+    MetaPackageInfo::SelectionType getFormat() const 
+    { 
+      return MetaPackageInfo::FLUIDX;
+    }
 
 };
 

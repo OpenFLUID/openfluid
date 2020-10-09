@@ -58,15 +58,34 @@ class ProgramProxy
 
 
   public:
+    
+    struct CommandInfos
+    {
+      QString Program;
+
+      QStringList Args;
+
+      QString joined(const QString& Sep = " ") const
+      {
+        return (Program + Sep + Args.join(Sep));
+      }
+    };
+
 
     static bool isAvailable()
-    { return false; }
+    { 
+      return false; 
+    }
 
     static QString getVersion()
-    { return m_Version; }
+    { 
+      return m_Version; 
+    }
 
     static QString getExecutablePath()
-    { return m_ExecutablePath; }
+    { 
+      return m_ExecutablePath; 
+    }
 
 };
 

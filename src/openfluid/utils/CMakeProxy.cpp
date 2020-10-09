@@ -109,39 +109,36 @@ bool CMakeProxy::isAvailable()
 // =====================================================================
 
 
-QString CMakeProxy::getConfigureCommand(const QString& BuildDir, const QString& SrcDir,
-                                        const std::map<QString,QString>& Variables,
-                                        const QString& Generator, const std::vector<QString>& Options)
+CMakeProxy::CommandInfos CMakeProxy::getConfigureCommand(const QString& BuildDir, const QString& SrcDir,
+                                                         const std::map<QString,QString>& Variables,
+                                                         const QString& Generator, const QStringList& Options)
 {
+  CMakeProxy::CommandInfos Cmd;
+
   if (!isAvailable())
   {
-    return "";
+    return Cmd;
   }
 
+  Cmd.Program = m_ExecutablePath;
 
-  QString ArgsOptsStr;
+  Cmd.Args << "-E" << "chdir" << BuildDir; // cd to build directory
+  Cmd.Args << m_ExecutablePath << SrcDir;  // cmake configure command with the sources directory 
 
   if (!Generator.isEmpty())
   {
-    ArgsOptsStr += QString(" -G \"%1\"").arg(Generator);
+    Cmd.Args << "-G" << Generator;
   }
-
 
   for (const auto& Var : Variables)
   {
-    ArgsOptsStr += QString(" -D%1=%2").arg(Var.first).arg(Var.second);
+    Cmd.Args << QString("-D%1=%2").arg(Var.first).arg(Var.second);
   }
 
   for (const auto& Opt : Options)
   {
-    ArgsOptsStr += QString(" %1").arg(Opt);
+    Cmd.Args << Opt;
   }
-
-  QString Cmd = QString("\"%1\" -E chdir \"%2\" \"%1\" \"%3\"%4")
-                .arg(m_ExecutablePath)
-                .arg(BuildDir)
-                .arg(SrcDir)
-                .arg(ArgsOptsStr);
 
   return Cmd;
 }
@@ -151,56 +148,49 @@ QString CMakeProxy::getConfigureCommand(const QString& BuildDir, const QString& 
 // =====================================================================
 
 
-QString CMakeProxy::getBuildCommand(const QString& BuildDir,
-                                    const QString& Target,
-                                    const unsigned int Jobs,
-                                    const QString& CMakeOptions, const QString& OtherOptions)
+CMakeProxy::CommandInfos CMakeProxy::getBuildCommand(const QString& BuildDir,
+                                                     const QString& Target,
+                                                     const unsigned int Jobs,
+                                                     const QStringList& CMakeOptions, 
+                                                     const QStringList& OtherOptions)
 {
+  CMakeProxy::CommandInfos Cmd;
+
   if (!isAvailable())
   {
-    return "";
+    return Cmd;
   }
 
+  Cmd.Program = m_ExecutablePath;
 
-  QString TargetOpt;
-  QString CMakeOpts;
-  QString OtherOpts;
+  Cmd.Args << "-E" << "chdir" << BuildDir; // cd to build directory
+  Cmd.Args << m_ExecutablePath << "--build" << "."; // build command in the current directory 
 
   if (!Target.isEmpty())
   {
-    TargetOpt = QString(" --target %1").arg(Target);
+    Cmd.Args << "--target" << Target;
   }
 
-  if (!CMakeOptions.isEmpty())
+  for (const auto& Opt : CMakeOptions)
   {
-    CMakeOpts = " " + CMakeOptions;
+    Cmd.Args << Opt;
   }
 
   // Add Jobs option
-  if (Jobs)
+  if (Jobs || !OtherOptions.empty())
   {
-    OtherOpts = QString(" -- -j %1").arg(Jobs);
-  }
+    Cmd.Args << "--";
 
-  // Add other options
-  if (!OtherOptions.isEmpty())
-  {
-    if (OtherOpts.isEmpty())
+    if (Jobs)
     {
-      OtherOpts = QString(" -- %1").arg(OtherOptions);
+      Cmd.Args << "-j" << QString("%1").arg(Jobs);
     }
-    else
+
+    for (const auto& Opt : OtherOptions)
     {
-      OtherOpts += " " + OtherOptions;
+      Cmd.Args << Opt;
     }
   }
-
-  QString Cmd = QString("\"%1\" -E chdir \"%2\" \"%1\" --build .%3%4%5")
-                  .arg(m_ExecutablePath)
-                  .arg(BuildDir)
-                  .arg(TargetOpt)
-                  .arg(CMakeOpts)
-                  .arg(OtherOpts);
 
   return Cmd;
 }
@@ -210,21 +200,27 @@ QString CMakeProxy::getBuildCommand(const QString& BuildDir,
 // =====================================================================
 
 
-QString CMakeProxy::getTarCompressCommand(const QString& WorkDir,
-                                          const QString& TarFilePath, const QStringList& RelativePathsToCompress,
-                                          const QString& Options)
+CMakeProxy::CommandInfos CMakeProxy::getTarCompressCommand(const QString& WorkDir,
+                                                           const QString& TarFilePath, 
+                                                           const QStringList& RelativePathsToCompress,
+                                                           const QString& Options)
 {
+  CMakeProxy::CommandInfos Cmd;
+
   if (!isAvailable())
   {
-    return "";
+    return Cmd;
   }
 
-  return QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar cf%3 \"%4\" \"%5\"")
-         .arg(m_ExecutablePath)
-         .arg(WorkDir)
-         .arg(Options)
-         .arg(TarFilePath)
-         .arg(RelativePathsToCompress.join("\" \""));
+  Cmd.Program = m_ExecutablePath;
+
+  Cmd.Args << "-E" << "chdir" << WorkDir; // cd to work directory
+  Cmd.Args << m_ExecutablePath << "-E" << "tar"; // tar command
+  Cmd.Args << "cf"+Options;
+  Cmd.Args << TarFilePath;
+  Cmd.Args << RelativePathsToCompress;
+
+  return Cmd;
 }
 
 
@@ -232,19 +228,24 @@ QString CMakeProxy::getTarCompressCommand(const QString& WorkDir,
 // =====================================================================
 
 
-QString CMakeProxy::getTarUncompressCommand(const QString& WorkDir, const QString& TarFilePath,
-                                            const QString& Options)
+CMakeProxy::CommandInfos CMakeProxy::getTarUncompressCommand(const QString& WorkDir, const QString& TarFilePath,
+                                                             const QString& Options)
 {
+  CMakeProxy::CommandInfos Cmd;
+
   if (!isAvailable())
   {
-    return "";
+    return Cmd;
   }
 
-  return QString ("\"%1\" -E chdir \"%2\" \"%1\" -E tar xf%3 \"%4\"")
-         .arg(m_ExecutablePath)
-         .arg(WorkDir)
-         .arg(Options)
-         .arg(TarFilePath);
+  Cmd.Program = m_ExecutablePath;
+
+  Cmd.Args << "-E" << "chdir" << WorkDir; // cd to work directory
+  Cmd.Args << m_ExecutablePath << "-E" << "tar"; // tar command
+  Cmd.Args << "xf"+Options;
+  Cmd.Args << TarFilePath;
+
+  return Cmd;
 }
 
 

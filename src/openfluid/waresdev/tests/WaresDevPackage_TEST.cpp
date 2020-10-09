@@ -360,11 +360,11 @@ BOOST_FIXTURE_TEST_CASE(PkgExport,F)
 
   BOOST_CHECK(OutOfwdpDir.exists("my_package.ofwdp"));
 
-  QString Command =
+  openfluid::utils::CMakeProxy::CommandInfos Command =
       openfluid::utils::CMakeProxy::getTarUncompressCommand(OutOfwdpPath,
                                                             OutOfwdpDir.absoluteFilePath("my_package.ofwdp"),"z");
 
-  BOOST_CHECK(!QProcess::execute(Command));
+  BOOST_CHECK(!QProcess::execute(Command.Program,Command.Args));
 
   QStringList FilesInPackage = OutOfwdpDir.entryList(QDir::NoDotAndDotDot | QDir::Files);
   BOOST_CHECK(FilesInPackage.contains("ofwdp.conf"));

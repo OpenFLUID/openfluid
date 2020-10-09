@@ -56,35 +56,37 @@
 
 BOOST_AUTO_TEST_CASE(check_configurecmd)
 {
-  QString Cmd;
+  openfluid::utils::CMakeProxy::CommandInfos Cmd;
 
   Cmd = openfluid::utils::CMakeProxy::getConfigureCommand("/tmp/build","/tmp/src");
-  std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("\"/tmp/src\""));
+  std::cout << Cmd.joined().toStdString() << std::endl;
+  BOOST_REQUIRE(Cmd.joined().endsWith("/tmp/src"));
 
 
   Cmd = openfluid::utils::CMakeProxy::getConfigureCommand("/tmp/build","/tmp/src",
                                                           {{"CMAKE_INSTALL_PREFIX","/usr"},
                                                            {"CMAKE_BUILD_TYPE","release"}});
-  std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("\"/tmp/src\" -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr"));
+  std::cout << Cmd.joined().toStdString() << std::endl;
+  BOOST_REQUIRE(Cmd.joined().endsWith("/tmp/src -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr"));
 
 
   Cmd = openfluid::utils::CMakeProxy::getConfigureCommand("/tmp/build","/tmp/src",
                                                           {{"CMAKE_INSTALL_PREFIX","/usr"},
                                                            {"CMAKE_BUILD_TYPE","release"}},
                                                           "Ninja");
-  std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("\"/tmp/src\" -G \"Ninja\" -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr"));
+  std::cout << Cmd.joined().toStdString() << std::endl;
+  BOOST_REQUIRE(
+    Cmd.joined().endsWith("/tmp/src -G Ninja -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr"));
 
 
   Cmd = openfluid::utils::CMakeProxy::getConfigureCommand("/tmp/build","/tmp/src",
                                                           {{"CMAKE_INSTALL_PREFIX","/usr"},
                                                            {"CMAKE_BUILD_TYPE","release"}},
                                                           "Ninja",{"-Wdev","--trace"});
-  std::cout << Cmd.toStdString() << std::endl;
+  std::cout << Cmd.joined().toStdString() << std::endl;
   BOOST_REQUIRE(
-      Cmd.endsWith("\"/tmp/src\" -G \"Ninja\" -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr -Wdev --trace"));
+    Cmd.joined()
+       .endsWith("/tmp/src -G Ninja -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr -Wdev --trace"));
 }
 
 
@@ -94,23 +96,23 @@ BOOST_AUTO_TEST_CASE(check_configurecmd)
 
 BOOST_AUTO_TEST_CASE(check_buildcmd)
 {
-  QString Cmd;
+  openfluid::utils::CMakeProxy::CommandInfos Cmd;
 
   Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build");
-  std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("--build ."));
+  std::cout << Cmd.joined().toStdString() << std::endl;
+  BOOST_REQUIRE(Cmd.joined().endsWith("--build ."));
 
   Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install");
-  std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("--build . --target install"));
+  std::cout << Cmd.joined().toStdString() << std::endl;
+  BOOST_REQUIRE(Cmd.joined().endsWith("--build . --target install"));
 
-  Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install",1,"--clean-first");
-  std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("--build . --target install --clean-first -- -j 1"));
+  Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install",1,{"--clean-first"});
+  std::cout << Cmd.joined().toStdString() << std::endl;
+  BOOST_REQUIRE(Cmd.joined().endsWith("--build . --target install --clean-first -- -j 1"));
 
-  Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install",4,"--clean-first","VERBOSE=1");
-  std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("--build . --target install --clean-first -- -j 4 VERBOSE=1"));
+  Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install",4,{"--clean-first"},{"VERBOSE=1"});
+  std::cout << Cmd.joined().toStdString() << std::endl;
+  BOOST_REQUIRE(Cmd.joined().endsWith("--build . --target install --clean-first -- -j 4 VERBOSE=1"));
 }
 
 
@@ -120,19 +122,19 @@ BOOST_AUTO_TEST_CASE(check_buildcmd)
 
 BOOST_AUTO_TEST_CASE(check_tarcmd)
 {
-  QString Cmd;
+  openfluid::utils::CMakeProxy::CommandInfos Cmd;
   QStringList FilesToCompress = {"dir1/fileb.txt","dir1/filea.txt","dir3/filey.txt"};
 
   Cmd = openfluid::utils::CMakeProxy::getTarCompressCommand("/tmp/compress","compressedfile.tar.gz",FilesToCompress);
-  std::cout << Cmd.toStdString() << std::endl;
+  std::cout << Cmd.joined().toStdString() << std::endl;
   BOOST_REQUIRE(
-      Cmd.endsWith("tar cf \"compressedfile.tar.gz\" \"dir1/fileb.txt\" \"dir1/filea.txt\" \"dir3/filey.txt\""));
+      Cmd.joined().endsWith("tar cf compressedfile.tar.gz dir1/fileb.txt dir1/filea.txt dir3/filey.txt"));
 
   Cmd = openfluid::utils::CMakeProxy::getTarCompressCommand("/tmp/compress","compressedfile.tar.gz",
                                                             FilesToCompress,"vz");
-  std::cout << Cmd.toStdString() << std::endl;
+  std::cout << Cmd.joined().toStdString() << std::endl;
   BOOST_REQUIRE(
-      Cmd.endsWith("tar cfvz \"compressedfile.tar.gz\" \"dir1/fileb.txt\" \"dir1/filea.txt\" \"dir3/filey.txt\""));
+      Cmd.joined().endsWith("tar cfvz compressedfile.tar.gz dir1/fileb.txt dir1/filea.txt dir3/filey.txt"));
 }
 
 
@@ -142,15 +144,15 @@ BOOST_AUTO_TEST_CASE(check_tarcmd)
 
 BOOST_AUTO_TEST_CASE(check_untarcmd)
 {
-  QString Cmd;
+  openfluid::utils::CMakeProxy::CommandInfos Cmd;
 
   Cmd = openfluid::utils::CMakeProxy::getTarUncompressCommand("/tmp/compress","compressedfile.tar.gz");
-  std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("tar xf \"compressedfile.tar.gz\""));
+  std::cout << Cmd.joined().toStdString() << std::endl;
+  BOOST_REQUIRE(Cmd.joined().endsWith("tar xf compressedfile.tar.gz"));
 
   Cmd = openfluid::utils::CMakeProxy::getTarUncompressCommand("/tmp/compress","compressedfile.tar.gz","vz");
-  std::cout << Cmd.toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.endsWith("tar xfvz \"compressedfile.tar.gz\""));
+  std::cout << Cmd.joined().toStdString() << std::endl;
+  BOOST_REQUIRE(Cmd.joined().endsWith("tar xfvz compressedfile.tar.gz"));
 }
 
 

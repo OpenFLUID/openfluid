@@ -471,7 +471,7 @@ void WaresSrcImportDialog::updateWaresHubWaresList()
       {
         Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
         Item->setToolTip(tr("User \"%2\" is not authorized to access to \"%1\"").arg(WareId).arg(UserName));
-        Item->setBackgroundColor(QColor("orange"));
+        Item->setBackground(QColor("orange"));
       }
 
       Item->setCheckState(

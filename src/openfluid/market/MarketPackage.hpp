@@ -163,25 +163,55 @@ class OPENFLUID_API MarketPackage
                              const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir,
                              const std::string& MarketBagSrcSubDir);
 
-    static std::string getMarketBagSimulatorDir() { return m_MarketBagSimulatorDir; };
+    static std::string getMarketBagSimulatorDir() 
+    { 
+      return m_MarketBagSimulatorDir; 
+    }
 
-    static std::string getMarketBagObserverDir() { return m_MarketBagObserverDir; };
+    static std::string getMarketBagObserverDir() 
+    { 
+      return m_MarketBagObserverDir;
+    }
 
-    static std::string getMarketBagBuilderextDir() { return m_MarketBagBuilderextDir; };
+    static std::string getMarketBagBuilderextDir() 
+    { 
+      return m_MarketBagBuilderextDir;
+    }
 
-    static std::string getMarketBagDatasetDir() { return m_MarketBagDatasetDir; };
+    static std::string getMarketBagDatasetDir() 
+    { 
+      return m_MarketBagDatasetDir;
+    }
 
-    static std::string getMarketBagBinSubDir() { return m_MarketBagBinSubDir; };
+    static std::string getMarketBagBinSubDir()
+    { 
+      return m_MarketBagBinSubDir;
+    }
 
-    static std::string getMarketBagSrcSubDir() { return m_MarketBagSrcSubDir; };
+    static std::string getMarketBagSrcSubDir() 
+    { 
+      return m_MarketBagSrcSubDir;
+    }
 
-    static std::string getTempDir() { return m_TempDir; };
+    static std::string getTempDir() 
+    { 
+      return m_TempDir;
+    }
 
-    static std::string getTempBuildsDir() { return m_TempBuildsDir; };
+    static std::string getTempBuildsDir()
+    { 
+      return m_TempBuildsDir;
+    }
 
-    static std::string getTempDownloadsDir() { return m_TempDownloadsDir; };
+    static std::string getTempDownloadsDir()
+    { 
+      return m_TempDownloadsDir;
+    }
 
-    static std::string getLogFile() { return m_LogFile; };
+    static std::string getLogFile()
+    { 
+      return m_LogFile;
+    }
 
     /**
      @return build options of package type passed as parameter

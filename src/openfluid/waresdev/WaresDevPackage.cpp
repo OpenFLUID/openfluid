@@ -45,7 +45,6 @@
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
 
@@ -112,7 +111,7 @@ QStringList WaresDevPackage::getWaresPaths()
 // =====================================================================
 
 
-void WaresDevPackage::createAndLauchProcess(const QString& Command)
+void WaresDevPackage::createAndLauchProcess(const openfluid::utils::CMakeProxy::CommandInfos& Command)
 {
   if (mp_Process)
   {
@@ -125,7 +124,7 @@ void WaresDevPackage::createAndLauchProcess(const QString& Command)
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutput()));
 
-  mp_Process->start(Command);
+  mp_Process->start(Command.Program,Command.Args);
 
   mp_Process->waitForFinished(-1);
   mp_Process->waitForReadyRead(-1);
@@ -295,8 +294,8 @@ void WaresDevExportPackage::compress()
   }
 
 
-  QString Command = openfluid::utils::CMakeProxy::getTarCompressCommand(WaresdevPath,m_PackageFilePath,
-                                                                        RelativePathsToExport,"vz");
+  openfluid::utils::CMakeProxy::CommandInfos Command = 
+    openfluid::utils::CMakeProxy::getTarCompressCommand(WaresdevPath,m_PackageFilePath,RelativePathsToExport,"vz");
 
   QDir::setCurrent(WaresdevPath);
 
@@ -361,7 +360,8 @@ void WaresDevImportPackage::fetchInformation()
 
 void WaresDevImportPackage::uncompress()
 {
-  QString Command = openfluid::utils::CMakeProxy::getTarUncompressCommand(m_PackageTempPath,m_PackageFilePath,"vz");
+  openfluid::utils::CMakeProxy::CommandInfos Command = 
+    openfluid::utils::CMakeProxy::getTarUncompressCommand(m_PackageTempPath,m_PackageFilePath,"vz");
 
   createAndLauchProcess(Command);
 }

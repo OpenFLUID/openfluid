@@ -49,6 +49,7 @@
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/waresdev/WareSrcMsgStream.hpp>
 #include <openfluid/waresdev/WareSrcProcess.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -141,7 +142,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
     */
     void findCMake();
 
-    void runCommand(const QString& Command, const QProcessEnvironment& Env,
+    void runCommand(const openfluid::utils::CMakeProxy::CommandInfos& CmdInfos, const QProcessEnvironment& Env,
                     WareSrcProcess::Type CmdType = WareSrcProcess::Type::NONE);
 
 

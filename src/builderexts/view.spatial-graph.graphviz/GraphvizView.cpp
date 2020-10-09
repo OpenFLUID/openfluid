@@ -58,7 +58,7 @@ void GraphvizView::wheelEvent(QWheelEvent* Event)
 {
   if (Event->modifiers().testFlag(Qt::ControlModifier)) // zoom only when Ctrl key is pressed
   {
-    if (Event->delta() < 0)
+    if (Event->angleDelta().y() < 0)
     {
       scale(0.9,0.9);
     }

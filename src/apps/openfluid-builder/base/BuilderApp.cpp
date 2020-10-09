@@ -89,8 +89,6 @@ BuilderApp::~BuilderApp()
 
 void BuilderApp::initialize()
 {
-  qsrand((uint)QTime::currentTime().msec());
-
   openfluid::base::PreferencesManager* PrefsMgr =
     openfluid::base::PreferencesManager::instance();
 
