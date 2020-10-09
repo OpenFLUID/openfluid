@@ -51,6 +51,7 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/global.hpp>
 
 #include "tests-config.hpp"
 
@@ -85,11 +86,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::base::RunContextManager::instance()->isProjectOpen(), false);
 
   openfluid::base::RunContextManager::instance()->setInputDir("/foo/bar");
-
   openfluid::base::RunContextManager::instance()->setOutputDir("/bar/baz");
-
+#if !defined(OPENFLUID_OS_WINDOWS)
   BOOST_REQUIRE_EQUAL(openfluid::base::RunContextManager::instance()->getInputDir(),"/foo/bar");
   BOOST_REQUIRE_EQUAL(openfluid::base::RunContextManager::instance()->getOutputDir(),"/bar/baz");
+#endif
   BOOST_REQUIRE_EQUAL(openfluid::base::RunContextManager::instance()->isProjectOpen(),false);
   BOOST_REQUIRE_EQUAL(openfluid::base::RunContextManager::instance()->getProjectPath(), "");
 

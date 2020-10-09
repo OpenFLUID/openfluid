@@ -49,6 +49,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/global.hpp>
 
 #include "tests-config.hpp"
 
@@ -108,7 +109,8 @@ BOOST_AUTO_TEST_CASE(check_path_clean_absolute_relative)
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::cleanPath("/my/path//.//to/directory/"),"/my/path/to/directory");
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::cleanPath("my/path//.//to/directory/"),"my/path/to/directory");
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::cleanPath("my/path//.//to/../../directory/"),"my/directory");
-  
+
+#if !defined(OPENFLUID_OS_WINDOWS)
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath("/my/path/to/directory/"),"/my/path/to/directory");
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath("/my/path/to/directory"),"/my/path/to/directory");
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath("/my/path/to/file.txt"),"/my/path/to/file.txt");
@@ -116,6 +118,7 @@ BOOST_AUTO_TEST_CASE(check_path_clean_absolute_relative)
                                                                  "/my/path/to/file.txt");
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath("/"),"/");
   BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::absolutePath(""),"");
+#endif
 
   std::cout << openfluid::tools::Filesystem::absolutePath("path/to/directory") << std::endl;
   BOOST_REQUIRE(
