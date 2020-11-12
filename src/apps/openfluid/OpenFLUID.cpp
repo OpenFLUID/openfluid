@@ -39,6 +39,9 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
+
+#include <boost/algorithm/string/join.hpp>
 
 #include <QElapsedTimer>
 
@@ -62,6 +65,7 @@
 #include <openfluid/buddies/NewSimBuddy.hpp>
 #include <openfluid/buddies/NewDataBuddy.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
+#include <openfluid/buildinfo.hpp>
 
 #if OPENFLUID_SIM2DOC_ENABLED
 #include <openfluid/buddies/Sim2DocBuddy.hpp>
@@ -165,6 +169,37 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   displayHeaderSeparator();
   std::cout << std::endl;
   std::cout.flush();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDApp::printBuildInfo()
+{
+  auto printItem = [](const std::vector<std::string>& Category, const std::string& Value)
+  {
+    std::cout << boost::algorithm::join(Category,"/") << " : " << Value << std::endl;
+  };
+
+  std::string TmpFlags = openfluid::config::BUILD_COMPILER_FLAGS;
+  std::replace(TmpFlags.begin(),TmpFlags.end(),';',' ');
+
+  printItem({"build","type"},openfluid::config::BUILD_TYPE);
+  printItem({"build","cmake","version"},openfluid::config::BUILD_CMAKE_VERSION);
+  printItem({"build","c++","standard"},openfluid::config::BUILD_CXX_STANDARD);
+  printItem({"build","compiler","id"},openfluid::config::BUILD_COMPILER_ID);
+  printItem({"build","compiler","version"},openfluid::config::BUILD_COMPILER_VERSION);
+  printItem({"build","compiler","flags"},TmpFlags);
+  printItem({"dependencies","boost","version"},openfluid::config::BUILD_LIB_BOOST_VERSION);
+  printItem({"dependencies","gdal","version"},openfluid::config::BUILD_LIB_GDAL_VERSION);
+  printItem({"dependencies","rapidjson","version"},openfluid::config::BUILD_LIB_RAPIDJSON_VERSION);
+  printItem({"dependencies","qt","version"},openfluid::config::BUILD_LIB_QT_VERSION);
+  if (!openfluid::config::BUILD_LIB_GEOS_VERSION.empty())
+  {
+    printItem({"dependencies","geos","version"},openfluid::config::BUILD_LIB_GEOS_VERSION);
+  }
 }
 
 
@@ -480,6 +515,8 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   Parser.addOption(openfluid::utils::CommandLineOption("version","","display version"));
 
+  Parser.addOption(openfluid::utils::CommandLineOption("build-info","","display build information"));
+
 
   // run dataset
   openfluid::utils::CommandLineCommand RunDatasetCmd("run","Run a simulation from a project or an input dataset");
@@ -548,6 +585,12 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     if (Parser.command(ActiveCommandStr).isOptionActive("version"))
     {
       std::cout << openfluid::config::VERSION_FULL << std::endl;
+      m_RunType = RunType::InfoRequest;
+      return;
+    }
+    else if (Parser.command(ActiveCommandStr).isOptionActive("build-info"))
+    {
+      printBuildInfo();
       m_RunType = RunType::InfoRequest;
       return;
     }

@@ -84,7 +84,7 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
   ui->CreditsEdit->setText(quickndirtyMardown2HTML(resourceToString(":/ui/common/texts/AUTHORS.md")));
   ui->ChangelogEdit->setText(quickndirtyMardown2HTML(resourceToString(":/ui/common/texts/CHANGELOG.md")));
   ui->LicenseEdit->setText(resourceToString(":/ui/common/texts/LICENSE"));
-  ui->BuildInfoEdit->setText(generateBuildInfoText());
+  ui->BuildInfoEdit->setText(quickndirtyMardown2HTML(generateBuildInfoText()));
 
 
   ui->ButtonBox->button(QDialogButtonBox::Close)->setCursor(Qt::PointingHandCursor);
@@ -133,27 +133,40 @@ QString AboutDialog::resourceToString(const QString& ResName)
 
 QString AboutDialog::generateBuildInfoText()
 {
-  QString Text = tr("<b>Build environment</b><br/>"
-                    "* Build type : %1<br/>"
-                    "* CMake version : %2<br/>"
-                    "* Compiler ID : %3<br/>"
-                    "* Compiler version : %4<br/>"
-                    "<br/>"
-                    "<b>Dependencies</b><br/>"
-                    "* Boost version : %5<br/>"
-                    "* Qt version : %6<br/>"
-                    "* RapidJSON version : %7<br/>"
-                    "* GDAL version : %8<br/>"
-                    "* GEOS version : %9<br/>")
-                 .arg(QString::fromStdString(openfluid::config::BUILD_TYPE))
-                 .arg(QString::fromStdString(openfluid::config::BUILD_CMAKE_VERSION))
-                 .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_ID))
-                 .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_VERSION))
-                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_BOOST_VERSION))
-                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_QT_VERSION))
-                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_RAPIDJSON_VERSION))
-                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_GDAL_VERSION))
-                 .arg(QString::fromStdString(openfluid::config::BUILD_LIB_GEOS_VERSION));
+  QString SkelText = 
+    tr("## Build environment\n"
+       "\n"
+       "* Build type : %1\n"
+       "* CMake version : %2\n"
+       "* C++ standard : %3\n"
+       "* Compiler ID : %4\n"
+       "* Compiler version : %5\n"
+       "* Compiler flags : %6\n"
+       "\n"
+       "\n"
+       "## Dependencies\n"
+       "\n"
+       "* Boost version : %7\n"
+       "* Qt version : %8\n"
+       "* RapidJSON version : %9\n"
+       "* GDAL version : %10\n");
+
+  QString Text = SkelText.arg(QString::fromStdString(openfluid::config::BUILD_TYPE))
+                         .arg(QString::fromStdString(openfluid::config::BUILD_CMAKE_VERSION))
+                         .arg(QString::fromStdString(openfluid::config::BUILD_CXX_STANDARD))
+                         .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_ID))
+                         .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_VERSION))
+                         .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_FLAGS).replace(';',' '))
+                         .arg(QString::fromStdString(openfluid::config::BUILD_LIB_BOOST_VERSION))
+                         .arg(QString::fromStdString(openfluid::config::BUILD_LIB_QT_VERSION))
+                         .arg(QString::fromStdString(openfluid::config::BUILD_LIB_RAPIDJSON_VERSION))
+                         .arg(QString::fromStdString(openfluid::config::BUILD_LIB_GDAL_VERSION));
+
+  if (!openfluid::config::BUILD_LIB_GEOS_VERSION.empty())
+  {
+    Text = Text + 
+      QString("* GEOS version : %1\n").arg(QString::fromStdString(openfluid::config::BUILD_LIB_GEOS_VERSION));
+  }
 
   return Text;
 }
@@ -165,13 +178,13 @@ QString AboutDialog::generateBuildInfoText()
 
 QString AboutDialog::quickndirtyMardown2HTML(const QString& Content)
 {
-  QStringList Lines = Content.split(QRegExp("[\r\n]"));
-
+  QStringList SourceLines = Content.split(QRegExp("[\r\n]"));
   QStringList ProcessedLines;
-
-  for (auto& Line : Lines)
+  
+  for (auto& Line : SourceLines)
   {
     Line = openfluid::tools::escapeXMLEntities(Line);
+
     if (Line.startsWith("### "))
     {
       Line.remove(0,4);

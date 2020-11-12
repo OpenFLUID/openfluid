@@ -80,6 +80,8 @@ class OpenFLUIDApp
 
     void printOpenFLUIDInfos();
 
+    void printBuildInfo();
+
     void printPaths(bool ShowTemp = true);
 
     void printEnvInfos();
