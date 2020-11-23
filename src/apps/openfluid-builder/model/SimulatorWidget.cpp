@@ -156,7 +156,6 @@ void SimulatorWidget::refresh()
   if (Signature != nullptr)
   {
     findDocFile(Signature);
-
     ui->DocButton->setVisible(!m_DocFilePath.empty());
 
     m_Ghost = Signature->Ghost;
@@ -165,6 +164,17 @@ void SimulatorWidget::refresh()
     {
       WaresTranslationsRegistry::instance()->tryLoadWareTranslation(QString::fromStdString(Signature->FileFullPath));
       m_IsTranslated = true;
+    }
+
+    if (!m_Ghost)
+    {
+      QString BuildType = QString::fromStdString(Signature->Signature->BuildInfo.BuildType);
+      updateBuildInfoIcons(BuildType.contains("DEB"),BuildType == "RELEASE" || BuildType == "RELWITHDEBINFO");
+    }
+    else
+    {
+      ui->DebugIconLabel->setVisible(false);
+      ui->SpeedIconLabel->setVisible(false);
     }
 
     setAvailableWare(true);

@@ -51,7 +51,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.wrongversion")
 
   DECLARE_VERSION("1.0");
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
-  Signature->setABIVersion("0.0.0");
+  Signature->BuildInfo.SDKVersion = "0.0.0";
 
   DECLARE_DOMAIN("");
   DECLARE_PROCESS("");

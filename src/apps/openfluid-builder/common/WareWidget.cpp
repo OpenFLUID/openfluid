@@ -66,6 +66,12 @@ WareWidget::WareWidget(QWidget* Parent,
 
   ui->NameLabel->setElideMode(Qt::ElideRight);
 
+  ui->DebugIconLabel->setText("");
+  ui->DebugIconLabel->setPixmap(openfluid::ui::common::getImage("ware-debug","builder"));
+  ui->SpeedIconLabel->setText("");
+  ui->SpeedIconLabel->setPixmap(openfluid::ui::common::getImage("ware-speed","builder"));
+  updateBuildInfoIcons(false,false);
+
 
   ui->DocButton->setVisible(false);
 
@@ -135,6 +141,8 @@ WareWidget::~WareWidget()
 void WareWidget::setAvailableWare(bool Available)
 {
   m_Available = Available;
+  ui->DebugIconLabel->setVisible(Available);
+  ui->SpeedIconLabel->setVisible(Available);
   ui->NameLabel->setVisible(Available);
   ui->ParamInfoTitleWidget->setVisible(Available);
   ui->ShowHideParamsLabel->setVisible(Available);
@@ -182,6 +190,19 @@ void WareWidget::updateWidgetBackground()
 
   setStyleSheet(QString("#WareFrame { background-color: %1; %2border: 1px solid %3}")
                 .arg(BGColor).arg(BGPattern).arg(BUILDER_WARE_BORDERCOLOR));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::updateBuildInfoIcons(bool Debug,bool Speed)
+{
+  ui->DebugIconLabel->setEnabled(Debug);
+  ui->DebugIconLabel->setToolTip(QString("Built with debug information : %1").arg(Debug ? "yes" : "no"));
+  ui->SpeedIconLabel->setEnabled(Speed);
+  ui->SpeedIconLabel->setToolTip(QString("Optimized for speed : %1").arg(Speed ? "yes" : "no"));
 }
 
 

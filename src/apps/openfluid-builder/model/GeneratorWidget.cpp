@@ -54,6 +54,8 @@ GeneratorWidget::GeneratorWidget(QWidget* Parent,
   mp_SignInstance(SignInstance)
 {  
   refresh();
+  ui->DebugIconLabel->setVisible(false);
+  ui->SpeedIconLabel->setVisible(false);
   ui->AddParamButton->setVisible(false);
   ui->ParameterizationSwitchLabel->setVisible(false);
 }

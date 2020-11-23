@@ -60,9 +60,12 @@
     OPENFLUID_PLUGIN openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL() \
     { \
       openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature(); \
-      Signature->setABIVersion(openfluid::config::VERSION_FULL); \
-      Signature->ID = (id);
-
+      Signature->ID = (id); \
+      Signature->BuildInfo.SDKVersion = openfluid::config::VERSION_FULL; \
+      Signature->BuildInfo.BuildType = (WAREBUILD_BUILD_TYPE); \
+      Signature->BuildInfo.CompilerID = (WAREBUILD_COMPILER_ID); \
+      Signature->BuildInfo.CompilerVersion = (WAREBUILD_COMPILER_VERSION); \
+      Signature->BuildInfo.CompilerFlags = (WAREBUILD_COMPILER_FLAGS);
 
 /**
   Macro for the end of definition of signature hook

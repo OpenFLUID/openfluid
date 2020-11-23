@@ -55,6 +55,11 @@ class OPENFLUID_API WareSignature
 
     typedef std::vector<std::pair<std::string,std::string> > AuthorsList_t;
 
+    /**
+      Information about build context
+    */    
+    SignatureBuildInfo BuildInfo;
+
     WareID_t ID;
 
     WareName_t Name;
@@ -70,11 +75,6 @@ class OPENFLUID_API WareSignature
     Development status
     */
     WareStatus_t Status;
-
-    /**
-    ABI version number used to build the ware
-    */
-    WareVersion_t ABIVersion;
 
     /**
     Authors as a list of pairs [name,email]
@@ -98,12 +98,12 @@ class OPENFLUID_API WareSignature
 
     void clear()
     {
+      BuildInfo = SignatureBuildInfo();
       ID.clear();
       Name.clear();
       Description.clear();
       Version.clear();
       Status = WareStatus_t::EXPERIMENTAL;
-      ABIVersion.clear();
       Authors.clear();
     }
 
@@ -115,16 +115,6 @@ class OPENFLUID_API WareSignature
     virtual ~WareSignature()
     {  
       
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    void setABIVersion(const WareVersion_t& Version)
-    {
-      ABIVersion = Version;
     }
 
 

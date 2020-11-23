@@ -551,7 +551,22 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsT
       OutStm << 
         getIndentedText(2,"Description",openfluid::tools::replaceEmptyString(Sign->Description,"(none)")) << "\n";
       OutStm << getIndentedText(2,"Version",Sign->Version) << "\n";
-      OutStm << getIndentedText(2,"SDK version used at build time",Sign->ABIVersion) << "\n";
+      OutStm << getIndentedText(2,"SDK version used at build time",Sign->BuildInfo.SDKVersion) << "\n";
+      OutStm << getIndentedText(2,"Build information") << "\n";
+      OutStm << 
+        getIndentedText(3,"Build type",openfluid::tools::replaceEmptyString(Sign->BuildInfo.BuildType,"(unknown)")) << 
+        "\n";
+      OutStm << 
+        getIndentedText(3,"Compiler ID",openfluid::tools::replaceEmptyString(Sign->BuildInfo.CompilerID,"(unknown)")) <<
+        "\n";
+      OutStm << 
+        getIndentedText(3,"Compiler version",
+                        openfluid::tools::replaceEmptyString(Sign->BuildInfo.CompilerVersion,"(unknown)")) << 
+        "\n";
+      OutStm << 
+        getIndentedText(3,"Compiler flags",
+                        openfluid::tools::replaceEmptyString(Sign->BuildInfo.CompilerFlags,"(none specified)")) << 
+        "\n";
       OutStm << 
         getIndentedText(2,"Development status",openfluid::ware::WareSignature::getStatusAsString(Sign->Status)) << "\n";
       OutStm << getIndentedText(2,"Author(s)",getAuthorsAsString(Sign->Authors)) << "\n";
@@ -922,7 +937,16 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsJ
       rapidjson::Value WareObj(rapidjson::kObjectType);
       WareObj.AddMember("id",rapidjson::Value(Sign->ID.c_str(),JSONalloc),JSONalloc);
       WareObj.AddMember("file_path",rapidjson::Value(Plug->FileFullPath.c_str(),JSONalloc),JSONalloc);
-      WareObj.AddMember("abi_version",rapidjson::Value(Sign->ABIVersion.c_str(),JSONalloc),JSONalloc);
+      WareObj.AddMember("abi_version",rapidjson::Value(Sign->BuildInfo.SDKVersion.c_str(),JSONalloc),JSONalloc);
+
+      rapidjson::Value BuildObj(rapidjson::kObjectType);
+      BuildObj.AddMember("type",rapidjson::Value(Sign->BuildInfo.BuildType.c_str(),JSONalloc),JSONalloc);
+      BuildObj.AddMember("compiler_id",rapidjson::Value(Sign->BuildInfo.CompilerID.c_str(),JSONalloc),JSONalloc);
+      BuildObj.AddMember("compiler_version",
+                         rapidjson::Value(Sign->BuildInfo.CompilerVersion.c_str(),JSONalloc),JSONalloc);
+      BuildObj.AddMember("compiler_flags",rapidjson::Value(Sign->BuildInfo.CompilerFlags.c_str(),JSONalloc),JSONalloc);
+      WareObj.AddMember("build_info",BuildObj,JSONalloc);
+
       WareObj.AddMember("name",rapidjson::Value(Sign->Name.c_str(),JSONalloc),JSONalloc);
       WareObj.AddMember("description",rapidjson::Value(Sign->Description.c_str(),JSONalloc),JSONalloc); 
       WareObj.AddMember("version",rapidjson::Value(Sign->Version.c_str(),JSONalloc),JSONalloc);

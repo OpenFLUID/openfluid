@@ -64,10 +64,14 @@
     { \
       openfluid::builderext::BuilderExtensionSignature* Signature =\
         new openfluid::builderext::BuilderExtensionSignature(); \
-      Signature->setABIVersion(openfluid::config::VERSION_FULL); \
       Signature->ID = (id); \
       Signature->Mode = (extmode);\
-      Signature->Type = openfluid::builderext::TYPE_FEATURE;
+      Signature->Type = openfluid::builderext::TYPE_FEATURE; \
+      Signature->BuildInfo.SDKVersion = openfluid::config::VERSION_FULL; \
+      Signature->BuildInfo.BuildType = (WAREBUILD_BUILD_TYPE); \
+      Signature->BuildInfo.CompilerID = (WAREBUILD_COMPILER_ID); \
+      Signature->BuildInfo.CompilerVersion = (WAREBUILD_COMPILER_VERSION); \
+      Signature->BuildInfo.CompilerFlags = (WAREBUILD_COMPILER_FLAGS);
 #endif
 
 /**

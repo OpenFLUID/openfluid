@@ -160,40 +160,36 @@ QString SignatureWidget::formatAuthors(const openfluid::ware::WareSignature::Aut
 // =====================================================================
 
 
-void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignatureInstance* Signature)
+QString SignatureWidget::getGeneralInfoLine(const QString& Title, const QString& Text, bool WithPreBR)
+{
+  return QString("%3<b>%1</b>: %2").arg(Title).arg(Text).arg(WithPreBR ? "<br/>" : "");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<typename SignatureType>
+QString SignatureWidget::getCommonForGeneral(const SignatureType* Signature)
 {
   QString Contents;
 
-  QString PathLabelStr = tr("Plugin path");
+  Contents += getGeneralInfoLine(tr("ID"),convertStdString(Signature->Signature->ID),false);
+  Contents += getGeneralInfoLine(tr("Name"),convertStdString(Signature->Signature->Name));
+  Contents += getGeneralInfoLine(tr("Description"),convertStdString(Signature->Signature->Description));
 
-  if (Signature->Ghost)
-  {
-    PathLabelStr = tr("Ghost path");
-  }
 
-  Contents += "<b>" + tr("ID") + ":</b> " + convertStdString(Signature->Signature->ID) + "<br/>";
-  Contents += "<b>" + tr("Name") + ":</b> " + convertStdString(Signature->Signature->Name) + "<br/>";
-  Contents += "<b>" + tr("Description") + ":</b> " + convertStdString(Signature->Signature->Description);
-
-  if (Signature->ItemType == openfluid::ware::WareType::SIMULATOR)
+  if (Signature->ItemType == openfluid::ware::WareType::SIMULATOR ||
+      Signature->ItemType == openfluid::ware::WareType::OBSERVER)
   {
     Contents += "<hr>";
-    Contents += "<b>" + tr("Author(s)") + ":</b> ";
 
-    if (!Signature->Signature->Authors.empty())
-    {
-      Contents += formatAuthors(Signature->Signature->Authors);
-    }
-    else
-    {
-      Contents += convertStdString("");
-    }
+    Contents += getGeneralInfoLine(tr("Version"),convertStdString(Signature->Signature->Version),false);
+    Contents += getGeneralInfoLine(tr("Author(s)"),
+                                   Signature->Signature->Authors.empty() ? 
+                                   convertStdString("") : formatAuthors(Signature->Signature->Authors));
 
-    Contents += "<hr>";
-    Contents += "<b>" + PathLabelStr + ":</b> " +
-                QDir::toNativeSeparators(convertStdString(Signature->FileFullPath));
-    Contents += "<hr>";
-    Contents += "<b>" + tr("Version") + ":</b> " + convertStdString(Signature->Signature->Version) + "<br/>";
 
     QString StatusStr = tr("experimental");
     if (Signature->Signature->Status == openfluid::ware::BETA)
@@ -204,13 +200,64 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
     {
       StatusStr = tr("stable");
     }
-    Contents += "<b>" + tr("Status") + ":</b> " + StatusStr + "<br/>";
-    Contents += "<hr>";
-    Contents += "<b>" + tr("Domain(s)") + ":</b> " + convertStdString(Signature->Signature->Domain) + "<br/>";
-    Contents += "<b>" + tr("Process(es)") + ":</b> " + convertStdString(Signature->Signature->Process) + "<br/>";
-    Contents += "<b>" + tr("Methods(s)") + ":</b> " + convertStdString(Signature->Signature->Method) + "<br/>";
+    Contents += getGeneralInfoLine(tr("Status"),StatusStr);
 
+    Contents += "<hr>";
+
+    Contents += getGeneralInfoLine(tr("File path"),
+                                   QDir::toNativeSeparators(convertStdString(Signature->FileFullPath)),false);
+
+    auto BuildInfo = Signature->Signature->BuildInfo;
+    if (!BuildInfo.BuildType.empty())
+    {
+      Contents += getGeneralInfoLine(tr("Build type"),QString::fromStdString(BuildInfo.BuildType));
+    }
+    if (!BuildInfo.CompilerID.empty())
+    {
+      Contents += getGeneralInfoLine(tr("Compiler ID"),QString::fromStdString(BuildInfo.CompilerID));
+    }
+    if (!BuildInfo.CompilerVersion.empty())
+    {
+      Contents += getGeneralInfoLine(tr("Compiler version"),QString::fromStdString(BuildInfo.CompilerVersion));
+    }
+    if (!BuildInfo.CompilerFlags.empty())
+    {
+      Contents += getGeneralInfoLine(tr("Compiler flags"),QString::fromStdString(BuildInfo.CompilerFlags));
+    }
   }
+
+  return Contents;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignatureInstance* Signature)
+{
+  QString Contents = getCommonForGeneral(Signature);
+
+  if (Signature->ItemType == openfluid::ware::WareType::SIMULATOR)
+  {
+    Contents += "<hr>";
+
+    Contents += getGeneralInfoLine(tr("Domain(s)"),convertStdString(Signature->Signature->Domain),false);
+    Contents += getGeneralInfoLine(tr("Process(es)"),convertStdString(Signature->Signature->Process));
+    Contents += getGeneralInfoLine(tr("Methods(s)"),convertStdString(Signature->Signature->Method));
+  }
+
+  ui->GeneralLabel->setText(Contents);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureWidget::updateGeneral(const openfluid::machine::ObserverSignatureInstance* Signature)
+{
+  QString Contents = getCommonForGeneral(Signature);
 
   ui->GeneralLabel->setText(Contents);
 }
@@ -487,51 +534,6 @@ void SignatureWidget::updateSpatialGraph(const openfluid::machine::ModelItemSign
     ui->InfosTabWidget->addTab(ui->SpatialGraphTab,tr("Spatial graph"));
   }
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SignatureWidget::updateGeneral(const openfluid::machine::ObserverSignatureInstance* Signature)
-{
-  QString Contents;
-
-  Contents += "<b>" + tr("ID") + ":</b> " + convertStdString(Signature->Signature->ID) + "<br/>";
-  Contents += "<b>" + tr("Name") + ":</b> " + convertStdString(Signature->Signature->Name) + "<br/>";
-  Contents += "<b>" + tr("Description") + ":</b> " + convertStdString(Signature->Signature->Description);
-
-  Contents += "<hr>";
-  Contents += "<b>" + tr("Author(s)") + ":</b> ";
-
-  if (!Signature->Signature->Authors.empty())
-  {
-    Contents += formatAuthors(Signature->Signature->Authors);
-  }
-  else
-  {
-    Contents += convertStdString("");
-  }
-
-  Contents += "<hr>";
-  Contents += "<b>" + tr("Plugin path") + ":</b> " + convertStdString(Signature->FileFullPath);
-  Contents += "<hr>";
-  Contents += "<b>" + tr("Version") + ":</b> " + convertStdString(Signature->Signature->Version) + "<br/>";
-
-  QString StatusStr = tr("experimental");
-  if (Signature->Signature->Status == openfluid::ware::BETA)
-  {
-    StatusStr = tr("beta");
-  }
-  if (Signature->Signature->Status == openfluid::ware::STABLE)
-  {
-    StatusStr = tr("stable");
-  }
-  Contents += "<b>" + tr("Status") + ":</b> " + StatusStr + "<br/>";
-
-
-  ui->GeneralLabel->setText(Contents);
 }
 
 

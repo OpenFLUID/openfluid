@@ -61,7 +61,14 @@ class SignatureWidget : public QWidget
 
     Ui::SignatureWidget* ui;
 
+    static QString getGeneralInfoLine(const QString& Title, const QString& Text, bool WithPreBR = true);
+
+    template<typename SignatureType>
+    QString getCommonForGeneral(const SignatureType* Signature);
+
     void updateGeneral(const openfluid::machine::ModelItemSignatureInstance* Signature);
+
+    void updateGeneral(const openfluid::machine::ObserverSignatureInstance* Signature);
 
     void updateParametersCategory(const std::vector<openfluid::ware::SignatureDataItem>* Infos,
                                   const QString& CatStr, unsigned int BaseIndex);
@@ -89,13 +96,11 @@ class SignatureWidget : public QWidget
 
     void updateSpatialGraph(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    void updateGeneral(const openfluid::machine::ObserverSignatureInstance* Signature);
-
     QString formatAuthors(const openfluid::ware::WareSignature::AuthorsList_t& AuthList);
 
     void clearAllInfos();
 
-    static QString convertStdString(const std::string& Str, const QString& ReplaceStr = "<i>unknown</i>");
+    static QString convertStdString(const std::string& Str, const QString& ReplaceStr = "<i>"+tr("unknown")+"</i>");
 
 
   public:

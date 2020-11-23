@@ -92,6 +92,9 @@ void ObserverWidget::refresh()
       m_IsTranslated = true;
     }
 
+    QString BuildType = QString::fromStdString(Signature->Signature->BuildInfo.BuildType);
+    updateBuildInfoIcons(BuildType.contains("DEB"),BuildType == "RELEASE" || BuildType == "RELWITHDEBINFO");
+
     setAvailableWare(true);
     ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
     ui->InfosSideWidget->update(Signature);

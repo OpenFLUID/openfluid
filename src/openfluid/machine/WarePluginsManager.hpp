@@ -105,7 +105,7 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    ItemInstanceType* buildWareContainerWithSignatureOnly(const std::string& ID)
+    ItemInstanceType* buildWareContainerWithSignatureOnly(const std::string& ID, bool StrictABICheck = true)
     {
       std::string PluginFilename = ID+getPluginFilenameSuffix()+openfluid::config::PLUGINS_EXT;
       std::string PluginFullPath = getPluginFullPath(PluginFilename);
@@ -124,7 +124,8 @@ class OPENFLUID_API WarePluginsManager
         if (ABIVersionProc)
         {
           std::unique_ptr<std::string> StrPtr(ABIVersionProc());
-          WareItem->Verified = (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*StrPtr,false) == 0);
+          WareItem->Verified = 
+            (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*StrPtr,StrictABICheck) == 0);
         }
         else
         {
@@ -187,7 +188,7 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    SignatureInstanceType* getWareSignature(const std::string& PluginFilename)
+    SignatureInstanceType* getWareSignature(const std::string& PluginFilename, bool StrictABICheck = true)
     {
       std::string PluginFullPath = getPluginFullPath(PluginFilename);
       SignatureInstanceType* Sign = nullptr;
@@ -212,7 +213,8 @@ class OPENFLUID_API WarePluginsManager
           if (ABIVersionProc)
           {
             std::unique_ptr<std::string> StrPtr(ABIVersionProc());
-            Sign->Verified = (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*StrPtr,false) == 0); 
+            Sign->Verified = 
+              (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*StrPtr,StrictABICheck) == 0); 
           }
           else
           {

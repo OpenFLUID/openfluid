@@ -44,7 +44,6 @@
 #include <QMouseEvent>
 #include <QWidget>
 
-#include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/builderext/PluggableParameterizationExtension.hpp>
 #include <openfluid/ui/common/ActionLabel.hpp>
 
@@ -109,6 +108,8 @@ class WareWidget : public QWidget
 
     virtual void updateWidgetBackground();
 
+    void updateBuildInfoIcons(bool Debug,bool Speed);
+
     bool addParameterWidget(const QString& Name, const QString& Value);
 
     bool removeParameterWidget(const QString& Name);
@@ -168,7 +169,9 @@ class WareWidget : public QWidget
     void displayParams();
 
     openfluid::ware::WareID_t getID() const
-    { return m_ID; };
+    { 
+      return m_ID; 
+    }
 
     virtual openfluid::ware::WareType getType() = 0;
 

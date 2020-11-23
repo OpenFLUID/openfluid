@@ -121,6 +121,24 @@ enum WareStatus_t
 // =====================================================================
 
 
+struct SignatureBuildInfo
+{
+  WareVersion_t SDKVersion = "";
+
+  std::string BuildType = "";
+
+  std::string CompilerID = "";
+
+  std::string CompilerVersion = "";
+
+  std::string CompilerFlags = "";
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
 typedef std::string WareParamKey_t;
 
 typedef openfluid::core::StringValue WareParamValue_t;
