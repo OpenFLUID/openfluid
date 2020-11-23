@@ -101,13 +101,13 @@ class OPENFLUID_API PluggableWare
     /**
       Ware execution environment
     */
-    const openfluid::core::MapValue* mp_WareEnv;
+    const openfluid::core::MapValue* mp_WareEnv = nullptr;
 
 
     /**
       Ware Type
     */
-    WareType m_WareType;
+    WareType m_WareType = WareType::UNDEFINED;
 
 
     /**
@@ -118,7 +118,7 @@ class OPENFLUID_API PluggableWare
 
   protected:
 
-    bool m_Initialized;
+    bool m_Initialized = false;
 
     virtual bool isLinked() const
     { 
@@ -224,7 +224,17 @@ class OPENFLUID_API PluggableWare
 
   public:
 
-    virtual ~PluggableWare();
+    PluggableWare() = default;
+
+    PluggableWare(const PluggableWare&) = delete;
+    
+    PluggableWare(PluggableWare&&) = default;
+
+    PluggableWare& operator=(const PluggableWare&) = delete;
+
+    PluggableWare& operator=(PluggableWare&&) = default;
+
+    virtual ~PluggableWare() = default;
 
     void linkToRunEnvironment(const openfluid::core::MapValue* Env)
     {

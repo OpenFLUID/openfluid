@@ -207,7 +207,7 @@ class OPENFLUID_API WareSrcFactory
       @param ErrMsg A QString that will be filled with error messages if the file creation fails
       @return bool False if the file creation fails, true otherwise
     */
-    bool createCMakeListsFile(QString& NewFilePath, QString& ErrMsg);
+    bool createCMakeListsFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg);
 
     /**
       Creates a wareshub.json file in the ware directory, from the (shared) Json file template.

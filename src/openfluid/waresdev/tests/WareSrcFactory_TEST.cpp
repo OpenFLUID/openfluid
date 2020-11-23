@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   R.Sim2docModeIndex = 1;  //"AUTO"
   R.Sim2docInstall = true;
 
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(NewFilePath, ErrMsg), false);
+  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), false);
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   BOOST_CHECK_EQUAL(Factory.createCmakeConfigFile(R, NewFilePath, ErrMsg), false);
 
   Factory.setWareId("wrongid");
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(NewFilePath, ErrMsg), false);
+  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), false);
@@ -105,13 +105,15 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   QDir SimDir(WareTypeDir.filePath("sim.id"));
   Factory.setWareId("sim.id");
 
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(NewFilePath, ErrMsg), true);
+  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(SimDir.exists("CMakeLists.txt"));
   QFile CMakeTpl(TypedTemplatesDir.filePath("CMakeLists.txt.tpl"));
   QFile CMakeResult(SimDir.filePath("CMakeLists.txt"));
   CMakeTpl.open(QIODevice::ReadOnly | QIODevice::Text);
   CMakeResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  BOOST_CHECK_EQUAL(QTextStream(&CMakeTpl).readAll().toStdString(), QTextStream(&CMakeResult).readAll().toStdString());
+  QString CMakeListsFileContent = QTextStream(&CMakeResult).readAll();
+  BOOST_CHECK(!CMakeListsFileContent.contains("%%"));
+  BOOST_CHECK(CMakeListsFileContent.contains("PROJECT(\"sim.id\")"));
   CMakeTpl.close();
   CMakeResult.close();
 
@@ -211,7 +213,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   R.BuilderExtCategoryIndex = 0;  //"openfluid::builderext::CAT_SPATIAL"
   R.BuilderExtMenuText = "bla bla";
 
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(NewFilePath, ErrMsg), false);
+  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), false);
@@ -220,7 +222,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BOOST_CHECK_EQUAL(Factory.createCmakeConfigFile(R, NewFilePath, ErrMsg), false);
 
   Factory.setWareId("wrongid");
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(NewFilePath, ErrMsg), false);
+  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), false);
   BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), false);
@@ -232,13 +234,15 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   QDir BextDir(WareTypeDir.filePath("bext.id"));
   Factory.setWareId("bext.id");
 
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(NewFilePath, ErrMsg), true);
+  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("CMakeLists.txt"));
   QFile CMakeTpl(TypedTemplatesDir.filePath("CMakeLists.txt.tpl"));
   QFile CMakeResult(BextDir.filePath("CMakeLists.txt"));
   CMakeTpl.open(QIODevice::ReadOnly | QIODevice::Text);
   CMakeResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  BOOST_CHECK_EQUAL(QTextStream(&CMakeTpl).readAll().toStdString(), QTextStream(&CMakeResult).readAll().toStdString());
+  QString CMakeListsFileContent = QTextStream(&CMakeResult).readAll();
+  BOOST_CHECK(!CMakeListsFileContent.contains("%%"));
+  BOOST_CHECK(CMakeListsFileContent.contains("PROJECT(\"bext.id\")"));
   CMakeTpl.close();
   CMakeResult.close();
 

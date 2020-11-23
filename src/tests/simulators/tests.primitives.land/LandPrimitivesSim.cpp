@@ -225,7 +225,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       }
 
 
-      auto CheckUnitsList = [this,Cols,Rows](const openfluid::core::UnitsClass_t& ClassName)
+      auto CheckUnitsList = [this](const openfluid::core::UnitsClass_t& ClassName)
       {
         openfluid::core::PcsOrd_t PrevPcsOrd = 0;
         openfluid::core::UnitsPtrList_t UList = OPENFLUID_GetUnits(ClassName);

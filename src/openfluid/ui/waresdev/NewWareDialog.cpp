@@ -303,7 +303,7 @@ void NewWareDialog::accept()
   }
   else
   {
-    Ok = Factory.createCMakeListsFile(NewFilePath, ErrMsg);
+    Ok = Factory.createCMakeListsFile(Repl, NewFilePath, ErrMsg);
   }
 
   if (Ok)

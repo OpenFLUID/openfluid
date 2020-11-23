@@ -108,10 +108,11 @@ void WareSrcFactory::setWareId(const QString& Id)
 // =====================================================================
 
 
-bool WareSrcFactory::createCMakeListsFile(QString& NewFilePath, QString& ErrMsg)
+bool WareSrcFactory::createCMakeListsFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
 {
-  return copyTemplateToNewFile(m_TypedTemplatesDir.filePath("CMakeLists.txt.tpl"), "CMakeLists.txt", NewFilePath,
-                               ErrMsg);
+  return (copyTemplateToNewFile(m_TypedTemplatesDir.filePath("CMakeLists.txt.tpl"), "CMakeLists.txt", NewFilePath,
+                                ErrMsg)
+      && replaceInFile(R, NewFilePath, ErrMsg));
 }
 
 

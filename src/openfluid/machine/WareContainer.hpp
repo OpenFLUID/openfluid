@@ -55,15 +55,24 @@ class OPENFLUID_API WareContainer
 {
   public:
 
-    std::string FileFullPath;
+    std::string FileFullPath = "";
 
-    bool Verified;
+    bool Verified = false;
 
-    UUID_t LinkUID;
+    UUID_t LinkUID = "";
 
 
-    WareContainer() : FileFullPath(""),Verified(false), LinkUID("")
-    { }
+    WareContainer() = default;
+
+    WareContainer(const WareContainer&) = delete;
+    
+    WareContainer(WareContainer&&) = default;
+
+    WareContainer& operator=(const WareContainer&) = delete;
+
+    WareContainer& operator=(WareContainer&&) = default;
+
+    virtual ~WareContainer() = default;
 };
 
 

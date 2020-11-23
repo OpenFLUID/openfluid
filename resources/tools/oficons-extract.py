@@ -32,7 +32,7 @@
 #  This script extracts and processes icons for OpenFLUID UI. It uses icons from Google material design
 #  icons library (https://material.io/icons/) and from https://materialdesignicons.com/
 #
-#  Usage: oficons-extract --work-path=/path/to/work
+#  Usage: oficons-extract /path/to/work
 #         oficons-extract --help
 #
 #  This script requires the convert tool from ImageMagick (https://www.imagemagick.org/)
@@ -99,7 +99,7 @@ BaseSet['link'] = ['content','link',False,True,False]
 
 ExtSet['file-explorer'] = ['file-tree',False,True,False]
 ExtSet['dev-wares'] = ['code-braces',False,True,False]
-ExtSet['ghost2sim'] = ['json',False,True,False]
+ExtSet['ghost2sim'] = ['code-json',False,True,False]
 ExtSet['log-view'] = ['message-text-outline',False,True,False]
 ExtSet['export'] = ['export',False,True,False]
 ExtSet['linked'] = ['link-variant',False,True,False]
@@ -110,6 +110,7 @@ ExtSet['color-marker'] = ['format-color-highlight',False,True,False]
 ExtSet['color-marker-cancel'] = ['format-color-marker-cancel',False,True,False]
 ExtSet['application'] = ['application',False,True,False]
 ExtSet['folder-pound'] = ['folder-pound',False,True,False]
+
 
 BaseSetGitURL = 'https://github.com/OpenFLUID/material-design-icons.git'
 BaseSetDir = 'base'
@@ -247,12 +248,12 @@ def convert(SrcFileNoExt,Path,IconName,Light,Dark,Grayed):
   print(SrcFile)
 
   TmpFile = os.path.join(getTmpPath(Path),IconName)+'.png'
-  InkscapeCmd = [InkscapeProgram,'--without-gui','-f',SrcFile,'-e',TmpFile,'-h',StandardSize,'-w',StandardSize]
+  InkscapeCmd = [InkscapeProgram,'--export-filename',TmpFile,'-h',StandardSize,'-w',StandardSize,SrcFile]
   subprocess.call(InkscapeCmd)
 
   if HiDPIEnabled:
     TmpFileHiDPI = os.path.join(getTmpPath(Path),IconName)+'@2x.png'
-    InkscapeCmd = [InkscapeProgram,'--without-gui','--file='+SrcFile,'-e',TmpFileHiDPI,'-h',HiDPISize,'-w',HiDPISize]
+    InkscapeCmd = [InkscapeProgram,'--export-filename',TmpFileHiDPI,'-h',HiDPISize,'-w',HiDPISize,SrcFile]
     subprocess.call(InkscapeCmd)
 
 

@@ -97,6 +97,8 @@ class OPENFLUID_API PluggableObserver : public SimulationInspectorWare
 
     virtual ~PluggableObserver();
 
+    using SimulationInspectorWare::initializeWare;
+
     /**
        Internally called by the framework.
      */

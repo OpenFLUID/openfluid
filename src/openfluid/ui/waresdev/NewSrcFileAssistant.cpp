@@ -522,7 +522,8 @@ void NewSrcFileAssistant::accept()
       }
       else if (ui->CMakeListsRadioButton->isChecked())
       {
-        Ok = mp_Factory->createCMakeListsFile(NewFilePath, ErrMsg);
+        openfluid::waresdev::WareSrcFactory::Replacements R;
+        Ok = mp_Factory->createCMakeListsFile(R, NewFilePath, ErrMsg);
       }  
       break;
     case static_cast<int>(PageType::EMPTY_PAGE):

@@ -434,6 +434,8 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
     */
     virtual ~PluggableSimulator();
 
+    using SimulationContributorWare::initializeWare;
+
     /**
       Internally called by the framework.
     */

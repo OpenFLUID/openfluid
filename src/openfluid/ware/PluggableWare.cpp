@@ -46,17 +46,7 @@ namespace openfluid { namespace ware {
 
 
 PluggableWare::PluggableWare(WareType WType)
-: mp_WareEnv(nullptr),m_WareType(WType),m_WareID(""),m_Initialized(false)
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-PluggableWare::~PluggableWare()
+: m_WareType(WType)
 {
 
 }
