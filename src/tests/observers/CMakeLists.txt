@@ -147,6 +147,7 @@ OPENFLUID_ADD_TEST(NAME observers-KmlFiles
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.KmlObservers/kmlplot.kmz"
                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.KmlObservers/SU.kmz"
                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.KmlObservers/RS.kmz"
+                             CHECK_FILE_EXIST_IN_ARCHIVE "doc.kml" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.KmlObservers/kmlplot.kmz"
                   )
 
 

@@ -285,7 +285,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
         Args << "a";
         Args << "-tzip";
         Args << QString::fromStdString(KmzFilePath);
-        Args << QString::fromStdString(InputDir);
+        Args << QString::fromStdString(InputDir)+"/*";
 
         QProcess::execute(SevenZProgram.getFullProgramPath(),Args);
       }
