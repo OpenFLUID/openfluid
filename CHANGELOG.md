@@ -1,3 +1,49 @@
+## 2.1.11
+
+  * Added display of help when openfluid command line is launched 
+    without any argument
+  * Added build information in wares signature
+  * Added display of build information for wares in Builder
+  * Added display of build information for wares 
+    in reports using openfluid command line
+  * Added compatibility with future 1.0 version of FLUIDhub API,
+    keeping compatibility with current 0.5 version
+  * Added cleanPath, absolutePath and renameFile methods 
+    in Filesystem class
+  * Added CMake targets to build all unit tests of a given library
+  * Added CMake configuration option to allow/disallow 
+    network requests during tests
+  * Added CMake detection of server availability 
+    for tests with network requests
+  * Added ability to display build information using openfluid command line
+  * Improved details of build information
+  * Improved tests
+  * Updated Devstudio UI/UX for importing wares from remote repositories
+    to ensure FLUIDhub API compatibility
+  * Updated CMakeLists.txt template for wares to match CMake requirements
+  * Updated ABI check in plugins manager to strict check
+  * Updated deprecated usage of QProcess methods
+  * Updated building process for PDF documentation
+  * Updated example buddy to display path in error messages
+  * Updated management of CMake configuration using OPTIONS
+  * Updated wares plugins interface to match C-linkage
+  * Updated CI configuration
+  * Replaced Qt random functions by stdlib random 
+  * Replaced deprecated boost headers in unit tests
+  * Replaced 7zip by CMake for background management of zip archives
+  * Fixed display of build information in About dialog
+  * Fixed Builder crash when cancelling window for ware opening
+  * Fixed potential wrong project path management in Builder
+  * Fixed input/output/temp directories in wares environment,
+    now always returned as absolute paths
+  * Fixed generation of KMZ file archive in KML observer
+  * Fixed compilation flags for clang compiler
+  * Fixed of wind usage in Firespread example
+  * Cleaned source code
+  * Cleaned build configuration and related scripts
+
+
+
 ## 2.1.10
 
   * Added colouring of simulators and generators in OpenFLUID-Builder
