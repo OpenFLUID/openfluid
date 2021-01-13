@@ -240,7 +240,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
         // < 75 km/h : 1.7
         // > 75 km/h : 2
 
-        int WindCoeff = 1.0;
+        double WindCoeff = 1.0;
         if (WindSpeed.value()->asDoubleValue().get() > 25)
         {
           WindCoeff = 1.4;
