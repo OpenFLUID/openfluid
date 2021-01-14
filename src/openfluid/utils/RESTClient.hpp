@@ -33,6 +33,7 @@
   @file RESTClient.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THONI <armel.thoni@inrae.fr>
 */
 
 
@@ -54,6 +55,9 @@
 
 namespace openfluid { namespace utils {
 
+/* List instead of map since several HTTP headers can have the same key: 
+   https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2 */
+typedef std::list<std::pair<QByteArray,QByteArray>> t_HeadersList;
 
 class OPENFLUID_API RESTClient
 {
@@ -131,6 +135,8 @@ class OPENFLUID_API RESTClient
 
     SSLConfiguration m_SSLConfiguration;
 
+    t_HeadersList m_RawHeaders;
+
     Reply performRequest(const QString& Path, const QString& Method, const QString& Data = "") const;
 
 
@@ -148,6 +154,14 @@ class OPENFLUID_API RESTClient
 
     void setSSLConfiguration(const SSLConfiguration& Config)
     { m_SSLConfiguration = Config; }
+
+    void resetRawHeaders();
+
+    void removeRawHeader(const QByteArray Key);
+
+    bool hasRawHeader(const QByteArray Key);
+
+    void addRawHeader(const QByteArray Key, const QByteArray Value);
 
     SSLConfiguration getSSLConfiguration() const
     { return m_SSLConfiguration; }

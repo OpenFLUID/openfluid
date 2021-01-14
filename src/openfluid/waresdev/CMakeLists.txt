@@ -6,7 +6,7 @@ SET(OPENFLUID_WARESDEV_CPP WareSrcManager.cpp
                            WareSrcFactory.cpp 
                            WareSrcMsgParser.cpp
                            WaresDevPackage.cpp 
-                           WaresHubImportWorker.cpp
+                           FluidHubWaresImportWorker.cpp
                            CompletionProvider.cpp
                            )
 
@@ -17,7 +17,7 @@ SET(OPENFLUID_WARESDEV_HPP WareSrcManager.hpp
                            WareSrcFactory.hpp 
                            WareSrcMsgParser.hpp 
                            WaresDevPackage.hpp 
-                           WaresHubImportWorker.hpp
+                           FluidHubWaresImportWorker.hpp
                            CompletionProvider.hpp
                            )
 

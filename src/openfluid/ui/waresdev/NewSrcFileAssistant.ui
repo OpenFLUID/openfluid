@@ -225,7 +225,7 @@ font : bold;
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="WareshubRadioButton">
+       <widget class="QRadioButton" name="HubRadioButton">
         <property name="text">
          <string>wareshub.json file</string>
         </property>
@@ -275,7 +275,7 @@ font : bold;
   <tabstop>HppUiRadioButton</tabstop>
   <tabstop>CMakeListsRadioButton</tabstop>
   <tabstop>CMakeConfigRadioButton</tabstop>
-  <tabstop>WareshubRadioButton</tabstop>
+  <tabstop>HubRadioButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

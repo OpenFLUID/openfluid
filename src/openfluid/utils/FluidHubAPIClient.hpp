@@ -33,6 +33,7 @@
   @file FluidHubAPIClient.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THONI <armel.thoni@inrae.fr>
 */
 
 
@@ -82,13 +83,17 @@ class OPENFLUID_API FluidHubAPIClient
 
     RESTClient m_RESTClient;
 
-    RESTClient::SSLConfiguration  m_SSLConfig;
+    RESTClient::SSLConfiguration m_SSLConfig;
 
     QString m_HubName;
 
     QString m_HubStatus;
 
     QString m_HubAPIVersion;
+
+    bool m_IsV0ofAPI = true;
+
+    QString m_WareCapabilityName = "wareshub";
 
     std::set<QString> m_HubCapabilities;
 
@@ -120,46 +125,78 @@ class OPENFLUID_API FluidHubAPIClient
     void disconnect();
 
     /**
+      Unsets the authentication informations
+    */
+    void logout();
+
+    /**
       Returns true if the client is currently connected
       @return true if connected
     */
     bool isConnected() const
-    { return !(m_RESTClient.getBaseURL().isEmpty()); }
+    {
+      return !(m_RESTClient.getBaseURL().isEmpty());
+    }
+
+    /**
+      Returns true if the serveur uses the deprecated API (old wareshub)
+      @return true if connected
+    */
+    bool isV0ofAPI() const
+    {
+      return m_IsV0ofAPI;
+    }
 
     /**
       Returns the URL of the current FluidHub
       @return the FluidHub URL
     */
     QString getHubURL() const
-    { return m_RESTClient.getBaseURL(); }
+    {
+      return m_RESTClient.getBaseURL();
+    }
 
     /**
       Returns the API version of the current FluidHub
       @return the FluidHub API version
     */
     QString getHubAPIVersion() const
-    { return m_HubAPIVersion; }
+    {
+      return m_HubAPIVersion;
+    }
 
     /**
       Returns the status of the current FluidHub
       @return the FluidHub status
     */
     QString getHubStatus() const
-    { return m_HubStatus; }
+    {
+      return m_HubStatus;
+    }
 
     /**
       Returns the name of the current FluidHub
       @return the FluidHub name
     */
     QString getHubName() const
-    { return m_HubName; }
+    {
+      return m_HubName;
+    }
 
     /**
       Returns the capabilities list of the current FluidHub ("news","wareshub", ...)
       @return the FluidHub capabilities
     */
     std::set<QString> getHubCapabilities() const
-    { return m_HubCapabilities; }
+    {
+      return m_HubCapabilities;
+    }
+
+    /**
+      Returns the corresponding user unixname if connected and not deprecated API
+      @return the connected user unixname
+    */
+    std::string getUserUnixname(std::string Email, std::string Password);
 
     /**
       Returns the list of all available wares in the current FluidHub
@@ -173,7 +210,7 @@ class OPENFLUID_API FluidHubAPIClient
       @param[in] Username Optional username used in returned git URL
       @return the detailed list of wares of the give type
     */
-    WaresDetailsByID_t getAvailableWaresWithDetails(openfluid::ware::WareType Type,
+    WaresDetailsByID_t getAvailableWaresWithDetails(openfluid::ware::WareType Type, 
                                                     const QString& Username = "") const;
 
     /**

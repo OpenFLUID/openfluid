@@ -30,26 +30,24 @@
  */
 
 /**
- @file WaresHubImportWorker_TEST.cpp
+ @file FluidHubWaresImportWorker_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+ @author Armel THONI <armel.thoni@inrae.fr>
  */
 
 
 #define BOOST_TEST_NO_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_WaresHubImportWorker
+#define BOOST_TEST_MODULE unittest_FluidHubWaresImportWorker
 
-
-#include <iostream>
 
 #include <boost/test/unit_test.hpp>
 
 #include <QCoreApplication>
 #include <QDir>
 
-#include <openfluid/waresdev/WaresHubImportWorker.hpp>
+#include <openfluid/waresdev/FluidHubWaresImportWorker.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 
@@ -60,7 +58,7 @@
 // =====================================================================
 
 
-class F
+class HubTestFixture
 {
   private:
 
@@ -72,18 +70,20 @@ class F
 
     QString FirstAvailSimId;
 
-    static const QString UrlHttp;
-    static const QString UrlHttps;
-    static const QString UrlHttpsRedirect;
+    static const QString UrlHttpV0;
+    static const QString UrlHttpsV0;
+    static const QString UrlHttpsV0Redirect;
+    static const QString UrlHttpV1;
+    static const QString UrlHttpsV1;
     static const QString Username;
     static const QString Password;
 
     std::string CurrentOFBranchName;
 
-    F()
+    HubTestFixture()
     {
       TestWorkspacePath = QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR);
-      TestWorkspacePath.append("/wareshubimport");
+      TestWorkspacePath.append("/FluidHubWaresImport");
 
       forceRemove(TestWorkspacePath);
 
@@ -96,7 +96,7 @@ class F
       CurrentOFBranchName = openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName().toStdString();
     }
 
-    ~F()
+    ~HubTestFixture()
     {
       forceRemove(TestWorkspacePath);
       openfluid::waresdev::WareSrcManager::kill();
@@ -121,7 +121,7 @@ class F
       Dir.rmdir(Path);
     }
 
-    QString getFirstAvailSimUrl(openfluid::waresdev::WaresHubImportWorker& W)
+    QString getFirstAvailSimUrl(openfluid::waresdev::FluidHubWaresImportWorker& W)
     {
       openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t Wares = W.getAvailableWaresWithDetails(
           openfluid::ware::WareType::SIMULATOR);
@@ -148,8 +148,17 @@ class F
       return "";
     }
 
-    static bool checkHttps(const std::string& TestName)
+    static bool checkHttps(const std::string& TestName, int version=0)
     {
+      QString UrlHttps;
+      if (version == 0)
+      {
+        UrlHttps = UrlHttpsV0;
+      }
+      else
+      {
+        UrlHttps = UrlHttpsV1;
+      }
       if (!UrlHttps.isEmpty())
       {
         return true;
@@ -161,12 +170,14 @@ class F
     }
 };
 
+const QString HubTestFixture::UrlHttpV0 = QString::fromStdString(CONFIGTESTS_FLUIDHUB_V0_URL_HTTP);
+const QString HubTestFixture::UrlHttpsV0 = QString::fromStdString(CONFIGTESTS_FLUIDHUB_V0_URL_HTTPS);
+const QString HubTestFixture::UrlHttpsV0Redirect = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_REDIRECT_HTTPS);
+const QString HubTestFixture::UrlHttpV1 = QString::fromStdString(CONFIGTESTS_FLUIDHUB_V1_URL_HTTP);
+const QString HubTestFixture::UrlHttpsV1 = QString::fromStdString(CONFIGTESTS_FLUIDHUB_V1_URL_HTTPS);
 
-const QString F::UrlHttp = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_HTTP);
-const QString F::UrlHttps = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_HTTPS);
-const QString F::UrlHttpsRedirect = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_REDIRECT_HTTPS);
-const QString F::Username = QString::fromStdString(CONFIGTESTS_WARESHUB_USERNAME);
-const QString F::Password = QString::fromStdString(CONFIGTESTS_WARESHUB_PASSWORD);
+const QString HubTestFixture::Username = QString::fromStdString(CONFIGTESTS_WARESHUB_USERNAME);
+const QString HubTestFixture::Password = QString::fromStdString(CONFIGTESTS_WARESHUB_PASSWORD);
 
 
 // =====================================================================
@@ -177,7 +188,7 @@ BOOST_AUTO_TEST_CASE(connect_wrong_url_fails)
 {
   std::cout << " ======== <empty URL> ========" << std::endl;
 
-  openfluid::waresdev::WaresHubImportWorker W("");
+  openfluid::waresdev::FluidHubWaresImportWorker W("");
   BOOST_CHECK_EQUAL(W.connect(), false);
 }
 
@@ -186,11 +197,11 @@ BOOST_AUTO_TEST_CASE(connect_wrong_url_fails)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(connect_http_ok)
+BOOST_AUTO_TEST_CASE(connect_http_v0_ok)
 {
-  std::cout << " ======== " << F::UrlHttp.toStdString() << " ========" << std::endl;
+  std::cout << " ======== " << HubTestFixture::UrlHttpV0.toStdString() << " ========" << std::endl;
 
-  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttp);
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpV0);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
 }
@@ -200,16 +211,49 @@ BOOST_AUTO_TEST_CASE(connect_http_ok)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(connect_https_ssl_ok)
+BOOST_AUTO_TEST_CASE(connect_http_v1_ok)
 {
-  std::cout << " ======== " << F::UrlHttps.toStdString() << " (ok) ========" << std::endl;
+  std::cout << " ======== " << HubTestFixture::UrlHttpV1.toStdString() << " ========" << std::endl;
 
-  if (!F::checkHttps("connect_https_ssl_ok"))
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpV1);
+  BOOST_CHECK(W.connect());
+  BOOST_CHECK(W.isConnected());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(connect_https_ssl_v0_ok)
+{
+  std::cout << " ======== " << HubTestFixture::UrlHttpsV0.toStdString() << " (ok) ========" << std::endl;
+
+  if (!HubTestFixture::checkHttps("connect_https_ssl_ok", 0))
   {
     return;
   }
 
-  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps);
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpsV0);
+  BOOST_CHECK(W.connect());
+  BOOST_CHECK(W.isConnected());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(connect_https_ssl_v1_ok)
+{
+  std::cout << " ======== " << HubTestFixture::UrlHttpsV1.toStdString() << " (ok) ========" << std::endl;
+
+  if (!HubTestFixture::checkHttps("connect_https_ssl_ok", 1))
+  {
+    return;
+  }
+
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpsV1);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
 }
@@ -222,14 +266,14 @@ BOOST_AUTO_TEST_CASE(connect_https_ssl_ok)
 #if OPENFLUID_REST_URL_REDIRECT
 BOOST_AUTO_TEST_CASE(connect_https_ssl_ok_redirect)
 {
-  if (!F::checkHttps("connect_https_ssl_ok_redirect"))
+  if (!HubTestFixture::checkHttps("connect_https_ssl_ok_redirect", 0))
   {
     return;
   }
 
-  std::cout << " ======== " << F::UrlHttpsRedirect.toStdString() << " (ok) ========" << std::endl;
+  std::cout << " ======== " << HubTestFixture::UrlHttpsV0Redirect.toStdString() << " (ok) ========" << std::endl;
 
-  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttpsRedirect);
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpsV0Redirect);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
 }
@@ -240,16 +284,35 @@ BOOST_AUTO_TEST_CASE(connect_https_ssl_ok_redirect)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_ok)
+BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_v0_ok)
 {
-  if (!F::checkHttps("connect_https_sslNoverify_ok"))
+  if (!HubTestFixture::checkHttps("connect_https_sslNoverify_ok", 0))
   {
     return;
   }
 
-  std::cout << " ======== " << F::UrlHttps.toStdString() << " (noverify) ========" << std::endl;
+  std::cout << " ======== " << HubTestFixture::UrlHttpsV0.toStdString() << " (noverify) ========" << std::endl;
 
-  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps, "", "", true);
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpsV0, true);
+  BOOST_CHECK(W.connect());
+  BOOST_CHECK(W.isConnected());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_v1_ok)
+{
+  if (!HubTestFixture::checkHttps("connect_https_sslNoverify_ok", 1))
+  {
+    return;
+  }
+
+  std::cout << " ======== " << HubTestFixture::UrlHttpsV1.toStdString() << " (noverify) ========" << std::endl;
+
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpsV1, true);
   BOOST_CHECK(W.connect());
   BOOST_CHECK(W.isConnected());
 }
@@ -261,7 +324,7 @@ BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_ok)
 
 BOOST_AUTO_TEST_CASE(ware_list_not_connected_ok)
 {
-  openfluid::waresdev::WaresHubImportWorker W("");
+  openfluid::waresdev::FluidHubWaresImportWorker W("");
   BOOST_CHECK_EQUAL(W.isConnected(), false);
   BOOST_CHECK(W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).empty());
 }
@@ -271,9 +334,9 @@ BOOST_AUTO_TEST_CASE(ware_list_not_connected_ok)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(ware_list_http_ok)
+BOOST_AUTO_TEST_CASE(ware_list_http_v0_ok)
 {
-  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttp);
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpV0);
   W.connect();
   BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
   BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
@@ -286,14 +349,9 @@ BOOST_AUTO_TEST_CASE(ware_list_http_ok)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(ware_list_https_ok)
+BOOST_AUTO_TEST_CASE(ware_list_http_v1_ok)
 {
-  if (!F::checkHttps("ware_list_https_ok"))
-  {
-    return;
-  }
-
-  openfluid::waresdev::WaresHubImportWorker W(F::UrlHttps);
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpV1);
   W.connect();
   BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
   BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
@@ -306,15 +364,56 @@ BOOST_AUTO_TEST_CASE(ware_list_https_ok)
 // =====================================================================
 
 
-BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
+BOOST_AUTO_TEST_CASE(ware_list_https_v0_ok)
 {
-  if (!checkHttps("clone_https_wrongauth_fails"))
+  if (!HubTestFixture::checkHttps("ware_list_https_ok", 0))
   {
     return;
   }
 
-  openfluid::waresdev::WaresHubImportWorker W(UrlHttps, "wrongname", "wrongpass", true);
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpsV0);
   W.connect();
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT).size(), 1);
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::UNDEFINED).size(), 0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(ware_list_https_v1_ok)
+{
+  if (!HubTestFixture::checkHttps("ware_list_https_ok", 1))
+  {
+    return;
+  }
+
+  openfluid::waresdev::FluidHubWaresImportWorker W(HubTestFixture::UrlHttpsV1);
+  W.connect();
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT).size(), 1);
+  BOOST_CHECK_EQUAL(W.getAvailableWaresWithDetails(openfluid::ware::WareType::UNDEFINED).size(), 0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_v0_fails,HubTestFixture)
+{
+  if (!checkHttps("clone_https_wrongauth_v0_fails"))
+  {
+    return;
+  }
+
+  openfluid::waresdev::FluidHubWaresImportWorker W(UrlHttpsV0, true);
+  W.connect();
+  W.login("wrongname", "wrongpass");
 
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
 
@@ -328,7 +427,30 @@ BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_fails,F)
 // =====================================================================
 
 
-BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
+BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_v1_fails,HubTestFixture)
+{
+  if (!checkHttps("clone_https_wrongauth_v1_fails"))
+  {
+    return;
+  }
+
+  openfluid::waresdev::FluidHubWaresImportWorker W(UrlHttpsV1, true);
+  W.connect();
+  BOOST_CHECK_EQUAL(W.login("wrongname", "wrongpass"), false);
+
+  W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
+
+  BOOST_CHECK_EQUAL(W.clone(), false);
+
+  BOOST_CHECK(TestWaresDevSimulatorsDir.entryList(QDir::Files).empty());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_FIXTURE_TEST_CASE(clone_https_ok,HubTestFixture)
 {
 
   // TODO to enable once cloning will be possible from the testing FluidHub service
@@ -338,8 +460,9 @@ BOOST_FIXTURE_TEST_CASE(clone_https_ok,F)
     return;
   }
 
-  openfluid::waresdev::WaresHubImportWorker W(UrlHttps, Username, Password, true);
+  openfluid::waresdev::FluidHubWaresImportWorker W(UrlHttps, true);
   BOOST_CHECK(W.connect());
+  BOOST_CHECK(W.login(Username, Password));
 
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(W) } } });
 

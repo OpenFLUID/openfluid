@@ -34,6 +34,7 @@
   @file RESTClient.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THONI <armel.thoni@inrae.fr>
 */
 
 
@@ -106,7 +107,7 @@ class RequestExecutionImpl : public QObject
       { }
 
       void run(const QString& URL, const RESTClient::SSLConfiguration& SSLConfig,
-               const QString& Method, const QString& Body)
+               const QString& Method, const QString& Body, const t_HeadersList RawHeaders)
       {
         m_Reply.clear();
         m_DataBuffer.setData("");
@@ -118,6 +119,10 @@ class RequestExecutionImpl : public QObject
         QSslConfiguration RequestSSLConfig = Request.sslConfiguration();
         RequestSSLConfig.setPeerVerifyMode(SSLConfig.getCertificateVerifyMode());
         Request.setSslConfiguration(RequestSSLConfig);
+        for (auto Header : RawHeaders)
+        {
+          Request.setRawHeader(Header.first, Header.second);
+        }
 
 #if OPENFLUID_REST_URL_REDIRECT
         Request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
@@ -148,13 +153,66 @@ RESTClient::RESTClient()
 // =====================================================================
 
 
+void RESTClient::removeRawHeader(const QByteArray Key)
+{
+  for (auto Header : m_RawHeaders)
+  {
+    if (Header.first == Key)
+    {
+      m_RawHeaders.remove(Header);
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool RESTClient::hasRawHeader(const QByteArray Key)
+{
+  for (auto Header : m_RawHeaders)
+  {
+    if (Header.first == Key)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RESTClient::resetRawHeaders()
+{
+  m_RawHeaders.clear();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RESTClient::addRawHeader(const QByteArray Key, const QByteArray Value)
+{
+  m_RawHeaders.push_back(std::pair<QByteArray,QByteArray>(Key, Value));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 RESTClient::Reply RESTClient::performRequest(const QString& Path, const QString& Method, const QString& Data) const
 {
   RequestExecutionImpl RequestMan;
 
   QString FullURL = m_BaseURL + Path;
 
-  RequestMan.run(FullURL, m_SSLConfiguration, Method, Data);
+  RequestMan.run(FullURL, m_SSLConfiguration, Method, Data, m_RawHeaders);
 
   QEventLoop Loop;
   QObject::connect(&RequestMan, SIGNAL(completed()), &Loop, SLOT(quit()));
@@ -193,12 +251,9 @@ RESTClient::Reply RESTClient::getResource(const QString& Path) const
 // =====================================================================
 
 
-RESTClient::Reply RESTClient::postResource(const QString& /*Path*/, const QString& /*Data*/) const
+RESTClient::Reply RESTClient::postResource(const QString& Path, const QString& Data) const
 {
-  throw openfluid::base::FrameworkException(
-        openfluid::base::FrameworkException::computeContext(OPENFLUID_CODE_LOCATION),"not implemented");
-
-  return RESTClient::Reply();
+  return performRequest(Path, "POST", Data);
 }
 
 

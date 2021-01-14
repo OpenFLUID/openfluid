@@ -34,6 +34,7 @@
   @file FluidHubAPIClient.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THONI <armel.thoni@inrae.fr>
 */
 
 
@@ -89,12 +90,25 @@ void JSONArrayToStringVector(const rapidjson::Value& Obj, std::vector<std::strin
 
 
 void JSONObjectToDetailedWares(const rapidjson::Value& Obj,
-                               FluidHubAPIClient::WaresDetailsByID_t& WMap)
+                               FluidHubAPIClient::WaresDetailsByID_t& WMap, bool IsV0ofAPI=true)
 {
   WMap.clear();
 
   if (Obj.IsObject())
   {
+    std::string DASH, DescriptionKey;
+    if (IsV0ofAPI)
+    {
+      DASH = "-";
+      DescriptionKey = "shortdesc";
+    }
+    else
+    {
+      DASH = "_";
+      DescriptionKey = "description";
+    }
+    
+
     for (rapidjson::Value::ConstMemberIterator it = Obj.MemberBegin();it != Obj.MemberEnd(); ++it)
     {
       if (it->value.IsObject())
@@ -103,25 +117,25 @@ void JSONObjectToDetailedWares(const rapidjson::Value& Obj,
 
         WMap[WareID] = FluidHubAPIClient::WareDetailedDescription();
 
-        rapidjson::Value::ConstMemberIterator itMember = it->value.FindMember("shortdesc");
+        rapidjson::Value::ConstMemberIterator itMember = it->value.FindMember(DescriptionKey.c_str());
         if (itMember != it->value.MemberEnd() && itMember->value.IsString())
         {
           WMap[WareID].ShortDescription = std::string(itMember->value.GetString());
         }
 
-        itMember = it->value.FindMember("git-url");
+        itMember = it->value.FindMember(("git"+DASH+"url").c_str());
         if (itMember != it->value.MemberEnd() && itMember->value.IsString())
         {
           WMap[WareID].GitUrl = std::string(itMember->value.GetString());
         }
 
-        itMember = it->value.FindMember("git-branches");
+        itMember = it->value.FindMember(("git"+DASH+"branches").c_str());
         if (itMember != it->value.MemberEnd() && itMember->value.IsArray())
         {
           JSONArrayToStringVector(itMember->value,WMap[WareID].GitBranches);
         }
 
-        itMember = it->value.FindMember("issues-counts");
+        itMember = it->value.FindMember(("issues"+DASH+"counts").c_str());
         if (itMember != it->value.MemberEnd() && itMember->value.IsObject())
         {
           for (rapidjson::Value::ConstMemberIterator itCounters = itMember->value.MemberBegin();
@@ -135,13 +149,13 @@ void JSONObjectToDetailedWares(const rapidjson::Value& Obj,
           }
         }
 
-        itMember = it->value.FindMember("users-ro");
+        itMember = it->value.FindMember(("users"+DASH+"ro").c_str());
         if (itMember != it->value.MemberEnd() && itMember->value.IsArray())
         {
           JSONArrayToStringSet(itMember->value,WMap[WareID].ROUsers);
         }
 
-        itMember = it->value.FindMember("users-rw");
+        itMember = it->value.FindMember(("users"+DASH+"rw").c_str());
         if (itMember != it->value.MemberEnd() && itMember->value.IsArray())
         {
           JSONArrayToStringSet(itMember->value,WMap[WareID].RWUsers);
@@ -160,10 +174,25 @@ void FluidHubAPIClient::reset()
 {
   m_RESTClient.setBaseURL("");
   m_RESTClient.setSSLConfiguration(RESTClient::SSLConfiguration());
+  logout();
+  m_RESTClient.resetRawHeaders();
+  m_RESTClient.addRawHeader("Content-Type", "application/json");
+  //m_RESTClient.addRawHeader(QByteArray("Accept"), QByteArray("application/x.openfluid.FLUIDhub+json;version=1.0"));
+  m_RESTClient.addRawHeader("Accept", "application/x.openfluid.FLUIDhub+json;version=1.0");
   m_HubAPIVersion.clear();
   m_HubCapabilities.clear();
   m_HubName.clear();
   m_HubStatus.clear();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void FluidHubAPIClient::logout()
+{
+  m_RESTClient.removeRawHeader("Authorization");
 }
 
 
@@ -226,17 +255,35 @@ bool FluidHubAPIClient::connect(const QString& URL,const RESTClient::SSLConfigur
 
     if (JSONDoc.IsObject())
     {
+      // deduce API system from API base call content
+      for (rapidjson::Value::ConstMemberIterator it = JSONDoc.MemberBegin();it != JSONDoc.MemberEnd(); ++it)
+      {
+        QString Key = QString(it->name.GetString());
+        if ((Key == "api-version" || Key == "api_version") && it->value.IsString())
+        {
+          m_HubAPIVersion = it->value.GetString();
+          m_IsV0ofAPI = m_HubAPIVersion.startsWith("0."); 
+        }
+      }
+
+      if (m_IsV0ofAPI)
+      {
+        m_WareCapabilityName = "wareshub";
+      }
+      else
+      {
+        m_WareCapabilityName = "wares";
+      }
+
       for (rapidjson::Value::ConstMemberIterator it = JSONDoc.MemberBegin();it != JSONDoc.MemberEnd(); ++it)
       {
         QString Key = QString(it->name.GetString());
 
-        if (Key == "nature" && it->value.IsString() && QString(it->value.GetString()) == "OpenFLUID FluidHub")
+        if (Key == "nature" && it->value.IsString() && (
+              (m_IsV0ofAPI && QString(it->value.GetString()) == "OpenFLUID FluidHub") || 
+              QString(it->value.GetString()) == "OpenFLUID"))
         {
           ValidNature = true; // URL is really a FluidHub
-        }
-        else if (Key == "api-version" && it->value.IsString())
-        {
-          m_HubAPIVersion = it->value.GetString();
         }
         else if (Key == "name" && it->value.IsString())
         {
@@ -285,7 +332,7 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
   WaresDesc[openfluid::ware::WareType::OBSERVER] = std::set<openfluid::ware::WareID_t>();
   WaresDesc[openfluid::ware::WareType::BUILDEREXT] = std::set<openfluid::ware::WareID_t>();
 
-  if (isConnected() && isCapable("wareshub"))
+  if (isConnected() && isCapable(m_WareCapabilityName))
   {
     RESTClient::Reply Reply = m_RESTClient.getResource("/wares");
 
@@ -329,14 +376,85 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
 // =====================================================================
 
 
-FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDetails(openfluid::ware::WareType Type,
-                                                                                const QString& Username) const
+std::string fetchFieldFromEndpoint(const RESTClient& Client, const std::string Method, const std::string Url, 
+                                   const std::string WantedKey, const std::string RequestData="")
+{
+  RESTClient::Reply Reply;
+  if (Method == "GET")
+  {
+    Reply = Client.getResource(QString::fromStdString(Url));
+  }
+  else if (Method == "POST")
+  {
+    Reply = Client.postResource(QString::fromStdString(Url), QString::fromStdString(RequestData));
+  }
+
+  if (Reply.isOK())
+  {
+    rapidjson::Document JSONDoc;
+
+    if (JSONDoc.Parse<0>(Reply.getContent().toStdString().c_str()).HasParseError())
+    {
+      return "";
+    }
+
+    if (JSONDoc.IsObject())
+    {
+      for (rapidjson::Value::ConstMemberIterator it = JSONDoc.MemberBegin();it != JSONDoc.MemberEnd(); ++it)
+      {
+        std::string Key = it->name.GetString();
+
+        if (Key == WantedKey)
+        {
+          if (it->value.IsString())
+          {
+            return it->value.GetString();
+          }
+        }
+      }
+    }
+  }
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string FluidHubAPIClient::getUserUnixname(const std::string Email, const std::string Password)
+{
+  if (!m_IsV0ofAPI && isConnected())
+  {
+    if (!m_RESTClient.hasRawHeader("Authorization"))
+    {
+      std::string AccessBody = "{\"email\":\""+Email+"\",\"password\":\""+Password+"\"}";
+      std::string AccessToken = fetchFieldFromEndpoint(m_RESTClient, "POST", "/auth/token", "access", AccessBody);
+      if (AccessToken != "")
+      {
+        QString HeaderData = "Bearer " + QString::fromStdString(AccessToken);
+        m_RESTClient.addRawHeader("Authorization", HeaderData.toLocal8Bit()); 
+      }
+    }
+    std::string unixname = fetchFieldFromEndpoint(m_RESTClient, "GET", "/account", "unixname");
+    return unixname;
+  }
+  return "";
+}
+  
+
+// =====================================================================
+// =====================================================================
+
+
+FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDetails(openfluid::ware::WareType Type, 
+                                                                                      const QString& Username) const
 {
   WaresDetailsByID_t WaresDesc = std::map<openfluid::ware::WareID_t,WareDetailedDescription>();
 
   QString Path = wareTypeToString(Type);
 
-  if (isConnected() && isCapable("wareshub") && !(Path.isEmpty()))
+  if (isConnected() && isCapable(m_WareCapabilityName) && !(Path.isEmpty()))
   {
     Path = "/wares/"+Path;
 
@@ -358,7 +476,7 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDe
 
       if (JSONDoc.IsObject())
       {
-        JSONObjectToDetailedWares(JSONDoc,WaresDesc);
+        JSONObjectToDetailedWares(JSONDoc, WaresDesc, m_IsV0ofAPI);
       }
     }
   }

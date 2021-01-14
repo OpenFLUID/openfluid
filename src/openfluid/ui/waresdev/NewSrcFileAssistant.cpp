@@ -35,6 +35,7 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Armel THONI <armel.thoni@inrae.fr>
  */
 
 
@@ -383,7 +384,7 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   QString BgColorCss = QString("background-color: %1;").arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR);
   ui->MessageFrame->setStyleSheet(BgColorCss);
 
-  ui->buttonGroup->setId(ui->WareshubRadioButton, -1);
+  ui->buttonGroup->setId(ui->HubRadioButton, -1);
   ui->buttonGroup->setId(ui->CMakeListsRadioButton, -1);
   ui->buttonGroup->setId(ui->EmptyRadioButton, static_cast<int>(PageType::EMPTY_PAGE));
   ui->buttonGroup->setId(ui->CMakeConfigRadioButton, static_cast<int>(PageType::CMAKECONFIG_PAGE));
@@ -395,7 +396,7 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   QString MainCpp = mref_Container.getMainCppPath();
   QString UiParamCpp = mref_Container.getUiParamCppPath();
 
-  ui->WareshubRadioButton->setEnabled(mref_Container.getJsonPath().isEmpty());
+  ui->HubRadioButton->setEnabled(mref_Container.getJsonPath().isEmpty());
   ui->CMakeListsRadioButton->setEnabled(mref_Container.getCMakeListsPath().isEmpty());
   ui->CMakeConfigRadioButton->setEnabled(mref_Container.getCMakeConfigPath().isEmpty());
   ui->CppRadioButton->setEnabled(MainCpp.isEmpty());
@@ -516,7 +517,7 @@ void NewSrcFileAssistant::accept()
   switch (currentId())
   {
     case static_cast<int>(PageType::INTRO_PAGE):
-      if (ui->WareshubRadioButton->isChecked())
+      if (ui->HubRadioButton->isChecked())
       {
         Ok = mp_Factory->createJsonFile(NewFilePath, ErrMsg);
       }

@@ -1,0 +1,413 @@
+[
+  {
+    "prefix" : null,
+    "endpoints" : [
+      {
+        "path" : "/",
+        "get" : {
+          "returned": {
+            "body" : "Multi API Rejocker server root"
+          }
+        }
+      }
+    ]
+  },
+
+
+
+  {
+    "prefix" : "/rest",
+    "endpoints" : [
+      {
+        "path" : "/users",
+        "get" : {
+          "returned": {
+            "body" : "[{\"id\":1,\"name\":\"LeanneGraham\",\"username\": \"Bret\",\"email\":\"Sincere@april.biz\",\"address\":{\"street\":\"KulasLight\",\"suite\":\"Apt.556\",\"city\":\"Gwenborough\",\"zipcode\":\"92998-3874\",\"geo\":{\"lat\":\"-37.3159\",\"lng\":\"81.1496\"}},\"phone\":\"1-770-736-8031x56442\",\"website\":\"hildegard.org\",\"company\":{\"name\":\"Romaguera-Crona\",\"catchPhrase\":\"Multi-layeredclient-serverneural-net\",\"bs\":\"harnessreal-timee-markets\"}},{\"id\":2,\"name\":\"ErvinHowell\",\"username\":\"Antonette\",\"email\":\"Shanna@melissa.tv\",\"address\":{\"street\":\"VictorPlains\",\"suite\":\"Suite879\",\"city\":\"Wisokyburgh\",\"zipcode\":\"90566-7771\",\"geo\":{\"lat\":\"-43.9509\",\"lng\":\"-34.4618\"}},\"phone\":\"010-692-6593x09125\",\"website\":\"anastasia.net\",\"company\":{\"name\":\"Deckow-Crist\",\"catchPhrase\":\"Proactivedidacticcontingency\",\"bs\":\"synergizescalablesupply-chains\"}]"
+          }
+        }
+      }, 
+      {
+          "path" : "/users/2",
+          "get" : {
+            "returned": {
+              "body" : "{\"id\":2,\"name\":\"ErvinHowell\",\"username\": \"Antonette\",\"email\":\"Shanna@melissa.tv\",\"address\":{\"street\":\"VictorPlains\",\"suite\":\"Suite879\",\"city\":\"Wisokyburgh\",\"zipcode\":\"90566-7771\",\"geo\":{\"lat\":\"-43.9509\",\"lng\":\"-34.4618\"}},\"phone\":\"010-692-6593x09125\",\"website\":\"anastasia.net\",\"company\":{\"name\":\"Deckow-Crist\",\"catchPhrase\":\"Proactivedidacticcontingency\",\"bs\":\"synergizescalablesupply-chains\"}"
+            }
+          }
+        },
+        {
+          "path" : "/auth",
+          "post" : {
+            "expected" : {
+            "body" : {
+              "username" : "Antonette",
+              "password" : "an70_n3773"
+            }
+            
+          },
+          "returned" : {
+            "body" : {
+              "token" : "2b01d9d592da55cca64dd7804bc295e6e03b5df4"
+            }
+          } 
+        }
+      }
+    ]    
+  },
+
+
+  {
+    "prefix" : "/fluidhub-api",
+    "endpoints" : [
+      {
+        "path" : "/",
+        "get" : {
+          "returned": {
+            "body" : {
+              "nature" : "OpenFLUID FluidHub",
+              "api-version" : "0.8",
+              "capabilities" : ["news","wareshub"],
+              "status" : "testing",
+              "name" : "fluidhub for testing"
+            }
+          }
+        }
+      },
+      {
+        "path" : "/wares",
+        "get" : {
+          "returned": {
+            "body" : {
+              "simulators" : [
+                "examples.sim.A",
+                "examples.sim.B",
+                "examples.sim.C",
+                "examples.sim.D"
+              ],
+              "observers" : [
+                "examples.obs.J",
+                "examples.obs.K"
+              ],
+              "builderexts" : [
+                "examples.bext.X"
+              ]
+            }
+          }
+        }
+      }, 
+      {
+        "path" : "/wares/simulators",
+        "get" : {
+          "returned": {
+            "body" : {
+              "examples.sim.A": {
+                "shortdesc": "This is examples.sim.A...",
+                "git-url": "https://host.domain.org/foo-wareshub/git/simulators/examples.sim.A",
+                "git-branches": ["openfluid-2.0","openfluid-2.1"],
+                "issues-counts": {
+                  "bugs": 1,
+                  "features": 0,
+                  "reviews": 2
+                },
+                "users-ro": ["*"],
+                "users-rw": ["user1","user2","user3"]
+              },
+              "examples.sim.B": {
+                "shortdesc": "This is examples.sim.B...",
+                "git-url": "https://host.domain.org/foo-wareshub/git/simulators/examples.sim.B",
+                "git-branches": ["openfluid-1.7","openfluid-2.0","openfluid-2.1"],
+                "issues-counts": {
+                  "bugs": 1,
+                  "features": 0,
+                  "reviews": 2
+                },
+                "users-ro": ["*"],
+                "users-rw": ["user1"]
+              },
+              "examples.sim.C": {
+                "shortdesc": "This is examples.sim.C...",
+                "git-url": "https://host.domain.org/foo-wareshub/git/simulators/examples.sim.C",
+                "git-branches": ["openfluid-2.0","openfluid-2.1","openfluid-2.2-preview"],
+                "issues-counts": {
+                  "bugs": 1,
+                  "features": 0,
+                  "reviews": 2
+                },
+                "users-ro": ["*"],
+                "users-rw": ["user2","user3"]
+              },
+              "examples.sim.D": {
+                "shortdesc": "This is examples.sim.D...",
+                "git-url": "https://host.domain.org/foo-wareshub/git/simulators/examples.sim.D",
+                "git-branches": ["master"],
+                "issues-counts": {
+                  "bugs": 1,
+                  "features": 1,
+                  "reviews": 1
+                },
+                "users-ro": ["*"],
+                "users-rw": ["user1"]
+              }
+            }
+          }
+        }
+      },
+
+      {
+        "path" : "/wares/observers",
+        "get" : {
+          "returned": {
+            "body" : {
+              "examples.obs.J": {
+                "shortdesc": "This is examples.obs.J...",
+                "git-url": "https://host.domain.org/foo-wareshub/git/observers/examples.obs.J",
+                "git-branches": ["openfluid-2.0","openfluid-2.1"],
+                "issues-counts": {
+                  "bugs": 1,
+                  "features": 0,
+                  "reviews": 2
+                },
+                "users-ro": ["user1"],
+                "users-rw": ["user2"]
+              },
+              "examples.obs.K": {
+                "shortdesc": "This is examples.obs.K...",
+                "git-url": "https://host.domain.org/foo-wareshub/git/observers/examples.obs.K",
+                "git-branches": [],
+                "issues-counts": {
+                  "bugs": 0,
+                  "features": 0,
+                  "reviews": 0
+                },
+                "users-ro": ["*"],
+                "users-rw": ["user1"]
+              }
+            }
+          }
+        }
+      },
+      {
+        "path" : "/wares/builderexts",
+        "get" : {
+          "returned": {
+            "body" : {
+              "examples.bext.X": {
+                "shortdesc": "This is examples.bext.X...",
+                "git-url": "https://host.domain.org/foo-wareshub/git/builderexts/examples.bext.X",
+                "git-branches": ["openfluid-2.0","openfluid-2.1"],
+                "issues-counts": {
+                  "bugs": 1,
+                  "features": 0,
+                  "reviews": 2
+                },
+                "users-ro": [],
+                "users-rw": ["*"]
+              }
+            }
+          }
+        }
+      },
+      {
+        "path" : "/news",
+        "get" : {
+          "accepted": {
+            "parameters": {
+              "lang" : ["fr"]
+            }
+          },
+          "returned": {
+            "body" : "<rss version=\"2.0\">\n</rss>"
+          }
+        }
+      }
+    ]    
+  }, 
+
+
+
+
+
+  {
+    "prefix" : "/fluidhub-api/v1",
+    "endpoints" : [
+      {
+        "path" : "/",
+        "get" : {
+          "returned": {
+            "body" : {
+              "nature": "OpenFLUID",
+              "capabilities": [
+                  "datasets",
+                  "wares",
+                  "workspaces"
+              ],
+              "mode": "Development",
+              "status": "testing",
+              "name": "FLUIDhub_TESTING",
+              "version": "0.11.0~alpha1",
+              "api_version": "1.0",
+              "openfluid_version": "2.1"
+            }
+          }
+        }
+      },
+
+      
+
+      {
+        "path" : "/wares",
+        "get" : {
+          "expected" : {
+            "headers" : {
+              "Accept" : "application/x.openfluid.FLUIDhub+json;version=1.0"
+            }
+          },
+          "returned": {
+            "body" : {
+              "simulators": [
+                "examples.sim.A",
+                "examples.sim.B",
+                "examples.sim.C",
+                "examples.sim.D"
+              ], 
+              "observers": [
+                "examples.obs.J",
+                "examples.obs.K"
+              ],
+              "builderexts" : [
+                "examples.bext.X"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "path" : "/wares/simulators",
+        "get" : {
+          "expected" : {
+            "headers" : {
+              "Accept" : "application/x.openfluid.FLUIDhub+json;version=1.0"
+            }
+          },
+          "returned": 
+          {
+            "body" : 
+            {
+              "examples.sim.A": 
+              {
+                "description": "This is examples.sim.A...", 
+                "git_url": "https://host.domain.org/foo-wareshub/git/simulators/examples.sim.A", 
+                "users_ro": ["*"], "users_rw": ["user1", "user2", "user3"], 
+                "ware_url": "http://147.100.175.211:8181/api/wares/simulators/sim.staging.example1", 
+                "git_branches": ["openfluid-2.0", "openfluid-2.1"], 
+                "issues_counts": {"bugs": 1, "features": 0, "reviews": 2}
+              }, 
+              "examples.sim.B": 
+              {
+                "description": "This is sim.staging.example2...", 
+                "git_url": "http://147.100.175.211:8181/git-service/wares/simulators/sim.staging.example2", "users_ro": ["jbuckley", "kcobain", "dgrohl"], "users_rw": ["dgrohl"], "ware_url": "http://147.100.175.211:8181/api/wares/simulators/sim.staging.example2", 
+                "git_branches": ["openfluid-1.8", "openfluid-2.0", "openfluid-2.1"],
+                "issues_counts": {"bugs": 0, "features": 0, "reviews": 0}
+              }, 
+              "examples.sim.C": 
+              {
+                "description": "This is examples.sim.C...", 
+                "git_url": "https://host.domain.org/foo-wareshub/git/simulators/examples.sim.C", 
+                "git_branches": ["openfluid-2.0", "openfluid-2.1", "openfluid-2.2-preview"],
+                "issues_counts": {"bugs": 0, "features": 0, "reviews": 0},
+                "users_ro": ["*"], "users_rw": ["user2", "user3"]
+              }, 
+              "examples.sim.D": 
+              {
+                "description": "This is sim.staging.example2...", 
+                "git_url": "http://147.100.175.211:8181/git-service/wares/simulators/sim.staging.example2", "users_ro": ["jbuckley", "kcobain", "dgrohl"], "users_rw": ["dgrohl"], "ware_url": "http://147.100.175.211:8181/api/wares/simulators/sim.staging.example2", "git_branches": [], 
+                "git_branches": ["master"],
+                "issues_counts": {"bugs": 1, "features": 1, "reviews": 1}
+              }
+            }
+          }
+        }
+      },
+
+      {
+        "path" : "/wares/observers",
+        "get" : {
+          "expected" : {
+            "headers" : {
+              "Accept" : "application/x.openfluid.FLUIDhub+json;version=1.0"
+            }
+          },
+          "returned": 
+          {
+            "body" : 
+              {
+                "examples.obs.J": {
+                    "description": "This is examples.obs.J...",
+                    "git_url": "https://host.domain.org/foo-wareshub/git/observers/examples.obs.J",
+                    "users_ro": ["user1"],
+                    "users_rw": ["user2"],
+                    "ware_url": "http://147.100.175.211:8181/api/wares/observers/examples.obs.J",
+                    "git_branches": [],
+                    "issues_counts": {
+                        "bugs": 0,
+                        "features": 0,
+                        "reviews": 0
+                    }
+                }, 
+                "examples.obs.K": {
+                  "description": "E2",
+                  "git_url": "http://147.100.175.211:8181/git-service/wares/observers/examples.obs.K",
+                  "users_ro": [
+                      "kcobain",
+                      "dgrohl"
+                  ],
+                  "users_rw": [
+                      "dgrohl",
+                      "kcobain"
+                  ],
+                  "ware_url": "http://147.100.175.211:8181/api/wares/observers/examples.obs.K",
+                  "git_branches": [],
+                  "issues_counts": {
+                      "bugs": 0,
+                      "features": 0,
+                      "reviews": 0
+                  }
+              }
+            }
+          }
+        }
+      },
+
+      {
+        "path" : "/wares/builderexts",
+        "get" : {
+          "expected" : {
+            "headers" : {
+              "Accept" : "application/x.openfluid.FLUIDhub+json;version=1.0"
+            }
+          },
+          "returned": 
+          {
+            "body" : 
+              {
+                "examples.bext.X": {
+                    "description": "This is examples.bext.X...",
+                    "git_url": "https://host.domain.org/foo-wareshub/git/builderexts/examples.bext.X",
+                    "users_ro": [],
+                    "users_rw": ["*"],
+                    "ware_url": "http://147.100.175.211:8181/api/wares/observers/examples.obs.J",
+                    "git_branches": ["openfluid-2.0", "openfluid-2.1"], 
+                    "issues_counts": {
+                        "bugs": 1,
+                        "features": 0,
+                        "reviews": 2
+                    }
+                }
+            }
+          }
+        }
+      }
+    ]
+  }
+]
+
+

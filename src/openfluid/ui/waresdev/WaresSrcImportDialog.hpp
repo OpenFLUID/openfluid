@@ -30,10 +30,10 @@
  */
 
 /**
- @file WaresSrcImportDialog.hpp
- @brief Header of ...
+  @file WaresSrcImportDialog.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Armel THONI <armel.thoni@inra.fr>
  */
 
 
@@ -57,7 +57,7 @@ class WaresSrcImportDialog;
 
 namespace openfluid { namespace waresdev {
 class WaresDevImportPackage;
-class WaresHubImportWorker;
+class FluidHubWaresImportWorker;
 } }
 
 
@@ -76,7 +76,9 @@ class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageD
 
     void onPackagePathButtonClicked();
 
-    void onWareshubConnectButtonClicked();
+    void onHubConnectButtonClicked();
+
+    void onHubLoginButtonClicked();
 
     void import();
 
@@ -85,13 +87,22 @@ class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageD
 
     Ui::WaresSrcImportDialog* ui;
 
+    bool m_IsConnectedToHub = false;
+    bool m_IsLoggedInHub = false;
+
     QButtonGroup m_SourceBtGroup;
 
     QString m_PackagePathLabelDefault = "<i>No package selected</i>";
 
-    QList<QWidget*> m_WaresHubConnectionInfoWidgets;
+    QList<QWidget*> m_HubLoginWidgets;
+    QList<QWidget*> m_HubLoginWidgetsAndButton;
+    QList<QWidget*> m_HubConnectionInfoWidgets;
 
-    QString m_WaresHubButtonDisconnectLabel = tr("Disconnect");
+
+    QString m_HubButtonConnectLabel = tr("Go");
+    QString m_HubButtonDisconnectLabel = tr("Quit");
+    QString m_HubButtonLoginLabel = tr("Log in");
+    QString m_HubButtonLogoutLabel = tr("Log out");
 
     std::map<openfluid::ware::WareType, QListWidget*> m_ListWidgetsByWareType;
 
@@ -102,15 +113,15 @@ class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageD
 
     openfluid::waresdev::WaresDevImportPackage* mp_ImportFilePkg = nullptr;
 
-    openfluid::waresdev::WaresHubImportWorker* mp_WaresHubImportWorker = nullptr;
+    openfluid::waresdev::FluidHubWaresImportWorker* mp_FluidHubWaresImportWorker = nullptr;
 
-    QMap<openfluid::ware::WareType, QStringList> m_AlreadySelectedWaresHubWares;
+    QMap<openfluid::ware::WareType, QStringList> m_AlreadySelectedHubWares;
 
     void updatePackageInfo();
 
     void updatePackageWaresList();
 
-    void updateWaresHubWaresList();
+    void updateHubWaresList();
 
     QStringList getSelectedWares();
 

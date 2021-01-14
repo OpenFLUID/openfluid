@@ -30,17 +30,17 @@
  */
 
 /**
- @file WaresHubImportWorker.cpp
- @brief Implements ...
+  @file FluidHubWaresImportWorker.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Armel THONI <armel.thoni@inrae.fr>
  */
 
 
 #include <QCoreApplication>
 #include <QFileInfo>
 
-#include <openfluid/waresdev/WaresHubImportWorker.hpp>
+#include <openfluid/waresdev/FluidHubWaresImportWorker.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 
@@ -48,10 +48,8 @@
 namespace openfluid { namespace waresdev {
 
 
-WaresHubImportWorker::WaresHubImportWorker(const QString& WareshubUrl, const QString& Username,
-  const QString& Password, bool SslNoVerify) :
-    mp_WareshubClient(new openfluid::utils::FluidHubAPIClient()), m_WaresHubUrl(WareshubUrl), m_Username(Username),
-        m_Password(Password), m_SslNoVerify(SslNoVerify)
+FluidHubWaresImportWorker::FluidHubWaresImportWorker(const QString& WareshubUrl, bool SslNoVerify) :
+    mp_HubClient(new openfluid::utils::FluidHubAPIClient()), m_HubUrl(WareshubUrl), m_SslNoVerify(SslNoVerify)
 {
 
 }
@@ -61,9 +59,9 @@ WaresHubImportWorker::WaresHubImportWorker(const QString& WareshubUrl, const QSt
 // =====================================================================
 
 
-WaresHubImportWorker::~WaresHubImportWorker()
+FluidHubWaresImportWorker::~FluidHubWaresImportWorker()
 {
-  delete mp_WareshubClient;
+  delete mp_HubClient;
 }
 
 
@@ -71,9 +69,9 @@ WaresHubImportWorker::~WaresHubImportWorker()
 // =====================================================================
 
 
-bool WaresHubImportWorker::isConnected() const
+bool FluidHubWaresImportWorker::isConnected() const
 {
-  return mp_WareshubClient->isConnected();
+  return mp_HubClient->isConnected();
 }
 
 
@@ -81,7 +79,37 @@ bool WaresHubImportWorker::isConnected() const
 // =====================================================================
 
 
-openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t WaresHubImportWorker::getAvailableWaresWithDetails(
+bool FluidHubWaresImportWorker::isLoggedIn() const
+{
+  return !(m_Username.isEmpty() || m_Username.isNull());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool FluidHubWaresImportWorker::isV0ofAPI() const
+{
+  return mp_HubClient->isV0ofAPI();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString FluidHubWaresImportWorker::getUsername() const
+{
+  return m_Username;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t FluidHubWaresImportWorker::getAvailableWaresWithDetails(
   openfluid::ware::WareType Type) const
   {
   return m_AvailableWaresDetailsByIDByType.value(Type, openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t());
@@ -92,7 +120,7 @@ openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t WaresHubImportWorker::ge
 // =====================================================================
 
 
-void WaresHubImportWorker::setSelectedWaresUrl(
+void FluidHubWaresImportWorker::setSelectedWaresUrl(
   const std::map<openfluid::ware::WareType, QStringList>& SelectedWaresUrlByType)
 {
   m_SelectedWaresUrlByType = SelectedWaresUrlByType;
@@ -103,7 +131,7 @@ void WaresHubImportWorker::setSelectedWaresUrl(
 // =====================================================================
 
 
-bool WaresHubImportWorker::connect()
+bool FluidHubWaresImportWorker::connect()
 {
   m_AvailableWaresDetailsByIDByType.clear();
 
@@ -113,12 +141,12 @@ bool WaresHubImportWorker::connect()
     SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
   }
 
-  bool Ok = mp_WareshubClient->connect(m_WaresHubUrl, SSLConfig);
+  bool Ok = mp_HubClient->connect(m_HubUrl, SSLConfig);
 
-  for (const auto& ByType : mp_WareshubClient->getAllAvailableWares())
+  for (const auto& ByType : mp_HubClient->getAllAvailableWares())
   {
-    m_AvailableWaresDetailsByIDByType[ByType.first] = mp_WareshubClient->getAvailableWaresWithDetails(ByType.first,
-                                                                                                      m_Username);
+    m_AvailableWaresDetailsByIDByType[ByType.first] = mp_HubClient->getAvailableWaresWithDetails(ByType.first, 
+                                                                                                      m_Username);  
   }
 
   if (!Ok)
@@ -143,9 +171,9 @@ bool WaresHubImportWorker::connect()
 // =====================================================================
 
 
-void WaresHubImportWorker::disconnect()
+void FluidHubWaresImportWorker::disconnect()
 {
-  mp_WareshubClient->disconnect();
+  mp_HubClient->disconnect();
 }
 
 
@@ -153,7 +181,42 @@ void WaresHubImportWorker::disconnect()
 // =====================================================================
 
 
-bool WaresHubImportWorker::clone()
+bool FluidHubWaresImportWorker::login(const QString& Username, const QString& Password)
+{
+  m_Password = Password;
+  
+  if (isV0ofAPI())
+  {
+    m_Username = Username;
+  }
+  else
+  {
+    //fetch unixname from email via request /account/, field unixname
+    m_Username = QString::fromStdString(mp_HubClient->getUserUnixname(Username.toStdString(), 
+                                                                            m_Password.toStdString()));
+  }
+
+  return !m_Username.isEmpty(); // returns true when username found
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void FluidHubWaresImportWorker::logout()
+{
+  m_Username = "";
+  m_Password = "";
+  mp_HubClient->logout();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool FluidHubWaresImportWorker::clone()
 {
   if (!isConnected())
   {
@@ -183,7 +246,7 @@ bool WaresHubImportWorker::clone()
     for (const auto& GitUrl : Pair.second)
     {
       QString DestPath = QString("%1/%2").arg(WareTypePath).arg(QFileInfo(GitUrl).fileName());
-
+      
       openfluid::utils::GitProxy Git;
       QObject::connect(&Git, SIGNAL(info(const QString&)), this, SIGNAL(info(const QString&)));
       QObject::connect(&Git, SIGNAL(error(const QString&)), this, SIGNAL(error(const QString&)));

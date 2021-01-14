@@ -31,15 +31,15 @@
 
 
 /**
- @file WaresHubImportWorker.hpp
- @brief Header of ...
+  @file FluidHubWaresImportWorker.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Armel THONI <armel.thoni@inrae.fr>
  */
 
 
-#ifndef __OPENFLUID_WARESDEV_WARESHUBIMPORTWORKER_HPP__
-#define __OPENFLUID_WARESDEV_WARESHUBIMPORTWORKER_HPP__
+#ifndef __OPENFLUID_WARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__
+#define __OPENFLUID_WARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__
 
 
 #include <QObject>
@@ -53,7 +53,7 @@
 namespace openfluid { namespace waresdev {
 
 
-class OPENFLUID_API WaresHubImportWorker: public QObject
+class OPENFLUID_API FluidHubWaresImportWorker: public QObject
 {
   Q_OBJECT
 
@@ -66,9 +66,9 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
 
   private:
 
-    openfluid::utils::FluidHubAPIClient* mp_WareshubClient;
+    openfluid::utils::FluidHubAPIClient* mp_HubClient;
 
-    QString m_WaresHubUrl;
+    QString m_HubUrl;
 
     QString m_Username;
 
@@ -98,18 +98,26 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
 
     void disconnect();
 
+    bool login(const QString& Username, const QString& Password);
+
+    void logout();
+
     bool clone();
 
 
   public:
 
-    WaresHubImportWorker(const QString& WareshubUrl, 
-                         const QString& Username = "", const QString& Password = "",
-                         bool SslNoVerify = false);
+    FluidHubWaresImportWorker(const QString& WareshubUrl, bool SslNoVerify = false);
 
-    ~WaresHubImportWorker();
+    ~FluidHubWaresImportWorker();
 
     bool isConnected() const;
+
+    bool isLoggedIn() const;
+
+    bool isV0ofAPI() const;
+
+    QString getUsername() const;
 
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t getAvailableWaresWithDetails(
       openfluid::ware::WareType Type) const;
@@ -122,4 +130,4 @@ class OPENFLUID_API WaresHubImportWorker: public QObject
 } } // namespaces
 
 
-#endif /* __OPENFLUID_WARESDEV_WARESHUBIMPORTWORKER_HPP__ */
+#endif /* __OPENFLUID_WARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__ */

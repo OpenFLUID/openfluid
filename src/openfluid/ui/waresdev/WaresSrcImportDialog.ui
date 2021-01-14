@@ -80,30 +80,7 @@
       <widget class="QWidget" name="WareshubWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout_10">
         <item>
-         <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0,0,0,0,0,0">
-          <item row="0" column="6">
-           <widget class="QPushButton" name="WareshubConnectButton">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Connect</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLineEdit" name="PasswordLineEdit">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="echoMode">
-             <enum>QLineEdit::Password</enum>
-            </property>
-           </widget>
-          </item>
+         <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0,1,0,1,0,0">
           <item row="1" column="2">
            <widget class="QLineEdit" name="UsernameLineEdit">
             <property name="enabled">
@@ -111,19 +88,6 @@
             </property>
             <property name="text">
              <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QLabel" name="PasswordLabel">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Password:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -140,8 +104,18 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="6">
+           <widget class="QPushButton" name="HubConnectButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Connect</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="2" colspan="4">
-           <widget class="QLineEdit" name="WareshubUrlLineEdit">
+           <widget class="QLineEdit" name="HubUrlLineEdit">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -150,24 +124,50 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="5" colspan="2">
-           <widget class="QCheckBox" name="SslNoVerifyCheckBox">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Disable SSL verification</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0" colspan="2">
-           <widget class="QRadioButton" name="WareshubRadioButton">
+           <widget class="QRadioButton" name="HubRadioButton">
             <property name="text">
-             <string>WaresHub URL:</string>
+             <string>Hub URL:</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">SourceButtonGroup</string>
             </attribute>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="PasswordLabel">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Password:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QPushButton" name="HubLoginButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Log in</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4" colspan="2">
+           <widget class="QLineEdit" name="PasswordLineEdit">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
            </widget>
           </item>
          </layout>
@@ -303,12 +303,11 @@
  <tabstops>
   <tabstop>PackageRadioButton</tabstop>
   <tabstop>PackagePathButton</tabstop>
-  <tabstop>WareshubRadioButton</tabstop>
-  <tabstop>WareshubUrlLineEdit</tabstop>
+  <tabstop>HubRadioButton</tabstop>
+  <tabstop>HubUrlLineEdit</tabstop>
   <tabstop>UsernameLineEdit</tabstop>
   <tabstop>PasswordLineEdit</tabstop>
-  <tabstop>SslNoVerifyCheckBox</tabstop>
-  <tabstop>WareshubConnectButton</tabstop>
+  <tabstop>HubConnectButton</tabstop>
   <tabstop>WaresTabWidget</tabstop>
   <tabstop>SimListWidget</tabstop>
   <tabstop>ExtListWidget</tabstop>
@@ -349,7 +348,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>WareshubRadioButton</sender>
+   <sender>HubRadioButton</sender>
    <signal>toggled(bool)</signal>
    <receiver>InformationWidget</receiver>
    <slot>setHidden(bool)</slot>
