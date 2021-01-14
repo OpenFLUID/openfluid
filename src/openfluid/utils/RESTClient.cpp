@@ -175,10 +175,10 @@ bool RESTClient::hasRawHeader(const QByteArray Key)
   {
     if (Header.first == Key)
     {
-      return false;
+      return true;
     }
   }
-  return true;
+  return false;
 }
 
 
