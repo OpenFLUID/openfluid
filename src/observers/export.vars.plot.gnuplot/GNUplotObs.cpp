@@ -189,13 +189,10 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
         if (Sit->second.Type == SerieInfo::SerieType::SERIE_UNKNOWN)
         {
-          Sit = m_Plot.Series.erase(Sit);
           OPENFLUID_LogWarning("Serie " + SerieID + " ignored");
         }
-        else
-        {
-          ++Sit;
-        }
+
+        ++Sit;
       }
 
 
