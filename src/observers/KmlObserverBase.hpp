@@ -49,6 +49,7 @@
 
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
 
@@ -271,24 +272,26 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
     void buildKmzFile()
     {
-      std::string InputDir = m_TmpDir+"/"+m_KmzSubDir+"/";
-      std::string KmzFilePath = m_OutputDir + "/"+ m_OutputFileName;
+      std::string InputDir = m_TmpDir + "/" + m_KmzSubDir + "/";
+      std::string KmzFilePath = m_OutputDir + "/" + m_OutputFileName;
 
       openfluid::tools::Filesystem::removeDirectory(KmzFilePath);
 
-      openfluid::utils::ExternalProgram SevenZProgram =
-          openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::SevenZipProgram);
+      QFileInfoList FoundFiles =
+            QDir(QString::fromStdString(InputDir)).entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
 
-      if (SevenZProgram.isFound())
+      QStringList FilePaths;
+      for (int i=0;i<FoundFiles.size();i++)
       {
-        QStringList Args;
-        Args << "a";
-        Args << "-tzip";
-        Args << QString::fromStdString(KmzFilePath);
-        Args << QString::fromStdString(InputDir)+"/*";
-
-        QProcess::execute(SevenZProgram.getFullProgramPath(),Args);
+        FilePaths << FoundFiles[i].absoluteFilePath();
       }
+
+      openfluid::utils::CMakeProxy::CommandInfos Command = 
+        openfluid::utils::CMakeProxy::getTarCompressCommand(QString::fromStdString(InputDir),
+                                                            QString::fromStdString(KmzFilePath),
+                                                            FilePaths,"v");
+
+      QProcess::execute(Command.Program, Command.Args << "--format=zip");
     }
 
 
