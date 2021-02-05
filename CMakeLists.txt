@@ -18,16 +18,11 @@ PROJECT(OpenFLUID CXX)
 
 ################## build options ##################
 
-OPTION(OFBUILD_ENABLE_SANITIZER "" OFF)
-
 OPTION(OFBUILD_ENABLE_GUI "enable build of UI libs and apps" ON)
 OPTION(OFBUILD_ENABLE_LANDR "enable build of landr lib" OFF)
 OPTION(OFBUILD_ENABLE_MARKET "enable build of market" OFF)
 
-OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" OFF)
-IF(UNIX AND NOT APPLE)
-  OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" ON)
-ENDIF()
+OPTION(OFBUILD_ENABLE_DOCS "enable build of documentation" ON)
 
 OPTION(OFBUILD_ENABLE_APP_CMD "enable build of command line program" ON)
 OPTION(OFBUILD_ENABLE_APP_MINIMAL "enable build of openfluid-minimal program" ON)
@@ -37,7 +32,12 @@ OPTION(OFBUILD_ENABLE_APP_LOGEXPLORER "enable build of openfluid-logexplorer app
 OPTION(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION "enable integration of wares development in builder application" ON)
 OPTION(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION "enable integration market in builder application" OFF)
 
-OPTION(OFBUILD_ENABLE_DOCS "enable build of documentation" ON)
+OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" OFF)
+IF(UNIX AND NOT APPLE)
+  OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" ON)
+ENDIF()
+
+OPTION(OFBUILD_ENABLE_SANITIZER "" OFF)
 
 OPTION(OFBUILD_TESTS_ENABLE_HEAVY "enable build of heavy tests" OFF)
 OPTION(OFBUILD_TESTS_ENABLE_FORTRAN "enable build of test simulators inetegrating Fortran code" OFF)
@@ -124,15 +124,23 @@ SET(CMAKE_AUTOMOC_MOC_OPTIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+
 # Detection of main dependencies
+SET(OFBUILD_QT5_COMPONENTS Core Network Xml)
+IF(OFBUILD_ENABLE_GUI)
+  SET(OFBUILD_QT5_COMPONENTS ${OFBUILD_QT5_COMPONENTS} Widgets Svg)
+ENDIF()
+
 FIND_PACKAGE(Boost 1.53 REQUIRED COMPONENTS ${OFBUILD_BOOST_TEST_FRAMEWORK})
-FIND_PACKAGE(Qt5 COMPONENTS Core Widgets Network Xml Svg REQUIRED)
+FIND_PACKAGE(Qt5 COMPONENTS ${OFBUILD_QT5_COMPONENTS} REQUIRED)
 MESSAGE(STATUS "Found Qt5 (version ${Qt5_VERSION})")
 FIND_PACKAGE(GDAL REQUIRED)
 OPENFLUID_CHECK_GDAL_VERSION()
 FIND_PACKAGE(RapidJSON REQUIRED)
-FIND_PACKAGE(Doxygen 1.8)
-FIND_PACKAGE(LATEX)
+IF(OFBUILD_ENABLE_DOCS)
+  FIND_PACKAGE(Doxygen 1.8)
+  FIND_PACKAGE(LATEX)
+ENDIF()
 
 
 # Detection of external translations tools and setup of common translations targets

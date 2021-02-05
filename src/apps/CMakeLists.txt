@@ -1,5 +1,6 @@
 
 
+
 IF(OFBUILD_ENABLE_APP_MINIMAL)
   ADD_SUBDIRECTORY(openfluid-minimal)
 ENDIF()
@@ -14,9 +15,10 @@ ENDIF()
 
 IF(OFBUILD_ENABLE_APP_DEVSTUDIO)
   ADD_SUBDIRECTORY(openfluid-devstudio)
-  ADD_SUBDIRECTORY(openfluid-gitaskpass)
 ENDIF()
 
 IF(OFBUILD_ENABLE_APP_LOGEXPLORER)
   ADD_SUBDIRECTORY(openfluid-logexplorer)
 ENDIF()
+
+ADD_SUBDIRECTORY(openfluid-gitaskpass)

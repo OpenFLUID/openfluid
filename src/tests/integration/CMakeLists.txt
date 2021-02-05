@@ -439,10 +439,11 @@ SET_PROPERTY(TEST integration-CMakeModuleSimulatorTest APPEND PROPERTY DEPENDS i
 ###########################################################################
 
 
-FILE(MAKE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake")
+IF(OFBUILD_ENABLE_GUI)
+  FILE(MAKE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake")
 
-OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorParamsUIConfigure
-                   COMMAND "${CMAKE_COMMAND}"
+  OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorParamsUIConfigure
+                     COMMAND "${CMAKE_COMMAND}"
                               "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake" 
                               "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                               "${CMAKE_CURRENT_SOURCE_DIR}/tests.simui.cmake"
@@ -451,19 +452,22 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorParamsUIConfigure
                               "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                               "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
                               "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
-                    PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake")                              
-                              
+                     PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake")                              
+ENDIF()
+
 
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorParamsUIBuild
-                   COMMAND "${CMAKE_COMMAND}"
+IF(OFBUILD_ENABLE_GUI)
+  OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorParamsUIBuild
+                     COMMAND "${CMAKE_COMMAND}"
                               "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake" 
                               "${CMAKE_COMMAND}" "--build" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake"
                               "--target" "install"
                               "--clean-first")
-SET_PROPERTY(TEST integration-CMakeModuleSimulatorParamsUIBuild APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorParamsUIConfigure)
+  SET_PROPERTY(TEST integration-CMakeModuleSimulatorParamsUIBuild APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorParamsUIConfigure)
+ENDIF()
 
 
 ###########################################################################
@@ -508,11 +512,11 @@ SET_PROPERTY(TEST integration-CMakeModuleObserverTest APPEND PROPERTY DEPENDS in
 
 ###########################################################################
 
+IF(OFBUILD_ENABLE_GUI)
+  FILE(MAKE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obsui.cmake")
 
-FILE(MAKE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obsui.cmake")
-
-OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverParamsUIConfigure
-                   COMMAND "${CMAKE_COMMAND}"
+  OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverParamsUIConfigure
+                     COMMAND "${CMAKE_COMMAND}"
                               "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obsui.cmake" 
                               "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                               "${CMAKE_CURRENT_SOURCE_DIR}/tests.obsui.cmake"
@@ -521,20 +525,22 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverParamsUIConfigure
                               "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                               "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
                               "-DOBS_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
-                    PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obsui.cmake")                              
-                              
+                      PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obsui.cmake")                              
+ENDIF()
+
 
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverParamsUIBuild
-                   COMMAND "${CMAKE_COMMAND}"
+IF(OFBUILD_ENABLE_GUI)
+  OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverParamsUIBuild
+                     COMMAND "${CMAKE_COMMAND}"
                               "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obsui.cmake" 
                               "${CMAKE_COMMAND}" "--build" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obsui.cmake"
                               "--target" "install"
                               "--clean-first")
-SET_PROPERTY(TEST integration-CMakeModuleObserverParamsUIBuild APPEND PROPERTY DEPENDS integration-CMakeModuleObserverParamsUIConfigure)                                                            
-
+  SET_PROPERTY(TEST integration-CMakeModuleObserverParamsUIBuild APPEND PROPERTY DEPENDS integration-CMakeModuleObserverParamsUIConfigure)                                                            
+ENDIF()
 
 
 ###########################################################################
@@ -571,17 +577,30 @@ ENDIF()
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-CMakeModuleRun
-                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
-                           "run"
-                           "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.CMakeModule"
-                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CMakeModule" 
-                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CMakeModule")
-SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${OFBUILD_DIST_LIB_DIR}")
-SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorBuild)
-SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverBuild)
-SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverParamsUIBuild)
-                                                             
+IF(OFBUILD_ENABLE_GUI)
+  OPENFLUID_ADD_TEST(NAME integration-CMakeModuleRunWithUI
+                     COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                             "run"
+                             "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.CMakeModuleWithUI"
+                             "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CMakeModuleWithUI" 
+                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CMakeModuleWithUI")
+  SET_PROPERTY(TEST integration-CMakeModuleRunWithUI APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${OFBUILD_DIST_LIB_DIR}")
+  SET_PROPERTY(TEST integration-CMakeModuleRunWithUI APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorBuild)
+  SET_PROPERTY(TEST integration-CMakeModuleRunWithUI APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorParamsUIBuild)
+  SET_PROPERTY(TEST integration-CMakeModuleRunWithUI APPEND PROPERTY DEPENDS integration-CMakeModuleObserverBuild)
+  SET_PROPERTY(TEST integration-CMakeModuleRunWithUI APPEND PROPERTY DEPENDS integration-CMakeModuleObserverParamsUIBuild)
+ELSE()
+  OPENFLUID_ADD_TEST(NAME integration-CMakeModuleRun
+                     COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                             "run"
+                             "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.CMakeModule"
+                             "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CMakeModule" 
+                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.CMakeModule")
+  SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${OFBUILD_DIST_LIB_DIR}")
+  SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorBuild)
+  SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverBuild)
+ENDIF()
+
 
 ###########################################################################
 
