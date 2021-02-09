@@ -88,13 +88,13 @@ bool ExamplesBuddy::installExampleFolder(const std::string& SourcePath,
 
     openfluid::tools::Filesystem::copyDirectory(openfluid::tools::Filesystem::joinPath({SourcePath,FolderName}),
                                                 InstallPath);
-    mp_Listener->onSubstageCompleted("Done");
+    mp_Listener->onStageCompleted("Done");
 
     return true;
   }
   else
   {
-    mp_Listener->onSubstageCompleted("Skipped");
+    mp_Listener->onStageCompleted("Skipped");
   }
 
   return false;
