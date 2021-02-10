@@ -68,6 +68,10 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   m_ListWidgetsByWareType[openfluid::ware::WareType::OBSERVER] = ui->ObsListWidget;
   m_ListWidgetsByWareType[openfluid::ware::WareType::BUILDEREXT] = ui->ExtListWidget;
 
+  m_FilterWidgetsByWareType[openfluid::ware::WareType::SIMULATOR] = ui->SimFilterWidget;
+  m_FilterWidgetsByWareType[openfluid::ware::WareType::OBSERVER] = ui->ObsFilterWidget;
+  m_FilterWidgetsByWareType[openfluid::ware::WareType::BUILDEREXT] = ui->ExtFilterWidget;
+
   m_SourceBtGroup.addButton(ui->PackageRadioButton);
   m_SourceBtGroup.addButton(ui->HubRadioButton);
   m_SourceBtGroup.setExclusive(true);
@@ -95,6 +99,11 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
     connect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
   }
 
+  for (const auto& Pair : m_FilterWidgetsByWareType)
+  {
+    connect(Pair.second, SIGNAL(filterChanged()), this, SLOT(onWaresListRefreshAsked()));
+  }
+  
   connect(buttonBox(), SIGNAL(accepted()), this, SLOT(import()));
 
   ui->PackageRadioButton->click();
@@ -193,13 +202,21 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
       Widget->setEnabled(false);
     }
     ui->HubConnectButton->setEnabled(false);
+    for (const auto& Pair : m_FilterWidgetsByWareType)
+    {
+      Pair.second->showAuthorizationFilterCheckbox(false);
+    }
 
     updatePackageWaresList();
   }
   else
   {
-    ui->WaresGroupBox->setTitle(tr("Available wares on sHub site"));
+    ui->WaresGroupBox->setTitle(tr("Available wares on Hub site"));
     ui->HubUrlLineEdit->setEnabled(!m_IsConnectedToHub);
+    for (const auto& Pair : m_FilterWidgetsByWareType)
+    {
+      Pair.second->showAuthorizationFilterCheckbox(true);
+    }
 
     updateHubWaresList();
   }
@@ -426,6 +443,24 @@ void WaresSrcImportDialog::onHubLoginButtonClicked()
 // =====================================================================
 
 
+void WaresSrcImportDialog::onWaresListRefreshAsked()
+{
+  if (ui->PackageRadioButton->isChecked())
+  {
+    updatePackageWaresList();
+  }
+  else
+  {
+    updateHubWaresList();
+  }
+  
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WaresSrcImportDialog::updatePackageInfo()
 {
   if (mp_ImportFilePkg)
@@ -440,6 +475,30 @@ void WaresSrcImportDialog::updatePackageInfo()
   }
 
   ui->WaresTabWidget->setCurrentIndex(0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WaresSrcImportDialog::isWareDisplayed(const openfluid::ware::WareType& Type, const QString WareId, 
+                                           const bool WareInWorkspace, const bool WareNotAuthorized)
+{
+  if (!m_FilterWidgetsByWareType[Type]->areAlreadyImportedWaresEnabled() && WareInWorkspace)
+  {
+    return false;
+  }
+  if (!m_FilterWidgetsByWareType[Type]->areUnauthorizedWaresEnabled() && WareNotAuthorized)
+  {
+    return false;
+  }
+  QString FilterString = m_FilterWidgetsByWareType[Type]->getFilteringText();
+  if (!FilterString.isEmpty() && !WareId.contains(FilterString, Qt::CaseInsensitive))
+  {
+    return false;
+  }
+  return true;
 }
 
 
@@ -469,24 +528,29 @@ void WaresSrcImportDialog::updatePackageWaresList()
     QString WareName = WareFileInfo.fileName();
     QString WareTypeName = WareFileInfo.dir().dirName();
 
-    QListWidgetItem* Item = new QListWidgetItem(WareName);
-    Item->setData(Qt::UserRole, WareFileInfo.absoluteFilePath());
+    bool WareInWorkspace = WaresDevDir.exists(PackageTempDir.relativeFilePath(WarePath));
 
-    if (WaresDevDir.exists(PackageTempDir.relativeFilePath(WarePath)))
+    if (isWareDisplayed(m_WareTypeConverter[WareTypeName], WareName, WareInWorkspace, false))
     {
-      Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
-      Item->setCheckState(Qt::Unchecked);
-      Item->setToolTip(QString(tr("\"%1\" already exists in the workspace")).arg(WareName));
-    }
-    else
-    {
-      Item->setCheckState(Qt::Checked);
-      Item->setToolTip("");
-    }
+      QListWidgetItem* Item = new QListWidgetItem(WareName);
+      Item->setData(Qt::UserRole, WareFileInfo.absoluteFilePath());
 
-    if (m_WareTypeConverter.count(WareTypeName))
-    {
-      m_ListWidgetsByWareType[m_WareTypeConverter[WareTypeName]]->addItem(Item);
+      if (WareInWorkspace)
+      {
+        Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
+        Item->setCheckState(Qt::Unchecked);
+        Item->setToolTip(QString(tr("\"%1\" already exists in the workspace")).arg(WareName));
+      }
+      else
+      {
+        Item->setCheckState(Qt::Checked);
+        Item->setToolTip("");
+      }
+
+      if (m_WareTypeConverter.count(WareTypeName))
+      {
+        m_ListWidgetsByWareType[m_WareTypeConverter[WareTypeName]]->addItem(Item);
+      }
     }
   }
 
@@ -522,39 +586,45 @@ void WaresSrcImportDialog::updateHubWaresList()
     for (const auto& WarePair : mp_FluidHubWaresImportWorker->getAvailableWaresWithDetails(Type))
     {
       QString WareId = QString::fromStdString(WarePair.first);
-      QString WareUrl = QString::fromStdString(WarePair.second.GitUrl);
-
-      QListWidgetItem* Item = new QListWidgetItem(WareId);
-
-      Item->setData(Qt::UserRole, WareUrl);
-
       std::set<std::string> Users = WarePair.second.ROUsers;
 
-      if (!Mgr->getWarePath(WareId, Type, ErrStr).isEmpty())
+      bool WareInWorkspace = !Mgr->getWarePath(WareId, Type, ErrStr).isEmpty();
+      bool WareNotAuthorized = !Users.count("*") && !Users.count(UserName.toStdString());
+
+      if (isWareDisplayed(Type, WareId, WareInWorkspace, WareNotAuthorized))
       {
-        Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
-        Item->setToolTip(tr("\"%1\" already exists in the workspace").arg(WareId));
-      }
-      else if (mp_FluidHubWaresImportWorker->isLoggedIn())
-      {
-        if (!Users.count("*") && !Users.count(UserName.toStdString()))
+
+        QString WareUrl = QString::fromStdString(WarePair.second.GitUrl);
+        QListWidgetItem* Item = new QListWidgetItem(WareId);
+
+        Item->setData(Qt::UserRole, WareUrl);
+
+        if (WareInWorkspace)
         {
           Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
-          Item->setToolTip(tr("You are not authorized to access to \"%1\"").arg(WareId));
-          Item->setBackground(QColor("orange"));
+          Item->setToolTip(tr("\"%1\" already exists in the workspace").arg(WareId));
         }
-      }
-      else
-      {
-        Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
-        Item->setToolTip(tr("You must be authenticated to clone a ware"));
-      }
+        else if (mp_FluidHubWaresImportWorker->isLoggedIn())
+        {
+          if (WareNotAuthorized)
+          {
+            Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
+            Item->setToolTip(tr("You are not authorized to access to \"%1\"").arg(WareId));
+            Item->setForeground(QColor("orange"));
+          }
+        }
+        else
+        {
+          Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
+          Item->setToolTip(tr("You must be authenticated to clone a ware"));
+        }
 
-      Item->setCheckState(
-          (m_AlreadySelectedHubWares.contains(Type) && !m_AlreadySelectedHubWares[Type].filter(
-              QFileInfo(WareUrl).fileName()).isEmpty()) ? Qt::Checked : Qt::Unchecked);
+        Item->setCheckState(
+            (m_AlreadySelectedHubWares.contains(Type) && !m_AlreadySelectedHubWares[Type].filter(
+                QFileInfo(WareUrl).fileName()).isEmpty()) ? Qt::Checked : Qt::Unchecked);
 
-      m_ListWidgetsByWareType[Type]->addItem(Item);
+        m_ListWidgetsByWareType[Type]->addItem(Item);
+      }
     }
   }
 

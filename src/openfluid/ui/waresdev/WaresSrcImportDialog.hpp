@@ -49,6 +49,7 @@
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
+#include <openfluid/ui/waresdev/WaresImportFilterWidget.hpp>
 
 
 namespace Ui {
@@ -82,6 +83,8 @@ class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageD
 
     void import();
 
+    void onWaresListRefreshAsked();
+
 
   private:
 
@@ -105,6 +108,7 @@ class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageD
     QString m_HubButtonLogoutLabel = tr("Log out");
 
     std::map<openfluid::ware::WareType, QListWidget*> m_ListWidgetsByWareType;
+    std::map<openfluid::ware::WareType, WaresImportFilterWidget*> m_FilterWidgetsByWareType;
 
     std::map<QString, openfluid::ware::WareType> m_WareTypeConverter = {
         { QString::fromStdString(openfluid::config::SIMULATORS_PATH), openfluid::ware::WareType::SIMULATOR },
@@ -118,6 +122,9 @@ class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageD
     QMap<openfluid::ware::WareType, QStringList> m_AlreadySelectedHubWares;
 
     void updatePackageInfo();
+    
+    bool isWareDisplayed(const openfluid::ware::WareType& Type, const QString WareId, const bool WareInWorkspace, 
+                         const bool WareNotAuthorized);
 
     void updatePackageWaresList();
 

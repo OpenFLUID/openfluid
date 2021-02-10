@@ -5,7 +5,7 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcFileEditor.cpp WareSrcWid
                               WareSrcExplorer.cpp WareSrcExplorerModel.cpp WareExplorerDialog.cpp
                               NewSrcFileAssistant.cpp NewWareDialog.cpp FindReplaceDialog.cpp WareSrcMsgViewer.cpp
                               WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp WaresSrcIOProgressDialog.cpp
-                              WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp WareshubIssueDialog.cpp
+                              WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp WaresImportFilterWidget.cpp WareshubIssueDialog.cpp
                               WorkspaceDevDashboardWorker.cpp
                               WorkspaceDevProcessWorker.cpp 
                               WorkspaceDevBuildWorker.cpp WorkspaceDevCheckWorker.cpp WorkspaceDevPurgeWorker.cpp
@@ -18,7 +18,7 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcFileEditor.hpp WareSrcWid
                               WareSrcExplorer.hpp WareSrcExplorerModel.hpp WareExplorerDialog.hpp
                               NewSrcFileAssistant.hpp NewWareDialog.hpp FindReplaceDialog.hpp WareSrcMsgViewer.hpp
                               WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp
-                              WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp WareshubIssueDialog.hpp
+                              WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp WaresImportFilterWidget.hpp WareshubIssueDialog.hpp
                               WorkspaceDevDashboardTypes.hpp WorkspaceDevDashboardWorker.hpp 
                               WorkspaceDevProcessWorker.hpp 
                               WorkspaceDevBuildWorker.hpp WorkspaceDevCheckWorker.hpp WorkspaceDevPurgeWorker.hpp
@@ -29,7 +29,7 @@ QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui Ware
                                      EmptyPage.ui CppPage.ui CMakeConfigPage.ui
                                      NewSrcFileAssistant.ui NewWareDialog.ui FindReplaceDialog.ui
                                      WaresSrcExportDialog.ui WaresSrcImportDialog.ui WaresSrcIOProgressDialog.ui
-                                     WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui
+                                     WaresImportFilterWidget.ui WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui
                                      WorkspaceDevProcessDialog.ui
                                      WorkspaceDevDashboardDialog.ui WorkspaceDevWaresWidget.ui WorkspaceDevGitWidget.ui)
                                    
