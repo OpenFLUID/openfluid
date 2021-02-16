@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <model>
+  <generator varname="var.rand.prod" unitsclass="TU" method="inject" enabled="1">
+   <param name="distribution" value="distri.dat"/>
+   <param name="sources" value="sources.xml"/>
+  </generator>
+  <simulator ID="tests.generators.cycle.use" enabled="1">
+  </simulator>
+ </model>
+
+
+</openfluid>
+

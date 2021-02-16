@@ -68,8 +68,8 @@ EditFormatDialog::EditFormatDialog(const QStringList& ExistingFormats,QWidget* P
   m_HeaderCodes << CSVFormat::HeaderType::ColnamesAsComment << CSVFormat::HeaderType::ColnamesAsData << 
                    CSVFormat::HeaderType::Full << CSVFormat::HeaderType::None;
 
-  m_DateLabels << "ISO" << tr("6 columns") << tr("Time index");
-  m_DateCodes << "ISO" << "6cols" << "timeindex";
+  m_DateLabels << "ISO" << tr("ISO extended") << tr("6 columns") << tr("Time index");
+  m_DateCodes << "ISO" << "ISOEXT" << "6COLS" << "timeindex";
   m_FloatFormatsLabels << tr("Auto") << tr("Fixed") << tr("Scientific");
   m_FloatFormatsCodes  << "auto" << "fixed" << "scientific";
 

@@ -12,6 +12,9 @@ OFBUILD_ADD_SIMULATOR(tests.coupling.D ${OFBUILD_TESTS_BINARY_DIR})
 OFBUILD_ADD_SIMULATOR(tests.coupling.E ${OFBUILD_TESTS_BINARY_DIR})
 
 OFBUILD_ADD_SIMULATOR(tests.dotobs ${OFBUILD_TESTS_BINARY_DIR})
+
+OFBUILD_ADD_SIMULATOR(tests.generators.cycle.prod ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_SIMULATOR(tests.generators.cycle.use ${OFBUILD_TESTS_BINARY_DIR})
                                                    
 
 ###########################################################################

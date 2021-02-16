@@ -40,6 +40,7 @@
 #define __CSVOBSERVERBASE_HPP__
  
  
+#include <algorithm>
 #include <fstream>
 #include <vector>
 
@@ -260,11 +261,18 @@ inline std::string HeaderTypeToStr(CSVFormat::HeaderType HType)
 
 inline std::string StrToDateFormat(const std::string& FormatStr)
 {
-  if (FormatStr == "ISO")
+  std::string UpperFormatStr = FormatStr;
+  std::for_each(UpperFormatStr.begin(), UpperFormatStr.end(), [](char & c){c = ::toupper(c);});
+
+  if (UpperFormatStr == "ISO")
   {
     return "%Y%m%dT%H%M%S";
   }
-  else if (FormatStr == "6cols")
+  else if (UpperFormatStr == "ISOEXT")
+  {
+    return "%Y-%m-%dT%H:%M:%S";
+  }
+  else if (UpperFormatStr == "6COLS")
   {
     return "%Y\t%m\t%d\t%H\t%M\t%S";
   }

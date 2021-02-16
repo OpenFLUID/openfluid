@@ -68,8 +68,8 @@ MultiEditFormatDialog::MultiEditFormatDialog(const QStringList& ExistingFormats,
   m_HeaderCodes << MultiCSVFormat::HeaderType::ColnamesAsComment << MultiCSVFormat::HeaderType::ColnamesAsData \
                 << MultiCSVFormat::HeaderType::Full << MultiCSVFormat::HeaderType::None;
 
-  m_DateLabels << "ISO" << tr("6 columns") << tr("Time index");
-  m_DateCodes << "ISO" << "6cols" << "timeindex";
+  m_DateLabels << "ISO" << tr("ISO extended") << tr("6 columns") << tr("Time index");
+  m_DateCodes << "ISO" << "ISOEXT" << "6COLS" << "timeindex";
   m_FloatFormatsLabels << tr("Auto") << tr("Fixed") << tr("Scientific");
   m_FloatFormatsCodes  << "auto" << "fixed" << "scientific";
 

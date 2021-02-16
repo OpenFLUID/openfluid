@@ -1,0 +1,6 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+	<datasources>
+		<filesource ID="1" file="autoTU_TU1_var.rand.prod.csv" />
+	</datasources>
+</openfluid>

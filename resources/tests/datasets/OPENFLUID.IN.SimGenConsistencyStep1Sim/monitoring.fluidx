@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <monitoring>
+  <observer ID="export.vars.files.csv" enabled="1">
+   <param name="format.auto.colsep" value=" "/>
+   <param name="format.auto.commentchar" value="#"/>
+   <param name="format.auto.date" value="isoext"/>
+   <param name="format.auto.float-format" value="auto"/>
+   <param name="format.auto.header" value="none"/>
+   <param name="format.auto.precision" value="5"/>
+   <param name="set.autoTU.format" value="auto"/>
+   <param name="set.autoTU.unitsIDs" value="*"/>
+   <param name="set.autoTU.unitsclass" value="TU"/>
+   <param name="set.autoTU.vars" value="*"/>
+  </observer>
+ </monitoring>
+
+
+</openfluid>
+

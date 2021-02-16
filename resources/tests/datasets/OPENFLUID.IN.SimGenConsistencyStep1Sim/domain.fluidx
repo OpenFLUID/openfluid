@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <domain>
+  <definition>
+   <unit class="TU" ID="1" pcsorder="1">
+   </unit>
+   <unit class="TU" ID="2" pcsorder="1">
+   </unit>
+   <unit class="TU" ID="3" pcsorder="1">
+   </unit>
+  </definition>
+  <calendar>
+  </calendar>
+ </domain>
+
+
+</openfluid>
+

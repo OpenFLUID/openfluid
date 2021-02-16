@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <model>
+  <simulator ID="tests.generators.cycle.prod" enabled="1">
+  </simulator>
+  <simulator ID="tests.generators.cycle.use" enabled="1">
+  </simulator>
+ </model>
+
+
+</openfluid>
+

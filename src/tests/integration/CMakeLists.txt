@@ -380,6 +380,39 @@ SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS unit-api-
                                  
 
 ###########################################################################
+# integration-GeneratorsCycle is a test in 2 steps to check that inject generator and observer work correctly together
+#    Step 1 generates the data file in its OUT via a regular simulator. 
+#           The output data file is copied to a temporary dir containing IN files of step 2
+#    Step 2 uses the data file as source for inject generator and regenerates it as OUT
+#           the two OUT data files are then compared to check identity through observer and generator
+
+OPENFLUID_ADD_TEST(NAME integration-GeneratorsCycleStep1Sim
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "run"
+                           "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.SimGenConsistencyStep1Sim"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.SimGenConsistencyStep1Sim" 
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}" "-v"
+                   )
+
+FILE(COPY "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.SimGenConsistencyStep2Gen" 
+     DESTINATION "${OFBUILD_TESTS_TEMP_DIR}")
+OPENFLUID_ADD_TEST(NAME integration-GeneratorsCycleStep2Gen
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "run"
+                           "${OFBUILD_TESTS_TEMP_DIR}/OPENFLUID.IN.SimGenConsistencyStep2Gen"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.SimGenConsistencyStep2Gen" 
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}" "-v"
+                   
+                   PRE_TEST COPY_FILE "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.SimGenConsistencyStep1Sim/autoTU_TU1_var.rand.prod.csv" 
+                                      "${OFBUILD_TESTS_TEMP_DIR}/OPENFLUID.IN.SimGenConsistencyStep2Gen/"
+                   POST_TEST CHECK_FILE_IDENTICAL "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.SimGenConsistencyStep1Sim/"
+                                                  "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.SimGenConsistencyStep2Gen/"
+                                                  "autoTU_TU1_var.rand.prod.csv"
+                   )
+SET_TESTS_PROPERTIES(integration-GeneratorsCycleStep2Gen PROPERTIES DEPENDS integration-GeneratorsCycleStep1Sim)
+
+
+###########################################################################
 
 
 FILE(MAKE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/FindOpenFLUID")
