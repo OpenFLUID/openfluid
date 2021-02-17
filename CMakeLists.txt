@@ -32,9 +32,10 @@ OPTION(OFBUILD_ENABLE_APP_LOGEXPLORER "enable build of openfluid-logexplorer app
 OPTION(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION "enable integration of wares development in builder application" ON)
 OPTION(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION "enable integration market in builder application" OFF)
 
-OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" OFF)
 IF(UNIX AND NOT APPLE)
   OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" ON)
+ELSE()
+  OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" OFF)
 ENDIF()
 
 OPTION(OFBUILD_ENABLE_SANITIZER "" OFF)
