@@ -46,8 +46,10 @@ void snippets_filesystem()
 //! [joinpath]
 std::string Path;
 
-Path = openfluid::tools::Filesystem::joinPath({"/my/joined","path/myfile.txt"});
-// Path = "/my/joined/path/myfile.txt"
+Path = openfluid::tools::Filesystem::joinPath({"my","joined","path","myfile.txt"});
+// Path = "my/joined/path/myfile.txt"
+Path = openfluid::tools::Filesystem::joinPath({"/another","joined","path/anotherfile.txt"});
+// Path = "/another/joined/path/anotherfile.txt"
 //! [joinpath]
 }
 

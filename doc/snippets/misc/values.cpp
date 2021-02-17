@@ -261,7 +261,7 @@ openfluid::core::StringValue StringVal;
 openfluid::core::MapValue Val2;
 
 // to MapValue, using a string values separator
-StringVal.set("{\"myvalue1\":toto,\"myvalue2\"=12.56,\"myvalue3\"=17,\"myvalue3\"=false");
+StringVal.set("{\"myvalue1\":toto,\"myvalue2\":12.56,\"myvalue3\":17,\"myvalue4\":false}");
 StringVal.toMapValue(Val2);
 
 // all values are stored as strings, that can be converted to other types
