@@ -8,6 +8,7 @@
     in reports using openfluid command line
   * Added compatibility with future 1.0 version of FLUIDhub API,
     keeping compatibility with current 0.5 version
+  * Added filtering of available wares to import in DevStudio
   * Added cleanPath, absolutePath and renameFile methods 
     in Filesystem class
   * Added CMake targets to build all unit tests of a given library
@@ -16,6 +17,7 @@
   * Added CMake detection of server availability 
     for tests with network requests
   * Added ability to display build information using openfluid command line
+  * Added extended ISO format for datet-ime in CSV observers
   * Improved details of build information
   * Improved tests
   * Updated Devstudio UI/UX for importing wares from remote repositories
@@ -39,7 +41,10 @@
   * Fixed generation of KMZ file archive in KML observer
   * Fixed compilation flags for clang compiler
   * Fixed of wind usage in Firespread example
+  * Fixed potential bad alloc error in GNUplot observer
+  * Fixed display of example installation buddy in CLI mode
   * Cleaned source code
+  * Cleaned main documentation
   * Cleaned build configuration and related scripts
 
 
