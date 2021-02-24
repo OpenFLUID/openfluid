@@ -102,8 +102,8 @@ class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageD
     QList<QWidget*> m_HubConnectionInfoWidgets;
 
 
-    QString m_HubButtonConnectLabel = tr("Go");
-    QString m_HubButtonDisconnectLabel = tr("Quit");
+    QString m_HubButtonConnectLabel = tr("Connect");
+    QString m_HubButtonDisconnectLabel = tr("Disconnect");
     QString m_HubButtonLoginLabel = tr("Log in");
     QString m_HubButtonLogoutLabel = tr("Log out");
 

@@ -83,6 +83,8 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   m_HubLoginWidgetsAndButton << m_HubLoginWidgets << ui->HubLoginButton;
   m_HubConnectionInfoWidgets << ui->HubUrlLineEdit << m_HubLoginWidgets;
 
+  ui->HubConnectButton->setText(m_HubButtonConnectLabel);
+  
   ui->HubUrlLineEdit->setText(
       openfluid::base::PreferencesManager::instance()->getWaresdevImportWaresHubLastUrl());
 
@@ -211,7 +213,7 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
   }
   else
   {
-    ui->WaresGroupBox->setTitle(tr("Available wares on Hub site"));
+    ui->WaresGroupBox->setTitle(tr("Available wares on Hub"));
     ui->HubUrlLineEdit->setEnabled(!m_IsConnectedToHub);
     for (const auto& Pair : m_FilterWidgetsByWareType)
     {
@@ -616,7 +618,7 @@ void WaresSrcImportDialog::updateHubWaresList()
         else
         {
           Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
-          Item->setToolTip(tr("You must be authenticated to clone a ware"));
+          Item->setToolTip(tr("You must be logged in to clone a ware"));
         }
 
         Item->setCheckState(

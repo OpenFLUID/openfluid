@@ -32,7 +32,7 @@
     <message>
         <location filename="CSVObsParamsWidget.ui" line="71"/>
         <source>Float format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format flottant</translation>
     </message>
     <message>
         <location filename="CSVObsParamsWidget.ui" line="76"/>
@@ -126,7 +126,7 @@ Continuer quand même?</translation>
     <message>
         <location filename="EditFormatDialog.ui" line="141"/>
         <source>Float format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Format flottant:</translation>
     </message>
     <message>
         <location filename="EditFormatDialog.ui" line="155"/>
@@ -159,29 +159,34 @@ Continuer quand même?</translation>
         <translation>Aucun</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="70"/>
+        <location filename="EditFormatDialog.cpp" line="71"/>
         <source>6 columns</source>
         <translation>6 colonnes</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="70"/>
+        <location filename="EditFormatDialog.cpp" line="71"/>
         <source>Time index</source>
         <translation>Index de temps</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="72"/>
+        <location filename="EditFormatDialog.cpp" line="71"/>
+        <source>ISO extended</source>
+        <translation>ISO étendu</translation>
+    </message>
+    <message>
+        <location filename="EditFormatDialog.cpp" line="73"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="72"/>
+        <location filename="EditFormatDialog.cpp" line="73"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Fixé</translation>
     </message>
     <message>
-        <location filename="EditFormatDialog.cpp" line="72"/>
+        <location filename="EditFormatDialog.cpp" line="73"/>
         <source>Scientific</source>
-        <translation type="unfinished"></translation>
+        <translation>Scientifique</translation>
     </message>
 </context>
 <context>

@@ -103,7 +103,7 @@
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="71"/>
         <source>Float format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format flottant</translation>
     </message>
     <message>
         <location filename="MultiCSVObsParamsWidget.ui" line="76"/>
@@ -192,7 +192,7 @@ Continuer quand même?</translation>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="141"/>
         <source>Float format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Format flottant:</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.ui" line="155"/>
@@ -240,19 +240,24 @@ Continuer quand même?</translation>
         <translation>Index de temps</translation>
     </message>
     <message>
+        <location filename="MultiEditFormatDialog.cpp" line="71"/>
+        <source>ISO extended</source>
+        <translation>ISO étendu</translation>
+    </message>
+    <message>
         <location filename="MultiEditFormatDialog.cpp" line="73"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.cpp" line="73"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Fixé</translation>
     </message>
     <message>
         <location filename="MultiEditFormatDialog.cpp" line="73"/>
         <source>Scientific</source>
-        <translation type="unfinished"></translation>
+        <translation>Scientifique</translation>
     </message>
 </context>
 <context>
