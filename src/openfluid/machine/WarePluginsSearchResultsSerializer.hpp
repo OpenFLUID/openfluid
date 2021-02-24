@@ -564,8 +564,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsT
                         openfluid::tools::replaceEmptyString(Sign->BuildInfo.CompilerVersion,"(unknown)")) << 
         "\n";
       OutStm << 
-        getIndentedText(3,"Compiler flags",
-                        openfluid::tools::replaceEmptyString(Sign->BuildInfo.CompilerFlags,"(none specified)")) << 
+        getIndentedText(3,"Compilation flags",
+                        openfluid::tools::replaceEmptyString(Sign->BuildInfo.CompilationFlags,"(none specified)")) << 
         "\n";
       OutStm << 
         getIndentedText(2,"Development status",openfluid::ware::WareSignature::getStatusAsString(Sign->Status)) << "\n";
@@ -944,7 +944,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsJ
       BuildObj.AddMember("compiler_id",rapidjson::Value(Sign->BuildInfo.CompilerID.c_str(),JSONalloc),JSONalloc);
       BuildObj.AddMember("compiler_version",
                          rapidjson::Value(Sign->BuildInfo.CompilerVersion.c_str(),JSONalloc),JSONalloc);
-      BuildObj.AddMember("compiler_flags",rapidjson::Value(Sign->BuildInfo.CompilerFlags.c_str(),JSONalloc),JSONalloc);
+      BuildObj.AddMember("compilation_flags",
+                         rapidjson::Value(Sign->BuildInfo.CompilationFlags.c_str(),JSONalloc),JSONalloc);
       WareObj.AddMember("build_info",BuildObj,JSONalloc);
 
       WareObj.AddMember("name",rapidjson::Value(Sign->Name.c_str(),JSONalloc),JSONalloc);

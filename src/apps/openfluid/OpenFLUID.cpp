@@ -183,7 +183,7 @@ void OpenFLUIDApp::printBuildInfo()
     std::cout << boost::algorithm::join(Category,"/") << " : " << Value << std::endl;
   };
 
-  std::string TmpFlags = openfluid::config::BUILD_COMPILER_FLAGS;
+  std::string TmpFlags = openfluid::config::BUILD_COMPILATION_FLAGS;
   std::replace(TmpFlags.begin(),TmpFlags.end(),';',' ');
 
   printItem({"build","type"},openfluid::config::BUILD_TYPE);

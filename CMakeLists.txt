@@ -228,7 +228,7 @@ ELSE()
 MESSAGE(STATUS "Sanitizer: disabled")
 ENDIF()
 MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
-MESSAGE(STATUS "Compiler flags for ${CMAKE_BUILD_TYPE}: ${OFBUILD_ALL_COMPILE_FLAGS}")
+MESSAGE(STATUS "Compilation flags for ${CMAKE_BUILD_TYPE}: ${OFBUILD_ALL_COMPILE_FLAGS}")
 MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "****************************************")
 

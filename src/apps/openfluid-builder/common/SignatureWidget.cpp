@@ -220,9 +220,9 @@ QString SignatureWidget::getCommonForGeneral(const SignatureType* Signature)
     {
       Contents += getGeneralInfoLine(tr("Compiler version"),QString::fromStdString(BuildInfo.CompilerVersion));
     }
-    if (!BuildInfo.CompilerFlags.empty())
+    if (!BuildInfo.CompilationFlags.empty())
     {
-      Contents += getGeneralInfoLine(tr("Compiler flags"),QString::fromStdString(BuildInfo.CompilerFlags));
+      Contents += getGeneralInfoLine(tr("Compilation flags"),QString::fromStdString(BuildInfo.CompilationFlags));
     }
   }
 

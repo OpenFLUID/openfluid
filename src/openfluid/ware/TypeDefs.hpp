@@ -131,7 +131,7 @@ struct SignatureBuildInfo
 
   std::string CompilerVersion = "";
 
-  std::string CompilerFlags = "";
+  std::string CompilationFlags = "";
 };
 
 

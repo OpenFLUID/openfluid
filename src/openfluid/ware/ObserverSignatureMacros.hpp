@@ -65,7 +65,7 @@
       Signature->BuildInfo.BuildType = (WAREBUILD_BUILD_TYPE); \
       Signature->BuildInfo.CompilerID = (WAREBUILD_COMPILER_ID); \
       Signature->BuildInfo.CompilerVersion = (WAREBUILD_COMPILER_VERSION); \
-      Signature->BuildInfo.CompilerFlags = (WAREBUILD_COMPILER_FLAGS);
+      Signature->BuildInfo.CompilationFlags = (WAREBUILD_COMPILATION_FLAGS);
 
 
 /**

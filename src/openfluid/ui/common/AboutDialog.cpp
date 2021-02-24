@@ -37,6 +37,9 @@
  */
 
 
+#include <list>
+#include <utility>
+
 #include <QLabel>
 #include <QPushButton>
 #include <QPixmap>
@@ -133,39 +136,51 @@ QString AboutDialog::resourceToString(const QString& ResName)
 
 QString AboutDialog::generateBuildInfoText()
 {
-  QString SkelText = 
-    tr("## Build environment\n"
-       "\n"
-       "* Build type : %1\n"
-       "* CMake version : %2\n"
-       "* C++ standard : %3\n"
-       "* Compiler ID : %4\n"
-       "* Compiler version : %5\n"
-       "* Compiler flags : %6\n"
-       "\n"
-       "\n"
-       "## Dependencies\n"
-       "\n"
-       "* Boost version : %7\n"
-       "* Qt version : %8\n"
-       "* RapidJSON version : %9\n"
-       "* GDAL version : %10\n");
+  using InfoList = std::list<std::pair<QString,std::string>>;
 
-  QString Text = SkelText.arg(QString::fromStdString(openfluid::config::BUILD_TYPE))
-                         .arg(QString::fromStdString(openfluid::config::BUILD_CMAKE_VERSION))
-                         .arg(QString::fromStdString(openfluid::config::BUILD_CXX_STANDARD))
-                         .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_ID))
-                         .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_VERSION))
-                         .arg(QString::fromStdString(openfluid::config::BUILD_COMPILER_FLAGS).replace(';',' '))
-                         .arg(QString::fromStdString(openfluid::config::BUILD_LIB_BOOST_VERSION))
-                         .arg(QString::fromStdString(openfluid::config::BUILD_LIB_QT_VERSION))
-                         .arg(QString::fromStdString(openfluid::config::BUILD_LIB_RAPIDJSON_VERSION))
-                         .arg(QString::fromStdString(openfluid::config::BUILD_LIB_GDAL_VERSION));
+  std::string CFlags = openfluid::config::BUILD_COMPILATION_FLAGS;
+  std::replace(CFlags.begin(),CFlags.end(),';',' ');
 
+  InfoList BuildEnvInfoList = 
+  {
+    { tr("Build type"), openfluid::config::BUILD_TYPE },
+    { tr("CMake version"), openfluid::config::BUILD_CMAKE_VERSION },
+    { tr("C++ standard"), openfluid::config::BUILD_CXX_STANDARD },
+    { tr("Compiler ID"), openfluid::config::BUILD_COMPILER_ID },
+    { tr("Compiler version"), openfluid::config::BUILD_COMPILER_VERSION },
+    { tr("Compilation flags"), CFlags }
+  };
+
+  InfoList DepsInfoList = 
+  {
+     { "Boost", openfluid::config::BUILD_LIB_BOOST_VERSION },
+     { "GDAL", openfluid::config::BUILD_LIB_GDAL_VERSION },
+     { "RapidJSON", openfluid::config::BUILD_LIB_RAPIDJSON_VERSION },
+     { "Qt", openfluid::config::BUILD_LIB_QT_VERSION }
+  };
   if (!openfluid::config::BUILD_LIB_GEOS_VERSION.empty())
   {
-    Text = Text + 
-      QString("* GEOS version : %1\n").arg(QString::fromStdString(openfluid::config::BUILD_LIB_GEOS_VERSION));
+    DepsInfoList.push_back({ "GEOS", openfluid::config::BUILD_LIB_GEOS_VERSION });
+  }
+
+  std::list<std::pair<QString,InfoList>> InfoSections =
+  { 
+    { tr("Build environment"), BuildEnvInfoList }, 
+    { tr("Dependencies"), DepsInfoList } 
+  };
+
+  QString Text;
+
+  for(const auto& Section : InfoSections)
+  {
+    Text += "## " + Section.first + "\n\n";
+
+    for(const auto& Info : Section.second)
+    {
+      Text += "* " + Info.first + " : "  + QString::fromStdString(Info.second) + "\n";
+    }
+
+    Text += "\n\n";
   }
 
   return Text;
