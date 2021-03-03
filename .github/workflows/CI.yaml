@@ -1,0 +1,90 @@
+name: CI
+
+on: [push, pull_request]
+
+
+jobs:
+
+  ci-linux-debug:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Installation of dependencies
+        run: | 
+          sudo apt install -y \
+            libboost-all-dev libgdal-dev rapidjson-dev \
+            qt5-default qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev \
+            gnuplot p7zip-full graphviz
+      - name: Preparation
+        run: mkdir ./_build && ls
+      - name: Configuration
+        run: cmake ..
+        working-directory: ./_build
+      - name: Build
+        run: make -j 2
+        working-directory: ./_build
+      - name: Testing
+        run: ctest --output-on-failure
+        working-directory: ./_build
+
+  ci-linux-release:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Installation of dependencies
+        run: | 
+          sudo apt install -y \
+            libboost-dev libgdal-dev rapidjson-dev \
+            qt5-default qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev \
+            gnuplot p7zip-full graphviz
+      - name: Preparation
+        run: mkdir ./_build && ls
+      - name: Configuration
+        run: cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+        working-directory: ./_build
+      - name: Style check
+        run: make stylecheck
+        working-directory: ./_build
+      - name: Build
+        run: make -j 2
+        working-directory: ./_build
+      - name: Packaging
+        run: cpack && ls -l *.deb
+        working-directory: ./_build
+
+  ci-macos-release:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Installation of dependencies
+        run: | 
+          brew install \
+            boost rapidjson gdal geos qt5 \
+            doxygen gnuplot doxygen
+      - name: Preparation
+        run: |
+          echo "$(brew --prefix qt5)/bin" >> $GITHUB_PATH
+          mkdir ./_build && ls
+      - name: Configuration
+        run: cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)/lib/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+        working-directory: ./_build
+      - name: Build
+        run: make -j 2
+        working-directory: ./_build
+
+
+  ci-windows-debug:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: echo  "Debug on Windows / TODO"
+      - run: chdir
+      - run: dir
+
+
