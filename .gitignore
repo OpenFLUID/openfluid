@@ -1,5 +1,6 @@
 # external configuration files
 .*
+!.github/
 !.travis.yml
 !.appveyor.yml
 

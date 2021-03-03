@@ -1,0 +1,57 @@
+name: Packaging for MacOS
+
+on: 
+  workflow_dispatch:
+    inputs:
+      reference:
+        description: 'Tag/Branch/SHA1'
+        required: true
+        default: 'develop'
+
+
+jobs:
+  build-packaging:
+    strategy:
+      matrix:
+        os: [macos-10.15] # [macos-10.15, macos-11.0] macOS Big Sur will be added as soon as it will be available again
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.reference }}
+
+      - name: Installation of dependencies
+        run: |
+          brew update
+          brew install \
+            boost rapidjson gdal geos qt5 \
+            doxygen gnuplot doxygen
+
+      - name: Preparation
+        run: |
+          echo "$(brew --prefix qt5)/bin" >> $GITHUB_PATH
+          echo "SET(OPENFLUID_ENABLE_MARKET 0)" > CMake.in.local.cmake
+          echo "SET(OFBUILD_ENABLE_LANDR 0)" >> CMake.in.local.cmake
+          mkdir ./_build && ls
+
+      - name: Configuration
+        run: cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)/lib/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+        working-directory: ./_build
+
+      - name: Build
+        run: make -j 2
+        working-directory: ./_build
+
+      - name: Packaging
+        run: | 
+          cmake -P ofpack-osx-brewcask.cmake
+          ls -l _osx_brewcask
+        working-directory: ./_build
+      
+      - name: Uploading artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: ${{ matrix.os }}_${{ github.event.inputs.reference }}
+          path: ./_build/_osx_brewcask/openfluid*
