@@ -289,7 +289,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       openfluid::utils::CMakeProxy::CommandInfos Command = 
         openfluid::utils::CMakeProxy::getTarCompressCommand(QString::fromStdString(InputDir),
                                                             QString::fromStdString(KmzFilePath),
-                                                            FilePaths,"v");
+                                                            FilePaths);
 
       QProcess::execute(Command.Program, Command.Args << "--format=zip");
     }
