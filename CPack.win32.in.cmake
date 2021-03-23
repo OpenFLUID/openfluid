@@ -55,7 +55,7 @@ FOREACH(CURRENT_TARGET ${WINDEPLOYQT_TARGETS})
                                         \"\${CURRENT_TARGET_PATH}\"
                                         --dir \"\${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}\" 
                                         --libdir \"\${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}\"
-                                        --compiler-runtime
+                                        --compiler-runtime --release
                                         -xml -network -concurrent
                                         --verbose 1
                                 WORKING_DIRECTORY \"${CMAKE_BINARY_DIR}\"
