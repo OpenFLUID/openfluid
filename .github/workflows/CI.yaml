@@ -5,19 +5,24 @@ on: [push, pull_request]
 
 jobs:
 
+
+##########################################
+
+
   ci-linux-debug:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: actions/checkout@v2
       - name: Installation of dependencies
         run: | 
-          sudo apt install -y \
+          sudo apt update && sudo apt install -y \
             libboost-all-dev libgdal-dev rapidjson-dev \
             qt5-default qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev \
             gnuplot p7zip-full graphviz
+      - name: Checkout of source code
+        uses: actions/checkout@v2
       - name: Preparation
-        run: mkdir ./_build && ls
+        run: mkdir ./_build
       - name: Configuration
         run: cmake ..
         working-directory: ./_build
@@ -25,22 +30,23 @@ jobs:
         run: make -j 2
         working-directory: ./_build
       - name: Testing
-        run: ctest --output-on-failure
+        run: ctest -j 2 --output-on-failure
         working-directory: ./_build
 
   ci-linux-release:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: actions/checkout@v2
       - name: Installation of dependencies
         run: | 
           sudo apt install -y \
             libboost-dev libgdal-dev rapidjson-dev \
             qt5-default qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev \
             gnuplot p7zip-full graphviz
+      - name: Checkout of source code
+        uses: actions/checkout@v2
       - name: Preparation
-        run: mkdir ./_build && ls
+        run: mkdir ./_build
       - name: Configuration
         run: cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
         working-directory: ./_build
@@ -54,21 +60,25 @@ jobs:
         run: cpack && ls -l *.deb
         working-directory: ./_build
 
+
+##########################################
+
+
   ci-macos-release:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v2
-
       - name: Installation of dependencies
         run: | 
           brew install \
             boost rapidjson gdal geos qt5 \
             doxygen gnuplot doxygen
+      - name: Checkout of source code
+        uses: actions/checkout@v2
       - name: Preparation
         run: |
           echo "$(brew --prefix qt5)/bin" >> $GITHUB_PATH
-          mkdir ./_build && ls
+          mkdir ./_build
       - name: Configuration
         run: cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)/lib/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
         working-directory: ./_build
@@ -77,14 +87,44 @@ jobs:
         working-directory: ./_build
 
 
+##########################################
+
+
   ci-windows-debug:
     runs-on: windows-latest
-
+    
+    defaults:
+      run:
+        shell: msys2 {0}
+    
     steps:
-      - uses: actions/checkout@v2
-
-      - run: echo  "Debug on Windows / TODO"
-      - run: chdir
-      - run: dir
-
-
+      - name: Installation of dependencies
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: false
+          release: false
+          install: >-
+            mingw-w64-x86_64-toolchain mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-fortran
+            mingw-w64-x86_64-cmake mingw-w64-x86_64-doxygen
+            mingw-w64-x86_64-boost mingw-w64-x86_64-gdal mingw-w64-x86_64-rapidjson
+            mingw-w64-x86_64-qt5 mingw-w64-x86_64-openssl
+            git p7zip mingw-w64-x86_64-gnuplot mingw-w64-x86_64-graphviz
+      - name: Checkout of source code
+        uses: actions/checkout@v2
+      - name: Preparation
+        shell: msys2 {0}
+        run: mkdir ./_build
+      - name: Configuration
+        shell: msys2 {0}
+        run: cmake .. -G "MSYS Makefiles" -DOFBUILD_ENABLE_DOCS=OFF
+        working-directory: ./_build
+      - name: Build
+        shell: msys2 {0}
+        run: make -j 2
+        working-directory: ./_build
+      - name: Testing
+        run: |
+          export PATH=`pwd`/dist/bin:`pwd`/dist/lib:$PATH
+          ctest -j 2 --output-on-failure
+        working-directory: ./_build

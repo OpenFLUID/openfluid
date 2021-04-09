@@ -9,9 +9,8 @@ See also the LICENSE and AUTHORS files included in the sources.
 
 
 ## OpenFLUID sources 
-  
+
 [![CI](https://github.com/OpenFLUID/openfluid/actions/workflows/CI.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI.yaml)
-[![Build status](https://ci.appveyor.com/api/projects/status/6icywvsumu608uft/branch/develop?svg=true)](https://ci.appveyor.com/project/fabrejc/openfluid-hm6ac/branch/develop)
 
 
 The OpenFLUID source tree is organized as follow
