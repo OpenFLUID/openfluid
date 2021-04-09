@@ -131,7 +131,7 @@ class BaseCSVFile
     std::string FileName;
 
     BaseCSVFile() :
-      FileBuffer(nullptr), FileHandle(nullptr)
+      FileBuffer(nullptr), FileHandle()
     { }
 
     ~BaseCSVFile()
