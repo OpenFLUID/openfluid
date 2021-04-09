@@ -733,7 +733,9 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesInstallAll
                               "-o" "selection=*,sourcedir=${OFBUILD_SOURCE_EXAMPLES_DIR},installdir=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy,force=1"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/examplesbuddy"                              
                   )
-  
+SET_PROPERTY(TEST integration-BuddyExamplesInstallAll APPEND PROPERTY DEPENDS integration-BuddyExamplesInstallSimulator)
+SET_PROPERTY(TEST integration-BuddyExamplesInstallAll APPEND PROPERTY DEPENDS integration-BuddyExamplesInstallMissingSimulator)
+
 
 ###########################################################################
 
