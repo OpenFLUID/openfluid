@@ -37,8 +37,6 @@
  */
 
 
-#include <stdlib.h>
-
 #include <openfluid/debug.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 

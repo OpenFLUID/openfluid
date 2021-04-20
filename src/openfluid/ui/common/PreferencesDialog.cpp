@@ -160,6 +160,8 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   connect(ui->FontComboBox, SIGNAL(currentFontChanged(const QFont&)), this, SLOT(changeCurrentFont(const QFont&)));
   connect(ui->LineWrappingCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableLineWrapping(bool)));
   connect(ui->IndentSpaceNbSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changeIndentSpaceNumber(int)));
+  connect(ui->ShowInvisibleCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableInvisibleCharsDisplay(bool)));
+  connect(ui->ShowCarriageReturnCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableCarriageReturnDisplay(bool)));
   connect(ui->TextEditorApplyButton, SIGNAL(clicked()), this, SLOT(applyTextEditorSettings()));
   connect(ui->TextEditorRestoreDefaultsButton, SIGNAL(clicked()), this, SLOT(restoreDefaultsTextEditorSettings()));
 
@@ -561,6 +563,28 @@ void PreferencesDialog::changeIndentSpaceNumber(int SpaceNb)
 // =====================================================================
 
 
+void PreferencesDialog::enableInvisibleCharsDisplay(bool Enable)
+{
+  openfluid::base::PreferencesManager::instance()->setWaresdevInvisibleCharsDisplayEnabled(Enable);
+  m_TextEditorSettingsChanged = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::enableCarriageReturnDisplay(bool Enable)
+{
+  openfluid::base::PreferencesManager::instance()->setWaresdevCarriageReturnDisplayEnabled(Enable);
+  m_TextEditorSettingsChanged = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void PreferencesDialog::addMarketPlace()
 {
   EditMarketplaceDialog MarketDlg(this,"","",
@@ -745,6 +769,9 @@ void PreferencesDialog::intializeTextEditorSettings()
 
   ui->LineWrappingCheckBox->setChecked(PrefsMan->isWaresdevLineWrappingEnabled());
   ui->IndentSpaceNbSpinBox->setValue(PrefsMan->getWaresdevIndentSpaceNb());
+
+  ui->ShowInvisibleCheckBox->setChecked(PrefsMan->isWaresdevInvisibleCharsDisplayEnabled());
+  ui->ShowCarriageReturnCheckBox->setChecked(PrefsMan->isWaresdevCarriageReturnDisplayEnabled());
 }
 
 

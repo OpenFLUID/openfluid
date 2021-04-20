@@ -127,6 +127,10 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
 
     void changeIndentSpaceNumber(int SpaceNb);
 
+    void enableInvisibleCharsDisplay(bool Enable);
+
+    void enableCarriageReturnDisplay(bool Enable);
+
     void changeSyntaxElementColor(int ElementRow);
 
     void addMarketPlace();

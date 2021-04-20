@@ -292,6 +292,14 @@ class OPENFLUID_API PreferencesManager
 
     int getWaresdevIndentSpaceNb();
 
+    bool isWaresdevInvisibleCharsDisplayEnabled();
+
+    void setWaresdevInvisibleCharsDisplayEnabled(bool Enabled);
+
+    bool isWaresdevCarriageReturnDisplayEnabled();
+
+    void setWaresdevCarriageReturnDisplayEnabled(bool Enabled);
+
     void setWaresdevIndentSpaceNb(int SpaceNumber);
 
     QString getWaresdevConfigEnv(const QString& Name);

@@ -1372,6 +1372,9 @@ void PreferencesManager::setWaresdevTextEditorDefaults(bool ForceReset)
   DefaultHLRules.insert("comment/color","#A7A7A7");
   DefaultHLRules.insert("comment/decoration","italic");
 
+  DefaultHLRules.insert("invisible/color","#AAAAAA");
+  DefaultHLRules.insert("invisible/decoration","none");
+
   for(QMap<QString,QString>::iterator it = DefaultHLRules.begin(); it != DefaultHLRules.end(); ++it)
   {
     if(! mp_ConfFile->contains(it.key()) || ForceReset)
@@ -1411,6 +1414,16 @@ void PreferencesManager::setWaresdevTextEditorDefaults(bool ForceReset)
   if(! mp_ConfFile->contains("indent/spacenumber") || ForceReset)
   {
      mp_ConfFile->setValue("indent/spacenumber",2);
+  }
+
+  if(! mp_ConfFile->contains("show_invisible/enabled") || ForceReset)
+  {
+    mp_ConfFile->setValue("show_invisible/enabled",true);
+  }
+
+  if(! mp_ConfFile->contains("show_carriage_return/enabled") || ForceReset)
+  {
+    mp_ConfFile->setValue("show_carriage_return/enabled",false);
   }
 
   mp_ConfFile->endGroup();
@@ -1588,6 +1601,48 @@ int PreferencesManager::getWaresdevIndentSpaceNb()
 void PreferencesManager::setWaresdevIndentSpaceNb(int SpaceNumber)
 {
   mp_ConfFile->setValue("openfluid.waresdev.texteditor/indent/spacenumber",SpaceNumber);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isWaresdevInvisibleCharsDisplayEnabled()
+{
+  return mp_ConfFile->value("openfluid.waresdev.texteditor/show_invisible/enabled",true).toBool();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevInvisibleCharsDisplayEnabled(bool Enabled)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.texteditor/show_invisible/enabled",Enabled);
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isWaresdevCarriageReturnDisplayEnabled()
+{
+  return mp_ConfFile->value("openfluid.waresdev.texteditor/show_carriage_return/enabled",true).toBool();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevCarriageReturnDisplayEnabled(bool Enabled)
+{
+  mp_ConfFile->setValue("openfluid.waresdev.texteditor/show_carriage_return/enabled",Enabled);
   mp_ConfFile->sync();
 }
 

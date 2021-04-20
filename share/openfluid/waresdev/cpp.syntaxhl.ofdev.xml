@@ -235,7 +235,11 @@
         <rule name="comment-singleline" style="comment">
           <pattern value="//.*$" />
         </rule>
-        
+
+        <rule name="invisible-chars" style="invisible">
+          <pattern value="( |\t)" />
+          <pattern value="(\r\n|\r|\n)" />
+        </rule>
       </highlighting>
       
     </language>

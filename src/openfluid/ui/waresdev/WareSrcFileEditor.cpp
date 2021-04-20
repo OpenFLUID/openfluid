@@ -244,12 +244,21 @@ void WareSrcFileEditor::updateSettings()
     mp_SyntaxHighlighter = nullptr;
   }
 
-  // Line wrapping
+  // Text options
 
   QTextOption Option = document()->defaultTextOption();
-  Option.setWrapMode(PrefMgr->isWaresdevLineWrappingEnabled() ? QTextOption::WordWrap : QTextOption::NoWrap);
-  document()->setDefaultTextOption(Option);
 
+  //   Line wrapping
+  Option.setWrapMode(PrefMgr->isWaresdevLineWrappingEnabled() ? QTextOption::WordWrap : QTextOption::NoWrap);
+
+  //   Invisible characters
+  QFlags<QTextOption::Flag> CurrentTextFlags = Option.flags();
+  CurrentTextFlags.setFlag(QTextOption::ShowTabsAndSpaces, PrefMgr->isWaresdevInvisibleCharsDisplayEnabled());
+  CurrentTextFlags.setFlag(QTextOption::ShowLineAndParagraphSeparators, 
+                           PrefMgr->isWaresdevCarriageReturnDisplayEnabled());
+  Option.setFlags(CurrentTextFlags);
+
+  document()->setDefaultTextOption(Option);
 
   // Fonts
 
