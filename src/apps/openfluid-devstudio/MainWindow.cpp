@@ -257,8 +257,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   connect(mp_WidgetsCollection, SIGNAL(currentTabChanged(const QString&)),
           this, SLOT(setCurrentPath(const QString&)));
-  connect(mp_WidgetsCollection, SIGNAL(modifiedStatusChanged(bool, bool)),
-          this, SLOT(updateSaveButtonsStatus(bool, bool)));
+  connect(mp_WidgetsCollection, SIGNAL(modifiedStatusChanged(bool, bool, bool)),
+          this, SLOT(updateSaveButtonsStatus(bool, bool, bool)));
   connect(mp_WidgetsCollection, SIGNAL(editorSaved()),
           this, SLOT(updateExplorer()));
 
@@ -270,7 +270,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   setWorkspaceDefaults();
 
-  updateSaveButtonsStatus(false, false);
+  updateSaveButtonsStatus(false, mp_WidgetsCollection->isFileOpen(), false);
 
 
   QString TmpLabel = tr("Current workspace: %1")
@@ -677,12 +677,12 @@ void MainWindow::setCurrentPath(const QString& Path)
 // =====================================================================
 
 
-void MainWindow::updateSaveButtonsStatus(bool FileModified, bool WareModified)
+void MainWindow::updateSaveButtonsStatus(bool FileModified, bool FileOpen, bool WareModified)
 {
   mp_Toolbar->action("SaveFile")->setEnabled(FileModified);
-  mp_Toolbar->action("SaveAsFile")->setEnabled(FileModified);
+  mp_Toolbar->action("SaveAsFile")->setEnabled(FileOpen);
   mp_Toolbar->action("SaveAllFiles")->setEnabled(WareModified);
-  m_Actions["SaveAsFile"]->setEnabled(FileModified);
+  m_Actions["SaveAsFile"]->setEnabled(FileOpen);
 }
 
 

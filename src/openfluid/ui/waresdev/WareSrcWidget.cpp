@@ -898,14 +898,16 @@ void WareSrcWidget::checkModifiedStatus()
 
   bool IsWareModified = isWareModified();
 
+  bool IsFileOpen = currentEditor()!=0;
+
   if (mp_StandaloneToolBar)
   {
     mp_StandaloneToolBar->action("SaveFile")->setEnabled(IsCurrentEditorModified);
-    mp_StandaloneToolBar->action("SaveAsFile")->setEnabled(IsCurrentEditorModified);
+    mp_StandaloneToolBar->action("SaveAsFile")->setEnabled(IsFileOpen);
     mp_StandaloneToolBar->action("SaveAllFiles")->setEnabled(IsWareModified);
   }
 
-  emit modifiedStatusChanged(IsCurrentEditorModified, IsWareModified);
+  emit modifiedStatusChanged(IsCurrentEditorModified, IsFileOpen, IsWareModified);
 }
 
 

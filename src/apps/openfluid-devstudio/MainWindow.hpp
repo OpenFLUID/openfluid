@@ -117,7 +117,7 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     void setCurrentPath(const QString& Path);
 
-    void updateSaveButtonsStatus(bool FileModified, bool WareModified);
+    void updateSaveButtonsStatus(bool FileModified, bool FileOpen, bool WareModified);
 
     void onDeleteWareRequested();
 

@@ -131,7 +131,8 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
       
       connect(Widget, SIGNAL(openAPIDocRequested()), this, SLOT(openAPIDoc()));
 
-      connect(Widget, SIGNAL(modifiedStatusChanged(bool, bool)), this, SIGNAL(modifiedStatusChanged(bool, bool)));
+      connect(Widget, SIGNAL(modifiedStatusChanged(bool, bool, bool)), 
+              this, SIGNAL(modifiedStatusChanged(bool, bool, bool)));
 
       connect(Widget, SIGNAL(configureLaunched(openfluid::ware::WareType, const QString&)),
               this, SLOT(notifyConfigureLaunched(openfluid::ware::WareType, const QString&)));
@@ -791,6 +792,16 @@ QStringList WareSrcWidgetCollection::getOpenWarePaths()
 // =====================================================================
 
 
+bool WareSrcWidgetCollection::isFileOpen()
+{
+  return currentWareWidget()->currentEditor()!=0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool WareSrcWidgetCollection::isDebugMode()
 {
   return m_DefaultConfigMode == openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG;
@@ -1103,7 +1114,7 @@ void WareSrcWidgetCollection::checkModifiedStatus()
   }
   else
   {
-    emit modifiedStatusChanged(false, false);
+    emit modifiedStatusChanged(false, false, false);
   }
 }
 

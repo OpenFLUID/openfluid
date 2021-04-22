@@ -137,7 +137,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void openExternalToolRequested(const QString& Context, const QString& Path);
 
-    void modifiedStatusChanged(bool CurrentEditorModified, bool WareModified);
+    void modifiedStatusChanged(bool CurrentEditorModified, bool FileOpen, bool WareModified);
 
     void openAPIDocRequested();
 

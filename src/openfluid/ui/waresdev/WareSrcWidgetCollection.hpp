@@ -134,7 +134,7 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void currentTabChanged(const QString& Path);
 
-    void modifiedStatusChanged(bool CurrentEditorModified, bool CurrentWareModified);
+    void modifiedStatusChanged(bool CurrentEditorModified, bool FileOpen, bool CurrentWareModified);
 
     void configureLaunched(openfluid::ware::WareType Type, const QString& ID);
 
@@ -241,6 +241,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     QStringList getOpenWarePaths();
 
     QString getCurrentWarePath();
+
+    bool isFileOpen();
 
     bool isDebugMode();
 
