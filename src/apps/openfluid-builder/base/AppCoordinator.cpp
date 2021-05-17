@@ -49,11 +49,11 @@
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/config.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 
 #include "AppCoordinator.hpp"
 #include "MainWindow.hpp"
@@ -362,12 +362,12 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
   }
   else if (IType == NewProjectDialog::ImportType::IMPORT_PROJECT)
   {
-    openfluid::tools::copyDirectoryContentsRecursively(ISource.toStdString()+"/IN",PrjMan->getInputDir());
+    openfluid::tools::Filesystem::copyDirectory(ISource.toStdString()+"/IN",PrjMan->getInputDir(),true,true);
     return true;
   }
   else
   {
-    openfluid::tools::copyDirectoryContentsRecursively(ISource.toStdString(),PrjMan->getInputDir());
+    openfluid::tools::Filesystem::copyDirectory(ISource.toStdString(),PrjMan->getInputDir(),true,true);
     return true;
   }
 }

@@ -44,7 +44,7 @@
 
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 
 #include "ui_NewWareDialog.h"
@@ -345,7 +345,7 @@ void NewWareDialog::accept()
   {
     if (m_WareTypeDir.exists(WareId))
     {
-      openfluid::tools::emptyDirectoryRecursively(m_WareTypeDir.absoluteFilePath(WareId).toStdString());
+      openfluid::tools::Filesystem::emptyDirectory(m_WareTypeDir.absoluteFilePath(WareId).toStdString());
     }
     QMessageBox::warning(this, tr("Error"), tr("Unable to create the ware \"%1\"").arg(ErrMsg));
   }

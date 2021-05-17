@@ -37,101 +37,108 @@
 */
 
 
-#include <boost/algorithm/string/join.hpp>
+#include <filesystem>
+#include <thread>
+#include <ostream>
+#include <fstream>
+#include <regex>
 
-#include <QFileInfo>
-#include <QDir>
-#include <QFile>
-#include <QString>
-#include <QCoreApplication>
+#include <boost/algorithm/string/join.hpp>
 
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
 
 
-bool removeDirectoryRecursively(const QString& Path)
+class PathImpl
 {
-  bool Res = true;
-  QDir CurrentDir(Path);
+  private:
+    
+    std::filesystem::path m_Path;
 
-  if (CurrentDir.exists(Path))
-  {
-    for (QFileInfo Info : CurrentDir.entryInfoList(QDir::NoDotAndDotDot |
-                                                   QDir::System |
-                                                   QDir::Hidden  |
-                                                   QDir::AllDirs |
-                                                   QDir::Files,
-                                                   QDir::DirsFirst))
+
+  public:
+
+    PathImpl(const std::string& PathStr)
     {
-      if (Info.isDir())
-      {
-        Res = removeDirectoryRecursively(Info.absoluteFilePath());
-      }
-      else
-      {
-        Res = QFile::remove(Info.absoluteFilePath());
-      }
-
-      if (!Res)
-      {
-        return Res;
-      }
+      m_Path = std::filesystem::path(PathStr,std::filesystem::path::format::generic_format);
     }
-    Res = CurrentDir.rmdir(Path);
-  }
 
-  return Res;
-}
+    PathImpl(const std::filesystem::path& StdPath) :
+      m_Path(StdPath)
+    { }
+
+    const std::filesystem::path& stdPath() const
+    {
+      return m_Path;
+    }
+
+    bool isDirectory() const
+    {
+      return std::filesystem::is_directory(m_Path);
+    }
+
+    bool isFile() const
+    {
+      return (std::filesystem::is_regular_file(m_Path) || std::filesystem::is_symlink(m_Path));
+    }
+
+    bool exists() const
+    {
+      return std::filesystem::exists(m_Path);
+    }
+
+    bool makeDirectory() const
+    {
+      std::error_code TmpErr;
+      return (std::filesystem::is_directory(m_Path) || std::filesystem::create_directories(m_Path,TmpErr));
+    }
+
+    bool removeDirectory() const
+    {
+      if (isDirectory())
+      {
+        std::error_code TmpErr;
+        std::filesystem::remove_all(m_Path,TmpErr);  
+      }      
+      return true;
+    }
+
+    bool removeFile() const
+    {
+      if (isFile())
+      {
+        std::error_code TmpErr;
+        return std::filesystem::remove(m_Path,TmpErr);
+      }
+      return true;
+    }
+};
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool copyDirectoryRecursively(const QString& SrcPath,
-                              const QString& DestPath,
-                              const bool DontCopyDotDirs)
+std::string Filesystem::removeTrailingSeparators(const std::string& Path, char Sep) noexcept
 {
-  bool Res = true;
+  std::string TmpStr = Path;
+  unsigned int MinSize = 1; // minimal size to avoid removing the unique separator if any (e.g. "/")
 
-  QString DestDirPath = DestPath+"/"+QFileInfo(SrcPath).fileName();
-
-  if (QFileInfo(DestDirPath).isDir())
+  if (std::regex_match(Path,std::regex("[a-zA-Z]:.*")))
   {
-    removeDirectoryRecursively(DestDirPath);
+    MinSize = 3; // minimal size to avoid removing the windows drive if any (e.g. "c:/")
   }
 
-  QDir().mkpath(DestDirPath);
-
-  QDir CurrentDir(SrcPath);
-
-  for (QFileInfo Info : CurrentDir.entryInfoList(QDir::NoDotAndDotDot |
-                                                 QDir::System |
-                                                 QDir::Hidden  |
-                                                 QDir::AllDirs |
-                                                 QDir::Files,
-                                                 QDir::DirsFirst))
+  while (TmpStr.size() > MinSize  
+         && TmpStr.back() == Sep) 
   {
-    if (Info.isDir())
-    {
-
-      if (!DontCopyDotDirs || (DontCopyDotDirs && !Info.fileName().startsWith(".")))
-      {
-        Res = copyDirectoryRecursively(Info.absoluteFilePath(), DestDirPath, DontCopyDotDirs);
-      }
-    }
-    else
-    {
-      Res = QFile::copy(Info.absoluteFilePath(),DestDirPath+"/"+Info.fileName());
-    }
+    TmpStr.pop_back();
   }
 
-
-  return Res;
+  return TmpStr;
 }
 
 
@@ -149,9 +156,9 @@ std::string Filesystem::joinPath(const std::vector<std::string>& PathParts)
 // =====================================================================
 
 
-std::string Filesystem::filename(const std::string& Path)
+std::string Filesystem::toNativePath(const std::string& Path)
 {
-  return QFileInfo(QString::fromStdString(Path)).fileName().toStdString();
+  return std::filesystem::path(openfluid::tools::Filesystem::cleanPath(Path)).make_preferred().string();
 }
 
 
@@ -159,9 +166,19 @@ std::string Filesystem::filename(const std::string& Path)
 // =====================================================================
 
 
-std::string Filesystem::basename(const std::string& Path)
+std::string Filesystem::toGenericPath(const std::string& Path)
 {
-  return QFileInfo(QString::fromStdString(Path)).completeBaseName().toStdString();
+  return std::filesystem::path(openfluid::tools::Filesystem::cleanPath(Path)).generic_string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::filename(const std::string& Path)
+{
+  return PathImpl(Path).stdPath().filename().generic_string();
 }
 
 
@@ -171,7 +188,35 @@ std::string Filesystem::basename(const std::string& Path)
 
 std::string Filesystem::dirname(const std::string& Path)
 {
-  return QFileInfo(QString::fromStdString(Path)).dir().path().toStdString();
+  return PathImpl(Path).stdPath().parent_path().generic_string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::basename(const std::string& Path)
+{
+  return PathImpl(Path).stdPath().stem().generic_string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::minimalBasename(const std::string& Path)
+{
+  std::string TmpFilename = PathImpl(Path).stdPath().filename().generic_string();
+  size_t FirstDot = TmpFilename.find_first_of(".");
+
+  if (FirstDot != std::string::npos)
+  {
+    return TmpFilename.substr(0,FirstDot);
+  }
+
+  return TmpFilename;
 }
 
 
@@ -181,7 +226,32 @@ std::string Filesystem::dirname(const std::string& Path)
 
 std::string Filesystem::extension(const std::string& Path)
 {
-  return QFileInfo(QString::fromStdString(Path)).suffix().toStdString();
+  std::string Ext = PathImpl(Path).stdPath().extension().generic_string();
+
+  if (!Ext.empty() && Ext[0] == '.')
+  {
+    Ext.erase(0,1);
+  }
+
+  return Ext;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::completeExtension(const std::string& Path)
+{
+  std::string TmpFilename = PathImpl(Path).stdPath().filename().generic_string();
+  size_t FirstDot = TmpFilename.find_first_of(".");
+
+  if (FirstDot != std::string::npos)
+  {
+    return TmpFilename.substr(FirstDot+1);
+  }
+
+  return "";
 }
 
 
@@ -191,7 +261,7 @@ std::string Filesystem::extension(const std::string& Path)
 
 std::string Filesystem::currentPath()
 {
-  return QDir::currentPath().toStdString();
+  return std::filesystem::current_path().generic_string();
 }
 
 
@@ -201,12 +271,20 @@ std::string Filesystem::currentPath()
 
 std::string Filesystem::absolutePath(const std::string& Path)
 {
-  if (Path.empty())
+  std::string TmpStr = Path;
+  
+  if (TmpStr.empty())
   {
     return "";
+  } 
+  else if (TmpStr == "/")
+  {
+    return "/";
   }
 
-  return QDir::cleanPath(QDir::current().absoluteFilePath(QString::fromStdString(Path))).toStdString();
+  return removeTrailingSeparators(
+           std::filesystem::absolute(PathImpl(TmpStr).stdPath()).lexically_normal().generic_string()
+         );
 }
 
 
@@ -216,7 +294,7 @@ std::string Filesystem::absolutePath(const std::string& Path)
 
 std::string Filesystem::cleanPath(const std::string& Path)
 {
-  return QDir::cleanPath(QString::fromStdString(Path)).toStdString();
+  return removeTrailingSeparators(PathImpl(Path).stdPath().lexically_normal().generic_string());
 }
 
 
@@ -226,7 +304,7 @@ std::string Filesystem::cleanPath(const std::string& Path)
 
 bool Filesystem::isDirectory(const std::string& Path)
 {
-  return QFileInfo(QString::fromStdString(Path)).isDir();
+  return PathImpl(Path).isDirectory();
 }
 
 
@@ -236,7 +314,53 @@ bool Filesystem::isDirectory(const std::string& Path)
 
 bool Filesystem::isFile(const std::string& Path)
 {
-  return QFileInfo(QString::fromStdString(Path)).isFile();
+  return PathImpl(Path).isFile();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Filesystem::exists(const std::string& Path)
+{
+  return PathImpl(Path).exists();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Filesystem::copyFile(const std::string& SrcPath, const std::string& DestPath)
+{
+  std::error_code TmpErr;
+  return std::filesystem::copy_file(PathImpl(SrcPath).stdPath(),PathImpl(DestPath).stdPath(),TmpErr);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Filesystem::renameFile(const std::string& OriginalPath, const std::string& NewPath)
+{
+  std::error_code TmpErr;
+  const auto OrigStdPath = PathImpl(OriginalPath);
+  const auto NewStdPath = PathImpl(NewPath);
+
+  std::filesystem::rename(OrigStdPath.stdPath(),NewStdPath.stdPath(),TmpErr);
+  return (NewStdPath.isFile() && !OrigStdPath.isFile());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Filesystem::removeFile(const std::string& Path)
+{
+  return PathImpl(Path).removeFile();
 }
 
 
@@ -246,7 +370,7 @@ bool Filesystem::isFile(const std::string& Path)
 
 bool Filesystem::makeDirectory(const std::string& Path)
 {
-  return QDir().mkpath(QString::fromStdString(Path));
+  return PathImpl(Path).makeDirectory();
 }
 
 
@@ -256,7 +380,87 @@ bool Filesystem::makeDirectory(const std::string& Path)
 
 bool Filesystem::removeDirectory(const std::string& Path)
 {
-  return removeDirectoryRecursively(QString::fromStdString(Path));
+  return PathImpl(Path).removeDirectory();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Filesystem::copyDirectory(const std::string& SrcPath, const std::string& DestPath,
+                               bool WithBaseDir, bool RemoveExisting)
+{
+  const auto SrcPathImpl = PathImpl(SrcPath);
+  auto DestPathImpl = PathImpl(DestPath);
+
+
+  if (WithBaseDir)
+  {
+    DestPathImpl = PathImpl(DestPath+"/"+PathImpl(SrcPath).stdPath().filename().generic_string());
+  }
+
+  if (RemoveExisting)
+  {
+    if (DestPathImpl.isFile())
+    {
+      DestPathImpl.removeFile();
+    }
+    else if (DestPathImpl.isDirectory())
+    {
+      DestPathImpl.removeDirectory();
+    }
+  }
+
+  if (DestPathImpl.exists())
+  {
+    return false;
+  }
+
+
+  // Create parent path of destination directory before copy
+  if (PathImpl(DestPathImpl.stdPath().parent_path()).makeDirectory())
+  {
+    try 
+    {
+      std::filesystem::copy(SrcPathImpl.stdPath(),DestPathImpl.stdPath(),std::filesystem::copy_options::recursive);
+      return true;
+    }
+    catch (const std::filesystem::filesystem_error&)
+    {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Filesystem::emptyDirectory(const std::string& Path)
+{
+  for (const auto & Entry : std::filesystem::directory_iterator(PathImpl(Path).stdPath()))
+  {
+    if (Entry.is_directory())
+    {
+      if (!removeDirectory(Entry.path().string()))
+      {
+        return false;
+      }
+    }
+    else
+    {
+      if (!removeFile(Entry.path().string()))
+      {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
 
 
@@ -271,33 +475,37 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
     return std::string();
   }
 
-  static QString PID = QString("%1").arg(QCoreApplication::applicationPid());
+  std::ostringstream SS;
+  SS << std::this_thread::get_id();
+  static std::string PID = SS.str(); // use thread id to improve entropy
 
-  if (QDir().mkpath(QString::fromStdString(Path)))
+  if (makeDirectory(Path))
   {
+    // Thread ID - Pseudo Unique Identifier of 16 chars length
+    const std::string PIDPUI = PID + "-" + openfluid::tools::generatePseudoUniqueIdentifier(16);
 
-    // Process ID - Pseudo Unique Identifier of 16 chars length
-    std::string PIDPUI = PID.toStdString()+"-"+openfluid::tools::generatePseudoUniqueIdentifier(16);
-
-    // pattern for subdir : {SubdirName}-{PID}-{PUI}-%1
-    QString FullSubdirPath = 
-      QString::fromStdString(openfluid::tools::Filesystem::joinPath({Path,SubdirName+"-"+PIDPUI+"-%1"}));
-
-    // Suffix replacing the "%1" string for potential duplicates
+    // Suffix to avoid for potential duplicates
     // (duplicates should never happen, so suffix should be 0)
-    int IncSuffix = 0;
+    unsigned int IncSuffix = 0;
 
-    QString CandidateFullPath = FullSubdirPath.arg(IncSuffix);
+    // lambda expression to generate a formatted full path
+    // pattern for subdir : {SubdirName}-{PID}-{PUI}-{Inc}
+    auto generateFullPath = [&]()
+    { 
+      return joinPath({Path,SubdirName+"-"+PIDPUI+"-"+std::to_string(IncSuffix)}); 
+    };
 
-    while (QFileInfo(CandidateFullPath).isDir()) // FIXME problem if file exists with same name, use exists() instead?
+    std::string CandidateFullPath =  generateFullPath();
+
+    while (exists(CandidateFullPath))
     {
       IncSuffix++;
-      CandidateFullPath = FullSubdirPath.arg(IncSuffix);
+      CandidateFullPath = generateFullPath();
     }
 
-    if (QDir().mkpath(CandidateFullPath))
+    if (makeDirectory(CandidateFullPath))
     {
-      return CandidateFullPath.toStdString();
+      return CandidateFullPath;
     }
     else
     {
@@ -315,43 +523,46 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
 
 std::string Filesystem::makeUniqueFile(const std::string& Path, const std::string& FileName)
 {
-  if (QDir().mkpath(QString::fromStdString(Path)))
+  if (makeDirectory(Path))
   {
-    static QString PID = QString("%1").arg(QCoreApplication::applicationPid());
+    std::ostringstream SS;
+    SS << std::this_thread::get_id();
+    static std::string PID = SS.str(); // use thread id to improve entropy
 
-    QString FileRoot = QFileInfo(QString::fromStdString(FileName)).baseName();
-    QString FileExt = QFileInfo(QString::fromStdString(FileName)).completeSuffix();
-
-    if (!FileExt.isEmpty())
+    std::string FileRoot = minimalBasename(FileName);
+    std::string FileExt = completeExtension(FileName);
+    if (!FileExt.empty())
     {
       FileExt = "."+FileExt;
     }
 
     // Process ID - Pseudo Unique Identifier of 16 chars length
-    std::string PIDPUI = PID.toStdString()+"-"+openfluid::tools::generatePseudoUniqueIdentifier(16);
+    std::string PIDPUI = PID + "-" + openfluid::tools::generatePseudoUniqueIdentifier(16);
 
-    // pattern for file : {Path}/{Filename root}-{PID}-{PUI}-%1.{Filename ext}
-    QString FullFilePath = QString::fromStdString(
-      openfluid::tools::Filesystem::joinPath({Path,FileRoot.toStdString()+"-"+PIDPUI+"-%1"+FileExt.toStdString()})
-    );
-
-    // Suffix replacing the "%1" string for potential duplicates
+    // Suffix to avoid for potential duplicates
     // (duplicates should never happen, so suffix should be 0)
     int IncSuffix = 0;
 
-    QString CandidateFilePath = FullFilePath.arg(IncSuffix);
+    // lambda expression to generate a formatted full path
+    // pattern for file : {Path}/{Filename root}-{PID}-{PUI}-{Inc}.{Filename ext}
+    auto generateFullPath = [&]()
+    { 
+      return joinPath({Path,FileRoot+"-"+PIDPUI+std::to_string(IncSuffix)+FileExt}); 
+    };
 
-    while (QFileInfo(CandidateFilePath).exists())
+    std::string CandidateFilePath = generateFullPath();
+
+    while (exists(CandidateFilePath))
     {
       IncSuffix++;
-      CandidateFilePath = FullFilePath.arg(IncSuffix);
+      CandidateFilePath = generateFullPath();
     }
 
-    QFile EmptyFile(CandidateFilePath);
-    if (EmptyFile.open(QIODevice::WriteOnly))
+    std::ofstream EmptyFile(CandidateFilePath,std::ofstream::out);
+    if (EmptyFile.is_open())
     {
       EmptyFile.close();
-      return CandidateFilePath.toStdString();
+      return CandidateFilePath;
     }
   }
 
@@ -363,9 +574,32 @@ std::string Filesystem::makeUniqueFile(const std::string& Path, const std::strin
 // =====================================================================
 
 
-bool Filesystem::removeFile(const std::string& Path)
+std::vector<std::string> Filesystem::findFiles(const std::string& Path, bool WithPath, const std::string& Pattern)
 {
-  return QFile(QString::fromStdString(Path)).remove();
+  std::vector<std::string> FilesList;
+  const auto SearchPath = PathImpl(Path);
+
+  if (SearchPath.isDirectory())
+  {
+    std::regex RegExp(Pattern);
+
+    for (const auto & Entry : std::filesystem::directory_iterator(SearchPath.stdPath()))
+    {
+      if ((Entry.is_regular_file() || Entry.is_symlink()) && 
+          (Pattern.empty() || std::regex_match(Entry.path().filename().generic_string(),RegExp)))
+      {
+        if (WithPath)
+        {
+          FilesList.push_back(Entry.path().generic_string());
+        }
+        else
+        {
+          FilesList.push_back(Entry.path().filename().generic_string());
+        }
+      }
+    }
+  }
+  return FilesList;
 }
 
 
@@ -373,9 +607,32 @@ bool Filesystem::removeFile(const std::string& Path)
 // =====================================================================
 
 
-bool Filesystem::copyFile(const std::string& SrcPath, const std::string& DestPath)
+std::vector<std::string> Filesystem::findDirectories(const std::string& Path, bool WithPath, const std::string& Pattern)
 {
-  return QFile::copy(QString::fromStdString(SrcPath),QString::fromStdString(DestPath));
+  std::vector<std::string> DirsList;
+  const auto SearchPath = PathImpl(Path);
+
+  if (SearchPath.isDirectory())
+  {
+    std::regex RegExp(Pattern);
+
+    for (const auto & Entry : std::filesystem::directory_iterator(SearchPath.stdPath()))
+    {
+      if (Entry.is_directory() && 
+          (Pattern.empty() || std::regex_match(Entry.path().filename().generic_string(),RegExp)))
+      {
+        if (WithPath)
+        {
+          DirsList.push_back(Entry.path().generic_string());
+        }
+        else
+        {
+          DirsList.push_back(Entry.path().filename().generic_string());
+        }
+      }
+    }
+  }
+  return DirsList;
 }
 
 
@@ -383,9 +640,11 @@ bool Filesystem::copyFile(const std::string& SrcPath, const std::string& DestPat
 // =====================================================================
 
 
-bool Filesystem::renameFile(const std::string& OriginalPath, const std::string& NewPath)
+std::vector<std::string> Filesystem::findFilesByExtension(const std::string& Path,
+                                                          const std::string& Ext,
+                                                          bool WithPath, bool ExtIncludeDot)
 {
-  return QFile::rename(QString::fromStdString(OriginalPath),QString::fromStdString(NewPath));
+  return findFilesBySuffixAndExtension(Path,"",Ext,WithPath,ExtIncludeDot);
 }
 
 
@@ -393,11 +652,23 @@ bool Filesystem::renameFile(const std::string& OriginalPath, const std::string& 
 // =====================================================================
 
 
-bool Filesystem::copyDirectory(const std::string& SrcPath, const std::string& DestPath,
-                               const bool DontCopyDotDirs)
+std::vector<std::string> Filesystem::findFilesBySuffixAndExtension(const std::string& Path,
+                                                                   const std::string& Suffix,
+                                                                   const std::string& Ext,
+                                                                   bool WithPath,
+                                                                   bool ExtIncludeDot)
+
 {
-  return copyDirectoryRecursively(QString::fromStdString(SrcPath),QString::fromStdString(DestPath),
-                                  DontCopyDotDirs);
+  std::string SuffixExt = Suffix+"."+Ext;
+
+  if (ExtIncludeDot)
+  {
+    SuffixExt = Suffix+Ext;
+  }
+
+  std::string Pattern = ".*"+openfluid::tools::escapePattern(SuffixExt);
+
+  return findFiles(Path,WithPath,Pattern);
 }
 
 

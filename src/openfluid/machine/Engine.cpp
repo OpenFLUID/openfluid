@@ -48,7 +48,6 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/Engine.hpp>
@@ -518,8 +517,9 @@ void Engine::prepareOutputDir()
   {
     if (openfluid::base::RunContextManager::instance()->isClearOutputDir())
     {
-      openfluid::tools::emptyDirectoryRecursively(openfluid::base::RunContextManager::instance()
-                                                    ->getOutputDir().c_str());
+      openfluid::tools::Filesystem::emptyDirectory(
+        openfluid::base::RunContextManager::instance()->getOutputDir().c_str()
+      );
     }
   }
 }

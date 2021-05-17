@@ -49,7 +49,6 @@
 
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/config.hpp>
@@ -73,7 +72,7 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
       openfluid::ware::WareType::SIMULATOR);
   QDir WareTypeDir = QDir(WareTypePath);
 
-  openfluid::tools::emptyDirectoryRecursively(WareTypePath.toStdString());
+  openfluid::tools::Filesystem::emptyDirectory(WareTypePath.toStdString());
 
   openfluid::waresdev::WareSrcFactory Factory(openfluid::ware::WareType::SIMULATOR);
 
@@ -200,7 +199,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
       openfluid::ware::WareType::BUILDEREXT);
   QDir WareTypeDir = QDir(WareTypePath);
 
-  openfluid::tools::emptyDirectoryRecursively(WareTypePath.toStdString());
+  openfluid::tools::Filesystem::emptyDirectory(WareTypePath.toStdString());
 
   openfluid::waresdev::WareSrcFactory Factory(openfluid::ware::WareType::BUILDEREXT);
 

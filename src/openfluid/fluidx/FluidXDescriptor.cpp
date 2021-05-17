@@ -46,7 +46,6 @@
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
@@ -897,7 +896,8 @@ void FluidXDescriptor::loadFromDirectory(const std::string& DirPath)
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"directory " + DirPath + " does not exist");
   }
 
-  std::vector<std::string> FluidXFilesToLoad = openfluid::tools::findFilesByExtension(DirPath, "fluidx", true);
+  std::vector<std::string> FluidXFilesToLoad = 
+    openfluid::tools::Filesystem::findFilesByExtension(DirPath, "fluidx", true);
 
   if (FluidXFilesToLoad.size() == 0)
   {

@@ -42,8 +42,9 @@
 #include <random>
 #include <sstream>
 #include <iomanip>
+#include <regex>
 
-#include <QDir>
+#include <QString>
 
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
@@ -121,25 +122,6 @@ std::string replaceEmptyString(std::string SourceStr,
     SourceStr = ReplaceStr;
   }
   return SourceStr;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string removeTrailingSlashes(const std::string& Str)
-{
-
-  QString QStr = QString::fromStdString(Str);
-
-  while (QStr.endsWith(QDir::separator()))
-  {
-    QStr.remove(QStr.size()-1,1);
-  }
-
-  return QStr.toStdString();
-
 }
 
 
@@ -377,6 +359,18 @@ std::string getDurationAsPrettyString(long int MSecsDuration)
   }
 
   return TmpStr;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string escapePattern(const std::string& Str)
+{
+  std::regex SpecialChars { R"([-[\]{}()*+?.,\^$|#\s])" };
+
+  return std::regex_replace(Str,SpecialChars,R"(\$&)");
 }
 
 

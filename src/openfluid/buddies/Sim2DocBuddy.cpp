@@ -52,7 +52,6 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <openfluid/buddies/Sim2DocBuddy.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>

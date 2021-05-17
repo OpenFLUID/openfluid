@@ -162,7 +162,6 @@ void SimulatorSignatureRegistry::update()
 
   openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
 
-
   // searching for ghosts simulators
 
   std::vector<openfluid::machine::ModelItemSignatureInstance*> GhostsSignatures =

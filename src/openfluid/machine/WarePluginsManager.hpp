@@ -53,7 +53,7 @@
 #include <openfluid/machine/WarePluginsSearchResults.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/config.hpp>
 
@@ -360,9 +360,10 @@ class OPENFLUID_API WarePluginsManager
 
       for (i=0;i<PluginsPaths.size();i++)
       {
-        TmpFiles = openfluid::tools::findFilesBySuffixAndExtension(PluginsPaths[i],
-                                                                   getPluginFilenameSuffix(),
-                                                                   openfluid::config::PLUGINS_EXT,false,true);
+        TmpFiles = openfluid::tools::Filesystem::findFilesBySuffixAndExtension(PluginsPaths[i],
+                                                                               getPluginFilenameSuffix(),
+                                                                               openfluid::config::PLUGINS_EXT,
+                                                                               false,true);
 
         for (j=0;j<TmpFiles.size();j++)
         {

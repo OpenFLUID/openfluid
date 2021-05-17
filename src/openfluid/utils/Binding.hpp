@@ -50,7 +50,6 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/utils/BindingVerboseMachineListener.hpp>
 #include <openfluid/utils/BindingAbstractOutErr.hpp>
 #include <openfluid/machine/Factory.hpp>
@@ -642,10 +641,9 @@ class Binding
       {
         if (WithOriginData && !m_SourcePath.empty())
         {
-          openfluid::tools::emptyDirectoryRecursively(std::string(Path));
-          openfluid::tools::copyDirectoryContentsRecursively(m_SourcePath, std::string(Path));
+          openfluid::tools::Filesystem::copyDirectory(m_SourcePath, std::string(Path),false,true);
 
-          auto FluidXToRemove = openfluid::tools::findFilesByExtension(std::string(Path),"fluidx",true);
+          auto FluidXToRemove = openfluid::tools::Filesystem::findFilesByExtension(std::string(Path),"fluidx",true);
 
           for (const auto& F : FluidXToRemove)
           {

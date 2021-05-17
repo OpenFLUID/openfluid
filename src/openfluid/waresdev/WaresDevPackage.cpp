@@ -43,7 +43,6 @@
 #include <QCoreApplication>
 
 #include <openfluid/waresdev/WaresDevPackage.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
@@ -65,7 +64,7 @@ WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& 
 
   if (m_PackageTempDir.exists())
   {
-    openfluid::tools::emptyDirectoryRecursively(m_PackageTempPath.toStdString());
+    openfluid::tools::Filesystem::emptyDirectory(m_PackageTempPath.toStdString());
   }
   else
   {
@@ -420,7 +419,7 @@ void WaresDevImportPackage::copyWares()
     {
       emit info(tr("Importing \"%1\"").arg(DestinationPath));
 
-      if (!openfluid::tools::Filesystem::copyDirectory(WarePath.toStdString(), DestinationUpDir.toStdString()))
+      if (!openfluid::tools::Filesystem::copyDirectory(WarePath.toStdString(),DestinationUpDir.toStdString(),true,true))
       {
         emit error(tr("Unable to copy \"%1\" to \"%2\"").arg(WarePath).arg(DestinationUpDir));
         Ok = false;

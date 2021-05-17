@@ -41,7 +41,6 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
 
@@ -87,7 +86,7 @@ bool ExamplesBuddy::installExampleFolder(const std::string& SourcePath,
     openfluid::tools::Filesystem::makeDirectory(ThisFolderInstallPath);
 
     openfluid::tools::Filesystem::copyDirectory(openfluid::tools::Filesystem::joinPath({SourcePath,FolderName}),
-                                                InstallPath);
+                                                InstallPath,true,true);
     mp_Listener->onStageCompleted("Done");
 
     return true;
@@ -150,7 +149,7 @@ bool ExamplesBuddy::installAllExamplesFolders(const std::string& ExamplesSourceP
                                                                            openfluid::config::PROJECTS_PATH});
   if (openfluid::tools::Filesystem::isDirectory(ProjectsSourcePath))
   {
-    std::vector<std::string> FoundProjects = openfluid::tools::findDirectories(ProjectsSourcePath);
+    std::vector<std::string> FoundProjects = openfluid::tools::Filesystem::findDirectories(ProjectsSourcePath);
 
     for (unsigned int i=0;i<FoundProjects.size();i++)
     {
@@ -173,7 +172,7 @@ bool ExamplesBuddy::installAllExamplesFolders(const std::string& ExamplesSourceP
   
   if (openfluid::tools::Filesystem::isDirectory(SimulatorsSourcePath))
   {
-    std::vector<std::string> FoundSimulators = openfluid::tools::findDirectories(SimulatorsSourcePath);
+    std::vector<std::string> FoundSimulators = openfluid::tools::Filesystem::findDirectories(SimulatorsSourcePath);
 
     for (unsigned int i=0;i<FoundSimulators.size();i++)
     {

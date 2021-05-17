@@ -489,8 +489,11 @@ void Environment::addExtraSimulatorsDirs(const std::string& Dirs)
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {
-    m_ExtraSimulatorsDirs.insert(m_ExtraSimulatorsDirs.begin(), 1,
-                                 openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
+    m_ExtraSimulatorsDirs.insert(
+      m_ExtraSimulatorsDirs.begin(), 1,
+      openfluid::tools::Filesystem::removeTrailingSeparators(ExtraDirs[i],
+                                                             openfluid::tools::Filesystem::pathSeparator())
+    );
   }
 }
 
@@ -539,8 +542,11 @@ void Environment::addExtraObserversDirs(const std::string& Dirs)
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {
-    m_ExtraObserversDirs.insert(m_ExtraObserversDirs.begin(), 1,
-                                openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
+    m_ExtraObserversDirs.insert(
+      m_ExtraObserversDirs.begin(), 1,
+      openfluid::tools::Filesystem::removeTrailingSeparators(ExtraDirs[i],
+                                                             openfluid::tools::Filesystem::pathSeparator())
+    );
   }
 }
 
@@ -591,8 +597,11 @@ void Environment::addExtraBuilderextsDirs(const std::string& Dirs)
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {
-    m_ExtraBuilderextsDirs.insert(m_ExtraBuilderextsDirs.begin(), 1,
-                                  openfluid::tools::removeTrailingSlashes(ExtraDirs[i]));
+    m_ExtraBuilderextsDirs.insert(
+      m_ExtraBuilderextsDirs.begin(), 1,
+      openfluid::tools::Filesystem::removeTrailingSeparators(ExtraDirs[i],
+                                                             openfluid::tools::Filesystem::pathSeparator())
+    );
   }
 }
 

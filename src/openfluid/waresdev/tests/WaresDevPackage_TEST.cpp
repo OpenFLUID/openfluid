@@ -51,7 +51,6 @@
 
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/config.hpp>
@@ -81,7 +80,7 @@ class F
 
       openfluid::tools::Filesystem::makeDirectory(AbsoluteSubPath.toStdString());
 
-      openfluid::tools::emptyDirectoryRecursively(AbsoluteSubPath.toStdString());
+      openfluid::tools::Filesystem::emptyDirectory(AbsoluteSubPath.toStdString());
 
       return AbsoluteSubPath;
     }
@@ -174,7 +173,7 @@ class F
 
         if (Dir.exists())
         {
-          openfluid::tools::emptyDirectoryRecursively(DirPath.toStdString());
+          openfluid::tools::Filesystem::emptyDirectory(DirPath.toStdString());
           Dir.rmdir(DirPath);
         }
       }

@@ -45,7 +45,6 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
@@ -439,7 +438,7 @@ void WareSrcContainer::prepareBuildDirectory() const
 
   if (BuildDir.exists())
   {
-    openfluid::tools::emptyDirectoryRecursively(QString(m_BuildDirPath).toStdString());
+    openfluid::tools::Filesystem::emptyDirectory(QString(m_BuildDirPath).toStdString());
   }
   else if (!QDir().mkpath(m_BuildDirPath))
   {

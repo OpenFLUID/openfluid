@@ -94,22 +94,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // ---------------------------------------------------------------------
 
 
-#if defined(OPENFLUID_OS_WINDOWS)
-  BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("c:\\foo"),"c:\\foo");
-  BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("c:\\foo\\"),"c:\\foo");
-  BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("c:\\foo\\\\"),"c:\\foo");
-#else
-  BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("/foo"),"/foo");
-  BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("/foo/"),"/foo");
-  BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("/foo//"),"/foo");
-  BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("/foo////"),"/foo");
-  BOOST_REQUIRE_EQUAL(openfluid::tools::removeTrailingSlashes("/foo/bar/baz//"),"/foo/bar/baz");
-#endif
-
-
-  // ---------------------------------------------------------------------
-
-
   for (int i =0; i<10; i++)
   {
     std::cout << "10 chars: " << openfluid::tools::generatePseudoUniqueIdentifier(10) << std::endl;
@@ -153,5 +137,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
     std::cout << D << "ms = " << openfluid::tools::getDurationAsPrettyString(D) << std::endl;
   }
 
+
+  // ---------------------------------------------------------------------
+
+
+  BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern("txt"),"txt");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern(".md"),"\\.md");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern("_ofware20111-sim.dll"),"_ofware20111\\-sim\\.dll");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern("_ofware20200-obs.so"),"_ofware20200\\-obs\\.so");
+  BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern("+.?{}[]\\\\-_"),"\\+\\.\\?\\{\\}\\[\\]\\\\\\-_");
 }
 

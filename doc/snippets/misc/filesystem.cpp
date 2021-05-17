@@ -69,8 +69,17 @@ Name = openfluid::tools::Filesystem::filename("/tmp/archive.tar.gz");
 std::string Name;
 
 Name = openfluid::tools::Filesystem::basename("/tmp/archive.tar.gz");
-// name = "archive.tar"
+// Name = "archive.tar"
 //! [basename]
+}
+
+{
+//! [minimalbasename]
+std::string Name;
+
+Name = openfluid::tools::Filesystem::minimalBasename("/tmp/archive.tar.gz");
+// Name = "archive"
+//! [minimalbasename]
 }
 
 
@@ -92,5 +101,16 @@ Ext = openfluid::tools::Filesystem::extension("/tmp/archive.tar.gz");
 // Ext = "gz"
 //! [extension]
 }
+
+
+{
+//! [completeextension]
+std::string Ext;
+
+Ext = openfluid::tools::Filesystem::completeExtension("/tmp/archive.tar.gz");
+// Ext = "tar.gz"
+//! [completeextension]
+}
+
 
 }

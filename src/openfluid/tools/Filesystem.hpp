@@ -57,6 +57,10 @@ class OPENFLUID_API Filesystem
 
     Filesystem() = delete;
 
+    /**
+      Returns the separator used in paths lists according to current operating system
+      @return the list separator character
+    */
     constexpr static inline char pathsListSeparator() noexcept
     {
 #if defined(OPENFLUID_OS_UNIX)
@@ -66,6 +70,10 @@ class OPENFLUID_API Filesystem
 #endif
     } 
 
+    /**
+      Returns the path separator according to current operating system
+      @return the path separator character
+    */
     constexpr static inline char pathSeparator() noexcept
     {
 #if defined(OPENFLUID_OS_UNIX)
@@ -76,12 +84,35 @@ class OPENFLUID_API Filesystem
     }
 
     /**
+      Removes trailing separators in the given path, if any.
+      @param[in] Path the path
+      @param[in] Sep the separator character (default is '/')
+      @return the path without any trailing separator
+    */
+    static std::string removeTrailingSeparators(const std::string& Path, char Sep = '/') noexcept;
+
+    /**
       Returns a joined path string from a vector of path parts, using the '/' separator
       @param[in] PathParts a vector of path parts
       @return the joined path
       @snippet misc/filesystem.cpp joinpath
     */
     static std::string joinPath(const std::vector<std::string>& PathParts);
+
+    /**
+      Returns the given path as a cleaned path with native paths separators 
+      (e.g. '/' on Unix systems, '\' on Windows systems)
+      @param[in] Path the path
+      @return the cleaned path with native separators
+    */
+    static std::string toNativePath(const std::string& Path);
+
+    /**
+      Returns the given path as a cleaned path with generic paths separators (always '/')
+      @param[in] Path the path
+      @return the cleaned path with generic separators
+    */
+    static std::string toGenericPath(const std::string& Path);
 
     /**
       Returns the name of the file in the given path
@@ -92,7 +123,17 @@ class OPENFLUID_API Filesystem
     static std::string filename(const std::string& Path);
 
     /**
-      Returns the complete base name of the file in the given path
+      Returns the directory name (parent path) for the given path
+      @snippet misc/filesystem.cpp dirname
+      @param[in] Path the given path
+      @return the directory name
+    */
+    static std::string dirname(const std::string& Path);
+
+
+    /**
+      Returns the complete base name of the file for the given path 
+      (without latest extension part, without trailing dot if any)
       @snippet misc/filesystem.cpp basename
       @param[in] Path the given path
       @return the base name of the file
@@ -100,20 +141,29 @@ class OPENFLUID_API Filesystem
     static std::string basename(const std::string& Path);
 
     /**
-      Returns the directory name (parent path) of the given path
-      @snippet misc/filesystem.cpp dirname
+      Returns the minimal base name of the file for the given path 
+      (e.g. without any extension part, without trailing dot if any)
+      @snippet misc/filesystem.cpp minimalbasename
       @param[in] Path the given path
-      @return the directory name
+      @return the minimal base name of the file
     */
-    static std::string dirname(const std::string& Path);
+    static std::string minimalBasename(const std::string& Path);
 
     /**
-      Returns the extension of the file of the given path
+      Returns the extension (without dot character) of the file for the given path
       @snippet misc/filesystem.cpp extension
       @param[in] Path the given path
       @return the extension
     */
     static std::string extension(const std::string& Path);
+
+   /**
+      Returns the complete extension (without first dot character) of the file for the given path
+      @snippet misc/filesystem.cpp completeextension
+      @param[in] Path the given path
+      @return the complete extension
+    */
+    static std::string completeExtension(const std::string& Path);
 
     /**
       Returns the current path
@@ -149,6 +199,13 @@ class OPENFLUID_API Filesystem
       @return true or false
     */
     static bool isFile(const std::string& Path);
+
+    /**
+      Returns true if the given path exists (a file, a directory or a valid symbolic link)
+      @param[in] Path the given path
+      @return true or false
+    */
+    static bool exists(const std::string& Path);
 
     /**
       Creates the directory of the given path. It creates all parent directories necessary to create the directory.
@@ -213,12 +270,66 @@ class OPENFLUID_API Filesystem
       Recursively copies a directory from source to destination.
       @param[in] SrcPath the source path
       @param[in] DestPath the destination path
-      @param[in] DontCopyDotDirs if set to true, it ignores the directories beginning with a dot ('.').
-                 Default is false
+      @param[in] WithBaseDir if true, the source directory is created in the destination dir 
+                             as an intermdiate directory (e.g. if the content of /my/path/first is copied 
+                             into /my/path/second, the content will actually be copied into /my/path/second/first) 
+      @param[in] RemoveExisting if true, the destination directory is deleted if it already exists
       @return true if the directory was successfully copied, false otherwise
     */
     static bool copyDirectory(const std::string& SrcPath, const std::string& DestPath,
-                              const bool DontCopyDotDirs = false);
+                              bool WithBaseDir = false, bool RemoveExisting = false);
+
+    /**
+      Recursively removes all files and directories contained in the given directory.
+      It deletes the directory and recreates it.
+      @param[in] Path the directory to empty
+      @return true if successful
+    */
+    static bool emptyDirectory(const std::string& Path);
+
+    /**
+      Gets the list of files found in the specified directory
+      @param[in] Path the directory to explore
+      @param[in] WithPath return full path if true, directory name only otherwise
+      @param[in] Pattern an optional pattern to filter the files to find
+    */
+    static std::vector<std::string> findFiles(const std::string& Path, 
+                                              bool WithPath = false, const std::string& Pattern = "");
+
+    /**
+      Gets the list of directories found in the specified directory
+      @param[in] Path the directory to explore
+      @param[in] WithPath return full path if true, directory name only otherwise
+      @param[in] Pattern an optional pattern to filter the directories to find
+    */
+    static std::vector<std::string> findDirectories(const std::string& Path,
+                                                    bool WithPath = false, const std::string& Pattern = "");
+
+    /**
+      Gets the list of files with specified extension contained in the specified directory
+      @param[in] Path the directory to explore
+      @param[in] Ext the file extension
+      @param[in] WithPath return full path with file name if true, file name only otherwise
+      @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
+    */
+    static std::vector<std::string> findFilesByExtension(const std::string& Path,
+                                                                const std::string& Ext,
+                                                                bool WithPath = false,
+                                                                bool ExtIncludeDot = false);
+
+    /**
+      Get list of files with specified extension contained in the specified dir
+      @param[in] Path the directory to explore
+      @param[in] Ext the file extension
+      @param[in] Suffix the file suffix
+      @param[in] WithPath return full path with file name if true, file name only otherwise
+      @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
+    */
+    static std::vector<std::string> findFilesBySuffixAndExtension(const std::string& Path,
+                                                                  const std::string& Suffix,
+                                                                  const std::string& Ext,
+                                                                  bool WithPath = false,
+                                                                  bool ExtIncludeDot = false);
 
 };
 

@@ -5,7 +5,7 @@ SET(OPENFLUID_TOOLS_CPP ColumnTextParser.cpp
                         ProgressiveColumnFileReader.cpp ProgressiveChronFileReader.cpp
                         ChronFileInterpolator.cpp ChronFileLinearInterpolator.cpp 
                         DistributionTables.cpp DistributionBindings.cpp
-                        Filesystem.cpp FileHelpers.cpp
+                        Filesystem.cpp
                         FileLogger.cpp
                         DataHelpers.cpp IDHelpers.cpp QtHelpers.cpp MiscHelpers.cpp
                         )
@@ -16,7 +16,7 @@ SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp
                         ChronFileInterpolator.hpp ChronFileLinearInterpolator.hpp
                         DistributionTables.hpp DistributionBindings.hpp
                         Console.hpp
-                        Filesystem.hpp FileHelpers.hpp
+                        Filesystem.hpp
                         FileLogger.hpp
                         DataHelpers.hpp IDHelpers.hpp QtHelpers.hpp MiscHelpers.hpp
                         FortranCPP.hpp

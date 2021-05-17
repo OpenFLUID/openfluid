@@ -48,7 +48,7 @@
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/tools/FileHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
 #include "ProjectCentral.hpp"
@@ -269,7 +269,7 @@ bool ProjectCentral::saveAs(const QString& NewPrjName, const QString& NewPrjPath
   QDir().mkpath(NewPrjPath);
 
   // copy files and subdirectories from current to renamed project
-  openfluid::tools::copyDirectoryContentsRecursively(OldPrjPath.toStdString(),NewPrjPath.toStdString());
+  openfluid::tools::Filesystem::copyDirectory(OldPrjPath.toStdString(),NewPrjPath.toStdString(),true,true);
 
   // open renamed project
   PrjCtxt->openProject(NewPrjPath.toStdString());

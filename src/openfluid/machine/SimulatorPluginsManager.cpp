@@ -59,9 +59,10 @@ SimulatorPluginsManager::getAvailableGhostsSignatures(const std::string& /*Patte
 
   for (i=0;i<PluginsPaths.size();i++)
   {
-    TmpFiles = openfluid::tools::findFilesBySuffixAndExtension(PluginsPaths[i],
-                                                               openfluid::config::SIMULATORS_GHOSTS_SUFFIX,
-                                                               openfluid::config::GHOSTS_EXT,true,true);
+    TmpFiles = openfluid::tools::Filesystem::findFilesBySuffixAndExtension(PluginsPaths[i],
+                                                                           openfluid::config::SIMULATORS_GHOSTS_SUFFIX,
+                                                                           openfluid::config::GHOSTS_EXT,
+                                                                           true,true);
     for (j=0;j<TmpFiles.size();j++)
     {
       GhostsFiles.push_back(TmpFiles[j]);
