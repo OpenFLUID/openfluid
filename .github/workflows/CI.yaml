@@ -10,7 +10,7 @@ jobs:
 
 
   ci-linux-debug:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Installation of dependencies
@@ -34,7 +34,7 @@ jobs:
         working-directory: ./_build
 
   ci-linux-release:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Installation of dependencies
@@ -65,7 +65,7 @@ jobs:
 
 
   ci-macos-release:
-    runs-on: macos-latest
+    runs-on: macos-10.15
 
     steps:
       - name: Installation of dependencies
@@ -91,7 +91,7 @@ jobs:
 
 
   ci-windows-debug:
-    runs-on: windows-latest
+    runs-on: windows-2019
     
     defaults:
       run:
